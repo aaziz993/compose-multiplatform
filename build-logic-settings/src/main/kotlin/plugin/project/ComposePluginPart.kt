@@ -71,7 +71,7 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
             */
         val shouldGenerateCode = resDir.exists()
 
-        println(
+        logger.info(
             """
             ADJUSTING COMPOSE RESOURCES GENERATION
 
@@ -445,7 +445,7 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
         moduleIsolationDirectory: File?
     ) {
         target.compilations.all {
-            println("Configure $name resources for '${target.targetName}' target")
+            logger.info("Configure $name resources for '${target.targetName}' target")
 
             tasks.named(
                 "assemble${target.targetName.uppercaseFirstChar()}${name.uppercaseFirstChar()}Resources",
@@ -461,7 +461,7 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
             moduleResourceDir?.let { relativeResourcePlacement = it }
 
             doLast {
-                println(
+                logger.info(
                     "COPY FROM ${
                         from.get().map { it.absolutePath }
                     } TO " + outputDirectory.get().asFile.absolutePath
