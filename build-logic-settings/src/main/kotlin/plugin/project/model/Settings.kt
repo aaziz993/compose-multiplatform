@@ -1,6 +1,6 @@
-package gradle.amper.model
+package plugin.project.model
 
-import gradle.amper.model.doctor.DoctorSettings
+import plugin.project.amper.doctor.DoctorSettings
 import kotlinx.serialization.Serializable
 
 @Serializable

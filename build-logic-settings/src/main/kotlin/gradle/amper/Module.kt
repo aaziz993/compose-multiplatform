@@ -1,6 +1,6 @@
 package gradle.amper
 
-import gradle.amper.model.Properties
+import plugin.project.model.Properties
 import gradle.decodeFromAny
 import gradle.deepMerge
 import kotlinx.serialization.json.Json

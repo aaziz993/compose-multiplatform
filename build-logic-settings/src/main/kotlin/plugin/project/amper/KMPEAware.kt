@@ -1,4 +1,4 @@
-package plugin.project
+package plugin.project.amper
 
 import org.jetbrains.amper.frontend.FragmentDependencyType
 import org.jetbrains.amper.frontend.LeafFragment
@@ -65,4 +65,4 @@ internal interface KMPEAware {
 
 
 
-  
+

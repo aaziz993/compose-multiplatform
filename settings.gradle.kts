@@ -17,6 +17,7 @@ plugins {
 include(":android-app")
 include(":ios-app")
 include(":jvm-app")
+include(":wasm-app")
 include(":server-app")
 include(":shared")
 include(":cmp-lib")

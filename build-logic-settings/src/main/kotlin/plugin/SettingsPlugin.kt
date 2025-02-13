@@ -8,6 +8,8 @@ import gradle.libs
 import gradle.plugin
 import gradle.pluginAsDependency
 import gradle.plugins
+import kotlin.io.path.absolutePathString
+import kotlin.io.path.nameWithoutExtension
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -24,10 +26,9 @@ import org.jetbrains.amper.frontend.ModelInit
 import org.jetbrains.amper.gradle.*
 import org.jetbrains.kotlin.gradle.plugin.KotlinMultiplatformPluginWrapper
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
-import plugin.project.BindingProjectPlugin
-import kotlin.io.path.absolutePathString
-import kotlin.io.path.nameWithoutExtension
-
+import plugin.project.amper.BindingProjectPlugin
+import plugin.project.nonamper.model.NonAmperModel
+import plugin.project.nonamper.model.knownNonAmperModel
 
 /**
  * Gradle setting plugin, that is responsible for:
@@ -47,36 +48,70 @@ public class SettingsPlugin : Plugin<Settings> {
                 // at this point all projects have been created by settings.gradle.kts, but none were evaluated yet
                 val projects = settings.gradle.rootProject.allprojects
 
-                val modelResult = ModelInit.getGradleAmperModel(
-                    rootProjectDir = settings.rootDir.toPath().toAbsolutePath(),
-                    subprojectDirs = projects.map { it.projectDir.toPath().toAbsolutePath() },
-                    loader = gradleClassLoader,
-                )
-                if (modelResult is Result.Failure<Model> || problemReporter.hasFatal) {
-                    throw GradleException(problemReporter.getGradleError())
-                }
+                settings.setupAmperModel(gradleClassLoader)
 
-
-                val model = modelResult.get()
-
-                settings.gradle.knownModel = model
-                setGradleProjectsToAmperModuleMappings(projects, model.modules, settings.gradle)
-
-                settings.setupPluginsClasspath(model)
+                settings.setupNonAmperModel(gradleClassLoader)
 
                 projects.forEach { project ->
                     if (project.amperModule != null) {
                         configureProjectForAmper(project)
-                    } else if (project === project.rootProject) {
+                    }
+                    else if (project === project.rootProject) {
                         // Even if the root project doesn't have a module.yaml file (and thus is not an Amper project),
                         // subprojects using Kotlin/Native add the :commonizeNativeDistribution task to the root.
                         // The IDE runs it, as well as native subproject builds.
                         // Therefore, it needs mavenCentral to resolve kotlin-klib-commonizer-embeddable.
                         project.repositories.mavenCentral()
                     }
+                    else {
+                       configureProjectForNonAmper(project)
+                    }
                 }
             }
         }
+    }
+
+    context(SLF4JProblemReporterContext)
+    private fun Settings.setupAmperModel(loader: ClassLoader = Thread.currentThread().contextClassLoader) {
+        val projects = settings.gradle.rootProject.allprojects
+
+        val modelResult = ModelInit.getGradleAmperModel(
+            rootProjectDir = rootDir.toPath().toAbsolutePath(),
+            subprojectDirs = projects.map { it.projectDir.toPath().toAbsolutePath() },
+            loader = loader,
+        )
+
+        if (modelResult is Result.Failure<Model> || problemReporter.hasFatal) {
+            throw GradleException(problemReporter.getGradleError())
+        }
+
+        val model = modelResult.get()
+
+        settings.gradle.knownModel = model
+        setGradleProjectsToAmperModuleMappings(projects, model.modules, settings.gradle)
+
+        settings.setupPluginsClasspath(model)
+    }
+
+    context(SLF4JProblemReporterContext)
+    private fun Settings.setupNonAmperModel(loader: ClassLoader = Thread.currentThread().contextClassLoader) {
+        val projects = settings.gradle.rootProject.allprojects
+
+        val nonAmperModelResult = NonAmperModel.getGradleAmperModel(
+            rootProjectDir = settings.rootDir.toPath().toAbsolutePath(),
+            subprojectDirs = projects.map { it.projectDir.toPath().toAbsolutePath() },
+            loader = loader,
+        )
+
+        if (nonAmperModelResult is Result.Failure<*> || problemReporter.hasFatal) {
+            throw GradleException(problemReporter.getGradleError())
+        }
+
+        val model = nonAmperModelResult.get()
+
+        settings.gradle.knownNonAmperModel = model
+        setGradleProjectsToAmperModuleMappings(projects, model.modules, settings.gradle)
+
     }
 
     private fun setGradleProjectsToAmperModuleMappings(
@@ -98,7 +133,6 @@ public class SettingsPlugin : Plugin<Settings> {
     @Suppress("UNCHECKED_CAST")
     private fun Settings.setupPluginsClasspath(model: Model) {
 
-
         // We don't need to use the dynamic plugin mechanism if the user wants the embedded Compose version (because
         // it's already on the classpath). Using dynamic plugins relies on unreliable internal Gradle APIs, which are
         // absent in (or incompatible with) recent Gradle versions, so we only use this if absolutely necessary.
@@ -114,8 +148,8 @@ public class SettingsPlugin : Plugin<Settings> {
             setupDynamicClasspath(
                 *listOfNotNull(
                     composePlugin,
-                    libs.plugins.plugin("doctor").pluginAsDependency
-                ).toTypedArray()
+                    libs.plugins.plugin("doctor").pluginAsDependency,
+                ).toTypedArray(),
             ) {
                 addDefaultAmperRepositoriesForDependencies()
             }
@@ -139,11 +173,15 @@ public class SettingsPlugin : Plugin<Settings> {
         project.afterEvaluate {
             // W/A for XML factories mess within apple plugin classpath.
             val hasAndroidPlugin = plugins.hasPlugin("com.android.application") ||
-                    plugins.hasPlugin("com.android.library")
+                plugins.hasPlugin("com.android.library")
             if (hasAndroidPlugin) {
                 adjustXmlFactories()
             }
         }
+    }
+
+    private fun configureProjectForNonAmper(project: Project){
+
     }
 }
 

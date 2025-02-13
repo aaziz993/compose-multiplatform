@@ -1,4 +1,4 @@
-package gradle.amper.model
+package plugin.project.model
 
 import kotlinx.serialization.Serializable
 

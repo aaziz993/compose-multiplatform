@@ -1,8 +1,7 @@
-package plugin.project
+package plugin.project.amper
 
 import com.osacky.doctor.DoctorExtension
 import gradle.amper.additionalProperties
-import gradle.amper.model.doctor.DoctorSettings
 import gradle.id
 import gradle.isCI
 import gradle.libs

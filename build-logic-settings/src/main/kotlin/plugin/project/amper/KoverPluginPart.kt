@@ -1,4 +1,4 @@
-package plugin.project
+package plugin.project.amper
 
 import kotlinx.kover.gradle.plugin.dsl.KoverProjectExtension
 import org.gradle.kotlin.dsl.assign
