@@ -2,7 +2,9 @@
 
 package plugin.project.amper
 
+import gradle.amper.chooseComposeVersion
 import java.io.File
+import kotlin.io.resolve
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.provider.Provider
@@ -18,7 +20,9 @@ import org.jetbrains.amper.frontend.schema.ComposeResourcesSettings
 import org.jetbrains.amper.gradle.android.AndroidAwarePart
 import org.jetbrains.amper.gradle.base.AmperNamingConventions
 import org.jetbrains.amper.gradle.base.PluginPartCtx
+import org.jetbrains.amper.gradle.kmpp.KotlinAmperNamingConvention.kotlinSourceSet
 import org.jetbrains.amper.gradle.moduleDir
+import org.jetbrains.amper.gradle.tryRemove
 import org.jetbrains.compose.ComposeExtension
 import org.jetbrains.compose.internal.IDEA_IMPORT_TASK_NAME
 import org.jetbrains.compose.resources.AssembleTargetResourcesTask
@@ -54,11 +58,29 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
     // Highly dependent on compose version and ABI.
     // Need to implement API on compose plugin side.
     override fun applyBeforeEvaluate() {
+        val composeVersion = chooseComposeVersion(model)!!
+        val composeResourcesDir = module.moduleDir.resolve("composeResources").toFile()
+
         project.plugins.apply("org.jetbrains.kotlin.plugin.compose")
         project.plugins.apply("org.jetbrains.compose")
 
+        // Clean old resources from source sets.
+        kotlinMPE.sourceSets.all { resources.tryRemove { it.endsWith("composeResources") } }
+
         // Adjust task.
         project.adjustComposeResourcesGeneration()
+
+        // Adjust source sets.
+        module.rootFragment.kotlinSourceSet?.apply {
+            resources.srcDirs(composeResourcesDir)
+            dependencies {
+                implementation("org.jetbrains.compose.runtime:runtime:$composeVersion")
+                implementation("org.jetbrains.compose.components:components-resources:$composeVersion")
+            }
+        }
+
+        androidSourceSets?.findByName("main")
+            ?.resources?.srcDirs(composeResourcesDir)
     }
 
     private fun Project.adjustComposeResourcesGeneration() {

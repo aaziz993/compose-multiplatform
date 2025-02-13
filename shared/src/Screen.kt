@@ -4,11 +4,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import io.github.aaziz993.cmp_lib.generated.resources.Res
-import io.github.aaziz993.cmp_lib.generated.resources.flag_am
+import `cmp-lib`.resources.Res
+import `cmp-lib`.resources.flag_af
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -21,7 +21,7 @@ public fun Screen() {
         ) {
             BasicText("Hello!")
             TestImage()
-            Image(painterResource(Res.drawable.flag_am), null)
+            Image(painterResource(Res.drawable.flag_af), null)
         }
     }
 }
