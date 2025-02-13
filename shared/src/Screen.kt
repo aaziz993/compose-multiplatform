@@ -20,6 +20,7 @@ fun Screen() {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             BasicText("Hello!")
+            TestImage()
             Image(painterResource(Res.drawable.flag_am), null)
         }
     }

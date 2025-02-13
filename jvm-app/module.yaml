@@ -11,3 +11,8 @@ dependencies:
   - ../cmp-lib
   - ../shared
   - $compose.desktop.currentOs
+
+packaging:
+  - type: fatJar # specify a type of the package
+    content: # specify how to lay out the final artifact
+      include: licenses/**

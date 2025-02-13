@@ -7,8 +7,8 @@ settings:
     enabled: true
     version: 1.7.3
     resources:
-#      packageName: abrakadabra
-      exposedAccessors: true
+      packageName: resources
+      exposedAccessors: false
     experimental:
       hotReload:
         enabled: true

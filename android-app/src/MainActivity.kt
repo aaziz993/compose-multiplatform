@@ -4,16 +4,24 @@
 
 package hello.world
 
-import Screen
 import android.os.Bundle
+import android_app.generated.resources.Res
+import android_app.generated.resources.compose_multiplatform
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Column
+import org.jetbrains.compose.resources.painterResource
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Screen()
+            Column {
+//                Screen()
+                Image(painterResource(Res.drawable.compose_multiplatform), null)
+            }
         }
     }
 }

@@ -1,11 +1,11 @@
 repositories:
-#  - id: scratch
-#    url: https://packages.jetbrains.team/maven/p/amper/amper
-#    publish: true
-#    credentials:
-#      file: local.properties
-#      usernameKey: sonatype.password
-#      passwordKey: sonatype.password
+  #  - id: scratch
+  #    url: https://packages.jetbrains.team/maven/p/amper/amper
+  #    publish: true
+  #    credentials:
+  #      file: local.properties
+  #      usernameKey: sonatype.password
+  #      passwordKey: sonatype.password
   - id: mavenCentral
     url: https://repo.maven.apache.org/maven2/
   - id: googleRepo
@@ -39,11 +39,12 @@ settings:
       ensureJavaHomeMatches: false
 
   kotlin:
-#    languageVersion: 2.0.20
+    #    languageVersion: 2.0.20
     languageFeatures:
       - contextReceivers
     freeCompilerArgs:
       - -Xcontext-receivers
+      - -Xexpect-actual-classes
       - -Xbinary=bundleId=io.github.aaziz993.compose-multiplatform # set ios bundleId
     optIns: [ kotlin.io.path.ExperimentalPathApi ]
     allWarningsAsErrors: false
@@ -56,7 +57,7 @@ settings:
   kover:
     enabled: true
     html:
-      title: Generate Kover coverage report
+      title: Generate coverage report
       reportDir: build/reports/kover
       onCheck: true
 
@@ -68,4 +69,4 @@ test-settings@jvm:
   junit: junit-5
 
 test-settings@android:
-    junit: junit-5
+  junit: junit-5
