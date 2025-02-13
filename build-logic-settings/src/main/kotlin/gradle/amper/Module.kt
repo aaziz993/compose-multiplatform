@@ -21,9 +21,9 @@ internal val AmperModule.additionalProperties: Properties
         val yaml = Yaml()
         val map: Map<String, *> = yaml.load(moduleDir.resolve("module.yaml").readText())
 
-        val merged = (map["apply"] as List<String>).fold(emptyMap<String, Any?>()) { props, path ->
+        val merged = (map["apply"] as List<String>?)?.fold(emptyMap<String, Any?>()) { props, path ->
             props.deepMerge(yaml.load(moduleDir.resolve(path).readText()))
-        }.deepMerge(map)
+        }?.deepMerge(map).orEmpty()
 
         return json.decodeFromAny(merged)
     }

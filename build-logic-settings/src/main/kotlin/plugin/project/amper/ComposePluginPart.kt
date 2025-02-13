@@ -1,6 +1,5 @@
 @file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
 
-
 package plugin.project.amper
 
 import com.android.build.api.dsl.KotlinMultiplatformAndroidTarget

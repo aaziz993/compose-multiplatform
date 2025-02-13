@@ -12,6 +12,10 @@ project-version-minor = "0"
 project-version-patch = "0"
 project-version-preRelase = "release" # optional
 ##Gradle
+# intellij
+intellij-platform = "243.23654.166"
+# telemetry
+opentelemetry = "1.47.0"
 # configuration and build tool. Its goal is to provide a great and smooth user experience and IDE support
 amper = "0.6.0-dev-2425"
 # print suggestions for your build as you run regular tasks
@@ -335,6 +339,15 @@ semver = "2.0.0"
 
 [libraries]
 # Gradle
+# intellij
+intellij-platform-core = { module = "com.jetbrains.intellij.platform:core", version.ref = "intellij-platform" }
+intellij-platform-coreImpl = { module = "com.jetbrains.intellij.platform:core-impl", version.ref = "intellij-platform" }
+intellij-platform-ideCore = { module = "com.jetbrains.intellij.platform:ide-core", version.ref = "intellij-platform" }
+# telemetry
+opentelemetry-api = { module = "io.opentelemetry:opentelemetry-api", version.ref = "opentelemetry" }
+opentelemetry-kotlin = { module = "io.opentelemetry:opentelemetry-extension-kotlin", version.ref = "opentelemetry" }
+opentelemetry-sdk = { module = "io.opentelemetry:opentelemetry-sdk", version.ref = "opentelemetry" }
+opentelemetry-sdkTrace = { module = "io.opentelemetry:opentelemetry-sdk-trace", version.ref = "opentelemetry" }
 # configuration and build tool. Its goal is to provide a great and smooth user experience and IDE support
 amper-cli = { module = "org.jetbrains.amper:cli", version.ref = "amper" }
 amper = { module = "org.jetbrains.amper.settings.plugin:org.jetbrains.amper.settings.plugin.gradle.plugin", version.ref = "amper" }
@@ -835,6 +848,27 @@ suspendapp-ktor = { module = "io.arrow-kt:suspendapp-ktor", version.ref = "suspe
 semver = { module = "io.github.z4kn4fein:semver", version.ref = "semver" }
 
 [bundles]
+## Gradle
+# telemetry
+opentelemetry = [
+    "opentelemetry-api",
+    "opentelemetry-sdk",
+    "opentelemetry-sdkTrace",
+    "opentelemetry-kotlin"
+]
+# intellij
+intellij-platform = [
+    "intellij-platform-core",
+    "intellij-platform-coreImpl",
+    "intellij-platform-ideCore"
+]
+# # configuration and build tool. Its goal is to provide a great and smooth user experience and IDE support
+amper = [
+    "amper",
+    "amper-core",
+    "amper-frontend",
+    "amper-gradle"
+]
 ##Java
 # apache commons
 apache-commons = [

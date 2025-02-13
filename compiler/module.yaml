@@ -1,0 +1,7 @@
+product:
+  type: lib
+  platforms: [ jvm ]
+
+dependencies:
+  - ../kmp-lib
+  - $libs.symbol.processing.api

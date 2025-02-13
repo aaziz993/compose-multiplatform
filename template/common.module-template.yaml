@@ -49,12 +49,6 @@ settings:
     allWarningsAsErrors: false
     suppressWarnings: true
 
-    ksp:
-      processors:
-        - androidx.room:room-compiler:2.7.0-alpha09
-      processorOptions:
-        room.schemaLocation: ./schema
-
     serialization:
       enabled: true
       version: 1.8.0

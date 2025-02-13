@@ -1,13 +1,10 @@
-product: jvm/app
+product: wasm/app
 
 apply:
   - ../template/common.module-template.yaml
   - ../template/compose.module-template.yaml
-  - ../template/application.module-template.yaml
-  - ../template/room.module-template.yaml
 
 dependencies:
   - ../kmp-lib
   - ../cmp-lib
   - ../shared
-  - $compose.desktop.currentOs

@@ -1,4 +1,4 @@
-package plugin.project.amper
+package plugin.project.amperlike
 
 import com.osacky.doctor.DoctorExtension
 import gradle.amper.additionalProperties
@@ -20,7 +20,7 @@ internal class DoctorPluginPart(ctx: PluginPartCtx) : BindingPluginPart by ctx {
     private val doctorRE get() = project.extensions.getByType<DoctorExtension>()
 
     protected val doctor by lazy {
-        module.additionalProperties.settings.doctor
+        module.additionalProperties.settings?.doctor
     }
 
     override val needToApply: Boolean by lazy {
@@ -44,7 +44,7 @@ internal class DoctorPluginPart(ctx: PluginPartCtx) : BindingPluginPart by ctx {
                 logger.info("Gradle Doctor task monitoring is disabled.")
                 project.gradle.sharedServices.unregister("listener-service")
             }
-            enableTestCaching = doctorSettings.enableTestCaching
+            enableTestCaching.assign(doctorSettings.enableTestCaching)
 
             // Disable JAVA_HOME validation as we use "Daemon JVM discovery" feature
             // https://docs.gradle.org/current/userguide/gradle_daemon.html#sec:daemon_jvm_criteria

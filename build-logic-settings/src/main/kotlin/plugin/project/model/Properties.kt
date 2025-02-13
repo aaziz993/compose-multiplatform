@@ -4,5 +4,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal data class Properties(
-    val settings: Settings,
+    val settings: Settings? = null,
 )

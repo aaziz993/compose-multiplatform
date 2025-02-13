@@ -1,8 +1,10 @@
 product: ios/app
 
 apply:
-  - ../common.module-template.yaml
-  - ../compose.module-template.yaml
+  - ../template/common.module-template.yaml
+  - ../template/compose.module-template.yaml
+  - ../template/application.module-template.yaml
+  - ../template/room.module-template.yaml
 
 dependencies:
   - ../kmp-lib

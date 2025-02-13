@@ -1,0 +1,5 @@
+settings:
+  kotlin:
+    ksp:
+      processors:
+        - ../compiler

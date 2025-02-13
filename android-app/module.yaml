@@ -1,8 +1,10 @@
 product: android/app
 
 apply:
-  - ../common.module-template.yaml
-  - ../compose.module-template.yaml
+  - ../template/common.module-template.yaml
+  - ../template/compose.module-template.yaml
+  - ../template/application.module-template.yaml
+  - ../template/room.module-template.yaml
 
 dependencies:
   - ../kmp-lib
@@ -14,3 +16,6 @@ settings:
   android:
     namespace: io.github.aaziz993.android.app
     minSdk: 35
+    signing:
+      enabled: true
+      propertiesFile: ./keystore.properties # default

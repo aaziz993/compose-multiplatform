@@ -179,11 +179,12 @@ dependencies {
     // Gradle
     // plugin
     compileOnly(libs.kotlin.gradle.plugin)
+    // Opentelemetry
+    implementation(libs.bundles.opentelemetry)
+    // Intellij
+    implementation(libs.bundles.intellij.platform)
     // Configuration and build tool. Its goal is to provide a great and smooth user experience and IDE support
-    implementation(libs.amper)
-    implementation(libs.amper.core)
-    implementation(libs.amper.gradle)
-    implementation(libs.amper.frontend)
+    implementation(libs.bundles.amper)
     // print suggestions for your build as you run regular tasks
     implementation(libs.plugins.doctor.toDep())
     // gives the data to speed up your build, improve build reliability and accelerate build debugging.

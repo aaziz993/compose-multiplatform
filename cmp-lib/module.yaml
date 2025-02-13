@@ -12,9 +12,10 @@ aliases:
   - nonWeb: [ jvm, android, iosArm64, iosX64, iosSimulatorArm64 ]
 
 apply:
-  - ../common.module-template.yaml
-  - ../compose.module-template.yaml
-  - ../library.module-template.yaml
+  - ../template/common.module-template.yaml
+  - ../template/compose.module-template.yaml
+  - ../template/library.module-template.yaml
+  - ../template/room.module-template.yaml
 
 dependencies:
   - ../kmp-lib
