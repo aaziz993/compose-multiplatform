@@ -1,6 +1,6 @@
 @file:Suppress("UnnecessaryVariable")
 
-package ai.tech.core.processor
+package processor
 
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.Dependencies

@@ -3,5 +3,3 @@ settings:
     ksp:
       processors:
         - ../compiler
-      processorOptions:
-        -o

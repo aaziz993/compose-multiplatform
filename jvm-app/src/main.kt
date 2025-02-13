@@ -5,7 +5,7 @@ import androidx.compose.ui.window.application
 import jvm_app.generated.resources.Res
 import jvm_app.generated.resources.flag_ao
 
-fun main() = application {
+public fun main(): Unit = application {
     Window(onCloseRequest = ::exitApplication) {
         Column {
             Image(org.jetbrains.compose.resources.painterResource(Res.drawable.flag_ao),null)

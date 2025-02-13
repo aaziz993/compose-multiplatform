@@ -2,6 +2,15 @@ product:
   type: lib
   platforms: [ jvm ]
 
+apply:
+  - ../template/common.module-template.yaml
+  - ../template/jvm.module-template.yaml
+  - ../template/library.module-template.yaml
+
 dependencies:
   - ../kmp-lib
   - $libs.symbol.processing.api
+
+settings:
+  publishing:
+    name: compiler

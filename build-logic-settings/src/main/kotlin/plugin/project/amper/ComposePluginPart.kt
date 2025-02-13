@@ -70,11 +70,11 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
             */
         val shouldGenerateCode = resDir.exists()
 
-        logger.info(
+        println(
             """
             ADJUSTING COMPOSE RESOURCES GENERATION
 
-            Project: ${name}
+            Project: $name
             Root fragment: ${module.rootFragment.name}
             Platforms: ${module.rootFragment.platforms}
             Source sets: ${kotlinMPE.sourceSets.map(KotlinSourceSet::getName)}
@@ -98,7 +98,7 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
 
         tasks.withType<GenerateResClassTask> {
             this.packageName = packageName
-            this.makeAccessorsPublic = config.exposedAccessors
+            this.makeAccessorsPublic = makeAccessorsPublic
             this.packagingDir = packagingDir
 
             onlyIf { shouldGenerateCode }
@@ -144,9 +144,7 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
     }
 
     private fun ComposeResourcesSettings.getResourcesPackageName(module: AmperModule, makeAccessorsPublic: Boolean): String {
-        return packageName.takeIf { it.isNotEmpty() }?.let {
-            if (makeAccessorsPublic) "${project.name}.$it" else it
-        } ?: run {
+        return packageName.takeIf(String::isNotEmpty) ?: run {
             val packageParts =
                 module.rootFragment.inferPackageNameFromPublishing() ?: module.inferPackageNameFromModule()
             (packageParts + listOf("generated", "resources")).joinToString(separator = ".") {
@@ -453,9 +451,9 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
         target: KotlinTarget,
         moduleIsolationDirectory: File?
     ) {
-        target.compilations.all {
-            logger.info("Configure $name resources for '${target.targetName}' target")
+        logger.info("Configure $name resources for '${target.targetName}' target")
 
+        target.compilations.all {
             tasks.named(
                 "assemble${target.targetName.uppercaseFirstChar()}${name.uppercaseFirstChar()}Resources",
                 AssembleTargetResourcesTask::class.java,

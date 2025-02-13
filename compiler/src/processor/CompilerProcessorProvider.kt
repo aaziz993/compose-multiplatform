@@ -1,4 +1,4 @@
-package ai.tech.core.processor
+package processor
 
 import com.google.devtools.ksp.processing.SymbolProcessor
 import com.google.devtools.ksp.processing.SymbolProcessorEnvironment

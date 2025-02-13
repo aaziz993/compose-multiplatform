@@ -2,6 +2,7 @@ product: jvm/app
 
 apply:
   - ../template/common.module-template.yaml
+  - ../template/jvm.module-template.yaml
   - ../template/compose.module-template.yaml
   - ../template/application.module-template.yaml
   - ../template/room.module-template.yaml

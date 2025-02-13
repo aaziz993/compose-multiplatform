@@ -13,7 +13,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import org.jetbrains.compose.resources.painterResource
 
-class MainActivity : ComponentActivity() {
+public class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

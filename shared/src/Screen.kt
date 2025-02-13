@@ -12,7 +12,7 @@ import io.github.aaziz993.cmp_lib.generated.resources.flag_am
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-fun Screen() {
+public fun Screen() {
     MaterialTheme {
         Column(
             modifier = Modifier.fillMaxSize(),

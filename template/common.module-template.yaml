@@ -43,6 +43,7 @@ settings:
     languageFeatures:
       - contextReceivers
     freeCompilerArgs:
+      - -Xexplicit-api=strict
       - -Xcontext-receivers
       - -Xexpect-actual-classes
       - -Xbinary=bundleId=io.github.aaziz993.compose-multiplatform # set ios bundleId
