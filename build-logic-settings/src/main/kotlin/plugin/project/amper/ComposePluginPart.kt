@@ -2,12 +2,13 @@
 
 package plugin.project.amper
 
-import com.android.build.api.dsl.KotlinMultiplatformAndroidTarget
+import java.io.File
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.kotlin.dsl.assign
+import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.support.uppercaseFirstChar
 import org.gradle.kotlin.dsl.withType
@@ -17,18 +18,27 @@ import org.jetbrains.amper.frontend.schema.ComposeResourcesSettings
 import org.jetbrains.amper.gradle.android.AndroidAwarePart
 import org.jetbrains.amper.gradle.base.AmperNamingConventions
 import org.jetbrains.amper.gradle.base.PluginPartCtx
+import org.jetbrains.amper.gradle.moduleDir
+import org.jetbrains.compose.ComposeExtension
 import org.jetbrains.compose.internal.IDEA_IMPORT_TASK_NAME
-import org.jetbrains.compose.internal.IdeaImportTask
-import org.jetbrains.compose.resources.*
+import org.jetbrains.compose.resources.AssembleTargetResourcesTask
+import org.jetbrains.compose.resources.CopyNonXmlValueResourcesTask
+import org.jetbrains.compose.resources.GenerateActualResourceCollectorsTask
+import org.jetbrains.compose.resources.GenerateExpectResourceCollectorsTask
+import org.jetbrains.compose.resources.GenerateResClassTask
+import org.jetbrains.compose.resources.GenerateResourceAccessorsTask
+import org.jetbrains.compose.resources.PrepareComposeResourcesTask
+import org.jetbrains.compose.resources.RES_GEN_DIR
+import org.jetbrains.compose.resources.ResourcesExtension
+import org.jetbrains.compose.resources.XmlValuesConverterTask
+import org.jetbrains.compose.resources.onAgpApplied
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
-import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinMetadataTarget
 import org.jetbrains.kotlin.tooling.core.withClosure
 import org.slf4j.LoggerFactory
-import java.io.File
 
 public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConventions, AndroidAwarePart(ctx) {
 
@@ -44,8 +54,6 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
     // Highly dependent on compose version and ABI.
     // Need to implement API on compose plugin side.
     override fun applyBeforeEvaluate() {
-//        val composeVersion = chooseComposeVersion(model)!!
-
         project.plugins.apply("org.jetbrains.kotlin.plugin.compose")
         project.plugins.apply("org.jetbrains.compose")
 
@@ -56,95 +64,44 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
     private fun Project.adjustComposeResourcesGeneration() {
         val rootFragment = checkNotNull(module.rootFragment) { "Root fragment expected" }
         val config = rootFragment.settings.compose.resources
-        val makeAccessorsPublic = config.exposedAccessors
-        val packageName = config.getResourcesPackageName(module, makeAccessorsPublic)
-        val packagingDir = null
-        val resDir = project.file("resources")
+        val packageName = config.getResourcesPackageName(module, config.exposedAccessors)
+        val resDir = module.moduleDir.resolve("composeResources").toFile()
 
-        /*
-              The tasks generate code (collectors and Res) if either is true:
-               - The project has some actual resources in any of the fragments.
-               - The user explicitly requested to make the resources API public.
-                 We generate public code to make API not depend on the actual presence of the resources,
-                 because the user already opted-in to their usage.
-            */
-        val shouldGenerateCode = resDir.exists()
-
-        println(
-            """
-            ADJUSTING COMPOSE RESOURCES GENERATION
-
-            Project: $name
-            Root fragment: ${module.rootFragment.name}
-            Platforms: ${module.rootFragment.platforms}
-            Source sets: ${kotlinMPE.sourceSets.map(KotlinSourceSet::getName)}
-            Should generate: $shouldGenerateCode
-            Should separate expect/actual for resource collectors: ${module.rootFragment.platforms.size > 1}
-            GenerateResClassTask: ${tasks.withType<GenerateResClassTask>().map(Task::getName)}
-            GenerateResourceAccessorsTask: ${tasks.withType<GenerateResourceAccessorsTask>().map(Task::getName)}
-            GenerateExpectResourceCollectorsTask: ${
-                tasks.withType<GenerateExpectResourceCollectorsTask>().map(Task::getName)
+        project.extensions.configure<ComposeExtension> {
+            extensions.configure<ResourcesExtension> {
+                packageOfResClass = packageName
+                publicResClass = config.exposedAccessors
             }
-            GenerateActualResourceCollectorsTask: ${
-                tasks.withType<GenerateActualResourceCollectorsTask>().map(Task::getName)
-            }
-            AssembleTargetResourcesTask: ${
-                tasks.withType<AssembleTargetResourcesTask>().map(Task::getName)
-            }
-
-
-            """.trimIndent(),
-        )
-
-        tasks.withType<GenerateResClassTask> {
-            this.packageName = packageName
-            this.makeAccessorsPublic = makeAccessorsPublic
-            this.packagingDir = packagingDir
-
-            onlyIf { shouldGenerateCode }
         }
 
         kotlinMPE.sourceSets.all {
             val isCommonSourceSet = name == KotlinSourceSet.COMMON_MAIN_SOURCE_SET_NAME
 
-            val preparedResourcesTask = adjustPrepareComposeResourcesTask(
+            adjustPrepareComposeResourcesTask(
                 this,
                 resDir,
-                shouldGenerateCode && isCommonSourceSet,
+                isCommonSourceSet,
             )
-
-            val preparedResources = preparedResourcesTask.flatMap { it.outputDir.asFile }
 
             tasks.named(
                 getResourceAccessorsGenerationTaskName(),
                 GenerateResourceAccessorsTask::class.java,
             ) {
-                this.packageName = packageName
-                this.makeAccessorsPublic = config.exposedAccessors
-                this.packagingDir = packagingDir
-                this.resDir = preparedResources
-
-                onlyIf { shouldGenerateCode && isCommonSourceSet }
+                onlyIf { isCommonSourceSet }
             }
         }
 
-        adjustResourceCollectorsGeneration(shouldGenerateCode, packageName, makeAccessorsPublic)
-
-
-        kotlinMPE.targets
-            .matching { target -> !target.skipResourcesConfiguration() }
-            .all { adjustTargetResources(this, packagingDir) }
-
-        project.afterEvaluate {
-            //configure ANDROID resources
-            onAgpApplied {
-                adjustAndroidComposeResources(packagingDir)
-            }
-        }
+        project.adjustResourceCollectorsGeneration(
+            config.packageName,
+            config.exposedAccessors,
+            true,
+        )
     }
 
     private fun ComposeResourcesSettings.getResourcesPackageName(module: AmperModule, makeAccessorsPublic: Boolean): String {
-        return packageName.takeIf(String::isNotEmpty) ?: run {
+        return packageName.takeIf { it.isNotEmpty() }?.let {
+            if (makeAccessorsPublic) "${project.name}.$it" else it
+        } ?: run {
             val packageParts =
                 module.rootFragment.inferPackageNameFromPublishing() ?: module.inferPackageNameFromModule()
             (packageParts + listOf("generated", "resources")).joinToString(separator = ".") {
@@ -170,15 +127,13 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
     private fun Project.adjustPrepareComposeResourcesTask(
         sourceSet: KotlinSourceSet,
         originalResourcesDir: File,
-        shouldGenerate: Boolean
-    ): TaskProvider<PrepareComposeResourcesTask?> {
+        shouldGenerateCode: Boolean,
+    ) {
         tasks.named(
             "convertXmlValueResourcesFor${sourceSet.name.uppercaseFirstChar()}",
             XmlValuesConverterTask::class.java,
         ) {
             this.originalResourcesDir = originalResourcesDir
-
-            onlyIf { shouldGenerate }
         }
 
         tasks.named(
@@ -186,27 +141,13 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
             CopyNonXmlValueResourcesTask::class.java,
         ) {
             this.originalResourcesDir = originalResourcesDir
-
-            onlyIf { shouldGenerate }
         }
-
-        return tasks.named(
-            getPrepareComposeResourcesTaskName(sourceSet),
-            PrepareComposeResourcesTask::class.java,
-        )
-    }
-
-    private fun getPrepareComposeResourcesTaskName(sourceSet: KotlinSourceSet) =
-        "prepareComposeResourcesTaskFor${sourceSet.name.uppercaseFirstChar()}"
-
-    private fun KotlinSourceSet.getResourceAccessorsGenerationTaskName(): String {
-        return "generateResourceAccessorsFor${this.name.uppercaseFirstChar()}"
     }
 
     private fun Project.adjustResourceCollectorsGeneration(
-        shouldGenerateCode: Boolean,
         packageName: String,
-        makeAccessorsPublic: Boolean
+        makeAccessorsPublic: Boolean,
+        shouldGenerateCode: Boolean
     ) {
         // `expect` is generated in `common` only, while `actual` are generated in the refined fragments.
         //  do not separate `expect`/`actual` if the module only contains a single fragment.
@@ -218,9 +159,7 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
             .all {
                 adjustExpectResourceCollectorsGeneration(
                     this,
-                    shouldGenerateCode && shouldSeparateExpectActual,
-                    packageName,
-                    makeAccessorsPublic,
+                    shouldSeparateExpectActual,
                 )
             }
 
@@ -231,9 +170,6 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
                 kotlinMPE.sourceSets.matching { it.name == "androidMain" }.all {
                     adjustActualResourceCollectorsGeneration(
                         this,
-                        shouldGenerateCode,
-                        packageName,
-                        makeAccessorsPublic,
                         shouldSeparateExpectActual,
                     )
                     targetSourceSets.add(this)
@@ -243,9 +179,6 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
                 compilations.matching { it.name == KotlinCompilation.MAIN_COMPILATION_NAME }.all {
                     adjustActualResourceCollectorsGeneration(
                         defaultSourceSet,
-                        shouldGenerateCode,
-                        packageName,
-                        makeAccessorsPublic,
                         shouldSeparateExpectActual,
                     )
                     targetSourceSets.add(defaultSourceSet)
@@ -282,9 +215,9 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
                 kotlinMPE.sourceSets.matching { it.name == "ios" }.all {
                     val genTask = configureActualResourceCollectorsGeneration(
                         this,
-                        providers.provider { shouldGenerateCode },
-                        providers.provider { packageName },
-                        providers.provider { makeAccessorsPublic },
+                        provider { shouldGenerateCode },
+                        provider { packageName },
+                        provider { makeAccessorsPublic },
                         true,
                     )
 
@@ -325,16 +258,11 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
     private fun Project.adjustExpectResourceCollectorsGeneration(
         sourceSet: KotlinSourceSet,
         shouldGenerateCode: Boolean,
-        packageName: String,
-        makeAccessorsPublic: Boolean
     ) {
         tasks.named(
             "generateExpectResourceCollectorsFor${sourceSet.name.uppercaseFirstChar()}",
             GenerateExpectResourceCollectorsTask::class.java,
         ) {
-            this.packageName = packageName
-            this.makeAccessorsPublic = makeAccessorsPublic
-
             onlyIf { shouldGenerateCode }
         }
 
@@ -342,40 +270,24 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
             layout.buildDirectory.dir(sourceSet.getResourceCollectorsCodeDirName()).get().asFile
 
         if (!shouldGenerateCode) {
-            //register generated source set
+            //unregister generated source set
             sourceSet.kotlin.sourceDirectories.removeAll { file ->
                 file == codeDirPath
             }
         }
     }
 
+    private fun KotlinSourceSet.getResourceCollectorsCodeDirName(suffix: String = ""): String =
+        "$RES_GEN_DIR/kotlin/${name}${suffix}ResourceCollectors"
+
     private fun Project.adjustActualResourceCollectorsGeneration(
         sourceSet: KotlinSourceSet,
-        shouldGenerateCode: Boolean,
-        packageName: String,
-        makeAccessorsPublic: Boolean,
         useActualModifier: Boolean,
+    ) = tasks.named(
+        "generateActualResourceCollectorsFor${sourceSet.name.uppercaseFirstChar()}",
+        GenerateActualResourceCollectorsTask::class.java,
     ) {
-        tasks.named(
-            "generateActualResourceCollectorsFor${sourceSet.name.uppercaseFirstChar()}",
-            GenerateActualResourceCollectorsTask::class.java,
-        ) {
-            this.packageName = packageName
-            this.makeAccessorsPublic = makeAccessorsPublic
-            this.useActualModifier = useActualModifier
-
-            onlyIf { shouldGenerateCode }
-        }
-
-        val codeDirPath =
-            layout.buildDirectory.dir(sourceSet.getResourceCollectorsCodeDirName()).get().asFile
-
-        if (!shouldGenerateCode) {
-            //register generated source set
-            sourceSet.kotlin.sourceDirectories.removeAll { file ->
-                file == codeDirPath
-            }
-        }
+        this.useActualModifier = useActualModifier
     }
 
     private fun Project.configureActualResourceCollectorsGeneration(
@@ -424,56 +336,7 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
         return genTask
     }
 
-    private fun KotlinSourceSet.getResourceCollectorsCodeDirName(suffix: String = ""): String =
-        "$RES_GEN_DIR/kotlin/${name}${suffix}ResourceCollectors"
-
-    private fun KotlinTarget.skipResourcesConfiguration(): Boolean = when {
-        this is KotlinMetadataTarget -> true
-
-        //android resources should be configured via AGP
-        this is KotlinAndroidTarget -> true
-
-        //new AGP library target
-        this.isMultiplatformAndroidTarget() -> true
-
-        else -> false
-    }
-
-    @Suppress("UnstableApiUsage")
-    private fun KotlinTarget.isMultiplatformAndroidTarget(): Boolean = try {
-        this is KotlinMultiplatformAndroidTarget
-    }
-    catch (_: NoClassDefFoundError) {
-        false
-    }
-
-    private fun Project.adjustTargetResources(
-        target: KotlinTarget,
-        moduleIsolationDirectory: File?
-    ) {
-        logger.info("Configure $name resources for '${target.targetName}' target")
-
-        target.compilations.all {
-            tasks.named(
-                "assemble${target.targetName.uppercaseFirstChar()}${name.uppercaseFirstChar()}Resources",
-                AssembleTargetResourcesTask::class.java,
-            ) {
-                relativeResourcePlacement = moduleIsolationDirectory
-            }
-        }
-    }
-
-    private fun Project.adjustAndroidComposeResources(moduleResourceDir: File?) {
-        tasks.withType<CopyResourcesToAndroidAssetsTask>().configureEach {
-            moduleResourceDir?.let { relativeResourcePlacement = it }
-
-            doLast {
-                logger.info(
-                    "COPY FROM ${
-                        from.get().map { it.absolutePath }
-                    } TO " + outputDirectory.get().asFile.absolutePath,
-                )
-            }
-        }
+    private fun KotlinSourceSet.getResourceAccessorsGenerationTaskName(): String {
+        return "generateResourceAccessorsFor${this.name.uppercaseFirstChar()}"
     }
 }

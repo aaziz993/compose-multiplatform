@@ -7,7 +7,7 @@ settings:
     enabled: true
     version: 1.7.3
     resources:
-      packageName: res
+      packageName: resources
       exposedAccessors: true
     experimental:
       hotReload:
