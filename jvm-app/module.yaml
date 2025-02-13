@@ -1,0 +1,11 @@
+product: jvm/app
+
+apply:
+  - ../common.module-template.yaml
+  - ../compose.module-template.yaml
+
+dependencies:
+  - ../kmp-lib
+#  - ../cmp-lib
+  - ../shared
+  - $compose.desktop.currentOs

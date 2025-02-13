@@ -1,0 +1,14 @@
+product: ios/app
+
+apply:
+  - ../common.module-template.yaml
+  - ../compose.module-template.yaml
+
+dependencies:
+  - ../kmp-lib
+  - ../cmp-lib
+  - ../shared
+
+settings:
+  ios:
+    teamId: aaziz993ß # See https://developer.apple.com/help/account/manage-your-team/locate-your-team-id/

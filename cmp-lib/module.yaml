@@ -1,0 +1,27 @@
+product:
+  type: lib
+  platforms: [ jvm, android, iosArm64, iosX64, iosSimulatorArm64, js, wasm ]
+
+aliases:
+  - jvmAndAndroid: [ jvm, android ]
+  - nonJvm: [ android, iosArm64 , iosX64, iosSimulatorArm64, js, wasm ]
+  - nonAndroid: [ jvm, iosArm64, iosX64, iosSimulatorArm64, js, wasm ]
+  - mobile: [ android, iosArm64, iosX64, iosSimulatorArm64 ]
+  - nonMobile: [ jvm, js, wasm ]
+  - web: [ js, wasm ]
+  - nonWeb: [ jvm, android, iosArm64, iosX64, iosSimulatorArm64 ]
+
+apply:
+  - ../common.module-template.yaml
+  - ../compose.module-template.yaml
+  - ../library.module-template.yaml
+
+dependencies:
+  - ../kmp-lib
+
+settings:
+  android:
+    namespace: io.github.aaziz993.cmp.lib
+
+  publishing:
+    name: cmp-lib

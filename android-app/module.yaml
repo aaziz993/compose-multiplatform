@@ -1,0 +1,16 @@
+product: android/app
+
+apply:
+  - ../common.module-template.yaml
+  - ../compose.module-template.yaml
+
+dependencies:
+  - ../kmp-lib
+  - ../cmp-lib
+  - ../shared
+  - $libs.androidx.activity.compose
+
+settings:
+  android:
+    namespace: io.github.aaziz993.android.app
+    minSdk: 35

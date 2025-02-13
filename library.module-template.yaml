@@ -1,0 +1,8 @@
+
+settings:
+  jvm:
+    release: 23
+
+  publishing:
+    group: io.github.aaziz993
+    version: 1.0.0

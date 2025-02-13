@@ -1,0 +1,13 @@
+product: jvm/app
+
+apply:
+  - ../common.module-template.yaml
+
+dependencies:
+  - ../kmp-lib
+  - ../shared
+
+settings:
+  jvm:
+    release: 23
+    mainClass: MainKt
