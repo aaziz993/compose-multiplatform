@@ -2,47 +2,48 @@
 
 package plugin.project
 
+import java.io.File
 import org.gradle.api.Project
+import org.gradle.api.Task
 import org.gradle.api.provider.Provider
-import org.gradle.api.tasks.TaskProvider
+import org.gradle.internal.os.OperatingSystem
 import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.support.uppercaseFirstChar
+import org.gradle.kotlin.dsl.withType
 import org.jetbrains.amper.frontend.AmperModule
 import org.jetbrains.amper.frontend.Fragment
 import org.jetbrains.amper.frontend.schema.ComposeResourcesSettings
+import org.jetbrains.amper.frontend.schema.ProductType
 import org.jetbrains.amper.gradle.android.AndroidAwarePart
 import org.jetbrains.amper.gradle.base.AmperNamingConventions
 import org.jetbrains.amper.gradle.base.PluginPartCtx
-import org.jetbrains.amper.gradle.moduleDir
 import org.jetbrains.compose.ComposeExtension
+import org.jetbrains.compose.desktop.DesktopExtension
+import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.compose.internal.IDEA_IMPORT_TASK_NAME
+import org.jetbrains.compose.resources.AssembleTargetResourcesTask
 import org.jetbrains.compose.resources.GenerateActualResourceCollectorsTask
 import org.jetbrains.compose.resources.GenerateExpectResourceCollectorsTask
+import org.jetbrains.compose.resources.GenerateResClassTask
 import org.jetbrains.compose.resources.GenerateResourceAccessorsTask
+import org.jetbrains.compose.resources.KMP_RES_EXT
 import org.jetbrains.compose.resources.PrepareComposeResourcesTask
 import org.jetbrains.compose.resources.RES_GEN_DIR
 import org.jetbrains.compose.resources.ResourcesExtension
+import org.jetbrains.kotlin.gradle.ComposeKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
+import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
+import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinMetadataTarget
-import org.jetbrains.kotlin.tooling.core.withClosure
-import org.slf4j.LoggerFactory
-import org.gradle.api.Task
-import org.gradle.internal.os.OperatingSystem
-import org.gradle.kotlin.dsl.withType
-import org.jetbrains.amper.frontend.schema.ProductType
-import org.jetbrains.compose.desktop.DesktopExtension
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-import org.jetbrains.compose.resources.AssembleTargetResourcesTask
-import org.jetbrains.compose.resources.GenerateResClassTask
+import org.jetbrains.kotlin.gradle.plugin.mpp.resources.KotlinTargetResourcesPublication
+import plugin.utils.all
 
 public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConventions, AndroidAwarePart(ctx) {
-
-    private val logger = LoggerFactory.getLogger(ComposePluginPart::class.java)
 
     override val kotlinMPE: KotlinMultiplatformExtension =
         project.extensions.getByType<KotlinMultiplatformExtension>()
@@ -125,7 +126,8 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
             ADJUSTING COMPOSE RESOURCES GENERATION
 
             Project: $name
-            Source sets: ${kotlinMPE.sourceSets.map { "${it.name} resources: ${it.resources.sourceDirectories.map { it.name }}" }}
+            Targets: ${kotlinMPE.targets.map { it.name }}
+            Source sets: ${kotlinMPE.sourceSets.map { it.name }}
             GenerateResClassTask: ${tasks.withType<GenerateResClassTask>().map(Task::getName)}
             PrepareComposeResourcesTask: ${tasks.withType<PrepareComposeResourcesTask>().map(Task::getName)}
             GenerateResourceAccessorsTask: ${tasks.withType<GenerateResourceAccessorsTask>().map(Task::getName)}
@@ -157,18 +159,77 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
                                 KotlinSourceSet.COMMON_MAIN_SOURCE_SET_NAME -> "composeResources"
                                 KotlinSourceSet.COMMON_TEST_SOURCE_SET_NAME -> "composeTestResources"
                                 else -> "composeResources@$name"
-                            }.also(::println),
+                            },
                         )
                     },
                 )
             }
         }
-
-
         adjustResourceCollectorsGeneration(
             config.packageName,
             config.exposedAccessors,
         )
+
+        configureResources(extension)
+    }
+
+    private fun configureResources(extension: ResourcesExtension) = with(project) {
+        listOf("jvm", "wasm", "js", "iosArm64", "iosX64", "iosSimulatorArm64")
+            .forEach { platform ->
+                // Configure source set source directories for new targets
+                kotlinMPE.sourceSets.matching { it.name == platform }.all { sourceSet ->
+                    sourceSet.kotlin.srcDir(
+                        project.layout.buildDirectory.dir(
+                            sourceSet.getResourceCollectorsCodeDirName("Main"),
+                        ),
+                    )
+                }
+                kotlinMPE.targets.matching { target -> target.targetName == platform }.all { target ->
+                    val assembleTask = tasks.named(
+                        "assemble${target.targetName.uppercaseFirstChar()}MainResources",
+                        AssembleTargetResourcesTask::class.java,
+                    )
+
+                    val allCompilationResources = assembleTask.flatMap { it.outputDirectory.asFile }
+
+                    adjustAssembledResources(target, allCompilationResources)
+
+                    //setup task execution during IDE import
+                    tasks.configureEach {
+                        if (name == IDEA_IMPORT_TASK_NAME) {
+                            dependsOn(assembleTask)
+                        }
+                    }
+                }
+            }
+
+        if (module.rootFragment.name == "common") {
+//            val moduleIsolationDirectory = provider { extension }.getModuleResourcesDir(project)
+//
+//            kotlinMPE.targets.matching { it.name == "ios" }.all { target ->
+//                configureTargetResources(target, moduleIsolationDirectory)
+//            }
+        }
+    }
+
+    @OptIn(ComposeKotlinGradlePluginApi::class)
+    private fun Project.adjustAssembledResources(
+        target: KotlinTarget,
+        allCompilationResources: Provider<File>
+    ) {
+        var allResources = allCompilationResources
+
+        if (target.platformType in platformsForSetupKmpResources) {
+            val kmpResources = extraProperties.get(KMP_RES_EXT) as KotlinTargetResourcesPublication
+
+            allResources = kmpResources.resolveResources(target)
+        }
+
+        val sourceSetName = if (module.shouldSeparateResourceCollectorsExpectActual) target.name else "commonMain"
+
+        kotlinMPE.sourceSets.matching { it.name == sourceSetName }.all { sourceSet ->
+            sourceSet.resources.srcDir(allResources)
+        }
     }
 
     private fun ComposeResourcesSettings.getResourcesPackageName(module: AmperModule, makeAccessorsPublic: Boolean): String {
@@ -203,15 +264,13 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
     ) = with(project) {
         // `expect` is generated in `common` only, while `actual` are generated in the refined fragments.
         //  do not separate `expect`/`actual` if the module only contains a single fragment.
-        val shouldSeparateExpectActual = module.rootFragment.platforms.size > 1
-
 
         kotlinMPE.sourceSets
             .matching { it.name == KotlinSourceSet.COMMON_MAIN_SOURCE_SET_NAME }
             .all {
                 adjustExpectResourceCollectorsGeneration(
                     this,
-                    shouldSeparateExpectActual,
+                    module.shouldSeparateResourceCollectorsExpectActual,
                 )
             }
 
@@ -222,7 +281,7 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
                 kotlinMPE.sourceSets.matching { it.name == "androidMain" }.all {
                     adjustActualResourceCollectorsGeneration(
                         this,
-                        shouldSeparateExpectActual,
+                        module.shouldSeparateResourceCollectorsExpectActual,
                     )
                     actualSourceSets.add(this)
                 }
@@ -231,64 +290,27 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
                 compilations.matching { it.name == KotlinCompilation.MAIN_COMPILATION_NAME }.all {
                     adjustActualResourceCollectorsGeneration(
                         defaultSourceSet,
-                        shouldSeparateExpectActual,
+                        module.shouldSeparateResourceCollectorsExpectActual,
                     )
                     actualSourceSets.add(defaultSourceSet)
                 }
             }
         }
 
-        if (shouldSeparateExpectActual) {
-            // In multiplatform module add generated actual directories to amper specific source set source directories
-            if (module.rootFragment.name == "common") {
-                kotlinMPE.sourceSets.matching { it.name == "jvm" }.all {
-                    kotlin.srcDir(
-                        project.layout.buildDirectory.dir(
-                            getResourceCollectorsCodeDirName("Main"),
-                        ),
-                    )
-                }
+        if (module.shouldSeparateResourceCollectorsExpectActual) {
+            kotlinMPE.sourceSets.matching { it.name == "ios" }.all {
+                val genTask = configureActualResourceCollectorsGeneration(
+                    this,
+                    provider { true },
+                    provider { packageName },
+                    provider { makeAccessorsPublic },
+                    true,
+                )
 
-                kotlinMPE.sourceSets.matching { it.name == "wasm" }.all {
-                    kotlin.srcDir(
-                        project.layout.buildDirectory.dir(
-                            getResourceCollectorsCodeDirName("Main"),
-                        ),
-                    )
-                }
-
-                kotlinMPE.sourceSets.matching { it.name == "js" }.all {
-                    kotlin.srcDir(
-                        project.layout.buildDirectory.dir(
-                            getResourceCollectorsCodeDirName("Main"),
-                        ),
-                    )
-                }
-
-                kotlinMPE.sourceSets.matching { it.name == "ios" }.all {
-                    val genTask = configureActualResourceCollectorsGeneration(
-                        this,
-                        provider { packageName },
-                        provider { makeAccessorsPublic },
-                    )
-
-                    //setup task execution during IDE import
-                    tasks.configureEach {
-                        if (name == IDEA_IMPORT_TASK_NAME) {
-                            dependsOn(genTask)
-                        }
-                    }
-                }
-            }
-
-            if (module.rootFragment.name == "common" || module.rootFragment.name == "ios") {
-                listOf("iosArm64", "iosX64", "iosSimulatorArm64").forEach { sourceSet ->
-                    kotlinMPE.sourceSets.matching { it.name == sourceSet }.all {
-                        kotlin.srcDir(
-                            project.layout.buildDirectory.dir(
-                                getResourceCollectorsCodeDirName("Main"),
-                            ),
-                        )
+                //setup task execution during IDE import
+                tasks.configureEach {
+                    if (name == IDEA_IMPORT_TASK_NAME) {
+                        dependsOn(genTask)
                     }
                 }
             }
@@ -311,15 +333,14 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
         sourceSet: KotlinSourceSet,
         shouldGenerateCode: Boolean,
     ) = with(project) {
-        tasks.named(
+        val genTask = tasks.named(
             "generateExpectResourceCollectorsFor${sourceSet.name.uppercaseFirstChar()}",
             GenerateExpectResourceCollectorsTask::class.java,
         ) {
             onlyIf { shouldGenerateCode }
         }
 
-        val codeDirPath =
-            layout.buildDirectory.dir(sourceSet.getResourceCollectorsCodeDirName()).get().asFile
+        val codeDirPath = genTask.flatMap { it.codeDir.asFile }
 
         if (!shouldGenerateCode) {
             //unregister generated source set
@@ -340,48 +361,5 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
         GenerateActualResourceCollectorsTask::class.java,
     ) {
         this.useActualModifier = useActualModifier
-    }
-
-    private fun configureActualResourceCollectorsGeneration(
-        sourceSet: KotlinSourceSet,
-        packageName: Provider<String>,
-        makeAccessorsPublic: Provider<Boolean>,
-    ): TaskProvider<GenerateActualResourceCollectorsTask> = with(project) {
-        val taskName = "generateActualResourceCollectorsFor${sourceSet.name.uppercaseFirstChar()}"
-
-        logger.info("Configure actual resource collectors generation for ${sourceSet.name}")
-
-        val accessorDirs = project.files(
-            {
-                val allSourceSets = sourceSet.withClosure { it.dependsOn }
-                allSourceSets.mapNotNull { item ->
-                    val accessorsTaskName = item.getResourceAccessorsGenerationTaskName()
-                    if (tasks.names.contains(accessorsTaskName)) {
-                        tasks.named(accessorsTaskName, GenerateResourceAccessorsTask::class.java).map { it.codeDir }
-                    }
-                    else null
-                }
-            },
-        )
-
-        val genTask = tasks.register(
-            taskName,
-            GenerateActualResourceCollectorsTask::class.java,
-        ) {
-            this.packageName = packageName
-            this.makeAccessorsPublic = makeAccessorsPublic
-            this.useActualModifier = true
-            resourceAccessorDirs.from(accessorDirs)
-            codeDir = layout.buildDirectory.dir("$RES_GEN_DIR/kotlin/${sourceSet.name}ResourceCollectors")
-        }
-
-        //register generated source set
-        sourceSet.kotlin.srcDir(genTask.get().codeDir)
-
-        return genTask
-    }
-
-    private fun KotlinSourceSet.getResourceAccessorsGenerationTaskName(): String {
-        return "generateResourceAccessorsFor${this.name.uppercaseFirstChar()}"
     }
 }

@@ -2,12 +2,12 @@
 
 package plugin
 
-import gradle.decodeFromAny
-import gradle.deepMerge
-import gradle.libs
-import gradle.plugin
-import gradle.pluginAsDependency
-import gradle.plugins
+import plugin.utils.decodeFromAny
+import plugin.utils.deepMerge
+import plugin.utils.libs
+import plugin.utils.plugin
+import plugin.utils.pluginAsDependency
+import plugin.utils.plugins
 import kotlin.io.path.absolutePathString
 import kotlin.io.path.nameWithoutExtension
 import kotlin.io.path.readText

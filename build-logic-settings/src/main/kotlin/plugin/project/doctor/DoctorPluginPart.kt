@@ -1,13 +1,13 @@
 package plugin.project.doctor
 
 import com.osacky.doctor.DoctorExtension
-import gradle.id
-import gradle.isCI
-import gradle.libs
-import gradle.plugin
-import gradle.plugins
-import gradle.settings
-import gradle.unregister
+import plugin.utils.id
+import plugin.utils.isCI
+import plugin.utils.libs
+import plugin.utils.plugin
+import plugin.utils.plugins
+import plugin.utils.settings
+import plugin.utils.unregister
 import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.getByType
 import org.jetbrains.amper.gradle.base.BindingPluginPart

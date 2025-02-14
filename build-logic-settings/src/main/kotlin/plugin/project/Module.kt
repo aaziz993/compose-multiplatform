@@ -3,6 +3,7 @@
 package plugin.project
 
 import org.gradle.api.Project
+import org.jetbrains.amper.frontend.AmperModule
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import plugin.project.model.Properties
 
@@ -13,3 +14,7 @@ internal var Project.amperModuleExtraProperties: Properties
     set(value) {
         extraProperties[MODULE_EXTRA_PROPERTIES] = value
     }
+
+internal val AmperModule.shouldSeparateResourceCollectorsExpectActual
+    get() = rootFragment.platforms.size > 1
+

@@ -1,19 +1,9 @@
 package plugin.project.web
 
-import gradle.isCI
-import gradle.maybeNamed
-import org.gradle.api.Project
-import org.gradle.internal.extensions.stdlib.capitalized
-import org.gradle.kotlin.dsl.assign
+import plugin.utils.isCI
 import org.jetbrains.amper.gradle.base.BindingPluginPart
 import org.jetbrains.amper.gradle.base.PluginPartCtx
-import org.jetbrains.amper.gradle.kmpp.KotlinAmperNamingConvention
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
-import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
-import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
-import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
-import plugin.multiplatform.web.model.JsPlatform
-import plugin.multiplatform.web.model.jsPlatform
 import plugin.project.KMPEAware
 
 /**
