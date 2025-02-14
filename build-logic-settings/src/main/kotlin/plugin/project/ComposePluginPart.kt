@@ -178,14 +178,14 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
         listOf("jvm", "wasm", "js", "iosArm64", "iosX64", "iosSimulatorArm64")
             .forEach { platform ->
                 // Configure source set source directories for new targets
-                kotlinMPE.sourceSets.findByName(platform)?.let { sourceSet ->
+                kotlinMPE.sourceSets.matching { it.name == platform }.all { sourceSet ->
                     sourceSet.kotlin.srcDir(
                         project.layout.buildDirectory.dir(
                             sourceSet.getResourceCollectorsCodeDirName("Main"),
                         ),
                     )
                 }
-                kotlinMPE.targets.findByName(platform)?.let { target ->
+                kotlinMPE.targets.matching { it.name == platform }.all { target ->
                     val sourceSetName = if (module.shouldSeparateResourceCollectorsExpectActual) target.name else "commonMain"
 
                     adjustAssembledResources(target, sourceSetName)
@@ -193,9 +193,9 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
             }
 
         // Create ios target assembled resources[
-        listOf("iosArm64", "iosX64", "iosSimulatorArm64").firstNotNullOf { platform ->
+        listOf("iosArm64", "iosX64", "iosSimulatorArm64").firstNotNullOfOrNull { platform ->
             kotlinMPE.targets.findByName("iosArm64")
-        }.let { target ->
+        }?.let { target ->
             adjustAssembledResources(target, "${target.targetName}Main")
         }
     }
