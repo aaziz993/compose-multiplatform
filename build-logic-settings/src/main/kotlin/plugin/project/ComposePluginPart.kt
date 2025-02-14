@@ -120,6 +120,31 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
         val config = rootFragment.settings.compose.resources
         val packageName = config.getResourcesPackageName(module, config.exposedAccessors)
 
+        println(
+            """
+            -----------------------ADJUSTING COMPOSE RESOURCES GENERATION--------------------------
+
+            Project: $name
+            Module root fragment: ${module.rootFragment.name}
+            Targets: ${kotlinMPE.targets.map { it.name }}
+            Source sets: ${kotlinMPE.sourceSets.map { it.name }}
+            GenerateResClassTask: ${tasks.withType<GenerateResClassTask>().map(Task::getName)}
+            PrepareComposeResourcesTask: ${tasks.withType<PrepareComposeResourcesTask>().map(Task::getName)}
+            GenerateResourceAccessorsTask: ${tasks.withType<GenerateResourceAccessorsTask>().map(Task::getName)}
+            GenerateExpectResourceCollectorsTask: ${
+                tasks.withType<GenerateExpectResourceCollectorsTask>().map(Task::getName)
+            }
+            GenerateActualResourceCollectorsTask: ${
+                tasks.withType<GenerateActualResourceCollectorsTask>().map(Task::getName)
+            }
+            AssembleTargetResourcesTask: ${
+                tasks.withType<AssembleTargetResourcesTask>().map(Task::getName)
+            }
+
+            """.trimIndent(),
+        )
+
+
         extension.apply {
             packageOfResClass = packageName
             publicResClass = config.exposedAccessors

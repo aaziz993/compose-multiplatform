@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import cmp.lib.resources.Res
 import cmp.lib.resources.flag_af
+import cmp.lib.resources.flag_bz
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -21,7 +22,7 @@ public fun Screen() {
         ) {
             BasicText("Hello!")
             TestImage()
-            Image(painterResource(Res.drawable.flag_af), null)
+            Image(painterResource(Res.drawable.flag_bz), null)
         }
     }
 }

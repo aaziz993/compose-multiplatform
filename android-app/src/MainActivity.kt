@@ -4,9 +4,10 @@
 
 package hello.world
 
+import Screen
 import android.os.Bundle
-import android_app.generated.resources.Res
-import android_app.generated.resources.compose_multiplatform
+import android.app.resources.Res
+import android.app.resources.compose_multiplatform
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -19,7 +20,7 @@ public class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             Column {
-//                Screen()
+                Screen()
                 Image(painterResource(Res.drawable.compose_multiplatform), null)
             }
         }
