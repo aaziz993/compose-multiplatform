@@ -120,31 +120,6 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
         val config = rootFragment.settings.compose.resources
         val packageName = config.getResourcesPackageName(module, config.exposedAccessors)
 
-
-        println(
-            """
-            ADJUSTING COMPOSE RESOURCES GENERATION
-
-            Project: $name
-            Targets: ${kotlinMPE.targets.map { it.name }}
-            Source sets: ${kotlinMPE.sourceSets.map { it.name }}
-            GenerateResClassTask: ${tasks.withType<GenerateResClassTask>().map(Task::getName)}
-            PrepareComposeResourcesTask: ${tasks.withType<PrepareComposeResourcesTask>().map(Task::getName)}
-            GenerateResourceAccessorsTask: ${tasks.withType<GenerateResourceAccessorsTask>().map(Task::getName)}
-            GenerateExpectResourceCollectorsTask: ${
-                tasks.withType<GenerateExpectResourceCollectorsTask>().map(Task::getName)
-            }
-            GenerateActualResourceCollectorsTask: ${
-                tasks.withType<GenerateActualResourceCollectorsTask>().map(Task::getName)
-            }
-            AssembleTargetResourcesTask: ${
-                tasks.withType<AssembleTargetResourcesTask>().map(Task::getName)
-            }
-
-
-            """.trimIndent(),
-        )
-
         extension.apply {
             packageOfResClass = packageName
             publicResClass = config.exposedAccessors
@@ -234,7 +209,7 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
 
     private fun ComposeResourcesSettings.getResourcesPackageName(module: AmperModule, makeAccessorsPublic: Boolean): String {
         return packageName.takeIf { it.isNotEmpty() }?.let {
-            if (makeAccessorsPublic) "${project.name}.$it" else it
+            if (makeAccessorsPublic) "${project.name.replace("[-_]".toRegex(),".")}.$it" else it
         } ?: run {
             val packageParts =
                 module.rootFragment.inferPackageNameFromPublishing() ?: module.inferPackageNameFromModule()

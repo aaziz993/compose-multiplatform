@@ -7,8 +7,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import `cmp-lib`.resources.Res
-import `cmp-lib`.resources.flag_af
+import cmp.lib.resources.Res
+import cmp.lib.resources.flag_af
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
