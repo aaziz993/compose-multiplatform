@@ -1,4 +1,4 @@
-package plugin.project.amper.doctor
+package plugin.project.doctor
 
 import kotlinx.serialization.Serializable
 

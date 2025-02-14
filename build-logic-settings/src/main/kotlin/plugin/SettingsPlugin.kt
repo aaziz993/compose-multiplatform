@@ -32,14 +32,7 @@ import org.jetbrains.amper.gradle.moduleDir
 import org.jetbrains.amper.gradle.moduleFilePathToProjectPath
 import org.jetbrains.kotlin.gradle.plugin.KotlinMultiplatformPluginWrapper
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
-import plugin.project.amper.BindingProjectPlugin
-import plugin.project.amperlike.model.AmperLikeModel
-import plugin.project.amperlike.AmperLikeModuleWrapper
-import plugin.project.amperlike.knownAmperLikeModel
-import plugin.project.amperlike.model.AmperLikeModule
-import plugin.project.amperlike.moduleDir
-import plugin.project.amperlike.nonAmperModule
-import plugin.project.amperlike.nonAmperModuleFilePathToProjectPath
+import plugin.project.BindingProjectPlugin
 
 /**
  * Gradle setting plugin, that is responsible for:
@@ -73,9 +66,6 @@ public class SettingsPlugin : Plugin<Settings> {
                         // The IDE runs it, as well as native subproject builds.
                         // Therefore, it needs mavenCentral to resolve kotlin-klib-commonizer-embeddable.
                         project.repositories.mavenCentral()
-                    }
-                    else {
-                       configureProjectForAmperLike(project)
                     }
                 }
             }
@@ -169,54 +159,10 @@ public class SettingsPlugin : Plugin<Settings> {
             }
         }
     }
-
-    context(SLF4JProblemReporterContext)
-    private fun Settings.setupAmperLikeModel(loader: ClassLoader = Thread.currentThread().contextClassLoader) {
-        val projects = settings.gradle.rootProject.allprojects
-
-        val nonAmperModelResult = plugin.project.amperlike.init.ModelInit.getGradleAmperLikeModel(
-            rootProjectDir = settings.rootDir.toPath().toAbsolutePath(),
-            subprojectDirs = projects.map { it.projectDir.toPath().toAbsolutePath() },
-            loader = loader,
-        )
-
-        if (nonAmperModelResult is Result.Failure<AmperLikeModel> || problemReporter.hasFatal) {
-            throw GradleException(problemReporter.getGradleError())
-        }
-
-        val model = nonAmperModelResult.get()
-
-        settings.gradle.knownAmperLikeModel = model
-        setGradleProjectsToAmperLikeModuleMappings(projects, model.modules, settings.gradle)
-
-    }
-
-    private fun setGradleProjectsToAmperLikeModuleMappings(
-        projects: Set<Project>,
-        modules: List<AmperLikeModule>,
-        gradle: Gradle,
-    ) {
-        val nonAmperModulesByDir = modules
-            .filter { it.hasAmperLikeConfigFile() }
-            .associateBy { it.moduleDir.absolutePathString() }
-
-        projects.forEach { project ->
-            val module = nonAmperModulesByDir[project.projectDir.absolutePath] ?: return@forEach
-            project.nonAmperModule = AmperLikeModuleWrapper(module)
-            gradle.nonAmperModuleFilePathToProjectPath[module.moduleDir] = project.path
-        }
-    }
-
-    private fun configureProjectForAmperLike(project: Project){
-
-    }
 }
 
 private fun AmperModule.hasAmperConfigFile() =
     (source as? AmperModuleFileSource)?.buildFile?.nameWithoutExtension == "module"
-
-private fun AmperLikeModule.hasAmperLikeConfigFile() =
-    (source as? AmperModuleFileSource)?.buildFile?.nameWithoutExtension == "no.amper.module"
 
 private fun RepositoryHandler.addDefaultAmperRepositoriesForDependencies() {
     mavenCentral()

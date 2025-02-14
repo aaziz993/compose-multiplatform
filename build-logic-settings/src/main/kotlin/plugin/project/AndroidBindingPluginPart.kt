@@ -1,6 +1,6 @@
 @file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
 
-package plugin.project.amper
+package plugin.project
 
 import org.jetbrains.amper.core.properties.readProperties
 import org.jetbrains.amper.frontend.Layout

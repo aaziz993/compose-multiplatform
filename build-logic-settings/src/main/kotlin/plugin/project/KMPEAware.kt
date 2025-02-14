@@ -1,4 +1,4 @@
-package plugin.project.amper
+package plugin.project
 
 import org.jetbrains.amper.frontend.FragmentDependencyType
 import org.jetbrains.amper.frontend.LeafFragment
