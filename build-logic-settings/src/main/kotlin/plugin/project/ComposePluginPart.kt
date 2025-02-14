@@ -121,7 +121,7 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
         val config = rootFragment.settings.compose.resources
         val packageName = config.getResourcesPackageName(module, config.exposedAccessors)
 
-        logger.info(
+        println(
             """
             -----------------------ADJUSTING COMPOSE RESOURCES GENERATION--------------------------
 
@@ -178,40 +178,39 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
         listOf("jvm", "wasm", "js", "iosArm64", "iosX64", "iosSimulatorArm64")
             .forEach { platform ->
                 // Configure source set source directories for new targets
-                kotlinMPE.sourceSets.matching { it.name == platform }.all { sourceSet ->
+                kotlinMPE.sourceSets.findByName(platform)?.let { sourceSet ->
                     sourceSet.kotlin.srcDir(
                         project.layout.buildDirectory.dir(
                             sourceSet.getResourceCollectorsCodeDirName("Main"),
                         ),
                     )
                 }
-                kotlinMPE.targets.matching { target -> target.targetName == platform }.all { target ->
-                    val assembleTask = tasks.named(
-                        "assemble${target.targetName.uppercaseFirstChar()}MainResources",
-                        AssembleTargetResourcesTask::class.java,
-                    )
+                kotlinMPE.targets.findByName(platform)?.let { target ->
+                    val sourceSetName = if (module.shouldSeparateResourceCollectorsExpectActual) target.name else "commonMain"
 
-                    val allCompilationResources = assembleTask.flatMap { it.outputDirectory.asFile }
-
-                    adjustAssembledResources(target, allCompilationResources)
-
-                    //setup task execution during IDE import
-                    ideaImportDependOn(assembleTask)
+                    adjustAssembledResources(target, sourceSetName)
                 }
             }
 
-        // Create ios target assembled resources
-        kotlinMPE.targets.matching { it.name == "ios" }.all { target ->
-            ideaImportDependOn(*  configureTargetResources(target, moduleIsolationDirectory).toTypedArray())
+        // Create ios target assembled resources[
+        listOf("iosArm64", "iosX64", "iosSimulatorArm64").firstNotNullOf { platform ->
+            kotlinMPE.targets.findByName("iosArm64")
+        }.let { target ->
+            adjustAssembledResources(target, "${target.targetName}Main")
         }
     }
 
     @OptIn(ComposeKotlinGradlePluginApi::class)
     private fun Project.adjustAssembledResources(
         target: KotlinTarget,
-        allCompilationResources: Provider<File>
-    ) {
-        var allResources = allCompilationResources
+        sourceSetName: String,
+    ) = kotlinMPE.sourceSets.findByName(sourceSetName)?.let { sourceSet ->
+        val assembleTask = tasks.named(
+            "assemble${target.targetName.uppercaseFirstChar()}MainResources",
+            AssembleTargetResourcesTask::class.java,
+        )
+
+        var allResources = assembleTask.flatMap { it.outputDirectory.asFile }
 
         if (target.platformType in platformsForSetupKmpResources) {
             val kmpResources = extraProperties.get(KMP_RES_EXT) as KotlinTargetResourcesPublication
@@ -219,11 +218,10 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
             allResources = kmpResources.resolveResources(target)
         }
 
-        val sourceSetName = if (module.shouldSeparateResourceCollectorsExpectActual) target.name else "commonMain"
+        sourceSet.resources.srcDir(allResources)
 
-        kotlinMPE.sourceSets.matching { it.name == sourceSetName }.all { sourceSet ->
-            sourceSet.resources.srcDir(allResources)
-        }
+        //setup task execution during IDE import
+        ideaImportDependOn(assembleTask)
     }
 
     private fun ComposeResourcesSettings.getResourcesPackageName(module: AmperModule, makeAccessorsPublic: Boolean): String {
