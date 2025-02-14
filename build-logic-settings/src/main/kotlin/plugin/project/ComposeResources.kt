@@ -78,10 +78,10 @@ private fun KotlinSourceSet.getResourceAccessorsGenerationTaskName(): String {
     return "generateResourceAccessorsFor${this.name.uppercaseFirstChar()}"
 }
 
-private fun Project.configureTargetResources(
+internal fun Project.configureTargetResources(
     target: KotlinTarget,
     moduleIsolationDirectory: Provider<File>
-) {
+):List<TaskProvider<AssembleTargetResourcesTask>> = mutableListOf<TaskProvider<AssembleTargetResourcesTask>>().apply {
     target.compilations.all { compilation ->
         logger.info("Configure ${compilation.name} resources for '${target.targetName}' target")
         val compilationResources = files(
@@ -112,6 +112,8 @@ private fun Project.configureTargetResources(
         else {
             configureResourcesForCompilation(compilation, allCompilationResources)
         }
+
+        add(assembleResTask)
     }
 }
 

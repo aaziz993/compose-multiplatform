@@ -22,7 +22,6 @@ import org.jetbrains.amper.gradle.base.PluginPartCtx
 import org.jetbrains.compose.ComposeExtension
 import org.jetbrains.compose.desktop.DesktopExtension
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-import org.jetbrains.compose.internal.IDEA_IMPORT_TASK_NAME
 import org.jetbrains.compose.resources.AssembleTargetResourcesTask
 import org.jetbrains.compose.resources.GenerateActualResourceCollectorsTask
 import org.jetbrains.compose.resources.GenerateExpectResourceCollectorsTask
@@ -32,6 +31,7 @@ import org.jetbrains.compose.resources.KMP_RES_EXT
 import org.jetbrains.compose.resources.PrepareComposeResourcesTask
 import org.jetbrains.compose.resources.RES_GEN_DIR
 import org.jetbrains.compose.resources.ResourcesExtension
+import org.jetbrains.compose.resources.getModuleResourcesDir
 import org.jetbrains.kotlin.gradle.ComposeKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
@@ -42,6 +42,7 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinMetadataTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.resources.KotlinTargetResourcesPublication
 import plugin.utils.all
+import plugin.utils.ideaImportDependOn
 
 public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConventions, AndroidAwarePart(ctx) {
 
@@ -120,7 +121,7 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
         val config = rootFragment.settings.compose.resources
         val packageName = config.getResourcesPackageName(module, config.exposedAccessors)
 
-        println(
+        logger.info(
             """
             -----------------------ADJUSTING COMPOSE RESOURCES GENERATION--------------------------
 
@@ -170,10 +171,10 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
             config.exposedAccessors,
         )
 
-        configureResources(extension)
+        configureResources(provider { extension }.getModuleResourcesDir(project))
     }
 
-    private fun configureResources(extension: ResourcesExtension) = with(project) {
+    private fun configureResources(moduleIsolationDirectory: Provider<File>) = with(project) {
         listOf("jvm", "wasm", "js", "iosArm64", "iosX64", "iosSimulatorArm64")
             .forEach { platform ->
                 // Configure source set source directories for new targets
@@ -195,20 +196,13 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
                     adjustAssembledResources(target, allCompilationResources)
 
                     //setup task execution during IDE import
-                    tasks.configureEach {
-                        if (name == IDEA_IMPORT_TASK_NAME) {
-                            dependsOn(assembleTask)
-                        }
-                    }
+                    ideaImportDependOn(assembleTask)
                 }
             }
 
-        if (module.rootFragment.name == "common") {
-//            val moduleIsolationDirectory = provider { extension }.getModuleResourcesDir(project)
-//
-//            kotlinMPE.targets.matching { it.name == "ios" }.all { target ->
-//                configureTargetResources(target, moduleIsolationDirectory)
-//            }
+        // Create ios target assembled resources
+        kotlinMPE.targets.matching { it.name == "ios" }.all { target ->
+            ideaImportDependOn(*  configureTargetResources(target, moduleIsolationDirectory).toTypedArray())
         }
     }
 
@@ -234,7 +228,7 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
 
     private fun ComposeResourcesSettings.getResourcesPackageName(module: AmperModule, makeAccessorsPublic: Boolean): String {
         return packageName.takeIf { it.isNotEmpty() }?.let {
-            if (makeAccessorsPublic) "${project.name.replace("[-_]".toRegex(),".")}.$it" else it
+            if (makeAccessorsPublic) "${project.name.replace("[-_]".toRegex(), ".")}.$it" else it
         } ?: run {
             val packageParts =
                 module.rootFragment.inferPackageNameFromPublishing() ?: module.inferPackageNameFromModule()
@@ -297,25 +291,21 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
             }
         }
 
-        if (module.shouldSeparateResourceCollectorsExpectActual) {
-            kotlinMPE.sourceSets.matching { it.name == "ios" }.all {
-                val genTask = configureActualResourceCollectorsGeneration(
-                    this,
-                    provider { true },
-                    provider { packageName },
-                    provider { makeAccessorsPublic },
-                    true,
-                )
 
-                //setup task execution during IDE import
-                tasks.configureEach {
-                    if (name == IDEA_IMPORT_TASK_NAME) {
-                        dependsOn(genTask)
-                    }
-                }
-            }
+        kotlinMPE.sourceSets.matching { it.name == "ios" }.all {
+            val genTask = configureActualResourceCollectorsGeneration(
+                this,
+                provider { true },
+                provider { packageName },
+                provider { makeAccessorsPublic },
+                true,
+            )
+
+            //setup task execution during IDE import
+            ideaImportDependOn(genTask)
         }
-        else {
+
+        if (!module.shouldSeparateResourceCollectorsExpectActual) {
             // In single-platform module add generated actual directory to commonMain source set source directories
             kotlinMPE.sourceSets
                 .matching { it.name == KotlinSourceSet.COMMON_MAIN_SOURCE_SET_NAME }
