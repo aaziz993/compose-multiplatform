@@ -1,4 +1,5 @@
 import androidx.compose.ui.window.ComposeUIViewController
+import platform.UIKit.UIViewController
 
 public fun ViewController(): UIViewController = ComposeUIViewController({
     // Since 1.7.0-beta01 you have to add CADisableMinimumFrameDurationOnPhone property in your info.plist

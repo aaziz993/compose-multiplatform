@@ -35,6 +35,7 @@ import org.jetbrains.compose.resources.getModuleResourcesDir
 import org.jetbrains.kotlin.gradle.ComposeKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
+import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
@@ -51,6 +52,10 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
 
     override val needToApply: Boolean by lazy {
         module.leafFragments.any { it.settings.compose.enabled }
+    }
+
+    private val hasCommonIosSourceSet by lazy {
+        kotlinMPE.sourceSets.any { it.name == "ios" }
     }
 
     // Highly dependent on compose version and ABI.
@@ -121,7 +126,7 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
         val config = rootFragment.settings.compose.resources
         val packageName = config.getResourcesPackageName(module, config.exposedAccessors)
 
-        println(
+        logger.info(
             """
             -----------------------ADJUSTING COMPOSE RESOURCES GENERATION--------------------------
 
@@ -167,7 +172,7 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
             }
         }
         adjustResourceCollectorsGeneration(
-            config.packageName,
+            packageName,
             config.exposedAccessors,
         )
 
@@ -175,9 +180,9 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
     }
 
     private fun configureResources(moduleIsolationDirectory: Provider<File>) = with(project) {
-        listOf("jvm", "wasm", "js", "iosArm64", "iosX64", "iosSimulatorArm64")
+        (listOf("jvm", "wasm", "js") + if (hasCommonIosSourceSet) emptyList() else listOf("iosArm64", "iosX64", "iosSimulatorArm64"))
             .forEach { platform ->
-                // Configure source set source directories for new targets
+                // Add generated resource collectors code sources to new target source set resources
                 kotlinMPE.sourceSets.matching { it.name == platform }.all { sourceSet ->
                     sourceSet.kotlin.srcDir(
                         project.layout.buildDirectory.dir(
@@ -185,6 +190,7 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
                         ),
                     )
                 }
+                // Add generated assembled resources to new target source set resources
                 kotlinMPE.targets.matching { it.name == platform }.all { target ->
                     val sourceSetName = if (module.shouldSeparateResourceCollectorsExpectActual) target.name else "commonMain"
 
@@ -196,7 +202,7 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
         listOf("iosArm64", "iosX64", "iosSimulatorArm64").firstNotNullOfOrNull { platform ->
             kotlinMPE.targets.findByName("iosArm64")
         }?.let { target ->
-            adjustAssembledResources(target, "${target.targetName}Main")
+            adjustAssembledResources(target, "ios")
         }
     }
 
@@ -268,23 +274,31 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
 
         val actualSourceSets = mutableListOf<KotlinSourceSet>()
 
-        kotlinMPE.targets.all {
-            if (this is KotlinAndroidTarget) {
-                kotlinMPE.sourceSets.matching { it.name == "androidMain" }.all {
+        kotlinMPE.targets.all { target ->
+            if (target is KotlinAndroidTarget) {
+                kotlinMPE.sourceSets.matching { it.name == "androidMain" }.all { sourceSet ->
                     adjustActualResourceCollectorsGeneration(
-                        this,
+                        sourceSet,
                         module.shouldSeparateResourceCollectorsExpectActual,
+                        true,
                     )
-                    actualSourceSets.add(this)
+                    actualSourceSets.add(sourceSet)
                 }
             }
-            else if (this !is KotlinMetadataTarget) {
-                compilations.matching { it.name == KotlinCompilation.MAIN_COMPILATION_NAME }.all {
+            else if (target !is KotlinMetadataTarget) {
+                // Prevent ios sub source sets resource generation if ios is presented
+                val shouldGenerateCode = if (hasCommonIosSourceSet) !target.targetName.startsWith("ios") else true
+
+                target.compilations.matching { it.name == KotlinCompilation.MAIN_COMPILATION_NAME }.all { compilation ->
                     adjustActualResourceCollectorsGeneration(
-                        defaultSourceSet,
+                        compilation.defaultSourceSet,
                         module.shouldSeparateResourceCollectorsExpectActual,
+                        shouldGenerateCode,
                     )
-                    actualSourceSets.add(defaultSourceSet)
+
+                    if (shouldGenerateCode) {
+                        actualSourceSets.add(compilation.defaultSourceSet)
+                    }
                 }
             }
         }
@@ -344,10 +358,13 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
     private fun Project.adjustActualResourceCollectorsGeneration(
         sourceSet: KotlinSourceSet,
         useActualModifier: Boolean,
+        shouldGenerateCode: Boolean
     ) = tasks.named(
         "generateActualResourceCollectorsFor${sourceSet.name.uppercaseFirstChar()}",
         GenerateActualResourceCollectorsTask::class.java,
     ) {
         this.useActualModifier = useActualModifier
+
+        onlyIf { shouldGenerateCode }
     }
 }
