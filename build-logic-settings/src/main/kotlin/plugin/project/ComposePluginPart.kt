@@ -2,7 +2,6 @@
 
 package plugin.project
 
-import gradle.amper.chooseComposeVersion
 import java.io.File
 import org.gradle.api.Project
 import org.gradle.api.provider.Provider

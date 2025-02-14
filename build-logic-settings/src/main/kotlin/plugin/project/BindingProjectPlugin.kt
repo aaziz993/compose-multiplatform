@@ -20,7 +20,7 @@ import org.jetbrains.amper.gradle.parcelize.ParcelizePluginPart
 import org.jetbrains.amper.gradle.serialization.SerializationPluginPart
 import java.net.URI
 import org.jetbrains.amper.gradle.*
-import plugin.project.amperlike.DoctorPluginPart
+import plugin.project.doctor.DoctorPluginPart
 
 /**
  * Gradle project plugin entry point.

@@ -1,4 +1,6 @@
-product: wasm/app
+product:
+  type: lib
+  platforms: [ wasm ]
 
 apply:
   - ../template/common.module-template.yaml

@@ -1,6 +1,6 @@
 package plugin.project.model
 
-import plugin.project.doctor.DoctorSettings
+import plugin.project.doctor.model.DoctorSettings
 import kotlinx.serialization.Serializable
 
 @Serializable

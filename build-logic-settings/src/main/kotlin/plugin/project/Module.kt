@@ -1,19 +1,15 @@
-package gradle.amper
+package plugin.project
 
 import plugin.project.model.Properties
 import gradle.decodeFromAny
 import gradle.deepMerge
 import kotlinx.serialization.json.Json
 import org.jetbrains.amper.frontend.AmperModule
-import org.jetbrains.amper.frontend.schema.commonSettings
 import org.jetbrains.amper.gradle.moduleDir
 import org.yaml.snakeyaml.Yaml
 import kotlin.io.path.readText
 
 private val json = Json { ignoreUnknownKeys = true }
-
-internal val AmperModule.isComposeEnabled
-    get()= origin.commonSettings.compose.enabled
 
 @Suppress("UNCHECKED_CAST")
 internal val AmperModule.additionalProperties: Properties

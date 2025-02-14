@@ -1,4 +1,4 @@
-package gradle.amper
+package plugin.project
 
 
 import org.gradle.api.artifacts.Configuration

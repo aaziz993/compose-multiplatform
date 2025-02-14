@@ -2,8 +2,8 @@
 
 package plugin
 
-import gradle.amper.chooseComposeVersion
-import gradle.amper.setupDynamicClasspath
+import plugin.project.chooseComposeVersion
+import plugin.project.setupDynamicClasspath
 import gradle.libs
 import gradle.plugin
 import gradle.pluginAsDependency
