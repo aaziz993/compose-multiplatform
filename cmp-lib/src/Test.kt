@@ -1,7 +1,7 @@
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
-import `cmp-lib`.resources.Res
-import `cmp-lib`.resources.compose_multiplatform
+import cmp.lib.resources.Res
+import cmp.lib.resources.compose_multiplatform
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
