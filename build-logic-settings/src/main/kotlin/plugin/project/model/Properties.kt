@@ -5,7 +5,7 @@ import plugin.project.web.model.WebProduct
 
 @Serializable
 internal data class Properties(
-    val product: WebProduct,
+    val product: WebProduct? = null,
     val apply: Set<String>? = null,
     val settings: Settings? = null,
 )

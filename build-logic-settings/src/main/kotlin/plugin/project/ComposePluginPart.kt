@@ -24,6 +24,7 @@ import org.jetbrains.compose.resources.CopyNonXmlValueResourcesTask
 import org.jetbrains.compose.resources.GenerateActualResourceCollectorsTask
 import org.jetbrains.compose.resources.GenerateExpectResourceCollectorsTask
 import org.jetbrains.compose.resources.GenerateResourceAccessorsTask
+import org.jetbrains.compose.resources.PrepareComposeResourcesTask
 import org.jetbrains.compose.resources.RES_GEN_DIR
 import org.jetbrains.compose.resources.ResourcesExtension
 import org.jetbrains.compose.resources.XmlValuesConverterTask
@@ -55,30 +56,29 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
         project.plugins.apply("org.jetbrains.kotlin.plugin.compose")
         project.plugins.apply("org.jetbrains.compose")
 
-        // Clean old resources from source sets.
-        kotlinMPE.sourceSets.all { resources.tryRemove { it.endsWith("composeResources") } }
+//        // Clean old resources from source sets.
+//        kotlinMPE.sourceSets.all { resources.tryRemove { it.endsWith("composeResources") } }
 
         // Adjust task.
         project.adjustComposeResourcesGeneration()
 
         // Adjust source sets.
         module.rootFragment.kotlinSourceSet?.apply {
-            resources.srcDirs(composeResourcesDir)
+//            resources.srcDirs(composeResourcesDir)
             dependencies {
                 implementation("org.jetbrains.compose.runtime:runtime:$composeVersion")
                 implementation("org.jetbrains.compose.components:components-resources:$composeVersion")
             }
         }
 
-        androidSourceSets?.findByName("main")
-            ?.resources?.srcDirs(composeResourcesDir)
+//        androidSourceSets?.findByName("main")
+//            ?.resources?.srcDirs(composeResourcesDir)
     }
 
     private fun Project.adjustComposeResourcesGeneration() {
         val rootFragment = checkNotNull(module.rootFragment) { "Root fragment expected" }
         val config = rootFragment.settings.compose.resources
         val packageName = config.getResourcesPackageName(module, config.exposedAccessors)
-        val resDir = module.moduleDir.resolve("composeResources").toFile()
 
         project.extensions.configure<ComposeExtension> {
             extensions.configure<ResourcesExtension> {
@@ -88,20 +88,12 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
         }
 
         kotlinMPE.sourceSets.all {
-            val isCommonSourceSet = name == KotlinSourceSet.COMMON_MAIN_SOURCE_SET_NAME
+            val resDir = module.moduleDir.resolve("composeResources@$name").toFile()
 
             adjustPrepareComposeResourcesTask(
                 this,
                 resDir,
-                isCommonSourceSet,
             )
-
-            tasks.named(
-                getResourceAccessorsGenerationTaskName(),
-                GenerateResourceAccessorsTask::class.java,
-            ) {
-                onlyIf { isCommonSourceSet }
-            }
         }
 
         project.adjustResourceCollectorsGeneration(
@@ -140,7 +132,6 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
     private fun Project.adjustPrepareComposeResourcesTask(
         sourceSet: KotlinSourceSet,
         originalResourcesDir: File,
-        shouldGenerateCode: Boolean,
     ) {
         tasks.named(
             "convertXmlValueResourcesFor${sourceSet.name.uppercaseFirstChar()}",
@@ -155,7 +146,15 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
         ) {
             this.originalResourcesDir = originalResourcesDir
         }
+
+        tasks.named(
+            getPrepareComposeResourcesTaskName(sourceSet),
+            PrepareComposeResourcesTask::class.java
+        )
     }
+
+    private fun getPrepareComposeResourcesTaskName(sourceSet: KotlinSourceSet) =
+        "prepareComposeResourcesTaskFor${sourceSet.name.uppercaseFirstChar()}"
 
     private fun Project.adjustResourceCollectorsGeneration(
         packageName: String,

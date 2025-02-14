@@ -1,7 +1,6 @@
 package plugin.project.doctor
 
 import com.osacky.doctor.DoctorExtension
-import plugin.project.additionalProperties
 import gradle.id
 import gradle.isCI
 import gradle.libs
@@ -14,13 +13,14 @@ import org.gradle.kotlin.dsl.getByType
 import org.jetbrains.amper.gradle.base.BindingPluginPart
 import org.jetbrains.amper.gradle.base.PluginPartCtx
 import org.slf4j.LoggerFactory
+import plugin.project.amperModuleExtraProperties
 
 internal class DoctorPluginPart(ctx: PluginPartCtx) : BindingPluginPart by ctx {
     private val logger = LoggerFactory.getLogger(DoctorPluginPart::class.java)
     private val doctorRE get() = project.extensions.getByType<DoctorExtension>()
 
     private val doctor by lazy {
-        module.additionalProperties.settings?.doctor
+        project.amperModuleExtraProperties.settings?.doctor
     }
 
     override val needToApply: Boolean by lazy {

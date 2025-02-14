@@ -2,14 +2,16 @@
 
 package plugin
 
-import plugin.project.chooseComposeVersion
-import plugin.project.setupDynamicClasspath
+import gradle.decodeFromAny
+import gradle.deepMerge
 import gradle.libs
 import gradle.plugin
 import gradle.pluginAsDependency
 import gradle.plugins
 import kotlin.io.path.absolutePathString
 import kotlin.io.path.nameWithoutExtension
+import kotlin.io.path.readText
+import kotlinx.serialization.json.Json
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -32,7 +34,11 @@ import org.jetbrains.amper.gradle.moduleDir
 import org.jetbrains.amper.gradle.moduleFilePathToProjectPath
 import org.jetbrains.kotlin.gradle.plugin.KotlinMultiplatformPluginWrapper
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
+import org.yaml.snakeyaml.Yaml
 import plugin.project.BindingProjectPlugin
+import plugin.project.amperModuleExtraProperties
+import plugin.project.chooseComposeVersion
+import plugin.project.setupDynamicClasspath
 
 /**
  * Gradle setting plugin, that is responsible for:
@@ -42,6 +48,8 @@ import plugin.project.BindingProjectPlugin
  */
 // This is registered via FQN from the resources in org.jetbrains.amper.settings.plugin.properties
 public class SettingsPlugin : Plugin<Settings> {
+
+    private val amperExtraPropertiesJson = Json { ignoreUnknownKeys = true }
 
     override fun apply(settings: Settings) {
         with(SLF4JProblemReporterContext()) {
@@ -53,8 +61,6 @@ public class SettingsPlugin : Plugin<Settings> {
                 val projects = settings.gradle.rootProject.allprojects
 
                 settings.setupAmperModel(gradleClassLoader)
-
-//                settings.setupAmperLikeModel(gradleClassLoader)
 
                 projects.forEach { project ->
                     if (project.amperModule != null) {
@@ -90,6 +96,7 @@ public class SettingsPlugin : Plugin<Settings> {
 
         settings.gradle.knownModel = model
         setGradleProjectsToAmperModuleMappings(projects, model.modules, settings.gradle)
+        setGradleExtraPropertiesToAmperModuleMappings(projects, gradle)
 
         settings.setupPluginsClasspath(model)
     }
@@ -107,6 +114,30 @@ public class SettingsPlugin : Plugin<Settings> {
             val module = amperModulesByDir[project.projectDir.absolutePath] ?: return@forEach
             project.amperModule = AmperModuleWrapper(module)
             gradle.moduleFilePathToProjectPath[module.moduleDir] = project.path
+        }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    private fun setGradleExtraPropertiesToAmperModuleMappings(
+        projects: Set<Project>,
+        gradle: Gradle,
+    ) {
+        projects.filterNot { it.amperModule == null }.forEach { project ->
+            val module = project.amperModule!!
+
+            val yaml = Yaml()
+
+            val map: Map<String, *> = yaml.load(module.moduleDir.resolve("module.yaml").readText())
+
+            val merged = (map["apply"] as List<String>?)?.fold(emptyMap<String, Any?>()) { props, path ->
+                props.deepMerge(module.moduleDir.resolve(path).readText().ifBlank { null }?.let { yaml.load<Map<String, *>>(it) }.orEmpty())
+            }?.deepMerge(map).orEmpty().toMutableMap()
+
+            if (merged["product"]!! !is Map<*, *>) {
+                merged.remove("product")
+            }
+
+            project.amperModuleExtraProperties = amperExtraPropertiesJson.decodeFromAny(merged)
         }
     }
 

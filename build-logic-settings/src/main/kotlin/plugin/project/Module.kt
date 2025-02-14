@@ -1,25 +1,15 @@
+@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
+
 package plugin.project
 
+import org.gradle.api.Project
+import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import plugin.project.model.Properties
-import gradle.decodeFromAny
-import gradle.deepMerge
-import kotlinx.serialization.json.Json
-import org.jetbrains.amper.frontend.AmperModule
-import org.jetbrains.amper.gradle.moduleDir
-import org.yaml.snakeyaml.Yaml
-import kotlin.io.path.readText
 
-private val json = Json { ignoreUnknownKeys = true }
+private const val MODULE_EXTRA_PROPERTIES = "org.jetbrains.amper.gradle.ext.moduleExtraProperties"
 
-@Suppress("UNCHECKED_CAST")
-internal val AmperModule.additionalProperties: Properties
-    get() {
-        val yaml = Yaml()
-        val map: Map<String, *> = yaml.load(moduleDir.resolve("module.yaml").readText())
-
-        val merged = (map["apply"] as List<String>?)?.fold(emptyMap<String, Any?>()) { props, path ->
-            props.deepMerge(moduleDir.resolve(path).readText().ifBlank { null }?.let{yaml.load<Map<String,*>>(it)}.orEmpty())
-        }?.deepMerge(map).orEmpty()
-
-        return json.decodeFromAny(merged)
+internal var Project.amperModuleExtraProperties: Properties
+    get() = extraProperties[MODULE_EXTRA_PROPERTIES] as Properties
+    set(value) {
+        extraProperties[MODULE_EXTRA_PROPERTIES] = value
     }
