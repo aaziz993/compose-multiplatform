@@ -16,12 +16,13 @@ import plugin.project.web.js.karakum.configureKarakum
  */
 internal class JsBindingPluginPart(
     ctx: PluginPartCtx,
+    targetName: String,
 ) : WebAwarePart(ctx) {
 
     override val needToApply by lazy { Platform.JS in module }
 
-    override val target: NamedDomainObjectCollection<out KotlinJsTargetDsl> by lazy {
-        kotlinMPE.targets.withType<KotlinWasmJsTargetDsl>()
+    override val target: KotlinJsTargetDsl by lazy {
+        kotlinMPE.js(targetName)
     }
 
     /**
@@ -29,7 +30,7 @@ internal class JsBindingPluginPart(
      */
     override fun applyBeforeEvaluate() {
         super.applyBeforeEvaluate()
-        project.configureKarakum()
+//        project.configureKarakum()
     }
 }
 

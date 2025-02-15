@@ -57,6 +57,7 @@ internal interface KMPEAware {
     val LeafFragmentWrapper.targetCompilation: KotlinCompilation<KotlinCommonOptions>?
         get() = target?.run { (this@targetCompilation as LeafFragment).compilation }
 
+    // Introduced function to remember to propagate language settings.
     fun KotlinSourceSet.doDependsOn(it: FragmentWrapper) {
         val dependency = it.kotlinSourceSet
         dependsOn(dependency ?: return)

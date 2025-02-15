@@ -138,10 +138,6 @@ public class SettingsPlugin : Plugin<Settings> {
             module.moduleDir.resolve("module.yaml").readText(),
         ).toMutableMap().also(::tryTransform)
 
-        if (moduleSettings["product"]!! !is Map<*, *>) {
-            moduleSettings.remove("product")
-        }
-
         val templates = (moduleSettings["apply"] as List<String>?)?.associateWith { template ->
             yaml.load<MutableMap<String, *>>(
                 module.moduleDir.resolve(template).readText(),

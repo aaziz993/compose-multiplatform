@@ -282,10 +282,15 @@ dependencies {
     // Compose multiplatform
     implementation(libs.plugins.compose.multiplatform.toDep())
     runtimeOnly(libs.plugins.compose.compiler.toDep())
-//    implementation("org.jetbrains.compose.components:components-resources:1.7.3")
 
     // Semantic version
     implementation(libs.semver)
+
+
+    // A hack to make version catalogs accessible from buildSrc sources
+    // https://github.com/gradle/gradle/issues/15383#issuecomment-779893192
+    implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
+    implementation(files(kotlinWrappers.javaClass.superclass.protectionDomain.codeSource.location))
 }
 
 gradlePlugin {

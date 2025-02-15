@@ -1,9 +1,17 @@
 package gradle
 
+import org.gradle.api.Project
 import org.gradle.api.initialization.Settings
 import org.tomlj.Toml
 import org.tomlj.TomlParseResult
 import org.tomlj.TomlTable
+
+/**
+ * Accessor to make gradle.version catalog available in build-logic.
+ * See: https://github.com/gradle/gradle/issues/15383#issuecomment-779893192
+ */
+//internal val Project.libs: LibrariesForLibs
+//    get() = rootProject.the()
 
 @Suppress("UnstableApiUsage")
 internal val Settings.libs: TomlParseResult

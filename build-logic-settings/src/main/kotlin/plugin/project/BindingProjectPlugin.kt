@@ -2,6 +2,7 @@
 
 package plugin.project
 
+import java.net.URI
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -11,18 +12,19 @@ import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.tasks.testing.Test
 import org.jetbrains.amper.frontend.RepositoriesModulePart
 import org.jetbrains.amper.frontend.schema.JUnitVersion
+import org.jetbrains.amper.gradle.AmperModuleWrapper
+import org.jetbrains.amper.gradle.SLF4JProblemReporterContext
+import org.jetbrains.amper.gradle.amperModule
 import org.jetbrains.amper.gradle.apple.AppleBindingPluginPart
 import org.jetbrains.amper.gradle.base.BindingPluginPart
 import org.jetbrains.amper.gradle.base.PluginPartCtx
 import org.jetbrains.amper.gradle.java.JavaBindingPluginPart
-import org.jetbrains.amper.gradle.kmpp.KMPPBindingPluginPart
+import org.jetbrains.amper.gradle.knownModel
+import org.jetbrains.amper.gradle.moduleFilePathToProjectPath
 import org.jetbrains.amper.gradle.parcelize.ParcelizePluginPart
 import org.jetbrains.amper.gradle.serialization.SerializationPluginPart
-import java.net.URI
-import org.jetbrains.amper.gradle.*
 import plugin.project.compose.ComposePluginPart
 import plugin.project.gradlle.doctor.DoctorPluginPart
-import plugin.project.web.js.JsBindingPluginPart
 import plugin.project.web.WasmBindingPluginPart
 
 /**
@@ -47,8 +49,6 @@ internal class BindingProjectPlugin : Plugin<Project> {
             JavaBindingPluginPart(pluginCtx),
             ComposePluginPart(pluginCtx),
             AppleBindingPluginPart(pluginCtx),
-            WasmBindingPluginPart(pluginCtx),
-            JsBindingPluginPart(pluginCtx),
             SerializationPluginPart(pluginCtx),
             ParcelizePluginPart(pluginCtx),
             DoctorPluginPart(pluginCtx),

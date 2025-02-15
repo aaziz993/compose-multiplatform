@@ -1,5 +1,6 @@
 package plugin.project
 
+import gradle.tryAssign
 import kotlinx.kover.gradle.plugin.dsl.KoverProjectExtension
 import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.findByType
@@ -8,6 +9,7 @@ import org.jetbrains.amper.gradle.base.BindingPluginPart
 import org.jetbrains.amper.gradle.base.PluginPartCtx
 
 internal class KoverPluginPart(ctx: PluginPartCtx) : BindingPluginPart by ctx {
+
     private val koverRE
         get() = project.extensions.findByType<KoverProjectExtension>()!!
 
@@ -30,20 +32,21 @@ internal class KoverPluginPart(ctx: PluginPartCtx) : BindingPluginPart by ctx {
                 total {
                     if (htmlPart != null) {
                         html {
-                            title.assign(htmlPart.title)
+                            title = htmlPart.title
                             charset = htmlPart.charset
                             if (htmlPart.onCheck != null) {
-                                onCheck = htmlPart.onCheck ?: false
+                                onCheck tryAssign htmlPart.onCheck
                             }
 
-                            htmlPart.reportDir?.toFile()?.let { htmlDir = it }
+
+                            htmlDir tryAssign htmlPart.reportDir?.toFile()
                         }
                     }
 
                     if (xmlPart != null) {
                         xml {
-                            onCheck = xmlPart.onCheck ?: false
-                            xmlPart.reportFile?.toFile()?.let { xmlFile = it }
+                            onCheck tryAssign xmlPart.onCheck
+                            xmlFile tryAssign xmlPart.reportFile?.toFile()
                         }
 
                         adjustXmlFactories()

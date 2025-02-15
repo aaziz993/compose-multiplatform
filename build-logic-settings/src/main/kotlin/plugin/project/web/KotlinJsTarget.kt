@@ -1,24 +1,21 @@
 package plugin.project.web
 
+import gradle.amperModuleExtraProperties
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.assign
-import org.jetbrains.amper.gradle.amperModule
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
-import gradle.amperModuleExtraProperties
-import plugin.project.web.model.JsPlatform
-import plugin.project.web.model.jsPlatform
+import plugin.project.web.model.BrowserSettings
+import plugin.project.web.model.NodeSettings
 
 internal fun Project.configureKotlinJsTarget(target: KotlinJsTargetDsl) =
-    amperModuleExtraProperties.settings?.web.let { web ->
+    amperModuleExtraProperties.settings.web.let { web ->
         target.apply {
-            val module = amperModule
-            val jsPlatform = jsPlatform
-            val isApp = amperModuleExtraProperties.product.webApp
+            moduleName = web.moduleName ?: "$group.${project.name}-${target.name}"
 
-           moduleNametrySet  web?.framework?.moduleName ?: module?.userReadableName
+            web.browser.takeIf(BrowserSettings::enabled)?.let { browser ->
+                println("Configure $targetName browser")
 
-            if (jsPlatform == JsPlatform.BROWSER || jsPlatform == JsPlatform.WEB) {
                 browser {
                     val rootDirPath = rootDir.path
                     val projectDirPath = projectDir.path
@@ -26,9 +23,9 @@ internal fun Project.configureKotlinJsTarget(target: KotlinJsTargetDsl) =
                         mainOutputFileName = moduleName
                     }
                     commonWebpackConfig {
-                        if (isApp) {
-                            outputFileName = "$moduleName.js"
-                        }
+
+                        outputFileName = "$moduleName.js"
+
                         devServer = (devServer ?: KotlinWebpackConfig.DevServer()).apply {
                             static = (static ?: mutableListOf()).apply {
                                 // Serve sources to debug inside browser
@@ -42,12 +39,11 @@ internal fun Project.configureKotlinJsTarget(target: KotlinJsTargetDsl) =
                     }
                 }
             }
-
-            if (jsPlatform == JsPlatform.NODE || jsPlatform == JsPlatform.WEB) {
+            web.node.takeIf(NodeSettings::enabled)?.let { node ->
                 nodejs()
             }
 
-            if (isApp) {
+            if (web.executable) {
                 binaries.executable()
             }
             else {

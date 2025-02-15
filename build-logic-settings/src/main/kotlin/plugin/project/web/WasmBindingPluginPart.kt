@@ -10,20 +10,18 @@ import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinWasmJsTargetDsl
 import plugin.project.web.js.JsBindingPluginPart
 
-private val Project.wasmSupported: Boolean
-    get() = (findProperty("wasm.supported") as String?)?.toBoolean() == true
-
 /**
  * Plugin logic, bind to specific module, when only default target is available.
  */
 internal class WasmBindingPluginPart(
     ctx: PluginPartCtx,
+    targetName: String,
 ) : WebAwarePart(ctx) {
 
-    override val needToApply by lazy { Platform.WASM in module && project.wasmSupported }
+    override val needToApply by lazy { Platform.WASM in module }
 
-    override val target: NamedDomainObjectCollection<out KotlinJsTargetDsl> by lazy {
-         kotlinMPE.targets.withType<KotlinWasmJsTargetDsl>()
+    override val target: KotlinJsTargetDsl by lazy {
+         kotlinMPE.wasmJs(targetName)
     }
 
     /**

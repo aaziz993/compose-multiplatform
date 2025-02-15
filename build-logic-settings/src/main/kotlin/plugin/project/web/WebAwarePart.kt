@@ -1,6 +1,5 @@
 package plugin.project.web
 
-import org.gradle.api.NamedDomainObjectCollection
 import org.jetbrains.amper.gradle.base.BindingPluginPart
 import org.jetbrains.amper.gradle.base.PluginPartCtx
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
@@ -17,7 +16,7 @@ internal abstract class WebAwarePart(
     override val kotlinMPE: KotlinMultiplatformExtension =
         project.extensions.getByType(KotlinMultiplatformExtension::class.java)
 
-    protected abstract val target: NamedDomainObjectCollection<out KotlinJsTargetDsl>
+    protected abstract val target: KotlinJsTargetDsl
 
     /**
      * Entry point for this plugin part.
@@ -27,9 +26,7 @@ internal abstract class WebAwarePart(
     }
 
     private fun adjustTarget() = with(project) {
-        target.all {
-            configureKotlinJsTarget(this)
-            configureJsTestTasks(this)
-        }
+        configureKotlinJsTarget(target)
+        configureJsTestTasks(target)
     }
 }

@@ -1,13 +1,13 @@
 package plugin.project.web.js.karakum
 
+import gradle.amperModuleExtraProperties
+import gradle.tryAssign
 import io.github.sgrishchenko.karakum.gradle.plugin.KarakumExtension
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.assign
-import gradle.amperModuleExtraProperties
 
 internal fun Project.configureKarakumExtension(extension: KarakumExtension) =
-    with(amperModuleExtraProperties.settings.web.framework) {
+    with(amperModuleExtraProperties.settings.web) {
         extension.apply {
-            karakum.configFile?.let { configFile = file(it) }
+            configFile tryAssign karakum.configFile?.let(::file)
         }
     }

@@ -40,23 +40,32 @@ settings:
         ensureJavaHomeMatches: false
 
   kotlin:
-    #    languageVersion: 2.0.20
+    #    apiVersion: 2.1.10
+    #    languageVersion: 2.1.10
+    allWarningsAsErrors: false
+    debug: false
+    progressiveMode: true
+    suppressWarnings: false
+    verbose: true
     languageFeatures:
       - contextReceivers
-    allWarningsAsErrors: false
     freeCompilerArgs:
       - -Xexplicit-api=strict
       - -Xcontext-receivers
       - -Xexpect-actual-classes
+      - -Xinline-classes
       - -Xbinary=bundleId=io.github.aaziz993.compose-multiplatform # set ios bundleId
     optIns: [ kotlin.io.path.ExperimentalPathApi ]
     linkerOpts:
       - "-lsqlite3" # for ios
-    suppressWarnings: true
+
 
     serialization:
       enabled: true
       version: 1.8.0
+
+  jvm:
+    release: 23
 
   kover:
     enabled: true
@@ -64,7 +73,7 @@ settings:
       title: Generate coverage report
       reportDir: build/reports/kover
       onCheck: true
-
+      charset: UTF8
     xml:
       reportFile: build/reports/kover/report.xml
       onCheck: true

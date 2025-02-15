@@ -10,3 +10,9 @@ dependencies:
   - ../kmp-lib
   - ../cmp-lib
   - ../shared
+
+settings:
+  web:
+    framework:
+      browser:
+        enabled: true

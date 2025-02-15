@@ -1,11 +1,12 @@
 package plugin.project.compose.desktop
 
+import gradle.amperModuleExtraProperties
+import gradle.trySet
 import org.gradle.api.Project
 import org.gradle.internal.os.OperatingSystem
 import org.gradle.kotlin.dsl.assign
 import org.jetbrains.compose.desktop.DesktopExtension
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-import gradle.amperModuleExtraProperties
 
 internal fun Project.configureDesktopExtension(extension: DesktopExtension) =
     with(amperModuleExtraProperties.settings.compose) {
@@ -23,8 +24,9 @@ internal fun Project.configureDesktopExtension(extension: DesktopExtension) =
 
                 nativeDistributions {
                     targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-                    desktop.packageName?.let { packageName = it }
-                    desktop.packageVersion?.let { packageVersion = it }
+
+                    ::packageName trySet desktop.packageName
+                    ::packageVersion trySet desktop.packageVersion
 
                     with(desktop) {
                         linux {
@@ -36,7 +38,7 @@ internal fun Project.configureDesktopExtension(extension: DesktopExtension) =
                         macOS {
                             iconFile = file(macOs.iconFile)
 
-                            macOs.bundleId?.let { bundleID = it }
+                            bundleID = macOs.bundleId ?: "$group.$name"
                         }
                     }
                 }
