@@ -1,7 +1,11 @@
 package gradle
 
+import org.gradle.accessors.dm.LibrariesForLibs
 import org.gradle.api.Project
 import org.gradle.api.initialization.Settings
+import org.gradle.kotlin.dsl.the
+import org.gradle.kotlin.dsl.getByType
+import org.jetbrains.compose.ComposeExtension
 import org.tomlj.Toml
 import org.tomlj.TomlParseResult
 import org.tomlj.TomlTable
@@ -10,8 +14,11 @@ import org.tomlj.TomlTable
  * Accessor to make gradle.version catalog available in build-logic.
  * See: https://github.com/gradle/gradle/issues/15383#issuecomment-779893192
  */
-//internal val Project.libs: LibrariesForLibs
-//    get() = rootProject.the()
+internal val Project.libs: LibrariesForLibs
+    get() = the()
+
+internal val Project.compose
+    get() = extensions.getByType<ComposeExtension>().dependencies
 
 @Suppress("UnstableApiUsage")
 internal val Settings.libs: TomlParseResult

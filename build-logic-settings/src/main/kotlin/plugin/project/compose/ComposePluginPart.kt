@@ -13,6 +13,11 @@ import org.jetbrains.compose.desktop.DesktopExtension
 import org.jetbrains.compose.resources.ResourcesExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import gradle.chooseComposeVersion
+import gradle.id
+import gradle.libs
+import gradle.plugin
+import gradle.plugins
+import gradle.settings
 import plugin.project.KMPEAware
 import plugin.project.compose.desktop.configureDesktopExtension
 
@@ -28,17 +33,8 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
     // Highly dependent on compose version and ABI.
     // Need to implement API on compose plugin side.
     override fun applyBeforeEvaluate(): Unit = with(project) {
-        val composeVersion = chooseComposeVersion(model)!!
-
-        plugins.apply("org.jetbrains.kotlin.plugin.compose")
-        plugins.apply("org.jetbrains.compose")
-
-        module.rootFragment.kotlinSourceSet?.apply {
-            dependencies {
-                implementation("org.jetbrains.compose.runtime:runtime:$composeVersion")
-                implementation("org.jetbrains.compose.components:components-resources:$composeVersion")
-            }
-        }
+        plugins.apply(project.settings.libs.plugins.plugin("compose-multiplatform").id)
+        plugins.apply(project.settings.libs.plugins.plugin("compose-compiler").id)
 
         extensions.configure<ComposeExtension> {
             if (module.type == ProductType.JVM_APP) {

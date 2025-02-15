@@ -32,5 +32,10 @@ internal class JsBindingPluginPart(
         super.applyBeforeEvaluate()
 //        project.configureKarakum()
     }
+
+    override fun applyAfterEvaluate() {
+        super.applyAfterEvaluate()
+        project.configureKarakum()
+    }
 }
 

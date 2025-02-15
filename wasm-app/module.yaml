@@ -13,6 +13,4 @@ dependencies:
 
 settings:
   web:
-    framework:
-      browser:
-        enabled: true
+    executable: true
