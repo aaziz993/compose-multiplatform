@@ -2,12 +2,7 @@
 
 package plugin
 
-import plugin.gradle.decodeFromAny
-import plugin.gradle.deepMerge
-import plugin.gradle.libs
-import plugin.gradle.plugin
-import plugin.gradle.pluginAsDependency
-import plugin.gradle.plugins
+import kotlin.collections.fold
 import kotlin.io.path.absolutePathString
 import kotlin.io.path.nameWithoutExtension
 import kotlin.io.path.readText
@@ -35,10 +30,17 @@ import org.jetbrains.amper.gradle.moduleFilePathToProjectPath
 import org.jetbrains.kotlin.gradle.plugin.KotlinMultiplatformPluginWrapper
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import org.yaml.snakeyaml.Yaml
+import gradle.amperModuleExtraProperties
+import gradle.chooseComposeVersion
+import gradle.decodeFromAny
+import gradle.deepMerge
+import gradle.libs
+import gradle.plugin
+import gradle.pluginAsDependency
+import gradle.plugins
+import gradle.setupDynamicClasspath
 import plugin.project.BindingProjectPlugin
-import plugin.gradle.amperModuleExtraProperties
-import plugin.gradle.chooseComposeVersion
-import plugin.gradle.setupDynamicClasspath
+import plugin.project.model.Alias
 
 /**
  * Gradle setting plugin, that is responsible for:
@@ -50,6 +52,8 @@ import plugin.gradle.setupDynamicClasspath
 public class SettingsPlugin : Plugin<Settings> {
 
     private val amperExtraPropertiesJson = Json { ignoreUnknownKeys = true }
+
+    private val yaml = Yaml()
 
     override fun apply(settings: Settings) {
         with(SLF4JProblemReporterContext()) {
@@ -121,24 +125,35 @@ public class SettingsPlugin : Plugin<Settings> {
     private fun setGradleExtraPropertiesToAmperModuleMappings(
         projects: Set<Project>,
         gradle: Gradle,
-    ) {
-        projects.filterNot { it.amperModule == null }.forEach { project ->
-            val module = project.amperModule!!
+    ) = projects.filterNot { it.amperModule == null }.forEach { project ->
+        val module = project.amperModule!!
 
-            val yaml = Yaml()
-
-            val map: Map<String, *> = yaml.load(module.moduleDir.resolve("module.yaml").readText())
-
-            val merged = (map["apply"] as List<String>?)?.fold(emptyMap<String, Any?>()) { props, path ->
-                props.deepMerge(module.moduleDir.resolve(path).readText().ifBlank { null }?.let { yaml.load<Map<String, *>>(it) }.orEmpty())
-            }?.deepMerge(map).orEmpty().toMutableMap()
-
-            if (merged["product"]!! !is Map<*, *>) {
-                merged.remove("product")
-            }
-
-            project.amperModuleExtraProperties = amperExtraPropertiesJson.decodeFromAny(merged)
+        fun tryTransform(settings: MutableMap<String, Any?>) {
+            settings["aliases"] = (settings["aliases"] as List<Map<String, List<String>>>?)?.map { alias ->
+                Alias("", emptyList())
+            }.orEmpty()
         }
+
+        val moduleSettings = yaml.load<MutableMap<String, *>>(
+            module.moduleDir.resolve("module.yaml").readText(),
+        ).toMutableMap().also(::tryTransform)
+
+        if (moduleSettings["product"]!! !is Map<*, *>) {
+            moduleSettings.remove("product")
+        }
+
+        val templates = (moduleSettings["apply"] as List<String>?)?.associateWith { template ->
+            yaml.load<MutableMap<String, *>>(
+                module.moduleDir.resolve(template).readText(),
+            ).toMutableMap().also(::tryTransform)
+        }.orEmpty()
+
+        moduleSettings["apply"] = templates
+
+        project.amperModuleExtraProperties = amperExtraPropertiesJson.decodeFromAny(
+            templates.values.fold(emptyMap<String, Any?>()) { acc, map -> acc deepMerge map }
+                deepMerge moduleSettings,
+        )
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -206,7 +221,7 @@ private fun RepositoryHandler.addDefaultAmperRepositoriesForDependencies() {
     // For dev versions of compose plugin and dependencies
     maven { setUrl("https://maven.pkg.jetbrains.space/public/p/compose/dev") }
     // For compose experimental builds
-    maven { setUrl("https://packages.jetbrains.team/maven/p/firework/dev")}
+    maven { setUrl("https://packages.jetbrains.team/maven/p/firework/dev") }
     // Sonatype OSS Snapshot Repository
     maven { setUrl("https://oss.sonatype.org/content/repositories/snapshots") }
 

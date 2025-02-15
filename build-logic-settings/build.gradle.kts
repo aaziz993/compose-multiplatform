@@ -3,6 +3,7 @@ import java.util.Properties
 import kotlinx.validation.ExperimentalBCVApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
 plugins {
     // Print suggestions for your build as you run regular tasks
@@ -76,9 +77,9 @@ kotlin {
         optIn.addAll(
             listOf(
                 "org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi",
-                "org.jetbrains.kotlin.gradle.ExperimentalWasmDsl"
+                "org.jetbrains.kotlin.gradle.ExperimentalWasmDsl",
             ) +
-                    gradleProperties["kotlin.opt-ins"]?.toString()?.split(",")?.map(String::trim).orEmpty(),
+                gradleProperties["kotlin.opt-ins"]?.toString()?.split(",")?.map(String::trim).orEmpty(),
         )
     }
 
@@ -283,7 +284,6 @@ dependencies {
     runtimeOnly(libs.plugins.compose.compiler.toDep())
 //    implementation("org.jetbrains.compose.components:components-resources:1.7.3")
 
-
     // Semantic version
     implementation(libs.semver)
 }
@@ -299,7 +299,11 @@ gradlePlugin {
 
 tasks.withType<KotlinCompile>().configureEach {
     compilerOptions {
-        freeCompilerArgs.addAll("-Xcontext-receivers")
+        freeCompilerArgs.addAll(
+            "-Xcontext-receivers",
+//            "-Xwhen-guards",
+        )
+//        languageVersion = KotlinVersion.KOTLIN_2_2
         jvmTarget.set(JvmTarget.JVM_21)
     }
 }

@@ -20,7 +20,10 @@ import org.jetbrains.amper.gradle.parcelize.ParcelizePluginPart
 import org.jetbrains.amper.gradle.serialization.SerializationPluginPart
 import java.net.URI
 import org.jetbrains.amper.gradle.*
-import plugin.project.doctor.DoctorPluginPart
+import plugin.project.compose.ComposePluginPart
+import plugin.project.gradlle.doctor.DoctorPluginPart
+import plugin.project.web.js.JsBindingPluginPart
+import plugin.project.web.WasmBindingPluginPart
 
 /**
  * Gradle project plugin entry point.
@@ -44,10 +47,12 @@ internal class BindingProjectPlugin : Plugin<Project> {
             JavaBindingPluginPart(pluginCtx),
             ComposePluginPart(pluginCtx),
             AppleBindingPluginPart(pluginCtx),
+            WasmBindingPluginPart(pluginCtx),
+            JsBindingPluginPart(pluginCtx),
             SerializationPluginPart(pluginCtx),
             ParcelizePluginPart(pluginCtx),
             DoctorPluginPart(pluginCtx),
-            KoverPluginPart(pluginCtx)
+            KoverPluginPart(pluginCtx),
         )
         appliedParts = registeredParts.filter { it.needToApply }
 
@@ -116,7 +121,8 @@ internal class BindingProjectPlugin : Plugin<Project> {
         repositories.forEach { declared ->
             if (declared.id == "mavenLocal" && declared.url == "mavenLocal") {
                 mavenLocal()
-            } else {
+            }
+            else {
                 maven {
                     name = declared.id
                     url = URI.create(declared.url)

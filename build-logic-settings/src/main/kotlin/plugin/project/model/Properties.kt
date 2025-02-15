@@ -1,11 +1,6 @@
 package plugin.project.model
 
-import kotlinx.serialization.Serializable
-import plugin.project.web.model.WebProduct
-
-@Serializable
-internal data class Properties(
-    val product: WebProduct? = null,
-    val apply: Set<String>? = null,
-    val settings: Settings? = null,
-)
+internal interface Properties{
+    val aliases: List<Alias>
+    val settings: Settings?
+}

@@ -1,6 +1,6 @@
 repositories:
-  #  - id: scratch
-  #    url: https://packages.jetbrains.team/maven/p/amper/amper
+  - id: Amper Packages
+    url: https://packages.jetbrains.team/maven/p/amper/amper
   #    publish: true
   #    credentials:
   #      file: local.properties
@@ -30,25 +30,28 @@ dependencies:
   - $kotlin.serialization.properties
 
 settings:
-  doctor:
-    enabled: true
-    enableTaskMonitoring: true
-    enableTestCaching: true
-    javaHome:
-      ensureJavaHomeIsSet: false
-      ensureJavaHomeMatches: false
+  gradle:
+    doctor:
+      enabled: true
+      enableTaskMonitoring: true
+      enableTestCaching: true
+      javaHome:
+        ensureJavaHomeIsSet: false
+        ensureJavaHomeMatches: false
 
   kotlin:
     #    languageVersion: 2.0.20
     languageFeatures:
       - contextReceivers
+    allWarningsAsErrors: false
     freeCompilerArgs:
       - -Xexplicit-api=strict
       - -Xcontext-receivers
       - -Xexpect-actual-classes
       - -Xbinary=bundleId=io.github.aaziz993.compose-multiplatform # set ios bundleId
     optIns: [ kotlin.io.path.ExperimentalPathApi ]
-    allWarningsAsErrors: false
+    linkerOpts:
+      - "-lsqlite3" # for ios
     suppressWarnings: true
 
     serialization:
