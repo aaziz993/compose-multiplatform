@@ -1,4 +1,4 @@
-package plugin.project
+package plugin.gradle
 
 
 import org.gradle.api.artifacts.Configuration

@@ -1,4 +1,4 @@
-package plugin.utils
+package plugin.gradle
 
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.KSerializer

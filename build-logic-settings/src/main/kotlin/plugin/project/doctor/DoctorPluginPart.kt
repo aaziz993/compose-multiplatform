@@ -1,19 +1,19 @@
 package plugin.project.doctor
 
 import com.osacky.doctor.DoctorExtension
-import plugin.utils.id
-import plugin.utils.isCI
-import plugin.utils.libs
-import plugin.utils.plugin
-import plugin.utils.plugins
-import plugin.utils.settings
-import plugin.utils.unregister
+import plugin.gradle.id
+import plugin.gradle.isCI
+import plugin.gradle.libs
+import plugin.gradle.plugin
+import plugin.gradle.plugins
+import plugin.gradle.settings
+import plugin.gradle.unregister
 import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.getByType
 import org.jetbrains.amper.gradle.base.BindingPluginPart
 import org.jetbrains.amper.gradle.base.PluginPartCtx
 import org.slf4j.LoggerFactory
-import plugin.project.amperModuleExtraProperties
+import plugin.gradle.amperModuleExtraProperties
 
 internal class DoctorPluginPart(ctx: PluginPartCtx) : BindingPluginPart by ctx {
     private val logger = LoggerFactory.getLogger(DoctorPluginPart::class.java)

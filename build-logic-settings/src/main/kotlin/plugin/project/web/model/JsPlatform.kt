@@ -1,4 +1,4 @@
-package plugin.multiplatform.web.model
+package plugin.project.web.model
 
 import org.gradle.api.Project
 

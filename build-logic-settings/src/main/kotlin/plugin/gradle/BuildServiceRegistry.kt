@@ -1,4 +1,4 @@
-package plugin.utils
+package plugin.gradle
 
 import org.gradle.api.services.BuildServiceRegistry
 import org.gradle.api.services.internal.RegisteredBuildServiceProvider

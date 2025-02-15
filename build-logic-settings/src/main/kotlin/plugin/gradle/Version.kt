@@ -1,4 +1,4 @@
-package plugin.project
+package plugin.gradle
 
 import org.jetbrains.amper.frontend.Model
 import org.jetbrains.amper.frontend.schema.ComposeSettings

@@ -1,4 +1,4 @@
-package plugin.utils
+package plugin.gradle
 
 import org.gradle.api.NamedDomainObjectCollection
 import org.gradle.api.NamedDomainObjectContainer

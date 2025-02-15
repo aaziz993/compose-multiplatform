@@ -1,6 +1,6 @@
 package plugin.project.web
 
-import plugin.utils.isCI
+import plugin.gradle.isCI
 import org.jetbrains.amper.gradle.base.BindingPluginPart
 import org.jetbrains.amper.gradle.base.PluginPartCtx
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension

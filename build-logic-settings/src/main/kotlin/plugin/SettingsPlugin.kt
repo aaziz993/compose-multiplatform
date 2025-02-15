@@ -2,12 +2,12 @@
 
 package plugin
 
-import plugin.utils.decodeFromAny
-import plugin.utils.deepMerge
-import plugin.utils.libs
-import plugin.utils.plugin
-import plugin.utils.pluginAsDependency
-import plugin.utils.plugins
+import plugin.gradle.decodeFromAny
+import plugin.gradle.deepMerge
+import plugin.gradle.libs
+import plugin.gradle.plugin
+import plugin.gradle.pluginAsDependency
+import plugin.gradle.plugins
 import kotlin.io.path.absolutePathString
 import kotlin.io.path.nameWithoutExtension
 import kotlin.io.path.readText
@@ -36,9 +36,9 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinMultiplatformPluginWrapper
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import org.yaml.snakeyaml.Yaml
 import plugin.project.BindingProjectPlugin
-import plugin.project.amperModuleExtraProperties
-import plugin.project.chooseComposeVersion
-import plugin.project.setupDynamicClasspath
+import plugin.gradle.amperModuleExtraProperties
+import plugin.gradle.chooseComposeVersion
+import plugin.gradle.setupDynamicClasspath
 
 /**
  * Gradle setting plugin, that is responsible for:
@@ -205,6 +205,8 @@ private fun RepositoryHandler.addDefaultAmperRepositoriesForDependencies() {
     maven { setUrl("https://maven.pkg.jetbrains.space/kotlin/p/kotlin/dev") }
     // For dev versions of compose plugin and dependencies
     maven { setUrl("https://maven.pkg.jetbrains.space/public/p/compose/dev") }
+    // For compose experimental builds
+    maven { setUrl("https://packages.jetbrains.team/maven/p/firework/dev")}
     // Sonatype OSS Snapshot Repository
     maven { setUrl("https://oss.sonatype.org/content/repositories/snapshots") }
 

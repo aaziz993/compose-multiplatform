@@ -1,6 +1,6 @@
 @file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
 
-package plugin.project
+package plugin.gradle
 
 import org.gradle.api.Project
 import org.jetbrains.amper.frontend.AmperModule

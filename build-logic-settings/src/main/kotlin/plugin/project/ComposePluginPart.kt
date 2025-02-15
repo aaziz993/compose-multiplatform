@@ -2,10 +2,8 @@
 
 package plugin.project
 
-import java.io.File
 import org.gradle.api.Project
 import org.gradle.api.Task
-import org.gradle.api.provider.Provider
 import org.gradle.internal.os.OperatingSystem
 import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.configure
@@ -31,7 +29,6 @@ import org.jetbrains.compose.resources.KMP_RES_EXT
 import org.jetbrains.compose.resources.PrepareComposeResourcesTask
 import org.jetbrains.compose.resources.RES_GEN_DIR
 import org.jetbrains.compose.resources.ResourcesExtension
-import org.jetbrains.compose.resources.getModuleResourcesDir
 import org.jetbrains.kotlin.gradle.ComposeKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
@@ -42,8 +39,11 @@ import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinMetadataTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.resources.KotlinTargetResourcesPublication
-import plugin.utils.all
-import plugin.utils.ideaImportDependOn
+import plugin.gradle.all
+import plugin.gradle.chooseComposeVersion
+import plugin.gradle.configureActualResourceCollectorsGeneration
+import plugin.gradle.ideaImportDependOn
+import plugin.gradle.shouldSeparateResourceCollectorsExpectActual
 
 public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConventions, AndroidAwarePart(ctx) {
 
@@ -176,10 +176,10 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
             config.exposedAccessors,
         )
 
-        configureResources(provider { extension }.getModuleResourcesDir(project))
+        configureResources()
     }
 
-    private fun configureResources(moduleIsolationDirectory: Provider<File>) = with(project) {
+    private fun configureResources() = with(project) {
         (listOf("jvm", "wasm", "js") + if (hasCommonIosSourceSet) emptyList() else listOf("iosArm64", "iosX64", "iosSimulatorArm64"))
             .forEach { platform ->
                 // Add generated resource collectors code sources to new target source set resources
@@ -198,36 +198,18 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
                 }
             }
 
-        // Create ios target assembled resources[
-        listOf("iosArm64", "iosX64", "iosSimulatorArm64").firstNotNullOfOrNull { platform ->
-            kotlinMPE.targets.findByName("iosArm64")
-        }?.let { target ->
-            adjustAssembledResources(target, "ios")
-        }
-    }
-
-    @OptIn(ComposeKotlinGradlePluginApi::class)
-    private fun Project.adjustAssembledResources(
-        target: KotlinTarget,
-        sourceSetName: String,
-    ) = kotlinMPE.sourceSets.findByName(sourceSetName)?.let { sourceSet ->
-        val assembleTask = tasks.named(
-            "assemble${target.targetName.uppercaseFirstChar()}MainResources",
-            AssembleTargetResourcesTask::class.java,
-        )
-
-        var allResources = assembleTask.flatMap { it.outputDirectory.asFile }
-
-        if (target.platformType in platformsForSetupKmpResources) {
-            val kmpResources = extraProperties.get(KMP_RES_EXT) as KotlinTargetResourcesPublication
-
-            allResources = kmpResources.resolveResources(target)
+        // Create ios common source set assembled resources
+        listOf("iosArm64", "iosX64", "iosSimulatorArm64").forEach { platform ->
+            kotlinMPE.targets.matching { it.name == platform }.all { target ->
+                adjustAssembledResources(target, "ios")
+            }
         }
 
-        sourceSet.resources.srcDir(allResources)
+        // Sync ios resources // TODO
+//        val syncIosTask = tasks.withType<SyncComposeResourcesForIosTask>()
 
-        //setup task execution during IDE import
-        ideaImportDependOn(assembleTask)
+//        tasks.findByName("buildIosAppMain")?.finalizedBy(syncIosTask)
+//        :composeApp:desktopProcessResources', task ':composeApp:desktopMainClasses', task ':composeApp:desktopRun'
     }
 
     private fun ComposeResourcesSettings.getResourcesPackageName(module: AmperModule, makeAccessorsPublic: Boolean): String {
@@ -367,4 +349,30 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
 
         onlyIf { shouldGenerateCode }
     }
+
+
+    @OptIn(ComposeKotlinGradlePluginApi::class)
+    private fun Project.adjustAssembledResources(
+        target: KotlinTarget,
+        sourceSetName: String,
+    ) = kotlinMPE.sourceSets.findByName(sourceSetName)?.let { sourceSet ->
+        val assembleTask = tasks.named(
+            "assemble${target.targetName.uppercaseFirstChar()}MainResources",
+            AssembleTargetResourcesTask::class.java,
+        )
+
+        var allResources = assembleTask.flatMap { it.outputDirectory.asFile }
+
+        if (target.platformType in platformsForSetupKmpResources) {
+            val kmpResources = extraProperties.get(KMP_RES_EXT) as KotlinTargetResourcesPublication
+
+            allResources = kmpResources.resolveResources(target)
+        }
+
+        sourceSet.resources.srcDir(allResources)
+    }
+
+    private val platformsForSetupKmpResources = listOf(
+        KotlinPlatformType.native, KotlinPlatformType.js, KotlinPlatformType.wasm,
+    )
 }

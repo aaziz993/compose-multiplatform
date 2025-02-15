@@ -18,4 +18,4 @@ settings:
     minSdk: 35
     signing:
       enabled: true
-      propertiesFile: ./keystore.properties # default
+      propertiesFile: keystore.properties # default
