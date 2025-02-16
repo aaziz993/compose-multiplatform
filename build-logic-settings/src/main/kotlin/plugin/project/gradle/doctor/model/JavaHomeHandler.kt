@@ -3,7 +3,7 @@ package plugin.project.gradle.doctor.model
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal data class JavaHome(
+internal data class JavaHomeHandler(
     /**
      * Ensure that we are using `JAVA_HOME` to build with this Gradle.
      */

@@ -23,15 +23,14 @@ internal class DoctorPluginPart(ctx: PluginPartCtx) : BindingPluginPart by ctx {
         doctor.enabled && project == project.rootProject
     }
 
-    override fun applyBeforeEvaluate() = with(project) {
+    override fun applyBeforeEvaluate() {
         super.applyBeforeEvaluate()
-
 
         applySettings()
     }
 
     fun applySettings() = with(project) {
-        extensions.configure<DoctorExtension>(::configureDoctorExtension)
+        configureDoctorExtension()
 
         // Always monitor tasks on CI, but disable it locally by default with providing an option to opt-in.
         // See 'doctor.enableTaskMonitoring' in gradle.properties for details.

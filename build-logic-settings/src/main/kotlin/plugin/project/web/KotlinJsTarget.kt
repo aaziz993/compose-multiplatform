@@ -6,7 +6,6 @@ import org.gradle.kotlin.dsl.assign
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 import plugin.project.web.model.BrowserSettings
-import plugin.project.web.model.NodeSettings
 
 internal fun Project.configureKotlinJsTarget(target: KotlinJsTargetDsl) =
     amperModuleExtraProperties.settings.web.let { web ->

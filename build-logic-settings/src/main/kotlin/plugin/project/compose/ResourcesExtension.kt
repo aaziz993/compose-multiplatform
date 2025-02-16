@@ -4,6 +4,7 @@ package plugin.project.compose
 
 import org.gradle.api.Task
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.support.uppercaseFirstChar
 import org.gradle.kotlin.dsl.withType
@@ -33,10 +34,11 @@ import gradle.all
 import gradle.configureActualResourceCollectorsGeneration
 import gradle.ideaImportDependOn
 import gradle.shouldSeparateResourceCollectorsExpectActual
+import org.jetbrains.compose.ComposeExtension
 import plugin.project.KMPEAware
 
 context(KMPEAware)
-internal fun Project.configureResourcesExtension(extension: ResourcesExtension) {
+internal fun Project.configureResourcesExtension() = extensions.configure<ComposeExtension> {
     val module = amperModule!!
     val rootFragment = checkNotNull(module.rootFragment) { "Root fragment expected" }
     val settings = rootFragment.settings.compose.resources
@@ -66,7 +68,7 @@ internal fun Project.configureResourcesExtension(extension: ResourcesExtension) 
     )
 
 
-    extension.apply {
+    extensions.configure<ResourcesExtension> {
         packageOfResClass = settings.packageName
         publicResClass = settings.exposedAccessors
 

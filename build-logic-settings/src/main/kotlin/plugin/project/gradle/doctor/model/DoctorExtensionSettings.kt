@@ -1,13 +1,11 @@
 package plugin.project.gradle.doctor.model
 
 import com.osacky.doctor.AppleRosettaTranslationCheckMode
-import com.osacky.doctor.AppleRosettaTranslationCheckMode.ERROR
 import kotlinx.serialization.Serializable
-import org.gradle.kotlin.dsl.property
 
 @Suppress("PropertyName","ktlint:standard:property-naming")
 @Serializable
-internal data class DoctorSettings(
+internal data class DoctorExtensionSettings(
     val enabled: Boolean = true,
     /** Always monitor tasks on CI, but disable it locally by default with providing an option to opt-in.
      * See 'doctor.enableTaskMonitoring' in gradle.properties for details.
@@ -84,5 +82,5 @@ internal data class DoctorSettings(
     val appleRosettaTranslationCheckMode: AppleRosettaTranslationCheckMode? = null,
     /** Configures JAVA_HOME-specific behavior.
      */
-    val javaHome: JavaHome? = null,
+    val javaHome: JavaHomeHandler? = null,
 )

@@ -27,14 +27,14 @@ internal class ApiValidationPluginPart(ctx: PluginPartCtx) : BindingPluginPart b
         doctor.enabled && project == project.rootProject
     }
 
-    override fun applyBeforeEvaluate() = with(project) {
+    override fun applyBeforeEvaluate() {
         // The tool allows dumping binary API of a JVM part of a Kotlin library that is public in the sense of Kotlin visibilities and ensures that the public binary API wasn't changed in a way that makes this change binary incompatible.
-        plugins.apply(project.settings.libs.plugins.plugin("binary-compatibility-validator").id)
+        project.plugins.apply(project.settings.libs.plugins.plugin("binary-compatibility-validator").id)
 
         applySettings()
     }
 
     fun applySettings() = with(project) {
-        extensions.configure<ApiValidationExtension>(::configureApiValidationExtension)
+        configureApiValidationExtension()
     }
 }

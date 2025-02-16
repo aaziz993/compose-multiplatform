@@ -3,7 +3,7 @@ package plugin.project.gradle.apivalidation.model
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal data class ApiValidationSettings(
+internal data class ApiValidationExtensionSettings(
     /**
      * Disables API validation checks completely.
      */
@@ -21,7 +21,7 @@ internal data class ApiValidationSettings(
      * Fully qualified names of annotations that effectively exclude declarations from being .
      * Example of such annotation could be `kotlinx.coroutines.InternalCoroutinesApi`.
      */
-    val nonMarkers: Set<String>? = null,
+    val nonPublicMarkers: Set<String>? = null,
     /**
      * Fully qualified names of classes that are ignored by the API check.
      * Example of such a class could be `com.package.android.BuildConfig`.
@@ -33,21 +33,21 @@ internal data class ApiValidationSettings(
      * all declarations not covered by any of them will be considered non-.
      * [ignoredPackages], [ignoredClasses] and [nonMarkers] can be used for additional filtering.
      */
-    val Markers: Set<String>? = null,
+    val publicMarkers: Set<String>? = null,
     /**
      * Fully qualified package names that contain  declarations.
      * If at least one of [Markers], [Packages] or [Classes] is defined,
      * all declarations not covered by any of them will be considered non-.
      * [ignoredPackages], [ignoredClasses] and [nonMarkers] can be used for additional filtering.
      */
-    val Packages: Set<String>? = null,
+    val publicPackages: Set<String>? = null,
     /**
      * Fully qualified names of  classes.
      * If at least one of [Markers], [Packages] or [Classes] is defined,
      * all declarations not covered by any of them will be considered non-.
      * [ignoredPackages], [ignoredClasses] and [nonMarkers] can be used for additional filtering.
      */
-    val Classes: Set<String>? = null,
+    val publicClasses: Set<String>? = null,
     /**
      * Non-default Gradle SourceSet names that should be validated.
      * By default, only the `main` source set is checked.

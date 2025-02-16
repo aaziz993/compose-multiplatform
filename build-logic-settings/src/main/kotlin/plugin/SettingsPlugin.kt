@@ -41,6 +41,9 @@ import gradle.plugins
 import gradle.setupDynamicClasspath
 import plugin.project.BindingProjectPlugin
 import plugin.project.model.Alias
+import plugin.project.web.node.configureNodeJsRootExtension
+import plugin.project.web.npm.configureNpmExtension
+import plugin.project.web.yarn.configureYarnRootExtension
 
 /**
  * Gradle setting plugin, that is responsible for:
@@ -201,6 +204,12 @@ public class SettingsPlugin : Plugin<Settings> {
             }
         }
     }
+}
+
+private fun Project.configureWeb() {
+    configureNodeJsRootExtension()
+    configureNpmExtension()
+    configureYarnRootExtension()
 }
 
 private fun AmperModule.hasAmperConfigFile() =

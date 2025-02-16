@@ -36,7 +36,6 @@ import org.jetbrains.amper.gradle.base.PluginPartCtx
 import org.jetbrains.amper.gradle.closureSources
 import org.jetbrains.amper.gradle.findEntryPoint
 import org.jetbrains.amper.gradle.java.JavaBindingPluginPart
-import org.jetbrains.amper.gradle.kmpp.KMPPBindingPluginPart
 import org.jetbrains.amper.gradle.kmpp.KotlinAmperNamingConvention
 import org.jetbrains.amper.gradle.kotlin.configureCompilerOptions
 import org.jetbrains.amper.gradle.kotlin.configureFrom
