@@ -24,7 +24,9 @@ internal class DoctorPluginPart(ctx: PluginPartCtx) : BindingPluginPart by ctx {
     }
 
     override fun applyBeforeEvaluate() = with(project) {
-        plugins.apply(project.settings.libs.plugins.plugin("doctor").id)
+        super.applyBeforeEvaluate()
+
+
         applySettings()
     }
 

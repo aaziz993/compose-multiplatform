@@ -5,6 +5,7 @@ import com.osacky.doctor.AppleRosettaTranslationCheckMode.ERROR
 import kotlinx.serialization.Serializable
 import org.gradle.kotlin.dsl.property
 
+@Suppress("PropertyName","ktlint:standard:property-naming")
 @Serializable
 internal data class DoctorSettings(
     val enabled: Boolean = true,
@@ -23,12 +24,10 @@ internal data class DoctorSettings(
     /**
      * The level at which to warn when a build spends more than this percent garbage collecting.
      */
-    @Suppress("ktlint:standard:property-naming")
     val GCWarningThreshold: Float? = null,
     /**
      * The level at which to fail when a build spends more than this percent garbage collecting.
      */
-    @Suppress("ktlint:standard:property-naming")
     val GCFailThreshold: Float? = null,
     /**
      * Print a warning to the console if we spend more than this amount of time with Dagger annotation processors.

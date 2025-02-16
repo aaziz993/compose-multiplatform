@@ -24,6 +24,7 @@ import org.jetbrains.amper.gradle.moduleFilePathToProjectPath
 import org.jetbrains.amper.gradle.parcelize.ParcelizePluginPart
 import org.jetbrains.amper.gradle.serialization.SerializationPluginPart
 import plugin.project.compose.ComposePluginPart
+import plugin.project.gradle.apivalidation.ApiValidationPluginPart
 import plugin.project.gradle.doctor.DoctorPluginPart
 import plugin.project.gradle.spotless.SpotlessPluginPart
 import plugin.project.web.WasmBindingPluginPart
@@ -54,6 +55,7 @@ internal class BindingProjectPlugin : Plugin<Project> {
             ParcelizePluginPart(pluginCtx),
             DoctorPluginPart(pluginCtx),
             SpotlessPluginPart(pluginCtx),
+            ApiValidationPluginPart(pluginCtx),
             KoverPluginPart(pluginCtx),
         )
         appliedParts = registeredParts.filter { it.needToApply }

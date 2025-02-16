@@ -2,7 +2,11 @@ package plugin.project.gradle.spotless
 
 import com.diffplug.gradle.spotless.SpotlessExtension
 import gradle.amperModuleExtraProperties
+import gradle.id
 import gradle.libs
+import gradle.plugin
+import gradle.plugins
+import gradle.settings
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
 import org.jetbrains.amper.gradle.base.BindingPluginPart
@@ -18,16 +22,15 @@ internal class SpotlessPluginPart(ctx: PluginPartCtx) : BindingPluginPart by ctx
         spotless.enabled
     }
 
-    override fun applyAfterEvaluate() = with(project) {
+    override fun applyBeforeEvaluate() = with(project) {
         super.applyAfterEvaluate()
+
+        plugins.apply(project.settings.libs.plugins.plugin("spotless").id)
+
         applySettings()
     }
 
     fun applySettings() = with(project) {
-        plugins.apply(libs.plugins.spotless.get().pluginId)
-
-        apply(plugin = libs.plugins.spotless.get().pluginId)
-
         extensions.configure<SpotlessExtension>(::configureSpotlessExtension)
     }
 }
