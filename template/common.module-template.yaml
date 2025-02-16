@@ -39,6 +39,20 @@ settings:
         ensureJavaHomeIsSet: false
         ensureJavaHomeMatches: false
 
+    kover:
+      enabled: true
+      html:
+        title: Generate coverage report
+        reportDir: build/reports/kover
+        onCheck: true
+        charset: UTF8
+      xml:
+        reportFile: build/reports/kover/report.xml
+        onCheck: true
+
+    dokka:
+      sourceSets: [Module.md]
+
   kotlin:
     #    apiVersion: 2.1.10
     #    languageVersion: 2.1.10
@@ -66,17 +80,6 @@ settings:
 
   jvm:
     release: 23
-
-  kover:
-    enabled: true
-    html:
-      title: Generate coverage report
-      reportDir: build/reports/kover
-      onCheck: true
-      charset: UTF8
-    xml:
-      reportFile: build/reports/kover/report.xml
-      onCheck: true
 
 test-settings@jvm:
   junit: junit-5

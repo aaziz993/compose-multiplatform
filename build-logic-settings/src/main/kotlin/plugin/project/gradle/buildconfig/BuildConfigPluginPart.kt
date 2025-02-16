@@ -1,4 +1,4 @@
-package plugin.project.gradle.spotless
+package plugin.project.gradle.buildconfig
 
 import gradle.amperModuleExtraProperties
 import gradle.id
@@ -8,8 +8,9 @@ import gradle.plugins
 import gradle.settings
 import org.jetbrains.amper.gradle.base.BindingPluginPart
 import org.jetbrains.amper.gradle.base.PluginPartCtx
+import plugin.project.gradle.spotless.configureSpotlessExtension
 
-internal class SpotlessPluginPart(ctx: PluginPartCtx) : BindingPluginPart by ctx {
+internal class BuildConfigPluginPart(ctx: PluginPartCtx) : BindingPluginPart by ctx {
 
     private val spotless by lazy {
         project.amperModuleExtraProperties.settings.gradle.spotless
@@ -22,12 +23,12 @@ internal class SpotlessPluginPart(ctx: PluginPartCtx) : BindingPluginPart by ctx
     override fun applyBeforeEvaluate() {
         super.applyAfterEvaluate()
 
-        project.plugins.apply(project.settings.libs.plugins.plugin("spotless").id)
+        project.plugins.apply(project.settings.libs.plugins.plugin("build-config").id)
 
         applySettings()
     }
 
     fun applySettings() = with(project) {
-        configureSpotlessExtension()
+        configureBuildConfigExtension()
     }
 }
