@@ -1,4 +1,4 @@
-package plugin.project.gradlle.doctor
+package plugin.project.gradle.doctor
 
 import com.osacky.doctor.DoctorExtension
 import org.gradle.api.Project

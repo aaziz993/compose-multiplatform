@@ -1,4 +1,4 @@
-package plugin.project.gradlle.doctor.model
+package plugin.project.gradle.doctor.model
 
 import kotlinx.serialization.Serializable
 

@@ -1,4 +1,4 @@
-//package plugin.project.web.model
+package plugin.project.web.model//package plugin.project.web.model
 //
 //import kotlinx.serialization.Serializable
 //import org.gradle.api.provider.Provider
