@@ -5,13 +5,12 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.assign
 import gradle.amperModuleExtraProperties
 import gradle.isCI
+import gradle.tryAssign
 import gradle.unregister
 
 internal fun Project.configureDoctorExtension(extension: DoctorExtension) =
     with(amperModuleExtraProperties.settings.gradle) {
         extension.apply {
-            // Always monitor tasks on CI, but disable it locally by default with providing an option to opt-in.
-            // See 'doctor.enableTaskMonitoring' in gradle.properties for details.
             val enableTasksMonitoring = isCI || doctor.enableTaskMonitoring
 
             if (!enableTasksMonitoring) {
@@ -19,14 +18,28 @@ internal fun Project.configureDoctorExtension(extension: DoctorExtension) =
                 project.gradle.sharedServices.unregister("listener-service")
             }
 
-            doctor.enableTestCaching?.let(enableTestCaching::assign)
 
-            // Disable JAVA_HOME validation as we use "Daemon JVM discovery" feature
-            // https://docs.gradle.org/current/userguide/gradle_daemon.html#sec:daemon_jvm_criteria
+            disallowMultipleDaemons tryAssign doctor.disallowMultipleDaemons
+            downloadSpeedWarningThreshold tryAssign doctor.downloadSpeedWarningThreshold
+            GCWarningThreshold tryAssign doctor.GCWarningThreshold
+            GCFailThreshold tryAssign doctor.GCFailThreshold
+            daggerThreshold tryAssign doctor.daggerThreshold
+            enableTestCaching tryAssign doctor.enableTestCaching
+            failOnEmptyDirectories tryAssign doctor.failOnEmptyDirectories
+            allowBuildingAllAndroidAppsSimultaneously tryAssign doctor.allowBuildingAllAndroidAppsSimultaneously
+            warnWhenJetifierEnabled tryAssign doctor.warnWhenJetifierEnabled
+            negativeAvoidanceThreshold tryAssign doctor.negativeAvoidanceThreshold
+            warnWhenNotUsingParallelGC tryAssign doctor.warnWhenNotUsingParallelGC
+            disallowCleanTaskDependencies tryAssign doctor.disallowCleanTaskDependencies
+            warnIfKotlinCompileDaemonFallback tryAssign doctor.warnIfKotlinCompileDaemonFallback
+            appleRosettaTranslationCheckMode tryAssign doctor.appleRosettaTranslationCheckMode
+
             doctor.javaHome?.let { javaHome ->
                 javaHome {
-                    javaHome.ensureJavaHomeIsSet.let(ensureJavaHomeIsSet::assign)
-                    javaHome.ensureJavaHomeMatches.let(ensureJavaHomeMatches::assign)
+                    ensureJavaHomeMatches tryAssign javaHome.ensureJavaHomeMatches
+                    ensureJavaHomeIsSet tryAssign javaHome.ensureJavaHomeIsSet
+                    failOnError tryAssign javaHome.failOnError
+                    extraMessage tryAssign javaHome.extraMessage
                 }
             }
         }
