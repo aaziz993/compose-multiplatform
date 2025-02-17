@@ -102,8 +102,16 @@ public class SettingsPlugin : Plugin<Settings> {
             }
         }
 
-        dependencyResolutionManagement{
-
+        amperProjectExtraProperties.dependencyResolutionManagement.let { dependencyResolutionManagement ->
+            dependencyResolutionManagement {
+                versionCatalogs {
+                    dependencyResolutionManagement.versionCatalogs.forEach { (name, from) ->
+                        maybeCreate(name).apply {
+                            from(from)
+                        }
+                    }
+                }
+            }
         }
 
         amperProjectExtraProperties.modules.forEach(::include)
