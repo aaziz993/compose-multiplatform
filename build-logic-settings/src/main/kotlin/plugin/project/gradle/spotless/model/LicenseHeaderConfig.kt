@@ -1,6 +1,5 @@
 package plugin.project.gradle.spotless.model
 
-import com.diffplug.spotless.generic.LicenseHeaderStep.YearMode
 import kotlinx.serialization.Serializable
 
 @Serializable

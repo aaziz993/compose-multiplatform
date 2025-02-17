@@ -1,6 +1,5 @@
 package plugin.project.gradle.spotless.model
 
-import com.diffplug.spotless.cpp.ClangFormatStep
 import kotlinx.serialization.Serializable
 
 @Serializable

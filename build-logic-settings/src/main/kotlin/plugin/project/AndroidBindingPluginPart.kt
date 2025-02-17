@@ -2,10 +2,18 @@
 
 package plugin.project
 
+import java.io.File
+import kotlin.io.path.absolutePathString
+import kotlin.io.path.div
+import kotlin.io.path.exists
 import org.jetbrains.amper.core.properties.readProperties
 import org.jetbrains.amper.frontend.Layout
 import org.jetbrains.amper.frontend.Platform
-import org.jetbrains.amper.frontend.schema.*
+import org.jetbrains.amper.frontend.schema.ProductType
+import org.jetbrains.amper.frontend.schema.keyAlias
+import org.jetbrains.amper.frontend.schema.keyPassword
+import org.jetbrains.amper.frontend.schema.storeFile
+import org.jetbrains.amper.frontend.schema.storePassword
 import org.jetbrains.amper.gradle.android.AndroidAmperNamingConvention
 import org.jetbrains.amper.gradle.android.AndroidAwarePart
 import org.jetbrains.amper.gradle.android.SIGNING_CONFIG_NAME
@@ -16,11 +24,6 @@ import org.jetbrains.amper.gradle.kotlin.configureCompilerOptions
 import org.jetbrains.amper.gradle.layout
 import org.jetbrains.amper.gradle.moduleDir
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
-import java.io.File
-import kotlin.io.path.absolutePathString
-import kotlin.io.path.div
-import kotlin.io.path.exists
-
 
 /**
  * Plugin logic, bind to specific module, when only default target is available.

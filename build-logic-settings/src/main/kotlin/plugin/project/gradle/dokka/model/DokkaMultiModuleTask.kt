@@ -1,7 +1,6 @@
 package plugin.project.gradle.dokka.model
 
 import kotlinx.serialization.Serializable
-import org.gradle.api.artifacts.Configuration
 import org.jetbrains.dokka.DokkaConfiguration
 
 @Serializable

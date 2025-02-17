@@ -1,6 +1,8 @@
 package plugin.project.gradle.develocity.model
 
 import kotlinx.serialization.Serializable
+import plugin.settings.model.LocalBuildCache
+import plugin.settings.model.RemoteBuildCache
 
 @Serializable
 internal data class DevelocitySettings(
@@ -11,7 +13,7 @@ internal data class DevelocitySettings(
     override val allowUntrustedServer: Boolean? = null,
     override val accessKey: String? = null,
     val enabled: Boolean = true,
-    val localBuildCache: Boolean = true,
-    val remoteBuildCache: Boolean = true,
+    val localCache: LocalBuildCache = LocalBuildCache(),
+    val remoteCache: RemoteBuildCache = RemoteBuildCache(),
     val git: Git? = null,
 ) : DevelocityConfiguration

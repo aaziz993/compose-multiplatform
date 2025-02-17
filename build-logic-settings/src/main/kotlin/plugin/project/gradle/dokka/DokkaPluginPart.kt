@@ -1,11 +1,7 @@
 package plugin.project.gradle.dokka
 
 import gradle.amperModuleExtraProperties
-import gradle.id
 import gradle.libs
-import gradle.plugin
-import gradle.plugins
-import gradle.settings
 import gradle.tryAssign
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies

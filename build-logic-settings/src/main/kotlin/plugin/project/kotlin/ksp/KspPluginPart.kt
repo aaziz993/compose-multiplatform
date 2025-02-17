@@ -1,13 +1,13 @@
 package plugin.project.kotlin.ksp
 
-import org.jetbrains.amper.gradle.base.BindingPluginPart
-import org.jetbrains.amper.gradle.base.PluginPartCtx
 import gradle.amperModuleExtraProperties
 import gradle.id
 import gradle.libs
 import gradle.plugin
 import gradle.plugins
 import gradle.settings
+import org.jetbrains.amper.gradle.base.BindingPluginPart
+import org.jetbrains.amper.gradle.base.PluginPartCtx
 
 internal class KspPluginPart(ctx: PluginPartCtx) : BindingPluginPart by ctx {
 

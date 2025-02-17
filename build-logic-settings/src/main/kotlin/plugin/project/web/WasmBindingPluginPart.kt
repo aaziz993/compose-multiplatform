@@ -1,14 +1,9 @@
 package plugin.project.web
 
-import org.gradle.api.NamedDomainObjectCollection
-import org.gradle.api.Project
-import org.gradle.kotlin.dsl.withType
 import org.jetbrains.amper.frontend.Platform
 import org.jetbrains.amper.gradle.base.PluginPartCtx
 import org.jetbrains.amper.gradle.contains
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
-import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinWasmJsTargetDsl
-import plugin.project.web.js.JsBindingPluginPart
 
 /**
  * Plugin logic, bind to specific module, when only default target is available.

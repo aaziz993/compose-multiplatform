@@ -4,6 +4,7 @@ dependencies:
 
 settings:
   gradle:
+    # Print suggestions for your build as you run regular tasks.
     doctor:
       enabled: true
       enableTaskMonitoring: true
@@ -12,17 +13,39 @@ settings:
         ensureJavaHomeIsSet: false
         ensureJavaHomeMatches: false
 
-#    kover:
-#      enabled: true
-#      html:
-#        title: Generate coverage report
-#        reportDir: build/reports/kover
-#        onCheck: true
-#        charset: UTF8
-#      xml:
-#        reportFile: build/reports/kover/report.xml
-#        onCheck: true
+    # Can format <antlr | c | c# | c++ | css | flow | graphql | groovy | html | java | javascript | json | jsx | kotlin | less | license headers | markdown | objective-c | protobuf | python | scala | scss | shell | sql | typeScript | vue | yaml | anything> using <gradle | maven | sbt | anything>.
+    spotless:
+      enabled: true
 
+    # Set of solutions for collecting test coverage of Kotlin code compiled for JVM and Android platforms.
+    kover:
+      enabled: true
+      useJacoco: true
+      reports:
+        total:
+          html:
+            title: Generate coverage report
+            reportDir: build/reports/kover
+            onCheck: true
+            charset: UTF8
+          xml:
+            reportFile: build/reports/kover/report.xml
+            onCheck: true
+
+    # Help developers deliver high-quality, efficient code standards that benefit the entire team or organization.
+    sonar:
+      enabled: true
+      properties:
+        sonar.host.url: https://sonarcloud.io
+        sonar.organization: aaziz993
+        sonar.coverage.jacoco.xml.report.paths: build/reports/kover/report.xml
+        sonar.android.lint.report.paths: build/reports/lint-results.xml
+
+    # Generating BuildConstants for any kind of Gradle projects: Java, Kotlin, Android, Groovy, etc. Designed for KTS scripts, with experimental support for Kotlin's multi-platform plugin
+    buildConfig:
+      enabled: true
+
+    # API documentation engine for Kotlin.
     dokka:
       sourceSets: [Module.md]
 
@@ -51,6 +74,11 @@ settings:
     serialization:
       enabled: true
       version: 1.8.0
+
+    spotless:
+      enabled: true
+
+    sonar:
 
   jvm:
     release: 23

@@ -1,13 +1,7 @@
 package plugin.project.gradle.kover
 
 import gradle.amperModuleExtraProperties
-import gradle.id
 import gradle.libs
-import gradle.plugin
-import gradle.plugins
-import gradle.settings
-import kotlinx.kover.gradle.plugin.dsl.KoverProjectExtension
-import org.gradle.kotlin.dsl.findByType
 import org.jetbrains.amper.gradle.base.BindingPluginPart
 import org.jetbrains.amper.gradle.base.PluginPartCtx
 

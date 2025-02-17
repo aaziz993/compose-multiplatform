@@ -1,4 +1,4 @@
-package plugin.project.model.module
+package plugin.project.model
 
 internal interface Properties{
     val aliases: List<Alias>

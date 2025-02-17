@@ -1,7 +1,6 @@
 package plugin.project.gradle.spotless.model
 
 import com.diffplug.spotless.LineEnding
-import com.diffplug.spotless.generic.PipeStepPair
 import kotlinx.serialization.Serializable
 
 @Serializable

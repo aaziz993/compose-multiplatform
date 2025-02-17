@@ -1,9 +1,10 @@
 package plugin.project.gradle
 
-import gradle.kotlin
 import com.gradle.develocity.agent.gradle.test.DevelocityTestConfiguration
 import com.gradle.develocity.agent.gradle.test.TestRetryConfiguration
 import gradle.hasNative
+import gradle.isCI
+import gradle.kotlin
 import gradle.maybeNamed
 import org.gradle.api.Project
 import org.gradle.api.tasks.TaskCollection
@@ -16,9 +17,9 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.gradle.internal.extensions.core.extra
 import org.gradle.internal.os.OperatingSystem
+import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.getByName
 import org.gradle.kotlin.dsl.withType
-import org.gradle.kotlin.dsl.assign
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
@@ -88,6 +89,10 @@ internal fun Project.configureTest() = tasks.withType<Test> {
             }
         },
     )
+
+    if (isCI) {
+        configureTestOnCI()
+    }
 }
 
 /** Applies CI-specific configurations to test tasks. */

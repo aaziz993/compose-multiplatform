@@ -1,9 +1,7 @@
 package plugin.project.gradle.kover.model
 
 import kotlinx.kover.gradle.plugin.dsl.GroupingEntityType
-import kotlinx.kover.gradle.plugin.dsl.GroupingEntityType.APPLICATION
 import kotlinx.serialization.Serializable
-import org.gradle.api.provider.Property
 
 @Serializable
 internal data class KoverVerifyRule(

@@ -38,13 +38,13 @@ build-config = "4.1.1"
 libres = "1.2.3"
 # enforcing pre-commit and commit-msg Git hooks configuration. Conventional-commits-ready.
 gradle-pre-commit-git-hooks = "2.0.4"
-# generate code coverage report
+# set of solutions for collecting test coverage of Kotlin code compiled for JVM and Android platforms.
 kover = "0.9.0-RC"
-# code format check and fix
+# can format <antlr | c | c# | c++ | css | flow | graphql | groovy | html | java | javascript | json | jsx | kotlin | less | license headers | markdown | objective-c | protobuf | python | scala | scss | shell | sql | typeScript | vue | yaml | anything> using <gradle | maven | sbt | anything>.
 spotless = "6.25.0"
-# code analysis
+# help developers deliver high-quality, efficient code standards that benefit the entire team or organization.
 sonarqube = "5.0.0.4638"
-# an API documentation engine for Kotlin.
+# api documentation engine for Kotlin.
 dokka = "2.0.0"
 # the tool that produces Kotlin source example files and tests from markdown documents with embedded snippets of Kotlin code
 knit = "0.5.0"
@@ -1271,13 +1271,13 @@ build-config = { id = "com.github.gmazzo.buildconfig", version.ref = "build-conf
 libres = { id = "io.github.skeptick.libres", version.ref = "libres" }
 # enforcing pre-commit and commit-msg Git hooks configuration. Conventional-commits-ready.
 gradle-pre-commit-git-hooks = { id = "org.danilopianini.gradle-pre-commit-git-hooks", version.ref = "gradle-pre-commit-git-hooks" }
-# generate coverage analysis
+# set of solutions for collecting test coverage of Kotlin code compiled for JVM and Android platforms.
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
-# code format check and fix
+# can format <antlr | c | c# | c++ | css | flow | graphql | groovy | html | java | javascript | json | jsx | kotlin | less | license headers | markdown | objective-c | protobuf | python | scala | scss | shell | sql | typeScript | vue | yaml | anything> using <gradle | maven | sbt | anything>.
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
-# code analysis
+# help developers deliver high-quality, efficient code standards that benefit the entire team or organization.
 sonarqube = { id = "org.sonarqube", version.ref = "sonarqube" }
-# an API documentation engine for Kotlin.
+# api documentation engine for Kotlin.
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 # the tool that produces Kotlin source example files and tests from markdown documents with embedded snippets of Kotlin code
 knit = { id = "org.jetbrains.kotlinx.knit", version.ref = "knit" }

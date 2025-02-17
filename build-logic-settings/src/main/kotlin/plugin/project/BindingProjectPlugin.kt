@@ -10,7 +10,6 @@ import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.tasks.testing.Test
-import org.jetbrains.amper.frontend.Platform
 import org.jetbrains.amper.frontend.RepositoriesModulePart
 import org.jetbrains.amper.frontend.schema.JUnitVersion
 import org.jetbrains.amper.gradle.AmperModuleWrapper
@@ -25,11 +24,11 @@ import org.jetbrains.amper.gradle.moduleFilePathToProjectPath
 import org.jetbrains.amper.gradle.parcelize.ParcelizePluginPart
 import org.jetbrains.amper.gradle.serialization.SerializationPluginPart
 import plugin.project.compose.ComposePluginPart
-import plugin.project.gradle.kover.KoverPluginPart
 import plugin.project.gradle.apivalidation.ApiValidationPluginPart
 import plugin.project.gradle.buildconfig.BuildConfigPluginPart
 import plugin.project.gradle.doctor.DoctorPluginPart
 import plugin.project.gradle.dokka.DokkaPluginPart
+import plugin.project.gradle.kover.KoverPluginPart
 import plugin.project.gradle.sonar.SonarPluginPart
 import plugin.project.gradle.spotless.SpotlessPluginPart
 import plugin.project.web.WasmBindingPluginPart
@@ -54,10 +53,10 @@ internal class BindingProjectPlugin : Plugin<Project> {
         val registeredParts = listOf(
             DoctorPluginPart(pluginCtx),
             SpotlessPluginPart(pluginCtx),
-            SonarPluginPart(pluginCtx),
-            DokkaPluginPart(pluginCtx),
             KoverPluginPart(pluginCtx),
+            SonarPluginPart(pluginCtx),
             BuildConfigPluginPart(pluginCtx),
+            DokkaPluginPart(pluginCtx),
             ApiValidationPluginPart(pluginCtx),
             AndroidBindingPluginPart(pluginCtx),
             JsBindingPluginPart(pluginCtx),

@@ -4,8 +4,8 @@ import org.gradle.accessors.dm.LibrariesForKotlinWrappers
 import org.gradle.accessors.dm.LibrariesForLibs
 import org.gradle.api.Project
 import org.gradle.api.initialization.Settings
-import org.gradle.kotlin.dsl.the
 import org.gradle.kotlin.dsl.getByType
+import org.gradle.kotlin.dsl.the
 import org.jetbrains.compose.ComposeExtension
 import org.tomlj.Toml
 import org.tomlj.TomlParseResult

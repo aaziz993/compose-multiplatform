@@ -55,8 +55,6 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeCompilation
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary
 import org.jetbrains.kotlin.konan.target.Family
-import plugin.project.web.WasmBindingPluginPart
-import plugin.project.web.js.JsBindingPluginPart
 
 private fun LanguageSettingsBuilder.configureFromAmperSettings(settings: KotlinSettings) {
     languageVersion = settings.languageVersion.schemaValue

@@ -1,9 +1,9 @@
 package gradle
 
+import org.gradle.api.NamedDomainObjectCollection
 import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.konan.target.KonanTarget
-import org.gradle.api.NamedDomainObjectCollection
 
 internal fun KotlinTarget.isNative(): Boolean = this is KotlinNativeTarget
 

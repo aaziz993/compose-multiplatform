@@ -17,5 +17,5 @@ internal data class ModuleGradleSettings(
     val kover: KoverSettings = KoverSettings(),
     val dokka: DokkaModuleSettings = DokkaModuleSettings(),
     val apiValidation: ApiValidationSettings = ApiValidationSettings(),
-    val buildConfig: BuildConfigSettings = BuildConfigSettings()
+    val buildConfig: BuildConfigSettings = BuildConfigSettings(),
 )

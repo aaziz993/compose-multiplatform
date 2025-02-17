@@ -1,6 +1,5 @@
 package plugin.project.gradle.dokka.model
 
-import org.gradle.api.artifacts.Configuration
 import org.jetbrains.dokka.DokkaConfiguration
 import org.jetbrains.dokka.gradle.GradleDokkaSourceSetBuilder
 import org.jetbrains.dokka.gradle.GradleExternalDocumentationLinkBuilder

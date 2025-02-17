@@ -1,9 +1,17 @@
 package plugin.project.gradle.develocity
 
-import gradle.*
+import gradle.amperProjectExtraProperties
+import gradle.gitBranchName
+import gradle.gitCommitId
+import gradle.gitStatus
+import gradle.id
+import gradle.isCI
+import gradle.libs
+import gradle.plugin
+import gradle.plugins
+import java.net.URLEncoder
 import org.gradle.api.initialization.Settings
 import org.gradle.kotlin.dsl.develocity
-import java.net.URLEncoder
 
 internal class DevelocityPluginPart(private val settings: Settings) {
 

@@ -30,12 +30,33 @@ modules:
   - compiler
 
 settings:
+  # Gives the data to speed up your build, improve build reliability and accelerate build debugging.
+  # servers: https://ge.solutions-team.gradle.com, https://ge.jetbrains.com
   develocity:
     enabled: true
+    server: https://ge.solutions-team.gradle.com
+    buildScan:
+      publishing:
+        onlyIfAuthenticated: true
+      obfuscation:
+        ipAddresses:
+          - '': 0.0.0.0
+      capture:
+        fileFingerprints: true
+    git:
+      repo: https://github.com/aaziz993/cmp
+      skipTags: false
+    cache:
+      localCache:
+        isEnabled: true
+      remoteCache:
+        isEnabled: true
 
+  # Provides a repository for downloading JVMs
   toolchainManagement:
     enabled: true
 
+  # Enforcing pre-commit and commit-msg Git hooks configuration. Conventional-commits-ready.
   gitHooks:
     enabled: true
 

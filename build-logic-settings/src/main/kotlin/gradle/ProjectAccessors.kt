@@ -3,7 +3,6 @@ package gradle
 import com.diffplug.gradle.spotless.SpotlessExtension
 import com.github.gmazzo.gradle.plugins.BuildConfigExtension
 import com.google.devtools.ksp.gradle.KspExtension
-import com.gradle.develocity.agent.gradle.DevelocityConfiguration
 import com.osacky.doctor.DoctorExtension
 import io.github.sgrishchenko.karakum.gradle.plugin.KarakumExtension
 import kotlinx.atomicfu.plugin.gradle.AtomicFUPluginExtension
@@ -43,24 +42,24 @@ internal val Project.spotless: SpotlessExtension get() = the()
 internal fun Project.spotless(configure: SpotlessExtension.() -> Unit) =
     extensions.configure(configure)
 
-internal val Project.sonar: SonarExtension get() = the()
-
-internal fun Project.sonar(configure: SonarExtension.() -> Unit) =
-    extensions.configure(configure)
-
 internal val Project.kover: KoverProjectExtension get() = the()
 
 internal fun Project.kover(configure: KoverProjectExtension.() -> Unit) =
     extensions.configure(configure)
 
-internal val Project.dokka: DokkaExtension get() = the()
+internal val Project.sonar: SonarExtension get() = the()
 
-internal fun Project.dokka(configure: DokkaExtension.() -> Unit) =
+internal fun Project.sonar(configure: SonarExtension.() -> Unit) =
     extensions.configure(configure)
 
 internal val Project.buildConfig: BuildConfigExtension get() = the()
 
 internal fun Project.buildConfig(configure: BuildConfigExtension.() -> Unit) =
+    extensions.configure(configure)
+
+internal val Project.dokka: DokkaExtension get() = the()
+
+internal fun Project.dokka(configure: DokkaExtension.() -> Unit) =
     extensions.configure(configure)
 
 internal val Project.apiValidation: ApiValidationExtension get() = the()

@@ -2,7 +2,6 @@ package plugin.project.web.npm.model
 
 import kotlinx.serialization.Serializable
 import org.jetbrains.kotlin.gradle.targets.js.npm.LockFileMismatchReport
-import plugin.project.web.node.model.EnvSpec
 
 @Serializable
 internal data class NpmSettings(

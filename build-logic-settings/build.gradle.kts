@@ -1,10 +1,8 @@
 import io.github.z4kn4fein.semver.Version
-import java.util.Properties
+import java.util.*
 import kotlinx.validation.ExperimentalBCVApi
-import org.jetbrains.dokka.gradle.internal.InternalDokkaGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
 plugins {
     // Print suggestions for your build as you run regular tasks
@@ -13,7 +11,7 @@ plugins {
     alias(libs.plugins.dependencycheck)
     // The tool allows dumping binary API of a JVM part of a Kotlin library that is public in the sense of Kotlin visibilities and ensures that the public binary API wasn't changed in a way that makes this change binary incompatible.
     alias(libs.plugins.binary.compatibility.validator)
-    // An API documentation engine for Kotlin.
+    // API documentation engine for Kotlin.
     alias(libs.plugins.dokka)
     // Used to assist in the development of Gradle plugins. It automatically applies the Java Library.
     `java-gradle-plugin`
@@ -199,11 +197,11 @@ dependencies {
 //    implementation(libs.plugins.shadow.toDep()) // conflict io.ktor.plugin:io.ktor.plugin.gradle.plugin:3.0.0 > io.ktor.plugin:plugin:3.0.0 > com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:7.1.2
     // compiler processor for generating code during compilation
     implementation(libs.plugins.ksp.toDep())
-    // generate coverage report
+    // set of solutions for collecting test coverage of Kotlin code compiled for JVM and Android platforms.
     implementation(libs.plugins.kover.toDep())
-    // code format check and fix
+    // can format <antlr | c | c# | c++ | css | flow | graphql | groovy | html | java | javascript | json | jsx | kotlin | less | license headers | markdown | objective-c | protobuf | python | scala | scss | shell | sql | typeScript | vue | yaml | anything> using <gradle | maven | sbt | anything>.
     implementation(libs.plugins.spotless.toDep())
-    // code analysis
+    // help developers deliver high-quality, efficient code standards that benefit the entire team or organization.
     implementation(libs.plugins.sonarqube.toDep())
     // an API documentation engine for Kotlin.
     implementation(libs.plugins.dokka.toDep())
@@ -309,7 +307,7 @@ tasks.withType<KotlinCompile>().configureEach {
 //            "-Xwhen-guards",
         )
         optIn.addAll(
-                "org.jetbrains.dokka.gradle.internal.InternalDokkaGradlePluginApi",
+            "org.jetbrains.dokka.gradle.internal.InternalDokkaGradlePluginApi",
         )
 //        languageVersion = KotlinVersion.KOTLIN_2_2
         jvmTarget.set(JvmTarget.JVM_21)

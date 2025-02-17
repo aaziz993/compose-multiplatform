@@ -2,7 +2,16 @@
 
 package plugin.settings
 
-import kotlin.collections.fold
+import gradle.amperModuleExtraProperties
+import gradle.amperProjectExtraProperties
+import gradle.chooseComposeVersion
+import gradle.decodeFromAny
+import gradle.deepMerge
+import gradle.libs
+import gradle.plugin
+import gradle.pluginAsDependency
+import gradle.plugins
+import gradle.setupDynamicClasspath
 import kotlin.io.path.absolutePathString
 import kotlin.io.path.nameWithoutExtension
 import kotlin.io.path.readText
@@ -13,6 +22,7 @@ import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.api.initialization.Settings
 import org.gradle.api.invocation.Gradle
+import org.gradle.kotlin.dsl.maven
 import org.jetbrains.amper.core.Result
 import org.jetbrains.amper.core.UsedVersions
 import org.jetbrains.amper.core.get
@@ -30,26 +40,14 @@ import org.jetbrains.amper.gradle.moduleFilePathToProjectPath
 import org.jetbrains.kotlin.gradle.plugin.KotlinMultiplatformPluginWrapper
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import org.yaml.snakeyaml.Yaml
-import gradle.amperModuleExtraProperties
-import gradle.amperProjectExtraProperties
-import gradle.chooseComposeVersion
-import gradle.decodeFromAny
-import gradle.deepMerge
-import gradle.libs
-import gradle.plugin
-import gradle.pluginAsDependency
-import gradle.plugins
-import gradle.setupDynamicClasspath
-import org.gradle.kotlin.dsl.maven
 import plugin.project.BindingProjectPlugin
 import plugin.project.gradle.develocity.DevelocityPluginPart
 import plugin.project.gradle.githooks.GitHooksluginPart
 import plugin.project.gradle.toolchainmanagement.ToolchainManagementPluginPart
-import plugin.project.model.module.Alias
+import plugin.project.model.Alias
 import plugin.project.web.node.configureNodeJsRootExtension
 import plugin.project.web.npm.configureNpmExtension
 import plugin.project.web.yarn.configureYarnRootExtension
-import plugin.settings.model.ProjectProperties
 
 /**
  * Gradle setting plugin, that is responsible for:
@@ -66,6 +64,7 @@ public class SettingsPlugin : Plugin<Settings> {
 
     override fun apply(settings: Settings) {
         with(SLF4JProblemReporterContext()) {
+            // Setup  settings.gradle.kts from project.yaml.
             settings.setupAmperProject()
 
             // the class loader is different within projectsLoaded, and we need this one to load the ModelInit service
@@ -234,7 +233,6 @@ public class SettingsPlugin : Plugin<Settings> {
             setupDynamicClasspath(
                 *listOfNotNull(
                     composePlugin,
-                    libs.plugins.plugin("doctor").pluginAsDependency,
                 ).toTypedArray(),
             ) {
                 addDefaultAmperRepositoriesForDependencies()
@@ -251,7 +249,10 @@ public class SettingsPlugin : Plugin<Settings> {
 
         project.plugins.apply(BindingProjectPlugin::class.java)
 
+
+
         project.afterEvaluate {
+//            project.configureWeb()
             // W/A for XML factories mess within apple plugin classpath.
             val hasAndroidPlugin = plugins.hasPlugin("com.android.application") ||
                 plugins.hasPlugin("com.android.library")

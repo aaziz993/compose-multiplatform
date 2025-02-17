@@ -2,14 +2,19 @@
 
 package plugin.project.compose
 
-import org.gradle.api.Task
+import gradle.all
+import gradle.configureActualResourceCollectorsGeneration
+import gradle.ideaImportDependOn
+import gradle.shouldSeparateResourceCollectorsExpectActual
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.configure
+import org.gradle.api.Task
 import org.gradle.kotlin.dsl.assign
+import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.support.uppercaseFirstChar
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.amper.frontend.schema.ComposeResourcesSettings
 import org.jetbrains.amper.gradle.amperModule
+import org.jetbrains.compose.ComposeExtension
 import org.jetbrains.compose.resources.AssembleTargetResourcesTask
 import org.jetbrains.compose.resources.GenerateActualResourceCollectorsTask
 import org.jetbrains.compose.resources.GenerateExpectResourceCollectorsTask
@@ -30,11 +35,6 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinMetadataTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.resources.KotlinTargetResourcesPublication
 import org.jetbrains.kotlin.konan.target.Family
-import gradle.all
-import gradle.configureActualResourceCollectorsGeneration
-import gradle.ideaImportDependOn
-import gradle.shouldSeparateResourceCollectorsExpectActual
-import org.jetbrains.compose.ComposeExtension
 import plugin.project.KMPEAware
 
 context(KMPEAware)

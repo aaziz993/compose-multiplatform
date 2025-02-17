@@ -1,6 +1,5 @@
 package plugin.project.gradle.spotless.model
 
-import com.diffplug.spotless.java.GoogleJavaFormatStep
 import kotlinx.serialization.Serializable
 
 @Serializable

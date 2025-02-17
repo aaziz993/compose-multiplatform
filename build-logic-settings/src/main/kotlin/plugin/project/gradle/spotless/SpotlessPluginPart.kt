@@ -1,11 +1,7 @@
 package plugin.project.gradle.spotless
 
 import gradle.amperModuleExtraProperties
-import gradle.id
 import gradle.libs
-import gradle.plugin
-import gradle.plugins
-import gradle.settings
 import org.jetbrains.amper.gradle.base.BindingPluginPart
 import org.jetbrains.amper.gradle.base.PluginPartCtx
 
