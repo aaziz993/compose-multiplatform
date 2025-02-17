@@ -10,6 +10,7 @@ import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.tasks.testing.Test
+import org.jetbrains.amper.frontend.Platform
 import org.jetbrains.amper.frontend.RepositoriesModulePart
 import org.jetbrains.amper.frontend.schema.JUnitVersion
 import org.jetbrains.amper.gradle.AmperModuleWrapper
@@ -29,6 +30,7 @@ import plugin.project.gradle.apivalidation.ApiValidationPluginPart
 import plugin.project.gradle.doctor.DoctorPluginPart
 import plugin.project.gradle.spotless.SpotlessPluginPart
 import plugin.project.web.WasmBindingPluginPart
+import plugin.project.web.js.JsBindingPluginPart
 
 /**
  * Gradle project plugin entry point.
@@ -48,6 +50,8 @@ internal class BindingProjectPlugin : Plugin<Project> {
         val kmppBindingPluginPart = KMPPBindingPluginPart(pluginCtx)
         val registeredParts = listOf(
             AndroidBindingPluginPart(pluginCtx),
+            JsBindingPluginPart(pluginCtx),
+            WasmBindingPluginPart(pluginCtx),
             kmppBindingPluginPart,
             JavaBindingPluginPart(pluginCtx),
             ComposePluginPart(pluginCtx),

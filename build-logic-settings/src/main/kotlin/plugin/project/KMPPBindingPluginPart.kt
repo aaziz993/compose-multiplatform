@@ -222,8 +222,6 @@ internal class KMPPBindingPluginPart(
                 Platform.MACOS_ARM64 -> kotlinMPE.macosArm64(targetName)
                 Platform.LINUX_X64 -> kotlinMPE.linuxX64(targetName)
                 Platform.LINUX_ARM64 -> kotlinMPE.linuxArm64(targetName)
-                Platform.JS -> JsBindingPluginPart(ctx, targetName).applyBeforeEvaluate()
-                Platform.WASM -> WasmBindingPluginPart(ctx, targetName).applyBeforeEvaluate()
                 Platform.TVOS_ARM64 -> kotlinMPE.tvosArm64(targetName)
                 Platform.TVOS_X64 -> kotlinMPE.tvosX64(targetName)
                 Platform.TVOS_SIMULATOR_ARM64 -> kotlinMPE.tvosSimulatorArm64(targetName)
@@ -239,6 +237,7 @@ internal class KMPPBindingPluginPart(
 
                 // These are not leaf platforms, thus - should not get here.
                 // Configure js and wasm js by plugins
+                Platform.JS, Platform.WASM,
                 Platform.ANDROID_NATIVE, Platform.MINGW, Platform.WATCHOS,
                 Platform.IOS, Platform.MACOS, Platform.TVOS, Platform.APPLE,
                 Platform.LINUX, Platform.NATIVE, Platform.COMMON -> Unit

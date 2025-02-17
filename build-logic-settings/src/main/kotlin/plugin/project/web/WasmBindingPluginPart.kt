@@ -13,15 +13,12 @@ import plugin.project.web.js.JsBindingPluginPart
 /**
  * Plugin logic, bind to specific module, when only default target is available.
  */
-internal class WasmBindingPluginPart(
-    ctx: PluginPartCtx,
-    targetName: String,
-) : WebAwarePart(ctx) {
+internal class WasmBindingPluginPart(ctx: PluginPartCtx) : WebAwarePart(ctx) {
 
     override val needToApply by lazy { Platform.WASM in module }
 
     override val target: KotlinJsTargetDsl by lazy {
-         kotlinMPE.wasmJs(targetName)
+        kotlinMPE.wasmJs(module.artifactPlatforms.single { it == Platform.WASM }.targetName)
     }
 
     /**
