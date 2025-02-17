@@ -11,12 +11,8 @@ import gradle.settings
 
 internal class KspPluginPart(ctx: PluginPartCtx) : BindingPluginPart by ctx {
 
-    private val doctor by lazy {
-        project.amperModuleExtraProperties.settings.gradle.doctor
-    }
-
     override val needToApply: Boolean by lazy {
-        doctor.enabled && project == project.rootProject
+        project.amperModuleExtraProperties.settings.kotlin.ksp.enabled
     }
 
     override fun applyBeforeEvaluate() {
@@ -25,7 +21,7 @@ internal class KspPluginPart(ctx: PluginPartCtx) : BindingPluginPart by ctx {
         applySettings()
     }
 
-    fun applySettings() = with(project) {
-        configureAtomicFUPluginExtension()
+    private fun applySettings() = with(project) {
+        configureKspExtension()
     }
 }

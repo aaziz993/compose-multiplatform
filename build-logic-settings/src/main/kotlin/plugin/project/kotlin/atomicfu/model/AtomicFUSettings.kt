@@ -1,4 +1,4 @@
-package plugin.project.gradle.atomicfu.model
+package plugin.project.kotlin.atomicfu.model
 
 import kotlinx.serialization.Serializable
 
@@ -8,4 +8,5 @@ internal data class AtomicFUSettings(
     override val transformJvm: Boolean? = null,
     override val jvmVariant: String? = null,
     override val verbose: Boolean? = null,
+    val enabled: Boolean = true
 ) : AtomicFUExtension

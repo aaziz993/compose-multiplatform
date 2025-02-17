@@ -44,10 +44,12 @@ internal class DokkaPluginPart(ctx: PluginPartCtx) : BindingPluginPart by ctx {
     fun applySettings() = with(project) {
         configureDokkaExtension()
 
-        val dokkaPlugin by configurations
+        if (dokka.versioning) {
+            val dokkaPlugin by configurations
 
-        dependencies {
-            dokkaPlugin(libs.dokka.versioning)
+            dependencies {
+                dokkaPlugin(libs.dokka.versioning)
+            }
         }
     }
 

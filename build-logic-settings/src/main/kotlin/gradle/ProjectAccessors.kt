@@ -18,6 +18,7 @@ import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsEnvSpec
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension
 import org.jetbrains.kotlin.gradle.targets.js.npm.NpmExtension
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension
+import org.sonarqube.gradle.SonarExtension
 
 internal val Project.settings: Settings
     get() = (gradle as GradleInternal).settings
@@ -35,6 +36,11 @@ internal fun Project.atomicFU(configure: AtomicFUPluginExtension.() -> Unit) =
 internal val Project.spotless: SpotlessExtension get() = the()
 
 internal fun Project.spotless(configure: SpotlessExtension.() -> Unit) =
+    extensions.configure(configure)
+
+internal val Project.sonar: SonarExtension get() = the()
+
+internal fun Project.sonar(configure: SonarExtension.() -> Unit) =
     extensions.configure(configure)
 
 internal val Project.kover: KoverProjectExtension get() = the()

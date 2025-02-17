@@ -1,4 +1,4 @@
-package plugin.project.gradle.buildconfig
+package plugin.project.gradle.sonar
 
 import gradle.amperModuleExtraProperties
 import gradle.id
@@ -8,12 +8,10 @@ import gradle.plugins
 import gradle.settings
 import org.jetbrains.amper.gradle.base.BindingPluginPart
 import org.jetbrains.amper.gradle.base.PluginPartCtx
-import plugin.project.gradle.spotless.configureSpotlessExtension
 
-internal class BuildConfigPluginPart(ctx: PluginPartCtx) : BindingPluginPart by ctx {
-
+internal class SonarPluginPart(ctx: PluginPartCtx) : BindingPluginPart by ctx {
     override val needToApply: Boolean by lazy {
-        project.amperModuleExtraProperties.settings.gradle.buildConfig.enabled
+        project.amperModuleExtraProperties.settings.gradle.sonar.enabled
     }
 
     override fun applyBeforeEvaluate() {
@@ -25,6 +23,6 @@ internal class BuildConfigPluginPart(ctx: PluginPartCtx) : BindingPluginPart by 
     }
 
     fun applySettings() = with(project) {
-        configureBuildConfigExtension()
+        configureSonarExtension()
     }
 }

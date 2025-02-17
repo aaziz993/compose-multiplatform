@@ -10,4 +10,5 @@ internal data class KspSettings(
     override val excludedSources: List<String>? = null,
     override val arguments: Map<String, String>? = null,
     override val allWarningsAsErrors: Boolean? = null,
+    val enabled: Boolean = true,
 ) : KspExtension

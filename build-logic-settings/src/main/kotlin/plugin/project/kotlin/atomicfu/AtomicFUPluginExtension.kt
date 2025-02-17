@@ -1,4 +1,4 @@
-package plugin.project.gradle.atomicfu
+package plugin.project.kotlin.atomicfu
 
 import gradle.amperModuleExtraProperties
 import gradle.atomicFU

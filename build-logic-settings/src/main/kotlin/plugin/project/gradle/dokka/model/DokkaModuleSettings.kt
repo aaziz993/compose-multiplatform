@@ -14,5 +14,6 @@ internal data class DokkaModuleSettings(
     override val dokkaPublications: List<DokkaPublication>? = null,
     override val dokkaSourceSets: List<DokkaSourceSetSpec>? = null,
     override val dokkaEngineVersion: String? = null,
+    val versioning: Boolean = true,
     val task: DokkaModuleTask? = null
 ) : DokkaExtension

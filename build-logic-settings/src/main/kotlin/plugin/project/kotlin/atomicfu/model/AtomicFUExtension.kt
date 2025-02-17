@@ -1,4 +1,4 @@
-package plugin.project.gradle.atomicfu.model
+package plugin.project.kotlin.atomicfu.model
 
 internal interface AtomicFUExtension {
 
