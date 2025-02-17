@@ -1,6 +1,7 @@
 import io.github.z4kn4fein.semver.Version
 import java.util.Properties
 import kotlinx.validation.ExperimentalBCVApi
+import org.jetbrains.dokka.gradle.internal.InternalDokkaGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
@@ -286,7 +287,6 @@ dependencies {
     // Semantic version
     implementation(libs.semver)
 
-
     // A hack to make version catalogs accessible from buildSrc sources
     // https://github.com/gradle/gradle/issues/15383#issuecomment-779893192
     implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
@@ -307,6 +307,9 @@ tasks.withType<KotlinCompile>().configureEach {
         freeCompilerArgs.addAll(
             "-Xcontext-receivers",
 //            "-Xwhen-guards",
+        )
+        optIn.addAll(
+                "org.jetbrains.dokka.gradle.internal.InternalDokkaGradlePluginApi",
         )
 //        languageVersion = KotlinVersion.KOTLIN_2_2
         jvmTarget.set(JvmTarget.JVM_21)

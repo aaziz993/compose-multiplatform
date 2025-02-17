@@ -59,9 +59,9 @@ internal class BindingProjectPlugin : Plugin<Project> {
             SerializationPluginPart(pluginCtx),
             ParcelizePluginPart(pluginCtx),
             DoctorPluginPart(pluginCtx),
-            SpotlessPluginPart(pluginCtx),
-            ApiValidationPluginPart(pluginCtx),
-            KoverPluginPart(pluginCtx),
+//            SpotlessPluginPart(pluginCtx),
+//            ApiValidationPluginPart(pluginCtx),
+//            KoverPluginPart(pluginCtx),
         )
         appliedParts = registeredParts.filter { it.needToApply }
 

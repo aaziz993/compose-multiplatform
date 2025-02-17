@@ -50,7 +50,6 @@ internal fun Project.configureDokkaExtension() =
         }
     }
 
-@OptIn(InternalDokkaGradlePluginApi::class)
 context(Project)
 private fun org.jetbrains.dokka.gradle.formats.DokkaPublication.configureFrom(config: DokkaPublication) = apply {
     pluginsConfiguration
@@ -67,7 +66,6 @@ private fun org.jetbrains.dokka.gradle.formats.DokkaPublication.configureFrom(co
     finalizeCoroutines tryAssign config.finalizeCoroutines
 }
 
-@OptIn(InternalDokkaGradlePluginApi::class)
 context(Project)
 private fun org.jetbrains.dokka.gradle.engine.parameters.DokkaSourceSetSpec.configureFrom(config: DokkaSourceSetSpec) = apply {
     sourceSetScope tryAssign config.sourceSetScope

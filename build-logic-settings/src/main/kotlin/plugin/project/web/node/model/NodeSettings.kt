@@ -12,4 +12,5 @@ internal data class NodeSettings(
 //    )
     override val version: String? = null,
     val env: EnvSpec = EnvSpec(),
+    val enabled: Boolean = true
 ) : NodeJsRootExtension

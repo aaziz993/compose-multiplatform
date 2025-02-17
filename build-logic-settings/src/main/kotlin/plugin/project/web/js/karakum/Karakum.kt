@@ -10,7 +10,7 @@ import org.gradle.kotlin.dsl.withType
 internal fun Project.configureKarakum() {
     plugins.apply(libs.plugins.karakum.get().pluginId)
 
-    extensions.configure<KarakumExtension>(::configureKarakumExtension)
+    configureKarakumExtension()
 
-    tasks.withType<KarakumGenerate>(::configureKarakumGenerateTask)
+    configureKarakumGenerate()
 }

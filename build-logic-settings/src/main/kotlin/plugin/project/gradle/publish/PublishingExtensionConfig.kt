@@ -1,4 +1,4 @@
-//package plugin.project.gradle.publish
+package plugin.project.gradle.publish//package plugin.project.gradle.publish
 //
 //import gradle.androidNativeTargets
 //import gradle.findByName

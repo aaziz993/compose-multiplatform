@@ -4,7 +4,9 @@ pluginManagrment:
     - https://packages.jetbrains.team/maven/p/ij/intellij-dependencies
 
 versionCatalogs:
-  name: ko
+  name: kotlinWrappers
+  from: org.jetbrains.kotlin-wrappers:kotlin-wrappers-catalog:2025.2.2
+
 
 modules:
   - android-app

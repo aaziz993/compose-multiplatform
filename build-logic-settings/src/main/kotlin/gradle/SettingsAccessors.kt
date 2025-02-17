@@ -2,7 +2,7 @@ package gradle
 
 import org.gradle.api.initialization.Settings
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
-import plugin.project.settings.model.ProjectProperties
+import plugin.settings.model.ProjectProperties
 
 internal fun Settings.execute(cmd: String): String = providers.exec {
     commandLine(cmd.split(" "))

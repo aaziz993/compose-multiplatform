@@ -1,6 +1,6 @@
 @file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
 
-package plugin.project.settings
+package plugin.settings
 
 import kotlin.collections.fold
 import kotlin.io.path.absolutePathString
@@ -46,6 +46,7 @@ import plugin.project.model.module.Alias
 import plugin.project.web.node.configureNodeJsRootExtension
 import plugin.project.web.npm.configureNpmExtension
 import plugin.project.web.yarn.configureYarnRootExtension
+import plugin.settings.model.ProjectProperties
 
 /**
  * Gradle setting plugin, that is responsible for:
@@ -90,6 +91,7 @@ public class SettingsPlugin : Plugin<Settings> {
 
     private fun Settings.setupAmperProject() {
         setGradleExtraPropertiesToAmperProjectMappings()
+
         amperProjectExtraProperties.pluginManagement.let { pluginManagement ->
             pluginManagement {
                 repositories {
@@ -118,8 +120,9 @@ public class SettingsPlugin : Plugin<Settings> {
     }
 
     private fun Settings.setGradleExtraPropertiesToAmperProjectMappings() {
+        val projectSettings = yaml.load<Map<String, *>>(rootDir.resolve("project.yaml").readText())
         amperProjectExtraProperties = amperExtraPropertiesJson
-            .decodeFromString(rootDir.resolve("project.yaml").readText())
+            .decodeFromAny(projectSettings)
     }
 
     context(SLF4JProblemReporterContext)
