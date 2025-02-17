@@ -12,10 +12,10 @@ import plugin.project.gradle.spotless.model.SpotlessSettings
 @Serializable
 internal data class ModuleGradleSettings(
     val doctor: DoctorSettings = DoctorSettings(),
+    val buildConfig: BuildConfigSettings = BuildConfigSettings(),
     val spotless: SpotlessSettings = SpotlessSettings(),
-    val sonar: SonarSettings = SonarSettings(),
     val kover: KoverSettings = KoverSettings(),
+    val sonar: SonarSettings = SonarSettings(),
     val dokka: DokkaModuleSettings = DokkaModuleSettings(),
     val apiValidation: ApiValidationSettings = ApiValidationSettings(),
-    val buildConfig: BuildConfigSettings = BuildConfigSettings(),
 )

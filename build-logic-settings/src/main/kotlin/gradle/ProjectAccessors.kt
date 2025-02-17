@@ -30,12 +30,15 @@ internal val Project.kotlin: KotlinMultiplatformExtension get() = the()
 internal fun Project.kotlin(configure: KotlinMultiplatformExtension.() -> Unit) =
     extensions.configure(configure)
 
-
 internal val Project.doctor: DoctorExtension get() = the()
 
 internal fun Project.doctor(configure: DoctorExtension.() -> Unit) =
     extensions.configure(configure)
 
+internal val Project.buildConfig: BuildConfigExtension get() = the()
+
+internal fun Project.buildConfig(configure: BuildConfigExtension.() -> Unit) =
+    extensions.configure(configure)
 
 internal val Project.spotless: SpotlessExtension get() = the()
 
@@ -50,11 +53,6 @@ internal fun Project.kover(configure: KoverProjectExtension.() -> Unit) =
 internal val Project.sonar: SonarExtension get() = the()
 
 internal fun Project.sonar(configure: SonarExtension.() -> Unit) =
-    extensions.configure(configure)
-
-internal val Project.buildConfig: BuildConfigExtension get() = the()
-
-internal fun Project.buildConfig(configure: BuildConfigExtension.() -> Unit) =
     extensions.configure(configure)
 
 internal val Project.dokka: DokkaExtension get() = the()

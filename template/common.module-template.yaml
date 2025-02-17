@@ -13,6 +13,10 @@ settings:
         ensureJavaHomeIsSet: false
         ensureJavaHomeMatches: false
 
+    # Generating BuildConstants for any kind of Gradle projects: Java, Kotlin, Android, Groovy, etc. Designed for KTS scripts, with experimental support for Kotlin's multi-platform plugin
+    buildConfig:
+      enabled: true
+
     # Can format <antlr | c | c# | c++ | css | flow | graphql | groovy | html | java | javascript | json | jsx | kotlin | less | license headers | markdown | objective-c | protobuf | python | scala | scss | shell | sql | typeScript | vue | yaml | anything> using <gradle | maven | sbt | anything>.
     spotless:
       enabled: true
@@ -41,14 +45,17 @@ settings:
         sonar.coverage.jacoco.xml.report.paths: build/reports/kover/report.xml
         sonar.android.lint.report.paths: build/reports/lint-results.xml
 
-    # Generating BuildConstants for any kind of Gradle projects: Java, Kotlin, Android, Groovy, etc. Designed for KTS scripts, with experimental support for Kotlin's multi-platform plugin
-    buildConfig:
-      enabled: true
-
     # API documentation engine for Kotlin.
     dokka:
-      sourceSets: [Module.md]
+      sourceSets: [ Module.md ]
 
+    # The tool allows dumping binary API of a JVM part of a Kotlin library that is public in the sense of Kotlin visibilities and ensures that the public binary API wasn't changed in a way that makes this change binary incompatible.
+    apiValidation:
+      enabled: true
+      apiDumpDirectory: api-validation
+      klib:
+        enabled: true
+        strictValidation: true
 
   kotlin:
     #    apiVersion: 2.1.10
