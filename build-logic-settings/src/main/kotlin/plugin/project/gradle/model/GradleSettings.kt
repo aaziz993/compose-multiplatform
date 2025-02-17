@@ -10,6 +10,7 @@ import plugin.project.gradle.spotless.model.SpotlessSettings
 
 @Serializable
 internal data class GradleSettings(
+    val enterpriseAccessKey: String? = null,
     val doctor: DoctorSettings = DoctorSettings(),
     val spotless: SpotlessSettings = SpotlessSettings(),
     val kover: KoverSettings = KoverSettings(),

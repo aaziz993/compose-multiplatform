@@ -3,17 +3,12 @@ package plugin.project.gradle.develocity
 import com.gradle.develocity.agent.gradle.DevelocityConfiguration
 import gradle.*
 import org.gradle.api.initialization.Settings
-import plugin.project.gradle.develocity.model.DevelocitySettings
 import java.net.URLEncoder
 
 internal class DevelocityPluginPart(private val settings: Settings) {
 
-    private val develocity by lazy {
-        DevelocitySettings()
-    }
-
     val needToApply: Boolean by lazy {
-        develocity.enabled
+        settings.amperProjectExtraProperties.settings.develocity.enabled
     }
 
     fun apply() {

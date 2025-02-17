@@ -1,4 +1,4 @@
-package plugin.project.model
+package plugin.project.model.module
 
 import kotlinx.serialization.Serializable
 
@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 internal data class ModuleProperties(
     val apply: Map<String, TemplateProperties> = emptyMap(),
     override val aliases: List<Alias> = emptyList(),
-    override val settings: Settings = Settings(),
+    override val settings: ModuleSettings = ModuleSettings(),
 ) : Properties

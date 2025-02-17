@@ -1,48 +1,46 @@
 package plugin.project.gradle.develocity
 
 import com.gradle.develocity.agent.gradle.DevelocityPlugin
+import gradle.amperProjectExtraProperties
 import gradle.isCI
 import gradle.tryAssign
-import java.util.*
-import kotlin.collections.component1
-import kotlin.collections.component2
 import org.gradle.api.initialization.Settings
 import org.gradle.kotlin.dsl.develocity
 import org.gradle.kotlin.dsl.withType
 import plugin.project.gradle.develocity.model.BuildScanConfiguration
-import plugin.project.gradle.develocity.model.DevelocitySettings
 
 internal fun Settings.configureDevelocityConfiguration() =
     plugins.withType<DevelocityPlugin> {
-        val develocity = DevelocitySettings()
-        develocity {
-            develocity.buildScan?.let { buildScan ->
-                buildScan {
-                    configureFrom(buildScan)
-                }
-            }
-
-            server tryAssign develocity.server
-            edgeDiscovery tryAssign develocity.edgeDiscovery
-            projectId tryAssign develocity.projectId
-            allowUntrustedServer tryAssign develocity.allowUntrustedServer
-            accessKey tryAssign develocity.accessKey
-
-            buildCache {
-
-                if (isCI) {
-                    local {
-                        isEnabled = providers.gradleProperty("develocity.build.cache.local.enable").get().toBoolean()
+        amperProjectExtraProperties.settings.develocity.let { develocity ->
+            develocity {
+                develocity.buildScan?.let { buildScan ->
+                    buildScan {
+                        configureFrom(buildScan)
                     }
                 }
 
-                remote(buildCache) {
-                    isEnabled = develocity.remoteBuildCache
-                    // Check access key presence to avoid build cache errors on PR builds when access key is not present
-                    val accessKey = System.getenv().getOrElse("GRADLE_ENTERPRISE_ACCESS_KEY") {
-                        localProperties.getProperty("gradle.enterprise.access-key")
+                server tryAssign develocity.server
+                edgeDiscovery tryAssign develocity.edgeDiscovery
+                projectId tryAssign develocity.projectId
+                allowUntrustedServer tryAssign develocity.allowUntrustedServer
+                accessKey tryAssign develocity.accessKey
+
+                buildCache {
+
+                    if (isCI) {
+                        local {
+                            isEnabled = providers.gradleProperty("develocity.build.cache.local.enable").get().toBoolean()
+                        }
                     }
-                    isPush = isCI && accessKey != null
+
+                    remote(buildCache) {
+                        isEnabled = develocity.remoteBuildCache
+                        // Check access key presence to avoid build cache errors on PR builds when access key is not present
+                        val accessKey = System.getenv().getOrElse("GRADLE_ENTERPRISE_ACCESS_KEY") {
+                            null
+                        }
+                        isPush = isCI && accessKey != null
+                    }
                 }
             }
         }
@@ -53,7 +51,7 @@ private fun com.gradle.develocity.agent.gradle.scan.BuildScanConfiguration.confi
 ) = apply {
     config.background?.let { background ->
         background {
-            this.configureFrom(background)
+            configureFrom(background)
         }
     }
 

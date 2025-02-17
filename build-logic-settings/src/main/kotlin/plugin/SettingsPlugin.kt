@@ -31,6 +31,7 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinMultiplatformPluginWrapper
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import org.yaml.snakeyaml.Yaml
 import gradle.amperModuleExtraProperties
+import gradle.amperProjectExtraProperties
 import gradle.chooseComposeVersion
 import gradle.decodeFromAny
 import gradle.deepMerge
@@ -39,8 +40,9 @@ import gradle.plugin
 import gradle.pluginAsDependency
 import gradle.plugins
 import gradle.setupDynamicClasspath
+import org.gradle.kotlin.dsl.maven
 import plugin.project.BindingProjectPlugin
-import plugin.project.model.Alias
+import plugin.project.model.module.Alias
 import plugin.project.web.node.configureNodeJsRootExtension
 import plugin.project.web.npm.configureNpmExtension
 import plugin.project.web.yarn.configureYarnRootExtension
@@ -60,6 +62,7 @@ public class SettingsPlugin : Plugin<Settings> {
 
     override fun apply(settings: Settings) {
         with(SLF4JProblemReporterContext()) {
+            settings.setupAmperProject()
 
             // the class loader is different within projectsLoaded, and we need this one to load the ModelInit service
             val gradleClassLoader = Thread.currentThread().contextClassLoader
@@ -83,6 +86,28 @@ public class SettingsPlugin : Plugin<Settings> {
                 }
             }
         }
+    }
+
+    private fun Settings.setupAmperProject() {
+        setGradleExtraPropertiesToAmperProjectMappings()
+        amperProjectExtraProperties.pluginManagement.let { pluginManagement ->
+            pluginManagement {
+                repositories {
+                    mavenCentral()
+                    google()
+                    gradlePluginPortal()
+
+                    pluginManagement.repositories.forEach { url -> maven(url) }
+                }
+            }
+        }
+
+        amperProjectExtraProperties.modules.forEach(::include)
+    }
+
+    private fun Settings.setGradleExtraPropertiesToAmperProjectMappings() {
+        amperProjectExtraProperties = amperExtraPropertiesJson
+            .decodeFromString(rootDir.resolve("project.yaml").readText())
     }
 
     context(SLF4JProblemReporterContext)

@@ -1,0 +1,18 @@
+pluginManagrment:
+  repositories:
+    - https://www.jetbrains.com/intellij-repository/releases
+    - https://packages.jetbrains.team/maven/p/ij/intellij-dependencies
+
+versionCatalogs:
+  name: ko
+
+modules:
+  - android-app
+  - ios-app
+  - jvm-app
+  - wasm-app
+  - server-app
+  - shared
+  - cmp-lib
+  - kmp-lib
+  - compiler
