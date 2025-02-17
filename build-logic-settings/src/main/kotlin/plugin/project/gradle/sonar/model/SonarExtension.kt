@@ -52,5 +52,5 @@ internal interface SonarExtension {
     /**
      * @return Name of the variant to analyze. If null we'll take the first release variant
      */
-    var androidVariant: String?
+    val androidVariant: String?
 }

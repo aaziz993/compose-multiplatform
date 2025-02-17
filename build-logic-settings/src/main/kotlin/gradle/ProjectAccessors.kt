@@ -11,9 +11,11 @@ import kotlinx.validation.ApiValidationExtension
 import org.gradle.api.Project
 import org.gradle.api.initialization.Settings
 import org.gradle.api.internal.GradleInternal
+import org.gradle.api.toolchain.management.ToolchainManagement
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.the
 import org.jetbrains.dokka.gradle.DokkaExtension
+import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsEnvSpec
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension
 import org.jetbrains.kotlin.gradle.targets.js.npm.NpmExtension
@@ -23,15 +25,17 @@ import org.sonarqube.gradle.SonarExtension
 internal val Project.settings: Settings
     get() = (gradle as GradleInternal).settings
 
+internal val Project.kotlin: KotlinMultiplatformExtension get() = the()
+
+internal fun Project.kotlin(configure: KotlinMultiplatformExtension.() -> Unit) =
+    extensions.configure(configure)
+
+
 internal val Project.doctor: DoctorExtension get() = the()
 
 internal fun Project.doctor(configure: DoctorExtension.() -> Unit) =
     extensions.configure(configure)
 
-internal val Project.atomicFU: AtomicFUPluginExtension get() = the()
-
-internal fun Project.atomicFU(configure: AtomicFUPluginExtension.() -> Unit) =
-    extensions.configure(configure)
 
 internal val Project.spotless: SpotlessExtension get() = the()
 
@@ -66,6 +70,18 @@ internal fun Project.apiValidation(configure: ApiValidationExtension.() -> Unit)
 internal val Project.ksp: KspExtension get() = the()
 
 internal fun Project.ksp(configure: KspExtension.() -> Unit) =
+    extensions.configure(configure)
+
+@Suppress("UnstableApiUsage")
+internal val Project.toolchain: ToolchainManagement get() = the()
+
+@Suppress("UnstableApiUsage")
+internal fun Project.toolchain(configure: ToolchainManagement.() -> Unit) =
+    extensions.configure(configure)
+
+internal val Project.atomicFU: AtomicFUPluginExtension get() = the()
+
+internal fun Project.atomicFU(configure: AtomicFUPluginExtension.() -> Unit) =
     extensions.configure(configure)
 
 internal val Project.npm: NodeJsRootExtension get() = the()

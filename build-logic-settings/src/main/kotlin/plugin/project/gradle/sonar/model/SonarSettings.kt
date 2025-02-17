@@ -6,6 +6,6 @@ import kotlinx.serialization.Serializable
 internal data class SonarSettings(
     override val skipProject: Boolean? = null,
     override val properties: Map<String, String>? = null,
-    override var androidVariant: String? = null,
+    override val androidVariant: String? = null,
     val enabled: Boolean = true
 ) : SonarExtension

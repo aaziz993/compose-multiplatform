@@ -1,5 +1,6 @@
 package plugin.project.gradle
 
+import gradle.kotlin
 import com.gradle.develocity.agent.gradle.test.DevelocityTestConfiguration
 import com.gradle.develocity.agent.gradle.test.TestRetryConfiguration
 import gradle.maybeNamed
@@ -16,6 +17,7 @@ import org.gradle.internal.extensions.core.extra
 import org.gradle.internal.os.OperatingSystem
 import org.gradle.kotlin.dsl.getByName
 import org.gradle.kotlin.dsl.withType
+import org.gradle.kotlin.dsl.assign
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
