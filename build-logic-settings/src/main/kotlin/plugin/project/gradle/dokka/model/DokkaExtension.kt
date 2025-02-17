@@ -1,12 +1,9 @@
 package plugin.project.gradle.dokka.model
 
-import kotlinx.serialization.Serializable
-
 /**
  * Configure the behaviour of the [DokkaBasePlugin].
  */
-@Serializable
-internal data class DokkaExtensionSettings(
+internal interface DokkaExtension {
     /**
      * Base directory into which all [DokkaPublication]s will be produced.
      * By default, Dokka will generate all [DokkaPublication]s into a subdirectory inside [basePublicationsDirectory].
@@ -23,22 +20,22 @@ internal data class DokkaExtensionSettings(
      * }
      * ```
      */
-    val basePublicationsDirectory: String? = null,
+    val basePublicationsDirectory: String?
     /** Default Dokka Gradle Plugin cache directory */
-    val dokkaCacheDirectory: String? = null,
+    val dokkaCacheDirectory: String?
     /**
      * The display name used to refer to the module.
      * It is used for the table of contents, navigation, logging, etc.
      *
      * Default: the [current project name][org.gradle.api.Project.name].
      */
-    val moduleName: String? = null,
+    val moduleName: String?
     /**
      * The displayed module version.
      *
      * Default: the [version of the current project][org.gradle.api.Project.version].
      */
-    val moduleVersion: String? = null,
+    val moduleVersion: String?
 
     /**
      * Control the subdirectory used for files when aggregating this project as a Dokka Module into a Dokka Publication.
@@ -62,7 +59,7 @@ internal data class DokkaExtensionSettings(
      *
      * Default: the current project's [path][org.gradle.api.Project.getPath] as a file path.
      */
-    val modulePath: String? = null,
+    val modulePath: String?
     /**
      * An arbitrary string used to group source sets that originate from different Gradle subprojects.
      *
@@ -71,7 +68,7 @@ internal data class DokkaExtensionSettings(
      *
      * Defaults to [the Gradle path of the subproject][org.gradle.api.Project.getPath].
      */
-    val sourceSetScopeDefault: String? = null,
+    val sourceSetScopeDefault: String?
     /**
      * The Konan home directory, which contains libraries for Kotlin/Native development.
      *
@@ -79,7 +76,7 @@ internal data class DokkaExtensionSettings(
      * projects with a version below 2.0.
      */
     // This property should be removed when Dokka only supports KGP 2 or higher.
-    val konanHome: String? = null,
+    val konanHome: String?
 
     /**
      * The container for all [DokkaPublication]s in the current project.
@@ -111,7 +108,7 @@ internal data class DokkaExtensionSettings(
      * }
      * ```
      */
-    val dokkaPublications: List<DokkaPublication>? = null,
+    val dokkaPublications: List<DokkaPublication>?
     /**
      * The container for all [DokkaSourceSet][DokkaSourceSetSpec]s in the current project.
      *
@@ -146,12 +143,12 @@ internal data class DokkaExtensionSettings(
      * }
      * ```
      */
-    val dokkaSourceSets: List<DokkaSourceSetSpec>? = null,
+    val dokkaSourceSets: List<DokkaSourceSetSpec>?
     /**
      * The default version of Dokka dependencies that are used at runtime during generation.
      *
      * This value defaults to the current Dokka Gradle Plugin version, but can be overridden
      * if you want to use a newer or older version of Dokka at runtime.
      */
-    val dokkaEngineVersion: String? = null,
-)
+    val dokkaEngineVersion: String?
+}

@@ -2,6 +2,7 @@ package gradle
 
 import com.diffplug.gradle.spotless.SpotlessExtension
 import com.github.gmazzo.gradle.plugins.BuildConfigExtension
+import com.gradle.develocity.agent.gradle.DevelocityConfiguration
 import com.osacky.doctor.DoctorExtension
 import kotlinx.atomicfu.plugin.gradle.AtomicFUPluginExtension
 import kotlinx.kover.gradle.plugin.dsl.KoverProjectExtension
@@ -19,6 +20,11 @@ import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension
 
 internal val Project.settings: Settings
     get() = (gradle as GradleInternal).settings
+
+internal val Project.develocity: DevelocityConfiguration get() = the()
+
+internal fun Project.develocity(configure: DevelocityConfiguration.() -> Unit) =
+    extensions.configure(configure)
 
 internal val Project.doctor: DoctorExtension get() = the()
 

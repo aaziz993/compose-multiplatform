@@ -6,16 +6,18 @@ import gradle.libs
 import gradle.plugin
 import gradle.plugins
 import gradle.settings
+import gradle.tryAssign
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.withType
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.provideDelegate
+import org.gradle.kotlin.dsl.withType
 import org.jetbrains.amper.gradle.base.BindingPluginPart
 import org.jetbrains.amper.gradle.base.PluginPartCtx
-import org.jetbrains.dokka.gradle.DokkaExtension
+import org.jetbrains.dokka.gradle.AbstractDokkaTask
 import org.jetbrains.dokka.gradle.DokkaMultiModuleTask
+import org.jetbrains.dokka.gradle.internal.InternalDokkaGradlePluginApi
+import plugin.project.gradle.dokka.model.DokkaTask
 
 internal class DokkaPluginPart(ctx: PluginPartCtx) : BindingPluginPart by ctx {
 
@@ -25,6 +27,10 @@ internal class DokkaPluginPart(ctx: PluginPartCtx) : BindingPluginPart by ctx {
 
     override val needToApply: Boolean by lazy {
         spotless.enabled
+    }
+
+    private val dokka by lazy {
+        project.amperModuleExtraProperties.settings.gradle.dokka
     }
 
     override fun applyBeforeEvaluate() {
@@ -45,14 +51,35 @@ internal class DokkaPluginPart(ctx: PluginPartCtx) : BindingPluginPart by ctx {
         }
     }
 
-    private fun Project.configureDokkaMultiModuleTask(task: DokkaMultiModuleTask) =
-        tasks.withType<DokkaMultiModuleTask> {
-            val version = project.version
-            val dokkaOutputDir = "../versions"
-            val id = "org.jetbrains.dokka.versioning.VersioningPlugin"
-            val config = """{ "version": "$version", "olderVersionsDir":"$dokkaOutputDir" }"""
-
-            outputDirectory = project.layout.projectDirectory.dir("$dokkaOutputDir/$version")
-            pluginsMapConfiguration = mapOf(id to config)
+    @OptIn(InternalDokkaGradlePluginApi::class)
+    private fun Project.configureDokkaModuleTask() =
+        dokka.task?.let { task ->
+            tasks.withType<org.jetbrains.dokka.gradle.DokkaTask> {
+                configureFrom(task)
+            }
         }
+
+    @OptIn(InternalDokkaGradlePluginApi::class)
+    private fun Project.configureDokkaMultiModuleTask() =
+        dokka.task?.let { task ->
+            tasks.withType<DokkaMultiModuleTask> {
+                configureFrom(task)
+//                 includes: List<String>? = null, // TODO
+//
+//                 fileLayout tryAssign task.fil
+            }
+        }
+
+    private fun AbstractDokkaTask.configureFrom(config: DokkaTask) = apply {
+        moduleName tryAssign config.moduleName
+        moduleVersion tryAssign config.moduleVersion
+        outputDirectory tryAssign config.outputDirectory?.let(project.layout.projectDirectory::dir)
+        pluginsConfiguration tryAssign config.pluginsConfiguration
+        pluginsMapConfiguration tryAssign config.pluginsMapConfiguration
+        suppressObviousFunctions tryAssign config.suppressObviousFunctions
+        suppressInheritedMembers tryAssign config.suppressInheritedMembers
+        offlineMode tryAssign config.offlineMode
+        failOnWarning tryAssign config.failOnWarning
+        cacheRoot tryAssign config.cacheRoot?.let(project.layout.projectDirectory::dir)
+    }
 }

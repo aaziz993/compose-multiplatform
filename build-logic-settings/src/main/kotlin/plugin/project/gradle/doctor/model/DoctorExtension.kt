@@ -1,56 +1,54 @@
 package plugin.project.gradle.doctor.model
 
 import com.osacky.doctor.AppleRosettaTranslationCheckMode
-import kotlinx.serialization.Serializable
 
-@Suppress("PropertyName","ktlint:standard:property-naming")
-@Serializable
-internal data class DoctorExtensionSettings(
-    val enabled: Boolean = true,
-    /** Always monitor tasks on CI, but disable it locally by default with providing an option to opt-in.
-     * See 'doctor.enableTaskMonitoring' in gradle.properties for details.
-     */
-    val enableTaskMonitoring: Boolean = true,
+internal interface DoctorExtension {
     /**
      * Throw an exception when multiple Gradle Daemons are running.
      */
-    val disallowMultipleDaemons: Boolean? = null,
+    val disallowMultipleDaemons: Boolean?
+
     /**
      * Show a message if the download speed is less than this many megabytes / sec.
      */
-    val downloadSpeedWarningThreshold: Float? = null,
+    val downloadSpeedWarningThreshold: Float?
+
     /**
      * The level at which to warn when a build spends more than this percent garbage collecting.
      */
-    val GCWarningThreshold: Float? = null,
+    val GCWarningThreshold: Float?
+
     /**
      * The level at which to fail when a build spends more than this percent garbage collecting.
      */
-    val GCFailThreshold: Float? = null,
+    val GCFailThreshold: Float?
+
     /**
      * Print a warning to the console if we spend more than this amount of time with Dagger annotation processors.
      */
-    val daggerThreshold: Int? = null,
+    val daggerThreshold: Int?
+
     /**
      * By default, Gradle caches test results. This can be dangerous if tests rely on timestamps, dates, or other files
      * which are not declared as inputs.
      */
-    val enableTestCaching: Boolean? = null,
+    val enableTestCaching: Boolean?
 
     /**
      * By default, Gradle treats empty directories as inputs to compilation tasks. This can cause cache misses.
      */
-    val failOnEmptyDirectories: Boolean? = null,
+    val failOnEmptyDirectories: Boolean?
 
     /**
      * Do not allow building all apps simultaneously. This is likely not what the user intended.
      */
-    val allowBuildingAllAndroidAppsSimultaneously: Boolean? = null,
+    val allowBuildingAllAndroidAppsSimultaneously: Boolean?
 
     /**
      * Warn if using Android Jetifier
      */
-    val warnWhenJetifierEnabled: Boolean? = null,
+    val warnWhenJetifierEnabled: Boolean?
+
     /**
      * Negative Avoidance Savings Threshold
      * By default the Gradle Doctor will print out a warning when a task is slower to pull from the cache than to
@@ -58,11 +56,13 @@ internal data class DoctorExtensionSettings(
      * concurrently. In order to account for this there is a threshold you can set. When the difference is above the
      * threshold, a warning is displayed.
      */
-    val negativeAvoidanceThreshold: Int? = null,
+    val negativeAvoidanceThreshold: Int?
+
     /**
      * Warn when not using parallel GC.
      */
-    val warnWhenNotUsingParallelGC: Boolean? = null,
+    val warnWhenNotUsingParallelGC: Boolean?
+
     /**
      * Throws an error when the `Delete` or `clean` task has dependencies.
      * If a clean task depends on other tasks, clean can be reordered and made to run after the tasks that would produce
@@ -70,17 +70,20 @@ internal data class DoctorExtensionSettings(
      * (e.g., gradle clean build).
      * http://github.com/gradle/gradle/issues/2488
      */
-    val disallowCleanTaskDependencies: Boolean? = null,
+    val disallowCleanTaskDependencies: Boolean?
+
     /**
      * Warn if using the Kotlin Compiler Daemon Fallback. The fallback is incredibly slow and should be avoided.
      * https://youtrack.jetbrains.com/issue/KT-48843
      */
-    val warnIfKotlinCompileDaemonFallback: Boolean? = null,
+    val warnIfKotlinCompileDaemonFallback: Boolean?
+
     /**
      * The mode in which the Apple Rosetta translation check is executed. Default is "ERROR".
      */
-    val appleRosettaTranslationCheckMode: AppleRosettaTranslationCheckMode? = null,
+    val appleRosettaTranslationCheckMode: AppleRosettaTranslationCheckMode?
+
     /** Configures JAVA_HOME-specific behavior.
      */
-    val javaHome: JavaHomeHandler? = null,
-)
+    val javaHome: JavaHomeHandler?
+}
