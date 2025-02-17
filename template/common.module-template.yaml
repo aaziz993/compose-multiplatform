@@ -1,30 +1,3 @@
-repositories:
-  - id: Amper Packages
-    url: https://packages.jetbrains.team/maven/p/amper/amper
-  #    publish: true
-  #    credentials:
-  #      file: local.properties
-  #      usernameKey: sonatype.password
-  #      passwordKey: sonatype.password
-  - id: mavenCentral
-    url: https://repo.maven.apache.org/maven2/
-  - id: googleRepo
-    url: https://dl.google.com/dl/android/maven2/
-  - id: mavenLocal
-    url: mavenLocal
-    resolve: false
-    publish: true
-  - id: gradle
-    url: https://plugins.gradle.org/m2/
-  - id: intellij-repository
-    url: https://cache-redirector.jetbrains.com/www.jetbrains.com/intellij-repository/releases
-  - id: intellij-dependencies
-    url: https://cache-redirector.jetbrains.com/packages.jetbrains.team/maven/p/ij/intellij-dependencies
-  - id: libs-releases
-    url: https://repo.gradle.org/gradle/libs-releases
-  - id: teamcity-repository
-    url: https://cache-redirector.jetbrains.com/download.jetbrains.com/teamcity-repository
-
 dependencies:
   - $kotlin.serialization.json
   - $kotlin.serialization.properties
@@ -39,16 +12,16 @@ settings:
         ensureJavaHomeIsSet: false
         ensureJavaHomeMatches: false
 
-    kover:
-      enabled: true
-      html:
-        title: Generate coverage report
-        reportDir: build/reports/kover
-        onCheck: true
-        charset: UTF8
-      xml:
-        reportFile: build/reports/kover/report.xml
-        onCheck: true
+#    kover:
+#      enabled: true
+#      html:
+#        title: Generate coverage report
+#        reportDir: build/reports/kover
+#        onCheck: true
+#        charset: UTF8
+#      xml:
+#        reportFile: build/reports/kover/report.xml
+#        onCheck: true
 
     dokka:
       sourceSets: [Module.md]

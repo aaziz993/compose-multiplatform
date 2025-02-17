@@ -9,16 +9,12 @@ import org.gradle.api.initialization.Settings
 
 internal class GitHooksluginPart(private val settings: Settings) {
 
-    private val gitHooks by lazy {
-        settings.amperProjectExtraProperties.settings.gradle.gitHooks
-    }
-
     val needToApply: Boolean by lazy {
-        gitHooks.enabled
+        settings.amperProjectExtraProperties.settings.gradle.gitHooks.enabled
     }
 
-    fun applyBeforeEvaluate() {
-        settings.plugins.apply(settings.libs.plugins.plugin("git-hooks").id)
+    init {
+        settings.plugins.apply(settings.libs.plugins.plugin("gradle-pre-commit-git-hooks").id)
 
         applySettings()
     }

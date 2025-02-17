@@ -5,5 +5,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 internal data class VersionCatalog(
     val name: String,
-    val from: List<String>
+    val files: List<String>? = null,
+    val dependency: String? = null
 )

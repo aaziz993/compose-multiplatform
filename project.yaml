@@ -3,10 +3,20 @@ pluginManagrment:
     - https://www.jetbrains.com/intellij-repository/releases
     - https://packages.jetbrains.team/maven/p/ij/intellij-dependencies
 
-versionCatalogs:
-  name: kotlinWrappers
-  from: org.jetbrains.kotlin-wrappers:kotlin-wrappers-catalog:2025.2.2
+dependencyResolutionManagement:
+  repositories:
+    - https://packages.jetbrains.team/maven/p/amper/amper
+    - https://repo.maven.apache.org/maven2/
+    - https://dl.google.com/dl/android/maven2/
+    - https://plugins.gradle.org/m2/
+    - https://cache-redirector.jetbrains.com/www.jetbrains.com/intellij-repository/releases
+    - https://cache-redirector.jetbrains.com/packages.jetbrains.team/maven/p/ij/intellij-dependencies
+    - https://repo.gradle.org/gradle/libs-releases
+    - https://cache-redirector.jetbrains.com/download.jetbrains.com/teamcity-repository
 
+  versionCatalogs:
+    - name: kotlinWrappers
+      dependency: org.jetbrains.kotlin-wrappers:kotlin-wrappers-catalog:2025.2.2
 
 modules:
   - android-app
@@ -18,3 +28,14 @@ modules:
   - cmp-lib
   - kmp-lib
   - compiler
+
+settings:
+  develocity:
+    enabled: true
+
+  toolchainManagement:
+    enabled: true
+
+  gitHooks:
+    enabled: true
+

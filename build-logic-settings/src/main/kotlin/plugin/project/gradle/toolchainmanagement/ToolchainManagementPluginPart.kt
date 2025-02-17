@@ -17,8 +17,7 @@ internal class ToolchainManagementPluginPart(private val settings: Settings) {
         settings.amperProjectExtraProperties.settings.gradle.toolchain.enabled
     }
 
-    fun applyBeforeEvaluate() {
-
+   init {
         settings.plugins.apply(settings.libs.plugins.plugin("foojay-resolver-convention").id)
 
         applySettings()

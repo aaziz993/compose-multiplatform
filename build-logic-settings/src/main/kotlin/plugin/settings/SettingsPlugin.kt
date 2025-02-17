@@ -42,6 +42,9 @@ import gradle.plugins
 import gradle.setupDynamicClasspath
 import org.gradle.kotlin.dsl.maven
 import plugin.project.BindingProjectPlugin
+import plugin.project.gradle.develocity.DevelocityPluginPart
+import plugin.project.gradle.githooks.GitHooksluginPart
+import plugin.project.gradle.toolchainmanagement.ToolchainManagementPluginPart
 import plugin.project.model.module.Alias
 import plugin.project.web.node.configureNodeJsRootExtension
 import plugin.project.web.npm.configureNpmExtension
@@ -89,6 +92,7 @@ public class SettingsPlugin : Plugin<Settings> {
         }
     }
 
+    @Suppress("UnstableApiUsage")
     private fun Settings.setupAmperProject() {
         setGradleExtraPropertiesToAmperProjectMappings()
 
@@ -99,24 +103,41 @@ public class SettingsPlugin : Plugin<Settings> {
                     google()
                     gradlePluginPortal()
 
-                    pluginManagement.repositories.forEach { url -> maven(url) }
+                    pluginManagement?.repositories?.forEach { repository -> maven(repository) }
                 }
             }
         }
 
-        amperProjectExtraProperties.dependencyResolutionManagement.let { dependencyResolutionManagement ->
+        // Apply plugins.
+        DevelocityPluginPart(this)
+        ToolchainManagementPluginPart(this)
+        GitHooksluginPart(this)
+
+        amperProjectExtraProperties.dependencyResolutionManagement?.let { dependencyResolutionManagement ->
             dependencyResolutionManagement {
-                versionCatalogs {
-                    dependencyResolutionManagement.versionCatalogs.forEach { (name, from) ->
-                        maybeCreate(name).apply {
-                            from(from)
+                repositories {
+                    addDefaultAmperRepositoriesForDependencies()
+                    dependencyResolutionManagement.repositories?.let { repositories ->
+                        repositories.forEach { repository ->
+                            maven(repository)
+                        }
+                    }
+                }
+
+                dependencyResolutionManagement.versionCatalogs?.let { versionCatalogs ->
+                    versionCatalogs {
+                        versionCatalogs.forEach { (name, files, dependency) ->
+                            create(name).apply {
+                                files?.let { layout.rootDirectory.files(*it.toTypedArray()) }
+                                dependency?.let(::from)
+                            }
                         }
                     }
                 }
             }
         }
 
-        amperProjectExtraProperties.modules.forEach(::include)
+        amperProjectExtraProperties.modules?.forEach(::include)
     }
 
     private fun Settings.setGradleExtraPropertiesToAmperProjectMappings() {
@@ -222,11 +243,6 @@ public class SettingsPlugin : Plugin<Settings> {
     }
 
     private fun configureProjectForAmper(project: Project) {
-
-        // /!\ This overrides any user configuration from settings.gradle.kts
-        // This is only done in modules with Amper's module.yaml config to avoid issues
-        project.repositories.addDefaultAmperRepositoriesForDependencies()
-
         // Disable warning about Default Kotlin Hierarchy.
         project.extraProperties.set("kotlin.mpp.applyDefaultHierarchyTemplate", "false")
 

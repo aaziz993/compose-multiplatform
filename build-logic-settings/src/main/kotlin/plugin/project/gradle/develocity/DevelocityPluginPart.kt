@@ -13,7 +13,7 @@ internal class DevelocityPluginPart(private val settings: Settings) {
 
     val needToApply: Boolean by lazy { develocity.enabled }
 
-    fun apply() {
+    init {
         // Gives the data to speed up your build, improve build reliability and accelerate build debugging.
         settings.plugins.apply(settings.libs.plugins.plugin("develocity").id)
 
