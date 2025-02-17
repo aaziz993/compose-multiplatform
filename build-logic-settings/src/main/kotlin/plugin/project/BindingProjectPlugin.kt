@@ -31,6 +31,8 @@ import plugin.project.gradle.dokka.DokkaPluginPart
 import plugin.project.gradle.kover.KoverPluginPart
 import plugin.project.gradle.sonar.SonarPluginPart
 import plugin.project.gradle.spotless.SpotlessPluginPart
+import plugin.project.kotlin.atomicfu.AtomicFUPluginPart
+import plugin.project.kotlin.ksp.KspPluginPart
 import plugin.project.web.WasmBindingPluginPart
 import plugin.project.web.js.JsBindingPluginPart
 
@@ -58,6 +60,8 @@ internal class BindingProjectPlugin : Plugin<Project> {
             SonarPluginPart(pluginCtx),
             DokkaPluginPart(pluginCtx),
             ApiValidationPluginPart(pluginCtx),
+            KspPluginPart(pluginCtx),
+            AtomicFUPluginPart(pluginCtx),
             AndroidBindingPluginPart(pluginCtx),
             JsBindingPluginPart(pluginCtx),
             WasmBindingPluginPart(pluginCtx),

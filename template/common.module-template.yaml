@@ -20,6 +20,9 @@ settings:
     # Can format <antlr | c | c# | c++ | css | flow | graphql | groovy | html | java | javascript | json | jsx | kotlin | less | license headers | markdown | objective-c | protobuf | python | scala | scss | shell | sql | typeScript | vue | yaml | anything> using <gradle | maven | sbt | anything>.
     spotless:
       enabled: true
+      kotlinGradle:
+        ktlint:
+          editorConfigPath: ../.editorconfig
 
     # Set of solutions for collecting test coverage of Kotlin code compiled for JVM and Android platforms.
     kover:
@@ -81,11 +84,6 @@ settings:
     serialization:
       enabled: true
       version: 1.8.0
-
-    spotless:
-      enabled: true
-
-    sonar:
 
   jvm:
     release: 23
