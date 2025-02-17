@@ -2,6 +2,7 @@ package gradle
 
 import com.diffplug.gradle.spotless.SpotlessExtension
 import com.github.gmazzo.gradle.plugins.BuildConfigExtension
+import com.google.devtools.ksp.gradle.KspExtension
 import com.gradle.develocity.agent.gradle.DevelocityConfiguration
 import com.osacky.doctor.DoctorExtension
 import kotlinx.atomicfu.plugin.gradle.AtomicFUPluginExtension
@@ -20,11 +21,6 @@ import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension
 
 internal val Project.settings: Settings
     get() = (gradle as GradleInternal).settings
-
-internal val Project.develocity: DevelocityConfiguration get() = the()
-
-internal fun Project.develocity(configure: DevelocityConfiguration.() -> Unit) =
-    extensions.configure(configure)
 
 internal val Project.doctor: DoctorExtension get() = the()
 
@@ -61,6 +57,11 @@ internal val Project.apiValidation: ApiValidationExtension get() = the()
 internal fun Project.apiValidation(configure: ApiValidationExtension.() -> Unit) =
     extensions.configure(configure)
 
+internal val Project.ksp: KspExtension get() = the()
+
+internal fun Project.ksp(configure: KspExtension.() -> Unit) =
+    extensions.configure(configure)
+
 internal val Project.npm: NodeJsRootExtension get() = the()
 
 internal fun Project.npm(configure: NpmExtension.() -> Unit) =
@@ -80,6 +81,11 @@ internal val Project.nodeEnv: NodeJsEnvSpec get() = the()
 
 internal fun Project.nodeEnv(configure: NodeJsEnvSpec.() -> Unit) =
     extensions.configure(configure)
+
+internal fun Project.execute(cmd: String): String = providers.exec {
+    commandLine(cmd.split(" "))
+}.standardOutput.asText.get().trim()
+
 
 
 

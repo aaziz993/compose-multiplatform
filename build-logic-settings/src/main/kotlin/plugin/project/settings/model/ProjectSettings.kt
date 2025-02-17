@@ -1,7 +1,6 @@
-package plugin.project.model.project
+package plugin.project.settings.model
 
 import kotlinx.serialization.Serializable
-import plugin.project.gradle.develocity.model.DevelocitySettings
 import plugin.project.gradle.model.ProjectGradleSettings
 
 @Serializable

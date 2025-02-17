@@ -11,6 +11,7 @@ internal data class DevelocitySettings(
     override val allowUntrustedServer: Boolean? = null,
     override val accessKey: String? = null,
     val enabled: Boolean = true,
-    val localBuildCache: Boolean=true,
-    val remoteBuildCache: Boolean=true,
+    val localBuildCache: Boolean = true,
+    val remoteBuildCache: Boolean = true,
+    val git: Git? = null,
 ) : DevelocityConfiguration

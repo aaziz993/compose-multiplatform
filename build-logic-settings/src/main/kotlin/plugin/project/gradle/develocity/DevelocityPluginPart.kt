@@ -1,15 +1,17 @@
 package plugin.project.gradle.develocity
 
-import com.gradle.develocity.agent.gradle.DevelocityConfiguration
 import gradle.*
 import org.gradle.api.initialization.Settings
+import org.gradle.kotlin.dsl.develocity
 import java.net.URLEncoder
 
 internal class DevelocityPluginPart(private val settings: Settings) {
 
-    val needToApply: Boolean by lazy {
-        settings.amperProjectExtraProperties.settings.develocity.enabled
+    private val develocity by lazy {
+        settings.amperProjectExtraProperties.settings.gradle.develocity
     }
+
+    val needToApply: Boolean by lazy { develocity.enabled }
 
     fun apply() {
         // Gives the data to speed up your build, improve build reliability and accelerate build debugging.
@@ -36,58 +38,58 @@ internal class DevelocityPluginPart(private val settings: Settings) {
             return
         }
 
-        val ge = extensions.getByType(DevelocityConfiguration::class.java)
-
         gradle.projectsEvaluated {
             if (isCI) {
-                val buildTypeId = "teamcity.buildType.id"
-                val buildId = "teamcity.build.id"
+                develocity {
+                    val buildTypeId = "teamcity.buildType.id"
+                    val buildId = "teamcity.build.id"
 
-                if (gradle.rootProject.hasProperty(buildId) && gradle.rootProject.hasProperty(buildTypeId)) {
-                    val buildIdValue = gradle.rootProject.property(buildId).toString()
-                    val teamCityBuildNumber = URLEncoder.encode(buildIdValue, "UTF-8")
-                    val teamCityBuildTypeId = gradle.rootProject.property(buildTypeId)
+                    if (gradle.rootProject.hasProperty(buildId) && gradle.rootProject.hasProperty(buildTypeId)) {
+                        val buildIdValue = gradle.rootProject.property(buildId).toString()
+                        val teamCityBuildNumber = URLEncoder.encode(buildIdValue, "UTF-8")
+                        val teamCityBuildTypeId = gradle.rootProject.property(buildTypeId)
 
-                    ge.buildScan.link(
-                        "${rootProject.name.uppercase()} TeamCity build",
-                        "$teamCityUrl/buildConfiguration/${teamCityBuildTypeId}/${teamCityBuildNumber}",
-                    )
-                }
+                        buildScan.link(
+                            "${rootProject.name.uppercase()} TeamCity build",
+                            "$teamCityUrl/buildConfiguration/${teamCityBuildTypeId}/${teamCityBuildNumber}",
+                        )
+                    }
 
-                if (gradle.rootProject.hasProperty(buildId)) {
-                    ge.buildScan.value("TeamCity CI build id", gradle.rootProject.property(buildId) as String)
+                    if (gradle.rootProject.hasProperty(buildId)) {
+                        buildScan.value("TeamCity CI build id", gradle.rootProject.property(buildId) as String)
+                    }
                 }
             }
         }
     }
 
     private fun Settings.enrichGitData() = with(settings) {
-        val ge = extensions.getByType(DevelocityConfiguration::class.java)
+        this@DevelocityPluginPart.develocity.git?.let { git ->
+            gradle.projectsEvaluated {
+                if (!isCI && !git.skipTags) {
+                    develocity {
+                        git.repo.let { repo ->
+                            // Git commit id
+                            val commitId = gitCommitId()
+                            if (commitId.isNotEmpty()) {
+                                buildScan.value("Git Commit ID", commitId)
+                                buildScan.link("GitHub Commit Link", "$repo/tree/$commitId")
+                            }
 
-        val githubRepo = providers.gradleProperty("develocity.github.repo").get()
-        val skipGitTags = providers.gradleProperty("develocity.github.skip-git-tags").map(String::toBoolean)
-            .getOrElse(false)
+                            // Git branch name
+                            val branchName = gitBranchName()
+                            if (branchName.isNotEmpty()) {
+                                buildScan.value("Git Branch Name", branchName)
+                                buildScan.link("GitHub Branch Link", "$repo/tree/$branchName")
+                            }
+                        }
 
-        gradle.projectsEvaluated {
-            if (!isCI && !skipGitTags) {
-                // Git commit id
-                val commitId = execute("git rev-parse --verify HEAD")
-                if (commitId.isNotEmpty()) {
-                    ge.buildScan.value("Git Commit ID", commitId)
-                    ge.buildScan.link("GitHub Commit Link", "$githubRepo/tree/$commitId")
-                }
-
-                // Git branch name
-                val branchName = execute("git rev-parse --abbrev-ref HEAD")
-                if (branchName.isNotEmpty()) {
-                    ge.buildScan.value("Git Branch Name", branchName)
-                    ge.buildScan.link("GitHub Branch Link", "$githubRepo/tree/$branchName")
-                }
-
-                // Git dirty local state
-                val status = execute("git status --porcelain")
-                if (status.isNotEmpty()) {
-                    ge.buildScan.value("Git Status", status)
+                        // Git dirty local state
+                        val status = gitStatus()
+                        if (status.isNotEmpty()) {
+                            buildScan.value("Git Status", status)
+                        }
+                    }
                 }
             }
         }

@@ -11,7 +11,7 @@ import plugin.project.gradle.develocity.model.BuildScanConfiguration
 
 internal fun Settings.configureDevelocityConfiguration() =
     plugins.withType<DevelocityPlugin> {
-        amperProjectExtraProperties.settings.develocity.let { develocity ->
+        amperProjectExtraProperties.settings.gradle.develocity.let { develocity ->
             develocity {
                 develocity.buildScan?.let { buildScan ->
                     buildScan {

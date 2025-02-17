@@ -1,5 +1,6 @@
 package gradle
 
+import org.gradle.accessors.dm.LibrariesForKotlinWrappers
 import org.gradle.accessors.dm.LibrariesForLibs
 import org.gradle.api.Project
 import org.gradle.api.initialization.Settings
@@ -15,6 +16,13 @@ import org.tomlj.TomlTable
  * See: https://github.com/gradle/gradle/issues/15383#issuecomment-779893192
  */
 internal val Project.libs: LibrariesForLibs
+    get() = the()
+
+/**
+ * Accessor to make gradle.version catalog available in build-logic.
+ * See: https://github.com/gradle/gradle/issues/15383#issuecomment-779893192
+ */
+internal val Project.kotlinWrappers: LibrariesForKotlinWrappers
     get() = the()
 
 internal val Project.compose

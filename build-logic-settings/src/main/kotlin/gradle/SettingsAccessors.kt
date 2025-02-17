@@ -2,9 +2,9 @@ package gradle
 
 import org.gradle.api.initialization.Settings
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
-import plugin.project.model.project.ProjectProperties
+import plugin.project.settings.model.ProjectProperties
 
-internal fun Settings.execute(cmd: String): String = settings.providers.exec {
+internal fun Settings.execute(cmd: String): String = providers.exec {
     commandLine(cmd.split(" "))
 }.standardOutput.asText.get().trim()
 

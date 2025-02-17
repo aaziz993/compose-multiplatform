@@ -1,6 +1,6 @@
 @file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
 
-package plugin
+package plugin.project.settings
 
 import kotlin.collections.fold
 import kotlin.io.path.absolutePathString
