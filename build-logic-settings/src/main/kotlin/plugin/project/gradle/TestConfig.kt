@@ -3,6 +3,7 @@ package plugin.project.gradle
 import gradle.kotlin
 import com.gradle.develocity.agent.gradle.test.DevelocityTestConfiguration
 import com.gradle.develocity.agent.gradle.test.TestRetryConfiguration
+import gradle.hasNative
 import gradle.maybeNamed
 import org.gradle.api.Project
 import org.gradle.api.tasks.TaskCollection
@@ -155,7 +156,7 @@ private fun Project.configureTestOnCI() {
     // Run native tests only on matching host.
     // There is no need to configure `onlyIf` for Darwin targets as they're configured by KGP.
     @Suppress("UnstableApiUsage")
-    if (kotlin.targets.hasNative) {
+    if (kotlin.targets.hasNative()) {
         tasks.maybeNamed("linkDebugTestLinuxX64") {
             onlyIf("run only on Linux") { os == OperatingSystem.LINUX }
         }

@@ -6,12 +6,12 @@ import plugin.project.web.node.model.EnvSpec
 
 @Serializable
 internal data class NpmSettings(
-    val command: String? = null,
-    val lockFileName: String? = null,
-    val lockFileDirectory: String? = null,
-    val ignoreScripts: Boolean? = null,
-    val packageLockMismatchReport: LockFileMismatchReport? = null,
-    val reportNewPackageLock: Boolean? = null,
-    val packageLockAutoReplace: Boolean? = null,
-    val overrides: List<NpmOverride>? = null,
-)
+    override val command: String? = null,
+    override val lockFileName: String? = null,
+    override val lockFileDirectory: String? = null,
+    override val ignoreScripts: Boolean? = null,
+    override val packageLockMismatchReport: LockFileMismatchReport? = null,
+    override val reportNewPackageLock: Boolean? = null,
+    override val packageLockAutoReplace: Boolean? = null,
+    override val overrides: List<NpmOverride>? = null,
+) : NpmExtension

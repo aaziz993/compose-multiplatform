@@ -3,21 +3,21 @@ package gradle
 import org.gradle.api.Project
 import org.gradle.api.initialization.Settings
 
-public val isCI: Boolean by lazy {
+internal val isCI: Boolean by lazy {
     System.getenv("CI_VERSION") != null
 }
 
-public fun Settings.gitCommitId(): String = execute("git rev-parse --verify HEAD")
+internal fun Settings.gitCommitId(): String = execute("git rev-parse --verify HEAD")
 
-public fun Settings.gitBranchName(): String = execute("git rev-parse --abbrev-ref HEAD")
+internal fun Settings.gitBranchName(): String = execute("git rev-parse --abbrev-ref HEAD")
 
-public fun Settings.gitStatus(): String = execute("git status --porcelain")
+internal fun Settings.gitStatus(): String = execute("git status --porcelain")
 
-public fun Project.gitCommitId(): String = execute("git rev-parse --verify HEAD")
+internal fun Project.gitCommitId(): String = execute("git rev-parse --verify HEAD")
 
-public fun Project.gitBranchName(): String = execute("git rev-parse --abbrev-ref HEAD")
+internal fun Project.gitBranchName(): String = execute("git rev-parse --abbrev-ref HEAD")
 
-public fun Project.gitStatus(): String = execute("git status --porcelain")
+internal fun Project.gitStatus(): String = execute("git status --porcelain")
 
 // The GITHUB_REF_NAME provide the reference name.
 public val gitRef: String? by lazy {

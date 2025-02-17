@@ -48,55 +48,58 @@ internal fun Settings.configureDevelocityConfiguration() =
 
 private fun com.gradle.develocity.agent.gradle.scan.BuildScanConfiguration.configureFrom(
     config: BuildScanConfiguration
-) = apply {
+) {
     config.background?.let { background ->
         background {
             configureFrom(background)
         }
     }
 
-    config.tag?.let(::tag)
-    config.values?.forEach { (name, value) -> value(name, value) }
-    config.links?.forEach { (name, url) -> link(name, url) }
-    termsOfUseUrl tryAssign config.termsOfUseUrl
-    termsOfUseAgree tryAssign config.termsOfUseAgree
-    uploadInBackground tryAssign config.uploadInBackground
+    apply {
 
-    config.publishing?.let { publishing ->
-        publishing {
-            publishing.onlyIfAuthenticated?.takeIf { it }.run {
-                onlyIf { it.isAuthenticated }
-            }
-        }
-    }
-    config.obfuscation?.let { obfuscation ->
-        obfuscation {
-            obfuscation.username?.let { username ->
-                username(username::get)
-            }
+        config.tag?.let(::tag)
+        config.values?.forEach { (name, value) -> value(name, value) }
+        config.links?.forEach { (name, url) -> link(name, url) }
+        termsOfUseUrl tryAssign config.termsOfUseUrl
+        termsOfUseAgree tryAssign config.termsOfUseAgree
+        uploadInBackground tryAssign config.uploadInBackground
 
-            obfuscation.hostname?.let { hostname ->
-                hostname(hostname::get)
-            }
-
-            obfuscation.ipAddresses?.let { ipAddresses ->
-                ipAddresses {
-                    it.map { ipAddresses[it.hostAddress] }
+        config.publishing?.let { publishing ->
+            publishing {
+                publishing.onlyIfAuthenticated?.takeIf { it }.run {
+                    onlyIf { it.isAuthenticated }
                 }
             }
+        }
+        config.obfuscation?.let { obfuscation ->
+            obfuscation {
+                obfuscation.username?.let { username ->
+                    username(username::get)
+                }
 
-            obfuscation.externalProcessName?.let { externalProcessName ->
-                externalProcessName(externalProcessName::get)
+                obfuscation.hostname?.let { hostname ->
+                    hostname(hostname::get)
+                }
+
+                obfuscation.ipAddresses?.let { ipAddresses ->
+                    ipAddresses {
+                        it.map { ipAddresses[it.hostAddress] }
+                    }
+                }
+
+                obfuscation.externalProcessName?.let { externalProcessName ->
+                    externalProcessName(externalProcessName::get)
+                }
             }
         }
-    }
 
-    config.capture?.let { capture ->
-        capture {
-            fileFingerprints tryAssign capture.fileFingerprints
-            buildLogging tryAssign capture.buildLogging
-            testLogging tryAssign capture.testLogging
-            resourceUsage tryAssign capture.resourceUsage
+        config.capture?.let { capture ->
+            capture {
+                fileFingerprints tryAssign capture.fileFingerprints
+                buildLogging tryAssign capture.buildLogging
+                testLogging tryAssign capture.testLogging
+                resourceUsage tryAssign capture.resourceUsage
+            }
         }
     }
 }

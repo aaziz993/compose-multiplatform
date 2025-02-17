@@ -16,10 +16,6 @@ internal data class DokkaMultiModuleTask(
     override val offlineMode: Boolean? = null,
     override val failOnWarning: Boolean? = null,
     override val cacheRoot: String? = null,
-    override val plugins: Configuration? = null,
-    override val pluginsClasspath: List<String>? = null,
-    override val runtime: Configuration? = null,
-    override val runtimeClasspath: List<String>? = null,
     /**
      * List of Markdown files that contain
      * [module and package documentation](https://kotlinlang.org/docs/dokka-module-and-package-docs.html).

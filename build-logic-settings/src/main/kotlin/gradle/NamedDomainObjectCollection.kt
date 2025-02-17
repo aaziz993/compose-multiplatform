@@ -1,11 +1,8 @@
 package gradle
 
-import org.gradle.api.Action
 import org.gradle.api.NamedDomainObjectCollection
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.NamedDomainObjectProvider
-import org.gradle.api.artifacts.CapabilitiesResolution
-import org.gradle.api.artifacts.CapabilityResolutionDetails
 
 internal fun <T> NamedDomainObjectContainer<T>.maybeRegister(name: String, configure: T.() -> Unit): NamedDomainObjectProvider<T> =
     if (name in names) named(name, configure) else register(name, configure)

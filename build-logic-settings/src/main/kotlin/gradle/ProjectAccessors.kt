@@ -5,6 +5,7 @@ import com.github.gmazzo.gradle.plugins.BuildConfigExtension
 import com.google.devtools.ksp.gradle.KspExtension
 import com.gradle.develocity.agent.gradle.DevelocityConfiguration
 import com.osacky.doctor.DoctorExtension
+import io.github.sgrishchenko.karakum.gradle.plugin.KarakumExtension
 import kotlinx.atomicfu.plugin.gradle.AtomicFUPluginExtension
 import kotlinx.kover.gradle.plugin.dsl.KoverProjectExtension
 import kotlinx.validation.ApiValidationExtension
@@ -102,6 +103,11 @@ internal fun Project.node(configure: NodeJsRootExtension.() -> Unit) =
 internal val Project.nodeEnv: NodeJsEnvSpec get() = the()
 
 internal fun Project.nodeEnv(configure: NodeJsEnvSpec.() -> Unit) =
+    extensions.configure(configure)
+
+internal val Project.karakum: KarakumExtension get() = the()
+
+internal fun Project.karakum(configure: KarakumExtension.() -> Unit) =
     extensions.configure(configure)
 
 internal fun Project.execute(cmd: String): String = providers.exec {

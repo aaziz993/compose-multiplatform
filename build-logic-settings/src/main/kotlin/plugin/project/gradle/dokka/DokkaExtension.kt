@@ -4,22 +4,12 @@ import gradle.amperModuleExtraProperties
 import gradle.dokka
 import gradle.maybeNamed
 import gradle.tryAssign
-import java.net.URI
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
-import org.gradle.kotlin.dsl.invoke
-import org.gradle.kotlin.dsl.apply
-import org.jetbrains.dokka.DokkaConfiguration
 import org.jetbrains.dokka.gradle.DokkaPlugin
-import org.jetbrains.dokka.gradle.engine.parameters.KotlinPlatform
-import org.jetbrains.dokka.gradle.engine.parameters.KotlinPlatform.AndroidJVM
-import org.jetbrains.dokka.gradle.engine.parameters.VisibilityModifier
-import org.jetbrains.dokka.gradle.engine.parameters.VisibilityModifier.Public
 import org.jetbrains.dokka.gradle.internal.InternalDokkaGradlePluginApi
 import plugin.project.gradle.dokka.model.DokkaExternalDocumentationLinkSpec
-import plugin.project.gradle.dokka.model.DokkaPackageOptionsSpec
 import plugin.project.gradle.dokka.model.DokkaPublication
-import plugin.project.gradle.dokka.model.DokkaSourceLinkSpec
 import plugin.project.gradle.dokka.model.DokkaSourceSetSpec
 
 @OptIn(InternalDokkaGradlePluginApi::class)
