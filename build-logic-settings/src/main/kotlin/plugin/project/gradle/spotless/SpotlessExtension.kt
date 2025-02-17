@@ -149,8 +149,12 @@ internal fun Project.configureSpotlessExtension() =
                 spotless.encoding?.let(::setEncoding)
                 spotless.ratchetFrom?.let(::setRatchetFrom)
                 spotless.enforceCheck?.let(::setEnforceCheck)
-                spotless.predeclareDeps?.takeIf { it }.run { predeclareDeps() }
-                spotless.predeclareDepsFromBuildscript?.takeIf { it }.run { predeclareDepsFromBuildscript() }
+
+                // Applicable only in root project.
+                if (project == project.rootProject) {
+                    spotless.predeclareDeps?.takeIf { it }.run { predeclareDeps() }
+                    spotless.predeclareDepsFromBuildscript?.takeIf { it }.run { predeclareDepsFromBuildscript() }
+                }
 
                 // Format files
                 (spotless.formats?.ifEmpty { null }

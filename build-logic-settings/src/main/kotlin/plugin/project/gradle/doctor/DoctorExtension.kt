@@ -1,14 +1,13 @@
 package plugin.project.gradle.doctor
 
-import com.osacky.doctor.DoctorExtension
 import com.osacky.doctor.DoctorPlugin
-import org.gradle.api.Project
-import org.gradle.kotlin.dsl.withType
 import gradle.amperModuleExtraProperties
 import gradle.doctor
 import gradle.isCI
 import gradle.tryAssign
 import gradle.unregister
+import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
 
 internal fun Project.configureDoctorExtension() =
     plugins.withType<DoctorPlugin> {
@@ -20,7 +19,6 @@ internal fun Project.configureDoctorExtension() =
                     logger.info("Gradle Doctor task monitoring is disabled.")
                     project.gradle.sharedServices.unregister("listener-service")
                 }
-
 
                 disallowMultipleDaemons tryAssign doctor.disallowMultipleDaemons
                 downloadSpeedWarningThreshold tryAssign doctor.downloadSpeedWarningThreshold

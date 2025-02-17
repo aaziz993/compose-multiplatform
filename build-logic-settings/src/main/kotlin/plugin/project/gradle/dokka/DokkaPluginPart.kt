@@ -33,10 +33,10 @@ internal class DokkaPluginPart(ctx: PluginPartCtx) : BindingPluginPart by ctx {
         project.amperModuleExtraProperties.settings.gradle.dokka
     }
 
-    override fun applyBeforeEvaluate() {
+    override fun applyAfterEvaluate() {
         super.applyAfterEvaluate()
 
-        project.plugins.apply(project.settings.libs.plugins.plugin("dokka").id)
+        project.plugins.apply(project.libs.plugins.dokka.get().pluginId)
 
         applySettings()
     }

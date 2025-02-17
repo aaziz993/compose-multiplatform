@@ -1,17 +1,11 @@
 package plugin.project.gradle.doctor
 
-import com.osacky.doctor.DoctorExtension
-import org.gradle.kotlin.dsl.configure
-import org.jetbrains.amper.gradle.base.BindingPluginPart
-import org.jetbrains.amper.gradle.base.PluginPartCtx
 import gradle.amperModuleExtraProperties
-import gradle.id
 import gradle.isCI
 import gradle.libs
-import gradle.plugin
-import gradle.plugins
-import gradle.settings
 import gradle.unregister
+import org.jetbrains.amper.gradle.base.BindingPluginPart
+import org.jetbrains.amper.gradle.base.PluginPartCtx
 
 internal class DoctorPluginPart(ctx: PluginPartCtx) : BindingPluginPart by ctx {
 
@@ -23,8 +17,10 @@ internal class DoctorPluginPart(ctx: PluginPartCtx) : BindingPluginPart by ctx {
         doctor.enabled && project == project.rootProject
     }
 
-    override fun applyBeforeEvaluate() {
-        super.applyBeforeEvaluate()
+    override fun applyAfterEvaluate() {
+        super.applyAfterEvaluate()
+
+        project.plugins.apply(project.libs.plugins.doctor.get().pluginId)
 
         applySettings()
     }

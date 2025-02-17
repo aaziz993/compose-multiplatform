@@ -14,11 +14,13 @@ import org.jetbrains.amper.gradle.base.PluginPartCtx
 internal class KoverPluginPart(ctx: PluginPartCtx) : BindingPluginPart by ctx {
 
     override val needToApply: Boolean by lazy {
-       project.amperModuleExtraProperties.settings.gradle.kover.enabled
+        project.amperModuleExtraProperties.settings.gradle.kover.enabled
     }
 
-    override fun applyBeforeEvaluate() {
-        project.plugins.apply(project.settings.libs.plugins.plugin("kover").id)
+    override fun applyAfterEvaluate() {
+        super.applyAfterEvaluate()
+
+        project.plugins.apply(project.libs.plugins.kover.get().pluginId)
 
         applySettings()
     }

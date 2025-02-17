@@ -113,7 +113,3 @@ internal fun Project.karakum(configure: KarakumExtension.() -> Unit) =
 internal fun Project.execute(cmd: String): String = providers.exec {
     commandLine(cmd.split(" "))
 }.standardOutput.asText.get().trim()
-
-
-
-

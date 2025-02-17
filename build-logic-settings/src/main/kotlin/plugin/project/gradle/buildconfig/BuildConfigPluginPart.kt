@@ -16,10 +16,10 @@ internal class BuildConfigPluginPart(ctx: PluginPartCtx) : BindingPluginPart by 
         project.amperModuleExtraProperties.settings.gradle.buildConfig.enabled
     }
 
-    override fun applyBeforeEvaluate() {
+    override fun applyAfterEvaluate() {
         super.applyAfterEvaluate()
 
-        project.plugins.apply(project.settings.libs.plugins.plugin("build-config").id)
+        project.plugins.apply(project.libs.plugins.build.config.get().pluginId)
 
         applySettings()
     }

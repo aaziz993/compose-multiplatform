@@ -27,7 +27,10 @@ import org.jetbrains.amper.gradle.serialization.SerializationPluginPart
 import plugin.project.compose.ComposePluginPart
 import plugin.project.gradle.kover.KoverPluginPart
 import plugin.project.gradle.apivalidation.ApiValidationPluginPart
+import plugin.project.gradle.buildconfig.BuildConfigPluginPart
 import plugin.project.gradle.doctor.DoctorPluginPart
+import plugin.project.gradle.dokka.DokkaPluginPart
+import plugin.project.gradle.sonar.SonarPluginPart
 import plugin.project.gradle.spotless.SpotlessPluginPart
 import plugin.project.web.WasmBindingPluginPart
 import plugin.project.web.js.JsBindingPluginPart
@@ -49,6 +52,13 @@ internal class BindingProjectPlugin : Plugin<Project> {
         // Find applied parts. Preserve order!
         val kmppBindingPluginPart = KMPPBindingPluginPart(pluginCtx)
         val registeredParts = listOf(
+            DoctorPluginPart(pluginCtx),
+            SpotlessPluginPart(pluginCtx),
+            SonarPluginPart(pluginCtx),
+            DokkaPluginPart(pluginCtx),
+            KoverPluginPart(pluginCtx),
+            BuildConfigPluginPart(pluginCtx),
+            ApiValidationPluginPart(pluginCtx),
             AndroidBindingPluginPart(pluginCtx),
             JsBindingPluginPart(pluginCtx),
             WasmBindingPluginPart(pluginCtx),
@@ -58,10 +68,6 @@ internal class BindingProjectPlugin : Plugin<Project> {
             AppleBindingPluginPart(pluginCtx),
             SerializationPluginPart(pluginCtx),
             ParcelizePluginPart(pluginCtx),
-            DoctorPluginPart(pluginCtx),
-//            SpotlessPluginPart(pluginCtx),
-//            ApiValidationPluginPart(pluginCtx),
-//            KoverPluginPart(pluginCtx),
         )
         appliedParts = registeredParts.filter { it.needToApply }
 

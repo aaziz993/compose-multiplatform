@@ -19,10 +19,10 @@ internal class SpotlessPluginPart(ctx: PluginPartCtx) : BindingPluginPart by ctx
         spotless.enabled
     }
 
-    override fun applyBeforeEvaluate() {
+    override fun applyAfterEvaluate() {
         super.applyAfterEvaluate()
 
-        project.plugins.apply(project.settings.libs.plugins.plugin("spotless").id)
+        project.plugins.apply(project.libs.plugins.spotless.get().pluginId)
 
         applySettings()
     }
