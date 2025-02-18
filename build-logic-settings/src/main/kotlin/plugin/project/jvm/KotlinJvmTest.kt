@@ -7,16 +7,18 @@ import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.testing.Test
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
-import org.gradle.api.tasks.testing.logging.TestLogging
 import org.gradle.jvm.toolchain.JavaLanguageVersion
 import org.gradle.jvm.toolchain.JavaToolchainService
 import org.gradle.kotlin.dsl.assign
-import org.gradle.kotlin.dsl.withType
+import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.the
+import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest
 
-internal fun Project.configureKotlinJvmTest() =
-    tasks.withType<KotlinJvmTest>().configureEach {
+internal fun Project.configureKotlinJvmTest() {
+    val jvmTest = tasks.withType<KotlinJvmTest>()
+
+    jvmTest.configureEach {
         amperModuleExtraProperties.settings.jvm
         maxHeapSize = "2g"
         exclude("**/*StressTest*")
@@ -39,6 +41,25 @@ internal fun Project.configureKotlinJvmTest() =
             exceptionFormat = TestExceptionFormat.FULL
         }
     }
+
+    if(jvmTest.isNotEmpty()) {
+        tasks.register<Test>("stressTest") {
+            classpath = files(jvmTest.map { it.classpath })
+            testClassesDirs = files(jvmTest.map { it.testClassesDirs })
+
+            maxHeapSize = "2g"
+            jvmArgs("-XX:+HeapDumpOnOutOfMemoryError")
+            setForkEvery(1)
+            systemProperty("enable.stress.tests", "true")
+            include("**/*StressTest*")
+            useJUnitPlatform()
+            configureJavaToolchain(
+                libs.versions.java.toolchain.compileJdk.map(JavaLanguageVersion::of),
+                libs.versions.java.toolchain.testJdk.map(JavaLanguageVersion::of),
+            )
+        }
+    }
+}
 
 /** Configure tests against different JDK versions. */
 internal fun Test.configureJavaToolchain(

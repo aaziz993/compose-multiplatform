@@ -8,8 +8,9 @@ import plugin.project.web.model.WebSettings
 
 @Serializable
 internal data class ModuleSettings(
-    val kotlin: KotlinSettings = KotlinSettings(),
     val gradle: ModuleGradleSettings = ModuleGradleSettings(),
+    val kotlin: KotlinSettings = KotlinSettings(),
+    val jvm: JvmSettings= JvmSettings(),
     val web: WebSettings = WebSettings(),
     val compose: ComposeSettings = ComposeSettings(),
 )

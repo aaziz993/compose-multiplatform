@@ -27,11 +27,13 @@ import org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest
 import org.jetbrains.kotlin.gradle.targets.native.tasks.KotlinNativeTest
 import org.jetbrains.kotlin.gradle.tasks.KotlinNativeLink
 import org.jetbrains.kotlin.gradle.tasks.KotlinTest
+import plugin.project.jvm.configureKotlinJvmTest
 
 internal fun Project.configureTest() {
     if (isCI) {
         configureTestOnCI()
     }
+    configureKotlinJvmTest()
     configureTestLogging()
 }
 
