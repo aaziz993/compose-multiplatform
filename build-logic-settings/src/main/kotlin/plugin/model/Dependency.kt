@@ -1,35 +1,21 @@
 package plugin.model
 
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import org.gradle.api.file.Directory
-import org.gradle.api.file.FileCollection
+import org.gradle.api.Project
+import org.gradle.api.initialization.Settings
 
 @Serializable
-internal sealed class Dependency {
+internal data class Dependency(
 
-    abstract val notation: String
+    val notation: String
+) {
 
-    @Serializable
-    @SerialName("file")
-    internal data class File(override val notation: String) : Dependency() {
-
-        override fun toDependencyNotation(directory: Directory) = directory.files(notation)
+    fun Settings.toDependencyNotation(): Any {
     }
 
-    @Serializable
-    @SerialName("maven")
-    internal class Maven(override val notation: String) : Dependency() {
-
-        override fun toDependencyNotation(directory: Directory) = notation
+    fun Project.toDependencyNotation(): Any {
     }
 
-    @Serializable
-    @SerialName("catalog")
-    internal class Catalog(override val notation: String) : Dependency() {
-
-        override fun toDependencyNotation(directory: Directory) = NotImplementedError()
+    private fun toDependencyNotation(): Any {
     }
-
-    abstract fun toDependencyNotation(directory: Directory): Any
 }

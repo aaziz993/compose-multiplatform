@@ -34,7 +34,7 @@ internal class KspPluginPart(ctx: PluginPartCtx) : BindingPluginPart by ctx {
         val kspCommonMainMetadata by configurations
         dependencies {
             ksp.processors?.forEach { processor ->
-                kspCommonMainMetadata(processor.toDependencyNotation(layout.projectDirectory))
+                kspCommonMainMetadata(processor.toDependencyNotation())
             }
         }
     }

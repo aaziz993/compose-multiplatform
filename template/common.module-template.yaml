@@ -85,8 +85,7 @@ settings:
     ksp2:
       useKsp2: true
       processors:
-        - type: file
-          notation: ../compiler
+        - ../compiler
 
 
     # Multiplatform library that provides the idiomatic and efficient way of using atomic operations in Kotlin.

@@ -137,7 +137,7 @@ public class SettingsPlugin : Plugin<Settings> {
                         versionCatalogs.forEach { (name, dependency) ->
                             create(name) {
                                 from(
-                                    dependency.toDependencyNotation(layout.rootDirectory),
+                                    dependency.toDependencyNotation(),
                                 )
                             }
                         }
