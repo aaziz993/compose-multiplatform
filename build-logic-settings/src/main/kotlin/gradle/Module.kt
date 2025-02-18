@@ -15,6 +15,6 @@ internal var Project.amperModuleExtraProperties: ModuleProperties
         extraProperties[MODULE_EXTRA_PROPERTIES] = value
     }
 
-internal val AmperModule.shouldSeparateResourceCollectorsExpectActual
+internal val AmperModule.hasLeafSourceSets
     get() = rootFragment.platforms.size > 1
 

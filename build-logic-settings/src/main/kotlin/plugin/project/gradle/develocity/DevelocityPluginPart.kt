@@ -9,6 +9,8 @@ import gradle.isCI
 import gradle.libs
 import gradle.plugin
 import gradle.plugins
+import gradle.teamCityBuildId
+import gradle.teamCityBuildTypeId
 import java.net.URLEncoder
 import org.gradle.api.initialization.Settings
 import org.gradle.kotlin.dsl.develocity
@@ -38,7 +40,6 @@ internal class DevelocityPluginPart(private val settings: Settings) {
 
     }
 
-
     private fun Settings.enrichTeamCityData() = with(settings) {
         val teamCityUrl = providers.gradleProperty("team-city.url").orNull
 
@@ -52,19 +53,17 @@ internal class DevelocityPluginPart(private val settings: Settings) {
                     val buildTypeId = "teamcity.buildType.id"
                     val buildId = "teamcity.build.id"
 
-                    if (gradle.rootProject.hasProperty(buildId) && gradle.rootProject.hasProperty(buildTypeId)) {
-                        val buildIdValue = gradle.rootProject.property(buildId).toString()
-                        val teamCityBuildNumber = URLEncoder.encode(buildIdValue, "UTF-8")
-                        val teamCityBuildTypeId = gradle.rootProject.property(buildTypeId)
+                    rootProject.teamCityBuildId?.let { teamCityBuildId ->
+                        rootProject.teamCityBuildTypeId?.let { teamCityBuildTypeId ->
+                            val teamCityBuildNumber = URLEncoder.encode(teamCityBuildId, "UTF-8")
 
-                        buildScan.link(
-                            "${rootProject.name.uppercase()} TeamCity build",
-                            "$teamCityUrl/buildConfiguration/${teamCityBuildTypeId}/${teamCityBuildNumber}",
-                        )
-                    }
+                            buildScan.link(
+                                "${rootProject.name.uppercase()} TeamCity build",
+                                "$teamCityUrl/buildConfiguration/${teamCityBuildTypeId}/${teamCityBuildNumber}",
+                            )
+                        }
 
-                    if (gradle.rootProject.hasProperty(buildId)) {
-                        buildScan.value("TeamCity CI build id", gradle.rootProject.property(buildId) as String)
+                        buildScan.value("TeamCity CI build id", teamCityBuildId)
                     }
                 }
             }

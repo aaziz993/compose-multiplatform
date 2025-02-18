@@ -6,7 +6,6 @@ import gradle.libs
 import gradle.plugin
 import gradle.plugins
 import gradle.settings
-import gradle.toDependencyNotation
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.provideDelegate

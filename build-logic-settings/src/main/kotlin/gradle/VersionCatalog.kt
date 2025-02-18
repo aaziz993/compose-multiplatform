@@ -33,10 +33,10 @@ internal val Project.compose
     get() = extensions.getByType<ComposeExtension>().dependencies
 
 @Suppress("UnstableApiUsage")
-internal fun Settings.libs(path: String): TomlParseResult = Toml.parse(layout.rootDirectory.file(path).asFile.readText())
+internal fun File.asLibs(): TomlParseResult = Toml.parse(readText())
 
 internal val Settings.libs: TomlParseResult
-    get() = libs("gradle/libs.versions.toml")
+    get() = layout.rootDirectory.file("gradle/libs.versions.toml").asFile.asLibs()
 
 internal fun TomlTable.version(alias: String) =
     getString(alias)!!
@@ -79,30 +79,6 @@ internal val TomlParseResult.libraries
 
 internal val TomlParseResult.plugins
     get() = getTable("plugins")!!
-
-context(Settings)
-internal fun String.toDependencyNotation(): Any = toDependencyNotation(layout.rootDirectory)
-
-context(Project)
-internal fun String.toDependencyNotation(): Any = toDependencyNotation(layout.projectDirectory)
-
-private fun String.toDependencyNotation(directory: Directory): Any =
-    when {
-        startsWith("$") ->
-            Toml.parse(
-
-                substringBefore(".", "")
-                    .removePrefix("$").let {
-                        File(it)
-                    }
-                    .readText(),
-            ).libraries.library(
-                substringAfter(".", "").replace(".", "-"),
-            )
-
-        split(":").count() > 1 -> this
-        else -> directory.files(this)
-    }
 
 
 

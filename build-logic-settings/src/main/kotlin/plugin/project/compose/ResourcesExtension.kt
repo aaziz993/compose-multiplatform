@@ -5,7 +5,7 @@ package plugin.project.compose
 import gradle.all
 import gradle.configureActualResourceCollectorsGeneration
 import gradle.ideaImportDependOn
-import gradle.shouldSeparateResourceCollectorsExpectActual
+import gradle.hasLeafSourceSets
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.kotlin.dsl.assign
@@ -109,7 +109,7 @@ private fun Project.configureResources() {
             }
             // Add generated assembled resources to new target source set resources
             kotlinMPE.targets.matching { it.name == platform }.all { target ->
-                val sourceSetName = if (module.shouldSeparateResourceCollectorsExpectActual) target.name else "commonMain"
+                val sourceSetName = if (module.hasLeafSourceSets) target.name else "commonMain"
 
                 adjustAssembledResources(target, sourceSetName)
             }
@@ -136,7 +136,7 @@ private fun Project.adjustResourceCollectorsGeneration(
         .all {
             adjustExpectResourceCollectorsGeneration(
                 this,
-                module.shouldSeparateResourceCollectorsExpectActual,
+                module.hasLeafSourceSets,
             )
         }
 
@@ -147,7 +147,7 @@ private fun Project.adjustResourceCollectorsGeneration(
             kotlinMPE.sourceSets.matching { it.name == "androidMain" }.all { sourceSet ->
                 adjustActualResourceCollectorsGeneration(
                     sourceSet,
-                    module.shouldSeparateResourceCollectorsExpectActual,
+                    module.hasLeafSourceSets,
                     true,
                 )
                 actualSourceSets.add(sourceSet)
@@ -160,7 +160,7 @@ private fun Project.adjustResourceCollectorsGeneration(
             target.compilations.matching { it.name == KotlinCompilation.MAIN_COMPILATION_NAME }.all { compilation ->
                 adjustActualResourceCollectorsGeneration(
                     compilation.defaultSourceSet,
-                    module.shouldSeparateResourceCollectorsExpectActual,
+                    module.hasLeafSourceSets,
                     shouldGenerateCode,
                 )
 
@@ -185,7 +185,7 @@ private fun Project.adjustResourceCollectorsGeneration(
         ideaImportDependOn(genTask)
     }
 
-    if (!module.shouldSeparateResourceCollectorsExpectActual) {
+    if (!module.hasLeafSourceSets) {
         // In single-platform module add generated actual directory to commonMain source set source directories
         kotlinMPE.sourceSets
             .matching { it.name == KotlinSourceSet.COMMON_MAIN_SOURCE_SET_NAME }

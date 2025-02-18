@@ -12,7 +12,6 @@ import gradle.plugin
 import gradle.pluginAsDependency
 import gradle.plugins
 import gradle.setupDynamicClasspath
-import gradle.toDependencyNotation
 import gradle.version
 import gradle.versions
 import kotlin.io.path.absolutePathString

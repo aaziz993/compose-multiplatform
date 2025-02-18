@@ -5,11 +5,10 @@ package plugin.project
 import gradle.all
 import gradle.amperModuleExtraProperties
 import gradle.configureEach
-import gradle.shouldSeparateResourceCollectorsExpectActual
+import gradle.hasLeafSourceSets
 import gradle.withCapability
 import java.io.File
 import kotlin.io.path.relativeTo
-import kotlinx.serialization.json.Json
 import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier
@@ -458,15 +457,19 @@ internal class KMPPBindingPluginPart(
         }
 
         // Forth iteration - create source set groups from templates
-        if (module.shouldSeparateResourceCollectorsExpectActual) {
+        if (module.hasLeafSourceSets) {
             amperModuleExtraProperties.templates.forEach { (_, template) ->
                 template.aliases.forEach { alias ->
-                    val sourceSets = alias.group.map { it.kotlinSourceSetName(false) }
-                        .map(kotlinMPE.sourceSets::findByName)
+                    val sourceSetsNames = alias.group.map { it.kotlinSourceSetName(false) }
 
-                    if (sourceSets.none { it == null }) {
-                        kotlinMPE.sourceSets.create(alias.name).apply {
-                            (sourceSets as List<KotlinSourceSet>).forEach(::dependsOn)
+                    if (sourceSetsNames.all { sourceSetName -> kotlinMPE.sourceSets.findByName(sourceSetName) != null }) {
+                        kotlinMPE.sourceSets.create(alias.name) {
+                            sourceSetsNames.forEach { sourceSetName ->
+                                kotlinMPE.sourceSets.matching { sourceSet -> sourceSet.name == sourceSetName }
+                                    .all { sourceSet ->
+                                        sourceSet.dependsOn(this)
+                                    }
+                            }
                         }
                     }
                 }
@@ -475,12 +478,12 @@ internal class KMPPBindingPluginPart(
         println(kotlinMPE.sourceSets.map { it.name })
     }
 
-    private fun String.kotlinSourceSetName(isTest:Boolean): String = "$this${
-            if (isTest) {
-                if (this == "android") "androidTest" else "Test"
-            }
-            else "Main"
-        }"
+    private fun String.kotlinSourceSetName(isTest: Boolean): String = "$this${
+        if (isTest) {
+            if (this == "android") "androidTest" else "Test"
+        }
+        else "Main"
+    }"
 
     private val KotlinSourceSet.amperFragment: FragmentWrapper?
         get() = fragmentsByKotlinSourceSetName[name]

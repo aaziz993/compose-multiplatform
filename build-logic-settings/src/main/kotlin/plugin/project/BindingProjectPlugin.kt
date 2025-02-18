@@ -2,6 +2,8 @@
 
 package plugin.project
 
+import gradle.amperModuleExtraProperties
+import gradle.version
 import java.net.URI
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
@@ -86,6 +88,11 @@ internal class BindingProjectPlugin : Plugin<Project> {
         kmppBindingPluginPart.afterAll()
 
         // Apply other settings.
+        with(project) {
+            amperModuleExtraProperties.group?.let(::setGroup)
+            amperModuleExtraProperties.description?.let(::setDescription)
+//            version = amperModuleExtraProperties.version.toSemVer()
+        }
         applyRepositoryAttributes(linkedModule, project)
         applyPublicationAttributes(linkedModule, project)
         applyTest(linkedModule, project)
@@ -164,5 +171,7 @@ internal class BindingProjectPlugin : Plugin<Project> {
                 useJUnitPlatform()
             }
         }
+
+        project.configureTest()
     }
 }

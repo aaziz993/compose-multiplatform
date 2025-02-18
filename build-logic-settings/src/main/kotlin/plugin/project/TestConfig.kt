@@ -1,4 +1,4 @@
-package plugin.project.kotlin
+package plugin.project
 
 import com.gradle.develocity.agent.gradle.test.DevelocityTestConfiguration
 import com.gradle.develocity.agent.gradle.test.TestRetryConfiguration
@@ -28,7 +28,14 @@ import org.jetbrains.kotlin.gradle.targets.native.tasks.KotlinNativeTest
 import org.jetbrains.kotlin.gradle.tasks.KotlinNativeLink
 import org.jetbrains.kotlin.gradle.tasks.KotlinTest
 
-internal fun Project.configureTest() = tasks.withType<Test> {
+internal fun Project.configureTest() {
+    if (isCI) {
+        configureTestOnCI()
+    }
+    configureTestLogging()
+}
+
+private fun Project.configureTestLogging() = tasks.withType<Test> {
     testLogging {
         events(
             TestLogEvent.FAILED,
@@ -89,10 +96,6 @@ internal fun Project.configureTest() = tasks.withType<Test> {
             }
         },
     )
-
-    if (isCI) {
-        configureTestOnCI()
-    }
 }
 
 /** Applies CI-specific configurations to test tasks. */

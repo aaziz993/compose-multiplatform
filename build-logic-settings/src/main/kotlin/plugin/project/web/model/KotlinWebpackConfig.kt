@@ -1,4 +1,4 @@
-//package plugin.project.web.model
+package plugin.project.web.model//package plugin.project.web.model
 //
 //import java.io.File
 //import java.io.Serializable
