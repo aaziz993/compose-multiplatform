@@ -36,7 +36,7 @@ settings:
             onCheck: true
             charset: UTF8
           xml:
-            reportFile: build/reports/kover/report.xml
+            xmlFile: build/reports/kover/report.xml
             onCheck: true
 
     # Help developers deliver high-quality, efficient code standards that benefit the entire team or organization.

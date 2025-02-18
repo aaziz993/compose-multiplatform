@@ -157,7 +157,7 @@ public class SettingsPlugin : Plugin<Settings> {
 
         amperProjectExtraProperties = json
             .decodeFromAny<ProjectProperties>(projectSettings).also {
-                println("Apply project.yaml to project '${rootProject.name}':")
+                println("Apply project.yaml to project '${rootProject.name.uppercase()}':")
                 println(logYaml.dump(Json.Default.encodeToAny(it)))
             }
     }
