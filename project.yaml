@@ -38,7 +38,7 @@ settings:
           onlyIfAuthenticated: true
         obfuscation:
           ipAddresses:
-            - '': 0.0.0.0
+            '': 0.0.0.0
         capture:
           fileFingerprints: true
       git:
