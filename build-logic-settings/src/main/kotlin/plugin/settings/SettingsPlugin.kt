@@ -12,6 +12,7 @@ import gradle.plugin
 import gradle.pluginAsDependency
 import gradle.plugins
 import gradle.setupDynamicClasspath
+import gradle.toDependencyNotation
 import gradle.version
 import gradle.versions
 import kotlin.io.path.absolutePathString
@@ -43,7 +44,6 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinMultiplatformPluginWrapper
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import org.yaml.snakeyaml.DumperOptions
 import org.yaml.snakeyaml.Yaml
-import plugin.model.Dependency
 import plugin.project.BindingProjectPlugin
 import plugin.project.gradle.develocity.DevelocityPluginPart
 import plugin.project.gradle.githooks.GitHooksluginPart

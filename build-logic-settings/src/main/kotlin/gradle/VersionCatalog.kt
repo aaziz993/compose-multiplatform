@@ -1,8 +1,12 @@
+@file:Suppress("UnstableApiUsage")
+
 package gradle
 
+import java.io.File
 import org.gradle.accessors.dm.LibrariesForKotlinWrappers
 import org.gradle.accessors.dm.LibrariesForLibs
 import org.gradle.api.Project
+import org.gradle.api.file.Directory
 import org.gradle.api.initialization.Settings
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.the
@@ -29,13 +33,17 @@ internal val Project.compose
     get() = extensions.getByType<ComposeExtension>().dependencies
 
 @Suppress("UnstableApiUsage")
+internal fun Settings.libs(path: String): TomlParseResult = Toml.parse(layout.rootDirectory.file(path).asFile.readText())
+
 internal val Settings.libs: TomlParseResult
-    get() = Toml.parse(layout.rootDirectory.file("gradle/libs.versions.toml").asFile.readText())
+    get() = libs("gradle/libs.versions.toml")
 
 internal fun TomlTable.version(alias: String) =
     getString(alias)!!
 
 internal fun TomlTable.plugin(alias: String): TomlTable = getTable(alias)!!
+
+internal fun TomlTable.library(alias: String): TomlTable = getTable(alias)!!
 
 internal val TomlTable.id
     get() = getString("id")!!
@@ -71,6 +79,30 @@ internal val TomlParseResult.libraries
 
 internal val TomlParseResult.plugins
     get() = getTable("plugins")!!
+
+context(Settings)
+internal fun String.toDependencyNotation(): Any = toDependencyNotation(layout.rootDirectory)
+
+context(Project)
+internal fun String.toDependencyNotation(): Any = toDependencyNotation(layout.projectDirectory)
+
+private fun String.toDependencyNotation(directory: Directory): Any =
+    when {
+        startsWith("$") ->
+            Toml.parse(
+
+                substringBefore(".", "")
+                    .removePrefix("$").let {
+                        File(it)
+                    }
+                    .readText(),
+            ).libraries.library(
+                substringAfter(".", "").replace(".", "-"),
+            )
+
+        split(":").count() > 1 -> this
+        else -> directory.files(this)
+    }
 
 
 
