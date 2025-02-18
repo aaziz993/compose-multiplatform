@@ -4,7 +4,8 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal sealed class Dependency{
+internal sealed class Dependency {
+
     abstract val notation: String
 
     @Serializable
@@ -14,4 +15,8 @@ internal sealed class Dependency{
     @Serializable
     @SerialName("maven")
     internal class Maven(override val notation: String) : Dependency()
+
+    @Serializable
+    @SerialName("catalog")
+    internal class Catalog(override val notation: String) : Dependency()
 }
