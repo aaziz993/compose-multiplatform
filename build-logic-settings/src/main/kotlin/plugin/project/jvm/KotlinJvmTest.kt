@@ -15,59 +15,59 @@ import org.gradle.kotlin.dsl.the
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest
 
-internal fun Project.configureKotlinJvmTest() {
-    val jvmTest = tasks.withType<KotlinJvmTest>()
+internal fun Project.configureKotlinJvmTest() =
+    amperModuleExtraProperties.settings.jvm.let { jvm ->
+        val jvmTest = tasks.withType<KotlinJvmTest>()
 
-    jvmTest.configureEach {
-        amperModuleExtraProperties.settings.jvm
-        maxHeapSize = "2g"
-        exclude("**/*StressTest*")
-        useJUnitPlatform()
-        configureJavaToolchain(
-            libs.versions.java.toolchain.compileJdk.map(JavaLanguageVersion::of),
-            libs.versions.java.toolchain.testJdk.map(JavaLanguageVersion::of),
-        )
-
-        filter {
-            isFailOnNoMatchingTests = false
-        }
-        testLogging {
-            showExceptions = true
-            showStandardStreams = true
-            events = setOf(
-                TestLogEvent.FAILED,
-                TestLogEvent.PASSED,
-            )
-            exceptionFormat = TestExceptionFormat.FULL
-        }
-    }
-
-    if(jvmTest.isNotEmpty()) {
-        tasks.register<Test>("stressTest") {
-            classpath = files(jvmTest.map { it.classpath })
-            testClassesDirs = files(jvmTest.map { it.testClassesDirs })
-
+        jvmTest.configureEach {
             maxHeapSize = "2g"
-            jvmArgs("-XX:+HeapDumpOnOutOfMemoryError")
-            setForkEvery(1)
-            systemProperty("enable.stress.tests", "true")
-            include("**/*StressTest*")
+            exclude("**/*StressTest*")
             useJUnitPlatform()
             configureJavaToolchain(
-                libs.versions.java.toolchain.compileJdk.map(JavaLanguageVersion::of),
-                libs.versions.java.toolchain.testJdk.map(JavaLanguageVersion::of),
+                JavaLanguageVersion.of(jvm.compileSdk),
+                JavaLanguageVersion.of(jvm.testSdk),
             )
+
+            filter {
+                isFailOnNoMatchingTests = false
+            }
+            testLogging {
+                showExceptions = true
+                showStandardStreams = true
+                events = setOf(
+                    TestLogEvent.FAILED,
+                    TestLogEvent.PASSED,
+                )
+                exceptionFormat = TestExceptionFormat.FULL
+            }
+        }
+
+        if (jvmTest.isNotEmpty()) {
+            tasks.register<Test>("stressTest") {
+                classpath = files(jvmTest.map { it.classpath })
+                testClassesDirs = files(jvmTest.map { it.testClassesDirs })
+
+                maxHeapSize = "2g"
+                jvmArgs("-XX:+HeapDumpOnOutOfMemoryError")
+                setForkEvery(1)
+                systemProperty("enable.stress.tests", "true")
+                include("**/*StressTest*")
+                useJUnitPlatform()
+                configureJavaToolchain(
+                    JavaLanguageVersion.of(jvm.compileSdk),
+                    JavaLanguageVersion.of(jvm.testSdk),
+                )
+            }
         }
     }
-}
 
 /** Configure tests against different JDK versions. */
 internal fun Test.configureJavaToolchain(
-    compileJdk: Provider<JavaLanguageVersion>,
-    testJdk: Provider<JavaLanguageVersion>,
+    compileJdk: JavaLanguageVersion,
+    testJdk: JavaLanguageVersion,
 ) {
-    val testJdkVersion = testJdk.get().asInt()
-    onlyIf("only if testJdk is not lower than compileJdk") { testJdkVersion >= compileJdk.get().asInt() }
+    val testJdkVersion = testJdk.asInt()
+    onlyIf("only if testJdk is not lower than compileJdk") { testJdkVersion >= compileJdk.asInt() }
 
     val javaToolchains = project.the<JavaToolchainService>()
     javaLauncher = javaToolchains.launcherFor {

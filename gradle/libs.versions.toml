@@ -46,9 +46,9 @@ spotless = "6.25.0"
 sonarqube = "5.0.0.4638"
 # api documentation engine for Kotlin.
 dokka = "2.0.0"
-# the tool that produces Kotlin source example files and tests from markdown documents with embedded snippets of Kotlin code
+# produces Kotlin source example files and tests from markdown documents with embedded snippets of Kotlin code
 knit = "0.5.0"
-# the tool allows dumping binary API of a JVM part of a Kotlin library that is public in the sense of Kotlin visibilities and ensures that the public binary API wasn't changed in a way that makes this change binary incompatible.
+# allows dumping binary API of a JVM part of a Kotlin library that is public in the sense of Kotlin visibilities and ensures that the public binary API wasn't changed in a way that makes this change binary incompatible.
 binary-compatibility-validator = "0.16.3"
 # publishing
 vanniktech-maven-publish = "0.30.0"
@@ -1279,9 +1279,9 @@ spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 sonarqube = { id = "org.sonarqube", version.ref = "sonarqube" }
 # api documentation engine for Kotlin.
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
-# the tool that produces Kotlin source example files and tests from markdown documents with embedded snippets of Kotlin code
+# produces Kotlin source example files and tests from markdown documents with embedded snippets of Kotlin code
 knit = { id = "org.jetbrains.kotlinx.knit", version.ref = "knit" }
-# the tool allows dumping binary API of a JVM part of a Kotlin library that is public in the sense of Kotlin visibilities and ensures that the public binary API wasn't changed in a way that makes this change binary incompatible.
+# allows dumping binary API of a JVM part of a Kotlin library that is public in the sense of Kotlin visibilities and ensures that the public binary API wasn't changed in a way that makes this change binary incompatible.
 binary-compatibility-validator = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "binary-compatibility-validator" }
 # publishing
 vanniktech-maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "vanniktech-maven-publish" }
@@ -1291,9 +1291,9 @@ vanniktech-maven-publish = { id = "com.vanniktech.maven.publish", version.ref = 
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 # multiplatform library that provides the idiomatic and efficient way of using atomic operations in Kotlin.
 atomicfu = { id = "org.jetbrains.kotlinx.atomicfu", version.ref = "atomicfu" }
-# generate no arg contructor by specified annotation
+# generates an additional zero-argument constructor for classes with a specific annotation.
 noarg = { id = "org.jetbrains.kotlin.plugin.noarg", version.ref = "kotlin" }
-# make class open for inheritance by specified annotation
+# adapts Kotlin to the requirements of those frameworks and makes classes annotated with a specific annotation and their members open.
 allopen = { id = "org.jetbrains.kotlin.plugin.allopen", version.ref = "kotlin" }
 # serialization
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
@@ -1319,7 +1319,7 @@ kotlinx-rpc = { id = "org.jetbrains.kotlinx.rpc.plugin", version.ref = "kotlinx-
 # http client/Kotlin Symbol Processor for Kotlin Multiplatform ( Android, iOS, Js, Jvm, Linux) using KSP and Ktor clients inspired by Retrofit
 ktorfit = { id = "de.jensklingenberg.ktorfit", version.ref = "ktorfit" }
 ##graphql
-# client
+# strongly typed GraphQL client that generates Kotlin models for your GraphQL operations.
 apollo3 = { id = "com.apollographql.apollo3", version.ref = "apollo3" }
 # firebase
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics-plugin" }

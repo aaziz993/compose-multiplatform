@@ -33,8 +33,16 @@ import plugin.project.gradle.dokka.DokkaPluginPart
 import plugin.project.gradle.kover.KoverPluginPart
 import plugin.project.gradle.sonar.SonarPluginPart
 import plugin.project.gradle.spotless.SpotlessPluginPart
+import plugin.project.kotlin.allopen.AllOpenPluginPart
+import plugin.project.kotlin.apollo.ApolloPluginPart
 import plugin.project.kotlin.atomicfu.AtomicFUPluginPart
 import plugin.project.kotlin.ksp.KspPluginPart
+import plugin.project.kotlin.ktorfit.KtorfitPluginPart
+import plugin.project.kotlin.noarg.NoArgPluginPart
+import plugin.project.kotlin.powerassert.PowerAssertPluginPart
+import plugin.project.kotlin.room.RoomPluginPart
+import plugin.project.kotlin.rpc.RpcPluginPart
+import plugin.project.kotlin.sqldelight.SqlDelightPluginPart
 import plugin.project.web.WasmBindingPluginPart
 import plugin.project.web.js.JsBindingPluginPart
 
@@ -63,7 +71,15 @@ internal class BindingProjectPlugin : Plugin<Project> {
             DokkaPluginPart(pluginCtx),
             ApiValidationPluginPart(pluginCtx),
             KspPluginPart(pluginCtx),
+            AllOpenPluginPart(pluginCtx),
+            NoArgPluginPart(pluginCtx),
             AtomicFUPluginPart(pluginCtx),
+            RpcPluginPart(pluginCtx),
+            KtorfitPluginPart(pluginCtx),
+            ApolloPluginPart(pluginCtx),
+            SqlDelightPluginPart(pluginCtx),
+            RoomPluginPart(pluginCtx),
+            PowerAssertPluginPart(pluginCtx),
             AndroidBindingPluginPart(pluginCtx),
             JsBindingPluginPart(pluginCtx),
             WasmBindingPluginPart(pluginCtx),
@@ -91,7 +107,7 @@ internal class BindingProjectPlugin : Plugin<Project> {
         with(project) {
             amperModuleExtraProperties.group?.let(::setGroup)
             amperModuleExtraProperties.description?.let(::setDescription)
-//            version = amperModuleExtraProperties.version.toSemVer()
+            version = amperModuleExtraProperties.version.toSemVer()
         }
         applyRepositoryAttributes(linkedModule, project)
         applyPublicationAttributes(linkedModule, project)

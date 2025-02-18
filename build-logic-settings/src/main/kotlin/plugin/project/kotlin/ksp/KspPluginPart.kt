@@ -22,8 +22,10 @@ internal class KspPluginPart(ctx: PluginPartCtx) : BindingPluginPart by ctx {
         ksp.enabled
     }
 
-    override fun applyBeforeEvaluate() {
-        project.plugins.apply(project.settings.libs.plugins.plugin("ksp").id)
+    override fun applyAfterEvaluate() {
+        super.applyAfterEvaluate()
+
+        project.plugins.apply(project.libs.plugins.ksp.get().pluginId)
 
         applySettings()
     }

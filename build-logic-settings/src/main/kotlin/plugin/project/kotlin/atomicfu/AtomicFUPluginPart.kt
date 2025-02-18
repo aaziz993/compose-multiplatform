@@ -15,8 +15,10 @@ internal class AtomicFUPluginPart(ctx: PluginPartCtx) : BindingPluginPart by ctx
         project.amperModuleExtraProperties.settings.kotlin.atomicFU.enabled
     }
 
-    override fun applyBeforeEvaluate() {
-        project.plugins.apply(project.settings.libs.plugins.plugin("atomicfu").id)
+    override fun applyAfterEvaluate() {
+        super.applyAfterEvaluate()
+
+        project.plugins.apply(project.libs.plugins.atomicfu.get().pluginId)
 
         applySettings()
     }

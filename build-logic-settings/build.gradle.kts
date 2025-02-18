@@ -9,7 +9,7 @@ plugins {
     alias(libs.plugins.doctor)
     // Software Composition Analysis (SCA) tool that attempts to detect publicly disclosed vulnerabilities contained within a project's dependencies. It does this by determining if there is a Common Platform Enumeration (CPE) identifier for a given dependency. If found, it will generate a report linking to the associated CVE entries.
     alias(libs.plugins.dependencycheck)
-    // The tool allows dumping binary API of a JVM part of a Kotlin library that is public in the sense of Kotlin visibilities and ensures that the public binary API wasn't changed in a way that makes this change binary incompatible.
+    // allows dumping binary API of a JVM part of a Kotlin library that is public in the sense of Kotlin visibilities and ensures that the public binary API wasn't changed in a way that makes this change binary incompatible.
     alias(libs.plugins.binary.compatibility.validator)
     // API documentation engine for Kotlin.
     alias(libs.plugins.dokka)
@@ -206,9 +206,9 @@ dependencies {
     // an API documentation engine for Kotlin.
     implementation(libs.plugins.dokka.toDep())
     dokkaPlugin(libs.dokka.versioning)
-    // The tool allows dumping binary API of a JVM part of a Kotlin library that is public in the sense of Kotlin visibilities and ensures that the public binary API wasn't changed in a way that makes this change binary incompatible.
+    // allows dumping binary API of a JVM part of a Kotlin library that is public in the sense of Kotlin visibilities and ensures that the public binary API wasn't changed in a way that makes this change binary incompatible.
     implementation(libs.plugins.binary.compatibility.validator.toDep())
-    // the tool that produces Kotlin source example files and tests from markdown documents with embedded snippets of Kotlin code
+    // produces Kotlin source example files and tests from markdown documents with embedded snippets of Kotlin code
     implementation(libs.plugins.knit.toDep())
     // Generating BuildConstants for any kind of Gradle projects: Java, Kotlin, Android, Groovy, etc. Designed for KTS scripts, with experimental support for Kotlin's multi-platform plugin
     implementation(libs.plugins.build.config.toDep())
@@ -226,9 +226,9 @@ dependencies {
     implementation(libs.snakeyaml)
 
     // Kotlin
-    // generate no arg contractor by specified annotation
+    // generates an additional zero-argument constructor for classes with a specific annotation.
     implementation(libs.plugins.noarg.toDep())
-    // make class open for inheritance by specified annotation
+    // adapts Kotlin to the requirements of those frameworks and makes classes annotated with a specific annotation and their members open.
     implementation(libs.plugins.allopen.toDep())
     // serialization
     implementation(libs.plugins.kotlin.serialization.toDep())

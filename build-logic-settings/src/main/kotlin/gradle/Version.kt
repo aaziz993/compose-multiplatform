@@ -25,9 +25,11 @@ internal fun Project.version(major: Int, minor: Int, patch: Int, parsedPreReleas
         }${
             spaceExecutionNumber.orEmpty()
         }${
-            teamCityGitBranch.orEmpty()
+//            teamCityGitBranch.orEmpty()
+            ""
         }${
-            teamCityBuildNumber.orEmpty()
+//            teamCityBuildNumber.orEmpty()
+            ""
         }".ifEmpty { null },
     ).toString()
 

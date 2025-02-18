@@ -1,12 +1,17 @@
 package gradle
 
+import androidx.room.gradle.RoomExtension
+import app.cash.sqldelight.gradle.SqlDelightExtension
+import com.apollographql.apollo3.gradle.api.ApolloExtension
 import com.diffplug.gradle.spotless.SpotlessExtension
 import com.github.gmazzo.gradle.plugins.BuildConfigExtension
 import com.google.devtools.ksp.gradle.KspExtension
 import com.osacky.doctor.DoctorExtension
+import de.jensklingenberg.ktorfit.gradle.KtorfitGradleConfiguration
 import io.github.sgrishchenko.karakum.gradle.plugin.KarakumExtension
 import kotlinx.atomicfu.plugin.gradle.AtomicFUPluginExtension
 import kotlinx.kover.gradle.plugin.dsl.KoverProjectExtension
+import kotlinx.rpc.RpcExtension
 import kotlinx.validation.ApiValidationExtension
 import org.gradle.api.Project
 import org.gradle.api.initialization.Settings
@@ -15,11 +20,14 @@ import org.gradle.api.toolchain.management.ToolchainManagement
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.the
 import org.jetbrains.dokka.gradle.DokkaExtension
+import org.jetbrains.kotlin.allopen.gradle.AllOpenExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsEnvSpec
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension
 import org.jetbrains.kotlin.gradle.targets.js.npm.NpmExtension
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension
+import org.jetbrains.kotlin.noarg.gradle.NoArgExtension
+import org.jetbrains.kotlin.powerassert.gradle.PowerAssertGradleExtension
 import org.sonarqube.gradle.SonarExtension
 
 internal val Project.settings: Settings
@@ -65,11 +73,6 @@ internal val Project.apiValidation: ApiValidationExtension get() = the()
 internal fun Project.apiValidation(configure: ApiValidationExtension.() -> Unit) =
     extensions.configure(configure)
 
-internal val Project.ksp: KspExtension get() = the()
-
-internal fun Project.ksp(configure: KspExtension.() -> Unit) =
-    extensions.configure(configure)
-
 @Suppress("UnstableApiUsage")
 internal val Project.toolchain: ToolchainManagement get() = the()
 
@@ -77,10 +80,56 @@ internal val Project.toolchain: ToolchainManagement get() = the()
 internal fun Project.toolchain(configure: ToolchainManagement.() -> Unit) =
     extensions.configure(configure)
 
+internal val Project.ksp: KspExtension get() = the()
+
+internal fun Project.ksp(configure: KspExtension.() -> Unit) =
+    extensions.configure(configure)
+
 internal val Project.atomicFU: AtomicFUPluginExtension get() = the()
 
 internal fun Project.atomicFU(configure: AtomicFUPluginExtension.() -> Unit) =
     extensions.configure(configure)
+
+internal val Project.allOpen: AllOpenExtension get() = the()
+
+internal fun Project.allOpen(configure: AllOpenExtension.() -> Unit) =
+    extensions.configure(configure)
+
+internal val Project.noArg: NoArgExtension get() = the()
+
+internal fun Project.noArg(configure: NoArgExtension.() -> Unit) =
+    extensions.configure(configure)
+
+internal val Project.rpc: RpcExtension get() = the()
+
+internal fun Project.rpc(configure: RpcExtension.() -> Unit) =
+    extensions.configure(configure)
+
+internal val Project.ktorfit: KtorfitGradleConfiguration get() = the()
+
+internal fun Project.ktorfit(configure: KtorfitGradleConfiguration.() -> Unit) =
+    extensions.configure(configure)
+
+internal val Project.apollo: ApolloExtension get() = the()
+
+internal fun Project.apollo(configure: ApolloExtension.() -> Unit) =
+    extensions.configure(configure)
+
+internal val Project.sqldelight: SqlDelightExtension get() = the()
+
+internal fun Project.sqldelight(configure: SqlDelightExtension.() -> Unit) =
+    extensions.configure(configure)
+
+internal val Project.room: RoomExtension get() = the()
+
+internal fun Project.room(configure: RoomExtension.() -> Unit) =
+    extensions.configure(configure)
+
+internal val Project.powerAssert: PowerAssertGradleExtension get() = the()
+
+internal fun Project.powerAssert(configure: PowerAssertGradleExtension.() -> Unit) =
+    extensions.configure(configure)
+
 
 internal val Project.npm: NodeJsRootExtension get() = the()
 

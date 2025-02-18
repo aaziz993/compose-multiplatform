@@ -1,0 +1,18 @@
+package plugin.project.kotlin.ktorfit
+
+import de.jensklingenberg.ktorfit.gradle.KtorfitGradlePlugin
+import gradle.amperModuleExtraProperties
+import gradle.ktorfit
+import gradle.trySet
+import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
+
+internal fun Project.configureKtorfitGradleConfiguration() =
+    plugins.withType<KtorfitGradlePlugin> {
+        amperModuleExtraProperties.settings.kotlin.ktorfit.let { ktorfit ->
+            ktorfit {
+                ::generateQualifiedTypeName trySet ktorfit.generateQualifiedTypeName
+                ::errorCheckingMode trySet ktorfit.errorCheckingMode
+            }
+        }
+    }

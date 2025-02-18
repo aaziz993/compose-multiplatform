@@ -43,6 +43,9 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinMultiplatformPluginWrapper
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import org.yaml.snakeyaml.DumperOptions
 import org.yaml.snakeyaml.Yaml
+import org.yaml.snakeyaml.nodes.Tag
+import org.yaml.snakeyaml.representer.Represent
+import org.yaml.snakeyaml.representer.Representer
 import plugin.project.BindingProjectPlugin
 import plugin.project.gradle.develocity.DevelocityPluginPart
 import plugin.project.gradle.githooks.GitHooksluginPart
@@ -68,9 +71,12 @@ public class SettingsPlugin : Plugin<Settings> {
     private val yaml = Yaml()
 
     private val logYaml = Yaml(
-        DumperOptions().apply {
-            isPrettyFlow = true
+        object : Representer(DumperOptions()) {
+            init {
+                nullRepresenter = Represent { representScalar(Tag.NULL, "null") }
+            }
         },
+        DumperOptions(),
     )
 
     override fun apply(settings: Settings) {
