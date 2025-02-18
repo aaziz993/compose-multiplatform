@@ -32,7 +32,7 @@ settings:
         total:
           html:
             title: Generate coverage report
-            reportDir: build/reports/kover
+            htmlDir: build/reports/kover
             onCheck: true
             charset: UTF8
           xml:
@@ -45,8 +45,9 @@ settings:
       properties:
         sonar.host.url: https://sonarcloud.io
         sonar.organization: aaziz993
-        sonar.coverage.jacoco.xml.report.paths: build/reports/kover/report.xml
-        sonar.android.lint.report.paths: build/reports/lint-results.xml
+        sonar.projectKey: aaziz993_compose-multiplatform
+        sonar.coverage.jacoco.xmlReportPaths: build/reports/kover/report.xml
+        sonar.androidLint.reportPaths: build/reports/lint-results.xml
 
     # API documentation engine for Kotlin.
     dokka:

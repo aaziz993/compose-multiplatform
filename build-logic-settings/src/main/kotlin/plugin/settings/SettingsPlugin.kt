@@ -4,7 +4,6 @@ package plugin.settings
 
 import gradle.amperModuleExtraProperties
 import gradle.amperProjectExtraProperties
-import gradle.chooseComposeVersion
 import gradle.decodeFromAny
 import gradle.deepMerge
 import gradle.encodeToAny
@@ -13,6 +12,8 @@ import gradle.plugin
 import gradle.pluginAsDependency
 import gradle.plugins
 import gradle.setupDynamicClasspath
+import gradle.version
+import gradle.versions
 import kotlin.io.path.absolutePathString
 import kotlin.io.path.nameWithoutExtension
 import kotlin.io.path.readText
@@ -42,9 +43,6 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinMultiplatformPluginWrapper
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import org.yaml.snakeyaml.DumperOptions
 import org.yaml.snakeyaml.Yaml
-import org.yaml.snakeyaml.nodes.Tag
-import org.yaml.snakeyaml.representer.Represent
-import org.yaml.snakeyaml.representer.Representer
 import plugin.project.BindingProjectPlugin
 import plugin.project.gradle.develocity.DevelocityPluginPart
 import plugin.project.gradle.githooks.GitHooksluginPart
@@ -242,10 +240,10 @@ public class SettingsPlugin : Plugin<Settings> {
         // absent in (or incompatible with) recent Gradle versions, so we only use this if absolutely necessary.
         var composePlugin: String? = null
 
-        val chosenComposeVersion = chooseComposeVersion(model)
+        val composeVersion = libs.versions.version("compose-multiplatform")
 
-        if (chosenComposeVersion != null && chosenComposeVersion != UsedVersions.composeVersion) {
-            composePlugin = libs.plugins.plugin("compose-multiplatform").pluginAsDependency(chosenComposeVersion)
+        if (composeVersion != null && composeVersion != UsedVersions.composeVersion) {
+            composePlugin = libs.plugins.plugin("compose-multiplatform").pluginAsDependency(composeVersion)
         }
 
         with(libs) {

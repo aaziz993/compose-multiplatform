@@ -16,6 +16,9 @@ internal fun Project.configureSonarExtension() =
         amperModuleExtraProperties.settings.gradle.sonar.let { sonar ->
             sonar {
                 sonar.skipProject?.let(::setSkipProject)
+                properties {
+                    property("sonar.projectVersion",)
+                }
                 sonar.properties?.let { properties ->
                     properties {
                         properties.forEach { (key, value) -> property(key, value) }
