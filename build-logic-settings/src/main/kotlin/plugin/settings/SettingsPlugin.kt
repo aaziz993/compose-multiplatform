@@ -7,7 +7,6 @@ import gradle.amperProjectExtraProperties
 import gradle.chooseComposeVersion
 import gradle.decodeFromAny
 import gradle.deepMerge
-import gradle.encodeAnyToString
 import gradle.encodeToAny
 import gradle.libs
 import gradle.plugin
@@ -17,7 +16,6 @@ import gradle.setupDynamicClasspath
 import kotlin.io.path.absolutePathString
 import kotlin.io.path.nameWithoutExtension
 import kotlin.io.path.readText
-import kotlin.math.log
 import kotlinx.serialization.json.Json
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
@@ -25,7 +23,6 @@ import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.api.initialization.Settings
 import org.gradle.api.invocation.Gradle
-import org.gradle.internal.cc.base.logger
 import org.gradle.kotlin.dsl.maven
 import org.jetbrains.amper.core.Result
 import org.jetbrains.amper.core.UsedVersions
@@ -43,7 +40,11 @@ import org.jetbrains.amper.gradle.moduleDir
 import org.jetbrains.amper.gradle.moduleFilePathToProjectPath
 import org.jetbrains.kotlin.gradle.plugin.KotlinMultiplatformPluginWrapper
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
+import org.yaml.snakeyaml.DumperOptions
 import org.yaml.snakeyaml.Yaml
+import org.yaml.snakeyaml.nodes.Tag
+import org.yaml.snakeyaml.representer.Represent
+import org.yaml.snakeyaml.representer.Representer
 import plugin.project.BindingProjectPlugin
 import plugin.project.gradle.develocity.DevelocityPluginPart
 import plugin.project.gradle.githooks.GitHooksluginPart
@@ -53,6 +54,7 @@ import plugin.project.model.ModuleProperties
 import plugin.project.web.node.configureNodeJsRootExtension
 import plugin.project.web.npm.configureNpmExtension
 import plugin.project.web.yarn.configureYarnRootExtension
+import plugin.settings.model.ProjectProperties
 
 /**
  * Gradle setting plugin, that is responsible for:
@@ -63,9 +65,15 @@ import plugin.project.web.yarn.configureYarnRootExtension
 // This is registered via FQN from the resources in org.jetbrains.amper.settings.plugin.properties
 public class SettingsPlugin : Plugin<Settings> {
 
-    private val amperExtraPropertiesJson = Json { ignoreUnknownKeys = true }
+    private val json = Json { ignoreUnknownKeys = true }
 
     private val yaml = Yaml()
+
+    private val logYaml = Yaml(
+        DumperOptions().apply {
+            isPrettyFlow = true
+        },
+    )
 
     override fun apply(settings: Settings) {
         with(SLF4JProblemReporterContext()) {
@@ -146,8 +154,13 @@ public class SettingsPlugin : Plugin<Settings> {
 
     private fun Settings.setGradleExtraPropertiesToAmperProjectMappings() {
         val projectSettings = yaml.load<Map<String, *>>(rootDir.resolve("project.yaml").readText())
-        amperProjectExtraProperties = amperExtraPropertiesJson
-            .decodeFromAny(projectSettings)
+
+        amperProjectExtraProperties = json
+            .decodeFromAny<ProjectProperties>(projectSettings).also {
+                println("Apply project.yaml to project '${rootProject.name}':")
+                println(logYaml.dump(Json.Default.encodeToAny(it)))
+                println(logYaml.dump(projectSettings))
+            }
     }
 
     context(SLF4JProblemReporterContext)
@@ -212,13 +225,13 @@ public class SettingsPlugin : Plugin<Settings> {
             ).toMutableMap().also(::tryTransform)
         }.orEmpty()
 
-        project.amperModuleExtraProperties = amperExtraPropertiesJson.decodeFromAny<ModuleProperties>(
+        project.amperModuleExtraProperties = json.decodeFromAny<ModuleProperties>(
             templates.values.fold(emptyMap<String, Any?>()) { acc, map -> acc deepMerge map }
                 deepMerge moduleSettings,
         ).apply {
             println("Apply module.yaml to '${module.userReadableName.uppercase()}':")
-            println(yaml.dump(this))
-            this.templates = amperExtraPropertiesJson.decodeFromAny(templates)
+            println(logYaml.dump(Json.Default.encodeToAny(this)))
+            this.templates = json.decodeFromAny(templates)
         }
     }
 

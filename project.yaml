@@ -1,14 +1,10 @@
-pluginManagrment:
+pluginManagement:
   repositories:
     - https://www.jetbrains.com/intellij-repository/releases
     - https://packages.jetbrains.team/maven/p/ij/intellij-dependencies
 
 dependencyResolutionManagement:
   repositories:
-    - https://packages.jetbrains.team/maven/p/amper/amper
-    - https://repo.maven.apache.org/maven2/
-    - https://dl.google.com/dl/android/maven2/
-    - https://plugins.gradle.org/m2/
     - https://cache-redirector.jetbrains.com/www.jetbrains.com/intellij-repository/releases
     - https://cache-redirector.jetbrains.com/packages.jetbrains.team/maven/p/ij/intellij-dependencies
     - https://repo.gradle.org/gradle/libs-releases
@@ -30,34 +26,35 @@ modules:
   - compiler
 
 settings:
-  # Gives the data to speed up your build, improve build reliability and accelerate build debugging.
-  # servers: https://ge.solutions-team.gradle.com, https://ge.jetbrains.com
-  develocity:
-    enabled: true
-    server: https://ge.solutions-team.gradle.com
-    buildScan:
-      uploadInBackground: true
-      publishing:
-        onlyIfAuthenticated: true
-      obfuscation:
-        ipAddresses:
-          - '': 0.0.0.0
-      capture:
-        fileFingerprints: true
-    git:
-      repo: https://github.com/aaziz993/cmp
-      skipTags: false
-    cache:
-      localCache:
-        isEnabled: true
-      remoteCache:
-        isEnabled: true
+  gradle:
+    # Gives the data to speed up your build, improve build reliability and accelerate build debugging.
+    # servers: https://ge.solutions-team.gradle.com, https://ge.jetbrains.com
+    develocity:
+      enabled: true
+      server: https://ge.solutions-team.gradle.com
+      buildScan:
+        uploadInBackground: true
+        publishing:
+          onlyIfAuthenticated: true
+#        obfuscation:
+#          ipAddresses:
+#            - '': 0.0.0.0
+        capture:
+          fileFingerprints: true
+      git:
+        repo: https://github.com/aaziz993/cmp
+        skipTags: false
+      cache:
+        localCache:
+          isEnabled: true
+        remoteCache:
+          isEnabled: true
 
-  # Provides a repository for downloading JVMs
-  toolchainManagement:
-    enabled: true
+    # Provides a repository for downloading JVMs
+    toolchainManagement:
+      enabled: true
 
-  # Enforcing pre-commit and commit-msg Git hooks configuration. Conventional-commits-ready.
-  gitHooks:
-    enabled: true
+    # Enforcing pre-commit and commit-msg Git hooks configuration. Conventional-commits-ready.
+    gitHooks:
+      enabled: true
 
