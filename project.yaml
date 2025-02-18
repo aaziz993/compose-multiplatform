@@ -36,9 +36,9 @@ settings:
         uploadInBackground: true
         publishing:
           onlyIfAuthenticated: true
-#        obfuscation:
-#          ipAddresses:
-#            - '': 0.0.0.0
+        obfuscation:
+          ipAddresses:
+            - '': 0.0.0.0
         capture:
           fileFingerprints: true
       git:

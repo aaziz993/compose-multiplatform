@@ -159,7 +159,6 @@ public class SettingsPlugin : Plugin<Settings> {
             .decodeFromAny<ProjectProperties>(projectSettings).also {
                 println("Apply project.yaml to project '${rootProject.name}':")
                 println(logYaml.dump(Json.Default.encodeToAny(it)))
-                println(logYaml.dump(projectSettings))
             }
     }
 
