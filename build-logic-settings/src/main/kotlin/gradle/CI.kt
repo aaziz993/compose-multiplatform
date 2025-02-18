@@ -3,8 +3,13 @@ package gradle
 import org.gradle.api.Project
 import org.gradle.api.initialization.Settings
 
+private val CI_DETECT_PROPERTIES = listOf(
+    "CI",
+    "TEAMCITY_VERSION",
+)
+
 internal val isCI: Boolean by lazy {
-    System.getenv("CI_VERSION") != null
+    CI_DETECT_PROPERTIES.any(System.getenv()::contains)
 }
 
 internal fun Settings.gitCommitId(): String = execute("git rev-parse --verify HEAD")
