@@ -7,6 +7,8 @@ import gradle.amperProjectExtraProperties
 import gradle.chooseComposeVersion
 import gradle.decodeFromAny
 import gradle.deepMerge
+import gradle.encodeAnyToString
+import gradle.encodeToAny
 import gradle.libs
 import gradle.plugin
 import gradle.pluginAsDependency
@@ -15,6 +17,7 @@ import gradle.setupDynamicClasspath
 import kotlin.io.path.absolutePathString
 import kotlin.io.path.nameWithoutExtension
 import kotlin.io.path.readText
+import kotlin.math.log
 import kotlinx.serialization.json.Json
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
@@ -22,6 +25,7 @@ import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.api.initialization.Settings
 import org.gradle.api.invocation.Gradle
+import org.gradle.internal.cc.base.logger
 import org.gradle.kotlin.dsl.maven
 import org.jetbrains.amper.core.Result
 import org.jetbrains.amper.core.UsedVersions
@@ -45,6 +49,7 @@ import plugin.project.gradle.develocity.DevelocityPluginPart
 import plugin.project.gradle.githooks.GitHooksluginPart
 import plugin.project.gradle.toolchainmanagement.ToolchainManagementPluginPart
 import plugin.project.model.Alias
+import plugin.project.model.ModuleProperties
 import plugin.project.web.node.configureNodeJsRootExtension
 import plugin.project.web.npm.configureNpmExtension
 import plugin.project.web.yarn.configureYarnRootExtension
@@ -193,7 +198,7 @@ public class SettingsPlugin : Plugin<Settings> {
 
         fun tryTransform(settings: MutableMap<String, Any?>) {
             settings["aliases"] = (settings["aliases"] as List<Map<String, List<String>>>?)?.map { alias ->
-                Alias("", emptyList())
+                Alias(alias.keys.single(), alias.values.single())
             }.orEmpty()
         }
 
@@ -207,12 +212,14 @@ public class SettingsPlugin : Plugin<Settings> {
             ).toMutableMap().also(::tryTransform)
         }.orEmpty()
 
-        moduleSettings["apply"] = templates
-
-        project.amperModuleExtraProperties = amperExtraPropertiesJson.decodeFromAny(
+        project.amperModuleExtraProperties = amperExtraPropertiesJson.decodeFromAny<ModuleProperties>(
             templates.values.fold(emptyMap<String, Any?>()) { acc, map -> acc deepMerge map }
                 deepMerge moduleSettings,
-        )
+        ).apply {
+            println("Apply module.yaml to '${module.userReadableName.uppercase()}':")
+            println(yaml.dump(this))
+            this.templates = amperExtraPropertiesJson.decodeFromAny(templates)
+        }
     }
 
     @Suppress("UNCHECKED_CAST")

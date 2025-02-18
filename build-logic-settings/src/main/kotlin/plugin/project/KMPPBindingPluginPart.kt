@@ -3,11 +3,15 @@
 package plugin.project
 
 import gradle.all
+import gradle.amperModuleExtraProperties
 import gradle.configureEach
+import gradle.shouldSeparateResourceCollectorsExpectActual
 import gradle.withCapability
 import java.io.File
 import kotlin.io.path.relativeTo
+import kotlinx.serialization.json.Json
 import org.gradle.api.GradleException
+import org.gradle.api.Project
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier
 import org.gradle.api.attributes.Attribute
 import org.gradle.configurationcache.extensions.capitalized
@@ -82,7 +86,7 @@ internal class KMPPBindingPluginPart(
     @OptIn(ExperimentalKotlinGradlePluginApi::class)
     override fun applyBeforeEvaluate() {
         initTargets()
-        initSourceSets()
+        project.initSourceSets()
 
         // Workaround for KTIJ-27212, to get proper compiler arguments in the common code facet after import.
         // Apparently, configuring compiler arguments for metadata compilation is not sufficient.
@@ -347,7 +351,8 @@ internal class KMPPBindingPluginPart(
         }
     }
 
-    private fun initSourceSets() = with(KotlinAmperNamingConvention) {
+    @Suppress("UNCHECKED_CAST")
+    private fun Project.initSourceSets() = with(KotlinAmperNamingConvention) {
         // First iteration - create source sets and add dependencies.
         module.fragments.forEach { fragment ->
             fragment.maybeCreateSourceSet {
@@ -451,7 +456,31 @@ internal class KMPPBindingPluginPart(
                 }
             }
         }
+
+        // Forth iteration - create source set groups from templates
+        if (module.shouldSeparateResourceCollectorsExpectActual) {
+            amperModuleExtraProperties.templates.forEach { (_, template) ->
+                template.aliases.forEach { alias ->
+                    val sourceSets = alias.group.map { it.kotlinSourceSetName(false) }
+                        .map(kotlinMPE.sourceSets::findByName)
+
+                    if (sourceSets.none { it == null }) {
+                        kotlinMPE.sourceSets.create(alias.name).apply {
+                            (sourceSets as List<KotlinSourceSet>).forEach(::dependsOn)
+                        }
+                    }
+                }
+            }
+        }
+        println(kotlinMPE.sourceSets.map { it.name })
     }
+
+    private fun String.kotlinSourceSetName(isTest:Boolean): String = "$this${
+            if (isTest) {
+                if (this == "android") "androidTest" else "Test"
+            }
+            else "Main"
+        }"
 
     private val KotlinSourceSet.amperFragment: FragmentWrapper?
         get() = fragmentsByKotlinSourceSetName[name]

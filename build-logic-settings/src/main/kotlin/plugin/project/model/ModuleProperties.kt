@@ -4,7 +4,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal data class ModuleProperties(
-    val apply: Map<String, TemplateProperties> = emptyMap(),
-    override val aliases: List<Alias> = emptyList(),
+    val apply: List<String> = emptyList(),
+    @Transient
+    var templates: Map<String, TemplateProperties> = emptyMap(),
     override val settings: ModuleSettings = ModuleSettings(),
 ) : Properties

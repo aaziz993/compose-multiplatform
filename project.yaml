@@ -36,6 +36,7 @@ settings:
     enabled: true
     server: https://ge.solutions-team.gradle.com
     buildScan:
+      uploadInBackground: true
       publishing:
         onlyIfAuthenticated: true
       obfuscation:
