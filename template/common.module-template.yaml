@@ -84,6 +84,9 @@ settings:
     # API that you can use to develop lightweight compiler plugins. KSP provides a simplified compiler plugin API that leverages the power of Kotlin while keeping the learning curve at a minimum. Compared to KAPT, annotation processors that use KSP can run up to 2x faster.
     ksp2:
       useKsp2: true
+      processors:
+        - type: file
+          notation: ../compiler
 
 
     # Multiplatform library that provides the idiomatic and efficient way of using atomic operations in Kotlin.

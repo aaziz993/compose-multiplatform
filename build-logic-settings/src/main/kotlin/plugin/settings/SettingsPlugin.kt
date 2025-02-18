@@ -137,10 +137,7 @@ public class SettingsPlugin : Plugin<Settings> {
                         versionCatalogs.forEach { (name, dependency) ->
                             create(name) {
                                 from(
-                                        when (dependency) {
-                                            is Dependency.File -> layout.rootDirectory.files(dependency.notation)
-                                            else -> dependency.notation
-                                        },
+                                    dependency.toDependencyNotation(layout.rootDirectory),
                                 )
                             }
                         }
