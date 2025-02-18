@@ -6,6 +6,6 @@ import plugin.project.kotlin.ksp.model.KspSettings
 
 @Serializable
 internal data class KotlinSettings(
-    val ksp: KspSettings = KspSettings(),
+    val ksp2: KspSettings = KspSettings(),
     val atomicFU: AtomicFUSettings = AtomicFUSettings(),
 )

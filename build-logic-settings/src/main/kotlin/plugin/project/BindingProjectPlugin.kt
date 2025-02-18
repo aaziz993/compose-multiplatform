@@ -54,7 +54,7 @@ internal class BindingProjectPlugin : Plugin<Project> {
         val kmppBindingPluginPart = KMPPBindingPluginPart(pluginCtx)
         val registeredParts = listOf(
             DoctorPluginPart(pluginCtx),
-//            BuildConfigPluginPart(pluginCtx),
+            BuildConfigPluginPart(pluginCtx),
             SpotlessPluginPart(pluginCtx),
             KoverPluginPart(pluginCtx),
             SonarPluginPart(pluginCtx),

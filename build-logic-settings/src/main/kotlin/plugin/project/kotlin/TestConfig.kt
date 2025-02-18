@@ -1,4 +1,4 @@
-package plugin.project.gradle
+package plugin.project.kotlin
 
 import com.gradle.develocity.agent.gradle.test.DevelocityTestConfiguration
 import com.gradle.develocity.agent.gradle.test.TestRetryConfiguration

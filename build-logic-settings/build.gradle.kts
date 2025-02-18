@@ -195,7 +195,7 @@ dependencies {
     implementation(libs.plugins.foojay.resolver.convention.toDep())
     // creates fat/uber JARs with support for package relocation
 //    implementation(libs.plugins.shadow.toDep()) // conflict io.ktor.plugin:io.ktor.plugin.gradle.plugin:3.0.0 > io.ktor.plugin:plugin:3.0.0 > com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:7.1.2
-    // compiler processor for generating code during compilation
+    // api that you can use to develop lightweight compiler plugins. KSP provides a simplified compiler plugin API that leverages the power of Kotlin while keeping the learning curve at a minimum. Compared to KAPT, annotation processors that use KSP can run up to 2x faster.
     implementation(libs.plugins.ksp.toDep())
     // set of solutions for collecting test coverage of Kotlin code compiled for JVM and Android platforms.
     implementation(libs.plugins.kover.toDep())

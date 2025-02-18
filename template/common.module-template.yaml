@@ -81,6 +81,14 @@ settings:
     linkerOpts:
       - "-lsqlite3" # for ios
 
+    # API that you can use to develop lightweight compiler plugins. KSP provides a simplified compiler plugin API that leverages the power of Kotlin while keeping the learning curve at a minimum. Compared to KAPT, annotation processors that use KSP can run up to 2x faster.
+    ksp2:
+      useKsp2: true
+
+
+    # Multiplatform library that provides the idiomatic and efficient way of using atomic operations in Kotlin.
+    atomicFU:
+      enabled: true
 
     serialization:
       enabled: true

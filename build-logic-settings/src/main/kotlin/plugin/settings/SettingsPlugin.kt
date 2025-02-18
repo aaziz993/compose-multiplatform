@@ -43,6 +43,7 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinMultiplatformPluginWrapper
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import org.yaml.snakeyaml.DumperOptions
 import org.yaml.snakeyaml.Yaml
+import plugin.model.Dependency
 import plugin.project.BindingProjectPlugin
 import plugin.project.gradle.develocity.DevelocityPluginPart
 import plugin.project.gradle.githooks.GitHooksluginPart
@@ -86,6 +87,8 @@ public class SettingsPlugin : Plugin<Settings> {
 
                 settings.setupAmperModel(gradleClassLoader)
 
+                settings.setupPluginsClasspath()
+
                 projects.forEach { project ->
                     if (project.amperModule != null) {
                         configureProjectForAmper(project)
@@ -127,19 +130,18 @@ public class SettingsPlugin : Plugin<Settings> {
             dependencyResolutionManagement {
                 repositories {
                     addDefaultAmperRepositoriesForDependencies()
-                    dependencyResolutionManagement.repositories?.let { repositories ->
-                        repositories.forEach { repository ->
-                            maven(repository)
-                        }
-                    }
                 }
 
                 dependencyResolutionManagement.versionCatalogs?.let { versionCatalogs ->
                     versionCatalogs {
-                        versionCatalogs.forEach { (name, files, dependency) ->
-                            create(name).apply {
-                                files?.let { layout.rootDirectory.files(*it.toTypedArray()) }
-                                dependency?.let(::from)
+                        versionCatalogs.forEach { (name, dependency) ->
+                            create(name) {
+                                from(
+                                        when (dependency) {
+                                            is Dependency.File -> layout.rootDirectory.files(dependency.notation)
+                                            else -> dependency.notation
+                                        },
+                                )
                             }
                         }
                     }
@@ -179,8 +181,6 @@ public class SettingsPlugin : Plugin<Settings> {
         settings.gradle.knownModel = model
         setGradleProjectsToAmperModuleMappings(projects, model.modules, settings.gradle)
         setGradleExtraPropertiesToAmperModuleMappings(projects, gradle)
-
-        settings.setupPluginsClasspath(model)
     }
 
     private fun setGradleProjectsToAmperModuleMappings(
@@ -233,7 +233,7 @@ public class SettingsPlugin : Plugin<Settings> {
     }
 
     @Suppress("UNCHECKED_CAST")
-    private fun Settings.setupPluginsClasspath(model: Model) {
+    private fun Settings.setupPluginsClasspath() {
 
         // We don't need to use the dynamic plugin mechanism if the user wants the embedded Compose version (because
         // it's already on the classpath). Using dynamic plugins relies on unreliable internal Gradle APIs, which are
@@ -242,7 +242,7 @@ public class SettingsPlugin : Plugin<Settings> {
 
         val composeVersion = libs.versions.version("compose-multiplatform")
 
-        if (composeVersion != null && composeVersion != UsedVersions.composeVersion) {
+        if (composeVersion != UsedVersions.composeVersion) {
             composePlugin = libs.plugins.plugin("compose-multiplatform").pluginAsDependency(composeVersion)
         }
 
@@ -289,6 +289,7 @@ private fun Project.configureWeb() {
 private fun AmperModule.hasAmperConfigFile() =
     (source as? AmperModuleFileSource)?.buildFile?.nameWithoutExtension == "module"
 
+context(Settings)
 private fun RepositoryHandler.addDefaultAmperRepositoriesForDependencies() {
     mavenCentral()
     // For the Android plugin and dependencies
@@ -296,16 +297,23 @@ private fun RepositoryHandler.addDefaultAmperRepositoriesForDependencies() {
     // For other Gradle plugins
     gradlePluginPortal()
     // For dev versions of kotlin
-    maven { setUrl("https://maven.pkg.jetbrains.space/kotlin/p/kotlin/dev") }
+    maven("https://maven.pkg.jetbrains.space/kotlin/p/kotlin/dev")
     // For dev versions of compose plugin and dependencies
-    maven { setUrl("https://maven.pkg.jetbrains.space/public/p/compose/dev") }
+    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
     // For compose experimental builds
-    maven { setUrl("https://packages.jetbrains.team/maven/p/firework/dev") }
+    maven("https://packages.jetbrains.team/maven/p/firework/dev")
     // Sonatype OSS Snapshot Repository
-    maven { setUrl("https://oss.sonatype.org/content/repositories/snapshots") }
+    maven("https://oss.sonatype.org/content/repositories/snapshots")
 
     // Space Packages releases
-    maven { setUrl("https://maven.pkg.jetbrains.space/aaziz93/p/aaziz-93/maven") }
+    maven("https://maven.pkg.jetbrains.space/aaziz93/p/aaziz-93/maven")
     // GitHub Packages
-    maven { setUrl("https://maven.pkg.github.com/aaziz993") }
+    maven("https://maven.pkg.github.com/aaziz993")
+
+    // Apply repositories from project properties.
+    amperProjectExtraProperties.dependencyResolutionManagement?.repositories?.let { repositories ->
+        repositories.forEach { repository ->
+            maven(repository)
+        }
+    }
 }

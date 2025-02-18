@@ -1,9 +1,11 @@
 package plugin.project.gradle.dokka.model
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.jetbrains.dokka.DokkaConfiguration
 
 @Serializable
+@SerialName("task")
 internal data class DokkaModuleTask(
     override val moduleName: String? = null,
     override val moduleVersion: String? = null,

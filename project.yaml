@@ -12,7 +12,9 @@ dependencyResolutionManagement:
 
   versionCatalogs:
     - name: kotlinWrappers
-      dependency: org.jetbrains.kotlin-wrappers:kotlin-wrappers-catalog:2025.2.2
+      from:
+        type: maven
+        notation: [org.jetbrains.kotlin-wrappers:kotlin-wrappers-catalog:2025.2.2]
 
 modules:
   - android-app

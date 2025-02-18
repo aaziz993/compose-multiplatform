@@ -17,7 +17,7 @@ internal fun Project.configureSonarExtension() =
             sonar {
                 sonar.skipProject?.let(::setSkipProject)
                 properties {
-                    property("sonar.projectVersion",)
+                    property("sonar.projectVersion", version)
                 }
                 sonar.properties?.let { properties ->
                     properties {

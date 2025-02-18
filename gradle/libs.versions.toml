@@ -95,7 +95,7 @@ jsch = "0.1.55"
 kotlin = "2.1.0"
 # ktlint code formatter
 ktlint = "1.4.1"
-# compiler processor for generating code during compilation
+# api that you can use to develop lightweight compiler plugins. KSP provides a simplified compiler plugin API that leverages the power of Kotlin while keeping the learning curve at a minimum. Compared to KAPT, annotation processors that use KSP can run up to 2x faster.
 ksp = "2.1.0-1.0.29"
 # multiplatform logging
 km-logging = "1.5.0"
@@ -404,7 +404,7 @@ jsch = { module = "com.jcraft:jsch", version.ref = "jsch" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 
 ##Kotlin
-# Ksp symbol processor api
+# api that you can use to develop lightweight compiler plugins. KSP provides a simplified compiler plugin API that leverages the power of Kotlin while keeping the learning curve at a minimum. Compared to KAPT, annotation processors that use KSP can run up to 2x faster.
 symbol-processing-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
 km-logging = { module = "org.lighthousegames:logging", version.ref = "km-logging" }
 # multiplatform library that provides the idiomatic and efficient way of using atomic operations in Kotlin.
@@ -1287,7 +1287,7 @@ binary-compatibility-validator = { id = "org.jetbrains.kotlinx.binary-compatibil
 vanniktech-maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "vanniktech-maven-publish" }
 
 ##Kotlin
-# compiler processor for generating code during compilation
+# api that you can use to develop lightweight compiler plugins. KSP provides a simplified compiler plugin API that leverages the power of Kotlin while keeping the learning curve at a minimum. Compared to KAPT, annotation processors that use KSP can run up to 2x faster.
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 # multiplatform library that provides the idiomatic and efficient way of using atomic operations in Kotlin.
 atomicfu = { id = "org.jetbrains.kotlinx.atomicfu", version.ref = "atomicfu" }

@@ -13,6 +13,7 @@ import org.jetbrains.amper.gradle.base.PluginPartCtx
 import org.jetbrains.dokka.gradle.AbstractDokkaTask
 import org.jetbrains.dokka.gradle.DokkaMultiModuleTask
 import org.jetbrains.dokka.gradle.internal.InternalDokkaGradlePluginApi
+import plugin.project.gradle.dokka.model.DokkaMultiModuleFileLayout
 import plugin.project.gradle.dokka.model.DokkaTask
 
 internal class DokkaPluginPart(ctx: PluginPartCtx) : BindingPluginPart by ctx {
@@ -60,11 +61,11 @@ internal class DokkaPluginPart(ctx: PluginPartCtx) : BindingPluginPart by ctx {
     @OptIn(InternalDokkaGradlePluginApi::class)
     private fun Project.configureDokkaMultiModuleTask() =
         dokka.task?.let { task ->
+            task as plugin.project.gradle.dokka.model.DokkaMultiModuleTask
             tasks.withType<DokkaMultiModuleTask> {
                 configureFrom(task)
-//                 includes: List<String>? = null, // TODO
-//
-//                 fileLayout tryAssign task.fil
+                task.includes?.forEach(includes::setFrom)
+                fileLayout tryAssign task.fileLayout?.let(DokkaMultiModuleFileLayout::toDokkaMultiModuleFileLayout)
             }
         }
 
