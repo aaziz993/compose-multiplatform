@@ -6,5 +6,16 @@ apply:
   - ../template/common.module-template.yaml
 
 settings:
+  kotlin:
+    # generates typesafe Kotlin APIs from your SQL statements. It verifies your schema, statements, and migrations at compile-time and provides IDE features like autocomplete and refactoring which make writing and maintaining SQL simple.
+    sqldelight:
+      enabled: true
+      databases:
+        - name: Cache
+          packageName: data.database.sqldelight
+          # required by asynchronous web-worker-driver for js.
+          generateAsync: true
+
+
   publishing:
     name: kmp-lib

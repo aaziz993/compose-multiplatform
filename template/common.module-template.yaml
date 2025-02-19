@@ -102,7 +102,7 @@ settings:
       - "-lsqlite3" # for ios
 
     # api that you can use to develop lightweight compiler plugins. KSP provides a simplified compiler plugin API that leverages the power of Kotlin while keeping the learning curve at a minimum. Compared to KAPT, annotation processors that use KSP can run up to 2x faster.
-    ksp2:
+    ksp:
       enabled: true
       useKsp2: true
       processors:
@@ -136,7 +136,8 @@ settings:
 
     # generates typesafe Kotlin APIs from your SQL statements. It verifies your schema, statements, and migrations at compile-time and provides IDE features like autocomplete and refactoring which make writing and maintaining SQL simple.
     sqldelight:
-      enabled: true
+      enabled: false
+      linkSqlite: true
 
     # abstraction layer over SQLite to allow for more robust database access while harnessing the full power of SQLite.
     room:

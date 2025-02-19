@@ -1,5 +1,7 @@
 package plugin.project.kotlin.sqldelight.model
 
 internal interface SqlDelightExtension {
-  val linkSqlite:Boolean?
+
+    val databases: List<SqlDelightDatabase>
+    val linkSqlite: Boolean?
 }

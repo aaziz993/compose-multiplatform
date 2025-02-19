@@ -61,7 +61,7 @@ private fun org.jetbrains.dokka.gradle.formats.DokkaPublication.configureFrom(co
     failOnWarning tryAssign config.failOnWarning
     suppressObviousFunctions tryAssign config.suppressObviousFunctions
     suppressInheritedMembers tryAssign config.suppressInheritedMembers
-    config.includes?.forEach(includes::setFrom)
+    config.includes?.let(includes::setFrom)
     cacheRoot tryAssign config.cacheRoot?.let(layout.projectDirectory::dir)
     finalizeCoroutines tryAssign config.finalizeCoroutines
 }
@@ -71,11 +71,11 @@ private fun org.jetbrains.dokka.gradle.engine.parameters.DokkaSourceSetSpec.conf
     sourceSetScope tryAssign config.sourceSetScope
     suppress tryAssign config.suppress
     displayName tryAssign config.displayName
-    config.includes?.forEach(includes::setFrom)
+    config.includes?.let(includes::setFrom)
     documentedVisibilities tryAssign config.documentedVisibilities
-    config.classpath?.forEach(classpath::setFrom)
-    config.sourceRoots?.forEach(sourceRoots::setFrom)
-    config.samples?.forEach(samples::setFrom)
+    config.classpath?.let(classpath::setFrom)
+    config.sourceRoots?.let(sourceRoots::setFrom)
+    config.samples?.let(samples::setFrom)
     reportUndocumented tryAssign config.reportUndocumented
 
     config.sourceLinks?.forEach { sourceLink ->
@@ -109,7 +109,7 @@ private fun org.jetbrains.dokka.gradle.engine.parameters.DokkaSourceSetSpec.conf
     analysisPlatform tryAssign config.analysisPlatform
     skipEmptyPackages tryAssign config.skipEmptyPackages
     skipDeprecated tryAssign config.skipDeprecated
-    config.suppressedFiles?.forEach(suppressedFiles::setFrom)
+    config.suppressedFiles?.let(suppressedFiles::setFrom)
     suppressGeneratedFiles tryAssign config.suppressGeneratedFiles
     enableKotlinStdLibDocumentationLink tryAssign config.enableKotlinStdLibDocumentationLink
     enableJdkDocumentationLink tryAssign config.enableJdkDocumentationLink

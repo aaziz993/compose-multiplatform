@@ -61,7 +61,7 @@ internal class DokkaPluginPart(override val project: Project) : BindingPluginPar
             task as plugin.project.gradle.dokka.model.DokkaMultiModuleTask
             tasks.withType<DokkaMultiModuleTask> {
                 configureFrom(task)
-                task.includes?.forEach(includes::setFrom)
+                task.includes?.let(includes::setFrom)
                 fileLayout tryAssign task.fileLayout?.let(DokkaMultiModuleFileLayout::toDokkaMultiModuleFileLayout)
             }
         }

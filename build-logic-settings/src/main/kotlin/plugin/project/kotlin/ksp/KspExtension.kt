@@ -17,7 +17,7 @@ internal fun Project.configureKspExtension() =
                     arg { commandLineArgumentProviders }
                 }
                 ksp.excludedProcessors?.forEach(::excludeProcessor)
-                ksp.excludedSources?.forEach(excludedSources::setFrom)
+                ksp.excludedSources?.let(excludedSources::setFrom)
                 ksp.arguments?.forEach { (key, value) -> arg(key, value) }
                 ::allWarningsAsErrors trySet ksp.allWarningsAsErrors
             }
