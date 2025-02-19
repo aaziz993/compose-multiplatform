@@ -16,6 +16,7 @@ internal fun Project.configureApolloExtension() =
                 }
 
                 createAllAndroidVariantServices("",""){
+                    name=""
                     this.languageVersion
                 }
 
