@@ -6,8 +6,10 @@ import java.io.File
 import org.gradle.accessors.dm.LibrariesForKotlinWrappers
 import org.gradle.accessors.dm.LibrariesForLibs
 import org.gradle.api.Project
-import org.gradle.api.file.Directory
+import org.gradle.api.artifacts.VersionCatalog
+import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.api.initialization.Settings
+import org.gradle.api.plugins.ExtensionContainer
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.the
 import org.jetbrains.compose.ComposeExtension
@@ -31,6 +33,9 @@ internal val Project.kotlinWrappers: LibrariesForKotlinWrappers
 
 internal val Project.compose
     get() = extensions.getByType<ComposeExtension>().dependencies
+
+internal fun ExtensionContainer.libs(name:String): VersionCatalog
+     = getByType<VersionCatalogsExtension>().named(name)
 
 internal fun File.asLibs() = Toml.parse(readText())
 

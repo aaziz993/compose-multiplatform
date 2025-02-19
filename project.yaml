@@ -5,14 +5,18 @@ pluginManagement:
 
 dependencyResolutionManagement:
   repositories:
+    - https://repo.gradle.org/gradle/libs-releases
     - https://cache-redirector.jetbrains.com/www.jetbrains.com/intellij-repository/releases
     - https://cache-redirector.jetbrains.com/packages.jetbrains.team/maven/p/ij/intellij-dependencies
-    - https://repo.gradle.org/gradle/libs-releases
     - https://cache-redirector.jetbrains.com/download.jetbrains.com/teamcity-repository
+    # Space Packages releases
+    - https://maven.pkg.jetbrains.space/aaziz93/p/aaziz-93/maven
+    # GitHub Packages
+    - https://maven.pkg.github.com/aaziz993
 
-  versionCatalogs:
-    - name: kotlinWrappers
-      from: org.jetbrains.kotlin-wrappers:kotlin-wrappers-catalog:2025.2.2
+#  versionCatalogs:
+#    - name: kotlinWrappers
+#      from: org.jetbrains.kotlin-wrappers:kotlin-wrappers-catalog:2025.2.6
 
 modules:
   - android-app
@@ -24,6 +28,7 @@ modules:
   - cmp-lib
   - kmp-lib
   - compiler
+  - testProj
 
 settings:
   gradle:

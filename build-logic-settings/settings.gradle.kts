@@ -3,9 +3,12 @@
 import java.util.Date
 import java.util.Properties
 import org.tomlj.Toml
+import org.yaml.snakeyaml.Yaml
 
 rootProject.name = "build-logic-settings"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
+val projectSettings = Yaml().load<MutableMap<String, *>>(file("../project.yaml").readText())
 
 val gradleProperties: Properties = Properties().apply {
     val file = file("../gradle.properties")
@@ -113,17 +116,17 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         gradlePluginPortal()
+        maven("https://repo.gradle.org/gradle/libs-releases/")
         maven("https://packages.jetbrains.team/maven/p/amper/amper")
         maven("https://packages.jetbrains.team/maven/p/ij/intellij-dependencies")
         maven("https://www.jetbrains.com/intellij-repository/releases")
-        maven("https://repo.gradle.org/gradle/libs-releases/")
     }
     versionCatalogs {
         create("libs") {
             from(files("../gradle/libs.versions.toml"))
         }
         create("kotlinWrappers") {
-            val wrappersVersion = "2025.2.2"
+            val wrappersVersion = "2025.2.6"
             from("org.jetbrains.kotlin-wrappers:kotlin-wrappers-catalog:$wrappersVersion")
         }
     }

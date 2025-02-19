@@ -2,6 +2,7 @@
 
 package plugin.project
 
+import gradle.amperModuleExtraProperties
 import java.io.File
 import kotlin.io.path.absolutePathString
 import kotlin.io.path.div
@@ -32,6 +33,10 @@ internal class AndroidBindingPluginPart(
     ctx: PluginPartCtx,
 ) : KMPEAware, AndroidAwarePart(ctx) {
 
+    private val android by lazy {
+        project.amperModuleExtraProperties.settings.android
+    }
+
     override val kotlinMPE: KotlinMultiplatformExtension =
         project.extensions.getByType(KotlinMultiplatformExtension::class.java)
 
@@ -61,7 +66,7 @@ internal class AndroidBindingPluginPart(
 
     private fun adjustAndroidSourceSets() = with(AndroidAmperNamingConvention) {
         val shouldAddAndroidRes = module.artifactPlatforms.size == 1 &&
-                module.artifactPlatforms.contains(Platform.ANDROID)
+            module.artifactPlatforms.contains(Platform.ANDROID)
 
         // Adjust that source sets whose matching kotlin source sets are created by us.
         // Can be evaluated after project evaluation.
@@ -117,7 +122,8 @@ internal class AndroidBindingPluginPart(
                         // supported by supplementary modules.
                         lowercaseName.contains("test") && lowercaseName.contains("unit")
                     }
-                } else {
+                }
+                else {
                     androidTarget.compilations.matching { !it.name.lowercase().contains("test") }
                 }
                 compilations.configureEach {
@@ -169,7 +175,8 @@ internal class AndroidBindingPluginPart(
                         }
                     }
                 }
-            } else {
+            }
+            else {
                 val path = propertiesFile.normalize().absolutePathString()
                 project.logger.warn("Properties file $path not found. Signing will not be configured")
             }
@@ -181,7 +188,7 @@ internal class AndroidBindingPluginPart(
                 compileSdkVersion(androidSettings.compileSdk.versionNumber)
                 defaultConfig.apply {
                     if (!module.type.isLibrary()) applicationId = androidSettings.applicationId
-                    namespace = androidSettings.namespace
+                    namespace = android.namespace ?: "${project.group}.${project.name.replace("[-_]".toRegex(), ".")}"
                     minSdk = androidSettings.minSdk.versionNumber
                     maxSdk = androidSettings.maxSdk?.versionNumber
                     targetSdk = androidSettings.targetSdk.versionNumber

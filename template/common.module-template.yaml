@@ -1,6 +1,25 @@
+group: io.github.aaziz993
+
+aliases:
+  - jvmAndAndroid: [ jvm, android ]
+  - nonJvm: [ android, iosArm64 , iosX64, iosSimulatorArm64, js, wasm ]
+  - nonAndroid: [ jvm, iosArm64, iosX64, iosSimulatorArm64, js, wasm ]
+  - mobile: [ android, iosArm64, iosX64, iosSimulatorArm64 ]
+  - nonMobile: [ jvm, js, wasm ]
+  - web: [ js, wasm ]
+  - nonWeb: [ jvm, android, iosArm64, iosX64, iosSimulatorArm64 ]
+
 dependencies:
   - $kotlin.serialization.json
   - $kotlin.serialization.properties
+
+dependencies@nonWeb:
+  - $libs.androidx.room.runtime.ktx
+
+
+dependencies@android:
+  - $libs.androidx.room.runtime.android
+  - $libs.androidx.room.paging
 
 settings:
   gradle:
@@ -87,7 +106,11 @@ settings:
       enabled: true
       useKsp2: true
       processors:
-        - ../compiler
+        - $libs.arrow.optics.ksp.plugin
+        - $libs.androidx.room.compiler
+        - $libs.ktorfit.ksp
+        # Use import org.koin.ksp.generated.*
+        - $libs.koin.ksp.compiler
 
     # adapts Kotlin to the requirements of those frameworks and makes classes annotated with a specific annotation and their members open
     allOpen:
@@ -111,6 +134,16 @@ settings:
     atomicFU:
       enabled: true
 
+    # generates typesafe Kotlin APIs from your SQL statements. It verifies your schema, statements, and migrations at compile-time and provides IDE features like autocomplete and refactoring which make writing and maintaining SQL simple.
+    sqldelight:
+      enabled: true
+
+    # abstraction layer over SQLite to allow for more robust database access while harnessing the full power of SQLite.
+    room:
+      enabled: true
+      schemaDirectories:
+        - schemas
+
     # kotlin library for adding asynchronous Remote Procedure Call (RPC) services to your applications. Build your RPC with already known language constructs and nothing more!
     rpc:
       enabled: true
@@ -125,15 +158,6 @@ settings:
     apollo:
       enabled: true
       generateSourcesDuringGradleSync: true
-
-    # generates typesafe Kotlin APIs from your SQL statements. It verifies your schema, statements, and migrations at compile-time and provides IDE features like autocomplete and refactoring which make writing and maintaining SQL simple.
-    sqldelight:
-      enabled: true
-
-    room:
-      enabled: true
-      schemaDirectories:
-        - schemas
 
     # providing detailed failure messages with contextual information during testing.
     powerAssert:

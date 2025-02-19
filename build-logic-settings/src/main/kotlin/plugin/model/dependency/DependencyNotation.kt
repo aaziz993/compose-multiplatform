@@ -2,42 +2,38 @@
 
 package plugin.model.dependency
 
-import gradle.asLibs
-import gradle.libraries
-import gradle.library
 import gradle.libs
-import gradle.module
-import java.io.File
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import org.gradle.api.artifacts.VersionCatalog
 import org.gradle.api.file.Directory
 import org.gradle.api.initialization.Settings
 
-@Serializable(with = DependencySerializer::class)
-internal data class Dependency(
+@Serializable(with = DependencyNonationSerializer::class)
+internal data class DependencyNotation(
     val notation: String,
     val compile: Boolean = true,
-    val runtime: Boolean = false,
+    val runtime: Boolean = true,
     val exported: Boolean = false
 ) {
 
     context(Settings)
-    internal fun toDependencyNotation(): Any = toDependencyNotation(layout.rootDirectory)
+    internal fun toDependencyNotation(): Any = toDependencyNotation(layout.rootDirectory, extensions::libs)
 
     context(Project)
-    internal fun toDependencyNotation(): Any = toDependencyNotation(layout.projectDirectory)
+    internal fun toDependencyNotation(): Any = toDependencyNotation(layout.projectDirectory, extensions::libs)
 
-    private fun toDependencyNotation(directory: Directory): Any =
+    private fun toDependencyNotation(directory: Directory, catalog: (name: String) -> VersionCatalog): Any =
         when {
             notation.startsWith("$") ->
                 notation
                     .removePrefix("$")
                     .substringBefore(".")
-                    .let(::File).let { file ->
-                        if (file.isAbsolute) file else file.relativeTo(directory.asFile)
-                    }.asLibs().libraries.library(
+                    .let(catalog).findLibrary(
                         notation.substringAfter(".", "").replace(".", "-"),
-                    ).module
+                    ).get().also {
+                        println("KSP COMPILER: ${it}")
+                    }
 
             notation.contains("[/\\\\]".toRegex()) -> directory.files(notation)
 

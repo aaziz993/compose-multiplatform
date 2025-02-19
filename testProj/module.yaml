@@ -1,0 +1,11 @@
+product:
+  type: lib
+  platforms:
+    - jvm
+    - android
+
+apply:
+  - ../template/common.module-template.yaml
+
+module:
+  layout: gradle-kmp

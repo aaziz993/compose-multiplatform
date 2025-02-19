@@ -5,15 +5,10 @@ product:
 apply:
   - ../template/common.module-template.yaml
   - ../template/compose.module-template.yaml
-  - ../template/library.module-template.yaml
-  - ../template/room.module-template.yaml
 
 dependencies:
   - ../kmp-lib
 
 settings:
-  android:
-    namespace: io.github.aaziz993.cmp.lib
-
   publishing:
     name: cmp-lib

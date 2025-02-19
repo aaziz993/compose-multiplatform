@@ -2,8 +2,6 @@ product: jvm/app
 
 apply:
   - ../template/common.module-template.yaml
-  - ../template/application.module-template.yaml
-  - ../template/room.module-template.yaml
 
 dependencies:
   - ../kmp-lib

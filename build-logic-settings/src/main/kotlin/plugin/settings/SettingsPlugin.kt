@@ -97,9 +97,6 @@ public class SettingsPlugin : Plugin<Settings> {
                 projects.forEach { project ->
                     if (project.amperModule != null) {
                         configureProjectForAmper(project)
-                        if(project==rootProject) {
-                            println("AMPER ROOT MODULE")
-                        }
                     }
                     else if (project === project.rootProject) {
                         // Even if the root project doesn't have a module.yaml file (and thus is not an Amper project),
@@ -107,7 +104,6 @@ public class SettingsPlugin : Plugin<Settings> {
                         // The IDE runs it, as well as native subproject builds.
                         // Therefore, it needs mavenCentral to resolve kotlin-klib-commonizer-embeddable.
                         project.repositories.mavenCentral()
-                        println("NON AMPER ROOT MODULE")
                     }
                 }
             }
@@ -146,7 +142,9 @@ public class SettingsPlugin : Plugin<Settings> {
                         versionCatalogs.forEach { (name, dependency) ->
                             create(name) {
                                 from(
-                                    dependency.toDependencyNotation(),
+                                    dependency.toDependencyNotation().also {
+                                        println("DEPENDENCY NOTATION: $it")
+                                    },
                                 )
                             }
                         }
@@ -212,10 +210,17 @@ public class SettingsPlugin : Plugin<Settings> {
     ) = projects.filterNot { it.amperModule == null }.forEach { project ->
         val module = project.amperModule!!
 
-        fun tryTransform(settings: MutableMap<String, Any?>) {
-            settings["aliases"] = (settings["aliases"] as List<Map<String, List<String>>>?)?.map { alias ->
+        fun tryTransform(config: MutableMap<String, Any?>) {
+            config["aliases"] = (config["aliases"] as List<Map<String, List<String>>>?)?.map { alias ->
                 Alias(alias.keys.single(), alias.values.single())
             }.orEmpty()
+
+            config["dependencies"] = config.filterKeys { it.startsWith("dependencies") }.map { (key, notations) ->
+                mapOf(
+                        "sourceSetName" to key.substringAfter("@", "commonMain"),
+                        "dependencyNotations" to notations,
+                )
+            }
         }
 
         val moduleSettings = yaml.load<MutableMap<String, *>>(
@@ -310,11 +315,6 @@ private fun RepositoryHandler.addDefaultAmperRepositoriesForDependencies() {
     maven("https://packages.jetbrains.team/maven/p/firework/dev")
     // Sonatype OSS Snapshot Repository
     maven("https://oss.sonatype.org/content/repositories/snapshots")
-
-    // Space Packages releases
-    maven("https://maven.pkg.jetbrains.space/aaziz93/p/aaziz-93/maven")
-    // GitHub Packages
-    maven("https://maven.pkg.github.com/aaziz993")
 
     // Apply repositories from project properties.
     amperProjectExtraProperties.dependencyResolutionManagement?.repositories?.let { repositories ->

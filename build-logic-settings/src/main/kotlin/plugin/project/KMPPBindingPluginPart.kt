@@ -472,6 +472,10 @@ internal class KMPPBindingPluginPart(
                                         sourceSet.dependsOn(this)
                                     }
                             }
+
+                            dependencies {
+                                template
+                            }
                         }
                     }
                 }

@@ -4,6 +4,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal data class JvmSettings(
-    val compileSdk: Int = 23,
-    val testSdk: Int = 23,
+    val args: List<String>? = null,
 )

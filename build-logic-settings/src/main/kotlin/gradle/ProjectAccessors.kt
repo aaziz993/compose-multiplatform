@@ -100,6 +100,16 @@ internal val Project.noArg: NoArgExtension get() = the()
 internal fun Project.noArg(configure: NoArgExtension.() -> Unit) =
     extensions.configure(configure)
 
+internal val Project.sqldelight: SqlDelightExtension get() = the()
+
+internal fun Project.sqldelight(configure: SqlDelightExtension.() -> Unit) =
+    extensions.configure(configure)
+
+internal val Project.room: RoomExtension get() = the()
+
+internal fun Project.room(configure: RoomExtension.() -> Unit) =
+    extensions.configure(configure)
+
 internal val Project.rpc: RpcExtension get() = the()
 
 internal fun Project.rpc(configure: RpcExtension.() -> Unit) =
@@ -114,17 +124,6 @@ internal val Project.apollo: ApolloExtension get() = the()
 
 internal fun Project.apollo(configure: ApolloExtension.() -> Unit) =
     extensions.configure(configure)
-
-internal val Project.sqldelight: SqlDelightExtension get() = the()
-
-internal fun Project.sqldelight(configure: SqlDelightExtension.() -> Unit) =
-    extensions.configure(configure)
-
-internal val Project.room: RoomExtension get() = the()
-
-internal fun Project.room(configure: RoomExtension.() -> Unit) =
-    extensions.configure(configure)
-
 internal val Project.powerAssert: PowerAssertGradleExtension get() = the()
 
 internal fun Project.powerAssert(configure: PowerAssertGradleExtension.() -> Unit) =
