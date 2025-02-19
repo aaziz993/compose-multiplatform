@@ -31,9 +31,7 @@ internal data class DependencyNotation(
                     .substringBefore(".")
                     .let(catalog).findLibrary(
                         notation.substringAfter(".", "").replace(".", "-"),
-                    ).get().also {
-                        println("KSP COMPILER: ${it}")
-                    }
+                    ).get()
 
             notation.contains("[/\\\\]".toRegex()) -> directory.files(notation)
 
