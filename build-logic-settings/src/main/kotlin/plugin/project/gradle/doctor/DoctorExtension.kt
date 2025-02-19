@@ -1,7 +1,7 @@
 package plugin.project.gradle.doctor
 
 import com.osacky.doctor.DoctorPlugin
-import gradle.amperModuleExtraProperties
+import gradle.moduleProperties
 import gradle.doctor
 import gradle.isCI
 import gradle.tryAssign
@@ -11,7 +11,7 @@ import org.gradle.kotlin.dsl.withType
 
 internal fun Project.configureDoctorExtension() =
     plugins.withType<DoctorPlugin> {
-        with(amperModuleExtraProperties.settings.gradle) {
+        with(moduleProperties.settings.gradle) {
             doctor {
                 val enableTasksMonitoring = isCI || doctor.enableTaskMonitoring
 

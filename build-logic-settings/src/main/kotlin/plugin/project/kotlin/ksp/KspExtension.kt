@@ -1,7 +1,7 @@
 package plugin.project.kotlin.ksp
 
 import com.google.devtools.ksp.gradle.KspGradleSubplugin
-import gradle.amperModuleExtraProperties
+import gradle.moduleProperties
 import gradle.ksp
 import gradle.tryAssign
 import gradle.trySet
@@ -10,7 +10,7 @@ import org.gradle.kotlin.dsl.withType
 
 internal fun Project.configureKspExtension() =
     plugins.withType<KspGradleSubplugin> {
-        amperModuleExtraProperties.settings.kotlin.ksp2.let { ksp ->
+        moduleProperties.settings.kotlin.ksp2.let { ksp ->
             ksp {
                 useKsp2 tryAssign ksp.useKsp2
                 ksp.commandLineArgumentProviders?.let { commandLineArgumentProviders ->

@@ -28,7 +28,6 @@ modules:
   - cmp-lib
   - kmp-lib
   - compiler
-  - testProj
 
 settings:
   gradle:

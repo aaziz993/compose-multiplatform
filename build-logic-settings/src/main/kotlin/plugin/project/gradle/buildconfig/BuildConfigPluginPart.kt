@@ -1,25 +1,25 @@
 package plugin.project.gradle.buildconfig
 
-import gradle.amperModuleExtraProperties
+import gradle.moduleProperties
 import gradle.libs
-import org.jetbrains.amper.gradle.base.BindingPluginPart
-import org.jetbrains.amper.gradle.base.PluginPartCtx
+import org.gradle.api.Project
+import plugin.project.BindingPluginPart
 
-internal class BuildConfigPluginPart(ctx: PluginPartCtx) : BindingPluginPart by ctx {
+internal class BuildConfigPluginPart(override val project: Project) : BindingPluginPart {
 
     override val needToApply: Boolean by lazy {
-        project.amperModuleExtraProperties.settings.gradle.buildConfig.enabled
+        project.moduleProperties.settings.gradle.buildConfig.enabled
     }
 
-    override fun applyAfterEvaluate() {
-        super.applyAfterEvaluate()
-
-        project.plugins.apply(project.libs.plugins.build.config.get().pluginId)
+    override fun applyAfterEvaluate() = with(project) {
+        plugins.apply(project.libs.plugins.build.config.get().pluginId)
 
         applySettings()
     }
 
-    fun applySettings() = with(project) {
-        configureBuildConfigExtension()
+    fun applySettings() {
+        with(project) {
+            configureBuildConfigExtension()
+        }
     }
 }

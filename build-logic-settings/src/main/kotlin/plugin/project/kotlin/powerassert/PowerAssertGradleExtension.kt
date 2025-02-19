@@ -1,6 +1,6 @@
 package plugin.project.kotlin.powerassert
 
-import gradle.amperModuleExtraProperties
+import gradle.moduleProperties
 import gradle.powerAssert
 import gradle.tryAssign
 import org.gradle.api.Project
@@ -9,7 +9,7 @@ import org.jetbrains.kotlin.powerassert.gradle.PowerAssertGradlePlugin
 
 internal fun Project.configurePowerAssertGradleExtension() =
     plugins.withType<PowerAssertGradlePlugin> {
-        amperModuleExtraProperties.settings.kotlin.powerAssert.let { powerAssert ->
+        moduleProperties.settings.kotlin.powerAssert.let { powerAssert ->
             powerAssert {
                 functions tryAssign powerAssert.functions
                 includedSourceSets tryAssign powerAssert.includedSourceSets

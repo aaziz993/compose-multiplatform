@@ -1,4 +1,4 @@
-package plugin.apple
+package plugin.project.apple
 
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget

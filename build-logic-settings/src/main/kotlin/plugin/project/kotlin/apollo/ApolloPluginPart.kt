@@ -1,25 +1,25 @@
 package plugin.project.kotlin.apollo
 
-import gradle.amperModuleExtraProperties
+import gradle.moduleProperties
 import gradle.libs
-import org.jetbrains.amper.gradle.base.BindingPluginPart
-import org.jetbrains.amper.gradle.base.PluginPartCtx
+import plugin.project.BindingPluginPart
+import org.gradle.api.Project
 
-internal class ApolloPluginPart(ctx: PluginPartCtx) : BindingPluginPart by ctx {
+internal class ApolloPluginPart(override val project: Project) : BindingPluginPart {
 
     override val needToApply: Boolean by lazy {
-        project.amperModuleExtraProperties.settings.kotlin.apollo.enabled
+        project.moduleProperties.settings.kotlin.apollo.enabled
     }
 
-    override fun applyAfterEvaluate() {
-        super.applyAfterEvaluate()
-
-        project.plugins.apply(project.libs.plugins.apollo3.get().pluginId)
+    override fun applyAfterEvaluate() = with(project) {
+        plugins.apply(project.libs.plugins.apollo3.get().pluginId)
 
         applySettings()
     }
 
-    private fun applySettings() = with(project) {
-        configureApolloExtension()
+    private fun applySettings() {
+        with(project) {
+            configureApolloExtension()
+        }
     }
 }

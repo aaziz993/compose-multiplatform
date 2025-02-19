@@ -1,31 +1,25 @@
 package plugin.project.kotlin.ksp
 
-import gradle.amperModuleExtraProperties
-import gradle.id
+import gradle.moduleProperties
 import gradle.libs
-import gradle.plugin
-import gradle.plugins
-import gradle.settings
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.provideDelegate
-import org.jetbrains.amper.gradle.base.BindingPluginPart
-import org.jetbrains.amper.gradle.base.PluginPartCtx
+import plugin.project.BindingPluginPart
+import org.gradle.api.Project
 
-internal class KspPluginPart(ctx: PluginPartCtx) : BindingPluginPart by ctx {
+internal class KspPluginPart(override val project: Project) : BindingPluginPart {
 
     private val ksp by lazy {
-        project.amperModuleExtraProperties.settings.kotlin.ksp2
+        project.moduleProperties.settings.kotlin.ksp2
     }
 
     override val needToApply: Boolean by lazy {
         ksp.enabled
     }
 
-    override fun applyAfterEvaluate() {
-        super.applyAfterEvaluate()
-
-        project.plugins.apply(project.libs.plugins.ksp.get().pluginId)
+    override fun applyAfterEvaluate() =with(project) {
+        plugins.apply(project.libs.plugins.ksp.get().pluginId)
 
         applySettings()
     }

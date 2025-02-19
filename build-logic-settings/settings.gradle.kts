@@ -125,10 +125,6 @@ dependencyResolutionManagement {
         create("libs") {
             from(files("../gradle/libs.versions.toml"))
         }
-        create("kotlinWrappers") {
-            val wrappersVersion = "2025.2.6"
-            from("org.jetbrains.kotlin-wrappers:kotlin-wrappers-catalog:$wrappersVersion")
-        }
     }
 }
 

@@ -1,26 +1,32 @@
 package plugin.project.web
 
-import org.jetbrains.amper.frontend.Platform
-import org.jetbrains.amper.gradle.base.PluginPartCtx
-import org.jetbrains.amper.gradle.contains
-import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
+import gradle.kotlin
+import gradle.moduleProperties
+import org.gradle.api.Project
+import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinWasmJsTargetDsl
+import plugin.project.BindingPluginPart
+import plugin.project.model.hasWasmJs
+import plugin.project.model.wasmjs
 
 /**
  * Plugin logic, bind to specific module, when only default target is available.
  */
-internal class WasmBindingPluginPart(ctx: PluginPartCtx) : WebAwarePart(ctx) {
+internal class WasmBindingPluginPart(override val project: Project) : BindingPluginPart {
 
-    override val needToApply by lazy { Platform.WASM in module }
+    override val needToApply by lazy { project.moduleProperties.targets.hasWasmJs }
 
-    override val target: KotlinJsTargetDsl by lazy {
-        kotlinMPE.wasmJs(module.artifactPlatforms.single { it == Platform.WASM }.targetName)
-    }
+
 
     /**
      * Entry point for this plugin part.
      */
-    override fun applyBeforeEvaluate() {
-        super.applyBeforeEvaluate()
+    override fun applyBeforeEvaluate()  = with(project){
+        moduleProperties.targets.wasmjs.forEach { target -> target.applyTo(kotlin) }
+    }
+
+    private fun applySettings()=with(project){
+        configureKotlinJsTarget< KotlinWasmJsTargetDsl>()
+        configureJsTestTasks<KotlinWasmJsTargetDsl>()
     }
 }
 

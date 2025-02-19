@@ -1,6 +1,6 @@
 package plugin.project.gradle.dokka
 
-import gradle.amperModuleExtraProperties
+import gradle.moduleProperties
 import gradle.libs
 import gradle.tryAssign
 import org.gradle.api.Project
@@ -8,18 +8,17 @@ import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.provideDelegate
 import org.gradle.kotlin.dsl.withType
-import org.jetbrains.amper.gradle.base.BindingPluginPart
-import org.jetbrains.amper.gradle.base.PluginPartCtx
+import plugin.project.BindingPluginPart
 import org.jetbrains.dokka.gradle.AbstractDokkaTask
 import org.jetbrains.dokka.gradle.DokkaMultiModuleTask
 import org.jetbrains.dokka.gradle.internal.InternalDokkaGradlePluginApi
 import plugin.project.gradle.dokka.model.DokkaMultiModuleFileLayout
 import plugin.project.gradle.dokka.model.DokkaTask
 
-internal class DokkaPluginPart(ctx: PluginPartCtx) : BindingPluginPart by ctx {
+internal class DokkaPluginPart(override val project: Project) : BindingPluginPart {
 
     private val spotless by lazy {
-        project.amperModuleExtraProperties.settings.gradle.spotless
+        project.moduleProperties.settings.gradle.spotless
     }
 
     override val needToApply: Boolean by lazy {
@@ -27,13 +26,11 @@ internal class DokkaPluginPart(ctx: PluginPartCtx) : BindingPluginPart by ctx {
     }
 
     private val dokka by lazy {
-        project.amperModuleExtraProperties.settings.gradle.dokka
+        project.moduleProperties.settings.gradle.dokka
     }
 
-    override fun applyAfterEvaluate() {
-        super.applyAfterEvaluate()
-
-        project.plugins.apply(project.libs.plugins.dokka.get().pluginId)
+    override fun applyAfterEvaluate() = with(project) {
+        plugins.apply(project.libs.plugins.dokka.get().pluginId)
 
         applySettings()
     }

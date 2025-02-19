@@ -1,6 +1,6 @@
 package plugin.project.gradle.sonar
 
-import gradle.amperModuleExtraProperties
+import gradle.moduleProperties
 import gradle.sonar
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
@@ -13,7 +13,7 @@ import org.sonarqube.gradle.SonarQubePlugin
 // Any properties set on the command line also apply to this project.
 internal fun Project.configureSonarExtension() =
     plugins.withType<SonarQubePlugin> {
-        amperModuleExtraProperties.settings.gradle.sonar.let { sonar ->
+        moduleProperties.settings.gradle.sonar.let { sonar ->
             sonar {
                 sonar.skipProject?.let(::setSkipProject)
                 properties {

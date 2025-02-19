@@ -1,6 +1,6 @@
 package plugin.project.web.npm
 
-import gradle.amperModuleExtraProperties
+import gradle.moduleProperties
 import gradle.npm
 import gradle.tryAssign
 import gradle.trySet
@@ -10,7 +10,7 @@ import org.jetbrains.kotlin.gradle.targets.js.npm.NpmResolverPlugin
 
 internal fun Project.configureNpmExtension() =
     plugins.withType<NpmResolverPlugin> {
-        amperModuleExtraProperties.settings.web.npm.let { npm ->
+        moduleProperties.settings.web.npm.let { npm ->
             npm {
                 command tryAssign npm.command
                 lockFileName tryAssign npm.lockFileName

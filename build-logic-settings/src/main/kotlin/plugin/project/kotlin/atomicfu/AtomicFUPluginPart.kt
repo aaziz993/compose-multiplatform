@@ -1,29 +1,25 @@
 package plugin.project.kotlin.atomicfu
 
-import gradle.amperModuleExtraProperties
-import gradle.id
+import gradle.moduleProperties
 import gradle.libs
-import gradle.plugin
-import gradle.plugins
-import gradle.settings
-import org.jetbrains.amper.gradle.base.BindingPluginPart
-import org.jetbrains.amper.gradle.base.PluginPartCtx
+import plugin.project.BindingPluginPart
+import org.gradle.api.Project
 
-internal class AtomicFUPluginPart(ctx: PluginPartCtx) : BindingPluginPart by ctx {
+internal class AtomicFUPluginPart(override val project: Project) : BindingPluginPart {
 
     override val needToApply: Boolean by lazy {
-        project.amperModuleExtraProperties.settings.kotlin.atomicFU.enabled
+        project.moduleProperties.settings.kotlin.atomicFU.enabled
     }
 
-    override fun applyAfterEvaluate() {
-        super.applyAfterEvaluate()
-
-        project.plugins.apply(project.libs.plugins.atomicfu.get().pluginId)
+    override fun applyAfterEvaluate() = with(project) {
+        plugins.apply(project.libs.plugins.atomicfu.get().pluginId)
 
         applySettings()
     }
 
-    private fun applySettings() = with(project) {
-        configureAtomicFUPluginExtension()
+    private fun applySettings() {
+        with(project) {
+            configureAtomicFUPluginExtension()
+        }
     }
 }

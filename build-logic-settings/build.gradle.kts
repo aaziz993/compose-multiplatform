@@ -288,7 +288,6 @@ dependencies {
     // A hack to make version catalogs accessible from buildSrc sources
     // https://github.com/gradle/gradle/issues/15383#issuecomment-779893192
     implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
-    implementation(files(kotlinWrappers.javaClass.superclass.protectionDomain.codeSource.location))
 }
 
 gradlePlugin {

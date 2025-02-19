@@ -11,9 +11,8 @@ import org.gradle.kotlin.dsl.getByType
 import org.jetbrains.amper.frontend.schema.ProductType
 import org.jetbrains.amper.gradle.android.AndroidAwarePart
 import org.jetbrains.amper.gradle.base.AmperNamingConventions
-import org.jetbrains.amper.gradle.base.PluginPartCtx
+import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
-import plugin.project.KMPEAware
 import plugin.project.compose.desktop.configureDesktopExtension
 
 public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConventions, AndroidAwarePart(ctx) {

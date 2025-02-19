@@ -1,6 +1,6 @@
 package plugin.project.gradle.dokka
 
-import gradle.amperModuleExtraProperties
+import gradle.moduleProperties
 import gradle.dokka
 import gradle.maybeNamed
 import gradle.tryAssign
@@ -15,7 +15,7 @@ import plugin.project.gradle.dokka.model.DokkaSourceSetSpec
 @OptIn(InternalDokkaGradlePluginApi::class)
 internal fun Project.configureDokkaExtension() =
     plugins.withType<DokkaPlugin> {
-        amperModuleExtraProperties.settings.gradle.dokka.let { dokka ->
+        moduleProperties.settings.gradle.dokka.let { dokka ->
             dokka {
                 basePublicationsDirectory tryAssign dokka.basePublicationsDirectory?.let(layout.projectDirectory::dir)
                 dokkaCacheDirectory tryAssign dokka.dokkaCacheDirectory?.let(layout.projectDirectory::dir)

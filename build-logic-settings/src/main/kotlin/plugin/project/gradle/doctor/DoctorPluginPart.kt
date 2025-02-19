@@ -1,26 +1,24 @@
 package plugin.project.gradle.doctor
 
-import gradle.amperModuleExtraProperties
+import gradle.moduleProperties
 import gradle.isCI
 import gradle.libs
 import gradle.unregister
-import org.jetbrains.amper.gradle.base.BindingPluginPart
-import org.jetbrains.amper.gradle.base.PluginPartCtx
+import org.gradle.api.Project
+import plugin.project.BindingPluginPart
 
-internal class DoctorPluginPart(ctx: PluginPartCtx) : BindingPluginPart by ctx {
+internal class DoctorPluginPart(override val project: Project) : BindingPluginPart {
 
     private val doctor by lazy {
-        project.amperModuleExtraProperties.settings.gradle.doctor
+        project.moduleProperties.settings.gradle.doctor
     }
 
     override val needToApply: Boolean by lazy {
         doctor.enabled && project == project.rootProject
     }
 
-    override fun applyAfterEvaluate() {
-        super.applyAfterEvaluate()
-
-        project.plugins.apply(project.libs.plugins.doctor.get().pluginId)
+    override fun applyAfterEvaluate() = with(project) {
+        plugins.apply(project.libs.plugins.doctor.get().pluginId)
 
         applySettings()
     }

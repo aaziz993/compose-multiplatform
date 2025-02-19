@@ -1,19 +1,19 @@
 package plugin.project.web
 
-import gradle.amperModuleExtraProperties
-import gradle.tryAssign
-import gradle.trySet
+import gradle.kotlin
+import gradle.moduleProperties
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
 import org.gradle.kotlin.dsl.assign
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 import plugin.project.web.model.BrowserSettings
 import plugin.project.web.node.model.NodeSettings
 
-internal fun Project.configureKotlinJsTarget(target: KotlinJsTargetDsl) =
-    amperModuleExtraProperties.settings.web.let { web ->
-        target.apply {
-            moduleName = web.moduleName ?: "$group.${project.name}-${target.name}"
+internal inline fun <reified T : KotlinJsTargetDsl> Project.configureKotlinJsTarget() =
+    moduleProperties.settings.web.let { web ->
+        kotlin.targets.withType<T> {
+            moduleName = web.moduleName ?: "$group.${project.name}-${targetName}"
 
             web.browser.takeIf(BrowserSettings::enabled)?.let { browser ->
                 println("Configure $targetName browser")
@@ -47,10 +47,6 @@ internal fun Project.configureKotlinJsTarget(target: KotlinJsTargetDsl) =
 //                        ::progressReporter trySet webpackConfig.progressReporter
 //                        ::progressReporterPathFilter trySet webpackConfig.progressReporterPathFilter?.let(::file)
 //                        ::resolveFromModulesFirst trySet webpackConfig.resolveFromModulesFirst
-
-
-
-
 
                         outputFileName = "$moduleName.js"
 

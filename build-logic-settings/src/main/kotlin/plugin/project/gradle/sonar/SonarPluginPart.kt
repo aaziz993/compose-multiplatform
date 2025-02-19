@@ -1,25 +1,25 @@
 package plugin.project.gradle.sonar
 
-import gradle.amperModuleExtraProperties
+import gradle.moduleProperties
 import gradle.libs
-import org.jetbrains.amper.gradle.base.BindingPluginPart
-import org.jetbrains.amper.gradle.base.PluginPartCtx
+import plugin.project.BindingPluginPart
+import org.gradle.api.Project
 
-internal class SonarPluginPart(ctx: PluginPartCtx) : BindingPluginPart by ctx {
+internal class SonarPluginPart(override val project: Project) : BindingPluginPart {
 
     override val needToApply: Boolean by lazy {
-        project.amperModuleExtraProperties.settings.gradle.sonar.enabled
+        project.moduleProperties.settings.gradle.sonar.enabled
     }
 
-    override fun applyAfterEvaluate() {
-        super.applyAfterEvaluate()
-
-        project.plugins.apply(project.libs.plugins.sonarqube.get().pluginId)
+    override fun applyAfterEvaluate() = with(project) {
+        plugins.apply(project.libs.plugins.sonarqube.get().pluginId)
 
         applySettings()
     }
 
-    fun applySettings() = with(project) {
-        configureSonarExtension()
+    fun applySettings() {
+        with(project) {
+            configureSonarExtension()
+        }
     }
 }

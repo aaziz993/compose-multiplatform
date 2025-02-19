@@ -1,29 +1,31 @@
 package plugin.project.gradle.spotless
 
-import gradle.amperModuleExtraProperties
+import gradle.moduleProperties
 import gradle.libs
-import org.jetbrains.amper.gradle.base.BindingPluginPart
-import org.jetbrains.amper.gradle.base.PluginPartCtx
+import plugin.project.BindingPluginPart
+import org.gradle.api.Project
 
-internal class SpotlessPluginPart(ctx: PluginPartCtx) : BindingPluginPart by ctx {
+internal class SpotlessPluginPart(override val project: Project) : BindingPluginPart {
 
     private val spotless by lazy {
-        project.amperModuleExtraProperties.settings.gradle.spotless
+        project.moduleProperties.settings.gradle.spotless
     }
 
     override val needToApply: Boolean by lazy {
         spotless.enabled
     }
 
-    override fun applyAfterEvaluate() {
+    override fun applyAfterEvaluate() = with(project) {
         super.applyAfterEvaluate()
 
-        project.plugins.apply(project.libs.plugins.spotless.get().pluginId)
+        plugins.apply(project.libs.plugins.spotless.get().pluginId)
 
         applySettings()
     }
 
-    fun applySettings() = with(project) {
-        configureSpotlessExtension()
+    fun applySettings() {
+        with(project) {
+            configureSpotlessExtension()
+        }
     }
 }

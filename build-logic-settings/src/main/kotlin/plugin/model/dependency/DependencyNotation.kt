@@ -5,15 +5,11 @@ package plugin.model.dependency
 import gradle.libraries
 import gradle.library
 import gradle.libs
-import gradle.module
-import gradle.settings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import org.gradle.api.artifacts.VersionCatalog
 import org.gradle.api.file.Directory
 import org.gradle.api.initialization.Settings
 import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
-import org.tomlj.TomlParseResult
 
 @Serializable(with = DependencyNonationSerializer::class)
 internal data class DependencyNotation(

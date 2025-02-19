@@ -19,6 +19,7 @@ import org.gradle.api.internal.GradleInternal
 import org.gradle.api.toolchain.management.ToolchainManagement
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.the
+import org.jetbrains.compose.ComposeExtension
 import org.jetbrains.dokka.gradle.DokkaExtension
 import org.jetbrains.kotlin.allopen.gradle.AllOpenExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
@@ -29,6 +30,7 @@ import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension
 import org.jetbrains.kotlin.noarg.gradle.NoArgExtension
 import org.jetbrains.kotlin.powerassert.gradle.PowerAssertGradleExtension
 import org.sonarqube.gradle.SonarExtension
+import plugin.project.compose.model.ResourcesExtension
 
 internal val Project.settings: Settings
     get() = (gradle as GradleInternal).settings
@@ -124,11 +126,21 @@ internal val Project.apollo: ApolloExtension get() = the()
 
 internal fun Project.apollo(configure: ApolloExtension.() -> Unit) =
     extensions.configure(configure)
+
 internal val Project.powerAssert: PowerAssertGradleExtension get() = the()
 
 internal fun Project.powerAssert(configure: PowerAssertGradleExtension.() -> Unit) =
     extensions.configure(configure)
 
+internal val Project.compose: ComposeExtension get() = the()
+
+internal fun Project.compose(configure: ComposeExtension.() -> Unit) =
+    extensions.configure(configure)
+
+internal val Project.resources: ResourcesExtension get() = the()
+
+internal fun Project.resources(configure: ResourcesExtension.() -> Unit) =
+    extensions.configure(configure)
 
 internal val Project.npm: NodeJsRootExtension get() = the()
 

@@ -2,17 +2,13 @@
 
 package gradle
 
-import java.io.File
-import org.gradle.accessors.dm.LibrariesForKotlinWrappers
 import org.gradle.accessors.dm.LibrariesForLibs
 import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalog
 import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.api.initialization.Settings
-import org.gradle.api.plugins.ExtensionContainer
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.the
-import org.jetbrains.compose.ComposeExtension
 import org.tomlj.Toml
 import org.tomlj.TomlParseResult
 import org.tomlj.TomlTable
@@ -23,16 +19,6 @@ import org.tomlj.TomlTable
  */
 internal val Project.libs: LibrariesForLibs
     get() = the()
-
-/**
- * Accessor to make gradle.version catalog available in build-logic.
- * See: https://github.com/gradle/gradle/issues/15383#issuecomment-779893192
- */
-internal val Project.kotlinWrappers: LibrariesForKotlinWrappers
-    get() = the()
-
-internal val Project.compose
-    get() = extensions.getByType<ComposeExtension>().dependencies
 
 internal fun Project.libs(name: String): VersionCatalog = extensions.getByType<VersionCatalogsExtension>().named(name)
 

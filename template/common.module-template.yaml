@@ -10,8 +10,8 @@ aliases:
   - nonWeb: [ jvm, android, iosArm64, iosX64, iosSimulatorArm64 ]
 
 dependencies:
-  - $kotlin.serialization.json
-  - $kotlin.serialization.properties
+  - $libs.kotlinx.serialization.json
+  - $libs.kotlinx.serialization.properties
 
 dependencies@nonWeb:
   - $libs.androidx.room.runtime.ktx

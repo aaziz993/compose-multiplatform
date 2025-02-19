@@ -1,6 +1,6 @@
 package plugin.project.gradle.kover
 
-import gradle.amperModuleExtraProperties
+import gradle.moduleProperties
 import gradle.kover
 import gradle.tryAssign
 import kotlinx.kover.gradle.plugin.KoverGradlePlugin
@@ -10,7 +10,7 @@ import plugin.project.gradle.kover.model.KoverReportFiltersConfig
 
 internal fun Project.configureKoverExtension() =
     plugins.withType<KoverGradlePlugin> {
-        amperModuleExtraProperties.settings.gradle.kover.let { kover ->
+        moduleProperties.settings.gradle.kover.let { kover ->
             kover {
                 useJacoco tryAssign kover.useJacoco
                 jacocoVersion tryAssign kover.jacocoVersion

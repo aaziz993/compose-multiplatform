@@ -1,6 +1,6 @@
 package plugin.project.web.yarn
 
-import gradle.amperModuleExtraProperties
+import gradle.moduleProperties
 import gradle.trySet
 import gradle.yarn
 import org.gradle.api.Project
@@ -11,7 +11,7 @@ import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnResolution
 
 internal fun Project.configureYarnRootExtension() =
     plugins.withType<YarnPlugin> {
-        amperModuleExtraProperties.settings.web.yarn.let { yarn ->
+        moduleProperties.settings.web.yarn.let { yarn ->
             yarn {
                 ::lockFileName trySet yarn.lockFileName
                 ::lockFileDirectory trySet yarn.lockFileDirectory?.let(::file)

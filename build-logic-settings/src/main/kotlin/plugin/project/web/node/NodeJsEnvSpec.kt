@@ -1,6 +1,6 @@
 package plugin.project.web.node
 
-import gradle.amperModuleExtraProperties
+import gradle.moduleProperties
 import gradle.nodeEnv
 import gradle.tryAssign
 import org.gradle.api.Project
@@ -9,7 +9,7 @@ import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsPlugin
 
 internal fun Project.configureNodeJsEnvSpec() =
     plugins.withType<NodeJsPlugin> {
-        amperModuleExtraProperties.settings.web.node.env.let { env ->
+        moduleProperties.settings.web.node.env.let { env ->
             nodeEnv {
                 download tryAssign env.download
                 downloadBaseUrl tryAssign env.downloadBaseUrl

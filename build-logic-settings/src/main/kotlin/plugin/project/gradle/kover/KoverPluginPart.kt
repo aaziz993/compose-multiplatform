@@ -1,25 +1,25 @@
 package plugin.project.gradle.kover
 
-import gradle.amperModuleExtraProperties
+import gradle.moduleProperties
 import gradle.libs
-import org.jetbrains.amper.gradle.base.BindingPluginPart
-import org.jetbrains.amper.gradle.base.PluginPartCtx
+import plugin.project.BindingPluginPart
+import org.gradle.api.Project
 
-internal class KoverPluginPart(ctx: PluginPartCtx) : BindingPluginPart by ctx {
+internal class KoverPluginPart(override val project: Project) : BindingPluginPart {
 
     override val needToApply: Boolean by lazy {
-        project.amperModuleExtraProperties.settings.gradle.kover.enabled
+        project.moduleProperties.settings.gradle.kover.enabled
     }
 
-    override fun applyAfterEvaluate() {
-        super.applyAfterEvaluate()
-
-        project.plugins.apply(project.libs.plugins.kover.get().pluginId)
+    override fun applyAfterEvaluate() = with(project) {
+        plugins.apply(project.libs.plugins.kover.get().pluginId)
 
         applySettings()
     }
 
-    private fun applySettings() = with(project) {
-        configureKoverExtension()
+    private fun applySettings() {
+        with(project) {
+            configureKoverExtension()
+        }
     }
 }

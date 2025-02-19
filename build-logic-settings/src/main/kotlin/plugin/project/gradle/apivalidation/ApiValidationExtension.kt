@@ -1,6 +1,6 @@
 package plugin.project.gradle.apivalidation
 
-import gradle.amperModuleExtraProperties
+import gradle.moduleProperties
 import gradle.apiValidation
 import gradle.trySet
 import kotlinx.validation.BinaryCompatibilityValidatorPlugin
@@ -18,7 +18,7 @@ import org.gradle.kotlin.dsl.withType
 @OptIn(ExperimentalBCVApi::class)
 internal fun Project.configureApiValidationExtension() =
     plugins.withType<BinaryCompatibilityValidatorPlugin> {
-        amperModuleExtraProperties.settings.gradle.apiValidation.let { apiValidation ->
+        moduleProperties.settings.gradle.apiValidation.let { apiValidation ->
             apiValidation {
                 ::validationDisabled trySet apiValidation.validationDisabled
                 ::ignoredPackages trySet apiValidation.ignoredPackages?.toMutableSet()

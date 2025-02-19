@@ -12,7 +12,7 @@ import com.diffplug.gradle.spotless.YamlExtension
 import com.diffplug.spotless.generic.LicenseHeaderStep
 import com.diffplug.spotless.kotlin.KotlinConstants
 import com.diffplug.spotless.kotlin.KtfmtStep
-import gradle.amperModuleExtraProperties
+import gradle.moduleProperties
 import gradle.libs
 import gradle.spotless
 import org.gradle.api.Project
@@ -30,7 +30,7 @@ private const val LICENSE_HEADER_DIR = "../"
 
 internal fun Project.configureSpotlessExtension() =
     plugins.withType<SpotlessPlugin> {
-        amperModuleExtraProperties.settings.gradle.spotless.let { spotless ->
+        moduleProperties.settings.gradle.spotless.let { spotless ->
             spotless {
                 val targetExclude = listOf(
                     "**/generated-src/**",
