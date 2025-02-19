@@ -40,6 +40,7 @@ import org.jetbrains.amper.gradle.knownModel
 import org.jetbrains.amper.gradle.moduleDir
 import org.jetbrains.amper.gradle.moduleFilePathToProjectPath
 import org.jetbrains.kotlin.gradle.plugin.KotlinMultiplatformPluginWrapper
+import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import org.yaml.snakeyaml.DumperOptions
 import org.yaml.snakeyaml.Yaml
@@ -142,9 +143,7 @@ public class SettingsPlugin : Plugin<Settings> {
                         versionCatalogs.forEach { (name, dependency) ->
                             create(name) {
                                 from(
-                                    dependency.toDependencyNotation().also {
-                                        println("DEPENDENCY NOTATION: $it")
-                                    },
+                                    dependency.toDependencyNotation(),
                                 )
                             }
                         }
@@ -217,8 +216,15 @@ public class SettingsPlugin : Plugin<Settings> {
 
             config["dependencies"] = config.filterKeys { it.startsWith("dependencies") }.map { (key, notations) ->
                 mapOf(
-                        "sourceSetName" to key.substringAfter("@", "commonMain"),
-                        "dependencyNotations" to notations,
+                    "sourceSetName" to key.substringAfter("@", KotlinSourceSet.COMMON_MAIN_SOURCE_SET_NAME),
+                    "dependencyNotations" to notations,
+                )
+            }
+
+            config["test-dependencies"] = config.filterKeys { it.startsWith("test-dependencies") }.map { (key, notations) ->
+                mapOf(
+                    "sourceSetName" to key.substringAfter("@", KotlinSourceSet.COMMON_TEST_SOURCE_SET_NAME),
+                    "dependencyNotations" to notations,
                 )
             }
         }
@@ -227,19 +233,18 @@ public class SettingsPlugin : Plugin<Settings> {
             module.moduleDir.resolve("module.yaml").readText(),
         ).toMutableMap().also(::tryTransform)
 
-        val templates = (moduleSettings["apply"] as List<String>?)?.associateWith { template ->
+        val templates = (moduleSettings["apply"] as List<String>?)?.map { template ->
             yaml.load<MutableMap<String, *>>(
                 module.moduleDir.resolve(template).readText(),
             ).toMutableMap().also(::tryTransform)
         }.orEmpty()
 
         project.amperModuleExtraProperties = json.decodeFromAny<ModuleProperties>(
-            templates.values.fold(emptyMap<String, Any?>()) { acc, map -> acc deepMerge map }
+            templates.fold(emptyMap<String, Any?>()) { acc, map -> acc deepMerge map }
                 deepMerge moduleSettings,
         ).apply {
             println("Apply module.yaml to '${module.userReadableName.uppercase()}':")
             println(logYaml.dump(Json.Default.encodeToAny(this)))
-            this.templates = json.decodeFromAny(templates)
         }
     }
 
@@ -269,18 +274,15 @@ public class SettingsPlugin : Plugin<Settings> {
     }
 
     private fun configureProjectForAmper(project: Project) {
-        // Disable warning about Default Kotlin Hierarchy.
-        project.extraProperties.set("kotlin.mpp.applyDefaultHierarchyTemplate", "false")
+        // Enable Default Kotlin Hierarchy.
+        project.extraProperties.set("kotlin.mpp.applyDefaultHierarchyTemplate", "true")
 
         // Apply Kotlin plugins.
         project.plugins.apply(KotlinMultiplatformPluginWrapper::class.java)
 
         project.plugins.apply(BindingProjectPlugin::class.java)
 
-
-
         project.afterEvaluate {
-//            project.configureWeb()
             // W/A for XML factories mess within apple plugin classpath.
             val hasAndroidPlugin = plugins.hasPlugin("com.android.application") ||
                 plugins.hasPlugin("com.android.library")

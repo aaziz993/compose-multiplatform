@@ -34,15 +34,10 @@ internal val Project.kotlinWrappers: LibrariesForKotlinWrappers
 internal val Project.compose
     get() = extensions.getByType<ComposeExtension>().dependencies
 
-internal fun ExtensionContainer.libs(name:String): VersionCatalog
-     = getByType<VersionCatalogsExtension>().named(name)
-
-internal fun File.asLibs() = Toml.parse(readText())
-
-internal fun File.libsFile() = resolve("gradle/libs.versions.toml")
+internal fun Project.libs(name: String): VersionCatalog = extensions.getByType<VersionCatalogsExtension>().named(name)
 
 internal val Settings.libs: TomlParseResult
-    get() = layout.rootDirectory.asFile.libsFile().asLibs()
+    get() =  Toml.parse(layout.rootDirectory.file("gradle/libs.versions.toml").asFile.readText())
 
 internal fun TomlTable.version(alias: String) =
     getString(alias)

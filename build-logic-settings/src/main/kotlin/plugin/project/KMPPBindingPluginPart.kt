@@ -6,6 +6,7 @@ import gradle.all
 import gradle.amperModuleExtraProperties
 import gradle.configureEach
 import gradle.hasLeafSourceSets
+import gradle.kotlin
 import gradle.withCapability
 import java.io.File
 import kotlin.io.path.relativeTo
@@ -25,6 +26,7 @@ import org.jetbrains.amper.frontend.Layout
 import org.jetbrains.amper.frontend.LocalModuleDependency
 import org.jetbrains.amper.frontend.MavenDependency
 import org.jetbrains.amper.frontend.Platform
+import org.jetbrains.amper.frontend.schema.Dependency
 import org.jetbrains.amper.frontend.schema.IosSettings
 import org.jetbrains.amper.frontend.schema.JUnitVersion
 import org.jetbrains.amper.frontend.schema.KotlinSettings
@@ -58,6 +60,7 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeCompilation
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary
 import org.jetbrains.kotlin.konan.target.Family
+import plugin.model.dependency.depFunction
 
 private fun LanguageSettingsBuilder.configureFromAmperSettings(settings: KotlinSettings) {
     languageVersion = settings.languageVersion.schemaValue
@@ -75,10 +78,7 @@ internal class KMPPBindingPluginPart(
     private val ctx: PluginPartCtx,
 ) : BindingPluginPart by ctx, KMPEAware, AmperNamingConventions {
 
-    internal val fragmentsByKotlinSourceSetName = mutableMapOf<String, FragmentWrapper>()
-
-    override val kotlinMPE: KotlinMultiplatformExtension =
-        project.extensions.getByType(KotlinMultiplatformExtension::class.java)
+    override val kotlinMPE: KotlinMultiplatformExtension = project.kotlin
 
     override val needToApply = true
 
@@ -90,9 +90,9 @@ internal class KMPPBindingPluginPart(
         // Workaround for KTIJ-27212, to get proper compiler arguments in the common code facet after import.
         // Apparently, configuring compiler arguments for metadata compilation is not sufficient.
         // This workaround doesn't fix intermediate source sets, though, only the most common fragment.
-        kotlinMPE.compilerOptions {
-            configureFrom(module.mostCommonFragment.settings)
-        }
+//        kotlinMPE.compilerOptions {
+//            configureFrom(module.mostCommonFragment.settings)
+//        }
 
         val hasJUnit5 = module.fragments
             .any { it.settings.junit == JUnitVersion.JUNIT5 }
@@ -131,83 +131,47 @@ internal class KMPPBindingPluginPart(
         project.extraProperties.set("org.jetbrains.compose.experimental.uikit.enabled", "true")
 
         // Do after fragments init!
-        adjustSourceSetDirectories()
+//        adjustSourceSetDirectories()
         project.afterEvaluate {
             // We need to do that second time, because of tricky gradle/KMPP/android stuff.
             //
             // First call is needed because we need to search for entry point.
             // Second call is needed, because we need to rewrite changes from KMPP that
             // are done in "afterEvaluate" also.
-            adjustSourceSetDirectories()
+//            adjustSourceSetDirectories()
         }
     }
 
     /**
      * Set Amper specific directory layout.
      */
-    private fun adjustSourceSetDirectories() {
-        kotlinMPE.sourceSets.all { sourceSet ->
-            val fragment = sourceSet.amperFragment
-            when {
-                // Do GRADLE_JVM specific.
-                layout == Layout.GRADLE_JVM -> {
-                    if (sourceSet.name == "jvmMain") {
-                        replacePenultimatePaths(sourceSet.kotlin, sourceSet.resources, "main")
-                    }
-                    else if (sourceSet.name == "jvmTest") {
-                        replacePenultimatePaths(sourceSet.kotlin, sourceSet.resources, "test")
-                    }
-                }
-
-                // Do AMPER specific.
-                layout == Layout.AMPER && fragment != null -> {
-                    sourceSet.kotlin.tryAdd(fragment.src).tryRemove { it.endsWith("kotlin") }
-                    sourceSet.resources.tryAdd(fragment.resourcesPath).tryRemove { it.endsWith("resources") }
-                }
-
-                layout == Layout.AMPER && fragment == null -> {
-                    sourceSet.kotlin.setSrcDirs(emptyList<File>())
-                    sourceSet.resources.setSrcDirs(emptyList<File>())
-                }
-            }
-        }
-    }
-
-    fun afterAll() {
-        project.afterEvaluate {
-            // Need after evaluate to catch up android compilations.
-            module.artifactPlatforms.forEach { platform ->
-                val patchedCompilations = mutableListOf<KotlinCompilation<*>>()
-
-                module.leafFragments.filter { it.platform == platform }.forEach { fragment ->
-                    fragment.targetCompilation?.apply {
-                        compileTaskProvider.configureCompilerOptions(fragment.settings)
-                        patchedCompilations.add(this)
-                    }
-                }
-
-                // This doesn't seem to actually fix intermediate fragments.
-                // TODO check if it is useful at all
-                platform.target?.compilations?.forEach loop@{ compilation ->
-                    if (compilation in patchedCompilations) return@loop
-                    val nearestFragment = compilation.defaultSourceSet.mostCommonNearestAmperFragment
-                    val settings = nearestFragment?.settings ?: return@loop
-
-                    compilation.compileTaskProvider.configureCompilerOptions(settings)
-                }
-            }
-        }
-    }
-
-    internal val KotlinSourceSet.nearestAmperFragments: List<FragmentWrapper>
-        get() = amperFragment?.let { listOf(it) }
-            ?: dependsOn.flatMap { it.nearestAmperFragments }
-
-    internal val KotlinSourceSet.mostCommonNearestAmperFragment
-        get() = nearestAmperFragments.let { nearest ->
-            nearest.filter { it.fragmentDependencies.none { dep -> dep.target in nearest } }
-                .maxByOrNull { it.platforms.size }
-        }
+//    private fun adjustSourceSetDirectories() {
+//        kotlinMPE.sourceSets.all { sourceSet ->
+//            val fragment = sourceSet.amperFragment
+//            when {
+//                // Do GRADLE_JVM specific.
+//                layout == Layout.GRADLE_JVM -> {
+//                    if (sourceSet.name == "jvmMain") {
+//                        replacePenultimatePaths(sourceSet.kotlin, sourceSet.resources, "main")
+//                    }
+//                    else if (sourceSet.name == "jvmTest") {
+//                        replacePenultimatePaths(sourceSet.kotlin, sourceSet.resources, "test")
+//                    }
+//                }
+//
+//                // Do AMPER specific.
+//                layout == Layout.AMPER && fragment != null -> {
+//                    sourceSet.kotlin.tryAdd(fragment.src).tryRemove { it.endsWith("kotlin") }
+//                    sourceSet.resources.tryAdd(fragment.resourcesPath).tryRemove { it.endsWith("resources") }
+//                }
+//
+//                layout == Layout.AMPER && fragment == null -> {
+//                    sourceSet.kotlin.setSrcDirs(emptyList<File>())
+//                    sourceSet.resources.setSrcDirs(emptyList<File>())
+//                }
+//            }
+//        }
+//    }
 
     @OptIn(ExperimentalWasmDsl::class)
     private fun initTargets() = with(KotlinAmperNamingConvention) {
@@ -351,162 +315,34 @@ internal class KMPPBindingPluginPart(
     }
 
     @Suppress("UNCHECKED_CAST")
-    private fun Project.initSourceSets() = with(KotlinAmperNamingConvention) {
-        // First iteration - create source sets and add dependencies.
-        module.fragments.forEach { fragment ->
-//            fragment.maybeCreateSourceSet
-
-            kotlinMPE.sourceSets.maybeCreate(fragment.kotlinSourceSetName.kotlinSourceSetName(fragment.isTest)).apply {
-                fragmentsByKotlinSourceSetName[name] = fragment
-                dependencies {
-                    fragment.externalDependencies.forEach { externalDependency ->
-                        val depFunction: KotlinDependencyHandler.(Any) -> Unit =
-                            if (externalDependency is DefaultScopedNotation) with(externalDependency) {
-                                // tmp variable fixes strangely red code with "ambiguity"
-                                val tmp: KotlinDependencyHandler.(Any) -> Unit = when {
-                                    compile && runtime && !exported -> KotlinDependencyHandler::implementation
-                                    !compile && runtime && !exported -> KotlinDependencyHandler::runtimeOnly
-                                    compile && !runtime && !exported -> KotlinDependencyHandler::compileOnly
-                                    compile && runtime && exported -> KotlinDependencyHandler::api
-                                    compile && !runtime && exported -> error("Exporting a compile-only dependency is not supported")
-                                    !compile && runtime && exported -> error("Cannot export a runtime-only dependency to the consumer's compile classpath")
-                                    !compile && !runtime -> error("At least one scope of (compile, runtime) must be declared")
-                                    else -> KotlinDependencyHandler::implementation
-                                }
-                                tmp
-                            }
-                            else {
-                                { implementation(it) }
-                            }
-                        when (externalDependency) {
-                            is MavenDependency -> depFunction(externalDependency.coordinates.value)
-                            is LocalModuleDependency -> {
-                                val source = externalDependency.module.source
-                                if (source is AmperModuleInvalidPathSource) {
-                                    val relativeInvalidPath = source.invalidPath.relativeTo(project.projectDir.toPath())
-                                    throw GradleException(
-                                        "Unresolved dependency in project '${project.path}': " +
-                                            "cannot find Amper module at '$relativeInvalidPath'",
-                                    )
-                                }
-                                depFunction(externalDependency.module.linkedProject)
-                            }
-
-                            else -> error("Unsupported dependency type: $externalDependency")
-                        }
-                    }
-                }
-            }
-        }
-
-        val adjustedSourceSets = mutableSetOf<KotlinSourceSet>()
-
-        // Second iteration - set language settings
-        module.fragments.forEach { fragment ->
-            val sourceSets = fragment.matchingKotlinSourceSets
-
-            for (sourceSet in sourceSets) {
-                // Apply language settings.
-                sourceSet.languageSettings.configureFromAmperSettings(fragment.settings.kotlin)
-                adjustedSourceSets.add(sourceSet)
-            }
-        }
-
-        val commonKotlinSettings = module.mostCommonFragment.settings.kotlin
-
-        // we imply, sourceSets which was not touched by loop by fragments, they depend only on common
-        // to avoid gradle incompatibility error between sourceSets we apply to sourceSets left settings from common
-        (kotlinMPE.sourceSets.toSet() - adjustedSourceSets).forEach { sourceSet ->
-            sourceSet.languageSettings.configureFromAmperSettings(commonKotlinSettings)
-        }
-
-        // it is implied newly added sourceSets will depend on common
-        kotlinMPE.sourceSets
-            .matching { !adjustedSourceSets.contains(it) }
-            .configureEach { sourceSet ->
-                sourceSet.languageSettings.configureFromAmperSettings(commonKotlinSettings)
-            }
-
-        module.fragments.forEach { fragment ->
-            // TODO Replace with inner classes structure for wrappers.
-            with(module) {
-                val sourceSet = fragment.kotlinSourceSet
-                // Set dependencies.
-                fragment.fragmentDependencies.forEach {
-                    when (it.type) {
-                        FragmentDependencyType.REFINE ->
-                            sourceSet?.doDependsOn(it.target.wrapped)
-
-                        FragmentDependencyType.FRIEND ->
-                            // TODO Add associate with for related compilations.
-                            // Not needed for default "test" - "main" relations.
-                            run { }
-                    }
-                }
-            }
-        }
-
-        // Third iteration - adjust kotlin prebuilt source sets (UNMANAGED ones)
-        // to match created ones.
-        module.leafFragments.forEach { fragment ->
-            val compilationSourceSet = fragment.targetCompilation?.defaultSourceSet ?: return@forEach
-            if (compilationSourceSet != fragment.kotlinSourceSet) {
-                // Add dependency from compilation source set ONLY for unmanaged source sets.
-                if (compilationSourceSet.amperFragment == null) {
-                    compilationSourceSet.dependsOn(fragment.kotlinSourceSet ?: return@with)
-                }
-            }
-        }
-
+    private fun Project.initSourceSets() {
         // Forth iteration - create source set groups from templates
-        if (module.hasLeafSourceSets) {
-            amperModuleExtraProperties.templates.forEach { (_, template) ->
-                template.aliases.forEach { alias ->
-                    val sourceSetsNames = alias.group.map { it.kotlinSourceSetName(false) }
 
-                    if (sourceSetsNames.all { sourceSetName -> kotlinMPE.sourceSets.findByName(sourceSetName) != null }) {
-                        kotlinMPE.sourceSets.create(alias.name) {
-                            sourceSetsNames.forEach { sourceSetName ->
-                                kotlinMPE.sourceSets.matching { sourceSet -> sourceSet.name == sourceSetName }
-                                    .all { sourceSet ->
-                                        sourceSet.dependsOn(this)
-                                    }
+        kotlin.applyDefaultHierarchyTemplate {
+
+            amperModuleExtraProperties.aliases.forEach { alias ->
+                group(alias.name) {
+                    alias.group.forEach { targetName ->
+                        when (targetName) {
+                            "jvm" -> withJvm()
+                            "android" -> withAndroidTarget()
+                            "ios" -> group("ios") {
+                                withIos()
                             }
 
-                            dependencies {
-                                template
-                            }
+                            "iosArm64" -> withIosArm64()
+                            "iosX64" -> withIosX64()
+                            "iosSimulatorArm64" -> withIosSimulatorArm64()
+                            "js" -> withJs()
+                            "wasm" -> withWasmJs()
+                            else -> group(targetName)
                         }
                     }
                 }
             }
         }
-        println(kotlinMPE.sourceSets.map { it.name })
-    }
 
-    private fun String.kotlinSourceSetName(isTest: Boolean): String =
-        if (endsWith("Main") || endsWith("Test")) {
-            this
-        }
-        else if (isTest) {
-            if (this == "android") "androidUnitTest"
-            else "${this}Test"
-        }
-        else "${this}Main"
-
-    private val KotlinSourceSet.amperFragment: FragmentWrapper?
-        get() = fragmentsByKotlinSourceSetName[name]
-
-    // ------
-    private fun FragmentWrapper.maybeCreateSourceSet(
-        block: KotlinSourceSet.() -> Unit,
-    ) {
-        val sourceSet = kotlinMPE.sourceSets.maybeCreate(kotlinSourceSetName)
-        sourceSet.block()
+//        amperModuleExtraProperties.dependencies?.forEach { dependency -> dependency.add() }
+//        amperModuleExtraProperties.testDependencies?.forEach { dependency -> dependency.add() }
     }
 }
-
-private val AmperModule.mostCommonFragment: Fragment
-    get() = fragments.firstOrNull { fragment ->
-        fragment.fragmentDependencies.none { it.type == FragmentDependencyType.REFINE }
-    } ?: error("Couldn't find the most common fragment")
