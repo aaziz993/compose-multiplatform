@@ -354,7 +354,9 @@ internal class KMPPBindingPluginPart(
     private fun Project.initSourceSets() = with(KotlinAmperNamingConvention) {
         // First iteration - create source sets and add dependencies.
         module.fragments.forEach { fragment ->
-            fragment.maybeCreateSourceSet {
+//            fragment.maybeCreateSourceSet
+
+            kotlinMPE.sourceSets.maybeCreate(fragment.kotlinSourceSetName.kotlinSourceSetName(fragment.isTest)).apply {
                 fragmentsByKotlinSourceSetName[name] = fragment
                 dependencies {
                     fragment.externalDependencies.forEach { externalDependency ->
@@ -478,12 +480,15 @@ internal class KMPPBindingPluginPart(
         println(kotlinMPE.sourceSets.map { it.name })
     }
 
-    private fun String.kotlinSourceSetName(isTest: Boolean): String = "$this${
-        if (isTest) {
-            if (this == "android") "androidTest" else "Test"
+    private fun String.kotlinSourceSetName(isTest: Boolean): String =
+        if (endsWith("Main") || endsWith("Test")) {
+            this
         }
-        else "Main"
-    }"
+        else if (isTest) {
+            if (this == "android") "androidUnitTest"
+            else "${this}Test"
+        }
+        else "${this}Main"
 
     private val KotlinSourceSet.amperFragment: FragmentWrapper?
         get() = fragmentsByKotlinSourceSetName[name]

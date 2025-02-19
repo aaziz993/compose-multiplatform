@@ -5,6 +5,7 @@ package plugin.model.dependency
 import gradle.asLibs
 import gradle.libraries
 import gradle.library
+import gradle.libs
 import gradle.module
 import java.io.File
 import kotlinx.serialization.Serializable

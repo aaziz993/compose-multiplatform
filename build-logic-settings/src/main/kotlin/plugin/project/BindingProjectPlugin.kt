@@ -3,7 +3,11 @@
 package plugin.project
 
 import gradle.amperModuleExtraProperties
+import gradle.asLibs
+import gradle.libs
+import gradle.libsFile
 import gradle.version
+import gradle.versions
 import java.net.URI
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
@@ -107,7 +111,14 @@ internal class BindingProjectPlugin : Plugin<Project> {
         with(project) {
             amperModuleExtraProperties.group?.let(::setGroup)
             amperModuleExtraProperties.description?.let(::setDescription)
-            version = amperModuleExtraProperties.version.toSemVer()
+            rootProject.projectDir.libsFile().asLibs().versions.let { versions ->
+                version(
+                    versions.version("${project.name}-version-major")?.toInt() ?: 1,
+                    versions.version("${project.name}-version-minor")?.toInt() ?: 0,
+                    versions.version("${project.name}-version-patch")?.toInt() ?: 0,
+                    versions.version("${project.name}-version-preRelease"),
+                )
+            }
         }
         applyRepositoryAttributes(linkedModule, project)
         applyPublicationAttributes(linkedModule, project)

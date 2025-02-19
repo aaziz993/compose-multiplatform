@@ -32,14 +32,15 @@ internal val Project.kotlinWrappers: LibrariesForKotlinWrappers
 internal val Project.compose
     get() = extensions.getByType<ComposeExtension>().dependencies
 
-@Suppress("UnstableApiUsage")
-internal fun File.asLibs(): TomlParseResult = Toml.parse(readText())
+internal fun File.asLibs() = Toml.parse(readText())
+
+internal fun File.libsFile() = resolve("gradle/libs.versions.toml")
 
 internal val Settings.libs: TomlParseResult
-    get() = layout.rootDirectory.file("gradle/libs.versions.toml").asFile.asLibs()
+    get() = layout.rootDirectory.asFile.libsFile().asLibs()
 
 internal fun TomlTable.version(alias: String) =
-    getString(alias)!!
+    getString(alias)
 
 internal fun TomlTable.plugin(alias: String): TomlTable = getTable(alias)!!
 

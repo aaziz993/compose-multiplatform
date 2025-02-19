@@ -32,10 +32,10 @@ val gradleProperties: Properties = Properties().apply {
 group = gradleProperties["project.group"]!!.toString()
 
 version = Version(
-    libs.versions.project.version.major.get().toInt(),
-    libs.versions.project.version.minor.get().toInt(),
-    libs.versions.project.version.patch.get().toInt(),
-    libs.versions.project.version.preRelase.get(),
+    libs.versions.buildLigicSettings.version.major.get().toInt(),
+    libs.versions.buildLigicSettings.version.minor.get().toInt(),
+    libs.versions.buildLigicSettings.version.patch.get().toInt(),
+    libs.versions.buildLigicSettings.version.preRelase.get(),
     "${
         gradleProperties["github.actions.versioning.ref.name"]!!.toString().toBoolean().takeIf { it }?.let {
             // The GITHUB_REF_NAME provide the reference name.

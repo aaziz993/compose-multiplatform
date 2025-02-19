@@ -97,6 +97,9 @@ public class SettingsPlugin : Plugin<Settings> {
                 projects.forEach { project ->
                     if (project.amperModule != null) {
                         configureProjectForAmper(project)
+                        if(project==rootProject) {
+                            println("AMPER ROOT MODULE")
+                        }
                     }
                     else if (project === project.rootProject) {
                         // Even if the root project doesn't have a module.yaml file (and thus is not an Amper project),
@@ -104,6 +107,7 @@ public class SettingsPlugin : Plugin<Settings> {
                         // The IDE runs it, as well as native subproject builds.
                         // Therefore, it needs mavenCentral to resolve kotlin-klib-commonizer-embeddable.
                         project.repositories.mavenCentral()
+                        println("NON AMPER ROOT MODULE")
                     }
                 }
             }
@@ -242,7 +246,7 @@ public class SettingsPlugin : Plugin<Settings> {
         // absent in (or incompatible with) recent Gradle versions, so we only use this if absolutely necessary.
         var composePlugin: String? = null
 
-        val composeVersion = libs.versions.version("compose-multiplatform")
+        val composeVersion = libs.versions.version("compose-multiplatform")!!
 
         if (composeVersion != UsedVersions.composeVersion) {
             composePlugin = libs.plugins.plugin("compose-multiplatform").pluginAsDependency(composeVersion)

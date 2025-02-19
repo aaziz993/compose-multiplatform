@@ -7,7 +7,9 @@ aliases:
   - web: [ js, wasm ]
   - nonWeb: [ jvm, android, iosArm64, iosX64, iosSimulatorArm64 ]
 
+group: io.github.aaziz993
+
 settings:
   publishing:
-    group: io.github.aaziz993
-    version: 1.0.0
+    group:
+

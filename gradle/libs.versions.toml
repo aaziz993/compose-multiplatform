@@ -7,10 +7,21 @@
 ## additional labels for pre-release and build metadata are available as extensions to the MAJOR.MINOR.PATCH format.
 ## a pre-release version MAY be denoted by appending a hyphen and a series of dot separated identifiers immediately following the patch version. Identifiers MUST comprise only ASCII alphanumerics and hyphens [0-9A-Za-z-]. Identifiers MUST NOT be empty. Numeric identifiers MUST NOT include leading zeroes. Examples: 1.0.0-alpha, 1.0.0-alpha.1, 1.0.0-0.3.7, 1.0.0-x.7.z.92, 1.0.0-x-y-z.--.
 ## build metadata MAY be denoted by appending a plus sign and a series of dot separated identifiers immediately following the patch or pre-release version. Identifiers MUST comprise only ASCII alphanumerics and hyphens [0-9A-Za-z-]. Identifiers MUST NOT be empty. Examples: 1.0.0-alpha+001, 1.0.0+20130313144700, 1.0.0-beta+exp.sha.5114f85, 1.0.0+21AF26D3----117B344092BD.
-project-version-major = "1"
-project-version-minor = "0"
-project-version-patch = "0"
-project-version-preRelase = "release" # optional
+# build-logic-settings
+buildLigicSettings-version-major = "1"
+buildLigicSettings-version-minor = "0"
+buildLigicSettings-version-patch = "0"
+buildLigicSettings-version-preRelase = "release" # optional
+# kmp-lib
+kmpLib-version-major = "1"
+kmpLib-version-minor = "0"
+kmpLib-version-patch = "0"
+kmpLib-version-preRelase = "release" # optional
+# cmp-lib
+cmpLib-version-major = "1"
+cmpLib-version-minor = "0"
+cmpLib-version-patch = "0"
+cmpLib-version-preRelase = "release" # optional
 ##Gradle
 # intellij
 intellij-platform = "243.23654.166"
