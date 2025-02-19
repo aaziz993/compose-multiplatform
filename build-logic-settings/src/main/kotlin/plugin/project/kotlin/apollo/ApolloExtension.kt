@@ -11,6 +11,14 @@ internal fun Project.configureApolloExtension() =
     plugins.withType<ApolloPlugin> {
         moduleProperties.settings.kotlin.apollo.let { apollo ->
             apollo {
+                apollo.processors?.forEach { (schema, service, packageName) ->
+                    apolloKspProcessor(file(schema), service, packageName)
+                }
+
+                createAllAndroidVariantServices("",""){
+                    this.languageVersion
+                }
+
                 generateSourcesDuringGradleSync tryAssign apollo.generateSourcesDuringGradleSync
                 linkSqlite tryAssign apollo.linkSqlite
             }
