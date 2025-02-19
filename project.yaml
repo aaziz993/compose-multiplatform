@@ -14,9 +14,9 @@ dependencyResolutionManagement:
     # GitHub Packages
     - https://maven.pkg.github.com/aaziz993
 
-#  versionCatalogs:
-#    - name: kotlinWrappers
-#      from: org.jetbrains.kotlin-wrappers:kotlin-wrappers-catalog:2025.2.6
+  versionCatalogs:
+    - name: kotlinWrappers
+      from: org.jetbrains.kotlin-wrappers:kotlin-wrappers-catalog:2025.2.6
 
 modules:
   - android-app

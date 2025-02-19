@@ -26,7 +26,7 @@ internal object DependencyNonationSerializer : KSerializer<DependencyNotation> {
             is JsonObject -> {
                 val notation = element.keys.single()
                 if (element.values.size == 1) {
-                    when (element.values.single().toString()) {
+                    when (element.values.single().jsonPrimitive.content) {
                         "compile-only" -> return DependencyNotation(notation, compile = true, runtime = false)
                         "runtime-only" -> return DependencyNotation(notation, compile = false, runtime = true)
                         "exported" -> return DependencyNotation(notation, exported = true)
@@ -35,7 +35,7 @@ internal object DependencyNonationSerializer : KSerializer<DependencyNotation> {
                 else {
                     val exported = element.jsonObject["exported"]?.jsonPrimitive?.boolean == true
 
-                    when (element.jsonObject["scope"]?.toString()) {
+                    when (element.jsonObject["scope"]?.jsonPrimitive?.content) {
                         "compile-only" -> return DependencyNotation(notation, compile = true, runtime = false, exported = exported)
                         "runtime-only" -> return DependencyNotation(notation, compile = false, runtime = true, exported = exported)
                     }
@@ -43,7 +43,7 @@ internal object DependencyNonationSerializer : KSerializer<DependencyNotation> {
                 DependencyNotation(notation)
             }
 
-            else -> DependencyNotation(element.toString())
+            else -> DependencyNotation(element.jsonPrimitive.content)
         }
     }
 }
