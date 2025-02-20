@@ -7,7 +7,6 @@ import plugin.project.BindingPluginPart
 import plugin.project.model.target.TargetType
 import plugin.project.model.target.add
 import plugin.project.model.target.contains
-import plugin.project.model.target.isDescendantOf
 import plugin.project.web.configureJsTestTasks
 import plugin.project.web.configureKotlinJsTarget
 import plugin.project.web.js.karakum.configureKarakum
