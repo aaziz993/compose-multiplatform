@@ -27,7 +27,8 @@ internal data class KotlinWebpackConfig(
     val progressReporter: Boolean = false,
     val progressReporterPathFilter: String? = null,
     val resolveFromModulesFirst: Boolean = false,
-    val cssSupport: KotlinWebpackRule? = null,
+    val cssSupport: KotlinWebpackCssRule? = null,
+    val scssSupport: KotlinWebpackCssRule? = null,
 ) {
 
     @Serializable

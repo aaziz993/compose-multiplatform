@@ -13,7 +13,9 @@ import org.jetbrains.kotlin.gradle.targets.js.NpmVersions
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 import plugin.project.web.model.BrowserSettings
+import plugin.project.web.model.KotlinWebpackCssRule
 import plugin.project.web.model.KotlinWebpackOutput
+import plugin.project.web.model.KotlinWebpackRule
 import plugin.project.web.node.model.NodeSettings
 
 @Suppress("UnstableApiUsage")
@@ -61,7 +63,6 @@ internal inline fun <reified T : KotlinJsTargetDsl> Project.configureKotlinJsTar
                             ::experiments trySet commonWebpackConfig.experiments?.toMutableSet()
                             ::devtool trySet commonWebpackConfig.devtool
                             ::showProgress trySet commonWebpackConfig.showProgress
-                            ::optimization trySet commonWebpackConfig.optimization
                             ::sourceMaps trySet commonWebpackConfig.sourceMaps
                             ::export trySet commonWebpackConfig.export
                             ::progressReporter trySet commonWebpackConfig.progressReporter
@@ -69,12 +70,12 @@ internal inline fun <reified T : KotlinJsTargetDsl> Project.configureKotlinJsTar
                             ::resolveFromModulesFirst trySet commonWebpackConfig.resolveFromModulesFirst
                             commonWebpackConfig.cssSupport?.let { cssSupport ->
                                 cssSupport {
-                                    enabled tryAssign cssSupport.enabled
-                                    test tryAssign cssSupport.test
-                                    include tryAssign cssSupport.include
-                                    exclude tryAssign cssSupport.exclude
-                                    cssSupport.validate?.run { validate() }
-//
+                                    configureFrom(cssSupport)
+                                }
+                            }
+                            commonWebpackConfig.cssSupport?.let { cssSupport ->
+                                scssSupport {
+                                    configureFrom(cssSupport)
                                 }
                             }
                         }
@@ -100,4 +101,15 @@ private fun org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackOutput.c
     ::library trySet config.library
     ::libraryTarget trySet config.libraryTarget
     ::globalObject trySet config.globalObject
+}
+
+private fun org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackCssRule.configureFrom(
+    config: KotlinWebpackCssRule
+) {
+    mode tryAssign config.mode
+    enabled tryAssign config.enabled
+    test tryAssign config.test
+    include tryAssign config.include
+    exclude tryAssign config.exclude
+    config.validate?.run { validate() }
 }
