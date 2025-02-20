@@ -65,8 +65,8 @@ internal inline fun <reified T : KotlinJsTargetDsl> Project.configureKotlinJsTar
                             mainOutputFileName tryAssign webpack.mainOutputFileName
                             ::debug trySet webpack.debug
                             ::bin trySet webpack.bin
-                            ::args trySet webpack.args?.toMutableList()
-                            ::nodeArgs trySet webpack.nodeArgs?.toMutableList()
+                            webpack.args?.let(args::addAll)
+                            webpack.nodeArgs?.let(nodeArgs::addAll)
                             ::sourceMaps trySet webpack.sourceMaps
                             devServerProperty tryAssign webpack.devServerProperty?.toDevServer()
                             ::watchOptions trySet webpack.watchOptions?.toWatchOptions()

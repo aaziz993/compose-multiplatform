@@ -7,7 +7,6 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnLockMismatchReport
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnPlugin
-import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnResolution
 
 internal fun Project.configureYarnRootExtension() =
     plugins.withType<YarnPlugin> {
@@ -19,12 +18,7 @@ internal fun Project.configureYarnRootExtension() =
                 ::yarnLockMismatchReport trySet yarn.yarnLockMismatchReport
                 ::reportNewYarnLock trySet yarn.reportNewYarnLock
                 ::yarnLockAutoReplace trySet yarn.yarnLockAutoReplace
-                ::resolutions trySet yarn.resolutions?.map { resolution ->
-                    YarnResolution(resolution.path).apply {
-                        ::includedVersions trySet resolution.includedVersions?.toMutableList()
-                        ::excludedVersions trySet resolution.excludedVersions?.toMutableList()
-                    }
-                }?.toMutableList()
+                yarn.resolutions?.map(YarnResolution::toYarnResolution)?.let(resolutions::addAll)
 
                 lockFileDirectory = projectDir
 

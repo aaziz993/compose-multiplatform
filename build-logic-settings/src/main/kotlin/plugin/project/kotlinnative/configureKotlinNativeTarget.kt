@@ -30,7 +30,7 @@ internal fun org.jetbrains.kotlin.gradle.plugin.mpp.Framework.configureFrom(fram
     ::transitiveExport trySet framework.transitiveExport
     ::debuggable trySet framework.debuggable
     ::optimized trySet framework.optimized
-    framework.linkerOpts?.toMutableList()?.let(::linkerOpts)
+    framework.linkerOpts?.let(::linkerOpts)
     ::binaryOptions trySet framework.binaryOptions?.toMutableMap()
     ::freeCompilerArgs trySet framework.freeCompilerArgs
     ::outputDirectory trySet framework.optimized?.let(::file)

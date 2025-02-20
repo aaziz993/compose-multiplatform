@@ -22,8 +22,8 @@ internal fun Project.configureNpmExtension() =
                 overrides tryAssign npm.overrides?.map { override ->
                     org.jetbrains.kotlin.gradle.targets.js.npm.NpmOverride(override.path)
                         .apply {
-                            ::includedVersions trySet override.includedVersions?.toMutableList()
-                            ::excludedVersions trySet override.excludedVersions?.toMutableList()
+                            override.includedVersions?.let(includedVersions::addAll)
+                            override.excludedVersions?.let(excludedVersions::addAll)
                         }
                 }
             }
