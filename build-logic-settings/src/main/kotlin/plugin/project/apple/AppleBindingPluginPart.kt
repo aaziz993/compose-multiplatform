@@ -11,7 +11,6 @@ import plugin.project.BindingPluginPart
 import plugin.project.model.target.TargetType
 import plugin.project.model.target.add
 import plugin.project.model.target.contains
-import plugin.project.model.target.isDescendantOf
 
 internal class AppleBindingPluginPart(override val project: Project) : BindingPluginPart {
 

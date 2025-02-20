@@ -44,10 +44,4 @@ internal fun Target.add() = when (type) {
     TargetType.LINUX, TargetType.NATIVE, TargetType.COMMON -> Unit
 }
 
-
-internal fun TargetType.isDescendantOf(other: TargetType): Boolean =
-    this == other || (parent != null && parent.isDescendantOf(other))
-
-internal fun TargetType.isParentOf(other: TargetType) = other.isDescendantOf(this)
-
 internal operator fun List<Target>.contains(type: TargetType): Boolean = any {  target -> target.type.isDescendantOf(type) }

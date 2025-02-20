@@ -193,7 +193,7 @@ settings:
     freeCompilerArgs:
       - -Xjvm-default=all
 
-  android:
+#  android:
 
   native:
     binaries:

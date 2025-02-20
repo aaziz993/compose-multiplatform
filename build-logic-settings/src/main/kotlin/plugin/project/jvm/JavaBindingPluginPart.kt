@@ -4,15 +4,15 @@
 
 package plugin.project.jvm
 
+import gradle.all
+import gradle.kotlin
 import gradle.moduleProperties
 import org.gradle.api.Project
-import org.gradle.api.plugins.JavaApplication
-import org.gradle.api.plugins.JavaPluginExtension
+import org.jetbrains.amper.gradle.tryRemove
 import plugin.project.BindingPluginPart
 import plugin.project.model.target.TargetType
 import plugin.project.model.target.add
 import plugin.project.model.target.contains
-import plugin.project.model.target.isDescendantOf
 
 /**
  * Plugin logic, bind to specific module, when only default target is available.
@@ -27,18 +27,29 @@ internal class JavaBindingPluginPart(override val project: Project) : BindingPlu
             )
             return@lazy false
         }
-       TargetType.JVM in project.moduleProperties.targets
+        TargetType.JVM in project.moduleProperties.targets
     }
 
     override fun applyBeforeEvaluate() = with(project) {
         moduleProperties.targets
             .filter { target -> target.type.isDescendantOf(TargetType.JVM) }
-            .forEach { target->target.add() }
+            .forEach { target -> target.add() }
 
+        adjustJvmSourceSets()
 
 //        adjustJavaGeneralProperties()
 
 //        addJavaIntegration()
+    }
+
+    private fun adjustJvmSourceSets() = with(project) {
+        kotlin.sourceSets.matching { sourceSet -> sourceSet.name.startsWith("jvm") }.all { sourceSet ->
+            when(sourceSet.name){
+                "jvm"-> {
+                    sourceSet.kotlin.tryRemove { it.endsWith("jvm/") }
+                }
+            }
+        }
     }
 
 //    override fun applyAfterEvaluate() {

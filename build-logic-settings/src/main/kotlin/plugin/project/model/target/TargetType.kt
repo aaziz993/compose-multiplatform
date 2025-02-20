@@ -48,4 +48,10 @@ internal enum class TargetType(
     ANDROID_NATIVE_ARM64(ANDROID_NATIVE, isLeaf = true),
     ANDROID_NATIVE_X64(ANDROID_NATIVE, isLeaf = true),
     ANDROID_NATIVE_X86(ANDROID_NATIVE, isLeaf = true), ;
+
+    fun isDescendantOf(other: TargetType)
+        : Boolean =
+        this == other || (parent != null && parent.isDescendantOf(other))
+
+    fun isParentOf(other: TargetType) = other.isDescendantOf(this)
 }
