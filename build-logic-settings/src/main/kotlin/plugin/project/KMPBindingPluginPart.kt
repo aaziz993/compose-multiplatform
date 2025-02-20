@@ -5,6 +5,7 @@ package plugin.project
 import app.cash.sqldelight.core.decapitalize
 import gradle.all
 import gradle.kotlin
+import gradle.libs
 import gradle.moduleProperties
 import gradle.trySet
 import org.gradle.api.Plugin
@@ -26,7 +27,7 @@ private fun LanguageSettingsBuilder.configureFromAmperSettings(settings: KotlinS
 /**
  * Plugin logic, bind to specific module, when multiple targets are available.
  */
-internal class KMPPBindingPluginPart : Plugin<Project> {
+internal class KMPBindingPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
@@ -34,7 +35,7 @@ internal class KMPPBindingPluginPart : Plugin<Project> {
                 return@with
             }
 
-            plugins.apply(KotlinMultiplatformPluginWrapper::class.java)
+            plugins.apply(libs.plugins.kotlin.multiplatform.get().pluginId)
 
             // Enable Default Kotlin Hierarchy.
             extraProperties.set("kotlin.mpp.applyDefaultHierarchyTemplate", "true")

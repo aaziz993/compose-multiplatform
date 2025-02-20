@@ -76,14 +76,14 @@ internal class BindingProjectPlugin : Plugin<Project> {
             plugins.apply(KtorfitPluginPart::class.java)
             plugins.apply(ApolloPluginPart::class.java)
             plugins.apply(PowerAssertPluginPart::class.java)
+            plugins.apply(KMPBindingPluginPart::class.java)
+            plugins.apply(ComposePluginPart::class.java)
             plugins.apply(AndroidBindingPluginPart::class.java)
             plugins.apply(JsBindingPluginPart::class.java)
             plugins.apply(WasmBindingPluginPart::class.java)
             plugins.apply(JavaBindingPluginPart::class.java)
             plugins.apply(AppleBindingPluginPart::class.java)
             plugins.apply(CocoapodsPluginPart::class.java)
-            plugins.apply(KMPPBindingPluginPart::class.java)
-            plugins.apply(ComposePluginPart::class.java)
         }
 
         // Apply other settings.

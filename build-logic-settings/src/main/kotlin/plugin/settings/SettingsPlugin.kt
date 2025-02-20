@@ -70,7 +70,9 @@ public class SettingsPlugin : Plugin<Settings> {
 
                 // at this point all projects have been created by settings.gradle.kts, but none were evaluated yet
                 target.gradle.rootProject.allprojects {
-                    configureProject()
+                    afterEvaluate {
+                        configureProject()
+                    }
                 }
 
                 target.gradle.rootProject.repositories.mavenCentral()
