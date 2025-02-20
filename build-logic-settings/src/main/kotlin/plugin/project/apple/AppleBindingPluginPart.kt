@@ -8,14 +8,14 @@ import gradle.moduleProperties
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import plugin.project.BindingPluginPart
-import plugin.project.model.TargetType
-import plugin.project.model.add
-import plugin.project.model.contains
-import plugin.project.model.isDescendantOf
+import plugin.project.model.target.TargetType
+import plugin.project.model.target.add
+import plugin.project.model.target.contains
+import plugin.project.model.target.isDescendantOf
 
 internal class AppleBindingPluginPart(override val project: Project) : BindingPluginPart {
 
-    override val needToApply by lazy { TargetType.APPLE in project.moduleProperties.targets }
+    override val needToApply by lazy { TargetType.APPLE contains project.moduleProperties.targets }
 
     override fun applyBeforeEvaluate() = with(project) {
         // Apply plugin

@@ -128,7 +128,7 @@ kotlinx-uuid-core = "0.0.25"
 fleeksoft = "0.0.3"
 # hex, base32, base45 and base64 encoding and id generator
 diglol = "0.3.0"
-# switch string case
+# convert strings between various case formats
 kasechange = "1.4.1"
 # code highlight
 highlights = "1.0.0"
@@ -440,7 +440,7 @@ fleeksoft-charset-ext = { module = "com.fleeksoft.charset:charset-ext", version.
 encoding = { module = "com.diglol.encoding:encoding", version.ref = "diglol" }
 # id generator
 id = { module = "com.diglol.id:id", version.ref = "diglol" }
-# switch string case
+# convert strings between various case formats
 kasechange = { module = "net.pearx.kasechange:kasechange", version.ref = "kasechange" }
 # string fuzzywuzzy match
 fuzzywuzzy-kotlin = { module = "com.willowtreeapps:fuzzywuzzy-kotlin", version.ref = "fuzzywuzzy-kotlin" }

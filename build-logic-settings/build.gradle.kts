@@ -230,6 +230,8 @@ dependencies {
     implementation(libs.plugins.noarg.toDep())
     // adapts Kotlin to the requirements of those frameworks and makes classes annotated with a specific annotation and their members open.
     implementation(libs.plugins.allopen.toDep())
+    // convert strings between various case formats
+    implementation(libs.kasechange)
     // serialization
     implementation(libs.plugins.kotlin.serialization.toDep())
     implementation(libs.kotlinx.serialization.json)

@@ -2,6 +2,7 @@ package plugin.project.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import plugin.project.model.target.Target
 
 @Serializable
 internal data class ModuleProperties(

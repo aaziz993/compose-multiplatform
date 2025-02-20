@@ -4,16 +4,15 @@
 
 package plugin.project.jvm
 
-import gradle.kotlin
 import gradle.moduleProperties
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaApplication
 import org.gradle.api.plugins.JavaPluginExtension
 import plugin.project.BindingPluginPart
-import plugin.project.model.TargetType
-import plugin.project.model.add
-import plugin.project.model.contains
-import plugin.project.model.isDescendantOf
+import plugin.project.model.target.TargetType
+import plugin.project.model.target.add
+import plugin.project.model.target.contains
+import plugin.project.model.target.isDescendantOf
 
 /**
  * Plugin logic, bind to specific module, when only default target is available.
@@ -24,14 +23,14 @@ internal class JavaBindingPluginPart(override val project: Project) : BindingPlu
     internal val javaPE: JavaPluginExtension get() = project.extensions.getByType(JavaPluginExtension::class.java)
 
     override val needToApply by lazy {
-        if (TargetType.ANDROID in project.moduleProperties.targets) {
+        if (TargetType.ANDROID contains project.moduleProperties.targets) {
             project.logger.warn(
                 "Cant enable java integration when android is enabled. " +
                     "Module: ${project.name}",
             )
             return@lazy false
         }
-       TargetType.JVM in project.moduleProperties.targets
+       TargetType.JVM contains project.moduleProperties.targets
     }
 
     override fun applyBeforeEvaluate() = with(project) {
