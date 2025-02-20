@@ -4,16 +4,12 @@
 
 package plugin.project.apple
 
-import gradle.kotlin
 import gradle.moduleProperties
 import org.gradle.api.Project
-import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import plugin.project.BindingPluginPart
-import plugin.project.model.Target
 import plugin.project.model.TargetType
 import plugin.project.model.add
-import plugin.project.model.addTarget
 import plugin.project.model.contains
 import plugin.project.model.isDescendantOf
 
