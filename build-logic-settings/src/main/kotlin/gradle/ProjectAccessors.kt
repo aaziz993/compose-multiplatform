@@ -23,6 +23,7 @@ import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.the
 import org.jetbrains.compose.ComposeExtension
 import org.jetbrains.dokka.gradle.DokkaExtension
+import org.jetbrains.gradle.apple.AppleProjectExtension
 import org.jetbrains.kotlin.allopen.gradle.AllOpenExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.cocoapods.CocoapodsExtension
@@ -150,6 +151,10 @@ internal val Project.cocoapods: CocoapodsExtension get() = the()
 internal fun Project.cocoapods(configure: CocoapodsExtension.() -> Unit) =
     extensions.configure(configure)
 
+internal val Project.apple: AppleProjectExtension get() = the()
+
+internal fun Project.apple(configure: AppleProjectExtension.() -> Unit) =
+    extensions.configure(configure)
 
 internal val Project.compose: ComposeExtension get() = the()
 

@@ -10,36 +10,31 @@ import plugin.project.model.target.TargetType
 import plugin.project.model.target.add
 import plugin.project.model.target.contains
 
-/**
- * Plugin logic, bind to specific module, when only default target is available.
- */
 internal class AndroidBindingPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            moduleProperties.targets?.let { targets ->
-                if (TargetType.ANDROID in targets) {
-                    return@with
-                }
+            if (TargetType.ANDROID !in moduleProperties.targets) {
+                return@with
+            }
 
 //                plugins.apply(libs.plugins.android.get())
 
-                if (moduleProperties.application) {
-                    plugins.apply(libs.plugins.android.application.get().pluginId)
-                }
-                else {
-                    plugins.apply(libs.plugins.android.library.get().pluginId)
-                }
+            if (moduleProperties.application) {
+                plugins.apply(libs.plugins.android.application.get().pluginId)
+            }
+            else {
+                plugins.apply(libs.plugins.android.library.get().pluginId)
+            }
 
-                targets
-                    .filter { target -> target.type.isDescendantOf(TargetType.ANDROID) }
-                    .forEach { target -> target.add() }
+            moduleProperties.targets
+                .filter { target -> target.type.isDescendantOf(TargetType.ANDROID) }
+                .forEach { target -> target.add() }
 
 //        adjustCompilations()
 //        applySettings()
 //        adjustAndroidSourceSets()
 //        applyGoogleServicesPlugin()
-            }
         }
     }
 

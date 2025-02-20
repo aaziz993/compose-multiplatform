@@ -20,7 +20,7 @@ internal class DokkaPluginPart : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             moduleProperties.settings.gradle.dokka.let { dokka ->
-                if (!dokka.enabled || moduleProperties.targets == null) {
+                if (!dokka.enabled || moduleProperties.targets.isEmpty()) {
                     return@with
                 }
 

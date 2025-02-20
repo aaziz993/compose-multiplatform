@@ -31,7 +31,7 @@ internal class KMPBindingPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (moduleProperties.targets == null) {
+            if (moduleProperties.targets.isEmpty()) {
                 return@with
             }
 

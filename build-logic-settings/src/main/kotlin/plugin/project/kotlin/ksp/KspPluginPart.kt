@@ -13,7 +13,7 @@ internal class KspPluginPart : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             moduleProperties.settings.kotlin.ksp.let { ksp ->
-                if (!ksp.enabled || moduleProperties.targets == null) {
+                if (!ksp.enabled || moduleProperties.targets.isEmpty()) {
                     return@with
                 }
 

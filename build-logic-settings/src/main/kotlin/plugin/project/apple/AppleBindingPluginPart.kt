@@ -4,6 +4,7 @@
 
 package plugin.project.apple
 
+import gradle.apple
 import gradle.id
 import gradle.libs
 import gradle.moduleProperties
@@ -21,26 +22,18 @@ internal class AppleBindingPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            moduleProperties.targets?.let { targets ->
-                if (TargetType.APPLE !in targets) {
-                    return@with
-                }
-
-                plugins.apply(libs.plugins.apple.get().pluginId)
-
-                targets.filter { (type, _) -> type.isDescendantOf(TargetType.APPLE) }
-                    .forEach { target -> target.add() }
-
-                extraProperties.set("generateBuildableXcodeproj.skipKotlinFrameworkDependencies", "true")
-
-                // Add ios App
-//        applePE?.iosApp {
-//            iosDeviceFragments[0].settings.ios.teamId?.let {
-//                buildSettings.DEVELOPMENT_TEAM(it)
-//            }
-//            productInfo["UILaunchScreen"] = mapOf<String, Any>()
-//        }
+            if (TargetType.APPLE !in moduleProperties.targets) {
+                return@with
             }
+
+            plugins.apply(libs.plugins.apple.get().pluginId)
+
+            moduleProperties.targets.filter { (type, _) -> type.isDescendantOf(TargetType.APPLE) }
+                .forEach { target -> target.add() }
+
+            extraProperties.set("generateBuildableXcodeproj.skipKotlinFrameworkDependencies", "true")
+
+            configureAppleProjectExtension()
         }
     }
 }

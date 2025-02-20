@@ -15,19 +15,17 @@ internal class JsBindingPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            moduleProperties.targets?.let { targets ->
-                if (TargetType.JS !in targets) {
-                    return@with
-                }
-
-                targets
-                    .filter { target -> target.type.isDescendantOf(TargetType.JS) }
-                    .forEach { target -> target.add() }
-
-                configureKotlinJsTarget<KotlinJsTargetDsl>()
-                configureJsTestTasks<KotlinJsTargetDsl>()
-                configureKarakum()
+            if (TargetType.JS !in moduleProperties.targets) {
+                return@with
             }
+
+            moduleProperties.targets
+                .filter { target -> target.type.isDescendantOf(TargetType.JS) }
+                .forEach { target -> target.add() }
+
+            configureKotlinJsTarget<KotlinJsTargetDsl>()
+            configureJsTestTasks<KotlinJsTargetDsl>()
+            configureKarakum()
         }
     }
 }

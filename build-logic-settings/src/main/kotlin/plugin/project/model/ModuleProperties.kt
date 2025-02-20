@@ -7,7 +7,7 @@ import plugin.project.model.target.Target
 @Serializable
 internal data class ModuleProperties(
     val application: Boolean = false,
-    val targets: List<Target>? = null,
+    val targets: List<Target> = emptyList(),
     val aliases: List<Alias> = emptyList(),
     val group: String? = null,
     val description: String? = null,

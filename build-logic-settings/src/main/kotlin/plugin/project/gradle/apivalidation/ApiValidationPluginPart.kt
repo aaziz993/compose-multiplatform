@@ -9,7 +9,7 @@ internal class ApiValidationPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (!moduleProperties.settings.gradle.apiValidation.enabled || moduleProperties.targets == null) {
+            if (!moduleProperties.settings.gradle.apiValidation.enabled || moduleProperties.targets.isEmpty()) {
                 return@with
             }
 

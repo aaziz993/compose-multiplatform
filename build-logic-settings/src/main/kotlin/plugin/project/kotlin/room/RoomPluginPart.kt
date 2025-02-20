@@ -9,7 +9,7 @@ internal class RoomPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (!moduleProperties.settings.kotlin.room.enabled || moduleProperties.targets == null) {
+            if (!moduleProperties.settings.kotlin.room.enabled || moduleProperties.targets.isEmpty()) {
                 return@with
             }
 

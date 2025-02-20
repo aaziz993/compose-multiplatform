@@ -9,7 +9,7 @@ internal class AllOpenPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (!moduleProperties.settings.kotlin.allOpen.enabled || moduleProperties.targets == null) {
+            if (!moduleProperties.settings.kotlin.allOpen.enabled || moduleProperties.targets.isEmpty()) {
                 return@with
             }
 

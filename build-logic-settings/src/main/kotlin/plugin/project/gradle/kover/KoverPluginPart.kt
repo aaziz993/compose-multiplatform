@@ -9,7 +9,7 @@ internal class KoverPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (!moduleProperties.settings.gradle.kover.enabled || moduleProperties.targets == null) {
+            if (!moduleProperties.settings.gradle.kover.enabled || moduleProperties.targets.isEmpty()) {
                 return@with
             }
 

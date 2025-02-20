@@ -9,7 +9,7 @@ internal class SpotlessPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (!moduleProperties.settings.gradle.spotless.enabled || moduleProperties.targets == null) {
+            if (!moduleProperties.settings.gradle.spotless.enabled || moduleProperties.targets.isEmpty()) {
                 return@with
             }
 

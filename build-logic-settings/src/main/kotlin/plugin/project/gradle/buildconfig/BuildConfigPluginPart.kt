@@ -9,7 +9,7 @@ internal class BuildConfigPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (!moduleProperties.settings.gradle.buildConfig.enabled || moduleProperties.targets == null) {
+            if (!moduleProperties.settings.gradle.buildConfig.enabled || moduleProperties.targets.isEmpty()) {
                 return@with
             }
 

@@ -12,16 +12,13 @@ internal class WasmBindingPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            moduleProperties.targets?.let { targets ->
-
-                if (TargetType.WASM !in targets) {
-                    return@with
-                }
-
-                targets
-                    .filter { target -> target.type.isDescendantOf(TargetType.WASM) }
-                    .forEach { target -> target.add() }
+            if (TargetType.WASM !in moduleProperties.targets) {
+                return@with
             }
+
+            moduleProperties.targets
+                .filter { target -> target.type.isDescendantOf(TargetType.WASM) }
+                .forEach { target -> target.add() }
 
             configureKotlinJsTarget<KotlinWasmJsTargetDsl>()
             configureJsTestTasks<KotlinWasmJsTargetDsl>()

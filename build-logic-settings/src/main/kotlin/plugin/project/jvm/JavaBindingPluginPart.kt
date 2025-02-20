@@ -21,26 +21,24 @@ internal class JavaBindingPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            moduleProperties.targets?.let { targets ->
-                if (TargetType.ANDROID in targets) {
-                    logger.warn(
-                        "Cant enable java integration when android is enabled. " +
-                            "Module: $name",
-                    )
-                    return@with
-                }
+            if (TargetType.ANDROID in moduleProperties.targets) {
+                logger.warn(
+                    "Cant enable java integration when android is enabled. " +
+                        "Module: $name",
+                )
+                return@with
+            }
 
-                if (TargetType.JVM !in targets) {
-                    return@with
-                }
+            if (TargetType.JVM !in moduleProperties.targets) {
+                return@with
+            }
 
-                targets.filter { target -> target.type.isDescendantOf(TargetType.JVM) }
-                    .forEach { target -> target.add() }
+            moduleProperties.targets.filter { target -> target.type.isDescendantOf(TargetType.JVM) }
+                .forEach { target -> target.add() }
 
 //        adjustJavaGeneralProperties()
 
 //        addJavaIntegration()
-            }
         }
     }
 

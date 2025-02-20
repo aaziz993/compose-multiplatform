@@ -9,7 +9,7 @@ import org.gradle.api.Project
 internal class SonarPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) = with(target) {
-        if (!moduleProperties.settings.gradle.sonar.enabled || moduleProperties.targets == null) {
+        if (!moduleProperties.settings.gradle.sonar.enabled || moduleProperties.targets.isEmpty()) {
             return@with
         }
 

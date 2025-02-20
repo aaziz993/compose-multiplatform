@@ -9,7 +9,7 @@ internal class KtorfitPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (!moduleProperties.settings.kotlin.ktorfit.enabled || moduleProperties.targets == null) {
+            if (!moduleProperties.settings.kotlin.ktorfit.enabled || moduleProperties.targets.isEmpty()) {
                 return@with
             }
 
