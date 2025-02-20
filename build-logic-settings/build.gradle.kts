@@ -266,6 +266,7 @@ dependencies {
     implementation(kotlin("script-runtime"))
 
     // IOS
+    implementation(libs.plugins.apple.toDep())
     implementation(libs.plugins.cocoapods.toDep())
 
     // Native

@@ -273,6 +273,8 @@ compose-lint-checks = "1.2.0"
 androidx-test = "1.7.0-alpha01"
 
 ##IOS
+# apple
+apple = "222.4595-0.23.2"
 # ios
 ios-deployment-target = "18.2"
 #cocoapods
@@ -1315,7 +1317,7 @@ kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 # multiplatform
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 # data pipeline processing
-#dataframe = { id = "org.jetbrains.kotlinx.dataframe", version.ref = "dataframe" }
+dataframe = { id = "org.jetbrains.kotlinx.dataframe", version.ref = "dataframe" }
 # providing detailed failure messages with contextual information during testing.
 power-assert = { id = "org.jetbrains.kotlin.plugin.power-assert", version.ref = "kotlin" }
 # testing
@@ -1344,6 +1346,7 @@ android-library = { id = "com.android.library", version.ref = "agp" }
 
 ##IOS
 # cocoapods
+apple = { id = "org.jetbrains.gradle.apple.applePlugin", version.ref = "apple" }
 cocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
 
 ##Web
