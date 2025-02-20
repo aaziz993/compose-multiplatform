@@ -16,6 +16,8 @@ import kotlinx.validation.ApiValidationExtension
 import org.gradle.api.Project
 import org.gradle.api.initialization.Settings
 import org.gradle.api.internal.GradleInternal
+import org.gradle.api.plugins.JavaApplication
+import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.toolchain.management.ToolchainManagement
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.the
@@ -34,6 +36,16 @@ import plugin.project.compose.model.ResourcesExtension
 
 internal val Project.settings: Settings
     get() = (gradle as GradleInternal).settings
+
+internal val Project.java: JavaPluginExtension get() = the()
+
+internal fun Project.java(configure: JavaPluginExtension.() -> Unit) =
+    extensions.configure(configure)
+
+internal val Project.javaApp: JavaApplication get() = the()
+
+internal fun Project.javaApp(configure: JavaApplication.() -> Unit) =
+    extensions.configure(configure)
 
 internal val Project.kotlin: KotlinMultiplatformExtension get() = the()
 

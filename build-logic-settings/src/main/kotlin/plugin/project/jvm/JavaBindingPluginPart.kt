@@ -19,9 +19,6 @@ import plugin.project.model.target.isDescendantOf
  */
 internal class JavaBindingPluginPart(override val project: Project) : BindingPluginPart {
 
-    private val javaAPE: JavaApplication? get() = project.extensions.findByType(JavaApplication::class.java)
-    internal val javaPE: JavaPluginExtension get() = project.extensions.getByType(JavaPluginExtension::class.java)
-
     override val needToApply by lazy {
         if (TargetType.ANDROID in project.moduleProperties.targets) {
             project.logger.warn(
