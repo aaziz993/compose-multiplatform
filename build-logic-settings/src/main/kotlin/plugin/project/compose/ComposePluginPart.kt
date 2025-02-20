@@ -17,24 +17,22 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.gradle.api.Plugin
 import plugin.project.compose.desktop.configureDesktopExtension
 
-public class ComposePluginPart: Plugin<Project> {
+public class ComposePluginPart : Plugin<Project> {
 
-    override val needToApply: Boolean by lazy {
-        project.moduleProperties.settings.compose.enabled
-    }
+    override fun apply(target: Project) {
+        with(target) {
+            if (!moduleProperties.settings.compose.enabled || moduleProperties.targets == null) {
+                return@with
+            }
 
-    // Highly dependent on compose version and ABI.
-    // Need to implement API on compose plugin side.
-    override fun applyBeforeEvaluate(): Unit = with(project) {
-        plugins.apply(project.settings.libs.plugins.plugin("compose-multiplatform").id)
-        plugins.apply(project.settings.libs.plugins.plugin("compose-compiler").id)
+            plugins.apply(libs.plugins.compose.multiplatform.get().pluginId)
+            plugins.apply(libs.plugins.compose.compiler.get().pluginId)
 
-        if (moduleProperties.application) {
-            // Configure desktop
-            configureDesktopExtension()
+            if (moduleProperties.application) {
+                configureDesktopExtension()
+            }
+
+            configureResourcesExtension()
         }
-
-        // Adjust resources.
-        configureResourcesExtension()
     }
 }
