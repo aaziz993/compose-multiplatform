@@ -70,8 +70,8 @@ internal class BindingProjectPlugin : Plugin<Project> {
             JsBindingPluginPart(project),
             WasmBindingPluginPart(project),
             JavaBindingPluginPart(project),
-            CocoapodsPluginPart(project),
             AppleBindingPluginPart(project),
+            CocoapodsPluginPart(project),
             KMPPBindingPluginPart(project),
             ComposePluginPart(project),
         )
