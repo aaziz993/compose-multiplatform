@@ -11,7 +11,6 @@ import gradle.libs
 import gradle.plugin
 import gradle.pluginAsDependency
 import gradle.plugins
-import gradle.settings
 import gradle.setupDynamicClasspath
 import gradle.trySetSystemProperty
 import javax.xml.stream.XMLEventFactory
@@ -24,9 +23,7 @@ import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.api.initialization.Settings
 import org.gradle.kotlin.dsl.maven
 import org.jetbrains.amper.gradle.SLF4JProblemReporterContext
-import org.jetbrains.kotlin.gradle.plugin.KotlinMultiplatformPluginWrapper
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
-import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import org.yaml.snakeyaml.DumperOptions
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.nodes.Tag
@@ -38,9 +35,6 @@ import plugin.project.gradle.githooks.GitHooksluginPart
 import plugin.project.gradle.toolchainmanagement.ToolchainManagementPluginPart
 import plugin.project.model.Alias
 import plugin.project.model.ModuleProperties
-import plugin.project.web.node.configureNodeJsRootExtension
-import plugin.project.web.npm.configureNpmExtension
-import plugin.project.web.yarn.configureYarnRootExtension
 import plugin.settings.model.ProjectProperties
 
 /**
@@ -65,21 +59,21 @@ public class SettingsPlugin : Plugin<Settings> {
         DumperOptions(),
     )
 
-    override fun apply(settings: Settings) {
+    override fun apply(target: Settings) {
         with(SLF4JProblemReporterContext()) {
 
             // Setup  settings.gradle.kts from project.yaml.
-            settings.setupProject()
+            target.setupProject()
 
-            settings.gradle.projectsLoaded {
-                settings.setupPluginsClasspath()
+            target.gradle.projectsLoaded {
+                target.setupPluginsClasspath()
 
                 // at this point all projects have been created by settings.gradle.kts, but none were evaluated yet
-                settings.gradle.rootProject.allprojects {
+                target.gradle.rootProject.allprojects {
                     configureProject()
                 }
 
-                settings.gradle.rootProject.repositories.mavenCentral()
+                target.gradle.rootProject.repositories.mavenCentral()
             }
         }
     }

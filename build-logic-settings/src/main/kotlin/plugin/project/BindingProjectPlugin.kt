@@ -10,7 +10,6 @@ import gradle.versions
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.jetbrains.amper.frontend.schema.Settings
 import org.jetbrains.amper.gradle.SLF4JProblemReporterContext
 import plugin.project.android.AndroidBindingPluginPart
 import plugin.project.apple.AppleBindingPluginPart
@@ -46,16 +45,16 @@ import plugin.project.web.yarn.configureYarnRootExtension
  */
 internal class BindingProjectPlugin : Plugin<Project> {
 
-    override fun apply(project: Project) = with(SLF4JProblemReporterContext()) {
-        with(project) {
+    override fun apply(target: Project) = with(SLF4JProblemReporterContext()) {
+        with(target) {
             moduleProperties.group?.let(::setGroup)
             moduleProperties.description?.let(::setDescription)
             settings.libs.versions.let { versions ->
                 version(
-                    versions.version("${project.name}-version-major")?.toInt() ?: 1,
-                    versions.version("${project.name}-version-minor")?.toInt() ?: 0,
-                    versions.version("${project.name}-version-patch")?.toInt() ?: 0,
-                    versions.version("${project.name}-version-preRelease"),
+                    versions.version("${target.name}-version-major")?.toInt() ?: 1,
+                    versions.version("${target.name}-version-minor")?.toInt() ?: 0,
+                    versions.version("${target.name}-version-patch")?.toInt() ?: 0,
+                    versions.version("${target.name}-version-preRelease"),
                 )
             }
 
