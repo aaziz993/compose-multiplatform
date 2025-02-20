@@ -23,14 +23,14 @@ internal class JavaBindingPluginPart(override val project: Project) : BindingPlu
     internal val javaPE: JavaPluginExtension get() = project.extensions.getByType(JavaPluginExtension::class.java)
 
     override val needToApply by lazy {
-        if (TargetType.ANDROID contains project.moduleProperties.targets) {
+        if (TargetType.ANDROID in project.moduleProperties.targets) {
             project.logger.warn(
                 "Cant enable java integration when android is enabled. " +
                     "Module: ${project.name}",
             )
             return@lazy false
         }
-       TargetType.JVM contains project.moduleProperties.targets
+       TargetType.JVM in project.moduleProperties.targets
     }
 
     override fun applyBeforeEvaluate() = with(project) {

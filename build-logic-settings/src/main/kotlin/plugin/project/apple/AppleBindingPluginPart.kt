@@ -15,7 +15,7 @@ import plugin.project.model.target.isDescendantOf
 
 internal class AppleBindingPluginPart(override val project: Project) : BindingPluginPart {
 
-    override val needToApply by lazy { TargetType.APPLE contains project.moduleProperties.targets }
+    override val needToApply by lazy { TargetType.APPLE in project.moduleProperties.targets }
 
     override fun applyBeforeEvaluate() = with(project) {
         // Apply plugin
