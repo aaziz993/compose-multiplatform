@@ -4,5 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal data class BrowserSettings(
+    val webpackTask: KotlinWebpack?=null,
     val enabled: Boolean = true
 )

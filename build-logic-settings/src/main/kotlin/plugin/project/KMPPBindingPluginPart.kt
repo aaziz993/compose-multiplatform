@@ -4,13 +4,12 @@ package plugin.project
 
 import app.cash.sqldelight.core.decapitalize
 import gradle.all
-import gradle.moduleProperties
 import gradle.kotlin
+import gradle.moduleProperties
 import gradle.trySet
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
-import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.LanguageSettingsBuilder
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import plugin.project.kotlin.model.KotlinSettings
@@ -177,8 +176,6 @@ internal class KMPPBindingPluginPart(override val project: Project) : BindingPlu
 
     @Suppress("UNCHECKED_CAST")
     private fun Project.initSourceSets() {
-        // Forth iteration - create source set groups from templates
-
         // Apply aliases
         kotlin.applyDefaultHierarchyTemplate {
             common {
