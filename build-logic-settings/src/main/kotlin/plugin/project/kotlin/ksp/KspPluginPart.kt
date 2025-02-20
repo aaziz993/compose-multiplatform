@@ -5,32 +5,28 @@ import gradle.libs
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.provideDelegate
-import plugin.project.BindingPluginPart
+import org.gradle.api.Plugin
 import org.gradle.api.Project
 
-internal class KspPluginPart(override val project: Project) : BindingPluginPart {
+internal class KspPluginPart : Plugin<Project> {
 
-    private val ksp by lazy {
-        project.moduleProperties.settings.kotlin.ksp
-    }
+    override fun apply(target: Project) {
+        with(target) {
+            moduleProperties.settings.kotlin.ksp.let { ksp ->
+                if (!ksp.enabled || moduleProperties.targets == null) {
+                    return@with
+                }
 
-    override val needToApply: Boolean by lazy {
-        ksp.enabled
-    }
+                plugins.apply(project.libs.plugins.ksp.get().pluginId)
 
-    override fun applyAfterEvaluate() =with(project) {
-        plugins.apply(project.libs.plugins.ksp.get().pluginId)
+                configureKspExtension()
 
-        applySettings()
-    }
-
-    private fun applySettings() = with(project) {
-        configureKspExtension()
-
-        val kspCommonMainMetadata by configurations
-        dependencies {
-            ksp.processors?.forEach { processor ->
-                kspCommonMainMetadata(processor.toDependencyNotation())
+                val kspCommonMainMetadata by configurations
+                dependencies {
+                    ksp.processors?.forEach { processor ->
+                        kspCommonMainMetadata(processor.toDependencyNotation())
+                    }
+                }
             }
         }
     }

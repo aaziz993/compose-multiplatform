@@ -46,51 +46,7 @@ import plugin.project.web.yarn.configureYarnRootExtension
  */
 internal class BindingProjectPlugin : Plugin<Project> {
 
-    lateinit var appliedParts: List<BindingPluginPart>
-
     override fun apply(project: Project) = with(SLF4JProblemReporterContext()) {
-        // Find applied parts. Preserve order!
-        val registeredParts = listOf(
-            DoctorPluginPart(project),
-            BuildConfigPluginPart(project),
-            SpotlessPluginPart(project),
-            KoverPluginPart(project),
-            SonarPluginPart(project),
-            DokkaPluginPart(project),
-            ApiValidationPluginPart(project),
-            KspPluginPart(project),
-            AllOpenPluginPart(project),
-            NoArgPluginPart(project),
-            AtomicFUPluginPart(project),
-            SerializationPluginPart(project),
-            SqlDelightPluginPart(project),
-            RoomPluginPart(project),
-            RpcPluginPart(project),
-            KtorfitPluginPart(project),
-            ApolloPluginPart(project),
-            PowerAssertPluginPart(project),
-            AndroidBindingPluginPart(project),
-            JsBindingPluginPart(project),
-            WasmBindingPluginPart(project),
-            JavaBindingPluginPart(project),
-            AppleBindingPluginPart(project),
-            CocoapodsPluginPart(project),
-            KMPPBindingPluginPart(project),
-            ComposePluginPart(project),
-        )
-        appliedParts = registeredParts.filter { it.needToApply }
-
-        // Apply after evaluate (For example to access Amper extension).
-        // But register handlers first, so they will run before all other, that are registered
-        // within "beforeEvaluate".
-        project.afterEvaluate {
-            appliedParts.forEach(BindingPluginPart::applyAfterEvaluate)
-        }
-
-        // Apply before evaluate.
-        appliedParts.forEach(BindingPluginPart::applyBeforeEvaluate)
-
-        // Apply other settings.
         with(project) {
             moduleProperties.group?.let(::setGroup)
             moduleProperties.description?.let(::setDescription)
@@ -102,7 +58,37 @@ internal class BindingProjectPlugin : Plugin<Project> {
                     versions.version("${project.name}-version-preRelease"),
                 )
             }
+
+            plugins.apply(DoctorPluginPart::class.java)
+            plugins.apply(BuildConfigPluginPart::class.java)
+            plugins.apply(SpotlessPluginPart::class.java)
+            plugins.apply(KoverPluginPart::class.java)
+            plugins.apply(SonarPluginPart::class.java)
+            plugins.apply(DokkaPluginPart::class.java)
+            plugins.apply(ApiValidationPluginPart::class.java)
+            plugins.apply(KspPluginPart::class.java)
+            plugins.apply(AllOpenPluginPart::class.java)
+            plugins.apply(NoArgPluginPart::class.java)
+            plugins.apply(AtomicFUPluginPart::class.java)
+            plugins.apply(SerializationPluginPart::class.java)
+            plugins.apply(SqlDelightPluginPart::class.java)
+            plugins.apply(RoomPluginPart::class.java)
+            plugins.apply(RpcPluginPart::class.java)
+            plugins.apply(KtorfitPluginPart::class.java)
+            plugins.apply(ApolloPluginPart::class.java)
+            plugins.apply(PowerAssertPluginPart::class.java)
+            plugins.apply(AndroidBindingPluginPart::class.java)
+            plugins.apply(JsBindingPluginPart::class.java)
+            plugins.apply(WasmBindingPluginPart::class.java)
+            plugins.apply(JavaBindingPluginPart::class.java)
+            plugins.apply(AppleBindingPluginPart::class.java)
+            plugins.apply(CocoapodsPluginPart::class.java)
+            plugins.apply(KMPPBindingPluginPart::class.java)
+            plugins.apply(ComposePluginPart::class.java)
         }
+
+        // Apply other settings.
+
 //        applyRepositoryAttributes(project)
 //        applyPublicationAttributes(linkedModule, project)
 //        applyTest(linkedModule, project)

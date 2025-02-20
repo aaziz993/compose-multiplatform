@@ -3,32 +3,29 @@ package plugin.project.web
 import gradle.moduleProperties
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinWasmJsTargetDsl
-import plugin.project.BindingPluginPart
+import org.gradle.api.Plugin
 import plugin.project.model.target.TargetType
 import plugin.project.model.target.add
 import plugin.project.model.target.contains
 
-/**
- * Plugin logic, bind to specific module, when only default target is available.
- */
-internal class WasmBindingPluginPart(override val project: Project) : BindingPluginPart {
+internal class WasmBindingPluginPart : Plugin<Project> {
 
-    override val needToApply by lazy { TargetType.WASM in project.moduleProperties.targets }
+    override fun apply(target: Project) {
+        with(target) {
+            moduleProperties.targets?.let { targets ->
 
+                if (TargetType.WASM !in targets) {
+                    return@with
+                }
 
+                targets
+                    .filter { target -> target.type.isDescendantOf(TargetType.WASM) }
+                    .forEach { target -> target.add() }
+            }
 
-    /**
-     * Entry point for this plugin part.
-     */
-    override fun applyBeforeEvaluate()  = with(project){
-        moduleProperties.targets
-            .filter { target -> target.type.isDescendantOf(TargetType.WASM) }
-            .forEach { target->target.add() }
-    }
-
-    private fun applySettings()=with(project){
-        configureKotlinJsTarget< KotlinWasmJsTargetDsl>()
-        configureJsTestTasks<KotlinWasmJsTargetDsl>()
+            configureKotlinJsTarget<KotlinWasmJsTargetDsl>()
+            configureJsTestTasks<KotlinWasmJsTargetDsl>()
+        }
     }
 }
 

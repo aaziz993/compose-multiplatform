@@ -2,17 +2,17 @@ package plugin.project.kotlin.serialization
 
 import gradle.moduleProperties
 import gradle.libs
-import plugin.project.BindingPluginPart
+import org.gradle.api.Plugin
 import org.gradle.api.Project
 
-internal class SerializationPluginPart(override val project: Project) : BindingPluginPart {
+internal class SerializationPluginPart : Plugin<Project> {
 
-    override val needToApply: Boolean by lazy {
-        project.moduleProperties.settings.kotlin.serialization.enabled
-    }
+    override fun apply(target: Project) {
+        with(target) {
+            if (!moduleProperties.settings.kotlin.serialization.enabled || moduleProperties.targets == null) {
+                return@with
+            }
 
-    override fun applyAfterEvaluate() {
-        with(project) {
             plugins.apply(project.libs.plugins.kotlin.serialization.get().pluginId)
         }
     }

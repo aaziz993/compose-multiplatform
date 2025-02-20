@@ -15,4 +15,5 @@ internal data class ApiValidationSettings(
     override val additionalSourceSets: Set<String>? = null,
     override val apiDumpDirectory: String? = null,
     override val klib: KlibValidationSettings? = null,
+    val enabled: Boolean = true
 ) : ApiValidationExtension

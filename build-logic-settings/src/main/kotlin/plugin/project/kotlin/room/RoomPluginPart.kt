@@ -2,23 +2,19 @@ package plugin.project.kotlin.room
 
 import gradle.moduleProperties
 import gradle.libs
-import plugin.project.BindingPluginPart
+import org.gradle.api.Plugin
 import org.gradle.api.Project
 
-internal class RoomPluginPart(override val project: Project) : BindingPluginPart {
+internal class RoomPluginPart : Plugin<Project> {
 
-    override val needToApply: Boolean by lazy {
-        project.moduleProperties.settings.kotlin.room.enabled
-    }
+    override fun apply(target: Project) {
+        with(target) {
+            if (!moduleProperties.settings.kotlin.room.enabled || moduleProperties.targets == null) {
+                return@with
+            }
 
-    override fun applyAfterEvaluate() = with(project) {
-        plugins.apply(project.libs.plugins.room.get().pluginId)
+            plugins.apply(project.libs.plugins.room.get().pluginId)
 
-        applySettings()
-    }
-
-    private fun applySettings() {
-        with(project) {
             configureRoomExtension()
         }
     }

@@ -4,26 +4,18 @@ import gradle.moduleProperties
 import gradle.isCI
 import gradle.libs
 import gradle.unregister
+import org.gradle.api.Plugin
 import org.gradle.api.Project
-import plugin.project.BindingPluginPart
 
-internal class DoctorPluginPart(override val project: Project) : BindingPluginPart {
+internal class DoctorPluginPart : Plugin<Project> {
 
-    private val doctor by lazy {
-        project.moduleProperties.settings.gradle.doctor
-    }
+    override fun apply(target: Project) = with(target) {
+        if (!(moduleProperties.settings.gradle.doctor.enabled || this == rootProject)) {
+            return@with
+        }
 
-    override val needToApply: Boolean by lazy {
-        doctor.enabled && project == project.rootProject
-    }
-
-    override fun applyAfterEvaluate() = with(project) {
         plugins.apply(project.libs.plugins.doctor.get().pluginId)
 
-        applySettings()
-    }
-
-    fun applySettings() = with(project) {
         configureDoctorExtension()
 
         // Always monitor tasks on CI, but disable it locally by default with providing an option to opt-in.

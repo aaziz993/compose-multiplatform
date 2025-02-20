@@ -2,24 +2,19 @@ package plugin.project.gradle.sonar
 
 import gradle.moduleProperties
 import gradle.libs
-import plugin.project.BindingPluginPart
+import gradle.moduleProperties
+import org.gradle.api.Plugin
 import org.gradle.api.Project
 
-internal class SonarPluginPart(override val project: Project) : BindingPluginPart {
+internal class SonarPluginPart : Plugin<Project> {
 
-    override val needToApply: Boolean by lazy {
-        project.moduleProperties.settings.gradle.sonar.enabled
-    }
+    override fun apply(target: Project) = with(target) {
+        if (!moduleProperties.settings.gradle.sonar.enabled || moduleProperties.targets == null) {
+            return@with
+        }
 
-    override fun applyAfterEvaluate() = with(project) {
         plugins.apply(project.libs.plugins.sonarqube.get().pluginId)
 
-        applySettings()
-    }
-
-    fun applySettings() {
-        with(project) {
-            configureSonarExtension()
-        }
+        configureSonarExtension()
     }
 }

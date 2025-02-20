@@ -14,10 +14,10 @@ import org.jetbrains.amper.gradle.android.AndroidAwarePart
 import org.jetbrains.amper.gradle.base.AmperNamingConventions
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
-import plugin.project.BindingPluginPart
+import org.gradle.api.Plugin
 import plugin.project.compose.desktop.configureDesktopExtension
 
-public class ComposePluginPart(override val project: Project) : BindingPluginPart {
+public class ComposePluginPart: Plugin<Project> {
 
     override val needToApply: Boolean by lazy {
         project.moduleProperties.settings.compose.enabled

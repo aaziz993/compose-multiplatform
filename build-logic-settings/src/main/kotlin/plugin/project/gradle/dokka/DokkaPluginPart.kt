@@ -8,57 +8,47 @@ import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.provideDelegate
 import org.gradle.kotlin.dsl.withType
-import plugin.project.BindingPluginPart
+import org.gradle.api.Plugin
 import org.jetbrains.dokka.gradle.AbstractDokkaTask
 import org.jetbrains.dokka.gradle.DokkaMultiModuleTask
 import org.jetbrains.dokka.gradle.internal.InternalDokkaGradlePluginApi
 import plugin.project.gradle.dokka.model.DokkaMultiModuleFileLayout
 import plugin.project.gradle.dokka.model.DokkaTask
 
-internal class DokkaPluginPart(override val project: Project) : BindingPluginPart {
+internal class DokkaPluginPart : Plugin<Project> {
 
-    private val spotless by lazy {
-        project.moduleProperties.settings.gradle.spotless
-    }
-
-    override val needToApply: Boolean by lazy {
-        spotless.enabled
-    }
-
-    private val dokka by lazy {
-        project.moduleProperties.settings.gradle.dokka
-    }
-
-    override fun applyAfterEvaluate() = with(project) {
-        plugins.apply(project.libs.plugins.dokka.get().pluginId)
-
-        applySettings()
-    }
-
-    fun applySettings() {
-        with(project) {
-            configureDokkaExtension()
-
-            if (dokka.versioning) {
-                val dokkaPlugin by configurations
-
-                dependencies {
-                    dokkaPlugin(libs.dokka.versioning)
+    override fun apply(target: Project) {
+        with(target) {
+            moduleProperties.settings.gradle.dokka.let { dokka ->
+                if (!dokka.enabled || moduleProperties.targets == null) {
+                    return@with
                 }
-            }
 
-            if (project == rootProject) {
-                configureDokkaMultiModuleTask()
-            }
-            else {
-                configureDokkaModuleTask()
+                plugins.apply(project.libs.plugins.dokka.get().pluginId)
+
+                configureDokkaExtension()
+
+                if (dokka.versioning) {
+                    val dokkaPlugin by configurations
+
+                    dependencies {
+                        dokkaPlugin(libs.dokka.versioning)
+                    }
+                }
+
+                if (project == rootProject) {
+                    configureDokkaMultiModuleTask()
+                }
+                else {
+                    configureDokkaModuleTask()
+                }
             }
         }
     }
 
     @OptIn(InternalDokkaGradlePluginApi::class)
     private fun Project.configureDokkaModuleTask() =
-        dokka.task?.let { task ->
+        moduleProperties.settings.gradle.dokka.task?.let { task ->
             tasks.withType<org.jetbrains.dokka.gradle.DokkaTask> {
                 configureFrom(task)
             }
@@ -66,7 +56,7 @@ internal class DokkaPluginPart(override val project: Project) : BindingPluginPar
 
     @OptIn(InternalDokkaGradlePluginApi::class)
     private fun Project.configureDokkaMultiModuleTask() =
-        dokka.task?.let { task ->
+        moduleProperties.settings.gradle.dokka.task?.let { task ->
             tasks.withType<DokkaMultiModuleTask> {
                 configureFrom(task)
                 task.includes?.let(includes::setFrom)

@@ -2,23 +2,19 @@ package plugin.project.kotlin.atomicfu
 
 import gradle.moduleProperties
 import gradle.libs
-import plugin.project.BindingPluginPart
+import org.gradle.api.Plugin
 import org.gradle.api.Project
 
-internal class AtomicFUPluginPart(override val project: Project) : BindingPluginPart {
+internal class AtomicFUPluginPart : Plugin<Project> {
 
-    override val needToApply: Boolean by lazy {
-        project.moduleProperties.settings.kotlin.atomicFU.enabled
-    }
+    override fun apply(target: Project) {
+        with(target) {
+            if (!moduleProperties.settings.kotlin.atomicFU.enabled || moduleProperties.targets == null) {
+                return@with
+            }
 
-    override fun applyAfterEvaluate() = with(project) {
-        plugins.apply(project.libs.plugins.atomicfu.get().pluginId)
+            plugins.apply(project.libs.plugins.atomicfu.get().pluginId)
 
-        applySettings()
-    }
-
-    private fun applySettings() {
-        with(project) {
             configureAtomicFUPluginExtension()
         }
     }

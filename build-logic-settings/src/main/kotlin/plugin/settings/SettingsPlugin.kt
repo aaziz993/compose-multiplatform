@@ -156,11 +156,6 @@ public class SettingsPlugin : Plugin<Settings> {
     private fun Project.configureProject() {
         loadModuleProperties()
 
-        // Enable Default Kotlin Hierarchy.
-        extraProperties.set("kotlin.mpp.applyDefaultHierarchyTemplate", "true")
-
-        // Apply Kotlin plugins.
-        plugins.apply(KotlinMultiplatformPluginWrapper::class.java)
 
         plugins.apply(BindingProjectPlugin::class.java)
 

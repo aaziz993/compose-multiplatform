@@ -3,7 +3,7 @@ package plugin.project.web.js
 import gradle.moduleProperties
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
-import plugin.project.BindingPluginPart
+import org.gradle.api.Plugin
 import plugin.project.model.target.TargetType
 import plugin.project.model.target.add
 import plugin.project.model.target.contains
@@ -11,33 +11,24 @@ import plugin.project.web.configureJsTestTasks
 import plugin.project.web.configureKotlinJsTarget
 import plugin.project.web.js.karakum.configureKarakum
 
-/**
- * Plugin logic, bind to specific module, when only default target is available.
- */
-internal class JsBindingPluginPart(override val project: Project) : BindingPluginPart {
+internal class JsBindingPluginPart : Plugin<Project> {
 
-    override val needToApply by lazy { TargetType.JS in project.moduleProperties.targets }
+    override fun apply(target: Project) {
+        with(target) {
+            moduleProperties.targets?.let { targets ->
+                if (TargetType.JS !in targets) {
+                    return@with
+                }
 
-    /**
-     * Entry point for this plugin part.
-     */
-    override fun applyBeforeEvaluate() {
-        with(project) {
-            moduleProperties.targets
-                .filter { target -> target.type.isDescendantOf(TargetType.JS) }
-                .forEach { target->target.add() }
+                targets
+                    .filter { target -> target.type.isDescendantOf(TargetType.JS) }
+                    .forEach { target -> target.add() }
 
-            applySettings()
+                configureKotlinJsTarget<KotlinJsTargetDsl>()
+                configureJsTestTasks<KotlinJsTargetDsl>()
+                configureKarakum()
+            }
         }
-    }
-
-    override fun applyAfterEvaluate() = with(project) {
-        configureKarakum()
-    }
-
-    private fun applySettings() = with(project) {
-        configureKotlinJsTarget<KotlinJsTargetDsl>()
-        configureJsTestTasks<KotlinJsTargetDsl>()
     }
 }
 

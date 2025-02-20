@@ -2,9 +2,10 @@
 
 package plugin.project.android
 
+import gradle.libs
 import gradle.moduleProperties
 import org.gradle.api.Project
-import plugin.project.BindingPluginPart
+import org.gradle.api.Plugin
 import plugin.project.model.target.TargetType
 import plugin.project.model.target.add
 import plugin.project.model.target.contains
@@ -12,36 +13,33 @@ import plugin.project.model.target.contains
 /**
  * Plugin logic, bind to specific module, when only default target is available.
  */
-internal class AndroidBindingPluginPart(override val project: Project) : BindingPluginPart {
+internal class AndroidBindingPluginPart : Plugin<Project> {
 
-    override val needToApply by lazy { TargetType.ANDROID in project.moduleProperties.targets }
+    override fun apply(target: Project) {
+        with(target) {
+            moduleProperties.targets?.let { targets ->
+                if (TargetType.ANDROID in targets) {
+                    return@with
+                }
 
-    /**
-     * Entry point for this plugin part.
-     */
-    override fun applyBeforeEvaluate() = with(project) {
+//                plugins.apply(libs.plugins.android.get())
 
-        if (moduleProperties.application) {
-            plugins.apply("com.android.application")
-        }
-        else {
-            plugins.apply("com.android.library")
-        }
+                if (moduleProperties.application) {
+                    plugins.apply(libs.plugins.android.application.get().pluginId)
+                }
+                else {
+                    plugins.apply(libs.plugins.android.library.get().pluginId)
+                }
 
-        moduleProperties.targets
-            .filter { target -> target.type.isDescendantOf(TargetType.ANDROID) }
-            .forEach { target->target.add() }
+                targets
+                    .filter { target -> target.type.isDescendantOf(TargetType.ANDROID) }
+                    .forEach { target -> target.add() }
 
 //        adjustCompilations()
 //        applySettings()
 //        adjustAndroidSourceSets()
 //        applyGoogleServicesPlugin()
-    }
-
-    override fun applyAfterEvaluate() {
-        // Be sure our adjustments are made lastly.
-        project.afterEvaluate {
-//            adjustAndroidSourceSets()
+            }
         }
     }
 

@@ -2,23 +2,17 @@ package plugin.project.kotlin.noarg
 
 import gradle.moduleProperties
 import gradle.libs
-import plugin.project.BindingPluginPart
+import org.gradle.api.Plugin
 import org.gradle.api.Project
 
-internal class NoArgPluginPart(override val project: Project) : BindingPluginPart {
+internal class NoArgPluginPart : Plugin<Project> {
 
-    override val needToApply: Boolean by lazy {
-        project.moduleProperties.settings.kotlin.noArg.enabled
-    }
+    override fun apply(target: Project) {
+        with(target) {
+            if (!moduleProperties.settings.kotlin.noArg.enabled || moduleProperties.targets == null)
 
-    override fun applyAfterEvaluate() = with(project) {
-        plugins.apply(project.libs.plugins.allopen.get().pluginId)
+                plugins.apply(project.libs.plugins.allopen.get().pluginId)
 
-        applySettings()
-    }
-
-    private fun applySettings() {
-        with(project) {
             configureNoArgExtension()
         }
     }

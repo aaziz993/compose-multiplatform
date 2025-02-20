@@ -9,7 +9,7 @@ import gradle.kotlin
 import gradle.moduleProperties
 import org.gradle.api.Project
 import org.jetbrains.amper.gradle.tryRemove
-import plugin.project.BindingPluginPart
+import org.gradle.api.Plugin
 import plugin.project.model.target.TargetType
 import plugin.project.model.target.add
 import plugin.project.model.target.contains
@@ -17,42 +17,34 @@ import plugin.project.model.target.contains
 /**
  * Plugin logic, bind to specific module, when only default target is available.
  */
-internal class JavaBindingPluginPart(override val project: Project) : BindingPluginPart {
+internal class JavaBindingPluginPart : Plugin<Project> {
 
-    override val needToApply by lazy {
-        if (TargetType.ANDROID in project.moduleProperties.targets) {
-            project.logger.warn(
-                "Cant enable java integration when android is enabled. " +
-                    "Module: ${project.name}",
-            )
-            return@lazy false
-        }
-        TargetType.JVM in project.moduleProperties.targets
-    }
+    override fun apply(target: Project) {
+        with(target) {
+            moduleProperties.targets?.let { targets ->
+                if (TargetType.ANDROID in targets) {
+                    logger.warn(
+                        "Cant enable java integration when android is enabled. " +
+                            "Module: $name",
+                    )
+                    return@with
+                }
 
-    override fun applyBeforeEvaluate() = with(project) {
-        moduleProperties.targets
-            .filter { target -> target.type.isDescendantOf(TargetType.JVM) }
-            .forEach { target -> target.add() }
+                if (TargetType.JVM !in targets) {
+                    return@with
+                }
 
-        adjustJvmSourceSets()
+                targets.filter { target -> target.type.isDescendantOf(TargetType.JVM) }
+                    .forEach { target -> target.add() }
 
 //        adjustJavaGeneralProperties()
 
 //        addJavaIntegration()
-    }
-
-    private fun adjustJvmSourceSets() = with(project) {
-        kotlin.sourceSets.matching { sourceSet -> sourceSet.name.startsWith("jvm") }.all { sourceSet ->
-            when(sourceSet.name){
-                "jvm"-> {
-                    sourceSet.kotlin.tryRemove { it.endsWith("jvm/") }
-                }
             }
         }
     }
 
-//    override fun applyAfterEvaluate() {
+//    override fun apply(target:Project) {
 ////        adjustSourceDirs()
 //    }
 //

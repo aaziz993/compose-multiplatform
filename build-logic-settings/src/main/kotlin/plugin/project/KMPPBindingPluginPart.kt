@@ -7,9 +7,10 @@ import gradle.all
 import gradle.kotlin
 import gradle.moduleProperties
 import gradle.trySet
+import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
+import org.jetbrains.kotlin.gradle.plugin.KotlinMultiplatformPluginWrapper
 import org.jetbrains.kotlin.gradle.plugin.LanguageSettingsBuilder
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import plugin.project.kotlin.model.KotlinSettings
@@ -25,18 +26,27 @@ private fun LanguageSettingsBuilder.configureFromAmperSettings(settings: KotlinS
 /**
  * Plugin logic, bind to specific module, when multiple targets are available.
  */
-internal class KMPPBindingPluginPart(override val project: Project) : BindingPluginPart {
+internal class KMPPBindingPluginPart : Plugin<Project> {
 
-    override val needToApply = true
+    override fun apply(target: Project) {
+        with(target) {
+            if (moduleProperties.targets == null) {
+                return@with
+            }
 
-    @OptIn(ExperimentalKotlinGradlePluginApi::class)
-    override fun applyBeforeEvaluate() {
-//        initTargets()
-        project.initSourceSets()
+            plugins.apply(KotlinMultiplatformPluginWrapper::class.java)
 
-        // Workaround for KTIJ-27212, to get proper compiler arguments in the common code facet after import.
-        // Apparently, configuring compiler arguments for metadata compilation is not sufficient.
-        // This workaround doesn't fix intermediate source sets, though, only the most common fragment.
+            // Enable Default Kotlin Hierarchy.
+            extraProperties.set("kotlin.mpp.applyDefaultHierarchyTemplate", "true")
+
+            // IOS Compose uses UiKit, so we need to explicitly enable it, since it is experimental.
+            extraProperties.set("org.jetbrains.compose.experimental.uikit.enabled", "true")
+
+            adjustSourceSets()
+
+            // Workaround for KTIJ-27212, to get proper compiler arguments in the common code facet after import.
+            // Apparently, configuring compiler arguments for metadata compilation is not sufficient.
+            // This workaround doesn't fix intermediate source sets, though, only the most common fragment.
 //        kotlinMPE.compilerOptions {
 //            configureFrom(module.mostCommonFragment.settings)
 //        }
@@ -71,21 +81,6 @@ internal class KMPPBindingPluginPart(override val project: Project) : BindingPlu
 //                }
 //            }
 //        }
-    }
-
-    override fun applyAfterEvaluate() {
-        // IOS Compose uses UiKit, so we need to explicitly enable it, since it is experimental.
-        project.extraProperties.set("org.jetbrains.compose.experimental.uikit.enabled", "true")
-
-        // Do after fragments init!
-//        adjustSourceSetDirectories()
-        project.afterEvaluate {
-            // We need to do that second time, because of tricky gradle/KMPP/android stuff.
-            //
-            // First call is needed because we need to search for entry point.
-            // Second call is needed, because we need to rewrite changes from KMPP that
-            // are done in "afterEvaluate" also.
-//            adjustSourceSetDirectories()
         }
     }
 
@@ -175,7 +170,7 @@ internal class KMPPBindingPluginPart(override val project: Project) : BindingPlu
 //    }
 
     @Suppress("UNCHECKED_CAST")
-    private fun Project.initSourceSets() {
+    private fun Project.adjustSourceSets() {
         // Apply aliases
         kotlin.applyDefaultHierarchyTemplate {
             common {

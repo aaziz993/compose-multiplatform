@@ -3,22 +3,18 @@ package plugin.project.gradle.buildconfig
 import gradle.moduleProperties
 import gradle.libs
 import org.gradle.api.Project
-import plugin.project.BindingPluginPart
+import org.gradle.api.Plugin
 
-internal class BuildConfigPluginPart(override val project: Project) : BindingPluginPart {
+internal class BuildConfigPluginPart : Plugin<Project> {
 
-    override val needToApply: Boolean by lazy {
-        project.moduleProperties.settings.gradle.buildConfig.enabled
-    }
+    override fun apply(target: Project) {
+        with(target) {
+            if (!moduleProperties.settings.gradle.buildConfig.enabled || moduleProperties.targets == null) {
+                return@with
+            }
 
-    override fun applyAfterEvaluate() = with(project) {
-        plugins.apply(project.libs.plugins.build.config.get().pluginId)
+            plugins.apply(project.libs.plugins.build.config.get().pluginId)
 
-        applySettings()
-    }
-
-    fun applySettings() {
-        with(project) {
             configureBuildConfigExtension()
         }
     }
