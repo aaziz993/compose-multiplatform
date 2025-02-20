@@ -26,12 +26,7 @@ internal fun Project.configureKotlinNativeTarget() =
 
 context(Project)
 internal fun org.jetbrains.kotlin.gradle.plugin.mpp.Framework.configureFrom(framework: Framework) {
-    baseName = framework.baseName ?: "$group.${
-        project.name
-            .replace("[-_]".toRegex(), ".")
-    }.$targetName"
-
-
+    ::baseName trySet framework.baseName
     ::transitiveExport trySet framework.transitiveExport
     ::debuggable trySet framework.debuggable
     ::optimized trySet framework.optimized
@@ -40,6 +35,5 @@ internal fun org.jetbrains.kotlin.gradle.plugin.mpp.Framework.configureFrom(fram
     ::freeCompilerArgs trySet framework.freeCompilerArgs
     ::outputDirectory trySet framework.optimized?.let(::file)
     outputDirectoryProperty tryAssign framework.outputDirectoryProperty?.let(layout.projectDirectory::dir)
-
     ::isStatic trySet framework.isStatic
 }
