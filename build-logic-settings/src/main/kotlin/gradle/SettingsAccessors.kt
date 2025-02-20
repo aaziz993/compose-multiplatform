@@ -10,7 +10,7 @@ internal fun Settings.execute(cmd: String): String = providers.exec {
 
 private const val PROJECT_EXTRA_PROPERTIES = "org.jetbrains.amper.gradle.ext.projectExtraProperties"
 
-internal var Settings.amperProjectExtraProperties: ProjectProperties
+internal var Settings.projectProperties: ProjectProperties
     get() = extraProperties[PROJECT_EXTRA_PROPERTIES] as ProjectProperties
     set(value) {
         extraProperties[PROJECT_EXTRA_PROPERTIES] = value

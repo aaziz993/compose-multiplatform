@@ -3,7 +3,7 @@
 package plugin.settings
 
 import gradle.moduleProperties
-import gradle.amperProjectExtraProperties
+import gradle.projectProperties
 import gradle.decodeFromAny
 import gradle.deepMerge
 import gradle.encodeToAny
@@ -16,6 +16,7 @@ import gradle.trySetSystemProperty
 import javax.xml.stream.XMLEventFactory
 import javax.xml.stream.XMLInputFactory
 import javax.xml.stream.XMLOutputFactory
+import kotlin.reflect.jvm.jvmName
 import kotlinx.serialization.json.Json
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -87,7 +88,7 @@ public class SettingsPlugin : Plugin<Settings> {
     private fun Settings.setupProject() {
         loadProjectProperties()
 
-        amperProjectExtraProperties.pluginManagement.let { pluginManagement ->
+        projectProperties.pluginManagement.let { pluginManagement ->
             pluginManagement {
                 repositories {
                     mavenCentral()
@@ -100,11 +101,11 @@ public class SettingsPlugin : Plugin<Settings> {
         }
 
         // Apply plugins.
-        DevelocityPluginPart(this)
-        ToolchainManagementPluginPart(this)
-        GitHooksluginPart(this)
+        plugins.apply(DevelocityPluginPart::class.java)
+        plugins.apply(ToolchainManagementPluginPart::class.java)
+        plugins.apply(GitHooksluginPart::class.java)
 
-        amperProjectExtraProperties.dependencyResolutionManagement?.let { dependencyResolutionManagement ->
+        projectProperties.dependencyResolutionManagement?.let { dependencyResolutionManagement ->
             dependencyResolutionManagement {
                 repositories {
                     addDefaultAmperRepositoriesForDependencies()
@@ -124,13 +125,13 @@ public class SettingsPlugin : Plugin<Settings> {
             }
         }
 
-        amperProjectExtraProperties.modules?.forEach(::include)
+        projectProperties.modules?.forEach(::include)
     }
 
     private fun Settings.loadProjectProperties() {
         val projectSettings = yaml.load<Map<String, *>>(rootDir.resolve("project.yaml").readText())
 
-        amperProjectExtraProperties = json
+        projectProperties = json
             .decodeFromAny<ProjectProperties>(projectSettings).also {
                 println("Apply project.yaml to project '${rootProject.name.uppercase()}':")
                 println(logYaml.dump(Json.Default.encodeToAny(it)))
@@ -216,16 +217,16 @@ public class SettingsPlugin : Plugin<Settings> {
  */
 private fun adjustXmlFactories() {
     trySetSystemProperty(
-            XMLInputFactory::class.qualifiedName!!,
-            "com.sun.xml.internal.stream.XMLInputFactoryImpl",
+        XMLInputFactory::class.qualifiedName!!,
+        "com.sun.xml.internal.stream.XMLInputFactoryImpl",
     )
     trySetSystemProperty(
-            XMLOutputFactory::class.qualifiedName!!,
-            "com.sun.xml.internal.stream.XMLOutputFactoryImpl",
+        XMLOutputFactory::class.qualifiedName!!,
+        "com.sun.xml.internal.stream.XMLOutputFactoryImpl",
     )
     trySetSystemProperty(
-            XMLEventFactory::class.qualifiedName!!,
-            "com.sun.xml.internal.stream.events.XMLEventFactoryImpl",
+        XMLEventFactory::class.qualifiedName!!,
+        "com.sun.xml.internal.stream.events.XMLEventFactoryImpl",
     )
 }
 
@@ -252,7 +253,7 @@ private fun RepositoryHandler.addDefaultAmperRepositoriesForDependencies() {
     maven("https://oss.sonatype.org/content/repositories/snapshots")
 
     // Apply repositories from project properties.
-    amperProjectExtraProperties.dependencyResolutionManagement?.repositories?.let { repositories ->
+    projectProperties.dependencyResolutionManagement?.repositories?.let { repositories ->
         repositories.forEach { repository ->
             maven(repository)
         }

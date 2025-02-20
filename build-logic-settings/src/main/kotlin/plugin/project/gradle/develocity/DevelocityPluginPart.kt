@@ -1,6 +1,6 @@
 package plugin.project.gradle.develocity
 
-import gradle.amperProjectExtraProperties
+import gradle.projectProperties
 import gradle.gitBranchName
 import gradle.gitCommitId
 import gradle.gitStatus
@@ -12,35 +12,38 @@ import gradle.plugins
 import gradle.teamCityBuildId
 import gradle.teamCityBuildTypeId
 import java.net.URLEncoder
+import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
 import org.gradle.kotlin.dsl.develocity
+import plugin.project.gradle.develocity.model.DevelocitySettings
 
-internal class DevelocityPluginPart(private val settings: Settings) {
+internal class DevelocityPluginPart : Plugin<Settings> {
 
-    private val develocity by lazy {
-        settings.amperProjectExtraProperties.settings.gradle.develocity
+    override fun apply(target: Settings) {
+        with(target) {
+            projectProperties.settings.gradle.develocity
+                .takeIf(DevelocitySettings::enabled)?.let { develocity ->
+
+                    if (develocity.enabled) {
+                        // Gives the data to speed up your build, improve build reliability and accelerate build debugging.
+                        plugins.apply(settings.libs.plugins.plugin("develocity").id)
+
+                        // Enhances published build scans by adding a set of tags, links and custom values that have proven to be useful for many projects building with Develocity.
+                        plugins.apply(settings.libs.plugins.plugin("develocityCommonCustomUserData").id)
+
+                        applySettings()
+                    }
+                }
+        }
     }
 
-    val needToApply: Boolean by lazy { develocity.enabled }
-
-    init {
-        // Gives the data to speed up your build, improve build reliability and accelerate build debugging.
-        settings.plugins.apply(settings.libs.plugins.plugin("develocity").id)
-
-        // Enhances published build scans by adding a set of tags, links and custom values that have proven to be useful for many projects building with Develocity.
-        settings.plugins.apply(settings.libs.plugins.plugin("develocityCommonCustomUserData").id)
-
-        applySettings()
-    }
-
-    fun applySettings() = with(settings) {
+    private fun Settings.applySettings() {
         configureDevelocityConfiguration()
         enrichTeamCityData()
         enrichGitData()
-
     }
 
-    private fun Settings.enrichTeamCityData() = with(settings) {
+    private fun Settings.enrichTeamCityData() {
         val teamCityUrl = providers.gradleProperty("team-city.url").orNull
 
         if (teamCityUrl == null) {
@@ -50,9 +53,6 @@ internal class DevelocityPluginPart(private val settings: Settings) {
         gradle.projectsEvaluated {
             if (isCI) {
                 develocity {
-                    val buildTypeId = "teamcity.buildType.id"
-                    val buildId = "teamcity.build.id"
-
                     rootProject.teamCityBuildId?.let { teamCityBuildId ->
                         rootProject.teamCityBuildTypeId?.let { teamCityBuildTypeId ->
                             val teamCityBuildNumber = URLEncoder.encode(teamCityBuildId, "UTF-8")
@@ -70,8 +70,8 @@ internal class DevelocityPluginPart(private val settings: Settings) {
         }
     }
 
-    private fun Settings.enrichGitData() = with(settings) {
-        this@DevelocityPluginPart.develocity.git?.let { git ->
+    private fun Settings.enrichGitData() = settings.projectProperties.settings.gradle.develocity.let { develocity ->
+        develocity.git?.let { git ->
             gradle.projectsEvaluated {
                 if (!isCI && !git.skipTags) {
                     develocity {

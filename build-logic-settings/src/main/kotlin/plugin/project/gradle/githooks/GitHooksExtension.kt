@@ -1,6 +1,6 @@
 package plugin.project.gradle.githooks
 
-import gradle.amperProjectExtraProperties
+import gradle.projectProperties
 import gradle.trySet
 import java.net.URI
 import org.danilopianini.gradle.git.hooks.GradleGitHooksPlugin
@@ -10,7 +10,7 @@ import org.gradle.kotlin.dsl.withType
 
 internal fun Settings.configureGitHooksExtension() =
     plugins.withType<GradleGitHooksPlugin> {
-        amperProjectExtraProperties.settings.gradle.gitHooks.let { gitHooks ->
+        projectProperties.settings.gradle.gitHooks.let { gitHooks ->
             gitHooks {
                 gitHooks.hooks?.forEach { name, script ->
                     hook(name) {

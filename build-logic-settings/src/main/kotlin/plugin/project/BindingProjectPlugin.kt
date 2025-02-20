@@ -47,7 +47,7 @@ internal class BindingProjectPlugin : Plugin<Project> {
 
     override fun apply(project: Project) = with(SLF4JProblemReporterContext()) {
         // Find applied parts. Preserve order!
-        val registeredParts = listOf<BindingPluginPart>(
+        val registeredParts = listOf(
             DoctorPluginPart(project),
             BuildConfigPluginPart(project),
             SpotlessPluginPart(project),

@@ -1,7 +1,7 @@
 package plugin.project.gradle.develocity
 
 import com.gradle.develocity.agent.gradle.DevelocityPlugin
-import gradle.amperProjectExtraProperties
+import gradle.projectProperties
 import gradle.isCI
 import gradle.tryAssign
 import java.util.*
@@ -13,7 +13,7 @@ import plugin.project.gradle.develocity.model.BuildScanConfiguration
 @Suppress("UnstableApiUsage")
 internal fun Settings.configureDevelocityConfiguration() =
     plugins.withType<DevelocityPlugin> {
-        amperProjectExtraProperties.settings.gradle.develocity.let { develocity ->
+        projectProperties.settings.gradle.develocity.let { develocity ->
 
             develocity {
                 develocity.buildScan?.let { buildScan ->
@@ -43,7 +43,7 @@ internal fun Settings.configureDevelocityConfiguration() =
 
                                 // Check access key presence to avoid build cache errors on PR builds when access key is not present
                                 val accessKey = System.getenv().getOrElse("GRADLE_ENTERPRISE_ACCESS_KEY") {
-                                    amperProjectExtraProperties.settings.gradle.gradleEnterpriseAccessKey
+                                    projectProperties.settings.gradle.gradleEnterpriseAccessKey
                                 }
                                 isPush = remoteCache.isPush == true && accessKey != null
                             }

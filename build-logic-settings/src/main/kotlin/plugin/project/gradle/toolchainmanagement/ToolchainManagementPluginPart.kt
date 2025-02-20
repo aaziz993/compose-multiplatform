@@ -1,25 +1,28 @@
 package plugin.project.gradle.toolchainmanagement
 
-import gradle.amperProjectExtraProperties
+import gradle.projectProperties
 import gradle.id
 import gradle.libs
 import gradle.plugin
 import gradle.plugins
+import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
+import plugin.project.gradle.toolchainmanagement.model.ToolchainManagementSettings
 
-internal class ToolchainManagementPluginPart(private val settings: Settings) {
+internal class ToolchainManagementPluginPart : Plugin<Settings> {
 
-    val needToApply: Boolean by lazy {
-        settings.amperProjectExtraProperties.settings.gradle.toolchainManagement.enabled
+    override fun apply(target: Settings) {
+        with(target) {
+            projectProperties.settings.gradle.toolchainManagement
+                .takeIf(ToolchainManagementSettings::enabled)?.let { toolchainManagement ->
+                    plugins.apply(settings.libs.plugins.plugin("foojay-resolver-convention").id)
+
+                    applySettings()
+                }
+        }
     }
 
-   init {
-        settings.plugins.apply(settings.libs.plugins.plugin("foojay-resolver-convention").id)
-
-        applySettings()
-    }
-
-    fun applySettings() = with(settings) {
+    private fun Settings.applySettings() {
         configureToolchainManagement()
     }
 }
