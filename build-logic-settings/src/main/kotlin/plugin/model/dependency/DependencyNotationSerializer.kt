@@ -2,23 +2,34 @@ package plugin.model.dependency
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.descriptors.element
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
+import kotlinx.serialization.encoding.encodeStructure
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.boolean
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
-import kotlinx.serialization.serializer
 
-internal object DependencyNonationSerializer : KSerializer<DependencyNotation> {
+internal object DependencyNotationSerializer : KSerializer<DependencyNotation> {
 
     override val descriptor: SerialDescriptor
-        get() = String::class.serializer().descriptor
+        get() = buildClassSerialDescriptor("DependencyNotation") {
+            element<String>("notation")
+            element<Boolean>("compile")
+            element<String>("runtime")
+            element<String>("exported")
+        }
 
-    override fun serialize(encoder: Encoder, value: DependencyNotation) {
-        encoder.encodeString("${value.notation}:")
-    }
+    override fun serialize(encoder: Encoder, value: DependencyNotation) =
+        encoder.encodeStructure(descriptor) {
+            encodeStringElement(descriptor, 0, value.notation)
+            encodeBooleanElement(descriptor, 1, value.compile)
+            encodeBooleanElement(descriptor, 1, value.runtime)
+            encodeBooleanElement(descriptor, 1, value.exported)
+        }
 
     override fun deserialize(decoder: Decoder): DependencyNotation {
         val element = decoder.decodeSerializableValue(JsonElement.serializer())

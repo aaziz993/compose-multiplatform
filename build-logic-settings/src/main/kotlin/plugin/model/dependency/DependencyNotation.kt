@@ -11,7 +11,7 @@ import org.gradle.api.file.Directory
 import org.gradle.api.initialization.Settings
 import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
 
-@Serializable(with = DependencyNonationSerializer::class)
+@Serializable(with = DependencyNotationSerializer::class)
 internal data class DependencyNotation(
     val notation: String,
     val compile: Boolean = true,
