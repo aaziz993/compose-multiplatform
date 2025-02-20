@@ -1,8 +1,8 @@
-package plugin.project.ios.model
+package plugin.project.apple.model
 
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal data class IosSettings(
+internal data class AppleSettings(
     val teamId: String? = null,
 )

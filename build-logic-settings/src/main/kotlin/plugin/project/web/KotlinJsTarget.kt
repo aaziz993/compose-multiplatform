@@ -111,5 +111,5 @@ private fun org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackCssRule.
     test tryAssign config.test
     include tryAssign config.include
     exclude tryAssign config.exclude
-    config.validate?.run { validate() }
+    config.validate?.takeIf { it }.run { validate() }
 }

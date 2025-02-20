@@ -25,6 +25,7 @@ import org.jetbrains.compose.ComposeExtension
 import org.jetbrains.dokka.gradle.DokkaExtension
 import org.jetbrains.kotlin.allopen.gradle.AllOpenExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import org.jetbrains.kotlin.gradle.plugin.cocoapods.CocoapodsExtension
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsEnvSpec
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension
 import org.jetbrains.kotlin.gradle.targets.js.npm.NpmExtension
@@ -143,6 +144,12 @@ internal val Project.powerAssert: PowerAssertGradleExtension get() = the()
 
 internal fun Project.powerAssert(configure: PowerAssertGradleExtension.() -> Unit) =
     extensions.configure(configure)
+
+internal val Project.cocoapods: CocoapodsExtension get() = the()
+
+internal fun Project.cocoapods(configure: CocoapodsExtension.() -> Unit) =
+    extensions.configure(configure)
+
 
 internal val Project.compose: ComposeExtension get() = the()
 

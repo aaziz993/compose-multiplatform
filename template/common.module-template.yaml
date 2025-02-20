@@ -212,9 +212,6 @@ settings:
         linkerOpts:
           - -lsqlite3
 
-
-  ios:
-
   js:
     optIns:
       - kotlin.js.ExperimentalJsExport

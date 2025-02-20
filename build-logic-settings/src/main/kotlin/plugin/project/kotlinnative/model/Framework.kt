@@ -3,7 +3,7 @@ package plugin.project.kotlinnative.model
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal data class FrameworkSettings(
+internal data class Framework(
     override val baseName: String? = null,
     override val transitiveExport: Boolean? = null,
     override val debuggable: Boolean? = null,
