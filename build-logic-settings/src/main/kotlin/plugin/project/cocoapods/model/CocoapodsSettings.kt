@@ -26,5 +26,6 @@ internal data class CocoapodsSettings(
     override val publishDir: String? = null,
     override val specRepos: Set<String>? = null,
     override val pods: List<Pod>? = null,
+    override val podDependencies: List<CocoapodsExtension.CocoapodsDependency>? = null,
     val enabled: Boolean = true
 ) : CocoapodsExtension
