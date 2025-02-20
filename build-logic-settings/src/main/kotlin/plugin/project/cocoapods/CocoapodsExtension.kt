@@ -59,8 +59,7 @@ internal fun Project.configureCocoapodsExtension() =
                         ::moduleName trySet podDependency.moduleName
                         ::headers trySet podDependency.headers
                         ::version trySet podDependency.version
-                        source
-                        ::source trySet podDependency.source?.let(::file)?.let(CocoapodsExtension.CocoapodsDependency.PodLocation::Path)
+                        ::source trySet podDependency.source?.toPodLocation()
                         ::extraOpts trySet podDependency.extraOpts
                         ::packageName trySet podDependency.packageName
                         ::linkOnly trySet podDependency.linkOnly

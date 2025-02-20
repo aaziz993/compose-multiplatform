@@ -1,6 +1,12 @@
 package plugin.apple.cocoapods.model
 
+import java.net.URI
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonContentPolymorphicSerializer
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.jsonObject
+import org.gradle.api.Project
+import org.jetbrains.kotlin.gradle.plugin.cocoapods.CocoapodsExtension
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
 import plugin.project.cocoapods.model.Pod
 import plugin.project.kotlinnative.model.Framework
@@ -62,13 +68,13 @@ internal interface CocoapodsExtension {
      */
     val framework: Framework?
 
-    val ios: CocoapodsExtension.PodspecPlatformSettings?
+    val ios: PodspecPlatformSettings?
 
-    val osx: CocoapodsExtension.PodspecPlatformSettings?
+    val osx: PodspecPlatformSettings?
 
-    val tvos: CocoapodsExtension.PodspecPlatformSettings?
+    val tvos: PodspecPlatformSettings?
 
-    val watchos: CocoapodsExtension.PodspecPlatformSettings?
+    val watchos: PodspecPlatformSettings?
 
     /**
      * Configure custom Xcode Configurations to Native Build Types mapping
@@ -98,7 +104,7 @@ internal interface CocoapodsExtension {
         val moduleName: String? = null,
         val headers: String? = null,
         val version: String? = null,
-        val source: String?=null,
+        val source: PodLocation? = null,
         val extraOpts: List<String>? = null,
         val packageName: String? = null,
         /**
@@ -138,7 +144,50 @@ internal interface CocoapodsExtension {
 //            configure.execute(this)
 //        }
 
-    )
+    ) {
+
+        @Serializable(with = PodLocationSerializer::class)
+        sealed class PodLocation {
+
+            @Serializable
+            data class Path(
+                val dir: String
+            ) : PodLocation() {
+
+                context(Project)
+                override fun toPodLocation(): CocoapodsExtension.CocoapodsDependency.PodLocation =
+                    CocoapodsExtension.CocoapodsDependency.PodLocation.Path(file(dir))
+            }
+
+            @Serializable
+            data class Git(
+                val url: String,
+                val branch: String? = null,
+                val tag: String? = null,
+                val commit: String? = null
+            ) : PodLocation() {
+
+                context(Project)
+                override fun toPodLocation(): CocoapodsExtension.CocoapodsDependency.PodLocation =
+                    CocoapodsExtension.CocoapodsDependency.PodLocation.Git(
+                            URI(url),
+                            branch,
+                            commit,
+                    )
+            }
+
+            context(Project)
+            abstract fun toPodLocation(): org.jetbrains.kotlin.gradle.plugin.cocoapods.CocoapodsExtension.CocoapodsDependency.PodLocation
+        }
+
+        object PodLocationSerializer : JsonContentPolymorphicSerializer<PodLocation>(PodLocation::class) {
+
+            override fun selectDeserializer(element: JsonElement) = when {
+                element.jsonObject["dir"] != null -> PodLocation.Path.serializer()
+                else -> PodLocation.Git.serializer()
+            }
+        }
+    }
 
     //
     @Serializable
