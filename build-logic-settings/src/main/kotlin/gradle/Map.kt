@@ -2,6 +2,7 @@ package gradle
 
 import java.util.*
 
+@Suppress("UNCHECKED_CAST")
 internal infix fun Map<String, Any?>.deepMerge(source: Map<String, Any?>): Map<String, Any?> {
     val resultMap = toMutableMap()
     for (key in source.keys) {
@@ -17,9 +18,8 @@ internal infix fun Map<String, Any?>.deepMerge(source: Map<String, Any?>): Map<S
                 resultMap[key] = (resultMap[key] as Collection<*>) + (source[key] as Collection<*>)
             }
         }
-        else {
-            if (source[key] == null || (source[key] is String && (source[key] as String).isBlank())) continue
-            resultMap[key] = source[key] as Any
+        else if (source[key] != null) {
+            resultMap[key] = source[key]
         }
     }
     return resultMap
