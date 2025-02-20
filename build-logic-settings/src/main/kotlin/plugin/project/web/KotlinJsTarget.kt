@@ -9,9 +9,11 @@ import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.invoke
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.targets.js.NpmVersions
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 import plugin.project.web.model.BrowserSettings
+import plugin.project.web.model.KotlinWebpackOutput
 import plugin.project.web.node.model.NodeSettings
 
 @Suppress("UnstableApiUsage")
@@ -22,19 +24,13 @@ internal inline fun <reified T : KotlinJsTargetDsl> Project.configureKotlinJsTar
 
             web.browser.takeIf(BrowserSettings::enabled)?.let { browser ->
                 browser {
-                    val rootDirPath = rootDir.path
-                    val projectDirPath = projectDir.path
                     browser.webpackTask?.let { webpack ->
                         webpackTask {
                             ::mode trySet webpack.mode
                             inputFilesDirectory tryAssign webpack.inputFilesDirectory?.let(layout.projectDirectory::dir)
                             entryModuleName tryAssign webpack.entryModuleName
                             esModules tryAssign webpack.esModules
-                            webpack.output?.let { output ->
-                                this@webpackTask.output::library trySet output.library
-                                this@webpackTask.output::libraryTarget trySet output.libraryTarget
-                                this@webpackTask.output::globalObject trySet output.globalObject
-                            }
+                            webpack.output?.let(output::configureFrom)
                             outputDirectory tryAssign webpack.outputDirectory?.let(layout.projectDirectory::dir)
                             mainOutputFileName tryAssign webpack.mainOutputFileName
                             ::debug trySet webpack.debug
@@ -49,41 +45,38 @@ internal inline fun <reified T : KotlinJsTargetDsl> Project.configureKotlinJsTar
                         }
                     }
 
-                    commonWebpackConfig {
-//                        val webpackConfig = KotlinWebpackConfig()
-
-                        npmProjectDir tryAssign webpackConfig.npmProjectDir?.let(::file)
-                        ::mode trySet webpackConfig.mode
-                        ::entry trySet webpackConfig.entry?.let(::file)
-                        output tryAssign webpackConfig.output
-                        ::outputPath trySet webpackConfig.outputPath?.let(::file)
-                        ::outputFileName trySet webpackConfig.outputFileName
-                        ::configDirectory trySet webpackConfig.configDirectory?.let(::file)
-                        ::reportEvaluatedConfigFile trySet webpackConfig.reportEvaluatedConfigFile?.let(::file)
-                        devServer tryAssign webpackConfig.devServer
-                        ::watchOptions trySet webpackConfig.watchOptions
-                        ::experiments trySet webpackConfig.experiments
-                        ::rules tryAssign webpackConfig.rules
-                        ::devtool trySet webpackConfig.devtool
-                        ::showProgress trySet webpackConfig.showProgress
-                        ::optimization trySet webpackConfig.optimization
-                        ::sourceMaps trySet webpackConfig.sourceMaps
-                        ::export trySet webpackConfig.export
-                        ::progressReporter trySet webpackConfig.progressReporter
-                        ::progressReporterPathFilter trySet webpackConfig.progressReporterPathFilter?.let(::file)
-                        ::resolveFromModulesFirst trySet webpackConfig.resolveFromModulesFirst
-
-                        outputFileName = "$moduleName.js"
-
-                        devServer = (devServer ?: KotlinWebpackConfig.DevServer()).apply {
-                            static = (static ?: mutableListOf()).apply {
-                                // Serve sources to debug inside browser
-                                add(rootDirPath)
-                                add(projectDirPath)
+                    browser.commonWebpackConfig?.let { commonWebpackConfig ->
+                        commonWebpackConfig {
+                            ::mode trySet commonWebpackConfig.mode
+                            ::entry trySet commonWebpackConfig.entry?.let(::file)
+                            commonWebpackConfig.output?.let {
+                                output?.configureFrom(it)
                             }
-                        }
-                        cssSupport {
-                            enabled = true
+                            ::outputPath trySet commonWebpackConfig.outputPath?.let(::file)
+                            ::outputFileName trySet commonWebpackConfig.outputFileName
+                            ::configDirectory trySet commonWebpackConfig.configDirectory?.let(::file)
+                            ::reportEvaluatedConfigFile trySet commonWebpackConfig.reportEvaluatedConfigFile?.let(::file)
+                            ::devServer trySet commonWebpackConfig.devServer?.toDevServer()
+                            ::watchOptions trySet commonWebpackConfig.watchOptions?.toWatchOptions()
+                            ::experiments trySet commonWebpackConfig.experiments?.toMutableSet()
+                            ::devtool trySet commonWebpackConfig.devtool
+                            ::showProgress trySet commonWebpackConfig.showProgress
+                            ::optimization trySet commonWebpackConfig.optimization
+                            ::sourceMaps trySet commonWebpackConfig.sourceMaps
+                            ::export trySet commonWebpackConfig.export
+                            ::progressReporter trySet commonWebpackConfig.progressReporter
+                            ::progressReporterPathFilter trySet commonWebpackConfig.progressReporterPathFilter?.let(::file)
+                            ::resolveFromModulesFirst trySet commonWebpackConfig.resolveFromModulesFirst
+                            commonWebpackConfig.cssSupport?.let { cssSupport ->
+                                cssSupport {
+                                    enabled tryAssign cssSupport.enabled
+                                    test tryAssign cssSupport.test
+                                    include tryAssign cssSupport.include
+                                    exclude tryAssign cssSupport.exclude
+                                    cssSupport.validate?.run { validate() }
+//
+                                }
+                            }
                         }
                     }
                 }
@@ -100,3 +93,11 @@ internal inline fun <reified T : KotlinJsTargetDsl> Project.configureKotlinJsTar
             }
         }
     }
+
+private fun org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackOutput.configureFrom(
+    config: KotlinWebpackOutput
+) {
+    ::library trySet config.library
+    ::libraryTarget trySet config.libraryTarget
+    ::globalObject trySet config.globalObject
+}
