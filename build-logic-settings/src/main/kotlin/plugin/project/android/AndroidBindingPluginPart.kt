@@ -5,17 +5,18 @@ package plugin.project.android
 import gradle.kotlin
 import gradle.moduleProperties
 import org.gradle.api.Project
-import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import plugin.project.BindingPluginPart
-import plugin.project.model.android
-import plugin.project.model.hasAndroid
+import plugin.project.model.TargetType
+import plugin.project.model.add
+import plugin.project.model.contains
+import plugin.project.model.isDescendantOf
 
 /**
  * Plugin logic, bind to specific module, when only default target is available.
  */
 internal class AndroidBindingPluginPart(override val project: Project) : BindingPluginPart {
 
-    override val needToApply by lazy { project.moduleProperties.targets.hasAndroid }
+    override val needToApply by lazy { TargetType.ANDROID in project.moduleProperties.targets }
 
     /**
      * Entry point for this plugin part.
@@ -29,7 +30,9 @@ internal class AndroidBindingPluginPart(override val project: Project) : Binding
             plugins.apply("com.android.library")
         }
 
-        moduleProperties.targets.android.forEach { target -> target.applyTo(kotlin) }
+        moduleProperties.targets
+            .filter { target -> target.type.isDescendantOf(TargetType.ANDROID) }
+            .forEach { target->target.add() }
 
 //        adjustCompilations()
 //        applySettings()

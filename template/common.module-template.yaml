@@ -23,50 +23,50 @@ dependencies@android:
 
 settings:
   gradle:
-      # Can format <antlr | c | c# | c++ | css | flow | graphql | groovy | html | java | javascript | json | jsx | kotlin | less | license headers | markdown | objective-c | protobuf | python | scala | scss | shell | sql | typeScript | vue | yaml | anything> using <gradle | maven | sbt | anything>.
-      spotless:
-        enabled: true
-        kotlinGradle:
-          ktlint:
-            editorConfigPath: ../.editorconfig
+    # Can format <antlr | c | c# | c++ | css | flow | graphql | groovy | html | java | javascript | json | jsx | kotlin | less | license headers | markdown | objective-c | protobuf | python | scala | scss | shell | sql | typeScript | vue | yaml | anything> using <gradle | maven | sbt | anything>.
+    spotless:
+      enabled: true
+      kotlinGradle:
+        ktlint:
+          editorConfigPath: ../.editorconfig
 
-      # Set of solutions for collecting test coverage of Kotlin code compiled for JVM and Android platforms.
-      kover:
-        enabled: true
-        useJacoco: true
-        reports:
-          total:
-            html:
-              title: Generate coverage report
-              htmlDir: build/reports/kover
-              onCheck: true
-              charset: UTF8
-            xml:
-              xmlFile: build/reports/kover/report.xml
-              onCheck: true
+    # Set of solutions for collecting test coverage of Kotlin code compiled for JVM and Android platforms.
+    kover:
+      enabled: true
+      useJacoco: true
+      reports:
+        total:
+          html:
+            title: Generate coverage report
+            htmlDir: build/reports/kover
+            onCheck: true
+            charset: UTF8
+          xml:
+            xmlFile: build/reports/kover/report.xml
+            onCheck: true
 
-      # Help developers deliver high-quality, efficient code standards that benefit the entire team or organization.
-      sonar:
-        enabled: true
-        properties:
-          sonar.host.url: https://sonarcloud.io
-          sonar.organization: aaziz993
-          sonar.projectKey: aaziz993_compose-multiplatform
-          sonar.coverage.jacoco.xmlReportPaths: build/reports/kover/report.xml
-          sonar.androidLint.reportPaths: build/reports/lint-results.xml
+    # Help developers deliver high-quality, efficient code standards that benefit the entire team or organization.
+    sonar:
+      enabled: true
+      properties:
+        sonar.host.url: https://sonarcloud.io
+        sonar.organization: aaziz993
+        sonar.projectKey: aaziz993_compose-multiplatform
+        sonar.coverage.jacoco.xmlReportPaths: build/reports/kover/report.xml
+        sonar.androidLint.reportPaths: build/reports/lint-results.xml
 
-      # api documentation engine for Kotlin.
-      dokka:
-        enabled: true
-        sourceSets: [ Module.md ]
+    # api documentation engine for Kotlin.
+    dokka:
+      enabled: true
+      sourceSets: [ Module.md ]
 
-      # allows dumping binary API of a JVM part of a Kotlin library that is public in the sense of Kotlin visibilities and ensures that the public binary API wasn't changed in a way that makes this change binary incompatible.
-      apiValidation:
+    # allows dumping binary API of a JVM part of a Kotlin library that is public in the sense of Kotlin visibilities and ensures that the public binary API wasn't changed in a way that makes this change binary incompatible.
+    apiValidation:
+      enabled: true
+      apiDumpDirectory: api-validation
+      klib:
         enabled: true
-        apiDumpDirectory: api-validation
-        klib:
-          enabled: true
-          strictValidation: true
+        strictValidation: true
 
   kotlin:
     #    apiVersion: 2.1.10
@@ -195,15 +195,22 @@ settings:
   android:
 
   native:
-    freeCompilerArgs:
-      - -Xexport-kdoc
-      - -Xallocator=custom
-      - -XXLanguage+ImplicitSignedToUnsignedIntegerConversion
-      - -Xadd-light-debug=enable
-    optIns:
-      - kotlin.experimental.ExperimentalObjCName
-      - kotlinx.cinterop.ExperimentalForeignApi
-      - kotlinx.cinterop.BetaInteropApi
+    binaries:
+      framework:
+        freeCompilerArgs:
+          - -Xexport-kdoc
+          - -Xallocator=custom
+          - -XXLanguage+ImplicitSignedToUnsignedIntegerConversion
+          - -Xadd-light-debug=enable
+        optIns:
+          - kotlin.experimental.ExperimentalObjCName
+          - kotlinx.cinterop.ExperimentalForeignApi
+          - kotlinx.cinterop.BetaInteropApi
+
+        # add it to avoid sqllite3 issues in iOS. Required when using NativeSQLiteDriver
+        linkerOpts:
+          - -lsqlite3
+
 
   ios:
 

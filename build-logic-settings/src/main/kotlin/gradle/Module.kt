@@ -3,7 +3,6 @@
 package gradle
 
 import org.gradle.api.Project
-import org.jetbrains.amper.frontend.AmperModule
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import plugin.project.model.ModuleProperties
 
@@ -14,7 +13,4 @@ internal var Project.moduleProperties: ModuleProperties
     set(value) {
         extraProperties[MODULE_EXTRA_PROPERTIES] = value
     }
-
-internal val AmperModule.hasLeafSourceSets
-    get() = rootFragment.platforms.size > 1
 

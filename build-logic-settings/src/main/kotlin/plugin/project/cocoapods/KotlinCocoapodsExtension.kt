@@ -1,4 +1,4 @@
-package plugin.project.apple.cocoapods
+package plugin.project.cocoapods
 
 import gradle.libs
 import org.gradle.api.Project

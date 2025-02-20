@@ -1,18 +1,5 @@
 package plugin.project.apple
 
-import org.gradle.api.Project
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
-
-internal fun Project.configureIosKotlinNativeTarget(target: KotlinNativeTarget) =
-    target.apply {
-        binaries.framework {
-            baseName = this@configureIosKotlinNativeTarget.name
-            isStatic = true
-            // Add it to avoid sqllite3 issues in iOS. Required when using NativeSQLiteDriver
-            linkerOpts.add("-lsqlite3")
-        }
-    }
-
 //public fun Project.registerAssembleXCFramework(): TaskProvider<Task> = tasks.register("assembleXCFramework") {
 //    group = "build"
 //    dependsOn(
