@@ -90,43 +90,35 @@ internal interface CocoapodsExtension {
      */
     val pods: List<Pod>?
 
-    //    data class CocoapodsDependency(
-//        private val name: String,
-//         val moduleName: String
-//    )
-//    {
-//
-//        val headers: String?
-//
-//        val version: String?
-//
-//        val source: PodLocation?
-//
-//        val extraOpts: List<String>?
-//
-//        val packageName: String?
-//
-//        /**
-//         * Designates that the pod will be used only for dynamic framework linking and not for the cinterops. Code from it won't be
-//         * accessible for referencing from Kotlin but its native symbols will be visible while linking the framework.
-//         *
-//         * For static frameworks adding this flag is equivalent to removing the pod dependency entirely (because pods are not used for
-//         * static framework linking).
-//         */
-//        val linkOnly: Boolean?
-//
-//        /**
-//         * Contains a list of dependencies to other pods. This list will be used while building an interop Kotlin-binding for the pod.
-//         *
-//         * @see useInteropBindingFrom
-//         */
-//        val interopBindingDependencies: MutableList<String>?
-//
-//        /**
-//         * Path to local pod
-//         */
-//        val podspecDirectory: String?
-//
+    val podDependencies: List<CocoapodsDependency>?
+
+    @Serializable
+    data class CocoapodsDependency(
+        val name: String,
+        val moduleName: String? = null,
+        val headers: String? = null,
+        val version: String? = null,
+        val source: String?=null,
+        val extraOpts: List<String>? = null,
+        val packageName: String? = null,
+        /**
+         * Designates that the pod will be used only for dynamic framework linking and not for the cinterops. Code from it won't be
+         * accessible for referencing from Kotlin but its native symbols will be visible while linking the framework.
+         *
+         * For static frameworks adding this flag is equivalent to removing the pod dependency entirely (because pods are not used for
+         * static framework linking).
+         */
+        val linkOnly: Boolean? = null,
+        /**
+         * Contains a list of dependencies to other pods. This list will be used while building an interop Kotlin-binding for the pod.
+         *
+         * @see useInteropBindingFrom
+         */
+        val interopBindingDependencies: List<String>? = null,
+        /**
+         * Path to local pod
+         */
+        val podspecDirectory: String? = null,
 //        /**
 //         * Configure pod from git repository. The podspec file is expected to be in the repository root.
 //         */
@@ -145,9 +137,10 @@ internal interface CocoapodsExtension {
 //        fun git(url: String, configure: Action<Git>) = git(url) {
 //            configure.execute(this)
 //        }
-//
-//    }
-//
+
+    )
+
+    //
     @Serializable
     data class PodspecPlatformSettings(
         val deploymentTarget: String? = null

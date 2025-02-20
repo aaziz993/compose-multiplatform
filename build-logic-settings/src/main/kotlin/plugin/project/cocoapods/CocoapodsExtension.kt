@@ -8,6 +8,7 @@ import gradle.trySet
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.invoke
 import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.plugin.cocoapods.CocoapodsExtension
 import org.jetbrains.kotlin.gradle.plugin.cocoapods.KotlinCocoapodsPlugin
 import plugin.project.kotlinnative.configureFrom
 
@@ -50,6 +51,22 @@ internal fun Project.configureCocoapodsExtension() =
                         pod.headers,
                         pod.linkOnly,
                     )
+                }
+
+
+                cocoapods.podDependencies?.forEach { podDependency ->
+                    pod(name) {
+                        ::moduleName trySet podDependency.moduleName
+                        ::headers trySet podDependency.headers
+                        ::version trySet podDependency.version
+                        source
+                        ::source trySet podDependency.source?.let(::file)?.let(CocoapodsExtension.CocoapodsDependency.PodLocation::Path)
+                        ::extraOpts trySet podDependency.extraOpts
+                        ::packageName trySet podDependency.packageName
+                        ::linkOnly trySet podDependency.linkOnly
+                        podDependency.interopBindingDependencies?.let(interopBindingDependencies::addAll)
+                        podDependency.podspecDirectory?.let(::path)
+                    }
                 }
 
                 cocoapods.ios?.let { _ios ->
