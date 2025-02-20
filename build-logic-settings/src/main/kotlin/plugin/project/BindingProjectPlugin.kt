@@ -14,6 +14,7 @@ import org.jetbrains.amper.frontend.schema.Settings
 import org.jetbrains.amper.gradle.SLF4JProblemReporterContext
 import plugin.project.android.AndroidBindingPluginPart
 import plugin.project.apple.AppleBindingPluginPart
+import plugin.project.cocoapods.CocoapodsPluginPart
 import plugin.project.compose.ComposePluginPart
 import plugin.project.gradle.apivalidation.ApiValidationPluginPart
 import plugin.project.gradle.buildconfig.BuildConfigPluginPart
@@ -69,6 +70,7 @@ internal class BindingProjectPlugin : Plugin<Project> {
             JsBindingPluginPart(project),
             WasmBindingPluginPart(project),
             JavaBindingPluginPart(project),
+            CocoapodsPluginPart(project),
             AppleBindingPluginPart(project),
             KMPPBindingPluginPart(project),
             ComposePluginPart(project),
