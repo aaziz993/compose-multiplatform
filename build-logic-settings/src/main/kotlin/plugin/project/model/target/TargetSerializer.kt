@@ -12,6 +12,7 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.serializer
 import net.pearx.kasechange.toScreamingSnakeCase
+import net.pearx.kasechange.universalWordSplitter
 
 internal object TargetSerializer : KSerializer<Target> {
 
@@ -21,21 +22,20 @@ internal object TargetSerializer : KSerializer<Target> {
             element<String?>("name")
         }
 
-    override fun serialize(encoder: Encoder, value: Target) {
+    override fun serialize(encoder: Encoder, value: Target) =
         encoder.encodeStructure(descriptor) {
             encodeSerializableElement(descriptor, 0, TargetType::class.serializer(), value.type)
             encodeNullableSerializableElement(descriptor, 1, String::class.serializer(), value.targetName)
         }
-    }
 
     override fun deserialize(decoder: Decoder): Target {
         val element = decoder.decodeSerializableValue(JsonElement.serializer())
         return when (element) {
             is JsonObject -> {
-                Target(TargetType.valueOf(element["type"]!!.jsonPrimitive.content.toScreamingSnakeCase()), element["targetName"]!!.jsonPrimitive.content)
+                Target(TargetType.valueOf(element["type"]!!.jsonPrimitive.content.toScreamingSnakeCase(universalWordSplitter(false))), element["targetName"]!!.jsonPrimitive.content)
             }
 
-            else -> Target(TargetType.valueOf(element.jsonPrimitive.content.toScreamingSnakeCase()))
+            else -> Target(TargetType.valueOf(element.jsonPrimitive.content.toScreamingSnakeCase(universalWordSplitter(false))))
         }
     }
 }

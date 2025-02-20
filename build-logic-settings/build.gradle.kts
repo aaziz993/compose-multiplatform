@@ -232,7 +232,7 @@ dependencies {
     implementation(libs.plugins.allopen.toDep())
     // convert strings between various case formats
     implementation(libs.kasechange)
-    // serialization
+    // compiler plugin, that generates visitor code for serializable classes, runtime library with core serialization API and support libraries with various serialization formats.
     implementation(libs.plugins.kotlin.serialization.toDep())
     implementation(libs.kotlinx.serialization.json)
     // multiplatform

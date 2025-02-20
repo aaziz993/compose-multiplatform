@@ -148,7 +148,7 @@ flow-ext = "1.0.0"
 dataframe = "1727"
 # kandy is an open-source plotting library for Kotlin that provides a powerful and flexible DSL for creating graphs and utilizes various popular engines.
 kandy = "0.7.1-dev-54"
-# serialization
+# compiler plugin, that generates visitor code for serializable classes, runtime library with core serialization API and support libraries with various serialization formats.
 kotlinx-serialization = "1.8.0"
 kotlinx-serialization-csv = "0.0.18"
 kotlinx-serialization-smile-core = "0.2.0"
@@ -469,6 +469,7 @@ kandy = { module = "org.jetbrains.kotlinx:kandy-api", version.ref = "kandy" }
 # dataframe for data pipeline processing
 dataframe = { module = "org.jetbrains.kotlinx:dataframe", version.ref = "dataframe" }
 dataframe-jdbc = { module = "org.jetbrains.kotlinx:dataframe-jdbc", version.ref = "dataframe" }
+# compiler plugin, that generates visitor code for serializable classes, runtime library with core serialization API and support libraries with various serialization formats.
 # official serialization
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 kotlinx-serialization-csv = { module = "app.softwork:kotlinx-serialization-csv", version.ref = "kotlinx-serialization-csv" }

@@ -134,6 +134,7 @@ settings:
       myAnnotations:
         - data.type.annotation.NoArg
 
+    # compiler plugin, that generates visitor code for serializable classes, runtime library with core serialization API and support libraries with various serialization formats.
     serialization:
       enabled: true
       version: 1.8.0
