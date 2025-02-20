@@ -37,6 +37,9 @@ import plugin.project.kotlin.serialization.SerializationPluginPart
 import plugin.project.kotlin.sqldelight.SqlDelightPluginPart
 import plugin.project.web.WasmBindingPluginPart
 import plugin.project.web.js.JsBindingPluginPart
+import plugin.project.web.node.configureNodeJsRootExtension
+import plugin.project.web.npm.configureNpmExtension
+import plugin.project.web.yarn.configureYarnRootExtension
 
 /**
  * Gradle project plugin entry point.
@@ -100,7 +103,7 @@ internal class BindingProjectPlugin : Plugin<Project> {
                 )
             }
         }
-//        applyRepositoryAttributes(linkedModule, project)
+//        applyRepositoryAttributes(project)
 //        applyPublicationAttributes(linkedModule, project)
 //        applyTest(linkedModule, project)
 
@@ -109,11 +112,17 @@ internal class BindingProjectPlugin : Plugin<Project> {
         }
     }
 
-//    private fun applyRepositoryAttributes(
-//        project: Project
-//    ) = with(project){
-//        repositories.configure(module.parts.find<RepositoriesModulePart>())
-//    }
+    private fun Project.configureWeb() {
+        configureNodeJsRootExtension()
+        configureNpmExtension()
+        configureYarnRootExtension()
+    }
+
+    private fun applyRepositoryAttributes(
+        project: Project
+    ) = with(project) {
+        repositories.mavenCentral()
+    }
 
 //    private fun applyPublicationAttributes(
 //        module: AmperModuleWrapper,

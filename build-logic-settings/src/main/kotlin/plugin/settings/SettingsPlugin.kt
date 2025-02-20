@@ -11,12 +11,12 @@ import gradle.libs
 import gradle.plugin
 import gradle.pluginAsDependency
 import gradle.plugins
+import gradle.settings
 import gradle.setupDynamicClasspath
 import gradle.trySetSystemProperty
 import javax.xml.stream.XMLEventFactory
 import javax.xml.stream.XMLInputFactory
 import javax.xml.stream.XMLOutputFactory
-import kotlin.reflect.jvm.jvmName
 import kotlinx.serialization.json.Json
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -75,8 +75,8 @@ public class SettingsPlugin : Plugin<Settings> {
                 settings.setupPluginsClasspath()
 
                 // at this point all projects have been created by settings.gradle.kts, but none were evaluated yet
-                settings.gradle.rootProject.subprojects {
-                    loadModuleProperties(this)
+                settings.gradle.rootProject.allprojects {
+                    configureProject()
                 }
 
                 settings.gradle.rootProject.repositories.mavenCentral()
@@ -139,7 +139,48 @@ public class SettingsPlugin : Plugin<Settings> {
     }
 
     @Suppress("UNCHECKED_CAST")
-    private fun loadModuleProperties(project: Project) {
+    private fun Settings.setupPluginsClasspath() {
+        with(libs) {
+            setupDynamicClasspath(
+                libs.plugins.plugin("kotlin-multiplatform").pluginAsDependency,
+                libs.plugins.plugin("android").pluginAsDependency,
+                libs.plugins.plugin("android-library").pluginAsDependency,
+                libs.plugins.plugin("android-application").pluginAsDependency,
+                libs.plugins.plugin("compose-multiplatform").pluginAsDependency,
+            ) {
+                addDefaultAmperRepositoriesForDependencies()
+            }
+        }
+    }
+
+    private fun Project.configureProject() {
+        loadModuleProperties()
+
+        // Enable Default Kotlin Hierarchy.
+        extraProperties.set("kotlin.mpp.applyDefaultHierarchyTemplate", "true")
+
+        // Apply Kotlin plugins.
+        plugins.apply(KotlinMultiplatformPluginWrapper::class.java)
+
+        plugins.apply(BindingProjectPlugin::class.java)
+
+        afterEvaluate {
+            // W/A for XML factories mess within apple plugin classpath.
+            val hasAndroidPlugin = plugins.hasPlugin("com.android.application") ||
+                plugins.hasPlugin("com.android.library")
+            if (hasAndroidPlugin) {
+                adjustXmlFactories()
+            }
+        }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    private fun Project.loadModuleProperties() {
+
+        if (!project.file("module.yaml").exists()) {
+            moduleProperties = ModuleProperties()
+            return
+        }
 
         fun tryTransform(config: MutableMap<String, Any?>) {
             config["aliases"] = (config["aliases"] as List<Map<String, List<String>>>?)?.map { alias ->
@@ -180,86 +221,46 @@ public class SettingsPlugin : Plugin<Settings> {
         }
     }
 
-    @Suppress("UNCHECKED_CAST")
-    private fun Settings.setupPluginsClasspath() {
-        with(libs) {
-            setupDynamicClasspath(
-                libs.plugins.plugin("kotlin-multiplatform").pluginAsDependency,
-                libs.plugins.plugin("android").pluginAsDependency,
-                libs.plugins.plugin("android-library").pluginAsDependency,
-                libs.plugins.plugin("android-application").pluginAsDependency,
-                libs.plugins.plugin("compose-multiplatform").pluginAsDependency,
-            ) {
-                addDefaultAmperRepositoriesForDependencies()
-            }
-        }
+    /**
+     * W/A for service loading conflict between apple plugin
+     * and android plugin.
+     */
+    private fun adjustXmlFactories() {
+        trySetSystemProperty(
+            XMLInputFactory::class.qualifiedName!!,
+            "com.sun.xml.internal.stream.XMLInputFactoryImpl",
+        )
+        trySetSystemProperty(
+            XMLOutputFactory::class.qualifiedName!!,
+            "com.sun.xml.internal.stream.XMLOutputFactoryImpl",
+        )
+        trySetSystemProperty(
+            XMLEventFactory::class.qualifiedName!!,
+            "com.sun.xml.internal.stream.events.XMLEventFactoryImpl",
+        )
     }
 
-    private fun configureProjectForAmper(project: Project) {
-        // Enable Default Kotlin Hierarchy.
-        project.extraProperties.set("kotlin.mpp.applyDefaultHierarchyTemplate", "true")
+    context(Settings)
+    private fun RepositoryHandler.addDefaultAmperRepositoriesForDependencies() {
+        mavenCentral()
+        // For the Android plugin and dependencies
+        google()
+        // For other Gradle plugins
+        gradlePluginPortal()
+        // For dev versions of kotlin
+        maven("https://maven.pkg.jetbrains.space/kotlin/p/kotlin/dev")
+        // For dev versions of compose plugin and dependencies
+        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+        // For compose experimental builds
+        maven("https://packages.jetbrains.team/maven/p/firework/dev")
+        // Sonatype OSS Snapshot Repository
+        maven("https://oss.sonatype.org/content/repositories/snapshots")
 
-        // Apply Kotlin plugins.
-        project.plugins.apply(KotlinMultiplatformPluginWrapper::class.java)
-
-        project.plugins.apply(BindingProjectPlugin::class.java)
-
-        project.afterEvaluate {
-            // W/A for XML factories mess within apple plugin classpath.
-            val hasAndroidPlugin = plugins.hasPlugin("com.android.application") ||
-                plugins.hasPlugin("com.android.library")
-            if (hasAndroidPlugin) {
-                adjustXmlFactories()
+        // Apply repositories from project properties.
+        projectProperties.dependencyResolutionManagement?.repositories?.let { repositories ->
+            repositories.forEach { repository ->
+                maven(repository)
             }
-        }
-    }
-}
-
-/**
- * W/A for service loading conflict between apple plugin
- * and android plugin.
- */
-private fun adjustXmlFactories() {
-    trySetSystemProperty(
-        XMLInputFactory::class.qualifiedName!!,
-        "com.sun.xml.internal.stream.XMLInputFactoryImpl",
-    )
-    trySetSystemProperty(
-        XMLOutputFactory::class.qualifiedName!!,
-        "com.sun.xml.internal.stream.XMLOutputFactoryImpl",
-    )
-    trySetSystemProperty(
-        XMLEventFactory::class.qualifiedName!!,
-        "com.sun.xml.internal.stream.events.XMLEventFactoryImpl",
-    )
-}
-
-private fun Project.configureWeb() {
-    configureNodeJsRootExtension()
-    configureNpmExtension()
-    configureYarnRootExtension()
-}
-
-context(Settings)
-private fun RepositoryHandler.addDefaultAmperRepositoriesForDependencies() {
-    mavenCentral()
-    // For the Android plugin and dependencies
-    google()
-    // For other Gradle plugins
-    gradlePluginPortal()
-    // For dev versions of kotlin
-    maven("https://maven.pkg.jetbrains.space/kotlin/p/kotlin/dev")
-    // For dev versions of compose plugin and dependencies
-    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
-    // For compose experimental builds
-    maven("https://packages.jetbrains.team/maven/p/firework/dev")
-    // Sonatype OSS Snapshot Repository
-    maven("https://oss.sonatype.org/content/repositories/snapshots")
-
-    // Apply repositories from project properties.
-    projectProperties.dependencyResolutionManagement?.repositories?.let { repositories ->
-        repositories.forEach { repository ->
-            maven(repository)
         }
     }
 }

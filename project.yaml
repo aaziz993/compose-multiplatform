@@ -19,7 +19,6 @@ dependencyResolutionManagement:
       from: org.jetbrains.kotlin-wrappers:kotlin-wrappers-catalog:2025.2.6
 
 modules:
-#  - '' # this includes root project as module
   - android-app
   - ios-app
   - jvm-app

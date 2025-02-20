@@ -1,4 +1,4 @@
-package plugin.apple.cocoapods.model
+package plugin.project.cocoapods.model
 
 import java.net.URI
 import kotlinx.serialization.Serializable
@@ -8,7 +8,6 @@ import kotlinx.serialization.json.jsonObject
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.cocoapods.CocoapodsExtension
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
-import plugin.project.cocoapods.model.Pod
 import plugin.project.kotlinnative.model.Framework
 
 internal interface CocoapodsExtension {
@@ -177,7 +176,7 @@ internal interface CocoapodsExtension {
             }
 
             context(Project)
-            abstract fun toPodLocation(): org.jetbrains.kotlin.gradle.plugin.cocoapods.CocoapodsExtension.CocoapodsDependency.PodLocation
+            abstract fun toPodLocation(): CocoapodsExtension.CocoapodsDependency.PodLocation
         }
 
         object PodLocationSerializer : JsonContentPolymorphicSerializer<PodLocation>(PodLocation::class) {

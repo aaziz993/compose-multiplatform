@@ -2,7 +2,6 @@ package plugin.project.cocoapods.model
 
 import kotlinx.serialization.Serializable
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
-import plugin.apple.cocoapods.model.CocoapodsExtension
 import plugin.project.kotlinnative.model.Framework
 
 @Serializable
