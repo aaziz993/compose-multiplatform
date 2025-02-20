@@ -35,14 +35,23 @@ internal class DokkaPluginPart(override val project: Project) : BindingPluginPar
         applySettings()
     }
 
-    fun applySettings() = with(project) {
-        configureDokkaExtension()
+    fun applySettings() {
+        with(project) {
+            configureDokkaExtension()
 
-        if (dokka.versioning) {
-            val dokkaPlugin by configurations
+            if (dokka.versioning) {
+                val dokkaPlugin by configurations
 
-            dependencies {
-                dokkaPlugin(libs.dokka.versioning)
+                dependencies {
+                    dokkaPlugin(libs.dokka.versioning)
+                }
+            }
+
+            if (project == rootProject) {
+                configureDokkaMultiModuleTask()
+            }
+            else {
+                configureDokkaModuleTask()
             }
         }
     }
@@ -58,7 +67,6 @@ internal class DokkaPluginPart(override val project: Project) : BindingPluginPar
     @OptIn(InternalDokkaGradlePluginApi::class)
     private fun Project.configureDokkaMultiModuleTask() =
         dokka.task?.let { task ->
-            task as plugin.project.gradle.dokka.model.DokkaMultiModuleTask
             tasks.withType<DokkaMultiModuleTask> {
                 configureFrom(task)
                 task.includes?.let(includes::setFrom)

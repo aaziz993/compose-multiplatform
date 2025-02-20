@@ -13,7 +13,7 @@ internal fun Project.configureSqlDelightExtension() =
     plugins.withType<SqlDelightPlugin> {
         moduleProperties.settings.kotlin.sqldelight.let { sqldelight ->
             sqldelight {
-                sqldelight.databases.let { databases ->
+                sqldelight.databases?.let { databases ->
                     databases {
                         databases.forEach { database ->
                             //Note: Name of your Database and .sq file should be same

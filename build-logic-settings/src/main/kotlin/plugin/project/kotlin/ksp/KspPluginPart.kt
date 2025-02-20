@@ -11,7 +11,7 @@ import org.gradle.api.Project
 internal class KspPluginPart(override val project: Project) : BindingPluginPart {
 
     private val ksp by lazy {
-        project.moduleProperties.settings.kotlin.ksp2
+        project.moduleProperties.settings.kotlin.ksp
     }
 
     override val needToApply: Boolean by lazy {

@@ -6,26 +6,27 @@ import app.cash.sqldelight.core.decapitalize
 import gradle.all
 import gradle.moduleProperties
 import gradle.kotlin
+import gradle.trySet
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import org.jetbrains.kotlin.gradle.plugin.LanguageSettingsBuilder
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
+import plugin.project.kotlin.model.KotlinSettings
 
-//private fun LanguageSettingsBuilder.configureFromAmperSettings(settings: KotlinSettings) {
-//    languageVersion = settings.languageVersion.schemaValue
-//    apiVersion = settings.apiVersion.schemaValue
-//    progressiveMode = settings.progressiveMode
-//    settings.languageFeatures?.forEach { enableLanguageFeature(it.value.capitalized()) }
-//    settings.optIns?.forEach { optIn(it.value) }
-//}
+private fun LanguageSettingsBuilder.configureFromAmperSettings(settings: KotlinSettings) {
+    ::languageVersion trySet settings.languageVersion
+    ::apiVersion trySet settings.apiVersion
+    ::progressiveMode trySet settings.progressiveMode
+    settings.languageFeatures?.forEach(::enableLanguageFeature)
+    settings.optIns?.forEach(::optIn)
+}
 
 /**
  * Plugin logic, bind to specific module, when multiple targets are available.
  */
-internal class KMPPBindingPluginPart(override val project: Project) : BindingPluginPart, KMPEAware {
-
-    override val kotlinMPE: KotlinMultiplatformExtension = project.kotlin
+internal class KMPPBindingPluginPart(override val project: Project) : BindingPluginPart {
 
     override val needToApply = true
 
@@ -179,7 +180,7 @@ internal class KMPPBindingPluginPart(override val project: Project) : BindingPlu
         // Forth iteration - create source set groups from templates
 
         // Apply aliases
-        kotlinMPE.applyDefaultHierarchyTemplate {
+        kotlin.applyDefaultHierarchyTemplate {
             common {
                 moduleProperties.aliases.forEach { alias ->
                     group(alias.name) {
@@ -205,7 +206,7 @@ internal class KMPPBindingPluginPart(override val project: Project) : BindingPlu
         }
 
         // Flatten source sets source directories
-        kotlinMPE.sourceSets.all { sourceSet ->
+        kotlin.sourceSets.all { sourceSet ->
             val sourceSetNameParts = "^(.*?)(Main|Test|TestDebug)?$".toRegex().matchEntire(sourceSet.name)!!
 
             val (kotlinPrefixPart, resourcesPrefixPart) = sourceSetNameParts.groupValues[2].decapitalize().let {

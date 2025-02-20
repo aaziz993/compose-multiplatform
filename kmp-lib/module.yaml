@@ -1,6 +1,4 @@
-product:
-  type: lib
-  platforms: [ jvm, android, iosArm64, iosX64, iosSimulatorArm64, js, wasm ]
+targets: [ jvm, android, iosArm64, iosX64, iosSimulatorArm64, js, wasm ]
 
 apply:
   - ../template/common.module-template.yaml

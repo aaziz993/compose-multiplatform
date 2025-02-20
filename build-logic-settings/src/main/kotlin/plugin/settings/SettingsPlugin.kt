@@ -22,6 +22,7 @@ import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.api.initialization.Settings
 import org.gradle.kotlin.dsl.maven
+import org.jetbrains.amper.gradle.SLF4JProblemReporterContext
 import org.jetbrains.kotlin.gradle.plugin.KotlinMultiplatformPluginWrapper
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
@@ -64,18 +65,21 @@ public class SettingsPlugin : Plugin<Settings> {
     )
 
     override fun apply(settings: Settings) {
-        // Setup  settings.gradle.kts from project.yaml.
-        settings.setupProject()
+        with(SLF4JProblemReporterContext()) {
 
-        settings.gradle.projectsLoaded {
-            settings.setupPluginsClasspath()
+            // Setup  settings.gradle.kts from project.yaml.
+            settings.setupProject()
 
-            // at this point all projects have been created by settings.gradle.kts, but none were evaluated yet
-            settings.gradle.rootProject.subprojects {
-                loadModuleProperties(this)
+            settings.gradle.projectsLoaded {
+                settings.setupPluginsClasspath()
+
+                // at this point all projects have been created by settings.gradle.kts, but none were evaluated yet
+                settings.gradle.rootProject.subprojects {
+                    loadModuleProperties(this)
+                }
+
+                settings.gradle.rootProject.repositories.mavenCentral()
             }
-
-            settings.gradle.rootProject.repositories.mavenCentral()
         }
     }
 
@@ -212,16 +216,16 @@ public class SettingsPlugin : Plugin<Settings> {
  */
 private fun adjustXmlFactories() {
     trySetSystemProperty(
-        XMLInputFactory::class.qualifiedName!!,
-        "com.sun.xml.internal.stream.XMLInputFactoryImpl"
+            XMLInputFactory::class.qualifiedName!!,
+            "com.sun.xml.internal.stream.XMLInputFactoryImpl",
     )
     trySetSystemProperty(
-        XMLOutputFactory::class.qualifiedName!!,
-        "com.sun.xml.internal.stream.XMLOutputFactoryImpl"
+            XMLOutputFactory::class.qualifiedName!!,
+            "com.sun.xml.internal.stream.XMLOutputFactoryImpl",
     )
     trySetSystemProperty(
-        XMLEventFactory::class.qualifiedName!!,
-        "com.sun.xml.internal.stream.events.XMLEventFactoryImpl"
+            XMLEventFactory::class.qualifiedName!!,
+            "com.sun.xml.internal.stream.events.XMLEventFactoryImpl",
     )
 }
 

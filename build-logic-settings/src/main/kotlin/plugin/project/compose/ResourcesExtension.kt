@@ -3,6 +3,7 @@
 package plugin.project.compose
 
 import gradle.all
+import gradle.kotlin
 import gradle.moduleProperties
 import gradle.trySet
 import org.gradle.api.Project
@@ -13,7 +14,6 @@ import org.jetbrains.compose.ComposePlugin
 import org.jetbrains.compose.resources.ResourcesExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 
-context(KMPEAware)
 internal fun Project.configureResourcesExtension() =
     plugins.withType<ComposePlugin> {
         extensions.configure<ComposeExtension> {
@@ -26,7 +26,7 @@ internal fun Project.configureResourcesExtension() =
                         customDirectory(sourceSetName, provider { layout.projectDirectory.dir(directory) })
                     }
 
-                    kotlinMPE.sourceSets.all { sourceSet ->
+                    kotlin.sourceSets.all { sourceSet ->
                         // Adjust composeResources to match flatten directory structure
                         customDirectory(
                             sourceSet.name,

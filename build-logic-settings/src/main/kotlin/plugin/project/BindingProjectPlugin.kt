@@ -10,6 +10,8 @@ import gradle.versions
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.jetbrains.amper.frontend.schema.Settings
+import org.jetbrains.amper.gradle.SLF4JProblemReporterContext
 import plugin.project.android.AndroidBindingPluginPart
 import plugin.project.apple.AppleBindingPluginPart
 import plugin.project.compose.ComposePluginPart
@@ -30,6 +32,7 @@ import plugin.project.kotlin.noarg.NoArgPluginPart
 import plugin.project.kotlin.powerassert.PowerAssertPluginPart
 import plugin.project.kotlin.room.RoomPluginPart
 import plugin.project.kotlin.rpc.RpcPluginPart
+import plugin.project.kotlin.serialization.SerializationPluginPart
 import plugin.project.kotlin.sqldelight.SqlDelightPluginPart
 import plugin.project.web.WasmBindingPluginPart
 import plugin.project.web.js.JsBindingPluginPart
@@ -41,7 +44,7 @@ internal class BindingProjectPlugin : Plugin<Project> {
 
     lateinit var appliedParts: List<BindingPluginPart>
 
-    override fun apply(project: Project)  {
+    override fun apply(project: Project) = with(SLF4JProblemReporterContext()) {
         // Find applied parts. Preserve order!
         val registeredParts = listOf<BindingPluginPart>(
             DoctorPluginPart(project),
@@ -55,7 +58,7 @@ internal class BindingProjectPlugin : Plugin<Project> {
             AllOpenPluginPart(project),
             NoArgPluginPart(project),
             AtomicFUPluginPart(project),
-//            SerializationPluginPart(project),
+            SerializationPluginPart(project),
             SqlDelightPluginPart(project),
             RoomPluginPart(project),
             RpcPluginPart(project),
@@ -95,21 +98,20 @@ internal class BindingProjectPlugin : Plugin<Project> {
                 )
             }
         }
-        applyRepositoryAttributes(linkedModule, project)
+//        applyRepositoryAttributes(linkedModule, project)
 //        applyPublicationAttributes(linkedModule, project)
-        applyTest(linkedModule, project)
+//        applyTest(linkedModule, project)
 
         if (problemReporter.getErrors().isNotEmpty()) {
             throw GradleException(problemReporter.getGradleError())
         }
     }
 
-    private fun applyRepositoryAttributes(
-        module: AmperModuleWrapper,
-        project: Project
-    ) = with(project){
-        repositories.configure(module.parts.find<RepositoriesModulePart>())
-    }
+//    private fun applyRepositoryAttributes(
+//        project: Project
+//    ) = with(project){
+//        repositories.configure(module.parts.find<RepositoriesModulePart>())
+//    }
 
 //    private fun applyPublicationAttributes(
 //        module: AmperModuleWrapper,

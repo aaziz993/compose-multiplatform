@@ -1,4 +1,6 @@
-product: jvm/app
+application: true
+
+targets: [ jvm ]
 
 apply:
   - ../template/common.module-template.yaml

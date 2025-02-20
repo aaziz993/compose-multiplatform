@@ -4,6 +4,7 @@ package plugin.project.compose
 
 import gradle.id
 import gradle.libs
+import gradle.moduleProperties
 import gradle.plugin
 import gradle.plugins
 import gradle.settings
@@ -13,15 +14,13 @@ import org.jetbrains.amper.gradle.android.AndroidAwarePart
 import org.jetbrains.amper.gradle.base.AmperNamingConventions
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import plugin.project.BindingPluginPart
 import plugin.project.compose.desktop.configureDesktopExtension
 
-public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConventions, AndroidAwarePart(ctx) {
-
-    override val kotlinMPE: KotlinMultiplatformExtension =
-        project.extensions.getByType<KotlinMultiplatformExtension>()
+public class ComposePluginPart(override val project: Project) : BindingPluginPart {
 
     override val needToApply: Boolean by lazy {
-        module.leafFragments.any { it.settings.compose.enabled }
+        project.moduleProperties.settings.compose.enabled
     }
 
     // Highly dependent on compose version and ABI.
@@ -30,7 +29,7 @@ public class ComposePluginPart(ctx: PluginPartCtx) : KMPEAware, AmperNamingConve
         plugins.apply(project.settings.libs.plugins.plugin("compose-multiplatform").id)
         plugins.apply(project.settings.libs.plugins.plugin("compose-compiler").id)
 
-        if (module.type == ProductType.JVM_APP) {
+        if (moduleProperties.application) {
             // Configure desktop
             configureDesktopExtension()
         }

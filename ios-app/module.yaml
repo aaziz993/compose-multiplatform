@@ -1,4 +1,6 @@
-product: ios/app
+application: true
+
+targets: [ ios ]
 
 apply:
   - ../template/common.module-template.yaml

@@ -1,4 +1,6 @@
-product: android/app
+application: true
+
+targets: [ android ]
 
 apply:
   - ../template/common.module-template.yaml
