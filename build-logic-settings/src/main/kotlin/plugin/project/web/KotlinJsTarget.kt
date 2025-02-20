@@ -9,20 +9,48 @@ import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.invoke
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.dsl.JsMainFunctionExecutionMode
+import org.jetbrains.kotlin.gradle.dsl.JsModuleKind
+import org.jetbrains.kotlin.gradle.dsl.JsSourceMapEmbedMode
+import org.jetbrains.kotlin.gradle.dsl.JsSourceMapNamesPolicy
 import org.jetbrains.kotlin.gradle.targets.js.NpmVersions
+import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalMainFunctionArgumentsDsl
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
+import plugin.project.kotlin.model.language.configureFrom
 import plugin.project.web.model.BrowserSettings
+import plugin.project.web.model.KotlinJsCompilerOptions
 import plugin.project.web.model.KotlinWebpackCssRule
 import plugin.project.web.model.KotlinWebpackOutput
 import plugin.project.web.model.KotlinWebpackRule
 import plugin.project.web.node.model.NodeSettings
 
+@OptIn(ExperimentalMainFunctionArgumentsDsl::class)
 @Suppress("UnstableApiUsage")
 internal inline fun <reified T : KotlinJsTargetDsl> Project.configureKotlinJsTarget() =
     moduleProperties.settings.web.let { web ->
         kotlin.targets.withType<T> {
-            moduleName = web.moduleName ?: "$group.${project.name}-${targetName}"
+            ::moduleName trySet web.moduleName
+            web.useCommonJs?.takeIf { it }?.run { useCommonJs() }
+            web.useEsModules?.takeIf { it }?.run { useEsModules() }
+            web.passAsArgumentToMainFunction?.let(::passAsArgumentToMainFunction)
+            web.generateTypeScriptDefinitions?.takeIf { it }?.let { generateTypeScriptDefinitions() }
+
+            web.compilerOptions?.let { compilerOptions ->
+                compilerOptions {
+                    configureFrom(compilerOptions)
+                    friendModulesDisabled tryAssign compilerOptions.friendModulesDisabled
+                    main tryAssign compilerOptions.main
+                    moduleKind tryAssign compilerOptions.moduleKind
+                    moduleName tryAssign compilerOptions.moduleName
+                    sourceMap tryAssign compilerOptions.sourceMap
+                    sourceMapEmbedSources tryAssign compilerOptions.sourceMapEmbedSources
+                    sourceMapNamesPolicy tryAssign compilerOptions.sourceMapNamesPolicy
+                    sourceMapPrefix tryAssign compilerOptions.sourceMapPrefix
+                    target tryAssign compilerOptions.target
+                    useEsClasses tryAssign compilerOptions.useEsClasses
+                }
+            }
 
             web.browser.takeIf(BrowserSettings::enabled)?.let { browser ->
                 browser {

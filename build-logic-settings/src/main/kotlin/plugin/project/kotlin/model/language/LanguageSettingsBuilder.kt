@@ -1,4 +1,4 @@
-package plugin.project.kotlin.model
+package plugin.project.kotlin.model.language
 
 /**
  * Represents most common Kotlin compilation settings for an entity.

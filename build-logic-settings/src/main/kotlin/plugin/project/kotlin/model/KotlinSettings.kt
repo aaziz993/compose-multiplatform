@@ -1,12 +1,12 @@
 package plugin.project.kotlin.model
 
 import kotlinx.serialization.Serializable
-import org.jetbrains.amper.frontend.schema.Settings
 import plugin.project.kotlin.allopen.model.AllOpenSettings
 import plugin.project.kotlin.apollo.model.ApolloSettings
 import plugin.project.kotlin.atomicfu.model.AtomicFUSettings
 import plugin.project.kotlin.ksp.model.KspSettings
 import plugin.project.kotlin.ktorfit.model.KtorfitSettings
+import plugin.project.kotlin.model.language.LanguageSettings
 import plugin.project.kotlin.noarg.model.NoArgSettings
 import plugin.project.kotlin.powerassert.model.PowerAssertSettings
 import plugin.project.kotlin.room.model.RoomSettings

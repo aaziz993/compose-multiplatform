@@ -8,11 +8,16 @@ import plugin.project.web.yarn.model.YarnSettings
 
 @Serializable
 internal data class WebSettings(
-    val moduleName: String? = null,
+    override val moduleName: String? = null,
+    override val useCommonJs: Boolean? = null,
+    override val useEsModules: Boolean? = null,
+    override val passAsArgumentToMainFunction: String? = null,
+    override val generateTypeScriptDefinitions: Boolean? = null,
+    override val compilerOptions: KotlinJsCompilerOptions? = null,
     val browser: BrowserSettings = BrowserSettings(),
     val node: NodeSettings = NodeSettings(),
     val yarn: YarnSettings = YarnSettings(),
     val npm: NpmSettings = NpmSettings(),
     val karakum: KarakumSettings = KarakumSettings(),
     val executable: Boolean = false,
-)
+) : KotlinJsTargetDsl
