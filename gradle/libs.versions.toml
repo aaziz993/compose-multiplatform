@@ -1341,8 +1341,9 @@ firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "
 google-playServices = { id = "com.google.gms.google-services", version.ref = "google-play-services" }
 
 ##Android
-android-application = { id = "com.android.application", version.ref = "agp" }
+android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 android-library = { id = "com.android.library", version.ref = "agp" }
+android-application = { id = "com.android.application", version.ref = "agp" }
 
 ##IOS
 # cocoapods

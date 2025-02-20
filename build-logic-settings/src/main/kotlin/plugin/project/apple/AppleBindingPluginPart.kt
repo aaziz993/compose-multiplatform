@@ -4,7 +4,12 @@
 
 package plugin.project.apple
 
+import gradle.id
+import gradle.libs
 import gradle.moduleProperties
+import gradle.plugin
+import gradle.plugins
+import gradle.settings
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import plugin.project.BindingPluginPart
@@ -18,7 +23,7 @@ internal class AppleBindingPluginPart(override val project: Project) : BindingPl
 
     override fun applyBeforeEvaluate() = with(project) {
         // Apply plugin
-        plugins.apply("org.jetbrains.gradle.apple.applePlugin")
+        plugins.apply(settings.libs.plugins.plugin("apple").id)
 
         moduleProperties.targets
             .filter { (type, _) -> type.isDescendantOf(TargetType.APPLE) }

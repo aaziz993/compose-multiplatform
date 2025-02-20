@@ -184,6 +184,10 @@ public class SettingsPlugin : Plugin<Settings> {
     private fun Settings.setupPluginsClasspath() {
         with(libs) {
             setupDynamicClasspath(
+                libs.plugins.plugin("kotlin-multiplatform").pluginAsDependency,
+                libs.plugins.plugin("android").pluginAsDependency,
+                libs.plugins.plugin("android-library").pluginAsDependency,
+                libs.plugins.plugin("android-application").pluginAsDependency,
                 libs.plugins.plugin("compose-multiplatform").pluginAsDependency,
             ) {
                 addDefaultAmperRepositoriesForDependencies()
