@@ -1,10 +1,12 @@
 package plugin.project.web.model
 
+import gradle.tryAssign
 import kotlinx.serialization.Serializable
 import org.jetbrains.kotlin.gradle.dsl.JsMainFunctionExecutionMode
 import org.jetbrains.kotlin.gradle.dsl.JsModuleKind
 import org.jetbrains.kotlin.gradle.dsl.JsSourceMapEmbedMode
 import org.jetbrains.kotlin.gradle.dsl.JsSourceMapNamesPolicy
+import org.jetbrains.kotlin.gradle.dsl.KotlinJsCompilerOptions
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 import plugin.project.kotlin.model.language.KotlinCommonCompilerOptions
 
@@ -92,4 +94,19 @@ internal data class KotlinJsCompilerOptions(
      * Default value: null
      */
     val useEsClasses: Boolean? = null,
-) : KotlinCommonCompilerOptions
+) : KotlinCommonCompilerOptions {
+
+    fun applyTo(compilerOptions: KotlinJsCompilerOptions) {
+        super.applyTo(compilerOptions)
+        compilerOptions.friendModulesDisabled tryAssign friendModulesDisabled
+        compilerOptions.main tryAssign main
+        compilerOptions.moduleKind tryAssign moduleKind
+        compilerOptions.moduleName tryAssign moduleName
+        compilerOptions.sourceMap tryAssign sourceMap
+        compilerOptions.sourceMapEmbedSources tryAssign sourceMapEmbedSources
+        compilerOptions.sourceMapNamesPolicy tryAssign sourceMapNamesPolicy
+        compilerOptions.sourceMapPrefix tryAssign sourceMapPrefix
+        compilerOptions.target tryAssign target
+        compilerOptions.useEsClasses tryAssign useEsClasses
+    }
+}

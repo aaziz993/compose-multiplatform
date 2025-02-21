@@ -24,7 +24,7 @@ internal data class KotlinWebpackCssRule(
     fun applyTo(
         webpackRule: KotlinWebpackCssRule
     ) {
-        (this as KotlinWebpackRule).applyTo(webpackRule)
+        super.applyTo(webpackRule)
         webpackRule.mode tryAssign mode
     }
 }

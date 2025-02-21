@@ -46,7 +46,7 @@ internal interface KotlinCommonCompilerOptions : KotlinCommonCompilerToolOptions
     val progressiveMode: Boolean?
 
     fun applyTo(compilerOptions: KotlinCommonCompilerOptions) {
-        (this as KotlinCommonCompilerToolOptions).applyTo(compilerOptions)
+        super.applyTo(compilerOptions)
         compilerOptions.apiVersion tryAssign apiVersion
         compilerOptions.languageVersion tryAssign apiVersion
         optIn?.let(compilerOptions.optIn::addAll)

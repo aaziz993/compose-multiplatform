@@ -1,6 +1,9 @@
 package plugin.project.web.model
 
+import gradle.moduleProperties
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
+import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalDistributionDsl
 import plugin.project.web.js.karakum.model.KarakumSettings
 import plugin.project.web.node.model.NodeSettings
 import plugin.project.web.npm.model.NpmSettings
@@ -19,5 +22,28 @@ internal data class WebSettings(
     val yarn: YarnSettings = YarnSettings(),
     val npm: NpmSettings = NpmSettings(),
     val karakum: KarakumSettings = KarakumSettings(),
-    val executable: Boolean = false,
-) : KotlinJsTargetDsl
+) : KotlinJsTargetDsl {
+
+    @OptIn(ExperimentalDistributionDsl::class)
+    context(Project)
+    fun applyTo(target: org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl) {
+        super.applyTo(target)
+
+        if (browser.enabled) {
+            target.browser {
+                browser.applyTo(this)
+            }
+        }
+
+        if (node.enabled) {
+            target.nodejs()
+        }
+
+        if (moduleProperties.application) {
+            target.binaries.executable()
+        }
+        else {
+            target.binaries.library()
+        }
+    }
+}

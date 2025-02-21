@@ -16,7 +16,7 @@ internal data class DefaultTestFilter(
 ) : TestFilter {
 
     fun applyTo(defaultTestFilter: DefaultTestFilter) {
-        (this as TestFilter).applyTo(defaultTestFilter)
+        super.applyTo(defaultTestFilter)
         commandLineIncludePatterns?.let(defaultTestFilter::setCommandLineIncludePatterns)
     }
 }

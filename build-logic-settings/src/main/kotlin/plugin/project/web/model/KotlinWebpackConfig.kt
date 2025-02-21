@@ -1,10 +1,12 @@
 package plugin.project.web.model
 
+import gradle.trySet
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonContentPolymorphicSerializer
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.serializer
+import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 
 @Suppress("MemberVisibilityCanBePrivate")
@@ -30,6 +32,35 @@ internal data class KotlinWebpackConfig(
     val cssSupport: KotlinWebpackCssRule? = null,
     val scssSupport: KotlinWebpackCssRule? = null,
 ) {
+
+    context(Project)
+    fun applyTo(webpackConfig: KotlinWebpackConfig) {
+        webpackConfig::mode trySet mode
+        webpackConfig::entry trySet entry?.let(::file)
+        webpackConfig::output trySet output?.toKotlinWebPackOutput()
+        webpackConfig::outputPath trySet outputPath?.let(::file)
+        webpackConfig::outputFileName trySet outputFileName
+        webpackConfig::configDirectory trySet configDirectory?.let(::file)
+        webpackConfig::reportEvaluatedConfigFile trySet reportEvaluatedConfigFile?.let(::file)
+        webpackConfig::devServer trySet devServer?.toDevServer()
+        webpackConfig::watchOptions trySet watchOptions?.toWatchOptions()
+        webpackConfig::experiments trySet experiments?.toMutableSet()
+        webpackConfig::devtool trySet devtool
+        webpackConfig::showProgress trySet showProgress
+        webpackConfig::sourceMaps trySet sourceMaps
+        webpackConfig::export trySet export
+        webpackConfig::progressReporter trySet progressReporter
+        webpackConfig::progressReporterPathFilter trySet progressReporterPathFilter?.let(::file)
+        webpackConfig::resolveFromModulesFirst trySet resolveFromModulesFirst
+
+        if (cssSupport != null) {
+            webpackConfig.cssSupport(cssSupport::applyTo)
+        }
+
+        if (scssSupport != null) {
+            webpackConfig.scssSupport(scssSupport::applyTo)
+        }
+    }
 
     @Serializable
     data class WatchOptions(
