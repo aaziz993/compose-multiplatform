@@ -1,6 +1,10 @@
 package plugin.project.gradle.apivalidation.model
 
+import gradle.trySet
 import kotlinx.serialization.Serializable
+import kotlinx.validation.ExperimentalBCVApi
+import kotlinx.validation.KlibValidationSettings
+import kotlinx.validation.api.klib.KlibSignatureVersion
 
 @Serializable
 internal open class KlibValidationSettings(
@@ -30,4 +34,12 @@ internal open class KlibValidationSettings(
      * stricter and treats having unsupported targets as an error.
      */
     val strictValidation: Boolean? = null
-)
+) {
+
+    @OptIn(ExperimentalBCVApi::class)
+    fun applyTo(klib: KlibValidationSettings) {
+        klib::enabled trySet enabled
+        klib::signatureVersion trySet signatureVersion?.let(KlibSignatureVersion::of)
+        klib::strictValidation trySet strictValidation
+    }
+}

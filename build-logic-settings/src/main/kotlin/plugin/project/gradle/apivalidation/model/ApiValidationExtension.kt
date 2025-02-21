@@ -1,5 +1,9 @@
 package plugin.project.gradle.apivalidation.model
 
+import gradle.trySet
+import kotlinx.validation.ApiValidationExtension
+import kotlinx.validation.ExperimentalBCVApi
+
 internal interface ApiValidationExtension {
 
     /**
@@ -73,4 +77,19 @@ internal interface ApiValidationExtension {
      * @see KlibValidationSettings
      */
     val klib: KlibValidationSettings?
+
+    @OptIn(ExperimentalBCVApi::class)
+    fun applyTo(extension: ApiValidationExtension) {
+        extension::validationDisabled trySet validationDisabled
+        extension::ignoredPackages trySet ignoredPackages?.toMutableSet()
+        extension::ignoredProjects trySet ignoredProjects?.toMutableSet()
+        extension::nonPublicMarkers trySet nonPublicMarkers?.toMutableSet()
+        extension::ignoredClasses trySet ignoredClasses?.toMutableSet()
+        extension::publicMarkers trySet publicMarkers?.toMutableSet()
+        extension::publicPackages trySet publicPackages?.toMutableSet()
+        extension::publicClasses trySet publicClasses?.toMutableSet()
+        extension::additionalSourceSets trySet additionalSourceSets?.toMutableSet()
+        extension::apiDumpDirectory trySet apiDumpDirectory
+        klib?.applyTo(extension.klib)
+    }
 }
