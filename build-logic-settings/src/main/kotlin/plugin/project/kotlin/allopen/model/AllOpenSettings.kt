@@ -7,4 +7,10 @@ internal data class AllOpenSettings(
     override val myAnnotations: List<String>? = null,
     override val myPresets: List<String>? = null,
     val enabled: Boolean = true,
-) : AllOpenExtension
+) : AllOpenExtension{
+
+    fun applyTo(extension: org.jetbrains.kotlin.allopen.gradle.AllOpenExtension){
+        myAnnotations?.let(extension::annotations)
+        myPresets?.forEach(extension::preset)
+    }
+}

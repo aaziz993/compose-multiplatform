@@ -1,6 +1,9 @@
 package plugin.project.kotlin.sqldelight.model
 
+import app.cash.sqldelight.gradle.SqlDelightDatabase
+import gradle.tryAssign
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
 import plugin.model.dependency.DependencyNotation
 
 @Serializable
@@ -54,4 +57,21 @@ internal data class SqlDelightDatabase(
      * @see <a href="https://en.wikipedia.org/wiki/Null_%28SQL%29#Null-specific_and_3VL-specific_comparison_predicates">Wikipedia entry on null specific comparisons in SQL</a>
      */
     val treatNullAsUnknownForEquality: Boolean? = null,
-)
+) {
+
+    context(Project)
+    fun applyTo(database: SqlDelightDatabase) {
+        database.packageName tryAssign packageName
+        database.schemaOutputDirectory tryAssign schemaOutputDirectory?.let(layout.projectDirectory::dir)
+        srcDirs?.let(database.srcDirs::setFrom)
+        database.deriveSchemaFromMigrations tryAssign deriveSchemaFromMigrations
+        database.verifyMigrations tryAssign verifyMigrations
+        database.verifyDefinitions tryAssign verifyDefinitions
+        database.migrationOutputDirectory tryAssign migrationOutputDirectory?.let(layout.projectDirectory::dir)
+        database.migrationOutputFileFormat tryAssign migrationOutputFileFormat
+        database.generateAsync tryAssign generateAsync
+        modules?.map { it.toDependencyNotation() }?.forEach(database::module)
+        dialect?.let(database::dialect)
+        database.treatNullAsUnknownForEquality tryAssign treatNullAsUnknownForEquality
+    }
+}

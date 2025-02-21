@@ -1,5 +1,6 @@
 package plugin.project.kotlin.powerassert
 
+import gradle.libs
 import gradle.moduleProperties
 import gradle.powerAssert
 import gradle.tryAssign
@@ -8,12 +9,9 @@ import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.powerassert.gradle.PowerAssertGradlePlugin
 
 internal fun Project.configurePowerAssertGradleExtension() =
-    plugins.withType<PowerAssertGradlePlugin> {
+    pluginManager.withPlugin(libs.plugins.power.assert.get().pluginId) {
         moduleProperties.settings.kotlin.powerAssert.let { powerAssert ->
-            powerAssert {
-                functions tryAssign powerAssert.functions
-                includedSourceSets tryAssign powerAssert.includedSourceSets
-            }
+            powerAssert(powerAssert::applyTo)
         }
     }
 

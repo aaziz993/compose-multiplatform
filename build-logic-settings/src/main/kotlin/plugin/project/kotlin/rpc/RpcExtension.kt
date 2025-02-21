@@ -12,17 +12,6 @@ import org.gradle.kotlin.dsl.withType
 internal fun Project.configureRpcExtension() =
     plugins.withType<RpcGradlePlugin> {
         moduleProperties.settings.kotlin.rpc.let { rpc ->
-            rpc {
-                annotationTypeSafetyEnabled tryAssign rpc.annotationTypeSafetyEnabled
-                rpc.strict?.let { strict ->
-                    strict {
-                        stateFlow tryAssign strict.stateFlow
-                        sharedFlow tryAssign strict.sharedFlow
-                        nestedFlow tryAssign strict.nestedFlow
-                        notTopLevelServerFlow tryAssign strict.notTopLevelServerFlow
-                        fields tryAssign strict.fields
-                    }
-                }
-            }
+            rpc(rpc::applyTo)
         }
     }
