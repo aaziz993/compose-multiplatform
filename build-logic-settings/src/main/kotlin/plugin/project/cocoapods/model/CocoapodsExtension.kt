@@ -1,5 +1,6 @@
 package plugin.project.cocoapods.model
 
+import gradle.trySet
 import java.net.URI
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonContentPolymorphicSerializer
@@ -97,6 +98,77 @@ internal interface CocoapodsExtension {
 
     val podDependencies: List<CocoapodsDependency>?
 
+    context(Project)
+    fun applyTo(extension: CocoapodsExtension) {
+        extension::version trySet version
+        extension::authors trySet authors
+        extension::podfile trySet podfile?.let(::file)
+        needPodspec?.takeIf { it }?.run { extension.noPodspec() }
+        extension::name trySet name
+        extension::license trySet license
+        extension::summary trySet summary
+        extension::homepage trySet homepage
+        extension::source trySet source
+        extraSpecAttributes?.let(extension.extraSpecAttributes::putAll)
+
+        framework?.let { framework ->
+            extension.framework {
+                framework.applyTo(this)
+            }
+        }
+
+        xcodeConfigurationToNativeBuildType?.let(extension.xcodeConfigurationToNativeBuildType::putAll)
+        extension::publishDir trySet publishDir?.let(::file)
+
+        specRepos?.let { specRepos ->
+            extension.specRepos {
+                specRepos.forEach(::url)
+            }
+        }
+
+        pods?.forEach { pod ->
+            extension.pod(
+                pod.name,
+                pod.version,
+                pod.path?.let(::file),
+                pod.moduleName,
+                pod.headers,
+                pod.linkOnly,
+            )
+        }
+
+
+        podDependencies?.forEach { podDependency ->
+            extension.pod(podDependency.name) {
+                podDependency.applyTo(this)
+            }
+        }
+
+        ios?.let { _ios ->
+            extension.ios.apply {
+                ::deploymentTarget trySet _ios.deploymentTarget
+            }
+        }
+
+        osx?.let { _osx ->
+            extension.osx.apply {
+                ::deploymentTarget trySet _osx.deploymentTarget
+            }
+        }
+
+        tvos?.let { _tvos ->
+            extension.tvos.apply {
+                ::deploymentTarget trySet _tvos.deploymentTarget
+            }
+        }
+
+        watchos?.let { _watchos ->
+            extension.watchos.apply {
+                ::deploymentTarget trySet _watchos.deploymentTarget
+            }
+        }
+    }
+
     @Serializable
     data class CocoapodsDependency(
         val name: String,
@@ -145,6 +217,19 @@ internal interface CocoapodsExtension {
 
     ) {
 
+        context(Project)
+        fun applyTo(dependency: CocoapodsExtension.CocoapodsDependency) {
+            dependency::moduleName trySet moduleName
+            dependency::headers trySet headers
+            dependency::version trySet version
+            dependency::source trySet source?.toPodLocation()
+            dependency::extraOpts trySet extraOpts
+            dependency::packageName trySet packageName
+            dependency::linkOnly trySet linkOnly
+            interopBindingDependencies?.let(dependency.interopBindingDependencies::addAll)
+            podspecDirectory?.let(dependency::path)
+        }
+
         @Serializable(with = PodLocationSerializer::class)
         sealed class PodLocation {
 
@@ -169,9 +254,9 @@ internal interface CocoapodsExtension {
                 context(Project)
                 override fun toPodLocation(): CocoapodsExtension.CocoapodsDependency.PodLocation =
                     CocoapodsExtension.CocoapodsDependency.PodLocation.Git(
-                            URI(url),
-                            branch,
-                            commit,
+                        URI(url),
+                        branch,
+                        commit,
                     )
             }
 
