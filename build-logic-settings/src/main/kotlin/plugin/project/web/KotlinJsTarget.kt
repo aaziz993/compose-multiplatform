@@ -54,6 +54,20 @@ internal inline fun <reified T : KotlinJsTargetDsl> Project.configureKotlinJsTar
 
             web.browser.takeIf(BrowserSettings::enabled)?.let { browser ->
                 browser {
+                    testTask {
+                         targetName=""
+                         filter.includeTestsMatching()
+                         filter.excludeTestsMatching()
+                         filter.setExcludePatterns()
+                         filter.setExcludePatterns()
+                        filter.setIncludePatterns()
+                        setTestNameIncludePatterns()
+                        ignoreFailures
+                        filter.setCommandLineIncludePatterns()
+                        filter.isFailOnNoMatchingTests=true
+                         ignoreRunFailures: Boolean? = null,
+                    }
+
                     browser.webpackTask?.let { webpack ->
                         webpackTask {
                             ::mode trySet webpack.mode

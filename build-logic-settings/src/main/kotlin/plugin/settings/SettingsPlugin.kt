@@ -70,9 +70,7 @@ public class SettingsPlugin : Plugin<Settings> {
 
                 // at this point all projects have been created by settings.gradle.kts, but none were evaluated yet
                 target.gradle.rootProject.allprojects {
-                    afterEvaluate {
-                        configureProject()
-                    }
+                    configureProject()
                 }
 
                 target.gradle.rootProject.repositories.mavenCentral()
@@ -140,8 +138,8 @@ public class SettingsPlugin : Plugin<Settings> {
             setupDynamicClasspath(
                 libs.plugins.plugin("kotlin-multiplatform").pluginAsDependency,
                 libs.plugins.plugin("android").pluginAsDependency,
-                libs.plugins.plugin("android-library").pluginAsDependency,
-                libs.plugins.plugin("android-application").pluginAsDependency,
+                libs.plugins.plugin("androidLibrary").pluginAsDependency,
+                libs.plugins.plugin("androidApplication").pluginAsDependency,
                 libs.plugins.plugin("compose-multiplatform").pluginAsDependency,
             ) {
                 addDefaultAmperRepositoriesForDependencies()

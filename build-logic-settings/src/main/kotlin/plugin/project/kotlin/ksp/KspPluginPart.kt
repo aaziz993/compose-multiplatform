@@ -1,5 +1,6 @@
 package plugin.project.kotlin.ksp
 
+import gradle.kotlin
 import gradle.moduleProperties
 import gradle.libs
 import org.gradle.kotlin.dsl.dependencies
@@ -20,6 +21,10 @@ internal class KspPluginPart : Plugin<Project> {
                 plugins.apply(project.libs.plugins.ksp.get().pluginId)
 
                 configureKspExtension()
+
+                if(name=="android-app"){
+                    println("CONFIGS: ${moduleProperties.targets}")
+                }
 
                 val kspCommonMainMetadata by configurations
                 dependencies {

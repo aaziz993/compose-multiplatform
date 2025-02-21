@@ -24,9 +24,6 @@ private fun LanguageSettingsBuilder.configureFromAmperSettings(settings: KotlinS
     settings.optIns?.forEach(::optIn)
 }
 
-/**
- * Plugin logic, bind to specific module, when multiple targets are available.
- */
 internal class KMPBindingPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
@@ -35,7 +32,7 @@ internal class KMPBindingPluginPart : Plugin<Project> {
                 return@with
             }
 
-            plugins.apply(libs.plugins.kotlin.multiplatform.get().pluginId)
+            plugins.apply(KotlinMultiplatformPluginWrapper::class.java)
 
             // Enable Default Kotlin Hierarchy.
             extraProperties.set("kotlin.mpp.applyDefaultHierarchyTemplate", "true")

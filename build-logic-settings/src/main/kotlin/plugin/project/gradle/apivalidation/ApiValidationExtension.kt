@@ -42,12 +42,12 @@ internal fun Project.configureApiValidationExtension() =
         }
 
         tasks {
-            apiBuild {
-                // "jar" here is the name of the default Jar task producing the resulting jar file
-                // in a multiplatform project it can be named "jvmJar"
-                // if you applied the shadow plugin, it creates the "shadowJar" task that produces the transformed jar
-                inputJar.value(jar.flatMap { it.archiveFile })
-            }
+//            apiBuild {
+//                // "jar" here is the name of the default Jar task producing the resulting jar file
+//                // in a multiplatform project it can be named "jvmJar"
+//                // if you applied the shadow plugin, it creates the "shadowJar" task that produces the transformed jar
+//                inputJar.value(jar.flatMap { it.archiveFile })
+//            }
         }
     }
 

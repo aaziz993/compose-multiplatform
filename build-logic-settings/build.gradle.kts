@@ -262,7 +262,9 @@ dependencies {
 
     // Android
     compileOnly(libs.android.gradle.plugin)
-    runtimeOnly(libs.plugins.android.library.toDep())
+    runtimeOnly(libs.plugins.android.toDep())
+    runtimeOnly(libs.plugins.androidLibrary.toDep())
+    runtimeOnly(libs.plugins.androidApplication.toDep())
     implementation(kotlin("script-runtime"))
 
     // IOS

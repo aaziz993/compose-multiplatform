@@ -18,13 +18,11 @@ internal class AndroidBindingPluginPart : Plugin<Project> {
                 return@with
             }
 
-//                plugins.apply(libs.plugins.android.get())
-
             if (moduleProperties.application) {
-                plugins.apply(libs.plugins.android.application.get().pluginId)
+                plugins.apply(libs.plugins.androidApplication.get().pluginId)
             }
             else {
-                plugins.apply(libs.plugins.android.library.get().pluginId)
+                plugins.apply(libs.plugins.androidLibrary.get().pluginId)
             }
 
             moduleProperties.targets
@@ -34,11 +32,11 @@ internal class AndroidBindingPluginPart : Plugin<Project> {
 //        adjustCompilations()
 //        applySettings()
 //        adjustAndroidSourceSets()
-//        applyGoogleServicesPlugin()
+            applyGoogleServicesPlugin()
         }
     }
 
-//    private fun adjustAndroidSourceSets() = with(AndroidAmperNamingConvention) {
+    //    private fun adjustAndroidSourceSets() = with(AndroidAmperNamingConvention) {
 //        val shouldAddAndroidRes = module.artifactPlatforms.size == 1 &&
 //            module.artifactPlatforms.contains(Platform.ANDROID)
 //
@@ -187,9 +185,9 @@ internal class AndroidBindingPluginPart : Plugin<Project> {
 //        }
 //    }
 //
-//    private fun applyGoogleServicesPlugin() {
-//        if ((module.moduleDir / "google-services.json").exists()) {
-//            project.plugins.apply("com.google.gms.google-services")
-//        }
-//    }
+    private fun Project.applyGoogleServicesPlugin() {
+        if (file("google-services.json").exists()) {
+            plugins.apply(libs.plugins.google.playServices.get().pluginId)
+        }
+    }
 }
