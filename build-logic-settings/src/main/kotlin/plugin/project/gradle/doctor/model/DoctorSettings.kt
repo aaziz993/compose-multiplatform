@@ -32,7 +32,7 @@ internal data class DoctorSettings(
 ) : DoctorExtension{
 
     context(Project)
-    fun applyTo(extension: com.osacky.doctor.DoctorExtension) {
+   override fun applyTo(extension: com.osacky.doctor.DoctorExtension) {
         super.applyTo(extension)
         val enableTasksMonitoring = isCI || enableTaskMonitoring
 

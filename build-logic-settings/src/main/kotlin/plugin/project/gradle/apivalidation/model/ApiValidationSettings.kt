@@ -25,7 +25,7 @@ internal data class ApiValidationSettings(
 ) : ApiValidationExtension {
 
     context(Project)
-    fun applyTo(extension: kotlinx.validation.ApiValidationExtension) {
+   override fun applyTo(extension: kotlinx.validation.ApiValidationExtension) {
         super.applyTo(extension)
 
 

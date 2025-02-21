@@ -3,6 +3,7 @@ package plugin.project.gradle.apivalidation.model
 import gradle.trySet
 import kotlinx.validation.ApiValidationExtension
 import kotlinx.validation.ExperimentalBCVApi
+import org.gradle.api.Project
 
 internal interface ApiValidationExtension {
 
@@ -78,6 +79,7 @@ internal interface ApiValidationExtension {
      */
     val klib: KlibValidationSettings?
 
+    context(Project)
     @OptIn(ExperimentalBCVApi::class)
     fun applyTo(extension: ApiValidationExtension) {
         extension::validationDisabled trySet validationDisabled

@@ -93,6 +93,7 @@ internal interface DoctorExtension {
      */
     val javaHome: JavaHomeHandler?
 
+    context(Project)
     fun applyTo(extension: DoctorExtension) {
         extension.disallowMultipleDaemons tryAssign disallowMultipleDaemons
         extension.downloadSpeedWarningThreshold tryAssign downloadSpeedWarningThreshold

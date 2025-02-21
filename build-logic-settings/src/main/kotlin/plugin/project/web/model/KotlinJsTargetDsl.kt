@@ -1,6 +1,7 @@
 package plugin.project.web.model
 
 import gradle.trySet
+import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalMainFunctionArgumentsDsl
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
 import plugin.project.kotlin.model.language.HasConfigurableKotlinCompilerOptions
@@ -20,6 +21,7 @@ internal interface KotlinJsTargetDsl : HasConfigurableKotlinCompilerOptions<Kotl
 
     val generateTypeScriptDefinitions: Boolean?
 
+    context(Project)
     @OptIn(ExperimentalMainFunctionArgumentsDsl::class)
     fun applyTo(target: KotlinJsTargetDsl) {
         super.applyTo(target)

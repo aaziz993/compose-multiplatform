@@ -24,9 +24,9 @@ internal data class WebSettings(
     val karakum: KarakumSettings = KarakumSettings(),
 ) : KotlinJsTargetDsl {
 
-    @OptIn(ExperimentalDistributionDsl::class)
     context(Project)
-    fun applyTo(target: org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl) {
+    @OptIn(ExperimentalDistributionDsl::class)
+    override fun applyTo(target: org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl) {
         super.applyTo(target)
 
         if (browser.enabled) {

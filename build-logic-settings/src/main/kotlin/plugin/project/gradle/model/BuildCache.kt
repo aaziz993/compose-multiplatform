@@ -1,6 +1,5 @@
-package plugin.settings.model
+package plugin.project.gradle.model
 
-import org.gradle.api.initialization.Settings
 import org.gradle.caching.configuration.BuildCache
 
 /**

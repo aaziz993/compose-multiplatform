@@ -1,16 +1,13 @@
 package plugin.project.gradle.dokka.model
 
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import org.jetbrains.dokka.DokkaConfiguration
 
 @Serializable
-@SerialName("task")
 internal data class DokkaModuleTask(
     override val moduleName: String? = null,
     override val moduleVersion: String? = null,
     override val outputDirectory: String? = null,
-    override val pluginsConfiguration: List<DokkaConfiguration.PluginConfiguration>? = null,
+    override val pluginsConfiguration: List<PluginConfiguration>? = null,
     override val pluginsMapConfiguration: Map<String, String>? = null,
     override val suppressObviousFunctions: Boolean? = null,
     override val suppressInheritedMembers: Boolean? = null,

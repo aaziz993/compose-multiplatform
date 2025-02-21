@@ -4,7 +4,6 @@ import gradle.tryAssign
 import kotlinx.kover.gradle.plugin.dsl.KoverProjectExtension
 import kotlinx.kover.gradle.plugin.dsl.KoverVersions.JACOCO_TOOL_DEFAULT_VERSION
 import org.gradle.api.Project
-import plugin.project.gradle.kover.configFrom
 
 /**
  * Project extension for Kover Gradle Plugin.
