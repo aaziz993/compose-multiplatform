@@ -2,9 +2,9 @@
 
 package plugin.settings
 
-import gradle.decodeFromAny
+import gradle.serialization.decodeFromAny
 import gradle.deepMerge
-import gradle.encodeToAny
+import gradle.serialization.encodeToAny
 import gradle.libs
 import gradle.moduleProperties
 import gradle.plugin
@@ -169,6 +169,15 @@ public class SettingsPlugin : Plugin<Settings> {
         if (!project.file("module.yaml").exists()) {
             moduleProperties = ModuleProperties()
             return
+        }
+
+        fun sourceSetTransform(key:String,config: MutableMap<String,Any?>){
+            config[key] = config.filterKeys { it.startsWith(key) }.map { (key, value) ->
+                mapOf(
+                    "sourceSetName" to key.substringAfter("@", KotlinSourceSet.COMMON_MAIN_SOURCE_SET_NAME),
+                    "dependencyNotations" to value,
+                )
+            }
         }
 
         fun tryTransform(config: MutableMap<String, Any?>) {

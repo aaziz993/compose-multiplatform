@@ -1,4 +1,4 @@
-package gradle
+package gradle.serialization
 
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.KSerializer

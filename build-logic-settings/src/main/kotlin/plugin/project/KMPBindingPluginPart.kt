@@ -200,7 +200,8 @@ internal class KMPBindingPluginPart : Plugin<Project> {
             sourceSet.resources.setSrcDirs(listOf("$resourcesPrefixPart$suffixPart"))
         }
 
-        moduleProperties.dependencies.forEach { dependency -> dependency.applyTo() }
-        moduleProperties.testDependencies.forEach { dependency -> dependency.applyTo() }
+
+//        moduleProperties.dependencies.forEach { dependency -> dependency.applyTo() }
+//        moduleProperties.testDependencies.forEach { dependency -> dependency.applyTo() }
     }
 }
