@@ -1,13 +1,12 @@
 package plugin.project.gradle.githooks
 
-import gradle.projectProperties
 import gradle.id
 import gradle.libs
 import gradle.plugin
 import gradle.plugins
+import gradle.projectProperties
 import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
-import org.gradle.kotlin.dsl.gitHooks
 import plugin.project.gradle.githooks.model.GitHooksSettings
 
 internal class GitHooksluginPart : Plugin<Settings> {

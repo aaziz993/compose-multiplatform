@@ -1,8 +1,8 @@
 package plugin.project.gradle.doctor
 
-import gradle.moduleProperties
 import gradle.isCI
 import gradle.libs
+import gradle.moduleProperties
 import gradle.unregister
 import org.gradle.api.Plugin
 import org.gradle.api.Project

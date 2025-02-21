@@ -1,7 +1,6 @@
 package plugin.project.web.model
 
 import kotlinx.serialization.Serializable
-import org.gradle.api.provider.ListProperty
 import org.jetbrains.kotlin.gradle.dsl.JsMainFunctionExecutionMode
 import org.jetbrains.kotlin.gradle.dsl.JsModuleKind
 import org.jetbrains.kotlin.gradle.dsl.JsSourceMapEmbedMode

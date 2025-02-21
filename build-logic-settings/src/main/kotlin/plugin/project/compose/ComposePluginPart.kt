@@ -2,19 +2,10 @@
 
 package plugin.project.compose
 
-import gradle.id
 import gradle.libs
 import gradle.moduleProperties
-import gradle.plugin
-import gradle.plugins
-import gradle.settings
-import org.gradle.kotlin.dsl.getByType
-import org.jetbrains.amper.frontend.schema.ProductType
-import org.jetbrains.amper.gradle.android.AndroidAwarePart
-import org.jetbrains.amper.gradle.base.AmperNamingConventions
-import org.gradle.api.Project
-import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.gradle.api.Plugin
+import org.gradle.api.Project
 import plugin.project.compose.desktop.configureDesktopExtension
 
 public class ComposePluginPart : Plugin<Project> {

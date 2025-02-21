@@ -1,9 +1,9 @@
 package plugin.project.gradle.buildconfig
 
-import gradle.moduleProperties
 import gradle.libs
-import org.gradle.api.Project
+import gradle.moduleProperties
 import org.gradle.api.Plugin
+import org.gradle.api.Project
 
 internal class BuildConfigPluginPart : Plugin<Project> {
 

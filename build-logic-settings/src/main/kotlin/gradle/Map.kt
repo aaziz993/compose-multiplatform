@@ -1,7 +1,5 @@
 package gradle
 
-import java.util.*
-
 @Suppress("UNCHECKED_CAST")
 internal infix fun Map<String, Any?>.deepMerge(source: Map<String, Any?>): Map<String, Any?> {
     val resultMap = toMutableMap()

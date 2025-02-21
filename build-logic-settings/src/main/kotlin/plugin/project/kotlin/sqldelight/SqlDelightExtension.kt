@@ -5,9 +5,8 @@ import gradle.moduleProperties
 import gradle.sqldelight
 import gradle.tryAssign
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.withType
 import org.gradle.kotlin.dsl.invoke
-import plugin.model.dependency.DependencyNotation
+import org.gradle.kotlin.dsl.withType
 
 internal fun Project.configureSqlDelightExtension() =
     plugins.withType<SqlDelightPlugin> {

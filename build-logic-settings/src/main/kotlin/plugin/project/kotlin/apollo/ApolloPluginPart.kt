@@ -1,7 +1,7 @@
 package plugin.project.kotlin.apollo
 
-import gradle.moduleProperties
 import gradle.libs
+import gradle.moduleProperties
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 

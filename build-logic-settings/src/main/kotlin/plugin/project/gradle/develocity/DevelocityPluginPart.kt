@@ -1,6 +1,5 @@
 package plugin.project.gradle.develocity
 
-import gradle.projectProperties
 import gradle.gitBranchName
 import gradle.gitCommitId
 import gradle.gitStatus
@@ -9,6 +8,7 @@ import gradle.isCI
 import gradle.libs
 import gradle.plugin
 import gradle.plugins
+import gradle.projectProperties
 import gradle.teamCityBuildId
 import gradle.teamCityBuildTypeId
 import java.net.URLEncoder

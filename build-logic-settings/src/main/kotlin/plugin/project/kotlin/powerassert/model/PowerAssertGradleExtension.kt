@@ -1,7 +1,5 @@
 package plugin.project.kotlin.powerassert.model
 
-import kotlinx.serialization.Serializable
-
 internal interface PowerAssertGradleExtension {
 
     /**

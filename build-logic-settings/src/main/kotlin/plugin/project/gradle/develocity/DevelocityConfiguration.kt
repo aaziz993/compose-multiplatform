@@ -1,14 +1,12 @@
 package plugin.project.gradle.develocity
 
 import com.gradle.develocity.agent.gradle.DevelocityPlugin
-import gradle.projectProperties
 import gradle.isCI
+import gradle.projectProperties
 import gradle.tryAssign
-import java.util.*
 import org.gradle.api.initialization.Settings
 import org.gradle.kotlin.dsl.develocity
 import org.gradle.kotlin.dsl.withType
-import plugin.project.gradle.develocity.model.BuildScanConfiguration
 
 @Suppress("UnstableApiUsage")
 internal fun Settings.configureDevelocityConfiguration() =

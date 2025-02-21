@@ -1,9 +1,9 @@
 package plugin.project.gradle.doctor
 
 import com.osacky.doctor.DoctorPlugin
-import gradle.moduleProperties
 import gradle.doctor
 import gradle.isCI
+import gradle.moduleProperties
 import gradle.tryAssign
 import gradle.unregister
 import org.gradle.api.Project

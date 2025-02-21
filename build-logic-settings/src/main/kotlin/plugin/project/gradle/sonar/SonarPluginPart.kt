@@ -1,6 +1,5 @@
 package plugin.project.gradle.sonar
 
-import gradle.moduleProperties
 import gradle.libs
 import gradle.moduleProperties
 import org.gradle.api.Plugin

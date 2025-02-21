@@ -12,8 +12,8 @@ import com.diffplug.gradle.spotless.YamlExtension
 import com.diffplug.spotless.generic.LicenseHeaderStep
 import com.diffplug.spotless.kotlin.KotlinConstants
 import com.diffplug.spotless.kotlin.KtfmtStep
-import gradle.moduleProperties
 import gradle.libs
+import gradle.moduleProperties
 import gradle.spotless
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType

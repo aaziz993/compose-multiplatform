@@ -1,7 +1,7 @@
 package plugin.project.gradle.develocity.model
 
 import gradle.tryAssign
-import java.util.Date
+import java.util.*
 import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings
 

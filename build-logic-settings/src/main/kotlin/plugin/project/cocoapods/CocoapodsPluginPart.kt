@@ -2,8 +2,8 @@ package plugin.project.cocoapods
 
 import gradle.libs
 import gradle.moduleProperties
-import org.gradle.api.Project
 import org.gradle.api.Plugin
+import org.gradle.api.Project
 import plugin.project.model.target.TargetType
 import plugin.project.model.target.contains
 

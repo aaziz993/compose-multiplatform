@@ -1,7 +1,7 @@
 package plugin.project.gradle.kover
 
-import gradle.moduleProperties
 import gradle.kover
+import gradle.moduleProperties
 import gradle.tryAssign
 import kotlinx.kover.gradle.plugin.KoverGradlePlugin
 import org.gradle.api.Project

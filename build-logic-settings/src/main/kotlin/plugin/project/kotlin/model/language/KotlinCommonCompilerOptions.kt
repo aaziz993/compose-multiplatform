@@ -1,7 +1,6 @@
 package plugin.project.kotlin.model.language
 
 import gradle.tryAssign
-import org.gradle.api.provider.ListProperty
 import org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerOptions
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 

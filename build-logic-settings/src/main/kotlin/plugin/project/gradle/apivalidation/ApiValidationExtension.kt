@@ -1,7 +1,7 @@
 package plugin.project.gradle.apivalidation
 
-import gradle.moduleProperties
 import gradle.apiValidation
+import gradle.moduleProperties
 import gradle.trySet
 import kotlinx.validation.BinaryCompatibilityValidatorPlugin
 import kotlinx.validation.ExperimentalBCVApi

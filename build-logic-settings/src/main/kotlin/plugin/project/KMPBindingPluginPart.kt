@@ -5,16 +5,12 @@ package plugin.project
 import app.cash.sqldelight.core.decapitalize
 import gradle.all
 import gradle.kotlin
-import gradle.libs
 import gradle.moduleProperties
-import gradle.trySet
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.plugin.KotlinMultiplatformPluginWrapper
-import org.jetbrains.kotlin.gradle.plugin.LanguageSettingsBuilder
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
-import plugin.project.kotlin.model.KotlinSettings
 
 internal class KMPBindingPluginPart : Plugin<Project> {
 

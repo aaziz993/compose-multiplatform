@@ -1,8 +1,6 @@
 package plugin.project.compose.model
 
 import kotlinx.serialization.Serializable
-import org.gradle.api.file.Directory
-import org.gradle.api.provider.Provider
 import org.jetbrains.compose.resources.ResourcesExtension
 
 @Serializable

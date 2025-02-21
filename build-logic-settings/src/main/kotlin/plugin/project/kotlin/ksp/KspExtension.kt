@@ -1,8 +1,8 @@
 package plugin.project.kotlin.ksp
 
 import com.google.devtools.ksp.gradle.KspGradleSubplugin
-import gradle.moduleProperties
 import gradle.ksp
+import gradle.moduleProperties
 import gradle.tryAssign
 import gradle.trySet
 import org.gradle.api.Project

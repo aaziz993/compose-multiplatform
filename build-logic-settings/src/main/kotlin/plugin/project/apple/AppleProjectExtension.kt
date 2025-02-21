@@ -1,15 +1,11 @@
 package plugin.project.apple
 
-import com.android.tools.r8.n
 import gradle.moduleProperties
-import gradle.settings
 import gradle.trySet
 import org.gradle.api.Project
-import org.jetbrains.gradle.apple.ApplePlugin
 import org.gradle.kotlin.dsl.withType
+import org.jetbrains.gradle.apple.ApplePlugin
 import org.jetbrains.gradle.apple.apple
-import plugin.project.apple.model.AppleBuildSettings
-import plugin.project.apple.model.BuildConfiguration
 
 internal fun Project.configureAppleProjectExtension() =
     plugins.withType<ApplePlugin> {

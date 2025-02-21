@@ -2,8 +2,8 @@
 
 package plugin.project
 
-import gradle.moduleProperties
 import gradle.libs
+import gradle.moduleProperties
 import gradle.settings
 import gradle.version
 import gradle.versions

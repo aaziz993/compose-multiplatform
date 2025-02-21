@@ -1,16 +1,11 @@
 package plugin.project.kotlin.apollo
 
-import com.apollographql.apollo3.compiler.OperationIdGenerator
-import com.apollographql.apollo3.compiler.PackageNameGenerator
-import com.apollographql.apollo3.compiler.hooks.ApolloCompilerJavaHooks
 import com.apollographql.apollo3.gradle.internal.ApolloPlugin
-import gradle.moduleProperties
 import gradle.apollo
+import gradle.moduleProperties
 import gradle.tryAssign
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.withType
-import plugin.project.kotlin.apollo.model.Service
 
 internal fun Project.configureApolloExtension() =
     plugins.withType<ApolloPlugin> {

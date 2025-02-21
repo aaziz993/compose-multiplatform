@@ -1,7 +1,6 @@
 package plugin.project.kotlin.noarg.model
 
 import kotlinx.serialization.Serializable
-import plugin.project.kotlin.allopen.model.AllOpenExtension
 
 @Serializable
 internal data class NoArgSettings(

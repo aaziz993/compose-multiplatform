@@ -2,9 +2,9 @@ package plugin.project.web
 
 import gradle.kotlin
 import gradle.maybeNamed
-import org.gradle.kotlin.dsl.withType
 import org.gradle.api.Project
 import org.gradle.internal.extensions.stdlib.capitalized
+import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
 
 internal inline fun <reified T : KotlinJsTargetDsl> Project.configureJsTestTasks() =

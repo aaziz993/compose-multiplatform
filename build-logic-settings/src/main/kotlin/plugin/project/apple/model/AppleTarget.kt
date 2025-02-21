@@ -1,7 +1,5 @@
 package plugin.project.apple.model
 
-import org.jetbrains.gradle.apple.AppleBuildDestination
-
 internal interface AppleTarget {
 
     val bridgingHeader: String?

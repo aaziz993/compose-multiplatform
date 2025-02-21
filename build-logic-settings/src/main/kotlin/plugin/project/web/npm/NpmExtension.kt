@@ -3,7 +3,6 @@ package plugin.project.web.npm
 import gradle.moduleProperties
 import gradle.npm
 import gradle.tryAssign
-import gradle.trySet
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.targets.js.npm.NpmResolverPlugin

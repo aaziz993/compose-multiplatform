@@ -1,19 +1,17 @@
 package plugin.project.gradle.dokka
 
-import gradle.moduleProperties
 import gradle.libs
+import gradle.moduleProperties
 import gradle.tryAssign
+import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.provideDelegate
 import org.gradle.kotlin.dsl.withType
-import org.gradle.api.Plugin
-import org.jetbrains.dokka.gradle.AbstractDokkaTask
 import org.jetbrains.dokka.gradle.DokkaMultiModuleTask
 import org.jetbrains.dokka.gradle.internal.InternalDokkaGradlePluginApi
 import plugin.project.gradle.dokka.model.DokkaMultiModuleFileLayout
-import plugin.project.gradle.dokka.model.DokkaTask
 
 internal class DokkaPluginPart : Plugin<Project> {
 

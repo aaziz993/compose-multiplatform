@@ -2,15 +2,15 @@
 
 package plugin.settings
 
-import gradle.moduleProperties
-import gradle.projectProperties
 import gradle.decodeFromAny
 import gradle.deepMerge
 import gradle.encodeToAny
 import gradle.libs
+import gradle.moduleProperties
 import gradle.plugin
 import gradle.pluginAsDependency
 import gradle.plugins
+import gradle.projectProperties
 import gradle.setupDynamicClasspath
 import gradle.trySetSystemProperty
 import javax.xml.stream.XMLEventFactory

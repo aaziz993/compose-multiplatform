@@ -1,7 +1,7 @@
 package plugin.project.kotlin.atomicfu
 
-import gradle.moduleProperties
 import gradle.atomicFU
+import gradle.moduleProperties
 import gradle.trySet
 import kotlinx.atomicfu.plugin.gradle.AtomicFUGradlePlugin
 import org.gradle.api.Project

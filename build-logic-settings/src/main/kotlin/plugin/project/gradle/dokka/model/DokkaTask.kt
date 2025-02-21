@@ -3,7 +3,6 @@ package plugin.project.gradle.dokka.model
 import gradle.tryAssign
 import org.gradle.api.Project
 import org.jetbrains.dokka.gradle.AbstractDokkaTask
-import org.jetbrains.dokka.gradle.DokkaTask
 
 internal interface DokkaTask {
 

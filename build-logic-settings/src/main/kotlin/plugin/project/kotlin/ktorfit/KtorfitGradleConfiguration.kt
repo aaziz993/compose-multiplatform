@@ -1,8 +1,8 @@
 package plugin.project.kotlin.ktorfit
 
 import de.jensklingenberg.ktorfit.gradle.KtorfitGradlePlugin
-import gradle.moduleProperties
 import gradle.ktorfit
+import gradle.moduleProperties
 import gradle.trySet
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType

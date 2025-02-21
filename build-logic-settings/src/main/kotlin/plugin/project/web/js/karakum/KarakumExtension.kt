@@ -1,7 +1,7 @@
 package plugin.project.web.js.karakum
 
-import gradle.moduleProperties
 import gradle.karakum
+import gradle.moduleProperties
 import gradle.tryAssign
 import io.github.sgrishchenko.karakum.gradle.plugin.KarakumPlugin
 import org.gradle.api.Project

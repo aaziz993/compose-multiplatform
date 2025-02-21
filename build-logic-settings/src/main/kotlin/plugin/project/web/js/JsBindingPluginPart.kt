@@ -1,9 +1,9 @@
 package plugin.project.web.js
 
 import gradle.moduleProperties
+import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
-import org.gradle.api.Plugin
 import plugin.project.model.target.TargetType
 import plugin.project.model.target.applyTo
 import plugin.project.model.target.contains
