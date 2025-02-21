@@ -22,15 +22,7 @@ internal data class Framework(
 
     context(Project)
     fun applyTo(framework: Framework) {
-        framework::baseName trySet baseName
-        framework::transitiveExport trySet transitiveExport
-        framework::debuggable trySet debuggable
-        framework::optimized trySet optimized
-        linkerOpts?.let(framework::linkerOpts)
-        framework::binaryOptions trySet binaryOptions?.toMutableMap()
-        framework::freeCompilerArgs trySet freeCompilerArgs
-        framework::outputDirectory trySet optimized?.let(::file)
-        framework.outputDirectoryProperty tryAssign outputDirectoryProperty?.let(layout.projectDirectory::dir)
+        super.applyTo(framework)
         framework::isStatic trySet isStatic
     }
 }

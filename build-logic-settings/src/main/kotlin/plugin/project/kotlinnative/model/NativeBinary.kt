@@ -1,5 +1,10 @@
 package plugin.project.kotlinnative.model
 
+import gradle.tryAssign
+import gradle.trySet
+import org.gradle.api.Project
+import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary
+
 internal interface NativeBinary {
 
     val baseName: String?
@@ -21,4 +26,16 @@ internal interface NativeBinary {
     val outputDirectory: String?
 
     val outputDirectoryProperty: String?
+
+    context(Project)
+    fun applyTo(binary: NativeBinary) {
+        binary::baseName trySet baseName
+        binary::debuggable trySet debuggable
+        binary::optimized trySet optimized
+        linkerOpts?.let(binary::linkerOpts)
+        binary::binaryOptions trySet binaryOptions?.toMutableMap()
+        binary::freeCompilerArgs trySet freeCompilerArgs
+        binary::outputDirectory trySet optimized?.let(::file)
+        binary.outputDirectoryProperty tryAssign outputDirectoryProperty?.let(layout.projectDirectory::dir)
+    }
 }
