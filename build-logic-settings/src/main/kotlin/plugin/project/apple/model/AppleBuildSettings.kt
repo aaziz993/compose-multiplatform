@@ -841,7 +841,7 @@ internal enum class AppleBuildSettings {
     mig_generate_server_sources,
     print_note_include_stack, ;
 
-    fun applyTo(settings: AppleBuildSettings, value: String?) = when (this) {
+    fun applyTo(settings: AppleBuildSettings, value: String) = when (this) {
         ADDITIONAL_SDKS -> settings.ADDITIONAL_SDKS(value)
         ALTERNATE_GROUP -> settings.ALTERNATE_GROUP(value)
         ALTERNATE_MODE -> settings.ALTERNATE_MODE(value)
