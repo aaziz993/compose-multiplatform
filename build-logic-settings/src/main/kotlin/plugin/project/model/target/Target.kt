@@ -11,7 +11,7 @@ internal data class Target(
 )
 
 context(Project)
-internal fun Target.add() = when (type) {
+internal fun Target.applyTo() = when (type) {
     TargetType.ANDROID -> targetName?.let(kotlin::androidTarget) ?: kotlin.androidTarget()
     TargetType.JVM -> targetName?.let(kotlin::jvm) ?: kotlin.jvm()
     TargetType.IOS_ARM64 -> targetName?.let(kotlin::iosArm64) ?: kotlin.iosArm64()
@@ -44,4 +44,4 @@ internal fun Target.add() = when (type) {
     TargetType.LINUX, TargetType.NATIVE, TargetType.COMMON -> Unit
 }
 
-internal operator fun List<Target>.contains(type: TargetType): Boolean = any {  target -> target.type.isDescendantOf(type) }
+internal operator fun List<Target>.contains(type: TargetType): Boolean = any { target -> target.type.isDescendantOf(type) }

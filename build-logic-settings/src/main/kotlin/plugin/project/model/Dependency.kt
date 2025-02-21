@@ -13,7 +13,7 @@ internal data class Dependency(
 ) {
 
     context(Project)
-    internal fun add(): Any = kotlin.sourceSets.matching { sourceSet -> sourceSet.name == sourceSetName }.all { sourceSet ->
+    internal fun applyTo(): Any = kotlin.sourceSets.matching { sourceSet -> sourceSet.name == sourceSetName }.all { sourceSet ->
         sourceSet.dependencies {
             dependencyNotations.forEach { dependencyNotation -> dependencyNotation.addTo(this) }
         }

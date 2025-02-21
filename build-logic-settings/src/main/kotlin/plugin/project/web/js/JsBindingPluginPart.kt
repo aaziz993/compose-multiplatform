@@ -5,7 +5,7 @@ import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
 import org.gradle.api.Plugin
 import plugin.project.model.target.TargetType
-import plugin.project.model.target.add
+import plugin.project.model.target.applyTo
 import plugin.project.model.target.contains
 import plugin.project.web.configureJsTestTasks
 import plugin.project.web.configureKotlinJsTarget
@@ -21,7 +21,7 @@ internal class JsBindingPluginPart : Plugin<Project> {
 
             moduleProperties.targets
                 .filter { target -> target.type.isDescendantOf(TargetType.JS) }
-                .forEach { target -> target.add() }
+                .forEach { target -> target.applyTo() }
 
             configureKotlinJsTarget<KotlinJsTargetDsl>()
             configureJsTestTasks<KotlinJsTargetDsl>()

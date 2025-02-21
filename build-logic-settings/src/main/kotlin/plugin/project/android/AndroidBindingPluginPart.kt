@@ -7,7 +7,7 @@ import gradle.moduleProperties
 import org.gradle.api.Project
 import org.gradle.api.Plugin
 import plugin.project.model.target.TargetType
-import plugin.project.model.target.add
+import plugin.project.model.target.applyTo
 import plugin.project.model.target.contains
 
 internal class AndroidBindingPluginPart : Plugin<Project> {
@@ -27,7 +27,7 @@ internal class AndroidBindingPluginPart : Plugin<Project> {
 
             moduleProperties.targets
                 .filter { target -> target.type.isDescendantOf(TargetType.ANDROID) }
-                .forEach { target -> target.add() }
+                .forEach { target -> target.applyTo() }
 
 //        adjustCompilations()
 //        applySettings()

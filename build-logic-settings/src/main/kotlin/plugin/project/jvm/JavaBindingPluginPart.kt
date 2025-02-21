@@ -4,14 +4,11 @@
 
 package plugin.project.jvm
 
-import gradle.all
-import gradle.kotlin
 import gradle.moduleProperties
-import org.gradle.api.Project
-import org.jetbrains.amper.gradle.tryRemove
 import org.gradle.api.Plugin
+import org.gradle.api.Project
 import plugin.project.model.target.TargetType
-import plugin.project.model.target.add
+import plugin.project.model.target.applyTo
 import plugin.project.model.target.contains
 
 /**
@@ -34,7 +31,7 @@ internal class JavaBindingPluginPart : Plugin<Project> {
             }
 
             moduleProperties.targets.filter { target -> target.type.isDescendantOf(TargetType.JVM) }
-                .forEach { target -> target.add() }
+                .forEach { target -> target.applyTo() }
 
 //        adjustJavaGeneralProperties()
 

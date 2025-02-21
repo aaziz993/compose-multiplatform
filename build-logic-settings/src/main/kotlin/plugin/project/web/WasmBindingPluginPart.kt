@@ -5,7 +5,7 @@ import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinWasmJsTargetDsl
 import org.gradle.api.Plugin
 import plugin.project.model.target.TargetType
-import plugin.project.model.target.add
+import plugin.project.model.target.applyTo
 import plugin.project.model.target.contains
 
 internal class WasmBindingPluginPart : Plugin<Project> {
@@ -18,7 +18,7 @@ internal class WasmBindingPluginPart : Plugin<Project> {
 
             moduleProperties.targets
                 .filter { target -> target.type.isDescendantOf(TargetType.WASM) }
-                .forEach { target -> target.add() }
+                .forEach { target -> target.applyTo() }
 
             configureKotlinJsTarget<KotlinWasmJsTargetDsl>()
             configureJsTestTasks<KotlinWasmJsTargetDsl>()
