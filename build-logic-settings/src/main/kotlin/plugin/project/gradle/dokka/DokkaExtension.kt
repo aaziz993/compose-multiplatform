@@ -1,16 +1,13 @@
 package plugin.project.gradle.dokka
 
-import gradle.moduleProperties
 import gradle.dokka
 import gradle.maybeNamed
+import gradle.moduleProperties
 import gradle.tryAssign
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.dokka.gradle.DokkaPlugin
 import org.jetbrains.dokka.gradle.internal.InternalDokkaGradlePluginApi
-import plugin.project.gradle.dokka.model.DokkaExternalDocumentationLinkSpec
-import plugin.project.gradle.dokka.model.DokkaPublication
-import plugin.project.gradle.dokka.model.DokkaSourceSetSpec
 
 @OptIn(InternalDokkaGradlePluginApi::class)
 internal fun Project.configureDokkaExtension() =
@@ -28,20 +25,20 @@ internal fun Project.configureDokkaExtension() =
                 dokka.dokkaPublications?.forEach { dokkaPublication ->
                     dokkaPublication.formatName?.also { formatName ->
                         dokkaPublications.maybeNamed(formatName) {
-                            configureFrom(dokkaPublication)
+                            dokkaPublication.applyTo(this)
                         }
                     } ?: dokkaPublications.configureEach {
-                        configureFrom(dokkaPublication)
+                        dokkaPublication.applyTo(this)
                     }
                 }
 
                 dokka.dokkaSourceSets?.forEach { dokkaSourceSet ->
                     dokkaSourceSet.name?.also { name ->
                         dokkaSourceSets.maybeNamed(name) {
-                            configureFrom(dokkaSourceSet)
+                            dokkaSourceSet.applyTo(this)
                         }
                     } ?: dokkaSourceSets.configureEach {
-                        configureFrom(dokkaSourceSet)
+                        dokkaSourceSet.applyTo(this)
                     }
                 }
 
@@ -49,72 +46,6 @@ internal fun Project.configureDokkaExtension() =
             }
         }
     }
-
-context(Project)
-private fun org.jetbrains.dokka.gradle.formats.DokkaPublication.configureFrom(config: DokkaPublication) = apply {
-    pluginsConfiguration
-    enabled tryAssign config.enabled
-    moduleName tryAssign config.moduleName
-    moduleVersion tryAssign config.moduleVersion
-    outputDirectory tryAssign config.outputDirectory?.let(layout.projectDirectory::dir)
-    offlineMode tryAssign config.offlineMode
-    failOnWarning tryAssign config.failOnWarning
-    suppressObviousFunctions tryAssign config.suppressObviousFunctions
-    suppressInheritedMembers tryAssign config.suppressInheritedMembers
-    config.includes?.let(includes::setFrom)
-    cacheRoot tryAssign config.cacheRoot?.let(layout.projectDirectory::dir)
-    finalizeCoroutines tryAssign config.finalizeCoroutines
-}
-
-context(Project)
-private fun org.jetbrains.dokka.gradle.engine.parameters.DokkaSourceSetSpec.configureFrom(config: DokkaSourceSetSpec) = apply {
-    sourceSetScope tryAssign config.sourceSetScope
-    suppress tryAssign config.suppress
-    displayName tryAssign config.displayName
-    config.includes?.let(includes::setFrom)
-    documentedVisibilities tryAssign config.documentedVisibilities
-    config.classpath?.let(classpath::setFrom)
-    config.sourceRoots?.let(sourceRoots::setFrom)
-    config.samples?.let(samples::setFrom)
-    reportUndocumented tryAssign config.reportUndocumented
-
-    config.sourceLinks?.forEach { sourceLink ->
-        sourceLink {
-            localDirectory tryAssign sourceLink.localDirectory?.let(layout.projectDirectory::dir)
-            sourceLink.remoteUrl?.let(::remoteUrl)
-            remoteLineSuffix tryAssign sourceLink.remoteLineSuffix
-        }
-    }
-
-    config.perPackageOptions?.forEach { perPackageOption ->
-        perPackageOption {
-            matchingRegex tryAssign perPackageOption.matchingRegex
-            suppress tryAssign perPackageOption.suppress
-            documentedVisibilities tryAssign perPackageOption.documentedVisibilities
-            skipDeprecated tryAssign perPackageOption.skipDeprecated
-            reportUndocumented tryAssign perPackageOption.reportUndocumented
-        }
-    }
-
-    config.externalDocumentationLinks?.forEach { externalDocumentationLink ->
-        externalDocumentationLink.name?.also { name ->
-            externalDocumentationLinks.named(name, externalDocumentationLink::applyTo)
-        } ?: externalDocumentationLinks.configureEach(externalDocumentationLink::applyTo)
-    }
-
-    analysisPlatform tryAssign config.analysisPlatform
-    skipEmptyPackages tryAssign config.skipEmptyPackages
-    skipDeprecated tryAssign config.skipDeprecated
-    config.suppressedFiles?.let(suppressedFiles::setFrom)
-    suppressGeneratedFiles tryAssign config.suppressGeneratedFiles
-    enableKotlinStdLibDocumentationLink tryAssign config.enableKotlinStdLibDocumentationLink
-    enableJdkDocumentationLink tryAssign config.enableJdkDocumentationLink
-    enableAndroidDocumentationLink tryAssign config.enableAndroidDocumentationLink
-    languageVersion tryAssign config.languageVersion
-    apiVersion tryAssign config.apiVersion
-    jdkVersion tryAssign config.jdkVersion
-}
-
 
 
 

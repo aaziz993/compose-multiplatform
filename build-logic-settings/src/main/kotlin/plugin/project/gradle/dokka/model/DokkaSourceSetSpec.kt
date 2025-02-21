@@ -1,6 +1,9 @@
 package plugin.project.gradle.dokka.model
 
+import gradle.tryAssign
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
+import org.jetbrains.dokka.gradle.engine.parameters.DokkaSourceSetSpec
 import org.jetbrains.dokka.gradle.engine.parameters.KotlinPlatform
 import org.jetbrains.dokka.gradle.engine.parameters.VisibilityModifier
 
@@ -229,7 +232,7 @@ internal data class DokkaSourceSetSpec(
      *
      * By default, the latest language version available to Dokka's embedded compiler will be used.
      */
-    val languageVersion: String?? = null,
+    val languageVersion: String? = null,
     /**
      * [Kotlin API version](https://kotlinlang.org/docs/compatibility-modes.html)
      * used for setting up analysis and [`@sample`](https://kotlinlang.org/docs/kotlin-doc.html#sample-identifier)
@@ -237,7 +240,7 @@ internal data class DokkaSourceSetSpec(
      *
      * By default, it will be deduced from [languageVersion].
      */
-    val apiVersion: String?? = null,
+    val apiVersion: String? = null,
     /**
      * JDK version to use when generating external documentation links for Java types.
      *
@@ -248,4 +251,54 @@ internal data class DokkaSourceSetSpec(
      * Default is JDK 11.
      */
     val jdkVersion: Int? = null,
-)
+) {
+
+    context(Project)
+    fun applyTo(spec: DokkaSourceSetSpec) {
+        spec.sourceSetScope tryAssign sourceSetScope
+        spec.suppress tryAssign suppress
+        spec.displayName tryAssign displayName
+        includes?.let(spec.includes::setFrom)
+        spec.documentedVisibilities tryAssign documentedVisibilities
+        classpath?.let(spec.classpath::setFrom)
+        sourceRoots?.let(spec.sourceRoots::setFrom)
+        samples?.let(spec.samples::setFrom)
+        spec.reportUndocumented tryAssign reportUndocumented
+
+        sourceLinks?.forEach { sourceLink ->
+            spec.sourceLink {
+                localDirectory tryAssign sourceLink.localDirectory?.let(layout.projectDirectory::dir)
+                sourceLink.remoteUrl?.let(::remoteUrl)
+                remoteLineSuffix tryAssign sourceLink.remoteLineSuffix
+            }
+        }
+
+        perPackageOptions?.forEach { perPackageOption ->
+            spec.perPackageOption {
+                matchingRegex tryAssign perPackageOption.matchingRegex
+                suppress tryAssign perPackageOption.suppress
+                documentedVisibilities tryAssign perPackageOption.documentedVisibilities
+                skipDeprecated tryAssign perPackageOption.skipDeprecated
+                reportUndocumented tryAssign perPackageOption.reportUndocumented
+            }
+        }
+
+        externalDocumentationLinks?.forEach { externalDocumentationLink ->
+            externalDocumentationLink.name?.also { name ->
+                spec.externalDocumentationLinks.named(name, externalDocumentationLink::applyTo)
+            } ?: spec.externalDocumentationLinks.configureEach(externalDocumentationLink::applyTo)
+        }
+
+        spec.analysisPlatform tryAssign analysisPlatform
+        spec.skipEmptyPackages tryAssign skipEmptyPackages
+        spec.skipDeprecated tryAssign skipDeprecated
+        suppressedFiles?.let(spec.suppressedFiles::setFrom)
+        spec.suppressGeneratedFiles tryAssign suppressGeneratedFiles
+        spec.enableKotlinStdLibDocumentationLink tryAssign enableKotlinStdLibDocumentationLink
+        spec.enableJdkDocumentationLink tryAssign enableJdkDocumentationLink
+        spec.enableAndroidDocumentationLink tryAssign enableAndroidDocumentationLink
+        spec.languageVersion tryAssign languageVersion
+        spec.apiVersion tryAssign apiVersion
+        spec.jdkVersion tryAssign jdkVersion
+    }
+}

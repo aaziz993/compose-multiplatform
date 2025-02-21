@@ -18,7 +18,7 @@ internal fun Settings.configureDevelocityConfiguration() =
             develocity {
                 develocity.buildScan?.let { buildScan ->
                     buildScan {
-                        configureFrom(buildScan)
+                        buildScan.applyTo(this)
                     }
                 }
 
@@ -53,80 +53,6 @@ internal fun Settings.configureDevelocityConfiguration() =
             }
         }
     }
-
-context(Settings)
-private fun com.gradle.develocity.agent.gradle.scan.BuildScanConfiguration.configureFrom(
-    config: BuildScanConfiguration
-) {
-    val startParameter = gradle.startParameter
-
-    val scanJournal = layout.rootDirectory.file("scan-journal.log").asFile
-
-    config.background?.let { background ->
-        background {
-            configureFrom(background)
-        }
-    }
-
-    apply {
-
-        config.tag?.let(::tag)
-        config.values?.forEach { (name, value) -> value(name, value) }
-        config.links?.forEach { (name, url) -> link(name, url) }
-
-        buildScanPublished {
-            scanJournal.appendText("${Date()} — $buildScanUri — $startParameter\n")
-        }
-
-        termsOfUseUrl tryAssign config.termsOfUseUrl
-        termsOfUseAgree tryAssign config.termsOfUseAgree
-        uploadInBackground tryAssign config.uploadInBackground
-
-        config.publishing?.let { publishing ->
-            publishing {
-                publishing.onlyIfAuthenticated?.takeIf { it }.run {
-                    onlyIf { it.isAuthenticated }
-                }
-            }
-        }
-        config.obfuscation?.let { obfuscation ->
-            obfuscation {
-                obfuscation.username?.let { username ->
-                    username {
-                        username[it] ?: username[""] ?: it
-                    }
-                }
-
-                obfuscation.hostname?.let { hostname ->
-                    hostname {
-                        hostname[it] ?: hostname[""] ?: it
-                    }
-                }
-
-                obfuscation.ipAddresses?.let { ipAddresses ->
-                    ipAddresses {
-                        it.map { ipAddresses[it.hostAddress] ?: ipAddresses[""] ?: it.hostAddress }
-                    }
-                }
-
-                obfuscation.externalProcessName?.let { externalProcessName ->
-                    externalProcessName {
-                        externalProcessName[it] ?: externalProcessName[""] ?: it
-                    }
-                }
-            }
-        }
-
-        config.capture?.let { capture ->
-            capture {
-                fileFingerprints tryAssign capture.fileFingerprints
-                buildLogging tryAssign capture.buildLogging
-                testLogging tryAssign capture.testLogging
-                resourceUsage tryAssign capture.resourceUsage
-            }
-        }
-    }
-}
 
 
 

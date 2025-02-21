@@ -1,6 +1,8 @@
 package plugin.project.kotlin.model
 
+import gradle.trySet
 import kotlinx.serialization.Serializable
+import org.jetbrains.kotlin.gradle.plugin.LanguageSettingsBuilder
 import plugin.project.kotlin.allopen.model.AllOpenSettings
 import plugin.project.kotlin.apollo.model.ApolloSettings
 import plugin.project.kotlin.atomicfu.model.AtomicFUSettings
@@ -32,4 +34,13 @@ internal data class KotlinSettings(
     val sqldelight: SqlDelightSettings = SqlDelightSettings(),
     val room: RoomSettings = RoomSettings(),
     val powerAssert: PowerAssertSettings = PowerAssertSettings(),
-) : LanguageSettings
+) : LanguageSettings {
+
+    fun applyTo(builder: LanguageSettingsBuilder) {
+        builder::languageVersion trySet languageVersion
+        builder::apiVersion trySet apiVersion
+        builder::progressiveMode trySet progressiveMode
+        languageFeatures?.forEach(builder::enableLanguageFeature)
+        optIns?.forEach(builder::optIn)
+    }
+}

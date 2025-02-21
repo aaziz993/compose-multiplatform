@@ -1,8 +1,9 @@
 package plugin.project.gradle.dokka.model
 
-import org.jetbrains.dokka.DokkaConfiguration
-import org.jetbrains.dokka.gradle.GradleDokkaSourceSetBuilder
-import org.jetbrains.dokka.gradle.GradleExternalDocumentationLinkBuilder
+import gradle.tryAssign
+import org.gradle.api.Project
+import org.jetbrains.dokka.gradle.AbstractDokkaTask
+import org.jetbrains.dokka.gradle.DokkaTask
 
 internal interface DokkaTask {
 
@@ -38,7 +39,7 @@ internal interface DokkaTask {
      * Configuration for Dokka plugins. This property is not expected to be used directly - if possible, use
      * [pluginConfiguration] blocks (preferred) or [pluginsMapConfiguration] instead.
      */
-    val pluginsConfiguration: List<DokkaConfiguration.PluginConfiguration>?
+    val pluginsConfiguration: List<PluginConfiguration>?
 
     /**
      * JSON configuration of Dokka plugins.
@@ -115,4 +116,18 @@ internal interface DokkaTask {
      */
     val failOnWarning: Boolean?
     val cacheRoot: String?
+
+    context(Project)
+    fun applyTo(task: AbstractDokkaTask) = apply {
+        task.moduleName tryAssign moduleName
+        task.moduleVersion tryAssign moduleVersion
+        task.outputDirectory tryAssign outputDirectory?.let(layout.projectDirectory::dir)
+        task.pluginsConfiguration tryAssign pluginsConfiguration
+        task.pluginsMapConfiguration tryAssign pluginsMapConfiguration
+        task.suppressObviousFunctions tryAssign suppressObviousFunctions
+        task.suppressInheritedMembers tryAssign suppressInheritedMembers
+        task.offlineMode tryAssign offlineMode
+        task.failOnWarning tryAssign failOnWarning
+        task.cacheRoot tryAssign cacheRoot?.let(project.layout.projectDirectory::dir)
+    }
 }

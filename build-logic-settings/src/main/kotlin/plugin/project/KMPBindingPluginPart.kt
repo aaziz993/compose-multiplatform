@@ -16,14 +16,6 @@ import org.jetbrains.kotlin.gradle.plugin.LanguageSettingsBuilder
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import plugin.project.kotlin.model.KotlinSettings
 
-private fun LanguageSettingsBuilder.configureFromAmperSettings(settings: KotlinSettings) {
-    ::languageVersion trySet settings.languageVersion
-    ::apiVersion trySet settings.apiVersion
-    ::progressiveMode trySet settings.progressiveMode
-    settings.languageFeatures?.forEach(::enableLanguageFeature)
-    settings.optIns?.forEach(::optIn)
-}
-
 internal class KMPBindingPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {

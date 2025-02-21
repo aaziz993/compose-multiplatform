@@ -2,7 +2,10 @@ package plugin.project.kotlin.apollo.model
 
 import com.apollographql.apollo3.compiler.PackageNameGenerator
 import com.apollographql.apollo3.compiler.hooks.ApolloCompilerJavaHooks
+import com.apollographql.apollo3.gradle.api.Service
+import gradle.tryAssign
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
 
 @Serializable
 internal data class Service(
@@ -51,4 +54,52 @@ internal data class Service(
     val testDir: String? = null,
     val useSemanticNaming: Boolean? = null,
     val warnOnDeprecatedUsages: Boolean? = null,
-)
+) {
+
+    context(Project)
+    fun applyTo(service: Service) {
+        service.addJvmOverloads tryAssign addJvmOverloads
+        service.addTypename tryAssign addTypename
+        service.alwaysGenerateTypesMatching tryAssign alwaysGenerateTypesMatching
+        service.classesForEnumsMatching tryAssign classesForEnumsMatching
+        service.codegenModels tryAssign codegenModels
+        service.compilerJavaHooks tryAssign compilerJavaHooks
+        service.debugDir tryAssign debugDir?.let(layout.projectDirectory::dir)
+        service.decapitalizeFields tryAssign decapitalizeFields
+        service.excludes tryAssign excludes
+        service.failOnWarnings tryAssign failOnWarnings
+        service.fieldsOnDisjointTypesMustMerge tryAssign fieldsOnDisjointTypesMustMerge
+        service.flattenModels tryAssign flattenModels
+        service.generateApolloMetadata tryAssign generateApolloMetadata
+        service.generateAsInternal tryAssign generateAsInternal
+        service.generateDataBuilders tryAssign generateDataBuilders
+        service.generateFragmentImplementations tryAssign generateFragmentImplementations
+        service.generateInputBuilders tryAssign generateInputBuilders
+        service.generateKotlinModels tryAssign generateKotlinModels
+        service.generateMethods tryAssign generateMethods
+        service.generateModelBuilders tryAssign generateModelBuilders
+        service.generateOperationOutput tryAssign generateOperationOutput
+        service.generateOptionalOperationVariables tryAssign generateOptionalOperationVariables
+        service.generatePrimitiveTypes tryAssign generatePrimitiveTypes
+        service.generateQueryDocument tryAssign generateQueryDocument
+        service.generateSchema tryAssign generateSchema
+        service.generatedSchemaName tryAssign generatedSchemaName
+        service.includes tryAssign includes
+        service.jsExport tryAssign jsExport
+        service.languageVersion tryAssign languageVersion
+        service.nullableFieldStyle tryAssign nullableFieldStyle
+        service.operationManifest tryAssign operationManifest?.let(::file)
+        service.operationManifestFormat tryAssign operationManifestFormat
+        service.operationOutputFile tryAssign operationOutputFile?.let(::file)
+        service.outputDir tryAssign outputDir?.let(layout.projectDirectory::dir)
+        service.packageName tryAssign packageName
+        service.requiresOptInAnnotation tryAssign requiresOptInAnnotation
+        service.schemaFile tryAssign schemaFile?.let(::file)
+        schemaFiles?.let(service.schemaFiles::setFrom)
+        service.sealedClassesForEnumsMatching tryAssign sealedClassesForEnumsMatching
+        service.sourceFolder tryAssign sourceFolder
+        service.testDir tryAssign testDir?.let(layout.projectDirectory::dir)
+        service.useSemanticNaming tryAssign useSemanticNaming
+        service.warnOnDeprecatedUsages tryAssign warnOnDeprecatedUsages
+    }
+}

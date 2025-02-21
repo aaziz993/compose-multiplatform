@@ -1,6 +1,9 @@
 package plugin.project.gradle.dokka.model
 
+import gradle.tryAssign
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
+import org.jetbrains.dokka.gradle.formats.DokkaPublication
 
 /**
  * A [DokkaPublication] controls the output produced by the Dokka Generator.
@@ -111,4 +114,20 @@ internal data class DokkaPublication(
      * If you find you need to set this property, please report your use-case https://kotl.in/dokka-issues.
      */
     val finalizeCoroutines: Boolean? = null,
-)
+) {
+
+    context(Project)
+    fun applyTo(publication: DokkaPublication) {
+        publication.enabled tryAssign enabled
+        publication.moduleName tryAssign moduleName
+        publication.moduleVersion tryAssign moduleVersion
+        publication.outputDirectory tryAssign outputDirectory?.let(layout.projectDirectory::dir)
+        publication.offlineMode tryAssign offlineMode
+        publication.failOnWarning tryAssign failOnWarning
+        publication.suppressObviousFunctions tryAssign suppressObviousFunctions
+        publication.suppressInheritedMembers tryAssign suppressInheritedMembers
+        includes?.let(publication.includes::setFrom)
+        publication.cacheRoot tryAssign cacheRoot?.let(layout.projectDirectory::dir)
+        publication.finalizeCoroutines tryAssign finalizeCoroutines
+    }
+}

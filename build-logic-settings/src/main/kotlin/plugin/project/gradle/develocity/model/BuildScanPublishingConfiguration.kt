@@ -4,5 +4,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal data class BuildScanPublishingConfiguration(
-    val onlyIfAuthenticated: Boolean? = null
+    val ifAuthenticated: Boolean? = null
 )

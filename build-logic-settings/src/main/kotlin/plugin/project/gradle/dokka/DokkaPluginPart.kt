@@ -50,7 +50,7 @@ internal class DokkaPluginPart : Plugin<Project> {
     private fun Project.configureDokkaModuleTask() =
         moduleProperties.settings.gradle.dokka.task?.let { task ->
             tasks.withType<org.jetbrains.dokka.gradle.DokkaTask> {
-                configureFrom(task)
+                task.applyTo(this)
             }
         }
 
@@ -58,22 +58,9 @@ internal class DokkaPluginPart : Plugin<Project> {
     private fun Project.configureDokkaMultiModuleTask() =
         moduleProperties.settings.gradle.dokka.task?.let { task ->
             tasks.withType<DokkaMultiModuleTask> {
-                configureFrom(task)
+                task.applyTo(this)
                 task.includes?.let(includes::setFrom)
                 fileLayout tryAssign task.fileLayout?.let(DokkaMultiModuleFileLayout::toDokkaMultiModuleFileLayout)
             }
         }
-
-    private fun AbstractDokkaTask.configureFrom(config: DokkaTask) = apply {
-        moduleName tryAssign config.moduleName
-        moduleVersion tryAssign config.moduleVersion
-        outputDirectory tryAssign config.outputDirectory?.let(project.layout.projectDirectory::dir)
-        pluginsConfiguration tryAssign config.pluginsConfiguration
-        pluginsMapConfiguration tryAssign config.pluginsMapConfiguration
-        suppressObviousFunctions tryAssign config.suppressObviousFunctions
-        suppressInheritedMembers tryAssign config.suppressInheritedMembers
-        offlineMode tryAssign config.offlineMode
-        failOnWarning tryAssign config.failOnWarning
-        cacheRoot tryAssign config.cacheRoot?.let(project.layout.projectDirectory::dir)
-    }
 }
