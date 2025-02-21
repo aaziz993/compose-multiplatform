@@ -2,6 +2,7 @@ package plugin.project.kotlin.model.language
 
 import gradle.tryAssign
 import org.gradle.api.provider.ListProperty
+import org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerOptions
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
 /**
@@ -44,12 +45,12 @@ internal interface KotlinCommonCompilerOptions : KotlinCommonCompilerToolOptions
      */
 
     val progressiveMode: Boolean?
-}
 
-internal fun org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerOptions.configureFrom(config: KotlinCommonCompilerOptions) {
-    (this as org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerToolOptions).configureFrom(config as KotlinCommonCompilerToolOptions)
-    apiVersion tryAssign config.apiVersion
-    languageVersion tryAssign config.apiVersion
-    config.optIn?.let(optIn::addAll)
-    progressiveMode tryAssign config.progressiveMode
+    fun applyTo(compilerOptions: KotlinCommonCompilerOptions) {
+        (this as KotlinCommonCompilerToolOptions).applyTo(compilerOptions)
+        compilerOptions.apiVersion tryAssign apiVersion
+        compilerOptions.languageVersion tryAssign apiVersion
+        optIn?.let(compilerOptions.optIn::addAll)
+        compilerOptions.progressiveMode tryAssign progressiveMode
+    }
 }

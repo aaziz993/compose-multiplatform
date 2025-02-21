@@ -7,7 +7,6 @@ import gradle.trySet
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.plugin.cocoapods.KotlinCocoapodsPlugin
-import plugin.project.kotlinnative.configureFrom
 
 internal fun Project.configureCocoapodsExtension() =
     plugins.withType<KotlinCocoapodsPlugin> {
@@ -27,7 +26,7 @@ internal fun Project.configureCocoapodsExtension() =
 
                     cocoapods.framework?.let { framework ->
                         framework {
-                            configureFrom(framework)
+                            framework.applyTo(this)
                         }
                     }
 

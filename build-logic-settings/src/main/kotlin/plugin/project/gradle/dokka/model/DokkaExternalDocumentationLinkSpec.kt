@@ -1,6 +1,8 @@
 package plugin.project.gradle.dokka.model
 
+import gradle.tryAssign
 import kotlinx.serialization.Serializable
+import org.jetbrains.dokka.gradle.engine.parameters.DokkaExternalDocumentationLinkSpec
 
 /**
  * Configuration builder that allows creating links leading to externally hosted
@@ -70,4 +72,13 @@ internal data class DokkaExternalDocumentationLinkSpec(
      * @see org.jetbrains.dokka.gradle.engine.parameters.DokkaSourceSetSpec.enableAndroidDocumentationLink
      */
     val enabled: Boolean? = null,
-)
+) {
+
+    fun applyTo(
+        spec: DokkaExternalDocumentationLinkSpec
+    ) = apply {
+        url?.let(spec::url)
+        packageListUrl?.let(spec::packageListUrl)
+        spec.enabled tryAssign enabled
+    }
+}

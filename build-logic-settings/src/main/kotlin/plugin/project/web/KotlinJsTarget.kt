@@ -5,24 +5,10 @@ import gradle.moduleProperties
 import gradle.tryAssign
 import gradle.trySet
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.assign
-import org.gradle.kotlin.dsl.invoke
-import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.withType
-import org.jetbrains.kotlin.gradle.dsl.JsMainFunctionExecutionMode
-import org.jetbrains.kotlin.gradle.dsl.JsModuleKind
-import org.jetbrains.kotlin.gradle.dsl.JsSourceMapEmbedMode
-import org.jetbrains.kotlin.gradle.dsl.JsSourceMapNamesPolicy
-import org.jetbrains.kotlin.gradle.targets.js.NpmVersions
 import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalMainFunctionArgumentsDsl
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
-import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
-import plugin.project.kotlin.model.language.configureFrom
 import plugin.project.web.model.BrowserSettings
-import plugin.project.web.model.KotlinJsCompilerOptions
-import plugin.project.web.model.KotlinWebpackCssRule
-import plugin.project.web.model.KotlinWebpackOutput
-import plugin.project.web.model.KotlinWebpackRule
 import plugin.project.web.node.model.NodeSettings
 
 @OptIn(ExperimentalMainFunctionArgumentsDsl::class)
@@ -38,7 +24,7 @@ internal inline fun <reified T : KotlinJsTargetDsl> Project.configureKotlinJsTar
 
             web.compilerOptions?.let { compilerOptions ->
                 compilerOptions {
-                    configureFrom(compilerOptions)
+                    compilerOptions.applyTo(this)
                     friendModulesDisabled tryAssign compilerOptions.friendModulesDisabled
                     main tryAssign compilerOptions.main
                     moduleKind tryAssign compilerOptions.moduleKind
@@ -55,17 +41,7 @@ internal inline fun <reified T : KotlinJsTargetDsl> Project.configureKotlinJsTar
             web.browser.takeIf(BrowserSettings::enabled)?.let { browser ->
                 browser {
                     testTask {
-                         targetName=""
-                         filter.includeTestsMatching()
-                         filter.excludeTestsMatching()
-                         filter.setExcludePatterns()
-                         filter.setExcludePatterns()
-                        filter.setIncludePatterns()
-                        setTestNameIncludePatterns()
-                        ignoreFailures
-                        filter.setCommandLineIncludePatterns()
-                        filter.isFailOnNoMatchingTests=true
-                         ignoreRunFailures: Boolean? = null,
+
                     }
 
                     browser.webpackTask?.let { webpack ->
@@ -74,7 +50,7 @@ internal inline fun <reified T : KotlinJsTargetDsl> Project.configureKotlinJsTar
                             inputFilesDirectory tryAssign webpack.inputFilesDirectory?.let(layout.projectDirectory::dir)
                             entryModuleName tryAssign webpack.entryModuleName
                             esModules tryAssign webpack.esModules
-                            webpack.output?.let(output::configureFrom)
+                            webpack.output?.applyTo(output)
                             outputDirectory tryAssign webpack.outputDirectory?.let(layout.projectDirectory::dir)
                             mainOutputFileName tryAssign webpack.mainOutputFileName
                             ::debug trySet webpack.debug
@@ -93,9 +69,7 @@ internal inline fun <reified T : KotlinJsTargetDsl> Project.configureKotlinJsTar
                         commonWebpackConfig {
                             ::mode trySet commonWebpackConfig.mode
                             ::entry trySet commonWebpackConfig.entry?.let(::file)
-                            commonWebpackConfig.output?.let {
-                                output?.configureFrom(it)
-                            }
+                            ::output trySet commonWebpackConfig.output?.toKotlinWebPackOutput()
                             ::outputPath trySet commonWebpackConfig.outputPath?.let(::file)
                             ::outputFileName trySet commonWebpackConfig.outputFileName
                             ::configDirectory trySet commonWebpackConfig.configDirectory?.let(::file)
@@ -111,14 +85,10 @@ internal inline fun <reified T : KotlinJsTargetDsl> Project.configureKotlinJsTar
                             ::progressReporterPathFilter trySet commonWebpackConfig.progressReporterPathFilter?.let(::file)
                             ::resolveFromModulesFirst trySet commonWebpackConfig.resolveFromModulesFirst
                             commonWebpackConfig.cssSupport?.let { cssSupport ->
-                                cssSupport {
-                                    configureFrom(cssSupport)
-                                }
+                                cssSupport(cssSupport::applyTo)
                             }
-                            commonWebpackConfig.cssSupport?.let { cssSupport ->
-                                scssSupport {
-                                    configureFrom(cssSupport)
-                                }
+                            commonWebpackConfig.cssSupport?.let { scssSupport ->
+                                scssSupport(scssSupport::applyTo)
                             }
                         }
                     }
@@ -137,21 +107,4 @@ internal inline fun <reified T : KotlinJsTargetDsl> Project.configureKotlinJsTar
         }
     }
 
-private fun org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackOutput.configureFrom(
-    config: KotlinWebpackOutput
-) {
-    ::library trySet config.library
-    ::libraryTarget trySet config.libraryTarget
-    ::globalObject trySet config.globalObject
-}
 
-private fun org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackCssRule.configureFrom(
-    config: KotlinWebpackCssRule
-) {
-    mode tryAssign config.mode
-    enabled tryAssign config.enabled
-    test tryAssign config.test
-    include tryAssign config.include
-    exclude tryAssign config.exclude
-    config.validate?.takeIf { it }.run { validate() }
-}

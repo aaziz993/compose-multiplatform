@@ -1,5 +1,8 @@
 package plugin.project.web.model
 
+import gradle.tryAssign
+import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackRule
+
 internal interface KotlinWebpackRule {
 
     val enabled: Boolean?
@@ -16,4 +19,12 @@ internal interface KotlinWebpackRule {
      * Returning false will skip the rule silently. To terminate the build instead, throw an error.
      */
     val validate: Boolean?
+
+    fun applyTo(webpackRule: KotlinWebpackRule) {
+        webpackRule.enabled tryAssign enabled
+        webpackRule.test tryAssign test
+        webpackRule.include tryAssign include
+        webpackRule.exclude tryAssign exclude
+        validate?.takeIf { it }.run { webpackRule.validate() }
+    }
 }

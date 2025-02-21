@@ -98,12 +98,8 @@ private fun org.jetbrains.dokka.gradle.engine.parameters.DokkaSourceSetSpec.conf
 
     config.externalDocumentationLinks?.forEach { externalDocumentationLink ->
         externalDocumentationLink.name?.also { name ->
-            externalDocumentationLinks.maybeNamed(name) {
-                configureFrom(externalDocumentationLink)
-            }
-        } ?: externalDocumentationLinks.configureEach {
-            configureFrom(externalDocumentationLink)
-        }
+            externalDocumentationLinks.named(name, externalDocumentationLink::applyTo)
+        } ?: externalDocumentationLinks.configureEach(externalDocumentationLink::applyTo)
     }
 
     analysisPlatform tryAssign config.analysisPlatform
@@ -117,14 +113,6 @@ private fun org.jetbrains.dokka.gradle.engine.parameters.DokkaSourceSetSpec.conf
     languageVersion tryAssign config.languageVersion
     apiVersion tryAssign config.apiVersion
     jdkVersion tryAssign config.jdkVersion
-}
-
-private fun org.jetbrains.dokka.gradle.engine.parameters.DokkaExternalDocumentationLinkSpec.configureFrom(
-    config: DokkaExternalDocumentationLinkSpec
-) = apply {
-    config.url?.let(::url)
-    config.packageListUrl?.let(::packageListUrl)
-    enabled tryAssign config.enabled
 }
 
 

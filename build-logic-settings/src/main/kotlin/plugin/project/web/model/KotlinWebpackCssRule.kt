@@ -1,8 +1,8 @@
 package plugin.project.web.model
 
+import gradle.tryAssign
 import kotlinx.serialization.Serializable
-import org.gradle.api.provider.Property
-import org.gradle.api.tasks.Input
+import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackCssRule
 
 @Serializable
 internal data class KotlinWebpackCssRule(
@@ -19,5 +19,13 @@ internal data class KotlinWebpackCssRule(
      */
     override val validate: Boolean? = null,
     val mode: String? = null
-) : KotlinWebpackRule
+) : KotlinWebpackRule {
+
+    fun applyTo(
+        webpackRule: KotlinWebpackCssRule
+    ) {
+        (this as KotlinWebpackRule).applyTo(webpackRule)
+        webpackRule.mode tryAssign mode
+    }
+}
 

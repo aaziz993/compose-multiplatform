@@ -1,6 +1,7 @@
 package plugin.project.kotlin.model.language
 
 import gradle.tryAssign
+import org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerToolOptions
 
 /**
  * Common options for all Kotlin platforms' compilations and tools.
@@ -46,12 +47,12 @@ internal interface KotlinCommonCompilerToolOptions {
      */
 
     val freeCompilerArgs: List<String>?
-}
 
-internal fun org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerToolOptions.configureFrom(config: KotlinCommonCompilerToolOptions) {
-    allWarningsAsErrors tryAssign config.allWarningsAsErrors
-    extraWarnings tryAssign config.extraWarnings
-    suppressWarnings tryAssign config.suppressWarnings
-    verbose tryAssign config.verbose
-    freeCompilerArgs tryAssign config.freeCompilerArgs
+    fun applyTo(compilerToolOptions: KotlinCommonCompilerToolOptions) {
+        compilerToolOptions.allWarningsAsErrors tryAssign allWarningsAsErrors
+        compilerToolOptions.extraWarnings tryAssign extraWarnings
+        compilerToolOptions.suppressWarnings tryAssign suppressWarnings
+        compilerToolOptions.verbose tryAssign verbose
+        compilerToolOptions.freeCompilerArgs tryAssign freeCompilerArgs
+    }
 }

@@ -16,24 +16,10 @@ internal fun Project.configureKotlinNativeTarget() =
                 binaries {
                     binaries.framework?.let { framework ->
                         framework {
-                            configureFrom(framework)
+                            framework.applyTo(this)
                         }
                     }
                 }
             }
         }
     }
-
-context(Project)
-internal fun org.jetbrains.kotlin.gradle.plugin.mpp.Framework.configureFrom(framework: Framework) {
-    ::baseName trySet framework.baseName
-    ::transitiveExport trySet framework.transitiveExport
-    ::debuggable trySet framework.debuggable
-    ::optimized trySet framework.optimized
-    framework.linkerOpts?.let(::linkerOpts)
-    ::binaryOptions trySet framework.binaryOptions?.toMutableMap()
-    ::freeCompilerArgs trySet framework.freeCompilerArgs
-    ::outputDirectory trySet framework.optimized?.let(::file)
-    outputDirectoryProperty tryAssign framework.outputDirectoryProperty?.let(layout.projectDirectory::dir)
-    ::isStatic trySet framework.isStatic
-}

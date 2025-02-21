@@ -64,4 +64,14 @@ internal interface TestFilter {
      * The default is true.
      */
     val failOnNoMatchingTests: Boolean?
+
+    fun applyTo(defaultTestFilter: org.gradle.api.tasks.testing.TestFilter) {
+        includeTestsMatchings?.forEach(defaultTestFilter::includeTestsMatching)
+        excludeTestsMatchings?.forEach(defaultTestFilter::excludeTestsMatching)
+        includePatterns?.let(defaultTestFilter.includePatterns::addAll)
+        excludePatterns?.let(defaultTestFilter.excludePatterns::addAll)
+        includeTests?.forEach { (className, methodName) -> defaultTestFilter.includeTest(className, methodName) }
+        excludeTests?.forEach { (className, methodName) -> defaultTestFilter.excludeTest(className, methodName) }
+        failOnNoMatchingTests?.let(defaultTestFilter::setFailOnNoMatchingTests)
+    }
 }
