@@ -1,5 +1,6 @@
 package plugin.project.gradle.spotless.model
 
+import com.diffplug.gradle.spotless.FormatExtension
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -12,4 +13,12 @@ internal data class LicenseHeaderConfig(
     val yearSeparator: String? = null,
     val skipLinesMatching: String? = null,
     val updateYearWithLatest: Boolean? = null
-)
+){
+    fun applyTo(license: FormatExtension.LicenseHeaderConfig){
+        name?.let(license::named)
+        contentPattern?.let(license::onlyIfContentMatches)
+        yearSeparator?.let(license::yearSeparator)
+        skipLinesMatching?.let(license::skipLinesMatching)
+        updateYearWithLatest?.let(license::updateYearWithLatest)
+    }
+}

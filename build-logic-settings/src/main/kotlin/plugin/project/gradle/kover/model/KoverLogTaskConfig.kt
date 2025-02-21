@@ -1,8 +1,10 @@
 package plugin.project.gradle.kover.model;
 
+import gradle.tryAssign
 import kotlinx.kover.gradle.plugin.dsl.AggregationType
 import kotlinx.kover.gradle.plugin.dsl.CoverageUnit
 import kotlinx.kover.gradle.plugin.dsl.GroupingEntityType
+import kotlinx.kover.gradle.plugin.dsl.KoverLogTaskConfig
 import kotlinx.serialization.Serializable
 
 /**
@@ -69,4 +71,14 @@ internal data class KoverLogTaskConfig(
      * [AggregationType.COVERED_PERCENTAGE] by default.
      */
     val aggregationForGroup: AggregationType? = null
-)
+) {
+
+    fun applyTo(log: KoverLogTaskConfig) {
+        log.onCheck tryAssign onCheck
+        log.header tryAssign header
+        log.format tryAssign format
+        log.groupBy tryAssign groupBy
+        log.coverageUnits tryAssign coverageUnits
+        log.aggregationForGroup tryAssign aggregationForGroup
+    }
+}

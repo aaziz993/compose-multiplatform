@@ -1,8 +1,14 @@
 package plugin.project.gradle.doctor.model
 
 import com.osacky.doctor.AppleRosettaTranslationCheckMode
+import com.osacky.doctor.DoctorExtension
+import gradle.isCI
+import gradle.tryAssign
+import gradle.unregister
+import org.gradle.api.Project
 
 internal interface DoctorExtension {
+
     /**
      * Throw an exception when multiple Gradle Daemons are running.
      */
@@ -86,4 +92,25 @@ internal interface DoctorExtension {
     /** Configures JAVA_HOME-specific behavior.
      */
     val javaHome: JavaHomeHandler?
+
+    fun applyTo(extension: DoctorExtension) {
+        extension.disallowMultipleDaemons tryAssign disallowMultipleDaemons
+        extension.downloadSpeedWarningThreshold tryAssign downloadSpeedWarningThreshold
+        extension.GCWarningThreshold tryAssign GCWarningThreshold
+        extension.GCFailThreshold tryAssign GCFailThreshold
+        extension.daggerThreshold tryAssign daggerThreshold
+        extension.enableTestCaching tryAssign enableTestCaching
+        extension.failOnEmptyDirectories tryAssign failOnEmptyDirectories
+        extension.allowBuildingAllAndroidAppsSimultaneously tryAssign allowBuildingAllAndroidAppsSimultaneously
+        extension.warnWhenJetifierEnabled tryAssign warnWhenJetifierEnabled
+        extension.negativeAvoidanceThreshold tryAssign negativeAvoidanceThreshold
+        extension.warnWhenNotUsingParallelGC tryAssign warnWhenNotUsingParallelGC
+        extension.disallowCleanTaskDependencies tryAssign disallowCleanTaskDependencies
+        extension.warnIfKotlinCompileDaemonFallback tryAssign warnIfKotlinCompileDaemonFallback
+        extension.appleRosettaTranslationCheckMode tryAssign appleRosettaTranslationCheckMode
+
+        javaHome?.let { javaHome ->
+            extension.javaHome (javaHome::applyTo)
+        }
+    }
 }

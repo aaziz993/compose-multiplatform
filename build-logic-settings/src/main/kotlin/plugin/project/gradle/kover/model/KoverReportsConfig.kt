@@ -1,6 +1,10 @@
 package plugin.project.gradle.kover.model
 
+import gradle.tryAssign
+import kotlin.collections.map
+import kotlinx.kover.gradle.plugin.dsl.KoverReportsConfig
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
 
 /**
  * Configuration of Kover reports.
@@ -59,5 +63,52 @@ internal data class KoverReportsConfig(
      *
      * See details in [total].
      */
-    public val total: KoverReportSetConfig?=null,
-)
+    public val total: KoverReportSetConfig? = null,
+) {
+
+    context(Project)
+    fun applyTo(reports: KoverReportsConfig) {
+        filters?.let { filters ->
+            reports.filters(filters::applyTo)
+        }
+
+        verify?.let { verify ->
+            reports.verify(verify::applyTo)
+        }
+
+        total?.let { total ->
+            reports.total {
+                total.filters?.let { filters ->
+                    filters(filters::applyTo)
+                }
+
+                total.html?.let { html ->
+                    html {
+                        html.applyTo(this)
+                    }
+                }
+
+                total.xml?.let { xml ->
+                    xml {
+                        xml.applyTo(this)
+                    }
+                }
+
+                total.binary?.let { binary ->
+                    binary {
+                        binary.applyTo(this)
+                    }
+                }
+                total.verify?.let { verify ->
+                    verify(verify::applyTo)
+                }
+
+                total.log?.let { log ->
+                    log (log::applyTo)
+                }
+
+                additionalBinaryReports tryAssign total.additionalBinaryReports?.map(::file)
+            }
+        }
+    }
+}

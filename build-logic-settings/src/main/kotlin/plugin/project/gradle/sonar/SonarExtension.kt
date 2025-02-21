@@ -1,5 +1,6 @@
 package plugin.project.gradle.sonar
 
+import gradle.libs
 import gradle.moduleProperties
 import gradle.sonar
 import org.gradle.api.Project
@@ -12,19 +13,10 @@ import org.sonarqube.gradle.SonarQubePlugin
 // Information pertaining to the analysis as a whole has to be configured in the sonar block of this project.
 // Any properties set on the command line also apply to this project.
 internal fun Project.configureSonarExtension() =
-    plugins.withType<SonarQubePlugin> {
+    pluginManager.withPlugin(libs.plugins.sonarqube.get().pluginId) {
         moduleProperties.settings.gradle.sonar.let { sonar ->
             sonar {
-                sonar.skipProject?.let(::setSkipProject)
-                properties {
-                    property("sonar.projectVersion", version)
-                }
-                sonar.properties?.let { properties ->
-                    properties {
-                        properties.forEach { (key, value) -> property(key, value) }
-                    }
-                }
-                sonar.androidVariant?.let(::setAndroidVariant)
+                sonar.applyTo(this)
             }
         }
     }

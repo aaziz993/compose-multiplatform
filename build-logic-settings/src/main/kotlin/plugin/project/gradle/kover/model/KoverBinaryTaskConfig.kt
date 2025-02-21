@@ -1,6 +1,9 @@
 package plugin.project.gradle.kover.model;
 
+import gradle.tryAssign
+import kotlinx.kover.gradle.plugin.dsl.KoverBinaryTaskConfig
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
 
 /**
  * Configure Kover binary Report.
@@ -34,4 +37,11 @@ internal data class KoverBinaryTaskConfig(
      * This value should not be hardcoded, it is always necessary to read the actual value from the property.
      */
     val file: String? = null,
-)
+) {
+
+    context(Project)
+    fun applyTo(binary: KoverBinaryTaskConfig) {
+        binary.onCheck tryAssign onCheck
+        binary.file tryAssign file?.let(::file)
+    }
+}

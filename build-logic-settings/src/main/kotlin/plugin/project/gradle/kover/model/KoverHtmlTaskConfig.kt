@@ -1,6 +1,9 @@
 package plugin.project.gradle.kover.model
 
+import gradle.tryAssign
+import kotlinx.kover.gradle.plugin.dsl.KoverHtmlTaskConfig
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
 
 /**
  * Configure Kover HTML Report.
@@ -48,4 +51,13 @@ internal data class KoverHtmlTaskConfig(
      * This value should not be hardcoded, it is always necessary to read the actual value from the property.
      */
     val htmlDir: String? = null,
-)
+) {
+
+    context(Project)
+    fun applyTo(html: KoverHtmlTaskConfig) {
+        html.title tryAssign title
+        html.charset tryAssign charset
+        html.onCheck tryAssign onCheck
+        html.htmlDir tryAssign htmlDir?.let(layout.projectDirectory::dir)
+    }
+}

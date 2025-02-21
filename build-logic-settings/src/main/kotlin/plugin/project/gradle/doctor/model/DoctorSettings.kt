@@ -1,7 +1,10 @@
 package plugin.project.gradle.doctor.model
 
 import com.osacky.doctor.AppleRosettaTranslationCheckMode
+import gradle.isCI
+import gradle.unregister
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
 
 @Suppress("PropertyName", "ktlint:standard:property-naming")
 @Serializable
@@ -26,4 +29,16 @@ internal data class DoctorSettings(
     override val warnIfKotlinCompileDaemonFallback: Boolean? = null,
     override val appleRosettaTranslationCheckMode: AppleRosettaTranslationCheckMode? = null,
     override val javaHome: JavaHomeHandler? = null,
-) : DoctorExtension
+) : DoctorExtension{
+
+    context(Project)
+    fun applyTo(extension: com.osacky.doctor.DoctorExtension) {
+        super.applyTo(extension)
+        val enableTasksMonitoring = isCI || enableTaskMonitoring
+
+        if (!enableTasksMonitoring) {
+            logger.info("Gradle Doctor task monitoring is disabled.")
+            gradle.sharedServices.unregister("listener-service")
+        }
+    }
+}

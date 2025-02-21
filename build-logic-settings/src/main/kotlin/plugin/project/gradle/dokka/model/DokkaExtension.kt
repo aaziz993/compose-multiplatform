@@ -1,9 +1,15 @@
 package plugin.project.gradle.dokka.model
 
+import gradle.maybeNamed
+import gradle.tryAssign
+import org.gradle.api.Project
+import org.jetbrains.dokka.gradle.DokkaExtension
+
 /**
  * Configure the behaviour of the [DokkaBasePlugin].
  */
 internal interface DokkaExtension {
+
     /**
      * Base directory into which all [DokkaPublication]s will be produced.
      * By default, Dokka will generate all [DokkaPublication]s into a subdirectory inside [basePublicationsDirectory].
@@ -21,8 +27,10 @@ internal interface DokkaExtension {
      * ```
      */
     val basePublicationsDirectory: String?
+
     /** Default Dokka Gradle Plugin cache directory */
     val dokkaCacheDirectory: String?
+
     /**
      * The display name used to refer to the module.
      * It is used for the table of contents, navigation, logging, etc.
@@ -30,6 +38,7 @@ internal interface DokkaExtension {
      * Default: the [current project name][org.gradle.api.Project.name].
      */
     val moduleName: String?
+
     /**
      * The displayed module version.
      *
@@ -60,6 +69,7 @@ internal interface DokkaExtension {
      * Default: the current project's [path][org.gradle.api.Project.getPath] as a file path.
      */
     val modulePath: String?
+
     /**
      * An arbitrary string used to group source sets that originate from different Gradle subprojects.
      *
@@ -69,6 +79,7 @@ internal interface DokkaExtension {
      * Defaults to [the Gradle path of the subproject][org.gradle.api.Project.getPath].
      */
     val sourceSetScopeDefault: String?
+
     /**
      * The Konan home directory, which contains libraries for Kotlin/Native development.
      *
@@ -109,6 +120,7 @@ internal interface DokkaExtension {
      * ```
      */
     val dokkaPublications: List<DokkaPublication>?
+
     /**
      * The container for all [DokkaSourceSet][DokkaSourceSetSpec]s in the current project.
      *
@@ -144,6 +156,7 @@ internal interface DokkaExtension {
      * ```
      */
     val dokkaSourceSets: List<DokkaSourceSetSpec>?
+
     /**
      * The default version of Dokka dependencies that are used at runtime during generation.
      *
@@ -151,4 +164,37 @@ internal interface DokkaExtension {
      * if you want to use a newer or older version of Dokka at runtime.
      */
     val dokkaEngineVersion: String?
+
+    context(Project)
+    fun applyTo(extension: DokkaExtension) {
+        extension.basePublicationsDirectory tryAssign basePublicationsDirectory?.let(layout.projectDirectory::dir)
+        extension.dokkaCacheDirectory tryAssign dokkaCacheDirectory?.let(layout.projectDirectory::dir)
+        extension.moduleName tryAssign moduleName
+        extension.moduleVersion tryAssign moduleVersion
+        extension.modulePath tryAssign modulePath
+        extension.sourceSetScopeDefault tryAssign sourceSetScopeDefault
+        extension.konanHome tryAssign konanHome?.let(::file)
+
+        dokkaPublications?.forEach { dokkaPublication ->
+            dokkaPublication.formatName?.also { formatName ->
+                extension.dokkaPublications.maybeNamed(formatName) {
+                    dokkaPublication.applyTo(this)
+                }
+            } ?: extension.dokkaPublications.configureEach {
+                dokkaPublication.applyTo(this)
+            }
+        }
+
+        dokkaSourceSets?.forEach { dokkaSourceSet ->
+            dokkaSourceSet.name?.also { name ->
+                extension.dokkaSourceSets.maybeNamed(name) {
+                    dokkaSourceSet.applyTo(this)
+                }
+            } ?: extension.dokkaSourceSets.configureEach {
+                dokkaSourceSet.applyTo(this)
+            }
+        }
+
+        extension.dokkaEngineVersion tryAssign dokkaEngineVersion
+    }
 }

@@ -1,5 +1,7 @@
 package plugin.project.gradle.doctor.model
 
+import com.osacky.doctor.JavaHomeHandler
+import gradle.tryAssign
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -21,4 +23,12 @@ internal data class JavaHomeHandler(
      * other instructions that you want to link for developers on your team if they encounter an issue.
      */
     val extraMessage: String? = null,
-)
+) {
+
+    fun applyTo(handler: JavaHomeHandler) {
+        handler.ensureJavaHomeMatches tryAssign ensureJavaHomeMatches
+        handler.ensureJavaHomeIsSet tryAssign ensureJavaHomeIsSet
+        handler.failOnError tryAssign failOnError
+        handler.extraMessage tryAssign extraMessage
+    }
+}

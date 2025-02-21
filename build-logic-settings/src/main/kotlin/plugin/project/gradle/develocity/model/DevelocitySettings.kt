@@ -1,7 +1,11 @@
 package plugin.project.gradle.develocity.model
 
+import gradle.isCI
+import gradle.projectProperties
+import gradle.tryAssign
 import kotlinx.serialization.Serializable
-import plugin.settings.model.LocalBuildCache
+import org.gradle.api.initialization.Settings
+import plugin.settings.model.DirectoryBuildCache
 import plugin.settings.model.RemoteBuildCache
 
 @Serializable
@@ -13,7 +17,45 @@ internal data class DevelocitySettings(
     override val allowUntrustedServer: Boolean? = null,
     override val accessKey: String? = null,
     val enabled: Boolean = true,
-    val localCache: LocalBuildCache = LocalBuildCache(),
+    val localCache: DirectoryBuildCache = DirectoryBuildCache(),
     val remoteCache: RemoteBuildCache = RemoteBuildCache(),
     val git: Git? = null,
-) : DevelocityConfiguration
+) : DevelocityConfiguration {
+
+    context(Settings)
+    fun applyTo(configuration: com.gradle.develocity.agent.gradle.DevelocityConfiguration) {
+        buildScan?.let { buildScan ->
+            configuration.buildScan {
+                buildScan.applyTo(this)
+            }
+        }
+
+        configuration.server tryAssign server
+        configuration.edgeDiscovery tryAssign edgeDiscovery
+        configuration.projectId tryAssign projectId
+        configuration.allowUntrustedServer tryAssign allowUntrustedServer
+        configuration.accessKey tryAssign accessKey
+
+        if (isCI) {
+            buildCache {
+                localCache.let { localCache ->
+                    local {
+                        localCache.applyTo(this)
+                    }
+                }
+                remoteCache.let { remoteCache ->
+                    remote(configuration.buildCache) {
+                        remoteCache.applyTo(this)
+
+                        // Check access key presence to avoid build cache errors on PR builds when access key is not present
+                        val accessKey = System.getenv().getOrElse("GRADLE_ENTERPRISE_ACCESS_KEY") {
+                            projectProperties.settings.gradle.gradleEnterpriseAccessKey
+                        }
+
+                        isPush = remoteCache.isPush == true && accessKey != null
+                    }
+                }
+            }
+        }
+    }
+}

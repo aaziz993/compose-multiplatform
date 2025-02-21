@@ -1,6 +1,5 @@
 package plugin.project.gradle.kover.model
 
-import kotlinx.kover.gradle.plugin.dsl.KoverLogTaskConfig
 import kotlinx.serialization.Serializable
 
 /**

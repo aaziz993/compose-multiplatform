@@ -1,5 +1,7 @@
 package plugin.project.gradle.kover.model
 
+import gradle.tryAssign
+import kotlinx.kover.gradle.plugin.dsl.KoverVerifyTaskConfig
 import kotlinx.serialization.Serializable
 
 /**
@@ -38,5 +40,11 @@ internal data class KoverVerifyTaskConfig(
      *
      * `true` for total verification of all code in the project, `false` otherwise.
      */
-    public val onCheck: Boolean? = null
-)
+    val onCheck: Boolean? = null
+) {
+
+    fun applyTo(verify: KoverVerifyTaskConfig) {
+        verify.warningInsteadOfFailure tryAssign warningInsteadOfFailure
+        verify.onCheck tryAssign onCheck
+    }
+}

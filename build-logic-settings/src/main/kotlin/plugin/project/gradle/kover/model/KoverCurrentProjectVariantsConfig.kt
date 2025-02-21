@@ -1,5 +1,7 @@
 package plugin.project.gradle.kover.model
 
+import gradle.tryAssign
+import kotlinx.kover.gradle.plugin.dsl.KoverCurrentProjectVariantsConfig
 import kotlinx.serialization.Serializable
 
 /**
@@ -34,4 +36,23 @@ import kotlinx.serialization.Serializable
 internal data class KoverCurrentProjectVariantsConfig(
     val sources: KoverVariantSources? = null,
     val instrumentation: KoverProjectInstrumentation? = null,
-)
+) {
+
+    fun applyTo(project: KoverCurrentProjectVariantsConfig) {
+        sources?.let { sources ->
+            project.sources {
+                excludeJava tryAssign sources.excludeJava
+                excludedSourceSets tryAssign sources.excludedSourceSets
+            }
+        }
+
+        instrumentation?.let { instrumentation ->
+            project.instrumentation {
+                disabledForAll tryAssign instrumentation.disabledForAll
+                disabledForTestTasks tryAssign instrumentation.disabledForTestTasks
+                excludedClasses tryAssign instrumentation.excludedClasses
+                includedClasses tryAssign instrumentation.includedClasses
+            }
+        }
+    }
+}

@@ -1,5 +1,7 @@
 package plugin.project.gradle.kover.model
 
+import gradle.tryAssign
+import kotlinx.kover.gradle.plugin.dsl.KoverVerificationRulesConfig
 import kotlinx.serialization.Serializable
 
 /**
@@ -31,4 +33,9 @@ internal data class KoverVerificationRulesConfig(
      * `false` by default.
      */
     val warningInsteadOfFailure: Boolean? = null
-)
+) {
+
+    fun applyTo(rules: KoverVerificationRulesConfig) {
+        rules.warningInsteadOfFailure tryAssign warningInsteadOfFailure
+    }
+}

@@ -1,5 +1,8 @@
 package plugin.settings.model
 
+import org.gradle.api.initialization.Settings
+import org.gradle.caching.configuration.BuildCache
+
 /**
  * Configuration object for a build cache.
  *
@@ -16,4 +19,9 @@ internal interface BuildCache {
      * Sets whether a given build can store outputs in the build cache.
      */
     val isPush: Boolean?
+
+    fun applyTo(cache: BuildCache) {
+        isEnabled?.let(cache::setEnabled)
+        isPush?.let(cache::setPush)
+    }
 }

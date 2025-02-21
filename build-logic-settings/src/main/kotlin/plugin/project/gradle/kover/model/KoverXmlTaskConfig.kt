@@ -1,6 +1,9 @@
 package plugin.project.gradle.kover.model
 
+import gradle.tryAssign
+import kotlinx.kover.gradle.plugin.dsl.KoverXmlTaskConfig
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
 
 /**
  * Configure Kover XML Report.
@@ -43,4 +46,12 @@ internal data class KoverXmlTaskConfig(
      * `"Kover Gradle Plugin XML report for $projectPath"` by default.
      */
     val title: String? = null
-)
+) {
+
+    context(Project)
+    fun applyTo(xml: KoverXmlTaskConfig) {
+        xml.onCheck tryAssign onCheck
+        xml.xmlFile tryAssign xmlFile?.let(::file)
+        xml.title tryAssign title
+    }
+}

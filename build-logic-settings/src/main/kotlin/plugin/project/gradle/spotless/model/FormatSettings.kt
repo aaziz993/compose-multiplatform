@@ -1,5 +1,7 @@
 package plugin.project.gradle.spotless.model
 
+import com.diffplug.gradle.spotless.JavaExtension
+import com.diffplug.gradle.spotless.KotlinExtension
 import com.diffplug.spotless.LineEnding
 import kotlinx.serialization.Serializable
 
@@ -59,4 +61,59 @@ internal data class FormatSettings(
      * [.toggleOffOn].
      */
     val toggleOffOnDisable: Boolean? = null
-) : FormatExtension
+) : FormatExtension {
+
+    override fun applyTo(extension: com.diffplug.gradle.spotless.FormatExtension) {
+        super.applyTo(extension)
+        if (extension is JavaExtension) {
+            importOrder?.let { importOrder ->
+                importOrder.applyTo(
+                    importOrder.importOrder?.let { extension.importOrder(*it.toTypedArray()) }
+                        ?: importOrder.importOrderFile?.let(extension::importOrderFile)!!,
+                )
+            }
+
+            removeIfUnusedImports?.let { extension.removeUnusedImports() }
+            removeUnusedImports?.let(extension::removeUnusedImports)
+
+            googleJavaFormat?.let { googleJavaFormat ->
+                googleJavaFormat.applyTo(
+                    googleJavaFormat.version?.let(extension::googleJavaFormat)
+                        ?: extension.googleJavaFormat(),
+                )
+            }
+
+            palantirJavaFormat?.let { palantirJavaFormat ->
+                palantirJavaFormat.applyTo(
+                    palantirJavaFormat.version?.let(extension::palantirJavaFormat)
+                        ?: extension.palantirJavaFormat(),
+                )
+            }
+
+            eclipse?.let { eclipse ->
+                eclipse.applyTo(eclipse.formatterVersion?.let(extension::eclipse) ?: extension.eclipse())
+            }
+
+            formatAnnotations?.let { formatAnnotations ->
+                formatAnnotations.applyTo(extension.formatAnnotations())
+            }
+
+            cleanthat?.let { cleanthat ->
+                cleanthat.applyTo(extension.cleanthat())
+            }
+        }
+
+        (this as? KotlinExtension)?.let(::applyTo)
+
+        eclipseWtp?.let { eclipseWtp ->
+            eclipseWtp.applyTo(
+                eclipseWtp.version?.let { extension.eclipseWtp(eclipseWtp.type, it) }
+                    ?: extension.eclipseWtp(eclipseWtp.type),
+            )
+        }
+        toggleOffOnRegex?.let(extension::toggleOffOnRegex)
+        toggleOffOn?.let { (off, on) -> extension.toggleOffOn(off, on) }
+        toggleIfOffOn?.takeIf { it }.run { extension.toggleOffOn() }
+        toggleOffOnDisable?.takeIf { it }.run { extension.toggleOffOnDisable() }
+    }
+}

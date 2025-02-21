@@ -1,5 +1,10 @@
 package plugin.project.gradle.sonar.model
 
+import kotlin.collections.component1
+import kotlin.collections.component2
+import org.gradle.api.Project
+import org.sonarqube.gradle.SonarExtension
+
 /**
  * Adds an action that configures SonarQube properties for the associated Gradle project.
  *
@@ -53,4 +58,18 @@ internal interface SonarExtension {
      * @return Name of the variant to analyze. If null we'll take the first release variant
      */
     val androidVariant: String?
+
+    context(Project)
+    fun applyTo(extension: SonarExtension) {
+        skipProject?.let(extension::setSkipProject)
+        extension.properties {
+            property("sonar.projectVersion", version)
+        }
+        properties?.let { properties ->
+            extension.properties {
+                properties.forEach { (key, value) -> property(key, value) }
+            }
+        }
+        androidVariant?.let(extension::setAndroidVariant)
+    }
 }

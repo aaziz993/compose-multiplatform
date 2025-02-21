@@ -1,13 +1,17 @@
 package plugin.project.gradle.toolchainmanagement
 
+import gradle.id
+import gradle.libs
+import gradle.plugin
+import gradle.plugins
+import gradle.projectProperties
 import org.gradle.api.initialization.Settings
-import org.gradle.kotlin.dsl.withType
-import org.gradle.toolchains.foojay.FoojayToolchainsPlugin
 
 @Suppress("UnstableApiUsage")
 internal fun Settings.configureToolchainManagement() =
-    plugins.withType<FoojayToolchainsPlugin> {
-        toolchainManagement {
+    pluginManager.withPlugin(libs.plugins.plugin("foojay-resolver-convention").id) {
+        projectProperties.settings.gradle.toolchainManagement.let { toolchainManagement ->
+            toolchainManagement(toolchainManagement::applyTo)
         }
     }
 
