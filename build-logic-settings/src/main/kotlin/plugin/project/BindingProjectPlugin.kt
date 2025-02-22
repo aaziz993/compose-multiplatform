@@ -46,6 +46,9 @@ internal class BindingProjectPlugin : Plugin<Project> {
 
     override fun apply(target: Project) = with(SLF4JProblemReporterContext()) {
         with(target) {
+
+            applyRepositoryAttributes()
+
             projectProperties.group?.let(::setGroup)
             projectProperties.description?.let(::setDescription)
             settings.libs.versions.let { versions ->
@@ -89,7 +92,6 @@ internal class BindingProjectPlugin : Plugin<Project> {
 
         // Apply other settings.
 
-//        applyRepositoryAttributes(project)
 //        applyPublicationAttributes(linkedModule, project)
 //        applyTest(linkedModule, project)
 
@@ -104,9 +106,8 @@ internal class BindingProjectPlugin : Plugin<Project> {
         configureYarnRootExtension()
     }
 
-    private fun applyRepositoryAttributes(
-        project: Project
-    ) = with(project) {
+    private fun Project.applyRepositoryAttributes(
+    ) {
         repositories.mavenCentral()
     }
 
