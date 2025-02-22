@@ -37,10 +37,10 @@ internal fun Project.configureBaseExtension(
 
         manifestPlaceholders["appAuthRedirectScheme"] = "empty"
 
-        missingDimensionStrategy(
-            FlavorDimension.contentType.name,
-            BuildFlavor.demo.name,
-        )
+//        missingDimensionStrategy(
+//            FlavorDimension.contentType.name,
+//            BuildFlavor.demo.name,
+//        )
 
         vectorDrawables {
             useSupportLibrary = true
@@ -57,7 +57,7 @@ internal fun Project.configureBaseExtension(
     }
 
     buildTypes {
-        getByName(BuildType.RELEASE.applicationIdSuffix) {
+        getByName("debug") {
             isMinifyEnabled = true
             debuggable(false)
             proguardFiles(
@@ -81,7 +81,7 @@ internal fun Project.configureBaseExtension(
                 "test-proguard-rules.pro",
             )
         }
-        getByName(BuildType.DEBUG.applicationIdSuffix) {
+        getByName("release") {
             isMinifyEnabled = false
             debuggable(true)
             proguardFile(proguardFile)
@@ -91,7 +91,7 @@ internal fun Project.configureBaseExtension(
 
 
     (this@apply as CommonExtension<*, *, *, *, *, *>).apply {
-        flavorDimensions += FlavorDimension.contentType.name
+//        flavorDimensions += FlavorDimension.contentType.name
 
 //        productFlavors {
 //            BuildFlavor.values().forEach {

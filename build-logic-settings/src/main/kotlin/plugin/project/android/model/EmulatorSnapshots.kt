@@ -12,7 +12,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 internal data class EmulatorSnapshots(
     /** Enables automated test failure snapshots. Default to false. */
-    var enableForTestFailures: Boolean? = null
+    var enableForTestFailures: Boolean? = null,
     /**
      * Call this function to take unlimited number of test failure snapshots (will ignore
      * maxSnapshotsForTestFailures setting)

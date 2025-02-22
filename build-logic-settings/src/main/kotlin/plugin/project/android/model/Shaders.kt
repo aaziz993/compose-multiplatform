@@ -22,7 +22,7 @@ internal data class Shaders(
 
     fun applyTo(shaders: Shaders) {
         glslcArgs?.let(shaders.glslcArgs::addAll)
-        shaders.glslcScopedArgs()
+
         scopedGlslcArgs?.forEach { key, options ->
             shaders.glslcScopedArgs(key, *options.toTypedArray())
         }

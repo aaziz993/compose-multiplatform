@@ -9,10 +9,10 @@ internal fun Project.configureBaseAppModuleExtension(extension: BaseAppModuleExt
     }
 
     buildTypes {
-        getByName(BuildType.RELEASE.applicationIdSuffix) {
+        getByName("release") {
             isShrinkResources = true
         }
-        getByName(BuildType.DEBUG.applicationIdSuffix) {
+        getByName("debug") {
             isShrinkResources = false
         }
     }

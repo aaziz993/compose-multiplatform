@@ -1,8 +1,6 @@
 package plugin.project.android.model
 
 import com.android.build.gradle.BaseExtension
-import com.android.build.gradle.internal.dsl.DefaultConfig
-import com.android.build.gradle.internal.dsl.ProductFlavor
 import gradle.maybeNamed
 import gradle.trySet
 import org.gradle.api.Project
@@ -75,15 +73,15 @@ internal interface BaseExtension {
 
     val buildTypes: List<BuildType>?
 
-    val defaultConfig: DefaultConfig
+//    val defaultConfig: DefaultConfig
 
-    val productFlavors: List<ProductFlavor>
+//    val productFlavors: List<ProductFlavor>
 
     val signingConfigs: List<DefaultSigningConfig>?
 
     // these are indirectly implemented by extensions when they implement the new public
     // extension interfaces via delegates.
-    val buildFeatures: BuildFeatures
+//    val buildFeatures: BuildFeatures
     val namespace: String?
 
     context(Project)
@@ -180,7 +178,7 @@ internal interface BaseExtension {
 
         extension.productFlavors {
             all {
-                this.
+
             }
         }
 
