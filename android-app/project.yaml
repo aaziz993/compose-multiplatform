@@ -6,11 +6,12 @@ kotlin:
   targets: [ android ]
 
   sourceSets:
-    dependencies:
-      - ../kmp-lib
-      - ../cmp-lib
-      - ../shared
-      - $libs.androidx.activity.compose
+    androidMain:
+      dependencies:
+        - ../kmp-lib
+        - ../cmp-lib
+        - ../shared
+        - $libs.androidx.activity.compose
 
 settings:
   application: true

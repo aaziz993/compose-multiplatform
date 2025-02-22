@@ -1,16 +1,14 @@
-application: true
-
-targets: [ wasm ]
-
-apply:
+templates:
   - ../template/common.yaml
   - ../template/compose.yaml
 
-dependencies:
-  - ../kmp-lib
-  - ../cmp-lib
-  - ../shared
+application: true
 
-settings:
-  web:
-    executable: true
+kotlin:
+  targets: [ wasm ]
+  sourceSets:
+    commonMain:
+      dependencies:
+        - ../kmp-lib
+        - ../cmp-lib
+        - ../shared

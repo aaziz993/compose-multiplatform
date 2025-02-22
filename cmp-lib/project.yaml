@@ -6,8 +6,9 @@ kotlin:
   targets: [ android, iosArm64, iosX64, iosSimulatorArm64, js, wasm ]
 
   sourceSets:
-    dependencies:
-      - ../kmp-lib
+    commonMain:
+      dependencies:
+        - ../kmp-lib
 
 settings:
   publishing:

@@ -168,13 +168,13 @@ internal class KMPBindingPluginPart : Plugin<Project> {
                 }
             }
 
-            sourceSets.forEach { sourceSet ->
-                settings.projectProperties.kotlin.sourceSets?.get(sourceSet.name)?.dependencies?.let { dependencies ->
-                    sourceSet.dependencies {
-                        dependencies.forEach { dependency -> dependency.applyTo(this) }
-                    }
-                }
-            }
+//            sourceSets.forEach { sourceSet ->
+//                settings.projectProperties.kotlin.sourceSets?.get(sourceSet.name)?.dependencies?.let { dependencies ->
+//                    sourceSet.dependencies {
+//                        dependencies.forEach { dependency -> dependency.applyTo(this) }
+//                    }
+//                }
+//            }
         }
     }
 }
