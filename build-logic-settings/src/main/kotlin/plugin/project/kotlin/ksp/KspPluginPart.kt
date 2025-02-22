@@ -13,18 +13,15 @@ internal class KspPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            settings.projectProperties.plugins.ksp.let { ksp ->
-                if (!ksp.enabled || settings.projectProperties.kotlin.targets.isEmpty()) {
+            projectProperties.plugins.ksp.let { ksp ->
+                if (!ksp.enabled || projectProperties.kotlin.targets.isEmpty()) {
                     return@with
                 }
 
                 plugins.apply(project.libs.plugins.ksp.get().pluginId)
 
                 configureKspExtension()
-
-                if (name == "android-app") {
-                    println("CONFIGS: $settings.projectProperties.kotlin.targets}")
-                }
+                println("PROJ $name properties: ${projectProperties.kotlin.targets}")
 
                 val kspCommonMainMetadata by configurations
                 dependencies {

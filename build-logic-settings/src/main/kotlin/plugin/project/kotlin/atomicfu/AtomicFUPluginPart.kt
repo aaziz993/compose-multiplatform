@@ -10,7 +10,7 @@ internal class AtomicFUPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (settings.projectProperties.plugins.atomicFU.enabled || settings.projectProperties.kotlin.targets.isEmpty()) {
+            if (projectProperties.plugins.atomicFU.enabled || projectProperties.kotlin.targets.isEmpty()) {
                 return@with
             }
 

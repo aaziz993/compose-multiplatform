@@ -13,14 +13,14 @@ public class ComposePluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (settings.projectProperties.compose.enabled ||settings.projectProperties.kotlin.targets.isEmpty()) {
+            if (projectProperties.compose.enabled ||projectProperties.kotlin.targets.isEmpty()) {
                 return@with
             }
 
             plugins.apply(libs.plugins.compose.multiplatform.get().pluginId)
             plugins.apply(libs.plugins.compose.compiler.get().pluginId)
 
-            if (settings.projectProperties.application) {
+            if (projectProperties.application) {
                 configureDesktopExtension()
             }
 

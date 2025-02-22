@@ -11,6 +11,7 @@ import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.jetbrains.amper.gradle.SLF4JProblemReporterContext
+import org.yaml.snakeyaml.Yaml
 import plugin.project.android.AndroidBindingPluginPart
 import plugin.project.apple.AppleBindingPluginPart
 import plugin.project.cocoapods.CocoapodsPluginPart
@@ -47,8 +48,8 @@ internal class BindingProjectPlugin : Plugin<Project> {
 
     override fun apply(target: Project) = with(SLF4JProblemReporterContext()) {
         with(target) {
-           settings.projectProperties.group?.let(::setGroup)
-           settings.projectProperties.description?.let(::setDescription)
+            projectProperties.group?.let(::setGroup)
+            projectProperties.description?.let(::setDescription)
             settings.libs.versions.let { versions ->
                 version(
                     versions.version("${target.name}-version-major")?.toInt() ?: 1,

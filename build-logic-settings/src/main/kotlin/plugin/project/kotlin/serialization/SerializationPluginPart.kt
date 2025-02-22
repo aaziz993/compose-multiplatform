@@ -10,7 +10,7 @@ internal class SerializationPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (settings.projectProperties.plugins.serialization.enabled || settings.projectProperties.kotlin.targets.isEmpty()) {
+            if (projectProperties.plugins.serialization.enabled || projectProperties.kotlin.targets.isEmpty()) {
                 return@with
             }
 

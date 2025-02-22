@@ -9,7 +9,7 @@ import org.jetbrains.gradle.apple.apple
 
 internal fun Project.configureAppleProjectExtension() =
     plugins.withType<ApplePlugin> {
-       settings.projectProperties.settings.apple.let { apple ->
+       projectProperties.settings.apple.let { apple ->
             apple {
                 apple.applyTo(this)
             }

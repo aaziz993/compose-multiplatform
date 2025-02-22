@@ -8,7 +8,7 @@ import org.gradle.api.Project
 
 internal fun Project.configureKspExtension() =
     pluginManager.withPlugin(libs.plugins.ksp.get().pluginId) {
-       settings.projectProperties.plugins.ksp.let { ksp ->
+       projectProperties.plugins.ksp.let { ksp ->
             ksp(ksp::applyTo)
         }
     }

@@ -10,7 +10,7 @@ import org.jetbrains.kotlin.gradle.targets.js.npm.NpmResolverPlugin
 
 internal fun Project.configureNpmExtension() =
     plugins.withType<NpmResolverPlugin> {
-       settings.projectProperties.settings.web.npm.let { npm ->
+       projectProperties.settings.web.npm.let { npm ->
             npm {
                 command tryAssign npm.command
                 lockFileName tryAssign npm.lockFileName

@@ -1,5 +1,6 @@
 templates:
   - ../template/common.yaml
+  - ../template/multiplatform.yaml
   - ../template/compose.yaml
 
 plugins:
@@ -8,8 +9,6 @@ plugins:
       - ../compiler
 
 kotlin:
-  targets: [ jvm, android, iosArm64, iosX64, iosSimulatorArm64, js, wasm ]
-
   sourceSets:
     commonMain:
       dependencies:

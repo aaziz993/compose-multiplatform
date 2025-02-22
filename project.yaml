@@ -70,7 +70,7 @@ dependencyResolutionManagement:
       from: org.jetbrains.kotlin-wrappers:kotlin-wrappers-catalog:2025.2.6
 
 modules:
-  - android-app
+#  - android-app
   - ios-app
   - jvm-app
   - wasm-app

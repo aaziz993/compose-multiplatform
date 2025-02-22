@@ -8,7 +8,7 @@ import org.gradle.api.Project
 
 internal fun Project.configureCocoapodsExtension() =
     pluginManager.withPlugin(libs.plugins.cocoapods.get().pluginId) {
-       settings.projectProperties.kotlin.cocoapods.let { cocoapods ->
+       projectProperties.kotlin.cocoapods.let { cocoapods ->
             cocoapods {
                 cocoapods.applyTo(this)
             }

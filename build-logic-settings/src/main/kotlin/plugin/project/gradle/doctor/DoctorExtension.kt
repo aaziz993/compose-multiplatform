@@ -8,7 +8,7 @@ import org.gradle.api.Project
 
 internal fun Project.configureDoctorExtension() =
     pluginManager.withPlugin(libs.plugins.doctor.get().pluginId) {
-       settings.projectProperties.plugins.doctor.let { doctor ->
+       projectProperties.plugins.doctor.let { doctor ->
             doctor {
                 doctor.applyTo(this)
             }

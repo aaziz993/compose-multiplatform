@@ -1,6 +1,6 @@
 @file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
 
-package plugin.settings
+package plugin
 
 import gradle.serialization.decodeFromAny
 import gradle.deepMerge
@@ -82,7 +82,7 @@ public class SettingsPlugin : Plugin<Settings> {
     private fun Settings.setupProject() {
         projectProperties = layout.settingsDirectory.loadProperties()
 
-       settings.projectProperties.pluginManagement.let { pluginManagement ->
+        projectProperties.pluginManagement.let { pluginManagement ->
             pluginManagement {
                 repositories {
                     mavenCentral()
@@ -99,10 +99,10 @@ public class SettingsPlugin : Plugin<Settings> {
         plugins.apply(ToolchainManagementPluginPart::class.java)
         plugins.apply(GitHooksluginPart::class.java)
 
-       settings.projectProperties.dependencyResolutionManagement?.let { dependencyResolutionManagement ->
+        projectProperties.dependencyResolutionManagement?.let { dependencyResolutionManagement ->
             dependencyResolutionManagement {
                 repositories {
-                    addDefaultAmperRepositoriesForDependencies()
+                    configureDependenciesRepositories()
                 }
 
                 dependencyResolutionManagement.versionCatalogs?.let { versionCatalogs ->
@@ -119,7 +119,7 @@ public class SettingsPlugin : Plugin<Settings> {
             }
         }
 
-       settings.projectProperties.modules?.forEach(::include)
+        projectProperties.modules?.forEach(::include)
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -128,15 +128,18 @@ public class SettingsPlugin : Plugin<Settings> {
             setupDynamicClasspath(
                 libs.plugins.plugin("kotlin-multiplatform").pluginAsDependency,
             ) {
-                addDefaultAmperRepositoriesForDependencies()
+                configureDependenciesRepositories()
             }
         }
     }
 
     private fun Project.configureProject() {
-        settings.projectProperties = layout.projectDirectory.loadProperties().apply {
-            println("APPLY $PROJECT_PROPERTIES_FILE TO: $name")
-            println(logYaml.dump(Json.Default.encodeToAny(this)))
+        // Root projects properties already loaded in settings setup.
+        if (this != settings.rootProject) {
+            projectProperties = layout.projectDirectory.loadProperties().apply {
+                println("APPLY $PROJECT_PROPERTIES_FILE TO: $name")
+                println(logYaml.dump(Json.Default.encodeToAny(this)))
+            }
         }
 
         plugins.apply(BindingProjectPlugin::class.java)
@@ -161,11 +164,11 @@ public class SettingsPlugin : Plugin<Settings> {
 
         val properties = yaml.load<MutableMap<String, *>>(propertiesFile.readText())
 
-        (properties["templates"] as List<String>?)?.fold(emptyMap<String, Any?>()) { acc, template ->
+        val templatedProperties = (properties["templates"] as List<String>?)?.fold(emptyMap<String, Any?>()) { acc, template ->
             acc deepMerge yaml.load<MutableMap<String, *>>(file(template).asFile.readText())
         }.orEmpty() deepMerge properties
 
-        return json.decodeFromAny<Properties>(properties)
+        return json.decodeFromAny<Properties>(templatedProperties)
     }
 
     /**
@@ -188,7 +191,7 @@ public class SettingsPlugin : Plugin<Settings> {
     }
 
     context(Settings)
-    private fun RepositoryHandler.addDefaultAmperRepositoriesForDependencies() {
+    private fun RepositoryHandler.configureDependenciesRepositories() {
         mavenCentral()
         // For the Android plugin and dependencies
         google()
@@ -204,7 +207,7 @@ public class SettingsPlugin : Plugin<Settings> {
         maven("https://oss.sonatype.org/content/repositories/snapshots")
 
         // Apply repositories from project properties.
-       settings.projectProperties.dependencyResolutionManagement?.repositories?.let { repositories ->
+        projectProperties.dependencyResolutionManagement?.repositories?.let { repositories ->
             repositories.forEach { repository ->
                 maven(repository)
             }

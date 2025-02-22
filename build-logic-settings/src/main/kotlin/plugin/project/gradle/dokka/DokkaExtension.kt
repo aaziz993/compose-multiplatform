@@ -10,7 +10,7 @@ import org.jetbrains.dokka.gradle.internal.InternalDokkaGradlePluginApi
 @OptIn(InternalDokkaGradlePluginApi::class)
 internal fun Project.configureDokkaExtension() =
     pluginManager.withPlugin(libs.plugins.dokka.get().pluginId) {
-       settings.projectProperties.plugins.dokka.let { dokka ->
+       projectProperties.plugins.dokka.let { dokka ->
             dokka {
                 dokka.applyTo(this)
             }

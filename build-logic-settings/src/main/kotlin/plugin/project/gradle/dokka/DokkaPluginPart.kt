@@ -18,8 +18,8 @@ internal class DokkaPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-           settings.projectProperties.plugins.dokka.let { dokka ->
-                if (!dokka.enabled ||settings.projectProperties.kotlin.targets.isEmpty()) {
+           projectProperties.plugins.dokka.let { dokka ->
+                if (!dokka.enabled ||projectProperties.kotlin.targets.isEmpty()) {
                     return@with
                 }
 
@@ -47,7 +47,7 @@ internal class DokkaPluginPart : Plugin<Project> {
 
     @OptIn(InternalDokkaGradlePluginApi::class)
     private fun Project.configureDokkaModuleTask() =
-       settings.projectProperties.plugins.dokka.task?.let { task ->
+       projectProperties.plugins.dokka.task?.let { task ->
             tasks.withType<org.jetbrains.dokka.gradle.DokkaTask> {
                 task.applyTo(this)
             }
@@ -55,7 +55,7 @@ internal class DokkaPluginPart : Plugin<Project> {
 
     @OptIn(InternalDokkaGradlePluginApi::class)
     private fun Project.configureDokkaMultiModuleTask() =
-       settings.projectProperties.plugins.dokka.task?.let { task ->
+       projectProperties.plugins.dokka.task?.let { task ->
             tasks.withType<DokkaMultiModuleTask> {
                 task.applyTo(this)
                 task.includes?.let(includes::setFrom)

@@ -16,7 +16,7 @@ internal class KMPBindingPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (settings.projectProperties.kotlin.targets.isEmpty()) {
+            if (projectProperties.kotlin.targets.isEmpty()) {
                 return@with
             }
 
@@ -124,7 +124,7 @@ internal class KMPBindingPluginPart : Plugin<Project> {
     private fun Project.adjustTargets() =
         kotlin.applyDefaultHierarchyTemplate {
             common {
-                settings.projectProperties.kotlin.targetGroups?.forEach { (name, group) ->
+                projectProperties.kotlin.targetGroups?.forEach { (name, group) ->
                     group(name) {
                         group.forEach { targetName ->
                             when (targetName) {
@@ -150,7 +150,7 @@ internal class KMPBindingPluginPart : Plugin<Project> {
     @Suppress("UNCHECKED_CAST")
     private fun Project.adjustSourceSets() {
         kotlin {
-            if (settings.projectProperties.flatLayout) {
+            if (projectProperties.flatLayout) {
                 sourceSets.all { sourceSet ->
                     val sourceSetNameParts = "^(.*?)(Main|Test|TestDebug)?$".toRegex().matchEntire(sourceSet.name)!!
 
@@ -169,7 +169,7 @@ internal class KMPBindingPluginPart : Plugin<Project> {
             }
 
 //            sourceSets.forEach { sourceSet ->
-//                settings.projectProperties.kotlin.sourceSets?.get(sourceSet.name)?.dependencies?.let { dependencies ->
+//                projectProperties.kotlin.sourceSets?.get(sourceSet.name)?.dependencies?.let { dependencies ->
 //                    sourceSet.dependencies {
 //                        dependencies.forEach { dependency -> dependency.applyTo(this) }
 //                    }

@@ -11,7 +11,7 @@ import org.gradle.kotlin.dsl.withType
 @OptIn(RpcDangerousApi::class)
 internal fun Project.configureRpcExtension() =
     plugins.withType<RpcGradlePlugin> {
-       settings.projectProperties.plugins.rpc.let { rpc ->
+       projectProperties.plugins.rpc.let { rpc ->
             rpc(rpc::applyTo)
         }
     }

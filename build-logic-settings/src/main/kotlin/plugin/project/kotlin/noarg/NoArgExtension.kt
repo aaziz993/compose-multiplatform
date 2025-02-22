@@ -8,7 +8,7 @@ import org.gradle.api.Project
 
 internal fun Project.configureNoArgExtension() =
     pluginManager.withPlugin(libs.plugins.noarg.get().pluginId) {
-       settings.projectProperties.plugins.noArg.let { noArg ->
+       projectProperties.plugins.noArg.let { noArg ->
             noArg(noArg::applyTo)
         }
     }

@@ -10,7 +10,7 @@ private const val LICENSE_HEADER_DIR = "../"
 
 internal fun Project.configureSpotlessExtension() =
     pluginManager.withPlugin(libs.plugins.spotless.get().pluginId) {
-       settings.projectProperties.plugins.spotless.let { spotless ->
+       projectProperties.plugins.spotless.let { spotless ->
             spotless {
                 spotless.applyTo(this)
             }

@@ -11,7 +11,7 @@ import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnPlugin
 
 internal fun Project.configureYarnRootExtension() =
     plugins.withType<YarnPlugin> {
-       settings.projectProperties.settings.web.yarn.let { yarn ->
+       projectProperties.settings.web.yarn.let { yarn ->
             yarn {
                 ::lockFileName trySet yarn.lockFileName
                 ::lockFileDirectory trySet yarn.lockFileDirectory?.let(::file)

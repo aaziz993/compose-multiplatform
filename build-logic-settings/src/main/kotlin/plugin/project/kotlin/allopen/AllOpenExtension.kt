@@ -8,7 +8,7 @@ import org.gradle.api.Project
 
 internal fun Project.configureAllOpenExtension() =
     pluginManager.withPlugin(libs.plugins.allopen.get().pluginId) {
-       settings.projectProperties.plugins.allOpen.let { allOpen ->
+       projectProperties.plugins.allOpen.let { allOpen ->
             allOpen(allOpen::applyTo)
         }
     }

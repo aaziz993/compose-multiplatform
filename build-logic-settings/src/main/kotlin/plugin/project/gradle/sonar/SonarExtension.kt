@@ -13,7 +13,7 @@ import org.gradle.api.Project
 // Any properties set on the command line also apply to this project.
 internal fun Project.configureSonarExtension() =
     pluginManager.withPlugin(libs.plugins.sonarqube.get().pluginId) {
-        settings.projectProperties.plugins.sonar.let { sonar ->
+        projectProperties.plugins.sonar.let { sonar ->
             sonar {
                 sonar.applyTo(this)
             }

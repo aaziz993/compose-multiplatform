@@ -1,8 +1,7 @@
 package plugin.project.problemreporter
 
-import gradle.forEachEndAware
-
 internal interface ProblemReporter {
+
     /**
      * Check if we reported any fatal errors.
      */
@@ -12,6 +11,7 @@ internal interface ProblemReporter {
 }
 
 internal interface ProblemReporterContext {
+
     val problemReporter: ProblemReporter
 }
 
@@ -19,6 +19,7 @@ internal interface ProblemReporterContext {
 // Note: This class is not thread-safe.
 // Problems collecting might misbehave when used from multiple threads (e.g. in Gradle).
 internal abstract class CollectingProblemReporter : ProblemReporter {
+
     override val hasFatal get() = problems.any { it.level == Level.Fatal }
 
     protected val problems: MutableList<BuildProblem> = mutableListOf()
@@ -32,6 +33,7 @@ internal abstract class CollectingProblemReporter : ProblemReporter {
 }
 
 internal class NoOpCollectingProblemReporter : CollectingProblemReporter() {
+
     fun getProblems(): Collection<BuildProblem> = problems
 
     override fun doReportMessage(message: BuildProblem) {
@@ -51,10 +53,15 @@ internal fun renderMessage(problem: BuildProblem): String = buildString {
                 append(": ")
                 append(problem.message)
             }
-            is MultipleLocationsBuildProblemSource -> source.sources.forEachEndAware { isLast, it ->
-                appendSource(it)
-                if (!isLast) appendLine()
+
+            is MultipleLocationsBuildProblemSource -> {
+                source.sources.dropLast(1).forEach {
+                    appendSource(it)
+                    appendLine()
+                }
+                source.sources.lastOrNull()?.let(::appendSource)
             }
+
             GlobalBuildProblemSource -> append(problem.message)
         }
     }

@@ -15,18 +15,18 @@ internal class AndroidBindingPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (TargetType.ANDROID !in settings.projectProperties.kotlin.targets) {
+            if (TargetType.ANDROID !in projectProperties.kotlin.targets) {
                 return@with
             }
 
-            if (settings.projectProperties.application) {
+            if (projectProperties.application) {
                 plugins.apply(libs.plugins.androidApplication.get().pluginId)
             }
             else {
                 plugins.apply(libs.plugins.androidLibrary.get().pluginId)
             }
 
-           settings.projectProperties.kotlin.targets
+           projectProperties.kotlin.targets
                 .filter { target -> target.type.isDescendantOf(TargetType.ANDROID) }
                 .forEach { target -> target.applyTo() }
 

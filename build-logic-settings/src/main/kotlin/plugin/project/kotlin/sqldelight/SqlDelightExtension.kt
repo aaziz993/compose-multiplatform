@@ -9,7 +9,7 @@ import org.gradle.kotlin.dsl.withType
 
 internal fun Project.configureSqlDelightExtension() =
     plugins.withType<SqlDelightPlugin> {
-       settings.projectProperties.plugins.sqldelight.let { sqldelight ->
+       projectProperties.plugins.sqldelight.let { sqldelight ->
             sqldelight {
                 sqldelight.applyTo(this)
             }

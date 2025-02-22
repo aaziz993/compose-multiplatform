@@ -8,7 +8,7 @@ import org.gradle.api.Project
 
 internal fun Project.configureKtorfitGradleConfiguration() =
     pluginManager.withPlugin(libs.plugins.ktorfit.get().pluginId) {
-       settings.projectProperties.plugins.ktorfit.let { ktorfit ->
+       projectProperties.plugins.ktorfit.let { ktorfit ->
             ktorfit(ktorfit::applyTo)
         }
     }

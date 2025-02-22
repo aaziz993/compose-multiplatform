@@ -10,7 +10,7 @@ internal class KoverPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (!settings.projectProperties.plugins.kover.enabled ||settings.projectProperties.kotlin.targets.isEmpty()) {
+            if (!projectProperties.plugins.kover.enabled ||projectProperties.kotlin.targets.isEmpty()) {
                 return@with
             }
 

@@ -8,7 +8,7 @@ import org.gradle.api.Project
 
 internal fun Project.configureApolloExtension() =
     pluginManager.withPlugin(libs.plugins.apollo3.get().pluginId) {
-       settings.projectProperties.plugins.apollo.let { apollo ->
+       projectProperties.plugins.apollo.let { apollo ->
             apollo {
                 apollo.applyTo(this)
             }

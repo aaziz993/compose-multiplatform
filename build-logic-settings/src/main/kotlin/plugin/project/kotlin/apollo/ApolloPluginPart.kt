@@ -10,7 +10,7 @@ internal class ApolloPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (settings.projectProperties.plugins.apollo.enabled ||settings.projectProperties.kotlin.targets.isEmpty()) {
+            if (projectProperties.plugins.apollo.enabled ||projectProperties.kotlin.targets.isEmpty()) {
                 return@with
             }
 

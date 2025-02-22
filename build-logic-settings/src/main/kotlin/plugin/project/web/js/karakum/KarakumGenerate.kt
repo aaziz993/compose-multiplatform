@@ -19,7 +19,7 @@ internal val JS_TYPE_IMPORTS =
 
 internal fun Project.configureKarakumGenerate() =
     plugins.withType<KarakumPlugin> {
-       settings.projectProperties.settings.web.karakum.task.let { task ->
+       projectProperties.settings.web.karakum.task.let { task ->
             tasks.withType<KarakumGenerate> {
 
                 configFile tryAssign task.configFile?.let(::file)

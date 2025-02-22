@@ -16,11 +16,11 @@ internal class JsBindingPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (TargetType.JS !in settings.projectProperties.kotlin.targets) {
+            if (TargetType.JS !in projectProperties.kotlin.targets) {
                 return@with
             }
 
-            settings.projectProperties.kotlin.targets
+            projectProperties.kotlin.targets
                 .filter { target -> target.type.isDescendantOf(TargetType.JS) }
                 .forEach { target -> target.applyTo() }
 

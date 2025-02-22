@@ -7,7 +7,7 @@ import org.gradle.api.Project
 
 internal fun Project.configureJavaExtension() =
     pluginManager.withPlugin("java") {
-       settings.projectProperties.jvm.let { jvm ->
+       projectProperties.jvm.let { jvm ->
             java {
                 jvm.applyTo(this)
             }

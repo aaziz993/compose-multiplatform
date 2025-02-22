@@ -10,7 +10,7 @@ internal class PowerAssertPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (settings.projectProperties.plugins.powerAssert.enabled || settings.projectProperties.kotlin.targets.isEmpty()) {
+            if (projectProperties.plugins.powerAssert.enabled || projectProperties.kotlin.targets.isEmpty()) {
                 return@with
             }
 

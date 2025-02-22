@@ -40,7 +40,7 @@ internal data class WebSettings(
             target.nodejs()
         }
 
-        if (settings.projectProperties.application) {
+        if (projectProperties.application) {
             target.binaries.executable()
         }
         else {

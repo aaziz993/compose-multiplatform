@@ -8,7 +8,7 @@ import org.gradle.api.Project
 
 internal fun Project.configurePowerAssertGradleExtension() =
     pluginManager.withPlugin(libs.plugins.power.assert.get().pluginId) {
-       settings.projectProperties.plugins.powerAssert.let { powerAssert ->
+       projectProperties.plugins.powerAssert.let { powerAssert ->
             powerAssert(powerAssert::applyTo)
         }
     }

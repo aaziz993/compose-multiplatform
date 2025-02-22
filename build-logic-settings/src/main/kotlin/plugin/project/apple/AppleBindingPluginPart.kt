@@ -18,13 +18,13 @@ internal class AppleBindingPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (TargetType.APPLE !in settings.projectProperties.kotlin.targets) {
+            if (TargetType.APPLE !in projectProperties.kotlin.targets) {
                 return@with
             }
 
             plugins.apply(libs.plugins.apple.get().pluginId)
 
-           settings.projectProperties.kotlin.targets.filter { (type, _) -> type.isDescendantOf(TargetType.APPLE) }
+           projectProperties.kotlin.targets.filter { (type, _) -> type.isDescendantOf(TargetType.APPLE) }
                 .forEach { target -> target.applyTo() }
 
             extraProperties.set("generateBuildableXcodeproj.skipKotlinFrameworkDependencies", "true")

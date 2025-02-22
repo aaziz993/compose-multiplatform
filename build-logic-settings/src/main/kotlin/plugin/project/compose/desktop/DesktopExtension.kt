@@ -13,7 +13,7 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 internal fun Project.configureDesktopExtension() =
     extensions.configure<ComposeExtension> {
-       settings.projectProperties.compose.desktop.let { desktop ->
+       projectProperties.compose.desktop.let { desktop ->
             extensions.configure<DesktopExtension> {
                 application {
                     jvmArgs(

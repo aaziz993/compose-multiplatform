@@ -8,7 +8,7 @@ import org.gradle.api.Project
 
 internal fun Project.configureAtomicFUPluginExtension() =
     pluginManager.withPlugin(libs.plugins.atomicfu.get().pluginId) {
-       settings.projectProperties.plugins.atomicFU.let { atomicFU ->
+       projectProperties.plugins.atomicFU.let { atomicFU ->
             atomicFU(atomicFU::applyTo)
         }
     }

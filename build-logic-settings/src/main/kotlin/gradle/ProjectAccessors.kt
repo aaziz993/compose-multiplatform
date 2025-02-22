@@ -27,6 +27,7 @@ import org.jetbrains.gradle.apple.AppleProjectExtension
 import org.jetbrains.kotlin.allopen.gradle.AllOpenExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.cocoapods.CocoapodsExtension
+import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsEnvSpec
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension
 import org.jetbrains.kotlin.gradle.targets.js.npm.NpmExtension
@@ -35,6 +36,16 @@ import org.jetbrains.kotlin.noarg.gradle.NoArgExtension
 import org.jetbrains.kotlin.powerassert.gradle.PowerAssertGradleExtension
 import org.sonarqube.gradle.SonarExtension
 import plugin.project.compose.model.ResourcesExtension
+import plugin.project.model.Properties
+
+private const val PROPERTIES = "properties"
+
+internal var Project.projectProperties: Properties
+
+    get() = extraProperties[PROPERTIES] as Properties
+    set(value) {
+        extraProperties[PROPERTIES] = value
+    }
 
 internal val Project.settings: Settings
     get() = (gradle as GradleInternal).settings

@@ -11,7 +11,7 @@ import org.gradle.api.Project
 internal class DoctorPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) = with(target) {
-        if (!settings.projectProperties.plugins.doctor.enabled || this != rootProject) {
+        if (!projectProperties.plugins.doctor.enabled || this != rootProject) {
             return@with
         }
 

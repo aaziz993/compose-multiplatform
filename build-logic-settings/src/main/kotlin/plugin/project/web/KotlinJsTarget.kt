@@ -11,7 +11,7 @@ import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
 
 @OptIn(ExperimentalMainFunctionArgumentsDsl::class, ExperimentalDistributionDsl::class)
 internal inline fun <reified T : KotlinJsTargetDsl> Project.configureKotlinJsTarget() =
-   settings.projectProperties.settings.web.let { web ->
+   projectProperties.settings.web.let { web ->
         kotlin.targets.withType<T> {
             web.applyTo(this)
         }

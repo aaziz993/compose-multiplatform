@@ -10,7 +10,7 @@ internal class ApiValidationPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (!settings.projectProperties.plugins.apiValidation.enabled ||settings.projectProperties.kotlin.targets.isEmpty()) {
+            if (!projectProperties.plugins.apiValidation.enabled ||projectProperties.kotlin.targets.isEmpty()) {
                 return@with
             }
 

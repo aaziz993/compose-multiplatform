@@ -9,7 +9,7 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 internal fun Project.configureKotlinNativeTarget() =
     kotlin.targets.withType<KotlinNativeTarget> {
-        settings.projectProperties.settings.native.let { native ->
+        projectProperties.settings.native.let { native ->
             native.applyTo(this)
         }
     }

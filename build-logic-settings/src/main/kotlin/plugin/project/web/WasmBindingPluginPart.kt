@@ -13,11 +13,11 @@ internal class WasmBindingPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (TargetType.WASM !in settings.projectProperties.kotlin.targets) {
+            if (TargetType.WASM !in projectProperties.kotlin.targets) {
                 return@with
             }
 
-           settings.projectProperties.kotlin.targets
+           projectProperties.kotlin.targets
                 .filter { target -> target.type.isDescendantOf(TargetType.WASM) }
                 .forEach { target -> target.applyTo() }
 

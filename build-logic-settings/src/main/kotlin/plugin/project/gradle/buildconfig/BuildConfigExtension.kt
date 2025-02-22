@@ -8,7 +8,7 @@ import org.gradle.api.Project
 
 internal fun Project.configureBuildConfigExtension() =
     pluginManager.withPlugin(libs.plugins.build.config.get().pluginId) {
-       settings.projectProperties.plugins.buildConfig.let { buildConfig ->
+       projectProperties.plugins.buildConfig.let { buildConfig ->
             buildConfig {
                 buildConfig.applyTo(this)
             }

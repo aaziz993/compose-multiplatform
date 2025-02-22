@@ -12,7 +12,7 @@ internal class CocoapodsPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (TargetType.APPLE !in settings.projectProperties.kotlin.targets) {
+            if (TargetType.APPLE !in projectProperties.kotlin.targets) {
                 project.logger.warn(
                     "Unnecessary to enable cocoapods plugin when no apple targets represented. " +
                         "Module: ${project.name}",
@@ -20,13 +20,13 @@ internal class CocoapodsPluginPart : Plugin<Project> {
                 return@with
             }
 
-            if (!settings.projectProperties.kotlin.cocoapods.enabled) {
+            if (!projectProperties.kotlin.cocoapods.enabled) {
                 return@with
             }
 
-            plugins.apply(libs.plugins.cocoapods.get().pluginId)
-
-            configureCocoapodsExtension()
+//            plugins.apply(libs.plugins.cocoapods.get().pluginId)
+//
+//            configureCocoapodsExtension()
         }
     }
 }

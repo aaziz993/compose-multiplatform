@@ -1,5 +1,6 @@
 package plugin.project.gradle.apivalidation.model
 
+import gradle.maybeNamed
 import kotlinx.serialization.Serializable
 import kotlinx.validation.KotlinApiBuildTask
 import org.gradle.api.Project
@@ -25,16 +26,15 @@ internal data class ApiValidationSettings(
 ) : ApiValidationExtension {
 
     context(Project)
-   override fun applyTo(extension: kotlinx.validation.ApiValidationExtension) {
+    override fun applyTo(extension: kotlinx.validation.ApiValidationExtension) {
         super.applyTo(extension)
 
-
-
-        tasks.named<KotlinApiBuildTask>("apiBuild") {
+        tasks.maybeNamed("apiBuild") {
+            this as KotlinApiBuildTask
             // "jar" here is the name of the default Jar task producing the resulting jar file
             // in a multiplatform project it can be named "jvmJar"
             // if you applied the shadow plugin, it creates the "shadowJar" task that produces the transformed jar
-            inputJar.value(tasks.named<Jar>("jar").flatMap { it.archiveFile })
+            inputJar.value(tasks.named<Jar>("shadowJar").flatMap { it.archiveFile })
         }
     }
 }

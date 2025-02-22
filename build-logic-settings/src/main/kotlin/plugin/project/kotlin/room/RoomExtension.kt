@@ -8,7 +8,7 @@ import org.gradle.api.Project
 
 internal fun Project.configureRoomExtension() =
     pluginManager.withPlugin(libs.plugins.room.get().pluginId) {
-       settings.projectProperties.plugins.room.let { room ->
+       projectProperties.plugins.room.let { room ->
             room(room::applyTo)
         }
     }

@@ -18,7 +18,7 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 internal fun Project.configureResourcesExtension() =
     plugins.withType<ComposePlugin> {
         extensions.configure<ComposeExtension> {
-           settings.projectProperties.compose.resources.let { resources ->
+           projectProperties.compose.resources.let { resources ->
                 extensions.configure<ResourcesExtension> {
                     ::publicResClass trySet resources.publicResClass
                     ::packageOfResClass trySet resources.packageOfResClass

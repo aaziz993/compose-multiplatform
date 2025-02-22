@@ -17,7 +17,7 @@ internal data class AppleSettings(
     fun applyTo(extension: org.jetbrains.gradle.apple.AppleProjectExtension) {
         extension::teamID trySet teamID
 
-        if (settings.projectProperties.application) {
+        if (projectProperties.application) {
             iosApps?.forEach { iosApp ->
                 iosApp.name?.also { name ->
                     extension.iosApp(name, iosApp::applyTo)

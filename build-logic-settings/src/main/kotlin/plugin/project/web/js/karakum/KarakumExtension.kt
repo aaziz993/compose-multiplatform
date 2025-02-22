@@ -10,7 +10,7 @@ import org.gradle.kotlin.dsl.withType
 
 internal fun Project.configureKarakumExtension() =
     plugins.withType<KarakumPlugin> {
-       settings.projectProperties.settings.web.karakum.let { karakum ->
+       projectProperties.settings.web.karakum.let { karakum ->
             karakum {
                 configFile tryAssign karakum.configFile?.let(::file)
                 extensionSource tryAssign karakum.extensionSource?.let(layout.projectDirectory::dir)?.asFileTree

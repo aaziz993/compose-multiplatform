@@ -10,7 +10,7 @@ import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsPlugin
 
 internal fun Project.configureNodeJsEnvSpec() =
     plugins.withType<NodeJsPlugin> {
-       settings.projectProperties.settings.web.node.env.let { env ->
+       projectProperties.settings.web.node.env.let { env ->
             nodeEnv {
                 download tryAssign env.download
                 downloadBaseUrl tryAssign env.downloadBaseUrl
