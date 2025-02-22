@@ -21,7 +21,6 @@ internal class KspPluginPart : Plugin<Project> {
                 plugins.apply(project.libs.plugins.ksp.get().pluginId)
 
                 configureKspExtension()
-                println("PROJ $name properties: ${projectProperties.kotlin.targets}")
 
                 val kspCommonMainMetadata by configurations
                 dependencies {
