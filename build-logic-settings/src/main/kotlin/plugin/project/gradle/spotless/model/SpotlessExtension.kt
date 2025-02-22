@@ -44,19 +44,6 @@ internal interface SpotlessExtension {
 
     context(Project)
     fun applyTo(extension: SpotlessExtension) {
-        val targetExclude = listOf(
-            "**/generated-src/**",
-            "**/build-*/**",
-            "**/${layout.buildDirectory.get()}/**",
-            "**/.idea/**",
-            "**/.fleet/**",
-            "**/.idea/**",
-            "**/.gradle/**",
-            "/spotless/**",
-            "**/resources/**",
-            "**/buildSrc/**",
-        )
-
         val formats = mapOf(
             JavaExtension.NAME to FormatSettings(
                 target = listOf("**/*.java"),
@@ -163,10 +150,10 @@ internal interface SpotlessExtension {
         enforceCheck?.let(extension::setEnforceCheck)
 
         // Applicable only in root project.
-//        if (project == project.rootProject) {
-//            predeclareDeps?.takeIf { it }.run { extension.predeclareDeps() }
-//            predeclareDepsFromBuildscript?.takeIf { it }.run { extension.predeclareDepsFromBuildscript() }
-//        }
+        if (project == project.rootProject) {
+            predeclareDeps?.takeIf { it }.run { extension.predeclareDeps() }
+            predeclareDepsFromBuildscript?.takeIf { it }.run { extension.predeclareDepsFromBuildscript() }
+        }
 
         // Format files
         formats.ifEmpty { null }?.filterValues(FormatSettings::enabled)?.forEach { (name, settings) ->

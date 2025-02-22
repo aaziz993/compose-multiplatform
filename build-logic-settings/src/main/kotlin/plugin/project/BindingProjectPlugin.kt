@@ -63,7 +63,7 @@ internal class BindingProjectPlugin : Plugin<Project> {
                 plugins.apply(DoctorPluginPart::class.java)
                 plugins.apply(BuildConfigPluginPart::class.java)
                 plugins.apply(SpotlessPluginPart::class.java)
-                plugins.apply(KoverPluginPart::class.java)
+//                plugins.apply(KoverPluginPart::class.java)
                 plugins.apply(SonarPluginPart::class.java)
                 plugins.apply(DokkaPluginPart::class.java)
                 plugins.apply(ApiValidationPluginPart::class.java)
@@ -79,11 +79,11 @@ internal class BindingProjectPlugin : Plugin<Project> {
                 plugins.apply(ApolloPluginPart::class.java)
                 plugins.apply(PowerAssertPluginPart::class.java)
                 plugins.apply(ComposePluginPart::class.java)
-                plugins.apply(AndroidBindingPluginPart::class.java)
+//                plugins.apply(AndroidBindingPluginPart::class.java)
                 plugins.apply(JsBindingPluginPart::class.java)
                 plugins.apply(WasmBindingPluginPart::class.java)
-                plugins.apply(JavaBindingPluginPart::class.java)
-                plugins.apply(AppleBindingPluginPart::class.java)
+//                plugins.apply(JavaBindingPluginPart::class.java)
+//                plugins.apply(AppleBindingPluginPart::class.java)
             }
         }
 

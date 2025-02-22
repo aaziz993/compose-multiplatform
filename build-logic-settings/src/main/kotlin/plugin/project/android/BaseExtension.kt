@@ -5,12 +5,12 @@ import com.android.build.gradle.BaseExtension
 import gradle.libs
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.get
+import org.gradle.kotlin.dsl.withType
 
-internal fun Project.configureBaseExtension(
-    extension: BaseExtension,
-) = extension.apply {
+internal fun Project.configureBaseExtension() = extensions.configure<BaseExtension> {
     namespace = "$group.${project.name.replace("[-_]".toRegex(), ".")}"
 
     compileSdkVersion = "android-${libs.versions.android.compile.sdk.get()}"
@@ -90,7 +90,7 @@ internal fun Project.configureBaseExtension(
 
 
 
-    (this@apply as CommonExtension<*, *, *, *, *, *>).apply {
+    (this@configure as CommonExtension<*, *, *, *, *, *>).apply {
 //        flavorDimensions += FlavorDimension.contentType.name
 
 //        productFlavors {

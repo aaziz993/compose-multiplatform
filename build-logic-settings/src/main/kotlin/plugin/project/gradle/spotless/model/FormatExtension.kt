@@ -1,12 +1,8 @@
 package plugin.project.gradle.spotless.model
 
 import com.diffplug.gradle.spotless.FormatExtension
-import com.diffplug.gradle.spotless.JavaExtension
-import com.diffplug.gradle.spotless.KotlinExtension
 import com.diffplug.spotless.LineEnding
-import kotlin.collections.orEmpty
-import kotlin.collections.plus
-import kotlin.collections.toTypedArray
+import org.gradle.api.Project
 
 internal interface FormatExtension : BaseKotlinExtension {
 
@@ -51,9 +47,9 @@ internal interface FormatExtension : BaseKotlinExtension {
         excludePaths?.forEach(extension::ignoreErrorForPath)
         encoding?.let(extension::setEncoding)
         target?.let { extension.target(*it.toTypedArray()) }
-        extension.targetExclude(
-            *(targetExclude.orEmpty() + targetExclude).toTypedArray(),
-        )
+        targetExclude?.let { targetExclude ->
+            extension.targetExclude(*targetExclude.toTypedArray())
+        }
         targetExcludeIfContentContains?.let(extension::targetExcludeIfContentContains)
         targetExcludeIfContentContainsRegex?.let(extension::targetExcludeIfContentContainsRegex)
         replace?.forEach { (name, original, replacement) -> extension.replace(name, original, replacement) }

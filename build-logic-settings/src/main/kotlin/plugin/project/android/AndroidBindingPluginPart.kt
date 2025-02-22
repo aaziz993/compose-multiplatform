@@ -33,6 +33,8 @@ internal class AndroidBindingPluginPart : Plugin<Project> {
                 }
             }
 
+            configureBaseExtension()
+
 //        adjustCompilations()
 //        applySettings()
 //        adjustAndroidSourceSets()

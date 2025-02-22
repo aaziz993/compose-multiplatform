@@ -14,7 +14,7 @@ import org.jetbrains.kotlin.gradle.plugin.extraProperties
 internal class AppleBindingPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
-//        with(target) {
+        with(target) {
 //            if (TargetType.APPLE !in projectProperties.kotlin.targets) {
 //                return@with
 //            }
@@ -31,6 +31,9 @@ internal class AppleBindingPluginPart : Plugin<Project> {
 //            extraProperties.set("generateBuildableXcodeproj.skipKotlinFrameworkDependencies", "true")
 //
 //            configureAppleProjectExtension()
-//        }
+            kotlin.mingwX64{
+                this.isSourcesPublishable=true
+            }
+        }
     }
 }

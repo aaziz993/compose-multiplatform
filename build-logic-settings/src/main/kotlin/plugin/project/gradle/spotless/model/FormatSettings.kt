@@ -17,7 +17,17 @@ internal data class FormatSettings(
     override val excludePaths: MutableSet<String>? = null,
     override val encoding: String? = null,
     override val target: List<String>? = null,
-    override val targetExclude: List<String>? = null,
+    override val targetExclude: List<String>? = listOf(
+        "**/generated-src/**",
+        "**/build-*/**",
+        "**/.idea/**",
+        "**/.fleet/**",
+        "**/.idea/**",
+        "**/.gradle/**",
+        "/spotless/**",
+        "**/resources/**",
+        "**/buildSrc/**",
+    ),
     override val targetExcludeIfContentContains: String? = null,
     override val targetExcludeIfContentContainsRegex: String? = null,
     override val replace: List<Replace>? = null,
@@ -103,7 +113,7 @@ internal data class FormatSettings(
             }
         }
 
-        (this as? KotlinExtension)?.let(::applyTo)
+        (extension as? KotlinExtension)?.let(::applyTo)
 
         eclipseWtp?.let { eclipseWtp ->
             eclipseWtp.applyTo(
