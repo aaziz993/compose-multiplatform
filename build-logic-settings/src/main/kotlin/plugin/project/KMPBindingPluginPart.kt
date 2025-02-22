@@ -16,14 +16,7 @@ internal class KMPBindingPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (
-                (
-                    projectProperties.kotlin.jvm ?:
-                    projectProperties.kotlin.android ?:
-                projectProperties.kotlin.js ?:
-                projectProperties.kotlin.wasmJs
-                    ) == null
-            ) {
+            if (projectProperties.kotlin.hasTargets) {
                 return@with
             }
 

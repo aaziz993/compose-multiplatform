@@ -1,4 +1,4 @@
-package plugin.project.kotlinnative.model
+package plugin.project.kotlin.model.language.nat
 
 import gradle.tryAssign
 import gradle.trySet

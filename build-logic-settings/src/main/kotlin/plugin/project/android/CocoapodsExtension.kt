@@ -1,9 +1,8 @@
-package plugin.project.cocoapods
+package plugin.project.android
 
 import gradle.cocoapods
 import gradle.libs
 import gradle.projectProperties
-import gradle.settings
 import org.gradle.api.Project
 
 internal fun Project.configureCocoapodsExtension() =

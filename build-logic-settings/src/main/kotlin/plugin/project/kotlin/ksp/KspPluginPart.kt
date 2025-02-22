@@ -14,7 +14,7 @@ internal class KspPluginPart : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             projectProperties.plugins.ksp.let { ksp ->
-                if (!ksp.enabled || projectProperties.kotlin.targets.isEmpty()) {
+                if (!ksp.enabled || projectProperties.kotlin.hasTargets) {
                     return@with
                 }
 

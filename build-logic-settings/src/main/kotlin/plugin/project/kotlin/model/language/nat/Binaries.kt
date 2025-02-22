@@ -1,9 +1,8 @@
-package plugin.project.kotlinnative.model
+package plugin.project.kotlin.model.language.nat
 
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.AbstractKotlinNativeBinaryContainer
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinTargetWithBinaries
 
 @Serializable
 internal data class Binaries(

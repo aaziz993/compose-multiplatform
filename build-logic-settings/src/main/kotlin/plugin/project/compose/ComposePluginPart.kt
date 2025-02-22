@@ -13,7 +13,7 @@ public class ComposePluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (projectProperties.compose.enabled ||projectProperties.kotlin.targets.isEmpty()) {
+            if (projectProperties.compose.enabled || projectProperties.kotlin.hasTargets) {
                 return@with
             }
 

@@ -1,4 +1,4 @@
-package plugin.project.cocoapods.model
+package plugin.project.apple.model
 
 import gradle.trySet
 import java.net.URI
@@ -9,7 +9,8 @@ import kotlinx.serialization.json.jsonObject
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.cocoapods.CocoapodsExtension
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
-import plugin.project.kotlinnative.model.Framework
+import plugin.project.apple.model.Pod
+import plugin.project.kotlin.model.language.nat.Framework
 
 internal interface CocoapodsExtension {
 

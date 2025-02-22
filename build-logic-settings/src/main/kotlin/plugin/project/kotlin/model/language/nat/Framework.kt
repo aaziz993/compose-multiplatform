@@ -1,6 +1,5 @@
-package plugin.project.kotlinnative.model
+package plugin.project.kotlin.model.language.nat
 
-import gradle.tryAssign
 import gradle.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

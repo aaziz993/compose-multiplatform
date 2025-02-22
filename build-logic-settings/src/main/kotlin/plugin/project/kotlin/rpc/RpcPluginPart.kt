@@ -10,7 +10,7 @@ internal class RpcPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (projectProperties.plugins.rpc.enabled || projectProperties.kotlin.targets.isEmpty()) {
+            if (projectProperties.plugins.rpc.enabled || projectProperties.kotlin.hasTargets) {
                 return@with
             }
 

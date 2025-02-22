@@ -11,10 +11,8 @@ import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.jetbrains.amper.gradle.SLF4JProblemReporterContext
-import org.yaml.snakeyaml.Yaml
 import plugin.project.android.AndroidBindingPluginPart
 import plugin.project.apple.AppleBindingPluginPart
-import plugin.project.cocoapods.CocoapodsPluginPart
 import plugin.project.compose.ComposePluginPart
 import plugin.project.gradle.apivalidation.ApiValidationPluginPart
 import plugin.project.gradle.buildconfig.BuildConfigPluginPart
@@ -86,7 +84,6 @@ internal class BindingProjectPlugin : Plugin<Project> {
                 plugins.apply(WasmBindingPluginPart::class.java)
                 plugins.apply(JavaBindingPluginPart::class.java)
                 plugins.apply(AppleBindingPluginPart::class.java)
-                plugins.apply(CocoapodsPluginPart::class.java)
             }
         }
 

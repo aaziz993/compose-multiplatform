@@ -10,7 +10,7 @@ internal class NoArgPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (projectProperties.plugins.noArg.enabled || projectProperties.kotlin.targets.isEmpty())
+            if (projectProperties.plugins.noArg.enabled || projectProperties.kotlin.hasTargets)
 
                 plugins.apply(project.libs.plugins.allopen.get().pluginId)
 

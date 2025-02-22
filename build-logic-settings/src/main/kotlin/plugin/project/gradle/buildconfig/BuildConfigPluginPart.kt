@@ -10,7 +10,7 @@ internal class BuildConfigPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (!projectProperties.plugins.buildConfig.enabled ||projectProperties.kotlin.targets.isEmpty()) {
+            if (!projectProperties.plugins.buildConfig.enabled ||projectProperties.kotlin.hasTargets) {
                 return@with
             }
 

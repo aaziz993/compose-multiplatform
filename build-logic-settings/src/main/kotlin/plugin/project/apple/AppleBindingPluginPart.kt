@@ -4,6 +4,7 @@
 
 package plugin.project.apple
 
+import gradle.kotlin
 import gradle.libs
 import gradle.projectProperties
 import org.gradle.api.Plugin
@@ -13,19 +14,23 @@ import org.jetbrains.kotlin.gradle.plugin.extraProperties
 internal class AppleBindingPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
-        with(target) {
-            if (TargetType.APPLE !in projectProperties.kotlin.targets) {
-                return@with
-            }
-
-            plugins.apply(libs.plugins.apple.get().pluginId)
-
-           projectProperties.kotlin.targets.filter { (type, _) -> type.isDescendantOf(TargetType.APPLE) }
-                .forEach { target -> target.applyTo() }
-
-            extraProperties.set("generateBuildableXcodeproj.skipKotlinFrameworkDependencies", "true")
-
-            configureAppleProjectExtension()
-        }
+//        with(target) {
+//            if (TargetType.APPLE !in projectProperties.kotlin.targets) {
+//                return@with
+//            }
+//
+//            kotlin.iosSimulatorArm64(){
+//
+//            }
+//
+//            plugins.apply(libs.plugins.apple.get().pluginId)
+//plugins.apply(libs.plugins.cocoapods.get().pluginId)
+//           projectProperties.kotlin.targets.filter { (type, _) -> type.isDescendantOf(TargetType.APPLE) }
+//                .forEach { target -> target.applyTo() }
+//
+//            extraProperties.set("generateBuildableXcodeproj.skipKotlinFrameworkDependencies", "true")
+//
+//            configureAppleProjectExtension()
+//        }
     }
 }

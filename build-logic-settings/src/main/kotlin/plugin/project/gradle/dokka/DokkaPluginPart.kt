@@ -19,7 +19,7 @@ internal class DokkaPluginPart : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
            projectProperties.plugins.dokka.let { dokka ->
-                if (!dokka.enabled ||projectProperties.kotlin.targets.isEmpty()) {
+                if (!dokka.enabled ||projectProperties.kotlin.hasTargets) {
                     return@with
                 }
 

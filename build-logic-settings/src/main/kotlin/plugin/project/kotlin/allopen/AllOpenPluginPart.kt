@@ -10,7 +10,7 @@ internal class AllOpenPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (projectProperties.plugins.allOpen.enabled ||projectProperties.kotlin.targets.isEmpty()) {
+            if (projectProperties.plugins.allOpen.enabled ||projectProperties.kotlin.hasTargets) {
                 return@with
             }
 

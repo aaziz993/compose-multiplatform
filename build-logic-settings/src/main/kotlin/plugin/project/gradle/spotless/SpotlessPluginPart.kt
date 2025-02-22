@@ -10,7 +10,7 @@ internal class SpotlessPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (!projectProperties.plugins.spotless.enabled ||projectProperties.kotlin.targets.isEmpty()) {
+            if (!projectProperties.plugins.spotless.enabled ||projectProperties.kotlin.hasTargets) {
                 return@with
             }
 
