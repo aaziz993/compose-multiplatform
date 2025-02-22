@@ -4,14 +4,11 @@
 
 package plugin.project.java
 
+import gradle.kotlin
 import gradle.projectProperties
-import gradle.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.ApplicationPlugin
-import plugin.project.kotlin.model.target.TargetType
-import plugin.project.kotlin.model.target.applyTo
-import plugin.project.kotlin.model.target.contains
 
 internal class JavaBindingPluginPart : Plugin<Project> {
 
@@ -25,13 +22,15 @@ internal class JavaBindingPluginPart : Plugin<Project> {
 //                return@with
 //            }
 
-            if (projectProperties.kotlin.jvm == null) {
-                return@with
-            }
-
-            projectProperties.kotlin.jvm!!.forEach { target ->
-                target.applyTo()
-            }
+            projectProperties.kotlin.jvm?.forEach { targetName, target ->
+                targetName.takeIf(String::isNotEmpty)?.also { targetName ->
+                    kotlin.jvm(targetName) {
+                        target.applyTo(this)
+                    }
+                } ?: kotlin.jvm {
+                    target.applyTo(this)
+                }
+            } ?: return
 
             configureJavaExtension()
 

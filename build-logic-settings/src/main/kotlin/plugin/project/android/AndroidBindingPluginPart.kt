@@ -2,20 +2,17 @@
 
 package plugin.project.android
 
+import gradle.kotlin
 import gradle.libs
 import gradle.projectProperties
-import gradle.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import plugin.project.kotlin.model.target.TargetType
-import plugin.project.kotlin.model.target.applyTo
-import plugin.project.kotlin.model.target.contains
 
 internal class AndroidBindingPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (TargetType.ANDROID !in projectProperties.kotlin.targets) {
+            if (projectProperties.kotlin.android == null) {
                 return@with
             }
 
@@ -26,9 +23,15 @@ internal class AndroidBindingPluginPart : Plugin<Project> {
                 plugins.apply(libs.plugins.androidLibrary.get().pluginId)
             }
 
-           projectProperties.kotlin.targets
-                .filter { target -> target.type.isDescendantOf(TargetType.ANDROID) }
-                .forEach { target -> target.applyTo() }
+            projectProperties.kotlin.android!!.forEach { targetName, target ->
+                targetName.takeIf(String::isNotEmpty)?.also { targetName ->
+                    kotlin.androidTarget(targetName) {
+                        target.applyTo(this)
+                    }
+                } ?: kotlin.androidTarget {
+                    target.applyTo(this)
+                }
+            }
 
 //        adjustCompilations()
 //        applySettings()

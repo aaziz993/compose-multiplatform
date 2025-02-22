@@ -9,7 +9,6 @@ import plugin.project.kotlin.model.language.KotlinTarget
 
 @Serializable
 internal data class KotlinJvmTarget(
-    override val targetName: String,
     val testRuns: List<KotlinJvmTestRun>? = null,
     val mainRun: KotlinJvmRunDsl? = null,
     var withJava: Boolean? = null,
@@ -35,16 +34,5 @@ internal data class KotlinJvmTarget(
 
         withJava?.takeIf { it }?.let { target.withJava() }
         compilerOptions?.applyTo(target.compilerOptions)
-    }
-
-    context(Project)
-    fun applyTo() {
-        targetName.takeIf(String::isNotEmpty)?.also { targetName ->
-            kotlin.jvm(targetName) {
-                super.applyTo(this)
-            }
-        } ?: kotlin.jvm {
-            super.applyTo(this)
-        }
     }
 }

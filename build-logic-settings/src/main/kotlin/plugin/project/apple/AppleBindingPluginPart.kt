@@ -6,13 +6,9 @@ package plugin.project.apple
 
 import gradle.libs
 import gradle.projectProperties
-import gradle.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
-import plugin.project.kotlin.model.target.TargetType
-import plugin.project.kotlin.model.target.applyTo
-import plugin.project.kotlin.model.target.contains
 
 internal class AppleBindingPluginPart : Plugin<Project> {
 
