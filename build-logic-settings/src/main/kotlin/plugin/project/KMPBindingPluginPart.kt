@@ -5,10 +5,10 @@ package plugin.project
 import app.cash.sqldelight.core.decapitalize
 import gradle.all
 import gradle.kotlin
-import gradle.moduleProperties
+import gradle.projectProperties
+import gradle.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.plugin.KotlinMultiplatformPluginWrapper
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 
@@ -16,7 +16,7 @@ internal class KMPBindingPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (moduleProperties.targets.isEmpty()) {
+            if (settings.projectProperties.kotlin.targets.isEmpty()) {
                 return@with
             }
 
@@ -28,6 +28,7 @@ internal class KMPBindingPluginPart : Plugin<Project> {
             // IOS Compose uses UiKit, so we need to explicitly enable it, since it is experimental.
             extraProperties.set("org.jetbrains.compose.experimental.uikit.enabled", "true")
 
+            adjustTargets()
             adjustSourceSets()
 
             // Workaround for KTIJ-27212, to get proper compiler arguments in the common code facet after import.
@@ -101,7 +102,6 @@ internal class KMPBindingPluginPart : Plugin<Project> {
 //        }
 //    }
 
-
 //
 //        // Skip tests binary creation for now.
 //        module.leafFragments.forEach { fragment ->
@@ -121,14 +121,12 @@ internal class KMPBindingPluginPart : Plugin<Project> {
 //        }
 //    }
 
-    @Suppress("UNCHECKED_CAST")
-    private fun Project.adjustSourceSets() {
-        // Apply aliases
+    private fun Project.adjustTargets() =
         kotlin.applyDefaultHierarchyTemplate {
             common {
-                moduleProperties.aliases.forEach { alias ->
-                    group(alias.name) {
-                        alias.group.forEach { targetName ->
+                settings.projectProperties.kotlin.targetGroups?.forEach { (name, group) ->
+                    group(name) {
+                        group.forEach { targetName ->
                             when (targetName) {
                                 "jvm" -> withJvm()
                                 "android" -> withAndroidTarget()
@@ -149,25 +147,34 @@ internal class KMPBindingPluginPart : Plugin<Project> {
             }
         }
 
-        // Flatten source sets source directories
-        kotlin.sourceSets.all { sourceSet ->
-            val sourceSetNameParts = "^(.*?)(Main|Test|TestDebug)?$".toRegex().matchEntire(sourceSet.name)!!
+    @Suppress("UNCHECKED_CAST")
+    private fun Project.adjustSourceSets() {
+        kotlin {
+            if (settings.projectProperties.flatLayout) {
+                sourceSets.all { sourceSet ->
+                    val sourceSetNameParts = "^(.*?)(Main|Test|TestDebug)?$".toRegex().matchEntire(sourceSet.name)!!
 
-            val (kotlinPrefixPart, resourcesPrefixPart) = sourceSetNameParts.groupValues[2].decapitalize().let {
-                when (it) {
-                    "main", "" -> "src" to "resources"
-                    else -> it to "${it}Resources"
+                    val (kotlinPrefixPart, resourcesPrefixPart) = sourceSetNameParts.groupValues[2].decapitalize().let {
+                        when (it) {
+                            "main", "" -> "src" to "resources"
+                            else -> it to "${it}Resources"
+                        }
+                    }
+                    val suffixPart = sourceSetNameParts.groupValues[1].let {
+                        if (it == "common") "" else "@$it"
+                    }
+                    sourceSet.kotlin.setSrcDirs(listOf("$kotlinPrefixPart$suffixPart"))
+                    sourceSet.resources.setSrcDirs(listOf("$resourcesPrefixPart$suffixPart"))
                 }
             }
-            val suffixPart = sourceSetNameParts.groupValues[1].let {
-                if (it == "common") "" else "@$it"
+
+            sourceSets.forEach { sourceSet ->
+                settings.projectProperties.kotlin.sourceSets?.get(sourceSet.name)?.dependencies?.let { dependencies ->
+                    sourceSet.dependencies {
+                        dependencies.forEach { dependency -> dependency.applyTo(this) }
+                    }
+                }
             }
-            sourceSet.kotlin.setSrcDirs(listOf("$kotlinPrefixPart$suffixPart"))
-            sourceSet.resources.setSrcDirs(listOf("$resourcesPrefixPart$suffixPart"))
         }
-
-
-//        moduleProperties.dependencies.forEach { dependency -> dependency.applyTo() }
-//        moduleProperties.testDependencies.forEach { dependency -> dependency.applyTo() }
     }
 }

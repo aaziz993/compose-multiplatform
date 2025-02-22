@@ -14,7 +14,7 @@ import org.gradle.kotlin.dsl.withType
 
 internal fun Settings.configureGitHooksExtension() =
     pluginManager.withPlugin(libs.plugins.plugin("gradle-pre-commit-git-hooks").id) {
-        projectProperties.settings.gradle.gitHooks.let { gitHooks ->
+       settings.projectProperties.plugins.gitHooks.let { gitHooks ->
             gitHooks {
                 gitHooks.applyTo(this)
             }

@@ -1,15 +1,16 @@
 package plugin.project.kotlin.rpc
 
 import gradle.libs
-import gradle.moduleProperties
+import gradle.projectProperties
+import gradle.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
-internal class RpcPluginPart: Plugin<Project> {
+internal class RpcPluginPart : Plugin<Project> {
 
-    override fun apply(target:Project) {
+    override fun apply(target: Project) {
         with(target) {
-            if(!moduleProperties.settings.kotlin.rpc.enabled|| moduleProperties.targets.isEmpty()){
+            if (settings.projectProperties.plugins.rpc.enabled || settings.projectProperties.kotlin.targets.isEmpty()) {
                 return@with
             }
 

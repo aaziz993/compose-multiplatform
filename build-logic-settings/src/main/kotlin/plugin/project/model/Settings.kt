@@ -10,12 +10,8 @@ import plugin.project.web.model.WebSettings
 
 @Serializable
 internal data class Settings(
-    val application: Boolean = false,
-    val gradleEnterpriseAccessKey: String? = null,
     val android: AndroidSettings = AndroidSettings(),
     val native: NativeSettings = NativeSettings(),
     val apple: AppleSettings = AppleSettings(),
-    val cocoapods: CocoapodsSettings = CocoapodsSettings(),
     val web: WebSettings = WebSettings(),
-    val compose: ComposeSettings = ComposeSettings(),
 )

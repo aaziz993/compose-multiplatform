@@ -21,7 +21,7 @@ internal class DevelocityPluginPart : Plugin<Settings> {
 
     override fun apply(target: Settings) {
         with(target) {
-            projectProperties.settings.gradle.develocity
+           settings.projectProperties.plugins.develocity
                 .takeIf(DevelocitySettings::enabled)?.let { develocity ->
 
                     if (develocity.enabled) {
@@ -70,7 +70,7 @@ internal class DevelocityPluginPart : Plugin<Settings> {
         }
     }
 
-    private fun Settings.enrichGitData() = settings.projectProperties.settings.gradle.develocity.let { develocity ->
+    private fun Settings.enrichGitData() = settings.projectProperties.plugins.develocity.let { develocity ->
         develocity.git?.let { git ->
             gradle.projectsEvaluated {
                 if (!isCI && !git.skipTags) {

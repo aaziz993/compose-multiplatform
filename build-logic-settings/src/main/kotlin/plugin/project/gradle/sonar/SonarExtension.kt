@@ -1,11 +1,10 @@
 package plugin.project.gradle.sonar
 
 import gradle.libs
-import gradle.moduleProperties
+import gradle.projectProperties
+import gradle.settings
 import gradle.sonar
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.withType
-import org.sonarqube.gradle.SonarQubePlugin
 
 // Project code analysis
 // To analyze a project hierarchy, apply the SonarQube plugin to the root project of the hierarchy.
@@ -14,7 +13,7 @@ import org.sonarqube.gradle.SonarQubePlugin
 // Any properties set on the command line also apply to this project.
 internal fun Project.configureSonarExtension() =
     pluginManager.withPlugin(libs.plugins.sonarqube.get().pluginId) {
-        moduleProperties.settings.gradle.sonar.let { sonar ->
+        settings.projectProperties.plugins.sonar.let { sonar ->
             sonar {
                 sonar.applyTo(this)
             }

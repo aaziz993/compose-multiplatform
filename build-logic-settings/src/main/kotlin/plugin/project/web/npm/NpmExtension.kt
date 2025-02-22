@@ -1,7 +1,8 @@
 package plugin.project.web.npm
 
-import gradle.moduleProperties
+import gradle.projectProperties
 import gradle.npm
+import gradle.settings
 import gradle.tryAssign
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
@@ -9,7 +10,7 @@ import org.jetbrains.kotlin.gradle.targets.js.npm.NpmResolverPlugin
 
 internal fun Project.configureNpmExtension() =
     plugins.withType<NpmResolverPlugin> {
-        moduleProperties.settings.web.npm.let { npm ->
+       settings.projectProperties.settings.web.npm.let { npm ->
             npm {
                 command tryAssign npm.command
                 lockFileName tryAssign npm.lockFileName

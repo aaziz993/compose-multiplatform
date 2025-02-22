@@ -1,7 +1,11 @@
-package plugin.project.jvm.model
+package plugin.project.java.model
 
+import gradle.tryAssign
+import gradle.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.file.CopySpec
+import org.gradle.api.file.DuplicatesStrategy
+import org.gradle.api.plugins.JavaApplication
 
 /**
  * Configuration for a Java application, defining how to assemble the application.
@@ -38,7 +42,7 @@ internal data class JavaApplication(
      *
      * @since 6.4
      */
-    val ainClass: String? = null,
+    val mainClass: String? = null,
     /**
      * Array of string arguments to pass to the JVM when running the application
      */
@@ -52,7 +56,7 @@ internal data class JavaApplication(
      * The specification of the contents of the distribution.
      *
      *
-     * Use this [org.gradle.api.file.CopySpec] to include extra files/resource in the application distribution.
+     * Use this [CopySpec] to include extra files/resource in the application distribution.
      * <pre class='autoTested'>
      * plugins {
      * id 'application'
@@ -70,9 +74,13 @@ internal data class JavaApplication(
      * copy the application start scripts into the "`bin`" directory, and copy the built jar and its dependencies
      * into the "`lib`" directory.
      */
-){
-//    @ToBeReplacedByLazyProperty
-//    public fun getApplicationDistribution(): CopySpec?
-//
-//public fun setApplicationDistribution(applicationDistribution: CopySpec?)
+) {
+
+    fun applyTo(application: JavaApplication) {
+        applicationName?.let(application::setApplicationName)
+        application.mainModule tryAssign mainModule
+        application.mainClass tryAssign mainClass
+        applicationDefaultJvmArgs?.let(application::setApplicationDefaultJvmArgs)
+        executableDir?.let(application::setExecutableDir)
+    }
 }

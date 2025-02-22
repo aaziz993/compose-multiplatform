@@ -1,14 +1,15 @@
 package plugin.project.gradle.sonar
 
 import gradle.libs
-import gradle.moduleProperties
+import gradle.projectProperties
+import gradle.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
 internal class SonarPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) = with(target) {
-        if (!moduleProperties.settings.gradle.sonar.enabled || moduleProperties.targets.isEmpty()) {
+        if (!settings.projectProperties.plugins.sonar.enabled || settings.projectProperties.kotlin.targets.isEmpty()) {
             return@with
         }
 

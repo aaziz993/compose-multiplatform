@@ -4,7 +4,8 @@ package plugin.project.compose
 
 import gradle.all
 import gradle.kotlin
-import gradle.moduleProperties
+import gradle.projectProperties
+import gradle.settings
 import gradle.trySet
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -17,7 +18,7 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 internal fun Project.configureResourcesExtension() =
     plugins.withType<ComposePlugin> {
         extensions.configure<ComposeExtension> {
-            moduleProperties.settings.compose.resources.let { resources ->
+           settings.projectProperties.compose.resources.let { resources ->
                 extensions.configure<ResourcesExtension> {
                     ::publicResClass trySet resources.publicResClass
                     ::packageOfResClass trySet resources.packageOfResClass

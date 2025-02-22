@@ -1,17 +1,18 @@
 package plugin.project.cocoapods
 
 import gradle.libs
-import gradle.moduleProperties
+import gradle.projectProperties
+import gradle.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import plugin.project.model.target.TargetType
-import plugin.project.model.target.contains
+import plugin.project.kotlin.model.target.TargetType
+import plugin.project.kotlin.model.target.contains
 
 internal class CocoapodsPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (TargetType.APPLE !in moduleProperties.targets) {
+            if (TargetType.APPLE !in settings.projectProperties.kotlin.targets) {
                 project.logger.warn(
                     "Unnecessary to enable cocoapods plugin when no apple targets represented. " +
                         "Module: ${project.name}",
@@ -19,7 +20,7 @@ internal class CocoapodsPluginPart : Plugin<Project> {
                 return@with
             }
 
-            if (!project.moduleProperties.settings.cocoapods.enabled) {
+            if (!settings.projectProperties.kotlin.cocoapods.enabled) {
                 return@with
             }
 

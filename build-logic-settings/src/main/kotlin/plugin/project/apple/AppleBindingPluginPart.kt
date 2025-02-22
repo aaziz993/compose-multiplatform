@@ -5,25 +5,26 @@
 package plugin.project.apple
 
 import gradle.libs
-import gradle.moduleProperties
+import gradle.projectProperties
+import gradle.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
-import plugin.project.model.target.TargetType
-import plugin.project.model.target.applyTo
-import plugin.project.model.target.contains
+import plugin.project.kotlin.model.target.TargetType
+import plugin.project.kotlin.model.target.applyTo
+import plugin.project.kotlin.model.target.contains
 
 internal class AppleBindingPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (TargetType.APPLE !in moduleProperties.targets) {
+            if (TargetType.APPLE !in settings.projectProperties.kotlin.targets) {
                 return@with
             }
 
             plugins.apply(libs.plugins.apple.get().pluginId)
 
-            moduleProperties.targets.filter { (type, _) -> type.isDescendantOf(TargetType.APPLE) }
+           settings.projectProperties.kotlin.targets.filter { (type, _) -> type.isDescendantOf(TargetType.APPLE) }
                 .forEach { target -> target.applyTo() }
 
             extraProperties.set("generateBuildableXcodeproj.skipKotlinFrameworkDependencies", "true")

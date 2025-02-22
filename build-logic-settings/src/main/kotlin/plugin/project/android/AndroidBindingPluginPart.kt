@@ -3,29 +3,30 @@
 package plugin.project.android
 
 import gradle.libs
-import gradle.moduleProperties
+import gradle.projectProperties
+import gradle.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import plugin.project.model.target.TargetType
-import plugin.project.model.target.applyTo
-import plugin.project.model.target.contains
+import plugin.project.kotlin.model.target.TargetType
+import plugin.project.kotlin.model.target.applyTo
+import plugin.project.kotlin.model.target.contains
 
 internal class AndroidBindingPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (TargetType.ANDROID !in moduleProperties.targets) {
+            if (TargetType.ANDROID !in settings.projectProperties.kotlin.targets) {
                 return@with
             }
 
-            if (moduleProperties.application) {
+            if (settings.projectProperties.application) {
                 plugins.apply(libs.plugins.androidApplication.get().pluginId)
             }
             else {
                 plugins.apply(libs.plugins.androidLibrary.get().pluginId)
             }
 
-            moduleProperties.targets
+           settings.projectProperties.kotlin.targets
                 .filter { target -> target.type.isDescendantOf(TargetType.ANDROID) }
                 .forEach { target -> target.applyTo() }
 

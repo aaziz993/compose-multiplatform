@@ -1,7 +1,8 @@
 package plugin.project.kotlin.sqldelight
 
 import gradle.libs
-import gradle.moduleProperties
+import gradle.projectProperties
+import gradle.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -9,7 +10,7 @@ internal class SqlDelightPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (!moduleProperties.settings.kotlin.sqldelight.enabled || moduleProperties.targets.isEmpty()) {
+            if (settings.projectProperties.plugins.sqldelight.enabled || settings.projectProperties.kotlin.targets.isEmpty()) {
                 return@with
             }
 

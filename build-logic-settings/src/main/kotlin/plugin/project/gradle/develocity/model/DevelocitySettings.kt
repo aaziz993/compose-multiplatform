@@ -49,7 +49,7 @@ internal data class DevelocitySettings(
 
                         // Check access key presence to avoid build cache errors on PR builds when access key is not present
                         val accessKey = System.getenv().getOrElse("GRADLE_ENTERPRISE_ACCESS_KEY") {
-                            projectProperties.settings.gradle.gradleEnterpriseAccessKey
+                           settings.projectProperties.gradleEnterpriseAccessKey
                         }
 
                         isPush = remoteCache.isPush == true && accessKey != null

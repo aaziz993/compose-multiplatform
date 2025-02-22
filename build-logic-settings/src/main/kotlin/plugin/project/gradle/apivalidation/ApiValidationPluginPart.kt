@@ -1,7 +1,8 @@
 package plugin.project.gradle.apivalidation
 
 import gradle.libs
-import gradle.moduleProperties
+import gradle.projectProperties
+import gradle.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -9,7 +10,7 @@ internal class ApiValidationPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (!moduleProperties.settings.gradle.apiValidation.enabled || moduleProperties.targets.isEmpty()) {
+            if (!settings.projectProperties.plugins.apiValidation.enabled ||settings.projectProperties.kotlin.targets.isEmpty()) {
                 return@with
             }
 

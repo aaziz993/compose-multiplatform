@@ -1,7 +1,8 @@
 package plugin.project.web.node
 
-import gradle.moduleProperties
+import gradle.projectProperties
 import gradle.nodeEnv
+import gradle.settings
 import gradle.tryAssign
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
@@ -9,7 +10,7 @@ import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsPlugin
 
 internal fun Project.configureNodeJsEnvSpec() =
     plugins.withType<NodeJsPlugin> {
-        moduleProperties.settings.web.node.env.let { env ->
+       settings.projectProperties.settings.web.node.env.let { env ->
             nodeEnv {
                 download tryAssign env.download
                 downloadBaseUrl tryAssign env.downloadBaseUrl

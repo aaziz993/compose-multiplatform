@@ -1,6 +1,7 @@
 package plugin.project.web.model
 
-import gradle.moduleProperties
+import gradle.projectProperties
+import gradle.settings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalDistributionDsl
@@ -39,7 +40,7 @@ internal data class WebSettings(
             target.nodejs()
         }
 
-        if (moduleProperties.application) {
+        if (settings.projectProperties.application) {
             target.binaries.executable()
         }
         else {

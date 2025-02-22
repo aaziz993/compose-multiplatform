@@ -1,10 +1,9 @@
 package plugin.project.kotlin.model
 
 import kotlinx.serialization.Serializable
-import plugin.model.dependency.DependencyNotation
+import plugin.model.dependency.Dependency
 
 @Serializable
 internal data class SourceSet(
-    val name: String,
-    val dependencies: List<DependencyNotation>? = null,
+    val dependencies: List<Dependency>? = null,
 )

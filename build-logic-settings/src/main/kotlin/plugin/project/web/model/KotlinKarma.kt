@@ -8,27 +8,27 @@ import org.jetbrains.kotlin.gradle.targets.js.testing.karma.KotlinKarma
 internal data class KotlinKarma(
     val webpackConfig: KotlinWebpackConfig? = null,
     val configDirectory: String? = null,
-    val chrome: Boolean? = null,
-    val chromeHeadless: Boolean? = null,
-    val chromeHeadlessNoSandbox: Boolean? = null,
-    val chromium: Boolean? = null,
-    val chromiumHeadless: Boolean? = null,
-    val chromeCanary: Boolean? = null,
-    val chromeCanaryHeadless: Boolean? = null,
-    val debuggableChrome: Boolean? = null,
-    val phantomJS: Boolean? = null,
-    val firefox: Boolean? = null,
-    val firefoxHeadless: Boolean? = null,
-    val firefoxDeveloper: Boolean? = null,
-    val firefoxDeveloperHeadless: Boolean? = null,
-    val firefoxAurora: Boolean? = null,
-    val firefoxAuroraHeadless: Boolean? = null,
-    val firefoxNightly: Boolean? = null,
-    val firefoxNightlyHeadless: Boolean? = null,
-    val opera: Boolean? = null,
-    val safari: Boolean? = null,
-    val ie: Boolean? = null,
-    val sourceMapSupport: Boolean? = null,
+    val useChrome: Boolean? = null,
+    val useChromeHeadless: Boolean? = null,
+    val useChromeHeadlessNoSandbox: Boolean? = null,
+    val useChromium: Boolean? = null,
+    val useChromiumHeadless: Boolean? = null,
+    val useChromeCanary: Boolean? = null,
+    val useChromeCanaryHeadless: Boolean? = null,
+    val useDebuggableChrome: Boolean? = null,
+    val usePhantomJS: Boolean? = null,
+    val useFirefox: Boolean? = null,
+    val useFirefoxHeadless: Boolean? = null,
+    val useFirefoxDeveloper: Boolean? = null,
+    val useFirefoxDeveloperHeadless: Boolean? = null,
+    val useFirefoxAurora: Boolean? = null,
+    val useFirefoxAuroraHeadless: Boolean? = null,
+    val useFirefoxNightly: Boolean? = null,
+    val useFirefoxNightlyHeadless: Boolean? = null,
+    val useOpera: Boolean? = null,
+    val useSafari: Boolean? = null,
+    val useIe: Boolean? = null,
+    val useSourceMapSupport: Boolean? = null,
 ) {
 
     context(Project)
@@ -38,26 +38,26 @@ internal data class KotlinKarma(
         }
 
         configDirectory?.let(karma::useConfigDirectory)
-        chrome?.takeIf { it }?.run { karma.useChrome() }
-        chromeHeadless?.takeIf { it }?.run { karma.useChromeHeadless() }
-        chromeHeadlessNoSandbox?.takeIf { it }?.run { karma.useChromeHeadlessNoSandbox() }
-        chromium?.takeIf { it }?.run { karma.useChromium() }
-        chromiumHeadless?.takeIf { it }?.run { karma.useChromiumHeadless() }
-        chromeCanary?.takeIf { it }?.run { karma.useChromeCanary() }
-        chromeCanaryHeadless?.takeIf { it }?.run { karma.useChromeCanaryHeadless() }
-        debuggableChrome?.takeIf { it }?.run { karma.useDebuggableChrome() }
-        phantomJS?.takeIf { it }?.run { karma.usePhantomJS() }
-        firefox?.takeIf { it }?.run { karma.useFirefox() }
-        firefoxHeadless?.takeIf { it }?.run { karma.useFirefoxHeadless() }
-        firefoxDeveloper?.takeIf { it }?.run { karma.useFirefoxDeveloper() }
-        firefoxDeveloperHeadless?.takeIf { it }?.run { karma.useFirefoxDeveloperHeadless() }
-        firefoxAurora?.takeIf { it }?.run { karma.useFirefoxAurora() }
-        firefoxAuroraHeadless?.takeIf { it }?.run { karma.useFirefoxAuroraHeadless() }
-        firefoxNightly?.takeIf { it }?.run { karma.useFirefoxNightly() }
-        firefoxNightlyHeadless?.takeIf { it }?.run { karma.useFirefoxNightlyHeadless() }
-        opera?.takeIf { it }?.run { karma.useOpera() }
-        safari?.takeIf { it }?.run { karma.useSafari() }
-        ie?.takeIf { it }?.run { karma.useIe() }
-        sourceMapSupport?.takeIf { it }?.run { karma.useSourceMapSupport() }
+        useChrome?.takeIf { it }?.run { karma.useChrome() }
+        useChromeHeadless?.takeIf { it }?.run { karma.useChromeHeadless() }
+        useChromeHeadlessNoSandbox?.takeIf { it }?.run { karma.useChromeHeadlessNoSandbox() }
+        useChromium?.takeIf { it }?.run { karma.useChromium() }
+        useChromiumHeadless?.takeIf { it }?.run { karma.useChromiumHeadless() }
+        useChromeCanary?.takeIf { it }?.run { karma.useChromeCanary() }
+        useChromeCanaryHeadless?.takeIf { it }?.run { karma.useChromeCanaryHeadless() }
+        useDebuggableChrome?.takeIf { it }?.run { karma.useDebuggableChrome() }
+        usePhantomJS?.takeIf { it }?.run { karma.usePhantomJS() }
+        useFirefox?.takeIf { it }?.run { karma.useFirefox() }
+        useFirefoxHeadless?.takeIf { it }?.run { karma.useFirefoxHeadless() }
+        useFirefoxDeveloper?.takeIf { it }?.run { karma.useFirefoxDeveloper() }
+        useFirefoxDeveloperHeadless?.takeIf { it }?.run { karma.useFirefoxDeveloperHeadless() }
+        useFirefoxAurora?.takeIf { it }?.run { karma.useFirefoxAurora() }
+        useFirefoxAuroraHeadless?.takeIf { it }?.run { karma.useFirefoxAuroraHeadless() }
+        useFirefoxNightly?.takeIf { it }?.run { karma.useFirefoxNightly() }
+        useFirefoxNightlyHeadless?.takeIf { it }?.run { karma.useFirefoxNightlyHeadless() }
+        useOpera?.takeIf { it }?.run { karma.useOpera() }
+        useSafari?.takeIf { it }?.run { karma.useSafari() }
+        useIe?.takeIf { it }?.run { karma.useIe() }
+        useSourceMapSupport?.takeIf { it }?.run { karma.useSourceMapSupport() }
     }
 }

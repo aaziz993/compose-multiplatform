@@ -131,13 +131,13 @@ plugins:
 
 kotlin:
   targetGroups:
-    - jvmAndAndroid: [ jvm, android ]
-    - nonJvm: [ android, iosArm64 , iosX64, iosSimulatorArm64, js, wasm ]
-    - nonAndroid: [ jvm, iosArm64, iosX64, iosSimulatorArm64, js, wasm ]
-    - mobile: [ android, iosArm64, iosX64, iosSimulatorArm64 ]
-    - nonMobile: [ jvm, js, wasm ]
-    - web: [ js, wasm ]
-    - nonWeb: [ jvm, android, iosArm64, iosX64, iosSimulatorArm64 ]
+    jvmAndAndroid: [ jvm, android ]
+    nonJvm: [ android, iosArm64 , iosX64, iosSimulatorArm64, js, wasm ]
+    nonAndroid: [ jvm, iosArm64, iosX64, iosSimulatorArm64, js, wasm ]
+    mobile: [ android, iosArm64, iosX64, iosSimulatorArm64 ]
+    nonMobile: [ jvm, js, wasm ]
+    web: [ js, wasm ]
+    nonWeb: [ jvm, android, iosArm64, iosX64, iosSimulatorArm64 ]
 
   sourceSets:
     commonMain:

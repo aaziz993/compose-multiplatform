@@ -1,7 +1,8 @@
 package plugin.project.kotlin.powerassert
 
 import gradle.libs
-import gradle.moduleProperties
+import gradle.projectProperties
+import gradle.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -9,7 +10,7 @@ internal class PowerAssertPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (!moduleProperties.settings.kotlin.powerAssert.enabled || moduleProperties.targets.isEmpty()) {
+            if (settings.projectProperties.plugins.powerAssert.enabled || settings.projectProperties.kotlin.targets.isEmpty()) {
                 return@with
             }
 

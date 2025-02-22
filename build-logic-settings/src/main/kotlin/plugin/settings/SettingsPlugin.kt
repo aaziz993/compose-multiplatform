@@ -6,11 +6,11 @@ import gradle.serialization.decodeFromAny
 import gradle.deepMerge
 import gradle.serialization.encodeToAny
 import gradle.libs
-import gradle.moduleProperties
+import gradle.projectProperties
 import gradle.plugin
 import gradle.pluginAsDependency
 import gradle.plugins
-import gradle.projectProperties
+import gradle.settings
 import gradle.setupDynamicClasspath
 import gradle.trySetSystemProperty
 import javax.xml.stream.XMLEventFactory
@@ -20,10 +20,10 @@ import kotlinx.serialization.json.Json
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler
+import org.gradle.api.file.Directory
 import org.gradle.api.initialization.Settings
 import org.gradle.kotlin.dsl.maven
 import org.jetbrains.amper.gradle.SLF4JProblemReporterContext
-import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import org.yaml.snakeyaml.DumperOptions
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.nodes.Tag
@@ -33,8 +33,9 @@ import plugin.project.BindingProjectPlugin
 import plugin.project.gradle.develocity.DevelocityPluginPart
 import plugin.project.gradle.githooks.GitHooksluginPart
 import plugin.project.gradle.toolchainmanagement.ToolchainManagementPluginPart
-import plugin.project.kotlin.model.TargetGroup
 import plugin.project.model.Properties
+
+private const val PROJECT_PROPERTIES_FILE = "project.yaml"
 
 /**
  * Gradle setting plugin, that is responsible for:
@@ -79,9 +80,9 @@ public class SettingsPlugin : Plugin<Settings> {
 
     @Suppress("UnstableApiUsage")
     private fun Settings.setupProject() {
-        loadProjectProperties()
+        projectProperties = layout.settingsDirectory.loadProperties()
 
-        projectProperties.pluginManagement.let { pluginManagement ->
+       settings.projectProperties.pluginManagement.let { pluginManagement ->
             pluginManagement {
                 repositories {
                     mavenCentral()
@@ -98,7 +99,7 @@ public class SettingsPlugin : Plugin<Settings> {
         plugins.apply(ToolchainManagementPluginPart::class.java)
         plugins.apply(GitHooksluginPart::class.java)
 
-        projectProperties.dependencyResolutionManagement?.let { dependencyResolutionManagement ->
+       settings.projectProperties.dependencyResolutionManagement?.let { dependencyResolutionManagement ->
             dependencyResolutionManagement {
                 repositories {
                     addDefaultAmperRepositoriesForDependencies()
@@ -109,7 +110,7 @@ public class SettingsPlugin : Plugin<Settings> {
                         versionCatalogs.forEach { (name, dependency) ->
                             create(name) {
                                 from(
-                                    dependency.toDependencyNotation(),
+                                    dependency.resolve(),
                                 )
                             }
                         }
@@ -118,17 +119,7 @@ public class SettingsPlugin : Plugin<Settings> {
             }
         }
 
-        projectProperties.modules?.forEach(::include)
-    }
-
-    private fun Settings.loadProjectProperties() {
-        val projectSettings = yaml.load<Map<String, *>>(rootDir.resolve("project.yaml").readText())
-
-        projectProperties = json
-            .decodeFromAny<Properties>(projectSettings).also {
-                println("Apply project.yaml to project '${rootProject.name.uppercase()}':")
-                println(logYaml.dump(Json.Default.encodeToAny(it)))
-            }
+       settings.projectProperties.modules?.forEach(::include)
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -136,10 +127,6 @@ public class SettingsPlugin : Plugin<Settings> {
         with(libs) {
             setupDynamicClasspath(
                 libs.plugins.plugin("kotlin-multiplatform").pluginAsDependency,
-                libs.plugins.plugin("android").pluginAsDependency,
-                libs.plugins.plugin("androidLibrary").pluginAsDependency,
-                libs.plugins.plugin("androidApplication").pluginAsDependency,
-                libs.plugins.plugin("compose-multiplatform").pluginAsDependency,
             ) {
                 addDefaultAmperRepositoriesForDependencies()
             }
@@ -147,8 +134,10 @@ public class SettingsPlugin : Plugin<Settings> {
     }
 
     private fun Project.configureProject() {
-        loadModuleProperties()
-
+        settings.projectProperties = layout.projectDirectory.loadProperties().apply {
+            println("APPLY $PROJECT_PROPERTIES_FILE TO: $name")
+            println(logYaml.dump(Json.Default.encodeToAny(this)))
+        }
 
         plugins.apply(BindingProjectPlugin::class.java)
 
@@ -163,30 +152,20 @@ public class SettingsPlugin : Plugin<Settings> {
     }
 
     @Suppress("UNCHECKED_CAST")
-    private fun Project.loadModuleProperties() {
+    private fun Directory.loadProperties(): Properties {
+        val propertiesFile = file(PROJECT_PROPERTIES_FILE).asFile
 
-        if (!project.file("module.yaml").exists()) {
-            moduleProperties = Properties()
-            return
+        if (!propertiesFile.exists()) {
+            return Properties()
         }
 
-        val moduleSettings = yaml.load<MutableMap<String, *>>(
-            project.projectDir.resolve("project.yaml").readText(),
-        )
+        val properties = yaml.load<MutableMap<String, *>>(propertiesFile.readText())
 
-        val templates = (moduleSettings["apply"] as List<String>?)?.map { template ->
-            yaml.load<MutableMap<String, *>>(
-                project.projectDir.resolve(template).readText(),
-            )
-        }.orEmpty()
+        (properties["templates"] as List<String>?)?.fold(emptyMap<String, Any?>()) { acc, template ->
+            acc deepMerge yaml.load<MutableMap<String, *>>(file(template).asFile.readText())
+        }.orEmpty() deepMerge properties
 
-        project.moduleProperties = json.decodeFromAny<Properties>(
-            templates.fold(emptyMap<String, Any?>()) { acc, map -> acc deepMerge map }
-                deepMerge moduleSettings,
-        ).apply {
-            println("Apply module.yaml to '${project.name.uppercase()}':")
-            println(logYaml.dump(Json.Default.encodeToAny(this)))
-        }
+        return json.decodeFromAny<Properties>(properties)
     }
 
     /**
@@ -225,7 +204,7 @@ public class SettingsPlugin : Plugin<Settings> {
         maven("https://oss.sonatype.org/content/repositories/snapshots")
 
         // Apply repositories from project properties.
-        projectProperties.dependencyResolutionManagement?.repositories?.let { repositories ->
+       settings.projectProperties.dependencyResolutionManagement?.repositories?.let { repositories ->
             repositories.forEach { repository ->
                 maven(repository)
             }

@@ -1,4 +1,4 @@
-package plugin.project.jvm//package plugin.project.jvm
+package plugin.project.java//package plugin.project.jvm
 //
 //import gradle.amperModuleExtraProperties
 //import gradle.libs

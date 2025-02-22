@@ -1,6 +1,7 @@
 package plugin.project.compose.desktop
 
-import gradle.moduleProperties
+import gradle.projectProperties
+import gradle.settings
 import gradle.trySet
 import org.gradle.api.Project
 import org.gradle.internal.os.OperatingSystem
@@ -12,7 +13,7 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 internal fun Project.configureDesktopExtension() =
     extensions.configure<ComposeExtension> {
-        moduleProperties.settings.compose.desktop.let { desktop ->
+       settings.projectProperties.compose.desktop.let { desktop ->
             extensions.configure<DesktopExtension> {
                 application {
                     jvmArgs(

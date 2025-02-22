@@ -3,6 +3,7 @@ package plugin.project.kotlin.model
 import gradle.trySet
 import kotlinx.serialization.Serializable
 import org.jetbrains.kotlin.gradle.plugin.LanguageSettingsBuilder
+import plugin.project.cocoapods.model.CocoapodsSettings
 import plugin.project.kotlin.model.language.LanguageSettings
 import plugin.project.kotlin.model.target.Target
 
@@ -14,8 +15,9 @@ internal data class Kotlin(
     override val languageFeatures: Set<String>? = null,
     override val optIns: Set<String>? = null,
     val targets: List<Target> = emptyList(),
-    val targetGroups: List<TargetGroup>? = null,
-    val sourceSets: List<SourceSet>? = null
+    val targetGroups: LinkedHashMap<String, List<String>>? = null,
+    val sourceSets: LinkedHashMap<String, SourceSet>? = null,
+    val cocoapods: CocoapodsSettings = CocoapodsSettings(),
 ) : LanguageSettings {
 
     fun applyTo(builder: LanguageSettingsBuilder) {

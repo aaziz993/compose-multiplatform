@@ -1,7 +1,8 @@
 package plugin.project.kotlin.ksp
 
 import gradle.libs
-import gradle.moduleProperties
+import gradle.projectProperties
+import gradle.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
@@ -12,8 +13,8 @@ internal class KspPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            moduleProperties.settings.kotlin.ksp.let { ksp ->
-                if (!ksp.enabled || moduleProperties.targets.isEmpty()) {
+            settings.projectProperties.plugins.ksp.let { ksp ->
+                if (!ksp.enabled || settings.projectProperties.kotlin.targets.isEmpty()) {
                     return@with
                 }
 
@@ -21,14 +22,14 @@ internal class KspPluginPart : Plugin<Project> {
 
                 configureKspExtension()
 
-                if(name=="android-app"){
-                    println("CONFIGS: ${moduleProperties.targets}")
+                if (name == "android-app") {
+                    println("CONFIGS: $settings.projectProperties.kotlin.targets}")
                 }
 
                 val kspCommonMainMetadata by configurations
                 dependencies {
                     ksp.processors?.forEach { processor ->
-                        kspCommonMainMetadata(processor.toDependencyNotation())
+                        kspCommonMainMetadata(processor.resolve())
                     }
                 }
             }

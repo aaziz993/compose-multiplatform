@@ -2,7 +2,8 @@ package plugin.project.gradle.doctor
 
 import gradle.isCI
 import gradle.libs
-import gradle.moduleProperties
+import gradle.projectProperties
+import gradle.settings
 import gradle.unregister
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -10,7 +11,7 @@ import org.gradle.api.Project
 internal class DoctorPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) = with(target) {
-        if (!moduleProperties.settings.gradle.doctor.enabled || this != rootProject) {
+        if (!settings.projectProperties.plugins.doctor.enabled || this != rootProject) {
             return@with
         }
 

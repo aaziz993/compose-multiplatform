@@ -5,7 +5,7 @@ import gradle.trySet
 import kotlin.collections.component1
 import kotlin.collections.component2
 import kotlinx.serialization.Serializable
-import plugin.model.dependency.DependencyNotation
+import plugin.model.dependency.Dependency
 
 @Serializable
 internal data class KspSettings(
@@ -15,7 +15,7 @@ internal data class KspSettings(
     override val excludedSources: List<String>? = null,
     override val arguments: Map<String, String>? = null,
     override val allWarningsAsErrors: Boolean? = null,
-    val processors: List<DependencyNotation>? = null,
+    val processors: List<Dependency>? = null,
     val enabled: Boolean = true,
 ) : KspExtension {
 

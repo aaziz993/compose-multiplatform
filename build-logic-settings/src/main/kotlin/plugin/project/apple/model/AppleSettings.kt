@@ -1,6 +1,7 @@
 package plugin.project.apple.model
 
-import gradle.moduleProperties
+import gradle.projectProperties
+import gradle.settings
 import gradle.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -16,7 +17,7 @@ internal data class AppleSettings(
     fun applyTo(extension: org.jetbrains.gradle.apple.AppleProjectExtension) {
         extension::teamID trySet teamID
 
-        if (moduleProperties.application) {
+        if (settings.projectProperties.application) {
             iosApps?.forEach { iosApp ->
                 iosApp.name?.also { name ->
                     extension.iosApp(name, iosApp::applyTo)

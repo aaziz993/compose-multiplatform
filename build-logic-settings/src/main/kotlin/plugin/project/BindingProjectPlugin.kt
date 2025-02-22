@@ -3,7 +3,7 @@
 package plugin.project
 
 import gradle.libs
-import gradle.moduleProperties
+import gradle.projectProperties
 import gradle.settings
 import gradle.version
 import gradle.versions
@@ -22,7 +22,7 @@ import plugin.project.gradle.dokka.DokkaPluginPart
 import plugin.project.gradle.kover.KoverPluginPart
 import plugin.project.gradle.sonar.SonarPluginPart
 import plugin.project.gradle.spotless.SpotlessPluginPart
-import plugin.project.jvm.JavaBindingPluginPart
+import plugin.project.java.JavaBindingPluginPart
 import plugin.project.kotlin.allopen.AllOpenPluginPart
 import plugin.project.kotlin.apollo.ApolloPluginPart
 import plugin.project.kotlin.atomicfu.AtomicFUPluginPart
@@ -47,8 +47,8 @@ internal class BindingProjectPlugin : Plugin<Project> {
 
     override fun apply(target: Project) = with(SLF4JProblemReporterContext()) {
         with(target) {
-            moduleProperties.group?.let(::setGroup)
-            moduleProperties.description?.let(::setDescription)
+           settings.projectProperties.group?.let(::setGroup)
+           settings.projectProperties.description?.let(::setDescription)
             settings.libs.versions.let { versions ->
                 version(
                     versions.version("${target.name}-version-major")?.toInt() ?: 1,

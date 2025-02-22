@@ -13,7 +13,7 @@ internal class ToolchainManagementPluginPart : Plugin<Settings> {
 
     override fun apply(target: Settings) {
         with(target) {
-            projectProperties.settings.gradle.toolchainManagement
+           settings.projectProperties.plugins.toolchainManagement
                 .takeIf(ToolchainManagementSettings::enabled)?.let { toolchainManagement ->
                     plugins.apply(settings.libs.plugins.plugin("foojay-resolver-convention").id)
 
