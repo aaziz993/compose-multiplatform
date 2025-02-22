@@ -1,5 +1,6 @@
 package plugin.project.web
 
+import gradle.kotlin
 import gradle.projectProperties
 import gradle.settings
 import org.gradle.api.Plugin
@@ -13,15 +14,14 @@ internal class WasmBindingPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (TargetType.WASM !in projectProperties.kotlin.targets) {
+            if (projectProperties.kotlin.wasmJs == null) {
                 return@with
             }
 
-           projectProperties.kotlin.targets
-                .filter { target -> target.type.isDescendantOf(TargetType.WASM) }
-                .forEach { target -> target.applyTo() }
+            projectProperties.kotlin.wasmJs!!.forEach { target ->
+                target.applyTo()
+            }
 
-            configureKotlinJsTarget<KotlinWasmJsTargetDsl>()
             configureJsTestTasks<KotlinWasmJsTargetDsl>()
         }
     }

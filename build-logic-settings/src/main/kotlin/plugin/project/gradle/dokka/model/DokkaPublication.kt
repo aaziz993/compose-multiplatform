@@ -22,7 +22,7 @@ internal data class DokkaPublication(
      *
      * The value is case-sensitive.
      */
-    val formatName: String? = null,
+    val formatName: String = "",
     /**
      * Controls whether Dokka should generate documentation using this publication.
      *

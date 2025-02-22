@@ -32,7 +32,7 @@ internal interface AppleTarget {
         target::bridgingHeader trySet bridgingHeader
 
         buildConfigurations?.forEach { buildConfigurations ->
-            buildConfigurations.name?.also { name ->
+            buildConfigurations.name.takeIf(String::isNotEmpty)?.also { name ->
                 target.buildConfigurations.maybeNamed(name, buildConfigurations::applyTo)
             } ?: target.buildConfigurations.all(buildConfigurations::applyTo)
         }

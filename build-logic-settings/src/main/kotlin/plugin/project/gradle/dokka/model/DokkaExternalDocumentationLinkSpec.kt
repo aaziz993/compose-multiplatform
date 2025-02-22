@@ -28,7 +28,7 @@ import org.jetbrains.dokka.gradle.engine.parameters.DokkaExternalDocumentationLi
  */
 @Serializable
 internal data class DokkaExternalDocumentationLinkSpec(
-    val name: String? = null,
+    val name: String="",
     /**
      * Root URL of documentation to link with.
      *

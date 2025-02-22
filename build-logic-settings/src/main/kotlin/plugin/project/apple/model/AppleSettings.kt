@@ -19,7 +19,7 @@ internal data class AppleSettings(
 
         if (projectProperties.application) {
             iosApps?.forEach { iosApp ->
-                iosApp.name?.also { name ->
+                iosApp.name.takeIf(String::isNotEmpty)?.also { name ->
                     extension.iosApp(name, iosApp::applyTo)
                 } ?: extension.iosApp(iosApp::applyTo)
             }
@@ -27,7 +27,7 @@ internal data class AppleSettings(
         else {
 
             iosFrameworks?.forEach { iosFramework ->
-                iosFramework.name?.also { name ->
+                iosFramework.name.takeIf(String::isNotEmpty)?.also { name ->
                     extension.iosFramework(name, iosFramework::applyTo)
                 } ?: extension.iosFramework(iosFramework::applyTo)
             }

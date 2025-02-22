@@ -1,4 +1,4 @@
-package plugin.project.web.model
+package plugin.project.kotlin.model.language.web
 
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

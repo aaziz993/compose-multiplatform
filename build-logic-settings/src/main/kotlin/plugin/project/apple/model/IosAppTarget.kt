@@ -13,7 +13,7 @@ internal data class IosAppTarget(
     override val embedFrameworks: Boolean? = null,
     override val ipad: Boolean? = null,
     override val iphone: Boolean? = null,
-    override val name: String? = null,
+    override val name: String="",
     override val productInfo: Map<String, @Serializable(with = AnySerializer::class) Any>? = null,
     override val productModuleName: String? = null,
     override val productName: String? = null,

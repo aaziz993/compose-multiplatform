@@ -1,4 +1,4 @@
-package plugin.project.web.model
+package plugin.project.kotlin.model.language.web
 
 import gradle.tryAssign
 import kotlinx.serialization.Serializable

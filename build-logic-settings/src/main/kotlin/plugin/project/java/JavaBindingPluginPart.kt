@@ -17,20 +17,21 @@ internal class JavaBindingPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (TargetType.ANDROID in projectProperties.kotlin.targets) {
-                logger.warn(
-                    "Cant enable java integration when android is enabled. " +
-                        "Module: $name",
-                )
+//            if (TargetType.ANDROID in projectProperties.kotlin.jvm==null) {
+//                logger.warn(
+//                    "Cant enable java integration when android is enabled. " +
+//                        "Module: $name",
+//                )
+//                return@with
+//            }
+
+            if (projectProperties.kotlin.jvm == null) {
                 return@with
             }
 
-            if (TargetType.JVM !in projectProperties.kotlin.targets) {
-                return@with
+            projectProperties.kotlin.jvm!!.forEach { target ->
+                target.applyTo()
             }
-
-            projectProperties.kotlin.targets.filter { target -> target.type.isDescendantOf(TargetType.JVM) }
-                .forEach { target -> target.applyTo() }
 
             configureJavaExtension()
 

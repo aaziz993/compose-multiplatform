@@ -176,7 +176,7 @@ internal interface DokkaExtension {
         extension.konanHome tryAssign konanHome?.let(::file)
 
         dokkaPublications?.forEach { dokkaPublication ->
-            dokkaPublication.formatName?.also { formatName ->
+            dokkaPublication.formatName.takeIf(String::isNotEmpty)?.also { formatName ->
                 extension.dokkaPublications.maybeNamed(formatName) {
                     dokkaPublication.applyTo(this)
                 }
@@ -186,7 +186,7 @@ internal interface DokkaExtension {
         }
 
         dokkaSourceSets?.forEach { dokkaSourceSet ->
-            dokkaSourceSet.name?.also { name ->
+            dokkaSourceSet.name.takeIf(String::isNotEmpty)?.also { name ->
                 extension.dokkaSourceSets.maybeNamed(name) {
                     dokkaSourceSet.applyTo(this)
                 }

@@ -36,7 +36,7 @@ import org.jetbrains.dokka.gradle.engine.parameters.VisibilityModifier
  */
 @Serializable
 internal data class DokkaSourceSetSpec(
-    val name: String? = null,
+    val name: String = "",
     /**
      * An arbitrary string used to group source sets that originate from different Gradle subprojects.
      * This is primarily used by Kotlin Multiplatform projects, which can have multiple source sets
@@ -284,7 +284,7 @@ internal data class DokkaSourceSetSpec(
         }
 
         externalDocumentationLinks?.forEach { externalDocumentationLink ->
-            externalDocumentationLink.name?.also { name ->
+            externalDocumentationLink.name.takeIf(String::isNotEmpty)?.also { name ->
                 spec.externalDocumentationLinks.named(name, externalDocumentationLink::applyTo)
             } ?: spec.externalDocumentationLinks.configureEach(externalDocumentationLink::applyTo)
         }

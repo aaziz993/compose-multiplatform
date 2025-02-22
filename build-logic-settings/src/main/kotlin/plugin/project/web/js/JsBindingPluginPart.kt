@@ -1,5 +1,6 @@
 package plugin.project.web.js
 
+import gradle.kotlin
 import gradle.projectProperties
 import gradle.settings
 import org.gradle.api.Plugin
@@ -16,17 +17,15 @@ internal class JsBindingPluginPart : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (TargetType.JS !in projectProperties.kotlin.targets) {
+            if (projectProperties.kotlin.js == null) {
                 return@with
             }
 
-            projectProperties.kotlin.targets
-                .filter { target -> target.type.isDescendantOf(TargetType.JS) }
-                .forEach { target -> target.applyTo() }
+            projectProperties.kotlin.js!!.forEach { target ->
+                target.applyTo()
+            }
 
-            configureKotlinJsTarget<KotlinJsTargetDsl>()
             configureJsTestTasks<KotlinJsTargetDsl>()
-            configureKarakum()
         }
     }
 }

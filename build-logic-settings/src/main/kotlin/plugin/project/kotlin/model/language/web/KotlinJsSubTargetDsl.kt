@@ -1,4 +1,4 @@
-package plugin.project.web.model
+package plugin.project.kotlin.model.language.web
 
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalDistributionDsl

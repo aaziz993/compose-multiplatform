@@ -1,14 +1,17 @@
-package plugin.project.web.model
+package plugin.project.kotlin.model.language.web
 
 import gradle.trySet
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalMainFunctionArgumentsDsl
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
 import plugin.project.kotlin.model.language.HasConfigurableKotlinCompilerOptions
+import plugin.project.kotlin.model.language.KotlinTarget
 
-internal interface KotlinJsTargetDsl : HasConfigurableKotlinCompilerOptions<KotlinJsCompilerOptions> {
+internal interface KotlinJsTargetDsl : KotlinTarget, KotlinTargetWithNodeJsDsl, HasConfigurableKotlinCompilerOptions<KotlinJsCompilerOptions> {
 
     val moduleName: String?
+
+    val browser: KotlinJsBrowserDsl?
 
     val useCommonJs: Boolean?
 
@@ -26,6 +29,7 @@ internal interface KotlinJsTargetDsl : HasConfigurableKotlinCompilerOptions<Kotl
     fun applyTo(target: KotlinJsTargetDsl) {
         super.applyTo(target)
         target::moduleName trySet moduleName
+
         useCommonJs?.takeIf { it }?.run { target.useCommonJs() }
         useEsModules?.takeIf { it }?.run { target.useEsModules() }
         passAsArgumentToMainFunction?.let(target::passAsArgumentToMainFunction)
