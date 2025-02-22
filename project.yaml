@@ -70,12 +70,15 @@ dependencyResolutionManagement:
       from: org.jetbrains.kotlin-wrappers:kotlin-wrappers-catalog:2025.2.6
 
 modules:
-#  - android-app
-  - ios-app
-  - jvm-app
-  - wasm-app
-  - server-app
-  - shared
   - cmp-lib
   - kmp-lib
   - compiler
+  - shared
+  - android-app
+  - ios-app
+  - jvm-app
+  - js-app
+  - wasm-app
+  - server-app
+
+

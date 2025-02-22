@@ -4,7 +4,11 @@ package plugin.project
 
 import app.cash.sqldelight.core.decapitalize
 import gradle.all
+import gradle.id
 import gradle.kotlin
+import gradle.libs
+import gradle.plugin
+import gradle.plugins
 import gradle.projectProperties
 import gradle.settings
 import org.gradle.api.Plugin
@@ -20,7 +24,7 @@ internal class KMPBindingPluginPart : Plugin<Project> {
                 return@with
             }
 
-            plugins.apply(KotlinMultiplatformPluginWrapper::class.java)
+            plugins.apply(settings.libs.plugins.plugin("kotlin-multiplatform").id)
 
             // Enable Default Kotlin Hierarchy.
             extraProperties.set("kotlin.mpp.applyDefaultHierarchyTemplate", "true")

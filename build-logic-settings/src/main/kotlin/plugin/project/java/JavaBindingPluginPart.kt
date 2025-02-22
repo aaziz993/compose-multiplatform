@@ -32,14 +32,14 @@ internal class JavaBindingPluginPart : Plugin<Project> {
                 }
             } ?: return
 
-            configureJavaExtension()
+//            configureJavaExtension()
+//
+//            if (projectProperties.application && projectProperties.compose.enabled) {
+//                plugins.apply(ApplicationPlugin::class.java)
+//                configureJavaApplication()
+//            }
 
-            if (projectProperties.application && projectProperties.compose.enabled) {
-                plugins.apply(ApplicationPlugin::class.java)
-                configureJavaApplication()
-            }
-
-            configureJar()
+//            configureJar()
         }
     }
 }

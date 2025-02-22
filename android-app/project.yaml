@@ -3,7 +3,8 @@ templates:
   - ../template/compose.yaml
 
 kotlin:
-  targets: [ android ]
+  android:
+    '': { }
 
   sourceSets:
     androidMain:

@@ -6,7 +6,8 @@ jvm:
   mainClass: MainKt
 
 kotlin:
-  targets: [ jvm ]
+  jvm:
+    ~: { }
 
   sourceSets:
     commonMain:

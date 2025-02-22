@@ -2,9 +2,10 @@ templates:
   - ../template/common.yaml
   - ../template/compose.yaml
 
+application: true
 
 kotlin:
-  ios:
+  js:
     '': { }
 
   sourceSets:
@@ -13,8 +14,3 @@ kotlin:
         - ../kmp-lib
         - ../cmp-lib
         - ../shared
-
-settings:
-  application: true
-  ios:
-    teamId: io.github.aaziz993 # See https://developer.apple.com/help/account/manage-your-team/locate-your-team-id/

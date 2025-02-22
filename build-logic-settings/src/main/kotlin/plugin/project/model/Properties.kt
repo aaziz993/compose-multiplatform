@@ -1,5 +1,6 @@
 package plugin.project.model
 
+import gradle.serialization.serializer.AnySerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import plugin.project.compose.model.ComposeSettings
@@ -21,5 +22,5 @@ internal data class Properties(
     val modules: List<String>? = null,
     val gradleEnterpriseAccessKey: String? = null,
     @SerialName("flat-layout")
-    val flatLayout: Boolean = true
+    val flatLayout: Boolean = false,
 )

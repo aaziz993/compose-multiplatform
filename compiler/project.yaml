@@ -2,7 +2,8 @@ templates:
   - ../template/common.yaml
 
 kotlin:
-  targets: [ jvm ]
+  jvm:
+    '': { }
 
   sourceSets:
     commonMain:

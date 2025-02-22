@@ -1,2 +1,15 @@
 kotlin:
-  targets: [ jvm, iosArm64, iosX64, iosSimulatorArm64, js, wasm ]
+  jvm:
+    '': { }
+  android:
+    '': { }
+  iosArm64:
+    '': { }
+  iosX64:
+    '': { }
+  iosSimulatorArm64:
+    '': { }
+  js:
+    '': { }
+  wasm:
+    '': { }

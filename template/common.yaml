@@ -217,3 +217,5 @@ settings:
   js:
     optIns:
       - kotlin.js.ExperimentalJsExport
+
+flat-layout: true

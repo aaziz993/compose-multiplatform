@@ -5,7 +5,9 @@ templates:
 application: true
 
 kotlin:
-  targets: [ wasm ]
+  wasm:
+    '': { }
+
   sourceSets:
     commonMain:
       dependencies:
