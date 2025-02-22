@@ -11,7 +11,6 @@ import plugin.project.kotlin.model.language.jvm.KotlinJvmCompilerOptions
 
 @Serializable
 internal data class KotlinAndroidTarget(
-    override val targetName: String,
     /** Names of the Android library variants that should be published from the target's project within the default publications which are
      * set up if the `maven-publish` Gradle plugin is applied.
      *
