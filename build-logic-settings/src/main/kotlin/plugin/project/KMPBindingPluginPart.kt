@@ -101,41 +101,7 @@ internal class KMPBindingPluginPart : Plugin<Project> {
 //        }
 //    }
 
-    @OptIn(ExperimentalWasmDsl::class)
-//    private fun initTargets() = with(KotlinAmperNamingConvention) {
-//        module.artifactPlatforms.filter { it.isLeaf }.forEach {
-//            val targetName = it.targetName
-//            when (it) {
-//                Platform.ANDROID -> kotlinMPE.androidTarget(targetName)
-//                Platform.JVM -> kotlinMPE.jvm(targetName)
-//                Platform.IOS_ARM64 -> kotlinMPE.iosArm64(targetName)
-//                Platform.IOS_SIMULATOR_ARM64 -> kotlinMPE.iosSimulatorArm64(targetName)
-//                Platform.IOS_X64 -> kotlinMPE.iosX64(targetName)
-//                Platform.MACOS_X64 -> kotlinMPE.macosX64(targetName)
-//                Platform.MACOS_ARM64 -> kotlinMPE.macosArm64(targetName)
-//                Platform.LINUX_X64 -> kotlinMPE.linuxX64(targetName)
-//                Platform.LINUX_ARM64 -> kotlinMPE.linuxArm64(targetName)
-//                Platform.TVOS_ARM64 -> kotlinMPE.tvosArm64(targetName)
-//                Platform.TVOS_X64 -> kotlinMPE.tvosX64(targetName)
-//                Platform.TVOS_SIMULATOR_ARM64 -> kotlinMPE.tvosSimulatorArm64(targetName)
-//                Platform.WATCHOS_ARM64 -> kotlinMPE.watchosArm64(targetName)
-//                Platform.WATCHOS_ARM32 -> kotlinMPE.watchosArm32(targetName)
-//                Platform.WATCHOS_DEVICE_ARM64 -> kotlinMPE.watchosDeviceArm64(targetName)
-//                Platform.WATCHOS_SIMULATOR_ARM64 -> kotlinMPE.watchosSimulatorArm64(targetName)
-//                Platform.MINGW_X64 -> kotlinMPE.mingwX64(targetName)
-//                Platform.ANDROID_NATIVE_ARM32 -> kotlinMPE.androidNativeArm32(targetName)
-//                Platform.ANDROID_NATIVE_ARM64 -> kotlinMPE.androidNativeArm64(targetName)
-//                Platform.ANDROID_NATIVE_X64 -> kotlinMPE.androidNativeX64(targetName)
-//                Platform.ANDROID_NATIVE_X86 -> kotlinMPE.androidNativeX86(targetName)
-//
-//                // These are not leaf platforms, thus - should not get here.
-//                // Configure js and wasm js by plugins
-//                Platform.JS, Platform.WASM,
-//                Platform.ANDROID_NATIVE, Platform.MINGW, Platform.WATCHOS,
-//                Platform.IOS, Platform.MACOS, Platform.TVOS, Platform.APPLE,
-//                Platform.LINUX, Platform.NATIVE, Platform.COMMON -> Unit
-//            }
-//        }
+
 //
 //        // Skip tests binary creation for now.
 //        module.leafFragments.forEach { fragment ->

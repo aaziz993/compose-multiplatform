@@ -1,0 +1,14 @@
+templates:
+  - ../template/common.yaml
+
+kotlin:
+  targets: [ jvm ]
+
+  sourceSets:
+    dependencies:
+      - ../kmp-lib
+      - $libs.symbol.processing.api
+
+settings:
+  publishing:
+    name: compiler

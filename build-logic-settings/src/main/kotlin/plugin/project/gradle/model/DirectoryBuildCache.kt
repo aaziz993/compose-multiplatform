@@ -1,9 +1,8 @@
-package plugin.settings.model
+package plugin.project.gradle.model
 
 import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings
 import org.gradle.caching.local.DirectoryBuildCache
-import plugin.project.gradle.model.BuildCache
 
 @Serializable
 internal data class DirectoryBuildCache(

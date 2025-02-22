@@ -1,8 +1,6 @@
-package plugin.settings.model
+package plugin.project.gradle.model
 
 import kotlinx.serialization.Serializable
-import plugin.project.gradle.model.BuildCache
-
 
 @Serializable
 internal data class RemoteBuildCache(

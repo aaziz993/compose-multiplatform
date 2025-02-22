@@ -4,5 +4,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal data class JvmSettings(
-    val args: List<String>? = null,
+    val application: JavaApplication? = null,
 )

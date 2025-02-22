@@ -1,4 +1,4 @@
-package plugin.project.model.target
+package plugin.project.kotlin.model.target
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor

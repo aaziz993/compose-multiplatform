@@ -5,8 +5,8 @@ import gradle.projectProperties
 import gradle.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings
-import plugin.settings.model.DirectoryBuildCache
-import plugin.settings.model.RemoteBuildCache
+import plugin.project.gradle.model.DirectoryBuildCache
+import plugin.project.gradle.model.RemoteBuildCache
 
 @Serializable
 internal data class DevelocitySettings(

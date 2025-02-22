@@ -33,9 +33,8 @@ import plugin.project.BindingProjectPlugin
 import plugin.project.gradle.develocity.DevelocityPluginPart
 import plugin.project.gradle.githooks.GitHooksluginPart
 import plugin.project.gradle.toolchainmanagement.ToolchainManagementPluginPart
-import plugin.project.model.Alias
-import plugin.project.model.ModuleProperties
-import plugin.settings.model.ProjectProperties
+import plugin.project.kotlin.model.TargetGroup
+import plugin.project.model.Properties
 
 /**
  * Gradle setting plugin, that is responsible for:
@@ -126,7 +125,7 @@ public class SettingsPlugin : Plugin<Settings> {
         val projectSettings = yaml.load<Map<String, *>>(rootDir.resolve("project.yaml").readText())
 
         projectProperties = json
-            .decodeFromAny<ProjectProperties>(projectSettings).also {
+            .decodeFromAny<Properties>(projectSettings).also {
                 println("Apply project.yaml to project '${rootProject.name.uppercase()}':")
                 println(logYaml.dump(Json.Default.encodeToAny(it)))
             }
@@ -167,50 +166,21 @@ public class SettingsPlugin : Plugin<Settings> {
     private fun Project.loadModuleProperties() {
 
         if (!project.file("module.yaml").exists()) {
-            moduleProperties = ModuleProperties()
+            moduleProperties = Properties()
             return
         }
 
-        fun sourceSetTransform(key:String,config: MutableMap<String,Any?>){
-            config[key] = config.filterKeys { it.startsWith(key) }.map { (key, value) ->
-                mapOf(
-                    "sourceSetName" to key.substringAfter("@", KotlinSourceSet.COMMON_MAIN_SOURCE_SET_NAME),
-                    "dependencyNotations" to value,
-                )
-            }
-        }
-
-        fun tryTransform(config: MutableMap<String, Any?>) {
-            config["aliases"] = (config["aliases"] as List<Map<String, List<String>>>?)?.map { alias ->
-                Alias(alias.keys.single(), alias.values.single())
-            }.orEmpty()
-
-            config["dependencies"] = config.filterKeys { it.startsWith("dependencies") }.map { (key, notations) ->
-                mapOf(
-                    "sourceSetName" to key.substringAfter("@", KotlinSourceSet.COMMON_MAIN_SOURCE_SET_NAME),
-                    "dependencyNotations" to notations,
-                )
-            }
-
-            config["test-dependencies"] = config.filterKeys { it.startsWith("test-dependencies") }.map { (key, notations) ->
-                mapOf(
-                    "sourceSetName" to key.substringAfter("@", KotlinSourceSet.COMMON_TEST_SOURCE_SET_NAME),
-                    "dependencyNotations" to notations,
-                )
-            }
-        }
-
         val moduleSettings = yaml.load<MutableMap<String, *>>(
-            project.projectDir.resolve("module.yaml").readText(),
-        ).toMutableMap().also(::tryTransform)
+            project.projectDir.resolve("project.yaml").readText(),
+        )
 
         val templates = (moduleSettings["apply"] as List<String>?)?.map { template ->
             yaml.load<MutableMap<String, *>>(
                 project.projectDir.resolve(template).readText(),
-            ).toMutableMap().also(::tryTransform)
+            )
         }.orEmpty()
 
-        project.moduleProperties = json.decodeFromAny<ModuleProperties>(
+        project.moduleProperties = json.decodeFromAny<Properties>(
             templates.fold(emptyMap<String, Any?>()) { acc, map -> acc deepMerge map }
                 deepMerge moduleSettings,
         ).apply {

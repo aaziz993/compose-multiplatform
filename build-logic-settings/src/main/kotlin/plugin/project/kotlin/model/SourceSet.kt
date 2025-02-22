@@ -1,10 +1,10 @@
-package plugin.settings.model
+package plugin.project.kotlin.model
 
 import kotlinx.serialization.Serializable
 import plugin.model.dependency.DependencyNotation
 
 @Serializable
-internal data class VersionCatalog(
+internal data class SourceSet(
     val name: String,
-    val from: DependencyNotation,
+    val dependencies: List<DependencyNotation>? = null,
 )

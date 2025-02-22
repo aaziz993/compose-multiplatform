@@ -1,14 +1,21 @@
-package plugin.project.kotlin.model
+package plugin.project.model
 
-import gradle.trySet
 import kotlinx.serialization.Serializable
-import org.jetbrains.kotlin.gradle.plugin.LanguageSettingsBuilder
+import plugin.project.gradle.apivalidation.model.ApiValidationSettings
+import plugin.project.gradle.buildconfig.model.BuildConfigSettings
+import plugin.project.gradle.develocity.model.DevelocitySettings
+import plugin.project.gradle.doctor.model.DoctorSettings
+import plugin.project.gradle.dokka.model.DokkaSettings
+import plugin.project.gradle.githooks.model.GitHooksSettings
+import plugin.project.gradle.kover.model.KoverSettings
+import plugin.project.gradle.sonar.model.SonarSettings
+import plugin.project.gradle.spotless.model.SpotlessSettings
+import plugin.project.gradle.toolchainmanagement.model.ToolchainManagementSettings
 import plugin.project.kotlin.allopen.model.AllOpenSettings
 import plugin.project.kotlin.apollo.model.ApolloSettings
 import plugin.project.kotlin.atomicfu.model.AtomicFUSettings
 import plugin.project.kotlin.ksp.model.KspSettings
 import plugin.project.kotlin.ktorfit.model.KtorfitSettings
-import plugin.project.kotlin.model.language.LanguageSettings
 import plugin.project.kotlin.noarg.model.NoArgSettings
 import plugin.project.kotlin.powerassert.model.PowerAssertSettings
 import plugin.project.kotlin.room.model.RoomSettings
@@ -17,12 +24,17 @@ import plugin.project.kotlin.serialization.model.SerializationSettings
 import plugin.project.kotlin.sqldelight.model.SqlDelightSettings
 
 @Serializable
-internal data class KotlinSettings(
-    override val languageVersion: String? = null,
-    override val apiVersion: String? = null,
-    override val progressiveMode: Boolean? = null,
-    override val languageFeatures: Set<String>? = null,
-    override val optIns: Set<String>? = null,
+internal data class Plugins(
+    val develocity: DevelocitySettings = DevelocitySettings(),
+    val toolchainManagement: ToolchainManagementSettings = ToolchainManagementSettings(),
+    val gitHooks: GitHooksSettings = GitHooksSettings(),
+    val doctor: DoctorSettings = DoctorSettings(),
+    val buildConfig: BuildConfigSettings = BuildConfigSettings(),
+    val spotless: SpotlessSettings = SpotlessSettings(),
+    val kover: KoverSettings = KoverSettings(),
+    val sonar: SonarSettings = SonarSettings(),
+    val dokka: DokkaSettings = DokkaSettings(),
+    val apiValidation: ApiValidationSettings = ApiValidationSettings(),
     val ksp: KspSettings = KspSettings(),
     val allOpen: AllOpenSettings = AllOpenSettings(),
     val noArg: NoArgSettings = NoArgSettings(),
@@ -34,13 +46,4 @@ internal data class KotlinSettings(
     val sqldelight: SqlDelightSettings = SqlDelightSettings(),
     val room: RoomSettings = RoomSettings(),
     val powerAssert: PowerAssertSettings = PowerAssertSettings(),
-) : LanguageSettings {
-
-    fun applyTo(builder: LanguageSettingsBuilder) {
-        builder::languageVersion trySet languageVersion
-        builder::apiVersion trySet apiVersion
-        builder::progressiveMode trySet progressiveMode
-        languageFeatures?.forEach(builder::enableLanguageFeature)
-        optIns?.forEach(builder::optIn)
-    }
-}
+)

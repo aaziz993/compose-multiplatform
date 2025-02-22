@@ -1,0 +1,18 @@
+templates:
+  - ../template/common.yaml
+
+jvm:
+  release: 23
+  mainClass: MainKt
+
+kotlin:
+  targets: [ jvm ]
+
+  sourceSets:
+    commonMain:
+      dependencies:
+        - ../kmp-lib
+        - ../shared
+
+settings:
+  application: true

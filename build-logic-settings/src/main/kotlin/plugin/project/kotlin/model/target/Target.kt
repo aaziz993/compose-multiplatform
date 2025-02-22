@@ -1,4 +1,4 @@
-package plugin.project.model.target
+package plugin.project.kotlin.model.target
 
 import gradle.kotlin
 import kotlinx.serialization.Serializable

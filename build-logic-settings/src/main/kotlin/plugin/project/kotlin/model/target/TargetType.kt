@@ -1,4 +1,4 @@
-package plugin.project.model.target;
+package plugin.project.kotlin.model.target;
 
 internal enum class TargetType(
     val parent: TargetType? = null,

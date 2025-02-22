@@ -1,0 +1,14 @@
+templates:
+  - ../template/common.yaml
+  - ../template/compose.yaml
+
+kotlin:
+  targets: [ android, iosArm64, iosX64, iosSimulatorArm64, js, wasm ]
+
+  sourceSets:
+    dependencies:
+      - ../kmp-lib
+
+settings:
+  publishing:
+    name: cmp-lib

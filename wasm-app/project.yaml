@@ -3,8 +3,8 @@ application: true
 targets: [ wasm ]
 
 apply:
-  - ../template/common.module-template.yaml
-  - ../template/compose.module-template.yaml
+  - ../template/common.yaml
+  - ../template/compose.yaml
 
 dependencies:
   - ../kmp-lib

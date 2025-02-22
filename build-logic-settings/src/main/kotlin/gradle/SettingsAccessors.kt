@@ -2,16 +2,17 @@ package gradle
 
 import org.gradle.api.initialization.Settings
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
-import plugin.settings.model.ProjectProperties
+import plugin.project.model.Properties
 
 internal fun Settings.execute(cmd: String): String = providers.exec {
     commandLine(cmd.split(" "))
 }.standardOutput.asText.get().trim()
 
-private const val PROJECT_EXTRA_PROPERTIES = "org.jetbrains.amper.gradle.ext.projectExtraProperties"
+private const val PROPERTIES = "properties"
 
-internal var Settings.projectProperties: ProjectProperties
-    get() = extraProperties[PROJECT_EXTRA_PROPERTIES] as ProjectProperties
+internal var Settings.projectProperties: Properties
+
+    get() = extraProperties[PROPERTIES] as Properties
     set(value) {
-        extraProperties[PROJECT_EXTRA_PROPERTIES] = value
+        extraProperties[PROPERTIES] = value
     }

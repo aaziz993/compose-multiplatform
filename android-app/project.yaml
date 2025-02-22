@@ -1,0 +1,21 @@
+templates:
+  - ../template/common.yaml
+  - ../template/compose.yaml
+
+kotlin:
+  targets: [ android ]
+
+  sourceSets:
+    dependencies:
+      - ../kmp-lib
+      - ../cmp-lib
+      - ../shared
+      - $libs.androidx.activity.compose
+
+settings:
+  application: true
+  android:
+    minSdk: 35
+    signing:
+      enabled: true
+      propertiesFile: keystore.properties # default
