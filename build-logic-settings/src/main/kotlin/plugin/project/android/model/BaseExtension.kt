@@ -2,6 +2,8 @@ package plugin.project.android.model
 
 import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.internal.dsl.DefaultConfig
+import com.android.build.gradle.internal.dsl.ProductFlavor
+import gradle.maybeNamed
 import gradle.trySet
 import org.gradle.api.Project
 
@@ -71,13 +73,13 @@ internal interface BaseExtension {
 
     val libraryRequests: List<LibraryRequest>?
 
-    val buildTypes: List<BuildType>
+    val buildTypes: List<BuildType>?
 
     val defaultConfig: DefaultConfig
 
     val productFlavors: List<ProductFlavor>
 
-    val signingConfigs: List<SigningConfig>
+    val signingConfigs: List<DefaultSigningConfig>?
 
     // these are indirectly implemented by extensions when they implement the new public
     // extension interfaces via delegates.
@@ -156,16 +158,39 @@ internal interface BaseExtension {
         }
 
         extension::generatePureSplits trySet generatePureSplits
-        // Kept for binary and source compatibility until the old DSL interfaces can go away.
         flavorDimensionList?.let(extension.flavorDimensionList::addAll)
         resourcePrefix?.let(extension::resourcePrefix)
         extension::ndkVersion trySet ndkVersion
         extension::ndkPath trySet ndkPath
         libraryRequests?.map(LibraryRequest::toLibraryRequest)?.let(extension.libraryRequests::addAll)
 
-        extension.buildTypes {
-            this.create(""){
-                this.postProcessingBlockUsed
+        buildTypes?.forEach { buildType ->
+            extension.buildTypes {
+                maybeNamed(buildType.name) {
+                    buildType.applyTo(this)
+                } ?: create(buildType.name) {
+                    buildType.applyTo(this)
+                }
+            }
+        }
+
+//        extension.defaultConfig {
+//            this.name=""
+//        }
+
+        extension.productFlavors {
+            all {
+                this.
+            }
+        }
+
+        signingConfigs?.forEach { signingConfig ->
+            extension.signingConfigs {
+                maybeNamed(signingConfig.name) {
+                    signingConfig.applyTo(this)
+                } ?: create(signingConfig.name) {
+                    signingConfig.applyTo(this)
+                }
             }
         }
 

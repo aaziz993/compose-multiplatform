@@ -7,9 +7,6 @@ import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.get
-import plugin.project.android.model.BuildFlavor
-import plugin.project.android.model.BuildType
-import plugin.project.android.model.FlavorDimension
 
 internal fun Project.configureBaseExtension(
     extension: BaseExtension,

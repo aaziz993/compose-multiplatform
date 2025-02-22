@@ -1,0 +1,70 @@
+package plugin.project.android.model
+
+import com.android.build.api.dsl.Ndk
+import gradle.trySet
+import kotlinx.serialization.Serializable
+
+/**
+ * DSL object for per-variant NDK settings, such as the ABI filter.
+ */
+@Serializable
+internal data class Ndk(
+    /**
+     * Specifies the Application Binary Interfaces (ABI) that Gradle should build outputs for and
+     * package with your APK.
+     *
+     * You can list any subset of the
+     * [ABIs the NDK supports](https://developer.android.com/ndk/guides/abis.html#sa),
+     * as shown below:
+     *
+     * ```
+     * android {
+     *     // Similar to other properties in the defaultConfig block, you can override
+     *     // these properties for each product flavor in your build configuration.
+     *     defaultConfig {
+     *         ndk {
+     *             // Tells Gradle to build outputs for the following ABIs and package
+     *             // them into your APK.
+     *             abiFilters 'x86', 'x86_64', 'armeabi'
+     *         }
+     *     }
+     * }
+     * ```
+     *
+     * When this flag is not configured, Gradle builds and packages all available ABIs.
+     *
+     * To reduce the size of your APK, consider
+     * [configuring multiple APKs based on ABI](https://developer.android.com/studio/build/configure-apk-splits.html#configure-abi-split)—instead of creating one large APK with all
+     * versions of your native libraries, Gradle creates a separate APK for each ABI you want to
+     * support and only packages the files each ABI needs.
+     */
+    val abiFilters: Set<String>? = null,
+    /**
+     * The type of debug metadata which will be packaged in the app bundle.
+     *
+     * <p>Supported values are 'none' (default, no native debug metadata will be packaged),
+     * 'symbol_table' (only the symbol tables will be packaged), and 'full' (the debug info and
+     * symbol tables will be packaged).
+     *
+     * <p>Example usage:
+     *
+     * <pre>
+     * android {
+     *     buildTypes {
+     *         release {
+     *             ndk {
+     *                 debugSymbolLevel 'symbol_table'
+     *             }
+     *         }
+     *     }
+     * }
+     * </pre>
+     */
+    val debugSymbolLevel: String? = null,
+) {
+
+    fun applyTo(ndk: Ndk) {
+        abiFilters?.let(ndk.abiFilters::addAll)
+        ndk::debugSymbolLevel trySet debugSymbolLevel
+    }
+}

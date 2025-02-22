@@ -2,7 +2,6 @@ package plugin.project.android
 
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import org.gradle.api.Project
-import plugin.project.android.model.BuildType
 
 internal fun Project.configureBaseAppModuleExtension(extension: BaseAppModuleExtension) = extension.apply {
     defaultConfig {

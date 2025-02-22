@@ -12,9 +12,14 @@ internal fun <T> NamedDomainObjectContainer<T>.maybeRegister(name: String, confi
 internal fun <T> NamedDomainObjectCollection<T>.maybeNamed(name: String): NamedDomainObjectProvider<T>? =
     if (name in names) named(name) else null
 
-internal inline fun <reified T> NamedDomainObjectCollection<T>.maybeNamed(name: String,noinline configure: T.() -> Unit) {
-    if (name in names) named(name, configure)
-}
+internal inline fun <reified T> NamedDomainObjectCollection<T>.maybeNamed(name: String, noinline configure: T.() -> Unit): Unit? =
+    if (name in names) {
+        named(name, configure)
+        Unit
+    }
+    else {
+        null
+    }
 
 internal inline fun <reified T> NamedDomainObjectCollection<*>.findByName(name: String): T? =
     findByName(name) as? T
