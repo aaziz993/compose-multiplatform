@@ -1,9 +1,7 @@
 package plugin.project.kotlin.model.language.android
 
-import gradle.kotlin
 import gradle.trySet
 import kotlinx.serialization.Serializable
-import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
 import plugin.project.kotlin.model.language.HasConfigurableKotlinCompilerOptions
 import plugin.project.kotlin.model.language.KotlinTarget

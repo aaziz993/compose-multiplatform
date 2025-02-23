@@ -1,6 +1,9 @@
 package plugin.project.kotlin.noarg
 
+import gradle.id
 import gradle.libs
+import gradle.plugin
+import gradle.plugins
 import gradle.projectProperties
 import gradle.settings
 import org.gradle.api.Plugin
@@ -12,7 +15,7 @@ internal class NoArgPlugin : Plugin<Project> {
         with(target) {
             if (projectProperties.plugins.noArg.enabled || projectProperties.kotlin.hasTargets)
 
-                plugins.apply(project.libs.plugins.allopen.get().pluginId)
+                plugins.apply(settings.libs.plugins.plugin("allopen").id)
 
             configureNoArgExtension()
         }

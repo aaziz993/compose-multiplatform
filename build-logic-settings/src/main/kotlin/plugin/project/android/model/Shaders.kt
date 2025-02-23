@@ -2,7 +2,6 @@ package plugin.project.android.model
 
 import com.android.build.api.dsl.Shaders
 import kotlinx.serialization.Serializable
-import org.jetbrains.kotlin.com.google.common.collect.ListMultimap
 
 /**
  * Options for configuring scoped shader options.

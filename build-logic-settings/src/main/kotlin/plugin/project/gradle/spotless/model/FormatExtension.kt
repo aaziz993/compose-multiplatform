@@ -2,7 +2,6 @@ package plugin.project.gradle.spotless.model
 
 import com.diffplug.gradle.spotless.FormatExtension
 import com.diffplug.spotless.LineEnding
-import org.gradle.api.Project
 
 internal interface FormatExtension {
 

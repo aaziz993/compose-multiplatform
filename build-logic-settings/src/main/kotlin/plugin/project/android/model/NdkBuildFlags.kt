@@ -1,6 +1,5 @@
 package plugin.project.android.model
 
-import com.android.build.api.dsl.CmakeFlags
 import com.android.build.api.dsl.NdkBuildFlags
 import kotlinx.serialization.Serializable
 

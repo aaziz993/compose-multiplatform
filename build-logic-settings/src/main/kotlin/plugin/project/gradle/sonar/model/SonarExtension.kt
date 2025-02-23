@@ -1,7 +1,5 @@
 package plugin.project.gradle.sonar.model
 
-import kotlin.collections.component1
-import kotlin.collections.component2
 import org.gradle.api.Project
 import org.sonarqube.gradle.SonarExtension
 

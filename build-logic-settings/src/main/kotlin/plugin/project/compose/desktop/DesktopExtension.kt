@@ -1,7 +1,6 @@
 package plugin.project.compose.desktop
 
 import gradle.projectProperties
-import gradle.settings
 import gradle.trySet
 import org.gradle.api.Project
 import org.gradle.internal.os.OperatingSystem

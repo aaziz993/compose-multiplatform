@@ -2,17 +2,14 @@
 
 package plugin
 
-import gradle.serialization.decodeFromAny
+import gradle.allLibs
 import gradle.deepMerge
-import gradle.serialization.encodeToAny
-import gradle.libs
+import gradle.isUrl
 import gradle.projectProperties
-import gradle.plugin
-import gradle.pluginAsDependency
-import gradle.plugins
-import gradle.settings
-import gradle.setupDynamicClasspath
+import gradle.serialization.decodeFromAny
+import gradle.serialization.encodeToAny
 import gradle.trySetSystemProperty
+import java.net.URI
 import javax.xml.stream.XMLEventFactory
 import javax.xml.stream.XMLInputFactory
 import javax.xml.stream.XMLOutputFactory
@@ -21,15 +18,18 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.api.file.Directory
+import org.gradle.api.file.FileCollection
 import org.gradle.api.initialization.Settings
+import org.gradle.api.internal.artifacts.repositories.DefaultMavenArtifactRepository
 import org.gradle.kotlin.dsl.maven
-import org.jetbrains.amper.gradle.BindingSettingsPlugin
 import org.jetbrains.amper.gradle.SLF4JProblemReporterContext
+import org.tomlj.Toml
 import org.yaml.snakeyaml.DumperOptions
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.nodes.Tag
 import org.yaml.snakeyaml.representer.Represent
 import org.yaml.snakeyaml.representer.Representer
+import plugin.model.dependency.asVersionCatalogUri
 import plugin.project.ProjectPlugin
 import plugin.project.gradle.develocity.DevelocityPlugin
 import plugin.project.gradle.githooks.GitHooksPlugin
@@ -71,8 +71,6 @@ public class SettingsPlugin : Plugin<Settings> {
                 target.gradle.rootProject.allprojects {
                     configureProject()
                 }
-
-                target.gradle.rootProject.repositories.mavenCentral()
             }
         }
     }
@@ -93,11 +91,6 @@ public class SettingsPlugin : Plugin<Settings> {
             }
         }
 
-        // Apply plugins.
-        plugins.apply(DevelocityPlugin::class.java)
-        plugins.apply(ToolchainManagementPlugin::class.java)
-        plugins.apply(GitHooksPlugin::class.java)
-
         projectProperties.dependencyResolutionManagement?.let { dependencyResolutionManagement ->
             dependencyResolutionManagement {
                 repositories {
@@ -106,17 +99,58 @@ public class SettingsPlugin : Plugin<Settings> {
 
                 dependencyResolutionManagement.versionCatalogs?.let { versionCatalogs ->
                     versionCatalogs {
-                        versionCatalogs.forEach { (name, dependency) ->
-                            create(name) {
-                                from(
-                                    dependency.resolve(),
-                                )
+                        allLibs = versionCatalogs.associate { (catalogName, dependency) ->
+                            var notation = dependency.resolve()
+
+                            create(catalogName) { from(notation) }
+
+
+                            catalogName to if (notation is FileCollection) {
+                                Toml.parse(notation.files.single().readText())
                             }
-                        }
+                            else {
+                                notation as String
+
+                                val cacheFile = layout.settingsDirectory.file("gradle/$catalogName.versions.toml").asFile
+
+                                if (cacheFile.exists()) {
+                                    return@associate catalogName to Toml.parse(cacheFile.readText())
+                                }
+
+                                if (!notation.isUrl) {
+                                    notation = notation.asVersionCatalogUri()
+                                }
+
+                                repositories.map { (it as DefaultMavenArtifactRepository).url.toString().removeSuffix("/") }
+                                    .firstNotNullOf { url ->
+                                        try {
+                                            Toml.parse(
+                                                URI(
+                                                    "$url/$notation".also {
+                                                        println("TRY REPO ${it}")
+                                                    },
+                                                ).toURL().readText().also { catalogText ->
+                                                    cacheFile.writeText(catalogText)
+                                                },
+                                            )
+                                        }
+                                        catch (_: Throwable) {
+                                            null
+                                        }
+                                    }
+                            }
+                        } + ("libs" to Toml.parse(layout.settingsDirectory.file("gradle/libs.versions.toml").asFile.readText()))
+
+                        println(allLibs)
                     }
                 }
             }
         }
+
+        // Apply plugins after version catalogs are loaded in settings phase.
+        plugins.apply(DevelocityPlugin::class.java)
+        plugins.apply(ToolchainManagementPlugin::class.java)
+        plugins.apply(GitHooksPlugin::class.java)
 
         projectProperties.modules?.forEach(::include)
     }

@@ -2,9 +2,7 @@ package plugin.project.gradle.doctor.model
 
 import com.osacky.doctor.AppleRosettaTranslationCheckMode
 import com.osacky.doctor.DoctorExtension
-import gradle.isCI
 import gradle.tryAssign
-import gradle.unregister
 import org.gradle.api.Project
 
 internal interface DoctorExtension {

@@ -1,6 +1,9 @@
 package plugin.project.gradle.sonar
 
+import gradle.id
 import gradle.libs
+import gradle.plugin
+import gradle.plugins
 import gradle.projectProperties
 import gradle.settings
 import org.gradle.api.Plugin
@@ -13,7 +16,7 @@ internal class SonarPlugin : Plugin<Project> {
             return@with
         }
 
-        plugins.apply(project.libs.plugins.sonarqube.get().pluginId)
+        plugins.apply(settings.libs.plugins.plugin("sonarqube").id)
 
         configureSonarExtension()
     }

@@ -1,20 +1,10 @@
-/*
- * Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
- */
-
 package plugin.project.java
 
 import gradle.kotlin
 import gradle.projectProperties
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.withType
-import org.gradle.api.plugins.ApplicationPlugin
 import org.gradle.api.plugins.JavaPlugin
-import org.gradle.jvm.tasks.Jar
-import org.jetbrains.amper.gradle.BindingProjectPlugin
-import org.jetbrains.amper.gradle.java.JavaBindingPluginPart
-import org.jetbrains.amper.gradle.kmpp.KMPPBindingPluginPart
 import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
 
 internal class JavaPlugin : Plugin<Project> {

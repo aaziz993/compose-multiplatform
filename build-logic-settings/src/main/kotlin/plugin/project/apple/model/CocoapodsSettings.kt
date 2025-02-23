@@ -2,7 +2,6 @@ package plugin.project.apple.model
 
 import kotlinx.serialization.Serializable
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
-import plugin.project.apple.model.Pod
 import plugin.project.kotlin.model.language.nat.Framework
 
 @Serializable

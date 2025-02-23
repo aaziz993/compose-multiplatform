@@ -2,9 +2,12 @@
 
 package plugin.model.dependency
 
+import gradle.allLibs
+import gradle.isUrl
 import gradle.libraries
 import gradle.library
 import gradle.libs
+import gradle.module
 import gradle.settings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -21,11 +24,8 @@ internal data class Dependency(
 
     context(Settings)
     internal fun resolve(): Any = resolve(layout.rootDirectory) { catalogName, libraryName ->
-        if (catalogName == "libs") {
-            return@resolve libs.libraries.library(libraryName)
-        }
-
-        error("setting.gradle.kts has access only to default libs version catalog!")
+        allLibs[catalogName]?.libraries?.library(libraryName)?.module
+            ?: error("Can't access Version catalog: $catalogName")
     }
 
     context(Settings)
@@ -33,7 +33,9 @@ internal data class Dependency(
 
     context(Project)
     internal fun resolve(): Any = resolve(layout.projectDirectory) { catalogName, libraryName ->
-        libs(catalogName).findLibrary(libraryName).get()
+        println("$catalogName $libraryName")
+        settings.allLibs[catalogName]?.libraries?.library(libraryName)?.module
+            ?: error("Can't access Version catalog: $catalogName")
     }
 
     context(Project)
@@ -48,11 +50,10 @@ internal data class Dependency(
                         .removePrefix("$")
                         .substringBefore("."),
                     notation
-                        .substringAfter(".", "")
-                        .replace(".", "-"),
+                        .substringAfter("."),
                 )
 
-            notation.contains("[/\\\\]".toRegex()) -> directory.files(notation)
+            notation.contains("[/\\\\]".toRegex()) && !notation.isUrl -> directory.files(notation)
 
             else -> notation
         }
@@ -65,4 +66,11 @@ internal data class Dependency(
             JvmConstants.API_CONFIGURATION_NAME -> KotlinDependencyHandler::api
             else -> error("Unsupported dependency configuration: $configuration")
         }
+}
+
+internal fun String.asVersionCatalogUri(): String {
+    val fileNamePart = substringAfter(":").replace(":", "-")
+    return "${substringBeforeLast(":").replace("[.:]".toRegex(), "/")}/${
+        substringAfterLast(":")
+    }/$fileNamePart.toml"
 }

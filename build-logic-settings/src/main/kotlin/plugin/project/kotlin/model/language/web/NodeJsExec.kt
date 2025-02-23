@@ -5,7 +5,6 @@ import gradle.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsExec
-import plugin.project.kotlin.model.language.web.NodeJsRootExtension
 
 @Serializable
 internal data class NodeJsExec(

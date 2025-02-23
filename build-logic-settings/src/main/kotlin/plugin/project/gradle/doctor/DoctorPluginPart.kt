@@ -1,7 +1,10 @@
 package plugin.project.gradle.doctor
 
+import gradle.id
 import gradle.isCI
 import gradle.libs
+import gradle.plugin
+import gradle.plugins
 import gradle.projectProperties
 import gradle.settings
 import gradle.unregister
@@ -15,7 +18,7 @@ internal class DoctorPlugin : Plugin<Project> {
             return@with
         }
 
-        plugins.apply(project.libs.plugins.doctor.get().pluginId)
+        plugins.apply(settings.libs.plugins.plugin("doctor").id)
 
         configureDoctorExtension()
 

@@ -1,6 +1,5 @@
 package plugin.project.model
 
-import gradle.serialization.serializer.AnySerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import plugin.project.compose.model.ComposeSettings

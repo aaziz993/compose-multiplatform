@@ -1,7 +1,6 @@
 package plugin.project.web.yarn
 
 import gradle.projectProperties
-import gradle.settings
 import gradle.trySet
 import gradle.yarn
 import org.gradle.api.Project

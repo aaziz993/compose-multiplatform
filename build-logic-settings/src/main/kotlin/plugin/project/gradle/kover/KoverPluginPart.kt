@@ -1,6 +1,9 @@
 package plugin.project.gradle.kover
 
+import gradle.id
 import gradle.libs
+import gradle.plugin
+import gradle.plugins
 import gradle.projectProperties
 import gradle.settings
 import org.gradle.api.Plugin
@@ -14,7 +17,7 @@ internal class KoverPlugin : Plugin<Project> {
                 return@with
             }
 
-            plugins.apply(project.libs.plugins.kover.get().pluginId)
+            plugins.apply(settings.libs.plugins.plugin("kover").id)
 
             configureKoverExtension()
         }

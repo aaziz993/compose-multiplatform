@@ -1,7 +1,6 @@
 package plugin.project.gradle.kover.model
 
 import gradle.tryAssign
-import kotlin.collections.map
 import kotlinx.kover.gradle.plugin.dsl.KoverReportsConfig
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

@@ -23,7 +23,7 @@ internal class KMPPlugin : Plugin<Project> {
                 return@with
             }
 
-            plugins.apply(settings.libs.plugins.plugin("kotlin-multiplatform").id)
+            plugins.apply(settings.libs.plugins.plugin("kotlin.multiplatform").id)
 
             // Enable Default Kotlin Hierarchy.
             extraProperties.set("kotlin.mpp.applyDefaultHierarchyTemplate", "true")
@@ -31,8 +31,8 @@ internal class KMPPlugin : Plugin<Project> {
             // IOS Compose uses UiKit, so we need to explicitly enable it, since it is experimental.
             extraProperties.set("org.jetbrains.compose.experimental.uikit.enabled", "true")
 
-            adjustTargets()
-            adjustSourceSets()
+//            adjustTargets()
+//            adjustSourceSets()
 
             // Workaround for KTIJ-27212, to get proper compiler arguments in the common code facet after import.
             // Apparently, configuring compiler arguments for metadata compilation is not sufficient.

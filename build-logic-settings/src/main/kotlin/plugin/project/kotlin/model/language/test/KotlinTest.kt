@@ -1,7 +1,6 @@
 package plugin.project.kotlin.model.language.test
 
 import gradle.trySet
-import kotlinx.serialization.Serializable
 import org.jetbrains.kotlin.gradle.tasks.KotlinTest
 
 internal interface KotlinTest : AbstractTestTask {

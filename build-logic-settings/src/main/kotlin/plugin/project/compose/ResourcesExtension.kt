@@ -5,7 +5,6 @@ package plugin.project.compose
 import gradle.all
 import gradle.kotlin
 import gradle.projectProperties
-import gradle.settings
 import gradle.trySet
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure

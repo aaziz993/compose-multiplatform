@@ -1,6 +1,9 @@
 package plugin.project.kotlin.allopen
 
+import gradle.id
 import gradle.libs
+import gradle.plugin
+import gradle.plugins
 import gradle.projectProperties
 import gradle.settings
 import org.gradle.api.Plugin
@@ -14,7 +17,7 @@ internal class AllOpenPlugin : Plugin<Project> {
                 return@with
             }
 
-            plugins.apply(project.libs.plugins.allopen.get().pluginId)
+            plugins.apply(settings.libs.plugins.plugin("allopen").id)
 
             configureAllOpenExtension()
         }

@@ -1,6 +1,9 @@
 package plugin.project.gradle.spotless
 
+import gradle.id
 import gradle.libs
+import gradle.plugin
+import gradle.plugins
 import gradle.projectProperties
 import gradle.settings
 import org.gradle.api.Plugin
@@ -14,7 +17,7 @@ internal class SpotlessPlugin : Plugin<Project> {
                 return@with
             }
 
-            plugins.apply(project.libs.plugins.spotless.get().pluginId)
+            plugins.apply(settings.libs.plugins.plugin("spotless").id)
 
             configureSpotlessExtension()
         }

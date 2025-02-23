@@ -13,6 +13,9 @@ import com.diffplug.spotless.LineEnding
 import com.diffplug.spotless.generic.LicenseHeaderStep
 import com.diffplug.spotless.kotlin.KotlinConstants
 import gradle.libs
+import gradle.settings
+import gradle.version
+import gradle.versions
 import org.gradle.api.Project
 import plugin.project.gradle.spotless.LICENSE_HEADER_DIR
 
@@ -67,7 +70,7 @@ internal interface SpotlessExtension {
             ),
             KotlinExtension.NAME to FormatSettings(
                 ktlint = KtlintConfig(
-                    libs.versions.ktlint.get(),
+                    settings.libs.versions.version("ktlint"),
                     "../.editorconfig",
 
                     ),

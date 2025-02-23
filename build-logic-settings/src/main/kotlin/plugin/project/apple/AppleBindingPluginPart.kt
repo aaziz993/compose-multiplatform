@@ -5,11 +5,8 @@
 package plugin.project.apple
 
 import gradle.kotlin
-import gradle.libs
-import gradle.projectProperties
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.jetbrains.kotlin.gradle.plugin.extraProperties
 
 internal class ApplePlugin : Plugin<Project> {
 
@@ -23,8 +20,8 @@ internal class ApplePlugin : Plugin<Project> {
 //
 //            }
 //
-//            plugins.apply(libs.plugins.apple.get().pluginId)
-//plugins.apply(libs.plugins.cocoapods.get().pluginId)
+//            plugins.apply(settings.libs.plugins.plugin("apple").id)
+//plugins.apply(settings.libs.plugins.plugin("cocoapods").id)
 //           projectProperties.kotlin.targets.filter { (type, _) -> type.isDescendantOf(TargetType.APPLE) }
 //                .forEach { target -> target.applyTo() }
 //

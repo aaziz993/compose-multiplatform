@@ -1,6 +1,9 @@
 package plugin.project.kotlin.rpc
 
+import gradle.id
 import gradle.libs
+import gradle.plugin
+import gradle.plugins
 import gradle.projectProperties
 import gradle.settings
 import org.gradle.api.Plugin
@@ -14,7 +17,7 @@ internal class RpcPlugin : Plugin<Project> {
                 return@with
             }
 
-            plugins.apply(project.libs.plugins.kotlinx.rpc.get().pluginId)
+            plugins.apply(settings.libs.plugins.plugin("kotlinx.rpc").id)
 
             configureRpcExtension()
         }

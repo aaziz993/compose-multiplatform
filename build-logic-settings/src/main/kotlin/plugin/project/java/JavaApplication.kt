@@ -2,7 +2,6 @@ package plugin.project.java
 
 import gradle.javaApp
 import gradle.projectProperties
-import gradle.settings
 import org.gradle.api.Project
 import org.gradle.api.plugins.ApplicationPlugin
 

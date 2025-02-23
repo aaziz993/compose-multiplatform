@@ -1,7 +1,6 @@
 package plugin.project.android.model
 
 import kotlinx.serialization.Serializable
-import com.android.build.gradle.internal.dsl.AaptOptions
 
 /** DSL object for configuring aapt options.  */
 @Serializable

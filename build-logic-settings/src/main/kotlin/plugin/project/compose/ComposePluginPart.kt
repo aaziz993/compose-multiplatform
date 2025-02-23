@@ -2,7 +2,10 @@
 
 package plugin.project.compose
 
+import gradle.id
 import gradle.libs
+import gradle.plugin
+import gradle.plugins
 import gradle.projectProperties
 import gradle.settings
 import org.gradle.api.Plugin
@@ -17,8 +20,8 @@ public class ComposePlugin : Plugin<Project> {
                 return@with
             }
 
-            plugins.apply(libs.plugins.compose.multiplatform.get().pluginId)
-            plugins.apply(libs.plugins.compose.compiler.get().pluginId)
+            plugins.apply(settings.libs.plugins.plugin("compose.multiplatform").id)
+            plugins.apply(settings.libs.plugins.plugin("compose.compiler").id)
 
             if (projectProperties.application) {
                 configureDesktopExtension()

@@ -2,7 +2,6 @@ package plugin.project.gradle.spotless.model
 
 import com.diffplug.gradle.spotless.BaseKotlinExtension
 import com.diffplug.spotless.kotlin.KtfmtStep
-import kotlin.collections.forEach
 
 internal interface BaseKotlinExtension {
 

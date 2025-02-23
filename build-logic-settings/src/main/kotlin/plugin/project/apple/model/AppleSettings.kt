@@ -1,7 +1,6 @@
 package plugin.project.apple.model
 
 import gradle.projectProperties
-import gradle.settings
 import gradle.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

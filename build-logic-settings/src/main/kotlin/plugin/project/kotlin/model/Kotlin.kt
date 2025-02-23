@@ -1,9 +1,7 @@
 package plugin.project.kotlin.model
 
-import gradle.projectProperties
 import gradle.trySet
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.Transient
 import org.jetbrains.kotlin.gradle.plugin.LanguageSettingsBuilder
 import plugin.project.apple.model.CocoapodsSettings
 import plugin.project.kotlin.model.language.LanguageSettings

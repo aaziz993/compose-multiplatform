@@ -1,6 +1,5 @@
 package plugin.project.gradle.spotless.model
 
-import com.diffplug.gradle.spotless.FormatExtension
 import com.diffplug.gradle.spotless.JavaExtension
 import kotlinx.serialization.Serializable
 

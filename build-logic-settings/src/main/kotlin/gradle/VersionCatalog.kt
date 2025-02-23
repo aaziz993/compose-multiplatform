@@ -10,30 +10,29 @@ import org.gradle.api.initialization.Settings
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.the
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
-import org.tomlj.Toml
 import org.tomlj.TomlParseResult
 import org.tomlj.TomlTable
-import plugin.project.model.Properties
 
 private const val VERSION_CATALOG = "version.catalog"
 
-internal var Settings.versionCatalogs: Map<String, TomlParseResult>
-
+@Suppress("UNCHECKED_CAST")
+internal var Settings.allLibs: Map<String, TomlParseResult>
     get() = extraProperties[VERSION_CATALOG] as Map<String, TomlParseResult>
     set(value) {
         extraProperties[VERSION_CATALOG] = value
     }
 
-
 internal val Settings.libs: TomlParseResult
-    get() =  Toml.parse(layout.rootDirectory.file("gradle/libs.versions.toml").asFile.readText())
+    get() = allLibs["libs"]!!
+
+private fun String.asCatalogAlias() = replace(".", "-")
 
 internal fun TomlTable.version(alias: String) =
-    getString(alias)
+    getString(alias.asCatalogAlias())
 
-internal fun TomlTable.plugin(alias: String): TomlTable = getTable(alias)!!
+internal fun TomlTable.plugin(alias: String): TomlTable = getTable(alias.asCatalogAlias())!!
 
-internal fun TomlTable.library(alias: String): TomlTable = getTable(alias)!!
+internal fun TomlTable.library(alias: String): TomlTable = getTable(alias.asCatalogAlias())!!
 
 internal val TomlTable.id
     get() = getString("id")!!
@@ -69,12 +68,3 @@ internal val TomlParseResult.libraries
 
 internal val TomlParseResult.plugins
     get() = getTable("plugins")!!
-
-/**
- * Accessor to make gradle.version catalog available in build-logic.
- * See: https://github.com/gradle/gradle/issues/15383#issuecomment-779893192
- */
-internal val Project.libs: LibrariesForLibs
-    get() = the()
-
-internal fun Project.libs(name: String): VersionCatalog = extensions.getByType<VersionCatalogsExtension>().named(name)

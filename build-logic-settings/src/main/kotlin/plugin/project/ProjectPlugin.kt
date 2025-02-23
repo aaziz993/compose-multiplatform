@@ -10,8 +10,6 @@ import gradle.versions
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.jvm.tasks.Jar
-import org.gradle.kotlin.dsl.withType
 import org.jetbrains.amper.gradle.SLF4JProblemReporterContext
 import plugin.project.compose.ComposePlugin
 import plugin.project.gradle.apivalidation.ApiValidationPlugin
@@ -58,33 +56,30 @@ internal class ProjectPlugin : Plugin<Project> {
             }
 
             plugins.apply(KMPPlugin::class.java)
-
-            afterEvaluate {
-                plugins.apply(DoctorPlugin::class.java)
-                plugins.apply(BuildConfigPlugin::class.java)
-                plugins.apply(SpotlessPlugin::class.java)
-                plugins.apply(KoverPlugin::class.java)
-                plugins.apply(SonarPlugin::class.java)
-                plugins.apply(DokkaPlugin::class.java)
-                plugins.apply(ApiValidationPlugin::class.java)
-                plugins.apply(KspPlugin::class.java)
-                plugins.apply(AllOpenPlugin::class.java)
-                plugins.apply(NoArgPlugin::class.java)
-                plugins.apply(AtomicFUPlugin::class.java)
-                plugins.apply(SerializationPlugin::class.java)
-                plugins.apply(SqlDelightPlugin::class.java)
-                plugins.apply(RoomPlugin::class.java)
-                plugins.apply(RpcPlugin::class.java)
-                plugins.apply(KtorfitPlugin::class.java)
-                plugins.apply(ApolloPlugin::class.java)
-                plugins.apply(PowerAssertPlugin::class.java)
-                plugins.apply(ComposePlugin::class.java)
+            plugins.apply(DoctorPlugin::class.java)
+            plugins.apply(BuildConfigPlugin::class.java)
+            plugins.apply(SpotlessPlugin::class.java)
+            plugins.apply(KoverPlugin::class.java)
+            plugins.apply(SonarPlugin::class.java)
+            plugins.apply(DokkaPlugin::class.java)
+            plugins.apply(ApiValidationPlugin::class.java)
+            plugins.apply(KspPlugin::class.java)
+            plugins.apply(AllOpenPlugin::class.java)
+            plugins.apply(NoArgPlugin::class.java)
+            plugins.apply(AtomicFUPlugin::class.java)
+            plugins.apply(SerializationPlugin::class.java)
+            plugins.apply(SqlDelightPlugin::class.java)
+            plugins.apply(RoomPlugin::class.java)
+            plugins.apply(RpcPlugin::class.java)
+            plugins.apply(KtorfitPlugin::class.java)
+            plugins.apply(ApolloPlugin::class.java)
+            plugins.apply(PowerAssertPlugin::class.java)
+            plugins.apply(ComposePlugin::class.java)
+            plugins.apply(JavaPlugin::class.java)
 //                plugins.apply(AndroidPlugin::class.java)
-                plugins.apply(JsPlugin::class.java)
-                plugins.apply(WasmPlugin::class.java)
-                plugins.apply(JavaPlugin::class.java)
+            plugins.apply(JsPlugin::class.java)
+            plugins.apply(WasmPlugin::class.java)
 //                plugins.apply(ApplePlugin::class.java)
-            }
         }
 
         // Apply other settings.

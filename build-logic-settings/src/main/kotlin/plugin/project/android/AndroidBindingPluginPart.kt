@@ -2,9 +2,14 @@
 
 package plugin.project.android
 
+
+import gradle.id
 import gradle.kotlin
 import gradle.libs
+import gradle.plugin
+import gradle.plugins
 import gradle.projectProperties
+import gradle.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -17,10 +22,10 @@ internal class AndroidPlugin : Plugin<Project> {
             }
 
             if (projectProperties.application) {
-                plugins.apply(libs.plugins.androidApplication.get().pluginId)
+                plugins.apply(settings.libs.plugins.plugin("androidApplication").id)
             }
             else {
-                plugins.apply(libs.plugins.androidLibrary.get().pluginId)
+                plugins.apply(settings.libs.plugins.plugin("androidLibrary").id)
             }
 
             projectProperties.kotlin.android!!.forEach { targetName, target ->
@@ -33,7 +38,7 @@ internal class AndroidPlugin : Plugin<Project> {
                 }
             }
 
-            configureBaseExtension()
+//            configureBaseExtension()
 
 //        adjustCompilations()
 //        applySettings()
@@ -193,7 +198,7 @@ internal class AndroidPlugin : Plugin<Project> {
 //
     private fun Project.applyGoogleServicesPlugin() {
         if (file("google-services.json").exists()) {
-            plugins.apply(libs.plugins.google.playServices.get().pluginId)
+            plugins.apply(settings.libs.plugins.plugin("google.playServices").id)
         }
     }
 }

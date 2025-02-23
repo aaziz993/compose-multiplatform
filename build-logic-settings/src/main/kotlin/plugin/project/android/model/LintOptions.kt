@@ -1,8 +1,6 @@
 package plugin.project.android.model
 
 import com.android.build.gradle.internal.dsl.LintOptions
-import com.android.builder.model.ApiVersion
-import com.android.builder.model.v2.AndroidModel
 import gradle.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

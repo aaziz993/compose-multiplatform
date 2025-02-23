@@ -1,8 +1,7 @@
 package plugin.project.web.node
 
-import gradle.projectProperties
 import gradle.nodeEnv
-import gradle.settings
+import gradle.projectProperties
 import gradle.tryAssign
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType

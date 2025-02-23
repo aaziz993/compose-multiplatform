@@ -1,7 +1,6 @@
 package plugin.project.gradle.spotless.model
 
 import com.diffplug.gradle.spotless.RomeStepConfig
-import com.diffplug.spotless.rome.BiomeFlavor
 
 internal interface RomeStepConfig {
 

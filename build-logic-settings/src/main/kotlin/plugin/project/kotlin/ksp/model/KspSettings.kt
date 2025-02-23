@@ -2,8 +2,6 @@ package plugin.project.kotlin.ksp.model
 
 import gradle.tryAssign
 import gradle.trySet
-import kotlin.collections.component1
-import kotlin.collections.component2
 import kotlinx.serialization.Serializable
 import plugin.model.dependency.Dependency
 

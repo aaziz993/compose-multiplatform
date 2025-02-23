@@ -1,10 +1,8 @@
 package plugin.project.java.model
 
 import gradle.tryAssign
-import gradle.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.file.CopySpec
-import org.gradle.api.file.DuplicatesStrategy
 import org.gradle.api.plugins.JavaApplication
 
 /**

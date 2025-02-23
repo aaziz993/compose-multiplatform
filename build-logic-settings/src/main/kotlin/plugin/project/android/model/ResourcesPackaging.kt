@@ -1,7 +1,6 @@
 package plugin.project.android.model
 
 import com.android.build.api.dsl.ResourcesPackaging
-import gradle.trySet
 import kotlinx.serialization.Serializable
 
 /**

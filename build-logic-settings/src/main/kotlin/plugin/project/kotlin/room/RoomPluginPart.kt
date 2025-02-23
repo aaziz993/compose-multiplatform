@@ -1,6 +1,9 @@
 package plugin.project.kotlin.room
 
+import gradle.id
 import gradle.libs
+import gradle.plugin
+import gradle.plugins
 import gradle.projectProperties
 import gradle.settings
 import org.gradle.api.Plugin
@@ -14,7 +17,7 @@ internal class RoomPlugin : Plugin<Project> {
                 return@with
             }
 
-            plugins.apply(project.libs.plugins.room.get().pluginId)
+            plugins.apply(settings.libs.plugins.plugin("room").id)
 
             configureRoomExtension()
         }
