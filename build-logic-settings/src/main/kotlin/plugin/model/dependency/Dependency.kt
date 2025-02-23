@@ -3,6 +3,7 @@
 package plugin.model.dependency
 
 import gradle.allLibs
+import gradle.compose
 import gradle.isUrl
 import gradle.libraries
 import gradle.library
@@ -14,6 +15,7 @@ import org.gradle.api.Project
 import org.gradle.api.file.Directory
 import org.gradle.api.initialization.Settings
 import org.gradle.api.internal.tasks.JvmConstants
+import org.gradle.kotlin.dsl.the
 import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
 
 @Serializable(with = DependencySerializer::class)
@@ -33,7 +35,6 @@ internal data class Dependency(
 
     context(Project)
     internal fun resolve(): Any = resolve(layout.projectDirectory) { catalogName, libraryName ->
-        println("$catalogName $libraryName")
         settings.allLibs[catalogName]?.libraries?.library(libraryName)?.module
             ?: error("Can't access Version catalog: $catalogName")
     }

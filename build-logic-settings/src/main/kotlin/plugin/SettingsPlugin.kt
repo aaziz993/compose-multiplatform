@@ -126,9 +126,7 @@ public class SettingsPlugin : Plugin<Settings> {
                                         try {
                                             Toml.parse(
                                                 URI(
-                                                    "$url/$notation".also {
-                                                        println("TRY REPO ${it}")
-                                                    },
+                                                    "$url/$notation",
                                                 ).toURL().readText().also { catalogText ->
                                                     cacheFile.writeText(catalogText)
                                                 },
@@ -140,8 +138,6 @@ public class SettingsPlugin : Plugin<Settings> {
                                     }
                             }
                         } + ("libs" to Toml.parse(layout.settingsDirectory.file("gradle/libs.versions.toml").asFile.readText()))
-
-                        println(allLibs)
                     }
                 }
             }

@@ -16,3 +16,6 @@ kotlin:
         - ../kmp-lib
         - ../cmp-lib
         - ../shared
+    wasmJsMain:
+      dependencies:
+        - $kotlinWrappers.browser
