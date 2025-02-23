@@ -6,7 +6,9 @@ application: true
 
 kotlin:
   js:
-    '': { }
+    '':
+      browser: { }
+      nodejs: { }
 
   sourceSets:
     commonMain:

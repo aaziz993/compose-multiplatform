@@ -6,7 +6,7 @@ import gradle.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
-internal class AtomicFUPluginPart : Plugin<Project> {
+internal class AtomicFUPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {

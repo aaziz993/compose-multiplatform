@@ -6,7 +6,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinWasmJsTargetDsl
 
-internal class WasmBindingPluginPart : Plugin<Project> {
+internal class WasmPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {

@@ -11,7 +11,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 
-internal class AppleBindingPluginPart : Plugin<Project> {
+internal class ApplePlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {

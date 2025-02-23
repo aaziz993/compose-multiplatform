@@ -28,7 +28,20 @@ internal interface KotlinJsTargetDsl : KotlinTarget, KotlinTargetWithNodeJsDsl, 
     @OptIn(ExperimentalMainFunctionArgumentsDsl::class)
     fun applyTo(target: KotlinJsTargetDsl) {
         super.applyTo(target)
+
+        nodejs?.let { nodejs ->
+            target.nodejs {
+                nodejs.applyTo(this)
+            }
+        }
+
         target::moduleName trySet moduleName
+
+        browser?.let { browser ->
+            target.browser {
+                browser.applyTo(this)
+            }
+        }
 
         useCommonJs?.takeIf { it }?.run { target.useCommonJs() }
         useEsModules?.takeIf { it }?.run { target.useEsModules() }

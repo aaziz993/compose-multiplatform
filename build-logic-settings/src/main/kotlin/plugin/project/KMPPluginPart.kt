@@ -13,10 +13,9 @@ import gradle.projectProperties
 import gradle.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.jetbrains.kotlin.gradle.plugin.KotlinMultiplatformPluginWrapper
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 
-internal class KMPBindingPluginPart : Plugin<Project> {
+internal class KMPPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {

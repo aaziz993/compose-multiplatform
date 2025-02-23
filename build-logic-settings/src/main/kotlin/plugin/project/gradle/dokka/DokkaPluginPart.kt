@@ -14,7 +14,7 @@ import org.jetbrains.dokka.gradle.DokkaMultiModuleTask
 import org.jetbrains.dokka.gradle.internal.InternalDokkaGradlePluginApi
 import plugin.project.gradle.dokka.model.DokkaMultiModuleFileLayout
 
-internal class DokkaPluginPart : Plugin<Project> {
+internal class DokkaPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {

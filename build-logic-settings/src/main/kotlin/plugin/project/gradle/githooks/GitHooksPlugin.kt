@@ -9,7 +9,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
 import plugin.project.gradle.githooks.model.GitHooksSettings
 
-internal class GitHooksluginPart : Plugin<Settings> {
+internal class GitHooksPlugin : Plugin<Settings> {
 
     override fun apply(target: Settings) {
         with(target) {

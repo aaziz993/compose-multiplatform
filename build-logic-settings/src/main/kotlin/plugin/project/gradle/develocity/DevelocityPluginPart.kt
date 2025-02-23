@@ -17,7 +17,7 @@ import org.gradle.api.initialization.Settings
 import org.gradle.kotlin.dsl.develocity
 import plugin.project.gradle.develocity.model.DevelocitySettings
 
-internal class DevelocityPluginPart : Plugin<Settings> {
+internal class DevelocityPlugin : Plugin<Settings> {
 
     override fun apply(target: Settings) {
         with(target) {

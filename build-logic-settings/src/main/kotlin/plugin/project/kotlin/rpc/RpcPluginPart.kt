@@ -6,7 +6,7 @@ import gradle.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
-internal class RpcPluginPart : Plugin<Project> {
+internal class RpcPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {

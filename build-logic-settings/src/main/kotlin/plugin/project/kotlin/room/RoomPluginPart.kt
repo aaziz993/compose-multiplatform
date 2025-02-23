@@ -6,7 +6,7 @@ import gradle.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
-internal class RoomPluginPart : Plugin<Project> {
+internal class RoomPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {

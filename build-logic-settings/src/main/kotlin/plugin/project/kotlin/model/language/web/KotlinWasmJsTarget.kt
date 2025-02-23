@@ -1,9 +1,6 @@
 package plugin.project.kotlin.model.language.web
 
-import gradle.kotlin
 import kotlinx.serialization.Serializable
-import org.gradle.api.Project
-import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsNodeDsl
 
 @Serializable
 internal data class KotlinWasmJsTarget(

@@ -10,6 +10,7 @@ internal interface BaseKotlinExtension {
 
     /** Uses the <a href="https://github.com/facebookincubator/ktfmt">ktfmt</a> jar to format source code. */
     val ktfmt: List<KtfmtConfig>?
+
     val ktlint: KtlintConfig?
 
     fun applyTo(extension: BaseKotlinExtension) {

@@ -6,7 +6,9 @@ application: true
 
 kotlin:
   wasmJs:
-    '': { }
+    '':
+      browser: { }
+      nodejs: { }
 
   sourceSets:
     commonMain:

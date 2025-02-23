@@ -7,7 +7,7 @@ import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
 import plugin.project.web.configureJsTestTasks
 
-internal class JsBindingPluginPart : Plugin<Project> {
+internal class JsPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {

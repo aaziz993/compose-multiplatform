@@ -29,10 +29,10 @@ import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.nodes.Tag
 import org.yaml.snakeyaml.representer.Represent
 import org.yaml.snakeyaml.representer.Representer
-import plugin.project.BindingProjectPlugin
-import plugin.project.gradle.develocity.DevelocityPluginPart
-import plugin.project.gradle.githooks.GitHooksluginPart
-import plugin.project.gradle.toolchainmanagement.ToolchainManagementPluginPart
+import plugin.project.ProjectPlugin
+import plugin.project.gradle.develocity.DevelocityPlugin
+import plugin.project.gradle.githooks.GitHooksPlugin
+import plugin.project.gradle.toolchainmanagement.ToolchainManagementPlugin
 import plugin.project.model.Properties
 
 private const val PROJECT_PROPERTIES_FILE = "project.yaml"
@@ -66,8 +66,6 @@ public class SettingsPlugin : Plugin<Settings> {
             target.setupProject()
 
             target.gradle.projectsLoaded {
-                target.setupPluginsClasspath()
-
                 // at this point all projects have been created by settings.gradle.kts, but none were evaluated yet
                 target.gradle.rootProject.allprojects {
                     configureProject()
@@ -95,14 +93,14 @@ public class SettingsPlugin : Plugin<Settings> {
         }
 
         // Apply plugins.
-        plugins.apply(DevelocityPluginPart::class.java)
-        plugins.apply(ToolchainManagementPluginPart::class.java)
-        plugins.apply(GitHooksluginPart::class.java)
+        plugins.apply(DevelocityPlugin::class.java)
+        plugins.apply(ToolchainManagementPlugin::class.java)
+        plugins.apply(GitHooksPlugin::class.java)
 
         projectProperties.dependencyResolutionManagement?.let { dependencyResolutionManagement ->
             dependencyResolutionManagement {
                 repositories {
-                    configureDependenciesRepositories()
+                    addDependenciesRepositories()
                 }
 
                 dependencyResolutionManagement.versionCatalogs?.let { versionCatalogs ->
@@ -122,27 +120,20 @@ public class SettingsPlugin : Plugin<Settings> {
         projectProperties.modules?.forEach(::include)
     }
 
-    @Suppress("UNCHECKED_CAST")
-    private fun Settings.setupPluginsClasspath() {
-        with(libs) {
-            setupDynamicClasspath(
-                libs.plugins.plugin("kotlin-multiplatform").pluginAsDependency,
-            ) {
-                configureDependenciesRepositories()
-            }
-        }
-    }
-
     private fun Project.configureProject() {
         // Root projects properties already loaded in settings setup.
-        if (this != settings.rootProject) {
-            projectProperties = layout.projectDirectory.loadProperties().apply {
-                println("APPLY $PROJECT_PROPERTIES_FILE TO: $name")
-                println(logYaml.dump(Json.Default.encodeToAny(this)))
-            }
+
+        with(settings) {
+            repositories.addDependenciesRepositories()
         }
 
-        plugins.apply(BindingProjectPlugin::class.java)
+        projectProperties = layout.projectDirectory.loadProperties().apply {
+            println("APPLY $PROJECT_PROPERTIES_FILE TO: $name")
+            println(logYaml.dump(Json.Default.encodeToAny(this)))
+        }
+
+
+        plugins.apply(ProjectPlugin::class.java)
 
         afterEvaluate {
             // W/A for XML factories mess within apple plugin classpath.
@@ -191,7 +182,7 @@ public class SettingsPlugin : Plugin<Settings> {
     }
 
     context(Settings)
-    private fun RepositoryHandler.configureDependenciesRepositories() {
+    private fun RepositoryHandler.addDependenciesRepositories() {
         mavenCentral()
         // For the Android plugin and dependencies
         google()

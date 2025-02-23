@@ -4,7 +4,7 @@ import com.diffplug.gradle.spotless.FormatExtension
 import com.diffplug.spotless.LineEnding
 import org.gradle.api.Project
 
-internal interface FormatExtension : BaseKotlinExtension {
+internal interface FormatExtension {
 
     val lineEnding: LineEnding?
     val ratchetFrom: String?
@@ -38,8 +38,19 @@ internal interface FormatExtension : BaseKotlinExtension {
     val nativeCmd: List<NativeCmd>?
     val licenseHeader: LicenseHeaderConfig?
     val prettier: PrettierConfig?
+    val biome: BiomeGeneric?
     val clangFormat: ClangFormatConfig?
-
+    val eclipseWtp: EclipseWtpConfig?
+    val toggleOffOnRegex: String?
+    /** Disables formatting between the given tags.  */
+    val toggleOffOn: ToggleOffOn?
+    /** Disables formatting between `spotless:off` and `spotless:on`.  */
+    val toggleIfOffOn: Boolean?
+    /**
+     * Undoes all previous calls to [.toggleOffOn] and
+     * [.toggleOffOn].
+     */
+    val toggleOffOnDisable: Boolean?
     fun applyTo(extension: FormatExtension) {
         lineEnding?.let(extension::setLineEndings)
         ratchetFrom?.let(extension::setRatchetFrom)
@@ -70,8 +81,24 @@ internal interface FormatExtension : BaseKotlinExtension {
         prettier?.let { prettier ->
             extension.prettier(prettier.devDependencies)
         }
+
+        biome?.let { biome ->
+            biome.applyTo(biome.version?.let(extension::biome) ?: extension.biome())
+        }
+
         clangFormat?.let { clangFormat ->
             clangFormat.applyTo(clangFormat.version?.let(extension::clangFormat) ?: extension.clangFormat())
         }
+
+        eclipseWtp?.let { eclipseWtp ->
+            eclipseWtp.applyTo(
+                eclipseWtp.version?.let { extension.eclipseWtp(eclipseWtp.type, it) }
+                    ?: extension.eclipseWtp(eclipseWtp.type),
+            )
+        }
+        toggleOffOnRegex?.let(extension::toggleOffOnRegex)
+        toggleOffOn?.let { (off, on) -> extension.toggleOffOn(off, on) }
+        toggleIfOffOn?.takeIf { it }.run { extension.toggleOffOn() }
+        toggleOffOnDisable?.takeIf { it }.run { extension.toggleOffOnDisable() }
     }
 }

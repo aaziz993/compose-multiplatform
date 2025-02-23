@@ -9,7 +9,7 @@ import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.provideDelegate
 
-internal class KspPluginPart : Plugin<Project> {
+internal class KspPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {

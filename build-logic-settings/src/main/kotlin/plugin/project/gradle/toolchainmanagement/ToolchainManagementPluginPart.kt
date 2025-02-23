@@ -9,7 +9,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
 import plugin.project.gradle.toolchainmanagement.model.ToolchainManagementSettings
 
-internal class ToolchainManagementPluginPart : Plugin<Settings> {
+internal class ToolchainManagementPlugin : Plugin<Settings> {
 
     override fun apply(target: Settings) {
         with(target) {

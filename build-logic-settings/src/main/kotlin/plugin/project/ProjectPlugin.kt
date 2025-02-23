@@ -11,43 +11,40 @@ import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.jetbrains.amper.gradle.SLF4JProblemReporterContext
-import plugin.project.android.AndroidBindingPluginPart
-import plugin.project.apple.AppleBindingPluginPart
-import plugin.project.compose.ComposePluginPart
-import plugin.project.gradle.apivalidation.ApiValidationPluginPart
-import plugin.project.gradle.buildconfig.BuildConfigPluginPart
-import plugin.project.gradle.doctor.DoctorPluginPart
-import plugin.project.gradle.dokka.DokkaPluginPart
-import plugin.project.gradle.kover.KoverPluginPart
-import plugin.project.gradle.sonar.SonarPluginPart
-import plugin.project.gradle.spotless.SpotlessPluginPart
-import plugin.project.java.JavaBindingPluginPart
-import plugin.project.kotlin.allopen.AllOpenPluginPart
-import plugin.project.kotlin.apollo.ApolloPluginPart
-import plugin.project.kotlin.atomicfu.AtomicFUPluginPart
-import plugin.project.kotlin.ksp.KspPluginPart
-import plugin.project.kotlin.ktorfit.KtorfitPluginPart
-import plugin.project.kotlin.noarg.NoArgPluginPart
-import plugin.project.kotlin.powerassert.PowerAssertPluginPart
-import plugin.project.kotlin.room.RoomPluginPart
-import plugin.project.kotlin.rpc.RpcPluginPart
-import plugin.project.kotlin.serialization.SerializationPluginPart
-import plugin.project.kotlin.sqldelight.SqlDelightPluginPart
-import plugin.project.web.WasmBindingPluginPart
-import plugin.project.web.js.JsBindingPluginPart
-import plugin.project.web.node.configureNodeJsRootExtension
+import plugin.project.compose.ComposePlugin
+import plugin.project.gradle.apivalidation.ApiValidationPlugin
+import plugin.project.gradle.buildconfig.BuildConfigPlugin
+import plugin.project.gradle.doctor.DoctorPlugin
+import plugin.project.gradle.dokka.DokkaPlugin
+import plugin.project.gradle.kover.KoverPlugin
+import plugin.project.gradle.sonar.SonarPlugin
+import plugin.project.gradle.spotless.SpotlessPlugin
+import plugin.project.kotlin.allopen.AllOpenPlugin
+import plugin.project.kotlin.apollo.ApolloPlugin
+import plugin.project.kotlin.atomicfu.AtomicFUPlugin
+import plugin.project.kotlin.ksp.KspPlugin
+import plugin.project.kotlin.ktorfit.KtorfitPlugin
+import plugin.project.kotlin.noarg.NoArgPlugin
+import plugin.project.kotlin.powerassert.PowerAssertPlugin
+import plugin.project.kotlin.room.RoomPlugin
+import plugin.project.kotlin.rpc.RpcPlugin
+import plugin.project.kotlin.serialization.SerializationPlugin
+import plugin.project.kotlin.sqldelight.SqlDelightPlugin
+import plugin.project.web.WasmPlugin
+import plugin.project.web.js.JsPlugin
+import plugin.project.web.node.configureNodeJsEnvSpec
 import plugin.project.web.npm.configureNpmExtension
 import plugin.project.web.yarn.configureYarnRootExtension
 
 /**
  * Gradle project plugin entry point.
  */
-internal class BindingProjectPlugin : Plugin<Project> {
+internal class ProjectPlugin : Plugin<Project> {
 
     override fun apply(target: Project) = with(SLF4JProblemReporterContext()) {
         with(target) {
 
-            applyRepositoryAttributes()
+//            applyRepositoryAttributes()
 
             projectProperties.group?.let(::setGroup)
             projectProperties.description?.let(::setDescription)
@@ -60,33 +57,33 @@ internal class BindingProjectPlugin : Plugin<Project> {
                 )
             }
 
-            plugins.apply(KMPBindingPluginPart::class.java)
+            plugins.apply(KMPPlugin::class.java)
 
             afterEvaluate {
-                plugins.apply(DoctorPluginPart::class.java)
-                plugins.apply(BuildConfigPluginPart::class.java)
-                plugins.apply(SpotlessPluginPart::class.java)
-//                plugins.apply(KoverPluginPart::class.java)
-                plugins.apply(SonarPluginPart::class.java)
-                plugins.apply(DokkaPluginPart::class.java)
-                plugins.apply(ApiValidationPluginPart::class.java)
-                plugins.apply(KspPluginPart::class.java)
-                plugins.apply(AllOpenPluginPart::class.java)
-                plugins.apply(NoArgPluginPart::class.java)
-                plugins.apply(AtomicFUPluginPart::class.java)
-                plugins.apply(SerializationPluginPart::class.java)
-                plugins.apply(SqlDelightPluginPart::class.java)
-                plugins.apply(RoomPluginPart::class.java)
-                plugins.apply(RpcPluginPart::class.java)
-                plugins.apply(KtorfitPluginPart::class.java)
-                plugins.apply(ApolloPluginPart::class.java)
-                plugins.apply(PowerAssertPluginPart::class.java)
-                plugins.apply(ComposePluginPart::class.java)
-//                plugins.apply(AndroidBindingPluginPart::class.java)
-                plugins.apply(JsBindingPluginPart::class.java)
-                plugins.apply(WasmBindingPluginPart::class.java)
-//                plugins.apply(JavaBindingPluginPart::class.java)
-//                plugins.apply(AppleBindingPluginPart::class.java)
+                plugins.apply(DoctorPlugin::class.java)
+                plugins.apply(BuildConfigPlugin::class.java)
+                plugins.apply(SpotlessPlugin::class.java)
+                plugins.apply(KoverPlugin::class.java)
+                plugins.apply(SonarPlugin::class.java)
+                plugins.apply(DokkaPlugin::class.java)
+                plugins.apply(ApiValidationPlugin::class.java)
+                plugins.apply(KspPlugin::class.java)
+                plugins.apply(AllOpenPlugin::class.java)
+                plugins.apply(NoArgPlugin::class.java)
+                plugins.apply(AtomicFUPlugin::class.java)
+                plugins.apply(SerializationPlugin::class.java)
+                plugins.apply(SqlDelightPlugin::class.java)
+                plugins.apply(RoomPlugin::class.java)
+                plugins.apply(RpcPlugin::class.java)
+                plugins.apply(KtorfitPlugin::class.java)
+                plugins.apply(ApolloPlugin::class.java)
+                plugins.apply(PowerAssertPlugin::class.java)
+                plugins.apply(ComposePlugin::class.java)
+//                plugins.apply(AndroidPlugin::class.java)
+                plugins.apply(JsPlugin::class.java)
+                plugins.apply(WasmPlugin::class.java)
+//                plugins.apply(JavaPlugin::class.java)
+//                plugins.apply(ApplePlugin::class.java)
             }
         }
 
@@ -101,7 +98,7 @@ internal class BindingProjectPlugin : Plugin<Project> {
     }
 
     private fun Project.configureWeb() {
-        configureNodeJsRootExtension()
+        configureNodeJsEnvSpec()
         configureNpmExtension()
         configureYarnRootExtension()
     }

@@ -156,7 +156,7 @@ internal interface SpotlessExtension {
         }
 
         // Format files
-        formats.ifEmpty { null }?.filterValues(FormatSettings::enabled)?.forEach { (name, settings) ->
+        formats.ifEmpty { null }?.forEach { (name, settings) ->
             extension.format(name, settings::applyTo)
         }
 
