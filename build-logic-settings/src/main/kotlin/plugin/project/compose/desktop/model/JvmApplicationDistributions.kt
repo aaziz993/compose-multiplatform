@@ -1,10 +1,12 @@
-package plugin.project.compose.model
+package plugin.project.compose.desktop.model
 
 import gradle.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.compose.desktop.application.dsl.JvmApplicationDistributions
+import plugin.project.compose.desktop.model.linux.LinuxPlatformSettings
 import plugin.project.compose.desktop.model.macos.JvmMacOSPlatformSettings
+import plugin.project.compose.desktop.model.windows.WindowsPlatformSettings
 
 @Serializable
 internal data class JvmApplicationDistributions(

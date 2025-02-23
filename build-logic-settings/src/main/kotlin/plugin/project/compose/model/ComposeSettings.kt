@@ -1,11 +1,11 @@
 package plugin.project.compose.model
 
 import kotlinx.serialization.Serializable
-import plugin.project.compose.desktop.model.DesktopSettings
+import plugin.project.compose.desktop.model.DesktopExtension
 
 @Serializable
 internal data class ComposeSettings(
     val resources: ResourcesExtension = ResourcesExtension(),
-    val desktop: DesktopSettings = DesktopSettings(),
+    val desktop: DesktopExtension = DesktopExtension(),
     val enabled: Boolean = false
 )

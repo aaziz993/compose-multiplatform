@@ -5,11 +5,7 @@ import gradle.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.compose.desktop.application.dsl.JvmMacOSPlatformSettings
-import plugin.project.compose.model.AbstractMacOSPlatformSettings
-import plugin.project.compose.model.FileAssociation
-import plugin.project.compose.desktop.model.macos.InfoPlistSettings
-import plugin.project.compose.model.MacOSNotarizationSettings
-import plugin.project.compose.model.MacOSSigningSettings
+import plugin.project.compose.desktop.model.FileAssociation
 
 @Serializable
 internal data class JvmMacOSPlatformSettings(

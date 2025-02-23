@@ -22,6 +22,8 @@ import org.gradle.api.toolchain.management.ToolchainManagement
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.the
 import org.jetbrains.compose.ComposeExtension
+import org.jetbrains.compose.desktop.DesktopExtension
+import org.jetbrains.compose.resources.ResourcesExtension
 import org.jetbrains.dokka.gradle.DokkaExtension
 import org.jetbrains.gradle.apple.AppleProjectExtension
 import org.jetbrains.kotlin.allopen.gradle.AllOpenExtension
@@ -35,7 +37,6 @@ import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension
 import org.jetbrains.kotlin.noarg.gradle.NoArgExtension
 import org.jetbrains.kotlin.powerassert.gradle.PowerAssertGradleExtension
 import org.sonarqube.gradle.SonarExtension
-import plugin.project.compose.model.ResourcesExtension
 import plugin.project.model.Properties
 
 private const val PROPERTIES = "properties"
@@ -167,16 +168,6 @@ internal val Project.apple: AppleProjectExtension get() = the()
 internal fun Project.apple(configure: AppleProjectExtension.() -> Unit) =
     extensions.configure(configure)
 
-internal val Project.compose: ComposeExtension get() = the()
-
-internal fun Project.compose(configure: ComposeExtension.() -> Unit) =
-    extensions.configure(configure)
-
-internal val Project.resources: ResourcesExtension get() = the()
-
-internal fun Project.resources(configure: ResourcesExtension.() -> Unit) =
-    extensions.configure(configure)
-
 internal val Project.npm: NodeJsRootExtension get() = the()
 
 internal fun Project.npm(configure: NpmExtension.() -> Unit) =
@@ -201,6 +192,22 @@ internal val Project.karakum: KarakumExtension get() = the()
 
 internal fun Project.karakum(configure: KarakumExtension.() -> Unit) =
     extensions.configure(configure)
+
+internal val Project.compose: ComposeExtension get() = the()
+
+internal fun Project.compose(configure: ComposeExtension.() -> Unit) =
+    extensions.configure(configure)
+
+internal val Project.resources: ResourcesExtension get() = the()
+
+internal fun Project.resources(configure: ResourcesExtension.() -> Unit) =
+    extensions.configure(configure)
+
+internal val Project.desktop: DesktopExtension get() = the()
+
+internal fun Project.desktop(configure: DesktopExtension.() -> Unit) =
+    extensions.configure(configure)
+
 
 internal fun Project.execute(cmd: String): String = providers.exec {
     commandLine(cmd.split(" "))

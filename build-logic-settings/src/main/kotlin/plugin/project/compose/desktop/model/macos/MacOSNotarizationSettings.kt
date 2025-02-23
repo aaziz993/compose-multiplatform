@@ -1,4 +1,4 @@
-package plugin.project.compose.model
+package plugin.project.compose.desktop.model.macos
 
 import gradle.tryAssign
 import kotlinx.serialization.Serializable

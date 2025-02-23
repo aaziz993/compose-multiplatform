@@ -1,9 +1,11 @@
-package plugin.project.compose.model
+package plugin.project.compose.desktop.model.windows
 
 import gradle.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.compose.desktop.application.dsl.WindowsPlatformSettings
+import plugin.project.compose.desktop.model.AbstractPlatformSettings
+import plugin.project.compose.desktop.model.FileAssociation
 
 @Serializable
 internal data class WindowsPlatformSettings(

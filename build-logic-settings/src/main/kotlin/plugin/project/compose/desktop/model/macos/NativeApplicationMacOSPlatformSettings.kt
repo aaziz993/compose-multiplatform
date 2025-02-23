@@ -1,10 +1,7 @@
 package plugin.project.compose.desktop.model.macos
 
 import kotlinx.serialization.Serializable
-import plugin.project.compose.model.AbstractMacOSPlatformSettings
-import plugin.project.compose.model.FileAssociation
-import plugin.project.compose.model.MacOSNotarizationSettings
-import plugin.project.compose.model.MacOSSigningSettings
+import plugin.project.compose.desktop.model.FileAssociation
 
 @Serializable
 internal data class NativeApplicationMacOSPlatformSettings(

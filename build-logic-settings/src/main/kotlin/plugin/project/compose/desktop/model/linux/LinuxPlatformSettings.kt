@@ -1,9 +1,11 @@
-package plugin.project.compose.model
+package plugin.project.compose.desktop.model.linux
 
 import gradle.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.compose.desktop.application.dsl.LinuxPlatformSettings
+import plugin.project.compose.desktop.model.FileAssociation
+import plugin.project.compose.desktop.model.AbstractPlatformSettings
 
 @Serializable
 internal data class LinuxPlatformSettings(
