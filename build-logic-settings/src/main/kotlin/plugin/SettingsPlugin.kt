@@ -122,11 +122,6 @@ public class SettingsPlugin : Plugin<Settings> {
 
     private fun Project.configureProject() {
         // Root projects properties already loaded in settings setup.
-
-        with(settings) {
-            repositories.addDependenciesRepositories()
-        }
-
         projectProperties = layout.projectDirectory.loadProperties().apply {
             println("APPLY $PROJECT_PROPERTIES_FILE TO: $name")
             println(logYaml.dump(Json.Default.encodeToAny(this)))

@@ -5,6 +5,8 @@ import java.util.Properties
 import org.tomlj.Toml
 import org.yaml.snakeyaml.Yaml
 
+//apply(from = "gradle/model/toolchainmanagement/model/ToolchainManagementSettings.kt")
+
 rootProject.name = "build-logic-settings"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 

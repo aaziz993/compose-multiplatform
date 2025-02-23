@@ -8,19 +8,24 @@ import gradle.kotlin
 import gradle.projectProperties
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
 import org.gradle.api.plugins.ApplicationPlugin
+import org.gradle.api.plugins.JavaPlugin
+import org.gradle.jvm.tasks.Jar
+import org.jetbrains.amper.gradle.java.JavaBindingPluginPart
+import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
 
 internal class JavaPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-//            if (TargetType.ANDROID in projectProperties.kotlin.jvm==null) {
-//                logger.warn(
-//                    "Cant enable java integration when android is enabled. " +
-//                        "Module: $name",
-//                )
-//                return@with
-//            }
+            if (projectProperties.kotlin.android != null) {
+                logger.warn(
+                    "Cant enable java integration when android is enabled. " +
+                        "Project: $name",
+                )
+                return@with
+            }
 
             projectProperties.kotlin.jvm?.forEach { targetName, target ->
                 targetName.takeIf(String::isNotEmpty)?.also { targetName ->
@@ -41,5 +46,20 @@ internal class JavaPlugin : Plugin<Project> {
 
 //            configureJar()
         }
+    }
+
+    // TODO Rewrite this completely by not calling
+    //  KMPP code and following out own conventions.
+    private fun Project.addJavaIntegration() {
+        plugins.apply(JavaPlugin::class.java)
+
+        kotlin.targets.toList().forEach {
+            if (it is KotlinJvmTarget) it.withJava()
+        }
+
+//        // Set sources for all Amper related source sets.
+//        platformFragments.forEach {
+//            it.maybeCreateJavaSourceSet()
+//        }
     }
 }

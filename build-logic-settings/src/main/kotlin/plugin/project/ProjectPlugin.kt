@@ -10,6 +10,8 @@ import gradle.versions
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.jvm.tasks.Jar
+import org.gradle.kotlin.dsl.withType
 import org.jetbrains.amper.gradle.SLF4JProblemReporterContext
 import plugin.project.compose.ComposePlugin
 import plugin.project.gradle.apivalidation.ApiValidationPlugin
@@ -19,6 +21,7 @@ import plugin.project.gradle.dokka.DokkaPlugin
 import plugin.project.gradle.kover.KoverPlugin
 import plugin.project.gradle.sonar.SonarPlugin
 import plugin.project.gradle.spotless.SpotlessPlugin
+import plugin.project.java.JavaPlugin
 import plugin.project.kotlin.allopen.AllOpenPlugin
 import plugin.project.kotlin.apollo.ApolloPlugin
 import plugin.project.kotlin.atomicfu.AtomicFUPlugin
@@ -59,6 +62,8 @@ internal class ProjectPlugin : Plugin<Project> {
 
             plugins.apply(KMPPlugin::class.java)
 
+            println("PROJECT $name tasks ${tasks.withType<Jar>().map { it.name }}")
+
             afterEvaluate {
                 plugins.apply(DoctorPlugin::class.java)
                 plugins.apply(BuildConfigPlugin::class.java)
@@ -82,7 +87,7 @@ internal class ProjectPlugin : Plugin<Project> {
 //                plugins.apply(AndroidPlugin::class.java)
                 plugins.apply(JsPlugin::class.java)
                 plugins.apply(WasmPlugin::class.java)
-//                plugins.apply(JavaPlugin::class.java)
+                plugins.apply(JavaPlugin::class.java)
 //                plugins.apply(ApplePlugin::class.java)
             }
         }

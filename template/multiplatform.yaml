@@ -2,7 +2,9 @@ kotlin:
   jvm:
     '': { }
   android:
-    '': { }
+    '':
+      compilerOptions:
+        jvmTarget: JVM_23
   iosArm64:
     '': { }
   iosX64:
@@ -10,6 +12,10 @@ kotlin:
   iosSimulatorArm64:
     '': { }
   js:
-    '': { }
+    '':
+      browser: { }
+      nodejs: { }
   wasmJs:
-    '': { }
+    '':
+      browser: { }
+      nodejs: { }
