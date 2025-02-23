@@ -27,7 +27,7 @@ internal data class Dependency(
 
     context(Settings)
     internal fun resolve(): Any = resolve(layout.rootDirectory) { catalogName, libraryName ->
-        allLibs[catalogName]?.libraries?.library(libraryName)?.libraryAsDependency
+        allLibs[catalogName]?.libraryAsDependency(libraryName)
             ?: error("Can't access Version catalog: $catalogName")
     }
 
@@ -36,7 +36,7 @@ internal data class Dependency(
 
     context(Project)
     internal fun resolve(): Any = resolve(layout.projectDirectory) { catalogName, libraryName ->
-        settings.allLibs[catalogName]?.libraries?.library(libraryName)?.libraryAsDependency
+        settings.allLibs[catalogName]?.libraryAsDependency(libraryName)
             ?: error("Can't access Version catalog: $catalogName")
     }
 

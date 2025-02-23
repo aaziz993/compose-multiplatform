@@ -41,18 +41,20 @@ internal val TomlTable.module
     get() = getString("module") ?: "${getString("group")}:${getString("name")}"
 
 context(TomlParseResult)
-internal val TomlTable.version: String?
+private val TomlTable.version: String?
     get() = getTable("version")?.getString("ref")?.let(versions::version)
 
-context(TomlParseResult)
-internal val TomlTable.pluginAsDependency: String
-    get() = "$id:$id.gradle.plugin:${version!!}"
+internal fun TomlParseResult.pluginAsDependency(alias: String): String =
+    plugins.plugin(alias).let { plugin ->
+        "${plugin.id}:${plugin.id}.gradle.plugin:${plugin.version!!}"
+    }
 
 internal fun TomlTable.pluginAsDependency(version: String): String = "$id:$id.gradle.plugin:$version"
 
-context(TomlParseResult)
-internal val TomlTable.libraryAsDependency
-    get() = "$module${version?.let { ":$it" }}"
+internal fun TomlParseResult.libraryAsDependency(alias: String) =
+    libraries.library(alias).let { library ->
+        "${library.module}${library.version?.let { ":$it" }}"
+    }
 
 internal val TomlParseResult.versions
     get() = getTable("versions")!!

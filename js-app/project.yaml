@@ -9,6 +9,8 @@ kotlin:
     '':
       browser: { }
       nodejs: { }
+      binaries:
+        executable: true
 
   sourceSets:
     commonMain:

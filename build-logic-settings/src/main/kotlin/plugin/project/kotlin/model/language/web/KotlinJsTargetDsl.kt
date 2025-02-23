@@ -31,13 +31,13 @@ internal interface KotlinJsTargetDsl : KotlinTarget, KotlinTargetWithNodeJsDsl, 
     fun applyTo(target: KotlinJsTargetDsl) {
         super.applyTo(target)
 
+        target.moduleName = moduleName ?: name.asModuleName()
+
         nodejs?.let { nodejs ->
             target.nodejs {
                 nodejs.applyTo(this)
             }
         }
-
-        target.moduleName = moduleName ?: name.asModuleName()
 
         browser?.let { browser ->
             target.browser {
