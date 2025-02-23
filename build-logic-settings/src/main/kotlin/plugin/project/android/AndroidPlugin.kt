@@ -28,7 +28,7 @@ internal class AndroidPlugin : Plugin<Project> {
             }
 
             projectProperties.kotlin.android!!.forEach { targetName, target ->
-                if (targetName.isEmpty()) {
+                if (targetName.isNotEmpty()) {
                     kotlin.androidTarget(targetName) {
                         target.applyTo(this)
                     }

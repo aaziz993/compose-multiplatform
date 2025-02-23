@@ -127,7 +127,7 @@ kotlin = "2.1.10"
 # ktlint code formatter
 ktlint = "1.4.1"
 # api that you can use to develop lightweight compiler plugins. KSP provides a simplified compiler plugin API that leverages the power of Kotlin while keeping the learning curve at a minimum. Compared to KAPT, annotation processors that use KSP can run up to 2x faster.
-ksp = "2.1.0-1.0.29"
+ksp = "2.1.10-1.0.29"
 # multiplatform logging
 km-logging = "1.5.0"
 # multiplatform library that provides the idiomatic and efficient way of using atomic operations in Kotlin.

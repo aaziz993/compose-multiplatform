@@ -1,12 +1,15 @@
 package plugin.project.web.js
 
 import gradle.id
+import gradle.karakum
 import gradle.kotlin
 import gradle.libs
 import gradle.plugin
 import gradle.plugins
 import gradle.projectProperties
+import gradle.serialization.decodeMapFromString
 import gradle.settings
+import kotlinx.serialization.json.Json
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
@@ -18,7 +21,7 @@ internal class JsPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             projectProperties.kotlin.js?.forEach { targetName, target ->
-                if (targetName.isEmpty()) {
+                if (targetName.isNotEmpty()) {
                     kotlin.js(targetName) {
                         target.applyTo(this)
                     }
@@ -32,13 +35,19 @@ internal class JsPlugin : Plugin<Project> {
 
             configureKarakumGenerate()
 
+            val karakumConfigFile = karakum.configFile.asFile.get()
 
+            if (karakumConfigFile.exists()) {
 
-            kotlin.sourceSets.matching { sourceSet -> sourceSet.name.startsWith("js") }.all {
-                val karakumGeneratedDir = projectDir.resolve("src/jsMain/generated")
+                val karakumConfig = Json.Default.decodeMapFromString(karakumConfigFile.readText())
 
-                if (karakumGeneratedDir.exists()) {
-                    kotlin.srcDir(karakumGeneratedDir)
+                val karakumOutputDir = karakumConfigFile.parentFile.resolve(karakumConfig["output"].toString())
+
+                if (karakumOutputDir.exists()) {
+                    kotlin.sourceSets.matching { sourceSet -> sourceSet.name == "jsMain" }.all {
+
+                        kotlin.srcDir(karakumOutputDir)
+                    }
                 }
             }
 

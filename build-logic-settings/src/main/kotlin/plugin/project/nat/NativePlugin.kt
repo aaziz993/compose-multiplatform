@@ -18,7 +18,7 @@ internal class NativePlugin : Plugin<Project> {
             }
 
             projectProperties.kotlin.androidNativeArm32?.forEach { targetName, target ->
-                if (targetName.isEmpty()) {
+                if (targetName.isNotEmpty()) {
                     kotlin.androidNativeArm32(targetName) {
                         target.applyTo(this)
                     }
@@ -29,7 +29,7 @@ internal class NativePlugin : Plugin<Project> {
             }
 
             projectProperties.kotlin.androidNativeArm64?.forEach { targetName, target ->
-                if (targetName.isEmpty()) {
+                if (targetName.isNotEmpty()) {
                     kotlin.androidNativeArm64(targetName) {
                         target.applyTo(this)
                     }
@@ -40,7 +40,7 @@ internal class NativePlugin : Plugin<Project> {
             }
 
             projectProperties.kotlin.androidNativeX86?.forEach { targetName, target ->
-                if (targetName.isEmpty()) {
+                if (targetName.isNotEmpty()) {
                     kotlin.androidNativeX86(targetName) {
                         target.applyTo(this)
                     }
@@ -51,7 +51,7 @@ internal class NativePlugin : Plugin<Project> {
             }
 
             projectProperties.kotlin.androidNativeX64?.forEach { targetName, target ->
-                if (targetName.isEmpty()) {
+                if (targetName.isNotEmpty()) {
                     kotlin.androidNativeX64(targetName) {
                         target.applyTo(this)
                     }
@@ -62,7 +62,7 @@ internal class NativePlugin : Plugin<Project> {
             }
 
             projectProperties.kotlin.linuxArm64?.forEach { targetName, target ->
-                if (targetName.isEmpty()) {
+                if (targetName.isNotEmpty()) {
                     kotlin.linuxArm64(targetName) {
                         target.applyTo(this)
                     }
@@ -73,7 +73,7 @@ internal class NativePlugin : Plugin<Project> {
             }
 
             projectProperties.kotlin.linuxX64?.forEach { targetName, target ->
-                if (targetName.isEmpty()) {
+                if (targetName.isNotEmpty()) {
                     kotlin.linuxX64(targetName) {
                         target.applyTo(this)
                     }
@@ -84,7 +84,7 @@ internal class NativePlugin : Plugin<Project> {
             }
 
             projectProperties.kotlin.mingwX64?.forEach { targetName, target ->
-                if (targetName.isEmpty()) {
+                if (targetName.isNotEmpty()) {
                     kotlin.mingwX64(targetName) {
                         target.applyTo(this)
                     }

@@ -31,7 +31,7 @@ internal class ApplePlugin : Plugin<Project> {
             configureAppleProjectExtension()
 
             projectProperties.kotlin.iosArm64?.forEach { targetName, target ->
-                if (targetName.isEmpty()) {
+                if (targetName.isNotEmpty()) {
                     kotlin.iosArm64(targetName) {
                         target.applyTo(this)
                     }
@@ -42,7 +42,7 @@ internal class ApplePlugin : Plugin<Project> {
             }
 
             projectProperties.kotlin.iosX64?.forEach { targetName, target ->
-                if (targetName.isEmpty()) {
+                if (targetName.isNotEmpty()) {
                     kotlin.iosX64(targetName) {
                         target.applyTo(this)
                     }
@@ -53,7 +53,7 @@ internal class ApplePlugin : Plugin<Project> {
             }
 
             projectProperties.kotlin.iosSimulatorArm64?.forEach { targetName, target ->
-                if (targetName.isEmpty()) {
+                if (targetName.isNotEmpty()) {
                     kotlin.iosSimulatorArm64(targetName) {
                         target.applyTo(this)
                     }
@@ -64,7 +64,7 @@ internal class ApplePlugin : Plugin<Project> {
             }
 
             projectProperties.kotlin.watchosArm32?.forEach { targetName, target ->
-                if (targetName.isEmpty()) {
+                if (targetName.isNotEmpty()) {
                     kotlin.watchosArm32(targetName) {
                         target.applyTo(this)
                     }
@@ -75,7 +75,7 @@ internal class ApplePlugin : Plugin<Project> {
             }
 
             projectProperties.kotlin.watchosArm64?.forEach { targetName, target ->
-                if (targetName.isEmpty()) {
+                if (targetName.isNotEmpty()) {
                     kotlin.watchosArm64(targetName) {
                         target.applyTo(this)
                     }
@@ -86,7 +86,7 @@ internal class ApplePlugin : Plugin<Project> {
             }
 
             projectProperties.kotlin.watchosX64?.forEach { targetName, target ->
-                if (targetName.isEmpty()) {
+                if (targetName.isNotEmpty()) {
                     kotlin.watchosX64(targetName) {
                         target.applyTo(this)
                     }
@@ -97,7 +97,7 @@ internal class ApplePlugin : Plugin<Project> {
             }
 
             projectProperties.kotlin.watchosSimulatorArm64?.forEach { targetName, target ->
-                if (targetName.isEmpty()) {
+                if (targetName.isNotEmpty()) {
                     kotlin.watchosSimulatorArm64(targetName) {
                         target.applyTo(this)
                     }
@@ -108,7 +108,7 @@ internal class ApplePlugin : Plugin<Project> {
             }
 
             projectProperties.kotlin.tvosArm64?.forEach { targetName, target ->
-                if (targetName.isEmpty()) {
+                if (targetName.isNotEmpty()) {
                     kotlin.tvosArm64(targetName) {
                         target.applyTo(this)
                     }
@@ -119,7 +119,7 @@ internal class ApplePlugin : Plugin<Project> {
             }
 
             projectProperties.kotlin.tvosX64?.forEach { targetName, target ->
-                if (targetName.isEmpty()) {
+                if (targetName.isNotEmpty()) {
                     kotlin.tvosX64(targetName) {
                         target.applyTo(this)
                     }
@@ -130,7 +130,7 @@ internal class ApplePlugin : Plugin<Project> {
             }
 
             projectProperties.kotlin.tvosSimulatorArm64?.forEach { targetName, target ->
-                if (targetName.isEmpty()) {
+                if (targetName.isNotEmpty()) {
                     kotlin.tvosSimulatorArm64(targetName) {
                         target.applyTo(this)
                     }
@@ -141,7 +141,7 @@ internal class ApplePlugin : Plugin<Project> {
             }
 
             projectProperties.kotlin.macosArm64?.forEach { targetName, target ->
-                if (targetName.isEmpty()) {
+                if (targetName.isNotEmpty()) {
                     kotlin.macosArm64(targetName) {
                         target.applyTo(this)
                     }
@@ -152,7 +152,7 @@ internal class ApplePlugin : Plugin<Project> {
             }
 
             projectProperties.kotlin.macosX64?.forEach { targetName, target ->
-                if (targetName.isEmpty()) {
+                if (targetName.isNotEmpty()) {
                     kotlin.macosX64(targetName) {
                         target.applyTo(this)
                     }

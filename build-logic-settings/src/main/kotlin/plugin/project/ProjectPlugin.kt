@@ -49,17 +49,18 @@ internal class ProjectPlugin : Plugin<Project> {
 
     override fun apply(target: Project) = with(SLF4JProblemReporterContext()) {
         with(target) {
-            projectProperties.group?.let(::setGroup)
-            projectProperties.description?.let(::setDescription)
-            version = settings.libs.versions.let { versions ->
-                val moduleName=qualifiedModuleName
-                println("QUAL $moduleName")
-                version(
-                    versions.version("$moduleName.version.major")?.toInt() ?: 1,
-                    versions.version("$moduleName.version.minor")?.toInt() ?: 0,
-                    versions.version("$moduleName.version.patch")?.toInt() ?: 0,
-                    versions.version("$moduleName.version.preRelease"),
-                )
+            if (projectProperties.kotlin.hasTargets) {
+                projectProperties.group?.let(::setGroup)
+                projectProperties.description?.let(::setDescription)
+                version = settings.libs.versions.let { versions ->
+                    val moduleName = qualifiedModuleName
+                    version(
+                        versions.version("$moduleName.version.major")?.toInt() ?: 1,
+                        versions.version("$moduleName.version.minor")?.toInt() ?: 0,
+                        versions.version("$moduleName.version.patch")?.toInt() ?: 0,
+                        versions.version("$moduleName.version.preRelease"),
+                    )
+                }
             }
 
             plugins.apply(KMPPlugin::class.java)

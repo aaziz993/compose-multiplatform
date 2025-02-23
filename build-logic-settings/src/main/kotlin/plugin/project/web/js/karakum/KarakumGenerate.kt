@@ -26,6 +26,7 @@ internal fun Project.configureKarakumGenerate() =
             tasks.withType<KarakumGenerate> {
 
                 configFile tryAssign task.configFile?.let(::file)
+
                 extensionDirectory tryAssign task.extensionDirectory?.let(layout.projectDirectory::dir)
 
                 doLast {
