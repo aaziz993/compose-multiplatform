@@ -8,6 +8,7 @@ import plugin.project.kotlin.model.language.LanguageSettings
 import plugin.project.kotlin.model.language.SourceSet
 import plugin.project.kotlin.model.language.android.KotlinAndroidTarget
 import plugin.project.kotlin.model.language.jvm.KotlinJvmTarget
+import plugin.project.kotlin.model.language.nat.KotlinNativeTarget
 import plugin.project.kotlin.model.language.web.KotlinJsTarget
 import plugin.project.kotlin.model.language.web.KotlinWasmJsTarget
 
@@ -20,7 +21,18 @@ internal data class Kotlin(
     override val optIns: Set<String>? = null,
     val jvm: LinkedHashMap<String, KotlinJvmTarget>? = null,
     val android: LinkedHashMap<String, KotlinAndroidTarget>? = null,
-    val ios: LinkedHashMap<String, KotlinAndroidTarget>? = null,
+    val iosArm64: LinkedHashMap<String, KotlinNativeTarget>? = null,
+    val iosX64: LinkedHashMap<String, KotlinNativeTarget>? = null,
+    val iosSimulatorArm64: LinkedHashMap<String, KotlinNativeTarget>? = null,
+    val watchosArm32: LinkedHashMap<String, KotlinNativeTarget>? = null,
+    val watchosArm64: LinkedHashMap<String, KotlinNativeTarget>? = null,
+    val watchosX64: LinkedHashMap<String, KotlinNativeTarget>? = null,
+    val watchosSimulatorArm64: LinkedHashMap<String, KotlinNativeTarget>? = null,
+    val tvosArm64: LinkedHashMap<String, KotlinNativeTarget>? = null,
+    val tvosX64: LinkedHashMap<String, KotlinNativeTarget>? = null,
+    val tvosSimulatorArm64: LinkedHashMap<String, KotlinNativeTarget>? = null,
+    val macosArm64: LinkedHashMap<String, KotlinNativeTarget>? = null,
+    val macosX64: LinkedHashMap<String, KotlinNativeTarget>? = null,
     val js: LinkedHashMap<String, KotlinJsTarget>? = null,
     val wasmJs: LinkedHashMap<String, KotlinWasmJsTarget>? = null,
     val targetGroups: LinkedHashMap<String, List<String>>? = null,
@@ -28,8 +40,28 @@ internal data class Kotlin(
     val cocoapods: CocoapodsSettings = CocoapodsSettings(),
 ) : LanguageSettings {
 
+    val hasIosTargets by lazy {
+        (iosArm64 ?: iosX64 ?: iosSimulatorArm64) != null
+    }
+
+    val hasWatchosTargets by lazy {
+        (watchosArm32 ?: watchosArm64 ?: watchosX64 ?: watchosSimulatorArm64) != null
+    }
+
+    val hasTvosTargets by lazy {
+        (tvosArm64 ?: tvosX64 ?: tvosSimulatorArm64) != null
+    }
+
+    val hasMacosTargets by lazy {
+        (macosArm64 ?: macosX64) != null
+    }
+
+    val hasAppleTargets by lazy {
+        hasIosTargets || hasWatchosTargets || hasTvosTargets || hasMacosTargets
+    }
+
     val hasTargets by lazy {
-        (jvm ?: android ?: js ?: wasmJs) == null
+        (jvm ?: android ?: js ?: wasmJs) != null || hasAppleTargets
     }
 
     fun applyTo(builder: LanguageSettingsBuilder) {

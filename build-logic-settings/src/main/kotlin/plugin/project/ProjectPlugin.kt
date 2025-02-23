@@ -12,6 +12,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.jetbrains.amper.gradle.SLF4JProblemReporterContext
 import plugin.project.android.AndroidPlugin
+import plugin.project.apple.ApplePlugin
 import plugin.project.compose.ComposePlugin
 import plugin.project.gradle.apivalidation.ApiValidationPlugin
 import plugin.project.gradle.buildconfig.BuildConfigPlugin
@@ -80,7 +81,7 @@ internal class ProjectPlugin : Plugin<Project> {
             plugins.apply(AndroidPlugin::class.java)
             plugins.apply(JsPlugin::class.java)
             plugins.apply(WasmPlugin::class.java)
-//                plugins.apply(ApplePlugin::class.java)
+            plugins.apply(ApplePlugin::class.java)
         }
 
         // Apply other settings.

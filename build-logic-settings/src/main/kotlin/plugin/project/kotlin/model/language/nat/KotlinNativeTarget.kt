@@ -6,8 +6,9 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 @Serializable
 internal data class KotlinNativeTarget(
-    val binaries: Binaries? = null,
-) {
+    override val binaries: KotlinNativeBinaryContainer? = null,
+    val compilerOptions: KotlinNativeCompilerOptions? = null,
+) : HasBinaries<KotlinNativeBinaryContainer> {
 
     context(Project)
     fun applyTo(target: KotlinNativeTarget) {

@@ -2,8 +2,6 @@ templates:
   - ../template/common.yaml
   - ../template/compose.yaml
 
-application: true
-
 kotlin:
   js:
     '':

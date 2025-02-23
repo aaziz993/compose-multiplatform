@@ -5,20 +5,139 @@
 package plugin.project.apple
 
 import gradle.kotlin
+import gradle.projectProperties
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import plugin.project.kotlin.model.language.nat.KotlinNativeTarget
 
 internal class ApplePlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-//            if (TargetType.APPLE !in projectProperties.kotlin.targets) {
-//                return@with
-//            }
-//
-//            kotlin.iosSimulatorArm64(){
-//
-//            }
+            if (!projectProperties.kotlin.hasAppleTargets) {
+                return@with
+            }
+
+            projectProperties.kotlin.iosArm64?.forEach { targetName, target ->
+                targetName.takeIf(String::isNotEmpty)?.also { targetName ->
+                    kotlin.iosArm64(targetName) {
+                        target.applyTo(this)
+                    }
+                } ?: kotlin.iosArm64 {
+                    target.applyTo(this)
+                }
+            }
+
+            projectProperties.kotlin.iosX64?.forEach { targetName, target ->
+                targetName.takeIf(String::isNotEmpty)?.also { targetName ->
+                    kotlin.iosX64(targetName) {
+                        target.applyTo(this)
+                    }
+                } ?: kotlin.iosX64 {
+                    target.applyTo(this)
+                }
+            }
+
+            projectProperties.kotlin.iosSimulatorArm64?.forEach { targetName, target ->
+                targetName.takeIf(String::isNotEmpty)?.also { targetName ->
+                    kotlin.iosSimulatorArm64(targetName) {
+                        target.applyTo(this)
+                    }
+                } ?: kotlin.iosSimulatorArm64 {
+                    target.applyTo(this)
+                }
+            }
+
+            projectProperties.kotlin.watchosArm32?.forEach { targetName, target ->
+                targetName.takeIf(String::isNotEmpty)?.also { targetName ->
+                    kotlin.watchosArm32(targetName) {
+                        target.applyTo(this)
+                    }
+                } ?: kotlin.watchosArm32 {
+                    target.applyTo(this)
+                }
+            }
+
+            projectProperties.kotlin.watchosArm64?.forEach { targetName, target ->
+                targetName.takeIf(String::isNotEmpty)?.also { targetName ->
+                    kotlin.watchosArm64(targetName) {
+                        target.applyTo(this)
+                    }
+                } ?: kotlin.watchosArm64 {
+                    target.applyTo(this)
+                }
+            }
+
+            projectProperties.kotlin.watchosX64?.forEach { targetName, target ->
+                targetName.takeIf(String::isNotEmpty)?.also { targetName ->
+                    kotlin.watchosX64(targetName) {
+                        target.applyTo(this)
+                    }
+                } ?: kotlin.watchosX64 {
+                    target.applyTo(this)
+                }
+            }
+
+            projectProperties.kotlin.watchosSimulatorArm64?.forEach { targetName, target ->
+                targetName.takeIf(String::isNotEmpty)?.also { targetName ->
+                    kotlin.watchosSimulatorArm64(targetName) {
+                        target.applyTo(this)
+                    }
+                } ?: kotlin.watchosSimulatorArm64 {
+                    target.applyTo(this)
+                }
+            }
+
+            projectProperties.kotlin.tvosArm64?.forEach { targetName, target ->
+                targetName.takeIf(String::isNotEmpty)?.also { targetName ->
+                    kotlin.tvosArm64(targetName) {
+                        target.applyTo(this)
+                    }
+                } ?: kotlin.tvosArm64 {
+                    target.applyTo(this)
+                }
+            }
+
+            projectProperties.kotlin.tvosX64?.forEach { targetName, target ->
+                targetName.takeIf(String::isNotEmpty)?.also { targetName ->
+                    kotlin.tvosX64(targetName) {
+                        target.applyTo(this)
+                    }
+                } ?: kotlin.tvosX64 {
+                    target.applyTo(this)
+                }
+            }
+
+            projectProperties.kotlin.tvosSimulatorArm64?.forEach { targetName, target ->
+                targetName.takeIf(String::isNotEmpty)?.also { targetName ->
+                    kotlin.tvosSimulatorArm64(targetName) {
+                        target.applyTo(this)
+                    }
+                } ?: kotlin.tvosSimulatorArm64 {
+                    target.applyTo(this)
+                }
+            }
+
+            projectProperties.kotlin.macosArm64?.forEach { targetName, target ->
+                targetName.takeIf(String::isNotEmpty)?.also { targetName ->
+                    kotlin.macosArm64(targetName) {
+                        target.applyTo(this)
+                    }
+                } ?: kotlin.macosArm64 {
+                    target.applyTo(this)
+                }
+            }
+
+            projectProperties.kotlin.macosX64?.forEach { targetName, target ->
+                targetName.takeIf(String::isNotEmpty)?.also { targetName ->
+                    kotlin.macosX64(targetName) {
+                        target.applyTo(this)
+                    }
+                } ?: kotlin.macosX64 {
+                    target.applyTo(this)
+                }
+            }
+
 //
 //            plugins.apply(settings.libs.plugins.plugin("apple").id)
 //plugins.apply(settings.libs.plugins.plugin("cocoapods").id)
@@ -28,9 +147,7 @@ internal class ApplePlugin : Plugin<Project> {
 //            extraProperties.set("generateBuildableXcodeproj.skipKotlinFrameworkDependencies", "true")
 //
 //            configureAppleProjectExtension()
-            kotlin.mingwX64{
-                this.isSourcesPublishable=true
-            }
+
         }
     }
 }
