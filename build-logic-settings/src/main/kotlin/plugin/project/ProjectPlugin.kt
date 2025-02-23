@@ -7,6 +7,7 @@ import gradle.projectProperties
 import gradle.settings
 import gradle.version
 import gradle.versions
+import net.pearx.kasechange.toCamelCase
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -50,11 +51,12 @@ internal class ProjectPlugin : Plugin<Project> {
             projectProperties.group?.let(::setGroup)
             projectProperties.description?.let(::setDescription)
             version = settings.libs.versions.let { versions ->
+                val camelCaseName=name.toCamelCase()
                 version(
-                    versions.version("$name.version.major")?.toInt() ?: 1,
-                    versions.version("$name.version.minor")?.toInt() ?: 0,
-                    versions.version("$name.version.patch")?.toInt() ?: 0,
-                    versions.version("$name.version.preRelease"),
+                    versions.version("$camelCaseName.version.major")?.toInt() ?: 1,
+                    versions.version("$camelCaseName.version.minor")?.toInt() ?: 0,
+                    versions.version("$camelCaseName.version.patch")?.toInt() ?: 0,
+                    versions.version("$camelCaseName.version.preRelease"),
                 )
             }
 

@@ -32,36 +32,16 @@ shared-version-major = "1"
 shared-version-minor = "0"
 shared-version-patch = "0"
 shared-version-preRelase = "release" # optional
-# jvm-app
-jvmApp-version-major = "1"
-jvmApp-version-minor = "0"
-jvmApp-version-patch = "0"
-jvmApp-version-preRelase = "release" # optional
-# android-app
-androidApp-version-major = "1"
-androidApp-version-minor = "0"
-androidApp-version-patch = "0"
-androidApp-version-preRelase = "release" # optional
-# ios-app
-iosApp-version-major = "1"
-iosApp-version-minor = "0"
-iosApp-version-patch = "0"
-iosApp-version-preRelase = "release" # optional
-# js-app
-jsApp-version-major = "1"
-jsApp-version-minor = "0"
-jsApp-version-patch = "0"
-jsApp-version-preRelase = "release" # optional
-# wasnJs-app
-wasmJs-version-major = "1"
-wasmJs-version-minor = "0"
-wasmJs-version-patch = "0"
-wasmJs-version-preRelase = "release" # optional
+# compose-app
+composeApp-version-major = "1"
+composeApp-version-minor = "0"
+composeApp-version-patch = "0"
+composeApp-version-preRelase = "release" # optional
 # server-app
-server-version-major = "1"
-server-version-minor = "0"
-server-version-patch = "0"
-server-version-preRelase = "release" # optional
+serverApp-version-major = "1"
+serverApp-version-minor = "0"
+serverApp-version-patch = "0"
+serverApp-version-preRelase = "release" # optional
 ##Gradle
 # intellij
 intellij-platform = "243.23654.166"

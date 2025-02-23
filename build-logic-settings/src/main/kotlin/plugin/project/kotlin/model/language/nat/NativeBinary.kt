@@ -1,6 +1,6 @@
 package plugin.project.kotlin.model.language.nat
 
-import gradle.asModuleName
+import gradle.nativeModuleName
 import gradle.tryAssign
 import gradle.trySet
 import org.gradle.api.Project
@@ -30,7 +30,10 @@ internal interface NativeBinary {
 
     context(Project)
     fun applyTo(binary: NativeBinary) {
-        binary.baseName = baseName ?: "$group.${name.asModuleName()}"
+        val moduleName = path.split(":").drop(1).joinToString("-")
+
+
+        binary.baseName = baseName ?: nativeModuleName
         binary::debuggable trySet debuggable
         binary::optimized trySet optimized
         linkerOpts?.let(binary::linkerOpts)

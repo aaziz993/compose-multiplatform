@@ -1,6 +1,6 @@
 package plugin.project.apple.model
 
-import gradle.asModuleName
+import gradle.nativeModuleName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -9,12 +9,11 @@ internal data class AppleSettings(
     override val teamID: String? = null,
     val iosApps: List<IosAppTarget>? = null,
     val iosFrameworks: List<IosFrameworkTarget>? = null,
-    val cocoapods: CocoapodsSettings = CocoapodsSettings()
 ) : AppleProjectExtension {
 
     context(Project)
     fun applyTo(extension: org.jetbrains.gradle.apple.AppleProjectExtension) {
-        extension.teamID = teamID ?: "$group.${name.asModuleName()}"
+        extension.teamID = teamID ?: nativeModuleName
 
         iosApps?.forEach { iosApp ->
             iosApp.name.takeIf(String::isNotEmpty)?.also { name ->

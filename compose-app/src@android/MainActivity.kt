@@ -5,9 +5,9 @@
 package hello.world
 
 import Screen
-import android.os.Bundle
 import android.app.resources.Res
 import android.app.resources.compose_multiplatform
+import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image

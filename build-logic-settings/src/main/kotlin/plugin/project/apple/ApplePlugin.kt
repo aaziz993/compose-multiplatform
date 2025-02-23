@@ -24,6 +24,7 @@ internal class ApplePlugin : Plugin<Project> {
             }
 
             plugins.apply(settings.libs.plugins.plugin("apple").id)
+            plugins.apply(settings.libs.plugins.plugin("cocoapods").id)
 
             extraProperties.set("generateBuildableXcodeproj.skipKotlinFrameworkDependencies", "true")
 
@@ -149,9 +150,7 @@ internal class ApplePlugin : Plugin<Project> {
                 }
             }
 
-//            plugins.apply(settings.libs.plugins.plugin("cocoapods").id)
-
-//            configureCocoapodsExtension()
+            configureCocoapodsExtension()
         }
     }
 }

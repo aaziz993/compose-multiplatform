@@ -42,7 +42,6 @@ import plugin.project.model.Properties
 private const val PROPERTIES = "properties"
 
 internal var Project.projectProperties: Properties
-
     get() = extraProperties[PROPERTIES] as Properties
     set(value) {
         extraProperties[PROPERTIES] = value
@@ -158,9 +157,9 @@ internal val Project.powerAssert: PowerAssertGradleExtension get() = the()
 internal fun Project.powerAssert(configure: PowerAssertGradleExtension.() -> Unit) =
     extensions.configure(configure)
 
-internal val Project.cocoapods: CocoapodsExtension get() = the()
+internal val KotlinMultiplatformExtension.cocoapods: CocoapodsExtension get() = the()
 
-internal fun Project.cocoapods(configure: CocoapodsExtension.() -> Unit) =
+internal fun KotlinMultiplatformExtension.cocoapods(configure: CocoapodsExtension.() -> Unit) =
     extensions.configure(configure)
 
 internal val Project.apple: AppleProjectExtension get() = the()
@@ -198,16 +197,27 @@ internal val Project.compose: ComposeExtension get() = the()
 internal fun Project.compose(configure: ComposeExtension.() -> Unit) =
     extensions.configure(configure)
 
-internal val Project.resources: ResourcesExtension get() = the()
+internal val ComposeExtension.resources: ResourcesExtension get() = the()
 
-internal fun Project.resources(configure: ResourcesExtension.() -> Unit) =
+internal fun ComposeExtension.resources(configure: ResourcesExtension.() -> Unit) =
     extensions.configure(configure)
 
-internal val Project.desktop: DesktopExtension get() = the()
+internal val ComposeExtension.desktop: DesktopExtension get() = the()
 
-internal fun Project.desktop(configure: DesktopExtension.() -> Unit) =
+internal fun ComposeExtension.desktop(configure: DesktopExtension.() -> Unit) =
     extensions.configure(configure)
 
+/**
+ * Create native module name from project group and path.
+ */
+internal val Project.nativeModuleName
+    get() = path.split(":").drop(1).joinToString("_")
+
+/**
+ * Create android namespace from project group and path.
+ */
+internal val Project.androidNamespace
+    get() = "$group.${path.split(":").drop(2).joinToString(".")}"
 
 internal fun Project.execute(cmd: String): String = providers.exec {
     commandLine(cmd.split(" "))

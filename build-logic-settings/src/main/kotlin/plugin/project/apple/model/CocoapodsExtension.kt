@@ -1,5 +1,6 @@
 package plugin.project.apple.model
 
+import gradle.nativeModuleName
 import gradle.trySet
 import java.net.URI
 import kotlinx.serialization.Serializable
@@ -104,7 +105,8 @@ internal interface CocoapodsExtension {
         extension::authors trySet authors
         extension::podfile trySet podfile?.let(::file)
         needPodspec?.takeIf { it }?.run { extension.noPodspec() }
-        extension::name trySet name
+
+        extension.name = name ?: nativeModuleName
         extension::license trySet license
         extension::summary trySet summary
         extension::homepage trySet homepage

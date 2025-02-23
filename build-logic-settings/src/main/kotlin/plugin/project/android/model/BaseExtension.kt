@@ -1,7 +1,7 @@
 package plugin.project.android.model
 
 import com.android.build.gradle.BaseExtension
-import gradle.asModuleName
+import gradle.androidNamespace
 import gradle.maybeNamed
 import gradle.trySet
 import org.gradle.api.Project
@@ -193,6 +193,6 @@ internal interface BaseExtension {
             }
         }
 
-        extension.namespace = namespace ?: "$group.${name.asModuleName()}"
+        extension.namespace = namespace ?: androidNamespace
     }
 }

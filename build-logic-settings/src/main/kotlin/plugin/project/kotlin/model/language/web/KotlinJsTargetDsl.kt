@@ -1,6 +1,6 @@
 package plugin.project.kotlin.model.language.web
 
-import gradle.asModuleName
+import gradle.nativeModuleName
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalMainFunctionArgumentsDsl
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
@@ -30,7 +30,7 @@ internal interface KotlinJsTargetDsl : KotlinTarget, KotlinTargetWithNodeJsDsl, 
     fun applyTo(target: KotlinJsTargetDsl) {
         super.applyTo(target)
 
-        target.moduleName = moduleName ?: "$group.${name.asModuleName()}"
+        target.moduleName = moduleName ?: nativeModuleName
 
         nodejs?.let { nodejs ->
             target.nodejs {

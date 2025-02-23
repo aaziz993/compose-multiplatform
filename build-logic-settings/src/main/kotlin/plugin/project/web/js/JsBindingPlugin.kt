@@ -31,6 +31,8 @@ internal class JsPlugin : Plugin<Project> {
 
             configureKarakumGenerate()
 
+
+
             kotlin.sourceSets.matching { sourceSet -> sourceSet.name.startsWith("js") }.all {
                 val karakumGeneratedDir = projectDir.resolve("src/jsMain/generated")
 
