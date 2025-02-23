@@ -1,4 +1,4 @@
-package plugin.project.compose.desktop.model
+package plugin.project.compose.desktop.model.macos
 
 import kotlinx.serialization.Serializable
 

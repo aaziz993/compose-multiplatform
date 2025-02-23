@@ -9,16 +9,11 @@ import gradle.plugin
 import gradle.plugins
 import gradle.projectProperties
 import gradle.settings
-import gradle.tryAssign
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.provideDelegate
-import org.gradle.kotlin.dsl.withType
-import org.jetbrains.dokka.gradle.DokkaMultiModuleTask
-import org.jetbrains.dokka.gradle.internal.InternalDokkaGradlePluginApi
-import plugin.project.gradle.dokka.model.DokkaMultiModuleFileLayout
 
 internal class DokkaPlugin : Plugin<Project> {
 
