@@ -205,6 +205,7 @@ dependencies {
     implementation(libs.plugins.sonarqube.toDep())
     // an API documentation engine for Kotlin.
     implementation(libs.plugins.dokka.toDep())
+    implementation(libs.dokka.versioning)
     dokkaPlugin(libs.dokka.versioning)
     // allows dumping binary API of a JVM part of a Kotlin library that is public in the sense of Kotlin visibilities and ensures that the public binary API wasn't changed in a way that makes this change binary incompatible.
     implementation(libs.plugins.binary.compatibility.validator.toDep())
