@@ -1,6 +1,11 @@
 package plugin.project.web.js.karakum
 
+import gradle.id
+import gradle.libs
+import gradle.plugin
+import gradle.plugins
 import gradle.projectProperties
+import gradle.settings
 import gradle.tryAssign
 import io.github.sgrishchenko.karakum.gradle.plugin.KarakumPlugin
 import io.github.sgrishchenko.karakum.gradle.plugin.tasks.KarakumGenerate
@@ -17,7 +22,7 @@ internal val JS_TYPE_IMPORTS =
     )
 
 internal fun Project.configureKarakumGenerate() =
-    plugins.withType<KarakumPlugin> {
+    pluginManager.withPlugin(settings.libs.plugins.plugin("karakum").id) {
        projectProperties.settings.web.karakum.task.let { task ->
             tasks.withType<KarakumGenerate> {
 

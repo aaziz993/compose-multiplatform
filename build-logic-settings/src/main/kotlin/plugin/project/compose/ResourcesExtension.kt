@@ -2,9 +2,14 @@
 
 package plugin.project.compose
 
+import gradle.id
+import gradle.libs
+import gradle.plugin
+import gradle.plugins
 import gradle.all
 import gradle.kotlin
 import gradle.projectProperties
+import gradle.settings
 import gradle.trySet
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -15,9 +20,9 @@ import org.jetbrains.compose.resources.ResourcesExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 
 internal fun Project.configureResourcesExtension() =
-    plugins.withType<ComposePlugin> {
+    pluginManager.withPlugin(settings.libs.plugins.plugin("compose.multiplatform").id) {
         extensions.configure<ComposeExtension> {
-           projectProperties.compose.resources.let { resources ->
+            projectProperties.compose.resources.let { resources ->
                 extensions.configure<ResourcesExtension> {
                     ::publicResClass trySet resources.publicResClass
                     ::packageOfResClass trySet resources.packageOfResClass

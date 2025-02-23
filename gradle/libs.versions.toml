@@ -22,6 +22,46 @@ cmpLib-version-major = "1"
 cmpLib-version-minor = "0"
 cmpLib-version-patch = "0"
 cmpLib-version-preRelase = "release" # optional
+# compiler
+compiler-version-major = "1"
+compiler-version-minor = "0"
+compiler-version-patch = "0"
+compiler-version-preRelase = "release" # optional
+# shared
+shared-version-major = "1"
+shared-version-minor = "0"
+shared-version-patch = "0"
+shared-version-preRelase = "release" # optional
+# jvm-app
+jvmApp-version-major = "1"
+jvmApp-version-minor = "0"
+jvmApp-version-patch = "0"
+jvmApp-version-preRelase = "release" # optional
+# android-app
+androidApp-version-major = "1"
+androidApp-version-minor = "0"
+androidApp-version-patch = "0"
+androidApp-version-preRelase = "release" # optional
+# ios-app
+iosApp-version-major = "1"
+iosApp-version-minor = "0"
+iosApp-version-patch = "0"
+iosApp-version-preRelase = "release" # optional
+# js-app
+jsApp-version-major = "1"
+jsApp-version-minor = "0"
+jsApp-version-patch = "0"
+jsApp-version-preRelase = "release" # optional
+# wasnJs-app
+wasmJs-version-major = "1"
+wasmJs-version-minor = "0"
+wasmJs-version-patch = "0"
+wasmJs-version-preRelase = "release" # optional
+# server-app
+server-version-major = "1"
+server-version-minor = "0"
+server-version-patch = "0"
+server-version-preRelase = "release" # optional
 ##Gradle
 # intellij
 intellij-platform = "243.23654.166"
@@ -285,6 +325,7 @@ cocoapods-version = "1.0"
 desktop-package-version = "1.0.0"
 
 ##Web
+gradle-node-plugin = "7.1.0"
 kotlin-wrappers-catalog = "2025.2.6"
 kotlinx-html = "0.12.0"
 kotlinx-browser = "0.3.0"
@@ -1353,6 +1394,7 @@ apple = { id = "org.jetbrains.gradle.apple.applePlugin", version.ref = "apple" }
 cocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
 
 ##Web
+gradle-node-plugin = { id = "com.github.node-gradle.node", version.ref = "gradle-node-plugin" }
 js-plain-objects = { id = "org.jetbrains.kotlin.plugin.js-plain-objects", version.ref = "js-plain-objects" }
 seskar = { id = "io.github.turansky.seskar", version.ref = "seskar" }
 # converter of TypeScript declaration files to Kotlin declarations.

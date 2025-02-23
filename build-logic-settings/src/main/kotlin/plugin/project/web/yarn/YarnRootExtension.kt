@@ -9,7 +9,7 @@ import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnLockMismatchReport
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnPlugin
 
 internal fun Project.configureYarnRootExtension() =
-    plugins.withType<YarnPlugin> {
+    pluginManager.withPlugin(settings.libs.plugins.plugin().id) {
        projectProperties.settings.web.yarn.let { yarn ->
             yarn {
                 ::lockFileName trySet yarn.lockFileName

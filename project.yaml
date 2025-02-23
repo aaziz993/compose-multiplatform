@@ -89,11 +89,11 @@ modules:
   - kmp-lib
   - compiler
   - shared
+  - jvm-app
   - android-app
   - ios-app
-  - jvm-app
   - js-app
-  - wasm-app
+  - wasmJs-app
   - server-app
 
 
