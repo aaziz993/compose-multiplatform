@@ -1,16 +1,19 @@
 package plugin.project.web.yarn
 
+import gradle.id
+import gradle.libs
+import gradle.plugin
+import gradle.plugins
 import gradle.projectProperties
+import gradle.settings
 import gradle.trySet
 import gradle.yarn
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnLockMismatchReport
-import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnPlugin
 
 internal fun Project.configureYarnRootExtension() =
-    pluginManager.withPlugin(settings.libs.plugins.plugin().id) {
-       projectProperties.settings.web.yarn.let { yarn ->
+    pluginManager.withPlugin(settings.libs.plugins.plugin("gradle.node.plugin").id) {
+        projectProperties.settings.web.yarn.let { yarn ->
             yarn {
                 ::lockFileName trySet yarn.lockFileName
                 ::lockFileDirectory trySet yarn.lockFileDirectory?.let(::file)

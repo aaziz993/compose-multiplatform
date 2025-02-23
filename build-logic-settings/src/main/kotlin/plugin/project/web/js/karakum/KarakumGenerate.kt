@@ -7,7 +7,6 @@ import gradle.plugins
 import gradle.projectProperties
 import gradle.settings
 import gradle.tryAssign
-import io.github.sgrishchenko.karakum.gradle.plugin.KarakumPlugin
 import io.github.sgrishchenko.karakum.gradle.plugin.tasks.KarakumGenerate
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType

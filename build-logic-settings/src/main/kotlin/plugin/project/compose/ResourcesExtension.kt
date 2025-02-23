@@ -2,20 +2,18 @@
 
 package plugin.project.compose
 
+import gradle.all
 import gradle.id
+import gradle.kotlin
 import gradle.libs
 import gradle.plugin
 import gradle.plugins
-import gradle.all
-import gradle.kotlin
 import gradle.projectProperties
 import gradle.settings
 import gradle.trySet
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.withType
 import org.jetbrains.compose.ComposeExtension
-import org.jetbrains.compose.ComposePlugin
 import org.jetbrains.compose.resources.ResourcesExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 

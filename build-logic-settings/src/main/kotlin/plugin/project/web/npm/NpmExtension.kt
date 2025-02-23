@@ -2,15 +2,13 @@ package plugin.project.web.npm
 
 import gradle.id
 import gradle.libs
+import gradle.npm
 import gradle.plugin
 import gradle.plugins
-import gradle.npm
 import gradle.projectProperties
 import gradle.settings
 import gradle.tryAssign
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.withType
-import org.jetbrains.kotlin.gradle.targets.js.npm.NpmResolverPlugin
 
 internal fun Project.configureNpmExtension() =
     pluginManager.withPlugin(settings.libs.plugins.plugin("gradle.node.plugin").id) {
