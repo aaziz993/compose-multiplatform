@@ -193,6 +193,6 @@ internal interface BaseExtension {
             }
         }
 
-        extension.namespace = namespace ?: name.asModuleName()
+        extension.namespace = namespace ?: "$group.${name.asModuleName()}"
     }
 }

@@ -34,6 +34,6 @@ internal data class KotlinNativeCompilerOptions(
     context(Project)
     fun applyTo(options: KotlinNativeCompilerOptions) {
         super.applyTo(options)
-        options.moduleName.assign(moduleName ?: name.asModuleName())
+        options.moduleName.assign(moduleName ?: "$group.${name.asModuleName()}")
     }
 }

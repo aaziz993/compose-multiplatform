@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 internal data class SqlDelightSettings(
     override val databases: List<SqlDelightDatabase>? = null,
     override val linkSqlite: Boolean? = null,
-    val enabled: Boolean = true
+    val enabled: Boolean = false
 ) : SqlDelightExtension

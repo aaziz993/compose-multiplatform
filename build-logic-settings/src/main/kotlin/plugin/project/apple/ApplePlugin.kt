@@ -149,9 +149,9 @@ internal class ApplePlugin : Plugin<Project> {
                 }
             }
 
-            plugins.apply(settings.libs.plugins.plugin("cocoapods").id)
+//            plugins.apply(settings.libs.plugins.plugin("cocoapods").id)
 
-            configureCocoapodsExtension()
+//            configureCocoapodsExtension()
         }
     }
 }

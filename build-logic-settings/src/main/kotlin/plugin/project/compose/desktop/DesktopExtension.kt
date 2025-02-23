@@ -1,5 +1,6 @@
 package plugin.project.compose.desktop
 
+import gradle.asModuleName
 import gradle.projectProperties
 import gradle.trySet
 import org.gradle.api.Project
@@ -12,7 +13,7 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 internal fun Project.configureDesktopExtension() =
     extensions.configure<ComposeExtension> {
-       projectProperties.compose.desktop.let { desktop ->
+        projectProperties.compose.desktop.let { desktop ->
             extensions.configure<DesktopExtension> {
                 application {
                     jvmArgs(
@@ -41,7 +42,7 @@ internal fun Project.configureDesktopExtension() =
                             macOS {
                                 iconFile = file(macOs.iconFile)
 
-                                bundleID = macOs.bundleId ?: "$group.$name"
+                                bundleID = macOs.bundleId ?: "$group.${name.asModuleName()}"
                             }
                         }
                     }

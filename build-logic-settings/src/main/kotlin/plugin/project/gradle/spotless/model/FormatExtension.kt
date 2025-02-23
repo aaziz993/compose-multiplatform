@@ -97,7 +97,7 @@ internal interface FormatExtension {
         }
         toggleOffOnRegex?.let(extension::toggleOffOnRegex)
         toggleOffOn?.let { (off, on) -> extension.toggleOffOn(off, on) }
-        toggleIfOffOn?.takeIf { it }.run { extension.toggleOffOn() }
-        toggleOffOnDisable?.takeIf { it }.run { extension.toggleOffOnDisable() }
+        toggleIfOffOn?.takeIf { it }?.run { extension.toggleOffOn() }
+        toggleOffOnDisable?.takeIf { it }?.run { extension.toggleOffOnDisable() }
     }
 }

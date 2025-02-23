@@ -65,12 +65,10 @@ internal data class FormatSettings(
     override fun applyTo(extension: com.diffplug.gradle.spotless.FormatExtension) {
         super<FormatExtension>.applyTo(extension)
 
-        if (extension is com.diffplug.gradle.spotless.JavaExtension) {
-            super<JavaExtension>.applyTo(extension)
-        }
+        when (extension) {
+            is com.diffplug.gradle.spotless.JavaExtension -> super<JavaExtension>.applyTo(extension)
 
-        if (extension is KotlinExtension) {
-            super<BaseKotlinExtension>.applyTo(extension)
+            is KotlinExtension -> super<BaseKotlinExtension>.applyTo(extension)
         }
     }
 }

@@ -41,31 +41,8 @@ internal class DokkaPlugin : Plugin<Project> {
                     }
                 }
 
-                if (project == rootProject) {
-                    configureDokkaMultiModuleTask()
-                }
-                else {
-                    configureDokkaModuleTask()
-                }
+                dokka.task?.applyTo()
             }
         }
     }
-
-    @OptIn(InternalDokkaGradlePluginApi::class)
-    private fun Project.configureDokkaModuleTask() =
-        projectProperties.plugins.dokka.task?.let { task ->
-            tasks.withType<org.jetbrains.dokka.gradle.DokkaTask> {
-                task.applyTo(this)
-            }
-        }
-
-    @OptIn(InternalDokkaGradlePluginApi::class)
-    private fun Project.configureDokkaMultiModuleTask() =
-        projectProperties.plugins.dokka.task?.let { task ->
-            tasks.withType<DokkaMultiModuleTask> {
-                task.applyTo(this)
-                task.includes?.let(includes::setFrom)
-                fileLayout tryAssign task.fileLayout?.let(DokkaMultiModuleFileLayout::toDokkaMultiModuleFileLayout)
-            }
-        }
 }

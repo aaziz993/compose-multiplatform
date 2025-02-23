@@ -21,6 +21,12 @@ internal class JsPlugin : Plugin<Project> {
                 }
             } ?: return
 
+//            val karakumGeneratedDir = projectDir.resolve("src/jsMain/generated")
+//
+//            if (karakumGeneratedDir.exists()) {
+//                kotlin.srcDir(karakumGeneratedDir)
+//            }
+
             configureJsTestTasks<KotlinJsTargetDsl>()
         }
     }

@@ -32,12 +32,12 @@ internal data class KotlinJsTest(
         test::debug trySet debug
         nodeJsArgs?.let(test.nodeJsArgs::addAll)
 
-        useMocha?.takeIf { it }.run { test.useMocha() }
+        useMocha?.takeIf { it }?.run { test.useMocha() }
         if (mocha != null) {
             test.useMocha(mocha::applyTo)
         }
 
-        useKarma?.takeIf { it }.run { test.useKarma() }
+        useKarma?.takeIf { it }?.run { test.useKarma() }
         if (karma != null) {
             test.useKarma {
                 karma.applyTo(this)

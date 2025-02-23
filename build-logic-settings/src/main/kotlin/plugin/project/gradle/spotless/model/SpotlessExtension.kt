@@ -47,7 +47,18 @@ internal interface SpotlessExtension {
 
     context(Project)
     fun applyTo(extension: SpotlessExtension) {
-        val formats = mapOf(
+        lineEndings?.let(extension::setLineEndings)
+        encoding?.let(extension::setEncoding)
+        ratchetFrom?.let(extension::setRatchetFrom)
+        enforceCheck?.let(extension::setEnforceCheck)
+
+        // Applicable only in root project.
+        if (project == rootProject) {
+            predeclareDeps?.takeIf { it }?.run { extension.predeclareDeps() }
+            predeclareDepsFromBuildscript?.takeIf { it }?.run { extension.predeclareDepsFromBuildscript() }
+        }
+
+        val defaultFormats = mapOf(
             JavaExtension.NAME to FormatSettings(
                 target = listOf("**/*.java"),
                 trimTrailingWhitespace = true,
@@ -146,20 +157,8 @@ internal interface SpotlessExtension {
             )
         }
 
-
-        lineEndings?.let(extension::setLineEndings)
-        encoding?.let(extension::setEncoding)
-        ratchetFrom?.let(extension::setRatchetFrom)
-        enforceCheck?.let(extension::setEnforceCheck)
-
-        // Applicable only in root project.
-//        if (project == project.rootProject) {
-//            predeclareDeps?.takeIf { it }.run { extension.predeclareDeps() }
-//            predeclareDepsFromBuildscript?.takeIf { it }.run { extension.predeclareDepsFromBuildscript() }
-//        }
-
         // Format files
-        formats.ifEmpty { null }?.forEach { (name, settings) ->
+        (formats ?: defaultFormats).ifEmpty { null }?.forEach { (name, settings) ->
             extension.format(name, settings::applyTo)
         }
 

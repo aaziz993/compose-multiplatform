@@ -5,7 +5,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal data class SpotlessSettings(
-    val enabled: Boolean = true,
     override val lineEndings: LineEnding? = null,
     override val encoding: String? = null,
     override val ratchetFrom: String? = null,
@@ -13,5 +12,6 @@ internal data class SpotlessSettings(
     override val predeclareDepsFromBuildscript: Boolean? = null,
     override val predeclareDeps: Boolean? = null,
     override val formats: Map<String, FormatSettings>? = null,
-    override val kotlinGradle: KotlinGradleExtension? = null
+    override val kotlinGradle: KotlinGradleExtension? = null,
+    val enabled: Boolean = true
 ) : SpotlessExtension

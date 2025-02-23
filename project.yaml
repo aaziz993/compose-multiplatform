@@ -53,6 +53,11 @@ plugins:
     enabled: true
     sourceSets: [ Module.md ]
     task:
+      moduleName: Compose Multiplatform
+      pluginConfiguration:
+
+
+
 
 dependencyResolutionManagement:
   repositories:

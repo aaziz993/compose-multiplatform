@@ -30,7 +30,7 @@ internal interface NativeBinary {
 
     context(Project)
     fun applyTo(binary: NativeBinary) {
-        binary.baseName = baseName ?: name.asModuleName()
+        binary.baseName = baseName ?: "$group.${name.asModuleName()}"
         binary::debuggable trySet debuggable
         binary::optimized trySet optimized
         linkerOpts?.let(binary::linkerOpts)

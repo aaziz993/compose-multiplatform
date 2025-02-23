@@ -1,6 +1,8 @@
 package plugin.project.gradle.dokka.model
 
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
 
 @Serializable
 internal data class DokkaModuleTask(
@@ -40,7 +42,22 @@ internal data class DokkaModuleTask(
      * Useful stuff in another package.
      * ```
      */
-    val includes: List<String>? = null,
+    override val includes: List<String>? = null,
 
-    val fileLayout: DokkaMultiModuleFileLayout? = null,
-) : DokkaTask
+    override val fileLayout: DokkaMultiModuleFileLayout? = null,
+) : DokkaTask, DokkaMultiModuleTask {
+
+    context(Project)
+    fun applyTo() {
+        if (project == rootProject) {
+            tasks.withType<org.jetbrains.dokka.gradle.DokkaMultiModuleTask> {
+                super<DokkaMultiModuleTask>.applyTo(this)
+            }
+        }
+        else {
+            tasks.withType<org.jetbrains.dokka.gradle.DokkaTask> {
+                super<DokkaTask>.applyTo(this)
+            }
+        }
+    }
+}
