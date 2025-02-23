@@ -218,7 +218,7 @@ internal val Project.qualifiedModuleName
  * Create native module name from project group and path.
  */
 internal val Project.nativeModuleName
-    get() = path.split(":").drop(1).joinToString("_")
+    get() = path.split(":").drop(1).joinToString("-")
 
 /**
  * Create android namespace from project group and path.
