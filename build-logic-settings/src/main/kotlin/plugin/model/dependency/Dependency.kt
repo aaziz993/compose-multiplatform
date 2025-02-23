@@ -7,6 +7,7 @@ import gradle.compose
 import gradle.isUrl
 import gradle.libraries
 import gradle.library
+import gradle.libraryAsDependency
 import gradle.libs
 import gradle.module
 import gradle.settings
@@ -26,7 +27,7 @@ internal data class Dependency(
 
     context(Settings)
     internal fun resolve(): Any = resolve(layout.rootDirectory) { catalogName, libraryName ->
-        allLibs[catalogName]?.libraries?.library(libraryName)?.module
+        allLibs[catalogName]?.libraries?.library(libraryName)?.libraryAsDependency
             ?: error("Can't access Version catalog: $catalogName")
     }
 
@@ -35,15 +36,15 @@ internal data class Dependency(
 
     context(Project)
     internal fun resolve(): Any = resolve(layout.projectDirectory) { catalogName, libraryName ->
-        settings.allLibs[catalogName]?.libraries?.library(libraryName)?.module
+        settings.allLibs[catalogName]?.libraries?.library(libraryName)?.libraryAsDependency
             ?: error("Can't access Version catalog: $catalogName")
     }
 
     context(Project)
-    internal fun applyTo(kotlinDependencyHandler: KotlinDependencyHandler): Any =
+    internal fun applyTo(kotlinDependencyHandler: KotlinDependencyHandler): Unit =
         kotlinDependencyHandler.depFunction(resolve())
 
-    private fun resolve(directory: Directory, library: (catalogName: String, libraryName: String) -> Any): Any =
+    private fun resolve(directory: Directory, library: (catalogName: String, libraryName: String) -> String): Any =
         when {
             notation.startsWith("$") ->
                 library(

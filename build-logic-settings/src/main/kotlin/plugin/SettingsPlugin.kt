@@ -97,9 +97,14 @@ public class SettingsPlugin : Plugin<Settings> {
                     addDependenciesRepositories()
                 }
 
+                val libsFile = layout.settingsDirectory.file("gradle/libs.versions.toml").asFile
+                allLibs = if (dependencyResolutionManagement.versionCatalogs?.none { it.name == "libs" } != false && libsFile.exists())
+                    mapOf("libs" to Toml.parse(libsFile.readText()))
+                else emptyMap()
+
                 dependencyResolutionManagement.versionCatalogs?.let { versionCatalogs ->
                     versionCatalogs {
-                        val externalLibs = versionCatalogs.associate { (catalogName, dependency) ->
+                        allLibs += versionCatalogs.associate { (catalogName, dependency) ->
                             var notation = dependency.resolve()
 
                             create(catalogName) {
@@ -140,13 +145,6 @@ public class SettingsPlugin : Plugin<Settings> {
                                     }
                             }
                         }
-
-                        val libsFile = layout.settingsDirectory.file("gradle/libs.versions.toml").asFile
-                        val defaultLibs = if (!allLibs.containsKey("libs") && libsFile.exists())
-                            mapOf("libs" to Toml.parse(libsFile.readText()))
-                        else emptyMap()
-
-                        allLibs = externalLibs + defaultLibs
                     }
                 }
             }

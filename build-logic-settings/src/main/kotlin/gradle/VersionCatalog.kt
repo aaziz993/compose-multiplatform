@@ -2,13 +2,7 @@
 
 package gradle
 
-import org.gradle.accessors.dm.LibrariesForLibs
-import org.gradle.api.Project
-import org.gradle.api.artifacts.VersionCatalog
-import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.api.initialization.Settings
-import org.gradle.kotlin.dsl.getByType
-import org.gradle.kotlin.dsl.the
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import org.tomlj.TomlParseResult
 import org.tomlj.TomlTable
