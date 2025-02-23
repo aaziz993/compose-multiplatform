@@ -1,7 +1,6 @@
 package plugin.project.kotlin.model.language.web
 
 import gradle.asModuleName
-import gradle.trySet
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalMainFunctionArgumentsDsl
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl

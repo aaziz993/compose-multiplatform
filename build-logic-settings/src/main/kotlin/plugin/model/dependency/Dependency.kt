@@ -3,20 +3,14 @@
 package plugin.model.dependency
 
 import gradle.allLibs
-import gradle.compose
 import gradle.isUrl
-import gradle.libraries
-import gradle.library
 import gradle.libraryAsDependency
-import gradle.libs
-import gradle.module
 import gradle.settings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.file.Directory
 import org.gradle.api.initialization.Settings
 import org.gradle.api.internal.tasks.JvmConstants
-import org.gradle.kotlin.dsl.the
 import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
 
 @Serializable(with = DependencySerializer::class)

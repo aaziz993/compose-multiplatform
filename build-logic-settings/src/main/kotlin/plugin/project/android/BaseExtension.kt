@@ -1,14 +1,5 @@
 package plugin.project.android
 
-import com.android.build.api.dsl.CommonExtension
-import com.android.build.gradle.BaseExtension
-import gradle.libs
-import org.gradle.api.JavaVersion
-import org.gradle.api.Project
-import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.get
-
 //internal fun Project.configureBaseExtension() = extensions.configure<BaseExtension> {
 //    namespace = "$group.${project.name.replace("[-_]".toRegex(), ".")}"
 //

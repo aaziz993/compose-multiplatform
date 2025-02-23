@@ -1,7 +1,6 @@
 package plugin.project.kotlin.sqldelight.model
 
 import app.cash.sqldelight.gradle.SqlDelightDatabase
-import gradle.settings
 import gradle.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

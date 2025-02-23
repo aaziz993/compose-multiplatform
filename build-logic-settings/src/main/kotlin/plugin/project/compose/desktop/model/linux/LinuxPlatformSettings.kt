@@ -4,8 +4,8 @@ import gradle.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.compose.desktop.application.dsl.LinuxPlatformSettings
-import plugin.project.compose.desktop.model.FileAssociation
 import plugin.project.compose.desktop.model.AbstractPlatformSettings
+import plugin.project.compose.desktop.model.FileAssociation
 
 @Serializable
 internal data class LinuxPlatformSettings(
