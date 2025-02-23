@@ -67,7 +67,7 @@ dependencyResolutionManagement:
 
   versionCatalogs:
     - name: kotlinWrappers
-      from: org.jetbrains.kotlin-wrappers:kotlin-wrappers-catalog:2025.2.6
+      from: $libs.kotlin.wrappers.catalog
 
 modules:
   - cmp-lib

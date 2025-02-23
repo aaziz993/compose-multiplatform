@@ -11,5 +11,6 @@ internal data class KotlinJsTarget(
     override val useEsModules: Boolean? = null,
     override val passAsArgumentToMainFunction: String? = null,
     override val generateTypeScriptDefinitions: Boolean? = null,
-    override val compilerOptions: KotlinJsCompilerOptions? = null
+    override val compilerOptions: KotlinJsCompilerOptions? = null,
+    override val binaries: KotlinJsBinaryContainer? = null,
 ) : KotlinJsTargetDsl

@@ -1,13 +1,15 @@
 package plugin.project.kotlin.model.language.web
 
+import gradle.asModuleName
 import gradle.trySet
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalMainFunctionArgumentsDsl
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
+import plugin.project.kotlin.model.language.HasBinaries
 import plugin.project.kotlin.model.language.HasConfigurableKotlinCompilerOptions
 import plugin.project.kotlin.model.language.KotlinTarget
 
-internal interface KotlinJsTargetDsl : KotlinTarget, KotlinTargetWithNodeJsDsl, HasConfigurableKotlinCompilerOptions<KotlinJsCompilerOptions> {
+internal interface KotlinJsTargetDsl : KotlinTarget, KotlinTargetWithNodeJsDsl, HasBinaries<KotlinJsBinaryContainer>, HasConfigurableKotlinCompilerOptions<KotlinJsCompilerOptions> {
 
     val moduleName: String?
 
@@ -35,7 +37,7 @@ internal interface KotlinJsTargetDsl : KotlinTarget, KotlinTargetWithNodeJsDsl, 
             }
         }
 
-        target::moduleName trySet moduleName
+        target.moduleName = moduleName ?: name.asModuleName()
 
         browser?.let { browser ->
             target.browser {
@@ -47,5 +49,10 @@ internal interface KotlinJsTargetDsl : KotlinTarget, KotlinTargetWithNodeJsDsl, 
         useEsModules?.takeIf { it }?.run { target.useEsModules() }
         passAsArgumentToMainFunction?.let(target::passAsArgumentToMainFunction)
         generateTypeScriptDefinitions?.takeIf { it }?.let { target.generateTypeScriptDefinitions() }
+
+        binaries?.let { binaries ->
+            binaries.library?.takeIf { it }?.run { target.binaries.library() }
+            binaries.executable?.takeIf { it }?.run { target.binaries.executable() }
+        }
     }
 }

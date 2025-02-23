@@ -11,6 +11,7 @@ import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.jetbrains.amper.gradle.SLF4JProblemReporterContext
+import plugin.project.android.AndroidPlugin
 import plugin.project.compose.ComposePlugin
 import plugin.project.gradle.apivalidation.ApiValidationPlugin
 import plugin.project.gradle.buildconfig.BuildConfigPlugin
@@ -48,10 +49,10 @@ internal class ProjectPlugin : Plugin<Project> {
             projectProperties.description?.let(::setDescription)
             version = settings.libs.versions.let { versions ->
                 version(
-                    versions.version("$name-version-major")?.toInt() ?: 1,
-                    versions.version("$name-version-minor")?.toInt() ?: 0,
-                    versions.version("$name-version-patch")?.toInt() ?: 0,
-                    versions.version("$name-version-preRelease"),
+                    versions.version("$name.version.major")?.toInt() ?: 1,
+                    versions.version("$name.version.minor")?.toInt() ?: 0,
+                    versions.version("$name.version.patch")?.toInt() ?: 0,
+                    versions.version("$name.version.preRelease"),
                 )
             }
 
@@ -76,7 +77,7 @@ internal class ProjectPlugin : Plugin<Project> {
             plugins.apply(PowerAssertPlugin::class.java)
             plugins.apply(ComposePlugin::class.java)
             plugins.apply(JavaPlugin::class.java)
-//                plugins.apply(AndroidPlugin::class.java)
+            plugins.apply(AndroidPlugin::class.java)
             plugins.apply(JsPlugin::class.java)
             plugins.apply(WasmPlugin::class.java)
 //                plugins.apply(ApplePlugin::class.java)

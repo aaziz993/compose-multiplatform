@@ -285,6 +285,7 @@ cocoapods-version = "1.0"
 desktop-package-version = "1.0.0"
 
 ##Web
+kotlin-wrappers-catalog = "2025.2.6"
 kotlinx-html = "0.12.0"
 kotlinx-browser = "0.3.0"
 kotlin-wrappers = "2025.2.2"
@@ -751,6 +752,7 @@ androidx-test-core = { module = "androidx.test:core", version.ref = "androidx-te
 androidx-test-runner = { module = "androidx.test:runner", version.ref = "androidx-test" }
 
 ##Web
+kotlin-wrappers-catalog = { module = "org.jetbrains.kotlin-wrappers:kotlin-wrappers-catalog", version.ref = "kotlin-wrappers-catalog" }
 kotlinx-html = { module = "org.jetbrains.kotlinx:kotlinx-html", version.ref = "kotlinx-html" }
 kotlinx-browser = { module = "org.jetbrains.kotlinx:kotlinx-browser", version.ref = "kotlinx-browser" }
 seskar = { module = "io.github.turansky.seskar:seskar-core", version.ref = "seskar" }

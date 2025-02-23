@@ -33,6 +33,7 @@ internal data class KotlinAndroidTarget(
         publishLibraryVariants?.let { publishLibraryVariants ->
             target.publishLibraryVariants = publishLibraryVariants
         }
+
         publishAllLibraryVariants?.takeIf { it }?.run { target.publishAllLibraryVariants() }
         target::publishLibraryVariantsGroupedByFlavor trySet publishLibraryVariantsGroupedByFlavor
         compilerOptions?.applyTo(target.compilerOptions)

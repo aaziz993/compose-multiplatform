@@ -32,3 +32,7 @@ public infix fun <T> Property<T>.tryAssign(value: T?): Unit? = value?.let(::assi
 
 public infix fun <T> Property<T>.tryAssign(value: Provider<out T?>): Unit? =
     value.takeIf { provider -> provider.isPresent }?.let(::assign)
+
+internal fun String.asModuleName() = this
+    .replace('-', '_') // Support pods with dashes in names (see https://github.com/JetBrains/kotlin-native/issues/2884).
+

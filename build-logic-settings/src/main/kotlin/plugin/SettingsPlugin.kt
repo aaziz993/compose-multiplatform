@@ -99,10 +99,12 @@ public class SettingsPlugin : Plugin<Settings> {
 
                 dependencyResolutionManagement.versionCatalogs?.let { versionCatalogs ->
                     versionCatalogs {
-                        allLibs = versionCatalogs.associate { (catalogName, dependency) ->
+                        val externalLibs = versionCatalogs.associate { (catalogName, dependency) ->
                             var notation = dependency.resolve()
 
-                            create(catalogName) { from(notation) }
+                            create(catalogName) {
+                                from(notation)
+                            }
 
 
                             catalogName to if (notation is FileCollection) {
@@ -137,7 +139,14 @@ public class SettingsPlugin : Plugin<Settings> {
                                         }
                                     }
                             }
-                        } + ("libs" to Toml.parse(layout.settingsDirectory.file("gradle/libs.versions.toml").asFile.readText()))
+                        }
+
+                        val libsFile = layout.settingsDirectory.file("gradle/libs.versions.toml").asFile
+                        val defaultLibs = if (!allLibs.containsKey("libs") && libsFile.exists())
+                            mapOf("libs" to Toml.parse(libsFile.readText()))
+                        else emptyMap()
+
+                        allLibs = externalLibs + defaultLibs
                     }
                 }
             }
