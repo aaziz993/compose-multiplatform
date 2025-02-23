@@ -46,17 +46,14 @@ internal class ProjectPlugin : Plugin<Project> {
 
     override fun apply(target: Project) = with(SLF4JProblemReporterContext()) {
         with(target) {
-
-//            applyRepositoryAttributes()
-
             projectProperties.group?.let(::setGroup)
             projectProperties.description?.let(::setDescription)
-            settings.libs.versions.let { versions ->
+            version = settings.libs.versions.let { versions ->
                 version(
-                    versions.version("${target.name}-version-major")?.toInt() ?: 1,
-                    versions.version("${target.name}-version-minor")?.toInt() ?: 0,
-                    versions.version("${target.name}-version-patch")?.toInt() ?: 0,
-                    versions.version("${target.name}-version-preRelease"),
+                    versions.version("$name-version-major")?.toInt() ?: 1,
+                    versions.version("$name-version-minor")?.toInt() ?: 0,
+                    versions.version("$name-version-patch")?.toInt() ?: 0,
+                    versions.version("$name-version-preRelease"),
                 )
             }
 

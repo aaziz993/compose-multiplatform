@@ -23,6 +23,7 @@ import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.api.file.Directory
 import org.gradle.api.initialization.Settings
 import org.gradle.kotlin.dsl.maven
+import org.jetbrains.amper.gradle.BindingSettingsPlugin
 import org.jetbrains.amper.gradle.SLF4JProblemReporterContext
 import org.yaml.snakeyaml.DumperOptions
 import org.yaml.snakeyaml.Yaml
@@ -126,7 +127,6 @@ public class SettingsPlugin : Plugin<Settings> {
             println("APPLY $PROJECT_PROPERTIES_FILE TO: $name")
             println(logYaml.dump(Json.Default.encodeToAny(this)))
         }
-
 
         plugins.apply(ProjectPlugin::class.java)
 
