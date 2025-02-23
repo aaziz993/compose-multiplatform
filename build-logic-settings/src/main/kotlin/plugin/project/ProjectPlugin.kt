@@ -62,8 +62,6 @@ internal class ProjectPlugin : Plugin<Project> {
 
             plugins.apply(KMPPlugin::class.java)
 
-            println("PROJECT $name tasks ${tasks.withType<Jar>().map { it.name }}")
-
             afterEvaluate {
                 plugins.apply(DoctorPlugin::class.java)
                 plugins.apply(BuildConfigPlugin::class.java)

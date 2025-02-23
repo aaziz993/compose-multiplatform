@@ -12,21 +12,15 @@ import org.gradle.kotlin.dsl.withType
 import org.gradle.api.plugins.ApplicationPlugin
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.jvm.tasks.Jar
+import org.jetbrains.amper.gradle.BindingProjectPlugin
 import org.jetbrains.amper.gradle.java.JavaBindingPluginPart
+import org.jetbrains.amper.gradle.kmpp.KMPPBindingPluginPart
 import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
 
 internal class JavaPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (projectProperties.kotlin.android != null) {
-                logger.warn(
-                    "Cant enable java integration when android is enabled. " +
-                        "Project: $name",
-                )
-                return@with
-            }
-
             projectProperties.kotlin.jvm?.forEach { targetName, target ->
                 targetName.takeIf(String::isNotEmpty)?.also { targetName ->
                     kotlin.jvm(targetName) {
@@ -36,6 +30,14 @@ internal class JavaPlugin : Plugin<Project> {
                     target.applyTo(this)
                 }
             } ?: return
+
+            if (projectProperties.kotlin.android != null) {
+                logger.warn(
+                    "Can't enable java integration when android is enabled. " +
+                        "Project: $name",
+                )
+                return@with
+            }
 
 //            configureJavaExtension()
 //
