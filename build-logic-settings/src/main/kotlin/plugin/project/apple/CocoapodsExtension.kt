@@ -1,5 +1,6 @@
 package plugin.project.apple
 
+import gradle.cocoapods
 import gradle.id
 import gradle.libs
 import gradle.plugin
@@ -10,11 +11,12 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.gradle.apple.ApplePlugin
 import org.jetbrains.gradle.apple.apple
+import org.jetbrains.kotlin.gradle.plugin.cocoapods.KotlinCocoapodsPlugin
 
-internal fun Project.configureAppleProjectExtension() =
-    pluginManager.withPlugin(settings.libs.plugins.plugin("apple").id) {
+internal fun Project.configureCocoapodsExtension() =
+    pluginManager.withPlugin(settings.libs.plugins.plugin("cocoapods").id) {
         projectProperties.settings.apple.let { apple ->
-            apple {
+            cocoapods {
                 apple.applyTo(this)
             }
         }

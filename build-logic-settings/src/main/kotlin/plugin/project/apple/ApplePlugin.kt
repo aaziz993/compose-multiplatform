@@ -4,11 +4,16 @@
 
 package plugin.project.apple
 
+import gradle.id
 import gradle.kotlin
+import gradle.libs
+import gradle.plugin
+import gradle.plugins
 import gradle.projectProperties
+import gradle.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import plugin.project.kotlin.model.language.nat.KotlinNativeTarget
+import org.jetbrains.kotlin.gradle.plugin.extraProperties
 
 internal class ApplePlugin : Plugin<Project> {
 
@@ -17,6 +22,12 @@ internal class ApplePlugin : Plugin<Project> {
             if (!projectProperties.kotlin.hasAppleTargets) {
                 return@with
             }
+
+            plugins.apply(settings.libs.plugins.plugin("apple").id)
+
+            extraProperties.set("generateBuildableXcodeproj.skipKotlinFrameworkDependencies", "true")
+
+            configureAppleProjectExtension()
 
             projectProperties.kotlin.iosArm64?.forEach { targetName, target ->
                 targetName.takeIf(String::isNotEmpty)?.also { targetName ->
@@ -138,16 +149,9 @@ internal class ApplePlugin : Plugin<Project> {
                 }
             }
 
-//
-//            plugins.apply(settings.libs.plugins.plugin("apple").id)
-//plugins.apply(settings.libs.plugins.plugin("cocoapods").id)
-//           projectProperties.kotlin.targets.filter { (type, _) -> type.isDescendantOf(TargetType.APPLE) }
-//                .forEach { target -> target.applyTo() }
-//
-//            extraProperties.set("generateBuildableXcodeproj.skipKotlinFrameworkDependencies", "true")
-//
-//            configureAppleProjectExtension()
+            plugins.apply(settings.libs.plugins.plugin("cocoapods").id)
 
+            configureCocoapodsExtension()
         }
     }
 }

@@ -19,7 +19,7 @@ internal class KMPPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (projectProperties.kotlin.hasTargets) {
+            if (!projectProperties.kotlin.hasTargets) {
                 return@with
             }
 

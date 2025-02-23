@@ -13,7 +13,7 @@ internal class SqlDelightPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (projectProperties.plugins.sqldelight.enabled || projectProperties.kotlin.hasTargets) {
+            if (projectProperties.plugins.sqldelight.enabled || !projectProperties.kotlin.hasTargets) {
                 return@with
             }
 

@@ -25,7 +25,7 @@ internal class DokkaPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             projectProperties.plugins.dokka.let { dokka ->
-                if (!dokka.enabled || projectProperties.kotlin.hasTargets) {
+                if (!dokka.enabled || !projectProperties.kotlin.hasTargets) {
                     return@with
                 }
 

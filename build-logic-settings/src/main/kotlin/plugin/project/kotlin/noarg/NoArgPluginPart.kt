@@ -13,7 +13,7 @@ internal class NoArgPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (projectProperties.plugins.noArg.enabled || projectProperties.kotlin.hasTargets)
+            if (projectProperties.plugins.noArg.enabled || !projectProperties.kotlin.hasTargets)
 
                 plugins.apply(settings.libs.plugins.plugin("allopen").id)
 

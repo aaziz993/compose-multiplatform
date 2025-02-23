@@ -21,6 +21,10 @@ internal data class Kotlin(
     override val optIns: Set<String>? = null,
     val jvm: LinkedHashMap<String, KotlinJvmTarget>? = null,
     val android: LinkedHashMap<String, KotlinAndroidTarget>? = null,
+    val androidNativeArm32: LinkedHashMap<String, KotlinNativeTarget>? = null,
+    val androidNativeArm64: LinkedHashMap<String, KotlinNativeTarget>? = null,
+    val androidNativeX86: LinkedHashMap<String, KotlinNativeTarget>? = null,
+    val androidNativeX64: LinkedHashMap<String, KotlinNativeTarget>? = null,
     val iosArm64: LinkedHashMap<String, KotlinNativeTarget>? = null,
     val iosX64: LinkedHashMap<String, KotlinNativeTarget>? = null,
     val iosSimulatorArm64: LinkedHashMap<String, KotlinNativeTarget>? = null,
@@ -33,12 +37,19 @@ internal data class Kotlin(
     val tvosSimulatorArm64: LinkedHashMap<String, KotlinNativeTarget>? = null,
     val macosArm64: LinkedHashMap<String, KotlinNativeTarget>? = null,
     val macosX64: LinkedHashMap<String, KotlinNativeTarget>? = null,
+    val linuxArm64: LinkedHashMap<String, KotlinNativeTarget>? = null,
+    val linuxX64: LinkedHashMap<String, KotlinNativeTarget>? = null,
+    val mingwX64: LinkedHashMap<String, KotlinNativeTarget>? = null,
     val js: LinkedHashMap<String, KotlinJsTarget>? = null,
     val wasmJs: LinkedHashMap<String, KotlinWasmJsTarget>? = null,
     val targetGroups: LinkedHashMap<String, List<String>>? = null,
     val sourceSets: LinkedHashMap<String, SourceSet>? = null,
     val cocoapods: CocoapodsSettings = CocoapodsSettings(),
 ) : LanguageSettings {
+
+    val hasAndroidNativeTargets by lazy {
+        (androidNativeArm32 ?: androidNativeArm64 ?: androidNativeX86 ?: androidNativeX64) != null
+    }
 
     val hasIosTargets by lazy {
         (iosArm64 ?: iosX64 ?: iosSimulatorArm64) != null
@@ -60,8 +71,16 @@ internal data class Kotlin(
         hasIosTargets || hasWatchosTargets || hasTvosTargets || hasMacosTargets
     }
 
+    val hasLinuxTargets by lazy {
+        (linuxArm64 ?: linuxX64) != null
+    }
+
+    val hasNativeTargets by lazy {
+        hasAndroidNativeTargets || hasAppleTargets || hasLinuxTargets
+    }
+
     val hasTargets by lazy {
-        (jvm ?: android ?: js ?: wasmJs) != null || hasAppleTargets
+        (jvm ?: android ?: js ?: wasmJs) != null || hasNativeTargets
     }
 
     fun applyTo(builder: LanguageSettingsBuilder) {

@@ -13,7 +13,7 @@ internal class PowerAssertPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (projectProperties.plugins.powerAssert.enabled || projectProperties.kotlin.hasTargets) {
+            if (projectProperties.plugins.powerAssert.enabled || !projectProperties.kotlin.hasTargets) {
                 return@with
             }
 

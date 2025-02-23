@@ -12,7 +12,7 @@ import org.gradle.api.Project
 internal class SonarPlugin : Plugin<Project> {
 
     override fun apply(target: Project) = with(target) {
-        if (!projectProperties.plugins.sonar.enabled || projectProperties.kotlin.hasTargets) {
+        if (!projectProperties.plugins.sonar.enabled || !projectProperties.kotlin.hasTargets) {
             return@with
         }
 

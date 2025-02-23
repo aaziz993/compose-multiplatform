@@ -33,6 +33,7 @@ import plugin.project.kotlin.room.RoomPlugin
 import plugin.project.kotlin.rpc.RpcPlugin
 import plugin.project.kotlin.serialization.SerializationPlugin
 import plugin.project.kotlin.sqldelight.SqlDelightPlugin
+import plugin.project.nat.NativePlugin
 import plugin.project.web.WasmPlugin
 import plugin.project.web.js.JsPlugin
 import plugin.project.web.node.configureNodeJsEnvSpec
@@ -82,6 +83,7 @@ internal class ProjectPlugin : Plugin<Project> {
             plugins.apply(JsPlugin::class.java)
             plugins.apply(WasmPlugin::class.java)
             plugins.apply(ApplePlugin::class.java)
+            plugins.apply(NativePlugin::class.java)
         }
 
         // Apply other settings.

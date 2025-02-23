@@ -13,7 +13,7 @@ internal class KtorfitPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (projectProperties.plugins.ktorfit.enabled || projectProperties.kotlin.hasTargets) {
+            if (projectProperties.plugins.ktorfit.enabled || !projectProperties.kotlin.hasTargets) {
                 return@with
             }
 

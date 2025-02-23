@@ -1,5 +1,6 @@
 package plugin.project.apple.model
 
+import gradle.asModuleName
 import gradle.projectProperties
 import gradle.trySet
 import kotlinx.serialization.Serializable
@@ -14,22 +15,18 @@ internal data class AppleSettings(
 
     context(Project)
     fun applyTo(extension: org.jetbrains.gradle.apple.AppleProjectExtension) {
-        extension::teamID trySet teamID
+        extension.teamID = teamID ?: name.asModuleName()
 
-        if (projectProperties.application) {
-            iosApps?.forEach { iosApp ->
-                iosApp.name.takeIf(String::isNotEmpty)?.also { name ->
-                    extension.iosApp(name, iosApp::applyTo)
-                } ?: extension.iosApp(iosApp::applyTo)
-            }
+        iosApps?.forEach { iosApp ->
+            iosApp.name.takeIf(String::isNotEmpty)?.also { name ->
+                extension.iosApp(name, iosApp::applyTo)
+            } ?: extension.iosApp(iosApp::applyTo)
         }
-        else {
 
-            iosFrameworks?.forEach { iosFramework ->
-                iosFramework.name.takeIf(String::isNotEmpty)?.also { name ->
-                    extension.iosFramework(name, iosFramework::applyTo)
-                } ?: extension.iosFramework(iosFramework::applyTo)
-            }
+        iosFrameworks?.forEach { iosFramework ->
+            iosFramework.name.takeIf(String::isNotEmpty)?.also { name ->
+                extension.iosFramework(name, iosFramework::applyTo)
+            } ?: extension.iosFramework(iosFramework::applyTo)
         }
     }
 }

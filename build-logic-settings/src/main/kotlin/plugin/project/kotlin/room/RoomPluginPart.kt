@@ -13,7 +13,7 @@ internal class RoomPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (projectProperties.plugins.room.enabled || projectProperties.kotlin.hasTargets) {
+            if (projectProperties.plugins.room.enabled || !projectProperties.kotlin.hasTargets) {
                 return@with
             }
 
