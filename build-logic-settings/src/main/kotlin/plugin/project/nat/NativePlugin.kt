@@ -18,71 +18,78 @@ internal class NativePlugin : Plugin<Project> {
             }
 
             projectProperties.kotlin.androidNativeArm32?.forEach { targetName, target ->
-                targetName.takeIf(String::isNotEmpty)?.also { targetName ->
+                if (targetName.isEmpty()) {
                     kotlin.androidNativeArm32(targetName) {
                         target.applyTo(this)
                     }
-                } ?: kotlin.androidNativeArm32 {
+                }
+                else kotlin.androidNativeArm32 {
                     target.applyTo(this)
                 }
             }
 
             projectProperties.kotlin.androidNativeArm64?.forEach { targetName, target ->
-                targetName.takeIf(String::isNotEmpty)?.also { targetName ->
+                if (targetName.isEmpty()) {
                     kotlin.androidNativeArm64(targetName) {
                         target.applyTo(this)
                     }
-                } ?: kotlin.androidNativeArm64 {
+                }
+                else kotlin.androidNativeArm64 {
                     target.applyTo(this)
                 }
             }
 
             projectProperties.kotlin.androidNativeX86?.forEach { targetName, target ->
-                targetName.takeIf(String::isNotEmpty)?.also { targetName ->
+                if (targetName.isEmpty()) {
                     kotlin.androidNativeX86(targetName) {
                         target.applyTo(this)
                     }
-                } ?: kotlin.androidNativeX86 {
+                }
+                else kotlin.androidNativeX86 {
                     target.applyTo(this)
                 }
             }
 
             projectProperties.kotlin.androidNativeX64?.forEach { targetName, target ->
-                targetName.takeIf(String::isNotEmpty)?.also { targetName ->
+                if (targetName.isEmpty()) {
                     kotlin.androidNativeX64(targetName) {
                         target.applyTo(this)
                     }
-                } ?: kotlin.androidNativeX64 {
+                }
+                else kotlin.androidNativeX64 {
                     target.applyTo(this)
                 }
             }
 
             projectProperties.kotlin.linuxArm64?.forEach { targetName, target ->
-                targetName.takeIf(String::isNotEmpty)?.also { targetName ->
+                if (targetName.isEmpty()) {
                     kotlin.linuxArm64(targetName) {
                         target.applyTo(this)
                     }
-                } ?: kotlin.linuxArm64 {
+                }
+                else kotlin.linuxArm64 {
                     target.applyTo(this)
                 }
             }
 
             projectProperties.kotlin.linuxX64?.forEach { targetName, target ->
-                targetName.takeIf(String::isNotEmpty)?.also { targetName ->
+                if (targetName.isEmpty()) {
                     kotlin.linuxX64(targetName) {
                         target.applyTo(this)
                     }
-                } ?: kotlin.linuxX64 {
+                }
+                else kotlin.linuxX64 {
                     target.applyTo(this)
                 }
             }
 
             projectProperties.kotlin.mingwX64?.forEach { targetName, target ->
-                targetName.takeIf(String::isNotEmpty)?.also { targetName ->
+                if (targetName.isEmpty()) {
                     kotlin.mingwX64(targetName) {
                         target.applyTo(this)
                     }
-                } ?: kotlin.mingwX64 {
+                }
+                else kotlin.mingwX64 {
                     target.applyTo(this)
                 }
             }

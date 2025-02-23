@@ -18,11 +18,12 @@ internal class JsPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             projectProperties.kotlin.js?.forEach { targetName, target ->
-                targetName.takeIf(String::isNotEmpty)?.also { targetName ->
+                if (targetName.isEmpty()) {
                     kotlin.js(targetName) {
                         target.applyTo(this)
                     }
-                } ?: kotlin.js {
+                }
+                else kotlin.js {
                     target.applyTo(this)
                 }
             } ?: return

@@ -2,7 +2,6 @@
 
 package plugin.project.android
 
-
 import gradle.id
 import gradle.kotlin
 import gradle.libs
@@ -29,11 +28,12 @@ internal class AndroidPlugin : Plugin<Project> {
             }
 
             projectProperties.kotlin.android!!.forEach { targetName, target ->
-                targetName.takeIf(String::isNotEmpty)?.also { targetName ->
+                if (targetName.isEmpty()) {
                     kotlin.androidTarget(targetName) {
                         target.applyTo(this)
                     }
-                } ?: kotlin.androidTarget {
+                }
+                else kotlin.androidTarget {
                     target.applyTo(this)
                 }
             }

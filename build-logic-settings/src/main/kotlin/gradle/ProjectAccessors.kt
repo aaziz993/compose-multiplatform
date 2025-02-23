@@ -210,6 +210,13 @@ internal fun ComposeExtension.desktop(configure: DesktopExtension.() -> Unit) =
 /**
  * Create native module name from project group and path.
  */
+internal val Project.qualifiedModuleName
+    get() = path.split(":").drop(1).joinToString("-")
+
+
+/**
+ * Create native module name from project group and path.
+ */
 internal val Project.nativeModuleName
     get() = path.split(":").drop(1).joinToString("_")
 

@@ -11,11 +11,12 @@ internal class WasmPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             projectProperties.kotlin.wasmJs?.forEach { targetName, target ->
-                targetName.takeIf(String::isNotEmpty)?.also { targetName ->
+                if (targetName.isEmpty()) {
                     kotlin.wasmJs(targetName) {
                         target.applyTo(this)
                     }
-                } ?: kotlin.wasmJs {
+                }
+                else kotlin.wasmJs {
                     target.applyTo(this)
                 }
             } ?: return

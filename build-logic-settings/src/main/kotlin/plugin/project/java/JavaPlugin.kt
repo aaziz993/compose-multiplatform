@@ -12,11 +12,12 @@ internal class JavaPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             projectProperties.kotlin.jvm?.forEach { targetName, target ->
-                targetName.takeIf(String::isNotEmpty)?.also { targetName ->
+                if (targetName.isEmpty()) {
                     kotlin.jvm(targetName) {
                         target.applyTo(this)
                     }
-                } ?: kotlin.jvm {
+                }
+                else kotlin.jvm {
                     target.applyTo(this)
                 }
             } ?: return

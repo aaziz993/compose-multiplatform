@@ -134,7 +134,6 @@ buildscript {
     }
 
     dependencies {
-        apply(from = "gradle/model/test/test.kts")
         classpath("org.tomlj:tomlj:1.1.1")
         classpath("org.yaml:snakeyaml:2.3")
         classpath("io.github.z4kn4fein:semver:2.0.0")

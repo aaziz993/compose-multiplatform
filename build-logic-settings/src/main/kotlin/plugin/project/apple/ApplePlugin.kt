@@ -31,121 +31,133 @@ internal class ApplePlugin : Plugin<Project> {
             configureAppleProjectExtension()
 
             projectProperties.kotlin.iosArm64?.forEach { targetName, target ->
-                targetName.takeIf(String::isNotEmpty)?.also { targetName ->
+                if (targetName.isEmpty()) {
                     kotlin.iosArm64(targetName) {
                         target.applyTo(this)
                     }
-                } ?: kotlin.iosArm64 {
+                }
+                else kotlin.iosArm64 {
                     target.applyTo(this)
                 }
             }
 
             projectProperties.kotlin.iosX64?.forEach { targetName, target ->
-                targetName.takeIf(String::isNotEmpty)?.also { targetName ->
+                if (targetName.isEmpty()) {
                     kotlin.iosX64(targetName) {
                         target.applyTo(this)
                     }
-                } ?: kotlin.iosX64 {
+                }
+                else kotlin.iosX64 {
                     target.applyTo(this)
                 }
             }
 
             projectProperties.kotlin.iosSimulatorArm64?.forEach { targetName, target ->
-                targetName.takeIf(String::isNotEmpty)?.also { targetName ->
+                if (targetName.isEmpty()) {
                     kotlin.iosSimulatorArm64(targetName) {
                         target.applyTo(this)
                     }
-                } ?: kotlin.iosSimulatorArm64 {
+                }
+                else kotlin.iosSimulatorArm64 {
                     target.applyTo(this)
                 }
             }
 
             projectProperties.kotlin.watchosArm32?.forEach { targetName, target ->
-                targetName.takeIf(String::isNotEmpty)?.also { targetName ->
+                if (targetName.isEmpty()) {
                     kotlin.watchosArm32(targetName) {
                         target.applyTo(this)
                     }
-                } ?: kotlin.watchosArm32 {
+                }
+                else kotlin.watchosArm32 {
                     target.applyTo(this)
                 }
             }
 
             projectProperties.kotlin.watchosArm64?.forEach { targetName, target ->
-                targetName.takeIf(String::isNotEmpty)?.also { targetName ->
+                if (targetName.isEmpty()) {
                     kotlin.watchosArm64(targetName) {
                         target.applyTo(this)
                     }
-                } ?: kotlin.watchosArm64 {
+                }
+                else kotlin.watchosArm64 {
                     target.applyTo(this)
                 }
             }
 
             projectProperties.kotlin.watchosX64?.forEach { targetName, target ->
-                targetName.takeIf(String::isNotEmpty)?.also { targetName ->
+                if (targetName.isEmpty()) {
                     kotlin.watchosX64(targetName) {
                         target.applyTo(this)
                     }
-                } ?: kotlin.watchosX64 {
+                }
+                else kotlin.watchosX64 {
                     target.applyTo(this)
                 }
             }
 
             projectProperties.kotlin.watchosSimulatorArm64?.forEach { targetName, target ->
-                targetName.takeIf(String::isNotEmpty)?.also { targetName ->
+                if (targetName.isEmpty()) {
                     kotlin.watchosSimulatorArm64(targetName) {
                         target.applyTo(this)
                     }
-                } ?: kotlin.watchosSimulatorArm64 {
+                }
+                else kotlin.watchosSimulatorArm64 {
                     target.applyTo(this)
                 }
             }
 
             projectProperties.kotlin.tvosArm64?.forEach { targetName, target ->
-                targetName.takeIf(String::isNotEmpty)?.also { targetName ->
+                if (targetName.isEmpty()) {
                     kotlin.tvosArm64(targetName) {
                         target.applyTo(this)
                     }
-                } ?: kotlin.tvosArm64 {
+                }
+                else kotlin.tvosArm64 {
                     target.applyTo(this)
                 }
             }
 
             projectProperties.kotlin.tvosX64?.forEach { targetName, target ->
-                targetName.takeIf(String::isNotEmpty)?.also { targetName ->
+                if (targetName.isEmpty()) {
                     kotlin.tvosX64(targetName) {
                         target.applyTo(this)
                     }
-                } ?: kotlin.tvosX64 {
+                }
+                else kotlin.tvosX64 {
                     target.applyTo(this)
                 }
             }
 
             projectProperties.kotlin.tvosSimulatorArm64?.forEach { targetName, target ->
-                targetName.takeIf(String::isNotEmpty)?.also { targetName ->
+                if (targetName.isEmpty()) {
                     kotlin.tvosSimulatorArm64(targetName) {
                         target.applyTo(this)
                     }
-                } ?: kotlin.tvosSimulatorArm64 {
+                }
+                else kotlin.tvosSimulatorArm64 {
                     target.applyTo(this)
                 }
             }
 
             projectProperties.kotlin.macosArm64?.forEach { targetName, target ->
-                targetName.takeIf(String::isNotEmpty)?.also { targetName ->
+                if (targetName.isEmpty()) {
                     kotlin.macosArm64(targetName) {
                         target.applyTo(this)
                     }
-                } ?: kotlin.macosArm64 {
+                }
+                else kotlin.macosArm64 {
                     target.applyTo(this)
                 }
             }
 
             projectProperties.kotlin.macosX64?.forEach { targetName, target ->
-                targetName.takeIf(String::isNotEmpty)?.also { targetName ->
+                if (targetName.isEmpty()) {
                     kotlin.macosX64(targetName) {
                         target.applyTo(this)
                     }
-                } ?: kotlin.macosX64 {
+                }
+                else kotlin.macosX64 {
                     target.applyTo(this)
                 }
             }

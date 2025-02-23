@@ -13,15 +13,15 @@ buildLigicSettings-version-minor = "0"
 buildLigicSettings-version-patch = "0"
 buildLigicSettings-version-preRelase = "release" # optional
 # kmp-lib
-kmpLib-version-major = "1"
-kmpLib-version-minor = "0"
-kmpLib-version-patch = "0"
-kmpLib-version-preRelase = "release" # optional
+kmp-lib-version-major = "1"
+kmp-lib-version-minor = "0"
+kmp-lib-version-patch = "0"
+kmp-lib-version-preRelase = "release" # optional
 # cmp-lib
-cmpLib-version-major = "1"
-cmpLib-version-minor = "0"
-cmpLib-version-patch = "0"
-cmpLib-version-preRelase = "release" # optional
+cmp-lib-version-major = "1"
+cmp-lib-version-minor = "0"
+cmp-lib-version-patch = "0"
+cmp-lib-version-preRelase = "release" # optional
 # compiler
 compiler-version-major = "1"
 compiler-version-minor = "0"
@@ -33,15 +33,15 @@ shared-version-minor = "0"
 shared-version-patch = "0"
 shared-version-preRelase = "release" # optional
 # compose-app
-composeApp-version-major = "1"
-composeApp-version-minor = "0"
-composeApp-version-patch = "0"
-composeApp-version-preRelase = "release" # optional
+compose-app-version-major = "1"
+compose-app-version-minor = "0"
+compose-app-version-patch = "0"
+compose-app-version-preRelase = "release" # optional
 # server-app
-serverApp-version-major = "1"
-serverApp-version-minor = "0"
-serverApp-version-patch = "0"
-serverApp-version-preRelase = "release" # optional
+server-app-version-major = "1"
+server-app-version-minor = "0"
+server-app-version-patch = "0"
+server-app-version-preRelase = "release" # optional
 ##Gradle
 # intellij
 intellij-platform = "243.23654.166"

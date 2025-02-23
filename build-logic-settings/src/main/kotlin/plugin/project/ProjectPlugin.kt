@@ -4,6 +4,7 @@ package plugin.project
 
 import gradle.libs
 import gradle.projectProperties
+import gradle.qualifiedModuleName
 import gradle.settings
 import gradle.version
 import gradle.versions
@@ -51,12 +52,13 @@ internal class ProjectPlugin : Plugin<Project> {
             projectProperties.group?.let(::setGroup)
             projectProperties.description?.let(::setDescription)
             version = settings.libs.versions.let { versions ->
-                val camelCaseName=name.toCamelCase()
+                val moduleName=qualifiedModuleName
+                println("QUAL $moduleName")
                 version(
-                    versions.version("$camelCaseName.version.major")?.toInt() ?: 1,
-                    versions.version("$camelCaseName.version.minor")?.toInt() ?: 0,
-                    versions.version("$camelCaseName.version.patch")?.toInt() ?: 0,
-                    versions.version("$camelCaseName.version.preRelease"),
+                    versions.version("$moduleName.version.major")?.toInt() ?: 1,
+                    versions.version("$moduleName.version.minor")?.toInt() ?: 0,
+                    versions.version("$moduleName.version.patch")?.toInt() ?: 0,
+                    versions.version("$moduleName.version.preRelease"),
                 )
             }
 
