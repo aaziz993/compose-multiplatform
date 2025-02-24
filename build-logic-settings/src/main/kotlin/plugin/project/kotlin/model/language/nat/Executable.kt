@@ -7,6 +7,14 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
 
 @Serializable
 internal data class Executable(
+    override val baseName: String? = null,
+    override val debuggable: Boolean? = null,
+    override val optimized: Boolean? = null,
+    override val linkerOpts: List<String>? = null,
+    override val binaryOptions: Map<String, String>? = null,
+    override val freeCompilerArgs: List<String>? = null,
+    override val outputDirectory: String? = null,
+    override val outputDirectoryProperty: String? = null,
     /**
      * The fully qualified name of the main function. For an example:
      *
