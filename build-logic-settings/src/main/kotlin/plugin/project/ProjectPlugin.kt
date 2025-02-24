@@ -23,10 +23,10 @@ import plugin.project.gradle.kover.KoverPlugin
 import plugin.project.gradle.sonar.SonarPlugin
 import plugin.project.gradle.spotless.SpotlessPlugin
 import plugin.project.java.JavaPlugin
-import plugin.project.kotlin.kmp.KMPPlugin
 import plugin.project.kotlin.allopen.AllOpenPlugin
 import plugin.project.kotlin.apollo.ApolloPlugin
 import plugin.project.kotlin.atomicfu.AtomicFUPlugin
+import plugin.project.kotlin.kmp.KMPPlugin
 import plugin.project.kotlin.ksp.KspPlugin
 import plugin.project.kotlin.ktorfit.KtorfitPlugin
 import plugin.project.kotlin.noarg.NoArgPlugin

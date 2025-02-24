@@ -2,12 +2,9 @@
 
 package plugin
 
-import com.android.build.gradle.internal.lint.AndroidLintAnalysisTask
-import com.android.build.gradle.internal.lint.LintModelWriterTask
 import gradle.allLibs
 import gradle.deepMerge
 import gradle.isUrl
-import gradle.libraryAsDependency
 import gradle.libs
 import gradle.projectProperties
 import gradle.serialization.decodeFromAny
@@ -28,7 +25,6 @@ import org.gradle.api.file.FileCollection
 import org.gradle.api.initialization.Settings
 import org.gradle.api.internal.artifacts.repositories.DefaultMavenArtifactRepository
 import org.gradle.kotlin.dsl.maven
-import org.jetbrains.amper.gradle.BindingSettingsPlugin
 import org.jetbrains.amper.gradle.SLF4JProblemReporterContext
 import org.jetbrains.compose.jetbrainsCompose
 import org.tomlj.Toml

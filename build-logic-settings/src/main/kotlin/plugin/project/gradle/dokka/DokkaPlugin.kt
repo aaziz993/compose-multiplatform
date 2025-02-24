@@ -14,30 +14,18 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.provideDelegate
+import plugin.project.gradle.dokka.model.DokkaSettings
 
 internal class DokkaPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            projectProperties.plugins.dokka.let { dokka ->
-                if (!dokka.enabled || !projectProperties.kotlin.hasTargets) {
-                    return@with
+            projectProperties.plugins.dokka
+                .takeIf { it.enabled && projectProperties.kotlin.hasTargets }?.let { dokka ->
+                    plugins.apply(settings.libs.plugins.plugin("dokka").id)
+
+                    dokka.applyTo()
                 }
-
-                plugins.apply(settings.libs.plugins.plugin("dokka").id)
-
-                configureDokkaExtension()
-
-                if (dokka.versioning) {
-                    val dokkaPlugin by configurations
-
-                    dependencies {
-                        dokkaPlugin(settings.libs.libraries.library("dokka.versioning").module)
-                    }
-                }
-
-                dokka.task?.applyTo()
-            }
         }
     }
 }

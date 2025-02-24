@@ -2,7 +2,6 @@ package plugin.project.compose.android
 
 import gradle.android
 import gradle.compose
-import gradle.desktop
 import gradle.id
 import gradle.libs
 import gradle.plugin

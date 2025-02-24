@@ -2,6 +2,7 @@ package plugin.project.kotlin.noarg
 
 import gradle.id
 import gradle.libs
+import gradle.noArg
 import gradle.plugin
 import gradle.plugins
 import gradle.projectProperties
@@ -13,11 +14,12 @@ internal class NoArgPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (projectProperties.plugins.noArg.enabled || !projectProperties.kotlin.hasTargets)
+            projectProperties.plugins.noArg
+                .takeIf { it.enabled && projectProperties.kotlin.hasTargets }?.let { noArg ->
+                    plugins.apply(settings.libs.plugins.plugin("allopen").id)
 
-                plugins.apply(settings.libs.plugins.plugin("allopen").id)
-
-            configureNoArgExtension()
+                    noArg.applyTo()
+                }
         }
     }
 }

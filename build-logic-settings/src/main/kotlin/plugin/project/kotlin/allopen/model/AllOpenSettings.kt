@@ -1,16 +1,26 @@
 package plugin.project.kotlin.allopen.model
 
+import gradle.allOpen
+import gradle.id
+import gradle.libs
+import gradle.plugin
+import gradle.plugins
+import gradle.settings
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
+import plugin.project.model.EnabledSettings
 
 @Serializable
 internal data class AllOpenSettings(
     override val myAnnotations: List<String>? = null,
     override val myPresets: List<String>? = null,
-    val enabled: Boolean = true,
-) : AllOpenExtension{
+    override val enabled: Boolean = true,
+) : AllOpenExtension, EnabledSettings {
 
-    fun applyTo(extension: org.jetbrains.kotlin.allopen.gradle.AllOpenExtension){
-        myAnnotations?.let(extension::annotations)
-        myPresets?.forEach(extension::preset)
-    }
+    context(Project)
+    fun applyTo() =
+        pluginManager.withPlugin(settings.libs.plugins.plugin("allopen").id) {
+            myAnnotations?.let(allOpen::annotations)
+            myPresets?.forEach(allOpen::preset)
+        }
 }

@@ -1,5 +1,6 @@
 package plugin.project.kotlin.allopen
 
+import gradle.allOpen
 import gradle.id
 import gradle.libs
 import gradle.plugin
@@ -13,13 +14,12 @@ internal class AllOpenPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (projectProperties.plugins.allOpen.enabled ||projectProperties.kotlin.hasTargets) {
-                return@with
-            }
+            projectProperties.plugins.allOpen
+                .takeIf { it.enabled && projectProperties.kotlin.hasTargets }?.let { allOpen ->
+                    plugins.apply(settings.libs.plugins.plugin("allopen").id)
 
-            plugins.apply(settings.libs.plugins.plugin("allopen").id)
-
-            configureAllOpenExtension()
+                    allOpen.applyTo()
+                }
         }
     }
 }

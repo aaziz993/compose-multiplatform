@@ -17,7 +17,8 @@ import gradle.settings
 import gradle.version
 import gradle.versions
 import org.gradle.api.Project
-import plugin.project.gradle.spotless.LICENSE_HEADER_DIR
+
+private const val LICENSE_HEADER_DIR = "../"
 
 internal interface SpotlessExtension {
 

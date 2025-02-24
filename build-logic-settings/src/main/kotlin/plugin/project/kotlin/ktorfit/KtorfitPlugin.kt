@@ -1,6 +1,7 @@
 package plugin.project.kotlin.ktorfit
 
 import gradle.id
+import gradle.ktorfit
 import gradle.libs
 import gradle.plugin
 import gradle.plugins
@@ -13,13 +14,12 @@ internal class KtorfitPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (projectProperties.plugins.ktorfit.enabled || !projectProperties.kotlin.hasTargets) {
-                return@with
-            }
+            projectProperties.plugins.ktorfit
+                .takeIf { it.enabled && projectProperties.kotlin.hasTargets }?.let { ktorfit ->
+                    plugins.apply(settings.libs.plugins.plugin("ktorfit").id)
 
-            plugins.apply(settings.libs.plugins.plugin("ktorfit").id)
-
-            configureKtorfitGradleConfiguration()
+                    ktorfit.applyTo()
+                }
         }
     }
 }

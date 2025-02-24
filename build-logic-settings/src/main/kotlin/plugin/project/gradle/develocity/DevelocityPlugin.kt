@@ -21,26 +21,18 @@ internal class DevelocityPlugin : Plugin<Settings> {
 
     override fun apply(target: Settings) {
         with(target) {
-           projectProperties.plugins.develocity
-                .takeIf(DevelocitySettings::enabled)?.let { develocity ->
+            projectProperties.plugins.develocity.takeIf(DevelocitySettings::enabled)?.let { develocity ->
+                // Gives the data to speed up your build, improve build reliability and accelerate build debugging.
+                plugins.apply(settings.libs.plugins.plugin("develocity").id)
 
-                    if (develocity.enabled) {
-                        // Gives the data to speed up your build, improve build reliability and accelerate build debugging.
-                        plugins.apply(settings.libs.plugins.plugin("develocity").id)
+                // Enhances published build scans by adding a set of tags, links and custom values that have proven to be useful for many projects building with Develocity.
+                plugins.apply(settings.libs.plugins.plugin("develocityCommonCustomUserData").id)
 
-                        // Enhances published build scans by adding a set of tags, links and custom values that have proven to be useful for many projects building with Develocity.
-                        plugins.apply(settings.libs.plugins.plugin("develocityCommonCustomUserData").id)
-
-                        applySettings()
-                    }
-                }
+                develocity.applyTo()
+                enrichTeamCityData()
+                enrichGitData()
+            }
         }
-    }
-
-    private fun Settings.applySettings() {
-        configureDevelocityConfiguration()
-        enrichTeamCityData()
-        enrichGitData()
     }
 
     private fun Settings.enrichTeamCityData() {

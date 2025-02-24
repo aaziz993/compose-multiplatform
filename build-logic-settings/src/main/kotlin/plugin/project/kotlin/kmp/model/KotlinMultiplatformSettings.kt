@@ -1,15 +1,20 @@
 package plugin.project.kotlin.kmp.model
 
+import gradle.id
 import gradle.kotlin
-import kotlin.collections.component1
-import kotlin.collections.component2
+import gradle.libs
+import gradle.plugin
+import gradle.plugins
+import gradle.settings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
 import plugin.project.apple.cocoapods.model.CocoapodsSettings
-import plugin.project.java.application.model.JavaApplication
+import plugin.project.java.application.JavaApplication
 import plugin.project.java.model.Jar
 import plugin.project.java.model.JavaToolchainSpec
+import plugin.project.java.model.application.JavaApplication
+import plugin.project.kotlin.cocoapods.model.CocoapodsSettings
 import plugin.project.kotlin.model.language.KotlinCommonCompilerOptions
 import plugin.project.kotlin.model.language.SourceSet
 import plugin.project.kotlin.model.language.android.KotlinAndroidTargetSettings
@@ -95,31 +100,32 @@ internal data class KotlinMultiplatformSettings(
     }
 
     context(Project)
-    fun applyTo() {
-        super.applyTo(kotlin)
-        kotlin.applyDefaultHierarchyTemplate {
-            common {
-                hierarchy?.forEach { (name, group) ->
-                    group(name) {
-                        group.forEach { targetName ->
-                            when (targetName) {
-                                "jvm" -> withJvm()
-                                "android" -> withAndroidTarget()
-                                "ios" -> group("ios") {
-                                    withIos()
-                                }
+    fun applyTo() =
+        pluginManager.withPlugin(settings.libs.plugins.plugin("kotlin.multiplatform").id) {
+            super.applyTo(kotlin)
+            kotlin.applyDefaultHierarchyTemplate {
+                common {
+                    hierarchy?.forEach { (name, group) ->
+                        group(name) {
+                            group.forEach { targetName ->
+                                when (targetName) {
+                                    "jvm" -> withJvm()
+                                    "android" -> withAndroidTarget()
+                                    "ios" -> group("ios") {
+                                        withIos()
+                                    }
 
-                                "iosArm64" -> withIosArm64()
-                                "iosX64" -> withIosX64()
-                                "iosSimulatorArm64" -> withIosSimulatorArm64()
-                                "js" -> withJs()
-                                "wasm" -> withWasmJs()
-                                else -> group(targetName)
+                                    "iosArm64" -> withIosArm64()
+                                    "iosX64" -> withIosX64()
+                                    "iosSimulatorArm64" -> withIosSimulatorArm64()
+                                    "js" -> withJs()
+                                    "wasm" -> withWasmJs()
+                                    else -> group(targetName)
+                                }
                             }
                         }
                     }
                 }
             }
         }
-    }
 }

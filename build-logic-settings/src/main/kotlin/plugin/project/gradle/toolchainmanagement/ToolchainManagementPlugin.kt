@@ -13,16 +13,12 @@ internal class ToolchainManagementPlugin : Plugin<Settings> {
 
     override fun apply(target: Settings) {
         with(target) {
-           projectProperties.plugins.toolchainManagement
+            projectProperties.plugins.toolchainManagement
                 .takeIf(ToolchainManagementSettings::enabled)?.let { toolchainManagement ->
                     plugins.apply(settings.libs.plugins.plugin("foojay-resolver-convention").id)
 
-                    applySettings()
+                    toolchainManagement.applyTo()
                 }
         }
-    }
-
-    private fun Settings.applySettings() {
-        configureToolchainManagement()
     }
 }

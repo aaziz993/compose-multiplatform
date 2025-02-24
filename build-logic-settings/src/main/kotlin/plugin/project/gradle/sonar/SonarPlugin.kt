@@ -11,13 +11,14 @@ import org.gradle.api.Project
 
 internal class SonarPlugin : Plugin<Project> {
 
-    override fun apply(target: Project) = with(target) {
-        if (!projectProperties.plugins.sonar.enabled || !projectProperties.kotlin.hasTargets) {
-            return@with
+    override fun apply(target: Project) {
+        with(target) {
+            projectProperties.plugins.sonar
+                .takeIf { it.enabled && projectProperties.kotlin.hasTargets }?.let { sonar ->
+                    plugins.apply(settings.libs.plugins.plugin("sonarqube").id)
+
+                    sonar.applyTo()
+                }
         }
-
-        plugins.apply(settings.libs.plugins.plugin("sonarqube").id)
-
-        configureSonarExtension()
     }
 }

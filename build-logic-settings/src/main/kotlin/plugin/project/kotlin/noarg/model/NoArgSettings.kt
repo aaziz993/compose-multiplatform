@@ -2,20 +2,30 @@
 
 package plugin.project.kotlin.noarg.model
 
+import gradle.id
+import gradle.libs
+import gradle.noArg
+import gradle.plugin
+import gradle.plugins
+import gradle.settings
 import gradle.trySet
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
+import plugin.project.model.EnabledSettings
 
 @Serializable
 internal data class NoArgSettings(
     override val myAnnotations: List<String>? = null,
     override val myPresets: List<String>? = null,
     val invokeInitializers: Boolean? = null,
-    val enabled: Boolean = true,
-) : NoArgExtension {
+    override val enabled: Boolean = true,
+) : NoArgExtension, EnabledSettings {
 
-    fun applyTo(extension: org.jetbrains.kotlin.noarg.gradle.NoArgExtension) {
-        myAnnotations?.let(extension::annotations)
-        myPresets?.let(extension.myPresets::addAll)
-        extension::invokeInitializers trySet invokeInitializers
-    }
+    context(Project)
+    fun applyTo() =
+        pluginManager.withPlugin(settings.libs.plugins.plugin("noarg").id) {
+            myAnnotations?.let(noArg::annotations)
+            myPresets?.let(noArg.myPresets::addAll)
+            noArg::invokeInitializers trySet invokeInitializers
+        }
 }

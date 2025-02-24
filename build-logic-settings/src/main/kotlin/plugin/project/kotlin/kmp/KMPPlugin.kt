@@ -12,65 +12,26 @@ import gradle.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
+import plugin.project.kotlin.kmp.model.KotlinMultiplatformSettings
 import plugin.project.model.Layout
 
 internal class KMPPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (!projectProperties.kotlin.hasTargets) {
-                return@with
+            projectProperties.kotlin.takeIf(KotlinMultiplatformSettings::hasTargets)?.let { kotlin ->
+                plugins.apply(settings.libs.plugins.plugin("kotlin.multiplatform").id)
+
+                // Enable Default Kotlin Hierarchy.
+                extraProperties.set("kotlin.mpp.applyDefaultHierarchyTemplate", "true")
+
+                // IOS Compose uses UiKit, so we need to explicitly enable it, since it is experimental.
+                extraProperties.set("org.jetbrains.compose.experimental.uikit.enabled", "true")
+
+                kotlin.applyTo()
+
+                adjustSourceSets()
             }
-
-            plugins.apply(settings.libs.plugins.plugin("kotlin.multiplatform").id)
-
-            // Enable Default Kotlin Hierarchy.
-            extraProperties.set("kotlin.mpp.applyDefaultHierarchyTemplate", "true")
-
-            // IOS Compose uses UiKit, so we need to explicitly enable it, since it is experimental.
-            extraProperties.set("org.jetbrains.compose.experimental.uikit.enabled", "true")
-
-            configureKotlinMultiplatformExtension()
-
-            adjustSourceSets()
-
-            // Workaround for KTIJ-27212, to get proper compiler arguments in the common code facet after import.
-            // Apparently, configuring compiler arguments for metadata compilation is not sufficient.
-            // This workaround doesn't fix intermediate source sets, though, only the most common fragment.
-//        kotlinMPE.compilerOptions {
-//            configureFrom(module.mostCommonFragment.settings)
-//        }
-
-//        val hasJUnit5 = module.fragments
-//            .any { it.settings.junit == JUnitVersion.JUNIT5 }
-//        val hasJUnit = module.fragments
-//            .any { it.settings.junit != JUnitVersion.NONE }
-//        if (hasJUnit) {
-//            project.configurations.all { config ->
-//                config.resolutionStrategy.capabilitiesResolution.withCapability("org.jetbrains.kotlin:kotlin-test-framework-impl") { capability ->
-//                    val selected = if (hasJUnit5) {
-//                        capability.candidates
-//                            .filter { (it.id as? ModuleComponentIdentifier)?.module == "kotlin-test-junit5" }
-//                            .firstOrNull { (it.id as? ModuleComponentIdentifier)?.version == UsedVersions.kotlinVersion }
-//                            ?: error(
-//                                "No kotlin test junit5 dependency variant on classpath. Existing: " +
-//                                    capability.candidates.joinToString { it.variantName },
-//                            )
-//                    }
-//                    else {
-//                        capability.candidates
-//                            .firstOrNull { (it.id as? ModuleComponentIdentifier)?.version == UsedVersions.kotlinVersion }
-//                            ?: error(
-//                                "No kotlin test junit dependency variant on classpath. Existing: " +
-//                                    capability.candidates.joinToString { it.variantName },
-//                            )
-//                    }
-//
-//                    capability.select(selected)
-//                    capability.because("Select junit impl, since it is embedded")
-//                }
-//            }
-//        }
         }
     }
 

@@ -16,14 +16,10 @@ internal class KspPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            projectProperties.plugins.ksp.let { ksp ->
-                if (!ksp.enabled || !projectProperties.kotlin.hasTargets) {
-                    return@with
-                }
-
+            projectProperties.plugins.ksp.takeIf { it.enabled && projectProperties.kotlin.hasTargets }?.let { ksp ->
                 plugins.apply(settings.libs.plugins.plugin("ksp").id)
 
-                configureKspExtension()
+                ksp.applyTo()
 
                 val kspCommonMainMetadata by configurations
                 dependencies {

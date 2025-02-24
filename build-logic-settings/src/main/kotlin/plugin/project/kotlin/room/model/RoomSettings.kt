@@ -1,17 +1,27 @@
 package plugin.project.kotlin.room.model
 
+import gradle.id
+import gradle.libs
+import gradle.plugin
+import gradle.plugins
+import gradle.room
+import gradle.settings
 import gradle.trySet
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
+import plugin.project.model.EnabledSettings
 
 @Serializable
 internal data class RoomSettings(
     override val schemaDirectories: Set<String>? = null,
     override val generateKotlin: Boolean? = null,
-    val enabled: Boolean = true
-) : RoomExtension {
+    override val enabled: Boolean = true
+) : RoomExtension, EnabledSettings {
 
-    fun applyTo(extension: androidx.room.gradle.RoomExtension) {
-        schemaDirectories?.forEach(extension::schemaDirectory)
-        extension::generateKotlin trySet generateKotlin
-    }
+    context(Project)
+    fun applyTo() =
+        pluginManager.withPlugin(settings.libs.plugins.plugin("room").id) {
+            schemaDirectories?.forEach(room::schemaDirectory)
+            room::generateKotlin trySet generateKotlin
+        }
 }

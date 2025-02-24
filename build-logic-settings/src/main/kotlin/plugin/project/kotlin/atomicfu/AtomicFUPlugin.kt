@@ -1,5 +1,6 @@
 package plugin.project.kotlin.atomicfu
 
+import gradle.atomicFU
 import gradle.id
 import gradle.libs
 import gradle.plugin
@@ -13,13 +14,12 @@ internal class AtomicFUPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (projectProperties.plugins.atomicFU.enabled || !projectProperties.kotlin.hasTargets) {
-                return@with
-            }
+            projectProperties.plugins.atomicFU
+                .takeIf { it.enabled && projectProperties.kotlin.hasTargets }?.let { atomicFU ->
+                    plugins.apply(settings.libs.plugins.plugin("atomicfu").id)
 
-            plugins.apply(settings.libs.plugins.plugin("atomicfu").id)
-
-            configureAtomicFUPluginExtension()
+                    atomicFU.applyTo()
+                }
         }
     }
 }

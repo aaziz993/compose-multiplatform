@@ -6,6 +6,7 @@ import gradle.plugin
 import gradle.plugins
 import gradle.projectProperties
 import gradle.settings
+import gradle.sqldelight
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -13,13 +14,12 @@ internal class SqlDelightPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (projectProperties.plugins.sqldelight.enabled || !projectProperties.kotlin.hasTargets) {
-                return@with
-            }
+            projectProperties.plugins.sqldelight
+                .takeIf { it.enabled && projectProperties.kotlin.hasTargets }?.let { sqldelight ->
+                    plugins.apply(settings.libs.plugins.plugin("sqldelight").id)
 
-            plugins.apply(settings.libs.plugins.plugin("sqldelight").id)
-
-            configureSqlDelightExtension()
+                    sqldelight.applyTo()
+                }
         }
     }
 }

@@ -13,11 +13,12 @@ internal class SerializationPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (projectProperties.plugins.serialization.enabled || !projectProperties.kotlin.hasTargets) {
-                return@with
-            }
+            projectProperties.plugins.serialization
+                .takeIf { it.enabled && projectProperties.kotlin.hasTargets }?.let { serialization ->
+                    plugins.apply(settings.libs.plugins.plugin("kotlin.serialization").id)
 
-            plugins.apply(settings.libs.plugins.plugin("kotlin.serialization").id)
+                    serialization.applyTo()
+                }
         }
     }
 }

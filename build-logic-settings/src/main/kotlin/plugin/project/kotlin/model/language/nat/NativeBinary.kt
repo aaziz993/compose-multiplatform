@@ -1,6 +1,5 @@
 package plugin.project.kotlin.model.language.nat
 
-import gradle.moduleName
 import gradle.tryAssign
 import gradle.trySet
 import org.gradle.api.Project

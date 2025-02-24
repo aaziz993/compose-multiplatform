@@ -13,13 +13,12 @@ internal class RoomPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (projectProperties.plugins.room.enabled || !projectProperties.kotlin.hasTargets) {
-                return@with
-            }
+            projectProperties.plugins.room
+                .takeIf { it.enabled && projectProperties.kotlin.hasTargets }?.let { room ->
+                    plugins.apply(settings.libs.plugins.plugin("room").id)
 
-            plugins.apply(settings.libs.plugins.plugin("room").id)
-
-            configureRoomExtension()
+                    room.applyTo()
+                }
         }
     }
 }

@@ -1,12 +1,18 @@
 package plugin.project.gradle.develocity.model
 
+import gradle.id
 import gradle.isCI
+import gradle.libs
+import gradle.plugin
+import gradle.plugins
 import gradle.projectProperties
 import gradle.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings
+import org.gradle.kotlin.dsl.develocity
 import plugin.project.gradle.model.DirectoryBuildCache
 import plugin.project.gradle.model.RemoteBuildCache
+import plugin.project.model.EnabledSettings
 
 @Serializable
 internal data class DevelocitySettings(
@@ -16,46 +22,47 @@ internal data class DevelocitySettings(
     override val projectId: String? = null,
     override val allowUntrustedServer: Boolean? = null,
     override val accessKey: String? = null,
-    val enabled: Boolean = true,
+    override val enabled: Boolean = true,
     val localCache: DirectoryBuildCache = DirectoryBuildCache(),
     val remoteCache: RemoteBuildCache = RemoteBuildCache(),
     val git: Git? = null,
-) : DevelocityConfiguration {
+) : DevelocityConfiguration, EnabledSettings {
 
     context(Settings)
-    fun applyTo(configuration: com.gradle.develocity.agent.gradle.DevelocityConfiguration) {
-        buildScan?.let { buildScan ->
-            configuration.buildScan {
-                buildScan.applyTo(this)
-            }
-        }
-
-        configuration.server tryAssign server
-        configuration.edgeDiscovery tryAssign edgeDiscovery
-        configuration.projectId tryAssign projectId
-        configuration.allowUntrustedServer tryAssign allowUntrustedServer
-        configuration.accessKey tryAssign accessKey
-
-        if (isCI) {
-            buildCache {
-                localCache.let { localCache ->
-                    local {
-                        localCache.applyTo(this)
-                    }
+    fun applyTo() =
+        pluginManager.withPlugin(libs.plugins.plugin("develocity").id) {
+            buildScan?.let { buildScan ->
+                develocity.buildScan {
+                    buildScan.applyTo(this)
                 }
-                remoteCache.let { remoteCache ->
-                    remote(configuration.buildCache) {
-                        remoteCache.applyTo(this)
+            }
 
-                        // Check access key presence to avoid build cache errors on PR builds when access key is not present
-                        val accessKey = System.getenv().getOrElse("GRADLE_ENTERPRISE_ACCESS_KEY") {
-                           projectProperties.gradleEnterpriseAccessKey
+            develocity.server tryAssign server
+            develocity.edgeDiscovery tryAssign edgeDiscovery
+            develocity.projectId tryAssign projectId
+            develocity.allowUntrustedServer tryAssign allowUntrustedServer
+            develocity.accessKey tryAssign accessKey
+
+            if (isCI) {
+                buildCache {
+                    localCache.let { localCache ->
+                        local {
+                            localCache.applyTo(this)
                         }
+                    }
+                    remoteCache.let { remoteCache ->
+                        remote(develocity.buildCache) {
+                            remoteCache.applyTo(this)
 
-                        isPush = remoteCache.isPush == true && accessKey != null
+                            // Check access key presence to avoid build cache errors on PR builds when access key is not present
+                            val accessKey = System.getenv().getOrElse("GRADLE_ENTERPRISE_ACCESS_KEY") {
+                                projectProperties.gradleEnterpriseAccessKey
+                            }
+
+                            isPush = remoteCache.isPush == true && accessKey != null
+                        }
                     }
                 }
             }
         }
-    }
 }

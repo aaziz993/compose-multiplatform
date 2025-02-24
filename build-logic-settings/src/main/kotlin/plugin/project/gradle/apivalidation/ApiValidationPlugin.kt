@@ -8,19 +8,19 @@ import gradle.projectProperties
 import gradle.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import plugin.project.gradle.apivalidation.model.ApiValidationSettings
 
 internal class ApiValidationPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (!projectProperties.plugins.apiValidation.enabled || !projectProperties.kotlin.hasTargets) {
-                return@with
-            }
+            projectProperties.plugins.apiValidation
+                .takeIf { it.enabled && projectProperties.kotlin.hasTargets }?.let { apiValidation ->
+                    // The tool allows dumping binary API of a JVM part of a Kotlin library that is public in the sense of Kotlin visibilities and ensures that the public binary API wasn't changed in a way that makes this change binary incompatible.
+                    plugins.apply(settings.libs.plugins.plugin("binary.compatibility.validator").id)
 
-            // The tool allows dumping binary API of a JVM part of a Kotlin library that is public in the sense of Kotlin visibilities and ensures that the public binary API wasn't changed in a way that makes this change binary incompatible.
-            plugins.apply(settings.libs.plugins.plugin("binary.compatibility.validator").id)
-
-            configureApiValidationExtension()
+                    apiValidation.applyTo()
+                }
         }
     }
 }

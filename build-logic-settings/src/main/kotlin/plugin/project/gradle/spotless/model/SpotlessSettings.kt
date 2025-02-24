@@ -1,7 +1,15 @@
 package plugin.project.gradle.spotless.model
 
 import com.diffplug.spotless.LineEnding
+import gradle.id
+import gradle.libs
+import gradle.plugin
+import gradle.plugins
+import gradle.settings
+import gradle.spotless
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
+import plugin.project.model.EnabledSettings
 
 @Serializable
 internal data class SpotlessSettings(
@@ -13,5 +21,12 @@ internal data class SpotlessSettings(
     override val predeclareDeps: Boolean? = null,
     override val formats: Map<String, FormatSettings>? = null,
     override val kotlinGradle: KotlinGradleExtension? = null,
-    val enabled: Boolean = true
-) : SpotlessExtension
+    override val enabled: Boolean = true
+) : SpotlessExtension, EnabledSettings {
+
+    context(Project)
+    fun applyTo() =
+        pluginManager.withPlugin(settings.libs.plugins.plugin("spotless").id) {
+            super.applyTo(spotless)
+        }
+}

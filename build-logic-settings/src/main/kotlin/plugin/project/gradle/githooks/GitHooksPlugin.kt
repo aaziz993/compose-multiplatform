@@ -13,15 +13,11 @@ internal class GitHooksPlugin : Plugin<Settings> {
 
     override fun apply(target: Settings) {
         with(target) {
-           projectProperties.plugins.gitHooks.takeIf(GitHooksSettings::enabled)?.let { gitHooks ->
-                settings.plugins.apply(settings.libs.plugins.plugin("gradle-pre-commit-git-hooks").id)
+            projectProperties.plugins.gitHooks.takeIf(GitHooksSettings::enabled)?.let { gitHooks ->
+                plugins.apply(settings.libs.plugins.plugin("gradle-pre-commit-git-hooks").id)
 
-                applySettings()
+                gitHooks.applyTo()
             }
         }
-    }
-
-    private fun Settings.applySettings() {
-        configureGitHooksExtension()
     }
 }

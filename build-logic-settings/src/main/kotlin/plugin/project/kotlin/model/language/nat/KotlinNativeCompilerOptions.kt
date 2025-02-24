@@ -1,6 +1,5 @@
 package plugin.project.kotlin.model.language.nat
 
-import gradle.moduleName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.assign

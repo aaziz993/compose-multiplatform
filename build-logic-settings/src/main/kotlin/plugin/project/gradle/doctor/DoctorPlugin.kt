@@ -1,5 +1,6 @@
 package plugin.project.gradle.doctor
 
+import com.android.tools.r8.internal.dO
 import gradle.id
 import gradle.isCI
 import gradle.libs
@@ -13,22 +14,13 @@ import org.gradle.api.Project
 
 internal class DoctorPlugin : Plugin<Project> {
 
-    override fun apply(target: Project) = with(target) {
-        if (!projectProperties.plugins.doctor.enabled || this != rootProject) {
-            return@with
-        }
+    override fun apply(target: Project) {
+        with(target) {
+            projectProperties.plugins.doctor.takeIf { it.enabled && project == rootProject }?.let { doctor ->
+                plugins.apply(settings.libs.plugins.plugin("doctor").id)
 
-        plugins.apply(settings.libs.plugins.plugin("doctor").id)
-
-        configureDoctorExtension()
-
-        // Always monitor tasks on CI, but disable it locally by default with providing an option to opt-in.
-        // See 'doctor.enableTaskMonitoring' in gradle.properties for details.
-        val enableTasksMonitoring = isCI || providers.gradleProperty("doctor.enable-task-monitoring").get().toBoolean()
-
-        if (!enableTasksMonitoring) {
-            logger.info("Gradle Doctor task monitoring is disabled.")
-            gradle.sharedServices.unregister("listener-service")
+                doctor.applyTo()
+            }
         }
     }
 }

@@ -1,6 +1,12 @@
 package plugin.project.apple.model
 
+import gradle.apple
+import gradle.id
+import gradle.libs
 import gradle.moduleName
+import gradle.plugin
+import gradle.plugins
+import gradle.settings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -12,19 +18,20 @@ internal data class AppleSettings(
 ) : AppleProjectExtension {
 
     context(Project)
-    fun applyTo(extension: org.jetbrains.gradle.apple.AppleProjectExtension) {
-        extension.teamID = teamID ?: moduleName
+    fun applyTo() =
+        pluginManager.withPlugin(settings.libs.plugins.plugin("apple").id) {
+            apple.teamID = teamID ?: moduleName
 
-        iosApps?.forEach { iosApp ->
-            iosApp.name.takeIf(String::isNotEmpty)?.also { name ->
-                extension.iosApp(name, iosApp::applyTo)
-            } ?: extension.iosApp(iosApp::applyTo)
-        }
+            iosApps?.forEach { iosApp ->
+                iosApp.name.takeIf(String::isNotEmpty)?.also { name ->
+                    apple.iosApp(name, iosApp::applyTo)
+                } ?: apple.iosApp(iosApp::applyTo)
+            }
 
-        iosFrameworks?.forEach { iosFramework ->
-            iosFramework.name.takeIf(String::isNotEmpty)?.also { name ->
-                extension.iosFramework(name, iosFramework::applyTo)
-            } ?: extension.iosFramework(iosFramework::applyTo)
+            iosFrameworks?.forEach { iosFramework ->
+                iosFramework.name.takeIf(String::isNotEmpty)?.also { name ->
+                    apple.iosFramework(name, iosFramework::applyTo)
+                } ?: apple.iosFramework(iosFramework::applyTo)
+            }
         }
-    }
 }

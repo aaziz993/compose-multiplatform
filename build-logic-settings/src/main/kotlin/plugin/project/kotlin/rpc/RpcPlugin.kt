@@ -13,13 +13,12 @@ internal class RpcPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (projectProperties.plugins.rpc.enabled || !projectProperties.kotlin.hasTargets) {
-                return@with
-            }
+            projectProperties.plugins.rpc
+                .takeIf { it.enabled && projectProperties.kotlin.hasTargets }?.let { rpc ->
+                    plugins.apply(settings.libs.plugins.plugin("kotlinx.rpc").id)
 
-            plugins.apply(settings.libs.plugins.plugin("kotlinx.rpc").id)
-
-            configureRpcExtension()
+                    rpc.applyTo()
+                }
         }
     }
 }

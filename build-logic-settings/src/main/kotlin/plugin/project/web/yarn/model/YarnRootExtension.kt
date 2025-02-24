@@ -1,8 +1,6 @@
 package plugin.project.web.yarn.model
 
 import gradle.trySet
-import kotlin.text.toBoolean
-import kotlin.text.uppercase
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnLockMismatchReport

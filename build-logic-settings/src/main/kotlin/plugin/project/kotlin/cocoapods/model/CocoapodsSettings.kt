@@ -1,8 +1,17 @@
-package plugin.project.apple.cocoapods.model
+package plugin.project.kotlin.cocoapods.model
 
+import gradle.cocoapods
+import gradle.id
+import gradle.kotlin
+import gradle.libs
+import gradle.plugin
+import gradle.plugins
+import gradle.settings
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
 import plugin.project.kotlin.model.language.nat.Framework
+import plugin.project.model.EnabledSettings
 
 @Serializable
 internal data class CocoapodsSettings(
@@ -26,5 +35,12 @@ internal data class CocoapodsSettings(
     override val specRepos: Set<String>? = null,
     override val pods: List<Pod>? = null,
     override val podDependencies: List<CocoapodsExtension.CocoapodsDependency>? = null,
-    val enabled: Boolean = true
-) : CocoapodsExtension
+    override val enabled: Boolean = true
+) : CocoapodsExtension, EnabledSettings {
+
+    context(Project)
+    fun applyTo() =
+        pluginManager.withPlugin(settings.libs.plugins.plugin("cocoapods").id) {
+            super.applyTo(kotlin.cocoapods)
+        }
+}

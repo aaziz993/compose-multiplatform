@@ -1,7 +1,9 @@
-package plugin.project.java.application.model
+package plugin.project.java.model.application
 
 import gradle.tryAssign
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
+import org.gradle.api.plugins.ApplicationPlugin
 import org.gradle.api.plugins.JavaApplication
 
 /**
@@ -73,11 +75,13 @@ internal data class JavaApplication(
      */
 ) {
 
-    fun applyTo(application: JavaApplication) {
-        applicationName?.let(application::setApplicationName)
-        application.mainModule tryAssign mainModule
-        application.mainClass tryAssign mainClass
-        applicationDefaultJvmArgs?.let(application::setApplicationDefaultJvmArgs)
-        executableDir?.let(application::setExecutableDir)
-    }
+    context(Project)
+    fun applyTo(application: JavaApplication) =
+        pluginManager.withPlugin(ApplicationPlugin.APPLICATION_PLUGIN_NAME) {
+            applicationName?.let(application::setApplicationName)
+            application.mainModule tryAssign mainModule
+            application.mainClass tryAssign mainClass
+            applicationDefaultJvmArgs?.let(application::setApplicationDefaultJvmArgs)
+            executableDir?.let(application::setExecutableDir)
+        }
 }

@@ -1,15 +1,21 @@
 package plugin.project.gradle.doctor.model
 
 import com.osacky.doctor.AppleRosettaTranslationCheckMode
+import gradle.doctor
+import gradle.id
 import gradle.isCI
+import gradle.libs
+import gradle.plugin
+import gradle.plugins
+import gradle.settings
 import gradle.unregister
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import plugin.project.model.EnabledSettings
 
 @Suppress("PropertyName", "ktlint:standard:property-naming")
 @Serializable
 internal data class DoctorSettings(
-    val enabled: Boolean = true,
     /** Always monitor tasks on CI, but disable it locally by default with providing an option to opt-in.
      * See 'doctor.enableTaskMonitoring' in gradle.properties for details.
      */
@@ -29,16 +35,21 @@ internal data class DoctorSettings(
     override val warnIfKotlinCompileDaemonFallback: Boolean? = null,
     override val appleRosettaTranslationCheckMode: AppleRosettaTranslationCheckMode? = null,
     override val javaHome: JavaHomeHandler? = null,
-) : DoctorExtension{
+    override val enabled: Boolean = true,
+) : DoctorExtension, EnabledSettings {
 
     context(Project)
-   override fun applyTo(extension: com.osacky.doctor.DoctorExtension) {
-        super.applyTo(extension)
-        val enableTasksMonitoring = isCI || enableTaskMonitoring
+    fun applyTo() =
+        pluginManager.withPlugin(settings.libs.plugins.plugin("doctor").id) {
+            super.applyTo(doctor)
 
-        if (!enableTasksMonitoring) {
-            logger.info("Gradle Doctor task monitoring is disabled.")
-            gradle.sharedServices.unregister("listener-service")
+            // Always monitor tasks on CI, but disable it locally by default with providing an option to opt-in.
+            // See 'doctor.enableTaskMonitoring' in gradle.properties for details.
+            val enableTasksMonitoring = isCI || providers.gradleProperty("doctor.enable-task-monitoring").get().toBoolean()
+
+            if (!enableTasksMonitoring) {
+                logger.info("Gradle Doctor task monitoring is disabled.")
+                gradle.sharedServices.unregister("listener-service")
+            }
         }
-    }
 }

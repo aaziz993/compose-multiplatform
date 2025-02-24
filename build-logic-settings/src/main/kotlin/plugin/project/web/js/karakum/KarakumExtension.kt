@@ -7,7 +7,6 @@ import gradle.plugin
 import gradle.plugins
 import gradle.projectProperties
 import gradle.settings
-import gradle.tryAssign
 import org.gradle.api.Project
 
 internal fun Project.configureKarakumExtension() =

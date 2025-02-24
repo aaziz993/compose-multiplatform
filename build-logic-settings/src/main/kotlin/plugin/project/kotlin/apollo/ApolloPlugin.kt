@@ -13,13 +13,12 @@ internal class ApolloPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (projectProperties.plugins.apollo.enabled ||projectProperties.kotlin.hasTargets) {
-                return@with
-            }
+            projectProperties.plugins.apollo
+                .takeIf { it.enabled && projectProperties.kotlin.hasTargets }?.let { apollo ->
+                    plugins.apply(settings.libs.plugins.plugin("apollo3").id)
 
-            plugins.apply(settings.libs.plugins.plugin("apollo3").id)
-
-            configureApolloExtension()
+                    apollo.applyTo()
+                }
         }
     }
 }

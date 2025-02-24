@@ -1,4 +1,4 @@
-package plugin.project.apple.cocoapods.model
+package plugin.project.kotlin.cocoapods.model
 
 import kotlinx.serialization.Serializable
 

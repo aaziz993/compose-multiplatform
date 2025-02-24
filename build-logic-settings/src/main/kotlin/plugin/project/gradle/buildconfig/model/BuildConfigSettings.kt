@@ -1,14 +1,23 @@
 package plugin.project.gradle.buildconfig.model
 
+import gradle.buildConfig
+import gradle.id
+import gradle.libs
+import gradle.plugin
+import gradle.plugins
+import gradle.settings
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
+import plugin.project.model.EnabledSettings
 
 @Serializable
 internal data class BuildConfigSettings(
-    val enabled: Boolean = true,
     override val sourceSets: List<String>? = null,
-) : BuildConfigExtension {
+    override val enabled: Boolean = true,
+) : BuildConfigExtension, EnabledSettings {
 
-    fun applyTo(extension: com.github.gmazzo.gradle.plugins.BuildConfigExtension) {
-        sourceSets?.forEach(extension.sourceSets::register)
+    context(Project)
+    fun applyTo() = pluginManager.withPlugin(settings.libs.plugins.plugin("build.config").id) {
+        sourceSets?.forEach(buildConfig.sourceSets::register)
     }
 }

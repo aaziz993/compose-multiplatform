@@ -13,13 +13,13 @@ internal class KoverPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (!projectProperties.plugins.kover.enabled ||projectProperties.kotlin.hasTargets) {
-                return@with
-            }
+            projectProperties.plugins.kover
+                .takeIf { it.enabled && projectProperties.kotlin.hasTargets }?.let { kover ->
 
-            plugins.apply(settings.libs.plugins.plugin("kover").id)
+                    plugins.apply(settings.libs.plugins.plugin("kover").id)
 
-            configureKoverExtension()
+                    kover.applyTo()
+                }
         }
     }
 }
