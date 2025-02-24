@@ -21,12 +21,15 @@ internal val Settings.libs: TomlParseResult
 
 private fun String.asCatalogAlias() = replace(".", "-")
 
-internal fun TomlTable.version(alias: String) =
-    getString(alias.asCatalogAlias())
+internal fun TomlTable.version(alias: String) = getString(alias.asCatalogAlias())
 
-internal fun TomlTable.plugin(alias: String): TomlTable = getTable(alias.asCatalogAlias())!!
+internal fun TomlTable.plugin(alias: String): TomlTable = alias.asCatalogAlias().let { name ->
+    getTable(name) ?: error("Not found plugin: $name")
+}
 
-internal fun TomlTable.library(alias: String): TomlTable = getTable(alias.asCatalogAlias())!!
+internal fun TomlTable.library(alias: String): TomlTable = alias.asCatalogAlias().let { name ->
+    getTable(name) ?: error("Not found library: $name")
+}
 
 internal val TomlTable.id
     get() = getString("id")!!

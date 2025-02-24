@@ -2,11 +2,30 @@ kotlin:
   sourceSets:
     commonMain:
       dependencies:
+        - $compose.runtime
         - $compose.foundation
         - $compose.material3
+        - $compose.ui
+        - $compose.components.resources
+        - $compose.material3AdaptiveNavigationSuite
+        - $compose.materialIconsExtended
+
+    commonTest:
+      dependencies:
+        - $compose.uiTest
+
+    jvmMain:
+      dependencies:
+        - $compose.desktop.currentOs
+
     androidMain:
       dependencies:
+        - $compose.preview
         - $libs.androidx.activity.compose
+
+    jsMain:
+      dependencies:
+        - $compose.html.core
 
 compose:
   enabled: true

@@ -19,8 +19,8 @@ uiTooling =  { module = "org.jetbrains.compose.ui:ui-tooling", version.ref = "co
 uiUtil =  { module = "org.jetbrains.compose.ui:ui-util", version.ref = "compose" }
 preview =  { module = "org.jetbrains.compose.ui:ui-tooling-preview", version.ref = "compose" }
 materialIconsExtended =  { module = "org.jetbrains.compose.material:material-icons-extended", version.ref = "materialExtendedIcon" }
-common-components-resources =  { module = "org.jetbrains.compose.components:components-resources", version.ref = "compose" }
-common-components-uiToolingPreview =  { module = "org.jetbrains.compose.components:components-ui-tooling-preview", version.ref = "compose" }
+components-resources =  { module = "org.jetbrains.compose.components:components-resources", version.ref = "compose" }
+components-uiToolingPreview =  { module = "org.jetbrains.compose.components:components-ui-tooling-preview", version.ref = "compose" }
 ##Desktop
 desktop-common =  { module = "org.jetbrains.compose.desktop:desktop", version.ref = "compose" }
 desktop-linux_x64 =  { module = "org.jetbrains.compose.desktop:desktop-jvm-linux-x64", version.ref = "compose" }

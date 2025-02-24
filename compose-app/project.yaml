@@ -17,14 +17,11 @@ kotlin:
     '':
       browser: { }
       nodejs: { }
-      binaries:
-        executable: true
 
   wasmJs:
     '':
       browser: { }
       nodejs: { }
-      executable: true
 
   sourceSets:
     commonMain:
@@ -33,14 +30,5 @@ kotlin:
         - ../cmp-lib
         - ../shared
 
-    jvmMain:
-      dependencies:
-        - $compose.desktop.currentOs
-
 settings:
   application: true
-  android:
-    minSdk: 35
-    signing:
-      enabled: true
-      propertiesFile: keystore.properties # default
