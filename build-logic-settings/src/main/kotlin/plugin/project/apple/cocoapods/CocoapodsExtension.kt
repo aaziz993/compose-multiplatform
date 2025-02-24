@@ -1,4 +1,4 @@
-package plugin.project.apple
+package plugin.project.apple.cocoapods
 
 import gradle.cocoapods
 import gradle.id

@@ -5,6 +5,7 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.jvm.toolchain.internal.DefaultJvmVendorSpec
+import plugin.project.java.application.model.JavaApplication
 
 @Serializable
 internal data class JavaSettings(
@@ -62,7 +63,5 @@ internal data class JavaSettings(
                 manifest.attributes?.let(attributes::putAll)
             }
         }
-
-
     }
 }

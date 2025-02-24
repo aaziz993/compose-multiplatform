@@ -1,4 +1,4 @@
-package plugin.project.java
+package plugin.project.java.application
 
 import gradle.javaApp
 import gradle.projectProperties

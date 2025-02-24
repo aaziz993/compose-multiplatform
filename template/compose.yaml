@@ -8,8 +8,6 @@ kotlin:
 compose:
   enabled: true
   resources:
-    packageName: resources
-    exposedAccessors: true
-  experimental:
-    hotReload:
-      enabled: true
+    publicResClass: true
+    packageOfResClass: resources
+    generateResClass: Auto

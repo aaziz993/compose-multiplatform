@@ -3,7 +3,7 @@ package plugin.project.kotlin.model
 import gradle.trySet
 import kotlinx.serialization.Serializable
 import org.jetbrains.kotlin.gradle.plugin.LanguageSettingsBuilder
-import plugin.project.apple.model.CocoapodsSettings
+import plugin.project.apple.cocoapods.model.CocoapodsSettings
 import plugin.project.kotlin.model.language.LanguageSettings
 import plugin.project.kotlin.model.language.SourceSet
 import plugin.project.kotlin.model.language.android.KotlinAndroidTarget

@@ -1,4 +1,4 @@
-package plugin.project.apple.model
+package plugin.project.apple.cocoapods.model
 
 import gradle.moduleName
 import gradle.trySet
@@ -198,25 +198,6 @@ internal interface CocoapodsExtension {
          * Path to local pod
          */
         val podspecDirectory: String? = null,
-//        /**
-//         * Configure pod from git repository. The podspec file is expected to be in the repository root.
-//         */
-//        @JvmOverloads
-//        fun git(url: String, configure: (Git.() -> Unit)?): PodLocation {
-//            val git = Git(URI(url))
-//            if (configure != null) {
-//                git.configure()
-//            }
-//            return git
-//        }
-//
-//        /**
-//         * Configure pod from git repository. The podspec file is expected to be in the repository root.
-//         */
-//        fun git(url: String, configure: Action<Git>) = git(url) {
-//            configure.execute(this)
-//        }
-
     ) {
 
         context(Project)

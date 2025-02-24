@@ -1,8 +1,7 @@
-package plugin.project.java.model
+package plugin.project.java.application.model
 
 import gradle.tryAssign
 import kotlinx.serialization.Serializable
-import org.gradle.api.file.CopySpec
 import org.gradle.api.plugins.JavaApplication
 
 /**
@@ -54,7 +53,7 @@ internal data class JavaApplication(
      * The specification of the contents of the distribution.
      *
      *
-     * Use this [CopySpec] to include extra files/resource in the application distribution.
+     * Use this [org.gradle.api.file.CopySpec] to include extra files/resource in the application distribution.
      * <pre class='autoTested'>
      * plugins {
      * id 'application'

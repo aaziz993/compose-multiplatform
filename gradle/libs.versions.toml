@@ -323,7 +323,8 @@ pako = "2.1.0"
 puppeteer = "20.9.0"
 
 ##Compose
-compose-multiplatform = "1.7.3"
+compose = "1.7.3"
+materialExtendedIcon = "1.7.0-rc01"
 # colorr picker
 colorpicker = "1.1.2"
 # icons
@@ -800,8 +801,8 @@ coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor3", version.re
 # additional cricle shapes
 squircle-shape = { group = "io.github.stoyan-vuchev", name = "squircle-shape", version.ref = "squircle-shape" }
 # material3 Adaptive
-material3-window-size-clazz = { module = "org.jetbrains.compose.material3:material3-window-size-class", version.ref = "compose-multiplatform" }
-material3-adaptive-navigation-suite = { module = "org.jetbrains.compose.material3:material3-adaptive-navigation-suite", version.ref = "compose-multiplatform" }
+material3-window-size-clazz = { module = "org.jetbrains.compose.material3:material3-window-size-class", version.ref = "compose" }
+material3-adaptive-navigation-suite = { module = "org.jetbrains.compose.material3:material3-adaptive-navigation-suite", version.ref = "compose" }
 material3-adaptive = { module = "org.jetbrains.compose.material3.adaptive:adaptive", version.ref = "material3-adaptive" }
 material3-adaptive-layout = { module = "org.jetbrains.compose.material3.adaptive:adaptive-layout", version.ref = "material3-adaptive" }
 material3-adaptive-navigation = { module = "org.jetbrains.compose.material3.adaptive:adaptive-navigation", version.ref = "material3-adaptive" }
@@ -1380,6 +1381,6 @@ seskar = { id = "io.github.turansky.seskar", version.ref = "seskar" }
 # converter of TypeScript declaration files to Kotlin declarations.
 karakum = { id = "io.github.sgrishchenko.karakum", version.ref = "karakum" }
 
-##Compose multiplatform
-compose-multiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
+##Compose
+compose-multiplatform = { id = "org.jetbrains.compose", version.ref = "compose" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

@@ -5,10 +5,14 @@ package plugin
 import gradle.allLibs
 import gradle.deepMerge
 import gradle.isUrl
+import gradle.libraryAsDependency
+import gradle.libs
 import gradle.projectProperties
 import gradle.serialization.decodeFromAny
 import gradle.serialization.encodeToAny
 import gradle.trySetSystemProperty
+import gradle.version
+import gradle.versions
 import java.net.URI
 import javax.xml.stream.XMLEventFactory
 import javax.xml.stream.XMLInputFactory
@@ -38,6 +42,9 @@ import plugin.project.gradle.toolchainmanagement.ToolchainManagementPlugin
 import plugin.project.model.Properties
 
 private const val PROJECT_PROPERTIES_FILE = "project.yaml"
+private const val VERSION_CATALOG_CACHE_DIR = "build-logic-settings/gradle"
+
+private const val COMPOSE_VERSION_CATALOG_FILE = "build-logic-settings/gradle/compose.versions.template.toml"
 
 /**
  * Gradle setting plugin, that is responsible for:
@@ -119,7 +126,7 @@ public class SettingsPlugin : Plugin<Settings> {
                             else {
                                 notation as String
 
-                                val cacheFile = layout.settingsDirectory.file("gradle/$catalogName.versions.toml").asFile
+                                val cacheFile = layout.settingsDirectory.file("$VERSION_CATALOG_CACHE_DIR/$catalogName.versions.toml").asFile
 
                                 if (cacheFile.exists()) {
                                     return@associate catalogName to Toml.parse(cacheFile.readText())
@@ -135,9 +142,9 @@ public class SettingsPlugin : Plugin<Settings> {
                                             Toml.parse(
                                                 URI(
                                                     "$url/$notation",
-                                                ).toURL().readText().also { catalogText ->
-                                                    cacheFile.writeText(catalogText)
-                                                },
+                                                ).toURL()
+                                                    .readText()
+                                                    .also(cacheFile::writeText), // write to cache
                                             )
                                         }
                                         catch (_: Throwable) {
@@ -148,6 +155,15 @@ public class SettingsPlugin : Plugin<Settings> {
                         }
                     }
                 }
+
+                // Load pre-defined compose version catalog
+                allLibs += "compose" to Toml.parse(
+                    layout.settingsDirectory.file(COMPOSE_VERSION_CATALOG_FILE).asFile
+                        .readText()
+                        .replace("\$kotlin", libs.versions.version("kotlin")!!)
+                        .replace("\$compose", libs.versions.version("compose")!!)
+                        .replace("\$materialExtendedIcon", libs.versions.version("materialExtendedIcon")!!),
+                )
             }
         }
 

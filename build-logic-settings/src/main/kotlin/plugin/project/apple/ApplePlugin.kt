@@ -14,6 +14,7 @@ import gradle.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
+import plugin.project.apple.cocoapods.configureCocoapodsExtension
 
 internal class ApplePlugin : Plugin<Project> {
 

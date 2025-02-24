@@ -5,11 +5,10 @@ package plugin.project
 import gradle.libs
 import gradle.moduleName
 import gradle.projectProperties
-import gradle.qualifiedModuleName
 import gradle.settings
 import gradle.version
 import gradle.versions
-import net.pearx.kasechange.toCamelCase
+import kotlin.reflect.full.declaredMemberProperties
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -63,7 +62,7 @@ internal class ProjectPlugin : Plugin<Project> {
                     )
                 }
             }
-dependencies.extensions.
+
             plugins.apply(KMPPlugin::class.java)
             plugins.apply(DoctorPlugin::class.java)
             plugins.apply(BuildConfigPlugin::class.java)
