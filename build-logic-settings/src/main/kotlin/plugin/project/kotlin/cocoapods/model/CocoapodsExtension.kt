@@ -146,29 +146,10 @@ internal interface CocoapodsExtension {
             }
         }
 
-        ios?.let { _ios ->
-            extension.ios.apply {
-                ::deploymentTarget trySet _ios.deploymentTarget
-            }
-        }
-
-        osx?.let { _osx ->
-            extension.osx.apply {
-                ::deploymentTarget trySet _osx.deploymentTarget
-            }
-        }
-
-        tvos?.let { _tvos ->
-            extension.tvos.apply {
-                ::deploymentTarget trySet _tvos.deploymentTarget
-            }
-        }
-
-        watchos?.let { _watchos ->
-            extension.watchos.apply {
-                ::deploymentTarget trySet _watchos.deploymentTarget
-            }
-        }
+        ios?.applyTo(extension.ios)
+        osx?.applyTo(extension.osx)
+        tvos?.applyTo(extension.tvos)
+        watchos?.applyTo(extension.watchos)
     }
 
     @Serializable
@@ -260,5 +241,10 @@ internal interface CocoapodsExtension {
     @Serializable
     data class PodspecPlatformSettings(
         val deploymentTarget: String? = null
-    )
+    ) {
+
+        fun applyTo(settings: CocoapodsExtension.PodspecPlatformSettings) {
+            settings::deploymentTarget trySet deploymentTarget
+        }
+    }
 }
