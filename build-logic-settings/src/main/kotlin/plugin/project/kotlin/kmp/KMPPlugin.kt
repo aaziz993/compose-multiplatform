@@ -1,6 +1,4 @@
-@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
-
-package plugin.project
+package plugin.project.kotlin.kmp
 
 import app.cash.sqldelight.core.decapitalize
 import gradle.all
@@ -32,7 +30,7 @@ internal class KMPPlugin : Plugin<Project> {
             // IOS Compose uses UiKit, so we need to explicitly enable it, since it is experimental.
             extraProperties.set("org.jetbrains.compose.experimental.uikit.enabled", "true")
 
-            adjustTargets()
+            configureKotlinMultiplatformExtension()
 
             adjustSourceSets()
 
@@ -125,32 +123,6 @@ internal class KMPPlugin : Plugin<Project> {
 //            }
 //        }
 //    }
-
-    private fun Project.adjustTargets() =
-        kotlin.applyDefaultHierarchyTemplate {
-            common {
-                projectProperties.kotlin.targetGroups?.forEach { (name, group) ->
-                    group(name) {
-                        group.forEach { targetName ->
-                            when (targetName) {
-                                "jvm" -> withJvm()
-                                "android" -> withAndroidTarget()
-                                "ios" -> group("ios") {
-                                    withIos()
-                                }
-
-                                "iosArm64" -> withIosArm64()
-                                "iosX64" -> withIosX64()
-                                "iosSimulatorArm64" -> withIosSimulatorArm64()
-                                "js" -> withJs()
-                                "wasm" -> withWasmJs()
-                                else -> group(targetName)
-                            }
-                        }
-                    }
-                }
-            }
-        }
 
     @Suppress("UNCHECKED_CAST")
     private fun Project.adjustSourceSets() {

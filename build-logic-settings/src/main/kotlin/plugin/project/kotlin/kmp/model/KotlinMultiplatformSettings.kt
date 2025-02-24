@@ -1,26 +1,33 @@
-package plugin.project.kotlin.model
+package plugin.project.kotlin.kmp.model
 
-import gradle.trySet
+import gradle.kotlin
+import kotlin.collections.component1
+import kotlin.collections.component2
 import kotlinx.serialization.Serializable
-import org.jetbrains.kotlin.gradle.plugin.LanguageSettingsBuilder
+import org.gradle.api.Project
+import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
 import plugin.project.apple.cocoapods.model.CocoapodsSettings
-import plugin.project.kotlin.model.language.LanguageSettings
+import plugin.project.java.application.model.JavaApplication
+import plugin.project.java.model.Jar
+import plugin.project.java.model.JavaToolchainSpec
+import plugin.project.kotlin.model.language.KotlinCommonCompilerOptions
 import plugin.project.kotlin.model.language.SourceSet
-import plugin.project.kotlin.model.language.android.KotlinAndroidTarget
 import plugin.project.kotlin.model.language.android.KotlinAndroidTargetSettings
-import plugin.project.kotlin.model.language.jvm.KotlinJvmTarget
 import plugin.project.kotlin.model.language.jvm.KotlinJvmTargetSettings
 import plugin.project.kotlin.model.language.nat.KotlinNativeTargetSettings
 import plugin.project.kotlin.model.language.web.KotlinJsTargetSettings
 import plugin.project.kotlin.model.language.web.KotlinWasmJsTargetSettings
 
 @Serializable
-internal data class Kotlin(
-    override val languageVersion: String? = null,
-    override val apiVersion: String? = null,
-    override val progressiveMode: Boolean? = null,
-    override val languageFeatures: Set<String>? = null,
-    override val optIns: Set<String>? = null,
+internal data class KotlinMultiplatformSettings(
+    override val withSourcesJar: Boolean? = null,
+    override val jvmToolchainSpec: JavaToolchainSpec? = null,
+    override val jvmToolchain: Int? = null,
+    override val kotlinDaemonJvmArgs: List<String>? = null,
+    override val compilerVersion: String? = null,
+    override val coreLibrariesVersion: String? = null,
+    override val explicitApi: ExplicitApiMode? = null,
+    override val compilerOptions: KotlinCommonCompilerOptions? = null,
     val jvm: LinkedHashMap<String, KotlinJvmTargetSettings>? = null,
     val android: LinkedHashMap<String, KotlinAndroidTargetSettings>? = null,
     val androidNativeArm32: LinkedHashMap<String, KotlinNativeTargetSettings>? = null,
@@ -44,10 +51,12 @@ internal data class Kotlin(
     val mingwX64: LinkedHashMap<String, KotlinNativeTargetSettings>? = null,
     val js: LinkedHashMap<String, KotlinJsTargetSettings>? = null,
     val wasmJs: LinkedHashMap<String, KotlinWasmJsTargetSettings>? = null,
-    val targetGroups: LinkedHashMap<String, List<String>>? = null,
+    val hierarchy: LinkedHashMap<String, List<String>>? = null,
     val sourceSets: LinkedHashMap<String, SourceSet>? = null,
+    val application: JavaApplication? = null,
+    val jar: Jar? = null,
     val cocoapods: CocoapodsSettings = CocoapodsSettings(),
-) : LanguageSettings {
+) : KotlinMultiplatformExtension {
 
     val hasAndroidNativeTargets by lazy {
         (androidNativeArm32 ?: androidNativeArm64 ?: androidNativeX86 ?: androidNativeX64) != null
@@ -85,11 +94,32 @@ internal data class Kotlin(
         (jvm ?: android ?: js ?: wasmJs) != null || hasNativeTargets
     }
 
-    fun applyTo(builder: LanguageSettingsBuilder) {
-        builder::languageVersion trySet languageVersion
-        builder::apiVersion trySet apiVersion
-        builder::progressiveMode trySet progressiveMode
-        languageFeatures?.forEach(builder::enableLanguageFeature)
-        optIns?.forEach(builder::optIn)
+    context(Project)
+    fun applyTo() {
+        super.applyTo(kotlin)
+        kotlin.applyDefaultHierarchyTemplate {
+            common {
+                hierarchy?.forEach { (name, group) ->
+                    group(name) {
+                        group.forEach { targetName ->
+                            when (targetName) {
+                                "jvm" -> withJvm()
+                                "android" -> withAndroidTarget()
+                                "ios" -> group("ios") {
+                                    withIos()
+                                }
+
+                                "iosArm64" -> withIosArm64()
+                                "iosX64" -> withIosX64()
+                                "iosSimulatorArm64" -> withIosSimulatorArm64()
+                                "js" -> withJs()
+                                "wasm" -> withWasmJs()
+                                else -> group(targetName)
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

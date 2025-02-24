@@ -1,10 +1,9 @@
 package plugin.project.model
 
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import plugin.project.compose.model.ComposeSettings
-import plugin.project.java.model.JavaSettings
-import plugin.project.kotlin.model.Kotlin
+import plugin.project.java.model.JavaPluginSettings
+import plugin.project.kotlin.kmp.model.KotlinMultiplatformSettings
 
 @Serializable
 internal data class Properties(
@@ -12,8 +11,8 @@ internal data class Properties(
     val plugins: Plugins = Plugins(),
     val group: String? = null,
     val description: String? = null,
-    val jvm: JavaSettings = JavaSettings(),
-    val kotlin: Kotlin = Kotlin(),
+    val jvm: JavaPluginSettings = JavaPluginSettings(),
+    val kotlin: KotlinMultiplatformSettings = KotlinMultiplatformSettings(),
     val compose: ComposeSettings = ComposeSettings(),
     val settings: Settings = Settings(),
     val pluginManagement: PluginManagement? = null,

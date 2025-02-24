@@ -1,7 +1,9 @@
 package plugin.project.java.model
 
+import gradle.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.jvm.toolchain.JavaLanguageVersion
+import org.gradle.jvm.toolchain.JavaToolchainSpec
 
 /**
  * Requirements for selecting a Java toolchain.
@@ -50,4 +52,10 @@ internal data class JavaToolchainSpec(
      * @since 6.8
      */
     val vendor: JvmVendorSpec? = null,
-)
+) {
+
+    fun applyTo(spec: JavaToolchainSpec) {
+        spec.languageVersion tryAssign languageVersion
+        spec.vendor tryAssign vendor?.toVendor()
+    }
+}

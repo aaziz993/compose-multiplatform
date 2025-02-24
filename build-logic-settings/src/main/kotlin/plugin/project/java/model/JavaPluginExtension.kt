@@ -1,6 +1,9 @@
 package plugin.project.java.model
 
+import gradle.tryAssign
 import org.gradle.api.JavaVersion
+import org.gradle.api.Project
+import org.gradle.api.plugins.JavaPluginExtension
 
 /**
  * Common configuration for JVM (Java) based projects.
@@ -134,4 +137,32 @@ internal interface JavaPluginExtension {
      * @since 7.1
      */
     val manifest: Manifest?
+
+    context(Project)
+    @Suppress("UnstableApiUsage")
+    fun applyTo(extension: JavaPluginExtension) {
+        sourceCompatibility?.let(extension::setSourceCompatibility)
+        targetCompatibility?.let(extension::setTargetCompatibility)
+        disableAutoTargetJvm?.takeIf { it }?.run { extension.disableAutoTargetJvm() }
+        withJavadocJar?.takeIf { it }?.run { extension.withJavadocJar() }
+        withSourcesJar?.takeIf { it }?.run { extension.withSourcesJar() }
+
+        modularity?.applyTo(extension.modularity)
+
+        toolchain?.let { toolchain ->
+            extension.toolchain(toolchain::applyTo)
+        }
+
+        consistentResolution?.let { consistentResolution ->
+            extension.consistentResolution(consistentResolution::applyTo)
+        }
+
+        extension.docsDir tryAssign docsDir?.let(layout.projectDirectory::dir)
+        extension.testResultsDir tryAssign testResultsDir?.let(layout.projectDirectory::dir)
+        extension.testReportDir tryAssign testReportDir?.let(layout.projectDirectory::dir)
+
+        manifest?.let { manifest ->
+            extension.manifest(manifest::applyTo)
+        }
+    }
 }

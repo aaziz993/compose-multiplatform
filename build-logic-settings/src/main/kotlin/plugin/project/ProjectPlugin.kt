@@ -8,7 +8,6 @@ import gradle.projectProperties
 import gradle.settings
 import gradle.version
 import gradle.versions
-import kotlin.reflect.full.declaredMemberProperties
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -24,6 +23,7 @@ import plugin.project.gradle.kover.KoverPlugin
 import plugin.project.gradle.sonar.SonarPlugin
 import plugin.project.gradle.spotless.SpotlessPlugin
 import plugin.project.java.JavaPlugin
+import plugin.project.kotlin.kmp.KMPPlugin
 import plugin.project.kotlin.allopen.AllOpenPlugin
 import plugin.project.kotlin.apollo.ApolloPlugin
 import plugin.project.kotlin.atomicfu.AtomicFUPlugin
@@ -36,7 +36,6 @@ import plugin.project.kotlin.rpc.RpcPlugin
 import plugin.project.kotlin.serialization.SerializationPlugin
 import plugin.project.kotlin.sqldelight.SqlDelightPlugin
 import plugin.project.nat.NativePlugin
-import plugin.project.web.WasmPlugin
 import plugin.project.web.js.JsPlugin
 import plugin.project.web.node.configureNodeJsEnvSpec
 import plugin.project.web.npm.configureNpmExtension

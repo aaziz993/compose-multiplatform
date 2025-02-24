@@ -6,8 +6,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal data class KtorfitSettings(
-    override var generateQualifiedTypeName: Boolean? = null,
-    override var errorCheckingMode: ErrorCheckingMode? = null,
+    override val generateQualifiedTypeName: Boolean? = null,
+    override val errorCheckingMode: ErrorCheckingMode? = null,
     val enabled: Boolean = true
 ) : KtorfitGradleConfiguration {
 

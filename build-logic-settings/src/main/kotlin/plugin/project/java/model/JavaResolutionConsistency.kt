@@ -1,6 +1,7 @@
 package plugin.project.java.model
 
 import kotlinx.serialization.Serializable
+import org.gradle.api.plugins.JavaResolutionConsistency
 
 /**
  * Dependency resolution consistency configuration for
@@ -45,4 +46,11 @@ internal data class JavaResolutionConsistency(
      * requirements at runtime.
      */
     val useRuntimeClasspathVersions: Boolean? = null
-)
+) {
+
+    @Suppress("UnstableApiUsage")
+    fun applyTo(resolutionConsistency: JavaResolutionConsistency) {
+        useCompileClasspathVersions?.takeIf { it }?.run { resolutionConsistency.useCompileClasspathVersions() }
+        useRuntimeClasspathVersions?.takeIf { it }?.run { resolutionConsistency.useRuntimeClasspathVersions() }
+    }
+}

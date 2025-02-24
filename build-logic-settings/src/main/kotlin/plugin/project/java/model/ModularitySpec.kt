@@ -1,6 +1,8 @@
 package plugin.project.java.model
 
+import gradle.tryAssign
 import kotlinx.serialization.Serializable
+import org.gradle.api.jvm.ModularitySpec
 
 /**
  * Description of the modularity of a classpath.
@@ -37,4 +39,9 @@ internal data class ModularitySpec(
      *
      */
     val inferModulePath: Boolean? = null,
-)
+) {
+
+    fun applyTo(spec: ModularitySpec) {
+        spec.inferModulePath tryAssign inferModulePath
+    }
+}
