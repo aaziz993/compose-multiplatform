@@ -99,7 +99,7 @@ plugins:
 
   # kotlin library for adding asynchronous Remote Procedure Call (RPC) services to your applications. Build your RPC with already known language constructs and nothing more!
   rpc:
-    enabled: false
+    enabled: true
     annotationTypeSafetyEnabled: true
 
   # http client/Kotlin Symbol Processor for Kotlin Multiplatform ( Android, iOS, Js, Jvm, Linux) using KSP and Ktor clients inspired by Retrofit

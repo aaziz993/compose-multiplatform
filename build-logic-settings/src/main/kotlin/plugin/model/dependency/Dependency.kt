@@ -8,7 +8,6 @@ import gradle.libraryAsDependency
 import gradle.settings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import org.gradle.api.file.Directory
 import org.gradle.api.initialization.Settings
 import org.gradle.api.internal.tasks.JvmConstants
 import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
@@ -20,7 +19,9 @@ internal data class Dependency(
 ) {
 
     context(Settings)
-    internal fun resolve(): Any = resolve(layout.rootDirectory) { catalogName, libraryName ->
+    internal fun resolve(): Any = resolve({
+        layout.settingsDirectory.file(it)
+    }) { catalogName, libraryName ->
         allLibs[catalogName]?.libraryAsDependency(libraryName)
             ?: error("Not found version catalog: $catalogName")
     }
@@ -29,7 +30,9 @@ internal data class Dependency(
     internal fun applyTo(kotlinDependencyHandler: KotlinDependencyHandler): Any = kotlinDependencyHandler.depFunction(resolve())
 
     context(Project)
-    internal fun resolve(): Any = resolve(layout.projectDirectory) { catalogName, libraryName ->
+    internal fun resolve(): Any = resolve({
+        project(it)
+    }) { catalogName, libraryName ->
         settings.allLibs[catalogName]?.libraryAsDependency(libraryName)
             ?: error("Not found version catalog: $catalogName")
     }
@@ -38,10 +41,10 @@ internal data class Dependency(
     internal fun applyTo(kotlinDependencyHandler: KotlinDependencyHandler): Unit =
         kotlinDependencyHandler.depFunction(resolve())
 
-    private fun resolve(directory: Directory, library: (catalogName: String, libraryName: String) -> String): Any =
+    private fun resolve(fromFile: (path: String) -> Any, fromLibs: (catalogName: String, libraryName: String) -> String): Any =
         when {
             notation.startsWith("$") ->
-                library(
+                fromLibs(
                     notation
                         .removePrefix("$")
                         .substringBefore("."),
@@ -49,7 +52,7 @@ internal data class Dependency(
                         .substringAfter("."),
                 )
 
-            notation.contains("[/\\\\]".toRegex()) && !notation.isUrl -> directory.files(notation)
+            notation.contains("[/\\\\]".toRegex()) && !notation.isUrl -> fromFile(notation)
 
             else -> notation
         }

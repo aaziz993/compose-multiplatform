@@ -1,15 +1,13 @@
 package plugin.project.kotlin.model.language.nat
 
-import gradle.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import org.jetbrains.kotlin.gradle.plugin.mpp.Framework
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
+import org.jetbrains.kotlin.gradle.plugin.mpp.TestExecutable
 
 @Serializable
-internal data class Framework(
+internal data class TestExecutable(
     override val baseName: String? = null,
-    override val transitiveExport: Boolean? = null,
     override val debuggable: Boolean? = null,
     override val optimized: Boolean? = null,
     override val linkerOpts: List<String>? = null,
@@ -17,13 +15,11 @@ internal data class Framework(
     override val freeCompilerArgs: List<String>? = null,
     override val outputDirectory: String? = null,
     override val outputDirectoryProperty: String? = null,
-    val isStatic: Boolean? = null,
     val buildTypes: List<NativeBuildType>? = null,
-) : AbstractNativeLibrary {
+) : NativeBinary {
 
     context(Project)
-    fun applyTo(framework: Framework) {
-        super.applyTo(framework)
-        framework::isStatic trySet isStatic
+    fun applyTo(executable: TestExecutable) {
+        super.applyTo(executable)
     }
 }

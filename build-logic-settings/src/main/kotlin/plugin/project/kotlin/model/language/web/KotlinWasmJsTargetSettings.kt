@@ -13,6 +13,6 @@ internal data class KotlinWasmJsTargetSettings(
     override val passAsArgumentToMainFunction: String? = null,
     override val generateTypeScriptDefinitions: Boolean? = null,
     override val compilerOptions: KotlinJsCompilerOptions? = null,
-    override val binaries: KotlinJsBinaryContainer? = null,
+    override val binaries: KotlinJsBinaryContainer = KotlinJsBinaryContainer(),
     override val enabled: Boolean = true,
 ) : KotlinJsTargetDsl, EnabledSettings

@@ -6,11 +6,11 @@ templates:
 plugins:
   ksp:
     processors:
-      - ../compiler
+      - :compiler
 
 kotlin:
   sourceSets:
     commonMain:
       dependencies:
-        - ../kmp-lib
-        - ../cmp-lib
+        - :kmp-lib
+        - :cmp-lib

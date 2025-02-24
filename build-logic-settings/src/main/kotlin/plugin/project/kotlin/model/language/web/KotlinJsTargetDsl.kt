@@ -1,5 +1,6 @@
 package plugin.project.kotlin.model.language.web
 
+import gradle.projectProperties
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalMainFunctionArgumentsDsl
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
@@ -47,6 +48,13 @@ internal interface KotlinJsTargetDsl : KotlinTarget, KotlinTargetWithNodeJsDsl, 
         useEsModules?.takeIf { it }?.run { target.useEsModules() }
         passAsArgumentToMainFunction?.let(target::passAsArgumentToMainFunction)
         generateTypeScriptDefinitions?.takeIf { it }?.let { target.generateTypeScriptDefinitions() }
+
+        if (projectProperties.settings.application) {
+            target.binaries.executable()
+        }
+        else {
+            target.binaries.library()
+        }
 
         binaries?.let { binaries ->
             binaries.library?.takeIf { it }?.run { target.binaries.library() }

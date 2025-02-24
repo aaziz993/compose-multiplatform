@@ -3,9 +3,8 @@ package plugin.project.kotlin.model.language.nat
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
-internal interface KotlinNativeTarget : HasBinaries<KotlinNativeBinaryContainer> {
+internal interface KotlinNativeTarget : HasBinaries<KotlinNativeBinaryContainer?> {
 
-    override val binaries: KotlinNativeBinaryContainer?
     val compilerOptions: KotlinNativeCompilerOptions?
 
     context(Project)

@@ -5,9 +5,10 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.mpp.Framework
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
+import org.jetbrains.kotlin.gradle.plugin.mpp.SharedLibrary
 
 @Serializable
-internal data class Framework(
+internal data class SharedLibrary(
     override val baseName: String? = null,
     override val transitiveExport: Boolean? = null,
     override val debuggable: Boolean? = null,
@@ -17,13 +18,11 @@ internal data class Framework(
     override val freeCompilerArgs: List<String>? = null,
     override val outputDirectory: String? = null,
     override val outputDirectoryProperty: String? = null,
-    val isStatic: Boolean? = null,
     val buildTypes: List<NativeBuildType>? = null,
 ) : AbstractNativeLibrary {
 
     context(Project)
-    fun applyTo(framework: Framework) {
-        super.applyTo(framework)
-        framework::isStatic trySet isStatic
+    fun applyTo(library: SharedLibrary) {
+        super.applyTo(library)
     }
 }

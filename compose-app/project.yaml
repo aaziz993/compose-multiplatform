@@ -26,9 +26,9 @@ kotlin:
   sourceSets:
     commonMain:
       dependencies:
-        - ../kmp-lib
-        - ../cmp-lib
-        - ../shared
+        - :kmp-lib
+        - :cmp-lib
+        - :shared
 
 settings:
   application: true
