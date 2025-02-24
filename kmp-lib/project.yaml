@@ -11,7 +11,3 @@ plugins:
         packageName: data.database.sqldelight
         # required by asynchronous web-worker-driver for js.
         generateAsync: true
-
-settings:
-  publishing:
-    name: kmp-lib

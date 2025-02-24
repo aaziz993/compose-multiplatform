@@ -12,5 +12,5 @@ kotlin:
   sourceSets:
     commonMain:
       dependencies:
-        - :kmp-lib
-        - :cmp-lib
+#        - :kmp-lib
+#        - :cmp-lib

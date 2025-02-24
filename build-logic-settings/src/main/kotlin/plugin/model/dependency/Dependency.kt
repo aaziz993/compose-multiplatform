@@ -10,6 +10,7 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.initialization.Settings
 import org.gradle.api.internal.tasks.JvmConstants
+import org.gradle.kotlin.dsl.DependencyHandlerScope
 import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
 
 @Serializable(with = DependencySerializer::class)
@@ -19,9 +20,11 @@ internal data class Dependency(
 ) {
 
     context(Settings)
-    internal fun resolve(): Any = resolve({
-        layout.settingsDirectory.file(it)
-    }) { catalogName, libraryName ->
+    internal fun resolve(): Any = resolve(
+        {
+            layout.settingsDirectory.file(it)
+        },
+    ) { catalogName, libraryName ->
         allLibs[catalogName]?.libraryAsDependency(libraryName)
             ?: error("Not found version catalog: $catalogName")
     }
@@ -30,9 +33,13 @@ internal data class Dependency(
     internal fun applyTo(kotlinDependencyHandler: KotlinDependencyHandler): Any = kotlinDependencyHandler.depFunction(resolve())
 
     context(Project)
-    internal fun resolve(): Any = resolve({
-        project(it)
-    }) { catalogName, libraryName ->
+    internal fun resolve(): Any = resolve(
+        {
+            project(it).also {
+
+            }
+        },
+    ) { catalogName, libraryName ->
         settings.allLibs[catalogName]?.libraryAsDependency(libraryName)
             ?: error("Not found version catalog: $catalogName")
     }
@@ -40,6 +47,11 @@ internal data class Dependency(
     context(Project)
     internal fun applyTo(kotlinDependencyHandler: KotlinDependencyHandler): Unit =
         kotlinDependencyHandler.depFunction(resolve())
+
+    context(Project)
+    internal fun applyTo(dependencyHandler: DependencyHandlerScope) {
+        dependencyHandler.add(configuration, resolve())
+    }
 
     private fun resolve(fromFile: (path: String) -> Any, fromLibs: (catalogName: String, libraryName: String) -> String): Any =
         when {
@@ -58,7 +70,7 @@ internal data class Dependency(
         }
 
     private val depFunction: KotlinDependencyHandler.(Any) -> Unit
-        get() = when (configuration) {
+        get() =  when (configuration) {
             JvmConstants.IMPLEMENTATION_CONFIGURATION_NAME -> KotlinDependencyHandler::implementation
             JvmConstants.RUNTIME_ONLY_CONFIGURATION_NAME -> KotlinDependencyHandler::runtimeOnly
             JvmConstants.COMPILE_ONLY_CONFIGURATION_NAME -> KotlinDependencyHandler::compileOnly

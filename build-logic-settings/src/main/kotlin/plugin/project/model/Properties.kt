@@ -1,6 +1,7 @@
 package plugin.project.model
 
 import kotlinx.serialization.Serializable
+import plugin.model.dependency.Dependency
 import plugin.project.android.model.AndroidSettings
 import plugin.project.apple.model.AppleSettings
 import plugin.project.compose.model.ComposeSettings
@@ -29,6 +30,7 @@ internal data class Properties(
     val compose: ComposeSettings = ComposeSettings(),
     val pluginManagement: PluginManagement? = null,
     val dependencyResolutionManagement: DependencyResolutionManagement? = null,
+    val dependencies: List<Dependency>? = null,
     val modules: List<String>? = null,
     val gradleEnterpriseAccessKey: String? = null,
     val settings: Settings = Settings()

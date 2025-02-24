@@ -105,9 +105,9 @@ public class SettingsPlugin : Plugin<Settings> {
                 }
 
                 val libsFile = layout.settingsDirectory.file("gradle/libs.versions.toml").asFile
-                allLibs = if (dependencyResolutionManagement.versionCatalogs?.none { it.name == "libs" } != false && libsFile.exists())
-                    mapOf("libs" to Toml.parse(libsFile.readText()))
-                else emptyMap()
+                if (dependencyResolutionManagement.versionCatalogs?.none { it.name == "libs" } != false && libsFile.exists())
+                    allLibs += "libs" to Toml.parse(libsFile.readText())
+
 
                 dependencyResolutionManagement.versionCatalogs?.let { versionCatalogs ->
                     versionCatalogs {

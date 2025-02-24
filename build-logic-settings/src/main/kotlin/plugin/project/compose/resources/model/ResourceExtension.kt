@@ -1,7 +1,17 @@
 package plugin.project.compose.resources.model
 
+import gradle.all
+import gradle.kotlin
+import gradle.projectProperties
+import gradle.sourceSetsComposeDirs
+import gradle.trySet
+import kotlin.collections.component1
+import kotlin.collections.component2
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
 import org.jetbrains.compose.resources.ResourcesExtension
+import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
+import plugin.project.model.Layout
 
 @Serializable
 internal data class ResourcesExtension(
@@ -34,4 +44,29 @@ internal data class ResourcesExtension(
      * @param directoryProvider the provider that provides the custom directory
      */
     val customResourceDirectories: Map<String, String>? = null
-)
+) {
+
+    context(Project)
+    fun applyTo(extension: ResourcesExtension) {
+        extension::publicResClass trySet publicResClass
+        extension::packageOfResClass trySet packageOfResClass
+        extension::generateResClass trySet generateResClass
+        customResourceDirectories?.forEach { (sourceSetName, directory) ->
+            extension.customDirectory(sourceSetName, provider { layout.projectDirectory.dir(directory) })
+        }
+
+        // Adjust composeResources to match flatten directory structure
+        when (projectProperties.settings.layout) {
+            Layout.FLAT -> kotlin.sourceSets.all { sourceSet ->
+                extension.customDirectory(
+                    sourceSet.name,
+                    provider {
+                        layout.projectDirectory.dir(sourceSetsComposeDirs[sourceSet.name]!!)
+                    },
+                )
+            }
+
+            else -> Unit
+        }
+    }
+}

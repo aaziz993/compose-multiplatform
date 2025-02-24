@@ -11,6 +11,7 @@ import gradle.versions
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.dependencies
 import org.jetbrains.amper.gradle.SLF4JProblemReporterContext
 import plugin.project.android.AndroidPlugin
 import plugin.project.apple.ApplePlugin
@@ -88,6 +89,14 @@ internal class ProjectPlugin : Plugin<Project> {
             plugins.apply(ApplePlugin::class.java)
             plugins.apply(NativePlugin::class.java)
             plugins.apply(ComposePlugin::class.java)
+
+            projectProperties.dependencies?.let { dependencies ->
+                dependencies.forEach { dependency ->
+                    dependencies {
+                        dependency.applyTo(this)
+                    }
+                }
+            }
         }
 
         // Apply other settings.

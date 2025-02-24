@@ -3,6 +3,7 @@
 package gradle
 
 import org.gradle.api.initialization.Settings
+import org.jetbrains.amper.gradle.getBindingMap
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import org.tomlj.TomlParseResult
 import org.tomlj.TomlTable
@@ -10,11 +11,8 @@ import org.tomlj.TomlTable
 private const val VERSION_CATALOG = "version.catalog"
 
 @Suppress("UNCHECKED_CAST")
-internal var Settings.allLibs: Map<String, TomlParseResult>
-    get() = extraProperties[VERSION_CATALOG] as Map<String, TomlParseResult>
-    set(value) {
-        extraProperties[VERSION_CATALOG] = value
-    }
+internal val Settings.allLibs: MutableMap<String, TomlParseResult>
+    get() = extraProperties.getBindingMap(VERSION_CATALOG)
 
 internal val Settings.libs: TomlParseResult
     get() = allLibs["libs"]!!

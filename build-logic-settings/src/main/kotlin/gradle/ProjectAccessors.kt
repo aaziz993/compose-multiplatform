@@ -21,6 +21,7 @@ import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.toolchain.management.ToolchainManagement
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.the
+import org.jetbrains.amper.gradle.getBindingMap
 import org.jetbrains.compose.ComposeExtension
 import org.jetbrains.compose.android.AndroidExtension
 import org.jetbrains.compose.desktop.DesktopExtension
@@ -47,6 +48,12 @@ internal var Project.projectProperties: Properties
     set(value) {
         extraProperties[PROPERTIES] = value
     }
+
+private const val COMPOSE_RESOURCES_DIR = "compose.resources.dir"
+
+@Suppress("UNCHECKED_CAST")
+internal val Project.sourceSetsComposeDirs: MutableMap<String, String>
+    get() = extraProperties.getBindingMap(COMPOSE_RESOURCES_DIR)
 
 internal val Project.settings: Settings
     get() = (gradle as GradleInternal).settings
@@ -212,6 +219,7 @@ internal val ComposeExtension.android: AndroidExtension get() = the()
 
 internal fun ComposeExtension.android(configure: AndroidExtension.() -> Unit) =
     extensions.configure(configure)
+
 /**
  * Create native module name from project path.
  */

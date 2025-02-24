@@ -125,11 +125,11 @@ plugins:
 
     includedSourceSets:
       - commonMain
-      - jvm
+      - jvmMain
       - androidMain
-      - ios
-      - js
-      - wasm
+      - nativeMain
+      - jsMain
+      - wasmJsMain
 
 kotlin:
   jvmToolchain: 23
@@ -152,6 +152,10 @@ kotlin:
     nonWeb:
       dependencies:
         - $libs.androidx.room.runtime.ktx
+
+    jvmMain:
+      dependencies:
+        - $libs.kotlinx.coroutines.swing
 
     androidMain:
       dependencies:

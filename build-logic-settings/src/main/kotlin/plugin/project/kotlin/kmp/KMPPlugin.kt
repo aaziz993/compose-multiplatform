@@ -9,8 +9,10 @@ import gradle.plugin
 import gradle.plugins
 import gradle.projectProperties
 import gradle.settings
+import gradle.sourceSetsComposeDirs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.jetbrains.amper.gradle.BindingSettingsPlugin
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import plugin.project.kotlin.kmp.model.KotlinMultiplatformSettings
 import plugin.project.model.Layout
@@ -42,17 +44,23 @@ internal class KMPPlugin : Plugin<Project> {
                 Layout.FLAT -> sourceSets.all { sourceSet ->
                     val sourceSetNameParts = "^(.*?)(Main|Test|TestDebug)?$".toRegex().matchEntire(sourceSet.name)!!
 
-                    val (kotlinPrefixPart, resourcesPrefixPart) = sourceSetNameParts.groupValues[2].decapitalize().let {
-                        when (it) {
-                            "main", "" -> "src" to "resources"
-                            else -> it to "${it}Resources"
+                    val suffixPart = sourceSetNameParts.groupValues[1].let { targetName ->
+                        if (targetName == "common") "" else "@$targetName"
+                    }
+
+                    val (kotlinPrefixPart, resourcesPrefixPart, composeResourcesPrefixPart) = sourceSetNameParts.groupValues[2]
+                        .decapitalize()
+                        .let { compilationName ->
+                            when (compilationName) {
+                                "main", "" -> Triple("src", "resources", "composeResources")
+
+                                else -> Triple(compilationName, "${compilationName}Resources", "${compilationName}ComposeResources")
+                            }
                         }
-                    }
-                    val suffixPart = sourceSetNameParts.groupValues[1].let {
-                        if (it == "common") "" else "@$it"
-                    }
+
                     sourceSet.kotlin.setSrcDirs(listOf("$kotlinPrefixPart$suffixPart"))
                     sourceSet.resources.setSrcDirs(listOf("$resourcesPrefixPart$suffixPart"))
+                    sourceSetsComposeDirs[sourceSet.name] = "$composeResourcesPrefixPart$suffixPart"
                 }
 
                 else -> Unit

@@ -1,13 +1,28 @@
 package plugin.project.compose.model
 
+import gradle.compose
+import gradle.id
+import gradle.libs
+import gradle.plugin
+import gradle.plugins
+import gradle.resources
+import gradle.settings
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
 import plugin.project.compose.desktop.model.DesktopExtension
 import plugin.project.compose.resources.model.ResourcesExtension
 import plugin.project.model.EnabledSettings
 
 @Serializable
 internal data class ComposeSettings(
-    val resources: ResourcesExtension = ResourcesExtension(),
     val desktop: DesktopExtension = DesktopExtension(),
+    val resources: ResourcesExtension = ResourcesExtension(),
     override val enabled: Boolean = false
-) : EnabledSettings
+) : EnabledSettings {
+
+    context(Project)
+    fun applyTo() =
+        pluginManager.withPlugin(settings.libs.plugins.plugin("compose.multiplatform").id) {
+            resources.applyTo(compose.resources)
+        }
+}

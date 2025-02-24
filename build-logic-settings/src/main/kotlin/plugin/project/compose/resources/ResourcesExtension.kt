@@ -19,37 +19,7 @@ import plugin.project.model.Layout
 
 internal fun Project.configureResourcesExtension() =
     pluginManager.withPlugin(settings.libs.plugins.plugin("compose.multiplatform").id) {
-        compose {
-            projectProperties.compose.resources.let { resources ->
-                resources {
-                    ::publicResClass trySet resources.publicResClass
-                    ::packageOfResClass trySet resources.packageOfResClass
-                    ::generateResClass trySet resources.generateResClass
-                    resources.customResourceDirectories?.forEach { (sourceSetName, directory) ->
-                        customDirectory(sourceSetName, provider { layout.projectDirectory.dir(directory) })
-                    }
-
-                    when (projectProperties.settings.layout) {
-                        // Adjust composeResources to match flatten directory structure
-                        Layout.FLAT -> kotlin.sourceSets.all { sourceSet ->
-                            customDirectory(
-                                sourceSet.name,
-                                provider {
-                                    layout.projectDirectory.dir(
-                                        when (sourceSet.name) {
-                                            KotlinSourceSet.COMMON_MAIN_SOURCE_SET_NAME -> "composeResources"
-                                            KotlinSourceSet.COMMON_TEST_SOURCE_SET_NAME -> "composeTestResources"
-                                            else -> "composeResources@${sourceSet.name}"
-                                        },
-                                    )
-                                },
-                            )
-
-                        }
-
-                        else -> Unit
-                    }
-                }
-            }
+        projectProperties.compose.resources.let { resources ->
+            resources.applyTo(compose.resources)
         }
     }

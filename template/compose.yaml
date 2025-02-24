@@ -7,8 +7,11 @@ kotlin:
         - $compose.material3
         - $compose.ui
         - $compose.components.resources
+        - $compose.components.uiToolingPreview
         - $compose.material3AdaptiveNavigationSuite
         - $compose.materialIconsExtended
+        - $libs.androidx.lifecycle.viewmodel
+        - $libs.androidx.lifecycle.runtime.compose
 
     commonTest:
       dependencies:
@@ -27,9 +30,17 @@ kotlin:
       dependencies:
         - $compose.html.core
 
+dependencies:
+  - $compose.uiTooling: debugImplementation
+
 compose:
   enabled: true
+  desktop:
+    application:
+      mainClass: MainKt
+      nativeDistributions:
+        targetFormats: [ Dmg, Msi, Deb ]
+
   resources:
     publicResClass: true
-    packageOfResClass: resources
     generateResClass: Auto

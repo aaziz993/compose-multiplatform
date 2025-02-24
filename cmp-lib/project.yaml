@@ -7,8 +7,4 @@ kotlin:
   sourceSets:
     commonMain:
       dependencies:
-        - :kmp-lib
-
-settings:
-  publishing:
-    name: cmp-lib
+#        - kmp-lib

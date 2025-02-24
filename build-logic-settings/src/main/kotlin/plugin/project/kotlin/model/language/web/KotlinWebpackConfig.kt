@@ -1,5 +1,6 @@
 package plugin.project.kotlin.model.language.web
 
+import gradle.moduleName
 import gradle.trySet
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonContentPolymorphicSerializer
@@ -39,7 +40,7 @@ internal data class KotlinWebpackConfig(
         webpackConfig::entry trySet entry?.let(::file)
         webpackConfig::output trySet output?.toKotlinWebPackOutput()
         webpackConfig::outputPath trySet outputPath?.let(::file)
-        webpackConfig::outputFileName trySet outputFileName
+        webpackConfig.outputFileName = outputFileName ?: "$moduleName.js"
         webpackConfig::configDirectory trySet configDirectory?.let(::file)
         webpackConfig::reportEvaluatedConfigFile trySet reportEvaluatedConfigFile?.let(::file)
         webpackConfig::devServer trySet devServer?.toDevServer()

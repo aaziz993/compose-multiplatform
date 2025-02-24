@@ -18,19 +18,20 @@ public class ComposePlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (projectProperties.compose.enabled || !projectProperties.kotlin.hasTargets) {
-                return@with
-            }
+            projectProperties.compose
+                .takeIf { it.enabled && projectProperties.kotlin.hasTargets }?.let { compose ->
+                    plugins.apply(settings.libs.plugins.plugin("compose.multiplatform").id)
+                    plugins.apply(settings.libs.plugins.plugin("compose.compiler").id)
 
-            plugins.apply(settings.libs.plugins.plugin("compose.multiplatform").id)
-            plugins.apply(settings.libs.plugins.plugin("compose.compiler").id)
+                    compose
 
-            if (projectProperties.settings.application) {
-                configureDesktopExtension()
-                configureAndroidExtension()
-            }
+                    if (projectProperties.settings.application) {
+                        configureDesktopExtension()
+                        configureAndroidExtension()
+                    }
 
-            configureResourcesExtension()
+                    configureResourcesExtension()
+                }
         }
     }
 }

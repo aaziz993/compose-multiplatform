@@ -23,12 +23,12 @@ kotlin:
       browser: { }
       nodejs: { }
 
-  sourceSets:
-    commonMain:
-      dependencies:
-        - :kmp-lib
-        - :cmp-lib
-        - :shared
+#  sourceSets:
+#    commonMain:
+#      dependencies:
+#        - :kmp-lib
+#        - :cmp-lib
+#        - :shared
 
 settings:
   application: true
