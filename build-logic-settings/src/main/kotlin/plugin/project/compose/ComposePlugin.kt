@@ -25,7 +25,7 @@ public class ComposePlugin : Plugin<Project> {
             plugins.apply(settings.libs.plugins.plugin("compose.multiplatform").id)
             plugins.apply(settings.libs.plugins.plugin("compose.compiler").id)
 
-            if (projectProperties.application) {
+            if (projectProperties.settings.application) {
                 configureDesktopExtension()
                 configureAndroidExtension()
             }

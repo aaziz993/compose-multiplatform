@@ -38,7 +38,7 @@ internal class KMPPlugin : Plugin<Project> {
     @Suppress("UNCHECKED_CAST")
     private fun Project.adjustSourceSets() {
         kotlin {
-            when (projectProperties.layout) {
+            when (projectProperties.settings.layout) {
                 Layout.FLAT -> sourceSets.all { sourceSet ->
                     val sourceSetNameParts = "^(.*?)(Main|Test|TestDebug)?$".toRegex().matchEntire(sourceSet.name)!!
 

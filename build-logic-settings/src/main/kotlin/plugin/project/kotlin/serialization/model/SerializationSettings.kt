@@ -16,7 +16,7 @@ internal data class SerializationSettings(
 
     context(Project)
     fun applyTo() =
-        pluginManager.withPlugin(settings.libs.plugins.plugin("kotlinx.serialization").id) {
-            
+        pluginManager.withPlugin(settings.libs.plugins.plugin("kotlin.serialization").id) {
+
         }
 }

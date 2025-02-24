@@ -4,6 +4,9 @@ kotlin:
       dependencies:
         - $compose.foundation
         - $compose.material3
+    androidMain:
+      dependencies:
+        - $libs.androidx.activity.compose
 
 compose:
   enabled: true

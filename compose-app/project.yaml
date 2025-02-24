@@ -37,14 +37,6 @@ kotlin:
       dependencies:
         - $compose.desktop.currentOs
 
-    androidMain:
-      dependencies:
-        - $libs.androidx.activity.compose
-
-    wasmJsMain:
-      dependencies:
-        - $kotlinWrappers.browser
-
 settings:
   application: true
   android:

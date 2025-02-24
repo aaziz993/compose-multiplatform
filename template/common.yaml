@@ -132,6 +132,8 @@ plugins:
       - wasm
 
 kotlin:
+  jvmToolchain: 23
+
   targetGroups:
     jvmAndAndroid: [ jvm, android ]
     nonJvm: [ android, iosArm64 , iosX64, iosSimulatorArm64, js, wasm ]
@@ -155,6 +157,10 @@ kotlin:
       dependencies:
         - $libs.androidx.room.runtime.android
         - $libs.androidx.room.paging
+    
+    wasmJsMain:
+      dependencies:
+        - $kotlinWrappers.browser
 
 #  allWarningsAsErrors: false
 #  debug: false
@@ -197,25 +203,24 @@ kotlin:
 #    - -Xjvm-default=all
 
 settings:
-  native:
-    binaries:
-      framework:
-        freeCompilerArgs:
-          - -Xexport-kdoc
-          - -Xallocator=custom
-          - -XXLanguage+ImplicitSignedToUnsignedIntegerConversion
-          - -Xadd-light-debug=enable
-        optIns:
-          - kotlin.experimental.ExperimentalObjCName
-          - kotlinx.cinterop.ExperimentalForeignApi
-          - kotlinx.cinterop.BetaInteropApi
-
-        # add it to avoid sqllite3 issues in iOS. Required when using NativeSQLiteDriver
-        linkerOpts:
-          - -lsqlite3
-
-  js:
-    optIns:
-      - kotlin.js.ExperimentalJsExport
-
-layout: FLAT
+  layout: FLAT
+#  native:
+#    binaries:
+#      framework:
+#        freeCompilerArgs:
+#          - -Xexport-kdoc
+#          - -Xallocator=custom
+#          - -XXLanguage+ImplicitSignedToUnsignedIntegerConversion
+#          - -Xadd-light-debug=enable
+#        optIns:
+#          - kotlin.experimental.ExperimentalObjCName
+#          - kotlinx.cinterop.ExperimentalForeignApi
+#          - kotlinx.cinterop.BetaInteropApi
+#
+#        # add it to avoid sqllite3 issues in iOS. Required when using NativeSQLiteDriver
+#        linkerOpts:
+#          - -lsqlite3
+#
+#  js:
+#    optIns:
+#      - kotlin.js.ExperimentalJsExport

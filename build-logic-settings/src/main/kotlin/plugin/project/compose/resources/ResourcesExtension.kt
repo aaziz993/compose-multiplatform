@@ -29,7 +29,7 @@ internal fun Project.configureResourcesExtension() =
                         customDirectory(sourceSetName, provider { layout.projectDirectory.dir(directory) })
                     }
 
-                    when (projectProperties.layout) {
+                    when (projectProperties.settings.layout) {
                         // Adjust composeResources to match flatten directory structure
                         Layout.FLAT -> kotlin.sourceSets.all { sourceSet ->
                             customDirectory(

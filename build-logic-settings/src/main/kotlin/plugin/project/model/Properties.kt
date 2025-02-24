@@ -31,5 +31,5 @@ internal data class Properties(
     val dependencyResolutionManagement: DependencyResolutionManagement? = null,
     val modules: List<String>? = null,
     val gradleEnterpriseAccessKey: String? = null,
-    val layout: Layout = Layout.DEFAULT,
+    val settings: Settings = Settings()
 )

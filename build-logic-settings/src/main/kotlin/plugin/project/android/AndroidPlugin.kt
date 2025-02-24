@@ -20,7 +20,7 @@ internal class AndroidPlugin : Plugin<Project> {
                 return@with
             }
 
-            if (projectProperties.application) {
+            if (projectProperties.settings.application) {
                 plugins.apply(settings.libs.plugins.plugin("androidApplication").id)
             }
             else {
