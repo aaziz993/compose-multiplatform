@@ -6,7 +6,6 @@ import gradle.libs
 import gradle.plugin
 import gradle.plugins
 import kotlinx.serialization.Serializable
-import org.gradle.api.Project
 import org.gradle.api.initialization.Settings
 import plugin.project.model.EnabledSettings
 

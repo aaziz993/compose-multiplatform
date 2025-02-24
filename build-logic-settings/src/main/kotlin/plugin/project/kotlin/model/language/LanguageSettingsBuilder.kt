@@ -1,5 +1,8 @@
 package plugin.project.kotlin.model.language
 
+import gradle.trySet
+import org.jetbrains.kotlin.gradle.plugin.LanguageSettingsBuilder
+
 /**
  * Represents most common Kotlin compilation settings for an entity.
  *
@@ -8,7 +11,7 @@ package plugin.project.kotlin.model.language
  *
  * See also [Compiler options DSL documentation](https://kotlinlang.org/docs/gradle-compiler-options.html).
  */
-internal interface LanguageSettings {
+internal interface LanguageSettingsBuilder {
 
     /**
      * Provide source compatibility with the specified version of Kotlin.
@@ -44,7 +47,7 @@ internal interface LanguageSettings {
     /**
      * @suppress
      */
-    val languageFeatures: Set<String>?
+    val enabledLanguageFeatures: Set<String>?
 
     /**
      * Enable API usages that require opt-in with an opt-in requirement marker with the given fully qualified name.
@@ -52,4 +55,13 @@ internal interface LanguageSettings {
      * Default value: emptyList<String>()
      */
     val optIns: Set<String>?
+
+    fun applyTo(builder: LanguageSettingsBuilder) {
+        builder::languageVersion trySet languageVersion
+        builder::apiVersion trySet apiVersion
+        builder::progressiveMode trySet progressiveMode
+        builder.enabledLanguageFeatures
+        enabledLanguageFeatures?.forEach(builder::enableLanguageFeature)
+        optIns?.forEach(builder::optIn)
+    }
 }

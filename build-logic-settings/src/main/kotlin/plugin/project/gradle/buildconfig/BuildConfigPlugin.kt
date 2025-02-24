@@ -1,6 +1,5 @@
 package plugin.project.gradle.buildconfig
 
-import gradle.buildConfig
 import gradle.id
 import gradle.libs
 import gradle.plugin
@@ -9,7 +8,6 @@ import gradle.projectProperties
 import gradle.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import plugin.project.gradle.buildconfig.model.BuildConfigSettings
 
 internal class BuildConfigPlugin : Plugin<Project> {
 

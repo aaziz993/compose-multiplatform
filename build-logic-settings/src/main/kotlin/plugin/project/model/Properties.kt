@@ -4,7 +4,6 @@ import kotlinx.serialization.Serializable
 import plugin.project.android.model.AndroidSettings
 import plugin.project.apple.model.AppleSettings
 import plugin.project.compose.model.ComposeSettings
-import plugin.project.java.application.JavaApplication
 import plugin.project.java.model.JavaPluginExtension
 import plugin.project.java.model.application.JavaApplication
 import plugin.project.kotlin.kmp.model.KotlinMultiplatformSettings

@@ -27,7 +27,7 @@ internal class ApplePlugin : Plugin<Project> {
 
             plugins.apply(settings.libs.plugins.plugin("apple").id)
 
-            configureAppleProjectExtension()
+            projectProperties.apple.applyTo()
 
             projectProperties.kotlin.iosArm64?.forEach { targetName, target ->
                 if (targetName.isNotEmpty()) {

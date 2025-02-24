@@ -35,56 +35,6 @@ internal class KMPPlugin : Plugin<Project> {
         }
     }
 
-    /**
-     * Set Amper specific directory layout.
-     */
-//    private fun adjustSourceSetDirectories() {
-//        kotlinMPE.sourceSets.all { sourceSet ->
-//            val fragment = sourceSet.amperFragment
-//            when {
-//                // Do GRADLE_JVM specific.
-//                layout == Layout.GRADLE_JVM -> {
-//                    if (sourceSet.name == "jvmMain") {
-//                        replacePenultimatePaths(sourceSet.kotlin, sourceSet.resources, "main")
-//                    }
-//                    else if (sourceSet.name == "jvmTest") {
-//                        replacePenultimatePaths(sourceSet.kotlin, sourceSet.resources, "test")
-//                    }
-//                }
-//
-//                // Do AMPER specific.
-//                layout == Layout.AMPER && fragment != null -> {
-//                    sourceSet.kotlin.tryAdd(fragment.src).tryRemove { it.endsWith("kotlin") }
-//                    sourceSet.resources.tryAdd(fragment.resourcesPath).tryRemove { it.endsWith("resources") }
-//                }
-//
-//                layout == Layout.AMPER && fragment == null -> {
-//                    sourceSet.kotlin.setSrcDirs(emptyList<File>())
-//                    sourceSet.resources.setSrcDirs(emptyList<File>())
-//                }
-//            }
-//        }
-//    }
-
-//
-//        // Skip tests binary creation for now.
-//        module.leafFragments.forEach { fragment ->
-//            val target = fragment.target ?: return@forEach
-//            with(target) target@{
-//                if (fragment.platform != Platform.ANDROID) {
-//                    fragment.maybeCreateCompilation {
-//                        if (this@target is KotlinNativeTarget)
-//                            adjust(
-//                                this@target,
-//                                this as KotlinNativeCompilation,
-//                                fragment,
-//                            )
-//                    }
-//                }
-//            }
-//        }
-//    }
-
     @Suppress("UNCHECKED_CAST")
     private fun Project.adjustSourceSets() {
         kotlin {
@@ -109,11 +59,7 @@ internal class KMPPlugin : Plugin<Project> {
             }
 
             sourceSets.forEach { sourceSet ->
-                projectProperties.kotlin.sourceSets?.get(sourceSet.name)?.dependencies?.let { dependencies ->
-                    sourceSet.dependencies {
-                        dependencies.forEach { dependency -> dependency.applyTo(this) }
-                    }
-                }
+                projectProperties.kotlin.sourceSets?.get(sourceSet.name)?.applyTo(sourceSet)
             }
         }
     }

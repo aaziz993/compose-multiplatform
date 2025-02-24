@@ -8,7 +8,6 @@ import gradle.projectProperties
 import gradle.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import plugin.project.gradle.apivalidation.model.ApiValidationSettings
 
 internal class ApiValidationPlugin : Plugin<Project> {
 

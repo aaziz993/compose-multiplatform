@@ -1,7 +1,6 @@
 package plugin.project.kotlin.ktorfit
 
 import gradle.id
-import gradle.ktorfit
 import gradle.libs
 import gradle.plugin
 import gradle.plugins

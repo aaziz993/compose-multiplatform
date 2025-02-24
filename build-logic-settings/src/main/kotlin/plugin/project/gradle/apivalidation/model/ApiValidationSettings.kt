@@ -3,10 +3,10 @@ package plugin.project.gradle.apivalidation.model
 import gradle.apiValidation
 import gradle.id
 import gradle.libs
+import gradle.maybeNamed
 import gradle.plugin
 import gradle.plugins
 import gradle.settings
-import gradle.maybeNamed
 import kotlinx.serialization.Serializable
 import kotlinx.validation.KotlinApiBuildTask
 import org.gradle.api.Project

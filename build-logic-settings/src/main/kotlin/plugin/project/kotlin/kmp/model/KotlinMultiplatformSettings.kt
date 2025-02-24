@@ -9,14 +9,13 @@ import gradle.settings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
-import plugin.project.apple.cocoapods.model.CocoapodsSettings
-import plugin.project.java.application.JavaApplication
 import plugin.project.java.model.Jar
 import plugin.project.java.model.JavaToolchainSpec
 import plugin.project.java.model.application.JavaApplication
 import plugin.project.kotlin.cocoapods.model.CocoapodsSettings
+import plugin.project.kotlin.model.KotlinSourceSet
 import plugin.project.kotlin.model.language.KotlinCommonCompilerOptions
-import plugin.project.kotlin.model.language.SourceSet
+import plugin.project.kotlin.model.language.KotlinMultiplatformExtension
 import plugin.project.kotlin.model.language.android.KotlinAndroidTargetSettings
 import plugin.project.kotlin.model.language.jvm.KotlinJvmTargetSettings
 import plugin.project.kotlin.model.language.nat.KotlinNativeTargetSettings
@@ -57,7 +56,7 @@ internal data class KotlinMultiplatformSettings(
     val js: LinkedHashMap<String, KotlinJsTargetSettings>? = null,
     val wasmJs: LinkedHashMap<String, KotlinWasmJsTargetSettings>? = null,
     val hierarchy: LinkedHashMap<String, List<String>>? = null,
-    val sourceSets: LinkedHashMap<String, SourceSet>? = null,
+    val sourceSets: LinkedHashMap<String, KotlinSourceSet>? = null,
     val application: JavaApplication? = null,
     val jar: Jar? = null,
     val cocoapods: CocoapodsSettings = CocoapodsSettings(),

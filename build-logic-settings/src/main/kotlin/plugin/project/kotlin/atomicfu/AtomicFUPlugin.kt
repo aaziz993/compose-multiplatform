@@ -1,6 +1,5 @@
 package plugin.project.kotlin.atomicfu
 
-import gradle.atomicFU
 import gradle.id
 import gradle.libs
 import gradle.plugin

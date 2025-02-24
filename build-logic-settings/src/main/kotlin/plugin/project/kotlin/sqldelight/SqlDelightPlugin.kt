@@ -6,7 +6,6 @@ import gradle.plugin
 import gradle.plugins
 import gradle.projectProperties
 import gradle.settings
-import gradle.sqldelight
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
