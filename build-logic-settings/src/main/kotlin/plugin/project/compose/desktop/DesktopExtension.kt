@@ -12,11 +12,5 @@ import org.gradle.api.Project
 
 internal fun Project.configureDesktopExtension() =
     pluginManager.withPlugin(settings.libs.plugins.plugin("compose.multiplatform").id) {
-        compose {
-            projectProperties.compose.desktop.let { desktop ->
-                desktop {
-                    desktop.applyTo(this)
-                }
-            }
-        }
+        projectProperties.compose.desktop.applyTo(compose.desktop)
     }

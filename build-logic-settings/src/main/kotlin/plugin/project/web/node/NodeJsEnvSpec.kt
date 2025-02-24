@@ -12,13 +12,5 @@ import org.gradle.api.Project
 
 internal fun Project.configureNodeJsEnvSpec() =
     pluginManager.withPlugin(settings.libs.plugins.plugin("gradle.node.plugin").id) {
-       projectProperties.settings.web.nodeJsEnv.let { env ->
-            nodeEnv {
-                download tryAssign env.download
-                downloadBaseUrl tryAssign env.downloadBaseUrl
-                installationDirectory tryAssign env.installationDirectory?.let(layout.projectDirectory::dir)
-                version tryAssign env.version
-                command tryAssign env.command
-            }
-        }
+        projectProperties.nodeJsEnv.applyTo(nodeEnv)
     }

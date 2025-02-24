@@ -12,10 +12,5 @@ import org.gradle.api.Project
 
 internal fun Project.configureKarakumExtension() =
     pluginManager.withPlugin(settings.libs.plugins.plugin("karakum").id) {
-       projectProperties.settings.web.karakum.let { karakum ->
-            karakum {
-                configFile tryAssign karakum.configFile?.let(::file)
-                extensionSource tryAssign karakum.extensionSource?.let(layout.projectDirectory::dir)?.asFileTree
-            }
-        }
+        projectProperties.karakum.applyTo(karakum)
     }

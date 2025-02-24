@@ -8,9 +8,9 @@ import plugin.project.java.application.model.JavaApplication
 import plugin.project.java.model.JavaPluginSettings
 import plugin.project.kotlin.kmp.model.KotlinMultiplatformSettings
 import plugin.project.web.js.karakum.model.KarakumSettings
-import plugin.project.web.node.model.EnvSpec
-import plugin.project.web.npm.model.NpmSettings
-import plugin.project.web.yarn.model.YarnSettings
+import plugin.project.web.node.model.NodeJsEnvSpec
+import plugin.project.web.npm.model.NpmExtension
+import plugin.project.web.yarn.model.YarnRootExtension
 
 @Serializable
 internal data class Properties(
@@ -22,9 +22,9 @@ internal data class Properties(
     val kotlin: KotlinMultiplatformSettings = KotlinMultiplatformSettings(),
     val android: AndroidSettings = AndroidSettings(),
     val apple: AppleSettings = AppleSettings(),
-    val nodeJsEnv: EnvSpec = EnvSpec(),
-    val yarn: YarnSettings = YarnSettings(),
-    val npm: NpmSettings = NpmSettings(),
+    val nodeJsEnv: NodeJsEnvSpec = NodeJsEnvSpec(),
+    val yarn: YarnRootExtension = YarnRootExtension(),
+    val npm: NpmExtension = NpmExtension(),
     val karakum: KarakumSettings = KarakumSettings(),
     val compose: ComposeSettings = ComposeSettings(),
     val pluginManagement: PluginManagement? = null,

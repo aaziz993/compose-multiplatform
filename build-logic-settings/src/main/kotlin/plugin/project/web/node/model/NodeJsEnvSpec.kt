@@ -1,9 +1,12 @@
 package plugin.project.web.node.model
 
+import gradle.tryAssign
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
+import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsEnvSpec
 
 @Serializable
-internal data class EnvSpec(
+internal data class NodeJsEnvSpec(
     /**
      * Specify whether we need to download the tool
      */
@@ -27,4 +30,14 @@ internal data class EnvSpec(
      * Specify a command to run the tool
      */
     val command: String? = null
-)
+) {
+
+    context(Project)
+    fun applyTo(spec: NodeJsEnvSpec) {
+        spec.download tryAssign download
+        spec.downloadBaseUrl tryAssign downloadBaseUrl
+        spec.installationDirectory tryAssign installationDirectory?.let(layout.projectDirectory::dir)
+        spec.version tryAssign version
+        spec.command tryAssign command
+    }
+}

@@ -13,10 +13,6 @@ import org.gradle.api.Project
 @OptIn(ExperimentalBCVApi::class)
 internal fun Project.configureApiValidationExtension() =
     pluginManager.withPlugin(settings.libs.plugins.plugin("binary.compatibility.validator").id) {
-       projectProperties.plugins.apiValidation.let { apiValidation ->
-            apiValidation {
-                apiValidation.applyTo(this)
-            }
-        }
+        projectProperties.plugins.apiValidation.applyTo(apiValidation)
     }
 

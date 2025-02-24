@@ -6,9 +6,7 @@ import kotlin.collections.component2
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
-import plugin.project.android.model.AndroidSettings
 import plugin.project.apple.cocoapods.model.CocoapodsSettings
-import plugin.project.apple.model.AppleSettings
 import plugin.project.java.application.model.JavaApplication
 import plugin.project.java.model.Jar
 import plugin.project.java.model.JavaToolchainSpec
@@ -19,10 +17,6 @@ import plugin.project.kotlin.model.language.jvm.KotlinJvmTargetSettings
 import plugin.project.kotlin.model.language.nat.KotlinNativeTargetSettings
 import plugin.project.kotlin.model.language.web.KotlinJsTargetSettings
 import plugin.project.kotlin.model.language.web.KotlinWasmJsTargetSettings
-import plugin.project.web.js.karakum.model.KarakumSettings
-import plugin.project.web.node.model.EnvSpec
-import plugin.project.web.npm.model.NpmSettings
-import plugin.project.web.yarn.model.YarnSettings
 
 @Serializable
 internal data class KotlinMultiplatformSettings(

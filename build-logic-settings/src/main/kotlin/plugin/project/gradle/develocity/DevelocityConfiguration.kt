@@ -10,11 +10,7 @@ import org.gradle.kotlin.dsl.develocity
 
 internal fun Settings.configureDevelocityConfiguration() =
     pluginManager.withPlugin(libs.plugins.plugin("develocity").id) {
-       projectProperties.plugins.develocity.let { develocity ->
-            develocity {
-                develocity.applyTo(this)
-            }
-        }
+        projectProperties.plugins.develocity.applyTo(develocity)
     }
 
 

@@ -11,9 +11,5 @@ import org.gradle.api.Project
 
 internal fun Project.configureSqlDelightExtension() =
     pluginManager.withPlugin(settings.libs.plugins.plugin("sqldelight").id) {
-        projectProperties.plugins.sqldelight.let { sqldelight ->
-            sqldelight {
-                sqldelight.applyTo(this)
-            }
-        }
+        projectProperties.plugins.sqldelight.applyTo(sqldelight)
     }

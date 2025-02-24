@@ -11,10 +11,6 @@ import org.gradle.api.Project
 
 internal fun Project.configureDoctorExtension() =
     pluginManager.withPlugin(settings.libs.plugins.plugin("doctor").id) {
-       projectProperties.plugins.doctor.let { doctor ->
-            doctor {
-                doctor.applyTo(this)
-            }
-        }
+        projectProperties.plugins.doctor.applyTo(doctor)
     }
 

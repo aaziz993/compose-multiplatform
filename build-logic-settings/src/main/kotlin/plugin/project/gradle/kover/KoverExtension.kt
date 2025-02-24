@@ -11,11 +11,7 @@ import org.gradle.api.Project
 
 internal fun Project.configureKoverExtension() =
     pluginManager.withPlugin(settings.libs.plugins.plugin("kover").id) {
-       projectProperties.plugins.kover.let { kover ->
-            kover {
-                kover.applyTo(this)
-            }
-        }
+        projectProperties.plugins.kover.applyTo(kover)
     }
 
 

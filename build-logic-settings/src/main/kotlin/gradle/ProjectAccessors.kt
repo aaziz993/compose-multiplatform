@@ -24,7 +24,6 @@ import org.gradle.kotlin.dsl.the
 import org.jetbrains.compose.ComposeExtension
 import org.jetbrains.compose.android.AndroidExtension
 import org.jetbrains.compose.desktop.DesktopExtension
-import org.jetbrains.compose.experimental.dsl.ExperimentalExtension
 import org.jetbrains.compose.resources.ResourcesExtension
 import org.jetbrains.dokka.gradle.DokkaExtension
 import org.jetbrains.gradle.apple.AppleProjectExtension
@@ -169,7 +168,7 @@ internal val Project.apple: AppleProjectExtension get() = the()
 internal fun Project.apple(configure: AppleProjectExtension.() -> Unit) =
     extensions.configure(configure)
 
-internal val Project.npm: NodeJsRootExtension get() = the()
+internal val Project.npm: NpmExtension get() = the()
 
 internal fun Project.npm(configure: NpmExtension.() -> Unit) =
     extensions.configure(configure)
