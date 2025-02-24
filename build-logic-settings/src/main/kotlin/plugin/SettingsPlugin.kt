@@ -23,6 +23,7 @@ import org.gradle.api.initialization.Settings
 import org.gradle.api.internal.artifacts.repositories.DefaultMavenArtifactRepository
 import org.gradle.kotlin.dsl.maven
 import org.jetbrains.amper.gradle.SLF4JProblemReporterContext
+import org.jetbrains.compose.jetbrainsCompose
 import org.tomlj.Toml
 import org.yaml.snakeyaml.DumperOptions
 import org.yaml.snakeyaml.Yaml
@@ -223,7 +224,7 @@ public class SettingsPlugin : Plugin<Settings> {
         // For dev versions of kotlin
         maven("https://maven.pkg.jetbrains.space/kotlin/p/kotlin/dev")
         // For dev versions of compose plugin and dependencies
-        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+        jetbrainsCompose()
         // For compose experimental builds
         maven("https://packages.jetbrains.team/maven/p/firework/dev")
         // Sonatype OSS Snapshot Repository

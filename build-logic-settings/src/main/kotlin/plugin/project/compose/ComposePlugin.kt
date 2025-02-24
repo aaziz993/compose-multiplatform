@@ -10,7 +10,9 @@ import gradle.projectProperties
 import gradle.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import plugin.project.compose.android.configureAndroidExtension
 import plugin.project.compose.desktop.configureDesktopExtension
+import plugin.project.compose.resources.configureResourcesExtension
 
 public class ComposePlugin : Plugin<Project> {
 
@@ -25,6 +27,7 @@ public class ComposePlugin : Plugin<Project> {
 
             if (projectProperties.application) {
                 configureDesktopExtension()
+                configureAndroidExtension()
             }
 
             configureResourcesExtension()

@@ -1,4 +1,4 @@
-package plugin.project.compose.model
+package plugin.project.compose.resources.model
 
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.ResourcesExtension

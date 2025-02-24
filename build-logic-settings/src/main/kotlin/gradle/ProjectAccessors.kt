@@ -22,7 +22,9 @@ import org.gradle.api.toolchain.management.ToolchainManagement
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.the
 import org.jetbrains.compose.ComposeExtension
+import org.jetbrains.compose.android.AndroidExtension
 import org.jetbrains.compose.desktop.DesktopExtension
+import org.jetbrains.compose.experimental.dsl.ExperimentalExtension
 import org.jetbrains.compose.resources.ResourcesExtension
 import org.jetbrains.dokka.gradle.DokkaExtension
 import org.jetbrains.gradle.apple.AppleProjectExtension
@@ -207,17 +209,14 @@ internal val ComposeExtension.desktop: DesktopExtension get() = the()
 internal fun ComposeExtension.desktop(configure: DesktopExtension.() -> Unit) =
     extensions.configure(configure)
 
-/**
- * Create native module name from project group and path.
- */
-internal val Project.qualifiedModuleName
-    get() = path.split(":").drop(1).joinToString("-")
+internal val ComposeExtension.android: AndroidExtension get() = the()
 
-
+internal fun ComposeExtension.android(configure: AndroidExtension.() -> Unit) =
+    extensions.configure(configure)
 /**
- * Create native module name from project group and path.
+ * Create native module name from project path.
  */
-internal val Project.nativeModuleName
+internal val Project.moduleName
     get() = path.split(":").drop(1).joinToString("-")
 
 /**

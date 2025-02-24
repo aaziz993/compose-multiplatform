@@ -3,6 +3,7 @@
 package plugin.project
 
 import gradle.libs
+import gradle.moduleName
 import gradle.projectProperties
 import gradle.qualifiedModuleName
 import gradle.settings
@@ -53,7 +54,7 @@ internal class ProjectPlugin : Plugin<Project> {
                 projectProperties.group?.let(::setGroup)
                 projectProperties.description?.let(::setDescription)
                 version = settings.libs.versions.let { versions ->
-                    val moduleName = qualifiedModuleName
+                    val moduleName = moduleName
                     version(
                         versions.version("$moduleName.version.major")?.toInt() ?: 1,
                         versions.version("$moduleName.version.minor")?.toInt() ?: 0,
@@ -62,7 +63,7 @@ internal class ProjectPlugin : Plugin<Project> {
                     )
                 }
             }
-
+dependencies.extensions.
             plugins.apply(KMPPlugin::class.java)
             plugins.apply(DoctorPlugin::class.java)
             plugins.apply(BuildConfigPlugin::class.java)

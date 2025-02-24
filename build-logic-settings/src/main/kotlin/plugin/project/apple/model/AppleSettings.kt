@@ -1,6 +1,6 @@
 package plugin.project.apple.model
 
-import gradle.nativeModuleName
+import gradle.moduleName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -13,7 +13,7 @@ internal data class AppleSettings(
 
     context(Project)
     fun applyTo(extension: org.jetbrains.gradle.apple.AppleProjectExtension) {
-        extension.teamID = teamID ?: nativeModuleName
+        extension.teamID = teamID ?: moduleName
 
         iosApps?.forEach { iosApp ->
             iosApp.name.takeIf(String::isNotEmpty)?.also { name ->

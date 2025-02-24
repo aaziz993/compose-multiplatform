@@ -228,7 +228,7 @@ private fun Project.registerAggregationTestTask(
     taskDependencies: () -> TaskCollection<*>,
     targetFilter: (KotlinTarget) -> Boolean,
 ) {
-    extensions.configure<KotlinMultiplatformExtension>("kotlin") {
+    kotlin {
         var called = false
         targets.matching(targetFilter).configureEach {
             if (called) return@configureEach

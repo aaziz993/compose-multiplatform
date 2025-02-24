@@ -1,27 +1,26 @@
 @file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
 
-package plugin.project.compose
+package plugin.project.compose.resources
 
 import gradle.all
+import gradle.compose
 import gradle.id
 import gradle.kotlin
 import gradle.libs
 import gradle.plugin
 import gradle.plugins
 import gradle.projectProperties
+import gradle.resources
 import gradle.settings
 import gradle.trySet
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.configure
-import org.jetbrains.compose.ComposeExtension
-import org.jetbrains.compose.resources.ResourcesExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 
 internal fun Project.configureResourcesExtension() =
     pluginManager.withPlugin(settings.libs.plugins.plugin("compose.multiplatform").id) {
-        extensions.configure<ComposeExtension> {
+        compose {
             projectProperties.compose.resources.let { resources ->
-                extensions.configure<ResourcesExtension> {
+                resources {
                     ::publicResClass trySet resources.publicResClass
                     ::packageOfResClass trySet resources.packageOfResClass
                     ::generateResClass trySet resources.generateResClass

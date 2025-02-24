@@ -1,6 +1,6 @@
 package plugin.project.kotlin.model.language.nat
 
-import gradle.nativeModuleName
+import gradle.moduleName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.assign
@@ -34,6 +34,6 @@ internal data class KotlinNativeCompilerOptions(
     fun applyTo(options: KotlinNativeCompilerOptions) {
         super.applyTo(options)
 
-        options.moduleName.assign(moduleName ?: nativeModuleName)
+        options.moduleName.assign(moduleName ?: moduleName)
     }
 }
