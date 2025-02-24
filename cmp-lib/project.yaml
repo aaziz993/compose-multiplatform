@@ -7,4 +7,4 @@ kotlin:
   sourceSets:
     commonMain:
       dependencies:
-#        - kmp-lib
+        - :kmp-lib
