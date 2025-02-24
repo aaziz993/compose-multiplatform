@@ -2,6 +2,8 @@
 
 package plugin
 
+import com.android.build.gradle.internal.lint.AndroidLintAnalysisTask
+import com.android.build.gradle.internal.lint.LintModelWriterTask
 import gradle.allLibs
 import gradle.deepMerge
 import gradle.isUrl
@@ -26,6 +28,7 @@ import org.gradle.api.file.FileCollection
 import org.gradle.api.initialization.Settings
 import org.gradle.api.internal.artifacts.repositories.DefaultMavenArtifactRepository
 import org.gradle.kotlin.dsl.maven
+import org.jetbrains.amper.gradle.BindingSettingsPlugin
 import org.jetbrains.amper.gradle.SLF4JProblemReporterContext
 import org.jetbrains.compose.jetbrainsCompose
 import org.tomlj.Toml
@@ -176,7 +179,7 @@ public class SettingsPlugin : Plugin<Settings> {
     }
 
     private fun Project.configureProject() {
-        // Root projects properties already loaded in settings setup.
+        // Load project properties.
         projectProperties = layout.projectDirectory.loadProperties().apply {
             println("APPLY $PROJECT_PROPERTIES_FILE TO: $name")
             println(logYaml.dump(Json.Default.encodeToAny(this)))

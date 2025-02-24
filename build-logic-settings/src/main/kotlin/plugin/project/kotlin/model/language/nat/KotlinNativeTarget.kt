@@ -4,11 +4,10 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
-@Serializable
-internal data class KotlinNativeTarget(
-    override val binaries: KotlinNativeBinaryContainer? = null,
-    val compilerOptions: KotlinNativeCompilerOptions? = null,
-) : HasBinaries<KotlinNativeBinaryContainer> {
+internal interface KotlinNativeTarget : HasBinaries<KotlinNativeBinaryContainer> {
+
+    override val binaries: KotlinNativeBinaryContainer?
+    val compilerOptions: KotlinNativeCompilerOptions?
 
     context(Project)
     fun applyTo(target: KotlinNativeTarget) {

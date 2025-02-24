@@ -14,10 +14,10 @@ import org.gradle.api.internal.tasks.JvmConstants
 import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
 
 @Serializable(with = DependencySerializer::class)
-internal sealed class Dependency {
-
-    abstract val notation: String
-    abstract val configuration: String
+internal data class Dependency(
+    val notation: String,
+    val configuration: String = "implementation"
+) {
 
     context(Settings)
     internal fun resolve(): Any = resolve(layout.rootDirectory) { catalogName, libraryName ->
@@ -38,24 +38,7 @@ internal sealed class Dependency {
     internal fun applyTo(kotlinDependencyHandler: KotlinDependencyHandler): Unit =
         kotlinDependencyHandler.depFunction(resolve())
 
-    protected abstract fun resolve(directory: Directory, library: (catalogName: String, libraryName: String) -> String): Any
-
-    private val depFunction: KotlinDependencyHandler.(Any) -> Unit
-        get() = when (configuration) {
-            JvmConstants.IMPLEMENTATION_CONFIGURATION_NAME -> KotlinDependencyHandler::implementation
-            JvmConstants.RUNTIME_ONLY_CONFIGURATION_NAME -> KotlinDependencyHandler::runtimeOnly
-            JvmConstants.COMPILE_ONLY_CONFIGURATION_NAME -> KotlinDependencyHandler::compileOnly
-            JvmConstants.API_CONFIGURATION_NAME -> KotlinDependencyHandler::api
-            else -> error("Unsupported dependency configuration: $configuration")
-        }
-}
-
-internal data class KotlinDependency(
-    override val notation: String,
-    override val configuration: String = "implementation"
-) : Dependency() {
-
-    override fun resolve(directory: Directory, library: (catalogName: String, libraryName: String) -> String): Any =
+    private fun resolve(directory: Directory, library: (catalogName: String, libraryName: String) -> String): Any =
         when {
             notation.startsWith("$") ->
                 library(
@@ -70,25 +53,15 @@ internal data class KotlinDependency(
 
             else -> notation
         }
-}
 
-internal data class NpmDependency(
-    override val notation: String,
-    override val configuration: String = "implementation"
-) : Dependency() {
-
-    override fun resolve(directory: Directory, library: (catalogName: String, libraryName: String) -> String): Any =
-        when {
-            notation.startsWith("$") ->
-                library(
-                    notation
-                        .removePrefix("$")
-                        .substringBefore("."),
-                    notation
-                        .substringAfter("."),
-                )
-
-            else -> notation
+    private val depFunction: KotlinDependencyHandler.(Any) -> Unit
+        get() = when (configuration) {
+            JvmConstants.IMPLEMENTATION_CONFIGURATION_NAME -> KotlinDependencyHandler::implementation
+            JvmConstants.RUNTIME_ONLY_CONFIGURATION_NAME -> KotlinDependencyHandler::runtimeOnly
+            JvmConstants.COMPILE_ONLY_CONFIGURATION_NAME -> KotlinDependencyHandler::compileOnly
+            JvmConstants.API_CONFIGURATION_NAME -> KotlinDependencyHandler::api
+            else -> error("Unsupported dependency configuration: $configuration")
+        }
 }
 
 internal fun String.asVersionCatalogUri(): String {

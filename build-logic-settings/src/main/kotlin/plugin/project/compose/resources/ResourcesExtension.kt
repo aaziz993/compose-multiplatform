@@ -15,6 +15,7 @@ import gradle.settings
 import gradle.trySet
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
+import plugin.project.model.Layout
 
 internal fun Project.configureResourcesExtension() =
     pluginManager.withPlugin(settings.libs.plugins.plugin("compose.multiplatform").id) {
@@ -28,20 +29,25 @@ internal fun Project.configureResourcesExtension() =
                         customDirectory(sourceSetName, provider { layout.projectDirectory.dir(directory) })
                     }
 
-                    kotlin.sourceSets.all { sourceSet ->
+                    when (projectProperties.layout) {
                         // Adjust composeResources to match flatten directory structure
-                        customDirectory(
-                            sourceSet.name,
-                            provider {
-                                layout.projectDirectory.dir(
-                                    when (sourceSet.name) {
-                                        KotlinSourceSet.COMMON_MAIN_SOURCE_SET_NAME -> "composeResources"
-                                        KotlinSourceSet.COMMON_TEST_SOURCE_SET_NAME -> "composeTestResources"
-                                        else -> "composeResources@${sourceSet.name}"
-                                    },
-                                )
-                            },
-                        )
+                        Layout.FLAT -> kotlin.sourceSets.all { sourceSet ->
+                            customDirectory(
+                                sourceSet.name,
+                                provider {
+                                    layout.projectDirectory.dir(
+                                        when (sourceSet.name) {
+                                            KotlinSourceSet.COMMON_MAIN_SOURCE_SET_NAME -> "composeResources"
+                                            KotlinSourceSet.COMMON_TEST_SOURCE_SET_NAME -> "composeTestResources"
+                                            else -> "composeResources@${sourceSet.name}"
+                                        },
+                                    )
+                                },
+                            )
+
+                        }
+
+                        else -> Unit
                     }
                 }
             }

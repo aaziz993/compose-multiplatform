@@ -156,8 +156,6 @@ kotlin:
         - $libs.androidx.room.runtime.android
         - $libs.androidx.room.paging
 
-  #    apiVersion: 2.1.10
-  #    languageVersion: 2.1.10
 #  allWarningsAsErrors: false
 #  debug: false
 #  progressiveMode: true
@@ -220,4 +218,4 @@ settings:
     optIns:
       - kotlin.js.ExperimentalJsExport
 
-flat-layout: true
+layout: FLAT

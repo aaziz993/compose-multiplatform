@@ -32,11 +32,14 @@ kotlin:
         - ../kmp-lib
         - ../cmp-lib
         - ../shared
-        - $libs.androidx.activity.compose
 
     jvmMain:
       dependencies:
         - $compose.desktop.currentOs
+
+    androidMain:
+      dependencies:
+        - $libs.androidx.activity.compose
 
     wasmJsMain:
       dependencies:

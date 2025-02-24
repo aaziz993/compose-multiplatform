@@ -14,6 +14,7 @@ import gradle.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
+import plugin.project.model.Layout
 
 internal class KMPPlugin : Plugin<Project> {
 
@@ -32,6 +33,7 @@ internal class KMPPlugin : Plugin<Project> {
             extraProperties.set("org.jetbrains.compose.experimental.uikit.enabled", "true")
 
             adjustTargets()
+
             adjustSourceSets()
 
             // Workaround for KTIJ-27212, to get proper compiler arguments in the common code facet after import.
@@ -153,8 +155,8 @@ internal class KMPPlugin : Plugin<Project> {
     @Suppress("UNCHECKED_CAST")
     private fun Project.adjustSourceSets() {
         kotlin {
-            if (projectProperties.flatLayout) {
-                sourceSets.all { sourceSet ->
+            when (projectProperties.layout) {
+                Layout.FLAT -> sourceSets.all { sourceSet ->
                     val sourceSetNameParts = "^(.*?)(Main|Test|TestDebug)?$".toRegex().matchEntire(sourceSet.name)!!
 
                     val (kotlinPrefixPart, resourcesPrefixPart) = sourceSetNameParts.groupValues[2].decapitalize().let {
@@ -169,15 +171,17 @@ internal class KMPPlugin : Plugin<Project> {
                     sourceSet.kotlin.setSrcDirs(listOf("$kotlinPrefixPart$suffixPart"))
                     sourceSet.resources.setSrcDirs(listOf("$resourcesPrefixPart$suffixPart"))
                 }
+
+                else -> Unit
             }
 
-//            sourceSets.forEach { sourceSet ->
-//                projectProperties.kotlin.sourceSets?.get(sourceSet.name)?.dependencies?.let { dependencies ->
-//                    sourceSet.dependencies {
-//                        dependencies.forEach { dependency -> dependency.applyTo(this) }
-//                    }
-//                }
-//            }
+            sourceSets.forEach { sourceSet ->
+                projectProperties.kotlin.sourceSets?.get(sourceSet.name)?.dependencies?.let { dependencies ->
+                    sourceSet.dependencies {
+                        dependencies.forEach { dependency -> dependency.applyTo(this) }
+                    }
+                }
+            }
         }
     }
 }

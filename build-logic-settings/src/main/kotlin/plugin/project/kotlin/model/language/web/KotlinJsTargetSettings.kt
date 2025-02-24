@@ -1,9 +1,10 @@
 package plugin.project.kotlin.model.language.web
 
 import kotlinx.serialization.Serializable
+import plugin.project.model.EnabledSettings
 
 @Serializable
-internal data class KotlinJsTarget(
+internal data class KotlinJsTargetSettings(
     override val nodejs: KotlinJsNodeDsl? = null,
     override val moduleName: String? = null,
     override val browser: KotlinJsBrowserDsl? = null,
@@ -13,4 +14,5 @@ internal data class KotlinJsTarget(
     override val generateTypeScriptDefinitions: Boolean? = null,
     override val compilerOptions: KotlinJsCompilerOptions? = null,
     override val binaries: KotlinJsBinaryContainer? = null,
-) : KotlinJsTargetDsl
+    override val enabled: Boolean = true,
+) : KotlinJsTargetDsl, EnabledSettings

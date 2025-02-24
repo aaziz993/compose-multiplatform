@@ -1,5 +1,6 @@
 package plugin.project.compose.desktop.model
 
+import gradle.java
 import gradle.kotlin
 import gradle.trySet
 import kotlinx.serialization.Serializable
@@ -27,9 +28,7 @@ internal data class JvmApplication(
 
     context(Project)
     fun applyTo(application: JvmApplication) {
-//        fromSourceSet?.let(kotlin.sourceSets::getByName)?.let { fromSourceSet ->
-//            application.from(fromSourceSet)
-//        }
+        fromSourceSet?.let(java.sourceSets::getByName)?.let(application::from)
         fromKotlinTarget?.let(kotlin.targets::getByName)?.let(application::from)
         disableDefaultConfiguration?.takeIf { it }?.run { application.disableDefaultConfiguration() }
         dependsOn?.map(tasks::getByName)?.let { tasks -> application.dependsOn(*tasks.toTypedArray()) }

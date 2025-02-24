@@ -7,8 +7,8 @@ import plugin.project.kotlin.model.language.HasConfigurableKotlinCompilerOptions
 import plugin.project.kotlin.model.language.KotlinTarget
 import plugin.project.kotlin.model.language.jvm.KotlinJvmCompilerOptions
 
-@Serializable
-internal data class KotlinAndroidTarget(
+internal interface KotlinAndroidTarget : KotlinTarget, HasConfigurableKotlinCompilerOptions<KotlinJvmCompilerOptions> {
+
     /** Names of the Android library variants that should be published from the target's project within the default publications which are
      * set up if the `maven-publish` Gradle plugin is applied.
      *
@@ -19,15 +19,16 @@ internal data class KotlinAndroidTarget(
      *
      * If set to null, which can also be done with [publishAllLibraryVariants],
      * all library variants will be published, but not test or application variants. */
-    val publishLibraryVariants: List<String>? = null,
+    val publishLibraryVariants: List<String>?
+
     /** Set up all of the Android library variants to be published from this target's project within the default publications, which are
      * set up if the `maven-publish` Gradle plugin is applied. This overrides the variants chosen with [publishLibraryVariants] */
-    val publishAllLibraryVariants: Boolean? = null,
+    val publishAllLibraryVariants: Boolean?
+
     /** If true, a publication will be created per merged product flavor, with the build types used as classifiers for the artifacts
      * published within each publication. If set to false, each Android variant will have a separate publication. */
-    val publishLibraryVariantsGroupedByFlavor: Boolean? = null,
-    override val compilerOptions: KotlinJvmCompilerOptions? = null,
-) : KotlinTarget, HasConfigurableKotlinCompilerOptions<KotlinJvmCompilerOptions> {
+    val publishLibraryVariantsGroupedByFlavor: Boolean?
+    override val compilerOptions: KotlinJvmCompilerOptions?
 
     fun applyTo(target: KotlinAndroidTarget) {
         publishLibraryVariants?.let { publishLibraryVariants ->

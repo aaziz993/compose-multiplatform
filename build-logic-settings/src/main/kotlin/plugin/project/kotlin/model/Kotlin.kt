@@ -7,10 +7,12 @@ import plugin.project.apple.cocoapods.model.CocoapodsSettings
 import plugin.project.kotlin.model.language.LanguageSettings
 import plugin.project.kotlin.model.language.SourceSet
 import plugin.project.kotlin.model.language.android.KotlinAndroidTarget
+import plugin.project.kotlin.model.language.android.KotlinAndroidTargetSettings
 import plugin.project.kotlin.model.language.jvm.KotlinJvmTarget
-import plugin.project.kotlin.model.language.nat.KotlinNativeTarget
-import plugin.project.kotlin.model.language.web.KotlinJsTarget
-import plugin.project.kotlin.model.language.web.KotlinWasmJsTarget
+import plugin.project.kotlin.model.language.jvm.KotlinJvmTargetSettings
+import plugin.project.kotlin.model.language.nat.KotlinNativeTargetSettings
+import plugin.project.kotlin.model.language.web.KotlinJsTargetSettings
+import plugin.project.kotlin.model.language.web.KotlinWasmJsTargetSettings
 
 @Serializable
 internal data class Kotlin(
@@ -19,29 +21,29 @@ internal data class Kotlin(
     override val progressiveMode: Boolean? = null,
     override val languageFeatures: Set<String>? = null,
     override val optIns: Set<String>? = null,
-    val jvm: LinkedHashMap<String, KotlinJvmTarget>? = null,
-    val android: LinkedHashMap<String, KotlinAndroidTarget>? = null,
-    val androidNativeArm32: LinkedHashMap<String, KotlinNativeTarget>? = null,
-    val androidNativeArm64: LinkedHashMap<String, KotlinNativeTarget>? = null,
-    val androidNativeX86: LinkedHashMap<String, KotlinNativeTarget>? = null,
-    val androidNativeX64: LinkedHashMap<String, KotlinNativeTarget>? = null,
-    val iosArm64: LinkedHashMap<String, KotlinNativeTarget>? = null,
-    val iosX64: LinkedHashMap<String, KotlinNativeTarget>? = null,
-    val iosSimulatorArm64: LinkedHashMap<String, KotlinNativeTarget>? = null,
-    val watchosArm32: LinkedHashMap<String, KotlinNativeTarget>? = null,
-    val watchosArm64: LinkedHashMap<String, KotlinNativeTarget>? = null,
-    val watchosX64: LinkedHashMap<String, KotlinNativeTarget>? = null,
-    val watchosSimulatorArm64: LinkedHashMap<String, KotlinNativeTarget>? = null,
-    val tvosArm64: LinkedHashMap<String, KotlinNativeTarget>? = null,
-    val tvosX64: LinkedHashMap<String, KotlinNativeTarget>? = null,
-    val tvosSimulatorArm64: LinkedHashMap<String, KotlinNativeTarget>? = null,
-    val macosArm64: LinkedHashMap<String, KotlinNativeTarget>? = null,
-    val macosX64: LinkedHashMap<String, KotlinNativeTarget>? = null,
-    val linuxArm64: LinkedHashMap<String, KotlinNativeTarget>? = null,
-    val linuxX64: LinkedHashMap<String, KotlinNativeTarget>? = null,
-    val mingwX64: LinkedHashMap<String, KotlinNativeTarget>? = null,
-    val js: LinkedHashMap<String, KotlinJsTarget>? = null,
-    val wasmJs: LinkedHashMap<String, KotlinWasmJsTarget>? = null,
+    val jvm: LinkedHashMap<String, KotlinJvmTargetSettings>? = null,
+    val android: LinkedHashMap<String, KotlinAndroidTargetSettings>? = null,
+    val androidNativeArm32: LinkedHashMap<String, KotlinNativeTargetSettings>? = null,
+    val androidNativeArm64: LinkedHashMap<String, KotlinNativeTargetSettings>? = null,
+    val androidNativeX86: LinkedHashMap<String, KotlinNativeTargetSettings>? = null,
+    val androidNativeX64: LinkedHashMap<String, KotlinNativeTargetSettings>? = null,
+    val iosArm64: LinkedHashMap<String, KotlinNativeTargetSettings>? = null,
+    val iosX64: LinkedHashMap<String, KotlinNativeTargetSettings>? = null,
+    val iosSimulatorArm64: LinkedHashMap<String, KotlinNativeTargetSettings>? = null,
+    val watchosArm32: LinkedHashMap<String, KotlinNativeTargetSettings>? = null,
+    val watchosArm64: LinkedHashMap<String, KotlinNativeTargetSettings>? = null,
+    val watchosX64: LinkedHashMap<String, KotlinNativeTargetSettings>? = null,
+    val watchosSimulatorArm64: LinkedHashMap<String, KotlinNativeTargetSettings>? = null,
+    val tvosArm64: LinkedHashMap<String, KotlinNativeTargetSettings>? = null,
+    val tvosX64: LinkedHashMap<String, KotlinNativeTargetSettings>? = null,
+    val tvosSimulatorArm64: LinkedHashMap<String, KotlinNativeTargetSettings>? = null,
+    val macosArm64: LinkedHashMap<String, KotlinNativeTargetSettings>? = null,
+    val macosX64: LinkedHashMap<String, KotlinNativeTargetSettings>? = null,
+    val linuxArm64: LinkedHashMap<String, KotlinNativeTargetSettings>? = null,
+    val linuxX64: LinkedHashMap<String, KotlinNativeTargetSettings>? = null,
+    val mingwX64: LinkedHashMap<String, KotlinNativeTargetSettings>? = null,
+    val js: LinkedHashMap<String, KotlinJsTargetSettings>? = null,
+    val wasmJs: LinkedHashMap<String, KotlinWasmJsTargetSettings>? = null,
     val targetGroups: LinkedHashMap<String, List<String>>? = null,
     val sourceSets: LinkedHashMap<String, SourceSet>? = null,
     val cocoapods: CocoapodsSettings = CocoapodsSettings(),

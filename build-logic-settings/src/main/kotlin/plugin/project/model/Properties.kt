@@ -20,6 +20,5 @@ internal data class Properties(
     val dependencyResolutionManagement: DependencyResolutionManagement? = null,
     val modules: List<String>? = null,
     val gradleEnterpriseAccessKey: String? = null,
-    @SerialName("flat-layout")
-    val flatLayout: Boolean = false,
+    val layout: Layout = Layout.DEFAULT,
 )

@@ -6,13 +6,12 @@ import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
 import plugin.project.kotlin.model.language.HasConfigurableKotlinCompilerOptions
 import plugin.project.kotlin.model.language.KotlinTarget
 
-@Serializable
-internal data class KotlinJvmTarget(
-    val testRuns: List<KotlinJvmTestRun>? = null,
-    val mainRun: KotlinJvmRunDsl? = null,
-    var withJava: Boolean? = null,
-    override val compilerOptions: KotlinJvmCompilerOptions? = null,
-) : KotlinTarget, HasConfigurableKotlinCompilerOptions<KotlinJvmCompilerOptions> {
+internal  interface KotlinJvmTarget : KotlinTarget, HasConfigurableKotlinCompilerOptions<KotlinJvmCompilerOptions> {
+    val testRuns: List<KotlinJvmTestRun>?
+    val mainRun: KotlinJvmRunDsl?
+    var withJava: Boolean?
+    override val compilerOptions: KotlinJvmCompilerOptions?
+
 
     context(Project)
     fun applyTo(target: KotlinJvmTarget) {
