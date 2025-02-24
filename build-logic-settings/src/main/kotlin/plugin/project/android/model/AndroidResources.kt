@@ -15,7 +15,7 @@ internal interface AndroidResources {
      *
      * This is [ignoreAssetsPatterns] joined by ':'.
      */
-    var ignoreAssetsPattern: String?
+    val ignoreAssetsPattern: String?
 
     /**
      * Patterns describing assets to be ignored.

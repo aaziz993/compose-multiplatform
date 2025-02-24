@@ -4,6 +4,6 @@ import de.jensklingenberg.ktorfit.gradle.ErrorCheckingMode
 
 internal interface KtorfitGradleConfiguration {
 
-    var generateQualifiedTypeName: Boolean?
-    var errorCheckingMode: ErrorCheckingMode?
+    val generateQualifiedTypeName: Boolean?
+    val errorCheckingMode: ErrorCheckingMode?
 }

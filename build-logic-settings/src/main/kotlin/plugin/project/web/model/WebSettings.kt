@@ -8,8 +8,5 @@ import plugin.project.web.yarn.model.YarnSettings
 
 @Serializable
 internal data class WebSettings(
-    val nodeJsEnv: EnvSpec = EnvSpec(),
-    val yarn: YarnSettings = YarnSettings(),
-    val npm: NpmSettings = NpmSettings(),
-    val karakum: KarakumSettings = KarakumSettings(),
+
 )

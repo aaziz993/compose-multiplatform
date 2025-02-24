@@ -6,6 +6,6 @@ internal interface RoomExtension {
     val schemaDirectories: Set<String>?
 
     /** Causes Room annotation processor to generate Kotlin code instead of Java. */
-    var generateKotlin: Boolean?
+    val generateKotlin: Boolean?
 }
 

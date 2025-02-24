@@ -9,7 +9,7 @@ import plugin.project.kotlin.model.language.KotlinTarget
 internal  interface KotlinJvmTarget : KotlinTarget, HasConfigurableKotlinCompilerOptions<KotlinJvmCompilerOptions> {
     val testRuns: List<KotlinJvmTestRun>?
     val mainRun: KotlinJvmRunDsl?
-    var withJava: Boolean?
+    val withJava: Boolean?
     override val compilerOptions: KotlinJvmCompilerOptions?
 
 

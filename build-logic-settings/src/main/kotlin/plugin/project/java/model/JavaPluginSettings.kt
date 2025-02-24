@@ -21,11 +21,4 @@ internal data class JavaPluginSettings(
     override val testReportDir: String? = null,
     override val manifest: Manifest? = null,
     override val enabled: Boolean = true
-) : JavaPluginExtension, EnabledSettings {
-
-    context(Project)
-    @Suppress("UnstableApiUsage")
-    fun applyTo(extension: org.gradle.api.plugins.JavaPluginExtension) {
-        super.applyTo(extension)
-    }
-}
+) : JavaPluginExtension, EnabledSettings

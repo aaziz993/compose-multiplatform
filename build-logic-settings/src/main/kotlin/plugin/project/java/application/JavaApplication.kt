@@ -7,7 +7,7 @@ import org.gradle.api.plugins.ApplicationPlugin
 
 internal fun Project.configureJavaApplication() =
     pluginManager.withPlugin(ApplicationPlugin.APPLICATION_PLUGIN_NAME) {
-       projectProperties.jvm.application?.let { application ->
+       projectProperties.application?.let { application ->
             javaApp(application::applyTo)
         }
     }
