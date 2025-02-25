@@ -33,6 +33,7 @@ internal data class Properties(
     val pluginManagement: PluginManagement? = null,
     val dependencyResolutionManagement: DependencyResolutionManagement? = null,
     val dependencies: List<Dependency>? = null,
-    val modules: List<String>? = null,
+    val includes: List<String>? = null,
+    val projects: List<ProjectDescriptor>? = null,
     val gradleEnterpriseAccessKey: String? = null,
 )

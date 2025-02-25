@@ -84,9 +84,9 @@ dependencyResolutionManagement:
     - name: kotlinWrappers
       from: $libs.kotlin.wrappers.catalog
 
-modules:
-  - cmp-lib
+includes:
   - kmp-lib
+  - cmp-lib
   - compiler
   - shared
   - compose-app

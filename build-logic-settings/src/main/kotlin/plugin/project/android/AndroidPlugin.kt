@@ -12,6 +12,7 @@ import gradle.plugin
 import gradle.plugins
 import gradle.projectProperties
 import gradle.settings
+import java.io.File
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import plugin.project.model.ProjectLayout
@@ -68,7 +69,6 @@ internal class AndroidPlugin : Plugin<Project> {
 
                 kotlin.setSrcDirs(listOf("$compilationPrefixPart@android"))
                 java.setSrcDirs(listOf("$compilationPrefixPart@android"))
-                kotlin.setSrcDirs(listOf("$compilationPrefixPart@android"))
                 manifest.srcFile("$compilationPrefixPart@android/AndroidManifest.xml")
                 resources.setSrcDirs(listOf("${resourcesPrefixPart}Resources@android".decapitalize()))
                 res.setSrcDirs(listOf("${resourcesPrefixPart}Res@android".decapitalize()))

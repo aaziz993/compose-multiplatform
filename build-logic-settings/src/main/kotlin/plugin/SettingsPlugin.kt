@@ -171,7 +171,13 @@ public class SettingsPlugin : Plugin<Settings> {
         plugins.apply(ToolchainManagementPlugin::class.java)
         plugins.apply(GitHooksPlugin::class.java)
 
-        projectProperties.modules?.forEach(::include)
+        // Include subprojects.
+        projectProperties.includes?.forEach(::include)
+
+        // Configure subprojects.
+        projectProperties.projects?.forEach { project ->
+            project.applyTo()
+        }
     }
 
     private fun Project.configureProject() {
