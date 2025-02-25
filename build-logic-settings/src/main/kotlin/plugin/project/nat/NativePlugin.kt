@@ -9,7 +9,7 @@ internal class NativePlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (projectProperties.kotlin.targets.orEmpty().none { target -> target is KotlinNativeTarget }) {
+            if (projectProperties.kotlin.targets?.none { target -> target is KotlinNativeTarget } == true) {
                 return@with
             }
         }

@@ -10,6 +10,7 @@ import gradle.settings
 import java.io.File
 import kotlin.text.endsWith
 import kotlinx.serialization.DeserializationStrategy
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonContentPolymorphicSerializer
 import kotlinx.serialization.json.JsonElement
@@ -87,7 +88,7 @@ internal object ProjectDependencySerializer :
 
         return JsonObject(
             mapOf(
-                "type" to JsonPrimitive("dep")
+                "type" to JsonPrimitive("dep"),
                 "notation" to element,
             ),
         )
@@ -164,12 +165,14 @@ internal sealed class StandardDependency : ProjectDependency() {
 }
 
 @Serializable
+@SerialName("dep")
 internal data class Dependency(
     override val notation: String,
     override val configuration: String = "implementation"
 ) : StandardDependency()
 
 @Serializable
+@SerialName("npm")
 internal data class NpmDependency(
     override val notation: String,
     override val configuration: String = "implementation",
@@ -207,6 +210,7 @@ internal data class NpmDependency(
 }
 
 @Serializable
+@SerialName("pod")
 internal data class PodDependency(override val notation: String) : ProjectDependency() {
 
     fun toCocoapodsDependency() {

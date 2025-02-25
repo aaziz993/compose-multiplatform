@@ -14,7 +14,7 @@ internal class RoomPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             projectProperties.plugins.room
-                .takeIf { it.enabled && projectProperties.kotlin.hasTargets }?.let { room ->
+                .takeIf { it.enabled && projectProperties.kotlin.targets?.isNotEmpty()==true }?.let { room ->
                     plugins.apply(settings.libs.plugins.plugin("room").id)
 
                     room.applyTo()

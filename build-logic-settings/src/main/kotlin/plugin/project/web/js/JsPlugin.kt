@@ -23,7 +23,7 @@ internal class JsPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (projectProperties.kotlin.targets.orEmpty().none { target -> target is KotlinJsTarget }) {
+            if (projectProperties.kotlin.targets?.none { target -> target is KotlinJsTarget } == true) {
                 return@with
             }
 

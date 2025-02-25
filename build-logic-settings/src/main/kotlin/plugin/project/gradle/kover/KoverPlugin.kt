@@ -14,7 +14,7 @@ internal class KoverPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             projectProperties.plugins.kover
-                .takeIf { it.enabled && projectProperties.kotlin.hasTargets }?.let { kover ->
+                .takeIf { it.enabled && projectProperties.kotlin.targets?.isNotEmpty()==true }?.let { kover ->
 
                     plugins.apply(settings.libs.plugins.plugin("kover").id)
 

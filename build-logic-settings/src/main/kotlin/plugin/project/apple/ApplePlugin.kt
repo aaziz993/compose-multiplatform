@@ -18,7 +18,7 @@ internal class ApplePlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (projectProperties.kotlin.targets.orEmpty().none { target -> target is KotlinAppleTarget }) {
+            if (projectProperties.kotlin.targets?.none { target -> target is KotlinAppleTarget }==true) {
                 return@with
             }
 

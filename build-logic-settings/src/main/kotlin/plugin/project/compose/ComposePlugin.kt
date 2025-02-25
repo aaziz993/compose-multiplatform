@@ -20,7 +20,7 @@ public class ComposePlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             projectProperties.compose
-                .takeIf { it.enabled && projectProperties.kotlin.hasTargets }?.let { compose ->
+                .takeIf { it.enabled && projectProperties.kotlin.targets?.isNotEmpty() == true }?.let { compose ->
                     plugins.apply(settings.libs.plugins.plugin("compose.multiplatform").id)
                     plugins.apply(settings.libs.plugins.plugin("compose.compiler").id)
 

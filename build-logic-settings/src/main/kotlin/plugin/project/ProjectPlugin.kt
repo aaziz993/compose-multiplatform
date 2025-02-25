@@ -50,7 +50,7 @@ internal class ProjectPlugin : Plugin<Project> {
 
     override fun apply(target: Project) = with(SLF4JProblemReporterContext()) {
         with(target) {
-            if (projectProperties.kotlin.hasTargets) {
+            if (projectProperties.kotlin.targets?.isNotEmpty() == true) {
                 projectProperties.group?.let(::setGroup)
                 projectProperties.description?.let(::setDescription)
                 version = settings.libs.versions.let { versions ->

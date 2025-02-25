@@ -14,7 +14,7 @@ internal class DokkaPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             projectProperties.plugins.dokka
-                .takeIf { it.enabled && projectProperties.kotlin.hasTargets }?.let { dokka ->
+                .takeIf { it.enabled && projectProperties.kotlin.targets?.isNotEmpty()==true }?.let { dokka ->
                     plugins.apply(settings.libs.plugins.plugin("dokka").id)
 
                     dokka.applyTo()

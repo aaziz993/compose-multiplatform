@@ -14,7 +14,7 @@ internal class SerializationPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             projectProperties.plugins.serialization
-                .takeIf { it.enabled && projectProperties.kotlin.hasTargets }?.let { serialization ->
+                .takeIf { it.enabled && projectProperties.kotlin.targets?.isNotEmpty()==true }?.let { serialization ->
                     plugins.apply(settings.libs.plugins.plugin("kotlin.serialization").id)
 
                     serialization.applyTo()
