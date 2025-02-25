@@ -402,7 +402,7 @@ commons-lang3 = { module = "org.apache.commons:commons-lang3", version.ref = "co
 commons-beanutils = { module = "commons-beanutils:commons-beanutils", version.ref = "commons-beanutils" }
 # commons network
 commons-net = { module = "commons-net:commons-net", version.ref = "commons-net" }
-# reflections
+# scans and indexes your project's classpath metadata, allowing reverse transitive query of the type system on runtime.
 reflections = { module = "org.reflections:reflections", version.ref = "reflections" }
 # parse xml
 jackson-dataformat-xml = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-xml", version.ref = "jackson-dataformat-xml" }

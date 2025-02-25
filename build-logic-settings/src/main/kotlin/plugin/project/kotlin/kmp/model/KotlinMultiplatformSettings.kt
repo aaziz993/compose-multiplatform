@@ -16,11 +16,7 @@ import plugin.project.kotlin.cocoapods.model.CocoapodsSettings
 import plugin.project.kotlin.model.KotlinSourceSet
 import plugin.project.kotlin.model.language.KotlinCommonCompilerOptions
 import plugin.project.kotlin.model.language.KotlinMultiplatformExtension
-import plugin.project.kotlin.model.language.android.KotlinAndroidTargetSettings
-import plugin.project.kotlin.model.language.jvm.KotlinJvmTargetSettings
-import plugin.project.kotlin.model.language.nat.KotlinNativeTargetSettings
-import plugin.project.kotlin.model.language.web.KotlinJsTargetSettings
-import plugin.project.kotlin.model.language.web.KotlinWasmJsTargetSettings
+import plugin.project.kotlin.model.language.KotlinTarget
 
 @Serializable
 internal data class KotlinMultiplatformSettings(
@@ -32,31 +28,9 @@ internal data class KotlinMultiplatformSettings(
     override val coreLibrariesVersion: String? = null,
     override val explicitApi: ExplicitApiMode? = null,
     override val compilerOptions: KotlinCommonCompilerOptions? = null,
-    val jvm: LinkedHashMap<String, KotlinJvmTargetSettings>? = null,
-    val android: LinkedHashMap<String, KotlinAndroidTargetSettings>? = null,
-    val androidNativeArm32: LinkedHashMap<String, KotlinNativeTargetSettings>? = null,
-    val androidNativeArm64: LinkedHashMap<String, KotlinNativeTargetSettings>? = null,
-    val androidNativeX86: LinkedHashMap<String, KotlinNativeTargetSettings>? = null,
-    val androidNativeX64: LinkedHashMap<String, KotlinNativeTargetSettings>? = null,
-    val iosArm64: LinkedHashMap<String, KotlinNativeTargetSettings>? = null,
-    val iosX64: LinkedHashMap<String, KotlinNativeTargetSettings>? = null,
-    val iosSimulatorArm64: LinkedHashMap<String, KotlinNativeTargetSettings>? = null,
-    val watchosArm32: LinkedHashMap<String, KotlinNativeTargetSettings>? = null,
-    val watchosArm64: LinkedHashMap<String, KotlinNativeTargetSettings>? = null,
-    val watchosX64: LinkedHashMap<String, KotlinNativeTargetSettings>? = null,
-    val watchosSimulatorArm64: LinkedHashMap<String, KotlinNativeTargetSettings>? = null,
-    val tvosArm64: LinkedHashMap<String, KotlinNativeTargetSettings>? = null,
-    val tvosX64: LinkedHashMap<String, KotlinNativeTargetSettings>? = null,
-    val tvosSimulatorArm64: LinkedHashMap<String, KotlinNativeTargetSettings>? = null,
-    val macosArm64: LinkedHashMap<String, KotlinNativeTargetSettings>? = null,
-    val macosX64: LinkedHashMap<String, KotlinNativeTargetSettings>? = null,
-    val linuxArm64: LinkedHashMap<String, KotlinNativeTargetSettings>? = null,
-    val linuxX64: LinkedHashMap<String, KotlinNativeTargetSettings>? = null,
-    val mingwX64: LinkedHashMap<String, KotlinNativeTargetSettings>? = null,
-    val js: LinkedHashMap<String, KotlinJsTargetSettings>? = null,
-    val wasmJs: LinkedHashMap<String, KotlinWasmJsTargetSettings>? = null,
+    val targets: List<KotlinTarget>?=null,
     val hierarchy: LinkedHashMap<String, List<String>>? = null,
-    val sourceSets: LinkedHashMap<String, KotlinSourceSet>? = null,
+    val sourceSets: List<KotlinSourceSet>? = null,
     val application: JavaApplication? = null,
     val jar: Jar? = null,
     val cocoapods: CocoapodsSettings = CocoapodsSettings(),

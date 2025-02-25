@@ -1,16 +1,21 @@
 package plugin.project.kotlin.model.language.jvm
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
 import plugin.project.kotlin.model.language.HasConfigurableKotlinCompilerOptions
 import plugin.project.kotlin.model.language.KotlinTarget
 
-internal  interface KotlinJvmTarget : KotlinTarget, HasConfigurableKotlinCompilerOptions<KotlinJvmCompilerOptions> {
-    val testRuns: List<KotlinJvmTestRun>?
-    val mainRun: KotlinJvmRunDsl?
-    val withJava: Boolean?
-    override val compilerOptions: KotlinJvmCompilerOptions?
-
+@Serializable
+@SerialName("jvm")
+internal data class KotlinJvmTarget(
+    override val name: String? = null,
+    override val compilerOptions: KotlinJvmCompilerOptions? = null,
+    val testRuns: List<KotlinJvmTestRun>? = null,
+    val mainRun: KotlinJvmRunDsl? = null,
+    val withJava: Boolean? = null,
+) : KotlinTarget, HasConfigurableKotlinCompilerOptions<KotlinJvmCompilerOptions> {
 
     context(Project)
     fun applyTo(target: KotlinJvmTarget) {

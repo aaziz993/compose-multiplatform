@@ -231,6 +231,8 @@ dependencies {
     implementation(libs.plugins.noarg.toDep())
     // adapts Kotlin to the requirements of those frameworks and makes classes annotated with a specific annotation and their members open.
     implementation(libs.plugins.allopen.toDep())
+    // scans and indexes your project's classpath metadata, allowing reverse transitive query of the type system on runtime.
+    implementation(libs.reflections)
     // convert strings between various case formats
     implementation(libs.kasechange)
     // compiler plugin, that generates visitor code for serializable classes, runtime library with core serialization API and support libraries with various serialization formats.

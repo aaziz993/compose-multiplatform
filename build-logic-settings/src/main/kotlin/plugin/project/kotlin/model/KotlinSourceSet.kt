@@ -38,7 +38,8 @@ internal data class KotlinSourceSet(
      *
      * These extensions are evaluated lazily and can include additional custom source file types beyond the default ".kt" and ".kts" ones.
      */
-    val customSourceFilesExtensions: List<String>? = null
+    val customSourceFilesExtensions: List<String>? = null,
+    val name: String,
 ) : HasKotlinDependencies {
 
     context(Project)
