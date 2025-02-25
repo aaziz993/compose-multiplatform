@@ -1,10 +1,12 @@
+type: LIB
+
 templates:
   - ../template/common.yaml
   - ../template/multiplatform.yaml
   - ../template/compose.yaml
 
-kotlin:
-  sourceSets:
-    commonMain:
-      dependencies:
-        - :kmp-lib
+#kotlin:
+#  sourceSets:
+#    commonMain:
+#      dependencies:
+#        - :kmp-lib

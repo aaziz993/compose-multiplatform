@@ -2,6 +2,7 @@ package gradle
 
 import androidx.room.gradle.RoomExtension
 import app.cash.sqldelight.gradle.SqlDelightExtension
+import com.android.build.gradle.BaseExtension
 import com.apollographql.apollo3.gradle.api.ApolloExtension
 import com.diffplug.gradle.spotless.SpotlessExtension
 import com.github.gmazzo.gradle.plugins.BuildConfigExtension
@@ -49,12 +50,6 @@ internal var Project.projectProperties: Properties
         extraProperties[PROPERTIES] = value
     }
 
-private const val COMPOSE_RESOURCES_DIR = "compose.resources.dir"
-
-@Suppress("UNCHECKED_CAST")
-internal val Project.sourceSetsComposeDirs: MutableMap<String, String>
-    get() = extraProperties.getBindingMap(COMPOSE_RESOURCES_DIR)
-
 internal val Project.settings: Settings
     get() = (gradle as GradleInternal).settings
 
@@ -66,6 +61,11 @@ internal fun Project.java(configure: JavaPluginExtension.() -> Unit) =
 internal val Project.javaApp: JavaApplication get() = the()
 
 internal fun Project.javaApp(configure: JavaApplication.() -> Unit) =
+    extensions.configure(configure)
+
+internal val Project.android: BaseExtension get() = the()
+
+internal fun Project.android(configure: BaseExtension.() -> Unit) =
     extensions.configure(configure)
 
 internal val Project.kotlin: KotlinMultiplatformExtension get() = the()

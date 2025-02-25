@@ -1,17 +1,16 @@
 package plugin.project.compose.resources.model
 
-import gradle.all
+import app.cash.sqldelight.core.decapitalize
 import gradle.kotlin
 import gradle.projectProperties
-import gradle.sourceSetsComposeDirs
 import gradle.trySet
 import kotlin.collections.component1
 import kotlin.collections.component2
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.compose.resources.ResourcesExtension
-import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
-import plugin.project.model.Layout
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinMetadataTarget
+import plugin.project.model.ProjectLayout
 
 @Serializable
 internal data class ResourcesExtension(
@@ -56,14 +55,17 @@ internal data class ResourcesExtension(
         }
 
         // Adjust composeResources to match flatten directory structure
-        when (projectProperties.settings.layout) {
-            Layout.FLAT -> kotlin.sourceSets.all { sourceSet ->
-                extension.customDirectory(
-                    sourceSet.name,
-                    provider {
-                        layout.projectDirectory.dir(sourceSetsComposeDirs[sourceSet.name]!!)
-                    },
-                )
+        when (projectProperties.layout) {
+            ProjectLayout.FLAT -> kotlin.targets.forEach { target ->
+                val targetPart = if (target is KotlinMetadataTarget) "" else "@${target.targetName}"
+                target.compilations.forEach { compilation ->
+                    extension.customDirectory(
+                        compilation.defaultSourceSet.name,
+                        provider {
+                            layout.projectDirectory.dir("${compilation.name}ComposeResources$targetPart".decapitalize())
+                        },
+                    )
+                }
             }
 
             else -> Unit

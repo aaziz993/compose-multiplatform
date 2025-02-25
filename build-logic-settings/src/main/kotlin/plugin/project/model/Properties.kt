@@ -15,10 +15,12 @@ import plugin.project.web.yarn.model.YarnRootExtension
 
 @Serializable
 internal data class Properties(
-    val plugins: Plugins = Plugins(),
+    val type: ProjectType = ProjectType.LIB,
+    val layout: ProjectLayout = ProjectLayout.DEFAULT,
     val group: String? = null,
     val description: String? = null,
-    val jvm: JavaPluginExtension = JavaPluginExtension(),
+    val plugins: Plugins = Plugins(),
+    val jvm: JavaPluginExtension? = null,
     val application: JavaApplication? = null,
     val kotlin: KotlinMultiplatformSettings = KotlinMultiplatformSettings(),
     val android: AndroidSettings = AndroidSettings(),
@@ -33,5 +35,4 @@ internal data class Properties(
     val dependencies: List<Dependency>? = null,
     val modules: List<String>? = null,
     val gradleEnterpriseAccessKey: String? = null,
-    val settings: Settings = Settings()
 )

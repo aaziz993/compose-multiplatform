@@ -1,5 +1,6 @@
 package plugin.project.java.model.application
 
+import gradle.javaApp
 import gradle.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -76,12 +77,12 @@ internal data class JavaApplication(
 ) {
 
     context(Project)
-    fun applyTo(application: JavaApplication) =
+    fun applyTo() =
         pluginManager.withPlugin(ApplicationPlugin.APPLICATION_PLUGIN_NAME) {
-            applicationName?.let(application::setApplicationName)
-            application.mainModule tryAssign mainModule
-            application.mainClass tryAssign mainClass
-            applicationDefaultJvmArgs?.let(application::setApplicationDefaultJvmArgs)
-            executableDir?.let(application::setExecutableDir)
+            applicationName?.let(javaApp::setApplicationName)
+            javaApp.mainModule tryAssign mainModule
+            javaApp.mainClass tryAssign mainClass
+            applicationDefaultJvmArgs?.let(javaApp::setApplicationDefaultJvmArgs)
+            executableDir?.let(javaApp::setExecutableDir)
         }
 }

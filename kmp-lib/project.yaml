@@ -1,3 +1,5 @@
+type: LIB
+
 templates:
   - ../template/common.yaml
   - ../template/multiplatform.yaml

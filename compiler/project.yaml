@@ -6,11 +6,7 @@ kotlin:
     '': { }
 
   sourceSets:
-    commonMain:
+    jvmMain:
       dependencies:
 #        - :kmp-lib
         - $libs.symbol.processing.api
-
-settings:
-  publishing:
-    name: compiler

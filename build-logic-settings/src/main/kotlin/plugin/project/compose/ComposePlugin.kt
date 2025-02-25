@@ -13,6 +13,7 @@ import org.gradle.api.Project
 import plugin.project.compose.android.configureAndroidExtension
 import plugin.project.compose.desktop.configureDesktopExtension
 import plugin.project.compose.resources.configureResourcesExtension
+import plugin.project.model.ProjectType
 
 public class ComposePlugin : Plugin<Project> {
 
@@ -23,9 +24,7 @@ public class ComposePlugin : Plugin<Project> {
                     plugins.apply(settings.libs.plugins.plugin("compose.multiplatform").id)
                     plugins.apply(settings.libs.plugins.plugin("compose.compiler").id)
 
-                    compose
-
-                    if (projectProperties.settings.application) {
+                    if (projectProperties.type == ProjectType.APP) {
                         configureDesktopExtension()
                         configureAndroidExtension()
                     }

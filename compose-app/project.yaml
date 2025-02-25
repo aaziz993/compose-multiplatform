@@ -1,3 +1,5 @@
+type: APP
+
 templates:
   - ../template/common.yaml
   - ../template/multiplatform.yaml

@@ -7,6 +7,7 @@ import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
 import plugin.project.kotlin.model.language.HasBinaries
 import plugin.project.kotlin.model.language.HasConfigurableKotlinCompilerOptions
 import plugin.project.kotlin.model.language.KotlinTarget
+import plugin.project.model.ProjectType
 
 internal interface KotlinJsTargetDsl : KotlinTarget, KotlinTargetWithNodeJsDsl, HasBinaries<KotlinJsBinaryContainer>, HasConfigurableKotlinCompilerOptions<KotlinJsCompilerOptions> {
 
@@ -49,16 +50,21 @@ internal interface KotlinJsTargetDsl : KotlinTarget, KotlinTargetWithNodeJsDsl, 
         passAsArgumentToMainFunction?.let(target::passAsArgumentToMainFunction)
         generateTypeScriptDefinitions?.takeIf { it }?.let { target.generateTypeScriptDefinitions() }
 
-        if (projectProperties.settings.application) {
-            target.binaries.executable()
-        }
-        else {
-            target.binaries.library()
-        }
+        when (projectProperties.type) {
+            ProjectType.APP ->
+                binaries.executable.let { binaries ->
+                    binaries.compilation?.let { compilation ->
+                        target.binaries.executable(target.compilations.getByName(compilation))
+                    } ?: target.binaries.executable()
+                }
 
-        binaries?.let { binaries ->
-            binaries.library?.takeIf { it }?.run { target.binaries.library() }
-            binaries.executable?.takeIf { it }?.run { target.binaries.executable() }
+            ProjectType.LIB -> binaries.library.let { binaries ->
+                binaries.compilation?.let { compilation ->
+                    target.binaries.library(target.compilations.getByName(compilation))
+                } ?: target.binaries.library()
+            }
+
+            else -> Unit
         }
     }
 }

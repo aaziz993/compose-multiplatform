@@ -1,5 +1,6 @@
 package plugin.project.java.model
 
+import gradle.java
 import gradle.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.JavaVersion
@@ -143,30 +144,30 @@ internal data class JavaPluginExtension(
 
     context(Project)
     @Suppress("UnstableApiUsage")
-    fun applyTo(extension: JavaPluginExtension) =
+    fun applyTo() =
         pluginManager.withPlugin("java") {
-            sourceCompatibility?.let(extension::setSourceCompatibility)
-            targetCompatibility?.let(extension::setTargetCompatibility)
-            disableAutoTargetJvm?.takeIf { it }?.run { extension.disableAutoTargetJvm() }
-            withJavadocJar?.takeIf { it }?.run { extension.withJavadocJar() }
-            withSourcesJar?.takeIf { it }?.run { extension.withSourcesJar() }
+            sourceCompatibility?.let(java::setSourceCompatibility)
+            targetCompatibility?.let(java::setTargetCompatibility)
+            disableAutoTargetJvm?.takeIf { it }?.run { java.disableAutoTargetJvm() }
+            withJavadocJar?.takeIf { it }?.run { java.withJavadocJar() }
+            withSourcesJar?.takeIf { it }?.run { java.withSourcesJar() }
 
-            modularity?.applyTo(extension.modularity)
+            modularity?.applyTo(java.modularity)
 
             toolchain?.let { toolchain ->
-                extension.toolchain(toolchain::applyTo)
+                java.toolchain(toolchain::applyTo)
             }
 
             consistentResolution?.let { consistentResolution ->
-                extension.consistentResolution(consistentResolution::applyTo)
+                java.consistentResolution(consistentResolution::applyTo)
             }
 
-            extension.docsDir tryAssign docsDir?.let(layout.projectDirectory::dir)
-            extension.testResultsDir tryAssign testResultsDir?.let(layout.projectDirectory::dir)
-            extension.testReportDir tryAssign testReportDir?.let(layout.projectDirectory::dir)
+            java.docsDir tryAssign docsDir?.let(layout.projectDirectory::dir)
+            java.testResultsDir tryAssign testResultsDir?.let(layout.projectDirectory::dir)
+            java.testReportDir tryAssign testReportDir?.let(layout.projectDirectory::dir)
 
             manifest?.let { manifest ->
-                extension.manifest(manifest::applyTo)
+                java.manifest(manifest::applyTo)
             }
         }
 }
