@@ -1,7 +1,6 @@
 package plugin.project.kotlin.model.language
 
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
-import plugin.project.kotlin.model.KotlinBaseExtension
 
 internal interface KotlinMultiplatformExtension : KotlinBaseExtension,
     HasConfigurableKotlinCompilerOptions<KotlinCommonCompilerOptions> {

@@ -39,7 +39,7 @@ import plugin.project.ProjectPlugin
 import plugin.project.gradle.develocity.DevelocityPlugin
 import plugin.project.gradle.githooks.GitHooksPlugin
 import plugin.project.gradle.toolchainmanagement.ToolchainManagementPlugin
-import plugin.project.model.Properties
+import plugin.project.model.ProjectProperties
 
 private const val PROJECT_PROPERTIES_FILE = "project.yaml"
 private const val VERSION_CATALOG_CACHE_DIR = "build-logic-settings/gradle"
@@ -202,11 +202,11 @@ public class SettingsPlugin : Plugin<Settings> {
     }
 
     @Suppress("UNCHECKED_CAST")
-    private fun Directory.loadProperties(): Properties {
+    private fun Directory.loadProperties(): ProjectProperties {
         val propertiesFile = file(PROJECT_PROPERTIES_FILE).asFile
 
         if (!propertiesFile.exists()) {
-            return Properties()
+            return ProjectProperties()
         }
 
         val properties = yaml.load<MutableMap<String, *>>(propertiesFile.readText())
@@ -215,7 +215,7 @@ public class SettingsPlugin : Plugin<Settings> {
             acc deepMerge yaml.load<MutableMap<String, *>>(file(template).asFile.readText())
         }.orEmpty() deepMerge properties
 
-        return json.decodeFromAny<Properties>(templatedProperties)
+        return json.decodeFromAny<ProjectProperties>(templatedProperties)
     }
 
     /**

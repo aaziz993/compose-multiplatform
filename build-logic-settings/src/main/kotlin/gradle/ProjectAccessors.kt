@@ -22,7 +22,6 @@ import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.toolchain.management.ToolchainManagement
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.the
-import org.jetbrains.amper.gradle.getBindingMap
 import org.jetbrains.compose.ComposeExtension
 import org.jetbrains.compose.android.AndroidExtension
 import org.jetbrains.compose.desktop.DesktopExtension
@@ -40,12 +39,12 @@ import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension
 import org.jetbrains.kotlin.noarg.gradle.NoArgExtension
 import org.jetbrains.kotlin.powerassert.gradle.PowerAssertGradleExtension
 import org.sonarqube.gradle.SonarExtension
-import plugin.project.model.Properties
+import plugin.project.model.ProjectProperties
 
 private const val PROPERTIES = "properties"
 
-internal var Project.projectProperties: Properties
-    get() = extraProperties[PROPERTIES] as Properties
+internal var Project.projectProperties: ProjectProperties
+    get() = extraProperties[PROPERTIES] as ProjectProperties
     set(value) {
         extraProperties[PROPERTIES] = value
     }

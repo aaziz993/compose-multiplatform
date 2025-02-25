@@ -14,7 +14,7 @@ import plugin.project.web.npm.model.NpmExtension
 import plugin.project.web.yarn.model.YarnRootExtension
 
 @Serializable
-internal data class Properties(
+internal data class ProjectProperties(
     val type: ProjectType = ProjectType.LIB,
     val layout: ProjectLayout = ProjectLayout.DEFAULT,
     val group: String? = null,

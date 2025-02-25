@@ -58,7 +58,7 @@ internal class KMPPlugin : Plugin<Project> {
             }
 
             sourceSets.forEach { sourceSet ->
-                projectProperties.kotlin.sourceSets?.find { it.name == sourceSet.name }?.applyTo(sourceSet)
+                projectProperties.kotlin.sourceSets?.get(sourceSet.name)?.applyTo(sourceSet)
             }
         }
     }

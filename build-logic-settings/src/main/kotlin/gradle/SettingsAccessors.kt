@@ -4,7 +4,7 @@ import org.danilopianini.gradle.git.hooks.GitHooksExtension
 import org.gradle.api.initialization.Settings
 import org.gradle.kotlin.dsl.getByType
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
-import plugin.project.model.Properties
+import plugin.project.model.ProjectProperties
 
 internal fun Settings.execute(cmd: String): String = providers.exec {
     commandLine(cmd.split(" "))
@@ -12,8 +12,8 @@ internal fun Settings.execute(cmd: String): String = providers.exec {
 
 private const val PROPERTIES = "settings.project.properties"
 
-internal var Settings.projectProperties: Properties
-    get() = extraProperties[PROPERTIES] as Properties
+internal var Settings.projectProperties: ProjectProperties
+    get() = extraProperties[PROPERTIES] as ProjectProperties
     set(value) {
         extraProperties[PROPERTIES] = value
     }

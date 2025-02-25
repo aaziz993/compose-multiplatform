@@ -1,11 +1,10 @@
-package plugin.project.kotlin.model
+package plugin.project.kotlin.model.language
 
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import plugin.model.dependency.ProjectDependency
 import plugin.model.dependency.StandardDependency
-import plugin.project.kotlin.model.language.LanguageSettingsBuilder
 
 /**
  * Represents a logical group of Kotlin files, including sources, resources and additional metadata describing how
@@ -28,7 +27,7 @@ internal data class KotlinSourceSet(
     /**
      * Provides the DSL to configure a subset of Kotlin compilation language settings for this [KotlinSourceSet].
      *
-     * **Note**: The [plugin.project.kotlin.model.language.LanguageSettingsBuilder] interface will be deprecated in the future.
+     * **Note**: The [LanguageSettingsBuilder] interface will be deprecated in the future.
      * Instead, it is better to use the existing `compilerOptions` DSL.
      */
     val languageSettings: LanguageSettingsBuilder? = null,
@@ -39,7 +38,6 @@ internal data class KotlinSourceSet(
      * These extensions are evaluated lazily and can include additional custom source file types beyond the default ".kt" and ".kts" ones.
      */
     val customSourceFilesExtensions: List<String>? = null,
-    val name: String,
 ) : HasKotlinDependencies {
 
     context(Project)

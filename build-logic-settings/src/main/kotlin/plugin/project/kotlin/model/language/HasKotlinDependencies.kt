@@ -1,4 +1,4 @@
-package plugin.project.kotlin.model;
+package plugin.project.kotlin.model.language
 
 import plugin.model.dependency.ProjectDependency;
 
