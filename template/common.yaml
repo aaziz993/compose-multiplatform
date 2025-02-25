@@ -159,11 +159,11 @@ kotlin:
 
     - jsMain:
         dependencies:
-          - npm: $lib.js.joda.timezone
-          - npm: $lib.npm.copy.webpack.plugin
-          - npm: $lib.npm.openpgp
-          - npm: $lib.npm.pako
-          - npm: $lib.npm.puppeteer
+          - npm: $libs.js.joda.timezone
+          - npm: $libs.npm.copy.webpack.plugin
+          - npm: $libs.npm.openpgp
+          - npm: $libs.npm.pako
+          - npm: $libs.npm.puppeteer
 
     - wasmJsMain:
         dependencies:
