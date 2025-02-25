@@ -1,6 +1,7 @@
 package plugin.project.kotlin.model.language
 
 import gradle.kotlin
+import gradle.projectProperties
 import gradle.serialization.getPolymorphicSerializer
 import gradle.trySet
 import kotlinx.serialization.DeserializationStrategy
@@ -9,6 +10,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.*
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
+import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalMainFunctionArgumentsDsl
 import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
 import plugin.project.kotlin.model.language.jvm.KotlinJvmCompilerOptions
 import plugin.project.kotlin.model.language.jvm.KotlinJvmRunDsl
@@ -17,6 +19,7 @@ import plugin.project.kotlin.model.language.nat.HasBinaries
 import plugin.project.kotlin.model.language.nat.KotlinNativeBinaryContainer
 import plugin.project.kotlin.model.language.nat.KotlinNativeCompilerOptions
 import plugin.project.kotlin.model.language.web.*
+import plugin.project.model.ProjectType
 
 @Serializable(with = KotlinTargetSerializer::class)
 internal sealed class KotlinTarget {
@@ -454,6 +457,69 @@ internal data class KotlinMingwX64Target(
         super.applyTo(name?.let(kotlin::mingwX64) ?: kotlin.mingwX64())
     }
 }
+
+@Serializable
+internal sealed class KotlinJsTargetDsl : KotlinTarget(), KotlinTargetWithNodeJsDsl,
+    HasBinaries<KotlinJsBinaryContainer>, HasConfigurableKotlinCompilerOptions<KotlinJsCompilerOptions> {
+
+    abstract val moduleName: String?
+
+    abstract val browser: KotlinJsBrowserDsl?
+
+    abstract val useCommonJs: Boolean?
+
+    abstract val useEsModules: Boolean?
+
+    /**
+     * The function accepts [jsExpression] and puts this expression as the "args: Array<String>" argument in place of main-function call
+     */
+    abstract val passAsArgumentToMainFunction: String?
+
+    abstract val generateTypeScriptDefinitions: Boolean?
+
+    context(Project)
+    @OptIn(ExperimentalMainFunctionArgumentsDsl::class)
+    fun applyTo(target: org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl) {
+        super.applyTo(target)
+
+        target.moduleName = moduleName ?: moduleName
+
+        nodejs?.let { nodejs ->
+            target.nodejs {
+                nodejs.applyTo(this)
+            }
+        }
+
+        browser?.let { browser ->
+            target.browser {
+                browser.applyTo(this)
+            }
+        }
+
+        useCommonJs?.takeIf { it }?.run { target.useCommonJs() }
+        useEsModules?.takeIf { it }?.run { target.useEsModules() }
+        passAsArgumentToMainFunction?.let(target::passAsArgumentToMainFunction)
+        generateTypeScriptDefinitions?.takeIf { it }?.let { target.generateTypeScriptDefinitions() }
+
+        when (projectProperties.type) {
+            ProjectType.APP ->
+                binaries.executable.let { binaries ->
+                    binaries.compilation?.let { compilation ->
+                        target.binaries.executable(target.compilations.getByName(compilation))
+                    } ?: target.binaries.executable()
+                }
+
+            ProjectType.LIB -> binaries.library.let { binaries ->
+                binaries.compilation?.let { compilation ->
+                    target.binaries.library(target.compilations.getByName(compilation))
+                } ?: target.binaries.library()
+            }
+
+            else -> Unit
+        }
+    }
+}
+
 
 @Serializable
 @SerialName("js")
