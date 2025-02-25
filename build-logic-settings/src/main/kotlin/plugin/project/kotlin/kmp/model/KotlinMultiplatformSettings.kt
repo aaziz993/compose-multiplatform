@@ -42,6 +42,7 @@ internal data class KotlinMultiplatformSettings(
         pluginManager.withPlugin(settings.libs.plugins.plugin("kotlin.multiplatform").id) {
             super.applyTo(kotlin)
 
+            println("TARGETS: ${projectProperties.kotlin.targets.orEmpty().map { it::class.simpleName }}")
             projectProperties.kotlin.targets?.forEach { target -> target.applyTo() }
 
             kotlin.applyDefaultHierarchyTemplate {
