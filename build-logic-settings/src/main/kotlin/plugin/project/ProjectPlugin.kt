@@ -13,6 +13,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
 import org.jetbrains.amper.gradle.SLF4JProblemReporterContext
+import plugin.model.dependency.Dependency
 import plugin.project.android.AndroidPlugin
 import plugin.project.apple.ApplePlugin
 import plugin.project.compose.ComposePlugin
@@ -91,7 +92,7 @@ internal class ProjectPlugin : Plugin<Project> {
             plugins.apply(ComposePlugin::class.java)
 
             projectProperties.dependencies?.let { dependencies ->
-                dependencies.forEach { dependency ->
+                dependencies.filterIsInstance<Dependency>().forEach { dependency ->
                     dependencies {
                         dependency.applyTo(this)
                     }

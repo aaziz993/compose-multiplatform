@@ -33,7 +33,8 @@ import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.nodes.Tag
 import org.yaml.snakeyaml.representer.Represent
 import org.yaml.snakeyaml.representer.Representer
-import plugin.model.dependency.asVersionCatalogUri
+import plugin.model.dependency.Dependency
+import plugin.model.dependency.toVersionCatalogUrlPath
 import plugin.project.ProjectPlugin
 import plugin.project.gradle.develocity.DevelocityPlugin
 import plugin.project.gradle.githooks.GitHooksPlugin
@@ -111,16 +112,16 @@ public class SettingsPlugin : Plugin<Settings> {
 
                 dependencyResolutionManagement.versionCatalogs?.let { versionCatalogs ->
                     versionCatalogs {
-                        allLibs += versionCatalogs.associate { (catalogName, dependency) ->
-                            var notation = dependency.resolve()
+                        versionCatalogs.forEach { (catalogName, dependency) ->
+                            var notation = (dependency as Dependency).resolve()
 
                             create(catalogName) {
                                 from(notation)
                             }
 
 
-                            catalogName to if (notation is FileCollection) {
-                                Toml.parse(notation.files.single().readText())
+                            if (notation is FileCollection) {
+                                allLibs[catalogName] = Toml.parse(notation.files.single().readText())
                             }
                             else {
                                 notation as String
@@ -128,14 +129,15 @@ public class SettingsPlugin : Plugin<Settings> {
                                 val cacheFile = layout.settingsDirectory.file("$VERSION_CATALOG_CACHE_DIR/$catalogName.versions.toml").asFile
 
                                 if (cacheFile.exists()) {
-                                    return@associate catalogName to Toml.parse(cacheFile.readText())
+                                    allLibs[catalogName] = Toml.parse(cacheFile.readText())
+                                    return@forEach
                                 }
 
                                 if (!notation.isUrl) {
-                                    notation = notation.asVersionCatalogUri()
+                                    notation = notation.toVersionCatalogUrlPath()
                                 }
 
-                                repositories.map { (it as DefaultMavenArtifactRepository).url.toString().removeSuffix("/") }
+                                allLibs[catalogName] = repositories.map { (it as DefaultMavenArtifactRepository).url.toString().removeSuffix("/") }
                                     .firstNotNullOf { url ->
                                         try {
                                             Toml.parse(

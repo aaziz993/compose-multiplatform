@@ -3,7 +3,8 @@ package plugin.project.kotlin.model
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
-import plugin.model.dependency.Dependency
+import plugin.model.dependency.ProjectDependency
+import plugin.model.dependency.StandardDependency
 import plugin.project.kotlin.model.language.LanguageSettingsBuilder
 
 /**
@@ -23,7 +24,7 @@ import plugin.project.kotlin.model.language.LanguageSettingsBuilder
  */
 @Serializable
 internal data class KotlinSourceSet(
-    override val dependencies: List<Dependency>? = null,
+    override val dependencies: List<ProjectDependency>? = null,
     /**
      * Provides the DSL to configure a subset of Kotlin compilation language settings for this [KotlinSourceSet].
      *
@@ -43,7 +44,7 @@ internal data class KotlinSourceSet(
     context(Project)
     fun applyTo(sourceSet: KotlinSourceSet) {
         sourceSet.dependencies {
-            dependencies?.forEach { dependency -> dependency.applyTo(this) }
+            dependencies?.filterIsInstance<StandardDependency>()?.forEach { dependency -> dependency.applyTo(this) }
         }
 
         languageSettings?.applyTo(sourceSet.languageSettings)

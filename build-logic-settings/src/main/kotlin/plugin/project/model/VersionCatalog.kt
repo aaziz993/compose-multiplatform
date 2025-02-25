@@ -2,11 +2,12 @@ package plugin.project.model
 
 import kotlinx.serialization.Serializable
 import plugin.model.dependency.Dependency
+import plugin.model.dependency.ProjectDependency
 
 @Serializable
 internal data class VersionCatalog(
     val name: String,
-    val from: Dependency,
+    val from: ProjectDependency,
 ){
 
     override fun equals(other: Any?): Boolean =(other is VersionCatalog)

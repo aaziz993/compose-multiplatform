@@ -157,6 +157,14 @@ kotlin:
         - $libs.androidx.room.runtime.android
         - $libs.androidx.room.paging
 
+    jsMain:
+      dependencies:
+        - npm: $lib.js.joda.timezone
+        - npm: $lib.npm.copy.webpack.plugin
+        - npm: $lib.npm.openpgp
+        - npm: $lib.npm.pako
+        - npm: $lib.npm.puppeteer
+
     wasmJsMain:
       dependencies:
         - $kotlinWrappers.browser

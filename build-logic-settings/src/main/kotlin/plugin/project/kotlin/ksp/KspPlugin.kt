@@ -11,6 +11,7 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.provideDelegate
+import plugin.model.dependency.Dependency
 
 internal class KspPlugin : Plugin<Project> {
 
@@ -23,7 +24,7 @@ internal class KspPlugin : Plugin<Project> {
 
                 val kspCommonMainMetadata by configurations
                 dependencies {
-                    ksp.processors?.forEach { processor ->
+                    ksp.processors?.filterIsInstance<Dependency>()?.forEach { processor ->
                         kspCommonMainMetadata(processor.resolve())
                     }
                 }

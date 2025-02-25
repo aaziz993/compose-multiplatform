@@ -5,6 +5,7 @@ import gradle.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import plugin.model.dependency.Dependency
+import plugin.model.dependency.ProjectDependency
 
 @Serializable
 internal data class SqlDelightDatabase(
@@ -18,7 +19,7 @@ internal data class SqlDelightDatabase(
     val migrationOutputDirectory: String? = null,
     val migrationOutputFileFormat: String? = null,
     val generateAsync: Boolean? = null,
-    val modules: List<Dependency>? = null,
+    val modules: List<ProjectDependency>? = null,
     val dialect: String? = null,
     /**
      * When SqlDelight finds an equality operation with a nullable typed rvalue such as:
@@ -70,7 +71,7 @@ internal data class SqlDelightDatabase(
         database.migrationOutputDirectory tryAssign migrationOutputDirectory?.let(layout.projectDirectory::dir)
         database.migrationOutputFileFormat tryAssign migrationOutputFileFormat
         database.generateAsync tryAssign generateAsync
-        modules?.map { it.resolve() }?.forEach(database::module)
+        modules?.filterIsInstance<Dependency>()?.map { it.resolve() }?.forEach(database::module)
         dialect?.let(database::dialect)
         database.treatNullAsUnknownForEquality tryAssign treatNullAsUnknownForEquality
     }
