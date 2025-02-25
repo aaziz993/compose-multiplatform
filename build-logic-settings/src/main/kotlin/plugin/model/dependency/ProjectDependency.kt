@@ -220,12 +220,12 @@ internal data class PodDependency(
 ) : ProjectDependency() {
 
     context(Project)
-    fun toCocoapodsDependency() {
+    fun toCocoapodsDependency(): CocoapodsExtension.CocoapodsDependency {
         val cocoapodsNotation = (if (notation.startsWith("$"))
             settings.allLibs.resolve(notation)
         else notation).removePrefix("cocoapods:")
 
-        CocoapodsExtension.CocoapodsDependency(
+        return CocoapodsExtension.CocoapodsDependency(
             cocoapodsNotation.substringBefore(":"),
             moduleName,
             headers,

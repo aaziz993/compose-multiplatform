@@ -19,13 +19,17 @@ internal class JavaPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             if (
-                projectProperties.kotlin.targets?.any { target -> target is KotlinAndroidTarget } == true ||
-                projectProperties.kotlin.targets?.none { target -> target is KotlinJvmTarget } == true
+                projectProperties.kotlin.targets?.any { target ->
+                    println("TARGET ${target.targetName} is android ${  target is KotlinAndroidTarget }")
+                    target is KotlinAndroidTarget
+                } == true ||
+                projectProperties.kotlin.targets?.none { target ->
+                    println("TARGET ${target.targetName} is jvm ${  target is KotlinJvmTarget }")
+                    target is KotlinJvmTarget
+                } == true
             ) {
                 return@with
             }
-
-            println("APPLY JAVA PLUGIN")
 
             plugins.apply(JavaPlugin::class.java)
 

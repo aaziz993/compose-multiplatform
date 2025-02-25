@@ -148,11 +148,14 @@ internal interface CocoapodsExtension {
             }
         }
 
-        projectProperties.dependencies?.filterIsInstance<PodDependency>()?.forEach { podDependency ->
-            extension.pod(podDependency.name) {
-                podDependency.toCocoapodsDependency().applyTo(this)
+        projectProperties.dependencies
+            ?.filterIsInstance<PodDependency>()
+            ?.map { it.toCocoapodsDependency() }
+            ?.forEach { podDependency ->
+                extension.pod(podDependency.name) {
+                    podDependency.applyTo(this)
+                }
             }
-        }
 
         ios?.applyTo(extension.ios)
         osx?.applyTo(extension.osx)
