@@ -8,7 +8,7 @@ import org.jetbrains.compose.desktop.application.dsl.ProguardSettings
 @Serializable
 internal data class ProguardSettings(
     val version: String? = null,
-    val maxHeapSize: String?? = null,
+    val maxHeapSize: String? = null,
     val configurationFiles: List<String>? = null,
     val isEnabled: Boolean? = null,
     val obfuscate: Boolean? = null,

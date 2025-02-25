@@ -12,6 +12,7 @@ import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
+import org.jetbrains.amper.gradle.BindingProjectPlugin
 import org.jetbrains.amper.gradle.SLF4JProblemReporterContext
 import plugin.model.dependency.Dependency
 import plugin.project.android.AndroidPlugin
@@ -64,7 +65,7 @@ internal class ProjectPlugin : Plugin<Project> {
                 }
             }
 
-            plugins.apply(KMPPlugin::class.java)
+            //  Don't change order!
             plugins.apply(DoctorPlugin::class.java)
             plugins.apply(BuildConfigPlugin::class.java)
             plugins.apply(SpotlessPlugin::class.java)
@@ -72,7 +73,6 @@ internal class ProjectPlugin : Plugin<Project> {
             plugins.apply(SonarPlugin::class.java)
             plugins.apply(DokkaPlugin::class.java)
             plugins.apply(ApiValidationPlugin::class.java)
-            plugins.apply(KspPlugin::class.java)
             plugins.apply(AllOpenPlugin::class.java)
             plugins.apply(NoArgPlugin::class.java)
             plugins.apply(AtomicFUPlugin::class.java)
@@ -84,7 +84,9 @@ internal class ProjectPlugin : Plugin<Project> {
             plugins.apply(ApolloPlugin::class.java)
             plugins.apply(PowerAssertPlugin::class.java)
             plugins.apply(JavaPlugin::class.java)
-            plugins.apply(AndroidPlugin::class.java)
+            plugins.apply(AndroidPlugin::class.java) // apply and configure android library or application plugin.
+            plugins.apply(KMPPlugin::class.java) // need android library or application plugin applied.
+            plugins.apply(KspPlugin::class.java) // kspCommonMainMetadata need kmp plugin applied.
 //            plugins.apply(JsPlugin::class.java)
 //            plugins.apply(WasmPlugin::class.java)
             plugins.apply(ApplePlugin::class.java)

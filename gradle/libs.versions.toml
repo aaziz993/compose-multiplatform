@@ -309,7 +309,6 @@ gradle-node-plugin = "7.1.0"
 kotlin-wrappers-catalog = "2025.2.6"
 kotlinx-html = "0.12.0"
 kotlinx-browser = "0.3.0"
-kotlin-wrappers = "2025.2.2"
 js-plain-objects = "2.0.20-Beta1"
 seskar = "3.82.0"
 # converter of TypeScript declaration files to Kotlin declarations.
