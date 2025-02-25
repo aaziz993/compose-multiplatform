@@ -5,32 +5,10 @@ templates:
   - ../template/multiplatform.yaml
   - ../template/compose.yaml
 
-kotlin:
-  jvm:
-    '': { }
-
-  android:
-    '': { }
-
-  ios:
-    '': { }
-
-  js:
-    '':
-      browser: { }
-      nodejs: { }
-
-  wasmJs:
-    '':
-      browser: { }
-      nodejs: { }
-
+#kotlin:
 #  sourceSets:
 #    commonMain:
 #      dependencies:
 #        - :kmp-lib
 #        - :cmp-lib
 #        - :shared
-
-settings:
-  application: true

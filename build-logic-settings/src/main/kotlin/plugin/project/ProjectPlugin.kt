@@ -85,7 +85,7 @@ internal class ProjectPlugin : Plugin<Project> {
             plugins.apply(PowerAssertPlugin::class.java)
             plugins.apply(JavaPlugin::class.java)
             plugins.apply(AndroidPlugin::class.java)
-            plugins.apply(JsPlugin::class.java)
+//            plugins.apply(JsPlugin::class.java)
 //            plugins.apply(WasmPlugin::class.java)
             plugins.apply(ApplePlugin::class.java)
             plugins.apply(NativePlugin::class.java)

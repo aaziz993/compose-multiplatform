@@ -1,30 +1,27 @@
 kotlin:
-  jvm:
-    '': { }
-  android:
-    '':
-      compilerOptions:
-        jvmTarget: JVM_23
-  iosArm64:
-    '': { }
-  iosX64:
-    '': { }
-  iosSimulatorArm64:
-    '': { }
-  js:
-    '':
-      browser: { }
-      nodejs: { }
-  wasmJs:
-    '':
-      browser: { }
-      nodejs: { }
+  targets:
+    - jvm
+    - androidTarget:
+        name: ''
+        compilerOptions:
+          jvmTarget: JVM_23
+    - iosArm64
+    - iosX64
+    - iosSimulatorArm64
+    - js:
+        name: ''
+        browser: { }
+        nodejs: { }
+    - wasmJs:
+        name: ''
+        browser: { }
+        nodejs: { }
 
   hierarchy:
-    jvmAndAndroid: [ jvm, android ]
-    nonJvm: [ android, iosArm64 , iosX64, iosSimulatorArm64, js, wasm ]
-    nonAndroid: [ jvm, iosArm64, iosX64, iosSimulatorArm64, js, wasm ]
-    mobile: [ android, iosArm64, iosX64, iosSimulatorArm64 ]
-    nonMobile: [ jvm, js, wasm ]
-    web: [ js, wasm ]
-    nonWeb: [ jvm, android, iosArm64, iosX64, iosSimulatorArm64 ]
+    jvmAndAndroid: [ jvm, androidTarget ]
+    nonJvm: [ androidTarget, ios, web ]
+    nonAndroid: [ jvm, ios, web ]
+    mobile: [ androidTarget, ios ]
+    nonMobile: [ jvm, web ]
+    web: [ js, wasmJs ]
+    nonWeb: [ jvmAndAndroid, ios ]

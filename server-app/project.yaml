@@ -3,19 +3,11 @@ type: APP
 templates:
   - ../template/common.yaml
 
-jvm:
-  release: 23
-  mainClass: MainKt
-
 kotlin:
-  jvm:
-    '': { }
+  targets: [ jvm ]
 
-  sourceSets:
-    commonMain:
-      dependencies:
+#  sourceSets:
+#    commonMain:
+#      dependencies:
 #        - :kmp-lib
 #        - :shared
-
-settings:
-  application: true
