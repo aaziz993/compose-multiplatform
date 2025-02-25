@@ -5,21 +5,16 @@ import gradle.projectProperties
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinWasmJsTargetDsl
+import plugin.project.kotlin.model.language.KotlinJsTarget
+import plugin.project.kotlin.model.language.KotlinWasmJsTarget
 
 internal class WasmPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            projectProperties.kotlin.wasmJs?.forEach { targetName, target ->
-                if (targetName.isNotEmpty()) {
-                    kotlin.wasmJs(targetName) {
-                        target.applyTo(this)
-                    }
-                }
-                else kotlin.wasmJs {
-                    target.applyTo(this)
-                }
-            } ?: return
+            if (projectProperties.kotlin.targets.orEmpty().none { target -> target is KotlinWasmJsTarget }) {
+                return@with
+            }
 
             configureJsTestTasks<KotlinWasmJsTargetDsl>()
         }

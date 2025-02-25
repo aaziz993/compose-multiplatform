@@ -15,6 +15,7 @@ import gradle.settings
 import java.io.File
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import plugin.project.kotlin.model.language.KotlinAndroidTarget
 import plugin.project.model.ProjectLayout
 import plugin.project.model.ProjectType
 
@@ -22,7 +23,7 @@ internal class AndroidPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (projectProperties.kotlin.android == null) {
+            if (projectProperties.kotlin.targets.orEmpty().none { target -> target is KotlinAndroidTarget }) {
                 return@with
             }
 
@@ -30,17 +31,6 @@ internal class AndroidPlugin : Plugin<Project> {
                 ProjectType.APP -> plugins.apply(settings.libs.plugins.plugin("androidApplication").id)
 
                 else -> plugins.apply(settings.libs.plugins.plugin("androidLibrary").id)
-            }
-
-            projectProperties.kotlin.android!!.forEach { targetName, target ->
-                if (targetName.isNotEmpty()) {
-                    kotlin.androidTarget(targetName) {
-                        target.applyTo(this)
-                    }
-                }
-                else kotlin.androidTarget {
-                    target.applyTo(this)
-                }
             }
 
 //            configureBaseExtension()

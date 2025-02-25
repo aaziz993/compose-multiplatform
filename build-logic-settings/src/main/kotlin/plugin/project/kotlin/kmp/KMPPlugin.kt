@@ -20,7 +20,7 @@ internal class KMPPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            projectProperties.kotlin.takeIf(KotlinMultiplatformSettings::hasTargets)?.let { kotlin ->
+            projectProperties.kotlin.takeIf { it.targets?.isNotEmpty() == true }?.let { kotlin ->
                 plugins.apply(settings.libs.plugins.plugin("kotlin.multiplatform").id)
 
                 // Enable Default Kotlin Hierarchy.
@@ -59,7 +59,7 @@ internal class KMPPlugin : Plugin<Project> {
             }
 
             sourceSets.forEach { sourceSet ->
-                projectProperties.kotlin.sourceSets?.get(sourceSet.name)?.applyTo(sourceSet)
+                projectProperties.kotlin.sourceSets?.find { it.name == sourceSet.name }?.applyTo(sourceSet)
             }
         }
     }

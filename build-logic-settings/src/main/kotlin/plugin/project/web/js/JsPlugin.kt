@@ -13,6 +13,8 @@ import kotlinx.serialization.json.Json
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
+import plugin.project.kotlin.model.language.KotlinJsTarget
+import plugin.project.kotlin.model.language.KotlinJvmTarget
 import plugin.project.web.configureJsTestTasks
 import plugin.project.web.js.karakum.configureKarakum
 import plugin.project.web.js.karakum.configureKarakumGenerate
@@ -21,16 +23,9 @@ internal class JsPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            projectProperties.kotlin.js?.forEach { targetName, target ->
-                if (targetName.isNotEmpty()) {
-                    kotlin.js(targetName) {
-                        target.applyTo(this)
-                    }
-                }
-                else kotlin.js {
-                    target.applyTo(this)
-                }
-            } ?: return
+            if (projectProperties.kotlin.targets.orEmpty().none { target -> target is KotlinJsTarget }) {
+                return@with
+            }
 
             plugins.apply(settings.libs.plugins.plugin("karakum").id)
 

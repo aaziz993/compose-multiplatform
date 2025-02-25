@@ -5,9 +5,19 @@ package plugin.model.dependency
 import gradle.allLibs
 import gradle.isUrl
 import gradle.libraryAsDependency
+import gradle.serialization.getPolymorphicSerializer
 import gradle.settings
 import java.io.File
+import kotlin.text.endsWith
+import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonContentPolymorphicSerializer
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.JsonTransformingSerializer
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
 import org.gradle.api.Project
 import org.gradle.api.file.Directory
 import org.gradle.api.file.FileCollection
@@ -16,11 +26,72 @@ import org.gradle.api.internal.tasks.JvmConstants
 import org.gradle.kotlin.dsl.DependencyHandlerScope
 import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
 import org.tomlj.TomlParseResult
+import plugin.project.kotlin.model.language.KotlinTarget
 
 @Serializable(with = ProjectDependencySerializer::class)
 internal sealed class ProjectDependency {
 
     abstract val notation: String
+}
+
+internal object ProjectDependencyPolymorphicSerializer : JsonContentPolymorphicSerializer<ProjectDependency>(ProjectDependency::class) {
+
+    override fun selectDeserializer(element: JsonElement): DeserializationStrategy<ProjectDependency> {
+        val type = element.jsonObject["type"]!!.jsonPrimitive.content
+        return ProjectDependency::class.getPolymorphicSerializer(type)!!
+    }
+}
+
+internal object ProjectDependencySerializer :
+    JsonTransformingSerializer<ProjectDependency>(ProjectDependencyPolymorphicSerializer) {
+
+    override fun transformDeserialize(element: JsonElement): JsonElement {
+        if (element is JsonObject) {
+            val key = element.keys.single()
+            val value = element.values.single()
+
+            when {
+                key.endsWith("npm", true) || key == "pod" -> {
+                    val npmConfiguration = if (key.endsWith("npm")) mapOf(
+                        "npmConfiguration" to JsonPrimitive(key),
+                    )
+                    else emptyMap()
+
+                    if (value is JsonObject) {
+                        return JsonObject(
+                            buildMap {
+                                put("type", JsonPrimitive(key))
+                                putAll(npmConfiguration)
+                                putAll(value.jsonObject)
+                            },
+                        )
+                    }
+
+                    return JsonObject(
+                        mapOf(
+                            "type" to JsonPrimitive(key),
+                            "notation" to value,
+                        ) + npmConfiguration,
+                    )
+                }
+
+                else -> return JsonObject(
+                    mapOf(
+                        "type" to JsonPrimitive("dep"),
+                        "notation" to JsonPrimitive(key),
+                        "configuration" to value,
+                    ),
+                )
+            }
+        }
+
+        return JsonObject(
+            mapOf(
+                "type" to JsonPrimitive("dep")
+                "notation" to element,
+            ),
+        )
+    }
 }
 
 @Serializable
@@ -149,5 +220,9 @@ internal fun String.toVersionCatalogUrlPath(): String {
         substringAfterLast(":")
     }/$fileNamePart.toml"
 }
+
+
+
+
 
 
