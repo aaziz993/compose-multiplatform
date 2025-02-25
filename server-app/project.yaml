@@ -11,3 +11,6 @@ kotlin:
 #      dependencies:
 #        - :kmp-lib
 #        - :shared
+
+application:
+  mainClass: MainKt
