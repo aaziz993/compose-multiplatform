@@ -534,7 +534,7 @@ internal data class KotlinJsTarget(
     override val generateTypeScriptDefinitions: Boolean? = null,
     override val compilerOptions: KotlinJsCompilerOptions? = null,
     override val binaries: KotlinJsBinaryContainer = KotlinJsBinaryContainer(),
-) : KotlinJsTargetDsl {
+) : KotlinJsTargetDsl() {
 
     context(Project)
     override fun applyTo() {
@@ -555,7 +555,7 @@ internal data class KotlinWasmJsTarget(
     override val generateTypeScriptDefinitions: Boolean? = null,
     override val compilerOptions: KotlinJsCompilerOptions? = null,
     override val binaries: KotlinJsBinaryContainer = KotlinJsBinaryContainer(),
-) : KotlinJsTargetDsl {
+) : KotlinJsTargetDsl() {
 
     context(Project)
     override fun applyTo() {
@@ -577,7 +577,7 @@ internal data class KotlinWasmJsTarget(
 //    override val generateTypeScriptDefinitions: Boolean? = null,
 //    override val compilerOptions: KotlinJsCompilerOptions? = null,
 //    override val binaries: KotlinJsBinaryContainer = KotlinJsBinaryContainer(),
-//) : KotlinJsTargetDsl {
+//) : KotlinJsTargetDsl() {
 //
 //    context(Project)
 //    override fun applyTo() {

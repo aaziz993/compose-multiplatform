@@ -20,8 +20,8 @@ internal data class WindowsPlatformSettings(
     var menu: Boolean? = null,
     var menuGroup: String? = null,
     var upgradeUuid: String? = null,
-    var msiPackageVersion: String?? = null,
-    var exePackageVersion: String?? = null,
+    var msiPackageVersion: String? = null,
+    var exePackageVersion: String? = null,
 ) : AbstractPlatformSettings() {
 
     context(Project)
