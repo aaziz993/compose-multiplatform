@@ -25,6 +25,8 @@ internal class JavaPlugin : Plugin<Project> {
                 return@with
             }
 
+            println("APPLY JAVA PLUGIN")
+
             plugins.apply(JavaPlugin::class.java)
 
             adjustSourceSets()

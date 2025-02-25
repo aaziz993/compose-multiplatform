@@ -5,9 +5,12 @@ package plugin.model.dependency
 import gradle.allLibs
 import gradle.isUrl
 import gradle.libraryAsDependency
+import gradle.libs
+import gradle.resolve
 import gradle.serialization.getPolymorphicSerializer
 import gradle.settings
 import java.io.File
+import kotlin.String
 import kotlin.text.endsWith
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.SerialName
@@ -27,6 +30,8 @@ import org.gradle.api.internal.tasks.JvmConstants
 import org.gradle.kotlin.dsl.DependencyHandlerScope
 import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
 import org.tomlj.TomlParseResult
+import plugin.project.kotlin.cocoapods.model.CocoapodsExtension
+import plugin.project.kotlin.cocoapods.model.CocoapodsExtension.CocoapodsDependency.PodLocation
 import plugin.project.kotlin.model.language.KotlinTarget
 
 @Serializable(with = ProjectDependencySerializer::class)
@@ -137,16 +142,7 @@ internal sealed class StandardDependency : ProjectDependency() {
     ): Any =
         when {
             notation.startsWith("$") -> {
-                val catalogName = notation
-                    .removePrefix("$")
-                    .substringBefore(".")
-                val libraryName = notation
-                    .substringAfter(".")
-
-                fromNotation(
-                    libs[catalogName]?.libraryAsDependency(libraryName)
-                        ?: error("Not found version catalog: $catalogName"),
-                )
+                fromNotation(libs.resolve(notation))
             }
 
             notation.contains("[/\\\\]".toRegex()) && !notation.isUrl -> directory.file(notation)
@@ -211,10 +207,36 @@ internal data class NpmDependency(
 
 @Serializable
 @SerialName("pod")
-internal data class PodDependency(override val notation: String) : ProjectDependency() {
+internal data class PodDependency(
+    override val notation: String,
+    val moduleName: String? = null,
+    val headers: String? = null,
+    val source: PodLocation? = null,
+    val extraOpts: List<String>? = null,
+    val packageName: String? = null,
+    val linkOnly: Boolean? = null,
+    val interopBindingDependencies: List<String>? = null,
+    val podspecDirectory: String? = null,
+) : ProjectDependency() {
 
+    context(Project)
     fun toCocoapodsDependency() {
-//        CocoapodsExtension.CocoapodsDependency()
+        val cocoapodsNotation = (if (notation.startsWith("$"))
+            settings.allLibs.resolve(notation)
+        else notation).removePrefix("cocoapods:")
+
+        CocoapodsExtension.CocoapodsDependency(
+            cocoapodsNotation.substringBefore(":"),
+            moduleName,
+            headers,
+            cocoapodsNotation.substringAfter(":", "").ifEmpty { null },
+            source,
+            extraOpts,
+            packageName,
+            linkOnly,
+            interopBindingDependencies,
+            podspecDirectory,
+        )
     }
 }
 

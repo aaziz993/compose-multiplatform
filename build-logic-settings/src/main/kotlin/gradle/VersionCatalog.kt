@@ -63,3 +63,13 @@ internal val TomlParseResult.libraries
 
 internal val TomlParseResult.plugins
     get() = getTable("plugins")!!
+
+internal fun Map<String, TomlParseResult>.resolve(notation: String): String {
+    val catalogName = notation
+        .removePrefix("$")
+        .substringBefore(".")
+    val libraryName = notation
+        .substringAfter(".")
+    return this[catalogName]?.libraryAsDependency(libraryName)
+        ?: error("Not found version catalog: $catalogName")
+}

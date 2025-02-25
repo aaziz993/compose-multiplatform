@@ -1,6 +1,7 @@
 package plugin.project.kotlin.cocoapods.model
 
 import gradle.moduleName
+import gradle.projectProperties
 import gradle.trySet
 import java.net.URI
 import kotlinx.serialization.Serializable
@@ -10,6 +11,7 @@ import kotlinx.serialization.json.jsonObject
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.cocoapods.CocoapodsExtension
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
+import plugin.model.dependency.PodDependency
 import plugin.project.kotlin.model.language.nat.Framework
 
 internal interface CocoapodsExtension {
@@ -143,6 +145,12 @@ internal interface CocoapodsExtension {
         podDependencies?.forEach { podDependency ->
             extension.pod(podDependency.name) {
                 podDependency.applyTo(this)
+            }
+        }
+
+        projectProperties.dependencies?.filterIsInstance<PodDependency>()?.forEach { podDependency ->
+            extension.pod(podDependency.name) {
+                podDependency.toCocoapodsDependency().applyTo(this)
             }
         }
 

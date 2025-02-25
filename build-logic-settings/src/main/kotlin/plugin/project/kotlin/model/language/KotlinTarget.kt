@@ -18,6 +18,8 @@ import plugin.project.kotlin.model.language.nat.KotlinNativeBinaryContainer
 import plugin.project.kotlin.model.language.nat.KotlinNativeCompilerOptions
 import plugin.project.kotlin.model.language.web.*
 import plugin.project.model.ProjectType
+import kotlin.reflect.full.createInstance
+import kotlin.reflect.full.primaryConstructor
 
 @Serializable(with = KotlinTargetSerializer::class)
 internal sealed class KotlinTarget {
@@ -63,7 +65,7 @@ internal object KotlinTargetSerializer :
 @Serializable
 @SerialName("jvm")
 internal data class KotlinJvmTarget(
-    override val targetName: String="",
+    override val targetName: String = "",
     override val compilerOptions: KotlinJvmCompilerOptions? = null,
     val testRuns: List<KotlinJvmTestRun>? = null,
     val mainRun: KotlinJvmRunDsl? = null,
@@ -96,7 +98,7 @@ internal data class KotlinJvmTarget(
 @Serializable
 @SerialName("androidTarget")
 internal data class KotlinAndroidTarget(
-    override val targetName: String="",
+    override val targetName: String = "",
     /** Names of the Android library variants that should be published from the target's project within the default publications which are
      * set up if the `maven-publish` Gradle plugin is applied.
      *
@@ -134,12 +136,13 @@ internal data class KotlinAndroidTarget(
 }
 
 @Serializable
+@SerialName("native")
 internal sealed class KotlinNativeTarget : KotlinTarget(), HasBinaries<KotlinNativeBinaryContainer?> {
 
     abstract val compilerOptions: KotlinNativeCompilerOptions?
 
     context(Project)
-    fun applyTo(target: org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget) {
+    protected fun applyTo(target: org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget) {
         binaries?.let { binaries ->
             target.binaries {
                 binaries.framework?.let { framework ->
@@ -150,43 +153,63 @@ internal sealed class KotlinNativeTarget : KotlinTarget(), HasBinaries<KotlinNat
             }
         }
     }
+
+
+    context(Project)
+    override fun applyTo() {
+        this::class.sealedSubclasses.forEach { clazz ->
+            clazz.createInstance().applyTo()
+        }
+    }
 }
 
 @Serializable
-internal sealed class KotlinAndroidNative : KotlinNativeTarget()
+@SerialName("androidNative")
+internal sealed class KotlinAndroidNative : KotlinNativeTarget() {
+    context(Project)
+    override fun applyTo() {
+        this::class.sealedSubclasses.forEach { clazz ->
+            clazz.createInstance().applyTo()
+        }
+    }
+}
 
 @Serializable
 @SerialName("androidNativeArm32")
 internal data class KotlinAndroidNativeArm32(
-    override val targetName: String="",
+    override val targetName: String = "",
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,
 ) : KotlinAndroidNative() {
 
     context(Project)
     override fun applyTo() {
-        super.applyTo(targetName.takeIf(String::isNotEmpty)?.let(kotlin::androidNativeArm32) ?: kotlin.androidNativeArm32())
+        super.applyTo(
+            targetName.takeIf(String::isNotEmpty)?.let(kotlin::androidNativeArm32) ?: kotlin.androidNativeArm32()
+        )
     }
 }
 
 @Serializable
 @SerialName("androidNativeArm64")
 internal data class KotlinAndroidNativeArm64(
-    override val targetName: String="",
+    override val targetName: String = "",
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,
 ) : KotlinAndroidNative() {
 
     context(Project)
     override fun applyTo() {
-        super.applyTo(targetName.takeIf(String::isNotEmpty)?.let(kotlin::androidNativeArm64) ?: kotlin.androidNativeArm64())
+        super.applyTo(
+            targetName.takeIf(String::isNotEmpty)?.let(kotlin::androidNativeArm64) ?: kotlin.androidNativeArm64()
+        )
     }
 }
 
 @Serializable
 @SerialName("androidNativeX64")
 internal data class KotlinAndroidNativeX64(
-    override val targetName: String="",
+    override val targetName: String = "",
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,
 ) : KotlinAndroidNative() {
@@ -200,7 +223,7 @@ internal data class KotlinAndroidNativeX64(
 @Serializable
 @SerialName("androidNativeX86")
 internal data class KotlinAndroidNativeX86(
-    override val targetName: String="",
+    override val targetName: String = "",
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,
 ) : KotlinAndroidNative() {
@@ -212,15 +235,31 @@ internal data class KotlinAndroidNativeX86(
 }
 
 @Serializable
-internal sealed class KotlinAppleTarget : KotlinNativeTarget()
+@SerialName("apple")
+internal sealed class KotlinAppleTarget : KotlinNativeTarget() {
+    context(Project)
+    override fun applyTo() {
+        this::class.sealedSubclasses.forEach { clazz ->
+            clazz.createInstance().applyTo()
+        }
+    }
+}
 
 @Serializable
-internal sealed class KotlinIosTarget : KotlinAppleTarget()
+@SerialName("ios")
+internal sealed class KotlinIosTarget : KotlinAppleTarget() {
+    context(Project)
+    override fun applyTo() {
+        this::class.sealedSubclasses.forEach { clazz ->
+            clazz.createInstance().applyTo()
+        }
+    }
+}
 
 @Serializable
 @SerialName("iosArm64")
 internal data class IosArm64(
-    override val targetName: String="",
+    override val targetName: String = "",
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,
 ) : KotlinIosTarget() {
@@ -234,7 +273,7 @@ internal data class IosArm64(
 @Serializable
 @SerialName("iosX64")
 internal data class KotlinIosX64Target(
-    override val targetName: String="",
+    override val targetName: String = "",
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,
 ) : KotlinIosTarget() {
@@ -248,24 +287,34 @@ internal data class KotlinIosX64Target(
 @Serializable
 @SerialName("iosSimulatorArm64")
 internal data class KotlinIosSimulatorArm64Target(
-    override val targetName: String="",
+    override val targetName: String = "",
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,
 ) : KotlinIosTarget() {
 
     context(Project)
     override fun applyTo() {
-        super.applyTo(targetName.takeIf(String::isNotEmpty)?.let(kotlin::iosSimulatorArm64) ?: kotlin.iosSimulatorArm64())
+        super.applyTo(
+            targetName.takeIf(String::isNotEmpty)?.let(kotlin::iosSimulatorArm64) ?: kotlin.iosSimulatorArm64()
+        )
     }
 }
 
 @Serializable
-internal sealed class KotlinWatchosTarget : KotlinAppleTarget()
+@SerialName("watchos")
+internal sealed class KotlinWatchosTarget : KotlinAppleTarget() {
+    context(Project)
+    override fun applyTo() {
+        this::class.sealedSubclasses.forEach { clazz ->
+            clazz.createInstance().applyTo()
+        }
+    }
+}
 
 @Serializable
 @SerialName("watchosArm32")
 internal data class KotlinWatchosArm32Target(
-    override val targetName: String="",
+    override val targetName: String = "",
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,
 ) : KotlinWatchosTarget() {
@@ -279,7 +328,7 @@ internal data class KotlinWatchosArm32Target(
 @Serializable
 @SerialName("watchosArm64")
 internal data class KotlinWatchosArm64Target(
-    override val targetName: String="",
+    override val targetName: String = "",
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,
 ) : KotlinWatchosTarget() {
@@ -293,21 +342,23 @@ internal data class KotlinWatchosArm64Target(
 @Serializable
 @SerialName("watchosDeviceArm64")
 internal data class KotlinWatchosDeviceArm64Target(
-    override val targetName: String="",
+    override val targetName: String = "",
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,
 ) : KotlinWatchosTarget() {
 
     context(Project)
     override fun applyTo() {
-        super.applyTo(targetName.takeIf(String::isNotEmpty)?.let(kotlin::watchosDeviceArm64) ?: kotlin.watchosDeviceArm64())
+        super.applyTo(
+            targetName.takeIf(String::isNotEmpty)?.let(kotlin::watchosDeviceArm64) ?: kotlin.watchosDeviceArm64()
+        )
     }
 }
 
 @Serializable
 @SerialName("watchosSimulatorArm64")
 internal data class KotlinWatchosSimulatorX64Target(
-    override val targetName: String="",
+    override val targetName: String = "",
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,
 ) : KotlinWatchosTarget() {
@@ -321,7 +372,7 @@ internal data class KotlinWatchosSimulatorX64Target(
 @Serializable
 @SerialName("watchosSimulatorArm64")
 internal data class KotlinWatchosSimulatorArm64Target(
-    override val targetName: String="",
+    override val targetName: String = "",
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,
 ) : KotlinWatchosTarget() {
@@ -335,12 +386,20 @@ internal data class KotlinWatchosSimulatorArm64Target(
 }
 
 @Serializable
-internal sealed class KotlinTvosTarget : KotlinAppleTarget()
+@SerialName("tvos")
+internal sealed class KotlinTvosTarget : KotlinAppleTarget() {
+    context(Project)
+    override fun applyTo() {
+        this::class.sealedSubclasses.forEach { clazz ->
+            clazz.createInstance().applyTo()
+        }
+    }
+}
 
 @Serializable
 @SerialName("tvosArm64")
 internal data class KotlinTvosArm64Target(
-    override val targetName: String="",
+    override val targetName: String = "",
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,
 ) : KotlinTvosTarget() {
@@ -354,7 +413,7 @@ internal data class KotlinTvosArm64Target(
 @Serializable
 @SerialName("tvosX64")
 internal data class KotlinTvosX64Target(
-    override val targetName: String="",
+    override val targetName: String = "",
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,
 ) : KotlinTvosTarget() {
@@ -368,24 +427,34 @@ internal data class KotlinTvosX64Target(
 @Serializable
 @SerialName("tvosSimulatorArm64")
 internal data class KotlinTvosSimulatorArm64Target(
-    override val targetName: String="",
+    override val targetName: String = "",
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,
 ) : KotlinTvosTarget() {
 
     context(Project)
     override fun applyTo() {
-        super.applyTo(targetName.takeIf(String::isNotEmpty)?.let(kotlin::tvosSimulatorArm64) ?: kotlin.tvosSimulatorArm64())
+        super.applyTo(
+            targetName.takeIf(String::isNotEmpty)?.let(kotlin::tvosSimulatorArm64) ?: kotlin.tvosSimulatorArm64()
+        )
     }
 }
 
 @Serializable
-internal sealed class KotlinMacosTarget : KotlinAppleTarget()
+@SerialName("macos")
+internal sealed class KotlinMacosTarget : KotlinAppleTarget() {
+    context(Project)
+    override fun applyTo() {
+        this::class.sealedSubclasses.forEach { clazz ->
+            clazz.createInstance().applyTo()
+        }
+    }
+}
 
 @Serializable
 @SerialName("macosArm64")
 internal data class KotlinMacosArm64Target(
-    override val targetName: String="",
+    override val targetName: String = "",
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,
 ) : KotlinMacosTarget() {
@@ -399,7 +468,7 @@ internal data class KotlinMacosArm64Target(
 @Serializable
 @SerialName("macosX64")
 internal data class KotlinMacosX64Target(
-    override val targetName: String="",
+    override val targetName: String = "",
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,
 ) : KotlinMacosTarget() {
@@ -411,12 +480,20 @@ internal data class KotlinMacosX64Target(
 }
 
 @Serializable
-internal sealed class KotlinLinuxTarget : KotlinNativeTarget()
+@SerialName("linux")
+internal sealed class KotlinLinuxTarget : KotlinNativeTarget() {
+    context(Project)
+    override fun applyTo() {
+        this::class.sealedSubclasses.forEach { clazz ->
+            clazz.createInstance().applyTo()
+        }
+    }
+}
 
 @Serializable
 @SerialName("linuxArm64")
 internal data class KotlinLinuxArm64Target(
-    override val targetName: String="",
+    override val targetName: String = "",
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,
 ) : KotlinLinuxTarget() {
@@ -430,7 +507,7 @@ internal data class KotlinLinuxArm64Target(
 @Serializable
 @SerialName("linuxX64")
 internal data class KotlinLinuxX64Target(
-    override val targetName: String="",
+    override val targetName: String = "",
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,
 ) : KotlinLinuxTarget() {
@@ -442,12 +519,20 @@ internal data class KotlinLinuxX64Target(
 }
 
 @Serializable
-internal sealed class KotlinMingwTarget : KotlinNativeTarget()
+@SerialName("mingw")
+internal sealed class KotlinMingwTarget : KotlinNativeTarget() {
+    context(Project)
+    override fun applyTo() {
+        this::class.sealedSubclasses.forEach { clazz ->
+            clazz.createInstance().applyTo()
+        }
+    }
+}
 
 @Serializable
 @SerialName("mingwX64")
 internal data class KotlinMingwX64Target(
-    override val targetName: String="",
+    override val targetName: String = "",
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,
 ) : KotlinNativeTarget() {
@@ -459,6 +544,7 @@ internal data class KotlinMingwX64Target(
 }
 
 @Serializable
+@SerialName("web")
 internal sealed class KotlinJsTargetDsl : KotlinTarget(), KotlinTargetWithNodeJsDsl,
     HasBinaries<KotlinJsBinaryContainer>, HasConfigurableKotlinCompilerOptions<KotlinJsCompilerOptions> {
 
@@ -479,7 +565,7 @@ internal sealed class KotlinJsTargetDsl : KotlinTarget(), KotlinTargetWithNodeJs
 
     context(Project)
     @OptIn(ExperimentalMainFunctionArgumentsDsl::class)
-    fun applyTo(target: org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl) {
+    protected fun applyTo(target: org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl) {
         super.applyTo(target)
 
         target.moduleName = moduleName ?: moduleName
@@ -518,13 +604,21 @@ internal sealed class KotlinJsTargetDsl : KotlinTarget(), KotlinTargetWithNodeJs
             else -> Unit
         }
     }
+
+
+    context(Project)
+    override fun applyTo() {
+        this::class.sealedSubclasses.forEach { clazz ->
+            clazz.createInstance().applyTo()
+        }
+    }
 }
 
 
 @Serializable
 @SerialName("js")
 internal data class KotlinJsTarget(
-    override val targetName: String="",
+    override val targetName: String = "",
     override val nodejs: KotlinJsNodeDsl? = null,
     override val moduleName: String? = null,
     override val browser: KotlinJsBrowserDsl? = null,
@@ -545,7 +639,7 @@ internal data class KotlinJsTarget(
 @Serializable
 @SerialName("wasmJs")
 internal data class KotlinWasmJsTarget(
-    override val targetName: String="",
+    override val targetName: String = "",
     override val nodejs: KotlinJsNodeDsl? = null,
     override val moduleName: String? = null,
     override val browser: KotlinJsBrowserDsl? = null,
@@ -563,24 +657,3 @@ internal data class KotlinWasmJsTarget(
         super.applyTo(targetName.takeIf(String::isNotEmpty)?.let(kotlin::wasmJs) ?: kotlin.wasmJs())
     }
 }
-
-//@Serializable
-//@SerialName("wasmWai")
-//internal data class KotlinWasmWasiTarget(
-//    override val name: String="",
-//    override val nodejs: KotlinJsNodeDsl? = null,
-//    override val moduleName: String? = null,
-//    override val browser: KotlinJsBrowserDsl? = null,
-//    override val useCommonJs: Boolean? = null,
-//    override val useEsModules: Boolean? = null,
-//    override val passAsArgumentToMainFunction: String? = null,
-//    override val generateTypeScriptDefinitions: Boolean? = null,
-//    override val compilerOptions: KotlinJsCompilerOptions? = null,
-//    override val binaries: KotlinJsBinaryContainer = KotlinJsBinaryContainer(),
-//) : KotlinJsTargetDsl() {
-//
-//    context(Project)
-//    override fun applyTo() {
-//        super.applyTo(targetName.takeIf(String::isNotEmpty)?.let(kotlin::wasmWasi) ?: kotlin.wasmWasi())
-//    }
-//}
