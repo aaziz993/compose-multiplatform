@@ -7,5 +7,5 @@ kotlin:
   sourceSets:
     jvmMain:
       dependencies:
-        #        - :kmp-lib
+        - :kmp-lib
         - $libs.symbol.processing.api

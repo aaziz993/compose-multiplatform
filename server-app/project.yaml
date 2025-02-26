@@ -6,11 +6,8 @@ templates:
 kotlin:
   targets: [ jvm ]
 
-#  sourceSets:
-#    commonMain:
-#      dependencies:
-#        - :kmp-lib
-#        - :shared
-
-application:
-  mainClass: MainKt
+  sourceSets:
+    commonMain:
+      dependencies:
+        - :kmp-lib
+        - :shared

@@ -3,6 +3,7 @@
 package plugin.project.android
 
 import app.cash.sqldelight.core.decapitalize
+import com.android.build.api.dsl.CommonExtension
 import com.android.build.gradle.LibraryExtension
 import com.android.build.gradle.TestedExtension
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
@@ -28,7 +29,7 @@ internal class AndroidPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (projectProperties.kotlin.targets?.none { target -> target is KotlinAndroidTarget } == true) {
+            if (projectProperties.kotlin.targets?.none { target -> target is KotlinAndroidTarget } != false) {
                 return@with
             }
 
@@ -46,24 +47,50 @@ internal class AndroidPlugin : Plugin<Project> {
     }
 
     private fun Project.adjustAndroidSourceSets() {
-//        val variants = (if (projectProperties.type == ProjectType.APP)
-//            (android as BaseAppModuleExtension).applicationVariants
-//        else
-//            (android as LibraryExtension).libraryVariants) +
-//            (android as TestedExtension).let {
-//                it.testVariants + it.unitTestVariants
-//            }
-//
-//        variants.map {
-//            it.name
-//        }.let {
-//            println("ANDROID VARIANTS: $it")
-//        }
+
+        println("ANDROID SOURCE STS: ${android.sourceSets.map { it.name }}")
+        val variants = (if (projectProperties.type == ProjectType.APP)
+            (android as BaseAppModuleExtension).applicationVariants
+        else
+            (android as LibraryExtension).libraryVariants) +
+            (android as TestedExtension).let {
+                it.testVariants + it.unitTestVariants
+            }
+
+        variants.map {
+            it.name
+        }.let {
+            println("ANDROID VARS: $it")
+        }
+
+        (android as CommonExtension<*,*,*,*,*,*>).buildTypes.map {
+            it.name
+        }.let {
+            println("ANDROID TYPES: $it")
+        }
+
+       (android as CommonExtension<*,*,*,*,*,*>).productFlavors.map {
+            it.name
+        }.let {
+            println("ANDROID FLAVOURS: $it")
+        }
+
+        (android as CommonExtension<*,*,*,*,*,*>).flavorDimensions.let {
+            println("ANDROID FLAVOURS DIMS: $it")
+        }
+        val isTextFixtures= (android as TestedExtension).testFixtures.enable
 
         when (projectProperties.layout) {
-
             ProjectLayout.FLAT -> android.sourceSets.all {
-                val sourceSetNameParts = "^.*?(Main|Test|TestDebug)?$".toRegex().matchEntire(name)!!
+            val isMain = name == "main"
+            val isTestFixtures = isTestFixtures
+            val buildType = android.buildTypes.find { name.contains(it.name, ignoreCase = true) }?.name
+            val productFlavor = android.productFlavors.find { name.contains(it.name, ignoreCase = true) }?.name
+            val isTest = name.contains("androidTest", ignoreCase = true) || name.contains("test", ignoreCase = true)
+
+
+
+            val sourceSetNameParts = "^.*?(Main|Test|TestDebug)?$".toRegex().matchEntire(name)!!
 
                 val (compilationPrefixPart, resourcesPrefixPart) = sourceSetNameParts.groupValues[1]
                     .decapitalized()

@@ -24,7 +24,7 @@ internal data class ResourcesPackaging(
      *
      * Example: `android.packagingOptions.resources.excludes += "**`/`*.exclude"`
      */
-    val excludes: Set <String>?=null,
+    val excludes: Set<String>? = null,
 
     /**
      * The set of patterns for which the first occurrence is packaged in the APK. For each java
@@ -33,7 +33,7 @@ internal data class ResourcesPackaging(
      *
      * Example: `android.packagingOptions.resources.pickFirsts += "**`/`*.pickFirst"`
      */
-    val pickFirsts: Set <String>?=null,
+    val pickFirsts: Set<String>? = null,
 
     /**
      * The set of patterns for which matching java resources are merged. For each java resource
@@ -42,8 +42,9 @@ internal data class ResourcesPackaging(
      *
      * Example: `android.packagingOptions.resources.merges += "**`/`*.merge"`
      */
-    val merges: Set <String>?=null
-){
+    val merges: Set<String>? = null
+) {
+
     fun applyTo(packaging: ResourcesPackaging) {
         excludes?.let(packaging.excludes::addAll)
         pickFirsts?.let(packaging.pickFirsts::addAll)

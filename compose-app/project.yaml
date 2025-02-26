@@ -5,10 +5,10 @@ templates:
   - ../template/multiplatform.yaml
   - ../template/compose.yaml
 
-#kotlin:
-#  sourceSets:
-#    commonMain:
-#      dependencies:
-#        - :kmp-lib
-#        - :cmp-lib
-#        - :shared
+kotlin:
+  sourceSets:
+    commonMain:
+      dependencies:
+        - :kmp-lib
+        - :cmp-lib
+        - :shared

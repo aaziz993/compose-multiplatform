@@ -5,8 +5,8 @@ templates:
   - ../template/multiplatform.yaml
   - ../template/compose.yaml
 
-#kotlin:
-#  sourceSets:
-#    commonMain:
-#      dependencies:
-#        - :kmp-lib
+kotlin:
+  sourceSets:
+    commonMain:
+      dependencies:
+        - :kmp-lib

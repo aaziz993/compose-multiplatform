@@ -23,31 +23,31 @@ internal class JsPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (projectProperties.kotlin.targets?.none { target -> target is KotlinJsTarget } == true) {
+            if (projectProperties.kotlin.targets?.none { target -> target is KotlinJsTarget } != false) {
                 return@with
             }
 
             plugins.apply(settings.libs.plugins.plugin("karakum").id)
 
-//            configureKarakum()
+            configureKarakum()
 
-//            configureKarakumGenerate()
+            configureKarakumGenerate()
 
-//            val karakumConfigFile = karakum.configFile.asFile.get()
-//
-//            if (karakumConfigFile.exists()) {
-//
-//                val karakumConfig = Json.Default.decodeMapFromString(karakumConfigFile.readText())
-//
-//                val karakumOutputDir = karakumConfigFile.parentFile.resolve(karakumConfig["output"].toString())
-//
-//                if (karakumOutputDir.exists()) {
-//                    kotlin.sourceSets.matching { sourceSet -> sourceSet.name == "jsMain" }.all {
-//
-//                        kotlin.srcDir(karakumOutputDir)
-//                    }
-//                }
-//            }
+            val karakumConfigFile = karakum.configFile.asFile.get()
+
+            if (karakumConfigFile.exists()) {
+
+                val karakumConfig = Json.Default.decodeMapFromString(karakumConfigFile.readText())
+
+                val karakumOutputDir = karakumConfigFile.parentFile.resolve(karakumConfig["output"].toString())
+
+                if (karakumOutputDir.exists()) {
+                    kotlin.sourceSets.matching { sourceSet -> sourceSet.name == "jsMain" }.all {
+
+                        kotlin.srcDir(karakumOutputDir)
+                    }
+                }
+            }
 
             configureJsTestTasks<KotlinJsTargetDsl>()
         }

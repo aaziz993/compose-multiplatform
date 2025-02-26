@@ -10,7 +10,7 @@ internal class WasmPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (projectProperties.kotlin.targets?.none { target -> target is KotlinWasmJsTarget } == true) {
+            if (projectProperties.kotlin.targets?.none { target -> target is KotlinWasmJsTarget } != false) {
                 return@with
             }
 

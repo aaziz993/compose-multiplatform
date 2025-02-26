@@ -10,6 +10,7 @@ import gradle.settings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
+import plugin.project.android.model.BaseExtension
 import plugin.project.java.model.Jar
 import plugin.project.java.model.JavaToolchainSpec
 import plugin.project.java.model.application.JavaApplication
@@ -33,6 +34,7 @@ internal data class KotlinMultiplatformSettings(
     val hierarchy: LinkedHashMap<String, List<String>>? = null,
     val sourceSets: LinkedHashMap<String, KotlinSourceSet>? = null,
     val application: JavaApplication? = null,
+    val android: BaseExtension? = null,
     val jar: Jar? = null,
     val cocoapods: CocoapodsSettings = CocoapodsSettings(),
 ) : KotlinMultiplatformExtension {

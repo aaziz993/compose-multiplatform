@@ -90,7 +90,6 @@ plugins:
 
   # generates typesafe Kotlin APIs from your SQL statements. It verifies your schema, statements, and migrations at compile-time and provides IDE features like autocomplete and refactoring which make writing and maintaining SQL simple.
   sqldelight:
-    enabled: false
     linkSqlite: true
 
   # abstraction layer over SQLite to allow for more robust database access while harnessing the full power of SQLite.
@@ -165,9 +164,9 @@ kotlin:
 #        - npm: $libs.npm.pako
 #        - npm: $libs.npm.puppeteer
 
-    wasmJsMain:
-      dependencies:
-        - $kotlinWrappers.browser
+#    wasmJsMain:
+#      dependencies:
+#        - $kotlinWrappers.browser
 
 #  allWarningsAsErrors: false
 #  debug: false
@@ -229,3 +228,55 @@ kotlin:
 #  js:
 #    optIns:
 #      - kotlin.js.ExperimentalJsExport
+application:
+  mainClass: ApplicationKt
+  applicationDefaultJvmArgs:
+    - -Dio.ktor.development=true
+
+android:
+  defaultConfig:
+    testInstrumentationRunner: androidx.test.runner.AndroidJUnitRunner
+
+    manifestPlaceholders:
+      appAuthRedirectScheme: "empty"
+
+    vectorDrawables:
+      useSupportLibrary: true
+
+    # List additional ProGuard rules for the given build type here. By default,
+    # Android Studio creates and includes an empty rules file for you (located
+    # at the root directory of each module).
+    proguardFiles: [ consumer-proguard.pro ]
+    # The proguard files listed here are included in the
+    # test APK only.
+    testProguardFiles: [ test-proguard-rules.pro ]
+    consumerProguardFiles: [ consumer-proguard.pro ]
+
+  buildTypes:
+    - release:
+        isMinifyEnabled: true
+        debuggable: false
+    - debug:
+        isMinifyEnabled: false
+        debuggable: true
+
+  packagingOptions:
+    resources:
+      excludes: /META-INF/{AL2.0,LGPL2.1
+
+  buildFeatures:
+    buildConfig: true
+    viewBinding: true
+
+  lintOptions:
+    checkReleaseBuilds: false
+    abortOnError: false
+
+  compileOptions:
+    isCoreLibraryDesugaringEnabled: true
+
+dependencies:
+  - $libs.compose.lint.checks: lintChecks
+  - $libs.android.desugar.jdk.libs
+  - $libs.androidx.test.core
+  - $libs.androidx.test.runner

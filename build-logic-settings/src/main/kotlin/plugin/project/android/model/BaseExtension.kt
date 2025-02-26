@@ -74,7 +74,7 @@ internal interface BaseExtension {
 
     val buildTypes: List<BuildType>?
 
-//    val defaultConfig: DefaultConfig
+    val defaultConfig: DefaultConfig
 
 //    val productFlavors: List<ProductFlavor>
 
@@ -82,7 +82,7 @@ internal interface BaseExtension {
 
     // these are indirectly implemented by extensions when they implement the new public
     // extension interfaces via delegates.
-//    val buildFeatures: BuildFeatures
+    val buildFeatures: BuildFeatures?
     val namespace: String?
 
     context(Project)
@@ -173,9 +173,9 @@ internal interface BaseExtension {
             }
         }
 
-//        extension.defaultConfig {
-//            this.name=""
-//        }
+        extension.defaultConfig {
+
+        }
 
         extension.productFlavors {
             all {
@@ -192,6 +192,8 @@ internal interface BaseExtension {
                 }
             }
         }
+
+        buildFeatures?.applyTo(extension.buildFeatures)
 
         extension.namespace = namespace ?: androidNamespace
     }

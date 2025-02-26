@@ -1,6 +1,6 @@
 package gradle
 
-internal fun String.decapitalized() = replaceFirstChar(Char::uppercase)
+internal fun String.decapitalized() = replaceFirstChar(Char::lowercase)
 
 private val URL_REGEX = "^(https|http)://".toRegex()
 
