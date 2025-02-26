@@ -20,11 +20,11 @@ internal class JavaPlugin : Plugin<Project> {
         with(target) {
             if (
                 projectProperties.kotlin.targets?.any { target ->
-                    println("TARGET ${target.targetName} is android ${  target is KotlinAndroidTarget }")
+                    println("TARGET ${target::class.java.simpleName} is android ${target is KotlinAndroidTarget}")
                     target is KotlinAndroidTarget
                 } == true ||
                 projectProperties.kotlin.targets?.none { target ->
-                    println("TARGET ${target.targetName} is jvm ${  target is KotlinJvmTarget }")
+                    println("TARGET ${target::class.simpleName} is jvm ${target is KotlinJvmTarget}")
                     target is KotlinJvmTarget
                 } == true
             ) {

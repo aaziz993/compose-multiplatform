@@ -109,6 +109,7 @@ internal data class KotlinMultiplatformSettings(
                                     "mingwX64" -> withMingwX64()
                                     "js" -> withJs()
                                     "wasmJs" -> withWasmJs()
+                                    "wasmWasi" -> withWasmWasi()
                                     else -> group(targetName)
                                 }
                             }

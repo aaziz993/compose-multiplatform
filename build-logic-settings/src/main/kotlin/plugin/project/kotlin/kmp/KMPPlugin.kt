@@ -12,6 +12,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinMetadataTarget
 import plugin.project.model.ProjectLayout
 
@@ -40,6 +41,10 @@ internal class KMPPlugin : Plugin<Project> {
         kotlin {
             when (projectProperties.layout) {
                 ProjectLayout.FLAT -> targets.forEach { target ->
+                    println("COMP: ${target.compilations.map { it.name }}")
+                    if(target is KotlinAndroidTarget){
+                        println("LIB VAR: ${target.publishLibraryVariants}")
+                    }
                     val targetPart = if (target is KotlinMetadataTarget) "" else "@${target.targetName}"
                     target.compilations.forEach { compilation ->
                         compilation.defaultSourceSet {
@@ -57,9 +62,9 @@ internal class KMPPlugin : Plugin<Project> {
                 else -> Unit
             }
 
-            sourceSets.forEach { sourceSet ->
-                projectProperties.kotlin.sourceSets?.get(sourceSet.name)?.applyTo(sourceSet)
-            }
+//            sourceSets.forEach { sourceSet ->
+//                projectProperties.kotlin.sourceSets?.get(sourceSet.name)?.applyTo(sourceSet)
+//            }
         }
     }
 }

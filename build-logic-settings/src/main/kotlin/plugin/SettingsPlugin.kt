@@ -40,6 +40,7 @@ import plugin.project.gradle.develocity.DevelocityPlugin
 import plugin.project.gradle.githooks.GitHooksPlugin
 import plugin.project.gradle.toolchainmanagement.ToolchainManagementPlugin
 import plugin.project.model.ProjectProperties
+import org.jetbrains.compose.internal.utils.currentTarget
 
 private const val PROJECT_PROPERTIES_FILE = "project.yaml"
 private const val VERSION_CATALOG_CACHE_DIR = "build-logic-settings/gradle"
@@ -163,7 +164,8 @@ public class SettingsPlugin : Plugin<Settings> {
                         .readText()
                         .replace("\$kotlin", libs.versions.version("kotlin")!!)
                         .replace("\$compose", libs.versions.version("compose")!!)
-                        .replace("\$materialExtendedIcon", libs.versions.version("materialExtendedIcon")!!),
+                        .replace("\$materialExtendedIcon", libs.versions.version("materialExtendedIcon")!!)
+                        .replace("\$currentTargetId", currentTarget.id),
                 )
             }
         }

@@ -3,6 +3,8 @@
 package plugin.project.android
 
 import app.cash.sqldelight.core.decapitalize
+import com.android.build.gradle.LibraryExtension
+import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import gradle.all
 import gradle.android
 import gradle.id
@@ -15,6 +17,7 @@ import gradle.settings
 import java.io.File
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.jetbrains.amper.gradle.android.AndroidBindingPluginPart
 import plugin.project.kotlin.model.language.KotlinAndroidTarget
 import plugin.project.model.ProjectLayout
 import plugin.project.model.ProjectType
@@ -35,15 +38,23 @@ internal class AndroidPlugin : Plugin<Project> {
 
 //            configureBaseExtension()
 
-//        adjustCompilations()
-//        applySettings()
             adjustAndroidSourceSets()
             applyGoogleServicesPlugin()
         }
     }
 
     private fun Project.adjustAndroidSourceSets() {
+        (if (projectProperties.type == ProjectType.APP)
+            (android as BaseAppModuleExtension).applicationVariants
+        else
+            (android as LibraryExtension).libraryVariants).map{
+                it.name
+        }.let {
+                println("ANDROID VARIANTS: $it")
+        }
+
         when (projectProperties.layout) {
+
             ProjectLayout.FLAT -> android.sourceSets.all {
                 val sourceSetNameParts = "^.*?(Main|Test|TestDebug)?$".toRegex().matchEntire(name)!!
 

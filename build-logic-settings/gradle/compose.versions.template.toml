@@ -30,7 +30,7 @@ desktop-windows_arm64 =  { module = "org.jetbrains.compose.desktop:desktop-jvm-w
 desktop-macos_x64 =  { module = "org.jetbrains.compose.desktop:desktop-jvm-macos-x64", version.ref = "compose" }
 desktop-macos_arm64 =  { module = "org.jetbrains.compose.desktop:desktop-jvm-macos-arm64", version.ref = "compose" }
 desktop-uiTestJUnit4 =  { module = "org.jetbrains.compose.ui:ui-test-junit4", version.ref = "compose" }
-desktop-currentOs =  { module = "org.jetbrains.compose.desktop:desktop-jvm-${currentTarget.id}", version.ref = "compose" }
+desktop-currentOs =  { module = "org.jetbrains.compose.desktop:desktop-jvm-$currentTargetId", version.ref = "compose" }
 desktop-components-splitPane =  { module = "org.jetbrains.compose.components:components-splitpane", version.ref = "compose" }
 desktop-components-animatedImage =  { module = "org.jetbrains.compose.components:components-animatedimage", version.ref = "compose" }
 ##Web
