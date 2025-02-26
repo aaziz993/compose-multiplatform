@@ -4,9 +4,11 @@ package plugin.project.android
 
 import app.cash.sqldelight.core.decapitalize
 import com.android.build.gradle.LibraryExtension
+import com.android.build.gradle.TestedExtension
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import gradle.all
 import gradle.android
+import gradle.decapitalized
 import gradle.id
 import gradle.kotlin
 import gradle.libs
@@ -44,14 +46,19 @@ internal class AndroidPlugin : Plugin<Project> {
     }
 
     private fun Project.adjustAndroidSourceSets() {
-        (if (projectProperties.type == ProjectType.APP)
-            (android as BaseAppModuleExtension).applicationVariants
-        else
-            (android as LibraryExtension).libraryVariants).map{
-                it.name
-        }.let {
-                println("ANDROID VARIANTS: $it")
-        }
+//        val variants = (if (projectProperties.type == ProjectType.APP)
+//            (android as BaseAppModuleExtension).applicationVariants
+//        else
+//            (android as LibraryExtension).libraryVariants) +
+//            (android as TestedExtension).let {
+//                it.testVariants + it.unitTestVariants
+//            }
+//
+//        variants.map {
+//            it.name
+//        }.let {
+//            println("ANDROID VARIANTS: $it")
+//        }
 
         when (projectProperties.layout) {
 
@@ -59,7 +66,7 @@ internal class AndroidPlugin : Plugin<Project> {
                 val sourceSetNameParts = "^.*?(Main|Test|TestDebug)?$".toRegex().matchEntire(name)!!
 
                 val (compilationPrefixPart, resourcesPrefixPart) = sourceSetNameParts.groupValues[1]
-                    .decapitalize()
+                    .decapitalized()
                     .let { compilationName ->
                         when (compilationName) {
                             "main", "" -> "src" to ""
@@ -71,10 +78,10 @@ internal class AndroidPlugin : Plugin<Project> {
                 kotlin.setSrcDirs(listOf("$compilationPrefixPart@android"))
                 java.setSrcDirs(listOf("$compilationPrefixPart@android"))
                 manifest.srcFile("$compilationPrefixPart@android/AndroidManifest.xml")
-                resources.setSrcDirs(listOf("${resourcesPrefixPart}Resources@android".decapitalize()))
-                res.setSrcDirs(listOf("${resourcesPrefixPart}Res@android".decapitalize()))
-                assets.setSrcDirs(listOf("${resourcesPrefixPart}Assets@android".decapitalize()))
-                shaders.setSrcDirs(listOf("${resourcesPrefixPart}Shaders@android".decapitalize()))
+                resources.setSrcDirs(listOf("${resourcesPrefixPart}Resources@android".decapitalized()))
+                res.setSrcDirs(listOf("${resourcesPrefixPart}Res@android".decapitalized()))
+                assets.setSrcDirs(listOf("${resourcesPrefixPart}Assets@android".decapitalized()))
+                shaders.setSrcDirs(listOf("${resourcesPrefixPart}Shaders@android".decapitalized()))
             }
 
             else -> Unit

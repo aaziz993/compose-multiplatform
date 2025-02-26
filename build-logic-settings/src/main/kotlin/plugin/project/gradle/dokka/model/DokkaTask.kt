@@ -29,7 +29,7 @@ internal interface DokkaTask {
      * Directory to which documentation will be generated, regardless of format.
      * Can be set on per-task basis.
      *
-     * Default is `project/buildDir/taskName.removePrefix("dokka").decapitalize()`, so
+     * Default is `project/buildDir/taskName.removePrefix("dokka").decapitalized()`, so
      * for `dokkaHtmlMultiModule` task it will be `project/buildDir/htmlMultiModule`
      */
     val outputDirectory: String?

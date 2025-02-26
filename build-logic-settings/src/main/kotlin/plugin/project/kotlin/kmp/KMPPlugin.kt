@@ -1,6 +1,7 @@
 package plugin.project.kotlin.kmp
 
 import app.cash.sqldelight.core.decapitalize
+import gradle.decapitalized
 import gradle.id
 import gradle.kotlin
 import gradle.libs
@@ -54,7 +55,7 @@ internal class KMPPlugin : Plugin<Project> {
                             }
 
                             kotlin.setSrcDirs(listOf("$srcPrefixPart$targetPart"))
-                            resources.setSrcDirs(listOf("${compilation.name}Resources$targetPart".decapitalize()))
+                            resources.setSrcDirs(listOf("${compilation.name}Resources$targetPart".decapitalized()))
                         }
                     }
                 }

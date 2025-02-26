@@ -1,14 +1,13 @@
 package plugin.project.java
 
-import app.cash.sqldelight.core.capitalize
 import gradle.java
-import gradle.kotlin
 import gradle.projectProperties
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.ApplicationPlugin
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.tasks.SourceSet
+import org.gradle.internal.extensions.stdlib.capitalized
 import plugin.project.kotlin.model.language.KotlinAndroidTarget
 import plugin.project.kotlin.model.language.KotlinJvmTarget
 import plugin.project.model.ProjectLayout
@@ -20,16 +19,16 @@ internal class JavaPlugin : Plugin<Project> {
         with(target) {
             if (
                 projectProperties.kotlin.targets?.any { target ->
-                    println("TARGET ${target::class.java.simpleName} is android ${target is KotlinAndroidTarget}")
                     target is KotlinAndroidTarget
-                } == true ||
-                projectProperties.kotlin.targets?.none { target ->
-                    println("TARGET ${target::class.simpleName} is jvm ${target is KotlinJvmTarget}")
-                    target is KotlinJvmTarget
                 } == true
+                ||
+                projectProperties.kotlin.targets?.none { target ->
+                    target is KotlinJvmTarget
+                } != false
             ) {
                 return@with
             }
+
 
             plugins.apply(JavaPlugin::class.java)
 
@@ -37,8 +36,10 @@ internal class JavaPlugin : Plugin<Project> {
 
             projectProperties.jvm?.applyTo()
 
+            // Apply java application plugin.
             if (projectProperties.type == ProjectType.APP && !projectProperties.compose.enabled) {
                 plugins.apply(ApplicationPlugin::class.java)
+
                 projectProperties.application?.applyTo()
             }
         }
@@ -59,7 +60,7 @@ internal class JavaPlugin : Plugin<Project> {
             }
 
             else -> java.sourceSets.all {
-                val compilationName = name.capitalize()
+                val compilationName = name.capitalized()
                 java.setSrcDirs(listOf("src/jvm$compilationName/java"))
                 resources.setSrcDirs(listOf("src/jvm$compilationName/resources"))
             }

@@ -1,6 +1,7 @@
 package plugin.project.compose.resources.model
 
 import app.cash.sqldelight.core.decapitalize
+import gradle.decapitalized
 import gradle.kotlin
 import gradle.projectProperties
 import gradle.trySet
@@ -62,7 +63,7 @@ internal data class ResourcesExtension(
                     extension.customDirectory(
                         compilation.defaultSourceSet.name,
                         provider {
-                            layout.projectDirectory.dir("${compilation.name}ComposeResources$targetPart".decapitalize())
+                            layout.projectDirectory.dir("${compilation.name}ComposeResources$targetPart".decapitalized())
                         },
                     )
                 }
