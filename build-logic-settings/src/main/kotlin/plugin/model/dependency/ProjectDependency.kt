@@ -171,19 +171,19 @@ internal data class NpmDependency(
         )
     }
 
-    private fun npm(handler: KotlinDependencyHandler, file: File) = when (configuration) {
+    private fun npm(handler: KotlinDependencyHandler, file: File) = when (npmConfiguration) {
         "npm" -> handler.npm(file)
         "devNpm" -> handler.devNpm(file)
         "optionalNpm" -> handler.optionalNpm(file)
-        else -> error("Unsupported npm dependency configuration: $configuration")
+        else -> error("Unsupported npm dependency configuration: $npmConfiguration")
     }
 
-    private fun npm(handler: KotlinDependencyHandler, name: String, version: String) = when (configuration) {
+    private fun npm(handler: KotlinDependencyHandler, name: String, version: String) = when (npmConfiguration) {
         "npm" -> handler.npm(name, version)
         "devNpm" -> handler.devNpm(name, version)
         "optionalNpm" -> handler.optionalNpm(name, version)
         "peerNpm" -> handler.peerNpm(name, version)
-        else -> error("Unsupported npm dependency configuration: $configuration")
+        else -> error("Unsupported npm dependency configuration: $npmConfiguration")
     }
 }
 
