@@ -13,7 +13,6 @@ internal fun <T> NamedDomainObjectContainer<T>.optionalRegister(name: String, co
 internal fun <T> NamedDomainObjectCollection<T>.maybeNamed(name: String): NamedDomainObjectProvider<T>? =
     if (name in names) named(name) else null
 
-
 internal inline fun <reified T> NamedDomainObjectCollection<T>.maybeNamed(name: String, noinline configure: T.() -> Unit): NamedDomainObjectProvider<T>? =
     if (name in names) {
         named(name, configure)
@@ -21,6 +20,9 @@ internal inline fun <reified T> NamedDomainObjectCollection<T>.maybeNamed(name: 
     else {
         null
     }
+
+internal fun <T> NamedDomainObjectContainer<T>.namedOrAll(name: String, configure: T.() -> Unit) =
+    if (name.isEmpty()) all(configure) else named(name, configure)
 
 internal fun <T> NamedDomainObjectCollection<T>.all(action: (T) -> Unit) =
     all { action(this) }

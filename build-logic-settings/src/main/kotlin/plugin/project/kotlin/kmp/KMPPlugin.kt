@@ -5,6 +5,7 @@ import gradle.decapitalized
 import gradle.id
 import gradle.kotlin
 import gradle.libs
+import gradle.maybeNamed
 import gradle.plugin
 import gradle.plugins
 import gradle.projectProperties
@@ -41,18 +42,40 @@ internal class KMPPlugin : Plugin<Project> {
     private fun Project.adjustSourceSets() {
         kotlin {
             when (projectProperties.layout) {
-                ProjectLayout.FLAT -> targets.forEach { target ->
-                    val targetPart = if (target is KotlinMetadataTarget) "" else "@${target.targetName}"
-                    target.compilations.forEach { compilation ->
-                        compilation.defaultSourceSet {
-                            val (srcPrefixPart, resourcesPrefixPart) = when (compilation.name) {
-                                KotlinCompilation.MAIN_COMPILATION_NAME -> "src" to "resources"
-                                else -> compilation.name to "${compilation.name}Resources"
-                            }
+                ProjectLayout.FLAT -> {
+                    targets.forEach { target ->
+                        val targetPart = if (target is KotlinMetadataTarget) "" else "@${target.targetName}"
+                        target.compilations.forEach { compilation ->
+                            compilation.defaultSourceSet {
+                                val (srcPrefixPart, resourcesPrefixPart) = when (compilation.name) {
+                                    KotlinCompilation.MAIN_COMPILATION_NAME -> "src" to "resources"
+                                    else -> compilation.name to "${compilation.name}Resources"
+                                }
 
-                            kotlin.setSrcDirs(listOf("$srcPrefixPart$targetPart"))
-                            resources.setSrcDirs(listOf("$resourcesPrefixPart$targetPart"))
+                                kotlin.setSrcDirs(listOf("$srcPrefixPart$targetPart"))
+                                resources.setSrcDirs(listOf("$resourcesPrefixPart$targetPart"))
+                            }
                         }
+                    }
+
+                    targets.filterIsInstance<KotlinAndroidTarget>().forEach { target ->
+                        (listOf("") + target.publishLibraryVariants.orEmpty()).forEach { variant ->
+                            sourceSets.maybeNamed("androidUnitTest") {
+
+                            }
+                            sourceSets.maybeNamed("androidInstrumentedTest") {
+
+                            }
+                        }
+                        println(
+                            """
+                    Library variants: ${target.publishLibraryVariants}
+                    MainVariant: ${target.mainVariant.sourceSetTree.get().name}
+                    UnitTestVariant: ${target.unitTestVariant.sourceSetTree.get().name}
+                    InstrumentedTestVariant: ${target.instrumentedTestVariant.sourceSetTree.get().name}
+                    Compilations: ${target.compilations.map { it.name to it.androidVariant }}
+                """.trimIndent(),
+                        )
                     }
                 }
 

@@ -29,6 +29,7 @@ import plugin.model.dependency.StandardDependency
  */
 @Serializable
 internal data class KotlinSourceSet(
+    override val name: String = "",
     override val dependencies: List<ProjectDependency>? = null,
     /**
      * Provides the DSL to configure a subset of Kotlin compilation language settings for this [KotlinSourceSet].
@@ -44,7 +45,7 @@ internal data class KotlinSourceSet(
      * These extensions are evaluated lazily and can include additional custom source file types beyond the default ".kt" and ".kts" ones.
      */
     val customSourceFilesExtensions: List<String>? = null,
-) : HasKotlinDependencies {
+) : Named, HasKotlinDependencies {
 
     context(Project)
     fun applyTo(sourceSet: org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet) {

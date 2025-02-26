@@ -164,9 +164,9 @@ kotlin:
         - npm: $libs.npm.pako
         - npm: $libs.npm.puppeteer
 
-    wasmJsMain:
-      dependencies:
-        - $kotlinWrappers.browser
+#    wasmJsMain:
+#      dependencies:
+#        - $kotlinWrappers.browser
 
 #  allWarningsAsErrors: false
 #  debug: false

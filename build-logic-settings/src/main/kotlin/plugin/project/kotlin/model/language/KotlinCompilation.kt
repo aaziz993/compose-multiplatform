@@ -2,7 +2,6 @@ package plugin.project.kotlin.model.language
 
 import gradle.trySet
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.getByName
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
 
 /**
@@ -72,12 +71,15 @@ Here's an example of how to use consume the outputs of the main JVM Compilation 
  * Instead, there is a dedicated compilation for each shared source set.
  *
  */
-internal interface KotlinCompilation : HasKotlinDependencies {
+internal interface KotlinCompilation : HasKotlinDependencies, Named {
 
     /**
      * The name of the compilation.
      */
     val compilationName: String
+
+    override val name: String
+        get() = compilationName
 
     /**
      * The [KotlinSourceSet] by default associated with this compilation.

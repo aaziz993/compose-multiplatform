@@ -1,6 +1,7 @@
 package plugin.project.gradle.dokka.model
 
 import gradle.maybeNamed
+import gradle.namedOrAll
 import gradle.tryAssign
 import org.gradle.api.Project
 import org.jetbrains.dokka.gradle.DokkaExtension
@@ -176,21 +177,13 @@ internal interface DokkaExtension {
         extension.konanHome tryAssign konanHome?.let(::file)
 
         dokkaPublications?.forEach { dokkaPublication ->
-            dokkaPublication.formatName.takeIf(String::isNotEmpty)?.also { formatName ->
-                extension.dokkaPublications.maybeNamed(formatName) {
-                    dokkaPublication.applyTo(this)
-                }
-            } ?: extension.dokkaPublications.configureEach {
+            extension.dokkaPublications.namedOrAll(dokkaPublication.formatName) {
                 dokkaPublication.applyTo(this)
             }
         }
 
         dokkaSourceSets?.forEach { dokkaSourceSet ->
-            dokkaSourceSet.name.takeIf(String::isNotEmpty)?.also { name ->
-                extension.dokkaSourceSets.maybeNamed(name) {
-                    dokkaSourceSet.applyTo(this)
-                }
-            } ?: extension.dokkaSourceSets.configureEach {
+            extension.dokkaSourceSets.namedOrAll(dokkaSourceSet.name) {
                 dokkaSourceSet.applyTo(this)
             }
         }

@@ -1,5 +1,6 @@
 package plugin.project.gradle.dokka.model
 
+import gradle.namedOrAll
 import gradle.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -284,9 +285,7 @@ internal data class DokkaSourceSetSpec(
         }
 
         externalDocumentationLinks?.forEach { externalDocumentationLink ->
-            externalDocumentationLink.name.takeIf(String::isNotEmpty)?.also { name ->
-                spec.externalDocumentationLinks.named(name, externalDocumentationLink::applyTo)
-            } ?: spec.externalDocumentationLinks.configureEach(externalDocumentationLink::applyTo)
+            spec.externalDocumentationLinks.namedOrAll(externalDocumentationLink.name, externalDocumentationLink::applyTo)
         }
 
         spec.analysisPlatform tryAssign analysisPlatform

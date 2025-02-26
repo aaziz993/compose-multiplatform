@@ -51,6 +51,7 @@ internal data class KotlinJvmCompilerOptions(
 
     fun applyTo(compilerOptions: KotlinJvmCompilerOptions) {
         super.applyTo(compilerOptions)
+
         compilerOptions.javaParameters tryAssign javaParameters
         compilerOptions.jvmTarget tryAssign jvmTarget
         compilerOptions.moduleName tryAssign moduleName

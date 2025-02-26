@@ -85,10 +85,10 @@ internal class ProjectPlugin : Plugin<Project> {
             plugins.apply(KtorfitPlugin::class.java)
             plugins.apply(ApolloPlugin::class.java)
             plugins.apply(PowerAssertPlugin::class.java)
-            plugins.apply(JavaPlugin::class.java)
             plugins.apply(AndroidPlugin::class.java) // apply and configure android library or application plugin.
             plugins.apply(KMPPlugin::class.java) // need android library or application plugin applied.
             plugins.apply(KspPlugin::class.java) // kspCommonMainMetadata need kmp plugin applied.
+            plugins.apply(JavaPlugin::class.java)
             plugins.apply(NativePlugin::class.java)
             plugins.apply(ApplePlugin::class.java)
             plugins.apply(JsPlugin::class.java)
