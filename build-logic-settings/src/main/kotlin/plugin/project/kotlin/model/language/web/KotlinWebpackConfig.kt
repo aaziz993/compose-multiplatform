@@ -35,12 +35,12 @@ internal data class KotlinWebpackConfig(
 ) {
 
     context(Project)
-    fun applyTo(webpackConfig: KotlinWebpackConfig) {
+    fun applyTo(webpackConfig: KotlinWebpackConfig, defaultModuleName: String? = null) {
         webpackConfig::mode trySet mode
         webpackConfig::entry trySet entry?.let(::file)
         webpackConfig::output trySet output?.toKotlinWebPackOutput()
         webpackConfig::outputPath trySet outputPath?.let(::file)
-        webpackConfig.outputFileName = outputFileName ?: "$moduleName.js"
+        webpackConfig.outputFileName = outputFileName ?: defaultModuleName
         webpackConfig::configDirectory trySet configDirectory?.let(::file)
         webpackConfig::reportEvaluatedConfigFile trySet reportEvaluatedConfigFile?.let(::file)
         webpackConfig::devServer trySet devServer?.toDevServer()

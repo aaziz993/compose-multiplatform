@@ -535,13 +535,13 @@ internal sealed class KotlinJsTargetDsl : KotlinTarget(), KotlinTargetWithNodeJs
     protected fun applyTo(target: org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl) {
         super<KotlinTarget>.applyTo(target)
 
-        target.moduleName = moduleName ?: moduleName
+        target.moduleName = moduleName ?: project.moduleName
 
         super<KotlinTargetWithNodeJsDsl>.applyTo(target)
 
         browser?.let { browser ->
             target.browser {
-                browser.applyTo(this)
+                browser.applyTo(this, "$moduleName-${targetName}.js")
             }
         }
 
