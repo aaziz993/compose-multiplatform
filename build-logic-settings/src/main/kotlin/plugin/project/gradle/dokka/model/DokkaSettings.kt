@@ -14,6 +14,8 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.provideDelegate
+import org.gradle.kotlin.dsl.withType
+import plugin.project.gradle.dokka.model.AbstractDokkaTask
 import plugin.project.model.EnabledSettings
 
 @Serializable
@@ -30,7 +32,8 @@ internal data class DokkaSettings(
     override val dokkaEngineVersion: String? = null,
     override val enabled: Boolean = true,
     val versioning: Boolean = true,
-    val task: DokkaModuleTask? = null,
+    val dokkaTask: DokkaTask? = null,
+    val dokkaMutiModuleTask: DokkaMultiModuleTask? = null,
 ) : DokkaExtension, EnabledSettings {
 
     context(Project)
@@ -45,6 +48,16 @@ internal data class DokkaSettings(
             }
         }
 
-        task?.applyTo()
+
+        if (project == rootProject) {
+            tasks.withType<org.jetbrains.dokka.gradle.DokkaMultiModuleTask> {
+                dokkaMutiModuleTask?.applyTo(this)
+            }
+        }
+        else {
+            tasks.withType<org.jetbrains.dokka.gradle.DokkaTask> {
+                dokkaTask?.applyTo(this)
+            }
+        }
     }
 }

@@ -23,10 +23,13 @@ internal data class KotlinJvmAndroidCompilation(
 ) : KotlinCompilation {
 
     context(Project)
-     fun applyTo(compilation: KotlinJvmAndroidCompilation) {
-         compileTaskProvider?.let{compileTaskProvider->
-             compilation.compileTaskProvider
-         }
+    fun applyTo(compilation: KotlinJvmAndroidCompilation) {
+        compileTaskProvider?.let { compileTaskProvider ->
+            compilation.compileTaskProvider.configure {
+                compileTaskProvider.applyTo(this)
+                compileTaskProvider.compilerOptions?.applyTo(compilerOptions)
+            }
+        }
 
         compilation.compileJavaTaskProvider.configure {
             this.

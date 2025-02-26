@@ -20,6 +20,7 @@ import java.io.File
 import java.time.Duration
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import org.gradle.api.Task
 
 /**
  *
@@ -144,7 +145,7 @@ import org.gradle.api.Project
  * Parallel execution can be enabled by the `--parallel` flag when the build is initiated.
  * In parallel mode, the tasks of different projects (i.e. in a multi project build) are able to be executed in parallel.
  */
-internal interface Task : Comparable<Task?> {
+internal interface Task {
 
     /**
      *
@@ -339,8 +340,7 @@ internal interface Task : Comparable<Task?> {
     val shouldRunAfter: List<String>?
 
     context(Project)
-    fun applyTo() {
-        val task = tasks.getByName(name)
+    fun applyTo(task: Task) {
         dependsOn?.let(task::setDependsOn)
         onlyIf?.let { onlyIf -> task.onlyIf { onlyIf } }
         doNotTrackState?.let(task::doNotTrackState)

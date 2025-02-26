@@ -51,7 +51,7 @@ plugins:
   # api documentation engine for Kotlin.
   dokka:
     enabled: true
-    task:
+    dokkaMutiModuleTask:
       moduleName: Compose Multiplatform
       includes: [ Module.md ]
       outputDirectory: build/dokka
