@@ -18,10 +18,10 @@ kotlin:
         nodejs: { }
 
   hierarchy:
-    jvmAndAndroid: [ jvm, androidTarget ]
-    nonJvm: [ androidTarget, ios, web ]
-    nonAndroid: [ jvm, ios, web ]
-    mobile: [ androidTarget, ios ]
-    nonMobile: [ jvm, web ]
-    web: [ js, wasmJs ]
-    nonWeb: [ jvmAndAndroid, ios ]
+    - jvmAndAndroid: [ jvm, androidTarget ]
+    - nonJvm: [ androidTarget, ios, web ]
+    - nonAndroid: [ jvm, ios, web ]
+    - mobile: [ androidTarget, ios ]
+    - nonMobile: [ jvm, web ]
+    - web: [ js, wasmJs ]
+    - nonWeb: [ jvmAndAndroid, ios ]

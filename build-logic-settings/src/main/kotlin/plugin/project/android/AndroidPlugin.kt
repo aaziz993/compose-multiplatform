@@ -20,6 +20,7 @@ import gradle.settings
 import java.io.File
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.tasks.SourceSet
 import org.jetbrains.amper.gradle.android.AndroidBindingPluginPart
 import plugin.project.kotlin.model.language.KotlinAndroidTarget
 import plugin.project.model.ProjectLayout
@@ -82,8 +83,7 @@ internal class AndroidPlugin : Plugin<Project> {
 
         when (projectProperties.layout) {
             ProjectLayout.FLAT -> android.sourceSets.all {
-            val isMain = name == "main"
-            val isTestFixtures = isTestFixtures
+            val isMain = name == SourceSet.MAIN_SOURCE_SET_NAME
             val buildType = android.buildTypes.find { name.contains(it.name, ignoreCase = true) }?.name
             val productFlavor = android.productFlavors.find { name.contains(it.name, ignoreCase = true) }?.name
             val isTest = name.contains("androidTest", ignoreCase = true) || name.contains("test", ignoreCase = true)

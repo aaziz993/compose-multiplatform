@@ -74,7 +74,7 @@ internal interface BaseExtension {
 
     val buildTypes: List<BuildType>?
 
-    val defaultConfig: DefaultConfig
+//    val defaultConfig: DefaultConfig
 
 //    val productFlavors: List<ProductFlavor>
 

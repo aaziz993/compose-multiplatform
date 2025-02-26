@@ -42,20 +42,16 @@ internal class KMPPlugin : Plugin<Project> {
         kotlin {
             when (projectProperties.layout) {
                 ProjectLayout.FLAT -> targets.forEach { target ->
-                    println("COMP: ${target.compilations.map { it.name }}")
-                    if(target is KotlinAndroidTarget){
-                        println("LIB VAR: ${target.publishLibraryVariants}")
-                    }
                     val targetPart = if (target is KotlinMetadataTarget) "" else "@${target.targetName}"
                     target.compilations.forEach { compilation ->
                         compilation.defaultSourceSet {
-                            val srcPrefixPart = when (compilation.name) {
-                                KotlinCompilation.MAIN_COMPILATION_NAME, "" -> "src"
-                                else -> compilation.name
+                            val (srcPrefixPart, resourcesPrefixPart) = when (compilation.name) {
+                                KotlinCompilation.MAIN_COMPILATION_NAME -> "src" to "resources"
+                                else -> compilation.name to "${compilation.name}Resources"
                             }
 
                             kotlin.setSrcDirs(listOf("$srcPrefixPart$targetPart"))
-                            resources.setSrcDirs(listOf("${compilation.name}Resources$targetPart".decapitalized()))
+                            resources.setSrcDirs(listOf("$resourcesPrefixPart$targetPart"))
                         }
                     }
                 }
@@ -63,9 +59,7 @@ internal class KMPPlugin : Plugin<Project> {
                 else -> Unit
             }
 
-            sourceSets.forEach { sourceSet ->
-                projectProperties.kotlin.sourceSets?.get(sourceSet.name)?.applyTo(sourceSet)
-            }
+            projectProperties.kotlin.sourceSets?.forEach { sourceSet -> sourceSet.applyTo() }
         }
     }
 }

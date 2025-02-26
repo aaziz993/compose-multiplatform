@@ -1,8 +1,14 @@
 package plugin.project.kotlin.model.language
 
+import gradle.kotlin
+import gradle.serialization.serializer.JsonPolymorphicTransformingSerializer
+import kotlin.reflect.KClass
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.jsonObject
 import org.gradle.api.Project
-import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import plugin.model.dependency.ProjectDependency
 import plugin.model.dependency.StandardDependency
 
@@ -21,7 +27,7 @@ import plugin.model.dependency.StandardDependency
  *
  * @see KotlinSourceSetContainer
  */
-@Serializable
+@Serializable(with = KotlinSourceSetSerializer::class)
 internal data class KotlinSourceSet(
     override val dependencies: List<ProjectDependency>? = null,
     /**
@@ -38,15 +44,38 @@ internal data class KotlinSourceSet(
      * These extensions are evaluated lazily and can include additional custom source file types beyond the default ".kt" and ".kts" ones.
      */
     val customSourceFilesExtensions: List<String>? = null,
+    val name: String,
 ) : HasKotlinDependencies {
 
     context(Project)
-    fun applyTo(sourceSet: KotlinSourceSet) {
+    fun applyTo(sourceSet: org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet) {
         sourceSet.dependencies {
             dependencies?.filterIsInstance<StandardDependency>()?.forEach { dependency -> dependency.applyTo(this) }
         }
 
         languageSettings?.applyTo(sourceSet.languageSettings)
         customSourceFilesExtensions?.let(sourceSet::addCustomSourceFilesExtensions)
+    }
+
+    context(Project)
+    fun applyTo() {
+        applyTo(kotlin.sourceSets.getByName(name))
+    }
+}
+
+private object KotlinSourceSetSerializer : JsonPolymorphicTransformingSerializer<KotlinSourceSet>(
+    KotlinSourceSet::class,
+) {
+
+    override fun transformDeserialize(element: JsonElement): JsonElement {
+        val jsonObject = element.jsonObject
+        val key = jsonObject.keys.single()
+        val value = jsonObject.values.single()
+        return JsonObject(
+            buildMap {
+                put("type", JsonPrimitive(key))
+                putAll(value.jsonObject)
+            },
+        )
     }
 }

@@ -136,37 +136,37 @@ kotlin:
   jvmToolchain: 23
 
   sourceSets:
-    commonMain:
-      dependencies:
-        - $libs.kotlinx.serialization.json
-        - $libs.kotlinx.serialization.properties
+    - commonMain:
+        dependencies:
+          - $libs.kotlinx.serialization.json
+          - $libs.kotlinx.serialization.properties
 
-    nonWeb:
-      dependencies:
-        - $libs.androidx.room.runtime.ktx
+    - nonWeb:
+        dependencies:
+          - $libs.androidx.room.runtime.ktx
 
-    jvmMain:
-      dependencies:
-        - $libs.kotlinx.coroutines.swing
+    - jvmMain:
+        dependencies:
+          - $libs.kotlinx.coroutines.swing
 
-    androidMain:
-      dependencies:
-        - $libs.androidx.activity.ktx
-        - $libs.androidx.fragment.ktx
-        - $libs.androidx.room.runtime.android
-        - $libs.androidx.room.paging
+    - androidMain:
+        dependencies:
+          - $libs.androidx.activity.ktx
+          - $libs.androidx.fragment.ktx
+          - $libs.androidx.room.runtime.android
+          - $libs.androidx.room.paging
 
-#    jsMain:
-#      dependencies:
-#        - npm: $libs.js.joda.timezone
-#        - npm: $libs.npm.copy.webpack.plugin
-#        - npm: $libs.npm.openpgp
-#        - npm: $libs.npm.pako
-#        - npm: $libs.npm.puppeteer
+    - jsMain:
+        dependencies:
+          - npm: $libs.js.joda.timezone
+          - npm: $libs.npm.copy.webpack.plugin
+          - npm: $libs.npm.openpgp
+          - npm: $libs.npm.pako
+          - npm: $libs.npm.puppeteer
 
-#    wasmJsMain:
-#      dependencies:
-#        - $kotlinWrappers.browser
+    - wasmJsMain:
+        dependencies:
+          - $kotlinWrappers.browser
 
 #  allWarningsAsErrors: false
 #  debug: false
