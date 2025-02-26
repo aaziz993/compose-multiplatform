@@ -27,7 +27,7 @@ import plugin.model.dependency.StandardDependency
  *
  * @see KotlinSourceSetContainer
  */
-@Serializable(with = KotlinSourceSetSerializer::class)
+@Serializable
 internal data class KotlinSourceSet(
     override val dependencies: List<ProjectDependency>? = null,
     /**
@@ -44,7 +44,6 @@ internal data class KotlinSourceSet(
      * These extensions are evaluated lazily and can include additional custom source file types beyond the default ".kt" and ".kts" ones.
      */
     val customSourceFilesExtensions: List<String>? = null,
-    val name: String,
 ) : HasKotlinDependencies {
 
     context(Project)
@@ -55,27 +54,5 @@ internal data class KotlinSourceSet(
 
         languageSettings?.applyTo(sourceSet.languageSettings)
         customSourceFilesExtensions?.let(sourceSet::addCustomSourceFilesExtensions)
-    }
-
-    context(Project)
-    fun applyTo() {
-        applyTo(kotlin.sourceSets.getByName(name))
-    }
-}
-
-private object KotlinSourceSetSerializer : JsonPolymorphicTransformingSerializer<KotlinSourceSet>(
-    KotlinSourceSet::class,
-) {
-
-    override fun transformDeserialize(element: JsonElement): JsonElement {
-        val jsonObject = element.jsonObject
-        val key = jsonObject.keys.single()
-        val value = jsonObject.values.single()
-        return JsonObject(
-            buildMap {
-                put("type", JsonPrimitive(key))
-                putAll(value.jsonObject)
-            },
-        )
     }
 }

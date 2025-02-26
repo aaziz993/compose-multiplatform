@@ -1,34 +1,34 @@
 kotlin:
   sourceSets:
-    - commonMain:
-        dependencies:
-          - $compose.runtime
-          - $compose.foundation
-          - $compose.material3
-          - $compose.ui
-          - $compose.components.resources
-          - $compose.components.uiToolingPreview
-          - $compose.material3AdaptiveNavigationSuite
-          - $compose.materialIconsExtended
-          - $libs.androidx.lifecycle.viewmodel
-          - $libs.androidx.lifecycle.runtime.compose
+    commonMain:
+      dependencies:
+        - $compose.runtime
+        - $compose.foundation
+        - $compose.material3
+        - $compose.ui
+        - $compose.components.resources
+        - $compose.components.uiToolingPreview
+        - $compose.material3AdaptiveNavigationSuite
+        - $compose.materialIconsExtended
+        - $libs.androidx.lifecycle.viewmodel
+        - $libs.androidx.lifecycle.runtime.compose
 
-    - commonTest:
-        dependencies:
-          - $compose.uiTest
+    commonTest:
+      dependencies:
+        - $compose.uiTest
 
-    - jvmMain:
-        dependencies:
-          - $compose.desktop.currentOs
+    jvmMain:
+      dependencies:
+        - $compose.desktop.currentOs
 
-    - androidMain:
-        dependencies:
-          - $compose.preview
-          - $libs.androidx.activity.compose
+    androidMain:
+      dependencies:
+        - $compose.preview
+        - $libs.androidx.activity.compose
 
-    - jsMain:
-        dependencies:
-          - $compose.html.core
+    jsMain:
+      dependencies:
+        - $compose.html.core
 
 dependencies:
   - $compose.uiTooling: debugImplementation
