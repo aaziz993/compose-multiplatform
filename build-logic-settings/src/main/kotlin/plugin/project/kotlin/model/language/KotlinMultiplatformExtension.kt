@@ -9,7 +9,7 @@ internal interface KotlinMultiplatformExtension : KotlinBaseExtension,
 
     fun applyTo(extension: KotlinMultiplatformExtension) {
         super<KotlinBaseExtension>.applyTo(extension)
-        super<HasConfigurableKotlinCompilerOptions>.applyTo(extension)
+        compilerOptions?.applyTo(extension.compilerOptions)
         withSourcesJar?.let(extension::withSourcesJar)
     }
 }

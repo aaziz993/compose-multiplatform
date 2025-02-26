@@ -27,5 +27,9 @@ internal data class KotlinJvmAndroidCompilation(
          compileTaskProvider?.let{compileTaskProvider->
              compilation.compileTaskProvider
          }
+
+        compilation.compileJavaTaskProvider.configure {
+            this.
+        }
     }
 }

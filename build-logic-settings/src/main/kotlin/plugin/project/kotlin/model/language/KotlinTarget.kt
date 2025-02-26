@@ -98,7 +98,7 @@ internal data class KotlinJvmTarget(
 
         super<KotlinTarget>.applyTo(target)
 
-        super<HasConfigurableKotlinCompilerOptions>.applyTo(target)
+        compilerOptions?.applyTo(target.compilerOptions)
 
         testRuns?.forEach { testRuns ->
             target.testRuns.namedOrAll(testRuns.name) {
@@ -145,7 +145,7 @@ internal data class KotlinAndroidTarget(
 
         super<KotlinTarget>.applyTo(target)
 
-        super<HasConfigurableKotlinCompilerOptions>.applyTo(target)
+        compilerOptions?.applyTo(target.compilerOptions)
 
         publishLibraryVariants?.let { publishLibraryVariants ->
             target.publishLibraryVariants = publishLibraryVariants
@@ -167,7 +167,7 @@ internal sealed class KotlinNativeTarget : KotlinTarget(),
     protected fun applyTo(target: org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget) {
         super<KotlinTarget>.applyTo(target)
 
-        super<HasConfigurableKotlinCompilerOptions>.applyTo(target)
+        compilerOptions?.applyTo(target.compilerOptions)
 
         binaries?.let { binaries ->
             target.binaries {
@@ -543,7 +543,7 @@ internal sealed class KotlinJsTargetDsl : KotlinTarget(), KotlinTargetWithNodeJs
     protected fun applyTo(target: org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl) {
         super<KotlinTarget>.applyTo(target)
 
-        super<HasConfigurableKotlinCompilerOptions>.applyTo(target)
+        compilerOptions?.applyTo(target.compilerOptions)
 
         target.moduleName = moduleName ?: project.moduleName
 
