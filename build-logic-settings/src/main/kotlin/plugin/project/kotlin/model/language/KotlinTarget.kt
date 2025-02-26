@@ -1,8 +1,11 @@
 package plugin.project.kotlin.model.language
 
 import gradle.kotlin
+import gradle.moduleName
 import gradle.serialization.getPolymorphicSerializer
+import gradle.serialization.serializer.JsonPolymorphicTransformingSerializer
 import gradle.trySet
+import kotlin.reflect.KClass
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -43,18 +46,11 @@ internal sealed class KotlinTarget {
     abstract fun applyTo()
 }
 
-internal object KotlinTargetPolymorphicSerializer :
-    JsonContentPolymorphicSerializer<KotlinTarget>(KotlinTarget::class) {
 
-    override fun selectDeserializer(element: JsonElement): DeserializationStrategy<KotlinTarget> {
-        val type = element.jsonObject["type"]!!.jsonPrimitive.content
-        return KotlinTarget::class.getPolymorphicSerializer(type)!!
-    }
-}
 
-internal object KotlinTargetSerializer :
-    JsonTransformingSerializer<KotlinTarget>(KotlinTargetPolymorphicSerializer) {
-
+private object KotlinTargetSerializer: JsonPolymorphicTransformingSerializer<KotlinTarget>(
+    KotlinTarget::class,
+){
     override fun transformDeserialize(element: JsonElement): JsonElement {
         if (element is JsonObject) {
             val key = element.keys.single()
@@ -190,7 +186,7 @@ internal data class KotlinAndroidNativeArm32(
     context(Project)
     override fun applyTo() {
         super.applyTo(
-            targetName.takeIf(String::isNotEmpty)?.let(kotlin::androidNativeArm32) ?: kotlin.androidNativeArm32()
+            targetName.takeIf(String::isNotEmpty)?.let(kotlin::androidNativeArm32) ?: kotlin.androidNativeArm32(),
         )
     }
 }
@@ -207,7 +203,7 @@ internal data class KotlinAndroidNativeArm64(
     context(Project)
     override fun applyTo() {
         super.applyTo(
-            targetName.takeIf(String::isNotEmpty)?.let(kotlin::androidNativeArm64) ?: kotlin.androidNativeArm64()
+            targetName.takeIf(String::isNotEmpty)?.let(kotlin::androidNativeArm64) ?: kotlin.androidNativeArm64(),
         )
     }
 }
@@ -290,7 +286,7 @@ internal data class KotlinIosSimulatorArm64Target(
     context(Project)
     override fun applyTo() {
         super.applyTo(
-            targetName.takeIf(String::isNotEmpty)?.let(kotlin::iosSimulatorArm64) ?: kotlin.iosSimulatorArm64()
+            targetName.takeIf(String::isNotEmpty)?.let(kotlin::iosSimulatorArm64) ?: kotlin.iosSimulatorArm64(),
         )
     }
 }
@@ -340,7 +336,7 @@ internal data class KotlinWatchosDeviceArm64Target(
     context(Project)
     override fun applyTo() {
         super.applyTo(
-            targetName.takeIf(String::isNotEmpty)?.let(kotlin::watchosDeviceArm64) ?: kotlin.watchosDeviceArm64()
+            targetName.takeIf(String::isNotEmpty)?.let(kotlin::watchosDeviceArm64) ?: kotlin.watchosDeviceArm64(),
         )
     }
 }
@@ -372,7 +368,7 @@ internal data class KotlinWatchosSimulatorArm64Target(
     context(Project)
     override fun applyTo() {
         super.applyTo(
-            targetName.takeIf(String::isNotEmpty)?.let(kotlin::watchosSimulatorArm64) ?: kotlin.watchosSimulatorArm64()
+            targetName.takeIf(String::isNotEmpty)?.let(kotlin::watchosSimulatorArm64) ?: kotlin.watchosSimulatorArm64(),
         )
     }
 }
@@ -422,7 +418,7 @@ internal data class KotlinTvosSimulatorArm64Target(
     context(Project)
     override fun applyTo() {
         super.applyTo(
-            targetName.takeIf(String::isNotEmpty)?.let(kotlin::tvosSimulatorArm64) ?: kotlin.tvosSimulatorArm64()
+            targetName.takeIf(String::isNotEmpty)?.let(kotlin::tvosSimulatorArm64) ?: kotlin.tvosSimulatorArm64(),
         )
     }
 }
@@ -553,7 +549,6 @@ internal sealed class KotlinJsTargetDsl : KotlinTarget(), KotlinTargetWithNodeJs
         binaries.applyTo(target.binaries)
     }
 }
-
 
 @Serializable
 @SerialName("js")

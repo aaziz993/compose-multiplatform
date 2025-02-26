@@ -39,6 +39,8 @@ import plugin.project.kotlin.rpc.RpcPlugin
 import plugin.project.kotlin.serialization.SerializationPlugin
 import plugin.project.kotlin.sqldelight.SqlDelightPlugin
 import plugin.project.nat.NativePlugin
+import plugin.project.web.WasmPlugin
+import plugin.project.web.WasmWasiPlugin
 import plugin.project.web.js.JsPlugin
 import plugin.project.web.node.configureNodeJsEnvSpec
 import plugin.project.web.npm.configureNpmExtension
@@ -89,6 +91,7 @@ internal class ProjectPlugin : Plugin<Project> {
 //            plugins.apply(KspPlugin::class.java) // kspCommonMainMetadata need kmp plugin applied.
 //            plugins.apply(JsPlugin::class.java)
 //            plugins.apply(WasmPlugin::class.java)
+//            plugins.apply(WasmWasiPlugin::class.java)
 //            plugins.apply(ApplePlugin::class.java)
 //            plugins.apply(NativePlugin::class.java)
 //            plugins.apply(ComposePlugin::class.java)
