@@ -4,6 +4,7 @@ import java.io.File
 import kotlin.reflect.KMutableProperty0
 import org.gradle.api.file.FileSystemLocation
 import org.gradle.api.file.FileSystemLocationProperty
+import org.gradle.api.file.SourceDirectorySet
 import org.gradle.api.provider.HasMultipleValues
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
@@ -32,3 +33,10 @@ public infix fun <T> Property<T>.tryAssign(value: T?): Unit? = value?.let(::assi
 
 public infix fun <T> Property<T>.tryAssign(value: Provider<out T?>): Unit? =
     value.takeIf(Provider<out T?>::isPresent)?.let(::assign)
+
+internal fun SourceDirectorySet.tryReplace(oldDir: String, newDir: String) {
+    if (contains(oldDir)) {
+        removeAll { file -> file.path.endsWith(oldDir) }
+        this.srcDir(newDir)
+    }
+}

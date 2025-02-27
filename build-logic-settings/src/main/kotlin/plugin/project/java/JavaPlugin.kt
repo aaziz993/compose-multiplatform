@@ -7,12 +7,14 @@ import gradle.plugin
 import gradle.plugins
 import gradle.projectProperties
 import gradle.settings
+import gradle.tryReplace
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.ApplicationPlugin
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.tasks.SourceSet
 import org.gradle.internal.extensions.stdlib.capitalized
+import org.jetbrains.amper.gradle.kmpp.KMPPBindingPluginPart
 import plugin.project.kotlin.model.KotlinAndroidTarget
 import plugin.project.kotlin.model.KotlinJvmTarget
 import plugin.project.model.ProjectLayout
@@ -63,20 +65,19 @@ internal class JavaPlugin : Plugin<Project> {
                     SourceSet.TEST_SOURCE_SET_NAME to "${SourceSet.TEST_SOURCE_SET_NAME}Resources"
                 }
 
-                java.setSrcDirs(listOf("$compilationPrefixPart@jvm"))
-                resources.setSrcDirs(listOf("$resourcesPrefixPart@jvm"))
+                java.tryReplace("src/$name/java", "$compilationPrefixPart@jvm")
+                resources.setSrcDirs("src/$name/resources", "$resourcesPrefixPart@jvm")
             }
 
             else -> if (isMultiplatform) {
                 java.sourceSets.all {
                     val compilationName = name.capitalized()
-                    java.setSrcDirs(listOf("src/jvm$compilationName/java"))
-                    resources.setSrcDirs(listOf("src/jvm$compilationName/resources"))
+                    java.tryReplace("src/$name/java", "src/jvm$compilationName/java")
+                    resources.tryReplace("src/$name/resources", "src/jvm$compilationName/resources")
                 }
             }
         }
 
-        println("$name JAVA SOURCE SETS: ${java.sourceSets.map { it.java.sourceDirectories.map { it.absolutePath } }}")
-
+        println("$name JAVA SOURCE SETS: ${java.sourceSets.map { it.java.sourceDirectories.map { it.path } }}")
     }
 }
