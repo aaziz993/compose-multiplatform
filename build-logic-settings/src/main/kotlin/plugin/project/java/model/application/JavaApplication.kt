@@ -5,7 +5,6 @@ import gradle.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.plugins.ApplicationPlugin
-import org.gradle.api.plugins.JavaApplication
 
 /**
  * Configuration for a Java application, defining how to assemble the application.

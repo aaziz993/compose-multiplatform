@@ -8,7 +8,7 @@ import plugin.project.compose.model.ComposeSettings
 import plugin.project.java.model.JavaPluginExtension
 import plugin.project.java.model.application.JavaApplication
 import plugin.project.kotlin.kmp.model.KotlinMultiplatformSettings
-import plugin.project.kotlin.model.language.HasKotlinDependencies
+import plugin.project.kotlin.model.HasKotlinDependencies
 import plugin.project.web.js.karakum.model.KarakumSettings
 import plugin.project.web.node.model.NodeJsEnvSpec
 import plugin.project.web.npm.model.NpmExtension

@@ -25,7 +25,7 @@ internal interface SpotlessExtension {
     /** Line endings (if any). */
     val lineEndings: LineEnding?
 
-    /** Returns the encoding to use. */
+    /** Sets the encoding to use. */
     val encoding: String?
 
     /**

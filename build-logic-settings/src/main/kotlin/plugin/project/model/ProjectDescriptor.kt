@@ -30,7 +30,7 @@ internal data class ProjectDescriptor(
      */
     val buildFileName: String? = null,
     /**
-     * Returns the path of this project. The path can be used as a unique identifier for this project.
+     * Sets the path of this project. The path can be used as a unique identifier for this project.
      *
      * @return The path. Never returns null.
      */

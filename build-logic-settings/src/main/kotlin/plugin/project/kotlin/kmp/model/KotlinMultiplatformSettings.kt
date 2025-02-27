@@ -15,10 +15,10 @@ import plugin.project.java.model.Jar
 import plugin.project.java.model.JavaToolchainSpec
 import plugin.project.java.model.application.JavaApplication
 import plugin.project.kotlin.cocoapods.model.CocoapodsSettings
-import plugin.project.kotlin.model.language.KotlinSourceSet
-import plugin.project.kotlin.model.language.KotlinCommonCompilerOptions
-import plugin.project.kotlin.model.language.KotlinMultiplatformExtension
-import plugin.project.kotlin.model.language.KotlinTarget
+import plugin.project.kotlin.model.KotlinCommonCompilerOptions
+import plugin.project.kotlin.model.KotlinMultiplatformExtension
+import plugin.project.kotlin.model.KotlinSourceSet
+import plugin.project.kotlin.model.KotlinTarget
 
 @Serializable
 internal data class KotlinMultiplatformSettings(

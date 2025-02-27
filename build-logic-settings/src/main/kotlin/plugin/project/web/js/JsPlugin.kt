@@ -13,8 +13,7 @@ import kotlinx.serialization.json.Json
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
-import plugin.project.kotlin.model.language.KotlinJsTarget
-import plugin.project.kotlin.model.language.KotlinJvmTarget
+import plugin.project.kotlin.model.KotlinJsTarget
 import plugin.project.web.configureJsTestTasks
 import plugin.project.web.js.karakum.configureKarakum
 import plugin.project.web.js.karakum.configureKarakumGenerate

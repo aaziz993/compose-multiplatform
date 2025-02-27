@@ -15,7 +15,6 @@ import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.provideDelegate
 import org.gradle.kotlin.dsl.withType
-import plugin.project.gradle.dokka.model.AbstractDokkaTask
 import plugin.project.model.EnabledSettings
 
 @Serializable

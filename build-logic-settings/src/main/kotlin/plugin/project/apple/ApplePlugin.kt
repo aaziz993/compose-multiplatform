@@ -1,7 +1,6 @@
 package plugin.project.apple
 
 import gradle.id
-import gradle.kotlin
 import gradle.libs
 import gradle.plugin
 import gradle.plugins
@@ -10,9 +9,7 @@ import gradle.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
-import plugin.project.apple.model.AppleTarget
-import plugin.project.kotlin.model.language.KotlinAndroidTarget
-import plugin.project.kotlin.model.language.KotlinAppleTarget
+import plugin.project.kotlin.model.KotlinAppleTarget
 
 internal class ApplePlugin : Plugin<Project> {
 

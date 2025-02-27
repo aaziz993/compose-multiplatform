@@ -1,6 +1,5 @@
 package plugin.project.gradle.dokka.model
 
-import gradle.maybeNamed
 import gradle.namedOrAll
 import gradle.tryAssign
 import org.gradle.api.Project

@@ -10,7 +10,6 @@ import gradle.tryAssign
 import gradle.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import plugin.model.dependency.Dependency
 import plugin.model.dependency.ProjectDependency
 import plugin.project.model.EnabledSettings
 

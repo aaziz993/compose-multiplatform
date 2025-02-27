@@ -1,12 +1,9 @@
 package plugin.project.compose.resources.model
 
-import app.cash.sqldelight.core.decapitalize
 import gradle.decapitalized
 import gradle.kotlin
 import gradle.projectProperties
 import gradle.trySet
-import kotlin.collections.component1
-import kotlin.collections.component2
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.compose.resources.ResourcesExtension

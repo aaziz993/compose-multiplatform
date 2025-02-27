@@ -12,7 +12,7 @@ import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.cocoapods.CocoapodsExtension
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
 import plugin.model.dependency.PodDependency
-import plugin.project.kotlin.model.language.nat.Framework
+import plugin.project.kotlin.model.nat.Framework
 
 internal interface CocoapodsExtension {
 

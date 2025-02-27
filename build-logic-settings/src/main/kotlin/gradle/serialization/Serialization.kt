@@ -1,6 +1,5 @@
 package gradle.serialization
 
-import kotlin.jvm.kotlin
 import kotlin.reflect.KClass
 import kotlin.reflect.full.findAnnotation
 import kotlinx.serialization.KSerializer

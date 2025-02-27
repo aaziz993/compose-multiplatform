@@ -8,8 +8,8 @@ import org.gradle.api.plugins.ApplicationPlugin
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.tasks.SourceSet
 import org.gradle.internal.extensions.stdlib.capitalized
-import plugin.project.kotlin.model.language.KotlinAndroidTarget
-import plugin.project.kotlin.model.language.KotlinJvmTarget
+import plugin.project.kotlin.model.KotlinAndroidTarget
+import plugin.project.kotlin.model.KotlinJvmTarget
 import plugin.project.model.ProjectLayout
 import plugin.project.model.ProjectType
 

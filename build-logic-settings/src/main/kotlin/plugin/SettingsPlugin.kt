@@ -26,6 +26,7 @@ import org.gradle.api.initialization.Settings
 import org.gradle.api.internal.artifacts.repositories.DefaultMavenArtifactRepository
 import org.gradle.kotlin.dsl.maven
 import org.jetbrains.amper.gradle.SLF4JProblemReporterContext
+import org.jetbrains.compose.internal.utils.currentTarget
 import org.jetbrains.compose.jetbrainsCompose
 import org.tomlj.Toml
 import org.yaml.snakeyaml.DumperOptions
@@ -40,7 +41,6 @@ import plugin.project.gradle.develocity.DevelocityPlugin
 import plugin.project.gradle.githooks.GitHooksPlugin
 import plugin.project.gradle.toolchainmanagement.ToolchainManagementPlugin
 import plugin.project.model.ProjectProperties
-import org.jetbrains.compose.internal.utils.currentTarget
 
 private const val PROJECT_PROPERTIES_FILE = "project.yaml"
 private const val VERSION_CATALOG_CACHE_DIR = "build-logic-settings/gradle"

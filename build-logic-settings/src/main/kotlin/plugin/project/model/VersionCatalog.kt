@@ -1,7 +1,6 @@
 package plugin.project.model
 
 import kotlinx.serialization.Serializable
-import plugin.model.dependency.Dependency
 import plugin.model.dependency.ProjectDependency
 
 @Serializable

@@ -2,27 +2,24 @@
 
 package plugin.project.android
 
-import app.cash.sqldelight.core.decapitalize
+import com.android.build.api.dsl.BuildType
 import com.android.build.api.dsl.CommonExtension
+import com.android.build.api.dsl.ProductFlavor
 import com.android.build.gradle.LibraryExtension
 import com.android.build.gradle.TestedExtension
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
-import gradle.all
 import gradle.android
 import gradle.decapitalized
 import gradle.id
-import gradle.kotlin
 import gradle.libs
 import gradle.plugin
 import gradle.plugins
 import gradle.projectProperties
 import gradle.settings
-import java.io.File
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.SourceSet
-import org.jetbrains.amper.gradle.android.AndroidBindingPluginPart
-import plugin.project.kotlin.model.language.KotlinAndroidTarget
+import plugin.project.kotlin.model.KotlinAndroidTarget
 import plugin.project.model.ProjectLayout
 import plugin.project.model.ProjectType
 
@@ -47,50 +44,47 @@ internal class AndroidPlugin : Plugin<Project> {
         }
     }
 
+    @Suppress("UnstableApiUsage")
     private fun Project.adjustAndroidSourceSets() {
-
-        println("ANDROID SOURCE STS: ${android.sourceSets.map { it.name }}")
         val variants = (if (projectProperties.type == ProjectType.APP)
             (android as BaseAppModuleExtension).applicationVariants
         else
             (android as LibraryExtension).libraryVariants) +
+
             (android as TestedExtension).let {
                 it.testVariants + it.unitTestVariants
             }
 
-        variants.map {
-            it.name
-        }.let {
-            println("ANDROID VARS: $it")
+        val buildTypes = (android as CommonExtension<*, *, *, *, *, *>).buildTypes.map(BuildType::getName)
+
+        val flavours = android.flavorDimensionList.map { flavorDimension ->
+            android.productFlavors
+                .filter { productFlavor -> productFlavor.dimension == flavorDimension }
+                .map(ProductFlavor::getName)
         }
 
-        (android as CommonExtension<*,*,*,*,*,*>).buildTypes.map {
-            it.name
-        }.let {
-            println("ANDROID TYPES: $it")
-        }
+        val isTextFixtures = (android as TestedExtension).testFixtures.enable
 
-       (android as CommonExtension<*,*,*,*,*,*>).productFlavors.map {
-            it.name
-        }.let {
-            println("ANDROID FLAVOURS: $it")
-        }
-
-        (android as CommonExtension<*,*,*,*,*,*>).flavorDimensions.let {
-            println("ANDROID FLAVOURS DIMS: $it")
-        }
-        val isTextFixtures= (android as TestedExtension).testFixtures.enable
+        println(
+                """ANDROID
+            BuildTypes: $buildTypes
+            Flavours: $flavours
+            IsTextFixtures: $isTextFixtures
+        """.trimIndent(),
+        )
+//        listOf(
+//            "main",
+//            "test
+//        )
 
         when (projectProperties.layout) {
             ProjectLayout.FLAT -> android.sourceSets.all {
-            val isMain = name == SourceSet.MAIN_SOURCE_SET_NAME
-            val buildType = android.buildTypes.find { name.contains(it.name, ignoreCase = true) }?.name
-            val productFlavor = android.productFlavors.find { name.contains(it.name, ignoreCase = true) }?.name
-            val isTest = name.contains("androidTest", ignoreCase = true) || name.contains("test", ignoreCase = true)
+                val isMain = name == SourceSet.MAIN_SOURCE_SET_NAME
+                val buildType = android.buildTypes.find { name.contains(it.name, ignoreCase = true) }?.name
+                val productFlavor = android.productFlavors.find { name.contains(it.name, ignoreCase = true) }?.name
+                val isTest = name.contains("androidTest", ignoreCase = true) || name.contains("test", ignoreCase = true)
 
-
-
-            val sourceSetNameParts = "^.*?(Main|Test|TestDebug)?$".toRegex().matchEntire(name)!!
+                val sourceSetNameParts = "^.*?(Main|Test|TestDebug)?$".toRegex().matchEntire(name)!!
 
                 val (compilationPrefixPart, resourcesPrefixPart) = sourceSetNameParts.groupValues[1]
                     .decapitalized()

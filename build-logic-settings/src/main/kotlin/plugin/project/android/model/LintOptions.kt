@@ -44,18 +44,18 @@ internal data class LintOptions(
      */
     val noLines: Boolean? = null,
     /**
-     * Returns whether lint should be quiet (for example, not write informational messages
+     * Sets whether lint should be quiet (for example, not write informational messages
      * such as paths to report files written)
      */
     val quiet: Boolean? = null,
-    /** Returns whether lint should check all warnings, including those off by default  */
+    /** Sets whether lint should check all warnings, including those off by default  */
     val checkAllWarnings: Boolean? = null,
-    /** Returns whether lint will only check for errors (ignoring warnings)  */
+    /** Sets whether lint will only check for errors (ignoring warnings)  */
     val ignoreWarnings: Boolean? = null,
-    /** Returns whether lint should treat all warnings as errors  */
+    /** Sets whether lint should treat all warnings as errors  */
     val warningsAsErrors: Boolean? = null,
     /**
-     * Returns whether lint should run all checks on test sources, instead of just the
+     * Sets whether lint should run all checks on test sources, instead of just the
      * lint checks that have been specifically written to include tests (e.g. checks
      * looking for specific test errors, or checks that need to consider testing code
      * such as the unused resource detector)
@@ -72,19 +72,19 @@ internal data class LintOptions(
      */
     val ignoreTestFixturesSources: Boolean? = null,
     /**
-     * Returns whether lint should run checks on generated sources.
+     * Sets whether lint should run checks on generated sources.
      */
     val checkGeneratedSources: Boolean? = null,
-    /** Returns whether lint should include explanations for issue errors. (Note that
+    /** Sets whether lint should include explanations for issue errors. (Note that
      * HTML and XML reports intentionally do this unconditionally, ignoring this setting.)  */
     val explainIssues: Boolean? = null,
     /**
-     * Returns whether lint should include all output (e.g. include all alternate
+     * Sets whether lint should include all output (e.g. include all alternate
      * locations, not truncating long messages, etc.)
      */
     val showAll: Boolean? = null,
     /**
-     * Returns an optional path to a lint.xml configuration file
+     * Sets an optional path to a lint.xml configuration file
      */
     val lintConfig: String? = null,
     /** Whether we should write an text report. Default false. The location can be
@@ -117,17 +117,17 @@ internal data class LintOptions(
      */
     val sarifOutput: String? = null,
     /**
-     * Returns whether lint should check for fatal errors during release builds. Default is true.
+     * Sets whether lint should check for fatal errors during release builds. Default is true.
      * If issues with severity "fatal" are found, the release build is aborted.
      */
     val checkReleaseBuilds: Boolean? = null,
     /**
-     * Returns whether lint should check all dependencies too as part of its analysis. Default is
+     * Sets whether lint should check all dependencies too as part of its analysis. Default is
      * false.
      */
     val checkDependencies: Boolean? = null,
     /**
-     * Returns the baseline file to use, if any. The baseline file is
+     * Sets the baseline file to use, if any. The baseline file is
      * an XML report previously created by lint, and any warnings and
      * errors listed in that report will be ignored from analysis.
      *

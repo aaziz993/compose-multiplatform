@@ -5,7 +5,6 @@ import gradle.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
-import org.gradle.api.plugins.JavaPluginExtension
 
 /**
  * Common configuration for JVM (Java) based projects.
@@ -118,19 +117,19 @@ internal data class JavaPluginExtension(
     val consistentResolution: JavaResolutionConsistency? = null,
 
     /**
-     * Returns a file pointing to the root directory supposed to be used for all docs.
+     * Sets a file pointing to the root directory supposed to be used for all docs.
      * @since 7.1
      */
     val docsDir: String? = null,
 
     /**
-     * Returns a file pointing to the root directory of the test results.
+     * Sets a file pointing to the root directory of the test results.
      * @since 7.1
      */
     val testResultsDir: String? = null,
 
     /**
-     * Returns a file pointing to the root directory to be used for reports.
+     * Sets a file pointing to the root directory to be used for reports.
      * @since 7.1
      */
     val testReportDir: String? = null,

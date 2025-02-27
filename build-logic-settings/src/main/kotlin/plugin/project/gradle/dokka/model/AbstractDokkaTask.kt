@@ -3,7 +3,7 @@ package plugin.project.gradle.dokka.model
 import gradle.tryAssign
 import org.gradle.api.Project
 import org.jetbrains.dokka.gradle.AbstractDokkaTask
-import plugin.project.kotlin.model.language.Task
+import plugin.project.kotlin.model.Task
 
 internal abstract class AbstractDokkaTask : Task {
 

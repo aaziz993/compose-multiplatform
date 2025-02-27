@@ -11,10 +11,7 @@ import gradle.versions
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.dependencies
-import org.jetbrains.amper.gradle.BindingProjectPlugin
 import org.jetbrains.amper.gradle.SLF4JProblemReporterContext
-import plugin.model.dependency.Dependency
 import plugin.project.android.AndroidPlugin
 import plugin.project.apple.ApplePlugin
 import plugin.project.compose.ComposePlugin
