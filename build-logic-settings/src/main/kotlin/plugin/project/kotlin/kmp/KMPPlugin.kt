@@ -10,9 +10,11 @@ import gradle.plugins
 import gradle.prefixIfNotEmpty
 import gradle.projectProperties
 import gradle.settings
+import gradle.sourceSetsToComposeDirs
 import net.pearx.kasechange.universalWordSplitter
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.jetbrains.amper.gradle.BindingSettingsPlugin
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
@@ -66,7 +68,7 @@ internal class KMPPlugin : Plugin<Project> {
                             when {
                                 restPart.startsWith(mainVariantName) -> {
                                     srcPrefixPart = "src"
-                                    resourcesPrefixPart = "resources"
+                                    resourcesPrefixPart = ""
                                 }
 
                                 restPart.startsWith(unitTestVariantName) -> {
@@ -75,7 +77,7 @@ internal class KMPPlugin : Plugin<Project> {
                                             restPart.removePrefix(unitTestVariantName),
                                         ).joinToString("+").prefixIfNotEmpty("+")
                                     }"
-                                    resourcesPrefixPart = "${srcPrefixPart}Resources"
+                                    resourcesPrefixPart = srcPrefixPart
                                 }
 
                                 restPart.startsWith(instrumentedVariantName) -> {
@@ -84,12 +86,12 @@ internal class KMPPlugin : Plugin<Project> {
                                             restPart.removePrefix(instrumentedVariantName),
                                         ).joinToString("+").prefixIfNotEmpty("+")
                                     }"
-                                    resourcesPrefixPart = "${srcPrefixPart}Resources"
+                                    resourcesPrefixPart = srcPrefixPart
                                 }
 
                                 else -> {
                                     srcPrefixPart = restPart
-                                    resourcesPrefixPart = "${srcPrefixPart}Resources"
+                                    resourcesPrefixPart = srcPrefixPart
                                 }
                             }
                         }
@@ -105,23 +107,17 @@ internal class KMPPlugin : Plugin<Project> {
 
                             if (compilationName == KotlinCompilation.MAIN_COMPILATION_NAME) {
                                 srcPrefixPart = "src"
-                                resourcesPrefixPart = "resources"
+                                resourcesPrefixPart = ""
                             }
                             else {
                                 srcPrefixPart = compilationName
-                                resourcesPrefixPart = "${compilationName}Resources"
+                                resourcesPrefixPart = compilationName
                             }
                         }
-                        println(
-                            """SOURCE SET NAME PARTS:
-                            SrcPart: $srcPrefixPart
-                            ResPart: $resourcesPrefixPart
-                            TargetPart: $targetPart
-                        """.trimMargin(),
-                        )
-
+                        BindingSettingsPlugin
                         sourceSet.kotlin.setSrcDirs(listOf("$srcPrefixPart$targetPart"))
-                        sourceSet.resources.setSrcDirs(listOf("$resourcesPrefixPart$targetPart"))
+                        sourceSet.resources.setSrcDirs(listOf("${resourcesPrefixPart}Resources$targetPart".decapitalized()))
+                        sourceSetsToComposeDirs[sourceSet] = layout.projectDirectory.dir("${resourcesPrefixPart}ComposeResources$targetPart".decapitalized())
                     }
                 }
 

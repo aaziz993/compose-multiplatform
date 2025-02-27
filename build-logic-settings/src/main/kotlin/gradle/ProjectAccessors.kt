@@ -10,18 +10,23 @@ import com.google.devtools.ksp.gradle.KspExtension
 import com.osacky.doctor.DoctorExtension
 import de.jensklingenberg.ktorfit.gradle.KtorfitGradleConfiguration
 import io.github.sgrishchenko.karakum.gradle.plugin.KarakumExtension
+import java.nio.file.Path
 import kotlinx.atomicfu.plugin.gradle.AtomicFUPluginExtension
 import kotlinx.kover.gradle.plugin.dsl.KoverProjectExtension
 import kotlinx.rpc.RpcExtension
 import kotlinx.validation.ApiValidationExtension
 import org.gradle.api.Project
+import org.gradle.api.file.Directory
 import org.gradle.api.initialization.Settings
 import org.gradle.api.internal.GradleInternal
+import org.gradle.api.invocation.Gradle
+import org.gradle.api.plugins.ExtensionAware
 import org.gradle.api.plugins.JavaApplication
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.toolchain.management.ToolchainManagement
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.the
+import org.jetbrains.amper.gradle.getBindingMap
 import org.jetbrains.compose.ComposeExtension
 import org.jetbrains.compose.android.AndroidExtension
 import org.jetbrains.compose.desktop.DesktopExtension
@@ -30,6 +35,7 @@ import org.jetbrains.dokka.gradle.DokkaExtension
 import org.jetbrains.gradle.apple.AppleProjectExtension
 import org.jetbrains.kotlin.allopen.gradle.AllOpenExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import org.jetbrains.kotlin.gradle.plugin.cocoapods.CocoapodsExtension
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsEnvSpec
@@ -41,12 +47,12 @@ import org.jetbrains.kotlin.powerassert.gradle.PowerAssertGradleExtension
 import org.sonarqube.gradle.SonarExtension
 import plugin.project.model.ProjectProperties
 
-private const val PROPERTIES = "properties"
+private const val PROJECT_PROPERTIES_EXT = "project.properties.ext"
 
 internal var Project.projectProperties: ProjectProperties
-    get() = extraProperties[PROPERTIES] as ProjectProperties
+    get() = extraProperties[PROJECT_PROPERTIES_EXT] as ProjectProperties
     set(value) {
-        extraProperties[PROPERTIES] = value
+        extraProperties[PROJECT_PROPERTIES_EXT] = value
     }
 
 internal val Project.settings: Settings
@@ -234,3 +240,12 @@ internal val Project.androidNamespace
 internal fun Project.execute(cmd: String): String = providers.exec {
     commandLine(cmd.split(" "))
 }.standardOutput.asText.get().trim()
+
+private const val SOURCES_SET_TO_COMPOSE_RESOURCES_DIR_EXT = "sourceset.compose.resources.dir.ext"
+
+/**
+ * Needed, because there is no [Project] during gradle setting setup, only [ProjectDescriptor],
+ * so cant utilize [Project]'s [ExtensionAware] interface.
+ */
+internal val Project.sourceSetsToComposeDirs: MutableMap<KotlinSourceSet, Directory>
+    get() = extraProperties.getBindingMap(SOURCES_SET_TO_COMPOSE_RESOURCES_DIR_EXT)

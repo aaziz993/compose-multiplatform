@@ -3,6 +3,7 @@ package plugin.project.compose.resources.model
 import gradle.decapitalized
 import gradle.kotlin
 import gradle.projectProperties
+import gradle.sourceSetsToComposeDirs
 import gradle.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -54,16 +55,11 @@ internal data class ResourcesExtension(
 
         // Adjust composeResources to match flatten directory structure
         when (projectProperties.layout) {
-            ProjectLayout.FLAT -> kotlin.targets.forEach { target ->
-                val targetPart = if (target is KotlinMetadataTarget) "" else "@${target.targetName}"
-                target.compilations.forEach { compilation ->
-                    extension.customDirectory(
-                        compilation.defaultSourceSet.name,
-                        provider {
-                            layout.projectDirectory.dir("${compilation.name}ComposeResources$targetPart".decapitalized())
-                        },
-                    )
-                }
+            ProjectLayout.FLAT -> kotlin.sourceSets.forEach { sourceSet ->
+                extension.customDirectory(
+                    sourceSet.name,
+                    provider { sourceSetsToComposeDirs[sourceSet]!! },
+                )
             }
 
             else -> Unit
