@@ -114,7 +114,7 @@ internal class KMPPlugin : Plugin<Project> {
                                 resourcesPrefixPart = compilationName
                             }
                         }
-                        BindingSettingsPlugin
+
                         sourceSet.kotlin.setSrcDirs(listOf("$srcPrefixPart$targetPart"))
                         sourceSet.resources.setSrcDirs(listOf("${resourcesPrefixPart}Resources$targetPart".decapitalized()))
                         sourceSetsToComposeDirs[sourceSet] = layout.projectDirectory.dir("${resourcesPrefixPart}ComposeResources$targetPart".decapitalized())
