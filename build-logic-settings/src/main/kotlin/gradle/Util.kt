@@ -35,8 +35,7 @@ public infix fun <T> Property<T>.tryAssign(value: Provider<out T?>): Unit? =
     value.takeIf(Provider<out T?>::isPresent)?.let(::assign)
 
 internal fun SourceDirectorySet.tryReplace(oldDir: String, newDir: String) {
-    if (contains(oldDir)) {
-        removeAll { file -> file.path.endsWith(oldDir) }
-        this.srcDir(newDir)
+    if (removeAll { file -> file.path.endsWith(oldDir) }) {
+        srcDir(newDir)
     }
 }

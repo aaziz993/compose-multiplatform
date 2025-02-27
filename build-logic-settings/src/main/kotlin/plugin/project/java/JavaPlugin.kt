@@ -66,7 +66,7 @@ internal class JavaPlugin : Plugin<Project> {
                 }
 
                 java.tryReplace("src/$name/java", "$compilationPrefixPart@jvm")
-                resources.setSrcDirs("src/$name/resources", "$resourcesPrefixPart@jvm")
+                resources.tryReplace("src/$name/resources", "$resourcesPrefixPart@jvm")
             }
 
             else -> if (isMultiplatform) {
