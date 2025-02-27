@@ -11,7 +11,7 @@ import gradle.prefixIfNotEmpty
 import gradle.projectProperties
 import gradle.settings
 import gradle.sourceSetsToComposeResourcesDirs
-import gradle.tryReplace
+import gradle.replace
 import net.pearx.kasechange.universalWordSplitter
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -114,8 +114,8 @@ internal class KMPPlugin : Plugin<Project> {
                             }
                         }
 
-                        sourceSet.kotlin.tryReplace("src/${sourceSet.name}/kotlin", "$srcPrefixPart$targetPart")
-                        sourceSet.resources.tryReplace("src/${sourceSet.name}/resources", "${resourcesPrefixPart}Resources$targetPart".decapitalized())
+                        sourceSet.kotlin.replace("src/${sourceSet.name}/kotlin", "$srcPrefixPart$targetPart")
+                        sourceSet.resources.replace("src/${sourceSet.name}/resources", "${resourcesPrefixPart}Resources$targetPart".decapitalized())
                         sourceSetsToComposeResourcesDirs[sourceSet] = layout.projectDirectory.dir("${resourcesPrefixPart}ComposeResources$targetPart".decapitalized())
                     }
                 }

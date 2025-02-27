@@ -2,24 +2,22 @@
 
 package plugin.project.android
 
-import com.android.build.api.dsl.BuildType
-import com.android.build.api.dsl.CommonExtension
-import com.android.build.api.dsl.ProductFlavor
-import com.android.build.gradle.LibraryExtension
-import com.android.build.gradle.TestedExtension
-import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
+import com.android.build.gradle.internal.plugins.AppPlugin
+import com.android.build.gradle.internal.plugins.LibraryPlugin
+import com.android.build.gradle.internal.services.DslServices
 import com.android.build.gradle.internal.variant.DimensionCombinator
 import gradle.android
-import gradle.decapitalized
 import gradle.id
 import gradle.libs
 import gradle.plugin
 import gradle.plugins
 import gradle.projectProperties
 import gradle.settings
+import kotlin.reflect.full.declaredMemberProperties
+import kotlin.reflect.full.memberProperties
+import kotlin.reflect.jvm.isAccessible
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.tasks.SourceSet
 import org.gradle.internal.extensions.stdlib.capitalized
 import plugin.project.kotlin.model.KotlinAndroidTarget
 import plugin.project.model.ProjectLayout
@@ -63,33 +61,50 @@ internal class AndroidPlugin : Plugin<Project> {
 
     @Suppress("UnstableApiUsage")
     private fun Project.adjustAndroidSourceSets() {
-//        android {
-//            buildTypes {
-//                create("some") {
-//
-//                }
-//            }
-//            flavorDimensions("api", "tr")
-//            productFlavors {
-//                create("demo") {
-//                    dimension = "tr"
-//                }
-//                create("full")
-//                create("game") {
-//                    dimension = "api"
-//                }
-//            }
-//        }
+        android {
+            buildTypes {
+                create("some") {
 
-//        DimensionCombinator(android.,
-//
-//            ).computeVariants().map {
-//
-//        }
+                }
+            }
+            flavorDimensions("api", "tr")
+            productFlavors {
+                create("demo") {
+                    dimension = "tr"
+                }
+                create("full") {
+                    dimension = "api"
+                }
+                create("game") {
+                    dimension = "api"
+                }
+            }
+        }
+
+        val variantInputModel = if (projectProperties.type == ProjectType.APP)
+            plugins.findPlugin(AppPlugin::class.java)!!.variantInputModel
+        else
+            plugins.findPlugin(LibraryPlugin::class.java)!!.variantInputModel
+
+        DimensionCombinator(
+            variantInputModel,
+            android::class.memberProperties.find { it.name == "dslServices" }!!.let {
+                it.isAccessible = true
+                it.getter.call(android) as DslServices
+            }.issueReporter,
+            android.flavorDimensionList,
+        ).computeVariants().map {
+            "${
+                it.productFlavors
+                    .joinToString("") { it.second.capitalized() }
+            }${it.buildType.orEmpty().capitalized()}"
+        }.forEach {
+            println("ANDROID $it")
+        }
+
 
         when (projectProperties.layout) {
             ProjectLayout.FLAT -> android.sourceSets.all {
-
 
 //                kotlin.setSrcDirs(listOf("$compilationPrefixPart@android"))
 //                java.setSrcDirs(listOf("$compilationPrefixPart@android"))

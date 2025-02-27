@@ -1,7 +1,7 @@
 kotlin:
   targets:
     - jvm
-#    - androidTarget
+    - androidTarget
     - iosArm64
     - iosX64
     - iosSimulatorArm64
