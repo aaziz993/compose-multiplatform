@@ -31,6 +31,7 @@ internal data class ProjectProperties(
     val npm: NpmExtension = NpmExtension(),
     val karakum: KarakumSettings = KarakumSettings(),
     val compose: ComposeSettings = ComposeSettings(),
+    val tasks: Tasks = Tasks(),
     val pluginManagement: PluginManagement? = null,
     val dependencyResolutionManagement: DependencyResolutionManagement? = null,
     override val dependencies: List<ProjectDependency>? = null,

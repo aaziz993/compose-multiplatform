@@ -1,19 +1,22 @@
 package plugin.project.kotlin.kmp
 
+import gradle.all
+import gradle.decapitalized
 import gradle.id
 import gradle.kotlin
 import gradle.libs
-import gradle.maybeNamed
 import gradle.plugin
 import gradle.plugins
 import gradle.projectProperties
 import gradle.settings
+import net.pearx.kasechange.universalWordSplitter
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.getByName
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
+import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinMetadataTarget
 import plugin.project.model.ProjectLayout
 
 internal class KMPPlugin : Plugin<Project> {
@@ -41,39 +44,87 @@ internal class KMPPlugin : Plugin<Project> {
         kotlin {
             when (projectProperties.layout) {
                 ProjectLayout.FLAT -> {
-                    targets.forEach { target ->
-                        val targetPart = if (target is KotlinMetadataTarget) "" else "@${target.targetName}"
-                        target.compilations.forEach { compilation ->
-                            compilation.defaultSourceSet {
-                                val (srcPrefixPart, resourcesPrefixPart) = when (compilation.name) {
-                                    KotlinCompilation.MAIN_COMPILATION_NAME -> "src" to "resources"
-                                    else -> compilation.name to "${compilation.name}Resources"
+                    val androidTargets = kotlin.targets.filterIsInstance<KotlinAndroidTarget>()
+                    kotlin.sourceSets.all { sourceSet ->
+                        var targetPart: String
+                        var srcPrefixPart: String
+                        var resourcesPrefixPart: String
+
+                        val androidTarget = androidTargets.find { target -> sourceSet.name.startsWith(target.targetName) }
+
+                        if (androidTarget != null) {
+                            targetPart = "@${androidTarget.targetName}"
+
+                            val restPart = sourceSet.name.removePrefix(androidTarget.targetName).decapitalized()
+
+                            val mainVariantName = androidTarget.mainVariant.sourceSetTree.get().name
+                            val unitTestVariantName = androidTarget.unitTestVariant.sourceSetTree.get().name
+                            val instrumentedVariantName = androidTarget.instrumentedTestVariant.sourceSetTree.get().name
+
+                            val splitter = universalWordSplitter(true)
+
+                            when {
+                                restPart.startsWith(mainVariantName) -> {
+                                    srcPrefixPart = "src"
+                                    resourcesPrefixPart = "resources"
                                 }
 
-                                kotlin.setSrcDirs(listOf("$srcPrefixPart$targetPart"))
-                                resources.setSrcDirs(listOf("$resourcesPrefixPart$targetPart"))
+                                restPart.startsWith(unitTestVariantName) -> {
+                                    srcPrefixPart = (
+                                        listOf(unitTestVariantName) +
+                                            splitter.splitToWords(
+                                                restPart.removePrefix(unitTestVariantName),
+                                            )
+                                        ).joinToString("+")
+                                    resourcesPrefixPart = "${srcPrefixPart}Resources"
+                                }
+
+                                restPart.startsWith(instrumentedVariantName) -> {
+                                    srcPrefixPart = (
+                                        listOf(instrumentedVariantName) +
+                                            splitter.splitToWords(
+                                                restPart.removePrefix(instrumentedVariantName),
+                                            )
+                                        ).joinToString("+")
+                                    resourcesPrefixPart = "${srcPrefixPart}Resources"
+                                }
+
+                                else -> {
+                                    srcPrefixPart = restPart
+                                    resourcesPrefixPart = "${srcPrefixPart}Resources"
+                                }
                             }
                         }
-                    }
+                        else {
 
-                    targets.filterIsInstance<KotlinAndroidTarget>().forEach { target ->
-                        (listOf("") + target.publishLibraryVariants.orEmpty()).forEach { variant ->
-                            sourceSets.maybeNamed("androidUnitTest") {
+                            val sourceSetNameParts = "(.*[a-z\\d])([A-Z]\\w+)$".toRegex().matchEntire(sourceSet.name)!!
 
+                            targetPart = sourceSetNameParts.groupValues[1].let { targetName ->
+                                if (targetName == "common") "" else "@$targetName"
                             }
-                            sourceSets.maybeNamed("androidInstrumentedTest") {
 
+                            val compilationName = sourceSetNameParts.groupValues[2].decapitalized()
+
+                            if (compilationName == KotlinCompilation.MAIN_COMPILATION_NAME) {
+                                srcPrefixPart = "src"
+                                resourcesPrefixPart = "resources"
+                            }
+                            else {
+                                srcPrefixPart = compilationName
+                                resourcesPrefixPart = "${compilationName}Resources"
                             }
                         }
                         println(
-                            """
-                    Library variants: ${target.publishLibraryVariants}
-                    MainVariant: ${target.mainVariant.sourceSetTree.get().name}
-                    UnitTestVariant: ${target.unitTestVariant.sourceSetTree.get().name}
-                    InstrumentedTestVariant: ${target.instrumentedTestVariant.sourceSetTree.get().name}
-                    Compilations: ${target.compilations.map { it.name to it.androidVariant }}
-                """.trimIndent(),
+                            """SOURCE SET NAME PARTS:
+                            SrcPart: $srcPrefixPart
+                            ResPart: $resourcesPrefixPart
+                            TargetPart: $targetPart
+                        """.trimMargin(),
                         )
+
+                        sourceSet.kotlin.setSrcDirs(listOf("$srcPrefixPart$targetPart"))
+                        sourceSet.resources.setSrcDirs(listOf("$resourcesPrefixPart$targetPart"))
+
                     }
                 }
 

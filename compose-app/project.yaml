@@ -12,3 +12,7 @@ kotlin:
         - :kmp-lib
         - :cmp-lib
         - :shared
+
+android:
+  buildFeatures:
+    compose: true

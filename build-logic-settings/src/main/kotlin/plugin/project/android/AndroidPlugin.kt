@@ -8,6 +8,7 @@ import com.android.build.api.dsl.ProductFlavor
 import com.android.build.gradle.LibraryExtension
 import com.android.build.gradle.TestedExtension
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
+import com.android.build.gradle.internal.variant.DimensionCombinator
 import gradle.android
 import gradle.decapitalized
 import gradle.id
@@ -19,6 +20,7 @@ import gradle.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.SourceSet
+import org.gradle.internal.extensions.stdlib.capitalized
 import plugin.project.kotlin.model.KotlinAndroidTarget
 import plugin.project.model.ProjectLayout
 import plugin.project.model.ProjectType
@@ -44,38 +46,46 @@ internal class AndroidPlugin : Plugin<Project> {
         }
     }
 
+    fun <T> List<List<T>>.combinations(): Sequence<List<T>> {
+        if (isEmpty()) return sequenceOf(emptyList())
+
+        val firstList = first()
+        val restCombinations = drop(1).combinations()
+
+        return sequence {
+            for (item in firstList) {
+                for (combination in restCombinations) {
+                    yield(listOf(item) + combination)
+                }
+            }
+        }
+    }
+
     @Suppress("UnstableApiUsage")
     private fun Project.adjustAndroidSourceSets() {
-        val variants = (if (projectProperties.type == ProjectType.APP)
-            (android as BaseAppModuleExtension).applicationVariants
-        else
-            (android as LibraryExtension).libraryVariants) +
+//        android {
+//            buildTypes {
+//                create("some") {
+//
+//                }
+//            }
+//            flavorDimensions("api", "tr")
+//            productFlavors {
+//                create("demo") {
+//                    dimension = "tr"
+//                }
+//                create("full")
+//                create("game") {
+//                    dimension = "api"
+//                }
+//            }
+//        }
 
-            (android as TestedExtension).let {
-                it.testVariants + it.unitTestVariants
-            }
-
-        val buildTypes = (android as CommonExtension<*, *, *, *, *, *>).buildTypes.map(BuildType::getName)
-
-        val flavours = android.flavorDimensionList.map { flavorDimension ->
-            android.productFlavors
-                .filter { productFlavor -> productFlavor.dimension == flavorDimension }
-                .map(ProductFlavor::getName)
-        }
-
-        val isTextFixtures = (android as TestedExtension).testFixtures.enable
-
-        println(
-                """ANDROID
-            BuildTypes: $buildTypes
-            Flavours: $flavours
-            IsTextFixtures: $isTextFixtures
-        """.trimIndent(),
-        )
-//        listOf(
-//            "main",
-//            "test
-//        )
+//        DimensionCombinator(android.,
+//
+//            ).computeVariants().map {
+//
+//        }
 
         when (projectProperties.layout) {
             ProjectLayout.FLAT -> android.sourceSets.all {

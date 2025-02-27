@@ -2,8 +2,8 @@ package plugin.project.kotlin.model
 
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import plugin.model.dependency.Dependency
 import plugin.model.dependency.ProjectDependency
-import plugin.model.dependency.StandardDependency
 
 /**
  * Represents a logical group of Kotlin files, including sources, resources and additional metadata describing how
@@ -43,7 +43,7 @@ internal data class KotlinSourceSet(
     context(Project)
     fun applyTo(sourceSet: org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet) {
         sourceSet.dependencies {
-            dependencies?.filterIsInstance<StandardDependency>()?.forEach { dependency -> dependency.applyTo(this) }
+            dependencies?.filterIsInstance<Dependency>()?.forEach { dependency -> dependency.applyTo(this) }
         }
 
         languageSettings?.applyTo(sourceSet.languageSettings)

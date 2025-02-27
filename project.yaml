@@ -51,23 +51,22 @@ plugins:
   # api documentation engine for Kotlin.
   dokka:
     enabled: true
-    dokkaMutiModuleTask:
-      moduleName: Compose Multiplatform
-      includes: [ Module.md ]
-      outputDirectory: build/dokka
-      pluginsMapConfiguration:
-        org.jetbrains.dokka.versioning.VersioningPlugin: '{
-"version" = "2.0",
-"olderVersionDir" = "build/dokka/versions",
-"renderVersionsNavigationOnAllPages" = "true"
-}'
-        org.jetbrains.dokka.base.DokkaBase: '{
-"customAssets" = ["documentation/logo-icon.svg"],
-"footerMessage" = "© 2025 - Aziz Atoev"
-}'
 
-
-
+tasks:
+  dokkaMutiModuleTask:
+    moduleName: Compose Multiplatform
+    includes: [ Module.md ]
+    outputDirectory: build/dokka
+    pluginsMapConfiguration:
+      org.jetbrains.dokka.versioning.VersioningPlugin: '{
+  "version" = "2.0",
+  "olderVersionDir" = "build/dokka/versions",
+  "renderVersionsNavigationOnAllPages" = "true"
+  }'
+      org.jetbrains.dokka.base.DokkaBase: '{
+  "customAssets" = ["documentation/logo-icon.svg"],
+  "footerMessage" = "© 2025 - Aziz Atoev"
+  }'
 
 dependencyResolutionManagement:
   repositories:

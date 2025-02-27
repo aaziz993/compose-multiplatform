@@ -32,9 +32,9 @@ internal class JavaPlugin : Plugin<Project> {
 
             plugins.apply(JavaPlugin::class.java)
 
-            adjustSourceSets()
-
             projectProperties.jvm?.applyTo()
+
+            adjustSourceSets()
 
             // Apply java application plugin.
             if (projectProperties.type == ProjectType.APP && !projectProperties.compose.enabled) {
@@ -46,6 +46,7 @@ internal class JavaPlugin : Plugin<Project> {
     }
 
     private fun Project.adjustSourceSets() {
+        println("JAVA SOURCE SETS: ${java.sourceSets.map { it.name }}")
         when (projectProperties.layout) {
             ProjectLayout.FLAT -> java.sourceSets.all {
                 val (compilationPrefixPart, resourcesPrefixPart) = if (SourceSet.isMain(this)) {

@@ -42,7 +42,7 @@ internal object ProjectDependencySerializer :
             when {
                 key.endsWith("npm", true) || key == "pod" -> {
                     val npmConfiguration = if (key.endsWith("npm"))
-                        mapOf("npmConfiguration" to JsonPrimitive(key))
+                        mapOf("additionalConfiguration" to JsonPrimitive(key))
                     else emptyMap()
 
                     if (value is JsonObject) {
@@ -83,9 +83,11 @@ internal object ProjectDependencySerializer :
 }
 
 @Serializable
-internal sealed class StandardDependency : ProjectDependency() {
-
-    abstract val configuration: String
+internal data class Dependency(
+    override val notation: String,
+    val configuration: String = "implementation",
+    val additionalConfiguration: String? = null
+) : ProjectDependency() {
 
     context(Settings)
     fun resolve(): Any = resolve(
@@ -111,11 +113,9 @@ internal sealed class StandardDependency : ProjectDependency() {
         handler.add(configuration, resolve())
     }
 
-    open fun additionalConfiguration(handler: KotlinDependencyHandler, notation: Any) = notation
-
     context(Project)
-    open fun applyTo(handler: KotlinDependencyHandler): Unit =
-        handler.depFunction(additionalConfiguration(handler, resolve()))
+    fun applyTo(handler: KotlinDependencyHandler): Unit =
+        handler.configurationFunction(additionalConfiguration(handler, resolve()))
 
     private fun resolve(
         libs: Map<String, TomlParseResult>,
@@ -132,58 +132,55 @@ internal sealed class StandardDependency : ProjectDependency() {
             else -> fromNotation(notation)
         }
 
-    private val depFunction: KotlinDependencyHandler.(Any) -> Unit
+    private fun additionalConfiguration(handler: KotlinDependencyHandler, notation: Any) =
+        when {
+            additionalConfiguration == null -> notation
+
+            additionalConfiguration.endsWith("npm") -> {
+                if (notation is FileCollection) {
+                    npm(handler, notation.singleFile)
+                }
+                else {
+
+                    val npmNotation = notation.toString().removePrefix("npm:")
+
+                    npm(
+                        handler,
+                        npmNotation.substringBefore(":"),
+                        npmNotation.substringAfter(":"),
+                    )
+                }
+            }
+
+            else -> error("Unsupported dependency additional configuration: $additionalConfiguration")
+        }
+
+    private val configurationFunction: KotlinDependencyHandler.(Any) -> Unit
         get() = when (configuration) {
-            JvmConstants.IMPLEMENTATION_CONFIGURATION_NAME -> KotlinDependencyHandler::implementation
-            JvmConstants.RUNTIME_ONLY_CONFIGURATION_NAME -> KotlinDependencyHandler::runtimeOnly
-            JvmConstants.COMPILE_ONLY_CONFIGURATION_NAME -> KotlinDependencyHandler::compileOnly
             JvmConstants.API_CONFIGURATION_NAME -> KotlinDependencyHandler::api
+            JvmConstants.IMPLEMENTATION_CONFIGURATION_NAME -> KotlinDependencyHandler::implementation
+            JvmConstants.COMPILE_ONLY_CONFIGURATION_NAME -> KotlinDependencyHandler::compileOnly
+            JvmConstants.RUNTIME_ONLY_CONFIGURATION_NAME -> KotlinDependencyHandler::runtimeOnly
+            "kotlin" -> {
+                { kotlin(it.toString()) }
+            }
+
             else -> error("Unsupported dependency configuration: $configuration")
         }
-}
 
-@Serializable
-@SerialName("dep")
-internal data class Dependency(
-    override val notation: String,
-    override val configuration: String = "implementation"
-) : StandardDependency()
-
-@Serializable
-@SerialName("npm")
-internal data class NpmDependency(
-    override val notation: String,
-    override val configuration: String = "implementation",
-    val npmConfiguration: String,
-) : StandardDependency() {
-
-    override fun additionalConfiguration(handler: KotlinDependencyHandler, notation: Any): Any {
-        if (notation is FileCollection) {
-            return npm(handler, notation.singleFile)
-        }
-
-        val npmNotation = notation.toString().removePrefix("npm:")
-
-        return npm(
-            handler,
-            npmNotation.substringBefore(":"),
-            npmNotation.substringAfter(":"),
-        )
-    }
-
-    private fun npm(handler: KotlinDependencyHandler, file: File) = when (npmConfiguration) {
+    private fun npm(handler: KotlinDependencyHandler, file: File) = when (additionalConfiguration) {
         "npm" -> handler.npm(file)
         "devNpm" -> handler.devNpm(file)
         "optionalNpm" -> handler.optionalNpm(file)
-        else -> error("Unsupported npm dependency configuration: $npmConfiguration")
+        else -> error("Unsupported dependency npm configuration: $additionalConfiguration")
     }
 
-    private fun npm(handler: KotlinDependencyHandler, name: String, version: String) = when (npmConfiguration) {
+    private fun npm(handler: KotlinDependencyHandler, name: String, version: String) = when (additionalConfiguration) {
         "npm" -> handler.npm(name, version)
         "devNpm" -> handler.devNpm(name, version)
         "optionalNpm" -> handler.optionalNpm(name, version)
         "peerNpm" -> handler.peerNpm(name, version)
-        else -> error("Unsupported npm dependency configuration: $npmConfiguration")
+        else -> error("Unsupported dependency npm configuration: $additionalConfiguration")
     }
 }
 

@@ -8,6 +8,7 @@ import gradle.libs
 import gradle.module
 import gradle.plugin
 import gradle.plugins
+import gradle.projectProperties
 import gradle.settings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -31,8 +32,6 @@ internal data class DokkaSettings(
     override val dokkaEngineVersion: String? = null,
     override val enabled: Boolean = true,
     val versioning: Boolean = true,
-    val dokkaTask: DokkaTask? = null,
-    val dokkaMutiModuleTask: DokkaMultiModuleTask? = null,
 ) : DokkaExtension, EnabledSettings {
 
     context(Project)
@@ -49,13 +48,17 @@ internal data class DokkaSettings(
 
 
         if (project == rootProject) {
-            tasks.withType<org.jetbrains.dokka.gradle.DokkaMultiModuleTask> {
-                dokkaMutiModuleTask?.applyTo(this)
+            projectProperties.tasks.dokkaMultiModuleTask?.let { dokkaMultiModuleTask ->
+                tasks.withType<org.jetbrains.dokka.gradle.DokkaMultiModuleTask> {
+                    dokkaMultiModuleTask.applyTo(this)
+                }
             }
         }
         else {
-            tasks.withType<org.jetbrains.dokka.gradle.DokkaTask> {
-                dokkaTask?.applyTo(this)
+            projectProperties.tasks.dokkaTask?.let { dokkaTask ->
+                tasks.withType<org.jetbrains.dokka.gradle.DokkaTask> {
+                    dokkaTask.applyTo(this)
+                }
             }
         }
     }

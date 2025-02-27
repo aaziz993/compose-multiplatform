@@ -53,7 +53,7 @@ internal data class KotlinMultiplatformSettings(
                             group.forEach { targetName ->
                                 when (targetName) {
                                     "jvm" -> withJvm()
-                                    "androidTarget" -> withAndroidTarget()
+                                    "android" -> withAndroidTarget()
                                     "native" -> group(targetName) {
                                         withNative()
                                     }
