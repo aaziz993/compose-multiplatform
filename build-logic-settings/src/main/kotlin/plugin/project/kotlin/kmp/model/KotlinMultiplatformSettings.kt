@@ -16,6 +16,7 @@ import plugin.project.java.model.JavaToolchainSpec
 import plugin.project.java.model.application.JavaApplication
 import plugin.project.kotlin.cocoapods.model.CocoapodsSettings
 import plugin.project.kotlin.model.KotlinCommonCompilerOptions
+import plugin.project.kotlin.model.KotlinCommonCompilerOptionsImpl
 import plugin.project.kotlin.model.KotlinMultiplatformExtension
 import plugin.project.kotlin.model.KotlinSourceSet
 import plugin.project.kotlin.model.KotlinTarget
@@ -29,7 +30,7 @@ internal data class KotlinMultiplatformSettings(
     override val compilerVersion: String? = null,
     override val coreLibrariesVersion: String? = null,
     override val explicitApi: ExplicitApiMode? = null,
-    override val compilerOptions: KotlinCommonCompilerOptions? = null,
+    override val compilerOptions: KotlinCommonCompilerOptionsImpl? = null,
     val targets: List<KotlinTarget>? = null,
     val hierarchy: LinkedHashMap<String, List<String>>? = null,
     val sourceSets: LinkedHashMap<String, KotlinSourceSet>? = null,

@@ -12,7 +12,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 @Serializable
 internal data class KotlinNativeCompilerOptions(
     override val languageVersion: KotlinVersion? = null,
-    override val optIn: List<String>? = null,
+    override val optIns: List<String>? = null,
     override val progressiveMode: Boolean? = null,
     override val allWarningsAsErrors: Boolean? = null,
     override val extraWarnings: Boolean? = null,

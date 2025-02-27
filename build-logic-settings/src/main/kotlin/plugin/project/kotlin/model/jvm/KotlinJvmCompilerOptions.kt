@@ -13,7 +13,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 internal data class KotlinJvmCompilerOptions(
     override val apiVersion: KotlinVersion? = null,
     override val languageVersion: KotlinVersion? = null,
-    override val optIn: List<String>? = null,
+    override val optIns: List<String>? = null,
     override val progressiveMode: Boolean? = null,
     override val allWarningsAsErrors: Boolean? = null,
     override val extraWarnings: Boolean? = null,

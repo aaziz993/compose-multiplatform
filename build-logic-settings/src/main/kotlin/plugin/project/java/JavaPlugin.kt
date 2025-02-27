@@ -51,8 +51,6 @@ internal class JavaPlugin : Plugin<Project> {
     }
 
     private fun Project.adjustSourceSets() {
-        println("$name JAVA SOURCE SETS: ${java.sourceSets.map { it.name }}")
-
         val isMultiplatform =
             pluginManager.hasPlugin(settings.libs.plugins.plugin("kotlin.multiplatform").id)
 
@@ -77,5 +75,8 @@ internal class JavaPlugin : Plugin<Project> {
                 }
             }
         }
+
+        println("$name JAVA SOURCE SETS: ${java.sourceSets.map { it.java.sourceDirectories.map { it.absolutePath } }}")
+
     }
 }
