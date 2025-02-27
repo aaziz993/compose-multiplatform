@@ -45,7 +45,7 @@ internal object ProjectDependencySerializer :
                         return JsonObject(
                             buildMap {
                                 put("type", JsonPrimitive("dependency"))
-                                put("additionalConfiguration", JsonPrimitive(key))
+                                put("subConfiguration", JsonPrimitive(key))
                                 putAll(value.jsonObject)
                             },
                         )
@@ -55,7 +55,7 @@ internal object ProjectDependencySerializer :
                         mapOf(
                             "type" to JsonPrimitive("dependency"),
                             "notation" to value,
-                            "additionalConfiguration" to JsonPrimitive(key),
+                            "subConfiguration" to JsonPrimitive(key),
                         ),
                     )
                 }
@@ -102,7 +102,7 @@ internal object ProjectDependencySerializer :
 internal data class Dependency(
     override val notation: String,
     val configuration: String = "implementation",
-    val additionalConfiguration: String? = null
+    val subConfiguration: String? = null
 ) : ProjectDependency() {
 
     context(Settings)
@@ -131,7 +131,7 @@ internal data class Dependency(
 
     context(Project)
     fun applyTo(handler: KotlinDependencyHandler): Unit =
-        handler.configurationFunction(additionalConfiguration(handler, resolve()))
+        handler.configurationFunction(subConfiguration(handler, resolve()))
 
     private fun resolve(
         libs: Map<String, TomlParseResult>,
@@ -148,11 +148,24 @@ internal data class Dependency(
             else -> fromNotation(notation)
         }
 
-    private fun additionalConfiguration(handler: KotlinDependencyHandler, notation: Any) =
-        when {
-            additionalConfiguration == null -> notation
+    private val configurationFunction: KotlinDependencyHandler.(Any) -> Unit
+        get() = when (configuration) {
+            JvmConstants.API_CONFIGURATION_NAME -> KotlinDependencyHandler::api
+            JvmConstants.IMPLEMENTATION_CONFIGURATION_NAME -> KotlinDependencyHandler::implementation
+            JvmConstants.COMPILE_ONLY_CONFIGURATION_NAME -> KotlinDependencyHandler::compileOnly
+            JvmConstants.RUNTIME_ONLY_CONFIGURATION_NAME -> KotlinDependencyHandler::runtimeOnly
+            "kotlin" -> {
+                { kotlin(it.toString()) }
+            }
 
-            additionalConfiguration.endsWith("npm") -> {
+            else -> error("Unsupported dependency configuration: $configuration")
+        }
+
+    private fun subConfiguration(handler: KotlinDependencyHandler, notation: Any) =
+        when {
+            subConfiguration == null -> notation
+
+            subConfiguration.endsWith("npm") -> {
                 if (notation is FileCollection) {
                     npm(handler, notation.singleFile)
                 }
@@ -168,35 +181,22 @@ internal data class Dependency(
                 }
             }
 
-            else -> error("Unsupported dependency additional configuration: $additionalConfiguration")
+            else -> error("Unsupported dependency additional configuration: $subConfiguration")
         }
 
-    private val configurationFunction: KotlinDependencyHandler.(Any) -> Unit
-        get() = when (configuration) {
-            JvmConstants.API_CONFIGURATION_NAME -> KotlinDependencyHandler::api
-            JvmConstants.IMPLEMENTATION_CONFIGURATION_NAME -> KotlinDependencyHandler::implementation
-            JvmConstants.COMPILE_ONLY_CONFIGURATION_NAME -> KotlinDependencyHandler::compileOnly
-            JvmConstants.RUNTIME_ONLY_CONFIGURATION_NAME -> KotlinDependencyHandler::runtimeOnly
-            "kotlin" -> {
-                { kotlin(it.toString()) }
-            }
-
-            else -> error("Unsupported dependency configuration: $configuration")
-        }
-
-    private fun npm(handler: KotlinDependencyHandler, file: File) = when (additionalConfiguration) {
+    private fun npm(handler: KotlinDependencyHandler, file: File) = when (subConfiguration) {
         "npm" -> handler.npm(file)
         "devNpm" -> handler.devNpm(file)
         "optionalNpm" -> handler.optionalNpm(file)
-        else -> error("Unsupported dependency npm configuration: $additionalConfiguration")
+        else -> error("Unsupported dependency npm configuration: $subConfiguration")
     }
 
-    private fun npm(handler: KotlinDependencyHandler, name: String, version: String) = when (additionalConfiguration) {
+    private fun npm(handler: KotlinDependencyHandler, name: String, version: String) = when (subConfiguration) {
         "npm" -> handler.npm(name, version)
         "devNpm" -> handler.devNpm(name, version)
         "optionalNpm" -> handler.optionalNpm(name, version)
         "peerNpm" -> handler.peerNpm(name, version)
-        else -> error("Unsupported dependency npm configuration: $additionalConfiguration")
+        else -> error("Unsupported dependency npm configuration: $subConfiguration")
     }
 }
 

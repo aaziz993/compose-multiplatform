@@ -7,16 +7,16 @@ import gradle.kotlin
 import gradle.libs
 import gradle.plugin
 import gradle.plugins
+import gradle.prefixIfNotEmpty
 import gradle.projectProperties
 import gradle.settings
 import net.pearx.kasechange.universalWordSplitter
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.getByName
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
-import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
+import org.jetbrains.kotlin.util.prefixIfNot
 import plugin.project.model.ProjectLayout
 
 internal class KMPPlugin : Plugin<Project> {
@@ -58,7 +58,7 @@ internal class KMPPlugin : Plugin<Project> {
                             val restPart = sourceSet.name.removePrefix(androidTarget.targetName).decapitalized()
 
                             val mainVariantName = androidTarget.mainVariant.sourceSetTree.get().name
-                            val unitTestVariantName = androidTarget.unitTestVariant.sourceSetTree.get().name
+                            val unitTestVariantName = "unitTest"
                             val instrumentedVariantName = androidTarget.instrumentedTestVariant.sourceSetTree.get().name
 
                             val splitter = universalWordSplitter(true)
@@ -70,22 +70,20 @@ internal class KMPPlugin : Plugin<Project> {
                                 }
 
                                 restPart.startsWith(unitTestVariantName) -> {
-                                    srcPrefixPart = (
-                                        listOf(unitTestVariantName) +
-                                            splitter.splitToWords(
-                                                restPart.removePrefix(unitTestVariantName),
-                                            )
-                                        ).joinToString("+")
+                                    srcPrefixPart = "${unitTestVariantName}${
+                                        splitter.splitToWords(
+                                            restPart.removePrefix(unitTestVariantName),
+                                        ).joinToString("+").prefixIfNotEmpty("+")
+                                    }"
                                     resourcesPrefixPart = "${srcPrefixPart}Resources"
                                 }
 
                                 restPart.startsWith(instrumentedVariantName) -> {
-                                    srcPrefixPart = (
-                                        listOf(instrumentedVariantName) +
-                                            splitter.splitToWords(
-                                                restPart.removePrefix(instrumentedVariantName),
-                                            )
-                                        ).joinToString("+")
+                                    srcPrefixPart = "${instrumentedVariantName}${
+                                        splitter.splitToWords(
+                                            restPart.removePrefix(instrumentedVariantName),
+                                        ).joinToString("+").prefixIfNotEmpty("+")
+                                    }"
                                     resourcesPrefixPart = "${srcPrefixPart}Resources"
                                 }
 
@@ -124,7 +122,6 @@ internal class KMPPlugin : Plugin<Project> {
 
                         sourceSet.kotlin.setSrcDirs(listOf("$srcPrefixPart$targetPart"))
                         sourceSet.resources.setSrcDirs(listOf("$resourcesPrefixPart$targetPart"))
-
                     }
                 }
 
