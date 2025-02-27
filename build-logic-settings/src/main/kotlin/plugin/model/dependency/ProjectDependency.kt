@@ -40,16 +40,31 @@ internal object ProjectDependencySerializer :
             val value = element.values.single()
 
             when {
-                key.endsWith("npm", true) || key == "pod" -> {
-                    val npmConfiguration = if (key.endsWith("npm"))
-                        mapOf("additionalConfiguration" to JsonPrimitive(key))
-                    else emptyMap()
+                key.endsWith("npm", true) -> {
+                    if (value is JsonObject) {
+                        return JsonObject(
+                            buildMap {
+                                put("type", JsonPrimitive("dependency"))
+                                put("additionalConfiguration", JsonPrimitive(key))
+                                putAll(value.jsonObject)
+                            },
+                        )
+                    }
 
+                    return JsonObject(
+                        mapOf(
+                            "type" to JsonPrimitive("dependency"),
+                            "notation" to value,
+                            "additionalConfiguration" to JsonPrimitive(key),
+                        ),
+                    )
+                }
+
+                key == "pod" -> {
                     if (value is JsonObject) {
                         return JsonObject(
                             buildMap {
                                 put("type", JsonPrimitive(key))
-                                putAll(npmConfiguration)
                                 putAll(value.jsonObject)
                             },
                         )
@@ -59,13 +74,13 @@ internal object ProjectDependencySerializer :
                         mapOf(
                             "type" to JsonPrimitive(key),
                             "notation" to value,
-                        ) + npmConfiguration,
+                        ),
                     )
                 }
 
                 else -> return JsonObject(
                     mapOf(
-                        "type" to JsonPrimitive("dep"),
+                        "type" to JsonPrimitive("dependency"),
                         "notation" to JsonPrimitive(key),
                         "configuration" to value,
                     ),
@@ -75,7 +90,7 @@ internal object ProjectDependencySerializer :
 
         return JsonObject(
             mapOf(
-                "type" to JsonPrimitive("dep"),
+                "type" to JsonPrimitive("dependency"),
                 "notation" to element,
             ),
         )
@@ -83,6 +98,7 @@ internal object ProjectDependencySerializer :
 }
 
 @Serializable
+@SerialName("dependency")
 internal data class Dependency(
     override val notation: String,
     val configuration: String = "implementation",
