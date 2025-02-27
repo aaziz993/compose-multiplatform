@@ -89,30 +89,15 @@ internal class AndroidPlugin : Plugin<Project> {
 
         when (projectProperties.layout) {
             ProjectLayout.FLAT -> android.sourceSets.all {
-                val isMain = name == SourceSet.MAIN_SOURCE_SET_NAME
-                val buildType = android.buildTypes.find { name.contains(it.name, ignoreCase = true) }?.name
-                val productFlavor = android.productFlavors.find { name.contains(it.name, ignoreCase = true) }?.name
-                val isTest = name.contains("androidTest", ignoreCase = true) || name.contains("test", ignoreCase = true)
 
-                val sourceSetNameParts = "^.*?(Main|Test|TestDebug)?$".toRegex().matchEntire(name)!!
 
-                val (compilationPrefixPart, resourcesPrefixPart) = sourceSetNameParts.groupValues[1]
-                    .decapitalized()
-                    .let { compilationName ->
-                        when (compilationName) {
-                            "main", "" -> "src" to ""
-
-                            else -> compilationName to compilationName
-                        }
-                    }
-
-                kotlin.setSrcDirs(listOf("$compilationPrefixPart@android"))
-                java.setSrcDirs(listOf("$compilationPrefixPart@android"))
-                manifest.srcFile("$compilationPrefixPart@android/AndroidManifest.xml")
-                resources.setSrcDirs(listOf("${resourcesPrefixPart}Resources@android".decapitalized()))
-                res.setSrcDirs(listOf("${resourcesPrefixPart}Res@android".decapitalized()))
-                assets.setSrcDirs(listOf("${resourcesPrefixPart}Assets@android".decapitalized()))
-                shaders.setSrcDirs(listOf("${resourcesPrefixPart}Shaders@android".decapitalized()))
+//                kotlin.setSrcDirs(listOf("$compilationPrefixPart@android"))
+//                java.setSrcDirs(listOf("$compilationPrefixPart@android"))
+//                manifest.srcFile("$compilationPrefixPart@android/AndroidManifest.xml")
+//                resources.setSrcDirs(listOf("${resourcesPrefixPart}Resources@android".decapitalized()))
+//                res.setSrcDirs(listOf("${resourcesPrefixPart}Res@android".decapitalized()))
+//                assets.setSrcDirs(listOf("${resourcesPrefixPart}Assets@android".decapitalized()))
+//                shaders.setSrcDirs(listOf("${resourcesPrefixPart}Shaders@android".decapitalized()))
             }
 
             else -> Unit

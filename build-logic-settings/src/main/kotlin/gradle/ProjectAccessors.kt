@@ -10,7 +10,6 @@ import com.google.devtools.ksp.gradle.KspExtension
 import com.osacky.doctor.DoctorExtension
 import de.jensklingenberg.ktorfit.gradle.KtorfitGradleConfiguration
 import io.github.sgrishchenko.karakum.gradle.plugin.KarakumExtension
-import java.nio.file.Path
 import kotlinx.atomicfu.plugin.gradle.AtomicFUPluginExtension
 import kotlinx.kover.gradle.plugin.dsl.KoverProjectExtension
 import kotlinx.rpc.RpcExtension
@@ -19,7 +18,6 @@ import org.gradle.api.Project
 import org.gradle.api.file.Directory
 import org.gradle.api.initialization.Settings
 import org.gradle.api.internal.GradleInternal
-import org.gradle.api.invocation.Gradle
 import org.gradle.api.plugins.ExtensionAware
 import org.gradle.api.plugins.JavaApplication
 import org.gradle.api.plugins.JavaPluginExtension
@@ -247,5 +245,5 @@ private const val SOURCES_SET_TO_COMPOSE_RESOURCES_DIR_EXT = "sourceset.compose.
  * Needed, because there is no [Project] during gradle setting setup, only [ProjectDescriptor],
  * so cant utilize [Project]'s [ExtensionAware] interface.
  */
-internal val Project.sourceSetsToComposeDirs: MutableMap<KotlinSourceSet, Directory>
+internal val Project.sourceSetsToComposeResourcesDirs: MutableMap<KotlinSourceSet, Directory>
     get() = extraProperties.getBindingMap(SOURCES_SET_TO_COMPOSE_RESOURCES_DIR_EXT)

@@ -10,15 +10,13 @@ import gradle.plugins
 import gradle.prefixIfNotEmpty
 import gradle.projectProperties
 import gradle.settings
-import gradle.sourceSetsToComposeDirs
+import gradle.sourceSetsToComposeResourcesDirs
 import net.pearx.kasechange.universalWordSplitter
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.jetbrains.amper.gradle.BindingSettingsPlugin
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
-import org.jetbrains.kotlin.util.prefixIfNot
 import plugin.project.model.ProjectLayout
 
 internal class KMPPlugin : Plugin<Project> {
@@ -117,7 +115,7 @@ internal class KMPPlugin : Plugin<Project> {
 
                         sourceSet.kotlin.setSrcDirs(listOf("$srcPrefixPart$targetPart"))
                         sourceSet.resources.setSrcDirs(listOf("${resourcesPrefixPart}Resources$targetPart".decapitalized()))
-                        sourceSetsToComposeDirs[sourceSet] = layout.projectDirectory.dir("${resourcesPrefixPart}ComposeResources$targetPart".decapitalized())
+                        sourceSetsToComposeResourcesDirs[sourceSet] = layout.projectDirectory.dir("${resourcesPrefixPart}ComposeResources$targetPart".decapitalized())
                     }
                 }
 

@@ -1,14 +1,12 @@
 package plugin.project.compose.resources.model
 
-import gradle.decapitalized
 import gradle.kotlin
 import gradle.projectProperties
-import gradle.sourceSetsToComposeDirs
+import gradle.sourceSetsToComposeResourcesDirs
 import gradle.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.compose.resources.ResourcesExtension
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinMetadataTarget
 import plugin.project.model.ProjectLayout
 
 @Serializable
@@ -58,7 +56,7 @@ internal data class ResourcesExtension(
             ProjectLayout.FLAT -> kotlin.sourceSets.forEach { sourceSet ->
                 extension.customDirectory(
                     sourceSet.name,
-                    provider { sourceSetsToComposeDirs[sourceSet]!! },
+                    provider { sourceSetsToComposeResourcesDirs[sourceSet]!! },
                 )
             }
 

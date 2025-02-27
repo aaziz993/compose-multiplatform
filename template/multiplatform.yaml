@@ -1,19 +1,14 @@
 kotlin:
   targets:
     - jvm
-    - androidTarget:
-        name: ''
-        compilerOptions:
-          jvmTarget: JVM_23
+    - androidTarget
     - iosArm64
     - iosX64
     - iosSimulatorArm64
     - js:
-        name: ''
         browser: { }
         nodejs: { }
     - wasmJs:
-        name: ''
         browser: { }
         nodejs: { }
 

@@ -1,7 +1,12 @@
 package plugin.project.java
 
+import gradle.id
 import gradle.java
+import gradle.libs
+import gradle.plugin
+import gradle.plugins
 import gradle.projectProperties
+import gradle.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.ApplicationPlugin
@@ -46,24 +51,30 @@ internal class JavaPlugin : Plugin<Project> {
     }
 
     private fun Project.adjustSourceSets() {
-        println("JAVA SOURCE SETS: ${java.sourceSets.map { it.name }}")
+        println("$name JAVA SOURCE SETS: ${java.sourceSets.map { it.name }}")
+
+        val isMultiplatform =
+            pluginManager.hasPlugin(settings.libs.plugins.plugin("kotlin.multiplatform").id)
+
         when (projectProperties.layout) {
             ProjectLayout.FLAT -> java.sourceSets.all {
                 val (compilationPrefixPart, resourcesPrefixPart) = if (SourceSet.isMain(this)) {
                     "src" to "resources"
                 }
                 else {
-                    "test" to "testResources"
+                    SourceSet.TEST_SOURCE_SET_NAME to "${SourceSet.TEST_SOURCE_SET_NAME}Resources"
                 }
 
                 java.setSrcDirs(listOf("$compilationPrefixPart@jvm"))
                 resources.setSrcDirs(listOf("$resourcesPrefixPart@jvm"))
             }
 
-            else -> java.sourceSets.all {
-                val compilationName = name.capitalized()
-                java.setSrcDirs(listOf("src/jvm$compilationName/java"))
-                resources.setSrcDirs(listOf("src/jvm$compilationName/resources"))
+            else -> if (isMultiplatform) {
+                java.sourceSets.all {
+                    val compilationName = name.capitalized()
+                    java.setSrcDirs(listOf("src/jvm$compilationName/java"))
+                    resources.setSrcDirs(listOf("src/jvm$compilationName/resources"))
+                }
             }
         }
     }
