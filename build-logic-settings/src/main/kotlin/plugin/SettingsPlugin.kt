@@ -32,15 +32,6 @@ public class SettingsPlugin : Plugin<Settings> {
 
     private val yaml = Yaml()
 
-    private val logYaml = Yaml(
-        object : Representer(DumperOptions()) {
-            init {
-                nullRepresenter = Represent { representScalar(Tag.NULL, "null") }
-            }
-        },
-        DumperOptions(),
-    )
-
     @Suppress("UnstableApiUsage")
     override fun apply(target: Settings) {
         with(SLF4JProblemReporterContext()) {
@@ -55,8 +46,8 @@ public class SettingsPlugin : Plugin<Settings> {
                 allprojects {
                     // Load project properties.
                     projectProperties = layout.projectDirectory.loadProperties().apply {
-                        println("APPLY $PROJECT_PROPERTIES_FILE TO: $name")
-                        println(logYaml.dump(Json.Default.encodeToAny(this)))
+                        println("Applied $PROJECT_PROPERTIES_FILE to: $name")
+                        println(yaml.dump(Json.Default.encodeToAny(this)))
                     }
 
                     projectProperties.applyTo()

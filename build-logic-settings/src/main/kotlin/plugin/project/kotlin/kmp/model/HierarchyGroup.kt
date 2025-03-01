@@ -5,22 +5,22 @@ import kotlinx.serialization.Serializable
 import org.jetbrains.kotlin.gradle.plugin.KotlinHierarchyBuilder
 
 @Serializable
-internal data class HierarchyAlias(
-    val alias: String,
+internal data class HierarchyGroup(
+    val group: String,
     val aliases: List<String>
 ) {
 
     fun applyTo(builder: KotlinHierarchyBuilder) {
-        builder.group(alias) {
-            aliases.forEach { targetName ->
-                when (targetName) {
+        builder.group(group) {
+            aliases.forEach { alias ->
+                when (alias) {
                     "jvm" -> withJvm()
                     "android" -> withAndroidTarget()
-                    "native" -> group(targetName) {
+                    "native" -> group(alias) {
                         withNative()
                     }
 
-                    "androidNative" -> group(targetName) {
+                    "androidNative" -> group(alias) {
                         withAndroidNative()
                     }
 
@@ -28,31 +28,31 @@ internal data class HierarchyAlias(
                     "androidNativeArm64" -> withAndroidNativeArm64()
                     "androidNativeX86" -> withAndroidNativeX86()
                     "androidNativeX64" -> withAndroidNativeX64()
-                    "apple" -> group(targetName) {
+                    "apple" -> group(alias) {
                         withApple()
                     }
 
-                    "ios" -> group(targetName) {
+                    "ios" -> group(alias) {
                         withIos()
                     }
 
                     "iosArm64" -> withIosArm64()
                     "iosX64" -> withIosX64()
                     "iosSimulatorArm64" -> withIosSimulatorArm64()
-                    "tvos" -> group(targetName) {
+                    "tvos" -> group(alias) {
                         withTvos()
                     }
 
                     "tvosArm64" -> withTvosArm64()
                     "tvosX64" -> withTvosX64()
                     "tvosSimulatorArm64" -> withTvosSimulatorArm64()
-                    "macos" -> group(targetName) {
+                    "macos" -> group(alias) {
                         withMacos()
                     }
 
                     "macosArm64" -> withMacosArm64()
                     "macosX64" -> withMacosX64()
-                    "watchos" -> group(targetName) {
+                    "watchos" -> group(alias) {
                         withWatchos()
                     }
 
@@ -60,13 +60,13 @@ internal data class HierarchyAlias(
                     "watchosArm64" -> withWatchosArm64()
                     "watchosDeviceArm64" -> withWatchosDeviceArm64()
                     "watchosSimulatorArm64" -> withWatchosSimulatorArm64()
-                    "linux" -> group(targetName) {
+                    "linux" -> group(alias) {
                         withLinux()
                     }
 
                     "linuxArm64" -> withLinuxArm64()
                     "linuxX64" -> withLinuxX64()
-                    "mingw" -> group(targetName) {
+                    "mingw" -> group(alias) {
                         withMingw()
                     }
 
@@ -74,15 +74,15 @@ internal data class HierarchyAlias(
                     "js" -> withJs()
                     "wasmJs" -> withWasmJs()
                     "wasmWasi" -> withWasmWasi()
-                    else -> group(targetName)
+                    else -> group(alias)
                 }
             }
         }
     }
 }
 
-internal object HierarchyAliasTransformingSerializer : KeyTransformingSerializer<HierarchyAlias>(
-        HierarchyAlias.serializer(),
-        "alias",
+internal object HierarchyAliasTransformingSerializer : KeyTransformingSerializer<HierarchyGroup>(
+        HierarchyGroup.serializer(),
+        "group",
         "aliases",
 )

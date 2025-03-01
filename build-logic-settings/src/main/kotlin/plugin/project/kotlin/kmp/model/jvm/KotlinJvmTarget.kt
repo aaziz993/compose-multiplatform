@@ -1,8 +1,6 @@
 package plugin.project.kotlin.kmp.model.jvm
 
-
 import gradle.kotlin
-import gradle.namedOrAll
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -29,9 +27,7 @@ internal data class KotlinJvmTarget(
         compilerOptions?.applyTo(target.compilerOptions)
 
         testRuns?.forEach { testRuns ->
-            target.testRuns.namedOrAll(testRuns.name) {
-                testRuns.applyTo(this)
-            }
+            testRuns.applyTo(target.testRuns)
         }
 
         mainRun?.let { mainRun ->

@@ -2,6 +2,7 @@ package plugin.project.kotlin.model
 
 import gradle.serialization.serializer.AnySerializer
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
 
 /**
  * Represents a Kotlin task compiling using configurable [compilerOptions].
@@ -31,4 +32,11 @@ internal data class KotlinCompilationTask<out CO : KotlinCommonCompilerOptions> 
      * This can be used to get the values of currently configured options or modify them.
      */
     val compilerOptions: CO?
-) : Task
+) : Task{
+
+    context(Project)
+    override fun applyTo(task: org.gradle.api.Task) {
+        super.applyTo(task)
+        compilerOptions?.applyTo(compilerOptions as org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerOptions)
+    }
+}

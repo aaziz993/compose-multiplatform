@@ -2,8 +2,11 @@ package plugin.project.kotlin.kmp.model.nat
 
 import gradle.trySet
 import kotlinx.serialization.Serializable
+import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.CInteropSettings
+import plugin.project.kotlin.model.Named
+import plugin.project.kotlin.model.configure
 
 /**
  * # C interoperability settings
@@ -37,7 +40,7 @@ import org.jetbrains.kotlin.gradle.plugin.CInteropSettings
  * In this example, we've added a `cinterop` setting named `cinteropForLinuxX64` to the `linuxX64` `main` [KotlinCompilation].
  * These settings are used to create and configure a `cinterop` task, along with the necessary dependencies for the compile task.
  */
-internal interface CInteropSettings: plugin.project.kotlin.model.Named {
+internal interface CInteropSettings : Named {
 
     /**
      *  A collection of directories to look for headers.
@@ -337,19 +340,19 @@ internal interface CInteropSettings: plugin.project.kotlin.model.Named {
     val extraOpts: List<String>?
 
     context(Project)
-    fun applyTo(settings: CInteropSettings) {
-        settings::dependencyFiles trySet dependencyFiles?.let { files(*it.toTypedArray()) }
-        defFile?.let(settings::defFile)
-        packageName?.let(settings::packageName)
-        headers?.let { settings.headers(*it.toTypedArray()) }
-        includeDirs?.let { settings.includeDirs(*it.toTypedArray()) }
-        includeDirectories?.let { includeDirectories ->
-            settings.includeDirs {
+    fun applyTo(settings: NamedDomainObjectContainer<out CInteropSettings>) = settings.configure {
+        ::dependencyFiles trySet this@CInteropSettings.dependencyFiles?.let { files(*it.toTypedArray()) }
+        this@CInteropSettings.defFile?.let(::defFile)
+        this@CInteropSettings.packageName?.let(::packageName)
+        this@CInteropSettings.headers?.let { headers(*it.toTypedArray()) }
+        this@CInteropSettings.includeDirs?.let { includeDirs(*it.toTypedArray()) }
+        this@CInteropSettings.includeDirectories?.let { includeDirectories ->
+            includeDirs {
                 includeDirectories.applyTo(this)
             }
         }
-        compilerOpts?.let(settings::compilerOpts)
-        linkerOpts?.let(settings::linkerOpts)
-        extraOpts?.let(settings::extraOpts)
+        this@CInteropSettings.compilerOpts?.let(::compilerOpts)
+        this@CInteropSettings.linkerOpts?.let(::linkerOpts)
+        this@CInteropSettings.extraOpts?.let(::extraOpts)
     }
 }

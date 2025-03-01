@@ -2,9 +2,11 @@ package plugin.project.kotlin.kmp.model.jvm
 
 import gradle.tryAssign
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompilerOptions
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
+import plugin.project.kotlin.model.KotlinCommonCompilerOptions
 
 /**
  * Compiler options for Kotlin/JVM.
@@ -46,14 +48,17 @@ internal data class KotlinJvmCompilerOptions(
      * Default value: false
      */
     val noJdk: Boolean? = null,
-) : plugin.project.kotlin.model.KotlinCommonCompilerOptions {
+) : KotlinCommonCompilerOptions {
 
-    fun applyTo(compilerOptions: KotlinJvmCompilerOptions) {
-        super.applyTo(compilerOptions)
+    context(Project)
+    override fun applyTo(options: org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerToolOptions) {
+        super.applyTo(options)
 
-        compilerOptions.javaParameters tryAssign javaParameters
-        compilerOptions.jvmTarget tryAssign jvmTarget
-        compilerOptions.moduleName tryAssign moduleName
-        compilerOptions.noJdk tryAssign noJdk
+        options as KotlinJvmCompilerOptions
+
+        options.javaParameters tryAssign javaParameters
+        options.jvmTarget tryAssign jvmTarget
+        options.moduleName tryAssign moduleName
+        options.noJdk tryAssign noJdk
     }
 }

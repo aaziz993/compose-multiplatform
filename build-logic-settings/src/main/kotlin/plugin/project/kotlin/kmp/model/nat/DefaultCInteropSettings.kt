@@ -1,6 +1,7 @@
 package plugin.project.kotlin.kmp.model.nat
 
 import kotlinx.serialization.Serializable
+import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.mpp.DefaultCInteropSettings
 
@@ -16,10 +17,4 @@ internal data class DefaultCInteropSettings(
     override val compilerOpts: List<String>? = null,
     override val linkerOpts: List<String>? = null,
     override val extraOpts: List<String>? = null
-) : CInteropSettings {
-
-    context(Project)
-    fun applyTo(settings: DefaultCInteropSettings) {
-        super.applyTo(settings)
-    }
-}
+) : CInteropSettings

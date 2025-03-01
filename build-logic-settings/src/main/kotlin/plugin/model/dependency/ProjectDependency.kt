@@ -26,6 +26,8 @@ import org.tomlj.TomlParseResult
 import plugin.project.kotlin.cocoapods.model.CocoapodsExtension
 import plugin.project.kotlin.cocoapods.model.CocoapodsExtension.CocoapodsDependency.PodLocation
 
+private val SUB_CONFIGURATIONS = listOf("npm", "devNpm", "optionalNpm", "peerNpm")
+
 @Serializable
 internal sealed class ProjectDependency {
 
@@ -35,92 +37,44 @@ internal sealed class ProjectDependency {
 internal object ProjectDependencyTransformingSerializer :
     JsonTransformingSerializer<ProjectDependency>(ProjectDependency.serializer()) {
 
-    override fun transformDeserialize(element: JsonElement): JsonElement {
+    override fun transformDeserialize(element: JsonElement): JsonElement =
         if (element is JsonObject) {
             val key = element.keys.single()
             val value = element.values.single()
 
             when {
-                key.endsWith("npm", true) -> {
-                    if (value is JsonObject) {
-                        return JsonObject(
-                            buildMap {
-                                put("type", JsonPrimitive("dependency"))
-                                put("subConfiguration", JsonPrimitive(key))
-                                putAll(value.jsonObject)
-                            },
-                        )
-                    }
 
-                    return JsonObject(
-                        mapOf(
-                            "type" to JsonPrimitive("dependency"),
-                            "notation" to value,
-                            "subConfiguration" to JsonPrimitive(key),
-                        ),
-                    )
-                }
+                key == "pod" -> JsonObject(
+                    buildMap {
+                        put("type", JsonPrimitive(key))
+                        if (value is JsonObject) putAll(value.jsonObject) else put("notation", value)
+                    },
+                )
 
-                key == "pod" -> {
-                    if (value is JsonObject) {
-                        return JsonObject(
-                            buildMap {
-                                put("type", JsonPrimitive(key))
-                                putAll(value.jsonObject)
-                            },
-                        )
-                    }
-
-                    return JsonObject(
-                        mapOf(
-                            "type" to JsonPrimitive(key),
-                            "notation" to value,
-                        ),
-                    )
-                }
-
-                else -> return JsonObject(
-                    mapOf(
-                        "type" to JsonPrimitive("dependency"),
-                        "notation" to JsonPrimitive(key),
-                        "configuration" to value,
-                    ),
+                else -> JsonObject(
+                    buildMap {
+                        put("type", JsonPrimitive("dependency"))
+                        key.takeIf { it !in SUB_CONFIGURATIONS }?.let { put("configuration", JsonPrimitive(it)) }
+                        key.takeIf { it in SUB_CONFIGURATIONS }?.let { put("subConfiguration", JsonPrimitive(it)) }
+                        if (value is JsonObject) putAll(value.jsonObject) else put("notation", value)
+                    },
                 )
             }
         }
-
-        return JsonObject(
+        else JsonObject(
             mapOf(
                 "type" to JsonPrimitive("dependency"),
                 "notation" to element,
             ),
         )
-    }
 
-//    override fun transformSerialize(element: JsonElement): JsonElement =
-//        JsonObject(
-//            mapOf(
-//                when (element.jsonObject["type"].jsonPrimitive.content) {
-//                    "dependency" -> {
-//                        val subConfigurationMap = element.jsonObject["subConfiguration"]?.let { subConfiguration ->
-//                            subConfiguration to JsonPrimitive("")
-//                        }
-//
-//                        element.jsonObject["configuration"]?.let { configuration ->
-//                            element.jsonObject["notation"]!!.jsonPrimitive.content to configuration
-//                        }
-//
-//
-//
-//                        "pod" to JsonPrimitive("")
-//                    }
-//
-//                    "pod" -> {
-//                        "pod" to JsonPrimitive("")
-//                    }
-//                },
-//            ),
-//        )
+    override fun transformSerialize(element: JsonElement): JsonElement =
+        JsonObject(
+            mapOf(
+                element.jsonObject["type"]!!.jsonPrimitive.content
+                    to JsonObject(element.jsonObject.filterKeys { key -> key != "type" }),
+            ),
+        )
 }
 
 @Serializable

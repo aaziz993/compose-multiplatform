@@ -1,6 +1,5 @@
 package plugin.project.kotlin.kmp.model
 
-import gradle.namedOrAll
 import gradle.serialization.serializer.JsonContentPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
@@ -27,9 +26,7 @@ internal interface KotlinTarget : Named {
     context(Project)
     fun applyTo(target: org.jetbrains.kotlin.gradle.plugin.KotlinTarget) {
         compilations?.forEach { compilation ->
-            target.compilations.namedOrAll(compilation.name) {
-                compilation.applyTo(this)
-            }
+            compilation.applyTo(target.compilations)
         }
     }
 

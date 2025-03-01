@@ -1,6 +1,7 @@
 package plugin.project.kotlin.model
 
 import gradle.tryAssign
+import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerOptions
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
@@ -45,11 +46,15 @@ internal interface KotlinCommonCompilerOptions : KotlinCommonCompilerToolOptions
 
     val progressiveMode: Boolean?
 
-    fun applyTo(compilerOptions: KotlinCommonCompilerOptions) {
-        super.applyTo(compilerOptions)
-        compilerOptions.apiVersion tryAssign apiVersion
-        compilerOptions.languageVersion tryAssign apiVersion
-        optIns?.let(compilerOptions.optIn::addAll)
-        compilerOptions.progressiveMode tryAssign progressiveMode
+    context(Project)
+    override fun applyTo(options: org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerToolOptions) {
+        super.applyTo(options)
+
+        options as KotlinCommonCompilerOptions
+
+        options.apiVersion tryAssign apiVersion
+        options.languageVersion tryAssign apiVersion
+        optIns?.let(options.optIn::addAll)
+        options.progressiveMode tryAssign progressiveMode
     }
 }

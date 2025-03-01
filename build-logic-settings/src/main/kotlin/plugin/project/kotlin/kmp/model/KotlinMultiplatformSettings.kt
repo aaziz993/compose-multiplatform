@@ -26,7 +26,7 @@ internal data class KotlinMultiplatformSettings(
     override val explicitApi: ExplicitApiMode? = null,
     override val compilerOptions: KotlinCommonCompilerOptionsImpl? = null,
     val targets: List<@Serializable(with = KotlinTargetTransformingSerializer::class) KotlinTarget>? = null,
-    val hierarchy: List<@Serializable(with = HierarchyAliasTransformingSerializer::class) HierarchyAlias>? = null,
+    val hierarchy: List<@Serializable(with = HierarchyAliasTransformingSerializer::class) HierarchyGroup>? = null,
     val sourceSets: List<@Serializable(with = KotlinSourceSetTransformingSerializer::class) KotlinSourceSet>? = null,
     val application: JavaApplication? = null,
     val android: BaseExtension? = null,

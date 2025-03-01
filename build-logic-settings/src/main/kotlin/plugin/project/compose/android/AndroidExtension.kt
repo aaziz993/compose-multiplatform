@@ -12,9 +12,9 @@ import org.gradle.api.Project
 
 internal fun Project.configureAndroidExtension() =
     pluginManager.withPlugin(settings.libs.plugins.plugin("compose.multiplatform").id) {
-        projectProperties.compose.desktop.let { desktop ->
+//        projectProperties.compose.android.let { android ->
             compose.android {
 
             }
-        }
+//        }
     }

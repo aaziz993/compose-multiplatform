@@ -2,10 +2,14 @@ package plugin.project.kotlin.kmp.model.web
 
 import gradle.trySet
 import kotlinx.serialization.Serializable
+import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJsCompilation
 import plugin.model.dependency.ProjectDependency
 import plugin.model.dependency.ProjectDependencyTransformingSerializer
+import plugin.project.kotlin.model.HasBinaries
+import plugin.project.kotlin.model.KotlinCompilation
+import plugin.project.kotlin.model.configure
 
 @Serializable
 internal data class KotlinJsCompilation(
@@ -17,17 +21,21 @@ internal data class KotlinJsCompilation(
     override val binaries: KotlinJsBinaryContainer = KotlinJsBinaryContainer(),
     var outputModuleName: String? = null,
     val packageJson: PackageJson? = null,
-) : plugin.project.kotlin.model.KotlinCompilation, plugin.project.kotlin.model.HasBinaries<KotlinJsBinaryContainer> {
+) : KotlinCompilation, HasBinaries<KotlinJsBinaryContainer> {
 
     context(Project)
-    fun applyTo(compilation: KotlinJsCompilation) {
-        super.applyTo(compilation)
+    override fun applyTo(compilations: NamedDomainObjectContainer<out org.jetbrains.kotlin.gradle.plugin.KotlinCompilation<*>>) {
+        super.applyTo(compilations)
 
-        binaries.applyTo(compilation.binaries)
-        compilation::outputModuleName trySet outputModuleName
-        packageJson?.let { packageJson ->
-            compilation.packageJson {
-                packageJson.applyTo(this)
+        compilations.configure {
+            this as KotlinJsCompilation
+
+            this@KotlinJsCompilation.binaries.applyTo(binaries)
+            ::outputModuleName trySet this@KotlinJsCompilation.outputModuleName
+            this@KotlinJsCompilation.packageJson?.let { packageJson ->
+                packageJson {
+                    packageJson.applyTo(this)
+                }
             }
         }
     }

@@ -1,10 +1,13 @@
 package plugin.project.kotlin.kmp.model.nat
 
+import gradle.moduleName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.assign
+import org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerToolOptions
 import org.jetbrains.kotlin.gradle.dsl.KotlinNativeCompilerOptions
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
+import plugin.project.kotlin.model.KotlinCommonCompilerOptions
 
 /**
  * Compiler options for Kotlin Native.
@@ -26,12 +29,14 @@ internal data class KotlinNativeCompilerOptions(
      */
     val moduleName: String? = null,
     override val apiVersion: KotlinVersion?,
-) : plugin.project.kotlin.model.KotlinCommonCompilerOptions {
+) : KotlinCommonCompilerOptions {
 
     context(Project)
-    fun applyTo(options: KotlinNativeCompilerOptions) {
+    override fun applyTo(options: KotlinCommonCompilerToolOptions) {
         super.applyTo(options)
 
-        options.moduleName.assign(moduleName ?: moduleName)
+        options as KotlinNativeCompilerOptions
+
+        options.moduleName.assign(moduleName ?: project.moduleName)
     }
 }

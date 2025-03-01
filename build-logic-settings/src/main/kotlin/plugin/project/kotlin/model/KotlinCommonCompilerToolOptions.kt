@@ -1,6 +1,7 @@
 package plugin.project.kotlin.model
 
 import gradle.tryAssign
+import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerToolOptions
 
 /**
@@ -48,11 +49,12 @@ internal interface KotlinCommonCompilerToolOptions {
 
     val freeCompilerArgs: List<String>?
 
-    fun applyTo(compilerToolOptions: KotlinCommonCompilerToolOptions) {
-        compilerToolOptions.allWarningsAsErrors tryAssign allWarningsAsErrors
-        compilerToolOptions.extraWarnings tryAssign extraWarnings
-        compilerToolOptions.suppressWarnings tryAssign suppressWarnings
-        compilerToolOptions.verbose tryAssign verbose
-        compilerToolOptions.freeCompilerArgs tryAssign freeCompilerArgs
+    context(Project)
+    fun applyTo(options: KotlinCommonCompilerToolOptions) {
+        options.allWarningsAsErrors tryAssign allWarningsAsErrors
+        options.extraWarnings tryAssign extraWarnings
+        options.suppressWarnings tryAssign suppressWarnings
+        options.verbose tryAssign verbose
+        options.freeCompilerArgs tryAssign freeCompilerArgs
     }
 }

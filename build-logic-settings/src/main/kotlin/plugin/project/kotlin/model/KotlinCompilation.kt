@@ -1,6 +1,7 @@
 package plugin.project.kotlin.model
 
 import gradle.trySet
+import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
 import plugin.project.kotlin.kmp.model.KotlinSourceSet
@@ -107,17 +108,17 @@ internal interface KotlinCompilation : HasKotlinDependencies, Named {
     val associatedCompilations: Set<String>?
 
     context(Project)
-    fun applyTo(compilation: KotlinCompilation<*>) {
-        defaultSourceSet?.let { defaultSourceSet ->
-            compilation.defaultSourceSet {
+    fun applyTo(compilations: NamedDomainObjectContainer<out KotlinCompilation<*>>) = compilations.configure {
+        this@KotlinCompilation.defaultSourceSet?.let { defaultSourceSet ->
+            defaultSourceSet {
                 defaultSourceSet.applyTo(this)
             }
         }
 
-        compilation::compileDependencyFiles trySet compileDependencyFiles?.let { files(* it.toTypedArray()) }
+        ::compileDependencyFiles trySet this@KotlinCompilation.compileDependencyFiles?.let { files(* it.toTypedArray()) }
 
-        output?.applyTo(compilation.output)
+        this@KotlinCompilation.output?.applyTo(output)
 
-        associatedCompilations?.map(compilation.target.compilations::getByName)?.forEach(compilation::associateWith)
+//        this@KotlinCompilation.associatedCompilations?.map(target.compilations::getByName)?.forEach(::associateWith)
     }
 }

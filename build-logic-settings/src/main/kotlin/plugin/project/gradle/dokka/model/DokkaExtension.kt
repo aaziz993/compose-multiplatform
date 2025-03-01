@@ -1,6 +1,5 @@
 package plugin.project.gradle.dokka.model
 
-import gradle.namedOrAll
 import gradle.tryAssign
 import org.gradle.api.Project
 import org.jetbrains.dokka.gradle.DokkaExtension
@@ -176,15 +175,11 @@ internal interface DokkaExtension {
         extension.konanHome tryAssign konanHome?.let(::file)
 
         dokkaPublications?.forEach { dokkaPublication ->
-            extension.dokkaPublications.namedOrAll(dokkaPublication.formatName) {
-                dokkaPublication.applyTo(this)
-            }
+            dokkaPublication.applyTo(extension.dokkaPublications)
         }
 
         dokkaSourceSets?.forEach { dokkaSourceSet ->
-            extension.dokkaSourceSets.namedOrAll(dokkaSourceSet.name) {
-                dokkaSourceSet.applyTo(this)
-            }
+            dokkaSourceSet.applyTo(extension.dokkaSourceSets)
         }
 
         extension.dokkaEngineVersion tryAssign dokkaEngineVersion

@@ -2,10 +2,12 @@ package plugin.project.kotlin.kmp.model.web
 
 import gradle.tryAssign
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.JsMainFunctionExecutionMode
 import org.jetbrains.kotlin.gradle.dsl.JsModuleKind
 import org.jetbrains.kotlin.gradle.dsl.JsSourceMapEmbedMode
 import org.jetbrains.kotlin.gradle.dsl.JsSourceMapNamesPolicy
+import org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerToolOptions
 import org.jetbrains.kotlin.gradle.dsl.KotlinJsCompilerOptions
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
@@ -95,17 +97,21 @@ internal data class KotlinJsCompilerOptions(
     val useEsClasses: Boolean? = null,
 ) : plugin.project.kotlin.model.KotlinCommonCompilerOptions {
 
-    fun applyTo(compilerOptions: KotlinJsCompilerOptions) {
-        super.applyTo(compilerOptions)
-        compilerOptions.friendModulesDisabled tryAssign friendModulesDisabled
-        compilerOptions.main tryAssign main
-        compilerOptions.moduleKind tryAssign moduleKind
-        compilerOptions.moduleName tryAssign moduleName
-        compilerOptions.sourceMap tryAssign sourceMap
-        compilerOptions.sourceMapEmbedSources tryAssign sourceMapEmbedSources
-        compilerOptions.sourceMapNamesPolicy tryAssign sourceMapNamesPolicy
-        compilerOptions.sourceMapPrefix tryAssign sourceMapPrefix
-        compilerOptions.target tryAssign target
-        compilerOptions.useEsClasses tryAssign useEsClasses
+    context(Project)
+    override fun applyTo(options: KotlinCommonCompilerToolOptions) {
+        super.applyTo(options)
+
+        options as KotlinJsCompilerOptions
+
+        options.friendModulesDisabled tryAssign friendModulesDisabled
+        options.main tryAssign main
+        options.moduleKind tryAssign moduleKind
+        options.moduleName tryAssign moduleName
+        options.sourceMap tryAssign sourceMap
+        options.sourceMapEmbedSources tryAssign sourceMapEmbedSources
+        options.sourceMapNamesPolicy tryAssign sourceMapNamesPolicy
+        options.sourceMapPrefix tryAssign sourceMapPrefix
+        options.target tryAssign target
+        options.useEsClasses tryAssign useEsClasses
     }
 }

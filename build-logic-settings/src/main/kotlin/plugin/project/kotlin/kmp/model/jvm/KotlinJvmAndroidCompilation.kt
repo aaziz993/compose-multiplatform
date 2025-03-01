@@ -1,7 +1,9 @@
 package plugin.project.kotlin.kmp.model.jvm
 
 import kotlinx.serialization.Serializable
+import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.invoke
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJvmAndroidCompilation
 import plugin.model.dependency.ProjectDependency
 import plugin.model.dependency.ProjectDependencyTransformingSerializer
@@ -10,6 +12,7 @@ import plugin.project.kotlin.kmp.model.KotlinSourceSet
 import plugin.project.kotlin.model.KotlinCompilation
 import plugin.project.kotlin.model.KotlinCompilationOutput
 import plugin.project.kotlin.model.KotlinCompilationTask
+import plugin.project.kotlin.model.configure
 
 @Serializable
 internal data class KotlinJvmAndroidCompilation(
@@ -24,17 +27,22 @@ internal data class KotlinJvmAndroidCompilation(
 ) : KotlinCompilation {
 
     context(Project)
-    fun applyTo(compilation: KotlinJvmAndroidCompilation) {
-        compileTaskProvider?.let { compileTaskProvider ->
-            compilation.compileTaskProvider.configure {
-                compileTaskProvider.applyTo(this)
-                compileTaskProvider.compilerOptions?.applyTo(compilerOptions)
-            }
-        }
+    override fun applyTo(compilations: NamedDomainObjectContainer<out org.jetbrains.kotlin.gradle.plugin.KotlinCompilation<*>>) {
+        super.applyTo(compilations)
 
-        compileJavaTaskProvider?.let { compileJavaTaskProvider ->
-            compilation.compileJavaTaskProvider.configure {
-                compileJavaTaskProvider.applyTo(this)
+        compilations.configure {
+            this as KotlinJvmAndroidCompilation
+
+            this@KotlinJvmAndroidCompilation.compileTaskProvider?.let { compileTaskProvider ->
+                compileTaskProvider {
+                    compileTaskProvider.applyTo(this)
+                }
+            }
+
+            this@KotlinJvmAndroidCompilation.compileJavaTaskProvider?.let { compileJavaTaskProvider ->
+                compileJavaTaskProvider {
+                    compileJavaTaskProvider.applyTo(this)
+                }
             }
         }
     }

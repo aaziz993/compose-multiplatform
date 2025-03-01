@@ -14,7 +14,6 @@ internal open class JsonContentPolymorphicSerializer<T : Any>(
 ) : JsonContentPolymorphicSerializer<T>(baseClass) {
 
     override fun selectDeserializer(element: JsonElement): DeserializationStrategy<T> {
-        println(element)
         val type = element.jsonObject[classDiscriminator]!!.jsonPrimitive.content
         return baseClass.getPolymorphicSerializer(type)!!
     }

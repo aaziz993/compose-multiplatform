@@ -1,12 +1,14 @@
 package plugin.project.gradle.dokka.model
 
-import gradle.namedOrAll
 import gradle.tryAssign
 import kotlinx.serialization.Serializable
+import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 import org.jetbrains.dokka.gradle.engine.parameters.DokkaSourceSetSpec
 import org.jetbrains.dokka.gradle.engine.parameters.KotlinPlatform
 import org.jetbrains.dokka.gradle.engine.parameters.VisibilityModifier
+import plugin.project.kotlin.model.Named
+import plugin.project.kotlin.model.configure
 
 /**
  * A [DokkaSourceSetSpec] controls how Dokka will view and rendered sources.
@@ -37,7 +39,7 @@ import org.jetbrains.dokka.gradle.engine.parameters.VisibilityModifier
  */
 @Serializable
 internal data class DokkaSourceSetSpec(
-    val name: String = "",
+    override val name: String = "",
     /**
      * An arbitrary string used to group source sets that originate from different Gradle subprojects.
      * This is primarily used by Kotlin Multiplatform projects, which can have multiple source sets
@@ -252,30 +254,30 @@ internal data class DokkaSourceSetSpec(
      * Default is JDK 11.
      */
     val jdkVersion: Int? = null,
-) {
+) : Named {
 
     context(Project)
-    fun applyTo(spec: DokkaSourceSetSpec) {
-        spec.sourceSetScope tryAssign sourceSetScope
-        spec.suppress tryAssign suppress
-        spec.displayName tryAssign displayName
-        includes?.let(spec.includes::setFrom)
-        spec.documentedVisibilities tryAssign documentedVisibilities
-        classpath?.let(spec.classpath::setFrom)
-        sourceRoots?.let(spec.sourceRoots::setFrom)
-        samples?.let(spec.samples::setFrom)
-        spec.reportUndocumented tryAssign reportUndocumented
+    fun applyTo(specs: NamedDomainObjectContainer<DokkaSourceSetSpec>) = specs.configure {
+        sourceSetScope tryAssign this@DokkaSourceSetSpec.sourceSetScope
+        suppress tryAssign this@DokkaSourceSetSpec.suppress
+        displayName tryAssign this@DokkaSourceSetSpec.displayName
+        this@DokkaSourceSetSpec.includes?.let(includes::setFrom)
+        documentedVisibilities tryAssign this@DokkaSourceSetSpec.documentedVisibilities
+        this@DokkaSourceSetSpec.classpath?.let(classpath::setFrom)
+        this@DokkaSourceSetSpec.sourceRoots?.let(sourceRoots::setFrom)
+        this@DokkaSourceSetSpec.samples?.let(samples::setFrom)
+        reportUndocumented tryAssign this@DokkaSourceSetSpec.reportUndocumented
 
-        sourceLinks?.forEach { sourceLink ->
-            spec.sourceLink {
+        this@DokkaSourceSetSpec.sourceLinks?.forEach { sourceLink ->
+            sourceLink {
                 localDirectory tryAssign sourceLink.localDirectory?.let(layout.projectDirectory::dir)
                 sourceLink.remoteUrl?.let(::remoteUrl)
                 remoteLineSuffix tryAssign sourceLink.remoteLineSuffix
             }
         }
 
-        perPackageOptions?.forEach { perPackageOption ->
-            spec.perPackageOption {
+        this@DokkaSourceSetSpec.perPackageOptions?.forEach { perPackageOption ->
+            perPackageOption {
                 matchingRegex tryAssign perPackageOption.matchingRegex
                 suppress tryAssign perPackageOption.suppress
                 documentedVisibilities tryAssign perPackageOption.documentedVisibilities
@@ -284,20 +286,20 @@ internal data class DokkaSourceSetSpec(
             }
         }
 
-        externalDocumentationLinks?.forEach { externalDocumentationLink ->
-            spec.externalDocumentationLinks.namedOrAll(externalDocumentationLink.name, externalDocumentationLink::applyTo)
+        this@DokkaSourceSetSpec.externalDocumentationLinks?.forEach { externalDocumentationLink ->
+            externalDocumentationLink.applyTo(externalDocumentationLinks)
         }
 
-        spec.analysisPlatform tryAssign analysisPlatform
-        spec.skipEmptyPackages tryAssign skipEmptyPackages
-        spec.skipDeprecated tryAssign skipDeprecated
-        suppressedFiles?.let(spec.suppressedFiles::setFrom)
-        spec.suppressGeneratedFiles tryAssign suppressGeneratedFiles
-        spec.enableKotlinStdLibDocumentationLink tryAssign enableKotlinStdLibDocumentationLink
-        spec.enableJdkDocumentationLink tryAssign enableJdkDocumentationLink
-        spec.enableAndroidDocumentationLink tryAssign enableAndroidDocumentationLink
-        spec.languageVersion tryAssign languageVersion
-        spec.apiVersion tryAssign apiVersion
-        spec.jdkVersion tryAssign jdkVersion
+        analysisPlatform tryAssign this@DokkaSourceSetSpec.analysisPlatform
+        skipEmptyPackages tryAssign this@DokkaSourceSetSpec.skipEmptyPackages
+        skipDeprecated tryAssign this@DokkaSourceSetSpec.skipDeprecated
+        this@DokkaSourceSetSpec.suppressedFiles?.let(suppressedFiles::setFrom)
+        suppressGeneratedFiles tryAssign this@DokkaSourceSetSpec.suppressGeneratedFiles
+        enableKotlinStdLibDocumentationLink tryAssign this@DokkaSourceSetSpec.enableKotlinStdLibDocumentationLink
+        enableJdkDocumentationLink tryAssign this@DokkaSourceSetSpec.enableJdkDocumentationLink
+        enableAndroidDocumentationLink tryAssign this@DokkaSourceSetSpec.enableAndroidDocumentationLink
+        languageVersion tryAssign this@DokkaSourceSetSpec.languageVersion
+        apiVersion tryAssign this@DokkaSourceSetSpec.apiVersion
+        jdkVersion tryAssign this@DokkaSourceSetSpec.jdkVersion
     }
 }

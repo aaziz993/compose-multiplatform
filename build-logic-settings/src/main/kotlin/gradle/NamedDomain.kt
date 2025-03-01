@@ -10,8 +10,9 @@ internal inline fun <T> NamedDomainObjectCollection<out T>.all(crossinline actio
 internal inline fun <T> NamedDomainObjectCollection<out T>.configureEach(crossinline action: (T) -> Unit) =
     configureEach { action(this) }
 
-internal inline fun <reified T> NamedDomainObjectContainer<out T>.namedOrAll(name: String, noinline configure: T.() -> Unit) =
+internal inline fun <reified T> NamedDomainObjectContainer<out T>.namedOrAll(name: String, noinline configure: T.() -> Unit) {
     if (name.isEmpty()) all(configure) else named(name, configure)
+}
 
 internal inline fun <reified T> NamedDomainObjectCollection<out T>.maybeNamed(name: String, noinline configure: T.() -> Unit): NamedDomainObjectProvider<out T>? =
     if (name in names) {
@@ -21,5 +22,6 @@ internal inline fun <reified T> NamedDomainObjectCollection<out T>.maybeNamed(na
         null
     }
 
-internal inline fun <reified T> NamedDomainObjectContainer<out T>.maybeNamedOrAll(name: String, noinline configure: T.() -> Unit) =
+internal inline fun <reified T> NamedDomainObjectContainer<out T>.maybeNamedOrAll(name: String, noinline configure: T.() -> Unit) {
     if (name.isEmpty()) all(configure) else maybeNamed(name, configure)
+}

@@ -1,6 +1,5 @@
 package plugin.project.kotlin.model
 
-import gradle.maybeNamedOrAll
 import gradle.serialization.serializer.AnySerializer
 import gradle.serialization.serializer.JsonContentPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
@@ -337,10 +336,8 @@ internal interface Task : Named {
     }
 
     context(Project)
-    fun applyTo() {
-        tasks.configure {
-            applyTo(this)
-        }
+    fun applyTo() = tasks.configure {
+        applyTo(this)
     }
 }
 

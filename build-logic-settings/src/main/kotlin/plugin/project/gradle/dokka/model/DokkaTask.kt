@@ -1,6 +1,5 @@
 package plugin.project.gradle.dokka.model
 
-import gradle.maybeNamedOrAll
 import gradle.serialization.serializer.AnySerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
