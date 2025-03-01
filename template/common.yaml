@@ -196,7 +196,7 @@ kotlin:
           - $libs.kotlinx.serialization.json
           - $libs.kotlinx.serialization.properties
 
-    - nonWeb:
+    - nonWebMain:
         dependencies:
           - $libs.androidx.room.runtime.ktx
 

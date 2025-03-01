@@ -7,6 +7,7 @@ import gradle.plugin
 import gradle.plugins
 import gradle.projectProperties
 import gradle.settings
+import kotlin.collections.forEach
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
@@ -32,7 +33,6 @@ internal data class KotlinMultiplatformSettings(
     val sourceSets: List<@Serializable(with = KotlinSourceSetTransformingSerializer::class) KotlinSourceSet>? = null,
     val application: JavaApplication? = null,
     val android: BaseExtension? = null,
-    val jar: Jar? = null,
     val cocoapods: CocoapodsSettings = CocoapodsSettings(),
 ) : KotlinMultiplatformExtension {
 
@@ -41,7 +41,7 @@ internal data class KotlinMultiplatformSettings(
         pluginManager.withPlugin(settings.libs.plugins.plugin("kotlin.multiplatform").id) {
             super.applyTo(kotlin)
 
-            projectProperties.kotlin.targets?.forEach { target -> target.applyTo() }
+            targets?.forEach { target -> target.applyTo() }
 
             kotlin.applyDefaultHierarchyTemplate {
                 common {
@@ -49,6 +49,10 @@ internal data class KotlinMultiplatformSettings(
                         hierarchy.applyTo(this)
                     }
                 }
+            }
+
+            sourceSets?.forEach { sourceSet ->
+                sourceSet.applyTo()
             }
         }
 }

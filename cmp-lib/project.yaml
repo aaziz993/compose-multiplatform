@@ -7,6 +7,6 @@ templates:
 
 kotlin:
   sourceSets:
-    commonMain:
-      dependencies:
-        - :kmp-lib
+    - commonMain:
+        dependencies:
+          - :kmp-lib

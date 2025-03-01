@@ -7,11 +7,11 @@ templates:
 
 kotlin:
   sourceSets:
-    commonMain:
-      dependencies:
-        - :kmp-lib
-        - :cmp-lib
-        - :shared
+    - commonMain:
+        dependencies:
+          - :kmp-lib
+          - :cmp-lib
+          - :shared
 
 android:
   buildFeatures:

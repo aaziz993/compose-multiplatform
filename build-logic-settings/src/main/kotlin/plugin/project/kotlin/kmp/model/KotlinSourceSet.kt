@@ -1,6 +1,7 @@
 package plugin.project.kotlin.kmp.model
 
 import gradle.kotlin
+import gradle.maybeNamedOrAll
 import gradle.namedOrAll
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
@@ -49,7 +50,7 @@ internal data class KotlinSourceSet(
 
     context(Project)
     fun applyTo() {
-        kotlin.sourceSets.namedOrAll(name) {
+        kotlin.sourceSets.maybeNamedOrAll(name) {
             dependencies {
                 dependencies?.filterIsInstance<Dependency>()?.forEach { dependency -> dependency.applyTo(this) }
             }

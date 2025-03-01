@@ -5,6 +5,7 @@ import gradle.serialization.serializer.JsonContentPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import plugin.project.kotlin.model.KotlinCompilation
 import plugin.project.kotlin.model.Named
 
 @Serializable(with = KotlinTargetSerializer::class)
@@ -21,7 +22,7 @@ internal interface KotlinTarget : Named {
      * Allows access to the default [main][plugin.project.kotlin.model.KotlinCompilation.MAIN_COMPILATION_NAME] or [test][plugin.project.kotlin.model.KotlinCompilation.TEST_COMPILATION_NAME]
      * compilations, or the creation of additional compilations.
      */
-    abstract val compilations: List<plugin.project.kotlin.model.KotlinCompilation>?
+    val compilations: List<KotlinCompilation>?
 
     context(Project)
     fun applyTo(target: org.jetbrains.kotlin.gradle.plugin.KotlinTarget) {
@@ -33,7 +34,7 @@ internal interface KotlinTarget : Named {
     }
 
     context(Project)
-    abstract fun applyTo()
+    fun applyTo()
 }
 
 private object KotlinTargetSerializer : JsonContentPolymorphicSerializer<KotlinTarget>(

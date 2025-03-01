@@ -5,7 +5,7 @@ kotlin:
   targets: [ jvm ]
 
   sourceSets:
-    jvmMain:
-      dependencies:
-        - :kmp-lib
-        - $libs.symbol.processing.api
+    - jvmMain:
+        dependencies:
+          - :kmp-lib
+          - $libs.symbol.processing.api

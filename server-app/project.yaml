@@ -7,7 +7,7 @@ kotlin:
   targets: [ jvm ]
 
   sourceSets:
-    commonMain:
-      dependencies:
-        - :kmp-lib
-        - :shared
+    - commonMain:
+        dependencies:
+          - :kmp-lib
+          - :shared

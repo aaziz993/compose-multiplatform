@@ -119,10 +119,6 @@ internal class KMPPlugin : Plugin<Project> {
 
                 else -> Unit
             }
-
-            projectProperties.kotlin.sourceSets?.forEach { sourceSet ->
-                sourceSet.applyTo()
-            }
         }
     }
 }
