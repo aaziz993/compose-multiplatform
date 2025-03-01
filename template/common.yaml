@@ -285,5 +285,5 @@ dependencies:
   - $libs.androidx.test.runner
 
 tasks:
-  dokkaTask:
-    outputDirectory: build/dokka
+  - dokkaTask:
+      outputDirectory: build/dokka

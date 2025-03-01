@@ -108,7 +108,11 @@ internal interface KotlinCompilation : HasKotlinDependencies, Named {
 
     context(Project)
     fun applyTo(compilation: KotlinCompilation<*>) {
-        defaultSourceSet?.applyTo()
+        defaultSourceSet?.let { defaultSourceSet ->
+            compilation.defaultSourceSet {
+                defaultSourceSet.applyTo(this)
+            }
+        }
 
         compilation::compileDependencyFiles trySet compileDependencyFiles?.let { files(* it.toTypedArray()) }
 

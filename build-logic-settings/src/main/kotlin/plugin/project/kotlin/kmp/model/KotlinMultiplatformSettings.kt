@@ -5,14 +5,11 @@ import gradle.kotlin
 import gradle.libs
 import gradle.plugin
 import gradle.plugins
-import gradle.projectProperties
 import gradle.settings
-import kotlin.collections.forEach
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
 import plugin.project.android.model.BaseExtension
-import plugin.project.java.model.Jar
 import plugin.project.java.model.JavaToolchainSpec
 import plugin.project.java.model.application.JavaApplication
 import plugin.project.kotlin.cocoapods.model.CocoapodsSettings

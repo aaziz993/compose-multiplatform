@@ -1,52 +1,23 @@
-@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
-
 package plugin
 
-import gradle.allLibs
 import gradle.deepMerge
-import gradle.isUrl
-import gradle.libs
 import gradle.projectProperties
 import gradle.resolve
 import gradle.serialization.decodeFromAny
 import gradle.serialization.encodeToAny
-import gradle.trySetSystemProperty
-import gradle.version
-import gradle.versions
-import java.net.URI
-import javax.xml.stream.XMLEventFactory
-import javax.xml.stream.XMLInputFactory
-import javax.xml.stream.XMLOutputFactory
 import kotlinx.serialization.json.Json
 import org.gradle.api.Plugin
-import org.gradle.api.Project
-import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.api.file.Directory
-import org.gradle.api.file.FileCollection
 import org.gradle.api.initialization.Settings
-import org.gradle.api.internal.artifacts.repositories.DefaultMavenArtifactRepository
-import org.gradle.kotlin.dsl.maven
-import org.jetbrains.amper.gradle.SLF4JProblemReporterContext
-import org.jetbrains.compose.internal.utils.currentTarget
-import org.jetbrains.compose.jetbrainsCompose
-import org.tomlj.Toml
 import org.yaml.snakeyaml.DumperOptions
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.nodes.Tag
 import org.yaml.snakeyaml.representer.Represent
 import org.yaml.snakeyaml.representer.Representer
-import plugin.model.dependency.Dependency
-import plugin.model.dependency.toVersionCatalogUrlPath
-import plugin.project.ProjectPlugin
-import plugin.project.gradle.develocity.DevelocityPlugin
-import plugin.project.gradle.githooks.GitHooksPlugin
-import plugin.project.gradle.toolchainmanagement.ToolchainManagementPlugin
 import plugin.project.model.ProjectProperties
+import plugin.project.problemreporter.SLF4JProblemReporterContext
 
 private const val PROJECT_PROPERTIES_FILE = "project.yaml"
-private const val VERSION_CATALOG_CACHE_DIR = "build-logic-settings/gradle"
-
-private const val COMPOSE_VERSION_CATALOG_FILE = "build-logic-settings/gradle/compose.versions.template.toml"
 
 /**
  * Gradle setting plugin, that is responsible for:
@@ -70,136 +41,26 @@ public class SettingsPlugin : Plugin<Settings> {
         DumperOptions(),
     )
 
+    @Suppress("UnstableApiUsage")
     override fun apply(target: Settings) {
         with(SLF4JProblemReporterContext()) {
-
-            // Setup  settings.gradle.kts from project.yaml.
-            target.setupProject()
+            with(target) {
+                // Setup  settings.gradle.kts from project.yaml.
+                projectProperties = target.layout.settingsDirectory.loadProperties()
+                projectProperties.applyTo()
+            }
 
             target.gradle.projectsLoaded {
                 // at this point all projects have been created by settings.gradle.kts, but none were evaluated yet
-                target.gradle.rootProject.allprojects {
-                    configureProject()
-                }
-            }
-        }
-    }
-
-    @Suppress("UnstableApiUsage")
-    private fun Settings.setupProject() {
-        projectProperties = layout.settingsDirectory.loadProperties()
-
-        projectProperties.pluginManagement.let { pluginManagement ->
-            pluginManagement {
-                repositories {
-                    mavenCentral()
-                    google()
-                    gradlePluginPortal()
-
-                    pluginManagement?.repositories?.forEach { repository -> maven(repository) }
-                }
-            }
-        }
-
-        projectProperties.dependencyResolutionManagement?.let { dependencyResolutionManagement ->
-            dependencyResolutionManagement {
-                repositories {
-                    addDependenciesRepositories()
-                }
-
-                val libsFile = layout.settingsDirectory.file("gradle/libs.versions.toml").asFile
-                if (dependencyResolutionManagement.versionCatalogs?.none { it.name == "libs" } != false && libsFile.exists())
-                    allLibs += "libs" to Toml.parse(libsFile.readText())
-
-
-                dependencyResolutionManagement.versionCatalogs?.let { versionCatalogs ->
-                    versionCatalogs {
-                        versionCatalogs.forEach { (catalogName, dependency) ->
-                            var notation = (dependency as Dependency).resolve()
-
-                            create(catalogName) {
-                                from(notation)
-                            }
-
-
-                            if (notation is FileCollection) {
-                                allLibs[catalogName] = Toml.parse(notation.files.single().readText())
-                            }
-                            else {
-                                notation as String
-
-                                val cacheFile = layout.settingsDirectory.file("$VERSION_CATALOG_CACHE_DIR/$catalogName.versions.toml").asFile
-
-                                if (cacheFile.exists()) {
-                                    allLibs[catalogName] = Toml.parse(cacheFile.readText())
-                                    return@forEach
-                                }
-
-                                if (!notation.isUrl) {
-                                    notation = notation.toVersionCatalogUrlPath()
-                                }
-
-                                allLibs[catalogName] = repositories.map { (it as DefaultMavenArtifactRepository).url.toString().removeSuffix("/") }
-                                    .firstNotNullOf { url ->
-                                        try {
-                                            Toml.parse(
-                                                URI(
-                                                    "$url/$notation",
-                                                ).toURL()
-                                                    .readText()
-                                                    .also(cacheFile::writeText), // write to cache
-                                            )
-                                        }
-                                        catch (_: Throwable) {
-                                            null
-                                        }
-                                    }
-                            }
-                        }
+                allprojects {
+                    // Load project properties.
+                    projectProperties = layout.projectDirectory.loadProperties().apply {
+                        println("APPLY $PROJECT_PROPERTIES_FILE TO: $name")
+                        println(logYaml.dump(Json.Default.encodeToAny(this)))
                     }
+
+                    projectProperties.applyTo()
                 }
-
-                // Load pre-defined compose version catalog
-                allLibs += "compose" to Toml.parse(
-                    layout.settingsDirectory.file(COMPOSE_VERSION_CATALOG_FILE).asFile
-                        .readText()
-                        .replace("\$kotlin", libs.versions.version("kotlin")!!)
-                        .replace("\$compose", libs.versions.version("compose")!!)
-                        .replace("\$materialExtendedIcon", libs.versions.version("materialExtendedIcon")!!)
-                        .replace("\$currentTargetId", currentTarget.id),
-                )
-            }
-        }
-
-        // Apply plugins after version catalogs are loaded in settings phase.
-        plugins.apply(DevelocityPlugin::class.java)
-        plugins.apply(ToolchainManagementPlugin::class.java)
-        plugins.apply(GitHooksPlugin::class.java)
-
-        // Include subprojects.
-        projectProperties.includes?.forEach(::include)
-
-        // Configure subprojects.
-        projectProperties.projects?.forEach { project ->
-            project.applyTo()
-        }
-    }
-
-    private fun Project.configureProject() {
-        // Load project properties.
-        projectProperties = layout.projectDirectory.loadProperties().apply {
-            println("APPLY $PROJECT_PROPERTIES_FILE TO: $name")
-            println(logYaml.dump(Json.Default.encodeToAny(this)))
-        }
-
-        plugins.apply(ProjectPlugin::class.java)
-
-        afterEvaluate {
-            // W/A for XML factories mess within apple plugin classpath.
-            val hasAndroidPlugin = plugins.hasPlugin("com.android.application") ||
-                plugins.hasPlugin("com.android.library")
-            if (hasAndroidPlugin) {
-                adjustXmlFactories()
             }
         }
     }
@@ -219,48 +80,5 @@ public class SettingsPlugin : Plugin<Settings> {
         }.orEmpty() deepMerge properties
 
         return json.decodeFromAny<ProjectProperties>(templatedProperties.resolve())
-    }
-
-    /**
-     * W/A for service loading conflict between apple plugin
-     * and android plugin.
-     */
-    private fun adjustXmlFactories() {
-        trySetSystemProperty(
-            XMLInputFactory::class.qualifiedName!!,
-            "com.sun.xml.internal.stream.XMLInputFactoryImpl",
-        )
-        trySetSystemProperty(
-            XMLOutputFactory::class.qualifiedName!!,
-            "com.sun.xml.internal.stream.XMLOutputFactoryImpl",
-        )
-        trySetSystemProperty(
-            XMLEventFactory::class.qualifiedName!!,
-            "com.sun.xml.internal.stream.events.XMLEventFactoryImpl",
-        )
-    }
-
-    context(Settings)
-    private fun RepositoryHandler.addDependenciesRepositories() {
-        mavenCentral()
-        // For the Android plugin and dependencies
-        google()
-        // For other Gradle plugins
-        gradlePluginPortal()
-        // For dev versions of kotlin
-        maven("https://maven.pkg.jetbrains.space/kotlin/p/kotlin/dev")
-        // For dev versions of compose plugin and dependencies
-        jetbrainsCompose()
-        // For compose experimental builds
-        maven("https://packages.jetbrains.team/maven/p/firework/dev")
-        // Sonatype OSS Snapshot Repository
-        maven("https://oss.sonatype.org/content/repositories/snapshots")
-
-        // Apply repositories from project properties.
-        projectProperties.dependencyResolutionManagement?.repositories?.let { repositories ->
-            repositories.forEach { repository ->
-                maven(repository)
-            }
-        }
     }
 }

@@ -1,11 +1,12 @@
 package plugin.project.kotlin.model
 
+import gradle.maybeNamedOrAll
 import gradle.serialization.serializer.AnySerializer
+import gradle.serialization.serializer.JsonContentPolymorphicSerializer
+import gradle.serialization.serializer.KeyTransformingSerializer
 import groovy.lang.MissingPropertyException
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import org.gradle.api.Task
-import org.gradle.api.plugins.Convention
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.TaskDependency
 
@@ -132,15 +133,8 @@ import org.gradle.api.tasks.TaskDependency
  * Parallel execution can be enabled by the `--parallel` flag when the build is initiated.
  * In parallel mode, the tasks of different projects (i.e. in a multi project build) are able to be executed in parallel.
  */
-internal interface Task {
-
-    /**
-     *
-     * Returns the name of this task. The name uniquely identifies the task within its [Project].
-     *
-     * @return The name of the task. Never returns null.
-     */
-    val name: String
+@Serializable(with = TaskSerializer::class)
+internal interface Task : Named {
 
     /**
      *
@@ -327,7 +321,7 @@ internal interface Task {
     val shouldRunAfter: List<String>?
 
     context(Project)
-    fun applyTo(task: Task) {
+    fun applyTo(task: org.gradle.api.Task) {
         dependsOn?.let(task::setDependsOn)
         onlyIf?.let { onlyIf -> task.onlyIf { onlyIf } }
         doNotTrackState?.let(task::doNotTrackState)
@@ -341,4 +335,20 @@ internal interface Task {
         finalizedBy?.let(task::setFinalizedBy)
         shouldRunAfter?.let(task::setShouldRunAfter)
     }
+
+    context(Project)
+    fun applyTo() {
+        tasks.configure {
+            applyTo(this)
+        }
+    }
 }
+
+private object TaskSerializer : JsonContentPolymorphicSerializer<Task>(
+    Task::class,
+)
+
+internal object TaskTransformingSerializer : KeyTransformingSerializer<Task>(
+    Task.serializer(),
+    "type",
+)

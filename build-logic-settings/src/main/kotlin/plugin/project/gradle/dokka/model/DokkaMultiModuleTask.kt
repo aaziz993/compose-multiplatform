@@ -2,12 +2,15 @@ package plugin.project.gradle.dokka.model
 
 import gradle.serialization.serializer.AnySerializer
 import gradle.tryAssign
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.dokka.gradle.internal.InternalDokkaGradlePluginApi
+import plugin.project.kotlin.model.configure
 
 @Serializable
+@SerialName("dokkaMultiModuleTask")
 internal data class DokkaMultiModuleTask(
     override val name: String = "",
     override val dependsOn: List<String>? = null,
@@ -65,11 +68,15 @@ internal data class DokkaMultiModuleTask(
 
     context(Project)
     @OptIn(InternalDokkaGradlePluginApi::class)
-    fun applyTo() {
+    override fun applyTo() {
         tasks.withType<org.jetbrains.dokka.gradle.DokkaMultiModuleTask> {
-            super.applyTo(this)
-            this@DokkaMultiModuleTask.includes?.let(includes::setFrom)
-            fileLayout tryAssign this@DokkaMultiModuleTask.fileLayout?.let(DokkaMultiModuleFileLayout::toDokkaMultiModuleFileLayout)
+            super.applyTo()
+            tasks.configure {
+                this as org.jetbrains.dokka.gradle.DokkaMultiModuleTask
+
+                this@DokkaMultiModuleTask.includes?.let(includes::setFrom)
+                fileLayout tryAssign this@DokkaMultiModuleTask.fileLayout?.let(DokkaMultiModuleFileLayout::toDokkaMultiModuleFileLayout)
+            }
         }
     }
 }

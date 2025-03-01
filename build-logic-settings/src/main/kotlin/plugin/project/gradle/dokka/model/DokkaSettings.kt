@@ -45,21 +45,5 @@ internal data class DokkaSettings(
                 dokkaPlugin(settings.libs.libraries.library("dokka.versioning").module)
             }
         }
-
-
-        if (project == rootProject) {
-            projectProperties.tasks.dokkaMultiModuleTask?.let { dokkaMultiModuleTask ->
-                tasks.withType<org.jetbrains.dokka.gradle.DokkaMultiModuleTask> {
-                    dokkaMultiModuleTask.applyTo(this)
-                }
-            }
-        }
-        else {
-            projectProperties.tasks.dokkaTask?.let { dokkaTask ->
-                tasks.withType<org.jetbrains.dokka.gradle.DokkaTask> {
-                    dokkaTask.applyTo(this)
-                }
-            }
-        }
     }
 }

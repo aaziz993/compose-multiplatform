@@ -1,8 +1,6 @@
 package plugin.project.kotlin.kmp.model
 
 import gradle.kotlin
-import gradle.maybeNamedOrAll
-import gradle.namedOrAll
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -12,6 +10,8 @@ import plugin.model.dependency.ProjectDependencyTransformingSerializer
 import plugin.project.kotlin.model.HasKotlinDependencies
 import plugin.project.kotlin.model.LanguageSettingsBuilder
 import plugin.project.kotlin.model.Named
+import plugin.project.kotlin.model.configure
+import plugin.project.kotlin.model.maybeConfigure
 
 /**
  * Represents a logical group of Kotlin files, including sources, resources and additional metadata describing how
@@ -49,14 +49,19 @@ internal data class KotlinSourceSet(
 ) : Named, HasKotlinDependencies {
 
     context(Project)
-    fun applyTo() {
-        kotlin.sourceSets.maybeNamedOrAll(name) {
-            dependencies {
-                dependencies?.filterIsInstance<Dependency>()?.forEach { dependency -> dependency.applyTo(this) }
-            }
+    fun applyTo(sourceSet: org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet) {
+        sourceSet.dependencies {
+            dependencies?.filterIsInstance<Dependency>()?.forEach { dependency -> dependency.applyTo(this) }
+        }
 
-            this@KotlinSourceSet.languageSettings?.applyTo(languageSettings)
-            this@KotlinSourceSet.customSourceFilesExtensions?.let(::addCustomSourceFilesExtensions)
+        languageSettings?.applyTo(sourceSet.languageSettings)
+        customSourceFilesExtensions?.let(sourceSet::addCustomSourceFilesExtensions)
+    }
+
+    context(Project)
+    fun applyTo() {
+        kotlin.sourceSets.maybeConfigure {
+            applyTo(this)
         }
     }
 }

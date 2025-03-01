@@ -1,5 +1,9 @@
 package plugin.project.kotlin.model
 
+import gradle.maybeNamedOrAll
+import gradle.namedOrAll
+import org.gradle.api.NamedDomainObjectContainer
+
 /**
  * Types can implement this interface and use the embedded {@link Namer} implementation, to satisfy API that calls for a namer.
  */
@@ -12,5 +16,13 @@ internal interface Named {
      *
      * @return The name. Never null.
      */
-    val name:String
+    val name: String
 }
+
+context(Named)
+internal inline fun <reified T> NamedDomainObjectContainer<out T>.configure(noinline configure: T.() -> Unit) =
+    namedOrAll(name, configure)
+
+context(Named)
+internal inline fun <reified T> NamedDomainObjectContainer<out T>.maybeConfigure(noinline configure: T.() -> Unit) =
+    maybeNamedOrAll(name, configure)
