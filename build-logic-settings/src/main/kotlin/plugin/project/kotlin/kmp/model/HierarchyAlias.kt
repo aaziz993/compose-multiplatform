@@ -8,8 +8,9 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinHierarchyBuilder
 internal data class HierarchyAlias(
     val alias: String,
     val aliases: List<String>
-){
-    fun applyTo(builder: KotlinHierarchyBuilder){
+) {
+
+    fun applyTo(builder: KotlinHierarchyBuilder) {
         builder.group(alias) {
             aliases.forEach { targetName ->
                 when (targetName) {
@@ -81,6 +82,7 @@ internal data class HierarchyAlias(
 }
 
 internal object HierarchyAliasTransformingSerializer : KeyTransformingSerializer<HierarchyAlias>(
-    HierarchyAlias.serializer(),
-    "alias",
+        HierarchyAlias.serializer(),
+        "alias",
+        "aliases",
 )

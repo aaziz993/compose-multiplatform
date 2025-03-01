@@ -3,7 +3,7 @@ type: LIB
 templates:
   - ../template/common.yaml
   - ../template/kotlin-multiplatform.yaml
-  - ../template/compose-kotlin-multiplatform.yaml
+  - ../template/kotlin-multiplatform.yaml
 
 kotlin:
   sourceSets:
