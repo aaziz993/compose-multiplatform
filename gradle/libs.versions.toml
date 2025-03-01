@@ -150,6 +150,8 @@ fleeksoft = "0.0.3"
 diglol = "0.3.0"
 # convert strings between various case formats
 kasechange = "1.4.1"
+# a nice parser combinator library for Kotlin JVM, JS, and Multiplatform projects
+better-parse = "0.4.4"
 # code highlight
 highlights = "1.0.0"
 # string fuzzywuzzy match
@@ -158,9 +160,9 @@ fuzzywuzzy-kotlin = "0.9.0"
 fluid = "0.13.0"
 # bytebuffer
 buffer = "1.4.2"
-# util
+# a collection of all the things that are missing from Kotlin STL, popular KMP libraries & platform SDKs. The library is meant to be a drop-in dependency - no need to study anything - just add and enjoy the expanded API of the things you are used to, relying on autocompletion to come up with suggestions for you.
 kmputils = "1.1.2"
-# functional utils
+# provide a lingua franca of interfaces and abstractions across Kotlin libraries. For this, it includes the most popular data types such as Option, and Either, functional operators such as zipOrAccumulate, and computation blocks to empower users to write pure FP apps and libraries built atop higher order abstractions.
 arrow = "2.0.0"
 # flow extensions
 flow-ext = "1.0.0"
@@ -466,6 +468,8 @@ encoding = { module = "com.diglol.encoding:encoding", version.ref = "diglol" }
 id = { module = "com.diglol.id:id", version.ref = "diglol" }
 # convert strings between various case formats
 kasechange = { module = "net.pearx.kasechange:kasechange", version.ref = "kasechange" }
+# a nice parser combinator library for Kotlin JVM, JS, and Multiplatform projects
+better-parse = { module = "com.github.h0tk3y.betterParse:better-parse", version.ref = "better-parse" }
 # string fuzzywuzzy match
 fuzzywuzzy-kotlin = { module = "com.willowtreeapps:fuzzywuzzy-kotlin", version.ref = "fuzzywuzzy-kotlin" }
 # code highlight
@@ -476,11 +480,11 @@ fluid-i18n = { module = "io.fluidsonic.i18n:fluid-i18n", version.ref = "fluid" }
 fluid-currency = { module = "io.fluidsonic.currency:fluid-currency", version.ref = "fluid" }
 # bytebuffer
 buffer = { module = "com.ditchoom:buffer", version.ref = "buffer" }
-# util
+# a collection of all the things that are missing from Kotlin STL, popular KMP libraries & platform SDKs. The library is meant to be a drop-in dependency - no need to study anything - just add and enjoy the expanded API of the things you are used to, relying on autocompletion to come up with suggestions for you.
 kmputils-common = { module = "pro.respawn.kmmutils:common", version.ref = "kmputils" }
 kmputils-datetime = { module = "pro.respawn.kmmutils:datetime", version.ref = "kmputils" }
 kmputils-coroutines = { module = "pro.respawn.kmmutils:coroutines", version.ref = "kmputils" }
-# arrow
+# provide a lingua franca of interfaces and abstractions across Kotlin libraries. For this, it includes the most popular data types such as Option, and Either, functional operators such as zipOrAccumulate, and computation blocks to empower users to write pure FP apps and libraries built atop higher order abstractions.
 arrow-core = { module = "io.arrow-kt:arrow-core", version.ref = "arrow" }
 arrow-fx-coroutines = { module = "io.arrow-kt:arrow-fx-coroutines", version.ref = "arrow" }
 arrow-resilience = { module = "io.arrow-kt:arrow-resilience", version.ref = "arrow" }

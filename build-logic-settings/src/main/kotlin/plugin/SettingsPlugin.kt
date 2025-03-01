@@ -7,6 +7,7 @@ import gradle.deepMerge
 import gradle.isUrl
 import gradle.libs
 import gradle.projectProperties
+import gradle.resolve
 import gradle.serialization.decodeFromAny
 import gradle.serialization.encodeToAny
 import gradle.trySetSystemProperty
@@ -217,7 +218,7 @@ public class SettingsPlugin : Plugin<Settings> {
             acc deepMerge yaml.load<MutableMap<String, *>>(file(template).asFile.readText())
         }.orEmpty() deepMerge properties
 
-        return json.decodeFromAny<ProjectProperties>(templatedProperties)
+        return json.decodeFromAny<ProjectProperties>(templatedProperties.resolve())
     }
 
     /**

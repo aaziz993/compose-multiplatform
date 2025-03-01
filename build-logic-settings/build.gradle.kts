@@ -235,6 +235,10 @@ dependencies {
     implementation(libs.reflections)
     // convert strings between various case formats
     implementation(libs.kasechange)
+    // a nice parser combinator library for Kotlin JVM, JS, and Multiplatform projects
+    implementation(libs.better.parse)
+    // provide a lingua franca of interfaces and abstractions across Kotlin libraries. For this, it includes the most popular data types such as Option, and Either, functional operators such as zipOrAccumulate, and computation blocks to empower users to write pure FP apps and libraries built atop higher order abstractions.
+    implementation(libs.arrow.core)
     // compiler plugin, that generates visitor code for serializable classes, runtime library with core serialization API and support libraries with various serialization formats.
     implementation(libs.plugins.kotlin.serialization.toDep())
     implementation(libs.kotlinx.serialization.json)

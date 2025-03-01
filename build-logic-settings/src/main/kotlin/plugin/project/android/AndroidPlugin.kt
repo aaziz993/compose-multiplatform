@@ -2,23 +2,20 @@
 
 package plugin.project.android
 
-import com.android.build.gradle.internal.plugins.AppPlugin
-import com.android.build.gradle.internal.plugins.LibraryPlugin
-import com.android.build.gradle.internal.services.DslServices
-import com.android.build.gradle.internal.variant.DimensionCombinator
+import gradle.all
 import gradle.android
+import gradle.decapitalized
 import gradle.id
 import gradle.libs
 import gradle.plugin
 import gradle.plugins
+import gradle.prefixIfNotEmpty
 import gradle.projectProperties
+import gradle.replace
 import gradle.settings
-import kotlin.reflect.full.declaredMemberProperties
-import kotlin.reflect.full.memberProperties
-import kotlin.reflect.jvm.isAccessible
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.internal.extensions.stdlib.capitalized
+import org.gradle.api.tasks.SourceSet
 import plugin.project.kotlin.model.KotlinAndroidTarget
 import plugin.project.model.ProjectLayout
 import plugin.project.model.ProjectType
@@ -81,38 +78,40 @@ internal class AndroidPlugin : Plugin<Project> {
             }
         }
 
-        val variantInputModel = if (projectProperties.type == ProjectType.APP)
-            plugins.findPlugin(AppPlugin::class.java)!!.variantInputModel
-        else
-            plugins.findPlugin(LibraryPlugin::class.java)!!.variantInputModel
-
-        DimensionCombinator(
-            variantInputModel,
-            android::class.memberProperties.find { it.name == "dslServices" }!!.let {
-                it.isAccessible = true
-                it.getter.call(android) as DslServices
-            }.issueReporter,
-            android.flavorDimensionList,
-        ).computeVariants().map {
-            "${
-                it.productFlavors
-                    .joinToString("") { it.second.capitalized() }
-            }${it.buildType.orEmpty().capitalized()}"
-        }.forEach {
-            println("ANDROID $it")
-        }
 
 
         when (projectProperties.layout) {
-            ProjectLayout.FLAT -> android.sourceSets.all {
 
-//                kotlin.setSrcDirs(listOf("$compilationPrefixPart@android"))
-//                java.setSrcDirs(listOf("$compilationPrefixPart@android"))
-//                manifest.srcFile("$compilationPrefixPart@android/AndroidManifest.xml")
-//                resources.setSrcDirs(listOf("${resourcesPrefixPart}Resources@android".decapitalized()))
-//                res.setSrcDirs(listOf("${resourcesPrefixPart}Res@android".decapitalized()))
-//                assets.setSrcDirs(listOf("${resourcesPrefixPart}Assets@android".decapitalized()))
-//                shaders.setSrcDirs(listOf("${resourcesPrefixPart}Shaders@android".decapitalized()))
+            ProjectLayout.FLAT -> android.sourceSets.all { sourceSet ->
+                val (srcPrefixPart, resourcesPrefixPart) = when (sourceSet.name) {
+                    SourceSet.MAIN_SOURCE_SET_NAME -> "src" to ""
+
+                    SourceSet.TEST_SOURCE_SET_NAME -> "${SourceSet.TEST_SOURCE_SET_NAME}${
+                        sourceSet.name.removePrefix(SourceSet.TEST_SOURCE_SET_NAME).prefixIfNotEmpty("+")
+                    }".let { it to it }
+
+                    "androidTest" -> "androidTest${
+                        sourceSet.name.removePrefix("androidTest").prefixIfNotEmpty("+")
+                    }".let { it to it }
+
+                    "textFixtures" -> "textFixtures${
+                        sourceSet.name.removePrefix("textFixtures").prefixIfNotEmpty("+")
+                    }".let { it to it }
+
+                    else -> sourceSet.name.let { it to it }
+                }
+
+                sourceSet.java.replace("src/${sourceSet.name}/java", "$srcPrefixPart@android")
+                sourceSet.kotlin.replace("src/${sourceSet.name}/kotlin", "$srcPrefixPart@android")
+                sourceSet.manifest.srcFile("$srcPrefixPart@android/AndroidManifest.xml")
+                sourceSet.res.replace("src/${sourceSet.name}/res", "${resourcesPrefixPart}Res@android".decapitalized())
+                sourceSet.assets.replace("src/${sourceSet.name}/assets", "${resourcesPrefixPart}Assets@android".decapitalized())
+                sourceSet.aidl.replace("src/${sourceSet.name}/aidl", "${resourcesPrefixPart}Aidl@android".decapitalized())
+                sourceSet.renderscript.replace("src/${sourceSet.name}/rs", "${resourcesPrefixPart}Rs@android".decapitalized())
+                sourceSet.jniLibs.replace("src/${sourceSet.name}/jniLibs", "${resourcesPrefixPart}JniLibs@android".decapitalized())
+                sourceSet.resources.replace("src/${sourceSet.name}/resources", "${resourcesPrefixPart}Resources@android".decapitalized())
+                sourceSet.shaders.replace("src/${sourceSet.name}/shaders", "${resourcesPrefixPart}Shaders@android".decapitalized())
+
             }
 
             else -> Unit

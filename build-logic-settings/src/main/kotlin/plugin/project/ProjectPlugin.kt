@@ -50,11 +50,12 @@ internal class ProjectPlugin : Plugin<Project> {
 
     override fun apply(target: Project) = with(SLF4JProblemReporterContext()) {
         with(target) {
+            val moduleName = moduleName
+
             if (projectProperties.kotlin.targets?.isNotEmpty() == true) {
                 projectProperties.group?.let(::setGroup)
                 projectProperties.description?.let(::setDescription)
                 version = settings.libs.versions.let { versions ->
-                    val moduleName = moduleName
                     version(
                         versions.version("$moduleName.version.major")?.toInt() ?: 1,
                         versions.version("$moduleName.version.minor")?.toInt() ?: 0,

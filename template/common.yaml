@@ -1,3 +1,61 @@
+kotlinCompilerOptions:
+  allWarningsAsErrors: false
+  debug: false
+  progressiveMode: true
+  suppressWarnings: false
+  verbose: true
+  languageFeatures:
+    - ContextReceivers
+    - ExplicitBackingFields
+  freeCompilerArgs:
+    - -Xexplicit-api=strict
+    - -Xexport-kdoc
+    - -Xinline-classes
+    - -Xwhen-guards
+    - -Xnon-local-break-continue
+    - -Xexpect-actual-classes
+    - -Xcontext-receivers
+    - -Xmulti-dollar-interpolation
+    - -Xrender-internal-diagnostic-names
+  optIns:
+    - kotlin.RequiresOptIn, kotlin.ExperimentalSubclassOptIn
+    - kotlin.ExperimentalStdlibApi
+    - kotlin.ExperimentalUnsignedTypes
+    - kotlin.ExperimentalUuidApi
+    - kotlin.time.ExperimentalTime
+    - kotlin.contracts.ExperimentalContracts
+    - kotlin.experimental.ExperimentalObjCName
+    - kotlin.js.ExperimentalJsExport
+    - kotlinx.coroutines.ExperimentalCoroutinesApi
+    - kotlinx.coroutines.DelicateCoroutinesApi
+    - kotlinx.coroutines.FlowPreview
+    - kotlinx.serialization.ExperimentalSerializationApi
+    - kotlinx.serialization.InternalSerializationApi
+    - dev.whyoleg.cryptography.DelicateCryptographyApi
+
+kotlinJvmCompilerOptions:
+  freeCompilerArgs:
+    - -Xjvm-default=all
+
+kotlinNativeCompilerOptions:
+  freeCompilerArgs:
+    - -Xexport-kdoc
+    - -Xallocator=custom
+    - -XXLanguage+ImplicitSignedToUnsignedIntegerConversion
+    - -Xadd-light-debug=enable
+  optIns:
+    - kotlin.experimental.ExperimentalObjCName
+    - kotlinx.cinterop.ExperimentalForeignApi
+    - kotlinx.cinterop.BetaInteropApi
+
+  # add it to avoid sqllite3 issues in iOS. Required when using NativeSQLiteDriver
+  linkerOpts:
+    - -lsqlite3
+
+kotlinJsCompilerOptions:
+  optIns:
+    - kotlin.js.ExperimentalJsExport
+
 layout: FLAT
 
 group: io.github.aaziz993
@@ -132,41 +190,6 @@ plugins:
 kotlin:
   jvmToolchain: 23
 
-  compilerOptions:
-    allWarningsAsErrors: false
-    debug: false
-    progressiveMode: true
-    suppressWarnings: false
-    verbose: true
-    languageFeatures:
-      - ContextReceivers
-      - ExplicitBackingFields
-    freeCompilerArgs:
-      - -Xexplicit-api=strict
-      - -Xexport-kdoc
-      - -Xinline-classes
-      - -Xwhen-guards
-      - -Xnon-local-break-continue
-      - -Xexpect-actual-classes
-      - -Xcontext-receivers
-      - -Xmulti-dollar-interpolation
-      - -Xrender-internal-diagnostic-names
-    optIns:
-      - kotlin.RequiresOptIn, kotlin.ExperimentalSubclassOptIn
-      - kotlin.ExperimentalStdlibApi
-      - kotlin.ExperimentalUnsignedTypes
-      - kotlin.ExperimentalUuidApi
-      - kotlin.time.ExperimentalTime
-      - kotlin.contracts.ExperimentalContracts
-      - kotlin.experimental.ExperimentalObjCName
-      - kotlin.js.ExperimentalJsExport
-      - kotlinx.coroutines.ExperimentalCoroutinesApi
-      - kotlinx.coroutines.DelicateCoroutinesApi
-      - kotlinx.coroutines.FlowPreview
-      - kotlinx.serialization.ExperimentalSerializationApi
-      - kotlinx.serialization.InternalSerializationApi
-      - dev.whyoleg.cryptography.DelicateCryptographyApi
-
   sourceSets:
     commonMain:
       dependencies:
@@ -200,33 +223,6 @@ kotlin:
 #      dependencies:
 #        - $kotlinWrappers.browser
 
-#
-#
-#jvm:
-#  release: 23
-#  freeCompilerArgs:
-#    - -Xjvm-default=all
-
-#  native:
-#    binaries:
-#      framework:
-#        freeCompilerArgs:
-#          - -Xexport-kdoc
-#          - -Xallocator=custom
-#          - -XXLanguage+ImplicitSignedToUnsignedIntegerConversion
-#          - -Xadd-light-debug=enable
-#        optIns:
-#          - kotlin.experimental.ExperimentalObjCName
-#          - kotlinx.cinterop.ExperimentalForeignApi
-#          - kotlinx.cinterop.BetaInteropApi
-#
-#        # add it to avoid sqllite3 issues in iOS. Required when using NativeSQLiteDriver
-#        linkerOpts:
-#          - -lsqlite3
-#
-#  js:
-#    optIns:
-#      - kotlin.js.ExperimentalJsExport
 application:
   mainClass: ApplicationKt
   applicationDefaultJvmArgs:
@@ -259,6 +255,12 @@ android:
         isMinifyEnabled: false
         debuggable: true
 
+  flavourDimensions: [ api, mode ]
+  productFlavours:
+    - demo:
+        dimension: mode
+    - full:
+        dimension: mode
   packagingOptions:
     resources:
       excludes: /META-INF/{AL2.0,LGPL2.1

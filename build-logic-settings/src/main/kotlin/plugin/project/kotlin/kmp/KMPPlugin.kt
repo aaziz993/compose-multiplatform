@@ -12,9 +12,12 @@ import gradle.projectProperties
 import gradle.settings
 import gradle.sourceSetsToComposeResourcesDirs
 import gradle.replace
+import kotlin.reflect.full.memberProperties
 import net.pearx.kasechange.universalWordSplitter
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.jetbrains.amper.gradle.android.AndroidBindingPluginPart
+import org.jetbrains.amper.gradle.kmpp.KMPPBindingPluginPart
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
@@ -62,8 +65,6 @@ internal class KMPPlugin : Plugin<Project> {
                             val unitTestVariantName = "unitTest"
                             val instrumentedVariantName = androidTarget.instrumentedTestVariant.sourceSetTree.get().name
 
-                            val splitter = universalWordSplitter(true)
-
                             when {
                                 restPart.startsWith(mainVariantName) -> {
                                     srcPrefixPart = "src"
@@ -72,18 +73,14 @@ internal class KMPPlugin : Plugin<Project> {
 
                                 restPart.startsWith(unitTestVariantName) -> {
                                     srcPrefixPart = "${unitTestVariantName}${
-                                        splitter.splitToWords(
-                                            restPart.removePrefix(unitTestVariantName),
-                                        ).joinToString("+").prefixIfNotEmpty("+")
+                                        restPart.removePrefix(unitTestVariantName).prefixIfNotEmpty("+")
                                     }"
                                     resourcesPrefixPart = srcPrefixPart
                                 }
 
                                 restPart.startsWith(instrumentedVariantName) -> {
                                     srcPrefixPart = "${instrumentedVariantName}${
-                                        splitter.splitToWords(
-                                            restPart.removePrefix(instrumentedVariantName),
-                                        ).joinToString("+").prefixIfNotEmpty("+")
+                                        restPart.removePrefix(instrumentedVariantName).prefixIfNotEmpty("+")
                                     }"
                                     resourcesPrefixPart = srcPrefixPart
                                 }

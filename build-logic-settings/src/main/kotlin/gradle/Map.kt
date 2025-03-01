@@ -7,26 +7,28 @@ internal infix fun Map<String, Any?>.deepMerge(source: Map<String, Any?>): Map<S
         //recursive merge for nested maps
         when {
             source[key] is Map<*, *> && (resultMap[key] is Map<*, *> || resultMap[key] == null) -> {
-                if (resultMap[key] == null) {
-                    resultMap[key] = mutableMapOf<String, Any?>()
-                }
-                val originalChild = resultMap[key] as Map<String, Any?>
+                val originalChild = (resultMap[key] as? Map<String, Any?>) ?: mutableMapOf()
                 val newChild = source[key] as Map<String, Any?>
                 resultMap[key] = originalChild deepMerge newChild
             }
 
             source[key] is Collection<*> && (resultMap[key] is Collection<*> || resultMap[key] == null) -> {
-                if (resultMap[key] == null) {
-                    resultMap[key] = mutableListOf<Any?>()
-                }
+                val originalChild = (resultMap[key] as? Collection<*>) ?: mutableListOf<Any?>()
+                val newChild = source[key] as Collection<*>
 
-                if (!(resultMap[key] as Collection<*>).containsAll(source[key] as Collection<*>)) {
-                    resultMap[key] = (resultMap[key] as Collection<*>) + (source[key] as Collection<*>)
+                if (!originalChild.containsAll(newChild)) {
+                    resultMap[key] = originalChild + newChild
                 }
             }
 
-            else -> resultMap[key] = source[key]
+            else -> if (source[key] != null) {
+                resultMap[key] = source[key]
+            }
         }
     }
     return resultMap
+}
+
+internal fun Any.get(vararg keys:Any?){
+
 }

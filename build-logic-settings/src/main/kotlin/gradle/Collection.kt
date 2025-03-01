@@ -1,31 +1,36 @@
 package gradle
 
-import org.gradle.api.NamedDomainObjectCollection
-import org.gradle.api.NamedDomainObjectContainer
-import org.gradle.api.NamedDomainObjectProvider
+import com.github.h0tk3y.betterParse.combinators.*
+import com.github.h0tk3y.betterParse.grammar.Grammar
+import com.github.h0tk3y.betterParse.grammar.parser
+import com.github.h0tk3y.betterParse.lexer.literalToken
+import com.github.h0tk3y.betterParse.lexer.regexToken
+import com.github.h0tk3y.betterParse.parser.Parser
 
-internal fun <T> NamedDomainObjectContainer<T>.maybeRegister(name: String, configure: T.() -> Unit): NamedDomainObjectProvider<T> =
-    if (name in names) named(name, configure) else register(name, configure)
+internal fun Any.resolve(): Any? = when (this) {
+    is String -> resolveValue()
+    is Map<*, *> -> mapValues { (_, value) -> value?.resolve() }
+    is List<*> -> map { it?.resolve() }
+    else -> this
+}
 
-internal fun <T> NamedDomainObjectContainer<T>.optionalRegister(name: String, configure: T.() -> Unit): NamedDomainObjectProvider<T>? =
-    if (name in names) null else register(name, configure)
+internal fun String.resolveValue(): Any {
+    return this
+}
 
-internal fun <T> NamedDomainObjectCollection<T>.maybeNamed(name: String): NamedDomainObjectProvider<T>? =
-    if (name in names) named(name) else null
-
-internal inline fun <reified T> NamedDomainObjectCollection<T>.maybeNamed(name: String, noinline configure: T.() -> Unit): NamedDomainObjectProvider<T>? =
-    if (name in names) {
-        named(name, configure)
-    }
-    else {
-        null
-    }
-
-internal fun <T> NamedDomainObjectContainer<T>.namedOrAll(name: String, configure: T.() -> Unit) =
-    if (name.isEmpty()) all(configure) else named(name, configure)
-
-internal fun <T> NamedDomainObjectCollection<T>.all(action: (T) -> Unit) =
-    all { action(this) }
-
-internal fun <T> NamedDomainObjectCollection<T>.configureEach(action: (T) -> Unit) =
-    configureEach { action(this) }
+//private class Resolver() : Grammar<Int>() {
+//
+//    private val LBRC by literalToken("\\{")
+//    private val RBRC by literalToken("}")
+//    val NON_EVAL by regexToken("""([^$\\]*(?:\\{2})*(?:\\[^$])?)*""")
+//
+//    val DOLLAR_SIGN by literalToken("$")
+//
+//    val EXT_ID by regexToken("[\\w.]+")
+//
+//    val EXT_ID_REF by -DOLLAR_SIGN * EXT_ID
+//
+////    val braced by -LBRC *  * -RBRC
+//
+//    override val rootParser: Parser<Int> = null
+//}

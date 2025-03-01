@@ -2,7 +2,6 @@ package plugin.project
 
 import com.gradle.develocity.agent.gradle.test.DevelocityTestConfiguration
 import com.gradle.develocity.agent.gradle.test.TestRetryConfiguration
-import gradle.hasNative
 import gradle.isCI
 import gradle.kotlin
 import gradle.maybeNamed
@@ -101,6 +100,7 @@ private fun Project.configureTestLogging() = tasks.withType<Test> {
 }
 
 /** Applies CI-specific configurations to test tasks. */
+@Suppress("UnstableApiUsage")
 private fun Project.configureTestOnCI() {
     // Don't fail build on the CI:
     // 1. To distinct builds failed because of failed tests and because of compilation errors or anything else.
@@ -165,17 +165,14 @@ private fun Project.configureTestOnCI() {
 
     // Run native tests only on matching host.
     // There is no need to configure `onlyIf` for Darwin targets as they're configured by KGP.
-    @Suppress("UnstableApiUsage")
-    if (kotlin.targets.hasNative()) {
-        tasks.maybeNamed("linkDebugTestLinuxX64") {
-            onlyIf("run only on Linux") { os == OperatingSystem.LINUX }
-        }
-        tasks.maybeNamed("linkDebugTestLinuxArm64") {
-            onlyIf("run only on Linux") { os == OperatingSystem.LINUX }
-        }
-        tasks.maybeNamed("linkDebugTestMingwX64") {
-            onlyIf("run only on Windows") { os == OperatingSystem.WINDOWS }
-        }
+    tasks.maybeNamed("linkDebugTestLinuxX64") {
+        onlyIf("run only on Linux") { os == OperatingSystem.LINUX }
+    }
+    tasks.maybeNamed("linkDebugTestLinuxArm64") {
+        onlyIf("run only on Linux") { os == OperatingSystem.LINUX }
+    }
+    tasks.maybeNamed("linkDebugTestMingwX64") {
+        onlyIf("run only on Windows") { os == OperatingSystem.WINDOWS }
     }
 }
 
