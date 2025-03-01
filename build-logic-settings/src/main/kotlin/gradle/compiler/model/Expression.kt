@@ -1,10 +1,12 @@
 package gradle.compiler.model
 
+import com.ionspin.kotlin.bignum.decimal.BigDecimal
+
 public sealed class Expression
 
 public data class Const(val value: Int) : Expression()
 
-public data class Number(val value: Int) : Expression()
+public data class Number(val value: String) : Expression()
 public data class Variable(val name: String) : Expression()
 
 public data class Reference(val id: String) : Expression()
@@ -51,9 +53,9 @@ public object Lt : BinaryOperationKind()
 public object Leq : BinaryOperationKind()
 public object Geq : BinaryOperationKind()
 
-public fun Boolean.asBit():Int = if (this) 1 else 0
+public fun Boolean.asBit(): Int = if (this) 1 else 0
 
-public fun BinaryOperationKind.semantics(l: Int, r: Int):Int = when (this) {
+public fun BinaryOperationKind.semantics(l: Int, r: Int): Int = when (this) {
     Plus -> l + r
     Minus -> l - r
     Times -> l * r

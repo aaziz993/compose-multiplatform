@@ -194,7 +194,7 @@ dependencies {
     //  provides a repository for downloading JVMs
     implementation(libs.plugins.foojay.resolver.convention.toDep())
     // creates fat/uber JARs with support for package relocation
-//    implementation(libs.plugins.shadow.toDep()) // conflict io.ktor.plugin:io.ktor.plugin.gradle.plugin:3.0.0 > io.ktor.plugin:plugin:3.0.0 > com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:7.1.2
+    implementation(libs.plugins.shadow.toDep()) // conflict io.ktor.plugin:io.ktor.plugin.gradle.plugin:3.0.0 > io.ktor.plugin:plugin:3.0.0 > com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:7.1.2
     // api that you can use to develop lightweight compiler plugins. KSP provides a simplified compiler plugin API that leverages the power of Kotlin while keeping the learning curve at a minimum. Compared to KAPT, annotation processors that use KSP can run up to 2x faster.
     implementation(libs.plugins.ksp.toDep())
     // set of solutions for collecting test coverage of Kotlin code compiled for JVM and Android platforms.
@@ -221,6 +221,8 @@ dependencies {
     implementation(libs.plugins.vanniktech.maven.publish.toDep())
 
     // Java
+    // scans and indexes your project's classpath metadata, allowing reverse transitive query of the type system on runtime.
+    implementation(libs.reflections)
     // parse toml
     implementation(libs.tomlj)
     // parse yaml
@@ -231,8 +233,8 @@ dependencies {
     implementation(libs.plugins.noarg.toDep())
     // adapts Kotlin to the requirements of those frameworks and makes classes annotated with a specific annotation and their members open.
     implementation(libs.plugins.allopen.toDep())
-    // scans and indexes your project's classpath metadata, allowing reverse transitive query of the type system on runtime.
-    implementation(libs.reflections)
+    // big numbers
+    implementation(libs.bignum)
     // convert strings between various case formats
     implementation(libs.kasechange)
     // a nice parser combinator library for Kotlin JVM, JS, and Multiplatform projects
