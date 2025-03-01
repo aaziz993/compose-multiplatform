@@ -15,11 +15,7 @@ import plugin.project.java.model.Jar
 import plugin.project.java.model.JavaToolchainSpec
 import plugin.project.java.model.application.JavaApplication
 import plugin.project.kotlin.cocoapods.model.CocoapodsSettings
-import plugin.project.kotlin.model.KotlinCommonCompilerOptions
 import plugin.project.kotlin.model.KotlinCommonCompilerOptionsImpl
-import plugin.project.kotlin.model.KotlinMultiplatformExtension
-import plugin.project.kotlin.model.KotlinSourceSet
-import plugin.project.kotlin.model.KotlinTarget
 
 @Serializable
 internal data class KotlinMultiplatformSettings(
@@ -31,9 +27,9 @@ internal data class KotlinMultiplatformSettings(
     override val coreLibrariesVersion: String? = null,
     override val explicitApi: ExplicitApiMode? = null,
     override val compilerOptions: KotlinCommonCompilerOptionsImpl? = null,
-    val targets: List<KotlinTarget>? = null,
-    val hierarchy: LinkedHashMap<String, List<String>>? = null,
-    val sourceSets: LinkedHashMap<String, KotlinSourceSet>? = null,
+    val targets: List<@Serializable(with = KotlinTargetTransformingSerializer::class) KotlinTarget>? = null,
+    val hierarchy: List<@Serializable(with = HierarchyAliasTransformingSerializer::class) HierarchyAlias>? = null,
+    val sourceSets: List<@Serializable(with = KotlinSourceSetTransformingSerializer::class) KotlinSourceSet>? = null,
     val application: JavaApplication? = null,
     val android: BaseExtension? = null,
     val jar: Jar? = null,
@@ -49,74 +45,8 @@ internal data class KotlinMultiplatformSettings(
 
             kotlin.applyDefaultHierarchyTemplate {
                 common {
-                    hierarchy?.forEach { (name, group) ->
-                        group(name) {
-                            group.forEach { targetName ->
-                                when (targetName) {
-                                    "jvm" -> withJvm()
-                                    "android" -> withAndroidTarget()
-                                    "native" -> group(targetName) {
-                                        withNative()
-                                    }
-
-                                    "androidNative" -> group(targetName) {
-                                        withAndroidNative()
-                                    }
-
-                                    "androidNativeArm32" -> withAndroidNativeArm32()
-                                    "androidNativeArm64" -> withAndroidNativeArm64()
-                                    "androidNativeX86" -> withAndroidNativeX86()
-                                    "androidNativeX64" -> withAndroidNativeX64()
-                                    "apple" -> group(targetName) {
-                                        withApple()
-                                    }
-
-                                    "ios" -> group(targetName) {
-                                        withIos()
-                                    }
-
-                                    "iosArm64" -> withIosArm64()
-                                    "iosX64" -> withIosX64()
-                                    "iosSimulatorArm64" -> withIosSimulatorArm64()
-                                    "tvos" -> group(targetName) {
-                                        withTvos()
-                                    }
-
-                                    "tvosArm64" -> withTvosArm64()
-                                    "tvosX64" -> withTvosX64()
-                                    "tvosSimulatorArm64" -> withTvosSimulatorArm64()
-                                    "macos" -> group(targetName) {
-                                        withMacos()
-                                    }
-
-                                    "macosArm64" -> withMacosArm64()
-                                    "macosX64" -> withMacosX64()
-                                    "watchos" -> group(targetName) {
-                                        withWatchos()
-                                    }
-
-                                    "watchosArm32" -> withWatchosArm32()
-                                    "watchosArm64" -> withWatchosArm64()
-                                    "watchosDeviceArm64" -> withWatchosDeviceArm64()
-                                    "watchosSimulatorArm64" -> withWatchosSimulatorArm64()
-                                    "linux" -> group(targetName) {
-                                        withLinux()
-                                    }
-
-                                    "linuxArm64" -> withLinuxArm64()
-                                    "linuxX64" -> withLinuxX64()
-                                    "mingw" -> group(targetName) {
-                                        withMingw()
-                                    }
-
-                                    "mingwX64" -> withMingwX64()
-                                    "js" -> withJs()
-                                    "wasmJs" -> withWasmJs()
-                                    "wasmWasi" -> withWasmWasi()
-                                    else -> group(targetName)
-                                }
-                            }
-                        }
+                    hierarchy?.forEach { hierarchy ->
+                        hierarchy.applyTo(this)
                     }
                 }
             }

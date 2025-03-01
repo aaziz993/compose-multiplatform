@@ -11,6 +11,7 @@ import gradle.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import plugin.model.dependency.ProjectDependency
+import plugin.model.dependency.ProjectDependencyTransformingSerializer
 import plugin.project.model.EnabledSettings
 
 @Serializable
@@ -21,7 +22,7 @@ internal data class KspSettings(
     override val excludedSources: List<String>? = null,
     override val arguments: Map<String, String>? = null,
     override val allWarningsAsErrors: Boolean? = null,
-    val processors: List<ProjectDependency>? = null,
+    val processors: List<@Serializable(with = ProjectDependencyTransformingSerializer::class) ProjectDependency>? = null,
     override val enabled: Boolean = true,
 ) : KspExtension, EnabledSettings {
 

@@ -120,8 +120,8 @@ internal class KMPPlugin : Plugin<Project> {
                 else -> Unit
             }
 
-            sourceSets.forEach { sourceSet ->
-                projectProperties.kotlin.sourceSets?.get(sourceSet.name)?.applyTo(sourceSet)
+            projectProperties.kotlin.sourceSets?.forEach { sourceSet ->
+                sourceSet.applyTo()
             }
         }
     }

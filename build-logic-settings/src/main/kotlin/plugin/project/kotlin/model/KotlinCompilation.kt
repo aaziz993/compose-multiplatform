@@ -3,6 +3,7 @@ package plugin.project.kotlin.model
 import gradle.trySet
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
+import plugin.project.kotlin.kmp.model.KotlinSourceSet
 
 /**
  * # Kotlin compilation
@@ -107,11 +108,7 @@ internal interface KotlinCompilation : HasKotlinDependencies, Named {
 
     context(Project)
     fun applyTo(compilation: KotlinCompilation<*>) {
-        defaultSourceSet?.let { defaultSourceSet ->
-            compilation.defaultSourceSet {
-                defaultSourceSet.applyTo(this)
-            }
-        }
+        defaultSourceSet?.applyTo()
 
         compilation::compileDependencyFiles trySet compileDependencyFiles?.let { files(* it.toTypedArray()) }
 

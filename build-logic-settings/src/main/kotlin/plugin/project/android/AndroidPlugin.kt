@@ -16,7 +16,7 @@ import gradle.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.SourceSet
-import plugin.project.kotlin.model.KotlinAndroidTarget
+import plugin.project.kotlin.kmp.model.android.KotlinAndroidTarget
 import plugin.project.model.ProjectLayout
 import plugin.project.model.ProjectType
 

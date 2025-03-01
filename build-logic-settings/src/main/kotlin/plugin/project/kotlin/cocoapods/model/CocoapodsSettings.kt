@@ -10,7 +10,7 @@ import gradle.settings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
-import plugin.project.kotlin.model.nat.Framework
+import plugin.project.kotlin.kmp.model.nat.Framework
 import plugin.project.model.EnabledSettings
 
 @Serializable

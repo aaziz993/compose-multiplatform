@@ -29,6 +29,6 @@ internal infix fun Map<String, Any?>.deepMerge(source: Map<String, Any?>): Map<S
     return resultMap
 }
 
-internal fun Any.get(vararg keys:Any?){
-
-}
+//internal fun Any.get(vararg keys:Any?)=when(this){
+//    is List ->
+//}

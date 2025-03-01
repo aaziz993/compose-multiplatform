@@ -9,8 +9,9 @@ import kotlinx.serialization.serializer
 import org.reflections.Reflections
 
 @Suppress("UNCHECKED_CAST")
-public fun <T : Any> KClass<out T>.getPolymorphicSerializer(type: String): KSerializer<T>? = Reflections().getSubTypesOf(java)
-    .filter { it.kotlin.findAnnotation<Serializable>() != null }
-    .find { clazz ->
-        (clazz.getAnnotation(SerialName::class.java)?.value ?: clazz.simpleName) == type
-    }?.kotlin?.serializer() as KSerializer<T>?
+public fun <T : Any> KClass<out T>.getPolymorphicSerializer(type: String): KSerializer<T>? =
+    Reflections().getSubTypesOf(java)
+        .filter { it.kotlin.findAnnotation<Serializable>() != null }
+        .find { clazz ->
+            (clazz.getAnnotation(SerialName::class.java)?.value ?: clazz.simpleName) == type
+        }?.kotlin?.serializer() as KSerializer<T>?

@@ -5,7 +5,6 @@ package plugin.model.dependency
 import gradle.allLibs
 import gradle.isUrl
 import gradle.resolve
-import gradle.serialization.serializer.JsonPolymorphicTransformingSerializer
 import gradle.settings
 import java.io.File
 import kotlinx.serialization.SerialName
@@ -13,7 +12,9 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.JsonTransformingSerializer
 import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
 import org.gradle.api.Project
 import org.gradle.api.file.Directory
 import org.gradle.api.file.FileCollection
@@ -25,14 +26,14 @@ import org.tomlj.TomlParseResult
 import plugin.project.kotlin.cocoapods.model.CocoapodsExtension
 import plugin.project.kotlin.cocoapods.model.CocoapodsExtension.CocoapodsDependency.PodLocation
 
-@Serializable(with = ProjectDependencySerializer::class)
+@Serializable
 internal sealed class ProjectDependency {
 
     abstract val notation: String
 }
 
-internal object ProjectDependencySerializer :
-    JsonPolymorphicTransformingSerializer<ProjectDependency>(ProjectDependency::class) {
+internal object ProjectDependencyTransformingSerializer :
+    JsonTransformingSerializer<ProjectDependency>(ProjectDependency.serializer()) {
 
     override fun transformDeserialize(element: JsonElement): JsonElement {
         if (element is JsonObject) {
@@ -95,6 +96,31 @@ internal object ProjectDependencySerializer :
             ),
         )
     }
+
+//    override fun transformSerialize(element: JsonElement): JsonElement =
+//        JsonObject(
+//            mapOf(
+//                when (element.jsonObject["type"].jsonPrimitive.content) {
+//                    "dependency" -> {
+//                        val subConfigurationMap = element.jsonObject["subConfiguration"]?.let { subConfiguration ->
+//                            subConfiguration to JsonPrimitive("")
+//                        }
+//
+//                        element.jsonObject["configuration"]?.let { configuration ->
+//                            element.jsonObject["notation"]!!.jsonPrimitive.content to configuration
+//                        }
+//
+//
+//
+//                        "pod" to JsonPrimitive("")
+//                    }
+//
+//                    "pod" -> {
+//                        "pod" to JsonPrimitive("")
+//                    }
+//                },
+//            ),
+//        )
 }
 
 @Serializable

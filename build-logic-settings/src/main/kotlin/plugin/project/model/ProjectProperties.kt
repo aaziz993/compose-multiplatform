@@ -2,6 +2,7 @@ package plugin.project.model
 
 import kotlinx.serialization.Serializable
 import plugin.model.dependency.ProjectDependency
+import plugin.model.dependency.ProjectDependencyTransformingSerializer
 import plugin.project.android.model.AndroidSettings
 import plugin.project.apple.model.AppleSettings
 import plugin.project.compose.model.ComposeSettings
@@ -34,7 +35,7 @@ internal data class ProjectProperties(
     val tasks: Tasks = Tasks(),
     val pluginManagement: PluginManagement? = null,
     val dependencyResolutionManagement: DependencyResolutionManagement? = null,
-    override val dependencies: List<ProjectDependency>? = null,
+    override val dependencies: List<@Serializable(with = ProjectDependencyTransformingSerializer::class) ProjectDependency>? = null,
     val includes: List<String>? = null,
     val projects: List<ProjectDescriptor>? = null,
     val gradleEnterpriseAccessKey: String? = null,

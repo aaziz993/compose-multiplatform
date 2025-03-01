@@ -6,6 +6,7 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import plugin.model.dependency.Dependency
 import plugin.model.dependency.ProjectDependency
+import plugin.model.dependency.ProjectDependencyTransformingSerializer
 
 @Serializable
 internal data class SqlDelightDatabase(
@@ -19,7 +20,7 @@ internal data class SqlDelightDatabase(
     val migrationOutputDirectory: String? = null,
     val migrationOutputFileFormat: String? = null,
     val generateAsync: Boolean? = null,
-    val modules: List<ProjectDependency>? = null,
+    val modules: List<@Serializable(with = ProjectDependencyTransformingSerializer::class) ProjectDependency>? = null,
     val dialect: String? = null,
     /**
      * When SqlDelight finds an equality operation with a nullable typed rvalue such as:

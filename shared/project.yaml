@@ -1,7 +1,7 @@
 templates:
   - ../template/common.yaml
-  - ../template/multiplatform.yaml
-  - ../template/compose.yaml
+  - ../template/kotlin-multiplatform.yaml
+  - ../template/compose-kotlin-multiplatform.yaml
 
 plugins:
   ksp:
