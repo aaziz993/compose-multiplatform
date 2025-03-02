@@ -8,4 +8,16 @@ internal fun Project.configureJar() {
     tasks.withType<Jar> {
 
     }
+
+//    tasks {
+//        shadowJar {
+//            duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+//            from(sourceSets["test"].output)
+//            archiveBaseName.set("my-app")
+//            mergeServiceFiles()
+//            manifest {
+//                attributes("Main-Class" to "com.example.MyApp")
+//            }
+//        }
+//    }
 }

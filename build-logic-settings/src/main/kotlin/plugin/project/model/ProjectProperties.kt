@@ -6,6 +6,7 @@ import gradle.allLibs
 import gradle.isUrl
 import gradle.libs
 import gradle.moduleName
+import gradle.projectProperties
 import gradle.settings
 import gradle.trySetSystemProperty
 import gradle.version
@@ -89,6 +90,7 @@ internal data class ProjectProperties(
     val layout: ProjectLayout = ProjectLayout.DEFAULT,
     val group: String? = null,
     val description: String? = null,
+    val version: VersionSettings = VersionSettings(),
     val plugins: Plugins = Plugins(),
     val jvm: JavaPluginExtension? = null,
     val application: JavaApplication? = null,
@@ -228,14 +230,8 @@ internal data class ProjectProperties(
         if (kotlin.targets?.isNotEmpty() == true) {
             group?.let(::setGroup)
             description?.let(::setDescription)
-            version = settings.libs.versions.let { versions ->
-                version(
-                    versions.version("$moduleName.version.major")?.toInt() ?: 1,
-                    versions.version("$moduleName.version.minor")?.toInt() ?: 0,
-                    versions.version("$moduleName.version.patch")?.toInt() ?: 0,
-                    versions.version("$moduleName.version.preRelease"),
-                )
-            }
+
+            project.version = version()
         }
 
         //  Don't change order!
