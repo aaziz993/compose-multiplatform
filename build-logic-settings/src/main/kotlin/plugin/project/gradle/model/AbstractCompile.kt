@@ -1,12 +1,9 @@
 package plugin.project.gradle.model
 
 import gradle.tryAssign
-import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
-import org.gradle.api.tasks.SourceTask
 import org.gradle.api.tasks.compile.AbstractCompile
 import plugin.project.kotlin.model.Task
-import plugin.project.kotlin.model.configure
 
 /**
  * The base class for all JVM-based language compilation tasks.
@@ -44,20 +41,18 @@ internal abstract class AbstractCompile : Task {
     abstract val targetCompatibility: String?
 
     context(Project)
-    override fun applyTo(_tasks: NamedDomainObjectContainer<org.gradle.api.Task>) {
-        super.applyTo(_tasks)
+    override fun applyTo(task: org.gradle.api.Task) {
+        super.applyTo(task)
 
-        _tasks.configure {
-            this as AbstractCompile
+        task as AbstractCompile
 
-            destinationDirectory tryAssign this@AbstractCompile.destinationDirectory?.let(layout.projectDirectory::dir)
+        task.destinationDirectory tryAssign destinationDirectory?.let(layout.projectDirectory::dir)
 
-            this@AbstractCompile.classpath?.let { classpath ->
-                setClasspath(files(*classpath.toTypedArray()))
-            }
-
-            this@AbstractCompile.sourceCompatibility?.let(::setSourceCompatibility)
-            this@AbstractCompile.targetCompatibility?.let(::setTargetCompatibility)
+        classpath?.let { classpath ->
+            task.classpath = files(*classpath.toTypedArray())
         }
+
+        sourceCompatibility?.let(task::setSourceCompatibility)
+        targetCompatibility?.let(task::setTargetCompatibility)
     }
 }

@@ -108,21 +108,19 @@ internal interface KotlinCompilation : HasKotlinDependencies, Named {
     val associatedCompilations: Set<String>?
 
     context(Project)
-    fun applyTo(compilations: NamedDomainObjectContainer<out KotlinCompilation<*>>) = compilations.configure {
-        this@KotlinCompilation.defaultSourceSet?.let { defaultSourceSet ->
-            defaultSourceSet {
+    fun applyTo(compilation: KotlinCompilation<*>) {
+        defaultSourceSet?.let { defaultSourceSet ->
+            compilation.defaultSourceSet {
                 defaultSourceSet.applyTo(this)
             }
         }
 
-        ::compileDependencyFiles trySet this@KotlinCompilation.compileDependencyFiles?.let { files(* it.toTypedArray()) }
+        compilation::compileDependencyFiles trySet compileDependencyFiles?.let { files(* it.toTypedArray()) }
 
-        this@KotlinCompilation.output?.applyTo(output)
+        output?.applyTo(compilation.output)
 
-        this@KotlinCompilation.associatedCompilations
-            ?.map(target.compilations::getByName)
-            ?.forEach { target ->
-                associateWith(target)
-            }
+        associatedCompilations
+            ?.map(compilation.target.compilations::getByName)
+            ?.forEach(compilation::associateWith)
     }
 }

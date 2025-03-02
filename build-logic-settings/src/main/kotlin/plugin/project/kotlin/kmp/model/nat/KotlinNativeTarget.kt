@@ -1,12 +1,13 @@
 package plugin.project.kotlin.kmp.model.nat
 
+import gradle.containerize
 import kotlinx.serialization.Serializable
 import org.gradle.api.NamedDomainObjectCollection
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.container
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import plugin.project.kotlin.kmp.model.KotlinTarget
-import plugin.project.kotlin.model.configure
+import plugin.project.kotlin.model.HasBinaries
+import plugin.project.kotlin.model.HasConfigurableKotlinCompilerOptions
 
 @Serializable
 internal abstract class KotlinNativeTarget : KotlinTarget,
@@ -16,20 +17,18 @@ internal abstract class KotlinNativeTarget : KotlinTarget,
     abstract override val compilations: List<KotlinNativeCompilation>?
 
     context(Project)
-    override fun applyTo(targets: NamedDomainObjectCollection<out org.jetbrains.kotlin.gradle.plugin.KotlinTarget>) {
-        super<KotlinTarget>.applyTo(targets)
+    override fun applyTo(target: org.jetbrains.kotlin.gradle.plugin.KotlinTarget) {
+        super<KotlinTarget>.applyTo(target)
 
-        targets.configure {
-            this as KotlinNativeTarget
+        target as KotlinNativeTarget
 
-            this@KotlinNativeTarget.compilerOptions?.applyTo(compilerOptions)
+        super<HasConfigurableKotlinCompilerOptions>.applyTo(target)
 
-            this@KotlinNativeTarget.binaries?.let { binaries ->
-                binaries {
-                    binaries.framework?.let { framework ->
-                        framework {
-                            framework.applyTo(container {  this})
-                        }
+        binaries?.let { binaries ->
+            target.binaries {
+                binaries.framework?.let { framework ->
+                    framework {
+                        framework.applyTo(this)
                     }
                 }
             }

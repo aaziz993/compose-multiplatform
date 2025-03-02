@@ -1,9 +1,7 @@
 package plugin.project.kotlin.model
 
 import gradle.serialization.serializer.AnySerializer
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerToolOptions
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
@@ -39,13 +37,11 @@ internal data class KotlinCompilationTask<out CO : KotlinCommonCompilerOptions>(
 ) : Task {
 
     context(Project)
-    override fun applyTo(_tasks: NamedDomainObjectContainer<org.gradle.api.Task>) {
-        super.applyTo(_tasks)
+    override fun applyTo(task: org.gradle.api.Task) {
+        super.applyTo(task)
 
-        _tasks.configure {
-            this as KotlinCompilationTask<*>
+        task as KotlinCompilationTask<*>
 
-            this@KotlinCompilationTask.compilerOptions?.applyTo(compilerOptions as KotlinCommonCompilerToolOptions)
-        }
+        compilerOptions?.applyTo(task.compilerOptions)
     }
 }

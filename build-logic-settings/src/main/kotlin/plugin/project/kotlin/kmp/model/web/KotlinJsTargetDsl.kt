@@ -6,11 +6,12 @@ import org.gradle.api.NamedDomainObjectCollection
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalMainFunctionArgumentsDsl
 import plugin.project.kotlin.kmp.model.KotlinTarget
-import plugin.project.kotlin.model.configure
+import plugin.project.kotlin.model.HasBinaries
+import plugin.project.kotlin.model.HasConfigurableKotlinCompilerOptions
 
 @Serializable
 internal abstract class KotlinJsTargetDsl : KotlinTarget, KotlinTargetWithNodeJsDsl,
-    plugin.project.kotlin.kmp.model.nat.HasBinaries<KotlinJsBinaryContainer>, plugin.project.kotlin.model.HasConfigurableKotlinCompilerOptions<plugin.project.kotlin.kmp.model.web.KotlinJsCompilerOptions> {
+    HasBinaries<KotlinJsBinaryContainer>, HasConfigurableKotlinCompilerOptions<KotlinJsCompilerOptions> {
 
     abstract override val compilations: List<KotlinJsCompilation>?
 
@@ -31,29 +32,27 @@ internal abstract class KotlinJsTargetDsl : KotlinTarget, KotlinTargetWithNodeJs
 
     context(Project)
     @OptIn(ExperimentalMainFunctionArgumentsDsl::class)
-    override fun applyTo(targets: NamedDomainObjectCollection<out org.jetbrains.kotlin.gradle.plugin.KotlinTarget>) {
-        super<KotlinTarget>.applyTo(targets)
+    override fun applyTo(target: org.jetbrains.kotlin.gradle.plugin.KotlinTarget) {
+        super<KotlinTarget>.applyTo(target)
 
-        targets.configure {
-            this as org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
+        target as org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
 
-            this@KotlinJsTargetDsl.compilerOptions?.applyTo(compilerOptions)
+        super<HasConfigurableKotlinCompilerOptions>.applyTo(target)
 
-            moduleName = this@KotlinJsTargetDsl.moduleName ?: project.moduleName
+        target.moduleName = moduleName ?: project.moduleName
 
-            super<KotlinTargetWithNodeJsDsl>.applyTo(this)
+        super<KotlinTargetWithNodeJsDsl>.applyTo(target)
 
-            this@KotlinJsTargetDsl.browser?.let { browser ->
-                browser {
-                    browser.applyTo(this, "$moduleName-${targetName}.js")
-                }
+        browser?.let { browser ->
+            target.browser {
+                browser.applyTo(this, "$moduleName-${targetName}.js")
             }
-
-            this@KotlinJsTargetDsl.useCommonJs?.takeIf { it }?.run { useCommonJs() }
-            this@KotlinJsTargetDsl.useEsModules?.takeIf { it }?.run { useEsModules() }
-            this@KotlinJsTargetDsl.passAsArgumentToMainFunction?.let(::passAsArgumentToMainFunction)
-            this@KotlinJsTargetDsl.generateTypeScriptDefinitions?.takeIf { it }?.let { generateTypeScriptDefinitions() }
-            this@KotlinJsTargetDsl.binaries.applyTo(binaries)
         }
+
+        useCommonJs?.takeIf { it }?.run { target.useCommonJs() }
+        useEsModules?.takeIf { it }?.run { target.useEsModules() }
+        passAsArgumentToMainFunction?.let(target::passAsArgumentToMainFunction)
+        generateTypeScriptDefinitions?.takeIf { it }?.let { target.generateTypeScriptDefinitions() }
+        binaries.applyTo(target.binaries)
     }
 }

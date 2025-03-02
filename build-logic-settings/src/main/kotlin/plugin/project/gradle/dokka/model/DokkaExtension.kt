@@ -175,11 +175,15 @@ internal interface DokkaExtension {
         extension.konanHome tryAssign konanHome?.let(::file)
 
         dokkaPublications?.forEach { dokkaPublication ->
-            dokkaPublication.applyTo(extension.dokkaPublications)
+            extension.dokkaPublications.named(dokkaPublication.name) {
+                dokkaPublication.applyTo(this)
+            }
         }
 
         dokkaSourceSets?.forEach { dokkaSourceSet ->
-            dokkaSourceSet.applyTo(extension.dokkaSourceSets)
+            extension.dokkaSourceSets.named(dokkaSourceSet.name) {
+                dokkaSourceSet.applyTo(this)
+            }
         }
 
         extension.dokkaEngineVersion tryAssign dokkaEngineVersion

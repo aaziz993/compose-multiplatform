@@ -4,14 +4,12 @@ import gradle.kotlin
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.container
-import org.gradle.kotlin.dsl.withType
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
+import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
 
 @Serializable
 @SerialName("js")
 internal data class KotlinJsTarget(
-    override val targetName: String = "",
+    override val targetName: String = "js",
     override val compilations: List<KotlinJsCompilation>? = null,
     override val nodejs: KotlinJsNodeDsl? = null,
     override val moduleName: String? = null,
@@ -25,12 +23,5 @@ internal data class KotlinJsTarget(
 ) : KotlinJsTargetDsl() {
 
     context(Project)
-    override fun applyTo() {
-        val targets =
-            if (targetName.isEmpty())
-                kotlin.targets.withType<KotlinNativeTarget>()
-            else container { kotlin.js(targetName) }
-
-        super.applyTo(targets)
-    }
+    override fun applyTo() = super.applyTo(kotlin.js(targetName) as KotlinTarget)
 }

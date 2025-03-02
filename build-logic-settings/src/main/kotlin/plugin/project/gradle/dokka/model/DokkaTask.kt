@@ -4,6 +4,7 @@ import gradle.serialization.serializer.AnySerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import org.gradle.api.Task
 import org.gradle.kotlin.dsl.withType
 
 @Serializable
@@ -35,9 +36,9 @@ internal data class DokkaTask(
 ) : AbstractDokkaTask() {
 
     context(Project)
-    override fun applyTo() {
+    override fun applyTo(task: Task) {
         tasks.withType<org.jetbrains.dokka.gradle.DokkaTask> {
-            super.applyTo()
+            super.applyTo(this)
         }
     }
 }

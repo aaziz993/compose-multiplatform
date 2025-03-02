@@ -6,7 +6,6 @@ import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 import org.jetbrains.dokka.gradle.formats.DokkaPublication
 import plugin.project.kotlin.model.Named
-import plugin.project.kotlin.model.configure
 
 /**
  * A [DokkaPublication] controls the output produced by the Dokka Generator.
@@ -123,18 +122,17 @@ internal data class DokkaPublication(
         get() = formatName
 
     context(Project)
-    fun applyTo(publications: NamedDomainObjectContainer<DokkaPublication>) =
-        publications.configure {
-            enabled tryAssign this@DokkaPublication.enabled
-            moduleName tryAssign this@DokkaPublication.moduleName
-            moduleVersion tryAssign this@DokkaPublication.moduleVersion
-            outputDirectory tryAssign this@DokkaPublication.outputDirectory?.let(layout.projectDirectory::dir)
-            offlineMode tryAssign this@DokkaPublication.offlineMode
-            failOnWarning tryAssign this@DokkaPublication.failOnWarning
-            suppressObviousFunctions tryAssign this@DokkaPublication.suppressObviousFunctions
-            suppressInheritedMembers tryAssign this@DokkaPublication.suppressInheritedMembers
-            this@DokkaPublication.includes?.let(includes::setFrom)
-            cacheRoot tryAssign this@DokkaPublication.cacheRoot?.let(layout.projectDirectory::dir)
-            finalizeCoroutines tryAssign this@DokkaPublication.finalizeCoroutines
-        }
+    fun applyTo(publication: DokkaPublication) {
+        publication.enabled tryAssign enabled
+        publication.moduleName tryAssign moduleName
+        publication.moduleVersion tryAssign moduleVersion
+        publication.outputDirectory tryAssign outputDirectory?.let(layout.projectDirectory::dir)
+        publication.offlineMode tryAssign offlineMode
+        publication.failOnWarning tryAssign failOnWarning
+        publication.suppressObviousFunctions tryAssign suppressObviousFunctions
+        publication.suppressInheritedMembers tryAssign suppressInheritedMembers
+        includes?.let(publication.includes::setFrom)
+        publication.cacheRoot tryAssign cacheRoot?.let(layout.projectDirectory::dir)
+        publication.finalizeCoroutines tryAssign finalizeCoroutines
+    }
 }

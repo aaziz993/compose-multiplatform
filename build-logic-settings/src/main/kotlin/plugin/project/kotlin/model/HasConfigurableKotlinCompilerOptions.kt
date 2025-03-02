@@ -1,5 +1,8 @@
 package plugin.project.kotlin.model
 
+import org.gradle.api.Project
+import org.jetbrains.kotlin.gradle.dsl.HasConfigurableKotlinCompilerOptions
+
 /**
  * DSL entity with the ability to configure Kotlin compiler options.
  */
@@ -11,4 +14,9 @@ internal interface HasConfigurableKotlinCompilerOptions<CO : KotlinCommonCompile
      * This can be used to get the values of currently configured options or modify them.
      */
     val compilerOptions: CO?
+
+    context(Project)
+    fun applyTo(options: HasConfigurableKotlinCompilerOptions<*>) {
+        compilerOptions?.applyTo(options.compilerOptions)
+    }
 }

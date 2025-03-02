@@ -1,6 +1,7 @@
 package plugin.project.kotlin.kmp.model
 
 import gradle.kotlin
+import gradle.maybeNamed
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -10,8 +11,6 @@ import plugin.model.dependency.ProjectDependencyTransformingSerializer
 import plugin.project.kotlin.model.HasKotlinDependencies
 import plugin.project.kotlin.model.LanguageSettingsBuilder
 import plugin.project.kotlin.model.Named
-import plugin.project.kotlin.model.configure
-import plugin.project.kotlin.model.maybeConfigure
 
 /**
  * Represents a logical group of Kotlin files, including sources, resources and additional metadata describing how
@@ -60,7 +59,7 @@ internal data class KotlinSourceSet(
 
     context(Project)
     fun applyTo() {
-        kotlin.sourceSets.maybeConfigure {
+        kotlin.sourceSets.maybeNamed(name) {
             applyTo(this)
         }
     }

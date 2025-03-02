@@ -8,7 +8,6 @@ import org.gradle.api.NamedDomainObjectCollection
 import org.gradle.api.Project
 import plugin.project.kotlin.model.KotlinCompilation
 import plugin.project.kotlin.model.Named
-import plugin.project.kotlin.model.configure
 
 @Serializable(with = KotlinTargetSerializer::class)
 internal interface KotlinTarget : Named {
@@ -27,12 +26,13 @@ internal interface KotlinTarget : Named {
     val compilations: List<KotlinCompilation>?
 
     context(Project)
-    fun applyTo(targets: NamedDomainObjectCollection<out org.jetbrains.kotlin.gradle.plugin.KotlinTarget>) =
-        targets.configure {
-            this@KotlinTarget.compilations?.forEach { compilation ->
-                compilation.applyTo(compilations)
+    fun applyTo(target: org.jetbrains.kotlin.gradle.plugin.KotlinTarget) {
+        this@KotlinTarget.compilations?.forEach { compilation ->
+            target.compilations.named(compilation.name) {
+                compilation.applyTo(this)
             }
         }
+    }
 
     context(Project)
     fun applyTo()

@@ -1,5 +1,6 @@
 package plugin.project.kotlin.cocoapods.model
 
+import gradle.containerize
 import gradle.moduleName
 import gradle.projectProperties
 import gradle.trySet
@@ -118,7 +119,7 @@ internal interface CocoapodsExtension {
 
         framework?.let { framework ->
             extension.framework {
-                framework.applyTo(container { this })
+                framework.applyTo( this )
             }
         }
 

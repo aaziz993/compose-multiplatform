@@ -19,11 +19,3 @@ internal interface Named {
      */
     val name: String
 }
-
-context(Named)
-internal inline fun <reified T> NamedDomainObjectCollection<out T>.configure(noinline configure: T.() -> Unit) =
-    namedOrAll(name, configure)
-
-context(Named)
-internal inline fun <reified T> NamedDomainObjectCollection<out T>.maybeConfigure(noinline configure: T.() -> Unit) =
-    maybeNamedOrAll(name, configure)

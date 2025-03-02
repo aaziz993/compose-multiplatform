@@ -5,7 +5,6 @@ import org.gradle.api.NamedDomainObjectCollection
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.mpp.Executable
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
-import plugin.project.kotlin.model.configure
 
 @Serializable
 internal data class Executable(
@@ -31,13 +30,11 @@ internal data class Executable(
 ) : NativeBinary {
 
     context(Project)
-    override fun applyTo(binaries: NamedDomainObjectCollection<out org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary>) {
-        super.applyTo(binaries)
+    override fun applyTo(binary: org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary) {
+        super.applyTo(binary)
 
-        binaries.configure {
-            this as Executable
+        binary as Executable
 
-            this@Executable.entryPoint?.let(::entryPoint)
-        }
+        entryPoint?.let(binary::entryPoint)
     }
 }

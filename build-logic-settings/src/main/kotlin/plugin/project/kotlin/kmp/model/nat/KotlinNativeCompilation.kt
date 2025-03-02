@@ -1,13 +1,11 @@
 package plugin.project.kotlin.kmp.model.nat
 
 import kotlinx.serialization.Serializable
-import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeCompilation
 import plugin.model.dependency.ProjectDependency
 import plugin.model.dependency.ProjectDependencyTransformingSerializer
-import plugin.project.kotlin.model.configure
 
 @Serializable
 internal data class KotlinNativeCompilation(
@@ -23,16 +21,14 @@ internal data class KotlinNativeCompilation(
 ) : plugin.project.kotlin.model.KotlinCompilation {
 
     context(Project)
-    override fun applyTo(compilations: NamedDomainObjectContainer<out KotlinCompilation<*>>) {
-        super.applyTo(compilations)
+    override fun applyTo(compilation: KotlinCompilation<*>) {
+        super.applyTo(compilation)
 
-        compilations.configure {
-            this as KotlinNativeCompilation
+        compilation as KotlinNativeCompilation
 
-            this@KotlinNativeCompilation.cinterops?.forEach { cinterops ->
-                cinterops {
-                    cinterops.applyTo(this)
-                }
+        cinterops?.forEach { cinterops ->
+            compilation.cinterops.named(cinterops.name) {
+                cinterops.applyTo(this)
             }
         }
     }

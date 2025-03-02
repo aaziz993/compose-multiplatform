@@ -5,13 +5,9 @@ import gradle.trySet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.container
-import org.gradle.kotlin.dsl.withType
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
 import plugin.project.kotlin.kmp.model.KotlinTarget
 import plugin.project.kotlin.kmp.model.jvm.KotlinJvmCompilerOptions
 import plugin.project.kotlin.model.HasConfigurableKotlinCompilerOptions
-import plugin.project.kotlin.model.configure
 
 @Serializable
 @SerialName("android")
@@ -40,22 +36,17 @@ internal data class KotlinAndroidTarget(
 
     context(Project)
     override fun applyTo() {
-        val targets =
-            if (targetName.isEmpty())
-                kotlin.targets.withType<KotlinAndroidTarget>()
-            else container { kotlin.androidTarget(targetName) }
+        val target = kotlin.androidTarget(targetName)
 
-        super<KotlinTarget>.applyTo(targets)
+        super<KotlinTarget>.applyTo(target)
 
-        targets.configure {
-            this@KotlinAndroidTarget.compilerOptions?.applyTo(compilerOptions)
+        super<HasConfigurableKotlinCompilerOptions>.applyTo(target)
 
-            this@KotlinAndroidTarget.publishLibraryVariants?.let { _publishLibraryVariants ->
-                publishLibraryVariants = _publishLibraryVariants
-            }
-
-            this@KotlinAndroidTarget.publishAllLibraryVariants?.takeIf { it }?.run { publishAllLibraryVariants() }
-            ::publishLibraryVariantsGroupedByFlavor trySet this@KotlinAndroidTarget.publishLibraryVariantsGroupedByFlavor
+        publishLibraryVariants?.let { publishLibraryVariants ->
+            target.publishLibraryVariants = publishLibraryVariants
         }
+
+        publishAllLibraryVariants?.takeIf { it }?.run { target.publishAllLibraryVariants() }
+        target::publishLibraryVariantsGroupedByFlavor trySet publishLibraryVariantsGroupedByFlavor
     }
 }

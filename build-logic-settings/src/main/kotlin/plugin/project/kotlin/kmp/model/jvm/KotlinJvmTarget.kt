@@ -4,17 +4,13 @@ import gradle.kotlin
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.container
-import org.gradle.kotlin.dsl.withType
-import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
 import plugin.project.kotlin.kmp.model.KotlinTarget
 import plugin.project.kotlin.model.HasConfigurableKotlinCompilerOptions
-import plugin.project.kotlin.model.configure
 
 @Serializable
 @SerialName("jvm")
 internal data class KotlinJvmTarget(
-    override val targetName: String = "",
+    override val targetName: String = "jvm",
     override val compilations: List<KotlinJvmAndroidCompilation>? = null,
     override val compilerOptions: KotlinJvmCompilerOptions? = null,
     val testRuns: List<KotlinJvmTestRun>? = null,
@@ -24,25 +20,22 @@ internal data class KotlinJvmTarget(
 
     context(Project)
     override fun applyTo() {
-        val targets =
-            if (targetName.isEmpty())
-                kotlin.targets.withType<KotlinJvmTarget>()
-            else container { kotlin.jvm(targetName) }
+        val target = kotlin.jvm(targetName)
 
-        super<KotlinTarget>.applyTo(targets)
+        super<KotlinTarget>.applyTo(target)
 
-        targets.configure {
-            this@KotlinJvmTarget.compilerOptions?.applyTo(compilerOptions)
+        super<HasConfigurableKotlinCompilerOptions>.applyTo(target)
 
-            this@KotlinJvmTarget.testRuns?.forEach { _testRuns ->
-                _testRuns.applyTo(testRuns)
+        testRuns?.forEach { testRun ->
+            target.testRuns.named(testRun.name) {
+                testRun.applyTo(this)
             }
-
-            this@KotlinJvmTarget.mainRun?.let { mainRun ->
-                mainRun(mainRun::applyTo)
-            }
-
-            this@KotlinJvmTarget.withJava?.takeIf { it }?.let { withJava() }
         }
+
+        mainRun?.let { mainRun ->
+            target.mainRun(mainRun::applyTo)
+        }
+
+        withJava?.takeIf { it }?.let { target.withJava() }
     }
 }

@@ -5,7 +5,6 @@ import gradle.serialization.serializer.JsonContentPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
 import groovy.lang.MissingPropertyException
 import kotlinx.serialization.Serializable
-import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.TaskDependency
@@ -321,24 +320,20 @@ internal interface Task : Named {
     val shouldRunAfter: List<String>?
 
     context(Project)
-    fun applyTo(_tasks: NamedDomainObjectContainer<org.gradle.api.Task>) =
-        _tasks.configure {
-            this@Task.dependsOn?.let(::setDependsOn)
-            this@Task.onlyIf?.let { onlyIf -> onlyIf { onlyIf } }
-            this@Task.doNotTrackState?.let(::doNotTrackState)
-            this@Task.notCompatibleWithConfigurationCache?.let(::notCompatibleWithConfigurationCache)
-            this@Task.didWork?.let(::setDidWork)
-            this@Task.enabled?.let(::setEnabled)
-            this@Task.properties?.forEach { (name, value) -> setProperty(name, value) }
-            this@Task.description?.let(::setDescription)
-            this@Task.group?.let(::setGroup)
-            this@Task.mustRunAfter?.let(::setMustRunAfter)
-            this@Task.finalizedBy?.let(::setFinalizedBy)
-            this@Task.shouldRunAfter?.let(::setShouldRunAfter)
-        }
-
-    context(Project)
-    fun applyTo() = applyTo(tasks)
+    fun applyTo(task: org.gradle.api.Task) {
+        dependsOn?.let(task::setDependsOn)
+        onlyIf?.let { onlyIf -> task.onlyIf { onlyIf } }
+        doNotTrackState?.let(task::doNotTrackState)
+        notCompatibleWithConfigurationCache?.let(task::notCompatibleWithConfigurationCache)
+        didWork?.let(task::setDidWork)
+        enabled?.let(task::setEnabled)
+        properties?.forEach { (name, value) -> task.setProperty(name, value) }
+        description?.let(task::setDescription)
+        group?.let(task::setGroup)
+        mustRunAfter?.let(task::setMustRunAfter)
+        finalizedBy?.let(task::setFinalizedBy)
+        shouldRunAfter?.let(task::setShouldRunAfter)
+    }
 }
 
 private object TaskSerializer : JsonContentPolymorphicSerializer<Task>(

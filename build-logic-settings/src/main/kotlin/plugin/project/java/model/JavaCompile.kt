@@ -1,7 +1,6 @@
 package plugin.project.java.model
 
 import gradle.serialization.serializer.AnySerializer
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
@@ -10,7 +9,6 @@ import org.gradle.api.tasks.compile.JavaCompile
 import plugin.project.gradle.model.AbstractCompile
 import plugin.project.gradle.model.CompileOptions
 import plugin.project.gradle.model.HasCompileOptions
-import plugin.project.kotlin.model.configure
 
 /**
  * Compiles Java source files.
@@ -55,15 +53,13 @@ internal data class JavaCompile(
 ) : AbstractCompile(), HasCompileOptions {
 
     context(Project)
-    override fun applyTo(_tasks: NamedDomainObjectContainer<Task>) {
-        super<AbstractCompile>.applyTo(_tasks)
+    override fun applyTo(task: Task) {
+        super<AbstractCompile>.applyTo(task)
 
-        _tasks.configure {
-            this as JavaCompile
+        task as JavaCompile
 
-            super<HasCompileOptions>.applyTo(this)
+        super<HasCompileOptions>.applyTo(task)
 
-            this@JavaCompile.modularity?.applyTo(modularity)
-        }
+        modularity?.applyTo(task.modularity)
     }
 }

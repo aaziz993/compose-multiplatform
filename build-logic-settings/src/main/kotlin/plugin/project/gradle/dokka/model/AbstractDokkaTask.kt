@@ -4,7 +4,6 @@ import gradle.tryAssign
 import org.gradle.api.Project
 import org.jetbrains.dokka.gradle.AbstractDokkaTask
 import plugin.project.kotlin.model.Task
-import plugin.project.kotlin.model.configure
 
 internal abstract class AbstractDokkaTask : Task {
 
@@ -119,21 +118,20 @@ internal abstract class AbstractDokkaTask : Task {
     abstract val cacheRoot: String?
 
     context(Project)
-    override fun applyTo() {
-        super.applyTo()
-        tasks.configure {
-            this as AbstractDokkaTask
+    override fun applyTo(task: org.gradle.api.Task) {
+        super.applyTo(task)
 
-            moduleName tryAssign this@AbstractDokkaTask.moduleName
-            moduleVersion tryAssign this@AbstractDokkaTask.moduleVersion
-            outputDirectory tryAssign this@AbstractDokkaTask.outputDirectory?.let(layout.projectDirectory::dir)
-            pluginsConfiguration tryAssign this@AbstractDokkaTask.pluginsConfiguration
-            pluginsMapConfiguration tryAssign this@AbstractDokkaTask.pluginsMapConfiguration
-            suppressObviousFunctions tryAssign this@AbstractDokkaTask.suppressObviousFunctions
-            suppressInheritedMembers tryAssign this@AbstractDokkaTask.suppressInheritedMembers
-            offlineMode tryAssign this@AbstractDokkaTask.offlineMode
-            failOnWarning tryAssign this@AbstractDokkaTask.failOnWarning
-            cacheRoot tryAssign this@AbstractDokkaTask.cacheRoot?.let(project.layout.projectDirectory::dir)
-        }
+        task as AbstractDokkaTask
+
+        task.moduleName tryAssign moduleName
+        task.moduleVersion tryAssign moduleVersion
+        task.outputDirectory tryAssign outputDirectory?.let(layout.projectDirectory::dir)
+        task.pluginsConfiguration tryAssign pluginsConfiguration
+        task.pluginsMapConfiguration tryAssign pluginsMapConfiguration
+        task.suppressObviousFunctions tryAssign suppressObviousFunctions
+        task.suppressInheritedMembers tryAssign suppressInheritedMembers
+        task.offlineMode tryAssign offlineMode
+        task.failOnWarning tryAssign failOnWarning
+        task.cacheRoot tryAssign cacheRoot?.let(project.layout.projectDirectory::dir)
     }
 }

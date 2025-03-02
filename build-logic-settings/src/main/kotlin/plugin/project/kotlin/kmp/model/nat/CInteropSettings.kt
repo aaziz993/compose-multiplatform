@@ -6,7 +6,6 @@ import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.CInteropSettings
 import plugin.project.kotlin.model.Named
-import plugin.project.kotlin.model.configure
 
 /**
  * # C interoperability settings
@@ -340,19 +339,20 @@ internal interface CInteropSettings : Named {
     val extraOpts: List<String>?
 
     context(Project)
-    fun applyTo(settings: NamedDomainObjectContainer<out CInteropSettings>) = settings.configure {
-        ::dependencyFiles trySet this@CInteropSettings.dependencyFiles?.let { files(*it.toTypedArray()) }
-        this@CInteropSettings.defFile?.let(::defFile)
-        this@CInteropSettings.packageName?.let(::packageName)
-        this@CInteropSettings.headers?.let { headers(*it.toTypedArray()) }
-        this@CInteropSettings.includeDirs?.let { includeDirs(*it.toTypedArray()) }
-        this@CInteropSettings.includeDirectories?.let { includeDirectories ->
-            includeDirs {
+    fun applyTo(settings: CInteropSettings) {
+        settings::dependencyFiles trySet dependencyFiles?.let { files(*it.toTypedArray()) }
+        defFile?.let(settings::defFile)
+        packageName?.let(settings::packageName)
+        headers?.let { settings.headers(*it.toTypedArray()) }
+        includeDirs?.let { settings.includeDirs(*it.toTypedArray()) }
+
+        includeDirectories?.let { includeDirectories ->
+            settings.includeDirs {
                 includeDirectories.applyTo(this)
             }
         }
-        this@CInteropSettings.compilerOpts?.let(::compilerOpts)
-        this@CInteropSettings.linkerOpts?.let(::linkerOpts)
-        this@CInteropSettings.extraOpts?.let(::extraOpts)
+        compilerOpts?.let(settings::compilerOpts)
+        linkerOpts?.let(settings::linkerOpts)
+        extraOpts?.let(settings::extraOpts)
     }
 }

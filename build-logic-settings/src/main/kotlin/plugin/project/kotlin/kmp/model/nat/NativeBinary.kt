@@ -3,11 +3,9 @@ package plugin.project.kotlin.kmp.model.nat
 import gradle.moduleName
 import gradle.tryAssign
 import gradle.trySet
-import org.gradle.api.NamedDomainObjectCollection
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary
 import plugin.project.kotlin.model.Named
-import plugin.project.kotlin.model.configure
 
 internal interface NativeBinary : Named {
 
@@ -32,15 +30,14 @@ internal interface NativeBinary : Named {
     val outputDirectoryProperty: String?
 
     context(Project)
-    fun applyTo(binaries: NamedDomainObjectCollection<out NativeBinary>) =
-        binaries.configure {
-            baseName = this@NativeBinary.baseName ?: moduleName
-            ::debuggable trySet this@NativeBinary.debuggable
-            ::optimized trySet this@NativeBinary.optimized
-            this@NativeBinary.linkerOpts?.let(::linkerOpts)
-            ::binaryOptions trySet this@NativeBinary.binaryOptions?.toMutableMap()
-            ::freeCompilerArgs trySet this@NativeBinary.freeCompilerArgs
-            ::outputDirectory trySet this@NativeBinary.optimized?.let(::file)
-            outputDirectoryProperty tryAssign this@NativeBinary.outputDirectoryProperty?.let(layout.projectDirectory::dir)
-        }
+    fun applyTo(binary: NativeBinary) {
+        binary.baseName = baseName ?: moduleName
+        binary::debuggable trySet debuggable
+        binary::optimized trySet optimized
+        linkerOpts?.let(binary::linkerOpts)
+        binary::binaryOptions trySet binaryOptions?.toMutableMap()
+        binary::freeCompilerArgs trySet freeCompilerArgs
+        binary::outputDirectory trySet optimized?.let(::file)
+        binary.outputDirectoryProperty tryAssign outputDirectoryProperty?.let(layout.projectDirectory::dir)
+    }
 }

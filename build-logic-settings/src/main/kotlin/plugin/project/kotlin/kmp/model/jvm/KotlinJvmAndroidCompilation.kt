@@ -1,9 +1,10 @@
 package plugin.project.kotlin.kmp.model.jvm
 
+import gradle.containerize
 import kotlinx.serialization.Serializable
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.container
+import org.gradle.api.Task
 import org.gradle.kotlin.dsl.invoke
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJvmAndroidCompilation
 import plugin.model.dependency.ProjectDependency
@@ -13,7 +14,6 @@ import plugin.project.kotlin.kmp.model.KotlinSourceSet
 import plugin.project.kotlin.model.KotlinCompilation
 import plugin.project.kotlin.model.KotlinCompilationOutput
 import plugin.project.kotlin.model.KotlinCompilationTask
-import plugin.project.kotlin.model.configure
 
 @Serializable
 internal data class KotlinJvmAndroidCompilation(
@@ -28,22 +28,21 @@ internal data class KotlinJvmAndroidCompilation(
 ) : KotlinCompilation {
 
     context(Project)
-    override fun applyTo(compilations: NamedDomainObjectContainer<out org.jetbrains.kotlin.gradle.plugin.KotlinCompilation<*>>) {
-        super.applyTo(compilations)
+    override fun applyTo(compilation: org.jetbrains.kotlin.gradle.plugin.KotlinCompilation<*>) {
+        super.applyTo(compilation)
 
-        compilations.configure {
-            this as KotlinJvmAndroidCompilation
 
-            this@KotlinJvmAndroidCompilation.compileTaskProvider?.let { compileTaskProvider ->
-                compileTaskProvider {
-                    compileTaskProvider.applyTo(project.container { this })
-                }
+        compilation as KotlinJvmAndroidCompilation
+
+        compileTaskProvider?.let { compileTaskProvider ->
+            compilation.compileTaskProvider {
+                compileTaskProvider.applyTo(this)
             }
+        }
 
-            this@KotlinJvmAndroidCompilation.compileJavaTaskProvider?.let { compileJavaTaskProvider ->
-                compileJavaTaskProvider {
-                    compileJavaTaskProvider.applyTo(project.container { this })
-                }
+        compileJavaTaskProvider?.let { compileJavaTaskProvider ->
+            compilation.compileJavaTaskProvider {
+                compileJavaTaskProvider.applyTo(this as Task)
             }
         }
     }
