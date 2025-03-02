@@ -1,5 +1,6 @@
 package plugin.project.gradle.apivalidation.model
 
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import gradle.apiValidation
 import gradle.id
 import gradle.libs
@@ -35,12 +36,11 @@ internal data class ApiValidationSettings(
         pluginManager.withPlugin(settings.libs.plugins.plugin("binary.compatibility.validator").id) {
             super.applyTo()
 
-            tasks.maybeNamed("apiBuild") {
-                this as KotlinApiBuildTask
+            tasks.maybeNamed("apiBuild", KotlinApiBuildTask::class.java) {
                 // "jar" here is the name of the default Jar task producing the resulting jar file
                 // in a multiplatform project it can be named "jvmJar"
                 // if you applied the shadow plugin, it creates the "shadowJar" task that produces the transformed jar
-                inputJar.value(tasks.named<Jar>("shadowJar").flatMap { it.archiveFile })
+                inputJar.value(tasks.named<ShadowJar>("shadowJar").flatMap { it.archiveFile })
             }
         }
 }

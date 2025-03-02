@@ -1,6 +1,5 @@
-package plugin.project.kotlin.serialization.model
+package plugin.project.gradle.shadow.model
 
-import com.github.jengelman.gradle.plugins.shadow.ShadowExtension
 import gradle.id
 import gradle.libs
 import gradle.plugin
@@ -11,13 +10,13 @@ import org.gradle.api.Project
 import plugin.project.model.EnabledSettings
 
 @Serializable
-internal data class SerializationSettings(
+internal data class ShadowSettings(
     override val enabled: Boolean = true
 ) : EnabledSettings {
 
     context(Project)
     fun applyTo() =
-        pluginManager.withPlugin(settings.libs.plugins.plugin("shadow").id) {
+        pluginManager.withPlugin(settings.libs.plugins.plugin("kotlin.serialization").id) {
 
         }
 }

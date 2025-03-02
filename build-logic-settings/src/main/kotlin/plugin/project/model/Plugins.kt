@@ -8,6 +8,7 @@ import plugin.project.gradle.doctor.model.DoctorSettings
 import plugin.project.gradle.dokka.model.DokkaSettings
 import plugin.project.gradle.githooks.model.GitHooksSettings
 import plugin.project.gradle.kover.model.KoverSettings
+import plugin.project.gradle.shadow.model.ShadowSettings
 import plugin.project.gradle.sonar.model.SonarSettings
 import plugin.project.gradle.spotless.model.SpotlessSettings
 import plugin.project.gradle.toolchainmanagement.model.ToolchainManagementSettings
@@ -34,6 +35,7 @@ internal data class Plugins(
     val kover: KoverSettings = KoverSettings(),
     val sonar: SonarSettings = SonarSettings(),
     val dokka: DokkaSettings = DokkaSettings(),
+    val shadowSettings: ShadowSettings = ShadowSettings(),
     val apiValidation: ApiValidationSettings = ApiValidationSettings(),
     val ksp: KspSettings = KspSettings(),
     val allOpen: AllOpenSettings = AllOpenSettings(),

@@ -42,6 +42,7 @@ import plugin.project.gradle.doctor.DoctorPlugin
 import plugin.project.gradle.dokka.DokkaPlugin
 import plugin.project.gradle.githooks.GitHooksPlugin
 import plugin.project.gradle.kover.KoverPlugin
+import plugin.project.gradle.shadow.ShadowPlugin
 import plugin.project.gradle.sonar.SonarPlugin
 import plugin.project.gradle.spotless.SpotlessPlugin
 import plugin.project.gradle.toolchainmanagement.ToolchainManagementPlugin
@@ -241,6 +242,7 @@ internal data class ProjectProperties(
         project.plugins.apply(KoverPlugin::class.java)
         project.plugins.apply(SonarPlugin::class.java)
         project.plugins.apply(DokkaPlugin::class.java)
+        project.plugins.apply(ShadowPlugin::class.java)
         project.plugins.apply(ApiValidationPlugin::class.java)
         project.plugins.apply(AllOpenPlugin::class.java)
         project.plugins.apply(NoArgPlugin::class.java)
@@ -263,9 +265,10 @@ internal data class ProjectProperties(
         project.plugins.apply(WasmWasiPlugin::class.java)
         project.plugins.apply(ComposePlugin::class.java)
 
-//        tasks?.forEach { task ->
-//            task.applyTo()
-//        }
+        println("TASKS: " + project.tasks.map { it.name })
+        tasks?.forEach { task ->
+            task.applyTo()
+        }
 
         if (problemReporter.getErrors().isNotEmpty()) {
             throw GradleException(problemReporter.getGradleError())
