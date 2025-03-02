@@ -29,6 +29,20 @@ internal infix fun Map<String, Any?>.deepMerge(source: Map<String, Any?>): Map<S
     return resultMap
 }
 
-//internal fun Any.get(vararg keys:Any?)=when(this){
-//    is List ->
-//}
+internal fun Any.get(vararg keys: Any?) = DeepRecursiveFunction<Pair<List<Any?>, Any>, Any?> { (subKeys, obj) ->
+    val key = subKeys.first()
+
+    val value = when (obj) {
+        is List<*> -> obj[key.toString().toInt()]
+        is Map<*, *> -> obj[key]
+        else -> error("Neither list or map to get value by key: $key")
+    }
+
+    if (value == null) {
+        return@DeepRecursiveFunction value
+    }
+
+    subKeys.drop(1).takeIf(List<*>::isNotEmpty)?.let {
+        callRecursive(it to value)
+    } ?: value
+}(keys.toList() to this)
