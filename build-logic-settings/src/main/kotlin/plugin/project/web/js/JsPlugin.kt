@@ -15,8 +15,6 @@ import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
 import plugin.project.kotlin.kmp.model.web.KotlinJsTarget
 import plugin.project.web.configureJsTestTasks
-import plugin.project.web.js.karakum.configureKarakum
-import plugin.project.web.js.karakum.configureKarakumGenerate
 
 internal class JsPlugin : Plugin<Project> {
 
@@ -28,9 +26,7 @@ internal class JsPlugin : Plugin<Project> {
 
             plugins.apply(settings.libs.plugins.plugin("karakum").id)
 
-            configureKarakum()
-
-            configureKarakumGenerate()
+            projectProperties.karakum.applyTo()
 
             val karakumConfigFile = karakum.configFile.asFile.get()
 

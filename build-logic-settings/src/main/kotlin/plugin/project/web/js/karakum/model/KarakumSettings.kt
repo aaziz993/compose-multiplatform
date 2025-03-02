@@ -13,7 +13,6 @@ import org.gradle.api.Project
 internal data class KarakumSettings(
     override val configFile: String? = null,
     override val extensionSource: String? = null,
-    val task: KarakumGenerate = KarakumGenerate(),
 ) : KarakumExtension {
 
     context(Project)

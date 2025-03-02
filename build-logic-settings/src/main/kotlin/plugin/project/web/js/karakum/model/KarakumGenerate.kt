@@ -4,12 +4,14 @@ import gradle.id
 import gradle.libs
 import gradle.plugin
 import gradle.plugins
+import gradle.serialization.serializer.AnySerializer
 import gradle.settings
 import gradle.tryAssign
 import io.github.sgrishchenko.karakum.gradle.plugin.tasks.KarakumGenerate
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
+import plugin.project.kotlin.model.Task
 
 private val JS_TYPE_IMPORTS =
     mapOf(
@@ -22,12 +24,25 @@ private val JS_TYPE_IMPORTS =
 
 @Serializable
 internal data class KarakumGenerate(
+    override val dependsOn: List<String>? = null,
+    override val onlyIf: Boolean? = null,
+    override val doNotTrackState: String? = null,
+    override val notCompatibleWithConfigurationCache: String? = null,
+    override val didWork: Boolean? = null,
+    override val enabled: Boolean? = null,
+    override val properties: Map<String, @Serializable(with = AnySerializer::class) Any>? = null,
+    override val description: String? = null,
+    override val group: String? = null,
+    override val mustRunAfter: List<String>? = null,
+    override val finalizedBy: List<String>? = null,
+    override val shouldRunAfter: List<String>? = null,
+    override val name: String = "karakumGenerate",
     val configFile: String? = null,
     val extensionDirectory: String? = null,
-) {
+) : Task {
 
     context(Project)
-    fun applyTo() =
+    override fun applyTo() =
         pluginManager.withPlugin(settings.libs.plugins.plugin("karakum").id) {
             tasks.withType<KarakumGenerate> {
                 configFile tryAssign this@KarakumGenerate.configFile?.let(::file)
