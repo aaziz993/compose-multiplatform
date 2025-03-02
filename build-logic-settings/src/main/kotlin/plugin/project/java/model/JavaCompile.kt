@@ -1,11 +1,16 @@
 package plugin.project.java.model
 
+import gradle.serialization.serializer.AnySerializer
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
+import org.gradle.api.Task
 import org.gradle.api.tasks.compile.JavaCompile
 import plugin.project.gradle.model.AbstractCompile
 import plugin.project.gradle.model.CompileOptions
 import plugin.project.gradle.model.HasCompileOptions
+import plugin.project.kotlin.model.configure
 
 /**
  * Compiles Java source files.
@@ -23,6 +28,19 @@ import plugin.project.gradle.model.HasCompileOptions
  */
 @Serializable
 internal data class JavaCompile(
+    override val dependsOn: List<String>? = null,
+    override val onlyIf: Boolean? = null,
+    override val doNotTrackState: String? = null,
+    override val notCompatibleWithConfigurationCache: String? = null,
+    override val didWork: Boolean? = null,
+    override val enabled: Boolean? = null,
+    override val properties: Map<String, @Serializable(with = AnySerializer::class) Any>? = null,
+    override val description: String? = null,
+    override val group: String? = null,
+    override val mustRunAfter: List<String>? = null,
+    override val finalizedBy: List<String>? = null,
+    override val shouldRunAfter: List<String>? = null,
+    override val name: String = "",
     override val destinationDirectory: String? = null,
     override val classpath: List<String>? = null,
     override val sourceCompatibility: String? = null,
@@ -37,10 +55,15 @@ internal data class JavaCompile(
 ) : AbstractCompile(), HasCompileOptions {
 
     context(Project)
-    fun applyTo(compile: JavaCompile) {
-        super<AbstractCompile>.applyTo(compile)
-        super<HasCompileOptions>.applyTo(compile)
+    override fun applyTo(_tasks: NamedDomainObjectContainer<Task>) {
+        super<AbstractCompile>.applyTo(_tasks)
 
-        modularity?.applyTo(compile.modularity)
+        _tasks.configure {
+            this as JavaCompile
+
+            super<HasCompileOptions>.applyTo(this)
+
+            this@JavaCompile.modularity?.applyTo(modularity)
+        }
     }
 }

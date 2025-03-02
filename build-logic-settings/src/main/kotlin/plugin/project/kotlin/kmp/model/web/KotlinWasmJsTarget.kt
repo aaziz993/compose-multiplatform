@@ -4,6 +4,9 @@ import gradle.kotlin
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.container
+import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 @Serializable
 @SerialName("wasmJs")
@@ -23,6 +26,11 @@ internal data class KotlinWasmJsTarget(
 
     context(Project)
     override fun applyTo() {
-        super.applyTo(targetName.takeIf(String::isNotEmpty)?.let(kotlin::wasmJs) ?: kotlin.wasmJs())
+        val targets =
+            if (targetName.isEmpty())
+                kotlin.targets.withType<KotlinNativeTarget>()
+            else container { kotlin.wasmJs(targetName) }
+
+        super.applyTo(targets)
     }
 }

@@ -322,7 +322,7 @@ internal object ProgramGrammar : Grammar<Program>() {
     }
 }
 
-internal fun readProgram(text: String): Program {
-    val parsed = ProgramGrammar.parseToEnd(text)
-//    return resolveCalls(parsed)
-}
+//internal fun readProgram(text: String): Program {
+//    val parsed = ProgramGrammar.parseToEnd(text)
+////    return resolveCalls(parsed)
+//}

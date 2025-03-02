@@ -4,6 +4,9 @@ import gradle.kotlin
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.container
+import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import plugin.project.kotlin.kmp.model.nat.KotlinNativeBinaryContainer
 import plugin.project.kotlin.kmp.model.nat.KotlinNativeCompilation
 import plugin.project.kotlin.kmp.model.nat.KotlinNativeCompilerOptions
@@ -19,6 +22,11 @@ internal data class IosArm64(
 
     context(Project)
     override fun applyTo() {
-        super.applyTo(targetName.takeIf(String::isNotEmpty)?.let(kotlin::iosArm64) ?: kotlin.iosArm64())
+        val targets =
+            if (targetName.isEmpty())
+                kotlin.targets.withType<KotlinNativeTarget>()
+            else container { kotlin.iosArm64(targetName) }
+
+        super.applyTo(targets)
     }
 }

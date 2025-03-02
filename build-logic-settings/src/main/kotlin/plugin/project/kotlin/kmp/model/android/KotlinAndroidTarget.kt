@@ -5,14 +5,18 @@ import gradle.trySet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.container
+import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
 import plugin.project.kotlin.kmp.model.KotlinTarget
 import plugin.project.kotlin.kmp.model.jvm.KotlinJvmCompilerOptions
 import plugin.project.kotlin.model.HasConfigurableKotlinCompilerOptions
+import plugin.project.kotlin.model.configure
 
 @Serializable
-@SerialName("androidTarget")
+@SerialName("android")
 internal data class KotlinAndroidTarget(
-    override val targetName: String = "",
+    override val targetName: String = "android",
     override val compilations: List<plugin.project.kotlin.kmp.model.jvm.KotlinJvmAndroidCompilation>? = null,
     /** Names of the Android library variants that should be published from the target's project within the default publications which are
      * set up if the `maven-publish` Gradle plugin is applied.
@@ -36,17 +40,22 @@ internal data class KotlinAndroidTarget(
 
     context(Project)
     override fun applyTo() {
-        val target = targetName.takeIf(String::isNotEmpty)?.let(kotlin::androidTarget) ?: kotlin.androidTarget()
+        val targets =
+            if (targetName.isEmpty())
+                kotlin.targets.withType<KotlinAndroidTarget>()
+            else container { kotlin.androidTarget(targetName) }
 
-        super<KotlinTarget>.applyTo(target)
+        super<KotlinTarget>.applyTo(targets)
 
-        compilerOptions?.applyTo(target.compilerOptions)
+        targets.configure {
+            this@KotlinAndroidTarget.compilerOptions?.applyTo(compilerOptions)
 
-        publishLibraryVariants?.let { publishLibraryVariants ->
-            target.publishLibraryVariants = publishLibraryVariants
+            this@KotlinAndroidTarget.publishLibraryVariants?.let { _publishLibraryVariants ->
+                publishLibraryVariants = _publishLibraryVariants
+            }
+
+            this@KotlinAndroidTarget.publishAllLibraryVariants?.takeIf { it }?.run { publishAllLibraryVariants() }
+            ::publishLibraryVariantsGroupedByFlavor trySet this@KotlinAndroidTarget.publishLibraryVariantsGroupedByFlavor
         }
-
-        publishAllLibraryVariants?.takeIf { it }?.run { target.publishAllLibraryVariants() }
-        target::publishLibraryVariantsGroupedByFlavor trySet publishLibraryVariantsGroupedByFlavor
     }
 }

@@ -4,6 +4,11 @@ import gradle.kotlin
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.container
+import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
+import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
+import plugin.project.kotlin.kmp.model.KotlinTarget
 import plugin.project.kotlin.kmp.model.nat.KotlinNativeBinaryContainer
 import plugin.project.kotlin.kmp.model.nat.KotlinNativeCompilation
 import plugin.project.kotlin.kmp.model.nat.KotlinNativeCompilerOptions
@@ -19,8 +24,11 @@ internal data class KotlinAndroidNativeArm32(
 
     context(Project)
     override fun applyTo() {
-        super.applyTo(
-            targetName.takeIf(String::isNotEmpty)?.let(kotlin::androidNativeArm32) ?: kotlin.androidNativeArm32(),
-        )
+        val targets =
+            if (targetName.isEmpty())
+                kotlin.targets.withType<KotlinNativeTarget>()
+            else container { kotlin.androidNativeArm32(targetName) }
+
+        super.applyTo(targets)
     }
 }

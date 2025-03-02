@@ -2,6 +2,7 @@ package plugin.project.kotlin.model
 
 import gradle.maybeNamedOrAll
 import gradle.namedOrAll
+import org.gradle.api.NamedDomainObjectCollection
 import org.gradle.api.NamedDomainObjectContainer
 
 /**
@@ -20,9 +21,9 @@ internal interface Named {
 }
 
 context(Named)
-internal inline fun <reified T> NamedDomainObjectContainer<out T>.configure(noinline configure: T.() -> Unit) =
+internal inline fun <reified T> NamedDomainObjectCollection<out T>.configure(noinline configure: T.() -> Unit) =
     namedOrAll(name, configure)
 
 context(Named)
-internal inline fun <reified T> NamedDomainObjectContainer<out T>.maybeConfigure(noinline configure: T.() -> Unit) =
+internal inline fun <reified T> NamedDomainObjectCollection<out T>.maybeConfigure(noinline configure: T.() -> Unit) =
     maybeNamedOrAll(name, configure)

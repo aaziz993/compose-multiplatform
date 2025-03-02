@@ -4,8 +4,12 @@ import gradle.kotlin
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.container
+import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
 import plugin.project.kotlin.kmp.model.KotlinTarget
 import plugin.project.kotlin.model.HasConfigurableKotlinCompilerOptions
+import plugin.project.kotlin.model.configure
 
 @Serializable
 @SerialName("jvm")
@@ -20,20 +24,25 @@ internal data class KotlinJvmTarget(
 
     context(Project)
     override fun applyTo() {
-        val target = targetName.takeIf(String::isNotEmpty)?.let(kotlin::jvm) ?: kotlin.jvm()
+        val targets =
+            if (targetName.isEmpty())
+                kotlin.targets.withType<KotlinJvmTarget>()
+            else container { kotlin.jvm(targetName) }
 
-        super<KotlinTarget>.applyTo(target)
+        super<KotlinTarget>.applyTo(targets)
 
-        compilerOptions?.applyTo(target.compilerOptions)
+        targets.configure {
+            this@KotlinJvmTarget.compilerOptions?.applyTo(compilerOptions)
 
-        testRuns?.forEach { testRuns ->
-            testRuns.applyTo(target.testRuns)
+            this@KotlinJvmTarget.testRuns?.forEach { _testRuns ->
+                _testRuns.applyTo(testRuns)
+            }
+
+            this@KotlinJvmTarget.mainRun?.let { mainRun ->
+                mainRun(mainRun::applyTo)
+            }
+
+            this@KotlinJvmTarget.withJava?.takeIf { it }?.let { withJava() }
         }
-
-        mainRun?.let { mainRun ->
-            target.mainRun(mainRun::applyTo)
-        }
-
-        withJava?.takeIf { it }?.let { target.withJava() }
     }
 }

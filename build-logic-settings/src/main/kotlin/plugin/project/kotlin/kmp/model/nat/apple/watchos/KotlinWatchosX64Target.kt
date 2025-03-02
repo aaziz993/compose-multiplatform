@@ -4,13 +4,16 @@ import gradle.kotlin
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.container
+import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import plugin.project.kotlin.kmp.model.nat.KotlinNativeBinaryContainer
 import plugin.project.kotlin.kmp.model.nat.KotlinNativeCompilation
 import plugin.project.kotlin.kmp.model.nat.KotlinNativeCompilerOptions
 
 @Serializable
 @SerialName("watchosSimulatorArm64")
-internal data class KotlinWatchosSimulatorX64Target(
+internal data class KotlinWatchosX64Target(
     override val targetName: String = "",
     override val compilations: List<KotlinNativeCompilation>? = null,
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
@@ -19,6 +22,11 @@ internal data class KotlinWatchosSimulatorX64Target(
 
     context(Project)
     override fun applyTo() {
-        super.applyTo(targetName.takeIf(String::isNotEmpty)?.let(kotlin::watchosX64) ?: kotlin.watchosX64())
+        val targets =
+            if (targetName.isEmpty())
+                kotlin.targets.withType<KotlinNativeTarget>()
+            else container { kotlin.watchosX64(targetName) }
+
+        super.applyTo(targets)
     }
 }

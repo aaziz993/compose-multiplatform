@@ -4,6 +4,9 @@ import gradle.kotlin
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.container
+import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import plugin.project.kotlin.kmp.model.nat.KotlinNativeBinaryContainer
 import plugin.project.kotlin.kmp.model.nat.KotlinNativeCompilation
 import plugin.project.kotlin.kmp.model.nat.KotlinNativeCompilerOptions
@@ -19,8 +22,11 @@ internal data class KotlinWatchosDeviceArm64Target(
 
     context(Project)
     override fun applyTo() {
-        super.applyTo(
-            targetName.takeIf(String::isNotEmpty)?.let(kotlin::watchosDeviceArm64) ?: kotlin.watchosDeviceArm64(),
-        )
+        val targets =
+            if (targetName.isEmpty())
+                kotlin.targets.withType<KotlinNativeTarget>()
+            else container { kotlin.watchosDeviceArm64(targetName) }
+
+        super.applyTo(targets)
     }
 }

@@ -119,6 +119,10 @@ internal interface KotlinCompilation : HasKotlinDependencies, Named {
 
         this@KotlinCompilation.output?.applyTo(output)
 
-//        this@KotlinCompilation.associatedCompilations?.map(target.compilations::getByName)?.forEach(::associateWith)
+        this@KotlinCompilation.associatedCompilations
+            ?.map(target.compilations::getByName)
+            ?.forEach { target ->
+                associateWith(target)
+            }
     }
 }

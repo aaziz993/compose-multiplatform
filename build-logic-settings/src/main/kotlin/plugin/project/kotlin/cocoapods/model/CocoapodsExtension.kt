@@ -9,6 +9,7 @@ import kotlinx.serialization.json.JsonContentPolymorphicSerializer
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.jsonObject
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.container
 import org.jetbrains.kotlin.gradle.plugin.cocoapods.CocoapodsExtension
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
 import plugin.model.dependency.PodDependency
@@ -117,7 +118,7 @@ internal interface CocoapodsExtension {
 
         framework?.let { framework ->
             extension.framework {
-                framework.applyTo(this)
+                framework.applyTo(container { this })
             }
         }
 

@@ -3,6 +3,7 @@ package plugin.project.kotlin.kmp.model.jvm
 import kotlinx.serialization.Serializable
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.container
 import org.gradle.kotlin.dsl.invoke
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJvmAndroidCompilation
 import plugin.model.dependency.ProjectDependency
@@ -35,13 +36,13 @@ internal data class KotlinJvmAndroidCompilation(
 
             this@KotlinJvmAndroidCompilation.compileTaskProvider?.let { compileTaskProvider ->
                 compileTaskProvider {
-                    compileTaskProvider.applyTo(this)
+                    compileTaskProvider.applyTo(project.container { this })
                 }
             }
 
             this@KotlinJvmAndroidCompilation.compileJavaTaskProvider?.let { compileJavaTaskProvider ->
                 compileJavaTaskProvider {
-                    compileJavaTaskProvider.applyTo(this)
+                    compileJavaTaskProvider.applyTo(project.container { this })
                 }
             }
         }

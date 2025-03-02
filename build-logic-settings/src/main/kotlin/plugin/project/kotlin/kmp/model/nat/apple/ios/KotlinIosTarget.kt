@@ -4,4 +4,4 @@ import kotlinx.serialization.Serializable
 import plugin.project.kotlin.kmp.model.nat.apple.KotlinAppleTarget
 
 @Serializable
-internal sealed class KotlinIosTarget : KotlinAppleTarget()
+internal abstract class KotlinIosTarget : KotlinAppleTarget()

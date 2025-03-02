@@ -2,6 +2,7 @@ package plugin.project.kotlin.kmp.model.nat
 
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.container
 import org.jetbrains.kotlin.gradle.dsl.KotlinNativeBinaryContainer
 
 /*
@@ -23,40 +24,40 @@ internal data class KotlinNativeBinaryContainer(
         executable?.let { executable ->
             executable.buildTypes?.also { buildTypes ->
                 binaries.executable(buildTypes) {
-                    executable.applyTo(this)
+                    executable.applyTo(container { this })
                 }
             } ?: binaries.executable {
-                executable.applyTo(this)
+                executable.applyTo(container { this })
             }
         }
 
         staticLib?.let { staticLib ->
             staticLib.buildTypes?.also { buildTypes ->
                 binaries.staticLib(buildTypes) {
-                    staticLib.applyTo(this)
+                    staticLib.applyTo(container { this })
                 }
             } ?: binaries.staticLib {
-                staticLib.applyTo(this)
+                staticLib.applyTo(container { this })
             }
         }
 
         framework?.let { framework ->
             framework.buildTypes?.also { buildTypes ->
                 binaries.framework(buildTypes) {
-                    framework.applyTo(this)
+                    framework.applyTo(container { this })
                 }
             } ?: binaries.framework {
-                framework.applyTo(this)
+                framework.applyTo(container { this })
             }
         }
 
         test?.let { test ->
             test.buildTypes?.also { buildTypes ->
                 binaries.test(buildTypes) {
-                    test.applyTo(this)
+                    test.applyTo(container { this })
                 }
             } ?: binaries.test {
-                test.applyTo(this)
+                test.applyTo(container { this })
             }
         }
     }

@@ -1,8 +1,12 @@
 package plugin.project.kotlin.model
 
 import gradle.serialization.serializer.AnySerializer
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
+import org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerToolOptions
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 /**
  * Represents a Kotlin task compiling using configurable [compilerOptions].
@@ -12,7 +16,7 @@ import org.gradle.api.Project
  * @see [KotlinCommonCompilerOptions]
  */
 @Serializable
-internal data class KotlinCompilationTask<out CO : KotlinCommonCompilerOptions> (
+internal data class KotlinCompilationTask<out CO : KotlinCommonCompilerOptions>(
     override val name: String = "",
     override val dependsOn: List<String>? = null,
     override val onlyIf: Boolean? = null,
@@ -32,11 +36,16 @@ internal data class KotlinCompilationTask<out CO : KotlinCommonCompilerOptions> 
      * This can be used to get the values of currently configured options or modify them.
      */
     val compilerOptions: CO?
-) : Task{
+) : Task {
 
     context(Project)
-    override fun applyTo(task: org.gradle.api.Task) {
-        super.applyTo(task)
-        compilerOptions?.applyTo(compilerOptions as org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerOptions)
+    override fun applyTo(_tasks: NamedDomainObjectContainer<org.gradle.api.Task>) {
+        super.applyTo(_tasks)
+
+        _tasks.configure {
+            this as KotlinCompilationTask<*>
+
+            this@KotlinCompilationTask.compilerOptions?.applyTo(compilerOptions as KotlinCommonCompilerToolOptions)
+        }
     }
 }
