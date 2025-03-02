@@ -2,8 +2,8 @@ type: LIB
 
 templates:
   - ../template/common.yaml
-  - ../template/kotlin-multiplatform.yaml
-  - ../template/kotlin-multiplatform.yaml
+  - ../template/kmp.yaml
+  - ../template/cmp.yaml
 
 kotlin:
   sourceSets:

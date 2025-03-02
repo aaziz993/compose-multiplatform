@@ -15,7 +15,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
  */
 @Serializable
 internal data class KotlinCompilationTask<out CO : KotlinCommonCompilerOptions>(
-    override val name: String = "",
+    override val name: String,
     override val dependsOn: List<String>? = null,
     override val onlyIf: Boolean? = null,
     override val doNotTrackState: String? = null,

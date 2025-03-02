@@ -3,6 +3,7 @@ package plugin.project.gradle.dokka.model
 import gradle.tryAssign
 import org.gradle.api.Project
 import org.jetbrains.dokka.gradle.DokkaExtension
+import org.jetbrains.dokka.gradle.workers.ClassLoaderIsolation
 
 /**
  * Configure the behaviour of the [DokkaBasePlugin].
@@ -157,12 +158,83 @@ internal interface DokkaExtension {
     val dokkaSourceSets: List<DokkaSourceSetSpec>?
 
     /**
+     * Dokka Plugin are used to configure the way Dokka generates a format.
+     * Some plugins can be configured via parameters, and those parameters are stored in this
+     * container.
+     */
+    val pluginsConfiguration: List<DokkaPluginParametersBaseSpec>?
+
+    /**
      * The default version of Dokka dependencies that are used at runtime during generation.
      *
      * This value defaults to the current Dokka Gradle Plugin version, but can be overridden
      * if you want to use a newer or older version of Dokka at runtime.
      */
     val dokkaEngineVersion: String?
+
+    /**
+     * Dokka Gradle Plugin runs Dokka Generator in a separate
+     * [Gradle Worker](https://docs.gradle.org/8.10/userguide/worker_api.html).
+     *
+     * DGP uses a Worker to ensure that the Java classpath required by Dokka Generator
+     * is kept separate from the Gradle buildscript classpath, ensuring that dependencies
+     * required for running Gradle builds don't interfere with those needed to run Dokka.
+     *
+     * #### Worker modes
+     *
+     * DGP can launch the Generator in one of two Worker modes.
+     *
+     * The Worker modes are used to optimise the performance of a Gradle build,
+     * especially concerning the memory requirements.
+     *
+     * ##### [ProcessIsolation]
+     *
+     * The maximum isolation level. Dokka Generator is executed in a separate Java process,
+     * managed by Gradle.
+     *
+     * The Java process parameters (such as JVM args and system properties) can be configured precisely,
+     * and independently of other Gradle processes.
+     *
+     * Process isolation is best suited for projects where Dokka requires a lot more, or less,
+     * memory than other Gradle tasks that are run more frequently.
+     * This is usually the case for smaller projects, or those with default or low
+     * [Gradle Daemon](https://docs.gradle.org/8.10/userguide/gradle_daemon.html)
+     * memory settings.
+     *
+     * ##### [ClassLoaderIsolation]
+     *
+     * Dokka Generator is run in the current Gradle Daemon process, in a new thread with an isolated classpath.
+     *
+     * Classloader isolation is best suited for projects that already have high Gradle Daemon memory requirements.
+     * This is usually the case for very large projects, especially Kotlin Multiplatform projects.
+     * These projects will typically also require a lot of memory to running Dokka Generator.
+     *
+     * If the Gradle Daemon already uses a large amount of memory, it is beneficial to run Dokka Generator
+     * in the same Daemon process. Running Dokka Generator inside the Daemon avoids launching
+     * two Java processes on the same machine, both with high memory requirements.
+     *
+     * #### Example configuration
+     *
+     * ```kotlin
+     * dokka {
+     *   // use the current Gradle process, but with an isolated classpath
+     *   dokkaGeneratorIsolation = ClassLoaderIsolation()
+     *
+     *   // launch a new process, optionally controlling the standard JVM options
+     *   dokkaGeneratorIsolation = ProcessIsolation {
+     *     maxHeapSize = "2g" // increase maximum heap size
+     *     systemProperties.add("someCustomProperty", 123)
+     *   }
+     * }
+     * ```
+     *
+     * @see WorkerIsolation
+     * @see org.jetbrains.dokka.gradle.workers.ProcessIsolation
+     * @see org.jetbrains.dokka.gradle.workers.ClassLoaderIsolation
+     */
+    // Aside: Launching without isolation WorkerExecutor.noIsolation is not an option, because
+    // running Dokka Generator **requires** an isolated classpath.
+//     val dokkaGeneratorIsolation: WorkerIsolation?
 
     context(Project)
     fun applyTo(extension: DokkaExtension) {
@@ -181,11 +253,22 @@ internal interface DokkaExtension {
         }
 
         dokkaSourceSets?.forEach { dokkaSourceSet ->
+            println(extension.dokkaSourceSets.map { it.name })
             extension.dokkaSourceSets.named(dokkaSourceSet.name) {
                 dokkaSourceSet.applyTo(this)
             }
         }
 
+        pluginsConfiguration?.forEach { pluginConfiguration ->
+            extension.pluginsConfiguration.named(pluginConfiguration.name) {
+                pluginConfiguration.applyTo(this)
+            }
+        }
+
         extension.dokkaEngineVersion tryAssign dokkaEngineVersion
+
+//        dokkaGeneratorIsolation?.let{dokkaGeneratorIsolation->
+//
+//        }
     }
 }

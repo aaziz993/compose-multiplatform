@@ -1,10 +1,8 @@
 package plugin.project.kotlin.kmp.model
 
-import gradle.kotlin
 import gradle.serialization.serializer.JsonContentPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
-import org.gradle.api.NamedDomainObjectCollection
 import org.gradle.api.Project
 import plugin.project.kotlin.model.KotlinCompilation
 import plugin.project.kotlin.model.Named
@@ -33,9 +31,6 @@ internal interface KotlinTarget : Named {
             }
         }
     }
-
-    context(Project)
-    fun applyTo()
 }
 
 private object KotlinTargetSerializer : JsonContentPolymorphicSerializer<KotlinTarget>(

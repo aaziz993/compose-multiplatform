@@ -2,7 +2,6 @@ package plugin.project.java.model
 
 import gradle.serialization.serializer.AnySerializer
 import kotlinx.serialization.Serializable
-import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.tasks.compile.JavaCompile
@@ -38,7 +37,7 @@ internal data class JavaCompile(
     override val mustRunAfter: List<String>? = null,
     override val finalizedBy: List<String>? = null,
     override val shouldRunAfter: List<String>? = null,
-    override val name: String = "",
+    override val name: String = "compileJava",
     override val destinationDirectory: String? = null,
     override val classpath: List<String>? = null,
     override val sourceCompatibility: String? = null,

@@ -1,10 +1,9 @@
 package plugin.project.gradle.dokka.model
 
+import gradle.serialization.serializer.KeyTransformingSerializer
 import gradle.tryAssign
 import kotlinx.serialization.Serializable
-import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
-import org.jetbrains.dokka.gradle.formats.DokkaPublication
 import plugin.project.kotlin.model.Named
 
 /**
@@ -122,7 +121,7 @@ internal data class DokkaPublication(
         get() = formatName
 
     context(Project)
-    fun applyTo(publication: DokkaPublication) {
+    fun applyTo(publication: org.jetbrains.dokka.gradle.formats.DokkaPublication) {
         publication.enabled tryAssign enabled
         publication.moduleName tryAssign moduleName
         publication.moduleVersion tryAssign moduleVersion
@@ -136,3 +135,8 @@ internal data class DokkaPublication(
         publication.finalizeCoroutines tryAssign finalizeCoroutines
     }
 }
+
+internal object DokkaPublicationTransformingSerializer : KeyTransformingSerializer<DokkaPublication>(
+    DokkaPublication.serializer(),
+    "formatName",
+)

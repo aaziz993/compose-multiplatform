@@ -14,34 +14,30 @@ internal abstract class KeyTransformingSerializer<T : Any>(
     private val valueAs: String? = null,
 ) : JsonTransformingSerializer<T>(tSerializer) {
 
-    override fun transformDeserialize(element: JsonElement): JsonElement {
+    override fun transformDeserialize(element: JsonElement): JsonElement =
         if (element is JsonObject) {
             val key = element.keys.single()
             val value = element.values.single()
 
-            if (value is JsonObject) {
-                return JsonObject(
-                    buildMap {
-                        put(keyAs, JsonPrimitive(key))
+            JsonObject(
+                buildMap {
+                    put(keyAs, JsonPrimitive(key))
+                    if (value is JsonObject) {
                         putAll(value.jsonObject)
-                    },
-                )
-            }
-
-            return JsonObject(
+                    }
+                    else {
+                        put(valueAs!!, value)
+                    }
+                },
+            )
+        }
+        else {
+            JsonObject(
                 mapOf(
-                    keyAs to JsonPrimitive(key),
-                    valueAs!! to value,
+                    keyAs to element,
                 ),
             )
         }
-
-        return JsonObject(
-            mapOf(
-                keyAs to element,
-            ),
-        )
-    }
 
     override fun transformSerialize(element: JsonElement): JsonElement = JsonObject(
         mapOf(

@@ -270,9 +270,10 @@ internal data class ProjectProperties(
         project.plugins.apply(WasmWasiPlugin::class.java)
         project.plugins.apply(ComposePlugin::class.java)
 
-        tasks?.forEach { task ->
-            task.applyTo()
-        }
+//        tasks?.forEach { task ->
+//            task.applyTo()
+//        }
+
         if (problemReporter.getErrors().isNotEmpty()) {
             throw GradleException(problemReporter.getGradleError())
         }

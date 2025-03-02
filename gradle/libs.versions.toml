@@ -1324,7 +1324,10 @@ spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 # help developers deliver high-quality, efficient code standards that benefit the entire team or organization.
 sonarqube = { id = "org.sonarqube", version.ref = "sonarqube" }
 # api documentation engine for Kotlin.
+# for html
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+# for javadoc
+dokkaJavadoc = { id = "org.jetbrains.dokka-javadoc", version.ref = "dokka" }
 # produces Kotlin source example files and tests from markdown documents with embedded snippets of Kotlin code
 knit = { id = "org.jetbrains.kotlinx.knit", version.ref = "knit" }
 # allows dumping binary API of a JVM part of a Kotlin library that is public in the sense of Kotlin visibilities and ensures that the public binary API wasn't changed in a way that makes this change binary incompatible.

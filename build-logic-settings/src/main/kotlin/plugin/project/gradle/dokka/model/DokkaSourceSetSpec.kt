@@ -1,9 +1,9 @@
 package plugin.project.gradle.dokka.model
 
+import gradle.serialization.serializer.KeyTransformingSerializer
 import gradle.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import org.jetbrains.dokka.gradle.engine.parameters.DokkaSourceSetSpec
 import org.jetbrains.dokka.gradle.engine.parameters.KotlinPlatform
 import org.jetbrains.dokka.gradle.engine.parameters.VisibilityModifier
 import plugin.project.kotlin.model.Named
@@ -255,7 +255,7 @@ internal data class DokkaSourceSetSpec(
 ) : Named {
 
     context(Project)
-    fun applyTo(spec: DokkaSourceSetSpec) {
+    fun applyTo(spec: org.jetbrains.dokka.gradle.engine.parameters.DokkaSourceSetSpec) {
         spec.sourceSetScope tryAssign sourceSetScope
         spec.suppress tryAssign suppress
         spec.displayName tryAssign displayName
@@ -302,3 +302,8 @@ internal data class DokkaSourceSetSpec(
         spec.jdkVersion tryAssign jdkVersion
     }
 }
+
+internal object DokkaSourceSetSpecTransformingSerializer : KeyTransformingSerializer<DokkaSourceSetSpec>(
+    DokkaSourceSetSpec.serializer(),
+    "name",
+)

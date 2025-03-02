@@ -334,6 +334,13 @@ internal interface Task : Named {
         finalizedBy?.let(task::setFinalizedBy)
         shouldRunAfter?.let(task::setShouldRunAfter)
     }
+
+    context(Project)
+    override fun applyTo() {
+        tasks.named(name) {
+            applyTo(this)
+        }
+    }
 }
 
 private object TaskSerializer : JsonContentPolymorphicSerializer<Task>(

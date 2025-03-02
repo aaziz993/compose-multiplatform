@@ -8,14 +8,12 @@ import gradle.libs
 import gradle.module
 import gradle.plugin
 import gradle.plugins
-import gradle.projectProperties
 import gradle.settings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.provideDelegate
-import org.gradle.kotlin.dsl.withType
 import plugin.project.model.EnabledSettings
 
 @Serializable
@@ -27,8 +25,9 @@ internal data class DokkaSettings(
     override val modulePath: String? = null,
     override val sourceSetScopeDefault: String? = null,
     override val konanHome: String? = null,
-    override val dokkaPublications: List<DokkaPublication>? = null,
-    override val dokkaSourceSets: List<DokkaSourceSetSpec>? = null,
+    override val dokkaPublications: List<@Serializable(with = DokkaPublicationTransformingSerializer::class) DokkaPublication>? = null,
+    override val dokkaSourceSets: List<@Serializable(with = DokkaSourceSetSpecTransformingSerializer::class) DokkaSourceSetSpec>? = null,
+    override val pluginsConfiguration: List<@Serializable(with = DokkaPluginParametersBaseSpecTransformingSerializer::class) DokkaPluginParametersBaseSpec>? = null,
     override val dokkaEngineVersion: String? = null,
     override val enabled: Boolean = true,
     val versioning: Boolean = true,

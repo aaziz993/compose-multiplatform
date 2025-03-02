@@ -58,7 +58,7 @@ internal data class KotlinSourceSet(
     }
 
     context(Project)
-    fun applyTo() {
+    override fun applyTo() {
         kotlin.sourceSets.maybeNamed(name) {
             applyTo(this)
         }

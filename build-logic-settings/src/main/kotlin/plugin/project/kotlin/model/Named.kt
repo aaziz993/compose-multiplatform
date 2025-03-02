@@ -4,6 +4,7 @@ import gradle.maybeNamedOrAll
 import gradle.namedOrAll
 import org.gradle.api.NamedDomainObjectCollection
 import org.gradle.api.NamedDomainObjectContainer
+import org.gradle.api.Project
 
 /**
  * Types can implement this interface and use the embedded {@link Namer} implementation, to satisfy API that calls for a namer.
@@ -18,4 +19,7 @@ internal interface Named {
      * @return The name. Never null.
      */
     val name: String
+
+    context(Project)
+    fun applyTo(){}
 }

@@ -9,10 +9,13 @@ plugins {
     alias(libs.plugins.doctor)
     // Software Composition Analysis (SCA) tool that attempts to detect publicly disclosed vulnerabilities contained within a project's dependencies. It does this by determining if there is a Common Platform Enumeration (CPE) identifier for a given dependency. If found, it will generate a report linking to the associated CVE entries.
     alias(libs.plugins.dependencycheck)
-    // allows dumping binary API of a JVM part of a Kotlin library that is public in the sense of Kotlin visibilities and ensures that the public binary API wasn't changed in a way that makes this change binary incompatible.
+    // Allows dumping binary API of a JVM part of a Kotlin library that is public in the sense of Kotlin visibilities and ensures that the public binary API wasn't changed in a way that makes this change binary incompatible.
     alias(libs.plugins.binary.compatibility.validator)
     // API documentation engine for Kotlin.
+    // for html
     alias(libs.plugins.dokka)
+    // for javadoc
+    alias(libs.plugins.dokkaJavadoc)
     // Used to assist in the development of Gradle plugins. It automatically applies the Java Library.
     `java-gradle-plugin`
     // Support convention plugins written in Kotlin.
@@ -204,7 +207,11 @@ dependencies {
     // help developers deliver high-quality, efficient code standards that benefit the entire team or organization.
     implementation(libs.plugins.sonarqube.toDep())
     // an API documentation engine for Kotlin.
+    // for html
     implementation(libs.plugins.dokka.toDep())
+    // for javadoc
+    implementation(libs.plugins.dokkaJavadoc.toDep())
+    // for versioning
     implementation(libs.dokka.versioning)
     dokkaPlugin(libs.dokka.versioning)
     // allows dumping binary API of a JVM part of a Kotlin library that is public in the sense of Kotlin visibilities and ensures that the public binary API wasn't changed in a way that makes this change binary incompatible.

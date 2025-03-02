@@ -94,6 +94,7 @@ plugins:
       sonar.androidLint.reportPaths: build/reports/lint-results.xml
 
   # api documentation engine for Kotlin.
+  # api documentation engine for Kotlin.
   dokka:
     enabled: true
 
@@ -186,7 +187,8 @@ plugins:
       - nativeMain
       - jsMain
       - wasmJsMain
-
+common:
+  yaml:
 kotlin:
   jvmToolchain: 23
 
@@ -283,7 +285,3 @@ dependencies:
   - $libs.android.desugar.jdk.libs
   - $libs.androidx.test.core
   - $libs.androidx.test.runner
-
-tasks:
-  - dokkaTask:
-      outputDirectory: build/dokka
