@@ -18,9 +18,9 @@ internal data class AppleSettings(
 ) : AppleProjectExtension {
 
     context(Project)
-    fun applyTo() =
+    override fun applyTo() =
         pluginManager.withPlugin(settings.libs.plugins.plugin("apple").id) {
-            apple.teamID = teamID ?: moduleName
+            super.applyTo()
 
             iosApps?.forEach { iosApp ->
                 iosApp.name.takeIf(String::isNotEmpty)?.also { name ->

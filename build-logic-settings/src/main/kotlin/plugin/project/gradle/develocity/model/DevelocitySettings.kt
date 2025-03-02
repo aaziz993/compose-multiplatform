@@ -29,19 +29,10 @@ internal data class DevelocitySettings(
 ) : DevelocityConfiguration, EnabledSettings {
 
     context(Settings)
-    fun applyTo() =
+    override fun applyTo() =
         pluginManager.withPlugin(libs.plugins.plugin("develocity").id) {
-            buildScan?.let { buildScan ->
-                develocity.buildScan {
-                    buildScan.applyTo(this)
-                }
-            }
+            super.applyTo()
 
-            develocity.server tryAssign server
-            develocity.edgeDiscovery tryAssign edgeDiscovery
-            develocity.projectId tryAssign projectId
-            develocity.allowUntrustedServer tryAssign allowUntrustedServer
-            develocity.accessKey tryAssign accessKey
 
             if (isCI) {
                 buildCache {

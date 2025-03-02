@@ -1,5 +1,9 @@
 package plugin.project.web.js.karakum.model
 
+import gradle.karakum
+import gradle.tryAssign
+import org.gradle.api.Project
+
 internal interface KarakumExtension {
 
     /**
@@ -7,4 +11,10 @@ internal interface KarakumExtension {
      */
     val configFile: String?
     val extensionSource: String?
+
+    context(Project)
+    fun applyTo() {
+        karakum.configFile tryAssign configFile?.let(::file)
+        karakum.extensionSource tryAssign extensionSource?.let(layout.projectDirectory::dir)?.asFileTree
+    }
 }

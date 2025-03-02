@@ -19,9 +19,8 @@ internal data class RoomSettings(
 ) : RoomExtension, EnabledSettings {
 
     context(Project)
-    fun applyTo() =
+    override fun applyTo() =
         pluginManager.withPlugin(settings.libs.plugins.plugin("room").id) {
-            schemaDirectories?.forEach(room::schemaDirectory)
-            room::generateKotlin trySet generateKotlin
+            super.applyTo()
         }
 }

@@ -39,8 +39,8 @@ internal data class CocoapodsSettings(
 ) : CocoapodsExtension, EnabledSettings {
 
     context(Project)
-    fun applyTo() =
+    override fun applyTo() =
         pluginManager.withPlugin(settings.libs.plugins.plugin("cocoapods").id) {
-            super.applyTo(kotlin.cocoapods)
+            super.applyTo()
         }
 }

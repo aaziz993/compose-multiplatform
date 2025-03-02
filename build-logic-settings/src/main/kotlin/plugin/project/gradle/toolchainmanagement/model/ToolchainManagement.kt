@@ -1,3 +1,10 @@
 package plugin.project.gradle.toolchainmanagement.model
 
-internal interface ToolchainManagement
+import org.gradle.api.initialization.Settings
+
+internal interface ToolchainManagement {
+
+    context(Settings)
+    fun applyTo() {
+    }
+}

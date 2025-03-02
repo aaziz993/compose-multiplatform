@@ -1,5 +1,6 @@
 package plugin.project.gradle.apivalidation.model
 
+import gradle.apiValidation
 import gradle.trySet
 import kotlinx.validation.ApiValidationExtension
 import kotlinx.validation.ExperimentalBCVApi
@@ -81,17 +82,17 @@ internal interface ApiValidationExtension {
 
     context(Project)
     @OptIn(ExperimentalBCVApi::class)
-    fun applyTo(extension: ApiValidationExtension) {
-        extension::validationDisabled trySet validationDisabled
-        extension::ignoredPackages trySet ignoredPackages?.toMutableSet()
-        extension::ignoredProjects trySet ignoredProjects?.toMutableSet()
-        extension::nonPublicMarkers trySet nonPublicMarkers?.toMutableSet()
-        extension::ignoredClasses trySet ignoredClasses?.toMutableSet()
-        extension::publicMarkers trySet publicMarkers?.toMutableSet()
-        extension::publicPackages trySet publicPackages?.toMutableSet()
-        extension::publicClasses trySet publicClasses?.toMutableSet()
-        extension::additionalSourceSets trySet additionalSourceSets?.toMutableSet()
-        extension::apiDumpDirectory trySet apiDumpDirectory
-        klib?.applyTo(extension.klib)
+    fun applyTo() {
+        apiValidation::validationDisabled trySet validationDisabled
+        apiValidation::ignoredPackages trySet ignoredPackages?.toMutableSet()
+        apiValidation::ignoredProjects trySet ignoredProjects?.toMutableSet()
+        apiValidation::nonPublicMarkers trySet nonPublicMarkers?.toMutableSet()
+        apiValidation::ignoredClasses trySet ignoredClasses?.toMutableSet()
+        apiValidation::publicMarkers trySet publicMarkers?.toMutableSet()
+        apiValidation::publicPackages trySet publicPackages?.toMutableSet()
+        apiValidation::publicClasses trySet publicClasses?.toMutableSet()
+        apiValidation::additionalSourceSets trySet additionalSourceSets?.toMutableSet()
+        apiValidation::apiDumpDirectory trySet apiDumpDirectory
+        klib?.applyTo(apiValidation.klib)
     }
 }

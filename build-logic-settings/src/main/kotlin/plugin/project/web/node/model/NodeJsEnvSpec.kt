@@ -1,5 +1,11 @@
 package plugin.project.web.node.model
 
+import gradle.id
+import gradle.libs
+import gradle.nodeEnv
+import gradle.plugin
+import gradle.plugins
+import gradle.settings
 import gradle.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -33,11 +39,11 @@ internal data class NodeJsEnvSpec(
 ) {
 
     context(Project)
-    fun applyTo(spec: NodeJsEnvSpec) {
-        spec.download tryAssign download
-        spec.downloadBaseUrl tryAssign downloadBaseUrl
-        spec.installationDirectory tryAssign installationDirectory?.let(layout.projectDirectory::dir)
-        spec.version tryAssign version
-        spec.command tryAssign command
+    fun applyTo() = pluginManager.withPlugin(settings.libs.plugins.plugin("gradle.node.plugin").id) {
+        nodeEnv.download tryAssign download
+        nodeEnv.downloadBaseUrl tryAssign downloadBaseUrl
+        nodeEnv.installationDirectory tryAssign installationDirectory?.let(layout.projectDirectory::dir)
+        nodeEnv.version tryAssign version
+        nodeEnv.command tryAssign command
     }
 }

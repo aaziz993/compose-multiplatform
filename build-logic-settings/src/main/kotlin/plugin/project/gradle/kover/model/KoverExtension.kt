@@ -1,5 +1,6 @@
 package plugin.project.gradle.kover.model
 
+import gradle.kover
 import gradle.tryAssign
 import kotlinx.kover.gradle.plugin.dsl.KoverProjectExtension
 import kotlinx.kover.gradle.plugin.dsl.KoverVersions.JACOCO_TOOL_DEFAULT_VERSION
@@ -41,16 +42,16 @@ internal interface KoverExtension {
     val reports: KoverReportsConfig?
 
     context(Project)
-    fun applyTo(extension: KoverProjectExtension) {
-        extension.useJacoco tryAssign useJacoco
-        extension.jacocoVersion tryAssign jacocoVersion
+    fun applyTo() {
+        kover.useJacoco tryAssign useJacoco
+        kover.jacocoVersion tryAssign jacocoVersion
 
         currentProject?.let { currentProject ->
-            extension.currentProject(currentProject::applyTo)
+            kover.currentProject(currentProject::applyTo)
         }
 
         reports?.let { reports ->
-            extension.reports {
+            kover.reports {
                 reports.applyTo(this)
             }
         }

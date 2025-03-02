@@ -19,8 +19,8 @@ internal data class SonarSettings(
 ) : SonarExtension, EnabledSettings {
 
     context(Project)
-    fun applyTo() =
+    override fun applyTo() =
         pluginManager.withPlugin(settings.libs.plugins.plugin("sonarqube").id) {
-            super.applyTo(sonar)
+            super.applyTo()
         }
 }

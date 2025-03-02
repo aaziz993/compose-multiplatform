@@ -69,11 +69,8 @@ import plugin.project.web.WasmPlugin
 import plugin.project.web.WasmWasiPlugin
 import plugin.project.web.js.JsPlugin
 import plugin.project.web.js.karakum.model.KarakumSettings
-import plugin.project.web.node.configureNodeJsEnvSpec
 import plugin.project.web.node.model.NodeJsEnvSpec
-import plugin.project.web.npm.configureNpmExtension
 import plugin.project.web.npm.model.NpmExtension
-import plugin.project.web.yarn.configureYarnRootExtension
 import plugin.project.web.yarn.model.YarnRootExtension
 
 private const val VERSION_CATALOG_CACHE_DIR = "build-logic-settings/gradle"
@@ -305,11 +302,5 @@ internal data class ProjectProperties(
             XMLEventFactory::class.qualifiedName!!,
             "com.sun.xml.internal.stream.events.XMLEventFactoryImpl",
         )
-    }
-
-    private fun Project.configureWeb() {
-        configureNodeJsEnvSpec()
-        configureNpmExtension()
-        configureYarnRootExtension()
     }
 }

@@ -43,7 +43,6 @@ internal object ProjectDependencyTransformingSerializer :
             val value = element.values.single()
 
             when {
-
                 key == "pod" -> JsonObject(
                     buildMap {
                         put("type", JsonPrimitive(key))

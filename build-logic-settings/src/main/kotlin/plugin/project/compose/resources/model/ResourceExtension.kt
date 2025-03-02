@@ -1,7 +1,14 @@
 package plugin.project.compose.resources.model
 
+import gradle.compose
+import gradle.id
 import gradle.kotlin
+import gradle.libs
+import gradle.plugin
+import gradle.plugins
 import gradle.projectProperties
+import gradle.resources
+import gradle.settings
 import gradle.sourceSetsToComposeResourcesDirs
 import gradle.trySet
 import kotlinx.serialization.Serializable
@@ -43,24 +50,26 @@ internal data class ResourcesExtension(
 ) {
 
     context(Project)
-    fun applyTo(extension: ResourcesExtension) {
-        extension::publicResClass trySet publicResClass
-        extension::packageOfResClass trySet packageOfResClass
-        extension::generateResClass trySet generateResClass
-        customResourceDirectories?.forEach { (sourceSetName, directory) ->
-            extension.customDirectory(sourceSetName, provider { layout.projectDirectory.dir(directory) })
-        }
-
-        // Adjust composeResources to match flatten directory structure
-        when (projectProperties.layout) {
-            ProjectLayout.FLAT -> kotlin.sourceSets.forEach { sourceSet ->
-                extension.customDirectory(
-                    sourceSet.name,
-                    provider { sourceSetsToComposeResourcesDirs[sourceSet]!! },
-                )
+    fun applyTo() = pluginManager.withPlugin(settings.libs.plugins.plugin("compose.multiplatform").id) {
+        compose.resources {
+            ::publicResClass trySet this@ResourcesExtension.publicResClass
+            ::packageOfResClass trySet this@ResourcesExtension.packageOfResClass
+            ::generateResClass trySet this@ResourcesExtension.generateResClass
+            this@ResourcesExtension.customResourceDirectories?.forEach { (sourceSetName, directory) ->
+                customDirectory(sourceSetName, provider { layout.projectDirectory.dir(directory) })
             }
 
-            else -> Unit
+            // Adjust composeResources to match flatten directory structure
+            when (projectProperties.layout) {
+                ProjectLayout.FLAT -> kotlin.sourceSets.forEach { sourceSet ->
+                    customDirectory(
+                        sourceSet.name,
+                        provider { sourceSetsToComposeResourcesDirs[sourceSet]!! },
+                    )
+                }
+
+                else -> Unit
+            }
         }
     }
 }

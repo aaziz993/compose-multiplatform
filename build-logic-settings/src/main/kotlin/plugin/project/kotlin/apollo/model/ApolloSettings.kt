@@ -23,31 +23,8 @@ internal data class ApolloSettings(
 ) : ApolloExtension, EnabledSettings {
 
     context(Project)
-    fun applyTo() =
+    override fun applyTo() =
         pluginManager.withPlugin(settings.libs.plugins.plugin("apollo3").id) {
-            processors?.forEach { (schema, service, packageName) ->
-                apollo.apolloKspProcessor(file(schema), service, packageName)
-            }
-
-            androidServices?.forEach { androidService ->
-                apollo.createAllAndroidVariantServices(androidService.sourceFolder, androidService.nameSuffix) {
-                    androidService.service?.applyTo(this)
-                }
-            }
-
-            kotlinService?.forEach { kotlinService ->
-                apollo.createAllKotlinSourceSetServices(kotlinService.sourceFolder, kotlinService.nameSuffix) {
-                    kotlinService.service?.applyTo(this)
-                }
-            }
-
-            services?.forEach { service ->
-                apollo.service(service.name) {
-                    service.applyTo(this)
-                }
-            }
-
-            apollo.generateSourcesDuringGradleSync tryAssign generateSourcesDuringGradleSync
-            apollo.linkSqlite tryAssign linkSqlite
+            super.applyTo()
         }
 }

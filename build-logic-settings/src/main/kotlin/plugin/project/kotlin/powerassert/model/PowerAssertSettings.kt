@@ -19,9 +19,8 @@ internal data class PowerAssertSettings(
 ) : PowerAssertGradleExtension, EnabledSettings {
 
     context(Project)
-    fun applyTo() =
+    override fun applyTo() =
         pluginManager.withPlugin(settings.libs.plugins.plugin("power.assert").id) {
-            powerAssert.functions tryAssign functions
-            powerAssert.includedSourceSets tryAssign includedSourceSets
+            super.applyTo()
         }
 }

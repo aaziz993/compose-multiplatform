@@ -20,9 +20,8 @@ internal data class KtorfitSettings(
 ) : KtorfitGradleConfiguration, EnabledSettings {
 
     context(Project)
-    fun applyTo() =
+    override fun applyTo() =
         pluginManager.withPlugin(settings.libs.plugins.plugin("ktorfit").id) {
-            ktorfit::generateQualifiedTypeName trySet generateQualifiedTypeName
-            ktorfit::errorCheckingMode trySet errorCheckingMode
+            super.applyTo()
         }
 }

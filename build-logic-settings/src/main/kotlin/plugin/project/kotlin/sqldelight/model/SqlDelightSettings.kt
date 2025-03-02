@@ -18,8 +18,8 @@ internal data class SqlDelightSettings(
 ) : SqlDelightExtension, EnabledSettings {
 
     context(Project)
-    fun applyTo() =
+    override fun applyTo() =
         pluginManager.withPlugin(settings.libs.plugins.plugin("sqldelight").id) {
-            super.applyTo(sqldelight)
+            super.applyTo()
         }
 }

@@ -1,5 +1,11 @@
 package plugin.project.web.npm.model
 
+import gradle.id
+import gradle.libs
+import gradle.npm
+import gradle.plugin
+import gradle.plugins
+import gradle.settings
 import gradle.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -19,14 +25,15 @@ internal data class NpmExtension(
 ) {
 
     context(Project)
-    fun applyTo(extension: NpmExtension) {
-        extension.command tryAssign command
-        extension.lockFileName tryAssign lockFileName
-        extension.lockFileDirectory tryAssign lockFileDirectory?.let(layout.projectDirectory::dir)
-        extension.ignoreScripts tryAssign ignoreScripts
-        extension.packageLockMismatchReport tryAssign packageLockMismatchReport
-        extension.reportNewPackageLock tryAssign reportNewPackageLock
-        extension.packageLockAutoReplace tryAssign packageLockAutoReplace
-        extension.overrides tryAssign overrides?.map(NpmOverride::toNpmOverride)
-    }
+    fun applyTo() =
+        pluginManager.withPlugin(settings.libs.plugins.plugin("gradle.node.plugin").id) {
+            npm.command tryAssign command
+            npm.lockFileName tryAssign lockFileName
+            npm.lockFileDirectory tryAssign lockFileDirectory?.let(layout.projectDirectory::dir)
+            npm.ignoreScripts tryAssign ignoreScripts
+            npm.packageLockMismatchReport tryAssign packageLockMismatchReport
+            npm.reportNewPackageLock tryAssign reportNewPackageLock
+            npm.packageLockAutoReplace tryAssign packageLockAutoReplace
+            npm.overrides tryAssign overrides?.map(NpmOverride::toNpmOverride)
+        }
 }

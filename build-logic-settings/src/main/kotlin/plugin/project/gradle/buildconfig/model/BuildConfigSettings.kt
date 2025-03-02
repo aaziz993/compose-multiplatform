@@ -17,7 +17,7 @@ internal data class BuildConfigSettings(
 ) : BuildConfigExtension, EnabledSettings {
 
     context(Project)
-    fun applyTo() = pluginManager.withPlugin(settings.libs.plugins.plugin("build.config").id) {
-        sourceSets?.forEach(buildConfig.sourceSets::register)
+    override fun applyTo() = pluginManager.withPlugin(settings.libs.plugins.plugin("build.config").id) {
+        super.applyTo()
     }
 }

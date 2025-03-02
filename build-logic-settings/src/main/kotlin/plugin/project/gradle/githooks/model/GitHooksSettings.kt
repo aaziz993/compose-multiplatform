@@ -19,8 +19,8 @@ internal data class GitHooksSettings(
 ) : GitHooksExtension, EnabledSettings {
 
     context(Settings)
-    fun applyTo() =
+    override fun applyTo() =
         pluginManager.withPlugin(libs.plugins.plugin("gradle-pre-commit-git-hooks").id) {
-            super.applyTo(gitHooks)
+            super.applyTo()
         }
 }

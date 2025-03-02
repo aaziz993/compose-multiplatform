@@ -1,5 +1,14 @@
 package plugin.project.kotlin.ksp.model
 
+import gradle.ksp
+import gradle.tryAssign
+import gradle.trySet
+import org.gradle.api.Project
+import org.gradle.kotlin.dsl.dependencies
+import org.gradle.kotlin.dsl.getValue
+import org.gradle.kotlin.dsl.provideDelegate
+import plugin.model.dependency.Dependency
+
 internal interface KspExtension {
     /**
      * Enables or disables KSP 2, defaults to the `ksp.useKsp2` gradle property or `false` if that's not set.
@@ -15,4 +24,18 @@ internal interface KspExtension {
     val arguments: Map<String, String>?
     // Treat all warning as errors.
     val allWarningsAsErrors: Boolean?
+
+    context(Project)
+    fun applyTo(){
+        ksp.useKsp2 tryAssign useKsp2
+
+        commandLineArgumentProviders?.let { commandLineArgumentProviders ->
+            ksp.arg { commandLineArgumentProviders }
+        }
+
+        excludedProcessors?.forEach(ksp::excludeProcessor)
+        excludedSources?.let(ksp.excludedSources::setFrom)
+        arguments?.forEach { (key, value) -> ksp.arg(key, value) }
+        ksp::allWarningsAsErrors trySet allWarningsAsErrors
+    }
 }

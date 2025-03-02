@@ -1,5 +1,6 @@
 package plugin.project.gradle.githooks.model
 
+import gradle.gitHooks
 import gradle.trySet
 import java.net.URI
 import org.danilopianini.gradle.git.hooks.GitHooksExtension
@@ -23,25 +24,25 @@ internal interface GitHooksExtension {
     val repoRoot: String?
 
     context(Settings)
-    fun applyTo(extension: GitHooksExtension) {
+    fun applyTo() {
         hooks?.forEach { name, script ->
-            extension.hook(name) {
+            gitHooks.hook(name) {
                 from { script }
             }
         }
 
         hooksFiles?.forEach { name, file ->
-            extension.hook(name) {
+            gitHooks.hook(name) {
                 from(rootDir.resolve(file))
             }
         }
 
         hooksUrls?.forEach { name, file ->
-            extension.hook(name) {
+            gitHooks.hook(name) {
                 from(URI(file).toURL())
             }
         }
 
-        extension::repoRoot trySet repoRoot?.let(rootDir::resolve)
+        gitHooks::repoRoot trySet repoRoot?.let(rootDir::resolve)
     }
 }

@@ -21,12 +21,8 @@ internal data class RpcSettings(
 
     context(Project)
     @OptIn(RpcDangerousApi::class)
-    fun applyTo() =
+    override fun applyTo() =
         pluginManager.withPlugin(settings.libs.plugins.plugin("kotlinx.rpc").id) {
-            rpc.annotationTypeSafetyEnabled tryAssign annotationTypeSafetyEnabled
-
-            strict?.let { strict ->
-                rpc.strict(strict::applyTo)
-            }
+            super.applyTo()
         }
 }

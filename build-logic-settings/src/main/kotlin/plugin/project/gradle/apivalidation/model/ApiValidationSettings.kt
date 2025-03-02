@@ -31,9 +31,9 @@ internal data class ApiValidationSettings(
 ) : ApiValidationExtension, EnabledSettings {
 
     context(Project)
-    fun applyTo() =
+    override fun applyTo() =
         pluginManager.withPlugin(settings.libs.plugins.plugin("binary.compatibility.validator").id) {
-            super.applyTo(apiValidation)
+            super.applyTo()
 
             tasks.maybeNamed("apiBuild") {
                 this as KotlinApiBuildTask

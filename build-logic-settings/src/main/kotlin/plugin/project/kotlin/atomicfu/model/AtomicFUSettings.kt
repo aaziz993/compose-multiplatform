@@ -21,11 +21,8 @@ internal data class AtomicFUSettings(
 ) : AtomicFUExtension, EnabledSettings {
 
     context(Project)
-    fun applyTo() =
+    override fun applyTo() =
         pluginManager.withPlugin(settings.libs.plugins.plugin("atomicfu").id) {
-            atomicFU::dependenciesVersion trySet dependenciesVersion
-            atomicFU::transformJvm trySet transformJvm
-            atomicFU::jvmVariant trySet jvmVariant
-            atomicFU::verbose trySet verbose
+            super.applyTo()
         }
 }

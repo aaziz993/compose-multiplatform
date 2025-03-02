@@ -14,8 +14,7 @@ internal data class ToolchainManagementSettings(
 ) : ToolchainManagement, EnabledSettings {
 
     context(Settings)
-    @Suppress("UnstableApiUsage")
-    fun applyTo() =
+    override fun applyTo() =
         pluginManager.withPlugin(libs.plugins.plugin("foojay-resolver-convention").id) {
 
         }

@@ -1,5 +1,6 @@
 package plugin.project.gradle.dokka.model
 
+import gradle.dokka
 import gradle.tryAssign
 import org.gradle.api.Project
 import org.jetbrains.dokka.gradle.DokkaExtension
@@ -234,41 +235,38 @@ internal interface DokkaExtension {
      */
     // Aside: Launching without isolation WorkerExecutor.noIsolation is not an option, because
     // running Dokka Generator **requires** an isolated classpath.
-//     val dokkaGeneratorIsolation: WorkerIsolation?
+    val dokkaGeneratorIsolation: WorkerIsolation?
 
     context(Project)
-    fun applyTo(extension: DokkaExtension) {
-        extension.basePublicationsDirectory tryAssign basePublicationsDirectory?.let(layout.projectDirectory::dir)
-        extension.dokkaCacheDirectory tryAssign dokkaCacheDirectory?.let(layout.projectDirectory::dir)
-        extension.moduleName tryAssign moduleName
-        extension.moduleVersion tryAssign moduleVersion
-        extension.modulePath tryAssign modulePath
-        extension.sourceSetScopeDefault tryAssign sourceSetScopeDefault
-        extension.konanHome tryAssign konanHome?.let(::file)
+    fun applyTo() {
+        dokka.basePublicationsDirectory tryAssign basePublicationsDirectory?.let(layout.projectDirectory::dir)
+        dokka.dokkaCacheDirectory tryAssign dokkaCacheDirectory?.let(layout.projectDirectory::dir)
+        dokka.moduleName tryAssign moduleName
+        dokka.moduleVersion tryAssign moduleVersion
+        dokka.modulePath tryAssign modulePath
+        dokka.sourceSetScopeDefault tryAssign sourceSetScopeDefault
+        dokka.konanHome tryAssign konanHome?.let(::file)
 
         dokkaPublications?.forEach { dokkaPublication ->
-            extension.dokkaPublications.named(dokkaPublication.name) {
+            dokka.dokkaPublications.named(dokkaPublication.name) {
                 dokkaPublication.applyTo(this)
             }
         }
 
         dokkaSourceSets?.forEach { dokkaSourceSet ->
-            println(extension.dokkaSourceSets.map { it.name })
-            extension.dokkaSourceSets.named(dokkaSourceSet.name) {
+            println(dokka.dokkaSourceSets.map { it.name })
+            dokka.dokkaSourceSets.named(dokkaSourceSet.name) {
                 dokkaSourceSet.applyTo(this)
             }
         }
 
         pluginsConfiguration?.forEach { pluginConfiguration ->
-            extension.pluginsConfiguration.named(pluginConfiguration.name) {
+            dokka.pluginsConfiguration.named(pluginConfiguration.name) {
                 pluginConfiguration.applyTo(this)
             }
         }
 
-        extension.dokkaEngineVersion tryAssign dokkaEngineVersion
-
-//        dokkaGeneratorIsolation?.let{dokkaGeneratorIsolation->
-//
-//        }
+        dokka.dokkaEngineVersion tryAssign dokkaEngineVersion
+        dokka.dokkaGeneratorIsolation tryAssign dokkaGeneratorIsolation?.toWorkerIsolation(dokka)
     }
 }

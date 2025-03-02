@@ -18,9 +18,8 @@ internal data class AllOpenSettings(
 ) : AllOpenExtension, EnabledSettings {
 
     context(Project)
-    fun applyTo() =
+    override fun applyTo() =
         pluginManager.withPlugin(settings.libs.plugins.plugin("allopen").id) {
-            myAnnotations?.let(allOpen::annotations)
-            myPresets?.forEach(allOpen::preset)
+            super.applyTo()
         }
 }

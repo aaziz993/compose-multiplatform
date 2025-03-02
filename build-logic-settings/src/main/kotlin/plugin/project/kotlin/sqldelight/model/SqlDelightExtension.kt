@@ -1,5 +1,6 @@
 package plugin.project.kotlin.sqldelight.model
 
+import gradle.sqldelight
 import gradle.tryAssign
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.invoke
@@ -10,9 +11,9 @@ internal interface SqlDelightExtension {
     val linkSqlite: Boolean?
 
     context(Project)
-    fun applyTo(extension: app.cash.sqldelight.gradle.SqlDelightExtension) {
+    fun applyTo() {
         databases?.let { databases ->
-            extension.databases {
+            sqldelight.databases {
                 databases.forEach { database ->
                     //Note: Name of your Database and .sq file should be same
                     create(database.name) {
@@ -21,6 +22,6 @@ internal interface SqlDelightExtension {
                 }
             }
         }
-        extension.linkSqlite tryAssign linkSqlite
+        sqldelight.linkSqlite tryAssign linkSqlite
     }
 }

@@ -1,5 +1,9 @@
 package plugin.project.kotlin.powerassert.model
 
+import gradle.powerAssert
+import gradle.tryAssign
+import org.gradle.api.Project
+
 internal interface PowerAssertGradleExtension {
 
     /**
@@ -13,4 +17,10 @@ internal interface PowerAssertGradleExtension {
      * When the provider returns `null` - which is the default - all test SourceSets will be transformed.
      */
     val includedSourceSets: Set<String>?
+
+    context(Project)
+    fun applyTo() {
+        powerAssert.functions tryAssign functions
+        powerAssert.includedSourceSets tryAssign includedSourceSets
+    }
 }

@@ -13,7 +13,7 @@ internal data class IosAppTarget(
     override val embedFrameworks: Boolean? = null,
     override val ipad: Boolean? = null,
     override val iphone: Boolean? = null,
-    override val name: String="",
+    override val name: String = "",
     override val productInfo: Map<String, @Serializable(with = AnySerializer::class) Any>? = null,
     override val productModuleName: String? = null,
     override val productName: String? = null,
@@ -25,8 +25,11 @@ internal data class IosAppTarget(
     val sceneConfigurations: List<SceneConfiguration>? = null,
 ) : AppleTarget {
 
-    fun applyTo(target: IosAppTarget) {
+    override fun applyTo(target: org.jetbrains.gradle.apple.targets.AppleTarget) {
         super.applyTo(target)
+
+        target as IosAppTarget
+
         target::launchStoryboard trySet launchStoryboard
         target::mainStoryboard trySet mainStoryboard
         target::multipleWindows trySet multipleWindows

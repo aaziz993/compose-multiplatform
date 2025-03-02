@@ -29,13 +29,14 @@ internal data class DokkaSettings(
     override val dokkaSourceSets: List<@Serializable(with = DokkaSourceSetSpecTransformingSerializer::class) DokkaSourceSetSpec>? = null,
     override val pluginsConfiguration: List<@Serializable(with = DokkaPluginParametersBaseSpecTransformingSerializer::class) DokkaPluginParametersBaseSpec>? = null,
     override val dokkaEngineVersion: String? = null,
+    override val dokkaGeneratorIsolation: WorkerIsolation? = null,
     override val enabled: Boolean = true,
     val versioning: Boolean = true,
 ) : DokkaExtension, EnabledSettings {
 
     context(Project)
-    fun applyTo() = pluginManager.withPlugin(settings.libs.plugins.plugin("dokka").id) {
-        super.applyTo(dokka)
+    override fun applyTo() = pluginManager.withPlugin(settings.libs.plugins.plugin("dokka").id) {
+        super.applyTo()
 
         if (versioning) {
             val dokkaPlugin by configurations

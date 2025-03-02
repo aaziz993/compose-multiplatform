@@ -21,13 +21,6 @@ internal class KspPlugin : Plugin<Project> {
                 plugins.apply(settings.libs.plugins.plugin("ksp").id)
 
                 ksp.applyTo()
-
-                val kspCommonMainMetadata by configurations
-                dependencies {
-                    ksp.processors?.filterIsInstance<Dependency>()?.forEach { processor ->
-                        kspCommonMainMetadata(processor.resolve())
-                    }
-                }
             }
         }
     }

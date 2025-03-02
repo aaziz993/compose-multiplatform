@@ -8,8 +8,13 @@ import gradle.plugins
 import gradle.settings
 import gradle.tryAssign
 import gradle.trySet
+import kotlin.io.resolve
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.dependencies
+import org.gradle.kotlin.dsl.getValue
+import org.gradle.kotlin.dsl.provideDelegate
+import plugin.model.dependency.Dependency
 import plugin.model.dependency.ProjectDependency
 import plugin.model.dependency.ProjectDependencyTransformingSerializer
 import plugin.project.model.EnabledSettings
@@ -27,17 +32,15 @@ internal data class KspSettings(
 ) : KspExtension, EnabledSettings {
 
     context(Project)
-    fun applyTo() =
+    override fun applyTo() =
         pluginManager.withPlugin(settings.libs.plugins.plugin("ksp").id) {
-            ksp.useKsp2 tryAssign useKsp2
+            super.applyTo()
 
-            commandLineArgumentProviders?.let { commandLineArgumentProviders ->
-                ksp.arg { commandLineArgumentProviders }
+            val kspCommonMainMetadata by configurations
+            dependencies {
+                processors?.filterIsInstance<Dependency>()?.forEach { processor ->
+                    kspCommonMainMetadata(processor.resolve())
+                }
             }
-
-            excludedProcessors?.forEach(ksp::excludeProcessor)
-            excludedSources?.let(ksp.excludedSources::setFrom)
-            arguments?.forEach { (key, value) -> ksp.arg(key, value) }
-            ksp::allWarningsAsErrors trySet allWarningsAsErrors
         }
 }

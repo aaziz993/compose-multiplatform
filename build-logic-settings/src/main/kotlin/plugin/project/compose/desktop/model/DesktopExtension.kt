@@ -1,5 +1,12 @@
 package plugin.project.compose.desktop.model
 
+import gradle.compose
+import gradle.desktop
+import gradle.id
+import gradle.libs
+import gradle.plugin
+import gradle.plugins
+import gradle.settings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.compose.desktop.DesktopExtension
@@ -11,12 +18,14 @@ internal data class DesktopExtension(
 ) {
 
     context(Project)
-    fun applyTo(extension: DesktopExtension) {
-        application?.applyTo(extension.application)
+    fun applyTo() = pluginManager.withPlugin(settings.libs.plugins.plugin("compose.multiplatform").id) {
+        compose.desktop {
+            this@DesktopExtension.application?.applyTo(application)
 
-        nativeApplication?.let { nativeApplication ->
-            extension.nativeApplication {
-                nativeApplication.applyTo(this)
+            this@DesktopExtension.nativeApplication?.let { nativeApplication ->
+                nativeApplication {
+                    nativeApplication.applyTo(this)
+                }
             }
         }
     }

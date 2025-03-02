@@ -39,9 +39,9 @@ internal data class DoctorSettings(
 ) : DoctorExtension, EnabledSettings {
 
     context(Project)
-    fun applyTo() =
+    override fun applyTo() =
         pluginManager.withPlugin(settings.libs.plugins.plugin("doctor").id) {
-            super.applyTo(doctor)
+            super.applyTo()
 
             // Always monitor tasks on CI, but disable it locally by default with providing an option to opt-in.
             // See 'doctor.enableTaskMonitoring' in gradle.properties for details.

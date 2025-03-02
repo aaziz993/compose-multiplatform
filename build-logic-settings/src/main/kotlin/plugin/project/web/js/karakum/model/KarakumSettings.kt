@@ -1,5 +1,10 @@
 package plugin.project.web.js.karakum.model
 
+import gradle.id
+import gradle.libs
+import gradle.plugin
+import gradle.plugins
+import gradle.settings
 import gradle.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -12,8 +17,8 @@ internal data class KarakumSettings(
 ) : KarakumExtension {
 
     context(Project)
-    fun applyTo(extension: io.github.sgrishchenko.karakum.gradle.plugin.KarakumExtension) {
-        extension.configFile tryAssign configFile?.let(::file)
-        extension.extensionSource tryAssign extensionSource?.let(layout.projectDirectory::dir)?.asFileTree
-    }
+    override fun applyTo() =
+        pluginManager.withPlugin(settings.libs.plugins.plugin("karakum").id) {
+            super.applyTo()
+        }
 }

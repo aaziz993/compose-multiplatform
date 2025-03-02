@@ -14,6 +14,7 @@ import com.diffplug.spotless.generic.LicenseHeaderStep
 import com.diffplug.spotless.kotlin.KotlinConstants
 import gradle.libs
 import gradle.settings
+import gradle.spotless
 import gradle.version
 import gradle.versions
 import org.gradle.api.Project
@@ -47,16 +48,16 @@ internal interface SpotlessExtension {
     val kotlinGradle: KotlinGradleExtension?
 
     context(Project)
-    fun applyTo(extension: SpotlessExtension) {
-        lineEndings?.let(extension::setLineEndings)
-        encoding?.let(extension::setEncoding)
-        ratchetFrom?.let(extension::setRatchetFrom)
-        enforceCheck?.let(extension::setEnforceCheck)
+    fun applyTo() {
+        lineEndings?.let(spotless::setLineEndings)
+        encoding?.let(spotless::setEncoding)
+        ratchetFrom?.let(spotless::setRatchetFrom)
+        enforceCheck?.let(spotless::setEnforceCheck)
 
         // Applicable only in root project.
         if (project == rootProject) {
-            predeclareDeps?.takeIf { it }?.run { extension.predeclareDeps() }
-            predeclareDepsFromBuildscript?.takeIf { it }?.run { extension.predeclareDepsFromBuildscript() }
+            predeclareDeps?.takeIf { it }?.run { spotless.predeclareDeps() }
+            predeclareDepsFromBuildscript?.takeIf { it }?.run { spotless.predeclareDepsFromBuildscript() }
         }
 
         val defaultFormats = mapOf(
@@ -160,12 +161,12 @@ internal interface SpotlessExtension {
 
         // Format files
         (formats ?: defaultFormats).ifEmpty { null }?.forEach { (name, settings) ->
-            extension.format(name, settings::applyTo)
+            spotless.format(name, settings::applyTo)
         }
 
         kotlinGradle?.let { kotlinGradle ->
             // Additional configuration for Kotlin Gradle scripts
-            extension.kotlinGradle(kotlinGradle::applyTo)
+            spotless.kotlinGradle(kotlinGradle::applyTo)
         }
     }
 }

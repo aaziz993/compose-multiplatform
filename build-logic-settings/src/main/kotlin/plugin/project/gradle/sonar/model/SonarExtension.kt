@@ -1,5 +1,6 @@
 package plugin.project.gradle.sonar.model
 
+import gradle.sonar
 import org.gradle.api.Project
 import org.sonarqube.gradle.SonarExtension
 
@@ -58,16 +59,16 @@ internal interface SonarExtension {
     val androidVariant: String?
 
     context(Project)
-    fun applyTo(extension: SonarExtension) {
-        skipProject?.let(extension::setSkipProject)
-        extension.properties {
+    fun applyTo() {
+        skipProject?.let(sonar::setSkipProject)
+        sonar.properties {
             property("sonar.projectVersion", version)
         }
         properties?.let { properties ->
-            extension.properties {
+            sonar.properties {
                 properties.forEach { (key, value) -> property(key, value) }
             }
         }
-        androidVariant?.let(extension::setAndroidVariant)
+        androidVariant?.let(sonar::setAndroidVariant)
     }
 }

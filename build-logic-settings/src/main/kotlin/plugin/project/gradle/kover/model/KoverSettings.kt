@@ -20,8 +20,8 @@ internal data class KoverSettings(
 ) : KoverExtension, EnabledSettings {
 
     context(Project)
-    fun applyTo() =
+    override fun applyTo() =
         pluginManager.withPlugin(settings.libs.plugins.plugin("kover").id) {
-            super.applyTo(kover)
+            super.applyTo()
         }
 }

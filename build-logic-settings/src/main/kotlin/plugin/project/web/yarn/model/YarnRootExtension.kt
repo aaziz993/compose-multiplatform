@@ -1,6 +1,12 @@
 package plugin.project.web.yarn.model
 
+import gradle.id
+import gradle.libs
+import gradle.plugin
+import gradle.plugins
+import gradle.settings
 import gradle.trySet
+import gradle.yarn
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnLockMismatchReport
@@ -18,20 +24,21 @@ internal data class YarnRootExtension(
 ) {
 
     context(Project)
-    fun applyTo(extension: YarnRootExtension) {
-        extension::lockFileName trySet lockFileName
-        extension::lockFileDirectory trySet lockFileDirectory?.let(::file)
-        extension::ignoreScripts trySet ignoreScripts
-        extension::yarnLockMismatchReport trySet yarnLockMismatchReport
-        extension::reportNewYarnLock trySet reportNewYarnLock
-        extension::yarnLockAutoReplace trySet yarnLockAutoReplace
-        resolutions?.map(YarnResolution::toYarnResolution)?.let(extension.resolutions::addAll)
-        extension::lockFileDirectory trySet lockFileDirectory?.let(::file)
+    fun applyTo() =
+        pluginManager.withPlugin(settings.libs.plugins.plugin("gradle.node.plugin").id) {
+            yarn::lockFileName trySet lockFileName
+            yarn::lockFileDirectory trySet lockFileDirectory?.let(::file)
+            yarn::ignoreScripts trySet ignoreScripts
+            yarn::yarnLockMismatchReport trySet yarnLockMismatchReport
+            yarn::reportNewYarnLock trySet reportNewYarnLock
+            yarn::yarnLockAutoReplace trySet yarnLockAutoReplace
+            resolutions?.map(YarnResolution::toYarnResolution)?.let(yarn.resolutions::addAll)
+            yarn::lockFileDirectory trySet lockFileDirectory?.let(::file)
 
-        extension.yarnLockMismatchReport = YarnLockMismatchReport.valueOf(
-            providers.gradleProperty("npm.packageLockMismatchReport").get().uppercase(),
-        )
+            yarn.yarnLockMismatchReport = YarnLockMismatchReport.valueOf(
+                providers.gradleProperty("npm.packageLockMismatchReport").get().uppercase(),
+            )
 
-        extension.ignoreScripts = providers.gradleProperty("ignoreScripts").get().toBoolean()
-    }
+            yarn.ignoreScripts = providers.gradleProperty("ignoreScripts").get().toBoolean()
+        }
 }
