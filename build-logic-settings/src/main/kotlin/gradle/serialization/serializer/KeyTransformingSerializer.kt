@@ -39,9 +39,12 @@ internal abstract class KeyTransformingSerializer<T : Any>(
             )
         }
 
-    override fun transformSerialize(element: JsonElement): JsonElement = JsonObject(
-        mapOf(
-            keyAs to JsonObject(element.jsonObject.filterKeys { key -> key != keyAs }),
-        ),
-    )
+    override fun transformSerialize(element: JsonElement): JsonElement =
+        element.jsonObject[keyAs]?.let {
+            JsonObject(
+                mapOf(
+                    it.jsonPrimitive.content to JsonObject(element.jsonObject.filterKeys { key -> key != keyAs }),
+                ),
+            )
+        } ?: element
 }

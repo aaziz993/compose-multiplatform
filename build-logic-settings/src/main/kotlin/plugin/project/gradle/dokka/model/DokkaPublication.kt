@@ -121,18 +121,20 @@ internal data class DokkaPublication(
         get() = formatName
 
     context(Project)
-    fun applyTo(publication: org.jetbrains.dokka.gradle.formats.DokkaPublication) {
-        publication.enabled tryAssign enabled
-        publication.moduleName tryAssign moduleName
-        publication.moduleVersion tryAssign moduleVersion
-        publication.outputDirectory tryAssign outputDirectory?.let(layout.projectDirectory::dir)
-        publication.offlineMode tryAssign offlineMode
-        publication.failOnWarning tryAssign failOnWarning
-        publication.suppressObviousFunctions tryAssign suppressObviousFunctions
-        publication.suppressInheritedMembers tryAssign suppressInheritedMembers
-        includes?.let(publication.includes::setFrom)
-        publication.cacheRoot tryAssign cacheRoot?.let(layout.projectDirectory::dir)
-        publication.finalizeCoroutines tryAssign finalizeCoroutines
+    override fun applyTo(named: org.gradle.api.Named) {
+        named as org.jetbrains.dokka.gradle.formats.DokkaPublication
+
+        named.enabled tryAssign enabled
+        named.moduleName tryAssign moduleName
+        named.moduleVersion tryAssign moduleVersion
+        named.outputDirectory tryAssign outputDirectory?.let(layout.projectDirectory::dir)
+        named.offlineMode tryAssign offlineMode
+        named.failOnWarning tryAssign failOnWarning
+        named.suppressObviousFunctions tryAssign suppressObviousFunctions
+        named.suppressInheritedMembers tryAssign suppressInheritedMembers
+        includes?.let(named.includes::setFrom)
+        named.cacheRoot tryAssign cacheRoot?.let(layout.projectDirectory::dir)
+        named.finalizeCoroutines tryAssign finalizeCoroutines
     }
 }
 

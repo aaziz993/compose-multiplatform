@@ -2,6 +2,7 @@ package plugin.project.gradle.spotless.model
 
 import com.diffplug.gradle.spotless.FormatExtension
 import com.diffplug.spotless.LineEnding
+import kotlinx.serialization.Serializable
 
 internal interface FormatExtension {
 
@@ -41,10 +42,13 @@ internal interface FormatExtension {
     val clangFormat: ClangFormatConfig?
     val eclipseWtp: EclipseWtpConfig?
     val toggleOffOnRegex: String?
+
     /** Disables formatting between the given tags.  */
     val toggleOffOn: ToggleOffOn?
+
     /** Disables formatting between `spotless:off` and `spotless:on`.  */
     val toggleIfOffOn: Boolean?
+
     /**
      * Undoes all previous calls to [.toggleOffOn] and
      * [.toggleOffOn].

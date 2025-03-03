@@ -2,7 +2,6 @@ package plugin.project.kotlin.kmp.model.nat
 
 import gradle.trySet
 import kotlinx.serialization.Serializable
-import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.CInteropSettings
 import plugin.project.kotlin.model.Named
@@ -339,20 +338,22 @@ internal interface CInteropSettings : Named {
     val extraOpts: List<String>?
 
     context(Project)
-    fun applyTo(settings: CInteropSettings) {
-        settings::dependencyFiles trySet dependencyFiles?.let { files(*it.toTypedArray()) }
-        defFile?.let(settings::defFile)
-        packageName?.let(settings::packageName)
-        headers?.let { settings.headers(*it.toTypedArray()) }
-        includeDirs?.let { settings.includeDirs(*it.toTypedArray()) }
+    override fun applyTo(named: org.gradle.api.Named) {
+        named as CInteropSettings
+
+        named::dependencyFiles trySet dependencyFiles?.let { files(*it.toTypedArray()) }
+        defFile?.let(named::defFile)
+        packageName?.let(named::packageName)
+        headers?.let { named.headers(*it.toTypedArray()) }
+        includeDirs?.let { named.includeDirs(*it.toTypedArray()) }
 
         includeDirectories?.let { includeDirectories ->
-            settings.includeDirs {
+            named.includeDirs {
                 includeDirectories.applyTo(this)
             }
         }
-        compilerOpts?.let(settings::compilerOpts)
-        linkerOpts?.let(settings::linkerOpts)
-        extraOpts?.let(settings::extraOpts)
+        compilerOpts?.let(named::compilerOpts)
+        linkerOpts?.let(named::linkerOpts)
+        extraOpts?.let(named::extraOpts)
     }
 }

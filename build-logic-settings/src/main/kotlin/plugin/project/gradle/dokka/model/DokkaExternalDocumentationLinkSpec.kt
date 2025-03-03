@@ -3,6 +3,7 @@ package plugin.project.gradle.dokka.model
 import gradle.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.NamedDomainObjectContainer
+import org.gradle.api.Project
 import org.jetbrains.dokka.gradle.engine.parameters.DokkaExternalDocumentationLinkSpec
 import plugin.project.kotlin.model.Named
 
@@ -76,9 +77,12 @@ internal data class DokkaExternalDocumentationLinkSpec(
     val enabled: Boolean? = null,
 ) : Named {
 
-    fun applyTo(spec: DokkaExternalDocumentationLinkSpec) {
-        url?.let(spec::url)
-        packageListUrl?.let(spec::packageListUrl)
-        spec.enabled tryAssign enabled
+    context(Project)
+    override fun applyTo(named: org.gradle.api.Named) {
+        named as DokkaExternalDocumentationLinkSpec
+
+        url?.let(named::url)
+        packageListUrl?.let(named::packageListUrl)
+        named.enabled tryAssign enabled
     }
 }

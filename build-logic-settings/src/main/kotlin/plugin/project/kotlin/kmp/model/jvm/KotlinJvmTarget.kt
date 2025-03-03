@@ -18,6 +18,9 @@ internal data class KotlinJvmTarget(
     val withJava: Boolean? = null,
 ) : KotlinTarget, HasConfigurableKotlinCompilerOptions<KotlinJvmCompilerOptions> {
 
+    override val needKmp: Boolean
+        get() = false
+
     context(Project)
     override fun applyTo() {
         val target = kotlin.jvm(targetName)

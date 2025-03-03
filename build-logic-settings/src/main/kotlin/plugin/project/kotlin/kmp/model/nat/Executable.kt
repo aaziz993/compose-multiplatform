@@ -1,7 +1,7 @@
 package plugin.project.kotlin.kmp.model.nat
 
 import kotlinx.serialization.Serializable
-import org.gradle.api.NamedDomainObjectCollection
+import org.gradle.api.Named
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.mpp.Executable
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
@@ -30,11 +30,11 @@ internal data class Executable(
 ) : NativeBinary {
 
     context(Project)
-    override fun applyTo(binary: org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary) {
-        super.applyTo(binary)
+    override fun applyTo(named: Named) {
+        super.applyTo(named)
 
-        binary as Executable
+        named as Executable
 
-        entryPoint?.let(binary::entryPoint)
+        entryPoint?.let(named::entryPoint)
     }
 }

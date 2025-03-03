@@ -1,8 +1,7 @@
 package plugin.project.kotlin.kmp.model.nat
 
-import gradle.containerize
 import kotlinx.serialization.Serializable
-import org.gradle.api.NamedDomainObjectCollection
+import org.gradle.api.Named
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import plugin.project.kotlin.kmp.model.KotlinTarget
@@ -17,15 +16,15 @@ internal abstract class KotlinNativeTarget : KotlinTarget,
     abstract override val compilations: List<KotlinNativeCompilation>?
 
     context(Project)
-    override fun applyTo(target: org.jetbrains.kotlin.gradle.plugin.KotlinTarget) {
-        super<KotlinTarget>.applyTo(target)
+    override fun applyTo(named: Named) {
+        super<KotlinTarget>.applyTo(named)
 
-        target as KotlinNativeTarget
+        named as KotlinNativeTarget
 
-        super<HasConfigurableKotlinCompilerOptions>.applyTo(target)
+        super<HasConfigurableKotlinCompilerOptions>.applyTo(named)
 
         binaries?.let { binaries ->
-            target.binaries {
+            named.binaries {
                 binaries.framework?.let { framework ->
                     framework {
                         framework.applyTo(this)

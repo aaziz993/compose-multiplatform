@@ -31,7 +31,7 @@ kotlin:
           - $compose.html.core
 
 dependencies:
-  - $compose.uiTooling: debugImplementation
+  - debugImplementation: $compose.uiTooling
 
 compose:
   enabled: true

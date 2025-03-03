@@ -1,19 +1,12 @@
 package plugin.project.gradle.dokka.model
 
-import gradle.dokka
 import gradle.id
-import gradle.libraries
-import gradle.library
 import gradle.libs
-import gradle.module
 import gradle.plugin
 import gradle.plugins
 import gradle.settings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.getValue
-import org.gradle.kotlin.dsl.provideDelegate
 import plugin.project.model.EnabledSettings
 
 @Serializable
@@ -31,19 +24,10 @@ internal data class DokkaSettings(
     override val dokkaEngineVersion: String? = null,
     override val dokkaGeneratorIsolation: WorkerIsolation? = null,
     override val enabled: Boolean = true,
-    val versioning: Boolean = true,
 ) : DokkaExtension, EnabledSettings {
 
     context(Project)
     override fun applyTo() = pluginManager.withPlugin(settings.libs.plugins.plugin("dokka").id) {
         super.applyTo()
-
-        if (versioning) {
-            val dokkaPlugin by configurations
-
-            dependencies {
-                dokkaPlugin(settings.libs.libraries.library("dokka.versioning").module)
-            }
-        }
     }
 }

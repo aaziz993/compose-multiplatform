@@ -2,6 +2,7 @@ package plugin.project.kotlin.kmp.model.web
 
 import gradle.trySet
 import kotlinx.serialization.Serializable
+import org.gradle.api.Named
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJsCompilation
 import plugin.model.dependency.ProjectDependency
@@ -22,16 +23,16 @@ internal data class KotlinJsCompilation(
 ) : KotlinCompilation, HasBinaries<KotlinJsBinaryContainer> {
 
     context(Project)
-    override fun applyTo(compilation: org.jetbrains.kotlin.gradle.plugin.KotlinCompilation<*>) {
-        super.applyTo(compilation)
+    override fun applyTo(named: Named) {
+        super.applyTo(named)
 
-        compilation as KotlinJsCompilation
+        named as KotlinJsCompilation
 
-        binaries.applyTo(compilation.binaries)
-        compilation::outputModuleName trySet outputModuleName
+        binaries.applyTo(named.binaries)
+        named::outputModuleName trySet outputModuleName
 
         packageJson?.let { packageJson ->
-            compilation.packageJson {
+            named.packageJson {
                 packageJson.applyTo(this)
             }
         }

@@ -3,7 +3,6 @@ package plugin.project.kotlin.model
 import gradle.maybeNamedOrAll
 import gradle.namedOrAll
 import org.gradle.api.NamedDomainObjectCollection
-import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 
 /**
@@ -21,5 +20,22 @@ internal interface Named {
     val name: String
 
     context(Project)
-    fun applyTo(){}
+    fun applyTo(named: org.gradle.api.Named)
+
+    context(Project)
+    fun applyTo(named: NamedDomainObjectCollection<out org.gradle.api.Named>) =
+        named.namedOrAll(name) {
+            applyTo(this)
+        }
+
+    context(Project)
+    fun applyToMaybe(named: NamedDomainObjectCollection<out org.gradle.api.Named>) =
+        named.maybeNamedOrAll(name) {
+            applyTo(this)
+        }
+
+    context(Project)
+    fun applyTo() {
+        throw UnsupportedOperationException()
+    }
 }

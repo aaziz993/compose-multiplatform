@@ -1,6 +1,7 @@
 package plugin.project.gradle.model
 
 import gradle.tryAssign
+import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.api.tasks.compile.AbstractCompile
 import plugin.project.kotlin.model.Task
@@ -41,18 +42,18 @@ internal abstract class AbstractCompile : Task {
     abstract val targetCompatibility: String?
 
     context(Project)
-    override fun applyTo(task: org.gradle.api.Task) {
-        super.applyTo(task)
+    override fun applyTo(named: Named) {
+        super.applyTo(named)
 
-        task as AbstractCompile
+        named as AbstractCompile
 
-        task.destinationDirectory tryAssign destinationDirectory?.let(layout.projectDirectory::dir)
+        named.destinationDirectory tryAssign destinationDirectory?.let(layout.projectDirectory::dir)
 
         classpath?.let { classpath ->
-            task.classpath = files(*classpath.toTypedArray())
+            named.classpath = files(*classpath.toTypedArray())
         }
 
-        sourceCompatibility?.let(task::setSourceCompatibility)
-        targetCompatibility?.let(task::setTargetCompatibility)
+        sourceCompatibility?.let(named::setSourceCompatibility)
+        targetCompatibility?.let(named::setTargetCompatibility)
     }
 }

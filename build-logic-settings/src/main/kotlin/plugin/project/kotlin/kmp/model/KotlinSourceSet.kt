@@ -1,7 +1,6 @@
 package plugin.project.kotlin.kmp.model
 
 import gradle.kotlin
-import gradle.maybeNamed
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -48,21 +47,19 @@ internal data class KotlinSourceSet(
 ) : Named, HasKotlinDependencies {
 
     context(Project)
-    fun applyTo(sourceSet: org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet) {
-        sourceSet.dependencies {
+    override fun applyTo(named: org.gradle.api.Named) {
+        named as org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
+
+        named.dependencies {
             dependencies?.filterIsInstance<Dependency>()?.forEach { dependency -> dependency.applyTo(this) }
         }
 
-        languageSettings?.applyTo(sourceSet.languageSettings)
-        customSourceFilesExtensions?.let(sourceSet::addCustomSourceFilesExtensions)
+        languageSettings?.applyTo(named.languageSettings)
+        customSourceFilesExtensions?.let(named::addCustomSourceFilesExtensions)
     }
 
     context(Project)
-    override fun applyTo() {
-        kotlin.sourceSets.maybeNamed(name) {
-            applyTo(this)
-        }
-    }
+    override fun applyTo() = applyToMaybe(kotlin.sourceSets)
 }
 
 internal object KotlinSourceSetTransformingSerializer : KeyTransformingSerializer<KotlinSourceSet>(

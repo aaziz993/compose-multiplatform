@@ -165,7 +165,7 @@ dokka {
     dokkaSourceSets.main {
 
         // contains descriptions for the module and the packages
-        includes.from("Module.md")
+        includes.from("README.md")
 
         // adds source links that lead to this repository, allowing readers
         // to easily find source code for inspected declarations

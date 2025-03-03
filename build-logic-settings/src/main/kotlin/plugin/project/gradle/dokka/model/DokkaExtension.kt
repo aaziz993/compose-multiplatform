@@ -248,22 +248,15 @@ internal interface DokkaExtension {
         dokka.konanHome tryAssign konanHome?.let(::file)
 
         dokkaPublications?.forEach { dokkaPublication ->
-            dokka.dokkaPublications.named(dokkaPublication.name) {
-                dokkaPublication.applyTo(this)
-            }
+            dokkaPublication.applyTo(dokka.dokkaPublications)
         }
 
         dokkaSourceSets?.forEach { dokkaSourceSet ->
-            println(dokka.dokkaSourceSets.map { it.name })
-            dokka.dokkaSourceSets.named(dokkaSourceSet.name) {
-                dokkaSourceSet.applyTo(this)
-            }
+            dokkaSourceSet.applyTo(dokka.dokkaSourceSets)
         }
 
         pluginsConfiguration?.forEach { pluginConfiguration ->
-            dokka.pluginsConfiguration.named(pluginConfiguration.name) {
-                pluginConfiguration.applyTo(this)
-            }
+            pluginConfiguration.applyTo(dokka.pluginsConfiguration)
         }
 
         dokka.dokkaEngineVersion tryAssign dokkaEngineVersion

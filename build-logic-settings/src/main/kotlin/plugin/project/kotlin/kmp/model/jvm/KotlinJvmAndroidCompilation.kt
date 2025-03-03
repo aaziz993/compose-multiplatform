@@ -2,10 +2,13 @@ package plugin.project.kotlin.kmp.model.jvm
 
 import gradle.containerize
 import kotlinx.serialization.Serializable
+import org.gradle.api.Named
+import org.gradle.api.NamedDomainObjectCollection
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.kotlin.dsl.invoke
+import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJvmAndroidCompilation
 import plugin.model.dependency.ProjectDependency
 import plugin.model.dependency.ProjectDependencyTransformingSerializer
@@ -28,21 +31,20 @@ internal data class KotlinJvmAndroidCompilation(
 ) : KotlinCompilation {
 
     context(Project)
-    override fun applyTo(compilation: org.jetbrains.kotlin.gradle.plugin.KotlinCompilation<*>) {
-        super.applyTo(compilation)
+    override fun applyTo(named: Named) {
+        super.applyTo(named)
 
-
-        compilation as KotlinJvmAndroidCompilation
+        named as KotlinJvmAndroidCompilation
 
         compileTaskProvider?.let { compileTaskProvider ->
-            compilation.compileTaskProvider {
+            named.compileTaskProvider {
                 compileTaskProvider.applyTo(this)
             }
         }
 
         compileJavaTaskProvider?.let { compileJavaTaskProvider ->
-            compilation.compileJavaTaskProvider {
-                compileJavaTaskProvider.applyTo(this as Task)
+            named.compileJavaTaskProvider {
+                compileJavaTaskProvider.applyTo(this as Named)
             }
         }
     }

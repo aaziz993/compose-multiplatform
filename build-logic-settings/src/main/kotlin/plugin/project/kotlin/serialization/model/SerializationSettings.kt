@@ -1,6 +1,5 @@
 package plugin.project.kotlin.serialization.model
 
-import com.github.jengelman.gradle.plugins.shadow.ShadowExtension
 import gradle.id
 import gradle.libs
 import gradle.plugin

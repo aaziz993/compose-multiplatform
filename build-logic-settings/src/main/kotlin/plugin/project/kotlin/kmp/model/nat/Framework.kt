@@ -2,9 +2,9 @@ package plugin.project.kotlin.kmp.model.nat
 
 import gradle.trySet
 import kotlinx.serialization.Serializable
+import org.gradle.api.Named
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.mpp.Framework
-import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
 
 @Serializable
@@ -24,11 +24,11 @@ internal data class Framework(
 ) : AbstractNativeLibrary {
 
     context(Project)
-    override fun applyTo(binary: NativeBinary) {
-        super.applyTo(binary)
+    override fun applyTo(named: Named) {
+        super.applyTo(named)
 
-        binary as Framework
+        named as Framework
 
-        binary::isStatic trySet this@Framework.isStatic
+        named::isStatic trySet this@Framework.isStatic
     }
 }

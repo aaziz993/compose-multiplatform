@@ -5,7 +5,6 @@ package plugin.project.model
 import gradle.allLibs
 import gradle.isUrl
 import gradle.libs
-import gradle.moduleName
 import gradle.projectProperties
 import gradle.settings
 import gradle.trySetSystemProperty
@@ -18,10 +17,13 @@ import javax.xml.stream.XMLOutputFactory
 import kotlinx.serialization.Serializable
 import org.gradle.api.GradleException
 import org.gradle.api.Project
+import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.api.file.FileCollection
 import org.gradle.api.initialization.Settings
 import org.gradle.api.internal.artifacts.repositories.DefaultMavenArtifactRepository
+import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.maven
+import org.gradle.kotlin.dsl.repositories
 import org.jetbrains.compose.internal.utils.currentTarget
 import org.jetbrains.compose.jetbrainsCompose
 import org.tomlj.Toml
@@ -124,26 +126,7 @@ internal data class ProjectProperties(
         dependencyResolutionManagement?.let { dependencyResolutionManagement ->
             dependencyResolutionManagement {
                 repositories {
-                    mavenCentral()
-                    // For the Android plugin and dependencies
-                    google()
-                    // For other Gradle plugins
-                    gradlePluginPortal()
-                    // For dev versions of kotlin
-                    maven("https://maven.pkg.jetbrains.space/kotlin/p/kotlin/dev")
-                    // For dev versions of compose plugin and dependencies
-                    jetbrainsCompose()
-                    // For compose experimental builds
-                    maven("https://packages.jetbrains.team/maven/p/firework/dev")
-                    // Sonatype OSS Snapshot Repository
-                    maven("https://oss.sonatype.org/content/repositories/snapshots")
-
-                    // Apply repositories from project properties.
-                    dependencyResolutionManagement.repositories?.let { repositories ->
-                        repositories.forEach { repository ->
-                            maven(repository)
-                        }
-                    }
+                    settings.applyTo(this)
                 }
 
                 val libsFile = settings.layout.settingsDirectory.file("gradle/libs.versions.toml").asFile
@@ -210,6 +193,10 @@ internal data class ProjectProperties(
             }
         }
 
+        buildscript.repositories {
+            settings.applyTo(this)
+        }
+
         // Apply plugins after version catalogs are loaded in settings phase.
         settings.plugins.apply(DevelocityPlugin::class.java)
         settings.plugins.apply(ToolchainManagementPlugin::class.java)
@@ -226,13 +213,15 @@ internal data class ProjectProperties(
 
     context(Project)
     fun applyTo() = with(SLF4JProblemReporterContext()) {
-        val moduleName = moduleName
-
         if (kotlin.targets?.isNotEmpty() == true) {
             group?.let(::setGroup)
             description?.let(::setDescription)
 
             project.version = version()
+        }
+
+        buildscript.repositories {
+            settings.applyTo(this)
         }
 
         //  Don't change order!
@@ -265,7 +254,12 @@ internal data class ProjectProperties(
         project.plugins.apply(WasmWasiPlugin::class.java)
         project.plugins.apply(ComposePlugin::class.java)
 
-        println("TASKS: " + project.tasks.map { it.name })
+        dependencies?.filterIsInstance<Dependency>()?.forEach { dependency ->
+            dependencies {
+                dependency.applyTo(this)
+            }
+        }
+
         tasks?.forEach { task ->
             task.applyTo()
         }
@@ -301,5 +295,28 @@ internal data class ProjectProperties(
             XMLEventFactory::class.qualifiedName!!,
             "com.sun.xml.internal.stream.events.XMLEventFactoryImpl",
         )
+    }
+
+    private fun Settings.applyTo(handler: RepositoryHandler) = with(handler) {
+        mavenCentral()
+        // For the Android plugin and dependencies
+        google()
+        // For other Gradle plugins
+        gradlePluginPortal()
+        // For dev versions of kotlin
+        maven("https://maven.pkg.jetbrains.space/kotlin/p/kotlin/dev")
+        // For dev versions of compose plugin and dependencies
+        jetbrainsCompose()
+        // For compose experimental builds
+        maven("https://packages.jetbrains.team/maven/p/firework/dev")
+        // Sonatype OSS Snapshot Repository
+        maven("https://oss.sonatype.org/content/repositories/snapshots")
+
+        // Apply repositories from project properties.
+        projectProperties.dependencyResolutionManagement?.repositories?.let { repositories ->
+            repositories.forEach { repository ->
+                maven(repository)
+            }
+        }
     }
 }

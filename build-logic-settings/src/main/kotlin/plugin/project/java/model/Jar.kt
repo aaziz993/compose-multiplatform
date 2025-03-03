@@ -1,26 +1,56 @@
 package plugin.project.java.model
 
 import kotlinx.serialization.Serializable
+import org.gradle.api.Named
 import org.gradle.api.Project
-import org.gradle.jvm.tasks.Jar
-import org.gradle.kotlin.dsl.attributes
+import org.gradle.api.tasks.bundling.Jar
+import plugin.project.gradle.model.CopySpec
+import plugin.project.gradle.model.Zip
 
+/**
+ * Assembles a JAR archive.
+ */
 @Serializable
-internal data class Jar(
-    val manifest: Manifest? = null,
-) {
+internal abstract class Jar : Zip() {
+
+    /**
+     * The character set used to encode the manifest content.
+     *
+     * @param manifestContentCharset the character set used to encode the manifest content
+     * @see .getManifestContentCharset
+     * @since 2.14
+     */
+    abstract var manifestContentCharset: String?
+
+    /**
+     * Sets the manifest for this JAR archive.
+     *
+     * @param manifest The manifest. May be null.
+     */
+    abstract var manifest: Manifest?
+
+    /**
+     * Adds content to this JAR archive's META-INF directory.
+     *
+     *
+     * The given action is executed to configure a `CopySpec`.
+     *
+     * @param configureAction The action.
+     * @return The created `CopySpec`
+     * @since 3.5
+     */
+
+    abstract val metaInf: CopySpec?
 
     context(Project)
-    fun applyTo(jar: Jar) {
-        manifest?.let { manifest ->
-            jar.manifest {
-                attributes(
-                    "Implementation-Title" to name,
-                    "Implementation-Version" to version,
-                    "Automatic-Module-Name" to name,
-                )
-                manifest.attributes?.let(attributes::putAll)
-            }
-        }
+    override fun applyTo(named: Named) {
+        super.applyTo(named)
+
+        named as Jar
+
+        metadataCharset?.let(named::setMetadataCharset)
+        manifestContentCharset?.let(named::setManifestContentCharset)
+        manifest?.applyTo(named.manifest)
+        metaInf?.applyTo(named.metaInf)
     }
 }

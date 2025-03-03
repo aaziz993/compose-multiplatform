@@ -108,19 +108,21 @@ internal interface KotlinCompilation : HasKotlinDependencies, Named {
     val associatedCompilations: Set<String>?
 
     context(Project)
-    fun applyTo(compilation: KotlinCompilation<*>) {
+   override fun applyTo(named: org.gradle.api.Named) {
+       named as KotlinCompilation<*>
+
         defaultSourceSet?.let { defaultSourceSet ->
-            compilation.defaultSourceSet {
+            named.defaultSourceSet {
                 defaultSourceSet.applyTo(this)
             }
         }
 
-        compilation::compileDependencyFiles trySet compileDependencyFiles?.let { files(* it.toTypedArray()) }
+        named::compileDependencyFiles trySet compileDependencyFiles?.let { files(* it.toTypedArray()) }
 
-        output?.applyTo(compilation.output)
+        output?.applyTo(named.output)
 
         associatedCompilations
-            ?.map(compilation.target.compilations::getByName)
-            ?.forEach(compilation::associateWith)
+            ?.map(named.target.compilations::getByName)
+            ?.forEach(named::associateWith)
     }
 }

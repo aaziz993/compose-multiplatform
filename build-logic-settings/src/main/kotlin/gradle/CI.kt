@@ -5,6 +5,8 @@ import org.gradle.api.initialization.Settings
 
 private val CI_DETECT_PROPERTIES = listOf(
     "CI",
+    "GITHUB_ACTION",
+    "JB_SPACE_EXECUTION_NUMBER",
     "TEAMCITY_VERSION",
 )
 

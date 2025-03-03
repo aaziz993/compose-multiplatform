@@ -1,10 +1,12 @@
 package plugin.project.kotlin.model
 
+import org.gradle.kotlin.dsl.withType
 import gradle.serialization.serializer.AnySerializer
 import gradle.serialization.serializer.JsonContentPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
 import groovy.lang.MissingPropertyException
 import kotlinx.serialization.Serializable
+import org.gradle.api.NamedDomainObjectCollection
 import org.gradle.api.Project
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.TaskDependency
@@ -320,27 +322,25 @@ internal interface Task : Named {
     val shouldRunAfter: List<String>?
 
     context(Project)
-    fun applyTo(task: org.gradle.api.Task) {
-        dependsOn?.let(task::setDependsOn)
-        onlyIf?.let { onlyIf -> task.onlyIf { onlyIf } }
-        doNotTrackState?.let(task::doNotTrackState)
-        notCompatibleWithConfigurationCache?.let(task::notCompatibleWithConfigurationCache)
-        didWork?.let(task::setDidWork)
-        enabled?.let(task::setEnabled)
-        properties?.forEach { (name, value) -> task.setProperty(name, value) }
-        description?.let(task::setDescription)
-        group?.let(task::setGroup)
-        mustRunAfter?.let(task::setMustRunAfter)
-        finalizedBy?.let(task::setFinalizedBy)
-        shouldRunAfter?.let(task::setShouldRunAfter)
+    override fun applyTo(named: org.gradle.api.Named) {
+        named as org.gradle.api.Task
+
+        dependsOn?.let(named::setDependsOn)
+        onlyIf?.let { onlyIf -> named.onlyIf { onlyIf } }
+        doNotTrackState?.let(named::doNotTrackState)
+        notCompatibleWithConfigurationCache?.let(named::notCompatibleWithConfigurationCache)
+        didWork?.let(named::setDidWork)
+        enabled?.let(named::setEnabled)
+        properties?.forEach { (name, value) -> named.setProperty(name, value) }
+        description?.let(named::setDescription)
+        group?.let(named::setGroup)
+        mustRunAfter?.let(named::setMustRunAfter)
+        finalizedBy?.let(named::setFinalizedBy)
+        shouldRunAfter?.let(named::setShouldRunAfter)
     }
 
     context(Project)
-    override fun applyTo() {
-        tasks.named(name) {
-            applyTo(this)
-        }
-    }
+    override fun applyTo() = applyTo(tasks)
 }
 
 private object TaskSerializer : JsonContentPolymorphicSerializer<Task>(

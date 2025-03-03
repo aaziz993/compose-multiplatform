@@ -105,7 +105,12 @@ internal data class Dependency(
 
     context(Project)
     fun applyTo(handler: DependencyHandlerScope) {
-        handler.add(configuration, resolve())
+        if (configurations.findByName(configuration) != null) {
+            handler.add(configuration, resolve())
+        }
+        else {
+            logger.warn("Configuration doesn't exists: $configuration")
+        }
     }
 
     context(Project)

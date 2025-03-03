@@ -30,14 +30,16 @@ internal interface NativeBinary : Named {
     val outputDirectoryProperty: String?
 
     context(Project)
-    fun applyTo(binary: NativeBinary) {
-        binary.baseName = baseName ?: moduleName
-        binary::debuggable trySet debuggable
-        binary::optimized trySet optimized
-        linkerOpts?.let(binary::linkerOpts)
-        binary::binaryOptions trySet binaryOptions?.toMutableMap()
-        binary::freeCompilerArgs trySet freeCompilerArgs
-        binary::outputDirectory trySet optimized?.let(::file)
-        binary.outputDirectoryProperty tryAssign outputDirectoryProperty?.let(layout.projectDirectory::dir)
+    override fun applyTo(named: org.gradle.api.Named) {
+        named as NativeBinary
+
+        named.baseName = baseName ?: moduleName
+        named::debuggable trySet debuggable
+        named::optimized trySet optimized
+        linkerOpts?.let(named::linkerOpts)
+        named::binaryOptions trySet binaryOptions?.toMutableMap()
+        named::freeCompilerArgs trySet freeCompilerArgs
+        named::outputDirectory trySet optimized?.let(::file)
+        named.outputDirectoryProperty tryAssign outputDirectoryProperty?.let(layout.projectDirectory::dir)
     }
 }

@@ -1,10 +1,15 @@
 package plugin.project.java.model
 
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import gradle.serialization.serializer.AnySerializer
 import kotlinx.serialization.Serializable
+import org.gradle.api.Named
+import org.gradle.api.NamedDomainObjectCollection
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.tasks.compile.JavaCompile
+import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 import plugin.project.gradle.model.AbstractCompile
 import plugin.project.gradle.model.CompileOptions
 import plugin.project.gradle.model.HasCompileOptions
@@ -37,7 +42,7 @@ internal data class JavaCompile(
     override val mustRunAfter: List<String>? = null,
     override val finalizedBy: List<String>? = null,
     override val shouldRunAfter: List<String>? = null,
-    override val name: String = "compileJava",
+    override val name: String = "",
     override val destinationDirectory: String? = null,
     override val classpath: List<String>? = null,
     override val sourceCompatibility: String? = null,
@@ -52,13 +57,16 @@ internal data class JavaCompile(
 ) : AbstractCompile(), HasCompileOptions {
 
     context(Project)
-    override fun applyTo(task: Task) {
-        super<AbstractCompile>.applyTo(task)
+    override fun applyTo(named: Named) {
+        super<AbstractCompile>.applyTo(named)
 
-        task as JavaCompile
+        named as JavaCompile
 
-        super<HasCompileOptions>.applyTo(task)
+        super<HasCompileOptions>.applyTo(named)
 
-        modularity?.applyTo(task.modularity)
+        modularity?.applyTo(named.modularity)
     }
+
+    context(Project)
+    override fun applyTo() = applyTo(tasks.withType<JavaCompile>())
 }

@@ -166,7 +166,9 @@ internal data class JavaPluginExtension(
             java.testReportDir tryAssign testReportDir?.let(layout.projectDirectory::dir)
 
             manifest?.let { manifest ->
-                java.manifest(manifest::applyTo)
+                java.manifest {
+                    manifest.applyTo(this)
+                }
             }
         }
 }

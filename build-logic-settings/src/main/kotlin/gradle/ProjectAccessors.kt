@@ -30,6 +30,7 @@ import org.jetbrains.compose.android.AndroidExtension
 import org.jetbrains.compose.desktop.DesktopExtension
 import org.jetbrains.compose.resources.ResourcesExtension
 import org.jetbrains.dokka.gradle.DokkaExtension
+import org.jetbrains.dokka.versioning.VersioningConfiguration
 import org.jetbrains.gradle.apple.AppleProjectExtension
 import org.jetbrains.kotlin.allopen.gradle.AllOpenExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
@@ -104,6 +105,11 @@ internal fun Project.sonar(configure: SonarExtension.() -> Unit) =
 internal val Project.dokka: DokkaExtension get() = the()
 
 internal fun Project.dokka(configure: DokkaExtension.() -> Unit) =
+    extensions.configure(configure)
+
+internal val Project.versioning: VersioningConfiguration get() = the()
+
+internal fun Project.versioning(configure: VersioningConfiguration.() -> Unit) =
     extensions.configure(configure)
 
 internal val Project.apiValidation: ApiValidationExtension get() = the()

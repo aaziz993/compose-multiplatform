@@ -9,11 +9,7 @@ import kotlinx.serialization.json.Json
 import org.gradle.api.Plugin
 import org.gradle.api.file.Directory
 import org.gradle.api.initialization.Settings
-import org.yaml.snakeyaml.DumperOptions
 import org.yaml.snakeyaml.Yaml
-import org.yaml.snakeyaml.nodes.Tag
-import org.yaml.snakeyaml.representer.Represent
-import org.yaml.snakeyaml.representer.Representer
 import plugin.project.model.ProjectProperties
 import plugin.project.problemreporter.SLF4JProblemReporterContext
 

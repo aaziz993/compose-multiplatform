@@ -2,7 +2,7 @@ package plugin.project.kotlin.kmp.model.web
 
 import gradle.moduleName
 import kotlinx.serialization.Serializable
-import org.gradle.api.NamedDomainObjectCollection
+import org.gradle.api.Named
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalMainFunctionArgumentsDsl
 import plugin.project.kotlin.kmp.model.KotlinTarget
@@ -32,27 +32,27 @@ internal abstract class KotlinJsTargetDsl : KotlinTarget, KotlinTargetWithNodeJs
 
     context(Project)
     @OptIn(ExperimentalMainFunctionArgumentsDsl::class)
-    override fun applyTo(target: org.jetbrains.kotlin.gradle.plugin.KotlinTarget) {
-        super<KotlinTarget>.applyTo(target)
+    override fun applyTo(named: Named) {
+        super<KotlinTarget>.applyTo(named)
 
-        target as org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
+        named as org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
 
-        super<HasConfigurableKotlinCompilerOptions>.applyTo(target)
+        super<HasConfigurableKotlinCompilerOptions>.applyTo(named)
 
-        target.moduleName = moduleName ?: project.moduleName
+        named.moduleName = moduleName ?: project.moduleName
 
-        super<KotlinTargetWithNodeJsDsl>.applyTo(target)
+        super<KotlinTargetWithNodeJsDsl>.applyTo(named)
 
         browser?.let { browser ->
-            target.browser {
+            named.browser {
                 browser.applyTo(this, "$moduleName-${targetName}.js")
             }
         }
 
-        useCommonJs?.takeIf { it }?.run { target.useCommonJs() }
-        useEsModules?.takeIf { it }?.run { target.useEsModules() }
-        passAsArgumentToMainFunction?.let(target::passAsArgumentToMainFunction)
-        generateTypeScriptDefinitions?.takeIf { it }?.let { target.generateTypeScriptDefinitions() }
-        binaries.applyTo(target.binaries)
+        useCommonJs?.takeIf { it }?.run { named.useCommonJs() }
+        useEsModules?.takeIf { it }?.run { named.useEsModules() }
+        passAsArgumentToMainFunction?.let(named::passAsArgumentToMainFunction)
+        generateTypeScriptDefinitions?.takeIf { it }?.let { named.generateTypeScriptDefinitions() }
+        binaries.applyTo(named.binaries)
     }
 }

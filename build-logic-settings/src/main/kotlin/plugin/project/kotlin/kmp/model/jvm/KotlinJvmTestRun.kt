@@ -12,9 +12,11 @@ internal data class KotlinJvmTestRun(
 ) : Named {
 
     context(Project)
-    fun applyTo(run: KotlinJvmTestRun) {
+    override fun applyTo(named: org.gradle.api.Named) {
+        named as KotlinJvmTestRun
+
         executionSource?.let { executionSource ->
-            run.setExecutionSourceFrom(
+            named.setExecutionSourceFrom(
                 files(executionSource.classpath),
                 files(executionSource.testClassesDirs),
             )

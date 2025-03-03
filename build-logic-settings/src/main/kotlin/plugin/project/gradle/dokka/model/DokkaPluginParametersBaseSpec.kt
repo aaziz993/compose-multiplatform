@@ -1,11 +1,16 @@
 package plugin.project.gradle.dokka.model
 
+import gradle.libraryAsDependency
+import gradle.libs
 import gradle.serialization.serializer.KeyTransformingSerializer
+import gradle.settings
 import gradle.tryAssign
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.buildscript
 import org.jetbrains.dokka.gradle.engine.plugins.DokkaHtmlPluginParameters
+import org.jetbrains.dokka.gradle.engine.plugins.DokkaVersioningPluginParameters
 import plugin.project.kotlin.model.Named
 
 /**
@@ -22,10 +27,12 @@ import plugin.project.kotlin.model.Named
 internal sealed class DokkaPluginParametersBaseSpec : Named {
 
     abstract val pluginFqn: String
-
-    context(Project)
-    abstract fun applyTo(spec: org.jetbrains.dokka.gradle.engine.plugins.DokkaPluginParametersBaseSpec)
 }
+
+internal object DokkaPluginParametersBaseSpecTransformingSerializer : KeyTransformingSerializer<DokkaPluginParametersBaseSpec>(
+    DokkaPluginParametersBaseSpec.serializer(),
+    "type",
+)
 
 /**
  * Configuration for Dokka's base HTML format
@@ -109,21 +116,94 @@ internal data class DokkaHtmlPluginParameters(
         get() = DokkaHtmlPluginParameters.DOKKA_HTML_PLUGIN_FQN
 
     context(Project)
-    override fun applyTo(spec: org.jetbrains.dokka.gradle.engine.plugins.DokkaPluginParametersBaseSpec) {
-        spec as DokkaHtmlPluginParameters
+    override fun applyTo(named: org.gradle.api.Named) {
+        named as DokkaHtmlPluginParameters
 
-        customAssets?.let(spec.customAssets::setFrom)
-        customStyleSheets?.let(spec.customStyleSheets::setFrom)
-        spec.separateInheritedMembers tryAssign separateInheritedMembers
-        spec.mergeImplicitExpectActualDeclarations tryAssign mergeImplicitExpectActualDeclarations
-        spec.footerMessage tryAssign footerMessage
-        spec.homepageLink tryAssign homepageLink
-        spec.templatesDir tryAssign templatesDir?.let(layout.projectDirectory::dir)
+        customAssets?.let(named.customAssets::setFrom)
+        customStyleSheets?.let(named.customStyleSheets::setFrom)
+        named.separateInheritedMembers tryAssign separateInheritedMembers
+        named.mergeImplicitExpectActualDeclarations tryAssign mergeImplicitExpectActualDeclarations
+        named.footerMessage tryAssign footerMessage
+        named.homepageLink tryAssign homepageLink
+        named.templatesDir tryAssign templatesDir?.let(layout.projectDirectory::dir)
     }
 }
 
-internal object DokkaPluginParametersBaseSpecTransformingSerializer : KeyTransformingSerializer<DokkaPluginParametersBaseSpec>(
-    DokkaPluginParametersBaseSpec.serializer(),
-    "type",
-)
+/**
+ * Configuration for
+ * [Dokka's Versioning plugin](https://github.com/Kotlin/dokka/tree/master/plugins/versioning#readme).
+ *
+ * The versioning plugin provides the ability to host documentation for multiple versions of your
+ * library/application with seamless switching between them. This, in turn, provides a better
+ * experience for your users.
+ *
+ * Note: The versioning plugin only works with Dokka's HTML format.
+ */
+@Serializable
+@SerialName("versioning")
+internal data class DokkaVersioningParameters(
+
+    /**
+     * The version of your application/library that documentation is going to be generated for.
+     * This will be the version shown in the dropdown menu.
+     */
+    val version: String? = null,
+
+    /**
+     * An optional list of strings that represents the order that versions should appear in the
+     * dropdown menu.
+     *
+     * Must match [version] string exactly. The first item in the list is at the top of the dropdown.
+     * Any versions not in this list will be excluded from the dropdown.
+     *
+     * If no versions are supplied the versions will be ordered using SemVer ordering.
+     */
+    val versionsOrdering: List<String>? = null,
+
+    /**
+     * An optional path to a parent folder that contains other documentation versions.
+     * It requires a specific directory structure.
+     *
+     * For more information, see
+     * [Directory structure](https://github.com/Kotlin/dokka/blob/master/plugins/versioning/README.md#directory-structure).
+     */
+    val olderVersionsDir: String? = null,
+
+    /**
+     * An optional list of paths to other documentation versions. It must point to Dokka's outputs
+     * directly. This is useful if different versions can't all be in the same directory.
+     */
+    val olderVersions: List<String>? = null,
+
+    /**
+     * An optional boolean value indicating whether to render the navigation dropdown on all pages.
+     *
+     * Set to `true` by default.
+     */
+    val renderVersionsNavigationOnAllPages: Boolean? = null,
+) : DokkaPluginParametersBaseSpec() {
+
+    override val name: String
+        get() = DokkaVersioningPluginParameters.DOKKA_VERSIONING_PLUGIN_PARAMETERS_NAME
+
+    override val pluginFqn: String
+        get() = DokkaVersioningPluginParameters.DOKKA_VERSIONING_PLUGIN_FQN
+
+    context(Project)
+    override fun applyTo(named: org.gradle.api.Named) {
+        buildscript {
+            dependencies {
+                classpath(settings.libs.libraryAsDependency("dokka.versioning"))
+            }
+        }
+
+        named as DokkaVersioningPluginParameters
+
+        named.olderVersionsDir tryAssign olderVersionsDir?.let(::file)
+        olderVersions?.let(named.olderVersions::setFrom)
+        named.versionsOrdering tryAssign versionsOrdering
+        named.version tryAssign version
+        named.renderVersionsNavigationOnAllPages tryAssign renderVersionsNavigationOnAllPages
+    }
+}
 

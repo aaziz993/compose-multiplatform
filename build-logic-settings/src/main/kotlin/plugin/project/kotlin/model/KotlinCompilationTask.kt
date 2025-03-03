@@ -1,9 +1,12 @@
 package plugin.project.kotlin.model
 
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import gradle.serialization.serializer.AnySerializer
 import kotlinx.serialization.Serializable
+import org.gradle.api.Named
+import org.gradle.api.NamedDomainObjectCollection
 import org.gradle.api.Project
-import org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerToolOptions
+import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 /**
@@ -15,7 +18,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
  */
 @Serializable
 internal data class KotlinCompilationTask<out CO : KotlinCommonCompilerOptions>(
-    override val name: String,
+    override val name: String = "",
     override val dependsOn: List<String>? = null,
     override val onlyIf: Boolean? = null,
     override val doNotTrackState: String? = null,
@@ -37,11 +40,14 @@ internal data class KotlinCompilationTask<out CO : KotlinCommonCompilerOptions>(
 ) : Task {
 
     context(Project)
-    override fun applyTo(task: org.gradle.api.Task) {
-        super.applyTo(task)
+    override fun applyTo(named: Named) {
+        super.applyTo(named)
 
-        task as KotlinCompilationTask<*>
+        named as KotlinCompilationTask<*>
 
-        compilerOptions?.applyTo(task.compilerOptions)
+        compilerOptions?.applyTo(named.compilerOptions)
     }
+
+    context(Project)
+    override fun applyTo() = applyTo(tasks.withType<KotlinCompilationTask<*>>())
 }

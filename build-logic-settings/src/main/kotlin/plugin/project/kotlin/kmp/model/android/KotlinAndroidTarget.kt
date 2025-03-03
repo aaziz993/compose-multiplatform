@@ -34,6 +34,9 @@ internal data class KotlinAndroidTarget(
     override val compilerOptions: KotlinJvmCompilerOptions? = null,
 ) : KotlinTarget, HasConfigurableKotlinCompilerOptions<KotlinJvmCompilerOptions> {
 
+    override val needKmp: Boolean
+        get() = false
+
     context(Project)
     override fun applyTo() {
         val target = kotlin.androidTarget(targetName)

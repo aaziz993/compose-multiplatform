@@ -255,19 +255,21 @@ internal data class DokkaSourceSetSpec(
 ) : Named {
 
     context(Project)
-    fun applyTo(spec: org.jetbrains.dokka.gradle.engine.parameters.DokkaSourceSetSpec) {
-        spec.sourceSetScope tryAssign sourceSetScope
-        spec.suppress tryAssign suppress
-        spec.displayName tryAssign displayName
-        includes?.let(spec.includes::setFrom)
-        spec.documentedVisibilities tryAssign documentedVisibilities
-        classpath?.let(spec.classpath::setFrom)
-        sourceRoots?.let(spec.sourceRoots::setFrom)
-        samples?.let(spec.samples::setFrom)
-        spec.reportUndocumented tryAssign reportUndocumented
+    override fun applyTo(named: org.gradle.api.Named) {
+        named as org.jetbrains.dokka.gradle.engine.parameters.DokkaSourceSetSpec
+
+        named.sourceSetScope tryAssign sourceSetScope
+        named.suppress tryAssign suppress
+        named.displayName tryAssign displayName
+        includes?.let(named.includes::setFrom)
+        named.documentedVisibilities tryAssign documentedVisibilities
+        classpath?.let(named.classpath::setFrom)
+        sourceRoots?.let(named.sourceRoots::setFrom)
+        samples?.let(named.samples::setFrom)
+        named.reportUndocumented tryAssign reportUndocumented
 
         sourceLinks?.forEach { sourceLink ->
-            spec.sourceLink {
+            named.sourceLink {
                 localDirectory tryAssign sourceLink.localDirectory?.let(layout.projectDirectory::dir)
                 sourceLink.remoteUrl?.let(::remoteUrl)
                 remoteLineSuffix tryAssign sourceLink.remoteLineSuffix
@@ -275,7 +277,7 @@ internal data class DokkaSourceSetSpec(
         }
 
         perPackageOptions?.forEach { perPackageOption ->
-            spec.perPackageOption {
+            named.perPackageOption {
                 matchingRegex tryAssign perPackageOption.matchingRegex
                 suppress tryAssign perPackageOption.suppress
                 documentedVisibilities tryAssign perPackageOption.documentedVisibilities
@@ -285,21 +287,20 @@ internal data class DokkaSourceSetSpec(
         }
 
         externalDocumentationLinks?.forEach { externalDocumentationLink ->
-            spec.externalDocumentationLinks
-                .named(externalDocumentationLink.name, externalDocumentationLink::applyTo)
+            externalDocumentationLink.applyTo(named.externalDocumentationLinks)
         }
 
-        spec.analysisPlatform tryAssign analysisPlatform
-        spec.skipEmptyPackages tryAssign skipEmptyPackages
-        spec.skipDeprecated tryAssign skipDeprecated
-        suppressedFiles?.let(spec.suppressedFiles::setFrom)
-        spec.suppressGeneratedFiles tryAssign suppressGeneratedFiles
-        spec.enableKotlinStdLibDocumentationLink tryAssign enableKotlinStdLibDocumentationLink
-        spec.enableJdkDocumentationLink tryAssign enableJdkDocumentationLink
-        spec.enableAndroidDocumentationLink tryAssign enableAndroidDocumentationLink
-        spec.languageVersion tryAssign languageVersion
-        spec.apiVersion tryAssign apiVersion
-        spec.jdkVersion tryAssign jdkVersion
+        named.analysisPlatform tryAssign analysisPlatform
+        named.skipEmptyPackages tryAssign skipEmptyPackages
+        named.skipDeprecated tryAssign skipDeprecated
+        suppressedFiles?.let(named.suppressedFiles::setFrom)
+        named.suppressGeneratedFiles tryAssign suppressGeneratedFiles
+        named.enableKotlinStdLibDocumentationLink tryAssign enableKotlinStdLibDocumentationLink
+        named.enableJdkDocumentationLink tryAssign enableJdkDocumentationLink
+        named.enableAndroidDocumentationLink tryAssign enableAndroidDocumentationLink
+        named.languageVersion tryAssign languageVersion
+        named.apiVersion tryAssign apiVersion
+        named.jdkVersion tryAssign jdkVersion
     }
 }
 

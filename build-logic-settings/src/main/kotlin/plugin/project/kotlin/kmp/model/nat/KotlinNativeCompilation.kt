@@ -1,11 +1,12 @@
 package plugin.project.kotlin.kmp.model.nat
 
 import kotlinx.serialization.Serializable
+import org.gradle.api.Named
 import org.gradle.api.Project
-import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeCompilation
 import plugin.model.dependency.ProjectDependency
 import plugin.model.dependency.ProjectDependencyTransformingSerializer
+import plugin.project.kotlin.model.KotlinCompilation
 
 @Serializable
 internal data class KotlinNativeCompilation(
@@ -18,16 +19,16 @@ internal data class KotlinNativeCompilation(
     // Interop DSL.
 
     val cinterops: List<DefaultCInteropSettings>? = null
-) : plugin.project.kotlin.model.KotlinCompilation {
+) : KotlinCompilation {
 
     context(Project)
-    override fun applyTo(compilation: KotlinCompilation<*>) {
-        super.applyTo(compilation)
+    override fun applyTo(named: Named) {
+        super.applyTo(named)
 
-        compilation as KotlinNativeCompilation
+        named as KotlinNativeCompilation
 
         cinterops?.forEach { cinterops ->
-            compilation.cinterops.named(cinterops.name) {
+            named.cinterops.named(cinterops.name) {
                 cinterops.applyTo(this)
             }
         }

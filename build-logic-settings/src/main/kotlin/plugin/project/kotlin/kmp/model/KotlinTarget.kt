@@ -1,5 +1,6 @@
 package plugin.project.kotlin.kmp.model
 
+import gradle.kotlin
 import gradle.serialization.serializer.JsonContentPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
@@ -23,14 +24,22 @@ internal interface KotlinTarget : Named {
      */
     val compilations: List<KotlinCompilation>?
 
+    val needKmp: Boolean
+        get() = true
+
     context(Project)
-    fun applyTo(target: org.jetbrains.kotlin.gradle.plugin.KotlinTarget) {
+    override fun applyTo(named: org.gradle.api.Named) {
+        named as org.jetbrains.kotlin.gradle.plugin.KotlinTarget
+
         this@KotlinTarget.compilations?.forEach { compilation ->
-            target.compilations.named(compilation.name) {
+            named.compilations.named(compilation.name) {
                 compilation.applyTo(this)
             }
         }
     }
+
+    context(Project)
+    override fun applyTo() = applyTo(kotlin.targets)
 }
 
 private object KotlinTargetSerializer : JsonContentPolymorphicSerializer<KotlinTarget>(

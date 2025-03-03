@@ -393,8 +393,9 @@ amper-gradle = { module = "org.jetbrains.amper.settings.plugin:gradle-integratio
 amper-frontend = { module = "org.jetbrains.amper:frontend-api", version.ref = "amper" }
 # plugin
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
-# documenation versioning
+# provides the ability to host documentation for multiple versions of your library/application with seamless switching between them. This, in turn, provides a better experience for your users.
 dokka-versioning = { module = "org.jetbrains.dokka:versioning-plugin", version.ref = "dokka" }
+
 ##Java
 # logging
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback-classic" }

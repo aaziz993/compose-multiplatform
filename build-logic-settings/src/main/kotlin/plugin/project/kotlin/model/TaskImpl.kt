@@ -3,6 +3,7 @@ package plugin.project.kotlin.model
 import gradle.serialization.serializer.AnySerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
 
 @Serializable
 @SerialName("Task")
