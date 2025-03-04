@@ -3,6 +3,11 @@ import java.util.*
 import kotlinx.validation.ExperimentalBCVApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.yaml.snakeyaml.DumperOptions
+import org.yaml.snakeyaml.LoaderOptions
+import org.yaml.snakeyaml.Yaml
+import org.yaml.snakeyaml.constructor.Constructor
+import org.yaml.snakeyaml.representer.Representer
 
 plugins {
     // Print suggestions for your build as you run regular tasks
@@ -24,6 +29,24 @@ plugins {
     // Serialization
     alias(libs.plugins.kotlin.serialization)
 }
+
+data class ProjectProperties(
+    val group: String? = null,
+)
+
+var yaml: Yaml = Yaml(
+        Constructor(
+                ProjectProperties::class.java, LoaderOptions(),
+        ),
+        Representer(DumperOptions()).apply {
+            propertyUtils.isSkipMissingProperties = true
+        },
+        DumperOptions(),
+)
+
+val projectProperties: ProjectProperties = yaml.load(file("../project.yaml").readText())
+
+println("PROPS: $projectProperties")
 
 val gradleProperties: Properties = Properties().apply {
     val file = file("../gradle.properties")

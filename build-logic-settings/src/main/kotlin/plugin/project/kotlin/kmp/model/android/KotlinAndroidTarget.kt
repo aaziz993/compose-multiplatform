@@ -6,6 +6,8 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import plugin.project.kotlin.kmp.model.KotlinTarget
+import plugin.project.kotlin.kmp.model.jvm.KotlinJvmAndroidCompilation
+import plugin.project.kotlin.kmp.model.jvm.KotlinJvmAndroidCompilationTransformingSerializer
 import plugin.project.kotlin.kmp.model.jvm.KotlinJvmCompilerOptions
 import plugin.project.kotlin.model.HasConfigurableKotlinCompilerOptions
 
@@ -13,7 +15,7 @@ import plugin.project.kotlin.model.HasConfigurableKotlinCompilerOptions
 @SerialName("android")
 internal data class KotlinAndroidTarget(
     override val targetName: String = "android",
-    override val compilations: List<plugin.project.kotlin.kmp.model.jvm.KotlinJvmAndroidCompilation>? = null,
+    override val compilations: List<@Serializable(with = KotlinJvmAndroidCompilationTransformingSerializer::class) KotlinJvmAndroidCompilation>? = null,
     /** Names of the Android library variants that should be published from the target's project within the default publications which are
      * set up if the `maven-publish` Gradle plugin is applied.
      *

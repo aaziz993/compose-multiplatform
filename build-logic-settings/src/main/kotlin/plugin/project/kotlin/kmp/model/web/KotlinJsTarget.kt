@@ -10,7 +10,7 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
 @SerialName("js")
 internal data class KotlinJsTarget(
     override val targetName: String = "js",
-    override val compilations: List<KotlinJsCompilation>? = null,
+    override val compilations: List<@Serializable(with = KotlinJsCompilationTransformingSerializer::class) KotlinJsCompilation>? = null,
     override val nodejs: KotlinJsNodeDsl? = null,
     override val moduleName: String? = null,
     override val browser: KotlinJsBrowserDsl? = null,

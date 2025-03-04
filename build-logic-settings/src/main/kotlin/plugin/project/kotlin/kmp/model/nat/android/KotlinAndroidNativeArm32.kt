@@ -7,13 +7,14 @@ import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
 import plugin.project.kotlin.kmp.model.nat.KotlinNativeBinaryContainer
 import plugin.project.kotlin.kmp.model.nat.KotlinNativeCompilation
+import plugin.project.kotlin.kmp.model.nat.KotlinNativeCompilationTransformingSerializer
 import plugin.project.kotlin.kmp.model.nat.KotlinNativeCompilerOptions
 
 @Serializable
 @SerialName("androidNativeArm32")
 internal data class KotlinAndroidNativeArm32(
     override val targetName: String = "androidNativeArm32",
-    override val compilations: List<KotlinNativeCompilation>? = null,
+    override val compilations: List<@Serializable(with = KotlinNativeCompilationTransformingSerializer::class) KotlinNativeCompilation>? = null,
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,
 ) : KotlinAndroidNative() {

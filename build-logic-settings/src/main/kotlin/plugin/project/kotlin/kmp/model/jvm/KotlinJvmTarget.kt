@@ -11,7 +11,7 @@ import plugin.project.kotlin.model.HasConfigurableKotlinCompilerOptions
 @SerialName("jvm")
 internal data class KotlinJvmTarget(
     override val targetName: String = "jvm",
-    override val compilations: List<KotlinJvmAndroidCompilation>? = null,
+    override val compilations: List<@Serializable(with = KotlinJvmAndroidCompilationTransformingSerializer::class) KotlinJvmAndroidCompilation>? = null,
     override val compilerOptions: KotlinJvmCompilerOptions? = null,
     val testRuns: List<KotlinJvmTestRun>? = null,
     val mainRun: KotlinJvmRunDsl? = null,

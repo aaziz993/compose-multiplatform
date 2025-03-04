@@ -11,13 +11,14 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import plugin.project.kotlin.kmp.model.nat.KotlinNativeBinaryContainer
 import plugin.project.kotlin.kmp.model.nat.KotlinNativeCompilation
+import plugin.project.kotlin.kmp.model.nat.KotlinNativeCompilationTransformingSerializer
 import plugin.project.kotlin.kmp.model.nat.KotlinNativeCompilerOptions
 
 @Serializable
 @SerialName("macosX64")
 internal data class KotlinMacosX64Target(
     override val targetName: String = "macosX64",
-    override val compilations: List<KotlinNativeCompilation>? = null,
+    override val compilations: List<@Serializable(with = KotlinNativeCompilationTransformingSerializer::class) KotlinNativeCompilation>? = null,
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,
 ) : KotlinMacosTarget() {

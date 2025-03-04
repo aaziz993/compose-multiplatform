@@ -7,7 +7,7 @@ import org.jetbrains.kotlin.gradle.targets.js.testing.karma.KotlinKarma
 @Serializable
 internal data class KotlinKarma(
     val webpackConfig: KotlinWebpackConfig? = null,
-    val configDirectory: String? = null,
+    val useConfigDirectory: String? = null,
     val useChrome: Boolean? = null,
     val useChromeHeadless: Boolean? = null,
     val useChromeHeadlessNoSandbox: Boolean? = null,
@@ -37,7 +37,7 @@ internal data class KotlinKarma(
             webpackConfig.applyTo(karma.webpackConfig)
         }
 
-        configDirectory?.let(karma::useConfigDirectory)
+        useConfigDirectory?.let(karma::useConfigDirectory)
         useChrome?.takeIf { it }?.run { karma.useChrome() }
         useChromeHeadless?.takeIf { it }?.run { karma.useChromeHeadless() }
         useChromeHeadlessNoSandbox?.takeIf { it }?.run { karma.useChromeHeadlessNoSandbox() }

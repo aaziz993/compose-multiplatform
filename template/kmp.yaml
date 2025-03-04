@@ -6,11 +6,26 @@ kotlin:
     - iosX64
     - iosSimulatorArm64
     - js:
-        browser: { }
-        nodejs: { }
+        browser:
+          testTask:
+            karma:
+              configDirectory: ../gradle/js/karma.config.d
+              useChromeHeadless: true
+        nodejs:
+          testTask:
+            mocha:
+              timeout: 600s
+
     - wasmJs:
-        browser: { }
-        nodejs: { }
+        browser:
+          testTask:
+            karma:
+              configDirectory: ../gradle/js/karma.config.d
+              useChromeHeadless: true
+        nodejs:
+          testTask:
+            mocha:
+              timeout: 600s
 
   hierarchy:
     - jvmAndAndroid: [ jvm, android ]

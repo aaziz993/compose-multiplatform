@@ -1,10 +1,11 @@
 package plugin.project.kotlin.model
 
+import gradle.serialization.serializer.KeyTransformingSerializer
 import gradle.trySet
-import org.gradle.api.NamedDomainObjectContainer
+import kotlinx.serialization.KSerializer
 import org.gradle.api.Project
-import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
 import plugin.project.kotlin.kmp.model.KotlinSourceSet
+import plugin.project.kotlin.kmp.model.KotlinTarget
 
 /**
  * # Kotlin compilation
@@ -108,8 +109,8 @@ internal interface KotlinCompilation : HasKotlinDependencies, Named {
     val associatedCompilations: Set<String>?
 
     context(Project)
-   override fun applyTo(named: org.gradle.api.Named) {
-       named as KotlinCompilation<*>
+    override fun applyTo(named: org.gradle.api.Named) {
+        named as org.jetbrains.kotlin.gradle.plugin.KotlinCompilation<*>
 
         defaultSourceSet?.let { defaultSourceSet ->
             named.defaultSourceSet {
@@ -126,3 +127,10 @@ internal interface KotlinCompilation : HasKotlinDependencies, Named {
             ?.forEach(named::associateWith)
     }
 }
+
+internal abstract class KotlinCompilationTransformingSerializer<T : KotlinCompilation>(
+    tSerializer: KSerializer<T>
+) : KeyTransformingSerializer<T>(
+    tSerializer,
+    "compilationName",
+)

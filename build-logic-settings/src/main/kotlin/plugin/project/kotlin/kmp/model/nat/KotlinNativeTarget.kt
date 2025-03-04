@@ -10,7 +10,7 @@ import plugin.project.kotlin.model.HasConfigurableKotlinCompilerOptions
 
 @Serializable
 internal abstract class KotlinNativeTarget : KotlinTarget,
-    plugin.project.kotlin.model.HasConfigurableKotlinCompilerOptions<KotlinNativeCompilerOptions>,
+    HasConfigurableKotlinCompilerOptions<KotlinNativeCompilerOptions>,
     HasBinaries<KotlinNativeBinaryContainer?> {
 
     abstract override val compilations: List<KotlinNativeCompilation>?

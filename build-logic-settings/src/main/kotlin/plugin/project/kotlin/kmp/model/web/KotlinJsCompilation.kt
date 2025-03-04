@@ -4,11 +4,11 @@ import gradle.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJsCompilation
 import plugin.model.dependency.ProjectDependency
 import plugin.model.dependency.ProjectDependencyTransformingSerializer
 import plugin.project.kotlin.model.HasBinaries
 import plugin.project.kotlin.model.KotlinCompilation
+import plugin.project.kotlin.model.KotlinCompilationTransformingSerializer
 
 @Serializable
 internal data class KotlinJsCompilation(
@@ -26,7 +26,7 @@ internal data class KotlinJsCompilation(
     override fun applyTo(named: Named) {
         super.applyTo(named)
 
-        named as KotlinJsCompilation
+        named as org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJsCompilation
 
         binaries.applyTo(named.binaries)
         named::outputModuleName trySet outputModuleName
@@ -38,3 +38,8 @@ internal data class KotlinJsCompilation(
         }
     }
 }
+
+internal object KotlinJsCompilationTransformingSerializer :
+    KotlinCompilationTransformingSerializer<KotlinJsCompilation>(
+        KotlinJsCompilation.serializer(),
+    )

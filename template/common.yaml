@@ -192,8 +192,7 @@ plugins:
       - nativeMain
       - jsMain
       - wasmJsMain
-common:
-  yaml:
+
 kotlin:
   jvmToolchain: 23
 

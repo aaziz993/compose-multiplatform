@@ -1,6 +1,8 @@
 package plugin.project.kotlin.kmp.model.jvm
 
 import gradle.containerize
+import gradle.serialization.serializer.KeyTransformingSerializer
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.NamedDomainObjectCollection
@@ -9,7 +11,6 @@ import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.kotlin.dsl.invoke
 import org.gradle.kotlin.dsl.withType
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJvmAndroidCompilation
 import plugin.model.dependency.ProjectDependency
 import plugin.model.dependency.ProjectDependencyTransformingSerializer
 import plugin.project.java.model.JavaCompile
@@ -17,6 +18,7 @@ import plugin.project.kotlin.kmp.model.KotlinSourceSet
 import plugin.project.kotlin.model.KotlinCompilation
 import plugin.project.kotlin.model.KotlinCompilationOutput
 import plugin.project.kotlin.model.KotlinCompilationTask
+import plugin.project.kotlin.model.KotlinCompilationTransformingSerializer
 
 @Serializable
 internal data class KotlinJvmAndroidCompilation(
@@ -34,7 +36,7 @@ internal data class KotlinJvmAndroidCompilation(
     override fun applyTo(named: Named) {
         super.applyTo(named)
 
-        named as KotlinJvmAndroidCompilation
+        named as org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJvmAndroidCompilation
 
         compileTaskProvider?.let { compileTaskProvider ->
             named.compileTaskProvider {
@@ -49,3 +51,8 @@ internal data class KotlinJvmAndroidCompilation(
         }
     }
 }
+
+internal object KotlinJvmAndroidCompilationTransformingSerializer :
+    KotlinCompilationTransformingSerializer<KotlinJvmAndroidCompilation>(
+            KotlinJvmAndroidCompilation.serializer(),
+    )
