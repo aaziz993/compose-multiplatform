@@ -29,6 +29,6 @@ internal interface TestVariantDimension :
         dimension as TestVariantDimension
 
         dimension::multiDexEnabled trySet multiDexEnabled
-        dimension::signingConfig trySet signingConfig?.toA
+        dimension::signingConfig trySet signingConfig?.toApkSigningConfig()
     }
 }

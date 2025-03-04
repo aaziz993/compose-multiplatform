@@ -12,7 +12,7 @@ import plugin.project.kotlin.model.Named
  * [DefaultSigningConfig] extends this with options relating to just APKs
  *
  */
-internal interface SigningConfig1 : Named {
+internal interface SigningConfigDsl : Named {
 
     /**
      * Store file used when signing.

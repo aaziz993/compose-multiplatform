@@ -48,7 +48,7 @@ internal interface LibraryVariantDimension : VariantDimension {
             dimension.consumerProguardFiles(*consumerProguardFiles.toTypedArray())
         }
 
-        dimension::signingConfig trySet signingConfig
+        dimension::signingConfig trySet signingConfig?.toApkSigningConfig()
         aarMetadata?.applyTo(dimension.aarMetadata)
     }
 }

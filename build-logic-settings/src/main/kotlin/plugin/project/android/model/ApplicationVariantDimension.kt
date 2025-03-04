@@ -51,6 +51,6 @@ internal interface ApplicationVariantDimension : VariantDimension {
         dimension::applicationIdSuffix trySet applicationIdSuffix
         dimension::versionNameSuffix trySet versionNameSuffix
         dimension::multiDexEnabled trySet multiDexEnabled
-        dimension::signingConfig trySet signingConfig
+        dimension::signingConfig trySet signingConfig?.toApkSigningConfig()
     }
 }

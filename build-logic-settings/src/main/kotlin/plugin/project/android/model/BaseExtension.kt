@@ -78,7 +78,7 @@ internal interface BaseExtension {
 
 //    val productFlavors: List<ProductFlavor>
 
-    val signingConfigs: List<DefaultSigningConfig>?
+    val signingConfigs: List<SigningConfigImpl>?
 
     // these are indirectly implemented by extensions when they implement the new public
     // extension interfaces via delegates.
@@ -184,7 +184,7 @@ internal interface BaseExtension {
 
             }
         }
-        com.android.builder.signing.DefaultSigningConfig
+
         signingConfigs?.forEach { signingConfig ->
            signingConfig.applyTo(extension.signingConfigs)
         }

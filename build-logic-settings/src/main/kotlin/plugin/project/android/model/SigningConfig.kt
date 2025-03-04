@@ -1,5 +1,7 @@
 package plugin.project.android.model
 
+import com.android.builder.model.SigningConfig
+
 /**
  * A Signing Configuration.
  *
@@ -30,5 +32,5 @@ internal interface SigningConfig {
      *
      * i.e. all the required information are present.
      */
-    val isSigningReady: Boolean
+    val isSigningReady: Boolean?
 }

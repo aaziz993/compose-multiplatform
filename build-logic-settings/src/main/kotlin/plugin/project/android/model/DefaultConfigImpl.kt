@@ -1,6 +1,8 @@
 package plugin.project.android.model
 
 import com.android.build.api.dsl.VariantDimension
+import com.android.build.gradle.internal.dsl.DefaultConfig
+import gradle.android
 import gradle.serialization.serializer.AnySerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -43,11 +45,10 @@ internal data class DefaultConfigImpl(
     override val applicationIdSuffix: String? = null,
     override val versionNameSuffix: String? = null,
     override val multiDexEnabled: Boolean? = null,
-    override val signingConfig: DefaultSigningConfig? = null,
+    override val signingConfig: ApkSigningConfigImpl? = null,
     override val consumerProguardFiles: List<String>? = null,
     override val aarMetadata: AarMetadata? = null,
-
-    ) : ApplicationDefaultConfig,
+) : ApplicationDefaultConfig,
     DynamicFeatureDefaultConfig,
     LibraryDefaultConfig,
     TestDefaultConfig {

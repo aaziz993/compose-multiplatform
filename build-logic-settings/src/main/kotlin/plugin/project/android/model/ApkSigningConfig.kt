@@ -2,12 +2,13 @@ package plugin.project.android.model
 
 import com.android.build.api.dsl.ApkSigningConfig
 import com.android.builder.signing.DefaultSigningConfig
+import gradle.android
 import gradle.trySet
 import org.gradle.api.Project
 import plugin.project.kotlin.model.Named
 
 /** DSL object to configure signing configs. */
-internal interface ApkSigningConfig : SigningConfig1, Named {
+internal interface ApkSigningConfig : SigningConfigDsl, Named {
 
     /**
      * Enable signing using JAR Signature Scheme (aka v1 signing). If null, a default value is used.
@@ -38,19 +39,15 @@ internal interface ApkSigningConfig : SigningConfig1, Named {
      */
     val enableV4Signing: Boolean?
 
-    fun toApkSigningConfig() = DefaultSigningConfig(
-
-    )
-
     context(Project)
-    override fun applyTo(named: org.gradle.api.Named) {
-        named as ApkSigningConfig
+    fun toApkSigningConfig(): ApkSigningConfig =
+        android.signingConfigs.create(name) {
 
-        super<SigningConfig1>.applyTo(named)
+            super<SigningConfigDsl>.applyTo(this)
 
-        named::enableV1Signing trySet enableV1Signing
-        named::enableV2Signing trySet enableV2Signing
-        named::enableV3Signing trySet enableV3Signing
-        named::enableV4Signing trySet enableV4Signing
-    }
+            ::enableV1Signing trySet enableV1Signing
+            ::enableV2Signing trySet enableV2Signing
+            ::enableV3Signing trySet enableV3Signing
+            ::enableV4Signing trySet enableV4Signing
+        }
 }
