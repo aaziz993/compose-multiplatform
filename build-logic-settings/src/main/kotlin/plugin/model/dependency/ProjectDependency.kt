@@ -104,14 +104,12 @@ internal data class Dependency(
     }
 
     context(Project)
-    fun applyTo(handler: DependencyHandlerScope) {
+    fun applyTo(handler: DependencyHandlerScope) =
         if (configurations.findByName(configuration) != null) {
             handler.add(configuration, resolve())
-        }
-        else {
+        } else {
             logger.warn("Configuration doesn't exists: $configuration")
         }
-    }
 
     context(Project)
     fun applyTo(handler: KotlinDependencyHandler): Unit =

@@ -1,22 +1,25 @@
 package plugin.project.java
 
-import gradle.id
 import gradle.all
+import gradle.id
 import gradle.java
 import gradle.libs
 import gradle.plugin
 import gradle.plugins
 import gradle.projectProperties
-import gradle.settings
 import gradle.replace
+import gradle.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.ApplicationPlugin
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.tasks.SourceSet
 import org.gradle.internal.extensions.stdlib.capitalized
+import org.gradle.kotlin.dsl.dependencies
+import plugin.model.dependency.Dependency
 import plugin.project.kotlin.kmp.model.android.KotlinAndroidTarget
 import plugin.project.kotlin.kmp.model.jvm.KotlinJvmTarget
+import plugin.project.kotlin.model.sourceSets
 import plugin.project.model.ProjectLayout
 import plugin.project.model.ProjectType
 
@@ -48,13 +51,20 @@ internal class JavaPlugin : Plugin<Project> {
                 projectProperties.application?.applyTo()
             }
 
+            if (!projectProperties.kotlin.needKmp) {
+                projectProperties.kotlin.sourceSets<KotlinJvmTarget>()?.forEach { sourceSet ->
+                    dependencies {
+
+                    }
+                }
+            }
+
             adjustSourceSets()
         }
     }
 
     private fun Project.adjustSourceSets() {
-        val isMultiplatform =
-            pluginManager.hasPlugin(settings.libs.plugins.plugin("kotlin.multiplatform").id)
+        val isMultiplatform = projectProperties.kotlin.needKmp
 
         when (projectProperties.layout) {
             ProjectLayout.FLAT -> {

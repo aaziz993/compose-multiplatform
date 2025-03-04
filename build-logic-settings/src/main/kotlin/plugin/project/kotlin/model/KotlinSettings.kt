@@ -1,5 +1,6 @@
-package plugin.project.kotlin.kmp.model
+package plugin.project.kotlin.model
 
+import gradle.allSameType
 import gradle.id
 import gradle.kotlin
 import gradle.libs
@@ -13,10 +14,16 @@ import plugin.project.android.model.BaseExtension
 import plugin.project.java.model.JavaToolchainSpec
 import plugin.project.java.model.application.JavaApplication
 import plugin.project.kotlin.cocoapods.model.CocoapodsSettings
-import plugin.project.kotlin.model.KotlinCommonCompilerOptionsImpl
+import plugin.project.kotlin.kmp.model.HierarchyAliasTransformingSerializer
+import plugin.project.kotlin.kmp.model.HierarchyGroup
+import plugin.project.kotlin.kmp.model.KotlinMultiplatformExtension
+import plugin.project.kotlin.kmp.model.KotlinSourceSet
+import plugin.project.kotlin.kmp.model.KotlinSourceSetTransformingSerializer
+import plugin.project.kotlin.kmp.model.KotlinTarget
+import plugin.project.kotlin.kmp.model.KotlinTargetTransformingSerializer
 
 @Serializable
-internal data class KotlinMultiplatformSettings(
+internal data class KotlinSettings(
     override val withSourcesJar: Boolean? = null,
     override val jvmToolchainSpec: JavaToolchainSpec? = null,
     override val jvmToolchain: Int? = null,
@@ -32,6 +39,10 @@ internal data class KotlinMultiplatformSettings(
     val android: BaseExtension? = null,
     val cocoapods: CocoapodsSettings = CocoapodsSettings(),
 ) : KotlinMultiplatformExtension {
+
+    val needKmp: Boolean by lazy {
+        targets != null && (targets.any(KotlinTarget::needKmp) || !targets.allSameType())
+    }
 
     context(Project)
     fun applyTo() =
@@ -52,4 +63,12 @@ internal data class KotlinMultiplatformSettings(
                 sourceSet.applyTo()
             }
         }
+}
+
+internal inline fun <reified T : KotlinTarget> KotlinSettings.sourceSets(): List<KotlinSourceSet>? {
+    val _targets = targets?.filterIsInstance<T>() ?: return null
+
+    return sourceSets?.filter { sourceSet ->
+        sourceSet.name.isEmpty() || _targets.any { target -> sourceSet.name.startsWith(target.targetName) }
+    }
 }

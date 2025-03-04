@@ -1,12 +1,8 @@
 templates:
   - ../template/common.yaml
+  - ../template/android.yaml
   - ../template/kmp.yaml
   - ../template/cmp.yaml
-
-plugins:
-  ksp:
-    processors:
-      - :compiler
 
 kotlin:
   sourceSets:
@@ -14,3 +10,6 @@ kotlin:
         dependencies:
           - :kmp-lib
           - :cmp-lib
+
+dependencies:
+  - kspCommonMainMetadata: :compiler

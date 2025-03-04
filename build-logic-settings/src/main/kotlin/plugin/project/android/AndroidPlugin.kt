@@ -16,7 +16,10 @@ import gradle.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.SourceSet
+import org.gradle.kotlin.dsl.dependencies
+import plugin.model.dependency.Dependency
 import plugin.project.kotlin.kmp.model.android.KotlinAndroidTarget
+import plugin.project.kotlin.model.sourceSets
 import plugin.project.model.ProjectLayout
 import plugin.project.model.ProjectType
 
@@ -36,27 +39,25 @@ internal class AndroidPlugin : Plugin<Project> {
 
 //            configureBaseExtension()
 
+            if (!projectProperties.kotlin.needKmp) {
+                projectProperties.kotlin
+                    .sourceSets<KotlinAndroidTarget>()
+                    ?.forEach { sourceSet ->
+                        dependencies {
+                            sourceSet.dependencies
+                                ?.filterIsInstance<Dependency>()
+                                ?.forEach { dependency ->
+
+                                }
+                        }
+                    }
+            }
+
             adjustAndroidSourceSets()
             applyGoogleServicesPlugin()
         }
     }
 
-    fun <T> List<List<T>>.combinations(): Sequence<List<T>> {
-        if (isEmpty()) return sequenceOf(emptyList())
-
-        val firstList = first()
-        val restCombinations = drop(1).combinations()
-
-        return sequence {
-            for (item in firstList) {
-                for (combination in restCombinations) {
-                    yield(listOf(item) + combination)
-                }
-            }
-        }
-    }
-
-    @Suppress("UnstableApiUsage")
     private fun Project.adjustAndroidSourceSets() {
         android {
             buildTypes {
@@ -81,7 +82,6 @@ internal class AndroidPlugin : Plugin<Project> {
 
 
         when (projectProperties.layout) {
-
             ProjectLayout.FLAT -> android.sourceSets.all { sourceSet ->
                 val (srcPrefixPart, resourcesPrefixPart) = when (sourceSet.name) {
                     SourceSet.MAIN_SOURCE_SET_NAME -> "src" to ""

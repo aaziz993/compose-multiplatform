@@ -27,7 +27,6 @@ internal data class KspSettings(
     override val excludedSources: List<String>? = null,
     override val arguments: Map<String, String>? = null,
     override val allWarningsAsErrors: Boolean? = null,
-    val processors: List<@Serializable(with = ProjectDependencyTransformingSerializer::class) ProjectDependency>? = null,
     override val enabled: Boolean = true,
 ) : KspExtension, EnabledSettings {
 
@@ -35,12 +34,5 @@ internal data class KspSettings(
     override fun applyTo() =
         pluginManager.withPlugin(settings.libs.plugins.plugin("ksp").id) {
             super.applyTo()
-
-            val kspCommonMainMetadata by configurations
-            dependencies {
-                processors?.filterIsInstance<Dependency>()?.forEach { processor ->
-                    kspCommonMainMetadata(processor.resolve())
-                }
-            }
         }
 }

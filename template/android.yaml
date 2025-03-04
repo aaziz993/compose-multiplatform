@@ -1,0 +1,5 @@
+dependencies:
+  - lintChecks: $libs.compose.lint.checks
+  - $libs.android.desugar.jdk.libs
+  - $libs.androidx.test.core
+  - $libs.androidx.test.runner

@@ -55,7 +55,7 @@ import plugin.project.kotlin.allopen.AllOpenPlugin
 import plugin.project.kotlin.apollo.ApolloPlugin
 import plugin.project.kotlin.atomicfu.AtomicFUPlugin
 import plugin.project.kotlin.kmp.KMPPlugin
-import plugin.project.kotlin.kmp.model.KotlinMultiplatformSettings
+import plugin.project.kotlin.model.KotlinSettings
 import plugin.project.kotlin.ksp.KspPlugin
 import plugin.project.kotlin.ktorfit.KtorfitPlugin
 import plugin.project.kotlin.model.HasKotlinDependencies
@@ -97,7 +97,7 @@ internal data class ProjectProperties(
     val plugins: Plugins = Plugins(),
     val jvm: JavaPluginExtension? = null,
     val application: JavaApplication? = null,
-    val kotlin: KotlinMultiplatformSettings = KotlinMultiplatformSettings(),
+    val kotlin: KotlinSettings = KotlinSettings(),
     val android: AndroidSettings = AndroidSettings(),
     val apple: AppleSettings = AppleSettings(),
     val nodeJsEnv: NodeJsEnvSpec = NodeJsEnvSpec(),
@@ -243,10 +243,10 @@ internal data class ProjectProperties(
         project.plugins.apply(KtorfitPlugin::class.java)
         project.plugins.apply(ApolloPlugin::class.java)
         project.plugins.apply(PowerAssertPlugin::class.java)
+        project.plugins.apply(JavaPlugin::class.java)
         project.plugins.apply(AndroidPlugin::class.java) // apply and configure android library or application plugin.
         project.plugins.apply(KMPPlugin::class.java) // need android library or application plugin applied.
         project.plugins.apply(KspPlugin::class.java) // kspCommonMainMetadata need kmp plugin applied.
-        project.plugins.apply(JavaPlugin::class.java)
         project.plugins.apply(NativePlugin::class.java)
         project.plugins.apply(ApplePlugin::class.java)
         project.plugins.apply(JsPlugin::class.java)

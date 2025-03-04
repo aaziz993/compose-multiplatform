@@ -12,22 +12,19 @@ import gradle.projectProperties
 import gradle.settings
 import gradle.sourceSetsToComposeResourcesDirs
 import gradle.replace
-import kotlin.reflect.full.memberProperties
-import net.pearx.kasechange.universalWordSplitter
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.jetbrains.amper.gradle.android.AndroidBindingPluginPart
-import org.jetbrains.amper.gradle.kmpp.KMPPBindingPluginPart
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
+import plugin.project.kotlin.model.KotlinSettings
 import plugin.project.model.ProjectLayout
 
 internal class KMPPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            projectProperties.kotlin.takeIf { it.targets?.isNotEmpty() == true }?.let { kotlin ->
+            projectProperties.kotlin.takeIf(KotlinSettings::needKmp)?.let { kotlin ->
                 plugins.apply(settings.libs.plugins.plugin("kotlin.multiplatform").id)
 
                 // Enable Default Kotlin Hierarchy.

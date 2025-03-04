@@ -115,12 +115,6 @@ plugins:
   ksp:
     enabled: true
     useKsp2: true
-    processors:
-      - $libs.arrow.optics.ksp.plugin
-      - $libs.androidx.room.compiler
-      - $libs.ktorfit.ksp
-      # Use import org.koin.ksp.generated.*
-      - $libs.koin.ksp.compiler
 
   # Generating BuildConstants for any kind of Gradle projects: Java, Kotlin, Android, Groovy, etc. Designed for KTS scripts, with experimental support for Kotlin's multi-platform plugin
   buildConfig:
@@ -286,10 +280,11 @@ android:
     isCoreLibraryDesugaringEnabled: true
 
 dependencies:
-  - lintChecks: $libs.compose.lint.checks
-  - $libs.android.desugar.jdk.libs
-  - $libs.androidx.test.core
-  - $libs.androidx.test.runner
+  - kspCommonMainMetadata: $libs.arrow.optics.ksp.plugin
+  - kspCommonMainMetadata: $libs.androidx.room.compiler
+  - kspCommonMainMetadata: $libs.ktorfit.ksp
+    # Use import org.koin.ksp.generated.*
+  - kspCommonMainMetadata: $libs.koin.ksp.compiler
 
 tasks:
   - shadowJar:
