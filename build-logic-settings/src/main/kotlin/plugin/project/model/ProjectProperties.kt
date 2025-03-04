@@ -21,6 +21,7 @@ import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.api.file.FileCollection
 import org.gradle.api.initialization.Settings
 import org.gradle.api.internal.artifacts.repositories.DefaultMavenArtifactRepository
+import org.gradle.internal.extensions.stdlib.capitalized
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.maven
 import org.gradle.kotlin.dsl.repositories
@@ -55,6 +56,7 @@ import plugin.project.kotlin.allopen.AllOpenPlugin
 import plugin.project.kotlin.apollo.ApolloPlugin
 import plugin.project.kotlin.atomicfu.AtomicFUPlugin
 import plugin.project.kotlin.kmp.KMPPlugin
+import plugin.project.kotlin.kmp.model.KotlinTarget
 import plugin.project.kotlin.model.KotlinSettings
 import plugin.project.kotlin.ksp.KspPlugin
 import plugin.project.kotlin.ktorfit.KtorfitPlugin
@@ -319,4 +321,16 @@ internal data class ProjectProperties(
             }
         }
     }
+}
+
+internal inline fun <reified T : KotlinTarget> ProjectProperties.dependencies() {
+    val targets = kotlin.targets?.filterIsInstance<T>() ?: return null
+
+    dependencies?.filterIsInstance<Dependency>()?.mapNotNull { dependency ->
+        if (dependency.configuration.startsWith("ksp")) {
+            targets.any { target -> dependency.configuration.startsWith("ksp${target.targetName.capitalized()}") }
+        }
+        dependency
+    }
+    null
 }

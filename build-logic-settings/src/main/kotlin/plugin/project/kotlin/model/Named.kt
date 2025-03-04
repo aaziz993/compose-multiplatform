@@ -24,12 +24,6 @@ internal interface Named {
 
     context(Project)
     fun applyTo(named: NamedDomainObjectCollection<out org.gradle.api.Named>) =
-        named.namedOrAll(name) {
-            applyTo(this)
-        }
-
-    context(Project)
-    fun applyToMaybe(named: NamedDomainObjectCollection<out org.gradle.api.Named>) =
         named.maybeNamedOrAll(name) {
             applyTo(this)
         }

@@ -22,6 +22,7 @@ import plugin.project.kotlin.kmp.model.jvm.KotlinJvmTarget
 import plugin.project.kotlin.model.sourceSets
 import plugin.project.model.ProjectLayout
 import plugin.project.model.ProjectType
+import plugin.project.model.dependencies
 
 internal class JavaPlugin : Plugin<Project> {
 
@@ -52,9 +53,26 @@ internal class JavaPlugin : Plugin<Project> {
             }
 
             if (!projectProperties.kotlin.needKmp) {
-                projectProperties.kotlin.sourceSets<KotlinJvmTarget>()?.forEach { sourceSet ->
+                projectProperties.dependencies<KotlinJvmTarget>().let { dependencies ->
                     dependencies {
+//                        dependencies.filterIsInstance<Dependency>().forEach { dependency ->
+//                            when {
+//                                dependency.configuration == "kspCommonMainMetadata" -> "ksp"
+//                                dependency.configuration == "kspCommonTestMetadata" -> "kspTest"
+//                                dependency.configuration.startsWith("ksp")
+//                            }
+//                        }
+                    }
+                }
 
+                projectProperties.kotlin.sourceSets<KotlinJvmTarget>()?.forEach { sourceSet ->
+                    sourceSet.dependencies?.let {  dependencies ->
+                        dependencies {
+                            dependencies.forEach { dependency ->
+                                dependency as Dependency
+                                dependency.configuration
+                            }
+                        }
                     }
                 }
             }
@@ -68,24 +86,24 @@ internal class JavaPlugin : Plugin<Project> {
 
         when (projectProperties.layout) {
             ProjectLayout.FLAT -> {
-                val targetName = if (isMultiplatform) "jvm" else "java"
+                val targetPart = "@${if (isMultiplatform) "jvm" else "java"}"
 
                 java.sourceSets.all { sourceSet ->
-                    val (compilationPrefixPart, resourcesPrefixPart) = if (SourceSet.isMain(sourceSet))
+                    val (srcPrefixPart, resourcesPrefixPart) = if (SourceSet.isMain(sourceSet))
                         "src" to "resources"
                     else sourceSet.name to "${sourceSet.name}Resources"
 
 
-                    sourceSet.java.replace("src/${sourceSet.name}/java", "$compilationPrefixPart@$targetName")
-                    sourceSet.resources.replace("src/${sourceSet.name}/resources", "$resourcesPrefixPart@$targetName")
+                    sourceSet.java.replace("src/${sourceSet.name}/java", "$srcPrefixPart$targetPart")
+                    sourceSet.resources.replace("src/${sourceSet.name}/resources", "$resourcesPrefixPart$targetPart")
                 }
             }
 
             else -> if (isMultiplatform) {
                 java.sourceSets.all { sourceSet ->
-                    val compilationName = sourceSet.name.capitalized()
-                    sourceSet.java.replace("src/${sourceSet.name}/java", "src/jvm$compilationName/java")
-                    sourceSet.resources.replace("src/${sourceSet.name}/resources", "src/jvm$compilationName/resources")
+                    val newSourceSetName = "jvm${sourceSet.name.capitalized()}"
+                    sourceSet.java.replace("src/${sourceSet.name}/java", "src/$newSourceSetName/java")
+                    sourceSet.resources.replace("src/${sourceSet.name}/resources", "src/$newSourceSetName/resources")
                 }
             }
         }

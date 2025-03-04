@@ -50,8 +50,12 @@ internal data class KotlinSourceSet(
     override fun applyTo(named: org.gradle.api.Named) {
         named as org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 
-        named.dependencies {
-            dependencies?.filterIsInstance<Dependency>()?.forEach { dependency -> dependency.applyTo(this) }
+        dependencies?.let { dependencies ->
+            named.dependencies {
+                dependencies.filterIsInstance<Dependency>().forEach { dependency ->
+                    dependency.applyTo(this)
+                }
+            }
         }
 
         languageSettings?.applyTo(named.languageSettings)
@@ -59,7 +63,7 @@ internal data class KotlinSourceSet(
     }
 
     context(Project)
-    override fun applyTo() = applyToMaybe(kotlin.sourceSets)
+    override fun applyTo() = applyTo(kotlin.sourceSets)
 }
 
 internal object KotlinSourceSetTransformingSerializer : KeyTransformingSerializer<KotlinSourceSet>(

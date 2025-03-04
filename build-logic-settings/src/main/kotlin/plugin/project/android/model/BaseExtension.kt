@@ -74,7 +74,7 @@ internal interface BaseExtension {
 
     val buildTypes: List<BuildType>?
 
-//    val defaultConfig: DefaultConfig
+    val defaultConfig: DefaultConfigImpl?
 
 //    val productFlavors: List<ProductFlavor>
 
@@ -173,8 +173,10 @@ internal interface BaseExtension {
             }
         }
 
-        extension.defaultConfig {
-
+        defaultConfig?.let { defaultConfig ->
+            extension.defaultConfig {
+                defaultConfig.applyTo(this)
+            }
         }
 
         extension.productFlavors {
@@ -184,13 +186,7 @@ internal interface BaseExtension {
         }
 
         signingConfigs?.forEach { signingConfig ->
-            extension.signingConfigs {
-                maybeNamed(signingConfig.name) {
-                    signingConfig.applyTo(this)
-                } ?: create(signingConfig.name) {
-                    signingConfig.applyTo(this)
-                }
-            }
+           signingConfig.applyTo(extension.signingConfigs)
         }
 
         buildFeatures?.applyTo(extension.buildFeatures)
