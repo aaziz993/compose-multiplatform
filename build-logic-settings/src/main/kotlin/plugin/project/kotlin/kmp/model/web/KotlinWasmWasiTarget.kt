@@ -11,7 +11,7 @@ import plugin.project.kotlin.model.HasBinaries
 @SerialName("wasmWasi")
 internal data class KotlinWasmWasiTarget(
     override val targetName: String = "wasmWasi",
-    override val compilations: List<KotlinJsCompilation>? = null,
+    override val compilations: List<@Serializable(with = KotlinJsIrCompilationTransformingSerializer::class) KotlinJsIrCompilation>? = null,
     override val nodejs: KotlinJsNodeDsl? = null,
     override val binaries: KotlinJsBinaryContainer = KotlinJsBinaryContainer(),
 ) : KotlinTarget, KotlinTargetWithNodeJsDsl, HasBinaries<KotlinJsBinaryContainer> {

@@ -11,6 +11,7 @@ import org.gradle.api.Project
  */
 internal interface TestVariantDimension :
     VariantDimension {
+
     /**
      * Returns whether multi-dex is enabled.
      *
@@ -19,7 +20,7 @@ internal interface TestVariantDimension :
     val multiDexEnabled: Boolean?
 
     /** The associated signing config or null if none are set on the variant dimension. */
-    val signingConfig: ApkSigningConfigImpl?
+    val signingConfig: ApkSigningConfig?
 
     context(Project)
     override fun applyTo(dimension: com.android.build.api.dsl.VariantDimension) {
@@ -27,7 +28,7 @@ internal interface TestVariantDimension :
 
         dimension as TestVariantDimension
 
-        dimension:: multiDexEnabled trySet  multiDexEnabled
-        dimension:: signingConfig trySet signingConfig
+        dimension::multiDexEnabled trySet multiDexEnabled
+        dimension::signingConfig trySet signingConfig?.toA
     }
 }

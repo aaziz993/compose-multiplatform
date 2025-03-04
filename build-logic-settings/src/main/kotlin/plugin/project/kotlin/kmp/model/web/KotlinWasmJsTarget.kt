@@ -15,7 +15,7 @@ import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinWasmJsTargetDsl
 @SerialName("wasmJs")
 internal data class KotlinWasmJsTarget(
     override val targetName: String = "wasmJs",
-    override val compilations: List<KotlinJsCompilation>? = null,
+    override val compilations: List<@Serializable(with = KotlinJsIrCompilationTransformingSerializer::class) KotlinJsIrCompilation>? = null,
     override val nodejs: KotlinJsNodeDsl? = null,
     override val moduleName: String? = null,
     override val browser: KotlinJsBrowserDsl? = null,

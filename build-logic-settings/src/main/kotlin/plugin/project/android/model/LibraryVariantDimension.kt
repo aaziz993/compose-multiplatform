@@ -31,7 +31,7 @@ internal interface LibraryVariantDimension : VariantDimension {
     val consumerProguardFiles: List<String>?
 
     /** The associated signing config or null if none are set on the variant dimension. */
-    val signingConfig: ApkSigningConfigImpl?
+    val signingConfig: ApkSigningConfig?
 
     /** Options for configuring AAR metadata. */
     val aarMetadata: AarMetadata?

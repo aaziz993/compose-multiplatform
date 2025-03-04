@@ -1,68 +1,34 @@
 package plugin.project.android.model
 
-import com.android.build.api.dsl.SigningConfig
-import gradle.android
-import gradle.trySet
-import org.gradle.api.Project
-import plugin.project.kotlin.model.Named
-
 /**
- * DSL object for configuring options related to signing for APKs and bundles.
+ * A Signing Configuration.
  *
- * [DefaultSigningConfig] extends this with options relating to just APKs
- *
+ * This is an interface for the gradle tooling api, and should only be used from Android Studio.
+ * It is not part of the DSL & API interfaces of the Android Gradle Plugin.
  */
-internal interface SigningConfig : Named {
+internal interface SigningConfig {
+    /** Returns the name of the Signing config */
+    val name: String
 
-    /**
-     * Store file used when signing.
-     *
-     * See [Signing Your Applications](http://developer.android.com/tools/publishing/app-signing.html)
-     */
+    /** The keystore file. */
     val storeFile: String?
 
-    /**
-     * Store password used when signing.
-     *
-     * See [Signing Your Applications](http://developer.android.com/tools/publishing/app-signing.html)
-     */
+    /** The keystore password. */
     val storePassword: String?
 
-    /**
-     * Key alias used when signing.
-     *
-     * See [Signing Your Applications](http://developer.android.com/tools/publishing/app-signing.html)
-     */
+    /** The key alias name. */
     val keyAlias: String?
 
-    /**
-     * Key password used when signing.
-     *
-     * See [Signing Your Applications](http://developer.android.com/tools/publishing/app-signing.html)
-     */
+    /** The key password. */
     val keyPassword: String?
 
-    /**
-     * Store type used when signing.
-     *
-     * See [Signing Your Applications](http://developer.android.com/tools/publishing/app-signing.html)
-     */
+    /** The store type. */
     val storeType: String?
 
     /**
-     * Copies all properties from the given signing config.
+     * Whether the config is fully configured for signing.
+     *
+     * i.e. all the required information are present.
      */
-    val initWith: String?
-
-    context(Project)
-    override fun applyTo(named: org.gradle.api.Named) {
-        named as SigningConfig
-
-        named::storeFile trySet storeFile?.let(::file)
-        named::storePassword trySet storePassword
-        named::keyAlias trySet keyAlias
-        named::keyPassword trySet keyPassword
-        named::storeType trySet storeType
-        initWith?.let(android.signingConfigs::getByName)?.let(named::initWith)
-    }
+    val isSigningReady: Boolean
 }

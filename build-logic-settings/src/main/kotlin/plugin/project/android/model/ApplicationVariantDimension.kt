@@ -40,7 +40,7 @@ internal interface ApplicationVariantDimension : VariantDimension {
     val multiDexEnabled: Boolean?
 
     /** The associated signing config or null if none are set on the variant dimension. */
-    val signingConfig: ApkSigningConfigImpl?
+    val signingConfig: ApkSigningConfig?
 
     context(Project)
     override fun applyTo(dimension: com.android.build.api.dsl.VariantDimension) {

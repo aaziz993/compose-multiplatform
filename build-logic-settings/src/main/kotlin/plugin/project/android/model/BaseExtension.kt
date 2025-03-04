@@ -184,7 +184,7 @@ internal interface BaseExtension {
 
             }
         }
-
+        com.android.builder.signing.DefaultSigningConfig
         signingConfigs?.forEach { signingConfig ->
            signingConfig.applyTo(extension.signingConfigs)
         }
