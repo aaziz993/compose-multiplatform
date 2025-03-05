@@ -32,11 +32,8 @@ internal interface DynamicFeatureProductFlavor :
     ProductFlavor {
 
     context(Project)
-    override fun applyTo(named: Named) {
-        super<ProductFlavor>.applyTo(named)
-
-        named as DynamicFeatureProductFlavor
-
-        super<DynamicFeatureBaseFlavor>.applyTo(named)
+    override fun applyTo(dimension: VariantDimension) {
+        super<DynamicFeatureBaseFlavor>.applyTo(dimension)
+        super<ProductFlavor>.applyTo(dimension)
     }
 }

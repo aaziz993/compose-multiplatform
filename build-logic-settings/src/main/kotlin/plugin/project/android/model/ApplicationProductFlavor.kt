@@ -43,20 +43,13 @@ internal interface ApplicationProductFlavor :
     /** Whether this product flavor should be selected in Studio by default  */
     val isDefault: Boolean?
 
-//    context(Project)
-//    override fun applyTo(dimension: VariantDimension) {
-//        super<ApplicationBaseFlavor>.applyTo(dimension)
-//        super<ProductFlavor>.applyTo(dimension)
-//    }
-
     context(Project)
-    override fun applyTo(named: Named) {
-        super<ProductFlavor>.applyTo(named)
+    override fun applyTo(dimension: VariantDimension) {
+        super<ApplicationBaseFlavor>.applyTo(dimension)
+        super<ProductFlavor>.applyTo(dimension)
 
-        named as ApplicationProductFlavor
+        dimension as ApplicationProductFlavor
 
-        super<ApplicationBaseFlavor>.applyTo(named)
-
-        named::isDefault trySet isDefault
+        dimension::isDefault trySet isDefault
     }
 }

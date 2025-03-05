@@ -1,8 +1,8 @@
 package plugin.project.android.model
 
+import com.android.build.api.dsl.VariantDimension
 import gradle.serialization.serializer.AnySerializer
 import kotlinx.serialization.Serializable
-import org.gradle.api.Named
 import org.gradle.api.Project
 
 @Serializable
@@ -51,16 +51,15 @@ internal data class ProductFlavorImpl(
     override val aarMetadata: AarMetadata? = null
 ) :
     ApplicationProductFlavor,
-//    DynamicFeatureProductFlavor,
-//    LibraryProductFlavor,
-//    TestProductFlavor
-{
+    DynamicFeatureProductFlavor,
+    LibraryProductFlavor,
+    TestProductFlavor {
 
     context(Project)
-    override fun applyTo(named: Named) {
-        super<ApplicationProductFlavor>.applyTo(named)
-        super<DynamicFeatureProductFlavor>.applyTo(named)
-        super<LibraryProductFlavor>.applyTo(named)
-        super<TestProductFlavor>.applyTo(named)
+    override fun applyTo(dimension: VariantDimension) {
+        super<ApplicationProductFlavor>.applyTo(dimension)
+        super<DynamicFeatureProductFlavor>.applyTo(dimension)
+        super<LibraryProductFlavor>.applyTo(dimension)
+        super<TestProductFlavor>.applyTo(dimension)
     }
 }

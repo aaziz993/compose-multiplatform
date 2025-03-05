@@ -1,8 +1,6 @@
 package plugin.project.android.model
 
-import com.android.build.api.dsl.TestProductFlavor
 import com.android.build.api.dsl.VariantDimension
-import org.gradle.api.Named
 import org.gradle.api.Project
 
 /**
@@ -20,11 +18,8 @@ internal interface TestProductFlavor :
     ProductFlavor {
 
     context(Project)
-    override fun applyTo(named: Named) {
-        super<ProductFlavor>.applyTo(named)
-
-        named as TestProductFlavor
-
-        super<TestBaseFlavor>.applyTo(named)
+    override fun applyTo(dimension: VariantDimension) {
+        super<TestBaseFlavor>.applyTo(dimension)
+        super<ProductFlavor>.applyTo(dimension)
     }
 }
