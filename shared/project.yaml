@@ -1,8 +1,8 @@
 templates:
-  - ../template/common.yaml
   - ../template/android.yaml
   - ../template/kmp.yaml
   - ../template/cmp.yaml
+  - ../template/common.yaml
 
 kotlin:
   sourceSets:

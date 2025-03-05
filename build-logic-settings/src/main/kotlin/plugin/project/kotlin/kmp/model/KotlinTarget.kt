@@ -3,6 +3,7 @@ package plugin.project.kotlin.kmp.model
 import gradle.kotlin
 import gradle.serialization.serializer.JsonContentPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import plugin.project.kotlin.model.KotlinCompilation
@@ -50,3 +51,13 @@ internal object KotlinTargetTransformingSerializer : KeyTransformingSerializer<K
     KotlinTarget.serializer(),
     "type",
 )
+
+@Serializable
+@SerialName("")
+internal data class KotlinTargetIml(
+    override val compilations: List<KotlinCompilation>? = null,
+) : KotlinTarget {
+
+    override val targetName: String
+        get() = ""
+}
