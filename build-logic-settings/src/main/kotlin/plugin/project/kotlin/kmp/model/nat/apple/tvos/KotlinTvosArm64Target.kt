@@ -25,5 +25,9 @@ internal data class KotlinTvosArm64Target(
 ) : KotlinTvosTarget() {
 
     context(Project)
-    override fun applyTo() =super.applyTo(kotlin.tvosArm64(targetName) as KotlinTarget)
+    override fun applyTo() {
+        create(kotlin::tvosArm64)
+
+        super.applyTo()
+    }
 }

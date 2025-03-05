@@ -24,5 +24,9 @@ internal data class KotlinLinuxX64Target(
 ) : KotlinLinuxTarget() {
 
     context(Project)
-    override fun applyTo() = super.applyTo(kotlin.linuxX64(targetName) as KotlinTarget)
+    override fun applyTo() {
+        create(kotlin::linuxX64)
+
+        super.applyTo()
+    }
 }

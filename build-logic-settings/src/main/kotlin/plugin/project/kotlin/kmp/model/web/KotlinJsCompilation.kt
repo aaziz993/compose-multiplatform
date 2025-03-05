@@ -3,7 +3,7 @@ package plugin.project.kotlin.kmp.model.web
 import gradle.trySet
 import org.gradle.api.Named
 import org.gradle.api.Project
-import plugin.project.kotlin.model.HasBinaries
+import plugin.project.gradle.model.HasBinaries
 import plugin.project.kotlin.model.KotlinCompilation
 
 internal interface KotlinJsCompilation : KotlinCompilation, HasBinaries<KotlinJsBinaryContainer> {

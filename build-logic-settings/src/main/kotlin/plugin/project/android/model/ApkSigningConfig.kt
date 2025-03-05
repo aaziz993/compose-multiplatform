@@ -1,11 +1,10 @@
 package plugin.project.android.model
 
 import com.android.build.api.dsl.ApkSigningConfig
-import com.android.builder.signing.DefaultSigningConfig
 import gradle.android
 import gradle.trySet
 import org.gradle.api.Project
-import plugin.project.kotlin.model.Named
+import plugin.project.gradle.model.Named
 
 /** DSL object to configure signing configs. */
 internal interface ApkSigningConfig : SigningConfigDsl, Named {

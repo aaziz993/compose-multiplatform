@@ -4,8 +4,9 @@ import gradle.kotlin
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinWasmWasiTargetDsl
 import plugin.project.kotlin.kmp.model.KotlinTarget
-import plugin.project.kotlin.model.HasBinaries
+import plugin.project.gradle.model.HasBinaries
 
 @Serializable
 @SerialName("wasmWasi")
@@ -18,9 +19,11 @@ internal data class KotlinWasmWasiTarget(
 
     context(Project)
     override fun applyTo() {
-        val target = kotlin.wasmWasi(targetName)
+        val target = create(kotlin::wasmWasi)
 
-        super<KotlinTarget>.applyTo(target)
+        super<KotlinTarget>.applyTo()
+
+        (target as KotlinWasmWasiTargetDsl?) ?: return
 
         super<KotlinTargetWithNodeJsDsl>.applyTo(target)
 

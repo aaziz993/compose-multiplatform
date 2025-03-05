@@ -25,6 +25,8 @@ internal data class KotlinAndroidNativeX64(
 
     context(Project)
     override fun applyTo() {
-        super.applyTo(kotlin.androidNativeX64(targetName) as KotlinTarget)
+        create(kotlin::androidNativeX64)
+
+        super.applyTo()
     }
 }

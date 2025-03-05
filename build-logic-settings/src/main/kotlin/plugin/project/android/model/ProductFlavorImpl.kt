@@ -1,14 +1,13 @@
 package plugin.project.android.model
 
-import com.android.build.api.dsl.VariantDimension
-import com.android.build.gradle.internal.dsl.DefaultConfig
-import gradle.android
 import gradle.serialization.serializer.AnySerializer
 import kotlinx.serialization.Serializable
+import org.gradle.api.Named
 import org.gradle.api.Project
 
 @Serializable
-internal data class DefaultConfigImpl(
+internal data class ProductFlavorImpl(
+    override val isDefault: Boolean? = null,
     override val applicationId: String? = null,
     override val versionCode: Int? = null,
     override val versionName: String? = null,
@@ -45,19 +44,23 @@ internal data class DefaultConfigImpl(
     override val applicationIdSuffix: String? = null,
     override val versionNameSuffix: String? = null,
     override val multiDexEnabled: Boolean? = null,
-    override val signingConfig: ApkSigningConfigImpl? = null,
+    override val signingConfig: ApkSigningConfig? = null,
+    override val dimension: String? = null,
+    override val matchingFallbacks: List<String>? = null,
     override val consumerProguardFiles: List<String>? = null,
-    override val aarMetadata: AarMetadata? = null,
-) : ApplicationDefaultConfig,
-    DynamicFeatureDefaultConfig,
-    LibraryDefaultConfig,
-    TestDefaultConfig {
+    override val aarMetadata: AarMetadata? = null
+) :
+    ApplicationProductFlavor,
+//    DynamicFeatureProductFlavor,
+//    LibraryProductFlavor,
+//    TestProductFlavor
+{
 
     context(Project)
-    override fun applyTo(dimension: VariantDimension) {
-        super<ApplicationDefaultConfig>.applyTo(dimension)
-        super<DynamicFeatureDefaultConfig>.applyTo(dimension)
-        super<LibraryDefaultConfig>.applyTo(dimension)
-        super<TestDefaultConfig>.applyTo(dimension)
+    override fun applyTo(named: Named) {
+        super<ApplicationProductFlavor>.applyTo(named)
+        super<DynamicFeatureProductFlavor>.applyTo(named)
+        super<LibraryProductFlavor>.applyTo(named)
+        super<TestProductFlavor>.applyTo(named)
     }
 }

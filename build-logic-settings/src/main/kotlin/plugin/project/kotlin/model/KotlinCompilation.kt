@@ -4,6 +4,7 @@ import gradle.serialization.serializer.KeyTransformingSerializer
 import gradle.trySet
 import kotlinx.serialization.KSerializer
 import org.gradle.api.Project
+import plugin.project.gradle.model.Named
 import plugin.project.kotlin.kmp.model.KotlinSourceSet
 import plugin.project.kotlin.kmp.model.KotlinTarget
 

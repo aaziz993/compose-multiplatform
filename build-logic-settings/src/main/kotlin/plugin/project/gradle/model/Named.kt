@@ -1,7 +1,7 @@
-package plugin.project.kotlin.model
+package plugin.project.gradle.model
 
 import gradle.maybeNamedOrAll
-import gradle.namedOrAll
+import org.gradle.api.Named
 import org.gradle.api.NamedDomainObjectCollection
 import org.gradle.api.Project
 
@@ -19,11 +19,17 @@ internal interface Named {
      */
     val name: String
 
-    context(Project)
-    fun applyTo(named: org.gradle.api.Named)
+    fun create(block: (name: String) -> Named): Named? {
+        if (name.isNotEmpty()) {
+            block(name)
+        }
+    }
 
     context(Project)
-    fun applyTo(named: NamedDomainObjectCollection<out org.gradle.api.Named>) =
+    fun applyTo(named: Named)
+
+    context(Project)
+    fun applyTo(named: NamedDomainObjectCollection<out Named>) =
         named.maybeNamedOrAll(name) {
             applyTo(this)
         }

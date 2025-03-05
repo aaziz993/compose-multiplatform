@@ -1,7 +1,7 @@
 package plugin.project.android.model
 
 import org.gradle.api.Project
-import plugin.project.kotlin.model.Named
+import plugin.project.gradle.model.Named
 
 internal data class SigningConfigImpl(
     override val name: String="",

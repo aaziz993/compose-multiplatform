@@ -1,13 +1,16 @@
 package plugin.project.kotlin.kmp.model.web
 
+import gradle.kotlin
 import gradle.moduleName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalMainFunctionArgumentsDsl
+import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
 import plugin.project.kotlin.kmp.model.KotlinTarget
-import plugin.project.kotlin.model.HasBinaries
+import plugin.project.gradle.model.HasBinaries
 import plugin.project.kotlin.model.HasConfigurableKotlinCompilerOptions
+import org.gradle.kotlin.dsl.withType
 
 @Serializable
 internal abstract class KotlinJsTargetDsl : KotlinTarget, KotlinTargetWithNodeJsDsl,
@@ -35,7 +38,7 @@ internal abstract class KotlinJsTargetDsl : KotlinTarget, KotlinTargetWithNodeJs
     override fun applyTo(named: Named) {
         super<KotlinTarget>.applyTo(named)
 
-        named as org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
+        named as KotlinJsTargetDsl
 
         super<HasConfigurableKotlinCompilerOptions>.applyTo(named)
 
@@ -55,4 +58,8 @@ internal abstract class KotlinJsTargetDsl : KotlinTarget, KotlinTargetWithNodeJs
         generateTypeScriptDefinitions?.takeIf { it }?.let { named.generateTypeScriptDefinitions() }
         binaries.applyTo(named.binaries)
     }
+
+    context(Project)
+    override fun applyTo() =
+        super<KotlinTarget>.applyTo(kotlin.targets.withType<KotlinJsTargetDsl>())
 }

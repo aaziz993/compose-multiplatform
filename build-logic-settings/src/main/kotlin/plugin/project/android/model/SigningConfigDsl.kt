@@ -4,7 +4,7 @@ import com.android.build.api.dsl.SigningConfig
 import gradle.android
 import gradle.trySet
 import org.gradle.api.Project
-import plugin.project.kotlin.model.Named
+import plugin.project.gradle.model.Named
 
 /**
  * DSL object for configuring options related to signing for APKs and bundles.

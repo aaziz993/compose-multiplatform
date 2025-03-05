@@ -4,7 +4,6 @@ import gradle.tryAssign
 import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.api.tasks.compile.AbstractCompile
-import plugin.project.kotlin.model.Task
 
 /**
  * The base class for all JVM-based language compilation tasks.

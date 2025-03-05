@@ -24,5 +24,9 @@ internal data class IosArm64(
 ) : KotlinIosTarget() {
 
     context(Project)
-    override fun applyTo() = super.applyTo(kotlin.iosArm64(targetName) as KotlinTarget)
+    override fun applyTo() {
+        create(kotlin::iosArm64)
+
+        super.applyTo()
+    }
 }

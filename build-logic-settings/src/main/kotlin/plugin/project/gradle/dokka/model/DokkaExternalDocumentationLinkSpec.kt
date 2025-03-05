@@ -2,10 +2,9 @@ package plugin.project.gradle.dokka.model
 
 import gradle.tryAssign
 import kotlinx.serialization.Serializable
-import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 import org.jetbrains.dokka.gradle.engine.parameters.DokkaExternalDocumentationLinkSpec
-import plugin.project.kotlin.model.Named
+import plugin.project.gradle.model.Named
 
 /**
  * Configuration builder that allows creating links leading to externally hosted

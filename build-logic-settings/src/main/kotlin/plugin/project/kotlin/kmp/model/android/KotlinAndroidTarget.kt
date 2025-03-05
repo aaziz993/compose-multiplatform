@@ -5,6 +5,7 @@ import gradle.trySet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
 import plugin.project.kotlin.kmp.model.KotlinTarget
 import plugin.project.kotlin.kmp.model.jvm.KotlinJvmAndroidCompilation
 import plugin.project.kotlin.kmp.model.jvm.KotlinJvmAndroidCompilationTransformingSerializer
@@ -41,9 +42,11 @@ internal data class KotlinAndroidTarget(
 
     context(Project)
     override fun applyTo() {
-        val target = kotlin.androidTarget(targetName)
+        val target = create(kotlin::androidTarget)
 
-        super<KotlinTarget>.applyTo(target)
+        super<KotlinTarget>.applyTo()
+
+        (target as KotlinAndroidTarget?) ?: return
 
         super<HasConfigurableKotlinCompilerOptions>.applyTo(target)
 

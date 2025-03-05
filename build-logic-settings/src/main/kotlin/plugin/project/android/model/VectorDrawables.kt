@@ -25,7 +25,7 @@ internal data class VectorDrawables(
      *
      * See [Vector Asset Studio](http://developer.android.com/tools/help/vector-asset-studio.html).
      */
-    var useSupportLibrary: Boolean? = null,
+    val useSupportLibrary: Boolean? = null,
 ) {
 
     @Suppress("UnstableApiUsage")

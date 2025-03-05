@@ -17,10 +17,10 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 internal data class PostProcessing(
-    var isRemoveUnusedCode: Boolean? = null,
-    var isRemoveUnusedResources: Boolean? = null,
-    var isObfuscate: Boolean? = null,
-    var isOptimizeCode: Boolean? = null,
+    val isRemoveUnusedCode: Boolean? = null,
+    val isRemoveUnusedResources: Boolean? = null,
+    val isObfuscate: Boolean? = null,
+    val isOptimizeCode: Boolean? = null,
     val proguardFiles: List<String>? = null,
     val testProguardFiles: List<String>? = null,
     val consumerProguardFiles: List<String>? = null,

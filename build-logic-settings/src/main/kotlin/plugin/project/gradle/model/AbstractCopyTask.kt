@@ -19,7 +19,6 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.api.tasks.AbstractCopyTask
-import plugin.project.kotlin.model.Task
 
 /**
  * `AbstractCopyTask` is the base class for all copy tasks.

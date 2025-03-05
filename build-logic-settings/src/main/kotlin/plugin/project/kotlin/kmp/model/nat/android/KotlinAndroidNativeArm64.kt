@@ -25,6 +25,8 @@ internal data class KotlinAndroidNativeArm64(
 
     context(Project)
     override fun applyTo() {
-        super.applyTo(kotlin.androidNativeArm64(targetName) as KotlinTarget)
+        create(kotlin::androidNativeArm64)
+
+        super.applyTo()
     }
 }

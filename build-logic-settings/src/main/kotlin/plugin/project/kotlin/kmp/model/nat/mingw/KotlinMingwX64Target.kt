@@ -24,5 +24,9 @@ internal data class KotlinMingwX64Target(
 ) : KotlinMingwTarget() {
 
     context(Project)
-    override fun applyTo() = super.applyTo(kotlin.mingwX64(targetName) as KotlinTarget)
+    override fun applyTo() {
+        create(kotlin::mingwX64)
+
+        super.applyTo()
+    }
 }

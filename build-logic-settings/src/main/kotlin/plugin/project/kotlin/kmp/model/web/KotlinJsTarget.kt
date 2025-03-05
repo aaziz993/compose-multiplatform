@@ -23,5 +23,9 @@ internal data class KotlinJsTarget(
 ) : KotlinJsTargetDsl() {
 
     context(Project)
-    override fun applyTo() = super.applyTo(kotlin.js(targetName) as KotlinTarget)
+    override fun applyTo() {
+        create(kotlin::js)
+
+        super.applyTo()
+    }
 }

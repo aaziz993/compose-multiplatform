@@ -24,5 +24,9 @@ internal data class KotlinWatchosArm32Target(
 ) : KotlinWatchosTarget() {
 
     context(Project)
-    override fun applyTo() = super.applyTo(kotlin.watchosArm32(targetName) as KotlinTarget)
+    override fun applyTo() {
+        create(kotlin::watchosArm32)
+
+        super.applyTo()
+    }
 }

@@ -5,7 +5,7 @@ import gradle.tryAssign
 import gradle.trySet
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary
-import plugin.project.kotlin.model.Named
+import plugin.project.gradle.model.Named
 
 internal interface NativeBinary : Named {
 

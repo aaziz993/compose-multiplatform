@@ -1,12 +1,10 @@
-package plugin.project.kotlin.model
+package plugin.project.gradle.model
 
-import org.gradle.kotlin.dsl.withType
 import gradle.serialization.serializer.AnySerializer
 import gradle.serialization.serializer.JsonContentPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
 import groovy.lang.MissingPropertyException
 import kotlinx.serialization.Serializable
-import org.gradle.api.NamedDomainObjectCollection
 import org.gradle.api.Project
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.TaskDependency

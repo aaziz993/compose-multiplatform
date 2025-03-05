@@ -1,15 +1,9 @@
 package plugin.project.kotlin.kmp.model.web
 
-import gradle.containerize
 import gradle.kotlin
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.container
-import org.gradle.kotlin.dsl.withType
-import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
-import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinWasmJsTargetDsl
 
 @Serializable
 @SerialName("wasmJs")
@@ -28,5 +22,9 @@ internal data class KotlinWasmJsTarget(
 ) : KotlinJsTargetDsl() {
 
     context(Project)
-    override fun applyTo() = super.applyTo(kotlin.wasmJs(targetName) as KotlinTarget)
+    override fun applyTo() {
+        create(kotlin::wasmJs)
+
+        super.applyTo()
+    }
 }

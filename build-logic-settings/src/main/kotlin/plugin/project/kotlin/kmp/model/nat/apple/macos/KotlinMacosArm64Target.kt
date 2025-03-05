@@ -24,5 +24,9 @@ internal data class KotlinMacosArm64Target(
 ) : KotlinMacosTarget() {
 
     context(Project)
-    override fun applyTo() = super.applyTo(kotlin.macosArm64(targetName) as KotlinTarget)
+    override fun applyTo() {
+        create(kotlin::macosArm64)
+        
+        super.applyTo()
+    }
 }

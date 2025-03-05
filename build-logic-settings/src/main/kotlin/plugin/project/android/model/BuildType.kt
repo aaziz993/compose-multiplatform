@@ -14,15 +14,15 @@ internal data class BuildType(
      */
     val name: String,
     val lazyInit: Boolean? = null,
-    var enableAndroidTestCoverage: Boolean? = null,
-    var enableUnitTestCoverage: Boolean? = null,
-    var isDebuggable: Boolean? = null,
-    var isTestCoverageEnabled: Boolean? = null,
-    var isPseudoLocalesEnabled: Boolean? = null,
-    var isJniDebuggable: Boolean? = null,
-    var isRenderscriptDebuggable: Boolean? = null,
-    var renderscriptOptimLevel: Int? = null,
-    var isProfileable: Boolean? = null,
+    val enableAndroidTestCoverage: Boolean? = null,
+    val enableUnitTestCoverage: Boolean? = null,
+    val isDebuggable: Boolean? = null,
+    val isTestCoverageEnabled: Boolean? = null,
+    val isPseudoLocalesEnabled: Boolean? = null,
+    val isJniDebuggable: Boolean? = null,
+    val isRenderscriptDebuggable: Boolean? = null,
+    val renderscriptOptimLevel: Int? = null,
+    val isProfileable: Boolean? = null,
     val ndk: Ndk? = null,
     /**
      * Configure native build options.
@@ -34,7 +34,7 @@ internal data class BuildType(
      *
      * Can be removed once the AaptOptions crunch method is removed.
      */
-    var isCrunchPngsDefault: Boolean? = null,
+    val isCrunchPngsDefault: Boolean? = null,
 
     val matchingFallbacks: List<String>? = null,
 
@@ -46,13 +46,13 @@ internal data class BuildType(
     val shaders: Shaders? = null,
 
     /** The signing configuration. e.g.: `signingConfig signingConfigs.myConfig`  */
-    var signingConfig: ApkSigningConfig? = null,
+    val signingConfig: ApkSigningConfig? = null,
 
-    var isEmbedMicroApp: Boolean? = null,
+    val isEmbedMicroApp: Boolean? = null,
 
-    var isDefault: Boolean? = null,
+    val isDefault: Boolean? = null,
 
-    var proguardFiles: List<String>? = null,
+    val proguardFiles: List<String>? = null,
 
     /**
      * Specifies proguard rule files to be used when processing test code.
@@ -79,19 +79,19 @@ internal data class BuildType(
     val consumerProguardFiles: List<String>? = null,
 
 
-    var isMinifyEnabled: Boolean? = null,
+    val isMinifyEnabled: Boolean? = null,
 
     /**
      * Whether shrinking of unused resources is enabled.
      *
      * Default is false;
      */
-    var isShrinkResources: Boolean? = null,
+    val isShrinkResources: Boolean? = null,
 
 
-    var isCrunchPngs: Boolean? = null,
+    val isCrunchPngs: Boolean? = null,
 
-    var postProcessingBlockUsed: Boolean? = null,
+    val postProcessingBlockUsed: Boolean? = null,
 
     /** This DSL is incubating and subject to change.  */
     val postprocessing: PostProcessing? = null,

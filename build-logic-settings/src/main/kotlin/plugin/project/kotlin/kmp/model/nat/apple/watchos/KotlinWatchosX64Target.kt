@@ -24,5 +24,9 @@ internal data class KotlinWatchosX64Target(
 ) : KotlinWatchosTarget() {
 
     context(Project)
-    override fun applyTo() = super.applyTo(kotlin.watchosX64(targetName) as KotlinTarget)
+    override fun applyTo() {
+        create(kotlin::watchosX64)
+
+        super.applyTo()
+    }
 }

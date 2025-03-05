@@ -6,7 +6,7 @@ import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import plugin.project.kotlin.model.KotlinCompilation
-import plugin.project.kotlin.model.Named
+import plugin.project.gradle.model.Named
 
 @Serializable(with = KotlinTargetSerializer::class)
 internal interface KotlinTarget : Named {

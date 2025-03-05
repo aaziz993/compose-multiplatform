@@ -4,6 +4,7 @@ import gradle.kotlin
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
 import plugin.project.kotlin.kmp.model.KotlinTarget
 import plugin.project.kotlin.model.HasConfigurableKotlinCompilerOptions
 
@@ -23,9 +24,11 @@ internal data class KotlinJvmTarget(
 
     context(Project)
     override fun applyTo() {
-        val target = kotlin.jvm(targetName)
+        val target = create(kotlin::jvm)
 
-        super<KotlinTarget>.applyTo(target)
+        super<KotlinTarget>.applyTo()
+
+        (target as KotlinJvmTarget?) ?: return
 
         super<HasConfigurableKotlinCompilerOptions>.applyTo(target)
 

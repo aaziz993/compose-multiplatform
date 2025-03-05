@@ -20,7 +20,7 @@ internal interface ApplicationBaseFlavor :
      * See [Set the Application ID](https://developer.android.com/studio/build/application-id.html)
      */
 
-    var applicationId: String?
+    val applicationId: String?
 
     /**
      * Version code.
@@ -28,14 +28,14 @@ internal interface ApplicationBaseFlavor :
      * See [Versioning Your Application](http://developer.android.com/tools/publishing/versioning.html)
      */
 
-    var versionCode: Int?
+    val versionCode: Int?
 
     /**
      * Version name.
      *
      * See [Versioning Your Application](http://developer.android.com/tools/publishing/versioning.html)
      */
-    var versionName: String?
+    val versionName: String?
 
     /**
      * The target SDK version.
@@ -45,7 +45,7 @@ internal interface ApplicationBaseFlavor :
      * See [uses-sdk element documentation](http://developer.android.com/guide/topics/manifest/uses-sdk-element.html).
      */
 
-    var targetSdk: Int?
+    val targetSdk: Int?
 
     /**
      * The target SDK version.
@@ -54,7 +54,7 @@ internal interface ApplicationBaseFlavor :
      *
      * See [uses-sdk element documentation](http://developer.android.com/guide/topics/manifest/uses-sdk-element.html).
      */
-    var targetSdkPreview: String?
+    val targetSdkPreview: String?
 
     /**
      * The maxSdkVersion, or null if not specified. This is only the value set on this produce
@@ -63,7 +63,7 @@ internal interface ApplicationBaseFlavor :
      * See [uses-sdk element documentation](http://developer.android.com/guide/topics/manifest/uses-sdk-element.html).
      */
 
-    var maxSdk: Int?
+    val maxSdk: Int?
 
     context(Project)
     override fun applyTo(dimension: VariantDimension) {

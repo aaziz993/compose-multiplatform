@@ -25,6 +25,8 @@ internal data class KotlinAndroidNativeX86(
 
     context(Project)
     override fun applyTo() {
-        super.applyTo(kotlin.androidNativeX86(targetName) as KotlinTarget)
+        create(kotlin::androidNativeX86)
+
+        super.applyTo()
     }
 }

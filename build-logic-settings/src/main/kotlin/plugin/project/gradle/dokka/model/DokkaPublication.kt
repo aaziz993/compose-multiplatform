@@ -4,7 +4,7 @@ import gradle.serialization.serializer.KeyTransformingSerializer
 import gradle.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import plugin.project.kotlin.model.Named
+import plugin.project.gradle.model.Named
 
 /**
  * A [DokkaPublication] controls the output produced by the Dokka Generator.

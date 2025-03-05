@@ -4,7 +4,7 @@ import gradle.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.CInteropSettings
-import plugin.project.kotlin.model.Named
+import plugin.project.gradle.model.Named
 
 /**
  * # C interoperability settings

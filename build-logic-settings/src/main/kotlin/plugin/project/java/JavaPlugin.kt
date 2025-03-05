@@ -1,14 +1,9 @@
 package plugin.project.java
 
 import gradle.all
-import gradle.id
 import gradle.java
-import gradle.libs
-import gradle.plugin
-import gradle.plugins
 import gradle.projectProperties
 import gradle.replace
-import gradle.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.ApplicationPlugin

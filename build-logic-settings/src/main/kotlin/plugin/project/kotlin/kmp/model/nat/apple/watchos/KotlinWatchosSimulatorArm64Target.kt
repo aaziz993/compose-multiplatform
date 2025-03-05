@@ -24,5 +24,9 @@ internal data class KotlinWatchosSimulatorArm64Target(
 ) : KotlinWatchosTarget() {
 
     context(Project)
-    override fun applyTo() = super.applyTo(kotlin.watchosSimulatorArm64(targetName) as KotlinTarget)
+    override fun applyTo() {
+        create(kotlin::watchosSimulatorArm64)
+
+        super.applyTo()
+    }
 }

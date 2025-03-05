@@ -9,7 +9,7 @@ import plugin.model.dependency.ProjectDependency
 import plugin.model.dependency.ProjectDependencyTransformingSerializer
 import plugin.project.kotlin.model.HasKotlinDependencies
 import plugin.project.kotlin.model.LanguageSettingsBuilder
-import plugin.project.kotlin.model.Named
+import plugin.project.gradle.model.Named
 
 /**
  * Represents a logical group of Kotlin files, including sources, resources and additional metadata describing how

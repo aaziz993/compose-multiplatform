@@ -11,7 +11,7 @@ import io.github.sgrishchenko.karakum.gradle.plugin.tasks.KarakumGenerate
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
-import plugin.project.kotlin.model.Task
+import plugin.project.gradle.model.Task
 
 private val JS_TYPE_IMPORTS =
     mapOf(
