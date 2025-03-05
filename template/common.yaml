@@ -306,6 +306,11 @@ dependencies:
   - kspCommonMainMetadata: $libs.ktorfit.ksp
     # Use import org.koin.ksp.generated.*
   - kspCommonMainMetadata: $libs.koin.ksp.compiler
+  # android dependencies
+  - lintChecks: $libs.compose.lint.checks
+  - $libs.android.desugar.jdk.libs
+  - $libs.androidx.test.core
+  - $libs.androidx.test.runner
 
 tasks:
   - shadowJar:

@@ -1,5 +1,4 @@
 templates:
-  - ../template/android.yaml
   - ../template/kmp.yaml
   - ../template/cmp.yaml
   - ../template/common.yaml
