@@ -50,6 +50,7 @@ internal class AndroidPlugin : Plugin<Project> {
                             sourceSet.name.startsWith("testFixtures")
                         ) "test"
                         else ""
+
                         dependencies {
                             sourceSet.dependencies
                                 ?.forEach { dependency ->
