@@ -28,7 +28,7 @@ internal data class KotlinNativeCompilerOptions(
      * Default value: null
      */
     val moduleName: String? = null,
-    override val apiVersion: KotlinVersion?,
+    override val apiVersion: KotlinVersion? = null
 ) : KotlinCommonCompilerOptions {
 
     context(Project)
