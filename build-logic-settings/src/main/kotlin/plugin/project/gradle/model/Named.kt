@@ -1,6 +1,5 @@
 package plugin.project.gradle.model
 
-import gradle.maybeNamedOrAll
 import org.gradle.api.Named
 import org.gradle.api.NamedDomainObjectCollection
 import org.gradle.api.Project
@@ -27,7 +26,7 @@ internal interface Named {
 
     context(Project)
     fun applyTo(named: NamedDomainObjectCollection<out Named>) =
-        named.maybeNamedOrAll(name) {
+        named.configure(name) {
             applyTo(this)
         }
 
@@ -35,4 +34,8 @@ internal interface Named {
     fun applyTo() {
         throw UnsupportedOperationException()
     }
+}
+
+private inline fun <reified T> NamedDomainObjectCollection<out T>.configure(name: String, noinline configure: T.() -> Unit) {
+    if (name.isEmpty()) all(configure) else findByName(name)?.configure()
 }

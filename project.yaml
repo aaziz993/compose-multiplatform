@@ -61,7 +61,7 @@ plugins:
           footerMessage: © 2025 - Aziz Atoev
           templatesDir: documentation
       - versioning:
-          olderVersionDir: documentation/version
+          olderVersionsDir: documentation/version
 
 dependencyResolutionManagement:
   repositories:

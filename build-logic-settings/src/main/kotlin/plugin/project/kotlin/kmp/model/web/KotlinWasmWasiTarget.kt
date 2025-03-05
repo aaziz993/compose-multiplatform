@@ -23,7 +23,7 @@ internal data class KotlinWasmWasiTarget(
 
         super<KotlinTarget>.applyTo()
 
-        (target as KotlinWasmWasiTargetDsl?) ?: return
+        if (target !is KotlinWasmWasiTargetDsl) return
 
         super<KotlinTargetWithNodeJsDsl>.applyTo(target)
 

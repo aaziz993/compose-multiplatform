@@ -28,7 +28,7 @@ internal data class KotlinJvmTarget(
 
         super<KotlinTarget>.applyTo()
 
-        (target as KotlinJvmTarget?) ?: return
+        if (target !is KotlinJvmTarget) return
 
         super<HasConfigurableKotlinCompilerOptions>.applyTo(target)
 

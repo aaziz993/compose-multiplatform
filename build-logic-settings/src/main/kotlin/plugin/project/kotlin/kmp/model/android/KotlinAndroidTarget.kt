@@ -46,7 +46,7 @@ internal data class KotlinAndroidTarget(
 
         super<KotlinTarget>.applyTo()
 
-        (target as KotlinAndroidTarget?) ?: return
+        if (target !is KotlinAndroidTarget) return
 
         super<HasConfigurableKotlinCompilerOptions>.applyTo(target)
 
