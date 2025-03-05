@@ -1,11 +1,15 @@
 package plugin.project.kotlin.kmp.model.jvm
 
+import gradle.kotlin
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
 import plugin.project.kotlin.kmp.model.KotlinTarget
 import plugin.project.kotlin.model.HasConfigurableKotlinCompilerOptions
+import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
+import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
 
 @Serializable
 internal abstract class KotlinJvmAndAndroidTarget :
@@ -31,4 +35,10 @@ internal data class KotlinJvmAndAndroidTargetImpl(
 
     override val targetName: String
         get() = ""
+
+    context(Project)
+    override fun applyTo() {
+        super.applyTo(kotlin.targets.withType<KotlinJvmTarget>())
+        super.applyTo(kotlin.targets.withType<KotlinAndroidTarget>())
+    }
 }
