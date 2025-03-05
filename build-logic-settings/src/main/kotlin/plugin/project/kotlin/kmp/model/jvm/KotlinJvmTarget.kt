@@ -3,10 +3,10 @@ package plugin.project.kotlin.kmp.model.jvm
 import gradle.kotlin
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import org.gradle.api.Named
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
-import plugin.project.kotlin.kmp.model.KotlinTarget
-import plugin.project.kotlin.model.HasConfigurableKotlinCompilerOptions
+import org.gradle.kotlin.dsl.withType
 
 @Serializable
 @SerialName("jvm")
@@ -17,31 +17,31 @@ internal data class KotlinJvmTarget(
     val testRuns: List<KotlinJvmTestRun>? = null,
     val mainRun: KotlinJvmRunDsl? = null,
     val withJava: Boolean? = null,
-) : KotlinTarget, HasConfigurableKotlinCompilerOptions<KotlinJvmCompilerOptions> {
-
-    override val needKmp: Boolean
-        get() = false
+) : KotlinJvmAndAndroidTarget() {
 
     context(Project)
-    override fun applyTo() {
-        val target = create(kotlin::jvm)
+    override fun applyTo(named: Named) {
+        super.applyTo(named)
 
-        super<KotlinTarget>.applyTo()
-
-        if (target !is KotlinJvmTarget) return
-
-        super<HasConfigurableKotlinCompilerOptions>.applyTo(target)
+        named as KotlinJvmTarget
 
         testRuns?.forEach { testRun ->
-            target.testRuns.named(testRun.name) {
+            named.testRuns.named(testRun.name) {
                 testRun.applyTo(this)
             }
         }
 
         mainRun?.let { mainRun ->
-            target.mainRun(mainRun::applyTo)
+            named.mainRun(mainRun::applyTo)
         }
 
-        withJava?.takeIf { it }?.let { target.withJava() }
+        withJava?.takeIf { it }?.let { named.withJava() }
+    }
+
+    context(Project)
+    override fun applyTo() {
+        create(kotlin::jvm)
+
+        super<KotlinJvmAndAndroidTarget>.applyTo(kotlin.targets.withType<KotlinJvmTarget>())
     }
 }

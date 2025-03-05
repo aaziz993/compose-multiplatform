@@ -34,27 +34,12 @@ kotlinCompilerOptions:
     - dev.whyoleg.cryptography.DelicateCryptographyApi
 
 kotlinJvmCompilerOptions:
-  freeCompilerArgs:
-    - -Xjvm-default=all
+
 
 kotlinNativeCompilerOptions:
-  freeCompilerArgs:
-    - -Xexport-kdoc
-    - -Xallocator=custom
-    - -XXLanguage+ImplicitSignedToUnsignedIntegerConversion
-    - -Xadd-light-debug=enable
-  optIns:
-    - kotlin.experimental.ExperimentalObjCName
-    - kotlinx.cinterop.ExperimentalForeignApi
-    - kotlinx.cinterop.BetaInteropApi
 
-  # add it to avoid sqllite3 issues in iOS. Required when using NativeSQLiteDriver
-  linkerOpts:
-    - -lsqlite3
 
-kotlinJsCompilerOptions:
-  optIns:
-    - kotlin.js.ExperimentalJsExport
+
 
 layout: FLAT
 
@@ -188,7 +173,52 @@ plugins:
       - wasmJsMain
 
 kotlin:
-  jvmToolchain: 23
+  targets:
+    jvmAndAndroid:
+      compilerOptions:
+        freeCompilerArgs:
+          - -Xjvm-default=all
+
+    native:
+      compilerOptions:
+        freeCompilerArgs:
+          - -Xexport-kdoc
+          - -Xallocator=custom
+          - -XXLanguage+ImplicitSignedToUnsignedIntegerConversion
+          - -Xadd-light-debug=enable
+        optIns:
+          - kotlin.experimental.ExperimentalObjCName
+          - kotlinx.cinterop.ExperimentalForeignApi
+          - kotlinx.cinterop.BetaInteropApi
+      binaries:
+        framework:
+          # add it to avoid sqllite3 issues in iOS. Required when using NativeSQLiteDriver
+          linkerOpts:
+            - -lsqlite3
+
+    jsAndWasmJs:
+      compilerOptions:
+        optIns:
+          - kotlin.js.ExperimentalJsExport
+      browser:
+        testTask:
+          karma:
+            configDirectory: ../gradle/js/karma.config.d
+            useChromeHeadless: true
+      nodejs:
+        testTask:
+          mocha:
+            timeout: 600s
+
+  hierarchy:
+    - jvmAndAndroid: [ jvm, android ]
+    - nonJvm: [ android, ios, web ]
+    - nonAndroid: [ jvm, ios, web ]
+    - mobile: [ android, ios ]
+    - nonMobile: [ jvm, web ]
+    - jsAndWasmJs: [ js, wasmJs ]
+    - web: [ js, wasmJs, wasmWasi ]
+    - nonWeb: [ jvmAndAndroid, ios ]
 
   sourceSets:
     - commonMain:

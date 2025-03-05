@@ -4,6 +4,8 @@ import gradle.kotlin
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinWasmJsTargetDsl
 
 @Serializable
 @SerialName("wasmJs")
@@ -25,6 +27,6 @@ internal data class KotlinWasmJsTarget(
     override fun applyTo() {
         create(kotlin::wasmJs)
 
-        super.applyTo()
+        super.applyTo(kotlin.targets.withType<KotlinWasmJsTargetDsl>())
     }
 }

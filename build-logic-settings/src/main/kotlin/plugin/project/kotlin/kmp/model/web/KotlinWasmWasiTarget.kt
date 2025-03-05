@@ -3,7 +3,10 @@ package plugin.project.kotlin.kmp.model.web
 import gradle.kotlin
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import org.gradle.api.Named
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinWasmJsTargetDsl
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinWasmWasiTargetDsl
 import plugin.project.kotlin.kmp.model.KotlinTarget
 import plugin.project.gradle.model.HasBinaries
@@ -18,15 +21,20 @@ internal data class KotlinWasmWasiTarget(
 ) : KotlinTarget, KotlinTargetWithNodeJsDsl, HasBinaries<KotlinJsBinaryContainer> {
 
     context(Project)
+    override fun applyTo(named: Named) {
+        super<KotlinTarget>.applyTo(named)
+
+        named as KotlinWasmWasiTargetDsl
+
+        super<KotlinTargetWithNodeJsDsl>.applyTo(named)
+
+        binaries.applyTo(named.binaries)
+    }
+
+    context(Project)
     override fun applyTo() {
-        val target = create(kotlin::wasmWasi)
+        create(kotlin::wasmWasi)
 
-        super<KotlinTarget>.applyTo()
-
-        if (target !is KotlinWasmWasiTargetDsl) return
-
-        super<KotlinTargetWithNodeJsDsl>.applyTo(target)
-
-        binaries.applyTo(target.binaries)
+        super<KotlinTarget>.applyTo(kotlin.targets.withType<KotlinWasmWasiTargetDsl>())
     }
 }

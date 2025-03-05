@@ -40,6 +40,12 @@ compose:
       mainClass: MainKt
       nativeDistributions:
         targetFormats: [ Dmg, Msi, Deb ]
+        macOS:
+          iconFile: composeResources/drawables/MacOSIcon.icns
+        linux:
+          iconFile: composeResources/drawables/LinuxIcon.png
+        windows:
+          iconFile: composeResources/drawables/WindowsIcon.ico
 
   resources:
     publicResClass: true

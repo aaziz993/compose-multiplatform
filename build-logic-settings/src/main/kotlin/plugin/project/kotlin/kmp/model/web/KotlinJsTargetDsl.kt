@@ -2,13 +2,13 @@ package plugin.project.kotlin.kmp.model.web
 
 import gradle.kotlin
 import gradle.moduleName
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalMainFunctionArgumentsDsl
-import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
-import plugin.project.kotlin.kmp.model.KotlinTarget
 import plugin.project.gradle.model.HasBinaries
+import plugin.project.kotlin.kmp.model.KotlinTarget
 import plugin.project.kotlin.model.HasConfigurableKotlinCompilerOptions
 import org.gradle.kotlin.dsl.withType
 
@@ -38,7 +38,7 @@ internal abstract class KotlinJsTargetDsl : KotlinTarget, KotlinTargetWithNodeJs
     override fun applyTo(named: Named) {
         super<KotlinTarget>.applyTo(named)
 
-        named as KotlinJsTargetDsl
+        named as org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
 
         super<HasConfigurableKotlinCompilerOptions>.applyTo(named)
 
@@ -61,5 +61,24 @@ internal abstract class KotlinJsTargetDsl : KotlinTarget, KotlinTargetWithNodeJs
 
     context(Project)
     override fun applyTo() =
-        super<KotlinTarget>.applyTo(kotlin.targets.withType<KotlinJsTargetDsl>())
+        super<KotlinTarget>.applyTo(kotlin.targets.withType<org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl>())
+}
+
+@Serializable
+@SerialName("jsAndWasmJs")
+internal data class KotlinJsTargetDslImpl(
+    override val compilations: List<KotlinJsCompilation>? = null,
+    override val moduleName: String? = null,
+    override val browser: KotlinJsBrowserDsl? = null,
+    override val useCommonJs: Boolean? = null,
+    override val useEsModules: Boolean? = null,
+    override val passAsArgumentToMainFunction: String? = null,
+    override val generateTypeScriptDefinitions: Boolean? = null,
+    override val nodejs: KotlinJsNodeDsl? = null,
+    override val binaries: KotlinJsBinaryContainer = KotlinJsBinaryContainer(),
+    override val compilerOptions: KotlinJsCompilerOptions? = null,
+) : KotlinJsTargetDsl() {
+
+    override val targetName: String
+        get() = ""
 }
