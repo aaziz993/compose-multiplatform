@@ -1,6 +1,5 @@
 package plugin.project.kotlin.model
 
-import gradle.allSameType
 import gradle.id
 import gradle.kotlin
 import gradle.libs
@@ -40,8 +39,8 @@ internal data class KotlinSettings(
     val cocoapods: CocoapodsSettings = CocoapodsSettings(),
 ) : KotlinMultiplatformExtension {
 
-    val needKmp: Boolean by lazy {
-        targets != null && (targets.any(KotlinTarget::needKmp) || !targets.allSameType())
+    val enableKMP: Boolean by lazy {
+        targets?.any { target -> target::class != targets.first()::class } == true
     }
 
     context(Project)

@@ -50,8 +50,7 @@ internal data class ProductFlavorImpl(
     override val matchingFallbacks: List<String>? = null,
     override val consumerProguardFiles: List<String>? = null,
     override val aarMetadata: AarMetadata? = null
-) :
-    ApplicationProductFlavor,
+) : ApplicationProductFlavor,
     DynamicFeatureProductFlavor,
     LibraryProductFlavor,
     TestProductFlavor {

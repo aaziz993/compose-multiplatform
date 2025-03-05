@@ -16,6 +16,7 @@ import gradle.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.SourceSet
+import org.gradle.internal.extensions.stdlib.capitalized
 import org.gradle.kotlin.dsl.dependencies
 import plugin.model.dependency.Dependency
 import plugin.project.kotlin.kmp.model.jvm.android.KotlinAndroidTarget
@@ -37,17 +38,26 @@ internal class AndroidPlugin : Plugin<Project> {
                 else -> plugins.apply(settings.libs.plugins.plugin("androidLibrary").id)
             }
 
-//            configureBaseExtension()
+//            projectProperties.android?.applyTo()
 
-            if (!projectProperties.kotlin.needKmp) {
+            if (!projectProperties.kotlin.enableKMP) {
                 projectProperties.kotlin
                     .sourceSets<KotlinAndroidTarget>()
                     ?.forEach { sourceSet ->
+                        val compilationName = if (
+                            sourceSet.name == SourceSet.TEST_SOURCE_SET_NAME ||
+                            sourceSet.name.startsWith("androidTest") ||
+                            sourceSet.name.startsWith("testFixtures")
+                        ) "test"
+                        else ""
                         dependencies {
                             sourceSet.dependencies
-                                ?.filterIsInstance<Dependency>()
                                 ?.forEach { dependency ->
-
+                                    add(
+                                        "$compilationName${dependency.configuration.capitalized()}"
+                                            .decapitalized(),
+                                        dependency.resolve(),
+                                    )
                                 }
                         }
                     }
@@ -58,44 +68,22 @@ internal class AndroidPlugin : Plugin<Project> {
         }
     }
 
-    private fun Project.adjustAndroidSourceSets() {
-        android {
-            buildTypes {
-                create("some") {
-
-                }
-            }
-            flavorDimensions("api", "tr")
-            productFlavors {
-                create("demo") {
-                    dimension = "tr"
-                }
-                create("full") {
-                    dimension = "api"
-                }
-                create("game") {
-                    dimension = "api"
-                }
-            }
-        }
-
-
-
+    private fun Project.adjustAndroidSourceSets() =
         when (projectProperties.layout) {
             ProjectLayout.FLAT -> android.sourceSets.all { sourceSet ->
-                val (srcPrefixPart, resourcesPrefixPart) = when (sourceSet.name) {
-                    SourceSet.MAIN_SOURCE_SET_NAME -> "src" to ""
+                val (srcPrefixPart, resourcesPrefixPart) = when {
+                    sourceSet.name == SourceSet.MAIN_SOURCE_SET_NAME -> "src" to ""
 
-                    SourceSet.TEST_SOURCE_SET_NAME -> "${SourceSet.TEST_SOURCE_SET_NAME}${
+                    sourceSet.name.startsWith(SourceSet.TEST_SOURCE_SET_NAME) -> "${SourceSet.TEST_SOURCE_SET_NAME}${
                         sourceSet.name.removePrefix(SourceSet.TEST_SOURCE_SET_NAME).prefixIfNotEmpty("+")
                     }".let { it to it }
 
-                    "androidTest" -> "androidTest${
+                    sourceSet.name.startsWith("androidTest") -> "androidTest${
                         sourceSet.name.removePrefix("androidTest").prefixIfNotEmpty("+")
                     }".let { it to it }
 
-                    "textFixtures" -> "textFixtures${
-                        sourceSet.name.removePrefix("textFixtures").prefixIfNotEmpty("+")
+                    sourceSet.name.startsWith("testFixtures") -> "testFixtures${
+                        sourceSet.name.removePrefix("testFixtures").prefixIfNotEmpty("+")
                     }".let { it to it }
 
                     else -> sourceSet.name.let { it to it }
@@ -111,12 +99,10 @@ internal class AndroidPlugin : Plugin<Project> {
                 sourceSet.jniLibs.replace("src/${sourceSet.name}/jniLibs", "${resourcesPrefixPart}JniLibs@android".decapitalized())
                 sourceSet.resources.replace("src/${sourceSet.name}/resources", "${resourcesPrefixPart}Resources@android".decapitalized())
                 sourceSet.shaders.replace("src/${sourceSet.name}/shaders", "${resourcesPrefixPart}Shaders@android".decapitalized())
-
             }
 
             else -> Unit
         }
-    }
 
     private fun Project.applyGoogleServicesPlugin() {
         if (file("google-services.json").exists()) {

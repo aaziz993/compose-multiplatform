@@ -15,9 +15,6 @@ import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
 internal abstract class KotlinJvmAndAndroidTarget :
     KotlinTarget, HasConfigurableKotlinCompilerOptions<KotlinJvmCompilerOptions> {
 
-    override val needKmp: Boolean
-        get() = false
-
     context(Project)
     override fun applyTo(named: Named) {
         super<KotlinTarget>.applyTo(named)

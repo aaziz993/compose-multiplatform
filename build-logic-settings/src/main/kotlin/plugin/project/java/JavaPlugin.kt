@@ -1,6 +1,7 @@
 package plugin.project.java
 
 import gradle.all
+import gradle.decapitalized
 import gradle.java
 import gradle.projectProperties
 import gradle.replace
@@ -11,7 +12,6 @@ import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.tasks.SourceSet
 import org.gradle.internal.extensions.stdlib.capitalized
 import org.gradle.kotlin.dsl.dependencies
-import plugin.model.dependency.Dependency
 import plugin.project.kotlin.kmp.model.jvm.android.KotlinAndroidTarget
 import plugin.project.kotlin.kmp.model.jvm.KotlinJvmTarget
 import plugin.project.kotlin.model.sourceSets
@@ -47,7 +47,7 @@ internal class JavaPlugin : Plugin<Project> {
                 projectProperties.application?.applyTo()
             }
 
-            if (!projectProperties.kotlin.needKmp) {
+            if (!projectProperties.kotlin.enableKMP) {
                 projectProperties.dependencies<KotlinJvmTarget>().let { dependencies ->
                     dependencies {
 //                        dependencies.filterIsInstance<Dependency>().forEach { dependency ->
@@ -61,10 +61,17 @@ internal class JavaPlugin : Plugin<Project> {
                 }
 
                 projectProperties.kotlin.sourceSets<KotlinJvmTarget>()?.forEach { sourceSet ->
-                    sourceSet.dependencies?.let {  dependencies ->
+                    val compilationPrefix =
+                        if (sourceSet.name.endsWith(SourceSet.TEST_SOURCE_SET_NAME, true)) "test" else ""
+
+                    sourceSet.dependencies?.let { dependencies ->
                         dependencies {
                             dependencies.forEach { dependency ->
-                                dependency.configuration
+                                add(
+                                    "$compilationPrefix${dependency.configuration.capitalized()}"
+                                        .decapitalized(),
+                                    dependency.resolve(),
+                                )
                             }
                         }
                     }
@@ -76,7 +83,7 @@ internal class JavaPlugin : Plugin<Project> {
     }
 
     private fun Project.adjustSourceSets() {
-        val isMultiplatform = projectProperties.kotlin.needKmp
+        val isMultiplatform = projectProperties.kotlin.enableKMP
 
         when (projectProperties.layout) {
             ProjectLayout.FLAT -> {
