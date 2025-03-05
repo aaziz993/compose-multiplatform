@@ -4,8 +4,8 @@ import gradle.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
-import plugin.model.dependency.ProjectDependency
-import plugin.model.dependency.ProjectDependencyTransformingSerializer
+import plugin.model.dependency.Dependency
+import plugin.model.dependency.DependencyTransformingSerializer
 import plugin.project.kotlin.model.KotlinCompilationTransformingSerializer
 
 @Serializable
@@ -14,7 +14,7 @@ internal data class KotlinJsIrCompilation(
     override val compileDependencyFiles: List<String>? = null,
     override val output: plugin.project.kotlin.model.KotlinCompilationOutput? = null,
     override val associatedCompilations: Set<String>? = null,
-    override val dependencies: List<@Serializable(with = ProjectDependencyTransformingSerializer::class) ProjectDependency>? = null,
+    override val dependencies: List<@Serializable(with = DependencyTransformingSerializer::class) Dependency>? = null,
     override val binaries: KotlinJsBinaryContainer = KotlinJsBinaryContainer(),
     override val outputModuleName: String? = null,
     override val packageJson: PackageJson? = null,

@@ -1,18 +1,11 @@
 package plugin.project.kotlin.kmp.model.jvm
 
-import gradle.containerize
-import gradle.serialization.serializer.KeyTransformingSerializer
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
-import org.gradle.api.NamedDomainObjectCollection
-import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
-import org.gradle.api.Task
 import org.gradle.kotlin.dsl.invoke
-import org.gradle.kotlin.dsl.withType
-import plugin.model.dependency.ProjectDependency
-import plugin.model.dependency.ProjectDependencyTransformingSerializer
+import plugin.model.dependency.Dependency
+import plugin.model.dependency.DependencyTransformingSerializer
 import plugin.project.java.model.JavaCompile
 import plugin.project.kotlin.kmp.model.KotlinSourceSet
 import plugin.project.kotlin.model.KotlinCompilation
@@ -27,7 +20,7 @@ internal data class KotlinJvmAndroidCompilation(
     override val compileDependencyFiles: List<String>? = null,
     override val output: KotlinCompilationOutput? = null,
     override val associatedCompilations: Set<String>? = null,
-    override val dependencies: List<@Serializable(with = ProjectDependencyTransformingSerializer::class) ProjectDependency>? = null,
+    override val dependencies: List<@Serializable(with = DependencyTransformingSerializer::class) Dependency>? = null,
     val compileTaskProvider: KotlinCompilationTask<KotlinJvmCompilerOptions>? = null,
     val compileJavaTaskProvider: JavaCompile? = null,
 ) : KotlinCompilation {

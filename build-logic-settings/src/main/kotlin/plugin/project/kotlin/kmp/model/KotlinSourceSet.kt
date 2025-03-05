@@ -5,8 +5,7 @@ import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import plugin.model.dependency.Dependency
-import plugin.model.dependency.ProjectDependency
-import plugin.model.dependency.ProjectDependencyTransformingSerializer
+import plugin.model.dependency.DependencyTransformingSerializer
 import plugin.project.kotlin.model.HasKotlinDependencies
 import plugin.project.kotlin.model.LanguageSettingsBuilder
 import plugin.project.gradle.model.Named
@@ -29,7 +28,7 @@ import plugin.project.gradle.model.Named
 @Serializable
 internal data class KotlinSourceSet(
     override val name: String = "",
-    override val dependencies: List<@Serializable(with = ProjectDependencyTransformingSerializer::class) ProjectDependency>? = null,
+    override val dependencies: List<@Serializable(with = DependencyTransformingSerializer::class) Dependency>? = null,
     /**
      * Provides the DSL to configure a subset of Kotlin compilation language settings for this [KotlinSourceSet].
      *

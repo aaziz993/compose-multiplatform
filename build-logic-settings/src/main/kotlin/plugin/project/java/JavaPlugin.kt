@@ -64,7 +64,6 @@ internal class JavaPlugin : Plugin<Project> {
                     sourceSet.dependencies?.let {  dependencies ->
                         dependencies {
                             dependencies.forEach { dependency ->
-                                dependency as Dependency
                                 dependency.configuration
                             }
                         }

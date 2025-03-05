@@ -3,8 +3,8 @@ package plugin.project.kotlin.kmp.model.nat
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
-import plugin.model.dependency.ProjectDependency
-import plugin.model.dependency.ProjectDependencyTransformingSerializer
+import plugin.model.dependency.Dependency
+import plugin.model.dependency.DependencyTransformingSerializer
 import plugin.project.kotlin.model.KotlinCompilation
 import plugin.project.kotlin.model.KotlinCompilationTransformingSerializer
 
@@ -15,7 +15,7 @@ internal data class KotlinNativeCompilation(
     override val compileDependencyFiles: List<String>? = null,
     override val output: plugin.project.kotlin.model.KotlinCompilationOutput? = null,
     override val associatedCompilations: Set<String>? = null,
-    override val dependencies: List<@Serializable(with = ProjectDependencyTransformingSerializer::class) ProjectDependency>? = null,
+    override val dependencies: List<@Serializable(with = DependencyTransformingSerializer::class) Dependency>? = null,
     // Interop DSL.
 
     val cinterops: List<DefaultCInteropSettings>? = null

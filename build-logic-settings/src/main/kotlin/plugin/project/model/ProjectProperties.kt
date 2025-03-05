@@ -7,6 +7,7 @@ import gradle.isUrl
 import gradle.libs
 import gradle.projectProperties
 import gradle.settings
+import gradle.toVersionCatalogUrlPath
 import gradle.trySetSystemProperty
 import gradle.version
 import gradle.versions
@@ -28,9 +29,7 @@ import org.jetbrains.compose.internal.utils.currentTarget
 import org.jetbrains.compose.jetbrainsCompose
 import org.tomlj.Toml
 import plugin.model.dependency.Dependency
-import plugin.model.dependency.ProjectDependency
-import plugin.model.dependency.ProjectDependencyTransformingSerializer
-import plugin.model.dependency.toVersionCatalogUrlPath
+import plugin.model.dependency.DependencyTransformingSerializer
 import plugin.project.android.AndroidPlugin
 import plugin.project.android.model.AndroidSettings
 import plugin.project.apple.ApplePlugin
@@ -86,7 +85,7 @@ private const val COMPOSE_VERSION_CATALOG_FILE = "build-logic-settings/gradle/co
 internal data class ProjectProperties(
     val pluginManagement: PluginManagement? = null,
     val dependencyResolutionManagement: DependencyResolutionManagement? = null,
-    override val dependencies: List<@Serializable(with = ProjectDependencyTransformingSerializer::class) ProjectDependency>? = null,
+    override val dependencies: List<@Serializable(with = DependencyTransformingSerializer::class) Dependency>? = null,
     val includes: List<String>? = null,
     val projects: List<ProjectDescriptor>? = null,
     val gradleEnterpriseAccessKey: String? = null,

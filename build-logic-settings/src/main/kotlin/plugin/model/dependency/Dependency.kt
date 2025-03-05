@@ -7,14 +7,12 @@ import gradle.isUrl
 import gradle.resolve
 import gradle.settings
 import java.io.File
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.JsonTransformingSerializer
 import kotlinx.serialization.json.jsonObject
-import kotlinx.serialization.json.jsonPrimitive
 import org.gradle.api.Project
 import org.gradle.api.file.Directory
 import org.gradle.api.file.FileCollection
@@ -23,66 +21,15 @@ import org.gradle.api.internal.tasks.JvmConstants
 import org.gradle.kotlin.dsl.DependencyHandlerScope
 import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
 import org.tomlj.TomlParseResult
-import plugin.project.kotlin.cocoapods.model.CocoapodsExtension
-import plugin.project.kotlin.cocoapods.model.CocoapodsExtension.CocoapodsDependency.PodLocation
 
 private val SUB_CONFIGURATIONS = listOf("npm", "devNpm", "optionalNpm", "peerNpm")
 
 @Serializable
-internal sealed class ProjectDependency {
-
-    abstract val notation: String
-}
-
-internal object ProjectDependencyTransformingSerializer :
-    JsonTransformingSerializer<ProjectDependency>(ProjectDependency.serializer()) {
-
-    override fun transformDeserialize(element: JsonElement): JsonElement =
-        if (element is JsonObject) {
-            val key = element.keys.single()
-            val value = element.values.single()
-
-            when {
-                key == "pod" -> JsonObject(
-                    buildMap {
-                        put("type", JsonPrimitive(key))
-                        if (value is JsonObject) putAll(value.jsonObject) else put("notation", value)
-                    },
-                )
-
-                else -> JsonObject(
-                    buildMap {
-                        put("type", JsonPrimitive("dependency"))
-                        key.takeIf { it !in SUB_CONFIGURATIONS }?.let { put("configuration", JsonPrimitive(it)) }
-                        key.takeIf { it in SUB_CONFIGURATIONS }?.let { put("subConfiguration", JsonPrimitive(it)) }
-                        if (value is JsonObject) putAll(value.jsonObject) else put("notation", value)
-                    },
-                )
-            }
-        }
-        else JsonObject(
-            mapOf(
-                "type" to JsonPrimitive("dependency"),
-                "notation" to element,
-            ),
-        )
-
-    override fun transformSerialize(element: JsonElement): JsonElement =
-        JsonObject(
-            mapOf(
-                element.jsonObject["type"]!!.jsonPrimitive.content
-                    to JsonObject(element.jsonObject.filterKeys { key -> key != "type" }),
-            ),
-        )
-}
-
-@Serializable
-@SerialName("dependency")
 internal data class Dependency(
-    override val notation: String,
+    val notation: String,
     val configuration: String = "implementation",
     val subConfiguration: String? = null
-) : ProjectDependency() {
+) {
 
     context(Settings)
     fun resolve(): Any = resolve(
@@ -107,7 +54,8 @@ internal data class Dependency(
     fun applyTo(handler: DependencyHandlerScope) =
         if (configurations.findByName(configuration) != null) {
             handler.add(configuration, resolve())
-        } else {
+        }
+        else {
             logger.warn("Configuration doesn't exists: $configuration")
         }
 
@@ -182,46 +130,27 @@ internal data class Dependency(
     }
 }
 
-@Serializable
-@SerialName("pod")
-internal data class PodDependency(
-    override val notation: String,
-    val moduleName: String? = null,
-    val headers: String? = null,
-    val source: PodLocation? = null,
-    val extraOpts: List<String>? = null,
-    val packageName: String? = null,
-    val linkOnly: Boolean? = null,
-    val interopBindingDependencies: List<String>? = null,
-    val podspecDirectory: String? = null,
-) : ProjectDependency() {
+internal object DependencyTransformingSerializer :
+    JsonTransformingSerializer<Dependency>(Dependency.serializer()) {
 
-    context(Project)
-    fun toCocoapodsDependency(): CocoapodsExtension.CocoapodsDependency {
-        val cocoapodsNotation = (if (notation.startsWith("$"))
-            settings.allLibs.resolve(notation)
-        else notation).removePrefix("cocoapods:")
+    override fun transformDeserialize(element: JsonElement): JsonElement =
+        if (element is JsonObject) {
+            val key = element.keys.single()
+            val value = element.values.single()
 
-        return CocoapodsExtension.CocoapodsDependency(
-            cocoapodsNotation.substringBefore(":"),
-            moduleName,
-            headers,
-            cocoapodsNotation.substringAfter(":", "").ifEmpty { null },
-            source,
-            extraOpts,
-            packageName,
-            linkOnly,
-            interopBindingDependencies,
-            podspecDirectory,
+            JsonObject(
+                buildMap {
+                    key.takeIf { it !in SUB_CONFIGURATIONS }?.let { put("configuration", JsonPrimitive(it)) }
+                    key.takeIf { it in SUB_CONFIGURATIONS }?.let { put("subConfiguration", JsonPrimitive(it)) }
+                    if (value is JsonObject) putAll(value.jsonObject) else put("notation", value)
+                },
+            )
+        }
+        else JsonObject(
+            mapOf(
+                "notation" to element,
+            ),
         )
-    }
-}
-
-internal fun String.toVersionCatalogUrlPath(): String {
-    val fileNamePart = substringAfter(":").replace(":", "-")
-    return "${substringBeforeLast(":").replace("[.:]".toRegex(), "/")}/${
-        substringAfterLast(":")
-    }/$fileNamePart.toml"
 }
 
 

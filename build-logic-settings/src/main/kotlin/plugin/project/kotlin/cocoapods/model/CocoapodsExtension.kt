@@ -1,19 +1,24 @@
 package plugin.project.kotlin.cocoapods.model
 
+import gradle.allLibs
 import gradle.cocoapods
 import gradle.kotlin
 import gradle.moduleName
 import gradle.projectProperties
+import gradle.resolve
+import gradle.settings
 import gradle.trySet
 import java.net.URI
+import kotlin.text.removePrefix
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonContentPolymorphicSerializer
 import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonTransformingSerializer
 import kotlinx.serialization.json.jsonObject
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.cocoapods.CocoapodsExtension
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
-import plugin.model.dependency.PodDependency
 import plugin.project.kotlin.kmp.model.nat.Framework
 
 internal interface CocoapodsExtension {
@@ -101,7 +106,7 @@ internal interface CocoapodsExtension {
      */
     val pods: List<Pod>?
 
-    val podDependencies: List<CocoapodsDependency>?
+    val podDependencies: List<@Serializable(with = CocoapodsDependencyTransformingSerializer::class) CocoapodsDependency>?
 
     context(Project)
     fun applyTo() {
@@ -109,7 +114,6 @@ internal interface CocoapodsExtension {
         kotlin.cocoapods::authors trySet authors
         kotlin.cocoapods::podfile trySet podfile?.let(::file)
         needPodspec?.takeIf { it }?.run { kotlin.cocoapods.noPodspec() }
-
         kotlin.cocoapods.name = name ?: moduleName
         kotlin.cocoapods::license trySet license
         kotlin.cocoapods::summary trySet summary
@@ -145,19 +149,11 @@ internal interface CocoapodsExtension {
 
 
         podDependencies?.forEach { podDependency ->
-            kotlin.cocoapods.pod(podDependency.name) {
+            podDependency.resolve()
+            kotlin.cocoapods.pod(podDependency.name!!) {
                 podDependency.applyTo(this)
             }
         }
-
-        projectProperties.dependencies
-            ?.filterIsInstance<PodDependency>()
-            ?.map { it.toCocoapodsDependency() }
-            ?.forEach { podDependency ->
-                kotlin.cocoapods.pod(podDependency.name) {
-                    podDependency.applyTo(this)
-                }
-            }
 
         ios?.applyTo(kotlin.cocoapods.ios)
         osx?.applyTo(kotlin.cocoapods.osx)
@@ -167,10 +163,10 @@ internal interface CocoapodsExtension {
 
     @Serializable
     data class CocoapodsDependency(
-        val name: String,
+        var name: String? = null,
         val moduleName: String? = null,
         val headers: String? = null,
-        val version: String? = null,
+        var version: String? = null,
         val source: PodLocation? = null,
         val extraOpts: List<String>? = null,
         val packageName: String? = null,
@@ -192,7 +188,19 @@ internal interface CocoapodsExtension {
          * Path to local pod
          */
         val podspecDirectory: String? = null,
+        val notation: String? = null,
     ) {
+
+        context(Project)
+        fun tryResolve() {
+            notation?.let { notation ->
+                if (notation.startsWith("$")) settings.allLibs.resolve(notation).removePrefix("cocoapods:")
+                else notation
+            }?.let { notation ->
+                name = notation.substringBefore(":")
+                version = notation.substringAfter(":", "").ifEmpty { null }
+            }
+        }
 
         context(Project)
         fun applyTo(dependency: CocoapodsExtension.CocoapodsDependency) {
@@ -250,7 +258,19 @@ internal interface CocoapodsExtension {
         }
     }
 
-    //
+    object CocoapodsDependencyTransformingSerializer : JsonTransformingSerializer<CocoapodsDependency>(
+        CocoapodsDependency.serializer(),
+    ) {
+
+        override fun transformDeserialize(element: JsonElement): JsonElement =
+            element as? JsonObject
+                ?: JsonObject(
+                    mapOf(
+                        "notation" to element,
+                    ),
+                )
+    }
+
     @Serializable
     data class PodspecPlatformSettings(
         val deploymentTarget: String? = null

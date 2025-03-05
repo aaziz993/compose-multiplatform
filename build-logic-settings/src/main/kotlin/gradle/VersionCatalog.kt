@@ -73,3 +73,10 @@ internal fun Map<String, TomlParseResult>.resolve(notation: String): String {
     return this[catalogName]?.libraryAsDependency(libraryName)
         ?: error("Not found version catalog: $catalogName")
 }
+
+internal fun String.toVersionCatalogUrlPath(): String {
+    val fileNamePart = substringAfter(":").replace(":", "-")
+    return "${substringBeforeLast(":").replace("[.:]".toRegex(), "/")}/${
+        substringAfterLast(":")
+    }/$fileNamePart.toml"
+}
