@@ -254,7 +254,7 @@ internal data class ProjectProperties(
         project.plugins.apply(WasmWasiPlugin::class.java)
         project.plugins.apply(ComposePlugin::class.java)
 
-        dependencies?.filterIsInstance<Dependency>()?.forEach { dependency ->
+        dependencies?.forEach { dependency ->
             dependencies {
                 dependency.applyTo(this)
             }
@@ -321,7 +321,7 @@ internal data class ProjectProperties(
     }
 }
 
-internal inline fun <reified T : KotlinTarget> ProjectProperties.dependencies():List<Dependency>? {
+internal inline fun <reified T : KotlinTarget> ProjectProperties.dependencies(): List<Dependency>? {
 //    val targets = kotlin.targets?.filterIsInstance<T>() ?: return null
 //
 //    dependencies?.filterIsInstance<Dependency>()?.mapNotNull { dependency ->
