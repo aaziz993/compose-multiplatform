@@ -62,8 +62,6 @@ internal interface BaseExtension {
     val generatePureSplits: Boolean?
 
     // Kept for binary and source compatibility until the old DSL interfaces can go away.
-    val flavorDimensionList: MutableList<String>?
-
     val resourcePrefix: String?
 
     val ndkVersion: String?
@@ -157,7 +155,7 @@ internal interface BaseExtension {
         }
 
         extension::generatePureSplits trySet generatePureSplits
-        flavorDimensionList?.let(extension.flavorDimensionList::addAll)
+        flavorDimensions?.let(extension.flavorDimensionList::addAll)
         resourcePrefix?.let(extension::resourcePrefix)
         extension::ndkVersion trySet ndkVersion
         extension::ndkPath trySet ndkPath

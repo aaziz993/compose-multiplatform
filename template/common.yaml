@@ -251,15 +251,24 @@ application:
     - -Dio.ktor.development=true
 
 android:
+  compileOptions:
+    isCoreLibraryDesugaringEnabled: true
+  lintOptions:
+    checkReleaseBuilds: false
+    abortOnError: false
+  buildTypes:
+    - release:
+        isMinifyEnabled: true
+        debuggable: false
+    - debug:
+        isMinifyEnabled: false
+        debuggable: true
   defaultConfig:
     testInstrumentationRunner: androidx.test.runner.AndroidJUnitRunner
-
     manifestPlaceholders:
       appAuthRedirectScheme: "empty"
-
     vectorDrawables:
       useSupportLibrary: true
-
     # List additional ProGuard rules for the given build type here. By default,
     # Android Studio creates and includes an empty rules file for you (located
     # at the root directory of each module).
@@ -268,37 +277,18 @@ android:
     # test APK only.
     testProguardFiles: [ test-proguard-rules.pro ]
     consumerProguardFiles: [ consumer-proguard.pro ]
-
-  buildTypes:
-    - release:
-        isMinifyEnabled: true
-        debuggable: false
-    - debug:
-        isMinifyEnabled: false
-        debuggable: true
-
   flavourDimensions: [ api, mode ]
-
   productFlavours:
     - demo:
         dimension: mode
     - full:
         dimension: mode
-
   packagingOptions:
     resources:
       excludes: /META-INF/{AL2.0,LGPL2.1
-
   buildFeatures:
     buildConfig: true
     viewBinding: true
-
-  lintOptions:
-    checkReleaseBuilds: false
-    abortOnError: false
-
-  compileOptions:
-    isCoreLibraryDesugaringEnabled: true
 
 dependencies:
   - kspCommonMainMetadata: $libs.arrow.optics.ksp.plugin
