@@ -13,6 +13,7 @@ plugins:
           licenseHeader:
             headerFile: ../LICENSE_HEADER.java
             delimiter: '(package|import|public|class|module) '
+          targetExclude: [ ../LICENSE_HEADER.java ]
           importOrder: { }
           removeIfUnusedImports: true
           googleJavaFormat:
@@ -33,6 +34,7 @@ plugins:
             headerFile: ../LICENSE_HEADER.kt
             delimiter: (package |@file|import )
           targets: [ '**/*.kt','**/*.kts' ]
+          targetExclude: [ ../LICENSE_HEADER.kt ]
           importOrder: { }
           removeIfUnusedImports: true
           toggleIfOffOn: true
@@ -45,6 +47,7 @@ plugins:
           licenseHeader:
             headerFile: ../LICENSE_HEADER.kt
             delimiter: (package |@file|import )
+          targetExclude: [ ../LICENSE_HEADER.kt ]
           importOrder: { }
           removeIfUnusedImports: true
           toggleIfOffOn: true
@@ -52,84 +55,94 @@ plugins:
           trimTrailingWhitespace: true
           endWithNewline: true
           licenseHeader:
-            headerFile: LICENSE_HEADER.js
+            headerFile: ../LICENSE_HEADER.js
             delimiter: ^
           target: [ '**/*.js' ]
+          targetExclude: [ ../LICENSE_HEADER.js ]
           toggleIfOffOn: true
       - typescript:
           trimTrailingWhitespace: true
           endWithNewline: true
           licenseHeader:
-            headerFile: LICENSE_HEADER.ts
+            headerFile: ../LICENSE_HEADER.ts
             delimiter: ^
           target: [ '**/*.ts' ]
+          targetExclude: [ ../LICENSE_HEADER.ts ]
           toggleIfOffOn: true
       - json:
           trimTrailingWhitespace: true
           endWithNewline: true
           target: [ '**/*.json' ]
+          targetExclude: [ ../LICENSE_HEADER.json ]
           toggleIfOffOn: true
       - yaml:
           trimTrailingWhitespace: true
           endWithNewline: true
           licenseHeader:
-            headerFile: LICENSE_HEADER.yaml
+            headerFile: ../LICENSE_HEADER.yaml
             delimiter: ^
           target: [ '**/*.yaml', '**/*.yml' ]
+          targetExclude: [ ../LICENSE_HEADER.yaml ]
           toggleIfOffOn: true
       - format:
           name: xml
           trimTrailingWhitespace: true
           endWithNewline: true
           licenseHeader:
-            headerFile: LICENSE_HEADER.xml
+            headerFile: ../LICENSE_HEADER.xml
             delimiter: <(\?xml)?
           target: [ '**/*.xml' ]
+          targetExclude: [ ../LICENSE_HEADER.xml ]
           toggleIfOffOn: true
       - format:
           name: properties
           trimTrailingWhitespace: true
           endWithNewline: true
           licenseHeader:
-            headerFile: LICENSE_HEADER.properties
+            headerFile: ../LICENSE_HEADER.properties
             delimiter: ^
           target: [ '**/*.properties' ]
+          targetExclude: [ ../LICENSE_HEADER.properties ]
           toggleIfOffOn: true
       - format:
           name: html
           trimTrailingWhitespace: true
           endWithNewline: true
           licenseHeader:
-            headerFile: LICENSE_HEADER.html
+            headerFile: ../LICENSE_HEADER.html
             delimiter: <(!DOCTYPE |html )
           target: [ '**/*.html' ]
+          targetExclude: [ ../LICENSE_HEADER.html ]
           toggleIfOffOn: true
       - format:
           name: md
           trimTrailingWhitespace: true
           endWithNewline: true
           licenseHeader:
-            headerFile: LICENSE_HEADER.md
+            headerFile: ../LICENSE_HEADER.md
             delimiter: ^
           target: [ '**/*.md' ]
+          targetExclude: [ ../LICENSE_HEADER.md ]
           toggleIfOffOn: true
       - format:
           name: gitignore
           trimTrailingWhitespace: true
           endWithNewline: true
           licenseHeader:
-            headerFile: LICENSE_HEADER.gitignore
+            headerFile: ../LICENSE_HEADER.gitignore
             delimiter: ^
-          target: [ '**/*.gitignore' ]
+          target: [ '**/.gitignore' ]
+          targetExclude: [ ../LICENSE_HEADER.gitignore ]
           toggleIfOffOn: true
       - format:
           name: gitattributes
           trimTrailingWhitespace: true
           endWithNewline: true
           licenseHeader:
-            headerFile: LICENSE_HEADER.gitattributes
+            headerFile: ../LICENSE_HEADER.gitattributes
             delimiter: ^
-          target: [ '**/*.gitattributes' ]
+          target: [ '**/.gitattributes' ]
+          targetExclude: [ ../LICENSE_HEADER.gitattributes ]
           toggleIfOffOn: true
 
   # Set of solutions for collecting test coverage of Kotlin code compiled for JVM and Android platforms.
