@@ -11,7 +11,7 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.buildscript
 import org.jetbrains.dokka.gradle.engine.plugins.DokkaHtmlPluginParameters
 import org.jetbrains.dokka.gradle.engine.plugins.DokkaVersioningPluginParameters
-import plugin.project.gradle.model.Named
+import gradle.model.Named
 
 /**
  * Base class for defining Dokka Plugin configuration.

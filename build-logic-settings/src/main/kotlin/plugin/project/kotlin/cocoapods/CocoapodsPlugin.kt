@@ -8,7 +8,7 @@ import gradle.projectProperties
 import gradle.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import plugin.project.kmp.model.nat.apple.KotlinAppleTarget
+import gradle.model.kmp.nat.apple.KotlinAppleTarget
 
 internal class CocoapodsPlugin : Plugin<Project> {
 

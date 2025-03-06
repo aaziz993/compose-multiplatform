@@ -9,8 +9,8 @@ import gradle.projectProperties
 import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings
 import org.gradle.kotlin.dsl.develocity
-import plugin.project.gradle.model.DirectoryBuildCache
-import plugin.project.gradle.model.RemoteBuildCache
+import gradle.model.DirectoryBuildCache
+import gradle.model.RemoteBuildCache
 import plugin.project.model.EnabledSettings
 
 @Serializable

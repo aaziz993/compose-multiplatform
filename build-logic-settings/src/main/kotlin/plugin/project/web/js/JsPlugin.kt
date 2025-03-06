@@ -13,7 +13,7 @@ import kotlinx.serialization.json.Json
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
-import plugin.project.kmp.model.web.KotlinJsTarget
+import gradle.model.kmp.web.KotlinJsTarget
 import plugin.project.web.configureJsTestTasks
 
 internal class JsPlugin : Plugin<Project> {

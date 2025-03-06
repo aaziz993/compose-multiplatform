@@ -4,7 +4,7 @@ import gradle.projectProperties
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinWasmWasiTargetDsl
-import plugin.project.kmp.model.web.KotlinWasmWasiTarget
+import gradle.model.kmp.web.KotlinWasmWasiTarget
 
 internal class WasmWasiPlugin : Plugin<Project> {
 

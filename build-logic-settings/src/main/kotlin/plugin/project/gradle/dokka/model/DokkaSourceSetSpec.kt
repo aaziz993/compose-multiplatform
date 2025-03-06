@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.dokka.gradle.engine.parameters.KotlinPlatform
 import org.jetbrains.dokka.gradle.engine.parameters.VisibilityModifier
-import plugin.project.gradle.model.Named
+import gradle.model.Named
 
 /**
  * A [DokkaSourceSetSpec] controls how Dokka will view and rendered sources.

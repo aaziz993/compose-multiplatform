@@ -2,14 +2,14 @@ package plugin.project.compose.model
 
 import gradle.id
 import gradle.libs
+import gradle.model.cmp.android.model.AndroidExtension
 import gradle.plugin
 import gradle.plugins
 import gradle.settings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import plugin.project.compose.android.model.AndroidExtension
-import plugin.project.compose.desktop.model.DesktopExtension
-import plugin.project.compose.resources.model.ResourcesExtension
+import gradle.model.cmp.desktop.model.DesktopExtension
+import gradle.model.cmp.resources.model.ResourcesExtension
 import plugin.project.model.EnabledSettings
 
 @Serializable

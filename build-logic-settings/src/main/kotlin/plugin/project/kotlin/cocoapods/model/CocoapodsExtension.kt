@@ -18,7 +18,7 @@ import kotlinx.serialization.json.jsonObject
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.cocoapods.CocoapodsExtension
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
-import plugin.project.kmp.model.nat.Framework
+import gradle.model.kmp.nat.Framework
 
 internal interface CocoapodsExtension {
 

@@ -12,9 +12,9 @@ import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.tasks.SourceSet
 import org.gradle.internal.extensions.stdlib.capitalized
 import org.gradle.kotlin.dsl.dependencies
-import plugin.project.kmp.model.jvm.KotlinJvmTarget
-import plugin.project.kmp.model.jvm.android.KotlinAndroidTarget
-import plugin.project.kotlin.model.sourceSets
+import gradle.model.kmp.jvm.KotlinJvmTarget
+import gradle.model.kmp.jvm.android.KotlinAndroidTarget
+import gradle.model.kotlin.sourceSets
 import plugin.project.model.ProjectLayout
 import plugin.project.model.ProjectType
 
