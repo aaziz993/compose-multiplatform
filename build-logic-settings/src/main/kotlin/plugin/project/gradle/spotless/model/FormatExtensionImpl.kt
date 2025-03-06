@@ -1,10 +1,10 @@
-@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
-
 package plugin.project.gradle.spotless.model
 
 import com.diffplug.spotless.LineEnding
 import gradle.projectProperties
 import gradle.spotless
+import kotlin.reflect.full.declaredMemberProperties
+import kotlin.reflect.jvm.isAccessible
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -43,11 +43,16 @@ internal data class FormatExtensionImpl(
 ) : FormatExtension {
 
     context(Project)
+    @Suppress("UNCHECKED_CAST")
     override fun applyTo() = if (name.isEmpty()) {
-//        projectProperties.plugins.spotless.formats?.filter()
-        spotless.formats.values.forEach { format ->
-            applyTo(format)
-        }
+        spotless::class.declaredMemberProperties
+            .single { property -> property.name == "formats" }
+            .let { property ->
+                property.isAccessible = true
+                property.call(spotless) as Map<String, com.diffplug.gradle.spotless.FormatExtension>
+            }.values.forEach { format ->
+                applyTo(format)
+            }
     }
     else spotless.format(name) {
         applyTo(this)
