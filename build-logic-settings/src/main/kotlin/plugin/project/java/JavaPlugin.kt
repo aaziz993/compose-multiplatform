@@ -17,7 +17,6 @@ import plugin.project.kotlin.kmp.model.jvm.android.KotlinAndroidTarget
 import plugin.project.kotlin.model.sourceSets
 import plugin.project.model.ProjectLayout
 import plugin.project.model.ProjectType
-import plugin.project.model.dependencies
 
 internal class JavaPlugin : Plugin<Project> {
 
@@ -57,9 +56,7 @@ internal class JavaPlugin : Plugin<Project> {
                             dependencies.forEach { dependency ->
                                 add(
                                     "$compilationPrefix${dependency.configuration.capitalized()}"
-                                        .decapitalized().also {
-                                            println("ADD JAVA DEP $it: ${dependency.resolve()}")
-                                        },
+                                        .decapitalized(),
                                     dependency.resolve(),
                                 )
                             }
