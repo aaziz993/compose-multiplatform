@@ -49,12 +49,5 @@ internal interface SpotlessExtension {
         formats?.forEach { format ->
             format.applyTo()
         }
-
-        // Additional configuration for Kotlin Gradle scripts
-        kotlinGradle?.let { kotlinGradle ->
-            spotless.kotlinGradle {
-                kotlinGradle.applyTo(this)
-            }
-        }
     }
 }
