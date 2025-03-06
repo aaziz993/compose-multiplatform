@@ -30,7 +30,7 @@ internal interface SpotlessExtension {
     val enforceCheck: Boolean?
     val predeclareDepsFromBuildscript: Boolean?
     val predeclareDeps: Boolean?
-    val formats: List<@Serializable(with = FormatExtensionTransformingSerializer::class) FormatExtension>?
+    val formats: LinkedHashSet<@Serializable(with = FormatExtensionTransformingSerializer::class) FormatExtension>?
 
     context(Project)
     fun applyTo() {

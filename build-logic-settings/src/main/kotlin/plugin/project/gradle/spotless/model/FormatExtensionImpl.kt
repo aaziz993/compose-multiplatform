@@ -44,6 +44,7 @@ internal data class FormatExtensionImpl(
     context(Project)
     @Suppress("UNCHECKED_CAST")
     override fun applyTo() = if (name.isEmpty()) {
+        println("SPOTLESS PROPS: ${spotless::class.declaredMemberProperties.map { it.name }}")
         spotless::class.declaredMemberProperties
             .single { property -> property.name == "formats" }
             .let { property ->
@@ -55,5 +56,40 @@ internal data class FormatExtensionImpl(
     }
     else spotless.format(name) {
         applyTo(this)
+    }
+
+    override fun equals(other: Any?): Boolean =
+        super.equals(other) || (other is FormatExtensionImpl && name == other.name)
+
+    override fun hashCode(): Int {
+        var result = trimTrailingWhitespace?.hashCode() ?: 0
+        result = 31 * result + (endWithNewline?.hashCode() ?: 0)
+        result = 31 * result + (indentWithSpaces ?: 0)
+        result = 31 * result + (indentIfWithSpaces?.hashCode() ?: 0)
+        result = 31 * result + (indentWithTabs ?: 0)
+        result = 31 * result + (indentIfWithTabs?.hashCode() ?: 0)
+        result = 31 * result + (toggleIfOffOn?.hashCode() ?: 0)
+        result = 31 * result + (toggleOffOnDisable?.hashCode() ?: 0)
+        result = 31 * result + name.hashCode()
+        result = 31 * result + (lineEnding?.hashCode() ?: 0)
+        result = 31 * result + (ratchetFrom?.hashCode() ?: 0)
+        result = 31 * result + (excludeSteps?.hashCode() ?: 0)
+        result = 31 * result + (excludePaths?.hashCode() ?: 0)
+        result = 31 * result + (encoding?.hashCode() ?: 0)
+        result = 31 * result + (target?.hashCode() ?: 0)
+        result = 31 * result + (targetExclude?.hashCode() ?: 0)
+        result = 31 * result + (targetExcludeIfContentContains?.hashCode() ?: 0)
+        result = 31 * result + (targetExcludeIfContentContainsRegex?.hashCode() ?: 0)
+        result = 31 * result + (replace?.hashCode() ?: 0)
+        result = 31 * result + (replaceRegex?.hashCode() ?: 0)
+        result = 31 * result + (nativeCmd?.hashCode() ?: 0)
+        result = 31 * result + (licenseHeader?.hashCode() ?: 0)
+        result = 31 * result + (prettier?.hashCode() ?: 0)
+        result = 31 * result + (biome?.hashCode() ?: 0)
+        result = 31 * result + (clangFormat?.hashCode() ?: 0)
+        result = 31 * result + (eclipseWtp?.hashCode() ?: 0)
+        result = 31 * result + (toggleOffOnRegex?.hashCode() ?: 0)
+        result = 31 * result + (toggleOffOn?.hashCode() ?: 0)
+        return result
     }
 }

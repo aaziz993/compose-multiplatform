@@ -15,8 +15,8 @@ import org.gradle.api.Project
 internal interface FormatExtension {
     val lineEnding: LineEnding?
     val ratchetFrom: String?
-    val excludeSteps: MutableSet<String>?
-    val excludePaths: MutableSet<String>?
+    val excludeSteps: Set<String>?
+    val excludePaths: Set<String>?
     val encoding: String?
     val target: List<String>?
     val targetExclude: List<String>?

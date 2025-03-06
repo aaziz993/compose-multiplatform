@@ -18,7 +18,7 @@ internal data class SpotlessSettings(
     override val enforceCheck: Boolean? = null,
     override val predeclareDepsFromBuildscript: Boolean? = null,
     override val predeclareDeps: Boolean? = null,
-    override val formats: List<@Serializable(with = FormatExtensionTransformingSerializer::class) FormatExtension>? = null,
+    override val formats: LinkedHashSet<@Serializable(with = FormatExtensionTransformingSerializer::class) FormatExtension>? = null,
     override val enabled: Boolean = true
 ) : SpotlessExtension, EnabledSettings {
 

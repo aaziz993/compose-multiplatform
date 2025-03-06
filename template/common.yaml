@@ -8,106 +8,158 @@ plugins:
     enabled: true
     formats:
       - java:
+          # specify license header text
           licenseHeader:
             headerFile: ../LICENSE_HEADER.java
             delimiter: '(package|import|public|class|module) '
+          # include source files
+          targets: [ '**/*.java' ]
+          # exclude source files
           targetExclude: [ ../LICENSE_HEADER.java ]
-          importOrder: { }
+          # uses the default importOrder configuration
+          importOrder:
+            importOrder: [ ]
+          # removes any unused imports from any of your Java classes
           removeIfUnusedImports: true
+          # Tells spotless to format according to the Google Style Guide
+          # (https://google.github.io/styleguide/javaguide.html)
           googleJavaFormat:
             groupArtifact: com.google.googlejavaformat:google-java-format
             reflowLongStrings: true
             reorderImports: true
             formatJavadoc: false
+          # fixes formatting of type annotations
           formatAnnotations: { }
+          # cleanthat will refactor your code, but it may break your style: apply it before your formatter
           cleanthat: { }
       - kotlin:
+          # use ktlint with version and custom .editorconfig
           ktlint:
             version: $libs.ktlint
             editorConfigPath: ../.editorconfig
+          # specify license header text
           licenseHeader:
             headerFile: ../LICENSE_HEADER.kt
             delimiter: (package |@file|import )
+          # include source files
           targets: [ '**/*.kt','**/*.kts' ]
+          # exclude source files
           targetExclude: [ ../LICENSE_HEADER.kt ]
-          importOrder: { }
+          # removes any unused imports from any of your Java classes
           removeIfUnusedImports: true
       - kotlinGradle:
+          # use ktlint with version and custom .editorconfig
           ktlint:
             version: $libs.ktlint
             editorConfigPath: ../.editorconfig
+          # specify license header text
           licenseHeader:
             headerFile: ../LICENSE_HEADER.kt
             delimiter: (package |@file|import )
+          # include source files
+          targets: [ '**/*.gradle.kts' ]
+          # exclude source files
           targetExclude: [ ../LICENSE_HEADER.kt ]
-          importOrder: { }
+          # removes any unused imports from any of your Java classes
           removeIfUnusedImports: true
       - javascript:
+          # specify license header text
           licenseHeader:
             headerFile: ../LICENSE_HEADER.js
             delimiter: ^
+          # include source files
           target: [ '**/*.js' ]
+          # exclude source files
           targetExclude: [ ../LICENSE_HEADER.js ]
       - typescript:
+          # specify license header text
           licenseHeader:
             headerFile: ../LICENSE_HEADER.ts
             delimiter: ^
+          # include source files
           target: [ '**/*.ts' ]
+          # exclude source files
           targetExclude: [ ../LICENSE_HEADER.ts ]
       - json:
+          # include source files
           target: [ '**/*.json' ]
+          # exclude source files
           targetExclude: [ ../LICENSE_HEADER.json ]
       - yaml:
+          # specify license header text
           licenseHeader:
             headerFile: ../LICENSE_HEADER.yaml
             delimiter: ^
+          # include source files
           target: [ '**/*.yaml', '**/*.yml' ]
+          # exclude source files
           targetExclude: [ ../LICENSE_HEADER.yaml ]
       - format:
           name: xml
+          # specify license header text
           licenseHeader:
             headerFile: ../LICENSE_HEADER.xml
             delimiter: <(\?xml)?
+          # include source files
           target: [ '**/*.xml' ]
+          # exclude source files
           targetExclude: [ ../LICENSE_HEADER.xml ]
       - format:
           name: properties
+          # specify license header text
           licenseHeader:
             headerFile: ../LICENSE_HEADER.properties
             delimiter: ^
+          # include source files
           target: [ '**/*.properties' ]
+          # exclude source files
           targetExclude: [ ../LICENSE_HEADER.properties ]
       - format:
           name: html
+          # specify license header text
           licenseHeader:
             headerFile: ../LICENSE_HEADER.html
             delimiter: <(!DOCTYPE |html )
+          # include source files
           target: [ '**/*.html' ]
+          # exclude source files
           targetExclude: [ ../LICENSE_HEADER.html ]
       - format:
           name: md
+          # specify license header text
           licenseHeader:
             headerFile: ../LICENSE_HEADER.md
             delimiter: ^
+          # include source files
           target: [ '**/*.md' ]
+          # exclude source files
           targetExclude: [ ../LICENSE_HEADER.md ]
       - format:
           name: gitignore
+          # specify license header text
           licenseHeader:
             headerFile: ../LICENSE_HEADER.gitignore
             delimiter: ^
+          # include source files
           target: [ '**/.gitignore' ]
+          # exclude source files
           targetExclude: [ ../LICENSE_HEADER.gitignore ]
       - format:
           name: gitattributes
+          # specify license header text
           licenseHeader:
             headerFile: ../LICENSE_HEADER.gitattributes
             delimiter: ^
+          # include source files
           target: [ '**/.gitattributes' ]
+          # exclude source files
           targetExclude: [ ../LICENSE_HEADER.gitattributes ]
       - format:
+          # removes any extra whitespace at the end of lines
           trimTrailingWhitespace: true
+          # adds a newline character to the end of files content
           endWithNewline: true
+          # adds the ability to have spotless ignore specific portions of a project. The usage looks like the following
           toggleIfOffOn: true
 
   # Set of solutions for collecting test coverage of Kotlin code compiled for JVM and Android platforms.
