@@ -77,7 +77,7 @@ internal data class KotlinJsTargetDslImpl(
     override val nodejs: KotlinJsNodeDsl? = null,
     override val binaries: KotlinJsBinaryContainer = KotlinJsBinaryContainer(),
     override val compilerOptions: KotlinJsCompilerOptions? = null,
-) : KotlinJsTargetDsl() {
+) : KotlinJsTargetDsl {
 
     override val targetName: String
         get() = ""
