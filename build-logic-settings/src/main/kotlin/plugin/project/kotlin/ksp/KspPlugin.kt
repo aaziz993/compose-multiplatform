@@ -8,10 +8,6 @@ import gradle.projectProperties
 import gradle.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.getValue
-import org.gradle.kotlin.dsl.provideDelegate
-import plugin.model.dependency.Dependency
 
 internal class KspPlugin : Plugin<Project> {
 

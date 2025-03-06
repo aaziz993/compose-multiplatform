@@ -1,6 +1,6 @@
 @file:Suppress("UnstableApiUsage")
 
-package plugin.model.dependency
+package plugin.project.model
 
 import gradle.allLibs
 import gradle.isUrl

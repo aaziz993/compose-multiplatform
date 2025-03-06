@@ -4,8 +4,8 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.invoke
-import plugin.model.dependency.Dependency
-import plugin.model.dependency.DependencyTransformingSerializer
+import plugin.project.model.Dependency
+import plugin.project.model.DependencyTransformingSerializer
 import plugin.project.java.model.JavaCompile
 import plugin.project.kotlin.kmp.model.KotlinSourceSet
 import plugin.project.kotlin.model.KotlinCompilation

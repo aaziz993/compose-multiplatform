@@ -1,15 +1,29 @@
 package plugin.project.kotlin.kmp.model.web
 
+import gradle.serialization.serializer.AnySerializer
 import gradle.tryAssign
 import gradle.trySet
 import kotlinx.serialization.Serializable
+import org.gradle.api.Named
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
-import plugin.project.kotlin.kmp.model.test.KotlinTest
+import plugin.project.kotlin.model.KotlinTest
 
 @Serializable
 internal data class KotlinJsTest(
-    override val targetName: String? = null,
+    override val dependsOn: List<String>? = null,
+    override val onlyIf: Boolean? = null,
+    override val doNotTrackState: String? = null,
+    override val notCompatibleWithConfigurationCache: String? = null,
+    override val didWork: Boolean? = null,
+    override val enabled: Boolean? = null,
+    override val properties: Map<String, @Serializable(with = AnySerializer::class) Any>? = null,
+    override val description: String? = null,
+    override val group: String? = null,
+    override val mustRunAfter: List<String>? = null,
+    override val finalizedBy: List<String>? = null,
+    override val shouldRunAfter: List<String>? = null,
+    override val name: String = "",
     override val ignoreRunFailures: Boolean? = null,
     override val filter: plugin.project.kotlin.kmp.model.test.DefaultTestFilter? = null,
     override val ignoreFailures: Boolean? = null,
@@ -24,21 +38,26 @@ internal data class KotlinJsTest(
 ) : KotlinTest {
 
     context(Project)
-    fun applyTo(test: KotlinJsTest) {
-        super.applyTo(test)
-        environment?.let(test.environment::putAll)
-        test.inputFileProperty tryAssign inputFileProperty?.let(::file)
-        test::debug trySet debug
-        nodeJsArgs?.let(test.nodeJsArgs::addAll)
+    override fun applyTo(named: Named) {
+        super.applyTo(named)
 
-        useMocha?.takeIf { it }?.run { test.useMocha() }
-        if (mocha != null) {
-            test.useMocha(mocha::applyTo)
+        named as KotlinJsTest
+
+        environment?.let(named.environment::putAll)
+        named.inputFileProperty tryAssign inputFileProperty?.let(::file)
+        named::debug trySet debug
+        nodeJsArgs?.let(named.nodeJsArgs::addAll)
+
+        useMocha?.takeIf { it }?.run { named.useMocha() }
+
+        mocha?.let { mocha ->
+            named.useMocha(mocha::applyTo)
         }
 
-        useKarma?.takeIf { it }?.run { test.useKarma() }
-        if (karma != null) {
-            test.useKarma {
+        useKarma?.takeIf { it }?.run { named.useKarma() }
+
+        karma?.let { karma ->
+            named.useKarma {
                 karma.applyTo(this)
             }
         }

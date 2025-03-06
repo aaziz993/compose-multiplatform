@@ -4,8 +4,8 @@ import gradle.kotlin
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import plugin.model.dependency.Dependency
-import plugin.model.dependency.DependencyTransformingSerializer
+import plugin.project.model.Dependency
+import plugin.project.model.DependencyTransformingSerializer
 import plugin.project.kotlin.model.HasKotlinDependencies
 import plugin.project.kotlin.model.LanguageSettingsBuilder
 import plugin.project.gradle.model.Named

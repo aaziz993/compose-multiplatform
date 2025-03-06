@@ -3,8 +3,8 @@ package plugin.project.kotlin.kmp.model.nat
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
-import plugin.model.dependency.Dependency
-import plugin.model.dependency.DependencyTransformingSerializer
+import plugin.project.model.Dependency
+import plugin.project.model.DependencyTransformingSerializer
 import plugin.project.kotlin.model.KotlinCompilation
 import plugin.project.kotlin.model.KotlinCompilationTransformingSerializer
 

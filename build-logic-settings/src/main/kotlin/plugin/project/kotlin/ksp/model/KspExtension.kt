@@ -4,10 +4,6 @@ import gradle.ksp
 import gradle.tryAssign
 import gradle.trySet
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.getValue
-import org.gradle.kotlin.dsl.provideDelegate
-import plugin.model.dependency.Dependency
 
 internal interface KspExtension {
     /**

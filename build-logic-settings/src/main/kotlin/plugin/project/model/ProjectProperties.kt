@@ -28,8 +28,6 @@ import org.gradle.kotlin.dsl.repositories
 import org.jetbrains.compose.internal.utils.currentTarget
 import org.jetbrains.compose.jetbrainsCompose
 import org.tomlj.Toml
-import plugin.model.dependency.Dependency
-import plugin.model.dependency.DependencyTransformingSerializer
 import plugin.project.android.AndroidPlugin
 import plugin.project.android.model.AndroidSettings
 import plugin.project.apple.ApplePlugin

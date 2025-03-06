@@ -25,7 +25,9 @@ internal data class KotlinJsNodeDsl(
         }
 
         testTask?.let { testTask ->
-            node.testTask(testTask::applyTo)
+            node.testTask{
+                testTask.applyTo(this)
+            }
         }
 
         runTask?.let { runTask ->
