@@ -7,12 +7,9 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
 @Serializable
-@SerialName("kotlinGradle")
-internal data class KotlinGradleExtension(
-    override val name: String = "kotlin",
-    override val diktat: DiktatConfig? = null,
-    override val ktfmt: List<KtfmtConfig>? = null,
-    override val ktlint: KtlintConfig? = null,
+@SerialName("go")
+internal data class Go(
+    override val name: String = "",
     override val lineEnding: LineEnding? = null,
     override val ratchetFrom: String? = null,
     override val excludeSteps: MutableSet<String>? = null,
@@ -40,10 +37,10 @@ internal data class KotlinGradleExtension(
     override val toggleOffOn: ToggleOffOn? = null,
     override val toggleIfOffOn: Boolean? = null,
     override val toggleOffOnDisable: Boolean? = null,
-) : BaseKotlinExtension() {
+) : FormatExtension {
 
     context(Project)
-    override fun applyTo() = spotless.kotlinGradle {
+    override fun applyTo() = spotless.go {
         applyTo(this)
     }
 }

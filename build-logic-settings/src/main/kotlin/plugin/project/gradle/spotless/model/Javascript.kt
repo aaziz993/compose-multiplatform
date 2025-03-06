@@ -6,13 +6,11 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
+/** Configures the special javascript-specific extension for javascript files.  */
 @Serializable
-@SerialName("kotlinGradle")
-internal data class KotlinGradleExtension(
-    override val name: String = "kotlin",
-    override val diktat: DiktatConfig? = null,
-    override val ktfmt: List<KtfmtConfig>? = null,
-    override val ktlint: KtlintConfig? = null,
+@SerialName("javascript")
+internal data class Javascript(
+    override val name: String = "",
     override val lineEnding: LineEnding? = null,
     override val ratchetFrom: String? = null,
     override val excludeSteps: MutableSet<String>? = null,
@@ -40,10 +38,10 @@ internal data class KotlinGradleExtension(
     override val toggleOffOn: ToggleOffOn? = null,
     override val toggleIfOffOn: Boolean? = null,
     override val toggleOffOnDisable: Boolean? = null,
-) : BaseKotlinExtension() {
+) : FormatExtension {
 
     context(Project)
-    override fun applyTo() = spotless.kotlinGradle {
+    override fun applyTo() = spotless.javascript {
         applyTo(this)
     }
 }

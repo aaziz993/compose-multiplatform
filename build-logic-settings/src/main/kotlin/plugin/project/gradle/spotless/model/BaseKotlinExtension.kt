@@ -2,19 +2,25 @@ package plugin.project.gradle.spotless.model
 
 import com.diffplug.gradle.spotless.BaseKotlinExtension
 import com.diffplug.spotless.kotlin.KtfmtStep
+import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-internal interface BaseKotlinExtension {
+@Serializable
+internal abstract class BaseKotlinExtension : FormatExtension {
 
-    val diktat: DiktatConfig?
+    abstract val diktat: DiktatConfig?
 
     /** Uses the <a href="https://github.com/facebookincubator/ktfmt">ktfmt</a> jar to format source code. */
-    val ktfmt: List<KtfmtConfig>?
+    abstract val ktfmt: List<KtfmtConfig>?
 
-    val ktlint: KtlintConfig?
+    abstract val ktlint: KtlintConfig?
 
     context(Project)
-    fun applyTo(extension: BaseKotlinExtension) {
+    override fun applyTo(extension: com.diffplug.gradle.spotless.FormatExtension) {
+        super.applyTo(extension)
+
+        extension as BaseKotlinExtension
+
         diktat?.let { diktat ->
             (diktat.version?.resolveVersion()?.let(extension::diktat) ?: extension.diktat()).apply {
                 diktat.config?.let(::configFile)

@@ -7,8 +7,8 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
 @Serializable
-@SerialName("kotlinGradle")
-internal data class KotlinGradleExtension(
+@SerialName("kotlin")
+internal data class KotlinExtension(
     override val name: String = "kotlin",
     override val diktat: DiktatConfig? = null,
     override val ktfmt: List<KtfmtConfig>? = null,
@@ -43,7 +43,7 @@ internal data class KotlinGradleExtension(
 ) : BaseKotlinExtension() {
 
     context(Project)
-    override fun applyTo() = spotless.kotlinGradle {
+    override fun applyTo() = spotless.kotlin {
         applyTo(this)
     }
 }

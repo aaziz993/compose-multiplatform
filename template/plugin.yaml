@@ -1,0 +1,10 @@
+spotlessExclude: [
+  '**/generated-src/**',
+  '**/build-*/**',
+  '**/.idea/**',
+  '**/.fleet/**',
+  '**/.idea/**',
+  '**/.gradle/**',
+  '/spotless/**',
+  '**/resources/**',
+  '**/buildSrc/**' ]

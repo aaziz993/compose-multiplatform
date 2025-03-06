@@ -64,7 +64,7 @@ internal val TomlParseResult.libraries
 internal val TomlParseResult.plugins
     get() = getTable("plugins")!!
 
-internal fun Map<String, TomlParseResult>.resolve(notation: String): String {
+internal fun Map<String, TomlParseResult>.resolveLibrary(notation: String): String {
     val catalogName = notation
         .removePrefix("$")
         .substringBefore(".")

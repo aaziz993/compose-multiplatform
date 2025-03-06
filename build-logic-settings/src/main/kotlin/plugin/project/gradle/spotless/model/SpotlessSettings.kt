@@ -6,7 +6,6 @@ import gradle.libs
 import gradle.plugin
 import gradle.plugins
 import gradle.settings
-import gradle.spotless
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import plugin.project.model.EnabledSettings
@@ -19,7 +18,7 @@ internal data class SpotlessSettings(
     override val enforceCheck: Boolean? = null,
     override val predeclareDepsFromBuildscript: Boolean? = null,
     override val predeclareDeps: Boolean? = null,
-    override val formats: Map<String, FormatSettings>? = null,
+    override val formats: Map<String, FormatExtensionImpl>? = null,
     override val kotlinGradle: KotlinGradleExtension? = null,
     override val enabled: Boolean = true
 ) : SpotlessExtension, EnabledSettings {

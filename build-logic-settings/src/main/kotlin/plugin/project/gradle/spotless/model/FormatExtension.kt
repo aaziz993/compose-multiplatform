@@ -1,15 +1,19 @@
 package plugin.project.gradle.spotless.model
 
-import com.diffplug.gradle.spotless.FormatExtension
 import com.diffplug.spotless.LineEnding
 import gradle.allLibs
 import gradle.resolveVersion
+import gradle.serialization.serializer.JsonContentPolymorphicSerializer
+import gradle.serialization.serializer.KeyTransformingSerializer
 import gradle.settings
+import gradle.spotless
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
+@Serializable(with = FormatExtensionSerializer::class)
 internal interface FormatExtension {
 
+    val name: String
     val lineEnding: LineEnding?
     val ratchetFrom: String?
     val excludeSteps: MutableSet<String>?
@@ -60,7 +64,7 @@ internal interface FormatExtension {
     val toggleOffOnDisable: Boolean?
 
     context(Project)
-    fun applyTo(extension: FormatExtension) {
+    fun applyTo(extension: com.diffplug.gradle.spotless.FormatExtension) {
         lineEnding?.let(extension::setLineEndings)
         ratchetFrom?.let(extension::setRatchetFrom)
         excludeSteps?.forEach(extension::ignoreErrorForStep)
@@ -99,8 +103,8 @@ internal interface FormatExtension {
 
         clangFormat?.let { clangFormat ->
             clangFormat.applyTo(
-                    clangFormat.version?.resolveVersion()?.let(extension::clangFormat)
-                            ?: extension.clangFormat(),
+                clangFormat.version?.resolveVersion()?.let(extension::clangFormat)
+                    ?: extension.clangFormat(),
             )
         }
 
@@ -115,9 +119,23 @@ internal interface FormatExtension {
         toggleIfOffOn?.takeIf { it }?.run { extension.toggleOffOn() }
         toggleOffOnDisable?.takeIf { it }?.run { extension.toggleOffOnDisable() }
     }
+
+    context(Project)
+    fun applyTo() = spotless.format(name) {
+        applyTo(this)
+    }
+
+    context(Project)
+    fun String.resolveVersion() =
+        if (startsWith("$")) settings.allLibs.resolveVersion(this)
+        else this
 }
 
-context(Project)
-internal fun String.resolveVersion() =
-    if (startsWith("$")) settings.allLibs.resolveVersion(this)
-    else this
+private object FormatExtensionSerializer : JsonContentPolymorphicSerializer<FormatExtension>(
+    FormatExtension::class,
+)
+
+internal object FormatExtensionTransformingSerializer : KeyTransformingSerializer<FormatExtension>(
+    FormatExtension.serializer(),
+    "type",
+)

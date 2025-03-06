@@ -4,8 +4,8 @@ import gradle.allLibs
 import gradle.cocoapods
 import gradle.kotlin
 import gradle.moduleName
-import gradle.projectProperties
 import gradle.resolve
+import gradle.resolveLibrary
 import gradle.settings
 import gradle.trySet
 import java.net.URI
@@ -194,7 +194,7 @@ internal interface CocoapodsExtension {
         context(Project)
         fun tryResolve() {
             notation?.let { notation ->
-                if (notation.startsWith("$")) settings.allLibs.resolve(notation).removePrefix("cocoapods:")
+                if (notation.startsWith("$")) settings.allLibs.resolveLibrary(notation).removePrefix("cocoapods:")
                 else notation
             }?.let { notation ->
                 name = notation.substringBefore(":")

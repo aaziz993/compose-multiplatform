@@ -1,18 +1,13 @@
 package plugin.project.gradle.spotless.model
 
 import com.diffplug.spotless.LineEnding
-import gradle.spotless
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import org.gradle.api.Project
 
 @Serializable
-@SerialName("kotlinGradle")
-internal data class KotlinGradleExtension(
-    override val name: String = "kotlin",
-    override val diktat: DiktatConfig? = null,
-    override val ktfmt: List<KtfmtConfig>? = null,
-    override val ktlint: KtlintConfig? = null,
+@SerialName("format")
+internal data class FormatExtensionImpl(
+    override val name: String = "",
     override val lineEnding: LineEnding? = null,
     override val ratchetFrom: String? = null,
     override val excludeSteps: MutableSet<String>? = null,
@@ -40,10 +35,4 @@ internal data class KotlinGradleExtension(
     override val toggleOffOn: ToggleOffOn? = null,
     override val toggleIfOffOn: Boolean? = null,
     override val toggleOffOnDisable: Boolean? = null,
-) : BaseKotlinExtension() {
-
-    context(Project)
-    override fun applyTo() = spotless.kotlinGradle {
-        applyTo(this)
-    }
-}
+) : FormatExtension

@@ -4,6 +4,7 @@ package plugin.project.gradle.spotless.model
 
 import com.diffplug.spotless.LineEnding
 import gradle.spotless
+import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
 internal interface SpotlessExtension {
@@ -29,8 +30,7 @@ internal interface SpotlessExtension {
     val enforceCheck: Boolean?
     val predeclareDepsFromBuildscript: Boolean?
     val predeclareDeps: Boolean?
-    val formats: Map<String, FormatSettings>?
-    val kotlinGradle: KotlinGradleExtension?
+    val formats: List<@Serializable(with = FormatExtensionTransformingSerializer::class) FormatExtension>?
 
     context(Project)
     fun applyTo() {
@@ -46,14 +46,12 @@ internal interface SpotlessExtension {
         }
 
         // Format files
-        formats?.forEach { (name, settings) ->
-            spotless.format(name) {
-                settings.applyTo(this)
-            }
+        formats?.forEach { format ->
+            format.applyTo()
         }
 
+        // Additional configuration for Kotlin Gradle scripts
         kotlinGradle?.let { kotlinGradle ->
-            // Additional configuration for Kotlin Gradle scripts
             spotless.kotlinGradle {
                 kotlinGradle.applyTo(this)
             }

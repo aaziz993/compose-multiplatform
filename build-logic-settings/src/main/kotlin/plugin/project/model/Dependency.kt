@@ -4,7 +4,7 @@ package plugin.project.model
 
 import gradle.allLibs
 import gradle.isUrl
-import gradle.resolve
+import gradle.resolveLibrary
 import gradle.settings
 import java.io.File
 import kotlinx.serialization.Serializable
@@ -70,7 +70,7 @@ internal data class Dependency(
     ): Any =
         when {
             notation.startsWith("$") -> {
-                fromNotation(libs.resolve(notation))
+                fromNotation(libs.resolveLibrary(notation))
             }
 
             notation.contains("[/\\\\]".toRegex()) && !notation.isUrl -> directory.file(notation)
