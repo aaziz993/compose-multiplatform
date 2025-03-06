@@ -1,6 +1,7 @@
 package plugin.project.gradle.spotless.model
 
 import com.diffplug.gradle.spotless.JavaExtension
+import org.gradle.api.Project
 
 internal interface JavaExtension {
 
@@ -21,6 +22,7 @@ internal interface JavaExtension {
     /** Apply CleanThat refactoring rules.  */
     val cleanthat: CleanthatJavaConfig?
 
+    context(Project)
     fun applyTo(extension: JavaExtension) {
         importOrder?.let { importOrder ->
             importOrder.applyTo(
@@ -34,14 +36,14 @@ internal interface JavaExtension {
 
         googleJavaFormat?.let { googleJavaFormat ->
             googleJavaFormat.applyTo(
-                googleJavaFormat.version?.let(extension::googleJavaFormat)
+                googleJavaFormat.version?.resolveVersion()?.let(extension::googleJavaFormat)
                     ?: extension.googleJavaFormat(),
             )
         }
 
         palantirJavaFormat?.let { palantirJavaFormat ->
             palantirJavaFormat.applyTo(
-                palantirJavaFormat.version?.let(extension::palantirJavaFormat)
+                palantirJavaFormat.version?.resolveVersion()?.let(extension::palantirJavaFormat)
                     ?: extension.palantirJavaFormat(),
             )
         }

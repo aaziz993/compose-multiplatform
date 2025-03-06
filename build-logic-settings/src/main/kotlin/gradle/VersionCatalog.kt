@@ -74,6 +74,15 @@ internal fun Map<String, TomlParseResult>.resolve(notation: String): String {
         ?: error("Not found version catalog: $catalogName")
 }
 
+internal fun Map<String, TomlParseResult>.resolveVersion(version: String): String? {
+    val catalogName = version
+        .removePrefix("$")
+        .substringBefore(".")
+    val versionAlias = version
+        .substringAfter(".")
+    return this[catalogName]?.versions?.version(versionAlias)
+}
+
 internal fun String.toVersionCatalogUrlPath(): String {
     val fileNamePart = substringAfter(":").replace(":", "-")
     return "${substringBeforeLast(":").replace("[.:]".toRegex(), "/")}/${

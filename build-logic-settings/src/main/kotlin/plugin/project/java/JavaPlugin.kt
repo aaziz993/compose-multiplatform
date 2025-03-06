@@ -47,6 +47,7 @@ internal class JavaPlugin : Plugin<Project> {
             }
 
             if (!projectProperties.kotlin.enabledKMP) {
+                println("APPLY SINGLE JAVA")
                 projectProperties.kotlin.sourceSets<KotlinJvmTarget>()?.forEach { sourceSet ->
                     val compilationPrefix =
                         if (sourceSet.name.endsWith(SourceSet.TEST_SOURCE_SET_NAME, true)) "test" else ""

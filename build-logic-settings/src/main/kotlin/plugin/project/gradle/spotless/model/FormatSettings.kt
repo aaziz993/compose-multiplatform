@@ -3,6 +3,7 @@ package plugin.project.gradle.spotless.model
 import com.diffplug.gradle.spotless.KotlinExtension
 import com.diffplug.spotless.LineEnding
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
 
 @Serializable
 internal data class FormatSettings(
@@ -62,6 +63,7 @@ internal data class FormatSettings(
     override val ktlint: KtlintConfig? = null,
 ) : FormatExtension, BaseKotlinExtension, JavaExtension {
 
+    context(Project)
     override fun applyTo(extension: com.diffplug.gradle.spotless.FormatExtension) {
         super<FormatExtension>.applyTo(extension)
 

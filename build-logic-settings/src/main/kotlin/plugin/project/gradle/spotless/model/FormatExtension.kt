@@ -2,7 +2,11 @@ package plugin.project.gradle.spotless.model
 
 import com.diffplug.gradle.spotless.FormatExtension
 import com.diffplug.spotless.LineEnding
+import gradle.allLibs
+import gradle.resolveVersion
+import gradle.settings
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
 
 internal interface FormatExtension {
 
@@ -54,6 +58,8 @@ internal interface FormatExtension {
      * [.toggleOffOn].
      */
     val toggleOffOnDisable: Boolean?
+
+    context(Project)
     fun applyTo(extension: FormatExtension) {
         lineEnding?.let(extension::setLineEndings)
         ratchetFrom?.let(extension::setRatchetFrom)
@@ -86,16 +92,21 @@ internal interface FormatExtension {
         }
 
         biome?.let { biome ->
-            biome.applyTo(biome.version?.let(extension::biome) ?: extension.biome())
+            biome.applyTo(
+                biome.version?.resolveVersion()?.let(extension::biome) ?: extension.biome(),
+            )
         }
 
         clangFormat?.let { clangFormat ->
-            clangFormat.applyTo(clangFormat.version?.let(extension::clangFormat) ?: extension.clangFormat())
+            clangFormat.applyTo(
+                    clangFormat.version?.resolveVersion()?.let(extension::clangFormat)
+                            ?: extension.clangFormat(),
+            )
         }
 
         eclipseWtp?.let { eclipseWtp ->
             eclipseWtp.applyTo(
-                eclipseWtp.version?.let { extension.eclipseWtp(eclipseWtp.type, it) }
+                eclipseWtp.version?.resolveVersion()?.let { extension.eclipseWtp(eclipseWtp.type, it) }
                     ?: extension.eclipseWtp(eclipseWtp.type),
             )
         }
@@ -105,3 +116,8 @@ internal interface FormatExtension {
         toggleOffOnDisable?.takeIf { it }?.run { extension.toggleOffOnDisable() }
     }
 }
+
+context(Project)
+internal fun String.resolveVersion() =
+    if (startsWith("$")) settings.allLibs.resolveVersion(this)
+    else this

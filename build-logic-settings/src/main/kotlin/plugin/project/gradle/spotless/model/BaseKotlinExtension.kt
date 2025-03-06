@@ -2,6 +2,7 @@ package plugin.project.gradle.spotless.model
 
 import com.diffplug.gradle.spotless.BaseKotlinExtension
 import com.diffplug.spotless.kotlin.KtfmtStep
+import org.gradle.api.Project
 
 internal interface BaseKotlinExtension {
 
@@ -12,16 +13,16 @@ internal interface BaseKotlinExtension {
 
     val ktlint: KtlintConfig?
 
+    context(Project)
     fun applyTo(extension: BaseKotlinExtension) {
         diktat?.let { diktat ->
-            (diktat.version?.let(extension::diktat) ?: extension.diktat()).apply {
-
+            (diktat.version?.resolveVersion()?.let(extension::diktat) ?: extension.diktat()).apply {
                 diktat.config?.let(::configFile)
             }
         }
 
         ktfmt?.forEach { ktfmt ->
-            (ktfmt.version?.let(extension::ktfmt) ?: extension.ktfmt()).apply {
+            (ktfmt.version?.resolveVersion()?.let(extension::ktfmt) ?: extension.ktfmt()).apply {
                 when (ktfmt.style) {
                     KtfmtStep.Style.DROPBOX -> dropboxStyle()
                     KtfmtStep.Style.GOOGLE -> googleStyle()
@@ -37,7 +38,7 @@ internal interface BaseKotlinExtension {
         }
 
         ktlint?.let { ktlint ->
-            (ktlint.version?.let(extension::ktlint) ?: extension.ktlint()).apply {
+            (ktlint.version?.resolveVersion()?.let(extension::ktlint) ?: extension.ktlint()).apply {
                 ktlint.editorConfigPath?.let(::setEditorConfigPath)
                 ktlint.editorConfigOverride?.let(::editorConfigOverride)
                 ktlint.customRuleSets?.let(::customRuleSets)

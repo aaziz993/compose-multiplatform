@@ -7,3 +7,14 @@ kotlin:
    - iosSimulatorArm64
    - js
    - wasmJs
+
+  hierarchy:
+    - jvmAndAndroid: [ jvm, android ]
+    - nonJvm: [ android, ios, web ]
+    - nonAndroid: [ jvm, ios, web ]
+    - nonIos: [ jvm, android, web ]
+    - mobile: [ android, ios ]
+    - nonMobile: [ jvm, web ]
+    - jsAndWasmJs: [ js, wasmJs ]
+    - web: [ js, wasmJs, wasmWasi ]
+    - nonWeb: [ jvmAndAndroid, ios ]

@@ -2,24 +2,9 @@
 
 package plugin.project.gradle.spotless.model
 
-import com.diffplug.gradle.spotless.JavaExtension
-import com.diffplug.gradle.spotless.JavascriptExtension
-import com.diffplug.gradle.spotless.JsonExtension
-import com.diffplug.gradle.spotless.KotlinExtension
-import com.diffplug.gradle.spotless.SpotlessExtension
-import com.diffplug.gradle.spotless.TypescriptExtension
-import com.diffplug.gradle.spotless.YamlExtension
 import com.diffplug.spotless.LineEnding
-import com.diffplug.spotless.generic.LicenseHeaderStep
-import com.diffplug.spotless.kotlin.KotlinConstants
-import gradle.libs
-import gradle.settings
 import gradle.spotless
-import gradle.version
-import gradle.versions
 import org.gradle.api.Project
-
-private const val LICENSE_HEADER_DIR = "../"
 
 internal interface SpotlessExtension {
 
@@ -60,119 +45,18 @@ internal interface SpotlessExtension {
             predeclareDepsFromBuildscript?.takeIf { it }?.run { spotless.predeclareDepsFromBuildscript() }
         }
 
-        val defaultFormats = mapOf(
-            JavaExtension.NAME to FormatSettings(
-                target = listOf("**/*.java"),
-                trimTrailingWhitespace = true,
-                endWithNewline = true,
-                licenseHeader = LicenseHeaderConfig(
-                    headerFile = LICENSE_HEADER_DIR,
-                    delimiter = LicenseHeaderStep.DEFAULT_JAVA_HEADER_DELIMITER,
-                ),
-                importOrder = ImportOrderConfig(),
-                removeIfUnusedImports = true,
-                googleJavaFormat = GoogleJavaFormatConfig(
-                    groupArtifact = "com.google.googlejavaformat:google-java-format",
-                    reflowLongStrings = true,
-                    reorderImports = true,
-                    formatJavadoc = false,
-                ),
-                formatAnnotations = FormatAnnotationsConfig(),
-                cleanthat = CleanthatJavaConfig(),
-                toggleIfOffOn = true,
-            ),
-            KotlinExtension.NAME to FormatSettings(
-                ktlint = KtlintConfig(
-                    settings.libs.versions.version("ktlint"),
-                    "../.editorconfig",
-
-                    ),
-                target = listOf("**/*.kt"),
-                trimTrailingWhitespace = true,
-                endWithNewline = true,
-                licenseHeader = LicenseHeaderConfig(
-                    headerFile = LICENSE_HEADER_DIR,
-                    delimiter = KotlinConstants.LICENSE_HEADER_DELIMITER,
-                ),
-                importOrder = ImportOrderConfig(),
-                removeIfUnusedImports = true,
-                toggleIfOffOn = true,
-            ),
-        ) + listOf(
-            Format(
-                "kts",
-                listOf("kts"),
-                KotlinConstants.LICENSE_HEADER_DELIMITER,
-            ),
-            Format(
-                JsonExtension.NAME,
-                listOf("json"),
-            ),
-            Format(
-                "xml",
-                listOf("xml"),
-                "<(\\?xml)?",
-            ),
-            Format(
-                YamlExtension.NAME,
-                listOf("yaml", "yml"),
-            ),
-            Format(
-                "properties",
-                listOf("properties"),
-            ),
-            Format(
-                "html",
-                listOf("html"),
-                "<(!DOCTYPE |html )",
-            ),
-            Format(
-                JavascriptExtension.NAME,
-                listOf("js"),
-            ),
-            Format(
-                TypescriptExtension.NAME,
-                listOf("ts"),
-            ),
-            Format(
-                "md",
-                listOf("md"),
-            ),
-            Format(
-                "gitignore",
-                listOf("gitignore"),
-            ),
-            Format(
-                "gitattributes",
-                listOf("gitattributes"),
-            ),
-        ).associate { (name, extensions, delimiter) ->
-            name to FormatSettings(
-                trimTrailingWhitespace = true,
-                endWithNewline = true,
-                licenseHeader = LicenseHeaderConfig(
-                    headerFile = LICENSE_HEADER_DIR,
-                    delimiter = delimiter,
-                ),
-                target = extensions.map { extension -> "**/*.$extension" },
-                toggleIfOffOn = true,
-            )
-        }
-
         // Format files
-        (formats ?: defaultFormats).ifEmpty { null }?.forEach { (name, settings) ->
-            spotless.format(name, settings::applyTo)
+        formats?.forEach { (name, settings) ->
+            spotless.format(name) {
+                settings.applyTo(this)
+            }
         }
 
         kotlinGradle?.let { kotlinGradle ->
             // Additional configuration for Kotlin Gradle scripts
-            spotless.kotlinGradle(kotlinGradle::applyTo)
+            spotless.kotlinGradle {
+                kotlinGradle.applyTo(this)
+            }
         }
     }
 }
-
-internal data class Format(
-    val name: String,
-    val extensions: List<String>,
-    val delimiter: String = "^",
-)
