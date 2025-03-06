@@ -284,6 +284,8 @@ plugins:
       - wasmJsMain
 
 kotlin:
+  explicitApi: Strict
+
   targets:
     - '':
         compilerOptions:
