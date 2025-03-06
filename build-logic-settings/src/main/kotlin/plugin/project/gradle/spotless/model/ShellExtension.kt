@@ -1,3 +1,5 @@
+@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
+
 package plugin.project.gradle.spotless.model
 
 import com.diffplug.spotless.LineEnding
@@ -9,8 +11,7 @@ import org.gradle.api.Project
 /** Configures the special shell-specific extension.  */
 @Serializable
 @SerialName("shell")
-internal data class Shell(
-    override val name: String = "",
+internal data class ShellExtension(
     override val lineEnding: LineEnding? = null,
     override val ratchetFrom: String? = null,
     override val excludeSteps: MutableSet<String>? = null,
@@ -41,7 +42,12 @@ internal data class Shell(
 ) : FormatExtension {
 
     context(Project)
-    override fun applyTo() = spotless.shell {
+    override fun applyTo() = if (name.isEmpty()) {
+        spotless.formats.values.forEach { format ->
+            applyTo(format)
+        }
+    }
+    else spotless.shell {
         applyTo(this)
     }
 }

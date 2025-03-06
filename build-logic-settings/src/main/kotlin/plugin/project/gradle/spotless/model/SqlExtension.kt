@@ -1,3 +1,5 @@
+@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
+
 package plugin.project.gradle.spotless.model
 
 import com.diffplug.spotless.LineEnding
@@ -6,11 +8,10 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-/** Configures the special protobuf-specific extension.  */
+/** Configures the special sql-specific extension for SQL files.  */
 @Serializable
-@SerialName("protobuf")
-internal data class Protobuf(
-    override val name: String = "",
+@SerialName("sql")
+internal data class SqlExtension(
     override val lineEnding: LineEnding? = null,
     override val ratchetFrom: String? = null,
     override val excludeSteps: MutableSet<String>? = null,
@@ -41,7 +42,12 @@ internal data class Protobuf(
 ) : FormatExtension {
 
     context(Project)
-    override fun applyTo() = spotless.protobuf {
+    override fun applyTo() = if (name.isEmpty()) {
+        spotless.formats.values.forEach { format ->
+            applyTo(format)
+        }
+    }
+    else spotless.sql {
         applyTo(this)
     }
 }

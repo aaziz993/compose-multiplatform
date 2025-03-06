@@ -1,3 +1,5 @@
+@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
+
 package plugin.project.gradle.spotless.model
 
 import com.diffplug.spotless.LineEnding
@@ -6,11 +8,9 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-/** Configures the special groovy-specific extension.  */
 @Serializable
-@SerialName("groovy")
-internal data class Groovy(
-    override val name: String = "",
+@SerialName("go")
+internal data class GoExtension(
     override val lineEnding: LineEnding? = null,
     override val ratchetFrom: String? = null,
     override val excludeSteps: MutableSet<String>? = null,
@@ -41,7 +41,12 @@ internal data class Groovy(
 ) : FormatExtension {
 
     context(Project)
-    override fun applyTo() = spotless.groovy {
+    override fun applyTo() = if (name.isEmpty()) {
+        spotless.formats.values.forEach { format ->
+            applyTo(format)
+        }
+    }
+    else spotless.go {
         applyTo(this)
     }
 }

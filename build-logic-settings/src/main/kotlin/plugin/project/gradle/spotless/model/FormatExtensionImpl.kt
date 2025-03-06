@@ -1,13 +1,17 @@
+@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
+
 package plugin.project.gradle.spotless.model
 
 import com.diffplug.spotless.LineEnding
+import gradle.spotless
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
 
 @Serializable
 @SerialName("format")
 internal data class FormatExtensionImpl(
-    override val name: String = "",
+    val name: String = "",
     override val lineEnding: LineEnding? = null,
     override val ratchetFrom: String? = null,
     override val excludeSteps: MutableSet<String>? = null,
@@ -35,4 +39,15 @@ internal data class FormatExtensionImpl(
     override val toggleOffOn: ToggleOffOn? = null,
     override val toggleIfOffOn: Boolean? = null,
     override val toggleOffOnDisable: Boolean? = null,
-) : FormatExtension
+) : FormatExtension {
+
+    context(Project)
+    override fun applyTo() = if (name.isEmpty()) {
+        spotless.formats.values.forEach { format ->
+            applyTo(format)
+        }
+    }
+    else spotless.format(name) {
+        applyTo(this)
+    }
+}

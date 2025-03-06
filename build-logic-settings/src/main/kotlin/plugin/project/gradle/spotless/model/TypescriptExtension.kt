@@ -1,3 +1,5 @@
+@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
+
 package plugin.project.gradle.spotless.model
 
 import com.diffplug.spotless.LineEnding
@@ -6,11 +8,10 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-/** Configures the special JSON-specific extension.  */
+/** Configures the special typescript-specific extension for typescript files.  */
 @Serializable
-@SerialName("json")
-internal data class Json(
-    override val name: String = "",
+@SerialName("typescript")
+internal data class TypescriptExtension(
     override val lineEnding: LineEnding? = null,
     override val ratchetFrom: String? = null,
     override val excludeSteps: MutableSet<String>? = null,
@@ -41,7 +42,12 @@ internal data class Json(
 ) : FormatExtension {
 
     context(Project)
-    override fun applyTo() = spotless.json {
+    override fun applyTo() = if (name.isEmpty()) {
+        spotless.formats.values.forEach { format ->
+            applyTo(format)
+        }
+    }
+    else spotless.typescript {
         applyTo(this)
     }
 }

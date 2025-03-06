@@ -1,3 +1,5 @@
+@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
+
 package plugin.project.gradle.spotless.model
 
 import com.diffplug.spotless.LineEnding
@@ -6,11 +8,10 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-/** Configures the special javascript-specific extension for javascript files.  */
+/** Configures the special groovy-specific extension.  */
 @Serializable
-@SerialName("javascript")
-internal data class Javascript(
-    override val name: String = "",
+@SerialName("groovy")
+internal data class GroovyExtension(
     override val lineEnding: LineEnding? = null,
     override val ratchetFrom: String? = null,
     override val excludeSteps: MutableSet<String>? = null,
@@ -41,7 +42,12 @@ internal data class Javascript(
 ) : FormatExtension {
 
     context(Project)
-    override fun applyTo() = spotless.javascript {
+    override fun applyTo() = if (name.isEmpty()) {
+        spotless.formats.values.forEach { format ->
+            applyTo(format)
+        }
+    }
+    else spotless.groovy {
         applyTo(this)
     }
 }

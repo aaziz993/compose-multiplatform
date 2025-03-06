@@ -1,3 +1,5 @@
+@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
+
 package plugin.project.gradle.spotless.model
 
 import com.diffplug.spotless.LineEnding
@@ -12,8 +14,6 @@ import org.gradle.api.Project
 
 @Serializable(with = FormatExtensionSerializer::class)
 internal interface FormatExtension {
-
-    val name: String
     val lineEnding: LineEnding?
     val ratchetFrom: String?
     val excludeSteps: MutableSet<String>?
@@ -121,9 +121,7 @@ internal interface FormatExtension {
     }
 
     context(Project)
-    fun applyTo() = spotless.format(name) {
-        applyTo(this)
-    }
+    fun applyTo()
 
     context(Project)
     fun String.resolveVersion() =

@@ -46,8 +46,15 @@ internal class JavaPlugin : Plugin<Project> {
                 projectProperties.application?.applyTo()
             }
 
+            println(
+                """APPLY SINGLE JAVA
+                EnabledKMP: ${projectProperties.kotlin.enabledKMP}
+                Targets: ${projectProperties.kotlin.targets?.map { it::class.simpleName }}
+            """.trimMargin(),
+            )
+
             if (!projectProperties.kotlin.enabledKMP) {
-                println("APPLY SINGLE JAVA")
+
                 projectProperties.kotlin.sourceSets<KotlinJvmTarget>()?.forEach { sourceSet ->
                     val compilationPrefix =
                         if (sourceSet.name.endsWith(SourceSet.TEST_SOURCE_SET_NAME, true)) "test" else ""

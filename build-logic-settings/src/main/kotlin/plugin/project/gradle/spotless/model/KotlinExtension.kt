@@ -1,3 +1,5 @@
+@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
+
 package plugin.project.gradle.spotless.model
 
 import com.diffplug.spotless.LineEnding
@@ -9,7 +11,6 @@ import org.gradle.api.Project
 @Serializable
 @SerialName("kotlin")
 internal data class KotlinExtension(
-    override val name: String = "kotlin",
     override val diktat: DiktatConfig? = null,
     override val ktfmt: List<KtfmtConfig>? = null,
     override val ktlint: KtlintConfig? = null,
@@ -43,7 +44,12 @@ internal data class KotlinExtension(
 ) : BaseKotlinExtension() {
 
     context(Project)
-    override fun applyTo() = spotless.kotlin {
+    override fun applyTo() = if (name.isEmpty()) {
+        spotless.formats.values.forEach { format ->
+            applyTo(format)
+        }
+    }
+    else spotless.kotlin {
         applyTo(this)
     }
 }

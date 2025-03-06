@@ -1,3 +1,5 @@
+@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
+
 package plugin.project.gradle.spotless.model
 
 import com.diffplug.spotless.LineEnding
@@ -6,11 +8,10 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-/** Configures the special antlr4-specific extension for antlr4 files.  */
+/** Configures the special Gherkin-specific extension.  */
 @Serializable
-@SerialName("antlr4")
-internal data class Antlr4(
-    override val name: String = "",
+@SerialName("gherkin")
+internal data class GherkinExtension(
     override val lineEnding: LineEnding? = null,
     override val ratchetFrom: String? = null,
     override val excludeSteps: MutableSet<String>? = null,
@@ -41,7 +42,12 @@ internal data class Antlr4(
 ) : FormatExtension {
 
     context(Project)
-    override fun applyTo() = spotless.antlr4 {
+    override fun applyTo() = if (name.isEmpty()) {
+        spotless.formats.values.forEach { format ->
+            applyTo(format)
+        }
+    }
+    else spotless.gherkin {
         applyTo(this)
     }
 }

@@ -1,3 +1,5 @@
+@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
+
 package plugin.project.gradle.spotless.model
 
 import com.diffplug.spotless.LineEnding
@@ -6,11 +8,10 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-/** Configures the special groovy-specific extension for Gradle files.  */
+/** Configures the special freshmark-specific extension.  */
 @Serializable
-@SerialName("groovyGradle")
-internal data class GroovyGradle(
-    override val name: String = "",
+@SerialName("freshmark")
+internal data class FreshmarkExtension(
     override val lineEnding: LineEnding? = null,
     override val ratchetFrom: String? = null,
     override val excludeSteps: MutableSet<String>? = null,
@@ -41,7 +42,12 @@ internal data class GroovyGradle(
 ) : FormatExtension {
 
     context(Project)
-    override fun applyTo() = spotless.groovyGradle {
+    override fun applyTo() = if (name.isEmpty()) {
+        spotless.formats.values.forEach { format ->
+            applyTo(format)
+        }
+    }
+    else spotless.freshmark {
         applyTo(this)
     }
 }

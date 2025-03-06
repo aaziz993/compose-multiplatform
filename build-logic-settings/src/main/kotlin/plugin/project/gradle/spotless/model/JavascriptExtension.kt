@@ -1,3 +1,5 @@
+@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
+
 package plugin.project.gradle.spotless.model
 
 import com.diffplug.spotless.LineEnding
@@ -6,11 +8,10 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-/** Configures the special freshmark-specific extension.  */
+/** Configures the special javascript-specific extension for javascript files.  */
 @Serializable
-@SerialName("freshmark")
-internal data class Freshmark(
-    override val name: String = "",
+@SerialName("javascript")
+internal data class JavascriptExtension(
     override val lineEnding: LineEnding? = null,
     override val ratchetFrom: String? = null,
     override val excludeSteps: MutableSet<String>? = null,
@@ -41,7 +42,12 @@ internal data class Freshmark(
 ) : FormatExtension {
 
     context(Project)
-    override fun applyTo() = spotless.freshmark {
+    override fun applyTo() = if (name.isEmpty()) {
+        spotless.formats.values.forEach { format ->
+            applyTo(format)
+        }
+    }
+    else spotless.javascript {
         applyTo(this)
     }
 }

@@ -1,3 +1,5 @@
+@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
+
 package plugin.project.gradle.spotless.model
 
 import com.diffplug.spotless.LineEnding
@@ -6,11 +8,10 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-/** Configures the special Gherkin-specific extension.  */
+/** Configures the special protobuf-specific extension.  */
 @Serializable
-@SerialName("gherkin")
-internal data class Gherkin(
-    override val name: String = "",
+@SerialName("protobuf")
+internal data class ProtobufExtension(
     override val lineEnding: LineEnding? = null,
     override val ratchetFrom: String? = null,
     override val excludeSteps: MutableSet<String>? = null,
@@ -41,7 +42,12 @@ internal data class Gherkin(
 ) : FormatExtension {
 
     context(Project)
-    override fun applyTo() = spotless.gherkin {
+    override fun applyTo() = if (name.isEmpty()) {
+        spotless.formats.values.forEach { format ->
+            applyTo(format)
+        }
+    }
+    else spotless.protobuf {
         applyTo(this)
     }
 }

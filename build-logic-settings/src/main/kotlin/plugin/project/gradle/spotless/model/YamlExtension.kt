@@ -1,3 +1,5 @@
+@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
+
 package plugin.project.gradle.spotless.model
 
 import com.diffplug.spotless.LineEnding
@@ -6,11 +8,10 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-/** Configures the special scala-specific extension. */
+/** Configures the special YAML-specific extension.  */
 @Serializable
-@SerialName("scala")
-internal data class Scala(
-    override val name: String = "",
+@SerialName("yaml")
+internal data class YamlExtension(
     override val lineEnding: LineEnding? = null,
     override val ratchetFrom: String? = null,
     override val excludeSteps: MutableSet<String>? = null,
@@ -41,7 +42,12 @@ internal data class Scala(
 ) : FormatExtension {
 
     context(Project)
-    override fun applyTo() = spotless.scala {
+    override fun applyTo() = if (name.isEmpty()) {
+        spotless.formats.values.forEach { format ->
+            applyTo(format)
+        }
+    }
+    else spotless.yaml {
         applyTo(this)
     }
 }

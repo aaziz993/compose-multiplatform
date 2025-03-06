@@ -1,15 +1,20 @@
+@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
+
 package plugin.project.gradle.spotless.model
 
+import com.diffplug.gradle.spotless.JsonExtension
 import com.diffplug.spotless.LineEnding
 import gradle.spotless
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import kotlin.reflect.KFunction1
+import org.gradle.api.Action
 
-/** Configures the special sql-specific extension for SQL files.  */
+/** Configures the special JSON-specific extension.  */
 @Serializable
-@SerialName("sql")
-internal data class Sql(
+@SerialName("json")
+internal data class JsonExtension(
     override val name: String = "",
     override val lineEnding: LineEnding? = null,
     override val ratchetFrom: String? = null,
@@ -41,7 +46,12 @@ internal data class Sql(
 ) : FormatExtension {
 
     context(Project)
-    override fun applyTo() = spotless.sql {
+    override fun applyTo() = if (name.isEmpty()) {
+        spotless.formats.values.forEach { format ->
+            applyTo(format)
+        }
+    }
+    else spotless.json {
         applyTo(this)
     }
 }

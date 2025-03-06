@@ -1,3 +1,5 @@
+@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
+
 package plugin.project.gradle.spotless.model
 
 import com.diffplug.spotless.LineEnding
@@ -9,8 +11,7 @@ import org.gradle.api.Project
 /** Configures the special flexmark-specific extension.  */
 @Serializable
 @SerialName("flexmark")
-internal data class Flexmark(
-    override val name: String = "",
+internal data class FlexmarkExtension(
     override val lineEnding: LineEnding? = null,
     override val ratchetFrom: String? = null,
     override val excludeSteps: MutableSet<String>? = null,
@@ -41,7 +42,12 @@ internal data class Flexmark(
 ) : FormatExtension {
 
     context(Project)
-    override fun applyTo() = spotless.flexmark {
+    override fun applyTo() = if (name.isEmpty()) {
+        spotless.formats.values.forEach { format ->
+            applyTo(format)
+        }
+    }
+    else spotless.flexmark {
         applyTo(this)
     }
 }

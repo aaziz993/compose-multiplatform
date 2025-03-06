@@ -1,3 +1,5 @@
+@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
+
 package plugin.project.gradle.spotless.model
 
 import com.diffplug.gradle.spotless.JavaExtension
@@ -10,7 +12,6 @@ import org.gradle.api.Project
 @Serializable
 @SerialName("java")
 internal data class JavaExtension(
-    override val name: String = "java",
     override val lineEnding: LineEnding? = null,
     override val ratchetFrom: String? = null,
     override val excludeSteps: MutableSet<String>? = null,
@@ -96,7 +97,12 @@ internal data class JavaExtension(
     }
 
     context(Project)
-    override fun applyTo() = spotless.java {
+    override fun applyTo() = if (name.isEmpty()) {
+        spotless.formats.values.forEach { format ->
+            applyTo(format)
+        }
+    }
+    else spotless.java {
         applyTo(this)
     }
 }

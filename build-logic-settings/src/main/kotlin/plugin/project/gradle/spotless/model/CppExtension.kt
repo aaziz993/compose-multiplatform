@@ -1,3 +1,5 @@
+@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
+
 package plugin.project.gradle.spotless.model
 
 import com.diffplug.spotless.LineEnding
@@ -6,11 +8,10 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-/** Configures the special python-specific extension for python files.  */
+/** Configures the special C/C++-specific extension.  */
 @Serializable
-@SerialName("python")
-internal data class Python(
-    override val name: String = "",
+@SerialName("cpp")
+internal data class CppExtension(
     override val lineEnding: LineEnding? = null,
     override val ratchetFrom: String? = null,
     override val excludeSteps: MutableSet<String>? = null,
@@ -41,7 +42,12 @@ internal data class Python(
 ) : FormatExtension {
 
     context(Project)
-    override fun applyTo() = spotless.python {
+    override fun applyTo() = if (name.isEmpty()) {
+        spotless.formats.values.forEach { format ->
+            applyTo(format)
+        }
+    }
+    else spotless.cpp {
         applyTo(this)
     }
 }
