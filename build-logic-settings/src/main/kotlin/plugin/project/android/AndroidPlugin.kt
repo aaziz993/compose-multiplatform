@@ -18,7 +18,7 @@ import org.gradle.api.Project
 import org.gradle.api.tasks.SourceSet
 import org.gradle.internal.extensions.stdlib.capitalized
 import org.gradle.kotlin.dsl.dependencies
-import plugin.project.kotlin.kmp.model.jvm.android.KotlinAndroidTarget
+import plugin.project.kmp.model.jvm.android.KotlinAndroidTarget
 import plugin.project.kotlin.model.sourceSets
 import plugin.project.model.ProjectLayout
 import plugin.project.model.ProjectType
@@ -37,7 +37,7 @@ internal class AndroidPlugin : Plugin<Project> {
                 else -> plugins.apply(settings.libs.plugins.plugin("androidLibrary").id)
             }
 
-//            projectProperties.android?.applyTo()
+            projectProperties.android?.applyTo()
 
             if (!projectProperties.kotlin.enabledKMP) {
                 projectProperties.kotlin

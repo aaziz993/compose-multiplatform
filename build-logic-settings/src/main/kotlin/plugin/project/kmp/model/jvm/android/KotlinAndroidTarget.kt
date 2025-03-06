@@ -8,10 +8,10 @@ import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
-import plugin.project.kotlin.kmp.model.jvm.KotlinJvmAndAndroidTarget
-import plugin.project.kotlin.kmp.model.jvm.KotlinJvmAndroidCompilation
-import plugin.project.kotlin.kmp.model.jvm.KotlinJvmAndroidCompilationTransformingSerializer
-import plugin.project.kotlin.kmp.model.jvm.KotlinJvmCompilerOptions
+import plugin.project.kmp.model.jvm.KotlinJvmAndAndroidTarget
+import plugin.project.kmp.model.jvm.KotlinJvmAndroidCompilation
+import plugin.project.kmp.model.jvm.KotlinJvmAndroidCompilationTransformingSerializer
+import plugin.project.kmp.model.jvm.KotlinJvmCompilerOptions
 
 @Serializable
 @SerialName("android")

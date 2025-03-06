@@ -1,11 +1,13 @@
 package plugin.project.android.model
 
-import com.android.build.gradle.BaseExtension
 import gradle.androidNamespace
 import gradle.maybeNamed
+import gradle.serialization.serializer.JsonContentPolymorphicSerializer
 import gradle.trySet
+import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
+@Serializable(with = BaseExtensionSerializer::class)
 internal interface BaseExtension {
 
     val composeOptions: ComposeOptions?
@@ -85,7 +87,7 @@ internal interface BaseExtension {
 
     context(Project)
     @Suppress("UnstableApiUsage")
-    fun applyTo(extension: BaseExtension) {
+    fun applyTo(extension: com.android.build.gradle.BaseExtension) {
         composeOptions?.let { composeOptions ->
             extension.composeOptions {
                 ::kotlinCompilerExtensionVersion trySet composeOptions.kotlinCompilerExtensionVersion
@@ -192,3 +194,7 @@ internal interface BaseExtension {
         extension.namespace = namespace ?: androidNamespace
     }
 }
+
+private object BaseExtensionSerializer : JsonContentPolymorphicSerializer<BaseExtension>(
+    BaseExtension::class,
+)

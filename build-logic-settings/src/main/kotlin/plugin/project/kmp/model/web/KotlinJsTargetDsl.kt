@@ -10,7 +10,7 @@ import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalMainFunctionArgumentsDsl
 import org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsIrTarget
 import plugin.project.gradle.model.HasBinaries
-import plugin.project.kotlin.kmp.model.KotlinTarget
+import plugin.project.kmp.model.KotlinTarget
 import plugin.project.kotlin.model.HasConfigurableKotlinCompilerOptions
 
 internal interface KotlinJsTargetDsl : KotlinTarget, KotlinTargetWithNodeJsDsl,

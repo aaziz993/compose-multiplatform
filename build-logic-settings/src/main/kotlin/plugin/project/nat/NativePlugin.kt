@@ -3,7 +3,7 @@ package plugin.project.nat
 import gradle.projectProperties
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import plugin.project.kotlin.kmp.model.nat.KotlinNativeTarget
+import plugin.project.kmp.model.nat.KotlinNativeTarget
 
 internal class NativePlugin : Plugin<Project> {
 

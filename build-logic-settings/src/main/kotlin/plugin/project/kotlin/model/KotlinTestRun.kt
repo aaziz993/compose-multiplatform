@@ -1,7 +1,7 @@
 package plugin.project.kotlin.model
 
 import org.jetbrains.kotlin.gradle.plugin.KotlinTestRun
-import plugin.project.kotlin.kmp.model.test.TestFilter
+import plugin.project.kmp.model.test.TestFilter
 
 /**
  * A [KotlinExecution] that runs configured tests.

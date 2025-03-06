@@ -31,6 +31,7 @@ import org.jetbrains.compose.jetbrainsCompose
 import org.tomlj.Toml
 import plugin.project.android.AndroidPlugin
 import plugin.project.android.model.AndroidSettings
+import plugin.project.android.model.BaseExtension
 import plugin.project.apple.ApplePlugin
 import plugin.project.apple.model.AppleSettings
 import plugin.project.compose.ComposePlugin
@@ -54,8 +55,8 @@ import plugin.project.java.model.application.JavaApplication
 import plugin.project.kotlin.allopen.AllOpenPlugin
 import plugin.project.kotlin.apollo.ApolloPlugin
 import plugin.project.kotlin.atomicfu.AtomicFUPlugin
-import plugin.project.kotlin.kmp.KMPPlugin
-import plugin.project.kotlin.kmp.model.KotlinTarget
+import plugin.project.kmp.KMPPlugin
+import plugin.project.kmp.model.KotlinTarget
 import plugin.project.kotlin.ksp.KspPlugin
 import plugin.project.kotlin.ktorfit.KtorfitPlugin
 import plugin.project.kotlin.model.HasKotlinDependencies
@@ -97,7 +98,7 @@ internal data class ProjectProperties(
     val jvm: JavaPluginExtension? = null,
     val application: JavaApplication? = null,
     val kotlin: KotlinSettings = KotlinSettings(),
-    val android: AndroidSettings = AndroidSettings(),
+    val android: BaseExtension? = null,
     val apple: AppleSettings = AppleSettings(),
     val nodeJsEnv: NodeJsEnvSpec = NodeJsEnvSpec(),
     val yarn: YarnRootExtension = YarnRootExtension(),

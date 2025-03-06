@@ -1,7 +1,7 @@
 package plugin.project.kmp.model.nat
 
 import kotlinx.serialization.Serializable
-import plugin.project.kotlin.kmp.model.test.TestFilter
+import plugin.project.kmp.model.test.TestFilter
 
 @Serializable
 internal data class KotlinNativeBinaryTestRunImpl(

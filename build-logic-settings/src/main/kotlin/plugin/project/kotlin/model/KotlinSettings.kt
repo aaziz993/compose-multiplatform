@@ -13,13 +13,13 @@ import plugin.project.android.model.BaseExtension
 import plugin.project.java.model.JavaToolchainSpec
 import plugin.project.java.model.application.JavaApplication
 import plugin.project.kotlin.cocoapods.model.CocoapodsSettings
-import plugin.project.kotlin.kmp.model.HierarchyAliasTransformingSerializer
-import plugin.project.kotlin.kmp.model.HierarchyGroup
-import plugin.project.kotlin.kmp.model.KotlinMultiplatformExtension
-import plugin.project.kotlin.kmp.model.KotlinSourceSet
-import plugin.project.kotlin.kmp.model.KotlinSourceSetTransformingSerializer
-import plugin.project.kotlin.kmp.model.KotlinTarget
-import plugin.project.kotlin.kmp.model.KotlinTargetTransformingSerializer
+import plugin.project.kmp.model.HierarchyAliasTransformingSerializer
+import plugin.project.kmp.model.HierarchyGroup
+import plugin.project.kmp.model.KotlinMultiplatformExtension
+import plugin.project.kmp.model.KotlinSourceSet
+import plugin.project.kmp.model.KotlinSourceSetTransformingSerializer
+import plugin.project.kmp.model.KotlinTarget
+import plugin.project.kmp.model.KotlinTargetTransformingSerializer
 
 @Serializable
 internal data class KotlinSettings(
@@ -34,8 +34,6 @@ internal data class KotlinSettings(
     val targets: List<@Serializable(with = KotlinTargetTransformingSerializer::class) KotlinTarget>? = null,
     val hierarchy: List<@Serializable(with = HierarchyAliasTransformingSerializer::class) HierarchyGroup>? = null,
     val sourceSets: List<@Serializable(with = KotlinSourceSetTransformingSerializer::class) KotlinSourceSet>? = null,
-    val application: JavaApplication? = null,
-    val android: BaseExtension? = null,
     val cocoapods: CocoapodsSettings = CocoapodsSettings(),
 ) : KotlinMultiplatformExtension {
 

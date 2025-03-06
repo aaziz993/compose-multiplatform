@@ -8,7 +8,7 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinWasmWasiTargetDsl
 import plugin.project.gradle.model.HasBinaries
-import plugin.project.kotlin.kmp.model.KotlinTarget
+import plugin.project.kmp.model.KotlinTarget
 
 @Serializable
 @SerialName("wasmWasi")

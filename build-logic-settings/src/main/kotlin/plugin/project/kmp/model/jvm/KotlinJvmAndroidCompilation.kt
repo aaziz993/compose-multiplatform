@@ -5,7 +5,7 @@ import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.invoke
 import plugin.project.java.model.JavaCompile
-import plugin.project.kotlin.kmp.model.KotlinSourceSet
+import plugin.project.kmp.model.KotlinSourceSet
 import plugin.project.kotlin.model.KotlinCompilation
 import plugin.project.kotlin.model.KotlinCompilationOutput
 import plugin.project.kotlin.model.KotlinCompilationTask

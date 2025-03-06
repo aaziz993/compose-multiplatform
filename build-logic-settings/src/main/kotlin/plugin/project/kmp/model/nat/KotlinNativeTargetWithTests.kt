@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
-import plugin.project.kotlin.kmp.model.KotlinTargetWithTests
+import plugin.project.kmp.model.KotlinTargetWithTests
 
 @Serializable
 internal abstract class KotlinNativeTargetWithTests<T : KotlinNativeBinaryTestRun> :

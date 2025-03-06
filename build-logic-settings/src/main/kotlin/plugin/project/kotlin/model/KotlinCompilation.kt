@@ -5,8 +5,8 @@ import gradle.trySet
 import kotlinx.serialization.KSerializer
 import org.gradle.api.Project
 import plugin.project.gradle.model.Named
-import plugin.project.kotlin.kmp.model.KotlinSourceSet
-import plugin.project.kotlin.kmp.model.KotlinTarget
+import plugin.project.kmp.model.KotlinSourceSet
+import plugin.project.kmp.model.KotlinTarget
 
 /**
  * # Kotlin compilation

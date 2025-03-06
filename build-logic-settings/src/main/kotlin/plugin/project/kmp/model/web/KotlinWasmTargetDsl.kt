@@ -1,7 +1,7 @@
 package plugin.project.kmp.model.web
 
 import plugin.project.gradle.model.HasBinaries
-import plugin.project.kotlin.kmp.model.KotlinTarget
+import plugin.project.kmp.model.KotlinTarget
 
 internal interface KotlinWasmTargetDsl : KotlinTarget, HasBinaries<KotlinJsBinaryContainer> {
 

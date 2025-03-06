@@ -9,7 +9,7 @@ import gradle.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
-import plugin.project.kotlin.kmp.model.nat.apple.KotlinAppleTarget
+import plugin.project.kmp.model.nat.apple.KotlinAppleTarget
 
 internal class ApplePlugin : Plugin<Project> {
 
