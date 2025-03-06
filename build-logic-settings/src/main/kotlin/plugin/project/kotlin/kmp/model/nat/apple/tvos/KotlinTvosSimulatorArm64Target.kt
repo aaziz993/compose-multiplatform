@@ -13,7 +13,8 @@ import plugin.project.kotlin.kmp.model.nat.KotlinNativeBinaryContainer
 import plugin.project.kotlin.kmp.model.nat.KotlinNativeCompilation
 import plugin.project.kotlin.kmp.model.nat.KotlinNativeCompilationTransformingSerializer
 import plugin.project.kotlin.kmp.model.nat.KotlinNativeCompilerOptions
-
+import plugin.project.kotlin.kmp.model.nat.KotlinNativeSimulatorTestRun
+import plugin.project.kotlin.kmp.model.nat.KotlinNativeTargetWithSimulatorTests
 
 @Serializable
 @SerialName("tvosSimulatorArm64")
@@ -22,7 +23,8 @@ internal data class KotlinTvosSimulatorArm64Target(
     override val compilations: List<@Serializable(with = KotlinNativeCompilationTransformingSerializer::class) KotlinNativeCompilation>? = null,
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,
-) : KotlinTvosTarget() {
+    override val testRuns: List<KotlinNativeSimulatorTestRun>? = null,
+) : KotlinNativeTargetWithSimulatorTests(), KotlinTvosTarget {
 
     context(Project)
     override fun applyTo() {

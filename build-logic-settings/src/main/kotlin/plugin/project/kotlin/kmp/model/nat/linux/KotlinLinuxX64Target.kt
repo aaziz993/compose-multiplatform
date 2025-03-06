@@ -13,6 +13,8 @@ import plugin.project.kotlin.kmp.model.nat.KotlinNativeBinaryContainer
 import plugin.project.kotlin.kmp.model.nat.KotlinNativeCompilation
 import plugin.project.kotlin.kmp.model.nat.KotlinNativeCompilationTransformingSerializer
 import plugin.project.kotlin.kmp.model.nat.KotlinNativeCompilerOptions
+import plugin.project.kotlin.kmp.model.nat.KotlinNativeHostTestRun
+import plugin.project.kotlin.kmp.model.nat.KotlinNativeTargetWithHostTests
 
 @Serializable
 @SerialName("linuxX64")
@@ -21,7 +23,8 @@ internal data class KotlinLinuxX64Target(
     override val compilations: List<@Serializable(with = KotlinNativeCompilationTransformingSerializer::class) KotlinNativeCompilation>? = null,
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,
-) : KotlinLinuxTarget() {
+    override val testRuns: List<KotlinNativeHostTestRun>? = null,
+) : KotlinNativeTargetWithHostTests(), KotlinLinuxTarget {
 
     context(Project)
     override fun applyTo() {

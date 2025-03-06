@@ -27,11 +27,7 @@ internal abstract class KotlinNativeTarget : KotlinTarget,
 
         binaries?.let { binaries ->
             named.binaries {
-                binaries.framework?.let { framework ->
-                    framework {
-                        framework.applyTo(this)
-                    }
-                }
+                binaries.applyTo(this)
             }
         }
     }

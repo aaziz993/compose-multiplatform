@@ -13,6 +13,8 @@ import plugin.project.kotlin.kmp.model.nat.KotlinNativeBinaryContainer
 import plugin.project.kotlin.kmp.model.nat.KotlinNativeCompilation
 import plugin.project.kotlin.kmp.model.nat.KotlinNativeCompilationTransformingSerializer
 import plugin.project.kotlin.kmp.model.nat.KotlinNativeCompilerOptions
+import plugin.project.kotlin.kmp.model.nat.KotlinNativeSimulatorTestRun
+import plugin.project.kotlin.kmp.model.nat.KotlinNativeTargetWithSimulatorTests
 
 @Serializable
 @SerialName("watchosSimulatorArm64")
@@ -21,7 +23,8 @@ internal data class KotlinWatchosX64Target(
     override val compilations: List<@Serializable(with = KotlinNativeCompilationTransformingSerializer::class) KotlinNativeCompilation>? = null,
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,
-) : KotlinWatchosTarget() {
+    override val testRuns: List<KotlinNativeSimulatorTestRun>? = null,
+) : KotlinNativeTargetWithSimulatorTests(), KotlinWatchosTarget {
 
     context(Project)
     override fun applyTo() {

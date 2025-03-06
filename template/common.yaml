@@ -186,7 +186,6 @@ kotlin:
             # add it to avoid sqllite3 issues in iOS. Required when using NativeSQLiteDriver
             linkerOpts:
               - -lsqlite3
-
     - jsAndWasmJs:
         compilerOptions:
           optIns:
@@ -205,6 +204,7 @@ kotlin:
     - jvmAndAndroid: [ jvm, android ]
     - nonJvm: [ android, ios, web ]
     - nonAndroid: [ jvm, ios, web ]
+    - nonIos: [ jvm, android, web ]
     - mobile: [ android, ios ]
     - nonMobile: [ jvm, web ]
     - jsAndWasmJs: [ js, wasmJs ]

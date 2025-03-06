@@ -3,7 +3,6 @@ package plugin.project.android.model
 import com.android.build.api.dsl.VariantDimension
 import gradle.serialization.serializer.AnySerializer
 import kotlinx.serialization.Serializable
-import org.gradle.api.Named
 import org.gradle.api.Project
 
 @Serializable
@@ -62,9 +61,4 @@ internal data class ProductFlavorImpl(
         super<LibraryProductFlavor>.applyTo(dimension)
         super<TestProductFlavor>.applyTo(dimension)
     }
-
-//    context(Project)
-//    override fun applyTo(named: Named) =
-//        applyTo(named as VariantDimension)
-//    }
 }
