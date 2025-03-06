@@ -4,7 +4,6 @@ import gradle.kotlin
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.withType
 
 @Serializable
 @SerialName("wasmJs")
@@ -20,8 +19,8 @@ internal data class KotlinWasmJsTarget(
     override val generateTypeScriptDefinitions: Boolean? = null,
     override val compilerOptions: KotlinJsCompilerOptions? = null,
     override val binaries: KotlinJsBinaryContainer = KotlinJsBinaryContainer(),
-    override val useD8: Boolean? = null,
-    override val d8: KotlinWasmD8Dsl? = null,
+    override val d8: Boolean? = null,
+    override val d8Dsl: KotlinWasmD8Dsl? = null,
 ) : KotlinWasmJsTargetDsl {
 
     override val isLeaf: Boolean
