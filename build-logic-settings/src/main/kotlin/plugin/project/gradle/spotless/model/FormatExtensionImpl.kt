@@ -3,6 +3,7 @@
 package plugin.project.gradle.spotless.model
 
 import com.diffplug.spotless.LineEnding
+import gradle.projectProperties
 import gradle.spotless
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -43,6 +44,7 @@ internal data class FormatExtensionImpl(
 
     context(Project)
     override fun applyTo() = if (name.isEmpty()) {
+//        projectProperties.plugins.spotless.formats?.filter()
         spotless.formats.values.forEach { format ->
             applyTo(format)
         }

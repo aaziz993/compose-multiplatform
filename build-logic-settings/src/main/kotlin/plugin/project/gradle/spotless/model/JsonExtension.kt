@@ -1,5 +1,3 @@
-@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
-
 package plugin.project.gradle.spotless.model
 
 import com.diffplug.gradle.spotless.JsonExtension
@@ -15,7 +13,6 @@ import org.gradle.api.Action
 @Serializable
 @SerialName("json")
 internal data class JsonExtension(
-    override val name: String = "",
     override val lineEnding: LineEnding? = null,
     override val ratchetFrom: String? = null,
     override val excludeSteps: MutableSet<String>? = null,
@@ -46,12 +43,7 @@ internal data class JsonExtension(
 ) : FormatExtension {
 
     context(Project)
-    override fun applyTo() = if (name.isEmpty()) {
-        spotless.formats.values.forEach { format ->
-            applyTo(format)
-        }
-    }
-    else spotless.json {
+    override fun applyTo() = spotless.json {
         applyTo(this)
     }
 }

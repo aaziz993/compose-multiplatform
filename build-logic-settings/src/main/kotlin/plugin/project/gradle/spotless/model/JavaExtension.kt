@@ -1,5 +1,3 @@
-@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
-
 package plugin.project.gradle.spotless.model
 
 import com.diffplug.gradle.spotless.JavaExtension
@@ -97,12 +95,7 @@ internal data class JavaExtension(
     }
 
     context(Project)
-    override fun applyTo() = if (name.isEmpty()) {
-        spotless.formats.values.forEach { format ->
-            applyTo(format)
-        }
-    }
-    else spotless.java {
+    override fun applyTo() = spotless.java {
         applyTo(this)
     }
 }

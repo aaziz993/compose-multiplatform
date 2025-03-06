@@ -1,5 +1,3 @@
-@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
-
 package plugin.project.gradle.spotless.model
 
 import com.diffplug.spotless.LineEnding
@@ -42,12 +40,7 @@ internal data class JavascriptExtension(
 ) : FormatExtension {
 
     context(Project)
-    override fun applyTo() = if (name.isEmpty()) {
-        spotless.formats.values.forEach { format ->
-            applyTo(format)
-        }
-    }
-    else spotless.javascript {
+    override fun applyTo() = spotless.javascript {
         applyTo(this)
     }
 }

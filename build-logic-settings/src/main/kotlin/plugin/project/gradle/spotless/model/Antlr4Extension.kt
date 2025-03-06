@@ -1,5 +1,3 @@
-@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
-
 package plugin.project.gradle.spotless.model
 
 import com.diffplug.spotless.LineEnding
@@ -42,13 +40,7 @@ internal data class Antlr4Extension(
 ) : FormatExtension {
 
     context(Project)
-    override fun applyTo() =
-        if (name.isEmpty()) {
-            spotless.formats.values.forEach { format ->
-                applyTo(format)
-            }
-        }
-        else spotless.antlr4 {
-            applyTo(this)
-        }
+    override fun applyTo() = spotless.antlr4 {
+        applyTo(this)
+    }
 }

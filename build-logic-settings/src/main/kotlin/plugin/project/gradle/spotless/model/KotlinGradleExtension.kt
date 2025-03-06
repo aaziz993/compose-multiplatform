@@ -1,5 +1,3 @@
-@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
-
 package plugin.project.gradle.spotless.model
 
 import com.diffplug.spotless.LineEnding
@@ -44,12 +42,7 @@ internal data class KotlinGradleExtension(
 ) : BaseKotlinExtension() {
 
     context(Project)
-    override fun applyTo() = if (name.isEmpty()) {
-        spotless.formats.values.forEach { format ->
-            applyTo(format)
-        }
-    }
-    else spotless.kotlinGradle {
+    override fun applyTo() = spotless.kotlinGradle {
         applyTo(this)
     }
 }
