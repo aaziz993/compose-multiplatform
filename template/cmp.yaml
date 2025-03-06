@@ -41,11 +41,16 @@ compose:
       nativeDistributions:
         targetFormats: [ Dmg, Msi, Deb ]
         macOS:
-          iconFile: composeResources@jvm/drawables/MacOSIcon.icns
+          iconFile: composeResources@jvm/drawable/MacOSIcon.icns
         linux:
-          iconFile: composeResources@jvm/drawables/LinuxIcon.png
+          iconFile: composeResources@jvm/drawable/LinuxIcon.png
         windows:
-          iconFile: composeResources@jvm/drawables/WindowsIcon.ico
+          iconFile: composeResources@jvm/drawable/WindowsIcon.ico
+      buildTypes:
+        release:
+          proguard:
+            configurationFiles: [ compose-desktop.pro ]
+
 
   resources:
     publicResClass: true
