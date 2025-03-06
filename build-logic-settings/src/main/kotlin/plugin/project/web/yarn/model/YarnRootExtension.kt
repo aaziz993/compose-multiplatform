@@ -10,7 +10,6 @@ import gradle.yarn
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnLockMismatchReport
-import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension
 
 @Serializable
 internal data class YarnRootExtension(

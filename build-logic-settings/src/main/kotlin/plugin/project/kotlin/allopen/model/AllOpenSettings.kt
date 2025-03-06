@@ -1,6 +1,5 @@
 package plugin.project.kotlin.allopen.model
 
-import gradle.allOpen
 import gradle.id
 import gradle.libs
 import gradle.plugin

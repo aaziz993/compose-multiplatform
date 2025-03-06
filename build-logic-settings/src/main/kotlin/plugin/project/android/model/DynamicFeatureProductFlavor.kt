@@ -1,10 +1,7 @@
 package plugin.project.android.model
 
-import com.android.build.api.dsl.DynamicFeatureProductFlavor
 import com.android.build.api.dsl.VariantDimension
-import org.gradle.api.Named
 import org.gradle.api.Project
-import plugin.project.android.model.DynamicFeatureBaseFlavor
 
 /**
  * Encapsulates all product flavors properties for dynamic feature projects.

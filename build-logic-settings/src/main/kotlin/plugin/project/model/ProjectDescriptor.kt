@@ -1,9 +1,7 @@
 package plugin.project.model
 
-import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings
-import plugin.project.kotlin.kmp.model.KotlinTarget
 
 /**
  *

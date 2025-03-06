@@ -9,7 +9,6 @@ import gradle.plugins
 import gradle.settings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import org.jetbrains.compose.desktop.DesktopExtension
 
 @Serializable
 internal data class DesktopExtension(

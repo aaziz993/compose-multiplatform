@@ -3,7 +3,6 @@ package plugin.project.android.model
 import com.android.build.api.dsl.LibraryProductFlavor
 import com.android.build.api.dsl.VariantDimension
 import gradle.trySet
-import org.gradle.api.Named
 import org.gradle.api.Project
 
 /**

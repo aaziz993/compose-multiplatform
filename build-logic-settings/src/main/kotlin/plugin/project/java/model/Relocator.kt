@@ -19,7 +19,6 @@
 package plugin.project.java.model
 
 import com.github.jengelman.gradle.plugins.shadow.relocation.SimpleRelocator
-import kotlin.String
 import kotlinx.serialization.Serializable
 
 /**

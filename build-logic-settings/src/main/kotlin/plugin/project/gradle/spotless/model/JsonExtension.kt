@@ -1,13 +1,10 @@
 package plugin.project.gradle.spotless.model
 
-import com.diffplug.gradle.spotless.JsonExtension
 import com.diffplug.spotless.LineEnding
 import gradle.spotless
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import kotlin.reflect.KFunction1
-import org.gradle.api.Action
 
 /** Configures the special JSON-specific extension.  */
 @Serializable

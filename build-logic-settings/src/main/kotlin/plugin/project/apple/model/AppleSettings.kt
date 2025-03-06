@@ -3,7 +3,6 @@ package plugin.project.apple.model
 import gradle.apple
 import gradle.id
 import gradle.libs
-import gradle.moduleName
 import gradle.plugin
 import gradle.plugins
 import gradle.settings

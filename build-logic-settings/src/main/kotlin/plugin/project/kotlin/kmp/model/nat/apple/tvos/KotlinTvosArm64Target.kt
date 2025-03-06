@@ -1,6 +1,5 @@
 package plugin.project.kotlin.kmp.model.nat.apple.tvos
 
-import gradle.containerize
 import gradle.kotlin
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

@@ -9,7 +9,6 @@ import gradle.settings
 import gradle.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsEnvSpec
 
 @Serializable
 internal data class NodeJsEnvSpec(

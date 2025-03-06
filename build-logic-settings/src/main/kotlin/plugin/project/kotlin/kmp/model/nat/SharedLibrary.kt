@@ -1,12 +1,7 @@
 package plugin.project.kotlin.kmp.model.nat
 
-import gradle.trySet
 import kotlinx.serialization.Serializable
-import org.gradle.api.Project
-import org.jetbrains.kotlin.gradle.plugin.mpp.Framework
-import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
-import org.jetbrains.kotlin.gradle.plugin.mpp.SharedLibrary
 
 @Serializable
 internal data class SharedLibrary(

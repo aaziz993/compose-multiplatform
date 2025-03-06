@@ -1,8 +1,5 @@
 package plugin.project.model
 
-import gradle.gitRunNumber
-import gradle.spaceExecutionNumber
-import gradle.spaceGitBranch
 import kotlinx.serialization.Serializable
 
 @Serializable

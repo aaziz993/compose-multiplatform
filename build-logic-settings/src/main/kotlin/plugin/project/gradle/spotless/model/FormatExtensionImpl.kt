@@ -1,7 +1,6 @@
 package plugin.project.gradle.spotless.model
 
 import com.diffplug.spotless.LineEnding
-import gradle.projectProperties
 import gradle.spotless
 import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.jvm.isAccessible

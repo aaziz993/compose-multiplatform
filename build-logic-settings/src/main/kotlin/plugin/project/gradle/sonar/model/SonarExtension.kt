@@ -2,7 +2,6 @@ package plugin.project.gradle.sonar.model
 
 import gradle.sonar
 import org.gradle.api.Project
-import org.sonarqube.gradle.SonarExtension
 
 /**
  * Adds an action that configures SonarQube properties for the associated Gradle project.

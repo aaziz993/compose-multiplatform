@@ -1,9 +1,6 @@
 package plugin.project.gradle.develocity.model
 
-import gradle.isCI
-import gradle.projectProperties
 import gradle.tryAssign
-import org.gradle.api.Project
 import org.gradle.api.initialization.Settings
 import org.gradle.kotlin.dsl.develocity
 

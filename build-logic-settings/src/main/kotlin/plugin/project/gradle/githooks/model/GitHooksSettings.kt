@@ -1,6 +1,5 @@
 package plugin.project.gradle.githooks.model
 
-import gradle.gitHooks
 import gradle.id
 import gradle.libs
 import gradle.plugin

@@ -6,7 +6,6 @@ import gradle.libs
 import gradle.plugin
 import gradle.plugins
 import gradle.projectProperties
-import gradle.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings
 import org.gradle.kotlin.dsl.develocity

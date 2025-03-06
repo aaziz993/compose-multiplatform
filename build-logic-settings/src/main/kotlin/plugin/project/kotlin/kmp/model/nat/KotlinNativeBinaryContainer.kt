@@ -1,9 +1,7 @@
 package plugin.project.kotlin.kmp.model.nat
 
-import gradle.containerize
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.container
 import org.jetbrains.kotlin.gradle.dsl.KotlinNativeBinaryContainer
 
 /*

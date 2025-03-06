@@ -5,11 +5,11 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
-import plugin.project.kotlin.kmp.model.KotlinTarget
-import plugin.project.kotlin.model.HasConfigurableKotlinCompilerOptions
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
 import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
+import plugin.project.kotlin.kmp.model.KotlinTarget
+import plugin.project.kotlin.model.HasConfigurableKotlinCompilerOptions
 
 @Serializable
 internal abstract class KotlinJvmAndAndroidTarget :

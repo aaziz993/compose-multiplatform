@@ -3,7 +3,6 @@ package plugin.project.gradle.githooks.model
 import gradle.gitHooks
 import gradle.trySet
 import java.net.URI
-import org.danilopianini.gradle.git.hooks.GitHooksExtension
 import org.gradle.api.initialization.Settings
 
 /**

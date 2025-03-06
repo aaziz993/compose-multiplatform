@@ -4,14 +4,14 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.invoke
-import plugin.project.model.Dependency
-import plugin.project.model.DependencyTransformingSerializer
 import plugin.project.java.model.JavaCompile
 import plugin.project.kotlin.kmp.model.KotlinSourceSet
 import plugin.project.kotlin.model.KotlinCompilation
 import plugin.project.kotlin.model.KotlinCompilationOutput
 import plugin.project.kotlin.model.KotlinCompilationTask
 import plugin.project.kotlin.model.KotlinCompilationTransformingSerializer
+import plugin.project.model.Dependency
+import plugin.project.model.DependencyTransformingSerializer
 
 @Serializable
 internal data class KotlinJvmAndroidCompilation(

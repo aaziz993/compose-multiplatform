@@ -1,12 +1,10 @@
 package plugin.project.kotlin.apollo.model
 
-import gradle.apollo
 import gradle.id
 import gradle.libs
 import gradle.plugin
 import gradle.plugins
 import gradle.settings
-import gradle.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import plugin.project.model.EnabledSettings

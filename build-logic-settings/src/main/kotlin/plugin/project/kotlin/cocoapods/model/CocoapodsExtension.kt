@@ -9,7 +9,6 @@ import gradle.resolveLibrary
 import gradle.settings
 import gradle.trySet
 import java.net.URI
-import kotlin.text.removePrefix
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonContentPolymorphicSerializer
 import kotlinx.serialization.json.JsonElement

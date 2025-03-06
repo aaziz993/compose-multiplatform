@@ -4,11 +4,11 @@ import gradle.kotlin
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import plugin.project.model.Dependency
-import plugin.project.model.DependencyTransformingSerializer
+import plugin.project.gradle.model.Named
 import plugin.project.kotlin.model.HasKotlinDependencies
 import plugin.project.kotlin.model.LanguageSettingsBuilder
-import plugin.project.gradle.model.Named
+import plugin.project.model.Dependency
+import plugin.project.model.DependencyTransformingSerializer
 
 /**
  * Represents a logical group of Kotlin files, including sources, resources and additional metadata describing how

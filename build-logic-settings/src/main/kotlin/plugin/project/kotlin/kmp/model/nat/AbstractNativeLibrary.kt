@@ -2,7 +2,6 @@ package plugin.project.kotlin.kmp.model.nat
 
 import gradle.trySet
 import org.gradle.api.Named
-import org.gradle.api.NamedDomainObjectCollection
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.mpp.AbstractNativeLibrary
 

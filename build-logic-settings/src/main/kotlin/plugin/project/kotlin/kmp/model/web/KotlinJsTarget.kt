@@ -4,7 +4,6 @@ import gradle.kotlin
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
 
 @Serializable
 @SerialName("js")

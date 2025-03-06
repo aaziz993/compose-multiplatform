@@ -1,7 +1,5 @@
 package plugin.project.android.model
 
-import com.android.builder.model.SigningConfig
-
 /**
  * A Signing Configuration.
  *

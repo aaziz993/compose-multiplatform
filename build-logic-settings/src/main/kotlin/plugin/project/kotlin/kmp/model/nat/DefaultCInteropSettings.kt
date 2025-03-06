@@ -1,9 +1,6 @@
 package plugin.project.kotlin.kmp.model.nat
 
 import kotlinx.serialization.Serializable
-import org.gradle.api.NamedDomainObjectContainer
-import org.gradle.api.Project
-import org.jetbrains.kotlin.gradle.plugin.mpp.DefaultCInteropSettings
 
 @Serializable
 internal data class DefaultCInteropSettings(

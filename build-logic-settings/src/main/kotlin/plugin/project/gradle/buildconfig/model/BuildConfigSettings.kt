@@ -1,6 +1,5 @@
 package plugin.project.gradle.buildconfig.model
 
-import gradle.buildConfig
 import gradle.id
 import gradle.libs
 import gradle.plugin

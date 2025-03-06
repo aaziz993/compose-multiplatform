@@ -1,12 +1,10 @@
 package plugin.project.kotlin.atomicfu.model
 
-import gradle.atomicFU
 import gradle.id
 import gradle.libs
 import gradle.plugin
 import gradle.plugins
 import gradle.settings
-import gradle.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import plugin.project.model.EnabledSettings

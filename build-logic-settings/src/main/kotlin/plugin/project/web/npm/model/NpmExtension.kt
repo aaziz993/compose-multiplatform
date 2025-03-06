@@ -10,7 +10,6 @@ import gradle.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.npm.LockFileMismatchReport
-import org.jetbrains.kotlin.gradle.targets.js.npm.NpmExtension
 
 @Serializable
 internal data class NpmExtension(

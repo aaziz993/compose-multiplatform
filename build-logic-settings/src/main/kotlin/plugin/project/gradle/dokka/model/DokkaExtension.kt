@@ -3,7 +3,6 @@ package plugin.project.gradle.dokka.model
 import gradle.dokka
 import gradle.tryAssign
 import org.gradle.api.Project
-import org.jetbrains.dokka.gradle.DokkaExtension
 import org.jetbrains.dokka.gradle.workers.ClassLoaderIsolation
 
 /**

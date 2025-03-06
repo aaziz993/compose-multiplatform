@@ -1,7 +1,6 @@
 package plugin.project.gradle.apivalidation.model
 
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-import gradle.apiValidation
 import gradle.id
 import gradle.libs
 import gradle.maybeNamed
@@ -11,7 +10,6 @@ import gradle.settings
 import kotlinx.serialization.Serializable
 import kotlinx.validation.KotlinApiBuildTask
 import org.gradle.api.Project
-import org.gradle.api.tasks.bundling.Jar
 import org.gradle.kotlin.dsl.named
 import plugin.project.model.EnabledSettings
 

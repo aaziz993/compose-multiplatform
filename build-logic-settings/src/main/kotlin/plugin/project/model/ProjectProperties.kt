@@ -41,6 +41,8 @@ import plugin.project.gradle.doctor.DoctorPlugin
 import plugin.project.gradle.dokka.DokkaPlugin
 import plugin.project.gradle.githooks.GitHooksPlugin
 import plugin.project.gradle.kover.KoverPlugin
+import plugin.project.gradle.model.Task
+import plugin.project.gradle.model.TaskTransformingSerializer
 import plugin.project.gradle.shadow.ShadowPlugin
 import plugin.project.gradle.sonar.SonarPlugin
 import plugin.project.gradle.spotless.SpotlessPlugin
@@ -53,12 +55,10 @@ import plugin.project.kotlin.apollo.ApolloPlugin
 import plugin.project.kotlin.atomicfu.AtomicFUPlugin
 import plugin.project.kotlin.kmp.KMPPlugin
 import plugin.project.kotlin.kmp.model.KotlinTarget
-import plugin.project.kotlin.model.KotlinSettings
 import plugin.project.kotlin.ksp.KspPlugin
 import plugin.project.kotlin.ktorfit.KtorfitPlugin
 import plugin.project.kotlin.model.HasKotlinDependencies
-import plugin.project.gradle.model.Task
-import plugin.project.gradle.model.TaskTransformingSerializer
+import plugin.project.kotlin.model.KotlinSettings
 import plugin.project.kotlin.noarg.NoArgPlugin
 import plugin.project.kotlin.powerassert.PowerAssertPlugin
 import plugin.project.kotlin.room.RoomPlugin

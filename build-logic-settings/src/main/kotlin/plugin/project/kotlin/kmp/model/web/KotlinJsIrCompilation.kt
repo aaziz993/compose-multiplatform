@@ -4,9 +4,9 @@ import gradle.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
+import plugin.project.kotlin.model.KotlinCompilationTransformingSerializer
 import plugin.project.model.Dependency
 import plugin.project.model.DependencyTransformingSerializer
-import plugin.project.kotlin.model.KotlinCompilationTransformingSerializer
 
 @Serializable
 internal data class KotlinJsIrCompilation(

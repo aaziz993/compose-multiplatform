@@ -1,16 +1,25 @@
 package plugin.project.java.model
 
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-import gradle.*
+import gradle.id
+import gradle.libs
+import gradle.plugin
+import gradle.plugins
 import gradle.serialization.serializer.AnySerializer
+import gradle.settings
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.api.file.DuplicatesStrategy
 import org.gradle.api.tasks.bundling.ZipEntryCompression
-import plugin.project.gradle.model.*
 import org.gradle.kotlin.dsl.withType
+import plugin.project.gradle.model.CopySpecImpl
+import plugin.project.gradle.model.Expand
+import plugin.project.gradle.model.FileCopyDetails
+import plugin.project.gradle.model.FilesMatching
+import plugin.project.gradle.model.FromSpec
+import plugin.project.gradle.model.IntoSpec
 
 @Serializable
 @SerialName("shadowJar")

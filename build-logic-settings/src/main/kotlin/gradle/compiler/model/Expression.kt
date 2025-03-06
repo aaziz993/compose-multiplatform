@@ -1,7 +1,5 @@
 package gradle.compiler.model
 
-import com.ionspin.kotlin.bignum.decimal.BigDecimal
-
 public sealed class Expression
 
 public data class Const(val value: Int) : Expression()

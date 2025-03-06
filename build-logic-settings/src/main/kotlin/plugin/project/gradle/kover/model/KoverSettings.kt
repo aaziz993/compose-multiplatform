@@ -1,7 +1,6 @@
 package plugin.project.gradle.kover.model
 
 import gradle.id
-import gradle.kover
 import gradle.libs
 import gradle.plugin
 import gradle.plugins

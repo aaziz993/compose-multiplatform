@@ -1,8 +1,6 @@
 package plugin.project.kotlin.cocoapods.model
 
-import gradle.cocoapods
 import gradle.id
-import gradle.kotlin
 import gradle.libs
 import gradle.plugin
 import gradle.plugins

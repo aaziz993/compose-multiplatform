@@ -9,9 +9,9 @@ import gradle.plugin
 import gradle.plugins
 import gradle.prefixIfNotEmpty
 import gradle.projectProperties
+import gradle.replace
 import gradle.settings
 import gradle.sourceSetsToComposeResourcesDirs
-import gradle.replace
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation

@@ -3,10 +3,10 @@ package plugin.project.kotlin.kmp.model.nat
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
-import plugin.project.model.Dependency
-import plugin.project.model.DependencyTransformingSerializer
 import plugin.project.kotlin.model.KotlinCompilation
 import plugin.project.kotlin.model.KotlinCompilationTransformingSerializer
+import plugin.project.model.Dependency
+import plugin.project.model.DependencyTransformingSerializer
 
 @Serializable
 internal data class KotlinNativeCompilation(
