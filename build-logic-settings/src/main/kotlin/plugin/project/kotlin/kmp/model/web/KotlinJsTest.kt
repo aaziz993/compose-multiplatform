@@ -32,9 +32,9 @@ internal data class KotlinJsTest(
     val debug: Boolean? = null,
     val nodeJsArgs: List<String>? = null,
     val useMocha: Boolean? = null,
-    val mocha: KotlinMocha? = null,
+    val useMochaDsl: KotlinMocha? = null,
     val useKarma: Boolean? = null,
-    val karma: KotlinKarma? = null,
+    val useKarmaDsl: KotlinKarma? = null,
 ) : KotlinTest {
 
     context(Project)
@@ -50,15 +50,15 @@ internal data class KotlinJsTest(
 
         useMocha?.takeIf { it }?.run { named.useMocha() }
 
-        mocha?.let { mocha ->
-            named.useMocha(mocha::applyTo)
+        useMochaDsl?.let { useMochaDsl ->
+            named.useMocha(useMochaDsl::applyTo)
         }
 
         useKarma?.takeIf { it }?.run { named.useKarma() }
 
-        karma?.let { karma ->
+        useKarmaDsl?.let { useKarmaDsl ->
             named.useKarma {
-                karma.applyTo(this)
+                useKarmaDsl.applyTo(this)
             }
         }
     }

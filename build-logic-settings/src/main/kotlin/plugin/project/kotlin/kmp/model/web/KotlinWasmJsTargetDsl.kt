@@ -8,8 +8,8 @@ import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinWasmJsTargetDsl
 
 internal interface KotlinWasmJsTargetDsl : KotlinWasmTargetDsl, KotlinJsTargetDsl {
 
-    val useD8: Boolean?
-    val d8: KotlinWasmD8Dsl?
+    val d8: Boolean?
+    val d8Dsl: KotlinWasmD8Dsl?
 
     context(Project)
     override fun applyTo(named: Named) {
@@ -18,11 +18,11 @@ internal interface KotlinWasmJsTargetDsl : KotlinWasmTargetDsl, KotlinJsTargetDs
 
         named as KotlinWasmJsTargetDsl
 
-        useD8?.takeIf { it }?.run { named.d8() }
+        d8?.takeIf { it }?.run { named.d8() }
 
-        d8?.let { d8 ->
+        d8Dsl?.let { d8Dsl ->
             named.d8 {
-                d8.applyTo(this)
+                d8Dsl.applyTo(this)
             }
         }
     }

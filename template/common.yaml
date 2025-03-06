@@ -348,12 +348,12 @@ kotlin:
             - kotlin.js.ExperimentalJsExport
         browser:
           testTask:
-            karma:
+            useKarmaDsl:
               configDirectory: ../gradle/js/karma.config.d
               useChromeHeadless: true
         nodejs:
           testTask:
-            mocha:
+            useMochaDsl:
               timeout: 600s
 
   sourceSets:
