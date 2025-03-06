@@ -259,16 +259,6 @@ internal data class ProjectProperties(
             }
         }
 
-        if (!kotlin.enabledKMP) {
-            dependencies
-                ?.singleOrNull { dependency -> dependency.configuration == "kspCommonMainMetadata" }
-                ?.let { dependency ->
-                    dependencies {
-                        add("ksp", dependency.resolve())
-                    }
-                }
-        }
-
         tasks?.forEach { task ->
             task.applyTo()
         }

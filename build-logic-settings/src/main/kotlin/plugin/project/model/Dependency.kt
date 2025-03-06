@@ -42,21 +42,19 @@ internal data class Dependency(
         settings.allLibs,
         layout.projectDirectory,
     ) { notation ->
-        if (notation.startsWith(":")) {
-            project(notation)
-        }
-        else {
-            notation
-        }
+        if (notation.startsWith(":")) project(notation) else notation
     }
 
     context(Project)
     fun applyTo(handler: DependencyHandlerScope) =
-        if (configurations.findByName(configuration) != null) {
-            handler.add(configuration, resolve())
-        }
-        else {
-            logger.warn("Configuration doesn't exists: $configuration")
+        when {
+            configurations.findByName(configuration) != null ->
+                handler.add(configuration, resolve())
+
+            configuration == "kspCommonMainMetadata" && configurations.findByName("ksp") != null ->
+                handler.add("ksp", resolve())
+
+            else -> logger.warn("Configuration doesn't exists: $configuration")
         }
 
     context(Project)
