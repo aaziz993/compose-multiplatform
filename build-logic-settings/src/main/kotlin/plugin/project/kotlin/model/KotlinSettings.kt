@@ -39,8 +39,8 @@ internal data class KotlinSettings(
     val cocoapods: CocoapodsSettings = CocoapodsSettings(),
 ) : KotlinMultiplatformExtension {
 
-    val enableKMP: Boolean by lazy {
-        targets?.any { target -> target::class != targets.first()::class } == true
+    val enabledKMP: Boolean by lazy {
+        targets?.any(KotlinTarget::needKMP) == true || targets?.any { target -> target::class != targets.first()::class } == true
     }
 
     context(Project)

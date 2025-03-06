@@ -25,6 +25,9 @@ internal interface KotlinTarget : Named {
      */
     val compilations: List<KotlinCompilation>?
 
+    val needKMP: Boolean
+        get() = true
+
     context(Project)
     override fun applyTo(named: org.gradle.api.Named) {
         named as org.jetbrains.kotlin.gradle.plugin.KotlinTarget

@@ -39,7 +39,7 @@ internal class AndroidPlugin : Plugin<Project> {
 
 //            projectProperties.android?.applyTo()
 
-            if (!projectProperties.kotlin.enableKMP) {
+            if (!projectProperties.kotlin.enabledKMP) {
                 projectProperties.kotlin
                     .sourceSets<KotlinAndroidTarget>()
                     ?.forEach { sourceSet ->

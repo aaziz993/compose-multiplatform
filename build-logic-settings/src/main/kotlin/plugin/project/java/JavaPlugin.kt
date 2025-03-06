@@ -17,7 +17,6 @@ import plugin.project.kotlin.kmp.model.jvm.KotlinJvmTarget
 import plugin.project.kotlin.model.sourceSets
 import plugin.project.model.ProjectLayout
 import plugin.project.model.ProjectType
-import plugin.project.model.dependencies
 
 internal class JavaPlugin : Plugin<Project> {
 
@@ -47,7 +46,7 @@ internal class JavaPlugin : Plugin<Project> {
                 projectProperties.application?.applyTo()
             }
 
-            if (!projectProperties.kotlin.enableKMP) {
+            if (!projectProperties.kotlin.enabledKMP) {
                 projectProperties.kotlin.sourceSets<KotlinJvmTarget>()?.forEach { sourceSet ->
                     val compilationPrefix =
                         if (sourceSet.name.endsWith(SourceSet.TEST_SOURCE_SET_NAME, true)) "test" else ""
@@ -57,7 +56,9 @@ internal class JavaPlugin : Plugin<Project> {
                             dependencies.forEach { dependency ->
                                 add(
                                     "$compilationPrefix${dependency.configuration.capitalized()}"
-                                        .decapitalized(),
+                                        .decapitalized().also {
+                                            println("ADD JAVA DEP $it: ${dependency.resolve()}")
+                                        },
                                     dependency.resolve(),
                                 )
                             }
@@ -71,7 +72,7 @@ internal class JavaPlugin : Plugin<Project> {
     }
 
     private fun Project.adjustSourceSets() {
-        val isMultiplatform = projectProperties.kotlin.enableKMP
+        val isMultiplatform = projectProperties.kotlin.enabledKMP
 
         when (projectProperties.layout) {
             ProjectLayout.FLAT -> {
