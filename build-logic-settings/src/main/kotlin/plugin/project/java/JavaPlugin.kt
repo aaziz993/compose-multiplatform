@@ -48,14 +48,6 @@ internal class JavaPlugin : Plugin<Project> {
             }
 
             if (!projectProperties.kotlin.enabledKMP) {
-                projectProperties.dependencies<KotlinJvmTarget>("ksp")?.let { dependencies ->
-                    dependencies {
-                        dependencies.forEach {
-
-
-                        }
-                    }
-                }
                 projectProperties.kotlin.sourceSets<KotlinJvmTarget>()?.forEach { sourceSet ->
                     val compilationPrefix =
                         if (sourceSet.name.endsWith(SourceSet.TEST_SOURCE_SET_NAME, true)) "test" else ""

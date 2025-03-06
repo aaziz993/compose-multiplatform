@@ -259,6 +259,16 @@ internal data class ProjectProperties(
             }
         }
 
+        if (!kotlin.enabledKMP) {
+            dependencies
+                ?.singleOrNull { dependency -> dependency.configuration == "kspCommonMainMetadata" }
+                ?.let { dependency ->
+                    dependencies {
+                        add("ksp", dependency.resolve())
+                    }
+                }
+        }
+
         tasks?.forEach { task ->
             task.applyTo()
         }
@@ -317,15 +327,5 @@ internal data class ProjectProperties(
                 maven(repository)
             }
         }
-    }
-}
-
-internal inline fun <reified T : KotlinTarget> ProjectProperties.dependencies(
-    configurationPrefix: String
-): List<Dependency>? {
-    val targets = kotlin.targets?.filterIsInstance<T>() ?: return null
-
-    return dependencies?.filter { dependency ->
-        dependency.configuration == "kspCommonMainMetadata" || targets.any { target -> dependency.configuration.startsWith("${configurationPrefix}${target.targetName.capitalized()}") }
     }
 }
