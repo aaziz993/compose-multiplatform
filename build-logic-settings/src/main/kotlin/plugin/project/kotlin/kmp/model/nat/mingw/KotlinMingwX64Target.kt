@@ -21,6 +21,9 @@ internal data class KotlinMingwX64Target(
     override val testRuns: List<KotlinNativeHostTestRun>? = null,
 ) : KotlinNativeTargetWithHostTests(), KotlinMingwTarget {
 
+    override val isLeaf: Boolean
+        get() = true
+
     context(Project)
     override fun applyTo() {
         create(kotlin::mingwX64)

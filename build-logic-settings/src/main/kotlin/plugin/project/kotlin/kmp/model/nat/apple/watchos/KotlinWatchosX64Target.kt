@@ -21,6 +21,9 @@ internal data class KotlinWatchosX64Target(
     override val testRuns: List<KotlinNativeSimulatorTestRun>? = null,
 ) : KotlinNativeTargetWithSimulatorTests(), KotlinWatchosTarget {
 
+    override val isLeaf: Boolean
+        get() = true
+
     context(Project)
     override fun applyTo() {
         create(kotlin::watchosX64)

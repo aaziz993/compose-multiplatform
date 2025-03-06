@@ -19,6 +19,9 @@ internal data class KotlinWasmWasiTarget(
     override val binaries: KotlinJsBinaryContainer = KotlinJsBinaryContainer(),
 ) : KotlinTarget, KotlinTargetWithNodeJsDsl, HasBinaries<KotlinJsBinaryContainer> {
 
+    override val isLeaf: Boolean
+        get() = true
+
     context(Project)
     override fun applyTo(named: Named) {
         super<KotlinTarget>.applyTo(named)

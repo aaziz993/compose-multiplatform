@@ -3,6 +3,7 @@ package plugin.project.gradle.spotless.model
 import com.diffplug.spotless.LineEnding
 import gradle.spotless
 import kotlin.reflect.full.declaredMemberProperties
+import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.isAccessible
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -44,8 +45,7 @@ internal data class FormatExtensionImpl(
     context(Project)
     @Suppress("UNCHECKED_CAST")
     override fun applyTo() = if (name.isEmpty()) {
-        println("SPOTLESS PROPS: ${spotless::class.declaredMemberProperties.map { it.name }}")
-        spotless::class.declaredMemberProperties
+        spotless::class.memberProperties
             .single { property -> property.name == "formats" }
             .let { property ->
                 property.isAccessible = true

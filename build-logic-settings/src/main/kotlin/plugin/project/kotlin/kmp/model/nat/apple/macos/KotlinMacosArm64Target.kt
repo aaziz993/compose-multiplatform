@@ -21,6 +21,9 @@ internal data class KotlinMacosArm64Target(
     override val testRuns: List<KotlinNativeHostTestRun>? = null,
 ) : KotlinNativeTargetWithHostTests(), KotlinMacosTarget {
 
+    override val isLeaf: Boolean
+        get() = true
+
     context(Project)
     override fun applyTo() {
         create(kotlin::macosArm64)

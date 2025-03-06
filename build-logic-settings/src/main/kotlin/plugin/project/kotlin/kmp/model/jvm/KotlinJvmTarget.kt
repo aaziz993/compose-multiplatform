@@ -19,6 +19,9 @@ internal data class KotlinJvmTarget(
     val withJava: Boolean? = null,
 ) : KotlinJvmAndAndroidTarget() {
 
+    override val isLeaf: Boolean
+        get() = true
+
     context(Project)
     override fun applyTo(named: Named) {
         super.applyTo(named)

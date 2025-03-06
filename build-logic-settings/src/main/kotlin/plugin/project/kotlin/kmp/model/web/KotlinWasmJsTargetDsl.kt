@@ -1,0 +1,26 @@
+package plugin.project.kotlin.kmp.model.web
+
+import org.gradle.api.Named
+import org.gradle.api.Project
+import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinWasmD8Dsl
+import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinWasmJsTargetDsl
+
+internal interface KotlinWasmJsTargetDsl : KotlinWasmTargetDsl, KotlinJsTargetDsl {
+
+    val useD8: Boolean?
+    val d8: KotlinWasmD8Dsl?
+
+    context(Project)
+    override fun applyTo(named: Named) {
+        super<KotlinWasmTargetDsl>.applyTo(named)
+        super<KotlinJsTargetDsl>.applyTo(named)
+
+        named as KotlinWasmJsTargetDsl
+
+        useD8?.takeIf { it }?.run { named.d8() }
+
+        d8?.let { d8 ->
+
+        }
+    }
+}

@@ -319,14 +319,13 @@ internal data class ProjectProperties(
     }
 }
 
-internal inline fun <reified T : KotlinTarget> ProjectProperties.dependencies(): List<Dependency>? {
-//    val targets = kotlin.targets?.filterIsInstance<T>() ?: return null
-//
-//    dependencies?.filterIsInstance<Dependency>()?.mapNotNull { dependency ->
-//        if (dependency.configuration.startsWith("ksp")) {
-//            targets.any { target -> dependency.configuration.startsWith("ksp${target.targetName.capitalized()}") }
-//        }
-//        dependency
+internal inline fun <reified T : KotlinTarget> ProjectProperties.dependencies(
+    configurationPrefix: String
+): List<Dependency>? {
+    val targets = kotlin.targets?.filterIsInstance<T>() ?: return null
+
+//    dependencies?.filterIsInstance<Dependency>()?.filter { dependency ->
+//        dependency.configuration.startsWith("configurationPrefix)
 //    }
     return null
 }

@@ -21,6 +21,9 @@ internal data class KotlinLinuxX64Target(
     override val testRuns: List<KotlinNativeHostTestRun>? = null,
 ) : KotlinNativeTargetWithHostTests(), KotlinLinuxTarget {
 
+    override val isLeaf: Boolean
+        get() = true
+
     context(Project)
     override fun applyTo() {
         create(kotlin::linuxX64)

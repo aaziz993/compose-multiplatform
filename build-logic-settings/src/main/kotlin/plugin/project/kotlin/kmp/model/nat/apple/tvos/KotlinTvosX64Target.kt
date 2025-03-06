@@ -21,6 +21,9 @@ internal data class KotlinTvosX64Target(
     override val testRuns: List<KotlinNativeSimulatorTestRun>? = null,
 ) : KotlinNativeTargetWithSimulatorTests(), KotlinTvosTarget {
 
+    override val isLeaf: Boolean
+        get() = true
+
     context(Project)
     override fun applyTo() {
         create(kotlin::tvosX64)

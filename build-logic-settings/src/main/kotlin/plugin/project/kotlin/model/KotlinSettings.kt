@@ -40,7 +40,9 @@ internal data class KotlinSettings(
 ) : KotlinMultiplatformExtension {
 
     val enabledKMP: Boolean by lazy {
-        targets?.any(KotlinTarget::needKMP) == true || targets?.any { target -> target::class != targets.first()::class } == true
+        targets?.filter(KotlinTarget::isLeaf)?.let { targets ->
+            targets.any(KotlinTarget::needKMP) || targets.any { target -> target::class != targets.first()::class }
+        } == true
     }
 
     context(Project)

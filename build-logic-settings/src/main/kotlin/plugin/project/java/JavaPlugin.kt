@@ -48,13 +48,22 @@ internal class JavaPlugin : Plugin<Project> {
 
             println(
                 """APPLY SINGLE JAVA
+                Project: ${project.name}
                 EnabledKMP: ${projectProperties.kotlin.enabledKMP}
                 Targets: ${projectProperties.kotlin.targets?.map { it::class.simpleName }}
             """.trimMargin(),
             )
 
             if (!projectProperties.kotlin.enabledKMP) {
+                projectProperties.dependencies?.let { dependencies ->
+                    dependencies {
+                        dependencies.filter { dependency ->
+                            dependency.configuration.startsWith("ksp")
+                        }.forEach {
 
+                        }
+                    }
+                }
                 projectProperties.kotlin.sourceSets<KotlinJvmTarget>()?.forEach { sourceSet ->
                     val compilationPrefix =
                         if (sourceSet.name.endsWith(SourceSet.TEST_SOURCE_SET_NAME, true)) "test" else ""

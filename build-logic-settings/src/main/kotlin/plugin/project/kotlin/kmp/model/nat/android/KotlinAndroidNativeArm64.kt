@@ -18,6 +18,9 @@ internal data class KotlinAndroidNativeArm64(
     override val binaries: KotlinNativeBinaryContainer? = null,
 ) : KotlinAndroidNative() {
 
+    override val isLeaf: Boolean
+        get() = true
+
     context(Project)
     override fun applyTo() {
         create(kotlin::androidNativeArm64)

@@ -114,6 +114,8 @@ plugins:
           target: [ '**/*.properties' ]
           # exclude source files
           targetExclude: [ ../LICENSE_HEADER.properties ]
+          # removes any extra whitespace at the beginning of lines
+          indentWithSpaces: true
       - format:
           name: html
           # specify license header text

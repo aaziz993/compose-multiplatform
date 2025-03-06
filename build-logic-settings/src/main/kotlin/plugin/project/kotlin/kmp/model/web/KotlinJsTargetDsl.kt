@@ -8,30 +8,30 @@ import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalMainFunctionArgumentsDsl
+import org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsIrTarget
 import plugin.project.gradle.model.HasBinaries
 import plugin.project.kotlin.kmp.model.KotlinTarget
 import plugin.project.kotlin.model.HasConfigurableKotlinCompilerOptions
 
-@Serializable
-internal abstract class KotlinJsTargetDsl : KotlinTarget, KotlinTargetWithNodeJsDsl,
+internal interface KotlinJsTargetDsl : KotlinTarget, KotlinTargetWithNodeJsDsl,
     HasBinaries<KotlinJsBinaryContainer>, HasConfigurableKotlinCompilerOptions<KotlinJsCompilerOptions> {
 
     abstract override val compilations: List<KotlinJsCompilation>?
 
-    abstract val moduleName: String?
+     val moduleName: String?
 
-    abstract val browser: KotlinJsBrowserDsl?
+     val browser: KotlinJsBrowserDsl?
 
-    abstract val useCommonJs: Boolean?
+     val useCommonJs: Boolean?
 
-    abstract val useEsModules: Boolean?
+     val useEsModules: Boolean?
 
     /**
      * The function accepts [jsExpression] and puts this expression as the "args: Array<String>" argument in place of main-function call
      */
-    abstract val passAsArgumentToMainFunction: String?
+     val passAsArgumentToMainFunction: String?
 
-    abstract val generateTypeScriptDefinitions: Boolean?
+     val generateTypeScriptDefinitions: Boolean?
 
     context(Project)
     @OptIn(ExperimentalMainFunctionArgumentsDsl::class)

@@ -23,6 +23,9 @@ internal data class KotlinWasmJsTarget(
     override val binaries: KotlinJsBinaryContainer = KotlinJsBinaryContainer(),
 ) : KotlinJsTargetDsl() {
 
+    override val isLeaf: Boolean
+        get() = true
+
     context(Project)
     override fun applyTo() {
         create(kotlin::wasmJs)

@@ -21,6 +21,9 @@ internal data class KotlinIosX64Target(
     override val testRuns: List<KotlinNativeSimulatorTestRun>? = null,
 ) : KotlinNativeTargetWithSimulatorTests(), KotlinIosTarget {
 
+    override val isLeaf: Boolean
+        get() = true
+
     context(Project)
     override fun applyTo() {
         create(kotlin::iosX64)
