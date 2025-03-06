@@ -13,6 +13,7 @@ import org.gradle.api.Project
 
 @Serializable(with = FormatExtensionSerializer::class)
 internal interface FormatExtension {
+
     val lineEnding: LineEnding?
     val ratchetFrom: String?
     val excludeSteps: Set<String>?
@@ -80,7 +81,7 @@ internal interface FormatExtension {
         trimTrailingWhitespace?.takeIf { it }?.run { extension.trimTrailingWhitespace() }
         endWithNewline?.takeIf { it }?.run { extension.endWithNewline() }
         indentWithSpaces?.let(extension::indentWithSpaces)
-        indentIfWithSpaces?.takeIf { it }?.let { extension.trimTrailingWhitespace() }
+        indentIfWithSpaces?.takeIf { it }?.let { extension.indentWithSpaces() }
         indentWithTabs?.let(extension::indentWithTabs)
         indentIfWithTabs?.takeIf { it }?.run { extension.indentWithTabs() }
         nativeCmd?.forEach { (name, pathToExe, arguments) -> extension.nativeCmd(name, pathToExe, arguments) }

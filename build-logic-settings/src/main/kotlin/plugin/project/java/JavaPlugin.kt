@@ -17,6 +17,7 @@ import plugin.project.kotlin.kmp.model.jvm.android.KotlinAndroidTarget
 import plugin.project.kotlin.model.sourceSets
 import plugin.project.model.ProjectLayout
 import plugin.project.model.ProjectType
+import plugin.project.model.dependencies
 
 internal class JavaPlugin : Plugin<Project> {
 
@@ -46,20 +47,11 @@ internal class JavaPlugin : Plugin<Project> {
                 projectProperties.application?.applyTo()
             }
 
-            println(
-                """APPLY SINGLE JAVA
-                Project: ${project.name}
-                EnabledKMP: ${projectProperties.kotlin.enabledKMP}
-                Targets: ${projectProperties.kotlin.targets?.map { it::class.simpleName }}
-            """.trimMargin(),
-            )
-
             if (!projectProperties.kotlin.enabledKMP) {
-                projectProperties.dependencies?.let { dependencies ->
+                projectProperties.dependencies<KotlinJvmTarget>("ksp")?.let { dependencies ->
                     dependencies {
-                        dependencies.filter { dependency ->
-                            dependency.configuration.startsWith("ksp")
-                        }.forEach {
+                        dependencies.forEach {
+
 
                         }
                     }

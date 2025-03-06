@@ -22,6 +22,7 @@ import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.api.file.FileCollection
 import org.gradle.api.initialization.Settings
 import org.gradle.api.internal.artifacts.repositories.DefaultMavenArtifactRepository
+import org.gradle.internal.extensions.stdlib.capitalized
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.maven
 import org.gradle.kotlin.dsl.repositories
@@ -324,8 +325,7 @@ internal inline fun <reified T : KotlinTarget> ProjectProperties.dependencies(
 ): List<Dependency>? {
     val targets = kotlin.targets?.filterIsInstance<T>() ?: return null
 
-//    dependencies?.filterIsInstance<Dependency>()?.filter { dependency ->
-//        dependency.configuration.startsWith("configurationPrefix)
-//    }
-    return null
+    return dependencies?.filter { dependency ->
+        dependency.configuration == "kspCommonMainMetadata" || targets.any { target -> dependency.configuration.startsWith("${configurationPrefix}${target.targetName.capitalized()}") }
+    }
 }
