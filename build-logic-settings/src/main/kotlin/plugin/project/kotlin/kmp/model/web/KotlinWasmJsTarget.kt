@@ -5,7 +5,6 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
-import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinWasmJsTargetDsl
 
 @Serializable
 @SerialName("wasmJs")
@@ -21,7 +20,9 @@ internal data class KotlinWasmJsTarget(
     override val generateTypeScriptDefinitions: Boolean? = null,
     override val compilerOptions: KotlinJsCompilerOptions? = null,
     override val binaries: KotlinJsBinaryContainer = KotlinJsBinaryContainer(),
-) : KotlinJsTargetDsl() {
+    override val useD8: Boolean? = null,
+    override val d8: KotlinWasmD8Dsl? = null,
+) : KotlinWasmJsTargetDsl {
 
     override val isLeaf: Boolean
         get() = true
@@ -30,6 +31,6 @@ internal data class KotlinWasmJsTarget(
     override fun applyTo() {
         create(kotlin::wasmJs)
 
-        super.applyTo(kotlin.targets.withType<KotlinWasmJsTargetDsl>())
+        super.applyTo()
     }
 }

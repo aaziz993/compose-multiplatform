@@ -1,8 +1,9 @@
 package plugin.project.kotlin.kmp.model.web
 
+import gradle.kotlin
 import org.gradle.api.Named
 import org.gradle.api.Project
-import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinWasmD8Dsl
+import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinWasmJsTargetDsl
 
 internal interface KotlinWasmJsTargetDsl : KotlinWasmTargetDsl, KotlinJsTargetDsl {
@@ -20,7 +21,13 @@ internal interface KotlinWasmJsTargetDsl : KotlinWasmTargetDsl, KotlinJsTargetDs
         useD8?.takeIf { it }?.run { named.d8() }
 
         d8?.let { d8 ->
-
+            named.d8 {
+                d8.applyTo(this)
+            }
         }
     }
+
+    context(Project)
+    override fun applyTo() =
+        applyTo(kotlin.targets.withType<KotlinWasmJsTargetDsl>())
 }

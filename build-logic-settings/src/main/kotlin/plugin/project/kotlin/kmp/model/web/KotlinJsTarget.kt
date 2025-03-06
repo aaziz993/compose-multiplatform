@@ -19,7 +19,7 @@ internal data class KotlinJsTarget(
     override val generateTypeScriptDefinitions: Boolean? = null,
     override val compilerOptions: KotlinJsCompilerOptions? = null,
     override val binaries: KotlinJsBinaryContainer = KotlinJsBinaryContainer(),
-) : KotlinJsTargetDsl() {
+) : KotlinJsTargetDsl {
 
     override val isLeaf: Boolean
         get() = true
