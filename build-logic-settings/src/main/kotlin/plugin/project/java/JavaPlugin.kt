@@ -15,8 +15,8 @@ import org.gradle.kotlin.dsl.dependencies
 import gradle.model.kmp.jvm.KotlinJvmTarget
 import gradle.model.kmp.jvm.android.KotlinAndroidTarget
 import gradle.model.kotlin.sourceSets
-import plugin.project.model.ProjectLayout
-import plugin.project.model.ProjectType
+import gradle.model.project.ProjectLayout
+import gradle.model.project.ProjectType
 
 internal class JavaPlugin : Plugin<Project> {
 

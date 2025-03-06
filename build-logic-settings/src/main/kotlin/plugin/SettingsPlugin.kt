@@ -10,8 +10,8 @@ import org.gradle.api.Plugin
 import org.gradle.api.file.Directory
 import org.gradle.api.initialization.Settings
 import org.yaml.snakeyaml.Yaml
-import plugin.project.model.ProjectProperties
-import plugin.project.problemreporter.SLF4JProblemReporterContext
+import gradle.model.project.ProjectProperties
+import gradle.problemreporter.SLF4JProblemReporterContext
 
 private const val PROJECT_PROPERTIES_FILE = "project.yaml"
 

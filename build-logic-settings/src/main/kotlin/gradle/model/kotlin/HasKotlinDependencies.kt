@@ -1,8 +1,8 @@
 package gradle.model.kotlin
 
 import kotlinx.serialization.Serializable
-import plugin.project.model.Dependency
-import plugin.project.model.DependencyTransformingSerializer
+import gradle.model.project.Dependency
+import gradle.model.project.DependencyTransformingSerializer
 
 /**
  * Contains all the configurable Kotlin dependencies for a Kotlin DSL entity, like an instance of `KotlinSourceSet`.

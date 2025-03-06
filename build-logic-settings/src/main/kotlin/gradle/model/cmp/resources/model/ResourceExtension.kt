@@ -14,7 +14,7 @@ import gradle.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.compose.resources.ResourcesExtension
-import plugin.project.model.ProjectLayout
+import gradle.model.project.ProjectLayout
 
 @Serializable
 internal data class ResourcesExtension(

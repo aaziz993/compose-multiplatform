@@ -4,7 +4,7 @@ import gradle.projectProperties
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsBinaryContainer
-import plugin.project.model.ProjectType
+import gradle.model.project.ProjectType
 
 @Serializable
 internal data class KotlinJsBinaryContainer(

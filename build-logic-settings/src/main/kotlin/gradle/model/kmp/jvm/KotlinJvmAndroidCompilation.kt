@@ -10,8 +10,8 @@ import gradle.model.kotlin.KotlinCompilation
 import gradle.model.kotlin.KotlinCompilationOutput
 import gradle.model.kotlin.KotlinCompilationTask
 import gradle.model.kotlin.KotlinCompilationTransformingSerializer
-import plugin.project.model.Dependency
-import plugin.project.model.DependencyTransformingSerializer
+import gradle.model.project.Dependency
+import gradle.model.project.DependencyTransformingSerializer
 
 @Serializable
 internal data class KotlinJvmAndroidCompilation(

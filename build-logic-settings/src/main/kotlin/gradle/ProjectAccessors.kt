@@ -44,7 +44,7 @@ import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension
 import org.jetbrains.kotlin.noarg.gradle.NoArgExtension
 import org.jetbrains.kotlin.powerassert.gradle.PowerAssertGradleExtension
 import org.sonarqube.gradle.SonarExtension
-import plugin.project.model.ProjectProperties
+import gradle.model.project.ProjectProperties
 
 private const val PROJECT_PROPERTIES_EXT = "project.properties.ext"
 

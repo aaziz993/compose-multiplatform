@@ -18,7 +18,7 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
 import gradle.model.kotlin.KotlinSettings
-import plugin.project.model.ProjectLayout
+import gradle.model.project.ProjectLayout
 
 internal class KMPPlugin : Plugin<Project> {
 

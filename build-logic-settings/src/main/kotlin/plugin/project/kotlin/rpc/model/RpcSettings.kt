@@ -8,7 +8,7 @@ import gradle.settings
 import kotlinx.rpc.RpcDangerousApi
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import plugin.project.model.EnabledSettings
+import gradle.model.project.EnabledSettings
 
 @Serializable
 internal data class RpcSettings(

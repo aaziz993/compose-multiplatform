@@ -6,7 +6,7 @@ import gradle.plugin
 import gradle.plugins
 import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings
-import plugin.project.model.EnabledSettings
+import gradle.model.project.EnabledSettings
 
 @Serializable
 internal data class GitHooksSettings(

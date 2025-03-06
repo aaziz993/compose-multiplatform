@@ -10,7 +10,7 @@ import gradle.settings
 import gradle.unregister
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import plugin.project.model.EnabledSettings
+import gradle.model.project.EnabledSettings
 
 @Suppress("PropertyName", "ktlint:standard:property-naming")
 @Serializable

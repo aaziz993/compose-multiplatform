@@ -10,7 +10,7 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import gradle.model.cmp.desktop.model.DesktopExtension
 import gradle.model.cmp.resources.model.ResourcesExtension
-import plugin.project.model.EnabledSettings
+import gradle.model.project.EnabledSettings
 
 @Serializable
 internal data class ComposeSettings(

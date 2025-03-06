@@ -9,7 +9,7 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
 import gradle.model.kmp.nat.Framework
-import plugin.project.model.EnabledSettings
+import gradle.model.project.EnabledSettings
 
 @Serializable
 internal data class CocoapodsSettings(

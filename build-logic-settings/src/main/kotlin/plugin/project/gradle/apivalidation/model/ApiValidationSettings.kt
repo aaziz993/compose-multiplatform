@@ -11,7 +11,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.validation.KotlinApiBuildTask
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.named
-import plugin.project.model.EnabledSettings
+import gradle.model.project.EnabledSettings
 
 @Serializable
 internal data class ApiValidationSettings(

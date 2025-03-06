@@ -11,7 +11,7 @@ import org.gradle.api.initialization.Settings
 import org.gradle.kotlin.dsl.develocity
 import gradle.model.DirectoryBuildCache
 import gradle.model.RemoteBuildCache
-import plugin.project.model.EnabledSettings
+import gradle.model.project.EnabledSettings
 
 @Serializable
 internal data class DevelocitySettings(
