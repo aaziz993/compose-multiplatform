@@ -1,7 +1,12 @@
 package gradle.model.cmp.desktop.model
 
+import gradle.libs
+import gradle.moduleName
+import gradle.settings
 import gradle.tryAssign
 import gradle.trySet
+import gradle.version
+import gradle.versions
 import org.gradle.api.Project
 import org.jetbrains.compose.desktop.application.dsl.AbstractDistributions
 
@@ -19,8 +24,9 @@ internal abstract class AbstractDistributions {
     context(Project)
     fun applyTo(distributions: AbstractDistributions) {
         distributions.outputBaseDir tryAssign outputBaseDir?.let(layout.projectDirectory::dir)
-        distributions::packageName trySet packageName
-        distributions::packageVersion trySet packageVersion
+        distributions.packageName = packageName ?: moduleName
+        distributions::packageVersion trySet (packageVersion
+            ?: settings.libs.versions.version("compose.desktop.packageVersion"))
         distributions::copyright trySet copyright
         distributions::description trySet description
         distributions::vendor trySet vendor

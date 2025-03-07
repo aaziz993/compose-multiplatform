@@ -1,11 +1,16 @@
 package gradle.model.kotlin
 
+import gradle.libs
 import gradle.tryAssign
 import gradle.trySet
 import org.jetbrains.kotlin.buildtools.api.ExperimentalBuildToolsApi
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
 import org.jetbrains.kotlin.gradle.dsl.KotlinBaseExtension
 import gradle.model.java.JavaToolchainSpec
+import gradle.settings
+import gradle.version
+import gradle.versions
+import org.gradle.api.Project
 
 internal interface KotlinBaseExtension {
 
@@ -68,13 +73,15 @@ internal interface KotlinBaseExtension {
      */
     val explicitApi: ExplicitApiMode?
 
+    context(Project)
     @OptIn(ExperimentalBuildToolsApi::class)
     fun applyTo(extension: KotlinBaseExtension) {
         jvmToolchainSpec?.let { jvmToolchainSpec ->
             extension.jvmToolchain(jvmToolchainSpec::applyTo)
         }
 
-        jvmToolchain?.let(extension::jvmToolchain)
+        (jvmToolchain ?: settings.libs.versions.version("kotlin.jvmToolchain")?.toInt())
+            ?.let(extension::jvmToolchain)
         extension::kotlinDaemonJvmArgs trySet kotlinDaemonJvmArgs
         extension.compilerVersion tryAssign compilerVersion
         extension::coreLibrariesVersion trySet coreLibrariesVersion

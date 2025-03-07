@@ -17,6 +17,7 @@ import gradle.model.kmp.jvm.android.KotlinAndroidTarget
 import gradle.model.kotlin.sourceSets
 import gradle.model.project.ProjectLayout
 import gradle.model.project.ProjectType
+import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformJvmPlugin
 
 internal class JavaPlugin : Plugin<Project> {
 
@@ -47,6 +48,8 @@ internal class JavaPlugin : Plugin<Project> {
             }
 
             if (!projectProperties.kotlin.enabledKMP) {
+                plugins.apply("org.jetbrains.kotlin.jvm")
+
                 projectProperties.kotlin.sourceSets<KotlinJvmTarget>()?.forEach { sourceSet ->
                     val compilationPrefix =
                         if (sourceSet.name.endsWith(SourceSet.TEST_SOURCE_SET_NAME, true)) "test" else ""

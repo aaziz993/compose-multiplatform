@@ -3,6 +3,7 @@ package plugin.project.kotlin.cocoapods.model
 import gradle.allLibs
 import gradle.cocoapods
 import gradle.kotlin
+import gradle.libs
 import gradle.moduleName
 import gradle.resolve
 import gradle.resolveLibrary
@@ -19,6 +20,8 @@ import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.cocoapods.CocoapodsExtension
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
 import gradle.model.kmp.nat.Framework
+import gradle.version
+import gradle.versions
 
 internal interface CocoapodsExtension {
 
@@ -109,7 +112,7 @@ internal interface CocoapodsExtension {
 
     context(Project)
     fun applyTo() {
-        kotlin.cocoapods::version trySet version
+        kotlin.cocoapods::version trySet (version ?: settings.libs.versions.version("kotlin.cocoapods.version"))
         kotlin.cocoapods::authors trySet authors
         kotlin.cocoapods::podfile trySet podfile?.let(::file)
         needPodspec?.takeIf { it }?.run { kotlin.cocoapods.noPodspec() }
@@ -154,10 +157,10 @@ internal interface CocoapodsExtension {
             }
         }
 
-        ios?.applyTo(kotlin.cocoapods.ios)
-        osx?.applyTo(kotlin.cocoapods.osx)
-        tvos?.applyTo(kotlin.cocoapods.tvos)
-        watchos?.applyTo(kotlin.cocoapods.watchos)
+        ios?.applyTo(kotlin.cocoapods.ios, settings.libs.versions.version("kotlin.cocoapods.iosDeploymentTarget"))
+        osx?.applyTo(kotlin.cocoapods.osx, settings.libs.versions.version("kotlin.cocoapods.osxDeploymentTarget"))
+        tvos?.applyTo(kotlin.cocoapods.tvos, settings.libs.versions.version("kotlin.cocoapods.tvosDeploymentTarget"))
+        watchos?.applyTo(kotlin.cocoapods.watchos, settings.libs.versions.version("kotlin.cocoapods.watchosDeploymentTarget"))
     }
 
     @Serializable
@@ -275,8 +278,8 @@ internal interface CocoapodsExtension {
         val deploymentTarget: String? = null
     ) {
 
-        fun applyTo(settings: CocoapodsExtension.PodspecPlatformSettings) {
-            settings::deploymentTarget trySet deploymentTarget
+        fun applyTo(settings: CocoapodsExtension.PodspecPlatformSettings, deploymentTarget: String?) {
+            settings::deploymentTarget trySet (this@PodspecPlatformSettings.deploymentTarget ?: deploymentTarget)
         }
     }
 }

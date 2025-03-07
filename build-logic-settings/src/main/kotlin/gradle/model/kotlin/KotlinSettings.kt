@@ -18,6 +18,7 @@ import gradle.model.kmp.KotlinSourceSet
 import gradle.model.kmp.KotlinSourceSetTransformingSerializer
 import gradle.model.kmp.KotlinTarget
 import gradle.model.kmp.KotlinTargetTransformingSerializer
+import org.jetbrains.kotlin.gradle.dsl.KotlinBaseExtension
 
 @Serializable
 internal data class KotlinSettings(
@@ -44,7 +45,7 @@ internal data class KotlinSettings(
     context(Project)
     fun applyTo() =
         pluginManager.withPlugin(settings.libs.plugins.plugin("kotlin.multiplatform").id) {
-            super.applyTo(kotlin)
+            super.applyTo(kotlin as KotlinBaseExtension)
 
             targets?.forEach { target -> target.applyTo() }
 

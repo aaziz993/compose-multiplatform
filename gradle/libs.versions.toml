@@ -123,6 +123,8 @@ sshj = "0.38.0"
 jsch = "0.1.55"
 
 ##Kotlin
+# in project version
+kotlin-jvmToolchain = "23"
 kotlin = "2.1.10"
 # ktlint code formatter
 ktlint = "1.4.1"
@@ -264,6 +266,16 @@ firebase-admin = "9.4.1"
 permissions = "0.18.0"
 junit = "4.13.2"
 kotest = "6.0.0.M2"
+# In project version
+kotlin-cocoapods-version = "1.0"
+# In project version
+kotlin-cocoapods-iosDeploymentTarget = "18.2"
+# In project version
+kotlin-cocoapods-osxDeploymentTarget = "15.2"
+# In project version
+kotlin-cocoapods-tvosDeploymentTarget = "18.2"
+# In project version
+kotlin-cocoapods-watchosDeploymentTarget = "11.2"
 
 ##Android
 agp = "8.8.0-alpha05"
@@ -297,14 +309,6 @@ androidx-test = "1.7.0-alpha01"
 ##IOS
 # apple
 apple = "222.4595-0.23.2"
-# ios
-ios-deployment-target = "18.2"
-#cocoapods
-cocoapods-version = "1.0"
-
-##Desktop
-# in project version
-desktop-package-version = "1.0.0"
 
 ##Web
 gradle-node-plugin = "7.1.0"
@@ -357,6 +361,9 @@ worldwind = "1.5.19"
 jxmapviewer2 = "2.8"
 # test
 androidx-test-junit = "1.2.1"
+## desktop
+# in project version
+compose-desktop-packageVersion = "1.0.0"
 
 ##Metrics
 prometheus = "1.12.2"

@@ -1,12 +1,5 @@
 kotlin:
-  targets:
-   - jvm
-   - android
-   - iosArm64
-   - iosX64
-   - iosSimulatorArm64
-   - js
-   - wasmJs
+  targets: [ jvm, android, iosArm64, iosX64, iosSimulatorArm64, js, wasmJs ]
 
   hierarchy:
     - jvmAndAndroid: [ jvm, android ]
@@ -18,6 +11,9 @@ kotlin:
     - jsAndWasmJs: [ js, wasmJs ]
     - web: [ js, wasmJs, wasmWasi ]
     - nonWeb: [ jvmAndAndroid, ios ]
+
+  cocoapods:
+    ios: { }
 
 dependencies:
   # android dependencies
