@@ -64,11 +64,9 @@ internal data class Dependency(
     }
 
     private fun subConfiguration(handler: DependencyHandlerScope, notation: Any) =
-        when {
-            subConfiguration == null -> notation
-
-            subConfiguration == "kotlin" -> handler.kotlin(notation.toString())
-
+        when (subConfiguration) {
+            null -> notation
+            "kotlin" -> handler.kotlin(notation.toString())
             else -> error("Unsupported dependency additional configuration: $subConfiguration")
         }
 
