@@ -77,14 +77,17 @@ internal interface KotlinBaseExtension {
     @OptIn(ExperimentalBuildToolsApi::class)
     fun applyTo(extension: KotlinBaseExtension) {
         jvmToolchainSpec?.let { jvmToolchainSpec ->
-            extension.jvmToolchain(jvmToolchainSpec::applyTo)
-        }
-
-        (jvmToolchain ?: settings.libs.versions.version("kotlin.jvmToolchain")?.toInt())
+            extension.jvmToolchain {
+                jvmToolchainSpec.applyTo(this)
+            }
+        } ?: (jvmToolchain ?: settings.libs.versions.version("java.languageVersion")?.toInt())
             ?.let(extension::jvmToolchain)
+
         extension::kotlinDaemonJvmArgs trySet kotlinDaemonJvmArgs
-        extension.compilerVersion tryAssign compilerVersion
-        extension::coreLibrariesVersion trySet coreLibrariesVersion
+        extension.compilerVersion tryAssign (compilerVersion
+            ?: settings.libs.versions.version("kotlin.compilerVersion"))
+        extension::coreLibrariesVersion trySet (coreLibrariesVersion
+            ?: settings.libs.versions.version("kotlin.coreLibrariesVersion"))
         explicitApi?.let { explicitApi ->
             extension.explicitApi = explicitApi
         }

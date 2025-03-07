@@ -95,6 +95,8 @@ java {
 kotlin {
     explicitApi()
 
+    jvmToolchain(libs.versions.java.languageVersion.get().toInt())
+
     compilerOptions {
         freeCompilerArgs.addAll("-Xcontext-parameters")
         optIn.addAll(
@@ -106,7 +108,6 @@ kotlin {
         )
     }
 
-    jvmToolchain(libs.versions.java.toolchain.compileJdk.get().toInt())
 }
 
 doctor {

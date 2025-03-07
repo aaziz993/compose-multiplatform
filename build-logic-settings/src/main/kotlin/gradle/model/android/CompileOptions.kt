@@ -1,9 +1,14 @@
 package gradle.model.android
 
 import com.android.build.api.dsl.CompileOptions
+import gradle.libs
+import gradle.settings
 import gradle.trySet
+import gradle.version
+import gradle.versions
 import kotlinx.serialization.Serializable
 import org.gradle.api.JavaVersion
+import org.gradle.api.Project
 
 /**
  * Java compilation options.
@@ -40,9 +45,17 @@ internal data class CompileOptions(
     val isCoreLibraryDesugaringEnabled: Boolean? = null
 ) {
 
+    context(Project)
     fun applyTo(options: CompileOptions) {
-        sourceCompatibility?.let(options::sourceCompatibility)
-        targetCompatibility?.let(options::targetCompatibility)
+        (sourceCompatibility ?: settings.libs.versions
+            .version("java.sourceCompatibility")
+            ?.let(JavaVersion::toVersion))
+            ?.let(options::sourceCompatibility)
+        (targetCompatibility ?: settings.libs.versions
+            .version("java.targetCompatibility")
+            ?.let(JavaVersion::toVersion))
+            ?.let(options::targetCompatibility)
+
         options::encoding trySet encoding
         options::isCoreLibraryDesugaringEnabled trySet isCoreLibraryDesugaringEnabled
     }

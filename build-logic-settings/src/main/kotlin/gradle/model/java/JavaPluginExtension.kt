@@ -1,7 +1,11 @@
 package gradle.model.java
 
 import gradle.java
+import gradle.libs
+import gradle.settings
 import gradle.tryAssign
+import gradle.version
+import gradle.versions
 import kotlinx.serialization.Serializable
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
@@ -145,8 +149,15 @@ internal data class JavaPluginExtension(
     @Suppress("UnstableApiUsage")
     fun applyTo() =
         pluginManager.withPlugin("java") {
-            sourceCompatibility?.let(java::setSourceCompatibility)
-            targetCompatibility?.let(java::setTargetCompatibility)
+            (sourceCompatibility ?: settings.libs.versions
+                .version("java.sourceCompatibility")
+                ?.let(JavaVersion::toVersion))
+                ?.let(java::setSourceCompatibility)
+            (targetCompatibility ?: settings.libs.versions
+                .version("java.targetCompatibility")
+                ?.let(JavaVersion::toVersion))
+                ?.let(java::setTargetCompatibility)
+
             disableAutoTargetJvm?.takeIf { it }?.run { java.disableAutoTargetJvm() }
             withJavadocJar?.takeIf { it }?.run { java.withJavadocJar() }
             withSourcesJar?.takeIf { it }?.run { java.withSourcesJar() }
@@ -154,7 +165,9 @@ internal data class JavaPluginExtension(
             modularity?.applyTo(java.modularity)
 
             toolchain?.let { toolchain ->
-                java.toolchain(toolchain::applyTo)
+                java.toolchain {
+                    toolchain.applyTo(this)
+                }
             }
 
             consistentResolution?.let { consistentResolution ->

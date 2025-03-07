@@ -138,11 +138,15 @@ internal interface BaseExtension {
         }
 
         testOptions?.let { testOptions ->
-            extension.testOptions(testOptions::applyTo)
+            extension.testOptions {
+                testOptions.applyTo(this)
+            }
         }
 
         compileOptions?.let { compileOptions ->
-            extension.compileOptions(compileOptions::applyTo)
+            extension.compileOptions {
+                compileOptions.applyTo(this)
+            }
         }
 
         packagingOptions?.let { packagingOptions ->

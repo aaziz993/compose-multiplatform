@@ -86,10 +86,12 @@ vanniktech-maven-publish = "0.30.0"
 
 ##Java
 # in project version
-java-sourceCompatibility = "21"
-java-targetCompatibility = "21"
-java-toolchain-compileJdk = "21"
-java-toolchain-testJdk = "21"
+java-languageVersion = "23"
+# in project version
+java-sourceCompatibility = "23"
+# in project version
+java-targetCompatibility = "23"
+# in project version
 java-additionalTestVersions = "17, 21, 23"
 # google java format code formatter
 google-java-format = "1.25.0"

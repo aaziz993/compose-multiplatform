@@ -1,7 +1,12 @@
 package gradle.model.java
 
+import gradle.libs
+import gradle.settings
 import gradle.tryAssign
+import gradle.version
+import gradle.versions
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
 import org.gradle.jvm.toolchain.JavaLanguageVersion
 import org.gradle.jvm.toolchain.JavaToolchainSpec
 
@@ -54,8 +59,10 @@ internal data class JavaToolchainSpec(
     val vendor: JvmVendorSpec? = null,
 ) {
 
+    context(Project)
     fun applyTo(spec: JavaToolchainSpec) {
-        spec.languageVersion tryAssign languageVersion
+        spec.languageVersion tryAssign (languageVersion ?: settings.libs.versions.version("java.languageVersion")
+            ?.let(JavaLanguageVersion::of))
         spec.vendor tryAssign vendor?.toVendor()
     }
 }

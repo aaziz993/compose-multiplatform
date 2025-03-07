@@ -1,6 +1,10 @@
 package gradle.model.kotlin
 
+import gradle.libs
+import gradle.settings
 import gradle.tryAssign
+import gradle.version
+import gradle.versions
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerOptions
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
@@ -52,8 +56,10 @@ internal interface KotlinCommonCompilerOptions : KotlinCommonCompilerToolOptions
 
         options as KotlinCommonCompilerOptions
 
-        options.apiVersion tryAssign apiVersion
-        options.languageVersion tryAssign apiVersion
+        options.apiVersion tryAssign (apiVersion ?: settings.libs.versions.version("kotlin.apiVersion")
+            ?.let(KotlinVersion::valueOf))
+        options.languageVersion tryAssign (languageVersion ?: settings.libs.versions.version("kotlin.languageVersion")
+            ?.let(KotlinVersion::valueOf))
         optIns?.let(options.optIn::addAll)
         options.progressiveMode tryAssign progressiveMode
     }
