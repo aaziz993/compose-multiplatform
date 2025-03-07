@@ -34,8 +34,6 @@ internal interface BaseExtension {
 
     val aaptOptions: AaptOptions?
 
-    val lintOptions: LintOptions?
-
     val externalNativeBuild: ExternalNativeBuild?
 
     /**
@@ -116,12 +114,6 @@ internal interface BaseExtension {
 
         aaptOptions?.let { aaptOptions ->
             extension.aaptOptions(aaptOptions::applyTo)
-        }
-
-        lintOptions?.let { lintOptions ->
-            extension.lintOptions {
-                lintOptions.applyTo(this)
-            }
         }
 
         externalNativeBuild?.let { externalNativeBuild ->
