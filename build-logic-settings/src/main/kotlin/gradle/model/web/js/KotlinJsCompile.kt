@@ -1,4 +1,4 @@
-package gradle.model.web
+package gradle.model.web.js
 
 import gradle.model.kmp.web.KotlinJsCompilerOptions
 import gradle.model.kotlin.KotlinCompilationTask

@@ -42,7 +42,6 @@ import plugin.project.gradle.githooks.GitHooksPlugin
 import plugin.project.gradle.kover.KoverPlugin
 import gradle.model.Task
 import gradle.model.TaskTransformingSerializer
-import gradle.model.android.BaseExtension
 import plugin.project.gradle.shadow.ShadowPlugin
 import plugin.project.gradle.sonar.SonarPlugin
 import plugin.project.gradle.spotless.SpotlessPlugin
@@ -69,7 +68,7 @@ import gradle.problemreporter.SLF4JProblemReporterContext
 import plugin.project.web.WasmPlugin
 import plugin.project.web.WasmWasiPlugin
 import plugin.project.web.JsPlugin
-import gradle.model.web.karakum.KarakumSettings
+import gradle.model.web.js.karakum.KarakumSettings
 import gradle.model.web.node.model.NodeJsEnvSpec
 import gradle.model.web.npm.model.NpmExtension
 import gradle.model.web.yarn.model.YarnRootExtension

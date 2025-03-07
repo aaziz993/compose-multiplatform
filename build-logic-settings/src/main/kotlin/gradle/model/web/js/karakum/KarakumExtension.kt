@@ -1,4 +1,4 @@
-package gradle.model.web.karakum
+package gradle.model.web.js.karakum
 
 import gradle.karakum
 import gradle.tryAssign

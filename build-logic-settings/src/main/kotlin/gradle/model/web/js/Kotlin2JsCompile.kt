@@ -1,4 +1,4 @@
-package gradle.model.web
+package gradle.model.web.js
 
 import gradle.model.K2MultiplatformCompilationTask
 import gradle.model.ProducesKlib
@@ -7,7 +7,6 @@ import gradle.serialization.serializer.AnySerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 

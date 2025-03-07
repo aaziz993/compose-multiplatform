@@ -1,4 +1,4 @@
-package gradle.model.web.karakum
+package gradle.model.web.js.karakum
 
 import gradle.id
 import gradle.libs
