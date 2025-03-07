@@ -1,3 +1,14 @@
+spotlessExclude: [
+  '**/generated-src/**',
+  '**/build-*/**',
+  '**/.idea/**',
+  '**/.fleet/**',
+  '**/.idea/**',
+  '**/.gradle/**',
+  '/spotless/**',
+  '**/resources/**',
+  '**/buildSrc/**' ]
+
 layout: FLAT
 
 group: io.github.aaziz993

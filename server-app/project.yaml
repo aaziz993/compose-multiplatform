@@ -1,7 +1,6 @@
 type: APP
 
 templates:
-  - ../template/java.yaml
   - ../template/common.yaml
 
 kotlin:
