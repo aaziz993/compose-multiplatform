@@ -1,5 +1,6 @@
 package gradle.model.android
 
+import com.android.build.gradle.internal.dsl.InternalSigningConfig
 import org.gradle.api.Project
 import gradle.model.Named
 
@@ -13,6 +14,9 @@ internal interface InternalSigningConfig :
     context(Project)
     override fun applyTo(named: org.gradle.api.Named) {
         super<ApkSigningConfig>.applyTo(named)
+
+        named as InternalSigningConfig
+
         super<SigningConfigDsl>.applyTo(named)
     }
 }

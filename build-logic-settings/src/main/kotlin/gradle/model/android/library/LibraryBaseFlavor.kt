@@ -1,6 +1,7 @@
 package gradle.model.android.library
 
 import com.android.build.api.dsl.VariantDimension
+import gradle.model.android.BaseFlavor
 import org.gradle.api.Project
 
 /**

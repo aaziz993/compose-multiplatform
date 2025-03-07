@@ -40,19 +40,19 @@ internal interface ApkSigningConfig : SigningConfigDsl, Named {
 
     context(Project)
     override fun applyTo(named: org.gradle.api.Named) {
-        super<SigningConfigDsl>.applyTo(named)
-
         named as ApkSigningConfig
 
-        named  ::enableV1Signing trySet enableV1Signing
-        named ::enableV2Signing trySet enableV2Signing
-        named  ::enableV3Signing trySet enableV3Signing
-        named ::enableV4Signing trySet enableV4Signing
+        super<SigningConfigDsl>.applyTo(named)
+
+        named::enableV1Signing trySet enableV1Signing
+        named::enableV2Signing trySet enableV2Signing
+        named::enableV3Signing trySet enableV3Signing
+        named::enableV4Signing trySet enableV4Signing
     }
 
     context(Project)
     fun toApkSigningConfig(): ApkSigningConfig =
         android.signingConfigs.create(name) {
-            applyTo(this)
+//            super<Named>.applyTo(this as Named)
         }
 }
