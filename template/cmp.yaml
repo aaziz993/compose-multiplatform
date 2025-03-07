@@ -30,8 +30,10 @@ kotlin:
         dependencies:
           - $compose.html.core
 
-dependencies:
-  - debugImplementation: $compose.uiTooling
+android:
+  buildFeatures:
+    # enable compose
+    compose: true
 
 compose:
   enabled: true
@@ -59,3 +61,6 @@ compose:
   resources:
     publicResClass: true
     generateResClass: Auto
+
+dependencies:
+  - debugImplementation: $compose.uiTooling
