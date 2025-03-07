@@ -4,10 +4,13 @@ package gradle.model.gradle.spotless
 
 import com.diffplug.spotless.LineEnding
 import gradle.allLibs
+import gradle.libs
 import gradle.resolveVersion
 import gradle.serialization.serializer.JsonContentPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
 import gradle.settings
+import gradle.version
+import gradle.versions
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -110,7 +113,8 @@ internal interface FormatExtension {
 
         eclipseWtp?.let { eclipseWtp ->
             eclipseWtp.applyTo(
-                eclipseWtp.version?.resolveVersion()?.let { extension.eclipseWtp(eclipseWtp.type, it) }
+                (eclipseWtp.version?.resolveVersion() ?: settings.libs.versions.version("eclipseWtp"))
+                    ?.let { extension.eclipseWtp(eclipseWtp.type, it) }
                     ?: extension.eclipseWtp(eclipseWtp.type),
             )
         }

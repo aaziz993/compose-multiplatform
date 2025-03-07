@@ -2,7 +2,11 @@ package gradle.model.gradle.spotless
 
 import com.diffplug.gradle.spotless.JavaExtension
 import com.diffplug.spotless.LineEnding
+import gradle.libs
+import gradle.settings
 import gradle.spotless
+import gradle.version
+import gradle.versions
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -69,20 +73,23 @@ internal data class JavaExtension(
 
         googleJavaFormat?.let { googleJavaFormat ->
             googleJavaFormat.applyTo(
-                googleJavaFormat.version?.resolveVersion()?.let(extension::googleJavaFormat)
-                    ?: extension.googleJavaFormat(),
+                (googleJavaFormat.version?.resolveVersion() ?: settings.libs.versions.version("googleJavaFormat"))
+                    ?.let(extension::googleJavaFormat) ?: extension.googleJavaFormat(),
             )
         }
 
         palantirJavaFormat?.let { palantirJavaFormat ->
             palantirJavaFormat.applyTo(
-                palantirJavaFormat.version?.resolveVersion()?.let(extension::palantirJavaFormat)
-                    ?: extension.palantirJavaFormat(),
+                (palantirJavaFormat.version?.resolveVersion() ?: settings.libs.versions.version("palantirJavaFormat"))
+                    ?.let(extension::palantirJavaFormat) ?: extension.palantirJavaFormat(),
             )
         }
 
         eclipse?.let { eclipse ->
-            eclipse.applyTo(eclipse.formatterVersion?.let(extension::eclipse) ?: extension.eclipse())
+            eclipse.applyTo(
+                (eclipse.formatterVersion?.resolveVersion() ?: settings.libs.versions.version("eclipseFormatter"))
+                    ?.let(extension::eclipse) ?: extension.eclipse(),
+            )
         }
 
         formatAnnotations?.let { formatAnnotations ->

@@ -94,7 +94,7 @@ java-targetCompatibility = "23"
 # in project version
 java-additionalTestVersions = "17, 21, 23"
 # google java format code formatter
-google-java-format = "1.25.0"
+googleJavaFormat = "1.25.0"
 # logging
 logback-classic = "1.5.16"
 # apache commons

@@ -1,7 +1,10 @@
 package gradle.model.gradle.spotless
 
 import com.diffplug.gradle.spotless.BaseKotlinExtension
-import com.diffplug.spotless.kotlin.KtfmtStep
+import gradle.libs
+import gradle.settings
+import gradle.version
+import gradle.versions
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -22,33 +25,24 @@ internal abstract class BaseKotlinExtension : FormatExtension {
         extension as BaseKotlinExtension
 
         diktat?.let { diktat ->
-            (diktat.version?.resolveVersion()?.let(extension::diktat) ?: extension.diktat()).apply {
-                diktat.config?.let(::configFile)
-            }
+            diktat.applyTo(
+                (diktat.version?.resolveVersion() ?: settings.libs.versions.version("diktat"))
+                    ?.let(extension::diktat) ?: extension.diktat(),
+            )
         }
 
         ktfmt?.forEach { ktfmt ->
-            (ktfmt.version?.resolveVersion()?.let(extension::ktfmt) ?: extension.ktfmt()).apply {
-                when (ktfmt.style) {
-                    KtfmtStep.Style.DROPBOX -> dropboxStyle()
-                    KtfmtStep.Style.GOOGLE -> googleStyle()
-                    KtfmtStep.Style.KOTLINLANG -> kotlinlangStyle()
-                    else -> throw IllegalArgumentException("Unsupported ktfmt default style")
-                }.configure { options ->
-                    ktfmt.options.maxWidth?.let(options::setMaxWidth)
-                    ktfmt.options.blockIndent?.let(options::setBlockIndent)
-                    ktfmt.options.continuationIndent?.let(options::setContinuationIndent)
-                    ktfmt.options.removeUnusedImport?.let(options::setRemoveUnusedImport)
-                }
-            }
+            ktfmt.applyTo(
+                    (ktfmt.version?.resolveVersion() ?: settings.libs.versions.version("ktfmt"))
+                            ?.let(extension::ktfmt) ?: extension.ktfmt(),
+            )
         }
 
         ktlint?.let { ktlint ->
-            (ktlint.version?.resolveVersion()?.let(extension::ktlint) ?: extension.ktlint()).apply {
-                ktlint.editorConfigPath?.let(::setEditorConfigPath)
-                ktlint.editorConfigOverride?.let(::editorConfigOverride)
-                ktlint.customRuleSets?.let(::customRuleSets)
-            }
+            ktlint.applyTo(
+                    (ktlint.version?.resolveVersion() ?: settings.libs.versions.version("ktlint"))
+                            ?.let(extension::ktlint) ?: extension.ktlint(),
+            )
         }
     }
 }
