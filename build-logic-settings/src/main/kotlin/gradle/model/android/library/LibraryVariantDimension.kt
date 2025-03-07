@@ -1,6 +1,9 @@
-package gradle.model.android
+package gradle.model.android.library
 
 import com.android.build.api.dsl.LibraryVariantDimension
+import gradle.model.android.AarMetadata
+import gradle.model.android.ApkSigningConfig
+import gradle.model.android.VariantDimension
 import gradle.trySet
 import org.gradle.api.Project
 

@@ -1,4 +1,4 @@
-package gradle.model.android
+package gradle.model.android.library
 
 import com.android.build.api.dsl.VariantDimension
 import org.gradle.api.Project
@@ -6,7 +6,7 @@ import org.gradle.api.Project
 /**
  * Shared properties between [LibraryProductFlavor] and [LibraryDefaultConfig]
  *
- * See [ProductFlavor] and [DefaultConfigDsl] for more information.
+ * See [ProductFlavorDsl] and [DefaultConfigDsl] for more information.
  */
 internal interface LibraryBaseFlavor :
     BaseFlavor,

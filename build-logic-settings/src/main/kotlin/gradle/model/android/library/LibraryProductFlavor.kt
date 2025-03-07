@@ -1,12 +1,13 @@
-package gradle.model.android
+package gradle.model.android.library
 
-import com.android.build.api.dsl.ApplicationProductFlavor
+import com.android.build.api.dsl.LibraryProductFlavor
 import com.android.build.api.dsl.VariantDimension
+import gradle.model.android.ProductFlavorDsl
 import gradle.trySet
 import org.gradle.api.Project
 
 /**
- * Encapsulates all product flavors properties for application projects.
+ * Encapsulates all product flavors properties for library projects.
  *
  * Product flavors represent different versions of your project that you expect to co-exist on a
  * single device, the Google Play store, or repository. For example, you can configure 'demo' and
@@ -20,34 +21,34 @@ import org.gradle.api.Project
  * add them to the `productFlavors` block of your project's `build.gradle` file
  * and configure the settings you want.
  *
- * Product flavors support the same properties as the [DefaultConfigDsl] block—this is because
- * `defaultConfig` defines a [ProductFlavor] object that the plugin uses as the base configuration
+ * Product flavors support the same properties as the [gradle.model.android.DefaultConfigDsl] block—this is because
+ * `defaultConfig` defines a [gradle.model.android.ProductFlavorDsl] object that the plugin uses as the base configuration
  * for all other flavors.
  * Each flavor you configure can then override any of the default values in `defaultConfig`, such as
  * the [`applicationId`](https://d.android.com/studio/build/application-id.html).
  *
  * When using Android plugin 3.0.0 and higher,
- * *[each flavor must belong to a `dimension`][ProductFlavor.dimension]*.
+ * *[each flavor must belong to a `dimension`][dimension]*.
  *
  * When you configure product flavors, the Android plugin automatically combines them with your
- * [BuildType] configurations to
+ * [gradle.model.android.BuildType] configurations to
  * [create build variants](https://developer.android.com/studio/build/build-variants.html).
  * If the plugin creates certain build variants that you don't want, you can
  * [filter variants using `android.variantFilter`](https://developer.android.com/studio/build/build-variants.html#filter-variants).
  */
-internal interface ApplicationProductFlavor :
-    ApplicationBaseFlavor,
-    ProductFlavor {
+internal interface LibraryProductFlavor :
+    LibraryBaseFlavor,
+    ProductFlavorDsl {
 
     /** Whether this product flavor should be selected in Studio by default  */
     val isDefault: Boolean?
 
     context(Project)
     override fun applyTo(dimension: VariantDimension) {
-        super<ApplicationBaseFlavor>.applyTo(dimension)
-        super<ProductFlavor>.applyTo(dimension)
+        super<LibraryBaseFlavor>.applyTo(dimension)
+        super<ProductFlavorDsl>.applyTo(dimension)
 
-        dimension as ApplicationProductFlavor
+        dimension as LibraryProductFlavor
 
         dimension::isDefault trySet isDefault
     }

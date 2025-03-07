@@ -1,6 +1,8 @@
 package gradle.model.android
 
 import com.android.build.api.dsl.VariantDimension
+import gradle.model.android.application.ApplicationDefaultConfig
+import gradle.model.android.library.LibraryDefaultConfig
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

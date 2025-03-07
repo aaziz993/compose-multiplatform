@@ -4,7 +4,6 @@ import com.android.build.api.dsl.SigningConfig
 import gradle.android
 import gradle.trySet
 import org.gradle.api.Project
-import gradle.model.Named
 
 /**
  * DSL object for configuring options related to signing for APKs and bundles.
@@ -12,7 +11,7 @@ import gradle.model.Named
  * [DefaultSigningConfig] extends this with options relating to just APKs
  *
  */
-internal interface SigningConfigDsl : Named {
+internal interface SigningConfigDsl {
 
     /**
      * Store file used when signing.
@@ -55,14 +54,12 @@ internal interface SigningConfigDsl : Named {
     val initWith: String?
 
     context(Project)
-    override fun applyTo(named: org.gradle.api.Named) {
-        named as SigningConfig
-
-        named::storeFile trySet storeFile?.let(::file)
-        named::storePassword trySet storePassword
-        named::keyAlias trySet keyAlias
-        named::keyPassword trySet keyPassword
-        named::storeType trySet storeType
-        initWith?.let(android.signingConfigs::getByName)?.let(named::initWith)
+     fun applyTo(signingConfig: SigningConfig) {
+        signingConfig::storeFile trySet storeFile?.let(::file)
+        signingConfig::storePassword trySet storePassword
+        signingConfig::keyAlias trySet keyAlias
+        signingConfig::keyPassword trySet keyPassword
+        signingConfig::storeType trySet storeType
+        initWith?.let(android.signingConfigs::getByName)?.let(signingConfig::initWith)
     }
 }

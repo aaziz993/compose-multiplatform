@@ -1,6 +1,19 @@
-package gradle.model.android
+package gradle.model.android.library
 
 import com.android.build.api.dsl.LibraryBuildType
+import gradle.model.android.AarMetadata
+import gradle.model.android.AndroidTest
+import gradle.model.android.ApkSigningConfigImpl
+import gradle.model.android.BuildConfigField
+import gradle.model.android.BuildType
+import gradle.model.android.ExternalNativeBuildFlags
+import gradle.model.android.JavaCompileOptions
+import gradle.model.android.Ndk
+import gradle.model.android.Optimization
+import gradle.model.android.PostProcessing
+import gradle.model.android.ResValue
+import gradle.model.android.Shaders
+import gradle.model.android.VcsInfo
 import gradle.serialization.serializer.AnySerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named

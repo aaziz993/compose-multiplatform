@@ -22,15 +22,15 @@ import org.gradle.api.Project
  * * Properties that can vary between the app and the dynamic feature.
  *   For example, `resValues` can be used independently from the app in a dynamic feature.
  *
- * See [ApplicationProductFlavor]
+ * See [gradle.model.android.application.ApplicationProductFlavor]
  */
 internal interface DynamicFeatureProductFlavor :
     DynamicFeatureBaseFlavor,
-    ProductFlavor {
+    ProductFlavorDsl {
 
     context(Project)
     override fun applyTo(dimension: VariantDimension) {
         super<DynamicFeatureBaseFlavor>.applyTo(dimension)
-        super<ProductFlavor>.applyTo(dimension)
+        super<ProductFlavorDsl>.applyTo(dimension)
     }
 }

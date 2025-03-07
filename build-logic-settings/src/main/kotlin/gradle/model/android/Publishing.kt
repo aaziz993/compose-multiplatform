@@ -1,7 +1,6 @@
 package gradle.model.android
 
 import com.android.build.api.dsl.Publishing
-import kotlin.math.sin
 
 /**
  * Maven publishing DSL object for configuring options related to publishing Android variants to a
@@ -26,8 +25,8 @@ import kotlin.math.sin
  * necessary variant specific attributes including buildType and flavorDimensions to disambiguate
  * those variants. Note that multiple variants publishing is not supported in app modules.
  *
- * [LibraryPublishing] extends this with options for publishing library projects.
- * [ApplicationPublishing] extends this with options for publishing application projects.
+ * [gradle.model.android.library.LibraryPublishing] extends this with options for publishing library projects.
+ * [gradle.model.android.application.ApplicationPublishing] extends this with options for publishing application projects.
  */
 internal interface Publishing<SingleVariantT : SingleVariant> {
 

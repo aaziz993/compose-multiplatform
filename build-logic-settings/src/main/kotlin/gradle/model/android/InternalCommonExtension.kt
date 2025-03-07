@@ -9,7 +9,7 @@ internal interface InternalCommonExtension<
     BuildFeaturesT : BuildFeatures,
     BuildTypeT : BuildType,
     DefaultConfigT : DefaultConfigDsl,
-    ProductFlavorT : ProductFlavor,
+    ProductFlavorT : ProductFlavorDsl,
     AndroidResourcesT : AndroidResources,
     InstallationT : Installation> :
     CommonExtension<

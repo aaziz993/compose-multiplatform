@@ -1,7 +1,10 @@
-package gradle.model.android
+package gradle.model.android.library
 
 import com.android.build.api.dsl.LibraryExtension
-import com.android.build.api.dsl.TestedExtension
+import gradle.model.android.CommonExtension
+import gradle.model.android.Prefab
+import gradle.model.android.PrivacySandbox
+import gradle.model.android.TestedExtensionDsl
 import org.gradle.api.Project
 
 /**
@@ -13,14 +16,13 @@ import org.gradle.api.Project
  */
 internal interface LibraryExtensionDsl :
     CommonExtension<
-        LibraryBuildFeatures,
-        LibraryBuildType,
-        LibraryDefaultConfig,
-        LibraryProductFlavor,
-        LibraryAndroidResources,
-        LibraryInstallation,
-        >,
-    TestedExtensionDsl {
+            LibraryBuildFeatures,
+            LibraryBuildType,
+            LibraryDefaultConfig,
+            LibraryProductFlavor,
+            LibraryAndroidResources,
+            LibraryInstallation,
+            >, TestedExtensionDsl {
     // TODO(b/140406102)
 
     /** Aidl files to package in the aar. */
@@ -42,12 +44,10 @@ internal interface LibraryExtensionDsl :
 
     context(Project)
     @Suppress("UnstableApiUsage")
-    override fun applyTo(extension: com.android.build.api.dsl.CommonExtension<*, *, *, *, *, *>) {
+    fun applyTo(extension: LibraryExtension) {
         super<CommonExtension>.applyTo(extension)
 
-        super<TestedExtensionDsl>.applyTo(extension as TestedExtension)
-
-        extension as LibraryExtension
+        super<TestedExtensionDsl>.applyTo(extension)
 
         aidlPackagedList?.let { aidlPackagedList ->
             extension.aidlPackagedList?.addAll(aidlPackagedList)

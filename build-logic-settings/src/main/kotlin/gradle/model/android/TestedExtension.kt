@@ -1,10 +1,10 @@
 package gradle.model.android;
 
-import com.android.build.api.dsl.TestedExtension
+import com.android.build.gradle.TestedExtension
 import org.gradle.api.Project
 
 /**
- * Provides test components that are common to [AppExtension], [LibraryExtension], and
+ * Provides test components that are common to [AppExtension], [gradle.model.android.library.LibraryExtension], and
  * [FeatureExtension].
  *
  * To learn more about testing Android projects, read
@@ -13,11 +13,8 @@ import org.gradle.api.Project
 internal abstract class TestedExtension : BaseExtension, TestedExtensionDsl {
 
     context(Project)
-    override fun applyTo(extension: TestedExtension) {
-        super<TestedExtensionDsl>.applyTo(extension)
-
-        extension as com.android.build.gradle.TestedExtension
-
+    fun applyTo(extension: TestedExtension) {
         super<BaseExtension>.applyTo(extension)
+        super<TestedExtensionDsl>.applyTo(extension)
     }
 }

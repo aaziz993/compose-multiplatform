@@ -1,8 +1,9 @@
-package gradle.model.android
+package gradle.model.android.application
 
 import com.android.build.api.dsl.ApplicationBaseFlavor
 import com.android.build.api.dsl.VariantDimension
 import gradle.libs
+import gradle.model.android.BaseFlavor
 import gradle.settings
 import gradle.trySet
 import gradle.version
@@ -12,7 +13,7 @@ import org.gradle.api.Project
 /**
  * Shared properties between [ApplicationProductFlavor] and [ApplicationDefaultConfig]
  *
- * See [ProductFlavor] and [DefaultConfigDsl] for more information.
+ * See [gradle.model.android.ProductFlavorDsl] and [gradle.model.android.DefaultConfigDsl] for more information.
  */
 internal interface ApplicationBaseFlavor :
     BaseFlavor,

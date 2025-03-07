@@ -10,7 +10,7 @@ import gradle.versions
 import org.gradle.api.Project
 
 /**
- * Shared properties between DSL objects [ProductFlavor] and [DefaultConfigDsl]
+ * Shared properties between DSL objects [ProductFlavorDsl] and [DefaultConfigDsl]
  */
 internal interface BaseFlavor : VariantDimension {
     // TODO(b/140406102)

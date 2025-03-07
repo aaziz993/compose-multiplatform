@@ -1,22 +1,21 @@
-package gradle.model.android
+package gradle.model.android.application
 
 import com.android.build.api.dsl.VariantDimension
+import gradle.model.android.DefaultConfigDsl
 import org.gradle.api.Project
 
 /**
- * Specifies defaults for properties that the Android library plugin applies to all build variants.
+ * Specifies defaults for properties that the Android application plugin applies to all build variants.
  *
  * You can override any `defaultConfig` property when
  * [configuring product flavors](https://developer.android.com/studio/build/build-variants.html#product-flavors).
- * See [LibraryProductFlavor].
+ * See [ApplicationProductFlavor].
  */
-internal interface LibraryDefaultConfig :
-    LibraryBaseFlavor,
-    DefaultConfigDsl {
+internal interface ApplicationDefaultConfig : ApplicationBaseFlavor, DefaultConfigDsl {
 
     context(Project)
     override fun applyTo(dimension: VariantDimension) {
-        super<LibraryBaseFlavor>.applyTo(dimension)
+        super<ApplicationBaseFlavor>.applyTo(dimension)
         super<DefaultConfigDsl>.applyTo(dimension)
     }
 }

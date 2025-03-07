@@ -77,7 +77,7 @@ internal interface BaseExtension {
 
     val defaultConfig: DefaultConfigDsl?
 
-    val productFlavors: List<ProductFlavor>?
+    val productFlavors: List<ProductFlavorDsl>?
 
     val signingConfigs: List<SigningConfigImpl>?
 
@@ -182,7 +182,7 @@ internal interface BaseExtension {
         buildFeatures?.applyTo(extension.buildFeatures)
 
         extension.namespace = namespace ?: androidNamespace
-//        com.android.build.gradle.internal.dsl.BaseAppModuleExtension
+        com.android.build.gradle.internal.dsl.BaseAppModuleExtension
     }
 }
 

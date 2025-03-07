@@ -1,5 +1,6 @@
-package gradle.model.android
+package gradle.model.android.library
 
+import gradle.model.android.SingleVariant
 import kotlinx.serialization.Serializable
 
 /**

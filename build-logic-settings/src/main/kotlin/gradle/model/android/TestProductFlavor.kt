@@ -11,15 +11,15 @@ import org.gradle.api.Project
  * you can declare corresponding product flavors here. If you want to use some, you can use
  * [missingDimensionStrategy] to resolve any conflicts.
  *
- * See [ApplicationProductFlavor]
+ * See [gradle.model.android.application.ApplicationProductFlavor]
  */
 internal interface TestProductFlavor :
     TestBaseFlavor,
-    ProductFlavor {
+    ProductFlavorDsl {
 
     context(Project)
     override fun applyTo(dimension: VariantDimension) {
         super<TestBaseFlavor>.applyTo(dimension)
-        super<ProductFlavor>.applyTo(dimension)
+        super<ProductFlavorDsl>.applyTo(dimension)
     }
 }

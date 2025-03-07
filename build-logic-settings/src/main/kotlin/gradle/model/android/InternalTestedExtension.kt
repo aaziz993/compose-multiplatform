@@ -1,6 +1,5 @@
 package gradle.model.android
 
-import com.android.build.api.dsl.TestedExtension
 import com.android.build.gradle.internal.dsl.InternalTestedExtension
 import org.gradle.api.Project
 
@@ -8,18 +7,15 @@ import org.gradle.api.Project
 internal interface InternalTestedExtension<BuildFeaturesT : BuildFeatures,
     BuildTypeT : BuildType,
     DefaultConfigT : DefaultConfigDsl,
-    ProductFlavorT : ProductFlavor,
+    ProductFlavorT : ProductFlavorDsl,
     AndroidResourcesT : AndroidResources,
     InstallationT : Installation>
     : TestedExtensionDsl,
     InternalCommonExtension<BuildFeaturesT, BuildTypeT, DefaultConfigT, ProductFlavorT, AndroidResourcesT, InstallationT> {
 
     context(Project)
-    override fun applyTo(extension: TestedExtension) {
+    fun applyTo(extension: InternalTestedExtension<*, *, *, *, *, *>) {
         super<TestedExtensionDsl>.applyTo(extension)
-
-        extension as InternalTestedExtension<*, *, *, *, *, *>
-
         super<InternalCommonExtension>.applyTo(extension)
     }
 }

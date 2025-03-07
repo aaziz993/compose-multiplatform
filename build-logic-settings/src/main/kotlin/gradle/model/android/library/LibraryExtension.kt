@@ -1,7 +1,25 @@
-package gradle.model.android
+package gradle.model.android.library
 
-import com.android.build.api.dsl.CommonExtension
 import com.android.build.gradle.LibraryExtension
+import gradle.model.android.AaptOptions
+import gradle.model.android.AdbOptions
+import gradle.model.android.CompileOptions
+import gradle.model.android.CompileSdkAddon
+import gradle.model.android.ComposeOptions
+import gradle.model.android.DataBinding
+import gradle.model.android.ExternalNativeBuild
+import gradle.model.android.LibraryRequest
+import gradle.model.android.Lint
+import gradle.model.android.Packaging
+import gradle.model.android.Prefab
+import gradle.model.android.PrivacySandbox
+import gradle.model.android.SigningConfigImpl
+import gradle.model.android.Splits
+import gradle.model.android.TestCoverage
+import gradle.model.android.TestFixtures
+import gradle.model.android.TestOptions
+import gradle.model.android.TestedExtension
+import gradle.model.android.ViewBinding
 import gradle.serialization.serializer.AnySerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -42,7 +60,6 @@ internal data class LibraryExtension(
     override val buildToolsVersion: String? = null,
     override val flavorDimensions: List<String>? = null,
     override val aaptOptions: AaptOptions? = null,
-    override val lintOptions: LintOptions? = null,
     override val externalNativeBuild: ExternalNativeBuild? = null,
     override val testOptions: TestOptions? = null,
     override val compileOptions: CompileOptions? = null,
@@ -62,16 +79,8 @@ internal data class LibraryExtension(
 ) : TestedExtension(), InternalLibraryExtension {
 
     context(Project)
-    override fun applyTo(extension: com.android.build.api.dsl.TestedExtension) =
-        super<InternalLibraryExtension>.applyTo(extension)
-
-    context(Project)
-    override fun applyTo(extension: CommonExtension<*, *, *, *, *, *>) =
-        super<InternalLibraryExtension>.applyTo(extension)
-
-    context(Project)
     fun applyTo(extension: LibraryExtension) {
-        applyTo(extension as com.android.build.api.dsl.TestedExtension)
-        applyTo(extension as CommonExtension<*, *, *, *, *, *>)
+        super<TestedExtension>.applyTo(extension)
+        super<InternalLibraryExtension>.applyTo(extension)
     }
 }

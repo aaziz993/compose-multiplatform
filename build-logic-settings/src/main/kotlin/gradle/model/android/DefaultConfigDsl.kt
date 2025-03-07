@@ -5,9 +5,9 @@ package gradle.model.android
  *
  * You can override any `defaultConfig` property when
  * [configuring product flavors](https://developer.android.com/studio/build/build-variants.html#product-flavors).
- * See [ProductFlavor].
+ * See [ProductFlavorDsl].
  *
- * Each plugin has its own interface that extends this one, see [ApplicationDefaultConfig],
- * [LibraryDefaultConfig], [DynamicFeatureDefaultConfig] and [TestDefaultConfig].
+ * Each plugin has its own interface that extends this one, see [gradle.model.android.application.ApplicationDefaultConfig],
+ * [gradle.model.android.library.LibraryDefaultConfig], [DynamicFeatureDefaultConfig] and [TestDefaultConfig].
  */
 internal interface DefaultConfigDsl : BaseFlavor

@@ -20,7 +20,7 @@ internal interface CommonExtension<
     BuildFeaturesT : BuildFeatures,
     BuildTypeT : BuildType,
     DefaultConfigT : DefaultConfigDsl,
-    ProductFlavorT : ProductFlavor,
+    ProductFlavorT : ProductFlavorDsl,
     AndroidResourcesT : AndroidResources,
     InstallationT : Installation> {
 
@@ -56,7 +56,7 @@ internal interface CommonExtension<
     /**
      * Encapsulates all build type configurations for this project.
      *
-     * Unlike using [ProductFlavor] to create
+     * Unlike using [ProductFlavorDsl] to create
      * different versions of your project that you expect to co-exist on a single device, build
      * types determine how Gradle builds and packages each version of your project. Developers
      * typically use them to configure projects for various stages of a development lifecycle. For
@@ -159,7 +159,7 @@ internal interface CommonExtension<
      * If the plugin creates certain build variants that you don't want, you can
      * [filter variants](https://developer.android.com/studio/build/build-variants.html#filter-variants).
      *
-     * @see [ProductFlavor]
+     * @see [ProductFlavorDsl]
      */
     val productFlavors: List<ProductFlavorT>?
 

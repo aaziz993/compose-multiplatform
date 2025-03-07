@@ -1,6 +1,8 @@
-package gradle.model.android
+package gradle.model.android.library
 
 import com.android.build.api.dsl.LibraryPublishing
+import gradle.model.android.MultipleVariantsSettings
+import gradle.model.android.Publishing
 import kotlinx.serialization.Serializable
 
 /**
@@ -66,9 +68,9 @@ import kotlinx.serialization.Serializable
  * }
  * ```
  *
- * To publish all the build variants, you can use [MultipleVariants.allVariants] as a shortcut
- * instead of filtering variants with [MultipleVariants.includeBuildTypeValues]
- * and [MultipleVariants.includeFlavorDimensionAndValues].
+ * To publish all the build variants, you can use [gradle.model.android.MultipleVariants.allVariants] as a shortcut
+ * instead of filtering variants with [gradle.model.android.MultipleVariants.includeBuildTypeValues]
+ * and [gradle.model.android.MultipleVariants.includeFlavorDimensionAndValues].
  *
  * ```
  * android {
