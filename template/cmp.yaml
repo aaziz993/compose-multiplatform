@@ -39,11 +39,11 @@ compose:
     application:
       mainClass: MainKt
       jvmArgs:
-        - --add-opens", "java.desktop/sun.awt=ALL-UNNAMED
-        - --add-opens", "java.desktop/java.awt.peer=ALL-UNNAMED
+        - --add-opens=java.desktop/sun.awt=ALL-UNNAMED
+        - --add-opens=java.desktop/java.awt.peer=ALL-UNNAMED
         # for mac
-        - --add-opens", "java.desktop/sun.lwawt=ALL-UNNAMED
-        - --add-opens", "java.desktop/sun.lwawt.macosx=ALL-UNNAMED
+        - --add-opens=java.desktop/sun.lwawt=ALL-UNNAMED
+        - --add-opens=java.desktop/sun.lwawt.macosx=ALL-UNNAMED
       nativeDistributions:
         targetFormats: [ Dmg, Msi, Deb ]
         macOS:
@@ -56,8 +56,6 @@ compose:
         release:
           proguard:
             configurationFiles: [ compose-desktop.pro ]
-
-
   resources:
     publicResClass: true
     generateResClass: Auto

@@ -1,9 +1,13 @@
 package gradle.model.android
 
 import gradle.androidNamespace
+import gradle.libs
 import gradle.maybeNamed
 import gradle.serialization.serializer.JsonContentPolymorphicSerializer
+import gradle.settings
 import gradle.trySet
+import gradle.version
+import gradle.versions
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -110,7 +114,8 @@ internal interface BaseExtension {
 
         defaultPublishConfig?.let(extension::defaultPublishConfig)
         disableWrite?.takeIf { it }?.run { extension.disableWrite() }
-        compileSdkVersion?.let(extension::compileSdkVersion)
+        (compileSdkVersion ?: settings.libs.versions.version("android.compileSdk")?.toInt())
+            ?.let(extension::compileSdkVersion)
         buildToolsVersion?.let(extension::buildToolsVersion)
         flavorDimensions?.let { flavorDimensions ->
             extension.flavorDimensions(*flavorDimensions.toTypedArray())

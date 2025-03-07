@@ -1,28 +1,19 @@
 @file:Suppress("UnstableApiUsage")
 
+import java.net.URI
 import java.util.*
+import kotlin.apply
+import kotlin.jvm.java
+import kotlin.reflect.KMutableProperty0
+import kotlinx.serialization.Serializable
+import org.yaml.snakeyaml.DumperOptions
+import org.yaml.snakeyaml.LoaderOptions
 import org.yaml.snakeyaml.Yaml
-
-//apply(from = "gradle/model/toolchainmanagement/model/ToolchainManagementSettings.kt")
+import org.yaml.snakeyaml.constructor.Constructor
+import org.yaml.snakeyaml.representer.Representer
 
 rootProject.name = "build-logic-settings"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
-
-val projectSettings = Yaml().load<MutableMap<String, *>>(file("../project.yaml").readText())
-
-val gradleProperties: Properties = Properties().apply {
-    val file = file("../gradle.properties")
-    if (file.exists()) {
-        load(file.reader())
-    }
-}
-
-val localProperties: Properties = Properties().apply {
-    val file = file("../local.properties")
-    if (file.exists()) {
-        load(file.reader())
-    }
-}
 
 pluginManagement {
     repositories {
@@ -45,6 +36,32 @@ plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "0.9.0"
     // Enforcing pre-commit and commit-msg Git hooks configuration. Conventional-commits-ready.
     id("org.danilopianini.gradle-pre-commit-git-hooks") version "2.0.4"
+}
+
+//val YAML = Yaml(
+//    Constructor(
+//        ProjectProperties::class.java, LoaderOptions(),
+//    ),
+//    Representer(DumperOptions()).apply {
+//        propertyUtils.isSkipMissingProperties = true
+//    },
+//    DumperOptions(),
+//)
+
+//val projectProperties: ProjectProperties = YAML.load(file("project.yaml").readText())
+
+val gradleProperties: Properties = Properties().apply {
+    val file = file("../gradle.properties")
+    if (file.exists()) {
+        load(file.reader())
+    }
+}
+
+val localProperties: Properties = Properties().apply {
+    val file = file("../local.properties")
+    if (file.exists()) {
+        load(file.reader())
+    }
 }
 
 val isCI = System.getenv("CI") != null

@@ -2,7 +2,11 @@ package gradle.model.android
 
 import com.android.build.api.dsl.ApplicationBaseFlavor
 import com.android.build.api.dsl.VariantDimension
+import gradle.libs
+import gradle.settings
 import gradle.trySet
+import gradle.version
+import gradle.versions
 import org.gradle.api.Project
 
 /**
@@ -73,9 +77,9 @@ internal interface ApplicationBaseFlavor :
         dimension as ApplicationBaseFlavor
 
         dimension::applicationId trySet applicationId
-        dimension::versionCode trySet versionCode
-        dimension::versionName trySet versionName
-        dimension::targetSdk trySet targetSdk
+        dimension::versionCode trySet (versionCode ?: settings.libs.versions.version("android.versionCode")?.toInt())
+        dimension::versionName trySet (versionName ?: settings.libs.versions.version("android.versionName"))
+        dimension::targetSdk trySet (targetSdk ?: settings.libs.versions.version("android.targetSdk")?.toInt())
         dimension::targetSdkPreview trySet targetSdkPreview
         dimension::maxSdk trySet maxSdk
     }

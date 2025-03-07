@@ -34,19 +34,17 @@ data class ProjectProperties(
     val group: String? = null,
 )
 
-var yaml: Yaml = Yaml(
-        Constructor(
-                ProjectProperties::class.java, LoaderOptions(),
-        ),
-        Representer(DumperOptions()).apply {
-            propertyUtils.isSkipMissingProperties = true
-        },
-        DumperOptions(),
+val YAML: Yaml = Yaml(
+    Constructor(
+        ProjectProperties::class.java, LoaderOptions(),
+    ),
+    Representer(DumperOptions()).apply {
+        propertyUtils.isSkipMissingProperties = true
+    },
+    DumperOptions(),
 )
 
-val projectProperties: ProjectProperties = yaml.load(file("../project.yaml").readText())
-
-println("PROPS: $projectProperties")
+//val projectProperties: ProjectProperties = YAML.load(file("project.yaml").readText())
 
 val gradleProperties: Properties = Properties().apply {
     val file = file("../gradle.properties")
