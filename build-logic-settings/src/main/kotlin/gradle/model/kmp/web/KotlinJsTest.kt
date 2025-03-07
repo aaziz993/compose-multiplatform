@@ -27,6 +27,7 @@ internal data class KotlinJsTest(
     override val name: String = "",
     override val ignoreRunFailures: Boolean? = null,
     override val filter: DefaultTestFilter? = null,
+    override val targetName: String? = null,
     override val ignoreFailures: Boolean? = null,
     val environment: Map<String, String>? = null,
     val inputFileProperty: String? = null,

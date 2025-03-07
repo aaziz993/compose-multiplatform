@@ -8,7 +8,7 @@ import gradle.model.java.JavaCompile
 import gradle.model.kmp.KotlinSourceSet
 import gradle.model.kotlin.KotlinCompilation
 import gradle.model.kotlin.KotlinCompilationOutput
-import gradle.model.kotlin.KotlinCompilationTask
+import gradle.model.kotlin.KotlinCompilationTaskImpl
 import gradle.model.kotlin.KotlinCompilationTransformingSerializer
 import gradle.model.project.Dependency
 import gradle.model.project.DependencyTransformingSerializer
@@ -21,7 +21,7 @@ internal data class KotlinJvmAndroidCompilation(
     override val output: KotlinCompilationOutput? = null,
     override val associatedCompilations: Set<String>? = null,
     override val dependencies: List<@Serializable(with = DependencyTransformingSerializer::class) Dependency>? = null,
-    val compileTaskProvider: KotlinCompilationTask<KotlinJvmCompilerOptions>? = null,
+    val compileTaskProvider: KotlinCompilationTaskImpl<KotlinJvmCompilerOptions>? = null,
     val compileJavaTaskProvider: JavaCompile? = null,
 ) : KotlinCompilation {
 

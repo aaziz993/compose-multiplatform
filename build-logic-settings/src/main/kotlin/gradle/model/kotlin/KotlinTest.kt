@@ -7,6 +7,8 @@ import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.tasks.KotlinTest
 
 internal interface KotlinTest : AbstractTestTask {
+
+    val targetName: String?
     val ignoreRunFailures: Boolean?
 
     context(Project)
@@ -15,6 +17,7 @@ internal interface KotlinTest : AbstractTestTask {
 
         named as KotlinTest
 
+        named::targetName trySet targetName
         named::ignoreRunFailures trySet ignoreRunFailures
     }
 }

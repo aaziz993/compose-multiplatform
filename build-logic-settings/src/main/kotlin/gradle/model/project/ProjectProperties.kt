@@ -95,7 +95,7 @@ internal data class ProjectProperties(
     val jvm: JavaPluginExtension? = null,
     val application: JavaApplication? = null,
     val kotlin: KotlinSettings = KotlinSettings(),
-    val android: BaseExtension? = null,
+//    val android: BaseExtension? = null,
     val apple: AppleSettings = AppleSettings(),
     val nodeJsEnv: NodeJsEnvSpec = NodeJsEnvSpec(),
     val yarn: YarnRootExtension = YarnRootExtension(),
