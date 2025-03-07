@@ -2,6 +2,14 @@ package plugin.project.gradle.dokka.model
 
 import gradle.id
 import gradle.libs
+import gradle.model.dokka.DokkaExtension
+import gradle.model.dokka.DokkaPluginParametersBaseSpec
+import gradle.model.dokka.DokkaPluginParametersBaseSpecTransformingSerializer
+import gradle.model.dokka.DokkaPublication
+import gradle.model.dokka.DokkaPublicationTransformingSerializer
+import gradle.model.dokka.DokkaSourceSetSpec
+import gradle.model.dokka.DokkaSourceSetSpecTransformingSerializer
+import gradle.model.dokka.WorkerIsolation
 import gradle.plugin
 import gradle.plugins
 import gradle.settings

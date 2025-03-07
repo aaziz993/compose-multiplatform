@@ -35,7 +35,7 @@ internal data class Plugins(
     val kover: KoverSettings = KoverSettings(),
     val sonar: SonarSettings = SonarSettings(),
     val dokka: DokkaSettings = DokkaSettings(),
-    val shadowSettings: ShadowSettings = ShadowSettings(),
+    val shadow: ShadowSettings = ShadowSettings(),
     val apiValidation: ApiValidationSettings = ApiValidationSettings(),
     val ksp: KspSettings = KspSettings(),
     val allOpen: AllOpenSettings = AllOpenSettings(),

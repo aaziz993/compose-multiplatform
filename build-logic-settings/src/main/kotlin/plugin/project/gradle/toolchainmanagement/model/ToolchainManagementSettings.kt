@@ -2,6 +2,7 @@ package plugin.project.gradle.toolchainmanagement.model
 
 import gradle.id
 import gradle.libs
+import gradle.model.gradle.toolchainmanagement.ToolchainManagement
 import gradle.plugin
 import gradle.plugins
 import kotlinx.serialization.Serializable

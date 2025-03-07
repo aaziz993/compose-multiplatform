@@ -3,6 +3,9 @@ package plugin.project.gradle.spotless.model
 import com.diffplug.spotless.LineEnding
 import gradle.id
 import gradle.libs
+import gradle.model.gradle.spotless.FormatExtension
+import gradle.model.gradle.spotless.FormatExtensionTransformingSerializer
+import gradle.model.gradle.spotless.SpotlessExtension
 import gradle.plugin
 import gradle.plugins
 import gradle.settings

@@ -8,6 +8,7 @@ import gradle.settings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import gradle.model.project.EnabledSettings
+import gradle.model.sonar.SonarExtension
 
 @Serializable
 internal data class SonarSettings(
