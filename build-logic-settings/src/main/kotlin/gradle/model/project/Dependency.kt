@@ -19,10 +19,11 @@ import org.gradle.api.file.FileCollection
 import org.gradle.api.initialization.Settings
 import org.gradle.api.internal.tasks.JvmConstants
 import org.gradle.kotlin.dsl.DependencyHandlerScope
+import org.gradle.kotlin.dsl.kotlin
 import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
 import org.tomlj.TomlParseResult
 
-private val SUB_CONFIGURATIONS = listOf("npm", "devNpm", "optionalNpm", "peerNpm")
+private val SUB_CONFIGURATIONS = listOf("kotlin", "npm", "devNpm", "optionalNpm", "peerNpm")
 
 @Serializable
 internal data class Dependency(
@@ -46,52 +47,49 @@ internal data class Dependency(
     }
 
     context(Project)
-    fun applyTo(handler: DependencyHandlerScope) =
-        when {
-            configurations.findByName(configuration) != null ->
-                handler.add(configuration, resolve())
+    fun applyTo(handler: DependencyHandlerScope) {
+        val config = when {
+            configurations.findByName(configuration) != null -> configuration
 
             configuration == "kspCommonMainMetadata" && configurations.findByName("ksp") != null ->
-                handler.add("ksp", resolve())
+                "ksp"
 
-            else -> logger.warn("Configuration doesn't exists: $configuration")
+            else -> {
+                logger.warn("Configuration doesn't exists: $configuration")
+                return
+            }
+        }
+
+        handler.add(config, subConfiguration(handler, resolve()))
+    }
+
+    private fun subConfiguration(handler: DependencyHandlerScope, notation: Any) =
+        when {
+            subConfiguration == null -> notation
+
+            subConfiguration == "kotlin" -> handler.kotlin(notation.toString())
+
+            else -> error("Unsupported dependency additional configuration: $subConfiguration")
         }
 
     context(Project)
     fun applyTo(handler: KotlinDependencyHandler): Unit =
-        handler.configurationFunction(subConfiguration(handler, resolve()))
+        handler.kotlinConfigurationFunction(kotlinSubConfiguration(handler, resolve()))
 
-    private fun resolve(
-        libs: Map<String, TomlParseResult>,
-        directory: Directory,
-        fromNotation: (String) -> Any = { it }
-    ): Any =
-        when {
-            notation.startsWith("$") -> {
-                fromNotation(libs.resolveLibrary(notation))
-            }
-
-            notation.contains("[/\\\\]".toRegex()) && !notation.isUrl -> directory.file(notation)
-
-            else -> fromNotation(notation)
-        }
-
-    private val configurationFunction: KotlinDependencyHandler.(Any) -> Unit
+    private val kotlinConfigurationFunction: KotlinDependencyHandler.(Any) -> Unit
         get() = when (configuration) {
             JvmConstants.API_CONFIGURATION_NAME -> KotlinDependencyHandler::api
             JvmConstants.IMPLEMENTATION_CONFIGURATION_NAME -> KotlinDependencyHandler::implementation
             JvmConstants.COMPILE_ONLY_CONFIGURATION_NAME -> KotlinDependencyHandler::compileOnly
             JvmConstants.RUNTIME_ONLY_CONFIGURATION_NAME -> KotlinDependencyHandler::runtimeOnly
-            "kotlin" -> {
-                { kotlin(it.toString()) }
-            }
 
             else -> error("Unsupported dependency configuration: $configuration")
         }
 
-    private fun subConfiguration(handler: KotlinDependencyHandler, notation: Any) =
+    private fun kotlinSubConfiguration(handler: KotlinDependencyHandler, notation: Any) =
         when {
             subConfiguration == null -> notation
+            subConfiguration == "kotlin" -> handler.kotlin(notation.toString())
 
             subConfiguration.endsWith("npm") -> {
                 if (notation is FileCollection) {
@@ -126,6 +124,21 @@ internal data class Dependency(
         "peerNpm" -> handler.peerNpm(name, version)
         else -> error("Unsupported dependency npm configuration: $subConfiguration")
     }
+
+    private fun resolve(
+        libs: Map<String, TomlParseResult>,
+        directory: Directory,
+        fromNotation: (String) -> Any = { it }
+    ): Any =
+        when {
+            notation.startsWith("$") -> {
+                fromNotation(libs.resolveLibrary(notation))
+            }
+
+            notation.contains("[/\\\\]".toRegex()) && !notation.isUrl -> directory.file(notation)
+
+            else -> fromNotation(notation)
+        }
 }
 
 internal object DependencyTransformingSerializer :
