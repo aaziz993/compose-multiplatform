@@ -2,8 +2,6 @@ package gradle.model.gradle.dokka
 
 import org.jetbrains.dokka.gradle.AbstractDokkaTask
 import org.jetbrains.dokka.gradle.DokkaMultiModuleFileLayout
-import gradle.model.dokka.DokkaMultiModuleFileLayout.CompactInParent
-import gradle.model.dokka.DokkaMultiModuleFileLayout.NoCopy
 
 /**
  * @see DokkaMultiModuleFileLayout.targetChildOutputDirectory

@@ -2,6 +2,7 @@ package plugin.project.kotlin.powerassert.model
 
 import gradle.id
 import gradle.libs
+import gradle.model.kotlin.powerassert.PowerAssertGradleExtension
 import gradle.plugin
 import gradle.plugins
 import gradle.settings

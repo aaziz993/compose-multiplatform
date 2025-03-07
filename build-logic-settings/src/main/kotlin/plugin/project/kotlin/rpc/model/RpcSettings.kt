@@ -2,6 +2,8 @@ package plugin.project.kotlin.rpc.model
 
 import gradle.id
 import gradle.libs
+import gradle.model.kotlin.rpc.RpcExtension
+import gradle.model.kotlin.rpc.RpcStrictModeExtension
 import gradle.plugin
 import gradle.plugins
 import gradle.settings

@@ -8,7 +8,9 @@ import gradle.settings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
-import gradle.model.kmp.nat.Framework
+import gradle.model.kotlin.kmp.nat.Framework
+import gradle.model.kotlin.cocoapods.CocoapodsExtension
+import gradle.model.kotlin.cocoapods.Pod
 import gradle.model.project.EnabledSettings
 
 @Serializable

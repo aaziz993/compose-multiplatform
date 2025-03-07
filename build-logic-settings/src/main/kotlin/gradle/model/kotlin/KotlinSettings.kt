@@ -11,13 +11,13 @@ import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
 import gradle.model.java.JavaToolchainSpec
 import plugin.project.kotlin.cocoapods.model.CocoapodsSettings
-import gradle.model.kmp.HierarchyAliasTransformingSerializer
-import gradle.model.kmp.HierarchyGroup
-import gradle.model.kmp.KotlinMultiplatformExtension
-import gradle.model.kmp.KotlinSourceSet
-import gradle.model.kmp.KotlinSourceSetTransformingSerializer
-import gradle.model.kmp.KotlinTarget
-import gradle.model.kmp.KotlinTargetTransformingSerializer
+import gradle.model.kotlin.kmp.HierarchyAliasTransformingSerializer
+import gradle.model.kotlin.kmp.HierarchyGroup
+import gradle.model.kotlin.kmp.KotlinMultiplatformExtension
+import gradle.model.kotlin.kmp.KotlinSourceSet
+import gradle.model.kotlin.kmp.KotlinSourceSetTransformingSerializer
+import gradle.model.kotlin.kmp.KotlinTarget
+import gradle.model.kotlin.kmp.KotlinTargetTransformingSerializer
 import org.jetbrains.kotlin.gradle.dsl.KotlinBaseExtension
 
 @Serializable

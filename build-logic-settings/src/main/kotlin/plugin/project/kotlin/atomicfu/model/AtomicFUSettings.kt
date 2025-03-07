@@ -2,6 +2,7 @@ package plugin.project.kotlin.atomicfu.model
 
 import gradle.id
 import gradle.libs
+import gradle.model.kotlin.atomicfu.AtomicFUExtension
 import gradle.plugin
 import gradle.plugins
 import gradle.settings

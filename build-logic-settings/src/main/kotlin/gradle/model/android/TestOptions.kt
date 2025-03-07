@@ -2,9 +2,14 @@ package gradle.model.android
 
 import com.android.build.api.dsl.ManagedDevices
 import com.android.build.api.dsl.TestOptions
+import gradle.libs
+import gradle.settings
 import gradle.trySet
+import gradle.version
+import gradle.versions
 import kotlinx.serialization.Serializable
 import org.gradle.api.Incubating
+import org.gradle.api.Project
 
 /** Options for running tests. */
 @Serializable
@@ -31,7 +36,7 @@ internal data class TestOptions(
      * Configures Gradle Managed Devices for use in testing with the Unified test platform.
      */
     @get:Incubating
-    val managedDevices: ManagedDevices?=null,
+    val managedDevices: ManagedDevices? = null,
     /**
      * Specifies whether to use on-device test orchestration.
      *
@@ -103,6 +108,7 @@ internal data class TestOptions(
     val targetSdkPreview: String? = null,
 ) {
 
+    context(Project)
     @Suppress("UnstableApiUsage")
     fun applyTo(options: TestOptions) {
         unitTests?.applyTo(options.unitTests)
@@ -112,7 +118,7 @@ internal data class TestOptions(
         options::execution trySet execution
         emulatorControl?.applyTo(options.emulatorControl)
         emulatorSnapshots?.applyTo(options.emulatorSnapshots)
-        options::targetSdk trySet targetSdk
+        options::targetSdk trySet (targetSdk ?: settings.libs.versions.version("android.targetSdk")?.toInt())
         options::targetSdkPreview trySet targetSdkPreview
     }
 }

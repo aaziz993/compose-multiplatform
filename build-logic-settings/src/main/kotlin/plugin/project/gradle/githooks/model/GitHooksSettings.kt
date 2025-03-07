@@ -2,7 +2,7 @@ package plugin.project.gradle.githooks.model
 
 import gradle.id
 import gradle.libs
-import gradle.model.githooks.GitHooksExtension
+import gradle.model.gradle.githooks.GitHooksExtension
 import gradle.plugin
 import gradle.plugins
 import kotlinx.serialization.Serializable

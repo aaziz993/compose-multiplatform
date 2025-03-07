@@ -11,9 +11,9 @@ import org.gradle.api.initialization.Settings
 import org.gradle.kotlin.dsl.develocity
 import gradle.model.DirectoryBuildCache
 import gradle.model.RemoteBuildCache
-import gradle.model.develocity.BuildScanConfiguration
-import gradle.model.develocity.DevelocityConfiguration
-import gradle.model.develocity.Git
+import gradle.model.gradle.develocity.BuildScanConfiguration
+import gradle.model.gradle.develocity.DevelocityConfiguration
+import gradle.model.gradle.develocity.Git
 import gradle.model.project.EnabledSettings
 
 @Serializable

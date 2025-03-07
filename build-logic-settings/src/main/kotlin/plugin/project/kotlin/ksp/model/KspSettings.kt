@@ -2,6 +2,7 @@ package plugin.project.kotlin.ksp.model
 
 import gradle.id
 import gradle.libs
+import gradle.model.kotlin.ksp.KspExtension
 import gradle.plugin
 import gradle.plugins
 import gradle.settings

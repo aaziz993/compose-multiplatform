@@ -18,7 +18,7 @@ import org.gradle.api.Project
 import org.gradle.api.tasks.SourceSet
 import org.gradle.internal.extensions.stdlib.capitalized
 import org.gradle.kotlin.dsl.dependencies
-import gradle.model.kmp.jvm.android.KotlinAndroidTarget
+import gradle.model.kotlin.kmp.jvm.android.KotlinAndroidTarget
 import gradle.model.kotlin.sourceSets
 import gradle.model.project.ProjectLayout
 import gradle.model.project.ProjectType

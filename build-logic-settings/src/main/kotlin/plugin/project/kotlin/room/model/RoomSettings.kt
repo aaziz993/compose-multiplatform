@@ -2,6 +2,7 @@ package plugin.project.kotlin.room.model
 
 import gradle.id
 import gradle.libs
+import gradle.model.kotlin.room.RoomExtension
 import gradle.plugin
 import gradle.plugins
 import gradle.settings

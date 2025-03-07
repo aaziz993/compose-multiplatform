@@ -2,7 +2,7 @@ package plugin.project.gradle.buildconfig.model
 
 import gradle.id
 import gradle.libs
-import gradle.model.buildconfig.BuildConfigExtension
+import gradle.model.gradle.buildconfig.BuildConfigExtension
 import gradle.plugin
 import gradle.plugins
 import gradle.settings

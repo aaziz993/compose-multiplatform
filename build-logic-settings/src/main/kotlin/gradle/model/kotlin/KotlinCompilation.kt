@@ -1,11 +1,11 @@
 package gradle.model.kotlin
 
 import gradle.model.Named
+import gradle.model.kotlin.kmp.KotlinSourceSet
 import gradle.serialization.serializer.KeyTransformingSerializer
 import gradle.trySet
 import kotlinx.serialization.KSerializer
 import org.gradle.api.Project
-import gradle.model.kmp.KotlinSourceSet
 
 /**
  * # Kotlin compilation

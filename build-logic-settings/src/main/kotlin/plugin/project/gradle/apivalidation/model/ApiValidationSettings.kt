@@ -4,8 +4,8 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import gradle.id
 import gradle.libs
 import gradle.maybeNamed
-import gradle.model.apivalidation.ApiValidationExtension
-import gradle.model.apivalidation.KlibValidationSettings
+import gradle.model.gradle.apivalidation.ApiValidationExtension
+import gradle.model.gradle.apivalidation.KlibValidationSettings
 import gradle.plugin
 import gradle.plugins
 import gradle.settings

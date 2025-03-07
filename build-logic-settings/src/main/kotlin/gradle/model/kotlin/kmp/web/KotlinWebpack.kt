@@ -1,0 +1,49 @@
+package gradle.model.kotlin.kmp.web
+
+import gradle.tryAssign
+import gradle.trySet
+import kotlinx.serialization.Serializable
+import org.gradle.api.Project
+import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
+import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig.Mode
+
+@Serializable
+internal data class KotlinWebpack(
+    val mode: Mode? = null,
+    val inputFilesDirectory: String? = null,
+    val entryModuleName: String? = null,
+    val esModules: Boolean? = null,
+    val output: KotlinWebpackOutput? = null,
+    val outputDirectory: String? = null,
+    val mainOutputFileName: String? = null,
+    val debug: Boolean? = null,
+    val bin: String? = null,
+    val args: List<String>? = null,
+    val nodeArgs: List<String>? = null,
+    val sourceMaps: Boolean? = null,
+    val devServerProperty: KotlinWebpackConfig.DevServer? = null,
+    val watchOptions: KotlinWebpackConfig.WatchOptions? = null,
+    val devtool: String? = null,
+    val generateConfigOnly: Boolean? = null,
+) {
+
+    context(Project)
+    fun applyTo(webpack: KotlinWebpack) {
+        webpack::mode trySet mode
+        webpack.inputFilesDirectory tryAssign inputFilesDirectory?.let(layout.projectDirectory::dir)
+        webpack.entryModuleName tryAssign entryModuleName
+        webpack.esModules tryAssign esModules
+        output?.applyTo(webpack.output)
+        webpack.outputDirectory tryAssign outputDirectory?.let(layout.projectDirectory::dir)
+        webpack.mainOutputFileName tryAssign mainOutputFileName
+        webpack::debug trySet debug
+        webpack::bin trySet bin
+        args?.let(webpack.args::addAll)
+        nodeArgs?.let(webpack.nodeArgs::addAll)
+        webpack::sourceMaps trySet sourceMaps
+        webpack.devServerProperty tryAssign devServerProperty?.toDevServer()
+        webpack::watchOptions trySet watchOptions?.toWatchOptions()
+        webpack::devtool trySet devtool
+        webpack::generateConfigOnly trySet generateConfigOnly
+    }
+}

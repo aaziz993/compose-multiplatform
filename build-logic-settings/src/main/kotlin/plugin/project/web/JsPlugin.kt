@@ -4,7 +4,7 @@ import gradle.id
 import gradle.karakum
 import gradle.kotlin
 import gradle.libs
-import gradle.model.kmp.web.KotlinJsTarget
+import gradle.model.kotlin.kmp.web.KotlinJsTarget
 import gradle.plugin
 import gradle.plugins
 import gradle.projectProperties
