@@ -46,7 +46,7 @@ internal interface BaseExtension {
 
     val compileOptions: CompileOptions?
 
-    val packagingOptions: PackagingOptions?
+    val packaging: Packaging?
 
     val jacoco: JacocoOptions?
 
@@ -149,7 +149,7 @@ internal interface BaseExtension {
             }
         }
 
-        packagingOptions?.let { packagingOptions ->
+        packaging?.let { packagingOptions ->
             extension.packagingOptions(packagingOptions::applyTo)
         }
 
@@ -201,6 +201,8 @@ internal interface BaseExtension {
         buildFeatures?.applyTo(extension.buildFeatures)
 
         extension.namespace = namespace ?: androidNamespace
+
+        com.android.build.api.dsl.LibraryExtension
     }
 }
 

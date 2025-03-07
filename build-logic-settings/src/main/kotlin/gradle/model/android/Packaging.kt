@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
  * Options for APK packaging.
  */
 @Serializable
-internal data class PackagingOptions(
+internal data class Packaging(
     /** Packaging options for dex files */
     val dex: DexPackaging? = null,
     /** Packaging options for JNI library files */
