@@ -182,7 +182,6 @@ internal interface BaseExtension {
         buildFeatures?.applyTo(extension.buildFeatures)
 
         extension.namespace = namespace ?: androidNamespace
-        com.android.build.gradle.internal.dsl.BaseAppModuleExtension
     }
 }
 
