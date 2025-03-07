@@ -412,6 +412,10 @@ android:
     testInstrumentationRunner: androidx.test.runner.AndroidJUnitRunner
     manifestPlaceholders:
       appAuthRedirectScheme: "empty"
+    javaCompileOptions:
+      annotationProcessorOptions:
+        arguments:
+          'room.schemaLocation': schemas
     vectorDrawables:
       useSupportLibrary: true
     # List additional ProGuard rules for the given build type here. By default,
