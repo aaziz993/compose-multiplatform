@@ -40,27 +40,26 @@ internal class AndroidPlugin : Plugin<Project> {
 //            projectProperties.android?.applyTo()
 
             if (!projectProperties.kotlin.enabledKMP) {
-                projectProperties.kotlin
-                    .sourceSets<KotlinAndroidTarget>()
-                    ?.forEach { sourceSet ->
-                        val compilationName = if (
-                            sourceSet.name == SourceSet.TEST_SOURCE_SET_NAME ||
-                            sourceSet.name.startsWith("androidTest") ||
-                            sourceSet.name.startsWith("testFixtures")
-                        ) "test"
-                        else ""
+                projectProperties.kotlin.sourceSets<KotlinAndroidTarget>()?.forEach { sourceSet ->
+                    val compilationName = if (
+                        sourceSet.name == "commonTest" ||
+                        sourceSet.name.startsWith(SourceSet.TEST_SOURCE_SET_NAME) ||
+                        sourceSet.name.startsWith("androidTest") ||
+                        sourceSet.name.startsWith("testFixtures")
+                    ) "test"
+                    else ""
 
-                        dependencies {
-                            sourceSet.dependencies
-                                ?.forEach { dependency ->
-                                    add(
-                                        "$compilationName${dependency.configuration.capitalized()}"
-                                            .decapitalized(),
-                                        dependency.resolve(),
-                                    )
-                                }
-                        }
+                    dependencies {
+                        sourceSet.dependencies
+                            ?.forEach { dependency ->
+                                add(
+                                    "$compilationName${dependency.configuration.capitalized()}"
+                                        .decapitalized(),
+                                    dependency.resolve(),
+                                )
+                            }
                     }
+                }
             }
 
             adjustAndroidSourceSets()

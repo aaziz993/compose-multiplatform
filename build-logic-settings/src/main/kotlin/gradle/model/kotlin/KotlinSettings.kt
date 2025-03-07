@@ -66,7 +66,11 @@ internal data class KotlinSettings(
 internal inline fun <reified T : KotlinTarget> KotlinSettings.sourceSets(): List<KotlinSourceSet>? {
     val _targets = targets?.filterIsInstance<T>() ?: return null
 
-    return sourceSets?.filter { sourceSet ->
-        sourceSet.name.isEmpty() || _targets.any { target -> sourceSet.name.startsWith(target.targetName) }
+    return sourceSets?.let { sourceSets ->
+        sourceSets.filter { sourceSet ->
+            sourceSet.name.isEmpty() || _targets.any { target -> sourceSet.name.startsWith(target.targetName) }
+        } + sourceSets.filter { sourceSet ->
+            sourceSet.name == "commonMain" || sourceSet.name == "commonTest"
+        }
     }
 }

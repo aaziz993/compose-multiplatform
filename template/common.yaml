@@ -359,6 +359,7 @@ kotlin:
   sourceSets:
     - commonMain:
         dependencies:
+          - kotlin: kotlin-stdlib-common
           - $libs.kotlinx.serialization.json
           - $libs.kotlinx.serialization.properties
 
