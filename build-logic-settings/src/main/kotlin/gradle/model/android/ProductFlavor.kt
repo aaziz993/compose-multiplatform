@@ -20,7 +20,7 @@ import gradle.model.Named
  * add them to the `productFlavors` block of your project's `build.gradle` file
  * and configure the settings you want.
  *
- * Product flavors support the same properties as the [DefaultConfig] block—this is because
+ * Product flavors support the same properties as the [DefaultConfigDsl] block—this is because
  * `defaultConfig` defines a [ProductFlavor] object that the plugin uses as the base configuration
  * for all other flavors.
  * Each flavor you configure can then override any of the default values in `defaultConfig`, such as

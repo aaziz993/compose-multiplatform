@@ -1,6 +1,6 @@
 package gradle.model.android
 
-import com.android.build.gradle.internal.dsl.PackagingOptions
+import com.android.build.api.dsl.Packaging
 import kotlinx.serialization.Serializable
 
 /**
@@ -16,7 +16,7 @@ internal data class Packaging(
     val resources: ResourcesPackaging? = null
 ) {
 
-    fun applyTo(options: PackagingOptions) {
+    fun applyTo(options: Packaging) {
         dex?.applyTo(options.dex)
         jniLibs?.applyTo(options.jniLibs)
         resources?.applyTo(options.resources)

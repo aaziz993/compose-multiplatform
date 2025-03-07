@@ -9,7 +9,7 @@ import org.gradle.api.Project
 /**
  * Shared properties between DSL objects that contribute to a variant.
  *
- * That is, [BuildType] and [ProductFlavor] and [DefaultConfig].
+ * That is, [BuildType] and [ProductFlavor] and [DefaultConfigDsl].
  */
 internal interface VariantDimension {
 

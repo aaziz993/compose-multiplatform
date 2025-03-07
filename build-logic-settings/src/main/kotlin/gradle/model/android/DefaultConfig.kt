@@ -1,13 +1,20 @@
 package gradle.model.android
 
-/**
- * Specifies defaults for variant properties that the Android plugin applies to all build variants.
- *
- * You can override any `defaultConfig` property when
- * [configuring product flavors](https://developer.android.com/studio/build/build-variants.html#product-flavors).
- * See [ProductFlavor].
- *
- * Each plugin has its own interface that extends this one, see [ApplicationDefaultConfig],
- * [LibraryDefaultConfig], [DynamicFeatureDefaultConfig] and [TestDefaultConfig].
- */
-internal interface DefaultConfig : BaseFlavor
+import com.android.build.api.dsl.VariantDimension
+import kotlinx.serialization.Serializable
+import org.gradle.api.Project
+
+@Serializable
+internal abstract class DefaultConfig : ApplicationDefaultConfig,
+    DynamicFeatureDefaultConfig,
+    LibraryDefaultConfig,
+    TestDefaultConfig {
+
+    context(Project)
+    override fun applyTo(dimension: VariantDimension) {
+        super<ApplicationDefaultConfig>.applyTo(dimension)
+        super<DynamicFeatureDefaultConfig>.applyTo(dimension)
+        super<LibraryDefaultConfig>.applyTo(dimension)
+        super<TestDefaultConfig>.applyTo(dimension)
+    }
+}

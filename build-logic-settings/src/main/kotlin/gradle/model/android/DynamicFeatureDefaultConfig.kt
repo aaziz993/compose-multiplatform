@@ -12,11 +12,11 @@ import org.gradle.api.Project
  */
 internal interface DynamicFeatureDefaultConfig :
     DynamicFeatureBaseFlavor,
-    DefaultConfig {
+    DefaultConfigDsl {
 
     context(Project)
     override fun applyTo(dimension: VariantDimension) {
         super<DynamicFeatureBaseFlavor>.applyTo(dimension)
-        super<DefaultConfig>.applyTo(dimension)
+        super<DefaultConfigDsl>.applyTo(dimension)
     }
 }

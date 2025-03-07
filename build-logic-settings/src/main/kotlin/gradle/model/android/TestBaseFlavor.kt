@@ -12,7 +12,7 @@ import org.gradle.api.Project
 /**
  * Shared properties between [TestProductFlavor] and [TestDefaultConfig]
  *
- * See [ProductFlavor] and [DefaultConfig] for more information.
+ * See [ProductFlavor] and [DefaultConfigDsl] for more information.
  */
 internal interface TestBaseFlavor :
     BaseFlavor,

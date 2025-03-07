@@ -39,14 +39,20 @@ internal interface ApkSigningConfig : SigningConfigDsl, Named {
     val enableV4Signing: Boolean?
 
     context(Project)
+    override fun applyTo(named: org.gradle.api.Named) {
+        super<SigningConfigDsl>.applyTo(named)
+
+        named as ApkSigningConfig
+
+        named  ::enableV1Signing trySet enableV1Signing
+        named ::enableV2Signing trySet enableV2Signing
+        named  ::enableV3Signing trySet enableV3Signing
+        named ::enableV4Signing trySet enableV4Signing
+    }
+
+    context(Project)
     fun toApkSigningConfig(): ApkSigningConfig =
         android.signingConfigs.create(name) {
-
-            super<SigningConfigDsl>.applyTo(this)
-
-            ::enableV1Signing trySet enableV1Signing
-            ::enableV2Signing trySet enableV2Signing
-            ::enableV3Signing trySet enableV3Signing
-            ::enableV4Signing trySet enableV4Signing
+            applyTo(this)
         }
 }

@@ -9,6 +9,7 @@ import gradle.trySet
 import gradle.version
 import gradle.versions
 import kotlinx.serialization.Serializable
+import org.gradle.api.Named
 import org.gradle.api.Project
 
 @Serializable(with = BaseExtensionSerializer::class)
@@ -16,9 +17,9 @@ internal interface BaseExtension {
 
     val composeOptions: ComposeOptions?
 
-    val dataBinding: DataBindingOptions?
+    val dataBinding: DataBinding?
 
-    val viewBinding: ViewBindingOptions?
+    val viewBinding: ViewBinding?
 
     val defaultPublishConfig: String?
 
@@ -48,8 +49,6 @@ internal interface BaseExtension {
 
     val packaging: Packaging?
 
-    val jacoco: JacocoOptions?
-
     /**
      * Specifies options for the
      * [Android Debug Bridge (ADB)](https://developer.android.com/studio/command-line/adb.html),
@@ -78,7 +77,7 @@ internal interface BaseExtension {
 
     val buildTypes: List<BuildType>?
 
-    val defaultConfig: DefaultConfigImpl?
+    val defaultConfig: DefaultConfigDsl?
 
     val productFlavors: List<ProductFlavor>?
 
@@ -99,17 +98,11 @@ internal interface BaseExtension {
         }
 
         dataBinding?.let { dataBinding ->
-            extension.dataBinding {
-                ::version trySet dataBinding.version
-                ::addDefaultAdapters trySet dataBinding.addDefaultAdapters
-                ::isEnabledForTests trySet dataBinding.isEnabledForTests
-            }
+            extension.dataBinding(dataBinding::applyTo)
         }
 
         viewBinding?.let { viewBinding ->
-            extension.viewBinding {
-                ::enable trySet viewBinding.enable
-            }
+            extension.viewBinding(viewBinding::applyTo)
         }
 
         defaultPublishConfig?.let(extension::defaultPublishConfig)
@@ -153,10 +146,6 @@ internal interface BaseExtension {
             extension.packagingOptions(packagingOptions::applyTo)
         }
 
-        jacoco?.let { jacoco ->
-            extension.jacoco(jacoco::applyTo)
-        }
-
         adbOptions?.let { adbOptions ->
             extension.adbOptions(adbOptions::applyTo)
         }
@@ -175,9 +164,9 @@ internal interface BaseExtension {
         buildTypes?.forEach { buildType ->
             extension.buildTypes {
                 maybeNamed(buildType.name) {
-                    buildType.applyTo(this)
+                    buildType.applyTo(this as Named)
                 } ?: create(buildType.name) {
-                    buildType.applyTo(this)
+                    buildType.applyTo(this as Named)
                 }
             }
         }
@@ -201,8 +190,7 @@ internal interface BaseExtension {
         buildFeatures?.applyTo(extension.buildFeatures)
 
         extension.namespace = namespace ?: androidNamespace
-
-        com.android.build.api.dsl.LibraryExtension
+//        com.android.build.gradle.internal.dsl.BaseAppModuleExtension
     }
 }
 

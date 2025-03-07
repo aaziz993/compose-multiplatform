@@ -2,7 +2,9 @@ package gradle.model.android
 
 import org.gradle.api.Project
 import gradle.model.Named
+import kotlinx.serialization.Serializable
 
+@Serializable
 internal data class SigningConfigImpl(
     override val name: String="",
     override val enableV1Signing: Boolean? = null,

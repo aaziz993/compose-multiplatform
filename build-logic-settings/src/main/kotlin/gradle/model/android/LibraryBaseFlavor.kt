@@ -6,7 +6,7 @@ import org.gradle.api.Project
 /**
  * Shared properties between [LibraryProductFlavor] and [LibraryDefaultConfig]
  *
- * See [ProductFlavor] and [DefaultConfig] for more information.
+ * See [ProductFlavor] and [DefaultConfigDsl] for more information.
  */
 internal interface LibraryBaseFlavor :
     BaseFlavor,

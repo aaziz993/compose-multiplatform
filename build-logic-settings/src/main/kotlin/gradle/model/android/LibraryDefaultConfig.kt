@@ -12,11 +12,11 @@ import org.gradle.api.Project
  */
 internal interface LibraryDefaultConfig :
     LibraryBaseFlavor,
-    DefaultConfig {
+    DefaultConfigDsl {
 
     context(Project)
     override fun applyTo(dimension: VariantDimension) {
         super<LibraryBaseFlavor>.applyTo(dimension)
-        super<DefaultConfig>.applyTo(dimension)
+        super<DefaultConfigDsl>.applyTo(dimension)
     }
 }

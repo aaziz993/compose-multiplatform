@@ -7,7 +7,7 @@ import org.gradle.api.Project
  * Shared properties between DSL objects [DynamicFeatureProductFlavor] and
  * [DynamicFeatureDefaultConfig]
  *
- * See [ProductFlavor] and [DefaultConfig] for more information.
+ * See [ProductFlavor] and [DefaultConfigDsl] for more information.
  */
 internal interface DynamicFeatureBaseFlavor :
     BaseFlavor,

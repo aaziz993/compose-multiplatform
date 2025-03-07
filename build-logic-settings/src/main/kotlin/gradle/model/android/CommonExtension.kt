@@ -1,8 +1,14 @@
 package gradle.model.android
 
-import com.android.build.api.dsl.TestCoverage
+import com.android.build.api.dsl.CommonExtension
+import gradle.libs
 import gradle.serialization.serializer.AnySerializer
+import gradle.settings
+import gradle.trySet
+import gradle.version
+import gradle.versions
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
 
 /**
  * Common extension properties for the Android Application. Library and Dynamic Feature Plugins.
@@ -13,7 +19,7 @@ import kotlinx.serialization.Serializable
 internal interface CommonExtension<
     BuildFeaturesT : BuildFeatures,
     BuildTypeT : BuildType,
-    DefaultConfigT : DefaultConfig,
+    DefaultConfigT : DefaultConfigDsl,
     ProductFlavorT : ProductFlavor,
     AndroidResourcesT : AndroidResources,
     InstallationT : Installation> {
@@ -23,7 +29,7 @@ internal interface CommonExtension<
      *
      * For more information about the properties you can configure in this block, see [AndroidResources].
      */
-    val androidResources: AndroidResourcesT
+    val androidResources: AndroidResourcesT?
 
     /**
      * Specifies options for the
@@ -32,7 +38,7 @@ internal interface CommonExtension<
      *
      * For more information about the properties you can configure in this block, see [AdbOptions].
      */
-    val installation: InstallationT
+    val installation: InstallationT?
 
     /**
      * Specifies Java compiler options, such as the language level of the Java source code and
@@ -40,12 +46,12 @@ internal interface CommonExtension<
      *
      * For more information about the properties you can configure in this block, see [CompileOptions].
      */
-    val compileOptions: CompileOptions
+    val compileOptions: CompileOptions?
 
     /**
      * A list of build features that can be enabled or disabled on the Android Project.
      */
-    val buildFeatures: BuildFeaturesT
+    val buildFeatures: BuildFeaturesT?
 
     /**
      * Encapsulates all build type configurations for this project.
@@ -64,7 +70,7 @@ internal interface CommonExtension<
      *
      * @see BuildType
      */
-    val buildTypes: List<BuildTypeT>
+    val buildTypes: List<BuildTypeT>?
 
     /**
      * Specifies options for the
@@ -72,7 +78,7 @@ internal interface CommonExtension<
      *
      * For more information about the properties you can configure in this block, see [DataBinding]
      */
-    val dataBinding: DataBinding
+    val dataBinding: DataBinding?
 
     /**
      * Specifies options for the
@@ -80,14 +86,7 @@ internal interface CommonExtension<
      *
      * For more information about the properties you can configure in this block, see [ViewBinding]
      */
-    val viewBinding: ViewBinding
-
-    /**
-     * Configure the gathering of code-coverage from tests.
-     *
-     * This is replaced by [testCoverage].
-     */
-    val jacoco: JacocoOptions
+    val viewBinding: ViewBinding?
 
     /**
      * Configure the gathering of code-coverage from tests.
@@ -105,21 +104,14 @@ internal interface CommonExtension<
      *
      * For more information about the properties you can configure in this block, see [TestCoverage].
      */
-    val testCoverage: TestCoverage
+    val testCoverage: TestCoverage?
 
     /**
      * Specifies options for the lint tool.
      *
      * For more information about the properties you can configure in this block, see [Lint].
      */
-    val lint: Lint
-
-    /**
-     * Specifies options for the lint tool.
-     *
-     * For more information about the properties you can configure in this block, see [LintOptions].
-     */
-    val lintOptions: LintOptions
+    val lint: Lint?
 
     /**
      * Specifies options and rules that determine which files the Android plugin packages into your
@@ -127,7 +119,7 @@ internal interface CommonExtension<
      *
      * For more information about the properties you can configure in this block, see [Packaging].
      */
-    val packaging: Packaging
+    val packaging: Packaging?
 
     /**
      * Encapsulates all product flavors configurations for this project.
@@ -169,7 +161,7 @@ internal interface CommonExtension<
      *
      * @see [ProductFlavor]
      */
-    val productFlavors: List<ProductFlavorT>
+    val productFlavors: List<ProductFlavorT>?
 
     /**
      * Specifies defaults for variant properties that the Android plugin applies to all build
@@ -178,9 +170,9 @@ internal interface CommonExtension<
      * You can override any `defaultConfig` property when
      * [configuring product flavors](https://developer.android.com/studio/build/build-variants.html#product-flavors)
      *
-     * For more information about the properties you can configure in this block, see [DefaultConfig].
+     * For more information about the properties you can configure in this block, see [DefaultConfigDsl].
      */
-    val defaultConfig: DefaultConfigT
+    val defaultConfig: DefaultConfigT?
 
     /**
      * Encapsulates signing configurations that you can apply to [ ] and [ ] configurations.
@@ -199,7 +191,7 @@ internal interface CommonExtension<
      *
      * @see [ApkSigningConfig]
      */
-    val signingConfigs: List<ApkSigningConfig>
+    val signingConfigs: List<SigningConfigImpl>?
 
     /**
      * Specifies options for external native build using [CMake](https://cmake.org/) or
@@ -220,14 +212,14 @@ internal interface CommonExtension<
      * since 2.2.0
      */
 
-    val externalNativeBuild: ExternalNativeBuild
+    val externalNativeBuild: ExternalNativeBuild?
 
     /**
      * Specifies options for how the Android plugin should run local and instrumented tests.
      *
      * For more information about the properties you can configure in this block, see [TestOptions].
      */
-    val testOptions: TestOptions
+    val testOptions: TestOptions?
 
     /**
      * Specifies configurations for
@@ -236,9 +228,9 @@ internal interface CommonExtension<
      *
      * For more information about the properties you can configure in this block, see [Splits].
      */
-    val splits: Splits
+    val splits: Splits?
 
-    val composeOptions: ComposeOptions
+    val composeOptions: ComposeOptions?
 
     /**
      * Specifies the names of product flavor dimensions for this project.
@@ -307,7 +299,7 @@ internal interface CommonExtension<
      * To learn more, read
      * [Combine multiple flavors](https://developer.android.com/studio/build/build-variants.html#flavor-dimensions).
      */
-    val flavorDimensions: List<String>
+    val flavorDimensions: List<String>?
 
     /**
      * Specifies this project's resource prefix to Android Studio for editor features, such as Lint
@@ -328,7 +320,7 @@ internal interface CommonExtension<
      * resourcePrefix 'mylib_'
      * ```
      */
-    var resourcePrefix: String?
+    val resourcePrefix: String?
 
     /**
      * Requires the specified NDK version to be used.
@@ -364,7 +356,7 @@ internal interface CommonExtension<
      *
      * This can be set on all Gradle projects with [com.android.build.api.dsl.SettingsExtension.ndkVersion]
      */
-    var ndkVersion: String
+    val ndkVersion: String?
 
     /**
      * Requires the specified path to NDK be used.
@@ -386,7 +378,7 @@ internal interface CommonExtension<
      *
      * This can be set on all Gradle projects with [com.android.build.api.dsl.SettingsExtension.ndkPath]
      */
-    var ndkPath: String?
+    val ndkPath: String?
 
     /**
      * Specifies the version of the
@@ -415,7 +407,7 @@ internal interface CommonExtension<
      *
      * This can be set on all Gradle projects with [com.android.build.api.dsl.SettingsExtension.buildToolsVersion]
      */
-    var buildToolsVersion: String
+    val buildToolsVersion: String?
 
     /**
      * Includes the specified library to the classpath.
@@ -462,7 +454,7 @@ internal interface CommonExtension<
      *
      * This can be set on all Gradle projects with [com.android.build.api.dsl.SettingsExtension.compileSdk]
      */
-    var compileSdk: Int?
+    val compileSdk: Int?
 
     /**
      * Specifies the SDK Extension level to compile your project against. This value is optional.
@@ -471,7 +463,7 @@ internal interface CommonExtension<
      *
      * This can be set on all Gradle projects with [com.android.build.api.dsl.SettingsExtension.compileSdkExtension]
      */
-    var compileSdkExtension: Int?
+    val compileSdkExtension: Int?
 
     /**
      * Specify a preview API to compile your project against.
@@ -483,7 +475,7 @@ internal interface CommonExtension<
      *
      * This can be set on all Gradle projects with [com.android.build.api.dsl.SettingsExtension.compileSdkPreview]
      */
-    var compileSdkPreview: String?
+    val compileSdkPreview: String?
 
     /**
      * Specify an SDK add-on to compile your project against.
@@ -502,5 +494,60 @@ internal interface CommonExtension<
      * Values provided should not be based on a Task execution result, as most of these properties
      * are read during configuration.
      */
-    val experimentalProperties: Map<String, @Serializable(with = AnySerializer::class) Any>
+    val experimentalProperties: Map<String, @Serializable(with = AnySerializer::class) Any>?
+
+    context(Project)
+    @Suppress("UnstableApiUsage")
+    fun applyTo(extension: CommonExtension<*, *, *, *, *, *>) {
+        androidResources?.applyTo(extension.androidResources)
+        installation?.applyTo(extension.installation)
+        compileOptions?.applyTo(extension.compileOptions)
+        buildFeatures?.applyTo(extension.buildFeatures)
+
+        buildTypes?.forEach { buildType ->
+            buildType.applyTo(extension.buildTypes)
+        }
+
+        dataBinding?.applyTo(extension.dataBinding)
+        viewBinding?.applyTo(extension.viewBinding)
+        testCoverage?.applyTo(extension.testCoverage)
+        lint?.applyTo(extension.lint)
+
+        packaging?.applyTo(extension.packaging)
+
+        productFlavors?.forEach { productFlavors ->
+            productFlavors.applyTo(extension.productFlavors)
+        }
+
+        defaultConfig?.applyTo(extension.defaultConfig)
+
+        signingConfigs?.forEach { signingConfigs ->
+            signingConfigs.applyTo(extension.signingConfigs)
+        }
+
+        testOptions?.applyTo(extension.testOptions)
+        splits?.applyTo(extension.splits)
+        flavorDimensions?.let(extension.flavorDimensions::addAll)
+        extension::resourcePrefix trySet resourcePrefix
+        extension::ndkVersion trySet ndkVersion
+        extension::ndkPath trySet ndkPath
+
+        (buildToolsVersion ?: settings.libs.versions.version("android.buildToolsVersion"))?.let { buildToolsVersion ->
+            extension.buildToolsVersion = buildToolsVersion
+        }
+
+        useLibraries?.forEach { (name, required) ->
+            extension.useLibrary(name, required)
+        }
+
+        extension::compileSdk trySet compileSdk
+        extension::compileSdkExtension trySet compileSdkExtension
+        extension::compileSdkPreview trySet compileSdkPreview
+
+        compileSdkAddon?.let { (vendor, name, version) ->
+            extension.compileSdkAddon(vendor, name, version)
+        }
+
+        experimentalProperties?.let(extension.experimentalProperties::putAll)
+    }
 }

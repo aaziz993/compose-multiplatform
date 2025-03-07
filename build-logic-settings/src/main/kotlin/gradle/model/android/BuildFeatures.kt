@@ -9,8 +9,8 @@ import kotlinx.serialization.Serializable
  *
  * This list applies to all plugin types.
  */
-@Serializable
-internal data class BuildFeatures(
+internal interface BuildFeatures {
+
     /**
      * Flag to enable AIDL compilation.
      *
@@ -19,7 +19,8 @@ internal data class BuildFeatures(
      *
      * See [AIDL](http://developer.android.com/r/tools/reference/dsl/buildfeatures/aidl).
      */
-    val aidl: Boolean? = null,
+    val aidl: Boolean?
+
     /**
      * Flag to enable Compose feature.
      * Setting the value to `null` resets to the default value
@@ -28,7 +29,8 @@ internal data class BuildFeatures(
      *
      * See [Compose](http://developer.android.com/compose).
      **/
-    val compose: Boolean? = null,
+    val compose: Boolean?
+
     /**
      * Flag to enable/disable generation of the `BuildConfig` class.
      *
@@ -37,7 +39,8 @@ internal data class BuildFeatures(
      *
      * See [build config fields](http://developer.android.com/r/tools/build-config-fields).
      */
-    val buildConfig: Boolean? = null,
+    val buildConfig: Boolean?
+
     /**
      * Flag to enable/disable import of Prefab dependencies from AARs.
      *
@@ -54,7 +57,8 @@ internal data class BuildFeatures(
      *
      * See [Prefab](http://developer.android.com/r/tools/prefab).
      */
-    val prefab: Boolean? = null,
+    val prefab: Boolean?
+
     /**
      * Flag to enable RenderScript compilation.
      *
@@ -62,7 +66,8 @@ internal data class BuildFeatures(
      * Default value is `false`.
      *
      */
-    val renderScript: Boolean? = null,
+    val renderScript: Boolean?
+
     /**
      * Flag to enable Resource Values generation.
      *
@@ -75,7 +80,8 @@ internal data class BuildFeatures(
 
      * See [Resources](http://developer.android.com/r/tools/res-values).
      */
-    val resValues: Boolean? = null,
+    val resValues: Boolean?
+
     /**
      * Flag to enable Shader compilation.
      *
@@ -88,7 +94,8 @@ internal data class BuildFeatures(
      *
      * See [Shader Compilers](https://developer.android.com/r/tools/shader-compilers)
      */
-    val shaders: Boolean? = null,
+    val shaders: Boolean?
+
     /**
      * Flag to enable View Binding.
      *
@@ -101,8 +108,7 @@ internal data class BuildFeatures(
      *
      * See [View Binding Library](https://developer.android.com/viewbinding)
      */
-    val viewBinding: Boolean? = null,
-) {
+    val viewBinding: Boolean?
 
     fun applyTo(features: BuildFeatures) {
         features::aidl trySet aidl
