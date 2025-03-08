@@ -17,8 +17,6 @@ import gradle.sourceSetsToComposeResourcesDirs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.SourceSet
-import org.jetbrains.amper.gradle.android.AndroidBindingPluginPart
-import org.jetbrains.amper.gradle.kmpp.KMPPBindingPluginPart
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
@@ -117,7 +115,7 @@ internal class KMPPlugin : Plugin<Project> {
                                 resourcesPrefixPart = compilationName
                             }
                         }
-                        AndroidBindingPluginPart
+
                         sourceSet.kotlin.replace("src/${sourceSet.name}/kotlin", "$srcPrefixPart$targetPart")
                         sourceSet.resources.replace("src/${sourceSet.name}/resources", "${resourcesPrefixPart}Resources$targetPart".decapitalized())
                         sourceSetsToComposeResourcesDirs[sourceSet] = layout.projectDirectory.dir("${resourcesPrefixPart}ComposeResources$targetPart".decapitalized())
