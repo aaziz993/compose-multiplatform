@@ -371,7 +371,6 @@ kotlin:
   sourceSets:
     - commonMain:
         dependencies:
-          - kotlin: stdlib-common
           - $libs.kotlinx.serialization.json
           - $libs.kotlinx.serialization.properties
 
@@ -393,7 +392,7 @@ kotlin:
 
     - jsMain:
         dependencies:
-          - kotlin: test-js
+#          - kotlin: test-js
           - npm: $libs.js.joda.timezone
           - npm: $libs.npm.copy.webpack.plugin
           - npm: $libs.npm.openpgp
