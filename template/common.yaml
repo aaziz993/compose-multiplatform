@@ -370,7 +370,7 @@ kotlin:
             testLogging:
               showStandardStreams: true
             useKarmaDsl:
-              configDirectory: ../gradle/js/karma.config.d
+              configDirectory: ../karma.config.d
               useChromeHeadless: true
         nodejs:
           testTask:
