@@ -1,7 +1,6 @@
 package gradle.model.android
 
 import com.android.build.api.dsl.MultipleVariants
-import kotlinx.serialization.Serializable
 
 /**
  * Multi variant publishing options.

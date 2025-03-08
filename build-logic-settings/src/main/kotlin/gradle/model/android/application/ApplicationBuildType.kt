@@ -1,6 +1,5 @@
 package gradle.model.android.application
 
-import com.android.build.api.dsl.ApplicationBuildType
 import gradle.model.android.ApkSigningConfig
 import gradle.model.android.BuildConfigField
 import gradle.model.android.BuildType
@@ -13,6 +12,7 @@ import gradle.model.android.ResValue
 import gradle.model.android.Shaders
 import gradle.model.android.VcsInfo
 import gradle.serialization.serializer.AnySerializer
+import gradle.serialization.serializer.KeyTransformingSerializer
 import gradle.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
@@ -109,7 +109,7 @@ internal data class ApplicationBuildType(
     override fun applyTo(named: Named) {
         super<BuildType>.applyTo(named)
 
-        named as ApplicationBuildType
+        named as com.android.build.api.dsl.ApplicationBuildType
 
         named::isDebuggable trySet isDebuggable
         named::isEmbedMicroApp trySet isEmbedMicroApp
@@ -118,3 +118,8 @@ internal data class ApplicationBuildType(
         named::isProfileable trySet isProfileable
     }
 }
+
+internal object ApplicationBuildTypeTransformingSerializer : KeyTransformingSerializer<ApplicationBuildType>(
+    ApplicationBuildType.serializer(),
+    "name",
+)

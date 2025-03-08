@@ -5,6 +5,8 @@ import gradle.decapitalized
 import gradle.id
 import gradle.kotlin
 import gradle.libs
+import gradle.model.kotlin.KotlinSettings
+import gradle.model.project.ProjectLayout
 import gradle.plugin
 import gradle.plugins
 import gradle.prefixIfNotEmpty
@@ -17,8 +19,6 @@ import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
-import gradle.model.kotlin.KotlinSettings
-import gradle.model.project.ProjectLayout
 
 internal class KMPPlugin : Plugin<Project> {
 

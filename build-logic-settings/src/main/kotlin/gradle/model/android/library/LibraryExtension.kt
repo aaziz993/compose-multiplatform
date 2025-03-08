@@ -1,7 +1,5 @@
 package gradle.model.android.library
 
-import com.android.build.gradle.LibraryExtension
-import gradle.android
 import gradle.model.android.AaptOptions
 import gradle.model.android.AdbOptions
 import gradle.model.android.CompileOptions
@@ -37,10 +35,10 @@ internal data class LibraryExtension(
     override val androidResources: LibraryAndroidResources? = null,
     override val installation: LibraryInstallation? = null,
     override val buildFeatures: LibraryBuildFeatures? = null,
-    override val buildTypes: List<LibraryBuildType>? = null,
+    override val buildTypes: List<@Serializable(with = LibraryBuildTypeTransformingSerializer::class) LibraryBuildType>? = null,
     override val testCoverage: TestCoverage? = null,
     override val lint: Lint? = null,
-    override val productFlavors: List<LibraryProductFlavor>? = null,
+    override val productFlavors: List<@Serializable(with = LibraryProductFlavorTransformingSerializer::class) LibraryProductFlavor>? = null,
     override val defaultConfig: LibraryDefaultConfig? = null,
     override val useLibraries: List<LibraryRequest>? = null,
     override val compileSdk: Int? = null,

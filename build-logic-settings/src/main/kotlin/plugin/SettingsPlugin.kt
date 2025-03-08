@@ -1,17 +1,11 @@
 package plugin
 
-import gradle.deepMerge
-import gradle.projectProperties
-import gradle.resolve
-import gradle.serialization.decodeFromAny
-import gradle.serialization.encodeToAny
-import kotlinx.serialization.json.Json
-import org.gradle.api.Plugin
-import org.gradle.api.file.Directory
-import org.gradle.api.initialization.Settings
-import org.yaml.snakeyaml.Yaml
 import gradle.model.project.ProjectProperties
 import gradle.problemreporter.SLF4JProblemReporterContext
+import kotlinx.serialization.json.Json
+import org.gradle.api.Plugin
+import org.gradle.api.initialization.Settings
+import org.yaml.snakeyaml.Yaml
 
 private const val PROJECT_PROPERTIES_FILE = "project.yaml"
 

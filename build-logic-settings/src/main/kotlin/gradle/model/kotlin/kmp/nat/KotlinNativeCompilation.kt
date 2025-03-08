@@ -1,14 +1,14 @@
 package gradle.model.kotlin.kmp.nat
 
-import gradle.model.kotlin.kmp.KotlinSourceSet
-import kotlinx.serialization.Serializable
-import org.gradle.api.Named
-import org.gradle.api.Project
 import gradle.model.kotlin.KotlinCompilation
 import gradle.model.kotlin.KotlinCompilationOutput
 import gradle.model.kotlin.KotlinCompilationTransformingSerializer
+import gradle.model.kotlin.kmp.KotlinSourceSet
 import gradle.model.project.Dependency
 import gradle.model.project.DependencyTransformingSerializer
+import kotlinx.serialization.Serializable
+import org.gradle.api.Named
+import org.gradle.api.Project
 
 @Serializable
 internal data class KotlinNativeCompilation(

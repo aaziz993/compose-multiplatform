@@ -1,7 +1,5 @@
 package gradle.model.android.library
 
-import com.android.build.gradle.internal.dsl.InternalLibraryExtension
-import gradle.android
 import gradle.model.android.InternalTestedExtension
 import org.gradle.api.Project
 

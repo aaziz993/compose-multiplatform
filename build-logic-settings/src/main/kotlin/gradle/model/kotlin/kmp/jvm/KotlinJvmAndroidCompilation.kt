@@ -1,17 +1,17 @@
 package gradle.model.kotlin.kmp.jvm
 
-import kotlinx.serialization.Serializable
-import org.gradle.api.Named
-import org.gradle.api.Project
-import org.gradle.kotlin.dsl.invoke
 import gradle.model.java.JavaCompile
-import gradle.model.kotlin.kmp.KotlinSourceSet
 import gradle.model.kotlin.KotlinCompilation
 import gradle.model.kotlin.KotlinCompilationOutput
 import gradle.model.kotlin.KotlinCompilationTaskImpl
 import gradle.model.kotlin.KotlinCompilationTransformingSerializer
+import gradle.model.kotlin.kmp.KotlinSourceSet
 import gradle.model.project.Dependency
 import gradle.model.project.DependencyTransformingSerializer
+import kotlinx.serialization.Serializable
+import org.gradle.api.Named
+import org.gradle.api.Project
+import org.gradle.kotlin.dsl.invoke
 
 @Serializable
 internal data class KotlinJvmAndroidCompilation(

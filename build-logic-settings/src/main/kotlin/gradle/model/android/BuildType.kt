@@ -207,4 +207,3 @@ internal interface BuildType : Named, VariantDimension {
         vcsInfo?.applyTo(named.vcsInfo)
     }
 }
-

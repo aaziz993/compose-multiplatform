@@ -2,16 +2,16 @@ package plugin.project.kotlin.cocoapods.model
 
 import gradle.id
 import gradle.libs
+import gradle.model.kotlin.cocoapods.CocoapodsExtension
+import gradle.model.kotlin.cocoapods.Pod
+import gradle.model.kotlin.kmp.nat.Framework
+import gradle.model.project.EnabledSettings
 import gradle.plugin
 import gradle.plugins
 import gradle.settings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
-import gradle.model.kotlin.kmp.nat.Framework
-import gradle.model.kotlin.cocoapods.CocoapodsExtension
-import gradle.model.kotlin.cocoapods.Pod
-import gradle.model.project.EnabledSettings
 
 @Serializable
 internal data class CocoapodsSettings(

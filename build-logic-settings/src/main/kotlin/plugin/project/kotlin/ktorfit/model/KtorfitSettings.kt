@@ -4,12 +4,12 @@ import de.jensklingenberg.ktorfit.gradle.ErrorCheckingMode
 import gradle.id
 import gradle.libs
 import gradle.model.kotlin.ktorfit.KtorfitGradleConfiguration
+import gradle.model.project.EnabledSettings
 import gradle.plugin
 import gradle.plugins
 import gradle.settings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import gradle.model.project.EnabledSettings
 
 @Serializable
 internal data class KtorfitSettings(

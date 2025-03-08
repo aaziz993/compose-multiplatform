@@ -1,7 +1,7 @@
 package gradle.model.cmp.desktop.model.macos
 
-import kotlinx.serialization.Serializable
 import gradle.model.cmp.desktop.model.FileAssociation
+import kotlinx.serialization.Serializable
 
 @Serializable
 internal data class NativeApplicationMacOSPlatformSettings(

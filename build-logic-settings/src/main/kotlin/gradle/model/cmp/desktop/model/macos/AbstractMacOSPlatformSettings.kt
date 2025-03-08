@@ -1,9 +1,9 @@
 package gradle.model.cmp.desktop.model.macos
 
+import gradle.model.cmp.desktop.model.AbstractPlatformSettings
 import gradle.trySet
 import org.gradle.api.Project
 import org.jetbrains.compose.desktop.application.dsl.AbstractMacOSPlatformSettings
-import gradle.model.cmp.desktop.model.AbstractPlatformSettings
 
 internal abstract class AbstractMacOSPlatformSettings : AbstractPlatformSettings() {
 

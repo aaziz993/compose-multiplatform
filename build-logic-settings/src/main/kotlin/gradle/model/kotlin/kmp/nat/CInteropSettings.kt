@@ -1,10 +1,10 @@
 package gradle.model.kotlin.kmp.nat
 
+import gradle.model.Named
 import gradle.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.CInteropSettings
-import gradle.model.Named
 
 /**
  * # C interoperability settings

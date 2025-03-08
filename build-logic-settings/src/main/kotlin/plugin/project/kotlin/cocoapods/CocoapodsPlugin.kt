@@ -2,13 +2,13 @@ package plugin.project.kotlin.cocoapods
 
 import gradle.id
 import gradle.libs
+import gradle.model.kotlin.kmp.nat.apple.KotlinAppleTarget
 import gradle.plugin
 import gradle.plugins
 import gradle.projectProperties
 import gradle.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import gradle.model.kotlin.kmp.nat.apple.KotlinAppleTarget
 
 internal class CocoapodsPlugin : Plugin<Project> {
 

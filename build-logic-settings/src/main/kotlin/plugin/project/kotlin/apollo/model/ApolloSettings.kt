@@ -7,12 +7,12 @@ import gradle.model.kotlin.apollo.ApolloExtension
 import gradle.model.kotlin.apollo.ApolloKspProcessor
 import gradle.model.kotlin.apollo.KotlinService
 import gradle.model.kotlin.apollo.Service
+import gradle.model.project.EnabledSettings
 import gradle.plugin
 import gradle.plugins
 import gradle.settings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import gradle.model.project.EnabledSettings
 
 @Serializable
 internal data class ApolloSettings(

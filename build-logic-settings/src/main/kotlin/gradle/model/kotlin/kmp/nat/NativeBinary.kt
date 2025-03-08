@@ -1,11 +1,11 @@
 package gradle.model.kotlin.kmp.nat
 
+import gradle.model.Named
 import gradle.moduleName
 import gradle.tryAssign
 import gradle.trySet
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary
-import gradle.model.Named
 
 internal interface NativeBinary : Named {
 

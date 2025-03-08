@@ -1,6 +1,8 @@
 package gradle.model.kotlin.kmp.jvm
 
 import gradle.kotlin
+import gradle.model.kotlin.HasConfigurableKotlinCompilerOptions
+import gradle.model.kotlin.kmp.KotlinTarget
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
@@ -8,8 +10,6 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
 import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
-import gradle.model.kotlin.kmp.KotlinTarget
-import gradle.model.kotlin.HasConfigurableKotlinCompilerOptions
 
 @Serializable
 internal abstract class KotlinJvmAndAndroidTarget :

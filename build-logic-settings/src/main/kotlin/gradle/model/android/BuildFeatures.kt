@@ -2,7 +2,6 @@ package gradle.model.android
 
 import com.android.build.api.dsl.BuildFeatures
 import gradle.trySet
-import kotlinx.serialization.Serializable
 
 /**
  * A list of build features that can be disabled or enabled in an Android project.

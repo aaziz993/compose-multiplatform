@@ -1,12 +1,12 @@
 package gradle.model.cmp.desktop.model
 
+import gradle.model.cmp.desktop.model.linux.LinuxPlatformSettings
+import gradle.model.cmp.desktop.model.macos.JvmMacOSPlatformSettings
+import gradle.model.cmp.desktop.model.windows.WindowsPlatformSettings
 import gradle.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.compose.desktop.application.dsl.JvmApplicationDistributions
-import gradle.model.cmp.desktop.model.linux.LinuxPlatformSettings
-import gradle.model.cmp.desktop.model.macos.JvmMacOSPlatformSettings
-import gradle.model.cmp.desktop.model.windows.WindowsPlatformSettings
 
 @Serializable
 internal data class JvmApplicationDistributions(

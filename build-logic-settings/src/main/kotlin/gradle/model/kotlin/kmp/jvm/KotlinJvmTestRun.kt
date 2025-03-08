@@ -1,9 +1,9 @@
 package gradle.model.kotlin.kmp.jvm
 
+import gradle.model.Named
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTestRun
-import gradle.model.Named
 
 @Serializable
 internal data class KotlinJvmTestRun(

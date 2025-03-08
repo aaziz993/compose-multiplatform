@@ -2,6 +2,7 @@ package gradle.model.gradle.dokka
 
 import gradle.libraryAsDependency
 import gradle.libs
+import gradle.model.Named
 import gradle.serialization.serializer.KeyTransformingSerializer
 import gradle.settings
 import gradle.tryAssign
@@ -11,7 +12,6 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.buildscript
 import org.jetbrains.dokka.gradle.engine.plugins.DokkaHtmlPluginParameters
 import org.jetbrains.dokka.gradle.engine.plugins.DokkaVersioningPluginParameters
-import gradle.model.Named
 
 /**
  * Base class for defining Dokka Plugin configuration.

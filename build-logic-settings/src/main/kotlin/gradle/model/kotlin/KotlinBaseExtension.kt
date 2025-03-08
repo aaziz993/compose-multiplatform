@@ -1,16 +1,16 @@
 package gradle.model.kotlin
 
 import gradle.libs
-import gradle.tryAssign
-import gradle.trySet
-import org.jetbrains.kotlin.buildtools.api.ExperimentalBuildToolsApi
-import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
-import org.jetbrains.kotlin.gradle.dsl.KotlinBaseExtension
 import gradle.model.java.JavaToolchainSpec
 import gradle.settings
+import gradle.tryAssign
+import gradle.trySet
 import gradle.version
 import gradle.versions
 import org.gradle.api.Project
+import org.jetbrains.kotlin.buildtools.api.ExperimentalBuildToolsApi
+import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
+import org.jetbrains.kotlin.gradle.dsl.KotlinBaseExtension
 
 internal interface KotlinBaseExtension {
 

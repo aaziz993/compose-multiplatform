@@ -10,12 +10,12 @@ import gradle.model.gradle.dokka.DokkaPublicationTransformingSerializer
 import gradle.model.gradle.dokka.DokkaSourceSetSpec
 import gradle.model.gradle.dokka.DokkaSourceSetSpecTransformingSerializer
 import gradle.model.gradle.dokka.WorkerIsolation
+import gradle.model.project.EnabledSettings
 import gradle.plugin
 import gradle.plugins
 import gradle.settings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import gradle.model.project.EnabledSettings
 
 @Serializable
 internal data class DokkaSettings(

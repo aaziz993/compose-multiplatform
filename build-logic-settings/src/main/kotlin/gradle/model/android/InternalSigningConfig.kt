@@ -1,8 +1,8 @@
 package gradle.model.android
 
 import com.android.build.gradle.internal.dsl.InternalSigningConfig
-import org.gradle.api.Project
 import gradle.model.Named
+import org.gradle.api.Project
 
 /** Serves the same purpose as [InternalBuildType] */
 internal interface InternalSigningConfig :

@@ -1,10 +1,10 @@
 package gradle.model.kotlin.kmp.web
 
+import gradle.model.project.ProjectType
 import gradle.projectProperties
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsBinaryContainer
-import gradle.model.project.ProjectType
 
 @Serializable
 internal data class KotlinJsBinaryContainer(

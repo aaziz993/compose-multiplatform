@@ -3,14 +3,7 @@ package gradle.model.kotlin
 import gradle.id
 import gradle.kotlin
 import gradle.libs
-import gradle.plugin
-import gradle.plugins
-import gradle.settings
-import kotlinx.serialization.Serializable
-import org.gradle.api.Project
-import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
 import gradle.model.java.JavaToolchainSpec
-import plugin.project.kotlin.cocoapods.model.CocoapodsSettings
 import gradle.model.kotlin.kmp.HierarchyAliasTransformingSerializer
 import gradle.model.kotlin.kmp.HierarchyGroup
 import gradle.model.kotlin.kmp.KotlinMultiplatformExtension
@@ -18,7 +11,14 @@ import gradle.model.kotlin.kmp.KotlinSourceSet
 import gradle.model.kotlin.kmp.KotlinSourceSetTransformingSerializer
 import gradle.model.kotlin.kmp.KotlinTarget
 import gradle.model.kotlin.kmp.KotlinTargetTransformingSerializer
+import gradle.plugin
+import gradle.plugins
+import gradle.settings
+import kotlinx.serialization.Serializable
+import org.gradle.api.Project
+import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
 import org.jetbrains.kotlin.gradle.dsl.KotlinBaseExtension
+import plugin.project.kotlin.cocoapods.model.CocoapodsSettings
 
 @Serializable
 internal data class KotlinSettings(

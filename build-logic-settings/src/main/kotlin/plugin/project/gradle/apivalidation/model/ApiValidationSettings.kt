@@ -6,6 +6,7 @@ import gradle.libs
 import gradle.maybeNamed
 import gradle.model.gradle.apivalidation.ApiValidationExtension
 import gradle.model.gradle.apivalidation.KlibValidationSettings
+import gradle.model.project.EnabledSettings
 import gradle.plugin
 import gradle.plugins
 import gradle.settings
@@ -13,7 +14,6 @@ import kotlinx.serialization.Serializable
 import kotlinx.validation.KotlinApiBuildTask
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.named
-import gradle.model.project.EnabledSettings
 
 @Serializable
 internal data class ApiValidationSettings(

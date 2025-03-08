@@ -1,11 +1,11 @@
 package gradle.model.kotlin.sqldelight
 
 import app.cash.sqldelight.gradle.SqlDelightDatabase
+import gradle.model.project.Dependency
+import gradle.model.project.DependencyTransformingSerializer
 import gradle.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import gradle.model.project.Dependency
-import gradle.model.project.DependencyTransformingSerializer
 
 @Serializable
 internal data class SqlDelightDatabase(

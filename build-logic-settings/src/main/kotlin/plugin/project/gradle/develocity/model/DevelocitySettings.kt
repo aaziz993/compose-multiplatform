@@ -3,18 +3,18 @@ package plugin.project.gradle.develocity.model
 import gradle.id
 import gradle.isCI
 import gradle.libs
-import gradle.plugin
-import gradle.plugins
-import gradle.projectProperties
-import kotlinx.serialization.Serializable
-import org.gradle.api.initialization.Settings
-import org.gradle.kotlin.dsl.develocity
 import gradle.model.DirectoryBuildCache
 import gradle.model.RemoteBuildCache
 import gradle.model.gradle.develocity.BuildScanConfiguration
 import gradle.model.gradle.develocity.DevelocityConfiguration
 import gradle.model.gradle.develocity.Git
 import gradle.model.project.EnabledSettings
+import gradle.plugin
+import gradle.plugins
+import gradle.projectProperties
+import kotlinx.serialization.Serializable
+import org.gradle.api.initialization.Settings
+import org.gradle.kotlin.dsl.develocity
 
 @Serializable
 internal data class DevelocitySettings(

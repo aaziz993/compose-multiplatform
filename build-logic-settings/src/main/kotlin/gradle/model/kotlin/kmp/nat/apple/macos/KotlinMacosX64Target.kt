@@ -1,15 +1,15 @@
 package gradle.model.kotlin.kmp.nat.apple.macos
 
 import gradle.kotlin
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
-import org.gradle.api.Project
 import gradle.model.kotlin.kmp.nat.KotlinNativeBinaryContainer
 import gradle.model.kotlin.kmp.nat.KotlinNativeCompilation
 import gradle.model.kotlin.kmp.nat.KotlinNativeCompilationTransformingSerializer
 import gradle.model.kotlin.kmp.nat.KotlinNativeCompilerOptions
 import gradle.model.kotlin.kmp.nat.KotlinNativeHostTestRun
 import gradle.model.kotlin.kmp.nat.KotlinNativeTargetWithHostTests
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import org.gradle.api.Project
 
 @Serializable
 @SerialName("macosX64")

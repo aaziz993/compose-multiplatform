@@ -1,5 +1,6 @@
 package gradle.model.kotlin.kmp.nat
 
+import gradle.model.kotlin.KotlinCommonCompilerOptions
 import gradle.moduleName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -7,7 +8,6 @@ import org.gradle.kotlin.dsl.assign
 import org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerToolOptions
 import org.jetbrains.kotlin.gradle.dsl.KotlinNativeCompilerOptions
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
-import gradle.model.kotlin.KotlinCommonCompilerOptions
 
 /**
  * Compiler options for Kotlin Native.

@@ -2,6 +2,7 @@ package gradle.model.web.js.karakum
 
 import gradle.id
 import gradle.libs
+import gradle.model.Task
 import gradle.plugin
 import gradle.plugins
 import gradle.serialization.serializer.AnySerializer
@@ -11,7 +12,6 @@ import io.github.sgrishchenko.karakum.gradle.plugin.tasks.KarakumGenerate
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
-import gradle.model.Task
 
 private val JS_TYPE_IMPORTS =
     mapOf(

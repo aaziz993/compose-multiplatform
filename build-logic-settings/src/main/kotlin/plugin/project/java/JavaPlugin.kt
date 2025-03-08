@@ -3,6 +3,11 @@ package plugin.project.java
 import gradle.all
 import gradle.decapitalized
 import gradle.java
+import gradle.model.kotlin.kmp.jvm.KotlinJvmTarget
+import gradle.model.kotlin.kmp.jvm.android.KotlinAndroidTarget
+import gradle.model.kotlin.sourceSets
+import gradle.model.project.ProjectLayout
+import gradle.model.project.ProjectType
 import gradle.projectProperties
 import gradle.replace
 import org.gradle.api.Plugin
@@ -12,12 +17,6 @@ import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.tasks.SourceSet
 import org.gradle.internal.extensions.stdlib.capitalized
 import org.gradle.kotlin.dsl.dependencies
-import gradle.model.kotlin.kmp.jvm.KotlinJvmTarget
-import gradle.model.kotlin.kmp.jvm.android.KotlinAndroidTarget
-import gradle.model.kotlin.sourceSets
-import gradle.model.project.ProjectLayout
-import gradle.model.project.ProjectType
-import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformJvmPlugin
 
 internal class JavaPlugin : Plugin<Project> {
 

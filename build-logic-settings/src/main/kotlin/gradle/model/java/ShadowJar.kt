@@ -3,6 +3,12 @@ package gradle.model.java
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import gradle.id
 import gradle.libs
+import gradle.model.CopySpecImpl
+import gradle.model.Expand
+import gradle.model.FileCopyDetails
+import gradle.model.FilesMatching
+import gradle.model.FromSpec
+import gradle.model.IntoSpec
 import gradle.plugin
 import gradle.plugins
 import gradle.serialization.serializer.AnySerializer
@@ -14,12 +20,6 @@ import org.gradle.api.Project
 import org.gradle.api.file.DuplicatesStrategy
 import org.gradle.api.tasks.bundling.ZipEntryCompression
 import org.gradle.kotlin.dsl.withType
-import gradle.model.CopySpecImpl
-import gradle.model.Expand
-import gradle.model.FileCopyDetails
-import gradle.model.FilesMatching
-import gradle.model.FromSpec
-import gradle.model.IntoSpec
 
 @Serializable
 @SerialName("shadowJar")

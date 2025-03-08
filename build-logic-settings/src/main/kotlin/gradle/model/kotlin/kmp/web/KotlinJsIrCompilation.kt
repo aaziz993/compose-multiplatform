@@ -1,14 +1,14 @@
 package gradle.model.kotlin.kmp.web
 
-import gradle.model.kotlin.kmp.KotlinSourceSet
 import gradle.model.kotlin.KotlinCompilationOutput
+import gradle.model.kotlin.KotlinCompilationTransformingSerializer
+import gradle.model.kotlin.kmp.KotlinSourceSet
+import gradle.model.project.Dependency
+import gradle.model.project.DependencyTransformingSerializer
 import gradle.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
-import gradle.model.kotlin.KotlinCompilationTransformingSerializer
-import gradle.model.project.Dependency
-import gradle.model.project.DependencyTransformingSerializer
 
 @Serializable
 internal data class KotlinJsIrCompilation(

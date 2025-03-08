@@ -1,14 +1,14 @@
 package gradle.model.kotlin.kmp.web
 
 import gradle.kotlin
+import gradle.model.HasBinaries
+import gradle.model.kotlin.kmp.KotlinTarget
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinWasmWasiTargetDsl
-import gradle.model.HasBinaries
-import gradle.model.kotlin.kmp.KotlinTarget
 
 @Serializable
 @SerialName("wasmWasi")

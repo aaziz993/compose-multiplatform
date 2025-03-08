@@ -1,9 +1,8 @@
 package gradle.model.android
 
-import com.android.build.gradle.internal.dsl.SigningConfig
-import org.gradle.api.Project
 import gradle.model.Named
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
 
 @Serializable
 internal data class SigningConfigImpl(

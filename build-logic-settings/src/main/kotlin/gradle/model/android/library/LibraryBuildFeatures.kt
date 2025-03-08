@@ -17,6 +17,7 @@ internal data class LibraryBuildFeatures(
     override val resValues: Boolean? = null,
     override val shaders: Boolean? = null,
     override val viewBinding: Boolean? = null,
+    override val aidl: Boolean? = null,
     /**
      * Flag to disable Android resource processing.
      *
@@ -74,7 +75,6 @@ internal data class LibraryBuildFeatures(
      * More information about this feature at: https://developer.android.com/studio/build/native-dependencies
      */
     val prefabPublishing: Boolean? = null,
-    override val aidl: Boolean?,
 ) : BuildFeatures {
 
     override fun applyTo(features: com.android.build.api.dsl.BuildFeatures) {

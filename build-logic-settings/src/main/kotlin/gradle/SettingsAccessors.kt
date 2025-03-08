@@ -1,10 +1,10 @@
 package gradle
 
+import gradle.model.project.ProjectProperties
 import org.danilopianini.gradle.git.hooks.GitHooksExtension
 import org.gradle.api.initialization.Settings
 import org.gradle.kotlin.dsl.getByType
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
-import gradle.model.project.ProjectProperties
 
 internal fun Settings.execute(cmd: String): String = providers.exec {
     commandLine(cmd.split(" "))

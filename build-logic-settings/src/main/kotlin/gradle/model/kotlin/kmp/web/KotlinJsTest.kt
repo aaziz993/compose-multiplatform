@@ -1,6 +1,7 @@
 package gradle.model.kotlin.kmp.web
 
 import gradle.model.DefaultTestFilter
+import gradle.model.kotlin.KotlinTest
 import gradle.serialization.serializer.AnySerializer
 import gradle.tryAssign
 import gradle.trySet
@@ -8,7 +9,6 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
-import gradle.model.kotlin.KotlinTest
 
 @Serializable
 internal data class KotlinJsTest(

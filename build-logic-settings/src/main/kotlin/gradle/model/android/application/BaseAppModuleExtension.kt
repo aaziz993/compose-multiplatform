@@ -1,7 +1,5 @@
 package gradle.model.android.application
 
-import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
-import gradle.android
 import gradle.model.android.AaptOptions
 import gradle.model.android.AdbOptions
 import gradle.model.android.Bundle
@@ -48,9 +46,9 @@ internal data class BaseAppModuleExtension(
     override val ndkVersion: String? = null,
     override val ndkPath: String? = null,
     override val libraryRequests: List<LibraryRequest>? = null,
-    override val buildTypes: List<ApplicationBuildType>? = null,
+    override val buildTypes: List<@Serializable(with = ApplicationBuildTypeTransformingSerializer::class) ApplicationBuildType>? = null,
     override val defaultConfig: ApplicationDefaultConfig? = null,
-    override val productFlavors: List<ApplicationProductFlavor>? = null,
+    override val productFlavors: List<@Serializable(with = ApplicationProductFlavorTransformingSerializer::class) ApplicationProductFlavor>? = null,
     override val signingConfigs: List<SigningConfigImpl>? = null,
     override val buildFeatures: ApplicationBuildFeatures? = null,
     override val namespace: String? = null,

@@ -2,9 +2,9 @@ package gradle.model.android
 
 import com.android.build.api.dsl.ApkSigningConfig
 import gradle.android
+import gradle.model.Named
 import gradle.trySet
 import org.gradle.api.Project
-import gradle.model.Named
 
 /** DSL object to configure signing configs. */
 internal interface ApkSigningConfig : SigningConfigDsl, Named {

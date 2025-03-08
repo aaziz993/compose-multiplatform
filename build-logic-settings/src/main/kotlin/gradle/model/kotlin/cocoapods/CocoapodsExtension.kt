@@ -4,11 +4,14 @@ import gradle.allLibs
 import gradle.cocoapods
 import gradle.kotlin
 import gradle.libs
+import gradle.model.kotlin.kmp.nat.Framework
 import gradle.moduleName
 import gradle.resolve
 import gradle.resolveLibrary
 import gradle.settings
 import gradle.trySet
+import gradle.version
+import gradle.versions
 import java.net.URI
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonContentPolymorphicSerializer
@@ -19,9 +22,6 @@ import kotlinx.serialization.json.jsonObject
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.cocoapods.CocoapodsExtension
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
-import gradle.model.kotlin.kmp.nat.Framework
-import gradle.version
-import gradle.versions
 
 internal interface CocoapodsExtension {
 

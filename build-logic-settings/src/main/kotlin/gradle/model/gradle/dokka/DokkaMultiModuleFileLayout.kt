@@ -1,5 +1,7 @@
 package gradle.model.gradle.dokka
 
+import gradle.model.gradle.dokka.DokkaMultiModuleFileLayout.CompactInParent
+import gradle.model.gradle.dokka.DokkaMultiModuleFileLayout.NoCopy
 import org.jetbrains.dokka.gradle.AbstractDokkaTask
 import org.jetbrains.dokka.gradle.DokkaMultiModuleFileLayout
 

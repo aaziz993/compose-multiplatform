@@ -1,9 +1,9 @@
 package gradle.model.cmp.desktop.model
 
+import gradle.model.cmp.desktop.model.macos.NativeApplicationMacOSPlatformSettings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.compose.desktop.application.dsl.NativeApplicationDistributions
-import gradle.model.cmp.desktop.model.macos.NativeApplicationMacOSPlatformSettings
 
 @Serializable
 internal data class NativeApplicationDistributions(

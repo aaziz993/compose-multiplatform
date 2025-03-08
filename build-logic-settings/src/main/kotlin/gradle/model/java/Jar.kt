@@ -1,11 +1,11 @@
 package gradle.model.java
 
+import gradle.model.CopySpec
+import gradle.model.Zip
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.api.tasks.bundling.Jar
-import gradle.model.CopySpec
-import gradle.model.Zip
 
 /**
  * Assembles a JAR archive.

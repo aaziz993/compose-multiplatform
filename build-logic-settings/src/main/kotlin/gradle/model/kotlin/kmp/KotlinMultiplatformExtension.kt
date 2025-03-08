@@ -1,10 +1,10 @@
 package gradle.model.kotlin.kmp
 
-import org.gradle.api.Project
-import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import gradle.model.kotlin.HasConfigurableKotlinCompilerOptions
 import gradle.model.kotlin.KotlinBaseExtension
 import gradle.model.kotlin.KotlinCommonCompilerOptions
+import org.gradle.api.Project
+import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 internal interface KotlinMultiplatformExtension :
     KotlinBaseExtension, HasConfigurableKotlinCompilerOptions<KotlinCommonCompilerOptions> {

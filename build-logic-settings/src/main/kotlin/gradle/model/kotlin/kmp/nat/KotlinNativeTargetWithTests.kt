@@ -1,12 +1,12 @@
 package gradle.model.kotlin.kmp.nat
 
 import gradle.kotlin
+import gradle.model.kotlin.kmp.KotlinTargetWithTests
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
-import gradle.model.kotlin.kmp.KotlinTargetWithTests
 
 @Serializable
 internal abstract class KotlinNativeTargetWithTests<T : KotlinNativeBinaryTestRun> :

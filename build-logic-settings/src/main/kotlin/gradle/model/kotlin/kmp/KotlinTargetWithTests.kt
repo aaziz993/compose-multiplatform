@@ -1,9 +1,9 @@
 package gradle.model.kotlin.kmp
 
+import gradle.model.kotlin.KotlinExecution
 import org.gradle.api.Named
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.KotlinTargetWithTests
-import gradle.model.kotlin.KotlinExecution
 
 /**
  * Represents a [KotlinTarget] that includes test runs.

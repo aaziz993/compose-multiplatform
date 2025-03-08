@@ -1,14 +1,14 @@
 package gradle.model.kotlin.kmp
 
 import gradle.kotlin
-import gradle.serialization.serializer.KeyTransformingSerializer
-import kotlinx.serialization.Serializable
-import org.gradle.api.Project
 import gradle.model.Named
 import gradle.model.kotlin.HasKotlinDependencies
 import gradle.model.kotlin.LanguageSettingsBuilder
 import gradle.model.project.Dependency
 import gradle.model.project.DependencyTransformingSerializer
+import gradle.serialization.serializer.KeyTransformingSerializer
+import kotlinx.serialization.Serializable
+import org.gradle.api.Project
 
 /**
  * Represents a logical group of Kotlin files, including sources, resources and additional metadata describing how

@@ -1,15 +1,15 @@
 package gradle.model.kotlin.kmp.nat.apple.ios
 
 import gradle.kotlin
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
-import org.gradle.api.Project
 import gradle.model.kotlin.kmp.nat.KotlinNativeBinaryContainer
 import gradle.model.kotlin.kmp.nat.KotlinNativeCompilation
 import gradle.model.kotlin.kmp.nat.KotlinNativeCompilationTransformingSerializer
 import gradle.model.kotlin.kmp.nat.KotlinNativeCompilerOptions
 import gradle.model.kotlin.kmp.nat.KotlinNativeSimulatorTestRun
 import gradle.model.kotlin.kmp.nat.KotlinNativeTargetWithSimulatorTests
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import org.gradle.api.Project
 
 @Serializable
 @SerialName("iosX64")

@@ -1,14 +1,14 @@
 package gradle.model.java
 
+import gradle.model.AbstractCompile
+import gradle.model.CompileOptions
+import gradle.model.HasCompileOptions
 import gradle.serialization.serializer.AnySerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.kotlin.dsl.withType
-import gradle.model.AbstractCompile
-import gradle.model.CompileOptions
-import gradle.model.HasCompileOptions
 
 /**
  * Compiles Java source files.

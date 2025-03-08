@@ -1,13 +1,13 @@
 package gradle.model.kotlin.kmp.nat.android
 
 import gradle.kotlin
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
-import org.gradle.api.Project
 import gradle.model.kotlin.kmp.nat.KotlinNativeBinaryContainer
 import gradle.model.kotlin.kmp.nat.KotlinNativeCompilation
 import gradle.model.kotlin.kmp.nat.KotlinNativeCompilationTransformingSerializer
 import gradle.model.kotlin.kmp.nat.KotlinNativeCompilerOptions
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import org.gradle.api.Project
 
 @Serializable
 @SerialName("androidNativeX64")

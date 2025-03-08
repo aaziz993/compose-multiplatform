@@ -7,6 +7,10 @@ import gradle.android
 import gradle.decapitalized
 import gradle.id
 import gradle.libs
+import gradle.model.kotlin.kmp.jvm.android.KotlinAndroidTarget
+import gradle.model.kotlin.sourceSets
+import gradle.model.project.ProjectLayout
+import gradle.model.project.ProjectType
 import gradle.plugin
 import gradle.plugins
 import gradle.prefixIfNotEmpty
@@ -18,10 +22,6 @@ import org.gradle.api.Project
 import org.gradle.api.tasks.SourceSet
 import org.gradle.internal.extensions.stdlib.capitalized
 import org.gradle.kotlin.dsl.dependencies
-import gradle.model.kotlin.kmp.jvm.android.KotlinAndroidTarget
-import gradle.model.kotlin.sourceSets
-import gradle.model.project.ProjectLayout
-import gradle.model.project.ProjectType
 
 internal class AndroidPlugin : Plugin<Project> {
 

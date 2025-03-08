@@ -1,10 +1,10 @@
 package gradle.model.kotlin.kmp.web
 
+import gradle.model.HasBinaries
+import gradle.model.kotlin.KotlinCompilation
 import gradle.trySet
 import org.gradle.api.Named
 import org.gradle.api.Project
-import gradle.model.HasBinaries
-import gradle.model.kotlin.KotlinCompilation
 
 internal interface KotlinJsCompilation : KotlinCompilation, HasBinaries<KotlinJsBinaryContainer> {
 

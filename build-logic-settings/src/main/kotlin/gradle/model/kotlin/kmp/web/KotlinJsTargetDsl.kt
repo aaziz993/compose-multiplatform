@@ -1,6 +1,9 @@
 package gradle.model.kotlin.kmp.web
 
 import gradle.kotlin
+import gradle.model.HasBinaries
+import gradle.model.kotlin.HasConfigurableKotlinCompilerOptions
+import gradle.model.kotlin.kmp.KotlinTarget
 import gradle.moduleName
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -8,9 +11,6 @@ import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalMainFunctionArgumentsDsl
-import gradle.model.HasBinaries
-import gradle.model.kotlin.kmp.KotlinTarget
-import gradle.model.kotlin.HasConfigurableKotlinCompilerOptions
 
 internal interface KotlinJsTargetDsl : KotlinTarget, KotlinTargetWithNodeJsDsl,
     HasBinaries<KotlinJsBinaryContainer>, HasConfigurableKotlinCompilerOptions<KotlinJsCompilerOptions> {

@@ -2,8 +2,8 @@ package gradle.model.gradle.githooks
 
 import gradle.gitHooks
 import gradle.trySet
-import org.gradle.api.initialization.Settings
 import java.net.URI
+import org.gradle.api.initialization.Settings
 
 /**
  * DSL entry point, to be applied to [settings].gradle.kts.

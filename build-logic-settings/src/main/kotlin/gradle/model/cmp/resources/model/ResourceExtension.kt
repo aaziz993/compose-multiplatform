@@ -4,6 +4,7 @@ import gradle.compose
 import gradle.id
 import gradle.kotlin
 import gradle.libs
+import gradle.model.project.ProjectLayout
 import gradle.plugin
 import gradle.plugins
 import gradle.projectProperties
@@ -14,7 +15,6 @@ import gradle.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.compose.resources.ResourcesExtension
-import gradle.model.project.ProjectLayout
 
 @Serializable
 internal data class ResourcesExtension(

@@ -6,12 +6,12 @@ import gradle.libs
 import gradle.model.gradle.spotless.FormatExtension
 import gradle.model.gradle.spotless.FormatExtensionTransformingSerializer
 import gradle.model.gradle.spotless.SpotlessExtension
+import gradle.model.project.EnabledSettings
 import gradle.plugin
 import gradle.plugins
 import gradle.settings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import gradle.model.project.EnabledSettings
 
 @Serializable
 internal data class SpotlessSettings(

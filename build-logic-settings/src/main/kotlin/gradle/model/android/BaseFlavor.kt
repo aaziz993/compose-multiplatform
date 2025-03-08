@@ -4,7 +4,6 @@ import com.android.build.api.dsl.BaseFlavor
 import gradle.android
 import gradle.androidNamespace
 import gradle.libs
-import gradle.moduleName
 import gradle.settings
 import gradle.trySet
 import gradle.version

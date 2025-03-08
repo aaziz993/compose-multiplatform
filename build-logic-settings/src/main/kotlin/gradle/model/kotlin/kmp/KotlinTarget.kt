@@ -1,13 +1,13 @@
 package gradle.model.kotlin.kmp
 
 import gradle.kotlin
+import gradle.model.Named
+import gradle.model.kotlin.KotlinCompilation
 import gradle.serialization.serializer.JsonContentPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import gradle.model.Named
-import gradle.model.kotlin.KotlinCompilation
 
 @Serializable(with = KotlinTargetSerializer::class)
 internal interface KotlinTarget : Named {

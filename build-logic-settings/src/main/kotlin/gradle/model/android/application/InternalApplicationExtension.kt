@@ -1,6 +1,5 @@
 package gradle.model.android.application
 
-import com.android.build.gradle.internal.dsl.InternalApplicationExtension
 import gradle.model.android.InternalTestedExtension
 import org.gradle.api.Project
 

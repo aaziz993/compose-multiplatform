@@ -1,9 +1,9 @@
 package gradle.model.android
 
 import com.android.build.api.dsl.ProductFlavor
+import gradle.model.Named
 import gradle.trySet
 import org.gradle.api.Project
-import gradle.model.Named
 
 /**
  * Encapsulates all product flavors properties for this project.

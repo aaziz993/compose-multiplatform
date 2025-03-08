@@ -1,11 +1,11 @@
 package gradle.model.cmp.desktop.model.windows
 
+import gradle.model.cmp.desktop.model.AbstractPlatformSettings
+import gradle.model.cmp.desktop.model.FileAssociation
 import gradle.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.compose.desktop.application.dsl.WindowsPlatformSettings
-import gradle.model.cmp.desktop.model.AbstractPlatformSettings
-import gradle.model.cmp.desktop.model.FileAssociation
 
 @Serializable
 internal data class WindowsPlatformSettings(

@@ -3,12 +3,12 @@ package plugin.project.kotlin.atomicfu.model
 import gradle.id
 import gradle.libs
 import gradle.model.kotlin.atomicfu.AtomicFUExtension
+import gradle.model.project.EnabledSettings
 import gradle.plugin
 import gradle.plugins
 import gradle.settings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import gradle.model.project.EnabledSettings
 
 @Serializable
 internal data class AtomicFUSettings(

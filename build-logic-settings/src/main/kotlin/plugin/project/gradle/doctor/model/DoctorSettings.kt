@@ -6,13 +6,13 @@ import gradle.isCI
 import gradle.libs
 import gradle.model.gradle.doctor.DoctorExtension
 import gradle.model.gradle.doctor.JavaHomeHandler
+import gradle.model.project.EnabledSettings
 import gradle.plugin
 import gradle.plugins
 import gradle.settings
 import gradle.unregister
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import gradle.model.project.EnabledSettings
 
 @Suppress("PropertyName", "ktlint:standard:property-naming")
 @Serializable

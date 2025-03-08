@@ -1,12 +1,12 @@
 package gradle.model.kotlin.kmp.jvm
 
+import gradle.model.kotlin.KotlinCommonCompilerOptions
 import gradle.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompilerOptions
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
-import gradle.model.kotlin.KotlinCommonCompilerOptions
 
 /**
  * Compiler options for Kotlin/JVM.

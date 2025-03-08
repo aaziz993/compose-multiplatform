@@ -1,6 +1,5 @@
 package gradle.model.android.library
 
-import com.android.build.api.dsl.LibraryBuildType
 import gradle.model.android.AarMetadata
 import gradle.model.android.AndroidTest
 import gradle.model.android.ApkSigningConfigImpl
@@ -15,6 +14,7 @@ import gradle.model.android.ResValue
 import gradle.model.android.Shaders
 import gradle.model.android.VcsInfo
 import gradle.serialization.serializer.AnySerializer
+import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
@@ -73,10 +73,15 @@ internal data class LibraryBuildType(
     override fun applyTo(named: Named) {
         super<BuildType>.applyTo(named)
 
-        named as LibraryBuildType
+        named as com.android.build.api.dsl.LibraryBuildType
 
         super<LibraryVariantDimension>.applyTo(named)
 
         androidTest?.applyTo(named.androidTest)
     }
 }
+
+internal object LibraryBuildTypeTransformingSerializer : KeyTransformingSerializer<LibraryBuildType>(
+    LibraryBuildType.serializer(),
+    "name",
+)

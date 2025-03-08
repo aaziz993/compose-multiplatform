@@ -1,9 +1,9 @@
 package gradle.model.kotlin.kmp
 
-import org.gradle.api.Named
-import org.gradle.api.Project
 import gradle.model.kotlin.KotlinExecution
 import gradle.model.kotlin.KotlinTestRun
+import org.gradle.api.Named
+import org.gradle.api.Project
 
 /**
  * A [KotlinTargetExecution] that executes configured tests in the context of a specific [KotlinTarget].
