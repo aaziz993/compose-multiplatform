@@ -233,15 +233,16 @@ internal fun ComposeExtension.android(configure: AndroidExtension.() -> Unit) =
  * Create native module name from project path.
  */
 internal val Project.moduleName
-    get() = path.split(":").drop(1).joinToString("-")
+    get() = path.removePrefix(":").replace(":", "-")
 
 /**
  * Create android namespace from project group and path.
+ * Replace '-' and ':' in path with '.'
  */
 internal val Project.androidNamespace
-    get() = "$group.${path.split(":").drop(1).joinToString(".")}".also {
+    get() = "$group.${path.removePrefix(":").replace("[-_:]".toRegex(), ".")}".also {
         println(
-                """ANDROID NAMESPACE
+            """ANDROID NAMESPACE
         Path: $path
         Namespace: $it
         """.trimMargin(),
