@@ -336,6 +336,9 @@ kotlin:
         compilerOptions:
           freeCompilerArgs:
             - -Xjvm-default=all
+    - jvm:
+        name: ''
+        withJava: true
     - native:
         compilerOptions:
           freeCompilerArgs:

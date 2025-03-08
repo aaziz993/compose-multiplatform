@@ -65,37 +65,26 @@ internal class JavaPlugin : Plugin<Project> {
                         }
                     }
                 }
-            }
 
-            adjustSourceSets()
+                adjustSourceSets()
+            }
         }
     }
 
-    private fun Project.adjustSourceSets() {
-        val isMultiplatform = projectProperties.kotlin.enabledKMP
-
+    private fun Project.adjustSourceSets() =
         when (projectProperties.layout) {
             ProjectLayout.FLAT -> {
-                val targetPart = "@${if (isMultiplatform) "jvm" else "java"}"
-
                 java.sourceSets.all { sourceSet ->
                     val (srcPrefixPart, resourcesPrefixPart) = if (SourceSet.isMain(sourceSet))
                         "src" to "resources"
                     else sourceSet.name to "${sourceSet.name}Resources"
 
 
-                    sourceSet.java.replace("src/${sourceSet.name}/java", "$srcPrefixPart$targetPart")
-                    sourceSet.resources.replace("src/${sourceSet.name}/resources", "$resourcesPrefixPart$targetPart")
+                    sourceSet.java.replace("src/${sourceSet.name}/java", "$srcPrefixPart@jvm")
+                    sourceSet.resources.replace("src/${sourceSet.name}/resources", "$resourcesPrefixPart@jvm")
                 }
             }
 
-            else -> if (isMultiplatform) {
-                java.sourceSets.all { sourceSet ->
-                    val newSourceSetName = "jvm${sourceSet.name.capitalized()}"
-                    sourceSet.java.replace("src/${sourceSet.name}/java", "src/$newSourceSetName/java")
-                    sourceSet.resources.replace("src/${sourceSet.name}/resources", "src/$newSourceSetName/resources")
-                }
-            }
+            else -> Unit
         }
-    }
 }
