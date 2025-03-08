@@ -1,6 +1,7 @@
 package gradle.model.kotlin.kmp.web
 
 import gradle.model.DefaultTestFilter
+import gradle.model.TestLoggingContainer
 import gradle.model.kotlin.KotlinTest
 import gradle.serialization.serializer.AnySerializer
 import gradle.tryAssign
@@ -12,6 +13,14 @@ import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
 
 @Serializable
 internal data class KotlinJsTest(
+    override val targetName: String? = null,
+    override val ignoreRunFailures: Boolean? = null,
+    override val binaryResultsDirectory: String? = null,
+    override val ignoreFailures: Boolean? = null,
+    override val testLogging: TestLoggingContainer? = null,
+    override val testNameIncludePatterns: List<String>? = null,
+    override val failFast: Boolean? = null,
+    override val filter: DefaultTestFilter? = null,
     override val dependsOn: List<String>? = null,
     override val onlyIf: Boolean? = null,
     override val doNotTrackState: String? = null,
@@ -25,10 +34,6 @@ internal data class KotlinJsTest(
     override val finalizedBy: List<String>? = null,
     override val shouldRunAfter: List<String>? = null,
     override val name: String = "",
-    override val ignoreRunFailures: Boolean? = null,
-    override val filter: DefaultTestFilter? = null,
-    override val targetName: String? = null,
-    override val ignoreFailures: Boolean? = null,
     val environment: Map<String, String>? = null,
     val inputFileProperty: String? = null,
     val debug: Boolean? = null,
