@@ -387,13 +387,13 @@ kotlin:
         dependencies:
           - $libs.androidx.room.runtime.ktx
 
-#    - androidMain:
-#        dependencies:
-#          - $libs.androidx.activity.ktx
-#          - $libs.androidx.fragment.ktx
-#          - $libs.android.documentation.plugin
-#          - $libs.androidx.room.runtime.android
-#          - $libs.androidx.room.paging
+    - androidMain:
+        dependencies:
+          - $libs.androidx.activity.ktx
+          - $libs.androidx.fragment.ktx
+          - $libs.android.documentation.plugin
+          - $libs.androidx.room.runtime.android
+          - $libs.androidx.room.paging
 
     - jsMain:
         dependencies:
@@ -472,7 +472,7 @@ tasks:
   - shadowJar:
       duplicatesStrategy: EXCLUDE
       mergeServiceFiles: true
-  - Kotlin2JsCompile:
+  - kotlin2JsCompile:
       compilerOptions:
         target: es2015
       freeCompilerArgs:

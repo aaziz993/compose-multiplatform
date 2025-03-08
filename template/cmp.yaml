@@ -44,3 +44,5 @@ compose:
 
 dependencies:
   - debugImplementation: $compose.uiTooling
+  # android dependencies
+  - lintChecks: $libs.compose.lint.checks

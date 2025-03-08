@@ -4,6 +4,7 @@ import gradle.model.K2MultiplatformCompilationTask
 import gradle.model.ProducesKlib
 import gradle.model.kotlin.kmp.web.KotlinJsCompilerOptions
 import gradle.serialization.serializer.AnySerializer
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
@@ -11,6 +12,7 @@ import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 @Serializable
+@SerialName("kotlin2JsCompile")
 internal data class Kotlin2JsCompile(
     override val dependsOn: List<String>? = null,
     override val onlyIf: Boolean? = null,

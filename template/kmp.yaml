@@ -17,7 +17,6 @@ kotlin:
 
 dependencies:
   # android dependencies
-  - lintChecks: $libs.compose.lint.checks
   - coreLibraryDesugaring: $libs.android.desugar.jdk.libs
   - androidTestImplementation: $libs.androidx.test.core
   - androidTestImplementation: $libs.androidx.test.runner
