@@ -1,17 +1,13 @@
-/*
- * Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
- */
-
 package hello.world
 
 import Screen
-import android.app.resources.Res
-import android.app.resources.compose_multiplatform
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
+import io.github.aaziz993.compose_app.generated.resources.Res
+import io.github.aaziz993.compose_app.generated.resources.compose_multiplatform
 import org.jetbrains.compose.resources.painterResource
 
 public class MainActivity : ComponentActivity() {

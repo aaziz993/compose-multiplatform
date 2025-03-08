@@ -353,6 +353,12 @@ kotlin:
             linkerOpts:
               - -lsqlite3
     - jsAndWasmJs:
+        devServer:
+          static:
+            # serve sources to debug inside browser
+            - ../ # root directory
+            - ./ # project directory
+
         compilerOptions:
           optIns:
             - kotlin.js.ExperimentalJsExport
