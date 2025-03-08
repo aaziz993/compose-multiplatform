@@ -14,8 +14,8 @@ internal interface InternalTestedExtension<BuildFeaturesT : BuildFeatures,
     InternalCommonExtension<BuildFeaturesT, BuildTypeT, DefaultConfigT, ProductFlavorT, AndroidResourcesT, InstallationT> {
 
     context(Project)
-    fun applyTo(extension: InternalTestedExtension<*, *, *, *, *, *>) {
-        super<TestedExtensionDsl>.applyTo(extension)
-        super<InternalCommonExtension>.applyTo(extension)
+    override fun applyTo() {
+        super<TestedExtensionDsl>.applyTo()
+        super<InternalCommonExtension>.applyTo()
     }
 }

@@ -1,6 +1,5 @@
 package gradle.model.android;
 
-import com.android.build.gradle.TestedExtension
 import org.gradle.api.Project
 
 /**
@@ -13,8 +12,8 @@ import org.gradle.api.Project
 internal abstract class TestedExtension : BaseExtension, TestedExtensionDsl {
 
     context(Project)
-    fun applyTo(extension: TestedExtension) {
-        super<BaseExtension>.applyTo(extension)
-        super<TestedExtensionDsl>.applyTo(extension)
+    override fun applyTo() {
+        super<BaseExtension>.applyTo()
+        super<TestedExtensionDsl>.applyTo()
     }
 }

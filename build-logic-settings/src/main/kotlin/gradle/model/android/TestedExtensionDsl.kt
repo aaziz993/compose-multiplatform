@@ -1,6 +1,7 @@
 package gradle.model.android
 
 import com.android.build.api.dsl.TestedExtension
+import gradle.android
 import gradle.trySet
 import org.gradle.api.Project
 
@@ -74,7 +75,9 @@ internal interface TestedExtensionDsl {
 
     context(Project)
     @Suppress("UnstableApiUsage")
-    fun applyTo(extension: TestedExtension) {
+    fun applyTo() {
+        val extension = android as TestedExtension
+
         extension::testBuildType trySet testBuildType
         extension::testNamespace trySet testNamespace
 

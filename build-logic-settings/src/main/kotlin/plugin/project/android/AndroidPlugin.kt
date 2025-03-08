@@ -31,13 +31,12 @@ internal class AndroidPlugin : Plugin<Project> {
                 return@with
             }
 
-            when (projectProperties.type) {
-                ProjectType.APP -> plugins.apply(settings.libs.plugins.plugin("androidApplication").id)
+            if (projectProperties.type == ProjectType.APP)
+                plugins.apply(settings.libs.plugins.plugin("androidApplication").id)
+            else
+                plugins.apply(settings.libs.plugins.plugin("androidLibrary").id)
 
-                else -> plugins.apply(settings.libs.plugins.plugin("androidLibrary").id)
-            }
-
-//            projectProperties.android?.applyTo()
+            projectProperties.android?.applyTo()
 
             if (!projectProperties.kotlin.enabledKMP) {
                 projectProperties.kotlin.sourceSets<KotlinAndroidTarget>()?.forEach { sourceSet ->

@@ -416,9 +416,13 @@ android:
     - release:
         isMinifyEnabled: true
         debuggable: false
+        # application part
+        isShrinkResources: true
     - debug:
         isMinifyEnabled: false
         debuggable: true
+        # application part
+        isShrinkResources: false
   defaultConfig:
     testInstrumentationRunner: androidx.test.runner.AndroidJUnitRunner
     manifestPlaceholders:

@@ -3,6 +3,7 @@
 package gradle.model.project
 
 import gradle.allLibs
+import gradle.deepMerge
 import gradle.isUrl
 import gradle.libs
 import gradle.projectProperties
@@ -42,6 +43,9 @@ import plugin.project.gradle.githooks.GitHooksPlugin
 import plugin.project.gradle.kover.KoverPlugin
 import gradle.model.Task
 import gradle.model.TaskTransformingSerializer
+import gradle.model.android.BaseExtension
+import gradle.model.android.application.BaseAppModuleExtension
+import gradle.model.android.library.LibraryExtension
 import plugin.project.gradle.shadow.ShadowPlugin
 import plugin.project.gradle.sonar.SonarPlugin
 import plugin.project.gradle.spotless.SpotlessPlugin
@@ -72,6 +76,14 @@ import gradle.model.web.js.karakum.KarakumSettings
 import gradle.model.web.node.model.NodeJsEnvSpec
 import gradle.model.web.npm.model.NpmExtension
 import gradle.model.web.yarn.model.YarnRootExtension
+import gradle.resolve
+import gradle.serialization.decodeFromAny
+import gradle.serialization.encodeToAny
+import kotlinx.serialization.Transient
+import kotlinx.serialization.json.Json
+import org.gradle.api.file.Directory
+import org.yaml.snakeyaml.Yaml
+import plugin.PROJECT_PROPERTIES_FILE
 
 private const val VERSION_CATALOG_CACHE_DIR = "build-logic-settings/gradle"
 
@@ -94,7 +106,8 @@ internal data class ProjectProperties(
     val jvm: JavaPluginExtension? = null,
     val application: JavaApplication? = null,
     val kotlin: KotlinSettings = KotlinSettings(),
-//    val android: BaseExtension? = null,
+    @Transient
+    var android: BaseExtension? = null,
     val apple: AppleSettings = AppleSettings(),
     val nodeJsEnv: NodeJsEnvSpec = NodeJsEnvSpec(),
     val yarn: YarnRootExtension = YarnRootExtension(),
@@ -312,6 +325,52 @@ internal data class ProjectProperties(
         projectProperties.dependencyResolutionManagement?.repositories?.let { repositories ->
             repositories.forEach { repository ->
                 maven(repository)
+            }
+        }
+    }
+
+    companion object {
+
+        private val json = Json { ignoreUnknownKeys = true }
+
+        private val yaml = Yaml()
+
+        context(Settings)
+        @Suppress("UnstableApiUsage")
+        fun applyTo() {
+            projectProperties = layout.settingsDirectory.load()
+            projectProperties.applyTo()
+        }
+
+        context(Project)
+        fun applyTo() {
+            projectProperties = layout.projectDirectory.load().apply {
+                println("Applied $PROJECT_PROPERTIES_FILE to: $name")
+                println(yaml.dump(Json.Default.encodeToAny(this)))
+            }
+
+            projectProperties.applyTo()
+        }
+
+        @Suppress("UNCHECKED_CAST")
+        private fun Directory.load(): ProjectProperties {
+            val propertiesFile = file(PROJECT_PROPERTIES_FILE).asFile
+
+            if (!propertiesFile.exists()) {
+                return ProjectProperties()
+            }
+
+            val properties = yaml.load<MutableMap<String, *>>(propertiesFile.readText())
+
+            val templatedProperties = (properties["templates"] as List<String>?)?.fold(emptyMap<String, Any?>()) { acc, template ->
+                acc deepMerge yaml.load<MutableMap<String, *>>(file(template).asFile.readText())
+            }.orEmpty() deepMerge properties
+
+            return json.decodeFromAny<ProjectProperties>(templatedProperties.resolve()).apply {
+                if (type == ProjectType.APP)
+                    android = templatedProperties["android"]?.let { json.decodeFromAny<BaseAppModuleExtension>(it) }
+                else
+                    android = templatedProperties["android"]?.let { json.decodeFromAny<LibraryExtension>(it) }
             }
         }
     }

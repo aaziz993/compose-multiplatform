@@ -1,6 +1,7 @@
 package gradle.model.android.application
 
 import com.android.build.api.dsl.ApplicationExtension
+import gradle.android
 import gradle.model.android.Bundle
 import gradle.model.android.CommonExtension
 import gradle.model.android.DependenciesInfo
@@ -51,7 +52,9 @@ internal interface ApplicationExtensionDsl :
     val privacySandbox: PrivacySandbox?
 
     context(Project)
-    fun applyTo(extension: ApplicationExtension) {
+    override fun applyTo() {
+        val extension = android as ApplicationExtension
+
         dependenciesInfo?.applyTo(extension.dependenciesInfo)
         bundle?.applyTo(extension.bundle)
         dynamicFeatures?.let(extension.dynamicFeatures::addAll)

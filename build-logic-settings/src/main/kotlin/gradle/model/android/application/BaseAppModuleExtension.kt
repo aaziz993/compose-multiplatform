@@ -1,7 +1,7 @@
 package gradle.model.android.application
 
-import com.android.build.gradle.LibraryExtension
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
+import gradle.android
 import gradle.model.android.AaptOptions
 import gradle.model.android.AdbOptions
 import gradle.model.android.Bundle
@@ -20,9 +20,7 @@ import gradle.model.android.Splits
 import gradle.model.android.TestCoverage
 import gradle.model.android.TestFixtures
 import gradle.model.android.TestOptions
-import gradle.model.android.TestedExtension
 import gradle.model.android.ViewBinding
-import gradle.model.android.library.InternalLibraryExtension
 import gradle.serialization.serializer.AnySerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -78,8 +76,8 @@ internal data class BaseAppModuleExtension(
 ) : AppExtension(), InternalApplicationExtension {
 
     context(Project)
-    fun applyTo(extension: BaseAppModuleExtension) {
-        super<AppExtension>.applyTo(extension)
-        super<InternalApplicationExtension>.applyTo(extension)
+    override fun applyTo() {
+        super<AppExtension>.applyTo()
+        super<InternalApplicationExtension>.applyTo()
     }
 }

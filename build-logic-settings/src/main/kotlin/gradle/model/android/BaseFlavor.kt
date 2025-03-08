@@ -2,7 +2,9 @@ package gradle.model.android
 
 import com.android.build.api.dsl.BaseFlavor
 import gradle.android
+import gradle.androidNamespace
 import gradle.libs
+import gradle.moduleName
 import gradle.settings
 import gradle.trySet
 import gradle.version
@@ -202,7 +204,7 @@ internal interface BaseFlavor : VariantDimension {
 
         dimension as BaseFlavor
 
-        dimension::testApplicationId trySet testApplicationId
+        dimension.testApplicationId = testApplicationId ?: "$androidNamespace.test"
         dimension::minSdk trySet (settings.libs.versions.version("android.minSdk")?.toInt())
         dimension::minSdkPreview trySet minSdkPreview
         dimension::renderscriptTargetApi trySet renderscriptTargetApi

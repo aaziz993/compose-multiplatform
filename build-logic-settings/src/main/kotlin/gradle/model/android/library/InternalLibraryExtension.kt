@@ -1,6 +1,7 @@
 package gradle.model.android.library
 
 import com.android.build.gradle.internal.dsl.InternalLibraryExtension
+import gradle.android
 import gradle.model.android.InternalTestedExtension
 import org.gradle.api.Project
 
@@ -8,17 +9,17 @@ import org.gradle.api.Project
 internal interface InternalLibraryExtension :
     LibraryExtensionDsl,
     InternalTestedExtension<
-            LibraryBuildFeatures,
-            LibraryBuildType,
-            LibraryDefaultConfig,
-            LibraryProductFlavor,
-            LibraryAndroidResources,
-            LibraryInstallation,
-            > {
+        LibraryBuildFeatures,
+        LibraryBuildType,
+        LibraryDefaultConfig,
+        LibraryProductFlavor,
+        LibraryAndroidResources,
+        LibraryInstallation,
+        > {
 
     context(Project)
-    fun applyTo(extension: InternalLibraryExtension) {
-        super<LibraryExtensionDsl>.applyTo(extension)
-        super<InternalTestedExtension>.applyTo(extension)
+    override fun applyTo() {
+        super<LibraryExtensionDsl>.applyTo()
+        super<InternalTestedExtension>.applyTo()
     }
 }

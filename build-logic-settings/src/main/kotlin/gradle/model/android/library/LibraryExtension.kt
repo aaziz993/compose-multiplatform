@@ -1,6 +1,7 @@
 package gradle.model.android.library
 
 import com.android.build.gradle.LibraryExtension
+import gradle.android
 import gradle.model.android.AaptOptions
 import gradle.model.android.AdbOptions
 import gradle.model.android.CompileOptions
@@ -79,8 +80,8 @@ internal data class LibraryExtension(
 ) : TestedExtension(), InternalLibraryExtension {
 
     context(Project)
-    fun applyTo(extension: LibraryExtension) {
-        super<TestedExtension>.applyTo(extension)
-        super<InternalLibraryExtension>.applyTo(extension)
+    override fun applyTo() {
+        super<TestedExtension>.applyTo()
+        super<InternalLibraryExtension>.applyTo()
     }
 }

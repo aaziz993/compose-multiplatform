@@ -1,6 +1,7 @@
 package gradle.model.android
 
 import com.android.build.api.dsl.CommonExtension
+import gradle.android
 import gradle.libs
 import gradle.serialization.serializer.AnySerializer
 import gradle.settings
@@ -498,7 +499,9 @@ internal interface CommonExtension<
 
     context(Project)
     @Suppress("UnstableApiUsage")
-    fun applyTo(extension: CommonExtension<*, *, *, *, *, *>) {
+    fun applyTo() {
+        val extension = android as CommonExtension<*, *, *, *, *, *>
+
         androidResources?.applyTo(extension.androidResources)
         installation?.applyTo(extension.installation)
         compileOptions?.applyTo(extension.compileOptions)

@@ -1,18 +1,16 @@
 package gradle.model.android
 
+import gradle.android
 import gradle.androidNamespace
 import gradle.libs
 import gradle.maybeNamed
-import gradle.serialization.serializer.JsonContentPolymorphicSerializer
 import gradle.settings
 import gradle.trySet
 import gradle.version
 import gradle.versions
-import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
 
-@Serializable(with = BaseExtensionSerializer::class)
 internal interface BaseExtension {
 
     val composeOptions: ComposeOptions?
@@ -88,73 +86,73 @@ internal interface BaseExtension {
 
     context(Project)
     @Suppress("UnstableApiUsage")
-    fun applyTo(extension: com.android.build.gradle.BaseExtension) {
+    fun applyTo() {
         composeOptions?.let { composeOptions ->
-            extension.composeOptions {
+            android.composeOptions {
                 ::kotlinCompilerExtensionVersion trySet composeOptions.kotlinCompilerExtensionVersion
             }
         }
 
         dataBinding?.let { dataBinding ->
-            extension.dataBinding(dataBinding::applyTo)
+            android.dataBinding(dataBinding::applyTo)
         }
 
         viewBinding?.let { viewBinding ->
-            extension.viewBinding(viewBinding::applyTo)
+            android.viewBinding(viewBinding::applyTo)
         }
 
-        defaultPublishConfig?.let(extension::defaultPublishConfig)
-        disableWrite?.takeIf { it }?.run { extension.disableWrite() }
+        defaultPublishConfig?.let(android::defaultPublishConfig)
+        disableWrite?.takeIf { it }?.run { android.disableWrite() }
         (compileSdkVersion ?: settings.libs.versions.version("android.compileSdk")?.toInt())
-            ?.let(extension::compileSdkVersion)
-        buildToolsVersion?.let(extension::buildToolsVersion)
+            ?.let(android::compileSdkVersion)
+        buildToolsVersion?.let(android::buildToolsVersion)
         flavorDimensions?.let { flavorDimensions ->
-            extension.flavorDimensions(*flavorDimensions.toTypedArray())
+            android.flavorDimensions(*flavorDimensions.toTypedArray())
         }
 
         aaptOptions?.let { aaptOptions ->
-            extension.aaptOptions(aaptOptions::applyTo)
+            android.aaptOptions(aaptOptions::applyTo)
         }
 
         externalNativeBuild?.let { externalNativeBuild ->
-            extension.externalNativeBuild {
+            android.externalNativeBuild {
                 externalNativeBuild.applyTo(this)
             }
         }
 
         testOptions?.let { testOptions ->
-            extension.testOptions {
+            android.testOptions {
                 testOptions.applyTo(this)
             }
         }
 
         compileOptions?.let { compileOptions ->
-            extension.compileOptions {
+            android.compileOptions {
                 compileOptions.applyTo(this)
             }
         }
 
         packaging?.let { packagingOptions ->
-            extension.packagingOptions(packagingOptions::applyTo)
+            android.packagingOptions(packagingOptions::applyTo)
         }
 
         adbOptions?.let { adbOptions ->
-            extension.adbOptions(adbOptions::applyTo)
+            android.adbOptions(adbOptions::applyTo)
         }
 
         splits?.let { splits ->
-            extension.splits(splits::applyTo)
+            android.splits(splits::applyTo)
         }
 
-        extension::generatePureSplits trySet generatePureSplits
-        flavorDimensions?.let(extension.flavorDimensionList::addAll)
-        resourcePrefix?.let(extension::resourcePrefix)
-        extension::ndkVersion trySet ndkVersion
-        extension::ndkPath trySet ndkPath
-        libraryRequests?.map(LibraryRequest::toLibraryRequest)?.let(extension.libraryRequests::addAll)
+        android::generatePureSplits trySet generatePureSplits
+        flavorDimensions?.let(android.flavorDimensionList::addAll)
+        resourcePrefix?.let(android::resourcePrefix)
+        android::ndkVersion trySet ndkVersion
+        android::ndkPath trySet ndkPath
+        libraryRequests?.map(LibraryRequest::toLibraryRequest)?.let(android.libraryRequests::addAll)
 
         buildTypes?.forEach { buildType ->
-            extension.buildTypes {
+            android.buildTypes {
                 maybeNamed(buildType.name) {
                     buildType.applyTo(this as Named)
                 } ?: create(buildType.name) {
@@ -164,27 +162,23 @@ internal interface BaseExtension {
         }
 
         defaultConfig?.let { defaultConfig ->
-            extension.defaultConfig {
+            android.defaultConfig {
                 defaultConfig.applyTo(this)
             }
         }
 
         productFlavors?.forEach { productFlavors ->
-            extension.productFlavors {
+            android.productFlavors {
                 productFlavors.applyTo(this)
             }
         }
 
         signingConfigs?.forEach { signingConfig ->
-            signingConfig.applyTo(extension.signingConfigs)
+            signingConfig.applyTo(android.signingConfigs)
         }
 
-        buildFeatures?.applyTo(extension.buildFeatures)
+        buildFeatures?.applyTo(android.buildFeatures)
 
-        extension.namespace = namespace ?: androidNamespace
+        android.namespace = namespace ?: androidNamespace
     }
 }
-
-private object BaseExtensionSerializer : JsonContentPolymorphicSerializer<BaseExtension>(
-    BaseExtension::class,
-)

@@ -32,40 +32,17 @@ public class SettingsPlugin : Plugin<Settings> {
     override fun apply(target: Settings) {
         with(SLF4JProblemReporterContext()) {
             with(target) {
-                // Setup  settings.gradle.kts from project.yaml.
-                projectProperties = target.layout.settingsDirectory.loadProperties()
-                projectProperties.applyTo()
+                // Load and apply settings.gradle.kts properties from project.yaml.
+                ProjectProperties.applyTo()
             }
 
             target.gradle.projectsLoaded {
                 // at this point all projects have been created by settings.gradle.kts, but none were evaluated yet
                 allprojects {
-                    // Load project properties.
-                    projectProperties = layout.projectDirectory.loadProperties().apply {
-                        println("Applied $PROJECT_PROPERTIES_FILE to: $name")
-                        println(yaml.dump(Json.Default.encodeToAny(this)))
-                    }
-
-                    projectProperties.applyTo()
+                    // Load and apply build.gradle.kts properties from project.yaml.
+                    ProjectProperties.applyTo()
                 }
             }
         }
-    }
-
-    @Suppress("UNCHECKED_CAST")
-    private fun Directory.loadProperties(): ProjectProperties {
-        val propertiesFile = file(PROJECT_PROPERTIES_FILE).asFile
-
-        if (!propertiesFile.exists()) {
-            return ProjectProperties()
-        }
-
-        val properties = yaml.load<MutableMap<String, *>>(propertiesFile.readText())
-
-        val templatedProperties = (properties["templates"] as List<String>?)?.fold(emptyMap<String, Any?>()) { acc, template ->
-            acc deepMerge yaml.load<MutableMap<String, *>>(file(template).asFile.readText())
-        }.orEmpty() deepMerge properties
-
-        return json.decodeFromAny<ProjectProperties>(templatedProperties.resolve())
     }
 }
