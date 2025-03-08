@@ -357,6 +357,9 @@ kotlin:
           optIns:
             - kotlin.js.ExperimentalJsExport
         browser:
+          commonWebpackConfig:
+            cssSupport:
+              enabled: true
           testTask:
             testLogging:
               showStandardStreams: true
