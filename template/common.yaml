@@ -46,7 +46,6 @@ plugins:
       - kotlin:
           # use ktlint with version and custom .editorconfig
           ktlint:
-            version: $libs.ktlint
             editorConfigPath: ../.editorconfig
           # specify license header text
           licenseHeader:
@@ -61,7 +60,6 @@ plugins:
       - kotlinGradle:
           # use ktlint with version and custom .editorconfig
           ktlint:
-            version: $libs.ktlint
             editorConfigPath: ../.editorconfig
           # specify license header text
           licenseHeader:
