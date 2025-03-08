@@ -18,7 +18,7 @@ public suspend fun main() {
                 title = title,
                 icon =
 //                    if (isDevelopmentMode())
-                    painterResource(Res.drawable.MacOSIcon)
+                    painterResource(Res.drawable.LinuxIcon)
 //                else null,
         ) {
             Column {
