@@ -23,7 +23,6 @@ internal data class SigningConfigImpl(
 
     context(Project)
     override fun applyTo(named: org.gradle.api.Named) {
-        SigningConfig
         super<ApkSigningConfig>.applyTo(named)
         super<InternalSigningConfig>.applyTo(named)
     }
