@@ -51,7 +51,6 @@ internal data class LibraryBuildType(
     override val testProguardFiles: List<String>? = null,
     override val consumerProguardFiles: List<String>? = null,
     override val isMinifyEnabled: Boolean? = null,
-    override val isShrinkResources: Boolean? = null,
     override val postprocessing: PostProcessing? = null,
     override val initWith: String? = null,
     override val vcsInfo: VcsInfo? = null,
@@ -67,6 +66,9 @@ internal data class LibraryBuildType(
     val androidTest: AndroidTest? = null,
 ) : BuildType,
     LibraryVariantDimension {
+
+    override val isShrinkResources: Boolean?
+        get() = false
 
     context(Project)
     @Suppress("UnstableApiUsage")

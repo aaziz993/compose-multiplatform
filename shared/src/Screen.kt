@@ -7,9 +7,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import io.github.aaziz993.cmp_lib.generated.resources.Res
+import io.github.aaziz993.cmp_lib.generated.resources.compose_multiplatform
 import org.jetbrains.compose.resources.painterResource
-import resources.Res
-import resources.flag_bz
 
 @Composable
 public fun Screen() {
@@ -21,7 +21,7 @@ public fun Screen() {
         ) {
             BasicText("HELLO!")
             TestImage()
-            Image(painterResource(Res.drawable.flag_bz), null)
+            Image(painterResource(Res.drawable.compose_multiplatform), null)
         }
     }
 }

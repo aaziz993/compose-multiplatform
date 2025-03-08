@@ -239,7 +239,14 @@ internal val Project.moduleName
  * Create android namespace from project group and path.
  */
 internal val Project.androidNamespace
-    get() = "$group.${path.split(":").drop(2).joinToString(".")}"
+    get() = "$group.${path.split(":").drop(1).joinToString(".")}".also {
+        println(
+                """ANDROID NAMESPACE
+        Path: $path
+        Namespace: $it
+        """.trimMargin(),
+        )
+    }
 
 internal fun Project.execute(cmd: String): String = providers.exec {
     commandLine(cmd.split(" "))
