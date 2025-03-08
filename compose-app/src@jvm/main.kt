@@ -1,25 +1,31 @@
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
+import androidx.compose.ui.unit.DpSize
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+import androidx.compose.ui.window.rememberWindowState
 import io.github.aaziz993.compose_app.generated.resources.LinuxIcon
-import io.github.aaziz993.compose_app.generated.resources.MacOSIcon
 import io.github.aaziz993.compose_app.generated.resources.Res
 import io.github.aaziz993.compose_app.generated.resources.app_name
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.painterResource
 
+private val INIT_SIZE = DpSize(800.dp, 800.dp)
+
 public suspend fun main() {
     val title = getString(Res.string.app_name)
 
     application {
+        val windowState = rememberWindowState(width = INIT_SIZE.width, height = INIT_SIZE.height)
+
         Window(
-                onCloseRequest = ::exitApplication,
-                title = title,
-                icon =
-//                    if (isDevelopmentMode())
-                    painterResource(Res.drawable.LinuxIcon)
-//                else null,
+            onCloseRequest = ::exitApplication,
+            windowState,
+            title = title,
+            icon = if (isDevelopmentMode())
+                painterResource(Res.drawable.LinuxIcon)
+            else null,
         ) {
             Column {
                 Image(painterResource(Res.drawable.LinuxIcon), null)

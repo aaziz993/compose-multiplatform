@@ -9,7 +9,11 @@ import org.jetbrains.skiko.wasm.onWasmReady
 
 @OptIn(ExperimentalComposeUiApi::class)
 public suspend fun main() {
-    CanvasBasedWindow(getString(Res.string.app_name)) {
-        Screen()
+    val title = getString(Res.string.app_name)
+
+    onWasmReady {
+        CanvasBasedWindow(title) {
+            Screen()
+        }
     }
 }
