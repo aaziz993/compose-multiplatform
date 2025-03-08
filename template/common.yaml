@@ -387,17 +387,13 @@ kotlin:
         dependencies:
           - $libs.androidx.room.runtime.ktx
 
-    - jvmMain:
-        dependencies:
-          - $libs.kotlinx.coroutines.swing
-
-    - androidMain:
-        dependencies:
-          - $libs.androidx.activity.ktx
-          - $libs.androidx.fragment.ktx
-          - $libs.android.documentation.plugin
-          - $libs.androidx.room.runtime.android
-          - $libs.androidx.room.paging
+#    - androidMain:
+#        dependencies:
+#          - $libs.androidx.activity.ktx
+#          - $libs.androidx.fragment.ktx
+#          - $libs.android.documentation.plugin
+#          - $libs.androidx.room.runtime.android
+#          - $libs.androidx.room.paging
 
     - jsMain:
         dependencies:

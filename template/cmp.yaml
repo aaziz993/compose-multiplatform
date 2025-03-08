@@ -20,6 +20,7 @@ kotlin:
     - jvmMain:
         dependencies:
           - $compose.desktop.currentOs
+          - $libs.kotlinx.coroutines.swing
 
     - androidMain:
         dependencies:
