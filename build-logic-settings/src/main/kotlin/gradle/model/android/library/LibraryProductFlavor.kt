@@ -13,7 +13,6 @@ import gradle.model.android.ProductFlavorDsl
 import gradle.model.android.ResValue
 import gradle.model.android.Shaders
 import gradle.model.android.VectorDrawables
-import gradle.model.android.application.ApplicationProductFlavor
 import gradle.serialization.serializer.AnySerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
 import gradle.trySet
