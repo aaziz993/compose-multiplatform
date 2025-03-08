@@ -240,14 +240,7 @@ internal val Project.moduleName
  * Replace '-' and ':' in path with '.'
  */
 internal val Project.androidNamespace
-    get() = "$group.${path.removePrefix(":").replace("[-_:]".toRegex(), ".")}".also {
-        println(
-            """ANDROID NAMESPACE
-        Path: $path
-        Namespace: $it
-        """.trimMargin(),
-        )
-    }
+    get() = "$group.${path.removePrefix(":").replace("[-_:]".toRegex(), ".")}"
 
 internal fun Project.execute(cmd: String): String = providers.exec {
     commandLine(cmd.split(" "))
