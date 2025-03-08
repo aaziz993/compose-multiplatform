@@ -1,5 +1,6 @@
 package gradle.model.android
 
+import com.android.build.gradle.internal.dsl.SigningConfig
 import org.gradle.api.Project
 import gradle.model.Named
 import kotlinx.serialization.Serializable
@@ -22,6 +23,7 @@ internal data class SigningConfigImpl(
 
     context(Project)
     override fun applyTo(named: org.gradle.api.Named) {
+        SigningConfig
         super<ApkSigningConfig>.applyTo(named)
         super<InternalSigningConfig>.applyTo(named)
     }

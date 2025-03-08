@@ -1,4 +1,4 @@
-package plugin.project.compose.model
+package plugin.project.cmp.model
 
 import gradle.id
 import gradle.libs
@@ -13,7 +13,7 @@ import gradle.model.cmp.resources.model.ResourcesExtension
 import gradle.model.project.EnabledSettings
 
 @Serializable
-internal data class ComposeSettings(
+internal data class CMPSettings(
     val desktop: DesktopExtension = DesktopExtension(),
     val android: AndroidExtension = AndroidExtension(),
     val resources: ResourcesExtension = ResourcesExtension(),

@@ -1,6 +1,6 @@
 @file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
 
-package plugin.project.compose
+package plugin.project.cmp
 
 import gradle.id
 import gradle.libs
@@ -11,7 +11,7 @@ import gradle.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
-public class ComposePlugin : Plugin<Project> {
+public class CMPPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {

@@ -31,8 +31,8 @@ import org.tomlj.Toml
 import plugin.project.android.AndroidPlugin
 import plugin.project.apple.ApplePlugin
 import plugin.project.apple.model.AppleSettings
-import plugin.project.compose.ComposePlugin
-import plugin.project.compose.model.ComposeSettings
+import plugin.project.cmp.CMPPlugin
+import plugin.project.cmp.model.CMPSettings
 import plugin.project.gradle.apivalidation.ApiValidationPlugin
 import plugin.project.gradle.buildconfig.BuildConfigPlugin
 import plugin.project.gradle.develocity.DevelocityPlugin
@@ -100,7 +100,7 @@ internal data class ProjectProperties(
     val yarn: YarnRootExtension = YarnRootExtension(),
     val npm: NpmExtension = NpmExtension(),
     val karakum: KarakumSettings = KarakumSettings(),
-    val compose: ComposeSettings = ComposeSettings(),
+    val compose: CMPSettings = CMPSettings(),
     val tasks: List<@Serializable(with = TaskTransformingSerializer::class) Task>? = null,
 ) : HasKotlinDependencies {
 
@@ -248,7 +248,7 @@ internal data class ProjectProperties(
         project.plugins.apply(JsPlugin::class.java)
         project.plugins.apply(WasmPlugin::class.java)
         project.plugins.apply(WasmWasiPlugin::class.java)
-        project.plugins.apply(ComposePlugin::class.java)
+        project.plugins.apply(CMPPlugin::class.java)
 
         dependencies?.forEach { dependency ->
             dependencies {
