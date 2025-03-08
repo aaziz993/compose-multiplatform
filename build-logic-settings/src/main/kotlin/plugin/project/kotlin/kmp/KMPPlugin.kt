@@ -1,4 +1,4 @@
-package plugin.project.kmp
+package plugin.project.kotlin.kmp
 
 import gradle.all
 import gradle.decapitalized
@@ -16,6 +16,7 @@ import gradle.settings
 import gradle.sourceSetsToComposeResourcesDirs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.tasks.SourceSet
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
@@ -63,9 +64,16 @@ internal class KMPPlugin : Plugin<Project> {
                             val instrumentedVariantName = androidTarget.instrumentedTestVariant.sourceSetTree.get().name
 
                             when {
-                                restPart.startsWith(mainVariantName) -> {
+                                restPart == mainVariantName -> {
                                     srcPrefixPart = "src"
                                     resourcesPrefixPart = ""
+                                }
+
+                                sourceSet.name.startsWith(SourceSet.TEST_SOURCE_SET_NAME) -> {
+                                    srcPrefixPart = "${SourceSet.TEST_SOURCE_SET_NAME}${
+                                        restPart.removePrefix(SourceSet.TEST_SOURCE_SET_NAME).prefixIfNotEmpty("+")
+                                    }"
+                                    resourcesPrefixPart = srcPrefixPart
                                 }
 
                                 restPart.startsWith(unitTestVariantName) -> {

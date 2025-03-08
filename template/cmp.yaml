@@ -37,27 +37,6 @@ android:
 
 compose:
   enabled: true
-  desktop:
-    application:
-      mainClass: MainKt
-      jvmArgs:
-        - --add-opens=java.desktop/sun.awt=ALL-UNNAMED
-        - --add-opens=java.desktop/java.awt.peer=ALL-UNNAMED
-        # for mac
-        - --add-opens=java.desktop/sun.lwawt=ALL-UNNAMED
-        - --add-opens=java.desktop/sun.lwawt.macosx=ALL-UNNAMED
-      nativeDistributions:
-        targetFormats: [ Dmg, Msi, Deb ]
-        macOS:
-          iconFile: composeResources@jvm/drawable/MacOSIcon.icns
-        linux:
-          iconFile: composeResources@jvm/drawable/LinuxIcon.png
-        windows:
-          iconFile: composeResources@jvm/drawable/WindowsIcon.ico
-      buildTypes:
-        release:
-          proguard:
-            configurationFiles: [ compose-desktop.pro ]
   resources:
     publicResClass: true
     generateResClass: Auto

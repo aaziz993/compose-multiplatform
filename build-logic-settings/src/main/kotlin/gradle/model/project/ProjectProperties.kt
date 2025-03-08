@@ -68,7 +68,7 @@ import plugin.project.gradle.sonar.SonarPlugin
 import plugin.project.gradle.spotless.SpotlessPlugin
 import plugin.project.gradle.toolchainmanagement.ToolchainManagementPlugin
 import plugin.project.java.JavaPlugin
-import plugin.project.kmp.KMPPlugin
+import plugin.project.kotlin.kmp.KMPPlugin
 import plugin.project.kotlin.allopen.AllOpenPlugin
 import plugin.project.kotlin.apollo.ApolloPlugin
 import plugin.project.kotlin.atomicfu.AtomicFUPlugin
