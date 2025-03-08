@@ -11,7 +11,7 @@ import io.github.aaziz993.compose_app.generated.resources.app_name
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.painterResource
 
-private val INIT_SIZE = DpSize(800.dp, 800.dp)
+private val INIT_SIZE = DpSize(800.dp, 600.dp)
 
 public suspend fun main() {
     val title = getString(Res.string.app_name)

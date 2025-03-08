@@ -51,7 +51,7 @@ internal data class KotlinSourceSet(
 
         dependencies?.let { dependencies ->
             named.dependencies {
-                dependencies.filterIsInstance<Dependency>().forEach { dependency ->
+                dependencies.forEach { dependency ->
                     dependency.applyTo(this)
                 }
             }

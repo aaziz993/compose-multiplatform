@@ -216,11 +216,11 @@ multiplatform-settings = "1.1.1"
 # generates typesafe Kotlin APIs from your SQL statements. It verifies your schema, statements, and migrations at compile-time and provides IDE features like autocomplete and refactoring which make writing and maintaining SQL simple.
 sqldelight = "2.0.2"
 # abstraction layer over SQLite to allow for more robust database access while harnessing the full power of SQLite.
-room = "2.7.0-beta01"
+room = "2.7.0-rc01"
 # realm database
 realm = "10.19.0"
 # sqlite
-sqlite = "2.5.0-beta01"
+sqlite = "2.5.0-rc01"
 # jdbc
 mariadb-java-client = "3.5.0"
 postgresql = "42.7.4"
@@ -258,7 +258,7 @@ tcnative = "2.0.62.Final"
 apollo3 = "4.0.0-beta.3"
 kgraphql = "0.19.0"
 # firebase
-firebase-bom = "33.9.0"
+firebase-bom = "33.10.0"
 firebase-crashlytics-plugin = "3.0.3"
 # google services
 google-play-services = "4.4.2"
@@ -294,13 +294,13 @@ android-versionName = "1.0"
 splitties-appctx = "3.0.0"
 androidx-appcompat = "1.7.0"
 androidx-fragment-ktx = "1.8.6"
-androidx-activity-ktx = "1.10.0"
-androidx-constraint-layout = "2.2.0"
+androidx-activity-ktx = "1.10.1"
+androidx-constraint-layout = "2.2.1"
 androidx-core-ktx = "1.15.0"
 androidx-espresso-core = "3.6.1"
 androidx-ui-test = "1.7.8"
 # tooling
-desugar = "2.1.4"
+desugar = "2.1.5"
 compose-lint-checks = "1.2.0"
 # test
 androidx-test = "1.7.0-alpha01"
