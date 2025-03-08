@@ -48,7 +48,7 @@ internal data class BaseAppModuleExtension(
     override val libraryRequests: List<LibraryRequest>? = null,
     override val buildTypes: List<@Serializable(with = ApplicationBuildTypeTransformingSerializer::class) ApplicationBuildType>? = null,
     override val defaultConfig: ApplicationDefaultConfigImpl? = null,
-    override val productFlavors: List<@Serializable(with = ApplicationProductFlavorTransformingSerializer::class) ApplicationProductFlavor>? = null,
+    override val productFlavors: List<@Serializable(with = ApplicationProductFlavorTransformingSerializer::class) ApplicationProductFlavorImpl>? = null,
     override val signingConfigs: List<SigningConfigImpl>? = null,
     override val buildFeatures: ApplicationBuildFeatures? = null,
     override val namespace: String? = null,
