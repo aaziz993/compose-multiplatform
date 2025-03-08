@@ -16,7 +16,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal data class LibraryDefaultConfigImpl(
-    override val name: String,
+    override val name: String="",
     override val testApplicationId: String? = null,
     override val minSdk: Int? = null,
     override val minSdkPreview: String? = null,

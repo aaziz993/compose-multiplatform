@@ -98,7 +98,10 @@ kotlin {
     jvmToolchain(libs.versions.java.languageVersion.get().toInt())
 
     compilerOptions {
-        freeCompilerArgs.addAll("-Xcontext-parameters")
+        freeCompilerArgs.addAll(
+                "-Xignore-const-optimization-errors",
+                "-Xcontext-parameters",
+        )
         optIn.addAll(
             listOf(
                 "org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi",

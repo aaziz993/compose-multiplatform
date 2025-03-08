@@ -168,9 +168,7 @@ internal interface BaseExtension {
         }
 
         productFlavors?.forEach { productFlavors ->
-            android.productFlavors {
-                productFlavors.applyTo(this)
-            }
+            productFlavors.applyTo(android.productFlavors)
         }
 
         signingConfigs?.forEach { signingConfig ->

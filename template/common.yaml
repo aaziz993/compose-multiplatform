@@ -309,6 +309,7 @@ kotlin:
             - ContextReceivers
             - ExplicitBackingFields
           freeCompilerArgs:
+            - -Xignore-const-optimization-errors
             - -Xexplicit-api=strict
             - -Xexport-kdoc
             - -Xinline-classes
@@ -426,11 +427,11 @@ android:
   defaultConfig:
     testInstrumentationRunner: androidx.test.runner.AndroidJUnitRunner
     manifestPlaceholders:
-      appAuthRedirectScheme: "empty"
+      appAuthRedirectScheme: '"empty"'
     javaCompileOptions:
       annotationProcessorOptions:
         arguments:
-          'room.schemaLocation': schemas
+          room.schemaLocation: schemas
     vectorDrawables:
       useSupportLibrary: true
     # List additional ProGuard rules for the given build type here. By default,

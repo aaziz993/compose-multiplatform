@@ -146,7 +146,7 @@ internal data class ProjectProperties(
                 dependencyResolutionManagement.versionCatalogs?.let { versionCatalogs ->
                     versionCatalogs {
                         versionCatalogs.forEach { (catalogName, dependency) ->
-                            var notation = (dependency as Dependency).resolve()
+                            var notation = dependency.resolve()
 
                             create(catalogName) {
                                 from(notation)
