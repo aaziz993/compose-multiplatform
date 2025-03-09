@@ -1,4 +1,4 @@
-package gradle.model.kotlin.kmp.web.js
+package gradle.model.web.js
 
 import gradle.model.K2MultiplatformCompilationTask
 import gradle.model.ProducesKlib

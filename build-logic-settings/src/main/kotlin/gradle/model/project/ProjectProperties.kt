@@ -15,10 +15,10 @@ import gradle.model.java.JavaPluginExtension
 import gradle.model.java.application.JavaApplication
 import gradle.model.kotlin.HasKotlinDependencies
 import gradle.model.kotlin.KotlinSettings
-import gradle.model.kotlin.kmp.web.js.karakum.KarakumSettings
-import gradle.model.kotlin.kmp.web.node.model.NodeJsEnvSpec
-import gradle.model.kotlin.kmp.web.npm.model.NpmExtension
-import gradle.model.kotlin.kmp.web.yarn.model.YarnRootExtension
+import gradle.model.web.js.karakum.KarakumSettings
+import gradle.model.web.node.model.NodeJsEnvSpec
+import gradle.model.web.npm.model.NpmExtension
+import gradle.model.web.yarn.model.YarnRootExtension
 import gradle.problemreporter.SLF4JProblemReporterContext
 import gradle.projectProperties
 import gradle.resolve

@@ -1,4 +1,4 @@
-package gradle.model.kotlin.kmp.web.node.model
+package gradle.model.web.node.model
 
 import gradle.id
 import gradle.libs

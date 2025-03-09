@@ -1,4 +1,4 @@
-package gradle.model.kotlin.kmp.web.yarn.model
+package gradle.model.web.yarn.model
 
 import kotlinx.serialization.Serializable
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnResolution

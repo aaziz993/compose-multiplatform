@@ -1,4 +1,4 @@
-package gradle.model.kotlin.kmp.web.js.karakum
+package gradle.model.web.js.karakum
 
 import gradle.id
 import gradle.libs

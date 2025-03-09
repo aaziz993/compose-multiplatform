@@ -318,7 +318,7 @@ js-plain-objects = "2.0.20-Beta1"
 seskar = "3.82.0"
 # converter of TypeScript declaration files to Kotlin declarations.
 karakum = "1.0.0-alpha.45"
-npm-js-joda-timezone = "2.21.2"
+npm-js-joda-timezone = "2.11.0"
 npm-copy-webpack-plugin = "13.0.0"
 npm-encoding-japanese = "2.2.0"
 npm-encoding-japanese-types = "v2.0.5"
