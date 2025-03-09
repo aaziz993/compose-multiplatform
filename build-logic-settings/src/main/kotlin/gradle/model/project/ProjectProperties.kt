@@ -30,11 +30,10 @@ import gradle.trySetSystemProperty
 import gradle.version
 import gradle.versions
 import java.net.URI
-import java.util.Properties
+import java.util.*
 import javax.xml.stream.XMLEventFactory
 import javax.xml.stream.XMLInputFactory
 import javax.xml.stream.XMLOutputFactory
-import kotlin.io.reader
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import kotlinx.serialization.json.Json
@@ -70,10 +69,10 @@ import plugin.project.gradle.sonar.SonarPlugin
 import plugin.project.gradle.spotless.SpotlessPlugin
 import plugin.project.gradle.toolchainmanagement.ToolchainManagementPlugin
 import plugin.project.java.JavaPlugin
-import plugin.project.kotlin.kmp.KMPPlugin
 import plugin.project.kotlin.allopen.AllOpenPlugin
 import plugin.project.kotlin.apollo.ApolloPlugin
 import plugin.project.kotlin.atomicfu.AtomicFUPlugin
+import plugin.project.kotlin.kmp.KMPPlugin
 import plugin.project.kotlin.ksp.KspPlugin
 import plugin.project.kotlin.ktorfit.KtorfitPlugin
 import plugin.project.kotlin.noarg.NoArgPlugin

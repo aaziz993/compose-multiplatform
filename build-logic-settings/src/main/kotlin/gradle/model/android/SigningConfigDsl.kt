@@ -2,10 +2,8 @@ package gradle.model.android
 
 import com.android.build.api.dsl.SigningConfig
 import gradle.android
-import gradle.projectProperties
 import gradle.resolveSensitive
 import gradle.trySet
-import net.pearx.kasechange.toDotCase
 import org.gradle.api.Project
 
 /**

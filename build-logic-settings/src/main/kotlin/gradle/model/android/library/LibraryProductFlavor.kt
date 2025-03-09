@@ -1,22 +1,8 @@
 package gradle.model.android.library
 
 import com.android.build.api.dsl.VariantDimension
-import gradle.model.android.AarMetadata
-import gradle.model.android.ApkSigningConfig
-import gradle.model.android.BuildConfigField
-import gradle.model.android.ExternalNativeBuildFlags
-import gradle.model.android.JavaCompileOptions
-import gradle.model.android.MissingDimensionStrategy
-import gradle.model.android.Ndk
-import gradle.model.android.Optimization
 import gradle.model.android.ProductFlavorDsl
-import gradle.model.android.ResValue
-import gradle.model.android.Shaders
-import gradle.model.android.VectorDrawables
-import gradle.serialization.serializer.AnySerializer
-import gradle.serialization.serializer.KeyTransformingSerializer
 import gradle.trySet
-import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
 /**

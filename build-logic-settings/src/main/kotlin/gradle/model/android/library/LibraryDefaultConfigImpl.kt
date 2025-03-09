@@ -1,7 +1,6 @@
 package gradle.model.android.library
 
 import gradle.model.android.AarMetadata
-import gradle.model.android.ApkSigningConfig
 import gradle.model.android.ApkSigningConfigImpl
 import gradle.model.android.BuildConfigField
 import gradle.model.android.ExternalNativeBuildFlags

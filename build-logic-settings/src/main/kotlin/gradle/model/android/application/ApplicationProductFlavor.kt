@@ -3,7 +3,6 @@ package gradle.model.android.application
 import com.android.build.api.dsl.ApplicationProductFlavor
 import com.android.build.api.dsl.VariantDimension
 import gradle.model.android.ProductFlavorDsl
-import gradle.serialization.serializer.KeyTransformingSerializer
 import gradle.trySet
 import org.gradle.api.Project
 

@@ -2,7 +2,6 @@ package gradle.model.kotlin.kmp.web
 
 import gradle.model.kotlin.kmp.web.KotlinWebpackConfig.DevServer.Client.Overlay
 import gradle.trySet
-import kotlin.Boolean
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonContentPolymorphicSerializer
 import kotlinx.serialization.json.JsonElement

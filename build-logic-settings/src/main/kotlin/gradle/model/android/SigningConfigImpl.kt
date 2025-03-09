@@ -1,7 +1,6 @@
 package gradle.model.android
 
 import gradle.model.Named
-import gradle.model.gradle.dokka.DokkaPublication
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

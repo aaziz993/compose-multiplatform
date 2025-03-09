@@ -2,7 +2,6 @@ package gradle.model.kotlin.kmp.nat
 
 import kotlinx.serialization.Serializable
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
-import org.jetbrains.kotlin.gradle.plugin.mpp.NativeOutputKind
 
 @Serializable
 internal data class TestExecutableSettings(
