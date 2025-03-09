@@ -352,6 +352,11 @@ kotlin:
             # add it to avoid sqllite3 issues in iOS. Required when using NativeSQLiteDriver
             linkerOpts:
               - -lsqlite3
+          test: [ release ]
+    - nativeWithTests:
+        testRuns:
+          - releaseTest:
+              executionSourceFrom: release
     - jsAndWasmJs:
         devServer:
           static:

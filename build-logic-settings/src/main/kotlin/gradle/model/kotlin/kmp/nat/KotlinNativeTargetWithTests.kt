@@ -13,8 +13,10 @@ internal abstract class KotlinNativeTargetWithTests<T : KotlinNativeBinaryTestRu
     KotlinNativeTarget(), KotlinTargetWithTests<NativeBinaryTestRunSource, T> {
 
     context(Project)
-    override fun applyTo(named: Named) =
+    override fun applyTo(named: Named) {
+        super<KotlinNativeTarget>.applyTo(named)
         super<KotlinTargetWithTests>.applyTo(named)
+    }
 
     context(Project)
     override fun applyTo() =
@@ -25,8 +27,13 @@ internal abstract class KotlinNativeTargetWithTests<T : KotlinNativeBinaryTestRu
 @SerialName("nativeWithTests")
 internal data class KotlinNativeTargetWithTestsImpl(
     override val compilations: List<KotlinNativeCompilation>? = null,
-    override val targetName: String, override val compilerOptions: KotlinNativeCompilerOptions? = null,
+    override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,
-    override val testRuns: List<KotlinNativeBinaryTestRunImpl>? = null,
-) : KotlinNativeTargetWithTests<KotlinNativeBinaryTestRun>()
+    override val testRuns: List<@Serializable(with = KotlinNativeBinaryTestRunTransformingSerializer::class) KotlinNativeBinaryTestRunImpl>? = null,
+) : KotlinNativeTargetWithTests<KotlinNativeBinaryTestRun>() {
+
+    override val targetName: String
+        get() = ""
+}
+
 

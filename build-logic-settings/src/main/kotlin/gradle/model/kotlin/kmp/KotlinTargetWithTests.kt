@@ -24,7 +24,7 @@ internal interface KotlinTargetWithTests<E : KotlinExecution.ExecutionSource, T 
         named as KotlinTargetWithTests<*, *>
 
         testRuns?.forEach { testRun ->
-            testRun.applyTo(named.testRuns)
+            testRun.applyTo(named.testRuns, named.testRuns::create)
         }
     }
 }

@@ -6,6 +6,7 @@ import gradle.model.kotlin.kmp.nat.KotlinNativeCompilation
 import gradle.model.kotlin.kmp.nat.KotlinNativeCompilationTransformingSerializer
 import gradle.model.kotlin.kmp.nat.KotlinNativeCompilerOptions
 import gradle.model.kotlin.kmp.nat.KotlinNativeHostTestRun
+import gradle.model.kotlin.kmp.nat.KotlinNativeHostTestRunTransformingSerializer
 import gradle.model.kotlin.kmp.nat.KotlinNativeTargetWithHostTests
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -18,7 +19,7 @@ internal data class KotlinMacosArm64Target(
     override val compilations: List<@Serializable(with = KotlinNativeCompilationTransformingSerializer::class) KotlinNativeCompilation>? = null,
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,
-    override val testRuns: List<KotlinNativeHostTestRun>? = null,
+    override val testRuns: List<@Serializable(with = KotlinNativeHostTestRunTransformingSerializer::class) KotlinNativeHostTestRun>? = null,
 ) : KotlinNativeTargetWithHostTests(), KotlinMacosTarget {
 
     override val isLeaf: Boolean

@@ -12,7 +12,7 @@ internal data class KotlinNativeTargetWithSimulatorTestsImpl(
     override val compilations: List<KotlinNativeCompilation>? = null,
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,
-    override val testRuns: List<KotlinNativeHostTestRun>? = null,
+    override val testRuns: List<@Serializable(with = KotlinNativeHostTestRunTransformingSerializer::class) KotlinNativeHostTestRun>? = null,
 ) : KotlinNativeTargetWithHostTests() {
 
     override val targetName: String

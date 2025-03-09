@@ -1,5 +1,6 @@
 package gradle.model
 
+import gradle.maybeNamed
 import org.gradle.api.Named
 import org.gradle.api.NamedDomainObjectCollection
 import org.gradle.api.Project
@@ -25,10 +26,13 @@ internal interface Named {
     fun applyTo(named: Named)
 
     context(Project)
-    fun applyTo(named: NamedDomainObjectCollection<out Named>) =
-        named.configure(name) {
+    fun applyTo(named: NamedDomainObjectCollection<out Named>, create: ((name: String) -> Named)?) =
+        named.configure(name, create) {
             applyTo(this)
         }
+
+    context(Project)
+    fun applyTo(named: NamedDomainObjectCollection<out Named>) = applyTo(named, null)
 
     context(Project)
     fun applyTo() {
@@ -36,6 +40,7 @@ internal interface Named {
     }
 }
 
-private inline fun <reified T> NamedDomainObjectCollection<out T>.configure(name: String, noinline configure: T.() -> Unit) {
-    if (name.isEmpty()) all(configure) else findByName(name)?.configure()
+private inline fun <reified T> NamedDomainObjectCollection<out T>.configure(name: String, noinline create: ((name: String) -> T)? = null, noinline configure: T.() -> Unit) {
+    if (name.isEmpty()) all(configure)
+    else maybeNamed(name, configure) ?: create?.invoke(name)?.configure()
 }

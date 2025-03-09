@@ -6,6 +6,7 @@ import gradle.model.kotlin.kmp.nat.KotlinNativeCompilation
 import gradle.model.kotlin.kmp.nat.KotlinNativeCompilationTransformingSerializer
 import gradle.model.kotlin.kmp.nat.KotlinNativeCompilerOptions
 import gradle.model.kotlin.kmp.nat.KotlinNativeSimulatorTestRun
+import gradle.model.kotlin.kmp.nat.KotlinNativeSimulatorTestRunTransformingSerializer
 import gradle.model.kotlin.kmp.nat.KotlinNativeTargetWithSimulatorTests
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -18,7 +19,7 @@ internal data class KotlinWatchosSimulatorArm64Target(
     override val compilations: List<@Serializable(with = KotlinNativeCompilationTransformingSerializer::class) KotlinNativeCompilation>? = null,
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,
-    override val testRuns: List<KotlinNativeSimulatorTestRun>? = null,
+    override val testRuns: List<@Serializable(with = KotlinNativeSimulatorTestRunTransformingSerializer::class) KotlinNativeSimulatorTestRun>? = null,
 ) : KotlinNativeTargetWithSimulatorTests(), KotlinWatchosTarget {
 
     override val isLeaf: Boolean

@@ -13,7 +13,6 @@ internal interface KotlinTargetTestRun<ExecutionSource : KotlinExecution.Executi
     KotlinTargetExecution<ExecutionSource> {
 
     context(Project)
-    override fun applyTo(named: Named) {
+    override fun applyTo(named: Named) =
         super<KotlinTestRun>.applyTo(named as org.jetbrains.kotlin.gradle.plugin.KotlinTestRun<*>)
-    }
 }
