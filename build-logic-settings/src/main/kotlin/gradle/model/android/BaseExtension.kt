@@ -87,63 +87,26 @@ internal interface BaseExtension {
     context(Project)
     @Suppress("UnstableApiUsage")
     fun applyTo() {
-        composeOptions?.let { composeOptions ->
-            android.composeOptions {
-                ::kotlinCompilerExtensionVersion trySet composeOptions.kotlinCompilerExtensionVersion
-            }
-        }
-
-        dataBinding?.let { dataBinding ->
-            android.dataBinding(dataBinding::applyTo)
-        }
-
-        viewBinding?.let { viewBinding ->
-            android.viewBinding(viewBinding::applyTo)
-        }
-
+        composeOptions?.applyTo(android.composeOptions)
+        dataBinding?.applyTo(android.dataBinding)
+        viewBinding?.applyTo(android.viewBinding)
         defaultPublishConfig?.let(android::defaultPublishConfig)
         disableWrite?.takeIf { it }?.run { android.disableWrite() }
         (compileSdkVersion ?: settings.libs.versions.version("android.compileSdk")?.toInt())
             ?.let(android::compileSdkVersion)
         buildToolsVersion?.let(android::buildToolsVersion)
+
         flavorDimensions?.let { flavorDimensions ->
             android.flavorDimensions(*flavorDimensions.toTypedArray())
         }
 
-        aaptOptions?.let { aaptOptions ->
-            android.aaptOptions(aaptOptions::applyTo)
-        }
-
-        externalNativeBuild?.let { externalNativeBuild ->
-            android.externalNativeBuild {
-                externalNativeBuild.applyTo(this)
-            }
-        }
-
-        testOptions?.let { testOptions ->
-            android.testOptions {
-                testOptions.applyTo(this)
-            }
-        }
-
-        compileOptions?.let { compileOptions ->
-            android.compileOptions {
-                compileOptions.applyTo(this)
-            }
-        }
-
-        packaging?.let { packagingOptions ->
-            android.packagingOptions(packagingOptions::applyTo)
-        }
-
-        adbOptions?.let { adbOptions ->
-            android.adbOptions(adbOptions::applyTo)
-        }
-
-        splits?.let { splits ->
-            android.splits(splits::applyTo)
-        }
-
+        aaptOptions?.applyTo(android.aaptOptions)
+        externalNativeBuild?.applyTo(android.externalNativeBuild)
+        testOptions?.applyTo(android.testOptions)
+        compileOptions?.applyTo( android.compileOptions)
+        packaging?.applyTo( android.packagingOptions)
+        adbOptions?.applyTo(android.adbOptions)
+        splits?.applyTo( android.splits)
         android::generatePureSplits trySet generatePureSplits
         flavorDimensions?.let(android.flavorDimensionList::addAll)
         resourcePrefix?.let(android::resourcePrefix)
@@ -161,11 +124,7 @@ internal interface BaseExtension {
             }
         }
 
-        defaultConfig?.let { defaultConfig ->
-            android.defaultConfig {
-                defaultConfig.applyTo(this)
-            }
-        }
+        defaultConfig?.applyTo(android.defaultConfig)
 
         productFlavors?.forEach { productFlavors ->
             productFlavors.applyTo(android.productFlavors)
@@ -176,7 +135,6 @@ internal interface BaseExtension {
         }
 
         buildFeatures?.applyTo(android.buildFeatures)
-
         android.namespace = namespace ?: androidNamespace
     }
 }

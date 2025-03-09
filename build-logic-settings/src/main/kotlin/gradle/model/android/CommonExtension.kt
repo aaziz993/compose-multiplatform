@@ -530,6 +530,9 @@ internal interface CommonExtension<
 
         testOptions?.applyTo(extension.testOptions)
         splits?.applyTo(extension.splits)
+
+        composeOptions?.applyTo(extension.composeOptions)
+
         flavorDimensions?.let(extension.flavorDimensions::addAll)
         extension::resourcePrefix trySet resourcePrefix
         extension::ndkVersion trySet ndkVersion

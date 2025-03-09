@@ -46,7 +46,7 @@ internal abstract class AbstractCompile : Task {
     override fun applyTo(named: Named) {
         super.applyTo(named)
 
-        named as AbstractCompile
+        named as org.gradle.api.tasks.compile.AbstractCompile
 
         named.destinationDirectory tryAssign destinationDirectory?.let(layout.projectDirectory::dir)
 
