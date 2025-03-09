@@ -56,7 +56,7 @@ plugins:
           includes: [ README.md ]
     pluginsConfiguration:
       - html:
-          styleSheets: [ dokka-styles.css ]
+          customStyleSheets: [ dokka-styles.css ]
           footerMessage: © 2025 - Aziz Atoev
           templatesDir: documentation
       - versioning:
