@@ -352,7 +352,7 @@ internal object TaskTransformingSerializer : KeyTransformingSerializer<Task>(
 )
 
 @Serializable
-@SerialName("Task")
+@SerialName("")
 internal data class TaskImpl(
     override val dependsOn: List<String>? = null,
     override val onlyIf: Boolean? = null,
@@ -366,5 +366,8 @@ internal data class TaskImpl(
     override val mustRunAfter: List<String>? = null,
     override val finalizedBy: List<String>? = null,
     override val shouldRunAfter: List<String>? = null,
+) : Task {
+
     override val name: String
-) : Task
+        get() = ""
+}
