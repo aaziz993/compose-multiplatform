@@ -22,7 +22,6 @@ import org.gradle.api.tasks.bundling.ZipEntryCompression
 import org.gradle.kotlin.dsl.withType
 
 @Serializable
-@SerialName("shadowJar")
 internal data class ShadowJar(
     override var manifestContentCharset: String? = null,
     override var manifest: Manifest? = null,

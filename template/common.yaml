@@ -479,7 +479,7 @@ dependencies:
   - kspCommonMainMetadata: $libs.koin.ksp.compiler
 
 tasks:
-  - shadowJar:
+  - ShadowJar:
       duplicatesStrategy: EXCLUDE
       mergeServiceFiles: true
   - Kotlin2JsCompile:
