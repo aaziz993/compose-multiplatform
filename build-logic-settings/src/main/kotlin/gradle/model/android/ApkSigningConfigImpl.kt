@@ -17,8 +17,3 @@ internal data class ApkSigningConfigImpl(
     override val initWith: String? = null,
     override val name: String,
 ) : ApkSigningConfig
-
-internal object ApkSigningConfigTransformingSerializer : KeyTransformingSerializer<ApkSigningConfigImpl>(
-    ApkSigningConfigImpl.serializer(),
-    "name",
-)

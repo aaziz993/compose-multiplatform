@@ -432,7 +432,8 @@ android:
         debuggable: false
         # application part
         isShrinkResources: true
-        signingConfig: release
+        signingConfig:
+          name: release
     - debug:
         isMinifyEnabled: false
         debuggable: true
@@ -440,7 +441,7 @@ android:
         isShrinkResources: false
   lint:
     xmlReport: true
-    xmlOutput: build/reports/lint-results.xml
+    xmlOutput: build/reports/lint-results.xml # path to the lint report to consume by sonar
   defaultConfig:
     testInstrumentationRunner: androidx.test.runner.AndroidJUnitRunner
     manifestPlaceholders:
