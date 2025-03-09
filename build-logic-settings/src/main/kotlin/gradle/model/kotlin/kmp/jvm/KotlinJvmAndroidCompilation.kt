@@ -1,6 +1,6 @@
 package gradle.model.kotlin.kmp.jvm
 
-import gradle.model.java.JavaCompile
+import gradle.model.kotlin.kmp.jvm.java.JavaCompile
 import gradle.model.kotlin.KotlinCompilation
 import gradle.model.kotlin.KotlinCompilationOutput
 import gradle.model.kotlin.KotlinCompilationTaskImpl

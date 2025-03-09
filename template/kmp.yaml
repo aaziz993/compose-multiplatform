@@ -24,7 +24,7 @@ kotlin:
     - jsAndWasmJs: [ js, wasmJs ]
     - web: [ js, wasmJs, wasmWasi ]
     - nonWeb: [ jvmAndAndroid, ios ]
-    - wasm: wasmJs, wasmWasi]
+    - wasm: [wasmJs, wasmWasi]
 
 
   cocoapods:

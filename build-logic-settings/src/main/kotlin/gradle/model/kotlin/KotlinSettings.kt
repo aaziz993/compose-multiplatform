@@ -3,7 +3,7 @@ package gradle.model.kotlin
 import gradle.id
 import gradle.kotlin
 import gradle.libs
-import gradle.model.java.JavaToolchainSpec
+import gradle.model.kotlin.kmp.jvm.java.JavaToolchainSpec
 import gradle.model.kotlin.kmp.HierarchyAliasTransformingSerializer
 import gradle.model.kotlin.kmp.HierarchyGroup
 import gradle.model.kotlin.kmp.KotlinMultiplatformExtension
