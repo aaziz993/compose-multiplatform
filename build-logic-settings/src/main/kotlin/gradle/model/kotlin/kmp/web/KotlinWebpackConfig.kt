@@ -2,6 +2,7 @@ package gradle.model.kotlin.kmp.web
 
 import gradle.model.kotlin.kmp.web.KotlinWebpackConfig.DevServer.Client.Overlay
 import gradle.trySet
+import kotlin.Boolean
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonContentPolymorphicSerializer
 import kotlinx.serialization.json.JsonElement
@@ -45,12 +46,15 @@ internal data class KotlinWebpackConfig(
         webpackConfig::reportEvaluatedConfigFile trySet reportEvaluatedConfigFile?.let(::file)
 
         devServer?.let { devServer ->
-            (webpackConfig.devServer ?: KotlinWebpackConfig.DevServer()).apply {
-
-            }
+            webpackConfig.devServer = (webpackConfig.devServer ?: KotlinWebpackConfig.DevServer())
+                .apply(devServer::applyTo)
         }
 
-        webpackConfig::watchOptions trySet watchOptions?.toWatchOptions()
+        watchOptions?.let { watchOptions ->
+            webpackConfig.watchOptions = (webpackConfig.watchOptions ?: KotlinWebpackConfig.WatchOptions())
+                .apply(watchOptions::applyTo)
+        }
+
         webpackConfig::experiments trySet experiments?.toMutableSet()
         webpackConfig::devtool trySet devtool
         webpackConfig::showProgress trySet showProgress
@@ -75,10 +79,10 @@ internal data class KotlinWebpackConfig(
         val ignored: Boolean? = null
     ) {
 
-        fun toWatchOptions() = KotlinWebpackConfig.WatchOptions(
-            aggregateTimeout,
-            ignored,
-        )
+        fun applyTo(options: KotlinWebpackConfig.WatchOptions) {
+            options::aggregateTimeout trySet aggregateTimeout
+            options::ignored trySet ignored
+        }
     }
 
     @Serializable
@@ -108,6 +112,10 @@ internal data class KotlinWebpackConfig(
                     warnings,
                 )
             }
+
+            fun toClient() = KotlinWebpackConfig.DevServer.Client(
+                if (overlay is Overlay) overlay.toOverlay() else overlay,
+            )
         }
 
         private object OverlaySerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
@@ -136,6 +144,15 @@ internal data class KotlinWebpackConfig(
             )
         }
 
+        fun toDevServer() = KotlinWebpackConfig.DevServer(
+            open,
+            port,
+            proxy?.map(Proxy::toProxy)?.toMutableList(),
+            static?.toMutableList(),
+            contentBase?.toMutableList(),
+            client?.toClient(),
+        )
+
         fun applyTo(server: KotlinWebpackConfig.DevServer) {
             server::open trySet open
             server::port trySet port
@@ -158,9 +175,9 @@ internal data class KotlinWebpackConfig(
                 }
             }
 
-            client?.let { client ->
+            client?.toClient()?.let { client ->
                 server.client = (server.client ?: KotlinWebpackConfig.DevServer.Client(
-                    if (client.overlay is Overlay) client.overlay.toOverlay() else client.overlay,
+                    client.overlay,
                 ))
             }
         }

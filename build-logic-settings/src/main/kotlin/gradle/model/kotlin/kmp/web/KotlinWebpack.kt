@@ -28,6 +28,7 @@ internal data class KotlinWebpack(
 ) {
 
     context(Project)
+    @Suppress("UnstableApiUsage")
     fun applyTo(webpack: KotlinWebpack) {
         webpack::mode trySet mode
         webpack.inputFilesDirectory tryAssign inputFilesDirectory?.let(layout.projectDirectory::dir)
@@ -42,7 +43,13 @@ internal data class KotlinWebpack(
         nodeArgs?.let(webpack.nodeArgs::addAll)
         webpack::sourceMaps trySet sourceMaps
         webpack.devServerProperty tryAssign devServerProperty?.toDevServer()
-        webpack::watchOptions trySet watchOptions?.toWatchOptions()
+
+        watchOptions?.let { watchOptions ->
+            webpack.watchOptions = (webpack.watchOptions
+                ?: org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig.WatchOptions())
+                .apply(watchOptions::applyTo)
+        }
+
         webpack::devtool trySet devtool
         webpack::generateConfigOnly trySet generateConfigOnly
     }
