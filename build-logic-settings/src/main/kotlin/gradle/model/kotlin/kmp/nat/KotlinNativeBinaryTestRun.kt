@@ -4,6 +4,7 @@ import gradle.model.kotlin.kmp.KotlinTargetTestRun
 import org.gradle.api.Named
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTargetWithTests
+import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
 import org.jetbrains.kotlin.gradle.targets.native.KotlinNativeBinaryTestRun
 
 internal interface KotlinNativeBinaryTestRun : KotlinTargetTestRun<NativeBinaryTestRunSource> {
@@ -13,7 +14,7 @@ internal interface KotlinNativeBinaryTestRun : KotlinTargetTestRun<NativeBinaryT
      *
      * This overrides other [executionSource] options.
      */
-    val executionSourceFrom: String?
+    val executionSourceFrom: NativeBuildType?
 
     context(Project)
     override fun applyTo(named: Named) {

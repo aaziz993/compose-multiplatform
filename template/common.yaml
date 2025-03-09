@@ -357,7 +357,7 @@ kotlin:
     - nativeWithTests:
         testRuns:
           - releaseTest:
-              executionSourceFrom: release
+              executionSourceFrom: RELEASE
     - jsAndWasmJs:
         devServer:
           static:

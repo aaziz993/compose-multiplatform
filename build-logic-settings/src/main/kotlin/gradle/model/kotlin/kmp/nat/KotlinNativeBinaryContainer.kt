@@ -21,27 +21,26 @@ internal data class KotlinNativeBinaryContainer(
     context(Project)
     fun applyTo(binaries: KotlinNativeBinaryContainer) {
         executable?.let { executable ->
-            binaries.executable(executable.namePrefix,executable.buildTypes) {
+            binaries.executable(executable.namePrefix, executable.buildTypes) {
                 executable.applyTo(this)
             }
         }
 
         staticLib?.let { staticLib ->
-            binaries.staticLib(staticLib.namePrefix,staticLib.buildTypes) {
+            binaries.staticLib(staticLib.namePrefix, staticLib.buildTypes) {
                 staticLib.applyTo(this)
             }
         }
 
         framework?.let { framework ->
-            binaries.framework(framework.namePrefix,framework.buildTypes) {
+            binaries.framework(framework.namePrefix, framework.buildTypes) {
                 framework.applyTo(this)
             }
         }
 
         test?.let { test ->
-            binaries.test(test.namePrefix,test.buildTypes) {
-                    test.applyTo(this)
-                }
+            binaries.test(test.namePrefix, test.buildTypes) {
+                test.applyTo(this)
             }
         }
     }
