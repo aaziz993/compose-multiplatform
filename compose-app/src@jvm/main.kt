@@ -1,5 +1,3 @@
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
@@ -27,10 +25,7 @@ public suspend fun main() {
                 painterResource(Res.drawable.LinuxIcon)
             else null,
         ) {
-            Column {
-                Image(painterResource(Res.drawable.LinuxIcon), null)
-                App()
-            }
+            App()
         }
     }
 }
