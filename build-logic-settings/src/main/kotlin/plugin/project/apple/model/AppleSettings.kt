@@ -3,9 +3,9 @@ package plugin.project.apple.model
 import gradle.apple
 import gradle.id
 import gradle.libs
-import gradle.model.kotlin.kmp.apple.AppleProjectExtension
-import gradle.model.kotlin.kmp.apple.IosAppTarget
-import gradle.model.kotlin.kmp.apple.IosFrameworkTarget
+import gradle.model.apple.AppleProjectExtension
+import gradle.model.apple.IosAppTarget
+import gradle.model.apple.IosFrameworkTarget
 import gradle.plugin
 import gradle.plugins
 import gradle.settings

@@ -7,7 +7,7 @@ import gradle.android
 import gradle.decapitalized
 import gradle.id
 import gradle.libs
-import gradle.model.kotlin.kmp.jvm.android.KotlinAndroidTarget
+import gradle.model.kotlin.kmp.android.KotlinAndroidTarget
 import gradle.model.kotlin.sourceSets
 import gradle.model.project.ProjectLayout
 import gradle.model.project.ProjectType

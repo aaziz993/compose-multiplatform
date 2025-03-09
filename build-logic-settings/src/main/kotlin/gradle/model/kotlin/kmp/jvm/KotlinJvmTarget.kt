@@ -1,6 +1,9 @@
 package gradle.model.kotlin.kmp.jvm
 
 import gradle.kotlin
+import gradle.model.kotlin.kmp.KotlinJvmAndAndroidTarget
+import gradle.model.kotlin.kmp.KotlinJvmAndroidCompilation
+import gradle.model.kotlin.kmp.KotlinJvmAndroidCompilationTransformingSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named

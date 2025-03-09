@@ -1,7 +1,7 @@
 package gradle.model.kotlin
 
 import gradle.libs
-import gradle.model.kotlin.kmp.jvm.java.JavaToolchainSpec
+import gradle.model.java.JavaToolchainSpec
 import gradle.settings
 import gradle.tryAssign
 import gradle.trySet

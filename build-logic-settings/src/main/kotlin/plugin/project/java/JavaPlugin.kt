@@ -3,8 +3,8 @@ package plugin.project.java
 import gradle.all
 import gradle.decapitalized
 import gradle.java
+import gradle.model.kotlin.kmp.android.KotlinAndroidTarget
 import gradle.model.kotlin.kmp.jvm.KotlinJvmTarget
-import gradle.model.kotlin.kmp.jvm.android.KotlinAndroidTarget
 import gradle.model.kotlin.sourceSets
 import gradle.model.project.ProjectLayout
 import gradle.model.project.ProjectType
