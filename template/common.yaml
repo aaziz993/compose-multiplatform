@@ -431,6 +431,9 @@ android:
         debuggable: true
         # application part
         isShrinkResources: false
+  lint:
+    xmlReport: true
+    xmlOutput: build/reports/lint-results.xml
   defaultConfig:
     testInstrumentationRunner: androidx.test.runner.AndroidJUnitRunner
     manifestPlaceholders:
