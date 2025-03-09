@@ -1,5 +1,6 @@
 package gradle.model.kotlin.kmp.web
 
+import gradle.model.kotlin.kmp.web.KotlinWebpackConfig.DevServer.Client.Overlay
 import gradle.trySet
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonContentPolymorphicSerializer
@@ -42,7 +43,13 @@ internal data class KotlinWebpackConfig(
         webpackConfig.outputFileName = outputFileName ?: defaultModuleName
         webpackConfig::configDirectory trySet configDirectory?.let(::file)
         webpackConfig::reportEvaluatedConfigFile trySet reportEvaluatedConfigFile?.let(::file)
-        webpackConfig::devServer trySet devServer?.toDevServer()
+
+        devServer?.let { devServer ->
+            (webpackConfig.devServer ?: KotlinWebpackConfig.DevServer()).apply {
+
+            }
+        }
+
         webpackConfig::watchOptions trySet watchOptions?.toWatchOptions()
         webpackConfig::experiments trySet experiments?.toMutableSet()
         webpackConfig::devtool trySet devtool
@@ -90,6 +97,7 @@ internal data class KotlinWebpackConfig(
             val overlay: Any /* Overlay | Boolean */
         ) {
 
+            @Serializable
             data class Overlay(
                 val errors: Boolean,
                 val warnings: Boolean
@@ -100,16 +108,12 @@ internal data class KotlinWebpackConfig(
                     warnings,
                 )
             }
-
-            fun toClient() = KotlinWebpackConfig.DevServer.Client(
-                if (overlay is Overlay) overlay.toOverlay() else overlay,
-            )
         }
 
         private object OverlaySerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
 
             override fun selectDeserializer(element: JsonElement) = when {
-                element is JsonObject -> Client.Overlay::class.serializer()
+                element is JsonObject -> Client.Overlay.serializer()
                 else -> Boolean::class.serializer()
             }
         }
@@ -132,13 +136,33 @@ internal data class KotlinWebpackConfig(
             )
         }
 
-        fun toDevServer() = KotlinWebpackConfig.DevServer(
-            open,
-            port,
-            proxy?.map(Proxy::toProxy)?.toMutableList(),
-            static?.toMutableList(),
-            contentBase?.toMutableList(),
-            client?.toClient(),
-        )
+        fun applyTo(server: KotlinWebpackConfig.DevServer) {
+            server::open trySet open
+            server::port trySet port
+
+            proxy?.map(Proxy::toProxy)?.let { proxy ->
+                server.proxy = (server.proxy ?: mutableListOf()).apply {
+                    addAll(proxy)
+                }
+            }
+
+            static?.let { static ->
+                server.static = (server.static ?: mutableListOf()).apply {
+                    addAll(static)
+                }
+            }
+
+            contentBase?.let { contentBase ->
+                server.contentBase = (server.contentBase ?: mutableListOf()).apply {
+                    addAll(contentBase)
+                }
+            }
+
+            client?.let { client ->
+                server.client = (server.client ?: KotlinWebpackConfig.DevServer.Client(
+                    if (client.overlay is Overlay) client.overlay.toOverlay() else client.overlay,
+                ))
+            }
+        }
     }
 }

@@ -1,5 +1,16 @@
 kotlin:
-  targets: [ jvm, android, iosArm64, iosX64, iosSimulatorArm64, js, wasmJs ]
+  targets:
+    - jvm
+    - android
+    - iosArm64
+    - iosX64
+    - iosSimulatorArm64
+    - js:
+        devServer:
+          static: [ src@js ]
+    - wasmJs:
+        devServer:
+          static: [ src@wasmJs ]
 
   hierarchy:
     - jvmAndAndroid: [ jvm, android ]
