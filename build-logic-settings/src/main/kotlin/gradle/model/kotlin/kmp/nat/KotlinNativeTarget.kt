@@ -25,11 +25,7 @@ internal abstract class KotlinNativeTarget : KotlinTarget,
 
         super<HasConfigurableKotlinCompilerOptions>.applyTo(named)
 
-        binaries?.let { binaries ->
-            named.binaries {
-                binaries.applyTo(this)
-            }
-        }
+        binaries?.applyTo(named.binaries)
     }
 
     context(Project)

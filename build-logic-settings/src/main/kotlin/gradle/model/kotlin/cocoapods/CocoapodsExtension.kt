@@ -4,7 +4,7 @@ import gradle.allLibs
 import gradle.cocoapods
 import gradle.kotlin
 import gradle.libs
-import gradle.model.kotlin.kmp.nat.Framework
+import gradle.model.kotlin.kmp.nat.FrameworkSettings
 import gradle.moduleName
 import gradle.resolve
 import gradle.resolveLibrary
@@ -78,7 +78,7 @@ internal interface CocoapodsExtension {
     /**
      * Configurre framework of the pod built from this project.
      */
-    val framework: Framework?
+    val framework: FrameworkSettings?
 
     val ios: PodspecPlatformSettings?
 

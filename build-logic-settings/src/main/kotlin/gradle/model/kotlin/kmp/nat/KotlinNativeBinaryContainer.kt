@@ -12,10 +12,10 @@ Use the following naming scheme:
 */
 @Serializable
 internal data class KotlinNativeBinaryContainer(
-    val executable: Executable? = null,
-    val staticLib: SharedLibrary? = null,
-    val framework: Framework? = null,
-    val test: TestExecutable? = null,
+    val executable: ExecutableSettings? = null,
+    val staticLib: SharedLibrarySettings? = null,
+    val framework: FrameworkSettings? = null,
+    val test: TestExecutableSettings? = null,
 ) {
 
     context(Project)

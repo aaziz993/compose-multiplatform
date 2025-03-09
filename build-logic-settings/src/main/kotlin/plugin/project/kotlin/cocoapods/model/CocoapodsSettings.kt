@@ -4,7 +4,7 @@ import gradle.id
 import gradle.libs
 import gradle.model.kotlin.cocoapods.CocoapodsExtension
 import gradle.model.kotlin.cocoapods.Pod
-import gradle.model.kotlin.kmp.nat.Framework
+import gradle.model.kotlin.kmp.nat.FrameworkSettings
 import gradle.model.project.EnabledSettings
 import gradle.plugin
 import gradle.plugins
@@ -25,7 +25,7 @@ internal data class CocoapodsSettings(
     override val homepage: String? = null,
     override val source: String? = null,
     override val extraSpecAttributes: Map<String, String>? = null,
-    override val framework: Framework? = null,
+    override val framework: FrameworkSettings? = null,
     override val ios: CocoapodsExtension.PodspecPlatformSettings? = null,
     override val osx: CocoapodsExtension.PodspecPlatformSettings? = null,
     override val tvos: CocoapodsExtension.PodspecPlatformSettings? = null,

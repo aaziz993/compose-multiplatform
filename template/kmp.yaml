@@ -1,7 +1,8 @@
 kotlin:
   targets:
     - jvm
-    - android
+    - android:
+        publishLibraryVariants: [ release ]
     - iosArm64
     - iosX64
     - iosSimulatorArm64

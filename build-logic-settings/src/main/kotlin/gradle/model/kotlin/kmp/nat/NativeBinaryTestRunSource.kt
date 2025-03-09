@@ -8,7 +8,7 @@ import org.jetbrains.kotlin.gradle.targets.native.NativeBinaryTestRunSource
 @Serializable
 internal data class NativeBinaryTestRunSource(
     override val compilation: KotlinNativeCompilation? = null,
-    val binary: TestExecutable? = null
+    val binary: TestExecutableSettings? = null
 ) : CompilationExecutionSource {
 
     context(Project)
