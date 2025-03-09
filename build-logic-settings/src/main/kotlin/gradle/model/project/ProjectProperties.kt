@@ -116,7 +116,7 @@ internal data class ProjectProperties(
     val karakum: KarakumSettings = KarakumSettings(),
     val compose: CMPSettings = CMPSettings(),
     val tasks: List<@Serializable(with = TaskTransformingSerializer::class) Task>? = null,
-    private val localPropertiesFile: String = "../local.properties",
+    private val localPropertiesFile: String = "local.properties",
 ) : HasKotlinDependencies {
 
     @Transient

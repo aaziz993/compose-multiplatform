@@ -4,6 +4,8 @@ import gradle.kotlin
 import gradle.model.kotlin.kmp.KotlinJvmAndAndroidTarget
 import gradle.model.kotlin.kmp.KotlinJvmAndroidCompilation
 import gradle.model.kotlin.kmp.KotlinJvmAndroidCompilationTransformingSerializer
+import gradle.model.kotlin.kmp.android.KotlinAndroidTarget
+import gradle.projectProperties
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
@@ -41,7 +43,11 @@ internal data class KotlinJvmTarget(
             named.mainRun(mainRun::applyTo)
         }
 
-        withJava?.takeIf { it }?.let { named.withJava() }
+        if (projectProperties.kotlin.targets?.none { target ->
+                target is KotlinAndroidTarget
+            } != false) {
+            withJava?.takeIf { it }?.let { named.withJava() }
+        }
     }
 
     context(Project)

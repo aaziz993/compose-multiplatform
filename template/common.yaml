@@ -336,6 +336,9 @@ kotlin:
         compilerOptions:
           freeCompilerArgs:
             - -Xjvm-default=all
+    - jvm:
+        '':
+          withJava: true
     - native:
         compilerOptions:
           freeCompilerArgs:
@@ -499,3 +502,5 @@ tasks:
         - -Xdont-warn-on-error-suppression
         - -Xir-generate-inline-anonymous-functions #  https://youtrack.jetbrains.com/issue/KT-67355
         - -Xsuppress-warning=NOTHING_TO_INLINE
+
+localPropertiesFile: ../local.properties
