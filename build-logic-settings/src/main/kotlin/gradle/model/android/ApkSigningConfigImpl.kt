@@ -1,6 +1,5 @@
 package gradle.model.android
 
-import gradle.model.kotlin.kmp.KotlinTarget
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
 
@@ -16,7 +15,7 @@ internal data class ApkSigningConfigImpl(
     override val keyPassword: String? = null,
     override val storeType: String? = null,
     override val initWith: String? = null,
-    override val name: String = "",
+    override val name: String,
 ) : ApkSigningConfig
 
 internal object ApkSigningConfigTransformingSerializer : KeyTransformingSerializer<ApkSigningConfigImpl>(
