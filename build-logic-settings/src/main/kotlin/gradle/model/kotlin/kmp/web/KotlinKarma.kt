@@ -32,10 +32,8 @@ internal data class KotlinKarma(
 ) {
 
     context(Project)
-    fun applyTo(karma: KotlinKarma) {
-        if (webpackConfig != null) {
-            webpackConfig.applyTo(karma.webpackConfig)
-        }
+    fun applyTo(karma: KotlinKarma, moduleName: String) {
+        webpackConfig?.applyTo(karma.webpackConfig, moduleName)
 
         useConfigDirectory?.let(karma::useConfigDirectory)
         useChrome?.takeIf { it }?.run { karma.useChrome() }

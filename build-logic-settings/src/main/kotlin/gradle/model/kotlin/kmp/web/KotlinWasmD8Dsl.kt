@@ -12,8 +12,8 @@ internal data class KotlinWasmD8Dsl(
 ) : KotlinJsSubTargetDsl {
 
     context(Project)
-    override fun applyTo(target: org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsSubTargetDsl) {
-        super.applyTo(target)
+    override fun applyTo(target: org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsSubTargetDsl, moduleName: String) {
+        super.applyTo(target, moduleName)
 
         target as KotlinWasmD8Dsl
 

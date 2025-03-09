@@ -22,7 +22,7 @@ internal interface KotlinWasmJsTargetDsl : KotlinWasmTargetDsl, KotlinJsTargetDs
 
         d8Dsl?.let { d8Dsl ->
             named.d8 {
-                d8Dsl.applyTo(this)
+                d8Dsl.applyTo(this, "$moduleName-${named.targetName}")
             }
         }
     }

@@ -12,8 +12,8 @@ internal data class Distribution(
 ) {
 
     context(Project)
-    fun applyTo(distribution: Distribution) {
-        distribution.distributionName tryAssign distributionName
+    fun applyTo(distribution: Distribution, distributionName: String) {
+        distribution.distributionName.set(this.distributionName ?: distributionName)
         distribution.outputDirectory tryAssign outputDirectory?.let(layout.projectDirectory::dir)
     }
 }

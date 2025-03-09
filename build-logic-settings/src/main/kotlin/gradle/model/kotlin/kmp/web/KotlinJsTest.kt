@@ -3,6 +3,7 @@ package gradle.model.kotlin.kmp.web
 import gradle.model.DefaultTestFilter
 import gradle.model.TestLoggingContainer
 import gradle.model.kotlin.KotlinTest
+import gradle.moduleName
 import gradle.serialization.serializer.AnySerializer
 import gradle.tryAssign
 import gradle.trySet
@@ -57,16 +58,10 @@ internal data class KotlinJsTest(
 
         useMocha?.takeIf { it }?.run { named.useMocha() }
 
-        useMochaDsl?.let { useMochaDsl ->
-            named.useMocha(useMochaDsl::applyTo)
-        }
+        useMochaDsl?.applyTo(named.useMocha())
 
         useKarma?.takeIf { it }?.run { named.useKarma() }
 
-        useKarmaDsl?.let { useKarmaDsl ->
-            named.useKarma {
-                useKarmaDsl.applyTo(this)
-            }
-        }
+        useKarmaDsl?.applyTo(named.useKarma(),"$moduleName-targetName")
     }
 }

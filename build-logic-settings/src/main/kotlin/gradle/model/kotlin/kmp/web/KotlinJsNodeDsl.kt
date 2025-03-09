@@ -17,15 +17,15 @@ internal data class KotlinJsNodeDsl(
 
     context(Project)
     @OptIn(ExperimentalDistributionDsl::class, ExperimentalMainFunctionArgumentsDsl::class)
-    fun applyTo(node: KotlinJsNodeDsl) {
+    fun applyTo(node: KotlinJsNodeDsl, distributionName: String) {
         distribution?.let { distribution ->
             node.distribution {
-                distribution.applyTo(this)
+                distribution.applyTo(this, distributionName)
             }
         }
 
         testTask?.let { testTask ->
-            node.testTask{
+            node.testTask {
                 testTask.applyTo(this)
             }
         }

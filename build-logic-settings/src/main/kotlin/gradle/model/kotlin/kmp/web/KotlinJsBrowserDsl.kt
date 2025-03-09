@@ -14,11 +14,11 @@ internal data class KotlinJsBrowserDsl(
 ) : KotlinJsSubTargetDsl {
 
     context(Project)
-    fun applyTo(browser: KotlinJsBrowserDsl, defaultModuleName: String? = null) {
-        super.applyTo(browser)
+    fun applyTo(browser: KotlinJsBrowserDsl, moduleName: String) {
+        super.applyTo(browser, moduleName)
         commonWebpackConfig?.let { commonWebpackConfig ->
             browser.commonWebpackConfig {
-                commonWebpackConfig.applyTo(this, defaultModuleName)
+                commonWebpackConfig.applyTo(this, moduleName)
             }
         }
 

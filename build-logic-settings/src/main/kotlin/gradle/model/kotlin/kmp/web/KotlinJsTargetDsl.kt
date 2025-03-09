@@ -17,20 +17,20 @@ internal interface KotlinJsTargetDsl : KotlinTarget, KotlinTargetWithNodeJsDsl,
 
     abstract override val compilations: List<KotlinJsCompilation>?
 
-     val moduleName: String?
+    val moduleName: String?
 
-     val browser: KotlinJsBrowserDsl?
+    val browser: KotlinJsBrowserDsl?
 
-     val useCommonJs: Boolean?
+    val useCommonJs: Boolean?
 
-     val useEsModules: Boolean?
+    val useEsModules: Boolean?
 
     /**
      * The function accepts [jsExpression] and puts this expression as the "args: Array<String>" argument in place of main-function call
      */
-     val passAsArgumentToMainFunction: String?
+    val passAsArgumentToMainFunction: String?
 
-     val generateTypeScriptDefinitions: Boolean?
+    val generateTypeScriptDefinitions: Boolean?
 
     context(Project)
     @OptIn(ExperimentalMainFunctionArgumentsDsl::class)
@@ -41,13 +41,13 @@ internal interface KotlinJsTargetDsl : KotlinTarget, KotlinTargetWithNodeJsDsl,
 
         super<HasConfigurableKotlinCompilerOptions>.applyTo(named)
 
-        named.moduleName = moduleName ?: project.moduleName
+        named.moduleName = moduleName ?: "${project.moduleName}-$targetName"
 
-        super<KotlinTargetWithNodeJsDsl>.applyTo(named)
+        super<KotlinTargetWithNodeJsDsl>.applyTo(named, named.moduleName!!)
 
         browser?.let { browser ->
             named.browser {
-                browser.applyTo(this, "$moduleName-${targetName}.js")
+                browser.applyTo(this, "${named.moduleName}.js")
             }
         }
 

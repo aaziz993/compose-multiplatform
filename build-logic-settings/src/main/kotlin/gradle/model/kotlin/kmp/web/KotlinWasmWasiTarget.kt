@@ -3,6 +3,7 @@ package gradle.model.kotlin.kmp.web
 import gradle.kotlin
 import gradle.model.HasBinaries
 import gradle.model.kotlin.kmp.KotlinTarget
+import gradle.moduleName
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
@@ -28,7 +29,7 @@ internal data class KotlinWasmWasiTarget(
 
         named as KotlinWasmWasiTargetDsl
 
-        super<KotlinTargetWithNodeJsDsl>.applyTo(named)
+        super<KotlinTargetWithNodeJsDsl>.applyTo(named,"$moduleName-${named.targetName}")
 
         binaries.applyTo(named.binaries)
     }
