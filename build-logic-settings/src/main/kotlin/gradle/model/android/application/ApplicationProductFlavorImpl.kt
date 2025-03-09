@@ -1,6 +1,7 @@
 package gradle.model.android.application
 
 import gradle.model.android.ApkSigningConfig
+import gradle.model.android.ApkSigningConfigImpl
 import gradle.model.android.BuildConfigField
 import gradle.model.android.ExternalNativeBuildFlags
 import gradle.model.android.JavaCompileOptions
@@ -53,7 +54,7 @@ internal data class ApplicationProductFlavorImpl(
     override val applicationIdSuffix: String? = null,
     override val versionNameSuffix: String? = null,
     override val multiDexEnabled: Boolean? = null,
-    override val signingConfig: ApkSigningConfig? = null,
+    override val signingConfig: ApkSigningConfigImpl? = null,
     override val dimension: String? = null,
     override val matchingFallbacks: List<String>? = null,
     /** Whether this product flavor should be selected in Studio by default  */

@@ -17,6 +17,7 @@ import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.tasks.SourceSet
 import org.gradle.internal.extensions.stdlib.capitalized
 import org.gradle.kotlin.dsl.dependencies
+import org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest
 
 internal class JavaPlugin : Plugin<Project> {
 
@@ -33,7 +34,6 @@ internal class JavaPlugin : Plugin<Project> {
             ) {
                 return@with
             }
-
 
             plugins.apply(JavaPlugin::class.java)
 

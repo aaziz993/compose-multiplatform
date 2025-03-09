@@ -1,6 +1,7 @@
 package gradle.model.android.application
 
 import gradle.model.android.ApkSigningConfig
+import gradle.model.android.ApkSigningConfigImpl
 import gradle.model.android.BuildConfigField
 import gradle.model.android.BuildType
 import gradle.model.android.ExternalNativeBuildFlags
@@ -61,7 +62,7 @@ internal data class ApplicationBuildType(
     override val applicationIdSuffix: String? = null,
     override val versionNameSuffix: String? = null,
     override val multiDexEnabled: Boolean? = null,
-    override val signingConfig: ApkSigningConfig? = null,
+    override val signingConfig: ApkSigningConfigImpl? = null,
     /** Whether this build type should generate a debuggable apk. */
     val isDebuggable: Boolean? = null,
     /**
