@@ -1,14 +1,16 @@
 package gradle.model
 
+import gradle.serialization.serializer.AnySerializer
 import gradle.tryAssign
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
-import org.gradle.api.tasks.compile.AbstractCompile
 
 /**
  * The base class for all JVM-based language compilation tasks.
  */
-
+@Serializable
 internal abstract class AbstractCompile : Task {
 
     /**
@@ -56,3 +58,25 @@ internal abstract class AbstractCompile : Task {
         targetCompatibility?.let(named::setTargetCompatibility)
     }
 }
+
+@Serializable
+@SerialName("AbstractCompile")
+internal data class AbstractCompileImpl(
+    override val destinationDirectory: String? = null,
+    override val classpath: List<String>? = null,
+    override val sourceCompatibility: String? = null,
+    override val targetCompatibility: String? = null,
+    override val dependsOn: List<String>? = null,
+    override val onlyIf: Boolean? = null,
+    override val doNotTrackState: String? = null,
+    override val notCompatibleWithConfigurationCache: String? = null,
+    override val didWork: Boolean? = null,
+    override val enabled: Boolean? = null,
+    override val properties: Map<String, @Serializable(with = AnySerializer::class) Any>? = null,
+    override val description: String? = null,
+    override val group: String? = null,
+    override val mustRunAfter: List<String>? = null,
+    override val finalizedBy: List<String>? = null,
+    override val shouldRunAfter: List<String>? = null,
+    override val name: String = ""
+) : AbstractCompile()

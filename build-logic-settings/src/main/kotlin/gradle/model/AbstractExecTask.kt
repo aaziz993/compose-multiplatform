@@ -1,6 +1,7 @@
 package gradle.model
 
 import gradle.serialization.serializer.AnySerializer
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
@@ -10,6 +11,7 @@ import org.gradle.api.Project
  *
  * @param <T> The concrete type of the class.
 </T> */
+@Serializable
 internal abstract class AbstractExecTask<T : AbstractExecTask<T>> : Task {
 
     /**
@@ -74,3 +76,30 @@ internal abstract class AbstractExecTask<T : AbstractExecTask<T>> : Task {
         ignoreExitValue?.let(named::setIgnoreExitValue)
     }
 }
+
+@Serializable
+@SerialName("AbstractExecTask")
+internal data class AbstractExecTaskImpl<T : AbstractExecTask<T>>(
+    override val commandLineArgs: List<@Serializable(with = AnySerializer::class) Any>? = null,
+    override val setCommandLineArgs: List<@Serializable(with = AnySerializer::class) Any>? = null,
+    override val args: List<@Serializable(with = AnySerializer::class) Any>? = null,
+    override val setArgs: List<@Serializable(with = AnySerializer::class) Any>? = null,
+    override val executable: String? = null,
+    override val workingDir: String? = null,
+    override val environment: Map<String, @Serializable(with = AnySerializer::class) Any>? = null,
+    override val setEnvironment: Map<String, @Serializable(with = AnySerializer::class) Any>? = null,
+    override val ignoreExitValue: Boolean? = null,
+    override val dependsOn: List<String>? = null,
+    override val onlyIf: Boolean? = null,
+    override val doNotTrackState: String? = null,
+    override val notCompatibleWithConfigurationCache: String? = null,
+    override val didWork: Boolean? = null,
+    override val enabled: Boolean? = null,
+    override val properties: Map<String, @Serializable(with = AnySerializer::class) Any>? = null,
+    override val description: String? = null,
+    override val group: String? = null,
+    override val mustRunAfter: List<String>? = null,
+    override val finalizedBy: List<String>? = null,
+    override val shouldRunAfter: List<String>? = null,
+    override val name: String = "",
+) : AbstractExecTask<T>()

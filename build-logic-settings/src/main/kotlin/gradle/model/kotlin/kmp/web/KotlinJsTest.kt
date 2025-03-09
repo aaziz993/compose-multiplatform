@@ -42,7 +42,7 @@ internal data class KotlinJsTest(
     val useMochaDsl: KotlinMocha? = null,
     val useKarma: Boolean? = null,
     val useKarmaDsl: KotlinKarma? = null,
-) : KotlinTest {
+) : KotlinTest() {
 
     context(Project)
     override fun applyTo(named: Named) {

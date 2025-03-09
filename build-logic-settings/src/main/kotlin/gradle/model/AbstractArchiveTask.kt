@@ -1,10 +1,12 @@
 package gradle.model
 
+import gradle.serialization.serializer.AnySerializer
 import gradle.tryAssign
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
-import org.gradle.api.tasks.bundling.AbstractArchiveTask
+import org.gradle.api.file.DuplicatesStrategy
 
 /**
  * `AbstractArchiveTask` is the base class for all archive tasks.
@@ -97,7 +99,7 @@ internal abstract class AbstractArchiveTask : AbstractCopyTask() {
     override fun applyTo(named: Named) {
         super.applyTo(named)
 
-        named as AbstractArchiveTask
+        named as org.gradle.api.tasks.bundling.AbstractArchiveTask
 
         named.archiveBaseName tryAssign archiveBaseName
         named.destinationDirectory tryAssign destinationDirectory?.let(layout.projectDirectory::dir)
@@ -109,7 +111,7 @@ internal abstract class AbstractArchiveTask : AbstractCopyTask() {
         into?.let(named::into)
 
         intoSpec?.let { intoSpec ->
-            named.into(intoSpec.destPath){
+            named.into(intoSpec.destPath) {
                 intoSpec.copySpec.applyTo(this)
             }
         }
@@ -118,3 +120,52 @@ internal abstract class AbstractArchiveTask : AbstractCopyTask() {
         reproducibleFileOrder?.let(named::setReproducibleFileOrder)
     }
 }
+
+@Serializable
+@SerialName("AbstractArchiveTask")
+internal data class AbstractArchiveTaskImpl(
+    override val archiveFileName: String? = null,
+    override val destinationDirectory: String? = null,
+    override val archiveBaseName: String? = null,
+    override val archiveAppendix: String? = null,
+    override val archiveVersion: String? = null,
+    override val archiveExtension: String? = null,
+    override val archiveClassifier: String? = null,
+    override val preserveFileTimestamps: Boolean? = null,
+    override val reproducibleFileOrder: Boolean? = null,
+    override val caseSensitive: Boolean? = null,
+    override val dependsOn: List<String>? = null,
+    override val onlyIf: Boolean? = null,
+    override val doNotTrackState: String? = null,
+    override val notCompatibleWithConfigurationCache: String? = null,
+    override val didWork: Boolean? = null,
+    override val enabled: Boolean? = null,
+    override val properties: Map<String, @Serializable(with = AnySerializer::class) Any>? = null,
+    override val description: String? = null,
+    override val group: String? = null,
+    override val mustRunAfter: List<String>? = null,
+    override val finalizedBy: List<String>? = null,
+    override val shouldRunAfter: List<String>? = null,
+    override val name: String = "",
+    override val isCaseSensitive: Boolean? = null,
+    override val includeEmptyDirs: Boolean? = null,
+    override val duplicatesStrategy: DuplicatesStrategy? = null,
+    override val filesMatching: FilesMatching? = null,
+    override val filesNotMatching: FilesMatching? = null,
+    override val filteringCharset: String? = null,
+    override val from: List<String>? = null,
+    override val fromSpec: FromSpec? = null,
+    override val into: String? = null,
+    override val intoSpec: IntoSpec? = null,
+    override val rename: Map<String, String>? = null,
+    override val renamePattern: Map<String, String>? = null,
+    override val filePermissions: Int? = null,
+    override val dirPermissions: Int? = null,
+    override val eachFile: FileCopyDetails? = null,
+    override val expand: Map<String, @Serializable(with = AnySerializer::class) Any>? = null,
+    override val expandDetails: Expand? = null,
+    override val includes: List<String>? = null,
+    override val setIncludes: List<String>? = null,
+    override val excludes: List<String>? = null,
+    override val setExcludes: List<String>? = null,
+) : AbstractArchiveTask()

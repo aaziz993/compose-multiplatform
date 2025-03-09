@@ -1,23 +1,26 @@
 package gradle.model
 
+import gradle.serialization.serializer.AnySerializer
 import gradle.tryAssign
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
-import org.gradle.api.tasks.testing.AbstractTestTask
 
-internal interface AbstractTestTask : Task {
+@Serializable
+internal abstract class AbstractTestTask : Task {
 
     /**
      * Returns the root directory property for the test results in internal binary format.
      *
      * @since 4.4
      */
-    val binaryResultsDirectory: String?
+    abstract val binaryResultsDirectory: String?
 
     /**
      * {@inheritDoc}
      */
-    val ignoreFailures: Boolean?
+    abstract val ignoreFailures: Boolean?
 
     /**
      * Allows configuring the logging of the test execution, for example log eagerly the standard output, etc.
@@ -34,7 +37,7 @@ internal interface AbstractTestTask : Task {
      * @param action configure action
      * @since 3.5
      */
-    val testLogging: TestLoggingContainer?
+    abstract val testLogging: TestLoggingContainer?
 
     /**
      * Sets the test name patterns to be included in execution.
@@ -43,17 +46,17 @@ internal interface AbstractTestTask : Task {
      *
      * For more information on supported patterns see [TestFilter]
      */
-    val testNameIncludePatterns: List<String>?
+    abstract val testNameIncludePatterns: List<String>?
 
-    val failFast: Boolean?
+    abstract val failFast: Boolean?
 
-    val filter: DefaultTestFilter?
+    abstract val filter: DefaultTestFilter?
 
     context(Project)
     override fun applyTo(named: Named) {
         super.applyTo(named)
 
-        named as AbstractTestTask
+        named as org.gradle.api.tasks.testing.AbstractTestTask
 
         named.binaryResultsDirectory tryAssign binaryResultsDirectory?.let(layout.projectDirectory::dir)
         ignoreFailures?.let(named::setIgnoreFailures)
@@ -62,3 +65,27 @@ internal interface AbstractTestTask : Task {
         filter?.applyTo(named.filter)
     }
 }
+
+@Serializable
+@SerialName("AbstractTestTask")
+internal data class AbstractTestTaskImpl(
+    override val binaryResultsDirectory: String? = null,
+    override val ignoreFailures: Boolean? = null,
+    override val testLogging: TestLoggingContainer? = null,
+    override val testNameIncludePatterns: List<String>? = null,
+    override val failFast: Boolean? = null,
+    override val filter: DefaultTestFilter? = null,
+    override val dependsOn: List<String>? = null,
+    override val onlyIf: Boolean? = null,
+    override val doNotTrackState: String? = null,
+    override val notCompatibleWithConfigurationCache: String? = null,
+    override val didWork: Boolean? = null,
+    override val enabled: Boolean? = null,
+    override val properties: Map<String, @Serializable(with = AnySerializer::class) Any>? = null,
+    override val description: String? = null,
+    override val group: String? = null,
+    override val mustRunAfter: List<String>? = null,
+    override val finalizedBy: List<String>? = null,
+    override val shouldRunAfter: List<String>? = null,
+    override val name: String = "",
+) : AbstractTestTask()

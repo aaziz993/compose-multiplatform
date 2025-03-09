@@ -12,7 +12,6 @@ import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 @Serializable
-@SerialName("kotlin2JsCompile")
 internal data class Kotlin2JsCompile(
     override val dependsOn: List<String>? = null,
     override val onlyIf: Boolean? = null,

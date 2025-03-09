@@ -19,9 +19,13 @@ kotlin:
     - nonIos: [ jvm, android, web ]
     - mobile: [ android, ios ]
     - nonMobile: [ jvm, web ]
+    - nativeNonApple: [ mingw, unix, linux, androidNative ]
+    - nativeNonAndroid: [ apple, mingw, linux ]
     - jsAndWasmJs: [ js, wasmJs ]
     - web: [ js, wasmJs, wasmWasi ]
     - nonWeb: [ jvmAndAndroid, ios ]
+    - wasm: wasmJs, wasmWasi]
+
 
   cocoapods:
     ios: { }

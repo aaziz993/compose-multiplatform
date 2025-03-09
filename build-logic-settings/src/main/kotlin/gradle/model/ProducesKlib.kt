@@ -2,7 +2,10 @@
 
 package gradle.model
 
+import gradle.serialization.serializer.AnySerializer
 import gradle.tryAssign
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
 
@@ -19,3 +22,22 @@ internal interface ProducesKlib : Task {
         named.produceUnpackagedKlib tryAssign produceUnpackagedKlib
     }
 }
+
+@Serializable
+@SerialName("ProducesKlib")
+internal data class ProducesKlibImpl(
+    override val produceUnpackagedKlib: Boolean? = null,
+    override val dependsOn: List<String>? = null,
+    override val onlyIf: Boolean? = null,
+    override val doNotTrackState: String? = null,
+    override val notCompatibleWithConfigurationCache: String? = null,
+    override val didWork: Boolean? = null,
+    override val enabled: Boolean? = null,
+    override val properties: Map<String, @Serializable(with = AnySerializer::class) Any>? = null,
+    override val description: String? = null,
+    override val group: String? = null,
+    override val mustRunAfter: List<String>? = null,
+    override val finalizedBy: List<String>? = null,
+    override val shouldRunAfter: List<String>? = null,
+    override val name: String = ""
+) : ProducesKlib
