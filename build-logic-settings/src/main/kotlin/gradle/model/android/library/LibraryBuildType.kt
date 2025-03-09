@@ -3,7 +3,6 @@ package gradle.model.android.library
 import gradle.model.android.AarMetadata
 import gradle.model.android.AndroidTest
 import gradle.model.android.ApkSigningConfigImpl
-import gradle.model.android.ApkSigningConfigTransformingSerializer
 import gradle.model.android.BuildConfigField
 import gradle.model.android.BuildType
 import gradle.model.android.ExternalNativeBuildFlags

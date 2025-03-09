@@ -3,6 +3,7 @@ package gradle.model.android.library
 import com.android.build.api.dsl.LibraryVariantDimension
 import gradle.model.android.AarMetadata
 import gradle.model.android.ApkSigningConfig
+import gradle.model.android.ApkSigningConfigImpl
 import gradle.model.android.VariantDimension
 import gradle.trySet
 import org.gradle.api.Project
@@ -34,7 +35,7 @@ internal interface LibraryVariantDimension : VariantDimension {
     val consumerProguardFiles: List<String>?
 
     /** The associated signing config or null if none are set on the variant dimension. */
-    val signingConfig: ApkSigningConfig?
+    val signingConfig: ApkSigningConfigImpl?
 
     /** Options for configuring AAR metadata. */
     val aarMetadata: AarMetadata?

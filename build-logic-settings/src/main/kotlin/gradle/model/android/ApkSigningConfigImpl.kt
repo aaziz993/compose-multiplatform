@@ -1,6 +1,5 @@
 package gradle.model.android
 
-import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
 
 @Serializable

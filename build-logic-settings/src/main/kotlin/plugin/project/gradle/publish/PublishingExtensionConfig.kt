@@ -1,5 +1,6 @@
 package plugin.project.gradle.publish
 
+import org.gradle.api.Project
 import org.gradle.api.publish.PublishingExtension
 
 //package plugin.project.gradle.publish

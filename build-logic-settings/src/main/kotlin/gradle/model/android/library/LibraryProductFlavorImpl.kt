@@ -2,6 +2,7 @@ package gradle.model.android.library
 
 import gradle.model.android.AarMetadata
 import gradle.model.android.ApkSigningConfig
+import gradle.model.android.ApkSigningConfigImpl
 import gradle.model.android.BuildConfigField
 import gradle.model.android.ExternalNativeBuildFlags
 import gradle.model.android.JavaCompileOptions
@@ -47,7 +48,7 @@ internal data class LibraryProductFlavorImpl(
     override val optimization: Optimization? = null,
     override val multiDexEnabled: Boolean? = null,
     override val consumerProguardFiles: List<String>? = null,
-    override val signingConfig: ApkSigningConfig? = null,
+    override val signingConfig: ApkSigningConfigImpl? = null,
     override val aarMetadata: AarMetadata? = null,
     override val dimension: String? = null,
     override val matchingFallbacks: List<String>? = null,
