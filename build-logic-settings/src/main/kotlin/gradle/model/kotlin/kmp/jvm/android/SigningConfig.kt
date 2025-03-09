@@ -24,11 +24,4 @@ internal interface SigningConfig {
 
     /** The store type. */
     val storeType: String?
-
-    /**
-     * Whether the config is fully configured for signing.
-     *
-     * i.e. all the required information are present.
-     */
-    val isSigningReady: Boolean?
 }

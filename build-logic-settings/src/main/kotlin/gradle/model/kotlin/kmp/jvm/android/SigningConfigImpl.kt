@@ -1,12 +1,14 @@
 package gradle.model.kotlin.kmp.jvm.android
 
 import gradle.model.Named
+import gradle.model.gradle.dokka.DokkaPublication
+import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
 @Serializable
 internal data class SigningConfigImpl(
-    override val name: String="",
+    override val name: String = "",
     override val enableV1Signing: Boolean? = null,
     override val enableV2Signing: Boolean? = null,
     override val enableV3Signing: Boolean? = null,
@@ -17,7 +19,6 @@ internal data class SigningConfigImpl(
     override val keyPassword: String? = null,
     override val storeType: String? = null,
     override val initWith: String? = null,
-    override val isSigningReady: Boolean
 ) : Named, ApkSigningConfig, InternalSigningConfig {
 
     context(Project)
@@ -26,3 +27,8 @@ internal data class SigningConfigImpl(
         super<InternalSigningConfig>.applyTo(named)
     }
 }
+
+internal object SigningConfigTransformingSerializer : KeyTransformingSerializer<SigningConfigImpl>(
+    SigningConfigImpl.serializer(),
+    "name",
+)

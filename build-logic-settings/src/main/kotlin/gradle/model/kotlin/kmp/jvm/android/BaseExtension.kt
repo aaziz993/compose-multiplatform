@@ -3,12 +3,11 @@ package gradle.model.kotlin.kmp.jvm.android
 import gradle.android
 import gradle.androidNamespace
 import gradle.libs
-import gradle.maybeNamed
 import gradle.settings
 import gradle.trySet
 import gradle.version
 import gradle.versions
-import org.gradle.api.Named
+import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
 internal interface BaseExtension {
@@ -77,7 +76,7 @@ internal interface BaseExtension {
 
     val productFlavors: List<ProductFlavorDsl>?
 
-    val signingConfigs: List<SigningConfigImpl>?
+    val signingConfigs: List<@Serializable(with = SigningConfigTransformingSerializer::class) SigningConfigImpl>?
 
     // these are indirectly implemented by extensions when they implement the new public
     // extension interfaces via delegates.
@@ -103,10 +102,10 @@ internal interface BaseExtension {
         aaptOptions?.applyTo(android.aaptOptions)
         externalNativeBuild?.applyTo(android.externalNativeBuild)
         testOptions?.applyTo(android.testOptions)
-        compileOptions?.applyTo( android.compileOptions)
-        packaging?.applyTo( android.packagingOptions)
+        compileOptions?.applyTo(android.compileOptions)
+        packaging?.applyTo(android.packagingOptions)
         adbOptions?.applyTo(android.adbOptions)
-        splits?.applyTo( android.splits)
+        splits?.applyTo(android.splits)
         android::generatePureSplits trySet generatePureSplits
         flavorDimensions?.let(android.flavorDimensionList::addAll)
         resourcePrefix?.let(android::resourcePrefix)
@@ -115,23 +114,17 @@ internal interface BaseExtension {
         libraryRequests?.map(LibraryRequest::toLibraryRequest)?.let(android.libraryRequests::addAll)
 
         buildTypes?.forEach { buildType ->
-            android.buildTypes {
-                maybeNamed(buildType.name) {
-                    buildType.applyTo(this as Named)
-                } ?: create(buildType.name) {
-                    buildType.applyTo(this as Named)
-                }
-            }
+            buildType.applyTo(android.buildTypes, android.buildTypes::create)
         }
 
         defaultConfig?.applyTo(android.defaultConfig)
 
         productFlavors?.forEach { productFlavors ->
-            productFlavors.applyTo(android.productFlavors)
+            productFlavors.applyTo(android.productFlavors, android.productFlavors::create)
         }
 
         signingConfigs?.forEach { signingConfig ->
-            signingConfig.applyTo(android.signingConfigs)
+            signingConfig.applyTo(android.signingConfigs, android.signingConfigs::create)
         }
 
         buildFeatures?.applyTo(android.buildFeatures)

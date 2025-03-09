@@ -464,6 +464,12 @@ android:
         dimension: mode
     - full:
         dimension: mode
+  signingConfigs:
+    - release:
+        storeFile: keystore.jks
+        storePassword: android
+        keyAlias: android
+        keyPassword: android
   packagingOptions:
     resources:
       excludes: /META-INF/{AL2.0,LGPL2.1

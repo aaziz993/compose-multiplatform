@@ -13,6 +13,7 @@ import gradle.model.kotlin.kmp.jvm.android.Packaging
 import gradle.model.kotlin.kmp.jvm.android.Prefab
 import gradle.model.kotlin.kmp.jvm.android.PrivacySandbox
 import gradle.model.kotlin.kmp.jvm.android.SigningConfigImpl
+import gradle.model.kotlin.kmp.jvm.android.SigningConfigTransformingSerializer
 import gradle.model.kotlin.kmp.jvm.android.Splits
 import gradle.model.kotlin.kmp.jvm.android.TestCoverage
 import gradle.model.kotlin.kmp.jvm.android.TestFixtures
@@ -70,7 +71,7 @@ internal data class LibraryExtension(
     override val ndkVersion: String? = null,
     override val ndkPath: String? = null,
     override val libraryRequests: List<LibraryRequest>? = null,
-    override val signingConfigs: List<SigningConfigImpl>? = null,
+    override val signingConfigs: List<@Serializable(with = SigningConfigTransformingSerializer::class) SigningConfigImpl>? = null,
     override val namespace: String? = null,
     override val testBuildType: String? = null,
     override val testNamespace: String? = null,

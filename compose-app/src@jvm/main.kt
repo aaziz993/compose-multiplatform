@@ -3,7 +3,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
-import io.github.aaziz993.compose_app.generated.resources.LinuxIcon
 import io.github.aaziz993.compose_app.generated.resources.Res
 import io.github.aaziz993.compose_app.generated.resources.app_name
 import org.jetbrains.compose.resources.getString
@@ -22,7 +21,7 @@ public suspend fun main() {
             windowState,
             title = title,
             icon = if (isDevelopmentMode())
-                painterResource(Res.drawable.LinuxIcon)
+                painterResource(Res.drawable.c)
             else null,
         ) {
             App()

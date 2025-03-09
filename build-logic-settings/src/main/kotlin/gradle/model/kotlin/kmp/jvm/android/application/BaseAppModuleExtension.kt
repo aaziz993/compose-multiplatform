@@ -14,6 +14,7 @@ import gradle.model.kotlin.kmp.jvm.android.Lint
 import gradle.model.kotlin.kmp.jvm.android.Packaging
 import gradle.model.kotlin.kmp.jvm.android.PrivacySandbox
 import gradle.model.kotlin.kmp.jvm.android.SigningConfigImpl
+import gradle.model.kotlin.kmp.jvm.android.SigningConfigTransformingSerializer
 import gradle.model.kotlin.kmp.jvm.android.Splits
 import gradle.model.kotlin.kmp.jvm.android.TestCoverage
 import gradle.model.kotlin.kmp.jvm.android.TestFixtures
@@ -49,7 +50,7 @@ internal data class BaseAppModuleExtension(
     override val buildTypes: List<@Serializable(with = ApplicationBuildTypeTransformingSerializer::class) ApplicationBuildType>? = null,
     override val defaultConfig: ApplicationDefaultConfigImpl? = null,
     override val productFlavors: List<@Serializable(with = ApplicationProductFlavorTransformingSerializer::class) ApplicationProductFlavorImpl>? = null,
-    override val signingConfigs: List<SigningConfigImpl>? = null,
+    override val signingConfigs: List<@Serializable(with = SigningConfigTransformingSerializer::class) SigningConfigImpl>? = null,
     override val buildFeatures: ApplicationBuildFeatures? = null,
     override val namespace: String? = null,
     override val testBuildType: String? = null,

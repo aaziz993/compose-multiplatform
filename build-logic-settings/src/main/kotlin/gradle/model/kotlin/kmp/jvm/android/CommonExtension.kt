@@ -192,7 +192,7 @@ internal interface CommonExtension<
      *
      * @see [ApkSigningConfig]
      */
-    val signingConfigs: List<SigningConfigImpl>?
+    val signingConfigs: List<@Serializable(with = SigningConfigTransformingSerializer::class) SigningConfigImpl>?
 
     /**
      * Specifies options for external native build using [CMake](https://cmake.org/) or
@@ -508,7 +508,7 @@ internal interface CommonExtension<
         buildFeatures?.applyTo(extension.buildFeatures)
 
         buildTypes?.forEach { buildType ->
-            buildType.applyTo(extension.buildTypes)
+            buildType.applyTo(extension.buildTypes, extension.buildTypes::create)
         }
 
         dataBinding?.applyTo(extension.dataBinding)
@@ -519,20 +519,18 @@ internal interface CommonExtension<
         packaging?.applyTo(extension.packaging)
 
         productFlavors?.forEach { productFlavors ->
-            productFlavors.applyTo(extension.productFlavors)
+            productFlavors.applyTo(extension.productFlavors, extension.productFlavors::create)
         }
 
         defaultConfig?.applyTo(extension.defaultConfig)
 
         signingConfigs?.forEach { signingConfigs ->
-            signingConfigs.applyTo(extension.signingConfigs)
+            signingConfigs.applyTo(extension.signingConfigs, extension.signingConfigs::create)
         }
 
         testOptions?.applyTo(extension.testOptions)
         splits?.applyTo(extension.splits)
-
         composeOptions?.applyTo(extension.composeOptions)
-
         flavorDimensions?.let(extension.flavorDimensions::addAll)
         extension::resourcePrefix trySet resourcePrefix
         extension::ndkVersion trySet ndkVersion
