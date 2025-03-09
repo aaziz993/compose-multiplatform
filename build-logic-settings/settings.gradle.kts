@@ -38,39 +38,30 @@ plugins {
     id("org.danilopianini.gradle-pre-commit-git-hooks") version "2.0.4"
 }
 
-//val YAML = Yaml(
-//    Constructor(
-//        ProjectProperties::class.java, LoaderOptions(),
-//    ),
-//    Representer(DumperOptions()).apply {
-//        propertyUtils.isSkipMissingProperties = true
-//    },
-//    DumperOptions(),
-//)
-
-//val projectProperties: ProjectProperties = YAML.load(file("project.yaml").readText())
-
-val gradleProperties: Properties = Properties().apply {
-    val file = file("../gradle.properties")
-    if (file.exists()) {
-        load(file.reader())
-    }
-}
-
 val localProperties: Properties = Properties().apply {
-    val file = file("../local.properties")
+    val file = file("local.properties")
     if (file.exists()) {
         load(file.reader())
     }
 }
 
-val isCI = System.getenv("CI") != null
+val CI_DETECT_PROPERTIES = listOf(
+    "CI",
+    "GITHUB_ACTION",
+    "JB_SPACE_EXECUTION_NUMBER",
+    "TEAMCITY_VERSION",
+)
+
+val isCI = CI_DETECT_PROPERTIES.any(System.getenv()::contains)
+
+gradle.extra["isCI"] = isCI
+
 
 develocity {
     val startParameter = gradle.startParameter
     val scanJournal = File(settingsDir, "scan-journal.log")
 
-    server = gradleProperties.getProperty("develocity.server")
+    server = "https://ge.solutions-team.gradle.com"
 
     buildScan {
         uploadInBackground = !isCI
@@ -88,9 +79,7 @@ develocity {
             scanJournal.appendText("${Date()} — $buildScanUri — $startParameter\n")
         }
 
-        val skipBuildScans = gradleProperties.getProperty("develocity.skip-build-scans").toBoolean()
-
-        publishing.onlyIf { it.isAuthenticated && !skipBuildScans }
+        publishing.onlyIf { it.isAuthenticated }
     }
 }
 
@@ -98,12 +87,12 @@ buildCache {
 
     if (isCI) {
         local {
-            isEnabled = gradleProperties.getProperty("develocity.build.cache.local.enable").toBoolean()
+            isEnabled = true
         }
     }
 
     remote(develocity.buildCache) {
-        isEnabled = gradleProperties.getProperty("develocity.build.cache.remote.enable").toBoolean()
+        isEnabled = true
         // Check access key presence to avoid build cache errors on PR builds when access key is not present
         val accessKey = System.getenv().getOrElse("GRADLE_ENTERPRISE_ACCESS_KEY") {
             localProperties.getProperty("gradle.enterprise.access-key")

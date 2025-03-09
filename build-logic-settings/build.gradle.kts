@@ -1,13 +1,11 @@
 import io.github.z4kn4fein.semver.Version
 import java.util.*
 import kotlinx.validation.ExperimentalBCVApi
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.gradle.api.services.internal.RegisteredBuildServiceProvider
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.yaml.snakeyaml.DumperOptions
-import org.yaml.snakeyaml.LoaderOptions
-import org.yaml.snakeyaml.Yaml
-import org.yaml.snakeyaml.constructor.Constructor
-import org.yaml.snakeyaml.representer.Representer
+import org.gradle.kotlin.dsl.assign
+
+val isCI: Boolean by gradle.extra
 
 plugins {
     // Print suggestions for your build as you run regular tasks
@@ -30,30 +28,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
 }
 
-data class ProjectProperties(
-    val group: String? = null,
-)
-
-val YAML: Yaml = Yaml(
-    Constructor(
-        ProjectProperties::class.java, LoaderOptions(),
-    ),
-    Representer(DumperOptions()).apply {
-        propertyUtils.isSkipMissingProperties = true
-    },
-    DumperOptions(),
-)
-
-//val projectProperties: ProjectProperties = YAML.load(file("project.yaml").readText())
-
-val gradleProperties: Properties = Properties().apply {
-    val file = file("../gradle.properties")
-    if (file.exists()) {
-        load(file.reader())
-    }
-}
-
-group = gradleProperties["project.group"]!!.toString()
+group = "io.github.aaziz993"
 
 version = Version(
     libs.versions.buildLigicSettings.version.major.get().toInt(),
@@ -61,27 +36,18 @@ version = Version(
     libs.versions.buildLigicSettings.version.patch.get().toInt(),
     libs.versions.buildLigicSettings.version.preRelase.get(),
     "${
-        gradleProperties["github.actions.versioning.ref.name"]!!.toString().toBoolean().takeIf { it }?.let {
-            // The GITHUB_REF_NAME provide the reference name.
-            System.getenv()["GITHUB_REF_NAME"]?.let { "-$it" }
-        }.orEmpty()
+        // The GITHUB_REF_NAME provide the reference name.
+        System.getenv()["GITHUB_REF_NAME"]?.let { "-$it" }.orEmpty()
     }${
-        gradleProperties["github.actions.versioning.run.number"]!!.toString().toBoolean().takeIf { it }?.let {
-            // The GITHUB_RUN_NUMBER A unique number for each run of a particular workflow in a repository.
-            // This number begins at 1 for the workflow's first run, and increments with each new run.
-            // This number does not change if you re-run the workflow run.
-            System.getenv()["GITHUB_RUN_NUMBER"]?.let { "-$it" }
-        }.orEmpty()
+        // The GITHUB_RUN_NUMBER A unique number for each run of a particular workflow in a repository.
+        // This number begins at 1 for the workflow's first run, and increments with each new run.
+        // This number does not change if you re-run the workflow run.
+        System.getenv()["GITHUB_RUN_NUMBER"]?.let { "-$it" }.orEmpty()
     }${
-        gradleProperties["jetbrains.space.automation.versioning.ref.name"]!!.toString().toBoolean().takeIf { it }?.let {
-            // The JB_SPACE_GIT_BRANCH provide the reference  as "refs/heads/repository_name".
-            System.getenv()["JB_SPACE_GIT_BRANCH"]?.let { "-$it" }
-        }.orEmpty()
+        // The JB_SPACE_GIT_BRANCH provide the reference  as "refs/heads/repository_name".
+        System.getenv()["JB_SPACE_GIT_BRANCH"]?.let { "-$it" }.orEmpty()
     }${
-        gradleProperties["jetbrains.space.automation.versioning.run.number"]!!.toString().toBoolean().takeIf { it }
-            ?.let {
-                System.getenv()["JB_SPACE_EXECUTION_NUMBER"]?.let { "-$it" }
-            }.orEmpty()
+        System.getenv()["JB_SPACE_EXECUTION_NUMBER"]?.let { "-$it" }.orEmpty()
     }",
 )
 
@@ -99,78 +65,65 @@ kotlin {
 
     compilerOptions {
         freeCompilerArgs.addAll(
-                "-Xignore-const-optimization-errors",
-                "-Xcontext-parameters",
+            "-Xignore-const-optimization-errors",
+            "-Xcontext-parameters",
         )
         optIn.addAll(
             listOf(
                 "org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi",
                 "org.jetbrains.kotlin.gradle.ExperimentalWasmDsl",
-            ) +
-                gradleProperties["kotlin.opt-ins"]?.toString()?.split(",")?.map(String::trim).orEmpty(),
+                "kotlinx.serialization.InternalSerializationApi",
+            ),
         )
     }
 
 }
 
 doctor {
-    enableTestCaching = gradleProperties["doctor.enable-test-caching"]!!.toString().toBoolean()
+    enableTestCaching = true
 
     // Disable JAVA_HOME validation as we use "Daemon JVM discovery" feature
     // https://docs.gradle.org/current/userguide/gradle_daemon.html#sec:daemon_jvm_criteria
     javaHome {
-        ensureJavaHomeIsSet = gradleProperties["doctor.java-home.ensure-java-home-is-set"]!!.toString().toBoolean()
-        ensureJavaHomeMatches = gradleProperties["doctor.java-home.ensure-java-home-matches"]!!.toString().toBoolean()
+        ensureJavaHomeIsSet = false
+        ensureJavaHomeMatches = false
     }
+
+    // Always monitor tasks on CI, but disable it locally by default with providing an option to opt-in.
+    // See 'doctor.enableTaskMonitoring' in gradle.properties for details.
+    val enableTasksMonitoring = isCI
+
+    if (!isCI) {
+        logger.info("Gradle Doctor task monitoring is disabled.")
+        gradle.sharedServices.unregister("listener-service")
+    }
+}
+
+fun BuildServiceRegistry.unregister(name: String) {
+    val registration = registrations.getByName(name)
+    registrations.remove(registration)
+    (registration.service as RegisteredBuildServiceProvider<*, *>).maybeStop()
 }
 
 apiValidation {
     /**
-     * Packages that are excluded from public API dumps even if they
-     * contain public API.
-     */
-    ignoredPackages.addAll(
-        gradleProperties.getProperty("api.validation.ignore.packages")
-            .ifBlank { null }?.split(",").orEmpty().map(String::trim),
-    )
-
-    /**
-     * Classes (fully qualified) that are excluded from public API dumps even if they
-     * contain public API.
-     */
-    ignoredClasses.addAll(
-        gradleProperties.getProperty("api.validation.ignore.classes")
-            .ifBlank { null }?.split(",").orEmpty().map(String::trim),
-    )
-
-    /**
-     * Set of annotations that exclude API from being public.
-     * Typically, it is all kinds of `@InternalApi` annotations that mark
-     * effectively private API that cannot be actually private for technical reasons.
-     */
-    nonPublicMarkers.addAll(
-        gradleProperties.getProperty("api.validation.non-public-markers")
-            .ifBlank { null }?.split(",").orEmpty().map(String::trim),
-    )
-
-    /**
      * Flag to programmatically disable compatibility validator
      */
-    validationDisabled = gradleProperties.getProperty("api.validation.enable").toBoolean()
+    validationDisabled = false
 
     /**
      * A path to a subdirectory inside the project root directory where dumps should be stored.
      */
-    apiDumpDirectory = gradleProperties.getProperty("api.validation.api-dump-directory")
+    apiDumpDirectory = "api-validation"
 
     /**
      * The KLib validation support is experimental and is a subject to change (applies to both an API and the ABI dump format). A project has to use Kotlin 1.9.20 or newer to use this feature.
      */
     @OptIn(ExperimentalBCVApi::class)
     klib {
-        enabled = gradleProperties.getProperty("api.validation.klib.enable").toBoolean()
+        enabled = true
         // treat a target being unsupported on a host as an error
-        strictValidation = gradleProperties.getProperty("api.validation.klib.strict-validation").toBoolean()
+        strictValidation = true
     }
 }
 
@@ -188,7 +141,6 @@ dokka {
     moduleName = "Build logic convention plugins"
 
     dokkaSourceSets.main {
-
         // contains descriptions for the module and the packages
         includes.from("README.md")
 
@@ -196,7 +148,7 @@ dokka {
         // to easily find source code for inspected declarations
         sourceLink {
             localDirectory = file("src/main/kotlin")
-            remoteUrl("https://github.com/aaziz993/cmp/tree/main/build-logic")
+            remoteUrl("https://github.com/aaziz993/compose-multiplatform/tree/main/build-logic-settings")
             remoteLineSuffix = "#L"
         }
     }
@@ -317,7 +269,6 @@ dependencies {
 
     // Web
     runtimeOnly(libs.kotlinx.html)
-//    runtimeOnly(libs.kotlinx.browser)
     runtimeOnly(libs.plugins.js.plain.objects.toDep())
     runtimeOnly(libs.plugins.js.plain.objects.toDep())
     implementation(libs.plugins.seskar.toDep())
@@ -349,13 +300,10 @@ tasks.withType<KotlinCompile>().configureEach {
     compilerOptions {
         freeCompilerArgs.addAll(
             "-Xcontext-receivers",
-//            "-Xwhen-guards",
         )
         optIn.addAll(
             "org.jetbrains.dokka.gradle.internal.InternalDokkaGradlePluginApi",
         )
-//        languageVersion = KotlinVersion.KOTLIN_2_2
-        jvmTarget.set(JvmTarget.JVM_21)
     }
 }
 

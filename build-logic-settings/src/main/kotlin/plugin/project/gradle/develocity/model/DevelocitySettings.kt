@@ -25,8 +25,8 @@ internal data class DevelocitySettings(
     override val allowUntrustedServer: Boolean? = null,
     override val accessKey: String? = null,
     override val enabled: Boolean = true,
-    val localCache: DirectoryBuildCache = DirectoryBuildCache(),
-    val remoteCache: RemoteBuildCache = RemoteBuildCache(),
+    val localCache: DirectoryBuildCache? = null,
+    val remoteCache: RemoteBuildCache? = null,
     val git: Git? = null,
 ) : DevelocityConfiguration, EnabledSettings {
 
@@ -36,24 +36,23 @@ internal data class DevelocitySettings(
             super.applyTo()
 
 
-            if (isCI) {
-                buildCache {
-                    localCache.let { localCache ->
-                        local {
-                            localCache.applyTo(this)
-                        }
+
+            buildCache {
+                localCache?.takeIf { isCI }?.let { localCache ->
+                    local {
+                        localCache.applyTo(this)
                     }
-                    remoteCache.let { remoteCache ->
-                        remote(develocity.buildCache) {
-                            remoteCache.applyTo(this)
+                }
+                remoteCache?.let { remoteCache ->
+                    remote(develocity.buildCache) {
+                        remoteCache.applyTo(this)
 
-                            // Check access key presence to avoid build cache errors on PR builds when access key is not present
-                            val accessKey = System.getenv().getOrElse("GRADLE_ENTERPRISE_ACCESS_KEY") {
-                                projectProperties.gradleEnterpriseAccessKey
-                            }
-
-                            isPush = remoteCache.isPush == true && accessKey != null
+                        // Check access key presence to avoid build cache errors on PR builds when access key is not present
+                        val accessKey = System.getenv().getOrElse("GRADLE_ENTERPRISE_ACCESS_KEY") {
+                            projectProperties.gradleEnterpriseAccessKey
                         }
+
+                        isPush = isPush && isCI && accessKey != null
                     }
                 }
             }

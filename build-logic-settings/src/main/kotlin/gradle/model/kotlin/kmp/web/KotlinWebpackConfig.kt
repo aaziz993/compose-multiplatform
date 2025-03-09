@@ -121,7 +121,7 @@ internal data class KotlinWebpackConfig(
         private object OverlaySerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
 
             override fun selectDeserializer(element: JsonElement) = when {
-                element is JsonObject -> Client.Overlay.serializer()
+                element is JsonObject -> Overlay.serializer()
                 else -> Boolean::class.serializer()
             }
         }
