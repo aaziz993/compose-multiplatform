@@ -3,6 +3,7 @@ package gradle.model.kotlin.kmp.jvm.android.library
 import gradle.model.kotlin.kmp.jvm.android.AarMetadata
 import gradle.model.kotlin.kmp.jvm.android.AndroidTest
 import gradle.model.kotlin.kmp.jvm.android.ApkSigningConfigImpl
+import gradle.model.kotlin.kmp.jvm.android.ApkSigningConfigTransformingSerializer
 import gradle.model.kotlin.kmp.jvm.android.BuildConfigField
 import gradle.model.kotlin.kmp.jvm.android.BuildType
 import gradle.model.kotlin.kmp.jvm.android.ExternalNativeBuildFlags
@@ -46,7 +47,7 @@ internal data class LibraryBuildType(
     override val matchingFallbacks: List<String>? = null,
     override val javaCompileOptions: JavaCompileOptions? = null,
     override val shaders: Shaders? = null,
-    override val signingConfig: ApkSigningConfigImpl? = null,
+    override val signingConfig: @Serializable(with = ApkSigningConfigTransformingSerializer::class) ApkSigningConfigImpl? = null,
     override val proguardFiles: List<String>? = null,
     override val testProguardFiles: List<String>? = null,
     override val consumerProguardFiles: List<String>? = null,

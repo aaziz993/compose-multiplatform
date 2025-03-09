@@ -432,6 +432,7 @@ android:
         debuggable: false
         # application part
         isShrinkResources: true
+        signingConfig: signingConfigs.getByName("release")
     - debug:
         isMinifyEnabled: false
         debuggable: true

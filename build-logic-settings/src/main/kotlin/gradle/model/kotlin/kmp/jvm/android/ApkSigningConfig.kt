@@ -52,7 +52,7 @@ internal interface ApkSigningConfig : SigningConfigDsl, Named {
 
     context(Project)
     fun toApkSigningConfig(): ApkSigningConfig =
-        android.signingConfigs.create(name) {
+        android.signingConfigs.maybeCreate(name).apply {
             applyTo(this as org.gradle.api.Named)
         }
 }
