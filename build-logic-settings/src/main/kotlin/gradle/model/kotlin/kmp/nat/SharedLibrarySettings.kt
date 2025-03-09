@@ -15,5 +15,6 @@ internal data class SharedLibrarySettings(
     override val freeCompilerArgs: List<String>? = null,
     override val outputDirectory: String? = null,
     override val outputDirectoryProperty: String? = null,
-    val buildTypes: List<NativeBuildType>? = null,
+    val namePrefix: String = "",
+    val buildTypes: Set<NativeBuildType> = NativeBuildType.DEFAULT_BUILD_TYPES,
 ) : SharedLibrary()

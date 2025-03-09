@@ -16,5 +16,6 @@ internal data class FrameworkSettings(
     override val outputDirectory: String? = null,
     override val outputDirectoryProperty: String? = null,
     override val isStatic: Boolean? = null,
-    val buildTypes: List<NativeBuildType>? = null,
+    val namePrefix: String = "",
+    val buildTypes: Set<NativeBuildType> = NativeBuildType.DEFAULT_BUILD_TYPES,
 ) : Framework()

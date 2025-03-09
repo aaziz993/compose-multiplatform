@@ -353,7 +353,7 @@ kotlin:
             linkerOpts:
               - -lsqlite3
           test:
-            buildTypes: RELEASE
+            - buildTypes: RELEASE
     - nativeWithTests:
         testRuns:
           - releaseTest:
