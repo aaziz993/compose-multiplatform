@@ -2,7 +2,10 @@ package gradle.model.kotlin.kmp.jvm.android
 
 import com.android.build.api.dsl.SigningConfig
 import gradle.android
+import gradle.projectProperties
+import gradle.resolveSensitive
 import gradle.trySet
+import net.pearx.kasechange.toDotCase
 import org.gradle.api.Project
 
 /**
@@ -54,12 +57,12 @@ internal interface SigningConfigDsl {
     val initWith: String?
 
     context(Project)
-     fun applyTo(signingConfig: SigningConfig) {
+    fun applyTo(signingConfig: SigningConfig) {
         signingConfig::storeFile trySet storeFile?.let(::file)
-        signingConfig::storePassword trySet storePassword
-        signingConfig::keyAlias trySet keyAlias
-        signingConfig::keyPassword trySet keyPassword
-        signingConfig::storeType trySet storeType
+        signingConfig::storePassword trySet storePassword?.resolveSensitive()
+        signingConfig::keyAlias trySet keyAlias?.resolveSensitive()
+        signingConfig::keyPassword trySet keyPassword?.resolveSensitive()
+        signingConfig::storeType trySet storeType?.resolveSensitive()
         initWith?.let(android.signingConfigs::getByName)?.let(signingConfig::initWith)
     }
 }

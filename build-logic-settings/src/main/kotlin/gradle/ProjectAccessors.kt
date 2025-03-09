@@ -15,6 +15,8 @@ import kotlinx.atomicfu.plugin.gradle.AtomicFUPluginExtension
 import kotlinx.kover.gradle.plugin.dsl.KoverProjectExtension
 import kotlinx.rpc.RpcExtension
 import kotlinx.validation.ApiValidationExtension
+import net.pearx.kasechange.toDotCase
+import net.pearx.kasechange.toScreamingSnakeCase
 import org.gradle.api.Project
 import org.gradle.api.file.Directory
 import org.gradle.api.initialization.Settings
@@ -53,6 +55,17 @@ internal var Project.projectProperties: ProjectProperties
     set(value) {
         extraProperties[PROJECT_PROPERTIES_EXT] = value
     }
+
+context(Project)
+internal fun String.resolveSensitive() = when {
+    startsWith("\$env.") -> System.getenv(removePrefix("\$env.").toScreamingSnakeCase())
+    startsWith("\$local.") -> projectProperties.localProperties.getProperty("\$local.".toDotCase())
+    startsWith("\$envOrLocal.") -> System.getenv().getOrElse(removePrefix("\$envOrLocal.".toScreamingSnakeCase())) {
+        projectProperties.localProperties.getProperty("\$local.".toDotCase())
+    }
+
+    else -> this
+}
 
 internal val Project.settings: Settings
     get() = (gradle as GradleInternal).settings

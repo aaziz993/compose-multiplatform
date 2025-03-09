@@ -432,7 +432,7 @@ android:
         debuggable: false
         # application part
         isShrinkResources: true
-        signingConfig: signingConfigs.getByName("release")
+        signingConfig: release
     - debug:
         isMinifyEnabled: false
         debuggable: true
@@ -467,10 +467,12 @@ android:
         dimension: mode
   signingConfigs:
     - release:
-        storeFile: keystore.jks
-        storePassword: android
-        keyAlias: android
-        keyPassword: android
+        storeFile: resources@android/release.keystore
+        storePassword: $envOrLocal.android.release.signing.store.password
+        storeType: $envOrLocal.android.release.signing.store.type
+        keyAlias: $envOrLocal.android.release.signing.key.alias
+        keyPassword: $envOrLocal.android.release.signing.key.password
+        v2SigningEnabled: true
   packagingOptions:
     resources:
       excludes: /META-INF/{AL2.0,LGPL2.1

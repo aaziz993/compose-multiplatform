@@ -30,9 +30,11 @@ import gradle.trySetSystemProperty
 import gradle.version
 import gradle.versions
 import java.net.URI
+import java.util.Properties
 import javax.xml.stream.XMLEventFactory
 import javax.xml.stream.XMLInputFactory
 import javax.xml.stream.XMLOutputFactory
+import kotlin.io.reader
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import kotlinx.serialization.json.Json
@@ -115,7 +117,11 @@ internal data class ProjectProperties(
     val karakum: KarakumSettings = KarakumSettings(),
     val compose: CMPSettings = CMPSettings(),
     val tasks: List<@Serializable(with = TaskTransformingSerializer::class) Task>? = null,
+    private val localPropertiesFile: String = "../local.properties",
 ) : HasKotlinDependencies {
+
+    @Transient
+    val localProperties = Properties()
 
     context(Settings)
     @Suppress("UnstableApiUsage")
@@ -356,21 +362,30 @@ internal data class ProjectProperties(
         private fun Directory.load(): ProjectProperties {
             val propertiesFile = file(PROJECT_PROPERTIES_FILE).asFile
 
-            if (!propertiesFile.exists()) {
-                return ProjectProperties()
+            return if (propertiesFile.exists()) {
+
+                val properties = yaml.load<MutableMap<String, *>>(propertiesFile.readText())
+
+                val templatedProperties = (properties["templates"] as List<String>?)?.fold(emptyMap<String, Any?>()) { acc, template ->
+                    acc deepMerge yaml.load<MutableMap<String, *>>(file(template).asFile.readText())
+                }.orEmpty() deepMerge properties
+
+                json.decodeFromAny<ProjectProperties>(templatedProperties.resolve()).apply {
+                    if (type == ProjectType.APP)
+                        android = templatedProperties["android"]?.let { json.decodeFromAny<BaseAppModuleExtension>(it) }
+                    else
+                        android = templatedProperties["android"]?.let { json.decodeFromAny<LibraryExtension>(it) }
+                }
             }
-
-            val properties = yaml.load<MutableMap<String, *>>(propertiesFile.readText())
-
-            val templatedProperties = (properties["templates"] as List<String>?)?.fold(emptyMap<String, Any?>()) { acc, template ->
-                acc deepMerge yaml.load<MutableMap<String, *>>(file(template).asFile.readText())
-            }.orEmpty() deepMerge properties
-
-            return json.decodeFromAny<ProjectProperties>(templatedProperties.resolve()).apply {
-                if (type == ProjectType.APP)
-                    android = templatedProperties["android"]?.let { json.decodeFromAny<BaseAppModuleExtension>(it) }
-                else
-                    android = templatedProperties["android"]?.let { json.decodeFromAny<LibraryExtension>(it) }
+            else {
+                ProjectProperties()
+            }.apply {
+                localProperties.apply {
+                    val file = file(localPropertiesFile).asFile
+                    if (file.exists()) {
+                        load(file.reader())
+                    }
+                }
             }
         }
     }
