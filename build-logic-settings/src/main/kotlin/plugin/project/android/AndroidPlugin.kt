@@ -61,7 +61,7 @@ internal class AndroidPlugin : Plugin<Project> {
                 }
             }
 
-//            adjustAndroidSourceSets()
+            adjustAndroidSourceSets()
             applyGoogleServicesPlugin()
         }
     }

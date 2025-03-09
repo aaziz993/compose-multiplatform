@@ -8,5 +8,5 @@ public fun ViewController(): UIViewController = ComposeUIViewController({
     // Use newly added ComposeUIViewControllerConfiguration.enforceStrictPlistSanityCheck to opt-out of this behavior
     enforceStrictPlistSanityCheck = false
 }) {
-    Screen()
+    App()
 }

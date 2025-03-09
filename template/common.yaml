@@ -380,6 +380,7 @@ kotlin:
   sourceSets:
     - commonMain:
         dependencies:
+          - $libs.atomicfu
           - $libs.kotlinx.serialization.json
           - $libs.kotlinx.serialization.properties
 

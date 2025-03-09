@@ -1,7 +1,10 @@
 package plugin
 
+import gradle.libs
 import gradle.model.project.ProjectProperties
 import gradle.problemreporter.SLF4JProblemReporterContext
+import gradle.version
+import gradle.versions
 import kotlinx.serialization.json.Json
 import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings

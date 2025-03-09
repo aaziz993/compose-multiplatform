@@ -29,7 +29,7 @@ public suspend fun main() {
         ) {
             Column {
                 Image(painterResource(Res.drawable.LinuxIcon), null)
-                Screen()
+                App()
             }
         }
     }
