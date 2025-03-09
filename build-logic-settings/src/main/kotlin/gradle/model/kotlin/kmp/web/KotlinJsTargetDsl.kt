@@ -5,6 +5,7 @@ import gradle.model.HasBinaries
 import gradle.model.kotlin.HasConfigurableKotlinCompilerOptions
 import gradle.model.kotlin.kmp.KotlinTarget
 import gradle.moduleName
+import gradle.trySet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
@@ -41,13 +42,16 @@ internal interface KotlinJsTargetDsl : KotlinTarget, KotlinTargetWithNodeJsDsl,
 
         super<HasConfigurableKotlinCompilerOptions>.applyTo(named)
 
-        named.moduleName = moduleName ?: "${project.moduleName}-$targetName"
+        named::moduleName trySet (moduleName
+            ?: targetName
+                .takeIf(String::isNotEmpty)
+                ?.let { targetName -> "${project.moduleName}-$targetName" })
 
         super<KotlinTargetWithNodeJsDsl>.applyTo(named, named.moduleName!!)
 
         browser?.let { browser ->
             named.browser {
-                browser.applyTo(this, "${named.moduleName}.js")
+                browser.applyTo(this, named.moduleName!!)
             }
         }
 

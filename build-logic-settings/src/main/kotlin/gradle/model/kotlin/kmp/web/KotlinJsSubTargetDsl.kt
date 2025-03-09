@@ -12,16 +12,16 @@ internal interface KotlinJsSubTargetDsl {
 
     context(Project)
     @OptIn(ExperimentalDistributionDsl::class)
-    fun applyTo(target: KotlinJsSubTargetDsl, moduleName: String) {
+    fun applyTo(target: KotlinJsSubTargetDsl, distributionName: String) {
         distribution?.let { distribution ->
             target.distribution {
-                distribution.applyTo(this, moduleName)
+                distribution.applyTo(this, distributionName)
             }
         }
 
         testTask?.let { testTask ->
             target.testTask {
-                testTask.applyTo(this, )
+                testTask.applyTo(this)
             }
         }
     }
