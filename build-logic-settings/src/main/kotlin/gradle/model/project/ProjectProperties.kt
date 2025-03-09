@@ -268,6 +268,10 @@ internal data class ProjectProperties(
         project.plugins.apply(WasmWasiPlugin::class.java)
         project.plugins.apply(CMPPlugin::class.java)
 
+        projectProperties.nodeJsEnv.applyTo()
+        projectProperties.yarn.applyTo()
+        projectProperties.npm.applyTo()
+
         dependencies?.forEach { dependency ->
             dependencies {
                 dependency.applyTo(this)
