@@ -5,6 +5,8 @@ import gradle.model.kotlin.kmp.jvm.KotlinJvmAndAndroidTarget
 import gradle.model.kotlin.kmp.jvm.KotlinJvmAndroidCompilation
 import gradle.model.kotlin.kmp.jvm.KotlinJvmAndroidCompilationTransformingSerializer
 import gradle.model.kotlin.kmp.jvm.KotlinJvmCompilerOptions
+import gradle.model.project.ProjectType
+import gradle.projectProperties
 import gradle.trySet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -47,12 +49,14 @@ internal data class KotlinAndroidTarget(
 
         named as KotlinAndroidTarget
 
-        publishLibraryVariants?.let { publishLibraryVariants ->
-            named.publishLibraryVariants = publishLibraryVariants
-        }
+        if (projectProperties.type == ProjectType.LIB) {
+            publishLibraryVariants?.let { publishLibraryVariants ->
+                named.publishLibraryVariants = publishLibraryVariants
+            }
 
-        publishAllLibraryVariants?.takeIf { it }?.run { named.publishAllLibraryVariants() }
-        named::publishLibraryVariantsGroupedByFlavor trySet publishLibraryVariantsGroupedByFlavor
+            publishAllLibraryVariants?.takeIf { it }?.run { named.publishAllLibraryVariants() }
+            named::publishLibraryVariantsGroupedByFlavor trySet publishLibraryVariantsGroupedByFlavor
+        }
     }
 
     context(Project)
