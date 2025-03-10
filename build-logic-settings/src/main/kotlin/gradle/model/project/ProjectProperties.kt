@@ -57,6 +57,7 @@ import plugin.project.apple.ApplePlugin
 import plugin.project.apple.model.AppleSettings
 import plugin.project.cmp.CMPPlugin
 import plugin.project.cmp.model.CMPSettings
+import plugin.project.gradle.animalsniffer.AnimalSnifferPlugin
 import plugin.project.gradle.apivalidation.ApiValidationPlugin
 import plugin.project.gradle.buildconfig.BuildConfigPlugin
 import plugin.project.gradle.develocity.DevelocityPlugin
@@ -250,6 +251,7 @@ internal data class ProjectProperties(
         project.plugins.apply(DokkaPlugin::class.java)
         project.plugins.apply(ShadowPlugin::class.java)
         project.plugins.apply(ApiValidationPlugin::class.java)
+        project.plugins.apply(AnimalSnifferPlugin::class.java)
         project.plugins.apply(PublishPlugin::class.java)
         project.plugins.apply(AllOpenPlugin::class.java)
         project.plugins.apply(NoArgPlugin::class.java)

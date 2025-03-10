@@ -3,6 +3,7 @@ package gradle.model.project
 import gradle.model.android.application.ApplicationPublishing
 import gradle.model.gradle.publish.PublishingExtension
 import kotlinx.serialization.Serializable
+import plugin.project.gradle.animalsniffer.model.AnimalSnifferSettings
 import plugin.project.gradle.apivalidation.model.ApiValidationSettings
 import plugin.project.gradle.buildconfig.model.BuildConfigSettings
 import plugin.project.gradle.develocity.model.DevelocitySettings
@@ -41,6 +42,7 @@ internal data class Plugins(
     val dokka: DokkaSettings = DokkaSettings(),
     val shadow: ShadowSettings = ShadowSettings(),
     val apiValidation: ApiValidationSettings = ApiValidationSettings(),
+    val animalSniffer: AnimalSnifferSettings = AnimalSnifferSettings(),
     val knit: KnitSettings = KnitSettings(),
     val publishing: PublishingSettings = PublishingSettings(),
     val ksp: KspSettings = KspSettings(),

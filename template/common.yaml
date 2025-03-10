@@ -220,6 +220,12 @@ plugins:
       enabled: true
       strictValidation: true
 
+  # check (JDK, android SDK or any library) API compatibility for java (kotlin, scala, groovy etc.), android and kotlin multiplatform projects.
+  animalSniffer:
+    enabled: true
+    debug: true
+    ignoreFailures: true
+
   # publishing
   publishing:
     repositories:
@@ -540,6 +546,7 @@ dependencies:
   - kspCommonMainMetadata: $libs.ktorfit.ksp
     # Use import org.koin.ksp.generated.*
   - kspCommonMainMetadata: $libs.koin.ksp.compiler
+  - signature: org.codehaus.mojo.signature:java23-sun:1.0@signature
 
 tasks:
   - ShadowJar:

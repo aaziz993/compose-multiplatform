@@ -14,6 +14,8 @@ plugins {
     alias(libs.plugins.dependencycheck)
     // Allows dumping binary API of a JVM part of a Kotlin library that is public in the sense of Kotlin visibilities and ensures that the public binary API wasn't changed in a way that makes this change binary incompatible.
     alias(libs.plugins.binary.compatibility.validator)
+    // Check (JDK, android SDK or any library) API compatibility for java (kotlin, scala, groovy etc.), android and kotlin multiplatform projects.
+    alias(libs.plugins.animalsniffer)
     // API documentation engine for Kotlin.
     // for html
     alias(libs.plugins.dokka)
@@ -90,9 +92,6 @@ doctor {
     }
 
     // Always monitor tasks on CI, but disable it locally by default with providing an option to opt-in.
-    // See 'doctor.enableTaskMonitoring' in gradle.properties for details.
-    val enableTasksMonitoring = isCI
-
     if (!isCI) {
         logger.info("Gradle Doctor task monitoring is disabled.")
         gradle.sharedServices.unregister("listener-service")
