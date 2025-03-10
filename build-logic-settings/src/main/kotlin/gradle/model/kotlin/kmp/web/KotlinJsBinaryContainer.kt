@@ -27,8 +27,6 @@ internal data class KotlinJsBinaryContainer(
                     container.library(container.target.compilations.getByName(compilation))
                 } ?: container.library()
             }
-
-            else -> Unit
         }
     }
 }
