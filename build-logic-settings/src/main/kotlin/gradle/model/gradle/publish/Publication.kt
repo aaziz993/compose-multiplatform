@@ -1,6 +1,7 @@
 package gradle.model.gradle.publish
 
 import gradle.model.Named
+import gradle.publishing
 import gradle.serialization.serializer.JsonContentPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
@@ -41,6 +42,10 @@ internal interface Publication : Named {
         withoutBuildIdentifier?.takeIf { it }?.run { named.withoutBuildIdentifier() }
         withBuildIdentifier?.takeIf { it }?.run { named.withBuildIdentifier() }
     }
+
+    context(Project)
+    override fun applyTo() =
+        super.applyTo(publishing.publications)
 }
 
 private object PublicationSerializer : JsonContentPolymorphicSerializer<Publication>(

@@ -239,7 +239,7 @@ plugins:
     publications:
       - maven:
           pom:
-            inceptionYear: 2025
+            inceptionYear: '2025'
             licenses:
               license:
                 name: Apache License, Version 2.0

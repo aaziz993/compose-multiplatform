@@ -1,11 +1,13 @@
 package gradle.model.gradle.publish
 
+import gradle.publishing
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.api.publish.maven.MavenArtifact
 import org.gradle.api.publish.maven.MavenPublication
+import org.gradle.kotlin.dsl.withType
 
 /**
  * A `MavenPublication` is the representation/configuration of how Gradle should publish something in Maven format.
@@ -291,4 +293,8 @@ internal data class MavenPublication(
         suppressPomMetadataWarningsFor?.forEach(named::suppressPomMetadataWarningsFor)
         suppressAllPomMetadataWarnings?.takeIf { it }?.run { named.suppressAllPomMetadataWarnings() }
     }
+
+    context(Project)
+    override fun applyTo() =
+        super.applyTo(publishing.publications.withType<MavenPublication>())
 }

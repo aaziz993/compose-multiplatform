@@ -7,13 +7,16 @@ import gradle.publishing
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler
+import org.gradle.api.publish.maven.MavenPublication
+import org.gradle.kotlin.dsl.create
 
 /**
  * The configuration of how to “publish" the different components of a project.
  *
  * @since 1.3
  */
-internal interface PublishingExtension{
+internal interface PublishingExtension {
+
     /**
      * Configures the container of possible repositories to publish to.
      *
@@ -44,6 +47,7 @@ internal interface PublishingExtension{
      */
     val repositories: List<@Serializable(with = ArtifactRepositoryTransformingSerializer::class) ArtifactRepository>?
     val exclusiveContent: ExclusiveContentRepository?
+
     /**
      * Configures the publications of this project.
      *
@@ -85,7 +89,9 @@ internal interface PublishingExtension{
             }
 
             publications?.forEach { publication ->
-                publication.applyTo(publishing.publications, publishing.publications::create)
+                publication.applyTo(publishing.publications) { name ->
+                    publishing.publications.create<MavenPublication>(name)
+                }
             }
         }
 }
