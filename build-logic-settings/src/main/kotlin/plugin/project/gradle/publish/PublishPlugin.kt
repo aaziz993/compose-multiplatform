@@ -1,5 +1,6 @@
 package plugin.project.gradle.publish
 
+import gradle.model.project.ProjectType
 import gradle.projectProperties
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -10,7 +11,11 @@ internal class PublishPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             projectProperties.plugins.publishing
-                .takeIf { it.enabled && projectProperties.kotlin.targets?.isNotEmpty() == true }?.let { publishing ->
+                .takeIf {
+                    it.enabled
+                        && projectProperties.kotlin.targets?.isNotEmpty() == true
+                        && projectProperties.type == ProjectType.LIB
+                }?.let { publishing ->
                     plugins.apply(MavenPublishPlugin::class.java)
 
                     publishing.applyTo()
