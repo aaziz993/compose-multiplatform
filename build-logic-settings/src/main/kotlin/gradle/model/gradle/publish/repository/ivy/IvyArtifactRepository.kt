@@ -5,9 +5,13 @@ import gradle.model.gradle.publish.repository.AuthenticationSupported
 import gradle.model.gradle.publish.repository.RepositoryContentDescriptor
 import gradle.model.gradle.publish.repository.RepositoryPasswordCredentials
 import gradle.model.gradle.publish.repository.UrlArtifactRepository
+import gradle.publishing
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler
+import org.gradle.api.artifacts.repositories.IvyArtifactRepository
+import org.gradle.kotlin.dsl.withType
 
 /**
  * An artifact repository which uses an Ivy format to store artifacts and meta-data.
@@ -28,7 +32,7 @@ import org.gradle.api.artifacts.dsl.RepositoryHandler
 @Serializable
 @SerialName("ivy")
 internal data class IvyArtifactRepository(
-    override val name: String? = null,
+    override val name: String = "ivy",
     override val content: RepositoryContentDescriptor? = null,
     override val url: String? = null,
     override val allowInsecureProtocol: Boolean? = null,
@@ -143,27 +147,31 @@ internal data class IvyArtifactRepository(
         super<ArtifactRepository>.applyTo(repository)
         super<UrlArtifactRepository>.applyTo(repository as org.gradle.api.artifacts.repositories.UrlArtifactRepository)
         super<AuthenticationSupported>.applyTo(repository as org.gradle.api.artifacts.repositories.AuthenticationSupported)
-    }
 
-    override fun applyTo(handler: RepositoryHandler) {
-        handler.ivy {
-            applyTo(this as org.gradle.api.artifacts.repositories.ArtifactRepository)
+        repository as IvyArtifactRepository
 
-            this@IvyArtifactRepository.artifactPatterns?.forEach(::artifactPattern)
-            this@IvyArtifactRepository.ivyPatterns?.forEach(::ivyPattern)
-            this@IvyArtifactRepository.layout?.let(::layout)
+        artifactPatterns?.forEach(repository::artifactPattern)
+        ivyPatterns?.forEach(repository::ivyPattern)
+        layout?.let(repository::layout)
 
-            this@IvyArtifactRepository.patternLayout?.let { patternLayout ->
-                patternLayout(patternLayout::applyTo)
-            }
+        patternLayout?.let { patternLayout ->
+            repository.patternLayout(patternLayout::applyTo)
+        }
 
-            this@IvyArtifactRepository.resolve?.applyTo(resolve)
+        resolve?.applyTo(repository.resolve)
 
-            this@IvyArtifactRepository.metadataSources?.let { metadataSources ->
-                metadataSources(metadataSources::applyTo)
-            }
+        metadataSources?.let { metadataSources ->
+            repository.metadataSources(metadataSources::applyTo)
         }
     }
+
+    context(Project)
+    override fun applyTo() =
+        super<ArtifactRepository>.applyTo(
+            publishing.repositories.withType<IvyArtifactRepository>(),
+        ) {
+            publishing.repositories.ivy(it)
+        }
 
     /**
      * Allows configuring the sources of metadata for a specific repository.
@@ -196,7 +204,7 @@ internal data class IvyArtifactRepository(
         val ignoreGradleMetadataRedirection: Boolean? = null,
     ) {
 
-        fun applyTo(sources: org.gradle.api.artifacts.repositories.IvyArtifactRepository.MetadataSources) {
+        fun applyTo(sources: IvyArtifactRepository.MetadataSources) {
             gradleMetadata?.takeIf { it }?.run { sources.gradleMetadata() }
             ivyDescriptor?.takeIf { it }?.run { sources.ivyDescriptor() }
             artifact?.takeIf { it }?.run { sources.artifact() }

@@ -1,8 +1,11 @@
 package gradle.model.gradle.publish.repository
 
+import gradle.publishing
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import org.gradle.api.artifacts.dsl.RepositoryHandler
+import org.gradle.api.Project
+import org.gradle.api.artifacts.repositories.FlatDirectoryArtifactRepository
+import org.gradle.kotlin.dsl.withType
 
 /**
  * A repository that looks into a number of directories for artifacts. The artifacts are expected to be located in the root of the specified directories.
@@ -26,7 +29,7 @@ import org.gradle.api.artifacts.dsl.RepositoryHandler
 @Serializable
 @SerialName("flatDir")
 internal data class FlatDirectoryArtifactRepository(
-    override val name: String? = null,
+    override val name: String = "flatDir",
     override val content: RepositoryContentDescriptor? = null,
     /**
      * Sets the directories where this repository will look for artifacts.
@@ -37,11 +40,17 @@ internal data class FlatDirectoryArtifactRepository(
     val dirs: Set<String>,
 ) : ArtifactRepository {
 
-    override fun applyTo(handler: RepositoryHandler) {
-        handler.flatDir {
-            super.applyTo(this)
+    override fun applyTo(repository: org.gradle.api.artifacts.repositories.ArtifactRepository) {
+        super.applyTo(repository)
 
-            this@FlatDirectoryArtifactRepository.dirs.let(::setDirs)
-        }
+        repository as FlatDirectoryArtifactRepository
+
+        dirs.let(repository::setDirs)
     }
+
+    context(Project)
+    override fun applyTo() =
+        super.applyTo(publishing.repositories.withType<FlatDirectoryArtifactRepository>()) {
+            publishing.repositories.flatDir(it)
+        }
 }

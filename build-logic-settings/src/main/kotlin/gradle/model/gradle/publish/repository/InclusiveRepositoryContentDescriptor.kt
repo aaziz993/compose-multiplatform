@@ -1,8 +1,6 @@
 package gradle.model.gradle.publish.repository
 
-import gradle.model.gradle.publish.repository.Module
-import gradle.model.gradle.publish.repository.Version
-import org.gradle.api.artifacts.repositories.InclusiveRepositoryContentDescriptor
+import kotlinx.serialization.Serializable
 
 /**
  *
@@ -86,7 +84,7 @@ internal interface InclusiveRepositoryContentDescriptor {
     val includeVersionsByRegexes: List<Version>?
 
     @Suppress("UnstableApiUsage")
-    fun applyTo(descriptor: InclusiveRepositoryContentDescriptor) {
+    fun applyTo(descriptor: org.gradle.api.artifacts.repositories.InclusiveRepositoryContentDescriptor) {
         includeGroups?.forEach(descriptor::includeGroup)
         includeGroupsAndSubgroups?.forEach(descriptor::includeGroupAndSubgroups)
         includeGroupsByRegexes?.forEach(descriptor::includeGroupByRegex)
@@ -108,3 +106,15 @@ internal interface InclusiveRepositoryContentDescriptor {
         }
     }
 }
+
+@Serializable
+internal data class InclusiveRepositoryContentDescriptorImpl(
+    override val includeGroups: List<String>? = null,
+    override val includeGroupsAndSubgroups: List<String>? = null,
+    override val includeGroupsByRegexes: List<String>? = null,
+    override val includeModules: List<Module>? = null,
+    override val includeModulesByRegexes: List<Module>? = null,
+    override val includeVersions: List<Version>? = null,
+    override val includeVersionsByRegexes: List<Version>? = null,
+) : InclusiveRepositoryContentDescriptor
+

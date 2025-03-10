@@ -1,8 +1,11 @@
 package gradle.model.gradle.publish.repository
 
+import gradle.maybeNamed
 import gradle.serialization.serializer.JsonContentPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
+import org.gradle.api.NamedDomainObjectCollection
+import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler
 
 @Serializable(with = ArtifactRepositorySerializer::class)
@@ -18,7 +21,7 @@ internal interface ArtifactRepository {
      * @param name The name. Must not be null.
      * @throws IllegalStateException If the name is set after it has been added to the container.
      */
-    val name: String?
+    val name: String
 
     /**
      * Configures the content of this repository.
@@ -28,13 +31,23 @@ internal interface ArtifactRepository {
      */
     val content: RepositoryContentDescriptor?
 
-    fun applyTo(handler: RepositoryHandler)
+    context(Project)
+    fun applyTo()
 
     fun applyTo(repository: org.gradle.api.artifacts.repositories.ArtifactRepository) {
-        name?.let(repository::setName)
+        repository.name = name
         content?.let { content ->
             repository.content(content::applyTo)
         }
+    }
+
+    context(Project)
+    fun applyTo(
+        named: NamedDomainObjectCollection<out org.gradle.api.artifacts.repositories.ArtifactRepository>,
+        createAndConfigure: ((org.gradle.api.artifacts.repositories.ArtifactRepository.() -> Unit) -> org.gradle.api.artifacts.repositories.ArtifactRepository)?
+    ) = named.configure(
+        name, createAndConfigure) {
+        applyTo(this)
     }
 }
 
@@ -46,3 +59,12 @@ internal object ArtifactRepositoryTransformingSerializer : KeyTransformingSerial
     ArtifactRepository.serializer(),
     "type",
 )
+
+private inline fun <reified T> NamedDomainObjectCollection<out T>.configure(
+    name: String,
+    noinline createAndConfigure: ((T.() -> Unit) -> T)? = null,
+    noinline configure: T.() -> Unit
+) {
+    if (name.isEmpty()) all(configure)
+    else maybeNamed(name, configure) ?: createAndConfigure?.invoke(configure)
+}

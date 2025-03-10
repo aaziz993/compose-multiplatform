@@ -284,6 +284,8 @@ internal data class ProjectProperties(
             task.applyTo()
         }
 
+        publishing?.applyTo()
+
         if (problemReporter.getErrors().isNotEmpty()) {
             throw GradleException(problemReporter.getGradleError())
         }

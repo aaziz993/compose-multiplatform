@@ -24,8 +24,10 @@ import org.gradle.api.internal.GradleInternal
 import org.gradle.api.plugins.ExtensionAware
 import org.gradle.api.plugins.JavaApplication
 import org.gradle.api.plugins.JavaPluginExtension
+import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.toolchain.management.ToolchainManagement
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.extra
 import org.gradle.kotlin.dsl.the
 import org.jetbrains.amper.gradle.getBindingMap
 import org.jetbrains.compose.ComposeExtension
@@ -59,13 +61,19 @@ internal var Project.projectProperties: ProjectProperties
 context(Project)
 internal fun String.resolveValue() = when {
     startsWith("\$env.") -> System.getenv(removePrefix("\$env.").toScreamingSnakeCase())
-    startsWith("\$gradle.") -> providers.gradleProperty("\$gradle.".toDotCase())
+    startsWith("\$gradle.") -> providers.gradleProperty("\$gradle.".toDotCase()).get()
     startsWith("\$local.") -> projectProperties.localProperties.getProperty("\$local.".toDotCase())
+    startsWith("\$extra.") -> extra["\$extra.".toDotCase()]!!
     startsWith("\$envOrGradle.") -> System.getenv().getOrElse(removePrefix("\$envOrGradle.".toScreamingSnakeCase())) {
-        projectProperties.localProperties.getProperty("\$envOrGradle.".toDotCase())
+        providers.gradleProperty("\$envOrGradle.".toDotCase()).get()
     }
+
     startsWith("\$envOrLocal.") -> System.getenv().getOrElse(removePrefix("\$envOrLocal.".toScreamingSnakeCase())) {
         projectProperties.localProperties.getProperty("\$local.".toDotCase())
+    }
+
+    startsWith("\$envOrExtra.") -> System.getenv().getOrElse(removePrefix("\$envOrExtra.".toScreamingSnakeCase())) {
+        extra["\$envOrExtra.".toDotCase()]!!
     }
 
     else -> this
@@ -139,6 +147,11 @@ internal val Project.toolchain: ToolchainManagement get() = the()
 
 @Suppress("UnstableApiUsage")
 internal fun Project.toolchain(configure: ToolchainManagement.() -> Unit) =
+    extensions.configure(configure)
+
+internal val Project.publishing: PublishingExtension get() = the()
+
+internal fun Project.publishing(configure: PublishingExtension.() -> Unit) =
     extensions.configure(configure)
 
 internal val Project.ksp: KspExtension get() = the()

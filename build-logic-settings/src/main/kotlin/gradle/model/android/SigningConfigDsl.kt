@@ -57,10 +57,10 @@ internal interface SigningConfigDsl {
     context(Project)
     fun applyTo(signingConfig: SigningConfig) {
         signingConfig::storeFile trySet storeFile?.let(::file)
-        signingConfig::storePassword trySet storePassword?.resolveValue()
-        signingConfig::keyAlias trySet keyAlias?.resolveValue()
-        signingConfig::keyPassword trySet keyPassword?.resolveValue()
-        signingConfig::storeType trySet storeType?.resolveValue()
+        signingConfig::storePassword trySet storePassword?.resolveValue()?.toString()
+        signingConfig::keyAlias trySet keyAlias?.resolveValue()?.toString()
+        signingConfig::keyPassword trySet keyPassword?.resolveValue()?.toString()
+        signingConfig::storeType trySet storeType?.resolveValue()?.toString()
         initWith?.let(android.signingConfigs::getByName)?.let(signingConfig::initWith)
     }
 }
