@@ -86,6 +86,7 @@ includes:
   - server-app
 
 dependencies:
+  # dokka multimodule module dependencies
   - dokka: :kmp-lib
   - dokka: :cmp-lib
   - dokka: :compiler

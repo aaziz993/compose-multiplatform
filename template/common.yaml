@@ -546,7 +546,8 @@ dependencies:
   - kspCommonMainMetadata: $libs.ktorfit.ksp
     # Use import org.koin.ksp.generated.*
   - kspCommonMainMetadata: $libs.koin.ksp.compiler
-  - signature: org.codehaus.mojo.signature:java23-sun:1.0@signature
+  # animalsniffer java signatures
+  - signature: org.codehaus.mojo.signature:java18:1.0
 
 tasks:
   - ShadowJar:

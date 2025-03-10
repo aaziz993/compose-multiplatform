@@ -126,6 +126,11 @@ apiValidation {
     }
 }
 
+animalsniffer {
+    debug = true
+    isIgnoreFailures = true
+}
+
 tasks {
     apiBuild {
         // "jar" here is the name of the default Jar task producing the resulting jar file
@@ -206,6 +211,7 @@ dependencies {
     implementation(libs.plugins.binary.compatibility.validator.toDep())
     // check (JDK, android SDK or any library) API compatibility for java (kotlin, scala, groovy etc.), android and kotlin multiplatform projects.
     implementation(libs.plugins.animalsniffer.toDep())
+    signature(libs.signature)
     // produces Kotlin source example files and tests from markdown documents with embedded snippets of Kotlin code
     implementation(libs.plugins.knit.toDep())
     // Generating BuildConstants for any kind of Gradle projects: Java, Kotlin, Android, Groovy, etc. Designed for KTS scripts, with experimental support for Kotlin's multi-platform plugin

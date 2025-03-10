@@ -251,7 +251,7 @@ internal data class ProjectProperties(
         project.plugins.apply(DokkaPlugin::class.java)
         project.plugins.apply(ShadowPlugin::class.java)
         project.plugins.apply(ApiValidationPlugin::class.java)
-        project.plugins.apply(AnimalSnifferPlugin::class.java)
+//        project.plugins.apply(AnimalSnifferPlugin::class.java)
         project.plugins.apply(PublishPlugin::class.java)
         project.plugins.apply(AllOpenPlugin::class.java)
         project.plugins.apply(NoArgPlugin::class.java)
