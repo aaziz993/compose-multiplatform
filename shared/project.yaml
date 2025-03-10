@@ -1,3 +1,5 @@
+description: Shared sources for compose app and server app.
+
 templates:
   - ../template/kmp.yaml
   - ../template/cmp.yaml

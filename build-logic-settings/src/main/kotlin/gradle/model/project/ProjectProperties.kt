@@ -11,7 +11,6 @@ import gradle.model.TaskTransformingSerializer
 import gradle.model.android.BaseExtension
 import gradle.model.android.application.BaseAppModuleExtension
 import gradle.model.android.library.LibraryExtension
-import gradle.model.gradle.publish.PublishingExtension
 import gradle.model.java.JavaPluginExtension
 import gradle.model.java.application.JavaApplication
 import gradle.model.kotlin.HasKotlinDependencies
@@ -64,7 +63,9 @@ import plugin.project.gradle.develocity.DevelocityPlugin
 import plugin.project.gradle.doctor.DoctorPlugin
 import plugin.project.gradle.dokka.DokkaPlugin
 import plugin.project.gradle.githooks.GitHooksPlugin
+import plugin.project.gradle.knit.KnitPlugin
 import plugin.project.gradle.kover.KoverPlugin
+import plugin.project.gradle.publish.PublishPlugin
 import plugin.project.gradle.shadow.ShadowPlugin
 import plugin.project.gradle.sonar.SonarPlugin
 import plugin.project.gradle.spotless.SpotlessPlugin
@@ -95,7 +96,6 @@ private const val COMPOSE_VERSION_CATALOG_FILE = "build-logic-settings/gradle/co
 internal data class ProjectProperties(
     val pluginManagement: PluginManagement? = null,
     val dependencyResolutionManagement: DependencyResolutionManagement? = null,
-    val publishing: PublishingExtension? = null,
     override val dependencies: List<@Serializable(with = DependencyTransformingSerializer::class) Dependency>? = null,
     val includes: List<String>? = null,
     val projects: List<ProjectDescriptor>? = null,
@@ -249,6 +249,8 @@ internal data class ProjectProperties(
         project.plugins.apply(DokkaPlugin::class.java)
         project.plugins.apply(ShadowPlugin::class.java)
         project.plugins.apply(ApiValidationPlugin::class.java)
+        project.plugins.apply(KnitPlugin::class.java)
+        project.plugins.apply(PublishPlugin::class.java)
         project.plugins.apply(AllOpenPlugin::class.java)
         project.plugins.apply(NoArgPlugin::class.java)
         project.plugins.apply(AtomicFUPlugin::class.java)
@@ -283,8 +285,6 @@ internal data class ProjectProperties(
         tasks?.forEach { task ->
             task.applyTo()
         }
-
-        publishing?.applyTo()
 
         if (problemReporter.getErrors().isNotEmpty()) {
             throw GradleException(problemReporter.getGradleError())

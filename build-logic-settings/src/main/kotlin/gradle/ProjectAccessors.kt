@@ -12,6 +12,7 @@ import de.jensklingenberg.ktorfit.gradle.KtorfitGradleConfiguration
 import gradle.model.project.ProjectProperties
 import io.github.sgrishchenko.karakum.gradle.plugin.KarakumExtension
 import kotlinx.atomicfu.plugin.gradle.AtomicFUPluginExtension
+import kotlinx.knit.KnitPluginExtension
 import kotlinx.kover.gradle.plugin.dsl.KoverProjectExtension
 import kotlinx.rpc.RpcExtension
 import kotlinx.validation.ApiValidationExtension
@@ -29,6 +30,7 @@ import org.gradle.api.toolchain.management.ToolchainManagement
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.extra
 import org.gradle.kotlin.dsl.the
+import org.gradle.plugins.signing.SigningExtension
 import org.jetbrains.amper.gradle.getBindingMap
 import org.jetbrains.compose.ComposeExtension
 import org.jetbrains.compose.android.AndroidExtension
@@ -142,6 +144,11 @@ internal val Project.apiValidation: ApiValidationExtension get() = the()
 internal fun Project.apiValidation(configure: ApiValidationExtension.() -> Unit) =
     extensions.configure(configure)
 
+internal val Project.knit: KnitPluginExtension get() = the()
+
+internal fun Project.knit(configure: KnitPluginExtension.() -> Unit) =
+    extensions.configure(configure)
+
 @Suppress("UnstableApiUsage")
 internal val Project.toolchain: ToolchainManagement get() = the()
 
@@ -153,6 +160,12 @@ internal val Project.publishing: PublishingExtension get() = the()
 
 internal fun Project.publishing(configure: PublishingExtension.() -> Unit) =
     extensions.configure(configure)
+
+internal val Project.signing: SigningExtension get() = the()
+
+internal fun Project.signing(configure: SigningExtension.() -> Unit) =
+    extensions.configure(configure)
+
 
 internal val Project.ksp: KspExtension get() = the()
 

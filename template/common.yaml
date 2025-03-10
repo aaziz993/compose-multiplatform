@@ -220,6 +220,46 @@ plugins:
       enabled: true
       strictValidation: true
 
+  # publishing
+  publishing:
+    repositories:
+      - mavenLocal: { }
+      - maven:
+          name: GithubPackages
+          url: https://maven.pkg.github.com/aaziz993
+          credentials:
+            username: aaziz993
+            password: $envOrLocal.github.password
+      - maven:
+          name: SpacePackages
+          url: https://maven.pkg.jetbrains.space/aaziz93/p/aaziz-93/maven
+          credentials:
+            username: aaziz93
+            password: $envOrLocal.jetbrains.space.password
+    publications:
+      - maven:
+          pom:
+            inceptionYear: 2025
+            licenses:
+              license:
+                name: Apache License, Version 2.0
+                url: https://www.apache.org/licenses/LICENSE-2.0.txt
+                distribution: repo
+            issueManagement:
+              system: GitHub Issues
+              url: https://github.com/aaziz993/compose-multiplatform/issues
+            developers:
+              id: aaziz993
+              name: Aziz Atoev
+              email: a.atoev93@gmail.com
+              organization: AITech
+              organizationUrl: https://github.com/aaziz993
+            scm:
+              connection: scm:git:git://github.com:aaziz993/compose-multiplatform.git
+              url: https://github.com/aaziz993/compose-nultiplatform
+              developerConnection: scm:git:ssh://github.com:aaziz993/compose-multiplatform.git
+
+
   # api that you can use to develop lightweight compiler plugins. KSP provides a simplified compiler plugin API that leverages the power of Kotlin while keeping the learning curve at a minimum. Compared to KAPT, annotation processors that use KSP can run up to 2x faster.
   ksp:
     enabled: true
@@ -412,7 +452,7 @@ kotlin:
     - jsMain:
         dependencies:
           - kotlin: test-js
-#          - npm: $libs.js.joda.timezone
+          #          - npm: $libs.js.joda.timezone
           - npm: $libs.npm.copy.webpack.plugin
           - npm: $libs.npm.openpgp
           - npm: $libs.npm.pako
@@ -506,5 +546,8 @@ tasks:
         - -Xdont-warn-on-error-suppression
         - -Xir-generate-inline-anonymous-functions #  https://youtrack.jetbrains.com/issue/KT-67355
         - -Xsuppress-warning=NOTHING_TO_INLINE
+  - '':
+      name: publish
+      dependOn: publishToMavenLocal
 
 localPropertiesFile: ../local.properties

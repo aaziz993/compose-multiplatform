@@ -1,7 +1,7 @@
 package gradle.model.repository
 
-import gradle.model.gradle.publish.repository.Module
-import gradle.model.gradle.publish.repository.Version
+import gradle.model.repository.Module
+import gradle.model.repository.Version
 import org.gradle.api.artifacts.repositories.RepositoryContentDescriptor
 
 /**

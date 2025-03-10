@@ -2,7 +2,9 @@ package gradle.model.gradle.publish
 
 import gradle.tryAssign
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
 import org.gradle.api.publish.maven.MavenPom
+import org.gradle.kotlin.dsl.assign
 
 /**
  * The POM for a Maven publication.
@@ -110,10 +112,11 @@ internal data class MavenPom(
     val properties: Map<String, String>? = null,
 ) {
 
+    context(Project)
     fun applyTo(pom: MavenPom) {
         packaging?.let(pom::setPackaging)
-        pom.name tryAssign name
-        pom.description tryAssign description
+        pom.name = name ?: project.name
+        pom.description = description ?: project.description
         pom.url tryAssign url
         pom.inceptionYear tryAssign inceptionYear
 

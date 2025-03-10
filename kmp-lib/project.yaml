@@ -1,10 +1,17 @@
-type: LIB
+description: Kotlin multiplatform libraries.
 
 templates:
   - ../template/kmp.yaml
   - ../template/common.yaml
 
 plugins:
+  # publishing
+  publishing:
+    publications:
+      - maven:
+          pom:
+            url: https://github.com/aaziz993/compose-multiplatform/kmp-lib
+
   # generates typesafe Kotlin APIs from your SQL statements. It verifies your schema, statements, and migrations at compile-time and provides IDE features like autocomplete and refactoring which make writing and maintaining SQL simple.
   sqldelight:
     enabled: false

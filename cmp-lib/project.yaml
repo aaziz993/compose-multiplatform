@@ -1,9 +1,17 @@
-type: LIB
+description: Compose multiplatform libraries.
 
 templates:
   - ../template/kmp.yaml
   - ../template/cmp.yaml
   - ../template/common.yaml
+
+plugins:
+  # publishing
+  publishing:
+    publications:
+      - maven:
+          pom:
+            url: https://github.com/aaziz993/compose-multiplatform/cmp-lib
 
 kotlin:
   sourceSets:

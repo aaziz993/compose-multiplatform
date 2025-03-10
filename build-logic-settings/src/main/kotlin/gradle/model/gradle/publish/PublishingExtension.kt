@@ -1,8 +1,8 @@
 package gradle.model.gradle.publish
 
-import gradle.model.gradle.publish.repository.ArtifactRepository
-import gradle.model.gradle.publish.repository.ArtifactRepositoryTransformingSerializer
-import gradle.model.gradle.publish.repository.ExclusiveContentRepository
+import gradle.model.repository.ArtifactRepository
+import gradle.model.repository.ArtifactRepositoryTransformingSerializer
+import gradle.model.repository.ExclusiveContentRepository
 import gradle.publishing
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -13,8 +13,7 @@ import org.gradle.api.artifacts.dsl.RepositoryHandler
  *
  * @since 1.3
  */
-@Serializable
-internal data class PublishingExtension(
+internal interface PublishingExtension{
     /**
      * Configures the container of possible repositories to publish to.
      *
@@ -43,8 +42,8 @@ internal data class PublishingExtension(
      *
      * @param configure The action to configure the container of repositories with.
      */
-    val repositories: List<@Serializable(with = ArtifactRepositoryTransformingSerializer::class) ArtifactRepository>? = null,
-    val exclusiveContent: ExclusiveContentRepository? = null,
+    val repositories: List<@Serializable(with = ArtifactRepositoryTransformingSerializer::class) ArtifactRepository>?
+    val exclusiveContent: ExclusiveContentRepository?
     /**
      * Configures the publications of this project.
      *
@@ -75,8 +74,7 @@ internal data class PublishingExtension(
      *
      * @param configure The action or closure to configure the publications with.
      */
-    val publications: List<@Serializable(with = PublicationTransformingSerializer::class) Publication>? = null
-) {
+    val publications: List<@Serializable(with = PublicationTransformingSerializer::class) Publication>?
 
     context(Project)
     fun applyTo() =

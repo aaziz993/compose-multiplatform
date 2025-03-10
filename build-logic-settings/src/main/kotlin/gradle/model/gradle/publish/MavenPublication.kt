@@ -96,7 +96,7 @@ import org.gradle.api.publish.maven.MavenPublication
 internal data class MavenPublication(
     override val withoutBuildIdentifier: Boolean? = null,
     override val withBuildIdentifier: Boolean? = null,
-    override val name: String,
+    override val name: String = "maven",
     /**
      * Configures the POM that will be published.
      *

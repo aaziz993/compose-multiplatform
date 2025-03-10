@@ -1,7 +1,7 @@
 package gradle.model.repository.maven
 
-import gradle.model.gradle.publish.repository.RepositoryContentDescriptor
-import gradle.model.gradle.publish.repository.RepositoryPasswordCredentials
+import gradle.model.repository.RepositoryContentDescriptor
+import gradle.model.repository.RepositoryPasswordCredentials
 import gradle.publishing
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
