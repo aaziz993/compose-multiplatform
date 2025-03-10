@@ -528,6 +528,12 @@ android:
     buildConfig: true
     viewBinding: true
 
+apple:
+  teamID: io.github.aaziz993
+  iosApp:
+    buildSettings:
+      DEVELOPMENT_TEAM: io.github.aaziz993
+
 dependencies:
   - kspCommonMainMetadata: $libs.arrow.optics.ksp.plugin
   - kspCommonMainMetadata: $libs.androidx.room.compiler

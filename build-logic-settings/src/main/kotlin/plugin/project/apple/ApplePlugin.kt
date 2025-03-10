@@ -37,15 +37,11 @@ internal class ApplePlugin : Plugin<Project> {
 
     private fun Project.adjustSourceSets() = when (projectProperties.layout) {
         ProjectLayout.FLAT -> apple.sourceSets.all {
-            println("""
-                APPLE SOURCE SET: $name
-                SRCS: ${apple.srcDirs.map{ it.absolutePath }}
-            """.trimIndent())
             apple.srcDir(
-                    if (name.endsWith("AppMain"))
-                        "src@${name.removeSuffix("AppMain")}"
-                    else
-                        "test@${name.removeSuffix("AppTest")}",
+                if (sourceSetName.endsWith("AppMain"))
+                    "src@${sourceSetName.removeSuffix("AppMain")}"
+                else
+                    "test@${sourceSetName.removeSuffix("AppTest")}",
             )
         }
 

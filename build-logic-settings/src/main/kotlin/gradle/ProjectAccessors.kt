@@ -51,6 +51,7 @@ import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension
 import org.jetbrains.kotlin.noarg.gradle.NoArgExtension
 import org.jetbrains.kotlin.powerassert.gradle.PowerAssertGradleExtension
 import org.sonarqube.gradle.SonarExtension
+import ru.vyarus.gradle.plugin.animalsniffer.AnimalSnifferExtension
 
 private const val PROJECT_PROPERTIES_EXT = "project.properties.ext"
 
@@ -129,6 +130,11 @@ internal val Project.sonar: SonarExtension get() = the()
 internal fun Project.sonar(configure: SonarExtension.() -> Unit) =
     extensions.configure(configure)
 
+internal val Project.knit: KnitPluginExtension get() = the()
+
+internal fun Project.knit(configure: KnitPluginExtension.() -> Unit) =
+    extensions.configure(configure)
+
 internal val Project.dokka: DokkaExtension get() = the()
 
 internal fun Project.dokka(configure: DokkaExtension.() -> Unit) =
@@ -144,9 +150,9 @@ internal val Project.apiValidation: ApiValidationExtension get() = the()
 internal fun Project.apiValidation(configure: ApiValidationExtension.() -> Unit) =
     extensions.configure(configure)
 
-internal val Project.knit: KnitPluginExtension get() = the()
+internal val Project.animalSniffer: AnimalSnifferExtension get() = the()
 
-internal fun Project.knit(configure: KnitPluginExtension.() -> Unit) =
+internal fun Project.animalSniffer(configure: AnimalSnifferExtension.() -> Unit) =
     extensions.configure(configure)
 
 @Suppress("UnstableApiUsage")
@@ -165,7 +171,6 @@ internal val Project.signing: SigningExtension get() = the()
 
 internal fun Project.signing(configure: SigningExtension.() -> Unit) =
     extensions.configure(configure)
-
 
 internal val Project.ksp: KspExtension get() = the()
 
