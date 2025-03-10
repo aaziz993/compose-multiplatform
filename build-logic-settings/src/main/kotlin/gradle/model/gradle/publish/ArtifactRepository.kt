@@ -1,10 +1,8 @@
-package gradle.model.gradle.publishing
+package gradle.model.gradle.publish
 
-import kotlinx.serialization.Serializable
 import org.gradle.api.artifacts.repositories.ArtifactRepository
 
-@Serializable
-internal data class ArtifactRepository(
+internal interface ArtifactRepository{
     /**
      * Sets the name for this repository.
      *
@@ -15,19 +13,18 @@ internal data class ArtifactRepository(
      * @param name The name. Must not be null.
      * @throws IllegalStateException If the name is set after it has been added to the container.
      */
-    val name: String? = null,
+    val name: String
     /**
      * Configures the content of this repository.
      * @param configureAction the configuration action
      *
      * @since 5.1
      */
-    val content: RepositoryContentDescriptor? = null,
-) {
+    val content: RepositoryContentDescriptor?
+
+    fun toRepository(): ArtifactRepository
 
     fun applyTo(repository: ArtifactRepository) {
-        name?.let(repository::setName)
-
         content?.let { content ->
             repository.content(content::applyTo)
         }

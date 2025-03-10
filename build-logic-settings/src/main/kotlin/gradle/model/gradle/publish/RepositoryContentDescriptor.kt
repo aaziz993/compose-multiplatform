@@ -1,4 +1,4 @@
-package gradle.model.gradle.publishing
+package gradle.model.gradle.publish
 
 import kotlinx.serialization.Serializable
 import org.gradle.api.artifacts.repositories.RepositoryContentDescriptor
@@ -16,21 +16,15 @@ import org.gradle.api.artifacts.repositories.RepositoryContentDescriptor
  * @since 5.1
  */
 
-@Serializable
-internal data class RepositoryContentDescriptor(
-    override val includeGroups: List<String>? = null,
-    override val includeGroupsAndSubgroups: List<String>? = null,
-    override val includeGroupsByRegexes: List<String>? = null,
-    override val includeModules: List<Module>? = null,
-    override val includeModulesByRegexes: List<Module>? = null,
-    override val includeVersions: List<Version>? = null,
-    override val includeVersionsByRegexes: List<Version>? = null,
+internal interface RepositoryContentDescriptor : InclusiveRepositoryContentDescriptor {
+
     /**
      * Declares that an entire group shouldn't be searched for in this repository.
      *
      * @param group the group name
      */
-    val excludeGroups: List<String>? = null,
+    val excludeGroups: List<String>?
+
     /**
      * Declares that an entire group and its subgroups shouldn't be searched for in this repository.
      *
@@ -45,27 +39,31 @@ internal data class RepositoryContentDescriptor(
      * @param groupPrefix the group prefix to include
      * @since 8.1
      */
-    val excludeGroupsAndSubgroups: List<String>? = null,
+    val excludeGroupsAndSubgroups: List<String>?
+
     /**
      * Declares that an entire group shouldn't be searched for in this repository.
      *
      * @param groupRegex the group name regular expression
      */
-    val excludeGroupByRegexes: List<String>? = null,
+    val excludeGroupByRegexes: List<String>?
+
     /**
      * Declares that an entire module shouldn't be searched for in this repository.
      *
      * @param group the group name
      * @param moduleName the module name
      */
-    val excludeModules: List<Module>? = null,
+    val excludeModules: List<Module>?
+
     /**
      * Declares that an entire module shouldn't be searched for in this repository, using regular expressions.
      *
      * @param groupRegex the group name regular expression
      * @param moduleNameRegex the module name regular expression
      */
-    val excludeModulesByRegexes: List<Module>? = null,
+    val excludeModulesByRegexes: List<Module>?
+
     /**
      * Declares that a specific module version shouldn't be searched for in this repository.
      *
@@ -76,7 +74,8 @@ internal data class RepositoryContentDescriptor(
      * @param moduleName the module name
      * @param version the module version
      */
-    val excludeVersions: List<Version>? = null,
+    val excludeVersions: List<Version>?
+
     /**
      * Declares that a specific module version shouldn't be searched for in this repository, using regular expressions.
      *
@@ -87,15 +86,15 @@ internal data class RepositoryContentDescriptor(
      * @param moduleNameRegex the module name
      * @param versionRegex the module version
      */
-    val excludeVersionsByRegexes: List<Version>? = null,
+    val excludeVersionsByRegexes: List<Version>?
+
     /**
      * Declares that this repository should not be used for a specific
      * set of configurations. Defaults to any configuration
      *
      * @param configurationNames the names of the configurations the repository will not be used for
      */
-    val notForConfigurations: List<String>? = null,
-) : InclusiveRepositoryContentDescriptor {
+    val notForConfigurations: List<String>?
 
     @Suppress("UnstableApiUsage")
     override fun applyTo(descriptor: org.gradle.api.artifacts.repositories.InclusiveRepositoryContentDescriptor) {

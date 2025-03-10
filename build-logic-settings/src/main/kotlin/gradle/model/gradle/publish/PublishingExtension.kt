@@ -1,8 +1,9 @@
-package gradle.model.gradle.publishing
+package gradle.model.gradle.publish
 
-import org.gradle.api.Action
+import gradle.maybeNamed
+import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler
-import org.gradle.api.publish.PublicationContainer
+import org.gradle.api.publish.PublishingExtension
 
 /**
  * The configuration of how to “publish” the different components of a project.
@@ -39,7 +40,7 @@ internal interface PublishingExtension {
      *
      * @param configure The action to configure the container of repositories with.
      */
-    val repositories: RepositoryHandler?
+    val repositories: List<ArtifactRepository>?
 
     /**
      * Configures the publications of this project.
@@ -71,7 +72,19 @@ internal interface PublishingExtension {
      *
      * @param configure The action or closure to configure the publications with.
      */
-    val publications:PublicationContainer?
+    val publications: List<Publication>?
 
+    context(Project)
+    fun applyTo(extension: PublishingExtension) {
+        repositories?.forEach { repository ->
+            repository.name.takeIf(String::isNotEmpty)?.also { name ->
+                extension.repositories.maybeNamed(name, repository::applyTo)
+                    ?: extension.repositories.add(repository.toRepository())
+            } ?: extension.repositories.all(repository::applyTo)
+        }
 
+        publications?.forEach { publication ->
+            publication.applyTo(extension.publications, extension.publications::create)
+        }
+    }
 }
