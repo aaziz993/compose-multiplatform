@@ -1,28 +1,28 @@
-package gradle.model.gradle.publish
+package gradle.model.gradle.publish.repository.maven
 
+import gradle.model.gradle.publish.repository.ArtifactRepository
+import gradle.model.gradle.publish.repository.AuthenticationSupported
+import gradle.model.gradle.publish.repository.UrlArtifactRepository
 import kotlinx.serialization.Serializable
+import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.api.artifacts.repositories.MavenArtifactRepository
 
 /**
  * An artifact repository which uses a Maven format to store artifacts and meta-data.
  *
  *
- * Repositories of this type are created by the [org.gradle.api.artifacts.dsl.RepositoryHandler.maven] group of methods.
+ * Repositories of this type are created by the [RepositoryHandler.maven] group of methods.
  */
-@Serializable
-internal data class MavenArtifactRepository(
-    override val name: String,
-    override val content: RepositoryContentDescriptor? = null,
-    override val url: String? = null,
-    override val allowInsecureProtocol: Boolean? = null,
-    override val credentials: RepositoryPasswordCredentials? = null,
+internal interface MavenArtifactRepository : ArtifactRepository, UrlArtifactRepository, AuthenticationSupported {
+
     /**
      * Sets the additional URLs to use to find artifact files. Note that these URLs are not used to find POM files.
      *
      * @param urls The URLs.
      * @since 4.0
      */
-    val artifactUrls: Set<String>? = null,
+    val artifactUrls: Set<String>?
+
     /**
      * Configures the metadata sources for this repository. This method will replace any previously configured sources
      * of metadata.
@@ -31,15 +31,15 @@ internal data class MavenArtifactRepository(
      *
      * @since 4.5
      */
-    val metadataSources: MetadataSources? = null,
+    val metadataSources: MetadataSources?
+
     /**
      * Configures the content of this Maven repository.
      * @param configureAction the configuration action
      *
      * @since 5.1
      */
-    val mavenContent: MavenRepositoryContentDescriptor? = null,
-) : ArtifactRepository, UrlArtifactRepository, AuthenticationSupported {
+    val mavenContent: MavenRepositoryContentDescriptor?
 
     override fun applyTo(repository: org.gradle.api.artifacts.repositories.ArtifactRepository) {
         super<ArtifactRepository>.applyTo(repository)

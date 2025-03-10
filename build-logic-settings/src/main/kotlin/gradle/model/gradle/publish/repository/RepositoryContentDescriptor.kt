@@ -1,6 +1,7 @@
-package gradle.model.gradle.publish
+package gradle.model.gradle.publish.repository
 
-import kotlinx.serialization.Serializable
+import gradle.model.gradle.publish.repository.Module
+import gradle.model.gradle.publish.repository.Version
 import org.gradle.api.artifacts.repositories.RepositoryContentDescriptor
 
 /**

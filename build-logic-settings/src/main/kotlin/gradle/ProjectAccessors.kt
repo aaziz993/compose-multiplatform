@@ -57,9 +57,13 @@ internal var Project.projectProperties: ProjectProperties
     }
 
 context(Project)
-internal fun String.resolveSensitive() = when {
+internal fun String.resolveValue() = when {
     startsWith("\$env.") -> System.getenv(removePrefix("\$env.").toScreamingSnakeCase())
+    startsWith("\$gradle.") -> providers.gradleProperty("\$gradle.".toDotCase())
     startsWith("\$local.") -> projectProperties.localProperties.getProperty("\$local.".toDotCase())
+    startsWith("\$envOrGradle.") -> System.getenv().getOrElse(removePrefix("\$envOrGradle.".toScreamingSnakeCase())) {
+        projectProperties.localProperties.getProperty("\$envOrGradle.".toDotCase())
+    }
     startsWith("\$envOrLocal.") -> System.getenv().getOrElse(removePrefix("\$envOrLocal.".toScreamingSnakeCase())) {
         projectProperties.localProperties.getProperty("\$local.".toDotCase())
     }

@@ -1,4 +1,4 @@
-package gradle.model.gradle.publish
+package gradle.model.gradle.publish.repository
 
 import org.gradle.api.artifacts.repositories.AuthenticationSupported
 

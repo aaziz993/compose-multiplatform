@@ -1,6 +1,10 @@
 package gradle.model.gradle.publish
 
-import gradle.maybeNamed
+import gradle.model.gradle.publish.publication.Publication
+import gradle.model.gradle.publish.publication.PublicationTransformingSerializer
+import gradle.model.gradle.publish.repository.ArtifactRepository
+import gradle.model.gradle.publish.repository.ArtifactRepositoryTransformingSerializer
+import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.api.publish.PublishingExtension
@@ -10,8 +14,8 @@ import org.gradle.api.publish.PublishingExtension
  *
  * @since 1.3
  */
-internal interface PublishingExtension {
-
+@Serializable
+internal data class PublishingExtension(
     /**
      * Configures the container of possible repositories to publish to.
      *
@@ -40,8 +44,7 @@ internal interface PublishingExtension {
      *
      * @param configure The action to configure the container of repositories with.
      */
-    val repositories: List<ArtifactRepository>?
-
+    val repositories: List<@Serializable(with = ArtifactRepositoryTransformingSerializer::class) ArtifactRepository>? = null,
     /**
      * Configures the publications of this project.
      *
@@ -72,15 +75,13 @@ internal interface PublishingExtension {
      *
      * @param configure The action or closure to configure the publications with.
      */
-    val publications: List<Publication>?
+    val publications: List<@Serializable(with = PublicationTransformingSerializer::class) Publication>? = null
+) {
 
     context(Project)
     fun applyTo(extension: PublishingExtension) {
         repositories?.forEach { repository ->
-            repository.name.takeIf(String::isNotEmpty)?.also { name ->
-                extension.repositories.maybeNamed(name, repository::applyTo)
-                    ?: extension.repositories.add(repository.toRepository())
-            } ?: extension.repositories.all(repository::applyTo)
+            repository.applyTo(extension.repositories)
         }
 
         publications?.forEach { publication ->

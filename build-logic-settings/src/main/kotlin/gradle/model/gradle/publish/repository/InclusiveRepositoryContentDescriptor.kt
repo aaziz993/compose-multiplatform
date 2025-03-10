@@ -1,5 +1,7 @@
-package gradle.model.gradle.publish
+package gradle.model.gradle.publish.repository
 
+import gradle.model.gradle.publish.repository.Module
+import gradle.model.gradle.publish.repository.Version
 import org.gradle.api.artifacts.repositories.InclusiveRepositoryContentDescriptor
 
 /**

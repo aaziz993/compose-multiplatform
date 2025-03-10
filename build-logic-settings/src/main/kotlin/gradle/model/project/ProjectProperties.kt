@@ -11,6 +11,7 @@ import gradle.model.TaskTransformingSerializer
 import gradle.model.android.BaseExtension
 import gradle.model.android.application.BaseAppModuleExtension
 import gradle.model.android.library.LibraryExtension
+import gradle.model.gradle.publish.PublishingExtension
 import gradle.model.java.JavaPluginExtension
 import gradle.model.java.application.JavaApplication
 import gradle.model.kotlin.HasKotlinDependencies
@@ -94,6 +95,7 @@ private const val COMPOSE_VERSION_CATALOG_FILE = "build-logic-settings/gradle/co
 internal data class ProjectProperties(
     val pluginManagement: PluginManagement? = null,
     val dependencyResolutionManagement: DependencyResolutionManagement? = null,
+    val publishing: PublishingExtension? = null,
     override val dependencies: List<@Serializable(with = DependencyTransformingSerializer::class) Dependency>? = null,
     val includes: List<String>? = null,
     val projects: List<ProjectDescriptor>? = null,
