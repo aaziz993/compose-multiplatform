@@ -1,7 +1,5 @@
 package gradle.model.gradle.publish
 
-import gradle.model.gradle.publish.publication.Publication
-import gradle.model.gradle.publish.publication.PublicationTransformingSerializer
 import gradle.model.gradle.publish.repository.ArtifactRepository
 import gradle.model.gradle.publish.repository.ArtifactRepositoryTransformingSerializer
 import gradle.model.gradle.publish.repository.ExclusiveContentRepository
