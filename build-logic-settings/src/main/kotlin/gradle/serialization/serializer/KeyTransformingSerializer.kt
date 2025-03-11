@@ -17,9 +17,9 @@ internal abstract class KeyTransformingSerializer<T : Any>(
         ),
     )
 
-    override fun transformValue(key: String, value: String): JsonObject = JsonObject(
+    override fun transformValue(key: String, value: JsonElement): JsonObject = JsonObject(
         valueAs?.let { valueAs ->
-            mapOf(valueAs to JsonPrimitive(value))
+            mapOf(valueAs to value)
         } ?: emptyMap(),
     )
 }

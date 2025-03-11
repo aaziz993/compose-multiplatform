@@ -146,17 +146,17 @@ internal object DependencyTransformingSerializer : BaseKeyTransformingSerializer
 
     override fun transformKey(key: String, value: JsonElement?): JsonObject = JsonObject(
         mapOf(
-                when {
-                    value == null -> "notation"
-                    key in SUB_CONFIGURATIONS -> "subConfiguration"
-                    else -> "configuration"
-                } to JsonPrimitive(key),
+            when {
+                value == null -> "notation"
+                key in SUB_CONFIGURATIONS -> "subConfiguration"
+                else -> "configuration"
+            } to JsonPrimitive(key),
         ),
     )
 
-    override fun transformValue(key: String, value: String): JsonObject = JsonObject(
+    override fun transformValue(key: String, value: JsonElement): JsonObject = JsonObject(
         mapOf(
-            "notation" to JsonPrimitive(value),
+            "notation" to value,
         ),
     )
 }

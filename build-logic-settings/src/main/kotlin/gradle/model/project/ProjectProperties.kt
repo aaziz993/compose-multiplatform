@@ -322,7 +322,7 @@ internal data class ProjectProperties(
         )
     }
 
-    private fun Settings.applyTo(handler: RepositoryHandler){
+    private fun Settings.applyTo(handler: RepositoryHandler) {
         // Apply repositories from project properties.
         projectProperties.dependencyResolutionManagement?.repositories?.let { repositories ->
             repositories.forEach { repository ->
@@ -333,7 +333,9 @@ internal data class ProjectProperties(
 
     companion object {
 
-        private val json = Json { ignoreUnknownKeys = true }
+        private val json = Json {
+            ignoreUnknownKeys = true
+        }
 
         private val yaml = Yaml()
 

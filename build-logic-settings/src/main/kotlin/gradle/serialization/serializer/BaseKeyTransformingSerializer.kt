@@ -1,10 +1,8 @@
 package gradle.serialization.serializer
 
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.JsonTransformingSerializer
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
@@ -15,7 +13,7 @@ internal abstract class BaseKeyTransformingSerializer<T : Any>(
 
     abstract fun transformKey(key: String, value: JsonElement?): JsonObject
 
-    abstract fun transformValue(key: String, value: String): JsonObject
+    abstract fun transformValue(key: String, value: JsonElement): JsonObject
 
     final override fun transformDeserialize(element: JsonElement): JsonElement =
         if (element is JsonObject) {
@@ -25,11 +23,7 @@ internal abstract class BaseKeyTransformingSerializer<T : Any>(
             JsonObject(
                 buildMap {
                     putAll(transformKey(key, value))
-                    when (value) {
-                        is JsonPrimitive -> putAll(transformValue(key, value.jsonPrimitive.content))
-                        is JsonObject -> putAll(value.jsonObject)
-                        is JsonArray -> throw UnsupportedOperationException("Value can't be array")
-                    }
+                    putAll(if (value is JsonObject) value.jsonObject else transformValue(key, value))
                 },
             )
         }
