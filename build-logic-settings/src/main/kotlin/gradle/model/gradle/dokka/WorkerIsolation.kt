@@ -1,8 +1,10 @@
 package gradle.model.gradle.dokka
 
+import gradle.dokka
 import gradle.serialization.serializer.AnySerializer
 import gradle.tryAssign
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
 import org.gradle.process.JavaForkOptions
 import org.gradle.workers.WorkerExecutor
 import org.jetbrains.dokka.gradle.DokkaExtension
@@ -10,7 +12,8 @@ import org.jetbrains.dokka.gradle.DokkaExtension
 @Serializable
 internal sealed class WorkerIsolation {
 
-    abstract fun toWorkerIsolation(extension: DokkaExtension): org.jetbrains.dokka.gradle.workers.WorkerIsolation
+    context(Project)
+    abstract fun toWorkerIsolation(): org.jetbrains.dokka.gradle.workers.WorkerIsolation
 }
 
 /**
@@ -25,8 +28,9 @@ internal sealed class WorkerIsolation {
 @Serializable
 internal class ClassLoader : WorkerIsolation() {
 
-    override fun toWorkerIsolation(extension: DokkaExtension): org.jetbrains.dokka.gradle.workers.WorkerIsolation =
-        extension.ClassLoaderIsolation()
+    context(Project)
+    override fun toWorkerIsolation(): org.jetbrains.dokka.gradle.workers.WorkerIsolation =
+        dokka.ClassLoaderIsolation()
 }
 
 /**
@@ -63,8 +67,9 @@ internal data class Process(
     val systemProperties: Map<String, @Serializable(with = AnySerializer::class) Any>? = null,
 ) : WorkerIsolation() {
 
-    override fun toWorkerIsolation(extension: DokkaExtension): org.jetbrains.dokka.gradle.workers.WorkerIsolation =
-        extension.ProcessIsolation {
+    context(Project)
+    override fun toWorkerIsolation(): org.jetbrains.dokka.gradle.workers.WorkerIsolation =
+        dokka.ProcessIsolation {
             debug tryAssign this@Process.debug
             enableAssertions tryAssign this@Process.enableAssertions
             minHeapSize tryAssign this@Process.minHeapSize

@@ -8,6 +8,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
 
 /**
  * Analogous to [KotlinCompilationTask] for K2
@@ -26,6 +27,10 @@ internal interface K2MultiplatformCompilationTask : Task {
 
         compilerOptions?.applyTo(named.compilerOptions)
     }
+
+    context(Project)
+    override fun applyTo() =
+        super.applyTo(tasks.withType<org.jetbrains.kotlin.gradle.tasks.K2MultiplatformCompilationTask>())
 }
 
 @Serializable

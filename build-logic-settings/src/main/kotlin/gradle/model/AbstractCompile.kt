@@ -6,6 +6,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
 
 /**
  * The base class for all JVM-based language compilation tasks.
@@ -57,6 +58,10 @@ internal abstract class AbstractCompile : Task {
         sourceCompatibility?.let(named::setSourceCompatibility)
         targetCompatibility?.let(named::setTargetCompatibility)
     }
+
+    context(Project)
+    override fun applyTo() =
+        super.applyTo(tasks.withType<org.gradle.api.tasks.compile.AbstractCompile>())
 }
 
 @Serializable

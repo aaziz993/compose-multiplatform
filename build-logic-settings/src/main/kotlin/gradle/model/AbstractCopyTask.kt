@@ -21,6 +21,7 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.api.file.DuplicatesStrategy
+import org.gradle.kotlin.dsl.withType
 
 /**
  * `AbstractCopyTask` is the base class for all copy tasks.
@@ -42,6 +43,10 @@ internal abstract class AbstractCopyTask : Task, CopySpec {
         super<CopySpec>.applyTo(named)
         caseSensitive?.let(named::setCaseSensitive)
     }
+
+    context(Project)
+    override fun applyTo() =
+        super<Task>.applyTo(tasks.withType<org.gradle.api.tasks.AbstractCopyTask>())
 }
 
 @Serializable

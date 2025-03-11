@@ -259,6 +259,6 @@ internal interface DokkaExtension {
         }
 
         dokka.dokkaEngineVersion tryAssign dokkaEngineVersion
-        dokka.dokkaGeneratorIsolation tryAssign dokkaGeneratorIsolation?.toWorkerIsolation(dokka)
+        dokka.dokkaGeneratorIsolation tryAssign dokkaGeneratorIsolation?.toWorkerIsolation()
     }
 }

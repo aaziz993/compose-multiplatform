@@ -5,6 +5,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
 
 /**
  * `AbstractExecTask` is the base class for all exec tasks.
@@ -75,6 +76,10 @@ internal abstract class AbstractExecTask<T : AbstractExecTask<T>> : Task {
         setEnvironment?.let(named::setEnvironment)
         ignoreExitValue?.let(named::setIgnoreExitValue)
     }
+
+    context(Project)
+    override fun applyTo() =
+        super.applyTo(tasks.withType<org.gradle.api.tasks.AbstractExecTask<*>>())
 }
 
 @Serializable

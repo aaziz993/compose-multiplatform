@@ -7,6 +7,7 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.api.file.DuplicatesStrategy
+import org.gradle.kotlin.dsl.withType
 
 /**
  * `AbstractArchiveTask` is the base class for all archive tasks.
@@ -119,6 +120,10 @@ internal abstract class AbstractArchiveTask : AbstractCopyTask() {
         preserveFileTimestamps?.let(named::setPreserveFileTimestamps)
         reproducibleFileOrder?.let(named::setReproducibleFileOrder)
     }
+
+    context(Project)
+    override fun applyTo() =
+        super.applyTo(tasks.withType<org.gradle.api.tasks.bundling.AbstractArchiveTask>())
 }
 
 @Serializable

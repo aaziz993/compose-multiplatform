@@ -6,6 +6,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
 
 @Serializable
 internal abstract class AbstractTestTask : Task {
@@ -64,6 +65,10 @@ internal abstract class AbstractTestTask : Task {
         testNameIncludePatterns?.let(named::setTestNameIncludePatterns)
         filter?.applyTo(named.filter)
     }
+
+    context(Project)
+    override fun applyTo() =
+        super.applyTo(tasks.withType<org.gradle.api.tasks.testing.AbstractTestTask>())
 }
 
 @Serializable
@@ -87,7 +92,7 @@ internal data class AbstractTestTaskImpl(
     override val mustRunAfter: List<String>? = null,
     override val finalizedBy: List<String>? = null,
     override val shouldRunAfter: List<String>? = null,
-) : AbstractTestTask(){
+) : AbstractTestTask() {
 
     override val name: String
         get() = ""
