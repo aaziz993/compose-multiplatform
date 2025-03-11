@@ -16,7 +16,7 @@ public class CMPPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             projectProperties.compose
-                .takeIf { it.enabled && projectProperties.kotlin.targets?.isNotEmpty() == true }?.let { compose ->
+                .takeIf { it.enabled && projectProperties.kotlin.targets.isNotEmpty() == true }?.let { compose ->
                     plugins.apply(settings.libs.plugins.plugin("compose.multiplatform").id)
                     plugins.apply(settings.libs.plugins.plugin("compose.compiler").id)
 

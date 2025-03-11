@@ -14,7 +14,7 @@ internal class SonarPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             projectProperties.plugins.sonar
-                .takeIf { it.enabled && projectProperties.kotlin.targets?.isNotEmpty()==true }?.let { sonar ->
+                .takeIf { it.enabled && projectProperties.kotlin.targets.isNotEmpty() }?.let { sonar ->
                     plugins.apply(settings.libs.plugins.plugin("sonarqube").id)
 
                     sonar.applyTo()

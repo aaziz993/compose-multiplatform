@@ -13,7 +13,7 @@ internal class KspPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            projectProperties.plugins.ksp.takeIf { it.enabled && projectProperties.kotlin.targets?.isNotEmpty()==true }?.let { ksp ->
+            projectProperties.plugins.ksp.takeIf { it.enabled && projectProperties.kotlin.targets.isNotEmpty() }?.let { ksp ->
                 plugins.apply(settings.libs.plugins.plugin("ksp").id)
 
                 ksp.applyTo()

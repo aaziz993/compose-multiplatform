@@ -15,7 +15,7 @@ internal class KnitPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             projectProperties.plugins.knit
-                .takeIf { it.enabled && projectProperties.kotlin.targets?.isNotEmpty() == true }?.let { knit ->
+                .takeIf { it.enabled && projectProperties.kotlin.targets.isNotEmpty() == true }?.let { knit ->
                     plugins.apply(settings.libs.plugins.plugin("knit").id)
 
                     knit.applyTo()

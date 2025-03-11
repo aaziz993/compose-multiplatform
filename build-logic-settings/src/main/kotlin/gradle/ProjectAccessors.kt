@@ -67,12 +67,12 @@ internal fun String.resolveValue() =
     if (startsWith("$")) {
         removePrefix("$")
             .substringBefore(".")
-            .split("Or").firstNotNullOf { string ->
+            .split("Or").firstNotNullOf { reference ->
                 when {
-                    startsWith("\$env.") -> System.getenv()[removePrefix("\$env.").toScreamingSnakeCase()]
-                    startsWith("\$gradle.") -> providers.gradleProperty("\$gradle.".toDotCase()).orNull
-                    startsWith("\$local.") -> projectProperties.localProperties["\$local.".toDotCase()]
-                    startsWith("\$extra.") -> extra["\$extra.".toDotCase()]
+                    reference.startsWith("\$env.") -> System.getenv()[removePrefix("\$env.").toScreamingSnakeCase()]
+                    reference.startsWith("\$gradle.") -> providers.gradleProperty("\$gradle.".toDotCase()).orNull
+                    reference.startsWith("\$local.") -> projectProperties.localProperties["\$local.".toDotCase()]
+                    reference.startsWith("\$extra.") -> extra["\$extra.".toDotCase()]
                     else -> this
                 }
             }

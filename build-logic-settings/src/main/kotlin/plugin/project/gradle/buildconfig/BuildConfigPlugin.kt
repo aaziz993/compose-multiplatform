@@ -14,7 +14,7 @@ internal class BuildConfigPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             projectProperties.plugins.buildConfig
-                .takeIf { it.enabled && projectProperties.kotlin.targets?.isNotEmpty()==true }?.let { buildConfig ->
+                .takeIf { it.enabled && projectProperties.kotlin.targets.isNotEmpty() }?.let { buildConfig ->
                     plugins.apply(settings.libs.plugins.plugin("build.config").id)
 
                     buildConfig.applyTo()

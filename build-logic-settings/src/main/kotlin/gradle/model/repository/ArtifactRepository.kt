@@ -71,9 +71,9 @@ internal object ArtifactRepositoryTransformingSerializer : BaseKeyTransformingSe
         else mapOf("type" to JsonPrimitive(key)),
     )
 
-    override fun transformValue(key: String, value: String): JsonObject = JsonObject(
+    override fun transformValue(key: String, value: JsonElement): JsonObject = JsonObject(
         mapOf(
-            "url" to JsonPrimitive(value),
+            "url" to value,
         ),
     )
 }

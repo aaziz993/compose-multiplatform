@@ -14,7 +14,7 @@ internal class AnimalSnifferPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             projectProperties.plugins.animalSniffer
-                .takeIf { it.enabled && projectProperties.kotlin.targets?.isNotEmpty() == true }?.let { animalSniffer ->
+                .takeIf { it.enabled && projectProperties.kotlin.targets.isNotEmpty() }?.let { animalSniffer ->
                     plugins.apply(settings.libs.plugins.plugin("animalsniffer").id)
 
                     animalSniffer.applyTo()

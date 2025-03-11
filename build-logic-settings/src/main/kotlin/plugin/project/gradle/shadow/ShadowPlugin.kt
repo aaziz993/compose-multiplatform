@@ -14,7 +14,7 @@ internal class ShadowPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             projectProperties.plugins.shadow
-                .takeIf { it.enabled && projectProperties.kotlin.targets?.isNotEmpty() == true }?.let { shadow ->
+                .takeIf { it.enabled && projectProperties.kotlin.targets.isNotEmpty() == true }?.let { shadow ->
                     plugins.apply(settings.libs.plugins.plugin("shadow").id)
 
                     shadow.applyTo()

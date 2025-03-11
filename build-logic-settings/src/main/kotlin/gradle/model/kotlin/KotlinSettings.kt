@@ -37,9 +37,9 @@ internal data class KotlinSettings(
 ) : KotlinMultiplatformExtension {
 
     val enabledKMP: Boolean by lazy {
-        targets?.filter(KotlinTarget::isLeaf)?.let { targets ->
+        targets.filter(KotlinTarget::isLeaf).let { targets ->
             targets.any(KotlinTarget::needKMP) || targets.any { target -> target::class != targets.first()::class }
-        } == true
+        }
     }
 
     context(Project)
@@ -47,11 +47,11 @@ internal data class KotlinSettings(
         pluginManager.withPlugin(settings.libs.plugins.plugin("kotlin.multiplatform").id) {
             super.applyTo(kotlin as KotlinBaseExtension)
 
-            targets?.forEach { target -> target.applyTo() }
+            targets.forEach { target -> target.applyTo() }
 
             kotlin.applyDefaultHierarchyTemplate {
                 common {
-                    hierarchy?.forEach { hierarchy ->
+                    hierarchy.forEach { hierarchy ->
                         hierarchy.applyTo(this)
                     }
                 }
@@ -64,7 +64,7 @@ internal data class KotlinSettings(
 }
 
 internal inline fun <reified T : KotlinTarget> KotlinSettings.sourceSets(): List<KotlinSourceSet>? {
-    val _targets = targets?.filterIsInstance<T>() ?: return null
+    val _targets = targets.filterIsInstance<T>()
 
     return sourceSets?.let { sourceSets ->
         sourceSets.filter { sourceSet ->

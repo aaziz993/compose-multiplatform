@@ -14,7 +14,7 @@ internal class KtorfitPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             projectProperties.plugins.ktorfit
-                .takeIf { it.enabled && projectProperties.kotlin.targets?.isNotEmpty()==true }?.let { ktorfit ->
+                .takeIf { it.enabled && projectProperties.kotlin.targets.isNotEmpty() }?.let { ktorfit ->
                     plugins.apply(settings.libs.plugins.plugin("ktorfit").id)
 
                     ktorfit.applyTo()

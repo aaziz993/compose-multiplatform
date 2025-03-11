@@ -14,7 +14,7 @@ internal class PowerAssertPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             projectProperties.plugins.powerAssert
-                .takeIf { it.enabled && projectProperties.kotlin.targets?.isNotEmpty()==true }?.let { powerAssert ->
+                .takeIf { it.enabled && projectProperties.kotlin.targets.isNotEmpty() }?.let { powerAssert ->
                     plugins.apply(settings.libs.plugins.plugin("power.assert").id)
 
                     powerAssert.applyTo()

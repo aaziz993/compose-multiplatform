@@ -43,9 +43,7 @@ internal data class KotlinJvmTarget(
             named.mainRun(mainRun::applyTo)
         }
 
-        if (projectProperties.kotlin.targets?.none { target ->
-                target is KotlinAndroidTarget
-            } != false) {
+        if (projectProperties.kotlin.targets.none { target -> target is KotlinAndroidTarget }) {
             withJava?.takeIf { it }?.let { named.withJava() }
         }
     }
