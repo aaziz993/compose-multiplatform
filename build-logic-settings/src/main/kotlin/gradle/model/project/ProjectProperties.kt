@@ -232,10 +232,9 @@ internal data class ProjectProperties(
 
     context(Project)
     fun applyTo() = with(SLF4JProblemReporterContext()) {
-        if (kotlin.targets?.isNotEmpty() == true) {
+        if (kotlin.targets.isNotEmpty()) {
             group?.let(::setGroup)
             description?.let(::setDescription)
-
             project.version = version()
         }
 

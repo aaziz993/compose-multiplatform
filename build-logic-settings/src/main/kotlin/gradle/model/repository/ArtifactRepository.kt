@@ -1,5 +1,6 @@
 package gradle.model.repository
 
+import gradle.isUrl
 import gradle.maybeNamed
 import gradle.model.project.Dependency
 import gradle.serialization.serializer.BaseKeyTransformingSerializer
@@ -60,8 +61,8 @@ private object ArtifactRepositorySerializer : JsonContentPolymorphicSerializer<A
     ArtifactRepository::class,
 )
 
-internal object ArtifactRepositoryTransformingSerializer : BaseKeyTransformingSerializer<Dependency>(
-    Dependency.serializer(),
+internal object ArtifactRepositoryTransformingSerializer : BaseKeyTransformingSerializer<ArtifactRepository>(
+    ArtifactRepository.serializer(),
 ) {
 
     override fun transformKey(key: String, value: JsonElement?): JsonObject = JsonObject(
@@ -72,16 +73,14 @@ internal object ArtifactRepositoryTransformingSerializer : BaseKeyTransformingSe
                     put("url", JsonPrimitive(key))
                 }
 
-                else -> {
-                    put("type", JsonPrimitive(key))
-                }
+                else -> put("type", JsonPrimitive(key))
             }
         },
     )
 
     override fun transformValue(key: String, value: String): JsonObject = JsonObject(
         mapOf(
-            "url" to JsonPrimitive(value),
+                (if (value.isUrl) "url" else "type") to JsonPrimitive(value),
         ),
     )
 }
