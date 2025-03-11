@@ -322,11 +322,11 @@ internal data class ProjectProperties(
         )
     }
 
-    private fun Settings.applyTo(handler: RepositoryHandler) = with(handler) {
+    private fun Settings.applyTo(handler: RepositoryHandler){
         // Apply repositories from project properties.
         projectProperties.dependencyResolutionManagement?.repositories?.let { repositories ->
             repositories.forEach { repository ->
-                maven(repository)
+                repository.applyTo(handler)
             }
         }
     }

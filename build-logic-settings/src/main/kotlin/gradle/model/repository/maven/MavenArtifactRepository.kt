@@ -5,7 +5,9 @@ import gradle.model.repository.AuthenticationSupported
 import gradle.model.repository.UrlArtifactRepository
 import kotlinx.serialization.Serializable
 import org.gradle.api.artifacts.dsl.RepositoryHandler
+import org.gradle.api.artifacts.repositories.FlatDirectoryArtifactRepository
 import org.gradle.api.artifacts.repositories.MavenArtifactRepository
+import org.gradle.kotlin.dsl.withType
 
 /**
  * An artifact repository which uses a Maven format to store artifacts and meta-data.
@@ -59,6 +61,11 @@ internal interface MavenArtifactRepository : ArtifactRepository, UrlArtifactRepo
             repository.mavenContent(mavenContent::applyTo)
         }
     }
+
+    override fun applyTo(handler: RepositoryHandler) =
+        super<ArtifactRepository>.applyTo(handler.withType<MavenArtifactRepository>()) {
+            handler.maven(it)
+        }
 
     /**
      * Allows configuring the sources of metadata for a specific repository.

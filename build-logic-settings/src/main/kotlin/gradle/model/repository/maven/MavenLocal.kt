@@ -7,6 +7,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.artifacts.ArtifactRepositoryContainer
+import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.kotlin.dsl.withType
 
 @Serializable
@@ -24,11 +25,8 @@ internal data class MavenLocal(
     override val url: String?
         get() = null
 
-    context(Project)
-    override fun applyTo() =
-        super.applyTo(
-            publishing.repositories.withType<org.gradle.api.artifacts.repositories.MavenArtifactRepository>(),
-        ) {
-            publishing.repositories.mavenLocal(it)
+    override fun applyTo(handler: RepositoryHandler) =
+        super.applyTo(handler.withType<org.gradle.api.artifacts.repositories.MavenArtifactRepository>()) {
+            handler.mavenLocal(it)
         }
 }

@@ -12,6 +12,7 @@ import kotlinx.serialization.json.JsonPrimitive
 import org.gradle.api.NamedDomainObjectCollection
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler
+import org.gradle.api.initialization.Settings
 
 @Serializable(with = ArtifactRepositorySerializer::class)
 internal interface ArtifactRepository {
@@ -36,8 +37,7 @@ internal interface ArtifactRepository {
      */
     val content: RepositoryContentDescriptor?
 
-    context(Project)
-    fun applyTo()
+    fun applyTo(handler: RepositoryHandler)
 
     fun applyTo(repository: org.gradle.api.artifacts.repositories.ArtifactRepository) {
         repository.name = name
@@ -46,7 +46,6 @@ internal interface ArtifactRepository {
         }
     }
 
-    context(Project)
     fun applyTo(
         named: NamedDomainObjectCollection<out org.gradle.api.artifacts.repositories.ArtifactRepository>,
         createAndConfigure: ((org.gradle.api.artifacts.repositories.ArtifactRepository.() -> Unit) -> org.gradle.api.artifacts.repositories.ArtifactRepository)?
@@ -66,21 +65,16 @@ internal object ArtifactRepositoryTransformingSerializer : BaseKeyTransformingSe
 ) {
 
     override fun transformKey(key: String, value: JsonElement?): JsonObject = JsonObject(
-        buildMap {
-            when {
-                value == null -> {
-                    put("type", JsonPrimitive("maven"))
-                    put("url", JsonPrimitive(key))
-                }
-
-                else -> put("type", JsonPrimitive(key))
-            }
-        },
+        if (value == null && key.isUrl) mapOf(
+            "type" to JsonPrimitive("maven"),
+            "url" to JsonPrimitive(key),
+        )
+        else mapOf("type" to JsonPrimitive(key)),
     )
 
     override fun transformValue(key: String, value: String): JsonObject = JsonObject(
         mapOf(
-                (if (value.isUrl) "url" else "type") to JsonPrimitive(value),
+            "url" to JsonPrimitive(value),
         ),
     )
 }

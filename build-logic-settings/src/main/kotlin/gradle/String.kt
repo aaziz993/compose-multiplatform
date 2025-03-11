@@ -8,7 +8,7 @@ internal fun String.ifNotEmpty(transform: (String) -> String) =
 internal fun String.prefixIfNotEmpty(prefix: String) =
     ifNotEmpty { "$prefix$it" }
 
-private val URL_REGEX = "^(https|http)://".toRegex()
+private val URL_REGEX = "^(https|http)://.*".toRegex()
 
 internal val String.isUrl
     get() = matches(URL_REGEX)

@@ -85,7 +85,7 @@ internal interface PublishingExtension {
         pluginManager.withPlugin("maven-publish") {
 
             repositories?.forEach { repository ->
-                repository.applyTo()
+                repository.applyTo(publishing.repositories)
             }
 
             publications?.forEach { publication ->

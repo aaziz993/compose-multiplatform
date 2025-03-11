@@ -4,7 +4,9 @@ import gradle.publishing
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.api.artifacts.repositories.FlatDirectoryArtifactRepository
+import org.gradle.api.initialization.Settings
 import org.gradle.kotlin.dsl.withType
 
 /**
@@ -48,9 +50,8 @@ internal data class FlatDirectoryArtifactRepository(
         dirs.let(repository::setDirs)
     }
 
-    context(Project)
-    override fun applyTo() =
-        super.applyTo(publishing.repositories.withType<FlatDirectoryArtifactRepository>()) {
-            publishing.repositories.flatDir(it)
+    override fun applyTo(handler: RepositoryHandler) =
+        super.applyTo(handler.withType<FlatDirectoryArtifactRepository>()) {
+            handler.flatDir(it)
         }
 }

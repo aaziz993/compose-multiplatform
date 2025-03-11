@@ -7,6 +7,8 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler
+import org.gradle.api.artifacts.repositories.FlatDirectoryArtifactRepository
+import org.gradle.api.artifacts.repositories.MavenArtifactRepository
 import org.gradle.kotlin.dsl.withType
 
 @Serializable
@@ -18,10 +20,8 @@ internal data class GradlePluginPortal(
     override val name: String
         get() = "gradlePluginPortal"
 
-    context(Project)
-    override fun applyTo() =
-        super.applyTo(
-            publishing.repositories.withType<org.gradle.api.artifacts.repositories.MavenArtifactRepository>()){
-            publishing.repositories.gradlePluginPortal(it)
+    override fun applyTo(handler: RepositoryHandler) =
+        super.applyTo(handler.withType<MavenArtifactRepository>()) {
+            handler.gradlePluginPortal(it)
         }
 }
