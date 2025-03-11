@@ -14,7 +14,6 @@ import org.gradle.kotlin.dsl.withType
  *
  * The default is to compress the contents of the zip.
  */
-@Serializable
 internal abstract class Zip : AbstractArchiveTask() {
 
     /**

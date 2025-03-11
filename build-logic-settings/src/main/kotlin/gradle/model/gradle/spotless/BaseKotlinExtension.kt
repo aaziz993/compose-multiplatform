@@ -8,7 +8,6 @@ import gradle.versions
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-@Serializable
 internal abstract class BaseKotlinExtension : FormatExtension {
 
     abstract val diktat: DiktatConfig?

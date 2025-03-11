@@ -12,7 +12,6 @@ import org.gradle.kotlin.dsl.withType
  *
  * @param <T> The concrete type of the class.
 </T> */
-@Serializable
 internal abstract class AbstractExecTask<T : AbstractExecTask<T>> : Task {
 
     /**

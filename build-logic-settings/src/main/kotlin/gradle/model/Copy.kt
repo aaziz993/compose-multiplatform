@@ -51,7 +51,6 @@ import org.gradle.kotlin.dsl.register
  * }
 </pre> *
  */
-@Serializable
 internal abstract class Copy : AbstractCopyTask() {
 
     /**

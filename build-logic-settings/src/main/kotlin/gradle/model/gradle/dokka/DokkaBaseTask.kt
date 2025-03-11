@@ -7,7 +7,6 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 
-@Serializable
 internal abstract class DokkaBaseTask : Task {
 
     context(Project)

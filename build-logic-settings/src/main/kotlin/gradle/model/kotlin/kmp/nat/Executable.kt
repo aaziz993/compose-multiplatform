@@ -5,7 +5,6 @@ import org.gradle.api.Named
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.mpp.Executable
 
-@Serializable
 internal abstract class Executable : NativeBinary {
 
     /**

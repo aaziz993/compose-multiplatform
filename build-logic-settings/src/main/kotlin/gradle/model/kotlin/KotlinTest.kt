@@ -10,7 +10,6 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
 
-@Serializable
 internal abstract class KotlinTest : AbstractTestTask() {
 
     abstract val targetName: String?

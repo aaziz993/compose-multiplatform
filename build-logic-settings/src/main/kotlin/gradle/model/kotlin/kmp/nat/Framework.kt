@@ -6,7 +6,6 @@ import org.gradle.api.Named
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.mpp.Framework
 
-@Serializable
 internal abstract class Framework: AbstractNativeLibrary {
    abstract val isStatic: Boolean?
 

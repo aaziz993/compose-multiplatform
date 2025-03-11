@@ -8,7 +8,6 @@ import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 
-@Serializable
 internal abstract class KotlinNativeTargetWithTests<T : KotlinNativeBinaryTestRun> :
     KotlinNativeTarget(), KotlinTargetWithTests<NativeBinaryTestRunSource, T> {
 

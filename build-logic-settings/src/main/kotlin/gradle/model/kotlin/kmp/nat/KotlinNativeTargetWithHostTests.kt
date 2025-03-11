@@ -3,7 +3,6 @@ package gradle.model.kotlin.kmp.nat
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-@Serializable
 internal abstract class KotlinNativeTargetWithHostTests : KotlinNativeTargetWithTests<KotlinNativeHostTestRun>()
 
 @Serializable

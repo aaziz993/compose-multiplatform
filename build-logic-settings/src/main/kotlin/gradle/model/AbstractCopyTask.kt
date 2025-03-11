@@ -26,7 +26,6 @@ import org.gradle.kotlin.dsl.withType
 /**
  * `AbstractCopyTask` is the base class for all copy tasks.
  */
-@Serializable
 internal abstract class AbstractCopyTask : Task, CopySpec {
 
     /**

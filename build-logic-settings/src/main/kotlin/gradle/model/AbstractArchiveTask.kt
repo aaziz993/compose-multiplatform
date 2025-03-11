@@ -12,7 +12,6 @@ import org.gradle.kotlin.dsl.withType
 /**
  * `AbstractArchiveTask` is the base class for all archive tasks.
  */
-@Serializable
 internal abstract class AbstractArchiveTask : AbstractCopyTask() {
 
     /**

@@ -11,7 +11,6 @@ import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
 import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
 
-@Serializable
 internal abstract class KotlinJvmAndAndroidTarget :
     KotlinTarget, HasConfigurableKotlinCompilerOptions<KotlinJvmCompilerOptions> {
 

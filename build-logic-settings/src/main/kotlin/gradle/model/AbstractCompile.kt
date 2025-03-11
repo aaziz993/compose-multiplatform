@@ -11,7 +11,6 @@ import org.gradle.kotlin.dsl.withType
 /**
  * The base class for all JVM-based language compilation tasks.
  */
-@Serializable
 internal abstract class AbstractCompile : Task {
 
     /**

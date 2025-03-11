@@ -6,7 +6,6 @@ import gradle.model.android.library.LibraryDefaultConfig
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-@Serializable
 internal abstract class DefaultConfig : ApplicationDefaultConfig,
     DynamicFeatureDefaultConfig,
     LibraryDefaultConfig,

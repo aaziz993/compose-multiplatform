@@ -20,7 +20,6 @@ import org.gradle.kotlin.dsl.withType
 /**
  * Assembles a JAR archive.
  */
-@Serializable
 internal abstract class Jar : Zip() {
 
     /**
