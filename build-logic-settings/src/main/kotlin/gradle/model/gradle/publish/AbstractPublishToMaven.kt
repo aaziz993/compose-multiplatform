@@ -12,7 +12,6 @@ import org.gradle.kotlin.dsl.withType
  *
  * @since 2.4
  */
-@Serializable
 internal abstract class AbstractPublishToMaven : Task{
     context(Project)
     override fun applyTo() =

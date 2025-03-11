@@ -252,7 +252,6 @@ internal data class ProjectProperties(
         project.plugins.apply(DokkaPlugin::class.java)
         project.plugins.apply(ShadowPlugin::class.java)
         project.plugins.apply(ApiValidationPlugin::class.java)
-//        project.plugins.apply(AnimalSnifferPlugin::class.java)
         project.plugins.apply(PublishPlugin::class.java)
         project.plugins.apply(AllOpenPlugin::class.java)
         project.plugins.apply(NoArgPlugin::class.java)
@@ -266,6 +265,7 @@ internal data class ProjectProperties(
         project.plugins.apply(PowerAssertPlugin::class.java)
         project.plugins.apply(JavaPlugin::class.java)
         project.plugins.apply(AndroidPlugin::class.java) // apply and configure android library or application plugin.
+        project.plugins.apply(AnimalSnifferPlugin::class.java)
         project.plugins.apply(KMPPlugin::class.java) // need android library or application plugin applied.
         project.plugins.apply(KspPlugin::class.java) // kspCommonMainMetadata need kmp plugin applied.
         project.plugins.apply(NativePlugin::class.java)
@@ -369,10 +369,12 @@ internal data class ProjectProperties(
                 }.orEmpty() deepMerge properties
 
                 json.decodeFromAny<ProjectProperties>(templatedProperties.resolve()).apply {
-                    if (type == ProjectType.APP)
-                        android = templatedProperties["android"]?.let { json.decodeFromAny<BaseAppModuleExtension>(it) }
-                    else
-                        android = templatedProperties["android"]?.let { json.decodeFromAny<LibraryExtension>(it) }
+                    android = templatedProperties["android"]?.let { androidProperties ->
+                        if (type == ProjectType.APP)
+                            androidProperties.let { json.decodeFromAny<BaseAppModuleExtension>(it) }
+                        else
+                            androidProperties.let { json.decodeFromAny<LibraryExtension>(it) }
+                    }
                 }
             }
             else {
