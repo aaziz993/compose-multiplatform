@@ -7,7 +7,6 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 /**
  * Represents a Kotlin task compiling using configurable [compilerOptions].
@@ -29,13 +28,13 @@ internal interface KotlinCompilationTask<out CO : KotlinCommonCompilerOptions> :
     override fun applyTo(named: Named) {
         super.applyTo(named)
 
-        named as KotlinCompilationTask<*>
+        named as org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask<*>
 
         compilerOptions?.applyTo(named.compilerOptions)
     }
 
     context(Project)
-    override fun applyTo() = applyTo(tasks.withType<KotlinCompilationTask<*>>())
+    override fun applyTo() = applyTo(tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask<*>>())
 }
 
 @Serializable
@@ -53,9 +52,6 @@ internal data class KotlinCompilationTaskImpl<out CO : KotlinCommonCompilerOptio
     override val mustRunAfter: List<String>? = null,
     override val finalizedBy: List<String>? = null,
     override val shouldRunAfter: List<String>? = null,
-    override val compilerOptions: CO?
-) : gradle.model.kotlin.KotlinCompilationTask<CO>{
-
-    override val name: String
-        get() = ""
-}
+    override val compilerOptions: CO?=null,
+    override val name: String = "",
+) : KotlinCompilationTask<CO>

@@ -20,10 +20,11 @@ kotlin:
     - nonIos: [ jvm, android, web ]
     - mobile: [ android, ios ]
     - nonMobile: [ jvm, web ]
-    - nativeNonApple: [ mingw, linux, androidNative ]
+    - nativeNonApple: [ mingw, unix, linux, androidNative ]
     - apple32: [ watchosArm32, watchosArm64 ] # NB watchosArm64 is weird target w/ 32-bit numbers.
     - apple64: [ ios, macos, tvos, watchosX64, watchosDeviceArm64, watchosSimulatorArm64 ]
-    - nativeNonAndroid: [ apple, mingw, linux ]
+    - nativeNonAndroid: [ apple32, apple64, mingw, linux ]
+    - native: [ nativeNonApple, nativeNonAndroid ]
     - multithreaded: [ jvm, android, native ]
     - jsCommon: [ js, wasmJs ]
     - web: [ js, wasmJs, wasmWasi ]

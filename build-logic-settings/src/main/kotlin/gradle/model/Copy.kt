@@ -6,70 +6,77 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.api.file.DuplicatesStrategy
-import org.gradle.api.tasks.Copy
-import org.gradle.api.tasks.bundling.ZipEntryCompression
 import org.gradle.kotlin.dsl.withType
 
 /**
- * Assembles a ZIP archive.
+ * Copies files into a destination directory. This task can also rename and filter files as it copies. The task
+ * implements [CopySpec][org.gradle.api.file.CopySpec] for specifying what to copy.
  *
- * The default is to compress the contents of the zip.
+ *
+ *  Examples:
+ * <pre class='autoTested'>
+ * task copyDocs(type: Copy) {
+ * from 'src/main/doc'
+ * into 'build/target/doc'
+ * }
+ *
+ * //for Ant filter
+ * import org.apache.tools.ant.filters.ReplaceTokens
+ *
+ * //for including in the copy task
+ * def dataContent = copySpec {
+ * from 'src/data'
+ * include '*.data'
+ * }
+ *
+ * task initConfig(type: Copy) {
+ * from('src/main/config') {
+ * include '**&#47;*.properties'
+ * include '**&#47;*.xml'
+ * filter(ReplaceTokens, tokens: [version: '2.3.1'])
+ * }
+ * from('src/main/config') {
+ * exclude '**&#47;*.properties', '**&#47;*.xml'
+ * }
+ * from('src/main/languages') {
+ * rename 'EN_US_(.*)', '$1'
+ * }
+ * into 'build/target/config'
+ * exclude '**&#47;*.bak'
+ *
+ * includeEmptyDirs = false
+ *
+ * with dataContent
+ * }
+</pre> *
  */
 @Serializable
-internal abstract class Zip : AbstractArchiveTask() {
+internal abstract class Copy : AbstractCopyTask() {
 
     /**
-     * Sets the compression level of the entries of the archive. If set to [ZipEntryCompression.DEFLATED] (the default), each entry is
-     * compressed using the DEFLATE algorithm. If set to [ZipEntryCompression.STORED] the entries of the archive are left uncompressed.
+     * Sets the directory to copy files into. This is the same as calling [.into] on this task.
      *
-     * @param entryCompression `STORED` or `DEFLATED`
+     * @param destinationDir The destination directory. Must not be null.
      */
-    abstract val entryCompression: ZipEntryCompression?
-
-    /**
-     * Enables building zips with more than 65535 files or bigger than 4GB.
-     *
-     * @see .isZip64
-     */
-    abstract val allowZip64: Boolean?
-
-    /**
-     * The character set used to encode ZIP metadata like file names.
-     * Defaults to the platform's default character set.
-     *
-     * @param metadataCharset the character set used to encode ZIP metadata like file names
-     * @since 2.14
-     */
-    abstract val metadataCharset: String?
+    abstract val destinationDir: String?
 
     context(Project)
     override fun applyTo(named: Named) {
         super.applyTo(named)
 
-        named as org.gradle.api.tasks.bundling.Zip
+        named as org.gradle.api.tasks.Copy
 
-        named.filePermissions
-        entryCompression?.let(named::setEntryCompression)
-        allowZip64?.let(named::setZip64)
-        metadataCharset?.let(named::setMetadataCharset)
+        destinationDir?.let(::file)?.let(named::setDestinationDir)
     }
+
+    context(Project)
+    override fun applyTo() =
+        super.applyTo(tasks.withType<org.gradle.api.tasks.Copy>())
 }
 
 @Serializable
-@SerialName("Zip")
-internal data class ZipImpl(
-    override val entryCompression: ZipEntryCompression? = null,
-    override val allowZip64: Boolean? = null,
-    override val metadataCharset: String? = null,
-    override val archiveFileName: String? = null,
-    override val destinationDirectory: String? = null,
-    override val archiveBaseName: String? = null,
-    override val archiveAppendix: String? = null,
-    override val archiveVersion: String? = null,
-    override val archiveExtension: String? = null,
-    override val archiveClassifier: String? = null,
-    override val preserveFileTimestamps: Boolean? = null,
-    override val reproducibleFileOrder: Boolean? = null,
+@SerialName("Copy")
+internal data class CopyImpl(
     override val caseSensitive: Boolean? = null,
     override val dependsOn: List<String>? = null,
     override val onlyIf: Boolean? = null,
@@ -83,6 +90,7 @@ internal data class ZipImpl(
     override val mustRunAfter: List<String>? = null,
     override val finalizedBy: List<String>? = null,
     override val shouldRunAfter: List<String>? = null,
+    override val name: String = "",
     override val isCaseSensitive: Boolean? = null,
     override val includeEmptyDirs: Boolean? = null,
     override val duplicatesStrategy: DuplicatesStrategy? = null,
@@ -104,13 +112,10 @@ internal data class ZipImpl(
     override val setIncludes: List<String>? = null,
     override val excludes: List<String>? = null,
     override val setExcludes: List<String>? = null,
-    override val name: String = ""
-) : Zip() {
-
-    context(Project)
-    override fun applyTo() =
-        super.applyTo(tasks.withType<org.gradle.api.tasks.bundling.Zip>()) { name ->
-            Copy
-            tasks.register(name).get()
-        }
-}
+    /**
+     * Sets the directory to copy files into. This is the same as calling [.into] on this task.
+     *
+     * @param destinationDir The destination directory. Must not be null.
+     */
+    override val destinationDir: String? = null,
+) : Copy()

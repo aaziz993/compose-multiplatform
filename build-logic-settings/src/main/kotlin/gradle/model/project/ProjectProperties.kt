@@ -11,6 +11,7 @@ import gradle.model.TaskTransformingSerializer
 import gradle.model.android.BaseExtension
 import gradle.model.android.application.BaseAppModuleExtension
 import gradle.model.android.library.LibraryExtension
+import gradle.model.java.Jar
 import gradle.model.java.JavaPluginExtension
 import gradle.model.java.application.JavaApplication
 import gradle.model.kotlin.HasKotlinDependencies
@@ -44,6 +45,7 @@ import org.gradle.api.file.Directory
 import org.gradle.api.file.FileCollection
 import org.gradle.api.initialization.Settings
 import org.gradle.api.internal.artifacts.repositories.DefaultMavenArtifactRepository
+import org.gradle.kotlin.dsl.creating
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.maven
 import org.gradle.kotlin.dsl.repositories
@@ -322,15 +324,20 @@ internal data class ProjectProperties(
     }
 
     private fun Settings.applyTo(handler: RepositoryHandler) = with(handler) {
-        // For dev versions of compose plugin and dependencies
-        jetbrainsCompose()
-
         // Apply repositories from project properties.
         projectProperties.dependencyResolutionManagement?.repositories?.let { repositories ->
             repositories.forEach { repository ->
                 maven(repository)
             }
         }
+    }
+
+    private fun Project.configureEmptyJavadocArtifact(): Jar {
+        val javadocJar by project.tasks.creating(Jar::class) {
+            archiveClassifier = "javadoc"
+            // contents are deliberately left empty
+        }
+        return javadocJar
     }
 
     companion object {

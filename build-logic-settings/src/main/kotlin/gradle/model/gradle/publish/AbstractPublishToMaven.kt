@@ -13,7 +13,11 @@ import org.gradle.kotlin.dsl.withType
  * @since 2.4
  */
 @Serializable
-internal abstract class AbstractPublishToMaven : Task
+internal abstract class AbstractPublishToMaven : Task{
+    context(Project)
+    override fun applyTo() =
+        super.applyTo(tasks.withType<org.gradle.api.publish.maven.tasks.AbstractPublishToMaven>())
+}
 
 @Serializable
 @SerialName("AbstractPublishToMaven")
@@ -30,12 +34,5 @@ internal data class AbstractPublishToMavenImpl(
     override val mustRunAfter: List<String>? = null,
     override val finalizedBy: List<String>? = null,
     override val shouldRunAfter: List<String>? = null,
-) : AbstractPublishToMaven() {
-
-    override val name: String
-        get() = ""
-
-    context(Project)
-    override fun applyTo() =
-        super.applyTo(tasks.withType<org.gradle.api.publish.maven.tasks.AbstractPublishToMaven>())
-}
+    override val name: String = "",
+) : AbstractPublishToMaven()

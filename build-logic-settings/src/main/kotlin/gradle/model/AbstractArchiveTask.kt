@@ -172,8 +172,5 @@ internal data class AbstractArchiveTaskImpl(
     override val setIncludes: List<String>? = null,
     override val excludes: List<String>? = null,
     override val setExcludes: List<String>? = null,
-) : AbstractArchiveTask(){
-
-    override val name: String
-        get() = ""
-}
+    override val name: String = "",
+) : AbstractArchiveTask()

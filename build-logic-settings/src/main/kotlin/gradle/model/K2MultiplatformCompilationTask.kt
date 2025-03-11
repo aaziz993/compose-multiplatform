@@ -49,8 +49,5 @@ internal data class K2MultiplatformCompilationTaskImpl(
     override val mustRunAfter: List<String>? = null,
     override val finalizedBy: List<String>? = null,
     override val shouldRunAfter: List<String>? = null,
-) : K2MultiplatformCompilationTask{
-
-    override val name: String
-        get() = ""
-}
+    override val name: String = "",
+) : K2MultiplatformCompilationTask

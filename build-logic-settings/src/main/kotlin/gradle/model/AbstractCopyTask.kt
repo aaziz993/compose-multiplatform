@@ -41,6 +41,7 @@ internal abstract class AbstractCopyTask : Task, CopySpec {
         named as org.gradle.api.tasks.AbstractCopyTask
 
         super<CopySpec>.applyTo(named)
+
         caseSensitive?.let(named::setCaseSensitive)
     }
 
@@ -86,8 +87,5 @@ internal data class AbstractCopyTaskImpl(
     override val setIncludes: List<String>? = null,
     override val excludes: List<String>? = null,
     override val setExcludes: List<String>? = null,
-) : AbstractCopyTask(){
-
-    override val name: String
-        get() = ""
-}
+    override val name: String = "",
+) : AbstractCopyTask()

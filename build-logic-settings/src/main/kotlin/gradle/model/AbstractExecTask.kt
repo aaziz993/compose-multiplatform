@@ -106,8 +106,5 @@ internal data class AbstractExecTaskImpl<T : AbstractExecTask<T>>(
     override val mustRunAfter: List<String>? = null,
     override val finalizedBy: List<String>? = null,
     override val shouldRunAfter: List<String>? = null,
-) : AbstractExecTask<T>(){
-
-    override val name: String
-        get() = ""
-}
+    override val name: String = "",
+) : AbstractExecTask<T>()
