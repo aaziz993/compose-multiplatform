@@ -1,9 +1,15 @@
 package gradle.model.repository
 
 import gradle.maybeNamed
+import gradle.model.project.Dependency
+import gradle.model.project.SUB_CONFIGURATIONS
+import gradle.serialization.serializer.BaseKeyTransformingSerializer
 import gradle.serialization.serializer.JsonContentPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 import org.gradle.api.NamedDomainObjectCollection
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler
@@ -46,7 +52,8 @@ internal interface ArtifactRepository {
         named: NamedDomainObjectCollection<out org.gradle.api.artifacts.repositories.ArtifactRepository>,
         createAndConfigure: ((org.gradle.api.artifacts.repositories.ArtifactRepository.() -> Unit) -> org.gradle.api.artifacts.repositories.ArtifactRepository)?
     ) = named.configure(
-        name, createAndConfigure) {
+        name, createAndConfigure,
+    ) {
         applyTo(this)
     }
 }
@@ -55,9 +62,44 @@ private object ArtifactRepositorySerializer : JsonContentPolymorphicSerializer<A
     ArtifactRepository::class,
 )
 
-internal object ArtifactRepositoryTransformingSerializer : KeyTransformingSerializer<ArtifactRepository>(
-    ArtifactRepository.serializer(),
-    "type",
+internal object ArtifactRepositoryTransformingSerializer : BaseKeyTransformingSerializer<Dependency>(
+    Dependency.serializer(),
+) {
+
+    override fun transformKey(key: String, value: JsonElement?): JsonObject = JsonObject(
+        buildMap {
+            when {
+                value == null -> {
+                    put("type", JsonPrimitive("maven"))
+                    put("url", JsonPrimitive(key))
+                }
+
+                else -> {
+                    put("type", JsonPrimitive(key))
+                }
+            }
+        },
+    )
+
+    override fun transformValue(key: String, value: String): JsonObject = JsonObject(
+        mapOf(
+            "url" to JsonPrimitive(value),
+        ),
+    )
+}
+
+
+
+KeyTransformingSerializer<ArtifactRepository>(
+ArtifactRepository.serializer(),
+{
+    key, value ->
+    when {
+        value == null -> "type"
+        else -> "type"
+    }
+},
+{ _, _ -> "url" },
 )
 
 private inline fun <reified T> NamedDomainObjectCollection<out T>.configure(

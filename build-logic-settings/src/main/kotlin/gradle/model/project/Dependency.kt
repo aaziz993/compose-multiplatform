@@ -5,6 +5,7 @@ package gradle.model.project
 import gradle.allLibs
 import gradle.isUrl
 import gradle.resolveLibrary
+import gradle.serialization.serializer.BaseKeyTransformingSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
 import gradle.settings
 import java.io.File
@@ -139,17 +140,26 @@ internal data class Dependency(
         }
 }
 
-internal object DependencyTransformingSerializer : KeyTransformingSerializer<Dependency>(
+internal object DependencyTransformingSerializer : BaseKeyTransformingSerializer<Dependency>(
     Dependency.serializer(),
-    { key, value ->
-        when {
-            value == null -> "notation"
-            key in SUB_CONFIGURATIONS -> "subConfiguration"
-            else -> "configuration"
-        }
-    },
-    { _, _ -> "notation" },
-)
+) {
+
+    override fun transformKey(key: String, value: JsonElement?): JsonObject = JsonObject(
+        mapOf(
+                when {
+                    value == null -> "notation"
+                    key in SUB_CONFIGURATIONS -> "subConfiguration"
+                    else -> "configuration"
+                } to JsonPrimitive(key),
+        ),
+    )
+
+    override fun transformValue(key: String, value: String): JsonObject = JsonObject(
+        mapOf(
+            "notation" to JsonPrimitive(value),
+        ),
+    )
+}
 
 
 
