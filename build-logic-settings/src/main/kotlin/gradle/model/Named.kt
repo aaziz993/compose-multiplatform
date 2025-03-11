@@ -26,7 +26,7 @@ internal interface Named {
     fun applyTo(named: Named)
 
     context(Project)
-    fun applyTo(named: NamedDomainObjectCollection<out Named>, create: ((name: String) -> Named)?) =
+    fun applyTo(named: NamedDomainObjectCollection<out Named>, create: ((name: String) -> Named?)?) =
         named.configure(name, create) {
             applyTo(this)
         }
@@ -40,7 +40,7 @@ internal interface Named {
     }
 }
 
-private inline fun <reified T> NamedDomainObjectCollection<out T>.configure(name: String, noinline create: ((name: String) -> T)? = null, noinline configure: T.() -> Unit) {
+private inline fun <reified T> NamedDomainObjectCollection<out T>.configure(name: String, noinline create: ((name: String) -> T?)? = null, noinline configure: T.() -> Unit) {
     if (name.isEmpty()) all(configure)
     else maybeNamed(name, configure) ?: create?.invoke(name)?.configure()
 }

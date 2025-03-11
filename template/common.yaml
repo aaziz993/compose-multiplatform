@@ -556,11 +556,6 @@ dependencies:
   - signature: $libs.signature.android
 
 tasks:
-  - KnitTask:
-      dependsOn: [ dokkaGenerate ]
-  - ShadowJar:
-      duplicatesStrategy: EXCLUDE
-      mergeServiceFiles: true
   - Kotlin2JsCompile:
       compilerOptions:
         target: es2015
@@ -569,6 +564,18 @@ tasks:
         - -Xir-generate-inline-anonymous-functions #  https://youtrack.jetbrains.com/issue/KT-67355
         - -Xsuppress-warning=NOTHING_TO_INLINE
         - -Xpartial-linkage-loglevel=ERROR
+  - KnitTask:
+      dependsOn: [ dokkaGenerate ]
+#  - Jar:
+#      name: sourcesJar
+#      archiveClassifier: sources
+#      from: sources
+#  - Jar:
+#      name: javadocJar
+#      archiveClassifier: javadoc
+  - ShadowJar:
+      duplicatesStrategy: EXCLUDE
+      mergeServiceFiles: true
   - AbstractPublishToMaven:
       dependOn: publishToMavenLocal
 

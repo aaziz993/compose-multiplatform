@@ -10,9 +10,19 @@ import kotlinx.serialization.json.jsonPrimitive
 
 internal abstract class KeyTransformingSerializer<T : Any>(
     tSerializer: KSerializer<T>,
-    private val keyAs: String,
-    private val valueAs: String? = null,
+    private val keyTransform: (key: String, value: JsonElement?) -> String,
+    private val valueTransform: (key: String, value: JsonElement) -> String,
 ) : JsonTransformingSerializer<T>(tSerializer) {
+
+    constructor(
+        tSerializer: KSerializer<T>,
+        keyAs: String,
+        valueAs: String? = null,
+    ) : this(
+        tSerializer,
+        { _, _ -> keyAs },
+        { _, _ -> valueAs!! },
+    )
 
     override fun transformDeserialize(element: JsonElement): JsonElement =
         if (element is JsonObject) {
@@ -21,30 +31,15 @@ internal abstract class KeyTransformingSerializer<T : Any>(
 
             JsonObject(
                 buildMap {
-                    put(keyAs, JsonPrimitive(key))
-                    if (value is JsonObject) {
-                        putAll(value.jsonObject)
-                    }
-                    else {
-                        put(valueAs!!, value)
-                    }
+                    put(keyTransform(key, value), JsonPrimitive(key))
+                    if (value is JsonObject) putAll(value.jsonObject)
+                    else put(valueTransform(key, value)!!, value)
                 },
             )
         }
-        else {
-            JsonObject(
-                mapOf(
-                    keyAs to element,
-                ),
-            )
-        }
-
-    override fun transformSerialize(element: JsonElement): JsonElement =
-        element.jsonObject[keyAs]?.let {
-            JsonObject(
-                mapOf(
-                    it.jsonPrimitive.content to JsonObject(element.jsonObject.filterKeys { key -> key != keyAs }),
-                ),
-            )
-        } ?: element
+        else JsonObject(
+            mapOf(
+                keyTransform(element.jsonPrimitive.content, null) to element,
+            ),
+        )
 }

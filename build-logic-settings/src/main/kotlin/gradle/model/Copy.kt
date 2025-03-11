@@ -7,6 +7,7 @@ import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.api.file.DuplicatesStrategy
 import org.gradle.kotlin.dsl.withType
+import org.gradle.kotlin.dsl.register
 
 /**
  * Copies files into a destination directory. This task can also rename and filter files as it copies. The task
@@ -71,7 +72,9 @@ internal abstract class Copy : AbstractCopyTask() {
 
     context(Project)
     override fun applyTo() =
-        super.applyTo(tasks.withType<org.gradle.api.tasks.Copy>())
+        super.applyTo(tasks.withType<org.gradle.api.tasks.Copy>()) { name ->
+            tasks.register(name).get()
+        }
 }
 
 @Serializable
@@ -112,10 +115,5 @@ internal data class CopyImpl(
     override val setIncludes: List<String>? = null,
     override val excludes: List<String>? = null,
     override val setExcludes: List<String>? = null,
-    /**
-     * Sets the directory to copy files into. This is the same as calling [.into] on this task.
-     *
-     * @param destinationDir The destination directory. Must not be null.
-     */
     override val destinationDir: String? = null,
 ) : Copy()

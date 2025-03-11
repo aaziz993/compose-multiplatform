@@ -6,7 +6,6 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.api.file.DuplicatesStrategy
-import org.gradle.api.tasks.Copy
 import org.gradle.api.tasks.bundling.ZipEntryCompression
 import org.gradle.kotlin.dsl.withType
 
@@ -53,6 +52,12 @@ internal abstract class Zip : AbstractArchiveTask() {
         allowZip64?.let(named::setZip64)
         metadataCharset?.let(named::setMetadataCharset)
     }
+
+    context(Project)
+    override fun applyTo() =
+        super.applyTo(tasks.withType<org.gradle.api.tasks.bundling.Zip>()) { name ->
+            tasks.register(name).get()
+        }
 }
 
 @Serializable
@@ -105,12 +110,4 @@ internal data class ZipImpl(
     override val excludes: List<String>? = null,
     override val setExcludes: List<String>? = null,
     override val name: String = ""
-) : Zip() {
-
-    context(Project)
-    override fun applyTo() =
-        super.applyTo(tasks.withType<org.gradle.api.tasks.bundling.Zip>()) { name ->
-            Copy
-            tasks.register(name).get()
-        }
-}
+) : Zip()
