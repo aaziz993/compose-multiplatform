@@ -332,14 +332,6 @@ internal data class ProjectProperties(
         }
     }
 
-    private fun Project.configureEmptyJavadocArtifact(): Jar {
-        val javadocJar by project.tasks.creating(Jar::class) {
-            archiveClassifier = "javadoc"
-            // contents are deliberately left empty
-        }
-        return javadocJar
-    }
-
     companion object {
 
         private val json = Json { ignoreUnknownKeys = true }
