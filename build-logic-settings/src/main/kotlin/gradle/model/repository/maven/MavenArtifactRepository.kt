@@ -64,7 +64,7 @@ internal interface MavenArtifactRepository : ArtifactRepository, UrlArtifactRepo
 
     override fun applyTo(handler: RepositoryHandler) =
         super<ArtifactRepository>.applyTo(handler.withType<MavenArtifactRepository>()) {
-            handler.maven(it)
+            handler.maven (it)
         }
 
     /**

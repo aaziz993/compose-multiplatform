@@ -40,7 +40,6 @@ internal interface ArtifactRepository {
     fun applyTo(handler: RepositoryHandler)
 
     fun applyTo(repository: org.gradle.api.artifacts.repositories.ArtifactRepository) {
-        repository.name = name
         content?.let { content ->
             repository.content(content::applyTo)
         }
