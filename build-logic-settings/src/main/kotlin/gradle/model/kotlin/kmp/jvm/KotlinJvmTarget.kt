@@ -49,9 +49,6 @@ internal data class KotlinJvmTarget(
     }
 
     context(Project)
-    override fun applyTo() {
-        create(kotlin::jvm)
-
-        super<KotlinJvmAndAndroidTarget>.applyTo(kotlin.targets.withType<KotlinJvmTarget>())
-    }
+    override fun applyTo()=
+        super<KotlinJvmAndAndroidTarget>.applyTo(kotlin.targets.withType<KotlinJvmTarget>(),(kotlin::jvm)
 }

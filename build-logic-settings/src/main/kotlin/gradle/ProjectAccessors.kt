@@ -65,14 +65,17 @@ internal var Project.projectProperties: ProjectProperties
 context(Project)
 internal fun String.resolveValue() =
     if (startsWith("$")) {
+        val key = substringAfter(".")
         removePrefix("$")
             .substringBefore(".")
-            .split("Or").firstNotNullOf { reference ->
-                when {
-                    reference.startsWith("\$env.") -> System.getenv()[removePrefix("\$env.").toScreamingSnakeCase()]
-                    reference.startsWith("\$gradle.") -> providers.gradleProperty("\$gradle.".toDotCase()).orNull
-                    reference.startsWith("\$local.") -> projectProperties.localProperties["\$local.".toDotCase()]
-                    reference.startsWith("\$extra.") -> extra["\$extra.".toDotCase()]
+            .split("Or")
+            .map(String::lowercase)
+            .firstNotNullOf { reference ->
+                when (reference) {
+                    "env" -> System.getenv()[key.toScreamingSnakeCase()]
+                    "gradle" -> providers.gradleProperty(key.toDotCase()).orNull
+                    "extra" -> extra[key.toDotCase()]
+                    "local" -> projectProperties.localProperties[key.toDotCase()]
                     else -> this
                 }
             }

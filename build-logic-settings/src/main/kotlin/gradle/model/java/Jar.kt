@@ -15,6 +15,7 @@ import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.api.file.DuplicatesStrategy
 import org.gradle.api.tasks.bundling.ZipEntryCompression
+import org.gradle.api.tasks.testing.Test
 import org.gradle.kotlin.dsl.withType
 
 /**
@@ -56,7 +57,7 @@ internal abstract class Jar : Zip() {
         super.applyTo(named)
 
         named as org.gradle.api.tasks.bundling.Jar
-
+        Test
         metadataCharset?.let(named::setMetadataCharset)
         manifestContentCharset?.let(named::setManifestContentCharset)
         manifest?.applyTo(named.manifest)

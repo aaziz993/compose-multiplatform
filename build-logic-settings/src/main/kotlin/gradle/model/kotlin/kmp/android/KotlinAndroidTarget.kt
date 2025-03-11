@@ -60,9 +60,6 @@ internal data class KotlinAndroidTarget(
     }
 
     context(Project)
-    override fun applyTo() {
-        create(kotlin::androidTarget)
-
-        super<KotlinJvmAndAndroidTarget>.applyTo(kotlin.targets.withType<KotlinAndroidTarget>())
-    }
+    override fun applyTo() =
+        super<KotlinJvmAndAndroidTarget>.applyTo(kotlin.targets.withType<KotlinAndroidTarget>(), kotlin::androidTarget)
 }

@@ -9,6 +9,7 @@ import gradle.model.kotlin.kmp.nat.KotlinNativeTarget
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
 
 @Serializable
 @SerialName("watchosArm32")
@@ -23,9 +24,6 @@ internal data class KotlinWatchosArm32Target(
         get() = true
 
     context(Project)
-    override fun applyTo() {
-        create(kotlin::watchosArm32)
-
-        super.applyTo()
-    }
+    override fun applyTo() =
+        super.applyTo(kotlin.targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>(), kotlin::watchosArm32)
 }

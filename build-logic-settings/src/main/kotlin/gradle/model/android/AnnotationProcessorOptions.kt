@@ -1,6 +1,7 @@
 package gradle.model.android
 
 import com.android.build.api.dsl.AnnotationProcessorOptions
+import gradle.model.CommandLineArgumentProvider
 import kotlinx.serialization.Serializable
 
 /** Options for configuring Java annotation processor. */
@@ -26,7 +27,7 @@ internal data class AnnotationProcessorOptions(
     val arguments: Map<String, String>? = null,
     /**
      * Specifies arguments for annotation processors that you want to pass to the Android plugin
-     * using the [CommandLineArgumentProvider] class.
+     * using the [gradle.model.CommandLineArgumentProvider] class.
      *
      * The benefit of using this class is that it allows you or the annotation processor author to
      * improve the correctness and performance of incremental and cached clean builds by applying

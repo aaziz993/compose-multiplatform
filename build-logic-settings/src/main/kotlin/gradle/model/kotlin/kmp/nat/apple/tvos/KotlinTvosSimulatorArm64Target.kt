@@ -11,6 +11,8 @@ import gradle.model.kotlin.kmp.nat.KotlinNativeTargetWithSimulatorTests
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 @Serializable
 @SerialName("tvosSimulatorArm64")
@@ -26,9 +28,6 @@ internal data class KotlinTvosSimulatorArm64Target(
         get() = true
 
     context(Project)
-    override fun applyTo() {
-        create(kotlin::tvosSimulatorArm64)
-
-        super.applyTo()
-    }
+    override fun applyTo() =
+        super.applyTo(kotlin.targets.withType<KotlinNativeTarget>(), kotlin::tvosSimulatorArm64)
 }

@@ -9,6 +9,7 @@ import gradle.model.kotlin.kmp.nat.KotlinNativeTarget
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
 
 @Serializable
 @SerialName("tvosArm64")
@@ -23,9 +24,6 @@ internal data class KotlinTvosArm64Target(
         get() = true
 
     context(Project)
-    override fun applyTo() {
-        create(kotlin::tvosArm64)
-
-        super.applyTo()
-    }
+    override fun applyTo() =
+        super.applyTo(kotlin.targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>(), kotlin::tvosArm64)
 }

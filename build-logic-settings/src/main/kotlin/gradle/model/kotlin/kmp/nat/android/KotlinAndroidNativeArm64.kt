@@ -8,6 +8,8 @@ import gradle.model.kotlin.kmp.nat.KotlinNativeCompilerOptions
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 @Serializable
 @SerialName("androidNativeArm64")
@@ -22,9 +24,6 @@ internal data class KotlinAndroidNativeArm64(
         get() = true
 
     context(Project)
-    override fun applyTo() {
-        create(kotlin::androidNativeArm64)
-
-        super.applyTo()
-    }
+    override fun applyTo()=
+        super.applyTo(kotlin.targets.withType<KotlinNativeTarget>(),kotlin::androidNativeArm64)
 }

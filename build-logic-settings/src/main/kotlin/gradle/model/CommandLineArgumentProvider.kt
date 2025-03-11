@@ -1,4 +1,4 @@
-package gradle.model.android
+package gradle.model
 
 import kotlinx.serialization.Serializable
 import org.gradle.process.CommandLineArgumentProvider

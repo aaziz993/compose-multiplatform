@@ -8,6 +8,8 @@ import gradle.model.kotlin.kmp.nat.KotlinNativeCompilerOptions
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 @Serializable
 @SerialName("androidNativeX86")
@@ -22,9 +24,6 @@ internal data class KotlinAndroidNativeX86(
         get() = true
 
     context(Project)
-    override fun applyTo() {
-        create(kotlin::androidNativeX86)
-
-        super.applyTo()
-    }
+    override fun applyTo() =
+        super.applyTo(kotlin.targets.withType<KotlinNativeTarget>(),kotlin::androidNativeX86)
 }

@@ -19,9 +19,6 @@ internal interface Named {
      */
     val name: String
 
-    fun create(block: (name: String) -> Named): Named? =
-        if (name.isNotEmpty()) block(name) else null
-
     context(Project)
     fun applyTo(named: Named)
 
