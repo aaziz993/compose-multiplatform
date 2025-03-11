@@ -18,7 +18,7 @@ internal data class BuildScanConfiguration(
     val termsOfUseUrl: String? = null,
     val termsOfUseAgree: String? = null,
     val uploadInBackground: Boolean? = null,
-    val publishing: BuildScanPublishingConfiguration? = null,
+    val publishing: BuildScanPublishingConfiguration = BuildScanPublishingConfiguration(),
     val obfuscation: BuildScanDataObfuscationConfiguration? = null,
     val capture: BuildScanCaptureConfiguration?
 ) {
@@ -51,10 +51,8 @@ internal data class BuildScanConfiguration(
         configuration.termsOfUseAgree tryAssign termsOfUseAgree
         configuration.uploadInBackground tryAssign uploadInBackground
 
-        publishing?.let { publishing ->
-            configuration.publishing {
-                onlyIf { publishing.ifAuthenticated == true }
-            }
+        configuration.publishing {
+            onlyIf { publishing.ifAuthenticated != false && CI }
         }
 
         obfuscation?.let { obfuscation ->
