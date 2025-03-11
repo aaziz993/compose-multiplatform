@@ -43,7 +43,7 @@ internal data class BuildScanConfiguration(
         values?.forEach { (name, value) -> configuration.value(name, value) }
         links?.forEach { (name, url) -> configuration.link(name, url) }
 
-        buildScanPublished {
+        configuration.buildScanPublished {
             scanJournal.appendText("${Date()} — $buildScanUri — $startParameter\n")
         }
 
