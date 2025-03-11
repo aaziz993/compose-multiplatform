@@ -12,9 +12,11 @@ import org.gradle.kotlin.dsl.withType
 @Serializable
 @SerialName("gradlePluginPortal")
 internal data class GradlePluginPortal(
-    override val name: String="gradlePluginPortal",
     override val content: RepositoryContentDescriptor? = null,
 ) : ArtifactRepository {
+
+    override val name: String
+        get() = "gradlePluginPortal"
 
     context(Project)
     override fun applyTo() =

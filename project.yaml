@@ -65,6 +65,19 @@ plugins:
 
 dependencyResolutionManagement:
   repositories:
+    - mavenCentral
+    # For the Android plugin and dependencies
+    - google
+    # For other Gradle plugins
+    - gradlePluginPortal
+    # For dev versions of kotlin
+    - https://maven.pkg.jetbrains.space/kotlin/p/kotlin/dev
+    # For dev versions of compose plugin and dependencies
+    - jetbrainsCompose
+    # For compose experimental builds
+    - https://packages.jetbrains.team/maven/p/firework/dev
+    # Sonatype OSS Snapshot Repository
+    - https://oss.sonatype.org/content/repositories/snapshots
     - https://repo.gradle.org/gradle/libs-releases
     - https://cache-redirector.jetbrains.com/www.jetbrains.com/intellij-repository/releases
     - https://cache-redirector.jetbrains.com/packages.jetbrains.team/maven/p/ij/intellij-dependencies

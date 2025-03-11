@@ -322,19 +322,8 @@ internal data class ProjectProperties(
     }
 
     private fun Settings.applyTo(handler: RepositoryHandler) = with(handler) {
-        mavenCentral()
-        // For the Android plugin and dependencies
-        google()
-        // For other Gradle plugins
-        gradlePluginPortal()
-        // For dev versions of kotlin
-        maven("https://maven.pkg.jetbrains.space/kotlin/p/kotlin/dev")
         // For dev versions of compose plugin and dependencies
         jetbrainsCompose()
-        // For compose experimental builds
-        maven("https://packages.jetbrains.team/maven/p/firework/dev")
-        // Sonatype OSS Snapshot Repository
-        maven("https://oss.sonatype.org/content/repositories/snapshots")
 
         // Apply repositories from project properties.
         projectProperties.dependencyResolutionManagement?.repositories?.let { repositories ->
