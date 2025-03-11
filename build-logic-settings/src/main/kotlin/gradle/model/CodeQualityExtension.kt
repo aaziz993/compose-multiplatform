@@ -1,6 +1,7 @@
 package gradle.model
 
 import gradle.java
+import gradle.sourceSets
 import org.gradle.api.Project
 import org.gradle.api.plugins.quality.CodeQualityExtension
 
@@ -34,7 +35,7 @@ internal abstract class CodeQualityExtension {
     context(Project)
     fun applyTo(extension: CodeQualityExtension) {
         toolVersion?.let(extension::setToolVersion)
-        sourceSets?.map(java.sourceSets::getByName)?.let(extension::setSourceSets)
+        sourceSets?.map(project.sourceSets::getByName)?.let(extension::setSourceSets)
         ignoreFailures?.let(extension::setIgnoreFailures)
         reportsDir?.let(::file)?.let(extension::setReportsDir)
     }

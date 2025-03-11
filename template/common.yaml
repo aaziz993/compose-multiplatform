@@ -213,6 +213,10 @@ plugins:
       - versioning:
           olderVersionsDir: documentation/version
 
+  # produces Kotlin source example files and tests from markdown documents with embedded snippets of Kotlin code
+  knit:
+    moduleDocs: build/dokka
+
   # allows dumping binary API of a JVM part of a Kotlin library that is public in the sense of Kotlin visibilities and ensures that the public binary API wasn't changed in a way that makes this change binary incompatible.
   apiValidation:
     enabled: true
@@ -262,7 +266,7 @@ plugins:
                 organization: AITech
                 organizationUrl: https://github.com/aaziz993
             scm:
-              url: https://github.com/aaziz993/compose-nultiplatform
+              url: https://github.com/aaziz993/compose-multiplatform
               connection: scm:git:git://github.com:aaziz993/compose-multiplatform.git
               developerConnection: scm:git:ssh://github.com:aaziz993/compose-multiplatform.git
               tag: HEAD
@@ -548,9 +552,12 @@ dependencies:
     # Use import org.koin.ksp.generated.*
   - kspCommonMainMetadata: $libs.koin.ksp.compiler
   # animalsniffer java signatures
-  - signature: org.codehaus.mojo.signature:java18:1.0
+  - signature: $libs.signature.java
+  - signature: $libs.signature.android
 
 tasks:
+  - KnitTask:
+      dependsOn: [ dokkaGenerate ]
   - ShadowJar:
       duplicatesStrategy: EXCLUDE
       mergeServiceFiles: true
@@ -561,8 +568,8 @@ tasks:
         - -Xdont-warn-on-error-suppression
         - -Xir-generate-inline-anonymous-functions #  https://youtrack.jetbrains.com/issue/KT-67355
         - -Xsuppress-warning=NOTHING_TO_INLINE
-  - '':
-      name: publish
+        - -Xpartial-linkage-loglevel=ERROR
+  - AbstractPublishToMaven:
       dependOn: publishToMavenLocal
 
 localPropertiesFile: ../local.properties

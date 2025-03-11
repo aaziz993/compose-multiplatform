@@ -5,6 +5,10 @@ templates:
   - ../template/common.yaml
 
 plugins:
+  # produces Kotlin source example files and tests from markdown documents with embedded snippets of Kotlin code
+  knit:
+    siteRoot: https://github.com/aaziz993/compose-multiplatform/kmp-lib
+
   # publishing
   publishing:
     publications:

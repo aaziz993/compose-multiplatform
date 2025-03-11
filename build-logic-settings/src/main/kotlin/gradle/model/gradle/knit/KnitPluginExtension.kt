@@ -7,7 +7,6 @@ import gradle.plugin
 import gradle.plugins
 import gradle.settings
 import gradle.trySet
-import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
 internal interface KnitPluginExtension {

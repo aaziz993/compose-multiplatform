@@ -1,23 +1,16 @@
-package gradle.model.gradle.publish
+package gradle.model.gradle.knit
 
+import gradle.trySet
 import gradle.model.Task
 import gradle.serialization.serializer.AnySerializer
-import kotlinx.serialization.SerialName
+import kotlinx.knit.KnitTask
 import kotlinx.serialization.Serializable
+import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 
-/**
- * Base class for tasks that publish a [org.gradle.api.publish.maven.MavenPublication].
- *
- * @since 2.4
- */
 @Serializable
-internal abstract class AbstractPublishToMaven : Task
-
-@Serializable
-@SerialName("AbstractPublishToMaven")
-internal data class AbstractPublishToMavenImpl(
+internal data class KnitTask(
     override val dependsOn: List<String>? = null,
     override val onlyIf: Boolean? = null,
     override val doNotTrackState: String? = null,
@@ -30,12 +23,24 @@ internal data class AbstractPublishToMavenImpl(
     override val mustRunAfter: List<String>? = null,
     override val finalizedBy: List<String>? = null,
     override val shouldRunAfter: List<String>? = null,
-) : AbstractPublishToMaven() {
+    override val name: String = "",
+    val check: Boolean? = null,
+    val rootDir: String? = null,
+    val files: List<String>? = null,
+) : Task {
 
-    override val name: String
-        get() = ""
+    context(Project)
+    override fun applyTo(named: Named) {
+        super.applyTo(named)
+
+        named as KnitTask
+
+        named::check trySet check
+        named::rootDir trySet rootDir?.let(::file)
+        named::files trySet files?.let { files(*it.toTypedArray()) }
+    }
 
     context(Project)
     override fun applyTo() =
-        super.applyTo(tasks.withType<org.gradle.api.publish.maven.tasks.AbstractPublishToMaven>())
+        super.applyTo(tasks.withType<KnitTask>())
 }

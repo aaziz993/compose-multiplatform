@@ -83,7 +83,8 @@ knit = "0.5.0"
 binary-compatibility-validator = "0.16.3"
 # check (JDK, android SDK or any library) API compatibility for java (kotlin, scala, groovy etc.), android and kotlin multiplatform projects.
 animalsniffer = "2.0.0"
-signature = "1.0"
+signature-java = "1.0"
+signature-android = "12_r1"
 # publishing
 vanniktech-maven-publish = "0.30.0"
 
@@ -405,7 +406,8 @@ kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-p
 # provides the ability to host documentation for multiple versions of your library/application with seamless switching between them. This, in turn, provides a better experience for your users.
 dokka-versioning = { module = "org.jetbrains.dokka:versioning-plugin", version.ref = "dokka" }
 # signature for animalsniffer
-signature = { module = "org.codehaus.mojo.signature:java18", version.ref = "signature" }
+signature-java = { module = "org.codehaus.mojo.signature:java18", version.ref = "signature-java" }
+signature-android = { module = "net.sf.androidscents.signature:android-api-level-32", version.ref = "signature-android" }
 
 
 ##Java

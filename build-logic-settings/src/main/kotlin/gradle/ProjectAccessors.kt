@@ -26,6 +26,7 @@ import org.gradle.api.plugins.ExtensionAware
 import org.gradle.api.plugins.JavaApplication
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.publish.PublishingExtension
+import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.api.toolchain.management.ToolchainManagement
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.extra
@@ -257,6 +258,8 @@ internal val Project.compose: ComposeExtension get() = the()
 
 internal fun Project.compose(configure: ComposeExtension.() -> Unit) =
     extensions.configure(configure)
+
+internal val Project.sourceSets: SourceSetContainer get() = the()
 
 internal val ComposeExtension.resources: ResourcesExtension get() = the()
 
