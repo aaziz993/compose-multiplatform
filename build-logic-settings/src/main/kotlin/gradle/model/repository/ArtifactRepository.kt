@@ -2,10 +2,8 @@ package gradle.model.repository
 
 import gradle.maybeNamed
 import gradle.model.project.Dependency
-import gradle.model.project.SUB_CONFIGURATIONS
 import gradle.serialization.serializer.BaseKeyTransformingSerializer
 import gradle.serialization.serializer.JsonContentPolymorphicSerializer
-import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
