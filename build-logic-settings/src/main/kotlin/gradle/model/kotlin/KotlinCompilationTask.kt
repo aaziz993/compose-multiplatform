@@ -41,7 +41,6 @@ internal interface KotlinCompilationTask<out CO : KotlinCommonCompilerOptions> :
 @Serializable
 @SerialName("KotlinCompilationTask")
 internal data class KotlinCompilationTaskImpl<out CO : KotlinCommonCompilerOptions>(
-    override val name: String = "",
     override val dependsOn: List<String>? = null,
     override val onlyIf: Boolean? = null,
     override val doNotTrackState: String? = null,
@@ -55,4 +54,8 @@ internal data class KotlinCompilationTaskImpl<out CO : KotlinCommonCompilerOptio
     override val finalizedBy: List<String>? = null,
     override val shouldRunAfter: List<String>? = null,
     override val compilerOptions: CO?
-) : gradle.model.kotlin.KotlinCompilationTask<CO>
+) : gradle.model.kotlin.KotlinCompilationTask<CO>{
+
+    override val name: String
+        get() = ""
+}

@@ -55,7 +55,7 @@ internal data class MavenPom(
      *
      * @since 4.8
      */
-    val licenses: MavenPomLicenseSpec? = null,
+    val licenses: List<MavenPomLicense>? = null,
     /**
      * Configures the organization for the publication represented by this POM.
      *
@@ -67,13 +67,13 @@ internal data class MavenPom(
      *
      * @since 4.8
      */
-    val developers: MavenPomDeveloperSpec? = null,
+    val developers: List<MavenPomDeveloper>? = null,
     /**
      * Configures the contributors for the publication represented by this POM.
      *
      * @since 4.8
      */
-    val contributors: MavenPomContributorSpec? = null,
+    val contributors: List<MavenPomContributor>? = null,
     /**
      * Configures the SCM (source control management) for the publication represented by this POM.
      *
@@ -103,7 +103,7 @@ internal data class MavenPom(
      *
      * @since 4.8
      */
-    val mailingLists: MavenPomMailingListSpec? = null,
+    val mailingLists: List<MavenPomMailingList>? = null,
     /**
      * Returns the properties for the publication represented by this POM.
      *
@@ -121,7 +121,11 @@ internal data class MavenPom(
         pom.inceptionYear tryAssign inceptionYear
 
         licenses?.let { licenses ->
-            pom.licenses(licenses::applyTo)
+            pom.licenses {
+                licenses.forEach { license ->
+                    license(license::applyTo)
+                }
+            }
         }
 
         organization?.let { organization ->
@@ -129,11 +133,19 @@ internal data class MavenPom(
         }
 
         developers?.let { developers ->
-            pom.developers(developers::applyTo)
+            pom.developers {
+                developers.forEach { developer ->
+                    developer(developer::applyTo)
+                }
+            }
         }
 
         contributors?.let { contributors ->
-            pom.contributors(contributors::applyTo)
+            pom.contributors {
+                contributors.forEach { contributor ->
+                    contributor(contributor::applyTo)
+                }
+            }
         }
 
         scm?.let { scm ->
@@ -153,7 +165,11 @@ internal data class MavenPom(
         }
 
         mailingLists?.let { mailingLists ->
-            pom.mailingLists(mailingLists::applyTo)
+            pom.mailingLists {
+                mailingLists.forEach { mailingList ->
+                    mailingList(mailingList::applyTo)
+                }
+            }
         }
 
         pom.properties tryAssign properties

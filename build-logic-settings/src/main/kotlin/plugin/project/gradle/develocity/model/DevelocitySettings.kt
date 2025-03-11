@@ -1,7 +1,7 @@
 package plugin.project.gradle.develocity.model
 
 import gradle.id
-import gradle.isCI
+import gradle.CI
 import gradle.libs
 import gradle.model.DirectoryBuildCache
 import gradle.model.RemoteBuildCache
@@ -35,10 +35,8 @@ internal data class DevelocitySettings(
         pluginManager.withPlugin(libs.plugins.plugin("develocity").id) {
             super.applyTo()
 
-
-
             buildCache {
-                localCache?.takeIf { isCI }?.let { localCache ->
+                localCache?.takeIf { CI }?.let { localCache ->
                     local {
                         localCache.applyTo(this)
                     }
@@ -52,7 +50,7 @@ internal data class DevelocitySettings(
                             projectProperties.gradleEnterpriseAccessKey
                         }
 
-                        isPush = isPush && isCI && accessKey != null
+                        isPush = isPush && CI && accessKey != null
                     }
                 }
             }

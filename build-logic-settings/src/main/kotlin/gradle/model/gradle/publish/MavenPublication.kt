@@ -282,9 +282,9 @@ internal data class MavenPublication(
             named.artifact(source)
         }
 
-        groupId?.let(named::setGroupId)
-        artifactId?.let(named::setArtifactId)
-        version?.let(named::setVersion)
+        named.groupId = groupId ?: project.group.toString()
+        named.artifactId = artifactId ?: project.name
+        named.version = version ?: project.version.toString()
 
         versionMapping?.let { versionMapping ->
             named.versionMapping(versionMapping::applyTo)

@@ -2,7 +2,7 @@ package plugin.project.gradle.doctor.model
 
 import com.osacky.doctor.AppleRosettaTranslationCheckMode
 import gradle.id
-import gradle.isCI
+import gradle.CI
 import gradle.libs
 import gradle.model.gradle.doctor.DoctorExtension
 import gradle.model.gradle.doctor.JavaHomeHandler
@@ -46,7 +46,7 @@ internal data class DoctorSettings(
 
             // Always monitor tasks on CI, but disable it locally by default with providing an option to opt-in.
             // See 'doctor.enableTaskMonitoring' in gradle.properties for details.
-            val enableTasksMonitoring = isCI || enableTaskMonitoring
+            val enableTasksMonitoring = CI || enableTaskMonitoring
 
             if (!enableTasksMonitoring) {
                 logger.info("Gradle Doctor task monitoring is disabled.")

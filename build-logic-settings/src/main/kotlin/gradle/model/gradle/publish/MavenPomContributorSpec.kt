@@ -16,12 +16,10 @@ internal data class MavenPomContributorSpec(
     /**
      * Creates, configures and adds a contributor to the publication.
      */
-    val contributor: MavenPomContributor? = null,
+    val contributor: List<MavenPomContributor>? = null,
 ) {
 
     fun applyTo(spec: MavenPomContributorSpec) {
-        contributor?.let { contributor ->
-            spec.contributor(contributor::applyTo)
-        }
+
     }
 }

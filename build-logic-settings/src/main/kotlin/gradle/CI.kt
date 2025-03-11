@@ -3,14 +3,30 @@ package gradle
 import org.gradle.api.Project
 import org.gradle.api.initialization.Settings
 
+private const val GITHUB_CI_KEY = "GITHUB_ACTION"
+private const val TEAMCITY_CI_KEY = "TEAMCITY_VERSION"
+private const val SPACE_CI_KEY = "JB_SPACE_EXECUTION_NUMBER"
+
 private val CI_DETECT_PROPERTIES = listOf(
     "CI",
-    "GITHUB_ACTION",
-    "JB_SPACE_EXECUTION_NUMBER",
-    "TEAMCITY_VERSION",
+    GITHUB_CI_KEY,
+    SPACE_CI_KEY,
+    TEAMCITY_CI_KEY,
 )
 
-internal val isCI: Boolean by lazy {
+internal val GITHUB: Boolean by lazy {
+    System.getenv().contains(GITHUB_CI_KEY)
+}
+
+internal val TEAMCITY: Boolean by lazy {
+    System.getenv().contains(TEAMCITY_CI_KEY)
+}
+
+internal val SPACE: Boolean by lazy {
+    System.getenv().contains(SPACE_CI_KEY)
+}
+
+internal val CI: Boolean by lazy {
     CI_DETECT_PROPERTIES.any(System.getenv()::contains)
 }
 

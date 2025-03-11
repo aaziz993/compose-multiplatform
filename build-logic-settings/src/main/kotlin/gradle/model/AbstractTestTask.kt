@@ -87,5 +87,8 @@ internal data class AbstractTestTaskImpl(
     override val mustRunAfter: List<String>? = null,
     override val finalizedBy: List<String>? = null,
     override val shouldRunAfter: List<String>? = null,
-    override val name: String = "",
-) : AbstractTestTask()
+) : AbstractTestTask(){
+
+    override val name: String
+        get() = ""
+}

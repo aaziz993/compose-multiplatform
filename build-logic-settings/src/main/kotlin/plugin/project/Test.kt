@@ -2,7 +2,7 @@ package plugin.project
 
 import com.gradle.develocity.agent.gradle.test.DevelocityTestConfiguration
 import com.gradle.develocity.agent.gradle.test.TestRetryConfiguration
-import gradle.isCI
+import gradle.CI
 import gradle.kotlin
 import gradle.maybeNamed
 import org.gradle.api.Project
@@ -29,7 +29,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinTest
 //import plugin.project.jvm.configureKotlinJvmTest
 
 internal fun Project.configureTest() {
-    if (isCI) {
+    if (CI) {
         configureTestOnCI()
     }
 //    configureKotlinJvmTest()

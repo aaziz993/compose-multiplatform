@@ -24,13 +24,8 @@ internal class JavaPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             if (
-                projectProperties.kotlin.targets?.any { target ->
-                    target is KotlinAndroidTarget
-                } == true
-                ||
-                projectProperties.kotlin.targets?.none { target ->
-                    target is KotlinJvmTarget
-                } != false
+                projectProperties.kotlin.targets.any { target -> target is KotlinAndroidTarget } ||
+                projectProperties.kotlin.targets.none { target -> target is KotlinJvmTarget }
             ) {
                 return@with
             }

@@ -56,7 +56,8 @@ plugins:
           includes: [ README.md ]
     pluginsConfiguration:
       - html:
-          customStyleSheets: [ dokka-styles.css ]
+          customStyleSheets: [ dokka/style.css, dokka/prism.css, dokka/logo-styles.css ]
+          customAssets: [ dokka/logo-icon.svg ]
           footerMessage: © 2025 - Aziz Atoev
           templatesDir: documentation
       - versioning:

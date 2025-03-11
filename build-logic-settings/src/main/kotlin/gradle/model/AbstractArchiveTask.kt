@@ -146,7 +146,6 @@ internal data class AbstractArchiveTaskImpl(
     override val mustRunAfter: List<String>? = null,
     override val finalizedBy: List<String>? = null,
     override val shouldRunAfter: List<String>? = null,
-    override val name: String = "",
     override val isCaseSensitive: Boolean? = null,
     override val includeEmptyDirs: Boolean? = null,
     override val duplicatesStrategy: DuplicatesStrategy? = null,
@@ -168,4 +167,8 @@ internal data class AbstractArchiveTaskImpl(
     override val setIncludes: List<String>? = null,
     override val excludes: List<String>? = null,
     override val setExcludes: List<String>? = null,
-) : AbstractArchiveTask()
+) : AbstractArchiveTask(){
+
+    override val name: String
+        get() = ""
+}

@@ -206,7 +206,8 @@ plugins:
           includes: [ README.md ]
     pluginsConfiguration:
       - html:
-          customStyleSheets: [ dokka-styles.css ]
+          customStyleSheets: [ ../dokka/style.css, ../dokka/prism.css, ../dokka/logo-styles.css ]
+          customAssets: [ dokka/logo-icon.svg ]
           footerMessage: © 2025 - Aziz Atoev
           templatesDir: documentation
       - versioning:
@@ -247,24 +248,24 @@ plugins:
           pom:
             inceptionYear: '2025'
             licenses:
-              license:
-                name: Apache License, Version 2.0
+              - name: Apache License, Version 2.0
                 url: https://www.apache.org/licenses/LICENSE-2.0.txt
                 distribution: repo
+                comments: A business-friendly OSS license.
             issueManagement:
               system: GitHub Issues
               url: https://github.com/aaziz993/compose-multiplatform/issues
             developers:
-              id: aaziz993
-              name: Aziz Atoev
-              email: a.atoev93@gmail.com
-              organization: AITech
-              organizationUrl: https://github.com/aaziz993
+              - id: aaziz993
+                name: Aziz Atoev
+                email: a.atoev93@gmail.com
+                organization: AITech
+                organizationUrl: https://github.com/aaziz993
             scm:
-              connection: scm:git:git://github.com:aaziz993/compose-multiplatform.git
               url: https://github.com/aaziz993/compose-nultiplatform
+              connection: scm:git:git://github.com:aaziz993/compose-multiplatform.git
               developerConnection: scm:git:ssh://github.com:aaziz993/compose-multiplatform.git
-
+              tag: HEAD
 
   # api that you can use to develop lightweight compiler plugins. KSP provides a simplified compiler plugin API that leverages the power of Kotlin while keeping the learning curve at a minimum. Compared to KAPT, annotation processors that use KSP can run up to 2x faster.
   ksp:

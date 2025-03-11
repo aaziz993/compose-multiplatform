@@ -1,5 +1,9 @@
 package gradle.model.gradle.develocity
 
+import gradle.CI
+import gradle.GITHUB
+import gradle.SPACE
+import gradle.TEAMCITY
 import gradle.tryAssign
 import java.util.*
 import kotlinx.serialization.Serializable
@@ -20,6 +24,7 @@ internal data class BuildScanConfiguration(
 ) {
 
     context(Settings)
+    @Suppress("UnstableApiUsage")
     fun applyTo(
         configuration: com.gradle.develocity.agent.gradle.scan.BuildScanConfiguration
     ) {
@@ -27,66 +32,71 @@ internal data class BuildScanConfiguration(
 
         val scanJournal = layout.rootDirectory.file("scan-journal.log").asFile
 
-        if (background != null) {
+        background?.let { background ->
             configuration.background {
                 background.applyTo(this)
             }
         }
 
-        configuration.apply {
 
-            tag?.let(configuration::tag)
-            values?.forEach { (name, value) -> configuration.value(name, value) }
-            links?.forEach { (name, url) -> configuration.link(name, url) }
+        tag?.let(configuration::tag)
+        values?.forEach { (name, value) -> configuration.value(name, value) }
+        links?.forEach { (name, url) -> configuration.link(name, url) }
 
-            buildScanPublished {
-                scanJournal.appendText("${Date()} — $buildScanUri — $startParameter\n")
+        buildScanPublished {
+            scanJournal.appendText("${Date()} — $buildScanUri — $startParameter\n")
+        }
+
+        configuration.termsOfUseUrl tryAssign termsOfUseUrl
+        configuration.termsOfUseAgree tryAssign termsOfUseAgree
+        configuration.uploadInBackground tryAssign uploadInBackground
+
+        publishing?.let { publishing ->
+            configuration.publishing {
+                onlyIf { publishing.ifAuthenticated == true }
             }
+        }
 
-            configuration.termsOfUseUrl tryAssign termsOfUseUrl
-            configuration.termsOfUseAgree tryAssign termsOfUseAgree
-            configuration.uploadInBackground tryAssign uploadInBackground
-
-            if (this@BuildScanConfiguration.publishing != null) {
-                configuration.publishing {
-                    onlyIf { this@BuildScanConfiguration.publishing.ifAuthenticated == true }
+        obfuscation?.let { obfuscation ->
+            configuration.obfuscation {
+                obfuscation.username?.let { username ->
+                    username {
+                        username[it] ?: username[""] ?: it
+                    }
                 }
-            }
-            if (this@BuildScanConfiguration.obfuscation != null) {
-                configuration.obfuscation {
-                    this@BuildScanConfiguration.obfuscation.username?.let { username ->
-                        username {
-                            username[it] ?: username[""] ?: it
-                        }
-                    }
 
-                    this@BuildScanConfiguration.obfuscation.hostname?.let { hostname ->
-                        hostname {
-                            hostname[it] ?: hostname[""] ?: it
-                        }
-                    }
-
-                    this@BuildScanConfiguration.obfuscation.ipAddresses?.let { ipAddresses ->
-                        ipAddresses {
-                            it.map { ipAddresses[it.hostAddress] ?: ipAddresses[""] ?: it.hostAddress }
-                        }
-                    }
-
-                    this@BuildScanConfiguration.obfuscation.externalProcessName?.let { externalProcessName ->
-                        externalProcessName {
-                            externalProcessName[it] ?: externalProcessName[""] ?: it
+                obfuscation.hostname?.let { hostname ->
+                    hostname {
+                        when {
+                            GITHUB -> "GitHub"
+                            TEAMCITY -> "TeamCity"
+                            SPACE -> "Space"
+                            CI -> "CI"
+                            else -> hostname[it] ?: hostname[""] ?: it
                         }
                     }
                 }
-            }
 
-            capture?.let { capture ->
-                configuration.capture {
-                    fileFingerprints tryAssign capture.fileFingerprints
-                    buildLogging tryAssign capture.buildLogging
-                    testLogging tryAssign capture.testLogging
-                    resourceUsage tryAssign capture.resourceUsage
+                obfuscation.ipAddresses?.let { ipAddresses ->
+                    ipAddresses {
+                        it.map { ipAddresses[it.hostAddress] ?: ipAddresses[""] ?: it.hostAddress }
+                    }
                 }
+
+                obfuscation.externalProcessName?.let { externalProcessName ->
+                    externalProcessName {
+                        externalProcessName[it] ?: externalProcessName[""] ?: it
+                    }
+                }
+            }
+        }
+
+        capture?.let { capture ->
+            configuration.capture {
+                fileFingerprints tryAssign capture.fileFingerprints
+                buildLogging tryAssign capture.buildLogging
+                testLogging tryAssign capture.testLogging
+                resourceUsage tryAssign capture.resourceUsage
             }
         }
     }

@@ -4,7 +4,7 @@ import gradle.gitBranchName
 import gradle.gitCommitId
 import gradle.gitStatus
 import gradle.id
-import gradle.isCI
+import gradle.CI
 import gradle.libs
 import gradle.plugin
 import gradle.plugins
@@ -29,6 +29,7 @@ internal class DevelocityPlugin : Plugin<Settings> {
                 plugins.apply(settings.libs.plugins.plugin("develocityCommonCustomUserData").id)
 
                 develocity.applyTo()
+
                 enrichTeamCityData()
                 enrichGitData()
             }
@@ -43,7 +44,7 @@ internal class DevelocityPlugin : Plugin<Settings> {
         }
 
         gradle.projectsEvaluated {
-            if (isCI) {
+            if (CI) {
                 develocity {
                     rootProject.teamCityBuildId?.let { teamCityBuildId ->
                         rootProject.teamCityBuildTypeId?.let { teamCityBuildTypeId ->
@@ -65,7 +66,7 @@ internal class DevelocityPlugin : Plugin<Settings> {
     private fun Settings.enrichGitData() = projectProperties.plugins.develocity.let { develocity ->
         develocity.git?.let { git ->
             gradle.projectsEvaluated {
-                if (!isCI && !git.skipTags) {
+                if (!CI && !git.skipTags) {
                     develocity {
                         git.repo.let { repo ->
                             // Git commit id

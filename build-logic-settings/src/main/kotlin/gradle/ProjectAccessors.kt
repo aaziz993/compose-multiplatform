@@ -62,25 +62,21 @@ internal var Project.projectProperties: ProjectProperties
     }
 
 context(Project)
-internal fun String.resolveValue() = when {
-    startsWith("\$env.") -> System.getenv(removePrefix("\$env.").toScreamingSnakeCase())
-    startsWith("\$gradle.") -> providers.gradleProperty("\$gradle.".toDotCase()).get()
-    startsWith("\$local.") -> projectProperties.localProperties.getProperty("\$local.".toDotCase())
-    startsWith("\$extra.") -> extra["\$extra.".toDotCase()]!!
-    startsWith("\$envOrGradle.") -> System.getenv().getOrElse(removePrefix("\$envOrGradle.".toScreamingSnakeCase())) {
-        providers.gradleProperty("\$envOrGradle.".toDotCase()).get()
+internal fun String.resolveValue() =
+    if (startsWith("$")) {
+        removePrefix("$")
+            .substringBefore(".")
+            .split("Or").firstNotNullOf { string ->
+                when {
+                    startsWith("\$env.") -> System.getenv()[removePrefix("\$env.").toScreamingSnakeCase()]
+                    startsWith("\$gradle.") -> providers.gradleProperty("\$gradle.".toDotCase()).orNull
+                    startsWith("\$local.") -> projectProperties.localProperties["\$local.".toDotCase()]
+                    startsWith("\$extra.") -> extra["\$extra.".toDotCase()]
+                    else -> this
+                }
+            }
     }
-
-    startsWith("\$envOrLocal.") -> System.getenv().getOrElse(removePrefix("\$envOrLocal.".toScreamingSnakeCase())) {
-        projectProperties.localProperties.getProperty("\$local.".toDotCase())
-    }
-
-    startsWith("\$envOrExtra.") -> System.getenv().getOrElse(removePrefix("\$envOrExtra.".toScreamingSnakeCase())) {
-        extra["\$envOrExtra.".toDotCase()]!!
-    }
-
-    else -> this
-}
+    else this
 
 internal val Project.settings: Settings
     get() = (gradle as GradleInternal).settings
