@@ -88,20 +88,6 @@ internal object ArtifactRepositoryTransformingSerializer : BaseKeyTransformingSe
     )
 }
 
-
-
-KeyTransformingSerializer<ArtifactRepository>(
-ArtifactRepository.serializer(),
-{
-    key, value ->
-    when {
-        value == null -> "type"
-        else -> "type"
-    }
-},
-{ _, _ -> "url" },
-)
-
 private inline fun <reified T> NamedDomainObjectCollection<out T>.configure(
     name: String,
     noinline createAndConfigure: ((T.() -> Unit) -> T)? = null,
