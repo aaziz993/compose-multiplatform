@@ -2,6 +2,7 @@ package gradle.model
 
 import gradle.serialization.serializer.AnySerializer
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
 import org.gradle.process.ProcessForkOptions
 
 /**
@@ -33,6 +34,7 @@ internal interface ProcessForkOptions {
      */
     val environment: Map<String, @Serializable(with = AnySerializer::class) Any>?
 
+    context(Project)
     fun applyTo(options: ProcessForkOptions) {
         executable?.let(options::executable)
         workingDir?.let(options::workingDir)

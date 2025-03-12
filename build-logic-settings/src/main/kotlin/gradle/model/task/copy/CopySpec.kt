@@ -1,5 +1,7 @@
-package gradle.model
+package gradle.model.task.copy
 
+import gradle.model.FilesMatching
+import gradle.model.PatternFilterable
 import org.gradle.api.Project
 import org.gradle.api.file.CopySpec
 import org.gradle.api.file.DuplicatesStrategy
@@ -61,7 +63,7 @@ import org.gradle.api.file.DuplicatesStrategy
  *
  * @see org.gradle.api.tasks.Copy Copy Task
  *
- * @see org.gradle.api.Project.copy
+ * @see Project.copy
  */
 internal interface CopySpec : CopySourceSpec, CopyProcessingSpec, PatternFilterable {
 

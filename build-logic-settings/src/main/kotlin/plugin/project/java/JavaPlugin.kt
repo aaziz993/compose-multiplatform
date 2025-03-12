@@ -17,7 +17,6 @@ import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.tasks.SourceSet
 import org.gradle.internal.extensions.stdlib.capitalized
 import org.gradle.kotlin.dsl.dependencies
-import org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest
 
 internal class JavaPlugin : Plugin<Project> {
 
@@ -32,7 +31,7 @@ internal class JavaPlugin : Plugin<Project> {
 
             plugins.apply(JavaPlugin::class.java)
 
-            projectProperties.jvm?.applyTo()
+            projectProperties.java?.applyTo()
 
             // Apply java application plugin.
             if (projectProperties.type == ProjectType.APP && !projectProperties.compose.enabled) {

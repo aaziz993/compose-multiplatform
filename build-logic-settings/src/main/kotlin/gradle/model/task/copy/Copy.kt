@@ -1,20 +1,8 @@
-/*
- * Copyright 2010 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-package gradle.model
+package gradle.model.task.copy
 
+import gradle.model.Expand
+import gradle.model.FileCopyDetails
+import gradle.model.FilesMatching
 import gradle.serialization.serializer.AnySerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -24,34 +12,75 @@ import org.gradle.api.file.DuplicatesStrategy
 import org.gradle.kotlin.dsl.withType
 
 /**
- * `AbstractCopyTask` is the base class for all copy tasks.
+ * Copies files into a destination directory. This task can also rename and filter files as it copies. The task
+ * implements [CopySpec][org.gradle.api.file.CopySpec] for specifying what to copy.
+ *
+ *
+ *  Examples:
+ * <pre class='autoTested'>
+ * task copyDocs(type: Copy) {
+ * from 'src/main/doc'
+ * into 'build/target/doc'
+ * }
+ *
+ * //for Ant filter
+ * import org.apache.tools.ant.filters.ReplaceTokens
+ *
+ * //for including in the copy task
+ * def dataContent = copySpec {
+ * from 'src/data'
+ * include '*.data'
+ * }
+ *
+ * task initConfig(type: Copy) {
+ * from('src/main/config') {
+ * include '**&#47;*.properties'
+ * include '**&#47;*.xml'
+ * filter(ReplaceTokens, tokens: [version: '2.3.1'])
+ * }
+ * from('src/main/config') {
+ * exclude '**&#47;*.properties', '**&#47;*.xml'
+ * }
+ * from('src/main/languages') {
+ * rename 'EN_US_(.*)', '$1'
+ * }
+ * into 'build/target/config'
+ * exclude '**&#47;*.bak'
+ *
+ * includeEmptyDirs = false
+ *
+ * with dataContent
+ * }
+</pre> *
  */
-internal abstract class AbstractCopyTask : Task, CopySpec {
+internal abstract class Copy : AbstractCopyTask() {
 
     /**
-     * {@inheritDoc}
+     * Sets the directory to copy files into. This is the same as calling [.into] on this task.
+     *
+     * @param destinationDir The destination directory. Must not be null.
      */
-    abstract val caseSensitive: Boolean?
+    abstract val destinationDir: String?
 
     context(Project)
     override fun applyTo(named: Named) {
-        super<Task>.applyTo(named)
+        super.applyTo(named)
 
-        named as org.gradle.api.tasks.AbstractCopyTask
+        named as org.gradle.api.tasks.Copy
 
-        super<CopySpec>.applyTo(named)
-
-        caseSensitive?.let(named::setCaseSensitive)
+        destinationDir?.let(::file)?.let(named::setDestinationDir)
     }
 
     context(Project)
     override fun applyTo() =
-        super<Task>.applyTo(tasks.withType<org.gradle.api.tasks.AbstractCopyTask>())
+        super.applyTo(tasks.withType<org.gradle.api.tasks.Copy>()) { name ->
+            tasks.register(name).get()
+        }
 }
 
 @Serializable
-@SerialName("AbstractCopyTask")
-internal data class AbstractCopyTaskImpl(
+@SerialName("Copy")
+internal data class CopyImpl(
     override val caseSensitive: Boolean? = null,
     override val dependsOn: List<String>? = null,
     override val onlyIf: Boolean? = null,
@@ -65,6 +94,7 @@ internal data class AbstractCopyTaskImpl(
     override val mustRunAfter: List<String>? = null,
     override val finalizedBy: List<String>? = null,
     override val shouldRunAfter: List<String>? = null,
+    override val name: String = "",
     override val isCaseSensitive: Boolean? = null,
     override val includeEmptyDirs: Boolean? = null,
     override val duplicatesStrategy: DuplicatesStrategy? = null,
@@ -86,5 +116,5 @@ internal data class AbstractCopyTaskImpl(
     override val setIncludes: List<String>? = null,
     override val excludes: List<String>? = null,
     override val setExcludes: List<String>? = null,
-    override val name: String = "",
-) : AbstractCopyTask()
+    override val destinationDir: String? = null,
+) : Copy()

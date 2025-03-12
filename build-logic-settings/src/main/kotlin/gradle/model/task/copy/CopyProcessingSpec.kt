@@ -1,5 +1,7 @@
-package gradle.model
+package gradle.model.task.copy
 
+import gradle.model.ContentFilterable
+import gradle.model.FileCopyDetails
 import java.util.regex.Pattern
 import org.gradle.api.file.CopyProcessingSpec
 

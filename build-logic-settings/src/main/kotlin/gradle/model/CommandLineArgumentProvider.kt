@@ -5,7 +5,8 @@ import org.gradle.process.CommandLineArgumentProvider
 
 @Serializable
 internal data class CommandLineArgumentProvider(
-    val arguments: List<String>
+    val arguments: List<String>? = null
 ) : CommandLineArgumentProvider {
+
     override fun asArguments(): Iterable<String>? = arguments
 }

@@ -1,11 +1,11 @@
 package gradle.model.java
 
-import gradle.model.CopySpec
+import gradle.model.task.copy.CopySpec
 import gradle.model.Expand
 import gradle.model.FileCopyDetails
 import gradle.model.FilesMatching
-import gradle.model.FromSpec
-import gradle.model.IntoSpec
+import gradle.model.task.copy.FromSpec
+import gradle.model.task.copy.IntoSpec
 import gradle.model.Zip
 import gradle.model.kotlin.kmp.jvm.KotlinJvmTarget
 import gradle.projectProperties
@@ -15,7 +15,6 @@ import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.api.file.DuplicatesStrategy
 import org.gradle.api.tasks.bundling.ZipEntryCompression
-import org.gradle.api.tasks.testing.Test
 import org.gradle.kotlin.dsl.withType
 
 /**
@@ -57,7 +56,7 @@ internal abstract class Jar : Zip() {
         super.applyTo(named)
 
         named as org.gradle.api.tasks.bundling.Jar
-        Test
+
         metadataCharset?.let(named::setMetadataCharset)
         manifestContentCharset?.let(named::setManifestContentCharset)
         manifest?.applyTo(named.manifest)

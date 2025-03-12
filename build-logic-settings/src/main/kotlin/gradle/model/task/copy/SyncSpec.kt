@@ -1,5 +1,6 @@
-package gradle.model
+package gradle.model.task.copy
 
+import gradle.model.PatternFilterable
 import org.gradle.api.file.CopySourceSpec
 import org.gradle.api.file.SyncSpec
 

@@ -1,5 +1,8 @@
-package gradle.model
+package gradle.model.task.copy
 
+import gradle.model.Expand
+import gradle.model.FileCopyDetails
+import gradle.model.FilesMatching
 import gradle.serialization.serializer.AnySerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.file.DuplicatesStrategy

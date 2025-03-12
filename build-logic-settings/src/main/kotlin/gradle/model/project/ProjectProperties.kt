@@ -11,7 +11,6 @@ import gradle.model.TaskTransformingSerializer
 import gradle.model.android.BaseExtension
 import gradle.model.android.application.BaseAppModuleExtension
 import gradle.model.android.library.LibraryExtension
-import gradle.model.java.Jar
 import gradle.model.java.JavaPluginExtension
 import gradle.model.java.application.JavaApplication
 import gradle.model.kotlin.HasKotlinDependencies
@@ -45,12 +44,10 @@ import org.gradle.api.file.Directory
 import org.gradle.api.file.FileCollection
 import org.gradle.api.initialization.Settings
 import org.gradle.api.internal.artifacts.repositories.DefaultMavenArtifactRepository
-import org.gradle.kotlin.dsl.creating
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.maven
 import org.gradle.kotlin.dsl.repositories
 import org.jetbrains.compose.internal.utils.currentTarget
-import org.jetbrains.compose.jetbrainsCompose
 import org.tomlj.Toml
 import org.yaml.snakeyaml.Yaml
 import plugin.PROJECT_PROPERTIES_FILE
@@ -109,7 +106,7 @@ internal data class ProjectProperties(
     val description: String? = null,
     val version: VersionSettings = VersionSettings(),
     val plugins: Plugins = Plugins(),
-    val jvm: JavaPluginExtension? = null,
+    val java: JavaPluginExtension? = null,
     val application: JavaApplication? = null,
     val kotlin: KotlinSettings = KotlinSettings(),
     @Transient

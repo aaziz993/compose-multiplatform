@@ -1,5 +1,7 @@
 package gradle.model
 
+import gradle.model.task.copy.FromSpec
+import gradle.model.task.copy.IntoSpec
 import gradle.serialization.serializer.AnySerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

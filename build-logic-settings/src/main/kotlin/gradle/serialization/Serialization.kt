@@ -10,7 +10,7 @@ import org.reflections.Reflections
 
 @Suppress("UNCHECKED_CAST")
 public fun <T : Any> KClass<out T>.getPolymorphicSerializer(type: String): KSerializer<T>? =
-    Reflections().getSubTypesOf(java)
+    Reflections().getSubTypesOf(this@getPolymorphicSerializer.java)
         .filter { it.kotlin.findAnnotation<Serializable>() != null }
         .find { clazz ->
             (clazz.getAnnotation(SerialName::class.java)?.value ?: clazz.simpleName) == type

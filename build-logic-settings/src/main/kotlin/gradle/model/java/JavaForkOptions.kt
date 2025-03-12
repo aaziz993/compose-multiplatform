@@ -1,16 +1,16 @@
 package gradle.model.java
 
-import gradle.model.CommandLineArgumentProvider
+import gradle.model.ProcessForkOptions
 import gradle.serialization.serializer.AnySerializer
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
 import org.gradle.process.JavaForkOptions
 
 /**
  *
  * Specifies the options to use to fork a Java process.
  */
-@HasInternalProtocol
-public interface JavaForkOptions : ProcessForkOptions {
+internal interface JavaForkOptions : ProcessForkOptions {
 
     /**
      * Adds some system properties to use for the process.
@@ -57,14 +57,6 @@ public interface JavaForkOptions : ProcessForkOptions {
     val jvmArgs: List<String>?
 
     /**
-     * Command line argument providers for the java process to fork.
-     *
-     * @since 4.6
-     */
-
-    val jvmArgumentProviders: List<CommandLineArgumentProvider>?
-
-    /**
      * Adds the given values to the end of the bootstrap classpath for the process.
      *
      * @param classpath The classpath.
@@ -108,17 +100,21 @@ public interface JavaForkOptions : ProcessForkOptions {
      */
     val allJvmArgs: List<String>?
 
-    fun applyTo(options: JavaForkOptions) {
+    context(Project)
+    override fun applyTo(options: org.gradle.process.ProcessForkOptions) {
+        super.applyTo(options)
+
+        options as JavaForkOptions
+
         systemProperties?.let(options::systemProperties)
-        defaultCharacterEncoding?.let(options::defaultCharacterEncoding)
-        minHeapSize?.let(options::minHeapSize)
-        maxHeapSize?.let(options::maxHeapSize)
+        defaultCharacterEncoding?.let(options::setDefaultCharacterEncoding)
+        minHeapSize?.let(options::setMinHeapSize)
+        maxHeapSize?.let(options::setMaxHeapSize)
         jvmArgs?.let(options::jvmArgs)
-        jvmArgumentProviders?.let(options::jvmArgumentProviders)
-        bootstrapClasspath?.let(options::bootstrapClasspath)
-        enableAssertions?.let(options::enableAssertions)
-        debug?.let(options::debug)
-        debugOptions?.applyTo(options::debugOptions)
-        allJvmArgs?.let(options::allJvmArgs)
+        bootstrapClasspath?.let { files(*it.toTypedArray()) }?.let(options::setBootstrapClasspath)
+        enableAssertions?.let(options::setEnableAssertions)
+        debug?.let(options::setDebug)
+        debugOptions?.applyTo(options.debugOptions)
+        allJvmArgs?.let(options::setAllJvmArgs)
     }
 }

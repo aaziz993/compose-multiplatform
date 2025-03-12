@@ -1,4 +1,4 @@
-package gradle.model
+package gradle.model.task.copy
 
 import org.gradle.api.file.CopySourceSpec
 

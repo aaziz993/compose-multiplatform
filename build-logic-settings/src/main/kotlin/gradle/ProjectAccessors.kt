@@ -68,7 +68,7 @@ internal fun String.resolveValue() =
         val key = substringAfter(".")
         removePrefix("$")
             .substringBefore(".")
-            .split("Or")
+            .split("|")
             .map(String::lowercase)
             .firstNotNullOf { reference ->
                 when (reference) {
