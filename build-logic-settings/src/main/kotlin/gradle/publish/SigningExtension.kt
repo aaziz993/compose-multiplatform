@@ -4,6 +4,7 @@ import gradle.accessors.publishing
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
+import org.gradle.api.publish.PublicationArtifact
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.kotlin.dsl.artifacts
 import org.gradle.plugins.signing.SignOperation
@@ -13,7 +14,7 @@ import org.gradle.plugins.signing.SigningExtension
  * The global signing configuration for a project.
  */
 @Serializable
-public data class SigningExtension(
+internal data class SigningExtension(
     /**
      * Whether this task should fail if no signatory or signature type are configured at generation time.
      *
@@ -148,7 +149,9 @@ public data class SigningExtension(
         required?.let(extension::setRequired)
         useGpgCmd?.takeIf { it }?.run { extension.useGpgCmd() }
 
-        useInMemoryPgpKeys?.let(extension::useInMemoryPgpKeys)
+        useInMemoryPgpKeys?.let { (defaultKeyId, defaultSecretKey, defaultPassword) ->
+            extension.useInMemoryPgpKeys(defaultKeyId, defaultSecretKey, defaultPassword)
+        }
 
         signTasks?.map(tasks::getByName)?.let { tasks ->
             extension.sign(*tasks.toTypedArray())
@@ -164,13 +167,13 @@ public data class SigningExtension(
 
         val publishingArtifacts = publishing.publications
             .filterIsInstance<MavenPublication>()
-            .flatMap { it.artifacts }
+            .flatMap { it.artifacts } as List<PublicationArtifact>
 
-        signPublishArtifacts?.map { name ->
-            publishingArtifacts.find { artifact -> artifact.file.name == name }!!
-        }?.let { artifacts ->
-            extension.sign(*artifacts.toTypedArray())
-        }
+//        signPublishArtifacts?.map { name ->
+//            publishingArtifacts.find { artifact -> artifact.file.name == name }!!
+//        }?.let { artifacts ->
+//            extension.sign(*artifacts.toTypedArray())
+//        }
 
         signFiles?.map(::file)?.let { files ->
             extension.sign(*files.toTypedArray())
