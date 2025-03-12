@@ -9,6 +9,7 @@ import gradle.accessors.resolveVersion
 import gradle.serialization.serializer.JsonContentPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
 import gradle.accessors.settings
+import gradle.accessors.version
 import gradle.api.version
 import gradle.accessors.versions
 import kotlinx.serialization.Serializable

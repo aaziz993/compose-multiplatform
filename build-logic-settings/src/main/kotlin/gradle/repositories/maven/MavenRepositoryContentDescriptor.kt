@@ -1,9 +1,10 @@
 package gradle.repositories.maven
 
-import gradle.repositories.InclusiveRepositoryContentDescriptor
 import gradle.repositories.RepositoryContentDescriptor
 import gradle.repositories.Version
 import kotlinx.serialization.Serializable
+import org.gradle.api.artifacts.repositories.InclusiveRepositoryContentDescriptor
+import org.gradle.api.artifacts.repositories.MavenRepositoryContentDescriptor
 
 /**
  * Extends the repository content descriptor with Maven repositories specific options.

@@ -18,7 +18,7 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
 import org.jetbrains.kotlin.gradle.dsl.KotlinBaseExtension
-import plugin.project.kotlin.cocoapods.model.CocoapodsSettings
+import plugins.kotlin.cocoapods.model.CocoapodsSettings
 
 @Serializable
 internal data class KotlinSettings(

@@ -3,6 +3,7 @@ package gradle.plugins.spotless
 import com.diffplug.gradle.spotless.BaseKotlinExtension
 import gradle.accessors.libs
 import gradle.accessors.settings
+import gradle.accessors.version
 import gradle.api.version
 import gradle.accessors.versions
 import org.gradle.api.Project
