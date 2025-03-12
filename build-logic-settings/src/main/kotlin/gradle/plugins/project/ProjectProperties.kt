@@ -1,13 +1,8 @@
-@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
-
 package gradle.plugins.project
 
-import gradle.accessors.allLibs
 import gradle.coolection.deepMerge
-import gradle.isUrl
-import gradle.accessors.libs
-import gradle.tasks.Task
-import gradle.tasks.TaskTransformingSerializer
+import gradle.coolection.resolve
+import gradle.initialization.ScriptHandler
 import gradle.plugins.android.BaseExtension
 import gradle.plugins.android.application.BaseAppModuleExtension
 import gradle.plugins.android.library.LibraryExtension
@@ -19,84 +14,25 @@ import gradle.plugins.web.js.karakum.KarakumSettings
 import gradle.plugins.web.node.model.NodeJsEnvSpec
 import gradle.plugins.web.npm.model.NpmExtension
 import gradle.plugins.web.yarn.model.YarnRootExtension
-import gradle.problemreporter.SLF4JProblemReporterContext
-import gradle.accessors.projectProperties
-import gradle.coolection.resolve
 import gradle.serialization.decodeFromAny
-import gradle.serialization.encodeToAny
-import gradle.accessors.settings
-import gradle.accessors.toVersionCatalogUrlPath
-import gradle.accessors.version
-import gradle.api.trySetSystemProperty
-import gradle.api.version
-import gradle.accessors.versions
-import java.net.URI
+import gradle.tasks.Task
+import gradle.tasks.TaskTransformingSerializer
 import java.util.*
-import javax.xml.stream.XMLEventFactory
-import javax.xml.stream.XMLInputFactory
-import javax.xml.stream.XMLOutputFactory
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import kotlinx.serialization.json.Json
-import org.gradle.api.GradleException
-import org.gradle.api.Project
-import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.api.file.Directory
-import org.gradle.api.file.FileCollection
-import org.gradle.api.initialization.Settings
-import org.gradle.api.internal.artifacts.repositories.DefaultMavenArtifactRepository
-import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.maven
-import org.gradle.kotlin.dsl.repositories
-import org.jetbrains.compose.internal.utils.currentTarget
-import org.tomlj.Toml
 import org.yaml.snakeyaml.Yaml
-import plugin.PROJECT_PROPERTIES_FILE
-import plugins.android.AndroidPlugin
-import plugins.apple.ApplePlugin
 import plugins.apple.model.AppleSettings
-import plugins.cmp.CMPPlugin
 import plugins.cmp.model.CMPSettings
-import plugins.gradle.animalsniffer.AnimalSnifferPlugin
-import plugins.gradle.apivalidation.ApiValidationPlugin
-import plugins.gradle.buildconfig.BuildConfigPlugin
-import plugins.gradle.develocity.DevelocityPlugin
-import plugins.gradle.doctor.DoctorPlugin
-import plugins.gradle.dokka.DokkaPlugin
-import plugins.gradle.githooks.GitHooksPlugin
-import plugins.gradle.knit.KnitPlugin
-import plugins.gradle.kover.KoverPlugin
-import plugins.gradle.publish.PublishPlugin
-import plugins.gradle.shadow.ShadowPlugin
-import plugins.gradle.sonar.SonarPlugin
-import plugins.gradle.spotless.SpotlessPlugin
-import plugins.gradle.toolchainmanagement.ToolchainManagementPlugin
-import plugins.java.JavaPlugin
-import plugins.kotlin.allopen.AllOpenPlugin
-import plugins.kotlin.apollo.ApolloPlugin
-import plugins.kotlin.atomicfu.AtomicFUPlugin
-import plugins.kmp.KMPPlugin
-import plugins.kotlin.ksp.KspPlugin
-import plugins.kotlin.ktorfit.KtorfitPlugin
-import plugins.kotlin.noarg.NoArgPlugin
-import plugins.kotlin.powerassert.PowerAssertPlugin
-import plugins.kotlin.room.RoomPlugin
-import plugins.kotlin.rpc.RpcPlugin
-import plugins.kotlin.serialization.SerializationPlugin
-import plugins.kotlin.sqldelight.SqlDelightPlugin
-import plugins.nat.NativePlugin
-import plugins.web.JsPlugin
-import plugins.web.WasmPlugin
-import plugins.web.WasmWasiPlugin
 
-private const val VERSION_CATALOG_CACHE_DIR = "build-logic-settings/gradle"
-
-private const val COMPOSE_VERSION_CATALOG_FILE = "build-logic-settings/gradle/compose.versions.template.toml"
+internal const val PROJECT_PROPERTIES_FILE = "project.yaml"
 
 @Serializable
 internal data class ProjectProperties(
     val pluginManagement: PluginManagement? = null,
     val dependencyResolutionManagement: DependencyResolutionManagement? = null,
+    val buildscript: ScriptHandler? = null,
     override val dependencies: List<@Serializable(with = DependencyTransformingSerializer::class) Dependency>? = null,
     val includes: List<String>? = null,
     val projects: List<ProjectDescriptor>? = null,
@@ -125,237 +61,16 @@ internal data class ProjectProperties(
     @Transient
     val localProperties = Properties()
 
-    context(Settings)
-    @Suppress("UnstableApiUsage")
-    fun applyTo() {
-        pluginManagement.let { pluginManagement ->
-            pluginManagement {
-                repositories {
-                    mavenCentral()
-                    google()
-                    gradlePluginPortal()
-
-                    pluginManagement?.repositories?.forEach { repository -> maven(repository) }
-                }
-            }
-        }
-
-        dependencyResolutionManagement?.let { dependencyResolutionManagement ->
-            dependencyResolutionManagement {
-                repositories {
-                    settings.applyTo(this)
-                }
-
-                val libsFile = settings.layout.settingsDirectory.file("gradle/libs.versions.toml").asFile
-                if (dependencyResolutionManagement.versionCatalogs?.none { it.name == "libs" } != false && libsFile.exists())
-                    allLibs += "libs" to Toml.parse(libsFile.readText())
-
-
-                dependencyResolutionManagement.versionCatalogs?.let { versionCatalogs ->
-                    versionCatalogs {
-                        versionCatalogs.forEach { (catalogName, dependency) ->
-                            var notation = dependency.resolve()
-
-                            create(catalogName) {
-                                from(notation)
-                            }
-
-
-                            if (notation is FileCollection) {
-                                allLibs[catalogName] = Toml.parse(notation.files.single().readText())
-                            }
-                            else {
-                                notation as String
-
-                                val cacheFile = settings.layout.settingsDirectory.file("$VERSION_CATALOG_CACHE_DIR/$catalogName.versions.toml").asFile
-
-                                if (cacheFile.exists()) {
-                                    allLibs[catalogName] = Toml.parse(cacheFile.readText())
-                                    return@forEach
-                                }
-
-                                if (!notation.isUrl) {
-                                    notation = notation.toVersionCatalogUrlPath()
-                                }
-
-                                allLibs[catalogName] = repositories.map { (it as DefaultMavenArtifactRepository).url.toString().removeSuffix("/") }
-                                    .firstNotNullOf { url ->
-                                        try {
-                                            Toml.parse(
-                                                URI(
-                                                    "$url/$notation",
-                                                ).toURL()
-                                                    .readText()
-                                                    .also(cacheFile::writeText), // write to cache
-                                            )
-                                        }
-                                        catch (_: Throwable) {
-                                            null
-                                        }
-                                    }
-                            }
-                        }
-                    }
-                }
-
-                // Load pre-defined compose version catalog
-                allLibs += "compose" to Toml.parse(
-                    settings.layout.settingsDirectory.file(COMPOSE_VERSION_CATALOG_FILE).asFile
-                        .readText()
-                        .replace("\$kotlin", libs.versions.version("kotlin")!!)
-                        .replace("\$compose", libs.versions.version("compose")!!)
-                        .replace("\$materialExtendedIcon", libs.versions.version("materialExtendedIcon")!!)
-                        .replace("\$currentTargetId", currentTarget.id),
-                )
-            }
-        }
-
-        buildscript.repositories {
-            settings.applyTo(this)
-        }
-
-        // Apply plugins after version catalogs are loaded in settings phase.
-        settings.plugins.apply(DevelocityPlugin::class.java)
-        settings.plugins.apply(ToolchainManagementPlugin::class.java)
-        settings.plugins.apply(GitHooksPlugin::class.java)
-
-        // Include subprojects.
-        includes?.forEach(::include)
-
-        // Configure subprojects.
-        projects?.forEach { project ->
-            project.applyTo()
-        }
-    }
-
-    context(Project)
-    fun applyTo() = with(SLF4JProblemReporterContext()) {
-        if (kotlin.targets.isNotEmpty()) {
-            group?.let(::setGroup)
-            description?.let(::setDescription)
-            project.version = version()
-        }
-
-        buildscript.repositories {
-            settings.applyTo(this)
-        }
-
-        //  Don't change order!
-        project.plugins.apply(DoctorPlugin::class.java)
-        project.plugins.apply(BuildConfigPlugin::class.java)
-        project.plugins.apply(SpotlessPlugin::class.java)
-        project.plugins.apply(KoverPlugin::class.java)
-        project.plugins.apply(SonarPlugin::class.java)
-        project.plugins.apply(KnitPlugin::class.java)
-        project.plugins.apply(DokkaPlugin::class.java)
-        project.plugins.apply(ShadowPlugin::class.java)
-        project.plugins.apply(ApiValidationPlugin::class.java)
-        project.plugins.apply(PublishPlugin::class.java)
-        project.plugins.apply(AllOpenPlugin::class.java)
-        project.plugins.apply(NoArgPlugin::class.java)
-        project.plugins.apply(AtomicFUPlugin::class.java)
-        project.plugins.apply(SerializationPlugin::class.java)
-        project.plugins.apply(SqlDelightPlugin::class.java)
-        project.plugins.apply(RoomPlugin::class.java)
-        project.plugins.apply(RpcPlugin::class.java)
-        project.plugins.apply(KtorfitPlugin::class.java)
-        project.plugins.apply(ApolloPlugin::class.java)
-        project.plugins.apply(PowerAssertPlugin::class.java)
-        project.plugins.apply(JavaPlugin::class.java)
-        project.plugins.apply(AndroidPlugin::class.java) // apply and configure android library or application plugin.
-        project.plugins.apply(AnimalSnifferPlugin::class.java)
-        project.plugins.apply(KMPPlugin::class.java) // need android library or application plugin applied.
-        project.plugins.apply(KspPlugin::class.java) // kspCommonMainMetadata need kmp plugin applied.
-        project.plugins.apply(NativePlugin::class.java)
-        project.plugins.apply(ApplePlugin::class.java)
-        project.plugins.apply(JsPlugin::class.java)
-        project.plugins.apply(WasmPlugin::class.java)
-        project.plugins.apply(WasmWasiPlugin::class.java)
-        project.plugins.apply(CMPPlugin::class.java)
-
-        projectProperties.nodeJsEnv.applyTo()
-        projectProperties.yarn.applyTo()
-        projectProperties.npm.applyTo()
-
-        dependencies?.forEach { dependency ->
-            dependencies {
-                dependency.applyTo(this)
-            }
-        }
-
-        tasks?.forEach { task ->
-            task.applyTo()
-        }
-
-        if (problemReporter.getErrors().isNotEmpty()) {
-            throw GradleException(problemReporter.getGradleError())
-        }
-
-        afterEvaluate {
-            // W/A for XML factories mess within apple plugin classpath.
-            val hasAndroidPlugin = plugins.hasPlugin("com.android.application") ||
-                plugins.hasPlugin("com.android.library")
-            if (hasAndroidPlugin) {
-                adjustXmlFactories()
-            }
-        }
-    }
-
-    /**
-     * W/A for service loading conflict between apple plugin
-     * and android plugin.
-     */
-    private fun adjustXmlFactories() {
-        trySetSystemProperty(
-            XMLInputFactory::class.qualifiedName!!,
-            "com.sun.xml.internal.stream.XMLInputFactoryImpl",
-        )
-        trySetSystemProperty(
-            XMLOutputFactory::class.qualifiedName!!,
-            "com.sun.xml.internal.stream.XMLOutputFactoryImpl",
-        )
-        trySetSystemProperty(
-            XMLEventFactory::class.qualifiedName!!,
-            "com.sun.xml.internal.stream.events.XMLEventFactoryImpl",
-        )
-    }
-
-    private fun Settings.applyTo(handler: RepositoryHandler) {
-        // Apply repositories from project properties.
-        projectProperties.dependencyResolutionManagement?.repositories?.let { repositories ->
-            repositories.forEach { repository ->
-                repository.applyTo(handler)
-            }
-        }
-    }
-
     companion object {
 
-        private val json = Json {
+        val json = Json {
             ignoreUnknownKeys = true
         }
 
-        private val yaml = Yaml()
-
-        context(Settings)
-        @Suppress("UnstableApiUsage")
-        fun applyTo() {
-            projectProperties = layout.settingsDirectory.load()
-            projectProperties.applyTo()
-        }
-
-        context(Project)
-        fun applyTo() {
-            projectProperties = layout.projectDirectory.load().apply {
-                println("Applied $PROJECT_PROPERTIES_FILE to: $name")
-                println(yaml.dump(Json.Default.encodeToAny(this)))
-            }
-
-            projectProperties.applyTo()
-        }
+        val yaml = Yaml()
 
         @Suppress("UNCHECKED_CAST")
-        private fun Directory.load(): ProjectProperties {
+        fun Directory.load(): ProjectProperties {
             val propertiesFile = file(PROJECT_PROPERTIES_FILE).asFile
 
             return if (propertiesFile.exists()) {

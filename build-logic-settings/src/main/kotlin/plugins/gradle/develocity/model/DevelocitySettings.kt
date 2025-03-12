@@ -3,8 +3,8 @@ package plugins.gradle.develocity.model
 import gradle.accessors.id
 import gradle.api.CI
 import gradle.accessors.libs
-import gradle.plugins.buildcache.DirectoryBuildCache
-import gradle.plugins.buildcache.RemoteBuildCache
+import gradle.buildcache.DirectoryBuildCache
+import gradle.buildcache.RemoteBuildCache
 import gradle.plugins.develocity.BuildScanConfiguration
 import gradle.plugins.develocity.DevelocityConfiguration
 import gradle.plugins.develocity.Git

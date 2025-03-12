@@ -91,6 +91,10 @@ dependencyResolutionManagement:
     - name: kotlinWrappers
       from: $libs.kotlin.wrappers.catalog
 
+buildscript:
+  repositories:
+    - mavenCentral
+
 includes:
   - kmp-lib
   - cmp-lib

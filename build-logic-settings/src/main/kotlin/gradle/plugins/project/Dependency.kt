@@ -3,21 +3,21 @@
 package gradle.plugins.project
 
 import gradle.accessors.allLibs
-import gradle.isUrl
 import gradle.accessors.resolveLibrary
-import gradle.serialization.serializer.BaseKeyTransformingSerializer
 import gradle.accessors.settings
+import gradle.isUrl
+import gradle.serialization.serializer.BaseKeyTransformingSerializer
 import java.io.File
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import org.gradle.api.Project
+import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.api.file.Directory
 import org.gradle.api.file.FileCollection
 import org.gradle.api.initialization.Settings
 import org.gradle.api.internal.tasks.JvmConstants
-import org.gradle.kotlin.dsl.DependencyHandlerScope
 import org.gradle.kotlin.dsl.kotlin
 import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
 import org.tomlj.TomlParseResult
@@ -37,6 +37,11 @@ internal data class Dependency(
         layout.settingsDirectory,
     )
 
+    context(Settings)
+    fun applyTo(handler: DependencyHandler) {
+        handler.add(configuration, subConfiguration(handler, resolve()))
+    }
+
     context(Project)
     fun resolve(): Any = resolve(
         settings.allLibs,
@@ -46,7 +51,7 @@ internal data class Dependency(
     }
 
     context(Project)
-    fun applyTo(handler: DependencyHandlerScope) {
+    fun applyTo(handler: DependencyHandler) {
         val config = when {
             configurations.findByName(configuration) != null -> configuration
 
@@ -62,7 +67,7 @@ internal data class Dependency(
         handler.add(config, subConfiguration(handler, resolve()))
     }
 
-    private fun subConfiguration(handler: DependencyHandlerScope, notation: Any) =
+    private fun subConfiguration(handler: DependencyHandler, notation: Any) =
         when (subConfiguration) {
             null -> notation
             "kotlin" -> handler.kotlin(notation.toString())

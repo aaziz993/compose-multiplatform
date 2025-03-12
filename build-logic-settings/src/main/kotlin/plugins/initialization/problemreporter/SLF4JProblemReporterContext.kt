@@ -1,7 +1,7 @@
-package gradle.problemreporter
+package plugins.initialization.problemreporter
 
 import org.slf4j.LoggerFactory
-import plugin.SettingsPlugin
+import plugins.initialization.SettingsPlugin
 
 internal class SLF4JProblemReporterContext : ProblemReporterContext {
     override val problemReporter: SLF4JProblemReporter = SLF4JProblemReporter(SettingsPlugin::class.java)

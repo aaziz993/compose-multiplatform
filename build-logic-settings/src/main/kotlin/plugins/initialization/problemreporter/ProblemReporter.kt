@@ -1,4 +1,4 @@
-package gradle.problemreporter
+package plugins.initialization.problemreporter
 
 internal interface ProblemReporter {
 

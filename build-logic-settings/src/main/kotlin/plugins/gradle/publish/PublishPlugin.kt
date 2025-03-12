@@ -17,7 +17,7 @@ internal class PublishPlugin : Plugin<Project> {
                 }?.let { publishing ->
                     plugins.apply(MavenPublishPlugin::class.java)
                     plugins.apply(SigningPlugin::class.java)
-                    "signing"
+
                     publishing.applyTo()
                 }
         }
