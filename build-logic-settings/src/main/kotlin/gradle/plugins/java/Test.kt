@@ -261,7 +261,7 @@ internal abstract class Test : AbstractTestTask(), JavaForkOptions, PatternFilte
                 useTestNGDsl.applyTo(this)
             }
         }
-        gradle.plugins.kmp.jvm.KotlinJvmTest
+
         scanForTestClasses?.let(named::setScanForTestClasses)
         forkEvery?.let(named::setForkEvery)
         maxParallelForks?.let(named::setMaxParallelForks)
