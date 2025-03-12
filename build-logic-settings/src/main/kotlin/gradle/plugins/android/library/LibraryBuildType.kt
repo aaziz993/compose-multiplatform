@@ -13,7 +13,7 @@ import gradle.plugins.android.PostProcessing
 import gradle.plugins.android.ResValue
 import gradle.plugins.android.Shaders
 import gradle.plugins.android.VcsInfo
-import gradle.serialization.serializer.AnySerializer
+import gradle.collection.SerializableAnyMap
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
@@ -58,7 +58,7 @@ internal data class LibraryBuildType(
     override val aarMetadata: AarMetadata? = null,
     override val multiDexKeepProguard: String? = null,
     override val setProguardFiles: List<String>? = null,
-    override val manifestPlaceholders: Map<String, @Serializable(with = AnySerializer::class) Any>? = null,
+    override val manifestPlaceholders: SerializableAnyMap? = null,
     override val externalNativeBuild: ExternalNativeBuildFlags? = null,
     override val buildConfigFields: List<BuildConfigField>? = null,
     override val resValues: List<ResValue>? = null,

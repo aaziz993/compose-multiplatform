@@ -1,7 +1,7 @@
 package gradle.plugins.apple
 
 import gradle.api.trySet
-import gradle.serialization.serializer.AnySerializer
+import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
 import org.jetbrains.gradle.apple.targets.IosAppTarget
 
@@ -14,7 +14,7 @@ internal data class IosAppTarget(
     override val ipad: Boolean? = null,
     override val iphone: Boolean? = null,
     override val name: String = "",
-    override val productInfo: Map<String, @Serializable(with = AnySerializer::class) Any>? = null,
+    override val productInfo: SerializableAnyMap? = null,
     override val productModuleName: String? = null,
     override val productName: String? = null,
     val launchStoryboard: String? = null,

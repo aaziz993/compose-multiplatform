@@ -1,6 +1,6 @@
 package gradle.tasks
 
-import gradle.serialization.serializer.AnySerializer
+import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
 import org.gradle.api.file.ContentFilterable
 
@@ -24,7 +24,7 @@ internal interface ContentFilterable {
      * @param properties reference-to-value map for substitution
      * @return this
      */
-    val expand: Map<String, @Serializable(with = AnySerializer::class) Any>?
+    val expand: SerializableAnyMap?
 
     /**
      *

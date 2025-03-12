@@ -1,7 +1,7 @@
 package gradle.plugins.dokka
 
 import gradle.api.tryAssign
-import gradle.serialization.serializer.AnySerializer
+import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
@@ -17,7 +17,7 @@ internal data class DokkaGenerateTask(
     override val notCompatibleWithConfigurationCache: String? = null,
     override val didWork: Boolean? = null,
     override val enabled: Boolean? = null,
-    override val properties: Map<String, @Serializable(with = AnySerializer::class) Any>? = null,
+    override val properties: SerializableAnyMap? = null,
     override val description: String? = null,
     override val group: String? = null,
     override val mustRunAfter: List<String>? = null,

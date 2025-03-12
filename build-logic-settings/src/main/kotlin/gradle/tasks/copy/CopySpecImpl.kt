@@ -1,6 +1,6 @@
 package gradle.tasks.copy
 
-import gradle.serialization.serializer.AnySerializer
+import gradle.collection.SerializableAnyMap
 import gradle.tasks.Expand
 import gradle.tasks.FilesMatching
 import kotlinx.serialization.Serializable
@@ -82,7 +82,7 @@ internal data class CopySpecImpl(
     override val filePermissions: Int? = null,
     override val dirPermissions: Int? = null,
     override val eachFile: FileCopyDetails? = null,
-    override val expand: Map<String, @Serializable(with = AnySerializer::class) Any>? = null,
+    override val expand: SerializableAnyMap? = null,
     override val expandDetails: Expand? = null,
     override val includes: List<String>? = null,
     override val setIncludes: List<String>? = null,

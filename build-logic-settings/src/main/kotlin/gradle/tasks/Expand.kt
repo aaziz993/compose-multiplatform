@@ -1,6 +1,6 @@
 package gradle.tasks
 
-import gradle.serialization.serializer.AnySerializer
+import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
 
 @Serializable

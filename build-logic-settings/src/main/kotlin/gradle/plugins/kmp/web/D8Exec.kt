@@ -2,7 +2,8 @@ package gradle.plugins.kmp.web
 
 import gradle.api.tryAssign
 import gradle.api.trySet
-import gradle.serialization.serializer.AnySerializer
+import gradle.collection.SerializableAnyMap
+import gradle.collection.SerializableAnyList
 import gradle.tasks.AbstractExecTask
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
@@ -10,14 +11,14 @@ import org.gradle.api.Project
 
 @Serializable
 internal data class D8Exec(
-    override val commandLineArgs: List<@Serializable(with = AnySerializer::class) Any>? = null,
-    override val setCommandLineArgs: List<@Serializable(with = AnySerializer::class) Any>? = null,
-    override val args: List<@Serializable(with = AnySerializer::class) Any>? = null,
-    override val setArgs: List<@Serializable(with = AnySerializer::class) Any>? = null,
+    override val commandLineArgs: SerializableAnyList? = null,
+    override val setCommandLineArgs: SerializableAnyList? = null,
+    override val args: SerializableAnyList? = null,
+    override val setArgs: SerializableAnyList? = null,
     override val executable: String? = null,
     override val workingDir: String? = null,
-    override val environment: Map<String, @Serializable(with = AnySerializer::class) Any>? = null,
-    override val setEnvironment: Map<String, @Serializable(with = AnySerializer::class) Any>? = null,
+    override val environment: SerializableAnyMap? = null,
+    override val setEnvironment: SerializableAnyMap? = null,
     override val ignoreExitValue: Boolean? = null,
     override val dependsOn: List<String>? = null,
     override val onlyIf: Boolean? = null,
@@ -25,7 +26,7 @@ internal data class D8Exec(
     override val notCompatibleWithConfigurationCache: String? = null,
     override val didWork: Boolean? = null,
     override val enabled: Boolean? = null,
-    override val properties: Map<String, @Serializable(with = AnySerializer::class) Any>? = null,
+    override val properties: SerializableAnyMap? = null,
     override val description: String? = null,
     override val group: String? = null,
     override val mustRunAfter: List<String>? = null,

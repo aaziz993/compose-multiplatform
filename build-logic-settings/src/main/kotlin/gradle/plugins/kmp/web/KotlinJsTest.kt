@@ -4,7 +4,7 @@ import gradle.accessors.moduleName
 import gradle.api.tryAssign
 import gradle.api.trySet
 import gradle.plugins.kotlin.KotlinTest
-import gradle.serialization.serializer.AnySerializer
+import gradle.collection.SerializableAnyMap
 import gradle.tasks.test.DefaultTestFilter
 import gradle.tasks.test.TestLoggingContainer
 import kotlinx.serialization.Serializable
@@ -28,7 +28,7 @@ internal data class KotlinJsTest(
     override val notCompatibleWithConfigurationCache: String? = null,
     override val didWork: Boolean? = null,
     override val enabled: Boolean? = null,
-    override val properties: Map<String, @Serializable(with = AnySerializer::class) Any>? = null,
+    override val properties: SerializableAnyMap? = null,
     override val description: String? = null,
     override val group: String? = null,
     override val mustRunAfter: List<String>? = null,

@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin
 
 import gradle.api.trySet
-import gradle.serialization.serializer.AnySerializer
+import gradle.collection.SerializableAnyMap
 import gradle.tasks.test.AbstractTestTask
 import gradle.tasks.test.DefaultTestFilter
 import gradle.tasks.test.TestLoggingContainer
@@ -43,7 +43,7 @@ internal data class KotlinTestImpl(
     override val notCompatibleWithConfigurationCache: String? = null,
     override val didWork: Boolean? = null,
     override val enabled: Boolean? = null,
-    override val properties: Map<String, @Serializable(with = AnySerializer::class) Any>? = null,
+    override val properties: SerializableAnyMap? = null,
     override val description: String? = null,
     override val group: String? = null,
     override val mustRunAfter: List<String>? = null,

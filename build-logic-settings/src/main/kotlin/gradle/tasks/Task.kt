@@ -1,7 +1,7 @@
 package gradle.tasks
 
 import gradle.api.Named
-import gradle.serialization.serializer.AnySerializer
+import gradle.collection.SerializableAnyMap
 import gradle.serialization.serializer.JsonContentPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
 import groovy.lang.MissingPropertyException
@@ -235,7 +235,7 @@ internal interface Task : Named {
      * @param name The name of the property
      * @param value The value of the property
      */
-    val properties: Map<String, @Serializable(with = AnySerializer::class) Any>?
+    val properties: SerializableAnyMap?
 
     /**
      * Sets a description for this task. This should describe what the task does to the user of the build. The
@@ -361,7 +361,7 @@ internal data class TaskImpl(
     override val notCompatibleWithConfigurationCache: String? = null,
     override val didWork: Boolean? = null,
     override val enabled: Boolean? = null,
-    override val properties: Map<String, @Serializable(with = AnySerializer::class) Any>? = null,
+    override val properties: SerializableAnyMap? = null,
     override val description: String? = null,
     override val group: String? = null,
     override val mustRunAfter: List<String>? = null,

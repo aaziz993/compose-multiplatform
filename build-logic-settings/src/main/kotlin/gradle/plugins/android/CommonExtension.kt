@@ -8,7 +8,7 @@ import gradle.accessors.version
 import gradle.accessors.versions
 import gradle.api.trySet
 import gradle.api.version
-import gradle.serialization.serializer.AnySerializer
+import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -496,7 +496,7 @@ internal interface CommonExtension<
      * Values provided should not be based on a Task execution result, as most of these properties
      * are read during configuration.
      */
-    val experimentalProperties: Map<String, @Serializable(with = AnySerializer::class) Any>?
+    val experimentalProperties: SerializableAnyMap?
 
     context(Project)
     @Suppress("UnstableApiUsage")

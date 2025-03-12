@@ -1,7 +1,7 @@
 package gradle.plugins.android
 
 import com.android.build.api.dsl.ExternalNativeBuildFlags
-import gradle.serialization.serializer.AnySerializer
+import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
 
 /**
@@ -60,7 +60,7 @@ internal data class ExternalNativeBuildFlags(
     /**
      * Additional per-variant experimental properties for C and C++.
      */
-    val experimentalProperties: Map<String, @Serializable(with = AnySerializer::class) Any>? = null
+    val experimentalProperties: SerializableAnyMap? = null
 ) {
 
     @Suppress("UnstableApiUsage")

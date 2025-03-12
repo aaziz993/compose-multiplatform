@@ -1,7 +1,7 @@
 package gradle.plugins.apple
 
 import gradle.api.trySet
-import gradle.serialization.serializer.AnySerializer
+import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
 import org.jetbrains.gradle.apple.BuildConfiguration
 
@@ -9,7 +9,7 @@ import org.jetbrains.gradle.apple.BuildConfiguration
 internal data class BuildConfiguration(
     val fatFrameworks: Boolean? = null,
     val name: String = "",
-    val properties: Map<String, @Serializable(with = AnySerializer::class) Any>? = null
+    val properties: SerializableAnyMap? = null
 ) {
 
     fun applyTo(configuration: BuildConfiguration) {

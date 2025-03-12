@@ -1,7 +1,7 @@
 package gradle.plugins.kmp.web
 
 import gradle.api.trySet
-import gradle.serialization.serializer.AnySerializer
+import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.npm.PackageJson

@@ -1,7 +1,7 @@
 package gradle.plugins.kmp.jvm
 
 import gradle.api.tryAssign
-import gradle.serialization.serializer.AnySerializer
+import gradle.collection.SerializableAnyList
 import kotlinx.serialization.Serializable
 import org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmRunDsl
 
@@ -11,7 +11,7 @@ import org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmRunDsl
 @Serializable
 internal data class KotlinJvmRunDsl(
     val mainClass: String? = null,
-    val args: List<@Serializable(with = AnySerializer::class) Any>? = null,
+    val args: SerializableAnyList? = null,
     val classpath: List<String>? = null,
 ) {
 

@@ -1,13 +1,13 @@
 package gradle.plugins.java
 
-import gradle.serialization.serializer.AnySerializer
+import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.java.archives.Manifest
 
 @Serializable
 internal data class Manifest(
-    val attributes: Map<String, @Serializable(with = AnySerializer::class) Any>? = null,
+    val attributes: SerializableAnyMap? = null,
 ) {
 
     context(Project)

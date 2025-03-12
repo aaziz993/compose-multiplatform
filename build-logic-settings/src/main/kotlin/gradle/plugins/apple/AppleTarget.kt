@@ -2,7 +2,7 @@ package gradle.plugins.apple
 
 import gradle.api.maybeNamed
 import gradle.api.trySet
-import gradle.serialization.serializer.AnySerializer
+import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
 import org.jetbrains.gradle.apple.targets.AppleTarget
 
@@ -22,7 +22,7 @@ internal interface AppleTarget {
 
     val name: String?
 
-    val productInfo: Map<String, @Serializable(with = AnySerializer::class) Any>?
+    val productInfo: SerializableAnyMap?
 
     val productModuleName: String?
 

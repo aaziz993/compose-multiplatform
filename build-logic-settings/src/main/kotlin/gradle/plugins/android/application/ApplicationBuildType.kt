@@ -12,7 +12,7 @@ import gradle.plugins.android.PostProcessing
 import gradle.plugins.android.ResValue
 import gradle.plugins.android.Shaders
 import gradle.plugins.android.VcsInfo
-import gradle.serialization.serializer.AnySerializer
+import gradle.collection.SerializableAnyMap
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
@@ -51,7 +51,7 @@ internal data class ApplicationBuildType(
     override val proguardFiles: List<String>? = null,
     override val setProguardFiles: List<String>? = null,
     override val testProguardFiles: List<String>? = null,
-    override val manifestPlaceholders: Map<String, @Serializable(with = AnySerializer::class) Any>? = null,
+    override val manifestPlaceholders: SerializableAnyMap? = null,
     override val javaCompileOptions: JavaCompileOptions? = null,
     override val shaders: Shaders? = null,
     override val externalNativeBuild: ExternalNativeBuildFlags? = null,

@@ -1,9 +1,17 @@
-package gradle.plugins.java
+package gradle.plugins.kmp.jvm
 
-import gradle.serialization.serializer.AnySerializer
+import gradle.api.trySet
+import gradle.plugins.java.JUnitOptions
+import gradle.plugins.java.JUnitPlatformOptions
+import gradle.plugins.java.JavaDebugOptions
+import gradle.plugins.java.ModularitySpec
+import gradle.plugins.java.Test
+import gradle.plugins.java.TestNGOptions
+import gradle.collection.SerializableAnyMap
 import gradle.tasks.test.DefaultTestFilter
 import gradle.tasks.test.TestLoggingContainer
 import kotlinx.serialization.Serializable
+import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest
@@ -34,14 +42,14 @@ internal data class KotlinJvmTest(
     override val notCompatibleWithConfigurationCache: String? = null,
     override val didWork: Boolean? = null,
     override val enabled: Boolean? = null,
-    override val properties: Map<String, @Serializable(with = AnySerializer::class) Any>? = null,
+    override val properties: SerializableAnyMap? = null,
     override val description: String? = null,
     override val group: String? = null,
     override val mustRunAfter: List<String>? = null,
     override val finalizedBy: List<String>? = null,
     override val shouldRunAfter: List<String>? = null,
     override val name: String = "",
-    override val systemProperties: Map<String, @Serializable(with = AnySerializer::class) Any>? = null,
+    override val systemProperties: SerializableAnyMap? = null,
     override val defaultCharacterEncoding: String? = null,
     override val minHeapSize: String? = null,
     override val maxHeapSize: String? = null,
@@ -53,13 +61,21 @@ internal data class KotlinJvmTest(
     override val allJvmArgs: List<String>? = null,
     override val executable: String? = null,
     override val workingDir: String? = null,
-    override val environment: Map<String, @Serializable(with = AnySerializer::class) Any>? = null,
+    override val environment: SerializableAnyMap? = null,
     override val includes: List<String>? = null,
     override val setIncludes: List<String>? = null,
     override val excludes: List<String>? = null,
     override val setExcludes: List<String>? = null,
     val targetName: String? = null,
 ) : Test() {
+
+    override fun applyTo(named: Named) {
+        super.applyTo(named)
+
+        named as KotlinJvmTest
+
+        named::targetName trySet targetName
+    }
 
     context(Project)
     override fun applyTo() =

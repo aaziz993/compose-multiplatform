@@ -11,7 +11,7 @@ import gradle.plugins.android.Optimization
 import gradle.plugins.android.ResValue
 import gradle.plugins.android.Shaders
 import gradle.plugins.android.VectorDrawables
-import gradle.serialization.serializer.AnySerializer
+import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -37,7 +37,7 @@ internal data class LibraryDefaultConfigImpl(
     override val proguardFiles: List<String>? = null,
     override val setProguardFiles: List<String>? = null,
     override val testProguardFiles: List<String>? = null,
-    override val manifestPlaceholders: Map<String, @Serializable(with = AnySerializer::class) Any>? = null,
+    override val manifestPlaceholders: SerializableAnyMap? = null,
     override val javaCompileOptions: JavaCompileOptions? = null,
     override val shaders: Shaders? = null,
     override val externalNativeBuild: ExternalNativeBuildFlags? = null,

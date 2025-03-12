@@ -2,7 +2,7 @@ package gradle.plugins.dokka
 
 import gradle.accessors.dokka
 import gradle.api.tryAssign
-import gradle.serialization.serializer.AnySerializer
+import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.process.JavaForkOptions
@@ -63,7 +63,7 @@ internal data class Process(
     val defaultCharacterEncoding: String? = null,
 
     /** @see JavaForkOptions.setSystemProperties */
-    val systemProperties: Map<String, @Serializable(with = AnySerializer::class) Any>? = null,
+    val systemProperties: SerializableAnyMap? = null,
 ) : WorkerIsolation() {
 
     context(Project)

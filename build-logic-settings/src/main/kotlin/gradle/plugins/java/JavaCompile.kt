@@ -1,6 +1,6 @@
 package gradle.plugins.java
 
-import gradle.serialization.serializer.AnySerializer
+import gradle.collection.SerializableAnyMap
 import gradle.tasks.AbstractCompile
 import gradle.tasks.compile.CompileOptions
 import gradle.tasks.compile.HasCompileOptions
@@ -32,7 +32,7 @@ internal data class JavaCompile(
     override val notCompatibleWithConfigurationCache: String? = null,
     override val didWork: Boolean? = null,
     override val enabled: Boolean? = null,
-    override val properties: Map<String, @Serializable(with = AnySerializer::class) Any>? = null,
+    override val properties: SerializableAnyMap? = null,
     override val description: String? = null,
     override val group: String? = null,
     override val mustRunAfter: List<String>? = null,

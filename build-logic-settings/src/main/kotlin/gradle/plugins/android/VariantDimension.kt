@@ -2,7 +2,7 @@ package gradle.plugins.android
 
 import com.android.build.api.dsl.VariantDimension
 import gradle.api.trySet
-import gradle.serialization.serializer.AnySerializer
+import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -62,7 +62,7 @@ internal interface VariantDimension {
      * See
      * [Inject Build Variables into the Manifest](https://developer.android.com/studio/build/manifest-build-variables.html).
      */
-    val manifestPlaceholders: Map<String, @Serializable(with = AnySerializer::class) Any>?
+    val manifestPlaceholders: SerializableAnyMap?
 
     /** Options for configuring Java compilation. */
     val javaCompileOptions: JavaCompileOptions?

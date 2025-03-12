@@ -1,6 +1,6 @@
 package gradle.tasks.copy
 
-import gradle.serialization.serializer.AnySerializer
+import gradle.collection.SerializableAnyMap
 import gradle.tasks.Expand
 import gradle.tasks.FilesMatching
 import kotlinx.serialization.SerialName
@@ -87,7 +87,7 @@ internal data class CopyImpl(
     override val notCompatibleWithConfigurationCache: String? = null,
     override val didWork: Boolean? = null,
     override val enabled: Boolean? = null,
-    override val properties: Map<String, @Serializable(with = AnySerializer::class) Any>? = null,
+    override val properties: SerializableAnyMap? = null,
     override val description: String? = null,
     override val group: String? = null,
     override val mustRunAfter: List<String>? = null,
@@ -109,7 +109,7 @@ internal data class CopyImpl(
     override val filePermissions: Int? = null,
     override val dirPermissions: Int? = null,
     override val eachFile: FileCopyDetails? = null,
-    override val expand: Map<String, @Serializable(with = AnySerializer::class) Any>? = null,
+    override val expand: SerializableAnyMap? = null,
     override val expandDetails: Expand? = null,
     override val includes: List<String>? = null,
     override val setIncludes: List<String>? = null,

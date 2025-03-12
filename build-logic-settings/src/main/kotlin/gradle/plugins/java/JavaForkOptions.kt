@@ -1,7 +1,7 @@
 package gradle.plugins.java
 
 import gradle.process.ProcessForkOptions
-import gradle.serialization.serializer.AnySerializer
+import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.process.JavaForkOptions
@@ -18,7 +18,8 @@ internal interface JavaForkOptions : ProcessForkOptions {
      * @param properties The system properties. Must not be null.
      * @return this
      */
-    val systemProperties: Map<String, @Serializable(with = AnySerializer::class) Any>?
+    val systemProperties: SerializableAnyMap?
+    val setSystemProperties: SerializableAnyMap?
 
     /**
      * Sets the default character encoding to use.
@@ -107,6 +108,7 @@ internal interface JavaForkOptions : ProcessForkOptions {
         options as JavaForkOptions
 
         systemProperties?.let(options::systemProperties)
+        setSystemProperties?.let(options::setSystemProperties)
         defaultCharacterEncoding?.let(options::setDefaultCharacterEncoding)
         minHeapSize?.let(options::setMinHeapSize)
         maxHeapSize?.let(options::setMaxHeapSize)

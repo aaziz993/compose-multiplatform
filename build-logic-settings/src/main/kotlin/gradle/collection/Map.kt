@@ -1,5 +1,10 @@
 package gradle.collection
 
+import gradle.collection.SerializableAnyMap
+import kotlinx.serialization.Serializable
+
+internal typealias SerializableAnyMap = SerializableAnyMap
+
 @Suppress("UNCHECKED_CAST")
 internal infix fun Map<String, Any?>.deepMerge(source: Map<String, Any?>): Map<String, Any?> {
     val resultMap = toMutableMap()

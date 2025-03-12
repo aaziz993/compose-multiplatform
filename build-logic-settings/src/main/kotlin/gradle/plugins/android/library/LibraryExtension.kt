@@ -20,7 +20,7 @@ import gradle.plugins.android.TestFixtures
 import gradle.plugins.android.TestOptions
 import gradle.plugins.android.TestedExtension
 import gradle.plugins.android.ViewBinding
-import gradle.serialization.serializer.AnySerializer
+import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -46,7 +46,7 @@ internal data class LibraryExtension(
     override val compileSdkExtension: Int? = null,
     override val compileSdkPreview: String? = null,
     override val compileSdkAddon: CompileSdkAddon? = null,
-    override val experimentalProperties: Map<String, @Serializable(with = AnySerializer::class) Any>? = null,
+    override val experimentalProperties: SerializableAnyMap? = null,
     override val aidlPackagedList: List<String>? = null,
     override val prefab: List<Prefab>? = null,
     override val publishing: LibraryPublishing? = null,

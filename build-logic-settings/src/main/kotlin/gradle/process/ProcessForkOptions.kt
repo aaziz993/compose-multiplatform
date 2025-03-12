@@ -1,7 +1,6 @@
 package gradle.process
 
-import gradle.serialization.serializer.AnySerializer
-import kotlinx.serialization.Serializable
+import gradle.collection.SerializableAnyMap
 import org.gradle.api.Project
 import org.gradle.process.ProcessForkOptions
 
@@ -32,12 +31,14 @@ internal interface ProcessForkOptions {
      *
      * @param environmentVariables The environment variables. Must not be null.
      */
-    val environment: Map<String, @Serializable(with = AnySerializer::class) Any>?
+    val environment: SerializableAnyMap?
+    val setEnvironment: SerializableAnyMap?
 
     context(Project)
     fun applyTo(options: ProcessForkOptions) {
-        executable?.let(options::executable)
-        workingDir?.let(options::workingDir)
+        executable?.let(options::setExecutable)
+        workingDir?.let(options::setWorkingDir)
         environment?.let(options::environment)
+        setEnvironment?.let(options::setEnvironment)
     }
 }
