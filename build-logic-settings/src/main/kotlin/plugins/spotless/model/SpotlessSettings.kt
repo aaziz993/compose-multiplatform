@@ -3,13 +3,13 @@ package plugins.spotless.model
 import com.diffplug.spotless.LineEnding
 import gradle.accessors.id
 import gradle.accessors.libs
-import gradle.plugins.spotless.FormatExtension
-import gradle.plugins.spotless.FormatExtensionTransformingSerializer
-import gradle.plugins.spotless.SpotlessExtension
-import gradle.plugins.project.EnabledSettings
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
+import gradle.plugins.project.EnabledSettings
+import gradle.plugins.spotless.FormatExtension
+import gradle.plugins.spotless.FormatExtensionTransformingSerializer
+import gradle.plugins.spotless.SpotlessExtension
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

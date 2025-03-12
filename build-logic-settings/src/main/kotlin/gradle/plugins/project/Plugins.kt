@@ -1,22 +1,14 @@
 package gradle.plugins.project
 
-import gradle.plugins.android.application.ApplicationPublishing
-import gradle.plugins.publish.PublishingExtension
 import kotlinx.serialization.Serializable
-import plugins.gradle.animalsniffer.model.AnimalSnifferSettings
-import plugins.gradle.apivalidation.model.ApiValidationSettings
-import plugins.gradle.buildconfig.model.BuildConfigSettings
-import plugins.gradle.develocity.model.DevelocitySettings
-import plugins.gradle.doctor.model.DoctorSettings
-import plugins.gradle.dokka.model.DokkaSettings
-import plugins.gradle.githooks.model.GitHooksSettings
-import plugins.gradle.knit.model.KnitSettings
-import plugins.gradle.kover.model.KoverSettings
-import plugins.gradle.publish.model.PublishingSettings
-import plugins.gradle.shadow.model.ShadowSettings
-import plugins.gradle.sonar.model.SonarSettings
-import plugins.gradle.spotless.model.SpotlessSettings
-import plugins.gradle.toolchainmanagement.model.ToolchainManagementSettings
+import plugins.animalsniffer.model.AnimalSnifferSettings
+import plugins.apivalidation.model.ApiValidationSettings
+import plugins.buildconfig.model.BuildConfigSettings
+import plugins.develocity.model.DevelocitySettings
+import plugins.doctor.model.DoctorSettings
+import plugins.dokka.model.DokkaSettings
+import plugins.githooks.model.GitHooksSettings
+import plugins.knit.model.KnitSettings
 import plugins.kotlin.allopen.model.AllOpenSettings
 import plugins.kotlin.apollo.model.ApolloSettings
 import plugins.kotlin.atomicfu.model.AtomicFUSettings
@@ -28,6 +20,12 @@ import plugins.kotlin.room.model.RoomSettings
 import plugins.kotlin.rpc.model.RpcSettings
 import plugins.kotlin.serialization.model.SerializationSettings
 import plugins.kotlin.sqldelight.model.SqlDelightSettings
+import plugins.kover.model.KoverSettings
+import plugins.publish.model.PublishingSettings
+import plugins.shadow.model.ShadowSettings
+import plugins.sonar.model.SonarSettings
+import plugins.spotless.model.SpotlessSettings
+import plugins.toolchainmanagement.model.ToolchainManagementSettings
 
 @Serializable
 internal data class Plugins(

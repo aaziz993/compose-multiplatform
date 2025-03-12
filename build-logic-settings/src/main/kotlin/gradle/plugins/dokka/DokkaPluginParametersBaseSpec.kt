@@ -2,10 +2,10 @@ package gradle.plugins.dokka
 
 import gradle.accessors.libraryAsDependency
 import gradle.accessors.libs
-import gradle.api.Named
-import gradle.serialization.serializer.KeyTransformingSerializer
 import gradle.accessors.settings
+import gradle.api.Named
 import gradle.api.tryAssign
+import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

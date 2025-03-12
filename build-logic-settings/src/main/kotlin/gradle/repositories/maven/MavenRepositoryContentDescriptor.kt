@@ -1,8 +1,8 @@
 package gradle.repositories.maven
 
+import gradle.repositories.Module
 import gradle.repositories.RepositoryContentDescriptor
 import gradle.repositories.Version
-import gradle.repositories.Module
 import kotlinx.serialization.Serializable
 import org.gradle.api.artifacts.repositories.InclusiveRepositoryContentDescriptor
 import org.gradle.api.artifacts.repositories.MavenRepositoryContentDescriptor

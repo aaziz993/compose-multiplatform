@@ -1,7 +1,7 @@
 package gradle.plugins.apple
 
-import gradle.serialization.serializer.AnySerializer
 import gradle.api.trySet
+import gradle.serialization.serializer.AnySerializer
 import kotlinx.serialization.Serializable
 import org.jetbrains.gradle.apple.targets.IosAppTarget
 

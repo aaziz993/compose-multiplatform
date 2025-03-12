@@ -1,9 +1,9 @@
 package gradle.plugins.android.application
 
 import com.android.build.api.dsl.ApplicationVariantDimension
+import gradle.api.trySet
 import gradle.plugins.android.ApkSigningConfigImpl
 import gradle.plugins.android.VariantDimension
-import gradle.api.trySet
 import org.gradle.api.Project
 
 /**

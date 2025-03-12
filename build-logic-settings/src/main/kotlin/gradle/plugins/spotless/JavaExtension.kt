@@ -6,7 +6,6 @@ import gradle.accessors.libs
 import gradle.accessors.settings
 import gradle.accessors.spotless
 import gradle.accessors.version
-import gradle.api.version
 import gradle.accessors.versions
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

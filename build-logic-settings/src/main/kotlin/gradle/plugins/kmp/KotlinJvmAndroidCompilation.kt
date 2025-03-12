@@ -1,11 +1,11 @@
 package gradle.plugins.kmp
 
 import gradle.plugins.java.JavaCompile
+import gradle.plugins.kmp.jvm.KotlinJvmCompilerOptions
 import gradle.plugins.kotlin.KotlinCompilation
 import gradle.plugins.kotlin.KotlinCompilationOutput
 import gradle.plugins.kotlin.KotlinCompilationTaskImpl
 import gradle.plugins.kotlin.KotlinCompilationTransformingSerializer
-import gradle.plugins.kmp.jvm.KotlinJvmCompilerOptions
 import gradle.plugins.project.Dependency
 import gradle.plugins.project.DependencyTransformingSerializer
 import kotlinx.serialization.Serializable

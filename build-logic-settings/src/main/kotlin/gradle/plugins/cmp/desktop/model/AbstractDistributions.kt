@@ -4,10 +4,9 @@ import gradle.accessors.libs
 import gradle.accessors.moduleName
 import gradle.accessors.settings
 import gradle.accessors.version
+import gradle.accessors.versions
 import gradle.api.tryAssign
 import gradle.api.trySet
-import gradle.api.version
-import gradle.accessors.versions
 import org.gradle.api.Project
 import org.jetbrains.compose.desktop.application.dsl.AbstractDistributions
 

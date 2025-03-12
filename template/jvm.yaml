@@ -1,0 +1,7 @@
+application:
+  mainClass: ApplicationKt
+  applicationDefaultJvmArgs:
+    - -Dio.ktor.development=true
+
+dependencies:
+  - kotlin: stdlib

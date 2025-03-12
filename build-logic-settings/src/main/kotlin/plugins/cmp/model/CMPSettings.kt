@@ -2,13 +2,13 @@ package plugins.cmp.model
 
 import gradle.accessors.id
 import gradle.accessors.libs
+import gradle.accessors.plugin
+import gradle.accessors.plugins
+import gradle.accessors.settings
 import gradle.plugins.cmp.android.model.AndroidExtension
 import gradle.plugins.cmp.desktop.model.DesktopExtension
 import gradle.plugins.cmp.resources.model.ResourcesExtension
 import gradle.plugins.project.EnabledSettings
-import gradle.accessors.plugin
-import gradle.accessors.plugins
-import gradle.accessors.settings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

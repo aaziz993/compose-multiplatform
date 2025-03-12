@@ -5,8 +5,8 @@ import gradle.accessors.id
 import gradle.accessors.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
-import gradle.plugins.quality.CodeQualityExtension
 import gradle.accessors.settings
+import gradle.plugins.quality.CodeQualityExtension
 import org.gradle.api.Project
 
 /**

@@ -1,12 +1,12 @@
 package gradle.plugins.java
 
+import gradle.serialization.serializer.AnySerializer
 import gradle.tasks.test.DefaultTestFilter
 import gradle.tasks.test.TestLoggingContainer
-import gradle.serialization.serializer.AnySerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest
 import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest
 
 @Serializable
 internal data class KotlinJvmTest(

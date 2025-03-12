@@ -1,8 +1,8 @@
 package gradle.plugins.knit
 
 import gradle.api.trySet
-import gradle.tasks.Task
 import gradle.serialization.serializer.AnySerializer
+import gradle.tasks.Task
 import kotlinx.knit.KnitTask
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named

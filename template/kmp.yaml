@@ -1,17 +1,69 @@
 kotlin:
   targets:
     - jvm
+    # apply to all above jvm targets by providing empty name
+    - jvm:
+        name: ''
+        withJava: true
     - android:
         publishLibraryVariants: [ release ]
     - iosArm64
     - iosX64
     - iosSimulatorArm64
+    # apply to all above native targets
+    - native:
+        compilerOptions:
+          freeCompilerArgs:
+            - -Xexport-kdoc
+            - -Xallocator=custom
+            - -XXLanguage+ImplicitSignedToUnsignedIntegerConversion
+            - -Xadd-light-debug=enable
+          optIns:
+            - kotlin.experimental.ExperimentalObjCName
+            - kotlinx.cinterop.ExperimentalForeignApi
+            - kotlinx.cinterop.BetaInteropApi
+        binaries:
+          framework:
+            # add it to avoid sqllite3 issues in iOS. Required when using NativeSQLiteDriver
+            linkerOpts:
+              - -lsqlite3
+          test:
+            buildTypes: [ RELEASE ]
+    - nativeWithTests:
+        testRuns:
+          - releaseTest:
+              executionSourceFrom: RELEASE
     - js:
         devServer:
           static: [ src@js ]
     - wasmJs:
         devServer:
           static: [ src@wasmJs ]
+    # apply to all above js and wasm targets
+    - jsCommon:
+        devServer:
+          static:
+            # serve sources to debug inside browser
+            - ../ # root directory
+            - ./ # project directory
+
+        compilerOptions:
+          optIns:
+            - kotlin.js.ExperimentalJsExport
+        browser:
+          commonWebpackConfig:
+            cssSupport:
+              enabled: true
+          testTask:
+            testLogging:
+              showStandardStreams: true
+            useKarmaDsl:
+              configDirectory: ../karma.config.d
+              useChromeHeadless: true
+        nodejs:
+          testTask:
+            useMochaDsl:
+              timeout: 600s
 
   hierarchy:
     - jvmCommon: [ jvm, android ]
@@ -31,6 +83,29 @@ kotlin:
     - nonWeb: [ jvmCommon, ios ]
     - wasm: [ wasmJs, wasmWasi ]
 
+  sourceSets:
+    - commonMain:
+        dependencies:
+          - $libs.atomicfu
+          - $libs.kotlinx.serialization.json
+          - $libs.kotlinx.serialization.properties
+
+    - nonWebMain:
+        dependencies:
+          - $libs.androidx.room.runtime.ktx
+
+    - jsMain:
+        dependencies:
+          - kotlin: test-js
+          #          - npm: $libs.js.joda.timezone
+          - npm: $libs.npm.copy.webpack.plugin
+          - npm: $libs.npm.openpgp
+          - npm: $libs.npm.pako
+          - npm: $libs.npm.puppeteer
+
+  #    - wasmJsMain:
+  #        dependencies:
+  #          - $kotlinWrappers.browser
   cocoapods:
     ios: { }
 
@@ -39,3 +114,13 @@ dependencies:
   - coreLibraryDesugaring: $libs.android.desugar.jdk.libs
   - androidTestImplementation: $libs.androidx.test.core
   - androidTestImplementation: $libs.androidx.test.runner
+
+tasks:
+  - Kotlin2JsCompile:
+      compilerOptions:
+        target: es2015
+      freeCompilerArgs:
+        - -Xdont-warn-on-error-suppression
+        - -Xir-generate-inline-anonymous-functions #  https://youtrack.jetbrains.com/issue/KT-67355
+        - -Xsuppress-warning=NOTHING_TO_INLINE
+        - -Xpartial-linkage-loglevel=ERROR

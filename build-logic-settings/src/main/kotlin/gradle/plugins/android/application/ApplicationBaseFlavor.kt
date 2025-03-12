@@ -4,12 +4,11 @@ import com.android.build.api.dsl.ApplicationBaseFlavor
 import com.android.build.api.dsl.VariantDimension
 import gradle.accessors.androidNamespace
 import gradle.accessors.libs
-import gradle.plugins.android.BaseFlavor
 import gradle.accessors.settings
 import gradle.accessors.version
-import gradle.api.trySet
-import gradle.api.version
 import gradle.accessors.versions
+import gradle.api.trySet
+import gradle.plugins.android.BaseFlavor
 import org.gradle.api.Project
 
 /**

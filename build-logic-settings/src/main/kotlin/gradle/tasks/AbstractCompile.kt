@@ -1,7 +1,7 @@
 package gradle.tasks
 
-import gradle.serialization.serializer.AnySerializer
 import gradle.api.tryAssign
+import gradle.serialization.serializer.AnySerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named

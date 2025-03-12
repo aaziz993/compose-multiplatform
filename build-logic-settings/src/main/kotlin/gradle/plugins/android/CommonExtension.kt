@@ -3,12 +3,12 @@ package gradle.plugins.android
 import com.android.build.api.dsl.CommonExtension
 import gradle.accessors.android
 import gradle.accessors.libs
-import gradle.serialization.serializer.AnySerializer
 import gradle.accessors.settings
 import gradle.accessors.version
+import gradle.accessors.versions
 import gradle.api.trySet
 import gradle.api.version
-import gradle.accessors.versions
+import gradle.serialization.serializer.AnySerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

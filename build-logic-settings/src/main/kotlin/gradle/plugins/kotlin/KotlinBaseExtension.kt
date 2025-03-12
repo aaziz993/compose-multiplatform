@@ -1,13 +1,12 @@
 package gradle.plugins.kotlin
 
 import gradle.accessors.libs
-import gradle.plugins.java.JavaToolchainSpec
 import gradle.accessors.settings
 import gradle.accessors.version
+import gradle.accessors.versions
 import gradle.api.tryAssign
 import gradle.api.trySet
-import gradle.api.version
-import gradle.accessors.versions
+import gradle.plugins.java.JavaToolchainSpec
 import org.gradle.api.Project
 import org.jetbrains.kotlin.buildtools.api.ExperimentalBuildToolsApi
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode

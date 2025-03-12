@@ -1,8 +1,8 @@
 package gradle.plugins.android
 
 import com.android.build.api.dsl.VariantDimension
-import gradle.serialization.serializer.AnySerializer
 import gradle.api.trySet
+import gradle.serialization.serializer.AnySerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

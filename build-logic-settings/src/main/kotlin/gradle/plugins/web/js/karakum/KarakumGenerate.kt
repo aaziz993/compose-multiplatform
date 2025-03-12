@@ -2,12 +2,12 @@ package gradle.plugins.web.js.karakum
 
 import gradle.accessors.id
 import gradle.accessors.libs
-import gradle.tasks.Task
 import gradle.accessors.plugin
 import gradle.accessors.plugins
-import gradle.serialization.serializer.AnySerializer
 import gradle.accessors.settings
 import gradle.api.tryAssign
+import gradle.serialization.serializer.AnySerializer
+import gradle.tasks.Task
 import io.github.sgrishchenko.karakum.gradle.plugin.tasks.KarakumGenerate
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

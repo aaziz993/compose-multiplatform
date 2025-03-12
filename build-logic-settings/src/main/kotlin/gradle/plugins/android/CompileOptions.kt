@@ -4,8 +4,8 @@ import com.android.build.api.dsl.CompileOptions
 import gradle.accessors.libs
 import gradle.accessors.settings
 import gradle.accessors.version
-import gradle.api.trySet
 import gradle.accessors.versions
+import gradle.api.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project

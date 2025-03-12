@@ -1,13 +1,13 @@
 package gradle.plugins.kmp.android
 
 import gradle.accessors.kotlin
+import gradle.accessors.projectProperties
+import gradle.api.trySet
 import gradle.plugins.kmp.KotlinJvmAndAndroidTarget
 import gradle.plugins.kmp.KotlinJvmAndroidCompilation
 import gradle.plugins.kmp.KotlinJvmAndroidCompilationTransformingSerializer
 import gradle.plugins.kmp.jvm.KotlinJvmCompilerOptions
 import gradle.plugins.project.ProjectType
-import gradle.accessors.projectProperties
-import gradle.api.trySet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named

@@ -6,7 +6,7 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinTestRun
 /**
  * A [KotlinExecution] that runs configured tests.
  */
-internal interface KotlinTestRun<out SourceType : KotlinExecution.ExecutionSource> : KotlinExecution<SourceType> {
+internal interface KotlinTestRun : KotlinExecution {
 
     /**
      * Configures filtering for executable tests using the provided [configureFilter] configuration.

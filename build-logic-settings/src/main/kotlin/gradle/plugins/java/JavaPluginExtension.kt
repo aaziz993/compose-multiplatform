@@ -4,9 +4,8 @@ import gradle.accessors.java
 import gradle.accessors.libs
 import gradle.accessors.settings
 import gradle.accessors.version
-import gradle.api.tryAssign
-import gradle.api.version
 import gradle.accessors.versions
+import gradle.api.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project

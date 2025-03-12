@@ -1,10 +1,10 @@
 package gradle.plugins.kotlin
 
+import gradle.api.trySet
+import gradle.serialization.serializer.AnySerializer
 import gradle.tasks.test.AbstractTestTask
 import gradle.tasks.test.DefaultTestFilter
 import gradle.tasks.test.TestLoggingContainer
-import gradle.serialization.serializer.AnySerializer
-import gradle.api.trySet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named

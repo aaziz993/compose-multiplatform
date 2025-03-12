@@ -1,6 +1,8 @@
 package gradle.plugins.kotlin
 
 import gradle.api.Named
+import gradle.serialization.serializer.JsonContentPolymorphicSerializer
+import kotlinx.serialization.Serializable
 
 /**
  * Represents the execution of Kotlin code, such as tests.
@@ -11,12 +13,17 @@ import gradle.api.Named
  *
  * [KotlinTestRun] is a specific type of execution that runs tests.
  */
-internal interface KotlinExecution<out SourceType : KotlinExecution.ExecutionSource> : Named {
+internal interface KotlinExecution : Named {
 
     /**
      * Represents an execution source that provides the necessary inputs to run the execution.
      */
+    @Serializable(with = ExecutionSourceSerializer::class)
     interface ExecutionSource
+
+    private object ExecutionSourceSerializer : JsonContentPolymorphicSerializer<ExecutionSource>(
+        ExecutionSource::class,
+    )
 
     /**
      * The source of the executable code that this execution runs.
@@ -24,5 +31,5 @@ internal interface KotlinExecution<out SourceType : KotlinExecution.ExecutionSou
      * It is typically set via members of [ExecutionSource] support interfaces,
      * such as [CompilationExecutionSourceSupport] or [ClasspathTestRunSourceSupport].
      */
-    val executionSource: SourceType?
+    val executionSource:  ExecutionSource?
 }

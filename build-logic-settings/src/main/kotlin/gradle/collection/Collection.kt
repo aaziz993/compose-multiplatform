@@ -1,7 +1,5 @@
 package gradle.collection
 
-import kotlin.invoke
-
 internal fun Any.resolve(): Any? = DeepRecursiveFunction<Any, Any?> { obj ->
     when (obj) {
         is String -> obj.resolveValue()

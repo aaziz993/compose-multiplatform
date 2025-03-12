@@ -1,6 +1,5 @@
 package gradle.plugins.android.application
 
-import gradle.plugins.android.ApkSigningConfig
 import gradle.plugins.android.ApkSigningConfigImpl
 import gradle.plugins.android.BuildConfigField
 import gradle.plugins.android.ExternalNativeBuildFlags

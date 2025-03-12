@@ -1,9 +1,9 @@
 package gradle.plugins.java
 
+import gradle.serialization.serializer.AnySerializer
 import gradle.tasks.AbstractCompile
 import gradle.tasks.compile.CompileOptions
 import gradle.tasks.compile.HasCompileOptions
-import gradle.serialization.serializer.AnySerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project

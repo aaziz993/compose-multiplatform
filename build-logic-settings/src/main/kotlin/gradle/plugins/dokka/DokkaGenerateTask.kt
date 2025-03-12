@@ -1,13 +1,13 @@
 package gradle.plugins.dokka
 
-import gradle.serialization.serializer.AnySerializer
 import gradle.api.tryAssign
+import gradle.serialization.serializer.AnySerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
 import org.jetbrains.dokka.DokkaConfiguration
 import org.jetbrains.dokka.gradle.tasks.DokkaGenerateTask
-import org.gradle.kotlin.dsl.withType
 
 @Serializable
 internal data class DokkaGenerateTask(

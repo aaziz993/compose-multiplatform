@@ -1,13 +1,13 @@
 package gradle.tasks.archive
 
+import gradle.api.tryAssign
+import gradle.serialization.serializer.AnySerializer
 import gradle.tasks.Expand
-import gradle.tasks.copy.FileCopyDetails
 import gradle.tasks.FilesMatching
 import gradle.tasks.copy.AbstractCopyTask
+import gradle.tasks.copy.FileCopyDetails
 import gradle.tasks.copy.FromSpec
 import gradle.tasks.copy.IntoSpec
-import gradle.serialization.serializer.AnySerializer
-import gradle.api.tryAssign
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named

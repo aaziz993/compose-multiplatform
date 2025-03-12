@@ -4,26 +4,20 @@ import gradle.plugins.kmp.KotlinTargetTestRun
 import org.gradle.api.Named
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTargetWithTests
-import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
 import org.jetbrains.kotlin.gradle.targets.native.KotlinNativeBinaryTestRun
 
-internal interface KotlinNativeBinaryTestRun : KotlinTargetTestRun<NativeBinaryTestRunSource> {
-
-    /**
-     * Sets this test run to use the specified [testExecutable].
-     *
-     * This overrides other [executionSource] options.
-     */
-    val executionSourceFrom: NativeBuildType?
+internal interface KotlinNativeBinaryTestRun : KotlinTargetTestRun {
 
     context(Project)
     override fun applyTo(named: Named) {
         named as KotlinNativeBinaryTestRun
 
-        executionSource?.applyTo(named.executionSource)
-
         val target = named.target as KotlinNativeTargetWithTests<*>
 
-        executionSourceFrom?.let(target.binaries::getTest)?.let(named::setExecutionSourceFrom)
+        (executionSource as NativeBinaryTestRunSource?)?.let { executionSource ->
+            named.setExecutionSourceFrom(
+                target.binaries.getTest(executionSource.binary),
+            )
+        }
     }
 }

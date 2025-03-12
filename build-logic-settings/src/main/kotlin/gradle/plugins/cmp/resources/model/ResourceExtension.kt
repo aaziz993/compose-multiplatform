@@ -4,7 +4,6 @@ import gradle.accessors.compose
 import gradle.accessors.id
 import gradle.accessors.kotlin
 import gradle.accessors.libs
-import gradle.plugins.project.ProjectLayout
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.projectProperties
@@ -12,6 +11,7 @@ import gradle.accessors.resources
 import gradle.accessors.settings
 import gradle.accessors.sourceSetsToComposeResourcesDirs
 import gradle.api.trySet
+import gradle.plugins.project.ProjectLayout
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.compose.resources.ResourcesExtension

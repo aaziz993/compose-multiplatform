@@ -4,14 +4,14 @@ import gradle.accessors.allLibs
 import gradle.accessors.cocoapods
 import gradle.accessors.kotlin
 import gradle.accessors.libs
-import gradle.plugins.kmp.nat.FrameworkSettings
 import gradle.accessors.moduleName
-import gradle.collection.resolve
 import gradle.accessors.resolveLibrary
 import gradle.accessors.settings
 import gradle.accessors.version
-import gradle.api.trySet
 import gradle.accessors.versions
+import gradle.api.trySet
+import gradle.collection.resolve
+import gradle.plugins.kmp.nat.FrameworkSettings
 import java.net.URI
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonContentPolymorphicSerializer

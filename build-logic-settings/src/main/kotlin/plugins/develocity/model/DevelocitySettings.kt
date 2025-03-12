@@ -1,17 +1,17 @@
 package plugins.develocity.model
 
 import gradle.accessors.id
-import gradle.api.CI
 import gradle.accessors.libs
+import gradle.accessors.plugin
+import gradle.accessors.plugins
+import gradle.accessors.projectProperties
+import gradle.api.CI
 import gradle.buildcache.DirectoryBuildCache
 import gradle.buildcache.RemoteBuildCache
 import gradle.plugins.develocity.BuildScanConfiguration
 import gradle.plugins.develocity.DevelocityConfiguration
 import gradle.plugins.develocity.Git
 import gradle.plugins.project.EnabledSettings
-import gradle.accessors.plugin
-import gradle.accessors.plugins
-import gradle.accessors.projectProperties
 import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings
 import org.gradle.kotlin.dsl.develocity

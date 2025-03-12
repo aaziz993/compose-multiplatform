@@ -1,8 +1,8 @@
 package gradle.plugins.android.application
 
 import com.android.build.api.dsl.ApplicationInstallation
-import gradle.plugins.android.Installation
 import gradle.api.trySet
+import gradle.plugins.android.Installation
 import kotlinx.serialization.Serializable
 
 @Serializable

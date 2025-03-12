@@ -1,7 +1,6 @@
-package gradle.plugins.web.js
+package gradle.plugins.kmp.web
 
 import gradle.plugins.kotlin.KotlinCompilationTask
-import gradle.plugins.kmp.web.KotlinJsCompilerOptions
 import gradle.serialization.serializer.AnySerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -25,4 +24,4 @@ internal data class KotlinJsCompileImpl(
     override val finalizedBy: List<String>? = null,
     override val shouldRunAfter: List<String>? = null,
     override val name: String = ""
-) : KotlinJsCompile
+) : KotlinCompilationTask<KotlinJsCompilerOptions>

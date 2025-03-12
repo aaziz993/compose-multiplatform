@@ -8,7 +8,7 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinTargetWithTests
 /**
  * Represents a [KotlinTarget] that includes test runs.
  */
-internal interface KotlinTargetWithTests<E : KotlinExecution.ExecutionSource, T : KotlinTargetTestRun<E>> : KotlinTarget {
+internal interface KotlinTargetWithTests<T : KotlinTargetTestRun> : KotlinTarget {
 
     /**
      * The container that holds test run executions.

@@ -1,8 +1,8 @@
 package gradle.plugins.android.application
 
 import com.android.build.api.dsl.ApplicationBuildFeatures
-import gradle.plugins.android.BuildFeatures
 import gradle.api.trySet
+import gradle.plugins.android.BuildFeatures
 import kotlinx.serialization.Serializable
 
 /**

@@ -1,19 +1,19 @@
 package plugins.kmp
 
-import gradle.api.all
-import gradle.decapitalized
 import gradle.accessors.id
 import gradle.accessors.kotlin
 import gradle.accessors.libs
-import gradle.plugins.kotlin.KotlinSettings
-import gradle.plugins.project.ProjectLayout
 import gradle.accessors.plugin
 import gradle.accessors.plugins
-import gradle.prefixIfNotEmpty
 import gradle.accessors.projectProperties
-import gradle.file.replace
 import gradle.accessors.settings
 import gradle.accessors.sourceSetsToComposeResourcesDirs
+import gradle.api.all
+import gradle.decapitalized
+import gradle.file.replace
+import gradle.plugins.kotlin.KotlinSettings
+import gradle.plugins.project.ProjectLayout
+import gradle.prefixIfNotEmpty
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.SourceSet

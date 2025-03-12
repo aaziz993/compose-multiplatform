@@ -3,12 +3,12 @@ package plugins.apple
 import gradle.accessors.apple
 import gradle.accessors.id
 import gradle.accessors.libs
-import gradle.plugins.kmp.nat.apple.KotlinAppleTarget
-import gradle.plugins.project.ProjectLayout
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
+import gradle.plugins.kmp.nat.apple.KotlinAppleTarget
+import gradle.plugins.project.ProjectLayout
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.extraProperties

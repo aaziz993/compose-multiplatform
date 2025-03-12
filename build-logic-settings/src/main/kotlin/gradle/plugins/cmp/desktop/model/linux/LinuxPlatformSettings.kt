@@ -1,8 +1,8 @@
 package gradle.plugins.cmp.desktop.model.linux
 
+import gradle.api.trySet
 import gradle.plugins.cmp.desktop.model.AbstractPlatformSettings
 import gradle.plugins.cmp.desktop.model.FileAssociation
-import gradle.api.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.compose.desktop.application.dsl.LinuxPlatformSettings

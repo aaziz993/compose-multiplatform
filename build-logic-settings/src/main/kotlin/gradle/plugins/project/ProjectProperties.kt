@@ -10,10 +10,10 @@ import gradle.plugins.java.JavaPluginExtension
 import gradle.plugins.java.application.JavaApplication
 import gradle.plugins.kotlin.HasKotlinDependencies
 import gradle.plugins.kotlin.KotlinSettings
+import gradle.plugins.web.NodeJsEnvSpec
 import gradle.plugins.web.js.karakum.KarakumSettings
-import gradle.plugins.web.node.model.NodeJsEnvSpec
-import gradle.plugins.web.npm.model.NpmExtension
-import gradle.plugins.web.yarn.model.YarnRootExtension
+import gradle.plugins.web.npm.NpmExtension
+import gradle.plugins.web.yarn.YarnRootExtension
 import gradle.serialization.decodeFromAny
 import gradle.tasks.Task
 import gradle.tasks.TaskTransformingSerializer

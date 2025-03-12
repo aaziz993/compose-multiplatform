@@ -18,11 +18,11 @@ import org.gradle.api.internal.artifacts.repositories.DefaultMavenArtifactReposi
 import org.gradle.kotlin.dsl.maven
 import org.jetbrains.compose.internal.utils.currentTarget
 import org.tomlj.Toml
-import plugins.gradle.develocity.DevelocityPlugin
-import plugins.gradle.githooks.GitHooksPlugin
-import plugins.gradle.toolchainmanagement.ToolchainManagementPlugin
-import plugins.project.ProjectPlugin
+import plugins.develocity.DevelocityPlugin
+import plugins.githooks.GitHooksPlugin
 import plugins.initialization.problemreporter.SLF4JProblemReporterContext
+import plugins.project.ProjectPlugin
+import plugins.toolchainmanagement.ToolchainManagementPlugin
 
 private const val VERSION_CATALOG_CACHE_DIR = "build-logic-settings/gradle"
 

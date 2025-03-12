@@ -3,13 +3,13 @@ package plugins.apivalidation.model
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import gradle.accessors.id
 import gradle.accessors.libs
+import gradle.accessors.plugin
+import gradle.accessors.plugins
+import gradle.accessors.settings
 import gradle.api.maybeNamed
 import gradle.plugins.apivalidation.ApiValidationExtension
 import gradle.plugins.apivalidation.KlibValidationSettings
 import gradle.plugins.project.EnabledSettings
-import gradle.accessors.plugin
-import gradle.accessors.plugins
-import gradle.accessors.settings
 import kotlinx.serialization.Serializable
 import kotlinx.validation.KotlinApiBuildTask
 import org.gradle.api.Project

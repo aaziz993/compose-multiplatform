@@ -1,21 +1,21 @@
 package plugins.develocity
 
-import gradle.api.gitBranchName
-import gradle.api.gitCommitId
-import gradle.api.gitStatus
 import gradle.accessors.id
-import gradle.api.CI
 import gradle.accessors.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.projectProperties
+import gradle.api.CI
+import gradle.api.gitBranchName
+import gradle.api.gitCommitId
+import gradle.api.gitStatus
 import gradle.api.teamCityBuildId
 import gradle.api.teamCityBuildTypeId
 import java.net.URLEncoder
 import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
 import org.gradle.kotlin.dsl.develocity
-import plugins.gradle.develocity.model.DevelocitySettings
+import plugins.develocity.model.DevelocitySettings
 
 internal class DevelocityPlugin : Plugin<Settings> {
 

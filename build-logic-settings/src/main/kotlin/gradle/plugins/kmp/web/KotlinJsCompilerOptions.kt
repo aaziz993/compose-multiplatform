@@ -1,7 +1,7 @@
 package gradle.plugins.kmp.web
 
-import gradle.plugins.kotlin.KotlinCommonCompilerOptions
 import gradle.api.tryAssign
+import gradle.plugins.kotlin.KotlinCommonCompilerOptions
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.JsMainFunctionExecutionMode

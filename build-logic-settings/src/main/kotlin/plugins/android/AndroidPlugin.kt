@@ -2,21 +2,21 @@
 
 package plugins.android
 
-import gradle.api.all
 import gradle.accessors.android
-import gradle.decapitalized
 import gradle.accessors.id
 import gradle.accessors.libs
+import gradle.accessors.plugin
+import gradle.accessors.plugins
+import gradle.accessors.projectProperties
+import gradle.accessors.settings
+import gradle.api.all
+import gradle.decapitalized
+import gradle.file.replace
 import gradle.plugins.kmp.android.KotlinAndroidTarget
 import gradle.plugins.kotlin.sourceSets
 import gradle.plugins.project.ProjectLayout
 import gradle.plugins.project.ProjectType
-import gradle.accessors.plugin
-import gradle.accessors.plugins
 import gradle.prefixIfNotEmpty
-import gradle.accessors.projectProperties
-import gradle.file.replace
-import gradle.accessors.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.SourceSet

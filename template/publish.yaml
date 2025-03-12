@@ -1,0 +1,3 @@
+tasks:
+  - AbstractPublishToMaven:
+      dependOn: publishToMavenLocal

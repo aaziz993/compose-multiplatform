@@ -1,7 +1,7 @@
 package gradle.plugins.publish
 
-import gradle.api.Named
 import gradle.accessors.publishing
+import gradle.api.Named
 import gradle.serialization.serializer.JsonContentPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable

@@ -1,7 +1,5 @@
 package gradle.repositories
 
-import kotlinx.serialization.Serializable
-
 /**
  *
  * Descriptor of a repository content, used to avoid reaching to

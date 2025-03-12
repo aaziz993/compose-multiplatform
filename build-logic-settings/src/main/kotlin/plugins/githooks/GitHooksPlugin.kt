@@ -7,7 +7,7 @@ import gradle.accessors.plugins
 import gradle.accessors.projectProperties
 import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
-import plugins.gradle.githooks.model.GitHooksSettings
+import plugins.githooks.model.GitHooksSettings
 
 internal class GitHooksPlugin : Plugin<Settings> {
 

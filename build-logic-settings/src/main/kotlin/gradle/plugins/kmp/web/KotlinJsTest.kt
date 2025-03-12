@@ -1,12 +1,12 @@
 package gradle.plugins.kmp.web
 
-import gradle.tasks.test.DefaultTestFilter
-import gradle.tasks.test.TestLoggingContainer
-import gradle.plugins.kotlin.KotlinTest
 import gradle.accessors.moduleName
-import gradle.serialization.serializer.AnySerializer
 import gradle.api.tryAssign
 import gradle.api.trySet
+import gradle.plugins.kotlin.KotlinTest
+import gradle.serialization.serializer.AnySerializer
+import gradle.tasks.test.DefaultTestFilter
+import gradle.tasks.test.TestLoggingContainer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project

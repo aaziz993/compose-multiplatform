@@ -15,10 +15,10 @@
  */
 package gradle.tasks.copy
 
+import gradle.serialization.serializer.AnySerializer
 import gradle.tasks.Expand
 import gradle.tasks.FilesMatching
 import gradle.tasks.Task
-import gradle.serialization.serializer.AnySerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named

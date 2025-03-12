@@ -1,9 +1,8 @@
-package gradle.plugins.web.js
+package gradle.plugins.kmp.web
 
+import gradle.serialization.serializer.AnySerializer
 import gradle.tasks.K2MultiplatformCompilationTask
 import gradle.tasks.ProducesKlib
-import gradle.plugins.kmp.web.KotlinJsCompilerOptions
-import gradle.serialization.serializer.AnySerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project

@@ -1,15 +1,15 @@
 package gradle.plugins.java
 
-import gradle.tasks.copy.CopySpec
+import gradle.accessors.projectProperties
+import gradle.plugins.kmp.jvm.KotlinJvmTarget
+import gradle.serialization.serializer.AnySerializer
 import gradle.tasks.Expand
-import gradle.tasks.copy.FileCopyDetails
 import gradle.tasks.FilesMatching
+import gradle.tasks.archive.Zip
+import gradle.tasks.copy.CopySpec
+import gradle.tasks.copy.FileCopyDetails
 import gradle.tasks.copy.FromSpec
 import gradle.tasks.copy.IntoSpec
-import gradle.tasks.archive.Zip
-import gradle.plugins.kmp.jvm.KotlinJvmTarget
-import gradle.accessors.projectProperties
-import gradle.serialization.serializer.AnySerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project

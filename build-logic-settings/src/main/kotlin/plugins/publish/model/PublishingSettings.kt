@@ -1,9 +1,9 @@
 package plugins.publish.model
 
+import gradle.plugins.project.EnabledSettings
 import gradle.plugins.publish.Publication
 import gradle.plugins.publish.PublicationTransformingSerializer
 import gradle.plugins.publish.PublishingExtension
-import gradle.plugins.project.EnabledSettings
 import gradle.repositories.ArtifactRepository
 import gradle.repositories.ArtifactRepositoryTransformingSerializer
 import gradle.repositories.ExclusiveContentRepository

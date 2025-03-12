@@ -9,7 +9,7 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 
 internal abstract class KotlinNativeTargetWithTests<T : KotlinNativeBinaryTestRun> :
-    KotlinNativeTarget(), KotlinTargetWithTests<NativeBinaryTestRunSource, T> {
+    KotlinNativeTarget(), KotlinTargetWithTests<T> {
 
     context(Project)
     override fun applyTo(named: Named) {

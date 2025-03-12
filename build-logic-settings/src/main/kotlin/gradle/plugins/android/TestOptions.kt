@@ -5,9 +5,8 @@ import com.android.build.api.dsl.TestOptions
 import gradle.accessors.libs
 import gradle.accessors.settings
 import gradle.accessors.version
-import gradle.api.trySet
-import gradle.api.version
 import gradle.accessors.versions
+import gradle.api.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Incubating
 import org.gradle.api.Project

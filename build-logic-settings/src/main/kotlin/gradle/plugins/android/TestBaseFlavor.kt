@@ -5,9 +5,8 @@ import com.android.build.api.dsl.VariantDimension
 import gradle.accessors.libs
 import gradle.accessors.settings
 import gradle.accessors.version
-import gradle.api.trySet
-import gradle.api.version
 import gradle.accessors.versions
+import gradle.api.trySet
 import org.gradle.api.Project
 
 /**

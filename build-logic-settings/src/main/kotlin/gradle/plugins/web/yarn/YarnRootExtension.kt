@@ -1,12 +1,12 @@
-package gradle.plugins.web.yarn.model
+package gradle.plugins.web.yarn
 
 import gradle.accessors.id
 import gradle.accessors.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
-import gradle.api.trySet
 import gradle.accessors.yarn
+import gradle.api.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnLockMismatchReport

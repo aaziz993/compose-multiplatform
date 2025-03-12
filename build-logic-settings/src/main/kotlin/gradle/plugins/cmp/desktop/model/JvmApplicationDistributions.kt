@@ -1,9 +1,9 @@
 package gradle.plugins.cmp.desktop.model
 
+import gradle.api.trySet
 import gradle.plugins.cmp.desktop.model.linux.LinuxPlatformSettings
 import gradle.plugins.cmp.desktop.model.macos.JvmMacOSPlatformSettings
 import gradle.plugins.cmp.desktop.model.windows.WindowsPlatformSettings
-import gradle.api.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.compose.desktop.application.dsl.JvmApplicationDistributions

@@ -1,10 +1,10 @@
 package gradle.plugins.kmp.web
 
-import org.gradle.kotlin.dsl.withType
 import gradle.accessors.kotlin
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
 
 @Serializable
 @SerialName("js")

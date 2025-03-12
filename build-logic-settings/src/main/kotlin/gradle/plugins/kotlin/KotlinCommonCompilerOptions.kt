@@ -3,9 +3,8 @@ package gradle.plugins.kotlin
 import gradle.accessors.libs
 import gradle.accessors.settings
 import gradle.accessors.version
-import gradle.api.tryAssign
-import gradle.api.version
 import gradle.accessors.versions
+import gradle.api.tryAssign
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerOptions
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion

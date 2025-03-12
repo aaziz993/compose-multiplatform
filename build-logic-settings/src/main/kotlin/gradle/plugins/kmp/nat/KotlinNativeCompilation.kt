@@ -1,9 +1,9 @@
 package gradle.plugins.kmp.nat
 
+import gradle.plugins.kmp.KotlinSourceSet
 import gradle.plugins.kotlin.KotlinCompilation
 import gradle.plugins.kotlin.KotlinCompilationOutput
 import gradle.plugins.kotlin.KotlinCompilationTransformingSerializer
-import gradle.plugins.kmp.KotlinSourceSet
 import gradle.plugins.project.Dependency
 import gradle.plugins.project.DependencyTransformingSerializer
 import kotlinx.serialization.Serializable

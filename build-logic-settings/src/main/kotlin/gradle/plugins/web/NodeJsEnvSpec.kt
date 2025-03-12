@@ -1,4 +1,4 @@
-package gradle.plugins.web.node.model
+package gradle.plugins.web
 
 import gradle.accessors.id
 import gradle.accessors.libs

@@ -1,8 +1,8 @@
 package gradle.plugins.dokka
 
 import gradle.accessors.dokka
-import gradle.serialization.serializer.AnySerializer
 import gradle.api.tryAssign
+import gradle.serialization.serializer.AnySerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.process.JavaForkOptions

@@ -8,7 +8,7 @@ import gradle.accessors.projectProperties
 import gradle.accessors.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import plugins.gradle.dokka.model.DokkaSettings
+import plugins.dokka.model.DokkaSettings
 
 internal class DokkaPlugin : Plugin<Project> {
 

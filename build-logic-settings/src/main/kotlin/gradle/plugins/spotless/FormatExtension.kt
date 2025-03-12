@@ -6,12 +6,11 @@ import com.diffplug.spotless.LineEnding
 import gradle.accessors.allLibs
 import gradle.accessors.libs
 import gradle.accessors.resolveVersion
-import gradle.serialization.serializer.JsonContentPolymorphicSerializer
-import gradle.serialization.serializer.KeyTransformingSerializer
 import gradle.accessors.settings
 import gradle.accessors.version
-import gradle.api.version
 import gradle.accessors.versions
+import gradle.serialization.serializer.JsonContentPolymorphicSerializer
+import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

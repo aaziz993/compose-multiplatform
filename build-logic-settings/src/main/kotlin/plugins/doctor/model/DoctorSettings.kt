@@ -2,14 +2,14 @@ package plugins.doctor.model
 
 import com.osacky.doctor.AppleRosettaTranslationCheckMode
 import gradle.accessors.id
-import gradle.api.CI
 import gradle.accessors.libs
-import gradle.plugins.doctor.DoctorExtension
-import gradle.plugins.doctor.JavaHomeHandler
-import gradle.plugins.project.EnabledSettings
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
+import gradle.api.CI
+import gradle.plugins.doctor.DoctorExtension
+import gradle.plugins.doctor.JavaHomeHandler
+import gradle.plugins.project.EnabledSettings
 import gradle.services.unregister
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
