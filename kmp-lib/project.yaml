@@ -1,6 +1,9 @@
 description: Kotlin multiplatform libraries.
 
 templates:
+  - ../template/jvm.yaml
+  - ../template/android.yaml
+  - ../template/apple.yaml
   - ../template/kmp.yaml
   - ../template/common.yaml
 

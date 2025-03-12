@@ -1,12 +1,5 @@
 kotlin:
   targets:
-    - jvm
-    # apply to all above jvm targets by providing empty name
-    - jvm:
-        name: ''
-        withJava: true
-    - android:
-        publishLibraryVariants: [ release ]
     - iosArm64
     - iosX64
     - iosSimulatorArm64
@@ -67,9 +60,9 @@ kotlin:
 
   hierarchy:
     - jvmCommon: [ jvm, android ]
-    - nonJvm: [ android, ios, web ]
+    - nonJvm: [ mobile, web ]
     - nonAndroid: [ jvm, ios, web ]
-    - nonIos: [ jvm, android, web ]
+    - nonIos: [ jvmCommon, web ]
     - mobile: [ android, ios ]
     - nonMobile: [ jvm, web ]
     - nativeNonApple: [ mingw, unix, linux, androidNative ]
@@ -77,23 +70,13 @@ kotlin:
     - apple64: [ ios, macos, tvos, watchosX64, watchosDeviceArm64, watchosSimulatorArm64 ]
     - nativeNonAndroid: [ apple32, apple64, mingw, linux ]
     - native: [ nativeNonApple, nativeNonAndroid ]
-    - multithreaded: [ jvm, android, native ]
+    - multithreaded: [ jvmCommon, native ]
     - jsCommon: [ js, wasmJs ]
-    - web: [ js, wasmJs, wasmWasi ]
+    - web: [ jsCommon, wasmWasi ]
     - nonWeb: [ jvmCommon, ios ]
     - wasm: [ wasmJs, wasmWasi ]
 
   sourceSets:
-    - commonMain:
-        dependencies:
-          - $libs.atomicfu
-          - $libs.kotlinx.serialization.json
-          - $libs.kotlinx.serialization.properties
-
-    - nonWebMain:
-        dependencies:
-          - $libs.androidx.room.runtime.ktx
-
     - jsMain:
         dependencies:
           - kotlin: test-js
@@ -108,12 +91,6 @@ kotlin:
   #          - $kotlinWrappers.browser
   cocoapods:
     ios: { }
-
-dependencies:
-  # android dependencies
-  - coreLibraryDesugaring: $libs.android.desugar.jdk.libs
-  - androidTestImplementation: $libs.androidx.test.core
-  - androidTestImplementation: $libs.androidx.test.runner
 
 tasks:
   - Kotlin2JsCompile:

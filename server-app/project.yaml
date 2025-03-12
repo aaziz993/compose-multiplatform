@@ -3,7 +3,7 @@ type: APP
 description: Server application.
 
 templates:
-  - ../template/java.yaml
+  - ../template/jvm.yaml
   - ../template/common.yaml
 
 plugins:

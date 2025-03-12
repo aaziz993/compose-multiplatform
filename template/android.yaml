@@ -1,4 +1,8 @@
 kotlin:
+  targets:
+    - android:
+        publishLibraryVariants: [ release ]
+
   sourceSets:
     - androidMain:
         dependencies:
@@ -68,3 +72,8 @@ android:
   buildFeatures:
     buildConfig: true
     viewBinding: true
+
+dependencies:
+  - coreLibraryDesugaring: $libs.android.desugar.jdk.libs
+  - androidTestImplementation: $libs.androidx.test.core
+  - androidTestImplementation: $libs.androidx.test.runner

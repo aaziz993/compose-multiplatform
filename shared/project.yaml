@@ -1,6 +1,9 @@
 description: Shared sources for compose app and server app.
 
 templates:
+  - ../template/jvm.yaml
+  - ../template/android.yaml
+  - ../template/apple.yaml
   - ../template/kmp.yaml
   - ../template/common.yaml
 

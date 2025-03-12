@@ -3,6 +3,9 @@ type: APP
 description: Compose multiplatform application.
 
 templates:
+  - ../template/jvm.yaml
+  - ../template/android.yaml
+  - ../template/apple.yaml
   - ../template/kmp.yaml
   - ../template/cmp.yaml
   - ../template/common.yaml

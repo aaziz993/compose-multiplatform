@@ -1,7 +1,7 @@
 description: Ksp source generator.
 
 templates:
-  - ../template/java.yaml
+  - ../template/jvm.yaml
   - ../template/common.yaml
 
 plugins:

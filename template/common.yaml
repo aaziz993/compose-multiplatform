@@ -396,27 +396,38 @@ kotlin:
           freeCompilerArgs:
             - -Xjvm-default=all
 
+  sourceSets:
+    - commonMain:
+        dependencies:
+          - $libs.atomicfu
+          - $libs.kotlinx.serialization.json
+          - $libs.kotlinx.serialization.properties
+
+    - nonWebMain:
+        dependencies:
+          - $libs.androidx.room.runtime.ktx
+
 dependencies:
   - kspCommonMainMetadata: $libs.arrow.optics.ksp.plugin
   - kspCommonMainMetadata: $libs.androidx.room.compiler
   - kspCommonMainMetadata: $libs.ktorfit.ksp
     # Use import org.koin.ksp.generated.*
   - kspCommonMainMetadata: $libs.koin.ksp.compiler
-  # animalsniffer java signatures
+    # animalsniffer java signature
   - signature: $libs.signature.java
+    # animalsniffer android signature
   - signature: $libs.signature.android
 
 tasks:
-
   - KnitTask:
       dependsOn: [ dokkaGenerate ]
-#  - Jar:
-#      name: sourcesJar
-#      archiveClassifier: sources
-#      from: sources
-#  - Jar:
-#      name: javadocJar
-#      archiveClassifier: javadoc
+  #  - Jar:
+  #      name: sourcesJar
+  #      archiveClassifier: sources
+  #      from: sources
+  #  - Jar:
+  #      name: javadocJar
+  #      archiveClassifier: javadoc
   - ShadowJar:
       duplicatesStrategy: EXCLUDE
       mergeServiceFiles: true

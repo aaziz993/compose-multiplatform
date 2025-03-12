@@ -1,3 +1,11 @@
+kotlin:
+  targets:
+    - jvm
+    # apply to all above jvm targets by providing empty name
+    - jvm:
+        name: ''
+        withJava: true
+
 application:
   mainClass: ApplicationKt
   applicationDefaultJvmArgs:
