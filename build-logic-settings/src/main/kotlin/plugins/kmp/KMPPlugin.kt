@@ -71,16 +71,18 @@ internal class KMPPlugin : Plugin<Project> {
                                 srcPrefixPart = "src"
                                 resourcesPrefixPart = ""
                             }
-                            else androidSourceSetNamePrefixes
-                                .find { prefix -> restPart.startsWith(prefix) }
-                                ?.also { prefix ->
-                                    srcPrefixPart = "$prefix${
-                                        restPart.removePrefix(prefix).prefixIfNotEmpty("+")
-                                    }"
+                            else {
+                                val prefix = androidSourceSetNamePrefixes.find { prefix -> restPart.startsWith(prefix) }
+
+                                if (prefix == null) {
+                                    srcPrefixPart = restPart
                                     resourcesPrefixPart = srcPrefixPart
-                                } ?: run {
-                                srcPrefixPart = restPart
-                                resourcesPrefixPart = srcPrefixPart
+                                }
+                                else {
+                                    srcPrefixPart =
+                                        "$prefix${restPart.removePrefix(prefix).prefixIfNotEmpty("+")}"
+                                    resourcesPrefixPart = srcPrefixPart
+                                }
                             }
                         }
                         else {
