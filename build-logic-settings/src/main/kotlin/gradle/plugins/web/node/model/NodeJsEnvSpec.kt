@@ -38,7 +38,7 @@ internal data class NodeJsEnvSpec(
 ) {
 
     context(Project)
-    fun applyTo() = pluginManager.withPlugin(settings.libs.plugins.plugin("gradle.accessors.node.plugin").id) {
+    fun applyTo() = pluginManager.withPlugin(settings.libs.plugins.plugin("gradle.node.plugin").id) {
         nodeEnv.download tryAssign download
         nodeEnv.downloadBaseUrl tryAssign downloadBaseUrl
         nodeEnv.installationDirectory tryAssign installationDirectory?.let(layout.projectDirectory::dir)
