@@ -162,7 +162,7 @@ internal data class SigningExtension(
         }
 
         signPublications?.map(publishing.publications::getByName)?.let { publications ->
-            extension.sign(*signPublications.toTypedArray())
+            extension.sign(*publications.toTypedArray())
         }
 
         val publishingArtifacts = publishing.publications

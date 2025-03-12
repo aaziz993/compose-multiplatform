@@ -11,7 +11,7 @@ import org.jetbrains.kotlin.gradle.targets.js.npm.PackageJson
 internal data class PackageJson(
     val name: String? = null,
     val version: String? = null,
-    val customFields: Map<String, @Serializable(with = AnySerializer::class) Any?>? = null,
+    val customFields: SerializableAnyMap? = null,
     val private: Boolean? = null,
     val main: String? = null,
     val workspaces: List<String>? = null,

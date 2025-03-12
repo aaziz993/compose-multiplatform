@@ -277,7 +277,7 @@ internal data class MavenPublication(
         from?.let(components::getByName)?.let(named::from)
 
         artifacts?.forEach { (source, artifact) ->
-            named.artifact(source, gradle.publish.maven.MavenArtifact::applyTo)
+            named.artifact(source, artifact::applyTo)
         }
 
         artifactSources?.forEach { source ->

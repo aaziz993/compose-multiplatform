@@ -5,6 +5,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal data class Expand(
-    val properties:Map<String,@Serializable(with= AnySerializer::class) Any>,
+    val properties: SerializableAnyMap,
     val expandDetails: ExpandDetails
 )

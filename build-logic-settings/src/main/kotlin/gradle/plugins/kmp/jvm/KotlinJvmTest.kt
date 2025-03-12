@@ -50,6 +50,7 @@ internal data class KotlinJvmTest(
     override val shouldRunAfter: List<String>? = null,
     override val name: String = "",
     override val systemProperties: SerializableAnyMap? = null,
+    override val setEnvironment: SerializableAnyMap? = null,
     override val defaultCharacterEncoding: String? = null,
     override val minHeapSize: String? = null,
     override val maxHeapSize: String? = null,
@@ -62,6 +63,7 @@ internal data class KotlinJvmTest(
     override val executable: String? = null,
     override val workingDir: String? = null,
     override val environment: SerializableAnyMap? = null,
+    override val setSystemProperties: SerializableAnyMap? = null,
     override val includes: List<String>? = null,
     override val setIncludes: List<String>? = null,
     override val excludes: List<String>? = null,
@@ -69,6 +71,7 @@ internal data class KotlinJvmTest(
     val targetName: String? = null,
 ) : Test() {
 
+    context(Project)
     override fun applyTo(named: Named) {
         super.applyTo(named)
 
