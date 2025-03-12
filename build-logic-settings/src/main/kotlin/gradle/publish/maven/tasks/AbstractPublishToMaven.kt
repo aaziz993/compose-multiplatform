@@ -1,4 +1,4 @@
-package gradle.plugins.publish
+package gradle.publish.maven.tasks
 
 import gradle.serialization.serializer.AnySerializer
 import gradle.tasks.Task

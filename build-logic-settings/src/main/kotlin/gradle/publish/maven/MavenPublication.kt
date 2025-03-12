@@ -1,6 +1,8 @@
-package gradle.plugins.publish
+package gradle.publish.maven
 
 import gradle.accessors.publishing
+import gradle.publish.maven.Artifact
+import gradle.publish.Publication
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
@@ -275,7 +277,7 @@ internal data class MavenPublication(
         from?.let(components::getByName)?.let(named::from)
 
         artifacts?.forEach { (source, artifact) ->
-            named.artifact(source, artifact::applyTo)
+            named.artifact(source, gradle.publish.maven.MavenArtifact::applyTo)
         }
 
         artifactSources?.forEach { source ->

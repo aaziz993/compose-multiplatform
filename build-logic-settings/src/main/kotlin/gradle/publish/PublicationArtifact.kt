@@ -1,4 +1,4 @@
-package gradle.plugins.publish
+package gradle.publish
 
 import gradle.api.Buildable
 import org.gradle.api.publish.PublicationArtifact

@@ -1,4 +1,4 @@
-package gradle.plugins.publish
+package gradle.publish.maven
 
 import kotlinx.serialization.Serializable
 

@@ -1,4 +1,4 @@
-package gradle.plugins.publish
+package gradle.publish
 
 import gradle.accessors.publishing
 import gradle.api.Named

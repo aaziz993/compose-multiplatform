@@ -1,5 +1,6 @@
-package gradle.plugins.publish
+package gradle.publish.maven
 
+import gradle.publish.PublicationArtifact
 import kotlinx.serialization.Serializable
 import org.gradle.api.Buildable
 import org.gradle.api.publish.maven.MavenArtifact
