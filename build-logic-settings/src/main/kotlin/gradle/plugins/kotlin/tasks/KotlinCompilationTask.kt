@@ -1,16 +1,18 @@
-package gradle.plugins.kotlin
+package gradle.plugins.kotlin.tasks
 
+import gradle.plugins.kotlin.KotlinCommonCompilerOptions
 import gradle.tasks.Task
 import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 /**
  * Represents a Kotlin task compiling using configurable [compilerOptions].
  *
- * See [KotlinCommonCompilerOptions] and its inheritors for possible compiler options.
+ * See [gradle.plugins.kotlin.KotlinCommonCompilerOptions] and its inheritors for possible compiler options.
  *
- * @see [KotlinCommonCompilerOptions]
+ * @see [gradle.plugins.kotlin.KotlinCommonCompilerOptions]
  */
 internal interface KotlinCompilationTask<out CO : KotlinCommonCompilerOptions> : Task {
 
@@ -25,11 +27,11 @@ internal interface KotlinCompilationTask<out CO : KotlinCommonCompilerOptions> :
     override fun applyTo(named: Named) {
         super.applyTo(named)
 
-        named as org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask<*>
+        named as KotlinCompilationTask<*>
 
         compilerOptions?.applyTo(named.compilerOptions)
     }
 
     context(Project)
-    override fun applyTo() = applyTo(tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask<*>>())
+    override fun applyTo() = applyTo(tasks.withType<KotlinCompilationTask<*>>())
 }

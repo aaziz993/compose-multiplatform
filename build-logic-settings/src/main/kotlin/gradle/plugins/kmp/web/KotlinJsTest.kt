@@ -3,7 +3,7 @@ package gradle.plugins.kmp.web
 import gradle.accessors.moduleName
 import gradle.api.tryAssign
 import gradle.api.trySet
-import gradle.plugins.kotlin.KotlinTest
+import gradle.plugins.kotlin.tasks.KotlinTest
 import gradle.collection.SerializableAnyMap
 import gradle.tasks.test.DefaultTestFilter
 import gradle.tasks.test.TestLoggingContainer

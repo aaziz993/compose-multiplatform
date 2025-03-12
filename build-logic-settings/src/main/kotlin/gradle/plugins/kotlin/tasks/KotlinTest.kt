@@ -1,4 +1,4 @@
-package gradle.plugins.kotlin
+package gradle.plugins.kotlin.tasks
 
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap

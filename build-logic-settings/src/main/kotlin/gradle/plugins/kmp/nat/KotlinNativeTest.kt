@@ -3,7 +3,7 @@ package gradle.plugins.kmp.nat
 import gradle.api.tryAssign
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
-import gradle.plugins.kotlin.KotlinTest
+import gradle.plugins.kotlin.tasks.KotlinTest
 import gradle.tasks.test.DefaultTestFilter
 import gradle.tasks.test.TestLoggingContainer
 import kotlinx.serialization.Serializable

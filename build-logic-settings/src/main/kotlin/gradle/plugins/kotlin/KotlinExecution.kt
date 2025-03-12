@@ -18,12 +18,7 @@ internal interface KotlinExecution : Named {
     /**
      * Represents an execution source that provides the necessary inputs to run the execution.
      */
-    @Serializable(with = ExecutionSourceSerializer::class)
     interface ExecutionSource
-
-    private object ExecutionSourceSerializer : JsonContentPolymorphicSerializer<ExecutionSource>(
-        ExecutionSource::class,
-    )
 
     /**
      * The source of the executable code that this execution runs.

@@ -13,3 +13,16 @@ application:
 
 dependencies:
   - kotlin: stdlib
+
+tasks:
+  - KotlinJvmTest:
+    maxHeapSize: "2g"
+    excludes: [ '**/*StressTest*' ]
+    useJUnitPlatform: true
+    filter:
+      failOnNoMatchingTests: false
+    testLogging:
+      showExceptions: true
+      showStandardStreams: true
+      events: [ FAILED, PASSED ]
+      exceptionFormat: FULL

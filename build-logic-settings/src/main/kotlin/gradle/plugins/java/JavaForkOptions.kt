@@ -56,6 +56,7 @@ internal interface JavaForkOptions : ProcessForkOptions {
      * @since 4.0
      */
     val jvmArgs: List<String>?
+    val setJvmArgs: List<String>?
 
     /**
      * Adds the given values to the end of the bootstrap classpath for the process.
@@ -64,6 +65,7 @@ internal interface JavaForkOptions : ProcessForkOptions {
      * @return this
      */
     val bootstrapClasspath: List<String>?
+    val setBootstrapClasspath: List<String>?
 
     /**
      * Enable or disable assertions for the process.
@@ -113,7 +115,14 @@ internal interface JavaForkOptions : ProcessForkOptions {
         minHeapSize?.let(options::setMinHeapSize)
         maxHeapSize?.let(options::setMaxHeapSize)
         jvmArgs?.let(options::jvmArgs)
-        bootstrapClasspath?.let { files(*it.toTypedArray()) }?.let(options::setBootstrapClasspath)
+        setJvmArgs?.let(options::setJvmArgs)
+
+        bootstrapClasspath?.let { bootstrapClasspath ->
+            options.bootstrapClasspath(*bootstrapClasspath.toTypedArray())
+        }
+
+        setBootstrapClasspath?.let { files(*it.toTypedArray()) }?.let(options::setBootstrapClasspath)
+
         enableAssertions?.let(options::setEnableAssertions)
         debug?.let(options::setDebug)
         debugOptions?.applyTo(options.debugOptions)

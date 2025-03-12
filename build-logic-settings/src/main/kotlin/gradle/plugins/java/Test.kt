@@ -1,5 +1,6 @@
 package gradle.plugins.java
 
+import gradle.accessors.javaToolchain
 import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
 import gradle.tasks.PatternFilterable
@@ -10,7 +11,11 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
+import org.gradle.jvm.toolchain.JavaLanguageVersion
+import org.gradle.jvm.toolchain.JavaToolchainService
 import org.gradle.kotlin.dsl.withType
+import org.gradle.kotlin.dsl.assign
+import org.gradle.kotlin.dsl.the
 
 /**
  * Executes JUnit (3.8.x, 4.x or 5.x) or TestNG tests. Test are always run in (one or more) separate JVMs.
@@ -225,6 +230,8 @@ internal abstract class Test : AbstractTestTask(), JavaForkOptions, PatternFilte
      */
     abstract val maxParallelForks: Int?
 
+    abstract val javaLauncher: JavaToolchainSpec?
+
     context(Project)
     @Suppress("UnstableApiUsage")
     override fun applyTo(named: Named) {
@@ -264,7 +271,13 @@ internal abstract class Test : AbstractTestTask(), JavaForkOptions, PatternFilte
 
         scanForTestClasses?.let(named::setScanForTestClasses)
         forkEvery?.let(named::setForkEvery)
-        maxParallelForks?.let(named::setMaxParallelForks)
+        named.maxParallelForks = maxParallelForks ?: (Runtime.getRuntime().availableProcessors() / 2).coerceAtLeast(1)
+
+        javaLauncher?.let { javaLauncher ->
+            named.javaLauncher = javaToolchain.launcherFor {
+                javaLauncher.applyTo(this)
+            }
+        }
     }
 
     context(Project)
@@ -273,6 +286,26 @@ internal abstract class Test : AbstractTestTask(), JavaForkOptions, PatternFilte
             tasks.register(name).get()
         }
 }
+
+/** Configure tests against different JDK versions. */
+internal fun org.gradle.api.tasks.testing.Test.configureJavaToolchain() =
+    javaLauncher.get().metadata.languageVersion.asInt().let { languageVersion ->
+
+        if (languageVersion >= 16) {
+            // Allow reflective access from tests
+            jvmArgs(
+                "--add-opens=java.base/java.net=ALL-UNNAMED",
+                "--add-opens=java.base/java.time=ALL-UNNAMED",
+                "--add-opens=java.base/java.util=ALL-UNNAMED",
+            )
+        }
+
+        if (languageVersion >= 21) {
+            // coroutines-debug use dynamic agent loading under the hood.
+            // Remove as soon as the issue is fixed: https://youtrack.jetbrains.com/issue/KT-62096/
+            jvmArgs("-XX:+EnableDynamicAgentLoading")
+        }
+    }
 
 @Serializable
 @SerialName("Test")
@@ -314,7 +347,9 @@ internal data class TestImpl(
     override val minHeapSize: String? = null,
     override val maxHeapSize: String? = null,
     override val jvmArgs: List<String>? = null,
+    override val setJvmArgs: List<String>? = null,
     override val bootstrapClasspath: List<String>? = null,
+    override val setBootstrapClasspath: List<String>? = null,
     override val enableAssertions: Boolean? = null,
     override val debug: Boolean? = null,
     override val debugOptions: JavaDebugOptions? = null,
@@ -327,4 +362,5 @@ internal data class TestImpl(
     override val setIncludes: List<String>? = null,
     override val excludes: List<String>? = null,
     override val setExcludes: List<String>? = null,
+    override val javaLauncher: JavaToolchainSpec? = null,
 ) : Test()

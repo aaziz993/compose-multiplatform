@@ -7,4 +7,4 @@ import kotlinx.serialization.Serializable
 internal class ClasspathOnlyTestRunSource(
     val classpath: List<String>,
     val testClassesDirs: List<String>
-) : KotlinExecution.ExecutionSource
+) : JvmClasspathTestRunSource

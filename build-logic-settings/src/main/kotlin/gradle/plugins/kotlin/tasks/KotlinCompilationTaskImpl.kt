@@ -1,6 +1,7 @@
-package gradle.plugins.kotlin
+package gradle.plugins.kotlin.tasks
 
 import gradle.collection.SerializableAnyMap
+import gradle.plugins.kotlin.KotlinCommonCompilerOptions
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

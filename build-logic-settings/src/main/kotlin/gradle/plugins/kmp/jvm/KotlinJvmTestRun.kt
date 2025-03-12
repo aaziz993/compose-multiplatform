@@ -11,7 +11,7 @@ import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTestRun
 internal data class KotlinJvmTestRun(
     override val name: String = "",
     override val filter: DefaultTestFilter? = null,
-    override val executionSource: KotlinExecution.ExecutionSource? = null,
+    override val executionSource: JvmClasspathTestRunSource? = null,
 ) : KotlinTaskTestRun() {
 
     context(Project)
