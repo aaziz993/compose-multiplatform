@@ -23,6 +23,12 @@ import org.gradle.api.tasks.SourceSet
 import org.gradle.internal.extensions.stdlib.capitalized
 import org.gradle.kotlin.dsl.dependencies
 
+private val androidSourceSetNamePrefixes = listOf(
+    SourceSet.TEST_SOURCE_SET_NAME,
+    "androidTest",
+    "testFixtures",
+)
+
 internal class AndroidPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
@@ -42,9 +48,7 @@ internal class AndroidPlugin : Plugin<Project> {
                 projectProperties.kotlin.sourceSets<KotlinAndroidTarget>()?.forEach { sourceSet ->
                     val compilationName = if (
                         sourceSet.name == "commonTest" ||
-                        sourceSet.name.startsWith(SourceSet.TEST_SOURCE_SET_NAME) ||
-                        sourceSet.name.startsWith("androidTest") ||
-                        sourceSet.name.startsWith("testFixtures")
+                        androidSourceSetNamePrefixes.any(sourceSet.name::startsWith)
                     ) "test"
                     else ""
 
@@ -69,23 +73,13 @@ internal class AndroidPlugin : Plugin<Project> {
     private fun Project.adjustAndroidSourceSets() =
         when (projectProperties.layout) {
             ProjectLayout.FLAT -> android.sourceSets.all { sourceSet ->
-                val (srcPrefixPart, resourcesPrefixPart) = when {
-                    sourceSet.name == SourceSet.MAIN_SOURCE_SET_NAME -> "src" to ""
-
-                    sourceSet.name.startsWith(SourceSet.TEST_SOURCE_SET_NAME) -> "${SourceSet.TEST_SOURCE_SET_NAME}${
-                        sourceSet.name.removePrefix(SourceSet.TEST_SOURCE_SET_NAME).prefixIfNotEmpty("+")
-                    }".let { it to it }
-
-                    sourceSet.name.startsWith("androidTest") -> "androidTest${
-                        sourceSet.name.removePrefix("androidTest").prefixIfNotEmpty("+")
-                    }".let { it to it }
-
-                    sourceSet.name.startsWith("testFixtures") -> "testFixtures${
-                        sourceSet.name.removePrefix("testFixtures").prefixIfNotEmpty("+")
-                    }".let { it to it }
-
-                    else -> sourceSet.name.let { it to it }
-                }
+                val (srcPrefixPart, resourcesPrefixPart) =
+                    if (sourceSet.name == SourceSet.MAIN_SOURCE_SET_NAME) "src" to ""
+                    else androidSourceSetNamePrefixes.find { prefix ->
+                        sourceSet.name.startsWith(prefix)
+                    }?.let { prefix ->
+                        "$prefix${sourceSet.name.removePrefix(prefix).prefixIfNotEmpty("+")}".let { it to it }
+                    } ?: sourceSet.name.let { it to it }
 
                 sourceSet.java.replace("src/${sourceSet.name}/java", "$srcPrefixPart@android")
                 sourceSet.kotlin.replace("src/${sourceSet.name}/kotlin", "$srcPrefixPart@android")

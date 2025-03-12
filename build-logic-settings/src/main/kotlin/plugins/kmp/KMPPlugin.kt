@@ -59,41 +59,28 @@ internal class KMPPlugin : Plugin<Project> {
 
                             val restPart = sourceSet.name.removePrefix(androidTarget.targetName).decapitalized()
 
-                            val mainVariantName = androidTarget.mainVariant.sourceSetTree.get().name
-                            val unitTestVariantName = "unitTest"
-                            val instrumentedVariantName = androidTarget.instrumentedTestVariant.sourceSetTree.get().name
+                            val mainSourceSetNamePrefix = androidTarget.mainVariant.sourceSetTree.get().name
 
-                            when {
-                                restPart == mainVariantName -> {
-                                    srcPrefixPart = "src"
-                                    resourcesPrefixPart = ""
-                                }
+                            val androidSourceSetNamePrefixes = listOf(
+                                SourceSet.TEST_SOURCE_SET_NAME,
+                                "unitTest",
+                                androidTarget.instrumentedTestVariant.sourceSetTree.get().name,
+                            )
 
-                                sourceSet.name.startsWith(SourceSet.TEST_SOURCE_SET_NAME) -> {
-                                    srcPrefixPart = "${SourceSet.TEST_SOURCE_SET_NAME}${
-                                        restPart.removePrefix(SourceSet.TEST_SOURCE_SET_NAME).prefixIfNotEmpty("+")
+                            if (restPart == mainSourceSetNamePrefix) {
+                                srcPrefixPart = "src"
+                                resourcesPrefixPart = ""
+                            }
+                            else androidSourceSetNamePrefixes
+                                .find { prefix -> restPart.startsWith(prefix) }
+                                ?.also { prefix ->
+                                    srcPrefixPart = "$prefix${
+                                        restPart.removePrefix(prefix).prefixIfNotEmpty("+")
                                     }"
                                     resourcesPrefixPart = srcPrefixPart
-                                }
-
-                                restPart.startsWith(unitTestVariantName) -> {
-                                    srcPrefixPart = "${unitTestVariantName}${
-                                        restPart.removePrefix(unitTestVariantName).prefixIfNotEmpty("+")
-                                    }"
-                                    resourcesPrefixPart = srcPrefixPart
-                                }
-
-                                restPart.startsWith(instrumentedVariantName) -> {
-                                    srcPrefixPart = "${instrumentedVariantName}${
-                                        restPart.removePrefix(instrumentedVariantName).prefixIfNotEmpty("+")
-                                    }"
-                                    resourcesPrefixPart = srcPrefixPart
-                                }
-
-                                else -> {
-                                    srcPrefixPart = restPart
-                                    resourcesPrefixPart = srcPrefixPart
-                                }
+                                } ?: run {
+                                srcPrefixPart = restPart
+                                resourcesPrefixPart = srcPrefixPart
                             }
                         }
                         else {
