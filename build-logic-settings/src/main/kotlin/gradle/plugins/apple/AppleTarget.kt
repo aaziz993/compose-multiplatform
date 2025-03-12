@@ -1,8 +1,8 @@
 package gradle.plugins.apple
 
-import gradle.maybeNamed
+import gradle.api.maybeNamed
 import gradle.serialization.serializer.AnySerializer
-import gradle.trySet
+import gradle.api.trySet
 import kotlinx.serialization.Serializable
 import org.jetbrains.gradle.apple.targets.AppleTarget
 

@@ -1,7 +1,7 @@
 package gradle.plugins.kmp.web
 
-import gradle.kotlin
-import gradle.moduleName
+import gradle.accessors.kotlin
+import gradle.accessors.moduleName
 import gradle.plugins.kmp.HasBinaries
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

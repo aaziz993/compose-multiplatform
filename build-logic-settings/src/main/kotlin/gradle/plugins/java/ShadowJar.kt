@@ -1,18 +1,18 @@
 package gradle.plugins.java
 
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-import gradle.id
-import gradle.libs
+import gradle.accessors.id
+import gradle.accessors.libs
 import gradle.tasks.copy.CopySpecImpl
 import gradle.tasks.Expand
 import gradle.tasks.copy.FileCopyDetails
 import gradle.tasks.FilesMatching
 import gradle.tasks.copy.FromSpec
 import gradle.tasks.copy.IntoSpec
-import gradle.plugin
-import gradle.plugins
+import gradle.accessors.plugin
+import gradle.accessors.plugins
 import gradle.serialization.serializer.AnySerializer
-import gradle.settings
+import gradle.accessors.settings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project

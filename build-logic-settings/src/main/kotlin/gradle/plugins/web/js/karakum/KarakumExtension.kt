@@ -1,7 +1,7 @@
 package gradle.plugins.web.js.karakum
 
-import gradle.karakum
-import gradle.tryAssign
+import gradle.accessors.karakum
+import gradle.api.tryAssign
 import org.gradle.api.Project
 
 internal interface KarakumExtension {

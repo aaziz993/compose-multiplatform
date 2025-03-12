@@ -1,12 +1,12 @@
 package gradle.plugins.cmp.desktop.model
 
-import gradle.compose
-import gradle.desktop
-import gradle.id
-import gradle.libs
-import gradle.plugin
-import gradle.plugins
-import gradle.settings
+import gradle.accessors.compose
+import gradle.accessors.desktop
+import gradle.accessors.id
+import gradle.accessors.libs
+import gradle.accessors.plugin
+import gradle.accessors.plugins
+import gradle.accessors.settings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

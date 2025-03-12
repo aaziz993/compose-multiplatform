@@ -1,13 +1,14 @@
 package gradle.plugins.android
 
 import com.android.build.api.dsl.BaseFlavor
-import gradle.android
-import gradle.androidNamespace
-import gradle.libs
-import gradle.settings
-import gradle.trySet
-import gradle.version
-import gradle.versions
+import gradle.accessors.android
+import gradle.accessors.androidNamespace
+import gradle.accessors.libs
+import gradle.accessors.settings
+import gradle.accessors.version
+import gradle.api.trySet
+import gradle.api.version
+import gradle.accessors.versions
 import org.gradle.api.Project
 
 /**

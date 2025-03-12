@@ -1,12 +1,12 @@
 package plugin.project.kotlin.cocoapods
 
-import gradle.id
-import gradle.libs
+import gradle.accessors.id
+import gradle.accessors.libs
 import gradle.plugins.kmp.nat.apple.KotlinAppleTarget
-import gradle.plugin
-import gradle.plugins
-import gradle.projectProperties
-import gradle.settings
+import gradle.accessors.plugin
+import gradle.accessors.plugins
+import gradle.accessors.projectProperties
+import gradle.accessors.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 

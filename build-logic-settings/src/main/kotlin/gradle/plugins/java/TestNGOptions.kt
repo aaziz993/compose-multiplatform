@@ -1,7 +1,7 @@
 package gradle.plugins.java
 
 import gradle.tasks.test.TestFrameworkOptions
-import gradle.tryAssign
+import gradle.api.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.tasks.testing.testng.TestNGOptions

@@ -1,7 +1,7 @@
 package gradle.plugins.android
 
 import com.android.build.api.dsl.BuildFeatures
-import gradle.trySet
+import gradle.api.trySet
 
 /**
  * A list of build features that can be disabled or enabled in an Android project.

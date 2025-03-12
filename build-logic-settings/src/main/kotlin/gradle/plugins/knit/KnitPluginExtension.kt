@@ -1,12 +1,12 @@
 package gradle.plugins.knit
 
-import gradle.id
-import gradle.knit
-import gradle.libs
-import gradle.plugin
-import gradle.plugins
-import gradle.settings
-import gradle.trySet
+import gradle.accessors.id
+import gradle.accessors.knit
+import gradle.accessors.libs
+import gradle.accessors.plugin
+import gradle.accessors.plugins
+import gradle.accessors.settings
+import gradle.api.trySet
 import org.gradle.api.Project
 
 internal interface KnitPluginExtension {

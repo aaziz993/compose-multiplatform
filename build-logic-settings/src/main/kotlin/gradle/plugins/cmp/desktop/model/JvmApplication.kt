@@ -1,8 +1,8 @@
 package gradle.plugins.cmp.desktop.model
 
-import gradle.java
-import gradle.kotlin
-import gradle.trySet
+import gradle.accessors.java
+import gradle.accessors.kotlin
+import gradle.api.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.compose.desktop.application.dsl.JvmApplication

@@ -1,4 +1,7 @@
-package gradle
+package gradle.coolection
+
+import kotlin.collections.get
+import kotlin.invoke
 
 @Suppress("UNCHECKED_CAST")
 internal infix fun Map<String, Any?>.deepMerge(source: Map<String, Any?>): Map<String, Any?> {

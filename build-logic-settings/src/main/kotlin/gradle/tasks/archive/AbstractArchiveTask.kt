@@ -7,7 +7,7 @@ import gradle.tasks.copy.AbstractCopyTask
 import gradle.tasks.copy.FromSpec
 import gradle.tasks.copy.IntoSpec
 import gradle.serialization.serializer.AnySerializer
-import gradle.tryAssign
+import gradle.api.tryAssign
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named

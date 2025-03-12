@@ -1,7 +1,7 @@
 package plugin.project.web
 
 import gradle.plugins.kmp.web.KotlinWasmWasiTarget
-import gradle.projectProperties
+import gradle.accessors.projectProperties
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinWasmWasiTargetDsl

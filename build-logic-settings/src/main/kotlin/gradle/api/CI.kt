@@ -1,5 +1,6 @@
-package gradle
+package gradle.api
 
+import gradle.accessors.execute
 import org.gradle.api.Project
 import org.gradle.api.initialization.Settings
 

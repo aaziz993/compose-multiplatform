@@ -1,7 +1,7 @@
 package gradle.plugins.kmp.web
 
 import org.gradle.kotlin.dsl.withType
-import gradle.kotlin
+import gradle.accessors.kotlin
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

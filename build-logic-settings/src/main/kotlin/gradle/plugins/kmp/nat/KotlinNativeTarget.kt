@@ -1,6 +1,6 @@
 package gradle.plugins.kmp.nat
 
-import gradle.kotlin
+import gradle.accessors.kotlin
 import gradle.plugins.kmp.HasBinaries
 import gradle.plugins.kotlin.HasConfigurableKotlinCompilerOptions
 import gradle.plugins.kmp.KotlinTarget

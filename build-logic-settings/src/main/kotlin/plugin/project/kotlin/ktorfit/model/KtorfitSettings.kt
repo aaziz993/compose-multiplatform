@@ -1,13 +1,13 @@
 package plugin.project.kotlin.ktorfit.model
 
 import de.jensklingenberg.ktorfit.gradle.ErrorCheckingMode
-import gradle.id
-import gradle.libs
+import gradle.accessors.id
+import gradle.accessors.libs
 import gradle.plugins.kotlin.ktorfit.KtorfitGradleConfiguration
 import gradle.plugins.project.EnabledSettings
-import gradle.plugin
-import gradle.plugins
-import gradle.settings
+import gradle.accessors.plugin
+import gradle.accessors.plugins
+import gradle.accessors.settings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

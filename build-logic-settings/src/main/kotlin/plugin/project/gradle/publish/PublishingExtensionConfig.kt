@@ -12,7 +12,7 @@
 //import gradle.jsTargets
 //import gradle.jvmAndCommonTargets
 //import gradle.linuxTargets
-//import gradle.maybeNamed
+//import gradle.api.maybeNamed
 //import gradle.windowsTargets
 //import io.github.z4kn4fein.semver.Version
 //import java.util.concurrent.locks.ReentrantLock
@@ -25,18 +25,18 @@
 //import org.gradle.internal.extensions.stdlib.capitalized
 //import org.gradle.internal.os.OperatingSystem
 //import org.gradle.jvm.tasks.Jar
-//import org.gradle.kotlin.dsl.apply
-//import org.gradle.kotlin.dsl.assign
-//import org.gradle.kotlin.dsl.extra
-//import org.gradle.kotlin.dsl.getByName
-//import org.gradle.kotlin.dsl.invoke
-//import org.gradle.kotlin.dsl.provideDelegate
-//import org.gradle.kotlin.dsl.register
-//import org.gradle.kotlin.dsl.settings
-//import org.gradle.kotlin.dsl.withType
-//import org.gradle.plugins.signing.Sign
-//import org.gradle.plugins.signing.SigningExtension
-//import org.gradle.plugins.signing.SigningPlugin
+//import org.gradle.accessors.kotlin.dsl.apply
+//import org.gradle.accessors.kotlin.dsl.assign
+//import org.gradle.accessors.kotlin.dsl.extra
+//import org.gradle.accessors.kotlin.dsl.getByName
+//import org.gradle.accessors.kotlin.dsl.invoke
+//import org.gradle.accessors.kotlin.dsl.provideDelegate
+//import org.gradle.accessors.kotlin.dsl.register
+//import org.gradle.accessors.kotlin.dsl.settings
+//import org.gradle.accessors.kotlin.dsl.withType
+//import org.gradle.accessors.plugins.signing.Sign
+//import org.gradle.accessors.plugins.signing.SigningExtension
+//import org.gradle.accessors.plugins.signing.SigningPlugin
 //
 //internal fun Project.configurePublishingExtension(extension: PublishingExtension) = extension.apply {
 //    with(settings.extension) {

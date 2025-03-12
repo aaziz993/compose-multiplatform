@@ -1,15 +1,15 @@
 package plugin.project.java
 
-import gradle.all
+import gradle.api.all
 import gradle.decapitalized
-import gradle.java
+import gradle.accessors.java
 import gradle.plugins.kmp.android.KotlinAndroidTarget
 import gradle.plugins.kmp.jvm.KotlinJvmTarget
 import gradle.plugins.kotlin.sourceSets
 import gradle.plugins.project.ProjectLayout
 import gradle.plugins.project.ProjectType
-import gradle.projectProperties
-import gradle.replace
+import gradle.accessors.projectProperties
+import gradle.file.replace
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.ApplicationPlugin

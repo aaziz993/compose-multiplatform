@@ -1,7 +1,7 @@
 package gradle.plugins.kmp.web
 
 import gradle.plugins.project.ProjectType
-import gradle.projectProperties
+import gradle.accessors.projectProperties
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsBinaryContainer

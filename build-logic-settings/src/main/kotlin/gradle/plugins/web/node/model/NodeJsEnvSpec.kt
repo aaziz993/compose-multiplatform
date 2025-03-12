@@ -1,12 +1,12 @@
 package gradle.plugins.web.node.model
 
-import gradle.id
-import gradle.libs
-import gradle.nodeEnv
-import gradle.plugin
-import gradle.plugins
-import gradle.settings
-import gradle.tryAssign
+import gradle.accessors.id
+import gradle.accessors.libs
+import gradle.accessors.nodeEnv
+import gradle.accessors.plugin
+import gradle.accessors.plugins
+import gradle.accessors.settings
+import gradle.api.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -38,7 +38,7 @@ internal data class NodeJsEnvSpec(
 ) {
 
     context(Project)
-    fun applyTo() = pluginManager.withPlugin(settings.libs.plugins.plugin("gradle.node.plugin").id) {
+    fun applyTo() = pluginManager.withPlugin(settings.libs.plugins.plugin("gradle.accessors.node.plugin").id) {
         nodeEnv.download tryAssign download
         nodeEnv.downloadBaseUrl tryAssign downloadBaseUrl
         nodeEnv.installationDirectory tryAssign installationDirectory?.let(layout.projectDirectory::dir)

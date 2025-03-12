@@ -1,20 +1,16 @@
 package plugin.project.apple
 
-import gradle.all
-import gradle.apple
-import gradle.id
-import gradle.java
-import gradle.libs
+import gradle.accessors.apple
+import gradle.accessors.id
+import gradle.accessors.libs
 import gradle.plugins.kmp.nat.apple.KotlinAppleTarget
 import gradle.plugins.project.ProjectLayout
-import gradle.plugin
-import gradle.plugins
-import gradle.projectProperties
-import gradle.replace
-import gradle.settings
+import gradle.accessors.plugin
+import gradle.accessors.plugins
+import gradle.accessors.projectProperties
+import gradle.accessors.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.tasks.SourceSet
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 
 internal class ApplePlugin : Plugin<Project> {

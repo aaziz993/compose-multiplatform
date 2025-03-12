@@ -1,7 +1,7 @@
 package gradle.plugins.kmp.jvm
 
 import gradle.serialization.serializer.AnySerializer
-import gradle.tryAssign
+import gradle.api.tryAssign
 import kotlinx.serialization.Serializable
 import org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmRunDsl
 

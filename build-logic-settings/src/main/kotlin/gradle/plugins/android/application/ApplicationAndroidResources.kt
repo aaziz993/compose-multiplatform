@@ -2,7 +2,7 @@ package gradle.plugins.android.application
 
 import com.android.build.api.dsl.ApplicationAndroidResources
 import gradle.plugins.android.AndroidResources
-import gradle.trySet
+import gradle.api.trySet
 import kotlinx.serialization.Serializable
 
 /**

@@ -1,7 +1,7 @@
 package gradle.plugins.android.library
 
 import com.android.build.api.dsl.LibraryExtension
-import gradle.android
+import gradle.accessors.android
 import gradle.plugins.android.CommonExtension
 import gradle.plugins.android.Prefab
 import gradle.plugins.android.PrivacySandbox

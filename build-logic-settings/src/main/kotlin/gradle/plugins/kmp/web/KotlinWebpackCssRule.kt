@@ -1,6 +1,6 @@
 package gradle.plugins.kmp.web
 
-import gradle.tryAssign
+import gradle.api.tryAssign
 import kotlinx.serialization.Serializable
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackCssRule
 

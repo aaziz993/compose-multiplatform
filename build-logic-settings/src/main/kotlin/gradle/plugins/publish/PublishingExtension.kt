@@ -1,9 +1,9 @@
 package gradle.plugins.publish
 
-import gradle.plugins.repository.ArtifactRepository
-import gradle.plugins.repository.ArtifactRepositoryTransformingSerializer
-import gradle.plugins.repository.ExclusiveContentRepository
-import gradle.publishing
+import gradle.repositories.ArtifactRepository
+import gradle.repositories.ArtifactRepositoryTransformingSerializer
+import gradle.repositories.ExclusiveContentRepository
+import gradle.accessors.publishing
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler

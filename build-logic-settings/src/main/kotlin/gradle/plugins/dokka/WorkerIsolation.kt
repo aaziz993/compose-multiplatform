@@ -1,13 +1,12 @@
 package gradle.plugins.dokka
 
-import gradle.dokka
+import gradle.accessors.dokka
 import gradle.serialization.serializer.AnySerializer
-import gradle.tryAssign
+import gradle.api.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.process.JavaForkOptions
 import org.gradle.workers.WorkerExecutor
-import org.jetbrains.dokka.gradle.DokkaExtension
 
 @Serializable
 internal sealed class WorkerIsolation {

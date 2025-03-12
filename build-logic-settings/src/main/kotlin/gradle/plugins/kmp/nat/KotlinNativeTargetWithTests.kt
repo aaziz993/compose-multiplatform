@@ -1,6 +1,6 @@
 package gradle.plugins.kmp.nat
 
-import gradle.kotlin
+import gradle.accessors.kotlin
 import gradle.plugins.kmp.KotlinTargetWithTests
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

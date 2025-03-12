@@ -1,6 +1,6 @@
 package gradle.plugins.develocity
 
-import gradle.tryAssign
+import gradle.api.tryAssign
 import org.gradle.api.initialization.Settings
 import org.gradle.kotlin.dsl.develocity
 

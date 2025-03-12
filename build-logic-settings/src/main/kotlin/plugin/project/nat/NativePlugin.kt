@@ -1,7 +1,7 @@
 package plugin.project.nat
 
 import gradle.plugins.kmp.nat.KotlinNativeTarget
-import gradle.projectProperties
+import gradle.accessors.projectProperties
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 

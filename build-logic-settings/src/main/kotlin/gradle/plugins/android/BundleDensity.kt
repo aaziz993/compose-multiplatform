@@ -1,7 +1,7 @@
 package gradle.plugins.android
 
 import com.android.build.api.dsl.BundleDensity
-import gradle.trySet
+import gradle.api.trySet
 import kotlinx.serialization.Serializable
 
 /**

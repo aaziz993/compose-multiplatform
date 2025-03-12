@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin.apollo
 
-import gradle.apollo
-import gradle.tryAssign
+import gradle.accessors.apollo
+import gradle.api.tryAssign
 import org.gradle.api.Project
 
 internal interface ApolloExtension {

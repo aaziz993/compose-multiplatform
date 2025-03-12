@@ -1,6 +1,6 @@
 package gradle.plugins.kmp.nat.linux
 
-import gradle.kotlin
+import gradle.accessors.kotlin
 import gradle.plugins.kmp.nat.KotlinNativeBinaryContainer
 import gradle.plugins.kmp.nat.KotlinNativeCompilation
 import gradle.plugins.kmp.nat.KotlinNativeCompilationTransformingSerializer

@@ -1,8 +1,8 @@
 package gradle.plugins.kotlin.ktorfit
 
 import de.jensklingenberg.ktorfit.gradle.ErrorCheckingMode
-import gradle.ktorfit
-import gradle.trySet
+import gradle.accessors.ktorfit
+import gradle.api.trySet
 import org.gradle.api.Project
 
 internal interface KtorfitGradleConfiguration {

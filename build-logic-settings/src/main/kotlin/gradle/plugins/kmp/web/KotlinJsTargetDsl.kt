@@ -1,11 +1,11 @@
 package gradle.plugins.kmp.web
 
-import gradle.kotlin
+import gradle.accessors.kotlin
 import gradle.plugins.kmp.HasBinaries
 import gradle.plugins.kotlin.HasConfigurableKotlinCompilerOptions
 import gradle.plugins.kmp.KotlinTarget
-import gradle.moduleName
-import gradle.trySet
+import gradle.accessors.moduleName
+import gradle.api.trySet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named

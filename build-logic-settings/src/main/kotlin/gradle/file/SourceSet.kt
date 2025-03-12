@@ -1,4 +1,4 @@
-package gradle
+package gradle.file
 
 import com.android.build.api.dsl.AndroidSourceDirectorySet
 import org.gradle.api.file.SourceDirectorySet

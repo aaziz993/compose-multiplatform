@@ -1,6 +1,6 @@
 package gradle.plugins.quality
 
-import gradle.sourceSets
+import gradle.accessors.sourceSets
 import org.gradle.api.Project
 import org.gradle.api.plugins.quality.CodeQualityExtension
 

@@ -2,8 +2,8 @@ package gradle.plugins.kmp.web
 
 import gradle.tasks.AbstractExecTask
 import gradle.serialization.serializer.AnySerializer
-import gradle.tryAssign
-import gradle.trySet
+import gradle.api.tryAssign
+import gradle.api.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project

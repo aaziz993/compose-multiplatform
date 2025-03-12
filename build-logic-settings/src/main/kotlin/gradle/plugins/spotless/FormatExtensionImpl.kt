@@ -1,7 +1,7 @@
 package gradle.plugins.spotless
 
 import com.diffplug.spotless.LineEnding
-import gradle.spotless
+import gradle.accessors.spotless
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.isAccessible
 import kotlinx.serialization.SerialName

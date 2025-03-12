@@ -1,8 +1,8 @@
 package gradle.plugins.kotlin.ksp
 
-import gradle.ksp
-import gradle.tryAssign
-import gradle.trySet
+import gradle.accessors.ksp
+import gradle.api.tryAssign
+import gradle.api.trySet
 import org.gradle.api.Project
 
 internal interface KspExtension {

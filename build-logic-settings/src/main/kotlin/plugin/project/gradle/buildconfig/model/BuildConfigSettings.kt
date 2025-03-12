@@ -1,12 +1,12 @@
 package plugin.project.gradle.buildconfig.model
 
-import gradle.id
-import gradle.libs
+import gradle.accessors.id
+import gradle.accessors.libs
 import gradle.plugins.buildconfig.BuildConfigExtension
 import gradle.plugins.project.EnabledSettings
-import gradle.plugin
-import gradle.plugins
-import gradle.settings
+import gradle.accessors.plugin
+import gradle.accessors.plugins
+import gradle.accessors.settings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

@@ -1,7 +1,7 @@
 package gradle.plugins.java.application
 
-import gradle.javaApp
-import gradle.tryAssign
+import gradle.accessors.javaApp
+import gradle.api.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.plugins.ApplicationPlugin

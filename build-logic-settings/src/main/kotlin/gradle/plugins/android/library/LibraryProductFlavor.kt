@@ -2,7 +2,7 @@ package gradle.plugins.android.library
 
 import com.android.build.api.dsl.VariantDimension
 import gradle.plugins.android.ProductFlavorDsl
-import gradle.trySet
+import gradle.api.trySet
 import org.gradle.api.Project
 
 /**

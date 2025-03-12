@@ -1,6 +1,6 @@
 package gradle.plugins.buildconfig
 
-import gradle.buildConfig
+import gradle.accessors.buildConfig
 import org.gradle.api.Project
 
 internal interface BuildConfigExtension {

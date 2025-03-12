@@ -1,11 +1,11 @@
 package gradle.plugins.android
 
 import com.android.build.api.dsl.CompileOptions
-import gradle.libs
-import gradle.settings
-import gradle.trySet
-import gradle.version
-import gradle.versions
+import gradle.accessors.libs
+import gradle.accessors.settings
+import gradle.accessors.version
+import gradle.api.trySet
+import gradle.accessors.versions
 import kotlinx.serialization.Serializable
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project

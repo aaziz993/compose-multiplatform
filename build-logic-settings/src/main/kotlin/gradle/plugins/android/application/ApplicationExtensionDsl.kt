@@ -1,7 +1,7 @@
 package gradle.plugins.android.application
 
 import com.android.build.api.dsl.ApplicationExtension
-import gradle.android
+import gradle.accessors.android
 import gradle.plugins.android.Bundle
 import gradle.plugins.android.CommonExtension
 import gradle.plugins.android.DependenciesInfo

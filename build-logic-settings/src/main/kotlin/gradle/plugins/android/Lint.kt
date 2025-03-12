@@ -1,7 +1,7 @@
 package gradle.plugins.android
 
 import com.android.build.api.dsl.Lint
-import gradle.trySet
+import gradle.api.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

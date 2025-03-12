@@ -2,19 +2,16 @@
 
 package gradle.plugins.project
 
-import gradle.allLibs
+import gradle.accessors.allLibs
 import gradle.isUrl
-import gradle.resolveLibrary
+import gradle.accessors.resolveLibrary
 import gradle.serialization.serializer.BaseKeyTransformingSerializer
-import gradle.serialization.serializer.KeyTransformingSerializer
-import gradle.settings
+import gradle.accessors.settings
 import java.io.File
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
-import kotlinx.serialization.json.JsonTransformingSerializer
-import kotlinx.serialization.json.jsonObject
 import org.gradle.api.Project
 import org.gradle.api.file.Directory
 import org.gradle.api.file.FileCollection

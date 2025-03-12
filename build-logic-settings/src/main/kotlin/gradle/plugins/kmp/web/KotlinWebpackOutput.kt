@@ -1,6 +1,6 @@
 package gradle.plugins.kmp.web
 
-import gradle.trySet
+import gradle.api.trySet
 import kotlinx.serialization.Serializable
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackOutput
 

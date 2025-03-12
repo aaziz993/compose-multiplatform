@@ -1,4 +1,4 @@
-package gradle
+package gradle.accessors
 
 import androidx.room.gradle.RoomExtension
 import app.cash.sqldelight.gradle.SqlDelightExtension

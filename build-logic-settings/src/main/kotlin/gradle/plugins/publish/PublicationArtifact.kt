@@ -1,6 +1,6 @@
 package gradle.plugins.publish
 
-import gradle.plugins.Buildable
+import gradle.api.Buildable
 import org.gradle.api.publish.PublicationArtifact
 
 /**

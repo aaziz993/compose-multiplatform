@@ -1,6 +1,6 @@
 package gradle.plugins.kotlin
 
-import gradle.trySet
+import gradle.api.trySet
 import org.jetbrains.kotlin.gradle.plugin.LanguageSettingsBuilder
 
 /**

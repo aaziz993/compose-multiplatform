@@ -4,7 +4,7 @@ import com.android.build.api.dsl.LibraryVariantDimension
 import gradle.plugins.android.AarMetadata
 import gradle.plugins.android.ApkSigningConfigImpl
 import gradle.plugins.android.VariantDimension
-import gradle.trySet
+import gradle.api.trySet
 import org.gradle.api.Project
 
 /**

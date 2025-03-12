@@ -1,6 +1,6 @@
 package gradle.tasks
 
-import gradle.tryAssign
+import gradle.api.tryAssign
 import org.gradle.api.file.ExpandDetails
 
 /**

@@ -1,9 +1,9 @@
 package gradle.plugins.android
 
 import com.android.build.api.dsl.SigningConfig
-import gradle.android
-import gradle.resolveValue
-import gradle.trySet
+import gradle.accessors.android
+import gradle.coolection.resolveValue
+import gradle.api.trySet
 import org.gradle.api.Project
 
 /**

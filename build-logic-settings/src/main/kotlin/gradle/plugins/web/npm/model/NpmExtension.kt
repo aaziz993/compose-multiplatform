@@ -1,12 +1,12 @@
 package gradle.plugins.web.npm.model
 
-import gradle.id
-import gradle.libs
-import gradle.npm
-import gradle.plugin
-import gradle.plugins
-import gradle.settings
-import gradle.tryAssign
+import gradle.accessors.id
+import gradle.accessors.libs
+import gradle.accessors.npm
+import gradle.accessors.plugin
+import gradle.accessors.plugins
+import gradle.accessors.settings
+import gradle.api.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.npm.LockFileMismatchReport
@@ -25,7 +25,7 @@ internal data class NpmExtension(
 
     context(Project)
     fun applyTo() =
-        pluginManager.withPlugin(settings.libs.plugins.plugin("gradle.node.plugin").id) {
+        pluginManager.withPlugin(settings.libs.plugins.plugin("gradle.accessors.node.plugin").id) {
             npm.command tryAssign command
             npm.lockFileName tryAssign lockFileName
             npm.lockFileDirectory tryAssign lockFileDirectory?.let(layout.projectDirectory::dir)

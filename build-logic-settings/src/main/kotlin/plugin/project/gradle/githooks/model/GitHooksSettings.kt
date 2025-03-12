@@ -1,11 +1,11 @@
 package plugin.project.gradle.githooks.model
 
-import gradle.id
-import gradle.libs
+import gradle.accessors.id
+import gradle.accessors.libs
 import gradle.plugins.githooks.GitHooksExtension
 import gradle.plugins.project.EnabledSettings
-import gradle.plugin
-import gradle.plugins
+import gradle.accessors.plugin
+import gradle.accessors.plugins
 import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings
 

@@ -1,6 +1,6 @@
 package gradle.tasks.compile
 
-import gradle.tryAssign
+import gradle.api.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.file.FileCollection

@@ -1,6 +1,6 @@
 package gradle.tasks.copy
 
-import gradle.plugins.RelativePath
+import gradle.file.RelativePath
 import kotlinx.serialization.Serializable
 import org.gradle.api.file.DuplicatesStrategy
 import org.gradle.api.file.FileCopyDetails

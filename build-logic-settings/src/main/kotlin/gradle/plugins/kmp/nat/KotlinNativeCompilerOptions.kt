@@ -1,7 +1,7 @@
 package gradle.plugins.kmp.nat
 
 import gradle.plugins.kotlin.KotlinCommonCompilerOptions
-import gradle.moduleName
+import gradle.accessors.moduleName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.assign

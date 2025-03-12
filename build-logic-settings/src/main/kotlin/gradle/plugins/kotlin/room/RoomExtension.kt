@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin.room
 
-import gradle.room
-import gradle.trySet
+import gradle.accessors.room
+import gradle.api.trySet
 import org.gradle.api.Project
 
 internal interface RoomExtension {

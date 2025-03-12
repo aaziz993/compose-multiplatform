@@ -1,14 +1,13 @@
 package plugin.project.apple.model
 
-import gradle.apple
-import gradle.id
-import gradle.libs
+import gradle.accessors.id
+import gradle.accessors.libs
 import gradle.plugins.apple.AppleProjectExtension
 import gradle.plugins.apple.IosAppTarget
 import gradle.plugins.apple.IosFrameworkTarget
-import gradle.plugin
-import gradle.plugins
-import gradle.settings
+import gradle.accessors.plugin
+import gradle.accessors.plugins
+import gradle.accessors.settings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

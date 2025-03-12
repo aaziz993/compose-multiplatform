@@ -1,8 +1,8 @@
 package gradle.repositories.maven
 
-import gradle.plugins.repository.ArtifactRepository
-import gradle.plugins.repository.AuthenticationSupported
-import gradle.plugins.repository.UrlArtifactRepository
+import gradle.repositories.ArtifactRepository
+import gradle.repositories.AuthenticationSupported
+import gradle.repositories.UrlArtifactRepository
 import kotlinx.serialization.Serializable
 import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.api.artifacts.repositories.MavenArtifactRepository

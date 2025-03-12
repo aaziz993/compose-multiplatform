@@ -1,6 +1,6 @@
 package gradle.plugins.kotlin.rpc
 
-import gradle.tryAssign
+import gradle.api.tryAssign
 import kotlinx.rpc.RpcStrictMode
 import kotlinx.rpc.RpcStrictModeExtension
 import kotlinx.serialization.Serializable

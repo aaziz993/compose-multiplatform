@@ -4,9 +4,9 @@ import gradle.plugins.publish.Publication
 import gradle.plugins.publish.PublicationTransformingSerializer
 import gradle.plugins.publish.PublishingExtension
 import gradle.plugins.project.EnabledSettings
-import gradle.plugins.repository.ArtifactRepository
-import gradle.plugins.repository.ArtifactRepositoryTransformingSerializer
-import gradle.plugins.repository.ExclusiveContentRepository
+import gradle.repositories.ArtifactRepository
+import gradle.repositories.ArtifactRepositoryTransformingSerializer
+import gradle.repositories.ExclusiveContentRepository
 import kotlinx.serialization.Serializable
 
 @Serializable

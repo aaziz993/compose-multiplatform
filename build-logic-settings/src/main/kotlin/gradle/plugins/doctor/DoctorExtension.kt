@@ -1,8 +1,8 @@
 package gradle.plugins.doctor
 
 import com.osacky.doctor.AppleRosettaTranslationCheckMode
-import gradle.doctor
-import gradle.tryAssign
+import gradle.accessors.doctor
+import gradle.api.tryAssign
 import org.gradle.api.Project
 
 internal interface DoctorExtension {

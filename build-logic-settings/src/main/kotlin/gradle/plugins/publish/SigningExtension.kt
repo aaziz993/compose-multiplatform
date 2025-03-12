@@ -2,7 +2,7 @@
 //
 //import kotlinx.serialization.Serializable
 //import org.gradle.api.artifacts.PublishArtifact
-//import org.gradle.plugins.signing.SignOperation
+//import org.gradle.accessors.plugins.signing.SignOperation
 //
 ///**
 // * The global signing configuration for a project.

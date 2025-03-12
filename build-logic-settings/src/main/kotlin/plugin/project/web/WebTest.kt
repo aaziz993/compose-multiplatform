@@ -1,7 +1,7 @@
 package plugin.project.web
 
-import gradle.kotlin
-import gradle.maybeNamed
+import gradle.accessors.kotlin
+import gradle.api.maybeNamed
 import org.gradle.api.Project
 import org.gradle.internal.extensions.stdlib.capitalized
 import org.gradle.kotlin.dsl.withType

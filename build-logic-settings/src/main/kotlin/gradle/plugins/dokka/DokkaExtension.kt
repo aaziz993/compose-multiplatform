@@ -1,7 +1,7 @@
 package gradle.plugins.dokka
 
-import gradle.dokka
-import gradle.tryAssign
+import gradle.accessors.dokka
+import gradle.api.tryAssign
 import org.gradle.api.Project
 import org.jetbrains.dokka.gradle.workers.ClassLoaderIsolation
 

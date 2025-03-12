@@ -2,11 +2,11 @@ package gradle.plugins.spotless
 
 import com.diffplug.gradle.spotless.JavaExtension
 import com.diffplug.spotless.LineEnding
-import gradle.libs
-import gradle.settings
-import gradle.spotless
-import gradle.version
-import gradle.versions
+import gradle.accessors.libs
+import gradle.accessors.settings
+import gradle.accessors.spotless
+import gradle.api.version
+import gradle.accessors.versions
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

@@ -2,8 +2,8 @@
 
 package gradle.plugins.kotlin.noarg
 
-import gradle.noArg
-import gradle.trySet
+import gradle.accessors.noArg
+import gradle.api.trySet
 import org.gradle.api.Project
 
 internal interface NoArgExtension {

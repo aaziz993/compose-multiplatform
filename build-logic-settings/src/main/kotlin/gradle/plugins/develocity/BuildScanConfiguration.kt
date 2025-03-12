@@ -1,10 +1,10 @@
 package gradle.plugins.develocity
 
-import gradle.CI
-import gradle.GITHUB
-import gradle.SPACE
-import gradle.TEAMCITY
-import gradle.tryAssign
+import gradle.api.CI
+import gradle.api.GITHUB
+import gradle.api.SPACE
+import gradle.api.TEAMCITY
+import gradle.api.tryAssign
 import java.util.*
 import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings

@@ -1,4 +1,4 @@
-package gradle
+package gradle.api
 
 import org.gradle.api.Named
 import org.gradle.api.NamedDomainObjectCollection

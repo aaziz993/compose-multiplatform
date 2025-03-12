@@ -3,7 +3,7 @@ package gradle.plugins.kotlin.sqldelight
 import app.cash.sqldelight.gradle.SqlDelightDatabase
 import gradle.plugins.project.Dependency
 import gradle.plugins.project.DependencyTransformingSerializer
-import gradle.tryAssign
+import gradle.api.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

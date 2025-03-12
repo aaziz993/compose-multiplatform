@@ -1,4 +1,6 @@
-package gradle
+package gradle.coolection
+
+import kotlin.invoke
 
 internal fun Any.resolve(): Any? = DeepRecursiveFunction<Any, Any?> { obj ->
     when (obj) {

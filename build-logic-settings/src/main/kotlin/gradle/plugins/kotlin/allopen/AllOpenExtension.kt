@@ -1,6 +1,6 @@
 package gradle.plugins.kotlin.allopen
 
-import gradle.allOpen
+import gradle.accessors.allOpen
 import org.gradle.api.Project
 
 internal interface AllOpenExtension {

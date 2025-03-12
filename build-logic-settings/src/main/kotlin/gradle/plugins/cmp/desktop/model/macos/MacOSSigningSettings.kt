@@ -1,6 +1,6 @@
 package gradle.plugins.cmp.desktop.model.macos
 
-import gradle.tryAssign
+import gradle.api.tryAssign
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.desktop.application.dsl.MacOSSigningSettings
 

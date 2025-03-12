@@ -1,6 +1,6 @@
 package gradle.plugins.kover
 
-import gradle.tryAssign
+import gradle.api.tryAssign
 import kotlinx.kover.gradle.plugin.dsl.KoverBinaryTaskConfig
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

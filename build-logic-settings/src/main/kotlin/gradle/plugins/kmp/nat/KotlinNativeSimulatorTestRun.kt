@@ -2,7 +2,7 @@ package gradle.plugins.kmp.nat
 
 import gradle.tasks.test.TestFilter
 import gradle.serialization.serializer.KeyTransformingSerializer
-import gradle.trySet
+import gradle.api.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project

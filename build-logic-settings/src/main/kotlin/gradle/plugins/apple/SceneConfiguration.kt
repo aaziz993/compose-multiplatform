@@ -1,6 +1,6 @@
 package gradle.plugins.apple
 
-import gradle.trySet
+import gradle.api.trySet
 import kotlinx.serialization.Serializable
 import org.jetbrains.gradle.apple.dsl.SceneConfiguration
 

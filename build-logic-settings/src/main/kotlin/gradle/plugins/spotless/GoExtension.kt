@@ -1,7 +1,7 @@
 package gradle.plugins.spotless
 
 import com.diffplug.spotless.LineEnding
-import gradle.spotless
+import gradle.accessors.spotless
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

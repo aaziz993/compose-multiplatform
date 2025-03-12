@@ -1,11 +1,12 @@
 package gradle.plugins.java
 
-import gradle.java
-import gradle.libs
-import gradle.settings
-import gradle.tryAssign
-import gradle.version
-import gradle.versions
+import gradle.accessors.java
+import gradle.accessors.libs
+import gradle.accessors.settings
+import gradle.accessors.version
+import gradle.api.tryAssign
+import gradle.api.version
+import gradle.accessors.versions
 import kotlinx.serialization.Serializable
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project

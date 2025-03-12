@@ -1,6 +1,6 @@
 package gradle.plugins.kover
 
-import gradle.tryAssign
+import gradle.api.tryAssign
 import kotlinx.kover.gradle.plugin.dsl.KoverVerificationRulesConfig
 import kotlinx.serialization.Serializable
 

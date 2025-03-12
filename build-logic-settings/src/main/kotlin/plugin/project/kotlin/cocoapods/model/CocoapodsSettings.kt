@@ -1,14 +1,14 @@
 package plugin.project.kotlin.cocoapods.model
 
-import gradle.id
-import gradle.libs
+import gradle.accessors.id
+import gradle.accessors.libs
 import gradle.plugins.kotlin.cocoapods.CocoapodsExtension
 import gradle.plugins.kotlin.cocoapods.Pod
 import gradle.plugins.kmp.nat.FrameworkSettings
 import gradle.plugins.project.EnabledSettings
-import gradle.plugin
-import gradle.plugins
-import gradle.settings
+import gradle.accessors.plugin
+import gradle.accessors.plugins
+import gradle.accessors.settings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType

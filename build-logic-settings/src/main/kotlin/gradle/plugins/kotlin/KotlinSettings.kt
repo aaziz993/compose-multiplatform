@@ -1,8 +1,8 @@
 package gradle.plugins.kotlin
 
-import gradle.id
-import gradle.kotlin
-import gradle.libs
+import gradle.accessors.id
+import gradle.accessors.kotlin
+import gradle.accessors.libs
 import gradle.plugins.java.JavaToolchainSpec
 import gradle.plugins.kmp.HierarchyAliasTransformingSerializer
 import gradle.plugins.kmp.HierarchyGroup
@@ -11,9 +11,9 @@ import gradle.plugins.kmp.KotlinSourceSet
 import gradle.plugins.kmp.KotlinSourceSetTransformingSerializer
 import gradle.plugins.kmp.KotlinTarget
 import gradle.plugins.kmp.KotlinTargetTransformingSerializer
-import gradle.plugin
-import gradle.plugins
-import gradle.settings
+import gradle.accessors.plugin
+import gradle.accessors.plugins
+import gradle.accessors.settings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode

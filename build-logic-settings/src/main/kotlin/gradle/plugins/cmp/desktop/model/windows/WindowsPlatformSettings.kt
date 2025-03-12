@@ -2,7 +2,7 @@ package gradle.plugins.cmp.desktop.model.windows
 
 import gradle.plugins.cmp.desktop.model.AbstractPlatformSettings
 import gradle.plugins.cmp.desktop.model.FileAssociation
-import gradle.trySet
+import gradle.api.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.compose.desktop.application.dsl.WindowsPlatformSettings

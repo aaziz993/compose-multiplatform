@@ -1,9 +1,9 @@
 package gradle.plugins.kmp.nat
 
 import gradle.api.Named
-import gradle.moduleName
-import gradle.tryAssign
-import gradle.trySet
+import gradle.accessors.moduleName
+import gradle.api.tryAssign
+import gradle.api.trySet
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary
 

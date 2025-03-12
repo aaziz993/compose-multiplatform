@@ -1,7 +1,7 @@
 package gradle.plugins.android
 
 import com.android.build.api.dsl.DependenciesInfo
-import gradle.trySet
+import gradle.api.trySet
 import kotlinx.serialization.Serializable
 
 /** DSL object to specify whether to include SDK dependency information in APKs and Bundles.

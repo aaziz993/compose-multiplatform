@@ -1,16 +1,16 @@
 package plugin.project.gradle.develocity
 
-import gradle.gitBranchName
-import gradle.gitCommitId
-import gradle.gitStatus
-import gradle.id
-import gradle.CI
-import gradle.libs
-import gradle.plugin
-import gradle.plugins
-import gradle.projectProperties
-import gradle.teamCityBuildId
-import gradle.teamCityBuildTypeId
+import gradle.api.gitBranchName
+import gradle.api.gitCommitId
+import gradle.api.gitStatus
+import gradle.accessors.id
+import gradle.api.CI
+import gradle.accessors.libs
+import gradle.accessors.plugin
+import gradle.accessors.plugins
+import gradle.accessors.projectProperties
+import gradle.api.teamCityBuildId
+import gradle.api.teamCityBuildTypeId
 import java.net.URLEncoder
 import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings

@@ -4,7 +4,7 @@ import gradle.tasks.test.AbstractTestTask
 import gradle.tasks.test.DefaultTestFilter
 import gradle.tasks.test.TestLoggingContainer
 import gradle.serialization.serializer.AnySerializer
-import gradle.trySet
+import gradle.api.trySet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named

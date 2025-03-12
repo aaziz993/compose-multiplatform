@@ -1,10 +1,10 @@
 package plugin.project.gradle.toolchainmanagement
 
-import gradle.id
-import gradle.libs
-import gradle.plugin
-import gradle.plugins
-import gradle.projectProperties
+import gradle.accessors.id
+import gradle.accessors.libs
+import gradle.accessors.plugin
+import gradle.accessors.plugins
+import gradle.accessors.projectProperties
 import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
 import plugin.project.gradle.toolchainmanagement.model.ToolchainManagementSettings

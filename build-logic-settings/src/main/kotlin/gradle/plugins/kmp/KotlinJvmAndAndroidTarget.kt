@@ -1,6 +1,6 @@
 package gradle.plugins.kmp
 
-import gradle.kotlin
+import gradle.accessors.kotlin
 import gradle.plugins.kotlin.HasConfigurableKotlinCompilerOptions
 import gradle.plugins.kmp.jvm.KotlinJvmCompilerOptions
 import kotlinx.serialization.SerialName

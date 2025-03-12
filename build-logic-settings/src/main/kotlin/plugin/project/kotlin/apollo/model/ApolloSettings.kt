@@ -1,16 +1,16 @@
 package plugin.project.kotlin.apollo.model
 
-import gradle.id
-import gradle.libs
+import gradle.accessors.id
+import gradle.accessors.libs
 import gradle.plugins.kotlin.apollo.AndroidService
 import gradle.plugins.kotlin.apollo.ApolloExtension
 import gradle.plugins.kotlin.apollo.ApolloKspProcessor
 import gradle.plugins.kotlin.apollo.KotlinService
 import gradle.plugins.kotlin.apollo.Service
 import gradle.plugins.project.EnabledSettings
-import gradle.plugin
-import gradle.plugins
-import gradle.settings
+import gradle.accessors.plugin
+import gradle.accessors.plugins
+import gradle.accessors.settings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

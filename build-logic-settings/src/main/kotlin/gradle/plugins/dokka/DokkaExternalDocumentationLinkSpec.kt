@@ -1,7 +1,7 @@
 package gradle.plugins.dokka
 
 import gradle.api.Named
-import gradle.tryAssign
+import gradle.api.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.dokka.gradle.engine.parameters.DokkaExternalDocumentationLinkSpec

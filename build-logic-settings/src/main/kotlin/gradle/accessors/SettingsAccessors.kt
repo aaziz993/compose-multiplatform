@@ -1,4 +1,4 @@
-package gradle
+package gradle.accessors
 
 import gradle.plugins.project.ProjectProperties
 import org.danilopianini.gradle.git.hooks.GitHooksExtension

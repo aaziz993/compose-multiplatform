@@ -1,6 +1,6 @@
 package gradle.plugins.kmp
 
-import gradle.kotlin
+import gradle.accessors.kotlin
 import gradle.api.Named
 import gradle.plugins.kotlin.KotlinCompilation
 import gradle.serialization.serializer.JsonContentPolymorphicSerializer

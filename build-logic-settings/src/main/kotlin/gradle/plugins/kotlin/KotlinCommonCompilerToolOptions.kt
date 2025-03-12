@@ -1,6 +1,6 @@
 package gradle.plugins.kotlin
 
-import gradle.tryAssign
+import gradle.api.tryAssign
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerToolOptions
 

@@ -1,7 +1,7 @@
 package gradle.plugins.android
 
 import com.android.build.api.dsl.PrivacySandbox
-import gradle.trySet
+import gradle.api.trySet
 import kotlinx.serialization.Serializable
 
 /**

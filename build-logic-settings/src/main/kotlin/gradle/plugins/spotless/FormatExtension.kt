@@ -3,14 +3,14 @@
 package gradle.plugins.spotless
 
 import com.diffplug.spotless.LineEnding
-import gradle.allLibs
-import gradle.libs
-import gradle.resolveVersion
+import gradle.accessors.allLibs
+import gradle.accessors.libs
+import gradle.accessors.resolveVersion
 import gradle.serialization.serializer.JsonContentPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
-import gradle.settings
-import gradle.version
-import gradle.versions
+import gradle.accessors.settings
+import gradle.api.version
+import gradle.accessors.versions
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

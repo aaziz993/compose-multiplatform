@@ -1,6 +1,6 @@
 package gradle.plugins.publish
 
-import gradle.publishing
+import gradle.accessors.publishing
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named

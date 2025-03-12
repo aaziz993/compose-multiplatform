@@ -1,7 +1,7 @@
 package gradle.plugins.githooks
 
-import gradle.gitHooks
-import gradle.trySet
+import gradle.accessors.gitHooks
+import gradle.api.trySet
 import java.net.URI
 import org.gradle.api.initialization.Settings
 

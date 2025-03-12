@@ -1,7 +1,7 @@
 package gradle.plugins.doctor
 
 import com.osacky.doctor.JavaHomeHandler
-import gradle.tryAssign
+import gradle.api.tryAssign
 import kotlinx.serialization.Serializable
 
 @Serializable

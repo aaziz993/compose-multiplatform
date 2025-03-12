@@ -2,7 +2,7 @@ package gradle.plugins.dokka
 
 import gradle.api.Named
 import gradle.serialization.serializer.KeyTransformingSerializer
-import gradle.tryAssign
+import gradle.api.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

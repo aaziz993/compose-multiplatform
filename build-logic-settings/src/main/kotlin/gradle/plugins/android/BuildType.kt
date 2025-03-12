@@ -1,9 +1,9 @@
 package gradle.plugins.android
 
 import com.android.build.api.dsl.BuildType
-import gradle.android
+import gradle.accessors.android
 import gradle.api.Named
-import gradle.trySet
+import gradle.api.trySet
 import org.gradle.api.Project
 
 /**

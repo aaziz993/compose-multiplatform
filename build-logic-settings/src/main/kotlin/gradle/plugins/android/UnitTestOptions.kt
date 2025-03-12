@@ -1,7 +1,7 @@
 package gradle.plugins.android
 
 import com.android.build.api.dsl.UnitTestOptions
-import gradle.trySet
+import gradle.api.trySet
 import kotlinx.serialization.Serializable
 
 /** Options for controlling unit tests execution. */

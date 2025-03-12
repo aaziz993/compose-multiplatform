@@ -1,6 +1,6 @@
 package gradle.plugins.sonar
 
-import gradle.sonar
+import gradle.accessors.sonar
 import org.gradle.api.Project
 
 /**

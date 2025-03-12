@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin.sqldelight
 
-import gradle.sqldelight
-import gradle.tryAssign
+import gradle.accessors.sqldelight
+import gradle.api.tryAssign
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.invoke
 

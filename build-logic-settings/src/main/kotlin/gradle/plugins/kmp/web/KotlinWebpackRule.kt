@@ -1,6 +1,6 @@
 package gradle.plugins.kmp.web
 
-import gradle.tryAssign
+import gradle.api.tryAssign
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackRule
 
 internal interface KotlinWebpackRule {

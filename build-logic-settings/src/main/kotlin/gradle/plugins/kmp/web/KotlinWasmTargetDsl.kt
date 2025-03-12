@@ -1,7 +1,7 @@
 package gradle.plugins.kmp.web
 
 import org.gradle.kotlin.dsl.withType
-import gradle.kotlin
+import gradle.accessors.kotlin
 import gradle.plugins.kmp.HasBinaries
 import gradle.plugins.kmp.KotlinTarget
 import gradle.plugins.kotlin.KotlinCompilation

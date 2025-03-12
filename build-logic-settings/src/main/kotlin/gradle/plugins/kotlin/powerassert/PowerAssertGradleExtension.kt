@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin.powerassert
 
-import gradle.powerAssert
-import gradle.tryAssign
+import gradle.accessors.powerAssert
+import gradle.api.tryAssign
 import org.gradle.api.Project
 
 internal interface PowerAssertGradleExtension {

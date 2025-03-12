@@ -1,12 +1,12 @@
 package gradle.plugins.cmp.android.model
 
-import gradle.android
-import gradle.compose
-import gradle.id
-import gradle.libs
-import gradle.plugin
-import gradle.plugins
-import gradle.settings
+import gradle.accessors.android
+import gradle.accessors.compose
+import gradle.accessors.id
+import gradle.accessors.libs
+import gradle.accessors.plugin
+import gradle.accessors.plugins
+import gradle.accessors.settings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

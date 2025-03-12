@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin.atomicfu
 
-import gradle.atomicFU
-import gradle.trySet
+import gradle.accessors.atomicFU
+import gradle.api.trySet
 import org.gradle.api.Project
 
 internal interface AtomicFUExtension {

@@ -1,7 +1,6 @@
 package gradle.plugins.dokka
 
-import gradle.dokka
-import gradle.tryAssign
+import gradle.api.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.dokka.gradle.engine.parameters.DokkaGeneratorParametersSpec

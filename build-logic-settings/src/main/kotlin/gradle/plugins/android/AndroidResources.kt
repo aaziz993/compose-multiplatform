@@ -1,7 +1,7 @@
 package gradle.plugins.android
 
 import com.android.build.api.dsl.AndroidResources
-import gradle.trySet
+import gradle.api.trySet
 
 /**
  * DSL object for configuring Android resource options.

@@ -2,10 +2,10 @@
 
 package gradle.plugins.project
 
-import gradle.allLibs
-import gradle.deepMerge
+import gradle.accessors.allLibs
+import gradle.coolection.deepMerge
 import gradle.isUrl
-import gradle.libs
+import gradle.accessors.libs
 import gradle.tasks.Task
 import gradle.tasks.TaskTransformingSerializer
 import gradle.plugins.android.BaseExtension
@@ -20,15 +20,16 @@ import gradle.plugins.web.node.model.NodeJsEnvSpec
 import gradle.plugins.web.npm.model.NpmExtension
 import gradle.plugins.web.yarn.model.YarnRootExtension
 import gradle.problemreporter.SLF4JProblemReporterContext
-import gradle.projectProperties
-import gradle.resolve
+import gradle.accessors.projectProperties
+import gradle.coolection.resolve
 import gradle.serialization.decodeFromAny
 import gradle.serialization.encodeToAny
-import gradle.settings
-import gradle.toVersionCatalogUrlPath
-import gradle.trySetSystemProperty
-import gradle.version
-import gradle.versions
+import gradle.accessors.settings
+import gradle.accessors.toVersionCatalogUrlPath
+import gradle.accessors.version
+import gradle.api.trySetSystemProperty
+import gradle.api.version
+import gradle.accessors.versions
 import java.net.URI
 import java.util.*
 import javax.xml.stream.XMLEventFactory

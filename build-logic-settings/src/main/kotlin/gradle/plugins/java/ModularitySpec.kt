@@ -1,6 +1,6 @@
 package gradle.plugins.java
 
-import gradle.tryAssign
+import gradle.api.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.jvm.ModularitySpec
 

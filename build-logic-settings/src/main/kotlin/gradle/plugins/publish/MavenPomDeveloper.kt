@@ -1,6 +1,6 @@
 package gradle.plugins.publish
 
-import gradle.tryAssign
+import gradle.api.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.publish.maven.MavenPomDeveloper
 

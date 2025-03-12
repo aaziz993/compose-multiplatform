@@ -8,7 +8,7 @@ import gradle.tasks.copy.FromSpec
 import gradle.tasks.copy.IntoSpec
 import gradle.tasks.archive.Zip
 import gradle.plugins.kmp.jvm.KotlinJvmTarget
-import gradle.projectProperties
+import gradle.accessors.projectProperties
 import gradle.serialization.serializer.AnySerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named

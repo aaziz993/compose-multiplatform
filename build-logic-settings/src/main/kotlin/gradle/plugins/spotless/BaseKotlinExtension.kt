@@ -1,11 +1,10 @@
 package gradle.plugins.spotless
 
 import com.diffplug.gradle.spotless.BaseKotlinExtension
-import gradle.libs
-import gradle.settings
-import gradle.version
-import gradle.versions
-import kotlinx.serialization.Serializable
+import gradle.accessors.libs
+import gradle.accessors.settings
+import gradle.api.version
+import gradle.accessors.versions
 import org.gradle.api.Project
 
 internal abstract class BaseKotlinExtension : FormatExtension {

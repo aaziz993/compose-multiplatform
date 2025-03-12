@@ -1,12 +1,12 @@
 package gradle.plugins.web.yarn.model
 
-import gradle.id
-import gradle.libs
-import gradle.plugin
-import gradle.plugins
-import gradle.settings
-import gradle.trySet
-import gradle.yarn
+import gradle.accessors.id
+import gradle.accessors.libs
+import gradle.accessors.plugin
+import gradle.accessors.plugins
+import gradle.accessors.settings
+import gradle.api.trySet
+import gradle.accessors.yarn
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnLockMismatchReport
@@ -24,7 +24,7 @@ internal data class YarnRootExtension(
 
     context(Project)
     fun applyTo() =
-        pluginManager.withPlugin(settings.libs.plugins.plugin("gradle.node.plugin").id) {
+        pluginManager.withPlugin(settings.libs.plugins.plugin("gradle.accessors.node.plugin").id) {
             yarn::lockFileName trySet lockFileName
             yarn::lockFileDirectory trySet lockFileDirectory?.let(::file)
             yarn::ignoreScripts trySet ignoreScripts

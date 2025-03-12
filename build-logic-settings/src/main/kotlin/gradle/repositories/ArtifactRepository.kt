@@ -1,7 +1,7 @@
 package gradle.repositories
 
 import gradle.isUrl
-import gradle.maybeNamed
+import gradle.api.maybeNamed
 import gradle.serialization.serializer.BaseKeyTransformingSerializer
 import gradle.serialization.serializer.JsonContentPolymorphicSerializer
 import kotlinx.serialization.Serializable

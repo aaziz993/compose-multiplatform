@@ -3,7 +3,7 @@ package gradle.plugins.kotlin
 import gradle.api.Named
 import gradle.plugins.kmp.KotlinSourceSet
 import gradle.serialization.serializer.KeyTransformingSerializer
-import gradle.trySet
+import gradle.api.trySet
 import kotlinx.serialization.KSerializer
 import org.gradle.api.Project
 

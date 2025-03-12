@@ -1,6 +1,6 @@
 @file:Suppress("UnstableApiUsage")
 
-package gradle
+package gradle.accessors
 
 import org.gradle.api.initialization.Settings
 import org.jetbrains.amper.gradle.getBindingMap

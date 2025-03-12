@@ -1,4 +1,4 @@
-package gradle
+package gradle.api
 
 import java.io.File
 import kotlin.reflect.KMutableProperty0

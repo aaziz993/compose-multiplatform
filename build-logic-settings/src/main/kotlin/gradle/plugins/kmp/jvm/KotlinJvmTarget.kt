@@ -1,11 +1,11 @@
 package gradle.plugins.kmp.jvm
 
-import gradle.kotlin
+import gradle.accessors.kotlin
 import gradle.plugins.kmp.KotlinJvmAndAndroidTarget
 import gradle.plugins.kmp.KotlinJvmAndroidCompilation
 import gradle.plugins.kmp.KotlinJvmAndroidCompilationTransformingSerializer
 import gradle.plugins.kmp.android.KotlinAndroidTarget
-import gradle.projectProperties
+import gradle.accessors.projectProperties
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named

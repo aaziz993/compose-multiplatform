@@ -1,6 +1,6 @@
 package plugin.project.java
 
-import gradle.kotlin
+import gradle.accessors.kotlin
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
@@ -8,7 +8,7 @@ import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
 //package plugin.project.jvm
 //
 //import gradle.amperModuleExtraProperties
-//import gradle.libs
+//import gradle.accessors.libs
 //import org.gradle.api.Project
 //import org.gradle.api.provider.Provider
 //import org.gradle.api.tasks.testing.Test
@@ -16,10 +16,10 @@ import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
 //import org.gradle.api.tasks.testing.logging.TestLogEvent
 //import org.gradle.jvm.toolchain.JavaLanguageVersion
 //import org.gradle.jvm.toolchain.JavaToolchainService
-//import org.gradle.kotlin.dsl.assign
-//import org.gradle.kotlin.dsl.register
-//import org.gradle.kotlin.dsl.the
-//import org.gradle.kotlin.dsl.withType
+//import org.gradle.accessors.kotlin.dsl.assign
+//import org.gradle.accessors.kotlin.dsl.register
+//import org.gradle.accessors.kotlin.dsl.the
+//import org.gradle.accessors.kotlin.dsl.withType
 //import org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest
 //
 //internal fun Project.configureKotlinJvmTest() =

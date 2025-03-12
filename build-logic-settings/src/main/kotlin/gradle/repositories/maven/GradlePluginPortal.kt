@@ -1,7 +1,7 @@
 package gradle.repositories.maven
 
-import gradle.plugins.repository.ArtifactRepository
-import gradle.plugins.repository.RepositoryContentDescriptor
+import gradle.repositories.ArtifactRepository
+import gradle.repositories.RepositoryContentDescriptor
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.artifacts.dsl.RepositoryHandler

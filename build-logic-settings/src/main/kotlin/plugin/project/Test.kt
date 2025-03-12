@@ -2,9 +2,9 @@ package plugin.project
 
 import com.gradle.develocity.agent.gradle.test.DevelocityTestConfiguration
 import com.gradle.develocity.agent.gradle.test.TestRetryConfiguration
-import gradle.CI
-import gradle.kotlin
-import gradle.maybeNamed
+import gradle.api.CI
+import gradle.accessors.kotlin
+import gradle.api.maybeNamed
 import org.gradle.api.Project
 import org.gradle.api.tasks.TaskCollection
 import org.gradle.api.tasks.testing.AbstractTestTask
