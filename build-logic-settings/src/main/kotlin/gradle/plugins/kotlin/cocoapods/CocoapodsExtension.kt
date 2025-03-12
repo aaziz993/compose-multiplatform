@@ -6,12 +6,11 @@ import gradle.accessors.kotlin
 import gradle.accessors.libs
 import gradle.plugins.kmp.nat.FrameworkSettings
 import gradle.accessors.moduleName
-import gradle.coolection.resolve
+import gradle.collection.resolve
 import gradle.accessors.resolveLibrary
 import gradle.accessors.settings
 import gradle.accessors.version
 import gradle.api.trySet
-import gradle.api.version
 import gradle.accessors.versions
 import java.net.URI
 import kotlinx.serialization.Serializable

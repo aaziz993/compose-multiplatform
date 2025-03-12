@@ -143,6 +143,10 @@ public class SettingsPlugin : Plugin<Settings> {
                 projectProperties.projects?.forEach { project ->
                     project.applyTo()
                 }
+
+                buildCache{
+
+                }
             }
 
             target.gradle.projectsLoaded {

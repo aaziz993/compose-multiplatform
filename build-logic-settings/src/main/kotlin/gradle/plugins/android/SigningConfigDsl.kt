@@ -2,7 +2,7 @@ package gradle.plugins.android
 
 import com.android.build.api.dsl.SigningConfig
 import gradle.accessors.android
-import gradle.coolection.resolveValue
+import gradle.collection.resolveValue
 import gradle.api.trySet
 import org.gradle.api.Project
 

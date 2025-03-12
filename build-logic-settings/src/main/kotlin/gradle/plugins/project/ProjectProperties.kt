@@ -1,7 +1,7 @@
 package gradle.plugins.project
 
-import gradle.coolection.deepMerge
-import gradle.coolection.resolve
+import gradle.collection.deepMerge
+import gradle.collection.resolve
 import gradle.initialization.ScriptHandler
 import gradle.plugins.android.BaseExtension
 import gradle.plugins.android.application.BaseAppModuleExtension

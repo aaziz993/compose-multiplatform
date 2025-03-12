@@ -24,7 +24,7 @@ internal data class YarnRootExtension(
 
     context(Project)
     fun applyTo() =
-        pluginManager.withPlugin(settings.libs.plugins.plugin("gradle.accessors.node.plugin").id) {
+        pluginManager.withPlugin(settings.libs.plugins.plugin("gradle.node.plugin").id) {
             yarn::lockFileName trySet lockFileName
             yarn::lockFileDirectory trySet lockFileDirectory?.let(::file)
             yarn::ignoreScripts trySet ignoreScripts
