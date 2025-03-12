@@ -2,10 +2,10 @@ package plugin.project.kotlin.cocoapods.model
 
 import gradle.id
 import gradle.libs
-import gradle.model.kotlin.cocoapods.CocoapodsExtension
-import gradle.model.kotlin.cocoapods.Pod
-import gradle.model.kotlin.kmp.nat.FrameworkSettings
-import gradle.model.project.EnabledSettings
+import gradle.plugins.kotlin.cocoapods.CocoapodsExtension
+import gradle.plugins.kotlin.cocoapods.Pod
+import gradle.plugins.kmp.nat.FrameworkSettings
+import gradle.plugins.project.EnabledSettings
 import gradle.plugin
 import gradle.plugins
 import gradle.settings

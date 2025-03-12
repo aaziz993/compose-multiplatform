@@ -2,10 +2,10 @@ package plugin.project.cmp.model
 
 import gradle.id
 import gradle.libs
-import gradle.model.cmp.android.model.AndroidExtension
-import gradle.model.cmp.desktop.model.DesktopExtension
-import gradle.model.cmp.resources.model.ResourcesExtension
-import gradle.model.project.EnabledSettings
+import gradle.plugins.cmp.android.model.AndroidExtension
+import gradle.plugins.cmp.desktop.model.DesktopExtension
+import gradle.plugins.cmp.resources.model.ResourcesExtension
+import gradle.plugins.project.EnabledSettings
 import gradle.plugin
 import gradle.plugins
 import gradle.settings

@@ -4,8 +4,8 @@ package plugin.project.kotlin.noarg.model
 
 import gradle.id
 import gradle.libs
-import gradle.model.kotlin.noarg.NoArgExtension
-import gradle.model.project.EnabledSettings
+import gradle.plugins.kotlin.noarg.NoArgExtension
+import gradle.plugins.project.EnabledSettings
 import gradle.plugin
 import gradle.plugins
 import gradle.settings

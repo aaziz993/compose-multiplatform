@@ -2,15 +2,15 @@ package plugin.project.gradle.dokka.model
 
 import gradle.id
 import gradle.libs
-import gradle.model.gradle.dokka.DokkaExtension
-import gradle.model.gradle.dokka.DokkaPluginParametersBaseSpec
-import gradle.model.gradle.dokka.DokkaPluginParametersBaseSpecTransformingSerializer
-import gradle.model.gradle.dokka.DokkaPublication
-import gradle.model.gradle.dokka.DokkaPublicationTransformingSerializer
-import gradle.model.gradle.dokka.DokkaSourceSetSpec
-import gradle.model.gradle.dokka.DokkaSourceSetSpecTransformingSerializer
-import gradle.model.gradle.dokka.WorkerIsolation
-import gradle.model.project.EnabledSettings
+import gradle.plugins.dokka.DokkaExtension
+import gradle.plugins.dokka.DokkaPluginParametersBaseSpec
+import gradle.plugins.dokka.DokkaPluginParametersBaseSpecTransformingSerializer
+import gradle.plugins.dokka.DokkaPublication
+import gradle.plugins.dokka.DokkaPublicationTransformingSerializer
+import gradle.plugins.dokka.DokkaSourceSetSpec
+import gradle.plugins.dokka.DokkaSourceSetSpecTransformingSerializer
+import gradle.plugins.dokka.WorkerIsolation
+import gradle.plugins.project.EnabledSettings
 import gradle.plugin
 import gradle.plugins
 import gradle.settings

@@ -2,8 +2,8 @@ package plugin.project.kotlin.allopen.model
 
 import gradle.id
 import gradle.libs
-import gradle.model.kotlin.allopen.AllOpenExtension
-import gradle.model.project.EnabledSettings
+import gradle.plugins.kotlin.allopen.AllOpenExtension
+import gradle.plugins.project.EnabledSettings
 import gradle.plugin
 import gradle.plugins
 import gradle.settings

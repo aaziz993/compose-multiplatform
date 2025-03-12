@@ -2,7 +2,7 @@ package plugin.project.gradle.shadow.model
 
 import gradle.id
 import gradle.libs
-import gradle.model.project.EnabledSettings
+import gradle.plugins.project.EnabledSettings
 import gradle.plugin
 import gradle.plugins
 import gradle.settings

@@ -1,7 +1,7 @@
 package plugin.project.gradle.knit.model
 
-import gradle.model.gradle.knit.KnitPluginExtension
-import gradle.model.project.EnabledSettings
+import gradle.plugins.knit.KnitPluginExtension
+import gradle.plugins.project.EnabledSettings
 import kotlinx.serialization.Serializable
 
 @Serializable

@@ -1,6 +1,6 @@
 package plugin.project.web
 
-import gradle.model.kotlin.kmp.web.KotlinWasmWasiTarget
+import gradle.plugins.kmp.web.KotlinWasmWasiTarget
 import gradle.projectProperties
 import org.gradle.api.Plugin
 import org.gradle.api.Project

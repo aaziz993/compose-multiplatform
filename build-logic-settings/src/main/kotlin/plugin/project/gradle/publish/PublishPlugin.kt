@@ -1,6 +1,6 @@
 package plugin.project.gradle.publish
 
-import gradle.model.project.ProjectType
+import gradle.plugins.project.ProjectType
 import gradle.projectProperties
 import org.gradle.api.Plugin
 import org.gradle.api.Project

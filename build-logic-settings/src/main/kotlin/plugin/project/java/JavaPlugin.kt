@@ -3,11 +3,11 @@ package plugin.project.java
 import gradle.all
 import gradle.decapitalized
 import gradle.java
-import gradle.model.kotlin.kmp.android.KotlinAndroidTarget
-import gradle.model.kotlin.kmp.jvm.KotlinJvmTarget
-import gradle.model.kotlin.sourceSets
-import gradle.model.project.ProjectLayout
-import gradle.model.project.ProjectType
+import gradle.plugins.kmp.android.KotlinAndroidTarget
+import gradle.plugins.kmp.jvm.KotlinJvmTarget
+import gradle.plugins.kotlin.sourceSets
+import gradle.plugins.project.ProjectLayout
+import gradle.plugins.project.ProjectType
 import gradle.projectProperties
 import gradle.replace
 import org.gradle.api.Plugin

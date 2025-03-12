@@ -5,8 +5,8 @@ import gradle.apple
 import gradle.id
 import gradle.java
 import gradle.libs
-import gradle.model.kotlin.kmp.nat.apple.KotlinAppleTarget
-import gradle.model.project.ProjectLayout
+import gradle.plugins.kmp.nat.apple.KotlinAppleTarget
+import gradle.plugins.project.ProjectLayout
 import gradle.plugin
 import gradle.plugins
 import gradle.projectProperties

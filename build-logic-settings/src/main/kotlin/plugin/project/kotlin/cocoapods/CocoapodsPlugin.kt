@@ -2,7 +2,7 @@ package plugin.project.kotlin.cocoapods
 
 import gradle.id
 import gradle.libs
-import gradle.model.kotlin.kmp.nat.apple.KotlinAppleTarget
+import gradle.plugins.kmp.nat.apple.KotlinAppleTarget
 import gradle.plugin
 import gradle.plugins
 import gradle.projectProperties

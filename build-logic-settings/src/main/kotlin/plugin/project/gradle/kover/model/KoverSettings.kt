@@ -2,10 +2,10 @@ package plugin.project.gradle.kover.model
 
 import gradle.id
 import gradle.libs
-import gradle.model.gradle.kover.KoverCurrentProjectVariantsConfig
-import gradle.model.gradle.kover.KoverExtension
-import gradle.model.gradle.kover.KoverReportsConfig
-import gradle.model.project.EnabledSettings
+import gradle.plugins.kover.KoverCurrentProjectVariantsConfig
+import gradle.plugins.kover.KoverExtension
+import gradle.plugins.kover.KoverReportsConfig
+import gradle.plugins.project.EnabledSettings
 import gradle.plugin
 import gradle.plugins
 import gradle.settings

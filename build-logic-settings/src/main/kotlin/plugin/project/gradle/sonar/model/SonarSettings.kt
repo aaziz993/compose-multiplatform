@@ -2,8 +2,8 @@ package plugin.project.gradle.sonar.model
 
 import gradle.id
 import gradle.libs
-import gradle.model.gradle.sonar.SonarExtension
-import gradle.model.project.EnabledSettings
+import gradle.plugins.sonar.SonarExtension
+import gradle.plugins.project.EnabledSettings
 import gradle.plugin
 import gradle.plugins
 import gradle.settings

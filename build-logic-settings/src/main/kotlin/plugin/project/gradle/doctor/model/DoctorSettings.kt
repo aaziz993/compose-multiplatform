@@ -4,9 +4,9 @@ import com.osacky.doctor.AppleRosettaTranslationCheckMode
 import gradle.id
 import gradle.CI
 import gradle.libs
-import gradle.model.gradle.doctor.DoctorExtension
-import gradle.model.gradle.doctor.JavaHomeHandler
-import gradle.model.project.EnabledSettings
+import gradle.plugins.doctor.DoctorExtension
+import gradle.plugins.doctor.JavaHomeHandler
+import gradle.plugins.project.EnabledSettings
 import gradle.plugin
 import gradle.plugins
 import gradle.settings

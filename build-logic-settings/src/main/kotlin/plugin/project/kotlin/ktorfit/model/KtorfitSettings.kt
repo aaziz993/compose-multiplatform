@@ -3,8 +3,8 @@ package plugin.project.kotlin.ktorfit.model
 import de.jensklingenberg.ktorfit.gradle.ErrorCheckingMode
 import gradle.id
 import gradle.libs
-import gradle.model.kotlin.ktorfit.KtorfitGradleConfiguration
-import gradle.model.project.EnabledSettings
+import gradle.plugins.kotlin.ktorfit.KtorfitGradleConfiguration
+import gradle.plugins.project.EnabledSettings
 import gradle.plugin
 import gradle.plugins
 import gradle.settings

@@ -1,5 +1,0 @@
-package gradle.model.kotlin.kmp.nat
-
-import kotlinx.serialization.Serializable
-
-internal abstract class SharedLibrary : AbstractNativeLibrary

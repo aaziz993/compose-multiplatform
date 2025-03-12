@@ -7,10 +7,10 @@ import gradle.android
 import gradle.decapitalized
 import gradle.id
 import gradle.libs
-import gradle.model.kotlin.kmp.android.KotlinAndroidTarget
-import gradle.model.kotlin.sourceSets
-import gradle.model.project.ProjectLayout
-import gradle.model.project.ProjectType
+import gradle.plugins.kmp.android.KotlinAndroidTarget
+import gradle.plugins.kotlin.sourceSets
+import gradle.plugins.project.ProjectLayout
+import gradle.plugins.project.ProjectType
 import gradle.plugin
 import gradle.plugins
 import gradle.prefixIfNotEmpty

@@ -2,8 +2,8 @@ package plugin.project.kotlin.room.model
 
 import gradle.id
 import gradle.libs
-import gradle.model.kotlin.room.RoomExtension
-import gradle.model.project.EnabledSettings
+import gradle.plugins.kotlin.room.RoomExtension
+import gradle.plugins.project.EnabledSettings
 import gradle.plugin
 import gradle.plugins
 import gradle.settings
