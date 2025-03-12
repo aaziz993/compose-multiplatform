@@ -1,6 +1,6 @@
 package gradle.plugins.kotlin
 
-import gradle.Named
+import gradle.api.Named
 
 /**
  * Represents the execution of Kotlin code, such as tests.

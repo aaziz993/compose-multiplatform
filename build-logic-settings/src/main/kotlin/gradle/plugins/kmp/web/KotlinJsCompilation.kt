@@ -1,6 +1,6 @@
 package gradle.plugins.kmp.web
 
-import gradle.plugins.HasBinaries
+import gradle.plugins.kmp.HasBinaries
 import gradle.plugins.kotlin.KotlinCompilation
 import gradle.trySet
 import org.gradle.api.Named

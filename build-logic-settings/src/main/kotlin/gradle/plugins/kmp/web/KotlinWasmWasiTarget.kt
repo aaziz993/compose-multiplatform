@@ -1,9 +1,8 @@
 package gradle.plugins.kmp.web
 
 import gradle.kotlin
-import gradle.plugins.HasBinaries
-import gradle.plugins.kmp.KotlinTarget
 import gradle.moduleName
+import gradle.plugins.kmp.HasBinaries
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
@@ -18,26 +17,23 @@ internal data class KotlinWasmWasiTarget(
     override val compilations: List<@Serializable(with = KotlinJsIrCompilationTransformingSerializer::class) KotlinJsIrCompilation>? = null,
     override val nodejs: KotlinJsNodeDsl? = null,
     override val binaries: KotlinJsBinaryContainer = KotlinJsBinaryContainer(),
-) : KotlinTarget, KotlinTargetWithNodeJsDsl, HasBinaries<KotlinJsBinaryContainer> {
+) : KotlinWasmTargetDsl,
+    KotlinTargetWithNodeJsDsl,
+    HasBinaries<KotlinJsBinaryContainer> {
 
     override val isLeaf: Boolean
         get() = true
 
     context(Project)
     override fun applyTo(named: Named) {
-        super<KotlinTarget>.applyTo(named)
+        super<KotlinWasmTargetDsl>.applyTo(named)
 
         named as KotlinWasmWasiTargetDsl
 
-        super<KotlinTargetWithNodeJsDsl>.applyTo(named,"$moduleName-${named.targetName}")
-
-        binaries.applyTo(named.binaries)
+        super<KotlinTargetWithNodeJsDsl>.applyTo(named, "$moduleName-${named.targetName}")
     }
 
     context(Project)
-    override fun applyTo() {
-        create(kotlin::wasmWasi)
-
-        super<KotlinTarget>.applyTo(kotlin.targets.withType<KotlinWasmWasiTargetDsl>())
-    }
+    override fun applyTo() =
+        super<KotlinWasmTargetDsl>.applyTo(kotlin.targets.withType<KotlinWasmWasiTargetDsl>(), kotlin::wasmWasi)
 }

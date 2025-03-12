@@ -2,7 +2,7 @@ package gradle.plugins.dokka
 
 import gradle.libraryAsDependency
 import gradle.libs
-import gradle.Named
+import gradle.api.Named
 import gradle.serialization.serializer.KeyTransformingSerializer
 import gradle.settings
 import gradle.tryAssign

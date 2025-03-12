@@ -1,7 +1,7 @@
 package gradle.plugins.kmp.nat
 
 import gradle.kotlin
-import gradle.plugins.HasBinaries
+import gradle.plugins.kmp.HasBinaries
 import gradle.plugins.kotlin.HasConfigurableKotlinCompilerOptions
 import gradle.plugins.kmp.KotlinTarget
 import kotlinx.serialization.SerialName

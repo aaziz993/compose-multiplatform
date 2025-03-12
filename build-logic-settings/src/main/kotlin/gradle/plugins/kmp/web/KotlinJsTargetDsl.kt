@@ -1,7 +1,7 @@
 package gradle.plugins.kmp.web
 
 import gradle.kotlin
-import gradle.plugins.HasBinaries
+import gradle.plugins.kmp.HasBinaries
 import gradle.plugins.kotlin.HasConfigurableKotlinCompilerOptions
 import gradle.plugins.kmp.KotlinTarget
 import gradle.moduleName
@@ -68,7 +68,7 @@ internal interface KotlinJsTargetDsl : KotlinTarget, KotlinTargetWithNodeJsDsl,
 }
 
 @Serializable
-@SerialName("jsAndWasmJs")
+@SerialName("jsCommon")
 internal data class KotlinJsTargetDslImpl(
     override val compilations: List<KotlinJsCompilation>? = null,
     override val moduleName: String? = null,

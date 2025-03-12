@@ -1,7 +1,7 @@
 package gradle.plugins.android
 
 import com.android.build.gradle.internal.dsl.InternalSigningConfig
-import gradle.Named
+import gradle.api.Named
 import org.gradle.api.Project
 
 /** Serves the same purpose as [InternalBuildType] */

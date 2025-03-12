@@ -1,6 +1,6 @@
 package gradle.plugins.kmp.nat
 
-import gradle.Named
+import gradle.api.Named
 import gradle.moduleName
 import gradle.tryAssign
 import gradle.trySet

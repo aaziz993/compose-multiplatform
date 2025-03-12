@@ -1,6 +1,6 @@
 package gradle.plugins.android
 
-import gradle.Named
+import gradle.api.Named
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

@@ -3,7 +3,10 @@ package gradle.plugins.kmp.web
 import gradle.kotlin
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import org.gradle.api.Named
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinWasmJsTargetDsl
 
 @Serializable
 @SerialName("wasmJs")
@@ -19,17 +22,30 @@ internal data class KotlinWasmJsTarget(
     override val generateTypeScriptDefinitions: Boolean? = null,
     override val compilerOptions: KotlinJsCompilerOptions? = null,
     override val binaries: KotlinJsBinaryContainer = KotlinJsBinaryContainer(),
-    override val d8: Boolean? = null,
-    override val d8Dsl: KotlinWasmD8Dsl? = null,
-) : KotlinWasmJsTargetDsl {
+    val d8: Boolean? = null,
+    val d8Dsl: KotlinWasmD8Dsl? = null,
+) : KotlinWasmTargetDsl, KotlinJsTargetDsl {
 
     override val isLeaf: Boolean
         get() = true
 
     context(Project)
-    override fun applyTo() {
-        create(kotlin::wasmJs)
+    override fun applyTo(named: Named) {
+        super<KotlinWasmTargetDsl>.applyTo(named)
+        super<KotlinJsTargetDsl>.applyTo(named)
 
-        super.applyTo()
+        named as KotlinWasmJsTargetDsl
+
+        d8?.takeIf { it }?.run { named.d8() }
+
+        d8Dsl?.let { d8Dsl ->
+            named.d8 {
+                d8Dsl.applyTo(this, "$moduleName-${named.targetName}")
+            }
+        }
     }
+
+    context(Project)
+    override fun applyTo() =
+        applyTo(kotlin.targets.withType<KotlinWasmJsTargetDsl>(), kotlin::wasmJs)
 }

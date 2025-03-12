@@ -1,5 +1,6 @@
 package gradle.plugins.kmp.web
 
+import org.gradle.kotlin.dsl.withType
 import gradle.kotlin
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -25,9 +26,6 @@ internal data class KotlinJsTarget(
         get() = true
 
     context(Project)
-    override fun applyTo() {
-        create(kotlin::js)
-
-        super.applyTo()
-    }
+    override fun applyTo() =
+        super.applyTo(kotlin.targets.withType<org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl>(), kotlin::js)
 }

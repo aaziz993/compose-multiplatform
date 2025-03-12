@@ -387,7 +387,7 @@ kotlin:
             - kotlinx.serialization.ExperimentalSerializationApi
             - kotlinx.serialization.InternalSerializationApi
             - dev.whyoleg.cryptography.DelicateCryptographyApi
-    - jvmAndAndroid:
+    - jvmCommon:
         compilerOptions:
           freeCompilerArgs:
             - -Xjvm-default=all
@@ -416,7 +416,7 @@ kotlin:
         testRuns:
           - releaseTest:
               executionSourceFrom: RELEASE
-    - jsAndWasmJs:
+    - jsCommon:
         devServer:
           static:
             # serve sources to debug inside browser

@@ -1,7 +1,7 @@
 package gradle.plugins.android
 
 import com.android.build.api.dsl.ProductFlavor
-import gradle.Named
+import gradle.api.Named
 import gradle.trySet
 import org.gradle.api.Project
 

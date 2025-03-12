@@ -10,7 +10,7 @@ import gradle.plugins.project.EnabledSettings
 import gradle.plugin
 import gradle.plugins
 import gradle.settings
-import gradle.unregister
+import gradle.services.unregister
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

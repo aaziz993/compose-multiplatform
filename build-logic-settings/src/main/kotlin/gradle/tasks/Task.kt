@@ -1,6 +1,6 @@
 package gradle.tasks
 
-import gradle.Named
+import gradle.api.Named
 import gradle.serialization.serializer.AnySerializer
 import gradle.serialization.serializer.JsonContentPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer

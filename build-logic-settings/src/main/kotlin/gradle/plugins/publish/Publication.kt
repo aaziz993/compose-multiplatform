@@ -1,6 +1,6 @@
 package gradle.plugins.publish
 
-import gradle.Named
+import gradle.api.Named
 import gradle.publishing
 import gradle.serialization.serializer.JsonContentPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer

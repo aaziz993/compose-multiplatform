@@ -1,6 +1,6 @@
 package gradle.plugins.kotlin
 
-import gradle.Named
+import gradle.api.Named
 import gradle.plugins.kmp.KotlinSourceSet
 import gradle.serialization.serializer.KeyTransformingSerializer
 import gradle.trySet

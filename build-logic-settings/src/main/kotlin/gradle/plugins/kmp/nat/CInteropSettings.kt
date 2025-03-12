@@ -1,6 +1,6 @@
 package gradle.plugins.kmp.nat
 
-import gradle.Named
+import gradle.api.Named
 import gradle.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

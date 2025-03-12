@@ -1,6 +1,6 @@
 package gradle.plugins.dokka
 
-import gradle.Named
+import gradle.api.Named
 import gradle.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

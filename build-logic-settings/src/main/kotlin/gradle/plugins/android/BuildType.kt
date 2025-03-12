@@ -2,7 +2,7 @@ package gradle.plugins.android
 
 import com.android.build.api.dsl.BuildType
 import gradle.android
-import gradle.Named
+import gradle.api.Named
 import gradle.trySet
 import org.gradle.api.Project
 

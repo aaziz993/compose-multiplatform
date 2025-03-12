@@ -1,6 +1,6 @@
 package gradle.plugins.kmp.jvm
 
-import gradle.Named
+import gradle.api.Named
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTestRun

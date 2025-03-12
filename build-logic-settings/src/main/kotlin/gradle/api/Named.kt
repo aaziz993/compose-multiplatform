@@ -1,5 +1,6 @@
-package gradle
+package gradle.api
 
+import gradle.maybeNamed
 import org.gradle.api.Named
 import org.gradle.api.NamedDomainObjectCollection
 import org.gradle.api.Project

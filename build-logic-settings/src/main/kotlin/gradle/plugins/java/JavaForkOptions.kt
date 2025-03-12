@@ -1,6 +1,6 @@
 package gradle.plugins.java
 
-import gradle.plugins.process.ProcessForkOptions
+import gradle.process.ProcessForkOptions
 import gradle.serialization.serializer.AnySerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

@@ -1,7 +1,7 @@
 package gradle.plugins.kmp
 
 import gradle.kotlin
-import gradle.Named
+import gradle.api.Named
 import gradle.plugins.kotlin.HasKotlinDependencies
 import gradle.plugins.kotlin.LanguageSettingsBuilder
 import gradle.plugins.project.Dependency

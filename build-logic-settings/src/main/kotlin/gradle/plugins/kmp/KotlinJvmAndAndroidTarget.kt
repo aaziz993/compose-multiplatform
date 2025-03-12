@@ -26,7 +26,7 @@ internal abstract class KotlinJvmAndAndroidTarget :
 }
 
 @Serializable
-@SerialName("jvmAndAndroid")
+@SerialName("jvmCommon")
 internal data class KotlinJvmAndAndroidTargetImpl(
     override val compilations: List<@Serializable(with = KotlinJvmAndroidCompilationTransformingSerializer::class) KotlinJvmAndroidCompilation>? = null,
     override val compilerOptions: KotlinJvmCompilerOptions? = null,

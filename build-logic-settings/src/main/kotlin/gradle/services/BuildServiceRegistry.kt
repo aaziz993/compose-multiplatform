@@ -1,4 +1,4 @@
-package gradle
+package gradle.services
 
 import org.gradle.api.services.BuildServiceRegistry
 import org.gradle.api.services.internal.RegisteredBuildServiceProvider
