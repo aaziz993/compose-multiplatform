@@ -32,7 +32,7 @@ internal data class KotlinSettings(
     override val compilerOptions: KotlinCommonCompilerOptionsImpl? = null,
     val targets: List<@Serializable(with = KotlinTargetTransformingSerializer::class) KotlinTarget> = emptyList(),
     val hierarchy: List<@Serializable(with = HierarchyAliasTransformingSerializer::class) HierarchyGroup> = emptyList(),
-    val sourceSets: List<@Serializable(with = KotlinSourceSetTransformingSerializer::class) KotlinSourceSet>? = emptyList(),
+    val sourceSets: List<@Serializable(with = KotlinSourceSetTransformingSerializer::class) KotlinSourceSet> = emptyList(),
     val cocoapods: CocoapodsSettings = CocoapodsSettings(),
 ) : KotlinMultiplatformExtension {
 
@@ -57,7 +57,7 @@ internal data class KotlinSettings(
                 }
             }
 
-            sourceSets?.forEach { sourceSet ->
+            sourceSets.forEach { sourceSet ->
                 sourceSet.applyTo()
             }
         }
@@ -66,11 +66,14 @@ internal data class KotlinSettings(
 internal inline fun <reified T : KotlinTarget> KotlinSettings.sourceSets(): List<KotlinSourceSet>? {
     val _targets = targets.filterIsInstance<T>()
 
-    return sourceSets?.let { sourceSets ->
-        sourceSets.filter { sourceSet ->
-            sourceSet.name.isEmpty() || _targets.any { target -> sourceSet.name.startsWith(target.targetName) }
-        } + sourceSets.filter { sourceSet ->
-            sourceSet.name == "commonMain" || sourceSet.name == "commonTest"
+    return sourceSets.filter { sourceSet ->
+        sourceSet.name.isEmpty()
+            || sourceSet.name == "commonMain"
+            || sourceSet.name == "commonTest"
+            || _targets.any { target ->
+            sourceSet.name.startsWith(target.targetName) ||
+                hierarchy.filter { (_, aliases) -> target.targetName in aliases }.map(HierarchyGroup::group)
+                    .any { group -> sourceSet.name.startsWith(group) }
         }
     }
 }

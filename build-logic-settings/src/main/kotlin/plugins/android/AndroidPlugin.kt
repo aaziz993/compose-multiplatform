@@ -47,7 +47,7 @@ internal class AndroidPlugin : Plugin<Project> {
             if (!projectProperties.kotlin.enabledKMP) {
                 projectProperties.kotlin.sourceSets<KotlinAndroidTarget>()?.forEach { sourceSet ->
                     val compilationName = if (
-                        sourceSet.name == "commonTest" ||
+                        sourceSet.name.endsWith("Test") ||
                         androidSourceSetNamePrefixes.any(sourceSet.name::startsWith)
                     ) "test"
                     else ""
