@@ -3,7 +3,10 @@ package gradle.caching.remote
 import gradle.caching.AbstractBuildCache
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
+import org.gradle.api.initialization.Settings
 import org.gradle.caching.configuration.BuildCache
+import org.gradle.caching.configuration.BuildCacheConfiguration
 import org.gradle.caching.http.HttpBuildCache
 
 @Serializable
@@ -18,9 +21,6 @@ internal data class HttpBuildCache(
     val useExpectContinue: Boolean? = null,
 ) : AbstractBuildCache() {
 
-    override val type: Class<out BuildCache>
-        get() = HttpBuildCache::class.java
-
     override fun applyTo(cache: BuildCache) {
         super.applyTo(cache)
 
@@ -31,5 +31,10 @@ internal data class HttpBuildCache(
         allowUntrustedServer?.let(cache::setAllowUntrustedServer)
         allowInsecureProtocol?.let(cache::setAllowInsecureProtocol)
         useExpectContinue?.let(cache::setUseExpectContinue)
+    }
+
+    context(Settings)
+    override fun applyTo(configuration: BuildCacheConfiguration) {
+        configuration.remote(HttpBuildCache::class.java, ::applyTo)
     }
 }

@@ -4,7 +4,11 @@ import com.gradle.develocity.agent.gradle.buildcache.DevelocityBuildCache
 import gradle.caching.AbstractBuildCache
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
+import org.gradle.api.initialization.Settings
 import org.gradle.caching.configuration.BuildCache
+import org.gradle.caching.configuration.BuildCacheConfiguration
+import org.gradle.kotlin.dsl.develocity
 
 @Serializable
 @SerialName("develocity")
@@ -19,9 +23,6 @@ internal data class DevelocityBuildCache(
     val usernameAndPassword: HttpBuildCacheCredentials? = null
 ) : AbstractBuildCache() {
 
-    override val type: Class<out BuildCache>
-        get() = DevelocityBuildCache::class.java
-
     override fun applyTo(cache: BuildCache) {
         super.applyTo(cache)
 
@@ -35,5 +36,10 @@ internal data class DevelocityBuildCache(
         usernameAndPassword?.let { (username, password) ->
             cache.usernameAndPassword(username, password)
         }
+    }
+
+    context(Settings)
+    override fun applyTo(configuration: BuildCacheConfiguration) {
+        configuration.remote(develocity.buildCache, ::applyTo)
     }
 }
