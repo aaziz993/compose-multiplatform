@@ -17,7 +17,7 @@ internal interface HasBuiltinDelimiterForLicense {
     /**
      * Content that should be at the top of every file.
      */
-    val licenseHeader: LicenseHeaderConfig?
+    val licenseHeader: FormatExtension.LicenseHeaderConfig?
 
     fun applyTo(license: HasBuiltinDelimiterForLicense) {
         licenseHeader?.let { licenseHeader ->

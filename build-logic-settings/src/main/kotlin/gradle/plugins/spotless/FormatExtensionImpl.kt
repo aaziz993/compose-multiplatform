@@ -39,7 +39,7 @@ internal data class FormatExtensionImpl(
     override val toggleOffOn: ToggleOffOn? = null,
     override val toggleIfOffOn: Boolean? = null,
     override val toggleOffOnDisable: Boolean? = null,
-) : FormatExtension {
+) : FormatExtension() {
 
     context(Project)
     @Suppress("UNCHECKED_CAST")
