@@ -23,13 +23,13 @@ internal fun Project.version(): String =
         settings.libs.versions.version("$moduleName.version.patch")?.toInt() ?: projectProperties.version.patch,
         settings.libs.versions.version("$moduleName.version.preRelease") ?: projectProperties.version.preRelease,
         "${
-            gitRef?.takeIf{projectProperties.version.gitRef}.orEmpty()
+            gitRef?.takeIf { projectProperties.version.gitRef }.orEmpty()
         }${
-            gitRunNumber?.takeIf{projectProperties.version.gitRunNumber}.orEmpty()
+            gitRunNumber?.takeIf { projectProperties.version.gitRunNumber }.orEmpty()
         }${
-            spaceGitBranch?.takeIf{projectProperties.version.spaceGitBranch}.orEmpty()
+            spaceGitBranch?.takeIf { projectProperties.version.spaceGitBranch }.orEmpty()
         }${
-            spaceExecutionNumber?.takeIf{projectProperties.version.spaceExecutionNumber}.orEmpty()
+            spaceExecutionNumber?.takeIf { projectProperties.version.spaceExecutionNumber }.orEmpty()
         }${
 //            teamCityGitBranch?.takeIf{projectProperties.version.teamCityGitBranch}.orEmpty()
             ""
@@ -39,3 +39,4 @@ internal fun Project.version(): String =
         }".ifEmpty { null },
     ).toString()
 
+internal fun String.toVersion() = Version.parse(this)

@@ -2,7 +2,8 @@ plugins:
   # publishing
   publishing:
     repositories:
-      - mavenLocal: { }
+      - mavenLocal:
+          url: build/m2
       - maven:
           name: GithubPackages
           url: https://maven.pkg.github.com/aaziz993
@@ -15,8 +16,16 @@ plugins:
           credentials:
             username: aaziz93
             password: $envOrLocal.jetbrains.space.password
-    publications:
       - maven:
+          name: Sonatype
+          url: https://maven.pkg.jetbrains.space/aaziz93/p/aaziz-93/maven
+          credentials:
+            username: aaziz93
+            password: $envOrLocal.jetbrains.space.password
+    publications:
+      - maven: { }
+      - maven:
+          name: '' # apply to all above created maven publications by specifying empty name
           pom:
             inceptionYear: '2025'
             licenses:
@@ -41,9 +50,13 @@ plugins:
 
   # signing
   signing:
-    signPublications:
-      
+    signPublications: [ '' ] # enable GPG signing for all publications by specifying empty name
+    useInMemoryPgpKeys:
+      defaultSecretKey: $envOrLocal.signing.gnupg.key
+      defaultPassword: $envOrLocal.signing.gnupg.key.passphrase
+      useGpgCmd: true
 
 tasks:
-  - AbstractPublishToMaven:
+  - Task:
+      name: publish
       dependOn: publishToMavenLocal

@@ -15,9 +15,8 @@ internal inline fun <reified T : Named> Project.containerize(vararg values: T) =
         }
     }
 
-internal inline fun <reified T> NamedDomainObjectCollection<T>.getByNameOrAll(name: String) =
+internal fun <T> NamedDomainObjectCollection<T>.getByNameOrAll(name: String) =
     if (name.isEmpty()) toList() else listOf(getByName(name))
-
 
 internal inline fun <T> NamedDomainObjectCollection<out T>.all(crossinline action: (T) -> Unit) =
     all { action(this) }

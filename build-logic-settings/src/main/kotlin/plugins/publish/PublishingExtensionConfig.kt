@@ -50,51 +50,6 @@ internal fun Project.configurePublishingExtension(extension: PublishingExtension
             configureAggregatingTasks()
 
 
-            repositories {
-                // SPACE PACKAGES
-                maven {
-                    name = "SpacePackages"
-
-                    url = uri(providers.gradleProperty("jetbrains.space.packages.url").get())
-
-                    credentials {
-                        username = System.getenv().getOrElse("JB_SPACE_USERNAME") {
-                            providers.gradleProperty("jetbrains.space.username").get()
-                        }
-                        password = System.getenv().getOrElse("JB_SPACE_PASSWORD") {
-                            localProperties.getProperty("jetbrains.space.password")
-                        }
-                    }
-                }
-
-                // GITHUB PACKAGES
-                maven {
-                    name = "GithubPackages"
-
-                    url = uri(
-                        "${
-                            providers.gradleProperty("github.packages.url").get()
-                        }/${rootProject.name}",
-                    )
-
-                    // Repository username and password
-                    credentials {
-                        username = githubUsername
-
-                        password = System.getenv().getOrElse("GITHUB_PASSWORD") {
-                            localProperties.getProperty("github.password")
-                        }
-                    }
-                }
-
-                // TEST LOCAL
-                maven {
-                    name = "testLocal"
-                    setUrl(rootProject.layout.buildDirectory.dir("m2"))
-                }
-            }
-
-
             publications.withType(MavenPublication::class.java).configureEach {
                 pom {
                     name = project.name
@@ -180,70 +135,7 @@ private fun Project.registerAggregatingTask(name: String, targets: Set<String>) 
     }
 }
 
-private fun Project.configureSigning() {
-    extra["signing.gnupg.keyName"] = (System.getenv("SIGN_KEY_ID") ?: return)
-    extra["signing.gnupg.passphrase"] = (System.getenv("SIGN_KEY_PASSPHRASE") ?: return)
-
-    apply(SigningPlugin::class.java)
 
 
-
-    signing {
-        isRequired = !Version.parse(version.toString()).isPreRelease
-
-        useGpgCmd()
-
-        publishing.publications.withType<MavenPublication>().configureEach(::sign)
-    }
-
-    val gpgAgentLock: ReentrantLock by rootProject.extra { ReentrantLock() }
-
-    tasks.withType<Sign>().configureEach {
-        doFirst { gpgAgentLock.lock() }
-        doLast { gpgAgentLock.unlock() }
-    }
-}
-
-private fun Project.configureJavadocArtifact() {
-    val nonDefaultProjectStructure: List<String> by rootProject.extra
-    if (project.name in nonDefaultProjectStructure) return
-
-    val emptyJar = tasks.register<Jar>("emptyJar") {
-        archiveAppendix = "empty"
-    }
-
-    publishing {
-        for (target in kotlin.targets) {
-            val publication = publications.findByName<MavenPublication>(target.name) ?: continue
-
-            if (target.platformType.name == "jvm") {
-                publication.artifact(emptyJar) {
-                    classifier = "javadoc"
-                }
-            }
-            else {
-                publication.artifact(emptyJar) {
-                    classifier = "javadoc"
-                }
-                publication.artifact(emptyJar) {
-                    classifier = "kdoc"
-                }
-            }
-
-            if (target.platformType.name == "native") {
-                publication.artifact(emptyJar)
-            }
-        }
-    }
-
-    // We share emptyJar artifact between all publications, so all publish tasks should be run after all sign tasks.
-    // Otherwise Gradle will throw an error like:
-    //   Task ':publishX' uses output of task ':signY' without declaring an explicit or implicit dependency.
-    tasks.withType<AbstractPublishToMaven>().configureEach { mustRunAfter(tasks.withType<Sign>()) }
-}
 
 // Extension accessors
-private val Project.publishing: PublishingExtension get() = extensions.getByName<PublishingExtension>("publishing")
-private fun Project.publishing(block: PublishingExtension.() -> Unit) = extensions.configure("publishing", block)
-private fun Project.signing(configure: SigningExtension.() -> Unit) = extensions.configure("signing", configure)
-

@@ -96,8 +96,6 @@ public class ProjectPlugin : Plugin<Project> {
             project.plugins.apply(DokkaPlugin::class.java)
             project.plugins.apply(ShadowPlugin::class.java)
             project.plugins.apply(ApiValidationPlugin::class.java)
-            project.plugins.apply(PublishPlugin::class.java)
-            project.plugins.apply(SigningPlugin::class.java)
             project.plugins.apply(AllOpenPlugin::class.java)
             project.plugins.apply(NoArgPlugin::class.java)
             project.plugins.apply(AtomicFUPlugin::class.java)
@@ -119,6 +117,9 @@ public class ProjectPlugin : Plugin<Project> {
             project.plugins.apply(WasmPlugin::class.java)
             project.plugins.apply(WasmWasiPlugin::class.java)
             project.plugins.apply(CMPPlugin::class.java)
+            project.plugins.apply(PublishPlugin::class.java)
+            project.plugins.apply(SigningPlugin::class.java)
+
 
             projectProperties.nodeJsEnv.applyTo()
             projectProperties.yarn.applyTo()

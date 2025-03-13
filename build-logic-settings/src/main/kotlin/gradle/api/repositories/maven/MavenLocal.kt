@@ -16,12 +16,10 @@ internal data class MavenLocal(
     override val mavenContent: MavenRepositoryContentDescriptor? = null,
     override val name: String = ArtifactRepositoryContainer.DEFAULT_MAVEN_LOCAL_REPO_NAME,
     override val content: RepositoryContentDescriptor? = null,
+    override val url: String? = null,
     override val allowInsecureProtocol: Boolean? = null,
     override val credentials: RepositoryPasswordCredentials? = null,
 ) : MavenArtifactRepository {
-
-    override val url: String?
-        get() = null
 
     override fun applyTo(handler: RepositoryHandler) =
         super.applyTo(handler.withType<org.gradle.api.artifacts.repositories.MavenArtifactRepository>()) {
