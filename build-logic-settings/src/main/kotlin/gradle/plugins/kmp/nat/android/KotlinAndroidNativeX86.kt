@@ -20,9 +20,6 @@ internal data class KotlinAndroidNativeX86(
     override val binaries: KotlinNativeBinaryContainer? = null,
 ) : KotlinAndroidNative() {
 
-    override val isLeaf: Boolean
-        get() = true
-
     context(Project)
     override fun applyTo() =
         super.applyTo(kotlin.targets.withType<KotlinNativeTarget>(),kotlin::androidNativeX86)

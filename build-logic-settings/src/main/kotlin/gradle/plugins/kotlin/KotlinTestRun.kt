@@ -1,6 +1,6 @@
 package gradle.plugins.kotlin
 
-import gradle.tasks.test.TestFilter
+import gradle.api.tasks.test.TestFilter
 import org.jetbrains.kotlin.gradle.plugin.KotlinTestRun
 
 /**

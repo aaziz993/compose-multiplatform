@@ -3,10 +3,10 @@ package gradle.plugins.java
 import gradle.accessors.javaToolchain
 import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
-import gradle.tasks.PatternFilterable
-import gradle.tasks.test.AbstractTestTask
-import gradle.tasks.test.DefaultTestFilter
-import gradle.tasks.test.TestLoggingContainer
+import gradle.api.tasks.PatternFilterable
+import gradle.api.tasks.test.AbstractTestTask
+import gradle.api.tasks.test.DefaultTestFilter
+import gradle.api.tasks.test.TestLoggingContainer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named

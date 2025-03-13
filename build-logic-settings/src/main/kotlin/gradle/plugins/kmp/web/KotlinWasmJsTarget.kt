@@ -26,9 +26,6 @@ internal data class KotlinWasmJsTarget(
     val d8Dsl: KotlinWasmD8Dsl? = null,
 ) : KotlinWasmTargetDsl, KotlinJsTargetDsl {
 
-    override val isLeaf: Boolean
-        get() = true
-
     context(Project)
     override fun applyTo(named: Named) {
         super<KotlinWasmTargetDsl>.applyTo(named)

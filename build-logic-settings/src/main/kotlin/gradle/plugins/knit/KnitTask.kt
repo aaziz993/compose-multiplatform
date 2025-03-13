@@ -2,7 +2,7 @@ package gradle.plugins.knit
 
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
-import gradle.tasks.Task
+import gradle.api.tasks.Task
 import kotlinx.knit.KnitTask
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named

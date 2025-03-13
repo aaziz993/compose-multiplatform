@@ -4,7 +4,7 @@ import gradle.api.tryAssign
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
 import gradle.collection.SerializableAnyList
-import gradle.tasks.AbstractExecTask
+import gradle.api.tasks.AbstractExecTask
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project

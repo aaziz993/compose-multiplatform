@@ -1,8 +1,8 @@
 package gradle.plugins.kotlin.tasks
 
 import gradle.api.tryAssign
-import gradle.tasks.PatternFilterable
-import gradle.tasks.Task
+import gradle.api.tasks.PatternFilterable
+import gradle.api.tasks.Task
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompileTool
 

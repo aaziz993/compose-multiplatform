@@ -40,9 +40,6 @@ internal data class KotlinAndroidTarget(
     val publishLibraryVariantsGroupedByFlavor: Boolean? = null,
 ) : KotlinJvmAndAndroidTarget() {
 
-    override val isLeaf: Boolean
-        get() = true
-
     context(Project)
     override fun applyTo(named: Named) {
         super.applyTo(named)

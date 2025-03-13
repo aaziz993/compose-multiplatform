@@ -20,9 +20,6 @@ internal data class IosArm64(
     override val binaries: KotlinNativeBinaryContainer? = null,
 ) : KotlinNativeTarget(), KotlinIosTarget {
 
-    override val isLeaf: Boolean
-        get() = true
-
     context(Project)
     override fun applyTo() =
         super.applyTo(kotlin.targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>(),kotlin::iosArm64)

@@ -20,9 +20,6 @@ internal data class KotlinTvosArm64Target(
     override val binaries: KotlinNativeBinaryContainer? = null,
 ) : KotlinNativeTarget(), KotlinTvosTarget {
 
-    override val isLeaf: Boolean
-        get() = true
-
     context(Project)
     override fun applyTo() =
         super.applyTo(kotlin.targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>(), kotlin::tvosArm64)

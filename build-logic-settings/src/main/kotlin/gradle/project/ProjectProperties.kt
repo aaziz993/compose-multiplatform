@@ -16,8 +16,8 @@ import gradle.plugins.web.js.karakum.KarakumSettings
 import gradle.plugins.web.npm.NpmExtension
 import gradle.plugins.web.yarn.YarnRootExtension
 import gradle.serialization.decodeFromAny
-import gradle.tasks.Task
-import gradle.tasks.TaskTransformingSerializer
+import gradle.api.tasks.Task
+import gradle.api.tasks.TaskTransformingSerializer
 import java.util.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
@@ -45,7 +45,6 @@ internal data class ProjectProperties(
     val description: String? = null,
     val version: VersionSettings = VersionSettings(),
     val plugins: Plugins = Plugins(),
-    val java: JavaPluginExtension? = null,
     val application: JavaApplication? = null,
     val kotlin: KotlinSettings = KotlinSettings(),
     @Transient

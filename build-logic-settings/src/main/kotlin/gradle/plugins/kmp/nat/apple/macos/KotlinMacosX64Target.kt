@@ -24,9 +24,6 @@ internal data class KotlinMacosX64Target(
     override val testRuns: List<@Serializable(with = KotlinNativeHostTestRunTransformingSerializer::class) KotlinNativeHostTestRun>? = null,
 ) : KotlinNativeTargetWithHostTests(), KotlinMacosTarget {
 
-    override val isLeaf: Boolean
-        get() = true
-
     context(Project)
     override fun applyTo() =
         super.applyTo(kotlin.targets.withType<KotlinNativeTarget>(), kotlin::macosX64)

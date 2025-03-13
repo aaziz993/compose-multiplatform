@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin.tasks
 
 import gradle.plugins.kotlin.KotlinCommonCompilerOptions
-import gradle.tasks.Task
+import gradle.api.tasks.Task
 import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType

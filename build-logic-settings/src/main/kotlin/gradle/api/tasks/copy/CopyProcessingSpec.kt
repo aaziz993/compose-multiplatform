@@ -1,6 +1,6 @@
 package gradle.api.tasks.copy
 
-import gradle.tasks.ContentFilterable
+import gradle.api.tasks.ContentFilterable
 import java.util.regex.Pattern
 import org.gradle.api.file.CopyProcessingSpec
 

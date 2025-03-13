@@ -1,8 +1,8 @@
 package gradle.caching
 
 import kotlinx.serialization.Serializable
-import org.gradle.caching.configuration.BuildCache
 import org.gradle.caching.configuration.BuildCacheConfiguration
+import org.gradle.caching.http.HttpBuildCache
 import org.jetbrains.dokka.plugability.configuration
 
 /**
@@ -30,7 +30,7 @@ internal data class BuildCacheConfiguration(
      *
      * @param type the type of remote cache to configure.
      */
-    val remote: List<RemoteBuildCache>? = null,
+    val remote: List<BuildCache>? = null,
 ) {
 
     @Suppress("UNCHECKED_CAST")
@@ -38,9 +38,7 @@ internal data class BuildCacheConfiguration(
         local?.applyTo(configuration.local)
 
         remote?.forEach { remote ->
-            remote.type?.also { type ->
-                configuration.remote(Class.forName(type) as Class<out BuildCache>, remote::applyTo)
-            } ?: configuration.remote(remote::applyTo)
+            configuration.remote(remote.type, remote::applyTo)
         }
     }
 }

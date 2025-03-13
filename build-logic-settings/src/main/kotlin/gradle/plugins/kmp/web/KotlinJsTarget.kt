@@ -22,9 +22,6 @@ internal data class KotlinJsTarget(
     override val binaries: KotlinJsBinaryContainer = KotlinJsBinaryContainer(),
 ) : KotlinJsTargetDsl {
 
-    override val isLeaf: Boolean
-        get() = true
-
     context(Project)
     override fun applyTo() =
         super.applyTo(kotlin.targets.withType<org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl>(), kotlin::js)

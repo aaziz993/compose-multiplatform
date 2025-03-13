@@ -1,7 +1,7 @@
 package gradle.api.tasks.copy
 
-import gradle.tasks.FilesMatching
-import gradle.tasks.PatternFilterable
+import gradle.api.tasks.FilesMatching
+import gradle.api.tasks.PatternFilterable
 import org.gradle.api.Project
 import org.gradle.api.file.CopySpec
 import org.gradle.api.file.DuplicatesStrategy

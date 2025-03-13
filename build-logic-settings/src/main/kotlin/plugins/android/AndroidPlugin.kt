@@ -10,20 +10,17 @@ import gradle.accessors.plugins
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
 import gradle.api.all
-import gradle.decapitalized
 import gradle.api.file.replace
+import gradle.decapitalized
 import gradle.plugins.kmp.android.KotlinAndroidTarget
-import gradle.plugins.kotlin.sourceSets
+import gradle.prefixIfNotEmpty
 import gradle.project.ProjectLayout
 import gradle.project.ProjectType
-import gradle.prefixIfNotEmpty
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.SourceSet
-import org.gradle.internal.extensions.stdlib.capitalized
-import org.gradle.kotlin.dsl.dependencies
 
-private val androidSourceSetNamePrefixes = listOf(
+private val testSourceSetNamePrefixes = listOf(
     SourceSet.TEST_SOURCE_SET_NAME,
     "androidTest",
     "testFixtures",
@@ -44,31 +41,6 @@ internal class AndroidPlugin : Plugin<Project> {
 
             projectProperties.android?.applyTo()
 
-            if (!projectProperties.kotlin.enabledKMP) {
-                projectProperties.kotlin.targets.filterIsInstance<KotlinAndroidTarget>().forEach { target ->
-
-                }
-
-                projectProperties.kotlin.sourceSets<KotlinAndroidTarget>()?.forEach { sourceSet ->
-                    val compilationName = if (
-                        sourceSet.name.endsWith("Test") ||
-                        androidSourceSetNamePrefixes.any(sourceSet.name::startsWith)
-                    ) "test"
-                    else ""
-
-                    dependencies {
-                        sourceSet.dependencies
-                            ?.forEach { dependency ->
-                                add(
-                                    "$compilationName${dependency.configuration.capitalized()}"
-                                        .decapitalized(),
-                                    dependency.resolve(),
-                                )
-                            }
-                    }
-                }
-            }
-
             adjustAndroidSourceSets()
             applyGoogleServicesPlugin()
         }
@@ -79,7 +51,7 @@ internal class AndroidPlugin : Plugin<Project> {
             ProjectLayout.FLAT -> android.sourceSets.all { sourceSet ->
                 val (srcPrefixPart, resourcesPrefixPart) =
                     if (sourceSet.name == SourceSet.MAIN_SOURCE_SET_NAME) "src" to ""
-                    else androidSourceSetNamePrefixes.find { prefix ->
+                    else testSourceSetNamePrefixes.find { prefix ->
                         sourceSet.name.startsWith(prefix)
                     }?.let { prefix ->
                         "$prefix${sourceSet.name.removePrefix(prefix).prefixIfNotEmpty("+")}".let { it to it }

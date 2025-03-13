@@ -19,8 +19,7 @@ import org.gradle.api.Project
  *
  * @since 4.10
  */
-@Serializable
-internal data class JavaPluginExtension(
+internal interface JavaPluginExtension {
 
     /**
      * Sets the source compatibility used for compiling Java sources.
@@ -32,7 +31,7 @@ internal data class JavaPluginExtension(
      *
      * @see .toolchain
      */
-    val sourceCompatibility: JavaVersion? = null,
+    val sourceCompatibility: JavaVersion?
 
     /**
      * Sets the target compatibility used for compiling Java sources.
@@ -44,7 +43,7 @@ internal data class JavaPluginExtension(
      *
      * @see .toolchain
      */
-    val targetCompatibility: JavaVersion? = null,
+    val targetCompatibility: JavaVersion?
 
     /**
      * If this method is called, Gradle will not automatically try to fetch
@@ -58,7 +57,7 @@ internal data class JavaPluginExtension(
      *
      * @since 5.3
     </P> */
-    val disableAutoTargetJvm: Boolean? = null,
+    val disableAutoTargetJvm: Boolean?
 
     /**
      * Adds a task `javadocJar` that will package the output of the `javadoc` task in a JAR with classifier `javadoc`.
@@ -74,7 +73,7 @@ internal data class JavaPluginExtension(
      *
      * @since 6.0
     </P> */
-    val withJavadocJar: Boolean? = null,
+    val withJavadocJar: Boolean?
 
     /**
      * Adds a task `sourcesJar` that will package the Java sources of the main [SourceSet][org.gradle.api.tasks.SourceSet] in a JAR with classifier `sources`.
@@ -90,7 +89,7 @@ internal data class JavaPluginExtension(
      *
      * @since 6.0
     </P> */
-    val withSourcesJar: Boolean? = null,
+    val withSourcesJar: Boolean?
 
     /**
      * Configure the module path handling for tasks that have a 'classpath' as input. The module classpath handling defines
@@ -98,7 +97,7 @@ internal data class JavaPluginExtension(
      *
      * @since 6.4
      */
-    val modularity: ModularitySpec? = null,
+    val modularity: ModularitySpec?
 
     /**
      * Gets the project wide toolchain requirements that will be used for tasks requiring a tool from the toolchain (e.g. [org.gradle.api.tasks.compile.JavaCompile]).
@@ -109,7 +108,7 @@ internal data class JavaPluginExtension(
      *
      * @since 6.7
      */
-    val toolchain: JavaToolchainSpec? = null,
+    val toolchain: JavaToolchainSpec?
 
     /**
      * Configure the dependency resolution consistency for this Java project.
@@ -118,32 +117,31 @@ internal data class JavaPluginExtension(
      *
      * @since 6.8
      */
-    val consistentResolution: JavaResolutionConsistency? = null,
+    val consistentResolution: JavaResolutionConsistency?
 
     /**
      * Sets a file pointing to the root directory supposed to be used for all docs.
      * @since 7.1
      */
-    val docsDir: String? = null,
+    val docsDir: String?
 
     /**
      * Sets a file pointing to the root directory of the test results.
      * @since 7.1
      */
-    val testResultsDir: String? = null,
+    val testResultsDir: String?
 
     /**
      * Sets a file pointing to the root directory to be used for reports.
      * @since 7.1
      */
-    val testReportDir: String? = null,
+    val testReportDir: String?
 
     /**
      * Creates a new instance of a [Manifest].
      * @since 7.1
      */
-    val manifest: Manifest? = null,
-) {
+    val manifest: Manifest?
 
     context(Project)
     @Suppress("UnstableApiUsage")

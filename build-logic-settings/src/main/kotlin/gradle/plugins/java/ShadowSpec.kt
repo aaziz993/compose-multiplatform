@@ -1,7 +1,7 @@
 package gradle.plugins.java
 
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-import gradle.tasks.copy.CopySpec
+import gradle.api.tasks.copy.CopySpec
 import org.gradle.api.Project
 
 internal interface ShadowSpec : CopySpec {

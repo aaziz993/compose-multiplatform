@@ -9,8 +9,8 @@ import gradle.plugins.java.Test
 import gradle.plugins.java.TestNGOptions
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.java.JavaToolchainSpec
-import gradle.tasks.test.DefaultTestFilter
-import gradle.tasks.test.TestLoggingContainer
+import gradle.api.tasks.test.DefaultTestFilter
+import gradle.api.tasks.test.TestLoggingContainer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project

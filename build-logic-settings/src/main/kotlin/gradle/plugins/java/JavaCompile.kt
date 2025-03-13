@@ -1,9 +1,9 @@
 package gradle.plugins.java
 
 import gradle.collection.SerializableAnyMap
-import gradle.tasks.AbstractCompile
-import gradle.tasks.compile.CompileOptions
-import gradle.tasks.compile.HasCompileOptions
+import gradle.api.tasks.AbstractCompile
+import gradle.api.tasks.compile.CompileOptions
+import gradle.api.tasks.compile.HasCompileOptions
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project

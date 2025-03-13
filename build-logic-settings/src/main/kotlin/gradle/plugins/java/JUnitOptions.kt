@@ -1,6 +1,6 @@
 package gradle.plugins.java
 
-import gradle.tasks.test.TestFrameworkOptions
+import gradle.api.tasks.test.TestFrameworkOptions
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.tasks.testing.junit.JUnitOptions
@@ -32,7 +32,7 @@ internal data class JUnitOptions(
 
         setIncludeCategories?.let(options::setIncludeCategories)
 
-        excludeCategories?.let { includeCategories ->
+        excludeCategories?.let { excludeCategories ->
             options.excludeCategories(*excludeCategories.toTypedArray())
         }
 

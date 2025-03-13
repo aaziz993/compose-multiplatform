@@ -1,6 +1,6 @@
 package gradle.api.tasks.copy
 
-import gradle.tasks.PatternFilterable
+import gradle.api.tasks.PatternFilterable
 import org.gradle.api.file.CopySourceSpec
 import org.gradle.api.file.SyncSpec
 

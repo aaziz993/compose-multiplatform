@@ -25,7 +25,7 @@ internal class KMPPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            projectProperties.kotlin.takeIf(KotlinSettings::enabledKMP)?.let { kotlin ->
+            projectProperties.kotlin.takeIf { kotlin -> kotlin.targets.isNotEmpty() }?.let { kotlin ->
                 plugins.apply(settings.libs.plugins.plugin("kotlin.multiplatform").id)
 
                 // Enable Default Kotlin Hierarchy.

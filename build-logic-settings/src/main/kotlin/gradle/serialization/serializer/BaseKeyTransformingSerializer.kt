@@ -17,6 +17,7 @@ internal abstract class BaseKeyTransformingSerializer<T : Any>(
 
     final override fun transformDeserialize(element: JsonElement): JsonElement =
         if (element is JsonObject) {
+            println("ELEM:"+element)
             val key = element.keys.single()
             val value = element.values.single()
 

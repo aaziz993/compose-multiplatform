@@ -173,12 +173,12 @@ internal abstract class SigningExtension {
                 signing.sign(*publications.toTypedArray())
             }
 
-            publishing.publications.withType<MavenPublication>().configureEach { publication ->
-                val artifacts = publication.artifacts // This returns a Set<PublishArtifact>
-                artifacts.forEach { artifact ->
-                    signing.sign(artifact)
-                }
-            }
+//            publishing.publications.withType<MavenPublication>().configureEach { publication ->
+//                val artifacts = publication.artifacts // This returns a Set<PublishArtifact>
+//                artifacts.forEach { artifact ->
+//                    signing.sign(artifact)
+//                }
+//            }
 
             signFiles?.map(::file)?.let { files ->
                 signing.sign(*files.toTypedArray())

@@ -1,11 +1,11 @@
 package gradle.api.tasks.archive
 
 import gradle.collection.SerializableAnyMap
-import gradle.tasks.Expand
-import gradle.tasks.FilesMatching
-import gradle.tasks.copy.FileCopyDetails
-import gradle.tasks.copy.FromSpec
-import gradle.tasks.copy.IntoSpec
+import gradle.api.tasks.Expand
+import gradle.api.tasks.FilesMatching
+import gradle.api.tasks.copy.FileCopyDetails
+import gradle.api.tasks.copy.FromSpec
+import gradle.api.tasks.copy.IntoSpec
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named

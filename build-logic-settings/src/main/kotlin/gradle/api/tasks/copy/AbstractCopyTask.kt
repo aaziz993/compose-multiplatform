@@ -16,9 +16,9 @@
 package gradle.api.tasks.copy
 
 import gradle.collection.SerializableAnyMap
-import gradle.tasks.Expand
-import gradle.tasks.FilesMatching
-import gradle.tasks.Task
+import gradle.api.tasks.Expand
+import gradle.api.tasks.FilesMatching
+import gradle.api.tasks.Task
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named

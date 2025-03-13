@@ -1,6 +1,6 @@
 package gradle.api.tasks
 
-import gradle.tasks.copy.FileCopyDetails
+import gradle.api.tasks.copy.FileCopyDetails
 import kotlinx.serialization.Serializable
 
 @Serializable

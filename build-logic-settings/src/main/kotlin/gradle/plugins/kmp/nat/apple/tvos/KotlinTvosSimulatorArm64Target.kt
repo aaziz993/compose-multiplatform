@@ -24,9 +24,6 @@ internal data class KotlinTvosSimulatorArm64Target(
     override val testRuns: List<@Serializable(with = KotlinNativeSimulatorTestRunTransformingSerializer::class) KotlinNativeSimulatorTestRun>? = null,
 ) : KotlinNativeTargetWithSimulatorTests(), KotlinTvosTarget {
 
-    override val isLeaf: Boolean
-        get() = true
-
     context(Project)
     override fun applyTo() =
         super.applyTo(kotlin.targets.withType<KotlinNativeTarget>(), kotlin::tvosSimulatorArm64)

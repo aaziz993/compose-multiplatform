@@ -1,8 +1,8 @@
 package gradle.plugins.kmp.web
 
 import gradle.collection.SerializableAnyMap
-import gradle.tasks.K2MultiplatformCompilationTask
-import gradle.tasks.ProducesKlib
+import gradle.api.tasks.K2MultiplatformCompilationTask
+import gradle.api.tasks.ProducesKlib
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project

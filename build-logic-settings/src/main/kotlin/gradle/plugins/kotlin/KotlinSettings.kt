@@ -36,12 +36,6 @@ internal data class KotlinSettings(
     val cocoapods: CocoapodsSettings = CocoapodsSettings(),
 ) : KotlinMultiplatformExtension {
 
-    val enabledKMP: Boolean by lazy {
-        targets.filter(KotlinTarget::isLeaf).let { targets ->
-            targets.any(KotlinTarget::needKMP) || targets.any { target -> target::class != targets.first()::class }
-        }
-    }
-
     context(Project)
     fun applyTo() =
         pluginManager.withPlugin(settings.libs.plugins.plugin("kotlin.multiplatform").id) {
@@ -61,19 +55,4 @@ internal data class KotlinSettings(
                 sourceSet.applyTo()
             }
         }
-}
-
-internal inline fun <reified T : KotlinTarget> KotlinSettings.sourceSets(): List<KotlinSourceSet>? {
-    val _targets = targets.filterIsInstance<T>()
-
-    return sourceSets.filter { sourceSet ->
-        sourceSet.name.isEmpty()
-            || sourceSet.name == "commonMain"
-            || sourceSet.name == "commonTest"
-            || _targets.any { target ->
-            sourceSet.name.startsWith(target.targetName) ||
-                hierarchy.filter { (_, aliases) -> target.targetName in aliases }.map(HierarchyGroup::group)
-                    .any { group -> sourceSet.name.startsWith(group) }
-        }
-    }
 }

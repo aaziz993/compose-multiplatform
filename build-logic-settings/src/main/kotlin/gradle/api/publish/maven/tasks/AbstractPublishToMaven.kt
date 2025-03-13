@@ -1,7 +1,7 @@
 package gradle.api.publish.maven.tasks
 
 import gradle.collection.SerializableAnyMap
-import gradle.tasks.Task
+import gradle.api.tasks.Task
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

@@ -25,9 +25,6 @@ internal interface KotlinTarget : Named {
      */
     val compilations: List<KotlinCompilation>?
 
-    val isLeaf: Boolean
-        get() = false
-
     val needKMP: Boolean
         get() = true
 

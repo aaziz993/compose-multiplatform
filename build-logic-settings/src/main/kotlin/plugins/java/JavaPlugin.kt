@@ -4,11 +4,9 @@ import gradle.accessors.java
 import gradle.accessors.kotlin
 import gradle.accessors.projectProperties
 import gradle.api.all
-import gradle.decapitalized
 import gradle.api.file.replace
 import gradle.plugins.kmp.android.KotlinAndroidTarget
 import gradle.plugins.kmp.jvm.KotlinJvmTarget
-import gradle.plugins.kotlin.sourceSets
 import gradle.project.ProjectLayout
 import gradle.project.ProjectType
 import org.gradle.api.Plugin
@@ -17,53 +15,43 @@ import org.gradle.api.plugins.ApplicationPlugin
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.testing.Test
-import org.gradle.internal.extensions.stdlib.capitalized
-import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.withType
-import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformJvmPlugin
 import org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest
 
 internal class JavaPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (projectProperties.kotlin.targets.none { target -> target is KotlinJvmTarget }) {
-                return@with
-            }
+            projectProperties.plugins.java.takeIf {
+                it.enabled && projectProperties.kotlin.targets.any { target -> target is KotlinJvmTarget }
+            }?.let { java ->
 
+                tryRegisterJvmStressTest()
 
+                if (projectProperties.kotlin.targets.any { target -> target is KotlinAndroidTarget }) {
+                    return@with
+                }
 
-            tryRegisterJvmStressTest()
-
-            if (projectProperties.kotlin.enabledKMP) {
                 tryRegisterJavaCodegenTestTask()
-            }
 
-            if (projectProperties.kotlin.targets.any { target -> target is KotlinAndroidTarget }) {
-                return@with
-            }
+                plugins.apply(JavaPlugin::class.java)
 
-            plugins.apply(JavaPlugin::class.java)
+                java.applyTo()
 
-            projectProperties.java?.applyTo()
+                // Apply java application plugin.
+                if (projectProperties.type == ProjectType.APP && !projectProperties.compose.enabled) {
+                    plugins.apply(ApplicationPlugin::class.java)
 
-            // Apply java application plugin.
-            if (projectProperties.type == ProjectType.APP && !projectProperties.compose.enabled) {
-                plugins.apply(ApplicationPlugin::class.java)
-
-                projectProperties.application?.applyTo()
-            }
-
-            if (!projectProperties.kotlin.enabledKMP) {
-                plugins.apply(KotlinPlatformJvmPlugin::class.java)
+                    projectProperties.application?.applyTo()
+                }
 
                 adjustSourceSets()
             }
         }
     }
 
-    private fun Project.adjustSourceSets() {
+    private fun Project.adjustSourceSets() =
         when (projectProperties.layout) {
             ProjectLayout.FLAT -> {
                 java.sourceSets.all { sourceSet ->
@@ -80,38 +68,24 @@ internal class JavaPlugin : Plugin<Project> {
             else -> Unit
         }
 
-        projectProperties.kotlin.sourceSets<KotlinJvmTarget>()?.forEach { sourceSet ->
-            val compilationPrefix =
-                if (sourceSet.name.endsWith(SourceSet.TEST_SOURCE_SET_NAME, true)) "test" else ""
-
-            sourceSet.dependencies?.let { dependencies ->
-                dependencies {
-                    dependencies.forEach { dependency ->
-                        add(
-                            "$compilationPrefix${dependency.configuration.capitalized()}"
-                                .decapitalized(),
-                            dependency.resolve(),
-                        )
-                    }
-                }
-            }
-        }
-    }
-
     private fun Project.tryRegisterJvmStressTest() {
         val jvmTest = tasks.withType<KotlinJvmTest>()
 
         if (jvmTest.isNotEmpty()) {
+
             tasks.register<Test>("stressTest") {
                 classpath = files(jvmTest.map { it.classpath })
                 testClassesDirs = files(jvmTest.map { it.testClassesDirs })
-
                 maxHeapSize = "2g"
                 jvmArgs("-XX:+HeapDumpOnOutOfMemoryError")
                 forkEvery = 1
                 systemProperty("enable.stress.tests", "true")
                 include("**/*StressTest*")
                 useJUnitPlatform()
+            }
+
+            jvmTest.all {
+                exclude("**/*StressTest*")
             }
         }
     }
@@ -143,14 +117,17 @@ internal class JavaPlugin : Plugin<Project> {
 
             val javaCodegenCompilation = jvmTarget.compilations.create("javaCodegenTest")
 
-            jvmTarget.testRuns.create("javaCodegen").setExecutionSourceFrom(javaCodegenCompilation)
+            val testRun = jvmTarget.testRuns.create("javaCodegen")
+            testRun.setExecutionSourceFrom(javaCodegenCompilation)
+
+            val testCompileClasspath = configurations.getByName("${jvmTarget.targetName}TestCompileClasspath")
 
             javaCodegenCompilation.compileJavaTaskProvider?.configure {
-                classpath += configurations.getByName("jvmTestCompileClasspath")
+                classpath += testCompileClasspath
             }
 
-            javaCodegenCompilation.configurations.compileDependencyConfiguration.extendsFrom(configurations.getByName("jvmTestCompileClasspath"))
-            javaCodegenCompilation.configurations.runtimeDependencyConfiguration?.extendsFrom(configurations.getByName("jvmTestRuntimeClasspath"))
+            javaCodegenCompilation.configurations.compileDependencyConfiguration.extendsFrom(testCompileClasspath)
+            javaCodegenCompilation.configurations.runtimeDependencyConfiguration?.extendsFrom(configurations.getByName("${jvmTarget.targetName}TestRuntimeClasspath"))
             javaCodegenCompilation.defaultSourceSet.dependsOn(commonJavaCodegenTest)
         }
 }

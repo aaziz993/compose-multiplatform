@@ -1,8 +1,8 @@
 package gradle.api.tasks.copy
 
 import gradle.collection.SerializableAnyMap
-import gradle.tasks.Expand
-import gradle.tasks.FilesMatching
+import gradle.api.tasks.Expand
+import gradle.api.tasks.FilesMatching
 import kotlinx.serialization.Serializable
 import org.gradle.api.file.DuplicatesStrategy
 

@@ -21,9 +21,6 @@ internal data class KotlinWasmWasiTarget(
     KotlinTargetWithNodeJsDsl,
     HasBinaries<KotlinJsBinaryContainer> {
 
-    override val isLeaf: Boolean
-        get() = true
-
     context(Project)
     override fun applyTo(named: Named) {
         super<KotlinWasmTargetDsl>.applyTo(named)

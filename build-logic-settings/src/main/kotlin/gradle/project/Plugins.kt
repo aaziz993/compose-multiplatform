@@ -1,5 +1,6 @@
 package gradle.project
 
+import gradle.plugins.java.JavaPluginExtension
 import kotlinx.serialization.Serializable
 import plugins.animalsniffer.model.AnimalSnifferSettings
 import plugins.apivalidation.model.ApiValidationSettings
@@ -8,6 +9,7 @@ import plugins.develocity.model.DevelocitySettings
 import plugins.doctor.model.DoctorSettings
 import plugins.dokka.model.DokkaSettings
 import plugins.githooks.model.GitHooksSettings
+import plugins.java.model.JavaPluginSettings
 import plugins.knit.model.KnitSettings
 import plugins.kotlin.allopen.model.AllOpenSettings
 import plugins.kotlin.apollo.model.ApolloSettings
@@ -45,6 +47,7 @@ internal data class Plugins(
     val knit: KnitSettings = KnitSettings(),
     val publishing: PublishingSettings = PublishingSettings(),
     val signing: SigningSettings = SigningSettings(),
+    val java: JavaPluginSettings = JavaPluginSettings(),
     val ksp: KspSettings = KspSettings(),
     val allOpen: AllOpenSettings = AllOpenSettings(),
     val noArg: NoArgSettings = NoArgSettings(),
