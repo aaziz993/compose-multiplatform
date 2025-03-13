@@ -15,6 +15,10 @@ internal inline fun <reified T : Named> Project.containerize(vararg values: T) =
         }
     }
 
+internal inline fun <reified T> NamedDomainObjectCollection<T>.getByNameOrAll(name: String) =
+    if (name.isEmpty()) toList() else listOf(getByName(name))
+
+
 internal inline fun <T> NamedDomainObjectCollection<out T>.all(crossinline action: (T) -> Unit) =
     all { action(this) }
 
@@ -22,17 +26,8 @@ internal inline fun <T> NamedDomainObjectCollection<out T>.configureEach(crossin
     configureEach { action(this) }
 
 internal inline fun <reified T> NamedDomainObjectCollection<out T>.maybeNamed(name: String, noinline configure: T.() -> Unit): NamedDomainObjectProvider<out T>? =
-    if (name in names) {
-        named(name, configure)
-    }
-    else {
-        null
-    }
+    if (name in names) named(name, configure) else null
 
 internal inline fun <reified S : T, T> NamedDomainObjectCollection<T>.maybeNamed(name: String, type: Class<S>, noinline configure: S.() -> Unit) =
-    if (name in names) {
-        named(name, type, configure)
-    }
-    else {
-        null
-    }
+    if (name in names) named(name, type, configure) else null
+

@@ -1,5 +1,6 @@
 package gradle.plugins.kmp.jvm
 
+import gradle.api.getByNameOrAll
 import gradle.plugins.kotlin.KotlinExecution
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -14,7 +15,7 @@ internal data class JvmCompilationsTestRunSource(
     context(Project)
     override fun applyTo(run: KotlinJvmTestRun) =
         run.setExecutionSourceFrom(
-            classpathCompilations.map(run.target.compilations::getByName),
-            testCompilations.map(run.target.compilations::getByName),
+            classpathCompilations.flatMap(run.target.compilations::getByNameOrAll),
+            testCompilations.flatMap(run.target.compilations::getByNameOrAll),
         )
 }

@@ -108,10 +108,10 @@ public class ProjectPlugin : Plugin<Project> {
             project.plugins.apply(KtorfitPlugin::class.java)
             project.plugins.apply(ApolloPlugin::class.java)
             project.plugins.apply(PowerAssertPlugin::class.java)
-            project.plugins.apply(JavaPlugin::class.java) // should be applied before kmp plugin.
             project.plugins.apply(AndroidPlugin::class.java) // apply and configure android library or application plugin.
             project.plugins.apply(AnimalSnifferPlugin::class.java)
             project.plugins.apply(KMPPlugin::class.java) // need android library or application plugin applied.
+            project.plugins.apply(JavaPlugin::class.java) //  apply after kmp plugin.
             project.plugins.apply(KspPlugin::class.java) // kspCommonMainMetadata need kmp plugin applied.
             project.plugins.apply(NativePlugin::class.java)
             project.plugins.apply(ApplePlugin::class.java)

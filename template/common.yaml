@@ -215,46 +215,6 @@ plugins:
     debug: true
     ignoreFailures: true
 
-  # publishing
-  publishing:
-    repositories:
-      - mavenLocal: { }
-      - maven:
-          name: GithubPackages
-          url: https://maven.pkg.github.com/aaziz993
-          credentials:
-            username: aaziz993
-            password: $envOrLocal.github.password
-      - maven:
-          name: SpacePackages
-          url: https://maven.pkg.jetbrains.space/aaziz93/p/aaziz-93/maven
-          credentials:
-            username: aaziz93
-            password: $envOrLocal.jetbrains.space.password
-    publications:
-      - maven:
-          pom:
-            inceptionYear: '2025'
-            licenses:
-              - name: Apache License, Version 2.0
-                url: https://www.apache.org/licenses/LICENSE-2.0.txt
-                distribution: repo
-                comments: A business-friendly OSS license.
-            issueManagement:
-              system: GitHub Issues
-              url: https://github.com/aaziz993/compose-multiplatform/issues
-            developers:
-              - id: aaziz993
-                name: Aziz Atoev
-                email: a.atoev93@gmail.com
-                organization: AITech
-                organizationUrl: https://github.com/aaziz993
-            scm:
-              url: https://github.com/aaziz993/compose-multiplatform
-              connection: scm:git:git://github.com:aaziz993/compose-multiplatform.git
-              developerConnection: scm:git:ssh://github.com:aaziz993/compose-multiplatform.git
-              tag: HEAD
-
   # api that you can use to develop lightweight compiler plugins. KSP provides a simplified compiler plugin API that leverages the power of Kotlin while keeping the learning curve at a minimum. Compared to KAPT, annotation processors that use KSP can run up to 2x faster.
   ksp:
     enabled: true

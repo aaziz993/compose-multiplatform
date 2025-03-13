@@ -177,35 +177,7 @@ internal data class MavenPublication(
      * @param source The source of the artifact.
      * @param config An action to configure the values of the constructed [MavenArtifact].
      */
-    val artifacts: List<Artifact>? = null,
-    /**
-     * Clears any previously added artifacts from [.getArtifacts] and creates artifacts from the specified sources.
-     * Each supplied source is interpreted as per [.artifact].
-     *
-     * For example, to exclude the dependencies declared by a component and instead use a custom set of artifacts:
-     * <pre class='autoTested'>
-     * plugins {
-     * id 'java'
-     * id 'maven-publish'
-     * }
-     *
-     * task sourceJar(type: Jar) {
-     * archiveClassifier = "sources"
-     * }
-     *
-     * publishing {
-     * publications {
-     * maven(MavenPublication) {
-     * from components.java
-     * artifacts = ["my-custom-jar.jar", sourceJar]
-     * }
-     * }
-     * }
-    </pre> *
-     *
-     * @param sources The set of artifacts for this publication.
-     */
-    val artifactSources: List<String>? = null,
+    val artifacts: List<@Serializable(with = ArtifactTransformingSerializer::class) Artifact>? = null,
     /**
      * Sets the groupId for this publication.
      */
@@ -276,12 +248,11 @@ internal data class MavenPublication(
         pom?.applyTo(named.pom)
         from?.let(components::getByName)?.let(named::from)
 
-        artifacts?.forEach { (source, artifact) ->
-            named.artifact(source, artifact::applyTo)
-        }
+        artifacts?.forEach { artifact ->
+            artifact.artifact?.also { mavenArtifact ->
+                named.artifact(artifact.source, mavenArtifact::applyTo)
+            } ?: named.artifact(artifact.source)
 
-        artifactSources?.forEach { source ->
-            named.artifact(source)
         }
 
         named.groupId = groupId ?: project.group.toString()

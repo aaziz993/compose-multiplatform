@@ -1,13 +1,10 @@
 package gradle.plugins.signing
 
-import org.gradle.kotlin.dsl.withType
 import gradle.accessors.publishing
 import gradle.accessors.signing
-import gradle.api.configureEach
-import kotlinx.serialization.Serializable
+import gradle.api.getByNameOrAll
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
-import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.plugins.signing.SignOperation
 
 /**
@@ -161,15 +158,17 @@ internal abstract class SigningExtension {
                 signing.useInMemoryPgpKeys(defaultKeyId, defaultSecretKey, defaultPassword)
             }
 
-            signTasks?.map(tasks::getByName)?.let { tasks ->
+
+
+            signTasks?.flatMap(tasks::getByNameOrAll)?.let { tasks ->
                 signing.sign(*tasks.toTypedArray())
             }
 
-            signConfigurations?.map(configurations::getByName)?.let { configurations ->
+            signConfigurations?.flatMap(configurations::getByNameOrAll)?.let { configurations ->
                 signing.sign(*configurations.toTypedArray())
             }
 
-            signPublications?.map(publishing.publications::getByName)?.let { publications ->
+            signPublications?.flatMap(publishing.publications::getByNameOrAll)?.let { publications ->
                 signing.sign(*publications.toTypedArray())
             }
 

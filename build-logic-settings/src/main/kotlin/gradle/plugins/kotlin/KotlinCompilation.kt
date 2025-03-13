@@ -1,6 +1,7 @@
 package gradle.plugins.kotlin
 
 import gradle.api.Named
+import gradle.api.getByNameOrAll
 import gradle.api.trySet
 import gradle.plugins.kmp.KotlinSourceSet
 import gradle.serialization.serializer.KeyTransformingSerializer
@@ -123,7 +124,7 @@ internal interface KotlinCompilation : HasKotlinDependencies, Named {
         output?.applyTo(named.output)
 
         associatedCompilations
-            ?.map(named.target.compilations::getByName)
+            ?.flatMap(named.target.compilations::getByNameOrAll)
             ?.forEach(named::associateWith)
     }
 }

@@ -2,6 +2,7 @@ package gradle.plugins.cmp.desktop.model
 
 import gradle.accessors.java
 import gradle.accessors.kotlin
+import gradle.api.getByNameOrAll
 import gradle.api.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -31,7 +32,7 @@ internal data class JvmApplication(
         fromSourceSet?.let(java.sourceSets::getByName)?.let(application::from)
         fromKotlinTarget?.let(kotlin.targets::getByName)?.let(application::from)
         disableDefaultConfiguration?.takeIf { it }?.run { application.disableDefaultConfiguration() }
-        dependsOn?.map(tasks::getByName)?.let { tasks -> application.dependsOn(*tasks.toTypedArray()) }
+        dependsOn?.flatMap(tasks::getByNameOrAll)?.let { tasks -> application.dependsOn(*tasks.toTypedArray()) }
         fromFiles?.let { fromFiles -> application.fromFiles(*fromFiles.toTypedArray()) }
         application::mainClass trySet mainClass
         application::javaHome trySet javaHome
