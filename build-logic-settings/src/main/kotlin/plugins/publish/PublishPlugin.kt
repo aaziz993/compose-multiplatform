@@ -7,14 +7,18 @@ import org.gradle.kotlin.dsl.withType
 import org.gradle.kotlin.dsl.assign
 import gradle.accessors.projectProperties
 import gradle.accessors.publishing
+import gradle.api.maybeNamed
 import gradle.project.ProjectType
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin
 import org.gradle.api.publish.maven.tasks.AbstractPublishToMaven
+import org.gradle.api.publish.plugins.PublishingPlugin
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.internal.extensions.core.extra
+import org.gradle.internal.extensions.stdlib.capitalized
+import org.gradle.kotlin.dsl.provideDelegate
 import org.gradle.plugins.signing.Sign
 
 internal class PublishPlugin : Plugin<Project> {
@@ -28,6 +32,12 @@ internal class PublishPlugin : Plugin<Project> {
                     plugins.apply(MavenPublishPlugin::class.java)
 
                     publishing.applyTo()
+
+                    configureJavadocArtifact()
+
+                    projectProperties.kotlin.hierarchy.forEach { (group, aliases) ->
+                        registerAggregatingTask(group, aliases)
+                    }
                 }
         }
     }
@@ -66,5 +76,15 @@ internal class PublishPlugin : Plugin<Project> {
         // Otherwise Gradle will throw an error like:
         //   Task ':publishX' uses output of task ':signY' without declaring an explicit or implicit dependency.
         tasks.withType<AbstractPublishToMaven>().configureEach { mustRunAfter(tasks.withType<Sign>()) }
+    }
+
+    private fun Project.registerAggregatingTask(name: String, targets: Set<String>) {
+        tasks.register("publish${name}Publications") {
+            group = PublishingPlugin.PUBLISH_TASK_GROUP
+            val targetsTasks = targets.mapNotNull { target ->
+                tasks.maybeNamed("publish${target.capitalized()}PublicationToMavenRepository")
+            }
+            dependsOn(targetsTasks)
+        }
     }
 }

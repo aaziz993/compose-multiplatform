@@ -7,7 +7,7 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinHierarchyBuilder
 @Serializable
 internal data class HierarchyGroup(
     val group: String,
-    val aliases: List<String>
+    val aliases: Set<String>
 ) {
 
     fun applyTo(builder: KotlinHierarchyBuilder) {
