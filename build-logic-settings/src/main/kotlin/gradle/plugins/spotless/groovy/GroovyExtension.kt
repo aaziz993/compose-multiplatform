@@ -14,8 +14,8 @@ import org.gradle.api.Project
 internal data class GroovyExtension(
     override val lineEnding: LineEnding? = null,
     override val ratchetFrom: String? = null,
-    override val excludeSteps: MutableSet<String>? = null,
-    override val excludePaths: MutableSet<String>? = null,
+    override val excludeSteps: Set<String>? = null,
+    override val excludePaths: Set<String>? = null,
     override val encoding: String? = null,
     override val target: List<String>? = null,
     override val targetExclude: List<String>? = null,
@@ -39,6 +39,10 @@ internal data class GroovyExtension(
     override val toggleOffOn: ToggleOffOn? = null,
     override val toggleIfOffOn: Boolean? = null,
     override val toggleOffOnDisable: Boolean? = null,
+    override val importOrder: List<String>? = null,
+    override val importOrderFile: String? = null,
+    override val removeSemicolons: Boolean? = null,
+    override val greclipse: GrEclipseConfig? = null,
 ) : BaseGroovyExtension(), HasBuiltinDelimiterForLicense {
 
     context(Project)
