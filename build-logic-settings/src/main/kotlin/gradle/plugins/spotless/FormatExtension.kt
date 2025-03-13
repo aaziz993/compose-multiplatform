@@ -3,6 +3,7 @@
 package gradle.plugins.spotless
 
 import com.diffplug.spotless.LineEnding
+import com.diffplug.spotless.extra.wtp.EclipseWtpFormatterStep
 import gradle.accessors.allLibs
 import gradle.accessors.libs
 import gradle.accessors.resolveVersion
@@ -126,6 +127,76 @@ internal abstract class FormatExtension {
 
     context(Project)
     abstract fun applyTo()
+
+    @Serializable
+    internal data class ClangFormatConfig(
+        val version: String? = null,
+        val pathToExe: String? = null,
+        val style: String? = null,
+    ){
+        fun applyTo(format: com.diffplug.gradle.spotless.FormatExtension.ClangFormatConfig){
+            pathToExe?.let(format::pathToExe)
+            style?.let(format::style)
+        }
+    }
+
+    @Serializable
+    internal data class EclipseWtpConfig(
+        val version: String? = null,
+        val type: EclipseWtpFormatterStep,
+        val settingsFiles: List<String>? = null,
+    ) {
+
+        fun applyTo(eclipse: com.diffplug.gradle.spotless.FormatExtension.EclipseWtpConfig) {
+            settingsFiles?.let { eclipse.configFile(*it.toTypedArray()) }
+        }
+    }
+
+    @Serializable
+    internal sealed class LicenseHeaderConfig {
+
+        abstract val name: String?
+        abstract val contentPattern: String?
+        abstract val header: String?
+        abstract val headerFile: String?
+        abstract val delimiter: String?
+        abstract val yearSeparator: String?
+        abstract val skipLinesMatching: String?
+        abstract val updateYearWithLatest: Boolean?
+
+        fun applyTo(license: com.diffplug.gradle.spotless.FormatExtension.LicenseHeaderConfig) {
+            name?.let(license::named)
+            contentPattern?.let(license::onlyIfContentMatches)
+            yearSeparator?.let(license::yearSeparator)
+            skipLinesMatching?.let(license::skipLinesMatching)
+            updateYearWithLatest?.let(license::updateYearWithLatest)
+        }
+    }
+
+    @Serializable
+    internal data class NativeCmd(
+        val name: String,
+        val pathToExe: String,
+        val arguments: List<String> = emptyList()
+    )
+
+    @Serializable
+    internal data class PrettierConfig(
+        val devDependencies: MutableMap<String, String>? = null
+    )
+
+    @Serializable
+    internal data class Replace(
+        val name: String,
+        val original: String,
+        val replacement: String
+    )
+
+    @Serializable
+    internal data class ToggleOffOn(
+        val off: String,
+        val on: String
+    )
 }
 
 private object FormatExtensionSerializer : JsonContentPolymorphicSerializer<FormatExtension>(

@@ -1,13 +1,16 @@
 package gradle.plugins.spotless
 
 import com.diffplug.gradle.spotless.BaseKotlinExtension
+import com.diffplug.spotless.kotlin.KtfmtStep
 import gradle.accessors.libs
+import gradle.accessors.resolveVersion
 import gradle.accessors.settings
 import gradle.accessors.version
 import gradle.accessors.versions
+import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-internal abstract class BaseKotlinExtension : FormatExtension {
+internal abstract class BaseKotlinExtension : FormatExtension() {
 
     abstract val diktat: DiktatConfig?
 
@@ -41,6 +44,64 @@ internal abstract class BaseKotlinExtension : FormatExtension {
                     (ktlint.version?.resolveVersion() ?: settings.libs.versions.version("ktlint"))
                             ?.let(extension::ktlint) ?: extension.ktlint(),
             )
+        }
+    }
+
+    @Serializable
+    internal data class DiktatConfig(
+        val version: String? = null,
+        val configFile: String? = null
+    ) {
+
+        fun applyTo(config: BaseKotlinExtension.DiktatConfig) {
+            configFile?.let(config::configFile)
+        }
+    }
+
+    @Serializable
+    internal data class KtfmtConfig(
+        val version: String? = null,
+        val style: KtfmtStep.Style,
+        val options: KtfmtFormattingOptions
+    ) {
+
+        fun applyTo(config: BaseKotlinExtension.KtfmtConfig) =
+            when (style) {
+                KtfmtStep.Style.DROPBOX -> config.dropboxStyle()
+                KtfmtStep.Style.GOOGLE -> config.googleStyle()
+                KtfmtStep.Style.KOTLINLANG -> config.kotlinlangStyle()
+                else -> throw IllegalArgumentException("Unsupported ktfmt default style")
+            }.configure(options::applyTo)
+    }
+
+    @Serializable
+    internal data class KtfmtFormattingOptions(
+        val maxWidth: Int? = null,
+        val blockIndent: Int? = null,
+        val continuationIndent: Int? = null,
+        val removeUnusedImport: Boolean? = null,
+    ) {
+
+        fun applyTo(options: KtfmtStep.KtfmtFormattingOptions) {
+            maxWidth?.let(options::setMaxWidth)
+            blockIndent?.let(options::setBlockIndent)
+            continuationIndent?.let(options::setContinuationIndent)
+            removeUnusedImport?.let(options::setRemoveUnusedImport)
+        }
+    }
+
+    @Serializable
+    internal data class KtlintConfig(
+        val version: String? = null,
+        val editorConfigPath: String? = null,
+        val editorConfigOverride: Map<String, String>? = null,
+        val customRuleSets: List<String>? = null,
+    ) {
+
+        fun applyTo(config: BaseKotlinExtension.KtlintConfig) {
+            editorConfigPath?.let(config::setEditorConfigPath)
+            editorConfigOverride?.let(config::editorConfigOverride)
+            customRuleSets?.let(config::customRuleSets)
         }
     }
 }

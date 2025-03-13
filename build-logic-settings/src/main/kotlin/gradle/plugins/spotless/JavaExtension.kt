@@ -108,4 +108,96 @@ internal data class JavaExtension(
     override fun applyTo() = spotless.java {
         applyTo(this)
     }
+
+    @Serializable
+    internal class CleanthatJavaConfig(
+        val groupArtifact: String? = null,
+        val version: String? = null,
+        val sourceJdk: String? = null,
+        val mutators: List<String?>? = null,
+        val excludedMutators: List<String?>? = null,
+        val includeDraft: Boolean? = null
+    ){
+        fun applyTo(format: JavaExtension.CleanthatJavaConfig){
+            groupArtifact?.let(format::groupArtifact)
+            version?.let(format::version)
+            sourceJdk?.let(format::sourceCompatibility)
+            mutators?.let(format::addMutators)
+            excludedMutators?.forEach(format::excludeMutator)
+            includeDraft?.let(format::includeDraft)
+        }
+    }
+
+    @Serializable
+    internal data class EclipseConfig(
+        val formatterVersion: String? = null,
+        val settingsFiles: List<String>? = null,
+        val p2Mirrors: Map<String, String>? = null
+    ) {
+
+        fun applyTo(eclipse: JavaExtension.EclipseConfig) {
+            settingsFiles?.let { eclipse.configFile(*it.toTypedArray()) }
+            p2Mirrors?.let(eclipse::withP2Mirrors)
+        }
+    }
+
+    @Serializable
+    internal data class FormatAnnotationsConfig(
+        val addedTypeAnnotations: List<String>? = null,
+        val removedTypeAnnotations: List<String>? = null
+    ){
+        fun applyTo(annotations: JavaExtension.FormatAnnotationsConfig){
+            addedTypeAnnotations?.forEach(annotations::addTypeAnnotation)
+            removedTypeAnnotations?.forEach(annotations::removeTypeAnnotation)
+        }
+    }
+
+    @Serializable
+    internal data class GoogleJavaFormatConfig(
+        val version: String? = null,
+        val groupArtifact: String? = null,
+        val style: String? = null,
+        val reflowLongStrings: Boolean? = null,
+        val reorderImports: Boolean? = null,
+        val formatJavadoc: Boolean? = null,
+    ) {
+
+        fun applyTo(format: JavaExtension.GoogleJavaFormatConfig) {
+            groupArtifact?.let(format::groupArtifact)
+            style?.let(format::style)
+            reflowLongStrings?.let(format::reflowLongStrings)
+            reorderImports?.let(format::reorderImports)
+            formatJavadoc?.let(format::formatJavadoc)
+        }
+    }
+
+    @Serializable
+    internal data class ImportOrderConfig(
+        val importOrder: List<String>? = null,
+        val importOrderFile: String? = null,
+        val wildcardsLast: Boolean?=null,
+        val semanticSort: Boolean?=null,
+        val treatAsPackage: Set<String>? = null,
+        val treatAsClass: Set<String>? = null
+    ){
+        fun applyTo(importOrder: JavaExtension.ImportOrderConfig){
+            wildcardsLast?.let(importOrder::wildcardsLast)
+            semanticSort?.let(importOrder::semanticSort)
+            treatAsPackage?.let(importOrder::treatAsPackage)
+            treatAsClass?.let(importOrder::treatAsClass)
+        }
+    }
+
+    @Serializable
+    internal data class PalantirJavaFormatConfig(
+        val version: String? = null,
+        var style: String? = null,
+        var formatJavadoc: Boolean? = null
+    ) {
+
+        fun applyTo(format: JavaExtension.PalantirJavaFormatConfig) {
+            style?.let(format::style)
+            formatJavadoc?.let(format::formatJavadoc)
+        }
+    }
 }
