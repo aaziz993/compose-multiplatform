@@ -6,7 +6,6 @@ import gradle.accessors.signing
 import gradle.api.configureEach
 import gradle.api.getByNameOrAll
 import gradle.api.toVersion
-import io.github.z4kn4fein.semver.Version
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 import org.gradle.plugins.signing.Sign

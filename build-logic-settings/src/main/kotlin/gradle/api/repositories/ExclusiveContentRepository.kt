@@ -33,9 +33,10 @@ internal data class ExclusiveContentRepository(
 
     context(Project)
     fun applyTo(repository: ExclusiveContentRepository) {
-        forRepositories?.flatMap(repositories::getByNameOrAll)?.let { forRepositories ->
-            repository.forRepositories(*forRepositories.toTypedArray())
-        }
+        forRepositories
+            ?.flatMap(repositories::getByNameOrAll)?.let { forRepositories ->
+                repository.forRepositories(*forRepositories.toTypedArray())
+            }
 
         filter?.let { filter ->
             repository.filter(filter::applyTo)
