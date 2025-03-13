@@ -1,6 +1,7 @@
 package gradle.caching
 
 import kotlinx.serialization.Serializable
+import org.gradle.api.initialization.Settings
 import org.gradle.caching.configuration.BuildCacheConfiguration
 import org.gradle.caching.http.HttpBuildCache
 import org.jetbrains.dokka.plugability.configuration
@@ -33,12 +34,13 @@ internal data class BuildCacheConfiguration(
     val remotes: List<@Serializable(with = BuildCacheTransformingSerializer::class) BuildCache>? = null,
 ) {
 
+    context(Settings)
     @Suppress("UNCHECKED_CAST")
     fun applyTo(configuration: BuildCacheConfiguration) {
         local?.applyTo(configuration.local)
 
         remotes?.forEach { remote ->
-            configuration.remote(remote.type, remote::applyTo)
+            remote.applyTo(configuration)
         }
     }
 }
