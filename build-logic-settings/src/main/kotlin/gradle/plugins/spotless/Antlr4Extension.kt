@@ -37,10 +37,11 @@ internal data class Antlr4Extension(
     override val toggleOffOn: ToggleOffOn? = null,
     override val toggleIfOffOn: Boolean? = null,
     override val toggleOffOnDisable: Boolean? = null,
-) : FormatExtension {
+) : FormatExtension(), HasBuiltinDelimiterForLicense {
 
     context(Project)
     override fun applyTo() = spotless.antlr4 {
-        applyTo(this)
+       super<FormatExtension>. applyTo(this)
+       super<HasBuiltinDelimiterForLicense>. applyTo(this)
     }
 }

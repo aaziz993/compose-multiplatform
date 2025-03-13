@@ -3,6 +3,7 @@ package gradle.plugins.spotless
 import com.diffplug.gradle.spotless.JavaExtension
 import com.diffplug.spotless.LineEnding
 import gradle.accessors.libs
+import gradle.accessors.resolveVersion
 import gradle.accessors.settings
 import gradle.accessors.spotless
 import gradle.accessors.version
@@ -53,13 +54,15 @@ internal data class JavaExtension(
     val formatAnnotations: FormatAnnotationsConfig? = null,
     /** Apply CleanThat refactoring rules.  */
     val cleanthat: CleanthatJavaConfig? = null,
-) : FormatExtension {
+) : FormatExtension, HasBuiltinDelimiterForLicense {
 
     context(Project)
     override fun applyTo(extension: com.diffplug.gradle.spotless.FormatExtension) {
-        super.applyTo(extension)
+        super<FormatExtension>.applyTo(extension)
 
         extension as JavaExtension
+
+        super<HasBuiltinDelimiterForLicense>.applyTo(extension)
 
         importOrder?.let { importOrder ->
             importOrder.applyTo(

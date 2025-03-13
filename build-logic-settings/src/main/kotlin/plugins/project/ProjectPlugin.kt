@@ -2,6 +2,7 @@ package plugins.project
 
 import com.gradle.develocity.agent.gradle.test.DevelocityTestConfiguration
 import com.gradle.develocity.agent.gradle.test.TestRetryConfiguration
+import gradle.accessors.exportExtras
 import gradle.accessors.kotlin
 import org.gradle.kotlin.dsl.withType
 import org.gradle.kotlin.dsl.register
@@ -79,6 +80,8 @@ public class ProjectPlugin : Plugin<Project> {
                 println("Load and apply $PROJECT_PROPERTIES_FILE to: $name")
                 println(yaml.dump(Json.Default.encodeToAny(properties)))
             }
+
+            exportExtras()
 
             if (projectProperties.kotlin.targets.isNotEmpty()) {
                 projectProperties.group?.let(::setGroup)

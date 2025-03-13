@@ -1,5 +1,6 @@
 package gradle.plugins.project
 
+import gradle.buildcache.BuildCacheConfiguration
 import gradle.collection.deepMerge
 import gradle.collection.resolve
 import gradle.initialization.ScriptHandler
@@ -36,6 +37,7 @@ internal data class ProjectProperties(
     override val dependencies: List<@Serializable(with = DependencyTransformingSerializer::class) Dependency>? = null,
     val includes: List<String>? = null,
     val projects: List<ProjectDescriptor>? = null,
+    val buildCache: BuildCacheConfiguration? = null,
     val gradleEnterpriseAccessKey: String? = null,
     val type: ProjectType = ProjectType.LIB,
     val layout: ProjectLayout = ProjectLayout.DEFAULT,

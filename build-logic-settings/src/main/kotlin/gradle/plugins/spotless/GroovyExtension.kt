@@ -37,10 +37,11 @@ internal data class GroovyExtension(
     override val toggleOffOn: ToggleOffOn? = null,
     override val toggleIfOffOn: Boolean? = null,
     override val toggleOffOnDisable: Boolean? = null,
-) : FormatExtension {
+) : BaseGroovyExtension(), HasBuiltinDelimiterForLicense {
 
     context(Project)
     override fun applyTo() = spotless.groovy {
-        applyTo(this)
+        super<BaseGroovyExtension>.applyTo(this)
+        super<HasBuiltinDelimiterForLicense>.applyTo(this)
     }
 }

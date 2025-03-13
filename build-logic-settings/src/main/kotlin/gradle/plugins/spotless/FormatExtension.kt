@@ -15,59 +15,59 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
 @Serializable(with = FormatExtensionSerializer::class)
-internal interface FormatExtension {
+internal abstract class FormatExtension {
 
-    val lineEnding: LineEnding?
-    val ratchetFrom: String?
-    val excludeSteps: Set<String>?
-    val excludePaths: Set<String>?
-    val encoding: String?
-    val target: List<String>?
-    val targetExclude: List<String>?
-    val targetExcludeIfContentContains: String?
-    val targetExcludeIfContentContainsRegex: String?
-    val replace: List<Replace>?
-    val replaceRegex: List<Replace>?
+    abstract val lineEnding: LineEnding?
+    abstract val ratchetFrom: String?
+    abstract val excludeSteps: Set<String>?
+    abstract val excludePaths: Set<String>?
+    abstract val encoding: String?
+    abstract val target: List<String>?
+    abstract val targetExclude: List<String>?
+    abstract val targetExcludeIfContentContains: String?
+    abstract val targetExcludeIfContentContainsRegex: String?
+    abstract val replace: List<Replace>?
+    abstract val replaceRegex: List<Replace>?
 
     /** Removes trailing whitespace.  */
-    val trimTrailingWhitespace: Boolean?
+    abstract val trimTrailingWhitespace: Boolean?
 
     /** Ensures that files end with a single newline.  */
-    val endWithNewline: Boolean?
+    abstract val endWithNewline: Boolean?
 
     /** Ensures that the files are indented using spaces.  */
-    val indentWithSpaces: Int?
+    abstract val indentWithSpaces: Int?
 
     /** Ensures that the files are indented using spaces.  */
-    val indentIfWithSpaces: Boolean?
+    abstract val indentIfWithSpaces: Boolean?
 
     /** Ensures that the files are indented using tabs.  */
-    val indentWithTabs: Int?
+    abstract val indentWithTabs: Int?
 
     /** Ensures that the files are indented using tabs.  */
-    val indentIfWithTabs: Boolean?
-    val nativeCmd: List<NativeCmd>?
-    val licenseHeader: LicenseHeaderConfig?
-    val prettier: PrettierConfig?
-    val biome: BiomeGeneric?
-    val clangFormat: ClangFormatConfig?
-    val eclipseWtp: EclipseWtpConfig?
-    val toggleOffOnRegex: String?
+    abstract val indentIfWithTabs: Boolean?
+    abstract val nativeCmd: List<NativeCmd>?
+    abstract val licenseHeader: LicenseHeaderConfig?
+    abstract val prettier: PrettierConfig?
+    abstract val biome: BiomeGeneric?
+    abstract val clangFormat: ClangFormatConfig?
+    abstract val eclipseWtp: EclipseWtpConfig?
+    abstract val toggleOffOnRegex: String?
 
     /** Disables formatting between the given tags.  */
-    val toggleOffOn: ToggleOffOn?
+    abstract val toggleOffOn: ToggleOffOn?
 
     /** Disables formatting between `spotless:off` and `spotless:on`.  */
-    val toggleIfOffOn: Boolean?
+    abstract val toggleIfOffOn: Boolean?
 
     /**
      * Undoes all previous calls to [.toggleOffOn] and
      * [.toggleOffOn].
      */
-    val toggleOffOnDisable: Boolean?
+    abstract val toggleOffOnDisable: Boolean?
 
     context(Project)
-    fun applyTo(extension: com.diffplug.gradle.spotless.FormatExtension) {
+    open fun applyTo(extension: com.diffplug.gradle.spotless.FormatExtension) {
         lineEnding?.let(extension::setLineEndings)
         ratchetFrom?.let(extension::setRatchetFrom)
         excludeSteps?.forEach(extension::ignoreErrorForStep)
@@ -125,12 +125,7 @@ internal interface FormatExtension {
     }
 
     context(Project)
-    fun applyTo()
-
-    context(Project)
-    fun String.resolveVersion() =
-        if (startsWith("$")) settings.allLibs.resolveVersion(this)
-        else this
+    abstract fun applyTo()
 }
 
 private object FormatExtensionSerializer : JsonContentPolymorphicSerializer<FormatExtension>(

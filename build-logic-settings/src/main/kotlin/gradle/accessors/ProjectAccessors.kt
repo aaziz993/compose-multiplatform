@@ -9,8 +9,10 @@ import com.github.gmazzo.gradle.plugins.BuildConfigExtension
 import com.google.devtools.ksp.gradle.KspExtension
 import com.osacky.doctor.DoctorExtension
 import de.jensklingenberg.ktorfit.gradle.KtorfitGradleConfiguration
+import gradle.api.CI
 import gradle.plugins.project.ProjectProperties
 import io.github.sgrishchenko.karakum.gradle.plugin.KarakumExtension
+import java.util.Properties
 import kotlinx.atomicfu.plugin.gradle.AtomicFUPluginExtension
 import kotlinx.knit.KnitPluginExtension
 import kotlinx.kover.gradle.plugin.dsl.KoverProjectExtension
@@ -23,8 +25,10 @@ import org.gradle.api.file.Directory
 import org.gradle.api.initialization.Settings
 import org.gradle.api.internal.GradleInternal
 import org.gradle.api.plugins.ExtensionAware
+import org.gradle.api.plugins.ExtraPropertiesExtension
 import org.gradle.api.plugins.JavaApplication
 import org.gradle.api.plugins.JavaPluginExtension
+import org.gradle.api.provider.ProviderFactory
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.api.toolchain.management.ToolchainManagement
@@ -63,20 +67,42 @@ internal var Project.projectProperties: ProjectProperties
         extraProperties[PROJECT_PROPERTIES_EXT] = value
     }
 
+context(Settings)
+internal fun exportExtras() = extra.exportExtras()
+
 context(Project)
-internal fun String.resolveValue() =
+internal fun exportExtras() = extra.exportExtras()
+
+private fun ExtraPropertiesExtension.exportExtras() =
+    properties.putAll(
+        mapOf(
+            "isCI" to CI,
+        ),
+    )
+
+context(Settings)
+internal fun String.resolveValue() = resolveValue(providers, extra, projectProperties.localProperties)
+
+context(Project)
+internal fun String.resolveValue() = resolveValue(providers, extra, projectProperties.localProperties)
+
+private fun String.resolveValue(
+    providers: ProviderFactory,
+    extra: ExtraPropertiesExtension,
+    localProperties: Properties,
+) =
     if (startsWith("$")) {
         val key = substringAfter(".")
         removePrefix("$")
             .substringBefore(".")
             .split("|")
             .map(String::lowercase)
-            .firstNotNullOf { reference ->
+            .firstNotNullOfOrNull { reference ->
                 when (reference) {
                     "env" -> System.getenv()[key.toScreamingSnakeCase()]
                     "gradle" -> providers.gradleProperty(key.toDotCase()).orNull
                     "extra" -> extra[key.toDotCase()]
-                    "local" -> projectProperties.localProperties[key.toDotCase()]
+                    "local" -> localProperties[key.toDotCase()]
                     else -> this
                 }
             }

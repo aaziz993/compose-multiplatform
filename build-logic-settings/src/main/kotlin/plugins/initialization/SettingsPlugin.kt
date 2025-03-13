@@ -3,6 +3,7 @@
 package plugins.initialization
 
 import gradle.accessors.allLibs
+import gradle.accessors.exportExtras
 import gradle.accessors.libs
 import gradle.accessors.projectProperties
 import gradle.accessors.toVersionCatalogUrlPath
@@ -42,6 +43,8 @@ public class SettingsPlugin : Plugin<Settings> {
             with(target) {
                 // Load and apply project.yaml to settings.gradle.kts.
                 projectProperties = layout.settingsDirectory.load()
+
+                exportExtras()
 
                 projectProperties.pluginManagement.let { pluginManagement ->
                     pluginManagement {
@@ -144,9 +147,7 @@ public class SettingsPlugin : Plugin<Settings> {
                     project.applyTo()
                 }
 
-                buildCache{
-
-                }
+                projectProperties.buildCache?.applyTo(buildCache)
             }
 
             target.gradle.projectsLoaded {

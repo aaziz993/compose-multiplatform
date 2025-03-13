@@ -37,7 +37,7 @@ internal data class GroovyGradleExtension(
     override val toggleOffOn: ToggleOffOn? = null,
     override val toggleIfOffOn: Boolean? = null,
     override val toggleOffOnDisable: Boolean? = null,
-) : FormatExtension {
+) : BaseGroovyExtension() {
 
     context(Project)
     override fun applyTo() = spotless.groovyGradle {

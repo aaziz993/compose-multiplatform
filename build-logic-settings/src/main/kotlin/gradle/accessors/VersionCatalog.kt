@@ -2,6 +2,7 @@
 
 package gradle.accessors
 
+import org.gradle.api.Project
 import org.gradle.api.initialization.Settings
 import org.jetbrains.amper.gradle.getBindingMap
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
@@ -82,6 +83,11 @@ internal fun Map<String, TomlParseResult>.resolveVersion(version: String): Strin
         .substringAfter(".")
     return this[catalogName]?.versions?.version(versionAlias)
 }
+
+context(Project)
+internal fun String.resolveVersion() =
+    if (startsWith("$")) settings.allLibs.resolveVersion(removePrefix("$"))
+    else this
 
 internal fun String.toVersionCatalogUrlPath(): String {
     val fileNamePart = substringAfter(":").replace(":", "-")

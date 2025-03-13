@@ -43,6 +43,6 @@ internal data class KotlinGradleExtension(
 
     context(Project)
     override fun applyTo() = spotless.kotlinGradle {
-        applyTo(this)
+        super.applyTo(this)
     }
 }

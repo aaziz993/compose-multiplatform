@@ -39,10 +39,11 @@ internal data class KotlinExtension(
     override val toggleOffOn: ToggleOffOn? = null,
     override val toggleIfOffOn: Boolean? = null,
     override val toggleOffOnDisable: Boolean? = null,
-) : BaseKotlinExtension() {
+) : BaseKotlinExtension(), HasBuiltinDelimiterForLicense {
 
     context(Project)
     override fun applyTo() = spotless.kotlin {
-        applyTo(this)
+        super<BaseKotlinExtension>.applyTo(this)
+        super<HasBuiltinDelimiterForLicense>.applyTo(this)
     }
 }

@@ -3,7 +3,7 @@ package gradle.plugins.android
 import com.android.build.api.dsl.SigningConfig
 import gradle.accessors.android
 import gradle.api.trySet
-import gradle.collection.resolveValue
+import gradle.accessors.resolveValue
 import org.gradle.api.Project
 
 /**
