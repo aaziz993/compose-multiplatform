@@ -5,7 +5,7 @@ import gradle.accessors.kotlin
 import gradle.accessors.projectProperties
 import gradle.api.all
 import gradle.decapitalized
-import gradle.file.replace
+import gradle.api.file.replace
 import gradle.plugins.kmp.android.KotlinAndroidTarget
 import gradle.plugins.kmp.jvm.KotlinJvmTarget
 import gradle.plugins.kotlin.sourceSets

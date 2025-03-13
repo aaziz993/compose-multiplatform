@@ -1,10 +1,9 @@
 package gradle.project
 
-import gradle.api.publish.PublishingExtension
-import gradle.buildcache.BuildCacheConfiguration
+import gradle.caching.BuildCacheConfiguration
 import gradle.collection.deepMerge
 import gradle.collection.resolve
-import gradle.initialization.ScriptHandler
+import gradle.api.initialization.ScriptHandler
 import gradle.plugins.android.BaseExtension
 import gradle.plugins.android.application.BaseAppModuleExtension
 import gradle.plugins.android.library.LibraryExtension

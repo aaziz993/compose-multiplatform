@@ -7,7 +7,7 @@ import gradle.accessors.plugins
 import gradle.accessors.projectProperties
 import gradle.accessors.resolveValue
 import gradle.api.CI
-import gradle.buildcache.RemoteBuildCache
+import gradle.caching.RemoteBuildCache
 import gradle.plugins.develocity.BuildScanConfiguration
 import gradle.plugins.develocity.DevelocityConfiguration
 import gradle.plugins.develocity.Git

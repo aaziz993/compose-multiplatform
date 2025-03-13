@@ -10,7 +10,7 @@ plugins:
       - java:
           # specify license header text
           licenseHeader:
-            headerFile: ../LICENSE_HEADER.java
+            headerFile: ../license/SLASH_LICENSE_HEADER
             delimiter: '(package|import|public|class|module) '
           # include source files
           targets: [ '**/*.java' ]
@@ -36,7 +36,7 @@ plugins:
             editorConfigPath: ../.editorconfig
           # specify license header text
           licenseHeader:
-            headerFile: ../LICENSE_HEADER.kt
+            headerFile: ../license/SLASH_LICENSE_HEADER
             delimiter: (package |@file|import )
           # include source files
           targets: [ '**/*.kt','**/*.kts' ]
@@ -48,7 +48,7 @@ plugins:
             editorConfigPath: ../.editorconfig
           # specify license header text
           licenseHeader:
-            headerFile: ../LICENSE_HEADER.kt
+            headerFile: ../license/SLASH_LICENSE_HEADER
             delimiter: (package |@file|import )
           # include source files
           targets: [ '**/*.gradle.kts' ]
@@ -57,14 +57,14 @@ plugins:
       - javascript:
           # specify license header text
           licenseHeader:
-            headerFile: ../LICENSE_HEADER.js
+            headerFile: ../license/SLASH_LICENSE_HEADER
             delimiter: ^
           # include source files
           target: [ '**/*.js' ]
       - typescript:
           # specify license header text
           licenseHeader:
-            headerFile: ../LICENSE_HEADER.ts
+            headerFile: ../license/SLASH_LICENSE_HEADER
             delimiter: ^
           # include source files
           target: [ '**/*.ts' ]
@@ -74,7 +74,7 @@ plugins:
       - yaml:
           # specify license header text
           licenseHeader:
-            headerFile: ../LICENSE_HEADER.yaml
+            headerFile: ../license/SHARP_LICENSE_HEADER
             delimiter: ^
           # include source files
           target: [ '**/*.yaml', '**/*.yml' ]
@@ -82,7 +82,7 @@ plugins:
           name: xml
           # specify license header text
           licenseHeader:
-            headerFile: ../LICENSE_HEADER.xml
+            headerFile: ../license/TAG_LICENSE_HEADER
             delimiter: <(\?xml)?
           # include source files
           target: [ '**/*.xml' ]
@@ -90,7 +90,7 @@ plugins:
           name: properties
           # specify license header text
           licenseHeader:
-            headerFile: ../LICENSE_HEADER.properties
+            headerFile: ../license/SHARP_LICENSE_HEADER
             delimiter: ^
           # include source files
           target: [ '**/*.properties' ]
@@ -100,7 +100,7 @@ plugins:
           name: html
           # specify license header text
           licenseHeader:
-            headerFile: ../LICENSE_HEADER.html
+            headerFile: ../license/TAG_LICENSE_HEADER
             delimiter: <(!DOCTYPE |html )
           # include source files
           target: [ '**/*.html' ]
@@ -108,15 +108,23 @@ plugins:
           name: md
           # specify license header text
           licenseHeader:
-            headerFile: ../LICENSE_HEADER.md
+            headerFile: ../license/TAG_LICENSE_HEADER
             delimiter: ^
           # include source files
           target: [ '**/*.md' ]
       - format:
+          name: editconfig
+          # specify license header text
+          licenseHeader:
+            headerFile: ../license/SHARP_LICENSE_HEADER
+            delimiter: ^
+          # include source files
+          target: [ '**/.editconfig' ]
+      - format:
           name: gitignore
           # specify license header text
           licenseHeader:
-            headerFile: ../LICENSE_HEADER.gitignore
+            headerFile: ../license/SHARP_LICENSE_HEADER
             delimiter: ^
           # include source files
           target: [ '**/.gitignore' ]
@@ -124,14 +132,14 @@ plugins:
           name: gitattributes
           # specify license header text
           licenseHeader:
-            headerFile: ../LICENSE_HEADER.gitattributes
+            headerFile: ../license/SHARP_LICENSE_HEADER
             delimiter: ^
           # include source files
           target: [ '**/.gitattributes' ]
       - format:
           # exclude source files
           targetExclude: [
-            ../LICENSE_HEADER.* ,
+            ../license/*_LICENSE_HEADER ,
             '**/generated-src/**',
             '**/build-*/**',
             '**/.idea/**',

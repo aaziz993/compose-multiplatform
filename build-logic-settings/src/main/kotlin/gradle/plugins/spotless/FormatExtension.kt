@@ -133,8 +133,9 @@ internal abstract class FormatExtension {
         val version: String? = null,
         val pathToExe: String? = null,
         val style: String? = null,
-    ){
-        fun applyTo(format: com.diffplug.gradle.spotless.FormatExtension.ClangFormatConfig){
+    ) {
+
+        fun applyTo(format: com.diffplug.gradle.spotless.FormatExtension.ClangFormatConfig) {
             pathToExe?.let(format::pathToExe)
             style?.let(format::style)
         }
@@ -153,16 +154,16 @@ internal abstract class FormatExtension {
     }
 
     @Serializable
-    internal sealed class LicenseHeaderConfig {
-
-        abstract val name: String?
-        abstract val contentPattern: String?
-        abstract val header: String?
-        abstract val headerFile: String?
-        abstract val delimiter: String?
-        abstract val yearSeparator: String?
-        abstract val skipLinesMatching: String?
-        abstract val updateYearWithLatest: Boolean?
+    internal data class LicenseHeaderConfig(
+        val name: String? = null,
+        val contentPattern: String? = null,
+        val header: String? = null,
+        val headerFile: String? = null,
+        val delimiter: String? = null,
+        val yearSeparator: String? = null,
+        val skipLinesMatching: String? = null,
+        val updateYearWithLatest: Boolean? = null,
+    ) {
 
         fun applyTo(license: com.diffplug.gradle.spotless.FormatExtension.LicenseHeaderConfig) {
             name?.let(license::named)

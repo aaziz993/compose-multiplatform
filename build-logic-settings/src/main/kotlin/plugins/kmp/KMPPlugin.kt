@@ -10,7 +10,7 @@ import gradle.accessors.settings
 import gradle.accessors.sourceSetsToComposeResourcesDirs
 import gradle.api.all
 import gradle.decapitalized
-import gradle.file.replace
+import gradle.api.file.replace
 import gradle.plugins.kotlin.KotlinSettings
 import gradle.project.ProjectLayout
 import gradle.prefixIfNotEmpty

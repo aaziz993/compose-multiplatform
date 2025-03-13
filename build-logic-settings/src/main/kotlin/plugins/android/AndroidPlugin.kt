@@ -11,7 +11,7 @@ import gradle.accessors.projectProperties
 import gradle.accessors.settings
 import gradle.api.all
 import gradle.decapitalized
-import gradle.file.replace
+import gradle.api.file.replace
 import gradle.plugins.kmp.android.KotlinAndroidTarget
 import gradle.plugins.kotlin.sourceSets
 import gradle.project.ProjectLayout
@@ -45,6 +45,10 @@ internal class AndroidPlugin : Plugin<Project> {
             projectProperties.android?.applyTo()
 
             if (!projectProperties.kotlin.enabledKMP) {
+                projectProperties.kotlin.targets.filterIsInstance<KotlinAndroidTarget>().forEach { target ->
+
+                }
+
                 projectProperties.kotlin.sourceSets<KotlinAndroidTarget>()?.forEach { sourceSet ->
                     val compilationName = if (
                         sourceSet.name.endsWith("Test") ||

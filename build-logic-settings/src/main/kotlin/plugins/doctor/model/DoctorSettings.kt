@@ -10,7 +10,7 @@ import gradle.api.CI
 import gradle.plugins.doctor.DoctorExtension
 import gradle.plugins.doctor.JavaHomeHandler
 import gradle.project.EnabledSettings
-import gradle.services.unregister
+import gradle.api.services.unregister
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
