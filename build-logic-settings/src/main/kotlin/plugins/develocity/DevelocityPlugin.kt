@@ -7,17 +7,9 @@ import gradle.accessors.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.projectProperties
-import gradle.api.CI
-import gradle.api.gitBranchName
-import gradle.api.gitCommitId
-import gradle.api.gitStatus
-import gradle.api.teamCityBuildId
-import gradle.api.teamCityBuildTypeId
-import java.net.URLEncoder
 import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
 import org.gradle.api.tasks.testing.Test
-import org.gradle.kotlin.dsl.develocity
 import org.gradle.kotlin.dsl.getByName
 import plugins.develocity.model.DevelocitySettings
 
@@ -33,73 +25,10 @@ internal class DevelocityPlugin : Plugin<Settings> {
                 plugins.apply(settings.libs.plugins.plugin("develocityCommonCustomUserData").id)
 
                 develocity.applyTo()
-
-                if (CI) {
-                    enrichTeamCityData()
-                    enrichGitData()
-                }
             }
         }
     }
 
-    private fun Settings.enrichTeamCityData() {
-        val teamCityUrl = providers.gradleProperty("team-city.url").orNull
-
-        if (teamCityUrl == null) {
-            return
-        }
-
-        gradle.projectsEvaluated {
-            if (CI) {
-                develocity {
-                    rootProject.teamCityBuildId?.let { teamCityBuildId ->
-                        rootProject.teamCityBuildTypeId?.let { teamCityBuildTypeId ->
-                            val teamCityBuildNumber = URLEncoder.encode(teamCityBuildId, "UTF-8")
-
-                            buildScan.link(
-                                "${rootProject.name.uppercase()} TeamCity build",
-                                "$teamCityUrl/buildConfiguration/${teamCityBuildTypeId}/${teamCityBuildNumber}",
-                            )
-                        }
-
-                        buildScan.value("TeamCity CI build id", teamCityBuildId)
-                    }
-                }
-            }
-        }
-    }
-
-    private fun Settings.enrichGitData() = projectProperties.plugins.develocity.let { develocity ->
-        develocity.git?.let { git ->
-            gradle.projectsEvaluated {
-                if (!CI && !git.skipTags) {
-                    develocity {
-                        git.repo.let { repo ->
-                            // Git commit id
-                            val commitId = gitCommitId()
-                            if (commitId.isNotEmpty()) {
-                                buildScan.value("Git Commit ID", commitId)
-                                buildScan.link("GitHub Commit Link", "$repo/tree/$commitId")
-                            }
-
-                            // Git branch name
-                            val branchName = gitBranchName()
-                            if (branchName.isNotEmpty()) {
-                                buildScan.value("Git Branch Name", branchName)
-                                buildScan.link("GitHub Branch Link", "$repo/tree/$branchName")
-                            }
-                        }
-
-                        // Git dirty local state
-                        val status = gitStatus()
-                        if (status.isNotEmpty()) {
-                            buildScan.value("Git Status", status)
-                        }
-                    }
-                }
-            }
-        }
-    }
 
     companion object {
         // Docs: https://docs.gradle.com/develocity/gradle-plugin/current/#test_retry

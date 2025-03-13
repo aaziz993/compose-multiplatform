@@ -1,8 +1,6 @@
 package gradle.plugins.kotlin
 
 import gradle.api.Named
-import gradle.serialization.serializer.JsonContentPolymorphicSerializer
-import kotlinx.serialization.Serializable
 
 /**
  * Represents the execution of Kotlin code, such as tests.

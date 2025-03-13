@@ -23,8 +23,8 @@ internal class JavaPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            projectProperties.plugins.java.takeIf {
-                it.enabled && projectProperties.kotlin.targets.any { target -> target is KotlinJvmTarget }
+            projectProperties.java.takeIf {
+                projectProperties.kotlin.targets.any { target -> target is KotlinJvmTarget }
             }?.let { java ->
 
                 tryRegisterJvmStressTest()

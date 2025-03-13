@@ -3,7 +3,7 @@ package gradle.plugins.kmp
 import gradle.accessors.kotlin
 import gradle.api.Named
 import gradle.plugins.kotlin.KotlinCompilation
-import gradle.serialization.serializer.JsonContentPolymorphicSerializer
+import gradle.serialization.serializer.JsonPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -43,7 +43,7 @@ internal interface KotlinTarget : Named {
     override fun applyTo() = applyTo(kotlin.targets)
 }
 
-private object KotlinTargetSerializer : JsonContentPolymorphicSerializer<KotlinTarget>(
+private object KotlinTargetSerializer : JsonPolymorphicSerializer<KotlinTarget>(
     KotlinTarget::class,
 )
 

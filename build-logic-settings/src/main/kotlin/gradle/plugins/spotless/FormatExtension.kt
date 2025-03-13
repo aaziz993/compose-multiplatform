@@ -4,13 +4,12 @@ package gradle.plugins.spotless
 
 import com.diffplug.spotless.LineEnding
 import com.diffplug.spotless.extra.wtp.EclipseWtpFormatterStep
-import gradle.accessors.allLibs
 import gradle.accessors.libs
 import gradle.accessors.resolveVersion
 import gradle.accessors.settings
 import gradle.accessors.version
 import gradle.accessors.versions
-import gradle.serialization.serializer.JsonContentPolymorphicSerializer
+import gradle.serialization.serializer.JsonPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -200,7 +199,7 @@ internal abstract class FormatExtension {
     )
 }
 
-private object FormatExtensionSerializer : JsonContentPolymorphicSerializer<FormatExtension>(
+private object FormatExtensionSerializer : JsonPolymorphicSerializer<FormatExtension>(
     FormatExtension::class,
 )
 

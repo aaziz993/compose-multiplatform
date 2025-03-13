@@ -30,14 +30,14 @@ internal data class BuildCacheConfiguration(
      *
      * @param type the type of remote cache to configure.
      */
-    val remote: List<BuildCache>? = null,
+    val remotes: List<@Serializable(with = BuildCacheTransformingSerializer::class) BuildCache>? = null,
 ) {
 
     @Suppress("UNCHECKED_CAST")
     fun applyTo(configuration: BuildCacheConfiguration) {
         local?.applyTo(configuration.local)
 
-        remote?.forEach { remote ->
+        remotes?.forEach { remote ->
             configuration.remote(remote.type, remote::applyTo)
         }
     }

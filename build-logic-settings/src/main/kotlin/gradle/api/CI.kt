@@ -6,12 +6,12 @@ import org.gradle.api.initialization.Settings
 
 private const val GITHUB_CI_KEY = "GITHUB_ACTION"
 private const val TEAMCITY_CI_KEY = "TEAMCITY_VERSION"
-private const val SPACE_CI_KEY = "JB_SPACE_EXECUTION_NUMBER"
+private const val JB_SPACE_CI_KEY = "JB_SPACE_EXECUTION_NUMBER"
 
 private val CI_DETECT_PROPERTIES = listOf(
     "CI",
     GITHUB_CI_KEY,
-    SPACE_CI_KEY,
+    JB_SPACE_CI_KEY,
     TEAMCITY_CI_KEY,
 )
 
@@ -23,8 +23,8 @@ internal val TEAMCITY: Boolean by lazy {
     System.getenv().contains(TEAMCITY_CI_KEY)
 }
 
-internal val SPACE: Boolean by lazy {
-    System.getenv().contains(SPACE_CI_KEY)
+internal val JB_SPACE: Boolean by lazy {
+    System.getenv().contains(JB_SPACE_CI_KEY)
 }
 
 internal val CI: Boolean by lazy {

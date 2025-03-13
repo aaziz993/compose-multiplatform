@@ -14,17 +14,17 @@ internal interface PasswordCredentials : Credentials {
      *
      * @param userName The user name. May be null.
      */
-    val username: String?
+    val username: String
 
     /**
      * Sets the password to use when authenticating.
      *
      * @param password The password. May be null.
      */
-    val password: String?
+    val password: String
 
     fun applyTo(credentials: PasswordCredentials) {
-        username?.let(credentials::setUsername)
-        password?.let(credentials::setPassword)
+        credentials.username = username
+        credentials.password = password
     }
 }

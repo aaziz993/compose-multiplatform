@@ -1,11 +1,8 @@
 package gradle.caching
 
-import gradle.serialization.serializer.JsonContentPolymorphicSerializer
-import kotlinx.serialization.DeserializationStrategy
+import gradle.serialization.serializer.JsonPolymorphicSerializer
+import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.jsonObject
-import org.gradle.caching.configuration.BuildCacheConfiguration
 
 /**
  * Configuration object for a build cache.
@@ -34,10 +31,11 @@ internal interface BuildCache {
     }
 }
 
-private object BuildCacheSerializer : JsonContentPolymorphicSerializer<BuildCache>(BuildCache::class) {
+private object BuildCacheSerializer : JsonPolymorphicSerializer<BuildCache>(
+    BuildCache::class,
+)
 
-    override fun selectDeserializer(element: JsonElement): DeserializationStrategy<BuildCache> = when {
-        element.jsonObject.containsKey("url") -> HttpBuildCache.serializer()
-        else -> throw IllegalArgumentException("Unknown json value: $element")
-    }
-}
+internal object BuildCacheTransformingSerializer : KeyTransformingSerializer<BuildCache>(
+    BuildCache.serializer(),
+    "type",
+)

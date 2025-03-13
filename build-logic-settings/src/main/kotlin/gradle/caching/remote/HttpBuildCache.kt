@@ -1,11 +1,13 @@
-package gradle.caching
+package gradle.caching.remote
 
+import gradle.caching.AbstractBuildCache
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.caching.configuration.BuildCache
-import org.gradle.caching.configuration.BuildCacheConfiguration
 import org.gradle.caching.http.HttpBuildCache
 
 @Serializable
+@SerialName("http")
 internal data class HttpBuildCache(
     override val isEnabled: Boolean? = null,
     override val isPush: Boolean? = null,
@@ -29,9 +31,5 @@ internal data class HttpBuildCache(
         allowUntrustedServer?.let(cache::setAllowUntrustedServer)
         allowInsecureProtocol?.let(cache::setAllowInsecureProtocol)
         useExpectContinue?.let(cache::setUseExpectContinue)
-    }
-
-    override fun applyTo(configuration: BuildCacheConfiguration) {
-        super.applyTo(configuration)
     }
 }

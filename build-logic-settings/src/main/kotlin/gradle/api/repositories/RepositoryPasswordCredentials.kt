@@ -8,6 +8,6 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 internal data class RepositoryPasswordCredentials(
-    override val username: String? = null,
-    override val password: String? = null,
+    override val username: String,
+    override val password: String,
 ) : PasswordCredentials

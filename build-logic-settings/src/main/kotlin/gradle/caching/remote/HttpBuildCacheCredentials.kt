@@ -1,10 +1,10 @@
-package gradle.caching
+package gradle.caching.remote
 
 import gradle.plugins.credentials.PasswordCredentials
 import kotlinx.serialization.Serializable
 
 @Serializable
 internal data class HttpBuildCacheCredentials(
-    override val username: String? = null,
-    override val password: String? = null
+    override val username: String,
+    override val password: String
 ) : PasswordCredentials

@@ -1,7 +1,7 @@
 package gradle.plugins.kmp.jvm
 
 import gradle.plugins.kotlin.KotlinExecution
-import gradle.serialization.serializer.JsonContentPolymorphicSerializer
+import gradle.serialization.serializer.JsonPolymorphicSerializer
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
@@ -19,7 +19,7 @@ internal interface JvmClasspathTestRunSource : KotlinExecution.ExecutionSource {
     fun applyTo(run: KotlinJvmTestRun)
 }
 
-internal object JvmClasspathTestRunSourceSerializer : JsonContentPolymorphicSerializer<JvmClasspathTestRunSource>(
+internal object JvmClasspathTestRunSourceSerializer : JsonPolymorphicSerializer<JvmClasspathTestRunSource>(
     JvmClasspathTestRunSource::class,
 ) {
 

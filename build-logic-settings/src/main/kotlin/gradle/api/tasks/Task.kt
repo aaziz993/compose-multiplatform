@@ -2,7 +2,7 @@ package gradle.api.tasks
 
 import gradle.api.Named
 import gradle.collection.SerializableAnyMap
-import gradle.serialization.serializer.JsonContentPolymorphicSerializer
+import gradle.serialization.serializer.JsonPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
 import groovy.lang.MissingPropertyException
 import kotlinx.serialization.SerialName
@@ -343,7 +343,7 @@ internal interface Task : Named {
     override fun applyTo() = applyTo(tasks)
 }
 
-private object TaskSerializer : JsonContentPolymorphicSerializer<Task>(
+private object TaskSerializer : JsonPolymorphicSerializer<Task>(
     Task::class,
 )
 

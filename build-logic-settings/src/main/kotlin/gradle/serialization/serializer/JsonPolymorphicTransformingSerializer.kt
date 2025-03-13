@@ -8,7 +8,7 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 
-internal open class JsonContentPolymorphicSerializer<T : Any>(
+internal open class JsonPolymorphicSerializer<T : Any>(
     private val baseClass: KClass<T>,
     private val classDiscriminator: String = "type",
 ) : JsonContentPolymorphicSerializer<T>(baseClass) {

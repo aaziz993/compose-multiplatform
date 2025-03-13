@@ -2,7 +2,7 @@ package gradle.plugins.develocity
 
 import gradle.api.CI
 import gradle.api.GITHUB
-import gradle.api.SPACE
+import gradle.api.JB_SPACE
 import gradle.api.TEAMCITY
 import gradle.api.tryAssign
 import java.util.*
@@ -68,7 +68,7 @@ internal data class BuildScanConfiguration(
                         when {
                             GITHUB -> "GitHub"
                             TEAMCITY -> "TeamCity"
-                            SPACE -> "Space"
+                            JB_SPACE -> "JBSpace"
                             CI -> "CI"
                             else -> hostname[it] ?: hostname[""] ?: it
                         }

@@ -45,6 +45,7 @@ internal data class ProjectProperties(
     val description: String? = null,
     val version: VersionSettings = VersionSettings(),
     val plugins: Plugins = Plugins(),
+    val java: JavaPluginExtension = JavaPluginExtension(),
     val application: JavaApplication? = null,
     val kotlin: KotlinSettings = KotlinSettings(),
     @Transient

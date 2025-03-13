@@ -112,14 +112,17 @@ dependencies:
   - dokka: :compose-app
   - dokka: :server-app
 
-
 buildCache:
-  remote:
-    type: org.gradle.caching.http.HttpBuildCache
-    isEnabled: true
-    # better make it a variable and set it to true only for CI builds
-    isPush: true
-    url: https://files.pkg.jetbrains.space/aaziz93/p/aaziz-93/compose-multiplatform
-    credentials:
-      username: aaziz93
-      password: $envOrLocal.jb.space.gradle.build.cache.password
+  remotes:
+    - http:
+        isEnabled: true
+        # better make it a variable and set it to true only for CI builds
+        isPush: true
+        url: https://files.pkg.jetbrains.space/aaziz93/p/aaziz-93/compose-multiplatform
+        credentials:
+          username: aaziz93
+          password: $envOrLocal.jb.space.gradle.build.cache.password
+    - develocity:
+        isEnabled: true
+        # better make it a variable and set it to true only for CI builds
+        isPush: true

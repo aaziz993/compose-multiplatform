@@ -7,11 +7,16 @@ import gradle.accessors.plugins
 import gradle.accessors.projectProperties
 import gradle.accessors.resolveValue
 import gradle.api.CI
-import gradle.caching.RemoteBuildCache
+import gradle.api.gitBranchName
+import gradle.api.gitCommitId
+import gradle.api.gitStatus
+import gradle.api.teamCityBuildId
+import gradle.api.teamCityBuildTypeId
 import gradle.plugins.develocity.BuildScanConfiguration
 import gradle.plugins.develocity.DevelocityConfiguration
 import gradle.plugins.develocity.Git
 import gradle.project.EnabledSettings
+import java.net.URLEncoder
 import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings
 import org.gradle.kotlin.dsl.develocity
@@ -25,8 +30,9 @@ internal data class DevelocitySettings(
     override val allowUntrustedServer: Boolean? = null,
     override val accessKey: String? = null,
     override val enabled: Boolean = true,
-    val remoteCache: RemoteBuildCache? = null,
-    val git: Git? = null,
+    val gitRepo: String? = null,
+    val skipGitTags: Boolean = false,
+    val teamCityUrl: String? = null,
 ) : DevelocityConfiguration, EnabledSettings {
 
     context(Settings)
@@ -34,15 +40,62 @@ internal data class DevelocitySettings(
         pluginManager.withPlugin(libs.plugins.plugin("develocity").id) {
             super.applyTo()
 
-            buildCache {
-                remoteCache?.let { remoteCache ->
-                    remote(develocity.buildCache) {
-                        remoteCache.applyTo(this)
+            enrichGitData()
+            enrichTeamCityData()
+        }
 
-                        // Check access key presence to avoid build cache errors on PR builds when access key is not present
-                        isPush = isPush && CI && projectProperties.gradleEnterpriseAccessKey?.resolveValue() != null
+    private fun Settings.enrichGitData() = projectProperties.plugins.develocity.let { develocity ->
+        gradle.projectsEvaluated {
+            if (!CI && !develocity.skipGitTags) {
+                develocity {
+                    develocity.gitRepo.let { gitRepo ->
+                        // Git commit id
+                        val commitId = gitCommitId()
+                        if (commitId.isNotEmpty()) {
+                            buildScan.value("Git Commit ID", commitId)
+                            buildScan.link("GitHub Commit Link", "$gitRepo/tree/$commitId")
+                        }
+
+                        // Git branch name
+                        val branchName = gitBranchName()
+                        if (branchName.isNotEmpty()) {
+                            buildScan.value("Git Branch Name", branchName)
+                            buildScan.link("GitHub Branch Link", "$gitRepo/tree/$branchName")
+                        }
+                    }
+
+                    // Git dirty local state
+                    val status = gitStatus()
+                    if (status.isNotEmpty()) {
+                        buildScan.value("Git Status", status)
                     }
                 }
             }
         }
+    }
+
+    private fun Settings.enrichTeamCityData() {
+        if (teamCityUrl == null) {
+            return
+        }
+
+        gradle.projectsEvaluated {
+            if (CI) {
+                develocity {
+                    rootProject.teamCityBuildId?.let { teamCityBuildId ->
+                        rootProject.teamCityBuildTypeId?.let { teamCityBuildTypeId ->
+                            val teamCityBuildNumber = URLEncoder.encode(teamCityBuildId, "UTF-8")
+
+                            buildScan.link(
+                                "${rootProject.name.uppercase()} TeamCity build",
+                                "$teamCityUrl/buildConfiguration/${teamCityBuildTypeId}/${teamCityBuildNumber}",
+                            )
+                        }
+
+                        buildScan.value("TeamCity CI build id", teamCityBuildId)
+                    }
+                }
+            }
+        }
+    }
 }
