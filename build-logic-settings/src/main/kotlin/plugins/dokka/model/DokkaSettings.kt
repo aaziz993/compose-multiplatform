@@ -13,7 +13,7 @@ import gradle.plugins.dokka.DokkaPublicationTransformingSerializer
 import gradle.plugins.dokka.DokkaSourceSetSpec
 import gradle.plugins.dokka.DokkaSourceSetSpecTransformingSerializer
 import gradle.plugins.dokka.WorkerIsolation
-import gradle.plugins.project.EnabledSettings
+import gradle.project.EnabledSettings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

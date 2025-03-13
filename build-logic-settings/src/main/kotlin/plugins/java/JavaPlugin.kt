@@ -9,8 +9,8 @@ import gradle.file.replace
 import gradle.plugins.kmp.android.KotlinAndroidTarget
 import gradle.plugins.kmp.jvm.KotlinJvmTarget
 import gradle.plugins.kotlin.sourceSets
-import gradle.plugins.project.ProjectLayout
-import gradle.plugins.project.ProjectType
+import gradle.project.ProjectLayout
+import gradle.project.ProjectType
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.ApplicationPlugin

@@ -1,6 +1,6 @@
 @file:Suppress("UnstableApiUsage")
 
-package gradle.plugins.project
+package gradle.project
 
 import gradle.accessors.allLibs
 import gradle.accessors.resolveLibrary

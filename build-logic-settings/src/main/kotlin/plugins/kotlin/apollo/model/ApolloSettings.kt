@@ -10,7 +10,7 @@ import gradle.plugins.kotlin.apollo.ApolloExtension
 import gradle.plugins.kotlin.apollo.ApolloKspProcessor
 import gradle.plugins.kotlin.apollo.KotlinService
 import gradle.plugins.kotlin.apollo.Service
-import gradle.plugins.project.EnabledSettings
+import gradle.project.EnabledSettings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

@@ -8,6 +8,7 @@ import gradle.plugins.java.ModularitySpec
 import gradle.plugins.java.Test
 import gradle.plugins.java.TestNGOptions
 import gradle.collection.SerializableAnyMap
+import gradle.plugins.java.JavaToolchainSpec
 import gradle.tasks.test.DefaultTestFilter
 import gradle.tasks.test.TestLoggingContainer
 import kotlinx.serialization.Serializable
@@ -55,7 +56,9 @@ internal data class KotlinJvmTest(
     override val minHeapSize: String? = null,
     override val maxHeapSize: String? = null,
     override val jvmArgs: List<String>? = null,
+    override val setJvmArgs: List<String>? = null,
     override val bootstrapClasspath: List<String>? = null,
+    override val setBootstrapClasspath: List<String>? = null,
     override val enableAssertions: Boolean? = null,
     override val debug: Boolean? = null,
     override val debugOptions: JavaDebugOptions? = null,
@@ -68,6 +71,7 @@ internal data class KotlinJvmTest(
     override val setIncludes: List<String>? = null,
     override val excludes: List<String>? = null,
     override val setExcludes: List<String>? = null,
+    override val javaLauncher: JavaToolchainSpec? = null,
     val targetName: String? = null,
 ) : Test() {
 

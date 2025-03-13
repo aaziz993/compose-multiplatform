@@ -1,15 +1,18 @@
-package gradle.plugins.spotless
+package gradle.plugins.spotless.kotlin
 
 import com.diffplug.spotless.LineEnding
 import gradle.accessors.spotless
+import gradle.plugins.spotless.BiomeGeneric
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-/** Configures the special groovy-specific extension for Gradle files.  */
 @Serializable
-@SerialName("groovyGradle")
-internal data class GroovyGradleExtension(
+@SerialName("kotlinGradle")
+internal data class KotlinGradleExtension(
+    override val diktat: DiktatConfig? = null,
+    override val ktfmt: List<KtfmtConfig>? = null,
+    override val ktlint: KtlintConfig? = null,
     override val lineEnding: LineEnding? = null,
     override val ratchetFrom: String? = null,
     override val excludeSteps: MutableSet<String>? = null,
@@ -37,10 +40,10 @@ internal data class GroovyGradleExtension(
     override val toggleOffOn: ToggleOffOn? = null,
     override val toggleIfOffOn: Boolean? = null,
     override val toggleOffOnDisable: Boolean? = null,
-) : BaseGroovyExtension() {
+) : BaseKotlinExtension() {
 
     context(Project)
-    override fun applyTo() = spotless.groovyGradle {
-        applyTo(this)
+    override fun applyTo() = spotless.kotlinGradle {
+        super.applyTo(this)
     }
 }

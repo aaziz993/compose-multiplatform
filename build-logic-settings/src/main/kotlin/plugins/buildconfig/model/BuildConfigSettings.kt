@@ -6,7 +6,7 @@ import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
 import gradle.plugins.buildconfig.BuildConfigExtension
-import gradle.plugins.project.EnabledSettings
+import gradle.project.EnabledSettings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

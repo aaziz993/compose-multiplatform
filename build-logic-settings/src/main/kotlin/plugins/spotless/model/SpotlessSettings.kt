@@ -6,7 +6,7 @@ import gradle.accessors.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
-import gradle.plugins.project.EnabledSettings
+import gradle.project.EnabledSettings
 import gradle.plugins.spotless.FormatExtension
 import gradle.plugins.spotless.FormatExtensionTransformingSerializer
 import gradle.plugins.spotless.SpotlessExtension

@@ -1,4 +1,4 @@
-package gradle.plugins.project
+package gradle.project
 
 import gradle.buildcache.BuildCacheConfiguration
 import gradle.collection.deepMerge

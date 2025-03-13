@@ -12,7 +12,7 @@ import gradle.api.all
 import gradle.decapitalized
 import gradle.file.replace
 import gradle.plugins.kotlin.KotlinSettings
-import gradle.plugins.project.ProjectLayout
+import gradle.project.ProjectLayout
 import gradle.prefixIfNotEmpty
 import org.gradle.api.Plugin
 import org.gradle.api.Project

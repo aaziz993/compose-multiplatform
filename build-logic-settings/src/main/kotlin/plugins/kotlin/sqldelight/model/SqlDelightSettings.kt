@@ -7,7 +7,7 @@ import gradle.accessors.plugins
 import gradle.accessors.settings
 import gradle.plugins.kotlin.sqldelight.SqlDelightDatabase
 import gradle.plugins.kotlin.sqldelight.SqlDelightExtension
-import gradle.plugins.project.EnabledSettings
+import gradle.project.EnabledSettings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

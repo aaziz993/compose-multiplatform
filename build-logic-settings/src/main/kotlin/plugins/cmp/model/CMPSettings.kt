@@ -8,7 +8,7 @@ import gradle.accessors.settings
 import gradle.plugins.cmp.android.model.AndroidExtension
 import gradle.plugins.cmp.desktop.model.DesktopExtension
 import gradle.plugins.cmp.resources.model.ResourcesExtension
-import gradle.plugins.project.EnabledSettings
+import gradle.project.EnabledSettings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

@@ -10,7 +10,7 @@ import gradle.accessors.toVersionCatalogUrlPath
 import gradle.accessors.version
 import gradle.accessors.versions
 import gradle.isUrl
-import gradle.plugins.project.ProjectProperties.Companion.load
+import gradle.project.ProjectProperties.Companion.load
 import java.net.URI
 import org.gradle.api.Plugin
 import org.gradle.api.file.FileCollection

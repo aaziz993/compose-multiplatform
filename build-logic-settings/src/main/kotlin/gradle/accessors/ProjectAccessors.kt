@@ -10,7 +10,7 @@ import com.google.devtools.ksp.gradle.KspExtension
 import com.osacky.doctor.DoctorExtension
 import de.jensklingenberg.ktorfit.gradle.KtorfitGradleConfiguration
 import gradle.api.CI
-import gradle.plugins.project.ProjectProperties
+import gradle.project.ProjectProperties
 import io.github.sgrishchenko.karakum.gradle.plugin.KarakumExtension
 import java.util.Properties
 import kotlinx.atomicfu.plugin.gradle.AtomicFUPluginExtension

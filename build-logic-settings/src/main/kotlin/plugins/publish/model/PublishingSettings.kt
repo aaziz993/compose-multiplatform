@@ -1,6 +1,6 @@
 package plugins.publish.model
 
-import gradle.plugins.project.EnabledSettings
+import gradle.project.EnabledSettings
 import gradle.publish.Publication
 import gradle.publish.PublicationTransformingSerializer
 import gradle.publish.PublishingExtension

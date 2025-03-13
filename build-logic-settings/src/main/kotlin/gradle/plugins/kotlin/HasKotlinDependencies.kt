@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin
 
-import gradle.plugins.project.Dependency
-import gradle.plugins.project.DependencyTransformingSerializer
+import gradle.project.Dependency
+import gradle.project.DependencyTransformingSerializer
 import kotlinx.serialization.Serializable
 
 /**

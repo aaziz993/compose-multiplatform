@@ -1,0 +1,13 @@
+package gradle.plugins.kmp.nat
+
+import kotlinx.serialization.Serializable
+import org.jetbrains.kotlin.gradle.tasks.CompilerPluginOptions
+
+@Serializable
+internal data class CompilerPluginOptions(
+    override val optionsByPluginId: Map<String, List<SubpluginOption>>? = null
+) : CompilerPluginConfig() {
+
+    fun toCompilerPluginOptions() =
+        CompilerPluginOptions(super.toCompilerPluginConfig())
+}

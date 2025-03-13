@@ -1,15 +1,16 @@
-package gradle.plugins.spotless
+package gradle.plugins.spotless.groovy
 
 import com.diffplug.spotless.LineEnding
 import gradle.accessors.spotless
+import gradle.plugins.spotless.BiomeGeneric
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-/** Configures the special groovy-specific extension.  */
+/** Configures the special groovy-specific extension for Gradle files.  */
 @Serializable
-@SerialName("groovy")
-internal data class GroovyExtension(
+@SerialName("groovyGradle")
+internal data class GroovyGradleExtension(
     override val lineEnding: LineEnding? = null,
     override val ratchetFrom: String? = null,
     override val excludeSteps: MutableSet<String>? = null,
@@ -37,11 +38,10 @@ internal data class GroovyExtension(
     override val toggleOffOn: ToggleOffOn? = null,
     override val toggleIfOffOn: Boolean? = null,
     override val toggleOffOnDisable: Boolean? = null,
-) : BaseGroovyExtension(), HasBuiltinDelimiterForLicense {
+) : BaseGroovyExtension() {
 
     context(Project)
-    override fun applyTo() = spotless.groovy {
-        super<BaseGroovyExtension>.applyTo(this)
-        super<HasBuiltinDelimiterForLicense>.applyTo(this)
+    override fun applyTo() = spotless.groovyGradle {
+        applyTo(this)
     }
 }

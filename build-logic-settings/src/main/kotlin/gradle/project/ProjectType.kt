@@ -1,4 +1,4 @@
-package gradle.plugins.project
+package gradle.project
 
 internal enum class ProjectType {
     APP,

@@ -4,8 +4,8 @@ import gradle.api.trySet
 import gradle.plugins.kmp.KotlinSourceSet
 import gradle.plugins.kotlin.KotlinCompilationOutput
 import gradle.plugins.kotlin.KotlinCompilationTransformingSerializer
-import gradle.plugins.project.Dependency
-import gradle.plugins.project.DependencyTransformingSerializer
+import gradle.project.Dependency
+import gradle.project.DependencyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project

@@ -1,4 +1,4 @@
-package gradle.plugins.project
+package gradle.project
 
 import gradle.repositories.ArtifactRepository
 import gradle.repositories.ArtifactRepositoryTransformingSerializer

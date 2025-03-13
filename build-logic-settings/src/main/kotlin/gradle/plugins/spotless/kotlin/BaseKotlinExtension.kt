@@ -1,4 +1,4 @@
-package gradle.plugins.spotless
+package gradle.plugins.spotless.kotlin
 
 import com.diffplug.gradle.spotless.BaseKotlinExtension
 import com.diffplug.spotless.kotlin.KtfmtStep
@@ -7,6 +7,7 @@ import gradle.accessors.resolveVersion
 import gradle.accessors.settings
 import gradle.accessors.version
 import gradle.accessors.versions
+import gradle.plugins.spotless.FormatExtension
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

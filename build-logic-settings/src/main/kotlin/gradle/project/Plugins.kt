@@ -1,4 +1,4 @@
-package gradle.plugins.project
+package gradle.project
 
 import kotlinx.serialization.Serializable
 import plugins.animalsniffer.model.AnimalSnifferSettings

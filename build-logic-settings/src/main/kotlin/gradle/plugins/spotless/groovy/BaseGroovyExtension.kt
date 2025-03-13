@@ -1,12 +1,12 @@
-package gradle.plugins.spotless
+package gradle.plugins.spotless.groovy
 
 import com.diffplug.gradle.spotless.BaseGroovyExtension
-import com.diffplug.spotless.extra.groovy.GrEclipseFormatterStep
 import gradle.accessors.libs
 import gradle.accessors.resolveVersion
 import gradle.accessors.settings
 import gradle.accessors.version
 import gradle.accessors.versions
+import gradle.plugins.spotless.FormatExtension
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

@@ -7,7 +7,7 @@ import com.diffplug.gradle.spotless.HasBuiltinDelimiterForLicense
  * [license(licenseContent, licenseDelimiter)][FormatExtension.licenseHeader],
  * where licenseDelimiter is a regex that separates the license part of the code from the content.
  * For some kinds of format -
- * such as [java][JavaExtension], [kotlin][KotlinExtension], and [groovy][GroovyExtension] -
+ * such as [java][JavaExtension], [kotlin][gradle.plugins.spotless.kotlin.KotlinExtension], and [groovy][gradle.plugins.spotless.groovy.GroovyExtension] -
  * we already have a defined delimiter, so users don't have to provide it.
  * By having the java, kotlin, and groovy formats implement this interface,
  * you can write generic code for enforcing whitespace and licenses.

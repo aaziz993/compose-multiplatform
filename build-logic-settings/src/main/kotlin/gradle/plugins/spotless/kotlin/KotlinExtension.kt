@@ -1,7 +1,9 @@
-package gradle.plugins.spotless
+package gradle.plugins.spotless.kotlin
 
 import com.diffplug.spotless.LineEnding
 import gradle.accessors.spotless
+import gradle.plugins.spotless.BiomeGeneric
+import gradle.plugins.spotless.HasBuiltinDelimiterForLicense
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
