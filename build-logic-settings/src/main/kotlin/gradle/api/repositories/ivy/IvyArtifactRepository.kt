@@ -1,10 +1,10 @@
 package gradle.api.repositories.ivy
 
-import gradle.repositories.ArtifactRepository
-import gradle.repositories.AuthenticationSupported
-import gradle.repositories.RepositoryContentDescriptor
-import gradle.repositories.RepositoryPasswordCredentials
-import gradle.repositories.UrlArtifactRepository
+import gradle.api.repositories.ArtifactRepository
+import gradle.api.repositories.AuthenticationSupported
+import gradle.api.repositories.RepositoryContentDescriptor
+import gradle.api.repositories.RepositoryPasswordCredentials
+import gradle.api.repositories.UrlArtifactRepository
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.artifacts.dsl.RepositoryHandler

@@ -1,8 +1,8 @@
 package gradle.api.publish.maven
 
 import gradle.accessors.publishing
-import gradle.publish.maven.Artifact
-import gradle.publish.Publication
+import gradle.api.publish.maven.Artifact
+import gradle.api.publish.Publication
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named

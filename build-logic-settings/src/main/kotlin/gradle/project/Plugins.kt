@@ -23,6 +23,7 @@ import plugins.kotlin.sqldelight.model.SqlDelightSettings
 import plugins.kover.model.KoverSettings
 import plugins.publish.model.PublishingSettings
 import plugins.shadow.model.ShadowSettings
+import plugins.signing.model.SigningSettings
 import plugins.sonar.model.SonarSettings
 import plugins.spotless.model.SpotlessSettings
 import plugins.toolchainmanagement.model.ToolchainManagementSettings
@@ -43,6 +44,7 @@ internal data class Plugins(
     val animalSniffer: AnimalSnifferSettings = AnimalSnifferSettings(),
     val knit: KnitSettings = KnitSettings(),
     val publishing: PublishingSettings = PublishingSettings(),
+    val signing: SigningSettings = SigningSettings(),
     val ksp: KspSettings = KspSettings(),
     val allOpen: AllOpenSettings = AllOpenSettings(),
     val noArg: NoArgSettings = NoArgSettings(),

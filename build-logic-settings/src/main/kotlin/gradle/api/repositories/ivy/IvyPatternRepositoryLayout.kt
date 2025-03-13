@@ -1,6 +1,6 @@
 package gradle.api.repositories.ivy
 
-import gradle.repositories.RepositoryLayout
+import gradle.api.repositories.RepositoryLayout
 import kotlinx.serialization.Serializable
 import org.gradle.api.artifacts.repositories.IvyPatternRepositoryLayout
 

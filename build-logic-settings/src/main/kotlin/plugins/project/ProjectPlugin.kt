@@ -1,10 +1,7 @@
 package plugins.project
 
-import com.gradle.develocity.agent.gradle.test.DevelocityTestConfiguration
-import com.gradle.develocity.agent.gradle.test.TestRetryConfiguration
 import gradle.accessors.exportExtras
 import gradle.accessors.kotlin
-import org.gradle.kotlin.dsl.withType
 import gradle.accessors.projectProperties
 import gradle.api.CI
 import gradle.api.maybeNamed
@@ -23,12 +20,11 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.TaskCollection
 import org.gradle.api.tasks.testing.AbstractTestTask
-import org.gradle.api.tasks.testing.Test
 import org.gradle.internal.extensions.core.extra
 import org.gradle.internal.os.OperatingSystem
 import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.getByName
+import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
 import org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest
@@ -41,6 +37,7 @@ import plugins.apivalidation.ApiValidationPlugin
 import plugins.apple.ApplePlugin
 import plugins.buildconfig.BuildConfigPlugin
 import plugins.cmp.CMPPlugin
+import plugins.develocity.DevelocityPlugin
 import plugins.doctor.DoctorPlugin
 import plugins.dokka.DokkaPlugin
 import plugins.initialization.problemreporter.SLF4JProblemReporterContext
@@ -62,6 +59,7 @@ import plugins.kover.KoverPlugin
 import plugins.nat.NativePlugin
 import plugins.publish.PublishPlugin
 import plugins.shadow.ShadowPlugin
+import plugins.signing.SigningPlugin
 import plugins.sonar.SonarPlugin
 import plugins.spotless.SpotlessPlugin
 import plugins.web.JsPlugin
@@ -99,6 +97,7 @@ public class ProjectPlugin : Plugin<Project> {
             project.plugins.apply(ShadowPlugin::class.java)
             project.plugins.apply(ApiValidationPlugin::class.java)
             project.plugins.apply(PublishPlugin::class.java)
+            project.plugins.apply(SigningPlugin::class.java)
             project.plugins.apply(AllOpenPlugin::class.java)
             project.plugins.apply(NoArgPlugin::class.java)
             project.plugins.apply(AtomicFUPlugin::class.java)
@@ -140,12 +139,14 @@ public class ProjectPlugin : Plugin<Project> {
                 }
             }
 
-            if (CI) {
-                configureTestOnCI()
-            }
-
             projectProperties.tasks?.forEach { task ->
                 task.applyTo()
+            }
+
+            configureLinkTasks()
+
+            if (CI) {
+                configureTestTasksOnCI()
             }
 
             if (problemReporter.getErrors().isNotEmpty()) {
@@ -173,66 +174,10 @@ public class ProjectPlugin : Plugin<Project> {
         )
     }
 
-    /** Applies CI-specific configurations to test tasks. */
     @Suppress("UnstableApiUsage")
-    private fun Project.configureTestOnCI() {
-        // Don't fail build on the CI:
-        // 1. To distinct builds failed because of failed tests and because of compilation errors or anything else.
-        //    TeamCity parses test results to define build status, so the build won't be green.
-        // 2. To run as many tests as possible while keeping fail-fast behavior locally.
-        tasks.withType<AbstractTestTask>().configureEach {
-            ignoreFailures = true
-            if (this is KotlinTest) ignoreRunFailures = true
-        }
-
-        // KotlinTestReport overwrites ignoreFailure values and fails build on test failure if this flag is disabled
-        extra["kotlin.tests.individualTaskReports"] = true
-
-        tasks.withType<KotlinJvmTest>().configureEach {
-            testRetry {
-                maxRetries = 1
-                maxFailures = 10
-            }
-
-            applyTestRetryCompatibilityWorkaround()
-        }
-
-        registerAggregationTestTask(
-            name = "jvmAllTest",
-            taskDependencies = { tasks.withType<KotlinJvmTest>() },
-            targetFilter = { it.platformType == KotlinPlatformType.jvm },
-        )
-
-        registerAggregationTestTask(
-            name = "nativeTest",
-            taskDependencies = { tasks.withType<KotlinNativeTest>().matching { it.enabled } },
-            targetFilter = { it.platformType == KotlinPlatformType.native },
-        )
-
-        listOf("ios", "watchos", "tvos", "macos").forEach { targetGroup ->
-            registerAggregationTestTask(
-                name = "${targetGroup}Test",
-                taskDependencies = {
-                    tasks.withType<KotlinNativeTest>().matching {
-                        it.enabled && it.name.startsWith(targetGroup, ignoreCase = true)
-                    }
-                },
-                targetFilter = {
-                    it.platformType == KotlinPlatformType.native && it.name.startsWith(targetGroup, ignoreCase = true)
-                },
-            )
-        }
-
+    private fun Project.configureLinkTasks() {
         tasks.register("linkAll") {
             dependsOn(tasks.withType<KotlinNativeLink>())
-        }
-
-        if (providers.gradleProperty("project.skipTestTasks").map(String::toBoolean).getOrElse(false)) {
-            tasks.withType<AbstractTestTask>().configureEach { onlyIf { false } }
-        }
-
-        if (providers.gradleProperty("project.skipLinkTasks").map(String::toBoolean).getOrElse(false)) {
-            tasks.withType<KotlinNativeLink>().configureEach { onlyIf { false } }
         }
 
         val os = OperatingSystem.current()
@@ -248,6 +193,32 @@ public class ProjectPlugin : Plugin<Project> {
         tasks.maybeNamed("linkDebugTestMingwX64") {
             onlyIf("run only on Windows") { os == OperatingSystem.WINDOWS }
         }
+    }
+
+    /** Applies CI-specific configurations to test tasks. */
+    private fun Project.configureTestTasksOnCI() {
+        // Don't fail build on the CI:
+        // 1. To distinct builds failed because of failed tests and because of compilation errors or anything else.
+        //    TeamCity parses test results to define build status, so the build won't be green.
+        // 2. To run as many tests as possible while keeping fail-fast behavior locally.
+        tasks.withType<AbstractTestTask>().configureEach {
+            ignoreFailures = true
+            if (this is KotlinTest) ignoreRunFailures = true
+        }
+
+        // KotlinTestReport overwrites ignoreFailure values and fails build on test failure if this flag is disabled
+        extra["kotlin.tests.individualTaskReports"] = true
+
+        tasks.withType<KotlinJvmTest>().configureEach {
+            DevelocityPlugin.testRetry {
+                maxRetries = 1
+                maxFailures = 10
+            }
+
+            applyTestRetryCompatibilityWorkaround()
+        }
+
+        registerAggregationTestTasks()
     }
 
     /**
@@ -289,9 +260,32 @@ public class ProjectPlugin : Plugin<Project> {
         doLast("restore targetName") { targetName = originalTargetName }
     }
 
-    // Docs: https://docs.gradle.com/develocity/gradle-plugin/current/#test_retry
-    private fun Test.testRetry(configure: TestRetryConfiguration.() -> Unit) {
-        extensions.getByName<DevelocityTestConfiguration>("develocity").testRetry(configure)
+    private fun Project.registerAggregationTestTasks() {
+        registerAggregationTestTask(
+            name = "jvmAllTest",
+            taskDependencies = { tasks.withType<KotlinJvmTest>() },
+            targetFilter = { it.platformType == KotlinPlatformType.jvm },
+        )
+
+        registerAggregationTestTask(
+            name = "nativeTest",
+            taskDependencies = { tasks.withType<KotlinNativeTest>().matching { it.enabled } },
+            targetFilter = { it.platformType == KotlinPlatformType.native },
+        )
+
+        listOf("ios", "watchos", "tvos", "macos").forEach { targetGroup ->
+            registerAggregationTestTask(
+                name = "${targetGroup}Test",
+                taskDependencies = {
+                    tasks.withType<KotlinNativeTest>().matching {
+                        it.enabled && it.name.startsWith(targetGroup, ignoreCase = true)
+                    }
+                },
+                targetFilter = {
+                    it.platformType == KotlinPlatformType.native && it.name.startsWith(targetGroup, ignoreCase = true)
+                },
+            )
+        }
     }
 
     private fun Project.registerAggregationTestTask(

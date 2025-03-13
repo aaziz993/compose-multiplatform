@@ -1,9 +1,9 @@
 package gradle.api.publish
 
 import gradle.accessors.publishing
-import gradle.repositories.ArtifactRepository
-import gradle.repositories.ArtifactRepositoryTransformingSerializer
-import gradle.repositories.ExclusiveContentRepository
+import gradle.api.repositories.ArtifactRepository
+import gradle.api.repositories.ArtifactRepositoryTransformingSerializer
+import gradle.api.repositories.ExclusiveContentRepository
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler
@@ -83,7 +83,6 @@ internal interface PublishingExtension {
     context(Project)
     fun applyTo() =
         pluginManager.withPlugin("maven-publish") {
-
             repositories?.forEach { repository ->
                 repository.applyTo(publishing.repositories)
             }

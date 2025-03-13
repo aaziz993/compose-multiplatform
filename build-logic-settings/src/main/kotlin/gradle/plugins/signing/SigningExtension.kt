@@ -1,19 +1,20 @@
 package gradle.plugins.signing
 
+import org.gradle.kotlin.dsl.withType
 import gradle.accessors.publishing
+import gradle.accessors.signing
+import gradle.api.configureEach
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
-import org.gradle.api.publish.PublicationArtifact
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.plugins.signing.SignOperation
-import org.gradle.plugins.signing.SigningExtension
 
 /**
  * The global signing configuration for a project.
  */
-@Serializable
-internal data class SigningExtension(
+internal abstract class SigningExtension {
+
     /**
      * Whether this task should fail if no signatory or signature type are configured at generation time.
      *
@@ -36,13 +37,15 @@ internal data class SigningExtension(
      * }
     </pre> *
      */
-    val required: Boolean? = null,
+    abstract val required: Boolean?
+
     /**
      * Use GnuPG agent to perform signing work.
      *
      * @since 4.5
      */
-    val useGpgCmd: Boolean? = null,
+    abstract val useGpgCmd: Boolean?
+
     /**
      * Use the supplied ascii-armored in-memory PGP secret key and password
      * instead of reading it from a keyring.
@@ -59,7 +62,8 @@ internal data class SigningExtension(
      *
      * @since 6.0
      */
-    val useInMemoryPgpKeys: InMemoryPgpKeys? = null,
+    abstract val useInMemoryPgpKeys: InMemoryPgpKeys?
+
     /**
      * Creates signing tasks that depend on and sign the "archive" produced by the given tasks.
      *
@@ -74,7 +78,8 @@ internal data class SigningExtension(
      * @param tasks The tasks whose archives are to be signed
      * @return the created tasks.
      */
-    val signTasks: List<String>? = null,
+    abstract val signTasks: List<String>?
+
     /**
      * Creates signing tasks that sign [all artifacts][Configuration.getAllArtifacts] of the given configurations.
      *
@@ -86,7 +91,8 @@ internal data class SigningExtension(
      * @param configurations The configurations whose archives are to be signed
      * @return the created tasks.
      */
-    val signConfigurations: List<String>? = null,
+    abstract val signConfigurations: List<String>?
+
     /**
      * Creates signing tasks that sign all publishable artifacts of the given publications.
      *
@@ -100,7 +106,8 @@ internal data class SigningExtension(
      * @return the created tasks.
      * @since 4.8
      */
-    val signPublications: List<String>? = null,
+    abstract val signPublications: List<String>?
+
     /**
      * Digitally signs the publish artifacts, generating signature files alongside them.
      *
@@ -113,7 +120,8 @@ internal data class SigningExtension(
      * @param publishArtifacts The publish artifacts to sign
      * @return The executed [sign operation][SignOperation]
      */
-    val signPublishArtifacts: List<String>? = null,
+    abstract val signPublishArtifacts: List<String>?
+
     /**
      * Digitally signs the files, generating signature files alongside them.
      *
@@ -126,7 +134,8 @@ internal data class SigningExtension(
      * @param files The files to sign.
      * @return The executed [sign operation][SignOperation].
      */
-    val signFiles: List<String>? = null,
+    abstract val signFiles: List<String>?
+
     /**
      * Digitally signs the files, generating signature files alongside them.
      *
@@ -140,59 +149,43 @@ internal data class SigningExtension(
      * @param files The publish artifacts to sign.
      * @return The executed [sign operation][SignOperation].
      */
-    val signClassifierFile: List<ClassifierFile>? = null,
-) {
+    abstract val signClassifierFiles: List<ClassifierFile>?
 
     context(Project)
-    fun applyTo(extension: SigningExtension) {
-        required?.let(extension::setRequired)
-        useGpgCmd?.takeIf { it }?.run { extension.useGpgCmd() }
+    fun applyTo() =
+        pluginManager.withPlugin("signing") {
+            required?.let(signing::setRequired)
+            useGpgCmd?.takeIf { it }?.run { signing.useGpgCmd() }
 
-        useInMemoryPgpKeys?.let { (defaultKeyId, defaultSecretKey, defaultPassword) ->
-            extension.useInMemoryPgpKeys(defaultKeyId, defaultSecretKey, defaultPassword)
+            useInMemoryPgpKeys?.let { (defaultKeyId, defaultSecretKey, defaultPassword) ->
+                signing.useInMemoryPgpKeys(defaultKeyId, defaultSecretKey, defaultPassword)
+            }
+
+            signTasks?.map(tasks::getByName)?.let { tasks ->
+                signing.sign(*tasks.toTypedArray())
+            }
+
+            signConfigurations?.map(configurations::getByName)?.let { configurations ->
+                signing.sign(*configurations.toTypedArray())
+            }
+
+            signPublications?.map(publishing.publications::getByName)?.let { publications ->
+                signing.sign(*publications.toTypedArray())
+            }
+
+            publishing.publications.withType<MavenPublication>().configureEach { publication ->
+                val artifacts = publication.artifacts // This returns a Set<PublishArtifact>
+                artifacts.forEach { artifact ->
+                    signing.sign(artifact)
+                }
+            }
+
+            signFiles?.map(::file)?.let { files ->
+                signing.sign(*files.toTypedArray())
+            }
+
+            signClassifierFiles?.forEach { (classifier, files) ->
+                signing.sign(classifier, *files.map(::file).toTypedArray())
+            }
         }
-
-        signTasks?.map(tasks::getByName)?.let { tasks ->
-            extension.sign(*tasks.toTypedArray())
-        }
-
-        signConfigurations?.map(configurations::getByName)?.let { configurations ->
-            extension.sign(*configurations.toTypedArray())
-        }
-
-        signPublications?.map(publishing.publications::getByName)?.let { publications ->
-            extension.sign(*publications.toTypedArray())
-        }
-
-        val publishingArtifacts = publishing.publications
-            .filterIsInstance<MavenPublication>()
-            .flatMap { it.artifacts } as List<PublicationArtifact>
-
-//        signPublishArtifacts?.map { name ->
-//            publishingArtifacts.find { artifact -> artifact.file.name == name }!!
-//        }?.let { artifacts ->
-//            extension.sign(*artifacts.toTypedArray())
-//        }
-
-        signFiles?.map(::file)?.let { files ->
-            extension.sign(*files.toTypedArray())
-        }
-
-        signClassifierFile?.forEach { (classifier, files) ->
-            extension.sign(classifier, *files.map(::file).toTypedArray())
-        }
-    }
 }
-
-@Serializable
-internal data class ClassifierFile(
-    val classifier: String,
-    val files: List<String>
-)
-
-@Serializable
-internal data class InMemoryPgpKeys(
-    val defaultKeyId: String? = null,
-    val defaultSecretKey: String? = null,
-    val defaultPassword: String? = null
-)

@@ -1,5 +1,7 @@
 package plugins.develocity
 
+import com.gradle.develocity.agent.gradle.test.DevelocityTestConfiguration
+import com.gradle.develocity.agent.gradle.test.TestRetryConfiguration
 import gradle.accessors.id
 import gradle.accessors.libs
 import gradle.accessors.plugin
@@ -14,7 +16,9 @@ import gradle.api.teamCityBuildTypeId
 import java.net.URLEncoder
 import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
+import org.gradle.api.tasks.testing.Test
 import org.gradle.kotlin.dsl.develocity
+import org.gradle.kotlin.dsl.getByName
 import plugins.develocity.model.DevelocitySettings
 
 internal class DevelocityPlugin : Plugin<Settings> {
@@ -30,8 +34,10 @@ internal class DevelocityPlugin : Plugin<Settings> {
 
                 develocity.applyTo()
 
-                enrichTeamCityData()
-                enrichGitData()
+                if (CI) {
+                    enrichTeamCityData()
+                    enrichGitData()
+                }
             }
         }
     }
@@ -92,6 +98,14 @@ internal class DevelocityPlugin : Plugin<Settings> {
                     }
                 }
             }
+        }
+    }
+
+    companion object {
+        // Docs: https://docs.gradle.com/develocity/gradle-plugin/current/#test_retry
+        context(Test)
+        fun testRetry(configure: TestRetryConfiguration.() -> Unit) {
+            extensions.getByName<DevelocityTestConfiguration>("develocity").testRetry(configure)
         }
     }
 }

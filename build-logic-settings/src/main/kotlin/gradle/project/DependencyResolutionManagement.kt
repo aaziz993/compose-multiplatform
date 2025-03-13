@@ -1,7 +1,7 @@
 package gradle.project
 
-import gradle.repositories.ArtifactRepository
-import gradle.repositories.ArtifactRepositoryTransformingSerializer
+import gradle.api.repositories.ArtifactRepository
+import gradle.api.repositories.ArtifactRepositoryTransformingSerializer
 import kotlinx.serialization.Serializable
 
 @Serializable

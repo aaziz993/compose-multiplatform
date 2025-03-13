@@ -1,5 +1,6 @@
 package gradle.project
 
+import gradle.api.publish.PublishingExtension
 import gradle.buildcache.BuildCacheConfiguration
 import gradle.collection.deepMerge
 import gradle.collection.resolve

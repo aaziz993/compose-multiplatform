@@ -2,8 +2,8 @@ package gradle.initialization
 
 import gradle.project.Dependency
 import gradle.project.DependencyTransformingSerializer
-import gradle.repositories.ArtifactRepository
-import gradle.repositories.ArtifactRepositoryTransformingSerializer
+import gradle.api.repositories.ArtifactRepository
+import gradle.api.repositories.ArtifactRepositoryTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.initialization.Settings

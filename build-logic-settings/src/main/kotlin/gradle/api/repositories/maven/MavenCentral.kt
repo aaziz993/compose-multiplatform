@@ -1,7 +1,7 @@
 package gradle.api.repositories.maven
 
-import gradle.repositories.RepositoryContentDescriptor
-import gradle.repositories.RepositoryPasswordCredentials
+import gradle.api.repositories.RepositoryContentDescriptor
+import gradle.api.repositories.RepositoryPasswordCredentials
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.artifacts.ArtifactRepositoryContainer

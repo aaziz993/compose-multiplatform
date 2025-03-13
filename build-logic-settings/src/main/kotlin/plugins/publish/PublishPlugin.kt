@@ -16,7 +16,6 @@ internal class PublishPlugin : Plugin<Project> {
                     it.enabled && projectProperties.kotlin.targets.isNotEmpty() && projectProperties.type == ProjectType.LIB
                 }?.let { publishing ->
                     plugins.apply(MavenPublishPlugin::class.java)
-                    plugins.apply(SigningPlugin::class.java)
 
                     publishing.applyTo()
                 }
