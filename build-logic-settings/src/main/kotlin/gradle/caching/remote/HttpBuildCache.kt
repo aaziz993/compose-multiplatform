@@ -40,6 +40,8 @@ internal data class HttpBuildCache(
 
     context(Settings)
     override fun applyTo(configuration: BuildCacheConfiguration) {
-        configuration.remote(HttpBuildCache::class.java, ::applyTo)
+        configuration.remote(HttpBuildCache::class.java) {
+            applyTo(this)
+        }
     }
 }
