@@ -232,6 +232,8 @@ dependencies {
     implementation(libs.snakeyaml)
 
     // Kotlin
+    // toolkit for running benchmarks for multiplatform code written in Kotlin. It is designed to work with Kotlin/JVM, Kotlin/JS, Kotlin/Native, and Kotlin/WasmJs (experimental) targets.
+    implementation(libs.plugins.kotlinx.benchmark.toDep())
     // generates an additional zero-argument constructor for classes with a specific annotation.
     implementation(libs.plugins.noarg.toDep())
     // adapts Kotlin to the requirements of those frameworks and makes classes annotated with a specific annotation and their members open.

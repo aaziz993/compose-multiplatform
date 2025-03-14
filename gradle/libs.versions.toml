@@ -136,8 +136,10 @@ kotlin = "2.1.10"
 ktlint = "1.4.1"
 # api that you can use to develop lightweight compiler plugins. KSP provides a simplified compiler plugin API that leverages the power of Kotlin while keeping the learning curve at a minimum. Compared to KAPT, annotation processors that use KSP can run up to 2x faster.
 ksp = "2.1.10-1.0.29"
+# toolkit for running benchmarks for multiplatform code written in Kotlin. It is designed to work with Kotlin/JVM, Kotlin/JS, Kotlin/Native, and Kotlin/WasmJs (experimental) targets.
+kotlinx-benchmark = "0.4.13"
 # multiplatform logging
-km-logging = "1.5.0"
+km-logging = "2.0.3"
 # multiplatform library that provides the idiomatic and efficient way of using atomic operations in Kotlin.
 atomicfu = "0.27.0"
 # human readable
@@ -458,7 +460,10 @@ junit = { group = "junit", name = "junit", version.ref = "junit" }
 ##Kotlin
 # api that you can use to develop lightweight compiler plugins. KSP provides a simplified compiler plugin API that leverages the power of Kotlin while keeping the learning curve at a minimum. Compared to KAPT, annotation processors that use KSP can run up to 2x faster.
 symbol-processing-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
-km-logging = { module = "org.lighthousegames:logging", version.ref = "km-logging" }
+#
+kotlinx-benchmark-runtime = { module = "org.jetbrains.kotlinx:kotlinx-benchmark-runtime", version.ref = "kotlinx-benchmark" }
+# logging library targeting Android, iOS, JVM, WasmJS and JS.
+km-logging = { module = "org.diamondedge:logging", version.ref = "km-logging" }
 # multiplatform library that provides the idiomatic and efficient way of using atomic operations in Kotlin.
 atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "atomicfu" }
 # human readable
@@ -1355,6 +1360,8 @@ vanniktech-maven-publish = { id = "com.vanniktech.maven.publish", version.ref = 
 ##Kotlin
 # api that you can use to develop lightweight compiler plugins. KSP provides a simplified compiler plugin API that leverages the power of Kotlin while keeping the learning curve at a minimum. Compared to KAPT, annotation processors that use KSP can run up to 2x faster.
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+# toolkit for running benchmarks for multiplatform code written in Kotlin. It is designed to work with Kotlin/JVM, Kotlin/JS, Kotlin/Native, and Kotlin/WasmJs (experimental) targets.
+kotlinx-benchmark = { id = "org.jetbrains.kotlinx.benchmark", version.ref = "kotlinx-benchmark" }
 # multiplatform library that provides the idiomatic and efficient way of using atomic operations in Kotlin.
 atomicfu = { id = "org.jetbrains.kotlinx.atomicfu", version.ref = "atomicfu" }
 # generates an additional zero-argument constructor for classes with a specific annotation.

@@ -9,7 +9,7 @@ private const val GITHUB_CI_KEY = "GITHUB_ACTION"
 private const val JB_SPACE_CI_KEY = "JB_SPACE_EXECUTION_NUMBER"
 private const val TEAMCITY_CI_KEY = "TEAMCITY_VERSION"
 
-private val CI_NAMES = mapOf(
+private val CI_KEYS_NAMES = mapOf(
     GITHUB_CI_KEY to "Github",
     JB_SPACE_CI_KEY to "Space",
     TEAMCITY_CI_KEY to "Teamcity",
@@ -29,11 +29,11 @@ internal val isJB_SPACE: Boolean by lazy {
 }
 
 internal val isCI: Boolean by lazy {
-    CI_NAMES.keys.any(System.getenv()::contains)
+    CI_KEYS_NAMES.keys.any(System.getenv()::contains)
 }
 
 internal val CI: String? by lazy {
-    CI_NAMES.entries.find { (key, _) -> System.getenv().contains(key) }?.value
+    CI_KEYS_NAMES.entries.find { (key, _) -> System.getenv().contains(key) }?.value
 }
 
 internal fun Settings.gitCommitId(): String = execute("git rev-parse --verify HEAD")
