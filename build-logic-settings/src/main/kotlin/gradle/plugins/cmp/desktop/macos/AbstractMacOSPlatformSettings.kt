@@ -1,7 +1,7 @@
-package gradle.plugins.cmp.desktop.model.macos
+package gradle.plugins.cmp.desktop.macos
 
 import gradle.api.trySet
-import gradle.plugins.cmp.desktop.model.AbstractPlatformSettings
+import gradle.plugins.cmp.desktop.AbstractPlatformSettings
 import org.gradle.api.Project
 import org.jetbrains.compose.desktop.application.dsl.AbstractMacOSPlatformSettings
 

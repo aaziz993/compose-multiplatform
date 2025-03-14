@@ -2,6 +2,7 @@
 
 package plugins.initialization
 
+import org.gradle.kotlin.dsl.register
 import gradle.accessors.allLibs
 import gradle.accessors.exportExtras
 import gradle.accessors.libs
@@ -16,6 +17,8 @@ import org.gradle.api.Plugin
 import org.gradle.api.file.FileCollection
 import org.gradle.api.initialization.Settings
 import org.gradle.api.internal.artifacts.repositories.DefaultMavenArtifactRepository
+import org.gradle.api.resources.TextResource
+import org.gradle.api.tasks.Sync
 import org.gradle.kotlin.dsl.maven
 import org.jetbrains.compose.internal.utils.currentTarget
 import org.tomlj.Toml

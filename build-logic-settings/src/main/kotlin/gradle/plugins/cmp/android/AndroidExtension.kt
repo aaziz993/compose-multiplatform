@@ -1,4 +1,4 @@
-package gradle.plugins.cmp.android.model
+package gradle.plugins.cmp.android
 
 import gradle.accessors.android
 import gradle.accessors.compose

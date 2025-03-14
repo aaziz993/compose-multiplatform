@@ -1,4 +1,4 @@
-package gradle.plugins.cmp.desktop.model.macos
+package gradle.plugins.cmp.desktop.macos
 
 import gradle.api.tryAssign
 import kotlinx.serialization.Serializable

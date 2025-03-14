@@ -1,6 +1,6 @@
-package gradle.plugins.cmp.desktop.model
+package gradle.plugins.cmp.desktop
 
-import gradle.plugins.cmp.desktop.model.macos.NativeApplicationMacOSPlatformSettings
+import gradle.plugins.cmp.desktop.macos.NativeApplicationMacOSPlatformSettings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.compose.desktop.application.dsl.NativeApplicationDistributions

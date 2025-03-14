@@ -18,6 +18,7 @@ import gradle.plugins.web.yarn.YarnRootExtension
 import gradle.serialization.decodeFromAny
 import gradle.api.tasks.Task
 import gradle.api.tasks.TaskTransformingSerializer
+import gradle.project.sync.SyncFile
 import java.util.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
@@ -58,6 +59,7 @@ internal data class ProjectProperties(
     val compose: CMPSettings = CMPSettings(),
     val tasks: List<@Serializable(with = TaskTransformingSerializer::class) Task>? = null,
     private val localPropertiesFile: String = "local.properties",
+    val syncFiles: List<SyncFile> = emptyList(),
 ) : HasKotlinDependencies {
 
     @Transient

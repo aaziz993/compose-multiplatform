@@ -1,6 +1,6 @@
-package gradle.plugins.cmp.desktop.model.macos
+package gradle.plugins.cmp.desktop.macos
 
-import gradle.plugins.cmp.desktop.model.FileAssociation
+import gradle.plugins.cmp.desktop.FileAssociation
 import kotlinx.serialization.Serializable
 
 @Serializable

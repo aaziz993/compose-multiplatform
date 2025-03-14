@@ -1,4 +1,4 @@
-package gradle.plugins.cmp.resources.model
+package gradle.plugins.cmp.resources
 
 import gradle.accessors.compose
 import gradle.accessors.id

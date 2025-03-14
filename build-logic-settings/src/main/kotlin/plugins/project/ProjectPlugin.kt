@@ -1,16 +1,24 @@
+@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
+
 package plugins.project
 
+import org.gradle.kotlin.dsl.register
 import gradle.accessors.exportExtras
 import gradle.accessors.kotlin
 import gradle.accessors.projectProperties
 import gradle.api.CI
+import gradle.api.configureEach
 import gradle.api.maybeNamed
 import gradle.api.trySetSystemProperty
 import gradle.api.version
+import gradle.isUrl
 import gradle.project.PROJECT_PROPERTIES_FILE
 import gradle.project.ProjectProperties.Companion.load
 import gradle.project.ProjectProperties.Companion.yaml
+import gradle.project.sync.SyncFile
+import gradle.project.sync.SyncFileResolution
 import gradle.serialization.encodeToAny
+import java.io.File
 import javax.xml.stream.XMLEventFactory
 import javax.xml.stream.XMLInputFactory
 import javax.xml.stream.XMLOutputFactory
@@ -18,6 +26,8 @@ import kotlinx.serialization.json.Json
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.file.DuplicatesStrategy
+import org.gradle.api.tasks.Copy
 import org.gradle.api.tasks.TaskCollection
 import org.gradle.api.tasks.testing.AbstractTestTask
 import org.gradle.internal.extensions.core.extra
@@ -25,6 +35,7 @@ import org.gradle.internal.os.OperatingSystem
 import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.withType
+import org.jetbrains.compose.internal.de.undercouch.gradle.tasks.download.Download
 import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
 import org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest
@@ -65,6 +76,8 @@ import plugins.spotless.SpotlessPlugin
 import plugins.web.JsPlugin
 import plugins.web.WasmPlugin
 import plugins.web.WasmWasiPlugin
+import org.jetbrains.compose.internal.IDEA_IMPORT_TASK_NAME
+import org.jetbrains.compose.internal.IdeaImportTask
 
 public class ProjectPlugin : Plugin<Project> {
 
@@ -148,6 +161,38 @@ public class ProjectPlugin : Plugin<Project> {
 
             if (CI) {
                 configureTestTasksOnCI()
+            }
+
+            // register sync tasks
+            projectProperties.syncFiles.forEachIndexed { index, (from, into, resolution) ->
+                if (from.isUrl) {
+                    tasks.register<Download>("downloadFile$index") {
+                        src(from)
+                        dest(into)
+                        when (resolution) {
+                            SyncFileResolution.IF_MODIFIED -> onlyIfModified(true)
+                            SyncFileResolution.IF_NEWER -> onlyIfNewer(true)
+                            SyncFileResolution.OVERRIDE -> overwrite(true)
+                        }
+                    }
+                }
+                else {
+                    tasks.register<Copy>("copyFile$index") {
+                        from(from)
+                        into(into)
+
+                    }
+                }
+            }
+
+            //setup sync tasks execution during IDE import
+            if (projectProperties.syncFiles.isNotEmpty()) {
+
+                tasks.configureEach { importTask ->
+                    if (importTask.name == IDEA_IMPORT_TASK_NAME) {
+                        importTask.dependsOn(tasks.matching { it.name.startsWith("downloadFile") || it.name.startsWith("copyFile") })
+                    }
+                }
             }
 
             if (problemReporter.getErrors().isNotEmpty()) {
