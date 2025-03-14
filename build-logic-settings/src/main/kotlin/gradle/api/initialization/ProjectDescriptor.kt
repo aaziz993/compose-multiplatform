@@ -1,4 +1,4 @@
-package gradle.project
+package gradle.api.initialization
 
 import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings

@@ -35,6 +35,8 @@ internal interface ArtifactRepository {
     val content: RepositoryContentDescriptor?
 
     fun applyTo(repository: org.gradle.api.artifacts.repositories.ArtifactRepository) {
+//        name.takeIf(String::isNotEmpty)?.let(repository::setName) // TODO
+
         content?.let { content ->
             repository.content(content::applyTo)
         }

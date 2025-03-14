@@ -11,11 +11,15 @@ import gradle.accessors.projectProperties
 import gradle.accessors.settings
 import gradle.api.all
 import gradle.api.file.replace
+import gradle.api.trySetSystemProperty
 import gradle.decapitalized
 import gradle.plugins.kmp.android.KotlinAndroidTarget
 import gradle.prefixIfNotEmpty
 import gradle.project.ProjectLayout
 import gradle.project.ProjectType
+import javax.xml.stream.XMLEventFactory
+import javax.xml.stream.XMLInputFactory
+import javax.xml.stream.XMLOutputFactory
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.SourceSet
@@ -43,6 +47,10 @@ internal class AndroidPlugin : Plugin<Project> {
 
             adjustAndroidSourceSets()
             applyGoogleServicesPlugin()
+
+            afterEvaluate {
+                adjustXmlFactories()
+            }
         }
     }
 
@@ -77,4 +85,24 @@ internal class AndroidPlugin : Plugin<Project> {
             plugins.apply(settings.libs.plugins.plugin("google.playServices").id)
         }
     }
+
+    /**
+     * W/A for service loading conflict between apple plugin
+     * and android plugin.
+     */
+    private fun adjustXmlFactories() {
+        trySetSystemProperty(
+            XMLInputFactory::class.qualifiedName!!,
+            "com.sun.xml.internal.stream.XMLInputFactoryImpl",
+        )
+        trySetSystemProperty(
+            XMLOutputFactory::class.qualifiedName!!,
+            "com.sun.xml.internal.stream.XMLOutputFactoryImpl",
+        )
+        trySetSystemProperty(
+            XMLEventFactory::class.qualifiedName!!,
+            "com.sun.xml.internal.stream.events.XMLEventFactoryImpl",
+        )
+    }
+
 }

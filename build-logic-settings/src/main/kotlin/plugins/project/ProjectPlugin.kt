@@ -88,15 +88,13 @@ public class ProjectPlugin : Plugin<Project> {
 
             exportExtras()
 
+            projectProperties.buildscript?.applyTo()
+
             if (projectProperties.kotlin.targets.isNotEmpty()) {
                 projectProperties.group?.let(::setGroup)
                 projectProperties.description?.let(::setDescription)
                 project.version = version()
             }
-
-            projectProperties.buildscript?.applyTo()
-
-            CacheRedirector.applyTo()
 
             //  Don't change order!
             project.plugins.apply(DoctorPlugin::class.java)
@@ -118,13 +116,13 @@ public class ProjectPlugin : Plugin<Project> {
             project.plugins.apply(KtorfitPlugin::class.java)
             project.plugins.apply(ApolloPlugin::class.java)
             project.plugins.apply(PowerAssertPlugin::class.java)
+            project.plugins.apply(ApplePlugin::class.java) // doesn't depend on kmp
             project.plugins.apply(AndroidPlugin::class.java) // apply and configure android library or application plugin.
             project.plugins.apply(AnimalSnifferPlugin::class.java)
             project.plugins.apply(KMPPlugin::class.java) // need android library or application plugin applied.
             project.plugins.apply(JavaPlugin::class.java) //  apply after kmp plugin.
             project.plugins.apply(KspPlugin::class.java) // kspCommonMainMetadata need kmp plugin applied.
             project.plugins.apply(NativePlugin::class.java)
-            project.plugins.apply(ApplePlugin::class.java)
             project.plugins.apply(JsPlugin::class.java)
             project.plugins.apply(WasmPlugin::class.java)
             project.plugins.apply(WasmWasiPlugin::class.java)
@@ -132,19 +130,11 @@ public class ProjectPlugin : Plugin<Project> {
             project.plugins.apply(PublishPlugin::class.java)
             project.plugins.apply(SigningPlugin::class.java)
 
-
             projectProperties.nodeJsEnv.applyTo()
-            projectProperties.yarn.applyTo()
             projectProperties.npm.applyTo()
+            projectProperties.yarn.applyTo()
 
-            afterEvaluate {
-                // W/A for XML factories mess within apple plugin classpath.
-                val hasAndroidPlugin = plugins.hasPlugin("com.android.application") ||
-                    plugins.hasPlugin("com.android.library")
-                if (hasAndroidPlugin) {
-                    adjustXmlFactories()
-                }
-            }
+            CacheRedirector.applyTo()
 
             projectProperties.dependencies?.forEach { dependency ->
                 dependencies {
@@ -198,25 +188,6 @@ public class ProjectPlugin : Plugin<Project> {
                 throw GradleException(problemReporter.getGradleError())
             }
         }
-    }
-
-    /**
-     * W/A for service loading conflict between apple plugin
-     * and android plugin.
-     */
-    private fun adjustXmlFactories() {
-        trySetSystemProperty(
-            XMLInputFactory::class.qualifiedName!!,
-            "com.sun.xml.internal.stream.XMLInputFactoryImpl",
-        )
-        trySetSystemProperty(
-            XMLOutputFactory::class.qualifiedName!!,
-            "com.sun.xml.internal.stream.XMLOutputFactoryImpl",
-        )
-        trySetSystemProperty(
-            XMLEventFactory::class.qualifiedName!!,
-            "com.sun.xml.internal.stream.events.XMLEventFactoryImpl",
-        )
     }
 
     @Suppress("UnstableApiUsage")

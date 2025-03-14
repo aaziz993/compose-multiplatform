@@ -1,5 +1,8 @@
 package gradle.project
 
+import gradle.api.initialization.DependencyResolutionManagement
+import gradle.api.initialization.PluginManagement
+import gradle.api.initialization.ProjectDescriptor
 import gradle.caching.BuildCacheConfiguration
 import gradle.collection.deepMerge
 import gradle.collection.resolve

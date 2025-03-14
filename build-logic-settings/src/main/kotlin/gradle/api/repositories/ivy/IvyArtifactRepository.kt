@@ -7,6 +7,7 @@ import gradle.api.repositories.RepositoryPasswordCredentials
 import gradle.api.repositories.UrlArtifactRepository
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.api.artifacts.repositories.IvyArtifactRepository
 import org.gradle.kotlin.dsl.withType

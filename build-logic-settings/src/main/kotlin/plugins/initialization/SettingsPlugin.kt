@@ -47,22 +47,24 @@ public class SettingsPlugin : Plugin<Settings> {
 
                 exportExtras()
 
+                projectProperties.buildscript?.applyTo()
+
                 projectProperties.pluginManagement.let { pluginManagement ->
                     pluginManagement {
-                        repositories {
-                            mavenCentral()
-                            google()
-                            gradlePluginPortal()
-
-                            pluginManagement?.repositories?.forEach { repository -> maven(repository) }
+                        pluginManagement?.repositories?.let { repositories ->
+                            repositories {
+                                repositories.forEach { repository ->
+                                    repository.applyTo(this)
+                                }
+                            }
                         }
                     }
                 }
 
                 projectProperties.dependencyResolutionManagement?.let { dependencyResolutionManagement ->
                     dependencyResolutionManagement {
-                        repositories {
-                            projectProperties.dependencyResolutionManagement?.repositories?.let { repositories ->
+                        projectProperties.dependencyResolutionManagement?.repositories?.let { repositories ->
+                            repositories {
                                 repositories.forEach { repository ->
                                     repository.applyTo(this)
                                 }
@@ -132,8 +134,6 @@ public class SettingsPlugin : Plugin<Settings> {
                         )
                     }
                 }
-
-                projectProperties.buildscript?.applyTo()
 
                 CacheRedirector.applyTo()
 

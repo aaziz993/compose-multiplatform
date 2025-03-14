@@ -6,9 +6,11 @@ import gradle.accessors.nodeEnv
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
+import gradle.api.repositories.maybeRedirect
 import gradle.api.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.assign
 
 @Serializable
 internal data class NodeJsEnvSpec(

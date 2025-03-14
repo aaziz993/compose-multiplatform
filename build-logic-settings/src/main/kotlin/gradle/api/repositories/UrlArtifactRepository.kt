@@ -1,5 +1,6 @@
 package gradle.api.repositories
 
+import org.gradle.api.Project
 import org.gradle.api.artifacts.repositories.UrlArtifactRepository
 
 /**

@@ -1,6 +1,7 @@
 package gradle.plugins.kmp.nat
 
 import org.jetbrains.kotlin.gradle.plugin.CompilerPluginConfig
+import org.jetbrains.kotlin.gradle.tasks.KotlinNativeCompile
 
 /**
  * Represents a container containing all the settings for a specific Kotlin compiler plugin.

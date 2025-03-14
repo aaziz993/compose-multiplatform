@@ -2,6 +2,8 @@ package plugins.signing
 
 import org.gradle.kotlin.dsl.register
 import gradle.accessors.projectProperties
+import gradle.accessors.resolveValue
+import gradle.accessors.signing
 import gradle.project.ProjectType
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -21,11 +23,23 @@ internal class SigningPlugin : Plugin<Project> {
 
                     signing.applyTo()
 
-                    tasks.register<Exec>("distributeSigningKey") {
-                        commandLine("gpg", "--keyserver", "keys.openpgp.org '--send-keys", "yourKey")
-                        args("server", "key")
-                    }
+                    registerSigningGPGKeyDistributeTask()
                 }
         }
+    }
+
+    /** Distribute signing gpg key
+     * There are 3 servers supported by Central servers: [ keyserver.ubuntu.com, keys.openpgp.org, pgp.mit.edu ]
+     */
+    private fun Project.registerSigningGPGKeyDistributeTask() {
+        projectProperties.plugins.signing.useInMemoryPgpKeys?.defaultSecretKey
+            ?.resolveValue()
+            ?.let { key ->
+                tasks.register<Exec>("distributeSigningGPGKey") {
+                    executable = "../script/gpg/distribute-gpg.sh"
+
+                    args(key)
+                }
+            }
     }
 }

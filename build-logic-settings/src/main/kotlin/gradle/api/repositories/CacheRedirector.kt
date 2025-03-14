@@ -224,27 +224,24 @@ private val aliases = mapOf(
     "https://repo.maven.apache.org/maven2" to "https://repo1.maven.org/maven2", // Maven Central
 )
 
-private fun URI.toRedirectURI(): URI {
+internal fun URI.maybeRedirect(): URI {
     val url = toString().trimEnd('/')
     val deAliasedUrl = aliases.getOrDefault(url, url)
 
-    val cacheUrlEntry = cacheMap.entries.find { (origin, _) -> deAliasedUrl.startsWith(origin) }
-    return if (cacheUrlEntry != null) {
+    return cacheMap.entries.find { (origin, _) -> deAliasedUrl.startsWith(origin) }?.let { cacheUrlEntry ->
+
         val cacheUrl = cacheUrlEntry.value
         val originRestPath = deAliasedUrl.substringAfter(cacheUrlEntry.key, "")
         URI("$cacheUrl$originRestPath")
-    }
-    else {
-        this
-    }
+    } ?: this
 }
 
 private fun RepositoryHandler.redirect() {
     configureEach {
         when (this) {
-            is MavenArtifactRepository -> url = url.toRedirectURI()
+            is MavenArtifactRepository -> url = url.maybeRedirect()
             is IvyArtifactRepository -> @Suppress("SENSELESS_COMPARISON") if (url != null) {
-                url = url.toRedirectURI()
+                url = url.maybeRedirect()
             }
         }
     }
@@ -262,17 +259,16 @@ private fun Project.overrideNativeCompilerDownloadUrl() {
 /**
  * Yarn and node download url override
  */
-private fun Project.configureYarnAndNodeRedirects() {
+private fun Project.configureYarnAndNodeRedirects() =
     pluginManager.withPlugin(settings.libs.plugins.plugin("gradle.node.plugin").id) {
         yarn.downloadBaseUrl?.let { downloadBaseUrl ->
-            yarn.downloadBaseUrl = URI(downloadBaseUrl).toRedirectURI().toString()
+            yarn.downloadBaseUrl = URI(downloadBaseUrl).maybeRedirect().toString()
+        }
+
+        node.downloadBaseUrl?.let { downloadBaseUrl ->
+            node.downloadBaseUrl = URI(downloadBaseUrl).maybeRedirect().toString()
         }
     }
-
-    node.downloadBaseUrl?.let { downloadBaseUrl ->
-        node.downloadBaseUrl = URI(downloadBaseUrl).toRedirectURI().toString()
-    }
-}
 
 /**
  * Check repositories are overridden section
@@ -290,18 +286,32 @@ private fun Project.addCheckRepositoriesTask() {
                 testStarted(testName)
             }
 
-            project.repositories.filterIsInstance<IvyArtifactRepository>().forEach {
-                @Suppress("SENSELESS_COMPARISON") if (it.url == null) {
+            project.repositories.filterIsInstance<IvyArtifactRepository>().forEach { repository ->
+                @Suppress("SENSELESS_COMPARISON") if (repository.url == null) {
                     logInvalidIvyRepo(testName)
                 }
             }
 
-            project.repositories.findNonCachedRepositories().forEach {
-                logNonCachedRepo(testName, it)
+            project.repositories.findNonCachedRepositories().forEach { repository ->
+                logNonCachedRepo(testName, repository)
             }
 
-            project.buildscript.repositories.findNonCachedRepositories().forEach {
-                logNonCachedRepo(testName, it)
+            project.buildscript.repositories.findNonCachedRepositories().forEach { repository ->
+                logNonCachedRepo(testName, repository)
+            }
+
+            pluginManager.withPlugin(settings.libs.plugins.plugin("gradle.node.plugin").id) {
+                yarn.downloadBaseUrl
+                    ?.takeIf { downloadBaseUrl -> URI(downloadBaseUrl).isCachedOrLocal() }
+                    ?.let { downloadBaseUrl ->
+                        logNonCachedRepo(testName, downloadBaseUrl)
+                    }
+
+                node.downloadBaseUrl
+                    ?.takeIf { downloadBaseUrl -> URI(downloadBaseUrl).isCachedOrLocal() }
+                    ?.let { downloadBaseUrl ->
+                        logNonCachedRepo(testName, downloadBaseUrl)
+                    }
             }
 
             CI?.run {

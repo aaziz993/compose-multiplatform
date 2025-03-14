@@ -1,11 +1,13 @@
 package gradle.plugins.signing
 
+import org.gradle.kotlin.dsl.withType
 import com.vanniktech.maven.publish.tasks.WorkaroundSignatureType
 import gradle.accessors.publishing
 import gradle.accessors.signing
 import gradle.api.configureEach
 import gradle.api.getByNameOrAll
 import gradle.api.toVersion
+import gradle.collection.resolveValue
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 import org.gradle.plugins.signing.Sign
@@ -160,9 +162,12 @@ internal abstract class SigningExtension {
             useGpgCmd?.takeIf { it }?.run { signing.useGpgCmd() }
 
             useInMemoryPgpKeys?.let { (defaultKeyId, defaultSecretKey, defaultPassword) ->
-                signing.useInMemoryPgpKeys(defaultKeyId, defaultSecretKey, defaultPassword)
+                signing.useInMemoryPgpKeys(
+                    defaultKeyId?.resolveValue()?.toString(),
+                    defaultSecretKey?.resolveValue()?.toString(),
+                    defaultPassword?.resolveValue()?.toString(),
+                )
             }
-
 
 
             signTasks?.flatMap(tasks::getByNameOrAll)?.let { tasks ->
@@ -193,11 +198,11 @@ internal abstract class SigningExtension {
             }
 
             // TODO: https://youtrack.jetbrains.com/issue/KT-61313/ https://github.com/gradle/gradle/issues/26132
-            project.plugins.withId("org.jetbrains.kotlin.multiplatform") {
-                project.tasks.withType(Sign::class.java).configureEach { sign ->
+            plugins.withId("org.jetbrains.kotlin.multiplatform") {
+                tasks.withType<Sign>().configureEach { sign ->
                     sign.signatureType = WorkaroundSignatureType(
                         sign.signatureType ?: ArmoredSignatureType(),
-                        project.layout.buildDirectory.dir("signatures/${sign.name}"),
+                        layout.buildDirectory.dir("signatures/${sign.name}"),
                     )
                 }
             }

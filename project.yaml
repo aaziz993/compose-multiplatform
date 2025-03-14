@@ -1,5 +1,8 @@
 pluginManagement:
   repositories:
+    - mavenCentral
+    - google
+    - gradlePluginPortal
     - https://www.jetbrains.com/intellij-repository/releases
     - https://packages.jetbrains.team/maven/p/ij/intellij-dependencies
 
