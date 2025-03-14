@@ -9,7 +9,7 @@ import com.github.gmazzo.gradle.plugins.BuildConfigExtension
 import com.google.devtools.ksp.gradle.KspExtension
 import com.osacky.doctor.DoctorExtension
 import de.jensklingenberg.ktorfit.gradle.KtorfitGradleConfiguration
-import gradle.api.CI
+import gradle.api.isCI
 import gradle.project.ProjectProperties
 import io.github.sgrishchenko.karakum.gradle.plugin.KarakumExtension
 import java.util.Properties
@@ -76,7 +76,7 @@ internal fun exportExtras() = extra.exportExtras()
 private fun ExtraPropertiesExtension.exportExtras() =
     properties.putAll(
         mapOf(
-            "isCI" to CI,
+            "isCI" to isCI,
         ),
     )
 

@@ -2,7 +2,6 @@
 
 package plugins.initialization
 
-import org.gradle.kotlin.dsl.register
 import gradle.accessors.allLibs
 import gradle.accessors.exportExtras
 import gradle.accessors.libs
@@ -10,6 +9,7 @@ import gradle.accessors.projectProperties
 import gradle.accessors.toVersionCatalogUrlPath
 import gradle.accessors.version
 import gradle.accessors.versions
+import gradle.api.repositories.CacheRedirector
 import gradle.isUrl
 import gradle.project.ProjectProperties.Companion.load
 import java.net.URI
@@ -17,8 +17,6 @@ import org.gradle.api.Plugin
 import org.gradle.api.file.FileCollection
 import org.gradle.api.initialization.Settings
 import org.gradle.api.internal.artifacts.repositories.DefaultMavenArtifactRepository
-import org.gradle.api.resources.TextResource
-import org.gradle.api.tasks.Sync
 import org.gradle.kotlin.dsl.maven
 import org.jetbrains.compose.internal.utils.currentTarget
 import org.tomlj.Toml
@@ -136,6 +134,8 @@ public class SettingsPlugin : Plugin<Settings> {
                 }
 
                 projectProperties.buildscript?.applyTo()
+
+                CacheRedirector.applyTo()
 
                 // Apply plugins after version catalogs are loaded in settings phase.
                 settings.plugins.apply(DevelocityPlugin::class.java)

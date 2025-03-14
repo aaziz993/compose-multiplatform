@@ -1,9 +1,10 @@
 package gradle.plugins.develocity
 
 import gradle.api.CI
-import gradle.api.GITHUB
-import gradle.api.JB_SPACE
-import gradle.api.TEAMCITY
+import gradle.api.isCI
+import gradle.api.isGITHUB
+import gradle.api.isJB_SPACE
+import gradle.api.isTEAMCITY
 import gradle.api.tryAssign
 import java.util.*
 import kotlinx.serialization.Serializable
@@ -52,7 +53,7 @@ internal data class BuildScanConfiguration(
         configuration.uploadInBackground tryAssign uploadInBackground
 
         configuration.publishing {
-            onlyIf { publishing.ifAuthenticated != false && CI }
+            onlyIf { publishing.ifAuthenticated != false && isCI }
         }
 
         obfuscation?.let { obfuscation ->
@@ -65,13 +66,7 @@ internal data class BuildScanConfiguration(
 
                 obfuscation.hostname?.let { hostname ->
                     hostname {
-                        when {
-                            GITHUB -> "GitHub"
-                            TEAMCITY -> "TeamCity"
-                            JB_SPACE -> "JBSpace"
-                            CI -> "CI"
-                            else -> hostname[it] ?: hostname[""] ?: it
-                        }
+                        hostname[it] ?: hostname[""] ?: CI ?: it
                     }
                 }
 

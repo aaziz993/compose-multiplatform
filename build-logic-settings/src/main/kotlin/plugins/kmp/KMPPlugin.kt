@@ -11,7 +11,6 @@ import gradle.accessors.sourceSetsToComposeResourcesDirs
 import gradle.api.all
 import gradle.decapitalized
 import gradle.api.file.replace
-import gradle.plugins.kotlin.KotlinSettings
 import gradle.project.ProjectLayout
 import gradle.prefixIfNotEmpty
 import org.gradle.api.Plugin
@@ -61,7 +60,7 @@ internal class KMPPlugin : Plugin<Project> {
 
                             val mainSourceSetNamePrefix = androidTarget.mainVariant.sourceSetTree.get().name
 
-                            val androidSourceSetNamePrefixes = listOf(
+                            val testSourceSetNamePrefixes = listOf(
                                 SourceSet.TEST_SOURCE_SET_NAME,
                                 "unitTest",
                                 androidTarget.instrumentedTestVariant.sourceSetTree.get().name,
@@ -72,7 +71,7 @@ internal class KMPPlugin : Plugin<Project> {
                                 resourcesPrefixPart = ""
                             }
                             else {
-                                val prefix = androidSourceSetNamePrefixes.find { prefix -> restPart.startsWith(prefix) }
+                                val prefix = testSourceSetNamePrefixes.find { prefix -> restPart.startsWith(prefix) }
 
                                 if (prefix == null) {
                                     srcPrefixPart = restPart

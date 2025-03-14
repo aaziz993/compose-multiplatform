@@ -5,30 +5,35 @@ import org.gradle.api.Project
 import org.gradle.api.initialization.Settings
 
 private const val GITHUB_CI_KEY = "GITHUB_ACTION"
-private const val TEAMCITY_CI_KEY = "TEAMCITY_VERSION"
-private const val JB_SPACE_CI_KEY = "JB_SPACE_EXECUTION_NUMBER"
 
-private val CI_DETECT_PROPERTIES = listOf(
-    "CI",
-    GITHUB_CI_KEY,
-    JB_SPACE_CI_KEY,
-    TEAMCITY_CI_KEY,
+private const val JB_SPACE_CI_KEY = "JB_SPACE_EXECUTION_NUMBER"
+private const val TEAMCITY_CI_KEY = "TEAMCITY_VERSION"
+
+private val CI_NAMES = mapOf(
+    GITHUB_CI_KEY to "Github",
+    JB_SPACE_CI_KEY to "Space",
+    TEAMCITY_CI_KEY to "Teamcity",
+    "CI" to "CI",
 )
 
-internal val GITHUB: Boolean by lazy {
+internal val isGITHUB: Boolean by lazy {
     System.getenv().contains(GITHUB_CI_KEY)
 }
 
-internal val TEAMCITY: Boolean by lazy {
+internal val isTEAMCITY: Boolean by lazy {
     System.getenv().contains(TEAMCITY_CI_KEY)
 }
 
-internal val JB_SPACE: Boolean by lazy {
+internal val isJB_SPACE: Boolean by lazy {
     System.getenv().contains(JB_SPACE_CI_KEY)
 }
 
-internal val CI: Boolean by lazy {
-    CI_DETECT_PROPERTIES.any(System.getenv()::contains)
+internal val isCI: Boolean by lazy {
+    CI_NAMES.keys.any(System.getenv()::contains)
+}
+
+internal val CI: String? by lazy {
+    CI_NAMES.entries.find { (key, _) -> System.getenv().contains(key) }?.value
 }
 
 internal fun Settings.gitCommitId(): String = execute("git rev-parse --verify HEAD")

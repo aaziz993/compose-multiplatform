@@ -35,6 +35,7 @@ internal data class ProjectProperties(
     val pluginManagement: PluginManagement? = null,
     val dependencyResolutionManagement: DependencyResolutionManagement? = null,
     val buildscript: ScriptHandler? = null,
+    val cacheRedirector: Boolean = true,
     override val dependencies: List<@Serializable(with = DependencyTransformingSerializer::class) Dependency>? = null,
     val includes: List<String>? = null,
     val projects: List<ProjectDescriptor>? = null,

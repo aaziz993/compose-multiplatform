@@ -6,19 +6,18 @@ import org.gradle.kotlin.dsl.register
 import gradle.accessors.exportExtras
 import gradle.accessors.kotlin
 import gradle.accessors.projectProperties
-import gradle.api.CI
+import gradle.api.isCI
 import gradle.api.configureEach
 import gradle.api.maybeNamed
+import gradle.api.repositories.CacheRedirector
 import gradle.api.trySetSystemProperty
 import gradle.api.version
 import gradle.isUrl
 import gradle.project.PROJECT_PROPERTIES_FILE
 import gradle.project.ProjectProperties.Companion.load
 import gradle.project.ProjectProperties.Companion.yaml
-import gradle.project.sync.SyncFile
 import gradle.project.sync.SyncFileResolution
 import gradle.serialization.encodeToAny
-import java.io.File
 import javax.xml.stream.XMLEventFactory
 import javax.xml.stream.XMLInputFactory
 import javax.xml.stream.XMLOutputFactory
@@ -26,7 +25,6 @@ import kotlinx.serialization.json.Json
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.file.DuplicatesStrategy
 import org.gradle.api.tasks.Copy
 import org.gradle.api.tasks.TaskCollection
 import org.gradle.api.tasks.testing.AbstractTestTask
@@ -77,7 +75,6 @@ import plugins.web.JsPlugin
 import plugins.web.WasmPlugin
 import plugins.web.WasmWasiPlugin
 import org.jetbrains.compose.internal.IDEA_IMPORT_TASK_NAME
-import org.jetbrains.compose.internal.IdeaImportTask
 
 public class ProjectPlugin : Plugin<Project> {
 
@@ -98,6 +95,8 @@ public class ProjectPlugin : Plugin<Project> {
             }
 
             projectProperties.buildscript?.applyTo()
+
+            CacheRedirector.applyTo()
 
             //  Don't change order!
             project.plugins.apply(DoctorPlugin::class.java)
@@ -159,7 +158,7 @@ public class ProjectPlugin : Plugin<Project> {
 
             configureLinkTasks()
 
-            if (CI) {
+            if (isCI) {
                 configureTestTasksOnCI()
             }
 

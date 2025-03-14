@@ -3,11 +3,10 @@ package gradle.caching.remote
 import com.gradle.develocity.agent.gradle.buildcache.DevelocityBuildCache
 import gradle.accessors.projectProperties
 import gradle.accessors.resolveValue
-import gradle.api.CI
+import gradle.api.isCI
 import gradle.caching.AbstractBuildCache
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import org.gradle.api.Project
 import org.gradle.api.initialization.Settings
 import org.gradle.caching.configuration.BuildCache
 import org.gradle.caching.configuration.BuildCacheConfiguration
@@ -29,7 +28,7 @@ internal data class DevelocityBuildCache(
     context(Settings)
     override fun applyTo(cache: BuildCache) {
         // better set it to true only for CI builds.
-        cache.isPush = CI && projectProperties.gradleEnterpriseAccessKey?.resolveValue() != null
+        cache.isPush = isCI && projectProperties.gradleEnterpriseAccessKey?.resolveValue() != null
 
         super.applyTo(cache)
 

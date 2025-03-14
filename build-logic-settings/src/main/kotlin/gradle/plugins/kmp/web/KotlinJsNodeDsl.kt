@@ -1,5 +1,6 @@
 package gradle.plugins.kmp.web
 
+import gradle.plugins.kmp.web.NodeJsExec
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalDistributionDsl

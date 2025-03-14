@@ -5,8 +5,7 @@ import gradle.accessors.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.projectProperties
-import gradle.accessors.resolveValue
-import gradle.api.CI
+import gradle.api.isCI
 import gradle.api.gitBranchName
 import gradle.api.gitCommitId
 import gradle.api.gitStatus
@@ -14,7 +13,6 @@ import gradle.api.teamCityBuildId
 import gradle.api.teamCityBuildTypeId
 import gradle.plugins.develocity.BuildScanConfiguration
 import gradle.plugins.develocity.DevelocityConfiguration
-import gradle.plugins.develocity.Git
 import gradle.project.EnabledSettings
 import java.net.URLEncoder
 import kotlinx.serialization.Serializable
@@ -46,7 +44,7 @@ internal data class DevelocitySettings(
 
     private fun Settings.enrichGitData() = projectProperties.plugins.develocity.let { develocity ->
         gradle.projectsEvaluated {
-            if (!CI && !develocity.skipGitTags) {
+            if (!isCI && !develocity.skipGitTags) {
                 develocity {
                     develocity.gitRepo.let { gitRepo ->
                         // Git commit id
@@ -80,7 +78,7 @@ internal data class DevelocitySettings(
         }
 
         gradle.projectsEvaluated {
-            if (CI) {
+            if (isCI) {
                 develocity {
                     rootProject.teamCityBuildId?.let { teamCityBuildId ->
                         rootProject.teamCityBuildTypeId?.let { teamCityBuildTypeId ->
