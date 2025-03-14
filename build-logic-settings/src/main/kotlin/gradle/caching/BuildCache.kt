@@ -25,6 +25,7 @@ internal interface BuildCache {
      */
     val isPush: Boolean?
 
+    context(Settings)
     fun applyTo(cache: org.gradle.caching.configuration.BuildCache) {
         isEnabled?.let(cache::setEnabled)
         isPush?.let(cache::setPush)

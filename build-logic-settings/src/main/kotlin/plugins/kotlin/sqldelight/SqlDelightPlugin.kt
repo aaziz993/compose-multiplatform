@@ -14,7 +14,7 @@ internal class SqlDelightPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             projectProperties.plugins.sqldelight
-                .takeIf { it.enabled && projectProperties.kotlin.targets.isNotEmpty() == true }?.let { sqldelight ->
+                .takeIf { it.enabled && projectProperties.kotlin.targets.isNotEmpty() }?.let { sqldelight ->
                     plugins.apply(settings.libs.plugins.plugin("sqldelight").id)
 
                     sqldelight.applyTo()

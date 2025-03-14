@@ -59,9 +59,22 @@ plugins:
           customStyleSheets: [ dokka/style.css, dokka/prism.css, dokka/logo-styles.css ]
           customAssets: [ dokka/logo-icon.svg ]
           footerMessage: © 2025 - Aziz Atoev
-          templatesDir: documentation
+          templatesDir: dokka-templates
       - versioning:
           olderVersionsDir: documentation/version
+  # produces Kotlin source example files and tests from markdown documents with embedded snippets of Kotlin code
+  knit:
+    enabled: true
+    siteRoot: https://github.com/aaziz993/compose-multiplatform
+    #    moduleRoots: [
+    #      kmp-lib,
+    #      cmp-lib,
+    #      compiler,
+    #      shared,
+    #      compose-app,
+    #      server-app ] # by default taken from includes
+    moduleDocs: build/dokka
+    dokkaMultiModuleRoot: build/dokka
 
 dependencyResolutionManagement:
   repositories:
@@ -104,20 +117,18 @@ includes:
   - server-app
 
 dependencies:
-  # dokka multimodule module dependencies
-  - dokka: :kmp-lib
-  - dokka: :cmp-lib
-  - dokka: :compiler
-  - dokka: :shared
-  - dokka: :compose-app
-  - dokka: :server-app
+# dokka multimodule module dependencies. By default taken from includes see dokka.dependenciesFromIncludes.
+#  - dokka: :kmp-lib
+#  - dokka: :cmp-lib
+#  - dokka: :compiler
+#  - dokka: :shared
+#  - dokka: :compose-app
+#  - dokka: :server-app
 
 buildCache:
   remotes:
     - http:
         isEnabled: true
-        # better make it a variable and set it to true only for CI builds
-        isPush: true
         url: https://files.pkg.jetbrains.space/aaziz93/p/aaziz-93/compose-multiplatform
         credentials:
           username: aaziz93

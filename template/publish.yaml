@@ -50,11 +50,11 @@ plugins:
 
   # signing
   signing:
-    signPublications: [ '' ] # enable GPG signing for all publications by specifying empty name
+    useGpgCmd: true
     useInMemoryPgpKeys:
       defaultSecretKey: $envOrLocal.signing.gnupg.key
       defaultPassword: $envOrLocal.signing.gnupg.key.passphrase
-      useGpgCmd: true
+    signPublications: [ '' ] # sign all publications by specifying empty name
 
 tasks:
   - Task:

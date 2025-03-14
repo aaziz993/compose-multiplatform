@@ -18,8 +18,14 @@ internal data class DirectoryBuildCache(
 
     context(Settings)
     @Suppress("UnstableApiUsage")
-    fun applyTo(cache: DirectoryBuildCache) {
+    override fun applyTo(cache: org.gradle.caching.configuration.BuildCache) {
         super.applyTo(cache)
+
+        cache as DirectoryBuildCache
+
         directory?.let(layout.rootDirectory::dir)?.let(cache::setDirectory)
     }
+
+    context(Settings)
+    fun applyTo() = applyTo(buildCache.local)
 }

@@ -3,7 +3,6 @@ package gradle.caching
 import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings
 import org.gradle.caching.configuration.BuildCacheConfiguration
-import org.gradle.caching.http.HttpBuildCache
 import org.jetbrains.dokka.plugability.configuration
 
 /**
@@ -37,7 +36,7 @@ internal data class BuildCacheConfiguration(
     context(Settings)
     @Suppress("UNCHECKED_CAST")
     fun applyTo(configuration: BuildCacheConfiguration) {
-        local?.applyTo(configuration.local)
+        local?.applyTo()
 
         remotes?.forEach { remote ->
             remote.applyTo(configuration)

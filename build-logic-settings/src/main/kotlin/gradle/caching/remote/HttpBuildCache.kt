@@ -1,5 +1,6 @@
 package gradle.caching.remote
 
+import gradle.api.CI
 import gradle.caching.AbstractBuildCache
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -21,7 +22,11 @@ internal data class HttpBuildCache(
     val useExpectContinue: Boolean? = null,
 ) : AbstractBuildCache() {
 
+    context(Settings)
     override fun applyTo(cache: BuildCache) {
+        // better set it to true only for CI builds.
+        cache.isPush = CI
+
         super.applyTo(cache)
 
         cache as HttpBuildCache

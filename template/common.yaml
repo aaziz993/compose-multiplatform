@@ -75,7 +75,7 @@ plugins:
           # specify license header text
           licenseHeader:
             headerFile: ../license/SHARP_LICENSE_HEADER
-            delimiter: ^
+            delimiter: ^#
           # include source files
           target: [ '**/*.yaml', '**/*.yml' ]
       - format:
@@ -91,7 +91,7 @@ plugins:
           # specify license header text
           licenseHeader:
             headerFile: ../license/SHARP_LICENSE_HEADER
-            delimiter: ^
+            delimiter: ^#
           # include source files
           target: [ '**/*.properties' ]
           # removes any extra whitespace at the beginning of lines
@@ -109,7 +109,7 @@ plugins:
           # specify license header text
           licenseHeader:
             headerFile: ../license/TAG_LICENSE_HEADER
-            delimiter: ^
+            delimiter: ^<-- startfile -->
           # include source files
           target: [ '**/*.md' ]
       - format:
@@ -117,7 +117,7 @@ plugins:
           # specify license header text
           licenseHeader:
             headerFile: ../license/SHARP_LICENSE_HEADER
-            delimiter: ^
+            delimiter: ^#
           # include source files
           target: [ '**/.editconfig' ]
       - format:
@@ -125,7 +125,7 @@ plugins:
           # specify license header text
           licenseHeader:
             headerFile: ../license/SHARP_LICENSE_HEADER
-            delimiter: ^
+            delimiter: ^#
           # include source files
           target: [ '**/.gitignore' ]
       - format:
@@ -133,7 +133,7 @@ plugins:
           # specify license header text
           licenseHeader:
             headerFile: ../license/SHARP_LICENSE_HEADER
-            delimiter: ^
+            delimiter: ^#
           # include source files
           target: [ '**/.gitattributes' ]
       - format:
@@ -196,10 +196,6 @@ plugins:
           templatesDir: documentation
       - versioning:
           olderVersionsDir: documentation/version
-
-  # produces Kotlin source example files and tests from markdown documents with embedded snippets of Kotlin code
-  knit:
-    moduleDocs: build/dokka
 
   # allows dumping binary API of a JVM part of a Kotlin library that is public in the sense of Kotlin visibilities and ensures that the public binary API wasn't changed in a way that makes this change binary incompatible.
   apiValidation:
@@ -365,13 +361,6 @@ dependencies:
 tasks:
   - KnitTask:
       dependsOn: [ dokkaGenerate ]
-  #  - Jar:
-  #      name: sourcesJar
-  #      archiveClassifier: sources
-  #      from: sources
-  #  - Jar:
-  #      name: javadocJar
-  #      archiveClassifier: javadoc
   - ShadowJar:
       duplicatesStrategy: EXCLUDE
       mergeServiceFiles: true

@@ -1,5 +1,6 @@
 package plugins.dokka
 
+import org.gradle.kotlin.dsl.getValue
 import gradle.accessors.id
 import gradle.accessors.libs
 import gradle.accessors.plugin
@@ -8,6 +9,8 @@ import gradle.accessors.projectProperties
 import gradle.accessors.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.dependencies
+import org.gradle.kotlin.dsl.provideDelegate
 import plugins.dokka.model.DokkaSettings
 
 internal class DokkaPlugin : Plugin<Project> {
@@ -20,6 +23,17 @@ internal class DokkaPlugin : Plugin<Project> {
                     plugins.apply(settings.libs.plugins.plugin("dokkaJavadoc").id)
 
                     dokka.applyTo()
+
+                    if (project == rootProject && dokka.dependenciesFromIncludes) {
+                        val dokka by configurations
+                        settings.projectProperties.includes?.let { includes ->
+                            dependencies {
+                                includes.forEach { include ->
+                                    dokka(project(include))
+                                }
+                            }
+                        }
+                    }
                 }
         }
     }

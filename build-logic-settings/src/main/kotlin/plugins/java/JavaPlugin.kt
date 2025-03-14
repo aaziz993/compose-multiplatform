@@ -4,7 +4,8 @@ import gradle.accessors.java
 import gradle.accessors.kotlin
 import gradle.accessors.projectProperties
 import gradle.api.all
-import gradle.api.file.replace
+import gradle.api.file.add
+import gradle.api.file.remove
 import gradle.plugins.kmp.android.KotlinAndroidTarget
 import gradle.plugins.kmp.jvm.KotlinJvmTarget
 import gradle.project.ProjectLayout
@@ -17,51 +18,62 @@ import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.testing.Test
 import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
 import org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest
 
 internal class JavaPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            projectProperties.java.takeIf {
-                projectProperties.kotlin.targets.any { target -> target is KotlinJvmTarget }
-            }?.let { java ->
 
-                tryRegisterJvmStressTest()
+            tryRegisterJvmStressTest()
 
-                if (projectProperties.kotlin.targets.any { target -> target is KotlinAndroidTarget }) {
-                    return@with
-                }
+            tryRegisterJavaCodegenTestTask()
 
-                tryRegisterJavaCodegenTestTask()
-
-                plugins.apply(JavaPlugin::class.java)
-
-                java.applyTo()
-
-                // Apply java application plugin.
-                if (projectProperties.type == ProjectType.APP && !projectProperties.compose.enabled) {
-                    plugins.apply(ApplicationPlugin::class.java)
-
-                    projectProperties.application?.applyTo()
-                }
-
-                adjustSourceSets()
+            // When there are android targets disable KotlinJvmTarget.withJava property and JavaPlugin
+            if (projectProperties.kotlin.targets.any { target -> target is KotlinAndroidTarget } ||
+                projectProperties.kotlin.targets.none { target -> target is KotlinJvmTarget }) {
+                return@with
             }
+
+            plugins.apply(JavaPlugin::class.java)
+
+            projectProperties.java.applyTo()
+
+            // Apply java application plugin.
+            if (projectProperties.type == ProjectType.APP && !projectProperties.compose.enabled) {
+                plugins.apply(ApplicationPlugin::class.java)
+
+                projectProperties.application?.applyTo()
+            }
+
+            adjustSourceSets()
         }
     }
 
     private fun Project.adjustSourceSets() =
         when (projectProperties.layout) {
             ProjectLayout.FLAT -> {
-                java.sourceSets.all { sourceSet ->
-                    val (srcPrefixPart, resourcesPrefixPart) = if (SourceSet.isMain(sourceSet))
-                        "src" to "resources"
-                    else sourceSet.name to "${sourceSet.name}Resources"
+                val targetNames = kotlin.targets
+                    .filterIsInstance<org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget>()
+                    .map(KotlinTarget::targetName)
 
+                java.sourceSets.getByName(SourceSet.MAIN_SOURCE_SET_NAME).let { sourceSet ->
+                    sourceSet.java
+                        .remove("src/main/java")
+                        .add(*targetNames.map { targetName -> "src@$targetName" }.toTypedArray())
+                    sourceSet.java
+                        .remove("src/main/resources")
+                        .add(*targetNames.map { targetName -> "resources@$targetName" }.toTypedArray())
+                }
 
-                    sourceSet.java.replace("src/${sourceSet.name}/java", "$srcPrefixPart@jvm")
-                    sourceSet.resources.replace("src/${sourceSet.name}/resources", "$resourcesPrefixPart@jvm")
+                java.sourceSets.getByName(SourceSet.TEST_SOURCE_SET_NAME).let { sourceSet ->
+                    sourceSet.java
+                        .remove("src/main/java")
+                        .add(*targetNames.map { targetName -> "test@$targetName" }.toTypedArray())
+                    sourceSet.java
+                        .remove("src/main/resources")
+                        .add(*targetNames.map { targetName -> "testResources@$targetName" }.toTypedArray())
                 }
             }
 
