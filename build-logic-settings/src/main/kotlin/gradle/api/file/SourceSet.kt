@@ -9,6 +9,9 @@ internal fun SourceDirectorySet.remove(vararg paths: String) =
 internal fun SourceDirectorySet.add(vararg paths: String) =
     srcDirs(*paths)
 
+internal fun SourceDirectorySet.replace(oldPath: String, newPath: String) =
+    remove(oldPath).add(newPath)
+
 @Suppress("UnstableApiUsage")
 internal fun AndroidSourceDirectorySet.replace(oldPath: String, newPath: String) =
     setSrcDirs(directories.filterNot { file -> file.endsWith(oldPath) } + newPath)

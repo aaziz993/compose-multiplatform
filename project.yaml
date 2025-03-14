@@ -127,13 +127,13 @@ dependencies:
 
 buildCache:
   remotes:
+    # JB Space build cache
     - http:
         isEnabled: true
         url: https://files.pkg.jetbrains.space/aaziz93/p/aaziz-93/compose-multiplatform
         credentials:
           username: aaziz93
           password: $envOrLocal.jb.space.gradle.build.cache.password
-    - develocity:
-        isEnabled: true
-        # better make it a variable and set it to true only for CI builds
-        isPush: true
+    # Develocity build cache configured by default
+#    - develocity:
+#        isEnabled: true

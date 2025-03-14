@@ -10,6 +10,7 @@ import gradle.accessors.projectProperties
 import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
 import org.gradle.api.tasks.testing.Test
+import org.gradle.kotlin.dsl.develocity
 import org.gradle.kotlin.dsl.getByName
 import plugins.develocity.model.DevelocitySettings
 
@@ -25,12 +26,16 @@ internal class DevelocityPlugin : Plugin<Settings> {
                 plugins.apply(settings.libs.plugins.plugin("develocityCommonCustomUserData").id)
 
                 develocity.applyTo()
+
+                buildCache {
+                    remote(target.develocity.buildCache)
+                }
             }
         }
     }
 
-
     companion object {
+
         // Docs: https://docs.gradle.com/develocity/gradle-plugin/current/#test_retry
         context(Test)
         fun testRetry(configure: TestRetryConfiguration.() -> Unit) {
