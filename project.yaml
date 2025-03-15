@@ -129,14 +129,16 @@ dependencies:
 #  - dokka: :server-app
 
 buildCache:
+  local:
+#    enabled: true # Default is if not CI.
   remotes:
     # JB Space build cache
     - http:
-        isEnabled: true
+        enabled: true
         url: https://files.pkg.jetbrains.space/aaziz93/p/aaziz-93/compose-multiplatform
         credentials:
           username: aaziz93
           password: $envOrLocal.jb.space.gradle.build.cache.password
     # Develocity build cache configured by default
 #    - develocity:
-#        isEnabled: true
+#        enabled: true

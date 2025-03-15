@@ -7,8 +7,8 @@ import org.gradle.caching.local.DirectoryBuildCache
 
 @Serializable
 internal data class DirectoryBuildCache(
-    override val isEnabled: Boolean? = null,
-    override val isPush: Boolean? = null,
+    override val enabled: Boolean? = null,
+    override val push: Boolean? = null,
     /**
      * Sets the directory to use to store the build cache.
      *
@@ -20,7 +20,7 @@ internal data class DirectoryBuildCache(
     context(Settings)
     @Suppress("UnstableApiUsage")
     override fun applyTo(cache: org.gradle.caching.configuration.BuildCache) {
-        cache.isPush = !isCI
+        cache.isEnabled = !isCI
 
         super.applyTo(cache)
 

@@ -3,7 +3,6 @@ package gradle.caching
 import gradle.serialization.serializer.JsonPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
-import org.gradle.api.Project
 import org.gradle.api.initialization.Settings
 import org.gradle.caching.configuration.BuildCacheConfiguration
 
@@ -18,17 +17,17 @@ internal interface BuildCache {
     /**
      * Sets whether the build cache is enabled.
      */
-    val isEnabled: Boolean?
+    val enabled: Boolean?
 
     /**
      * Sets whether a given build can store outputs in the build cache.
      */
-    val isPush: Boolean?
+    val push: Boolean?
 
     context(Settings)
     fun applyTo(cache: org.gradle.caching.configuration.BuildCache) {
-        isEnabled?.let(cache::setEnabled)
-        isPush?.let(cache::setPush)
+        enabled?.let(cache::setEnabled)
+        push?.let(cache::setPush)
     }
 
     context(Settings)

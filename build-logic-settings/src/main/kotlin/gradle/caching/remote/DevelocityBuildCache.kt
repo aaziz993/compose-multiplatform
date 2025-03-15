@@ -15,8 +15,8 @@ import org.gradle.kotlin.dsl.develocity
 @Serializable
 @SerialName("develocity")
 internal data class DevelocityBuildCache(
-    override val isEnabled: Boolean? = null,
-    override val isPush: Boolean? = null,
+    override val enabled: Boolean? = null,
+    override val push: Boolean? = null,
     val server: String? = null,
     val path: String? = null,
     val allowUntrustedServer: Boolean? = null,

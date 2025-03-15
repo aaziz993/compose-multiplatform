@@ -12,8 +12,8 @@ import org.gradle.caching.http.HttpBuildCache
 @Serializable
 @SerialName("http")
 internal data class HttpBuildCache(
-    override val isEnabled: Boolean? = null,
-    override val isPush: Boolean? = null,
+    override val enabled: Boolean? = null,
+    override val push: Boolean? = null,
     val url: String,
     val credentials: HttpBuildCacheCredentials? = null,
     val allowUntrustedServer: Boolean? = null,
