@@ -32,65 +32,68 @@ internal interface ProjectFile {
     fun applyTo(name: String): List<TaskProvider<out DefaultTask>> {
         val (urls, files) = from.partition(String::isUrl)
 
-        return listOfNotNull(urls.takeIf(List<*>::isNotEmpty)?.flatMap { url ->
-            if (url.endsWith("/")) {
-                val urlLister = ApacheURLLister()
-                urlLister.listFiles(URI(url).toURL())
-            }
-            else listOf(url)
-        }.let { urls ->
-            rootProject.tasks.register<Download>(name) {
-                src(urls)
-                dest(into)
-
-                when (resolution) {
-                    FileResolution.ABSENT -> overwrite(false)
-                    FileResolution.OVERRIDE -> overwrite(true)
-                    FileResolution.MODIFIED -> onlyIfModified(true)
-                    FileResolution.NEWER -> onlyIfNewer(true)
+        return listOfNotNull(
+            urls.takeIf(List<*>::isNotEmpty)?.flatMap { url ->
+                if (url.endsWith("/")) {
+                    val urlLister = ApacheURLLister()
+                    urlLister.listFiles(URI(url).toURL())
                 }
+                else listOf(url)
+            }.let { urls ->
+                rootProject.tasks.register<Download>(name) {
+                    src(urls)
+                    dest(into)
 
-                doLast {
-                    if (dest.exists()) {
-                        // Read the downloaded file and replace placeholders
-                        val content = replace.fold(dest.readText()) { acc, (key, value) ->
-                            acc.replace(key, value)
+                    when (resolution) {
+                        FileResolution.ABSENT -> overwrite(false)
+                        FileResolution.OVERRIDE -> overwrite(true)
+                        FileResolution.MODIFIED -> onlyIfModified(true)
+                        FileResolution.NEWER -> onlyIfNewer(true)
+                    }
+
+                    doLast {
+                        if (dest.exists()) {
+                            // Read the downloaded file and replace placeholders
+                            val content = replace.fold(dest.readText()) { acc, (key, value) ->
+                                acc.replace(key, value)
+                            }
+
+                            // Write the modified content back to the file
+                            dest.writeText(content)
                         }
-
-                        // Write the modified content back to the file
-                        dest.writeText(content)
                     }
                 }
-            }
-        },
-        files.takeIf(List<*>::isNotEmpty)?.let { files ->
-            rootProject.tasks.register<Copy>(name) {
-                from(*files.toTypedArray())
-                into(into)
-                when (resolution) {
-                    FileResolution.ABSENT -> duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-                    FileResolution.OVERRIDE -> duplicatesStrategy = DuplicatesStrategy.INCLUDE
-                    FileResolution.MODIFIED -> exclude(FileUtils::contentEquals)
-                    FileResolution.NEWER -> exclude { fromFile, intoFile ->
-                        fromFile.lastModified() > intoFile.lastModified()
+            },
+            files.takeIf(List<*>::isNotEmpty)?.let { files ->
+                rootProject.tasks.register<Copy>(name) {
+                    from(*files.toTypedArray())
+                    into(into)
+                    when (resolution) {
+                        FileResolution.ABSENT -> duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+                        FileResolution.OVERRIDE -> duplicatesStrategy = DuplicatesStrategy.INCLUDE
+                        FileResolution.MODIFIED -> exclude(FileUtils::contentEquals)
+                        FileResolution.NEWER -> exclude { fromFile, intoFile ->
+                            fromFile.lastModified() > intoFile.lastModified()
+                        }
                     }
-                }
-                filter(replace, ReplaceTokens::class.java)
+                    filter(replace, ReplaceTokens::class.java)
 
-                includeEmptyDirs = false
-            }
-        })
+                    includeEmptyDirs = false
+                }
+            },
+        )
     }
 
     context(Project)
     fun AbstractCopyTask.exclude(equator: (from: File, into: File) -> Boolean) =
         exclude { fileTree ->
-            if (fileTree.isDirectory) return@exclude false
-
-            val intoFile = file(into).let { intoFile ->
-                if (intoFile.isDirectory()) intoFile.resolve(fileTree.relativePath.pathString)
-                else intoFile
+            if (fileTree.isDirectory) false
+            else {
+                val intoFile = file(into).let { intoFile ->
+                    if (intoFile.isDirectory()) intoFile.resolve(fileTree.relativePath.pathString)
+                    else intoFile
+                }
+                equator(fileTree.file, intoFile)
             }
-            equator(fileTree.file, intoFile)
         }
 }
