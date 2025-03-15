@@ -1,5 +1,6 @@
 package gradle.caching
 
+import gradle.api.isCI
 import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings
 import org.gradle.caching.local.DirectoryBuildCache
@@ -19,6 +20,8 @@ internal data class DirectoryBuildCache(
     context(Settings)
     @Suppress("UnstableApiUsage")
     override fun applyTo(cache: org.gradle.caching.configuration.BuildCache) {
+        cache.isPush = !isCI
+
         super.applyTo(cache)
 
         cache as DirectoryBuildCache

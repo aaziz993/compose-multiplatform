@@ -25,18 +25,18 @@ internal class JavaPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-
-            tryRegisterJvmStressTest()
-
-            tryRegisterJavaCodegenTestTask()
-
-            // When there are android targets disable KotlinJvmTarget.withJava property and JavaPlugin
-            if (projectProperties.kotlin.targets.any { target -> target is KotlinAndroidTarget } ||
-                projectProperties.kotlin.targets.none { target -> target is KotlinJvmTarget }) {
+            if (projectProperties.kotlin.targets.none { target -> target is KotlinJvmTarget }) {
                 return@with
             }
 
-            plugins.apply(JavaPlugin::class.java)
+            registerJvmStressTest()
+
+            registerJavaCodegenTestTask()
+
+            // When there are android targets disable KotlinJvmTarget.withJava property and JavaPlugin
+            if (projectProperties.kotlin.targets.any { target -> target is KotlinAndroidTarget }) {
+                return@with
+            }
 
             projectProperties.java.applyTo()
 
@@ -46,41 +46,10 @@ internal class JavaPlugin : Plugin<Project> {
 
                 projectProperties.application?.applyTo()
             }
-
-            adjustSourceSets()
         }
     }
 
-    private fun Project.adjustSourceSets() =
-        when (projectProperties.layout) {
-            ProjectLayout.FLAT -> {
-                val targetNames = kotlin.targets
-                    .filterIsInstance<org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget>()
-                    .map(KotlinTarget::targetName)
-
-                java.sourceSets.getByName(SourceSet.MAIN_SOURCE_SET_NAME).let { sourceSet ->
-                    sourceSet.java
-                        .remove("src/main/java")
-                        .add(*targetNames.map { targetName -> "src@$targetName" }.toTypedArray())
-                    sourceSet.java
-                        .remove("src/main/resources")
-                        .add(*targetNames.map { targetName -> "resources@$targetName" }.toTypedArray())
-                }
-
-                java.sourceSets.getByName(SourceSet.TEST_SOURCE_SET_NAME).let { sourceSet ->
-                    sourceSet.java
-                        .remove("src/main/java")
-                        .add(*targetNames.map { targetName -> "test@$targetName" }.toTypedArray())
-                    sourceSet.java
-                        .remove("src/main/resources")
-                        .add(*targetNames.map { targetName -> "testResources@$targetName" }.toTypedArray())
-                }
-            }
-
-            else -> Unit
-        }
-
-    private fun Project.tryRegisterJvmStressTest() {
+    private fun Project.registerJvmStressTest() {
         val jvmTest = tasks.withType<KotlinJvmTest>()
 
         if (jvmTest.isNotEmpty()) {
@@ -113,7 +82,7 @@ internal class JavaPlugin : Plugin<Project> {
      * This breaks IDE support because now commonTest/kotlin is used from 2 different places so clicking a model there, it's impossible
      * to tell which model it is. We could expect/actual all of the model APIs but that'd be a lot of very manual work
      */
-    private fun Project.tryRegisterJavaCodegenTestTask() =
+    private fun Project.registerJavaCodegenTestTask() =
         kotlin.targets.withType<org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget>().all { jvmTarget ->
 
             /**

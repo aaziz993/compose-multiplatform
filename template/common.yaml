@@ -210,6 +210,7 @@ plugins:
     enabled: true
     debug: true
     ignoreFailures: true
+    sourceSets: [ main ]
 
   # api that you can use to develop lightweight compiler plugins. KSP provides a simplified compiler plugin API that leverages the power of Kotlin while keeping the learning curve at a minimum. Compared to KAPT, annotation processors that use KSP can run up to 2x faster.
   ksp:
@@ -354,7 +355,9 @@ dependencies:
   - kspCommonMainMetadata: $libs.ktorfit.ksp
     # Use import org.koin.ksp.generated.*
   - kspCommonMainMetadata: $libs.koin.ksp.compiler
-    # animalsniffer java signature
+    # knit
+  - testImplementation: org.jetbrains.kotlinx:kotlinx-knit-test
+  # animalsniffer java signature
   - signature: $libs.signature.java
     # animalsniffer android signature
   - signature: $libs.signature.android

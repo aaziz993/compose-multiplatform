@@ -21,7 +21,7 @@ internal data class KotlinJvmTarget(
     override val compilerOptions: KotlinJvmCompilerOptions? = null,
     val testRuns: List<KotlinJvmTestRun>? = null,
     val mainRun: KotlinJvmRunDsl? = null,
-    val withJava: Boolean = true,
+    val withJava: Boolean?=null,
 ) : KotlinJvmAndAndroidTarget() {
 
     context(Project)
