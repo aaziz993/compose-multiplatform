@@ -8,6 +8,7 @@ import gradle.api.repositories.UrlArtifactRepository
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import org.gradle.api.artifacts.ArtifactRepositoryContainer
 import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.api.artifacts.repositories.IvyArtifactRepository
 import org.gradle.kotlin.dsl.withType
@@ -31,7 +32,7 @@ import org.gradle.kotlin.dsl.withType
 @Serializable
 @SerialName("ivy")
 internal data class IvyArtifactRepository(
-    override val name: String = "ivy",
+    override val name: String = "ivy${Math.random() * UInt.MAX_VALUE}",
     override val content: RepositoryContentDescriptor? = null,
     override val url: String? = null,
     override val allowInsecureProtocol: Boolean? = null,
