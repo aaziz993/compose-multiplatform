@@ -20,9 +20,9 @@ internal interface DownloadSpec {
 
     val compress: Boolean?
 
-    val username: String??
+    val username: String?
 
-    val password: String??
+    val password: String?
 
     val headers: Map<String, String>?
 
