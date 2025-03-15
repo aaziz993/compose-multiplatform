@@ -119,7 +119,7 @@ internal data class MavenPom(
         pom.name = name ?: project.name
         pom.description = description ?: project.description
         pom.url tryAssign url
-        pom.inceptionYear tryAssign (inceptionYear ?: projectProperties.inceptionYear)
+        pom.inceptionYear tryAssign (inceptionYear ?: projectProperties.year)
 
         (licenses.orEmpty() + listOfNotNull(projectProperties.license)).let { licenses ->
             pom.licenses {

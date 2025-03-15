@@ -3,6 +3,7 @@ package gradle.project.file
 import arrow.core.fold
 import gradle.isUrl
 import java.io.File
+import java.net.URI
 import kotlin.collections.component1
 import kotlin.collections.component2
 import kotlinx.serialization.Serializable
@@ -12,21 +13,31 @@ import org.gradle.api.Project
 import org.gradle.api.file.DuplicatesStrategy
 import org.gradle.api.tasks.AbstractCopyTask
 import org.gradle.api.tasks.Copy
+import org.gradle.internal.impldep.org.apache.ivy.util.url.ApacheURLLister
 import org.gradle.kotlin.dsl.register
 import org.jetbrains.compose.internal.de.undercouch.gradle.tasks.download.Download
 
 internal interface ProjectFile {
 
-    val from: String
+    val from: List<String>
     val into: String
     val resolution: FileResolution
+
     val replace: Map<String, String>
+        get() = emptyMap()
 
     context(Project)
-    fun applyTo(name: String) =
-        if (from.isUrl) {
+    fun applyTo(name: String) {
+        val (urls, files) = from.partition(String::isUrl)
+        urls.takeIf(List<*>::isNotEmpty)?.flatMap { url ->
+            if (url.endsWith("/")) {
+                val urlLister = ApacheURLLister()
+                urlLister.listFiles(URI(url).toURL())
+            }
+            else listOf(url)
+        }.let { urls ->
             rootProject.tasks.register<Download>(name) {
-                src(from)
+                src(urls)
                 dest(into)
 
                 when (resolution) {
@@ -44,20 +55,20 @@ internal interface ProjectFile {
                         }
 
                         // Write the modified content back to the file
-                        dest.writeText(transform?.invoke(content) ?: content)
+                        dest.writeText(content)
                     }
                 }
             }
         }
-        else {
+        files.takeIf(List<*>::isNotEmpty)?.let { files ->
             rootProject.tasks.register<Copy>(name) {
-                from(from)
+                from(*files.toTypedArray())
                 into(into)
                 when (resolution) {
                     FileResolution.ABSENT -> duplicatesStrategy = DuplicatesStrategy.EXCLUDE
                     FileResolution.OVERRIDE -> duplicatesStrategy = DuplicatesStrategy.INCLUDE
-                    FileResolution.MODIFIED -> excludeFile(FileUtils::contentEquals)
-                    FileResolution.NEWER -> excludeFile { fromFile, intoFile ->
+                    FileResolution.MODIFIED -> exclude(FileUtils::contentEquals)
+                    FileResolution.NEWER -> exclude { fromFile, intoFile ->
                         fromFile.lastModified() > intoFile.lastModified()
                     }
                 }
@@ -66,9 +77,10 @@ internal interface ProjectFile {
                 includeEmptyDirs = false
             }
         }
+    }
 
     context(Project)
-    private fun AbstractCopyTask.excludeFile(equator: (from: File, into: File) -> Boolean) =
+    fun AbstractCopyTask.exclude(equator: (from: File, into: File) -> Boolean) =
         exclude { fileTree ->
             if (fileTree.isDirectory) return@exclude false
 

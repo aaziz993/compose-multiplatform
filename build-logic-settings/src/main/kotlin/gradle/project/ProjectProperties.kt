@@ -22,8 +22,11 @@ import gradle.plugins.web.yarn.YarnRootExtension
 import gradle.serialization.decodeFromAny
 import gradle.api.tasks.Task
 import gradle.api.tasks.TaskTransformingSerializer
+import gradle.project.file.ContributionFile
+import gradle.project.file.CodeOfConductFile
+import gradle.project.file.LicenseFile
+import gradle.project.file.LicenseHeaderFile
 import gradle.project.file.ProjectFile
-import gradle.project.file.RootProjectFile
 import java.io.File
 import java.util.*
 import kotlinx.serialization.Serializable
@@ -43,11 +46,13 @@ internal data class ProjectProperties(
     val group: String? = null,
     val description: String? = null,
     val version: VersionSettings = VersionSettings(),
-    val inceptionYear: String? = null,
+    val year: String? = null,
     val developer: MavenPomDeveloper? = null,
     val license: MavenPomLicense? = null,
-    val contribution: RootProjectFile? = null,
-    val codeOfConduct: RootProjectFile? = null,
+    val licenseFile: LicenseFile? = null,
+    val codeOfConductFile: ContributionFile? = null,
+    val contributionFile: ContributionFile? = null,
+    val licenseHeaderFile: LicenseHeaderFile? = null,
     val buildscript: ScriptHandler? = null,
     val pluginManagement: PluginManagement? = null,
     val dependencyResolutionManagement: DependencyResolutionManagement? = null,

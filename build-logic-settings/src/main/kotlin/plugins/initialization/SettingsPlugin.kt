@@ -14,7 +14,9 @@ import gradle.api.configureEach
 import gradle.api.repositories.CacheRedirector
 import gradle.isUrl
 import gradle.project.ProjectProperties.Companion.load
+import gradle.project.file.CommentType
 import gradle.project.file.FileResolution
+import gradle.project.file.LicenseHeaderFile
 import gradle.project.file.ProjectFile
 import gradle.project.file.ProjectFileImpl
 import java.io.File
@@ -168,24 +170,22 @@ public class SettingsPlugin : Plugin<Settings> {
                 // Apply project files
                 with(rootProject) {
                     val projectFiles = (target.projectProperties.projectFiles + listOfNotNull(
-                        target.projectProperties.contribution,
-                        target.projectProperties.codeOfConduct,
+                        target.projectProperties.licenseFile,
+                        target.projectProperties.codeOfConductFile,
+                        target.projectProperties.contributionFile,
                     ) + listOf(
-                        ProjectFileImpl(
-                            "templates/LICENSE_HEADER_SLASHED",
-                            "licenses",
-                            transform = { text -> "/**\n${text.lines().joinToString("\n", " * ")}\n */" },
-                        ),
-                        ProjectFileImpl(
-                            "templates/LICENSE_HEADER_SHARPED",
-                            "licenses",
-                            transform = { text -> text.lines().joinToString("\n", " # ") },
-                        ),
-                        ProjectFileImpl(
-                            "templates/LICENSE_HEADER_TAGGED",
-                            "licenses",
-                            transform = { text -> "$<--\n$text\n -->" },
-                        ),
+//                        LicenseHeaderFile(
+//                            "templates/LICENSE_HEADER_SLASHED",
+//                            "licenses",
+//                        ),
+//                        ProjectFileImpl(
+//                            "templates/LICENSE_HEADER_SHARPED",
+//                            "licenses",
+//                        ),
+//                        ProjectFileImpl(
+//                            "templates/LICENSE_HEADER_TAGGED",
+//                            "licenses",
+//                        ),
                     )).mapIndexed { index, projectFile ->
                         projectFile.applyTo("projectFile$index")
                     }

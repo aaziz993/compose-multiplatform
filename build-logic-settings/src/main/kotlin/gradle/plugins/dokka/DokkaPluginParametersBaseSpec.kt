@@ -125,8 +125,8 @@ internal data class DokkaHtmlPluginParameters(
         named.separateInheritedMembers tryAssign separateInheritedMembers
         named.mergeImplicitExpectActualDeclarations tryAssign mergeImplicitExpectActualDeclarations
         named.footerMessage tryAssign (footerMessage ?: listOfNotNull(
-            projectProperties.inceptionYear,
-            projectProperties.developer.name,
+            projectProperties.year,
+            projectProperties.developer?.name,
         ).joinToString(" - ").takeIf(String::isNotEmpty)?.let { message -> "© $message" })
         named.homepageLink tryAssign homepageLink
         named.templatesDir tryAssign templatesDir?.let(layout.projectDirectory::dir)
