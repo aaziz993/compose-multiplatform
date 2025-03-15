@@ -28,11 +28,6 @@ plugins:
           name: '' # apply to all above created maven publications by specifying empty name
           pom:
             inceptionYear: '2025'
-            licenses:
-              - name: Apache License, Version 2.0
-                url: https://www.apache.org/licenses/LICENSE-2.0.txt
-                distribution: repo
-                comments: A business-friendly OSS license.
             issueManagement:
               system: GitHub Issues
               url: https://github.com/aaziz993/compose-multiplatform/issues

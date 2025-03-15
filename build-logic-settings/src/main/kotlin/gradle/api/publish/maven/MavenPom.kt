@@ -1,5 +1,6 @@
 package gradle.api.publish.maven
 
+import gradle.accessors.projectProperties
 import gradle.api.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -118,13 +119,20 @@ internal data class MavenPom(
         pom.name = name ?: project.name
         pom.description = description ?: project.description
         pom.url tryAssign url
-        pom.inceptionYear tryAssign inceptionYear
+        pom.inceptionYear tryAssign (inceptionYear ?: projectProperties.inceptionYear)
 
-        licenses?.let { licenses ->
+        (licenses.orEmpty() + projectProperties.license?.let(::listOf).orEmpty()).let { licenses ->
             pom.licenses {
                 licenses.forEach { license ->
                     license(license::applyTo)
                 }
+            }
+        }
+
+        // Apply root license
+        projectProperties.license?.let { license ->
+            pom.licenses {
+                license(license::applyTo)
             }
         }
 

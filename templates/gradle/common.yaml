@@ -2,7 +2,10 @@ layout: FLAT
 
 group: io.github.aaziz993
 
-# Applied to
+# Applied to maven publications
+inceptionYear: '2025'
+
+# Added to maven publications licenses
 license:
   name: Apache License, Version 2.0
   url: https://www.apache.org/licenses/LICENSE-2.0.txt

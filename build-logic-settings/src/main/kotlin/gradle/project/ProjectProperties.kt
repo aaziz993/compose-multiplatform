@@ -7,6 +7,7 @@ import gradle.caching.BuildCacheConfiguration
 import gradle.collection.deepMerge
 import gradle.collection.resolve
 import gradle.api.initialization.ScriptHandler
+import gradle.api.publish.maven.MavenPomLicense
 import gradle.plugins.android.BaseExtension
 import gradle.plugins.android.application.BaseAppModuleExtension
 import gradle.plugins.android.library.LibraryExtension
@@ -49,7 +50,8 @@ internal data class ProjectProperties(
     val group: String? = null,
     val description: String? = null,
     val version: VersionSettings = VersionSettings(),
-    val license: License? = null,
+    val inceptionYear: String? = null,
+    val license: MavenPomLicense? = null,
     val plugins: Plugins = Plugins(),
     val java: JavaPluginExtension = JavaPluginExtension(),
     val application: JavaApplication? = null,
