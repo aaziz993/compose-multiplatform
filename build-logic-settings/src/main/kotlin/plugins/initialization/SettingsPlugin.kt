@@ -2,6 +2,7 @@
 
 package plugins.initialization
 
+import arrow.core.fold
 import gradle.accessors.allLibs
 import gradle.accessors.exportExtras
 import gradle.accessors.libs
@@ -13,15 +14,16 @@ import gradle.api.configureEach
 import gradle.api.repositories.CacheRedirector
 import gradle.isUrl
 import gradle.project.ProjectProperties.Companion.load
-import gradle.project.sync.SyncFile
-import gradle.project.sync.SyncFileResolution
+import gradle.project.file.FileResolution
+import java.io.File
 import java.net.URI
+import org.apache.tools.ant.filters.ReplaceTokens
 import org.gradle.api.Plugin
+import org.gradle.api.file.DuplicatesStrategy
 import org.gradle.api.file.FileCollection
 import org.gradle.api.initialization.Settings
 import org.gradle.api.internal.artifacts.repositories.DefaultMavenArtifactRepository
 import org.gradle.api.tasks.Copy
-import org.gradle.kotlin.dsl.maven
 import org.gradle.kotlin.dsl.register
 import org.jetbrains.compose.internal.IDEA_IMPORT_TASK_NAME
 import org.jetbrains.compose.internal.de.undercouch.gradle.tasks.download.Download
@@ -161,38 +163,16 @@ public class SettingsPlugin : Plugin<Settings> {
             }
 
             target.gradle.projectsLoaded {
-                // register sync tasks
-                projectProperties.license
-                listOf(
-                    SyncFile(
-
-                    ),
-                )
-
-                val syncProjectFiles = projectProperties.syncFiles.mapIndexed { index, (from, into, resolution) ->
-                    if (from.isUrl) {
-                        rootProject.tasks.register<Download>("downloadProjectFile$index") {
-                            src(from)
-                            dest(into)
-                            when (resolution) {
-                                SyncFileResolution.IF_MODIFIED -> onlyIfModified(true)
-                                SyncFileResolution.IF_NEWER -> onlyIfNewer(true)
-                                SyncFileResolution.OVERRIDE -> overwrite(true)
-                            }
-                        }
+                with(rootProject) {
+                    val projectFiles = target.projectProperties.projectFiles.mapIndexed { index, projectFile ->
+                        projectFile.applyTo("projectFile$index")
                     }
-                    else {
-                        rootProject.tasks.register<Copy>("copyProjectFile$index") {
-                            from(from)
-                            into(into)
-                        }
-                    }
-                }
 
-                //setup sync tasks execution during IDE import
-                rootProject.tasks.configureEach { importTask ->
-                    if (importTask.name == IDEA_IMPORT_TASK_NAME) {
-                        importTask.dependsOn(syncProjectFiles)
+                    //setup sync tasks execution during IDE import
+                    tasks.configureEach { importTask ->
+                        if (importTask.name == IDEA_IMPORT_TASK_NAME) {
+                            importTask.dependsOn(projectFiles)
+                        }
                     }
                 }
 

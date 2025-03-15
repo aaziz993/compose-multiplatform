@@ -3,7 +3,7 @@ package gradle.plugins.spotless.groovy
 import com.diffplug.spotless.LineEnding
 import gradle.accessors.spotless
 import gradle.plugins.spotless.BiomeGeneric
-import gradle.plugins.spotless.HasBuiltinDelimiterForLicense
+
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -43,11 +43,10 @@ internal data class GroovyExtension(
     override val importOrderFile: String? = null,
     override val removeSemicolons: Boolean? = null,
     override val greclipse: GrEclipseConfig? = null,
-) : BaseGroovyExtension(), HasBuiltinDelimiterForLicense {
+) : BaseGroovyExtension() {
 
     context(Project)
     override fun applyTo() = spotless.groovy {
-        super<BaseGroovyExtension>.applyTo(this)
-        super<HasBuiltinDelimiterForLicense>.applyTo(this)
+        super.applyTo(this)
     }
 }

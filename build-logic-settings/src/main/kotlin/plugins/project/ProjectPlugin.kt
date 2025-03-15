@@ -2,32 +2,22 @@
 
 package plugins.project
 
-import org.gradle.kotlin.dsl.register
 import gradle.accessors.exportExtras
 import gradle.accessors.kotlin
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
 import gradle.api.isCI
-import gradle.api.configureEach
 import gradle.api.maybeNamed
 import gradle.api.repositories.CacheRedirector
-import gradle.api.trySetSystemProperty
 import gradle.api.version
-import gradle.isUrl
 import gradle.project.PROJECT_PROPERTIES_FILE
 import gradle.project.ProjectProperties.Companion.load
 import gradle.project.ProjectProperties.Companion.yaml
-import gradle.project.sync.SyncFile
-import gradle.project.sync.SyncFileResolution
 import gradle.serialization.encodeToAny
-import javax.xml.stream.XMLEventFactory
-import javax.xml.stream.XMLInputFactory
-import javax.xml.stream.XMLOutputFactory
 import kotlinx.serialization.json.Json
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.tasks.Copy
 import org.gradle.api.tasks.TaskCollection
 import org.gradle.api.tasks.testing.AbstractTestTask
 import org.gradle.internal.extensions.core.extra
@@ -35,7 +25,6 @@ import org.gradle.internal.os.OperatingSystem
 import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.withType
-import org.jetbrains.compose.internal.de.undercouch.gradle.tasks.download.Download
 import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
 import org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest
@@ -76,7 +65,6 @@ import plugins.spotless.SpotlessPlugin
 import plugins.web.JsPlugin
 import plugins.web.WasmPlugin
 import plugins.web.WasmWasiPlugin
-import org.jetbrains.compose.internal.IDEA_IMPORT_TASK_NAME
 
 public class ProjectPlugin : Plugin<Project> {
 

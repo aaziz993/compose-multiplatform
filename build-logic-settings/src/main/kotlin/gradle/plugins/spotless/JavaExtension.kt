@@ -54,15 +54,13 @@ internal data class JavaExtension(
     val formatAnnotations: FormatAnnotationsConfig? = null,
     /** Apply CleanThat refactoring rules.  */
     val cleanthat: CleanthatJavaConfig? = null,
-) : FormatExtension(), HasBuiltinDelimiterForLicense {
+) : FormatExtension() {
 
     context(Project)
     override fun applyTo(extension: com.diffplug.gradle.spotless.FormatExtension) {
-        super<FormatExtension>.applyTo(extension)
+        super.applyTo(extension)
 
         extension as JavaExtension
-
-        super<HasBuiltinDelimiterForLicense>.applyTo(extension)
 
         importOrder?.let { importOrder ->
             importOrder.applyTo(

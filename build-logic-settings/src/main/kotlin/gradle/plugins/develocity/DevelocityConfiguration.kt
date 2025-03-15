@@ -1,5 +1,6 @@
 package gradle.plugins.develocity
 
+import gradle.accessors.resolveValue
 import gradle.api.tryAssign
 import org.gradle.api.initialization.Settings
 import org.gradle.kotlin.dsl.develocity
@@ -25,6 +26,6 @@ internal interface DevelocityConfiguration {
         develocity.edgeDiscovery tryAssign edgeDiscovery
         develocity.projectId tryAssign projectId
         develocity.allowUntrustedServer tryAssign allowUntrustedServer
-        develocity.accessKey tryAssign accessKey
+        develocity.accessKey tryAssign accessKey?.resolveValue()?.toString()
     }
 }

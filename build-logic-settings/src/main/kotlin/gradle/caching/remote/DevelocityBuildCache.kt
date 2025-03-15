@@ -28,7 +28,7 @@ internal data class DevelocityBuildCache(
     context(Settings)
     override fun applyTo(cache: BuildCache) {
         // better set it to true only for CI builds.
-        cache.isPush = isCI && projectProperties.gradleEnterpriseAccessKey?.resolveValue() != null
+        cache.isPush = isCI && projectProperties.plugins.develocity.accessKey?.resolveValue() != null
 
         super.applyTo(cache)
 

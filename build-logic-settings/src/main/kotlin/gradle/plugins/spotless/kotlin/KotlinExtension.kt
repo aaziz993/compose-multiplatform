@@ -3,7 +3,7 @@ package gradle.plugins.spotless.kotlin
 import com.diffplug.spotless.LineEnding
 import gradle.accessors.spotless
 import gradle.plugins.spotless.BiomeGeneric
-import gradle.plugins.spotless.HasBuiltinDelimiterForLicense
+
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -41,11 +41,10 @@ internal data class KotlinExtension(
     override val toggleOffOn: ToggleOffOn? = null,
     override val toggleIfOffOn: Boolean? = null,
     override val toggleOffOnDisable: Boolean? = null,
-) : BaseKotlinExtension(), HasBuiltinDelimiterForLicense {
+) : BaseKotlinExtension() {
 
     context(Project)
     override fun applyTo() = spotless.kotlin {
-        super<BaseKotlinExtension>.applyTo(this)
-        super<HasBuiltinDelimiterForLicense>.applyTo(this)
+        super.applyTo(this)
     }
 }

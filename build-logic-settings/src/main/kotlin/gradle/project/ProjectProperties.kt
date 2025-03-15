@@ -16,13 +16,13 @@ import gradle.plugins.java.application.JavaApplication
 import gradle.plugins.kotlin.HasKotlinDependencies
 import gradle.plugins.kotlin.KotlinSettings
 import gradle.plugins.web.NodeJsEnvSpec
-import plugins.karakum.model.KarakumSettings
 import gradle.plugins.web.npm.NpmExtension
 import gradle.plugins.web.yarn.YarnRootExtension
 import gradle.serialization.decodeFromAny
 import gradle.api.tasks.Task
 import gradle.api.tasks.TaskTransformingSerializer
-import gradle.project.sync.SyncFile
+import gradle.project.file.ProjectFile
+import java.io.File
 import java.util.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
@@ -44,7 +44,6 @@ internal data class ProjectProperties(
     val includes: List<String>? = null,
     val projects: List<ProjectDescriptor>? = null,
     val buildCache: BuildCacheConfiguration? = null,
-    val gradleEnterpriseAccessKey: String? = null,
     val type: ProjectType = ProjectType.LIB,
     val layout: ProjectLayout = ProjectLayout.DEFAULT,
     val group: String? = null,
@@ -65,7 +64,7 @@ internal data class ProjectProperties(
     val compose: CMPSettings = CMPSettings(),
     val tasks: List<@Serializable(with = TaskTransformingSerializer::class) Task>? = null,
     private val localPropertiesFile: String = "local.properties",
-    val syncFiles: List<SyncFile> = emptyList(),
+    val projectFiles: List<ProjectFile> = emptyList(),
 ) : HasKotlinDependencies {
 
     @Transient
@@ -80,7 +79,7 @@ internal data class ProjectProperties(
         val yaml = Yaml()
 
         @Suppress("UNCHECKED_CAST")
-        fun Directory.load(settingsDir: Directory): ProjectProperties {
+        fun Directory.load(settingsDir: File): ProjectProperties {
             val propertiesFile = file(PROJECT_PROPERTIES_FILE).asFile
 
             return if (propertiesFile.exists()) {
@@ -104,7 +103,7 @@ internal data class ProjectProperties(
                 ProjectProperties()
             }.apply {
                 localProperties.apply {
-                    val file = settingsDir.file(localPropertiesFile).asFile
+                    val file = settingsDir.resolve(localPropertiesFile)
                     if (file.exists()) {
                         load(file.reader())
                     }
