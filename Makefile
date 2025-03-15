@@ -32,9 +32,6 @@ gen-doc-samples: # 📜 Generate documentation and code samples from documentati
 
 gen-all: gen-coverage gen-doc-samples # 🔨 Generate code coverage, documentation and code samples from documentation
 
-warmup: # 🔥 Warmup for jetbrains development environment
-	./gradlew assemble
-
 gen-gpg: # 🔑 Generate gpg key.
 	./scripts/gpg/gen-gpg.sh
 
@@ -62,8 +59,11 @@ publish-maven: full-check # 📦 Publish to Maven.
 publish: full-check # 📦 Publish to Space Packages, GitHub Packages and Maven.
 	./scripts/publish/publish-github.sh && ./scripts/publish/publish-space.sh && ./scripts/publish/publish-maven.sh
 
-clean: # 🧹 Clean all.
-	./gradlew clean
+warmup: # 🔥 Warmup for jetbrains development environment
+	./gradlew assemble
 
 server-auto-reload: # 🔄 Server application hot reload
   ./gradlew -t autoreload-engine-main:build
+
+clean: # 🧹 Clean all.
+	./gradlew clean

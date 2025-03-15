@@ -306,7 +306,7 @@ kotlin:
   explicitApi: Strict
 
   targets:
-    - '':
+    - KotlinTarget:
         compilerOptions:
           allWarningsAsErrors: false
           debug: false

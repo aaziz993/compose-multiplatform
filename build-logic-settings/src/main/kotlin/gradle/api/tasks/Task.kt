@@ -353,7 +353,7 @@ internal object TaskTransformingSerializer : KeyTransformingSerializer<Task>(
 )
 
 @Serializable
-@SerialName("")
+@SerialName("Task")
 internal data class TaskImpl(
     override val dependsOn: List<String>? = null,
     override val onlyIf: Boolean? = null,

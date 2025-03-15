@@ -15,8 +15,8 @@ internal open class JsonPolymorphicSerializer<T : Any>(
 
     override fun selectDeserializer(element: JsonElement): DeserializationStrategy<T> {
         val type = element.jsonObject[classDiscriminator]?.jsonPrimitive?.content
-            ?: error("Class discriminator not found in: $element")
+            ?: error("Class discriminator '$classDiscriminator' not found in: $element")
         return baseClass.getPolymorphicSerializer(type)
-            ?: error("Polymorphic serializer not found for class discriminator: $type")
+            ?: error("Polymorphic serializer not found for: $element")
     }
 }

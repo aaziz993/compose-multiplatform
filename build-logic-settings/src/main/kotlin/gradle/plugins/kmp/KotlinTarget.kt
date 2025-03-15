@@ -53,7 +53,7 @@ internal object KotlinTargetTransformingSerializer : KeyTransformingSerializer<K
 )
 
 @Serializable
-@SerialName("")
+@SerialName("KotlinTarget")
 internal data class KotlinTargetIml(
     override val compilations: List<KotlinCompilation>? = null,
 ) : KotlinTarget {
