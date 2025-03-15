@@ -5,6 +5,12 @@ license:
   distribution: repo
   comments: A business-friendly OSS license.
 
+contribution:
+  from: https://www.contributor-covenant.org/version/1/4/code-of-conduct/code_of_conduct.md
+
+codeOfConduct:
+  from: https://www.contributor-covenant.org/version/1/4/code-of-conduct/code_of_conduct.md
+
 buildscript:
   repositories:
     - mavenCentral

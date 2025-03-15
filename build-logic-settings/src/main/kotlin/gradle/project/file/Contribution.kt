@@ -1,12 +1,14 @@
 package gradle.project.file
 
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.Transient
 
 @Serializable
-internal data class ProjectFileImpl(
+internal data class Contribution(
     override val from: String,
-    override val into: String,
     override val resolution: FileResolution = FileResolution.ABSENT,
-    override val replace: Map<String, String> = emptyMap(),
-) : ProjectFile
+    override val emailPlaceHolder: Map<String, String> = emptyMap()
+) : ProjectFile {
+
+    override val into: String
+        get() = "./"
+}

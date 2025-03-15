@@ -2,4 +2,4 @@
 
 . ./gpg/gpg-util.sh
 
-print_gpg
+list_gpg "$1" "$2"

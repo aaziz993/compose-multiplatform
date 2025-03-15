@@ -27,21 +27,24 @@ gen-coverage: # 📊 Generate code coverage report.
 gen-doc: # 📄 Generate documentation
 	./gradlew dokkaGenerate
 
+check-doc-samples: # 🔬 Generate documentation and code samples from documentation.
+	./gradlew knitCheck
+
 gen-doc-samples: # 📜 Generate documentation and code samples from documentation.
 	./gradlew knitPrepare
 
 gen-all: gen-coverage gen-doc-samples # 🔨 Generate code coverage, documentation and code samples from documentation
 
-gen-gpg: # 🔑 Generate gpg key.
+gen-signing-gpg: # 🔑 Generate gpg key.
 	./gradlew generateSigningGPGKey
 
-list-gpg:
-	gpg --list-secret-keys --keyid-format=long
+list-signing-gpg:
+	./gradlew listSigningGPGKey
 
-clean-gpg: # 🧹 Clean all gpg keys.
-	./scripts/gpg/clean-gpg.sh
+clean-signing-gpg: # 🧹 Clean all gpg keys.
+	./gradlew cleanSigningGPGKey
 
-distribute-gpg: # 🌐 Distribute signing gpg key
+dist-signing-gpg: # 🌐 Distribute signing gpg key
 	./gradlew distributeSigningGPGKey
 
 publish-maven-local: full-check # 📦 Publish to GitHub Packages.

@@ -47,14 +47,14 @@ internal class SigningPlugin : Plugin<Project> {
             )
         }
 
-        tasks.register<Exec>("printSigningGPGKey") {
-            description = "Print the signing GPG keys"
+        tasks.register<Exec>("listSigningGPGKey") {
+            description = "List the signing GPG keys"
             group = "signing"
 
-            executable = settings.settingsDir.resolve("scripts/gpg/print-gpg.sh").absolutePath
+            executable = settings.settingsDir.resolve("scripts/gpg/list-gpg.sh").absolutePath
 
             args(
-                generateGpg.nameReal,
+                generateGpg.nameReal ?: projectProperties.developer?.name!!,
                 generateGpg.passphrase,
             )
         }
@@ -66,7 +66,7 @@ internal class SigningPlugin : Plugin<Project> {
             executable = settings.settingsDir.resolve("scripts/gpg/clean-gpg.sh").absolutePath
 
             args(
-                generateGpg.nameReal,
+                generateGpg.nameReal ?: projectProperties.developer?.name!!,
             )
         }
     }

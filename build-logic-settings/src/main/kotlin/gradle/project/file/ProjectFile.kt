@@ -22,9 +22,6 @@ internal interface ProjectFile {
     val resolution: FileResolution
     val replace: Map<String, String>
 
-    val transform: ((String) -> String)?
-        get() = null
-
     context(Project)
     fun applyTo(name: String) =
         if (from.isUrl) {
@@ -67,8 +64,6 @@ internal interface ProjectFile {
                 filter(replace, ReplaceTokens::class.java)
 
                 includeEmptyDirs = false
-
-//                eachFile {  }
             }
         }
 

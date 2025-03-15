@@ -165,10 +165,11 @@ public class SettingsPlugin : Plugin<Settings> {
             }
 
             target.gradle.projectsLoaded {
+                // Apply project files
                 with(rootProject) {
                     val projectFiles = (target.projectProperties.projectFiles + listOfNotNull(
-                        projectProperties.contribution,
-                        projectProperties.codeOfConduct,
+                        target.projectProperties.contribution,
+                        target.projectProperties.codeOfConduct,
                     ) + listOf(
                         ProjectFileImpl(
                             "templates/LICENSE_HEADER_SLASHED",

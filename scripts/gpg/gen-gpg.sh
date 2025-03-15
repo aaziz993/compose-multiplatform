@@ -18,4 +18,4 @@ Passphrase:$9
 %echo done
 EOF
 
-print_gpg
+list_gpg "$5" "$9"
