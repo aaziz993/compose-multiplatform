@@ -9,7 +9,7 @@ import org.gradle.api.tasks.TaskProvider
 
 @Serializable
 internal data class CodeOfConductFile(
-    override val from: String,
+    override val from: List<String>,
     override val resolution: FileResolution = FileResolution.ABSENT,
     val emailPlaceholder: String,
     val email: String? = null
@@ -22,7 +22,7 @@ internal data class CodeOfConductFile(
     override val replace: MutableMap<String, String> = mutableMapOf()
 
     context(Project)
-    override fun applyTo(name: String): TaskProvider<out DefaultTask> {
+    override fun applyTo(name: String): List<TaskProvider<out DefaultTask>> {
 
         (email ?: projectProperties.developer?.email)?.let { email ->
             replace[emailPlaceholder] = email

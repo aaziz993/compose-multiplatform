@@ -9,10 +9,12 @@ import kotlin.collections.component2
 import kotlinx.serialization.Serializable
 import org.apache.commons.io.FileUtils
 import org.apache.tools.ant.filters.ReplaceTokens
+import org.gradle.api.DefaultTask
 import org.gradle.api.Project
 import org.gradle.api.file.DuplicatesStrategy
 import org.gradle.api.tasks.AbstractCopyTask
 import org.gradle.api.tasks.Copy
+import org.gradle.api.tasks.TaskProvider
 import org.gradle.internal.impldep.org.apache.ivy.util.url.ApacheURLLister
 import org.gradle.kotlin.dsl.register
 import org.jetbrains.compose.internal.de.undercouch.gradle.tasks.download.Download
@@ -27,9 +29,10 @@ internal interface ProjectFile {
         get() = emptyMap()
 
     context(Project)
-    fun applyTo(name: String) {
+    fun applyTo(name: String): List<TaskProvider<out DefaultTask>> {
         val (urls, files) = from.partition(String::isUrl)
-        urls.takeIf(List<*>::isNotEmpty)?.flatMap { url ->
+
+        return listOfNotNull(urls.takeIf(List<*>::isNotEmpty)?.flatMap { url ->
             if (url.endsWith("/")) {
                 val urlLister = ApacheURLLister()
                 urlLister.listFiles(URI(url).toURL())
@@ -59,7 +62,7 @@ internal interface ProjectFile {
                     }
                 }
             }
-        }
+        },
         files.takeIf(List<*>::isNotEmpty)?.let { files ->
             rootProject.tasks.register<Copy>(name) {
                 from(*files.toTypedArray())
@@ -76,7 +79,7 @@ internal interface ProjectFile {
 
                 includeEmptyDirs = false
             }
-        }
+        })
     }
 
     context(Project)

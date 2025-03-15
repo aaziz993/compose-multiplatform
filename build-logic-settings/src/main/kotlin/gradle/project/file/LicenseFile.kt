@@ -9,7 +9,7 @@ import org.gradle.api.tasks.TaskProvider
 
 @Serializable
 internal data class LicenseFile(
-    override val from: String,
+    override val from: List<String>,
     override val resolution: FileResolution = FileResolution.ABSENT,
     val yearPlaceholder: String,
     val year: String? = null,
@@ -24,7 +24,7 @@ internal data class LicenseFile(
     override val replace: MutableMap<String, String> = mutableMapOf()
 
     context(Project)
-    override fun applyTo(name: String): TaskProvider<out DefaultTask> {
+    override fun applyTo(name: String): List<TaskProvider<out DefaultTask>> {
 
         (year ?: projectProperties.year)?.let { year ->
             replace[yearPlaceholder] = year
