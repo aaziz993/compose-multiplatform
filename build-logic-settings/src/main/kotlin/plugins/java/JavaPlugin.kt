@@ -38,7 +38,9 @@ internal class JavaPlugin : Plugin<Project> {
                 return@with
             }
 
-            projectProperties.java.applyTo()
+            if (projectProperties.kotlin.targets.any { target -> target is KotlinJvmTarget && target.withJava == true }) {
+                projectProperties.java.applyTo()
+            }
 
             // Apply java application plugin.
             if (projectProperties.type == ProjectType.APP && !projectProperties.compose.enabled) {
