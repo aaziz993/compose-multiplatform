@@ -8,6 +8,7 @@ templates:
   - ../templates/gradle/cmp.yaml
   - ../templates/gradle/common.yaml
   - ../templates/gradle/publish.yaml
+  - ../templates/gradle/root.yaml
 
 plugins:
   # Publishing

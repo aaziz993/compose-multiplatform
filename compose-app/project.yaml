@@ -9,6 +9,7 @@ templates:
   - ../templates/gradle/kmp.yaml
   - ../templates/gradle/cmp.yaml
   - ../templates/gradle/common.yaml
+  - ../templates/gradle/root.yaml
 
 kotlin:
   sourceSets:

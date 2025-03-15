@@ -2,9 +2,6 @@ layout: FLAT
 
 group: io.github.aaziz993
 
-# Applied to maven publications
-inceptionYear: '2025'
-
 plugins:
   # Can format <antlr | c | c# | c++ | css | flow | graphql | groovy | html | java | javascript | json | jsx | kotlin | less | license headers | markdown | objective-c | protobuf | python | scala | scss | shell | sql | typeScript | vue | yaml | anything> using <gradle | maven | sbt | anything>.
   spotless:
@@ -187,18 +184,10 @@ plugins:
 
   # api documentation engine for Kotlin.
   dokka:
-    enabled: true
-    dokkaSourceSets:
-      - '':
-          includes: [ README.md ]
     pluginsConfiguration:
       - html:
           customStyleSheets: [ ../dokka/style.css, ../dokka/prism.css, ../dokka/logo-styles.css ]
-          customAssets: [ dokka/logo-icon.svg ]
-          footerMessage: © 2025 - Aziz Atoev
-          templatesDir: documentation
-      - versioning:
-          olderVersionsDir: documentation/version
+          customAssets: [ ../dokka/logo-icon.svg ]
 
   # allows dumping binary API of a JVM part of a Kotlin library that is public in the sense of Kotlin visibilities and ensures that the public binary API wasn't changed in a way that makes this change binary incompatible.
   apiValidation:
@@ -366,8 +355,6 @@ dependencies:
   - signature: $libs.signature.android
 
 tasks:
-  - KnitTask:
-      dependsOn: [ dokkaGenerate ]
   - ShadowJar:
       duplicatesStrategy: EXCLUDE
       mergeServiceFiles: true

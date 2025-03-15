@@ -1,19 +1,5 @@
-# Added to maven publications licenses
-license:
-  name: Apache License, Version 2.0
-  url: https://www.apache.org/licenses/LICENSE-2.0.txt
-  distribution: repo
-  comments: A business-friendly OSS license.
-
-contribution:
-  from: https://www.contributor-covenant.org/version/1/4/code-of-conduct/code_of_conduct.md
-
-codeOfConduct:
-  from: https://www.contributor-covenant.org/version/1/4/code-of-conduct/code_of_conduct.md
-
-buildscript:
-  repositories:
-    - mavenCentral
+templates:
+  - templates/gradle/root.yaml
 
 pluginManagement:
   repositories:
@@ -70,18 +56,11 @@ plugins:
 
   # api documentation engine for Kotlin.
   dokka:
-    enabled: true
-    dokkaSourceSets:
-      - '':
-          includes: [ README.md ]
     pluginsConfiguration:
       - html:
           customStyleSheets: [ dokka/style.css, dokka/prism.css, dokka/logo-styles.css ]
           customAssets: [ dokka/logo-icon.svg ]
-          footerMessage: © 2025 - Aziz Atoev
-          templatesDir: dokka-templates
-      - versioning:
-          olderVersionsDir: documentation/version
+
   # produces Kotlin source example files and tests from markdown documents with embedded snippets of Kotlin code
   knit:
     enabled: true
@@ -132,7 +111,7 @@ includes:
   - compose-app
   - server-app
 
-dependencies:
+#dependencies:
 # dokka multimodule module dependencies. By default taken from includes see dokka.dependenciesFromIncludes.
 #  - dokka: :kmp-lib
 #  - dokka: :cmp-lib
@@ -153,6 +132,9 @@ buildCache:
           username: aaziz93
           password: $envOrLocal.jb.space.gradle.build.cache.password
     # Develocity build cache configured by default
-#    - develocity:
-#        enabled: true
+    - develocity:
+        enabled: true
 
+tasks:
+  - KnitTask:
+      dependsOn: [ dokkaGenerate ]

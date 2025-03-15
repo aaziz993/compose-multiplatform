@@ -27,16 +27,21 @@ plugins:
       - maven:
           name: '' # apply to all above created maven publications by specifying empty name
           pom:
-            inceptionYear: '2025'
+#            inceptionYear: '2025' # Populated from inceptionYear.
+#            licenses: # Populated from license.
+#              - name: Apache License, Version 2.0
+#                url: https://www.apache.org/licenses/LICENSE-2.0.txt
+#                distribution: repo
+#                comments: A business-friendly OSS license.
             issueManagement:
               system: GitHub Issues
               url: https://github.com/aaziz993/compose-multiplatform/issues
-            developers:
-              - id: aaziz993
-                name: Aziz Atoev
-                email: a.atoev93@gmail.com
-                organization: AITech
-                organizationUrl: https://github.com/aaziz993
+#            developers: # Populated from developer.
+#              - id: aaziz993
+#                name: Aziz Atoev
+#                email: a.atoev93@gmail.com
+#                organization: AITech
+#                organizationUrl: https://github.com/aaziz993
             scm:
               url: https://github.com/aaziz993/compose-multiplatform
               connection: scm:git:git://github.com:aaziz993/compose-multiplatform.git
@@ -56,9 +61,9 @@ plugins:
       keyLength: 4096
       subkeyType: RSA
       subkeyLength: 4096
-#      nameReal: Aziz Atoev # Default value is taken from developer.name
+#      nameReal: Aziz Atoev # Populated from developer.name
       nameComment: Maven publish signing key
-#      nameEmail: a.atoev93@gmail.com # Default value is taken from developer.email
+#      nameEmail: a.atoev93@gmail.com # Populated from developer.email
       expireDate: 0
       passphrase: $envOrLocal.signing.gnupg.key.passphrase
 

@@ -2,6 +2,7 @@ package gradle.plugins.dokka
 
 import gradle.accessors.libraryAsDependency
 import gradle.accessors.libs
+import gradle.accessors.projectProperties
 import gradle.accessors.settings
 import gradle.api.Named
 import gradle.api.tryAssign
@@ -123,7 +124,10 @@ internal data class DokkaHtmlPluginParameters(
         customStyleSheets?.let(named.customStyleSheets::setFrom)
         named.separateInheritedMembers tryAssign separateInheritedMembers
         named.mergeImplicitExpectActualDeclarations tryAssign mergeImplicitExpectActualDeclarations
-        named.footerMessage tryAssign footerMessage
+        named.footerMessage tryAssign (footerMessage ?: listOfNotNull(
+            projectProperties.inceptionYear,
+            projectProperties.developer.name,
+        ).joinToString(" - ").takeIf(String::isNotEmpty)?.let { message -> "© $message" })
         named.homepageLink tryAssign homepageLink
         named.templatesDir tryAssign templatesDir?.let(layout.projectDirectory::dir)
     }

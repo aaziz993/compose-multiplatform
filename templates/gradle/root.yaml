@@ -1,0 +1,38 @@
+buildscript:
+  repositories:
+    - mavenCentral
+
+inceptionYear: '2025'
+
+developer:
+  id: aaziz993
+  name: Aziz Atoev
+  email: a.atoev93@gmail.com
+  organization: AITech
+  organizationUrl: https://github.com/aaziz993
+
+license:
+  name: Apache License, Version 2.0
+  url: https://www.apache.org/licenses/LICENSE-2.0.txt
+  distribution: repo
+  comments: A business-friendly OSS license.
+
+contribution:
+  from: https://www.contributor-covenant.org/version/1/4/code-of-conduct/code_of_conduct.md
+
+codeOfConduct:
+  from: https://www.contributor-covenant.org/version/1/4/code-of-conduct/code_of_conduct.md
+
+plugins:
+  # api documentation engine for Kotlin.
+  dokka:
+    enabled: true
+    dokkaSourceSets:
+      - '':
+          includes: [ README.md ]
+    pluginsConfiguration:
+      - html:
+#          footerMessage: © 2025 - Aziz Atoev # Populated from inceptionYear and developer.name.
+          templatesDir: dokka-templates
+      - versioning:
+          olderVersionsDir: documentation/version
