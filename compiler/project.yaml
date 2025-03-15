@@ -3,6 +3,7 @@ description: Ksp source generator.
 templates:
   - ../templates/gradle/jvm.yaml
   - ../templates/gradle/common.yaml
+  - ../templates/gradle/publish.yaml
 
 kotlin:
   targets: [ jvm ]
