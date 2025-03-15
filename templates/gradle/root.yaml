@@ -26,7 +26,7 @@ codeOfConductFile:
   emailPlaceholder: '[INSERT EMAIL ADDRESS]'
 
 contributingFile:
-  from: [ https://www.contributor-covenant.org/version/1/4/code-of-conduct/code_of_conduct.md ]
+  from: [ https://chromium.googlesource.com/external/github.com/google/syzygy/+/09270be52bd2ffc91556ca58e4a78ef8acddecdf/CONTRIBUTING.txt ]
 
 plugins:
   # api documentation engine for Kotlin.

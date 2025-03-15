@@ -8,10 +8,15 @@ plugins:
     enabled: true
     formats:
       - java:
+          # remove old license header
+          replaceRegex:
+            - name: remove license header
+              original: ^(//.*|/\*[\s\S]*?\*\/)\s*
+              replacement: ''
           # specify license header text
           licenseHeader:
-            headerFile: ../licenses/SLASH_LICENSE_HEADER
-            delimiter: '(package|import|public|class|module) '
+            headerFile: ../licenses/LICENSE_HEADER_SLASHED
+            delimiter: ^
           # include source files
           targets: [ '**/*.java' ]
           # uses the default importOrder configuration
@@ -34,10 +39,15 @@ plugins:
           # use ktlint with version and custom .editorconfig
           ktlint:
             editorConfigPath: ../.editorconfig
+          # remove old license header
+          replaceRegex:
+            - name: remove license header
+              original: ^(//.*|/\*[\s\S]*?\*\/)\s*
+              replacement: ''
           # specify license header text
           licenseHeader:
-            headerFile: ../licenses/SLASH_LICENSE_HEADER
-            delimiter: (package |@file|import )
+            headerFile: ../licenses/LICENSE_HEADER_SLASHED
+            delimiter: ^
           # include source files
           targets: [ '**/*.kt','**/*.kts' ]
           # removes any unused imports from any of your Java classes
@@ -46,25 +56,40 @@ plugins:
           # use ktlint with version and custom .editorconfig
           ktlint:
             editorConfigPath: ../.editorconfig
+          # remove old license header
+          replaceRegex:
+            - name: remove license header
+              original: ^(//.*|/\*[\s\S]*?\*\/)\s*
+              replacement: ''
           # specify license header text
           licenseHeader:
-            headerFile: ../licenses/SLASH_LICENSE_HEADER
-            delimiter: (package |@file|import )
+            headerFile: ../licenses/LICENSE_HEADER_SLASHED
+            delimiter: ^
           # include source files
           targets: [ '**/*.gradle.kts' ]
           # removes any unused imports from any of your Java classes
           removeIfUnusedImports: true
       - javascript:
+          # remove old license header
+          replaceRegex:
+            - name: remove license header
+              original: ^(//.*|/\*[\s\S]*?\*\/)\s*
+              replacement: ''
           # specify license header text
           licenseHeader:
-            headerFile: ../licenses/SLASH_LICENSE_HEADER
+            headerFile: ../licenses/LICENSE_HEADER_SLASHED
             delimiter: ^
           # include source files
           target: [ '**/*.js' ]
       - typescript:
+          # remove old license header
+          replaceRegex:
+            - name: remove license header
+              original: ^(//.*|/\*[\s\S]*?\*\/)\s*
+              replacement: ''
           # specify license header text
           licenseHeader:
-            headerFile: ../licenses/SLASH_LICENSE_HEADER
+            headerFile: ../licenses/LICENSE_HEADER_SLASHED
             delimiter: ^
           # include source files
           target: [ '**/*.ts' ]
@@ -74,72 +99,87 @@ plugins:
       - yaml:
           # specify license header text
           licenseHeader:
-            headerFile: ../licenses/SHARP_LICENSE_HEADER
-            delimiter: ^#
+            headerFile: ../licenses/LICENSE_HEADER_SHARPED
+            delimiter: ^(?!\s*#).*
           # include source files
           target: [ '**/*.yaml', '**/*.yml' ]
       - format:
           name: xml
+          # remove old license header
+          replaceRegex:
+            - name: remove license header
+              original: ^(<--[\s\S]*?-->)\s*
+              replacement: ''
           # specify license header text
           licenseHeader:
-            headerFile: ../licenses/TAG_LICENSE_HEADER
-            delimiter: <(\?xml)?
+            headerFile: ../licenses/LICENSE_HEADER_TAGGED
+            delimiter: ^
           # include source files
           target: [ '**/*.xml' ]
       - format:
           name: properties
           # specify license header text
           licenseHeader:
-            headerFile: ../licenses/SHARP_LICENSE_HEADER
-            delimiter: ^#
+            headerFile: ../licenses/LICENSE_HEADER_SHARPED
+            delimiter: ^(?!\s*#).*
           # include source files
           target: [ '**/*.properties' ]
           # removes any extra whitespace at the beginning of lines
           indentIfWithSpaces: true
       - format:
           name: html
+          # remove old license header
+          replaceRegex:
+            - name: remove license header
+              original: ^(<--[\s\S]*?-->)\s*
+              replacement: ''
           # specify license header text
           licenseHeader:
-            headerFile: ../licenses/TAG_LICENSE_HEADER
-            delimiter: <(!DOCTYPE |html )
+            headerFile: ../licenses/LICENSE_HEADER_TAGGED
+            delimiter: ^
           # include source files
           target: [ '**/*.html' ]
       - format:
           name: md
+          # remove old license header
+          replaceRegex:
+            - name: remove license header
+              original: ^(<--[\s\S]*?-->)\s*
+              replacement: ''
           # specify license header text
           licenseHeader:
-            headerFile: ../licenses/TAG_LICENSE_HEADER
-            delimiter: ^<-- startfile -->
+            headerFile: ../licenses/LICENSE_HEADER_TAGGED
+            delimiter: ^
           # include source files
           target: [ '**/*.md' ]
       - format:
           name: editconfig
           # specify license header text
           licenseHeader:
-            headerFile: ../licenses/SHARP_LICENSE_HEADER
-            delimiter: ^#
+            headerFile: ../licenses/LICENSE_HEADER_SHARPED
+            delimiter: ^(?!\s*#).*
           # include source files
           target: [ '**/.editconfig' ]
       - format:
           name: gitignore
           # specify license header text
           licenseHeader:
-            headerFile: ../licenses/SHARP_LICENSE_HEADER
-            delimiter: ^#
+            headerFile: ../licenses/LICENSE_HEADER_SHARPED
+            delimiter: ^(?!\s*#).*
           # include source files
           target: [ '**/.gitignore' ]
       - format:
           name: gitattributes
           # specify license header text
           licenseHeader:
-            headerFile: ../licenses/SHARP_LICENSE_HEADER
-            delimiter: ^#
+            headerFile: ../licenses/LICENSE_HEADER_SHARPED
+            delimiter: ^(?!\s*#).*
           # include source files
           target: [ '**/.gitattributes' ]
       - format:
           # exclude source files
           targetExclude: [
-            ../license/*_LICENSE_HEADER ,
+            ../licenses/LICENSE_HEADER_* ,
             '**/generated-src/**',
             '**/build-*/**',
             '**/.idea/**',

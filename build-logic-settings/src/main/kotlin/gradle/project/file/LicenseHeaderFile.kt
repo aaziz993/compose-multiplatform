@@ -9,5 +9,4 @@ internal data class LicenseHeaderFile(
     override val resolution: FileResolution = FileResolution.ABSENT,
 ) : ProjectFile {
 
-
 }
