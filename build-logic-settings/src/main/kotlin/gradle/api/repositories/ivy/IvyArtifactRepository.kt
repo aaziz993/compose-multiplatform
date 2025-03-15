@@ -32,7 +32,7 @@ import org.gradle.kotlin.dsl.withType
 @Serializable
 @SerialName("ivy")
 internal data class IvyArtifactRepository(
-    override val name: String = "ivy${Math.random() * UInt.MAX_VALUE}",
+    override val name: String = "ivy${Math.random() * Int.MAX_VALUE}",,
     override val content: RepositoryContentDescriptor? = null,
     override val url: String? = null,
     override val allowInsecureProtocol: Boolean? = null,

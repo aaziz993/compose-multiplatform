@@ -12,7 +12,7 @@ internal data class Maven(
     override val artifactUrls: Set<String>? = null,
     override val metadataSources: MavenArtifactRepository.MetadataSources? = null,
     override val mavenContent: MavenRepositoryContentDescriptor? = null,
-    override val name: String = "${ArtifactRepositoryContainer.DEFAULT_MAVEN_CENTRAL_REPO_NAME}${Math.random() * UInt.MAX_VALUE}",
+    override val name: String = "${ArtifactRepositoryContainer.DEFAULT_MAVEN_CENTRAL_REPO_NAME}${Math.random() * Int.MAX_VALUE}",
     override val content: RepositoryContentDescriptor? = null,
     override val url: String? = null,
     override val allowInsecureProtocol: Boolean? = null,
