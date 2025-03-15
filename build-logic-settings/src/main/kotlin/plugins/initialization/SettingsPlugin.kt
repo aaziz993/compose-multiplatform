@@ -174,14 +174,14 @@ public class SettingsPlugin : Plugin<Settings> {
 //                            "templates/LICENSE_HEADER_TAGGED",
 //                            "licenses",
 //                        ),
-                    )).mapIndexed { index, projectFile ->
+                    )).flatMapIndexed { index, projectFile ->
                         projectFile.applyTo("projectFile$index")
                     }
 
                     //setup sync tasks execution during IDE import
                     tasks.configureEach { importTask ->
                         if (importTask.name == IDEA_IMPORT_TASK_NAME) {
-                            importTask.dependsOn(projectFiles)
+                            importTask.dependsOn(*projectFiles.toTypedArray())
                         }
                     }
                 }

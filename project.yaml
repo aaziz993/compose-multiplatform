@@ -111,7 +111,7 @@ includes:
   - compose-app
   - server-app
 
-#dependencies:
+dependencies:
 # dokka multimodule module dependencies. By default taken from includes see dokka.dependenciesFromIncludes.
 #  - dokka: :kmp-lib
 #  - dokka: :cmp-lib
@@ -119,6 +119,8 @@ includes:
 #  - dokka: :shared
 #  - dokka: :compose-app
 #  - dokka: :server-app
+  # knit
+  - testImplementation: org.jetbrains.kotlinx:kotlinx-knit-test
 
 buildCache:
   local:

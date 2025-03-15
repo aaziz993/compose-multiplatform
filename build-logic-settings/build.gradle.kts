@@ -159,7 +159,8 @@ dokka {
 
     pluginsConfiguration {
         html {
-            customStyleSheets.setFrom("dokka-styles.css")
+            customStyleSheets.setFrom("dokka/style.css", "dokka/prism.css", "dokka/logo-styles.css")
+            customAssets.setFrom("dokka/logo-icon.svg")
             footerMessage.set("© 2025-Aziz Atoev")
             templatesDir.set(layout.projectDirectory.dir("documentation"))
         }

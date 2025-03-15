@@ -387,8 +387,6 @@ dependencies:
   - kspCommonMainMetadata: $libs.ktorfit.ksp
     # Use import org.koin.ksp.generated.*
   - kspCommonMainMetadata: $libs.koin.ksp.compiler
-    # knit
-  - testImplementation: org.jetbrains.kotlinx:kotlinx-knit-test
   # animalsniffer java signature
   - signature: $libs.signature.java
     # animalsniffer android signature
