@@ -18,15 +18,15 @@ license:
   comments: A business-friendly OSS license.
 
 licenseFile:
-  yearPlaceholder: [yyyy]
-  ownerPlaceholder: [name of copyright owner]
+  yearPlaceholder: '[yyyy]'
+  ownerPlaceholder: '[name of copyright owner]'
 
 codeOfConductFile:
-  from: https://www.contributor-covenant.org/version/1/4/code-of-conduct/code_of_conduct.md
-  emailPlaceholder: [INSERT EMAIL ADDRESS]
+  from: [ https://www.contributor-covenant.org/version/1/4/code-of-conduct/code_of_conduct.md ]
+  emailPlaceholder: '[ INSERT EMAIL ADDRESS ]'
 
 contributionFile:
-  from: https://www.contributor-covenant.org/version/1/4/code-of-conduct/code_of_conduct.md
+  from: [ https://www.contributor-covenant.org/version/1/4/code-of-conduct/code_of_conduct.md ]
 
 plugins:
   # api documentation engine for Kotlin.
@@ -37,7 +37,7 @@ plugins:
           includes: [ README.md ]
     pluginsConfiguration:
       - html:
-#          footerMessage: © 2025 - Aziz Atoev # Populated from inceptionYear and developer.name.
+          #          footerMessage: © 2025 - Aziz Atoev # Populated from inceptionYear and developer.name.
           templatesDir: dokka-templates
       - versioning:
           olderVersionsDir: documentation/version

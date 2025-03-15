@@ -9,5 +9,5 @@ internal data class ContributionFile(
 ) : ProjectFile {
 
     override val into: String
-        get() = "./"
+        get() = "CONTRIBUTION.md"
 }
