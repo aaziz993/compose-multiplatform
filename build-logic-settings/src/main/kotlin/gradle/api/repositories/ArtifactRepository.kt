@@ -35,8 +35,6 @@ internal interface ArtifactRepository {
     val content: RepositoryContentDescriptor?
 
     fun applyTo(repository: org.gradle.api.artifacts.repositories.ArtifactRepository) {
-//        name.takeIf(String::isNotEmpty)?.let(repository::setName) // TODO
-
         content?.let { content ->
             repository.content(content::applyTo)
         }
@@ -44,9 +42,15 @@ internal interface ArtifactRepository {
 
     fun applyTo(
         named: NamedDomainObjectCollection<out org.gradle.api.artifacts.repositories.ArtifactRepository>,
-        createAndConfigure: ((org.gradle.api.artifacts.repositories.ArtifactRepository.() -> Unit) -> org.gradle.api.artifacts.repositories.ArtifactRepository)?
+        create: ((org.gradle.api.artifacts.repositories.ArtifactRepository.() -> Unit) -> org.gradle.api.artifacts.repositories.ArtifactRepository)?
     ) = named.configure(
-        name, createAndConfigure,
+        name,
+        { _name ->
+            create?.invoke {
+                name = _name
+                applyTo(this)
+            }
+        },
     ) {
         applyTo(this)
     }
@@ -79,9 +83,9 @@ internal object ArtifactRepositoryTransformingSerializer : BaseKeyTransformingSe
 
 private inline fun <reified T> NamedDomainObjectCollection<out T>.configure(
     name: String,
-    noinline createAndConfigure: ((T.() -> Unit) -> T)? = null,
+    noinline create: (name: String) -> Unit,
     noinline configure: T.() -> Unit
 ) {
     if (name.isEmpty()) all(configure)
-    else maybeNamed(name, configure) ?: createAndConfigure?.invoke(configure)
+    else maybeNamed(name, configure) ?: create(name)
 }

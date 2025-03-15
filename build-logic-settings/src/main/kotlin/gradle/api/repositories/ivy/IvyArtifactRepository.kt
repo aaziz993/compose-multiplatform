@@ -165,8 +165,8 @@ internal data class IvyArtifactRepository(
     }
 
     override fun applyTo(handler: RepositoryHandler) =
-        super<ArtifactRepository>.applyTo(handler.withType<IvyArtifactRepository>()) {
-            handler.ivy(it)
+        super<ArtifactRepository>.applyTo(handler.withType<IvyArtifactRepository>()) { action ->
+            handler.ivy(action)
         }
 
     /**
