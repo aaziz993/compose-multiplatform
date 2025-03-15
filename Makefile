@@ -18,7 +18,7 @@ quality-check: # 🔬 Check code quality with sonar.
 
 full-check: test format quality-check  # ✅ Code format, test and quality check.
 
-gen-js: # 📜 Generate typescript sources
+gen-kotlin-ts: # 📜 Convert of TypeScript declaration files to Kotlin declarations.
 	./gradlew gerateKarakumExternals
 
 gen-coverage: # 📊 Generate code coverage report.

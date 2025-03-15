@@ -49,6 +49,7 @@ internal data class ProjectProperties(
     val group: String? = null,
     val description: String? = null,
     val version: VersionSettings = VersionSettings(),
+    val license: License? = null,
     val plugins: Plugins = Plugins(),
     val java: JavaPluginExtension = JavaPluginExtension(),
     val application: JavaApplication? = null,
