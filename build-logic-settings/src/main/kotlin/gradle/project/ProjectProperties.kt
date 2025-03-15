@@ -15,7 +15,7 @@ import gradle.plugins.java.application.JavaApplication
 import gradle.plugins.kotlin.HasKotlinDependencies
 import gradle.plugins.kotlin.KotlinSettings
 import gradle.plugins.web.NodeJsEnvSpec
-import gradle.plugins.web.js.karakum.KarakumSettings
+import plugins.karakum.model.KarakumSettings
 import gradle.plugins.web.npm.NpmExtension
 import gradle.plugins.web.yarn.YarnRootExtension
 import gradle.serialization.decodeFromAny
@@ -59,7 +59,6 @@ internal data class ProjectProperties(
     val nodeJsEnv: NodeJsEnvSpec = NodeJsEnvSpec(),
     val yarn: YarnRootExtension = YarnRootExtension(),
     val npm: NpmExtension = NpmExtension(),
-    val karakum: KarakumSettings = KarakumSettings(),
     val compose: CMPSettings = CMPSettings(),
     val tasks: List<@Serializable(with = TaskTransformingSerializer::class) Task>? = null,
     private val localPropertiesFile: String = "local.properties",

@@ -1,5 +1,6 @@
 package gradle.project
 
+import plugins.karakum.model.KarakumSettings
 import kotlinx.serialization.Serializable
 import plugins.animalsniffer.model.AnimalSnifferSettings
 import plugins.apivalidation.model.ApiValidationSettings
@@ -46,6 +47,7 @@ internal data class Plugins(
     val publishing: PublishingSettings = PublishingSettings(),
     val signing: SigningSettings = SigningSettings(),
     val ksp: KspSettings = KspSettings(),
+    val karakum: KarakumSettings = KarakumSettings(),
     val allOpen: AllOpenSettings = AllOpenSettings(),
     val noArg: NoArgSettings = NoArgSettings(),
     val atomicFU: AtomicFUSettings = AtomicFUSettings(),

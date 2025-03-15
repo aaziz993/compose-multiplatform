@@ -1,13 +1,8 @@
 description: Ksp source generator.
 
 templates:
-  - ../template/jvm.yaml
-  - ../template/common.yaml
-
-plugins:
-  # produces Kotlin source example files and tests from markdown documents with embedded snippets of Kotlin code
-  knit:
-    siteRoot: https://github.com/aaziz993/compose-multiplatform/compiler
+  - ../templates/gradle/jvm.yaml
+  - ../templates/gradle/common.yaml
 
 kotlin:
   targets: [ jvm ]

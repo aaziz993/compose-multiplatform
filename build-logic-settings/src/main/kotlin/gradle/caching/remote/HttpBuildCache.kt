@@ -23,9 +23,6 @@ internal data class HttpBuildCache(
 
     context(Settings)
     override fun applyTo(cache: BuildCache) {
-        // better set it to true only for CI builds.
-        cache.isPush = isCI
-
         super.applyTo(cache)
 
         cache as HttpBuildCache

@@ -25,23 +25,6 @@ internal class JsPlugin : Plugin<Project> {
 
             plugins.apply(settings.libs.plugins.plugin("karakum").id)
 
-            projectProperties.karakum.applyTo()
-
-            val karakumConfigFile = karakum.configFile.asFile.get()
-
-            if (karakumConfigFile.exists()) {
-
-                val karakumConfig = Json.Default.decodeMapFromString(karakumConfigFile.readText())
-
-                val karakumOutputDir = karakumConfigFile.parentFile.resolve(karakumConfig["output"].toString())
-
-                if (karakumOutputDir.exists()) {
-                    kotlin.sourceSets.matching { sourceSet -> sourceSet.name == "jsMain" }.all {
-
-                        kotlin.srcDir(karakumOutputDir)
-                    }
-                }
-            }
 
             configureJsTestTasks<KotlinJsTargetDsl>()
         }

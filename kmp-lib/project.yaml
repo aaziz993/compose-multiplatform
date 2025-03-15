@@ -1,16 +1,16 @@
 description: Kotlin multiplatform libraries.
 
 templates:
-  - ../template/jvm.yaml
-  - ../template/android.yaml
-  - ../template/apple.yaml
-  - ../template/kmp.yaml
-  - ../template/common.yaml
+  - ../templates/gradle/jvm.yaml
+  - ../templates/gradle/android.yaml
+  - ../templates/gradle/apple.yaml
+  - ../templates/gradle/kmp.yaml
+  - ../templates/gradle/common.yaml
 
 plugins:
-  # produces Kotlin source example files and tests from markdown documents with embedded snippets of Kotlin code
-  knit:
-    siteRoot: https://github.com/aaziz993/compose-multiplatform/kmp-lib
+  # converter of TypeScript declaration files to Kotlin declarations.
+  karakum:
+    enabled: true
 
   # publishing
   publishing:
