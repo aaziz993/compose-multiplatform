@@ -23,7 +23,7 @@ licenseFile:
 
 codeOfConductFile:
   from: [ https://www.contributor-covenant.org/version/1/4/code-of-conduct/code_of_conduct.md ]
-  emailPlaceholder: '[ INSERT EMAIL ADDRESS ]'
+  emailPlaceholder: '[INSERT EMAIL ADDRESS]'
 
 contributingFile:
   from: [ https://www.contributor-covenant.org/version/1/4/code-of-conduct/code_of_conduct.md ]
