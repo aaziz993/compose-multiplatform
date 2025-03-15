@@ -2,7 +2,6 @@
 
 package plugins.initialization
 
-import arrow.core.fold
 import gradle.accessors.allLibs
 import gradle.accessors.exportExtras
 import gradle.accessors.libs
@@ -14,23 +13,12 @@ import gradle.api.configureEach
 import gradle.api.repositories.CacheRedirector
 import gradle.isUrl
 import gradle.project.ProjectProperties.Companion.load
-import gradle.project.file.CommentType
-import gradle.project.file.FileResolution
-import gradle.project.file.LicenseHeaderFile
-import gradle.project.file.ProjectFile
-import gradle.project.file.ProjectFileImpl
-import java.io.File
 import java.net.URI
-import org.apache.tools.ant.filters.ReplaceTokens
 import org.gradle.api.Plugin
-import org.gradle.api.file.DuplicatesStrategy
 import org.gradle.api.file.FileCollection
 import org.gradle.api.initialization.Settings
 import org.gradle.api.internal.artifacts.repositories.DefaultMavenArtifactRepository
-import org.gradle.api.tasks.Copy
-import org.gradle.kotlin.dsl.register
 import org.jetbrains.compose.internal.IDEA_IMPORT_TASK_NAME
-import org.jetbrains.compose.internal.de.undercouch.gradle.tasks.download.Download
 import org.jetbrains.compose.internal.utils.currentTarget
 import org.tomlj.Toml
 import plugins.develocity.DevelocityPlugin
