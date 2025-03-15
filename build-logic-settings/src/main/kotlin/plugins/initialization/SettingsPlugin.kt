@@ -160,7 +160,7 @@ public class SettingsPlugin : Plugin<Settings> {
                     val projectFiles = (target.projectProperties.projectFiles + listOfNotNull(
                         target.projectProperties.licenseFile,
                         target.projectProperties.codeOfConductFile,
-                        target.projectProperties.contributionFile,
+                        target.projectProperties.contributingFile,
                     ) + listOf(
 //                        LicenseHeaderFile(
 //                            "templates/LICENSE_HEADER_SLASHED",

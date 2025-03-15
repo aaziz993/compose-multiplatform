@@ -3,7 +3,7 @@ package gradle.project.file
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal data class ContributionFile(
+internal data class ContributingFile(
     override val from: List<String>,
     override val resolution: FileResolution = FileResolution.ABSENT,
 ) : ProjectFile {
