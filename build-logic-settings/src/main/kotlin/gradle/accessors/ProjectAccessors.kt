@@ -59,7 +59,7 @@ import org.jetbrains.kotlin.powerassert.gradle.PowerAssertGradleExtension
 import org.sonarqube.gradle.SonarExtension
 import ru.vyarus.gradle.plugin.animalsniffer.AnimalSnifferExtension
 
-private const val PROJECT_PROPERTIES_EXT = "project.properties.ext"
+internal const val PROJECT_PROPERTIES_EXT = "project.properties.ext"
 
 internal var Project.projectProperties: ProjectProperties
     get() = extraProperties[PROJECT_PROPERTIES_EXT] as ProjectProperties

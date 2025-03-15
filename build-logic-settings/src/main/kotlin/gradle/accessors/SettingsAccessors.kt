@@ -10,12 +10,10 @@ internal fun Settings.execute(cmd: String): String = providers.exec {
     commandLine(cmd.split(" "))
 }.standardOutput.asText.get().trim()
 
-private const val PROPERTIES = "settings.properties"
-
 internal var Settings.projectProperties: ProjectProperties
-    get() = extraProperties[PROPERTIES] as ProjectProperties
+    get() = extraProperties[PROJECT_PROPERTIES_EXT] as ProjectProperties
     set(value) {
-        extraProperties[PROPERTIES] = value
+        extraProperties[PROJECT_PROPERTIES_EXT] = value
     }
 
 internal val Settings.gitHooks

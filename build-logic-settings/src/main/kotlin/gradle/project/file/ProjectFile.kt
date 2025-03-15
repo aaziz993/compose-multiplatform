@@ -22,6 +22,9 @@ internal interface ProjectFile {
     val resolution: FileResolution
     val replace: Map<String, String>
 
+    val transform: ((String) -> String)?
+        get() = null
+
     context(Project)
     fun applyTo(name: String) =
         if (from.isUrl) {
@@ -44,7 +47,7 @@ internal interface ProjectFile {
                         }
 
                         // Write the modified content back to the file
-                        dest.writeText(content)
+                        dest.writeText(transform?.invoke(content) ?: content)
                     }
                 }
             }
@@ -53,8 +56,6 @@ internal interface ProjectFile {
             rootProject.tasks.register<Copy>(name) {
                 from(from)
                 into(into)
-                filter(replace, ReplaceTokens::class.java)
-
                 when (resolution) {
                     FileResolution.ABSENT -> duplicatesStrategy = DuplicatesStrategy.EXCLUDE
                     FileResolution.OVERRIDE -> duplicatesStrategy = DuplicatesStrategy.INCLUDE
@@ -63,6 +64,11 @@ internal interface ProjectFile {
                         fromFile.lastModified() > intoFile.lastModified()
                     }
                 }
+                filter(replace, ReplaceTokens::class.java)
+
+                includeEmptyDirs = false
+
+//                eachFile {  }
             }
         }
 

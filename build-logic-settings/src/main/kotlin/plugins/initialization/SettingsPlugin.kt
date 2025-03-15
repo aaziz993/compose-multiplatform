@@ -15,6 +15,8 @@ import gradle.api.repositories.CacheRedirector
 import gradle.isUrl
 import gradle.project.ProjectProperties.Companion.load
 import gradle.project.file.FileResolution
+import gradle.project.file.ProjectFile
+import gradle.project.file.ProjectFileImpl
 import java.io.File
 import java.net.URI
 import org.apache.tools.ant.filters.ReplaceTokens
@@ -167,6 +169,22 @@ public class SettingsPlugin : Plugin<Settings> {
                     val projectFiles = (target.projectProperties.projectFiles + listOfNotNull(
                         projectProperties.contribution,
                         projectProperties.codeOfConduct,
+                    ) + listOf(
+                        ProjectFileImpl(
+                            "templates/LICENSE_HEADER_SLASHED",
+                            "licenses",
+                            transform = { text -> "/**\n${text.lines().joinToString("\n", " * ")}\n */" },
+                        ),
+                        ProjectFileImpl(
+                            "templates/LICENSE_HEADER_SHARPED",
+                            "licenses",
+                            transform = { text -> text.lines().joinToString("\n", " # ") },
+                        ),
+                        ProjectFileImpl(
+                            "templates/LICENSE_HEADER_TAGGED",
+                            "licenses",
+                            transform = { text -> "$<--\n$text\n -->" },
+                        ),
                     )).mapIndexed { index, projectFile ->
                         projectFile.applyTo("projectFile$index")
                     }

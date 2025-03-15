@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 internal data class RootProjectFile(
     override val from: String,
-    override val resolution: FileResolution,
+    override val resolution: FileResolution = FileResolution.ABSENT,
     override val replace: Map<String, String> = emptyMap()
 ) : ProjectFile {
 

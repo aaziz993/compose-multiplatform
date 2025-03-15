@@ -150,10 +150,3 @@ buildCache:
 #    - develocity:
 #        enabled: true
 
-projectFiles:
-  - from: https://www.contributor-covenant.org/version/1/4/code-of-conduct/code_of_conduct.md
-    into: ./CODE_OF_CONDUCT.md
-    resolution: MODIFIED
-    replace:
-      '[yyyy]': 2025
-
