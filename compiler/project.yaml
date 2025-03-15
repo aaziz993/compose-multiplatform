@@ -5,6 +5,14 @@ templates:
   - ../templates/gradle/common.yaml
   - ../templates/gradle/publish.yaml
 
+plugins:
+  # publishing
+  publishing:
+    publications:
+      - maven:
+          pom:
+            url: https://github.com/aaziz993/compose-multiplatform/compiler
+
 kotlin:
   targets: [ jvm ]
 
