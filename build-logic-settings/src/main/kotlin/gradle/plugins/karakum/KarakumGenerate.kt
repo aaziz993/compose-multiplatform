@@ -1,4 +1,4 @@
-package gradle.plugins.web.js.karakum
+package gradle.plugins.karakum
 
 import gradle.accessors.id
 import gradle.accessors.libs

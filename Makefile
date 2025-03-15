@@ -41,16 +41,22 @@ clean-gpg: # 🧹 Clean all gpg keys.
 distribute-gpg: # 🌐 Distribute signing gpg key
 	./gradlew distributeSigningGPGKey
 
-publish-github-packages: full-check # 🚀 Publish to GitHub Packages.
+publish-maven-local: full-check # 📦 Publish to GitHub Packages.
+	./scripts/publish/publish-maven-local.sh
+
+publish-github-packages: full-check # 📦 Publish to GitHub Packages.
 	./scripts/publish/publish-github-packages.sh
 
-publish-space-packages: full-check # 🚀 Publish to Space Packages.
+publish-github-packages: full-check # 📦 Publish to GitHub Packages.
+	./scripts/publish/publish-github-packages.sh
+
+publish-space-packages: full-check # 📦 Publish to Space Packages.
 	./scripts/publish/publish-space-packages.sh
 
-publish-maven: full-check # 🚀 Publish to Maven.
+publish-maven: full-check # 📦 Publish to Maven.
 	./scripts/publish/publish-maven.sh
 
-publish: full-check # 🚀 Publish to Space Packages, GitHub Packages and Maven.
+publish: full-check # 📦 Publish to Space Packages, GitHub Packages and Maven.
 	./scripts/publish/publish-github.sh && ./scripts/publish/publish-space.sh && ./scripts/publish/publish-maven.sh
 
 clean: # 🧹 Clean all.

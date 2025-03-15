@@ -3,6 +3,7 @@ package gradle.plugins.web
 import gradle.api.repositories.maybeRedirect
 import gradle.api.trySet
 import org.jetbrains.kotlin.gradle.targets.js.AbstractSettings
+import org.jetbrains.kotlin.gradle.targets.js.npm.tasks.KotlinNpmInstallTask
 
 internal abstract class AbstractSettings {
 
@@ -15,6 +16,7 @@ internal abstract class AbstractSettings {
     abstract val version: String?
 
     fun applyTo(settings: AbstractSettings<*>) {
+        KotlinNpmInstallTask
         settings::downloadBaseUrl trySet downloadBaseUrl
         settings::version trySet version
     }

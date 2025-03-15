@@ -110,7 +110,7 @@ internal abstract class AnimalSnifferExtension : CodeQualityExtension() {
     abstract val failWithoutSignatures: Boolean?
 
     context(Project)
-    fun applyTo() = pluginManager.withPlugin("org.gradle.accessors.java-base") {
+    fun applyTo() = pluginManager.withPlugin("org.gradle.java-base") {
         pluginManager.withPlugin(settings.libs.plugins.plugin("animalsniffer").id) {
             debug?.let(animalSniffer::setDebug)
             annotation?.let(animalSniffer::setAnnotation)

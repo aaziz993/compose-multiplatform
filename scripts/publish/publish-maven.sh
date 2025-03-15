@@ -2,5 +2,4 @@
 
 echo Publish to Maven Central
 
-./gradlew :kmp-lib:publishAllPublicationsToMavenRepository
-./gradlew :cmp-lib:publishAllPublicationsToMavenRepository
+./gradlew :kmp-lib:publishAllPublicationsToMavenRepository :cmp-lib:publishAllPublicationsToMavenRepository

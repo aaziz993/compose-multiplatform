@@ -108,3 +108,5 @@ tasks:
         - -Xir-generate-inline-anonymous-functions #  https://youtrack.jetbrains.com/issue/KT-67355
         - -Xsuppress-warning=NOTHING_TO_INLINE
         - -Xpartial-linkage-loglevel=ERROR
+  - KotlinNpmInstallTask:
+      args: [ --ignore-engines ]
