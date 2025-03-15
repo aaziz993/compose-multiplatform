@@ -9,15 +9,22 @@ import gradle.accessors.projectProperties
 import gradle.accessors.toVersionCatalogUrlPath
 import gradle.accessors.version
 import gradle.accessors.versions
+import gradle.api.configureEach
 import gradle.api.repositories.CacheRedirector
 import gradle.isUrl
 import gradle.project.ProjectProperties.Companion.load
+import gradle.project.sync.SyncFile
+import gradle.project.sync.SyncFileResolution
 import java.net.URI
 import org.gradle.api.Plugin
 import org.gradle.api.file.FileCollection
 import org.gradle.api.initialization.Settings
 import org.gradle.api.internal.artifacts.repositories.DefaultMavenArtifactRepository
+import org.gradle.api.tasks.Copy
 import org.gradle.kotlin.dsl.maven
+import org.gradle.kotlin.dsl.register
+import org.jetbrains.compose.internal.IDEA_IMPORT_TASK_NAME
+import org.jetbrains.compose.internal.de.undercouch.gradle.tasks.download.Download
 import org.jetbrains.compose.internal.utils.currentTarget
 import org.tomlj.Toml
 import plugins.develocity.DevelocityPlugin
@@ -154,6 +161,41 @@ public class SettingsPlugin : Plugin<Settings> {
             }
 
             target.gradle.projectsLoaded {
+                // register sync tasks
+                projectProperties.license
+                listOf(
+                    SyncFile(
+
+                    ),
+                )
+
+                val syncProjectFiles = projectProperties.syncFiles.mapIndexed { index, (from, into, resolution) ->
+                    if (from.isUrl) {
+                        rootProject.tasks.register<Download>("downloadProjectFile$index") {
+                            src(from)
+                            dest(into)
+                            when (resolution) {
+                                SyncFileResolution.IF_MODIFIED -> onlyIfModified(true)
+                                SyncFileResolution.IF_NEWER -> onlyIfNewer(true)
+                                SyncFileResolution.OVERRIDE -> overwrite(true)
+                            }
+                        }
+                    }
+                    else {
+                        rootProject.tasks.register<Copy>("copyProjectFile$index") {
+                            from(from)
+                            into(into)
+                        }
+                    }
+                }
+
+                //setup sync tasks execution during IDE import
+                rootProject.tasks.configureEach { importTask ->
+                    if (importTask.name == IDEA_IMPORT_TASK_NAME) {
+                        importTask.dependsOn(syncProjectFiles)
+                    }
+                }
+
                 // at this point all projects have been created by settings.gradle.kts, but none were evaluated yet
                 allprojects {
                     plugins.apply(ProjectPlugin::class.java)

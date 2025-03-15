@@ -5,13 +5,6 @@ group: io.github.aaziz993
 # Applied to maven publications
 inceptionYear: '2025'
 
-# Added to maven publications licenses
-license:
-  name: Apache License, Version 2.0
-  url: https://www.apache.org/licenses/LICENSE-2.0.txt
-  distribution: repo
-  comments: A business-friendly OSS license.
-
 plugins:
   # Can format <antlr | c | c# | c++ | css | flow | graphql | groovy | html | java | javascript | json | jsx | kotlin | less | license headers | markdown | objective-c | protobuf | python | scala | scss | shell | sql | typeScript | vue | yaml | anything> using <gradle | maven | sbt | anything>.
   spotless:

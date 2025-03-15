@@ -1,3 +1,14 @@
+# Added to maven publications licenses
+license:
+  name: Apache License, Version 2.0
+  url: https://www.apache.org/licenses/LICENSE-2.0.txt
+  distribution: repo
+  comments: A business-friendly OSS license.
+
+buildscript:
+  repositories:
+    - mavenCentral
+
 pluginManagement:
   repositories:
     - mavenCentral
@@ -106,10 +117,6 @@ dependencyResolutionManagement:
   versionCatalogs:
     - name: kotlinWrappers
       from: $libs.kotlin.wrappers.catalog
-
-buildscript:
-  repositories:
-    - mavenCentral
 
 includes:
   - kmp-lib

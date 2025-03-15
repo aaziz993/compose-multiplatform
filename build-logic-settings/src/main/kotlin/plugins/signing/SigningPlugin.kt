@@ -27,9 +27,9 @@ internal class SigningPlugin : Plugin<Project> {
         }
     }
 
-    private fun Project.registerGenerateSigningGPGKeyTask() = projectProperties.plugins.signing.generateGpg { generateGpg ->
+    private fun Project.registerGenerateSigningGPGKeyTask() = projectProperties.plugins.signing.generateGpg?.let { generateGpg ->
         tasks.register<Exec>("generateSigningGPGKey") {
-            description = 'Generates a GPG key'
+            description = 'Generates a signing GPG key'
             group = 'signing'
 
             executable = settings.settingsDir.resolve("scripts/gpg/gen-gpg.sh").absolutePath
@@ -46,6 +46,29 @@ internal class SigningPlugin : Plugin<Project> {
                 generateGpg.passphrase,
             )
         }
+
+        tasks.register<Exec>("generateSigningGPGKey") {
+            description = 'Print signing GPG'
+            group = 'signing'
+
+            executable = settings.settingsDir.resolve("scripts/gpg/print-gpg.sh").absolutePath
+
+            args(
+                generateGpg.nameReal,
+                generateGpg.passphrase,
+            )
+        }
+
+        tasks.register<Exec>("generateSigningGPGKey") {
+            description = 'Clean signing GPG keys'
+            group = 'signing'
+
+            executable = settings.settingsDir.resolve("scripts/gpg/clean-gpg.sh").absolutePath
+
+            args(
+                generateGpg.nameReal,
+            )
+        }
     }
 
     /** Distribute signing gpg key
@@ -56,7 +79,7 @@ internal class SigningPlugin : Plugin<Project> {
             ?.resolveValue()
             ?.let { key ->
                 tasks.register<Exec>("distributeSigningGPGKey") {
-                    description = 'Distrbute a GPG key to servers: [keyserver.ubuntu.com, keys.openpgp.org, pgp.mit.edu]'
+                    description = 'Distrbutes a GPG key to servers: [keyserver.ubuntu.com, keys.openpgp.org, pgp.mit.edu]'
                     group = 'signing'
 
                     executable = settings.settingsDir.resolve("scripts/gpg/distribute-gpg.sh").absolutePath

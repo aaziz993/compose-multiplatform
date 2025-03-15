@@ -17,6 +17,7 @@ import gradle.isUrl
 import gradle.project.PROJECT_PROPERTIES_FILE
 import gradle.project.ProjectProperties.Companion.load
 import gradle.project.ProjectProperties.Companion.yaml
+import gradle.project.sync.SyncFile
 import gradle.project.sync.SyncFileResolution
 import gradle.serialization.encodeToAny
 import javax.xml.stream.XMLEventFactory
@@ -151,38 +152,6 @@ public class ProjectPlugin : Plugin<Project> {
 
             if (isCI) {
                 configureTestTasksOnCI()
-            }
-
-            // register sync tasks
-            projectProperties.syncFiles.forEachIndexed { index, (from, into, resolution) ->
-                if (from.isUrl) {
-                    tasks.register<Download>("downloadFile$index") {
-                        src(from)
-                        dest(into)
-                        when (resolution) {
-                            SyncFileResolution.IF_MODIFIED -> onlyIfModified(true)
-                            SyncFileResolution.IF_NEWER -> onlyIfNewer(true)
-                            SyncFileResolution.OVERRIDE -> overwrite(true)
-                        }
-                    }
-                }
-                else {
-                    tasks.register<Copy>("copyFile$index") {
-                        from(from)
-                        into(into)
-
-                    }
-                }
-            }
-
-            //setup sync tasks execution during IDE import
-            if (projectProperties.syncFiles.isNotEmpty()) {
-
-                tasks.configureEach { importTask ->
-                    if (importTask.name == IDEA_IMPORT_TASK_NAME) {
-                        importTask.dependsOn(tasks.matching { it.name.startsWith("downloadFile") || it.name.startsWith("copyFile") })
-                    }
-                }
             }
 
             if (problemReporter.getErrors().isNotEmpty()) {

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. scripts/gpg-util.sh
+. ./gpg-util.sh
 
 if ! is_gpg_key_in_keyserver keyserver.ubuntu.com "$gpg_key_id"; then
    gpg --keyserver keyserver.ubuntu.com --send-keys "$1"

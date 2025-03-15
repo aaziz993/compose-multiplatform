@@ -33,7 +33,7 @@ gen-doc-samples: # 📜 Generate documentation and code samples from documentati
 gen-all: gen-coverage gen-doc-samples # 🔨 Generate code coverage, documentation and code samples from documentation
 
 gen-gpg: # 🔑 Generate gpg key.
-	./scripts/gpg/gen-gpg.sh
+	./gradlew generateSigningGPGKey
 
 list-gpg:
 	gpg --list-secret-keys --keyid-format=long
