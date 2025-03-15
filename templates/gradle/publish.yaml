@@ -56,9 +56,9 @@ plugins:
       keyLength: 4096
       subkeyType: RSA
       subkeyLength: 4096
-      nameReal: Aziz Atoev
+#      nameReal: Aziz Atoev # Default value is taken from developer.name
       nameComment: Maven publish signing key
-      nameEmail: a.atoev93@gmail.com
+#      nameEmail: a.atoev93@gmail.com # Default value is taken from developer.email
       expireDate: 0
       passphrase: $envOrLocal.signing.gnupg.key.passphrase
 

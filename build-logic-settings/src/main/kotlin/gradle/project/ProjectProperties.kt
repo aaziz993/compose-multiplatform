@@ -7,6 +7,7 @@ import gradle.caching.BuildCacheConfiguration
 import gradle.collection.deepMerge
 import gradle.collection.resolve
 import gradle.api.initialization.ScriptHandler
+import gradle.api.publish.maven.MavenPomDeveloper
 import gradle.api.publish.maven.MavenPomLicense
 import gradle.plugins.android.BaseExtension
 import gradle.plugins.android.application.BaseAppModuleExtension
@@ -36,21 +37,22 @@ internal const val PROJECT_PROPERTIES_FILE = "project.yaml"
 
 @Serializable
 internal data class ProjectProperties(
-    val pluginManagement: PluginManagement? = null,
-    val dependencyResolutionManagement: DependencyResolutionManagement? = null,
-    val buildscript: ScriptHandler? = null,
-    val cacheRedirector: Boolean = true,
-    override val dependencies: List<@Serializable(with = DependencyTransformingSerializer::class) Dependency>? = null,
-    val includes: List<String>? = null,
-    val projects: List<ProjectDescriptor>? = null,
-    val buildCache: BuildCacheConfiguration? = null,
     val type: ProjectType = ProjectType.LIB,
     val layout: ProjectLayout = ProjectLayout.DEFAULT,
     val group: String? = null,
     val description: String? = null,
     val version: VersionSettings = VersionSettings(),
     val inceptionYear: String? = null,
+    val developer: MavenPomDeveloper? = null,
     val license: MavenPomLicense? = null,
+    val buildscript: ScriptHandler? = null,
+    val pluginManagement: PluginManagement? = null,
+    val dependencyResolutionManagement: DependencyResolutionManagement? = null,
+    val cacheRedirector: Boolean = true,
+    override val dependencies: List<@Serializable(with = DependencyTransformingSerializer::class) Dependency>? = null,
+    val includes: List<String>? = null,
+    val projects: List<ProjectDescriptor>? = null,
+    val buildCache: BuildCacheConfiguration? = null,
     val plugins: Plugins = Plugins(),
     val java: JavaPluginExtension = JavaPluginExtension(),
     val application: JavaApplication? = null,

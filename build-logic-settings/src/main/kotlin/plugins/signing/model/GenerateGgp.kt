@@ -8,9 +8,9 @@ internal data class GenerateGgp(
     val keyLength: String = "4096",
     val subkeyType: String = " RSA",
     val subkeyLength: String = "4096",
-    val nameReal: String,
+    val nameReal: String? = null,
     val nameComment: String = "",
-    val nameEmail: String,
+    val nameEmail: String? = null,
     val expireDate: Long = 0,
     val passphrase: String,
 )

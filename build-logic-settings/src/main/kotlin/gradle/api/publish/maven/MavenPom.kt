@@ -129,18 +129,11 @@ internal data class MavenPom(
             }
         }
 
-        // Apply root license
-        projectProperties.license?.let { license ->
-            pom.licenses {
-                license(license::applyTo)
-            }
-        }
-
         organization?.let { organization ->
             pom.organization(organization::applyTo)
         }
 
-        developers?.let { developers ->
+        (developers.orEmpty() + projectProperties.developer?.let(::listOf).orEmpty()).let { developers ->
             pom.developers {
                 developers.forEach { developer ->
                     developer(developer::applyTo)

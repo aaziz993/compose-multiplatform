@@ -29,8 +29,8 @@ internal class SigningPlugin : Plugin<Project> {
 
     private fun Project.registerGenerateSigningGPGKeyTask() = projectProperties.plugins.signing.generateGpg?.let { generateGpg ->
         tasks.register<Exec>("generateSigningGPGKey") {
-            description = 'Generates a signing GPG key'
-            group = 'signing'
+            description = "Generates the signing GPG key"
+            group = "signing"
 
             executable = settings.settingsDir.resolve("scripts/gpg/gen-gpg.sh").absolutePath
 
@@ -39,17 +39,17 @@ internal class SigningPlugin : Plugin<Project> {
                 generateGpg.keyLength,
                 generateGpg.subkeyType,
                 generateGpg.subkeyLength,
-                generateGpg.nameReal,
+                generateGpg.nameReal ?: projectProperties.developer?.name!!,
                 generateGpg.nameComment,
-                generateGpg.nameEmail,
+                generateGpg.nameEmail ?: projectProperties.developer?.email!!,
                 generateGpg.expireDate,
                 generateGpg.passphrase,
             )
         }
 
-        tasks.register<Exec>("generateSigningGPGKey") {
-            description = 'Print signing GPG'
-            group = 'signing'
+        tasks.register<Exec>("printSigningGPGKey") {
+            description = "Print the signing GPG keys"
+            group = "signing"
 
             executable = settings.settingsDir.resolve("scripts/gpg/print-gpg.sh").absolutePath
 
@@ -59,9 +59,9 @@ internal class SigningPlugin : Plugin<Project> {
             )
         }
 
-        tasks.register<Exec>("generateSigningGPGKey") {
-            description = 'Clean signing GPG keys'
-            group = 'signing'
+        tasks.register<Exec>("cleanSigningGPGKey") {
+            description = "Clean the signing GPG keys"
+            group = "signing"
 
             executable = settings.settingsDir.resolve("scripts/gpg/clean-gpg.sh").absolutePath
 
@@ -79,8 +79,8 @@ internal class SigningPlugin : Plugin<Project> {
             ?.resolveValue()
             ?.let { key ->
                 tasks.register<Exec>("distributeSigningGPGKey") {
-                    description = 'Distrbutes a GPG key to servers: [keyserver.ubuntu.com, keys.openpgp.org, pgp.mit.edu]'
-                    group = 'signing'
+                    description = "Distributes the signing GPG key to servers: [keyserver.ubuntu.com, keys.openpgp.org, pgp.mit.edu]"
+                    group = "signing"
 
                     executable = settings.settingsDir.resolve("scripts/gpg/distribute-gpg.sh").absolutePath
 
