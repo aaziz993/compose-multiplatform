@@ -9,7 +9,7 @@ function gpg_short_key_id() {
 }
 
 function gpg_key() {
-    gpg --pinentry-mode=loopback --passphrase="$2" --export-secret-keys --armor "$1" | grep -v '\-\-' | grep -v '^=.' | tr -d '\n'
+    gpg --pinentry-mode=loopback --passphrase="$1" --export-secret-keys --armor "$2" | grep -v '\-\-' | grep -v '^=.' | tr -d '\n'
 }
 
 function is_gpg_key_in_keyserver() {

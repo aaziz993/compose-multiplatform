@@ -80,7 +80,7 @@ internal data class ProjectProperties(
         val yaml = Yaml()
 
         @Suppress("UNCHECKED_CAST")
-        fun Directory.load(): ProjectProperties {
+        fun Directory.load(settingsDir: Directory): ProjectProperties {
             val propertiesFile = file(PROJECT_PROPERTIES_FILE).asFile
 
             return if (propertiesFile.exists()) {
@@ -104,7 +104,7 @@ internal data class ProjectProperties(
                 ProjectProperties()
             }.apply {
                 localProperties.apply {
-                    val file = file(localPropertiesFile).asFile
+                    val file = settingsDir.file(localPropertiesFile).asFile
                     if (file.exists()) {
                         load(file.reader())
                     }

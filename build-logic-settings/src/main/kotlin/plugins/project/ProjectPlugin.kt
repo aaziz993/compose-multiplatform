@@ -6,6 +6,7 @@ import org.gradle.kotlin.dsl.register
 import gradle.accessors.exportExtras
 import gradle.accessors.kotlin
 import gradle.accessors.projectProperties
+import gradle.accessors.settings
 import gradle.api.isCI
 import gradle.api.configureEach
 import gradle.api.maybeNamed
@@ -81,7 +82,7 @@ public class ProjectPlugin : Plugin<Project> {
     override fun apply(target: Project): Unit = with(SLF4JProblemReporterContext()) {
         with(target) {
             // Load and apply project.yaml to build.gradle.kts properties.
-            projectProperties = layout.projectDirectory.load().also { properties ->
+            projectProperties = layout.projectDirectory.load(settings.settingsDir).also { properties ->
                 println("Load and apply $PROJECT_PROPERTIES_FILE to: $name")
                 println(yaml.dump(Json.Default.encodeToAny(properties)))
             }

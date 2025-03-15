@@ -3,26 +3,21 @@
 . scripts/util.sh
 . scripts/gpg/gpg-util.sh
 
-gradle_properties_file="./gradle.properties"
-local_properties_file="./local.properties"
-
-if [[ -z "$(gpg --list-keys)" ]]; then
 gpg --gen-key --batch << EOF
-Key-Type:$(property "signing.gnupg.key.type" "$gradle_properties_file")
-Key-Length:$(property "signing.gnupg.key.length" "$gradle_properties_file" )
-Subkey-Type:$(property "signing.gnupg.subkey.type" "$gradle_properties_file" )
-Subkey-Length:$(property "signing.gnupg.subkey.length" "$gradle_properties_file" )
-Name-Real:$(property "signing.gnupg.name.real" "$gradle_properties_file" )
-Name-Comment:$(property "signing.gnupg.name.comment" "$gradle_properties_file" )
-Name-Email:$(property "signing.gnupg.name.email" "$gradle_properties_file" )
-Expire-Date:$(property "signing.gnupg.expire.date" "$gradle_properties_file" )
-Passphrase:$(property "signing.gnupg.key.passphrase" "$local_properties_file" )
+%echo Generating GPG key
+Key-Type:$1
+Key-Length:$2
+Subkey-Type:$3
+Subkey-Length:$4
+Name-Real:$5
+Name-Comment:$6
+Name-Email:$7
+Expire-Date:$8
+Passphrase:$9
 %commit
 %echo done
 EOF
-fi
 
-echo GPG short key-id:"$(gpg_short_key_id "$(property "signing.gnupg.name.real" "$gradle_properties_file" )")"
-echo GPG long key-id:"$(gpg_long_key_id "$(property "signing.gnupg.name.real" "$gradle_properties_file" )")"
-echo GPG key:"$(gpg_key "$(property "signing.gnupg.name.real" "$gradle_properties_file" )" \
-                        "$(property "signing.gnupg.key.passphrase" "$local_properties_file" )")"
+echo GPG short key-id:"$(gpg_short_key_id "$5")"
+echo GPG long key-id:"$(gpg_long_key_id "$5")"
+echo GPG key:"$(gpg_key "$9" "$5")"

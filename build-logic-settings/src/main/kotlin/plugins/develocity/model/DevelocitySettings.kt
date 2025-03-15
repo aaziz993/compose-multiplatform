@@ -46,7 +46,7 @@ internal data class DevelocitySettings(
         gradle.projectsEvaluated {
             if (!isCI && !develocity.skipGitTags) {
                 develocity {
-                    develocity.gitRepo.let { gitRepo ->
+                    develocity.gitRepo?.let { gitRepo ->
                         // Git commit id
                         val commitId = gitCommitId()
                         if (commitId.isNotEmpty()) {

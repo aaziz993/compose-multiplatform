@@ -1,14 +1,12 @@
 package plugins.signing
 
-import org.gradle.kotlin.dsl.register
 import gradle.accessors.projectProperties
 import gradle.accessors.resolveValue
-import gradle.accessors.signing
-import gradle.project.ProjectType
+import gradle.accessors.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.publish.maven.plugins.MavenPublishPlugin
 import org.gradle.api.tasks.Exec
+import org.gradle.kotlin.dsl.register
 import org.gradle.plugins.signing.SigningPlugin
 
 internal class SigningPlugin : Plugin<Project> {
@@ -23,8 +21,30 @@ internal class SigningPlugin : Plugin<Project> {
 
                     signing.applyTo()
 
+                    registerGenerateSigningGPGKeyTask()
                     registerSigningGPGKeyDistributeTask()
                 }
+        }
+    }
+
+    private fun Project.registerGenerateSigningGPGKeyTask() = projectProperties.plugins.signing.generateGpg { generateGpg ->
+        tasks.register<Exec>("generateSigningGPGKey") {
+            description = 'Generates a GPG key'
+            group = 'signing'
+
+            executable = settings.settingsDir.resolve("scripts/gpg/gen-gpg.sh").absolutePath
+
+            args(
+                generateGpg.keyType,
+                generateGpg.keyLength,
+                generateGpg.subkeyType,
+                generateGpg.subkeyLength,
+                generateGpg.nameReal,
+                generateGpg.nameComment,
+                generateGpg.nameEmail,
+                generateGpg.expireDate,
+                generateGpg.passphrase,
+            )
         }
     }
 
@@ -36,7 +56,10 @@ internal class SigningPlugin : Plugin<Project> {
             ?.resolveValue()
             ?.let { key ->
                 tasks.register<Exec>("distributeSigningGPGKey") {
-                    executable = "../script/gpg/distribute-gpg.sh"
+                    description = 'Distrbute a GPG key to servers: [keyserver.ubuntu.com, keys.openpgp.org, pgp.mit.edu]'
+                    group = 'signing'
+
+                    executable = settings.settingsDir.resolve("scripts/gpg/distribute-gpg.sh").absolutePath
 
                     args(key)
                 }

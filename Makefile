@@ -35,6 +35,9 @@ gen-all: gen-coverage gen-doc-samples # 🔨 Generate code coverage, documentati
 gen-gpg: # 🔑 Generate gpg key.
 	./scripts/gpg/gen-gpg.sh
 
+list-gpg:
+	gpg --list-secret-keys --keyid-format=long
+
 clean-gpg: # 🧹 Clean all gpg keys.
 	./scripts/gpg/clean-gpg.sh
 
@@ -43,9 +46,6 @@ distribute-gpg: # 🌐 Distribute signing gpg key
 
 publish-maven-local: full-check # 📦 Publish to GitHub Packages.
 	./scripts/publish/publish-maven-local.sh
-
-publish-github-packages: full-check # 📦 Publish to GitHub Packages.
-	./scripts/publish/publish-github-packages.sh
 
 publish-github-packages: full-check # 📦 Publish to GitHub Packages.
 	./scripts/publish/publish-github-packages.sh

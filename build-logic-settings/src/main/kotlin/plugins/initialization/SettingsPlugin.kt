@@ -43,7 +43,7 @@ public class SettingsPlugin : Plugin<Settings> {
         with(SLF4JProblemReporterContext()) {
             with(target) {
                 // Load and apply project.yaml to settings.gradle.kts.
-                projectProperties = layout.settingsDirectory.load()
+                projectProperties = layout.settingsDirectory.load(settingsDir)
 
                 exportExtras()
 

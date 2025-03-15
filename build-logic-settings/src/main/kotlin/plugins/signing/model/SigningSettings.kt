@@ -24,4 +24,5 @@ internal data class SigningSettings(
     override val signFiles: List<String>? = null,
     override val signClassifierFiles: List<ClassifierFile>? = null,
     override val enabled: Boolean = true,
+    val generateGpg: GenerateGgp? = null,
 ) : SigningExtension(), EnabledSettings
