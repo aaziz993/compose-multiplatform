@@ -15,13 +15,12 @@ import org.gradle.api.tasks.Copy
 import org.gradle.kotlin.dsl.register
 import org.jetbrains.compose.internal.de.undercouch.gradle.tasks.download.Download
 
-@Serializable
-internal data class ProjectFile(
-    val from: String,
-    val into: String,
-    val resolution: FileResolution = FileResolution.ABSENT,
-    val replace: Map<String, String> = emptyMap()
-) {
+internal interface ProjectFile {
+
+    val from: String
+    val into: String
+    val resolution: FileResolution
+    val replace: Map<String, String>
 
     context(Project)
     fun applyTo(name: String) =

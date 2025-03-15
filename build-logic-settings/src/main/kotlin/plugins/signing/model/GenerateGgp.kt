@@ -5,9 +5,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 internal data class GenerateGgp(
     val keyType: String = "RSA",
-    val keyLength: String = "4096",
+    val keyLength: Int = 4096,
     val subkeyType: String = " RSA",
-    val subkeyLength: String = "4096",
+    val subkeyLength: Int = 4096,
     val nameReal: String? = null,
     val nameComment: String = "",
     val nameEmail: String? = null,

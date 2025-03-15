@@ -164,7 +164,10 @@ public class SettingsPlugin : Plugin<Settings> {
 
             target.gradle.projectsLoaded {
                 with(rootProject) {
-                    val projectFiles = target.projectProperties.projectFiles.mapIndexed { index, projectFile ->
+                    val projectFiles = (target.projectProperties.projectFiles + listOfNotNull(
+                        projectProperties.contribution,
+                        projectProperties.codeOfConduct,
+                    )).mapIndexed { index, projectFile ->
                         projectFile.applyTo("projectFile$index")
                     }
 

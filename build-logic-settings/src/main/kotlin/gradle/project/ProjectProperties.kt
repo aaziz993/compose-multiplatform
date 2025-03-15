@@ -23,6 +23,7 @@ import gradle.serialization.decodeFromAny
 import gradle.api.tasks.Task
 import gradle.api.tasks.TaskTransformingSerializer
 import gradle.project.file.ProjectFile
+import gradle.project.file.RootProjectFile
 import java.io.File
 import java.util.*
 import kotlinx.serialization.Serializable
@@ -45,6 +46,8 @@ internal data class ProjectProperties(
     val inceptionYear: String? = null,
     val developer: MavenPomDeveloper? = null,
     val license: MavenPomLicense? = null,
+    val contribution: RootProjectFile? = null,
+    val codeOfConduct: RootProjectFile? = null,
     val buildscript: ScriptHandler? = null,
     val pluginManagement: PluginManagement? = null,
     val dependencyResolutionManagement: DependencyResolutionManagement? = null,

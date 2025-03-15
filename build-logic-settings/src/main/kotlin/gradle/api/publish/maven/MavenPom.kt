@@ -121,7 +121,7 @@ internal data class MavenPom(
         pom.url tryAssign url
         pom.inceptionYear tryAssign (inceptionYear ?: projectProperties.inceptionYear)
 
-        (licenses.orEmpty() + projectProperties.license?.let(::listOf).orEmpty()).let { licenses ->
+        (licenses.orEmpty() + listOfNotNull(projectProperties.license)).let { licenses ->
             pom.licenses {
                 licenses.forEach { license ->
                     license(license::applyTo)
@@ -133,7 +133,7 @@ internal data class MavenPom(
             pom.organization(organization::applyTo)
         }
 
-        (developers.orEmpty() + projectProperties.developer?.let(::listOf).orEmpty()).let { developers ->
+        (developers.orEmpty() + listOfNotNull(projectProperties.developer)).let { developers ->
             pom.developers {
                 developers.forEach { developer ->
                     developer(developer::applyTo)
