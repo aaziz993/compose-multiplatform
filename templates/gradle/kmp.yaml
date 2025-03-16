@@ -1,9 +1,5 @@
 kotlin:
   targets:
-    - jvmCommon:
-        compilerOptions:
-          freeCompilerArgs:
-            - -Xjvm-default=all
     - iosArm64
     - iosX64
     - iosSimulatorArm64
