@@ -19,32 +19,31 @@ internal data class LicenseHeaderFile(
     override val into: String = "licenses/LICENSE_HEADER"
 
     context(Project)
-    override fun applyTo(name: String): List<TaskProvider<out DefaultTask>> =
-        super.applyTo(name).onEach { task ->
-            task.configure {
-                val intoFile = file(into)
+    override fun applyTo(name: String, configure: DefaultTask.() -> Unit): List<TaskProvider<out DefaultTask>> =
+        super.applyTo(name) {
+            val intoFile = file(into)
 
-                var previousTemplateText: String? = null
+            var previousTemplateText: String? = null
 
-                doFirst {
-                    // Remember previous template
-                    if (intoFile.exists()) {
-                        previousTemplateText = intoFile.readText()
-                    }
+            doFirst {
+                // Remember previous template
+                if (intoFile.exists()) {
+                    previousTemplateText = intoFile.readText()
                 }
+            }
 
-                doLast {
+            doLast {
+                if (intoFile.exists()) {
+                    val templateText = intoFile.readText()
 
-                    if (intoFile.exists()) {
-                        val templateText = intoFile.readText()
-
-                        if (previousTemplateText == null || templateText != previousTemplateText) {
-                            file("${into}_SLASHED").writeText("/**\n${templateText.lines().joinToString("\n", " * ")}\n */")
-                            file("${into}_SHARPED").writeText(templateText.lines().joinToString("\n", " # "))
-                            file("${into}_TAGGED").writeText("$<--\n$templateText\n -->")
-                        }
+                    if (previousTemplateText == null || templateText != previousTemplateText) {
+                        file("${into}_SLASHED").writeText("/**\n${templateText.lines().joinToString("\n", " * ")}\n */")
+                        file("${into}_SHARPED").writeText(templateText.lines().joinToString("\n", " # "))
+                        file("${into}_TAGGED").writeText("$<--\n$templateText\n -->")
                     }
                 }
             }
+
+            configure()
         }
 }
