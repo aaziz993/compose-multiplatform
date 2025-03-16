@@ -20,7 +20,7 @@ internal data class SigningSettings(
     override val signTasks: List<String>? = null,
     override val signConfigurations: List<String>? = null,
     override val signPublications: List<String>? = null,
-    override val signPublishArtifacts: List<String>? = null,
+    override val signArtifacts: List<String>? = null,
     override val signFiles: List<String>? = null,
     override val signClassifierFiles: List<ClassifierFile>? = null,
     override val enabled: Boolean = true,
