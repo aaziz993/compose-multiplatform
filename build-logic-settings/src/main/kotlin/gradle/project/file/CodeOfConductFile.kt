@@ -10,14 +10,17 @@ import org.gradle.api.tasks.TaskProvider
 
 @Serializable
 internal data class CodeOfConductFile(
-    override val from: List<String>,
+    val source: String,
     override val resolution: FileResolution = FileResolution.ABSENT,
     val emailPlaceholder: String,
     val email: String? = null
 ) : ProjectFile {
 
-    override val into: String
-        get() = "CODE_OF_CONDUCT.md"
+    @Transient
+    override val from: List<String> = listOf(source)
+
+    @Transient
+    override val into: String = "CODE_OF_CONDUCT.md"
 
     @Transient
     override val replace: MutableMap<String, String> = mutableMapOf()

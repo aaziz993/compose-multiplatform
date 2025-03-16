@@ -10,7 +10,7 @@ import org.gradle.api.tasks.TaskProvider
 
 @Serializable
 internal data class LicenseFile(
-    override val from: MutableList<String> = mutableListOf(),
+    val source: String? = null,
     override val resolution: FileResolution = FileResolution.ABSENT,
     val yearPlaceholder: String,
     val year: String? = null,
@@ -18,19 +18,18 @@ internal data class LicenseFile(
     val owner: String? = null
 ) : ProjectFile {
 
-    override val into: String
-        get() = "LICENSE"
+    @Transient
+    override val from: MutableList<String> = mutableListOf()
+
+    @Transient
+    override val into: String = "LICENSE"
 
     @Transient
     override val replace: MutableMap<String, String> = mutableMapOf()
 
     context(Project)
     override fun applyTo(name: String): List<TaskProvider<out DefaultTask>> {
-        settings.projectProperties.license?.url?.let { url ->
-            if (from.isEmpty()) {
-                from.add(url)
-            }
-        }
+        from.add(source ?: settings.projectProperties.license?.url ?: return emptyList())
 
         (year ?: settings.projectProperties.year)?.let { year ->
             replace[yearPlaceholder] = year

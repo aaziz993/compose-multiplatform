@@ -1,13 +1,17 @@
 package gradle.project.file
 
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
 @Serializable
 internal data class ContributingFile(
-    override val from: List<String>,
+    val source: String,
     override val resolution: FileResolution = FileResolution.ABSENT,
 ) : ProjectFile {
 
-    override val into: String
-        get() = "CONTRIBUTION.md"
+    @Transient
+    override val from: List<String> = listOf(source)
+
+    @Transient
+    override val into: String = "CONTRIBUTING.md"
 }

@@ -44,7 +44,7 @@ internal class SigningPlugin : Plugin<Project> {
             description = "Generates the signing GPG key"
             group = "signing"
 
-            executable = settings.settingsDir.resolve("scripts/gpg/gen-gpg.sh").absolutePath
+            executable = settings.settingsDir.resolve("scripts/gpg/generate-gpg-key.sh").absolutePath
 
             args(
                 generateGpg.keyType,
@@ -63,7 +63,7 @@ internal class SigningPlugin : Plugin<Project> {
             description = "List the signing GPG keys"
             group = "signing"
 
-            executable = settings.settingsDir.resolve("scripts/gpg/list-gpg.sh").absolutePath
+            executable = settings.settingsDir.resolve("scripts/gpg/list-gpg_keys.sh").absolutePath
 
             args(
                 generateGpg.nameReal ?: projectProperties.developer?.name!!,
@@ -75,7 +75,7 @@ internal class SigningPlugin : Plugin<Project> {
             description = "Clean the signing GPG keys"
             group = "signing"
 
-            executable = settings.settingsDir.resolve("scripts/gpg/clean-gpg.sh").absolutePath
+            executable = settings.settingsDir.resolve("scripts/gpg/clean-gpg-keys.sh").absolutePath
 
             args(
                 generateGpg.nameReal ?: projectProperties.developer?.name!!,
@@ -94,7 +94,7 @@ internal class SigningPlugin : Plugin<Project> {
                     description = "Distributes the signing GPG key to servers: [keyserver.ubuntu.com, keys.openpgp.org, pgp.mit.edu]"
                     group = "signing"
 
-                    executable = settings.settingsDir.resolve("scripts/gpg/distribute-gpg.sh").absolutePath
+                    executable = settings.settingsDir.resolve("scripts/gpg/distribute-gpg-key.sh").absolutePath
 
                     args(key)
                 }

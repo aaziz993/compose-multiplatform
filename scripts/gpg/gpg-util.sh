@@ -12,7 +12,7 @@ function gpg_key() {
     gpg --pinentry-mode=loopback --passphrase="$1" --export-secret-keys --armor "$2" | grep -v '\-\-' | grep -v '^=.' | tr -d '\n'
 }
 
-function list_gpg(){
+function list_gpg_keys(){
     echo GPG short keys:"$(gpg_short_key_id "$1")"
     echo GPG long keys:"$(gpg_long_key_id "$1")"
     echo GPG keys:"$(gpg_key "$2" "$1")"

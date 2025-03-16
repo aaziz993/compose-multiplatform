@@ -1,7 +1,7 @@
 #!/bin/bash
 
-. ./util.sh
-. ./gpg/gpg-util.sh
+. ../util.sh
+. gpg-util.sh
 
 gpg --gen-key --batch << EOF
 %echo Generating GPG key
@@ -18,4 +18,4 @@ Passphrase:$9
 %echo done
 EOF
 
-list_gpg "$5" "$9"
+list_gpg_keys "$5" "$9"
