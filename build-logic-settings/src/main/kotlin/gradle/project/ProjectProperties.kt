@@ -23,6 +23,7 @@ import gradle.plugins.web.yarn.YarnRootExtension
 import gradle.serialization.decodeFromAny
 import gradle.api.tasks.Task
 import gradle.api.tasks.TaskTransformingSerializer
+import gradle.project.file.CodeOfConductFile
 import gradle.project.file.ContributingFile
 import gradle.project.file.LicenseFile
 import gradle.project.file.LicenseHeaderFile
@@ -52,7 +53,7 @@ internal data class ProjectProperties(
     val remote: MavenPomScm? = null,
     val licenseFile: LicenseFile? = null,
     val licenseHeaderFile: LicenseHeaderFile? = null,
-    val codeOfConductFile: ContributingFile? = null,
+    val codeOfConductFile: CodeOfConductFile? = null,
     val contributingFile: ContributingFile? = null,
     val buildscript: ScriptHandler? = null,
     val pluginManagement: PluginManagement? = null,
