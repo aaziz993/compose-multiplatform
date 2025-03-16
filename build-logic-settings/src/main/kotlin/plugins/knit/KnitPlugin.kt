@@ -23,10 +23,9 @@ internal class KnitPlugin : Plugin<Project> {
                     knit.applyTo()
 
                     tasks.named("knitPrepare") {
-                        val knitTask = this
                         // In order for knit to operate, it should depend on and collect
                         // all Dokka outputs from each module
-                        knitTask.dependsOn(tasks.named("dokkaGenerate"))
+                        dependsOn(tasks.named("dokkaGenerate"))
                     }
                 }
         }

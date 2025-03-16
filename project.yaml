@@ -1,3 +1,20 @@
+remote:
+  url: https://github.com/aaziz993/compose-multiplatform
+  connection: scm:git:git://github.com:aaziz993/compose-multiplatform.git
+  developerConnection: scm:git:ssh://github.com:aaziz993/compose-multiplatform.git
+  tag: HEAD
+
+licenseFile:
+  yearPlaceholder: '[yyyy]'
+  ownerPlaceholder: '[name of copyright owner]'
+
+codeOfConductFile:
+  from: [ https://www.contributor-covenant.org/version/1/4/code-of-conduct/code_of_conduct.md ]
+  emailPlaceholder: '[INSERT EMAIL ADDRESS]'
+
+contributingFile:
+  from: [ https://www.contributor-covenant.org/version/1/4/code-of-conduct/code_of_conduct.md ]
+
 templates:
   - templates/gradle/root.yaml
 

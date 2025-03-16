@@ -1,7 +1,3 @@
-buildscript:
-  repositories:
-    - mavenCentral
-
 year: '2025'
 
 developer:
@@ -16,23 +12,6 @@ license:
   url: https://www.apache.org/licenses/LICENSE-2.0.txt
   distribution: repo
   comments: A business-friendly OSS license.
-
-remote:
-  url: https://github.com/aaziz993/compose-multiplatform
-  connection: scm:git:git://github.com:aaziz993/compose-multiplatform.git
-  developerConnection: scm:git:ssh://github.com:aaziz993/compose-multiplatform.git
-  tag: HEAD
-
-licenseFile:
-  yearPlaceholder: '[yyyy]'
-  ownerPlaceholder: '[name of copyright owner]'
-
-codeOfConductFile:
-  from: [ https://www.contributor-covenant.org/version/1/4/code-of-conduct/code_of_conduct.md ]
-  emailPlaceholder: '[INSERT EMAIL ADDRESS]'
-
-contributingFile:
-  from: [ https://www.contributor-covenant.org/version/1/4/code-of-conduct/code_of_conduct.md ]
 
 plugins:
   # Set of solutions for collecting test coverage of Kotlin code compiled for JVM and Android platforms.
@@ -84,3 +63,7 @@ plugins:
           templatesDir: dokka-templates
       - versioning:
           olderVersionsDir: documentation/version
+
+buildscript:
+  repositories:
+    - mavenCentral
