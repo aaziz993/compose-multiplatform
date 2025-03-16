@@ -21,22 +21,14 @@ internal class KnitPlugin : Plugin<Project> {
                     plugins.apply(settings.libs.plugins.plugin("knit").id)
 
                     knit.applyTo()
-                }
-        }
-    }
 
-    companion object {
-
-        context(Gradle)
-        fun configureKnitTasks() {
-            rootProject.tasks.named("knitPrepare") {
-                val knitTask = this
-                // In order for knit to operate, it should depend on and collect
-                // all Dokka outputs from each module
-                allprojects {
-                    knitTask.dependsOn(tasks.named("dokkaGenerate"))
+                    tasks.named("knitPrepare") {
+                        val knitTask = this
+                        // In order for knit to operate, it should depend on and collect
+                        // all Dokka outputs from each module
+                        knitTask.dependsOn(tasks.named("dokkaGenerate"))
+                    }
                 }
-            }
         }
     }
 }

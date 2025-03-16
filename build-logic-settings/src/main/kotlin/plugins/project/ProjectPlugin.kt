@@ -93,7 +93,7 @@ public class ProjectPlugin : Plugin<Project> {
             project.plugins.apply(KoverPlugin::class.java)
             project.plugins.apply(SonarPlugin::class.java)
             project.plugins.apply(DokkaPlugin::class.java)
-            project.plugins.apply(KnitPlugin::class.java)
+            project.plugins.apply(KnitPlugin::class.java) // apply after dokka plugin to make knitPrepare be dependOn dokkaGenerate.
             project.plugins.apply(ShadowPlugin::class.java)
             project.plugins.apply(ApiValidationPlugin::class.java)
             project.plugins.apply(AllOpenPlugin::class.java)

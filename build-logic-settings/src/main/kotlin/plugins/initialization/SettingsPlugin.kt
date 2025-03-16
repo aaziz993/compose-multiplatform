@@ -191,9 +191,6 @@ public class SettingsPlugin : Plugin<Settings> {
                 allprojects {
                     plugins.apply(ProjectPlugin::class.java)
                 }
-
-                // Apply after all projects configured to configure knit tasks dependencies.
-                KnitPlugin.configureKnitTasks()
             }
         }
     }
