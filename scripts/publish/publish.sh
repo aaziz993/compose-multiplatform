@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo Publish
+
+source publish-local.sh
+
+./gradlew publishAllPublicationsToGithubPackagesRepository publishAllPublicationsToSpacePackagesRepository publishAllPublicationsToMavenRepository

@@ -29,7 +29,9 @@ internal class KoverPlugin : Plugin<Project> {
                     if (project == rootProject && kover.dependenciesFromSubprojects) {
                         val kover by configurations
                         dependencies {
-                            subprojects.forEach(::kover)
+                            subprojects.forEach { subproject ->
+                                kover(subproject)
+                            }
                         }
                     }
                 }

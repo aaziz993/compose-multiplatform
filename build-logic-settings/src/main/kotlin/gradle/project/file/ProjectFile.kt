@@ -43,7 +43,7 @@ internal interface ProjectFile {
                 rootProject.tasks.register<Download>(name) {
                     doLast {
                         try {
-                            download.run {
+                            download().run {
                                 src(urls)
                                 dest(into)
 
