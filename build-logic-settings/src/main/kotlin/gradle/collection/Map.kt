@@ -1,9 +1,12 @@
 package gradle.collection
 
 import gradle.serialization.serializer.AnySerializer
+import gradle.serialization.serializer.OptionalAnySerializer
 import kotlinx.serialization.Serializable
 
-internal typealias SerializableAnyMap = Map<String, @Serializable(with = AnySerializer::class) Any?>
+internal typealias SerializableAnyMap = Map<String, @Serializable(with = AnySerializer::class) Any>
+
+internal typealias SerializableOptionalAnyMap = Map<String, @Serializable(with = OptionalAnySerializer::class) Any?>
 
 @Suppress("UNCHECKED_CAST")
 internal infix fun Map<String, Any?>.deepMerge(source: Map<String, Any?>): Map<String, Any?> {

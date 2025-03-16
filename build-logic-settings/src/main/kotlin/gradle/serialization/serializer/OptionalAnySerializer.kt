@@ -11,17 +11,16 @@ import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.json.JsonDecoder
 import kotlinx.serialization.json.JsonEncoder
 
-internal object AnySerializer : KSerializer<Any> {
+internal object OptionalAnySerializer : KSerializer<Any?> {
 
     override val descriptor: SerialDescriptor
         get() = PrimitiveSerialDescriptor("Any", PrimitiveKind.STRING)
 
-    override fun serialize(encoder: Encoder, value: Any) {
+    override fun serialize(encoder: Encoder, value: Any?) {
         (encoder as? JsonEncoder ?: error("Only JsonEncoder is supported")).json.encodeAnyToString(value)
     }
 
-    override fun deserialize(decoder: Decoder): Any =
+    override fun deserialize(decoder: Decoder): Any? =
         (decoder as? JsonDecoder ?: error("Only JsonDecoder is supported"))
             .json.decodeAnyFromString(decoder.decodeString())!!
 }
-

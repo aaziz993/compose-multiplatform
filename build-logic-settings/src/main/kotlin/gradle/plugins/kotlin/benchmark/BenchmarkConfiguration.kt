@@ -3,6 +3,7 @@ package gradle.plugins.kotlin.benchmark
 import gradle.api.trySet
 import gradle.collection.SerializableAnyList
 import gradle.collection.SerializableAnyMap
+import gradle.collection.SerializableOptionalAnyList
 import kotlinx.benchmark.gradle.BenchmarkConfiguration
 import kotlinx.serialization.Serializable
 
@@ -17,7 +18,7 @@ internal data class BenchmarkConfiguration(
     val mode: String? = null,
     val name: String = "",
     val outputTimeUnit: String? = null,
-    val params: Map<String, SerializableAnyList>? = null,
+    val params: Map<String, SerializableOptionalAnyList>? = null,
     val reportFormat: String? = null,
     val warmups: Int? = null,
 ) {
