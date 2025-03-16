@@ -207,14 +207,14 @@ plugins:
       sonar.coverage.jacoco.xmlReportPaths: build/reports/kover/report.xml
       sonar.androidLint.reportPaths: build/reports/lint-results.xml
 
-  # api documentation engine for Kotlin.
+  # Api documentation engine for Kotlin.
   dokka:
     pluginsConfiguration:
       - html:
           customStyleSheets: [ ../dokka/style.css, ../dokka/prism.css, ../dokka/logo-styles.css ]
           customAssets: [ ../dokka/logo-icon.svg ]
 
-  # allows dumping binary API of a JVM part of a Kotlin library that is public in the sense of Kotlin visibilities and ensures that the public binary API wasn't changed in a way that makes this change binary incompatible.
+  # Allows dumping binary API of a JVM part of a Kotlin library that is public in the sense of Kotlin visibilities and ensures that the public binary API wasn't changed in a way that makes this change binary incompatible.
   apiValidation:
     enabled: true
     apiDumpDirectory: api-validation
@@ -222,14 +222,14 @@ plugins:
       enabled: true
       strictValidation: true
 
-  # check (JDK, android SDK or any library) API compatibility for java (kotlin, scala, groovy etc.), android and kotlin multiplatform projects.
+  # Check (JDK, android SDK or any library) API compatibility for java (kotlin, scala, groovy etc.), android and kotlin multiplatform projects.
   animalSniffer:
     enabled: true
     debug: true
     ignoreFailures: true
     sourceSets: [ main ]
 
-  # api that you can use to develop lightweight compiler plugins. KSP provides a simplified compiler plugin API that leverages the power of Kotlin while keeping the learning curve at a minimum. Compared to KAPT, annotation processors that use KSP can run up to 2x faster.
+  # Api that you can use to develop lightweight compiler plugins. KSP provides a simplified compiler plugin API that leverages the power of Kotlin while keeping the learning curve at a minimum. Compared to KAPT, annotation processors that use KSP can run up to 2x faster.
   ksp:
     enabled: true
     arguments:
@@ -243,7 +243,7 @@ plugins:
   buildConfig:
     enabled: true
 
-  # adapts Kotlin to the requirements of those frameworks and makes classes annotated with a specific annotation and their members open
+  # Adapts Kotlin to the requirements of those frameworks and makes classes annotated with a specific annotation and their members open
   allOpen:
     enabled: true
     myAnnotations:
@@ -252,46 +252,50 @@ plugins:
       - javax.persistence.Entity
       - data.type.annotation.AllOpen
 
-  # generates an additional zero-argument constructor for classes with a specific annotation.
+  # Generates an additional zero-argument constructor for classes with a specific annotation.
   noArg:
     myAnnotations:
       - data.type.annotation.NoArg
 
-  # compiler plugin, that generates visitor code for serializable classes, runtime library with core serialization API and support libraries with various serialization formats.
+  # Compiler plugin, that generates visitor code for serializable classes, runtime library with core serialization API and support libraries with various serialization formats.
   serialization:
     enabled: true
     version: 1.8.0
 
-  # multiplatform library that provides the idiomatic and efficient way of using atomic operations in Kotlin.
+  # Multiplatform library that provides the idiomatic and efficient way of using atomic operations in Kotlin.
   atomicFU:
     enabled: true
 
-  # generates typesafe Kotlin APIs from your SQL statements. It verifies your schema, statements, and migrations at compile-time and provides IDE features like autocomplete and refactoring which make writing and maintaining SQL simple.
+  # Toolkit for running benchmarks for multiplatform code written in Kotlin. It is designed to work with Kotlin/JVM, Kotlin/JS, Kotlin/Native, and Kotlin/WasmJs (experimental) targets.
+  benchmark:
+    enabled: true
+
+  # Generates typesafe Kotlin APIs from your SQL statements. It verifies your schema, statements, and migrations at compile-time and provides IDE features like autocomplete and refactoring which make writing and maintaining SQL simple.
   sqldelight:
     linkSqlite: true
 
-  # abstraction layer over SQLite to allow for more robust database access while harnessing the full power of SQLite.
+  # Abstraction layer over SQLite to allow for more robust database access while harnessing the full power of SQLite.
   room:
     enabled: true
     schemaDirectories:
       - schemas
 
-  # kotlin library for adding asynchronous Remote Procedure Call (RPC) services to your applications. Build your RPC with already known language constructs and nothing more!
+  # Kotlin library for adding asynchronous Remote Procedure Call (RPC) services to your applications. Build your RPC with already known language constructs and nothing more!
   rpc:
     enabled: true
     annotationTypeSafetyEnabled: true
 
-  # http client/Kotlin Symbol Processor for Kotlin Multiplatform ( Android, iOS, Js, Jvm, Linux) using KSP and Ktor clients inspired by Retrofit
+  # Http client/Kotlin Symbol Processor for Kotlin Multiplatform ( Android, iOS, Js, Jvm, Linux) using KSP and Ktor clients inspired by Retrofit
   ktorfit:
     enabled: true
     generateQualifiedTypeName: true
 
-  # strongly typed GraphQL client that generates Kotlin models for your GraphQL operations.
+  # Strongly typed GraphQL client that generates Kotlin models for your GraphQL operations.
   apollo:
     enabled: true
     generateSourcesDuringGradleSync: true
 
-  # providing detailed failure messages with contextual information during testing.
+  # Providing detailed failure messages with contextual information during testing.
   powerAssert:
     enabled: true
     functions:

@@ -36,7 +36,7 @@ internal interface Named {
     }
 }
 
-private inline fun <reified T> NamedDomainObjectCollection<out T>.configure(name: String, noinline create: ((name: String) -> T?)? = null, noinline configure: T.() -> Unit) {
+internal inline fun <reified T> NamedDomainObjectCollection<out T>.configure(name: String, noinline create: ((name: String) -> T?)? = null, noinline configure: T.() -> Unit) {
     if (name.isEmpty()) all(configure)
     else maybeNamed(name, configure) ?: create?.invoke(name)?.configure()
 }

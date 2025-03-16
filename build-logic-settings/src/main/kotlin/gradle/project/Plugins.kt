@@ -13,6 +13,7 @@ import plugins.knit.model.KnitSettings
 import plugins.kotlin.allopen.model.AllOpenSettings
 import plugins.kotlin.apollo.model.ApolloSettings
 import plugins.kotlin.atomicfu.model.AtomicFUSettings
+import plugins.kotlin.benchmark.model.BenchmarkSettings
 import plugins.kotlin.ksp.model.KspSettings
 import plugins.kotlin.ktorfit.model.KtorfitSettings
 import plugins.kotlin.noarg.model.NoArgSettings
@@ -52,6 +53,7 @@ internal data class Plugins(
     val noArg: NoArgSettings = NoArgSettings(),
     val atomicFU: AtomicFUSettings = AtomicFUSettings(),
     val serialization: SerializationSettings = SerializationSettings(),
+    val benchmark: BenchmarkSettings = BenchmarkSettings(),
     val ktorfit: KtorfitSettings = KtorfitSettings(),
     val apollo: ApolloSettings = ApolloSettings(),
     val rpc: RpcSettings = RpcSettings(),

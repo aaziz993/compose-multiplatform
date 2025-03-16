@@ -21,6 +21,8 @@ plugins {
     alias(libs.plugins.dokka)
     // for javadoc
     alias(libs.plugins.dokkaJavadoc)
+    // Produces Kotlin source example files and tests from markdown documents with embedded snippets of Kotlin code
+    alias(libs.plugins.knit)
     // Used to assist in the development of Gradle plugins. It automatically applies the Java Library.
     `java-gradle-plugin`
     // Support convention plugins written in Kotlin.
@@ -207,7 +209,6 @@ dependencies {
     implementation(libs.plugins.dokkaJavadoc.toDep())
     // for versioning
     implementation(libs.dokka.versioning)
-    dokkaPlugin(libs.dokka.versioning)
     // allows dumping binary API of a JVM part of a Kotlin library that is public in the sense of Kotlin visibilities and ensures that the public binary API wasn't changed in a way that makes this change binary incompatible.
     implementation(libs.plugins.binary.compatibility.validator.toDep())
     // check (JDK, android SDK or any library) API compatibility for java (kotlin, scala, groovy etc.), android and kotlin multiplatform projects.

@@ -49,6 +49,7 @@ import plugins.knit.KnitPlugin
 import plugins.kotlin.allopen.AllOpenPlugin
 import plugins.kotlin.apollo.ApolloPlugin
 import plugins.kotlin.atomicfu.AtomicFUPlugin
+import plugins.kotlin.benchmark.BenchmarkPlugin
 import plugins.kotlin.ksp.KspPlugin
 import plugins.kotlin.ktorfit.KtorfitPlugin
 import plugins.kotlin.noarg.NoArgPlugin
@@ -102,6 +103,7 @@ public class ProjectPlugin : Plugin<Project> {
             project.plugins.apply(NoArgPlugin::class.java)
             project.plugins.apply(AtomicFUPlugin::class.java)
             project.plugins.apply(SerializationPlugin::class.java)
+            project.plugins.apply(BenchmarkPlugin::class.java)
             project.plugins.apply(SqlDelightPlugin::class.java)
             project.plugins.apply(RoomPlugin::class.java)
             project.plugins.apply(RpcPlugin::class.java)
@@ -240,7 +242,7 @@ public class ProjectPlugin : Plugin<Project> {
         registerAggregationTestTask(
             name = "jvmAllProviderTest",
             taskDependencies = { tasks.withType<KotlinJvmTest>() },
-            targetFilter = { it.platformType == KotlinPlatformType.jvm }
+            targetFilter = { it.platformType == KotlinPlatformType.jvm },
         )
 
         // test only on min and max JDK versions
@@ -251,19 +253,19 @@ public class ProjectPlugin : Plugin<Project> {
                     it.javaLauncher.get().metadata.languageVersion.asInt() in setOf(8, 21)
                 }
             },
-            targetFilter = { it.platformType == KotlinPlatformType.jvm }
+            targetFilter = { it.platformType == KotlinPlatformType.jvm },
         )
 
         registerAggregationTestTask(
             name = "connectedAndroidProviderTest",
             taskDependencies = { tasks.matching { it is AndroidTestTask && it.name.startsWith("connected", ignoreCase = true) } },
-            targetFilter = { it.platformType == KotlinPlatformType.androidJvm }
+            targetFilter = { it.platformType == KotlinPlatformType.androidJvm },
         )
 
         registerAggregationTestTask(
             name = "nativeProviderTest",
             taskDependencies = { tasks.withType<KotlinNativeTest>().matching { it.enabled } },
-            targetFilter = { it.platformType == KotlinPlatformType.native }
+            targetFilter = { it.platformType == KotlinPlatformType.native },
         )
 
         listOf("ios", "watchos", "tvos", "macos").forEach { targetGroup ->
@@ -283,12 +285,12 @@ public class ProjectPlugin : Plugin<Project> {
         registerAggregationTestTask(
             name = "jsProviderTest",
             taskDependencies = { tasks.withType<KotlinJsTest>().matching { it.compilation.platformType == KotlinPlatformType.js } },
-            targetFilter = { it.platformType == KotlinPlatformType.js }
+            targetFilter = { it.platformType == KotlinPlatformType.js },
         )
         registerAggregationTestTask(
             name = "wasmProviderTest",
             taskDependencies = { tasks.withType<KotlinJsTest>().matching { it.compilation.platformType == KotlinPlatformType.wasm } },
-            targetFilter = { it.platformType == KotlinPlatformType.wasm }
+            targetFilter = { it.platformType == KotlinPlatformType.wasm },
         )
     }
 

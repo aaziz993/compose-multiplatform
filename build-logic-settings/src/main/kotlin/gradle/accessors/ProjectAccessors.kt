@@ -14,6 +14,7 @@ import gradle.project.ProjectProperties
 import io.github.sgrishchenko.karakum.gradle.plugin.KarakumExtension
 import java.util.Properties
 import kotlinx.atomicfu.plugin.gradle.AtomicFUPluginExtension
+import kotlinx.benchmark.gradle.BenchmarksExtension
 import kotlinx.knit.KnitPluginExtension
 import kotlinx.kover.gradle.plugin.dsl.KoverProjectExtension
 import kotlinx.rpc.RpcExtension
@@ -191,16 +192,6 @@ internal val Project.toolchain: ToolchainManagement get() = the()
 internal fun Project.toolchain(configure: ToolchainManagement.() -> Unit) =
     extensions.configure(configure)
 
-internal val Project.publishing: PublishingExtension get() = the()
-
-internal fun Project.publishing(configure: PublishingExtension.() -> Unit) =
-    extensions.configure(configure)
-
-internal val Project.signing: SigningExtension get() = the()
-
-internal fun Project.signing(configure: SigningExtension.() -> Unit) =
-    extensions.configure(configure)
-
 internal val Project.ksp: KspExtension get() = the()
 
 internal fun Project.ksp(configure: KspExtension.() -> Unit) =
@@ -219,6 +210,11 @@ internal fun Project.allOpen(configure: AllOpenExtension.() -> Unit) =
 internal val Project.noArg: NoArgExtension get() = the()
 
 internal fun Project.noArg(configure: NoArgExtension.() -> Unit) =
+    extensions.configure(configure)
+
+internal val Project.benchmark: BenchmarksExtension get() = the()
+
+internal fun Project.benchmark(configure: BenchmarksExtension.() -> Unit) =
     extensions.configure(configure)
 
 internal val Project.sqldelight: SqlDelightExtension get() = the()
@@ -306,6 +302,16 @@ internal fun ComposeExtension.desktop(configure: DesktopExtension.() -> Unit) =
 internal val ComposeExtension.android: AndroidExtension get() = the()
 
 internal fun ComposeExtension.android(configure: AndroidExtension.() -> Unit) =
+    extensions.configure(configure)
+
+internal val Project.publishing: PublishingExtension get() = the()
+
+internal fun Project.publishing(configure: PublishingExtension.() -> Unit) =
+    extensions.configure(configure)
+
+internal val Project.signing: SigningExtension get() = the()
+
+internal fun Project.signing(configure: SigningExtension.() -> Unit) =
     extensions.configure(configure)
 
 /**
