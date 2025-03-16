@@ -78,8 +78,9 @@ internal class SigningPlugin : Plugin<Project> {
     }
 
     private fun Project.registerGenerateSigningGPGKeyTasks() {
-        // Distribute signing gpg key
-        // There are 3 servers supported by Central servers: [ keyserver.ubuntu.com, keys.openpgp.org, pgp.mit.edu ]
+        /** Distribute signing gpg key
+         * There are 3 servers supported by Central servers: [ keyserver.ubuntu.com, keys.openpgp.org, pgp.mit.edu ]
+         */
         projectProperties.plugins.signing.useInMemoryPgpKeys?.defaultSecretKey
             ?.resolveValue()
             ?.let { key ->

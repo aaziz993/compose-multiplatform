@@ -1,11 +1,8 @@
 package plugins.java
 
-import gradle.accessors.java
 import gradle.accessors.kotlin
 import gradle.accessors.projectProperties
 import gradle.api.all
-import gradle.api.file.add
-import gradle.api.file.remove
 import gradle.plugins.kmp.android.KotlinAndroidTarget
 import gradle.plugins.kmp.jvm.KotlinJvmTarget
 import gradle.project.ProjectLayout
@@ -13,12 +10,9 @@ import gradle.project.ProjectType
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.ApplicationPlugin
-import org.gradle.api.plugins.JavaPlugin
-import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.testing.Test
 import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.withType
-import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
 import org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest
 
 internal class JavaPlugin : Plugin<Project> {
@@ -84,23 +78,23 @@ internal class JavaPlugin : Plugin<Project> {
      * This breaks IDE support because now commonTest/kotlin is used from 2 different places so clicking a model there, it's impossible
      * to tell which model it is. We could expect/actual all of the model APIs but that'd be a lot of very manual work
      */
-    private fun Project.registerJavaCodegenTestTask() =
-        kotlin.targets.withType<org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget>().all { jvmTarget ->
-
-            /**
-             * This is an intermediate source set to make sure that we do not have expect/actual
-             * in the same Kotlin module
-             */
-            val commonJavaCodegenTest = kotlin.sourceSets.create("commonJavaCodegenTest") {
-                when (projectProperties.layout) {
-                    ProjectLayout.FLAT -> kotlin.srcDir("test")
-                    else -> kotlin.srcDir("src/commonTest/kotlin")
-                }
+    private fun Project.registerJavaCodegenTestTask() {
+        /**
+         * This is an intermediate source set to make sure that we do not have expect/actual
+         * in the same Kotlin module
+         */
+        val commonJavaCodegenTest = kotlin.sourceSets.create("commonJavaCodegenTest") {
+            when (projectProperties.layout) {
+                ProjectLayout.FLAT -> kotlin.srcDir("test")
+                else -> kotlin.srcDir("src/commonTest/kotlin")
             }
+        }
 
+        kotlin.targets.withType<org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget>().all { jvmTarget ->
             val javaCodegenCompilation = jvmTarget.compilations.create("javaCodegenTest")
 
             val testRun = jvmTarget.testRuns.create("javaCodegen")
+
             testRun.setExecutionSourceFrom(javaCodegenCompilation)
 
             val testCompileClasspath = configurations.getByName("${jvmTarget.targetName}TestCompileClasspath")
@@ -113,4 +107,5 @@ internal class JavaPlugin : Plugin<Project> {
             javaCodegenCompilation.configurations.runtimeDependencyConfiguration?.extendsFrom(configurations.getByName("${jvmTarget.targetName}TestRuntimeClasspath"))
             javaCodegenCompilation.defaultSourceSet.dependsOn(commonJavaCodegenTest)
         }
+    }
 }
