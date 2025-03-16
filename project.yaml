@@ -27,7 +27,7 @@ plugins:
       capture:
         fileFingerprints: true
         buildLogging: true
-    gitRepo: https://github.com/aaziz993/cmp
+    #    gitRepo: https://github.com/aaziz993/cmp # Populated from remote.url.
     skipGitTags: false
 
   # Provides a repository for downloading JVMs
@@ -107,13 +107,13 @@ includes:
   - server-app
 
 dependencies:
-# dokka multimodule module dependencies. By default taken from includes see dokka.dependenciesFromIncludes.
-#  - dokka: :kmp-lib
-#  - dokka: :cmp-lib
-#  - dokka: :compiler
-#  - dokka: :shared
-#  - dokka: :compose-app
-#  - dokka: :server-app
+  # dokka multimodule module dependencies. By default taken from includes see dokka.dependenciesFromIncludes.
+  #  - dokka: :kmp-lib
+  #  - dokka: :cmp-lib
+  #  - dokka: :compiler
+  #  - dokka: :shared
+  #  - dokka: :compose-app
+  #  - dokka: :server-app
   # knit
   - testImplementation: org.jetbrains.kotlinx:kotlinx-knit-test
 

@@ -11,6 +11,7 @@ import gradle.api.gitCommitId
 import gradle.api.gitStatus
 import gradle.api.teamCityBuildId
 import gradle.api.teamCityBuildTypeId
+import gradle.isGithubUrl
 import gradle.plugins.develocity.BuildScanConfiguration
 import gradle.plugins.develocity.DevelocityConfiguration
 import gradle.project.EnabledSettings
@@ -46,7 +47,7 @@ internal data class DevelocitySettings(
         gradle.projectsEvaluated {
             if (!isCI && !develocity.skipGitTags) {
                 develocity {
-                    develocity.gitRepo?.let { gitRepo ->
+                    (develocity.gitRepo ?: projectProperties.remote?.url?.takeIf(String::isGithubUrl))?.let { gitRepo ->
                         // Git commit id
                         val commitId = gitCommitId()
                         if (commitId.isNotEmpty()) {

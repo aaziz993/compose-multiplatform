@@ -12,3 +12,8 @@ private val URL_REGEX = "^(https|http)://.*".toRegex()
 
 internal val String.isUrl
     get() = matches(URL_REGEX)
+
+private val GITHUB_URL_REGEX = """https?://(www\.)?github\.com/.*""".toRegex()
+
+internal val String.isGithubUrl
+    get() = matches(GITHUB_URL_REGEX)
