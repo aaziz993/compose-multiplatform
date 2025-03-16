@@ -13,6 +13,7 @@ import gradle.api.configureEach
 import gradle.api.repositories.CacheRedirector
 import gradle.isUrl
 import gradle.project.ProjectProperties.Companion.load
+import gradle.project.file.LicenseHeaderFile
 import java.net.URI
 import org.gradle.api.Plugin
 import org.gradle.api.file.FileCollection
@@ -162,19 +163,7 @@ public class SettingsPlugin : Plugin<Settings> {
                         target.projectProperties.licenseFile,
                         target.projectProperties.codeOfConductFile,
                         target.projectProperties.contributingFile,
-                    ) + listOf(
-//                        LicenseHeaderFile(
-//                            "templates/LICENSE_HEADER_SLASHED",
-//                            "licenses",
-//                        ),
-//                        ProjectFileImpl(
-//                            "templates/LICENSE_HEADER_SHARPED",
-//                            "licenses",
-//                        ),
-//                        ProjectFileImpl(
-//                            "templates/LICENSE_HEADER_TAGGED",
-//                            "licenses",
-//                        ),
+                        target.projectProperties.licenseHeaderFile,
                     )).flatMapIndexed { index, projectFile ->
                         projectFile.applyTo("projectFile$index")
                     }

@@ -8,12 +8,15 @@ licenseFile:
   yearPlaceholder: '[yyyy]'
   ownerPlaceholder: '[name of copyright owner]'
 
+licenseHeaderFile:
+  source: templates/LICENSE_HEADER
+
 codeOfConductFile:
-  from: [ https://www.contributor-covenant.org/version/1/4/code-of-conduct/code_of_conduct.md ]
+  source: https://www.contributor-covenant.org/version/1/4/code-of-conduct/code_of_conduct.md
   emailPlaceholder: '[INSERT EMAIL ADDRESS]'
 
 contributingFile:
-  from: [ https://www.contributor-covenant.org/version/1/4/code-of-conduct/code_of_conduct.md ]
+  source: https://www.contributor-covenant.org/version/1/4/code-of-conduct/code_of_conduct.md
 
 templates:
   - templates/gradle/root.yaml
