@@ -7,16 +7,20 @@ remote:
 licenseFile:
   yearPlaceholder: '[yyyy]'
   ownerPlaceholder: '[name of copyright owner]'
+  resolution: MODIFIED
 
 licenseHeaderFile:
   source: templates/LICENSE_HEADER
+  resolution: MODIFIED
 
 codeOfConductFile:
   source: https://www.contributor-covenant.org/version/1/4/code-of-conduct/code_of_conduct.md
   emailPlaceholder: '[INSERT EMAIL ADDRESS]'
+  resolution: MODIFIED
 
 contributingFile:
   source: https://www.contributor-covenant.org/version/1/4/code-of-conduct/code_of_conduct.md
+  resolution: MODIFIED
 
 templates:
   - templates/gradle/root.yaml
