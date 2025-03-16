@@ -4,7 +4,12 @@ kotlin:
     # apply to all above jvm targets by providing empty name
     - jvm:
         name: ''
-        withJava: true
+        compilerOptions:
+          freeCompilerArgs:
+            - -Xno-param-assertions
+            - -Xno-call-assertions
+            - -Xno-receiver-assertions
+        withJava: true # enable *.java support
 
 application:
   mainClass: ApplicationKt

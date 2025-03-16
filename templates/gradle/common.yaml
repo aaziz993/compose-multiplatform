@@ -197,21 +197,6 @@ plugins:
           # adds the ability to have spotless ignore specific portions of a project. The usage looks like the following
           toggleIfOffOn: true
 
-  # Set of solutions for collecting test coverage of Kotlin code compiled for JVM and Android platforms.
-  kover:
-    enabled: true
-    useJacoco: true
-    reports:
-      total:
-        html:
-          title: Generate coverage report
-          htmlDir: build/reports/kover
-          onCheck: true
-          charset: UTF8
-        xml:
-          xmlFile: build/reports/kover/report.xml
-          onCheck: true
-
   # Help developers deliver high-quality, efficient code standards that benefit the entire team or organization.
   sonar:
     enabled: true
@@ -338,17 +323,6 @@ kotlin:
           languageFeatures:
             - ContextReceivers
             - ExplicitBackingFields
-          freeCompilerArgs:
-            - -Xignore-const-optimization-errors
-            - -Xexplicit-api=strict
-            - -Xexport-kdoc
-            - -Xinline-classes
-            - -Xwhen-guards
-            - -Xnon-local-break-continue
-            - -Xexpect-actual-classes
-            - -Xcontext-receivers
-            - -Xmulti-dollar-interpolation
-            - -Xrender-internal-diagnostic-names
           optIns:
             - kotlin.RequiresOptIn, kotlin.ExperimentalSubclassOptIn
             - kotlin.ExperimentalStdlibApi
@@ -364,10 +338,17 @@ kotlin:
             - kotlinx.serialization.ExperimentalSerializationApi
             - kotlinx.serialization.InternalSerializationApi
             - dev.whyoleg.cryptography.DelicateCryptographyApi
-    - jvmCommon:
-        compilerOptions:
           freeCompilerArgs:
-            - -Xjvm-default=all
+            - -Xignore-const-optimization-errors
+            - -Xexplicit-api=strict
+            - -Xexport-kdoc
+            - -Xinline-classes
+            - -Xwhen-guards
+            - -Xnon-local-break-continue
+            - -Xexpect-actual-classes
+            - -Xcontext-receivers
+            - -Xmulti-dollar-interpolation
+            - -Xrender-internal-diagnostic-names
 
   sourceSets:
     - commonMain:

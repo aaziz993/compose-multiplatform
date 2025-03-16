@@ -1,20 +1,26 @@
 kotlin:
   targets:
+    - jvmCommon:
+        compilerOptions:
+          freeCompilerArgs:
+            - -Xjvm-default=all
     - iosArm64
     - iosX64
     - iosSimulatorArm64
     # apply to all above native targets
     - native:
         compilerOptions:
+          optIns:
+            - kotlin.experimental.ExperimentalObjCName
+            - kotlin.experimental.ExperimentalNativeApi
+            - kotlinx.cinterop.ExperimentalForeignApi
+            - kotlinx.cinterop.BetaInteropApi
+            - kotlinx.cinterop.UnsafeNumber
           freeCompilerArgs:
             - -Xexport-kdoc
             - -Xallocator=custom
             - -XXLanguage+ImplicitSignedToUnsignedIntegerConversion
             - -Xadd-light-debug=enable
-          optIns:
-            - kotlin.experimental.ExperimentalObjCName
-            - kotlinx.cinterop.ExperimentalForeignApi
-            - kotlinx.cinterop.BetaInteropApi
         binaries:
           framework:
             # add it to avoid sqllite3 issues in iOS. Required when using NativeSQLiteDriver

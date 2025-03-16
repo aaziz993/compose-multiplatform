@@ -26,14 +26,9 @@ plugins:
           '': 0.0.0.0
       capture:
         fileFingerprints: true
-    git:
-      repo: https://github.com/aaziz993/cmp
-      skipTags: false
-    cache:
-      localCache:
-        isEnabled: true
-      remoteCache:
-        isEnabled: true
+        buildLogging: true
+    gitRepo: https://github.com/aaziz993/cmp
+    skipGitTags: false
 
   # Provides a repository for downloading JVMs
   toolchainManagement:
@@ -136,7 +131,3 @@ buildCache:
     # Develocity build cache configured by default
     - develocity:
         enabled: true
-
-tasks:
-  - KnitTask:
-      dependsOn: [ dokkaGenerate ]

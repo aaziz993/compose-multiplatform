@@ -1,6 +1,12 @@
 package gradle.plugins.dokka
 
+import gradle.accessors.projectProperties
+import gradle.accessors.settings
+import gradle.api.tryAssign
+import gradle.project.ProjectLayout
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
+import org.jetbrains.dokka.gradle.engine.parameters.DokkaSourceLinkSpec
 
 /**
  * Configuration builder that allows adding a `source` link to each signature
@@ -68,4 +74,17 @@ internal data class DokkaSourceLinkSpec(
      * Default is `#L`.
      */
     val remoteLineSuffix: String? = null
-)
+) {
+
+    context(Project)
+    fun applyTo(spec: DokkaSourceLinkSpec) {
+        spec.localDirectory tryAssign layout.projectDirectory.dir(
+            localDirectory ?: when (projectProperties.layout) {
+                ProjectLayout.FLAT -> ""
+                else -> "src"
+            },
+        )
+        (remoteUrl ?: settings.projectProperties.remote?.url)?.let(spec::remoteUrl)
+        spec.remoteLineSuffix tryAssign remoteLineSuffix
+    }
+}

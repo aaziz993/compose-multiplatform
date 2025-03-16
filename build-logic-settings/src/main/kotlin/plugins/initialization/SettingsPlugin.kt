@@ -24,6 +24,7 @@ import org.tomlj.Toml
 import plugins.develocity.DevelocityPlugin
 import plugins.githooks.GitHooksPlugin
 import plugins.initialization.problemreporter.SLF4JProblemReporterContext
+import plugins.knit.KnitPlugin
 import plugins.project.ProjectPlugin
 import plugins.toolchainmanagement.ToolchainManagementPlugin
 
@@ -189,6 +190,8 @@ public class SettingsPlugin : Plugin<Settings> {
                 // at this point all projects have been created by settings.gradle.kts, but none were evaluated yet
                 allprojects {
                     plugins.apply(ProjectPlugin::class.java)
+
+                    KnitPlugin.configureKnitTasks()
                 }
             }
         }

@@ -270,20 +270,12 @@ internal data class DokkaSourceSetSpec(
 
         sourceLinks?.forEach { sourceLink ->
             named.sourceLink {
-                localDirectory tryAssign sourceLink.localDirectory?.let(layout.projectDirectory::dir)
-                sourceLink.remoteUrl?.let(::remoteUrl)
-                remoteLineSuffix tryAssign sourceLink.remoteLineSuffix
+                sourceLink.applyTo(this)
             }
         }
 
         perPackageOptions?.forEach { perPackageOption ->
-            named.perPackageOption {
-                matchingRegex tryAssign perPackageOption.matchingRegex
-                suppress tryAssign perPackageOption.suppress
-                documentedVisibilities tryAssign perPackageOption.documentedVisibilities
-                skipDeprecated tryAssign perPackageOption.skipDeprecated
-                reportUndocumented tryAssign perPackageOption.reportUndocumented
-            }
+            named.perPackageOption(perPackageOption::applyTo)
         }
 
         externalDocumentationLinks?.forEach { externalDocumentationLink ->

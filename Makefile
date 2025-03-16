@@ -22,7 +22,7 @@ gen-kotlin-ts: # 📜 Convert of TypeScript declaration files to Kotlin declarat
 	./gradlew gerateKarakumExternals
 
 gen-coverage: # 📊 Generate code coverage report.
-	./gradlew generateKoverReport
+	./gradlew koverReport
 
 gen-doc: # 📄 Generate documentation
 	./gradlew dokkaGenerate

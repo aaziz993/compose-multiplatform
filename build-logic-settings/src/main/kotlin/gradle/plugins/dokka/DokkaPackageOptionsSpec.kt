@@ -1,6 +1,8 @@
 package gradle.plugins.dokka
 
+import gradle.api.tryAssign
 import kotlinx.serialization.Serializable
+import org.jetbrains.dokka.gradle.engine.parameters.DokkaPackageOptionsSpec
 import org.jetbrains.dokka.gradle.engine.parameters.VisibilityModifier
 
 /**
@@ -22,19 +24,19 @@ import org.jetbrains.dokka.gradle.engine.parameters.VisibilityModifier
  * ```
  */
 @Serializable
-internal data class DokkaPackageOptionsSpec (
+internal data class DokkaPackageOptionsSpec(
     /**
      * Regular expression that is used to match the package.
      *
      * Default is any string: `.*`.
      */
-     val matchingRegex: String? = null,
+    val matchingRegex: String? = null,
     /**
      * Whether this package should be skipped when generating documentation.
      *
      * Default is `false`.
      */
-     val suppress: Boolean? = null,
+    val suppress: Boolean? = null,
     /**
      * Set of visibility modifiers that should be documented.
      *
@@ -45,7 +47,7 @@ internal data class DokkaPackageOptionsSpec (
      *
      * Default is [VisibilityModifier.Public].
      */
-      val documentedVisibilities: Set<VisibilityModifier>? = null,
+    val documentedVisibilities: Set<VisibilityModifier>? = null,
     /**
      * Whether to document declarations annotated with [Deprecated].
      *
@@ -53,7 +55,7 @@ internal data class DokkaPackageOptionsSpec (
      *
      * Default is `false`.
      */
-     val skipDeprecated: Boolean? = null,
+    val skipDeprecated: Boolean? = null,
 
     /**
      * Whether to emit warnings about visible undocumented declarations, that is declarations from
@@ -64,5 +66,14 @@ internal data class DokkaPackageOptionsSpec (
      *
      * Default is `false`.
      */
-     val reportUndocumented: Boolean? = null,
-)
+    val reportUndocumented: Boolean? = null,
+) {
+
+    fun applyTo(spec: DokkaPackageOptionsSpec) {
+        spec.matchingRegex tryAssign matchingRegex
+        spec.suppress tryAssign suppress
+        spec.documentedVisibilities tryAssign documentedVisibilities
+        spec.skipDeprecated tryAssign skipDeprecated
+        spec.reportUndocumented tryAssign reportUndocumented
+    }
+}

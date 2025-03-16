@@ -44,7 +44,9 @@ internal class PublishPlugin : Plugin<Project> {
 
                     configureJavadocArtifact()
 
-                    configureAggregatingTasks()
+                    registerAggregatingTasks()
+
+                    configureTasks()
                 }
         }
     }
@@ -71,15 +73,10 @@ internal class PublishPlugin : Plugin<Project> {
                 publication.artifact(emptyJar)
             }
         }
-
-        // We share emptyJar artifact between all publications, so all publish tasks should be run after all sign tasks.
-        // Otherwise, Gradle will throw an error like:
-        //   Task ':publishX' uses output of task ':signY' without declaring an explicit or implicit dependency.
-        tasks.withType<AbstractPublishToMaven>().configureEach { mustRunAfter(tasks.withType<Sign>()) }
     }
 
     @Suppress("UNCHECKED_CAST")
-    private fun Project.configureAggregatingTasks() {
+    private fun Project.registerAggregatingTasks() {
         // Jvm and Android
         registerAggregatingTask(
             "jvmCommon",
@@ -146,6 +143,17 @@ internal class PublishPlugin : Plugin<Project> {
                 tasks.maybeNamed("publish${target.capitalized()}PublicationToMavenRepository")
             }
             dependsOn(targetsTasks)
+        }
+    }
+
+    private fun Project.configureTasks() {
+        // We share emptyJar artifact between all publications, so all publish tasks should be run after all sign tasks.
+        // Otherwise, Gradle will throw an error like:
+        //   Task ':publishX' uses output of task ':signY' without declaring an explicit or implicit dependency.
+        tasks.withType<AbstractPublishToMaven>().configureEach { mustRunAfter(tasks.withType<Sign>()) }
+
+        tasks.named("publish") {
+            dependsOn(tasks.named("publishToMavenLocal"))
         }
     }
 }

@@ -19,6 +19,7 @@ internal data class KoverSettings(
     override val currentProject: KoverCurrentProjectVariantsConfig? = null,
     override val reports: KoverReportsConfig? = null,
     override val enabled: Boolean = true,
+    val dependenciesFromIncludes: Boolean = true,
 ) : KoverExtension, EnabledSettings {
 
     context(Project)

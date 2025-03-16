@@ -17,6 +17,12 @@ license:
   distribution: repo
   comments: A business-friendly OSS license.
 
+remote:
+  url: https://github.com/aaziz993/compose-multiplatform
+  connection: scm:git:git://github.com:aaziz993/compose-multiplatform.git
+  developerConnection: scm:git:ssh://github.com:aaziz993/compose-multiplatform.git
+  tag: HEAD
+
 licenseFile:
   yearPlaceholder: '[yyyy]'
   ownerPlaceholder: '[name of copyright owner]'
@@ -29,12 +35,37 @@ contributingFile:
   from: [ https://www.contributor-covenant.org/version/1/4/code-of-conduct/code_of_conduct.md ]
 
 plugins:
+  # Set of solutions for collecting test coverage of Kotlin code compiled for JVM and Android platforms.
+  kover:
+    enabled: true
+    useJacoco: true
+    reports:
+      total:
+        html:
+          title: Generate coverage report
+          htmlDir: build/reports/kover
+          onCheck: true
+          charset: UTF8
+        xml:
+          xmlFile: build/reports/kover/report.xml
+          onCheck: true
+        verify:
+          rule:
+            # 85 is our baseline that we aim to raise to 90+.
+            # Missing coverage is typically due to bugs in the agent
+            # (e.g. signatures deprecated with an error are counted),
+            # sometimes it's various diagnostic toString or catch for OOMs/VerificationErrors,
+            # but some places are definitely worth visiting.
+            minBound: 85 # COVERED_LINES_PERCENTAGE
+
   # api documentation engine for Kotlin.
   dokka:
     enabled: true
     dokkaSourceSets:
       - '':
           includes: [ README.md ]
+          sourceLink:
+            remoteLineSuffix: #L
     pluginsConfiguration:
       - html:
           #          footerMessage: © 2025 - Aziz Atoev # Populated from inceptionYear and developer.name.

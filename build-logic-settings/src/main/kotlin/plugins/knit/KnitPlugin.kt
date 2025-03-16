@@ -8,6 +8,7 @@ import gradle.accessors.projectProperties
 import gradle.accessors.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.invocation.Gradle
 
 internal class KnitPlugin : Plugin<Project> {
 
@@ -19,6 +20,26 @@ internal class KnitPlugin : Plugin<Project> {
 
                     knit.applyTo()
                 }
+        }
+    }
+    .
+    companion object {
+
+        context(Gradle)
+        fun configureKnitTasks() {
+            // In order for knit to operate, it should depend on and collect
+            // all Dokka outputs from each module
+            allprojects {
+                if (project == project.rootProject) {
+                    val dokkaTasks = project.subprojects.flatMap { subproject ->
+                        subproject.tasks.matching { it.name == "dokkaGenerate" }
+                    }
+
+                    project.tasks.named("knitPrepare") {
+                        dependsOn(dokkaTasks)
+                    }
+                }
+            }
         }
     }
 }

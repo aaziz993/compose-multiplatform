@@ -9,6 +9,7 @@ import gradle.collection.resolve
 import gradle.api.initialization.ScriptHandler
 import gradle.api.publish.maven.MavenPomDeveloper
 import gradle.api.publish.maven.MavenPomLicense
+import gradle.api.publish.maven.MavenPomScm
 import gradle.plugins.android.BaseExtension
 import gradle.plugins.android.application.BaseAppModuleExtension
 import gradle.plugins.android.library.LibraryExtension
@@ -48,6 +49,7 @@ internal data class ProjectProperties(
     val year: String? = null,
     val developer: MavenPomDeveloper? = null,
     val license: MavenPomLicense? = null,
+    val remote: MavenPomScm? = null,
     val licenseFile: LicenseFile? = null,
     val codeOfConductFile: ContributingFile? = null,
     val contributingFile: ContributingFile? = null,
