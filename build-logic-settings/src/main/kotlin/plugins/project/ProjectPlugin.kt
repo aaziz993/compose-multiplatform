@@ -268,6 +268,8 @@ public class ProjectPlugin : Plugin<Project> {
             targetFilter = { it.platformType == KotlinPlatformType.native },
         )
 
+//        projectProperties.kotlin.targets.filterIsInstance<Kotlin>()
+
         listOf("ios", "watchos", "tvos", "macos").forEach { targetGroup ->
             registerAggregationTestTask(
                 name = "${targetGroup}ProviderTest",

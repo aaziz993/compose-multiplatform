@@ -18,9 +18,9 @@ internal data class KotlinWatchosArm64Target(
     override val compilations: List<@Serializable(with = KotlinNativeCompilationTransformingSerializer::class) KotlinNativeCompilation>? = null,
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,
-) : KotlinNativeTarget(), KotlinWatchosTarget {
+) : KotlinNativeTarget(), KotlinWatchos32, KotlinWatchosTarget {
 
     context(Project)
-    override fun applyTo()=
-        super.applyTo(kotlin.targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>(),kotlin::watchosArm64)
+    override fun applyTo() =
+        super.applyTo(kotlin.targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>(), kotlin::watchosArm64)
 }

@@ -18,7 +18,7 @@ internal data class KotlinAndroidNativeX86(
     override val compilations: List<@Serializable(with = KotlinNativeCompilationTransformingSerializer::class) KotlinNativeCompilation>? = null,
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,
-) : KotlinAndroidNative() {
+) : KotlinAndroidNative(), KotlinAndroidNative32 {
 
     context(Project)
     override fun applyTo() =

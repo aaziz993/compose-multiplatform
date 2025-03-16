@@ -18,7 +18,7 @@ internal data class KotlinWatchosArm32Target(
     override val compilations: List<@Serializable(with = KotlinNativeCompilationTransformingSerializer::class) KotlinNativeCompilation>? = null,
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,
-) : KotlinNativeTarget(), KotlinWatchosTarget {
+) : KotlinNativeTarget(), KotlinWatchos32, KotlinWatchosTarget {
 
     context(Project)
     override fun applyTo() =

@@ -18,9 +18,9 @@ internal data class KotlinAndroidNativeX64(
     override val compilations: List<@Serializable(with = KotlinNativeCompilationTransformingSerializer::class) KotlinNativeCompilation>? = null,
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,
-) : KotlinAndroidNative() {
+) : KotlinAndroidNative(), KotlinAndroidNative64 {
 
     context(Project)
     override fun applyTo() =
-        super.applyTo(kotlin.targets.withType<KotlinNativeTarget>(),kotlin::androidNativeX64)
+        super.applyTo(kotlin.targets.withType<KotlinNativeTarget>(), kotlin::androidNativeX64)
 }
