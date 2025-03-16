@@ -12,10 +12,15 @@ import gradle.api.maybeNamed
 import gradle.api.repositories.CacheRedirector
 import gradle.api.version
 import gradle.plugins.kmp.instanceOf
+import gradle.plugins.kmp.nat.android.KotlinAndroidNativeTarget
+import gradle.plugins.kmp.nat.android.KotlinAndroidNative32Target
+import gradle.plugins.kmp.nat.android.KotlinAndroidNative64Target
 import gradle.plugins.kmp.nat.apple.KotlinAppleTarget
 import gradle.plugins.kmp.nat.apple.ios.KotlinIosTarget
 import gradle.plugins.kmp.nat.apple.macos.KotlinMacosTarget
 import gradle.plugins.kmp.nat.apple.tvos.KotlinTvosTarget
+import gradle.plugins.kmp.nat.apple.watchos.KotlinWatchos32Target
+import gradle.plugins.kmp.nat.apple.watchos.KotlinWatchos64Target
 import gradle.plugins.kmp.nat.apple.watchos.KotlinWatchosTarget
 import gradle.plugins.kmp.nat.linux.KotlinLinuxTarget
 import gradle.plugins.kmp.nat.mingw.KotlinMingwTarget
@@ -267,14 +272,24 @@ public class ProjectPlugin : Plugin<Project> {
             { it.platformType == KotlinPlatformType.androidJvm },
         )
 
+        // Android native
+        registerKotlinNativeTargetAggregationTestTask<KotlinAndroidNative32Target>("android32")
+        registerKotlinNativeTargetAggregationTestTask<KotlinAndroidNative64Target>("android64")
+        registerKotlinNativeTargetAggregationTestTask<KotlinAndroidNativeTarget>("android")
+
+        // Darwin
         registerKotlinNativeTargetAggregationTestTask<KotlinIosTarget>("ios")
+        registerKotlinNativeTargetAggregationTestTask<KotlinWatchos32Target>("watchos32")
+        registerKotlinNativeTargetAggregationTestTask<KotlinWatchos64Target>("watchos64")
         registerKotlinNativeTargetAggregationTestTask<KotlinWatchosTarget>("watchos")
         registerKotlinNativeTargetAggregationTestTask<KotlinTvosTarget>("tvos")
         registerKotlinNativeTargetAggregationTestTask<KotlinMacosTarget>("macos")
         registerKotlinNativeTargetAggregationTestTask<KotlinAppleTarget>("apple")
 
+        // Linux
         registerKotlinNativeTargetAggregationTestTask<KotlinLinuxTarget>("linux")
 
+        // Windows
         registerKotlinNativeTargetAggregationTestTask<KotlinMingwTarget>("mingw")
 
         registerAggregationTestTask<KotlinNativeTest>(

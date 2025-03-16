@@ -13,12 +13,12 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 @Serializable
 @SerialName("androidNativeArm32")
-internal data class KotlinAndroidNativeArm32(
+internal data class KotlinAndroidNativeArm32Target(
     override val targetName: String = "androidNativeArm32",
     override val compilations: List<@Serializable(with = KotlinNativeCompilationTransformingSerializer::class) KotlinNativeCompilation>? = null,
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,
-) : KotlinAndroidNative(), KotlinAndroidNative32 {
+) : KotlinAndroidNativeTarget(), KotlinAndroidNative32Target {
 
     context(Project)
     override fun applyTo()=

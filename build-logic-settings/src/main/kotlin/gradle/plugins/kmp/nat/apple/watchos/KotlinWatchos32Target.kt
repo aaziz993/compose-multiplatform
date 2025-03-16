@@ -1,3 +1,3 @@
 package gradle.plugins.kmp.nat.apple.watchos
 
-internal interface KotlinWatchos64
+internal interface KotlinWatchos32Target

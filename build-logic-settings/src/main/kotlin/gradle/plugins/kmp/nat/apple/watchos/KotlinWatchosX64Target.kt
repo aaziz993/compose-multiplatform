@@ -22,7 +22,7 @@ internal data class KotlinWatchosX64Target(
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,
     override val testRuns: List<@Serializable(with = KotlinNativeSimulatorTestRunTransformingSerializer::class) KotlinNativeSimulatorTestRun>? = null,
-) : KotlinNativeTargetWithSimulatorTests(),KotlinWatchos64, KotlinWatchosTarget {
+) : KotlinNativeTargetWithSimulatorTests(),KotlinWatchos64Target, KotlinWatchosTarget {
 
     context(Project)
     override fun applyTo() =

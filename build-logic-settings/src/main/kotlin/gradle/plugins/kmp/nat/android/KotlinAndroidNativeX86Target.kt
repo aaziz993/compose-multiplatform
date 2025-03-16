@@ -12,15 +12,15 @@ import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 @Serializable
-@SerialName("androidNativeX64")
-internal data class KotlinAndroidNativeX64(
-    override val targetName: String = "androidNativeX64",
+@SerialName("androidNativeX86")
+internal data class KotlinAndroidNativeX86Target(
+    override val targetName: String = "androidNativeX86",
     override val compilations: List<@Serializable(with = KotlinNativeCompilationTransformingSerializer::class) KotlinNativeCompilation>? = null,
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,
-) : KotlinAndroidNative(), KotlinAndroidNative64 {
+) : KotlinAndroidNativeTarget(), KotlinAndroidNative32Target {
 
     context(Project)
     override fun applyTo() =
-        super.applyTo(kotlin.targets.withType<KotlinNativeTarget>(), kotlin::androidNativeX64)
+        super.applyTo(kotlin.targets.withType<KotlinNativeTarget>(),kotlin::androidNativeX86)
 }
