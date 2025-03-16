@@ -20,6 +20,10 @@ android:
     abortOnError: false
   buildTypes:
     - release:
+        # List additional ProGuard rules for the given build type here. By default,
+        # Android Studio creates and includes an empty rules file for you (located
+        # at the root directory of each module).
+        proguardFiles: [ proguard.pro ]
         isMinifyEnabled: true
         debuggable: false
         # application part
@@ -44,10 +48,6 @@ android:
           room.schemaLocation: schemas
     vectorDrawables:
       useSupportLibrary: true
-    # List additional ProGuard rules for the given build type here. By default,
-    # Android Studio creates and includes an empty rules file for you (located
-    # at the root directory of each module).
-    proguardFiles: [ proguard.pro ]
     # The proguard files listed here are included in the
     # test APK only.
     testProguardFiles: [ test-proguard-rules.pro ]

@@ -1,6 +1,9 @@
 package gradle.plugins.android
 
+import com.android.build.api.dsl.LibraryExtension
 import com.android.build.api.dsl.VariantDimension
+import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
+import gradle.accessors.android
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
@@ -42,12 +45,16 @@ internal interface VariantDimension {
      */
     val proguardFiles: List<String>?
 
+    val defaultProguardFiles: List<String>?
+
     /**
      * Replaces the ProGuard configuration files.
      *
      * This method has a return value for legacy reasons.
      */
     val setProguardFiles: List<String>?
+
+    val setDefaultProguardFiles: List<String>?
 
     /**
      * The collection of proguard rule files to be used when processing test code.
@@ -125,7 +132,17 @@ internal interface VariantDimension {
             dimension.proguardFiles(*proguardFiles.toTypedArray())
         }
 
+        defaultProguardFiles
+            ?.mapNotNull { defaultProguardFile -> getDefaultProguardFile(defaultProguardFile) }
+            ?.let { defaultProguardFiles ->
+                dimension.proguardFiles(*defaultProguardFiles.toTypedArray())
+            }
+
         setProguardFiles?.let(dimension::setProguardFiles)
+
+        setDefaultProguardFiles
+            ?.mapNotNull { defaultProguardFile -> getDefaultProguardFile(defaultProguardFile) }
+            ?.let(dimension::setProguardFiles)
 
         testProguardFiles?.let { testProguardFiles ->
             dimension.testProguardFiles(*testProguardFiles.toTypedArray())
@@ -158,6 +175,12 @@ internal interface VariantDimension {
         optimization?.let { optimization ->
             dimension.optimization(optimization::applyTo)
         }
+    }
+
+    private fun Project.getDefaultProguardFile(name: String) = when (android) {
+        is BaseAppModuleExtension -> android.getDefaultProguardFile(name)
+        is LibraryExtension -> android.getDefaultProguardFile(name)
+        else -> null
     }
 }
 
