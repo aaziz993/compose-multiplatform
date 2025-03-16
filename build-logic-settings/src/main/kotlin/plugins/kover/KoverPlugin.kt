@@ -27,21 +27,24 @@ internal class KoverPlugin : Plugin<Project> {
                     registerKoverReportTask()
 
                     if (project == rootProject && kover.dependenciesFromSubprojects) {
-                        val kover by configurations
-                        dependencies {
-                            subprojects.forEach { subproject ->
-                                kover(subproject)
-                            }
-                        }
+                        configureDependencies()
                     }
                 }
         }
     }
 
+    private fun Project.configureDependencies() {
+        val kover by configurations
+        dependencies {
+            subprojects.forEach { subproject ->
+                kover(subproject)
+            }
+        }
+    }
+
     private fun Project.registerKoverReportTask() {
         tasks.register("koverReport") {
-            dependsOn(tasks.named("koverHtmlReport"))
-            dependsOn(tasks.named("koverXmlReport"))
+            dependsOn(tasks.named("koverHtmlReport"), tasks.named("koverXmlReport"))
         }
     }
 }

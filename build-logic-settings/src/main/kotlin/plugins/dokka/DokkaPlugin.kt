@@ -11,6 +11,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.provideDelegate
+import org.jetbrains.dokka.gradle.DokkaTask
 import plugins.dokka.model.DokkaSettings
 
 internal class DokkaPlugin : Plugin<Project> {
@@ -25,14 +26,18 @@ internal class DokkaPlugin : Plugin<Project> {
                     dokka.applyTo()
 
                     if (project == rootProject && dokka.dependenciesFromSubprojects) {
-                        val dokka by configurations
-                        dependencies {
-                            subprojects.forEach { subproject ->
-                                dokka(subproject)
-                            }
-                        }
+                        configureDependencies()
                     }
                 }
+        }
+    }
+
+    private fun Project.configureDependencies() {
+        val dokka by configurations
+        dependencies {
+            subprojects.forEach { subproject ->
+                dokka(subproject)
+            }
         }
     }
 }
