@@ -158,7 +158,7 @@ internal abstract class SigningExtension {
     context(Project)
     fun applyTo() =
         pluginManager.withPlugin("signing") {
-            signing.setRequired(required ?: !version.toString().toVersion().isPreRelease)
+            signing.isRequired = required ?: !version.toString().toVersion().isPreRelease
             useGpgCmd?.takeIf { it }?.run { signing.useGpgCmd() }
 
             useInMemoryPgpKeys?.let { (defaultKeyId, defaultSecretKey, defaultPassword) ->
@@ -168,7 +168,6 @@ internal abstract class SigningExtension {
                     defaultPassword?.resolveValue()?.toString(),
                 )
             }
-
 
             signTasks?.flatMap(tasks::getByNameOrAll)?.let { tasks ->
                 signing.sign(*tasks.toTypedArray())
@@ -182,6 +181,7 @@ internal abstract class SigningExtension {
                 signing.sign(*publications.toTypedArray())
             }
 
+            configurations
 //            publishing.publications.withType<MavenPublication>().configureEach { publication ->
 //                val artifacts = publication.artifacts // This returns a Set<PublishArtifact>
 //                artifacts.forEach { artifact ->

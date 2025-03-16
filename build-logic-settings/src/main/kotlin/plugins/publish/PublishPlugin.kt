@@ -4,8 +4,6 @@ import gradle.accessors.kotlin
 import gradle.accessors.projectProperties
 import gradle.accessors.publishing
 import gradle.api.findByName
-import gradle.api.maybeNamed
-import gradle.api.maybeRegister
 import gradle.plugins.kmp.instanceOf
 import gradle.plugins.kmp.nat.android.KotlinAndroidNativeTarget
 import gradle.plugins.kmp.nat.android.KotlinAndroidNative32Target
@@ -50,6 +48,7 @@ import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin
 import org.gradle.api.publish.maven.tasks.AbstractPublishToMaven
 import org.gradle.api.publish.plugins.PublishingPlugin
+import org.gradle.api.tasks.TaskCollection
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.internal.extensions.stdlib.capitalized
 import org.gradle.kotlin.dsl.assign
@@ -57,10 +56,15 @@ import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.withType
 import org.gradle.plugins.signing.Sign
 import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
+import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinWasmTargetDsl
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinWasmWasiTargetDsl
+import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
 import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
+import org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest
+import org.jetbrains.kotlin.gradle.targets.native.tasks.KotlinNativeTest
 
 internal class PublishPlugin : Plugin<Project> {
 
@@ -105,107 +109,126 @@ internal class PublishPlugin : Plugin<Project> {
 
     @Suppress("UNCHECKED_CAST")
     private fun Project.registerAggregatingTasks() {
-        registerAggregatingTask(
+        registerAggregatingPublishTask(
             "jvmAll",
-            KotlinJvmTarget::class,
-        )
+        ) { it is KotlinJvmTarget }
+
+        registerAggregatingPublishTask(
+            "androidAll",
+        ) { it is KotlinAndroidTarget }
 
         // Android native
-        registerAggregatingTask<KotlinAndroidNativeArm32Target>("androidNativeArm32All")
-        registerAggregatingTask<KotlinAndroidNativeX86Target>("androidNativeX86All")
-        registerAggregatingTask<KotlinAndroidNative32Target>("androidNative32")
-        registerAggregatingTask<KotlinAndroidNativeArm64Target>("androidNativeArm64All")
-        registerAggregatingTask<KotlinAndroidNativeX64Target>("androidNativeX64All")
-        registerAggregatingTask<KotlinAndroidNative64Target>("androidNative64")
-        registerAggregatingTask<KotlinAndroidNativeTarget>("androidNative")
+        registerAggregatingNativePublishTask<KotlinAndroidNativeArm32Target>("androidNativeArm32All")
+        registerAggregatingNativePublishTask<KotlinAndroidNativeX86Target>("androidNativeX86All")
+        registerAggregatingNativePublishTask<KotlinAndroidNative32Target>("androidNative32")
+        registerAggregatingNativePublishTask<KotlinAndroidNativeArm64Target>("androidNativeArm64All")
+        registerAggregatingNativePublishTask<KotlinAndroidNativeX64Target>("androidNativeX64All")
+        registerAggregatingNativePublishTask<KotlinAndroidNative64Target>("androidNative64")
+        registerAggregatingNativePublishTask<KotlinAndroidNativeTarget>("androidNative")
 
         // Darwin
         // ios
-        registerAggregatingTask<IosArm64Target>("iosArm64All")
-        registerAggregatingTask<KotlinIosX64Target>("iosX64All")
-        registerAggregatingTask<KotlinIosSimulatorArm64Target>("iosSimulatorArm64All")
-        registerAggregatingTask<KotlinIosTarget>("ios")
+        registerAggregatingNativePublishTask<IosArm64Target>("iosArm64All")
+        registerAggregatingNativePublishTask<KotlinIosX64Target>("iosX64All")
+        registerAggregatingNativePublishTask<KotlinIosSimulatorArm64Target>("iosSimulatorArm64All")
+        registerAggregatingNativePublishTask<KotlinIosTarget>("ios")
         // watchos
-        registerAggregatingTask<KotlinWatchosArm32Target>("watchosArm32All")
-        registerAggregatingTask<KotlinWatchosArm64Target>("watchosArm64All")
-        registerAggregatingTask<KotlinWatchos32Target>("watchos32")
-        registerAggregatingTask<KotlinWatchosDeviceArm64Target>("watchosDeviceArm64All")
-        registerAggregatingTask<KotlinWatchosX64Target>("watchosX64All")
-        registerAggregatingTask<KotlinWatchosSimulatorArm64Target>("watchosSimulatorArm64All")
-        registerAggregatingTask<KotlinWatchos64Target>("watchos64")
-        registerAggregatingTask<KotlinWatchosTarget>("watchos")
+        registerAggregatingNativePublishTask<KotlinWatchosArm32Target>("watchosArm32All")
+        registerAggregatingNativePublishTask<KotlinWatchosArm64Target>("watchosArm64All")
+        registerAggregatingNativePublishTask<KotlinWatchos32Target>("watchos32")
+        registerAggregatingNativePublishTask<KotlinWatchosDeviceArm64Target>("watchosDeviceArm64All")
+        registerAggregatingNativePublishTask<KotlinWatchosX64Target>("watchosX64All")
+        registerAggregatingNativePublishTask<KotlinWatchosSimulatorArm64Target>("watchosSimulatorArm64All")
+        registerAggregatingNativePublishTask<KotlinWatchos64Target>("watchos64")
+        registerAggregatingNativePublishTask<KotlinWatchosTarget>("watchos")
         // tvos
-        registerAggregatingTask<KotlinTvosArm64Target>("tvosArm64All")
-        registerAggregatingTask<KotlinTvosX64Target>("tvosX64All")
-        registerAggregatingTask<KotlinTvosSimulatorArm64Target>("tvosSimulatorArm64All")
-        registerAggregatingTask<KotlinTvosTarget>("tvos")
+        registerAggregatingNativePublishTask<KotlinTvosArm64Target>("tvosArm64All")
+        registerAggregatingNativePublishTask<KotlinTvosX64Target>("tvosX64All")
+        registerAggregatingNativePublishTask<KotlinTvosSimulatorArm64Target>("tvosSimulatorArm64All")
+        registerAggregatingNativePublishTask<KotlinTvosTarget>("tvos")
         // macos
-        registerAggregatingTask<KotlinMacosTarget>("macos")
-        registerAggregatingTask<KotlinMacosArm64Target>("macosArm64All")
-        registerAggregatingTask<KotlinMacosX64Target>("macosX64All")
-        registerAggregatingTask<KotlinMacosTarget>("macos")
+        registerAggregatingNativePublishTask<KotlinMacosTarget>("macos")
+        registerAggregatingNativePublishTask<KotlinMacosArm64Target>("macosArm64All")
+        registerAggregatingNativePublishTask<KotlinMacosX64Target>("macosX64All")
+        registerAggregatingNativePublishTask<KotlinMacosTarget>("macos")
         // apple
-        registerAggregatingTask<KotlinAppleTarget>("apple")
+        registerAggregatingNativePublishTask<KotlinAppleTarget>("apple")
 
         // Linux
-        registerAggregatingTask<KotlinLinuxArm64Target>("linuxArm64All")
-        registerAggregatingTask<KotlinLinuxX64Target>("linuxX64All")
-        registerAggregatingTask<KotlinLinuxTarget>("linux")
+        registerAggregatingNativePublishTask<KotlinLinuxArm64Target>("linuxArm64All")
+        registerAggregatingNativePublishTask<KotlinLinuxX64Target>("linuxX64All")
+        registerAggregatingNativePublishTask<KotlinLinuxTarget>("linux")
 
         // Windows
-        registerAggregatingTask<KotlinMingwTarget>("mingw")
-        registerAggregatingTask<KotlinMingwX64Target>("mingwX64All")
+        registerAggregatingNativePublishTask<KotlinMingwTarget>("mingw")
+        registerAggregatingNativePublishTask<KotlinMingwX64Target>("mingwX64All")
 
         // Native
-        registerAggregatingTask("native", KotlinNativeTarget::class)
+        registerAggregatingPublishTask(
+            "native",
+        ) { it is KotlinNativeTarget }
 
-        // All js
-        registerAggregatingTask<KotlinJsTarget>("jsAll")
+        registerAggregatingPublishTask(
+            "jsAll",
+        ) { it::class == KotlinJsTargetDsl::class }
 
-        // All js
-        registerAggregatingTask<KotlinWasmJsTarget>("wasmJsAll")
+        registerAggregatingPublishTask(
+            "wasmAll",
+        ) { it is KotlinWasmTargetDsl }
 
-        // Js and wasmJs
-        registerAggregatingTask("jsCommon", KotlinJsTargetDsl::class)
+        registerAggregatingPublishTask(
+            "jsCommon",
+        ) { it is KotlinJsTargetDsl }
 
-        // All wasmWasi
-        registerAggregatingTask("wasmWasiAll", KotlinWasmWasiTargetDsl::class)
+        registerAggregatingPublishTask(
+            "wasmWasiAll",
+        ) { it is KotlinWasmWasiTargetDsl }
     }
 
-    private inline fun <reified T : Any> Project.registerAggregatingTask(name: String) =
-        registerAggregatingTask(
+    private fun Project.registerAggregatingPublishTask(
+        name: String,
+        targetFilter: (KotlinTarget) -> Boolean,
+    ) =
+        registerAggregatingPublishTask(
+            name,
+            kotlin.targets.matching(targetFilter).map(KotlinTarget::targetName),
+        )
+
+    private inline fun <reified T : Any> Project.registerAggregatingNativePublishTask(
+        name: String
+    ) =
+        registerAggregatingPublishTask(
             name,
             projectProperties.kotlin.targets
                 .instanceOf<T>()
                 .map(`gradle.plugins.kmp`.KotlinTarget::targetName),
         )
 
-    private fun <T : KotlinTarget> Project.registerAggregatingTask(name: String, vararg targetsKClasses: KClass<T>) =
-        registerAggregatingTask(
-            name,
-            kotlin.targets.filter { target ->
-                targetsKClasses.any { targetKClass -> target::class.isSubclassOf(targetKClass) }
-            }.map(KotlinTarget::targetName),
-        )
-
-    private fun Project.registerAggregatingTask(name: String, aliases: List<String>) {
-        if (aliases.isEmpty()) return
+    private fun Project.registerAggregatingPublishTask(
+        name: String,
+        targetNames: List<String>,
+    ) {
+        if (targetNames.isEmpty()) return
 
         publishing.repositories.forEach { repository ->
             val repositoryName = repository.name.capitalized()
 
-            val publishTasks = aliases.mapNotNull { alias ->
-                tasks.maybeNamed("publish${alias.capitalized()}PublicationTo${repositoryName}Repository")
-            }
+            tasks.matching { task ->
+                targetNames.any { targetName ->
+                    task.name.matches(
+                        "${
+                            Regex.escape("publish${targetName.capitalized()}")
+                        }.*?${
+                            Regex.escape("PublicationTo${repositoryName}Repository")
+                        }Repository".toRegex(),
+                    )
+                }
+            }.takeIf(TaskCollection<*>::isNotEmpty)?.let { publishTasks ->
+                tasks.register("publish${name}PublicationTo${repositoryName}Repository") {
+                    group = PublishingPlugin.PUBLISH_TASK_GROUP
 
-            if (publishTasks.isEmpty()) {
-                return@forEach
-            }
-
-            tasks.register("publish${name}PublicationTo${repositoryName}Repository") {
-                group = PublishingPlugin.PUBLISH_TASK_GROUP
-
-                dependsOn(publishTasks)
+                    dependsOn(publishTasks)
+                }
             }
         }
     }

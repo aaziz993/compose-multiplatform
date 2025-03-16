@@ -60,9 +60,14 @@ import org.gradle.internal.os.OperatingSystem
 import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.withType
-import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
+import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
+import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinWasmTargetDsl
+import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinWasmWasiTargetDsl
 import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
+import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
 import org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest
 import org.jetbrains.kotlin.gradle.targets.native.tasks.KotlinNativeTest
 import org.jetbrains.kotlin.gradle.tasks.KotlinNativeLink
@@ -275,136 +280,151 @@ public class ProjectPlugin : Plugin<Project> {
     private fun Project.registerAggregationTestTasks() {
         registerAggregationTestTask<KotlinJvmTest>(
             "jvmAll",
-            KotlinPlatformType.jvm,
+            { it is KotlinJvmTarget },
         )
 
         // test only on min and max JDK versions
         registerAggregationTestTask<KotlinJvmTest>(
-            "jvmJdk",
-            KotlinPlatformType.jvm,
+            "jvmJdkRange",
+            { it is KotlinJvmTarget },
         ) {
             it.matching { it.javaLauncher.get().metadata.languageVersion.asInt() in setOf(8, 23) }
         }
 
-        registerAggregationTestTask(
-            "connectedAndroid",
-            { tasks.matching { it is AndroidTestTask && it.name.startsWith("connected", ignoreCase = true) } },
-            { it.platformType == KotlinPlatformType.androidJvm },
+        registerAggregationTestTask<KotlinJvmTest>(
+            "androidAll",
+            { it is KotlinAndroidTarget },
         )
 
+        registerAggregationTestTask(
+            "connectedAndroid",
+            { it is KotlinAndroidTarget },
+        ) { tasks.matching { it is AndroidTestTask && it.name.startsWith("connected", ignoreCase = true) } }
+
         // Android native
-        registerAggregationTestTask<KotlinAndroidNativeArm32Target>("androidNativeArm32All")
-        registerAggregationTestTask<KotlinAndroidNativeX86Target>("androidNativeX86All")
-        registerAggregationTestTask<KotlinAndroidNative32Target>("androidNative32")
-        registerAggregationTestTask<KotlinAndroidNativeArm64Target>("androidNativeArm64All")
-        registerAggregationTestTask<KotlinAndroidNativeX64Target>("androidNativeX64All")
-        registerAggregationTestTask<KotlinAndroidNative64Target>("androidNative64")
-        registerAggregationTestTask<KotlinAndroidNativeTarget>("androidNative")
+        registerAggregationNativeTestTask<KotlinAndroidNativeArm32Target>("androidNativeArm32All")
+        registerAggregationNativeTestTask<KotlinAndroidNativeX86Target>("androidNativeX86All")
+        registerAggregationNativeTestTask<KotlinAndroidNative32Target>("androidNative32")
+        registerAggregationNativeTestTask<KotlinAndroidNativeArm64Target>("androidNativeArm64All")
+        registerAggregationNativeTestTask<KotlinAndroidNativeX64Target>("androidNativeX64All")
+        registerAggregationNativeTestTask<KotlinAndroidNative64Target>("androidNative64")
+        registerAggregationNativeTestTask<KotlinAndroidNativeTarget>("androidNative")
 
         // Darwin
         // ios
-        registerAggregationTestTask<IosArm64Target>("iosArm64All")
-        registerAggregationTestTask<KotlinIosX64Target>("iosX64All")
-        registerAggregationTestTask<KotlinIosSimulatorArm64Target>("iosSimulatorArm64All")
-        registerAggregationTestTask<KotlinIosTarget>("ios")
+        registerAggregationNativeTestTask<IosArm64Target>("iosArm64All")
+        registerAggregationNativeTestTask<KotlinIosX64Target>("iosX64All")
+        registerAggregationNativeTestTask<KotlinIosSimulatorArm64Target>("iosSimulatorArm64All")
+        registerAggregationNativeTestTask<KotlinIosTarget>("ios")
         // watchos
-        registerAggregationTestTask<KotlinWatchosArm32Target>("watchosArm32All")
-        registerAggregationTestTask<KotlinWatchosArm64Target>("watchosArm64All")
-        registerAggregationTestTask<KotlinWatchos32Target>("watchos32")
-        registerAggregationTestTask<KotlinWatchosDeviceArm64Target>("watchosDeviceArm64All")
-        registerAggregationTestTask<KotlinWatchosX64Target>("watchosX64All")
-        registerAggregationTestTask<KotlinWatchosSimulatorArm64Target>("watchosSimulatorArm64All")
-        registerAggregationTestTask<KotlinWatchos64Target>("watchos64")
-        registerAggregationTestTask<KotlinWatchosTarget>("watchos")
+        registerAggregationNativeTestTask<KotlinWatchosArm32Target>("watchosArm32All")
+        registerAggregationNativeTestTask<KotlinWatchosArm64Target>("watchosArm64All")
+        registerAggregationNativeTestTask<KotlinWatchos32Target>("watchos32")
+        registerAggregationNativeTestTask<KotlinWatchosDeviceArm64Target>("watchosDeviceArm64All")
+        registerAggregationNativeTestTask<KotlinWatchosX64Target>("watchosX64All")
+        registerAggregationNativeTestTask<KotlinWatchosSimulatorArm64Target>("watchosSimulatorArm64All")
+        registerAggregationNativeTestTask<KotlinWatchos64Target>("watchos64")
+        registerAggregationNativeTestTask<KotlinWatchosTarget>("watchos")
         // tvos
-        registerAggregationTestTask<KotlinTvosArm64Target>("tvosArm64All")
-        registerAggregationTestTask<KotlinTvosX64Target>("tvosX64All")
-        registerAggregationTestTask<KotlinTvosSimulatorArm64Target>("tvosSimulatorArm64All")
-        registerAggregationTestTask<KotlinTvosTarget>("tvos")
+        registerAggregationNativeTestTask<KotlinTvosArm64Target>("tvosArm64All")
+        registerAggregationNativeTestTask<KotlinTvosX64Target>("tvosX64All")
+        registerAggregationNativeTestTask<KotlinTvosSimulatorArm64Target>("tvosSimulatorArm64All")
+        registerAggregationNativeTestTask<KotlinTvosTarget>("tvos")
         // macos
-        registerAggregationTestTask<KotlinMacosTarget>("macos")
-        registerAggregationTestTask<KotlinMacosArm64Target>("macosArm64All")
-        registerAggregationTestTask<KotlinMacosX64Target>("macosX64All")
-        registerAggregationTestTask<KotlinMacosTarget>("macos")
+        registerAggregationNativeTestTask<KotlinMacosTarget>("macos")
+        registerAggregationNativeTestTask<KotlinMacosArm64Target>("macosArm64All")
+        registerAggregationNativeTestTask<KotlinMacosX64Target>("macosX64All")
+        registerAggregationNativeTestTask<KotlinMacosTarget>("macos")
         // apple
-        registerAggregationTestTask<KotlinAppleTarget>("apple")
+        registerAggregationNativeTestTask<KotlinAppleTarget>("apple")
 
         // Linux
-        registerAggregationTestTask<KotlinLinuxArm64Target>("linuxArm64All")
-        registerAggregationTestTask<KotlinLinuxX64Target>("linuxX64All")
-        registerAggregationTestTask<KotlinLinuxTarget>("linux")
+        registerAggregationNativeTestTask<KotlinLinuxArm64Target>("linuxArm64All")
+        registerAggregationNativeTestTask<KotlinLinuxX64Target>("linuxX64All")
+        registerAggregationNativeTestTask<KotlinLinuxTarget>("linux")
 
         // Windows
-        registerAggregationTestTask<KotlinMingwTarget>("mingw")
-        registerAggregationTestTask<KotlinMingwX64Target>("mingwX64All")
+        registerAggregationNativeTestTask<KotlinMingwTarget>("mingw")
+        registerAggregationNativeTestTask<KotlinMingwX64Target>("mingwX64All")
 
         // Native
         registerAggregationTestTask<KotlinNativeTest>(
-            "native", KotlinPlatformType.native,
+            "native",
+            { it is KotlinNativeTarget },
         ) {
-            it.matching { it.enabled }
+            it.matching(KotlinNativeTest::isEnabled)
         }
 
-        registerAggregationTestTask<KotlinJsTest>("jsAll", KotlinPlatformType.js)
-
-        registerAggregationTestTask<KotlinJsTest>("wasmAll", KotlinPlatformType.wasm)
+        registerAggregationTestTask<KotlinJsTest>(
+            "jsAll",
+            { it::class == KotlinJsTargetDsl::class },
+        )
 
         registerAggregationTestTask<KotlinJsTest>(
-                "jsCommon", KotlinPlatformType.js, KotlinPlatformType.wasm,
+            "wasmAll",
+            { it is KotlinWasmTargetDsl },
+        )
+
+        registerAggregationTestTask<KotlinJsTest>(
+            "jsCommon",
+            { it is KotlinJsTargetDsl },
+        )
+
+        registerAggregationTestTask<KotlinJsTest>(
+            "wasmWasiAll",
+            { it is KotlinWasmWasiTargetDsl },
         )
     }
 
     private inline fun <reified T : Task> Project.registerAggregationTestTask(
         name: String,
-        vararg platforms: KotlinPlatformType,
-        crossinline matching: (TaskCollection<T>) -> TaskCollection<T> = { it },
-    ) {
-        registerAggregationTestTask(
-            name,
-            { matching(tasks.withType<T>()) },
-            { it.platformType in platforms },
-        )
-    }
+        noinline targetFilter: (KotlinTarget) -> Boolean,
+        crossinline tasksFilter: (TaskCollection<T>) -> TaskCollection<T> = { it },
+    ) = kotlin.targets
+        .matching(targetFilter)
+        .map(KotlinTarget::targetName)
+        .let { targetNames ->
+            registerAggregationTestTask(
+                name,
+                targetNames,
+            ) {
+                tasksFilter(tasks.withType<T>())
+            }
+        }
 
-    private inline fun <reified T : Any> Project.registerAggregationTestTask(name: String) {
+    private inline fun <reified T : Any> Project.registerAggregationNativeTestTask(name: String) =
         projectProperties.kotlin.targets
             .instanceOf<T>()
             .map(`gradle.plugins.kmp`.KotlinTarget::targetName)
             .let { targetNames ->
-                registerAggregationTestTask(
-                    name = name,
-                    taskDependencies = {
-                        tasks.withType<KotlinNativeTest>().matching { test ->
-                            test.enabled && targetNames.any { targetName ->
-                                test.name.startsWith(targetName, ignoreCase = true)
-                            }
-                        }
-                    },
-                    targetFilter = { target ->
-                        target.platformType == KotlinPlatformType.native && targetNames.any { targetName ->
-                            target.name.startsWith(targetName, ignoreCase = true)
-                        }
-                    },
-                )
-            }
-    }
-
-    private fun Project.registerAggregationTestTask(
-        name: String,
-        taskDependencies: () -> TaskCollection<*>,
-        targetFilter: (KotlinTarget) -> Boolean,
-    ) {
-        taskDependencies().takeIf(TaskCollection<*>::isNotEmpty)?.let { dependencies ->
-            var called = false
-            kotlin.targets.matching(targetFilter).configureEach {
-                if (called) return@configureEach
-                called = true
-
-                tasks.register("${name}Test") {
-                    group = "verification"
-                    dependsOn(dependencies)
+                registerAggregationTestTask<KotlinNativeTest>(
+                    name,
+                    targetNames,
+                ) {
+                    tasks.withType<KotlinNativeTest>().matching { test ->
+                        test.enabled && test.targetName?.let { targetName -> targetName in targetNames } != false
+                    }
                 }
             }
-        }
+
+    private inline fun <reified T : Task> Project.registerAggregationTestTask(
+        name: String,
+        targetNames: List<String>,
+        tasksFilter: (TaskCollection<T>) -> TaskCollection<T> = { it },
+    ) {
+        if (targetNames.isEmpty()) return
+
+        tasksFilter(
+            tasks.withType<T>().matching { task ->
+                targetNames.any { targetName -> task.name.startsWith(targetName) }
+            },
+        ).takeIf(TaskCollection<*>::isNotEmpty)
+            ?.let { testTasks ->
+                tasks.register("${name}Test") {
+                    group = "verification"
+
+                    dependsOn(testTasks)
+                }
+            }
     }
 }
