@@ -32,7 +32,7 @@ internal data class DokkaSettings(
     override val dokkaEngineVersion: String? = null,
     override val dokkaGeneratorIsolation: WorkerIsolation? = null,
     override val enabled: Boolean = true,
-    val dependenciesFromIncludes: Boolean = true,
+    val dependenciesFromSubprojects: Boolean = true,
 ) : DokkaExtension, EnabledSettings {
 
     context(Project)

@@ -6,8 +6,10 @@ import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
+import gradle.api.findByName
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.Task
 import org.gradle.api.invocation.Gradle
 
 internal class KnitPlugin : Plugin<Project> {
@@ -22,7 +24,7 @@ internal class KnitPlugin : Plugin<Project> {
                 }
         }
     }
-    .
+
     companion object {
 
         context(Gradle)
@@ -31,15 +33,15 @@ internal class KnitPlugin : Plugin<Project> {
             // all Dokka outputs from each module
             allprojects {
                 if (project == project.rootProject) {
-                    val dokkaTasks = project.subprojects.flatMap { subproject ->
-                        subproject.tasks.matching { it.name == "dokkaGenerate" }
-                    }
-
                     project.tasks.named("knitPrepare") {
-                        dependsOn(dokkaTasks)
+                        dependsOn(dokkaTasks(project))
                     }
                 }
             }
         }
+
+        private fun dokkaTasks(project: Project): List<Task> =
+            project.subprojects.takeIf(Set<*>::isNotEmpty)?.flatMap(::dokkaTasks)
+                ?: listOfNotNull(project.tasks.findByName("dokkaGenerate"))
     }
 }

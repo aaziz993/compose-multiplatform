@@ -24,7 +24,7 @@ internal class DokkaPlugin : Plugin<Project> {
 
                     dokka.applyTo()
 
-                    if (project == rootProject && dokka.dependenciesFromIncludes) {
+                    if (project == rootProject && dokka.dependenciesFromSubprojects) {
                         val dokka by configurations
                         dependencies {
                             subprojects.forEach { subproject ->

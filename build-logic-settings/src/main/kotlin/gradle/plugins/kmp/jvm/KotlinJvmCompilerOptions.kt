@@ -1,7 +1,13 @@
 package gradle.plugins.kmp.jvm
 
+import gradle.accessors.libs
+import gradle.accessors.settings
+import gradle.accessors.version
+import gradle.accessors.versions
+import gradle.addPrefix
 import gradle.api.tryAssign
 import gradle.plugins.kotlin.KotlinCommonCompilerOptions
+import gradle.prefixIfNotEmpty
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
@@ -57,7 +63,12 @@ internal data class KotlinJvmCompilerOptions(
         options as KotlinJvmCompilerOptions
 
         options.javaParameters tryAssign javaParameters
-        options.jvmTarget tryAssign jvmTarget
+        options.jvmTarget tryAssign (jvmTarget
+            ?: settings.libs.versions.version("java.languageVersion")
+                ?.replace(".", "_")
+                ?.addPrefix("JVM_")
+                ?.let(JvmTarget::valueOf)
+            )
         options.moduleName tryAssign moduleName
         options.noJdk tryAssign noJdk
     }

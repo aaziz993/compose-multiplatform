@@ -95,8 +95,6 @@ java-languageVersion = "23"
 java-sourceCompatibility = "23"
 # in project version
 java-targetCompatibility = "23"
-# in project version
-java-additionalTestVersions = "17, 21, 23"
 # google java format code formatter
 googleJavaFormat = "1.25.0"
 # logging
@@ -129,8 +127,6 @@ sshj = "0.38.0"
 jsch = "0.1.55"
 
 ##Kotlin
-# in project version
-kotlin-jvmToolchain = "23"
 kotlin = "2.1.10"
 # ktlint code formatter
 ktlint = "1.4.1"

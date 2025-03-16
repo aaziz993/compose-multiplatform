@@ -22,10 +22,10 @@ plugins:
             password: $envOrLocal.jetbrains.space.password
       - maven:
           name: Sonatype
-          url: https://maven.pkg.jetbrains.space/aaziz93/p/aaziz-93/maven
+          url: https://s01.oss.sonatype.org
           credentials:
             username: aaziz93
-            password: $envOrLocal.jetbrains.space.password
+            password: $envOrLocal.sonatype.password
     publications:
       - maven: { }
       - maven:

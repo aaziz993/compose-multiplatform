@@ -5,8 +5,17 @@ internal fun String.decapitalized() = replaceFirstChar(Char::lowercase)
 internal fun String.ifNotEmpty(transform: (String) -> String) =
     if (isNotEmpty()) transform(this) else this
 
+internal fun String.addPrefix(prefix: String) =
+    "$prefix$this"
+
+internal fun String.addSuffix(suffix: String) =
+    "$this$suffix"
+
 internal fun String.prefixIfNotEmpty(prefix: String) =
     ifNotEmpty { "$prefix$it" }
+
+internal fun String.suffixIfNotEmpty(suffix: String) =
+    ifNotEmpty { "$it$suffix" }
 
 private val URL_REGEX = "^(https|http)://.*".toRegex()
 

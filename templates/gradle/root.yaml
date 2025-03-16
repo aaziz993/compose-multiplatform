@@ -61,11 +61,23 @@ plugins:
   # api documentation engine for Kotlin.
   dokka:
     enabled: true
+    dokkaPublications:
+      - '':
+          suppressObviousFunctions: true
+          suppressInheritedMembers: false
     dokkaSourceSets:
       - '':
           includes: [ README.md ]
+          documentedVisibilities: [ Public ]
+          reportUndocumented: false
           sourceLink:
             remoteLineSuffix: #L
+          skipEmptyPackages: true
+          skipDeprecated: true
+          enableKotlinStdLibDocumentationLink: true
+          enableJdkDocumentationLink: true
+          enableAndroidDocumentationLink: true
+
     pluginsConfiguration:
       - html:
           #          footerMessage: © 2025 - Aziz Atoev # Populated from inceptionYear and developer.name.

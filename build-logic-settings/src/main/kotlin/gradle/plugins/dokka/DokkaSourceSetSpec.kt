@@ -1,5 +1,9 @@
 package gradle.plugins.dokka
 
+import gradle.accessors.libs
+import gradle.accessors.settings
+import gradle.accessors.version
+import gradle.accessors.versions
 import gradle.api.Named
 import gradle.api.tryAssign
 import gradle.serialization.serializer.KeyTransformingSerializer
@@ -7,6 +11,8 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.dokka.gradle.engine.parameters.KotlinPlatform
 import org.jetbrains.dokka.gradle.engine.parameters.VisibilityModifier
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget.valueOf
 
 /**
  * A [DokkaSourceSetSpec] controls how Dokka will view and rendered sources.
@@ -100,7 +106,7 @@ internal data class DokkaSourceSetSpec(
      *
      * Default is [VisibilityModifier.Public].
      */
-    val documentedVisibilities: List<VisibilityModifier>? = null,
+    val documentedVisibilities: Set<VisibilityModifier>? = null,
     /**
      * Classpath for analysis and interactive samples.
      *
@@ -292,7 +298,7 @@ internal data class DokkaSourceSetSpec(
         named.enableAndroidDocumentationLink tryAssign enableAndroidDocumentationLink
         named.languageVersion tryAssign languageVersion
         named.apiVersion tryAssign apiVersion
-        named.jdkVersion tryAssign jdkVersion
+        named.jdkVersion tryAssign (jdkVersion ?: settings.libs.versions.version("java.languageVersion")?.toInt())
     }
 }
 

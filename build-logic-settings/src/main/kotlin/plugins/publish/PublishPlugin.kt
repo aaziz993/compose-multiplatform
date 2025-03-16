@@ -1,5 +1,6 @@
 package plugins.publish
 
+import com.vanniktech.maven.publish.SonatypeHost
 import gradle.accessors.kotlin
 import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.withType

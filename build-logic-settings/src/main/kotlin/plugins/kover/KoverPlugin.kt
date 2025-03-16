@@ -26,7 +26,7 @@ internal class KoverPlugin : Plugin<Project> {
 
                     registerKoverReportTask()
 
-                    if (project == rootProject && kover.dependenciesFromIncludes) {
+                    if (project == rootProject && kover.dependenciesFromSubprojects) {
                         val kover by configurations
                         dependencies {
                             subprojects.forEach { subproject ->

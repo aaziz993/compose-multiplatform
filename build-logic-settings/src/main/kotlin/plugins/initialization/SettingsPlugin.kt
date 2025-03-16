@@ -179,7 +179,7 @@ public class SettingsPlugin : Plugin<Settings> {
                         projectFile.applyTo("projectFile$index")
                     }
 
-                    //setup sync tasks execution during IDE import
+                    //setup sync tasks execution during IDE import.
                     tasks.configureEach { importTask ->
                         if (importTask.name == IDEA_IMPORT_TASK_NAME) {
                             importTask.dependsOn(*projectFiles.toTypedArray())
@@ -187,12 +187,13 @@ public class SettingsPlugin : Plugin<Settings> {
                     }
                 }
 
-                // at this point all projects have been created by settings.gradle.kts, but none were evaluated yet
+                // at this point all projects have been created by settings.gradle.kts, but none were evaluated yet.
                 allprojects {
                     plugins.apply(ProjectPlugin::class.java)
-
-                    KnitPlugin.configureKnitTasks()
                 }
+
+                // Apply after all projects configured to configure knit tasks dependencies.
+                KnitPlugin.configureKnitTasks()
             }
         }
     }

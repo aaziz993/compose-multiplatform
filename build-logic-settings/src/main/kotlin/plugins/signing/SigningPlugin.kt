@@ -1,5 +1,6 @@
 package plugins.signing
 
+import org.gradle.kotlin.dsl.withType
 import gradle.accessors.projectProperties
 import gradle.accessors.resolveValue
 import gradle.accessors.settings
@@ -7,6 +8,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.Exec
 import org.gradle.kotlin.dsl.register
+import org.gradle.plugins.signing.Sign
 import org.gradle.plugins.signing.SigningPlugin
 
 internal class SigningPlugin : Plugin<Project> {
@@ -23,6 +25,16 @@ internal class SigningPlugin : Plugin<Project> {
 
                     registerGenerateSigningGPGKeyTask()
                     registerSigningGPGKeyDistributeTask()
+
+                    // NOTE: This is a temporary WA, see KT-61313.
+                    tasks.withType<Sign> {
+                        val pubName = name.substringAfter("sign").substringBefore("Publication")
+
+                        // Task ':linkDebugTest<platform>' uses this output of task ':sign<platform>Publication' without declaring an explicit or implicit dependency
+                        tasks.findByName("linkDebugTest$pubName")?.mustRunAfter(this)
+                        // Task ':compileTestKotlin<platform>' uses this output of task ':sign<platform>Publication' without declaring an explicit or implicit dependency
+                        tasks.findByName("compileTestKotlin$pubName")?.mustRunAfter(this)
+                    }
                 }
         }
     }
