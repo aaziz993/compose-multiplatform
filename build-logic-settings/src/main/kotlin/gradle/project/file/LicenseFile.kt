@@ -39,6 +39,6 @@ internal data class LicenseFile(
             replace[ownerPlaceholder] = owner
         }
 
-        return super.applyTo(name)
+        return super.applyTo(name,configure)
     }
 }

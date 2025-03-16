@@ -31,6 +31,6 @@ internal data class CodeOfConductFile(
             replace[emailPlaceholder] = email
         }
 
-        return super.applyTo(name)
+        return super.applyTo(name, configure)
     }
 }
