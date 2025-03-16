@@ -232,7 +232,6 @@ plugins:
   # api that you can use to develop lightweight compiler plugins. KSP provides a simplified compiler plugin API that leverages the power of Kotlin while keeping the learning curve at a minimum. Compared to KAPT, annotation processors that use KSP can run up to 2x faster.
   ksp:
     enabled: true
-    useKsp2: true
     arguments:
       # room
       room.schemaLocation: schemas
