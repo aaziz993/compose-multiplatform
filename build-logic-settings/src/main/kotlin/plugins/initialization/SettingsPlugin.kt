@@ -160,6 +160,11 @@ public class SettingsPlugin : Plugin<Settings> {
             }
 
             target.gradle.projectsLoaded {
+                // at this point all projects have been created by settings.gradle.kts, but none were evaluated yet.
+                allprojects {
+                    plugins.apply(ProjectPlugin::class.java)
+                }
+
                 // Apply project files
                 with(rootProject) {
                     val projectFiles = (
@@ -179,11 +184,6 @@ public class SettingsPlugin : Plugin<Settings> {
                             importTask.dependsOn(*projectFiles.toTypedArray())
                         }
                     }
-                }
-
-                // at this point all projects have been created by settings.gradle.kts, but none were evaluated yet.
-                allprojects {
-                    plugins.apply(ProjectPlugin::class.java)
                 }
             }
         }

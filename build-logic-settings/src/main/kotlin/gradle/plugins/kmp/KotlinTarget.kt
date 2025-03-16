@@ -61,3 +61,7 @@ internal data class KotlinTargetIml(
     override val targetName: String
         get() = ""
 }
+
+@Suppress("UNCHECKED_CAST")
+internal inline fun <reified T : Any> List<KotlinTarget>.instanceOf(): List<KotlinTarget> =
+    filterIsInstance<T>() as List<KotlinTarget>
