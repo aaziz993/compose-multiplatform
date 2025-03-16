@@ -11,15 +11,34 @@ import gradle.plugins.kmp.nat.android.KotlinAndroidNativeTarget
 import gradle.plugins.kmp.nat.android.KotlinAndroidNative32Target
 import gradle.plugins.kmp.nat.android.KotlinAndroidNative64Target
 import gradle.plugins.kmp.nat.android.KotlinAndroidNativeArm32Target
+import gradle.plugins.kmp.nat.android.KotlinAndroidNativeArm64Target
+import gradle.plugins.kmp.nat.android.KotlinAndroidNativeX64Target
+import gradle.plugins.kmp.nat.android.KotlinAndroidNativeX86Target
 import gradle.plugins.kmp.nat.apple.KotlinAppleTarget
+import gradle.plugins.kmp.nat.apple.ios.IosArm64Target
+import gradle.plugins.kmp.nat.apple.ios.KotlinIosSimulatorArm64Target
 import gradle.plugins.kmp.nat.apple.ios.KotlinIosTarget
+import gradle.plugins.kmp.nat.apple.ios.KotlinIosX64Target
+import gradle.plugins.kmp.nat.apple.macos.KotlinMacosArm64Target
 import gradle.plugins.kmp.nat.apple.macos.KotlinMacosTarget
+import gradle.plugins.kmp.nat.apple.macos.KotlinMacosX64Target
+import gradle.plugins.kmp.nat.apple.tvos.KotlinTvosArm64Target
+import gradle.plugins.kmp.nat.apple.tvos.KotlinTvosSimulatorArm64Target
 import gradle.plugins.kmp.nat.apple.tvos.KotlinTvosTarget
+import gradle.plugins.kmp.nat.apple.tvos.KotlinTvosX64Target
 import gradle.plugins.kmp.nat.apple.watchos.KotlinWatchos32Target
 import gradle.plugins.kmp.nat.apple.watchos.KotlinWatchos64Target
+import gradle.plugins.kmp.nat.apple.watchos.KotlinWatchosArm32Target
+import gradle.plugins.kmp.nat.apple.watchos.KotlinWatchosArm64Target
+import gradle.plugins.kmp.nat.apple.watchos.KotlinWatchosDeviceArm64Target
+import gradle.plugins.kmp.nat.apple.watchos.KotlinWatchosSimulatorArm64Target
 import gradle.plugins.kmp.nat.apple.watchos.KotlinWatchosTarget
+import gradle.plugins.kmp.nat.apple.watchos.KotlinWatchosX64Target
+import gradle.plugins.kmp.nat.linux.KotlinLinuxArm64Target
 import gradle.plugins.kmp.nat.linux.KotlinLinuxTarget
+import gradle.plugins.kmp.nat.linux.KotlinLinuxX64Target
 import gradle.plugins.kmp.nat.mingw.KotlinMingwTarget
+import gradle.plugins.kmp.nat.mingw.KotlinMingwX64Target
 import gradle.plugins.kmp.web.KotlinJsTarget
 import gradle.plugins.kmp.web.KotlinWasmJsTarget
 import gradle.project.ProjectType
@@ -38,6 +57,7 @@ import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.withType
 import org.gradle.plugins.signing.Sign
 import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinWasmWasiTargetDsl
 import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
@@ -91,30 +111,53 @@ internal class PublishPlugin : Plugin<Project> {
         )
 
         // Android native
-        registerAggregatingTask<KotlinAndroidNativeArm32Target>("androidNative32")
+        registerAggregatingTask<KotlinAndroidNativeArm32Target>("androidNativeArm32All")
+        registerAggregatingTask<KotlinAndroidNativeX86Target>("androidNativeX86All")
         registerAggregatingTask<KotlinAndroidNative32Target>("androidNative32")
+        registerAggregatingTask<KotlinAndroidNativeArm64Target>("androidNativeArm64All")
+        registerAggregatingTask<KotlinAndroidNativeX64Target>("androidNativeX64All")
         registerAggregatingTask<KotlinAndroidNative64Target>("androidNative64")
         registerAggregatingTask<KotlinAndroidNativeTarget>("androidNative")
 
         // Darwin
         // ios
+        registerAggregatingTask<IosArm64Target>("iosArm64All")
+        registerAggregatingTask<KotlinIosX64Target>("iosX64All")
+        registerAggregatingTask<KotlinIosSimulatorArm64Target>("iosSimulatorArm64All")
         registerAggregatingTask<KotlinIosTarget>("ios")
         // watchos
-        registerAggregatingTask<KotlinWatchosTarget>("watchos")
+        registerAggregatingTask<KotlinWatchosArm32Target>("watchosArm32All")
+        registerAggregatingTask<KotlinWatchosArm64Target>("watchosArm64All")
         registerAggregatingTask<KotlinWatchos32Target>("watchos32")
+        registerAggregatingTask<KotlinWatchosDeviceArm64Target>("watchosDeviceArm64All")
+        registerAggregatingTask<KotlinWatchosX64Target>("watchosX64All")
+        registerAggregatingTask<KotlinWatchosSimulatorArm64Target>("watchosSimulatorArm64All")
         registerAggregatingTask<KotlinWatchos64Target>("watchos64")
+        registerAggregatingTask<KotlinWatchosTarget>("watchos")
         // tvos
+        registerAggregatingTask<KotlinTvosArm64Target>("tvosArm64All")
+        registerAggregatingTask<KotlinTvosX64Target>("tvosX64All")
+        registerAggregatingTask<KotlinTvosSimulatorArm64Target>("tvosSimulatorArm64All")
         registerAggregatingTask<KotlinTvosTarget>("tvos")
         // macos
+        registerAggregatingTask<KotlinMacosTarget>("macos")
+        registerAggregatingTask<KotlinMacosArm64Target>("macosArm64All")
+        registerAggregatingTask<KotlinMacosX64Target>("macosX64All")
         registerAggregatingTask<KotlinMacosTarget>("macos")
         // apple
         registerAggregatingTask<KotlinAppleTarget>("apple")
 
         // Linux
+        registerAggregatingTask<KotlinLinuxArm64Target>("linuxArm64All")
+        registerAggregatingTask<KotlinLinuxX64Target>("linuxX64All")
         registerAggregatingTask<KotlinLinuxTarget>("linux")
 
         // Windows
         registerAggregatingTask<KotlinMingwTarget>("mingw")
+        registerAggregatingTask<KotlinMingwX64Target>("mingwX64All")
+
+        // Native
+        registerAggregatingTask("native", KotlinNativeTarget::class)
 
         // All js
         registerAggregatingTask<KotlinJsTarget>("jsAll")
@@ -151,11 +194,17 @@ internal class PublishPlugin : Plugin<Project> {
         publishing.repositories.forEach { repository ->
             val repositoryName = repository.name.capitalized()
 
-            tasks.maybeRegister("publish${name}PublicationTo${repositoryName}Repository") {
+            val publishTasks = aliases.mapNotNull { alias ->
+                tasks.maybeNamed("publish${alias.capitalized()}PublicationTo${repositoryName}Repository")
+            }
+
+            if (publishTasks.isEmpty()) {
+                return@forEach
+            }
+
+            tasks.register("publish${name}PublicationTo${repositoryName}Repository") {
                 group = PublishingPlugin.PUBLISH_TASK_GROUP
-                val publishTasks = aliases.mapNotNull { alias ->
-                    tasks.maybeNamed("publish${alias.capitalized()}PublicationTo${repositoryName}Repository")
-                }
+
                 dependsOn(publishTasks)
             }
         }

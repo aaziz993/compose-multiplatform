@@ -15,15 +15,35 @@ import gradle.plugins.kmp.instanceOf
 import gradle.plugins.kmp.nat.android.KotlinAndroidNativeTarget
 import gradle.plugins.kmp.nat.android.KotlinAndroidNative32Target
 import gradle.plugins.kmp.nat.android.KotlinAndroidNative64Target
+import gradle.plugins.kmp.nat.android.KotlinAndroidNativeArm32Target
+import gradle.plugins.kmp.nat.android.KotlinAndroidNativeArm64Target
+import gradle.plugins.kmp.nat.android.KotlinAndroidNativeX64Target
+import gradle.plugins.kmp.nat.android.KotlinAndroidNativeX86Target
 import gradle.plugins.kmp.nat.apple.KotlinAppleTarget
+import gradle.plugins.kmp.nat.apple.ios.IosArm64Target
+import gradle.plugins.kmp.nat.apple.ios.KotlinIosSimulatorArm64Target
 import gradle.plugins.kmp.nat.apple.ios.KotlinIosTarget
+import gradle.plugins.kmp.nat.apple.ios.KotlinIosX64Target
+import gradle.plugins.kmp.nat.apple.macos.KotlinMacosArm64Target
 import gradle.plugins.kmp.nat.apple.macos.KotlinMacosTarget
+import gradle.plugins.kmp.nat.apple.macos.KotlinMacosX64Target
+import gradle.plugins.kmp.nat.apple.tvos.KotlinTvosArm64Target
+import gradle.plugins.kmp.nat.apple.tvos.KotlinTvosSimulatorArm64Target
 import gradle.plugins.kmp.nat.apple.tvos.KotlinTvosTarget
+import gradle.plugins.kmp.nat.apple.tvos.KotlinTvosX64Target
 import gradle.plugins.kmp.nat.apple.watchos.KotlinWatchos32Target
 import gradle.plugins.kmp.nat.apple.watchos.KotlinWatchos64Target
+import gradle.plugins.kmp.nat.apple.watchos.KotlinWatchosArm32Target
+import gradle.plugins.kmp.nat.apple.watchos.KotlinWatchosArm64Target
+import gradle.plugins.kmp.nat.apple.watchos.KotlinWatchosDeviceArm64Target
+import gradle.plugins.kmp.nat.apple.watchos.KotlinWatchosSimulatorArm64Target
 import gradle.plugins.kmp.nat.apple.watchos.KotlinWatchosTarget
+import gradle.plugins.kmp.nat.apple.watchos.KotlinWatchosX64Target
+import gradle.plugins.kmp.nat.linux.KotlinLinuxArm64Target
 import gradle.plugins.kmp.nat.linux.KotlinLinuxTarget
+import gradle.plugins.kmp.nat.linux.KotlinLinuxX64Target
 import gradle.plugins.kmp.nat.mingw.KotlinMingwTarget
+import gradle.plugins.kmp.nat.mingw.KotlinMingwX64Target
 import gradle.project.PROJECT_PROPERTIES_FILE
 import gradle.project.ProjectProperties.Companion.load
 import gradle.project.ProjectProperties.Companion.yaml
@@ -260,10 +280,10 @@ public class ProjectPlugin : Plugin<Project> {
 
         // test only on min and max JDK versions
         registerAggregationTestTask<KotlinJvmTest>(
-            "jvm",
+            "jvmJdk",
             KotlinPlatformType.jvm,
         ) {
-            it.matching { it.javaLauncher.get().metadata.languageVersion.asInt() in setOf(8, 21) }
+            it.matching { it.javaLauncher.get().metadata.languageVersion.asInt() in setOf(8, 23) }
         }
 
         registerAggregationTestTask(
@@ -273,45 +293,64 @@ public class ProjectPlugin : Plugin<Project> {
         )
 
         // Android native
-        registerKotlinNativeTargetAggregationTestTask<KotlinAndroidNative32Target>("android32")
-        registerKotlinNativeTargetAggregationTestTask<KotlinAndroidNative64Target>("android64")
-        registerKotlinNativeTargetAggregationTestTask<KotlinAndroidNativeTarget>("android")
+        registerAggregationTestTask<KotlinAndroidNativeArm32Target>("androidNativeArm32All")
+        registerAggregationTestTask<KotlinAndroidNativeX86Target>("androidNativeX86All")
+        registerAggregationTestTask<KotlinAndroidNative32Target>("androidNative32")
+        registerAggregationTestTask<KotlinAndroidNativeArm64Target>("androidNativeArm64All")
+        registerAggregationTestTask<KotlinAndroidNativeX64Target>("androidNativeX64All")
+        registerAggregationTestTask<KotlinAndroidNative64Target>("androidNative64")
+        registerAggregationTestTask<KotlinAndroidNativeTarget>("androidNative")
 
         // Darwin
-        registerKotlinNativeTargetAggregationTestTask<KotlinIosTarget>("ios")
-        registerKotlinNativeTargetAggregationTestTask<KotlinWatchos32Target>("watchos32")
-        registerKotlinNativeTargetAggregationTestTask<KotlinWatchos64Target>("watchos64")
-        registerKotlinNativeTargetAggregationTestTask<KotlinWatchosTarget>("watchos")
-        registerKotlinNativeTargetAggregationTestTask<KotlinTvosTarget>("tvos")
-        registerKotlinNativeTargetAggregationTestTask<KotlinMacosTarget>("macos")
-        registerKotlinNativeTargetAggregationTestTask<KotlinAppleTarget>("apple")
+        // ios
+        registerAggregationTestTask<IosArm64Target>("iosArm64All")
+        registerAggregationTestTask<KotlinIosX64Target>("iosX64All")
+        registerAggregationTestTask<KotlinIosSimulatorArm64Target>("iosSimulatorArm64All")
+        registerAggregationTestTask<KotlinIosTarget>("ios")
+        // watchos
+        registerAggregationTestTask<KotlinWatchosArm32Target>("watchosArm32All")
+        registerAggregationTestTask<KotlinWatchosArm64Target>("watchosArm64All")
+        registerAggregationTestTask<KotlinWatchos32Target>("watchos32")
+        registerAggregationTestTask<KotlinWatchosDeviceArm64Target>("watchosDeviceArm64All")
+        registerAggregationTestTask<KotlinWatchosX64Target>("watchosX64All")
+        registerAggregationTestTask<KotlinWatchosSimulatorArm64Target>("watchosSimulatorArm64All")
+        registerAggregationTestTask<KotlinWatchos64Target>("watchos64")
+        registerAggregationTestTask<KotlinWatchosTarget>("watchos")
+        // tvos
+        registerAggregationTestTask<KotlinTvosArm64Target>("tvosArm64All")
+        registerAggregationTestTask<KotlinTvosX64Target>("tvosX64All")
+        registerAggregationTestTask<KotlinTvosSimulatorArm64Target>("tvosSimulatorArm64All")
+        registerAggregationTestTask<KotlinTvosTarget>("tvos")
+        // macos
+        registerAggregationTestTask<KotlinMacosTarget>("macos")
+        registerAggregationTestTask<KotlinMacosArm64Target>("macosArm64All")
+        registerAggregationTestTask<KotlinMacosX64Target>("macosX64All")
+        registerAggregationTestTask<KotlinMacosTarget>("macos")
+        // apple
+        registerAggregationTestTask<KotlinAppleTarget>("apple")
 
         // Linux
-        registerKotlinNativeTargetAggregationTestTask<KotlinLinuxTarget>("linux")
+        registerAggregationTestTask<KotlinLinuxArm64Target>("linuxArm64All")
+        registerAggregationTestTask<KotlinLinuxX64Target>("linuxX64All")
+        registerAggregationTestTask<KotlinLinuxTarget>("linux")
 
         // Windows
-        registerKotlinNativeTargetAggregationTestTask<KotlinMingwTarget>("mingw")
+        registerAggregationTestTask<KotlinMingwTarget>("mingw")
+        registerAggregationTestTask<KotlinMingwX64Target>("mingwX64All")
 
+        // Native
         registerAggregationTestTask<KotlinNativeTest>(
-            "native",
-            KotlinPlatformType.native,
+            "native", KotlinPlatformType.native,
         ) {
             it.matching { it.enabled }
         }
 
-        registerAggregationTestTask<KotlinJsTest>(
-            "js",
-            KotlinPlatformType.js,
-        )
+        registerAggregationTestTask<KotlinJsTest>("jsAll", KotlinPlatformType.js)
+
+        registerAggregationTestTask<KotlinJsTest>("wasmAll", KotlinPlatformType.wasm)
 
         registerAggregationTestTask<KotlinJsTest>(
-            "wasm",
-            KotlinPlatformType.wasm,
-        )
-
-        registerAggregationTestTask<KotlinJsTest>(
-            "jsCommon",
-            KotlinPlatformType.js, KotlinPlatformType.wasm,
+                "jsCommon", KotlinPlatformType.js, KotlinPlatformType.wasm,
         )
     }
 
@@ -327,7 +366,7 @@ public class ProjectPlugin : Plugin<Project> {
         )
     }
 
-    private inline fun <reified T : Any> Project.registerKotlinNativeTargetAggregationTestTask(name: String) {
+    private inline fun <reified T : Any> Project.registerAggregationTestTask(name: String) {
         projectProperties.kotlin.targets
             .instanceOf<T>()
             .map(`gradle.plugins.kmp`.KotlinTarget::targetName)
@@ -355,15 +394,15 @@ public class ProjectPlugin : Plugin<Project> {
         taskDependencies: () -> TaskCollection<*>,
         targetFilter: (KotlinTarget) -> Boolean,
     ) {
-        kotlin {
+        taskDependencies().takeIf(TaskCollection<*>::isNotEmpty)?.let { dependencies ->
             var called = false
-            targets.matching(targetFilter).configureEach {
+            kotlin.targets.matching(targetFilter).configureEach {
                 if (called) return@configureEach
                 called = true
 
                 tasks.register("${name}Test") {
                     group = "verification"
-                    dependsOn(taskDependencies())
+                    dependsOn(dependencies)
                 }
             }
         }
