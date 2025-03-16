@@ -10,6 +10,7 @@ import gradle.api.toVersion
 import gradle.collection.resolveValue
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
+import org.gradle.kotlin.dsl.provideDelegate
 import org.gradle.plugins.signing.Sign
 import org.gradle.plugins.signing.SignOperation
 import org.gradle.plugins.signing.type.pgp.ArmoredSignatureType
@@ -124,7 +125,7 @@ internal abstract class SigningExtension {
      * @param publishArtifacts The publish artifacts to sign
      * @return The executed [sign operation][SignOperation]
      */
-    abstract val signPublishArtifacts: List<String>?
+    abstract val signArtifacts: List<String>?
 
     /**
      * Digitally signs the files, generating signature files alongside them.
@@ -181,13 +182,13 @@ internal abstract class SigningExtension {
                 signing.sign(*publications.toTypedArray())
             }
 
-            configurations
-//            publishing.publications.withType<MavenPublication>().configureEach { publication ->
-//                val artifacts = publication.artifacts // This returns a Set<PublishArtifact>
-//                artifacts.forEach { artifact ->
-//                    signing.sign(artifact)
-//                }
-//            }
+            val allArtifacts = configurations.flatMap(Configuration::getAllArtifacts)
+
+            signArtifacts?.mapNotNull { signArtifact ->
+                allArtifacts.find { artifact -> artifact.classifier == signArtifact }
+            }?.let { signArtifacts ->
+                signing.sign(*signArtifacts.toTypedArray())
+            }
 
             signFiles?.map(::file)?.let { files ->
                 signing.sign(*files.toTypedArray())

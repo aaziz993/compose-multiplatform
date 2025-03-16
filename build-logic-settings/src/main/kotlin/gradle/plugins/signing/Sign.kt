@@ -9,6 +9,7 @@ import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
+import org.gradle.api.artifacts.Configuration
 import org.gradle.plugins.signing.Sign
 
 @Serializable
@@ -51,12 +52,13 @@ internal data class Sign(
             signing.sign(*publications.toTypedArray())
         }
 
-//            publishing.publications.withType<MavenPublication>().configureEach { publication ->
-//                val artifacts = publication.artifacts // This returns a Set<PublishArtifact>
-//                artifacts.forEach { artifact ->
-//                    signing.sign(artifact)
-//                }
-//            }
+        val allArtifacts = configurations.flatMap(Configuration::getAllArtifacts)
+
+        signArtifacts?.mapNotNull { signArtifact ->
+            allArtifacts.find { artifact -> artifact.classifier == signArtifact }
+        }?.let { signArtifacts ->
+            signing.sign(*signArtifacts.toTypedArray())
+        }
 
         signFiles?.map(::file)?.let { files ->
             signing.sign(*files.toTypedArray())
