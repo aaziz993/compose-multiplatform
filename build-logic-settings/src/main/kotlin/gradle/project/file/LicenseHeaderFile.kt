@@ -5,7 +5,6 @@ import kotlinx.serialization.Transient
 import org.gradle.api.DefaultTask
 import org.gradle.api.Project
 import org.gradle.api.tasks.TaskProvider
-import org.gradle.kotlin.dsl.configure
 
 @Serializable
 internal data class LicenseHeaderFile(
@@ -23,14 +22,27 @@ internal data class LicenseHeaderFile(
     override fun applyTo(name: String): List<TaskProvider<out DefaultTask>> =
         super.applyTo(name).also { tasks ->
             tasks.single().configure {
-                doLast {
-                    val intoFile = file(into)
-                    if (intoFile.exists()) {
-                        val text = intoFile.readText()
+                val intoFile = file(into)
 
-                        file("${into}_SLASHED").writeText("/**\n${text.lines().joinToString("\n", " * ")}\n */")
-                        file("${into}_SHARPED").writeText(text.lines().joinToString("\n", " # "))
-                        file("${into}_TAGGED").writeText("$<--\n$text\n -->")
+                var previousTemplateText: String? = null
+
+                doFirst {
+                    // Remember previous template
+                    if (intoFile.exists()) {
+                        previousTemplateText = intoFile.readText()
+                    }
+                }
+
+                doLast {
+
+                    if (intoFile.exists()) {
+                        val templateText = intoFile.readText()
+
+                        if (previousTemplateText == null || templateText != previousTemplateText) {
+                            file("${into}_SLASHED").writeText("/**\n${templateText.lines().joinToString("\n", " * ")}\n */")
+                            file("${into}_SHARPED").writeText(templateText.lines().joinToString("\n", " # "))
+                            file("${into}_TAGGED").writeText("$<--\n$templateText\n -->")
+                        }
                     }
                 }
             }

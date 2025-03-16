@@ -73,6 +73,7 @@ internal class PublishPlugin : Plugin<Project> {
 
     @Suppress("UNCHECKED_CAST")
     private fun Project.registerAggregatingTasks() {
+        kotlin.targetHierarchy.
         // Jvm and Android
         registerAggregatingTask(
             "jvmCommon",
