@@ -37,11 +37,8 @@ import gradle.plugins.kmp.nat.linux.KotlinLinuxTarget
 import gradle.plugins.kmp.nat.linux.KotlinLinuxX64Target
 import gradle.plugins.kmp.nat.mingw.KotlinMingwTarget
 import gradle.plugins.kmp.nat.mingw.KotlinMingwX64Target
-import gradle.plugins.kmp.web.KotlinJsTarget
-import gradle.plugins.kmp.web.KotlinWasmJsTarget
 import gradle.project.ProjectType
-import kotlin.reflect.KClass
-import kotlin.reflect.full.isSubclassOf
+import java.util.regex.Pattern
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.publish.maven.MavenPublication
@@ -61,10 +58,7 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinWasmTargetDsl
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinWasmWasiTargetDsl
-import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
 import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
-import org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest
-import org.jetbrains.kotlin.gradle.targets.native.tasks.KotlinNativeTest
 
 internal class PublishPlugin : Plugin<Project> {
 
@@ -211,20 +205,20 @@ internal class PublishPlugin : Plugin<Project> {
         if (targetNames.isEmpty()) return
 
         publishing.repositories.forEach { repository ->
-            val repositoryName = repository.name.capitalized()
+            val capitalizedRepositoryName = repository.name.capitalized()
 
             tasks.matching { task ->
                 targetNames.any { targetName ->
                     task.name.matches(
                         "${
-                            Regex.escape("publish${targetName.capitalized()}")
+                            Pattern.quote("publish${targetName.capitalized()}")
                         }.*?${
-                            Regex.escape("PublicationTo${repositoryName}Repository")
+                            Pattern.quote("PublicationTo${capitalizedRepositoryName}Repository")
                         }Repository".toRegex(),
                     )
                 }
             }.takeIf(TaskCollection<*>::isNotEmpty)?.let { publishTasks ->
-                tasks.register("publish${name}PublicationTo${repositoryName}Repository") {
+                tasks.register("publish${name.capitalized()}PublicationTo${capitalizedRepositoryName}Repository") {
                     group = PublishingPlugin.PUBLISH_TASK_GROUP
 
                     dependsOn(publishTasks)
