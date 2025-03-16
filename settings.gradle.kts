@@ -1,3 +1,6 @@
+rootProject.name = "compose-multiplatform"
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 pluginManagement {
     includeBuild("build-logic-settings")
     repositories {
