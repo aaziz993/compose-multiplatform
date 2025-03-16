@@ -29,7 +29,7 @@ internal interface ProjectFile {
         get() = emptyMap()
 
     context(Project)
-    fun applyTo(name: String, configure: DefaultTask.() -> Unit = {}): List<TaskProvider<out DefaultTask>> {
+    fun applyTo(name: String): List<TaskProvider<out DefaultTask>> {
         val (urls, files) = from.partition(String::isUrl)
 
         return listOfNotNull(
@@ -75,8 +75,6 @@ internal interface ProjectFile {
                             logger.warn(e.message!!)
                         }
                     }
-
-                    configure()
                 }
             },
             files.takeIf(List<*>::isNotEmpty)?.let { files ->
@@ -94,8 +92,6 @@ internal interface ProjectFile {
                     filter(replace, ReplaceTokens::class.java)
 
                     includeEmptyDirs = false
-
-                    configure()
                 }
             },
         )
