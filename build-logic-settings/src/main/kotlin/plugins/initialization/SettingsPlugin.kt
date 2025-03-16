@@ -165,7 +165,7 @@ public class SettingsPlugin : Plugin<Settings> {
                     val projectFiles = (
                         listOfNotNull(
                             target.projectProperties.licenseFile,
-                            target.projectProperties.licenseHeaderFile,
+//                            target.projectProperties.licenseHeaderFile,
                             target.projectProperties.codeOfConductFile,
                             target.projectProperties.contributingFile,
                         ) + target.projectProperties.projectFiles

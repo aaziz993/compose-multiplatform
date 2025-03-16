@@ -234,10 +234,10 @@ plugins:
     enabled: true
     arguments:
       # room
-      room.schemaLocation: schemas
-      room.incremental: true
-      room.expandProjection: true
-      room.generateKotlin: true
+      'room.schemaLocation': schemas
+      'room.incremental': true
+      'room.expandProjection': true
+      'room.generateKotlin': true
 
   # Generating BuildConstants for any kind of Gradle projects: Java, Kotlin, Android, Groovy, etc. Designed for KTS scripts, with experimental support for Kotlin's multi-platform plugin
   buildConfig:

@@ -194,8 +194,6 @@ dependencies {
     implementation(libs.plugins.foojay.resolver.convention.toDep())
     // creates fat/uber JARs with support for package relocation
     implementation(libs.plugins.shadow.toDep()) // conflict io.ktor.plugin:io.ktor.plugin.gradle.plugin:3.0.0 > io.ktor.plugin:plugin:3.0.0 > com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:7.1.2
-    // api that you can use to develop lightweight compiler plugins. KSP provides a simplified compiler plugin API that leverages the power of Kotlin while keeping the learning curve at a minimum. Compared to KAPT, annotation processors that use KSP can run up to 2x faster.
-    implementation(libs.plugins.ksp.toDep())
     // set of solutions for collecting test coverage of Kotlin code compiled for JVM and Android platforms.
     implementation(libs.plugins.kover.toDep())
     // can format <antlr | c | c# | c++ | css | flow | graphql | groovy | html | java | javascript | json | jsx | kotlin | less | license headers | markdown | objective-c | protobuf | python | scala | scss | shell | sql | typeScript | vue | yaml | anything> using <gradle | maven | sbt | anything>.
@@ -234,12 +232,14 @@ dependencies {
     implementation(libs.snakeyaml)
 
     // Kotlin
-    // toolkit for running benchmarks for multiplatform code written in Kotlin. It is designed to work with Kotlin/JVM, Kotlin/JS, Kotlin/Native, and Kotlin/WasmJs (experimental) targets.
-    implementation(libs.plugins.kotlinx.benchmark.toDep())
+    // api that you can use to develop lightweight compiler plugins. KSP provides a simplified compiler plugin API that leverages the power of Kotlin while keeping the learning curve at a minimum. Compared to KAPT, annotation processors that use KSP can run up to 2x faster.
+    implementation(libs.plugins.ksp.toDep())
     // generates an additional zero-argument constructor for classes with a specific annotation.
     implementation(libs.plugins.noarg.toDep())
     // adapts Kotlin to the requirements of those frameworks and makes classes annotated with a specific annotation and their members open.
     implementation(libs.plugins.allopen.toDep())
+    // toolkit for running benchmarks for multiplatform code written in Kotlin. It is designed to work with Kotlin/JVM, Kotlin/JS, Kotlin/Native, and Kotlin/WasmJs (experimental) targets.
+    implementation(libs.plugins.kotlinx.benchmark.toDep())
     // big numbers
     implementation(libs.bignum)
     // convert strings between various case formats
@@ -310,6 +310,11 @@ dependencies {
     implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
 }
 
+fun Provider<PluginDependency>.toDep() =
+    map {
+        "${it.pluginId}:${it.pluginId}.gradle.plugin:${it.version}"
+    }
+
 gradlePlugin {
     plugins {
         register("SettingsPlugin") {
@@ -330,7 +335,3 @@ tasks.withType<KotlinCompile>().configureEach {
     }
 }
 
-fun Provider<PluginDependency>.toDep() =
-    map {
-        "${it.pluginId}:${it.pluginId}.gradle.plugin:${it.version}"
-    }
