@@ -16,7 +16,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal data class LibraryDefaultConfigImpl(
-    override val name: String="",
+    override val name: String = "",
     override val testApplicationId: String? = null,
     override val minSdk: Int? = null,
     override val minSdkPreview: String? = null,
@@ -35,7 +35,9 @@ internal data class LibraryDefaultConfigImpl(
     override val multiDexKeepProguard: String? = null,
     override val ndk: Ndk? = null,
     override val proguardFiles: List<String>? = null,
+    override val defaultProguardFiles: List<String>? = null,
     override val setProguardFiles: List<String>? = null,
+    override val setDefaultProguardFiles: List<String>? = null,
     override val testProguardFiles: List<String>? = null,
     override val manifestPlaceholders: SerializableAnyMap? = null,
     override val javaCompileOptions: JavaCompileOptions? = null,
