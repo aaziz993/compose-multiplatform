@@ -190,8 +190,10 @@ dependencies {
     implementation(libs.plugins.develocity.toDep())
     // enhances published build scans by adding a set of tags, links and custom values that have proven to be useful for many projects building with Develocity.
     implementation(libs.plugins.develocityCommonCustomUserData.toDep())
-    //  provides a repository for downloading JVMs
+    // provides a repository for downloading JVMs
     implementation(libs.plugins.foojay.resolver.convention.toDep())
+    // software Composition Analysis (SCA) tool that attempts to detect publicly disclosed vulnerabilities contained within a project's dependencies. It does this by determining if there is a Common Platform Enumeration (CPE) identifier for a given dependency. If found, it will generate a report linking to the associated CVE entries.
+    implementation(libs.plugins.dependencycheck.toDep())
     // creates fat/uber JARs with support for package relocation
     implementation(libs.plugins.shadow.toDep()) // conflict io.ktor.plugin:io.ktor.plugin.gradle.plugin:3.0.0 > io.ktor.plugin:plugin:3.0.0 > com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:7.1.2
     // set of solutions for collecting test coverage of Kotlin code compiled for JVM and Android platforms.
@@ -238,8 +240,6 @@ dependencies {
     implementation(libs.plugins.noarg.toDep())
     // adapts Kotlin to the requirements of those frameworks and makes classes annotated with a specific annotation and their members open.
     implementation(libs.plugins.allopen.toDep())
-    // toolkit for running benchmarks for multiplatform code written in Kotlin. It is designed to work with Kotlin/JVM, Kotlin/JS, Kotlin/Native, and Kotlin/WasmJs (experimental) targets.
-    implementation(libs.plugins.kotlinx.benchmark.toDep())
     // big numbers
     implementation(libs.bignum)
     // convert strings between various case formats
@@ -251,6 +251,8 @@ dependencies {
     // compiler plugin, that generates visitor code for serializable classes, runtime library with core serialization API and support libraries with various serialization formats.
     implementation(libs.plugins.kotlin.serialization.toDep())
     implementation(libs.kotlinx.serialization.json)
+    // toolkit for running benchmarks for multiplatform code written in Kotlin. It is designed to work with Kotlin/JVM, Kotlin/JS, Kotlin/Native, and Kotlin/WasmJs (experimental) targets.
+    implementation(libs.plugins.kotlinx.benchmark.toDep())
     // multiplatform
     implementation(libs.plugins.kotlin.multiplatform.toDep())
     // multiplatform library that provides the idiomatic and efficient way of using atomic operations in Kotlin.

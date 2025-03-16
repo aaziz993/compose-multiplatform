@@ -46,8 +46,8 @@ android:
       annotationProcessorOptions:
         arguments:
           'room.schemaLocation': schemas
-          'room.incremental': true
-          'room.expandProjection': true
+          'room.incremental': 'true'
+          'room.expandProjection': 'true'
     vectorDrawables:
       useSupportLibrary: true
     # The proguard files listed here are included in the
