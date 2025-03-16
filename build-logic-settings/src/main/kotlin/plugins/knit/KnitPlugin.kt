@@ -29,19 +29,14 @@ internal class KnitPlugin : Plugin<Project> {
 
         context(Gradle)
         fun configureKnitTasks() {
-            // In order for knit to operate, it should depend on and collect
-            // all Dokka outputs from each module
-            allprojects {
-                if (project == project.rootProject) {
-                    project.tasks.named("knitPrepare") {
-                        dependsOn(dokkaTasks(project))
-                    }
+            rootProject.tasks.named("knitPrepare") {
+                val knitTask = this
+                // In order for knit to operate, it should depend on and collect
+                // all Dokka outputs from each module
+                allprojects {
+                    knitTask.dependsOn(tasks.named("dokkaGenerate"))
                 }
             }
         }
-
-        private fun dokkaTasks(project: Project): List<Task> =
-            project.subprojects.takeIf(Set<*>::isNotEmpty)?.flatMap(::dokkaTasks)
-                ?: listOfNotNull(project.tasks.findByName("dokkaGenerate"))
     }
 }
