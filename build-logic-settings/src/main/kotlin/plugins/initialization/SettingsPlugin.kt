@@ -162,14 +162,16 @@ public class SettingsPlugin : Plugin<Settings> {
             target.gradle.projectsLoaded {
                 // Apply project files
                 with(rootProject) {
-                    val projectFiles = (listOfNotNull(
-                        target.projectProperties.licenseFile,
-                        target.projectProperties.licenseHeaderFile,
-                        target.projectProperties.codeOfConductFile,
-                        target.projectProperties.contributingFile,
-                    ) + target.projectProperties.projectFiles).flatMapIndexed { index, projectFile ->
-                        projectFile.applyTo("projectFile$index")
-                    }
+                    val projectFiles = (
+                        listOfNotNull(
+                            target.projectProperties.licenseFile,
+                            target.projectProperties.licenseHeaderFile,
+                            target.projectProperties.codeOfConductFile,
+                            target.projectProperties.contributingFile,
+                        ) + target.projectProperties.projectFiles
+                        ).flatMapIndexed { index, projectFile ->
+                            projectFile.applyTo("projectFile$index")
+                        }
 
                     //setup sync tasks execution during IDE import.
                     tasks.configureEach { importTask ->

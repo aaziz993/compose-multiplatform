@@ -20,8 +20,8 @@ internal data class LicenseHeaderFile(
 
     context(Project)
     override fun applyTo(name: String): List<TaskProvider<out DefaultTask>> =
-        super.applyTo(name).also { tasks ->
-            tasks.single().configure {
+        super.applyTo(name).onEach { task ->
+            task.configure {
                 val intoFile = file(into)
 
                 var previousTemplateText: String? = null
