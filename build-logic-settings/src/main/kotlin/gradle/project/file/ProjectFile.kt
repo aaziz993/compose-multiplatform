@@ -41,25 +41,38 @@ internal interface ProjectFile {
                 else listOf(url)
             }.let { urls ->
                 rootProject.tasks.register<Download>(name) {
-                    src(urls)
-                    dest(into)
-
-                    when (resolution) {
-                        FileResolution.ABSENT -> overwrite(false)
-                        FileResolution.OVERRIDE -> overwrite(true)
-                        FileResolution.MODIFIED -> onlyIfModified(true)
-                        FileResolution.NEWER -> onlyIfNewer(true)
-                    }
-
                     doLast {
-                        if (dest.exists()) {
-                            // Read the downloaded file and replace placeholders
-                            val content = replace.fold(dest.readText()) { acc, (key, value) ->
-                                acc.replace(key, value)
-                            }
+                        try {
+                            download.run {
+                                src(urls)
+                                dest(into)
 
-                            // Write the modified content back to the file
-                            dest.writeText(content)
+                                when (resolution) {
+                                    FileResolution.ABSENT -> overwrite(false)
+                                    FileResolution.OVERRIDE -> {
+                                        overwrite(true)
+                                        tempAndMove(true)
+                                    }
+
+                                    FileResolution.MODIFIED -> onlyIfModified(true)
+                                    FileResolution.NEWER -> onlyIfNewer(true)
+                                }
+
+                                doLast {
+                                    if (dest.exists()) {
+                                        // Read the downloaded file and replace placeholders
+                                        val content = replace.fold(dest.readText()) { acc, (key, value) ->
+                                            acc.replace(key, value)
+                                        }
+
+                                        // Write the modified content back to the file
+                                        dest.writeText(content)
+                                    }
+                                }
+                            }
+                        }
+                        catch (e: Exception) {
+                            logger.warn(e.message!!)
                         }
                     }
                 }

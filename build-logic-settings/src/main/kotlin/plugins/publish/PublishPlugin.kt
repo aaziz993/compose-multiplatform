@@ -1,6 +1,5 @@
 package plugins.publish
 
-import com.vanniktech.maven.publish.SonatypeHost
 import gradle.accessors.kotlin
 import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.withType
@@ -53,10 +52,6 @@ internal class PublishPlugin : Plugin<Project> {
     }
 
     private fun Project.configureJavadocArtifact() {
-        val nonDefaultProjectStructure: List<String>? by rootProject.extra
-
-        if (project.name in nonDefaultProjectStructure.orEmpty()) return
-
         val emptyJar = tasks.register<Jar>("emptyJar") {
             archiveAppendix = "empty"
         }
