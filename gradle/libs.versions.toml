@@ -132,8 +132,6 @@ kotlin = "2.1.10"
 ktlint = "1.4.1"
 # api that you can use to develop lightweight compiler plugins. KSP provides a simplified compiler plugin API that leverages the power of Kotlin while keeping the learning curve at a minimum. Compared to KAPT, annotation processors that use KSP can run up to 2x faster.
 ksp = "2.1.10-1.0.29"
-# toolkit for running benchmarks for multiplatform code written in Kotlin. It is designed to work with Kotlin/JVM, Kotlin/JS, Kotlin/Native, and Kotlin/WasmJs (experimental) targets.
-kotlinx-benchmark = "0.4.13"
 # multiplatform logging
 km-logging = "2.0.3"
 # multiplatform library that provides the idiomatic and efficient way of using atomic operations in Kotlin.
@@ -182,6 +180,9 @@ kotlinx-serialization-csv = "0.0.18"
 kotlinx-serialization-smile-core = "0.2.0"
 serialization-msgpack = "0.5.5"
 xmlutil-serialization = "0.90.3"
+# toolkit for running benchmarks for multiplatform code written in Kotlin. It is designed to work with Kotlin/JVM, Kotlin/JS, Kotlin/Native, and Kotlin/WasmJs (experimental) targets.
+kotlinx-benchmark = "0.4.13"
+# community-supported serialization
 knbt = "0.11.5"
 tomlkt = "0.3.7"
 yamlkt = "0.13.0"
@@ -456,8 +457,6 @@ junit = { group = "junit", name = "junit", version.ref = "junit" }
 ##Kotlin
 # api that you can use to develop lightweight compiler plugins. KSP provides a simplified compiler plugin API that leverages the power of Kotlin while keeping the learning curve at a minimum. Compared to KAPT, annotation processors that use KSP can run up to 2x faster.
 symbol-processing-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
-#
-kotlinx-benchmark-runtime = { module = "org.jetbrains.kotlinx:kotlinx-benchmark-runtime", version.ref = "kotlinx-benchmark" }
 # logging library targeting Android, iOS, JVM, WasmJS and JS.
 km-logging = { module = "org.diamondedge:logging", version.ref = "km-logging" }
 # multiplatform library that provides the idiomatic and efficient way of using atomic operations in Kotlin.
@@ -523,6 +522,8 @@ kotlinx-serialization-protobuf = { module = "org.jetbrains.kotlinx:kotlinx-seria
 kotlinx-serialization-cbor = { module = "org.jetbrains.kotlinx:kotlinx-serialization-cbor", version.ref = "kotlinx-serialization" }
 kotlinx-serialization-properties = { module = "org.jetbrains.kotlinx:kotlinx-serialization-properties", version.ref = "kotlinx-serialization" }
 kotlinx-serialization-smile-core = { module = "io.github.vooft:kotlinx-serialization-smile-core", version.ref = "kotlinx-serialization-smile-core" }
+# toolkit for running benchmarks for multiplatform code written in Kotlin. It is designed to work with Kotlin/JVM, Kotlin/JS, Kotlin/Native, and Kotlin/WasmJs (experimental) targets.
+kotlinx-benchmark-runtime = { module = "org.jetbrains.kotlinx:kotlinx-benchmark-runtime", version.ref = "kotlinx-benchmark" }
 # community-supported serialization
 xmlutil-serialization = { module = "io.github.pdvrieze.xmlutil:serialization", version.ref = "xmlutil-serialization" }
 serialization-msgpack = { module = "com.ensarsarajcic.kotlinx:serialization-msgpack", version.ref = "serialization-msgpack" }

@@ -366,10 +366,10 @@ kotlin:
   sourceSets:
     - commonMain:
         dependencies:
-          - $libs.kotlinx.benchmark.runtime
           - $libs.atomicfu
           - $libs.kotlinx.serialization.json
           - $libs.kotlinx.serialization.properties
+          - $libs.kotlinx.benchmark.runtime
 
     - nonWebMain:
         dependencies:
