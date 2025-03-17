@@ -43,7 +43,12 @@ internal abstract class BenchmarksExtension {
             benchmark::reportsDir trySet reportsDir
 
             targets?.forEach { target ->
-                benchmark.targets.configure(target.name) {
+                benchmark.targets.configure(
+                        target.name,
+                        { name ->
+                            benchmark.targets.register(name).get()
+                        },
+                ) {
                     target.applyTo(this)
                 }
             }

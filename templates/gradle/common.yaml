@@ -209,6 +209,10 @@ plugins:
 
   # Api documentation engine for Kotlin.
   dokka:
+    dokkaSourceSets:
+      - commonMain:
+          displayName: common
+          sourceSetScope: common
     pluginsConfiguration:
       - html:
           customStyleSheets: [ ../dokka/style.css, ../dokka/prism.css, ../dokka/logo-styles.css ]
@@ -250,6 +254,7 @@ plugins:
       - javax.ws.rs.Path
       - javax.enterprise.context.ApplicationScoped
       - javax.persistence.Entity
+      - org.openjdk.jmh.annotations.State # apply to ensure your benchmark classes and methods are open.
       - data.type.annotation.AllOpen
 
   # Generates an additional zero-argument constructor for classes with a specific annotation.
@@ -257,18 +262,21 @@ plugins:
     myAnnotations:
       - data.type.annotation.NoArg
 
+  # Multiplatform library that provides the idiomatic and efficient way of using atomic operations in Kotlin.
+  atomicFU:
+    enabled: true
+
   # Compiler plugin, that generates visitor code for serializable classes, runtime library with core serialization API and support libraries with various serialization formats.
   serialization:
     enabled: true
     version: 1.8.0
 
-  # Multiplatform library that provides the idiomatic and efficient way of using atomic operations in Kotlin.
-  atomicFU:
-    enabled: true
-
   # Toolkit for running benchmarks for multiplatform code written in Kotlin. It is designed to work with Kotlin/JVM, Kotlin/JS, Kotlin/Native, and Kotlin/WasmJs (experimental) targets.
   benchmark:
     enabled: true
+    targets:
+      - jvm:
+          jmhVersion: '1.37'
 
   # Generates typesafe Kotlin APIs from your SQL statements. It verifies your schema, statements, and migrations at compile-time and provides IDE features like autocomplete and refactoring which make writing and maintaining SQL simple.
   sqldelight:
