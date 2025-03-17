@@ -1,5 +1,6 @@
 package plugins.apivalidation.model
 
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import gradle.accessors.apiBuild
 import gradle.accessors.id
 import gradle.accessors.libs
@@ -39,7 +40,7 @@ internal data class ApiValidationSettings(
                 // "jar" here is the name of the default Jar task producing the resulting jar file
                 // in a multiplatform project it can be named "jvmJar"
                 // if you applied the shadow plugin, it creates the "shadowJar" task that produces the transformed jar
-                inputJar.value(tasks.named<Jar>("jvmJar").flatMap { it.archiveFile })
+                inputJar.value(tasks.named<ShadowJar>("shadowJar").flatMap { it.archiveFile })
             }
         }
 }
