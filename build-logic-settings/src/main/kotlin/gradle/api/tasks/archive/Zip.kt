@@ -59,9 +59,7 @@ internal abstract class Zip : AbstractArchiveTask() {
 
     context(Project)
     override fun applyTo() =
-        super.applyTo(tasks.withType<org.gradle.api.tasks.bundling.Zip>()) { name ->
-            tasks.register(name).get()
-        }
+        super.applyTo(tasks.withType<org.gradle.api.tasks.bundling.Zip>())
 }
 
 @Serializable

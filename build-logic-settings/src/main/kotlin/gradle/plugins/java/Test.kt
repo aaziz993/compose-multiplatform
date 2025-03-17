@@ -282,9 +282,7 @@ internal abstract class Test : AbstractTestTask(), JavaForkOptions, PatternFilte
 
     context(Project)
     override fun applyTo() =
-        super<AbstractTestTask>.applyTo(tasks.withType<org.gradle.api.tasks.testing.Test>()) { name ->
-            tasks.register(name).get()
-        }
+        super<AbstractTestTask>.applyTo(tasks.withType<org.gradle.api.tasks.testing.Test>())
 }
 
 /** Configure tests against different JDK versions. */

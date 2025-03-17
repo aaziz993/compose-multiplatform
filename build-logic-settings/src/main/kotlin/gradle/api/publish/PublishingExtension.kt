@@ -88,9 +88,7 @@ internal interface PublishingExtension {
             }
 
             publications?.forEach { publication ->
-                publication.applyTo(publishing.publications) { name ->
-                    publishing.publications.create<MavenPublication>(name)
-                }
+                publication.applyTo(publishing.publications)
             }
         }
 }

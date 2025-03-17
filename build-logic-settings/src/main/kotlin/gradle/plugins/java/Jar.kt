@@ -65,11 +65,7 @@ internal abstract class Jar : Zip() {
 
     context(Project)
     override fun applyTo() =
-        super.applyTo(tasks.withType<org.gradle.api.tasks.bundling.Jar>()) { name ->
-            if (projectProperties.kotlin.targets.any { target -> target is KotlinJvmTarget })
-                tasks.register(name).get()
-            else null
-        }
+        super.applyTo(tasks.withType<org.gradle.api.tasks.bundling.Jar>())
 }
 
 @Serializable

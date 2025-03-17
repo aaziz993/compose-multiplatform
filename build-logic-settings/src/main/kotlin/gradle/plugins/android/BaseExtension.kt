@@ -114,17 +114,17 @@ internal interface BaseExtension {
         libraryRequests?.map(LibraryRequest::toLibraryRequest)?.let(android.libraryRequests::addAll)
 
         buildTypes?.forEach { buildType ->
-            buildType.applyTo(android.buildTypes, android.buildTypes::create)
+            buildType.applyTo(android.buildTypes)
         }
 
         defaultConfig?.applyTo(android.defaultConfig)
 
         productFlavors?.forEach { productFlavors ->
-            productFlavors.applyTo(android.productFlavors, android.productFlavors::create)
+            productFlavors.applyTo(android.productFlavors)
         }
 
         signingConfigs?.forEach { signingConfig ->
-            signingConfig.applyTo(android.signingConfigs, android.signingConfigs::create)
+            signingConfig.applyTo(android.signingConfigs)
         }
 
         buildFeatures?.applyTo(android.buildFeatures)

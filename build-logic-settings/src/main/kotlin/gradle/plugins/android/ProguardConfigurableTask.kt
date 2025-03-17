@@ -72,7 +72,5 @@ internal data class ProguardConfigurableTask(
 
     context(Project)
     override fun applyTo() =
-        super.applyTo(tasks.withType<ProguardConfigurableTask>()) { name ->
-            tasks.register(name).get()
-        }
+        super.applyTo(tasks.withType<ProguardConfigurableTask>())
 }

@@ -509,7 +509,7 @@ internal interface CommonExtension<
         buildFeatures?.applyTo(extension.buildFeatures)
 
         buildTypes?.forEach { buildType ->
-            buildType.applyTo(extension.buildTypes, extension.buildTypes::create)
+            buildType.applyTo(extension.buildTypes)
         }
 
         dataBinding?.applyTo(extension.dataBinding)
@@ -520,13 +520,13 @@ internal interface CommonExtension<
         packaging?.applyTo(extension.packaging)
 
         productFlavors?.forEach { productFlavors ->
-            productFlavors.applyTo(extension.productFlavors, extension.productFlavors::create)
+            productFlavors.applyTo(extension.productFlavors)
         }
 
         defaultConfig?.applyTo(extension.defaultConfig)
 
         signingConfigs?.forEach { signingConfigs ->
-            signingConfigs.applyTo(extension.signingConfigs, extension.signingConfigs::create)
+            signingConfigs.applyTo(extension.signingConfigs)
         }
 
         testOptions?.applyTo(extension.testOptions)

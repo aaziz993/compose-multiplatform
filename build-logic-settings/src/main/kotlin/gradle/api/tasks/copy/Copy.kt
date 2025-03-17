@@ -72,9 +72,7 @@ internal abstract class Copy : AbstractCopyTask() {
 
     context(Project)
     override fun applyTo() =
-        super.applyTo(tasks.withType<org.gradle.api.tasks.Copy>()) { name ->
-            tasks.register(name).get()
-        }
+        super.applyTo(tasks.withType<org.gradle.api.tasks.Copy>())
 }
 
 @Serializable

@@ -71,7 +71,5 @@ internal data class Sign(
 
     context(Project)
     override fun applyTo() =
-        super.applyTo(tasks.withType<Sign>()) { name ->
-            tasks.register(name).get()
-        }
+        super.applyTo(tasks.withType<Sign>())
 }
