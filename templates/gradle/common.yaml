@@ -274,6 +274,7 @@ plugins:
   # Toolkit for running benchmarks for multiplatform code written in Kotlin. It is designed to work with Kotlin/JVM, Kotlin/JS, Kotlin/Native, and Kotlin/WasmJs (experimental) targets.
   benchmark:
     enabled: true
+    reportsDir: build/reports
     targets:
       - jvm:
           jmhVersion: '1.37'
