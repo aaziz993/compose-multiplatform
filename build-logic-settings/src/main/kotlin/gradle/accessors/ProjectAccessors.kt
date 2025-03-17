@@ -32,6 +32,7 @@ import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.provider.ProviderFactory
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.tasks.SourceSetContainer
+import org.gradle.api.tasks.TaskContainer
 import org.gradle.api.toolchain.management.ToolchainManagement
 import org.gradle.jvm.toolchain.JavaToolchainService
 import org.gradle.kotlin.dsl.configure
@@ -44,6 +45,7 @@ import org.jetbrains.compose.android.AndroidExtension
 import org.jetbrains.compose.desktop.DesktopExtension
 import org.jetbrains.compose.resources.ResourcesExtension
 import org.jetbrains.dokka.gradle.DokkaExtension
+import org.jetbrains.dokka.gradle.tasks.DokkaGeneratePublicationTask
 import org.jetbrains.dokka.versioning.VersioningConfiguration
 import org.jetbrains.gradle.apple.AppleProjectExtension
 import org.jetbrains.kotlin.allopen.gradle.AllOpenExtension
@@ -313,6 +315,14 @@ internal val Project.signing: SigningExtension get() = the()
 
 internal fun Project.signing(configure: SigningExtension.() -> Unit) =
     extensions.configure(configure)
+
+context(Project)
+internal val TaskContainer.dokkaGeneratePublicationHtml
+    get() = tasks.named("dokkaGeneratePublicationHtml", DokkaGeneratePublicationTask::class.java)
+
+context(Project)
+internal val TaskContainer.dokkaGeneratePublicationJavadoc
+    get() = tasks.named("dokkaGeneratePublicationJavadoc", DokkaGeneratePublicationTask::class.java)
 
 /**
  * Create native module name from project path.

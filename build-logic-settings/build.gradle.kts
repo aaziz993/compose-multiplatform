@@ -172,7 +172,7 @@ dokka {
         }
     }
 }
-
+tasks.dokkaGeneratePublicationJavadoc
 // Having a plugin in plugins { ... } block with apply false has only one use. That is to add that plugin to the build script classpath. So the according action with a convention plugin would be to declare those plugins as runtimeOnly` dependencies for that convention plugin build. The plugin itself would then not do any actions but will just be applied so that its dependencies are dragged into the classpath too.
 dependencies {
     // Gradle
