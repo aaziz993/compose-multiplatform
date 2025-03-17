@@ -11,6 +11,7 @@ import gradle.accessors.versions
 import gradle.api.configure
 import gradle.api.tryAssign
 import gradle.api.trySet
+import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
 internal abstract class BenchmarksExtension {
@@ -25,7 +26,7 @@ internal abstract class BenchmarksExtension {
 
     abstract var reportsDir: String?
 
-    abstract val targets: List<BenchmarkTarget>?
+    abstract val targets: List<@Serializable(with = BenchmarkTargetTransformingSerializer::class) BenchmarkTarget>?
 
     context(Project)
     fun applyTo() =

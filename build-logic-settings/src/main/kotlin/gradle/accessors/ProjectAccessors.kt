@@ -10,15 +10,18 @@ import com.google.devtools.ksp.gradle.KspExtension
 import com.osacky.doctor.DoctorExtension
 import de.jensklingenberg.ktorfit.gradle.KtorfitGradleConfiguration
 import gradle.api.isCI
+import gradle.api.maybeNamed
 import gradle.project.ProjectProperties
 import io.github.sgrishchenko.karakum.gradle.plugin.KarakumExtension
 import java.util.Properties
+import kotlin.jvm.java
 import kotlinx.atomicfu.plugin.gradle.AtomicFUPluginExtension
 import kotlinx.benchmark.gradle.BenchmarksExtension
 import kotlinx.knit.KnitPluginExtension
 import kotlinx.kover.gradle.plugin.dsl.KoverProjectExtension
 import kotlinx.rpc.RpcExtension
 import kotlinx.validation.ApiValidationExtension
+import kotlinx.validation.KotlinApiBuildTask
 import net.pearx.kasechange.toDotCase
 import net.pearx.kasechange.toScreamingSnakeCase
 import org.gradle.api.Project
@@ -317,12 +320,28 @@ internal fun Project.signing(configure: SigningExtension.() -> Unit) =
     extensions.configure(configure)
 
 context(Project)
+internal val TaskContainer.apiBuild
+    get() = tasks.maybeNamed("apiBuild", KotlinApiBuildTask::class.java)
+
+context(Project)
+internal fun TaskContainer.apiBuild(configure: KotlinApiBuildTask.() -> Unit) =
+    tasks.maybeNamed("apiBuild", KotlinApiBuildTask::class.java, configure)
+
+context(Project)
 internal val TaskContainer.dokkaGeneratePublicationHtml
-    get() = tasks.named("dokkaGeneratePublicationHtml", DokkaGeneratePublicationTask::class.java)
+    get() = tasks.maybeNamed("dokkaGeneratePublicationHtml", DokkaGeneratePublicationTask::class.java)
+
+context(Project)
+internal fun TaskContainer.dokkaGeneratePublicationHtml(configure: KotlinApiBuildTask.() -> Unit) =
+    tasks.maybeNamed("apiBuild", KotlinApiBuildTask::class.java, configure)
 
 context(Project)
 internal val TaskContainer.dokkaGeneratePublicationJavadoc
-    get() = tasks.named("dokkaGeneratePublicationJavadoc", DokkaGeneratePublicationTask::class.java)
+    get() = tasks.maybeNamed("dokkaGeneratePublicationJavadoc", DokkaGeneratePublicationTask::class.java)
+
+context(Project)
+internal fun TaskContainer.dokkaGeneratePublicationJavadoc(configure: KotlinApiBuildTask.() -> Unit) =
+    tasks.maybeNamed("apiBuild", KotlinApiBuildTask::class.java, configure)
 
 /**
  * Create native module name from project path.

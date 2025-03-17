@@ -1,6 +1,5 @@
 package plugins.publish
 
-import org.gradle.kotlin.dsl.getValue
 import gradle.accessors.dokkaGeneratePublicationHtml
 import gradle.accessors.dokkaGeneratePublicationJavadoc
 import gradle.accessors.id
@@ -14,11 +13,11 @@ import gradle.accessors.settings
 import gradle.api.findByName
 import gradle.collection.associateWithNotNull
 import gradle.plugins.kmp.instanceOf
-import gradle.plugins.kmp.nat.android.KotlinAndroidNativeTarget
 import gradle.plugins.kmp.nat.android.KotlinAndroidNative32Target
 import gradle.plugins.kmp.nat.android.KotlinAndroidNative64Target
 import gradle.plugins.kmp.nat.android.KotlinAndroidNativeArm32Target
 import gradle.plugins.kmp.nat.android.KotlinAndroidNativeArm64Target
+import gradle.plugins.kmp.nat.android.KotlinAndroidNativeTarget
 import gradle.plugins.kmp.nat.android.KotlinAndroidNativeX64Target
 import gradle.plugins.kmp.nat.android.KotlinAndroidNativeX86Target
 import gradle.plugins.kmp.nat.apple.KotlinAppleTarget
@@ -55,10 +54,10 @@ import org.gradle.api.publish.maven.plugins.MavenPublishPlugin
 import org.gradle.api.publish.maven.tasks.AbstractPublishToMaven
 import org.gradle.api.publish.plugins.PublishingPlugin
 import org.gradle.api.tasks.TaskCollection
-import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.internal.extensions.stdlib.capitalized
 import org.gradle.kotlin.dsl.assign
+import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.provideDelegate
 import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.registering
@@ -102,7 +101,7 @@ internal class PublishPlugin : Plugin<Project> {
             if (plugins.hasPlugin(settings.libs.plugins.plugin("dokka").id))
                 tasks.register<Jar>("dokkaJavadocJar") {
                     description = "A Javadoc JAR containing Dokka Javadoc"
-                    from(tasks.dokkaGeneratePublicationJavadoc.flatMap { it.outputDirectory })
+                    from(tasks.dokkaGeneratePublicationJavadoc!!.flatMap { it.outputDirectory })
                 }
             else
                 tasks.register<Jar>("javadocJar") {
@@ -124,7 +123,7 @@ internal class PublishPlugin : Plugin<Project> {
         if (plugins.hasPlugin(settings.libs.plugins.plugin("dokkaJavadoc").id)) {
             val dokkaHtmlJar by tasks.registering(Jar::class) {
                 description = "A HTML Documentation JAR containing Dokka HTML"
-                from(tasks.dokkaGeneratePublicationHtml.flatMap { it.outputDirectory })
+                from(tasks.dokkaGeneratePublicationHtml!!.flatMap { it.outputDirectory })
                 archiveClassifier.set("html-doc")
             }
 

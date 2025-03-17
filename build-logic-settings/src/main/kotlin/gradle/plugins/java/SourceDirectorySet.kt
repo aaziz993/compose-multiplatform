@@ -1,0 +1,68 @@
+package gradle.plugins.java
+
+import gradle.api.Named
+import gradle.api.tasks.PatternFilterable
+import gradle.api.tryAssign
+import kotlinx.serialization.Serializable
+import org.gradle.api.Project
+
+/**
+ * A `SourceDirectorySet` represents a set of source files composed from a set of source directories, along
+ * with associated include and exclude patterns.
+ *
+ *
+ * `SourceDirectorySet` extends [FileTree]. The contents of the file tree represent the source files of this set,
+ * arranged in a hierarchy. The file tree is live and reflects changes to the source directories and their contents.
+ *
+ *
+ * You can create an instance of `SourceDirectorySet` using the [org.gradle.api.model.ObjectFactory.sourceDirectorySet]
+ * method.
+ *
+ *
+ * You can filter the **files** that are obtainable in this set using patterns via [.include]
+ * and [.include] (or any overload of these methods).  The set of included source directories themselves are
+ * **not filtered**.
+ */
+@Serializable
+internal data class SourceDirectorySet(
+    override val includes: List<String>? = null,
+    override val setIncludes: List<String>? = null,
+    override val excludes: List<String>? = null,
+    override val setExcludes: List<String>? = null,
+    override val name: String = "",
+    /**
+     * Adds the given source directories to this set. The given directories do not need to exist. Directories that do not exist are ignored.
+     *
+     * @param srcPaths The source directories. These are evaluated as per [org.gradle.api.Project.files]
+     * @return this
+     */
+    val srcDirs: List<String>? = null,
+    /**
+     * Sets the source directories for this set.
+     *
+     * @param srcPaths The source directories. These are evaluated as per [org.gradle.api.Project.files]
+     * @return this
+     */
+    val setSrcDirs: List<String>? = null,
+    /**
+     * Configure the directory to assemble the compiled classes into.
+     *
+     * @return The destination directory property for this set of sources.
+     * @since 6.1
+     */
+    val destinationDirectory: String? = null,
+) : PatternFilterable, Named {
+
+    context(Project)
+    override fun applyTo(named: org.gradle.api.Named) {
+        named as org.gradle.api.file.SourceDirectorySet
+
+        super<PatternFilterable>.applyTo(named)
+        srcDirs?.let { srcDirs ->
+            named.srcDirs(*srcDirs.toTypedArray())
+        }
+
+        setSrcDirs?.let(named::setSrcDirs)
+        named.destinationDirectory tryAssign destinationDirectory?.let(layout.projectDirectory::dir)
+    }
+}

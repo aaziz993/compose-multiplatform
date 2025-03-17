@@ -30,12 +30,14 @@ internal inline fun <T> NamedDomainObjectCollection<out T>.configureEach(crossin
 internal fun <T> NamedDomainObjectCollection<T>.maybeNamed(name: String): NamedDomainObjectProvider<T>? =
     if (name in names) named(name) else null
 
+internal fun <S : T, T> NamedDomainObjectCollection<T>.maybeNamed(name: String, type: Class<S>): NamedDomainObjectProvider<S>? =
+    if (name in names) named(name, type) else null
+
 internal inline fun <reified T> NamedDomainObjectCollection<out T>.maybeNamed(name: String, noinline configure: T.() -> Unit): NamedDomainObjectProvider<out T>? =
     if (name in names) named(name, configure) else null
 
 internal inline fun <reified S : T, T> NamedDomainObjectCollection<T>.maybeNamed(name: String, type: Class<S>, noinline configure: S.() -> Unit) =
     if (name in names) named(name, type, configure) else null
-
 
 @Suppress("EXTENSION_SHADOWED_BY_MEMBER")
 internal inline fun <reified T> NamedDomainObjectCollection<*>.findByName(name: String): T? = findByName(name) as? T

@@ -1,10 +1,13 @@
 package gradle.plugins.kotlin.benchmark
 
 import gradle.api.trySet
-import gradle.collection.SerializableAnyList
 import gradle.collection.SerializableAnyMap
 import gradle.collection.SerializableOptionalAnyList
 import kotlinx.benchmark.gradle.BenchmarkConfiguration
+import kotlinx.benchmark.gradle.JavaBenchmarkTarget
+import kotlinx.benchmark.gradle.JsBenchmarkTarget
+import kotlinx.benchmark.gradle.KotlinJvmBenchmarkTarget
+import kotlinx.benchmark.gradle.NativeBenchmarkTarget
 import kotlinx.serialization.Serializable
 
 @Serializable
