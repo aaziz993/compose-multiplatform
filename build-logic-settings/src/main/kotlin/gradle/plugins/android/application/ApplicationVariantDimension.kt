@@ -1,6 +1,7 @@
 package gradle.plugins.android.application
 
 import com.android.build.api.dsl.ApplicationVariantDimension
+import gradle.accessors.android
 import gradle.api.trySet
 import gradle.plugins.android.ApkSigningConfigImpl
 import gradle.plugins.android.VariantDimension
@@ -11,7 +12,7 @@ import org.gradle.api.Project
  *
  * That is, [ApplicationBuildType] and [ApplicationProductFlavor] and [ApplicationDefaultConfig].
  */
-internal interface ApplicationVariantDimension : VariantDimension {
+internal interface ApplicationVariantDimension<in T : ApplicationVariantDimension> : VariantDimension<T> {
 
     /**
      * Application id suffix. It is appended to the "base" application id when calculating the final
@@ -42,17 +43,15 @@ internal interface ApplicationVariantDimension : VariantDimension {
     val multiDexEnabled: Boolean?
 
     /** The associated signing config or null if none are set on the variant dimension. */
-    val signingConfig: ApkSigningConfigImpl?
+    val signingConfig: String?
 
     context(Project)
-    override fun applyTo(dimension: com.android.build.api.dsl.VariantDimension) {
+    override fun applyTo(dimension: T) {
         super.applyTo(dimension)
-
-        dimension as ApplicationVariantDimension
 
         dimension::applicationIdSuffix trySet applicationIdSuffix
         dimension::versionNameSuffix trySet versionNameSuffix
         dimension::multiDexEnabled trySet multiDexEnabled
-        dimension::signingConfig trySet signingConfig?.toApkSigningConfig()
+        dimension::signingConfig trySet signingConfig?.let(android.signingConfigs::getByName)
     }
 }

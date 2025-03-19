@@ -1,12 +1,13 @@
 package gradle.plugins.android
 
-
-import gradle.api.tasks.Task
+import gradle.api.tasks.DefaultTask
+import gradle.api.tasks.applyTo
 import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
+import java.util.SortedSet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import org.gradle.api.Named
+import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 
 /**
@@ -17,22 +18,15 @@ import org.gradle.kotlin.dsl.withType
  * - [NonIncrementalTask] -- variant aware task
  * - [NonIncrementalGlobalTask] -- non variant aware task
  */
-internal abstract class BaseTask : Task {
+internal abstract class BaseTask<T : com.android.build.gradle.internal.tasks.BaseTask> : DefaultTask<T>() {
 
     abstract val projectPath: String?
 
-        context(Project)
-    override fun applyTo(named: T) {
-        super.applyTo(named)
+    context(Project)
+    override fun applyTo(recipient: T) {
+        super.applyTo(recipient)
 
-        named as com.android.build.gradle.internal.tasks.BaseTask
-
-        named.projectPath tryAssign projectPath
-    }
-
-    context(GradleScope)
-    override fun _applyTo() = with(project) {
-        applyTo(tasks.withType<com.android.build.gradle.internal.tasks.BaseTask>())
+        recipient.projectPath tryAssign projectPath
     }
 }
 
@@ -53,4 +47,9 @@ internal data class BaseTaskImpl(
     override val finalizedBy: SortedSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
     override val name: String = ""
-) : BaseTask()
+) : BaseTask<com.android.build.gradle.internal.tasks.BaseTask>() {
+
+    context(Project)
+    override fun applyTo() =
+        applyTo(tasks.withType<com.android.build.gradle.internal.tasks.BaseTask>())
+}

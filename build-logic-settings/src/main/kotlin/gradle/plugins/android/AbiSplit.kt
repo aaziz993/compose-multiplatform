@@ -17,9 +17,9 @@ internal data class AbiSplit(
     override val reset: Boolean? = null,
     /** Whether to create an FULL_APK with all available ABIs. */
     val isUniversalApk: Boolean? = null,
-) : Split {
+) : Split<AbiSplit> {
 
-    fun applyTo(split: AbiSplit) {
+    override fun applyTo(split: AbiSplit) {
         super.applyTo(split)
         split::isUniversalApk trySet isUniversalApk
     }

@@ -1,5 +1,7 @@
 package gradle.plugins.android
 
+import com.android.build.api.dsl.DefaultConfig
+
 /**
  * Specifies defaults for variant properties that the Android plugin applies to all build variants.
  *
@@ -10,4 +12,4 @@ package gradle.plugins.android
  * Each plugin has its own interface that extends this one, see [gradle.model.android.application.ApplicationDefaultConfig],
  * [gradle.model.android.library.LibraryDefaultConfig], [DynamicFeatureDefaultConfig] and [TestDefaultConfig].
  */
-internal interface DefaultConfigDsl : BaseFlavor
+internal interface DefaultConfigDsl<in T : DefaultConfig> : BaseFlavor<T>

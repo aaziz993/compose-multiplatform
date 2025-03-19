@@ -3,11 +3,13 @@ package gradle.plugins.android
 import com.android.build.api.dsl.ApkSigningConfig
 import gradle.accessors.android
 import gradle.api.BaseNamed
+import gradle.api.ProjectNamed
 import gradle.api.trySet
+import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
 /** DSL object to configure signing configs. */
-internal interface ApkSigningConfig : SigningConfigDsl, BaseNamed {
+internal interface ApkSigningConfig<T : ApkSigningConfig> : SigningConfigDsl<T>, ProjectNamed<T> {
 
     /**
      * Enable signing using JAR Signature Scheme (aka v1 signing). If null, a default value is used.
@@ -38,10 +40,8 @@ internal interface ApkSigningConfig : SigningConfigDsl, BaseNamed {
      */
     val enableV4Signing: Boolean?
 
-        context(Project)
+    context(Project)
     override fun applyTo(named: T) {
-        named as ApkSigningConfig
-
         super<SigningConfigDsl>.applyTo(named)
 
         named::enableV1Signing trySet enableV1Signing
@@ -49,10 +49,20 @@ internal interface ApkSigningConfig : SigningConfigDsl, BaseNamed {
         named::enableV3Signing trySet enableV3Signing
         named::enableV4Signing trySet enableV4Signing
     }
-
-    context(Project)
-    fun toApkSigningConfig(): ApkSigningConfig =
-        android.signingConfigs.maybeCreate(name).apply {
-            applyTo(this as org.gradle.api.Named)
-        }
 }
+
+
+@Serializable
+internal data class ApkSigningConfigImpl(
+    override val enableV1Signing: Boolean? = null,
+    override val enableV2Signing: Boolean? = null,
+    override val enableV3Signing: Boolean? = null,
+    override val enableV4Signing: Boolean? = null,
+    override val storeFile: String? = null,
+    override val storePassword: String? = null,
+    override val keyAlias: String? = null,
+    override val keyPassword: String? = null,
+    override val storeType: String? = null,
+    override val initWith: String? = null,
+    override val name: String,
+) : gradle.plugins.android.ApkSigningConfig<ApkSigningConfig>

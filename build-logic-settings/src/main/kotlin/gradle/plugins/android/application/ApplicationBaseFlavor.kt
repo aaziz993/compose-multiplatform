@@ -1,7 +1,6 @@
 package gradle.plugins.android.application
 
 import com.android.build.api.dsl.ApplicationBaseFlavor
-import com.android.build.api.dsl.VariantDimension
 import gradle.accessors.androidNamespace
 import gradle.accessors.libs
 import gradle.accessors.settings
@@ -16,9 +15,7 @@ import org.gradle.api.Project
  *
  * See [gradle.model.android.ProductFlavorDsl] and [gradle.model.android.DefaultConfigDsl] for more information.
  */
-internal interface ApplicationBaseFlavor :
-    BaseFlavor,
-    ApplicationVariantDimension {
+internal interface ApplicationBaseFlavor<in T: ApplicationBaseFlavor> : BaseFlavor<T>, ApplicationVariantDimension<T> {
 
     /**
      * The application ID.
@@ -72,11 +69,9 @@ internal interface ApplicationBaseFlavor :
     val maxSdk: Int?
 
     context(Project)
-    override fun applyTo(dimension: VariantDimension) {
+    override fun applyTo(dimension: T) {
         super<BaseFlavor>.applyTo(dimension)
         super<ApplicationVariantDimension>.applyTo(dimension)
-
-        dimension as ApplicationBaseFlavor
 
         dimension.applicationId = applicationId ?: androidNamespace
         dimension::versionCode trySet (versionCode ?: settings.libs.versions.version("android.versionCode")?.toInt())

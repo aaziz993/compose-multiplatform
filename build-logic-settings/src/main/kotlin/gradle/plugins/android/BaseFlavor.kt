@@ -13,7 +13,7 @@ import org.gradle.api.Project
 /**
  * Shared properties between DSL objects [ProductFlavorDsl] and [DefaultConfigDsl]
  */
-internal interface BaseFlavor : VariantDimension {
+internal interface BaseFlavor<in T : BaseFlavor> : VariantDimension<T> {
     // TODO(b/140406102)
     /** The name of the flavor. */
     val name: String
@@ -179,7 +179,7 @@ internal interface BaseFlavor : VariantDimension {
      * }
      * ```
      */
-    val missingDimensionStrategies: List<MissingDimensionStrategy>?
+    val missingDimensionStrategies: Set<MissingDimensionStrategy>?
 
     /**
      * Copies all properties from the given flavor.
@@ -198,10 +198,8 @@ internal interface BaseFlavor : VariantDimension {
     val initWith: String?
 
     context(Project)
-    override fun applyTo(dimension: com.android.build.api.dsl.VariantDimension) {
+    override fun applyTo(dimension: T) {
         super.applyTo(dimension)
-
-        dimension as BaseFlavor
 
         dimension.testApplicationId = testApplicationId ?: "$androidNamespace.test"
         dimension::minSdk trySet (settings.libs.versions.version("android.minSdk")?.toInt())

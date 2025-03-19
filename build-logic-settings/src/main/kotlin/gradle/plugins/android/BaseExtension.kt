@@ -72,9 +72,9 @@ internal interface BaseExtension {
 
     val buildTypes: List<BuildType>?
 
-    val defaultConfig: DefaultConfigDsl?
+    val defaultConfig: DefaultConfigDsl<*>?
 
-    val productFlavors: List<ProductFlavorDsl>?
+    val productFlavors: List<ProductFlavorDsl<*>>?
 
     val signingConfigs: List<@Serializable(with = SigningConfigTransformingSerializer::class) SigningConfigImpl>?
 

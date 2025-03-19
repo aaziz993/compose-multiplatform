@@ -12,7 +12,7 @@ import org.gradle.api.Project
  * [DefaultSigningConfig] extends this with options relating to just APKs
  *
  */
-internal interface SigningConfigDsl {
+internal interface SigningConfigDsl<in T: SigningConfig> {
 
     /**
      * Store file used when signing.
@@ -55,7 +55,7 @@ internal interface SigningConfigDsl {
     val initWith: String?
 
     context(Project)
-    fun applyTo(signingConfig: SigningConfig) {
+    fun applyTo(signingConfig: T) {
         signingConfig::storeFile trySet storeFile?.let(::file)
         signingConfig::storePassword trySet storePassword?.resolveValue()?.toString()
         signingConfig::keyAlias trySet keyAlias?.resolveValue()?.toString()

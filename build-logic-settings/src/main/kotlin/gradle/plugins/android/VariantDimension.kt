@@ -13,7 +13,7 @@ import org.gradle.api.Project
  *
  * That is, [BuildType] and [ProductFlavorDsl] and [DefaultConfigDsl].
  */
-internal interface VariantDimension {
+internal interface VariantDimension<in T : VariantDimension> {
 
     /**
      * Text file with additional ProGuard rules to be used to determine which classes are compiled
@@ -120,7 +120,7 @@ internal interface VariantDimension {
 
     context(Project)
     @Suppress("UnstableApiUsage")
-    fun applyTo(dimension: VariantDimension) {
+    fun applyTo(dimension: T) {
         dimension::multiDexKeepProguard trySet multiDexKeepProguard?.let(::file)
 
         ndk?.let { ndk ->

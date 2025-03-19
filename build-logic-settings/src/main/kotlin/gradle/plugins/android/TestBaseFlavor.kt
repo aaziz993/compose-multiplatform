@@ -14,9 +14,7 @@ import org.gradle.api.Project
  *
  * See [ProductFlavorDsl] and [DefaultConfigDsl] for more information.
  */
-internal interface TestBaseFlavor :
-    BaseFlavor,
-    TestVariantDimension {
+internal interface TestBaseFlavor<in T : TestBaseFlavor> : BaseFlavor<T>, TestVariantDimension<T> {
 
     /**
      * The target SDK version.
@@ -45,7 +43,7 @@ internal interface TestBaseFlavor :
     val maxSdk: Int?
 
     context(Project)
-    override fun applyTo(dimension: VariantDimension) {
+    override fun applyTo(dimension: T) {
         super<BaseFlavor>.applyTo(dimension)
         super<TestVariantDimension>.applyTo(dimension)
 

@@ -6,16 +6,16 @@ import gradle.api.trySet
 /**
  *  Base data representing how an APK should be split for a given dimension (density, abi).
  */
-internal interface Split {
+internal interface Split<in T: Split> {
 
     /** Whether to split in this dimension. */
     val isEnable: Boolean?
 
     /** Includes some values */
-    val includes: List<String>?
+    val includes: Set<String>?
 
     /** Excludes some values */
-    val excludes: List<String>?
+    val excludes: Set<String>?
 
     /**
      * Resets the list of included split configuration.
@@ -25,7 +25,7 @@ internal interface Split {
      */
     val reset: Boolean?
 
-    fun applyTo(split: Split) {
+    fun applyTo(split: T) {
         split::isEnable trySet isEnable
 
         includes?.let { includes ->

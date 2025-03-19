@@ -2,13 +2,14 @@ package gradle.plugins.android
 
 import com.android.build.api.dsl.AndroidResources
 import gradle.api.trySet
+import java.util.SortedSet
 
 /**
  * DSL object for configuring Android resource options.
  *
  * This is accessed via [CommonExtension.androidResources]
  */
-internal interface AndroidResources {
+internal interface AndroidResources<in T: AndroidResources> {
 
     /**
      * Pattern describing assets to be ignored.
@@ -22,14 +23,14 @@ internal interface AndroidResources {
      *
      * If empty, defaults to `["!.svn", "!.git", "!.ds_store", "!*.scc", ".*", "<dir>_*", "!CVS", "!thumbs.db", "!picasa.ini", "!*~"]`
      */
-    val ignoreAssetsPatterns: List<String>?
+    val ignoreAssetsPatterns: Set<String>?
 
     /**
      * File extensions of Android resources, assets, and Java resources to be stored uncompressed in
      * the APK. Adding an empty extension (e.g., setting `noCompress ''`) will disable compression
      * for all Android resources, assets, and Java resources.
      */
-    val noCompress: List<String>?
+    val noCompress: Set<String>?
 
     /**
      * Forces aapt to return an error if it fails to find an entry for a configuration.
@@ -49,7 +50,7 @@ internal interface AndroidResources {
     val namespaced: Boolean?
 
     @Suppress("UnstableApiUsage")
-    fun applyTo(resources: AndroidResources) {
+    fun applyTo(resources: T) {
         resources::ignoreAssetsPattern trySet ignoreAssetsPattern
         ignoreAssetsPatterns?.let(resources.ignoreAssetsPatterns::addAll)
         noCompress?.let(resources.noCompress::addAll)

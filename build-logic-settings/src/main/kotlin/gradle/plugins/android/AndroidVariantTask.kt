@@ -1,10 +1,11 @@
 package gradle.plugins.android
 
-
+import gradle.api.tasks.applyTo
 import gradle.collection.SerializableAnyMap
+import gradle.plugins.android.BaseTask
+import java.util.SortedSet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 
@@ -16,20 +17,13 @@ import org.gradle.kotlin.dsl.withType
  * - [NonIncrementalTask]
  *
  */
-internal abstract class AndroidVariantTask : BaseTask(), VariantTask {
-
-        context(Project)
-    override fun applyTo(named: T) {
-        super<BaseTask>._applyTo(named)
-
-        named as com.android.build.gradle.internal.tasks.AndroidVariantTask
-
-        super<VariantTask>.applyTo(named)
-    }
+internal abstract class AndroidVariantTask<T : com.android.build.gradle.internal.tasks.AndroidVariantTask> : BaseTask<T>(), VariantTask {
 
     context(Project)
-    override fun applyTo() =
-        super<BaseTask>.applyTo(tasks.withType<com.android.build.gradle.internal.tasks.AndroidVariantTask>())
+    override fun applyTo(recipient: T) {
+        super<BaseTask>.applyTo(recipient)
+        super<VariantTask>.applyTo(recipient)
+    }
 }
 
 @Serializable
@@ -50,4 +44,9 @@ internal data class AndroidVariantTaskImpl(
     override val shouldRunAfter: Set<String>? = null,
     override val name: String = "",
     override val variantName: String? = null,
-) : AndroidVariantTask()
+) : AndroidVariantTask<com.android.build.gradle.internal.tasks.AndroidVariantTask>() {
+
+    context(Project)
+    override fun applyTo() =
+        applyTo(tasks.withType<com.android.build.gradle.internal.tasks.AndroidVariantTask>())
+}

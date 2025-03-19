@@ -1,6 +1,7 @@
 package gradle.plugins.android.library
 
 import com.android.build.api.dsl.LibraryVariantDimension
+import gradle.accessors.android
 import gradle.api.trySet
 import gradle.plugins.android.AarMetadata
 import gradle.plugins.android.ApkSigningConfigImpl
@@ -12,7 +13,7 @@ import org.gradle.api.Project
  *
  * That is, [LibraryBuildType] and [LibraryProductFlavor] and [LibraryDefaultConfig].
  */
-internal interface LibraryVariantDimension : VariantDimension {
+internal interface LibraryVariantDimension<in T : LibraryVariantDimension> : VariantDimension<T> {
 
     /**
      * Returns whether multi-dex is enabled.
@@ -34,16 +35,14 @@ internal interface LibraryVariantDimension : VariantDimension {
     val consumerProguardFiles: List<String>?
 
     /** The associated signing config or null if none are set on the variant dimension. */
-    val signingConfig: ApkSigningConfigImpl?
+    val signingConfig: String?
 
     /** Options for configuring AAR metadata. */
     val aarMetadata: AarMetadata?
 
     context(Project)
-    override fun applyTo(dimension: com.android.build.api.dsl.VariantDimension) {
+    override fun applyTo(dimension: T) {
         super.applyTo(dimension)
-
-        dimension as LibraryVariantDimension
 
         dimension::multiDexEnabled trySet multiDexEnabled
 
@@ -51,7 +50,7 @@ internal interface LibraryVariantDimension : VariantDimension {
             dimension.consumerProguardFiles(*consumerProguardFiles.toTypedArray())
         }
 
-        dimension::signingConfig trySet signingConfig?.toApkSigningConfig()
+        dimension::signingConfig trySet signingConfig?.let(android.signingConfigs::getByName)
         aarMetadata?.applyTo(dimension.aarMetadata)
     }
 }

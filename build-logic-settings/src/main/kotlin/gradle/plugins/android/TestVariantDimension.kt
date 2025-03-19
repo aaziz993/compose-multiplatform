@@ -1,6 +1,7 @@
 package gradle.plugins.android
 
 import com.android.build.api.dsl.TestVariantDimension
+import gradle.accessors.android
 import gradle.api.trySet
 import org.gradle.api.Project
 
@@ -9,8 +10,8 @@ import org.gradle.api.Project
  *
  * That is, [TestBuildType] and [TestProductFlavor] and [TestDefaultConfig].
  */
-internal interface TestVariantDimension :
-    VariantDimension {
+internal interface TestVariantDimension<in T : TestVariantDimension> :
+    VariantDimension<T> {
 
     /**
      * Returns whether multi-dex is enabled.
@@ -20,15 +21,15 @@ internal interface TestVariantDimension :
     val multiDexEnabled: Boolean?
 
     /** The associated signing config or null if none are set on the variant dimension. */
-    val signingConfig: ApkSigningConfig?
+    val signingConfig: String?
 
     context(Project)
-    override fun applyTo(dimension: com.android.build.api.dsl.VariantDimension) {
+    override fun applyTo(dimension: T) {
         super.applyTo(dimension)
 
         dimension as TestVariantDimension
 
         dimension::multiDexEnabled trySet multiDexEnabled
-        dimension::signingConfig trySet signingConfig?.toApkSigningConfig()
+        dimension::signingConfig trySet signingConfig?.let(android.signingConfigs::getByName)
     }
 }
