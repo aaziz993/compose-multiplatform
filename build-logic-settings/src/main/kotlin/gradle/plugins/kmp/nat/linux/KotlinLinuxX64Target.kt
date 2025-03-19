@@ -25,6 +25,6 @@ internal data class KotlinLinuxX64Target(
 ) : KotlinNativeTargetWithHostTests(), KotlinLinuxTarget {
 
     context(Project)
-    override fun applyTo()  =
+    override fun applyTo() =
         super.applyTo(kotlin.targets.withType<KotlinNativeTarget>(), kotlin::linuxX64)
 }

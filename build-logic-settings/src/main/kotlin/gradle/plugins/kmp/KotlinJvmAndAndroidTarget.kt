@@ -1,6 +1,7 @@
 package gradle.plugins.kmp
 
 import gradle.accessors.kotlin
+
 import gradle.plugins.kmp.jvm.KotlinJvmCompilerOptions
 import gradle.plugins.kotlin.HasConfigurableKotlinCompilerOptions
 import kotlinx.serialization.SerialName
@@ -17,8 +18,8 @@ internal abstract class KotlinJvmAndAndroidTarget :
     override val needKMP: Boolean
         get() = false
 
-    context(Project)
-    override fun applyTo(named: Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         super<KotlinTarget>.applyTo(named)
 
         super<HasConfigurableKotlinCompilerOptions>.applyTo(named as org.jetbrains.kotlin.gradle.dsl.HasConfigurableKotlinCompilerOptions<*>)

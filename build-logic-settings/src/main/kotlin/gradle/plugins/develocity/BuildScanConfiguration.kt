@@ -2,9 +2,6 @@ package gradle.plugins.develocity
 
 import gradle.api.CI
 import gradle.api.isCI
-import gradle.api.isGITHUB
-import gradle.api.isJB_SPACE
-import gradle.api.isTEAMCITY
 import gradle.api.tryAssign
 import java.util.*
 import kotlinx.serialization.Serializable

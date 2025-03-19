@@ -1,14 +1,18 @@
 package gradle.api.tasks
 
-import gradle.api.Named
+import gradle.api.ProjectNamed
+import gradle.api.applyTo
+import gradle.api.elementType
 import gradle.collection.SerializableAnyMap
 import gradle.serialization.serializer.JsonPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
 import groovy.lang.MissingPropertyException
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import org.gradle.api.NamedDomainObjectCollection
 import org.gradle.api.Project
 import org.gradle.api.provider.Provider
+import org.gradle.api.tasks.TaskCollection
 import org.gradle.api.tasks.TaskDependency
 
 /**
@@ -135,7 +139,7 @@ import org.gradle.api.tasks.TaskDependency
  * In parallel mode, the tasks of different projects (i.e. in a multi project build) are able to be executed in parallel.
  */
 @Serializable(with = TaskSerializer::class)
-internal interface Task : Named {
+internal interface Task<T : org.gradle.api.Task> : ProjectNamed<T> {
 
     /**
      *
@@ -322,9 +326,7 @@ internal interface Task : Named {
     val shouldRunAfter: List<String>?
 
     context(Project)
-    override fun applyTo(named: org.gradle.api.Named) {
-        named as org.gradle.api.Task
-
+    override fun applyTo(named: T) {
         dependsOn?.let(named::setDependsOn)
         onlyIf?.let { onlyIf -> named.onlyIf { onlyIf } }
         doNotTrackState?.let(named::doNotTrackState)
@@ -340,15 +342,21 @@ internal interface Task : Named {
     }
 
     context(Project)
-    override fun applyTo() = applyTo(tasks)
+    fun applyTo()
 }
 
-private object TaskSerializer : JsonPolymorphicSerializer<Task>(
+context(Project)
+internal fun <T : org.gradle.api.Task> Task<T>.applyTo(named: TaskCollection<T>) =
+    applyTo(named) { name, action ->
+        tasks.register(name, named.elementType(), action)
+    }
+
+private object TaskSerializer : JsonPolymorphicSerializer<Task<*>>(
     Task::class,
 )
 
-internal object TaskTransformingSerializer : KeyTransformingSerializer<Task>(
-    Task.serializer(),
+internal object TaskTransformingSerializer : KeyTransformingSerializer<Task<*>>(
+    TaskSerializer,
     "type",
 )
 
@@ -368,4 +376,8 @@ internal data class TaskImpl(
     override val finalizedBy: List<String>? = null,
     override val shouldRunAfter: List<String>? = null,
     override val name: String = "",
-) : Task
+) : Task<org.gradle.api.Task> {
+
+    context(Project)
+    override fun applyTo() = applyTo(tasks as TaskCollection<org.gradle.api.Task>)
+}

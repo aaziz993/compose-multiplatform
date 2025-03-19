@@ -1,11 +1,14 @@
 package gradle.api.publish.maven.tasks
 
-import gradle.collection.SerializableAnyMap
+import gradle.accessors.publishing
+import gradle.api.tasks.DefaultTask
 import gradle.api.tasks.Task
+import gradle.api.tasks.applyTo
+import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import org.gradle.api.publish.maven.tasks.PublishToMavenRepository
+import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.kotlin.dsl.withType
 
 /**
@@ -13,10 +16,18 @@ import org.gradle.kotlin.dsl.withType
  *
  * @since 2.4
  */
-internal abstract class AbstractPublishToMaven : Task{
+internal abstract class AbstractPublishToMaven<T : org.gradle.api.publish.maven.tasks.AbstractPublishToMaven> : DefaultTask<T>() {
+
+    abstract val publication: String?
+
     context(Project)
-    override fun applyTo() =
-        super.applyTo(tasks.withType<org.gradle.api.publish.maven.tasks.AbstractPublishToMaven>())
+    override fun applyTo(named: T) {
+        super.applyTo(named)
+
+        publication?.let(publishing.publications::getByName)?.let { publication ->
+            named.setPublication(publication as MavenPublication)
+        }
+    }
 }
 
 @Serializable
@@ -35,4 +46,10 @@ internal data class AbstractPublishToMavenImpl(
     override val finalizedBy: List<String>? = null,
     override val shouldRunAfter: List<String>? = null,
     override val name: String = "",
-) : AbstractPublishToMaven()
+    override val publication: String? = null,
+) : AbstractPublishToMaven<org.gradle.api.publish.maven.tasks.AbstractPublishToMaven>() {
+
+    context(Project)
+    override fun applyTo() =
+        applyTo(tasks.withType<org.gradle.api.publish.maven.tasks.AbstractPublishToMaven>())
+}

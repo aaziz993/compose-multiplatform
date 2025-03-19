@@ -1,6 +1,6 @@
 package gradle.plugins.cmp.desktop
 
-import org.gradle.kotlin.dsl.withType
+
 import gradle.api.tasks.Task
 import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
@@ -8,13 +8,14 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
 
 internal abstract class AbstractComposeDesktopTask : Task {
 
     abstract val verbose: Boolean?
 
-    context(Project)
-    override fun applyTo(named: Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         super.applyTo(named)
 
         named as org.jetbrains.compose.desktop.tasks.AbstractComposeDesktopTask
@@ -24,7 +25,7 @@ internal abstract class AbstractComposeDesktopTask : Task {
 
     context(Project)
     override fun applyTo() =
-        super.applyTo(tasks.withType<org.jetbrains.compose.desktop.tasks.AbstractComposeDesktopTask>())
+        applyTo(tasks.withType<org.jetbrains.compose.desktop.tasks.AbstractComposeDesktopTask>())
 }
 
 @Serializable

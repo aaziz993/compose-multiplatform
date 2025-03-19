@@ -1,6 +1,8 @@
 package gradle.plugins.android.application
 
+
 import gradle.api.trySet
+import gradle.collection.SerializableAnyMap
 import gradle.plugins.android.ApkSigningConfigImpl
 import gradle.plugins.android.BuildConfigField
 import gradle.plugins.android.BuildType
@@ -12,11 +14,9 @@ import gradle.plugins.android.PostProcessing
 import gradle.plugins.android.ResValue
 import gradle.plugins.android.Shaders
 import gradle.plugins.android.VcsInfo
-import gradle.collection.SerializableAnyMap
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
-import org.gradle.api.Project
 
 /**
  * Build types define certain properties that Gradle uses when building and packaging your app, and
@@ -107,8 +107,8 @@ internal data class ApplicationBuildType(
 ) : BuildType,
     ApplicationVariantDimension {
 
-    context(Project)
-    override fun applyTo(named: Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         super<BuildType>.applyTo(named)
 
         named as com.android.build.api.dsl.ApplicationBuildType

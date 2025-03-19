@@ -2,7 +2,6 @@ package gradle.api.publish.maven
 
 import gradle.api.publish.PublicationArtifact
 import kotlinx.serialization.Serializable
-import org.gradle.api.Buildable
 import org.gradle.api.publish.maven.MavenArtifact
 
 /**
@@ -22,12 +21,10 @@ internal data class MavenArtifact(
      * @param classifier The classifier.
      */
     val classifier: String? = null,
-) : PublicationArtifact {
+) : PublicationArtifact<MavenArtifact> {
 
-    override fun applyTo(buildable: Buildable) {
+    override fun applyTo(buildable: MavenArtifact) {
         super.applyTo(buildable)
-
-        buildable as MavenArtifact
 
         extension?.let(buildable::setExtension)
         classifier?.let(buildable::setClassifier)

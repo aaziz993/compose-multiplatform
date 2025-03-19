@@ -1,10 +1,10 @@
 package gradle.plugins.dokka
 
-import gradle.api.Named
+
+import gradle.api.BaseNamed
 import gradle.api.tryAssign
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
-import org.gradle.api.Project
 
 /**
  * A [DokkaPublication] controls the output produced by the Dokka Generator.
@@ -115,13 +115,13 @@ internal data class DokkaPublication(
      * If you find you need to set this property, please report your use-case https://kotl.in/dokka-issues.
      */
     val finalizeCoroutines: Boolean? = null,
-) : Named {
+) : BaseNamed {
 
     override val name: String
         get() = formatName
 
-    context(Project)
-    override fun applyTo(named: org.gradle.api.Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         named as org.jetbrains.dokka.gradle.formats.DokkaPublication
 
         named.enabled tryAssign enabled

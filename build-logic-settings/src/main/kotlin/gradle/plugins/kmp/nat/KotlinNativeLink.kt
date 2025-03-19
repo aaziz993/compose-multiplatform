@@ -1,5 +1,6 @@
 package gradle.plugins.kmp.nat
 
+
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.kotlin.KotlinCommonCompilerToolOptions
@@ -7,8 +8,6 @@ import gradle.plugins.kotlin.tasks.AbstractKotlinCompileTool
 import gradle.plugins.kotlin.tasks.KotlinToolTask
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
-import org.gradle.api.Project
-import org.jetbrains.kotlin.gradle.InternalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.tasks.KotlinNativeLink
 
 /**
@@ -49,9 +48,8 @@ internal data class KotlinNativeLink(
     val kotlinPluginData: KotlinCompilerPluginData? = null,
 ) : AbstractKotlinCompileTool(), KotlinToolTask<KotlinCommonCompilerToolOptions> {
 
-    context(Project)
-    @OptIn(InternalKotlinGradlePluginApi::class)
-    override fun applyTo(named: Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         super<AbstractKotlinCompileTool>.applyTo(named)
         super<KotlinToolTask>.applyTo(named)
 

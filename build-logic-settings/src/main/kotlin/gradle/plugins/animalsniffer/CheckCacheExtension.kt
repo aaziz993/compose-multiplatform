@@ -18,7 +18,7 @@ import ru.vyarus.gradle.plugin.animalsniffer.CheckCacheExtension
  * @since 13.07.2017
  */
 @Serializable
-internal data class CheckCacheExtension (
+internal data class CheckCacheExtension(
     /**
      * Enables check task caching to optimize subsequent check task calls. Useful when check called often
      * without clean. Could be extremely helpful on large classpath (like gradle plugin project).
@@ -31,7 +31,7 @@ internal data class CheckCacheExtension (
      * In some cases, cache tasks may fail due to merge conflicts. For example, jdk 8 signature could not be merged
      * with gradle jar because of different xml apis. But in most cases, cache would work.
      */
-     val enabled: Boolean?=null,
+    val enabled: Boolean? = null,
 
     /**
      * Option ignored until [.enabled] is enabled . Specifies exclusions for
@@ -46,7 +46,7 @@ internal data class CheckCacheExtension (
      *
      * @see ru.vyarus.gradle.plugin.animalsniffer.signature.BuildSignatureTask.exclude
      */
-     val exclude: List<String?>? = null,
+    val exclude: List<String?>? = null,
     /**
      * Build separate cache signature for each provided signatures or merge everything into the single signature.
      * First (be default) option useful when provided signatures must be used separately. E.g. when java and android
@@ -56,8 +56,9 @@ internal data class CheckCacheExtension (
      *
      * Second case could be useful when signatures must be merged (e.g. small signatures from 3rd party libraries).
      */
-     val mergeSignatures: Boolean?=null,
-){
+    val mergeSignatures: Boolean? = null,
+) {
+
     fun applyTo(extension: CheckCacheExtension) {
         enabled?.let(extension::setEnabled)
         exclude?.let(extension::setExclude)

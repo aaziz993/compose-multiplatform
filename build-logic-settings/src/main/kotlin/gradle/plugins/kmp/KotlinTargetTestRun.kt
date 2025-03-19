@@ -1,15 +1,15 @@
 package gradle.plugins.kmp
 
+
 import gradle.plugins.kotlin.KotlinTestRun
 import org.gradle.api.Named
-import org.gradle.api.Project
 
 /**
  * A [KotlinTargetExecution] that executes configured tests in the context of a specific [KotlinTarget].
  */
 internal interface KotlinTargetTestRun : KotlinTestRun, KotlinTargetExecution {
 
-    context(Project)
-    override fun applyTo(named: Named) =
+        context(Project)
+    override fun applyTo(named: T) =
         super<KotlinTestRun>.applyTo(named as org.jetbrains.kotlin.gradle.plugin.KotlinTestRun<*>)
 }

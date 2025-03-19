@@ -1,9 +1,9 @@
 package gradle.plugins.dokka
 
-import gradle.api.Named
+
+import gradle.api.BaseNamed
 import gradle.api.tryAssign
 import kotlinx.serialization.Serializable
-import org.gradle.api.Project
 import org.jetbrains.dokka.gradle.engine.parameters.DokkaExternalDocumentationLinkSpec
 
 /**
@@ -74,10 +74,10 @@ internal data class DokkaExternalDocumentationLinkSpec(
      * @see org.jetbrains.dokka.gradle.engine.parameters.DokkaSourceSetSpec.enableAndroidDocumentationLink
      */
     val enabled: Boolean? = null,
-) : Named {
+) : BaseNamed {
 
-    context(Project)
-    override fun applyTo(named: org.gradle.api.Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         named as DokkaExternalDocumentationLinkSpec
 
         url?.let(named::url)

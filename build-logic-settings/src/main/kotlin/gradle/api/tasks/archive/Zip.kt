@@ -1,11 +1,12 @@
 package gradle.api.tasks.archive
 
-import gradle.collection.SerializableAnyMap
 import gradle.api.tasks.Expand
 import gradle.api.tasks.FilesMatching
+import gradle.api.tasks.applyTo
 import gradle.api.tasks.copy.FileCopyDetails
 import gradle.api.tasks.copy.FromSpec
 import gradle.api.tasks.copy.IntoSpec
+import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
@@ -19,7 +20,7 @@ import org.gradle.kotlin.dsl.withType
  *
  * The default is to compress the contents of the zip.
  */
-internal abstract class Zip : AbstractArchiveTask() {
+internal abstract class Zip<T : org.gradle.api.tasks.bundling.Zip> : AbstractArchiveTask<T>() {
 
     /**
      * Sets the compression level of the entries of the archive. If set to [ZipEntryCompression.DEFLATED] (the default), each entry is
@@ -46,20 +47,14 @@ internal abstract class Zip : AbstractArchiveTask() {
     abstract val metadataCharset: String?
 
     context(Project)
-    override fun applyTo(named: Named) {
+    override fun applyTo(named: T) {
         super.applyTo(named)
-
-        named as org.gradle.api.tasks.bundling.Zip
 
         named.filePermissions
         entryCompression?.let(named::setEntryCompression)
         allowZip64?.let(named::setZip64)
         metadataCharset?.let(named::setMetadataCharset)
     }
-
-    context(Project)
-    override fun applyTo() =
-        super.applyTo(tasks.withType<org.gradle.api.tasks.bundling.Zip>())
 }
 
 @Serializable
@@ -112,4 +107,9 @@ internal data class ZipImpl(
     override val excludes: List<String>? = null,
     override val setExcludes: List<String>? = null,
     override val name: String = ""
-) : Zip()
+) : Zip<org.gradle.api.tasks.bundling.Zip>() {
+
+    context(Project)
+    override fun applyTo() =
+        applyTo(tasks.withType<org.gradle.api.tasks.bundling.Zip>())
+}

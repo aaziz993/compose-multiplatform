@@ -9,7 +9,7 @@ import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
-import gradle.api.all
+import gradle.api.configureEach
 import gradle.api.file.replace
 import gradle.api.trySetSystemProperty
 import gradle.decapitalized
@@ -56,7 +56,7 @@ internal class AndroidPlugin : Plugin<Project> {
 
     private fun Project.adjustAndroidSourceSets() =
         when (projectProperties.layout) {
-            ProjectLayout.FLAT -> android.sourceSets.all { sourceSet ->
+            ProjectLayout.FLAT -> android.sourceSets.configureEach { sourceSet ->
                 val (srcPrefixPart, resourcesPrefixPart) =
                     if (sourceSet.name == SourceSet.MAIN_SOURCE_SET_NAME) "src" to ""
                     else testSourceSetNamePrefixes.find { prefix ->
@@ -104,5 +104,4 @@ internal class AndroidPlugin : Plugin<Project> {
             "com.sun.xml.internal.stream.events.XMLEventFactoryImpl",
         )
     }
-
 }

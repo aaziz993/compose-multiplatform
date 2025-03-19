@@ -86,5 +86,5 @@ internal data class KoverReportFilter(
      *  inheritedFrom.add("*Repository")
      * ```
      */
-    public val inheritedFrom: Set<String>?=null,
+    public val inheritedFrom: Set<String>? = null,
 )

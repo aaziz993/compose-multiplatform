@@ -1,6 +1,5 @@
 package plugins.signing
 
-import org.gradle.kotlin.dsl.withType
 import gradle.accessors.projectProperties
 import gradle.accessors.resolveValue
 import gradle.accessors.settings
@@ -9,6 +8,7 @@ import org.gradle.api.Project
 import org.gradle.api.publish.maven.tasks.AbstractPublishToMaven
 import org.gradle.api.tasks.Exec
 import org.gradle.kotlin.dsl.register
+import org.gradle.kotlin.dsl.withType
 import org.gradle.plugins.signing.Sign
 import org.gradle.plugins.signing.SigningPlugin
 

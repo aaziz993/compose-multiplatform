@@ -7,7 +7,6 @@ import gradle.accessors.plugins
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
 import gradle.plugins.kmp.KotlinJvmAndAndroidTarget
-import gradle.plugins.kmp.jvm.KotlinJvmTarget
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 

@@ -82,7 +82,7 @@ internal data class HierarchyGroup(
 }
 
 internal object HierarchyAliasTransformingSerializer : KeyTransformingSerializer<HierarchyGroup>(
-        HierarchyGroup.serializer(),
-        "group",
-        "aliases",
+    HierarchyGroup.serializer(),
+    "group",
+    "aliases",
 )

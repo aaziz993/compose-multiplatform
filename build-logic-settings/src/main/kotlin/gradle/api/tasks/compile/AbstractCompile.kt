@@ -1,17 +1,18 @@
-package gradle.api.tasks
+package gradle.api.tasks.compile
 
+import gradle.api.tasks.SourceTask
+import gradle.api.tasks.applyTo
 import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 
 /**
  * The base class for all JVM-based language compilation tasks.
  */
-internal abstract class AbstractCompile : Task {
+internal abstract class AbstractCompile<T : org.gradle.api.tasks.compile.AbstractCompile> : SourceTask<T>() {
 
     /**
      * Sets the directory property that represents the directory to generate the `.class` files into.
@@ -43,10 +44,8 @@ internal abstract class AbstractCompile : Task {
     abstract val targetCompatibility: String?
 
     context(Project)
-    override fun applyTo(named: Named) {
+    override fun applyTo(named: T) {
         super.applyTo(named)
-
-        named as org.gradle.api.tasks.compile.AbstractCompile
 
         named.destinationDirectory tryAssign destinationDirectory?.let(layout.projectDirectory::dir)
 
@@ -57,10 +56,6 @@ internal abstract class AbstractCompile : Task {
         sourceCompatibility?.let(named::setSourceCompatibility)
         targetCompatibility?.let(named::setTargetCompatibility)
     }
-
-    context(Project)
-    override fun applyTo() =
-        super.applyTo(tasks.withType<org.gradle.api.tasks.compile.AbstractCompile>())
 }
 
 @Serializable
@@ -82,5 +77,14 @@ internal data class AbstractCompileImpl(
     override val mustRunAfter: List<String>? = null,
     override val finalizedBy: List<String>? = null,
     override val shouldRunAfter: List<String>? = null,
-    override val name: String = "",
-) : AbstractCompile()
+    override val name: String = "", override val sourceFiles: List<String>?,
+    override val includes: List<String>? = null,
+    override val setIncludes: List<String>? = null,
+    override val excludes: List<String>? = null,
+    override val setExcludes: List<String>? = null,
+) : AbstractCompile<org.gradle.api.tasks.compile.AbstractCompile>() {
+
+    context(Project)
+    override fun applyTo() =
+        applyTo(tasks.withType<org.gradle.api.tasks.compile.AbstractCompile>())
+}

@@ -2,7 +2,6 @@
 
 package plugins.initialization
 
-import org.gradle.kotlin.dsl.getValue
 import gradle.accessors.allLibs
 import gradle.accessors.exportExtras
 import gradle.accessors.libs
@@ -14,21 +13,17 @@ import gradle.api.configureEach
 import gradle.api.repositories.CacheRedirector
 import gradle.isUrl
 import gradle.project.ProjectProperties.Companion.load
-import gradle.project.file.LicenseHeaderFile
 import java.net.URI
 import org.gradle.api.Plugin
 import org.gradle.api.file.FileCollection
 import org.gradle.api.initialization.Settings
 import org.gradle.api.internal.artifacts.repositories.DefaultMavenArtifactRepository
-import org.gradle.kotlin.dsl.provideDelegate
-import org.gradle.kotlin.dsl.registering
 import org.jetbrains.compose.internal.IDEA_IMPORT_TASK_NAME
 import org.jetbrains.compose.internal.utils.currentTarget
 import org.tomlj.Toml
 import plugins.develocity.DevelocityPlugin
 import plugins.githooks.GitHooksPlugin
 import plugins.initialization.problemreporter.SLF4JProblemReporterContext
-import plugins.knit.KnitPlugin
 import plugins.project.ProjectPlugin
 import plugins.toolchainmanagement.ToolchainManagementPlugin
 
@@ -49,7 +44,7 @@ public class SettingsPlugin : Plugin<Settings> {
         with(SLF4JProblemReporterContext()) {
             with(target) {
                 // Load and apply project.yaml to settings.gradle.kts.
-                projectProperties = layout.settingsDirectory.load(settingsDir)
+                projectProperties = layout.settingsDirectory.load(layout.settingsDirectory)
 
                 exportExtras()
 

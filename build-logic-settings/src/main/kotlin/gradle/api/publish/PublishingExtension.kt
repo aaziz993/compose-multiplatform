@@ -4,11 +4,10 @@ import gradle.accessors.publishing
 import gradle.api.repositories.ArtifactRepository
 import gradle.api.repositories.ArtifactRepositoryTransformingSerializer
 import gradle.api.repositories.ExclusiveContentRepository
+import java.util.SortedSet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler
-import org.gradle.api.publish.maven.MavenPublication
-import org.gradle.kotlin.dsl.create
 
 /**
  * The configuration of how to “publish" the different components of a project.
@@ -45,7 +44,7 @@ internal interface PublishingExtension {
      *
      * @param configure The action to configure the container of repositories with.
      */
-    val repositories: List<@Serializable(with = ArtifactRepositoryTransformingSerializer::class) ArtifactRepository>?
+    val repositories: Set<@Serializable(with = ArtifactRepositoryTransformingSerializer::class) ArtifactRepository<*>>?
     val exclusiveContent: ExclusiveContentRepository?
 
     /**
@@ -78,9 +77,10 @@ internal interface PublishingExtension {
      *
      * @param configure The action or closure to configure the publications with.
      */
-    val publications: List<@Serializable(with = PublicationTransformingSerializer::class) Publication>?
+    val publications: Set<@Serializable(with = PublicationTransformingSerializer::class) Publication<*>>?
 
     context(Project)
+    @Suppress("UNCHECKED_CAST")
     fun applyTo() =
         pluginManager.withPlugin("maven-publish") {
             repositories?.forEach { repository ->
@@ -88,7 +88,7 @@ internal interface PublishingExtension {
             }
 
             publications?.forEach { publication ->
-                publication.applyTo(publishing.publications)
+                publication.applyTo()
             }
         }
 }

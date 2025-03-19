@@ -2,6 +2,7 @@ package gradle.plugins.kmp.android
 
 import gradle.accessors.kotlin
 import gradle.accessors.projectProperties
+
 import gradle.api.trySet
 import gradle.plugins.kmp.KotlinJvmAndAndroidTarget
 import gradle.plugins.kmp.KotlinJvmAndroidCompilation
@@ -40,8 +41,8 @@ internal data class KotlinAndroidTarget(
     val publishLibraryVariantsGroupedByFlavor: Boolean? = null,
 ) : KotlinJvmAndAndroidTarget() {
 
-    context(Project)
-    override fun applyTo(named: Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         super.applyTo(named)
 
         named as KotlinAndroidTarget
@@ -58,5 +59,7 @@ internal data class KotlinAndroidTarget(
 
     context(Project)
     override fun applyTo() =
-        super<KotlinJvmAndAndroidTarget>.applyTo(kotlin.targets.withType<KotlinAndroidTarget>(), kotlin::androidTarget)
+        super<KotlinJvmAndAndroidTarget>.applyTo(kotlin.targets.withType<KotlinAndroidTarget>()) { name, action ->
+            kotlin::androidTarget
+        }
 }

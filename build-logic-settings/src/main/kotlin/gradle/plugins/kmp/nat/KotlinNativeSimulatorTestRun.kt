@@ -1,11 +1,11 @@
 package gradle.plugins.kmp.nat
 
+
+import gradle.api.tasks.test.TestFilter
 import gradle.api.trySet
 import gradle.serialization.serializer.KeyTransformingSerializer
-import gradle.api.tasks.test.TestFilter
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
-import org.gradle.api.Project
 
 @Serializable
 internal data class KotlinNativeSimulatorTestRun(
@@ -19,8 +19,8 @@ internal data class KotlinNativeSimulatorTestRun(
     val deviceId: String,
 ) : KotlinNativeBinaryTestRun {
 
-    context(Project)
-    override fun applyTo(named: Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         super.applyTo(named)
 
         named as org.jetbrains.kotlin.gradle.targets.native.KotlinNativeSimulatorTestRun

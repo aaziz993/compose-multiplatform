@@ -1,6 +1,7 @@
 package gradle.plugins.kmp.nat
 
 import gradle.accessors.kotlin
+
 import gradle.plugins.kmp.KotlinTargetWithTests
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -11,8 +12,8 @@ import org.gradle.kotlin.dsl.withType
 internal abstract class KotlinNativeTargetWithTests<T : KotlinNativeBinaryTestRun> :
     KotlinNativeTarget(), KotlinTargetWithTests<T> {
 
-    context(Project)
-    override fun applyTo(named: Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         super<KotlinNativeTarget>.applyTo(named)
         super<KotlinTargetWithTests>.applyTo(named)
     }

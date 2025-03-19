@@ -1,12 +1,12 @@
 package gradle.plugins.android
 
+
 import gradle.api.tasks.Task
 import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
-import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 
 /**
@@ -21,8 +21,8 @@ internal abstract class BaseTask : Task {
 
     abstract val projectPath: String?
 
-    context(Project)
-    override fun applyTo(named: Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         super.applyTo(named)
 
         named as com.android.build.gradle.internal.tasks.BaseTask
@@ -30,9 +30,10 @@ internal abstract class BaseTask : Task {
         named.projectPath tryAssign projectPath
     }
 
-    context(Project)
-    override fun applyTo() =
-        super.applyTo(tasks.withType<com.android.build.gradle.internal.tasks.BaseTask>())
+    context(GradleScope)
+    override fun _applyTo() = with(project) {
+        applyTo(tasks.withType<com.android.build.gradle.internal.tasks.BaseTask>())
+    }
 }
 
 @Serializable

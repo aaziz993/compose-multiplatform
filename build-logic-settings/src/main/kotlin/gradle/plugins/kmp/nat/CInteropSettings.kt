@@ -1,9 +1,8 @@
 package gradle.plugins.kmp.nat
 
-import gradle.api.Named
+import gradle.api.BaseNamed
 import gradle.api.trySet
 import kotlinx.serialization.Serializable
-import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.CInteropSettings
 
 /**
@@ -38,7 +37,7 @@ import org.jetbrains.kotlin.gradle.plugin.CInteropSettings
  * In this example, we've added a `cinterop` setting named `cinteropForLinuxX64` to the `linuxX64` `main` [KotlinCompilation].
  * These settings are used to create and configure a `cinterop` task, along with the necessary dependencies for the compile task.
  */
-internal interface CInteropSettings : Named {
+internal interface CInteropSettings : BaseNamed {
 
     /**
      *  A collection of directories to look for headers.
@@ -337,8 +336,8 @@ internal interface CInteropSettings : Named {
      */
     val extraOpts: List<String>?
 
-    context(Project)
-    override fun applyTo(named: org.gradle.api.Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         named as CInteropSettings
 
         named::dependencyFiles trySet dependencyFiles?.let { files(*it.toTypedArray()) }

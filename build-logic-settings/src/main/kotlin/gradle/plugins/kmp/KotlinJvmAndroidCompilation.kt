@@ -1,16 +1,16 @@
 package gradle.plugins.kmp
 
+
 import gradle.plugins.java.JavaCompile
 import gradle.plugins.kmp.jvm.KotlinJvmCompilerOptions
 import gradle.plugins.kotlin.KotlinCompilation
 import gradle.plugins.kotlin.KotlinCompilationOutput
-import gradle.plugins.kotlin.tasks.KotlinCompilationTaskImpl
 import gradle.plugins.kotlin.KotlinCompilationTransformingSerializer
+import gradle.plugins.kotlin.tasks.KotlinCompilationTaskImpl
 import gradle.project.Dependency
 import gradle.project.DependencyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
-import org.gradle.api.Project
 import org.gradle.kotlin.dsl.invoke
 
 @Serializable
@@ -25,8 +25,8 @@ internal data class KotlinJvmAndroidCompilation(
     val compileJavaTaskProvider: JavaCompile? = null,
 ) : KotlinCompilation {
 
-    context(Project)
-    override fun applyTo(named: Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         super.applyTo(named)
 
         named as org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJvmAndroidCompilation
@@ -47,5 +47,5 @@ internal data class KotlinJvmAndroidCompilation(
 
 internal object KotlinJvmAndroidCompilationTransformingSerializer :
     KotlinCompilationTransformingSerializer<KotlinJvmAndroidCompilation>(
-            KotlinJvmAndroidCompilation.serializer(),
+        KotlinJvmAndroidCompilation.serializer(),
     )

@@ -1,5 +1,6 @@
 package gradle.plugins.kotlin
 
+
 import gradle.api.tasks.Task
 import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.SerialName
@@ -25,8 +26,8 @@ internal interface UsesKotlinJavaToolchain : Task {
 
     val kotlinJavaToolchain: KotlinJavaToolchain?
 
-    context(Project)
-    override fun applyTo(named: Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         super.applyTo(named)
 
         named as org.jetbrains.kotlin.gradle.tasks.UsesKotlinJavaToolchain
@@ -36,7 +37,7 @@ internal interface UsesKotlinJavaToolchain : Task {
 
     context(Project)
     override fun applyTo() =
-        super.applyTo(tasks.withType<org.jetbrains.kotlin.gradle.tasks.UsesKotlinJavaToolchain>())
+        applyTo(tasks.withType<org.jetbrains.kotlin.gradle.tasks.UsesKotlinJavaToolchain>())
 }
 
 @Serializable

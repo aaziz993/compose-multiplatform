@@ -6,7 +6,6 @@ import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import gradle.accessors.android
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
-import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
 /**

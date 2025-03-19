@@ -1,12 +1,13 @@
 package gradle.plugins.kmp.nat
 
+
 import gradle.api.tasks.K2MultiplatformCompilationTask
 import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
-import org.jetbrains.kotlin.gradle.tasks.KotlinNativeCompile
 import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.tasks.KotlinNativeCompile
 
 /**
  * A task producing a klibrary from a compilation.
@@ -45,8 +46,8 @@ internal data class KotlinNativeCompile(
     KotlinNativeCompileTask,
     K2MultiplatformCompilationTask {
 
-    context(Project)
-    override fun applyTo(named: Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         super<AbstractKotlinNativeCompile>.applyTo(named)
         super<KotlinNativeCompileTask>.applyTo(named)
         super<K2MultiplatformCompilationTask>.applyTo(named)

@@ -1,9 +1,12 @@
 package gradle.api.repositories
 
+import gradle.api.applyTo
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.api.artifacts.repositories.FlatDirectoryArtifactRepository
+import org.gradle.api.initialization.Settings
 import org.gradle.kotlin.dsl.withType
 
 /**
@@ -29,7 +32,7 @@ import org.gradle.kotlin.dsl.withType
 @SerialName("flatDir")
 internal data class FlatDirectoryArtifactRepository(
     override val name: String = "flatDir",
-    override val content: RepositoryContentDescriptor? = null,
+    override val content: RepositoryContentDescriptorImpl? = null,
     /**
      * Sets the directories where this repository will look for artifacts.
      *
@@ -37,18 +40,29 @@ internal data class FlatDirectoryArtifactRepository(
      * @since 4.0
      */
     val dirs: Set<String>,
-) : ArtifactRepository {
+) : ArtifactRepository<FlatDirectoryArtifactRepository> {
 
-    override fun applyTo(repository: org.gradle.api.artifacts.repositories.ArtifactRepository) {
-        super.applyTo(repository)
-
-        repository as FlatDirectoryArtifactRepository
-
-        dirs.let(repository::setDirs)
-    }
-
+    context(Settings)
     override fun applyTo(handler: RepositoryHandler) =
-        super.applyTo(handler.withType<FlatDirectoryArtifactRepository>()) {
-            handler.flatDir(it)
+        applyTo(handler.withType<FlatDirectoryArtifactRepository>()) { _name, action ->
+            handler.flatDir {
+                name = _name
+                action.execute(this)
+            }
         }
+
+    context(Project)
+    override fun applyTo(handler: RepositoryHandler) =
+        applyTo(handler.withType<FlatDirectoryArtifactRepository>()) { _name, action ->
+            handler.flatDir {
+                name = _name
+                action.execute(this)
+            }
+        }
+
+    override fun _applyTo(named: FlatDirectoryArtifactRepository) {
+        super._applyTo(named)
+
+        dirs.let(named::setDirs)
+    }
 }

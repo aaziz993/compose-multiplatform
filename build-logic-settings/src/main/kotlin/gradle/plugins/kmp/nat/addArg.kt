@@ -1,15 +1,14 @@
 package gradle.plugins.kmp.nat
 
+
 import gradle.api.tasks.ProducesKlib
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.kotlin.tasks.AbstractKotlinCompileTool
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
-import org.jetbrains.kotlin.gradle.InternalKotlinGradlePluginApi
 
 internal abstract class AbstractKotlinNativeCompile : AbstractKotlinCompileTool(), ProducesKlib {
 
@@ -21,9 +20,8 @@ internal abstract class AbstractKotlinNativeCompile : AbstractKotlinCompileTool(
 
     abstract val kotlinPluginData: KotlinCompilerPluginData?
 
-    context(Project)
-    @OptIn(InternalKotlinGradlePluginApi::class)
-    override fun applyTo(named: Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         super<AbstractKotlinCompileTool>.applyTo(named)
         super<ProducesKlib>.applyTo(named)
 

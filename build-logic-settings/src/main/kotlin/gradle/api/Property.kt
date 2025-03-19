@@ -15,7 +15,6 @@ internal fun trySetSystemProperty(key: String, value: String) {
         System.setProperty(key, value)
 }
 
-
 public infix fun <T> KMutableProperty0<T>.trySet(value: T?): Unit? = value?.let(::set)
 
 public infix fun <T : FileSystemLocation> FileSystemLocationProperty<T>.tryAssign(file: File?): Unit? =

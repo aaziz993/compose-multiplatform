@@ -35,15 +35,15 @@ internal abstract class BaseKotlinExtension : FormatExtension() {
 
         ktfmt?.forEach { ktfmt ->
             ktfmt.applyTo(
-                    (ktfmt.version?.resolveVersion() ?: settings.libs.versions.version("ktfmt"))
-                            ?.let(extension::ktfmt) ?: extension.ktfmt(),
+                (ktfmt.version?.resolveVersion() ?: settings.libs.versions.version("ktfmt"))
+                    ?.let(extension::ktfmt) ?: extension.ktfmt(),
             )
         }
 
         ktlint?.let { ktlint ->
             ktlint.applyTo(
-                    (ktlint.version?.resolveVersion() ?: settings.libs.versions.version("ktlint"))
-                            ?.let(extension::ktlint) ?: extension.ktlint(),
+                (ktlint.version?.resolveVersion() ?: settings.libs.versions.version("ktlint"))
+                    ?.let(extension::ktlint) ?: extension.ktlint(),
             )
         }
     }

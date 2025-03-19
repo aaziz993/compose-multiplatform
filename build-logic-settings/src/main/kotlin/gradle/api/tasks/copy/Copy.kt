@@ -1,8 +1,9 @@
 package gradle.api.tasks.copy
 
-import gradle.collection.SerializableAnyMap
 import gradle.api.tasks.Expand
 import gradle.api.tasks.FilesMatching
+import gradle.api.tasks.applyTo
+import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
@@ -52,7 +53,7 @@ import org.gradle.kotlin.dsl.withType
  * }
 </pre> *
  */
-internal abstract class Copy : AbstractCopyTask() {
+internal abstract class Copy<T : org.gradle.api.tasks.Copy> : AbstractCopyTask<T>() {
 
     /**
      * Sets the directory to copy files into. This is the same as calling [.into] on this task.
@@ -62,17 +63,11 @@ internal abstract class Copy : AbstractCopyTask() {
     abstract val destinationDir: String?
 
     context(Project)
-    override fun applyTo(named: Named) {
+    override fun applyTo(named: T) {
         super.applyTo(named)
-
-        named as org.gradle.api.tasks.Copy
 
         destinationDir?.let(::file)?.let(named::setDestinationDir)
     }
-
-    context(Project)
-    override fun applyTo() =
-        super.applyTo(tasks.withType<org.gradle.api.tasks.Copy>())
 }
 
 @Serializable
@@ -114,4 +109,9 @@ internal data class CopyImpl(
     override val excludes: List<String>? = null,
     override val setExcludes: List<String>? = null,
     override val destinationDir: String? = null,
-) : Copy()
+) : Copy<org.gradle.api.tasks.Copy>() {
+
+    context(Project)
+    override fun applyTo() =
+        applyTo(tasks.withType<org.gradle.api.tasks.Copy>())
+}

@@ -15,13 +15,14 @@
  */
 package gradle.api.tasks.copy
 
-import gradle.collection.SerializableAnyMap
+import gradle.api.tasks.ConventionTask
 import gradle.api.tasks.Expand
 import gradle.api.tasks.FilesMatching
 import gradle.api.tasks.Task
+import gradle.api.tasks.applyTo
+import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.api.file.DuplicatesStrategy
 import org.gradle.kotlin.dsl.withType
@@ -29,7 +30,7 @@ import org.gradle.kotlin.dsl.withType
 /**
  * `AbstractCopyTask` is the base class for all copy tasks.
  */
-internal abstract class AbstractCopyTask : Task, CopySpec {
+internal abstract class AbstractCopyTask<T: org.gradle.api.tasks.AbstractCopyTask> : ConventionTask<T>(), CopySpec<org.gradle.api.file.CopySpec> {
 
     /**
      * {@inheritDoc}
@@ -37,19 +38,13 @@ internal abstract class AbstractCopyTask : Task, CopySpec {
     abstract val caseSensitive: Boolean?
 
     context(Project)
-    override fun applyTo(named: Named) {
-        super<Task>.applyTo(named)
-
-        named as org.gradle.api.tasks.AbstractCopyTask
+    override fun applyTo(named: T) {
+        super<ConventionTask>.applyTo(named)
 
         super<CopySpec>.applyTo(named)
 
         caseSensitive?.let(named::setCaseSensitive)
     }
-
-    context(Project)
-    override fun applyTo() =
-        super<Task>.applyTo(tasks.withType<org.gradle.api.tasks.AbstractCopyTask>())
 }
 
 @Serializable
@@ -90,4 +85,9 @@ internal data class AbstractCopyTaskImpl(
     override val excludes: List<String>? = null,
     override val setExcludes: List<String>? = null,
     override val name: String = "",
-) : AbstractCopyTask()
+) : AbstractCopyTask<org.gradle.api.tasks.AbstractCopyTask>(){
+
+    context(Project)
+    override fun applyTo() =
+        applyTo(tasks.withType<org.gradle.api.tasks.AbstractCopyTask>())
+}

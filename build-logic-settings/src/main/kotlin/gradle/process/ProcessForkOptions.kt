@@ -8,7 +8,7 @@ import org.gradle.process.ProcessForkOptions
  *
  * Specifies the options to use to fork a process.
  */
-internal interface ProcessForkOptions {
+internal interface ProcessForkOptions<in T: ProcessForkOptions> {
 
     /**
      * Sets the name of the executable to use.
@@ -35,7 +35,7 @@ internal interface ProcessForkOptions {
     val setEnvironment: SerializableAnyMap?
 
     context(Project)
-    fun applyTo(options: ProcessForkOptions) {
+    fun applyTo(options: T) {
         executable?.let(options::setExecutable)
         workingDir?.let(options::setWorkingDir)
         environment?.let(options::environment)

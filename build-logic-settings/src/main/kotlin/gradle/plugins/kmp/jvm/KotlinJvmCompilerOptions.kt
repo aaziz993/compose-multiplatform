@@ -7,7 +7,6 @@ import gradle.accessors.versions
 import gradle.addPrefix
 import gradle.api.tryAssign
 import gradle.plugins.kotlin.KotlinCommonCompilerOptions
-import gradle.prefixIfNotEmpty
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget

@@ -1,7 +1,6 @@
 package gradle.plugins.android.application
 
-import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
-import gradle.accessors.android
+import gradle.collection.SerializableAnyMap
 import gradle.plugins.android.AaptOptions
 import gradle.plugins.android.AdbOptions
 import gradle.plugins.android.Bundle
@@ -22,7 +21,6 @@ import gradle.plugins.android.TestCoverage
 import gradle.plugins.android.TestFixtures
 import gradle.plugins.android.TestOptions
 import gradle.plugins.android.ViewBinding
-import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

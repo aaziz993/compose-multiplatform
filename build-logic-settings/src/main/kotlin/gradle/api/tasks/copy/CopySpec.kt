@@ -1,7 +1,7 @@
 package gradle.api.tasks.copy
 
 import gradle.api.tasks.FilesMatching
-import gradle.api.tasks.PatternFilterable
+import gradle.api.tasks.util.PatternFilterable
 import org.gradle.api.Project
 import org.gradle.api.file.CopySpec
 import org.gradle.api.file.DuplicatesStrategy
@@ -65,7 +65,7 @@ import org.gradle.api.file.DuplicatesStrategy
  *
  * @see Project.copy
  */
-internal interface CopySpec : CopySourceSpec, CopyProcessingSpec, PatternFilterable {
+internal interface CopySpec<T: CopySpec> : CopySourceSpec, CopyProcessingSpec<org.gradle.api.file.CopyProcessingSpec>, PatternFilterable<org.gradle.api.tasks.util.PatternFilterable> {
 
     /**
      * Specifies whether case-sensitive pattern matching should be used.
@@ -117,28 +117,28 @@ internal interface CopySpec : CopySourceSpec, CopyProcessingSpec, PatternFiltera
     val filteringCharset: String?
 
     context(Project)
-    fun applyTo(spec: CopySpec) {
-        super<CopySourceSpec>.applyTo(spec)
+    fun applyTo(recipient: T) {
+        super<CopySourceSpec>.applyTo(recipient)
 
-        super<CopyProcessingSpec>.applyTo(spec)
+        super<CopyProcessingSpec>.applyTo(recipient)
 
-        super<PatternFilterable>.applyTo(spec)
+        super<PatternFilterable>.applyTo(recipient)
 
-        isCaseSensitive?.let(spec::setCaseSensitive)
+        isCaseSensitive?.let(recipient::setCaseSensitive)
 
-        includeEmptyDirs?.let(spec::setIncludeEmptyDirs)
+        includeEmptyDirs?.let(recipient::setIncludeEmptyDirs)
 
-        duplicatesStrategy?.let(spec::setDuplicatesStrategy)
+        duplicatesStrategy?.let(recipient::setDuplicatesStrategy)
 
         filesMatching?.let { filesMatching ->
-            spec.filesMatching(filesMatching.patterns, filesMatching.fileCopyDetails::applyTo)
+            recipient.filesMatching(filesMatching.patterns, filesMatching.fileCopyDetails::applyTo)
         }
 
         filesNotMatching?.let { filesNotMatching ->
-            spec.filesNotMatching(filesNotMatching.patterns, filesNotMatching.fileCopyDetails::applyTo)
+            recipient.filesNotMatching(filesNotMatching.patterns, filesNotMatching.fileCopyDetails::applyTo)
         }
 
-        filteringCharset?.let(spec::setFilteringCharset)
+        filteringCharset?.let(recipient::setFilteringCharset)
     }
 }
 

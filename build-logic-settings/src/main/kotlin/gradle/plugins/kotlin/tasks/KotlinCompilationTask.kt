@@ -1,7 +1,8 @@
 package gradle.plugins.kotlin.tasks
 
-import gradle.plugins.kotlin.KotlinCommonCompilerOptions
+
 import gradle.api.tasks.Task
+import gradle.plugins.kotlin.KotlinCommonCompilerOptions
 import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
@@ -23,8 +24,8 @@ internal interface KotlinCompilationTask<out CO : KotlinCommonCompilerOptions> :
      */
     val compilerOptions: CO?
 
-    context(Project)
-    override fun applyTo(named: Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         super.applyTo(named)
 
         named as KotlinCompilationTask<*>

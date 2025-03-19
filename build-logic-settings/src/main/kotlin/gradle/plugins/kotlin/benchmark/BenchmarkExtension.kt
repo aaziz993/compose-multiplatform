@@ -8,7 +8,6 @@ import gradle.accessors.plugins
 import gradle.accessors.settings
 import gradle.accessors.version
 import gradle.accessors.versions
-import gradle.api.configure
 import gradle.api.tryAssign
 import gradle.api.trySet
 import kotlinx.serialization.Serializable
@@ -35,7 +34,7 @@ internal abstract class BenchmarksExtension {
             benchmark::buildDir trySet buildDir
 
             configurations?.forEach { configuration ->
-                benchmark.configurations.configure(configuration.name, configure = configuration::applyTo)
+                configuration.applyTo(benchmark.configurations)
             }
 
             benchmark.kotlinCompilerVersion tryAssign (kotlinCompilerVersion
@@ -43,14 +42,7 @@ internal abstract class BenchmarksExtension {
             benchmark::reportsDir trySet reportsDir
 
             targets?.forEach { target ->
-                benchmark.targets.configure(
-                        target.name,
-                        { name ->
-                            benchmark.targets.register(name).get()
-                        },
-                ) {
-                    target.applyTo(this)
-                }
+                target.applyTo(benchmark.targets)
             }
         }
 }

@@ -2,7 +2,7 @@ package plugins.java
 
 import gradle.accessors.kotlin
 import gradle.accessors.projectProperties
-import gradle.api.all
+import gradle.api.configureEach
 import gradle.plugins.kmp.android.KotlinAndroidTarget
 import gradle.plugins.kmp.jvm.KotlinJvmTarget
 import gradle.project.ProjectLayout
@@ -61,7 +61,7 @@ internal class JavaPlugin : Plugin<Project> {
                 useJUnitPlatform()
             }
 
-            jvmTest.all {
+            jvmTest.configureEach {
                 exclude("**/*StressTest*")
             }
         }
@@ -90,7 +90,7 @@ internal class JavaPlugin : Plugin<Project> {
             }
         }
 
-        kotlin.targets.withType<org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget>().all { jvmTarget ->
+        kotlin.targets.withType<org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget>().configureEach { jvmTarget ->
             val javaCodegenCompilation = jvmTarget.compilations.create("javaCodegenTest")
 
             val testRun = jvmTarget.testRuns.create("javaCodegen")

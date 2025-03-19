@@ -1,14 +1,14 @@
 package gradle.api.tasks
 
 import gradle.api.tryAssign
-import org.gradle.api.file.ExpandDetails
+import kotlinx.serialization.Serializable
 
 /**
- * Additional configuration parameters for [ContentFilterable.expand] action.
+ * Additional configuration parameters for [gradle.api.file.ContentFilterable.expand] action.
  *
  * @since 7.2
  */
-internal interface ExpandDetails {
+internal interface ExpandDetails<T : org.gradle.api.file.ExpandDetails> {
 
     /**
      * Controls if the underlying [groovy.text.SimpleTemplateEngine] escapes backslashes in the file before processing. If this is set to `false` then escape sequences in the processed
@@ -22,7 +22,12 @@ internal interface ExpandDetails {
      */
     val escapeBackslash: Boolean?
 
-    fun applyTo(details: ExpandDetails) {
-        details.escapeBackslash tryAssign escapeBackslash
+    fun applyTo(recipient: T) {
+        recipient.escapeBackslash tryAssign escapeBackslash
     }
 }
+
+@Serializable
+internal data class ExpandDetailsImpl(
+    override val escapeBackslash: Boolean? = null,
+) : ExpandDetails<org.gradle.api.file.ExpandDetails>

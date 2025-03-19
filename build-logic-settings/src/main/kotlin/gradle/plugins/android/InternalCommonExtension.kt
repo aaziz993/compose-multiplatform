@@ -18,4 +18,5 @@ internal interface InternalCommonExtension<
         DefaultConfigT,
         ProductFlavorT,
         AndroidResourcesT,
-        InstallationT>
+        InstallationT,
+        >

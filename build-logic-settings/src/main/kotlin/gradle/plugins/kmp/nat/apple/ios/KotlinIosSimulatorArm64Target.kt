@@ -25,6 +25,6 @@ internal data class KotlinIosSimulatorArm64Target(
 ) : KotlinNativeTargetWithSimulatorTests(), KotlinIosTarget {
 
     context(Project)
-    override fun applyTo()=
-        super.applyTo(kotlin.targets.withType<KotlinNativeTarget>(),kotlin::iosSimulatorArm64)
+    override fun applyTo() =
+        super.applyTo(kotlin.targets.withType<KotlinNativeTarget>(), kotlin::iosSimulatorArm64)
 }

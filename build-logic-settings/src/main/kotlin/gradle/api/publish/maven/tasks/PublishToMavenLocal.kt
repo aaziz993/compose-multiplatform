@@ -1,7 +1,11 @@
 package gradle.api.publish.maven.tasks
 
+import gradle.api.tasks.applyTo
 import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
+import org.gradle.api.publish.maven.tasks.PublishToMavenLocal
+import org.gradle.kotlin.dsl.withType
 
 @Serializable
 internal data class PublishToMavenLocal(
@@ -17,5 +21,11 @@ internal data class PublishToMavenLocal(
     override val mustRunAfter: List<String>? = null,
     override val finalizedBy: List<String>? = null,
     override val shouldRunAfter: List<String>? = null,
-    override val name: String = ""
-) : AbstractPublishToMaven()
+    override val name: String = "",
+    override val publication: String? = null,
+) : AbstractPublishToMaven<PublishToMavenLocal>() {
+
+    context(Project)
+    override fun applyTo() =
+        applyTo(tasks.withType<PublishToMavenLocal>())
+}

@@ -1,16 +1,17 @@
 package gradle.plugins.kmp.jvm
 
+
+import gradle.api.tasks.test.DefaultTestFilter
+import gradle.api.tasks.test.TestLoggingContainer
 import gradle.api.trySet
+import gradle.collection.SerializableAnyMap
 import gradle.plugins.java.JUnitOptions
 import gradle.plugins.java.JUnitPlatformOptions
 import gradle.plugins.java.JavaDebugOptions
+import gradle.plugins.java.JavaToolchainSpec
 import gradle.plugins.java.ModularitySpec
 import gradle.plugins.java.Test
 import gradle.plugins.java.TestNGOptions
-import gradle.collection.SerializableAnyMap
-import gradle.plugins.java.JavaToolchainSpec
-import gradle.api.tasks.test.DefaultTestFilter
-import gradle.api.tasks.test.TestLoggingContainer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
@@ -75,8 +76,8 @@ internal data class KotlinJvmTest(
     val targetName: String? = null,
 ) : Test() {
 
-    context(Project)
-    override fun applyTo(named: Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         super.applyTo(named)
 
         named as KotlinJvmTest
@@ -86,5 +87,5 @@ internal data class KotlinJvmTest(
 
     context(Project)
     override fun applyTo() =
-        super.applyTo(tasks.withType<KotlinJvmTest>())
+        applyTo(tasks.withType<KotlinJvmTest>())
 }

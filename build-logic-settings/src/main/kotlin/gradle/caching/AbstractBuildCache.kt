@@ -1,7 +1,6 @@
 package gradle.caching
 
 import gradle.api.isCI
-import org.gradle.api.Project
 import org.gradle.api.initialization.Settings
 
 public abstract class AbstractBuildCache : BuildCache {

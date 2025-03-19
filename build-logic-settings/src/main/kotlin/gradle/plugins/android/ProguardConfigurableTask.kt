@@ -1,6 +1,7 @@
 package gradle.plugins.android
 
 import com.android.build.gradle.internal.tasks.ProguardConfigurableTask
+
 import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
@@ -48,8 +49,8 @@ internal data class ProguardConfigurableTask(
     val hasAllAccessTransformers: Boolean? = null,
 ) : NonIncrementalTask() {
 
-    context(Project)
-    override fun applyTo(named: Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         super.applyTo(named)
 
         named as ProguardConfigurableTask
@@ -60,7 +61,7 @@ internal data class ProguardConfigurableTask(
         named.resourcesJar tryAssign resourcesJar?.let(::file)
         referencedClasses?.let(named.referencedClasses::setFrom)
         referencedResources?.let(named.referencedResources::setFrom)
-        named.extractedDefaultProguardFile tryAssign extractedDefaultProguardFile?.let(layout.projectDirectory::dir)
+        named.extractedDefaultProguardFile tryAssign extractedDefaultProguardFile?.let(project.layout.projectDirectory::dir)
         generatedProguardFile?.let(named.generatedProguardFile::setFrom)
         configurationFiles?.let(named.configurationFiles::setFrom)
         libraryKeepRulesFileCollection?.let(named.libraryKeepRulesFileCollection::setFrom)
@@ -72,5 +73,5 @@ internal data class ProguardConfigurableTask(
 
     context(Project)
     override fun applyTo() =
-        super.applyTo(tasks.withType<ProguardConfigurableTask>())
+        applyTo(tasks.withType<ProguardConfigurableTask>())
 }

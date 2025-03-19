@@ -1,15 +1,19 @@
 package gradle.api.tasks.test
 
+import gradle.api.VerificationTask
+import gradle.api.tasks.ConventionTask
+import gradle.api.tasks.Task
+import gradle.api.tasks.applyTo
 import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
-import gradle.api.tasks.Task
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 
-internal abstract class AbstractTestTask : Task {
+internal abstract class AbstractTestTask<T : org.gradle.api.tasks.testing.AbstractTestTask>
+    : ConventionTask<T>(), VerificationTask<org.gradle.api.tasks.VerificationTask> {
 
     /**
      * Returns the root directory property for the test results in internal binary format.
@@ -17,11 +21,6 @@ internal abstract class AbstractTestTask : Task {
      * @since 4.4
      */
     abstract val binaryResultsDirectory: String?
-
-    /**
-     * {@inheritDoc}
-     */
-    abstract val ignoreFailures: Boolean?
 
     /**
      * Allows configuring the logging of the test execution, for example log eagerly the standard output, etc.
@@ -54,10 +53,9 @@ internal abstract class AbstractTestTask : Task {
     abstract val filter: DefaultTestFilter?
 
     context(Project)
-    override fun applyTo(named: Named) {
-        super.applyTo(named)
-
-        named as org.gradle.api.tasks.testing.AbstractTestTask
+    override fun applyTo(named: T) {
+        super<ConventionTask>.applyTo(named)
+        super<VerificationTask>.applyTo(named)
 
         named.binaryResultsDirectory tryAssign binaryResultsDirectory?.let(layout.projectDirectory::dir)
         ignoreFailures?.let(named::setIgnoreFailures)
@@ -65,10 +63,6 @@ internal abstract class AbstractTestTask : Task {
         testNameIncludePatterns?.let(named::setTestNameIncludePatterns)
         filter?.applyTo(named.filter)
     }
-
-    context(Project)
-    override fun applyTo() =
-        super.applyTo(tasks.withType<org.gradle.api.tasks.testing.AbstractTestTask>())
 }
 
 @Serializable
@@ -93,4 +87,9 @@ internal data class AbstractTestTaskImpl(
     override val finalizedBy: List<String>? = null,
     override val shouldRunAfter: List<String>? = null,
     override val name: String = "",
-) : AbstractTestTask()
+) : AbstractTestTask<org.gradle.api.tasks.testing.AbstractTestTask>() {
+
+    context(Project)
+    override fun applyTo() =
+        applyTo(tasks.withType<org.gradle.api.tasks.testing.AbstractTestTask>())
+}

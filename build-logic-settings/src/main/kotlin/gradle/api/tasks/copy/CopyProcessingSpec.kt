@@ -1,13 +1,13 @@
 package gradle.api.tasks.copy
 
-import gradle.api.tasks.ContentFilterable
+import gradle.api.file.ContentFilterable
 import java.util.regex.Pattern
 import org.gradle.api.file.CopyProcessingSpec
 
 /**
  * Specifies the destination of a copy.
  */
-internal interface CopyProcessingSpec : ContentFilterable {
+internal interface CopyProcessingSpec<T : CopyProcessingSpec> : ContentFilterable<T> {
 
     /**
      * Specifies the destination directory for a copy. The destination is evaluated as per [ ][org.gradle.api.Project.file].
@@ -81,29 +81,27 @@ internal interface CopyProcessingSpec : ContentFilterable {
      */
     val eachFile: FileCopyDetails?
 
-    override fun applyTo(filterable: org.gradle.api.file.ContentFilterable) {
-        super.applyTo(filterable)
+    override fun applyTo(recipient: T) {
+        super.applyTo(recipient)
 
-        filterable as CopyProcessingSpec
-
-        into?.let(filterable::into)
-        rename?.forEach(filterable::rename)
-        renamePattern?.forEach { (key, value) -> filterable.rename(Pattern.compile(key), value) }
+        into?.let(recipient::into)
+        rename?.forEach(recipient::rename)
+        renamePattern?.forEach { (key, value) -> recipient.rename(Pattern.compile(key), value) }
 
         filePermissions?.let { filePermissions ->
-            filterable.filePermissions {
+            recipient.filePermissions {
                 unix(filePermissions)
             }
         }
 
         dirPermissions?.let { dirPermissions ->
-            filterable.dirPermissions {
+            recipient.dirPermissions {
                 unix(dirPermissions)
             }
         }
 
         eachFile?.let { eachFile ->
-            filterable.eachFile(eachFile::applyTo)
+            recipient.eachFile(eachFile::applyTo)
         }
     }
 }

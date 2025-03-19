@@ -7,7 +7,7 @@ plugins:
       # Something that's easy to "clean" for development not mavenLocal
       - maven:
           name: buildRepo
-          url: file://../build/repo # root build/repo
+          url: ../build/repo # root build/repo
       - maven:
           name: GithubPackages
           url: https://maven.pkg.github.com/aaziz993

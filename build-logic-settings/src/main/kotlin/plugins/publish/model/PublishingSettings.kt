@@ -1,12 +1,12 @@
 package plugins.publish.model
 
-import gradle.project.EnabledSettings
 import gradle.api.publish.Publication
 import gradle.api.publish.PublicationTransformingSerializer
 import gradle.api.publish.PublishingExtension
 import gradle.api.repositories.ArtifactRepository
 import gradle.api.repositories.ArtifactRepositoryTransformingSerializer
 import gradle.api.repositories.ExclusiveContentRepository
+import gradle.project.EnabledSettings
 import kotlinx.serialization.Serializable
 
 @Serializable

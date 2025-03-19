@@ -1,11 +1,10 @@
 package gradle.plugins.kmp.jvm
 
 import gradle.accessors.kotlin
-import gradle.accessors.projectProperties
+
 import gradle.plugins.kmp.KotlinJvmAndAndroidTarget
 import gradle.plugins.kmp.KotlinJvmAndroidCompilation
 import gradle.plugins.kmp.KotlinJvmAndroidCompilationTransformingSerializer
-import gradle.plugins.kmp.android.KotlinAndroidTarget
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
@@ -21,11 +20,11 @@ internal data class KotlinJvmTarget(
     override val compilerOptions: KotlinJvmCompilerOptions? = null,
     val testRuns: List<KotlinJvmTestRun>? = null,
     val mainRun: KotlinJvmRunDsl? = null,
-    val withJava: Boolean?=null,
+    val withJava: Boolean? = null,
 ) : KotlinJvmAndAndroidTarget() {
 
-    context(Project)
-    override fun applyTo(named: Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         super.applyTo(named)
 
         named as KotlinJvmTarget

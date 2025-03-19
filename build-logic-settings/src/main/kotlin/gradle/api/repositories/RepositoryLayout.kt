@@ -7,6 +7,7 @@ import org.gradle.api.artifacts.repositories.RepositoryLayout
  *
  * @since 2.3 (feature was already present in Groovy DSL, this type introduced in 2.3)
  */
-internal interface RepositoryLayout{
+internal interface RepositoryLayout {
+
     fun applyTo(layout: RepositoryLayout)
 }

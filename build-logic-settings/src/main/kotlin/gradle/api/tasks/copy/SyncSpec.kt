@@ -1,7 +1,7 @@
 package gradle.api.tasks.copy
 
-import gradle.api.tasks.PatternFilterable
-import org.gradle.api.file.CopySourceSpec
+import gradle.api.tasks.util.PatternFilterable
+import org.gradle.api.Project
 import org.gradle.api.file.SyncSpec
 
 /**
@@ -9,7 +9,7 @@ import org.gradle.api.file.SyncSpec
  *
  * @since 7.5
  */
-internal interface SyncSpec : CopySpec {
+internal interface SyncSpec<T : SyncSpec> : CopySpec<T> {
 
     /**
      * Configures the filter that defines which files to preserve in the destination directory.
@@ -17,13 +17,12 @@ internal interface SyncSpec : CopySpec {
      * @param action Action for configuring the preserve filter
      * @return this
      */
-    val preserve: PatternFilterable?
+    val preserve: PatternFilterable<org.gradle.api.tasks.util.PatternFilterable>?
 
-    override fun applyTo(spec: CopySourceSpec) {
-        super.applyTo(spec)
+    context(Project)
+    override fun applyTo(recipient: T) {
+        super.applyTo(recipient)
 
-        spec as SyncSpec
-
-        preserve?.applyTo(spec.preserve)
+        preserve?.applyTo(recipient.preserve)
     }
 }

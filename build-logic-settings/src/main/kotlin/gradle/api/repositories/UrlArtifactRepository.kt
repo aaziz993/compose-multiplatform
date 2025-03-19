@@ -1,7 +1,10 @@
 package gradle.api.repositories
 
+import gradle.isUrl
 import org.gradle.api.Project
 import org.gradle.api.artifacts.repositories.UrlArtifactRepository
+import org.gradle.api.file.Directory
+import org.gradle.api.initialization.Settings
 
 /**
  * A repository that supports resolving artifacts from a URL.
@@ -38,8 +41,22 @@ internal interface UrlArtifactRepository {
      */
     val allowInsecureProtocol: Boolean?
 
-    fun applyTo(repository: UrlArtifactRepository) {
-        url?.let(repository::setUrl)
+    context(Settings)
+    @Suppress("UnstableApiUsage")
+    fun applyTo(repository: UrlArtifactRepository) = with(layout.settingsDirectory) {
+        _applyTo(repository)
+    }
+
+    context(Project)
+    fun applyTo(repository: UrlArtifactRepository) = with(layout.projectDirectory) {
+        _applyTo(repository)
+    }
+
+    context(Directory)
+    fun _applyTo(repository: UrlArtifactRepository) {
+        url?.let { url ->
+            if (url.isUrl) url else dir(url)
+        }?.let(repository::setUrl)
         allowInsecureProtocol?.let(repository::setAllowInsecureProtocol)
     }
 }

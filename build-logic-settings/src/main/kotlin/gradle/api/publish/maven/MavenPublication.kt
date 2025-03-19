@@ -1,11 +1,10 @@
 package gradle.api.publish.maven
 
 import gradle.accessors.publishing
-import gradle.api.publish.maven.Artifact
+import gradle.api.applyTo
 import gradle.api.publish.Publication
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.api.publish.maven.MavenArtifact
 import org.gradle.api.publish.maven.MavenPublication
@@ -237,13 +236,11 @@ internal data class MavenPublication(
      * @since 6.0
      */
     val suppressAllPomMetadataWarnings: Boolean? = null,
-) : Publication {
+) : Publication<MavenPublication> {
 
     context(Project)
-    override fun applyTo(named: Named) {
+    override fun applyTo(named: MavenPublication) {
         super.applyTo(named)
-
-        named as MavenPublication
 
         pom?.applyTo(named.pom)
         from?.let(components::getByName)?.let(named::from)
@@ -269,5 +266,7 @@ internal data class MavenPublication(
 
     context(Project)
     override fun applyTo() =
-        super.applyTo(publishing.publications.withType<MavenPublication>())
+        applyTo(publishing.publications.withType<MavenPublication>()) { name, action ->
+            publishing.publications.register(name, MavenPublication::class.java, action)
+        }
 }

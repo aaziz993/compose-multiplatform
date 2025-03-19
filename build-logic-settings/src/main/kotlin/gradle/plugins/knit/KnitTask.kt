@@ -1,8 +1,9 @@
 package gradle.plugins.knit
 
+
+import gradle.api.tasks.Task
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
-import gradle.api.tasks.Task
 import kotlinx.knit.KnitTask
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
@@ -29,8 +30,8 @@ internal data class KnitTask(
     val files: List<String>? = null,
 ) : Task {
 
-    context(Project)
-    override fun applyTo(named: Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         super.applyTo(named)
 
         named as KnitTask
@@ -42,5 +43,5 @@ internal data class KnitTask(
 
     context(Project)
     override fun applyTo() =
-        super.applyTo(tasks.withType<KnitTask>())
+        applyTo(tasks.withType<KnitTask>())
 }

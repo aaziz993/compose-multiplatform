@@ -1,5 +1,6 @@
 package gradle.plugins.kmp.jvm
 
+
 import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.kmp.nat.CompilerPluginOptions
@@ -42,8 +43,8 @@ internal interface KotlinJvmCompile : BaseKotlinCompile,
      */
     val jvmTargetValidationMode: JvmTargetValidationMode?
 
-    context(Project)
-    override fun applyTo(named: Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         super<BaseKotlinCompile>.applyTo(named)
         super<KotlinCompilationTask>.applyTo(named)
         super<UsesKotlinJavaToolchain>.applyTo(named)

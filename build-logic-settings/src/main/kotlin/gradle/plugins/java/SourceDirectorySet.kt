@@ -1,10 +1,9 @@
 package gradle.plugins.java
 
-import gradle.api.Named
-import gradle.api.tasks.PatternFilterable
+import gradle.api.BaseNamed
+import gradle.api.tasks.util.PatternFilterable
 import gradle.api.tryAssign
 import kotlinx.serialization.Serializable
-import org.gradle.api.Project
 
 /**
  * A `SourceDirectorySet` represents a set of source files composed from a set of source directories, along
@@ -51,10 +50,10 @@ internal data class SourceDirectorySet(
      * @since 6.1
      */
     val destinationDirectory: String? = null,
-) : PatternFilterable, Named {
+) : PatternFilterable, BaseNamed {
 
-    context(Project)
-    override fun applyTo(named: org.gradle.api.Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         named as org.gradle.api.file.SourceDirectorySet
 
         super<PatternFilterable>.applyTo(named)

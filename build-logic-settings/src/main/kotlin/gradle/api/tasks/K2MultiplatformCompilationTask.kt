@@ -2,11 +2,10 @@
 
 package gradle.api.tasks
 
-import gradle.plugins.kotlin.KotlinCommonCompilerOptions
 import gradle.collection.SerializableAnyMap
+import gradle.plugins.kotlin.KotlinCommonCompilerOptions
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 
@@ -15,22 +14,16 @@ import org.gradle.kotlin.dsl.withType
  * This does not extend [KotlinCompilationTask], since [KotlinCompilationTask] carries an unwanted/conflicting
  * type parameter `<out T : KotlinCommonOptions>`
  */
-internal interface K2MultiplatformCompilationTask : Task {
+internal interface K2MultiplatformCompilationTask<T : org.jetbrains.kotlin.gradle.tasks.K2MultiplatformCompilationTask> : Task<T> {
 
     val compilerOptions: KotlinCommonCompilerOptions?
 
     context(Project)
-    override fun applyTo(named: Named) {
+    override fun applyTo(named: T) {
         super.applyTo(named)
-
-        named as org.jetbrains.kotlin.gradle.tasks.K2MultiplatformCompilationTask
 
         compilerOptions?.applyTo(named.compilerOptions)
     }
-
-    context(Project)
-    override fun applyTo() =
-        super.applyTo(tasks.withType<org.jetbrains.kotlin.gradle.tasks.K2MultiplatformCompilationTask>())
 }
 
 @Serializable
@@ -50,4 +43,9 @@ internal data class K2MultiplatformCompilationTaskImpl(
     override val finalizedBy: List<String>? = null,
     override val shouldRunAfter: List<String>? = null,
     override val name: String = "",
-) : K2MultiplatformCompilationTask
+) : K2MultiplatformCompilationTask<org.jetbrains.kotlin.gradle.tasks.K2MultiplatformCompilationTask> {
+
+    context(Project)
+    override fun applyTo() =
+        applyTo(tasks.withType<org.jetbrains.kotlin.gradle.tasks.K2MultiplatformCompilationTask>())
+}

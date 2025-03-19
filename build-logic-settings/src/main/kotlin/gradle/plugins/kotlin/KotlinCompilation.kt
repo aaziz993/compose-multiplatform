@@ -1,12 +1,11 @@
 package gradle.plugins.kotlin
 
-import gradle.api.Named
+import gradle.api.BaseNamed
 import gradle.api.getByNameOrAll
 import gradle.api.trySet
 import gradle.plugins.kmp.KotlinSourceSet
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.KSerializer
-import org.gradle.api.Project
 
 /**
  * # Kotlin compilation
@@ -75,7 +74,7 @@ Here's an example of how to use consume the outputs of the main JVM Compilation 
  * Instead, there is a dedicated compilation for each shared source set.
  *
  */
-internal interface KotlinCompilation : HasKotlinDependencies, Named {
+internal interface KotlinCompilation : HasKotlinDependencies, BaseNamed {
 
     /**
      * The name of the compilation.
@@ -109,8 +108,8 @@ internal interface KotlinCompilation : HasKotlinDependencies, Named {
      */
     val associatedCompilations: Set<String>?
 
-    context(Project)
-    override fun applyTo(named: org.gradle.api.Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         named as org.jetbrains.kotlin.gradle.plugin.KotlinCompilation<*>
 
         defaultSourceSet?.let { defaultSourceSet ->

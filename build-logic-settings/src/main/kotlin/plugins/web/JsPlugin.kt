@@ -1,16 +1,12 @@
 package plugins.web
 
 import gradle.accessors.id
-import gradle.accessors.karakum
-import gradle.accessors.kotlin
 import gradle.accessors.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
 import gradle.plugins.kmp.web.KotlinJsTarget
-import gradle.serialization.decodeMapFromString
-import kotlinx.serialization.json.Json
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl

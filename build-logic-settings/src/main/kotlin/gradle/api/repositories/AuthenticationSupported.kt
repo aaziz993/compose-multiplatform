@@ -26,7 +26,7 @@ internal interface AuthenticationSupported {
      *
      * @throws IllegalStateException when the credentials assigned to this repository are not of type [PasswordCredentials]
      */
-    val credentials: RepositoryPasswordCredentials?
+    val credentials: PasswordCredentials?
 
     fun applyTo(authenticationSupported: AuthenticationSupported) {
         credentials?.applyTo(authenticationSupported.credentials)

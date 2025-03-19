@@ -1,24 +1,34 @@
 package gradle.api.repositories.maven
 
+import gradle.api.applyTo
 import gradle.api.repositories.ArtifactRepository
-import gradle.api.repositories.RepositoryContentDescriptor
+import gradle.api.repositories.RepositoryContentDescriptorImpl
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.api.artifacts.repositories.MavenArtifactRepository
+import org.gradle.api.initialization.Settings
 import org.gradle.kotlin.dsl.withType
 
 @Serializable
 @SerialName("gradlePluginPortal")
 internal data class GradlePluginPortal(
-    override val content: RepositoryContentDescriptor? = null,
-) : ArtifactRepository {
+    override val content: RepositoryContentDescriptorImpl? = null,
+) : ArtifactRepository<org.gradle.api.artifacts.repositories.ArtifactRepository> {
 
     override val name: String
         get() = "gradlePluginPortal"
 
+    context(Settings)
     override fun applyTo(handler: RepositoryHandler) =
-        super.applyTo(handler.withType<MavenArtifactRepository>()) {
-            handler.gradlePluginPortal(it)
+        applyTo(handler.withType<org.gradle.api.artifacts.repositories.ArtifactRepository>()) { _, action ->
+            handler.gradlePluginPortal(action)
+        }
+
+    context(Project)
+    override fun applyTo(handler: RepositoryHandler) =
+        applyTo(handler.withType<org.gradle.api.artifacts.repositories.ArtifactRepository>()) { _, action ->
+            handler.gradlePluginPortal(action)
         }
 }

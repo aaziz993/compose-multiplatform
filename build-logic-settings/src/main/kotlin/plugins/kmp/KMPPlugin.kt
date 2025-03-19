@@ -8,11 +8,11 @@ import gradle.accessors.plugins
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
 import gradle.accessors.sourceSetsToComposeResourcesDirs
-import gradle.api.all
-import gradle.decapitalized
+import gradle.api.configureEach
 import gradle.api.file.replace
-import gradle.project.ProjectLayout
+import gradle.decapitalized
 import gradle.prefixIfNotEmpty
+import gradle.project.ProjectLayout
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.SourceSet
@@ -46,7 +46,7 @@ internal class KMPPlugin : Plugin<Project> {
             when (projectProperties.layout) {
                 ProjectLayout.FLAT -> {
                     val androidTargets = kotlin.targets.filterIsInstance<KotlinAndroidTarget>()
-                    kotlin.sourceSets.all { sourceSet ->
+                    kotlin.sourceSets.configureEach { sourceSet ->
                         var targetPart: String
                         var srcPrefixPart: String
                         var resourcesPrefixPart: String

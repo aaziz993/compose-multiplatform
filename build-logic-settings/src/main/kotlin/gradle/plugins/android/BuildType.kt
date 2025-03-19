@@ -2,9 +2,9 @@ package gradle.plugins.android
 
 import com.android.build.api.dsl.BuildType
 import gradle.accessors.android
-import gradle.api.Named
+
+import gradle.api.BaseNamed
 import gradle.api.trySet
-import org.gradle.api.Project
 
 /**
  * Build types define certain properties that Gradle uses when building and packaging your app, and
@@ -21,7 +21,7 @@ import org.gradle.api.Project
  * [configuring build types](https://developer.android.com/studio/build#build-config)
  * for more information.
  */
-internal interface BuildType : Named, VariantDimension {
+internal interface BuildType : BaseNamed, VariantDimension {
 
     /**
      * Specifies unit test code coverage data collection by configuring the JacocoPlugin.
@@ -182,9 +182,8 @@ internal interface BuildType : Named, VariantDimension {
 
     val vcsInfo: VcsInfo?
 
-    context(Project)
-    @Suppress("UnstableApiUsage")
-    override fun applyTo(named: org.gradle.api.Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         named as BuildType
 
         super<VariantDimension>.applyTo(named)

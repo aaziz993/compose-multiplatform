@@ -1,15 +1,15 @@
 package gradle.plugins.java
 
-import gradle.accessors.projectProperties
-import gradle.plugins.kmp.jvm.KotlinJvmTarget
-import gradle.collection.SerializableAnyMap
 import gradle.api.tasks.Expand
 import gradle.api.tasks.FilesMatching
+import gradle.api.tasks.applyTo
 import gradle.api.tasks.archive.Zip
 import gradle.api.tasks.copy.CopySpec
+import gradle.api.tasks.copy.CopySpecImpl
 import gradle.api.tasks.copy.FileCopyDetails
 import gradle.api.tasks.copy.FromSpec
 import gradle.api.tasks.copy.IntoSpec
+import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
@@ -20,7 +20,7 @@ import org.gradle.kotlin.dsl.withType
 /**
  * Assembles a JAR archive.
  */
-internal abstract class Jar : Zip() {
+internal abstract class Jar<T : org.gradle.api.tasks.bundling.Jar> : Zip<T>() {
 
     /**
      * The character set used to encode the manifest content.
@@ -49,30 +49,24 @@ internal abstract class Jar : Zip() {
      * @since 3.5
      */
 
-    abstract val metaInf: CopySpec?
+    abstract val metaInf: CopySpecImpl?
 
     context(Project)
-    override fun applyTo(named: Named) {
+    override fun applyTo(named: T) {
         super.applyTo(named)
-
-        named as org.gradle.api.tasks.bundling.Jar
 
         metadataCharset?.let(named::setMetadataCharset)
         manifestContentCharset?.let(named::setManifestContentCharset)
         manifest?.applyTo(named.manifest)
         metaInf?.applyTo(named.metaInf)
     }
-
-    context(Project)
-    override fun applyTo() =
-        super.applyTo(tasks.withType<org.gradle.api.tasks.bundling.Jar>())
 }
 
 @Serializable
 internal data class JarImpl(
     override var manifestContentCharset: String? = null,
     override var manifest: Manifest? = null,
-    override val metaInf: CopySpec? = null,
+    override val metaInf: CopySpecImpl? = null,
     override val entryCompression: ZipEntryCompression? = null,
     override val allowZip64: Boolean? = null,
     override val metadataCharset: String? = null,
@@ -120,4 +114,9 @@ internal data class JarImpl(
     override val setIncludes: List<String>? = null,
     override val excludes: List<String>? = null,
     override val setExcludes: List<String>?
-) : Jar()
+) : Jar<org.gradle.api.tasks.bundling.Jar>() {
+
+    context(Project)
+    override fun applyTo() =
+        applyTo(tasks.withType<org.gradle.api.tasks.bundling.Jar>())
+}

@@ -10,6 +10,6 @@ internal data class MissingDimensionStrategy(
 )
 
 internal object MissingDimensionStrategyTransformingSerializer : KeyTransformingSerializer<MissingDimensionStrategy>(
-        MissingDimensionStrategy.serializer(),
-        "dimension",
+    MissingDimensionStrategy.serializer(),
+    "dimension",
 )

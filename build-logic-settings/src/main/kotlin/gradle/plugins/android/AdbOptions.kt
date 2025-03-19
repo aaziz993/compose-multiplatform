@@ -12,7 +12,8 @@ internal data class AdbOptions(
     val timeOutInMs: Int? = null,
     /** The list of APK installation options. */
     val installOptions: List<String>? = null
-){
+) {
+
     fun applyTo(options: AdbOptions) {
         timeOutInMs?.let(options::timeOutInMs)
         installOptions?.let(options.installOptions::addAll)

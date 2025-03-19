@@ -1,6 +1,7 @@
 package gradle.plugins.kmp.web
 
 import gradle.accessors.kotlin
+
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
@@ -26,10 +27,10 @@ internal data class KotlinWasmJsTarget(
     val d8Dsl: KotlinWasmD8Dsl? = null,
 ) : KotlinWasmTargetDsl, KotlinJsTargetDsl {
 
-    context(Project)
-    override fun applyTo(named: Named) {
-        super<KotlinWasmTargetDsl>.applyTo(named)
-        super<KotlinJsTargetDsl>.applyTo(named)
+        context(Project)
+    override fun applyTo(named: T) {
+        super<KotlinWasmTargetDsl>._applyTo(named)
+        super<KotlinJsTargetDsl>._applyTo(named)
 
         named as KotlinWasmJsTargetDsl
 
@@ -42,7 +43,8 @@ internal data class KotlinWasmJsTarget(
         }
     }
 
-    context(Project)
-    override fun applyTo() =
-        applyTo(kotlin.targets.withType<KotlinWasmJsTargetDsl>(), kotlin::wasmJs)
+    context(GradleScope)
+    override fun _applyTo() = with(project) {
+        super._applyTo(kotlin.targets.withType<KotlinWasmJsTargetDsl>(), kotlin::wasmJs)
+    }
 }

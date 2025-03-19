@@ -1,7 +1,7 @@
 package gradle.plugins.dokka
 
-import gradle.collection.SerializableAnyMap
 import gradle.api.tasks.Task
+import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -11,7 +11,7 @@ internal abstract class DokkaBaseTask : Task {
 
     context(Project)
     override fun applyTo() =
-        super.applyTo(tasks.withType<org.jetbrains.dokka.gradle.tasks.DokkaBaseTask>())
+        applyTo(tasks.withType<org.jetbrains.dokka.gradle.tasks.DokkaBaseTask>())
 }
 
 @Serializable

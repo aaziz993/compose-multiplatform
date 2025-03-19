@@ -1,8 +1,8 @@
 package gradle.api.tasks.copy
 
-import gradle.collection.SerializableAnyMap
 import gradle.api.tasks.Expand
 import gradle.api.tasks.FilesMatching
+import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
 import org.gradle.api.file.DuplicatesStrategy
 
@@ -88,4 +88,4 @@ internal data class CopySpecImpl(
     override val setIncludes: List<String>? = null,
     override val excludes: List<String>? = null,
     override val setExcludes: List<String>? = null,
-) : CopySpec
+) : CopySpec<org.gradle.api.file.CopySpec>

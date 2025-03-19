@@ -1,6 +1,7 @@
 package gradle.plugins.kotlin
 
-import gradle.api.tasks.PatternFilterable
+
+import gradle.api.tasks.util.PatternFilterable
 import gradle.api.tasks.Task
 import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
@@ -9,7 +10,6 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 /**
  * Represents a Kotlin task participating in some stage of the build by compiling sources or running additional Kotlin tools.
@@ -46,8 +46,8 @@ internal interface KotlinCompileTool : PatternFilterable, Task {
      */
     val destinationDirectory: String?
 
-    context(Project)
-    override fun applyTo(named: Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         super<Task>.applyTo(named)
 
         named as org.jetbrains.kotlin.gradle.tasks.KotlinCompileTool

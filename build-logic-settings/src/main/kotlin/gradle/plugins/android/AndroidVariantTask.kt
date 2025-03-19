@@ -1,7 +1,7 @@
 package gradle.plugins.android
 
+
 import gradle.collection.SerializableAnyMap
-import gradle.plugins.cmp.desktop.AbstractComposeDesktopTask
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
@@ -18,9 +18,9 @@ import org.gradle.kotlin.dsl.withType
  */
 internal abstract class AndroidVariantTask : BaseTask(), VariantTask {
 
-    context(Project)
-    override fun applyTo(named: Named) {
-        super<BaseTask>.applyTo(named)
+        context(Project)
+    override fun applyTo(named: T) {
+        super<BaseTask>._applyTo(named)
 
         named as com.android.build.gradle.internal.tasks.AndroidVariantTask
 

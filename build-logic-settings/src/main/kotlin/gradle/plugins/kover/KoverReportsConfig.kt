@@ -103,7 +103,7 @@ internal data class KoverReportsConfig(
                 }
 
                 total.log?.let { log ->
-                    log (log::applyTo)
+                    log(log::applyTo)
                 }
 
                 additionalBinaryReports tryAssign total.additionalBinaryReports?.map(::file)

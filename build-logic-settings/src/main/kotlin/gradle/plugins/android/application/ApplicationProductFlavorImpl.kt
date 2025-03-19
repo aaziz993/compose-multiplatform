@@ -1,5 +1,6 @@
 package gradle.plugins.android.application
 
+import gradle.collection.SerializableAnyMap
 import gradle.plugins.android.ApkSigningConfigImpl
 import gradle.plugins.android.BuildConfigField
 import gradle.plugins.android.ExternalNativeBuildFlags
@@ -10,7 +11,6 @@ import gradle.plugins.android.Optimization
 import gradle.plugins.android.ResValue
 import gradle.plugins.android.Shaders
 import gradle.plugins.android.VectorDrawables
-import gradle.collection.SerializableAnyMap
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
 

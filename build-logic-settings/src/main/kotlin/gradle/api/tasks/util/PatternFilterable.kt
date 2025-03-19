@@ -1,4 +1,4 @@
-package gradle.api.tasks
+package gradle.api.tasks.util
 
 import org.gradle.api.tasks.util.PatternFilterable
 
@@ -52,7 +52,7 @@ import org.gradle.api.tasks.util.PatternFilterable
  * If no exclude patterns or spec are specified, then no files will be excluded. If any exclude patterns or specs are
  * specified, then a file is include only if it matches none of the patterns or specs.
  */
-internal interface PatternFilterable {
+internal interface PatternFilterable<in T: PatternFilterable> {
 
     /**
      * Add the allowable include patterns.  Note that unlike [.include] this replaces any previously
@@ -94,7 +94,7 @@ internal interface PatternFilterable {
      */
     val setExcludes: List<String>?
 
-    fun applyTo(filterable: PatternFilterable) {
+    fun applyTo(filterable: T) {
         includes?.let(filterable::include)
         setIncludes?.let(filterable::setIncludes)
         excludes?.let(filterable::exclude)

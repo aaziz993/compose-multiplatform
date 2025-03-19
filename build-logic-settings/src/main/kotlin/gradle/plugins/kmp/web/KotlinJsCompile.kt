@@ -1,7 +1,7 @@
 package gradle.plugins.kmp.web
 
-import gradle.plugins.kotlin.tasks.KotlinCompilationTask
 import gradle.collection.SerializableAnyMap
+import gradle.plugins.kotlin.tasks.KotlinCompilationTask
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

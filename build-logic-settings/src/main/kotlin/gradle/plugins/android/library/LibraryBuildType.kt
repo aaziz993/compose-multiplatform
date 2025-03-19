@@ -1,5 +1,7 @@
 package gradle.plugins.android.library
 
+
+import gradle.collection.SerializableAnyMap
 import gradle.plugins.android.AarMetadata
 import gradle.plugins.android.AndroidTest
 import gradle.plugins.android.ApkSigningConfigImpl
@@ -13,11 +15,9 @@ import gradle.plugins.android.PostProcessing
 import gradle.plugins.android.ResValue
 import gradle.plugins.android.Shaders
 import gradle.plugins.android.VcsInfo
-import gradle.collection.SerializableAnyMap
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
-import org.gradle.api.Project
 
 /**
  * Build types define certain properties that Gradle uses when building and packaging your library,
@@ -72,9 +72,8 @@ internal data class LibraryBuildType(
     override val isShrinkResources: Boolean?
         get() = false
 
-    context(Project)
-    @Suppress("UnstableApiUsage")
-    override fun applyTo(named: Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         super<BuildType>.applyTo(named)
 
         named as com.android.build.api.dsl.LibraryBuildType

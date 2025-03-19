@@ -1,6 +1,6 @@
 package gradle.api.repositories
 
-import gradle.api.maybeNamed
+import gradle.api.Named
 import gradle.isUrl
 import gradle.serialization.serializer.BaseKeyTransformingSerializer
 import gradle.serialization.serializer.JsonPolymorphicSerializer
@@ -8,23 +8,13 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
-import org.gradle.api.NamedDomainObjectCollection
+import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler
+import org.gradle.api.file.Directory
+import org.gradle.api.initialization.Settings
 
 @Serializable(with = ArtifactRepositorySerializer::class)
-internal interface ArtifactRepository {
-
-    /**
-     * Sets the name for this repository.
-     *
-     * If this repository is to be added to an [org.gradle.api.artifacts.ArtifactRepositoryContainer]
-     * (including [RepositoryHandler]), its name cannot be changed after it has
-     * been added to the container.
-     *
-     * @param name The name. Must not be null.
-     * @throws IllegalStateException If the name is set after it has been added to the container.
-     */
-    val name: String
+internal interface ArtifactRepository<T : org.gradle.api.artifacts.repositories.ArtifactRepository> : Named<T> {
 
     /**
      * Configures the content of this repository.
@@ -32,38 +22,39 @@ internal interface ArtifactRepository {
      *
      * @since 5.1
      */
-    val content: RepositoryContentDescriptor?
+    val content: RepositoryContentDescriptorImpl?
 
-    fun applyTo(repository: org.gradle.api.artifacts.repositories.ArtifactRepository) {
+    context(Settings)
+    @Suppress("UnstableApiUsage")
+    override fun applyTo(named: T) = with(layout.settingsDirectory) {
+        _applyTo(named)
+    }
+
+    context(Project)
+    override fun applyTo(named: T) = with(layout.projectDirectory) {
+        _applyTo(named)
+    }
+
+    context(Directory)
+    fun _applyTo(named: T) {
         content?.let { content ->
-            repository.content(content::applyTo)
+            named.content(content::applyTo)
         }
     }
 
-    fun applyTo(
-        named: NamedDomainObjectCollection<out org.gradle.api.artifacts.repositories.ArtifactRepository>,
-        create: ((org.gradle.api.artifacts.repositories.ArtifactRepository.() -> Unit) -> org.gradle.api.artifacts.repositories.ArtifactRepository)?
-    ) = named.configure(
-        name,
-        { _name ->
-            create?.invoke {
-                name = _name
-                applyTo(this)
-            }
-        },
-    ) {
-        applyTo(this)
-    }
+    context(Settings)
+    fun applyTo(handler: RepositoryHandler)
 
+    context(Project)
     fun applyTo(handler: RepositoryHandler)
 }
 
-private object ArtifactRepositorySerializer : JsonPolymorphicSerializer<ArtifactRepository>(
+private object ArtifactRepositorySerializer : JsonPolymorphicSerializer<ArtifactRepository<*>>(
     ArtifactRepository::class,
 )
 
-internal object ArtifactRepositoryTransformingSerializer : BaseKeyTransformingSerializer<ArtifactRepository>(
-    ArtifactRepository.serializer(),
+internal object ArtifactRepositoryTransformingSerializer : BaseKeyTransformingSerializer<ArtifactRepository<*>>(
+    ArtifactRepositorySerializer,
 ) {
 
     override fun transformKey(key: String, value: JsonElement?): JsonObject = JsonObject(
@@ -79,13 +70,4 @@ internal object ArtifactRepositoryTransformingSerializer : BaseKeyTransformingSe
             "url" to value,
         ),
     )
-}
-
-private inline fun <reified T> NamedDomainObjectCollection<out T>.configure(
-    name: String,
-    noinline create: (name: String) -> Unit,
-    noinline configure: T.() -> Unit
-) {
-    if (name.isEmpty()) all(configure)
-    else maybeNamed(name, configure) ?: create(name)
 }

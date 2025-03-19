@@ -1,5 +1,6 @@
 package gradle.plugins.cmp.desktop
 
+
 import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.SerialName
@@ -28,8 +29,8 @@ internal abstract class AbstractProguardTask : AbstractComposeDesktopTask() {
     abstract val maxHeapSize: String?
     abstract val destinationDir: String?
 
-    context(Project)
-    override fun applyTo(named: Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         super.applyTo(named)
 
         named as org.jetbrains.compose.desktop.application.tasks.AbstractProguardTask
@@ -51,7 +52,7 @@ internal abstract class AbstractProguardTask : AbstractComposeDesktopTask() {
 
     context(Project)
     override fun applyTo() =
-        super.applyTo(tasks.withType<org.jetbrains.compose.desktop.application.tasks.AbstractProguardTask>())
+        applyTo(tasks.withType<org.jetbrains.compose.desktop.application.tasks.AbstractProguardTask>())
 }
 
 @Serializable

@@ -1,9 +1,10 @@
 package gradle.api.initialization
 
-import gradle.project.Dependency
-import gradle.project.DependencyTransformingSerializer
 import gradle.api.repositories.ArtifactRepository
 import gradle.api.repositories.ArtifactRepositoryTransformingSerializer
+import gradle.project.Dependency
+import gradle.project.DependencyTransformingSerializer
+import java.util.SortedSet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.initialization.Settings
@@ -34,7 +35,7 @@ internal data class ScriptHandler(
      *
      * @return the repository handler. Never returns null.
      */
-    val repositories: List<@Serializable(with = ArtifactRepositoryTransformingSerializer::class) ArtifactRepository>? = null,
+    val repositories: Set<@Serializable(with = ArtifactRepositoryTransformingSerializer::class) ArtifactRepository<*>>? = null,
     /**
      * Returns the dependencies of the script. The returned dependency handler instance can be used for adding new
      * dependencies. For accessing already declared dependencies, the configurations can be used.
@@ -42,7 +43,7 @@ internal data class ScriptHandler(
      * @return the dependency handler. Never returns null.
      * @see .getConfigurations
      */
-    val dependencies: List<@Serializable(with = DependencyTransformingSerializer::class) Dependency>? = null,
+    val dependencies: Set<@Serializable(with = DependencyTransformingSerializer::class) Dependency>? = null,
 ) {
 
     context(Settings)

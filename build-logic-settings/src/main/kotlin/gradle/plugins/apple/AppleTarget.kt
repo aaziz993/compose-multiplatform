@@ -3,7 +3,6 @@ package gradle.plugins.apple
 import gradle.api.maybeNamed
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
-import kotlinx.serialization.Serializable
 import org.jetbrains.gradle.apple.targets.AppleTarget
 
 internal interface AppleTarget {

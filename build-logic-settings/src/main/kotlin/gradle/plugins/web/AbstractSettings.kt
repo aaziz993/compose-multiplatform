@@ -1,6 +1,5 @@
 package gradle.plugins.web
 
-import gradle.api.repositories.maybeRedirect
 import gradle.api.trySet
 import org.jetbrains.kotlin.gradle.targets.js.AbstractSettings
 import org.jetbrains.kotlin.gradle.targets.js.npm.tasks.KotlinNpmInstallTask

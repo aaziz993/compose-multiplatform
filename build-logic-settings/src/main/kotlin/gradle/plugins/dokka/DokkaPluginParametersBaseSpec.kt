@@ -4,12 +4,11 @@ import gradle.accessors.libraryAsDependency
 import gradle.accessors.libs
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
-import gradle.api.Named
+import gradle.api.BaseNamed
 import gradle.api.tryAssign
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import org.gradle.api.Project
 import org.gradle.kotlin.dsl.buildscript
 import org.jetbrains.dokka.gradle.engine.plugins.DokkaHtmlPluginParameters
 import org.jetbrains.dokka.gradle.engine.plugins.DokkaVersioningPluginParameters
@@ -25,7 +24,7 @@ import org.jetbrains.dokka.gradle.engine.plugins.DokkaVersioningPluginParameters
  * @param[pluginFqn] Fully qualified classname of the Dokka Plugin
  */
 @Serializable
-internal sealed class DokkaPluginParametersBaseSpec : Named {
+internal sealed class DokkaPluginParametersBaseSpec : BaseNamed {
 
     abstract val pluginFqn: String
 }
@@ -116,8 +115,8 @@ internal data class DokkaHtmlPluginParameters(
     override val pluginFqn: String
         get() = DokkaHtmlPluginParameters.DOKKA_HTML_PLUGIN_FQN
 
-    context(Project)
-    override fun applyTo(named: org.gradle.api.Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         named as DokkaHtmlPluginParameters
 
         customAssets?.let(named.customAssets::setFrom)
@@ -193,8 +192,8 @@ internal data class DokkaVersioningParameters(
     override val pluginFqn: String
         get() = DokkaVersioningPluginParameters.DOKKA_VERSIONING_PLUGIN_FQN
 
-    context(Project)
-    override fun applyTo(named: org.gradle.api.Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         buildscript {
             dependencies {
                 classpath(settings.libs.libraryAsDependency("dokka.versioning"))

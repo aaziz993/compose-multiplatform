@@ -1,11 +1,11 @@
 package gradle.plugins.java
 
-import gradle.collection.SerializableAnyMap
-import gradle.api.tasks.AbstractCompile
+
+import gradle.api.tasks.compile.AbstractCompile
 import gradle.api.tasks.compile.CompileOptions
 import gradle.api.tasks.compile.HasCompileOptions
+import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
-import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.kotlin.dsl.withType
@@ -52,8 +52,8 @@ internal data class JavaCompile(
     val modularity: ModularitySpec? = null,
 ) : AbstractCompile(), HasCompileOptions {
 
-    context(Project)
-    override fun applyTo(named: Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         super<AbstractCompile>.applyTo(named)
 
         named as JavaCompile

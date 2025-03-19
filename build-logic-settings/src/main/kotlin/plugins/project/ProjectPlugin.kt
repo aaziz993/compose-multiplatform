@@ -7,16 +7,17 @@ import gradle.accessors.exportExtras
 import gradle.accessors.kotlin
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
+import gradle.api.applyTo
 import gradle.api.isCI
 import gradle.api.maybeNamed
 import gradle.api.repositories.CacheRedirector
 import gradle.api.version
 import gradle.plugins.kmp.instanceOf
-import gradle.plugins.kmp.nat.android.KotlinAndroidNativeTarget
 import gradle.plugins.kmp.nat.android.KotlinAndroidNative32Target
 import gradle.plugins.kmp.nat.android.KotlinAndroidNative64Target
 import gradle.plugins.kmp.nat.android.KotlinAndroidNativeArm32Target
 import gradle.plugins.kmp.nat.android.KotlinAndroidNativeArm64Target
+import gradle.plugins.kmp.nat.android.KotlinAndroidNativeTarget
 import gradle.plugins.kmp.nat.android.KotlinAndroidNativeX64Target
 import gradle.plugins.kmp.nat.android.KotlinAndroidNativeX86Target
 import gradle.plugins.kmp.nat.apple.KotlinAppleTarget
@@ -110,10 +111,11 @@ import plugins.web.WasmWasiPlugin
 
 public class ProjectPlugin : Plugin<Project> {
 
+    @Suppress("UnstableApiUsage")
     override fun apply(target: Project): Unit = with(SLF4JProblemReporterContext()) {
         with(target) {
             // Load and apply project.yaml to build.gradle.kts properties.
-            projectProperties = layout.projectDirectory.load(settings.settingsDir).also { properties ->
+            projectProperties = layout.projectDirectory.load(settings.layout.settingsDirectory).also { properties ->
                 println("Load and apply $PROJECT_PROPERTIES_FILE to: $name")
                 println(yaml.dump(Json.Default.encodeToAny(properties)))
             }

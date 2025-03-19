@@ -1,22 +1,22 @@
 package gradle.plugins.kotlin.tasks
 
-import gradle.api.trySet
-import gradle.collection.SerializableAnyMap
+
 import gradle.api.tasks.test.AbstractTestTask
 import gradle.api.tasks.test.DefaultTestFilter
 import gradle.api.tasks.test.TestLoggingContainer
+import gradle.api.trySet
+import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
-import org.gradle.api.Project
 
 internal abstract class KotlinTest : AbstractTestTask() {
 
     abstract val targetName: String?
     abstract val ignoreRunFailures: Boolean?
 
-    context(Project)
-    override fun applyTo(named: Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         super.applyTo(named)
 
         named as org.jetbrains.kotlin.gradle.tasks.KotlinTest

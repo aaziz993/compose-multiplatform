@@ -1,10 +1,10 @@
 package gradle.plugins.kmp.web
 
-import gradle.collection.SerializableAnyMap
+
 import gradle.api.tasks.K2MultiplatformCompilationTask
 import gradle.api.tasks.ProducesKlib
+import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
-import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
@@ -31,14 +31,14 @@ internal data class Kotlin2JsCompile(
     K2MultiplatformCompilationTask,
     ProducesKlib {
 
-    context(Project)
-    override fun applyTo(named: Named) {
-        super<K2MultiplatformCompilationTask>.applyTo(named)
-        super<ProducesKlib>.applyTo(named)
+        context(Project)
+    override fun applyTo(named: T) {
+        super<K2MultiplatformCompilationTask>._applyTo(named)
+        super<ProducesKlib>._applyTo(named)
 
         named as Kotlin2JsCompile
 
-        compilerOptions?.applyTo(named.compilerOptions)
+        compilerOptions?._applyTo(named.compilerOptions)
         libraries?.let(named.libraries::setFrom)
     }
 

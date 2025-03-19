@@ -1,6 +1,7 @@
 package gradle.api.publish
 
 import gradle.api.Buildable
+import java.util.SortedSet
 import org.gradle.api.publish.PublicationArtifact
 
 /**
@@ -8,18 +9,16 @@ import org.gradle.api.publish.PublicationArtifact
  *
  * @since 4.8
  */
-internal interface PublicationArtifact : Buildable {
+internal interface PublicationArtifact<T: PublicationArtifact> : Buildable<T> {
 
     /**
      * Registers some tasks which build this artifact.
      *
      * @param tasks The tasks. These are evaluated as per [org.gradle.api.Task.dependsOn].
      */
-    val builtBy: List<String>?
+    val builtBy: Set<String>?
 
-    override fun applyTo(buildable: org.gradle.api.Buildable) {
-        buildable as PublicationArtifact
-
+    override fun applyTo(buildable: T) {
         builtBy?.let { builtBy ->
             buildable.builtBy(*builtBy.toTypedArray())
         }

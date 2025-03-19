@@ -1,8 +1,7 @@
 package gradle.plugins.java
 
-import gradle.process.ProcessForkOptions
 import gradle.collection.SerializableAnyMap
-import kotlinx.serialization.Serializable
+import gradle.process.ProcessForkOptions
 import org.gradle.api.Project
 import org.gradle.process.JavaForkOptions
 

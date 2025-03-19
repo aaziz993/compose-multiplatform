@@ -1,7 +1,7 @@
 package gradle.plugins.kmp
 
 import gradle.accessors.kotlin
-import gradle.api.Named
+import gradle.api.BaseNamed
 import gradle.plugins.kotlin.HasKotlinDependencies
 import gradle.plugins.kotlin.LanguageSettingsBuilder
 import gradle.project.Dependency
@@ -43,10 +43,10 @@ internal data class KotlinSourceSet(
      * These extensions are evaluated lazily and can include additional custom source file types beyond the default ".kt" and ".kts" ones.
      */
     val customSourceFilesExtensions: List<String>? = null,
-) : Named, HasKotlinDependencies {
+) : BaseNamed, HasKotlinDependencies {
 
-    context(Project)
-    override fun applyTo(named: org.gradle.api.Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         named as org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 
         dependencies?.let { dependencies ->

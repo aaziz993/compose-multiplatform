@@ -1,6 +1,5 @@
 package gradle.project
 
-import plugins.karakum.model.KarakumSettings
 import kotlinx.serialization.Serializable
 import plugins.animalsniffer.model.AnimalSnifferSettings
 import plugins.apivalidation.model.ApiValidationSettings
@@ -9,6 +8,7 @@ import plugins.develocity.model.DevelocitySettings
 import plugins.doctor.model.DoctorSettings
 import plugins.dokka.model.DokkaSettings
 import plugins.githooks.model.GitHooksSettings
+import plugins.karakum.model.KarakumSettings
 import plugins.knit.model.KnitSettings
 import plugins.kotlin.allopen.model.AllOpenSettings
 import plugins.kotlin.apollo.model.ApolloSettings

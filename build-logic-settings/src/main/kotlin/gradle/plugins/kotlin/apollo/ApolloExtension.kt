@@ -14,7 +14,7 @@ internal interface ApolloExtension {
     val services: List<Service>?
 
     context(Project)
-    fun applyTo(){
+    fun applyTo() {
         processors?.forEach { (schema, service, packageName) ->
             apollo.apolloKspProcessor(file(schema), service, packageName)
         }

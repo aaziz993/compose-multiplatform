@@ -41,7 +41,7 @@ internal data class LicenseHeaderFile(
                             file("${into}_SLASHED").writeText(
                                 "/**\n${
                                     templateText.lines().joinToString("\n", " * ")
-                                }\n */"
+                                }\n */",
                             )
                             file("${into}_SHARPED").writeText(templateText.lines().joinToString("\n", " # "))
                             file("${into}_TAGGED").writeText("$<--\n$templateText\n -->")

@@ -19,12 +19,12 @@ internal data class IvyPatternRepositoryLayout(
      * Adds an Ivy artifact pattern to define where artifacts are located in this repository.
      * @param pattern The ivy pattern
      */
-    val artifacts: List<String>? = null,
+    val artifacts: Set<String>? = null,
     /**
      * Adds an Ivy pattern to define where ivy files are located in this repository.
      * @param pattern The ivy pattern
      */
-    val ivys: List<String>? = null,
+    val ivys: Set<String>? = null,
     /**
      * Sets whether a Maven style layout is to be used for the 'organisation' part, replacing any dots with forward slashes.
      * Defaults to `false`.

@@ -5,9 +5,9 @@ import gradle.accessors.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
+import gradle.api.tasks.Task
 import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
-import gradle.api.tasks.Task
 import io.github.sgrishchenko.karakum.gradle.plugin.tasks.KarakumGenerate
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

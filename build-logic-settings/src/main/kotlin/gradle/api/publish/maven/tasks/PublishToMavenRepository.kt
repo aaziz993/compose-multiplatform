@@ -1,15 +1,19 @@
 package gradle.api.publish.maven.tasks
 
 import gradle.accessors.publishing
-import gradle.collection.SerializableAnyMap
+
 import gradle.api.repositories.maven.Maven
+import gradle.api.tasks.applyTo
+import gradle.collection.SerializableAnyMap
+import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.api.artifacts.repositories.ArtifactRepository
+import org.gradle.api.artifacts.repositories.MavenArtifactRepository
 import org.gradle.api.publish.maven.tasks.PublishToMavenRepository
 import org.gradle.kotlin.dsl.withType
 
-@kotlinx.serialization.Serializable
+@Serializable
 internal data class PublishToMavenRepository(
     override val dependsOn: List<String>? = null,
     override val onlyIf: Boolean? = null,
@@ -25,21 +29,21 @@ internal data class PublishToMavenRepository(
     override val shouldRunAfter: List<String>? = null,
     override val name: String = "",
     val repository: Maven? = null,
-) : AbstractPublishToMaven() {
+    override val publication: String? = null,
+) : AbstractPublishToMaven<PublishToMavenRepository>() {
 
     context(Project)
-    override fun applyTo(named: Named) {
+    override fun applyTo(named: PublishToMavenRepository) {
         super.applyTo(named)
 
-        named as PublishToMavenRepository
         PublishToMavenLocal
         repository?.let { repository ->
             if (repository.name.isEmpty() || repository.name == named.name) {
-                repository.applyTo(named.repository as ArtifactRepository)
+                repository.applyTo(named.repository)
             }
             else {
                 named.repository = publishing.repositories.maven {
-                    repository.applyTo(this as ArtifactRepository)
+                    repository.applyTo(this)
                 }
             }
         }
@@ -47,5 +51,5 @@ internal data class PublishToMavenRepository(
 
     context(Project)
     override fun applyTo() =
-        super.applyTo(tasks.withType<PublishToMavenRepository>())
+        applyTo(tasks.withType<PublishToMavenRepository>())
 }

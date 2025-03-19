@@ -6,10 +6,10 @@ import gradle.accessors.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
-import gradle.project.EnabledSettings
 import gradle.plugins.spotless.FormatExtension
 import gradle.plugins.spotless.FormatExtensionTransformingSerializer
 import gradle.plugins.spotless.SpotlessExtension
+import gradle.project.EnabledSettings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

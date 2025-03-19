@@ -1,11 +1,12 @@
 package gradle.plugins.kmp.nat
 
+
+import gradle.api.tasks.test.DefaultTestFilter
+import gradle.api.tasks.test.TestLoggingContainer
 import gradle.api.tryAssign
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.kotlin.tasks.KotlinTest
-import gradle.api.tasks.test.DefaultTestFilter
-import gradle.api.tasks.test.TestLoggingContainer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
@@ -42,8 +43,8 @@ internal data class KotlinNativeTest(
     val trackEnvironments: List<@Serializable(with = TrackEnvironmentTransformingSerializer::class) TrackEnvironment>? = null,
 ) : KotlinTest() {
 
-    context(Project)
-    override fun applyTo(named: Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         super.applyTo(named)
 
         named as KotlinNativeTest
@@ -63,5 +64,5 @@ internal data class KotlinNativeTest(
 
     context(Project)
     override fun applyTo() =
-        super.applyTo(tasks.withType<KotlinNativeTest>())
+        applyTo(tasks.withType<KotlinNativeTest>())
 }

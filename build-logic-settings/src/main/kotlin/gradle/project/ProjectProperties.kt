@@ -3,13 +3,15 @@ package gradle.project
 import gradle.api.initialization.DependencyResolutionManagement
 import gradle.api.initialization.PluginManagement
 import gradle.api.initialization.ProjectDescriptor
-import gradle.caching.BuildCacheConfiguration
-import gradle.collection.deepMerge
-import gradle.collection.resolve
 import gradle.api.initialization.ScriptHandler
 import gradle.api.publish.maven.MavenPomDeveloper
 import gradle.api.publish.maven.MavenPomLicense
 import gradle.api.publish.maven.MavenPomScm
+import gradle.api.tasks.Task
+import gradle.api.tasks.TaskTransformingSerializer
+import gradle.caching.BuildCacheConfiguration
+import gradle.collection.deepMerge
+import gradle.collection.resolve
 import gradle.plugins.android.BaseExtension
 import gradle.plugins.android.application.BaseAppModuleExtension
 import gradle.plugins.android.library.LibraryExtension
@@ -20,14 +22,12 @@ import gradle.plugins.kotlin.KotlinSettings
 import gradle.plugins.web.NodeJsEnvSpec
 import gradle.plugins.web.npm.NpmExtension
 import gradle.plugins.web.yarn.YarnRootExtension
-import gradle.serialization.decodeFromAny
-import gradle.api.tasks.Task
-import gradle.api.tasks.TaskTransformingSerializer
 import gradle.project.file.CodeOfConductFile
 import gradle.project.file.ContributingFile
 import gradle.project.file.LicenseFile
 import gradle.project.file.LicenseHeaderFile
 import gradle.project.file.ProjectFile
+import gradle.serialization.decodeFromAny
 import java.io.File
 import java.util.*
 import kotlinx.serialization.Serializable
@@ -91,7 +91,7 @@ internal data class ProjectProperties(
         val yaml = Yaml()
 
         @Suppress("UNCHECKED_CAST")
-        fun Directory.load(settingsDir: File): ProjectProperties {
+        fun Directory.load(settingsDir: Directory): ProjectProperties {
             val propertiesFile = file(PROJECT_PROPERTIES_FILE).asFile
 
             return if (propertiesFile.exists()) {
@@ -115,7 +115,7 @@ internal data class ProjectProperties(
                 ProjectProperties()
             }.apply {
                 localProperties.apply {
-                    val file = settingsDir.resolve(localPropertiesFile)
+                    val file = settingsDir.file(localPropertiesFile)
                     if (file.exists()) {
                         load(file.reader())
                     }

@@ -1,6 +1,6 @@
 package gradle.api.repositories
 
-import org.gradle.api.artifacts.repositories.RepositoryContentDescriptor
+import kotlinx.serialization.Serializable
 
 /**
  *
@@ -15,14 +15,14 @@ import org.gradle.api.artifacts.repositories.RepositoryContentDescriptor
  * @since 5.1
  */
 
-internal interface RepositoryContentDescriptor : InclusiveRepositoryContentDescriptor {
+internal interface RepositoryContentDescriptor : InclusiveRepositoryContentDescriptor<org.gradle.api.artifacts.repositories.RepositoryContentDescriptor> {
 
     /**
      * Declares that an entire group shouldn't be searched for in this repository.
      *
      * @param group the group name
      */
-    val excludeGroups: List<String>?
+    val excludeGroups: Set<String>?
 
     /**
      * Declares that an entire group and its subgroups shouldn't be searched for in this repository.
@@ -38,14 +38,14 @@ internal interface RepositoryContentDescriptor : InclusiveRepositoryContentDescr
      * @param groupPrefix the group prefix to include
      * @since 8.1
      */
-    val excludeGroupsAndSubgroups: List<String>?
+    val excludeGroupsAndSubgroups: Set<String>?
 
     /**
      * Declares that an entire group shouldn't be searched for in this repository.
      *
      * @param groupRegex the group name regular expression
      */
-    val excludeGroupByRegexes: List<String>?
+    val excludeGroupByRegexes: Set<String>?
 
     /**
      * Declares that an entire module shouldn't be searched for in this repository.
@@ -53,7 +53,7 @@ internal interface RepositoryContentDescriptor : InclusiveRepositoryContentDescr
      * @param group the group name
      * @param moduleName the module name
      */
-    val excludeModules: List<Module>?
+    val excludeModules: Set<Module>?
 
     /**
      * Declares that an entire module shouldn't be searched for in this repository, using regular expressions.
@@ -61,7 +61,7 @@ internal interface RepositoryContentDescriptor : InclusiveRepositoryContentDescr
      * @param groupRegex the group name regular expression
      * @param moduleNameRegex the module name regular expression
      */
-    val excludeModulesByRegexes: List<Module>?
+    val excludeModulesByRegexes: Set<Module>?
 
     /**
      * Declares that a specific module version shouldn't be searched for in this repository.
@@ -73,7 +73,7 @@ internal interface RepositoryContentDescriptor : InclusiveRepositoryContentDescr
      * @param moduleName the module name
      * @param version the module version
      */
-    val excludeVersions: List<Version>?
+    val excludeVersions: Set<Version>?
 
     /**
      * Declares that a specific module version shouldn't be searched for in this repository, using regular expressions.
@@ -85,7 +85,7 @@ internal interface RepositoryContentDescriptor : InclusiveRepositoryContentDescr
      * @param moduleNameRegex the module name
      * @param versionRegex the module version
      */
-    val excludeVersionsByRegexes: List<Version>?
+    val excludeVersionsByRegexes: Set<Version>?
 
     /**
      * Declares that this repository should not be used for a specific
@@ -93,13 +93,11 @@ internal interface RepositoryContentDescriptor : InclusiveRepositoryContentDescr
      *
      * @param configurationNames the names of the configurations the repository will not be used for
      */
-    val notForConfigurations: List<String>?
+    val notForConfigurations: Set<String>?
 
     @Suppress("UnstableApiUsage")
-    override fun applyTo(descriptor: org.gradle.api.artifacts.repositories.InclusiveRepositoryContentDescriptor) {
+    override fun applyTo(descriptor: org.gradle.api.artifacts.repositories.RepositoryContentDescriptor) {
         super.applyTo(descriptor)
-
-        descriptor as RepositoryContentDescriptor
 
         excludeGroups?.forEach(descriptor::excludeGroup)
         excludeGroupsAndSubgroups?.forEach(descriptor::excludeGroupAndSubgroups)
@@ -126,3 +124,22 @@ internal interface RepositoryContentDescriptor : InclusiveRepositoryContentDescr
         }
     }
 }
+
+@Serializable
+internal data class RepositoryContentDescriptorImpl(
+    override val excludeGroups: Set<String>? = null,
+    override val excludeGroupsAndSubgroups: Set<String>? = null,
+    override val excludeGroupByRegexes: Set<String>? = null,
+    override val excludeModules: Set<Module>? = null,
+    override val excludeModulesByRegexes: Set<Module>? = null,
+    override val excludeVersions: Set<Version>? = null,
+    override val excludeVersionsByRegexes: Set<Version>? = null,
+    override val notForConfigurations: Set<String>? = null,
+    override val includeGroups: Set<String>? = null,
+    override val includeGroupsAndSubgroups: Set<String>? = null,
+    override val includeGroupsByRegexes: Set<String>? = null,
+    override val includeModules: Set<Module>? = null,
+    override val includeModulesByRegexes: Set<Module>? = null,
+    override val includeVersions: Set<Version>? = null,
+    override val includeVersionsByRegexes: Set<Version>? = null,
+) : RepositoryContentDescriptor

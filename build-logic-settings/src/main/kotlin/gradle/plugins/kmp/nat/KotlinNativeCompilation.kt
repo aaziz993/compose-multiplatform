@@ -1,5 +1,6 @@
 package gradle.plugins.kmp.nat
 
+
 import gradle.plugins.kmp.KotlinSourceSet
 import gradle.plugins.kotlin.KotlinCompilation
 import gradle.plugins.kotlin.KotlinCompilationOutput
@@ -8,7 +9,6 @@ import gradle.project.Dependency
 import gradle.project.DependencyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
-import org.gradle.api.Project
 
 @Serializable
 internal data class KotlinNativeCompilation(
@@ -23,8 +23,8 @@ internal data class KotlinNativeCompilation(
     val cinterops: List<DefaultCInteropSettings>? = null
 ) : KotlinCompilation {
 
-    context(Project)
-    override fun applyTo(named: Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         super.applyTo(named)
 
         named as org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeCompilation

@@ -1,13 +1,13 @@
-package gradle.api.tasks
+package gradle.api.file
 
+import gradle.api.tasks.Expand
 import gradle.collection.SerializableAnyMap
-import kotlinx.serialization.Serializable
 import org.gradle.api.file.ContentFilterable
 
 /**
  * Represents some binary resource whose content can be filtered.
  */
-internal interface ContentFilterable {
+internal interface ContentFilterable<T : ContentFilterable> {
 
     /**
      *
@@ -37,7 +37,7 @@ internal interface ContentFilterable {
      *
      * Note that by default all escape sequences (`\n`, `\t`, `\\`, etc) are converted to the symbols
      * they represent, so, for example, `\n` becomes newline. This behavior is controlled by
-     * [ExpandDetails.getEscapeBackslash] property. It should be set to `true` to disable escape sequences
+     * [gradle.api.tasks.ExpandDetails.getEscapeBackslash] property. It should be set to `true` to disable escape sequences
      * conversion:
      * <pre>
      * expand(one: '1', two: 2) {
@@ -52,10 +52,10 @@ internal interface ContentFilterable {
      */
     val expandDetails: Expand?
 
-    fun applyTo(filterable: ContentFilterable) {
-        expand?.let(filterable::expand)
+    fun applyTo(recipient: T) {
+        expand?.let(recipient::expand)
         expandDetails?.let { expandDetails ->
-            filterable.expand(expandDetails.properties) {
+            recipient.expand(expandDetails.properties) {
                 expandDetails.expandDetails.applyTo(this)
             }
         }

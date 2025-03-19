@@ -1,8 +1,12 @@
 package gradle.api.tasks.download
 
-import gradle.api.tasks.Task
+import org.gradle.kotlin.dsl.withType
+import gradle.api.tasks.DefaultTask
+import gradle.api.tasks.applyTo
 import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
+import org.jetbrains.compose.internal.de.undercouch.gradle.tasks.download.Download
 
 @Serializable
 internal data class Download(
@@ -40,4 +44,9 @@ internal data class Download(
     override val cachedETagsFile: String? = null,
     override val method: String? = null,
     override val body: String? = null,
-) : Task, DownloadSpec
+) : DefaultTask<Download>(), DownloadSpec {
+
+    context(Project)
+    override fun applyTo() =
+        applyTo(tasks.withType<Download>())
+}

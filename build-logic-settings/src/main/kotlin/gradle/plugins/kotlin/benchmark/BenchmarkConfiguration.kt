@@ -1,14 +1,12 @@
 package gradle.plugins.kotlin.benchmark
 
+import gradle.api.BaseNamed
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
 import gradle.collection.SerializableOptionalAnyList
 import kotlinx.benchmark.gradle.BenchmarkConfiguration
-import kotlinx.benchmark.gradle.JavaBenchmarkTarget
-import kotlinx.benchmark.gradle.JsBenchmarkTarget
-import kotlinx.benchmark.gradle.KotlinJvmBenchmarkTarget
-import kotlinx.benchmark.gradle.NativeBenchmarkTarget
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
 
 @Serializable
 internal data class BenchmarkConfiguration(
@@ -19,24 +17,25 @@ internal data class BenchmarkConfiguration(
     val iterationTimeUnit: String? = null,
     val iterations: Int? = null,
     val mode: String? = null,
-    val name: String = "",
+    override val name: String = "",
     val outputTimeUnit: String? = null,
     val params: Map<String, SerializableOptionalAnyList>? = null,
     val reportFormat: String? = null,
     val warmups: Int? = null,
-) {
+) : BaseNamed<BenchmarkConfiguration> {
 
-    fun applyTo(configuration: BenchmarkConfiguration) {
-        advanced?.forEach(configuration::advanced)
-        excludes?.let(configuration.excludes::addAll)
-        includes?.let(configuration.includes::addAll)
-        configuration::iterationTime trySet iterationTime
-        configuration::iterationTimeUnit trySet iterationTimeUnit
-        configuration::iterations trySet iterations
-        configuration::mode trySet mode
-        configuration::outputTimeUnit trySet outputTimeUnit
-        configuration::params trySet params?.mapValues { (_, value) -> value.toMutableList() }?.toMutableMap()
-        configuration::reportFormat trySet reportFormat
-        configuration::warmups trySet warmups
+    context(Project)
+    override fun applyTo(named: BenchmarkConfiguration) {
+        advanced?.forEach(named::advanced)
+        excludes?.let(named.excludes::addAll)
+        includes?.let(named.includes::addAll)
+        named::iterationTime trySet iterationTime
+        named::iterationTimeUnit trySet iterationTimeUnit
+        named::iterations trySet iterations
+        named::mode trySet mode
+        named::outputTimeUnit trySet outputTimeUnit
+        named::params trySet params?.mapValues { (_, value) -> value.toMutableList() }?.toMutableMap()
+        named::reportFormat trySet reportFormat
+        named::warmups trySet warmups
     }
 }

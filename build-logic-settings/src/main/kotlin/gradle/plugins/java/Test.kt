@@ -1,21 +1,19 @@
 package gradle.plugins.java
 
 import gradle.accessors.javaToolchain
-import gradle.api.tryAssign
-import gradle.collection.SerializableAnyMap
-import gradle.api.tasks.PatternFilterable
+
+import gradle.api.tasks.util.PatternFilterable
 import gradle.api.tasks.test.AbstractTestTask
 import gradle.api.tasks.test.DefaultTestFilter
 import gradle.api.tasks.test.TestLoggingContainer
+import gradle.api.tryAssign
+import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
-import org.gradle.jvm.toolchain.JavaLanguageVersion
-import org.gradle.jvm.toolchain.JavaToolchainService
-import org.gradle.kotlin.dsl.withType
 import org.gradle.kotlin.dsl.assign
-import org.gradle.kotlin.dsl.the
+import org.gradle.kotlin.dsl.withType
 
 /**
  * Executes JUnit (3.8.x, 4.x or 5.x) or TestNG tests. Test are always run in (one or more) separate JVMs.
@@ -232,9 +230,8 @@ internal abstract class Test : AbstractTestTask(), JavaForkOptions, PatternFilte
 
     abstract val javaLauncher: JavaToolchainSpec?
 
-    context(Project)
-    @Suppress("UnstableApiUsage")
-    override fun applyTo(named: Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         super<AbstractTestTask>.applyTo(named)
 
         named as org.gradle.api.tasks.testing.Test

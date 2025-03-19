@@ -1,7 +1,6 @@
 package gradle.plugins.android
 
 import gradle.collection.SerializableAnyMap
-import gradle.plugins.android.BaseTask
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -12,10 +11,9 @@ import org.gradle.kotlin.dsl.withType
  */
 internal abstract class NonIncrementalTask : AndroidVariantTask() {
 
-
     context(Project)
     override fun applyTo() =
-        super.applyTo(tasks.withType<com.android.build.gradle.internal.tasks.NonIncrementalTask>())
+        applyTo(tasks.withType<com.android.build.gradle.internal.tasks.NonIncrementalTask>())
 }
 
 @Serializable

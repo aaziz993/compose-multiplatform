@@ -1,7 +1,8 @@
 package gradle.plugins.kmp
 
 import gradle.accessors.kotlin
-import gradle.api.Named
+import gradle.api.ProjectNamed
+import gradle.api.applyTo
 import gradle.plugins.kotlin.KotlinCompilation
 import gradle.serialization.serializer.JsonPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
@@ -10,7 +11,7 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
 @Serializable(with = KotlinTargetSerializer::class)
-internal interface KotlinTarget : Named {
+internal interface KotlinTarget<T : org.jetbrains.kotlin.gradle.plugin.KotlinTarget> : ProjectNamed<T> {
 
     val targetName: String
 
@@ -29,9 +30,7 @@ internal interface KotlinTarget : Named {
         get() = true
 
     context(Project)
-    override fun applyTo(named: org.gradle.api.Named) {
-        named as org.jetbrains.kotlin.gradle.plugin.KotlinTarget
-
+    override fun applyTo(named: T) {
         this@KotlinTarget.compilations?.forEach { compilation ->
             named.compilations.named(compilation.name) {
                 compilation.applyTo(this)
@@ -40,15 +39,15 @@ internal interface KotlinTarget : Named {
     }
 
     context(Project)
-    override fun applyTo() = applyTo(kotlin.targets)
+    fun applyTo()
 }
 
-private object KotlinTargetSerializer : JsonPolymorphicSerializer<KotlinTarget>(
+private object KotlinTargetSerializer : JsonPolymorphicSerializer<KotlinTarget<*>>(
     KotlinTarget::class,
 )
 
-internal object KotlinTargetTransformingSerializer : KeyTransformingSerializer<KotlinTarget>(
-    KotlinTarget.serializer(),
+internal object KotlinTargetTransformingSerializer : KeyTransformingSerializer<KotlinTarget<*>>(
+    KotlinTargetSerializer,
     "type",
 )
 
@@ -56,12 +55,17 @@ internal object KotlinTargetTransformingSerializer : KeyTransformingSerializer<K
 @SerialName("KotlinTarget")
 internal data class KotlinTargetIml(
     override val compilations: List<KotlinCompilation>? = null,
-) : KotlinTarget {
+) : KotlinTarget<org.jetbrains.kotlin.gradle.plugin.KotlinTarget> {
 
     override val targetName: String
         get() = ""
+
+    context(Project)
+    override fun applyTo() {
+        applyTo(kotlin.targets) { _, _ -> }
+    }
 }
 
 @Suppress("UNCHECKED_CAST")
-internal inline fun <reified T : Any> List<KotlinTarget>.instanceOf(): List<KotlinTarget> =
-    filterIsInstance<T>() as List<KotlinTarget>
+internal inline fun <reified T : Any> List<KotlinTarget<*>>.instanceOf(): List<KotlinTarget<*>> =
+    filterIsInstance<T>() as List<KotlinTarget<*>>

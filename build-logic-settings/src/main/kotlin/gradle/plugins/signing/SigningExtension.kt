@@ -1,6 +1,5 @@
 package gradle.plugins.signing
 
-import org.gradle.kotlin.dsl.withType
 import com.vanniktech.maven.publish.tasks.WorkaroundSignatureType
 import gradle.accessors.publishing
 import gradle.accessors.signing
@@ -10,7 +9,7 @@ import gradle.api.toVersion
 import gradle.collection.resolveValue
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
-import org.gradle.kotlin.dsl.provideDelegate
+import org.gradle.kotlin.dsl.withType
 import org.gradle.plugins.signing.Sign
 import org.gradle.plugins.signing.SignOperation
 import org.gradle.plugins.signing.type.pgp.ArmoredSignatureType

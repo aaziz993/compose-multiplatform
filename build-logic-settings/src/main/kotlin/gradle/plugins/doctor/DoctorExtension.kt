@@ -109,7 +109,7 @@ internal interface DoctorExtension {
         doctor.appleRosettaTranslationCheckMode tryAssign appleRosettaTranslationCheckMode
 
         javaHome?.let { javaHome ->
-            doctor.javaHome (javaHome::applyTo)
+            doctor.javaHome(javaHome::applyTo)
         }
     }
 }

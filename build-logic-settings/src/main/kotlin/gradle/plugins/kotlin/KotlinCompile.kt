@@ -1,6 +1,6 @@
 package gradle.plugins.kotlin
 
-import org.gradle.kotlin.dsl.withType
+
 import gradle.api.tasks.K2MultiplatformCompilationTask
 import gradle.api.tryAssign
 import gradle.api.trySet
@@ -12,6 +12,7 @@ import gradle.plugins.kotlin.tasks.AbstractKotlinCompileTool
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.jvm.JvmTargetValidationMode
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -59,8 +60,8 @@ internal data class KotlinCompile(
 ) : AbstractKotlinCompileTool(), K2MultiplatformCompilationTask,
     KotlinJvmCompile {
 
-    context(Project)
-    override fun applyTo(named: Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         super<AbstractKotlinCompileTool>.applyTo(named)
         super<K2MultiplatformCompilationTask>.applyTo(named)
         super<KotlinJvmCompile>.applyTo(named)
@@ -90,6 +91,7 @@ internal data class KotlinCompile(
         // Set if useClasspathSnapshot == true
         val classpathSnapshotDir: String? = null,
     ) {
+
         context(Project)
         fun applyTo(properties: KotlinCompile.ClasspathSnapshotProperties) {
             properties.useClasspathSnapshot tryAssign useClasspathSnapshot

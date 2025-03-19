@@ -1,13 +1,14 @@
 package gradle.api.tasks.archive
 
-import gradle.api.tryAssign
-import gradle.collection.SerializableAnyMap
 import gradle.api.tasks.Expand
 import gradle.api.tasks.FilesMatching
+import gradle.api.tasks.applyTo
 import gradle.api.tasks.copy.AbstractCopyTask
 import gradle.api.tasks.copy.FileCopyDetails
 import gradle.api.tasks.copy.FromSpec
 import gradle.api.tasks.copy.IntoSpec
+import gradle.api.tryAssign
+import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
@@ -18,7 +19,7 @@ import org.gradle.kotlin.dsl.withType
 /**
  * `AbstractArchiveTask` is the base class for all archive tasks.
  */
-internal abstract class AbstractArchiveTask : AbstractCopyTask() {
+internal abstract class AbstractArchiveTask<T : org.gradle.api.tasks.bundling.AbstractArchiveTask> : AbstractCopyTask<T>() {
 
     /**
      * Returns the archive name. If the name has not been explicitly set, the pattern for the name is:
@@ -102,10 +103,8 @@ internal abstract class AbstractArchiveTask : AbstractCopyTask() {
     abstract val reproducibleFileOrder: Boolean?
 
     context(Project)
-    override fun applyTo(named: Named) {
+    override fun applyTo(named: T) {
         super.applyTo(named)
-
-        named as org.gradle.api.tasks.bundling.AbstractArchiveTask
 
         named.archiveBaseName tryAssign archiveBaseName
         named.destinationDirectory tryAssign destinationDirectory?.let(layout.projectDirectory::dir)
@@ -125,10 +124,6 @@ internal abstract class AbstractArchiveTask : AbstractCopyTask() {
         preserveFileTimestamps?.let(named::setPreserveFileTimestamps)
         reproducibleFileOrder?.let(named::setReproducibleFileOrder)
     }
-
-    context(Project)
-    override fun applyTo() =
-        super.applyTo(tasks.withType<org.gradle.api.tasks.bundling.AbstractArchiveTask>())
 }
 
 @Serializable
@@ -178,4 +173,9 @@ internal data class AbstractArchiveTaskImpl(
     override val excludes: List<String>? = null,
     override val setExcludes: List<String>? = null,
     override val name: String = "",
-) : AbstractArchiveTask()
+) : AbstractArchiveTask<org.gradle.api.tasks.bundling.AbstractArchiveTask>() {
+
+    context(Project)
+    override fun applyTo() =
+        applyTo(tasks.withType<org.gradle.api.tasks.bundling.AbstractArchiveTask>())
+}

@@ -1,13 +1,12 @@
 package gradle.plugins.kmp.web
 
+
+import gradle.process.AbstractExecTask
 import gradle.api.tryAssign
 import gradle.api.trySet
-import gradle.collection.SerializableAnyMap
 import gradle.collection.SerializableAnyList
-import gradle.api.tasks.AbstractExecTask
+import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
-import org.gradle.api.Named
-import org.gradle.api.Project
 
 @Serializable
 internal data class D8Exec(
@@ -37,8 +36,8 @@ internal data class D8Exec(
     val inputFileProperty: String? = null,
 ) : AbstractExecTask<D8Exec>() {
 
-    context(Project)
-    override fun applyTo(named: Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         super.applyTo(named)
 
         named as org.jetbrains.kotlin.gradle.targets.js.d8.D8Exec

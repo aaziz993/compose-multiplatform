@@ -4,9 +4,6 @@ import arrow.core.fold
 import gradle.isUrl
 import java.io.File
 import java.net.URI
-import kotlin.collections.component1
-import kotlin.collections.component2
-import kotlinx.serialization.Serializable
 import org.apache.commons.io.FileUtils
 import org.apache.tools.ant.filters.ReplaceTokens
 import org.gradle.api.DefaultTask

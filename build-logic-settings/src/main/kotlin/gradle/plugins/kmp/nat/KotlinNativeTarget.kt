@@ -1,6 +1,7 @@
 package gradle.plugins.kmp.nat
 
 import gradle.accessors.kotlin
+
 import gradle.plugins.kmp.HasBinaries
 import gradle.plugins.kmp.KotlinTarget
 import gradle.plugins.kotlin.HasConfigurableKotlinCompilerOptions
@@ -16,8 +17,8 @@ internal abstract class KotlinNativeTarget : KotlinTarget,
 
     abstract override val compilations: List<KotlinNativeCompilation>?
 
-    context(Project)
-    override fun applyTo(named: Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         super<KotlinTarget>.applyTo(named)
 
         named as org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget

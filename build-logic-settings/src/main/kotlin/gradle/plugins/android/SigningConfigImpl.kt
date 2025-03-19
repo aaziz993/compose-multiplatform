@@ -1,9 +1,8 @@
 package gradle.plugins.android
 
-import gradle.api.Named
+import gradle.api.BaseNamed
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
-import org.gradle.api.Project
 
 @Serializable
 internal data class SigningConfigImpl(
@@ -18,10 +17,10 @@ internal data class SigningConfigImpl(
     override val keyPassword: String? = null,
     override val storeType: String? = null,
     override val initWith: String? = null,
-) : Named, ApkSigningConfig, InternalSigningConfig {
+) : BaseNamed, ApkSigningConfig, InternalSigningConfig {
 
-    context(Project)
-    override fun applyTo(named: org.gradle.api.Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         super<ApkSigningConfig>.applyTo(named)
         super<InternalSigningConfig>.applyTo(named)
     }

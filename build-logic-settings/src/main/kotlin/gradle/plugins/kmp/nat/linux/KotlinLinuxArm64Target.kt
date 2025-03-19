@@ -21,6 +21,6 @@ internal data class KotlinLinuxArm64Target(
 ) : KotlinNativeTarget(), KotlinLinuxTarget {
 
     context(Project)
-    override fun applyTo()  =
+    override fun applyTo() =
         super.applyTo(kotlin.targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>(), kotlin::linuxArm64)
 }

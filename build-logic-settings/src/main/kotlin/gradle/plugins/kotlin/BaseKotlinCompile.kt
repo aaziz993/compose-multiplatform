@@ -1,6 +1,6 @@
 package gradle.plugins.kotlin
 
-import gradle.api.tasks.Task
+
 import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.kmp.nat.CompilerPluginConfig
@@ -57,8 +57,8 @@ internal interface BaseKotlinCompile : KotlinCompileTool {
 
     val useModuleDetection: Boolean?
 
-    context(Project)
-    override fun applyTo(named: Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         super.applyTo(named)
 
         named as org.jetbrains.kotlin.gradle.tasks.BaseKotlinCompile
@@ -74,7 +74,7 @@ internal interface BaseKotlinCompile : KotlinCompileTool {
 
     context(Project)
     override fun applyTo() =
-        super.applyTo(tasks.withType<org.jetbrains.kotlin.gradle.tasks.BaseKotlinCompile>())
+        applyTo(tasks.withType<org.jetbrains.kotlin.gradle.tasks.BaseKotlinCompile>())
 }
 
 @Serializable

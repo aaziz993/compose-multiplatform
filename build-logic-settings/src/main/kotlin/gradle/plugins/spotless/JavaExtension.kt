@@ -115,8 +115,9 @@ internal data class JavaExtension(
         val mutators: List<String?>? = null,
         val excludedMutators: List<String?>? = null,
         val includeDraft: Boolean? = null
-    ){
-        fun applyTo(format: JavaExtension.CleanthatJavaConfig){
+    ) {
+
+        fun applyTo(format: JavaExtension.CleanthatJavaConfig) {
             groupArtifact?.let(format::groupArtifact)
             version?.let(format::version)
             sourceJdk?.let(format::sourceCompatibility)
@@ -143,8 +144,9 @@ internal data class JavaExtension(
     internal data class FormatAnnotationsConfig(
         val addedTypeAnnotations: List<String>? = null,
         val removedTypeAnnotations: List<String>? = null
-    ){
-        fun applyTo(annotations: JavaExtension.FormatAnnotationsConfig){
+    ) {
+
+        fun applyTo(annotations: JavaExtension.FormatAnnotationsConfig) {
             addedTypeAnnotations?.forEach(annotations::addTypeAnnotation)
             removedTypeAnnotations?.forEach(annotations::removeTypeAnnotation)
         }
@@ -173,12 +175,13 @@ internal data class JavaExtension(
     internal data class ImportOrderConfig(
         val importOrder: List<String>? = null,
         val importOrderFile: String? = null,
-        val wildcardsLast: Boolean?=null,
-        val semanticSort: Boolean?=null,
+        val wildcardsLast: Boolean? = null,
+        val semanticSort: Boolean? = null,
         val treatAsPackage: Set<String>? = null,
         val treatAsClass: Set<String>? = null
-    ){
-        fun applyTo(importOrder: JavaExtension.ImportOrderConfig){
+    ) {
+
+        fun applyTo(importOrder: JavaExtension.ImportOrderConfig) {
             wildcardsLast?.let(importOrder::wildcardsLast)
             semanticSort?.let(importOrder::semanticSort)
             treatAsPackage?.let(importOrder::treatAsPackage)

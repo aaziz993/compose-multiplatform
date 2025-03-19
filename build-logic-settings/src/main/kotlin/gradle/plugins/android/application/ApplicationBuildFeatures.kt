@@ -43,7 +43,7 @@ internal data class ApplicationBuildFeatures(
      *
      * More information about this feature at: TBD
      */
-    val mlModelBinding: Boolean?=null,
+    val mlModelBinding: Boolean? = null,
 ) : BuildFeatures {
 
     override fun applyTo(features: com.android.build.api.dsl.BuildFeatures) {

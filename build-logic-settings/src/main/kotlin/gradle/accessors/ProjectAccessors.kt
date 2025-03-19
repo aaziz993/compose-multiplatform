@@ -13,8 +13,7 @@ import gradle.api.isCI
 import gradle.api.maybeNamed
 import gradle.project.ProjectProperties
 import io.github.sgrishchenko.karakum.gradle.plugin.KarakumExtension
-import java.util.Properties
-import kotlin.jvm.java
+import java.util.*
 import kotlinx.atomicfu.plugin.gradle.AtomicFUPluginExtension
 import kotlinx.benchmark.gradle.BenchmarksExtension
 import kotlinx.knit.KnitPluginExtension

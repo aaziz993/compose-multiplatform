@@ -1,5 +1,6 @@
 package gradle.plugins.android.library
 
+import gradle.collection.SerializableAnyMap
 import gradle.plugins.android.AaptOptions
 import gradle.plugins.android.AdbOptions
 import gradle.plugins.android.CompileOptions
@@ -20,7 +21,6 @@ import gradle.plugins.android.TestFixtures
 import gradle.plugins.android.TestOptions
 import gradle.plugins.android.TestedExtension
 import gradle.plugins.android.ViewBinding
-import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

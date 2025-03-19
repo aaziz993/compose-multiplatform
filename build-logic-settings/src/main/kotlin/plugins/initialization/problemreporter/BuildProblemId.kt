@@ -42,7 +42,8 @@ internal object GlobalBuildProblemSource : BuildProblemSource
  * Can be used to express the problem with multiple locations (e.g., conflicting declarations).
  */
 internal class MultipleLocationsBuildProblemSource(val sources: List<BuildProblemSource>) : BuildProblemSource {
-    constructor(vararg sources: BuildProblemSource): this(sources.toList())
+
+    constructor(vararg sources: BuildProblemSource) : this(sources.toList())
 
     init {
         require(sources.none { it is MultipleLocationsBuildProblemSource }) { "Only non-nested sources are allowed in a MultipleLocationsBuildProblemSource" }
@@ -50,6 +51,7 @@ internal class MultipleLocationsBuildProblemSource(val sources: List<BuildProble
 }
 
 internal interface FileBuildProblemSource : BuildProblemSource {
+
     /**
      * Path to the file containing a problem.
      */
@@ -57,6 +59,7 @@ internal interface FileBuildProblemSource : BuildProblemSource {
 }
 
 internal interface FileWithRangesBuildProblemSource : FileBuildProblemSource {
+
     /**
      * Range of problematic code expressed in terms of lines and columns.
      * Can be used by clients to render the links to the exact location in the file or display an erroneous part of the
@@ -73,6 +76,7 @@ internal interface FileWithRangesBuildProblemSource : FileBuildProblemSource {
 }
 
 internal interface BuildProblem {
+
     val buildProblemId: BuildProblemId
     val source: BuildProblemSource
     val message: String
@@ -93,6 +97,7 @@ internal data class BuildProblemImpl(
 
 internal data class LineAndColumn(val line: Int, val column: Int, val lineContent: String?) {
     companion object {
+
         val NONE: LineAndColumn = LineAndColumn(-1, -1, null)
     }
 }

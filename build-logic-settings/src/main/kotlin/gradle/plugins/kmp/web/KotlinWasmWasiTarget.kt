@@ -2,6 +2,7 @@ package gradle.plugins.kmp.web
 
 import gradle.accessors.kotlin
 import gradle.accessors.moduleName
+
 import gradle.plugins.kmp.HasBinaries
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -21,8 +22,8 @@ internal data class KotlinWasmWasiTarget(
     KotlinTargetWithNodeJsDsl,
     HasBinaries<KotlinJsBinaryContainer> {
 
-    context(Project)
-    override fun applyTo(named: Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         super<KotlinWasmTargetDsl>.applyTo(named)
 
         named as KotlinWasmWasiTargetDsl

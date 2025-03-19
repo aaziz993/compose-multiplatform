@@ -1,7 +1,7 @@
 package gradle.api.repositories.maven
 
-import gradle.api.repositories.RepositoryContentDescriptor
-import gradle.api.repositories.RepositoryPasswordCredentials
+import gradle.api.repositories.RepositoryContentDescriptorImpl
+import gradle.api.repositories.PasswordCredentials
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.artifacts.ArtifactRepositoryContainer
@@ -13,8 +13,8 @@ internal data class Maven(
     override val metadataSources: MavenArtifactRepository.MetadataSources? = null,
     override val mavenContent: MavenRepositoryContentDescriptor? = null,
     override val name: String = "${ArtifactRepositoryContainer.DEFAULT_MAVEN_CENTRAL_REPO_NAME}${Math.random() * Int.MAX_VALUE}",
-    override val content: RepositoryContentDescriptor? = null,
+    override val content: RepositoryContentDescriptorImpl? = null,
     override val url: String? = null,
     override val allowInsecureProtocol: Boolean? = null,
-    override val credentials: RepositoryPasswordCredentials? = null,
+    override val credentials: PasswordCredentials? = null,
 ) : MavenArtifactRepository

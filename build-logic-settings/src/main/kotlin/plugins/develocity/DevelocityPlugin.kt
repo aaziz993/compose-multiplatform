@@ -7,7 +7,6 @@ import gradle.accessors.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.projectProperties
-import gradle.isUrl
 import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
 import org.gradle.api.tasks.testing.Test

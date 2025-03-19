@@ -2,6 +2,7 @@ package gradle.plugins.kmp.web
 
 import gradle.accessors.kotlin
 import gradle.accessors.moduleName
+
 import gradle.api.trySet
 import gradle.plugins.kmp.HasBinaries
 import gradle.plugins.kmp.KotlinTarget
@@ -11,7 +12,6 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
-import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalMainFunctionArgumentsDsl
 
 internal interface KotlinJsTargetDsl : KotlinTarget, KotlinTargetWithNodeJsDsl,
     HasBinaries<KotlinJsBinaryContainer>, HasConfigurableKotlinCompilerOptions<KotlinJsCompilerOptions> {
@@ -33,16 +33,15 @@ internal interface KotlinJsTargetDsl : KotlinTarget, KotlinTargetWithNodeJsDsl,
 
     val generateTypeScriptDefinitions: Boolean?
 
-    context(Project)
-    @OptIn(ExperimentalMainFunctionArgumentsDsl::class)
-    override fun applyTo(named: Named) {
-        super<KotlinTarget>.applyTo(named)
+        context(Project)
+    override fun applyTo(named: T) {
+        super<KotlinTarget>._applyTo(named)
 
         named as org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
 
         super<HasConfigurableKotlinCompilerOptions>.applyTo(named)
 
-        named::moduleName trySet (moduleName
+        named::moduleName trySet (this@KotlinJsTargetDsl.moduleName
             ?: targetName
                 .takeIf(String::isNotEmpty)
                 ?.let { targetName -> "${project.moduleName}-$targetName" })
@@ -63,8 +62,9 @@ internal interface KotlinJsTargetDsl : KotlinTarget, KotlinTargetWithNodeJsDsl,
     }
 
     context(Project)
-    override fun applyTo() =
+    override fun applyTo() = with(project) {
         super<KotlinTarget>.applyTo(kotlin.targets.withType<org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl>())
+    }
 }
 
 @Serializable

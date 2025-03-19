@@ -1,11 +1,12 @@
 package gradle.plugins.web
 
-import org.gradle.kotlin.dsl.withType
+
 import gradle.api.tasks.Task
 import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.targets.js.npm.tasks.KotlinNpmInstallTask
 
 @Serializable
@@ -26,8 +27,8 @@ internal data class KotlinNpmInstallTask(
     val args: List<String>? = null,
 ) : Task {
 
-    context(Project)
-    override fun applyTo(named: Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         super.applyTo(named)
 
         named as KotlinNpmInstallTask
@@ -37,5 +38,5 @@ internal data class KotlinNpmInstallTask(
 
     context(Project)
     override fun applyTo() =
-        super.applyTo(tasks.withType<KotlinNpmInstallTask>())
+        applyTo(tasks.withType<KotlinNpmInstallTask>())
 }

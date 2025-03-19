@@ -11,8 +11,9 @@ internal interface NoArgExtension {
     val myAnnotations: List<String>?
     val myPresets: List<String>?
     val invokeInitializers: Boolean?
+
     context(Project)
-    fun applyTo(){
+    fun applyTo() {
         myAnnotations?.let(noArg::annotations)
         myPresets?.let(noArg.myPresets::addAll)
         noArg::invokeInitializers trySet invokeInitializers

@@ -1,8 +1,7 @@
 package gradle.plugins.kmp
 
-import gradle.plugins.kotlin.KotlinExecution
+
 import org.gradle.api.Named
-import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.KotlinTargetWithTests
 
 /**
@@ -17,8 +16,8 @@ internal interface KotlinTargetWithTests<T : KotlinTargetTestRun> : KotlinTarget
      */
     val testRuns: List<T>?
 
-    context(Project)
-    override fun applyTo(named: Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         super.applyTo(named)
 
         named as KotlinTargetWithTests<*, *>

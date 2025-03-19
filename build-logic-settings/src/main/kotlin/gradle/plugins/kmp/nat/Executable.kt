@@ -1,7 +1,7 @@
 package gradle.plugins.kmp.nat
 
+
 import org.gradle.api.Named
-import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.mpp.Executable
 
 internal abstract class Executable : NativeBinary {
@@ -16,8 +16,8 @@ internal abstract class Executable : NativeBinary {
      */
     abstract val entryPoint: String?
 
-    context(Project)
-    override fun applyTo(named: Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         super.applyTo(named)
 
         named as Executable

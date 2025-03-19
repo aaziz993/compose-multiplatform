@@ -3,17 +3,17 @@
 package gradle.plugins.kmp.nat
 
 import gradle.collection.SerializableAnyMap
-import org.gradle.kotlin.dsl.withType
 import gradle.plugins.kotlin.tasks.KotlinCompilationTask
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
 
 internal interface KotlinNativeCompileTask : KotlinCompilationTask<KotlinNativeCompilerOptions> {
 
     context(Project)
     override fun applyTo() =
-        super.applyTo(tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinNativeCompileTask>())
+        applyTo(tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinNativeCompileTask>())
 }
 
 @Serializable

@@ -7,6 +7,7 @@ package gradle.plugins.android
  * It is not part of the DSL & API interfaces of the Android Gradle Plugin.
  */
 internal interface SigningConfig {
+
     /** Returns the name of the Signing config */
     val name: String
 

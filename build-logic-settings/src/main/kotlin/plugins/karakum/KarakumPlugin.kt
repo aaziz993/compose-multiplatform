@@ -10,12 +10,10 @@ import gradle.accessors.projectProperties
 import gradle.accessors.settings
 import gradle.plugins.kmp.KotlinTarget
 import gradle.plugins.kmp.web.KotlinJsTarget
-import gradle.plugins.kmp.web.KotlinJsTargetDsl
 import gradle.serialization.decodeMapFromString
 import kotlinx.serialization.json.Json
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import kotlin.io.readText
 
 internal class KarakumPlugin : Plugin<Project> {
 

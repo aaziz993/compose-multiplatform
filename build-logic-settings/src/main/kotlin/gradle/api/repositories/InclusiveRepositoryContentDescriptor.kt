@@ -1,5 +1,8 @@
 package gradle.api.repositories
 
+import kotlinx.serialization.Serializable
+import org.gradle.api.artifacts.repositories.InclusiveRepositoryContentDescriptor
+
 /**
  *
  * Descriptor of a repository content, used to avoid reaching to
@@ -15,14 +18,14 @@ package gradle.api.repositories
  *
  * @since 6.2
  */
-internal interface InclusiveRepositoryContentDescriptor {
+internal interface InclusiveRepositoryContentDescriptor<T: InclusiveRepositoryContentDescriptor> {
 
     /**
      * Declares that an entire group should be searched for in this repository.
      *
      * @param group the group name
      */
-    val includeGroups: List<String>?
+    val includeGroups: Set<String>?
 
     /**
      * Declares that an entire group and its subgroups should be searched for in this repository.
@@ -38,14 +41,14 @@ internal interface InclusiveRepositoryContentDescriptor {
      * @param groupPrefix the group prefix to include
      * @since 8.1
      */
-    val includeGroupsAndSubgroups: List<String>?
+    val includeGroupsAndSubgroups: Set<String>?
 
     /**
      * Declares that an entire group should be searched for in this repository.
      *
      * @param groupRegex a regular expression of the group name
      */
-    val includeGroupsByRegexes: List<String>?
+    val includeGroupsByRegexes: Set<String>?
 
     /**
      * Declares that an entire module should be searched for in this repository.
@@ -53,7 +56,7 @@ internal interface InclusiveRepositoryContentDescriptor {
      * @param group the group name
      * @param moduleName the module name
      */
-    val includeModules: List<Module>?
+    val includeModules: Set<Module>?
 
     /**
      * Declares that an entire module should be searched for in this repository, using regular expressions.
@@ -61,7 +64,7 @@ internal interface InclusiveRepositoryContentDescriptor {
      * @param groupRegex the group name regular expression
      * @param moduleNameRegex the module name regular expression
      */
-    val includeModulesByRegexes: List<Module>?
+    val includeModulesByRegexes: Set<Module>?
 
     /**
      * Declares that a specific module version should be searched for in this repository.
@@ -70,7 +73,7 @@ internal interface InclusiveRepositoryContentDescriptor {
      * @param moduleName the module name
      * @param version the module version
      */
-    val includeVersions: List<Version>?
+    val includeVersions: Set<Version>?
 
     /**
      * Declares that a specific module version should be searched for in this repository, using regular expressions.
@@ -79,10 +82,10 @@ internal interface InclusiveRepositoryContentDescriptor {
      * @param moduleNameRegex the module name regular expression
      * @param versionRegex the module version regular expression
      */
-    val includeVersionsByRegexes: List<Version>?
+    val includeVersionsByRegexes: Set<Version>?
 
     @Suppress("UnstableApiUsage")
-    fun applyTo(descriptor: org.gradle.api.artifacts.repositories.InclusiveRepositoryContentDescriptor) {
+    fun applyTo(descriptor: T) {
         includeGroups?.forEach(descriptor::includeGroup)
         includeGroupsAndSubgroups?.forEach(descriptor::includeGroupAndSubgroups)
         includeGroupsByRegexes?.forEach(descriptor::includeGroupByRegex)
@@ -104,4 +107,16 @@ internal interface InclusiveRepositoryContentDescriptor {
         }
     }
 }
+
+@Serializable
+internal data class InclusiveRepositoryContentDescriptorImpl(
+    override val includeGroups: Set<String>? = null,
+    override val includeGroupsAndSubgroups: Set<String>? = null,
+    override val includeGroupsByRegexes: Set<String>? = null,
+    override val includeModules: Set<Module>? = null,
+    override val includeModulesByRegexes: Set<Module>? = null,
+    override val includeVersions: Set<Version>? = null,
+    override val includeVersionsByRegexes: Set<Version>? = null,
+) : gradle.api.repositories.InclusiveRepositoryContentDescriptor<InclusiveRepositoryContentDescriptor>
+
 

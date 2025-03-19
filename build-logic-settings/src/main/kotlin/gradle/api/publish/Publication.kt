@@ -1,11 +1,12 @@
 package gradle.api.publish
 
 import gradle.accessors.publishing
-import gradle.api.Named
+import gradle.api.ProjectNamed
 import gradle.serialization.serializer.JsonPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import org.gradle.api.initialization.Settings
 
 /**
  * A publication is a description of a consumable representation of one or more artifacts, and possibly associated metadata.
@@ -13,7 +14,7 @@ import org.gradle.api.Project
  * @since 1.3
  */
 @Serializable(with = PublicationSerializer::class)
-internal interface Publication : Named {
+internal interface Publication<T : org.gradle.api.publish.Publication> : ProjectNamed<T> {
 
     /**
      * Disables publication of a unique build identifier in Gradle Module Metadata.
@@ -36,7 +37,7 @@ internal interface Publication : Named {
     val withBuildIdentifier: Boolean?
 
     context(Project)
-    override fun applyTo(named: org.gradle.api.Named) {
+    override fun applyTo(named: T) {
         named as org.gradle.api.publish.Publication
 
         withoutBuildIdentifier?.takeIf { it }?.run { named.withoutBuildIdentifier() }
@@ -44,15 +45,14 @@ internal interface Publication : Named {
     }
 
     context(Project)
-    override fun applyTo() =
-        super.applyTo(publishing.publications)
+    fun applyTo()
 }
 
-private object PublicationSerializer : JsonPolymorphicSerializer<Publication>(
+private object PublicationSerializer : JsonPolymorphicSerializer<Publication<*>>(
     Publication::class,
 )
 
-internal object PublicationTransformingSerializer : KeyTransformingSerializer<Publication>(
-    Publication.serializer(),
+internal object PublicationTransformingSerializer : KeyTransformingSerializer<Publication<*>>(
+    PublicationSerializer,
     "type",
 )

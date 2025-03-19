@@ -4,15 +4,12 @@ import gradle.accessors.libs
 import gradle.accessors.settings
 import gradle.accessors.version
 import gradle.accessors.versions
-import gradle.api.Named
+import gradle.api.BaseNamed
 import gradle.api.tryAssign
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
-import org.gradle.api.Project
 import org.jetbrains.dokka.gradle.engine.parameters.KotlinPlatform
 import org.jetbrains.dokka.gradle.engine.parameters.VisibilityModifier
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget.valueOf
 
 /**
  * A [DokkaSourceSetSpec] controls how Dokka will view and rendered sources.
@@ -258,10 +255,10 @@ internal data class DokkaSourceSetSpec(
      * Default is JDK 11.
      */
     val jdkVersion: Int? = null,
-) : Named {
+) : BaseNamed {
 
-    context(Project)
-    override fun applyTo(named: org.gradle.api.Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         named as org.jetbrains.dokka.gradle.engine.parameters.DokkaSourceSetSpec
 
         named.sourceSetScope tryAssign sourceSetScope

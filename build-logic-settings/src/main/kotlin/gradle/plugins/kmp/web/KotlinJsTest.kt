@@ -1,15 +1,15 @@
 package gradle.plugins.kmp.web
 
 import gradle.accessors.moduleName
-import gradle.api.tryAssign
-import gradle.api.trySet
-import gradle.plugins.kotlin.tasks.KotlinTest
-import gradle.collection.SerializableAnyMap
+
 import gradle.api.tasks.test.DefaultTestFilter
 import gradle.api.tasks.test.TestLoggingContainer
+import gradle.api.tryAssign
+import gradle.api.trySet
+import gradle.collection.SerializableAnyMap
+import gradle.plugins.kotlin.tasks.KotlinTest
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
-import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
 
 @Serializable
@@ -45,8 +45,8 @@ internal data class KotlinJsTest(
     val useKarmaDsl: KotlinKarma? = null,
 ) : KotlinTest() {
 
-    context(Project)
-    override fun applyTo(named: Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         super.applyTo(named)
 
         named as KotlinJsTest
@@ -62,6 +62,6 @@ internal data class KotlinJsTest(
 
         useKarma?.takeIf { it }?.run { named.useKarma() }
 
-        useKarmaDsl?.applyTo(named.useKarma(),"$moduleName-targetName")
+        useKarmaDsl?.applyTo(named.useKarma(), "$moduleName-targetName")
     }
 }

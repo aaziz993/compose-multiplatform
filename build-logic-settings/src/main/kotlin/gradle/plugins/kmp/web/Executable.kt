@@ -4,5 +4,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal data class Executable(
-    val compilation: String?=null,
+    val compilation: String? = null,
 )

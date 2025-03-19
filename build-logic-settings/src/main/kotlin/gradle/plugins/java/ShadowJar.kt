@@ -1,3 +1,5 @@
+@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
+
 package gradle.plugins.java
 
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
@@ -6,15 +8,16 @@ import gradle.accessors.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
-import gradle.collection.SerializableAnyMap
+
 import gradle.api.tasks.Expand
 import gradle.api.tasks.FilesMatching
+import gradle.api.tasks.applyTo
 import gradle.api.tasks.copy.CopySpecImpl
 import gradle.api.tasks.copy.FileCopyDetails
 import gradle.api.tasks.copy.FromSpec
 import gradle.api.tasks.copy.IntoSpec
+import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
-import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.api.file.DuplicatesStrategy
 import org.gradle.api.tasks.bundling.ZipEntryCompression
@@ -73,22 +76,25 @@ internal data class ShadowJar(
     override val excludes: List<String>? = null,
     override val setExcludes: List<String>? = null,
     override val relocators: List<Relocator>? = null,
-    override val configurations: List<List<String>>? = null,
+    val configurations: List<List<String>>? = null,
     override val dependencyFilter: DependencyFilter? = null,
-    override val enableRelocation: Boolean? = null,
-    override val relocationPrefix: String? = null,
+    val enableRelocation: Boolean? = null,
+    val relocationPrefix: String? = null,
     override val minimize: Boolean? = null,
     override val dependencyFilterForMinimize: DependencyFilter? = null,
     override val mergeServiceFiles: Boolean? = null,
     override val mergeServiceFilesPath: String? = null,
     override val append: String? = null
-) : Jar(), ShadowSpec {
+) : Jar<ShadowJar>(), ShadowSpec<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowSpec> {
 
     context(Project)
-    override fun applyTo(named: Named) =
+    override fun applyTo(recipient: ShadowJar) =
         pluginManager.withPlugin(settings.libs.plugins.plugin("shadow").id) {
-            super<Jar>.applyTo(named)
-            super<ShadowSpec>.applyTo(named as ShadowJar)
+            super<Jar>.applyTo(recipient)
+            super<ShadowSpec>.applyTo(recipient)
+            configurations?.map { files(*it.toTypedArray()) }?.let(recipient::setConfigurations)
+            enableRelocation?.let(recipient::setEnableRelocation)
+            relocationPrefix?.let(recipient::setRelocationPrefix)
         }
 
     context(Project)

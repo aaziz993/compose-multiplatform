@@ -1,9 +1,8 @@
 package gradle.plugins.android
 
 import com.android.build.api.dsl.ProductFlavor
-import gradle.api.Named
+import gradle.api.BaseNamed
 import gradle.api.trySet
-import org.gradle.api.Project
 
 /**
  * Encapsulates all product flavors properties for this project.
@@ -35,7 +34,7 @@ import org.gradle.api.Project
  * If the plugin creates certain build variants that you don't want, you can
  * [filter variants using `android.variantFilter`](https://developer.android.com/studio/build/build-variants.html#filter-variants).
  */
-internal interface ProductFlavorDsl : Named, BaseFlavor {
+internal interface ProductFlavorDsl : BaseNamed, BaseFlavor {
 
     /**
      * Specifies the flavor dimension that this product flavor belongs to.
@@ -160,8 +159,8 @@ internal interface ProductFlavorDsl : Named, BaseFlavor {
      */
     val matchingFallbacks: List<String>?
 
-    context(Project)
-    override fun applyTo(named: org.gradle.api.Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         named as ProductFlavor
 
         super<BaseFlavor>.applyTo(named)

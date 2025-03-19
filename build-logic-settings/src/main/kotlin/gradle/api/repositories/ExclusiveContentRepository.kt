@@ -21,7 +21,7 @@ internal data class ExclusiveContentRepository(
      * @param repositories the repositories for which we declare exclusive content
      * @return this repository descriptor
      */
-    val forRepositories: List<String>? = null,
+    val forRepositories: Set<String>? = null,
 
     /**
      * Defines the content filter for this repository

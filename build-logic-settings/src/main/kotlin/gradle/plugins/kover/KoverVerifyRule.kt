@@ -9,7 +9,7 @@ internal data class KoverVerifyRule(
      * Specifies by which entity the code for separate coverage evaluation will be grouped.
      * [GroupingEntityType.APPLICATION] by default.
      */
-    public val groupBy: GroupingEntityType?=null,
+    public val groupBy: GroupingEntityType? = null,
 
     /**
      * Specifies that the rule is checked during verification.

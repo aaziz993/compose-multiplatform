@@ -20,6 +20,6 @@ internal data class KotlinCompilationTaskImpl<out CO : KotlinCommonCompilerOptio
     override val mustRunAfter: List<String>? = null,
     override val finalizedBy: List<String>? = null,
     override val shouldRunAfter: List<String>? = null,
-    override val compilerOptions: CO?=null,
+    override val compilerOptions: CO? = null,
     override val name: String = "",
 ) : KotlinCompilationTask<CO>

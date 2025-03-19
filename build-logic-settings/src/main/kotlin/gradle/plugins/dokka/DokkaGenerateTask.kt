@@ -1,5 +1,6 @@
 package gradle.plugins.dokka
 
+
 import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
@@ -68,8 +69,8 @@ internal data class DokkaGenerateTask(
     val overrideJsonConfig: String? = null,
 ) : DokkaBaseTask() {
 
-    context(Project)
-    override fun applyTo(named: Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         super.applyTo(named)
 
         named as DokkaGenerateTask
@@ -87,5 +88,5 @@ internal data class DokkaGenerateTask(
 
     context(Project)
     override fun applyTo() =
-        super.applyTo(tasks.withType<DokkaGenerateTask>())
+        applyTo(tasks.withType<DokkaGenerateTask>())
 }

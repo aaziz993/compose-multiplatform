@@ -1,6 +1,7 @@
 package gradle.plugins.kmp.web
 
 import gradle.accessors.kotlin
+
 import gradle.plugins.kmp.HasBinaries
 import gradle.plugins.kmp.KotlinTarget
 import gradle.plugins.kotlin.KotlinCompilation
@@ -12,8 +13,8 @@ import org.gradle.kotlin.dsl.withType
 
 internal interface KotlinWasmTargetDsl : KotlinTarget, HasBinaries<KotlinJsBinaryContainer> {
 
-    context(Project)
-    override fun applyTo(named: Named) {
+        context(Project)
+    override fun applyTo(named: T) {
         super<KotlinTarget>.applyTo(named)
 
         named as org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinWasmTargetDsl

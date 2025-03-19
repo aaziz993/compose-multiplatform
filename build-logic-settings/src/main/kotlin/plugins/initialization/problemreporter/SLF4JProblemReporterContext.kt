@@ -4,11 +4,13 @@ import org.slf4j.LoggerFactory
 import plugins.initialization.SettingsPlugin
 
 internal class SLF4JProblemReporterContext : ProblemReporterContext {
+
     override val problemReporter: SLF4JProblemReporter = SLF4JProblemReporter(SettingsPlugin::class.java)
 }
 
 internal class SLF4JProblemReporter(loggerClass: Class<*> = ProblemReporter::class.java) : CollectingProblemReporter() {
     companion object {
+
         private const val ERROR_PREFIX = "  - "
         private const val ERROR_INDENT = "    "
     }
