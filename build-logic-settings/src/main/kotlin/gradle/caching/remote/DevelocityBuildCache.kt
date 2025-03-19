@@ -8,7 +8,6 @@ import gradle.caching.AbstractBuildCache
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings
-import org.gradle.caching.configuration.BuildCache
 import org.gradle.caching.configuration.BuildCacheConfiguration
 import org.gradle.kotlin.dsl.develocity
 
@@ -23,30 +22,28 @@ internal data class DevelocityBuildCache(
     val allowInsecureProtocol: Boolean? = null,
     val useExpectContinue: Boolean? = null,
     val usernameAndPassword: HttpBuildCacheCredentials? = null
-) : AbstractBuildCache() {
+) : AbstractBuildCache<DevelocityBuildCache>() {
 
     context(Settings)
-    override fun applyTo(cache: BuildCache) {
+    override fun applyTo(recipient: DevelocityBuildCache) {
         // better set it to true only for CI builds.
-        cache.isPush = isCI && projectProperties.plugins.develocity.accessKey?.resolveValue() != null
+        recipient.isPush = isCI && projectProperties.plugins.develocity.accessKey?.resolveValue() != null
 
-        super.applyTo(cache)
+        super.applyTo(recipient)
 
-        cache as DevelocityBuildCache
-
-        server?.let(cache::setServer)
-        path?.let(cache::setPath)
-        allowUntrustedServer?.let(cache::setAllowUntrustedServer)
-        allowInsecureProtocol?.let(cache::setAllowInsecureProtocol)
-        useExpectContinue?.let(cache::setUseExpectContinue)
+        server?.let(recipient::setServer)
+        path?.let(recipient::setPath)
+        allowUntrustedServer?.let(recipient::setAllowUntrustedServer)
+        allowInsecureProtocol?.let(recipient::setAllowInsecureProtocol)
+        useExpectContinue?.let(recipient::setUseExpectContinue)
         usernameAndPassword?.let { (username, password) ->
-            cache.usernameAndPassword(username, password)
+            recipient.usernameAndPassword(username, password)
         }
     }
 
     context(Settings)
-    override fun applyTo(configuration: BuildCacheConfiguration) {
-        configuration.remote(develocity.buildCache) {
+    override fun applyTo(recipient: BuildCacheConfiguration) {
+        recipient.remote(develocity.buildCache) {
             applyTo(this)
         }
     }

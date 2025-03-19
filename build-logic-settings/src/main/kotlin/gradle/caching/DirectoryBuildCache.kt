@@ -15,18 +15,16 @@ internal data class DirectoryBuildCache(
      * The directory is evaluated as per {@code Project.file(Object)}.
      */
     val directory: String? = null,
-) : BuildCache {
+) : BuildCache<DirectoryBuildCache> {
 
     context(Settings)
     @Suppress("UnstableApiUsage")
-    override fun applyTo(cache: org.gradle.caching.configuration.BuildCache) {
-        cache.isEnabled = !isCI
+    override fun applyTo(recipient: DirectoryBuildCache) {
+        recipient.isEnabled = !isCI
 
-        super.applyTo(cache)
+        super.applyTo(recipient)
 
-        cache as DirectoryBuildCache
-
-        directory?.let(layout.rootDirectory::dir)?.let(cache::setDirectory)
+        directory?.let(layout.rootDirectory::dir)?.let(recipient::setDirectory)
     }
 
     context(Settings)

@@ -4,7 +4,6 @@ import gradle.caching.AbstractBuildCache
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings
-import org.gradle.caching.configuration.BuildCache
 import org.gradle.caching.configuration.BuildCacheConfiguration
 import org.gradle.caching.http.HttpBuildCache
 
@@ -18,24 +17,22 @@ internal data class HttpBuildCache(
     val allowUntrustedServer: Boolean? = null,
     val allowInsecureProtocol: Boolean? = null,
     val useExpectContinue: Boolean? = null,
-) : AbstractBuildCache() {
+) : AbstractBuildCache<HttpBuildCache>() {
 
     context(Settings)
-    override fun applyTo(cache: BuildCache) {
-        super.applyTo(cache)
+    override fun applyTo(recipient: HttpBuildCache) {
+        super.applyTo(recipient)
 
-        cache as HttpBuildCache
-
-        cache.setUrl(url)
-        credentials?.applyTo(cache.credentials)
-        allowUntrustedServer?.let(cache::setAllowUntrustedServer)
-        allowInsecureProtocol?.let(cache::setAllowInsecureProtocol)
-        useExpectContinue?.let(cache::setUseExpectContinue)
+        recipient.setUrl(url)
+        credentials?.applyTo(recipient.credentials)
+        allowUntrustedServer?.let(recipient::setAllowUntrustedServer)
+        allowInsecureProtocol?.let(recipient::setAllowInsecureProtocol)
+        useExpectContinue?.let(recipient::setUseExpectContinue)
     }
 
     context(Settings)
-    override fun applyTo(configuration: BuildCacheConfiguration) {
-        configuration.remote(HttpBuildCache::class.java) {
+    override fun applyTo(recipient: BuildCacheConfiguration) {
+        recipient.remote(HttpBuildCache::class.java) {
             applyTo(this)
         }
     }
