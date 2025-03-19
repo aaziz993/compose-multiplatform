@@ -45,17 +45,17 @@ internal abstract class AbstractCompile<T : org.gradle.api.tasks.compile.Abstrac
     abstract val targetCompatibility: String?
 
     context(Project)
-    override fun applyTo(named: T) {
-        super.applyTo(named)
+    override fun applyTo(recipient: T) {
+        super.applyTo(recipient)
 
-        named.destinationDirectory tryAssign destinationDirectory?.let(layout.projectDirectory::dir)
+        recipient.destinationDirectory tryAssign destinationDirectory?.let(layout.projectDirectory::dir)
 
         classpath?.let { classpath ->
-            named.classpath = files(*classpath.toTypedArray())
+            recipient.classpath = files(*classpath.toTypedArray())
         }
 
-        sourceCompatibility?.let(named::setSourceCompatibility)
-        targetCompatibility?.let(named::setTargetCompatibility)
+        sourceCompatibility?.let(recipient::setSourceCompatibility)
+        targetCompatibility?.let(recipient::setTargetCompatibility)
     }
 }
 

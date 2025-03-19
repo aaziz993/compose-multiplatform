@@ -52,8 +52,8 @@ internal interface MavenArtifactRepository
         super<ArtifactRepository>.applyTo(recipient)
 
     context(Project)
-    override fun applyTo(named: MavenArtifactRepository) =
-        super<ArtifactRepository>.applyTo(named)
+    override fun applyTo(recipient: MavenArtifactRepository) =
+        super<ArtifactRepository>.applyTo(recipient)
 
     context(Directory)
     override fun _applyTo(recipient: MavenArtifactRepository) {

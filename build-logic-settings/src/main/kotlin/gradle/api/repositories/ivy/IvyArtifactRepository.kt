@@ -146,12 +146,12 @@ internal data class IvyArtifactRepository(
 ) : ArtifactRepository<IvyArtifactRepository>, UrlArtifactRepository, AuthenticationSupported {
 
     context(Settings)
-    override fun applyTo(named: IvyArtifactRepository) =
-        super<ArtifactRepository>.applyTo(named)
+    override fun applyTo(recipient: IvyArtifactRepository) =
+        super<ArtifactRepository>.applyTo(recipient)
 
     context(Project)
-    override fun applyTo(named: IvyArtifactRepository) =
-        super<ArtifactRepository>.applyTo(named)
+    override fun applyTo(recipient: IvyArtifactRepository) =
+        super<ArtifactRepository>.applyTo(recipient)
 
     context(Settings)
     override fun applyTo(recipient: RepositoryHandler) =

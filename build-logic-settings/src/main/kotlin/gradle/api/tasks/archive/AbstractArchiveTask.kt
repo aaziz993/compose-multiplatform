@@ -12,7 +12,6 @@ import gradle.collection.SerializableAnyMap
 import java.util.SortedSet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.api.file.DuplicatesStrategy
 import org.gradle.kotlin.dsl.withType
@@ -104,26 +103,26 @@ internal abstract class AbstractArchiveTask<T : org.gradle.api.tasks.bundling.Ab
     abstract val reproducibleFileOrder: Boolean?
 
     context(Project)
-    override fun applyTo(named: T) {
-        super.applyTo(named)
+    override fun applyTo(recipient: T) {
+        super.applyTo(recipient)
 
-        named.archiveBaseName tryAssign archiveBaseName
-        named.destinationDirectory tryAssign destinationDirectory?.let(layout.projectDirectory::dir)
-        named.archiveFileName tryAssign archiveFileName
-        named.archiveAppendix tryAssign archiveAppendix
-        named.archiveVersion tryAssign archiveVersion
-        named.archiveExtension tryAssign archiveExtension
-        named.archiveClassifier tryAssign archiveClassifier
-        into?.let(named::into)
+        recipient.archiveBaseName tryAssign archiveBaseName
+        recipient.destinationDirectory tryAssign destinationDirectory?.let(layout.projectDirectory::dir)
+        recipient.archiveFileName tryAssign archiveFileName
+        recipient.archiveAppendix tryAssign archiveAppendix
+        recipient.archiveVersion tryAssign archiveVersion
+        recipient.archiveExtension tryAssign archiveExtension
+        recipient.archiveClassifier tryAssign archiveClassifier
+        into?.let(recipient::into)
 
         intoSpec?.let { intoSpec ->
-            named.into(intoSpec.destPath) {
+            recipient.into(intoSpec.destPath) {
                 intoSpec.copySpec.applyTo(this)
             }
         }
 
-        preserveFileTimestamps?.let(named::setPreserveFileTimestamps)
-        reproducibleFileOrder?.let(named::setReproducibleFileOrder)
+        preserveFileTimestamps?.let(recipient::setPreserveFileTimestamps)
+        reproducibleFileOrder?.let(recipient::setReproducibleFileOrder)
     }
 }
 

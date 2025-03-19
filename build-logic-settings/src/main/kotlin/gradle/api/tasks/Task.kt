@@ -10,7 +10,6 @@ import groovy.lang.MissingPropertyException
 import java.util.SortedSet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import org.gradle.api.NamedDomainObjectCollection
 import org.gradle.api.Project
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.TaskCollection
@@ -327,19 +326,19 @@ internal interface Task<T : org.gradle.api.Task> : ProjectNamed<T> {
     val shouldRunAfter: Set<String>?
 
     context(Project)
-    override fun applyTo(named: T) {
-        dependsOn?.let(named::setDependsOn)
-        onlyIf?.let { onlyIf -> named.onlyIf { onlyIf } }
-        doNotTrackState?.let(named::doNotTrackState)
-        notCompatibleWithConfigurationCache?.let(named::notCompatibleWithConfigurationCache)
-        didWork?.let(named::setDidWork)
-        enabled?.let(named::setEnabled)
-        properties?.forEach { (name, value) -> named.setProperty(name, value) }
-        description?.let(named::setDescription)
-        group?.let(named::setGroup)
-        mustRunAfter?.let(named::setMustRunAfter)
-        finalizedBy?.let(named::setFinalizedBy)
-        shouldRunAfter?.let(named::setShouldRunAfter)
+    override fun applyTo(recipient: T) {
+        dependsOn?.let(recipient::setDependsOn)
+        onlyIf?.let { onlyIf -> recipient.onlyIf { onlyIf } }
+        doNotTrackState?.let(recipient::doNotTrackState)
+        notCompatibleWithConfigurationCache?.let(recipient::notCompatibleWithConfigurationCache)
+        didWork?.let(recipient::setDidWork)
+        enabled?.let(recipient::setEnabled)
+        properties?.forEach { (name, value) -> recipient.setProperty(name, value) }
+        description?.let(recipient::setDescription)
+        group?.let(recipient::setGroup)
+        mustRunAfter?.let(recipient::setMustRunAfter)
+        finalizedBy?.let(recipient::setFinalizedBy)
+        shouldRunAfter?.let(recipient::setShouldRunAfter)
     }
 
     context(Project)

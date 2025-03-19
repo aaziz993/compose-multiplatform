@@ -2,14 +2,12 @@ package gradle.api.tasks.test
 
 import gradle.api.VerificationTask
 import gradle.api.tasks.ConventionTask
-import gradle.api.tasks.Task
 import gradle.api.tasks.applyTo
 import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
 import java.util.SortedSet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 
@@ -54,15 +52,15 @@ internal abstract class AbstractTestTask<T : org.gradle.api.tasks.testing.Abstra
     abstract val filter: DefaultTestFilter?
 
     context(Project)
-    override fun applyTo(named: T) {
-        super<ConventionTask>.applyTo(named)
-        super<VerificationTask>.applyTo(named)
+    override fun applyTo(recipient: T) {
+        super<ConventionTask>.applyTo(recipient)
+        super<VerificationTask>.applyTo(recipient)
 
-        named.binaryResultsDirectory tryAssign binaryResultsDirectory?.let(layout.projectDirectory::dir)
-        ignoreFailures?.let(named::setIgnoreFailures)
-        testLogging?.applyTo(named.testLogging)
-        testNameIncludePatterns?.let(named::setTestNameIncludePatterns)
-        filter?.applyTo(named.filter)
+        recipient.binaryResultsDirectory tryAssign binaryResultsDirectory?.let(layout.projectDirectory::dir)
+        ignoreFailures?.let(recipient::setIgnoreFailures)
+        testLogging?.applyTo(recipient.testLogging)
+        testNameIncludePatterns?.let(recipient::setTestNameIncludePatterns)
+        filter?.applyTo(recipient.filter)
     }
 }
 

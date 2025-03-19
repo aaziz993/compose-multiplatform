@@ -1,12 +1,10 @@
 package gradle.api.publish
 
-import gradle.accessors.publishing
 import gradle.api.ProjectNamed
 import gradle.serialization.serializer.JsonPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import org.gradle.api.initialization.Settings
 
 /**
  * A publication is a description of a consumable representation of one or more artifacts, and possibly associated metadata.
@@ -37,11 +35,11 @@ internal interface Publication<T : org.gradle.api.publish.Publication> : Project
     val withBuildIdentifier: Boolean?
 
     context(Project)
-    override fun applyTo(named: T) {
-        named as org.gradle.api.publish.Publication
+    override fun applyTo(recipient: T) {
+        recipient as org.gradle.api.publish.Publication
 
-        withoutBuildIdentifier?.takeIf { it }?.run { named.withoutBuildIdentifier() }
-        withBuildIdentifier?.takeIf { it }?.run { named.withBuildIdentifier() }
+        withoutBuildIdentifier?.takeIf { it }?.run { recipient.withoutBuildIdentifier() }
+        withBuildIdentifier?.takeIf { it }?.run { recipient.withBuildIdentifier() }
     }
 
     context(Project)

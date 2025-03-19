@@ -3,7 +3,7 @@ package gradle.process
 import gradle.collection.SerializableAnyList
 import org.gradle.api.Project
 
-internal interface ExecSpec : BaseExecSpec< org.gradle.process.ExecSpec> {
+internal interface ExecSpec<in T : org.gradle.process.ExecSpec> : BaseExecSpec<T> {
 
     val commandLine: SerializableAnyList?
 
@@ -14,12 +14,12 @@ internal interface ExecSpec : BaseExecSpec< org.gradle.process.ExecSpec> {
     val setArgs: SerializableAnyList?
 
     context(Project)
-    override fun applyTo(options:  org.gradle.process.ExecSpec) {
-        super.applyTo(options)
+    override fun applyTo(recipient: T) {
+        super.applyTo(recipient)
 
-        commandLine?.let(options::commandLine)
-        setCommandLine?.let(options::setCommandLine)
-        args?.let(options::args)
-        setArgs?.let(options::setArgs)
+        commandLine?.let(recipient::commandLine)
+        setCommandLine?.let(recipient::setCommandLine)
+        args?.let(recipient::args)
+        setArgs?.let(recipient::setArgs)
     }
 }

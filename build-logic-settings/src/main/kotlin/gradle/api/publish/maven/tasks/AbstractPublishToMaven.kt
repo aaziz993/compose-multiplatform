@@ -2,7 +2,6 @@ package gradle.api.publish.maven.tasks
 
 import gradle.accessors.publishing
 import gradle.api.tasks.DefaultTask
-import gradle.api.tasks.Task
 import gradle.api.tasks.applyTo
 import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.SerialName
@@ -21,11 +20,11 @@ internal abstract class AbstractPublishToMaven<T : org.gradle.api.publish.maven.
     abstract val publication: String?
 
     context(Project)
-    override fun applyTo(named: T) {
-        super.applyTo(named)
+    override fun applyTo(recipient: T) {
+        super.applyTo(recipient)
 
         publication?.let(publishing.publications::getByName)?.let { publication ->
-            named.setPublication(publication as MavenPublication)
+            recipient.setPublication(publication as MavenPublication)
         }
     }
 }

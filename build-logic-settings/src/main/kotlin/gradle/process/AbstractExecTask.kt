@@ -4,6 +4,7 @@ import gradle.api.tasks.ConventionTask
 import gradle.api.tasks.applyTo
 import gradle.collection.SerializableAnyList
 import gradle.collection.SerializableAnyMap
+import java.util.SortedSet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -15,12 +16,12 @@ import org.gradle.kotlin.dsl.withType
  * @param <T> The concrete type of the class.
 </T> */
 internal abstract class AbstractExecTask<T : org.gradle.api.tasks.AbstractExecTask<*>>
-    : ConventionTask<T>(), ExecSpec<org.gradle.process.ExecSpec> {
+    : ConventionTask<T>(), ExecSpec<T> {
 
     context(Project)
-    override fun applyTo(named: T) {
-        super<ConventionTask>.applyTo(named)
-        super<ExecSpec>.applyTo(named)
+    override fun applyTo(recipient: T) {
+        super<ConventionTask>.applyTo(recipient)
+        super<ExecSpec>.applyTo(recipient)
     }
 }
 

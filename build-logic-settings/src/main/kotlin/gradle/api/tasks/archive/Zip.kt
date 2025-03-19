@@ -10,7 +10,6 @@ import gradle.collection.SerializableAnyMap
 import java.util.SortedSet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.api.file.DuplicatesStrategy
 import org.gradle.api.tasks.bundling.ZipEntryCompression
@@ -48,13 +47,13 @@ internal abstract class Zip<T : org.gradle.api.tasks.bundling.Zip> : AbstractArc
     abstract val metadataCharset: String?
 
     context(Project)
-    override fun applyTo(named: T) {
-        super.applyTo(named)
+    override fun applyTo(recipient: T) {
+        super.applyTo(recipient)
 
-        named.filePermissions
-        entryCompression?.let(named::setEntryCompression)
-        allowZip64?.let(named::setZip64)
-        metadataCharset?.let(named::setMetadataCharset)
+        recipient.filePermissions
+        entryCompression?.let(recipient::setEntryCompression)
+        allowZip64?.let(recipient::setZip64)
+        metadataCharset?.let(recipient::setMetadataCharset)
     }
 }
 

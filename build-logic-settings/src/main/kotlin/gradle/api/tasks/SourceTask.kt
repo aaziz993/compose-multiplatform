@@ -9,12 +9,12 @@ internal abstract class SourceTask<T : SourceTask> : ConventionTask<T>(), Patter
     abstract val sourceFiles: List<String>?
 
     context(Project)
-    override fun applyTo(named: T) {
-        super<ConventionTask>.applyTo(named)
-        super<PatternFilterable>.applyTo(named)
+    override fun applyTo(recipient: T) {
+        super<ConventionTask>.applyTo(recipient)
+        super<PatternFilterable>.applyTo(recipient)
 
         sourceFiles?.let { sourceFiles ->
-            named.source(*sourceFiles.toTypedArray())
+            recipient.source(*sourceFiles.toTypedArray())
         }
     }
 }

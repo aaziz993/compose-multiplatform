@@ -4,14 +4,12 @@ import gradle.api.tasks.Expand
 import gradle.api.tasks.FilesMatching
 import gradle.api.tasks.applyTo
 import gradle.api.tasks.archive.Zip
-import gradle.api.tasks.copy.CopySpec
 import gradle.api.tasks.copy.CopySpecImpl
 import gradle.api.tasks.copy.FileCopyDetails
 import gradle.api.tasks.copy.FromSpec
 import gradle.api.tasks.copy.IntoSpec
 import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
-import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.api.file.DuplicatesStrategy
 import org.gradle.api.tasks.bundling.ZipEntryCompression
@@ -52,13 +50,13 @@ internal abstract class Jar<T : org.gradle.api.tasks.bundling.Jar> : Zip<T>() {
     abstract val metaInf: CopySpecImpl?
 
     context(Project)
-    override fun applyTo(named: T) {
-        super.applyTo(named)
+    override fun applyTo(recipient: T) {
+        super.applyTo(recipient)
 
-        metadataCharset?.let(named::setMetadataCharset)
-        manifestContentCharset?.let(named::setManifestContentCharset)
-        manifest?.applyTo(named.manifest)
-        metaInf?.applyTo(named.metaInf)
+        metadataCharset?.let(recipient::setMetadataCharset)
+        manifestContentCharset?.let(recipient::setManifestContentCharset)
+        manifest?.applyTo(recipient.manifest)
+        metaInf?.applyTo(recipient.metaInf)
     }
 }
 

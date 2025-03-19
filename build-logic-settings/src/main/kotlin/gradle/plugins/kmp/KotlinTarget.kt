@@ -30,9 +30,9 @@ internal interface KotlinTarget<T : org.jetbrains.kotlin.gradle.plugin.KotlinTar
         get() = true
 
     context(Project)
-    override fun applyTo(named: T) {
+    override fun applyTo(recipient: T) {
         this@KotlinTarget.compilations?.forEach { compilation ->
-            named.compilations.named(compilation.name) {
+            recipient.compilations.named(compilation.name) {
                 compilation.applyTo(this)
             }
         }

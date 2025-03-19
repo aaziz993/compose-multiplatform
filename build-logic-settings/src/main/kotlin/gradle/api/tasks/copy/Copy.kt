@@ -7,7 +7,6 @@ import gradle.collection.SerializableAnyMap
 import java.util.SortedSet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.api.file.DuplicatesStrategy
 import org.gradle.kotlin.dsl.withType
@@ -64,10 +63,10 @@ internal abstract class Copy<T : org.gradle.api.tasks.Copy> : AbstractCopyTask<T
     abstract val destinationDir: String?
 
     context(Project)
-    override fun applyTo(named: T) {
-        super.applyTo(named)
+    override fun applyTo(recipient: T) {
+        super.applyTo(recipient)
 
-        destinationDir?.let(::file)?.let(named::setDestinationDir)
+        destinationDir?.let(::file)?.let(recipient::setDestinationDir)
     }
 }
 

@@ -20,10 +20,10 @@ internal interface K2MultiplatformCompilationTask<T : org.jetbrains.kotlin.gradl
     val compilerOptions: KotlinCommonCompilerOptions?
 
     context(Project)
-    override fun applyTo(named: T) {
-        super.applyTo(named)
+    override fun applyTo(recipient: T) {
+        super.applyTo(recipient)
 
-        compilerOptions?.applyTo(named.compilerOptions)
+        compilerOptions?.applyTo(recipient.compilerOptions)
     }
 }
 

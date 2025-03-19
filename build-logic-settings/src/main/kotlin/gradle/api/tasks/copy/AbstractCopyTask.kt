@@ -18,7 +18,6 @@ package gradle.api.tasks.copy
 import gradle.api.tasks.ConventionTask
 import gradle.api.tasks.Expand
 import gradle.api.tasks.FilesMatching
-import gradle.api.tasks.Task
 import gradle.api.tasks.applyTo
 import gradle.collection.SerializableAnyMap
 import java.util.SortedSet
@@ -39,12 +38,12 @@ internal abstract class AbstractCopyTask<T: org.gradle.api.tasks.AbstractCopyTas
     abstract val caseSensitive: Boolean?
 
     context(Project)
-    override fun applyTo(named: T) {
-        super<ConventionTask>.applyTo(named)
+    override fun applyTo(recipient: T) {
+        super<ConventionTask>.applyTo(recipient)
 
-        super<CopySpec>.applyTo(named)
+        super<CopySpec>.applyTo(recipient)
 
-        caseSensitive?.let(named::setCaseSensitive)
+        caseSensitive?.let(recipient::setCaseSensitive)
     }
 }
 

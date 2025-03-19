@@ -26,13 +26,13 @@ internal interface ArtifactRepository<T : org.gradle.api.artifacts.repositories.
 
     context(Settings)
     @Suppress("UnstableApiUsage")
-    override fun applyTo(named: T) = with(layout.settingsDirectory) {
-        _applyTo(named)
+    override fun applyTo(recipient: T) = with(layout.settingsDirectory) {
+        _applyTo(recipient)
     }
 
     context(Project)
-    override fun applyTo(named: T) = with(layout.projectDirectory) {
-        _applyTo(named)
+    override fun applyTo(recipient: T) = with(layout.projectDirectory) {
+        _applyTo(recipient)
     }
 
     context(Directory)

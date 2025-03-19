@@ -6,10 +6,7 @@ import gradle.api.repositories.maven.Maven
 import gradle.api.tasks.applyTo
 import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
-import org.gradle.api.Named
 import org.gradle.api.Project
-import org.gradle.api.artifacts.repositories.ArtifactRepository
-import org.gradle.api.artifacts.repositories.MavenArtifactRepository
 import org.gradle.api.publish.maven.tasks.PublishToMavenRepository
 import org.gradle.kotlin.dsl.withType
 
@@ -33,16 +30,16 @@ internal data class PublishToMavenRepository(
 ) : AbstractPublishToMaven<PublishToMavenRepository>() {
 
     context(Project)
-    override fun applyTo(named: PublishToMavenRepository) {
-        super.applyTo(named)
+    override fun applyTo(recipient: PublishToMavenRepository) {
+        super.applyTo(recipient)
 
         PublishToMavenLocal
         repository?.let { repository ->
-            if (repository.name.isEmpty() || repository.name == named.name) {
-                repository.applyTo(named.repository)
+            if (repository.name.isEmpty() || repository.name == recipient.name) {
+                repository.applyTo(recipient.repository)
             }
             else {
-                named.repository = publishing.repositories.maven {
+                recipient.repository = publishing.repositories.maven {
                     repository.applyTo(this)
                 }
             }
