@@ -1,7 +1,10 @@
 package gradle.api.tasks.copy
 
+import gradle.api.tasks.Expand
 import gradle.api.tasks.FilesMatching
 import gradle.api.tasks.util.PatternFilterable
+import gradle.collection.SerializableAnyMap
+import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.file.CopySpec
 import org.gradle.api.file.DuplicatesStrategy
@@ -65,7 +68,7 @@ import org.gradle.api.file.DuplicatesStrategy
  *
  * @see Project.copy
  */
-internal interface CopySpec<T: CopySpec> : CopySourceSpec, CopyProcessingSpec<org.gradle.api.file.CopyProcessingSpec>, PatternFilterable<org.gradle.api.tasks.util.PatternFilterable> {
+internal interface CopySpec<in T : CopySpec> : CopySourceSpec<T>, CopyProcessingSpec<T>, PatternFilterable<T> {
 
     /**
      * Specifies whether case-sensitive pattern matching should be used.
@@ -117,7 +120,7 @@ internal interface CopySpec<T: CopySpec> : CopySourceSpec, CopyProcessingSpec<or
     val filteringCharset: String?
 
     context(Project)
-    fun applyTo(recipient: T) {
+    override fun applyTo(recipient: T) {
         super<CopySourceSpec>.applyTo(recipient)
 
         super<CopyProcessingSpec>.applyTo(recipient)
@@ -141,4 +144,29 @@ internal interface CopySpec<T: CopySpec> : CopySourceSpec, CopyProcessingSpec<or
         filteringCharset?.let(recipient::setFilteringCharset)
     }
 }
+
+@Serializable
+internal data class CopySpecImpl(
+    override val isCaseSensitive: Boolean? = null,
+    override val includeEmptyDirs: Boolean? = null,
+    override val duplicatesStrategy: DuplicatesStrategy? = null,
+    override val filesMatching: FilesMatching? = null,
+    override val filesNotMatching: FilesMatching? = null,
+    override val filteringCharset: String? = null,
+    override val from: Set<String>? = null,
+    override val fromSpec: FromSpec? = null,
+    override val into: String? = null,
+    override val intoSpec: IntoSpec? = null,
+    override val rename: Map<String, String>? = null,
+    override val renamePattern: Map<String, String>? = null,
+    override val filePermissions: Int? = null,
+    override val dirPermissions: Int? = null,
+    override val eachFile: FileCopyDetails? = null,
+    override val expand: SerializableAnyMap? = null,
+    override val expandDetails: Expand? = null,
+    override val includes: Set<String>? = null,
+    override val setIncludes: Set<String>? = null,
+    override val excludes: Set<String>? = null,
+    override val setExcludes: Set<String>? = null,
+) : gradle.api.tasks.copy.CopySpec<CopySpec>
 

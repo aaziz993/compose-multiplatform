@@ -1,5 +1,6 @@
 package gradle.api.tasks.compile
 
+import gradle.accessors.files
 import gradle.api.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -22,12 +23,12 @@ internal data class CompileOptions(
     val encoding: String? = null,
     val debug: Boolean? = null,
     val fork: Boolean? = null,
-    val bootstrapClasspath: List<String>? = null,
+    val bootstrapClasspath: Set<String>? = null,
     val extensionDirs: String? = null,
     val compilerArgs: List<String>? = null,
     val incremental: Boolean? = null,
-    val sourcepath: FileCollection? = null,
-    val annotationProcessorPath: List<String>? = null,
+    val sourcepath: Set<String>? = null,
+    val annotationProcessorPath: Set<String>? = null,
     val incrementalAfterFailure: Boolean? = null,
     val javaModuleVersion: String? = null,
     val javaModuleMainClass: String? = null,
@@ -47,20 +48,12 @@ internal data class CompileOptions(
         encoding?.let(options::setEncoding)
         debug?.let(options::setDebug)
         fork?.let(options::setFork)
-
-        bootstrapClasspath?.let { bootstrapClasspath ->
-            options.bootstrapClasspath = files(*bootstrapClasspath.toTypedArray())
-        }
-
+        bootstrapClasspath?.let(::files)?.let(options::setBootstrapClasspath)
         extensionDirs?.let(options::setExtensionDirs)
         compilerArgs?.let(options::setCompilerArgs)
         incremental?.let(options::setIncremental)
-        sourcepath?.let(options::setSourcepath)
-
-        annotationProcessorPath?.let { annotationProcessorPath ->
-            options.annotationProcessorPath = files(*annotationProcessorPath.toTypedArray())
-        }
-
+        sourcepath?.let(::files).let(options::setSourcepath)
+        annotationProcessorPath?.let(::files)?.let(options::setAnnotationProcessorPath)
         options.incrementalAfterFailure tryAssign incrementalAfterFailure
         options.javaModuleVersion tryAssign javaModuleVersion
         options.javaModuleMainClass tryAssign javaModuleMainClass

@@ -4,6 +4,7 @@ package gradle.api.tasks
 
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.kotlin.KotlinCommonCompilerOptions
+import java.util.SortedSet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -30,7 +31,7 @@ internal interface K2MultiplatformCompilationTask<T : org.jetbrains.kotlin.gradl
 @SerialName("K2MultiplatformCompilationTask")
 internal data class K2MultiplatformCompilationTaskImpl(
     override val compilerOptions: KotlinCommonCompilerOptions? = null,
-    override val dependsOn: List<String>? = null,
+    override val dependsOn: SortedSet<String>? = null,
     override val onlyIf: Boolean? = null,
     override val doNotTrackState: String? = null,
     override val notCompatibleWithConfigurationCache: String? = null,
@@ -39,9 +40,9 @@ internal data class K2MultiplatformCompilationTaskImpl(
     override val properties: SerializableAnyMap? = null,
     override val description: String? = null,
     override val group: String? = null,
-    override val mustRunAfter: List<String>? = null,
-    override val finalizedBy: List<String>? = null,
-    override val shouldRunAfter: List<String>? = null,
+    override val mustRunAfter: Set<String>? = null,
+    override val finalizedBy: SortedSet<String>? = null,
+    override val shouldRunAfter: Set<String>? = null,
     override val name: String = "",
 ) : K2MultiplatformCompilationTask<org.jetbrains.kotlin.gradle.tasks.K2MultiplatformCompilationTask> {
 

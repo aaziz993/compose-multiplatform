@@ -43,18 +43,18 @@ internal data class FlatDirectoryArtifactRepository(
 ) : ArtifactRepository<FlatDirectoryArtifactRepository> {
 
     context(Settings)
-    override fun applyTo(handler: RepositoryHandler) =
-        applyTo(handler.withType<FlatDirectoryArtifactRepository>()) { _name, action ->
-            handler.flatDir {
+    override fun applyTo(recipient: RepositoryHandler) =
+        applyTo(recipient.withType<FlatDirectoryArtifactRepository>()) { _name, action ->
+            recipient.flatDir {
                 name = _name
                 action.execute(this)
             }
         }
 
     context(Project)
-    override fun applyTo(handler: RepositoryHandler) =
-        applyTo(handler.withType<FlatDirectoryArtifactRepository>()) { _name, action ->
-            handler.flatDir {
+    override fun applyTo(recipient: RepositoryHandler) =
+        applyTo(recipient.withType<FlatDirectoryArtifactRepository>()) { _name, action ->
+            recipient.flatDir {
                 name = _name
                 action.execute(this)
             }

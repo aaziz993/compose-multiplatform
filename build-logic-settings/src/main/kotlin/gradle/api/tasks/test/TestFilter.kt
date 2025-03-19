@@ -2,7 +2,7 @@ package gradle.api.tasks.test
 
 import org.gradle.api.tasks.testing.TestFilter
 
-internal interface TestFilter {
+internal interface TestFilter<in T: TestFilter> {
 
     /**
      * Appends a test name pattern to the inclusion filter. Wildcard '*' is supported, either test method name or class name is supported. Examples of test names: "com.foo.FooTest.someMethod",
@@ -67,13 +67,13 @@ internal interface TestFilter {
      */
     val failOnNoMatchingTests: Boolean?
 
-    fun applyTo(defaultTestFilter: TestFilter) {
-        includeTestsMatchings?.forEach(defaultTestFilter::includeTestsMatching)
-        excludeTestsMatchings?.forEach(defaultTestFilter::excludeTestsMatching)
-        includePatterns?.let(defaultTestFilter.includePatterns::addAll)
-        excludePatterns?.let(defaultTestFilter.excludePatterns::addAll)
-        includeTests?.forEach { (className, methodName) -> defaultTestFilter.includeTest(className, methodName) }
-        excludeTests?.forEach { (className, methodName) -> defaultTestFilter.excludeTest(className, methodName) }
-        failOnNoMatchingTests?.let(defaultTestFilter::setFailOnNoMatchingTests)
+    fun applyTo(recipient: T) {
+        includeTestsMatchings?.forEach(recipient::includeTestsMatching)
+        excludeTestsMatchings?.forEach(recipient::excludeTestsMatching)
+        includePatterns?.let(recipient.includePatterns::addAll)
+        excludePatterns?.let(recipient.excludePatterns::addAll)
+        includeTests?.forEach { (className, methodName) -> recipient.includeTest(className, methodName) }
+        excludeTests?.forEach { (className, methodName) -> recipient.excludeTest(className, methodName) }
+        failOnNoMatchingTests?.let(recipient::setFailOnNoMatchingTests)
     }
 }

@@ -1,10 +1,11 @@
 package gradle.plugins.java
 
-
+import gradle.api.tasks.applyTo
 import gradle.api.tasks.compile.AbstractCompile
 import gradle.api.tasks.compile.CompileOptions
 import gradle.api.tasks.compile.HasCompileOptions
 import gradle.collection.SerializableAnyMap
+import java.util.SortedSet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.tasks.compile.JavaCompile
@@ -26,7 +27,7 @@ import org.gradle.kotlin.dsl.withType
  */
 @Serializable
 internal data class JavaCompile(
-    override val dependsOn: List<String>? = null,
+    override val dependsOn: SortedSet<String>? = null,
     override val onlyIf: Boolean? = null,
     override val doNotTrackState: String? = null,
     override val notCompatibleWithConfigurationCache: String? = null,
@@ -35,12 +36,12 @@ internal data class JavaCompile(
     override val properties: SerializableAnyMap? = null,
     override val description: String? = null,
     override val group: String? = null,
-    override val mustRunAfter: List<String>? = null,
-    override val finalizedBy: List<String>? = null,
-    override val shouldRunAfter: List<String>? = null,
+    override val mustRunAfter: Set<String>? = null,
+    override val finalizedBy: SortedSet<String>? = null,
+    override val shouldRunAfter: Set<String>? = null,
     override val name: String = "",
     override val destinationDirectory: String? = null,
-    override val classpath: List<String>? = null,
+    override val classpath: Set<String>? = null,
     override val sourceCompatibility: String? = null,
     override val targetCompatibility: String? = null,
     override val options: CompileOptions? = null,
@@ -50,13 +51,16 @@ internal data class JavaCompile(
      * @since 6.4
      */
     val modularity: ModularitySpec? = null,
-) : AbstractCompile(), HasCompileOptions {
+    override val sourceFiles: List<String>? = null,
+    override val includes: Set<String>? = null,
+    override val setIncludes: Set<String>? = null,
+    override val excludes: Set<String>? = null,
+    override val setExcludes: Set<String>? = null,
+) : AbstractCompile<JavaCompile>(), HasCompileOptions<JavaCompile> {
 
-        context(Project)
-    override fun applyTo(named: T) {
+    context(Project)
+    override fun applyTo(named: JavaCompile) {
         super<AbstractCompile>.applyTo(named)
-
-        named as JavaCompile
 
         super<HasCompileOptions>.applyTo(named)
 

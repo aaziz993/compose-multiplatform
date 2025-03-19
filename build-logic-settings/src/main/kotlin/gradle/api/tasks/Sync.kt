@@ -1,79 +1,38 @@
-package gradle.api.tasks.copy
+package gradle.api.tasks
 
-import gradle.api.tasks.Expand
-import gradle.api.tasks.FilesMatching
-import gradle.api.tasks.applyTo
+import org.gradle.kotlin.dsl.withType
+import gradle.api.tasks.copy.AbstractCopyTask
+import gradle.api.tasks.copy.FileCopyDetails
+import gradle.api.tasks.copy.FromSpec
+import gradle.api.tasks.copy.IntoSpec
+import gradle.api.tasks.util.PatternFilterableImpl
 import gradle.collection.SerializableAnyMap
 import java.util.SortedSet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.api.file.DuplicatesStrategy
-import org.gradle.kotlin.dsl.withType
 
-/**
- * Copies files into a destination directory. This task can also rename and filter files as it copies. The task
- * implements [CopySpec][org.gradle.api.file.CopySpec] for specifying what to copy.
- *
- *
- *  Examples:
- * <pre class='autoTested'>
- * task copyDocs(type: Copy) {
- * from 'src/main/doc'
- * into 'build/target/doc'
- * }
- *
- * //for Ant filter
- * import org.apache.tools.ant.filters.ReplaceTokens
- *
- * //for including in the copy task
- * def dataContent = copySpec {
- * from 'src/data'
- * include '*.data'
- * }
- *
- * task initConfig(type: Copy) {
- * from('src/main/config') {
- * include '**&#47;*.properties'
- * include '**&#47;*.xml'
- * filter(ReplaceTokens, tokens: [version: '2.3.1'])
- * }
- * from('src/main/config') {
- * exclude '**&#47;*.properties', '**&#47;*.xml'
- * }
- * from('src/main/languages') {
- * rename 'EN_US_(.*)', '$1'
- * }
- * into 'build/target/config'
- * exclude '**&#47;*.bak'
- *
- * includeEmptyDirs = false
- *
- * with dataContent
- * }
-</pre> *
- */
-internal abstract class Copy<T : org.gradle.api.tasks.Copy> : AbstractCopyTask<T>() {
+internal abstract class Sync<T : org.gradle.api.tasks.Sync> : AbstractCopyTask<T>() {
 
-    /**
-     * Sets the directory to copy files into. This is the same as calling [.into] on this task.
-     *
-     * @param destinationDir The destination directory. Must not be null.
-     */
     abstract val destinationDir: String?
 
-    context(Project)
-    override fun applyTo(named: T) {
-        super.applyTo(named)
+    abstract val preserve: PatternFilterableImpl?
 
-        destinationDir?.let(::file)?.let(named::setDestinationDir)
+    context(Project)
+    override fun applyTo(recipient: T) {
+        super.applyTo(recipient)
+
+        destinationDir?.let(::file)?.let(recipient::setDestinationDir)
+        preserve?.applyTo(recipient)
     }
 }
 
 @Serializable
-@SerialName("Copy")
-internal data class CopyImpl(
+@SerialName("Sync")
+internal data class SyncImpl(
+    override val destinationDir: String? = null,
+    override val preserve: PatternFilterableImpl? = null,
     override val caseSensitive: Boolean? = null,
     override val dependsOn: SortedSet<String>? = null,
     override val onlyIf: Boolean? = null,
@@ -109,10 +68,9 @@ internal data class CopyImpl(
     override val setIncludes: Set<String>? = null,
     override val excludes: Set<String>? = null,
     override val setExcludes: Set<String>? = null,
-    override val destinationDir: String? = null,
-) : Copy<org.gradle.api.tasks.Copy>() {
+) : Sync<org.gradle.api.tasks.Sync>() {
 
     context(Project)
     override fun applyTo() =
-        applyTo(tasks.withType<org.gradle.api.tasks.Copy>())
+        applyTo(tasks.withType<org.gradle.api.tasks.Sync>())
 }

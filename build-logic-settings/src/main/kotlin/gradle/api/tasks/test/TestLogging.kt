@@ -1,5 +1,6 @@
 package gradle.api.tasks.test
 
+import kotlinx.serialization.Serializable
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.gradle.api.tasks.testing.logging.TestLogging
@@ -8,7 +9,7 @@ import org.gradle.api.tasks.testing.logging.TestStackTraceFilter
 /**
  * Options that determine which test events get logged, and at which detail.
  */
-internal interface TestLogging {
+internal interface TestLogging<in T: TestLogging> {
 
     /**
      * Sets the events to be logged.
@@ -100,16 +101,30 @@ internal interface TestLogging {
      */
     val showStandardStreams: Boolean?
 
-    fun applyTo(logging: TestLogging) {
-        events?.let(logging::setEvents)
-        minGranularity?.let(logging::setMinGranularity)
-        maxGranularity?.let(logging::setMaxGranularity)
-        displayGranularity?.let(logging::setDisplayGranularity)
-        showExceptions?.let(logging::setShowExceptions)
-        showCauses?.let(logging::setShowCauses)
-        showStackTraces?.let(logging::setShowStackTraces)
-        exceptionFormat?.let(logging::setExceptionFormat)
-        tackTraceFilters?.let(logging::setStackTraceFilters)
-        showStandardStreams?.let(logging::setShowStandardStreams)
+    fun applyTo(recipient: T) {
+        events?.let(recipient::setEvents)
+        minGranularity?.let(recipient::setMinGranularity)
+        maxGranularity?.let(recipient::setMaxGranularity)
+        displayGranularity?.let(recipient::setDisplayGranularity)
+        showExceptions?.let(recipient::setShowExceptions)
+        showCauses?.let(recipient::setShowCauses)
+        showStackTraces?.let(recipient::setShowStackTraces)
+        exceptionFormat?.let(recipient::setExceptionFormat)
+        tackTraceFilters?.let(recipient::setStackTraceFilters)
+        showStandardStreams?.let(recipient::setShowStandardStreams)
     }
 }
+
+@Serializable
+internal data class TestLoggingImpl(
+    override val events: Set<TestLogEvent>? = null,
+    override val minGranularity: Int? = null,
+    override val maxGranularity: Int? = null,
+    override val displayGranularity: Int? = null,
+    override val showExceptions: Boolean? = null,
+    override val showCauses: Boolean? = null,
+    override val showStackTraces: Boolean? = null,
+    override val exceptionFormat: TestExceptionFormat? = null,
+    override val tackTraceFilters: Set<TestStackTraceFilter>? = null,
+    override val showStandardStreams: Boolean? = null,
+) : gradle.api.tasks.test.TestLogging<TestLogging>

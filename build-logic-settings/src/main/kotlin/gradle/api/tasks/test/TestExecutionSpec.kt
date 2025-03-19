@@ -1,3 +1,3 @@
-package gradle.tasks.test
+package gradle.api.tasks.test
 
 public interface TestExecutionSpec

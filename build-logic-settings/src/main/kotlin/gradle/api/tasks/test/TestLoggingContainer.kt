@@ -85,12 +85,10 @@ internal data class TestLoggingContainer(
      * @param action logging options for error level
      */
     val error: TestLoggingImpl? = null,
-) : TestLogging {
+) : TestLogging<TestLoggingContainer> {
 
-    override fun applyTo(logging: org.gradle.api.tasks.testing.logging.TestLogging) {
+    override fun applyTo(logging: TestLoggingContainer) {
         super.applyTo(logging)
-
-        logging as TestLoggingContainer
 
         debug?.applyTo(logging.debug)
         info?.applyTo(logging.info)

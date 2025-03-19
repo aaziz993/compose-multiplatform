@@ -18,7 +18,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 @Serializable
 internal data class KotlinCompile(
-    override val dependsOn: List<String>? = null,
+    override val dependsOn: SortedSet<String>? = null,
     override val onlyIf: Boolean? = null,
     override val doNotTrackState: String? = null,
     override val notCompatibleWithConfigurationCache: String? = null,
@@ -27,9 +27,9 @@ internal data class KotlinCompile(
     override val properties: SerializableAnyMap? = null,
     override val description: String? = null,
     override val group: String? = null,
-    override val mustRunAfter: List<String>? = null,
-    override val finalizedBy: List<String>? = null,
-    override val shouldRunAfter: List<String>? = null,
+    override val mustRunAfter: Set<String>? = null,
+    override val finalizedBy: SortedSet<String>? = null,
+    override val shouldRunAfter: Set<String>? = null,
     override val name: String = "",
     override val compilerOptions: KotlinJvmCompilerOptions? = null,
     override val jvmTargetValidationMode: JvmTargetValidationMode? = null,
@@ -45,10 +45,10 @@ internal data class KotlinCompile(
     override val setSources: List<String>? = null,
     override val libraries: List<String>? = null,
     override val destinationDirectory: String? = null,
-    override val includes: List<String>? = null,
-    override val setIncludes: List<String>? = null,
-    override val excludes: List<String>? = null,
-    override val setExcludes: List<String>? = null,
+    override val includes: Set<String>? = null,
+    override val setIncludes: Set<String>? = null,
+    override val excludes: Set<String>? = null,
+    override val setExcludes: Set<String>? = null,
     /** A package prefix that is used for locating Java sources in a directory structure with non-full-depth packages.
      *
      * Example: a Java source file with `package com.example.my.package` is located in directory `src/main/java/my/package`.

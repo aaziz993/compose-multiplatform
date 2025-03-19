@@ -8,6 +8,7 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.api.artifacts.repositories.MavenArtifactRepository
+import org.gradle.api.file.Directory
 import org.gradle.api.initialization.Settings
 import org.gradle.kotlin.dsl.withType
 
@@ -18,7 +19,7 @@ import org.gradle.kotlin.dsl.withType
  * Repositories of this type are created by the [RepositoryHandler.maven] group of methods.
  */
 internal interface MavenArtifactRepository
-    : ArtifactRepository<MavenArtifactRepository>, UrlArtifactRepository, AuthenticationSupported {
+    : ArtifactRepository<MavenArtifactRepository>, UrlArtifactRepository<MavenArtifactRepository>, AuthenticationSupported<MavenArtifactRepository> {
 
     /**
      * Sets the additional URLs to use to find artifact files. Note that these URLs are not used to find POM files.
@@ -47,43 +48,43 @@ internal interface MavenArtifactRepository
     val mavenContent: MavenRepositoryContentDescriptor?
 
     context(Settings)
-    override fun applyTo(named: MavenArtifactRepository) =
-        super<ArtifactRepository>.applyTo(named)
+    override fun applyTo(recipient: MavenArtifactRepository) =
+        super<ArtifactRepository>.applyTo(recipient)
 
     context(Project)
     override fun applyTo(named: MavenArtifactRepository) =
         super<ArtifactRepository>.applyTo(named)
 
-    override fun _applyTo(named: MavenArtifactRepository) {
-        super<ArtifactRepository>._applyTo(named)
-
-        super<UrlArtifactRepository>.applyTo(named)
-        super<AuthenticationSupported>.applyTo(named)
+    context(Directory)
+    override fun _applyTo(recipient: MavenArtifactRepository) {
+        super<ArtifactRepository>._applyTo(recipient)
+        super<UrlArtifactRepository>._applyTo(recipient)
+        super<AuthenticationSupported>._applyTo(recipient)
 
         artifactUrls?.let { artifactUrls ->
-            named.artifactUrls(*artifactUrls.toTypedArray())
+            recipient.artifactUrls(*artifactUrls.toTypedArray())
         }
 
-        metadataSources?.applyTo(named.metadataSources)
+        metadataSources?.applyTo(recipient.metadataSources)
 
         mavenContent?.let { mavenContent ->
-            named.mavenContent(mavenContent::applyTo)
+            recipient.mavenContent(mavenContent::applyTo)
         }
     }
 
     context(Settings)
-    override fun applyTo(handler: RepositoryHandler) =
-        applyTo(handler.withType<MavenArtifactRepository>()) { _name, action ->
-            handler.maven {
+    override fun applyTo(recipient: RepositoryHandler) =
+        applyTo(recipient.withType<MavenArtifactRepository>()) { _name, action ->
+            recipient.maven {
                 name = _name
                 action.execute(this)
             }
         }
 
     context(Project)
-    override fun applyTo(handler: RepositoryHandler) =
-        applyTo(handler.withType<MavenArtifactRepository>()) { _name, action ->
-            handler.maven {
+    override fun applyTo(recipient: RepositoryHandler) =
+        applyTo(recipient.withType<MavenArtifactRepository>()) { _name, action ->
+            recipient.maven {
                 name = _name
                 action.execute(this)
             }

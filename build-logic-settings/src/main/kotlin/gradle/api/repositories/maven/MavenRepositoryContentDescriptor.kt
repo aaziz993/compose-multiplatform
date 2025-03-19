@@ -1,10 +1,9 @@
 package gradle.api.repositories.maven
 
 import gradle.api.repositories.Module
-import gradle.api.repositories.RepositoryContentDescriptorImpl
+import gradle.api.repositories.RepositoryContentDescriptor
 import gradle.api.repositories.Version
 import kotlinx.serialization.Serializable
-import org.gradle.api.artifacts.repositories.InclusiveRepositoryContentDescriptor
 import org.gradle.api.artifacts.repositories.MavenRepositoryContentDescriptor
 
 /**
@@ -14,20 +13,20 @@ import org.gradle.api.artifacts.repositories.MavenRepositoryContentDescriptor
  */
 @Serializable
 internal data class MavenRepositoryContentDescriptor(
-    override val excludeGroupsAndSubgroups: List<String>? = null,
-    override val excludeGroupByRegexes: List<String>? = null,
-    override val excludeModules: List<Module>? = null,
-    override val excludeModulesByRegexes: List<Module>? = null,
-    override val excludeVersions: List<Version>? = null,
-    override val excludeVersionsByRegexes: List<Version>? = null,
-    override val notForConfigurations: List<String>? = null,
-    override val includeGroups: List<String>? = null,
-    override val includeGroupsAndSubgroups: List<String>? = null,
-    override val includeGroupsByRegexes: List<String>? = null,
-    override val includeModules: List<Module>? = null,
-    override val includeModulesByRegexes: List<Module>? = null,
-    override val includeVersions: List<Version>? = null,
-    override val includeVersionsByRegexes: List<Version>? = null,
+    override val excludeGroupsAndSubgroups: Set<String>? = null,
+    override val excludeGroupByRegexes: Set<String>? = null,
+    override val excludeModules: Set<Module>? = null,
+    override val excludeModulesByRegexes: Set<Module>? = null,
+    override val excludeVersions: Set<Version>? = null,
+    override val excludeVersionsByRegexes: Set<Version>? = null,
+    override val notForConfigurations: Set<String>? = null,
+    override val includeGroups: Set<String>? = null,
+    override val includeGroupsAndSubgroups: Set<String>? = null,
+    override val includeGroupsByRegexes: Set<String>? = null,
+    override val includeModules: Set<Module>? = null,
+    override val includeModulesByRegexes: Set<Module>? = null,
+    override val includeVersions: Set<Version>? = null,
+    override val includeVersionsByRegexes: Set<Version>? = null,
     /**
      * Declares that this repository only contains releases.
      */
@@ -36,10 +35,10 @@ internal data class MavenRepositoryContentDescriptor(
      * Declares that this repository only contains snapshots.
      */
     val snapshotsOnly: Boolean? = null,
-    override val excludeGroups: List<String>?,
+    override val excludeGroups: Set<String>?,
 ) : RepositoryContentDescriptor {
 
-    override fun applyTo(descriptor: InclusiveRepositoryContentDescriptor) {
+    override fun applyTo(descriptor: org.gradle.api.artifacts.repositories.RepositoryContentDescriptor) {
         super.applyTo(descriptor)
 
         descriptor as MavenRepositoryContentDescriptor

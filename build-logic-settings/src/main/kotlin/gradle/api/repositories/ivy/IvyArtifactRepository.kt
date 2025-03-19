@@ -154,18 +154,18 @@ internal data class IvyArtifactRepository(
         super<ArtifactRepository>.applyTo(named)
 
     context(Settings)
-    override fun applyTo(handler: RepositoryHandler) =
-        applyTo(handler.withType<IvyArtifactRepository>()) { _name, action ->
-            handler.ivy {
+    override fun applyTo(recipient: RepositoryHandler) =
+        applyTo(recipient.withType<IvyArtifactRepository>()) { _name, action ->
+            recipient.ivy {
                 name = _name
                 action.execute(this)
             }
         }
 
     context(Project)
-    override fun applyTo(handler: RepositoryHandler) =
-        applyTo(handler.withType<IvyArtifactRepository>()) { _name, action ->
-            handler.ivy {
+    override fun applyTo(recipient: RepositoryHandler) =
+        applyTo(recipient.withType<IvyArtifactRepository>()) { _name, action ->
+            recipient.ivy {
                 name = _name
                 action.execute(this)
             }

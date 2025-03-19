@@ -2,12 +2,13 @@ package gradle.api.file
 
 import gradle.api.tasks.Expand
 import gradle.collection.SerializableAnyMap
+import org.gradle.api.Project
 import org.gradle.api.file.ContentFilterable
 
 /**
  * Represents some binary resource whose content can be filtered.
  */
-internal interface ContentFilterable<T : ContentFilterable> {
+internal interface ContentFilterable<in T : ContentFilterable> {
 
     /**
      *
@@ -52,6 +53,7 @@ internal interface ContentFilterable<T : ContentFilterable> {
      */
     val expandDetails: Expand?
 
+    context(Project)
     fun applyTo(recipient: T) {
         expand?.let(recipient::expand)
         expandDetails?.let { expandDetails ->

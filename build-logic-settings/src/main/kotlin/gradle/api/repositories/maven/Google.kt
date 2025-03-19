@@ -29,14 +29,14 @@ internal data class Google(
         get() = ArtifactRepositoryContainer.GOOGLE_URL
 
     context(Settings)
-    override fun applyTo(handler: RepositoryHandler) =
-        applyTo(handler.withType<org.gradle.api.artifacts.repositories.MavenArtifactRepository>()) { _, action ->
-            handler.google(action)
+    override fun applyTo(recipient: RepositoryHandler) =
+        applyTo(recipient.withType<org.gradle.api.artifacts.repositories.MavenArtifactRepository>()) { _, action ->
+            recipient.google(action)
         }
 
     context(Project)
-    override fun applyTo(handler: RepositoryHandler) =
-        applyTo(handler.withType<org.gradle.api.artifacts.repositories.MavenArtifactRepository>()) { _, action ->
-            handler.google(action)
+    override fun applyTo(recipient: RepositoryHandler) =
+        applyTo(recipient.withType<org.gradle.api.artifacts.repositories.MavenArtifactRepository>()) { _, action ->
+            recipient.google(action)
         }
 }

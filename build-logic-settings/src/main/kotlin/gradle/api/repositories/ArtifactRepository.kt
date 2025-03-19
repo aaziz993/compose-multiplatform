@@ -43,10 +43,10 @@ internal interface ArtifactRepository<T : org.gradle.api.artifacts.repositories.
     }
 
     context(Settings)
-    fun applyTo(handler: RepositoryHandler)
+    fun applyTo(recipient: RepositoryHandler)
 
     context(Project)
-    fun applyTo(handler: RepositoryHandler)
+    fun applyTo(recipient: RepositoryHandler)
 }
 
 private object ArtifactRepositorySerializer : JsonPolymorphicSerializer<ArtifactRepository<*>>(

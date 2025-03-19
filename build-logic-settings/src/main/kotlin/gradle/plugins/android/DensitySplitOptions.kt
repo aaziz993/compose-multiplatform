@@ -6,8 +6,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 internal data class DensitySplitOptions(
     override val isEnable: Boolean? = null,
-    override val includes: List<String>? = null,
-    override val excludes: List<String>? = null,
+    override val includes: Set<String>? = null,
+    override val excludes: Set<String>? = null,
     override val reset: Boolean? = null,
     val compatibleScreens: List<String>? = null,
 ) : Split {

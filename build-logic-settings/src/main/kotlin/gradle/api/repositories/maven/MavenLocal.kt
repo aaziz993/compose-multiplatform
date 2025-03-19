@@ -25,14 +25,14 @@ internal data class MavenLocal(
 ) : MavenArtifactRepository {
 
     context(Settings)
-    override fun applyTo(handler: RepositoryHandler) =
-        applyTo(handler.withType<org.gradle.api.artifacts.repositories.MavenArtifactRepository>()) { _, action ->
-            handler.mavenLocal(action)
+    override fun applyTo(recipient: RepositoryHandler) =
+        applyTo(recipient.withType<org.gradle.api.artifacts.repositories.MavenArtifactRepository>()) { _, action ->
+            recipient.mavenLocal(action)
         }
 
     context(Project)
-    override fun applyTo(handler: RepositoryHandler) =
-        applyTo(handler.withType<org.gradle.api.artifacts.repositories.MavenArtifactRepository>()) { _, action ->
-            handler.mavenLocal(action)
+    override fun applyTo(recipient: RepositoryHandler) =
+        applyTo(recipient.withType<org.gradle.api.artifacts.repositories.MavenArtifactRepository>()) { _, action ->
+            recipient.mavenLocal(action)
         }
 }

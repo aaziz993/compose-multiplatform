@@ -1,12 +1,13 @@
 package gradle.api.tasks.download
 
 import java.net.URI
+import java.util.SortedSet
 import org.gradle.internal.impldep.org.apache.ivy.util.url.ApacheURLLister
 import org.jetbrains.compose.internal.de.undercouch.gradle.tasks.download.DownloadSpec
 
 internal interface DownloadSpec {
 
-    val src: List<String>
+    val src: SortedSet<String>
 
     val dest: String
 

@@ -1,11 +1,12 @@
 package gradle.api.repositories
 
 import org.gradle.api.artifacts.repositories.AuthenticationSupported
+import org.gradle.api.file.Directory
 
 /**
  * An artifact repository which supports username/password authentication.
  */
-internal interface AuthenticationSupported {
+internal interface AuthenticationSupported<in T: AuthenticationSupported> {
 
     /**
      * Configures the username and password credentials for this repository using the supplied action.
@@ -28,7 +29,8 @@ internal interface AuthenticationSupported {
      */
     val credentials: PasswordCredentials?
 
-    fun applyTo(authenticationSupported: AuthenticationSupported) {
-        credentials?.applyTo(authenticationSupported.credentials)
+    context(Directory)
+    fun _applyTo(recipient: T) {
+        credentials?.applyTo(recipient.credentials)
     }
 }

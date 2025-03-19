@@ -5,6 +5,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal data class FilesMatching(
-    val patterns: List<String>,
+    val patterns: Set<String>,
     val fileCopyDetails: FileCopyDetails
 )

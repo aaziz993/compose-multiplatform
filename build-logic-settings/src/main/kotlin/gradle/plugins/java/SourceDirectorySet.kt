@@ -24,10 +24,10 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 internal data class SourceDirectorySet(
-    override val includes: List<String>? = null,
-    override val setIncludes: List<String>? = null,
-    override val excludes: List<String>? = null,
-    override val setExcludes: List<String>? = null,
+    override val includes: Set<String>? = null,
+    override val setIncludes: Set<String>? = null,
+    override val excludes: Set<String>? = null,
+    override val setExcludes: Set<String>? = null,
     override val name: String = "",
     /**
      * Adds the given source directories to this set. The given directories do not need to exist. Directories that do not exist are ignored.

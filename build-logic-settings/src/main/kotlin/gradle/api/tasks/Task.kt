@@ -7,6 +7,7 @@ import gradle.collection.SerializableAnyMap
 import gradle.serialization.serializer.JsonPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
 import groovy.lang.MissingPropertyException
+import java.util.SortedSet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.NamedDomainObjectCollection
@@ -148,7 +149,7 @@ internal interface Task<T : org.gradle.api.Task> : ProjectNamed<T> {
      *
      * @param dependsOnTasks The set of task paths.
      */
-    val dependsOn: List<String>?
+    val dependsOn: SortedSet<String>?
 
     /**
      *
@@ -279,7 +280,7 @@ internal interface Task<T : org.gradle.api.Task> : ProjectNamed<T> {
      *
      * @return the task object this method is applied to
      */
-    val mustRunAfter: List<String>?
+    val mustRunAfter: Set<String>?
 
     /**
      *
@@ -299,7 +300,7 @@ internal interface Task<T : org.gradle.api.Task> : ProjectNamed<T> {
      *
      * @return the task object this method is applied to
      */
-    val finalizedBy: List<String>?
+    val finalizedBy: SortedSet<String>?
 
     /**
      *
@@ -323,7 +324,7 @@ internal interface Task<T : org.gradle.api.Task> : ProjectNamed<T> {
      *
      * @return the task object this method is applied to
      */
-    val shouldRunAfter: List<String>?
+    val shouldRunAfter: Set<String>?
 
     context(Project)
     override fun applyTo(named: T) {
@@ -363,7 +364,7 @@ internal object TaskTransformingSerializer : KeyTransformingSerializer<Task<*>>(
 @Serializable
 @SerialName("Task")
 internal data class TaskImpl(
-    override val dependsOn: List<String>? = null,
+    override val dependsOn: SortedSet<String>? = null,
     override val onlyIf: Boolean? = null,
     override val doNotTrackState: String? = null,
     override val notCompatibleWithConfigurationCache: String? = null,
@@ -372,9 +373,9 @@ internal data class TaskImpl(
     override val properties: SerializableAnyMap? = null,
     override val description: String? = null,
     override val group: String? = null,
-    override val mustRunAfter: List<String>? = null,
-    override val finalizedBy: List<String>? = null,
-    override val shouldRunAfter: List<String>? = null,
+    override val mustRunAfter: Set<String>? = null,
+    override val finalizedBy: SortedSet<String>? = null,
+    override val shouldRunAfter: Set<String>? = null,
     override val name: String = "",
 ) : Task<org.gradle.api.Task> {
 

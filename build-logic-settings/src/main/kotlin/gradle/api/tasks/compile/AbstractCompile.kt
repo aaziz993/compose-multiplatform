@@ -4,6 +4,7 @@ import gradle.api.tasks.SourceTask
 import gradle.api.tasks.applyTo
 import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
+import java.util.SortedSet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -27,7 +28,7 @@ internal abstract class AbstractCompile<T : org.gradle.api.tasks.compile.Abstrac
      *
      * @return The classpath.
      */
-    abstract val classpath: List<String>?
+    abstract val classpath: Set<String>?
 
     /**
      * Sets the Java language level to use to compile the source files.
@@ -62,10 +63,10 @@ internal abstract class AbstractCompile<T : org.gradle.api.tasks.compile.Abstrac
 @SerialName("AbstractCompile")
 internal data class AbstractCompileImpl(
     override val destinationDirectory: String? = null,
-    override val classpath: List<String>? = null,
+    override val classpath: Set<String>? = null,
     override val sourceCompatibility: String? = null,
     override val targetCompatibility: String? = null,
-    override val dependsOn: List<String>? = null,
+    override val dependsOn: SortedSet<String>? = null,
     override val onlyIf: Boolean? = null,
     override val doNotTrackState: String? = null,
     override val notCompatibleWithConfigurationCache: String? = null,
@@ -74,14 +75,14 @@ internal data class AbstractCompileImpl(
     override val properties: SerializableAnyMap? = null,
     override val description: String? = null,
     override val group: String? = null,
-    override val mustRunAfter: List<String>? = null,
-    override val finalizedBy: List<String>? = null,
-    override val shouldRunAfter: List<String>? = null,
+    override val mustRunAfter: Set<String>? = null,
+    override val finalizedBy: SortedSet<String>? = null,
+    override val shouldRunAfter: Set<String>? = null,
     override val name: String = "", override val sourceFiles: List<String>?,
-    override val includes: List<String>? = null,
-    override val setIncludes: List<String>? = null,
-    override val excludes: List<String>? = null,
-    override val setExcludes: List<String>? = null,
+    override val includes: Set<String>? = null,
+    override val setIncludes: Set<String>? = null,
+    override val excludes: Set<String>? = null,
+    override val setExcludes: Set<String>? = null,
 ) : AbstractCompile<org.gradle.api.tasks.compile.AbstractCompile>() {
 
     context(Project)

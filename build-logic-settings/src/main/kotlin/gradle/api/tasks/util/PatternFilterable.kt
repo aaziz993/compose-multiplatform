@@ -1,6 +1,7 @@
 package gradle.api.tasks.util
 
-import org.gradle.api.tasks.util.PatternFilterable
+import kotlinx.serialization.Serializable
+import org.gradle.api.Project
 
 /**
  *
@@ -52,7 +53,7 @@ import org.gradle.api.tasks.util.PatternFilterable
  * If no exclude patterns or spec are specified, then no files will be excluded. If any exclude patterns or specs are
  * specified, then a file is include only if it matches none of the patterns or specs.
  */
-internal interface PatternFilterable<in T: PatternFilterable> {
+internal interface PatternFilterable<in T : org.gradle.api.tasks.util.PatternFilterable> {
 
     /**
      * Add the allowable include patterns.  Note that unlike [.include] this replaces any previously
@@ -62,7 +63,7 @@ internal interface PatternFilterable<in T: PatternFilterable> {
      * @return this
      * @see PatternFilterable Pattern Format
      */
-    val includes: List<String>?
+    val includes: Set<String>?
 
     /**
      * Set the allowable include patterns.  Note that unlike [.include] this replaces any previously
@@ -72,7 +73,7 @@ internal interface PatternFilterable<in T: PatternFilterable> {
      * @return this
      * @see PatternFilterable Pattern Format
      */
-    val setIncludes: List<String>?
+    val setIncludes: Set<String>?
 
     /**
      * Add the allowable exclude patterns.  Note that unlike [.exclude] this replaces any previously
@@ -82,7 +83,7 @@ internal interface PatternFilterable<in T: PatternFilterable> {
      * @return this
      * @see PatternFilterable Pattern Format
      */
-    val excludes: List<String>?
+    val excludes: Set<String>?
 
     /**
      * Set the allowable exclude patterns.  Note that unlike [.exclude] this replaces any previously
@@ -92,12 +93,21 @@ internal interface PatternFilterable<in T: PatternFilterable> {
      * @return this
      * @see PatternFilterable Pattern Format
      */
-    val setExcludes: List<String>?
+    val setExcludes: Set<String>?
 
-    fun applyTo(filterable: T) {
-        includes?.let(filterable::include)
-        setIncludes?.let(filterable::setIncludes)
-        excludes?.let(filterable::exclude)
-        setExcludes?.let(filterable::setExcludes)
+    context(Project)
+    fun applyTo(recipient: T) {
+        includes?.let(recipient::include)
+        setIncludes?.let(recipient::setIncludes)
+        excludes?.let(recipient::exclude)
+        setExcludes?.let(recipient::setExcludes)
     }
 }
+
+@Serializable
+internal data class PatternFilterableImpl(
+    override val includes: Set<String>? = null,
+    override val setIncludes: Set<String>? = null,
+    override val excludes: Set<String>? = null,
+    override val setExcludes: Set<String>? = null,
+) : PatternFilterable<org.gradle.api.tasks.util.PatternFilterable>

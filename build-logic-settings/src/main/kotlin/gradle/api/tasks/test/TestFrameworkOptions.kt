@@ -6,8 +6,8 @@ import org.gradle.api.tasks.testing.TestFrameworkOptions
 /**
  * The base class for any test framework specific options.
  */
-internal abstract class TestFrameworkOptions {
+internal abstract class TestFrameworkOptions<in T: TestFrameworkOptions> {
 
     context(Project)
-    abstract fun applyTo(options: TestFrameworkOptions)
+    abstract fun applyTo(options: T)
 }

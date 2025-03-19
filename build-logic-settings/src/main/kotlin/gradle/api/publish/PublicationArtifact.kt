@@ -1,7 +1,6 @@
 package gradle.api.publish
 
 import gradle.api.Buildable
-import java.util.SortedSet
 import org.gradle.api.publish.PublicationArtifact
 
 /**
@@ -9,7 +8,7 @@ import org.gradle.api.publish.PublicationArtifact
  *
  * @since 4.8
  */
-internal interface PublicationArtifact<T: PublicationArtifact> : Buildable<T> {
+internal interface PublicationArtifact<in T: PublicationArtifact> : Buildable<T> {
 
     /**
      * Registers some tasks which build this artifact.
@@ -18,9 +17,9 @@ internal interface PublicationArtifact<T: PublicationArtifact> : Buildable<T> {
      */
     val builtBy: Set<String>?
 
-    override fun applyTo(buildable: T) {
+    override fun applyTo(recipient: T) {
         builtBy?.let { builtBy ->
-            buildable.builtBy(*builtBy.toTypedArray())
+            recipient.builtBy(*builtBy.toTypedArray())
         }
     }
 }

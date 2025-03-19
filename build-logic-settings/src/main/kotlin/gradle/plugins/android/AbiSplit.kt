@@ -12,8 +12,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 internal data class AbiSplit(
     override val isEnable: Boolean? = null,
-    override val includes: List<String>? = null,
-    override val excludes: List<String>? = null,
+    override val includes: Set<String>? = null,
+    override val excludes: Set<String>? = null,
     override val reset: Boolean? = null,
     /** Whether to create an FULL_APK with all available ABIs. */
     val isUniversalApk: Boolean? = null,

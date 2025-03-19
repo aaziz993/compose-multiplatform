@@ -13,10 +13,10 @@ internal data class DefaultTestFilter(
     override val excludeTests: Set<Test>? = null,
     override val failOnNoMatchingTests: Boolean? = null,
     val commandLineIncludePatterns: Set<String>? = null,
-) : TestFilter {
+) : TestFilter<DefaultTestFilter> {
 
-    fun applyTo(defaultTestFilter: DefaultTestFilter) {
-        super.applyTo(defaultTestFilter)
-        commandLineIncludePatterns?.let(defaultTestFilter::setCommandLineIncludePatterns)
+    override fun applyTo(recipient: DefaultTestFilter) {
+        super.applyTo(recipient)
+        commandLineIncludePatterns?.let(recipient::setCommandLineIncludePatterns)
     }
 }

@@ -2,7 +2,7 @@ package gradle.api
 
 import org.gradle.api.tasks.VerificationTask
 
-internal interface VerificationTask<T : VerificationTask> {
+internal interface VerificationTask<in T : VerificationTask> {
 
     val ignoreFailures: Boolean?
 

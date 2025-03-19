@@ -11,7 +11,7 @@ import org.gradle.api.initialization.Settings
  *
  * @since 6.0
  */
-internal interface UrlArtifactRepository {
+internal interface UrlArtifactRepository<in T: UrlArtifactRepository> {
 
     /**
      * Sets the base URL of this repository.
@@ -43,20 +43,20 @@ internal interface UrlArtifactRepository {
 
     context(Settings)
     @Suppress("UnstableApiUsage")
-    fun applyTo(repository: UrlArtifactRepository) = with(layout.settingsDirectory) {
+    fun applyTo(repository: T) = with(layout.settingsDirectory) {
         _applyTo(repository)
     }
 
     context(Project)
-    fun applyTo(repository: UrlArtifactRepository) = with(layout.projectDirectory) {
+    fun applyTo(repository: T) = with(layout.projectDirectory) {
         _applyTo(repository)
     }
 
     context(Directory)
-    fun _applyTo(repository: UrlArtifactRepository) {
+    fun _applyTo(recipient: T) {
         url?.let { url ->
             if (url.isUrl) url else dir(url)
-        }?.let(repository::setUrl)
-        allowInsecureProtocol?.let(repository::setAllowInsecureProtocol)
+        }?.let(recipient::setUrl)
+        allowInsecureProtocol?.let(recipient::setAllowInsecureProtocol)
     }
 }

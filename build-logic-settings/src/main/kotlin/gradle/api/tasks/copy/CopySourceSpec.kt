@@ -1,18 +1,19 @@
 package gradle.api.tasks.copy
 
+import org.gradle.api.Project
 import org.gradle.api.file.CopySourceSpec
 
 /**
  * Specifies sources for a file copy.
  */
-internal interface CopySourceSpec {
+internal interface CopySourceSpec<in T: CopySourceSpec> {
 
     /**
      * Specifies source files or directories for a copy. The given paths are evaluated as per [ ][org.gradle.api.Project.files].
      *
      * @param sourcePaths Paths to source files for the copy
      */
-    val from: List<String>?
+    val from: Set<String>?
 
     /**
      * Specifies the source files or directories for a copy and creates a child `CopySpec`. The given source
@@ -23,7 +24,8 @@ internal interface CopySourceSpec {
      */
     val fromSpec: FromSpec?
 
-    fun applyTo(spec: CopySourceSpec) {
+    context(Project)
+    fun applyTo(spec: T) {
         from?.let { from -> spec.from(*from.toTypedArray()) }
         fromSpec?.let { fromSpec ->
             spec.from(fromSpec.sourcePath) {

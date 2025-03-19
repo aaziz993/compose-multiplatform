@@ -21,6 +21,7 @@ import gradle.api.tasks.FilesMatching
 import gradle.api.tasks.Task
 import gradle.api.tasks.applyTo
 import gradle.collection.SerializableAnyMap
+import java.util.SortedSet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -51,7 +52,7 @@ internal abstract class AbstractCopyTask<T: org.gradle.api.tasks.AbstractCopyTas
 @SerialName("AbstractCopyTask")
 internal data class AbstractCopyTaskImpl(
     override val caseSensitive: Boolean? = null,
-    override val dependsOn: List<String>? = null,
+    override val dependsOn: SortedSet<String>? = null,
     override val onlyIf: Boolean? = null,
     override val doNotTrackState: String? = null,
     override val notCompatibleWithConfigurationCache: String? = null,
@@ -60,16 +61,16 @@ internal data class AbstractCopyTaskImpl(
     override val properties: SerializableAnyMap? = null,
     override val description: String? = null,
     override val group: String? = null,
-    override val mustRunAfter: List<String>? = null,
-    override val finalizedBy: List<String>? = null,
-    override val shouldRunAfter: List<String>? = null,
+    override val mustRunAfter: Set<String>? = null,
+    override val finalizedBy: SortedSet<String>? = null,
+    override val shouldRunAfter: Set<String>? = null,
     override val isCaseSensitive: Boolean? = null,
     override val includeEmptyDirs: Boolean? = null,
     override val duplicatesStrategy: DuplicatesStrategy? = null,
     override val filesMatching: FilesMatching? = null,
     override val filesNotMatching: FilesMatching? = null,
     override val filteringCharset: String? = null,
-    override val from: List<String>? = null,
+    override val from: Set<String>? = null,
     override val fromSpec: FromSpec? = null,
     override val into: String? = null,
     override val intoSpec: IntoSpec? = null,
@@ -80,10 +81,10 @@ internal data class AbstractCopyTaskImpl(
     override val eachFile: FileCopyDetails? = null,
     override val expand: SerializableAnyMap? = null,
     override val expandDetails: Expand? = null,
-    override val includes: List<String>? = null,
-    override val setIncludes: List<String>? = null,
-    override val excludes: List<String>? = null,
-    override val setExcludes: List<String>? = null,
+    override val includes: Set<String>? = null,
+    override val setIncludes: Set<String>? = null,
+    override val excludes: Set<String>? = null,
+    override val setExcludes: Set<String>? = null,
     override val name: String = "",
 ) : AbstractCopyTask<org.gradle.api.tasks.AbstractCopyTask>(){
 

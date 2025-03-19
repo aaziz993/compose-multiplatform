@@ -2,12 +2,13 @@ package gradle.api.tasks.copy
 
 import gradle.api.file.ContentFilterable
 import java.util.regex.Pattern
+import org.gradle.api.Project
 import org.gradle.api.file.CopyProcessingSpec
 
 /**
  * Specifies the destination of a copy.
  */
-internal interface CopyProcessingSpec<T : CopyProcessingSpec> : ContentFilterable<T> {
+internal interface CopyProcessingSpec<in T : CopyProcessingSpec> : ContentFilterable<T> {
 
     /**
      * Specifies the destination directory for a copy. The destination is evaluated as per [ ][org.gradle.api.Project.file].
@@ -81,6 +82,7 @@ internal interface CopyProcessingSpec<T : CopyProcessingSpec> : ContentFilterabl
      */
     val eachFile: FileCopyDetails?
 
+    context(Project)
     override fun applyTo(recipient: T) {
         super.applyTo(recipient)
 
