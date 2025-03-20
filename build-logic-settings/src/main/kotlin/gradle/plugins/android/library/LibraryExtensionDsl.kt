@@ -8,6 +8,12 @@ import gradle.plugins.android.Prefab
 import gradle.plugins.android.PrivacySandbox
 import gradle.plugins.android.TestedExtensionDsl
 import org.gradle.api.Project
+import com.android.build.api.dsl.LibraryAndroidResources
+import com.android.build.api.dsl.LibraryBuildFeatures
+import com.android.build.api.dsl.LibraryBuildType
+import com.android.build.api.dsl.LibraryDefaultConfig
+import com.android.build.api.dsl.LibraryInstallation
+import com.android.build.api.dsl.LibraryProductFlavor
 
 /**
  * Extension for the Android Library Gradle Plugin.
@@ -20,8 +26,8 @@ internal interface LibraryExtensionDsl :
     CommonExtension<
         LibraryBuildFeatures,
         LibraryBuildType,
-        LibraryDefaultConfigImpl,
-        LibraryProductFlavorImpl,
+        LibraryDefaultConfig,
+        LibraryProductFlavor,
         LibraryAndroidResources,
         LibraryInstallation,
         >, TestedExtensionDsl {

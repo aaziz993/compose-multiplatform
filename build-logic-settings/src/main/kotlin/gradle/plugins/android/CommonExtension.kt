@@ -1,8 +1,6 @@
 package gradle.plugins.android
 
 import com.android.build.api.dsl.CommonExtension
-import com.android.build.api.dsl.DefaultConfig
-import com.android.build.api.dsl.ProductFlavor
 import gradle.accessors.android
 import gradle.accessors.libs
 import gradle.accessors.settings
@@ -23,19 +21,20 @@ import org.gradle.api.Project
  * Only the Android Gradle Plugin should create instances of this interface.
  */
 internal interface CommonExtension<
-    BuildFeaturesT : BuildFeatures<out com.android.build.api.dsl.BuildFeatures>,
-    BuildTypeT : BuildType<out com.android.build.api.dsl.BuildType>,
-    DefaultConfigT : DefaultConfigDsl<out DefaultConfig>,
-    ProductFlavorT : ProductFlavorDsl<out ProductFlavor>,
-    AndroidResourcesT : AndroidResources<out com.android.build.api.dsl.AndroidResources>,
-    InstallationT : Installation<out com.android.build.api.dsl.Installation>> {
+    BuildFeaturesT : com.android.build.api.dsl.BuildFeatures,
+    BuildTypeT : com.android.build.api.dsl.BuildType,
+    DefaultConfigT : com.android.build.api.dsl.DefaultConfig,
+    ProductFlavorT : com.android.build.api.dsl.ProductFlavor,
+    AndroidResourcesT : com.android.build.api.dsl.AndroidResources,
+    InstallationT : com.android.build.api.dsl.Installation
+    > {
 
     /**
      * Specifies options related to the processing of Android Resources.
      *
      * For more information about the properties you can configure in this block, see [AndroidResources].
      */
-    val androidResources: AndroidResourcesT?
+    val androidResources: AndroidResources<AndroidResourcesT>?
 
     /**
      * Specifies options for the
@@ -44,7 +43,7 @@ internal interface CommonExtension<
      *
      * For more information about the properties you can configure in this block, see [AdbOptions].
      */
-    val installation: InstallationT?
+    val installation: Installation<InstallationT>?
 
     /**
      * Specifies Java compiler options, such as the language level of the Java source code and
@@ -57,7 +56,7 @@ internal interface CommonExtension<
     /**
      * A list of build features that can be enabled or disabled on the Android Project.
      */
-    val buildFeatures: BuildFeaturesT?
+    val buildFeatures: BuildFeatures<BuildFeaturesT>?
 
     /**
      * Encapsulates all build type configurations for this project.
@@ -76,7 +75,7 @@ internal interface CommonExtension<
      *
      * @see BuildType
      */
-    val buildTypes: Set<BuildTypeT>?
+    val buildTypes: Set<BuildType<BuildTypeT>>?
 
     /**
      * Specifies options for the
@@ -167,7 +166,7 @@ internal interface CommonExtension<
      *
      * @see [ProductFlavorDsl]
      */
-    val productFlavors: Set<ProductFlavorT>?
+    val productFlavors: Set<ProductFlavorDsl<ProductFlavorT>>?
 
     /**
      * Specifies defaults for variant properties that the Android plugin applies to all build
@@ -178,7 +177,7 @@ internal interface CommonExtension<
      *
      * For more information about the properties you can configure in this block, see [DefaultConfigDsl].
      */
-    val defaultConfig: DefaultConfigT?
+    val defaultConfig: DefaultConfigDsl<DefaultConfigT>?
 
     /**
      * Encapsulates signing configurations that you can apply to [ ] and [ ] configurations.

@@ -54,4 +54,4 @@ import kotlinx.serialization.Serializable
 @Serializable
 internal data class ApplicationPublishing(
     override val singleVariants: List<ApplicationSingleVariant>? = null,
-) : Publishing<ApplicationPublishing, com.android.build.api.dsl.ApplicationSingleVariant, ApplicationSingleVariant>
+) : Publishing<ApplicationPublishing, com.android.build.api.dsl.ApplicationSingleVariant>

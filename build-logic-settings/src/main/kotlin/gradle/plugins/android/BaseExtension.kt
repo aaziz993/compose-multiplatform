@@ -6,13 +6,18 @@ import gradle.accessors.libs
 import gradle.accessors.settings
 import gradle.accessors.version
 import gradle.accessors.versions
+import gradle.api.applyTo
 import gradle.api.trySet
-import java.util.SortedSet
+import java.util.*
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import org.gradle.api.configuration.BuildFeature
 
-internal interface BaseExtension {
+internal interface BaseExtension<
+    BuildFeaturesT : com.android.build.api.dsl.BuildFeatures,
+    BuildTypeT : com.android.build.api.dsl.BuildType,
+    DefaultConfigT : com.android.build.api.dsl.DefaultConfig,
+    ProductFlavorT : com.android.build.api.dsl.ProductFlavor,
+    > {
 
     val composeOptions: ComposeOptions?
 
@@ -72,17 +77,17 @@ internal interface BaseExtension {
 
     val libraryRequests: Set<LibraryRequest>?
 
-    val buildTypes: Set<BuildType<out com.android.build.api.dsl.BuildType>>?
+    val buildTypes: Set<BuildType<BuildTypeT>>?
 
-    val defaultConfig: DefaultConfigDsl<*>?
+    val defaultConfig: DefaultConfigDsl<DefaultConfigT>?
 
-    val productFlavors: Set<ProductFlavorDsl<*>>?
+    val productFlavors: Set<ProductFlavorDsl<ProductFlavorT>>?
 
     val signingConfigs: Set<@Serializable(with = SigningConfigTransformingSerializer::class) SigningConfigImpl>?
 
     // these are indirectly implemented by extensions when they implement the new public
     // extension interfaces via delegates.
-    val buildFeatures: BuildFeatures<out com.android.build.api.dsl.BuildFeatures>?
+    val buildFeatures: BuildFeatures<BuildFeaturesT>?
     val namespace: String?
 
     context(Project)

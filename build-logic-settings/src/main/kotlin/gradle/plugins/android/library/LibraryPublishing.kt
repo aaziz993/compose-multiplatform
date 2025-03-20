@@ -151,7 +151,7 @@ internal data class LibraryPublishing(
      * Publish multiple variants to a component.
      */
     val multipleVariants: List<MultipleVariantsSettings>? = null,
-) : Publishing<LibraryPublishing, com.android.build.api.dsl.LibrarySingleVariant, LibrarySingleVariant> {
+) : Publishing<LibraryPublishing, com.android.build.api.dsl.LibrarySingleVariant> {
 
     override fun applyTo(publishing: LibraryPublishing) {
         super.applyTo(publishing)

@@ -1,6 +1,18 @@
 package gradle.plugins.android.application
 
+import com.android.build.api.dsl.AndroidResources
+import com.android.build.api.dsl.ApplicationAndroidResources
+import com.android.build.api.dsl.ApplicationBuildFeatures
+import com.android.build.api.dsl.ApplicationBuildType
+import com.android.build.api.dsl.ApplicationDefaultConfig
 import com.android.build.api.dsl.ApplicationExtension
+import com.android.build.api.dsl.ApplicationInstallation
+import com.android.build.api.dsl.ApplicationProductFlavor
+import com.android.build.api.dsl.BuildFeatures
+import com.android.build.api.dsl.BuildType
+import com.android.build.api.dsl.DefaultConfig
+import com.android.build.api.dsl.Installation
+import com.android.build.api.dsl.ProductFlavor
 import gradle.accessors.android
 import gradle.collection.act
 import gradle.plugins.android.Bundle
@@ -21,8 +33,8 @@ internal interface ApplicationExtensionDsl :
     CommonExtension<
         ApplicationBuildFeatures,
         ApplicationBuildType,
-        ApplicationDefaultConfigImpl,
-        ApplicationProductFlavorImpl,
+        ApplicationDefaultConfig,
+        ApplicationProductFlavor,
         ApplicationAndroidResources,
         ApplicationInstallation,
         >,

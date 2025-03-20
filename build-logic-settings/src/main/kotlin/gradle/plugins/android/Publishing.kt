@@ -28,12 +28,12 @@ import com.android.build.api.dsl.Publishing
  * [gradle.model.android.library.LibraryPublishing] extends this with options for publishing library projects.
  * [gradle.model.android.application.ApplicationPublishing] extends this with options for publishing application projects.
  */
-internal interface Publishing<in T : Publishing<S>, S : com.android.build.api.dsl.SingleVariant, SingleVariantT : SingleVariant<S>> {
+internal interface Publishing<in T : Publishing<S>, S : com.android.build.api.dsl.SingleVariant> {
 
     /**
      * Publish a variant with single variant publishing mechanism.
      */
-    val singleVariants: List<SingleVariantT>?
+    val singleVariants: List<SingleVariant<S>>?
 
     fun applyTo(publishing: T) {
         singleVariants?.forEach { singleVariant ->

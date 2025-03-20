@@ -40,7 +40,7 @@ internal data class AnnotationProcessorOptions(
      * pass them to the Android plugin, read
      * [Pass arguments to annotation processors](https://developer.android.com/studio/build/dependencies#processor-arguments).
      */
-    val compilerArgumentProviders: List<CommandLineArgumentProvider>? = null
+    val compilerArgumentProviders: List<CommandLineArgumentProvider>? = null,
     val setCompilerArgumentProviders: List<CommandLineArgumentProvider>? = null
 ) {
 

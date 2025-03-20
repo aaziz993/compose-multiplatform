@@ -1,5 +1,11 @@
 package gradle.plugins.android.application
 
+import com.android.build.api.dsl.ApplicationAndroidResources
+import com.android.build.api.dsl.ApplicationBuildFeatures
+import com.android.build.api.dsl.ApplicationBuildType
+import com.android.build.api.dsl.ApplicationDefaultConfig
+import com.android.build.api.dsl.ApplicationInstallation
+import com.android.build.api.dsl.ApplicationProductFlavor
 import gradle.plugins.android.InternalTestedExtension
 import org.gradle.api.Project
 
@@ -9,8 +15,8 @@ internal interface InternalApplicationExtension :
     InternalTestedExtension<
         ApplicationBuildFeatures,
         ApplicationBuildType,
-        ApplicationDefaultConfigImpl,
-        ApplicationProductFlavorImpl,
+        ApplicationDefaultConfig,
+        ApplicationProductFlavor,
         ApplicationAndroidResources,
         ApplicationInstallation,
         > {

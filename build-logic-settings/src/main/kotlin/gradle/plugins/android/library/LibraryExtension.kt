@@ -1,5 +1,7 @@
 package gradle.plugins.android.library
 
+import com.android.build.api.dsl.LibraryDefaultConfig
+import com.android.build.api.dsl.LibraryProductFlavor
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.android.AaptOptions
 import gradle.plugins.android.AdbOptions
@@ -78,7 +80,12 @@ internal data class LibraryExtension(
     override val testBuildType: String? = null,
     override val testNamespace: String? = null,
     override val testFixtures: TestFixtures? = null
-) : TestedExtension(), InternalLibraryExtension {
+) : TestedExtension<
+    com.android.build.api.dsl.LibraryBuildFeatures,
+    com.android.build.api.dsl.LibraryBuildType,
+    LibraryDefaultConfig,
+    LibraryProductFlavor,
+    >(), InternalLibraryExtension {
 
     context(Project)
     override fun applyTo() {

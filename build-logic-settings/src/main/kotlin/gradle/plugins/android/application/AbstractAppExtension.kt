@@ -1,5 +1,9 @@
 package gradle.plugins.android.application
 
+import com.android.build.api.dsl.ApplicationBuildFeatures
+import com.android.build.api.dsl.ApplicationBuildType
+import com.android.build.api.dsl.ApplicationDefaultConfig
+import com.android.build.api.dsl.ApplicationProductFlavor
 import gradle.plugins.android.TestedExtension
 
 /**
@@ -11,4 +15,8 @@ import gradle.plugins.android.TestedExtension
  *
  * For optional apks, this class is used directly.
  */
-internal abstract class AbstractAppExtension : TestedExtension()
+internal abstract class AbstractAppExtension : TestedExtension<
+    ApplicationBuildFeatures,
+    ApplicationBuildType,
+    ApplicationDefaultConfig,
+    ApplicationProductFlavor>()

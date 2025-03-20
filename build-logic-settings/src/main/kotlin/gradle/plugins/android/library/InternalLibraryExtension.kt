@@ -1,5 +1,11 @@
 package gradle.plugins.android.library
 
+import com.android.build.api.dsl.LibraryAndroidResources
+import com.android.build.api.dsl.LibraryBuildFeatures
+import com.android.build.api.dsl.LibraryBuildType
+import com.android.build.api.dsl.LibraryDefaultConfig
+import com.android.build.api.dsl.LibraryInstallation
+import com.android.build.api.dsl.LibraryProductFlavor
 import gradle.plugins.android.InternalTestedExtension
 import org.gradle.api.Project
 
@@ -9,8 +15,8 @@ internal interface InternalLibraryExtension :
     InternalTestedExtension<
         LibraryBuildFeatures,
         LibraryBuildType,
-        LibraryDefaultConfigImpl,
-        LibraryProductFlavorImpl,
+        LibraryDefaultConfig,
+        LibraryProductFlavor,
         LibraryAndroidResources,
         LibraryInstallation,
         > {
