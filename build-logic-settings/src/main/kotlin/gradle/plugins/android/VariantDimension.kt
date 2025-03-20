@@ -6,12 +6,13 @@ import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import gradle.accessors.android
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
+import gradle.plugins.android.compile.JavaCompileOptions
 import org.gradle.api.Project
 
 /**
  * Shared properties between DSL objects that contribute to a variant.
  *
- * That is, [BuildType] and [ProductFlavorDsl] and [DefaultConfigDsl].
+ * That is, [BuildType] and [gradle.plugins.android.flavor.ProductFlavorDsl] and [gradle.plugins.android.defaultconfig.DefaultConfigDsl].
  */
 internal interface VariantDimension<T : VariantDimension> {
 

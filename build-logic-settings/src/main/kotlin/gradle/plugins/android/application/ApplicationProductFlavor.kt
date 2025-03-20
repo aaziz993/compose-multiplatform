@@ -5,11 +5,11 @@ import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.android.BuildConfigField
 import gradle.plugins.android.ExternalNativeBuildFlags
-import gradle.plugins.android.JavaCompileOptions
+import gradle.plugins.android.compile.JavaCompileOptions
 import gradle.plugins.android.MissingDimensionStrategy
 import gradle.plugins.android.Ndk
 import gradle.plugins.android.Optimization
-import gradle.plugins.android.ProductFlavorDsl
+import gradle.plugins.android.flavor.ProductFlavorDsl
 import gradle.plugins.android.ResValue
 import gradle.plugins.android.Shaders
 import gradle.plugins.android.VectorDrawables

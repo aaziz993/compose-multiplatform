@@ -1,7 +1,7 @@
 package gradle.plugins.android.publish
 
 import com.android.build.api.dsl.MultipleVariants
-import gradle.plugins.android.FlavorDimensionAndValues
+import gradle.plugins.android.flavor.FlavorDimensionAndValues
 
 /**
  * Multi variant publishing options.

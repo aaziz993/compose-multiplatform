@@ -1,0 +1,20 @@
+package gradle.plugins.android.application.bundle
+
+import com.android.build.api.dsl.BundleDensity
+import gradle.api.trySet
+import kotlinx.serialization.Serializable
+
+/**
+ * DSL object for configuring the App Bundle Density options
+ *
+ * This is accessed via [Bundle.density]
+ */
+@Serializable
+internal data class BundleDensity(
+    val enableSplit: Boolean? = null,
+) {
+
+    fun applyTo(recipient: BundleDensity) {
+        recipient::enableSplit trySet enableSplit
+    }
+}

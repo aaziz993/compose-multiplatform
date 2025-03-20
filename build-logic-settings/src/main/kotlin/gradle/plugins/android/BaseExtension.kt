@@ -8,7 +8,18 @@ import gradle.accessors.version
 import gradle.accessors.versions
 import gradle.api.applyTo
 import gradle.api.trySet
+import gradle.collection.act
+import gradle.plugins.android.compile.CompileOptions
+import gradle.plugins.android.defaultconfig.DefaultConfigDsl
+import gradle.plugins.android.features.BuildFeatures
+import gradle.plugins.android.features.DataBinding
+import gradle.plugins.android.features.ViewBinding
+import gradle.plugins.android.flavor.ProductFlavorDsl
+import gradle.plugins.android.signing.SigningConfigImpl
+import gradle.plugins.android.signing.SigningConfigTransformingSerializer
+import gradle.plugins.android.test.TestOptions
 import java.util.*
+import kotlin.collections.addAll
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -35,6 +46,7 @@ internal interface BaseExtension<
     val buildToolsVersion: String?
 
     val flavorDimensions: SortedSet<String>?
+    val setFlavorDimensions: SortedSet<String>?
 
     val aaptOptions: AaptOptions?
 
@@ -43,7 +55,7 @@ internal interface BaseExtension<
     /**
      * Specifies options for how the Android plugin should run local and instrumented tests.
      *
-     * For more information about the properties you can configure in this block, see [TestOptions].
+     * For more information about the properties you can configure in this block, see [gradle.plugins.android.test.TestOptions].
      */
     val testOptions: TestOptions?
 
@@ -114,7 +126,12 @@ internal interface BaseExtension<
         adbOptions?.applyTo(android.adbOptions)
         splits?.applyTo(android.splits)
         android::generatePureSplits trySet generatePureSplits
-        flavorDimensions?.let(android.flavorDimensionList::addAll)
+
+        flavorDimensions?.let {  flavorDimensions ->
+            android.flavorDimensions(*flavorDimensions.toTypedArray())
+        }
+
+        setFlavorDimensions?.act(android.flavorDimensionList::clear)?.let(android.flavorDimensionList::addAll)
         resourcePrefix?.let(android::resourcePrefix)
         android::ndkVersion trySet ndkVersion
         android::ndkPath trySet ndkPath

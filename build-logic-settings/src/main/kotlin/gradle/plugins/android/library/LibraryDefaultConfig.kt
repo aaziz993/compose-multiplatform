@@ -1,13 +1,12 @@
 package gradle.plugins.android.library
 
 import com.android.build.api.dsl.LibraryDefaultConfig
-import com.android.build.api.dsl.VariantDimension
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.android.AarMetadata
 import gradle.plugins.android.BuildConfigField
-import gradle.plugins.android.DefaultConfigDsl
+import gradle.plugins.android.defaultconfig.DefaultConfigDsl
 import gradle.plugins.android.ExternalNativeBuildFlags
-import gradle.plugins.android.JavaCompileOptions
+import gradle.plugins.android.compile.JavaCompileOptions
 import gradle.plugins.android.MissingDimensionStrategy
 import gradle.plugins.android.Ndk
 import gradle.plugins.android.Optimization

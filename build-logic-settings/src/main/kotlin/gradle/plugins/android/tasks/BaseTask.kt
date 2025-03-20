@@ -1,0 +1,55 @@
+package gradle.plugins.android.tasks
+
+import gradle.api.tasks.DefaultTask
+import gradle.api.tasks.applyTo
+import gradle.api.tryAssign
+import gradle.collection.SerializableAnyMap
+import java.util.SortedSet
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
+
+/**
+ * Root Task class for all of AGP.
+ *
+ * DO NOT EXTEND THIS METHOD DIRECTLY. Instead, extend:
+ * - [NewIncrementalTask] -- variant aware task
+ * - [NonIncrementalTask] -- variant aware task
+ * - [NonIncrementalGlobalTask] -- non variant aware task
+ */
+internal abstract class BaseTask<T : com.android.build.gradle.internal.tasks.BaseTask> : DefaultTask<T>() {
+
+    abstract val projectPath: String?
+
+    context(Project)
+    override fun applyTo(recipient: T) {
+        super.applyTo(recipient)
+
+        recipient.projectPath tryAssign projectPath
+    }
+}
+
+@Serializable
+@SerialName("BaseTask")
+internal data class BaseTaskImpl(
+    override val projectPath: String? = null,
+    override val dependsOn: SortedSet<String>? = null,
+    override val onlyIf: Boolean? = null,
+    override val doNotTrackState: String? = null,
+    override val notCompatibleWithConfigurationCache: String? = null,
+    override val didWork: Boolean? = null,
+    override val enabled: Boolean? = null,
+    override val properties: SerializableAnyMap? = null,
+    override val description: String? = null,
+    override val group: String? = null,
+    override val mustRunAfter: Set<String>? = null,
+    override val finalizedBy: SortedSet<String>? = null,
+    override val shouldRunAfter: Set<String>? = null,
+    override val name: String = ""
+) : BaseTask<com.android.build.gradle.internal.tasks.BaseTask>() {
+
+    context(Project)
+    override fun applyTo() =
+        applyTo(tasks.withType<com.android.build.gradle.internal.tasks.BaseTask>())
+}

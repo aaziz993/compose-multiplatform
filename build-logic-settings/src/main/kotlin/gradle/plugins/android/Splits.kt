@@ -1,6 +1,8 @@
 package gradle.plugins.android
 
 import com.android.build.gradle.internal.dsl.Splits
+import gradle.plugins.android.split.AbiSplit
+import gradle.plugins.android.split.DensitySplitOptions
 import kotlinx.serialization.Serializable
 
 /**

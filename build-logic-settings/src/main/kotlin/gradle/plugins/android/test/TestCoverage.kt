@@ -1,0 +1,25 @@
+package gradle.plugins.android.test
+
+import com.android.build.api.dsl.TestCoverage
+import gradle.accessors.libs
+import gradle.accessors.settings
+import gradle.accessors.version
+import gradle.accessors.versions
+import gradle.api.trySet
+import kotlinx.serialization.Serializable
+import org.gradle.api.Project
+
+/** Settings related to the gathering of code-coverage data from tests */
+@Serializable
+internal data class TestCoverage(
+    /**
+     * The version of JaCoCo to use.
+     */
+    val jacocoVersion: String? = null,
+) {
+
+    context(Project)
+    fun applyTo(recipient: TestCoverage) {
+        recipient::jacocoVersion trySet (jacocoVersion ?: settings.libs.versions.version("jacoco"))
+    }
+}

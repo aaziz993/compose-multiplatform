@@ -2,12 +2,11 @@ package gradle.plugins.android.library
 
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.android.AarMetadata
-import gradle.plugins.android.AndroidTest
-import gradle.plugins.android.ApkSigningConfigImpl
+import gradle.plugins.android.test.AndroidTest
 import gradle.plugins.android.BuildConfigField
 import gradle.plugins.android.BuildType
 import gradle.plugins.android.ExternalNativeBuildFlags
-import gradle.plugins.android.JavaCompileOptions
+import gradle.plugins.android.compile.JavaCompileOptions
 import gradle.plugins.android.Ndk
 import gradle.plugins.android.Optimization
 import gradle.plugins.android.PostProcessing

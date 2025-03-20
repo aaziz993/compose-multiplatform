@@ -1,7 +1,7 @@
 package gradle.plugins.android.library
 
 import com.android.build.api.dsl.LibraryBaseFlavor
-import gradle.plugins.android.BaseFlavor
+import gradle.plugins.android.flavor.BaseFlavor
 import org.gradle.api.Project
 
 /**
