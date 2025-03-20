@@ -47,6 +47,7 @@ internal data class CheckCacheExtension(
      * @see ru.vyarus.gradle.plugin.animalsniffer.signature.BuildSignatureTask.exclude
      */
     val exclude: Set<String?>? = null,
+    val setExclude: Set<String?>? = null,
     /**
      * Build separate cache signature for each provided signatures or merge everything into the single signature.
      * First (be default) option useful when provided signatures must be used separately. E.g. when java and android
@@ -61,7 +62,8 @@ internal data class CheckCacheExtension(
 
     fun applyTo(recipient: CheckCacheExtension) {
         enabled?.let(recipient::setEnabled)
-        exclude?.let(recipient::setExclude)
+        exclude?.toTypedArray()?.let(recipient::exclude)
+        setExclude?.let(recipient::setExclude)
         mergeSignatures?.let(recipient::setMergeSignatures)
     }
 }

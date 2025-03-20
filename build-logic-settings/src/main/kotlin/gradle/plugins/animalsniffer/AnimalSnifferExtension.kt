@@ -42,6 +42,7 @@ internal abstract class AnimalSnifferExtension : CodeQualityExtension() {
      * docs</a> for more info.
      */
     abstract val ignore: Set<String>?
+    abstract val setIgnore: Set<String>?
 
     /**
      * Jar names to exclude from classpath. Asterisk should be used to mask version part 'slf4j-*'.
@@ -54,6 +55,7 @@ internal abstract class AnimalSnifferExtension : CodeQualityExtension() {
      * need to exclude library jars to correctly check with signature.
      */
     abstract val excludeJars: Set<String>?
+    abstract val setExcludeJars: Set<String>?
 
     /**
      * Check task has to always load and parse entire classpath. This could be time consuming on large classpath.
@@ -101,6 +103,7 @@ internal abstract class AnimalSnifferExtension : CodeQualityExtension() {
      * To see the full list of animalsniffer tasks use printAnimalsnifferTasks task.
      */
     abstract val defaultTargets: Set<String>?
+    abstract val setDefaultTargets: Set<String>?
 
     /**
      * Fail when no signatures declared for check tasks. Enabled by default to quickly reveal incorrect signature
@@ -114,11 +117,14 @@ internal abstract class AnimalSnifferExtension : CodeQualityExtension() {
         pluginManager.withPlugin(settings.libs.plugins.plugin("animalsniffer").id) {
             debug?.let(animalSniffer::setDebug)
             annotation?.let(animalSniffer::setAnnotation)
-            ignore?.let(animalSniffer::setIgnore)
-            excludeJars?.let(animalSniffer::setExcludeJars)
+            ignore?.toTypedArray()?.let(animalSniffer::ignore)
+            setIgnore?.let(animalSniffer::setIgnore)
+            excludeJars?.toTypedArray()?.let(animalSniffer::excludeJars)
+            setExcludeJars?.let(animalSniffer::setExcludeJars)
             cache?.applyTo(animalSniffer.cache)
             checkTestSources?.let(animalSniffer::setCheckTestSources)
             defaultTargets?.let(animalSniffer::setDefaultTargets)
+            setDefaultTargets?.toTypedArray()?.let(animalSniffer::defaultTargets)
             failWithoutSignatures?.let(animalSniffer::setFailWithoutSignatures)
         }
     }

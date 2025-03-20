@@ -2,6 +2,7 @@ package gradle.plugins.apple
 
 import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
+import org.jetbrains.gradle.apple.targets.IosFrameworkTarget
 
 @Serializable
 internal data class IosFrameworkTarget(
@@ -13,6 +14,7 @@ internal data class IosFrameworkTarget(
     override val iphone: Boolean? = null,
     override val name: String = "",
     override val productInfo: SerializableAnyMap? = null,
+    override val setProductInfo: SerializableAnyMap? = null,
     override val productModuleName: String? = null,
     override val productName: String? = null
-) : AppleTarget
+) : AppleTarget<IosFrameworkTarget>

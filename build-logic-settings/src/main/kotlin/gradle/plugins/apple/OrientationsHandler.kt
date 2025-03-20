@@ -12,9 +12,9 @@ internal data class OrientationsHandler(
 ) {
 
     fun applyTo(recipient: OrientationsHandler) {
-        landscapeLeft?.takeIf { it }?.run { handler.landscapeLeft() }
-        landscapeRight?.takeIf { it }?.run { handler.landscapeRight() }
-        portrait?.takeIf { it }?.run { handler.portrait() }
-        portraitUpsideDown?.takeIf { it }?.run { handler.portraitUpsideDown() }
+        landscapeLeft?.takeIf { it }?.run { recipient.landscapeLeft() }
+        landscapeRight?.takeIf { it }?.run { recipient.landscapeRight() }
+        portrait?.takeIf { it }?.run { recipient.portrait() }
+        portraitUpsideDown?.takeIf { it }?.run { recipient.portraitUpsideDown() }
     }
 }

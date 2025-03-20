@@ -23,24 +23,22 @@ internal data class IosAppTarget(
     val sceneDelegateClass: String? = null,
     val orientations: OrientationsHandler? = null,
     val sceneConfigurations: List<SceneConfiguration>? = null,
-) : AppleTarget {
+) : AppleTarget<IosAppTarget> {
 
-    override fun applyTo(recipient: org.jetbrains.gradle.apple.targets.AppleTarget) {
-        super.applyTo(target)
+    override fun applyTo(recipient: IosAppTarget) {
+        super.applyTo(recipient)
 
-        target as IosAppTarget
-
-        target::launchStoryboard trySet launchStoryboard
-        target::mainStoryboard trySet mainStoryboard
-        target::multipleWindows trySet multipleWindows
-        target::sceneDelegateClass trySet sceneDelegateClass
+        recipient::launchStoryboard trySet launchStoryboard
+        recipient::mainStoryboard trySet mainStoryboard
+        recipient::multipleWindows trySet multipleWindows
+        recipient::sceneDelegateClass trySet sceneDelegateClass
 
         orientations?.let { orientations ->
-            target.orientations(orientations::applyTo)
+            recipient.orientations(orientations::applyTo)
         }
 
         sceneConfigurations?.forEach { sceneConfigurations ->
-            target.sceneConfiguration(sceneConfigurations.name, sceneConfigurations::applyTo)
+            recipient.sceneConfiguration(sceneConfigurations.name, sceneConfigurations::applyTo)
         }
     }
 }
