@@ -41,7 +41,7 @@ internal abstract class AnimalSnifferExtension : CodeQualityExtension() {
      * #Ignoring_classes_not_in_the_signature">
      * docs</a> for more info.
      */
-    abstract val ignore: List<String>?
+    abstract val ignore: Set<String>?
 
     /**
      * Jar names to exclude from classpath. Asterisk should be used to mask version part 'slf4j-*'.
@@ -53,7 +53,7 @@ internal abstract class AnimalSnifferExtension : CodeQualityExtension() {
      * This is required for specific cases when you use 3rd party library signatures and
      * need to exclude library jars to correctly check with signature.
      */
-    abstract val excludeJars: List<String>?
+    abstract val excludeJars: Set<String>?
 
     /**
      * Check task has to always load and parse entire classpath. This could be time consuming on large classpath.

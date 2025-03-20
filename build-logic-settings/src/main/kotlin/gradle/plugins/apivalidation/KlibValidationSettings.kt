@@ -38,8 +38,8 @@ internal open class KlibValidationSettings(
 
     @OptIn(ExperimentalBCVApi::class)
     fun applyTo(recipient: KlibValidationSettings) {
-        klib::enabled trySet enabled
-        klib::signatureVersion trySet signatureVersion?.let(KlibSignatureVersion::of)
-        klib::strictValidation trySet strictValidation
+        recipient::enabled trySet enabled
+        recipient::signatureVersion trySet signatureVersion?.let(KlibSignatureVersion::of)
+        recipient::strictValidation trySet strictValidation
     }
 }
