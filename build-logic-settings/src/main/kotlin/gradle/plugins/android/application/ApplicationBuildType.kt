@@ -1,6 +1,5 @@
 package gradle.plugins.android.application
 
-
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.android.ApkSigningConfigImpl
@@ -16,7 +15,7 @@ import gradle.plugins.android.Shaders
 import gradle.plugins.android.VcsInfo
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
-import org.gradle.api.Named
+import org.gradle.api.Project
 
 /**
  * Build types define certain properties that Gradle uses when building and packaging your app, and
@@ -63,7 +62,7 @@ internal data class ApplicationBuildType(
     override val applicationIdSuffix: String? = null,
     override val versionNameSuffix: String? = null,
     override val multiDexEnabled: Boolean? = null,
-    override val signingConfig: ApkSigningConfigImpl? = null,
+    override val signingConfig: String? = null,
     /** Whether this build type should generate a debuggable apk. */
     val isDebuggable: Boolean? = null,
     /**
@@ -104,20 +103,18 @@ internal data class ApplicationBuildType(
      * warning.
      */
     val isProfileable: Boolean? = null,
-) : BuildType,
-    ApplicationVariantDimension {
+) : BuildType<com.android.build.api.dsl.ApplicationBuildType>,
+    ApplicationVariantDimension<com.android.build.api.dsl.ApplicationBuildType> {
 
-        context(Project)
-    override fun applyTo(recipient: T) {
-        super<BuildType>.applyTo(named)
+    context(Project)
+    override fun applyTo(recipient: com.android.build.api.dsl.ApplicationBuildType) {
+        super<BuildType>.applyTo(recipient)
 
-        named as com.android.build.api.dsl.ApplicationBuildType
-
-        named::isDebuggable trySet isDebuggable
-        named::isEmbedMicroApp trySet isEmbedMicroApp
-        named::isCrunchPngs trySet isCrunchPngs
-        named::isDefault trySet isDefault
-        named::isProfileable trySet isProfileable
+        recipient::isDebuggable trySet isDebuggable
+        recipient::isEmbedMicroApp trySet isEmbedMicroApp
+        recipient::isCrunchPngs trySet isCrunchPngs
+        recipient::isDefault trySet isDefault
+        recipient::isProfileable trySet isProfileable
     }
 }
 

@@ -14,6 +14,6 @@ internal data class ViewBinding(
 ) {
 
     fun applyTo(recipient: ViewBinding) {
-        binding::enable trySet enable
+        recipient::enable trySet enable
     }
 }

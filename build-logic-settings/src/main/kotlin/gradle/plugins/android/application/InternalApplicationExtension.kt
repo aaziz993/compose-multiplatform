@@ -9,8 +9,8 @@ internal interface InternalApplicationExtension :
     InternalTestedExtension<
         ApplicationBuildFeatures,
         ApplicationBuildType,
-        ApplicationDefaultConfig,
-        ApplicationProductFlavor,
+        ApplicationDefaultConfigImpl,
+        ApplicationProductFlavorImpl,
         ApplicationAndroidResources,
         ApplicationInstallation,
         > {

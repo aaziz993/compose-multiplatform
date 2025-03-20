@@ -1,14 +1,13 @@
 package gradle.plugins.android
 
-import com.android.build.api.dsl.ManagedDevices
 import com.android.build.api.dsl.TestOptions
 import gradle.accessors.libs
 import gradle.accessors.settings
 import gradle.accessors.version
 import gradle.accessors.versions
 import gradle.api.trySet
+import gradle.plugins.android.device.ManagedDevices
 import kotlinx.serialization.Serializable
-import org.gradle.api.Incubating
 import org.gradle.api.Project
 
 /** Options for running tests. */
@@ -35,7 +34,6 @@ internal data class TestOptions(
     /**
      * Configures Gradle Managed Devices for use in testing with the Unified test platform.
      */
-    @get:Incubating
     val managedDevices: ManagedDevices? = null,
     /**
      * Specifies whether to use on-device test orchestration.
@@ -111,14 +109,15 @@ internal data class TestOptions(
     context(Project)
     @Suppress("UnstableApiUsage")
     fun applyTo(recipient: TestOptions) {
-        unitTests?.applyTo(options.unitTests)
-        options::resultsDir trySet resultsDir
-        options::reportDir trySet reportDir
-        options::animationsDisabled trySet animationsDisabled
-        options::execution trySet execution
-        emulatorControl?.applyTo(options.emulatorControl)
-        emulatorSnapshots?.applyTo(options.emulatorSnapshots)
-        options::targetSdk trySet (targetSdk ?: settings.libs.versions.version("android.targetSdk")?.toInt())
-        options::targetSdkPreview trySet targetSdkPreview
+        unitTests?.applyTo(recipient.unitTests)
+        recipient::resultsDir trySet resultsDir
+        recipient::reportDir trySet reportDir
+        recipient::animationsDisabled trySet animationsDisabled
+        managedDevices?.applyTo(recipient.managedDevices)
+        recipient::execution trySet execution
+        emulatorControl?.applyTo(recipient.emulatorControl)
+        emulatorSnapshots?.applyTo(recipient.emulatorSnapshots)
+        recipient::targetSdk trySet (targetSdk ?: settings.libs.versions.version("android.targetSdk")?.toInt())
+        recipient::targetSdkPreview trySet targetSdkPreview
     }
 }

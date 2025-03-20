@@ -2,6 +2,7 @@ package gradle.plugins.android.application
 
 import com.android.build.api.dsl.ApplicationExtension
 import gradle.accessors.android
+import gradle.collection.act
 import gradle.plugins.android.Bundle
 import gradle.plugins.android.CommonExtension
 import gradle.plugins.android.DependenciesInfo
@@ -20,8 +21,8 @@ internal interface ApplicationExtensionDsl :
     CommonExtension<
         ApplicationBuildFeatures,
         ApplicationBuildType,
-        ApplicationDefaultConfig,
-        ApplicationProductFlavor,
+        ApplicationDefaultConfigImpl,
+        ApplicationProductFlavorImpl,
         ApplicationAndroidResources,
         ApplicationInstallation,
         >,
@@ -35,11 +36,13 @@ internal interface ApplicationExtensionDsl :
     val bundle: Bundle?
 
     val dynamicFeatures: Set<String>?
+    val setDynamicFeatures: Set<String>?
 
     /**
      * Set of asset pack subprojects to be included in the app's bundle.
      */
     val assetPacks: Set<String>?
+    val setAssetPacks: Set<String>?
 
     /**
      * Customizes publishing build variant artifacts from app module to a Maven repository.
@@ -58,7 +61,9 @@ internal interface ApplicationExtensionDsl :
         dependenciesInfo?.applyTo(extension.dependenciesInfo)
         bundle?.applyTo(extension.bundle)
         dynamicFeatures?.let(extension.dynamicFeatures::addAll)
+        setDynamicFeatures?.act(extension.dynamicFeatures::clear)?.let(extension.dynamicFeatures::addAll)
         assetPacks?.let(extension.assetPacks::addAll)
+        setAssetPacks?.act(extension.assetPacks::clear)?.let(extension.assetPacks::addAll)
         publishing?.applyTo(extension.publishing)
         privacySandbox?.applyTo(extension.privacySandbox)
     }

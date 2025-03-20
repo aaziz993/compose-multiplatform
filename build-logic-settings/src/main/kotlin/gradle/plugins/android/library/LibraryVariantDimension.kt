@@ -3,8 +3,8 @@ package gradle.plugins.android.library
 import com.android.build.api.dsl.LibraryVariantDimension
 import gradle.accessors.android
 import gradle.api.trySet
+import gradle.collection.act
 import gradle.plugins.android.AarMetadata
-import gradle.plugins.android.ApkSigningConfigImpl
 import gradle.plugins.android.VariantDimension
 import org.gradle.api.Project
 
@@ -33,6 +33,7 @@ internal interface LibraryVariantDimension<in T : LibraryVariantDimension> : Var
      * This is only valid for Library project. This is ignored in Application project.
      */
     val consumerProguardFiles: List<String>?
+    val setConsumerProguardFiles: List<String>?
 
     /** The associated signing config or null if none are set on the variant dimension. */
     val signingConfig: String?
@@ -42,15 +43,17 @@ internal interface LibraryVariantDimension<in T : LibraryVariantDimension> : Var
 
     context(Project)
     override fun applyTo(recipient: T) {
-        super.applyTo(dimension)
+        super.applyTo(recipient)
 
-        dimension::multiDexEnabled trySet multiDexEnabled
+        recipient::multiDexEnabled trySet multiDexEnabled
 
         consumerProguardFiles?.let { consumerProguardFiles ->
-            dimension.consumerProguardFiles(*consumerProguardFiles.toTypedArray())
+            recipient.consumerProguardFiles(*consumerProguardFiles.toTypedArray())
         }
 
-        dimension::signingConfig trySet signingConfig?.let(android.signingConfigs::getByName)
-        aarMetadata?.applyTo(dimension.aarMetadata)
+        setConsumerProguardFiles?.map(::file)?.act(recipient.consumerProguardFiles::clear)?.let(recipient.consumerProguardFiles::addAll)
+
+        recipient::signingConfig trySet signingConfig?.let(android.signingConfigs::getByName)
+        aarMetadata?.applyTo(recipient.aarMetadata)
     }
 }

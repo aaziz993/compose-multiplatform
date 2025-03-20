@@ -12,4 +12,4 @@ import com.android.build.api.dsl.DefaultConfig
  * Each plugin has its own interface that extends this one, see [gradle.model.android.application.ApplicationDefaultConfig],
  * [gradle.model.android.library.LibraryDefaultConfig], [DynamicFeatureDefaultConfig] and [TestDefaultConfig].
  */
-internal interface DefaultConfigDsl<in T : DefaultConfig> : BaseFlavor<T>
+internal interface DefaultConfigDsl<T : DefaultConfig> : BaseFlavor<T>

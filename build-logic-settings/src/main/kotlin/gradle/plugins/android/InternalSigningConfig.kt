@@ -15,8 +15,6 @@ internal interface InternalSigningConfig<T : InternalSigningConfig> :
     override fun applyTo(recipient: T) {
         super<ApkSigningConfig>.applyTo(recipient)
 
-        recipient as InternalSigningConfig
-
         super<SigningConfigDsl>.applyTo(recipient)
     }
 }

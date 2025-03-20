@@ -1,8 +1,10 @@
 package gradle.plugins.android
 
 import com.android.build.api.dsl.Prefab
+import gradle.api.ProjectNamed
 import gradle.api.trySet
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
 
 /**
  * Options for including [Prefab](https://google.github.io/prefab/) packages in AARs.
@@ -19,7 +21,7 @@ internal data class Prefab(
      * This name will be the name of the module in the prefab package, and the package name will be
      * the name of the gradle project.
      */
-    val name: String? = null,
+    override val name: String = "",
     /**
      * Path to a directory containing headers to export to dependents of this module.
      *
@@ -46,9 +48,10 @@ internal data class Prefab(
      * This value defaults to false.
      */
     val headerOnly: Boolean? = null,
-) {
+) : ProjectNamed<Prefab> {
 
-    fun applyTo(recipient: Prefab) {
+    context(Project)
+    override fun applyTo(recipient: Prefab) {
         recipient::name trySet name
         recipient::headers trySet headers
         recipient::libraryName trySet libraryName

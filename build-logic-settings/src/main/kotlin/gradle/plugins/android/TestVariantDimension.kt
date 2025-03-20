@@ -25,11 +25,9 @@ internal interface TestVariantDimension<in T : TestVariantDimension> :
 
     context(Project)
     override fun applyTo(recipient: T) {
-        super.applyTo(dimension)
-
-        dimension as TestVariantDimension
-
-        dimension::multiDexEnabled trySet multiDexEnabled
-        dimension::signingConfig trySet signingConfig?.let(android.signingConfigs::getByName)
+        super.applyTo(recipient)
+        
+        recipient::multiDexEnabled trySet multiDexEnabled
+        recipient::signingConfig trySet signingConfig?.let(android.signingConfigs::getByName)
     }
 }

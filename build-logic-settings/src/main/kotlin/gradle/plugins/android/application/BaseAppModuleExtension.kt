@@ -1,5 +1,6 @@
 package gradle.plugins.android.application
 
+import com.android.build.api.dsl.ApplicationExtension
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.android.AaptOptions
 import gradle.plugins.android.AdbOptions
@@ -21,6 +22,7 @@ import gradle.plugins.android.TestCoverage
 import gradle.plugins.android.TestFixtures
 import gradle.plugins.android.TestOptions
 import gradle.plugins.android.ViewBinding
+import java.util.SortedSet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -34,7 +36,7 @@ internal data class BaseAppModuleExtension(
     override val disableWrite: Boolean? = null,
     override val compileSdkVersion: Int? = null,
     override val buildToolsVersion: String? = null,
-    override val flavorDimensions: List<String>? = null,
+    override val flavorDimensions: SortedSet<String>? = null,
     override val aaptOptions: AaptOptions? = null,
     override val externalNativeBuild: ExternalNativeBuild? = null,
     override val testOptions: TestOptions? = null,
@@ -46,11 +48,11 @@ internal data class BaseAppModuleExtension(
     override val resourcePrefix: String? = null,
     override val ndkVersion: String? = null,
     override val ndkPath: String? = null,
-    override val libraryRequests: List<LibraryRequest>? = null,
-    override val buildTypes: List<@Serializable(with = ApplicationBuildTypeTransformingSerializer::class) ApplicationBuildType>? = null,
+    override val libraryRequests: Set<LibraryRequest>? = null,
+    override val buildTypes: Set<@Serializable(with = ApplicationBuildTypeTransformingSerializer::class) ApplicationBuildType>? = null,
     override val defaultConfig: ApplicationDefaultConfigImpl? = null,
-    override val productFlavors: List<@Serializable(with = ApplicationProductFlavorTransformingSerializer::class) ApplicationProductFlavorImpl>? = null,
-    override val signingConfigs: List<@Serializable(with = SigningConfigTransformingSerializer::class) SigningConfigImpl>? = null,
+    override val productFlavors: Set<@Serializable(with = ApplicationProductFlavorTransformingSerializer::class) ApplicationProductFlavorImpl>? = null,
+    override val signingConfigs: Set<@Serializable(with = SigningConfigTransformingSerializer::class) SigningConfigImpl>? = null,
     override val buildFeatures: ApplicationBuildFeatures? = null,
     override val namespace: String? = null,
     override val testBuildType: String? = null,
@@ -59,14 +61,16 @@ internal data class BaseAppModuleExtension(
     override val dependenciesInfo: DependenciesInfo? = null,
     override val bundle: Bundle? = null,
     override val dynamicFeatures: Set<String>? = null,
+    override val setDynamicFeatures: Set<String>? = null,
     override val assetPacks: Set<String>? = null,
+    override val setAssetPacks: Set<String>? = null,
     override val publishing: ApplicationPublishing? = null,
     override val privacySandbox: PrivacySandbox? = null,
     override val androidResources: ApplicationAndroidResources? = null,
     override val installation: ApplicationInstallation? = null,
     override val testCoverage: TestCoverage? = null,
     override val lint: Lint? = null,
-    override val useLibraries: List<LibraryRequest>? = null,
+    override val useLibraries: Set<LibraryRequest>? = null,
     override val compileSdk: Int? = null,
     override val compileSdkExtension: Int? = null,
     override val compileSdkPreview: String? = null,

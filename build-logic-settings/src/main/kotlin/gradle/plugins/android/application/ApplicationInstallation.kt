@@ -9,16 +9,15 @@ import kotlinx.serialization.Serializable
 internal data class ApplicationInstallation(
     override var timeOutInMs: Int? = null,
     override val installOptions: List<String>? = null,
+    override val setInstallOptions: List<String>? = null,
     /** Whether to generate per-SDK level baseline profiles to install with an APK. */
     val enableBaselineProfile: Boolean? = null,
-) : Installation {
+) : Installation<ApplicationInstallation> {
 
     @Suppress("UnstableApiUsage")
-    override fun applyTo(recipient: com.android.build.api.dsl.Installation) {
-        super.applyTo(installation)
+    override fun applyTo(recipient: ApplicationInstallation) {
+        super.applyTo(recipient)
 
-        installation as ApplicationInstallation
-
-        installation::enableBaselineProfile trySet enableBaselineProfile
+        recipient::enableBaselineProfile trySet enableBaselineProfile
     }
 }

@@ -44,14 +44,12 @@ internal data class ApplicationBuildFeatures(
      * More information about this feature at: TBD
      */
     val mlModelBinding: Boolean? = null,
-) : BuildFeatures {
+) : BuildFeatures<ApplicationBuildFeatures> {
 
-    override fun applyTo(recipient: com.android.build.api.dsl.BuildFeatures) {
-        super.applyTo(features)
+    override fun applyTo(recipient: ApplicationBuildFeatures) {
+        super.applyTo(recipient)
 
-        features as ApplicationBuildFeatures
-
-        features::dataBinding trySet dataBinding
-        features::mlModelBinding trySet mlModelBinding
+        recipient::dataBinding trySet dataBinding
+        recipient::mlModelBinding trySet mlModelBinding
     }
 }

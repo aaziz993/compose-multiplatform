@@ -7,7 +7,7 @@ import gradle.collection.act
 /**
  * Local installation options for the adb tool.
  */
-internal interface Installation<in T : Installation> {
+internal interface Installation<T : Installation> {
 
     /** The time out used for all adb operations. */
     var timeOutInMs: Int?

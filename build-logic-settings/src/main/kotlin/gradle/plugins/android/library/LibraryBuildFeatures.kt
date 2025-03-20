@@ -75,16 +75,14 @@ internal data class LibraryBuildFeatures(
      * More information about this feature at: https://developer.android.com/studio/build/native-dependencies
      */
     val prefabPublishing: Boolean? = null,
-) : BuildFeatures {
+) : BuildFeatures<LibraryBuildFeatures> {
 
-    override fun applyTo(recipient: com.android.build.api.dsl.BuildFeatures) {
-        super.applyTo(features)
+    override fun applyTo(recipient: LibraryBuildFeatures) {
+        super.applyTo(recipient)
 
-        features as LibraryBuildFeatures
-
-        features::androidResources trySet androidResources
-        features::dataBinding trySet dataBinding
-        features::mlModelBinding trySet mlModelBinding
-        features::prefabPublishing trySet prefabPublishing
+        recipient::androidResources trySet androidResources
+        recipient::dataBinding trySet dataBinding
+        recipient::mlModelBinding trySet mlModelBinding
+        recipient::prefabPublishing trySet prefabPublishing
     }
 }

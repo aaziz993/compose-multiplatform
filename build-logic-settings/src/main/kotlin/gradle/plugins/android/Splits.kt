@@ -1,6 +1,6 @@
 package gradle.plugins.android
 
-import com.android.build.api.dsl.Splits
+import com.android.build.gradle.internal.dsl.Splits
 import kotlinx.serialization.Serializable
 
 /**
@@ -46,7 +46,7 @@ internal data class Splits(
 ) {
 
     fun applyTo(recipient: Splits) {
-        abi?.applyTo(splits.abi)
-        density?.applyTo(splits.density)
+        abi?.applyTo(recipient.abi)
+        density?.applyTo(recipient.density)
     }
 }

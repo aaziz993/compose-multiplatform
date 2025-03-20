@@ -1,6 +1,7 @@
 package gradle.plugins.android
 
 import com.android.build.api.dsl.ResourcesPackaging
+import gradle.collection.act
 import kotlinx.serialization.Serializable
 
 /**
@@ -25,6 +26,7 @@ internal data class ResourcesPackaging(
      * Example: `android.packagingOptions.resources.excludes += "**`/`*.exclude"`
      */
     val excludes: Set<String>? = null,
+    val setExcludes: Set<String>? = null,
 
     /**
      * The set of patterns for which the first occurrence is packaged in the APK. For each java
@@ -34,6 +36,7 @@ internal data class ResourcesPackaging(
      * Example: `android.packagingOptions.resources.pickFirsts += "**`/`*.pickFirst"`
      */
     val pickFirsts: Set<String>? = null,
+    val setPickFirsts: Set<String>? = null,
 
     /**
      * The set of patterns for which matching java resources are merged. For each java resource
@@ -42,12 +45,16 @@ internal data class ResourcesPackaging(
      *
      * Example: `android.packagingOptions.resources.merges += "**`/`*.merge"`
      */
-    val merges: Set<String>? = null
+    val merges: Set<String>? = null,
+    val setMerges: Set<String>? = null
 ) {
 
     fun applyTo(recipient: ResourcesPackaging) {
-        excludes?.let(packaging.excludes::addAll)
-        pickFirsts?.let(packaging.pickFirsts::addAll)
-        merges?.let(packaging.merges::addAll)
+        excludes?.let(recipient.excludes::addAll)
+        setExcludes?.act(recipient.excludes::clear)?.let(recipient.excludes::addAll)
+        pickFirsts?.let(recipient.pickFirsts::addAll)
+        setPickFirsts?.act(recipient.pickFirsts::clear)?.let(recipient.pickFirsts::addAll)
+        merges?.let(recipient.merges::addAll)
+        setMerges?.act(recipient.merges::clear)?.let(recipient.merges::addAll)
     }
 }

@@ -36,8 +36,6 @@ internal interface Publication<T : org.gradle.api.publish.Publication> : Project
 
     context(Project)
     override fun applyTo(recipient: T) {
-        recipient as org.gradle.api.publish.Publication
-
         withoutBuildIdentifier?.takeIf { it }?.run { recipient.withoutBuildIdentifier() }
         withBuildIdentifier?.takeIf { it }?.run { recipient.withBuildIdentifier() }
     }

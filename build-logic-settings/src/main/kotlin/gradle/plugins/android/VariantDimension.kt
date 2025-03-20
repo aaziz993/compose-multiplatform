@@ -44,14 +44,14 @@ internal interface VariantDimension<in T : VariantDimension> {
      */
     val proguardFiles: List<String>?
 
-    val defaultProguardFiles: List<String>?
-
     /**
      * Replaces the ProGuard configuration files.
      *
      * This method has a return value for legacy reasons.
      */
     val setProguardFiles: List<String>?
+
+    val defaultProguardFiles: List<String>?
 
     val setDefaultProguardFiles: List<String>?
 
@@ -121,58 +121,58 @@ internal interface VariantDimension<in T : VariantDimension> {
     context(Project)
     @Suppress("UnstableApiUsage")
     fun applyTo(recipient: T) {
-        dimension::multiDexKeepProguard trySet multiDexKeepProguard?.let(::file)
+        recipient::multiDexKeepProguard trySet multiDexKeepProguard?.let(::file)
 
         ndk?.let { ndk ->
-            dimension.ndk(ndk::applyTo)
+            recipient.ndk(ndk::applyTo)
         }
 
         proguardFiles?.let { proguardFiles ->
-            dimension.proguardFiles(*proguardFiles.toTypedArray())
+            recipient.proguardFiles(*proguardFiles.toTypedArray())
         }
 
         defaultProguardFiles
             ?.mapNotNull { defaultProguardFile -> getDefaultProguardFile(defaultProguardFile) }
             ?.let { defaultProguardFiles ->
-                dimension.proguardFiles(*defaultProguardFiles.toTypedArray())
+                recipient.proguardFiles(*defaultProguardFiles.toTypedArray())
             }
 
-        setProguardFiles?.let(dimension::setProguardFiles)
+        setProguardFiles?.let(recipient::setProguardFiles)
 
         setDefaultProguardFiles
             ?.mapNotNull { defaultProguardFile -> getDefaultProguardFile(defaultProguardFile) }
-            ?.let(dimension::setProguardFiles)
+            ?.let(recipient::setProguardFiles)
 
         testProguardFiles?.let { testProguardFiles ->
-            dimension.testProguardFiles(*testProguardFiles.toTypedArray())
+            recipient.testProguardFiles(*testProguardFiles.toTypedArray())
         }
 
-        manifestPlaceholders?.let(dimension.manifestPlaceholders::putAll)
+        manifestPlaceholders?.let(recipient.manifestPlaceholders::putAll)
 
         javaCompileOptions?.let { javaCompileOptions ->
-            dimension.javaCompileOptions(javaCompileOptions::applyTo)
+            recipient.javaCompileOptions(javaCompileOptions::applyTo)
         }
 
         shaders?.let { shaders ->
-            dimension.shaders(shaders::applyTo)
+            recipient.shaders(shaders::applyTo)
         }
 
         externalNativeBuild?.let { externalNativeBuild ->
-            dimension.externalNativeBuild(externalNativeBuild::applyTo)
+            recipient.externalNativeBuild(externalNativeBuild::applyTo)
         }
 
         buildConfigFields?.forEach { (type, name, value) ->
-            dimension.buildConfigField(type, name, value)
+            recipient.buildConfigField(type, name, value)
         }
 
         resValues?.forEach { (type, name, value) ->
-            dimension.resValue(type, name, value)
+            recipient.resValue(type, name, value)
         }
 
-        dimension.optimization { }
+        recipient.optimization { }
 
         optimization?.let { optimization ->
-            dimension.optimization(optimization::applyTo)
+            recipient.optimization(optimization::applyTo)
         }
     }
 

@@ -1,5 +1,6 @@
 package gradle.plugins.android.application
 
+import com.android.build.api.dsl.ApplicationPublishing
 import gradle.plugins.android.Publishing
 import kotlinx.serialization.Serializable
 
@@ -53,4 +54,4 @@ import kotlinx.serialization.Serializable
 @Serializable
 internal data class ApplicationPublishing(
     override val singleVariants: List<ApplicationSingleVariant>? = null,
-) : Publishing<ApplicationSingleVariant>
+) : Publishing<ApplicationPublishing, com.android.build.api.dsl.ApplicationSingleVariant, ApplicationSingleVariant>

@@ -1,6 +1,5 @@
 package gradle.plugins.android.library
 
-
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.android.AarMetadata
 import gradle.plugins.android.AndroidTest
@@ -17,7 +16,7 @@ import gradle.plugins.android.Shaders
 import gradle.plugins.android.VcsInfo
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
-import org.gradle.api.Named
+import org.gradle.api.Project
 
 /**
  * Build types define certain properties that Gradle uses when building and packaging your library,
@@ -46,7 +45,7 @@ internal data class LibraryBuildType(
     override val matchingFallbacks: List<String>? = null,
     override val javaCompileOptions: JavaCompileOptions? = null,
     override val shaders: Shaders? = null,
-    override val signingConfig: ApkSigningConfigImpl? = null,
+    override val signingConfig: String? = null,
     override val proguardFiles: List<String>? = null,
     override val defaultProguardFiles: List<String>? = null,
     override val testProguardFiles: List<String>? = null,
@@ -66,21 +65,20 @@ internal data class LibraryBuildType(
     override val resValues: List<ResValue>? = null,
     override val optimization: Optimization? = null,
     val androidTest: AndroidTest? = null,
-) : BuildType,
-    LibraryVariantDimension {
+) : BuildType<com.android.build.api.dsl.LibraryBuildType>,
+    LibraryVariantDimension<com.android.build.api.dsl.LibraryBuildType> {
 
     override val isShrinkResources: Boolean?
         get() = false
 
-        context(Project)
-    override fun applyTo(recipient: T) {
-        super<BuildType>.applyTo(named)
+    context(Project)
+    @Suppress("UnstableApiUsage")
+    override fun applyTo(recipient: com.android.build.api.dsl.LibraryBuildType) {
+        super<BuildType>.applyTo(recipient)
 
-        named as com.android.build.api.dsl.LibraryBuildType
+        super<LibraryVariantDimension>.applyTo(recipient)
 
-        super<LibraryVariantDimension>.applyTo(named)
-
-        androidTest?.applyTo(named.androidTest)
+        androidTest?.applyTo(recipient.androidTest)
     }
 }
 

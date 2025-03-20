@@ -1,5 +1,6 @@
 package gradle.plugins.android
 
+import com.android.build.gradle.TestedExtension
 import org.gradle.api.Project
 
 /**

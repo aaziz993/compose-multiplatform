@@ -1,5 +1,6 @@
 package gradle.plugins.android.library
 
+import com.android.build.api.dsl.LibraryInstallation
 import gradle.plugins.android.Installation
 import kotlinx.serialization.Serializable
 
@@ -12,4 +13,5 @@ import kotlinx.serialization.Serializable
 internal data class LibraryInstallation(
     override var timeOutInMs: Int? = null,
     override val installOptions: List<String>? = null,
-) : Installation
+    override val setInstallOptions: List<String>? = null,
+) : Installation<LibraryInstallation>

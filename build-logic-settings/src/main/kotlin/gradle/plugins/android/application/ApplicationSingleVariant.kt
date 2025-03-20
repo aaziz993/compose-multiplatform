@@ -1,7 +1,6 @@
 package gradle.plugins.android.application
 
 import com.android.build.api.dsl.ApplicationSingleVariant
-import com.android.build.api.dsl.PublishingOptions
 import gradle.plugins.android.SingleVariant
 import kotlinx.serialization.Serializable
 
@@ -18,13 +17,11 @@ internal data class ApplicationSingleVariant(
      * variant as AAB artifact if this function is not invoked.
      */
     val publishApk: Boolean? = null,
-) : SingleVariant {
+) : SingleVariant<ApplicationSingleVariant> {
 
-    override fun applyTo(recipient: PublishingOptions) {
-        super.applyTo(options)
+    override fun applyTo(recipient: ApplicationSingleVariant) {
+        super.applyTo(recipient)
 
-        options as ApplicationSingleVariant
-
-        publishApk?.takeIf { it }?.run { options.publishApk() }
+        publishApk?.takeIf { it }?.run { recipient.publishApk() }
     }
 }

@@ -1,5 +1,7 @@
 package gradle.plugins.android.application
 
+import com.android.build.api.dsl.ApkExtension
+
 /**
  * Common extension properties for the Android Gradle Plugin Application and Dynamic Feature
  * plugins.
@@ -10,4 +12,6 @@ package gradle.plugins.android.application
 // TODO(b/140406102): Could this have a better name?
 internal interface ApkExtension {
     // TODO(b/140406102)
+
+    fun applyTo()
 }

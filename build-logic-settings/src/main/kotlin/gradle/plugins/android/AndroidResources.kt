@@ -9,7 +9,7 @@ import gradle.collection.act
  *
  * This is accessed via [CommonExtension.androidResources]
  */
-internal interface AndroidResources<in T : AndroidResources> {
+internal interface AndroidResources<T : AndroidResources> {
 
     /**
      * Pattern describing assets to be ignored.

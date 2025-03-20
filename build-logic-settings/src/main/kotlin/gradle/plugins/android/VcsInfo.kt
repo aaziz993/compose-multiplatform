@@ -20,6 +20,6 @@ internal data class VcsInfo(
 ) {
 
     fun applyTo(recipient: VcsInfo) {
-        info::include trySet include
+        recipient::include trySet include
     }
 }

@@ -21,7 +21,7 @@ internal data class DependenciesInfo(
 ) {
 
     fun applyTo(recipient: DependenciesInfo) {
-        info::includeInApk trySet includeInApk
-        info::includeInBundle trySet includeInBundle
+        recipient::includeInApk trySet includeInApk
+        recipient::includeInBundle trySet includeInBundle
     }
 }

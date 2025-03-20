@@ -1,14 +1,18 @@
 package gradle.plugins.android
 
 import com.android.build.api.dsl.CommonExtension
+import com.android.build.api.dsl.DefaultConfig
+import com.android.build.api.dsl.ProductFlavor
 import gradle.accessors.android
 import gradle.accessors.libs
 import gradle.accessors.settings
 import gradle.accessors.version
 import gradle.accessors.versions
+import gradle.api.applyTo
 import gradle.api.trySet
 import gradle.api.version
 import gradle.collection.SerializableAnyMap
+import java.util.SortedSet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -19,12 +23,12 @@ import org.gradle.api.Project
  * Only the Android Gradle Plugin should create instances of this interface.
  */
 internal interface CommonExtension<
-    BuildFeaturesT : BuildFeatures,
-    BuildTypeT : BuildType,
-    DefaultConfigT : DefaultConfigDsl,
-    ProductFlavorT : ProductFlavorDsl,
-    AndroidResourcesT : AndroidResources,
-    InstallationT : Installation> {
+    BuildFeaturesT : BuildFeatures<out com.android.build.api.dsl.BuildFeatures>,
+    BuildTypeT : BuildType<out com.android.build.api.dsl.BuildType>,
+    DefaultConfigT : DefaultConfigDsl<out DefaultConfig>,
+    ProductFlavorT : ProductFlavorDsl<out ProductFlavor>,
+    AndroidResourcesT : AndroidResources<out com.android.build.api.dsl.AndroidResources>,
+    InstallationT : Installation<out com.android.build.api.dsl.Installation>> {
 
     /**
      * Specifies options related to the processing of Android Resources.
@@ -72,7 +76,7 @@ internal interface CommonExtension<
      *
      * @see BuildType
      */
-    val buildTypes: List<BuildTypeT>?
+    val buildTypes: Set<BuildTypeT>?
 
     /**
      * Specifies options for the
@@ -163,7 +167,7 @@ internal interface CommonExtension<
      *
      * @see [ProductFlavorDsl]
      */
-    val productFlavors: List<ProductFlavorT>?
+    val productFlavors: Set<ProductFlavorT>?
 
     /**
      * Specifies defaults for variant properties that the Android plugin applies to all build
@@ -193,7 +197,7 @@ internal interface CommonExtension<
      *
      * @see [ApkSigningConfig]
      */
-    val signingConfigs: List<@Serializable(with = SigningConfigTransformingSerializer::class) SigningConfigImpl>?
+    val signingConfigs: Set<@Serializable(with = SigningConfigTransformingSerializer::class) SigningConfigImpl>?
 
     /**
      * Specifies options for external native build using [CMake](https://cmake.org/) or
@@ -301,7 +305,7 @@ internal interface CommonExtension<
      * To learn more, read
      * [Combine multiple flavors](https://developer.android.com/studio/build/build-variants.html#flavor-dimensions).
      */
-    val flavorDimensions: List<String>?
+    val flavorDimensions: SortedSet<String>?
 
     /**
      * Specifies this project's resource prefix to Android Studio for editor features, such as Lint
@@ -434,7 +438,7 @@ internal interface CommonExtension<
      *
      * @param name the name of the library.
      */
-    val useLibraries: List<LibraryRequest>?
+    val useLibraries: Set<LibraryRequest>?
 
     /**
      * Specifies the API level to compile your project against. The Android plugin requires you to

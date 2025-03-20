@@ -9,8 +9,8 @@ internal interface InternalLibraryExtension :
     InternalTestedExtension<
         LibraryBuildFeatures,
         LibraryBuildType,
-        LibraryDefaultConfig,
-        LibraryProductFlavor,
+        LibraryDefaultConfigImpl,
+        LibraryProductFlavorImpl,
         LibraryAndroidResources,
         LibraryInstallation,
         > {

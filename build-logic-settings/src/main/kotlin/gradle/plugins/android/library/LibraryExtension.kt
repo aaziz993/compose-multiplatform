@@ -21,6 +21,7 @@ import gradle.plugins.android.TestFixtures
 import gradle.plugins.android.TestOptions
 import gradle.plugins.android.TestedExtension
 import gradle.plugins.android.ViewBinding
+import java.util.SortedSet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -36,19 +37,20 @@ internal data class LibraryExtension(
     override val androidResources: LibraryAndroidResources? = null,
     override val installation: LibraryInstallation? = null,
     override val buildFeatures: LibraryBuildFeatures? = null,
-    override val buildTypes: List<@Serializable(with = LibraryBuildTypeTransformingSerializer::class) LibraryBuildType>? = null,
+    override val buildTypes: Set<@Serializable(with = LibraryBuildTypeTransformingSerializer::class) LibraryBuildType>? = null,
     override val testCoverage: TestCoverage? = null,
     override val lint: Lint? = null,
-    override val productFlavors: List<@Serializable(with = LibraryProductFlavorTransformingSerializer::class) LibraryProductFlavorImpl>? = null,
+    override val productFlavors: Set<@Serializable(with = LibraryProductFlavorTransformingSerializer::class) LibraryProductFlavorImpl>? = null,
     override val defaultConfig: LibraryDefaultConfigImpl? = null,
-    override val useLibraries: List<LibraryRequest>? = null,
+    override val useLibraries: Set<LibraryRequest>? = null,
     override val compileSdk: Int? = null,
     override val compileSdkExtension: Int? = null,
     override val compileSdkPreview: String? = null,
     override val compileSdkAddon: CompileSdkAddon? = null,
     override val experimentalProperties: SerializableAnyMap? = null,
-    override val aidlPackagedList: List<String>? = null,
-    override val prefab: List<Prefab>? = null,
+    override val aidlPackagedList: Set<String>? = null,
+    override val setAidlPackagedList: Set<String>? = null,
+    override val prefab: Set<Prefab>? = null,
     override val publishing: LibraryPublishing? = null,
     override val privacySandbox: PrivacySandbox? = null,
     override val composeOptions: ComposeOptions? = null,
@@ -58,7 +60,7 @@ internal data class LibraryExtension(
     override val disableWrite: Boolean? = null,
     override val compileSdkVersion: Int? = null,
     override val buildToolsVersion: String? = null,
-    override val flavorDimensions: List<String>? = null,
+    override val flavorDimensions: SortedSet<String>? = null,
     override val aaptOptions: AaptOptions? = null,
     override val externalNativeBuild: ExternalNativeBuild? = null,
     override val testOptions: TestOptions? = null,
@@ -70,8 +72,8 @@ internal data class LibraryExtension(
     override val resourcePrefix: String? = null,
     override val ndkVersion: String? = null,
     override val ndkPath: String? = null,
-    override val libraryRequests: List<LibraryRequest>? = null,
-    override val signingConfigs: List<@Serializable(with = SigningConfigTransformingSerializer::class) SigningConfigImpl>? = null,
+    override val libraryRequests: Set<LibraryRequest>? = null,
+    override val signingConfigs: Set<@Serializable(with = SigningConfigTransformingSerializer::class) SigningConfigImpl>? = null,
     override val namespace: String? = null,
     override val testBuildType: String? = null,
     override val testNamespace: String? = null,

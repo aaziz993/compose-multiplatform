@@ -2,6 +2,7 @@ package gradle.plugins.android.application
 
 import com.android.build.api.dsl.ApplicationAndroidResources
 import gradle.api.trySet
+import gradle.collection.act
 import gradle.plugins.android.AndroidResources
 import kotlinx.serialization.Serializable
 
@@ -13,10 +14,13 @@ import kotlinx.serialization.Serializable
 @Serializable
 internal data class ApplicationAndroidResources(
     override val ignoreAssetsPattern: String? = null,
-    override val ignoreAssetsPatterns: List<String>? = null,
-    override val noCompress: List<String>? = null,
+    override val ignoreAssetsPatterns: Set<String>? = null,
+    override val setIgnoreAssetsPatterns: Set<String>? = null,
+    override val noCompress: Set<String>? = null,
+    override val setNoCompress: Set<String>? = null,
     override val failOnMissingConfigEntry: Boolean? = null,
     override val additionalParameters: List<String>? = null,
+    override val setAdditionalParameters: List<String>? = null,
     override val namespaced: Boolean? = null,
     /**
      * Property that automatically generates locale config when enabled.
@@ -52,15 +56,15 @@ internal data class ApplicationAndroidResources(
      * [alternative resources](https://d.android.com/r/tools/alternative-resources) table.
      */
     val localeFilters: Set<String>? = null,
-) : AndroidResources {
+    val setLocaleFilters: Set<String>? = null,
+) : AndroidResources<ApplicationAndroidResources> {
 
     @Suppress("UnstableApiUsage")
-    override fun applyTo(recipient: com.android.build.api.dsl.AndroidResources) {
-        super.applyTo(resources)
+    override fun applyTo(recipient: ApplicationAndroidResources) {
+        super.applyTo(recipient)
 
-        resources as ApplicationAndroidResources
-
-        resources::generateLocaleConfig trySet generateLocaleConfig
-        localeFilters?.let(resources.localeFilters::addAll)
+        recipient::generateLocaleConfig trySet generateLocaleConfig
+        localeFilters?.let(recipient.localeFilters::addAll)
+        setLocaleFilters?.act(recipient.localeFilters::clear)?.let(recipient.localeFilters::addAll)
     }
 }

@@ -1,6 +1,8 @@
 package gradle.api
 
 import org.gradle.api.Action
+import org.gradle.api.DomainObjectCollection
+import org.gradle.api.Named
 import org.gradle.api.NamedDomainObjectCollection
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
@@ -25,6 +27,14 @@ internal interface SettingsNamed<T> : BaseNamed {
 }
 
 context(Settings)
+internal fun <T : Named> SettingsNamed<T>.applyTo(
+    recipient: DomainObjectCollection<T>,
+    create: (name: String, action: Action<in T>) -> Unit
+) = recipient.maybeNamedCreateOrEach(name, create) {
+    applyTo(this)
+}
+
+context(Settings)
 internal fun <T> SettingsNamed<T>.applyTo(
     recipient: NamedDomainObjectCollection<T>,
     create: (name: String, action: Action<in T>) -> Unit
@@ -42,6 +52,14 @@ internal interface ProjectNamed<T> : BaseNamed {
 
     context(Project)
     fun applyTo(recipient: T)
+}
+
+context(Project)
+internal fun <T : Named> ProjectNamed<T>.applyTo(
+    recipient: DomainObjectCollection<T>,
+    create: (name: String, action: Action<in T>) -> Unit
+) = recipient.maybeNamedCreateOrEach(name, create) {
+    applyTo(this)
 }
 
 context(Project)
@@ -65,6 +83,18 @@ internal interface Named<T> : SettingsNamed<T>, ProjectNamed<T> {
 
     context(Project)
     override fun applyTo(recipient: T)
+}
+
+internal fun <T : Named> DomainObjectCollection<T>.maybeNamedCreateOrEach(
+    name: String,
+    create: (name: String, action: Action<in T>) -> Unit = { _, _ -> },
+    configureAction: Action<in T>
+) {
+    if (name.isEmpty()) configureEach(configureAction)
+    else matching { it.name == name }.let {
+        if (it.isEmpty()) create(name, configureAction)
+        else it.configureEach(configureAction)
+    }
 }
 
 internal fun <T> NamedDomainObjectCollection<T>.maybeNamedCreateOrEach(

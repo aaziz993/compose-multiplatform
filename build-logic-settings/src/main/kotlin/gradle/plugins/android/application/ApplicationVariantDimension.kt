@@ -47,11 +47,11 @@ internal interface ApplicationVariantDimension<in T : ApplicationVariantDimensio
 
     context(Project)
     override fun applyTo(recipient: T) {
-        super.applyTo(dimension)
+        super.applyTo(recipient)
 
-        dimension::applicationIdSuffix trySet applicationIdSuffix
-        dimension::versionNameSuffix trySet versionNameSuffix
-        dimension::multiDexEnabled trySet multiDexEnabled
-        dimension::signingConfig trySet signingConfig?.let(android.signingConfigs::getByName)
+        recipient::applicationIdSuffix trySet applicationIdSuffix
+        recipient::versionNameSuffix trySet versionNameSuffix
+        recipient::multiDexEnabled trySet multiDexEnabled
+        recipient::signingConfig trySet signingConfig?.let(android.signingConfigs::getByName)
     }
 }

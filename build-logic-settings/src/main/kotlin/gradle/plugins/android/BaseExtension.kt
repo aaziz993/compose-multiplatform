@@ -7,8 +7,10 @@ import gradle.accessors.settings
 import gradle.accessors.version
 import gradle.accessors.versions
 import gradle.api.trySet
+import java.util.SortedSet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import org.gradle.api.configuration.BuildFeature
 
 internal interface BaseExtension {
 
@@ -27,7 +29,7 @@ internal interface BaseExtension {
 
     val buildToolsVersion: String?
 
-    val flavorDimensions: List<String>?
+    val flavorDimensions: SortedSet<String>?
 
     val aaptOptions: AaptOptions?
 
@@ -68,19 +70,19 @@ internal interface BaseExtension {
 
     val ndkPath: String?
 
-    val libraryRequests: List<LibraryRequest>?
+    val libraryRequests: Set<LibraryRequest>?
 
-    val buildTypes: List<BuildType>?
+    val buildTypes: Set<BuildType<out com.android.build.api.dsl.BuildType>>?
 
     val defaultConfig: DefaultConfigDsl<*>?
 
-    val productFlavors: List<ProductFlavorDsl<*>>?
+    val productFlavors: Set<ProductFlavorDsl<*>>?
 
-    val signingConfigs: List<@Serializable(with = SigningConfigTransformingSerializer::class) SigningConfigImpl>?
+    val signingConfigs: Set<@Serializable(with = SigningConfigTransformingSerializer::class) SigningConfigImpl>?
 
     // these are indirectly implemented by extensions when they implement the new public
     // extension interfaces via delegates.
-    val buildFeatures: BuildFeatures?
+    val buildFeatures: BuildFeatures<out com.android.build.api.dsl.BuildFeatures>?
     val namespace: String?
 
     context(Project)

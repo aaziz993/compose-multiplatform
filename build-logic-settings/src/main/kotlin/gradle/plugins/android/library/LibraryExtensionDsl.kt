@@ -2,6 +2,7 @@ package gradle.plugins.android.library
 
 import com.android.build.api.dsl.LibraryExtension
 import gradle.accessors.android
+import gradle.api.applyTo
 import gradle.plugins.android.CommonExtension
 import gradle.plugins.android.Prefab
 import gradle.plugins.android.PrivacySandbox
@@ -19,20 +20,21 @@ internal interface LibraryExtensionDsl :
     CommonExtension<
         LibraryBuildFeatures,
         LibraryBuildType,
-        LibraryDefaultConfig,
-        LibraryProductFlavor,
+        LibraryDefaultConfigImpl,
+        LibraryProductFlavorImpl,
         LibraryAndroidResources,
         LibraryInstallation,
         >, TestedExtensionDsl {
     // TODO(b/140406102)
 
     /** Aidl files to package in the aar. */
-    val aidlPackagedList: List<String>?
+    val aidlPackagedList: Set<String>?
+    val setAidlPackagedList: Set<String>?
 
     /**
      * container of Prefab options
      */
-    val prefab: List<Prefab>?
+    val prefab: Set<Prefab>?
 
     /**
      * Customizes publishing build variant artifacts from library module to a Maven repository.
@@ -47,7 +49,6 @@ internal interface LibraryExtensionDsl :
     @Suppress("UnstableApiUsage")
     override fun applyTo() {
         super<CommonExtension>.applyTo()
-
         super<TestedExtensionDsl>.applyTo()
 
         val extension = android as LibraryExtension
@@ -57,9 +58,13 @@ internal interface LibraryExtensionDsl :
 
         }
 
+        setAidlPackagedList?.let { setAidlPackagedList ->
+            extension.aidlPackagedList?.also(MutableCollection<*>::clear)?.addAll(setAidlPackagedList)
+
+        }
+
         prefab?.forEach { prefab ->
-            prefab.name?.also { name -> extension.prefab.findByName(name)?.apply(prefab::applyTo) }
-                ?: extension.prefab.all(prefab::applyTo)
+            prefab.applyTo(extension.prefab)
         }
 
         publishing?.applyTo(extension.publishing)

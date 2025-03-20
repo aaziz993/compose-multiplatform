@@ -47,7 +47,7 @@ internal data class UnitTestOptions(
 ) {
 
     fun applyTo(recipient: UnitTestOptions) {
-        options::isReturnDefaultValues trySet isReturnDefaultValues
-        options::isIncludeAndroidResources trySet isIncludeAndroidResources
+        recipient::isReturnDefaultValues trySet isReturnDefaultValues
+        recipient::isIncludeAndroidResources trySet isIncludeAndroidResources
     }
 }

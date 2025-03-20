@@ -1,8 +1,11 @@
 package gradle.plugins.android
 
+import com.android.build.gradle.internal.dsl.SigningConfig
 import gradle.api.BaseNamed
+import gradle.api.ProjectNamed
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
 
 @Serializable
 internal data class SigningConfigImpl(
@@ -17,12 +20,12 @@ internal data class SigningConfigImpl(
     override val keyPassword: String? = null,
     override val storeType: String? = null,
     override val initWith: String? = null,
-) : BaseNamed, ApkSigningConfig, InternalSigningConfig {
+) : ProjectNamed<SigningConfig>, ApkSigningConfig<SigningConfig>, InternalSigningConfig<SigningConfig> {
 
-        context(Project)
-    override fun applyTo(recipient: T) {
-        super<ApkSigningConfig>.applyTo(named)
-        super<InternalSigningConfig>.applyTo(named)
+    context(Project)
+    override fun applyTo(recipient: SigningConfig) {
+        super<ApkSigningConfig>.applyTo(recipient)
+        super<InternalSigningConfig>.applyTo(recipient)
     }
 }
 
