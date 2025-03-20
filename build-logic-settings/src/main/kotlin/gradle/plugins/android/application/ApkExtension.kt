@@ -12,6 +12,4 @@ import com.android.build.api.dsl.ApkExtension
 // TODO(b/140406102): Could this have a better name?
 internal interface ApkExtension {
     // TODO(b/140406102)
-
-    fun applyTo()
 }

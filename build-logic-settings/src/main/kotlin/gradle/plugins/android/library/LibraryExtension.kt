@@ -63,6 +63,7 @@ internal data class LibraryExtension(
     override val compileSdkVersion: Int? = null,
     override val buildToolsVersion: String? = null,
     override val flavorDimensions: SortedSet<String>? = null,
+    override val setFlavorDimensions: SortedSet<String>? = null,
     override val aaptOptions: AaptOptions? = null,
     override val externalNativeBuild: ExternalNativeBuild? = null,
     override val testOptions: TestOptions? = null,
