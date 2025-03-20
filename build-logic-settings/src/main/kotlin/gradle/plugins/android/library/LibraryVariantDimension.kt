@@ -13,7 +13,7 @@ import org.gradle.api.Project
  *
  * That is, [LibraryBuildType] and [LibraryProductFlavor] and [LibraryDefaultConfig].
  */
-internal interface LibraryVariantDimension<in T : LibraryVariantDimension> : VariantDimension<T> {
+internal interface LibraryVariantDimension<T : LibraryVariantDimension> : VariantDimension<T> {
 
     /**
      * Returns whether multi-dex is enabled.

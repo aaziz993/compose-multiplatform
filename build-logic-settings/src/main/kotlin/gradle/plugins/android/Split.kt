@@ -6,7 +6,7 @@ import gradle.api.trySet
 /**
  *  Base data representing how an APK should be split for a given dimension (density, abi).
  */
-internal interface Split<in T: Split> {
+internal interface Split<T: Split> {
 
     /** Whether to split in this dimension. */
     val isEnable: Boolean?

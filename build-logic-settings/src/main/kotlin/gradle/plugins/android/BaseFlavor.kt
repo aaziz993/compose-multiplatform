@@ -14,7 +14,7 @@ import org.gradle.api.Project
 /**
  * Shared properties between DSL objects [ProductFlavorDsl] and [DefaultConfigDsl]
  */
-internal interface BaseFlavor<in T : BaseFlavor> : VariantDimension<T> {
+internal interface BaseFlavor<T : BaseFlavor> : VariantDimension<T> {
     // TODO(b/140406102)
     /** The name of the flavor. */
     val name: String

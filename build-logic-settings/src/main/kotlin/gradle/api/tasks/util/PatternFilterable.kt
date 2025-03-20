@@ -53,7 +53,7 @@ import org.gradle.api.Project
  * If no exclude patterns or spec are specified, then no files will be excluded. If any exclude patterns or specs are
  * specified, then a file is include only if it matches none of the patterns or specs.
  */
-internal interface PatternFilterable<in T : org.gradle.api.tasks.util.PatternFilterable> {
+internal interface PatternFilterable<T : org.gradle.api.tasks.util.PatternFilterable> {
 
     /**
      * Add the allowable include patterns.  Note that unlike [.include] this replaces any previously

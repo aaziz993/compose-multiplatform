@@ -6,7 +6,7 @@ import org.gradle.api.file.Directory
 /**
  * An artifact repository which supports username/password authentication.
  */
-internal interface AuthenticationSupported<in T: AuthenticationSupported> {
+internal interface AuthenticationSupported<T: AuthenticationSupported> {
 
     /**
      * Configures the username and password credentials for this repository using the supplied action.

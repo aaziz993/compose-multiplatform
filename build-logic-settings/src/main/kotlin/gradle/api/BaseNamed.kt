@@ -106,7 +106,7 @@ internal fun <T> NamedDomainObjectCollection<T>.maybeNamedCreateOrEach(
     else (maybeNamed(name, configureAction) ?: create(name, configureAction))
 }
 
-internal interface Test<in T> {
+internal interface Test<T> {
 
     fun t(l: Collection<T>) {}
 }

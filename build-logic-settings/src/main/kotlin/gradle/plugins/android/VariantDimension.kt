@@ -13,7 +13,7 @@ import org.gradle.api.Project
  *
  * That is, [BuildType] and [ProductFlavorDsl] and [DefaultConfigDsl].
  */
-internal interface VariantDimension<in T : VariantDimension> {
+internal interface VariantDimension<T : VariantDimension> {
 
     /**
      * Text file with additional ProGuard rules to be used to determine which classes are compiled

@@ -8,7 +8,7 @@ import org.gradle.api.file.CopyProcessingSpec
 /**
  * Specifies the destination of a copy.
  */
-internal interface CopyProcessingSpec<in T : CopyProcessingSpec> : ContentFilterable<T> {
+internal interface CopyProcessingSpec<T : CopyProcessingSpec> : ContentFilterable<T> {
 
     /**
      * Specifies the destination directory for a copy. The destination is evaluated as per [ ][org.gradle.api.Project.file].

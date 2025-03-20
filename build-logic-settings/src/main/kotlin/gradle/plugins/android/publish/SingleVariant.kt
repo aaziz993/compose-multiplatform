@@ -1,4 +1,4 @@
-package gradle.plugins.android
+package gradle.plugins.android.publish
 
 import com.android.build.api.dsl.SingleVariant
 

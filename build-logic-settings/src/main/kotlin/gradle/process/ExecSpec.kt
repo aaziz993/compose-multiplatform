@@ -3,7 +3,7 @@ package gradle.process
 import gradle.collection.SerializableAnyList
 import org.gradle.api.Project
 
-internal interface ExecSpec<in T : org.gradle.process.ExecSpec> : BaseExecSpec<T> {
+internal interface ExecSpec<T : org.gradle.process.ExecSpec> : BaseExecSpec<T> {
 
     val commandLine: SerializableAnyList?
 

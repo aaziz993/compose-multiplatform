@@ -3,7 +3,7 @@ package gradle.process
 import org.gradle.api.Project
 import org.gradle.process.BaseExecSpec
 
-internal interface BaseExecSpec<in T : BaseExecSpec> : ProcessForkOptions<T> {
+internal interface BaseExecSpec<T : BaseExecSpec> : ProcessForkOptions<T> {
 
     val ignoreExitValue: Boolean?
 

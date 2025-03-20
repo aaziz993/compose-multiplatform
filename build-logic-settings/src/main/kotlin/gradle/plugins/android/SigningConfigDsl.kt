@@ -12,7 +12,7 @@ import org.gradle.api.Project
  * [DefaultSigningConfig] extends this with options relating to just APKs
  *
  */
-internal interface SigningConfigDsl<in T: SigningConfig> {
+internal interface SigningConfigDsl<T: SigningConfig> {
 
     /**
      * Store file used when signing.

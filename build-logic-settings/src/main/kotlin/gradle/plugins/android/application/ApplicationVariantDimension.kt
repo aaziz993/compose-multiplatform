@@ -12,7 +12,7 @@ import org.gradle.api.Project
  *
  * That is, [ApplicationBuildType] and [ApplicationProductFlavor] and [ApplicationDefaultConfig].
  */
-internal interface ApplicationVariantDimension<in T : ApplicationVariantDimension> : VariantDimension<T> {
+internal interface ApplicationVariantDimension<T : ApplicationVariantDimension> : VariantDimension<T> {
 
     /**
      * Application id suffix. It is appended to the "base" application id when calculating the final

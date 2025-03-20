@@ -1,4 +1,4 @@
-package gradle.plugins.android
+package gradle.plugins.android.publish
 
 import com.android.build.api.dsl.PublishingOptions
 
@@ -25,7 +25,7 @@ import com.android.build.api.dsl.PublishingOptions
  * }
  * ```
  */
-internal interface PublishingOptions<in T : PublishingOptions> {
+internal interface PublishingOptions<T : PublishingOptions> {
 
     /**
      * Publish java & kotlin sources jar as a secondary artifact to a Maven repository.

@@ -1,4 +1,4 @@
-package gradle.plugins.android
+package gradle.plugins.android.publish
 
 import com.android.build.api.dsl.Publishing
 
@@ -28,7 +28,7 @@ import com.android.build.api.dsl.Publishing
  * [gradle.model.android.library.LibraryPublishing] extends this with options for publishing library projects.
  * [gradle.model.android.application.ApplicationPublishing] extends this with options for publishing application projects.
  */
-internal interface Publishing<in T : Publishing<S>, S : com.android.build.api.dsl.SingleVariant> {
+internal interface Publishing<T : Publishing<S>, S : com.android.build.api.dsl.SingleVariant> {
 
     /**
      * Publish a variant with single variant publishing mechanism.

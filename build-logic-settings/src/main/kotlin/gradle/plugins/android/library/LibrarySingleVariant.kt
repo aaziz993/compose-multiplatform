@@ -1,7 +1,7 @@
 package gradle.plugins.android.library
 
 import com.android.build.api.dsl.LibrarySingleVariant
-import gradle.plugins.android.SingleVariant
+import gradle.plugins.android.publish.SingleVariant
 import kotlinx.serialization.Serializable
 
 /**

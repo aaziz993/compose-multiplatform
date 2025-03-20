@@ -15,7 +15,7 @@ import org.gradle.api.Project
  *
  * See [gradle.model.android.ProductFlavorDsl] and [gradle.model.android.DefaultConfigDsl] for more information.
  */
-internal interface ApplicationBaseFlavor<in T: ApplicationBaseFlavor> : BaseFlavor<T>, ApplicationVariantDimension<T> {
+internal interface ApplicationBaseFlavor<T: ApplicationBaseFlavor> : BaseFlavor<T>, ApplicationVariantDimension<T> {
 
     /**
      * The application ID.

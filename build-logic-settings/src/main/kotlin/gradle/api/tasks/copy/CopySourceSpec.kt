@@ -6,7 +6,7 @@ import org.gradle.api.file.CopySourceSpec
 /**
  * Specifies sources for a file copy.
  */
-internal interface CopySourceSpec<in T: CopySourceSpec> {
+internal interface CopySourceSpec<T: CopySourceSpec> {
 
     /**
      * Specifies source files or directories for a copy. The given paths are evaluated as per [ ][org.gradle.api.Project.files].

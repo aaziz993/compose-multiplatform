@@ -10,7 +10,7 @@ import org.gradle.api.Project
  *
  * See [ProductFlavorDsl] and [DefaultConfigDsl] for more information.
  */
-internal interface DynamicFeatureBaseFlavor<in T : DynamicFeatureBaseFlavor> :
+internal interface DynamicFeatureBaseFlavor<T : DynamicFeatureBaseFlavor> :
     BaseFlavor<T>,
     DynamicFeatureVariantDimension<T> {
 

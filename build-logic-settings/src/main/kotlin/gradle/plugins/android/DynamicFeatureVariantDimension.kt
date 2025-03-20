@@ -8,4 +8,4 @@ import com.android.build.api.dsl.DynamicFeatureVariantDimension
  * That is, [DynamicFeatureBuildType] and [DynamicFeatureProductFlavor] and
  * [DynamicFeatureDefaultConfig].
  */
-internal interface DynamicFeatureVariantDimension<in T : DynamicFeatureVariantDimension> : VariantDimension<T>
+internal interface DynamicFeatureVariantDimension<T : DynamicFeatureVariantDimension> : VariantDimension<T>

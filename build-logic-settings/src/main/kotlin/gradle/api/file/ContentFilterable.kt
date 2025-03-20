@@ -8,7 +8,7 @@ import org.gradle.api.file.ContentFilterable
 /**
  * Represents some binary resource whose content can be filtered.
  */
-internal interface ContentFilterable<in T : ContentFilterable> {
+internal interface ContentFilterable<T : ContentFilterable> {
 
     /**
      *

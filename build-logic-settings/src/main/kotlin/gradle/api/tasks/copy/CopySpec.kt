@@ -68,7 +68,7 @@ import org.gradle.api.file.DuplicatesStrategy
  *
  * @see Project.copy
  */
-internal interface CopySpec<in T : CopySpec> : CopySourceSpec<T>, CopyProcessingSpec<T>, PatternFilterable<T> {
+internal interface CopySpec<T : CopySpec> : CopySourceSpec<T>, CopyProcessingSpec<T>, PatternFilterable<T> {
 
     /**
      * Specifies whether case-sensitive pattern matching should be used.

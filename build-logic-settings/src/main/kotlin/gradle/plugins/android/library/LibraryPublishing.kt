@@ -2,7 +2,7 @@ package gradle.plugins.android.library
 
 import com.android.build.api.dsl.LibraryPublishing
 import gradle.plugins.android.MultipleVariantsSettings
-import gradle.plugins.android.Publishing
+import gradle.plugins.android.publish.Publishing
 import kotlinx.serialization.Serializable
 
 /**

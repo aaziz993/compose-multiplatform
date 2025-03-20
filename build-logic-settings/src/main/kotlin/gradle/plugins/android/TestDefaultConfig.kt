@@ -11,7 +11,7 @@ import org.gradle.api.Project
  * [configuring product flavors](https://developer.android.com/studio/build/build-variants.html#product-flavors).
  * See [TestProductFlavor].
  */
-internal interface TestDefaultConfig<in T : TestDefaultConfig> :
+internal interface TestDefaultConfig<T : TestDefaultConfig> :
     TestBaseFlavor<T>,
     DefaultConfigDsl<T> {
 

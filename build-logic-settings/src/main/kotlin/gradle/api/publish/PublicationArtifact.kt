@@ -8,7 +8,7 @@ import org.gradle.api.publish.PublicationArtifact
  *
  * @since 4.8
  */
-internal interface PublicationArtifact<in T: PublicationArtifact> : Buildable<T> {
+internal interface PublicationArtifact<T: PublicationArtifact> : Buildable<T> {
 
     /**
      * Registers some tasks which build this artifact.

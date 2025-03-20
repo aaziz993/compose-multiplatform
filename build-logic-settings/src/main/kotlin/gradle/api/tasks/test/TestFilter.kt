@@ -2,7 +2,7 @@ package gradle.api.tasks.test
 
 import org.gradle.api.tasks.testing.TestFilter
 
-internal interface TestFilter<in T: TestFilter> {
+internal interface TestFilter<T: TestFilter> {
 
     /**
      * Appends a test name pattern to the inclusion filter. Wildcard '*' is supported, either test method name or class name is supported. Examples of test names: "com.foo.FooTest.someMethod",

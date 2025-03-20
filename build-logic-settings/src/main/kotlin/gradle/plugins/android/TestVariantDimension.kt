@@ -10,7 +10,7 @@ import org.gradle.api.Project
  *
  * That is, [TestBuildType] and [TestProductFlavor] and [TestDefaultConfig].
  */
-internal interface TestVariantDimension<in T : TestVariantDimension> :
+internal interface TestVariantDimension<T : TestVariantDimension> :
     VariantDimension<T> {
 
     /**
@@ -26,7 +26,7 @@ internal interface TestVariantDimension<in T : TestVariantDimension> :
     context(Project)
     override fun applyTo(recipient: T) {
         super.applyTo(recipient)
-        
+
         recipient::multiDexEnabled trySet multiDexEnabled
         recipient::signingConfig trySet signingConfig?.let(android.signingConfigs::getByName)
     }

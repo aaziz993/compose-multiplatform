@@ -502,14 +502,21 @@ internal interface CommonExtension<
     val experimentalProperties: SerializableAnyMap?
 
     context(Project)
-    @Suppress("UnstableApiUsage")
+    @Suppress("UnstableApiUsage", "UNCHECKED_CAST")
     fun applyTo() {
-        val extension = android as CommonExtension<*, *, *, *, *, *>
+        val extension = android as CommonExtension<
+            BuildFeaturesT,
+            BuildTypeT,
+            DefaultConfigT,
+            ProductFlavorT,
+            AndroidResourcesT,
+            InstallationT,
+            >
 
         androidResources?.applyTo(extension.androidResources)
-        installation?.applyTo(extension.installation)
+        installation?.applyTo(extension.installation as InstallationT)
         compileOptions?.applyTo(extension.compileOptions)
-        buildFeatures?.applyTo(extension.buildFeatures)
+        buildFeatures?.applyTo(extension.buildFeatures as BuildFeaturesT)
 
         buildTypes?.forEach { buildType ->
             buildType.applyTo(extension.buildTypes)

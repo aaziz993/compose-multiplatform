@@ -91,7 +91,7 @@ internal interface BaseExtension<
     val namespace: String?
 
     context(Project)
-    @Suppress("UnstableApiUsage")
+    @Suppress("UnstableApiUsage", "UNCHECKED_CAST")
     fun applyTo() {
         composeOptions?.applyTo(android.composeOptions)
         dataBinding?.applyTo(android.dataBinding)
@@ -121,20 +121,20 @@ internal interface BaseExtension<
         libraryRequests?.map(LibraryRequest::toLibraryRequest)?.let(android.libraryRequests::addAll)
 
         buildTypes?.forEach { buildType ->
-            buildType.applyTo(android.buildTypes)
+            buildType.applyTo(android.buildTypes as BuildTypeT)
         }
 
-        defaultConfig?.applyTo(android.defaultConfig)
+        defaultConfig?.applyTo(android.defaultConfig as DefaultConfigT)
 
         productFlavors?.forEach { productFlavors ->
-            productFlavors.applyTo(android.productFlavors)
+            productFlavors.applyTo(android.productFlavors as ProductFlavorT)
         }
 
         signingConfigs?.forEach { signingConfig ->
             signingConfig.applyTo(android.signingConfigs)
         }
 
-        buildFeatures?.applyTo(android.buildFeatures)
+        buildFeatures?.applyTo(android.buildFeatures as BuildFeaturesT)
         android.namespace = namespace ?: androidNamespace
     }
 }

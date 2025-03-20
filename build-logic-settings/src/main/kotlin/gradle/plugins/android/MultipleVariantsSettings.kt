@@ -1,5 +1,6 @@
 package gradle.plugins.android
 
+import gradle.plugins.android.publish.MultipleVariants
 import kotlinx.serialization.Serializable
 
 @Serializable

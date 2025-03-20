@@ -1,7 +1,7 @@
 package gradle.plugins.android.application
 
 import com.android.build.api.dsl.ApplicationPublishing
-import gradle.plugins.android.Publishing
+import gradle.plugins.android.publish.Publishing
 import kotlinx.serialization.Serializable
 
 /**

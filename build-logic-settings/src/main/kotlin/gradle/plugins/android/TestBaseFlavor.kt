@@ -13,7 +13,7 @@ import org.gradle.api.Project
  *
  * See [ProductFlavorDsl] and [DefaultConfigDsl] for more information.
  */
-internal interface TestBaseFlavor<in T : TestBaseFlavor> : BaseFlavor<T>, TestVariantDimension<T> {
+internal interface TestBaseFlavor<T : TestBaseFlavor> : BaseFlavor<T>, TestVariantDimension<T> {
 
     /**
      * The target SDK version.
