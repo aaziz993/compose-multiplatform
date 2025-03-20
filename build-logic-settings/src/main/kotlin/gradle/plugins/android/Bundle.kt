@@ -26,16 +26,16 @@ internal data class Bundle(
 
     context(Project)
     @Suppress("UnstableApiUsage")
-    fun applyTo(bundle: Bundle) {
-        abi?.applyTo(bundle.abi)
-        density?.applyTo(bundle.density)
-        language?.applyTo(bundle.language)
-        texture?.applyTo(bundle.texture)
-        deviceTier?.applyTo(bundle.deviceTier)
-        codeTransparency?.applyTo(bundle.codeTransparency)
-        storeArchive?.applyTo(bundle.storeArchive)
-        bundle.integrityConfigDir tryAssign integrityConfigDir?.let(layout.projectDirectory::dir)
-        countrySet?.applyTo(bundle.countrySet)
-        aiModelVersion?.applyTo(bundle.aiModelVersion)
+    fun applyTo(recipient: Bundle) {
+        abi?.applyTo(recipient.abi)
+        density?.applyTo(recipient.density)
+        language?.applyTo(recipient.language)
+        texture?.applyTo(recipient.texture)
+        deviceTier?.applyTo(recipient.deviceTier)
+        codeTransparency?.applyTo(recipient.codeTransparency)
+        storeArchive?.applyTo(recipient.storeArchive)
+        recipient.integrityConfigDir tryAssign integrityConfigDir?.let(layout.projectDirectory::dir)
+        countrySet?.applyTo(recipient.countrySet)
+        aiModelVersion?.applyTo(recipient.aiModelVersion)
     }
 }

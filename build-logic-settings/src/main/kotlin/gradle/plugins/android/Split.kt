@@ -25,7 +25,7 @@ internal interface Split<in T: Split> {
      */
     val reset: Boolean?
 
-    fun applyTo(split: T) {
+    fun applyTo(recipient: T) {
         split::isEnable trySet isEnable
 
         includes?.let { includes ->

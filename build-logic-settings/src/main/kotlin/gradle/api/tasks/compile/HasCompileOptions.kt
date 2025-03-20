@@ -8,7 +8,7 @@ internal interface HasCompileOptions<in T: HasCompileOptions> {
     val options: CompileOptions?
 
     context(Project)
-    fun applyTo(hasCompileOptions: T) {
+    fun applyTo(recipient: T) {
         options?.applyTo(hasCompileOptions.options)
     }
 }

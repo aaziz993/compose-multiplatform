@@ -61,7 +61,7 @@ internal data class KotlinCompile(
     KotlinJvmCompile {
 
         context(Project)
-    override fun applyTo(named: T) {
+    override fun applyTo(recipient: T) {
         super<AbstractKotlinCompileTool>.applyTo(named)
         super<K2MultiplatformCompilationTask>.applyTo(named)
         super<KotlinJvmCompile>.applyTo(named)
@@ -93,7 +93,7 @@ internal data class KotlinCompile(
     ) {
 
         context(Project)
-        fun applyTo(properties: KotlinCompile.ClasspathSnapshotProperties) {
+        fun applyTo(recipient: KotlinCompile.ClasspathSnapshotProperties) {
             properties.useClasspathSnapshot tryAssign useClasspathSnapshot
             classpathSnapshot?.let(properties.classpathSnapshot::setFrom)
             classpath?.let(properties.classpath::setFrom)

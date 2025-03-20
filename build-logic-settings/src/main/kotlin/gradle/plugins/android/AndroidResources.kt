@@ -2,14 +2,14 @@ package gradle.plugins.android
 
 import com.android.build.api.dsl.AndroidResources
 import gradle.api.trySet
-import java.util.SortedSet
+import gradle.collection.act
 
 /**
  * DSL object for configuring Android resource options.
  *
  * This is accessed via [CommonExtension.androidResources]
  */
-internal interface AndroidResources<in T: AndroidResources> {
+internal interface AndroidResources<in T : AndroidResources> {
 
     /**
      * Pattern describing assets to be ignored.
@@ -24,6 +24,7 @@ internal interface AndroidResources<in T: AndroidResources> {
      * If empty, defaults to `["!.svn", "!.git", "!.ds_store", "!*.scc", ".*", "<dir>_*", "!CVS", "!thumbs.db", "!picasa.ini", "!*~"]`
      */
     val ignoreAssetsPatterns: Set<String>?
+    val setIgnoreAssetsPatterns: Set<String>?
 
     /**
      * File extensions of Android resources, assets, and Java resources to be stored uncompressed in
@@ -31,6 +32,7 @@ internal interface AndroidResources<in T: AndroidResources> {
      * for all Android resources, assets, and Java resources.
      */
     val noCompress: Set<String>?
+    val setNoCompress: Set<String>?
 
     /**
      * Forces aapt to return an error if it fails to find an entry for a configuration.
@@ -41,6 +43,7 @@ internal interface AndroidResources<in T: AndroidResources> {
 
     /** List of additional parameters to pass to `aapt`. */
     val additionalParameters: List<String>?
+    val setAdditionalParameters: List<String>?
 
     /**
      * Indicates whether the resources in this sub-project are fully namespaced.
@@ -50,12 +53,15 @@ internal interface AndroidResources<in T: AndroidResources> {
     val namespaced: Boolean?
 
     @Suppress("UnstableApiUsage")
-    fun applyTo(resources: T) {
-        resources::ignoreAssetsPattern trySet ignoreAssetsPattern
-        ignoreAssetsPatterns?.let(resources.ignoreAssetsPatterns::addAll)
-        noCompress?.let(resources.noCompress::addAll)
-        resources::failOnMissingConfigEntry trySet failOnMissingConfigEntry
-        additionalParameters?.let(resources.additionalParameters::addAll)
-        resources::namespaced trySet resources.namespaced
+    fun applyTo(recipient: T) {
+        recipient::ignoreAssetsPattern trySet ignoreAssetsPattern
+        ignoreAssetsPatterns?.let(recipient.ignoreAssetsPatterns::addAll)
+        setIgnoreAssetsPatterns?.act(recipient.ignoreAssetsPatterns::clear)?.let(recipient.ignoreAssetsPatterns::addAll)
+        noCompress?.let(recipient.noCompress::addAll)
+        setNoCompress?.act(recipient.noCompress::clear)?.let(recipient.noCompress::addAll)
+        recipient::failOnMissingConfigEntry trySet failOnMissingConfigEntry
+        additionalParameters?.let(recipient.additionalParameters::addAll)
+        setAdditionalParameters?.act(recipient.additionalParameters::clear)?.let(recipient.additionalParameters::addAll)
+        recipient::namespaced trySet recipient.namespaced
     }
 }

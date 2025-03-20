@@ -30,8 +30,8 @@ internal data class BundleTexture(
 ) {
 
     @Suppress("UnstableApiUsage")
-    fun applyTo(texture: BundleTexture) {
-        texture::enableSplit trySet enableSplit
-        texture::defaultFormat trySet defaultFormat
+    fun applyTo(recipient: BundleTexture) {
+        recipient::enableSplit trySet enableSplit
+        recipient::defaultFormat trySet defaultFormat
     }
 }

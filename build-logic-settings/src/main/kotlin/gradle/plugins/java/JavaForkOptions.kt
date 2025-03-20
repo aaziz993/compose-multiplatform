@@ -103,7 +103,7 @@ internal interface JavaForkOptions : ProcessForkOptions {
     val allJvmArgs: List<String>?
 
     context(Project)
-    override fun applyTo(options: org.gradle.process.ProcessForkOptions) {
+    override fun applyTo(recipient: org.gradle.process.ProcessForkOptions) {
         super.applyTo(options)
 
         options as JavaForkOptions

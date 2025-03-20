@@ -258,7 +258,7 @@ internal data class DokkaSourceSetSpec(
 ) : BaseNamed {
 
         context(Project)
-    override fun applyTo(named: T) {
+    override fun applyTo(recipient: T) {
         named as org.jetbrains.dokka.gradle.engine.parameters.DokkaSourceSetSpec
 
         named.sourceSetScope tryAssign sourceSetScope

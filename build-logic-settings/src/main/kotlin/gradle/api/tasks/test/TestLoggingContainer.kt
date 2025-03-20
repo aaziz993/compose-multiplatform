@@ -87,7 +87,7 @@ internal data class TestLoggingContainer(
     val error: TestLoggingImpl? = null,
 ) : TestLogging<TestLoggingContainer> {
 
-    override fun applyTo(logging: TestLoggingContainer) {
+    override fun applyTo(recipient: TestLoggingContainer) {
         super.applyTo(logging)
 
         debug?.applyTo(logging.debug)

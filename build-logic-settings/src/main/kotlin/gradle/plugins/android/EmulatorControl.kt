@@ -1,7 +1,9 @@
 package gradle.plugins.android
 
+import arrow.core.raise.recover
 import com.android.build.api.dsl.EmulatorControl
 import gradle.api.trySet
+import gradle.collection.act
 import kotlinx.serialization.Serializable
 
 /**
@@ -22,6 +24,7 @@ internal data class EmulatorControl(
      * accessible is described in go/emu-grpc-integration.
      */
     val allowedEndpoints: Set<String>? = null,
+    val setAllowedEndpoints: Set<String>? = null,
     /** The duration in seconds the test can access the gRPC endpoint.
      * The default value is 3600 (one hour).
      */
@@ -29,9 +32,10 @@ internal data class EmulatorControl(
 ) {
 
     @Suppress("UnstableApiUsage")
-    fun applyTo(control: EmulatorControl) {
-        control::enable trySet enable
-        allowedEndpoints?.let(control.allowedEndpoints::addAll)
-        control::secondsValid trySet secondsValid
+    fun applyTo(recipient: EmulatorControl) {
+        recipient::enable trySet enable
+        allowedEndpoints?.let(recipient.allowedEndpoints::addAll)
+        setAllowedEndpoints?.act(recipient.allowedEndpoints::clear)?.let(recipient.allowedEndpoints::addAll)
+        recipient::secondsValid trySet secondsValid
     }
 }

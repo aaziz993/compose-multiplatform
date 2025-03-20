@@ -1,5 +1,6 @@
 package gradle.plugins.android
 
+import com.android.build.api.dsl.DynamicFeatureDefaultConfig
 import com.android.build.api.dsl.VariantDimension
 import org.gradle.api.Project
 
@@ -10,13 +11,13 @@ import org.gradle.api.Project
  * [configuring product flavors](https://developer.android.com/studio/build/build-variants.html#product-flavors).
  * See [DynamicFeatureProductFlavor].
  */
-internal interface DynamicFeatureDefaultConfig :
-    DynamicFeatureBaseFlavor,
-    DefaultConfigDsl {
+internal interface DynamicFeatureDefaultConfig<in T: DynamicFeatureDefaultConfig> :
+    DynamicFeatureBaseFlavor<T>,
+    DefaultConfigDsl<T> {
 
     context(Project)
-    override fun applyTo(dimension: VariantDimension) {
-        super<DynamicFeatureBaseFlavor>.applyTo(dimension)
-        super<DefaultConfigDsl>.applyTo(dimension)
+    override fun applyTo(recipient: T) {
+        super<DynamicFeatureBaseFlavor>.applyTo(recipient)
+        super<DefaultConfigDsl>.applyTo(recipient)
     }
 }

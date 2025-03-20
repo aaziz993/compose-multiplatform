@@ -13,7 +13,7 @@ internal data class SceneConfiguration(
 
 ) {
 
-    fun applyTo(configuration: SceneConfiguration) {
+    fun applyTo(recipient: SceneConfiguration) {
         configuration::className trySet className
         configuration::delegateClassName trySet delegateClassName
         configuration::storyboardName trySet storyboardName

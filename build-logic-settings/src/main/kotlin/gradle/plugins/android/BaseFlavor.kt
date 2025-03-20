@@ -8,6 +8,7 @@ import gradle.accessors.settings
 import gradle.accessors.version
 import gradle.accessors.versions
 import gradle.api.trySet
+import gradle.collection.act
 import org.gradle.api.Project
 
 /**
@@ -96,6 +97,7 @@ internal interface BaseFlavor<in T : BaseFlavor> : VariantDimension<T> {
      * ```
      */
     val testInstrumentationRunnerArguments: Map<String, String>?
+    val setTestInstrumentationRunnerArguments: Map<String, String>?
 
     /**
      * See [instrumentation](http://developer.android.com/guide/topics/manifest/instrumentation-element.html).
@@ -198,30 +200,31 @@ internal interface BaseFlavor<in T : BaseFlavor> : VariantDimension<T> {
     val initWith: String?
 
     context(Project)
-    override fun applyTo(dimension: T) {
-        super.applyTo(dimension)
+    override fun applyTo(recipient: T) {
+        super.applyTo(recipient)
 
-        dimension.testApplicationId = testApplicationId ?: "$androidNamespace.test"
-        dimension::minSdk trySet (settings.libs.versions.version("android.minSdk")?.toInt())
-        dimension::minSdkPreview trySet minSdkPreview
-        dimension::renderscriptTargetApi trySet renderscriptTargetApi
-        dimension::renderscriptSupportModeEnabled trySet renderscriptSupportModeEnabled
-        dimension::renderscriptSupportModeBlasEnabled trySet renderscriptSupportModeBlasEnabled
-        dimension::renderscriptNdkModeEnabled trySet renderscriptNdkModeEnabled
-        dimension::testInstrumentationRunner trySet testInstrumentationRunner
-        testInstrumentationRunnerArguments?.let(dimension.testInstrumentationRunnerArguments::putAll)
-        dimension::testHandleProfiling trySet testHandleProfiling
-        dimension::testFunctionalTest trySet testFunctionalTest
+        recipient.testApplicationId = testApplicationId ?: "$androidNamespace.test"
+        recipient::minSdk trySet (settings.libs.versions.version("android.minSdk")?.toInt())
+        recipient::minSdkPreview trySet minSdkPreview
+        recipient::renderscriptTargetApi trySet renderscriptTargetApi
+        recipient::renderscriptSupportModeEnabled trySet renderscriptSupportModeEnabled
+        recipient::renderscriptSupportModeBlasEnabled trySet renderscriptSupportModeBlasEnabled
+        recipient::renderscriptNdkModeEnabled trySet renderscriptNdkModeEnabled
+        recipient::testInstrumentationRunner trySet testInstrumentationRunner
+        testInstrumentationRunnerArguments?.let(recipient.testInstrumentationRunnerArguments::putAll)
+        setTestInstrumentationRunnerArguments?.act(recipient.testInstrumentationRunnerArguments::clear)?.let(recipient.testInstrumentationRunnerArguments::putAll)
+        recipient::testHandleProfiling trySet testHandleProfiling
+        recipient::testFunctionalTest trySet testFunctionalTest
         vectorDrawables?.let { vectorDrawables ->
-            dimension.vectorDrawables(vectorDrawables::applyTo)
+            recipient.vectorDrawables(vectorDrawables::applyTo)
         }
 
-        dimension::wearAppUnbundled trySet wearAppUnbundled
+        recipient::wearAppUnbundled trySet wearAppUnbundled
 
         missingDimensionStrategies?.forEach { missingDimensionStrategy ->
-            dimension.missingDimensionStrategy(missingDimensionStrategy.dimension, missingDimensionStrategy.requestedValues)
+            recipient.missingDimensionStrategy(missingDimensionStrategy.dimension, missingDimensionStrategy.requestedValues)
         }
 
-        initWith?.let(android.productFlavors::getByName)?.let(dimension::initWith)
+        initWith?.let(android.productFlavors::getByName)?.let(recipient::initWith)
     }
 }

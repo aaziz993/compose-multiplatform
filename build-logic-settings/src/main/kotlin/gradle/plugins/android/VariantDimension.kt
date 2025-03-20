@@ -120,7 +120,7 @@ internal interface VariantDimension<in T : VariantDimension> {
 
     context(Project)
     @Suppress("UnstableApiUsage")
-    fun applyTo(dimension: T) {
+    fun applyTo(recipient: T) {
         dimension::multiDexKeepProguard trySet multiDexKeepProguard?.let(::file)
 
         ndk?.let { ndk ->

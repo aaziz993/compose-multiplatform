@@ -73,7 +73,7 @@ internal data class LibraryBuildType(
         get() = false
 
         context(Project)
-    override fun applyTo(named: T) {
+    override fun applyTo(recipient: T) {
         super<BuildType>.applyTo(named)
 
         named as com.android.build.api.dsl.LibraryBuildType

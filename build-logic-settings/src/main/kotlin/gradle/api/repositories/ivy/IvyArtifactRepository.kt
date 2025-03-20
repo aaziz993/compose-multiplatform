@@ -223,7 +223,7 @@ internal data class IvyArtifactRepository(
         val ignoreGradleMetadataRedirection: Boolean? = null,
     ) {
 
-        fun applyTo(sources: IvyArtifactRepository.MetadataSources) {
+        fun applyTo(recipient: IvyArtifactRepository.MetadataSources) {
             gradleMetadata?.takeIf { it }?.run { sources.gradleMetadata() }
             ivyDescriptor?.takeIf { it }?.run { sources.ivyDescriptor() }
             artifact?.takeIf { it }?.run { sources.artifact() }

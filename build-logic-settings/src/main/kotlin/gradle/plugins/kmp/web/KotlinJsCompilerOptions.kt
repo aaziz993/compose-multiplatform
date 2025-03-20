@@ -99,7 +99,7 @@ internal data class KotlinJsCompilerOptions(
 ) : KotlinCommonCompilerOptions {
 
     context(Project)
-    override fun applyTo(options: KotlinCommonCompilerToolOptions) {
+    override fun applyTo(recipient: KotlinCommonCompilerToolOptions) {
         super.applyTo(options)
 
         options as KotlinJsCompilerOptions

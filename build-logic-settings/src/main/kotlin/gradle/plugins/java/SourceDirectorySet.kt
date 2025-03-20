@@ -53,7 +53,7 @@ internal data class SourceDirectorySet(
 ) : PatternFilterable, BaseNamed {
 
         context(Project)
-    override fun applyTo(named: T) {
+    override fun applyTo(recipient: T) {
         named as org.gradle.api.file.SourceDirectorySet
 
         super<PatternFilterable>.applyTo(named)

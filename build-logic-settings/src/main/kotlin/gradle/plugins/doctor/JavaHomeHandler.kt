@@ -25,7 +25,7 @@ internal data class JavaHomeHandler(
     val extraMessage: String? = null,
 ) {
 
-    fun applyTo(handler: JavaHomeHandler) {
+    fun applyTo(recipient: JavaHomeHandler) {
         handler.ensureJavaHomeMatches tryAssign ensureJavaHomeMatches
         handler.ensureJavaHomeIsSet tryAssign ensureJavaHomeIsSet
         handler.failOnError tryAssign failOnError

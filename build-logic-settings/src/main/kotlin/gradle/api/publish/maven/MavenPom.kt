@@ -114,7 +114,7 @@ internal data class MavenPom(
 ) {
 
     context(Project)
-    fun applyTo(pom: MavenPom) {
+    fun applyTo(recipient: MavenPom) {
         packaging?.let(pom::setPackaging)
         pom.name = name ?: project.name
         pom.description = description ?: project.description

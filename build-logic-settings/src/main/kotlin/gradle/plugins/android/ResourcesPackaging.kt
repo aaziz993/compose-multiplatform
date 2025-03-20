@@ -45,7 +45,7 @@ internal data class ResourcesPackaging(
     val merges: Set<String>? = null
 ) {
 
-    fun applyTo(packaging: ResourcesPackaging) {
+    fun applyTo(recipient: ResourcesPackaging) {
         excludes?.let(packaging.excludes::addAll)
         pickFirsts?.let(packaging.pickFirsts::addAll)
         merges?.let(packaging.merges::addAll)

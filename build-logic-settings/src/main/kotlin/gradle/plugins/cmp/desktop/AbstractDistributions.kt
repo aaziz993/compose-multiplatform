@@ -22,7 +22,7 @@ internal abstract class AbstractDistributions {
     abstract val licenseFile: String?
 
     context(Project)
-    fun applyTo(distributions: AbstractDistributions) {
+    fun applyTo(recipient: AbstractDistributions) {
         distributions.outputBaseDir tryAssign outputBaseDir?.let(layout.projectDirectory::dir)
         distributions.packageName = packageName ?: moduleName
         distributions::packageVersion trySet (packageVersion

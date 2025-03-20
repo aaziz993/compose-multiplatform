@@ -58,7 +58,7 @@ internal interface BaseKotlinCompile : KotlinCompileTool {
     val useModuleDetection: Boolean?
 
         context(Project)
-    override fun applyTo(named: T) {
+    override fun applyTo(recipient: T) {
         super.applyTo(named)
 
         named as org.jetbrains.kotlin.gradle.tasks.BaseKotlinCompile

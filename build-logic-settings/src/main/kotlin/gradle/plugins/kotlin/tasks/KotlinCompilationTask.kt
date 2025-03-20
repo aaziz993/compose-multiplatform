@@ -25,7 +25,7 @@ internal interface KotlinCompilationTask<out CO : KotlinCommonCompilerOptions> :
     val compilerOptions: CO?
 
         context(Project)
-    override fun applyTo(named: T) {
+    override fun applyTo(recipient: T) {
         super.applyTo(named)
 
         named as KotlinCompilationTask<*>

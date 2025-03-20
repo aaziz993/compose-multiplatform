@@ -2,6 +2,7 @@ package gradle.plugins.android
 
 import com.android.build.api.dsl.JniLibsPackaging
 import gradle.api.trySet
+import gradle.collection.act
 import kotlinx.serialization.Serializable
 
 /**
@@ -31,6 +32,7 @@ internal data class JniLibsPackaging(
      * Example: `android.packagingOptions.jniLibs.excludes += "**`/`exclude.so"`
      */
     val excludes: Set<String>? = null,
+    val setExcludes: Set<String>? = null,
     /**
      * The set of patterns where the first occurrence is packaged in the APK. For each native
      * library APK entry path matching one of these patterns, only the first native library found
@@ -39,12 +41,14 @@ internal data class JniLibsPackaging(
      * Example: `android.packagingOptions.jniLibs.pickFirsts += "**`/`pickFirst.so"`
      */
     val pickFirsts: Set<String>? = null,
+    val setPickFirsts: Set<String>? = null,
     /**
      * The set of patterns for native libraries that should not be stripped of debug symbols.
      *
      * Example: `android.packagingOptions.jniLibs.keepDebugSymbols += "**`/`doNotStrip.so"`
      */
     val keepDebugSymbols: Set<String>? = null,
+    val setKeepDebugSymbols: Set<String>? = null,
     /**
      * The set of test-only patterns. Native libraries matching any of these patterns do not get
      * packaged in the main APK or AAR, but they are included in the test APK.
@@ -52,13 +56,18 @@ internal data class JniLibsPackaging(
      * Example: `android.packaging.jniLibs.testOnly += "**`/`testOnly.so"`
      */
     val testOnly: Set<String>? = null,
+    val setTestOnly: Set<String>? = null,
 ) {
 
-    fun applyTo(packaging: JniLibsPackaging) {
-        packaging::useLegacyPackaging trySet useLegacyPackaging
-        excludes?.let(packaging.excludes::addAll)
-        pickFirsts?.let(packaging.pickFirsts::addAll)
-        keepDebugSymbols?.let(packaging.keepDebugSymbols::addAll)
-        testOnly?.let(packaging.testOnly::addAll)
+    fun applyTo(recipient: JniLibsPackaging) {
+        recipient::useLegacyPackaging trySet useLegacyPackaging
+        excludes?.let(recipient.excludes::addAll)
+        setExcludes?.act(recipient.excludes::clear)?.let(recipient.excludes::addAll)
+        pickFirsts?.let(recipient.pickFirsts::addAll)
+        setPickFirsts?.act(recipient.pickFirsts::clear)?.let(recipient.pickFirsts::addAll)
+        keepDebugSymbols?.let(recipient.keepDebugSymbols::addAll)
+        setKeepDebugSymbols?.act(recipient.keepDebugSymbols::clear)?.let(recipient.keepDebugSymbols::addAll)
+        testOnly?.let(recipient.testOnly::addAll)
+        setTestOnly?.act(recipient.testOnly::clear)?.let(recipient.testOnly::addAll)
     }
 }

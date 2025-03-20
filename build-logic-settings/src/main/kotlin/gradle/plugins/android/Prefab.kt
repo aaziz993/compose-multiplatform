@@ -48,10 +48,10 @@ internal data class Prefab(
     val headerOnly: Boolean? = null,
 ) {
 
-    fun applyTo(prefab: Prefab) {
-        prefab::name trySet name
-        prefab::headers trySet headers
-        prefab::libraryName trySet libraryName
-        prefab::headerOnly trySet headerOnly
+    fun applyTo(recipient: Prefab) {
+        recipient::name trySet name
+        recipient::headers trySet headers
+        recipient::libraryName trySet libraryName
+        recipient::headerOnly trySet headerOnly
     }
 }

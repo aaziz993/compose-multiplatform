@@ -37,9 +37,9 @@ internal data class AarMetadata(
     val minAgpVersion: String? = null,
 ) {
 
-    fun applyTo(metadata: AarMetadata) {
-        metadata::minCompileSdk trySet minCompileSdk
-        metadata::minCompileSdkExtension trySet minCompileSdkExtension
-        metadata::minAgpVersion trySet minAgpVersion
+    fun applyTo(recipient: AarMetadata) {
+        recipient::minCompileSdk trySet minCompileSdk
+        recipient::minCompileSdkExtension trySet minCompileSdkExtension
+        recipient::minAgpVersion trySet minAgpVersion
     }
 }

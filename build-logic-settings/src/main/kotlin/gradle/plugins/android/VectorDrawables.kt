@@ -20,6 +20,7 @@ internal data class VectorDrawables(
      * [Supporting Multiple Screens](http://developer.android.com/guide/practices/screens_support.html).
      */
     val generatedDensities: Set<String>? = null,
+    val setGeneratedDensities: Set<String>? = null,
     /**
      * Whether to use runtime support for `vector` drawables, instead of build-time support.
      *
@@ -29,11 +30,15 @@ internal data class VectorDrawables(
 ) {
 
     @Suppress("UnstableApiUsage")
-    fun applyTo(drawables: VectorDrawables) {
+    fun applyTo(recipient: VectorDrawables) {
         generatedDensities?.let { generatedDensities ->
-            drawables.generatedDensities?.addAll(generatedDensities)
+            recipient.generatedDensities?.addAll(generatedDensities)
         }
 
-        drawables::useSupportLibrary trySet useSupportLibrary
+        setGeneratedDensities?.let { setGeneratedDensities ->
+            recipient.generatedDensities?.also(MutableSet<*>::clear)?.addAll(setGeneratedDensities)
+        }
+
+        recipient::useSupportLibrary trySet useSupportLibrary
     }
 }

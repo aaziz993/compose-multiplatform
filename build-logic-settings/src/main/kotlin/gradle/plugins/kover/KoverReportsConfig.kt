@@ -66,7 +66,7 @@ internal data class KoverReportsConfig(
 ) {
 
     context(Project)
-    fun applyTo(reports: KoverReportsConfig) {
+    fun applyTo(recipient: KoverReportsConfig) {
         filters?.let { filters ->
             reports.filters(filters::applyTo)
         }

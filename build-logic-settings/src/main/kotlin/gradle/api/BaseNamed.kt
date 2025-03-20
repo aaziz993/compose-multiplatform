@@ -21,7 +21,7 @@ internal interface BaseNamed {
 internal interface SettingsNamed<T> : BaseNamed {
 
     context(Settings)
-    fun applyTo(named: T)
+    fun applyTo(recipient: T)
 }
 
 context(Settings)

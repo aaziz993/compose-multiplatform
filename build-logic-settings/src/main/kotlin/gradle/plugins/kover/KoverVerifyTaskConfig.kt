@@ -43,7 +43,7 @@ internal data class KoverVerifyTaskConfig(
     val onCheck: Boolean? = null
 ) {
 
-    fun applyTo(verify: KoverVerifyTaskConfig) {
+    fun applyTo(recipient: KoverVerifyTaskConfig) {
         verify.warningInsteadOfFailure tryAssign warningInsteadOfFailure
         verify.onCheck tryAssign onCheck
     }

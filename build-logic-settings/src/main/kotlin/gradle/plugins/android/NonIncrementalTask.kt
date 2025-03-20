@@ -1,6 +1,8 @@
 package gradle.plugins.android
 
+import gradle.api.tasks.applyTo
 import gradle.collection.SerializableAnyMap
+import java.util.SortedSet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -9,11 +11,7 @@ import org.gradle.kotlin.dsl.withType
 /**
  * Base variant-aware non-incremental task
  */
-internal abstract class NonIncrementalTask : AndroidVariantTask() {
-
-    context(Project)
-    override fun applyTo() =
-        applyTo(tasks.withType<com.android.build.gradle.internal.tasks.NonIncrementalTask>())
+internal abstract class NonIncrementalTask<T : com.android.build.gradle.internal.tasks.NonIncrementalTask> : AndroidVariantTask<T>() {
 }
 
 @Serializable
@@ -34,4 +32,9 @@ internal data class NonIncrementalTaskImpl(
     override val shouldRunAfter: Set<String>? = null,
     override val name: String = "",
     override val variantName: String? = null,
-) : NonIncrementalTask()
+) : NonIncrementalTask<com.android.build.gradle.internal.tasks.NonIncrementalTask>() {
+
+    context(Project)
+    override fun applyTo() =
+        applyTo(tasks.withType<com.android.build.gradle.internal.tasks.NonIncrementalTask>())
+}

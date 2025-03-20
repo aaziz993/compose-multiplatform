@@ -14,7 +14,7 @@ internal abstract class AbstractPlatformSettings {
     abstract val fileAssociations: List<FileAssociation>?
 
     context(Project)
-    fun applyTo(settings: AbstractPlatformSettings) {
+    fun applyTo(recipient: AbstractPlatformSettings) {
         settings.iconFile tryAssign iconFile?.let(::file)
         settings::packageVersion trySet packageVersion
         settings::installationPath trySet installationPath

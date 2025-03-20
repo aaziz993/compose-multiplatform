@@ -8,8 +8,13 @@ internal typealias SerializableAnyMap = Map<String, @Serializable(with = AnySeri
 
 internal typealias SerializableOptionalAnyMap = Map<String, @Serializable(with = OptionalAnySerializer::class) Any?>
 
+public inline fun <K, V> Map<K, V>.act(action: () -> Unit): Map<K, V> {
+    action()
+    return this
+}
+
 @Suppress("UNCHECKED_CAST")
-internal infix fun Map<String, Any?>.deepMerge(source: Map<String, Any?>): Map<String, Any?> {
+public infix fun Map<String, Any?>.deepMerge(source: Map<String, Any?>): Map<String, Any?> {
     val resultMap = toMutableMap()
     for (key in source.keys) {
         //recursive merge for nested maps
@@ -37,7 +42,7 @@ internal infix fun Map<String, Any?>.deepMerge(source: Map<String, Any?>): Map<S
     return resultMap
 }
 
-internal fun Any.get(vararg keys: Any?) = DeepRecursiveFunction<Pair<List<Any?>, Any>, Any?> { (subKeys, obj) ->
+public fun Any.get(vararg keys: Any?) = DeepRecursiveFunction<Pair<List<Any?>, Any>, Any?> { (subKeys, obj) ->
     val key = subKeys.first()
 
     val value = when (obj) {

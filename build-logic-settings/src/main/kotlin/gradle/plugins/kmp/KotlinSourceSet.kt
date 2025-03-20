@@ -46,7 +46,7 @@ internal data class KotlinSourceSet(
 ) : BaseNamed, HasKotlinDependencies {
 
         context(Project)
-    override fun applyTo(named: T) {
+    override fun applyTo(recipient: T) {
         named as org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 
         dependencies?.let { dependencies ->

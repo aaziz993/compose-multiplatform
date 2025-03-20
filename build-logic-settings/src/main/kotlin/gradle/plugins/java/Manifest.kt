@@ -11,7 +11,7 @@ internal data class Manifest(
 ) {
 
     context(Project)
-    fun applyTo(manifest: Manifest) {
+    fun applyTo(recipient: Manifest) {
         manifest.attributes.putAll(
             mapOf(
                 "Implementation-Title" to (description ?: name),

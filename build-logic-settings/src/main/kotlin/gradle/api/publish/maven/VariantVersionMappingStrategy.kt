@@ -24,7 +24,7 @@ internal data class VariantVersionMappingStrategy(
     val fromResolutionOf: String? = null,
 ) {
 
-    fun applyTo(strategy: VariantVersionMappingStrategy) {
+    fun applyTo(recipient: VariantVersionMappingStrategy) {
         fromResolutionResult?.takeIf { it }?.run { strategy.fromResolutionResult() }
         fromResolutionOf?.let(strategy::fromResolutionOf)
     }

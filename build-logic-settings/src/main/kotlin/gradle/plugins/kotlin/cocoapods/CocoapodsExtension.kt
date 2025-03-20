@@ -205,7 +205,7 @@ internal interface CocoapodsExtension {
         }
 
         context(Project)
-        fun applyTo(dependency: CocoapodsExtension.CocoapodsDependency) {
+        fun applyTo(recipient: CocoapodsExtension.CocoapodsDependency) {
             dependency::moduleName trySet moduleName
             dependency::headers trySet headers
             dependency::version trySet version

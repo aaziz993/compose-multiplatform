@@ -116,7 +116,7 @@ internal data class DokkaHtmlPluginParameters(
         get() = DokkaHtmlPluginParameters.DOKKA_HTML_PLUGIN_FQN
 
         context(Project)
-    override fun applyTo(named: T) {
+    override fun applyTo(recipient: T) {
         named as DokkaHtmlPluginParameters
 
         customAssets?.let(named.customAssets::setFrom)
@@ -193,7 +193,7 @@ internal data class DokkaVersioningParameters(
         get() = DokkaVersioningPluginParameters.DOKKA_VERSIONING_PLUGIN_FQN
 
         context(Project)
-    override fun applyTo(named: T) {
+    override fun applyTo(recipient: T) {
         buildscript {
             dependencies {
                 classpath(settings.libs.libraryAsDependency("dokka.versioning"))

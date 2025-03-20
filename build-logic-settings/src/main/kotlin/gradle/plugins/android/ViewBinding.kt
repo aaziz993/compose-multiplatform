@@ -13,7 +13,7 @@ internal data class ViewBinding(
     val enable: Boolean? = null,
 ) {
 
-    fun applyTo(binding: ViewBinding) {
+    fun applyTo(recipient: ViewBinding) {
         binding::enable trySet enable
     }
 }

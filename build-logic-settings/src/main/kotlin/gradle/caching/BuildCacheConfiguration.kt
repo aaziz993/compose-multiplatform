@@ -35,7 +35,7 @@ internal data class BuildCacheConfiguration(
 
     context(Settings)
     @Suppress("UNCHECKED_CAST")
-    fun applyTo(configuration: BuildCacheConfiguration) {
+    fun applyTo(recipient: BuildCacheConfiguration) {
         local?.applyTo()
 
         remotes?.forEach { remote ->

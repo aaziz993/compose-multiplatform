@@ -22,7 +22,7 @@ internal data class MavenPomOrganization(
     val url: String? = null,
 ) {
 
-    fun applyTo(organization: MavenPomOrganization) {
+    fun applyTo(recipient: MavenPomOrganization) {
         organization.name tryAssign name
         organization.url tryAssign url
     }

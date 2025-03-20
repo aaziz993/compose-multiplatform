@@ -14,7 +14,7 @@ internal data class KeepRules(
      * "groupId:artifactId" in which case dependencies are ignored as long as they match
      * groupId & artifactId.
      */
-    val ignoreFrom: List<String>? = null,
+    val ignoreFrom: Set<String>? = null,
     /**
      * Ignore keep rules from all the external dependencies.
      */
@@ -22,11 +22,11 @@ internal data class KeepRules(
 ) {
 
     @Suppress("UnstableApiUsage")
-    fun applyTo(rules: KeepRules) {
+    fun applyTo(recipient: KeepRules) {
         ignoreFrom?.let { ignoreFrom ->
-            rules.ignoreFrom(*ignoreFrom.toTypedArray())
+            recipient.ignoreFrom(*ignoreFrom.toTypedArray())
         }
 
-        ignoreFromAllExternalDependencies?.let(rules::ignoreFromAllExternalDependencies)
+        ignoreFromAllExternalDependencies?.let(recipient::ignoreFromAllExternalDependencies)
     }
 }

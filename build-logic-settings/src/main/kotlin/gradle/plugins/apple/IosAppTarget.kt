@@ -25,7 +25,7 @@ internal data class IosAppTarget(
     val sceneConfigurations: List<SceneConfiguration>? = null,
 ) : AppleTarget {
 
-    override fun applyTo(target: org.jetbrains.gradle.apple.targets.AppleTarget) {
+    override fun applyTo(recipient: org.jetbrains.gradle.apple.targets.AppleTarget) {
         super.applyTo(target)
 
         target as IosAppTarget

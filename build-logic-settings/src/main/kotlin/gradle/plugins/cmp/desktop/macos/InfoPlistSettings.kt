@@ -9,7 +9,7 @@ internal data class InfoPlistSettings(
     val extraKeysRawXml: String? = null
 ) {
 
-    fun applyTo(settings: InfoPlistSettings) {
+    fun applyTo(recipient: InfoPlistSettings) {
         settings::extraKeysRawXml trySet extraKeysRawXml
     }
 }

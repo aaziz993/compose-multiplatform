@@ -121,7 +121,7 @@ internal interface MavenArtifactRepository
         val ignoreGradleMetadataRedirection: Boolean? = null,
     ) {
 
-        fun applyTo(sources: MavenArtifactRepository.MetadataSources) {
+        fun applyTo(recipient: MavenArtifactRepository.MetadataSources) {
             gradleMetadata?.takeIf { it }?.run { sources.gradleMetadata() }
             mavenPom?.takeIf { it }?.run { sources.mavenPom() }
             artifact?.takeIf { it }?.run { sources.artifact() }

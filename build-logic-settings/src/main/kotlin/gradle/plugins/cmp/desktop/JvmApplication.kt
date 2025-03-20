@@ -28,7 +28,7 @@ internal data class JvmApplication(
 ) {
 
     context(Project)
-    fun applyTo(application: JvmApplication) {
+    fun applyTo(recipient: JvmApplication) {
         fromSourceSet?.let(java.sourceSets::getByName)?.let(application::from)
         fromKotlinTarget?.let(kotlin.targets::getByName)?.let(application::from)
         disableDefaultConfiguration?.takeIf { it }?.run { application.disableDefaultConfiguration() }

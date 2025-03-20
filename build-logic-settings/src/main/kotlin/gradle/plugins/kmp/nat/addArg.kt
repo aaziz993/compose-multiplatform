@@ -21,7 +21,7 @@ internal abstract class AbstractKotlinNativeCompile : AbstractKotlinCompileTool(
     abstract val kotlinPluginData: KotlinCompilerPluginData?
 
         context(Project)
-    override fun applyTo(named: T) {
+    override fun applyTo(recipient: T) {
         super<AbstractKotlinCompileTool>.applyTo(named)
         super<ProducesKlib>.applyTo(named)
 

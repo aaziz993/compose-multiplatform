@@ -25,7 +25,7 @@ internal data class BenchmarkConfiguration(
 ) : BaseNamed<BenchmarkConfiguration> {
 
     context(Project)
-    override fun applyTo(named: BenchmarkConfiguration) {
+    override fun applyTo(recipient: BenchmarkConfiguration) {
         advanced?.forEach(named::advanced)
         excludes?.let(named.excludes::addAll)
         includes?.let(named.includes::addAll)

@@ -19,8 +19,8 @@ internal data class AbiSplit(
     val isUniversalApk: Boolean? = null,
 ) : Split<AbiSplit> {
 
-    override fun applyTo(split: AbiSplit) {
-        super.applyTo(split)
-        split::isUniversalApk trySet isUniversalApk
+    override fun applyTo(recipient: AbiSplit) {
+        super.applyTo(recipient)
+        recipient::isUniversalApk trySet isUniversalApk
     }
 }

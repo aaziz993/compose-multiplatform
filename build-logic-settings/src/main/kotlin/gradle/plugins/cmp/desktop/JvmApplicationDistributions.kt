@@ -26,7 +26,7 @@ internal data class JvmApplicationDistributions(
 ) : AbstractDistributions() {
 
     context(Project)
-    fun applyTo(distributions: JvmApplicationDistributions) {
+    fun applyTo(recipient: JvmApplicationDistributions) {
         super.applyTo(distributions)
 
         modules?.let(distributions.modules::addAll)

@@ -16,7 +16,7 @@ import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTestRun
 internal interface JvmClasspathTestRunSource : KotlinExecution.ExecutionSource {
 
     context(Project)
-    fun applyTo(run: KotlinJvmTestRun)
+    fun applyTo(recipient: KotlinJvmTestRun)
 }
 
 internal object JvmClasspathTestRunSourceSerializer : JsonPolymorphicSerializer<JvmClasspathTestRunSource>(

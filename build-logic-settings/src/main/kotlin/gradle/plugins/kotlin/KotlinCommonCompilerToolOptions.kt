@@ -50,7 +50,7 @@ internal interface KotlinCommonCompilerToolOptions {
     val freeCompilerArgs: List<String>?
 
     context(Project)
-    fun applyTo(options: KotlinCommonCompilerToolOptions) {
+    fun applyTo(recipient: KotlinCommonCompilerToolOptions) {
         options.allWarningsAsErrors tryAssign allWarningsAsErrors
         options.extraWarnings tryAssign extraWarnings
         options.suppressWarnings tryAssign suppressWarnings

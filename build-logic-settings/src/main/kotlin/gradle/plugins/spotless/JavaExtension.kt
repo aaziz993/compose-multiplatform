@@ -57,7 +57,7 @@ internal data class JavaExtension(
 ) : FormatExtension() {
 
     context(Project)
-    override fun applyTo(extension: com.diffplug.gradle.spotless.FormatExtension) {
+    override fun applyTo(recipient: com.diffplug.gradle.spotless.FormatExtension) {
         super.applyTo(extension)
 
         extension as JavaExtension
@@ -117,7 +117,7 @@ internal data class JavaExtension(
         val includeDraft: Boolean? = null
     ) {
 
-        fun applyTo(format: JavaExtension.CleanthatJavaConfig) {
+        fun applyTo(recipient: JavaExtension.CleanthatJavaConfig) {
             groupArtifact?.let(format::groupArtifact)
             version?.let(format::version)
             sourceJdk?.let(format::sourceCompatibility)
@@ -134,7 +134,7 @@ internal data class JavaExtension(
         val p2Mirrors: Map<String, String>? = null
     ) {
 
-        fun applyTo(eclipse: JavaExtension.EclipseConfig) {
+        fun applyTo(recipient: JavaExtension.EclipseConfig) {
             settingsFiles?.let { eclipse.configFile(*it.toTypedArray()) }
             p2Mirrors?.let(eclipse::withP2Mirrors)
         }
@@ -146,7 +146,7 @@ internal data class JavaExtension(
         val removedTypeAnnotations: List<String>? = null
     ) {
 
-        fun applyTo(annotations: JavaExtension.FormatAnnotationsConfig) {
+        fun applyTo(recipient: JavaExtension.FormatAnnotationsConfig) {
             addedTypeAnnotations?.forEach(annotations::addTypeAnnotation)
             removedTypeAnnotations?.forEach(annotations::removeTypeAnnotation)
         }
@@ -162,7 +162,7 @@ internal data class JavaExtension(
         val formatJavadoc: Boolean? = null,
     ) {
 
-        fun applyTo(format: JavaExtension.GoogleJavaFormatConfig) {
+        fun applyTo(recipient: JavaExtension.GoogleJavaFormatConfig) {
             groupArtifact?.let(format::groupArtifact)
             style?.let(format::style)
             reflowLongStrings?.let(format::reflowLongStrings)
@@ -181,7 +181,7 @@ internal data class JavaExtension(
         val treatAsClass: Set<String>? = null
     ) {
 
-        fun applyTo(importOrder: JavaExtension.ImportOrderConfig) {
+        fun applyTo(recipient: JavaExtension.ImportOrderConfig) {
             wildcardsLast?.let(importOrder::wildcardsLast)
             semanticSort?.let(importOrder::semanticSort)
             treatAsPackage?.let(importOrder::treatAsPackage)
@@ -196,7 +196,7 @@ internal data class JavaExtension(
         var formatJavadoc: Boolean? = null
     ) {
 
-        fun applyTo(format: JavaExtension.PalantirJavaFormatConfig) {
+        fun applyTo(recipient: JavaExtension.PalantirJavaFormatConfig) {
             style?.let(format::style)
             formatJavadoc?.let(format::formatJavadoc)
         }

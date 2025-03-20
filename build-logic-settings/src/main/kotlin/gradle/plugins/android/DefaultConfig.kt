@@ -1,20 +1,19 @@
 package gradle.plugins.android
 
-import com.android.build.api.dsl.VariantDimension
 import gradle.plugins.android.application.ApplicationDefaultConfig
 import gradle.plugins.android.library.LibraryDefaultConfig
 import org.gradle.api.Project
 
-internal abstract class DefaultConfig : ApplicationDefaultConfig,
-    DynamicFeatureDefaultConfig,
-    LibraryDefaultConfig,
-    TestDefaultConfig {
+internal abstract class DefaultConfig<T: com.android.build.gradle.internal.dsl.DefaultConfig> : ApplicationDefaultConfig<T>,
+    DynamicFeatureDefaultConfig<T>,
+    LibraryDefaultConfig<T>,
+    TestDefaultConfig<T> {
 
     context(Project)
-    override fun applyTo(dimension: VariantDimension) {
-        super<ApplicationDefaultConfig>.applyTo(dimension)
-        super<DynamicFeatureDefaultConfig>.applyTo(dimension)
-        super<LibraryDefaultConfig>.applyTo(dimension)
-        super<TestDefaultConfig>.applyTo(dimension)
+    override fun applyTo(recipient: T) {
+        super<ApplicationDefaultConfig>.applyTo(recipient)
+        super<DynamicFeatureDefaultConfig>.applyTo(recipient)
+        super<LibraryDefaultConfig>.applyTo(recipient)
+        super<TestDefaultConfig>.applyTo(recipient)
     }
 }

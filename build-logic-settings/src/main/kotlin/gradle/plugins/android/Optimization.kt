@@ -20,13 +20,13 @@ internal data class Optimization(
 ) {
 
     @Suppress("UnstableApiUsage")
-    fun applyTo(optimization: Optimization) {
+    fun applyTo(recipient: Optimization) {
         keepRules?.let { keepRules ->
-            optimization.keepRules(keepRules::applyTo)
+            recipient.keepRules(keepRules::applyTo)
         }
 
         baselineProfile?.let { baselineProfile ->
-            optimization.baselineProfile(baselineProfile::applyTo)
+            recipient.baselineProfile(baselineProfile::applyTo)
         }
     }
 }

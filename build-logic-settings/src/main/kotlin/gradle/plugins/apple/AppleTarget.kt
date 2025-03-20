@@ -27,7 +27,7 @@ internal interface AppleTarget {
 
     val productName: String?
 
-    fun applyTo(target: AppleTarget) {
+    fun applyTo(recipient: AppleTarget) {
         target::bridgingHeader trySet bridgingHeader
 
         buildConfigurations?.forEach { buildConfigurations ->

@@ -17,7 +17,7 @@ internal abstract class Executable : NativeBinary {
     abstract val entryPoint: String?
 
         context(Project)
-    override fun applyTo(named: T) {
+    override fun applyTo(recipient: T) {
         super.applyTo(named)
 
         named as Executable

@@ -30,7 +30,7 @@ internal abstract class AbstractProguardTask : AbstractComposeDesktopTask() {
     abstract val destinationDir: String?
 
         context(Project)
-    override fun applyTo(named: T) {
+    override fun applyTo(recipient: T) {
         super.applyTo(named)
 
         named as org.jetbrains.compose.desktop.application.tasks.AbstractProguardTask

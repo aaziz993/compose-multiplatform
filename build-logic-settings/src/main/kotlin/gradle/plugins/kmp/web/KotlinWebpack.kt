@@ -29,7 +29,7 @@ internal data class KotlinWebpack(
 
     context(Project)
     @Suppress("UnstableApiUsage")
-    fun applyTo(webpack: KotlinWebpack) {
+    fun applyTo(recipient: KotlinWebpack) {
         webpack::mode trySet mode
         webpack.inputFilesDirectory tryAssign inputFilesDirectory?.let(layout.projectDirectory::dir)
         webpack.entryModuleName tryAssign entryModuleName

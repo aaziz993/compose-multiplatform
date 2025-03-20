@@ -27,7 +27,7 @@ internal interface UsesKotlinJavaToolchain : Task {
     val kotlinJavaToolchain: KotlinJavaToolchain?
 
         context(Project)
-    override fun applyTo(named: T) {
+    override fun applyTo(recipient: T) {
         super.applyTo(named)
 
         named as org.jetbrains.kotlin.gradle.tasks.UsesKotlinJavaToolchain

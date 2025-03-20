@@ -47,7 +47,7 @@ internal interface KotlinCompileTool : PatternFilterable, Task {
     val destinationDirectory: String?
 
         context(Project)
-    override fun applyTo(named: T) {
+    override fun applyTo(recipient: T) {
         super<Task>.applyTo(named)
 
         named as org.jetbrains.kotlin.gradle.tasks.KotlinCompileTool

@@ -4,7 +4,9 @@ import com.android.build.api.dsl.BuildType
 import gradle.accessors.android
 
 import gradle.api.BaseNamed
+import gradle.api.ProjectNamed
 import gradle.api.trySet
+import org.gradle.api.Project
 
 /**
  * Build types define certain properties that Gradle uses when building and packaging your app, and
@@ -21,7 +23,7 @@ import gradle.api.trySet
  * [configuring build types](https://developer.android.com/studio/build#build-config)
  * for more information.
  */
-internal interface BuildType : BaseNamed, VariantDimension {
+internal interface BuildType<T : BuildType> : ProjectNamed<T>, VariantDimension<T> {
 
     /**
      * Specifies unit test code coverage data collection by configuring the JacocoPlugin.
@@ -182,27 +184,26 @@ internal interface BuildType : BaseNamed, VariantDimension {
 
     val vcsInfo: VcsInfo?
 
-        context(Project)
-    override fun applyTo(named: T) {
-        named as BuildType
+    context(Project)
+    @Suppress("UnstableApiUsage")
+    override fun applyTo(recipient: T) {
+        super<VariantDimension>.applyTo(recipient)
 
-        super<VariantDimension>.applyTo(named)
-
-        named::enableUnitTestCoverage trySet enableUnitTestCoverage
-        named::enableAndroidTestCoverage trySet enableAndroidTestCoverage
-        named::isPseudoLocalesEnabled trySet isPseudoLocalesEnabled
-        named::isJniDebuggable trySet isJniDebuggable
-        named::renderscriptOptimLevel trySet renderscriptOptimLevel
-        named::isMinifyEnabled trySet isMinifyEnabled
-        named::isShrinkResources trySet isShrinkResources
-        matchingFallbacks?.let(named.matchingFallbacks::addAll)
+        recipient::enableUnitTestCoverage trySet enableUnitTestCoverage
+        recipient::enableAndroidTestCoverage trySet enableAndroidTestCoverage
+        recipient::isPseudoLocalesEnabled trySet isPseudoLocalesEnabled
+        recipient::isJniDebuggable trySet isJniDebuggable
+        recipient::renderscriptOptimLevel trySet renderscriptOptimLevel
+        recipient::isMinifyEnabled trySet isMinifyEnabled
+        recipient::isShrinkResources trySet isShrinkResources
+        matchingFallbacks?.let(recipient.matchingFallbacks::addAll)
 
         postprocessing?.let { postprocessing ->
-            named.postprocessing(postprocessing::applyTo)
+            recipient.postprocessing(postprocessing::applyTo)
         }
 
-        initWith?.let(android.buildTypes::getByName)?.let(named::initWith)
+        initWith?.let(android.buildTypes::getByName)?.let(recipient::initWith)
 
-        vcsInfo?.applyTo(named.vcsInfo)
+        vcsInfo?.applyTo(recipient.vcsInfo)
     }
 }

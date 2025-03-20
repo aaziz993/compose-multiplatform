@@ -9,11 +9,17 @@ internal data class DensitySplitOptions(
     override val includes: Set<String>? = null,
     override val excludes: Set<String>? = null,
     override val reset: Boolean? = null,
-    val compatibleScreens: List<String>? = null,
-) : Split {
+    val compatibleScreens: Set<String>? = null,
+    val setCompatibleScreens: Set<String>? = null,
+) : Split<DensitySplitOptions> {
 
-    fun applyTo(options: DensitySplitOptions) {
-        super.applyTo(options)
-        compatibleScreens?.let(options::setCompatibleScreens)
+    override fun applyTo(recipient: DensitySplitOptions) {
+        super.applyTo(recipient)
+
+        compatibleScreens?.let { compatibleScreens ->
+            recipient.compatibleScreens(*compatibleScreens.toTypedArray())
+        }
+
+        setCompatibleScreens?.let(Set<String>::toList)?.let(recipient::setCompatibleScreens)
     }
 }

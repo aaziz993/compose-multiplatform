@@ -15,7 +15,7 @@ internal data class KotlinJvmRunDsl(
     val classpath: List<String>? = null,
 ) {
 
-    fun applyTo(run: KotlinJvmRunDsl) {
+    fun applyTo(recipient: KotlinJvmRunDsl) {
         run.mainClass tryAssign mainClass
 
         args?.let(run::setArgs)

@@ -40,7 +40,7 @@ internal data class KoverBinaryTaskConfig(
 ) {
 
     context(Project)
-    fun applyTo(binary: KoverBinaryTaskConfig) {
+    fun applyTo(recipient: KoverBinaryTaskConfig) {
         binary.onCheck tryAssign onCheck
         binary.file tryAssign file?.let(::file)
     }

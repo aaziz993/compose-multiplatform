@@ -42,7 +42,7 @@ internal data class KotlinAndroidTarget(
 ) : KotlinJvmAndAndroidTarget() {
 
         context(Project)
-    override fun applyTo(named: T) {
+    override fun applyTo(recipient: T) {
         super.applyTo(named)
 
         named as KotlinAndroidTarget

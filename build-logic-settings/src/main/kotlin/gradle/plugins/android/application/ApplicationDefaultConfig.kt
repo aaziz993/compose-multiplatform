@@ -1,5 +1,6 @@
 package gradle.plugins.android.application
 
+import com.android.build.api.dsl.ApplicationDefaultConfig
 import com.android.build.api.dsl.VariantDimension
 import gradle.plugins.android.DefaultConfigDsl
 import org.gradle.api.Project
@@ -11,11 +12,11 @@ import org.gradle.api.Project
  * [configuring product flavors](https://developer.android.com/studio/build/build-variants.html#product-flavors).
  * See [ApplicationProductFlavor].
  */
-internal interface ApplicationDefaultConfig : ApplicationBaseFlavor, DefaultConfigDsl {
+internal interface ApplicationDefaultConfig< T : ApplicationDefaultConfig> : ApplicationBaseFlavor<T>, DefaultConfigDsl<T> {
 
     context(Project)
-    override fun applyTo(dimension: VariantDimension) {
-        super<ApplicationBaseFlavor>.applyTo(dimension)
-        super<DefaultConfigDsl>.applyTo(dimension)
+    override fun applyTo(recipient: T) {
+        super<ApplicationBaseFlavor>.applyTo(recipient)
+        super<DefaultConfigDsl>.applyTo(recipient)
     }
 }

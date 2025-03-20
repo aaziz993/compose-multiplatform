@@ -77,7 +77,7 @@ internal data class DokkaExternalDocumentationLinkSpec(
 ) : BaseNamed {
 
         context(Project)
-    override fun applyTo(named: T) {
+    override fun applyTo(recipient: T) {
         named as DokkaExternalDocumentationLinkSpec
 
         url?.let(named::url)

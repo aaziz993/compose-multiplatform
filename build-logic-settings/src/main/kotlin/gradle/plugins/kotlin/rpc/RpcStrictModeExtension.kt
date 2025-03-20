@@ -43,7 +43,7 @@ internal data class RpcStrictModeExtension(
     val fields: RpcStrictMode? = null,
 ) {
 
-    fun applyTo(extension: RpcStrictModeExtension) {
+    fun applyTo(recipient: RpcStrictModeExtension) {
         extension.stateFlow tryAssign stateFlow
         extension.sharedFlow tryAssign sharedFlow
         extension.nestedFlow tryAssign nestedFlow

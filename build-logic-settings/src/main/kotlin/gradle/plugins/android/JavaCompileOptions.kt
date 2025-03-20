@@ -10,7 +10,7 @@ internal data class JavaCompileOptions(
     val annotationProcessorOptions: AnnotationProcessorOptions? = null,
 ) {
 
-    fun applyTo(options: JavaCompileOptions) {
-        annotationProcessorOptions?.applyTo(options.annotationProcessorOptions)
+    fun applyTo(recipient: JavaCompileOptions) {
+        annotationProcessorOptions?.applyTo(recipient.annotationProcessorOptions)
     }
 }

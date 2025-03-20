@@ -57,7 +57,7 @@ internal data class Service(
 ) {
 
     context(Project)
-    fun applyTo(service: Service) {
+    fun applyTo(recipient: Service) {
         service.addJvmOverloads tryAssign addJvmOverloads
         service.addTypename tryAssign addTypename
         service.alwaysGenerateTypesMatching tryAssign alwaysGenerateTypesMatching

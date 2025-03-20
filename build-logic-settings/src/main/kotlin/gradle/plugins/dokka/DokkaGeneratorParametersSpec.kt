@@ -49,7 +49,7 @@ internal data class DokkaGeneratorParametersSpec(
 ) {
 
     context(Project)
-    fun applyTo(spec: DokkaGeneratorParametersSpec) {
+    fun applyTo(recipient: DokkaGeneratorParametersSpec) {
         spec.moduleName tryAssign moduleName
         spec.moduleVersion tryAssign moduleVersion
         spec.failOnWarning tryAssign failOnWarning

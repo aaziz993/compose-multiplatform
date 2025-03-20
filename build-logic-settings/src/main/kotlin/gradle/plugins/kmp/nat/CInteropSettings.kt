@@ -112,7 +112,7 @@ internal interface CInteropSettings : BaseNamed {
         val headerFilterOnly: List<String>? = null,
     ) {
 
-        fun applyTo(directories: CInteropSettings.IncludeDirectories) {
+        fun applyTo(recipient: CInteropSettings.IncludeDirectories) {
             allHeaders?.let(directories::allHeaders)
             headerFilterOnly?.let(directories::headerFilterOnly)
         }
@@ -337,7 +337,7 @@ internal interface CInteropSettings : BaseNamed {
     val extraOpts: List<String>?
 
         context(Project)
-    override fun applyTo(named: T) {
+    override fun applyTo(recipient: T) {
         named as CInteropSettings
 
         named::dependencyFiles trySet dependencyFiles?.let { files(*it.toTypedArray()) }

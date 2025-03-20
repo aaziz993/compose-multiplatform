@@ -20,7 +20,7 @@ internal data class ApplicationSingleVariant(
     val publishApk: Boolean? = null,
 ) : SingleVariant {
 
-    override fun applyTo(options: PublishingOptions) {
+    override fun applyTo(recipient: PublishingOptions) {
         super.applyTo(options)
 
         options as ApplicationSingleVariant

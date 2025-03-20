@@ -1,5 +1,6 @@
 package gradle.plugins.android
 
+import com.android.build.api.dsl.TestProductFlavor
 import com.android.build.api.dsl.VariantDimension
 import org.gradle.api.Project
 
@@ -13,13 +14,13 @@ import org.gradle.api.Project
  *
  * See [gradle.model.android.application.ApplicationProductFlavor]
  */
-internal interface TestProductFlavor :
-    TestBaseFlavor,
-    ProductFlavorDsl {
+internal interface TestProductFlavor<T : TestProductFlavor> :
+    TestBaseFlavor<T>,
+    ProductFlavorDsl<T> {
 
     context(Project)
-    override fun applyTo(dimension: VariantDimension) {
-        super<TestBaseFlavor>.applyTo(dimension)
-        super<ProductFlavorDsl>.applyTo(dimension)
+    override fun applyTo(recipient: T) {
+        super<TestBaseFlavor>.applyTo(recipient)
+        super<ProductFlavorDsl>.applyTo(recipient)
     }
 }

@@ -14,7 +14,7 @@ internal data class ApplicationInstallation(
 ) : Installation {
 
     @Suppress("UnstableApiUsage")
-    override fun applyTo(installation: com.android.build.api.dsl.Installation) {
+    override fun applyTo(recipient: com.android.build.api.dsl.Installation) {
         super.applyTo(installation)
 
         installation as ApplicationInstallation

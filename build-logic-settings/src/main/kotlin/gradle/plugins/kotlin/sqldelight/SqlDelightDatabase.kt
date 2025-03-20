@@ -61,7 +61,7 @@ internal data class SqlDelightDatabase(
 ) {
 
     context(Project)
-    fun applyTo(database: SqlDelightDatabase) {
+    fun applyTo(recipient: SqlDelightDatabase) {
         database.packageName tryAssign packageName
         database.schemaOutputDirectory tryAssign schemaOutputDirectory?.let(layout.projectDirectory::dir)
         srcDirs?.let(database.srcDirs::setFrom)

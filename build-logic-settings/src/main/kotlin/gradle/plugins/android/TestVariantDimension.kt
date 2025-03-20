@@ -24,7 +24,7 @@ internal interface TestVariantDimension<in T : TestVariantDimension> :
     val signingConfig: String?
 
     context(Project)
-    override fun applyTo(dimension: T) {
+    override fun applyTo(recipient: T) {
         super.applyTo(dimension)
 
         dimension as TestVariantDimension

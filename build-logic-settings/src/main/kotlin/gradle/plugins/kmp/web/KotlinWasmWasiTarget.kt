@@ -23,7 +23,7 @@ internal data class KotlinWasmWasiTarget(
     HasBinaries<KotlinJsBinaryContainer> {
 
         context(Project)
-    override fun applyTo(named: T) {
+    override fun applyTo(recipient: T) {
         super<KotlinWasmTargetDsl>.applyTo(named)
 
         named as KotlinWasmWasiTargetDsl

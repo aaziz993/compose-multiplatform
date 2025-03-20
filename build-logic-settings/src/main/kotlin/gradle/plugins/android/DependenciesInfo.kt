@@ -20,7 +20,7 @@ internal data class DependenciesInfo(
     var includeInBundle: Boolean? = null,
 ) {
 
-    fun applyTo(info: DependenciesInfo) {
+    fun applyTo(recipient: DependenciesInfo) {
         info::includeInApk trySet includeInApk
         info::includeInBundle trySet includeInBundle
     }

@@ -19,7 +19,7 @@ internal data class Shaders(
     val scopedGlslcArgs: Map<String, List<String>>? = null,
 ) {
 
-    fun applyTo(shaders: Shaders) {
+    fun applyTo(recipient: Shaders) {
         glslcArgs?.let(shaders.glslcArgs::addAll)
 
         scopedGlslcArgs?.forEach { key, options ->

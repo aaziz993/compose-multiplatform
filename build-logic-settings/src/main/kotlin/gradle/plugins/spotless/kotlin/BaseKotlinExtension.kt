@@ -21,7 +21,7 @@ internal abstract class BaseKotlinExtension : FormatExtension() {
     abstract val ktlint: KtlintConfig?
 
     context(Project)
-    override fun applyTo(extension: com.diffplug.gradle.spotless.FormatExtension) {
+    override fun applyTo(recipient: com.diffplug.gradle.spotless.FormatExtension) {
         super.applyTo(extension)
 
         extension as BaseKotlinExtension
@@ -54,7 +54,7 @@ internal abstract class BaseKotlinExtension : FormatExtension() {
         val configFile: String? = null
     ) {
 
-        fun applyTo(config: BaseKotlinExtension.DiktatConfig) {
+        fun applyTo(recipient: BaseKotlinExtension.DiktatConfig) {
             configFile?.let(config::configFile)
         }
     }
@@ -66,7 +66,7 @@ internal abstract class BaseKotlinExtension : FormatExtension() {
         val options: KtfmtFormattingOptions
     ) {
 
-        fun applyTo(config: BaseKotlinExtension.KtfmtConfig) =
+        fun applyTo(recipient: BaseKotlinExtension.KtfmtConfig) =
             when (style) {
                 KtfmtStep.Style.DROPBOX -> config.dropboxStyle()
                 KtfmtStep.Style.GOOGLE -> config.googleStyle()
@@ -83,7 +83,7 @@ internal abstract class BaseKotlinExtension : FormatExtension() {
         val removeUnusedImport: Boolean? = null,
     ) {
 
-        fun applyTo(options: KtfmtStep.KtfmtFormattingOptions) {
+        fun applyTo(recipient: KtfmtStep.KtfmtFormattingOptions) {
             maxWidth?.let(options::setMaxWidth)
             blockIndent?.let(options::setBlockIndent)
             continuationIndent?.let(options::setContinuationIndent)
@@ -99,7 +99,7 @@ internal abstract class BaseKotlinExtension : FormatExtension() {
         val customRuleSets: List<String>? = null,
     ) {
 
-        fun applyTo(config: BaseKotlinExtension.KtlintConfig) {
+        fun applyTo(recipient: BaseKotlinExtension.KtlintConfig) {
             editorConfigPath?.let(config::setEditorConfigPath)
             editorConfigOverride?.let(config::editorConfigOverride)
             customRuleSets?.let(config::customRuleSets)

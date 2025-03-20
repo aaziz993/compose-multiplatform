@@ -12,7 +12,7 @@ internal data class MacOSSigningSettings(
     val prefix: String? = null
 ) {
 
-    fun applyTo(settings: MacOSSigningSettings) {
+    fun applyTo(recipient: MacOSSigningSettings) {
         settings.sign tryAssign sign
         settings.identity tryAssign identity
         settings.keychain tryAssign keychain

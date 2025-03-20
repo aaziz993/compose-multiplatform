@@ -33,7 +33,7 @@ internal data class MavenPomRelocation(
     val message: String? = null,
 ) {
 
-    fun applyTo(relocation: MavenPomRelocation) {
+    fun applyTo(recipient: MavenPomRelocation) {
         relocation.groupId tryAssign groupId
         relocation.artifactId tryAssign artifactId
         relocation.version tryAssign version

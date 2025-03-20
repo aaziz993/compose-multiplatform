@@ -1,6 +1,7 @@
 package gradle.plugins.android
 
 import com.android.build.gradle.internal.dsl.AdbOptions
+import gradle.collection.act
 import kotlinx.serialization.Serializable
 
 /**
@@ -11,12 +12,18 @@ internal data class AdbOptions(
     /** The time out used for all adb operations. */
     val timeOutInMs: Int? = null,
     /** The list of APK installation options. */
-    val installOptions: Set<String>? = null
+    val installOptions: Set<String>? = null,
+    val setInstallOptions: Set<String>? = null
 ) {
 
-    fun applyTo(options: AdbOptions) {
-        timeOutInMs?.let(options::timeOutInMs)
-        installOptions?.let(options.installOptions::addAll)
-        options.dslServices
+    fun applyTo(recipient: AdbOptions) {
+        timeOutInMs?.let(recipient::timeOutInMs)
+        installOptions?.let(recipient.installOptions::addAll)
+        
+        setInstallOptions?.let { setInstallOptions ->
+            recipient.setInstallOptions(*setInstallOptions.toTypedArray())
+        }
+
+        recipient.dslServices
     }
 }

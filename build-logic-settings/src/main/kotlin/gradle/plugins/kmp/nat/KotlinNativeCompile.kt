@@ -47,7 +47,7 @@ internal data class KotlinNativeCompile(
     K2MultiplatformCompilationTask {
 
         context(Project)
-    override fun applyTo(named: T) {
+    override fun applyTo(recipient: T) {
         super<AbstractKotlinNativeCompile>.applyTo(named)
         super<KotlinNativeCompileTask>.applyTo(named)
         super<K2MultiplatformCompilationTask>.applyTo(named)

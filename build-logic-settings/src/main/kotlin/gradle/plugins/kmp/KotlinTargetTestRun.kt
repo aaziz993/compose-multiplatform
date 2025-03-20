@@ -10,6 +10,6 @@ import org.gradle.api.Named
 internal interface KotlinTargetTestRun : KotlinTestRun, KotlinTargetExecution {
 
         context(Project)
-    override fun applyTo(named: T) =
+    override fun applyTo(recipient: T) =
         super<KotlinTestRun>.applyTo(named as org.jetbrains.kotlin.gradle.plugin.KotlinTestRun<*>)
 }

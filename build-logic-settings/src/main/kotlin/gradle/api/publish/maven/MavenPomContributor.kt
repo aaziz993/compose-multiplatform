@@ -48,7 +48,7 @@ internal data class MavenPomContributor(
     val properties: Map<String?, String>? = null,
 ) {
 
-    fun applyTo(contributor: MavenPomContributor) {
+    fun applyTo(recipient: MavenPomContributor) {
         contributor.name tryAssign name
         contributor.email tryAssign email
         contributor.url tryAssign url

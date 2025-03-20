@@ -67,7 +67,7 @@ internal abstract class FormatExtension {
     abstract val toggleOffOnDisable: Boolean?
 
     context(Project)
-    open fun applyTo(extension: com.diffplug.gradle.spotless.FormatExtension) {
+    open fun applyTo(recipient: com.diffplug.gradle.spotless.FormatExtension) {
         lineEnding?.let(extension::setLineEndings)
         ratchetFrom?.let(extension::setRatchetFrom)
         excludeSteps?.forEach(extension::ignoreErrorForStep)
@@ -134,7 +134,7 @@ internal abstract class FormatExtension {
         val style: String? = null,
     ) {
 
-        fun applyTo(format: com.diffplug.gradle.spotless.FormatExtension.ClangFormatConfig) {
+        fun applyTo(recipient: com.diffplug.gradle.spotless.FormatExtension.ClangFormatConfig) {
             pathToExe?.let(format::pathToExe)
             style?.let(format::style)
         }
@@ -147,7 +147,7 @@ internal abstract class FormatExtension {
         val settingsFiles: List<String>? = null,
     ) {
 
-        fun applyTo(eclipse: com.diffplug.gradle.spotless.FormatExtension.EclipseWtpConfig) {
+        fun applyTo(recipient: com.diffplug.gradle.spotless.FormatExtension.EclipseWtpConfig) {
             settingsFiles?.let { eclipse.configFile(*it.toTypedArray()) }
         }
     }
@@ -164,7 +164,7 @@ internal abstract class FormatExtension {
         val updateYearWithLatest: Boolean? = null,
     ) {
 
-        fun applyTo(license: com.diffplug.gradle.spotless.FormatExtension.LicenseHeaderConfig) {
+        fun applyTo(recipient: com.diffplug.gradle.spotless.FormatExtension.LicenseHeaderConfig) {
             name?.let(license::named)
             contentPattern?.let(license::onlyIfContentMatches)
             yearSeparator?.let(license::yearSeparator)

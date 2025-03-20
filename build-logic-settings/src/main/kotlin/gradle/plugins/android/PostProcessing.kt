@@ -2,6 +2,7 @@ package gradle.plugins.android
 
 import com.android.build.api.dsl.PostProcessing
 import gradle.api.trySet
+import java.util.SortedSet
 import kotlinx.serialization.Serializable
 
 /**
@@ -22,27 +23,36 @@ internal data class PostProcessing(
     val isObfuscate: Boolean? = null,
     val isOptimizeCode: Boolean? = null,
     val proguardFiles: List<String>? = null,
+    val setProguardFiles: List<String>? = null,
     val testProguardFiles: List<String>? = null,
+    val setTestProguardFiles: List<String>? = null,
     val consumerProguardFiles: List<String>? = null,
+    val setConsumerProguardFiles: List<String>? = null,
 ) {
 
     @Suppress("UnstableApiUsage")
-    fun applyTo(processing: PostProcessing) {
-        processing::isRemoveUnusedCode trySet isRemoveUnusedCode
-        processing::isRemoveUnusedResources trySet isRemoveUnusedResources
-        processing::isObfuscate trySet isObfuscate
-        processing::isOptimizeCode trySet isOptimizeCode
+    fun applyTo(recipient: PostProcessing) {
+        recipient::isRemoveUnusedCode trySet isRemoveUnusedCode
+        recipient::isRemoveUnusedResources trySet isRemoveUnusedResources
+        recipient::isObfuscate trySet isObfuscate
+        recipient::isOptimizeCode trySet isOptimizeCode
 
         proguardFiles?.let { proguardFiles ->
-            processing.proguardFiles(*proguardFiles.toTypedArray())
+            recipient.proguardFiles(*proguardFiles.toTypedArray())
         }
+
+        setProguardFiles?.let(recipient::setProguardFiles)
 
         testProguardFiles?.let { testProguardFiles ->
-            processing.testProguardFiles(*testProguardFiles.toTypedArray())
+            recipient.testProguardFiles(*testProguardFiles.toTypedArray())
         }
 
+        testProguardFiles?.let(recipient::setTestProguardFiles)
+
         consumerProguardFiles?.let { consumerProguardFiles ->
-            processing.consumerProguardFiles(*consumerProguardFiles.toTypedArray())
+            recipient.consumerProguardFiles(*consumerProguardFiles.toTypedArray())
         }
+
+        consumerProguardFiles?.let(recipient::setConsumerProguardFiles)
     }
 }

@@ -59,7 +59,7 @@ internal data class JavaDebugOptions(
 ) {
 
     @Suppress("UnstableApiUsage")
-    fun applyTo(options: JavaDebugOptions) {
+    fun applyTo(recipient: JavaDebugOptions) {
         options.enabled tryAssign enabled
         options.host tryAssign host
         options.port tryAssign port

@@ -8,7 +8,7 @@ import gradle.api.trySet
  *
  * This list applies to all plugin types.
  */
-internal interface BuildFeatures {
+internal interface BuildFeatures<in T: BuildFeatures> {
 
     /**
      * Flag to enable AIDL compilation.
@@ -109,14 +109,14 @@ internal interface BuildFeatures {
      */
     val viewBinding: Boolean?
 
-    fun applyTo(features: BuildFeatures) {
-        features::aidl trySet aidl
-        features::compose trySet compose
-        features::buildConfig trySet buildConfig
-        features::prefab trySet prefab
-        features::renderScript trySet renderScript
-        features::resValues trySet resValues
-        features::shaders trySet shaders
-        features::viewBinding trySet viewBinding
+    fun applyTo(recipient: T) {
+        recipient::aidl trySet aidl
+        recipient::compose trySet compose
+        recipient::buildConfig trySet buildConfig
+        recipient::prefab trySet prefab
+        recipient::renderScript trySet renderScript
+        recipient::resValues trySet resValues
+        recipient::shaders trySet shaders
+        recipient::viewBinding trySet viewBinding
     }
 }

@@ -46,7 +46,7 @@ internal data class ApplicationBuildFeatures(
     val mlModelBinding: Boolean? = null,
 ) : BuildFeatures {
 
-    override fun applyTo(features: com.android.build.api.dsl.BuildFeatures) {
+    override fun applyTo(recipient: com.android.build.api.dsl.BuildFeatures) {
         super.applyTo(features)
 
         features as ApplicationBuildFeatures

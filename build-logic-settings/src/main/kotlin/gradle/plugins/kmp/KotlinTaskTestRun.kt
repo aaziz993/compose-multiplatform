@@ -6,5 +6,5 @@ import org.gradle.api.Named
 internal abstract class KotlinTaskTestRun : KotlinTargetTestRun {
 
         context(Project)
-    override fun applyTo(named: T) = super.applyTo(named)
+    override fun applyTo(recipient: T) = super.applyTo(named)
 }

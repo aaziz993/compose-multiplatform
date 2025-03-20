@@ -15,7 +15,7 @@ internal abstract class JsBenchmarkTarget : BenchmarkTarget() {
 
     context(Project)
     @OptIn(KotlinxBenchmarkPluginInternalApi::class)
-    override fun applyTo(target: kotlinx.benchmark.gradle.BenchmarkTarget) {
+    override fun applyTo(recipient: kotlinx.benchmark.gradle.BenchmarkTarget) {
         super.applyTo(target)
 
         target as WasmBenchmarkTarget
@@ -34,7 +34,7 @@ internal data class JsBenchmarkTargetImpl(
 ) : JsBenchmarkTarget() {
 
     context(Project)
-    override fun applyTo(target: kotlinx.benchmark.gradle.BenchmarkTarget) {
+    override fun applyTo(recipient: kotlinx.benchmark.gradle.BenchmarkTarget) {
         super.applyTo(target)
 
         target as kotlinx.benchmark.gradle.JsBenchmarkTarget

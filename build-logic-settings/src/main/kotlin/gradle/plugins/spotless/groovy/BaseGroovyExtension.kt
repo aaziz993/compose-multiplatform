@@ -27,7 +27,7 @@ internal abstract class BaseGroovyExtension : FormatExtension() {
         val withP2Mirrors: Map<String, String>? = null
     ) {
 
-        fun applyTo(config: BaseGroovyExtension.GrEclipseConfig) {
+        fun applyTo(recipient: BaseGroovyExtension.GrEclipseConfig) {
             configFiles?.let { configFiles ->
                 config.configFile(*configFiles.toTypedArray())
             }
@@ -37,7 +37,7 @@ internal abstract class BaseGroovyExtension : FormatExtension() {
     }
 
     context(Project)
-    override fun applyTo(extension: com.diffplug.gradle.spotless.FormatExtension) {
+    override fun applyTo(recipient: com.diffplug.gradle.spotless.FormatExtension) {
         super.applyTo(extension)
 
         extension as BaseGroovyExtension

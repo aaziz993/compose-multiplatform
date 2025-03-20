@@ -2,6 +2,7 @@ package gradle.plugins.android
 
 import com.android.build.api.dsl.BaselineProfile
 import gradle.api.trySet
+import gradle.collection.act
 import kotlinx.serialization.Serializable
 
 /**
@@ -16,6 +17,7 @@ internal data class BaselineProfile(
      * groupId & artifactId.
      */
     val ignoreFrom: Set<String>? = null,
+    val setIgnoreFrom: Set<String>? = null,
 
     /**
      * Ignore baseline profiles from all the external dependencies.
@@ -24,8 +26,9 @@ internal data class BaselineProfile(
 ) {
 
     @Suppress("UnstableApiUsage")
-    fun applyTo(profile: BaselineProfile) {
-        ignoreFrom?.let(profile.ignoreFrom::addAll)
-        profile::ignoreFromAllExternalDependencies trySet ignoreFromAllExternalDependencies
+    fun applyTo(recipient: BaselineProfile) {
+        ignoreFrom?.let(recipient.ignoreFrom::addAll)
+        setIgnoreFrom?.act(recipient.ignoreFrom::clear)?.let(recipient.ignoreFrom::addAll)
+        recipient::ignoreFromAllExternalDependencies trySet ignoreFromAllExternalDependencies
     }
 }

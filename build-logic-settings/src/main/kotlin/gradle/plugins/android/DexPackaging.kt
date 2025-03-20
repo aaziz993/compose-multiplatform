@@ -29,7 +29,7 @@ internal data class DexPackaging(
     val useLegacyPackaging: Boolean? = null
 ) {
 
-    fun applyTo(packaging: DexPackaging) {
-        packaging::useLegacyPackaging trySet useLegacyPackaging
+    fun applyTo(recipient: DexPackaging) {
+        recipient::useLegacyPackaging trySet useLegacyPackaging
     }
 }

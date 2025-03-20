@@ -27,7 +27,7 @@ internal data class VersionMappingStrategy(
     val usages: List<Usage>? = null,
 ) {
 
-    fun applyTo(strategy: VersionMappingStrategy) {
+    fun applyTo(recipient: VersionMappingStrategy) {
         allVariants?.let { allVariants ->
             strategy.allVariants(allVariants::applyTo)
         }

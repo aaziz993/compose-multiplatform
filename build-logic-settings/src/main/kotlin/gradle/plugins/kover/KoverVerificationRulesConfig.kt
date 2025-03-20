@@ -35,7 +35,7 @@ internal data class KoverVerificationRulesConfig(
     val warningInsteadOfFailure: Boolean? = null
 ) {
 
-    fun applyTo(rules: KoverVerificationRulesConfig) {
+    fun applyTo(recipient: KoverVerificationRulesConfig) {
         rules.warningInsteadOfFailure tryAssign warningInsteadOfFailure
     }
 }

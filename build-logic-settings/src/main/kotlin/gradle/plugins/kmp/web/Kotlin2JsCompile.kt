@@ -32,7 +32,7 @@ internal data class Kotlin2JsCompile(
     ProducesKlib {
 
         context(Project)
-    override fun applyTo(named: T) {
+    override fun applyTo(recipient: T) {
         super<K2MultiplatformCompilationTask>._applyTo(named)
         super<ProducesKlib>._applyTo(named)
 

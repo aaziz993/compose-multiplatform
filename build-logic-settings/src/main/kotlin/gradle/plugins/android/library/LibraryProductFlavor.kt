@@ -1,5 +1,6 @@
 package gradle.plugins.android.library
 
+import com.android.build.api.dsl.LibraryProductFlavor
 import com.android.build.api.dsl.VariantDimension
 import gradle.api.trySet
 import gradle.plugins.android.ProductFlavorDsl
@@ -35,19 +36,17 @@ import org.gradle.api.Project
  * If the plugin creates certain build variants that you don't want, you can
  * [filter variants using `android.variantFilter`](https://developer.android.com/studio/build/build-variants.html#filter-variants).
  */
-internal interface LibraryProductFlavor : LibraryBaseFlavor,
-    ProductFlavorDsl {
+internal interface LibraryProductFlavor<T : LibraryProductFlavor> : LibraryBaseFlavor<T>,
+    ProductFlavorDsl<T> {
 
     /** Whether this product flavor should be selected in Studio by default  */
     val isDefault: Boolean?
 
     context(Project)
-    override fun applyTo(dimension: VariantDimension) {
-        super<LibraryBaseFlavor>.applyTo(dimension)
-        super<ProductFlavorDsl>.applyTo(dimension)
+    override fun applyTo(recipient: T) {
+        super<LibraryBaseFlavor>.applyTo(recipient)
+        super<ProductFlavorDsl>.applyTo(recipient)
 
-        dimension as com.android.build.api.dsl.LibraryProductFlavor
-
-        dimension::isDefault trySet isDefault
+        recipient::isDefault trySet isDefault
     }
 }

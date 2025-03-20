@@ -55,7 +55,7 @@ internal interface SigningConfigDsl<in T: SigningConfig> {
     val initWith: String?
 
     context(Project)
-    fun applyTo(signingConfig: T) {
+    fun applyTo(recipient: T) {
         signingConfig::storeFile trySet storeFile?.let(::file)
         signingConfig::storePassword trySet storePassword?.resolveValue()?.toString()
         signingConfig::keyAlias trySet keyAlias?.resolveValue()?.toString()

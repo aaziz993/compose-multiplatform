@@ -17,7 +17,7 @@ internal data class JavaBenchmarkTarget(
 
     context(Project)
     @OptIn(KotlinxBenchmarkPluginInternalApi::class)
-    override fun applyTo(target: kotlinx.benchmark.gradle.BenchmarkTarget) {
+    override fun applyTo(recipient: kotlinx.benchmark.gradle.BenchmarkTarget) {
         super.applyTo(target)
 
         target as JavaBenchmarkTarget

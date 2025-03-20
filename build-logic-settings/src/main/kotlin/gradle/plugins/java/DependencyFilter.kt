@@ -16,7 +16,7 @@ internal data class DependencyFilter(
 ) {
 
     context(Project)
-    fun applyTo(filter: DependencyFilter) {
+    fun applyTo(recipient: DependencyFilter) {
         resolve?.map { files(*it.toTypedArray()) }?.let(filter::resolve)
     }
 }

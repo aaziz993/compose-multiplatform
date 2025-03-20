@@ -25,7 +25,7 @@ internal data class LinuxPlatformSettings(
 ) : AbstractPlatformSettings() {
 
     context(Project)
-    fun applyTo(settings: LinuxPlatformSettings) {
+    fun applyTo(recipient: LinuxPlatformSettings) {
         super.applyTo(settings)
 
         settings::shortcut trySet shortcut

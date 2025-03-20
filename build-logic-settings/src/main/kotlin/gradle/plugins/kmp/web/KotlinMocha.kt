@@ -9,7 +9,7 @@ internal data class KotlinMocha(
     val timeout: String? = null
 ) {
 
-    fun applyTo(mocha: KotlinMocha) {
+    fun applyTo(recipient: KotlinMocha) {
         mocha::timeout trySet mocha.timeout
     }
 }

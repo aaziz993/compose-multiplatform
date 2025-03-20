@@ -55,7 +55,7 @@ internal data class ApplicationAndroidResources(
 ) : AndroidResources {
 
     @Suppress("UnstableApiUsage")
-    override fun applyTo(resources: com.android.build.api.dsl.AndroidResources) {
+    override fun applyTo(recipient: com.android.build.api.dsl.AndroidResources) {
         super.applyTo(resources)
 
         resources as ApplicationAndroidResources

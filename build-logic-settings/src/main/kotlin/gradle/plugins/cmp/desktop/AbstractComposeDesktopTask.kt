@@ -15,7 +15,7 @@ internal abstract class AbstractComposeDesktopTask : Task {
     abstract val verbose: Boolean?
 
         context(Project)
-    override fun applyTo(named: T) {
+    override fun applyTo(recipient: T) {
         super.applyTo(named)
 
         named as org.jetbrains.compose.desktop.tasks.AbstractComposeDesktopTask

@@ -20,8 +20,8 @@ internal data class BundleAiModelVersion(
 ) {
 
     @Suppress("UnstableApiUsage")
-    fun applyTo(version: BundleAiModelVersion) {
-        version::enableSplit trySet enableSplit
-        version::defaultVersion trySet defaultVersion
+    fun applyTo(recipient: BundleAiModelVersion) {
+        recipient::enableSplit trySet enableSplit
+        recipient::defaultVersion trySet defaultVersion
     }
 }

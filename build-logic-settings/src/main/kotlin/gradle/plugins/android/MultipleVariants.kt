@@ -5,7 +5,7 @@ import com.android.build.api.dsl.MultipleVariants
 /**
  * Multi variant publishing options.
  */
-internal interface MultipleVariants : PublishingOptions {
+internal interface MultipleVariants<in T : MultipleVariants> : PublishingOptions<T> {
 
     /**
      * Publish all the variants to the component.
@@ -15,22 +15,22 @@ internal interface MultipleVariants : PublishingOptions {
     /**
      * Publish variants to the component based on the specified build types.
      */
-    val includeBuildTypeValues: List<String>?
+    val includeBuildTypeValues: Set<String>?
 
     /**
      * Publish variants to the component based on the specified product flavor dimension and values.
      */
     val includeFlavorDimensionAndValues: List<FlavorDimensionAndValues>?
 
-    fun applyTo(variants: MultipleVariants) {
-        allVariants?.takeIf { it }?.run { variants.allVariants() }
+    override fun applyTo(recipient: T) {
+        allVariants?.takeIf { it }?.run { recipient.allVariants() }
 
         includeBuildTypeValues?.let { includeBuildTypeValues ->
-            variants.includeBuildTypeValues(*includeBuildTypeValues.toTypedArray())
+            recipient.includeBuildTypeValues(*includeBuildTypeValues.toTypedArray())
         }
 
         includeFlavorDimensionAndValues?.forEach { (dimension, values) ->
-            variants.includeFlavorDimensionAndValues(dimension, * values.toTypedArray())
+            recipient.includeFlavorDimensionAndValues(dimension, * values.toTypedArray())
         }
     }
 }

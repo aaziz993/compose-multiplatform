@@ -43,12 +43,12 @@ internal interface UrlArtifactRepository<in T: UrlArtifactRepository> {
 
     context(Settings)
     @Suppress("UnstableApiUsage")
-    fun applyTo(repository: T) = with(layout.settingsDirectory) {
+    fun applyTo(recipient: T) = with(layout.settingsDirectory) {
         _applyTo(repository)
     }
 
     context(Project)
-    fun applyTo(repository: T) = with(layout.projectDirectory) {
+    fun applyTo(recipient: T) = with(layout.projectDirectory) {
         _applyTo(repository)
     }
 

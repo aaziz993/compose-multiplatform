@@ -30,7 +30,7 @@ internal data class TestFixtures(
 ) {
 
     @Suppress("UnstableApiUsage")
-    fun applyTo(fixtures: TestFixtures) {
+    fun applyTo(recipient: TestFixtures) {
         fixtures::enable trySet enable
         fixtures::androidResources trySet androidResources
     }

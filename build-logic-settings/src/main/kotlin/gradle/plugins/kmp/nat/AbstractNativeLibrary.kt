@@ -10,7 +10,7 @@ internal interface AbstractNativeLibrary : NativeBinary {
     val transitiveExport: Boolean?
 
         context(Project)
-    override fun applyTo(named: T) {
+    override fun applyTo(recipient: T) {
         super.applyTo(named)
 
         named as AbstractNativeLibrary

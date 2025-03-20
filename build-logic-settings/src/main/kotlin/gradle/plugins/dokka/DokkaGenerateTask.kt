@@ -70,7 +70,7 @@ internal data class DokkaGenerateTask(
 ) : DokkaBaseTask() {
 
         context(Project)
-    override fun applyTo(named: T) {
+    override fun applyTo(recipient: T) {
         super.applyTo(named)
 
         named as DokkaGenerateTask

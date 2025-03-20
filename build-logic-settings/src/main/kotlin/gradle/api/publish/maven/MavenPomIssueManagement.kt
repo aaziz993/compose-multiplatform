@@ -22,7 +22,7 @@ internal data class MavenPomIssueManagement(
     val url: String? = null,
 ) {
 
-    fun applyTo(management: MavenPomIssueManagement) {
+    fun applyTo(recipient: MavenPomIssueManagement) {
         management.system tryAssign system
         management.url tryAssign url
     }

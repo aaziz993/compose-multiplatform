@@ -1,7 +1,6 @@
 package gradle.plugins.android
 
 import com.android.build.api.dsl.TestBaseFlavor
-import com.android.build.api.dsl.VariantDimension
 import gradle.accessors.libs
 import gradle.accessors.settings
 import gradle.accessors.version
@@ -43,14 +42,14 @@ internal interface TestBaseFlavor<in T : TestBaseFlavor> : BaseFlavor<T>, TestVa
     val maxSdk: Int?
 
     context(Project)
-    override fun applyTo(dimension: T) {
-        super<BaseFlavor>.applyTo(dimension)
-        super<TestVariantDimension>.applyTo(dimension)
+    override fun applyTo(recipient: T) {
+        super<BaseFlavor>.applyTo(recipient)
+        super<TestVariantDimension>.applyTo(recipient)
 
-        dimension as TestBaseFlavor
+        recipient as TestBaseFlavor
 
-        dimension::targetSdk trySet (targetSdk ?: settings.libs.versions.version("android.targetSdk")?.toInt())
-        dimension::targetSdkPreview trySet targetSdkPreview
-        dimension::maxSdk trySet maxSdk
+        recipient::targetSdk trySet (targetSdk ?: settings.libs.versions.version("android.targetSdk")?.toInt())
+        recipient::targetSdkPreview trySet targetSdkPreview
+        recipient::maxSdk trySet maxSdk
     }
 }

@@ -38,7 +38,7 @@ internal data class Sign(
 ) : Task {
 
         context(Project)
-    override fun applyTo(named: T) {
+    override fun applyTo(recipient: T) {
         with(project) {
             super.applyTo(named)
 

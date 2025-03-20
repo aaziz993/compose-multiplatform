@@ -9,7 +9,7 @@ import org.jetbrains.kotlin.gradle.targets.native.KotlinNativeBinaryTestRun
 internal interface KotlinNativeBinaryTestRun : KotlinTargetTestRun {
 
         context(Project)
-    override fun applyTo(named: T) {
+    override fun applyTo(recipient: T) {
         named as KotlinNativeBinaryTestRun
 
         val target = named.target as KotlinNativeTargetWithTests<*>

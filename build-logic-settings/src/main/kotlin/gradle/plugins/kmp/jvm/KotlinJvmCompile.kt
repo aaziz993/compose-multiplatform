@@ -44,7 +44,7 @@ internal interface KotlinJvmCompile : BaseKotlinCompile,
     val jvmTargetValidationMode: JvmTargetValidationMode?
 
         context(Project)
-    override fun applyTo(named: T) {
+    override fun applyTo(recipient: T) {
         super<BaseKotlinCompile>.applyTo(named)
         super<KotlinCompilationTask>.applyTo(named)
         super<UsesKotlinJavaToolchain>.applyTo(named)

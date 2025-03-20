@@ -39,7 +39,7 @@ internal data class CompileOptions(
 
     context(Project)
     @Suppress("UnstableApiUsage")
-    fun applyTo(options: CompileOptions) {
+    fun applyTo(recipient: CompileOptions) {
         failOnError?.let(options::setFailOnError)
         verbose?.let(options::setVerbose)
         listFiles?.let(options::setListFiles)

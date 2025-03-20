@@ -28,7 +28,7 @@ internal data class KotlinWasmJsTarget(
 ) : KotlinWasmTargetDsl, KotlinJsTargetDsl {
 
         context(Project)
-    override fun applyTo(named: T) {
+    override fun applyTo(recipient: T) {
         super<KotlinWasmTargetDsl>._applyTo(named)
         super<KotlinJsTargetDsl>._applyTo(named)
 

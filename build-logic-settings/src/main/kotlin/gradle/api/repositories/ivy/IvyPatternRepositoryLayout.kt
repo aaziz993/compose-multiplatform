@@ -34,7 +34,7 @@ internal data class IvyPatternRepositoryLayout(
     val m2compatible: Boolean? = null,
 ) : RepositoryLayout {
 
-    override fun applyTo(layout: org.gradle.api.artifacts.repositories.RepositoryLayout) {
+    override fun applyTo(recipient: org.gradle.api.artifacts.repositories.RepositoryLayout) {
         layout as IvyPatternRepositoryLayout
 
         artifacts?.forEach(layout::artifact)

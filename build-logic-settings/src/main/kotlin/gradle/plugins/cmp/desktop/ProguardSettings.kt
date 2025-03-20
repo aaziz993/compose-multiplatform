@@ -17,7 +17,7 @@ internal data class ProguardSettings(
 ) {
 
     context(Project)
-    fun applyTo(settings: ProguardSettings) {
+    fun applyTo(recipient: ProguardSettings) {
         settings.version tryAssign version
         settings.maxHeapSize tryAssign maxHeapSize
         configurationFiles?.let(settings.configurationFiles::setFrom)

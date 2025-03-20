@@ -96,7 +96,7 @@ internal interface RepositoryContentDescriptor : InclusiveRepositoryContentDescr
     val notForConfigurations: Set<String>?
 
     @Suppress("UnstableApiUsage")
-    override fun applyTo(descriptor: org.gradle.api.artifacts.repositories.RepositoryContentDescriptor) {
+    override fun applyTo(recipient: org.gradle.api.artifacts.repositories.RepositoryContentDescriptor) {
         super.applyTo(descriptor)
 
         excludeGroups?.forEach(descriptor::excludeGroup)

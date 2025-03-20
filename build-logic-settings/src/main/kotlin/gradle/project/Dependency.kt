@@ -38,7 +38,7 @@ internal data class Dependency(
     )
 
     context(Settings)
-    fun applyTo(handler: DependencyHandler) {
+    fun applyTo(recipient: DependencyHandler) {
         handler.add(configuration, subConfiguration(handler, resolve()))
     }
 
@@ -51,7 +51,7 @@ internal data class Dependency(
     }
 
     context(Project)
-    fun applyTo(handler: DependencyHandler) {
+    fun applyTo(recipient: DependencyHandler) {
         val config = when {
             configurations.findByName(configuration) != null -> configuration
 
@@ -75,7 +75,7 @@ internal data class Dependency(
         }
 
     context(Project)
-    fun applyTo(handler: KotlinDependencyHandler): Unit =
+    fun applyTo(recipient: KotlinDependencyHandler): Unit =
         handler.kotlinConfigurationFunction(kotlinSubConfiguration(handler, resolve()))
 
     private val kotlinConfigurationFunction: KotlinDependencyHandler.(Any) -> Unit

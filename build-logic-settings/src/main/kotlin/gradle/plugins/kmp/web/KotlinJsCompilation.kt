@@ -12,7 +12,7 @@ internal interface KotlinJsCompilation : KotlinCompilation, HasBinaries<KotlinJs
     val packageJson: PackageJson?
 
         context(Project)
-    override fun applyTo(named: T) {
+    override fun applyTo(recipient: T) {
         super.applyTo(named)
 
         named as org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJsCompilation

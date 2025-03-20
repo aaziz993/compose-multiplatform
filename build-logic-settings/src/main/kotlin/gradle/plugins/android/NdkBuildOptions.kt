@@ -73,8 +73,8 @@ internal data class NdkBuildOptions(
 ) {
 
     context(Project)
-    fun applyTo(build: NdkBuild) {
-        path?.let(build::path)
-        buildStagingDirectory?.let(build::buildStagingDirectory)
+    fun applyTo(recipient: NdkBuild) {
+        path?.let(recipient::path)
+        buildStagingDirectory?.let(rec\::buildStagingDirectory)
     }
 }

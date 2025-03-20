@@ -23,7 +23,7 @@ internal interface PasswordCredentials : Credentials {
      */
     val password: String
 
-    fun applyTo(credentials: PasswordCredentials) {
+    fun applyTo(recipient: PasswordCredentials) {
         credentials.username = username
         credentials.password = password
     }

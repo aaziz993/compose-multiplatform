@@ -32,7 +32,7 @@ internal data class MavenPomLicense(
     val comments: String? = null,
 ) {
 
-    fun applyTo(license: MavenPomLicense) {
+    fun applyTo(recipient: MavenPomLicense) {
         license.name tryAssign name
         license.url tryAssign url
         license.distribution tryAssign distribution

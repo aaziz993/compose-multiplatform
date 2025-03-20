@@ -46,7 +46,7 @@ internal interface ApplicationVariantDimension<in T : ApplicationVariantDimensio
     val signingConfig: String?
 
     context(Project)
-    override fun applyTo(dimension: T) {
+    override fun applyTo(recipient: T) {
         super.applyTo(dimension)
 
         dimension::applicationIdSuffix trySet applicationIdSuffix

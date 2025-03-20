@@ -28,7 +28,7 @@ internal data class KotlinNpmInstallTask(
 ) : Task {
 
         context(Project)
-    override fun applyTo(named: T) {
+    override fun applyTo(recipient: T) {
         super.applyTo(named)
 
         named as KotlinNpmInstallTask

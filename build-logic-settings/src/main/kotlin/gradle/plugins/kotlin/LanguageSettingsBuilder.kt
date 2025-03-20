@@ -56,7 +56,7 @@ internal interface LanguageSettingsBuilder {
      */
     val optIns: Set<String>?
 
-    fun applyTo(builder: LanguageSettingsBuilder) {
+    fun applyTo(recipient: LanguageSettingsBuilder) {
         builder::languageVersion trySet languageVersion
         builder::apiVersion trySet apiVersion
         builder::progressiveMode trySet progressiveMode

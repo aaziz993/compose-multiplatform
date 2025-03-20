@@ -109,7 +109,7 @@ internal interface KotlinCompilation : HasKotlinDependencies, BaseNamed {
     val associatedCompilations: Set<String>?
 
         context(Project)
-    override fun applyTo(named: T) {
+    override fun applyTo(recipient: T) {
         named as org.jetbrains.kotlin.gradle.plugin.KotlinCompilation<*>
 
         defaultSourceSet?.let { defaultSourceSet ->

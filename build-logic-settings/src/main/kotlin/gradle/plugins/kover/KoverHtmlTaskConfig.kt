@@ -54,7 +54,7 @@ internal data class KoverHtmlTaskConfig(
 ) {
 
     context(Project)
-    fun applyTo(html: KoverHtmlTaskConfig) {
+    fun applyTo(recipient: KoverHtmlTaskConfig) {
         html.title tryAssign title
         html.charset tryAssign charset
         html.onCheck tryAssign onCheck

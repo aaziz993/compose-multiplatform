@@ -49,7 +49,7 @@ internal data class KoverXmlTaskConfig(
 ) {
 
     context(Project)
-    fun applyTo(xml: KoverXmlTaskConfig) {
+    fun applyTo(recipient: KoverXmlTaskConfig) {
         xml.onCheck tryAssign onCheck
         xml.xmlFile tryAssign xmlFile?.let(::file)
         xml.title tryAssign title

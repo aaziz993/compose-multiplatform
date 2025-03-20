@@ -19,7 +19,7 @@ internal data class NativeApplicationDistributions(
 ) : AbstractDistributions() {
 
     context(Project)
-    fun applyTo(distributions: NativeApplicationDistributions) {
+    fun applyTo(recipient: NativeApplicationDistributions) {
         super.applyTo(distributions)
         macOS?.applyTo(distributions.macOS)
     }

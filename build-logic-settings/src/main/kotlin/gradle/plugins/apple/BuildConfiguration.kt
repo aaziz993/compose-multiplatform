@@ -12,7 +12,7 @@ internal data class BuildConfiguration(
     val properties: SerializableAnyMap? = null
 ) {
 
-    fun applyTo(configuration: BuildConfiguration) {
+    fun applyTo(recipient: BuildConfiguration) {
         configuration::fatFrameworks trySet fatFrameworks
         properties?.let(configuration.properties::putAll)
     }

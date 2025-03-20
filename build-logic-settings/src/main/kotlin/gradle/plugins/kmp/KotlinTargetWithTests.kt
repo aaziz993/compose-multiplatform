@@ -17,7 +17,7 @@ internal interface KotlinTargetWithTests<T : KotlinTargetTestRun> : KotlinTarget
     val testRuns: List<T>?
 
         context(Project)
-    override fun applyTo(named: T) {
+    override fun applyTo(recipient: T) {
         super.applyTo(named)
 
         named as KotlinTargetWithTests<*, *>

@@ -1,6 +1,7 @@
 package gradle.plugins.android
 
 import com.android.build.api.dsl.NdkBuildFlags
+import gradle.collection.act
 import kotlinx.serialization.Serializable
 
 /**
@@ -39,6 +40,7 @@ internal data class NdkBuildFlags(
      * since 2.2.0
      */
     val arguments: List<String>? = null,
+    val setArguments: List<String>? = null,
     /**
      * Specifies flags for the C compiler.
      *
@@ -63,6 +65,7 @@ internal data class NdkBuildFlags(
      *
      * since 2.2.0
      */
+    val setCFlags: List<String>? = null,
     val cFlags: List<String>? = null,
     /**
      * Specifies flags for the C++ compiler.
@@ -89,6 +92,7 @@ internal data class NdkBuildFlags(
      * since 2.2.0
      */
     val cppFlags: List<String>? = null,
+    val setCppFlags: List<String>? = null,
     /**
      * Specifies the Application Binary Interfaces (ABI) that Gradle should build outputs for. The
      * ABIs that Gradle packages into your APK are determined by
@@ -110,6 +114,7 @@ internal data class NdkBuildFlags(
      * since 2.2.0
      */
     val abiFilters: Set<String>? = null,
+    val setAbiFilters: Set<String>? = null,
     /**
      * Specifies the library and executable targets from your ndk-build project that Gradle should
      * build.
@@ -148,15 +153,21 @@ internal data class NdkBuildFlags(
      *
      * since 2.2.0
      */
-    val targets: Set<String>? = null
+    val targets: Set<String>? = null,
+    val setTargets: Set<String>? = null
 ) {
 
     @Suppress("UnstableApiUsage")
-    fun applyTo(flags: NdkBuildFlags) {
-        arguments?.let(flags.arguments::addAll)
-        cFlags?.let(flags.cFlags::addAll)
-        cppFlags?.let(flags.cppFlags::addAll)
-        abiFilters?.let(flags.abiFilters::addAll)
-        targets?.let(flags.targets::addAll)
+    fun applyTo(recipient: NdkBuildFlags) {
+        arguments?.let(recipient.arguments::addAll)
+        setArguments?.act(recipient.arguments::clear)?.let(recipient.arguments::addAll)
+        cFlags?.let(recipient.cFlags::addAll)
+        setCFlags?.act(recipient.cFlags::clear)?.let(recipient.cFlags::addAll)
+        cppFlags?.let(recipient.cppFlags::addAll)
+        setCppFlags?.act(recipient.cppFlags::clear)?.let(recipient.cppFlags::addAll)
+        abiFilters?.let(recipient.abiFilters::addAll)
+        setAbiFilters?.act(recipient.abiFilters::clear)?.let(recipient.abiFilters::addAll)
+        targets?.let(recipient.targets::addAll)
+        setTargets?.act(recipient.targets::clear)?.let(recipient.targets::addAll)
     }
 }

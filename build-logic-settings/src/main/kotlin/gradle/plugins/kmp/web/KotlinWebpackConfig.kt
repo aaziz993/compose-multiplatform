@@ -78,7 +78,7 @@ internal data class KotlinWebpackConfig(
         val ignored: Boolean? = null
     ) {
 
-        fun applyTo(options: KotlinWebpackConfig.WatchOptions) {
+        fun applyTo(recipient: KotlinWebpackConfig.WatchOptions) {
             options::aggregateTimeout trySet aggregateTimeout
             options::ignored trySet ignored
         }
@@ -152,7 +152,7 @@ internal data class KotlinWebpackConfig(
             client?.toClient(),
         )
 
-        fun applyTo(server: KotlinWebpackConfig.DevServer) {
+        fun applyTo(recipient: KotlinWebpackConfig.DevServer) {
             server::open trySet open
             server::port trySet port
 

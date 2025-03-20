@@ -73,7 +73,7 @@ internal data class KoverLogTaskConfig(
     val aggregationForGroup: AggregationType? = null
 ) {
 
-    fun applyTo(log: KoverLogTaskConfig) {
+    fun applyTo(recipient: KoverLogTaskConfig) {
         log.onCheck tryAssign onCheck
         log.header tryAssign header
         log.format tryAssign format

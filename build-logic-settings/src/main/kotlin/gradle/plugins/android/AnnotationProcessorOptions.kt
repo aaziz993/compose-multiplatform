@@ -1,6 +1,7 @@
 package gradle.plugins.android
 
 import com.android.build.api.dsl.AnnotationProcessorOptions
+import gradle.collection.act
 import gradle.process.CommandLineArgumentProvider
 import kotlinx.serialization.Serializable
 
@@ -16,6 +17,7 @@ internal data class AnnotationProcessorOptions(
      * [Add annotation processors](https://d.android.com/studio/build/dependencies#annotation_processor).
      */
     val classNames: List<String>? = null,
+    val setClassNames: List<String>? = null,
     /**
      * Specifies arguments that represent primitive types for annotation processors.
      *
@@ -25,6 +27,7 @@ internal data class AnnotationProcessorOptions(
      * @see [compilerArgumentProviders]
      */
     val arguments: Map<String, String>? = null,
+    val setArguments: Map<String, String>? = null,
     /**
      * Specifies arguments for annotation processors that you want to pass to the Android plugin
      * using the [CommandLineArgumentProvider] class.
@@ -38,11 +41,15 @@ internal data class AnnotationProcessorOptions(
      * [Pass arguments to annotation processors](https://developer.android.com/studio/build/dependencies#processor-arguments).
      */
     val compilerArgumentProviders: List<CommandLineArgumentProvider>? = null
+    val setCompilerArgumentProviders: List<CommandLineArgumentProvider>? = null
 ) {
 
-    fun applyTo(options: AnnotationProcessorOptions) {
-        classNames?.let(options.classNames::addAll)
-        arguments?.let(options.arguments::putAll)
-        compilerArgumentProviders?.let(options.compilerArgumentProviders::addAll)
+    fun applyTo(recipient: AnnotationProcessorOptions) {
+        classNames?.let(recipient.classNames::addAll)
+        setClassNames?.act(recipient.classNames::clear)?.let(recipient.classNames::addAll)
+        arguments?.let(recipient.arguments::putAll)
+        setArguments?.act(recipient.arguments::clear)?.let(recipient.arguments::putAll)
+        compilerArgumentProviders?.let(recipient.compilerArgumentProviders::addAll)
+        setCompilerArgumentProviders?.act(recipient.compilerArgumentProviders::clear)?.let(recipient.compilerArgumentProviders::addAll)
     }
 }

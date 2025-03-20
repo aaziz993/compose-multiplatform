@@ -45,7 +45,7 @@ internal data class MavenPomMailingList(
     val otherArchives: Set<String>? = null,
 ) {
 
-    fun applyTo(list: MavenPomMailingList) {
+    fun applyTo(recipient: MavenPomMailingList) {
         list.name tryAssign name
         list.subscribe tryAssign subscribe
         list.unsubscribe tryAssign unsubscribe

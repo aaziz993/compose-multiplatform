@@ -46,17 +46,17 @@ internal data class CompileOptions(
 ) {
 
     context(Project)
-    fun applyTo(options: CompileOptions) {
+    fun applyTo(recipient: CompileOptions) {
         (sourceCompatibility ?: settings.libs.versions
             .version("java.sourceCompatibility")
             ?.let(JavaVersion::toVersion))
-            ?.let(options::sourceCompatibility)
+            ?.let(recipient::sourceCompatibility)
         (targetCompatibility ?: settings.libs.versions
             .version("java.targetCompatibility")
             ?.let(JavaVersion::toVersion))
-            ?.let(options::targetCompatibility)
+            ?.let(recipient::targetCompatibility)
 
-        options::encoding trySet encoding
-        options::isCoreLibraryDesugaringEnabled trySet isCoreLibraryDesugaringEnabled
+        recipient::encoding trySet encoding
+        recipient::isCoreLibraryDesugaringEnabled trySet isCoreLibraryDesugaringEnabled
     }
 }

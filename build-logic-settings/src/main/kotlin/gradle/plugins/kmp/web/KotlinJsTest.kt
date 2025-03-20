@@ -46,7 +46,7 @@ internal data class KotlinJsTest(
 ) : KotlinTest() {
 
         context(Project)
-    override fun applyTo(named: T) {
+    override fun applyTo(recipient: T) {
         super.applyTo(named)
 
         named as KotlinJsTest

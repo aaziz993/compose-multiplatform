@@ -56,7 +56,7 @@ internal data class KotlinJvmCompilerOptions(
 ) : KotlinCommonCompilerOptions {
 
     context(Project)
-    override fun applyTo(options: org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerToolOptions) {
+    override fun applyTo(recipient: org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerToolOptions) {
         super.applyTo(options)
 
         options as KotlinJvmCompilerOptions

@@ -1,7 +1,7 @@
 package gradle.plugins.android
 
+import com.android.build.api.dsl.DynamicFeatureBaseFlavor
 import com.android.build.api.dsl.DynamicFeatureProductFlavor
-import com.android.build.api.dsl.VariantDimension
 import org.gradle.api.Project
 
 /**
@@ -10,13 +10,13 @@ import org.gradle.api.Project
  *
  * See [ProductFlavorDsl] and [DefaultConfigDsl] for more information.
  */
-internal interface DynamicFeatureBaseFlavor<in T : DynamicFeatureProductFlavor> :
+internal interface DynamicFeatureBaseFlavor<in T : DynamicFeatureBaseFlavor> :
     BaseFlavor<T>,
     DynamicFeatureVariantDimension<T> {
 
     context(Project)
-    override fun applyTo(dimension: T) {
-        super<BaseFlavor>.applyTo(dimension)
-        super<DynamicFeatureVariantDimension>.applyTo(dimension)
+    override fun applyTo(recipient: T) {
+        super<BaseFlavor>.applyTo(recipient)
+        super<DynamicFeatureVariantDimension>.applyTo(recipient)
     }
 }

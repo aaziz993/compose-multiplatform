@@ -46,7 +46,7 @@ internal data class UnitTestOptions(
     val isIncludeAndroidResources: Boolean? = null,
 ) {
 
-    fun applyTo(options: UnitTestOptions) {
+    fun applyTo(recipient: UnitTestOptions) {
         options::isReturnDefaultValues trySet isReturnDefaultValues
         options::isIncludeAndroidResources trySet isIncludeAndroidResources
     }

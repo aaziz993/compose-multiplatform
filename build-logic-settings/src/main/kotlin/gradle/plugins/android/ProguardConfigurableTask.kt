@@ -1,11 +1,13 @@
 package gradle.plugins.android
 
 import com.android.build.gradle.internal.tasks.ProguardConfigurableTask
+import com.android.builder.core.ComponentTypeImpl
+import gradle.api.tasks.applyTo
 
 import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
+import java.util.SortedSet
 import kotlinx.serialization.Serializable
-import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 
@@ -32,7 +34,7 @@ internal data class ProguardConfigurableTask(
     override val shouldRunAfter: Set<String>? = null,
     override val name: String = "",
     override val variantName: String? = null,
-//    val componentType: ComponentType? = null,
+    val componentType: ComponentTypeImpl? = null,
     val includeFeaturesInScopes: Boolean? = null,
     val testedMappingFile: List<String>? = null,
     val classes: List<String>? = null,
@@ -47,28 +49,27 @@ internal data class ProguardConfigurableTask(
     val ignoreFromAllExternalDependenciesInKeepRules: Boolean? = null,
     val mappingFile: String? = null,
     val hasAllAccessTransformers: Boolean? = null,
-) : NonIncrementalTask() {
+) : NonIncrementalTask<ProguardConfigurableTask>() {
 
-        context(Project)
-    override fun applyTo(named: T) {
-        super.applyTo(named)
+    context(Project)
+    override fun applyTo(recipient: ProguardConfigurableTask) {
+        super.applyTo(recipient)
 
-        named as ProguardConfigurableTask
-
-        named.includeFeaturesInScopes tryAssign includeFeaturesInScopes
-        testedMappingFile?.let(named.testedMappingFile::setFrom)
-        classes?.let(named.classes::setFrom)
-        named.resourcesJar tryAssign resourcesJar?.let(::file)
-        referencedClasses?.let(named.referencedClasses::setFrom)
-        referencedResources?.let(named.referencedResources::setFrom)
-        named.extractedDefaultProguardFile tryAssign extractedDefaultProguardFile?.let(project.layout.projectDirectory::dir)
-        generatedProguardFile?.let(named.generatedProguardFile::setFrom)
-        configurationFiles?.let(named.configurationFiles::setFrom)
-        libraryKeepRulesFileCollection?.let(named.libraryKeepRulesFileCollection::setFrom)
-        named.ignoreFromInKeepRules tryAssign ignoreFromInKeepRules
-        named.ignoreFromAllExternalDependenciesInKeepRules tryAssign ignoreFromAllExternalDependenciesInKeepRules
-        named.mappingFile tryAssign mappingFile?.let(::file)
-        named.hasAllAccessTransformers tryAssign hasAllAccessTransformers
+        recipient.componentType tryAssign componentType
+        recipient.includeFeaturesInScopes tryAssign includeFeaturesInScopes
+        testedMappingFile?.let(recipient.testedMappingFile::setFrom)
+        classes?.let(recipient.classes::setFrom)
+        recipient.resourcesJar tryAssign resourcesJar?.let(::file)
+        referencedClasses?.let(recipient.referencedClasses::setFrom)
+        referencedResources?.let(recipient.referencedResources::setFrom)
+        recipient.extractedDefaultProguardFile tryAssign extractedDefaultProguardFile?.let(project.layout.projectDirectory::dir)
+        generatedProguardFile?.let(recipient.generatedProguardFile::setFrom)
+        configurationFiles?.let(recipient.configurationFiles::setFrom)
+        libraryKeepRulesFileCollection?.let(recipient.libraryKeepRulesFileCollection::setFrom)
+        recipient.ignoreFromInKeepRules tryAssign ignoreFromInKeepRules
+        recipient.ignoreFromAllExternalDependenciesInKeepRules tryAssign ignoreFromAllExternalDependenciesInKeepRules
+        recipient.mappingFile tryAssign mappingFile?.let(::file)
+        recipient.hasAllAccessTransformers tryAssign hasAllAccessTransformers
     }
 
     context(Project)

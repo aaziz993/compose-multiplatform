@@ -38,7 +38,7 @@ internal data class KoverCurrentProjectVariantsConfig(
     val instrumentation: KoverProjectInstrumentation? = null,
 ) {
 
-    fun applyTo(project: KoverCurrentProjectVariantsConfig) {
+    fun applyTo(recipient: KoverCurrentProjectVariantsConfig) {
         sources?.let { sources ->
             project.sources {
                 excludeJava tryAssign sources.excludeJava

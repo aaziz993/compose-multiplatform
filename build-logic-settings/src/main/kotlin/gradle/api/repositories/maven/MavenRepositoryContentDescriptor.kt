@@ -38,7 +38,7 @@ internal data class MavenRepositoryContentDescriptor(
     override val excludeGroups: Set<String>?,
 ) : RepositoryContentDescriptor {
 
-    override fun applyTo(descriptor: org.gradle.api.artifacts.repositories.RepositoryContentDescriptor) {
+    override fun applyTo(recipient: org.gradle.api.artifacts.repositories.RepositoryContentDescriptor) {
         super.applyTo(descriptor)
 
         descriptor as MavenRepositoryContentDescriptor

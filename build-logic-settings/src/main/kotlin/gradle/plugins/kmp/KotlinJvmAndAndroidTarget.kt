@@ -19,7 +19,7 @@ internal abstract class KotlinJvmAndAndroidTarget :
         get() = false
 
         context(Project)
-    override fun applyTo(named: T) {
+    override fun applyTo(recipient: T) {
         super<KotlinTarget>.applyTo(named)
 
         super<HasConfigurableKotlinCompilerOptions>.applyTo(named as org.jetbrains.kotlin.gradle.dsl.HasConfigurableKotlinCompilerOptions<*>)

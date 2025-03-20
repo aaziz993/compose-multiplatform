@@ -2,6 +2,7 @@ package gradle.plugins.android
 
 import com.android.build.api.dsl.ExternalNativeBuildFlags
 import gradle.collection.SerializableAnyMap
+import gradle.collection.act
 import kotlinx.serialization.Serializable
 
 /**
@@ -60,13 +61,15 @@ internal data class ExternalNativeBuildFlags(
     /**
      * Additional per-variant experimental properties for C and C++.
      */
-    val experimentalProperties: SerializableAnyMap? = null
+    val experimentalProperties: SerializableAnyMap? = null,
+    val setExperimentalProperties: SerializableAnyMap? = null
 ) {
 
     @Suppress("UnstableApiUsage")
-    fun applyTo(options: ExternalNativeBuildFlags) {
-        ndkBuild?.applyTo(options.ndkBuild)
-        cmake?.applyTo(options.cmake)
-        experimentalProperties?.let(options.experimentalProperties::putAll)
+    fun applyTo(recipient: ExternalNativeBuildFlags) {
+        ndkBuild?.applyTo(recipient.ndkBuild)
+        cmake?.applyTo(recipient.cmake)
+        experimentalProperties?.let(recipient.experimentalProperties::putAll)
+        setExperimentalProperties?.act(recipient.experimentalProperties::clear)?.let(recipient.experimentalProperties::putAll)
     }
 }

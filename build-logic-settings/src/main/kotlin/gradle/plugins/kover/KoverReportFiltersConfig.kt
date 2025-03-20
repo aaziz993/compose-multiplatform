@@ -23,7 +23,7 @@ internal data class KoverReportFiltersConfig(
     val includes: KoverReportFilter? = null,
 ) {
 
-    fun applyTo(filter: KoverReportFiltersConfig) {
+    fun applyTo(recipient: KoverReportFiltersConfig) {
         excludes?.let { excludes ->
             filter.excludes {
                 classes tryAssign excludes.classes

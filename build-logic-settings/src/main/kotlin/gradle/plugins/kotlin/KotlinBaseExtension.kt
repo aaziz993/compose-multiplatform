@@ -75,7 +75,7 @@ internal interface KotlinBaseExtension {
 
     context(Project)
     @OptIn(ExperimentalBuildToolsApi::class)
-    fun applyTo(extension: KotlinBaseExtension) {
+    fun applyTo(recipient: KotlinBaseExtension) {
         jvmToolchainSpec?.let { jvmToolchainSpec ->
             extension.jvmToolchain {
                 jvmToolchainSpec.applyTo(this)

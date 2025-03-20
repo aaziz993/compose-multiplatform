@@ -41,7 +41,7 @@ internal interface LibraryVariantDimension<in T : LibraryVariantDimension> : Var
     val aarMetadata: AarMetadata?
 
     context(Project)
-    override fun applyTo(dimension: T) {
+    override fun applyTo(recipient: T) {
         super.applyTo(dimension)
 
         dimension::multiDexEnabled trySet multiDexEnabled

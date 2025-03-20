@@ -19,7 +19,7 @@ internal data class KotlinNativeBinaryContainer(
 ) {
 
     context(Project)
-    fun applyTo(binaries: KotlinNativeBinaryContainer) {
+    fun applyTo(recipient: KotlinNativeBinaryContainer) {
         executable?.let { executable ->
             binaries.executable(executable.namePrefix, executable.buildTypes) {
                 executable.applyTo(this)

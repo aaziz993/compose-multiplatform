@@ -32,7 +32,7 @@ internal data class KotlinNativeCompilerOptions(
 ) : KotlinCommonCompilerOptions {
 
     context(Project)
-    override fun applyTo(options: KotlinCommonCompilerToolOptions) {
+    override fun applyTo(recipient: KotlinCommonCompilerToolOptions) {
         super.applyTo(options)
 
         options as KotlinNativeCompilerOptions

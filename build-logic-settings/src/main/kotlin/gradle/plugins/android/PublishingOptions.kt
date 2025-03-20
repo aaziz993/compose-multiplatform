@@ -25,7 +25,7 @@ import com.android.build.api.dsl.PublishingOptions
  * }
  * ```
  */
-internal interface PublishingOptions {
+internal interface PublishingOptions<in T : PublishingOptions> {
 
     /**
      * Publish java & kotlin sources jar as a secondary artifact to a Maven repository.
@@ -38,8 +38,8 @@ internal interface PublishingOptions {
      */
     val withJavadocJar: Boolean?
 
-    fun applyTo(options: PublishingOptions) {
-        withSourcesJar?.takeIf { it }?.run { options.withSourcesJar() }
-        withJavadocJar?.takeIf { it }?.run { options.withJavadocJar() }
+    fun applyTo(recipient: T) {
+        withSourcesJar?.takeIf { it }?.run { recipient.withSourcesJar() }
+        withJavadocJar?.takeIf { it }?.run { recipient.withJavadocJar() }
     }
 }

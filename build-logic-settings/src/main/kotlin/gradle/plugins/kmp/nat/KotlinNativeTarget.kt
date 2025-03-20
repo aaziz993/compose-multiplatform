@@ -18,7 +18,7 @@ internal abstract class KotlinNativeTarget : KotlinTarget,
     abstract override val compilations: List<KotlinNativeCompilation>?
 
         context(Project)
-    override fun applyTo(named: T) {
+    override fun applyTo(recipient: T) {
         super<KotlinTarget>.applyTo(named)
 
         named as org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget

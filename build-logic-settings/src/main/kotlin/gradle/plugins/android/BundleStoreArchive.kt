@@ -22,7 +22,7 @@ internal data class BundleStoreArchive(
     val enable: Boolean? = null,
 ) {
 
-    fun applyTo(archive: BundleStoreArchive) {
-        archive::enable trySet enable
+    fun applyTo(recipient: BundleStoreArchive) {
+        recipient::enable trySet enable
     }
 }

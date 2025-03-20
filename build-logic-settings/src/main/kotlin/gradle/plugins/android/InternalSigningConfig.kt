@@ -1,21 +1,22 @@
 package gradle.plugins.android
 
 import com.android.build.gradle.internal.dsl.InternalSigningConfig
-import gradle.api.BaseNamed
+import gradle.api.ProjectNamed
+import org.gradle.api.Project
 
 /** Serves the same purpose as [InternalBuildType] */
-internal interface InternalSigningConfig :
+internal interface InternalSigningConfig<T : InternalSigningConfig> :
     SigningConfig,
-    ApkSigningConfig,
-    BaseNamed,
-    SigningConfigDsl {
+    ApkSigningConfig<T>,
+    ProjectNamed<T>,
+    SigningConfigDsl<T> {
 
-        context(Project)
-    override fun applyTo(named: T) {
-        super<ApkSigningConfig>.applyTo(named)
+    context(Project)
+    override fun applyTo(recipient: T) {
+        super<ApkSigningConfig>.applyTo(recipient)
 
-        named as InternalSigningConfig
+        recipient as InternalSigningConfig
 
-        super<SigningConfigDsl>.applyTo(named)
+        super<SigningConfigDsl>.applyTo(recipient)
     }
 }

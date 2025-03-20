@@ -14,7 +14,7 @@ internal data class PrivacySandbox(
     val enable: Boolean? = null,
 ) {
 
-    fun applyTo(sandbox: PrivacySandbox) {
-        sandbox::enable trySet enable
+    fun applyTo(recipient: PrivacySandbox) {
+        recipient::enable trySet enable
     }
 }

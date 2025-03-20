@@ -9,7 +9,7 @@ internal interface VariantTask {
     /** the name of the variant */
     val variantName: String?
 
-    fun applyTo(task: VariantTask) {
+    fun applyTo(recipient: VariantTask) {
         task::variantName trySet variantName
     }
 }

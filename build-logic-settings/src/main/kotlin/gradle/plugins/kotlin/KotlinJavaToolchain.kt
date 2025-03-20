@@ -49,13 +49,13 @@ internal interface KotlinJavaToolchain {
     ) {
 
         context(Project)
-        fun applyTo(setter: KotlinJavaToolchain.JdkSetter) {
+        fun applyTo(recipient: KotlinJavaToolchain.JdkSetter) {
             setter.use(file(jdkHomeLocation), jdkVersion)
         }
     }
 
     context(Project)
-    fun applyTo(toolchain: KotlinJavaToolchain) {
+    fun applyTo(recipient: KotlinJavaToolchain) {
         jdk?.applyTo(toolchain.jdk)
         this@KotlinJavaToolchain.toolchain?.let { javaLauncher ->
             toolchain.toolchain.use(

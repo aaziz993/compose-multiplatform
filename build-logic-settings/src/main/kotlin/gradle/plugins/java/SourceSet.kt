@@ -85,7 +85,7 @@ internal data class SourceSet(
 ) {
 
     context(Project)
-    fun applyTo(sourceSet: SourceSet) {
+    fun applyTo(recipient: SourceSet) {
         compileClasspath
             ?.let { compileClasspath -> files(*compileClasspath.toTypedArray()) }
             ?.let(sourceSet::setCompileClasspath)

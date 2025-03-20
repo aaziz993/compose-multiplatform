@@ -42,7 +42,7 @@ internal interface KotlinCompileTool : PatternFilterable, Task {
     val destinationDirectory: String?
 
     context(Project)
-    fun applyTo(tool: KotlinCompileTool) {
+    fun applyTo(recipient: KotlinCompileTool) {
         sources?.let { sources ->
             tool.source(* sources.toTypedArray())
         }

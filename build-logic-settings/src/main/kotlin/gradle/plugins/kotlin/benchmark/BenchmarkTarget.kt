@@ -14,12 +14,12 @@ internal abstract class BenchmarkTarget : BaseNamed<kotlinx.benchmark.gradle.Ben
     abstract val workingDir: String?
 
         context(Project)
-    override fun applyTo(named: T) {
+    override fun applyTo(recipient: T) {
         TODO("Not yet implemented")
     }
 
     context(Project)
-    open fun applyTo(target: kotlinx.benchmark.gradle.BenchmarkTarget) {
+    open fun applyTo(recipient: kotlinx.benchmark.gradle.BenchmarkTarget) {
         target::workingDir trySet workingDir
     }
 }

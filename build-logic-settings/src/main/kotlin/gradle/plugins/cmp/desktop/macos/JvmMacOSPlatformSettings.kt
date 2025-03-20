@@ -36,7 +36,7 @@ internal data class JvmMacOSPlatformSettings(
     ) : AbstractMacOSPlatformSettings() {
 
     context(Project)
-    fun applyTo(settings: JvmMacOSPlatformSettings) {
+    fun applyTo(recipient: JvmMacOSPlatformSettings) {
         super.applyTo(settings)
 
         settings::dockName trySet dockName

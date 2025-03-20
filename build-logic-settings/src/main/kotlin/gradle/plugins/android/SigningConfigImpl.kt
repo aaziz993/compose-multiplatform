@@ -20,7 +20,7 @@ internal data class SigningConfigImpl(
 ) : BaseNamed, ApkSigningConfig, InternalSigningConfig {
 
         context(Project)
-    override fun applyTo(named: T) {
+    override fun applyTo(recipient: T) {
         super<ApkSigningConfig>.applyTo(named)
         super<InternalSigningConfig>.applyTo(named)
     }

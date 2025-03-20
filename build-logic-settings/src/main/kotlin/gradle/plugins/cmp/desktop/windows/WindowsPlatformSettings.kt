@@ -25,7 +25,7 @@ internal data class WindowsPlatformSettings(
 ) : AbstractPlatformSettings() {
 
     context(Project)
-    fun applyTo(settings: WindowsPlatformSettings) {
+    fun applyTo(recipient: WindowsPlatformSettings) {
         super.applyTo(settings)
 
         settings::console trySet console

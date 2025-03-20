@@ -17,7 +17,7 @@ internal data class KotlinCompilationOutput(
     val classesDirs: List<String>? = null,
 ) {
 
-    fun applyTo(output: KotlinCompilationOutput) {
+    fun applyTo(recipient: KotlinCompilationOutput) {
         classesDirs?.let(output.classesDirs::setFrom)
     }
 }

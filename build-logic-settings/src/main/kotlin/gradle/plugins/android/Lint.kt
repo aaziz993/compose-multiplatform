@@ -2,6 +2,7 @@ package gradle.plugins.android
 
 import com.android.build.api.dsl.Lint
 import gradle.api.trySet
+import gradle.collection.act
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -98,10 +99,12 @@ internal data class Lint(
      *
      */
     val disable: Set<String>? = null,
+    val setDisable: Set<String>? = null,
     /**
      * The set of issue IDs to enable. Callers are allowed to modify this collection.
      */
     val enable: Set<String>? = null,
+    val setEnable: Set<String>? = null,
     /**
      * The exact set of issues to check set by [checkOnly].
      *
@@ -109,6 +112,7 @@ internal data class Lint(
      * any issues enabled via [enable] and without issues disabled via [disable].
      */
     val checkOnly: Set<String>? = null,
+    val setCheckOnly: Set<String>? = null,
     /** Whether lint should set the exit code of the process if errors are found */
     val abortOnError: Boolean? = null,
     /**
@@ -232,12 +236,16 @@ internal data class Lint(
     val baseline: String? = null,
     /** Issues that have severity overridden to 'informational' */
     val informational: Set<String>? = null,
+    val setInformational: Set<String>? = null,
     /** Issues that have severity overridden to 'warning' */
     val warning: Set<String>? = null,
+    val setWarning: Set<String>? = null,
     /** Issues that have severity overridden to 'error' */
     val error: Set<String>? = null,
+    val setError: Set<String>? = null,
     /** Issues that have severity overridden to 'fatal' */
     val fatal: Set<String>? = null,
+    val setFatal: Set<String>? = null,
     /**
      * The target sdk version used when generating a lint report for a library.
      * Must be equal or higher than main target SDK. Must be set for libraries only.
@@ -251,40 +259,46 @@ internal data class Lint(
 ) {
 
     context(Project)
-    fun applyTo(lint: Lint) {
-        disable?.let(lint.disable::addAll)
-        enable?.let(lint.enable::addAll)
-        checkOnly?.let(lint.checkOnly::addAll)
-        lint::abortOnError trySet abortOnError
-        lint::absolutePaths trySet absolutePaths
-        lint::noLines trySet noLines
-        lint::quiet trySet quiet
-        lint::checkAllWarnings trySet checkAllWarnings
-        lint::ignoreWarnings trySet ignoreWarnings
-        lint::warningsAsErrors trySet warningsAsErrors
-        lint::checkTestSources trySet checkTestSources
-        lint::ignoreTestSources trySet ignoreTestSources
-        lint::ignoreTestFixturesSources trySet ignoreTestFixturesSources
-        lint::checkGeneratedSources trySet checkGeneratedSources
-        lint::checkDependencies trySet checkDependencies
-        lint::explainIssues trySet explainIssues
-        lint::showAll trySet showAll
-        lint::checkReleaseBuilds trySet checkReleaseBuilds
-        lint::lintConfig trySet lintConfig?.let(::file)
-        lint::textReport trySet textReport
-        lint::htmlReport trySet htmlReport
-        lint::sarifReport trySet sarifReport
-        lint::xmlReport trySet xmlReport
-        lint::textOutput trySet textOutput?.let(::file)
-        lint::htmlOutput trySet htmlOutput?.let(::file)
-        lint::xmlOutput trySet xmlOutput?.let(::file)
-        lint::sarifOutput trySet sarifOutput?.let(::file)
-        lint::baseline trySet baseline?.let(::file)
-        informational?.let(lint.informational::addAll)
-        warning?.let(lint.warning::addAll)
-        error?.let(lint.error::addAll)
-        fatal?.let(lint.fatal::addAll)
-        lint::targetSdk trySet targetSdk
-        lint::targetSdkPreview trySet targetSdkPreview
+    fun applyTo(recipient: Lint) {
+        disable?.let(recipient.disable::addAll)
+        setDisable?.act(recipient.disable::clear)?.let(recipient.disable::addAll)
+        enable?.let(recipient.enable::addAll)
+        setEnable?.act(recipient.enable::clear)?.let(recipient.enable::addAll)
+        checkOnly?.let(recipient.checkOnly::addAll)
+        recipient::abortOnError trySet abortOnError
+        recipient::absolutePaths trySet absolutePaths
+        recipient::noLines trySet noLines
+        recipient::quiet trySet quiet
+        recipient::checkAllWarnings trySet checkAllWarnings
+        recipient::ignoreWarnings trySet ignoreWarnings
+        recipient::warningsAsErrors trySet warningsAsErrors
+        recipient::checkTestSources trySet checkTestSources
+        recipient::ignoreTestSources trySet ignoreTestSources
+        recipient::ignoreTestFixturesSources trySet ignoreTestFixturesSources
+        recipient::checkGeneratedSources trySet checkGeneratedSources
+        recipient::checkDependencies trySet checkDependencies
+        recipient::explainIssues trySet explainIssues
+        recipient::showAll trySet showAll
+        recipient::checkReleaseBuilds trySet checkReleaseBuilds
+        recipient::lintConfig trySet lintConfig?.let(::file)
+        recipient::textReport trySet textReport
+        recipient::htmlReport trySet htmlReport
+        recipient::sarifReport trySet sarifReport
+        recipient::xmlReport trySet xmlReport
+        recipient::textOutput trySet textOutput?.let(::file)
+        recipient::htmlOutput trySet htmlOutput?.let(::file)
+        recipient::xmlOutput trySet xmlOutput?.let(::file)
+        recipient::sarifOutput trySet sarifOutput?.let(::file)
+        recipient::baseline trySet baseline?.let(::file)
+        informational?.let(recipient.informational::addAll)
+        setInformational?.act(recipient.informational::clear)?.let(recipient.informational::addAll)
+        warning?.let(recipient.warning::addAll)
+        setWarning?.act(recipient.warning::clear)?.let(recipient.warning::addAll)
+        error?.let(recipient.error::addAll)
+        setError?.act(recipient.error::clear)?.let(recipient.error::addAll)
+        fatal?.let(recipient.fatal::addAll)
+        setFatal?.act(recipient.fatal::clear)?.let(recipient.fatal::addAll)
+        recipient::targetSdk trySet targetSdk
+        recipient::targetSdkPreview trySet targetSdkPreview
     }
 }

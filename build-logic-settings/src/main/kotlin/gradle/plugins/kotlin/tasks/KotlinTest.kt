@@ -16,7 +16,7 @@ internal abstract class KotlinTest : AbstractTestTask() {
     abstract val ignoreRunFailures: Boolean?
 
         context(Project)
-    override fun applyTo(named: T) {
+    override fun applyTo(recipient: T) {
         super.applyTo(named)
 
         named as org.jetbrains.kotlin.gradle.tasks.KotlinTest

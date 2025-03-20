@@ -25,7 +25,7 @@ internal interface CopySourceSpec<in T: CopySourceSpec> {
     val fromSpec: FromSpec?
 
     context(Project)
-    fun applyTo(spec: T) {
+    fun applyTo(recipient: T) {
         from?.let { from -> spec.from(*from.toTypedArray()) }
         fromSpec?.let { fromSpec ->
             spec.from(fromSpec.sourcePath) {

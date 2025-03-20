@@ -69,7 +69,7 @@ internal data class DokkaPackageOptionsSpec(
     val reportUndocumented: Boolean? = null,
 ) {
 
-    fun applyTo(spec: DokkaPackageOptionsSpec) {
+    fun applyTo(recipient: DokkaPackageOptionsSpec) {
         spec.matchingRegex tryAssign matchingRegex
         spec.suppress tryAssign suppress
         spec.documentedVisibilities tryAssign documentedVisibilities

@@ -19,7 +19,7 @@ internal data class VcsInfo(
     val include: Boolean? = null
 ) {
 
-    fun applyTo(info: VcsInfo) {
+    fun applyTo(recipient: VcsInfo) {
         info::include trySet include
     }
 }

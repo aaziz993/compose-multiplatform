@@ -2,6 +2,7 @@ package gradle.plugins.android
 
 import com.android.build.api.dsl.Ndk
 import gradle.api.trySet
+import gradle.collection.act
 import kotlinx.serialization.Serializable
 
 /**
@@ -39,6 +40,7 @@ internal data class Ndk(
      * support and only packages the files each ABI needs.
      */
     val abiFilters: Set<String>? = null,
+    val setAbiFilters: Set<String>? = null,
     /**
      * The type of debug metadata which will be packaged in the app bundle.
      *
@@ -63,8 +65,9 @@ internal data class Ndk(
     val debugSymbolLevel: String? = null,
 ) {
 
-    fun applyTo(ndk: Ndk) {
-        abiFilters?.let(ndk.abiFilters::addAll)
-        ndk::debugSymbolLevel trySet debugSymbolLevel
+    fun applyTo(recipient: Ndk) {
+        abiFilters?.let(recipient.abiFilters::addAll)
+        setAbiFilters?.act(recipient.abiFilters::clear)?.let(recipient.abiFilters::addAll)
+        recipient::debugSymbolLevel trySet debugSymbolLevel
     }
 }

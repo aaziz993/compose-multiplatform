@@ -139,7 +139,7 @@ internal data class TestNGOptions(
 
     context(Project)
     @Suppress("UnstableApiUsage")
-    override fun applyTo(options: org.gradle.api.tasks.testing.TestFrameworkOptions) {
+    override fun applyTo(recipient: org.gradle.api.tasks.testing.TestFrameworkOptions) {
         options as TestNGOptions
 
         outputDirectory?.let(::file)?.let(options::setOutputDirectory)

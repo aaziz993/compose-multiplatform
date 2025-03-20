@@ -12,7 +12,7 @@ internal interface KotlinMultiplatformExtension :
     val withSourcesJar: Boolean?
 
     context(Project)
-    override fun applyTo(extension: org.jetbrains.kotlin.gradle.dsl.KotlinBaseExtension) {
+    override fun applyTo(recipient: org.jetbrains.kotlin.gradle.dsl.KotlinBaseExtension) {
         super<KotlinBaseExtension>.applyTo(extension)
 
         extension as KotlinMultiplatformExtension

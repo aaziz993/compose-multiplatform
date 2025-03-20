@@ -77,7 +77,7 @@ internal data class DokkaSourceLinkSpec(
 ) {
 
     context(Project)
-    fun applyTo(spec: DokkaSourceLinkSpec) {
+    fun applyTo(recipient: DokkaSourceLinkSpec) {
         spec.localDirectory tryAssign layout.projectDirectory.dir(
             localDirectory ?: when (projectProperties.layout) {
                 ProjectLayout.FLAT -> ""

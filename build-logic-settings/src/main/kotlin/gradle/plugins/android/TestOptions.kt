@@ -110,7 +110,7 @@ internal data class TestOptions(
 
     context(Project)
     @Suppress("UnstableApiUsage")
-    fun applyTo(options: TestOptions) {
+    fun applyTo(recipient: TestOptions) {
         unitTests?.applyTo(options.unitTests)
         options::resultsDir trySet resultsDir
         options::reportDir trySet reportDir

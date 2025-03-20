@@ -23,7 +23,7 @@ internal data class JUnitOptions(
 ) : TestFrameworkOptions() {
 
     context(Project)
-    override fun applyTo(options: org.gradle.api.tasks.testing.TestFrameworkOptions) {
+    override fun applyTo(recipient: org.gradle.api.tasks.testing.TestFrameworkOptions) {
         options as JUnitOptions
 
         includeCategories?.let { includeCategories ->
