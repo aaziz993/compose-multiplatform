@@ -124,19 +124,11 @@ internal interface VariantDimension<T : VariantDimension> {
     fun applyTo(recipient: T) {
         recipient::multiDexKeepProguard trySet multiDexKeepProguard?.let(::file)
 
-        ndk?.let { ndk ->
-            recipient.ndk(ndk::applyTo)
-        }
-
-        proguardFiles?.let { proguardFiles ->
-            recipient.proguardFiles(*proguardFiles.toTypedArray())
-        }
+        ndk?.toTypedArray()?.let(recipient::proguardFiles)
 
         defaultProguardFiles
             ?.mapNotNull { defaultProguardFile -> getDefaultProguardFile(defaultProguardFile) }
-            ?.let { defaultProguardFiles ->
-                recipient.proguardFiles(*defaultProguardFiles.toTypedArray())
-            }
+            ?.toTypedArray()?.let(recipient::proguardFiles)
 
         setProguardFiles?.let(recipient::setProguardFiles)
 
@@ -144,9 +136,7 @@ internal interface VariantDimension<T : VariantDimension> {
             ?.mapNotNull { defaultProguardFile -> getDefaultProguardFile(defaultProguardFile) }
             ?.let(recipient::setProguardFiles)
 
-        testProguardFiles?.let { testProguardFiles ->
-            recipient.testProguardFiles(*testProguardFiles.toTypedArray())
-        }
+        testProguardFiles?.toTypedArray()?.let(recipient::testProguardFiles)
 
         manifestPlaceholders?.let(recipient.manifestPlaceholders::putAll)
 

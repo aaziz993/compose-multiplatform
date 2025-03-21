@@ -26,15 +26,11 @@ internal data class JUnitOptions(
     override fun applyTo(recipient: org.gradle.api.tasks.testing.TestFrameworkOptions) {
         options as JUnitOptions
 
-        includeCategories?.let { includeCategories ->
-            options.includeCategories(*includeCategories.toTypedArray())
-        }
+        includeCategories?.toTypedArray()?.let(options::includeCategories)
 
         setIncludeCategories?.let(options::setIncludeCategories)
 
-        excludeCategories?.let { excludeCategories ->
-            options.excludeCategories(*excludeCategories.toTypedArray())
-        }
+        excludeCategories?.toTypedArray()?.let(options::excludeCategories)
 
         setExcludeCategories?.let(options::setExcludeCategories)
     }

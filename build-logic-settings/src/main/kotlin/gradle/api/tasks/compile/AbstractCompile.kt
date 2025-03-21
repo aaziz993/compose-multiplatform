@@ -4,7 +4,7 @@ import gradle.api.tasks.SourceTask
 import gradle.api.tasks.applyTo
 import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
-import java.util.SortedSet
+
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -49,11 +49,7 @@ internal abstract class AbstractCompile<T : org.gradle.api.tasks.compile.Abstrac
         super.applyTo(recipient)
 
         recipient.destinationDirectory tryAssign destinationDirectory?.let(layout.projectDirectory::dir)
-
-        classpath?.let { classpath ->
-            recipient.classpath = files(*classpath.toTypedArray())
-        }
-
+        classpath?.toTypedArray()?.let(::files)?.let(recipient::setClasspath)
         sourceCompatibility?.let(recipient::setSourceCompatibility)
         targetCompatibility?.let(recipient::setTargetCompatibility)
     }
@@ -66,7 +62,7 @@ internal data class AbstractCompileImpl(
     override val classpath: Set<String>? = null,
     override val sourceCompatibility: String? = null,
     override val targetCompatibility: String? = null,
-    override val dependsOn: SortedSet<String>? = null,
+    override val dependsOn: LinkedHashSet<String>? = null,
     override val onlyIf: Boolean? = null,
     override val doNotTrackState: String? = null,
     override val notCompatibleWithConfigurationCache: String? = null,
@@ -76,7 +72,7 @@ internal data class AbstractCompileImpl(
     override val description: String? = null,
     override val group: String? = null,
     override val mustRunAfter: Set<String>? = null,
-    override val finalizedBy: SortedSet<String>? = null,
+    override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
     override val name: String = "", override val sourceFiles: List<String>?,
     override val includes: Set<String>? = null,

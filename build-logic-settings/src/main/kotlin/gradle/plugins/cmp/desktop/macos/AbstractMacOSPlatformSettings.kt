@@ -5,7 +5,7 @@ import gradle.plugins.cmp.desktop.AbstractPlatformSettings
 import org.gradle.api.Project
 import org.jetbrains.compose.desktop.application.dsl.AbstractMacOSPlatformSettings
 
-internal abstract class AbstractMacOSPlatformSettings : AbstractPlatformSettings() {
+internal abstract class AbstractMacOSPlatformSettings<T: AbstractMacOSPlatformSettings> : AbstractPlatformSettings<T>() {
 
     abstract val packageName: String?
 
@@ -29,17 +29,17 @@ internal abstract class AbstractMacOSPlatformSettings : AbstractPlatformSettings
     abstract val notarization: MacOSNotarizationSettings?
 
     context(Project)
-    fun applyTo(recipient: AbstractMacOSPlatformSettings) {
-        super.applyTo(settings)
+    open fun applyTo(recipient: T) {
+        super.applyTo(recipient)
 
-        settings::packageName trySet packageName
-        settings::packageBuildVersion trySet packageBuildVersion
-        settings::dmgPackageVersion trySet dmgPackageVersion
-        settings::dmgPackageBuildVersion trySet dmgPackageBuildVersion
-        settings::appCategory trySet appCategory
-        settings::minimumSystemVersion trySet minimumSystemVersion
-        settings::bundleID trySet bundleID
-        signing?.applyTo(settings.signing)
-        notarization?.applyTo(settings.notarization)
+        recipient::packageName trySet packageName
+        recipient::packageBuildVersion trySet packageBuildVersion
+        recipient::dmgPackageVersion trySet dmgPackageVersion
+        recipient::dmgPackageBuildVersion trySet dmgPackageBuildVersion
+        recipient::appCategory trySet appCategory
+        recipient::minimumSystemVersion trySet minimumSystemVersion
+        recipient::bundleID trySet bundleID
+        signing?.applyTo(recipient.signing)
+        notarization?.applyTo(recipient.notarization)
     }
 }

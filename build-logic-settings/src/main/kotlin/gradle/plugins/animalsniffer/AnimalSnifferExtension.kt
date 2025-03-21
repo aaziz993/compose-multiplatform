@@ -8,6 +8,8 @@ import gradle.accessors.plugins
 import gradle.accessors.settings
 import gradle.plugins.quality.CodeQualityExtension
 import org.gradle.api.Project
+import ru.vyarus.gradle.plugin.animalsniffer.debug.PrintAnimalsnifferSourceInfoTask
+import ru.vyarus.gradle.plugin.animalsniffer.debug.PrintAnimalsnifferTasksTask
 
 /**
  * Animal sniffer plugin extension. Use 'sourceSets' to define target source set (all by default).

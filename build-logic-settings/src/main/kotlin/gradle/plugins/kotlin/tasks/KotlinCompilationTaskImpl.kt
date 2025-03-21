@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 @SerialName("KotlinCompilationTask")
 internal data class KotlinCompilationTaskImpl<out CO : KotlinCommonCompilerOptions>(
-    override val dependsOn: SortedSet<String>? = null,
+    override val dependsOn: LinkedHashSet<String>? = null,
     override val onlyIf: Boolean? = null,
     override val doNotTrackState: String? = null,
     override val notCompatibleWithConfigurationCache: String? = null,
@@ -18,7 +18,7 @@ internal data class KotlinCompilationTaskImpl<out CO : KotlinCommonCompilerOptio
     override val description: String? = null,
     override val group: String? = null,
     override val mustRunAfter: Set<String>? = null,
-    override val finalizedBy: SortedSet<String>? = null,
+    override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
     override val compilerOptions: CO? = null,
     override val name: String = "",

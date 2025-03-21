@@ -33,7 +33,8 @@ internal interface KspExtension {
         }
 
         excludedProcessors?.forEach(ksp::excludeProcessor)
-        excludedSources?.let(ksp.excludedSources::setFrom)
+        excludedSources?.toTypedArray()?.let(ksp.excludedSources::from)
+setExcludedSources?.let(ksp.excludedSources::setFrom)
         arguments?.forEach { (key, value) -> ksp.arg(key, value) }
         ksp::allWarningsAsErrors trySet allWarningsAsErrors
     }

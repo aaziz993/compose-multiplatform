@@ -2,8 +2,10 @@ package gradle.plugins.cmp.desktop
 
 import gradle.accessors.java
 import gradle.accessors.kotlin
+import gradle.accessors.sourceSets
 import gradle.api.getByNameOrAll
 import gradle.api.trySet
+import gradle.collection.act
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.compose.desktop.application.dsl.JvmApplication
@@ -16,37 +18,33 @@ internal data class JvmApplication(
     /**
      * Depend on tasks
      */
-    val dependsOn: List<String>? = null,
-    val fromFiles: List<String>? = null,
+    val dependsOn: Set<String>? = null,
+    val fromFiles: Set<String>? = null,
     val mainClass: String? = null,
     val mainJar: String? = null,
     val javaHome: String? = null,
     val args: List<String>? = null,
+    val setArgs: List<String>? = null,
     val jvmArgs: List<String>? = null,
+    val setJvmArgs: List<String>? = null,
     val nativeDistributions: JvmApplicationDistributions? = null,
     val buildTypes: JvmApplicationBuildTypes? = null,
 ) {
 
     context(Project)
     fun applyTo(recipient: JvmApplication) {
-        fromSourceSet?.let(java.sourceSets::getByName)?.let(application::from)
-        fromKotlinTarget?.let(kotlin.targets::getByName)?.let(application::from)
-        disableDefaultConfiguration?.takeIf { it }?.run { application.disableDefaultConfiguration() }
-        dependsOn?.flatMap(tasks::getByNameOrAll)?.let { tasks -> application.dependsOn(*tasks.toTypedArray()) }
-        fromFiles?.let { fromFiles -> application.fromFiles(*fromFiles.toTypedArray()) }
-        application::mainClass trySet mainClass
-        application::javaHome trySet javaHome
-
-        nativeDistributions?.let { nativeDistributions ->
-            application.nativeDistributions {
-                nativeDistributions.applyTo(this)
-            }
-        }
-
-        buildTypes?.let { buildTypes ->
-            application.buildTypes {
-                buildTypes.applyTo(this)
-            }
-        }
+        fromSourceSet?.let(sourceSets::getByName)?.let(recipient::from)
+        fromKotlinTarget?.let(kotlin.targets::getByName)?.let(recipient::from)
+        disableDefaultConfiguration?.takeIf { it }?.run { recipient.disableDefaultConfiguration() }
+        dependsOn?.flatMap(tasks::getByNameOrAll)?.toTypedArray()?.let(recipient::dependsOn)
+        fromFiles?.toTypedArray()?.let(recipient::fromFiles)
+        recipient::mainClass trySet mainClass
+        recipient::javaHome trySet javaHome
+        args?.let(recipient.args::addAll)
+        setArgs?.act(recipient.args::clear)?.let(recipient.args::addAll)
+        jvmArgs?.let(recipient.jvmArgs::addAll)
+        setJvmArgs?.act(recipient.jvmArgs::clear)?.let(recipient.jvmArgs::addAll)
+        nativeDistributions?.applyTo(recipient.nativeDistributions)
+        buildTypes?.applyTo(recipient.buildTypes)
     }
 }

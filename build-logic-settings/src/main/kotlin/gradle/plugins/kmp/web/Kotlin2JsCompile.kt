@@ -11,7 +11,7 @@ import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 @Serializable
 internal data class Kotlin2JsCompile(
-    override val dependsOn: SortedSet<String>? = null,
+    override val dependsOn: LinkedHashSet<String>? = null,
     override val onlyIf: Boolean? = null,
     override val doNotTrackState: String? = null,
     override val notCompatibleWithConfigurationCache: String? = null,
@@ -21,7 +21,7 @@ internal data class Kotlin2JsCompile(
     override val description: String? = null,
     override val group: String? = null,
     override val mustRunAfter: Set<String>? = null,
-    override val finalizedBy: SortedSet<String>? = null,
+    override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
     override val name: String = "",
     override val produceUnpackagedKlib: Boolean? = null,
@@ -39,7 +39,8 @@ internal data class Kotlin2JsCompile(
         named as Kotlin2JsCompile
 
         compilerOptions?._applyTo(named.compilerOptions)
-        libraries?.let(named.libraries::setFrom)
+        libraries?.toTypedArray()?.let(named.libraries::from)
+setLibraries?.let(named.libraries::setFrom)
     }
 
     context(Project)

@@ -16,11 +16,11 @@ internal data class NativeApplicationDistributions(
     override val appResourcesRootDir: String? = null,
     override val licenseFile: String? = null,
     val macOS: NativeApplicationMacOSPlatformSettings? = null,
-) : AbstractDistributions() {
+) : AbstractDistributions<NativeApplicationDistributions>() {
 
     context(Project)
-    fun applyTo(recipient: NativeApplicationDistributions) {
-        super.applyTo(distributions)
-        macOS?.applyTo(distributions.macOS)
+    override fun applyTo(recipient: NativeApplicationDistributions) {
+        super.applyTo(recipient)
+        macOS?.applyTo(recipient.macOS)
     }
 }

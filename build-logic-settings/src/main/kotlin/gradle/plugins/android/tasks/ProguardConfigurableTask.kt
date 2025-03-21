@@ -6,7 +6,7 @@ import gradle.api.tasks.applyTo
 
 import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
-import java.util.SortedSet
+
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
@@ -20,7 +20,7 @@ import org.gradle.kotlin.dsl.withType
 @Serializable
 internal data class ProguardConfigurableTask(
     override val projectPath: String? = null,
-    override val dependsOn: SortedSet<String>? = null,
+    override val dependsOn: LinkedHashSet<String>? = null,
     override val onlyIf: Boolean? = null,
     override val doNotTrackState: String? = null,
     override val notCompatibleWithConfigurationCache: String? = null,
@@ -30,7 +30,7 @@ internal data class ProguardConfigurableTask(
     override val description: String? = null,
     override val group: String? = null,
     override val mustRunAfter: Set<String>? = null,
-    override val finalizedBy: SortedSet<String>? = null,
+    override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
     override val name: String = "",
     override val variantName: String? = null,
@@ -57,15 +57,22 @@ internal data class ProguardConfigurableTask(
 
         recipient.componentType tryAssign componentType
         recipient.includeFeaturesInScopes tryAssign includeFeaturesInScopes
-        testedMappingFile?.let(recipient.testedMappingFile::setFrom)
-        classes?.let(recipient.classes::setFrom)
+        testedMappingFile?.toTypedArray()?.let(recipient.testedMappingFile::from)
+setTestedMappingFile?.let(recipient.testedMappingFile::setFrom)
+        classes?.toTypedArray()?.let(recipient.classes::from)
+setClasses?.let(recipient.classes::setFrom)
         recipient.resourcesJar tryAssign resourcesJar?.let(::file)
-        referencedClasses?.let(recipient.referencedClasses::setFrom)
-        referencedResources?.let(recipient.referencedResources::setFrom)
+        referencedClasses?.toTypedArray()?.let(recipient.referencedClasses::from)
+setReferencedClasses?.let(recipient.referencedClasses::setFrom)
+        referencedResources?.toTypedArray()?.let(recipient.referencedResources::from)
+setReferencedResources?.let(recipient.referencedResources::setFrom)
         recipient.extractedDefaultProguardFile tryAssign extractedDefaultProguardFile?.let(project.layout.projectDirectory::dir)
-        generatedProguardFile?.let(recipient.generatedProguardFile::setFrom)
-        configurationFiles?.let(recipient.configurationFiles::setFrom)
-        libraryKeepRulesFileCollection?.let(recipient.libraryKeepRulesFileCollection::setFrom)
+        generatedProguardFile?.toTypedArray()?.let(recipient.generatedProguardFile::from)
+setGeneratedProguardFile?.let(recipient.generatedProguardFile::setFrom)
+        configurationFiles?.toTypedArray()?.let(recipient.configurationFiles::from)
+setConfigurationFiles?.let(recipient.configurationFiles::setFrom)
+        libraryKeepRulesFileCollection?.toTypedArray()?.let(recipient.libraryKeepRulesFileCollection::from)
+setLibraryKeepRulesFileCollection?.let(recipient.libraryKeepRulesFileCollection::setFrom)
         recipient.ignoreFromInKeepRules tryAssign ignoreFromInKeepRules
         recipient.ignoreFromAllExternalDependenciesInKeepRules tryAssign ignoreFromAllExternalDependenciesInKeepRules
         recipient.mappingFile tryAssign mappingFile?.let(::file)

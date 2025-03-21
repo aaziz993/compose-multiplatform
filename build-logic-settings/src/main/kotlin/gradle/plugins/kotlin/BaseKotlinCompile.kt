@@ -63,8 +63,10 @@ internal interface BaseKotlinCompile : KotlinCompileTool {
 
         named as org.jetbrains.kotlin.gradle.tasks.BaseKotlinCompile
 
-        friendPaths?.let(named.friendPaths::setFrom)
-        pluginClasspath?.let(named.pluginClasspath::setFrom)
+        friendPaths?.toTypedArray()?.let(named.friendPaths::from)
+setFriendPaths?.let(named.friendPaths::setFrom)
+        pluginClasspath?.toTypedArray()?.let(named.pluginClasspath::from)
+setPluginClasspath?.let(named.pluginClasspath::setFrom)
         named.pluginOptions tryAssign pluginOptions?.map(CompilerPluginConfig::toCompilerPluginConfig)
         named.moduleName tryAssign moduleName
         named.sourceSetName tryAssign sourceSetName
@@ -95,7 +97,7 @@ internal data class BaseKotlinCompileImpl(
     override val setIncludes: Set<String>? = null,
     override val excludes: Set<String>? = null,
     override val setExcludes: Set<String>? = null,
-    override val dependsOn: SortedSet<String>? = null,
+    override val dependsOn: LinkedHashSet<String>? = null,
     override val onlyIf: Boolean? = null,
     override val doNotTrackState: String? = null,
     override val notCompatibleWithConfigurationCache: String? = null,
@@ -105,7 +107,7 @@ internal data class BaseKotlinCompileImpl(
     override val description: String? = null,
     override val group: String? = null,
     override val mustRunAfter: Set<String>? = null,
-    override val finalizedBy: SortedSet<String>? = null,
+    override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
     override val name: String = ""
 ) : BaseKotlinCompile

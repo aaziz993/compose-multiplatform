@@ -13,9 +13,9 @@ internal data class MacOSSigningSettings(
 ) {
 
     fun applyTo(recipient: MacOSSigningSettings) {
-        settings.sign tryAssign sign
-        settings.identity tryAssign identity
-        settings.keychain tryAssign keychain
-        settings.prefix tryAssign prefix
+        recipient.sign tryAssign sign
+        recipient.identity tryAssign identity
+        recipient.keychain tryAssign keychain
+        recipient.prefix tryAssign prefix
     }
 }

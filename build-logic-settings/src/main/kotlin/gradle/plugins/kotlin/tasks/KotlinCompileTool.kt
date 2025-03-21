@@ -51,7 +51,8 @@ internal interface KotlinCompileTool : PatternFilterable, Task {
             tool.setSource(* setSources.toTypedArray())
         }
 
-        libraries?.let(tool.libraries::setFrom)
+        libraries?.toTypedArray()?.let(tool.libraries::from)
+setLibraries?.let(tool.libraries::setFrom)
         tool.destinationDirectory tryAssign destinationDirectory?.let(::file)
     }
 }

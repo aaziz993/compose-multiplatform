@@ -21,7 +21,7 @@ internal data class JvmMacOSPlatformSettings(
     override val iconFile: String? = null,
     override val packageVersion: String? = null,
     override val installationPath: String? = null,
-    override val fileAssociations: List<FileAssociation>? = null,
+    override val fileAssociations: Set<FileAssociation>? = null,
     var dockName: String? = null,
     var setDockNameSameAsPackageName: Boolean? = null,
     var appStore: Boolean? = null,
@@ -32,24 +32,23 @@ internal data class JvmMacOSPlatformSettings(
     val provisioningProfile: String? = null,
     val runtimeProvisioningProfile: String? = null,
     val infoPlist: InfoPlistSettings? = null,
-
-    ) : AbstractMacOSPlatformSettings() {
+) : AbstractMacOSPlatformSettings<JvmMacOSPlatformSettings>() {
 
     context(Project)
-    fun applyTo(recipient: JvmMacOSPlatformSettings) {
-        super.applyTo(settings)
+    override fun applyTo(recipient: JvmMacOSPlatformSettings) {
+        super.applyTo(recipient)
 
-        settings::dockName trySet dockName
-        settings::setDockNameSameAsPackageName trySet setDockNameSameAsPackageName
-        settings::appStore trySet appStore
-        settings.entitlementsFile tryAssign entitlementsFile?.let(::file)
-        settings.runtimeEntitlementsFile tryAssign runtimeEntitlementsFile?.let(::file)
-        settings::pkgPackageVersion trySet pkgPackageVersion
-        settings::pkgPackageBuildVersion trySet pkgPackageBuildVersion
-        settings.provisioningProfile tryAssign provisioningProfile?.let(::file)
-        settings.runtimeProvisioningProfile tryAssign runtimeProvisioningProfile?.let(::file)
+        recipient::dockName trySet dockName
+        recipient::setDockNameSameAsPackageName trySet setDockNameSameAsPackageName
+        recipient::appStore trySet appStore
+        recipient.entitlementsFile tryAssign entitlementsFile?.let(::file)
+        recipient.runtimeEntitlementsFile tryAssign runtimeEntitlementsFile?.let(::file)
+        recipient::pkgPackageVersion trySet pkgPackageVersion
+        recipient::pkgPackageBuildVersion trySet pkgPackageBuildVersion
+        recipient.provisioningProfile tryAssign provisioningProfile?.let(::file)
+        recipient.runtimeProvisioningProfile tryAssign runtimeProvisioningProfile?.let(::file)
         infoPlist?.let { infoPlist ->
-            settings.infoPlist(infoPlist::applyTo)
+            recipient.infoPlist(infoPlist::applyTo)
         }
     }
 }

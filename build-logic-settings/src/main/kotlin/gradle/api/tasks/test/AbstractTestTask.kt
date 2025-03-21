@@ -5,7 +5,7 @@ import gradle.api.tasks.ConventionTask
 import gradle.api.tasks.applyTo
 import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
-import java.util.SortedSet
+
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -73,7 +73,7 @@ internal data class AbstractTestTaskImpl(
     override val testNameIncludePatterns: List<String>? = null,
     override val failFast: Boolean? = null,
     override val filter: DefaultTestFilter? = null,
-    override val dependsOn: SortedSet<String>? = null,
+    override val dependsOn: LinkedHashSet<String>? = null,
     override val onlyIf: Boolean? = null,
     override val doNotTrackState: String? = null,
     override val notCompatibleWithConfigurationCache: String? = null,
@@ -83,7 +83,7 @@ internal data class AbstractTestTaskImpl(
     override val description: String? = null,
     override val group: String? = null,
     override val mustRunAfter: Set<String>? = null,
-    override val finalizedBy: SortedSet<String>? = null,
+    override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
     override val name: String = "",
 ) : AbstractTestTask<org.gradle.api.tasks.testing.AbstractTestTask>() {

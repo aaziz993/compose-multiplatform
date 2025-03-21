@@ -28,7 +28,7 @@ internal interface SettingsNamed<T> : BaseNamed {
 
 context(Settings)
 internal fun <T : Named> SettingsNamed<T>.applyTo(
-    recipient: DomainObjectCollection<T>,
+    recipient: DomainObjectCollection<out T>,
     create: (name: String, action: Action<in T>) -> Unit
 ) = recipient.maybeNamedCreateOrEach(name, create) {
     applyTo(this)
@@ -36,14 +36,14 @@ internal fun <T : Named> SettingsNamed<T>.applyTo(
 
 context(Settings)
 internal fun <T> SettingsNamed<T>.applyTo(
-    recipient: NamedDomainObjectCollection<T>,
+    recipient: NamedDomainObjectCollection<out T>,
     create: (name: String, action: Action<in T>) -> Unit
 ) = recipient.maybeNamedCreateOrEach(name, create) {
     applyTo(this)
 }
 
 context(Settings)
-internal fun <T> SettingsNamed<T>.applyTo(recipient: NamedDomainObjectContainer<T>) =
+internal fun <T> SettingsNamed<T>.applyTo(recipient: NamedDomainObjectContainer<out T>) =
     applyTo(recipient) { name, action ->
         recipient.register(name, action)
     }
@@ -56,7 +56,7 @@ internal interface ProjectNamed<T> : BaseNamed {
 
 context(Project)
 internal fun <T : Named> ProjectNamed<T>.applyTo(
-    recipient: DomainObjectCollection<T>,
+    recipient: DomainObjectCollection<out T>,
     create: (name: String, action: Action<in T>) -> Unit
 ) = recipient.maybeNamedCreateOrEach(name, create) {
     applyTo(this)
@@ -64,14 +64,14 @@ internal fun <T : Named> ProjectNamed<T>.applyTo(
 
 context(Project)
 internal fun <T> ProjectNamed<T>.applyTo(
-    recipient: NamedDomainObjectCollection<T>,
+    recipient: NamedDomainObjectCollection<out T>,
     create: (name: String, action: Action<in T>) -> Unit
 ) = recipient.maybeNamedCreateOrEach(name, create) {
     applyTo(this)
 }
 
 context(Project)
-internal fun <T> ProjectNamed<T>.applyTo(recipient: NamedDomainObjectContainer<T>) =
+internal fun <T> ProjectNamed<T>.applyTo(recipient: NamedDomainObjectContainer<out T>) =
     applyTo(recipient) { name, action ->
         recipient.register(name, action)
     }
@@ -85,7 +85,7 @@ internal interface Named<T> : SettingsNamed<T>, ProjectNamed<T> {
     override fun applyTo(recipient: T)
 }
 
-internal fun <T : Named> DomainObjectCollection<T>.maybeNamedCreateOrEach(
+internal fun <T : Named> DomainObjectCollection<out T>.maybeNamedCreateOrEach(
     name: String,
     create: (name: String, action: Action<in T>) -> Unit = { _, _ -> },
     configureAction: Action<in T>
@@ -97,16 +97,11 @@ internal fun <T : Named> DomainObjectCollection<T>.maybeNamedCreateOrEach(
     }
 }
 
-internal fun <T> NamedDomainObjectCollection<T>.maybeNamedCreateOrEach(
+internal fun <T> NamedDomainObjectCollection<out T>.maybeNamedCreateOrEach(
     name: String,
     create: (name: String, action: Action<in T>) -> Unit = { _, _ -> },
     configureAction: Action<in T>
 ) {
     if (name.isEmpty()) configureEach(configureAction)
     else (maybeNamed(name, configureAction) ?: create(name, configureAction))
-}
-
-internal interface Test<T> {
-
-    fun t(l: Collection<T>) {}
 }

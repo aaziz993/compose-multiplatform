@@ -264,11 +264,15 @@ internal data class DokkaSourceSetSpec(
         named.sourceSetScope tryAssign sourceSetScope
         named.suppress tryAssign suppress
         named.displayName tryAssign displayName
-        includes?.let(named.includes::setFrom)
+        includes?.toTypedArray()?.let(named.includes::from)
+setIncludes?.let(named.includes::setFrom)
         named.documentedVisibilities tryAssign documentedVisibilities
-        classpath?.let(named.classpath::setFrom)
-        sourceRoots?.let(named.sourceRoots::setFrom)
-        samples?.let(named.samples::setFrom)
+        classpath?.toTypedArray()?.let(named.classpath::from)
+setClasspath?.let(named.classpath::setFrom)
+        sourceRoots?.toTypedArray()?.let(named.sourceRoots::from)
+setSourceRoots?.let(named.sourceRoots::setFrom)
+        samples?.toTypedArray()?.let(named.samples::from)
+setSamples?.let(named.samples::setFrom)
         named.reportUndocumented tryAssign reportUndocumented
 
         sourceLinks?.forEach { sourceLink ->
@@ -288,7 +292,8 @@ internal data class DokkaSourceSetSpec(
         named.analysisPlatform tryAssign analysisPlatform
         named.skipEmptyPackages tryAssign skipEmptyPackages
         named.skipDeprecated tryAssign skipDeprecated
-        suppressedFiles?.let(named.suppressedFiles::setFrom)
+        suppressedFiles?.toTypedArray()?.let(named.suppressedFiles::from)
+setSuppressedFiles?.let(named.suppressedFiles::setFrom)
         named.suppressGeneratedFiles tryAssign suppressGeneratedFiles
         named.enableKotlinStdLibDocumentationLink tryAssign enableKotlinStdLibDocumentationLink
         named.enableJdkDocumentationLink tryAssign enableJdkDocumentationLink

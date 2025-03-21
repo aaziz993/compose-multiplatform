@@ -15,7 +15,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinNativeLink
  */
 @Serializable
 internal data class KotlinNativeLink(
-    override val dependsOn: SortedSet<String>? = null,
+    override val dependsOn: LinkedHashSet<String>? = null,
     override val onlyIf: Boolean? = null,
     override val doNotTrackState: String? = null,
     override val notCompatibleWithConfigurationCache: String? = null,
@@ -25,7 +25,7 @@ internal data class KotlinNativeLink(
     override val description: String? = null,
     override val group: String? = null,
     override val mustRunAfter: Set<String>? = null,
-    override val finalizedBy: SortedSet<String>? = null,
+    override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
     override val name: String = "",
     override val toolOptions: KotlinCommonCompilerToolOptions? = null,
@@ -56,7 +56,8 @@ internal data class KotlinNativeLink(
         named as KotlinNativeLink
 
         binary?.applyTo(named.binary)
-        apiFiles?.let(named.apiFiles::setFrom)
+        apiFiles?.toTypedArray()?.let(named.apiFiles::from)
+setApiFiles?.let(named.apiFiles::setFrom)
         compilerPluginOptions?.applyTo(named.compilerPluginOptions)
         named::compilerPluginClasspath trySet compilerPluginClasspath?.let { files(*it.toTypedArray()) }
         named::kotlinPluginData trySet kotlinPluginData?.toKotlinCompilerPluginData()?.let { kotlinPluginData ->

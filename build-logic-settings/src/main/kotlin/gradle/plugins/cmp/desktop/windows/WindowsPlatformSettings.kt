@@ -12,7 +12,7 @@ internal data class WindowsPlatformSettings(
     override val iconFile: String? = null,
     override val packageVersion: String? = null,
     override val installationPath: String? = null,
-    override val fileAssociations: List<FileAssociation>? = null,
+    override val fileAssociations: Set<FileAssociation>? = null,
     var console: Boolean? = null,
     var dirChooser: Boolean? = null,
     var perUserInstall: Boolean? = null,
@@ -22,20 +22,20 @@ internal data class WindowsPlatformSettings(
     var upgradeUuid: String? = null,
     var msiPackageVersion: String? = null,
     var exePackageVersion: String? = null,
-) : AbstractPlatformSettings() {
+) : AbstractPlatformSettings<WindowsPlatformSettings>() {
 
     context(Project)
-    fun applyTo(recipient: WindowsPlatformSettings) {
-        super.applyTo(settings)
+    override fun applyTo(recipient: WindowsPlatformSettings) {
+        super.applyTo(recipient)
 
-        settings::console trySet console
-        settings::dirChooser trySet dirChooser
-        settings::perUserInstall trySet perUserInstall
-        settings::shortcut trySet shortcut
-        settings::menu trySet menu
-        settings::menuGroup trySet menuGroup
-        settings::upgradeUuid trySet upgradeUuid
-        settings::msiPackageVersion trySet msiPackageVersion
-        settings::exePackageVersion trySet exePackageVersion
+        recipient::console trySet console
+        recipient::dirChooser trySet dirChooser
+        recipient::perUserInstall trySet perUserInstall
+        recipient::shortcut trySet shortcut
+        recipient::menu trySet menu
+        recipient::menuGroup trySet menuGroup
+        recipient::upgradeUuid trySet upgradeUuid
+        recipient::msiPackageVersion trySet msiPackageVersion
+        recipient::exePackageVersion trySet exePackageVersion
     }
 }

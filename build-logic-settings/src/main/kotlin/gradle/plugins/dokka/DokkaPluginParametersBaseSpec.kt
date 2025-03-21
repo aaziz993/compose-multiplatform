@@ -119,8 +119,10 @@ internal data class DokkaHtmlPluginParameters(
     override fun applyTo(recipient: T) {
         named as DokkaHtmlPluginParameters
 
-        customAssets?.let(named.customAssets::setFrom)
-        customStyleSheets?.let(named.customStyleSheets::setFrom)
+        customAssets?.toTypedArray()?.let(named.customAssets::from)
+setCustomAssets?.let(named.customAssets::setFrom)
+        customStyleSheets?.toTypedArray()?.let(named.customStyleSheets::from)
+setCustomStyleSheets?.let(named.customStyleSheets::setFrom)
         named.separateInheritedMembers tryAssign separateInheritedMembers
         named.mergeImplicitExpectActualDeclarations tryAssign mergeImplicitExpectActualDeclarations
         named.footerMessage tryAssign (footerMessage ?: listOfNotNull(
@@ -203,7 +205,8 @@ internal data class DokkaVersioningParameters(
         named as DokkaVersioningPluginParameters
 
         named.olderVersionsDir tryAssign olderVersionsDir?.let(::file)
-        olderVersions?.let(named.olderVersions::setFrom)
+        olderVersions?.toTypedArray()?.let(named.olderVersions::from)
+setOlderVersions?.let(named.olderVersions::setFrom)
         named.versionsOrdering tryAssign versionsOrdering
         named.version tryAssign version
         named.renderVersionsNavigationOnAllPages tryAssign renderVersionsNavigationOnAllPages

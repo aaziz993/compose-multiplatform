@@ -57,9 +57,7 @@ internal data class SourceDirectorySet(
         named as org.gradle.api.file.SourceDirectorySet
 
         super<PatternFilterable>.applyTo(named)
-        srcDirs?.let { srcDirs ->
-            named.srcDirs(*srcDirs.toTypedArray())
-        }
+        srcDirs?.toTypedArray()?.let(named::srcDirs)
 
         setSrcDirs?.let(named::setSrcDirs)
         named.destinationDirectory tryAssign destinationDirectory?.let(layout.projectDirectory::dir)

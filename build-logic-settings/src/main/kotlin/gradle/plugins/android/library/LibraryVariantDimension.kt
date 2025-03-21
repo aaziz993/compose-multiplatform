@@ -47,9 +47,7 @@ internal interface LibraryVariantDimension<T : LibraryVariantDimension> : Varian
 
         recipient::multiDexEnabled trySet multiDexEnabled
 
-        consumerProguardFiles?.let { consumerProguardFiles ->
-            recipient.consumerProguardFiles(*consumerProguardFiles.toTypedArray())
-        }
+        consumerProguardFiles?.toTypedArray()?.let(recipient::consumerProguardFiles)
 
         setConsumerProguardFiles?.map(::file)?.act(recipient.consumerProguardFiles::clear)?.let(recipient.consumerProguardFiles::addAll)
 

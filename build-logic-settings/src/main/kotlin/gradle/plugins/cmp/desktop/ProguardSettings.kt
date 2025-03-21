@@ -9,7 +9,8 @@ import org.jetbrains.compose.desktop.application.dsl.ProguardSettings
 internal data class ProguardSettings(
     val version: String? = null,
     val maxHeapSize: String? = null,
-    val configurationFiles: List<String>? = null,
+    val configurationFiles: LinkedHashSet<String>? = null,
+    val setConfigurationFiles: LinkedHashSet<String>? = null,
     val isEnabled: Boolean? = null,
     val obfuscate: Boolean? = null,
     val optimize: Boolean? = null,
@@ -18,12 +19,13 @@ internal data class ProguardSettings(
 
     context(Project)
     fun applyTo(recipient: ProguardSettings) {
-        settings.version tryAssign version
-        settings.maxHeapSize tryAssign maxHeapSize
-        configurationFiles?.let(settings.configurationFiles::setFrom)
-        settings.isEnabled tryAssign isEnabled
-        settings.obfuscate tryAssign obfuscate
-        settings.optimize tryAssign optimize
-        settings.joinOutputJars tryAssign joinOutputJars
+        recipient.version tryAssign version
+        recipient.maxHeapSize tryAssign maxHeapSize
+        configurationFiles?.toTypedArray()?.let(recipient.configurationFiles::from)
+        setConfigurationFiles?.let(recipient.configurationFiles::setFrom)
+        recipient.isEnabled tryAssign isEnabled
+        recipient.obfuscate tryAssign obfuscate
+        recipient.optimize tryAssign optimize
+        recipient.joinOutputJars tryAssign joinOutputJars
     }
 }

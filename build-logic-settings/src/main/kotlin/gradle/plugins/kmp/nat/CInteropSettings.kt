@@ -340,11 +340,8 @@ internal interface CInteropSettings : BaseNamed {
     override fun applyTo(recipient: T) {
         named as CInteropSettings
 
-        named::dependencyFiles trySet dependencyFiles?.let { files(*it.toTypedArray()) }
-        defFile?.let(named::defFile)
-        packageName?.let(named::packageName)
-        headers?.let { named.headers(*it.toTypedArray()) }
-        includeDirs?.let { named.includeDirs(*it.toTypedArray()) }
+        named::dependencyFiles trySet dependencyFiles?.toTypedArray()?.let(named::headers)
+        includeDirs?.toTypedArray()?.let(named::includeDirs)
 
         includeDirectories?.let { includeDirectories ->
             named.includeDirs {

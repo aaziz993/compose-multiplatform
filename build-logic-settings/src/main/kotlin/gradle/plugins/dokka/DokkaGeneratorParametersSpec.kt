@@ -56,8 +56,10 @@ internal data class DokkaGeneratorParametersSpec(
         spec.offlineMode tryAssign offlineMode
         spec.suppressObviousFunctions tryAssign suppressObviousFunctions
         spec.suppressInheritedMembers tryAssign suppressInheritedMembers
-        includes?.let(spec.includes::setFrom)
-        pluginsClasspath?.let(spec.pluginsClasspath::setFrom)
+        includes?.toTypedArray()?.let(spec.includes::from)
+setIncludes?.let(spec.includes::setFrom)
+        pluginsClasspath?.toTypedArray()?.let(spec.pluginsClasspath::from)
+setPluginsClasspath?.let(spec.pluginsClasspath::setFrom)
 
         dokkaSourceSets?.forEach { dokkaSourceSet ->
             dokkaSourceSet.applyTo(spec.dokkaSourceSets)

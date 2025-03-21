@@ -4,7 +4,7 @@ import gradle.accessors.publishing
 import gradle.api.repositories.ArtifactRepository
 import gradle.api.repositories.ArtifactRepositoryTransformingSerializer
 import gradle.api.repositories.ExclusiveContentRepository
-import java.util.SortedSet
+
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler

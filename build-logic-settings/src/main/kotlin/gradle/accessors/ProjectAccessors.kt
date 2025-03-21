@@ -64,8 +64,6 @@ import org.jetbrains.kotlin.powerassert.gradle.PowerAssertGradleExtension
 import org.sonarqube.gradle.SonarExtension
 import ru.vyarus.gradle.plugin.animalsniffer.AnimalSnifferExtension
 
-internal fun Project.files(paths: Collection<Any>) = files(* paths.toTypedArray())
-
 internal const val PROJECT_PROPERTIES_EXT = "project.properties.ext"
 
 internal var Project.projectProperties: ProjectProperties

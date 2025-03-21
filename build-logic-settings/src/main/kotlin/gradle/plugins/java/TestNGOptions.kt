@@ -144,15 +144,11 @@ internal data class TestNGOptions(
 
         outputDirectory?.let(::file)?.let(options::setOutputDirectory)
 
-        includeGroups?.let { includeGroups ->
-            options.includeGroups(*includeGroups.toTypedArray())
-        }
+        includeGroups?.toTypedArray()?.let(options::includeGroups)
 
         setIncludeGroups?.let(options::setIncludeGroups)
 
-        excludeGroups?.let { excludeGroups ->
-            options.excludeGroups(*excludeGroups.toTypedArray())
-        }
+        excludeGroups?.toTypedArray()?.let(options::excludeGroups)
 
         setExcludeGroups?.let(options::setExcludeGroups)
         configFailurePolicy?.let(options::setConfigFailurePolicy)

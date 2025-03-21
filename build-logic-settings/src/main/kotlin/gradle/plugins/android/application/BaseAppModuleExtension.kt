@@ -21,7 +21,7 @@ import gradle.plugins.android.test.TestCoverage
 import gradle.plugins.android.test.TestFixtures
 import gradle.plugins.android.test.TestOptions
 import gradle.plugins.android.features.ViewBinding
-import java.util.SortedSet
+
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -35,8 +35,8 @@ internal data class BaseAppModuleExtension(
     override val disableWrite: Boolean? = null,
     override val compileSdkVersion: Int? = null,
     override val buildToolsVersion: String? = null,
-    override val flavorDimensions: SortedSet<String>? = null,
-    override val setFlavorDimensions: SortedSet<String>? = null,
+    override val flavorDimensions: LinkedHashSet<String>? = null,
+    override val setFlavorDimensions: LinkedHashSet<String>? = null,
     override val aaptOptions: AaptOptions? = null,
     override val externalNativeBuild: ExternalNativeBuild? = null,
     override val testOptions: TestOptions? = null,

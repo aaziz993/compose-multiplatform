@@ -10,6 +10,6 @@ internal data class InfoPlistSettings(
 ) {
 
     fun applyTo(recipient: InfoPlistSettings) {
-        settings::extraKeysRawXml trySet extraKeysRawXml
+        recipient::extraKeysRawXml trySet extraKeysRawXml
     }
 }

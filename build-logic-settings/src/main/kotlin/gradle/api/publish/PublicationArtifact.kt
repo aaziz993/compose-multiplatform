@@ -8,7 +8,7 @@ import org.gradle.api.publish.PublicationArtifact
  *
  * @since 4.8
  */
-internal interface PublicationArtifact<T: PublicationArtifact> : Buildable<T> {
+internal interface PublicationArtifact<T : PublicationArtifact> : Buildable<T> {
 
     /**
      * Registers some tasks which build this artifact.
@@ -18,8 +18,6 @@ internal interface PublicationArtifact<T: PublicationArtifact> : Buildable<T> {
     val builtBy: Set<String>?
 
     override fun applyTo(recipient: T) {
-        builtBy?.let { builtBy ->
-            recipient.builtBy(*builtBy.toTypedArray())
-        }
+        builtBy?.toTypedArray()?.let(recipient::builtBy)
     }
 }

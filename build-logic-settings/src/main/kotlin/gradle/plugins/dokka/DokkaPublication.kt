@@ -132,7 +132,8 @@ internal data class DokkaPublication(
         named.failOnWarning tryAssign failOnWarning
         named.suppressObviousFunctions tryAssign suppressObviousFunctions
         named.suppressInheritedMembers tryAssign suppressInheritedMembers
-        includes?.let(named.includes::setFrom)
+        includes?.toTypedArray()?.let(named.includes::from)
+setIncludes?.let(named.includes::setFrom)
         named.cacheRoot tryAssign cacheRoot?.let(layout.projectDirectory::dir)
         named.finalizeCoroutines tryAssign finalizeCoroutines
     }

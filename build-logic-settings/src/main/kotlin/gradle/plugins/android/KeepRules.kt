@@ -23,9 +23,7 @@ internal data class KeepRules(
 
     @Suppress("UnstableApiUsage")
     fun applyTo(recipient: KeepRules) {
-        ignoreFrom?.let { ignoreFrom ->
-            recipient.ignoreFrom(*ignoreFrom.toTypedArray())
-        }
+        ignoreFrom?.toTypedArray()?.let(recipient::ignoreFrom)
 
         ignoreFromAllExternalDependencies?.let(recipient::ignoreFromAllExternalDependencies)
     }

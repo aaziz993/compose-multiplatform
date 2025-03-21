@@ -12,7 +12,7 @@ import org.jetbrains.dokka.gradle.tasks.DokkaGenerateTask
 
 @Serializable
 internal data class DokkaGenerateTask(
-    override val dependsOn: SortedSet<String>? = null,
+    override val dependsOn: LinkedHashSet<String>? = null,
     override val onlyIf: Boolean? = null,
     override val doNotTrackState: String? = null,
     override val notCompatibleWithConfigurationCache: String? = null,
@@ -22,7 +22,7 @@ internal data class DokkaGenerateTask(
     override val description: String? = null,
     override val group: String? = null,
     override val mustRunAfter: Set<String>? = null,
-    override val finalizedBy: SortedSet<String>? = null,
+    override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
     override val name: String = "",
     /**
@@ -76,7 +76,8 @@ internal data class DokkaGenerateTask(
         named as DokkaGenerateTask
 
         named.outputDirectory tryAssign outputDirectory?.let(layout.projectDirectory::dir)
-        runtimeClasspath?.let(named.runtimeClasspath::setFrom)
+        runtimeClasspath?.toTypedArray()?.let(named.runtimeClasspath::from)
+setRuntimeClasspath?.let(named.runtimeClasspath::setFrom)
         named.cacheDirectory tryAssign cacheDirectory?.let(layout.projectDirectory::dir)
         named.publicationEnabled tryAssign publicationEnabled
         generator?.applyTo(named.generator)

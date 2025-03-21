@@ -1,5 +1,7 @@
 package gradle.plugins.java
 
+import arrow.core.raise.recover
+import gradle.api.ProjectNamed
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.tasks.SourceSet
@@ -35,7 +37,7 @@ internal data class SourceSet(
      *
      * @return The name. Never returns null.
      */
-    val name: String = "",
+    override val name: String = "",
     /**
      * Sets the classpath used to compile this source.
      *
@@ -82,27 +84,14 @@ internal data class SourceSet(
      * @return the Java source. Never returns null.
      */
     val java: SourceDirectorySet? = null,
-) {
+) : ProjectNamed<SourceSet> {
 
     context(Project)
-    fun applyTo(recipient: SourceSet) {
+    override fun applyTo(recipient: SourceSet) {
         compileClasspath
-            ?.let { compileClasspath -> files(*compileClasspath.toTypedArray()) }
-            ?.let(sourceSet::setCompileClasspath)
+            ?.toTypedArray()?.let(recipient::compiledBy)
 
-        annotationProcessorPath
-            ?.let { annotationProcessorPath -> files(*annotationProcessorPath.toTypedArray()) }
-            ?.let(sourceSet::setAnnotationProcessorPath)
-
-        runtimeClasspath
-            ?.let { runtimeClasspath -> files(*runtimeClasspath.toTypedArray()) }
-            ?.let(sourceSet::setRuntimeClasspath)
-
-        compiledBy?.let { compiledBy ->
-            sourceSet.compiledBy(*compiledBy.toTypedArray())
-        }
-
-        resources?.applyTo(sourceSet.resources)
-        java?.applyTo(sourceSet.java)
+        resources?.applyTo(recipient.resources)
+        java?.applyTo(recipient.java)
     }
 }

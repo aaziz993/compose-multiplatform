@@ -28,9 +28,7 @@ internal abstract class BaseGroovyExtension : FormatExtension() {
     ) {
 
         fun applyTo(recipient: BaseGroovyExtension.GrEclipseConfig) {
-            configFiles?.let { configFiles ->
-                config.configFile(*configFiles.toTypedArray())
-            }
+            configFiles?.toTypedArray()?.let(config::configFile)
 
             withP2Mirrors?.let(config::withP2Mirrors)
         }
@@ -42,9 +40,7 @@ internal abstract class BaseGroovyExtension : FormatExtension() {
 
         extension as BaseGroovyExtension
 
-        importOrder?.let { importOrder ->
-            extension.importOrder(*importOrder.toTypedArray())
-        }
+        importOrder?.toTypedArray()?.let(extension::importOrder)
 
         importOrderFile?.let(extension::importOrderFile)
         removeSemicolons?.takeIf { it }?.run { extension.removeSemicolons() }

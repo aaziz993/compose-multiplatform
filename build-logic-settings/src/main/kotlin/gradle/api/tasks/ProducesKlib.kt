@@ -5,7 +5,7 @@ package gradle.api.tasks
 import org.gradle.kotlin.dsl.withType
 import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
-import java.util.SortedSet
+
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -26,7 +26,7 @@ internal interface ProducesKlib<T : org.jetbrains.kotlin.gradle.internal.tasks.P
 @SerialName("ProducesKlib")
 internal data class ProducesKlibImpl(
     override val produceUnpackagedKlib: Boolean? = null,
-    override val dependsOn: SortedSet<String>? = null,
+    override val dependsOn: LinkedHashSet<String>? = null,
     override val onlyIf: Boolean? = null,
     override val doNotTrackState: String? = null,
     override val notCompatibleWithConfigurationCache: String? = null,
@@ -36,7 +36,7 @@ internal data class ProducesKlibImpl(
     override val description: String? = null,
     override val group: String? = null,
     override val mustRunAfter: Set<String>? = null,
-    override val finalizedBy: SortedSet<String>? = null,
+    override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
     override val name: String = ""
 ) : ProducesKlib<org.jetbrains.kotlin.gradle.internal.tasks.ProducesKlib>{

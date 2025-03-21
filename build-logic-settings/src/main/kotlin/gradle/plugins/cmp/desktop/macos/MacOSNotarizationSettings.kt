@@ -12,8 +12,8 @@ internal data class MacOSNotarizationSettings(
 ) {
 
     fun applyTo(recipient: MacOSNotarizationSettings) {
-        settings.appleID tryAssign appleID
-        settings.password tryAssign password
-        settings.teamID tryAssign teamID
+        recipient.appleID tryAssign appleID
+        recipient.password tryAssign password
+        recipient.teamID tryAssign teamID
     }
 }

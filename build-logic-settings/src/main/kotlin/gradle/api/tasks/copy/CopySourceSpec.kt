@@ -1,19 +1,21 @@
 package gradle.api.tasks.copy
 
+import kotlinx.serialization.DeserializationStrategy
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.SetSerializer
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 import org.gradle.api.Project
 import org.gradle.api.file.CopySourceSpec
+import org.gradle.internal.impldep.kotlinx.serialization.json.JsonContentPolymorphicSerializer
 
 /**
  * Specifies sources for a file copy.
  */
-internal interface CopySourceSpec<T: CopySourceSpec> {
-
-    /**
-     * Specifies source files or directories for a copy. The given paths are evaluated as per [ ][org.gradle.api.Project.files].
-     *
-     * @param sourcePaths Paths to source files for the copy
-     */
-    val from: Set<String>?
+internal interface CopySourceSpec<T : CopySourceSpec> {
 
     /**
      * Specifies the source files or directories for a copy and creates a child `CopySpec`. The given source
@@ -22,17 +24,29 @@ internal interface CopySourceSpec<T: CopySourceSpec> {
      * @param sourcePath Path to source for the copy
      * @param configureAction action for configuring the child CopySpec
      */
-    val fromSpec: FromSpec?
+    val from: @Serializable(with = FromSerializer::class) Any?
 
     context(Project)
+    @Suppress("UNCHECKED_CAST")
     fun applyTo(recipient: T) {
-        from?.let { from -> spec.from(*from.toTypedArray()) }
-        fromSpec?.let { fromSpec ->
-            spec.from(fromSpec.sourcePath) {
-                fromSpec.copySpec
+        when (val from = from) {
+            is String -> recipient.from(from)
+            is LinkedHashSet<*> -> recipient.from(*from.toTypedArray())
+            is FromSpec -> recipient.from(from.sourcePath) {
+                from.copySpec.applyTo(this)
             }
+
+            else -> Unit
         }
     }
 }
 
+internal object FromSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
 
+    override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
+        when (element) {
+            is JsonPrimitive -> String.serializer()
+            is JsonArray -> SetSerializer(String.serializer())
+            is JsonObject -> FromSpec.serializer()
+        }
+}

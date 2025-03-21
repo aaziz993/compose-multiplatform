@@ -116,9 +116,7 @@ internal interface JavaForkOptions : ProcessForkOptions {
         jvmArgs?.let(options::jvmArgs)
         setJvmArgs?.let(options::setJvmArgs)
 
-        bootstrapClasspath?.let { bootstrapClasspath ->
-            options.bootstrapClasspath(*bootstrapClasspath.toTypedArray())
-        }
+        bootstrapClasspath?.toTypedArray()?.let(options::bootstrapClasspath)
 
         setBootstrapClasspath?.let { files(*it.toTypedArray()) }?.let(options::setBootstrapClasspath)
 

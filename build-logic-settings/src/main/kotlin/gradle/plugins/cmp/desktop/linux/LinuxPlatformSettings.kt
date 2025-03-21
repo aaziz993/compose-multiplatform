@@ -12,7 +12,7 @@ internal data class LinuxPlatformSettings(
     override val iconFile: String? = null,
     override val packageVersion: String? = null,
     override val installationPath: String? = null,
-    override val fileAssociations: List<FileAssociation>? = null,
+    override val fileAssociations: Set<FileAssociation>? = null,
     val shortcut: Boolean? = null,
     val packageName: String? = null,
     val appRelease: String? = null,
@@ -22,20 +22,20 @@ internal data class LinuxPlatformSettings(
     val rpmLicenseType: String? = null,
     val debPackageVersion: String? = null,
     val rpmPackageVersion: String? = null,
-) : AbstractPlatformSettings() {
+) : AbstractPlatformSettings<LinuxPlatformSettings>() {
 
     context(Project)
-    fun applyTo(recipient: LinuxPlatformSettings) {
-        super.applyTo(settings)
+    override fun applyTo(recipient: LinuxPlatformSettings) {
+        super.applyTo(recipient)
 
-        settings::shortcut trySet shortcut
-        settings::packageName trySet packageName
-        settings::appRelease trySet appRelease
-        settings::appCategory trySet appCategory
-        settings::debMaintainer trySet debMaintainer
-        settings::menuGroup trySet menuGroup
-        settings::rpmLicenseType trySet rpmLicenseType
-        settings::debPackageVersion trySet debPackageVersion
-        settings::rpmPackageVersion trySet rpmPackageVersion
+        recipient::shortcut trySet shortcut
+        recipient::packageName trySet packageName
+        recipient::appRelease trySet appRelease
+        recipient::appCategory trySet appCategory
+        recipient::debMaintainer trySet debMaintainer
+        recipient::menuGroup trySet menuGroup
+        recipient::rpmLicenseType trySet rpmLicenseType
+        recipient::debPackageVersion trySet debPackageVersion
+        recipient::rpmPackageVersion trySet rpmPackageVersion
     }
 }

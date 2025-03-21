@@ -61,10 +61,7 @@ internal interface MavenArtifactRepository
         super<UrlArtifactRepository>._applyTo(recipient)
         super<AuthenticationSupported>._applyTo(recipient)
 
-        artifactUrls?.let { artifactUrls ->
-            recipient.artifactUrls(*artifactUrls.toTypedArray())
-        }
-
+        artifactUrls?.toTypedArray()?.let (recipient::artifactUrls)
         metadataSources?.applyTo(recipient.metadataSources)
 
         mavenContent?.let { mavenContent ->

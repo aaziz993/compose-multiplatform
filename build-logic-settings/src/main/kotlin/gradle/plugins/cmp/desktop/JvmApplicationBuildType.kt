@@ -11,6 +11,6 @@ internal data class JvmApplicationBuildType(
 
     context(Project)
     fun applyTo(recipient: JvmApplicationBuildType) {
-        proguard?.applyTo(buildType.proguard)
+        proguard?.applyTo(recipient.proguard)
     }
 }

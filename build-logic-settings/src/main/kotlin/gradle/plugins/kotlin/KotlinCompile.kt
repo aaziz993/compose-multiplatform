@@ -18,7 +18,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 @Serializable
 internal data class KotlinCompile(
-    override val dependsOn: SortedSet<String>? = null,
+    override val dependsOn: LinkedHashSet<String>? = null,
     override val onlyIf: Boolean? = null,
     override val doNotTrackState: String? = null,
     override val notCompatibleWithConfigurationCache: String? = null,
@@ -28,7 +28,7 @@ internal data class KotlinCompile(
     override val description: String? = null,
     override val group: String? = null,
     override val mustRunAfter: Set<String>? = null,
-    override val finalizedBy: SortedSet<String>? = null,
+    override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
     override val name: String = "",
     override val compilerOptions: KotlinJvmCompilerOptions? = null,
@@ -95,8 +95,10 @@ internal data class KotlinCompile(
         context(Project)
         fun applyTo(recipient: KotlinCompile.ClasspathSnapshotProperties) {
             properties.useClasspathSnapshot tryAssign useClasspathSnapshot
-            classpathSnapshot?.let(properties.classpathSnapshot::setFrom)
-            classpath?.let(properties.classpath::setFrom)
+            classpathSnapshot?.toTypedArray()?.let(properties.classpathSnapshot::from)
+setClasspathSnapshot?.let(properties.classpathSnapshot::setFrom)
+            classpath?.toTypedArray()?.let(properties.classpath::from)
+setClasspath?.let(properties.classpath::setFrom)
             properties.classpathSnapshotDir tryAssign classpathSnapshotDir?.let(layout.projectDirectory::dir)
         }
     }

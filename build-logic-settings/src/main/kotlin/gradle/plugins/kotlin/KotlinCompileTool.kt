@@ -54,15 +54,12 @@ internal interface KotlinCompileTool : PatternFilterable, Task {
 
         super<PatternFilterable>.applyTo(named)
 
-        sources?.let { sources ->
-            named.source(*sources.toTypedArray())
-        }
+        sources?.toTypedArray()?.let(named::source)
 
-        setSources?.let { setSources ->
-            named.setSource(*setSources.toTypedArray())
-        }
+        setSources?.toTypedArray()?.let(named::setSource)
 
-        libraries?.let(named.libraries::setFrom)
+        libraries?.toTypedArray()?.let(named.libraries::from)
+setLibraries?.let(named.libraries::setFrom)
         named.destinationDirectory tryAssign destinationDirectory?.let(layout.projectDirectory::dir)
     }
 
@@ -82,7 +79,7 @@ internal data class KotlinCompileToolImpl(
     override val setIncludes: Set<String>? = null,
     override val excludes: Set<String>? = null,
     override val setExcludes: Set<String>? = null,
-    override val dependsOn: SortedSet<String>? = null,
+    override val dependsOn: LinkedHashSet<String>? = null,
     override val onlyIf: Boolean? = null,
     override val doNotTrackState: String? = null,
     override val notCompatibleWithConfigurationCache: String? = null,
@@ -92,7 +89,7 @@ internal data class KotlinCompileToolImpl(
     override val description: String? = null,
     override val group: String? = null,
     override val mustRunAfter: Set<String>? = null,
-    override val finalizedBy: SortedSet<String>? = null,
+    override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
     override val name: String = ""
 ) : KotlinCompileTool

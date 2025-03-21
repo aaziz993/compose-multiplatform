@@ -22,7 +22,7 @@ import gradle.plugins.android.signing.SigningConfigImpl
 import gradle.plugins.android.signing.SigningConfigTransformingSerializer
 import gradle.plugins.android.test.TestCoverage
 import gradle.plugins.android.test.TestOptions
-import java.util.SortedSet
+
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -316,8 +316,8 @@ internal interface CommonExtension<
      * To learn more, read
      * [Combine multiple flavors](https://developer.android.com/studio/build/build-variants.html#flavor-dimensions).
      */
-    val flavorDimensions: SortedSet<String>?
-    val setFlavorDimensions: SortedSet<String>?
+    val flavorDimensions: LinkedHashSet<String>?
+    val setFlavorDimensions: LinkedHashSet<String>?
 
     /**
      * Specifies this project's resource prefix to Android Studio for editor features, such as Lint
@@ -549,9 +549,7 @@ internal interface CommonExtension<
         splits?.applyTo(android.splits)
         composeOptions?.applyTo(android.composeOptions)
 
-        flavorDimensions?.let {  flavorDimensions ->
-            android.flavorDimensions(*flavorDimensions.toTypedArray())
-        }
+        flavorDimensions?.toTypedArray()?.let(android::flavorDimensions)
 
         setFlavorDimensions?.act(android.flavorDimensionList::clear)?.let(android.flavorDimensionList::addAll)
         resourcePrefix?.let(android::resourcePrefix)

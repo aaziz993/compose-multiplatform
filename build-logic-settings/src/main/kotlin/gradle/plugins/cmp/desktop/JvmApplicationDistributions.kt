@@ -1,6 +1,7 @@
 package gradle.plugins.cmp.desktop
 
 import gradle.api.trySet
+import gradle.collection.act
 import gradle.plugins.cmp.desktop.linux.LinuxPlatformSettings
 import gradle.plugins.cmp.desktop.macos.JvmMacOSPlatformSettings
 import gradle.plugins.cmp.desktop.windows.WindowsPlatformSettings
@@ -18,21 +19,23 @@ internal data class JvmApplicationDistributions(
     override val vendor: String? = null,
     override val appResourcesRootDir: String? = null,
     override val licenseFile: String? = null,
-    val modules: List<String>? = null,
+    val modules: Set<String>? = null,
+    val setModules: Set<String>? = null,
     val includeAllModules: Boolean? = null,
     val linux: LinuxPlatformSettings? = null,
     val macOS: JvmMacOSPlatformSettings? = null,
     val windows: WindowsPlatformSettings? = null,
-) : AbstractDistributions() {
+) : AbstractDistributions<JvmApplicationDistributions>() {
 
     context(Project)
-    fun applyTo(recipient: JvmApplicationDistributions) {
-        super.applyTo(distributions)
+    override fun applyTo(recipient: JvmApplicationDistributions) {
+        super.applyTo(recipient)
 
-        modules?.let(distributions.modules::addAll)
-        distributions::includeAllModules trySet includeAllModules
-        linux?.applyTo(distributions.linux)
-        macOS?.applyTo(distributions.macOS)
-        windows?.applyTo(distributions.windows)
+        modules?.let(recipient.modules::addAll)
+        setModules?.act(recipient.modules::clear)?.let(recipient.modules::addAll)
+        recipient::includeAllModules trySet includeAllModules
+        linux?.applyTo(recipient.linux)
+        macOS?.applyTo(recipient.macOS)
+        windows?.applyTo(recipient.windows)
     }
 }

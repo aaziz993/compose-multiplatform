@@ -3,6 +3,7 @@ package gradle.serialization.serializer
 import gradle.serialization.getPolymorphicSerializer
 import kotlin.reflect.KClass
 import kotlinx.serialization.DeserializationStrategy
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.JsonContentPolymorphicSerializer
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.jsonObject
@@ -15,8 +16,8 @@ internal open class JsonPolymorphicSerializer<T : Any>(
 
     override fun selectDeserializer(element: JsonElement): DeserializationStrategy<T> {
         val type = element.jsonObject[classDiscriminator]?.jsonPrimitive?.content
-            ?: error("Class discriminator '$classDiscriminator' not found in: $element")
+            ?: throw SerializationException("Class discriminator '$classDiscriminator' not found in: $element")
         return baseClass.getPolymorphicSerializer(type)
-            ?: error("Polymorphic serializer not found for: $element")
+            ?: throw SerializationException("Polymorphic serializer not found for: $element")
     }
 }

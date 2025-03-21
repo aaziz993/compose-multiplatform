@@ -2,6 +2,7 @@ package gradle.plugins.cmp.desktop.macos
 
 import gradle.plugins.cmp.desktop.FileAssociation
 import kotlinx.serialization.Serializable
+import org.jetbrains.compose.desktop.application.dsl.NativeApplicationMacOSPlatformSettings
 
 @Serializable
 internal data class NativeApplicationMacOSPlatformSettings(
@@ -17,5 +18,5 @@ internal data class NativeApplicationMacOSPlatformSettings(
     override val iconFile: String? = null,
     override val packageVersion: String? = null,
     override val installationPath: String? = null,
-    override val fileAssociations: List<FileAssociation>? = null,
-) : AbstractMacOSPlatformSettings()
+    override val fileAssociations: Set<FileAssociation>? = null,
+) : AbstractMacOSPlatformSettings<NativeApplicationMacOSPlatformSettings>()

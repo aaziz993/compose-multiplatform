@@ -13,8 +13,6 @@ internal abstract class SourceTask<T : SourceTask> : ConventionTask<T>(), Patter
         super<ConventionTask>.applyTo(recipient)
         super<PatternFilterable>.applyTo(recipient)
 
-        sourceFiles?.let { sourceFiles ->
-            recipient.source(*sourceFiles.toTypedArray())
-        }
+        sourceFiles?.toTypedArray()?.let(recipient::setSource)
     }
 }

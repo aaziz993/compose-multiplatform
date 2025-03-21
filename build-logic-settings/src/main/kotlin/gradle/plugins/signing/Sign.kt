@@ -15,7 +15,7 @@ import org.gradle.plugins.signing.Sign
 
 @Serializable
 internal data class Sign(
-    override val dependsOn: SortedSet<String>? = null,
+    override val dependsOn: LinkedHashSet<String>? = null,
     override val onlyIf: Boolean? = null,
     override val doNotTrackState: String? = null,
     override val notCompatibleWithConfigurationCache: String? = null,
@@ -25,7 +25,7 @@ internal data class Sign(
     override val description: String? = null,
     override val group: String? = null,
     override val mustRunAfter: Set<String>? = null,
-    override val finalizedBy: SortedSet<String>? = null,
+    override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
     override val name: String = "",
     val required: Boolean? = null,
@@ -42,29 +42,19 @@ internal data class Sign(
         with(project) {
             super.applyTo(named)
 
-            signTasks?.flatMap(tasks::getByNameOrAll)?.let { tasks ->
-                signing.sign(*tasks.toTypedArray())
-            }
+            signTasks?.flatMap(tasks::getByNameOrAll)?.toTypedArray()?.let(signing::sign)
 
-            signConfigurations?.flatMap(configurations::getByNameOrAll)?.let { configurations ->
-                signing.sign(*configurations.toTypedArray())
-            }
+            signConfigurations?.flatMap(configurations::getByNameOrAll)?.toTypedArray()?.let(signing::sign)
 
-            signPublications?.flatMap(publishing.publications::getByNameOrAll)?.let { publications ->
-                signing.sign(*publications.toTypedArray())
-            }
+            signPublications?.flatMap(publishing.publications::getByNameOrAll)?.toTypedArray()?.let(signing::sign)
 
             val allArtifacts = configurations.flatMap(Configuration::getAllArtifacts)
 
             signArtifacts?.mapNotNull { signArtifact ->
                 allArtifacts.find { artifact -> artifact.classifier == signArtifact }
-            }?.let { signArtifacts ->
-                signing.sign(*signArtifacts.toTypedArray())
-            }
+            }?.toTypedArray()?.let(signing::sign)
 
-            signFiles?.map(::file)?.let { files ->
-                signing.sign(*files.toTypedArray())
-            }
+            signFiles?.map(::file)?.toTypedArray()?.let(signing::sign)
 
             signClassifierFiles?.forEach { (classifier, files) ->
                 signing.sign(classifier, *files.map(::file).toTypedArray())

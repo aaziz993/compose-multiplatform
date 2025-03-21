@@ -7,9 +7,11 @@ import gradle.collection.SerializableAnyMap
 import gradle.serialization.serializer.JsonPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
 import groovy.lang.MissingPropertyException
-import java.util.SortedSet
+
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import org.gradle.api.DomainObjectCollection
+import org.gradle.api.NamedDomainObjectCollection
 import org.gradle.api.Project
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.TaskCollection
@@ -148,7 +150,7 @@ internal interface Task<T : org.gradle.api.Task> : ProjectNamed<T> {
      *
      * @param dependsOnTasks The set of task paths.
      */
-    val dependsOn: SortedSet<String>?
+    val dependsOn: LinkedHashSet<String>?
 
     /**
      *
@@ -299,7 +301,7 @@ internal interface Task<T : org.gradle.api.Task> : ProjectNamed<T> {
      *
      * @return the task object this method is applied to
      */
-    val finalizedBy: SortedSet<String>?
+    val finalizedBy: LinkedHashSet<String>?
 
     /**
      *
@@ -346,9 +348,9 @@ internal interface Task<T : org.gradle.api.Task> : ProjectNamed<T> {
 }
 
 context(Project)
-internal fun <T : org.gradle.api.Task> Task<T>.applyTo(named: TaskCollection<T>) =
-    applyTo(named) { name, action ->
-        tasks.register(name, named.elementType(), action)
+internal fun <T : org.gradle.api.Task> Task<T>.applyTo(recipient: TaskCollection<out T>) =
+    applyTo(recipient as DomainObjectCollection<out T>) { name, action ->
+        tasks.register(name, recipient.elementType(), action)
     }
 
 private object TaskSerializer : JsonPolymorphicSerializer<Task<*>>(
@@ -363,7 +365,7 @@ internal object TaskTransformingSerializer : KeyTransformingSerializer<Task<*>>(
 @Serializable
 @SerialName("Task")
 internal data class TaskImpl(
-    override val dependsOn: SortedSet<String>? = null,
+    override val dependsOn: LinkedHashSet<String>? = null,
     override val onlyIf: Boolean? = null,
     override val doNotTrackState: String? = null,
     override val notCompatibleWithConfigurationCache: String? = null,
@@ -373,7 +375,7 @@ internal data class TaskImpl(
     override val description: String? = null,
     override val group: String? = null,
     override val mustRunAfter: Set<String>? = null,
-    override val finalizedBy: SortedSet<String>? = null,
+    override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
     override val name: String = "",
 ) : Task<org.gradle.api.Task> {

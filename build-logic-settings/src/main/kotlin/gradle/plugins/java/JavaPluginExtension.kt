@@ -5,6 +5,7 @@ import gradle.accessors.libs
 import gradle.accessors.settings
 import gradle.accessors.version
 import gradle.accessors.versions
+import gradle.api.applyTo
 import gradle.api.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.JavaVersion
@@ -21,7 +22,6 @@ import org.gradle.api.Project
  */
 @Serializable
 internal data class JavaPluginExtension(
-
     /**
      * Sets the source compatibility used for compiling Java sources.
      *
@@ -33,7 +33,6 @@ internal data class JavaPluginExtension(
      * @see .toolchain
      */
     val sourceCompatibility: JavaVersion? = null,
-
     /**
      * Sets the target compatibility used for compiling Java sources.
      *
@@ -45,7 +44,6 @@ internal data class JavaPluginExtension(
      * @see .toolchain
      */
     val targetCompatibility: JavaVersion? = null,
-
     /**
      * If this method is called, Gradle will not automatically try to fetch
      * dependencies which have a JVM version compatible with the target compatibility
@@ -59,7 +57,6 @@ internal data class JavaPluginExtension(
      * @since 5.3
     </P> */
     val disableAutoTargetJvm: Boolean? = null,
-
     /**
      * Adds a task `javadocJar` that will package the output of the `javadoc` task in a JAR with classifier `javadoc`.
      * <P>
@@ -75,7 +72,6 @@ internal data class JavaPluginExtension(
      * @since 6.0
     </P> */
     val withJavadocJar: Boolean? = null,
-
     /**
      * Adds a task `sourcesJar` that will package the Java sources of the main [SourceSet][org.gradle.api.tasks.SourceSet] in a JAR with classifier `sources`.
      * <P>
@@ -91,7 +87,6 @@ internal data class JavaPluginExtension(
      * @since 6.0
     </P> */
     val withSourcesJar: Boolean? = null,
-
     /**
      * Configure the module path handling for tasks that have a 'classpath' as input. The module classpath handling defines
      * to determine for each entry if it is passed to Java tools using '-classpath' or '--module-path'.
@@ -99,7 +94,6 @@ internal data class JavaPluginExtension(
      * @since 6.4
      */
     val modularity: ModularitySpec? = null,
-
     /**
      * Gets the project wide toolchain requirements that will be used for tasks requiring a tool from the toolchain (e.g. [org.gradle.api.tasks.compile.JavaCompile]).
      *
@@ -110,7 +104,6 @@ internal data class JavaPluginExtension(
      * @since 6.7
      */
     val toolchain: JavaToolchainSpec? = null,
-
     /**
      * Configure the dependency resolution consistency for this Java project.
      *
@@ -119,25 +112,22 @@ internal data class JavaPluginExtension(
      * @since 6.8
      */
     val consistentResolution: JavaResolutionConsistency? = null,
-
+    val sourceSets: Set<SourceSet>? = null,
     /**
      * Sets a file pointing to the root directory supposed to be used for all docs.
      * @since 7.1
      */
     val docsDir: String? = null,
-
     /**
      * Sets a file pointing to the root directory of the test results.
      * @since 7.1
      */
     val testResultsDir: String? = null,
-
     /**
      * Sets a file pointing to the root directory to be used for reports.
      * @since 7.1
      */
     val testReportDir: String? = null,
-
     /**
      * Creates a new instance of a [Manifest].
      * @since 7.1
@@ -172,6 +162,10 @@ internal data class JavaPluginExtension(
 
             consistentResolution?.let { consistentResolution ->
                 java.consistentResolution(consistentResolution::applyTo)
+            }
+
+            sourceSets?.forEach { sourceSet ->
+                sourceSet.applyTo(java.sourceSets)
             }
 
             java.docsDir tryAssign docsDir?.let(layout.projectDirectory::dir)

@@ -64,7 +64,8 @@ internal data class SqlDelightDatabase(
     fun applyTo(recipient: SqlDelightDatabase) {
         database.packageName tryAssign packageName
         database.schemaOutputDirectory tryAssign schemaOutputDirectory?.let(layout.projectDirectory::dir)
-        srcDirs?.let(database.srcDirs::setFrom)
+        srcDirs?.toTypedArray()?.let(database.srcDirs::from)
+setSrcDirs?.let(database.srcDirs::setFrom)
         database.deriveSchemaFromMigrations tryAssign deriveSchemaFromMigrations
         database.verifyMigrations tryAssign verifyMigrations
         database.verifyDefinitions tryAssign verifyDefinitions

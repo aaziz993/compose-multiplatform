@@ -48,27 +48,19 @@ internal class JUnitPlatformOptions(
     override fun applyTo(recipient: org.gradle.api.tasks.testing.TestFrameworkOptions) {
         options as JUnitPlatformOptions
 
-        includeEngines?.let { includeEngines ->
-            options.includeEngines(*includeEngines.toTypedArray())
-        }
+        includeEngines?.toTypedArray()?.let(options::includeEngines)
 
         setIncludeEngines?.let(options::setIncludeEngines)
 
-        excludeEngines?.let { excludeEngines ->
-            options.excludeEngines(*excludeEngines.toTypedArray())
-        }
+        excludeEngines?.toTypedArray()?.let(options::excludeEngines)
 
         setExcludeEngines?.let(options::setExcludeEngines)
 
-        includeTags?.let { includeTags ->
-            options.includeTags(*includeTags.toTypedArray())
-        }
+        includeTags?.toTypedArray()?.let(options::includeTags)
 
         setIncludeTags?.let(options::setIncludeTags)
 
-        excludeTags?.let { excludeTags ->
-            options.excludeTags(*excludeTags.toTypedArray())
-        }
+        excludeTags?.toTypedArray()?.let(options::excludeTags)
 
         setExcludeTags?.let(options::setExcludeTags)
     }

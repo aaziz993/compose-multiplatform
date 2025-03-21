@@ -1,10 +1,8 @@
 package gradle.api.tasks.compile
 
-import gradle.accessors.files
 import gradle.api.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import org.gradle.api.file.FileCollection
 import org.gradle.api.tasks.compile.CompileOptions
 
 /**
@@ -40,25 +38,25 @@ internal data class CompileOptions(
     context(Project)
     @Suppress("UnstableApiUsage")
     fun applyTo(recipient: CompileOptions) {
-        failOnError?.let(options::setFailOnError)
-        verbose?.let(options::setVerbose)
-        listFiles?.let(options::setListFiles)
-        deprecation?.let(options::setDeprecation)
-        warnings?.let(options::setWarnings)
-        encoding?.let(options::setEncoding)
-        debug?.let(options::setDebug)
-        fork?.let(options::setFork)
-        bootstrapClasspath?.let(::files)?.let(options::setBootstrapClasspath)
-        extensionDirs?.let(options::setExtensionDirs)
-        compilerArgs?.let(options::setCompilerArgs)
-        incremental?.let(options::setIncremental)
-        sourcepath?.let(::files).let(options::setSourcepath)
-        annotationProcessorPath?.let(::files)?.let(options::setAnnotationProcessorPath)
-        options.incrementalAfterFailure tryAssign incrementalAfterFailure
-        options.javaModuleVersion tryAssign javaModuleVersion
-        options.javaModuleMainClass tryAssign javaModuleMainClass
-        options.release tryAssign release
-        options.generatedSourceOutputDirectory tryAssign generatedSourceOutputDirectory?.let(layout.projectDirectory::dir)
-        options.headerOutputDirectory tryAssign headerOutputDirectory?.let(layout.projectDirectory::dir)
+        failOnError?.let(recipient::setFailOnError)
+        verbose?.let(recipient::setVerbose)
+        listFiles?.let(recipient::setListFiles)
+        deprecation?.let(recipient::setDeprecation)
+        warnings?.let(recipient::setWarnings)
+        encoding?.let(recipient::setEncoding)
+        debug?.let(recipient::setDebug)
+        fork?.let(recipient::setFork)
+        bootstrapClasspath?.toTypedArray()?.let(::files)?.let(recipient::setBootstrapClasspath)
+        extensionDirs?.let(recipient::setExtensionDirs)
+        compilerArgs?.let(recipient::setCompilerArgs)
+        incremental?.let(recipient::setIncremental)
+        sourcepath?.toTypedArray()?.let(::files).let(recipient::setSourcepath)
+        annotationProcessorPath?.toTypedArray()?.let(::files)?.let(recipient::setAnnotationProcessorPath)
+        recipient.incrementalAfterFailure tryAssign incrementalAfterFailure
+        recipient.javaModuleVersion tryAssign javaModuleVersion
+        recipient.javaModuleMainClass tryAssign javaModuleMainClass
+        recipient.release tryAssign release
+        recipient.generatedSourceOutputDirectory tryAssign generatedSourceOutputDirectory?.let(layout.projectDirectory::dir)
+        recipient.headerOutputDirectory tryAssign headerOutputDirectory?.let(layout.projectDirectory::dir)
     }
 }

@@ -2,7 +2,7 @@ package gradle.plugins.android
 
 import com.android.build.api.dsl.PostProcessing
 import gradle.api.trySet
-import java.util.SortedSet
+
 import kotlinx.serialization.Serializable
 
 /**
@@ -37,22 +37,11 @@ internal data class PostProcessing(
         recipient::isObfuscate trySet isObfuscate
         recipient::isOptimizeCode trySet isOptimizeCode
 
-        proguardFiles?.let { proguardFiles ->
-            recipient.proguardFiles(*proguardFiles.toTypedArray())
-        }
-
+        proguardFiles?.toTypedArray()?.let(recipient::proguardFiles)
         setProguardFiles?.let(recipient::setProguardFiles)
-
-        testProguardFiles?.let { testProguardFiles ->
-            recipient.testProguardFiles(*testProguardFiles.toTypedArray())
-        }
-
+        testProguardFiles?.toTypedArray()?.let(recipient::testProguardFiles)
         testProguardFiles?.let(recipient::setTestProguardFiles)
-
-        consumerProguardFiles?.let { consumerProguardFiles ->
-            recipient.consumerProguardFiles(*consumerProguardFiles.toTypedArray())
-        }
-
+        consumerProguardFiles?.toTypedArray()?.let(recipient::consumerProguardFiles)
         consumerProguardFiles?.let(recipient::setConsumerProguardFiles)
     }
 }

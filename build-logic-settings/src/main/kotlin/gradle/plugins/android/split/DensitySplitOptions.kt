@@ -19,9 +19,7 @@ internal data class DensitySplitOptions(
         super<SplitOptions>.applyTo(recipient)
         super<DensitySplit>.applyTo(recipient)
 
-        compatibleScreens?.let { compatibleScreens ->
-            recipient.compatibleScreens(*compatibleScreens.toTypedArray())
-        }
+        compatibleScreens?.toTypedArray()?.let(recipient::compatibleScreens)
 
         setCompatibleScreens?.act(recipient.compatibleScreens::clear)?.let(recipient.compatibleScreens::addAll)
     }

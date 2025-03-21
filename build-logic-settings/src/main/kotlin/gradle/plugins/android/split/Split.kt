@@ -6,7 +6,7 @@ import gradle.api.trySet
 /**
  *  Base data representing how an APK should be split for a given dimension (density, abi).
  */
-internal interface Split<T: Split> {
+internal interface Split<T : Split> {
 
     /** Whether to split in this dimension. */
     val isEnable: Boolean?
@@ -27,15 +27,8 @@ internal interface Split<T: Split> {
 
     fun applyTo(recipient: T) {
         recipient::isEnable trySet isEnable
-
-        includes?.let { includes ->
-            recipient.include(* includes.toTypedArray())
-        }
-
-        excludes?.let { excludes ->
-            recipient.exclude(* excludes.toTypedArray())
-        }
-
+        includes?.toTypedArray()?.let(recipient::include)
+        excludes?.toTypedArray()?.let(recipient::exclude)
         reset?.takeIf { it }?.run { recipient.reset() }
     }
 }

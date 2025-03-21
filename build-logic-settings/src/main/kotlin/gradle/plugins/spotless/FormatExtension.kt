@@ -68,60 +68,58 @@ internal abstract class FormatExtension {
 
     context(Project)
     open fun applyTo(recipient: com.diffplug.gradle.spotless.FormatExtension) {
-        lineEnding?.let(extension::setLineEndings)
-        ratchetFrom?.let(extension::setRatchetFrom)
-        excludeSteps?.forEach(extension::ignoreErrorForStep)
-        excludePaths?.forEach(extension::ignoreErrorForPath)
-        encoding?.let(extension::setEncoding)
-        target?.let { extension.target(*it.toTypedArray()) }
-        targetExclude?.let { targetExclude ->
-            extension.targetExclude(*targetExclude.toTypedArray())
-        }
-        targetExcludeIfContentContains?.let(extension::targetExcludeIfContentContains)
-        targetExcludeIfContentContainsRegex?.let(extension::targetExcludeIfContentContainsRegex)
-        replace?.forEach { (name, original, replacement) -> extension.replace(name, original, replacement) }
-        replaceRegex?.forEach { (name, regex, replacement) -> extension.replaceRegex(name, regex, replacement) }
-        trimTrailingWhitespace?.takeIf { it }?.run { extension.trimTrailingWhitespace() }
-        endWithNewline?.takeIf { it }?.run { extension.endWithNewline() }
-        indentWithSpaces?.let(extension::indentWithSpaces)
-        indentIfWithSpaces?.takeIf { it }?.let { extension.indentWithSpaces() }
-        indentWithTabs?.let(extension::indentWithTabs)
-        indentIfWithTabs?.takeIf { it }?.run { extension.indentWithTabs() }
-        nativeCmd?.forEach { (name, pathToExe, arguments) -> extension.nativeCmd(name, pathToExe, arguments) }
+        lineEnding?.let(recipient::setLineEndings)
+        ratchetFrom?.let(recipient::setRatchetFrom)
+        excludeSteps?.forEach(recipient::ignoreErrorForStep)
+        excludePaths?.forEach(recipient::ignoreErrorForPath)
+        encoding?.let(recipient::setEncoding)
+        target?.toTypedArray().let(recipient::target)
+        targetExclude?.toTypedArray()?.let(recipient::targetExclude)
+        targetExcludeIfContentContains?.let(recipient::targetExcludeIfContentContains)
+        targetExcludeIfContentContainsRegex?.let(recipient::targetExcludeIfContentContainsRegex)
+        replace?.forEach { (name, original, replacement) -> recipient.replace(name, original, replacement) }
+        replaceRegex?.forEach { (name, regex, replacement) -> recipient.replaceRegex(name, regex, replacement) }
+        trimTrailingWhitespace?.takeIf { it }?.run { recipient.trimTrailingWhitespace() }
+        endWithNewline?.takeIf { it }?.run { recipient.endWithNewline() }
+        indentWithSpaces?.let(recipient::indentWithSpaces)
+        indentIfWithSpaces?.takeIf { it }?.let { recipient.indentWithSpaces() }
+        indentWithTabs?.let(recipient::indentWithTabs)
+        indentIfWithTabs?.takeIf { it }?.run { recipient.indentWithTabs() }
+        nativeCmd?.forEach { (name, pathToExe, arguments) -> recipient.nativeCmd(name, pathToExe, arguments) }
         licenseHeader?.let { license ->
             license.applyTo(
-                license.header?.let { extension.licenseHeader(it, license.delimiter) }
-                    ?: extension.licenseHeader(license.headerFile!!, license.delimiter),
+                license.header?.let { recipient.licenseHeader(it, license.delimiter) }
+                    ?: recipient.licenseHeader(license.headerFile!!, license.delimiter),
             )
         }
         prettier?.let { prettier ->
-            extension.prettier(prettier.devDependencies)
+            recipient.prettier(prettier.devDependencies)
         }
 
         biome?.let { biome ->
             biome.applyTo(
-                biome.version?.resolveVersion()?.let(extension::biome) ?: extension.biome(),
+                biome.version?.resolveVersion()?.let(recipient::biome) ?: recipient.biome(),
             )
         }
 
         clangFormat?.let { clangFormat ->
             clangFormat.applyTo(
-                clangFormat.version?.resolveVersion()?.let(extension::clangFormat)
-                    ?: extension.clangFormat(),
+                clangFormat.version?.resolveVersion()?.let(recipient::clangFormat)
+                    ?: recipient.clangFormat(),
             )
         }
 
         eclipseWtp?.let { eclipseWtp ->
             eclipseWtp.applyTo(
                 (eclipseWtp.version?.resolveVersion() ?: settings.libs.versions.version("eclipseWtp"))
-                    ?.let { extension.eclipseWtp(eclipseWtp.type, it) }
-                    ?: extension.eclipseWtp(eclipseWtp.type),
+                    ?.let { recipient.eclipseWtp(eclipseWtp.type, it) }
+                    ?: recipient.eclipseWtp(eclipseWtp.type),
             )
         }
-        toggleOffOnRegex?.let(extension::toggleOffOnRegex)
-        toggleOffOn?.let { (off, on) -> extension.toggleOffOn(off, on) }
-        toggleIfOffOn?.takeIf { it }?.run { extension.toggleOffOn() }
-        toggleOffOnDisable?.takeIf { it }?.run { extension.toggleOffOnDisable() }
+        toggleOffOnRegex?.let(recipient::toggleOffOnRegex)
+        toggleOffOn?.let { (off, on) -> recipient.toggleOffOn(off, on) }
+        toggleIfOffOn?.takeIf { it }?.run { recipient.toggleOffOn() }
+        toggleOffOnDisable?.takeIf { it }?.run { recipient.toggleOffOnDisable() }
     }
 
     context(Project)
@@ -135,8 +133,8 @@ internal abstract class FormatExtension {
     ) {
 
         fun applyTo(recipient: com.diffplug.gradle.spotless.FormatExtension.ClangFormatConfig) {
-            pathToExe?.let(format::pathToExe)
-            style?.let(format::style)
+            pathToExe?.let(recipient::pathToExe)
+            style?.let(recipient::style)
         }
     }
 
@@ -148,7 +146,7 @@ internal abstract class FormatExtension {
     ) {
 
         fun applyTo(recipient: com.diffplug.gradle.spotless.FormatExtension.EclipseWtpConfig) {
-            settingsFiles?.let { eclipse.configFile(*it.toTypedArray()) }
+            settingsFiles?.toTypedArray()?.let(recipient::configFile)
         }
     }
 
@@ -165,11 +163,11 @@ internal abstract class FormatExtension {
     ) {
 
         fun applyTo(recipient: com.diffplug.gradle.spotless.FormatExtension.LicenseHeaderConfig) {
-            name?.let(license::named)
-            contentPattern?.let(license::onlyIfContentMatches)
-            yearSeparator?.let(license::yearSeparator)
-            skipLinesMatching?.let(license::skipLinesMatching)
-            updateYearWithLatest?.let(license::updateYearWithLatest)
+            name?.let(recipient::named)
+            contentPattern?.let(recipient::onlyIfContentMatches)
+            yearSeparator?.let(recipient::yearSeparator)
+            skipLinesMatching?.let(recipient::skipLinesMatching)
+            updateYearWithLatest?.let(recipient::updateYearWithLatest)
         }
     }
 

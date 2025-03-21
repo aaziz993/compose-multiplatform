@@ -95,7 +95,8 @@ internal data class Service(
         service.packageName tryAssign packageName
         service.requiresOptInAnnotation tryAssign requiresOptInAnnotation
         service.schemaFile tryAssign schemaFile?.let(::file)
-        schemaFiles?.let(service.schemaFiles::setFrom)
+        schemaFiles?.toTypedArray()?.let(service.schemaFiles::from)
+setSchemaFiles?.let(service.schemaFiles::setFrom)
         service.sealedClassesForEnumsMatching tryAssign sealedClassesForEnumsMatching
         service.sourceFolder tryAssign sourceFolder
         service.testDir tryAssign testDir?.let(layout.projectDirectory::dir)

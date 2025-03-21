@@ -89,7 +89,7 @@ internal interface ApiValidationExtension {
 
     context(Project)
     @OptIn(ExperimentalBCVApi::class)
-    fun applyTo() {
+    fun applyTo()= pluginManager.withPlugin("binary.compatibility.validator") {
         apiValidation::validationDisabled trySet validationDisabled
         ignoredPackages?.let(apiValidation.ignoredPackages::addAll)
         apiValidation::ignoredPackages trySet setIgnoredPackages?.toMutableSet()

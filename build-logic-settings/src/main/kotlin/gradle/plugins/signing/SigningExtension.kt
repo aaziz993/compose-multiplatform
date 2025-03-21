@@ -161,37 +161,19 @@ internal abstract class SigningExtension {
             signing.isRequired = required ?: !version.toString().toVersion().isPreRelease
             useGpgCmd?.takeIf { it }?.run { signing.useGpgCmd() }
 
-            useInMemoryPgpKeys?.let { (defaultKeyId, defaultSecretKey, defaultPassword) ->
-                signing.useInMemoryPgpKeys(
-                    defaultKeyId?.resolveValue()?.toString(),
-                    defaultSecretKey?.resolveValue()?.toString(),
-                    defaultPassword?.resolveValue()?.toString(),
-                )
-            }
+            useInMemoryPgpKeys?.toTypedArray()?.let(signing::sign)
 
-            signTasks?.flatMap(tasks::getByNameOrAll)?.let { tasks ->
-                signing.sign(*tasks.toTypedArray())
-            }
+            signConfigurations?.flatMap(configurations::getByNameOrAll)?.toTypedArray()?.let(signing::sign)
 
-            signConfigurations?.flatMap(configurations::getByNameOrAll)?.let { configurations ->
-                signing.sign(*configurations.toTypedArray())
-            }
-
-            signPublications?.flatMap(publishing.publications::getByNameOrAll)?.let { publications ->
-                signing.sign(*publications.toTypedArray())
-            }
+            signPublications?.flatMap(publishing.publications::getByNameOrAll)?.toTypedArray()?.let(signing::sign)
 
             val allArtifacts = configurations.flatMap(Configuration::getAllArtifacts)
 
             signArtifacts?.mapNotNull { signArtifact ->
                 allArtifacts.find { artifact -> artifact.classifier == signArtifact }
-            }?.let { signArtifacts ->
-                signing.sign(*signArtifacts.toTypedArray())
-            }
+            }?.toTypedArray()?.let(signing::sign)
 
-            signFiles?.map(::file)?.let { files ->
-                signing.sign(*files.toTypedArray())
-            }
+            signFiles?.map(::file)?.toTypedArray()?.let(signing::sign)
 
             signClassifierFiles?.forEach { (classifier, files) ->
                 signing.sign(classifier, *files.map(::file).toTypedArray())

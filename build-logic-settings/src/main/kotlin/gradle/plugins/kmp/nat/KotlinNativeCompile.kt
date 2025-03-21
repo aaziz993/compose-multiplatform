@@ -17,7 +17,7 @@ internal data class KotlinNativeCompile(
     override val compilerPluginOptions: CompilerPluginOptions? = null,
     override val compilerPluginClasspath: List<String>? = null,
     override val kotlinPluginData: KotlinCompilerPluginData? = null,
-    override val dependsOn: SortedSet<String>? = null,
+    override val dependsOn: LinkedHashSet<String>? = null,
     override val onlyIf: Boolean? = null,
     override val doNotTrackState: String? = null,
     override val notCompatibleWithConfigurationCache: String? = null,
@@ -27,7 +27,7 @@ internal data class KotlinNativeCompile(
     override val description: String? = null,
     override val group: String? = null,
     override val mustRunAfter: Set<String>? = null,
-    override val finalizedBy: SortedSet<String>? = null,
+    override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
     override val name: String = "",
     override val produceUnpackagedKlib: Boolean? = null,
@@ -54,7 +54,8 @@ internal data class KotlinNativeCompile(
 
         named as KotlinNativeCompile
 
-        commonSources?.let(named.commonSources::setFrom)
+        commonSources?.toTypedArray()?.let(named.commonSources::from)
+setCommonSources?.let(named.commonSources::setFrom)
     }
 
     context(Project)

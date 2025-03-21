@@ -45,8 +45,8 @@ internal interface BaseExtension<
 
     val buildToolsVersion: String?
 
-    val flavorDimensions: SortedSet<String>?
-    val setFlavorDimensions: SortedSet<String>?
+    val flavorDimensions: LinkedHashSet<String>?
+    val setFlavorDimensions: LinkedHashSet<String>?
 
     val aaptOptions: AaptOptions?
 
@@ -114,9 +114,7 @@ internal interface BaseExtension<
             ?.let(android::compileSdkVersion)
         buildToolsVersion?.let(android::buildToolsVersion)
 
-        flavorDimensions?.let { flavorDimensions ->
-            android.flavorDimensions(*flavorDimensions.toTypedArray())
-        }
+        flavorDimensions?.toTypedArray()?.let(android::flavorDimensions)
 
         aaptOptions?.applyTo(android.aaptOptions)
         externalNativeBuild?.applyTo(android.externalNativeBuild)
@@ -127,9 +125,7 @@ internal interface BaseExtension<
         splits?.applyTo(android.splits)
         android::generatePureSplits trySet generatePureSplits
 
-        flavorDimensions?.let {  flavorDimensions ->
-            android.flavorDimensions(*flavorDimensions.toTypedArray())
-        }
+        flavorDimensions?.toTypedArray()?.let(android::flavorDimensions)
 
         setFlavorDimensions?.act(android.flavorDimensionList::clear)?.let(android.flavorDimensionList::addAll)
         resourcePrefix?.let(android::resourcePrefix)

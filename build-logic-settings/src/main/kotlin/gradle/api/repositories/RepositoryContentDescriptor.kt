@@ -97,31 +97,29 @@ internal interface RepositoryContentDescriptor : InclusiveRepositoryContentDescr
 
     @Suppress("UnstableApiUsage")
     override fun applyTo(recipient: org.gradle.api.artifacts.repositories.RepositoryContentDescriptor) {
-        super.applyTo(descriptor)
+        super.applyTo(recipient)
 
-        excludeGroups?.forEach(descriptor::excludeGroup)
-        excludeGroupsAndSubgroups?.forEach(descriptor::excludeGroupAndSubgroups)
-        excludeGroupByRegexes?.forEach(descriptor::excludeGroupByRegex)
+        excludeGroups?.forEach(recipient::excludeGroup)
+        excludeGroupsAndSubgroups?.forEach(recipient::excludeGroupAndSubgroups)
+        excludeGroupByRegexes?.forEach(recipient::excludeGroupByRegex)
 
         excludeModules?.forEach { (group, moduleName) ->
-            descriptor.excludeModule(group, moduleName)
+            recipient.excludeModule(group, moduleName)
         }
 
         excludeModulesByRegexes?.forEach { (group, moduleName) ->
-            descriptor.excludeModuleByRegex(group, moduleName)
+            recipient.excludeModuleByRegex(group, moduleName)
         }
 
         excludeVersions?.forEach { (group, moduleName, version) ->
-            descriptor.excludeVersion(group, moduleName, version)
+            recipient.excludeVersion(group, moduleName, version)
         }
 
         excludeVersionsByRegexes?.forEach { (group, moduleName, version) ->
-            descriptor.excludeVersionByRegex(group, moduleName, version)
+            recipient.excludeVersionByRegex(group, moduleName, version)
         }
 
-        notForConfigurations?.let { notForConfigurations ->
-            descriptor.notForConfigurations(*notForConfigurations.toTypedArray())
-        }
+        notForConfigurations?.toTypedArray()?.let(recipient::notForConfigurations)
     }
 }
 

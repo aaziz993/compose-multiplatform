@@ -10,7 +10,7 @@ import gradle.api.trySet
 import org.gradle.api.Project
 import org.jetbrains.compose.desktop.application.dsl.AbstractDistributions
 
-internal abstract class AbstractDistributions {
+internal abstract class AbstractDistributions<T : AbstractDistributions> {
 
     abstract val outputBaseDir: String?
     abstract val packageName: String?
@@ -22,15 +22,15 @@ internal abstract class AbstractDistributions {
     abstract val licenseFile: String?
 
     context(Project)
-    fun applyTo(recipient: AbstractDistributions) {
-        distributions.outputBaseDir tryAssign outputBaseDir?.let(layout.projectDirectory::dir)
-        distributions.packageName = packageName ?: moduleName
-        distributions::packageVersion trySet (packageVersion
+    open fun applyTo(recipient: T) {
+        recipient.outputBaseDir tryAssign outputBaseDir?.let(layout.projectDirectory::dir)
+        recipient.packageName = packageName ?: moduleName
+        recipient::packageVersion trySet (packageVersion
             ?: settings.libs.versions.version("compose.desktop.packageVersion"))
-        distributions::copyright trySet copyright
-        distributions::description trySet description
-        distributions::vendor trySet vendor
-        distributions.appResourcesRootDir tryAssign appResourcesRootDir?.let(layout.projectDirectory::dir)
-        distributions.licenseFile tryAssign licenseFile?.let(::file)
+        recipient::copyright trySet copyright
+        recipient::description trySet description
+        recipient::vendor trySet vendor
+        recipient.appResourcesRootDir tryAssign appResourcesRootDir?.let(layout.projectDirectory::dir)
+        recipient.licenseFile tryAssign licenseFile?.let(::file)
     }
 }

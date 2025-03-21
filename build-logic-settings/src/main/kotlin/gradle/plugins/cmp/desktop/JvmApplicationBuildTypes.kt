@@ -11,14 +11,6 @@ internal data class JvmApplicationBuildTypes(
 
     context(Project)
     fun applyTo(recipient: JvmApplicationBuildTypes) {
-        release?.let { release ->
-            buildTypes.release {
-                release.proguard?.let { proguard ->
-                    proguard {
-                        proguard.applyTo(this)
-                    }
-                }
-            }
-        }
+        release?.applyTo(recipient.release)
     }
 }

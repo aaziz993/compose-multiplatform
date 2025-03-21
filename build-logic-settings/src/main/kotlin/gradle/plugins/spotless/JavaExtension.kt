@@ -62,80 +62,12 @@ internal data class JavaExtension(
 
         extension as JavaExtension
 
-        importOrder?.let { importOrder ->
-            importOrder.applyTo(
-                importOrder.importOrder?.let { extension.importOrder(*it.toTypedArray()) }
+        importOrder?.toTypedArray()?.let(extension::importOrder)
                     ?: importOrder.importOrderFile?.let(extension::importOrderFile)!!,
             )
         }
 
-        removeIfUnusedImports?.let { extension.removeUnusedImports() }
-        removeUnusedImports?.let(extension::removeUnusedImports)
-
-        googleJavaFormat?.let { googleJavaFormat ->
-            googleJavaFormat.applyTo(
-                (googleJavaFormat.version?.resolveVersion() ?: settings.libs.versions.version("googleJavaFormat"))
-                    ?.let(extension::googleJavaFormat) ?: extension.googleJavaFormat(),
-            )
-        }
-
-        palantirJavaFormat?.let { palantirJavaFormat ->
-            palantirJavaFormat.applyTo(
-                (palantirJavaFormat.version?.resolveVersion() ?: settings.libs.versions.version("palantirJavaFormat"))
-                    ?.let(extension::palantirJavaFormat) ?: extension.palantirJavaFormat(),
-            )
-        }
-
-        eclipse?.let { eclipse ->
-            eclipse.applyTo(
-                (eclipse.formatterVersion?.resolveVersion() ?: settings.libs.versions.version("eclipseFormatter"))
-                    ?.let(extension::eclipse) ?: extension.eclipse(),
-            )
-        }
-
-        formatAnnotations?.let { formatAnnotations ->
-            formatAnnotations.applyTo(extension.formatAnnotations())
-        }
-
-        cleanthat?.let { cleanthat ->
-            cleanthat.applyTo(extension.cleanthat())
-        }
-    }
-
-    context(Project)
-    override fun applyTo() = spotless.java {
-        applyTo(this)
-    }
-
-    @Serializable
-    internal class CleanthatJavaConfig(
-        val groupArtifact: String? = null,
-        val version: String? = null,
-        val sourceJdk: String? = null,
-        val mutators: List<String?>? = null,
-        val excludedMutators: List<String?>? = null,
-        val includeDraft: Boolean? = null
-    ) {
-
-        fun applyTo(recipient: JavaExtension.CleanthatJavaConfig) {
-            groupArtifact?.let(format::groupArtifact)
-            version?.let(format::version)
-            sourceJdk?.let(format::sourceCompatibility)
-            mutators?.let(format::addMutators)
-            excludedMutators?.forEach(format::excludeMutator)
-            includeDraft?.let(format::includeDraft)
-        }
-    }
-
-    @Serializable
-    internal data class EclipseConfig(
-        val formatterVersion: String? = null,
-        val settingsFiles: List<String>? = null,
-        val p2Mirrors: Map<String, String>? = null
-    ) {
-
-        fun applyTo(recipient: JavaExtension.EclipseConfig) {
-            settingsFiles?.let { eclipse.configFile(*it.toTypedArray()) }
+        removeIfUnusedImports?.toTypedArray()?.let(eclipse::configFile)
             p2Mirrors?.let(eclipse::withP2Mirrors)
         }
     }
