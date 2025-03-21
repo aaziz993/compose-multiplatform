@@ -12,7 +12,7 @@ internal data class BuildScanConfiguration(
     val background: BuildScanConfiguration? = null,
     val tag: String? = null,
     val values: Map<String, String>? = null,
-    val links: List<Link>? = null,
+    val links: Set<Link>? = null,
     val termsOfUseUrl: String? = null,
     val termsOfUseAgree: String? = null,
     val uploadInBackground: Boolean? = null,
@@ -24,70 +24,32 @@ internal data class BuildScanConfiguration(
     context(Settings)
     @Suppress("UnstableApiUsage")
     fun applyTo(
-        configuration: com.gradle.develocity.agent.gradle.scan.BuildScanConfiguration
+        recipient: com.gradle.develocity.agent.gradle.scan.BuildScanConfiguration
     ) {
         val startParameter = gradle.startParameter
 
         val scanJournal = layout.rootDirectory.file("scan-journal.log").asFile
 
         background?.let { background ->
-            configuration.background {
+            recipient.background {
                 background.applyTo(this)
             }
         }
 
 
-        tag?.let(configuration::tag)
-        values?.forEach { (name, value) -> configuration.value(name, value) }
-        links?.forEach { (name, url) -> configuration.link(name, url) }
+        tag?.let(recipient::tag)
+        values?.forEach { (name, value) -> recipient.value(name, value) }
+        links?.forEach { (name, url) -> recipient.link(name, url) }
 
-        configuration.buildScanPublished {
+        recipient.buildScanPublished {
             scanJournal.appendText("${Date()} — $buildScanUri — $startParameter\n")
         }
 
-        configuration.termsOfUseUrl tryAssign termsOfUseUrl
-        configuration.termsOfUseAgree tryAssign termsOfUseAgree
-        configuration.uploadInBackground tryAssign uploadInBackground
-
-        configuration.publishing {
-            onlyIf { publishing.ifAuthenticated != false && isCI }
-        }
-
-        obfuscation?.let { obfuscation ->
-            configuration.obfuscation {
-                obfuscation.username?.let { username ->
-                    username {
-                        username[it] ?: username[""] ?: it
-                    }
-                }
-
-                obfuscation.hostname?.let { hostname ->
-                    hostname {
-                        hostname[it] ?: hostname[""] ?: CI ?: it
-                    }
-                }
-
-                obfuscation.ipAddresses?.let { ipAddresses ->
-                    ipAddresses {
-                        it.map { ipAddresses[it.hostAddress] ?: ipAddresses[""] ?: it.hostAddress }
-                    }
-                }
-
-                obfuscation.externalProcessName?.let { externalProcessName ->
-                    externalProcessName {
-                        externalProcessName[it] ?: externalProcessName[""] ?: it
-                    }
-                }
-            }
-        }
-
-        capture?.let { capture ->
-            configuration.capture {
-                fileFingerprints tryAssign capture.fileFingerprints
-                buildLogging tryAssign capture.buildLogging
-                testLogging tryAssign capture.testLogging
-                resourceUsage tryAssign capture.resourceUsage
-            }
-        }
+        recipient.termsOfUseUrl tryAssign termsOfUseUrl
+        recipient.termsOfUseAgree tryAssign termsOfUseAgree
+        recipient.uploadInBackground tryAssign uploadInBackground
+        publishing.applyTo(recipient.publishing)
+        obfuscation?.applyTo(recipient.obfuscation)
+        capture?.applyTo(recipient.capture)
     }
 }

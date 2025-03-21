@@ -1,4 +1,4 @@
-package gradle.plugins.android
+package gradle.plugins.android.test
 
 import com.android.build.api.dsl.EmulatorSnapshots
 import gradle.api.trySet

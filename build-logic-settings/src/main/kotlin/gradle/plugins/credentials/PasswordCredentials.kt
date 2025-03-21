@@ -1,5 +1,6 @@
 package gradle.plugins.credentials
 
+import gradle.api.trySet
 import org.gradle.api.credentials.PasswordCredentials
 
 /**
@@ -7,24 +8,24 @@ import org.gradle.api.credentials.PasswordCredentials
  *
  * @since 3.5
  */
-internal interface PasswordCredentials : Credentials {
+internal interface PasswordCredentials<T : PasswordCredentials> : Credentials<T> {
 
     /**
      * Sets the user name to use when authenticating.
      *
      * @param userName The user name. May be null.
      */
-    val username: String
+    val username: String?
 
     /**
      * Sets the password to use when authenticating.
      *
      * @param password The password. May be null.
      */
-    val password: String
+    val password: String?
 
-    fun applyTo(recipient: PasswordCredentials) {
-        credentials.username = username
-        credentials.password = password
+    override fun applyTo(recipient: T) {
+        username?.let(recipient::setUsername)
+        password?.let(recipient::setPassword)
     }
 }

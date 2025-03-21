@@ -1,6 +1,5 @@
-package gradle.plugins.android
+package gradle.plugins.android.test
 
-import arrow.core.raise.recover
 import com.android.build.api.dsl.EmulatorControl
 import gradle.api.trySet
 import gradle.collection.act

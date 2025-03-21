@@ -16,12 +16,7 @@ internal interface DevelocityConfiguration {
 
     context(Settings)
     fun applyTo() {
-        buildScan?.let { buildScan ->
-            develocity.buildScan {
-                buildScan.applyTo(this)
-            }
-        }
-
+        buildScan?.applyTo(develocity.buildScan)
         develocity.server tryAssign server
         develocity.edgeDiscovery tryAssign edgeDiscovery
         develocity.projectId tryAssign projectId

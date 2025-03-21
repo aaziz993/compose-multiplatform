@@ -1,3 +1,8 @@
 package gradle.plugins.credentials
 
-public interface Credentials
+import org.gradle.api.credentials.Credentials
+
+internal interface Credentials<T : Credentials> {
+
+    fun applyTo(recipient: T)
+}
