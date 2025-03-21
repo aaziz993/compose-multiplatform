@@ -70,7 +70,7 @@ internal data class AbstractCopyTaskImpl(
     override val filesNotMatching: FilesMatching? = null,
     override val filteringCharset: String? = null,
     override val from: Set<String>? = null,
-    override val fromSpec: FromSpec? = null,
+    override val fromSpec: From? = null,
     override val into: String? = null,
     override val intoSpec: IntoSpec? = null,
     override val rename: Map<String, String>? = null,

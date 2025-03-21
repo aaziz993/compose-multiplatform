@@ -6,10 +6,10 @@ import gradle.api.tasks.applyTo
 import gradle.api.tasks.archive.Zip
 import gradle.api.tasks.copy.CopySpecImpl
 import gradle.api.tasks.copy.FileCopyDetails
-import gradle.api.tasks.copy.FromSpec
+import gradle.api.tasks.copy.From
 import gradle.api.tasks.copy.IntoSpec
 import gradle.collection.SerializableAnyMap
-import gradle.plugins.java.Manifest
+import gradle.plugins.java.manifest.Manifest
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.file.DuplicatesStrategy
@@ -99,7 +99,7 @@ internal data class JarImpl(
     override val filesNotMatching: FilesMatching? = null,
     override val filteringCharset: String? = null,
     override val from: List<String>? = null,
-    override val fromSpec: FromSpec? = null,
+    override val fromSpec: From? = null,
     override val into: String? = null,
     override val intoSpec: IntoSpec? = null,
     override val rename: Map<String, String>? = null,

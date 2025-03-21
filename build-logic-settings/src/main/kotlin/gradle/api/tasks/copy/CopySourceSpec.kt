@@ -32,7 +32,7 @@ internal interface CopySourceSpec<T : CopySourceSpec> {
         when (val from = from) {
             is String -> recipient.from(from)
             is LinkedHashSet<*> -> recipient.from(*from.toTypedArray())
-            is FromSpec -> recipient.from(from.sourcePath) {
+            is From -> recipient.from(from.sourcePath) {
                 from.copySpec.applyTo(this)
             }
 
@@ -47,6 +47,6 @@ internal object FromSerializer : JsonContentPolymorphicSerializer<Any>(Any::clas
         when (element) {
             is JsonPrimitive -> String.serializer()
             is JsonArray -> SetSerializer(String.serializer())
-            is JsonObject -> FromSpec.serializer()
+            is JsonObject -> From.serializer()
         }
 }

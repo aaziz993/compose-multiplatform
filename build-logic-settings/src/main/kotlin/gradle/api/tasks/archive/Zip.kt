@@ -4,7 +4,7 @@ import gradle.api.tasks.Expand
 import gradle.api.tasks.FilesMatching
 import gradle.api.tasks.applyTo
 import gradle.api.tasks.copy.FileCopyDetails
-import gradle.api.tasks.copy.FromSpec
+import gradle.api.tasks.copy.From
 import gradle.api.tasks.copy.IntoSpec
 import gradle.collection.SerializableAnyMap
 
@@ -92,7 +92,7 @@ internal data class ZipImpl(
     override val filesNotMatching: FilesMatching? = null,
     override val filteringCharset: String? = null,
     override val from: Set<String>? = null,
-    override val fromSpec: FromSpec? = null,
+    override val fromSpec: From? = null,
     override val into: String? = null,
     override val intoSpec: IntoSpec? = null,
     override val rename: Map<String, String>? = null,

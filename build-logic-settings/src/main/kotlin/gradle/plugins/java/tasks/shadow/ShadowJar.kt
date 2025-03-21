@@ -15,10 +15,9 @@ import gradle.api.tasks.applyTo
 import gradle.api.tasks.copy.CopySpecImpl
 import gradle.api.tasks.copy.FileCopyDetails
 import gradle.api.tasks.copy.FromSerializer
-import gradle.api.tasks.copy.FromSpec
 import gradle.api.tasks.copy.IntoSpec
 import gradle.collection.SerializableAnyMap
-import gradle.plugins.java.Manifest
+import gradle.plugins.java.manifest.Manifest
 import gradle.plugins.java.Relocator
 import gradle.plugins.java.tasks.DependencyFilter
 import gradle.plugins.java.tasks.Jar

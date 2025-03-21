@@ -7,6 +7,7 @@ import gradle.accessors.version
 import gradle.accessors.versions
 import gradle.api.applyTo
 import gradle.api.tryAssign
+import gradle.plugins.java.manifest.Manifest
 import kotlinx.serialization.Serializable
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
@@ -129,7 +130,7 @@ internal data class JavaPluginExtension(
      */
     val testReportDir: String? = null,
     /**
-     * Creates a new instance of a [Manifest].
+     * Creates a new instance of a [gradle.plugins.java.manifest.Manifest].
      * @since 7.1
      */
     val manifest: Manifest? = null,

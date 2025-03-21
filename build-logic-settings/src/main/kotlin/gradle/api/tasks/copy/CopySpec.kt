@@ -128,9 +128,7 @@ internal interface CopySpec<T : CopySpec> : CopySourceSpec<T>, CopyProcessingSpe
         super<PatternFilterable>.applyTo(recipient)
 
         isCaseSensitive?.let(recipient::setCaseSensitive)
-
         includeEmptyDirs?.let(recipient::setIncludeEmptyDirs)
-
         duplicatesStrategy?.let(recipient::setDuplicatesStrategy)
 
         filesMatching?.let { filesMatching ->
@@ -153,7 +151,7 @@ internal data class CopySpecImpl(
     override val filesMatching: FilesMatching? = null,
     override val filesNotMatching: FilesMatching? = null,
     override val filteringCharset: String? = null,
-    override val from: Any? = null,
+    override val from: @Serializable(with = FromSerializer::class) Any? = null,
     override val into: String? = null,
     override val intoSpec: IntoSpec? = null,
     override val rename: Map<String, String>? = null,
