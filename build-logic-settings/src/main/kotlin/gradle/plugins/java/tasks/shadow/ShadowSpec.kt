@@ -1,11 +1,13 @@
 @file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
 
-package gradle.plugins.java
+package gradle.plugins.java.tasks.shadow
 
 import gradle.api.tasks.copy.CopySpec
+import gradle.plugins.java.Relocator
+import gradle.plugins.java.tasks.DependencyFilter
 import org.gradle.api.Project
 
-internal interface ShadowSpec<T : com.github.jengelman.gradle.plugins.shadow.tasks.ShadowSpec> : CopySpec<T> {
+internal interface ShadowSpec<T : ShadowSpec> : CopySpec<T> {
 
     val relocators: List<Relocator>?
 
@@ -34,7 +36,7 @@ internal interface ShadowSpec<T : com.github.jengelman.gradle.plugins.shadow.tas
     override fun applyTo(recipient: T) {
         super.applyTo(recipient)
 
-        relocators?.map(Relocator::toRelocator)?.forEach(recipient::relocate)
+        relocators?.map(gradle.plugins.java.Relocator::toRelocator)?.forEach(recipient::relocate)
 
         dependencyFilter?.let { dependencyFilter ->
             recipient.dependencies {

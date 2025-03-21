@@ -1,4 +1,4 @@
-package gradle.plugins.java
+package gradle.plugins.java.tasks
 
 import gradle.api.tasks.Expand
 import gradle.api.tasks.FilesMatching
@@ -9,6 +9,7 @@ import gradle.api.tasks.copy.FileCopyDetails
 import gradle.api.tasks.copy.FromSpec
 import gradle.api.tasks.copy.IntoSpec
 import gradle.collection.SerializableAnyMap
+import gradle.plugins.java.Manifest
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.file.DuplicatesStrategy

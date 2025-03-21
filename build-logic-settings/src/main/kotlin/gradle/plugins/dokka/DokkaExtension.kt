@@ -4,6 +4,8 @@ import gradle.accessors.dokka
 import gradle.api.applyTo
 import gradle.api.tryAssign
 import gradle.plugins.dokka.plugin.DokkaPluginParametersBaseSpec
+import gradle.plugins.dokka.plugin.DokkaPluginParametersBaseSpecTransformingSerializer
+import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.dokka.gradle.workers.ClassLoaderIsolation
 
@@ -164,7 +166,7 @@ internal interface DokkaExtension {
      * Some plugins can be configured via parameters, and those parameters are stored in this
      * container.
      */
-    val pluginsConfiguration: Set<DokkaPluginParametersBaseSpec<in org.jetbrains.dokka.gradle.engine.plugins.DokkaPluginParametersBaseSpec>>?
+    val pluginsConfiguration: Set<@Serializable(with = DokkaPluginParametersBaseSpecTransformingSerializer::class) DokkaPluginParametersBaseSpec<in org.jetbrains.dokka.gradle.engine.plugins.DokkaPluginParametersBaseSpec>>?
 
     /**
      * The default version of Dokka dependencies that are used at runtime during generation.
