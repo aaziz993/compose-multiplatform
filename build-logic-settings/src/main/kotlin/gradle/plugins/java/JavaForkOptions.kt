@@ -1,6 +1,7 @@
 package gradle.plugins.java
 
 import gradle.collection.SerializableAnyMap
+import gradle.collection.act
 import gradle.process.ProcessForkOptions
 import org.gradle.api.Project
 import org.gradle.process.JavaForkOptions
@@ -9,7 +10,7 @@ import org.gradle.process.JavaForkOptions
  *
  * Specifies the options to use to fork a Java process.
  */
-internal interface JavaForkOptions : ProcessForkOptions {
+internal interface JavaForkOptions<T : JavaForkOptions> : ProcessForkOptions<T> {
 
     /**
      * Adds some system properties to use for the process.
@@ -101,28 +102,28 @@ internal interface JavaForkOptions : ProcessForkOptions {
      * @since 4.0
      */
     val allJvmArgs: List<String>?
+    val setAllJvmArgs: List<String>?
 
     context(Project)
-    override fun applyTo(recipient: org.gradle.process.ProcessForkOptions) {
-        super.applyTo(options)
+    override fun applyTo(recipient: T) {
+        super.applyTo(recipient)
 
-        options as JavaForkOptions
+        systemProperties?.let(recipient::systemProperties)
+        setSystemProperties?.let(recipient::setSystemProperties)
+        defaultCharacterEncoding?.let(recipient::setDefaultCharacterEncoding)
+        minHeapSize?.let(recipient::setMinHeapSize)
+        maxHeapSize?.let(recipient::setMaxHeapSize)
+        jvmArgs?.let(recipient::jvmArgs)
+        setJvmArgs?.let(recipient::setJvmArgs)
 
-        systemProperties?.let(options::systemProperties)
-        setSystemProperties?.let(options::setSystemProperties)
-        defaultCharacterEncoding?.let(options::setDefaultCharacterEncoding)
-        minHeapSize?.let(options::setMinHeapSize)
-        maxHeapSize?.let(options::setMaxHeapSize)
-        jvmArgs?.let(options::jvmArgs)
-        setJvmArgs?.let(options::setJvmArgs)
+        bootstrapClasspath?.toTypedArray()?.let(recipient::bootstrapClasspath)
 
-        bootstrapClasspath?.toTypedArray()?.let(options::bootstrapClasspath)
+        setBootstrapClasspath?.toTypedArray()?.let(::files)?.let(recipient::setBootstrapClasspath)
 
-        setBootstrapClasspath?.toTypedArray()?.let(::files)?.let(options::setBootstrapClasspath)
-
-        enableAssertions?.let(options::setEnableAssertions)
-        debug?.let(options::setDebug)
-        debugOptions?.applyTo(options.debugOptions)
-        allJvmArgs?.let(options::setAllJvmArgs)
+        enableAssertions?.let(recipient::setEnableAssertions)
+        debug?.let(recipient::setDebug)
+        debugOptions?.applyTo(recipient.debugOptions)
+        allJvmArgs?.act(recipient.allJvmArgs::clear)?.let(recipient.allJvmArgs::addAll)
+        allJvmArgs?.let(recipient::setAllJvmArgs)
     }
 }

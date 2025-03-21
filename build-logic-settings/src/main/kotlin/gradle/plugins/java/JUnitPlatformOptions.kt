@@ -42,26 +42,17 @@ internal class JUnitPlatformOptions(
      */
     val excludeTags: Set<String>? = null,
     val setExcludeTags: Set<String>? = null,
-) : TestFrameworkOptions() {
+) : TestFrameworkOptions<JUnitPlatformOptions>() {
 
     context(Project)
-    override fun applyTo(recipient: org.gradle.api.tasks.testing.TestFrameworkOptions) {
-        options as JUnitPlatformOptions
-
-        includeEngines?.toTypedArray()?.let(options::includeEngines)
-
-        setIncludeEngines?.let(options::setIncludeEngines)
-
-        excludeEngines?.toTypedArray()?.let(options::excludeEngines)
-
-        setExcludeEngines?.let(options::setExcludeEngines)
-
-        includeTags?.toTypedArray()?.let(options::includeTags)
-
-        setIncludeTags?.let(options::setIncludeTags)
-
-        excludeTags?.toTypedArray()?.let(options::excludeTags)
-
-        setExcludeTags?.let(options::setExcludeTags)
+    override fun applyTo(recipient: JUnitPlatformOptions) {
+        includeEngines?.toTypedArray()?.let(recipient::includeEngines)
+        setIncludeEngines?.let(recipient::setIncludeEngines)
+        excludeEngines?.toTypedArray()?.let(recipient::excludeEngines)
+        setExcludeEngines?.let(recipient::setExcludeEngines)
+        includeTags?.toTypedArray()?.let(recipient::includeTags)
+        setIncludeTags?.let(recipient::setIncludeTags)
+        excludeTags?.toTypedArray()?.let(recipient::excludeTags)
+        setExcludeTags?.let(recipient::setExcludeTags)
     }
 }

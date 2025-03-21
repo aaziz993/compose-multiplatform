@@ -45,23 +45,22 @@ internal data class JavaCompile(
     override val sourceCompatibility: String? = null,
     override val targetCompatibility: String? = null,
     override val options: CompileOptions? = null,
+    override val sourceFiles: List<String>? = null,
+    override val includes: Set<String>? = null,
+    override val setIncludes: Set<String>? = null,
+    override val excludes: Set<String>? = null,
+    override val setExcludes: Set<String>? = null,
     /**
      * Sets the module path handling of this compile task.
      *
      * @since 6.4
      */
     val modularity: ModularitySpec? = null,
-    override val sourceFiles: List<String>? = null,
-    override val includes: Set<String>? = null,
-    override val setIncludes: Set<String>? = null,
-    override val excludes: Set<String>? = null,
-    override val setExcludes: Set<String>? = null,
 ) : AbstractCompile<JavaCompile>(), HasCompileOptions<JavaCompile> {
 
     context(Project)
     override fun applyTo(recipient: JavaCompile) {
         super<AbstractCompile>.applyTo(recipient)
-
         super<HasCompileOptions>.applyTo(recipient)
 
         modularity?.applyTo(recipient.modularity)

@@ -14,6 +14,7 @@ import gradle.api.tasks.FilesMatching
 import gradle.api.tasks.applyTo
 import gradle.api.tasks.copy.CopySpecImpl
 import gradle.api.tasks.copy.FileCopyDetails
+import gradle.api.tasks.copy.FromSerializer
 import gradle.api.tasks.copy.FromSpec
 import gradle.api.tasks.copy.IntoSpec
 import gradle.collection.SerializableAnyMap
@@ -64,8 +65,7 @@ internal data class ShadowJar(
     override val filesMatching: FilesMatching? = null,
     override val filesNotMatching: FilesMatching? = null,
     override val filteringCharset: String? = null,
-    override val from: List<String>? = null,
-    override val fromSpec: FromSpec? = null,
+    override val from: @Serializable(with = FromSerializer::class) Any?? = null,
     override val into: String? = null,
     override val intoSpec: IntoSpec? = null,
     override val rename: Map<String, String>? = null,
@@ -79,8 +79,8 @@ internal data class ShadowJar(
     override val setIncludes: Set<String>? = null,
     override val excludes: Set<String>? = null,
     override val setExcludes: Set<String>? = null,
-    override val relocators: List<Relocator>? = null,
-    val configurations: List<List<String>>? = null,
+    override val relocators: Set<Relocator>? = null,
+    val configurations: List<Set<String>>? = null,
     override val dependencyFilter: DependencyFilter? = null,
     val enableRelocation: Boolean? = null,
     val relocationPrefix: String? = null,
@@ -89,18 +89,14 @@ internal data class ShadowJar(
     override val mergeServiceFiles: Boolean? = null,
     override val mergeServiceFilesPath: String? = null,
     override val append: String? = null
-) : Jar<ShadowJar>()
-
-//    ShadowSpec<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowSpec>
-
-{
+) : Jar<ShadowJar>(), ShadowSpec<ShadowJar> {
 
     context(Project)
     override fun applyTo(recipient: ShadowJar) =
         pluginManager.withPlugin(settings.libs.plugins.plugin("shadow").id) {
             super<Jar>.applyTo(recipient)
             super<ShadowSpec>.applyTo(recipient)
-            configurations?.map(List<*>::toTypedArray)?.map(files)?.let(recipient::setConfigurations)
+            configurations?.map(Set<*>::toTypedArray)?.map(::files)?.let(recipient::setConfigurations)
             enableRelocation?.let(recipient::setEnableRelocation)
             relocationPrefix?.let(recipient::setRelocationPrefix)
         }

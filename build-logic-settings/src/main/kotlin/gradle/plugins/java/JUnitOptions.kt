@@ -20,18 +20,13 @@ internal data class JUnitOptions(
      */
     val excludeCategories: Set<String>? = null,
     val setExcludeCategories: Set<String>? = null,
-) : TestFrameworkOptions() {
+) : TestFrameworkOptions<JUnitOptions>() {
 
     context(Project)
-    override fun applyTo(recipient: org.gradle.api.tasks.testing.TestFrameworkOptions) {
-        options as JUnitOptions
-
-        includeCategories?.toTypedArray()?.let(options::includeCategories)
-
-        setIncludeCategories?.let(options::setIncludeCategories)
-
-        excludeCategories?.toTypedArray()?.let(options::excludeCategories)
-
-        setExcludeCategories?.let(options::setExcludeCategories)
+    override fun applyTo(recipient: JUnitOptions) {
+        includeCategories?.toTypedArray()?.let(recipient::includeCategories)
+        setIncludeCategories?.let(recipient::setIncludeCategories)
+        excludeCategories?.toTypedArray()?.let(recipient::excludeCategories)
+        setExcludeCategories?.let(recipient::setExcludeCategories)
     }
 }

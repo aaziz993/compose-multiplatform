@@ -151,14 +151,8 @@ internal data class JavaPluginExtension(
             disableAutoTargetJvm?.takeIf { it }?.run { java.disableAutoTargetJvm() }
             withJavadocJar?.takeIf { it }?.run { java.withJavadocJar() }
             withSourcesJar?.takeIf { it }?.run { java.withSourcesJar() }
-
             modularity?.applyTo(java.modularity)
-
-            toolchain?.let { toolchain ->
-                java.toolchain {
-                    toolchain.applyTo(this)
-                }
-            }
+            toolchain?.applyTo(java.toolchain)
 
             consistentResolution?.let { consistentResolution ->
                 java.consistentResolution(consistentResolution::applyTo)
@@ -171,11 +165,6 @@ internal data class JavaPluginExtension(
             java.docsDir tryAssign docsDir?.let(layout.projectDirectory::dir)
             java.testResultsDir tryAssign testResultsDir?.let(layout.projectDirectory::dir)
             java.testReportDir tryAssign testReportDir?.let(layout.projectDirectory::dir)
-
-            manifest?.let { manifest ->
-                java.manifest {
-                    manifest.applyTo(this)
-                }
-            }
+            manifest?.applyTo(java.manifest())
         }
 }

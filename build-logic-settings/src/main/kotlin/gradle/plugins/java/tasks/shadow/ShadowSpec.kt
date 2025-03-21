@@ -7,9 +7,9 @@ import gradle.plugins.java.Relocator
 import gradle.plugins.java.tasks.DependencyFilter
 import org.gradle.api.Project
 
-internal interface ShadowSpec<T : ShadowSpec> : CopySpec<T> {
+internal interface ShadowSpec<T :  com.github.jengelman.gradle.plugins.shadow.tasks.ShadowSpec> : CopySpec<T> {
 
-    val relocators: List<Relocator>?
+    val relocators: Set<Relocator>?
 
     val dependencyFilter: DependencyFilter?
 
@@ -36,7 +36,7 @@ internal interface ShadowSpec<T : ShadowSpec> : CopySpec<T> {
     override fun applyTo(recipient: T) {
         super.applyTo(recipient)
 
-        relocators?.map(gradle.plugins.java.Relocator::toRelocator)?.forEach(recipient::relocate)
+        relocators?.map(Relocator::toRelocator)?.forEach(recipient::relocate)
 
         dependencyFilter?.let { dependencyFilter ->
             recipient.dependencies {
