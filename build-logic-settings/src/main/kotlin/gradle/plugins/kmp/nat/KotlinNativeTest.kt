@@ -49,7 +49,7 @@ internal data class KotlinNativeTest(
 
         named as KotlinNativeTest
 
-        named.executableProperty tryAssign executables?.let { files(*it.toTypedArray()) }
+        named.executableProperty tryAssign executables?.toTypedArray()?.let(::files)
         named::args trySet args
         named::workingDir trySet workingDir
 

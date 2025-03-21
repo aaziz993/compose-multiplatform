@@ -59,7 +59,7 @@ internal data class KotlinNativeLink(
         apiFiles?.toTypedArray()?.let(named.apiFiles::from)
 setApiFiles?.let(named.apiFiles::setFrom)
         compilerPluginOptions?.applyTo(named.compilerPluginOptions)
-        named::compilerPluginClasspath trySet compilerPluginClasspath?.let { files(*it.toTypedArray()) }
+        named::compilerPluginClasspath trySet compilerPluginClasspath?.toTypedArray()?.let(::files)
         named::kotlinPluginData trySet kotlinPluginData?.toKotlinCompilerPluginData()?.let { kotlinPluginData ->
             provider { kotlinPluginData }
         }

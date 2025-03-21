@@ -28,7 +28,7 @@ internal interface KnitPluginExtension {
             knit.moduleRoots = moduleRoots ?: (settings.projectProperties.includes.orEmpty() + listOf("."))
             knit.moduleMarkers = moduleMarkers ?: listOf("build.gradle", "build.gradle.kts", "project.yaml")
             knit::moduleDocs trySet moduleDocs
-            knit::files trySet files?.let { files(*it.toTypedArray()) }
+            knit::files trySet files?.toTypedArray()?.let(::files)
             knit::rootDir trySet rootDir?.let(::file)
             knit::dokkaMultiModuleRoot trySet dokkaMultiModuleRoot
             knit::defaultLineSeparator trySet defaultLineSeparator

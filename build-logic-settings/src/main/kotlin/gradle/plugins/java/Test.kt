@@ -241,7 +241,7 @@ internal abstract class Test : AbstractTestTask(), JavaForkOptions, PatternFilte
 
         named.dryRun tryAssign dryRun
         modularity?.applyTo(named.modularity)
-        testClassesDirs?.let { files(*it.toTypedArray()) }?.let(named::setTestClassesDirs)
+        testClassesDirs?.toTypedArray()?.let(::files)?.let(named::setTestClassesDirs)
         useJUnit?.takeIf { it }?.run { named.useJUnit() }
 
         useJUnitDsl?.let { useJUnitDsl ->

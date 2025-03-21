@@ -1,12 +1,12 @@
 package gradle.plugins.knit
 
-
+import gradle.api.tasks.DefaultTask
 import gradle.api.tasks.Task
+import gradle.api.tasks.applyTo
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
 import kotlinx.knit.KnitTask
 import kotlinx.serialization.Serializable
-import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 
@@ -28,17 +28,15 @@ internal data class KnitTask(
     val check: Boolean? = null,
     val rootDir: String? = null,
     val files: List<String>? = null,
-) : Task {
+) : DefaultTask<KnitTask>() {
 
-        context(Project)
-    override fun applyTo(recipient: T) {
-        super.applyTo(named)
+    context(Project)
+    override fun applyTo(recipient: KnitTask) {
+        super.applyTo(recipient)
 
-        named as KnitTask
-
-        named::check trySet check
-        named::rootDir trySet rootDir?.let(::file)
-        named::files trySet files?.let { files(*it.toTypedArray()) }
+        recipient::check trySet check
+        recipient::rootDir trySet rootDir?.let(::file)
+        recipient::files trySet files?.toTypedArray()?.let(::files)
     }
 
     context(Project)

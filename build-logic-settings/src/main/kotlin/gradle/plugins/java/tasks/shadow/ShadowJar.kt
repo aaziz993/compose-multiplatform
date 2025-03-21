@@ -89,14 +89,18 @@ internal data class ShadowJar(
     override val mergeServiceFiles: Boolean? = null,
     override val mergeServiceFilesPath: String? = null,
     override val append: String? = null
-) : Jar<ShadowJar>(), ShadowSpec<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowSpec> {
+) : Jar<ShadowJar>()
+
+//    ShadowSpec<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowSpec>
+
+{
 
     context(Project)
     override fun applyTo(recipient: ShadowJar) =
         pluginManager.withPlugin(settings.libs.plugins.plugin("shadow").id) {
             super<Jar>.applyTo(recipient)
             super<ShadowSpec>.applyTo(recipient)
-            configurations?.map { files(*it.toTypedArray()) }?.let(recipient::setConfigurations)
+            configurations?.map(List<*>::toTypedArray)?.map(files)?.let(recipient::setConfigurations)
             enableRelocation?.let(recipient::setEnableRelocation)
             relocationPrefix?.let(recipient::setRelocationPrefix)
         }

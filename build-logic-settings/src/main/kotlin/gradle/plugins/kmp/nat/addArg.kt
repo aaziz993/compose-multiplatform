@@ -27,7 +27,7 @@ internal abstract class AbstractKotlinNativeCompile : AbstractKotlinCompileTool(
 
         named as org.jetbrains.kotlin.gradle.tasks.AbstractKotlinNativeCompile<*, *>
 
-        named::compilerPluginClasspath trySet compilerPluginClasspath?.let { files(*it.toTypedArray()) }
+        named::compilerPluginClasspath trySet compilerPluginClasspath?.toTypedArray()?.let(::files)
 
         named::kotlinPluginData trySet kotlinPluginData?.toKotlinCompilerPluginData()?.let { kotlinPluginData ->
             provider { kotlinPluginData }
