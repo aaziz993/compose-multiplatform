@@ -7,8 +7,19 @@ import gradle.api.configureEach
 import gradle.api.getByNameOrAll
 import gradle.api.toVersion
 import gradle.collection.resolveValue
+import gradle.plugins.java.manifest.From
+import kotlinx.serialization.DeserializationStrategy
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerializationException
+import kotlinx.serialization.builtins.SetSerializer
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
+import org.gradle.internal.impldep.kotlinx.serialization.json.JsonContentPolymorphicSerializer
 import org.gradle.kotlin.dsl.withType
 import org.gradle.plugins.signing.Sign
 import org.gradle.plugins.signing.SignOperation
@@ -69,64 +80,6 @@ internal abstract class SigningExtension {
     abstract val useInMemoryPgpKeys: InMemoryPgpKeys?
 
     /**
-     * Creates signing tasks that depend on and sign the "archive" produced by the given tasks.
-     *
-     *
-     * The created tasks will be named "sign*&lt;input task name capitalized&gt;*". That is, given a task with the name "jar" the created task will be named "signJar".
-     *
-     * If the task is not
-     * an [org.gradle.api.tasks.bundling.AbstractArchiveTask], an [InvalidUserDataException] will be thrown.
-     *
-     * The signature artifact for the created task is added to the [ ][.getConfiguration].
-     *
-     * @param tasks The tasks whose archives are to be signed
-     * @return the created tasks.
-     */
-    abstract val signTasks: List<String>?
-
-    /**
-     * Creates signing tasks that sign [all artifacts][Configuration.getAllArtifacts] of the given configurations.
-     *
-     *
-     * The created tasks will be named "sign*&lt;configuration name capitalized&gt;*". That is, given a configuration with the name "conf" the created task will be named "signConf".
-     *
-     * The signature artifacts for the created tasks are added to the [configuration][.getConfiguration] for this settings object.
-     *
-     * @param configurations The configurations whose archives are to be signed
-     * @return the created tasks.
-     */
-    abstract val signConfigurations: List<String>?
-
-    /**
-     * Creates signing tasks that sign all publishable artifacts of the given publications.
-     *
-     *
-     * The created tasks will be named "sign*&lt;publication name capitalized&gt;*Publication".
-     * That is, given a publication with the name "mavenJava" the created task will be named "signMavenJavaPublication".
-     *
-     * The signature artifacts for the created tasks are added to the publishable artifacts of the given publications.
-     *
-     * @param publications The publications whose artifacts are to be signed
-     * @return the created tasks.
-     * @since 4.8
-     */
-    abstract val signPublications: List<String>?
-
-    /**
-     * Digitally signs the publish artifacts, generating signature files alongside them.
-     *
-     *
-     * The project's default signatory and default signature type from the [signing settings][SigningExtension] will be used to generate the signature.
-     * The returned [sign operation][SignOperation] gives access to the created signature files.
-     *
-     * If there is no configured default signatory available, the sign operation will fail.
-     *
-     * @param publishArtifacts The publish artifacts to sign
-     * @return The executed [sign operation][SignOperation]
-     */
-    abstract val signArtifacts: List<String>?
-
-    /**
      * Digitally signs the files, generating signature files alongside them.
      *
      *
@@ -138,7 +91,7 @@ internal abstract class SigningExtension {
      * @param files The files to sign.
      * @return The executed [sign operation][SignOperation].
      */
-    abstract val signFiles: List<String>?
+    abstract val sign: Set<@Serializable(with = SignSerializer::class) Any>?
 
     /**
      * Digitally signs the files, generating signature files alongside them.
@@ -161,22 +114,40 @@ internal abstract class SigningExtension {
             signing.isRequired = required ?: !version.toString().toVersion().isPreRelease
             useGpgCmd?.takeIf { it }?.run { signing.useGpgCmd() }
 
-            useInMemoryPgpKeys?.toTypedArray()?.let(signing::sign)
+            useInMemoryPgpKeys?.let { (defaultKeyId, defaultSecretKey, defaultPassword) ->
+                signing.useInMemoryPgpKeys(defaultKeyId, defaultSecretKey, defaultPassword)
+            }
 
-            signConfigurations?.flatMap(configurations::getByNameOrAll)?.toTypedArray()?.let(signing::sign)
+            sign?.let { sign ->
+                val (references, files) = sign.filterIsInstance<String>().partition { value -> value.startsWith("$") }
 
-            signPublications?.flatMap(publishing.publications::getByNameOrAll)?.toTypedArray()?.let(signing::sign)
+                references
+                    .resolveReferences("configurations")
+                    .flatMap(configurations::getByNameOrAll)
+                    .toTypedArray()
+                    .let(signing::sign)
 
-            val allArtifacts = configurations.flatMap(Configuration::getAllArtifacts)
+                references
+                    .resolveReferences("publications")
+                    .flatMap(publishing.publications::getByNameOrAll)
+                    .toTypedArray()
+                    .let(signing::sign)
 
-            signArtifacts?.mapNotNull { signArtifact ->
-                allArtifacts.find { artifact -> artifact.classifier == signArtifact }
-            }?.toTypedArray()?.let(signing::sign)
+                val allArtifacts = configurations.flatMap(Configuration::getAllArtifacts)
 
-            signFiles?.map(::file)?.toTypedArray()?.let(signing::sign)
+                references
+                    .resolveReferences("artifacts")
+                    .flatMap { name ->
+                        if (name.isEmpty()) allArtifacts else allArtifacts.filter { artifact -> artifact.classifier == name }
+                    }
+                    .toTypedArray()
+                    .let(signing::sign)
 
-            signClassifierFiles?.forEach { (classifier, files) ->
-                signing.sign(classifier, *files.map(::file).toTypedArray())
+                files.map(::file).toTypedArray().let(signing::sign)
+
+                sign.filterIsInstance<ClassifierFile>().forEach { (classifier, files) ->
+                    signing.sign(classifier, *files.map(::file).toTypedArray())
+                }
             }
 
             // TODO: https://youtrack.jetbrains.com/issue/KT-61313/ https://github.com/gradle/gradle/issues/26132
@@ -188,5 +159,22 @@ internal abstract class SigningExtension {
                     )
                 }
             }
+        }
+
+    context(Project)
+    private fun List<String>.resolveReferences(name: String): List<String> {
+        val reference = "$$name."
+        return filter { value -> value.startsWith(reference) }
+            .map { reference -> reference.removePrefix(reference) }
+    }
+}
+
+internal object SignSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
+
+    override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
+        when (element) {
+            is JsonPrimitive -> String.serializer()
+            is JsonObject -> ClassifierFile.serializer()
+            else -> throw SerializationException("Unsupported element: $element")
         }
 }

@@ -77,7 +77,7 @@ plugins:
     useInMemoryPgpKeys:
       defaultSecretKey: $envOrLocal.signing.gnupg.key
       defaultPassword: $envOrLocal.signing.gnupg.key.passphrase
-    signPublications: [ '' ] # sign all publications by specifying empty name
+    sign: [ $publications. ] # sign all publications by specifying empty name
     # register generateSigningGPG task
     generateGpg:
       keyType: RSA

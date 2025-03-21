@@ -1,7 +1,8 @@
 package gradle.plugins.kmp.web
 
+import org.gradle.kotlin.dsl.withType
 import gradle.accessors.moduleName
-
+import gradle.api.tasks.applyTo
 import gradle.api.tasks.test.DefaultTestFilter
 import gradle.api.tasks.test.TestLoggingContainer
 import gradle.api.tryAssign
@@ -65,4 +66,8 @@ internal data class KotlinJsTest(
             else -> Unit
         }
     }
+
+    context(Project)
+    override fun applyTo() =
+        applyTo(tasks.withType<KotlinJsTest>())
 }

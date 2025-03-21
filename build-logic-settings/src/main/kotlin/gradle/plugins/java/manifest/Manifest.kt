@@ -47,7 +47,7 @@ internal data class Manifest(
 
         effectiveManifest?.applyTo(recipient.effectiveManifest)
 
-        when (val from = from) {
+        when (from) {
             is String -> recipient.from(from)
             is LinkedHashSet<*> -> recipient.from(*from.toTypedArray())
             is From -> recipient.from(from.mergePath, from.mergeSpec::applyTo)
@@ -55,14 +55,4 @@ internal data class Manifest(
             else -> Unit
         }
     }
-}
-
-internal object FromSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
-
-    override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
-        when (element) {
-            is JsonPrimitive -> String.serializer()
-            is JsonArray -> SetSerializer(String.serializer())
-            is JsonObject -> From.serializer()
-        }
 }

@@ -52,12 +52,12 @@ kotlin:
           testTask:
             testLogging:
               showStandardStreams: true
-            useKarmaDsl:
+            useKarma:
               configDirectory: ../karma.config.d
               useChromeHeadless: true
         nodejs:
           testTask:
-            useMochaDsl:
+            useMocha:
               timeout: 600s
 
   hierarchy:
