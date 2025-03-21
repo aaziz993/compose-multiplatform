@@ -9,7 +9,6 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 import org.gradle.plugins.signing.Sign
-import org.gradle.plugins.signing.signatory.pgp.PgpSignatoryFactory
 
 @Serializable
 internal data class Sign(
@@ -43,7 +42,6 @@ internal data class Sign(
             recipient::sign,
             recipient::sign,
         )
-        PgpSignatoryFactory().createSignatory()
     }
 
     context(Project)
