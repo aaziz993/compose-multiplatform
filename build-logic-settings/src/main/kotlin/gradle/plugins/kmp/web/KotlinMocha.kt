@@ -1,15 +1,28 @@
 package gradle.plugins.kmp.web
 
 import gradle.api.trySet
+import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.Serializable
-import org.jetbrains.kotlin.gradle.targets.js.testing.mocha.KotlinMocha
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonPrimitive
+import org.gradle.internal.impldep.kotlinx.serialization.json.JsonContentPolymorphicSerializer
 
 @Serializable
 internal data class KotlinMocha(
     val timeout: String? = null
 ) {
 
-    fun applyTo(recipient: KotlinMocha) {
-        mocha::timeout trySet mocha.timeout
+    fun applyTo(recipient: org.jetbrains.kotlin.gradle.targets.js.testing.mocha.KotlinMocha) {
+        recipient::timeout trySet timeout
     }
+}
+
+internal object KotlinMochaSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
+
+    override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
+        when (element) {
+            is JsonPrimitive -> Boolean.serializer()
+            else -> KotlinMocha.serializer()
+        }
 }

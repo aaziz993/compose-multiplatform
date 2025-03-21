@@ -7,9 +7,10 @@ import gradle.api.tasks.test.TestLoggingContainer
 import gradle.api.tryAssign
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
+import gradle.plugins.buildconfig.generator.BuildConfigKotlinGenerator
 import gradle.plugins.kotlin.tasks.KotlinTest
 import kotlinx.serialization.Serializable
-import org.gradle.api.Named
+import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
 
 @Serializable
@@ -39,29 +40,29 @@ internal data class KotlinJsTest(
     val inputFileProperty: String? = null,
     val debug: Boolean? = null,
     val nodeJsArgs: List<String>? = null,
-    val useMocha: Boolean? = null,
-    val useMochaDsl: KotlinMocha? = null,
-    val useKarma: Boolean? = null,
-    val useKarmaDsl: KotlinKarma? = null,
-) : KotlinTest() {
+    val useMocha: @Serializable(with = KotlinMochaSerializer::class) Any? = null,
+    val useKarma: @Serializable(with = KotlinKarmaSerializer::class) Any? = null,
+) : KotlinTest<KotlinJsTest>() {
 
-        context(Project)
-    override fun applyTo(recipient: T) {
-        super.applyTo(named)
+    context(Project)
+    override fun applyTo(recipient: KotlinJsTest) {
+        super.applyTo(recipient)
 
-        named as KotlinJsTest
+        environment?.let(recipient.environment::putAll)
+        recipient.inputFileProperty tryAssign inputFileProperty?.let(::file)
+        recipient::debug trySet debug
+        nodeJsArgs?.let(recipient.nodeJsArgs::addAll)
 
-        environment?.let(named.environment::putAll)
-        named.inputFileProperty tryAssign inputFileProperty?.let(::file)
-        named::debug trySet debug
-        nodeJsArgs?.let(named.nodeJsArgs::addAll)
+        when (useMocha) {
+            is Boolean -> recipient.useKarma()
+            is KotlinMocha -> useMocha.applyTo(recipient.useMocha())
+            else -> Unit
+        }
 
-        useMocha?.takeIf { it }?.run { named.useMocha() }
-
-        useMochaDsl?.applyTo(named.useMocha())
-
-        useKarma?.takeIf { it }?.run { named.useKarma() }
-
-        useKarmaDsl?.applyTo(named.useKarma(), "$moduleName-targetName")
+        when (useKarma) {
+            is Boolean -> recipient.useKarma()
+            is KotlinKarma -> useKarma.applyTo(recipient.useKarma(), "$moduleName-targetName")
+            else -> Unit
+        }
     }
 }

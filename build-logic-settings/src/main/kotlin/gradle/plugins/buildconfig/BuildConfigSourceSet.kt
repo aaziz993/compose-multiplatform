@@ -5,7 +5,9 @@ import gradle.api.applyTo
 import gradle.api.tryAssign
 import gradle.plugins.buildconfig.generator.BuildConfigGenerator
 import gradle.plugins.buildconfig.generator.BuildConfigJavaGenerator
+import gradle.plugins.buildconfig.generator.BuildConfigJavaGeneratorSerializer
 import gradle.plugins.buildconfig.generator.BuildConfigKotlinGenerator
+import gradle.plugins.buildconfig.generator.BuildConfigKotlinGeneratorSerializer
 import gradle.plugins.buildconfig.tasks.BuildConfigTask
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -18,10 +20,8 @@ internal data class BuildConfigSourceSet(
     override val name: String = "",
     val generator: BuildConfigGenerator<*>? = null,
     val generateTask: BuildConfigTask? = null,
-    val useJavaOutput: Boolean? = null,
-    val useJavaOutputDsl: BuildConfigJavaGenerator? = null,
-    val useKotlinOutput: Boolean? = null,
-    val useKotlinOutputDsl: BuildConfigKotlinGenerator? = null,
+    val useJavaOutput: @Serializable(with = BuildConfigJavaGeneratorSerializer::class) Any? = null,
+    val useKotlinOutput: @Serializable(with = BuildConfigKotlinGeneratorSerializer::class) Any? = null,
     /**
      * Creates a secondary build class with the given [className] in the same package
      */
@@ -40,16 +40,16 @@ internal data class BuildConfigSourceSet(
 
         recipient.generator tryAssign generator?.toBuildConfigGenerator()
 
-        useJavaOutput?.takeIf { it }?.run { recipient.useJavaOutput() }
-
-        useJavaOutputDsl?.let { useJavaOutputDsl ->
-            recipient.useJavaOutput(useJavaOutputDsl::applyTo)
+        when (useJavaOutput) {
+            is Boolean -> recipient.useJavaOutput()
+            is BuildConfigJavaGenerator -> recipient.useJavaOutput(useJavaOutput::applyTo)
+            else -> Unit
         }
 
-        useKotlinOutput?.takeIf { it }?.run { recipient.useKotlinOutput() }
-
-        useKotlinOutputDsl?.let { useKotlinOutputDsl ->
-            recipient.useKotlinOutput(useKotlinOutputDsl::applyTo)
+        when (useKotlinOutput) {
+            is Boolean -> recipient.useKotlinOutput()
+            is BuildConfigKotlinGenerator -> recipient.useKotlinOutput(useKotlinOutput::applyTo)
+            else -> Unit
         }
 
         forClass?.forEach { forClass ->

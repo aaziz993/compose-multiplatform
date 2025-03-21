@@ -1,6 +1,7 @@
 package gradle.plugins.kotlin.tasks
 
-
+import gradle.api.tasks.applyTo
+import org.gradle.kotlin.dsl.withType
 import gradle.api.tasks.test.AbstractTestTask
 import gradle.api.tasks.test.DefaultTestFilter
 import gradle.api.tasks.test.TestLoggingContainer
@@ -8,21 +9,19 @@ import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import org.gradle.api.Named
+import org.gradle.api.Project
 
-internal abstract class KotlinTest : AbstractTestTask() {
+internal abstract class KotlinTest<T : org.jetbrains.kotlin.gradle.tasks.KotlinTest> : AbstractTestTask<T>() {
 
     abstract val targetName: String?
     abstract val ignoreRunFailures: Boolean?
 
-        context(Project)
+    context(Project)
     override fun applyTo(recipient: T) {
-        super.applyTo(named)
+        super.applyTo(recipient)
 
-        named as org.jetbrains.kotlin.gradle.tasks.KotlinTest
-
-        named::targetName trySet targetName
-        named::ignoreRunFailures trySet ignoreRunFailures
+        recipient::targetName trySet targetName
+        recipient::ignoreRunFailures trySet ignoreRunFailures
     }
 }
 
@@ -50,4 +49,9 @@ internal data class KotlinTestImpl(
     override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
     override val name: String = "",
-) : KotlinTest()
+) : KotlinTest<org.jetbrains.kotlin.gradle.tasks.KotlinTest>() {
+
+    context(Project)
+    override fun applyTo() =
+        applyTo(tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinTest>())
+}

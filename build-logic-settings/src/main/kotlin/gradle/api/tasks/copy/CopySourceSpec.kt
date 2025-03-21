@@ -40,13 +40,3 @@ internal interface CopySourceSpec<T : CopySourceSpec> {
         }
     }
 }
-
-internal object FromSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
-
-    override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
-        when (element) {
-            is JsonPrimitive -> String.serializer()
-            is JsonArray -> SetSerializer(String.serializer())
-            is JsonObject -> From.serializer()
-        }
-}

@@ -1,11 +1,13 @@
 package gradle.plugins.kotlin
 
 import gradle.api.BaseNamed
+import gradle.api.ProjectNamed
 import gradle.api.getByNameOrAll
 import gradle.api.trySet
 import gradle.plugins.kmp.KotlinSourceSet
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.KSerializer
+import org.gradle.api.Project
 
 /**
  * # Kotlin compilation
@@ -74,7 +76,7 @@ Here's an example of how to use consume the outputs of the main JVM Compilation 
  * Instead, there is a dedicated compilation for each shared source set.
  *
  */
-internal interface KotlinCompilation : HasKotlinDependencies, BaseNamed {
+internal interface KotlinCompilation<T : org.jetbrains.kotlin.gradle.plugin.KotlinCompilation<*>> : HasKotlinDependencies<T>, ProjectNamed<T> {
 
     /**
      * The name of the compilation.
@@ -108,27 +110,18 @@ internal interface KotlinCompilation : HasKotlinDependencies, BaseNamed {
      */
     val associatedCompilations: Set<String>?
 
-        context(Project)
+    context(Project)
     override fun applyTo(recipient: T) {
-        named as org.jetbrains.kotlin.gradle.plugin.KotlinCompilation<*>
-
-        defaultSourceSet?.let { defaultSourceSet ->
-            named.defaultSourceSet {
-                defaultSourceSet.applyTo(this)
-            }
-        }
-
-        named::compileDependencyFiles trySet compileDependencyFiles?.let { files(* it.toTypedArray()) }
-
-        output?.applyTo(named.output)
-
+        defaultSourceSet?.applyTo(recipient.defaultSourceSet)
+        recipient::compileDependencyFiles trySet compileDependencyFiles?.toTypedArray()?.let(::files)
+        output?.applyTo(recipient.output)
         associatedCompilations
-            ?.flatMap(named.target.compilations::getByNameOrAll)
-            ?.forEach(named::associateWith)
+            ?.flatMap(recipient.target.compilations::getByNameOrAll)
+            ?.forEach(recipient::associateWith)
     }
 }
 
-internal abstract class KotlinCompilationTransformingSerializer<T : KotlinCompilation>(
+internal abstract class KotlinCompilationTransformingSerializer<T : KotlinCompilation<*>>(
     tSerializer: KSerializer<T>
 ) : KeyTransformingSerializer<T>(
     tSerializer,

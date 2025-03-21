@@ -1,8 +1,13 @@
 package gradle.plugins.kmp.web
 
+import gradle.plugins.buildconfig.generator.BuildConfigJavaGenerator
+import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonPrimitive
 import org.gradle.api.Project
-import org.jetbrains.kotlin.gradle.targets.js.testing.karma.KotlinKarma
+import org.gradle.internal.impldep.kotlinx.serialization.json.JsonContentPolymorphicSerializer
 
 @Serializable
 internal data class KotlinKarma(
@@ -32,30 +37,38 @@ internal data class KotlinKarma(
 ) {
 
     context(Project)
-    fun applyTo(karma: KotlinKarma, outputFileName: String) {
-        webpackConfig?.applyTo(karma.webpackConfig, outputFileName)
-
-        useConfigDirectory?.let(karma::useConfigDirectory)
-        useChrome?.takeIf { it }?.run { karma.useChrome() }
-        useChromeHeadless?.takeIf { it }?.run { karma.useChromeHeadless() }
-        useChromeHeadlessNoSandbox?.takeIf { it }?.run { karma.useChromeHeadlessNoSandbox() }
-        useChromium?.takeIf { it }?.run { karma.useChromium() }
-        useChromiumHeadless?.takeIf { it }?.run { karma.useChromiumHeadless() }
-        useChromeCanary?.takeIf { it }?.run { karma.useChromeCanary() }
-        useChromeCanaryHeadless?.takeIf { it }?.run { karma.useChromeCanaryHeadless() }
-        useDebuggableChrome?.takeIf { it }?.run { karma.useDebuggableChrome() }
-        usePhantomJS?.takeIf { it }?.run { karma.usePhantomJS() }
-        useFirefox?.takeIf { it }?.run { karma.useFirefox() }
-        useFirefoxHeadless?.takeIf { it }?.run { karma.useFirefoxHeadless() }
-        useFirefoxDeveloper?.takeIf { it }?.run { karma.useFirefoxDeveloper() }
-        useFirefoxDeveloperHeadless?.takeIf { it }?.run { karma.useFirefoxDeveloperHeadless() }
-        useFirefoxAurora?.takeIf { it }?.run { karma.useFirefoxAurora() }
-        useFirefoxAuroraHeadless?.takeIf { it }?.run { karma.useFirefoxAuroraHeadless() }
-        useFirefoxNightly?.takeIf { it }?.run { karma.useFirefoxNightly() }
-        useFirefoxNightlyHeadless?.takeIf { it }?.run { karma.useFirefoxNightlyHeadless() }
-        useOpera?.takeIf { it }?.run { karma.useOpera() }
-        useSafari?.takeIf { it }?.run { karma.useSafari() }
-        useIe?.takeIf { it }?.run { karma.useIe() }
-        useSourceMapSupport?.takeIf { it }?.run { karma.useSourceMapSupport() }
+    fun applyTo(recipient: org.jetbrains.kotlin.gradle.targets.js.testing.karma.KotlinKarma, outputFileName: String) {
+        webpackConfig?.applyTo(recipient.webpackConfig, outputFileName)
+        useConfigDirectory?.let(recipient::useConfigDirectory)
+        useChrome?.takeIf { it }?.run { recipient.useChrome() }
+        useChromeHeadless?.takeIf { it }?.run { recipient.useChromeHeadless() }
+        useChromeHeadlessNoSandbox?.takeIf { it }?.run { recipient.useChromeHeadlessNoSandbox() }
+        useChromium?.takeIf { it }?.run { recipient.useChromium() }
+        useChromiumHeadless?.takeIf { it }?.run { recipient.useChromiumHeadless() }
+        useChromeCanary?.takeIf { it }?.run { recipient.useChromeCanary() }
+        useChromeCanaryHeadless?.takeIf { it }?.run { recipient.useChromeCanaryHeadless() }
+        useDebuggableChrome?.takeIf { it }?.run { recipient.useDebuggableChrome() }
+        usePhantomJS?.takeIf { it }?.run { recipient.usePhantomJS() }
+        useFirefox?.takeIf { it }?.run { recipient.useFirefox() }
+        useFirefoxHeadless?.takeIf { it }?.run { recipient.useFirefoxHeadless() }
+        useFirefoxDeveloper?.takeIf { it }?.run { recipient.useFirefoxDeveloper() }
+        useFirefoxDeveloperHeadless?.takeIf { it }?.run { recipient.useFirefoxDeveloperHeadless() }
+        useFirefoxAurora?.takeIf { it }?.run { recipient.useFirefoxAurora() }
+        useFirefoxAuroraHeadless?.takeIf { it }?.run { recipient.useFirefoxAuroraHeadless() }
+        useFirefoxNightly?.takeIf { it }?.run { recipient.useFirefoxNightly() }
+        useFirefoxNightlyHeadless?.takeIf { it }?.run { recipient.useFirefoxNightlyHeadless() }
+        useOpera?.takeIf { it }?.run { recipient.useOpera() }
+        useSafari?.takeIf { it }?.run { recipient.useSafari() }
+        useIe?.takeIf { it }?.run { recipient.useIe() }
+        useSourceMapSupport?.takeIf { it }?.run { recipient.useSourceMapSupport() }
     }
+}
+
+internal object KotlinKarmaSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
+
+    override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
+        when (element) {
+            is JsonPrimitive -> Boolean.serializer()
+            else -> KotlinKarma.serializer()
+        }
 }
