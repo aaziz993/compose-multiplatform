@@ -1,7 +1,6 @@
 package gradle.plugins.signing
 
 import gradle.accessors.publishing
-import gradle.accessors.signing
 import gradle.api.getByNameOrAll
 import java.io.File
 import kotlinx.serialization.DeserializationStrategy
