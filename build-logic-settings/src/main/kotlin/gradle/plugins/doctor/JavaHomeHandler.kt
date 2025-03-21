@@ -26,9 +26,9 @@ internal data class JavaHomeHandler(
 ) {
 
     fun applyTo(recipient: JavaHomeHandler) {
-        handler.ensureJavaHomeMatches tryAssign ensureJavaHomeMatches
-        handler.ensureJavaHomeIsSet tryAssign ensureJavaHomeIsSet
-        handler.failOnError tryAssign failOnError
-        handler.extraMessage tryAssign extraMessage
+        recipient.ensureJavaHomeMatches tryAssign ensureJavaHomeMatches
+        recipient.ensureJavaHomeIsSet tryAssign ensureJavaHomeIsSet
+        recipient.failOnError tryAssign failOnError
+        recipient.extraMessage tryAssign extraMessage
     }
 }

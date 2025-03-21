@@ -4,11 +4,12 @@ import gradle.accessors.libraryAsDependency
 import gradle.accessors.libs
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
-import gradle.api.BaseNamed
+import gradle.api.ProjectNamed
 import gradle.api.tryAssign
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
 import org.gradle.kotlin.dsl.buildscript
 import org.jetbrains.dokka.gradle.engine.plugins.DokkaHtmlPluginParameters
 import org.jetbrains.dokka.gradle.engine.plugins.DokkaVersioningPluginParameters
@@ -24,12 +25,13 @@ import org.jetbrains.dokka.gradle.engine.plugins.DokkaVersioningPluginParameters
  * @param[pluginFqn] Fully qualified classname of the Dokka Plugin
  */
 @Serializable
-internal sealed class DokkaPluginParametersBaseSpec : BaseNamed {
+internal sealed class DokkaPluginParametersBaseSpec<T : org.jetbrains.dokka.gradle.engine.plugins.DokkaPluginParametersBaseSpec>
+    : ProjectNamed<T> {
 
     abstract val pluginFqn: String
 }
 
-internal object DokkaPluginParametersBaseSpecTransformingSerializer : KeyTransformingSerializer<DokkaPluginParametersBaseSpec>(
+internal object DokkaPluginParametersBaseSpecTransformingSerializer : KeyTransformingSerializer<DokkaPluginParametersBaseSpec<org.jetbrains.dokka.gradle.engine.plugins.DokkaPluginParametersBaseSpec>>(
     DokkaPluginParametersBaseSpec.serializer(),
     "type",
 )
@@ -56,7 +58,8 @@ internal data class DokkaHtmlPluginParameters(
      * It's best to try and mirror Dokka's directory structure in the source files, which can help
      * IDE inspections.
      */
-    val customAssets: List<String>? = null,
+    val customAssets: Set<String>? = null,
+    val setCustomAssets: Set<String>? = null,
 
     /**
      * List of paths for `.css` stylesheets to be bundled with documentation and used for rendering.
@@ -71,7 +74,8 @@ internal data class DokkaHtmlPluginParameters(
      * It's best to try and mirror Dokka's directory structure in the source files, which can help
      * IDE inspections.
      */
-    val customStyleSheets: List<String>? = null,
+    val customStyleSheets: Set<String>? = null,
+    val setCustomStyleSheets: Set<String>? = null,
 
     /**
      * This is a boolean option. If set to `true`, Dokka renders properties/functions and inherited
@@ -107,7 +111,7 @@ internal data class DokkaHtmlPluginParameters(
      * For more information, see [Templates](https://kotlinlang.org/docs/dokka-html.html#templates).
      */
     val templatesDir: String? = null,
-) : DokkaPluginParametersBaseSpec() {
+) : DokkaPluginParametersBaseSpec<DokkaHtmlPluginParameters>() {
 
     override val name: String
         get() = DokkaHtmlPluginParameters.DOKKA_HTML_PARAMETERS_NAME
@@ -115,22 +119,20 @@ internal data class DokkaHtmlPluginParameters(
     override val pluginFqn: String
         get() = DokkaHtmlPluginParameters.DOKKA_HTML_PLUGIN_FQN
 
-        context(Project)
-    override fun applyTo(recipient: T) {
-        named as DokkaHtmlPluginParameters
-
-        customAssets?.toTypedArray()?.let(named.customAssets::from)
-setCustomAssets?.let(named.customAssets::setFrom)
-        customStyleSheets?.toTypedArray()?.let(named.customStyleSheets::from)
-setCustomStyleSheets?.let(named.customStyleSheets::setFrom)
-        named.separateInheritedMembers tryAssign separateInheritedMembers
-        named.mergeImplicitExpectActualDeclarations tryAssign mergeImplicitExpectActualDeclarations
-        named.footerMessage tryAssign (footerMessage ?: listOfNotNull(
+    context(Project)
+    override fun applyTo(recipient: DokkaHtmlPluginParameters) {
+        customAssets?.toTypedArray()?.let(recipient.customAssets::from)
+        setCustomAssets?.let(recipient.customAssets::setFrom)
+        customStyleSheets?.toTypedArray()?.let(recipient.customStyleSheets::from)
+        setCustomStyleSheets?.let(recipient.customStyleSheets::setFrom)
+        recipient.separateInheritedMembers tryAssign separateInheritedMembers
+        recipient.mergeImplicitExpectActualDeclarations tryAssign mergeImplicitExpectActualDeclarations
+        recipient.footerMessage tryAssign (footerMessage ?: listOfNotNull(
             projectProperties.year,
             projectProperties.developer?.name,
         ).joinToString(" - ").takeIf(String::isNotEmpty)?.let { message -> "© $message" })
-        named.homepageLink tryAssign homepageLink
-        named.templatesDir tryAssign templatesDir?.let(layout.projectDirectory::dir)
+        recipient.homepageLink tryAssign homepageLink
+        recipient.templatesDir tryAssign templatesDir?.let(layout.projectDirectory::dir)
     }
 }
 
@@ -146,7 +148,7 @@ setCustomStyleSheets?.let(named.customStyleSheets::setFrom)
  */
 @Serializable
 @SerialName("versioning")
-internal data class DokkaVersioningParameters(
+internal data class DokkaVersioningPluginParameters(
 
     /**
      * The version of your application/library that documentation is going to be generated for.
@@ -163,7 +165,7 @@ internal data class DokkaVersioningParameters(
      *
      * If no versions are supplied the versions will be ordered using SemVer ordering.
      */
-    val versionsOrdering: List<String>? = null,
+    val versionsOrdering: LinkedHashSet<String>? = null,
 
     /**
      * An optional path to a parent folder that contains other documentation versions.
@@ -178,7 +180,8 @@ internal data class DokkaVersioningParameters(
      * An optional list of paths to other documentation versions. It must point to Dokka's outputs
      * directly. This is useful if different versions can't all be in the same directory.
      */
-    val olderVersions: List<String>? = null,
+    val olderVersions: LinkedHashSet<String>? = null,
+    val setOlderVersions: LinkedHashSet<String>? = null,
 
     /**
      * An optional boolean value indicating whether to render the navigation dropdown on all pages.
@@ -186,7 +189,7 @@ internal data class DokkaVersioningParameters(
      * Set to `true` by default.
      */
     val renderVersionsNavigationOnAllPages: Boolean? = null,
-) : DokkaPluginParametersBaseSpec() {
+) : DokkaPluginParametersBaseSpec<DokkaVersioningPluginParameters>() {
 
     override val name: String
         get() = DokkaVersioningPluginParameters.DOKKA_VERSIONING_PLUGIN_PARAMETERS_NAME
@@ -194,22 +197,20 @@ internal data class DokkaVersioningParameters(
     override val pluginFqn: String
         get() = DokkaVersioningPluginParameters.DOKKA_VERSIONING_PLUGIN_FQN
 
-        context(Project)
-    override fun applyTo(recipient: T) {
+    context(Project)
+    override fun applyTo(recipient: DokkaVersioningPluginParameters) {
         buildscript {
             dependencies {
                 classpath(settings.libs.libraryAsDependency("dokka.versioning"))
             }
         }
 
-        named as DokkaVersioningPluginParameters
-
-        named.olderVersionsDir tryAssign olderVersionsDir?.let(::file)
-        olderVersions?.toTypedArray()?.let(named.olderVersions::from)
-setOlderVersions?.let(named.olderVersions::setFrom)
-        named.versionsOrdering tryAssign versionsOrdering
-        named.version tryAssign version
-        named.renderVersionsNavigationOnAllPages tryAssign renderVersionsNavigationOnAllPages
+        recipient.olderVersionsDir tryAssign olderVersionsDir?.let(::file)
+        olderVersions?.toTypedArray()?.let(recipient.olderVersions::from)
+        setOlderVersions?.let(recipient.olderVersions::setFrom)
+        recipient.versionsOrdering tryAssign versionsOrdering
+        recipient.version tryAssign version
+        recipient.renderVersionsNavigationOnAllPages tryAssign renderVersionsNavigationOnAllPages
     }
 }
 

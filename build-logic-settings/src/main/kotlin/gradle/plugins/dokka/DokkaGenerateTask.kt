@@ -1,10 +1,9 @@
 package gradle.plugins.dokka
 
-
+import gradle.api.tasks.applyTo
 import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
-import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.dokka.DokkaConfiguration
@@ -35,7 +34,8 @@ internal data class DokkaGenerateTask(
      *
      * Contains the Dokka Generator, Dokka plugins, and any transitive dependencies.
      */
-    val runtimeClasspath: List<String>? = null,
+    val runtimeClasspath: Set<String>? = null,
+    val setRuntimeClasspath: Set<String>? = null,
     /** @see org.jetbrains.dokka.gradle.formats.DokkaPublication.cacheRoot */
     val cacheDirectory: String? = null,
     /** @see org.jetbrains.dokka.gradle.formats.DokkaPublication.enabled */
@@ -67,24 +67,22 @@ internal data class DokkaGenerateTask(
      * This should only be used for local debugging.
      */
     val overrideJsonConfig: String? = null,
-) : DokkaBaseTask() {
+) : DokkaBaseTask<DokkaGenerateTask>() {
 
-        context(Project)
-    override fun applyTo(recipient: T) {
-        super.applyTo(named)
+    context(Project)
+    override fun applyTo(recipient: DokkaGenerateTask) {
+        super.applyTo(recipient)
 
-        named as DokkaGenerateTask
-
-        named.outputDirectory tryAssign outputDirectory?.let(layout.projectDirectory::dir)
-        runtimeClasspath?.toTypedArray()?.let(named.runtimeClasspath::from)
-setRuntimeClasspath?.let(named.runtimeClasspath::setFrom)
-        named.cacheDirectory tryAssign cacheDirectory?.let(layout.projectDirectory::dir)
-        named.publicationEnabled tryAssign publicationEnabled
-        generator?.applyTo(named.generator)
-        named.workerIsolation tryAssign workerIsolation?.toWorkerIsolation()
-        named.workerLogFile tryAssign workerLogFile?.let(::file)
-        named.dokkaConfigurationJsonFile tryAssign dokkaConfigurationJsonFile?.let(::file)
-        named.overrideJsonConfig tryAssign overrideJsonConfig
+        recipient.outputDirectory tryAssign outputDirectory?.let(layout.projectDirectory::dir)
+        runtimeClasspath?.toTypedArray()?.let(recipient.runtimeClasspath::from)
+        setRuntimeClasspath?.let(recipient.runtimeClasspath::setFrom)
+        recipient.cacheDirectory tryAssign cacheDirectory?.let(layout.projectDirectory::dir)
+        recipient.publicationEnabled tryAssign publicationEnabled
+        generator?.applyTo(recipient.generator)
+        recipient.workerIsolation tryAssign workerIsolation?.toWorkerIsolation()
+        recipient.workerLogFile tryAssign workerLogFile?.let(::file)
+        recipient.dokkaConfigurationJsonFile tryAssign dokkaConfigurationJsonFile?.let(::file)
+        recipient.overrideJsonConfig tryAssign overrideJsonConfig
     }
 
     context(Project)

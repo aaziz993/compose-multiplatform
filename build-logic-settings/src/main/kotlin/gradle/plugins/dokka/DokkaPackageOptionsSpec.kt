@@ -70,10 +70,10 @@ internal data class DokkaPackageOptionsSpec(
 ) {
 
     fun applyTo(recipient: DokkaPackageOptionsSpec) {
-        spec.matchingRegex tryAssign matchingRegex
-        spec.suppress tryAssign suppress
-        spec.documentedVisibilities tryAssign documentedVisibilities
-        spec.skipDeprecated tryAssign skipDeprecated
-        spec.reportUndocumented tryAssign reportUndocumented
+        recipient.matchingRegex tryAssign matchingRegex
+        recipient.suppress tryAssign suppress
+        recipient.documentedVisibilities tryAssign documentedVisibilities
+        recipient.skipDeprecated tryAssign skipDeprecated
+        recipient.reportUndocumented tryAssign reportUndocumented
     }
 }

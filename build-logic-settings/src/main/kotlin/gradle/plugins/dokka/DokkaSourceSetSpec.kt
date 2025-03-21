@@ -5,9 +5,12 @@ import gradle.accessors.settings
 import gradle.accessors.version
 import gradle.accessors.versions
 import gradle.api.BaseNamed
+import gradle.api.ProjectNamed
+import gradle.api.applyTo
 import gradle.api.tryAssign
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
 import org.jetbrains.dokka.gradle.engine.parameters.KotlinPlatform
 import org.jetbrains.dokka.gradle.engine.parameters.VisibilityModifier
 
@@ -92,7 +95,8 @@ internal data class DokkaSourceSetSpec(
      * Useful stuff in another package.
      * ```
      */
-    val includes: List<String>? = null,
+    val includes: Set<String>? = null,
+    val setIncludes: Set<String>? = null,
     /**
      * Set of visibility modifiers that should be documented.
      *
@@ -113,18 +117,21 @@ internal data class DokkaSourceSetSpec(
      * By default, classpath is deduced from information provided by the Kotlin Gradle plugin.
      */
     val classpath: List<String>? = null,
+    val setClasspath: List<String>? = null,
     /**
      * Source code roots to be analyzed and documented.
      * Accepts directories and individual `.kt` / `.java` files.
      *
      * By default, source roots are deduced from information provided by the Kotlin Gradle plugin.
      */
-    val sourceRoots: List<String>? = null,
+    val sourceRoots: Set<String>? = null,
+    val setSourceRoots: Set<String>? = null,
     /**
      * List of directories or files that contain sample functions which are referenced via
      * [`@sample`](https://kotlinlang.org/docs/kotlin-doc.html#sample-identifier) KDoc tag.
      */
-    val samples: List<String>? = null,
+    val samples: Set<String>? = null,
+    val setSamples: Set<String>? = null,
     /**
      * Whether to emit warnings about visible undocumented declarations, that is declarations without KDocs
      * after they have been filtered by [documentedVisibilities].
@@ -154,7 +161,7 @@ internal data class DokkaSourceSetSpec(
     /**
      * Allows linking to Dokka/Javadoc documentation of the project's dependencies.
      */
-    val externalDocumentationLinks: List<DokkaExternalDocumentationLinkSpec>? = null,
+    val externalDocumentationLinks: Set<DokkaExternalDocumentationLinkSpec>? = null,
     /**
      * Platform to be used for setting up code analysis and samples.
      *
@@ -185,7 +192,8 @@ internal data class DokkaSourceSetSpec(
      *
      * Will be concatenated with generated files if [suppressGeneratedFiles] is set to `false`.
      */
-    val suppressedFiles: List<String>? = null,
+    val suppressedFiles: Set<String>? = null,
+    val setSuppressedFiles: Set<String>? = null,
     /**
      * Whether to document/analyze generated files.
      *
@@ -255,52 +263,50 @@ internal data class DokkaSourceSetSpec(
      * Default is JDK 11.
      */
     val jdkVersion: Int? = null,
-) : BaseNamed {
+) : ProjectNamed<org.jetbrains.dokka.gradle.engine.parameters.DokkaSourceSetSpec> {
 
-        context(Project)
-    override fun applyTo(recipient: T) {
-        named as org.jetbrains.dokka.gradle.engine.parameters.DokkaSourceSetSpec
-
-        named.sourceSetScope tryAssign sourceSetScope
-        named.suppress tryAssign suppress
-        named.displayName tryAssign displayName
-        includes?.toTypedArray()?.let(named.includes::from)
-setIncludes?.let(named.includes::setFrom)
-        named.documentedVisibilities tryAssign documentedVisibilities
-        classpath?.toTypedArray()?.let(named.classpath::from)
-setClasspath?.let(named.classpath::setFrom)
-        sourceRoots?.toTypedArray()?.let(named.sourceRoots::from)
-setSourceRoots?.let(named.sourceRoots::setFrom)
-        samples?.toTypedArray()?.let(named.samples::from)
-setSamples?.let(named.samples::setFrom)
-        named.reportUndocumented tryAssign reportUndocumented
+    context(Project)
+    override fun applyTo(recipient: org.jetbrains.dokka.gradle.engine.parameters.DokkaSourceSetSpec) {
+        recipient.sourceSetScope tryAssign sourceSetScope
+        recipient.suppress tryAssign suppress
+        recipient.displayName tryAssign displayName
+        includes?.toTypedArray()?.let(recipient.includes::from)
+        setIncludes?.let(recipient.includes::setFrom)
+        recipient.documentedVisibilities tryAssign documentedVisibilities
+        classpath?.toTypedArray()?.let(recipient.classpath::from)
+        setClasspath?.let(recipient.classpath::setFrom)
+        sourceRoots?.toTypedArray()?.let(recipient.sourceRoots::from)
+        setSourceRoots?.let(recipient.sourceRoots::setFrom)
+        samples?.toTypedArray()?.let(recipient.samples::from)
+        setSamples?.let(recipient.samples::setFrom)
+        recipient.reportUndocumented tryAssign reportUndocumented
 
         sourceLinks?.forEach { sourceLink ->
-            named.sourceLink {
+            recipient.sourceLink {
                 sourceLink.applyTo(this)
             }
         }
 
         perPackageOptions?.forEach { perPackageOption ->
-            named.perPackageOption(perPackageOption::applyTo)
+            recipient.perPackageOption(perPackageOption::applyTo)
         }
 
         externalDocumentationLinks?.forEach { externalDocumentationLink ->
-            externalDocumentationLink.applyTo(named.externalDocumentationLinks)
+            externalDocumentationLink.applyTo(recipient.externalDocumentationLinks)
         }
 
-        named.analysisPlatform tryAssign analysisPlatform
-        named.skipEmptyPackages tryAssign skipEmptyPackages
-        named.skipDeprecated tryAssign skipDeprecated
-        suppressedFiles?.toTypedArray()?.let(named.suppressedFiles::from)
-setSuppressedFiles?.let(named.suppressedFiles::setFrom)
-        named.suppressGeneratedFiles tryAssign suppressGeneratedFiles
-        named.enableKotlinStdLibDocumentationLink tryAssign enableKotlinStdLibDocumentationLink
-        named.enableJdkDocumentationLink tryAssign enableJdkDocumentationLink
-        named.enableAndroidDocumentationLink tryAssign enableAndroidDocumentationLink
-        named.languageVersion tryAssign languageVersion
-        named.apiVersion tryAssign apiVersion
-        named.jdkVersion tryAssign (jdkVersion ?: settings.libs.versions.version("java.languageVersion")?.toInt())
+        recipient.analysisPlatform tryAssign analysisPlatform
+        recipient.skipEmptyPackages tryAssign skipEmptyPackages
+        recipient.skipDeprecated tryAssign skipDeprecated
+        suppressedFiles?.toTypedArray()?.let(recipient.suppressedFiles::from)
+        setSuppressedFiles?.let(recipient.suppressedFiles::setFrom)
+        recipient.suppressGeneratedFiles tryAssign suppressGeneratedFiles
+        recipient.enableKotlinStdLibDocumentationLink tryAssign enableKotlinStdLibDocumentationLink
+        recipient.enableJdkDocumentationLink tryAssign enableJdkDocumentationLink
+        recipient.enableAndroidDocumentationLink tryAssign enableAndroidDocumentationLink
+        recipient.languageVersion tryAssign languageVersion
+        recipient.apiVersion tryAssign apiVersion
+        recipient.jdkVersion tryAssign (jdkVersion ?: settings.libs.versions.version("java.languageVersion")?.toInt())
     }
 }
 

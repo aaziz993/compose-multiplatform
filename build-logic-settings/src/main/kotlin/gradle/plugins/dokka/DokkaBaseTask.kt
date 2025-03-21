@@ -1,17 +1,16 @@
 package gradle.plugins.dokka
 
+import gradle.api.tasks.DefaultTask
 import gradle.api.tasks.Task
+import gradle.api.tasks.applyTo
 import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 
-internal abstract class DokkaBaseTask : Task {
+internal abstract class DokkaBaseTask<T : org.jetbrains.dokka.gradle.tasks.DokkaBaseTask> : DefaultTask<T>() {
 
-    context(Project)
-    override fun applyTo() =
-        applyTo(tasks.withType<org.jetbrains.dokka.gradle.tasks.DokkaBaseTask>())
 }
 
 @Serializable
@@ -30,4 +29,9 @@ internal class DokkaBaseTaskImpl(
     override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
     override val name: String = "",
-) : DokkaBaseTask()
+) : DokkaBaseTask<org.jetbrains.dokka.gradle.tasks.DokkaBaseTask>() {
+
+    context(Project)
+    override fun applyTo() =
+        applyTo(tasks.withType<org.jetbrains.dokka.gradle.tasks.DokkaBaseTask>())
+}

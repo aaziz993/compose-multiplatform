@@ -10,12 +10,12 @@ import org.jetbrains.dokka.gradle.DokkaMultiModuleFileLayout
  * @see NoCopy
  * @see CompactInParent
  */
-internal enum class DokkaMultiModuleFileLayout {
+internal enum class DokkaMultiModuleFileLayout(layout: DokkaMultiModuleFileLayout) {
 
     /**
      * Will link to the original [AbstractDokkaTask.outputDirectory]. This requires no copying of the output files.
      */
-    NoCopy,
+    NoCopy(DokkaMultiModuleFileLayout.NoCopy),
 
     /**
      * Will point to a subfolder inside the output directory of the parent.
@@ -24,11 +24,6 @@ internal enum class DokkaMultiModuleFileLayout {
      * :parentProject:firstAncestor:secondAncestor will be be resolved to
      * {parent output directory}/firstAncestor/secondAncestor
      */
-    CompactInParent;
-
-    fun toDokkaMultiModuleFileLayout(): DokkaMultiModuleFileLayout = when (this) {
-        NoCopy -> DokkaMultiModuleFileLayout.NoCopy
-        CompactInParent -> DokkaMultiModuleFileLayout.CompactInParent
-    }
+    CompactInParent(DokkaMultiModuleFileLayout.CompactInParent)
 }
 

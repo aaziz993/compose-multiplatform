@@ -1,10 +1,10 @@
 package gradle.plugins.dokka
 
-
-import gradle.api.BaseNamed
+import gradle.api.ProjectNamed
 import gradle.api.tryAssign
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
 
 /**
  * A [DokkaPublication] controls the output produced by the Dokka Generator.
@@ -100,7 +100,8 @@ internal data class DokkaPublication(
      * [Dokka Gradle example](https://github.com/Kotlin/dokka/tree/master/examples/gradle-v2/basic-gradle-example)
      * for an example of what it looks like and how to use it.
      */
-    val includes: List<String>? = null,
+    val includes: Set<String>? = null,
+    val setIncludes: Set<String>? = null,
     /**
      * A shared cache directory used by DokkaGenerator.
      *
@@ -115,27 +116,25 @@ internal data class DokkaPublication(
      * If you find you need to set this property, please report your use-case https://kotl.in/dokka-issues.
      */
     val finalizeCoroutines: Boolean? = null,
-) : BaseNamed {
+) : ProjectNamed<org.jetbrains.dokka.gradle.formats.DokkaPublication> {
 
     override val name: String
         get() = formatName
 
-        context(Project)
-    override fun applyTo(recipient: T) {
-        named as org.jetbrains.dokka.gradle.formats.DokkaPublication
-
-        named.enabled tryAssign enabled
-        named.moduleName tryAssign moduleName
-        named.moduleVersion tryAssign moduleVersion
-        named.outputDirectory tryAssign outputDirectory?.let(layout.projectDirectory::dir)
-        named.offlineMode tryAssign offlineMode
-        named.failOnWarning tryAssign failOnWarning
-        named.suppressObviousFunctions tryAssign suppressObviousFunctions
-        named.suppressInheritedMembers tryAssign suppressInheritedMembers
-        includes?.toTypedArray()?.let(named.includes::from)
-setIncludes?.let(named.includes::setFrom)
-        named.cacheRoot tryAssign cacheRoot?.let(layout.projectDirectory::dir)
-        named.finalizeCoroutines tryAssign finalizeCoroutines
+    context(Project)
+    override fun applyTo(recipient: org.jetbrains.dokka.gradle.formats.DokkaPublication) {
+        recipient.enabled tryAssign enabled
+        recipient.moduleName tryAssign moduleName
+        recipient.moduleVersion tryAssign moduleVersion
+        recipient.outputDirectory tryAssign outputDirectory?.let(layout.projectDirectory::dir)
+        recipient.offlineMode tryAssign offlineMode
+        recipient.failOnWarning tryAssign failOnWarning
+        recipient.suppressObviousFunctions tryAssign suppressObviousFunctions
+        recipient.suppressInheritedMembers tryAssign suppressInheritedMembers
+        includes?.toTypedArray()?.let(recipient.includes::from)
+        setIncludes?.let(recipient.includes::setFrom)
+        recipient.cacheRoot tryAssign cacheRoot?.let(layout.projectDirectory::dir)
+        recipient.finalizeCoroutines tryAssign finalizeCoroutines
     }
 }
 

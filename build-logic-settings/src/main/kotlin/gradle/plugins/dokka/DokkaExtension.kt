@@ -1,6 +1,7 @@
 package gradle.plugins.dokka
 
 import gradle.accessors.dokka
+import gradle.api.applyTo
 import gradle.api.tryAssign
 import org.gradle.api.Project
 import org.jetbrains.dokka.gradle.workers.ClassLoaderIsolation
@@ -119,7 +120,7 @@ internal interface DokkaExtension {
      * }
      * ```
      */
-    val dokkaPublications: List<DokkaPublication>?
+    val dokkaPublications: Set<DokkaPublication>?
 
     /**
      * The container for all [DokkaSourceSet][DokkaSourceSetSpec]s in the current project.
@@ -155,14 +156,14 @@ internal interface DokkaExtension {
      * }
      * ```
      */
-    val dokkaSourceSets: List<DokkaSourceSetSpec>?
+    val dokkaSourceSets: Set<DokkaSourceSetSpec>?
 
     /**
      * Dokka Plugin are used to configure the way Dokka generates a format.
      * Some plugins can be configured via parameters, and those parameters are stored in this
      * container.
      */
-    val pluginsConfiguration: List<DokkaPluginParametersBaseSpec>?
+    val pluginsConfiguration: Set<DokkaPluginParametersBaseSpec<*>>?
 
     /**
      * The default version of Dokka dependencies that are used at runtime during generation.
