@@ -1,6 +1,6 @@
 package plugins.signing.model
 
-import gradle.plugins.signing.ClassifierFile
+import gradle.plugins.signing.SignFile
 import gradle.plugins.signing.InMemoryPgpKeys
 import gradle.plugins.signing.SigningExtension
 import gradle.project.EnabledSettings
@@ -16,7 +16,7 @@ internal data class SigningSettings(
     override val signPublications: List<String>? = null,
     override val signArtifacts: List<String>? = null,
     override val signFiles: List<String>? = null,
-    override val signClassifierFiles: List<ClassifierFile>? = null,
+    override val signClassifierFiles: List<SignFile>? = null,
     override val enabled: Boolean = true,
     val generateGpg: GenerateGgp? = null,
 ) : SigningExtension(), EnabledSettings

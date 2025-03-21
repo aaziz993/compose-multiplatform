@@ -6,14 +6,10 @@ import gradle.accessors.signing
 import gradle.api.configureEach
 import gradle.api.getByNameOrAll
 import gradle.api.toVersion
-import gradle.collection.resolveValue
-import gradle.plugins.java.manifest.From
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
-import kotlinx.serialization.builtins.SetSerializer
 import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
@@ -28,7 +24,7 @@ import org.gradle.plugins.signing.type.pgp.ArmoredSignatureType
 /**
  * The global signing configuration for a project.
  */
-internal abstract class SigningExtension {
+internal abstract class SigningExtension : Signer {
 
     /**
      * Whether this task should fail if no signatory or signature type are configured at generation time.
@@ -84,20 +80,6 @@ internal abstract class SigningExtension {
      *
      *
      * The project's default signatory and default signature type from the [signing settings][SigningExtension] will be used to generate the signature.
-     * The returned [sign operation][SignOperation] gives access to the created signature files.
-     *
-     * If there is no configured default signatory available, the sign operation will fail.
-     *
-     * @param files The files to sign.
-     * @return The executed [sign operation][SignOperation].
-     */
-    abstract val sign: Set<@Serializable(with = SignSerializer::class) Any>?
-
-    /**
-     * Digitally signs the files, generating signature files alongside them.
-     *
-     *
-     * The project's default signatory and default signature type from the [signing settings][SigningExtension] will be used to generate the signature.
      * The returned [sign][SignOperation] gives access to the created signature files.
      *
      * If there is no configured default signatory available, the sign operation will fail.
@@ -106,7 +88,7 @@ internal abstract class SigningExtension {
      * @param files The publish artifacts to sign.
      * @return The executed [sign operation][SignOperation].
      */
-    abstract val signClassifierFiles: List<ClassifierFile>?
+    abstract val signClassifierFiles: List<SignFile>?
 
     context(Project)
     fun applyTo() =
@@ -118,37 +100,13 @@ internal abstract class SigningExtension {
                 signing.useInMemoryPgpKeys(defaultKeyId, defaultSecretKey, defaultPassword)
             }
 
-            sign?.let { sign ->
-                val (references, files) = sign.filterIsInstance<String>().partition { value -> value.startsWith("$") }
-
-                references
-                    .resolveReferences("configurations")
-                    .flatMap(configurations::getByNameOrAll)
-                    .toTypedArray()
-                    .let(signing::sign)
-
-                references
-                    .resolveReferences("publications")
-                    .flatMap(publishing.publications::getByNameOrAll)
-                    .toTypedArray()
-                    .let(signing::sign)
-
-                val allArtifacts = configurations.flatMap(Configuration::getAllArtifacts)
-
-                references
-                    .resolveReferences("artifacts")
-                    .flatMap { name ->
-                        if (name.isEmpty()) allArtifacts else allArtifacts.filter { artifact -> artifact.classifier == name }
-                    }
-                    .toTypedArray()
-                    .let(signing::sign)
-
-                files.map(::file).toTypedArray().let(signing::sign)
-
-                sign.filterIsInstance<ClassifierFile>().forEach { (classifier, files) ->
-                    signing.sign(classifier, *files.map(::file).toTypedArray())
-                }
-            }
+            applyTo(
+                signing::sign,
+                signing::sign,
+                signing::sign,
+                signing::sign,
+                signing::sign,
+            )
 
             // TODO: https://youtrack.jetbrains.com/issue/KT-61313/ https://github.com/gradle/gradle/issues/26132
             plugins.withId("org.jetbrains.kotlin.multiplatform") {
@@ -159,22 +117,5 @@ internal abstract class SigningExtension {
                     )
                 }
             }
-        }
-
-    context(Project)
-    private fun List<String>.resolveReferences(name: String): List<String> {
-        val reference = "$$name."
-        return filter { value -> value.startsWith(reference) }
-            .map { reference -> reference.removePrefix(reference) }
-    }
-}
-
-internal object SignSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
-
-    override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
-        when (element) {
-            is JsonPrimitive -> String.serializer()
-            is JsonObject -> ClassifierFile.serializer()
-            else -> throw SerializationException("Unsupported element: $element")
         }
 }
