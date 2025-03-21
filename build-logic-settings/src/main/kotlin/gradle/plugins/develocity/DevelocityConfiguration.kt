@@ -2,6 +2,7 @@ package gradle.plugins.develocity
 
 import gradle.accessors.resolveValue
 import gradle.api.tryAssign
+import gradle.plugins.develocity.buildscan.BuildScanConfiguration
 import org.gradle.api.initialization.Settings
 import org.gradle.kotlin.dsl.develocity
 

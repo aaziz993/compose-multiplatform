@@ -3,6 +3,10 @@ package gradle.plugins.buildconfig
 import com.github.gmazzo.gradle.plugins.BuildConfigSourceSet
 import gradle.api.applyTo
 import gradle.api.tryAssign
+import gradle.plugins.buildconfig.generator.BuildConfigGenerator
+import gradle.plugins.buildconfig.generator.BuildConfigJavaGenerator
+import gradle.plugins.buildconfig.generator.BuildConfigKotlinGenerator
+import gradle.plugins.buildconfig.tasks.BuildConfigTask
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

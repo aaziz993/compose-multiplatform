@@ -7,6 +7,8 @@ import gradle.accessors.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
+import gradle.plugins.cmp.desktop.application.JvmApplication
+import gradle.plugins.cmp.desktop.nativeapplication.NativeApplication
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

@@ -6,8 +6,8 @@ import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
 import gradle.plugins.dokka.DokkaExtension
-import gradle.plugins.dokka.DokkaPluginParametersBaseSpec
-import gradle.plugins.dokka.DokkaPluginParametersBaseSpecTransformingSerializer
+import gradle.plugins.dokka.plugin.DokkaPluginParametersBaseSpec
+import gradle.plugins.dokka.plugin.DokkaPluginParametersBaseSpecTransformingSerializer
 import gradle.plugins.dokka.DokkaPublication
 import gradle.plugins.dokka.DokkaPublicationTransformingSerializer
 import gradle.plugins.dokka.DokkaSourceSetSpec

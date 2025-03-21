@@ -12,11 +12,11 @@ internal data class DependencyFilter(
      * @param configuration
      * @return
      */
-    val resolve: List<List<String>>? = null,
+    val resolve: List<Set<String>>? = null,
 ) {
 
     context(Project)
     fun applyTo(recipient: DependencyFilter) {
-        resolve?.map { files(*it.toTypedArray()) }?.let(filter::resolve)
+        resolve?.map { files(*it.toTypedArray()) }?.let(recipient::resolve)
     }
 }

@@ -2,6 +2,8 @@ package gradle.plugins.apple
 
 import gradle.accessors.apple
 import gradle.accessors.moduleName
+import gradle.plugins.apple.target.IosAppTarget
+import gradle.plugins.apple.target.IosFrameworkTarget
 import org.gradle.api.Project
 
 internal interface AppleProjectExtension {
