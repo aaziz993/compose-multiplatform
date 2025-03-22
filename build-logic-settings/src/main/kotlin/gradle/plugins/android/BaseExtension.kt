@@ -17,10 +17,12 @@ import gradle.plugins.android.features.ViewBinding
 import gradle.plugins.android.flavor.ProductFlavorDsl
 import gradle.plugins.android.signing.SigningConfigImpl
 import gradle.plugins.android.signing.SigningConfigTransformingSerializer
+import gradle.plugins.android.sourceset.AndroidSourceSet
 import gradle.plugins.android.test.TestOptions
 import java.util.*
 import kotlin.collections.addAll
 import kotlinx.serialization.Serializable
+import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 
 internal interface BaseExtension<
@@ -72,6 +74,8 @@ internal interface BaseExtension<
      */
     val adbOptions: AdbOptions?
 
+    val sourceSets: Set<AndroidSourceSet>?
+
     val splits: Splits?
 
     // ---------------
@@ -113,20 +117,21 @@ internal interface BaseExtension<
         (compileSdkVersion ?: settings.libs.versions.version("android.compileSdk")?.toInt())
             ?.let(android::compileSdkVersion)
         buildToolsVersion?.let(android::buildToolsVersion)
-
         flavorDimensions?.toTypedArray()?.let(android::flavorDimensions)
-
         aaptOptions?.applyTo(android.aaptOptions)
         externalNativeBuild?.applyTo(android.externalNativeBuild)
         testOptions?.applyTo(android.testOptions)
         compileOptions?.applyTo(android.compileOptions)
         packaging?.applyTo(android.packagingOptions)
         adbOptions?.applyTo(android.adbOptions)
+
+        sourceSets?.forEach { sourceSet ->
+            sourceSet.applyTo(android.sourceSets)
+        }
+
         splits?.applyTo(android.splits)
         android::generatePureSplits trySet generatePureSplits
-
         flavorDimensions?.toTypedArray()?.let(android::flavorDimensions)
-
         setFlavorDimensions?.act(android.flavorDimensionList::clear)?.let(android.flavorDimensionList::addAll)
         resourcePrefix?.let(android::resourcePrefix)
         android::ndkVersion trySet ndkVersion

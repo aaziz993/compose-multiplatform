@@ -20,10 +20,12 @@ import gradle.plugins.android.features.ViewBinding
 import gradle.plugins.android.flavor.ProductFlavorDsl
 import gradle.plugins.android.signing.SigningConfigImpl
 import gradle.plugins.android.signing.SigningConfigTransformingSerializer
+import gradle.plugins.android.sourceset.AndroidSourceSet
 import gradle.plugins.android.test.TestCoverage
 import gradle.plugins.android.test.TestOptions
 
 import kotlinx.serialization.Serializable
+import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 
 /**
@@ -248,6 +250,14 @@ internal interface CommonExtension<
     val splits: Splits?
 
     val composeOptions: ComposeOptions?
+
+    /**
+     * Encapsulates source set configurations for all variants.
+     *
+     * Note that the Android plugin uses its own implementation of source sets. For more
+     * information about the properties you can configure in this block, see [AndroidSourceSet].
+     */
+    val sourceSets: Set<AndroidSourceSet>?
 
     /**
      * Specifies the names of product flavor dimensions for this project.
@@ -518,7 +528,7 @@ internal interface CommonExtension<
     @Suppress("UnstableApiUsage", "UNCHECKED_CAST")
     fun applyTo() {
         val extension = commonExtension()
-
+        extension.sourceSets
         androidResources?.applyTo(extension.androidResources)
         installation?.applyTo(extension.installation)
         compileOptions?.applyTo(android.compileOptions)
@@ -532,7 +542,6 @@ internal interface CommonExtension<
         viewBinding?.applyTo(android.viewBinding)
         testCoverage?.applyTo(extension.testCoverage)
         lint?.applyTo(extension.lint)
-
         packaging?.applyTo(extension.packaging)
 
         productFlavors?.forEach { productFlavors ->
@@ -548,6 +557,10 @@ internal interface CommonExtension<
         testOptions?.applyTo(android.testOptions)
         splits?.applyTo(android.splits)
         composeOptions?.applyTo(android.composeOptions)
+
+        sourceSets?.forEach { sourceSet ->
+            sourceSet.applyTo(android.sourceSets)
+        }
 
         flavorDimensions?.toTypedArray()?.let(android::flavorDimensions)
 

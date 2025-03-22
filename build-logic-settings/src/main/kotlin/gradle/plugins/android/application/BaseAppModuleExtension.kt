@@ -21,6 +21,7 @@ import gradle.plugins.android.test.TestCoverage
 import gradle.plugins.android.test.TestFixtures
 import gradle.plugins.android.test.TestOptions
 import gradle.plugins.android.features.ViewBinding
+import gradle.plugins.android.sourceset.AndroidSourceSet
 
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -29,6 +30,7 @@ import org.gradle.api.Project
 @Serializable
 internal data class BaseAppModuleExtension(
     override val composeOptions: ComposeOptions? = null,
+    override val sourceSets: Set<AndroidSourceSet>? = null,
     override val dataBinding: DataBinding? = null,
     override val viewBinding: ViewBinding? = null,
     override val defaultPublishConfig: String? = null,

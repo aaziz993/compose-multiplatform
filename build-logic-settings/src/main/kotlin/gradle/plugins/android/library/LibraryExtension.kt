@@ -23,6 +23,7 @@ import gradle.plugins.android.test.TestFixtures
 import gradle.plugins.android.test.TestOptions
 import gradle.plugins.android.TestedExtension
 import gradle.plugins.android.features.ViewBinding
+import gradle.plugins.android.sourceset.AndroidSourceSet
 
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -70,6 +71,7 @@ internal data class LibraryExtension(
     override val compileOptions: CompileOptions? = null,
     override val packaging: Packaging? = null,
     override val adbOptions: AdbOptions? = null,
+    override val sourceSets: Set<AndroidSourceSet>? = null,
     override val splits: Splits? = null,
     override val generatePureSplits: Boolean? = null,
     override val resourcePrefix: String? = null,
