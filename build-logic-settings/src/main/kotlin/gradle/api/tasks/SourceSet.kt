@@ -1,6 +1,7 @@
-package gradle.plugins.java.sourceset
+package gradle.api.tasks
 
 import gradle.api.ProjectNamed
+import gradle.api.file.SourceDirectorySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.tasks.SourceSet
@@ -13,7 +14,7 @@ import org.gradle.api.tasks.SourceSet
  *
  * The following example shows how you can configure the 'main' source set, which in this
  * case involves excluding classes whose package begins 'some.unwanted.package' from
- * compilation of the source files in the 'java' [SourceDirectorySet]:
+ * compilation of the source files in the 'java' [gradle.api.file.SourceDirectorySet]:
  *
  * <pre class='autoTested'>
  * plugins {
@@ -71,7 +72,7 @@ internal data class SourceSet(
      * Configures the non-Java resources for this set.
      *
      *
-     * The given closure is used to configure the [SourceDirectorySet] which contains the resources.
+     * The given closure is used to configure the [gradle.api.file.SourceDirectorySet] which contains the resources.
      *
      * @param configureClosure The closure to use to configure the resources.
      * @return this

@@ -8,7 +8,7 @@ import org.gradle.api.plugins.quality.CodeQualityExtension
 /**
  * Base Code Quality Extension.
  */
-internal abstract class CodeQualityExtension {
+internal abstract class CodeQualityExtension<T: CodeQualityExtension> {
 
     /**
      * The version of the code quality tool to be used.
@@ -18,7 +18,7 @@ internal abstract class CodeQualityExtension {
     /**
      * The source sets to be analyzed as part of the `check` and `build` tasks.
      */
-    abstract val sourceSets: List<String>?
+    abstract val sourceSets: List<SourceSet>?
 
     /**
      * Whether to allow the build to continue if there are warnings.
@@ -33,10 +33,10 @@ internal abstract class CodeQualityExtension {
     abstract val reportsDir: String?
 
     context(Project)
-    fun applyTo(recipient: CodeQualityExtension) {
-        toolVersion?.let(extension::setToolVersion)
-        sourceSets?.flatMap(project.sourceSets::getByNameOrAll)?.let(extension::setSourceSets)
-        ignoreFailures?.let(extension::setIgnoreFailures)
-        reportsDir?.let(::file)?.let(extension::setReportsDir)
+    fun applyTo(recipient: T) {
+        toolVersion?.let(recipient::setToolVersion)
+        sourceSets?.flatMap(project.sourceSets::getByNameOrAll)?.let(recipient::setSourceSets)
+        ignoreFailures?.let(recipient::setIgnoreFailures)
+        reportsDir?.let(::file)?.let(recipient::setReportsDir)
     }
 }
