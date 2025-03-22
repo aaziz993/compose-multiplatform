@@ -1,6 +1,6 @@
 package gradle.plugins.kotlin.benchmark
 
-import gradle.plugins.java.SourceSet
+import gradle.plugins.java.sourceset.SourceSet
 import kotlinx.benchmark.gradle.JavaBenchmarkTarget
 import kotlinx.benchmark.gradle.internal.KotlinxBenchmarkPluginInternalApi
 import kotlinx.serialization.SerialName

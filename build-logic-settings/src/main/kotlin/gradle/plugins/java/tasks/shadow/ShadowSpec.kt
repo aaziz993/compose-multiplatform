@@ -3,11 +3,11 @@
 package gradle.plugins.java.tasks.shadow
 
 import gradle.api.tasks.copy.CopySpec
-import gradle.plugins.java.Relocator
+import gradle.plugins.java.tasks.shadow.Relocator
 import gradle.plugins.java.tasks.DependencyFilter
 import org.gradle.api.Project
 
-internal interface ShadowSpec<T :  com.github.jengelman.gradle.plugins.shadow.tasks.ShadowSpec> : CopySpec<T> {
+internal interface ShadowSpec<T : com.github.jengelman.gradle.plugins.shadow.tasks.ShadowSpec> : CopySpec<T> {
 
     val relocators: Set<Relocator>?
 

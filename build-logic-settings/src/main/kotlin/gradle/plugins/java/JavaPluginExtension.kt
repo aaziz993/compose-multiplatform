@@ -8,6 +8,7 @@ import gradle.accessors.versions
 import gradle.api.applyTo
 import gradle.api.tryAssign
 import gradle.plugins.java.manifest.Manifest
+import gradle.plugins.java.sourceset.SourceSet
 import kotlinx.serialization.Serializable
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project

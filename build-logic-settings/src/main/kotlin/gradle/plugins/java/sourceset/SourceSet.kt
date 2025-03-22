@@ -1,6 +1,5 @@
-package gradle.plugins.java
+package gradle.plugins.java.sourceset
 
-import arrow.core.raise.recover
 import gradle.api.ProjectNamed
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

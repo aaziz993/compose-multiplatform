@@ -1,4 +1,4 @@
-package gradle.plugins.java
+package gradle.plugins.java.test
 
 import gradle.accessors.javaToolchain
 
@@ -8,11 +8,12 @@ import gradle.api.tasks.test.DefaultTestFilter
 import gradle.api.tasks.test.TestLoggingContainer
 import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
+import gradle.plugins.java.test.JavaForkOptions
+import gradle.plugins.java.JavaToolchainSpec
+import gradle.plugins.java.ModularitySpec
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import org.gradle.api.Named
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.withType
 
 /**

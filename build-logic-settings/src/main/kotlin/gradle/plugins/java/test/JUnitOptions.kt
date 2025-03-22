@@ -1,4 +1,4 @@
-package gradle.plugins.java
+package gradle.plugins.java.test
 
 import gradle.api.tasks.test.TestFrameworkOptions
 import kotlinx.serialization.Serializable

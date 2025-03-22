@@ -5,7 +5,9 @@ import gradle.accessors.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
+import gradle.api.tasks.DefaultTask
 import gradle.api.tasks.Task
+import gradle.api.tasks.applyTo
 import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
 import io.github.sgrishchenko.karakum.gradle.plugin.tasks.KarakumGenerate
@@ -39,67 +41,71 @@ internal data class KarakumGenerate(
     override val name: String = "karakumGenerate",
     val configFile: String? = null,
     val extensionDirectory: String? = null,
-) : Task {
+) : DefaultTask<KarakumGenerate>() {
 
     context(Project)
-    override fun applyTo() =
+    override fun applyTo(recipient: KarakumGenerate) =
         pluginManager.withPlugin(settings.libs.plugins.plugin("karakum").id) {
-            tasks.withType<KarakumGenerate> {
-                configFile tryAssign this@KarakumGenerate.configFile?.let(::file)
+            super.applyTo(recipient)
 
-                extensionDirectory tryAssign this@KarakumGenerate.extensionDirectory?.let(layout.projectDirectory::dir)
+            recipient.configFile tryAssign configFile?.let(::file)
 
-                doLast {
-                    val imports = mutableListOf<String>()
+            recipient.extensionDirectory tryAssign extensionDirectory?.let(layout.projectDirectory::dir)
 
-                    val karakumConfigFile = file("karakum.config.json")
+            recipient.doLast {
+                val imports = mutableListOf<String>()
 
-                    val generatedDir =
-                        files(""""output": "(.*?)",""".toRegex().find(karakumConfigFile.readText())!!.groupValues[1])
+                val karakumConfigFile = file("karakum.config.json")
 
-                    // Add internal modifier to all generated declarations
-                    generatedDir.asFileTree.forEach { file ->
-                        if (file.extension == "kt") {
-                            val content = file.readText()
+                val generatedDir =
+                    files(""""output": "(.*?)",""".toRegex().find(karakumConfigFile.readText())!!.groupValues[1])
 
-                            JS_TYPE_IMPORTS.entries
-                                .filter { (k, _) ->
-                                    content.contains("""(:|=)$k(\?|<|$)""".toRegex())
-                                }.map { """"${it.value}"""" }
-                                .let {
-                                    if (it.isNotEmpty()) {
-                                        imports.add(
-                                            """
+                // Add internal modifier to all generated declarations
+                generatedDir.asFileTree.forEach { file ->
+                    if (file.extension == "kt") {
+                        val content = file.readText()
+
+                        JS_TYPE_IMPORTS.entries
+                            .filter { (k, _) ->
+                                content.contains("""(:|=)$k(\?|<|$)""".toRegex())
+                            }.map { """"${it.value}"""" }
+                            .let {
+                                if (it.isNotEmpty()) {
+                                    imports.add(
+                                        """
                             "${file.path.replaceFirst("${generatedDir.asPath}\\", "").replace("\\", "/")}" : [
                             ${it.joinToString(",\n")}
                             ]""",
-                                        )
-                                    }
+                                    )
                                 }
+                            }
 
-                            // Use a regex to find and replace missing visibility modifiers
-                            val modifiedContent =
-                                content.replace(
-                                    Regex("""(?<=^)((sealed\s*)?external|typealias)(?=\s+)"""),
-                                    "internal $1",
-                                )
-                            file.writeText(modifiedContent)
-                        }
+                        // Use a regex to find and replace missing visibility modifiers
+                        val modifiedContent =
+                            content.replace(
+                                Regex("""(?<=^)((sealed\s*)?external|typealias)(?=\s+)"""),
+                                "internal $1",
+                            )
+                        file.writeText(modifiedContent)
                     }
+                }
 
-                    if (imports.isNotEmpty()) {
-                        karakumConfigFile.writeText(
-                            karakumConfigFile.readText().replace(
-                                """"importInjector"[\s\S]*?:[\s\S]*?\{[\s\S]*?\}""".toRegex(),
-                                """
+                if (imports.isNotEmpty()) {
+                    karakumConfigFile.writeText(
+                        karakumConfigFile.readText().replace(
+                            """"importInjector"[\s\S]*?:[\s\S]*?\{[\s\S]*?\}""".toRegex(),
+                            """
                         "importInjector":{
                            ${imports.joinToString(",\n")}
                         }
                         """.trimIndent(),
-                            ),
-                        )
-                    }
+                        ),
+                    )
                 }
             }
         }
+
+    context(Project)
+    override fun applyTo() =
+        applyTo(tasks.withType<KarakumGenerate>())
 }

@@ -7,6 +7,7 @@ import gradle.api.tasks.archive.Zip
 import gradle.api.tasks.copy.CopySpecImpl
 import gradle.api.tasks.copy.FileCopyDetails
 import gradle.api.tasks.copy.From
+import gradle.api.tasks.copy.FromSerializer
 import gradle.api.tasks.copy.IntoSpec
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.java.manifest.Manifest
@@ -98,8 +99,7 @@ internal data class JarImpl(
     override val filesMatching: FilesMatching? = null,
     override val filesNotMatching: FilesMatching? = null,
     override val filteringCharset: String? = null,
-    override val from: List<String>? = null,
-    override val fromSpec: From? = null,
+    override val from: @Serializable(with = FromSerializer::class) Any? = null,
     override val into: String? = null,
     override val intoSpec: IntoSpec? = null,
     override val rename: Map<String, String>? = null,
@@ -112,7 +112,7 @@ internal data class JarImpl(
     override val includes: Set<String>? = null,
     override val setIncludes: Set<String>? = null,
     override val excludes: Set<String>? = null,
-    override val setExcludes: List<String>?
+    override val setExcludes: Set<String>? = null,
 ) : Jar<org.gradle.api.tasks.bundling.Jar>() {
 
     context(Project)

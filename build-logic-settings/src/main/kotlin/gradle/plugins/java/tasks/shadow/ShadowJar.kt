@@ -18,7 +18,7 @@ import gradle.api.tasks.copy.FromSerializer
 import gradle.api.tasks.copy.IntoSpec
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.java.manifest.Manifest
-import gradle.plugins.java.Relocator
+import gradle.plugins.java.tasks.shadow.Relocator
 import gradle.plugins.java.tasks.DependencyFilter
 import gradle.plugins.java.tasks.Jar
 import kotlinx.serialization.Serializable
@@ -87,7 +87,7 @@ internal data class ShadowJar(
     override val dependencyFilterForMinimize: DependencyFilter? = null,
     override val mergeServiceFiles: Boolean? = null,
     override val mergeServiceFilesPath: String? = null,
-    override val append: String? = null
+    override val append: String? = null,
 ) : Jar<ShadowJar>(), ShadowSpec<ShadowJar> {
 
     context(Project)
