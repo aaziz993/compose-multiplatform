@@ -115,7 +115,10 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
 
         biome?.let { biome ->
             biome.applyTo(
-                recipient.biome(biome.version ?: settings.libs.versions.version("biome")),
+                recipient.biome(
+                    biome.version
+                        ?: settings.libs.versions.version("biome"),
+                ) as com.diffplug.gradle.spotless.FormatExtension.BiomeGeneric,
             )
         }
 
