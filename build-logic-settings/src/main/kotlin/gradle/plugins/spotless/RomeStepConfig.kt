@@ -2,7 +2,7 @@ package gradle.plugins.spotless
 
 import com.diffplug.gradle.spotless.RomeStepConfig
 
-internal interface RomeStepConfig {
+internal interface RomeStepConfig<T: RomeStepConfig<T>> {
 
     /**
      * Optional path to the directory with configuration file for Biome. The file
@@ -49,7 +49,7 @@ internal interface RomeStepConfig {
      */
     val version: String?
 
-    fun applyTo(config: RomeStepConfig<*>) {
+    fun applyTo(config: T) {
         configPath?.let(config::configPath)
         downloadDir?.let(config::downloadDir)
         pathToExe?.let(config::pathToExe)

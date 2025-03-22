@@ -1,5 +1,6 @@
 package gradle.plugins.spotless
 
+import com.diffplug.gradle.spotless.TypescriptExtension
 import com.diffplug.spotless.LineEnding
 import gradle.accessors.spotless
 import kotlinx.serialization.SerialName
@@ -34,7 +35,7 @@ internal data class TypescriptExtension(
     override val toggleOffOnRegex: String? = null,
     override val toggleOffOn: ToggleOffOn? = null,
     override val toggleOffOnDisable: Boolean? = null,
-) : FormatExtension() {
+) : FormatExtension<TypescriptExtension>() {
 
     context(Project)
     override fun applyTo() = spotless.typescript {

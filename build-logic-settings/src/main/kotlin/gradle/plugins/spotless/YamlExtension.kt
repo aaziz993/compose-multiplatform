@@ -1,5 +1,6 @@
 package gradle.plugins.spotless
 
+import com.diffplug.gradle.spotless.YamlExtension
 import com.diffplug.spotless.LineEnding
 import gradle.accessors.spotless
 import kotlinx.serialization.SerialName
@@ -34,7 +35,7 @@ internal data class YamlExtension(
     override val toggleOffOnRegex: String? = null,
     override val toggleOffOn: ToggleOffOn? = null,
     override val toggleOffOnDisable: Boolean? = null,
-) : FormatExtension() {
+) : FormatExtension<YamlExtension>() {
 
     context(Project)
     override fun applyTo() = spotless.yaml {
