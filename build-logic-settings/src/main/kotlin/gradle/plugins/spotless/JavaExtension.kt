@@ -135,7 +135,7 @@ internal data class JavaExtension(
     @Serializable
     internal data class EclipseConfig(
         val formatterVersion: String? = null,
-        val configFiles: List<String>? = null,
+        val configFiles: Set<String>? = null,
         val p2Mirrors: Map<String, String>? = null
     ) {
 
@@ -178,7 +178,7 @@ internal data class JavaExtension(
 
     @Serializable
     internal data class ImportOrderConfig(
-        val importOrder: List<String>? = null,
+        val importOrder: LinkedHashSet<String>? = null,
         val importOrderFile: String? = null,
         val wildcardsLast: Boolean? = null,
         val semanticSort: Boolean? = null,
