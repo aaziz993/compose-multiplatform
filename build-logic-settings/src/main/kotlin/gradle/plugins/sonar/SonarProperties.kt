@@ -24,7 +24,7 @@ internal data class SonarProperties(
     /**
      * @return The Sonar properties for the current Gradle project that are to be passed to the Sonar gradle.
      */
-    val properties: SerializableAnyMap? = null
+    val properties: SerializableAnyMap? = null,
     val setPproperties: SerializableAnyMap? = null
 ) {
 
