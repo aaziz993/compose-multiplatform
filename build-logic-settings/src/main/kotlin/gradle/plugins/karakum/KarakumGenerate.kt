@@ -57,15 +57,17 @@ internal data class KarakumGenerate(
 
             recipient.extensionDirectory tryAssign extensionDirectory?.let(layout.projectDirectory::dir)
 
-            val karakumConfigFile = configFile?.let(::file)
-
-            if (karakumConfigFile?.exists() != true) {
-                return@withPlugin
-            }
-
-            val karakumConfig = Json.Default.decodeMapFromString(karakumConfigFile.readText())
-
             recipient.doLast {
+                this as KarakumGenerate
+
+                val karakumConfigFile = configFile.asFile.get()
+
+                if (!karakumConfigFile.exists()) {
+                    return@doLast
+                }
+
+                val karakumConfig = Json.Default.decodeMapFromString(karakumConfigFile.readText())
+
                 val karakumOutput = file(karakumConfig["output"]!!.toString())
 
                 // Add internal modifier to all generated declarations
