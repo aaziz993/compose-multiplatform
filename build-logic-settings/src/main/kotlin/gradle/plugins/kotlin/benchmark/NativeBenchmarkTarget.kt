@@ -10,7 +10,7 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
 
 @Serializable
 internal data class NativeBenchmarkTarget(
-    override val name: String = "",
+    override val name: String? = null,,
     override val workingDir: String? = null,
     val buildType: NativeBuildType? = null,
     val compilation: KotlinNativeCompilation? = null,

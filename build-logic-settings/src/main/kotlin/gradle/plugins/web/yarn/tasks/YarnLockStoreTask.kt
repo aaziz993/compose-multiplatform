@@ -31,7 +31,7 @@ internal data class YarnLockStoreTask(
     override val setAdditionalInputFiles: Set<String>? = null,
     override val outputDirectory: String? = null,
     override val fileName: String? = null,
-    override val name: String = ""
+    override val name: String? = null,
 ) : LockStoreTask<YarnLockStoreTask>() {
 
     context(Project)

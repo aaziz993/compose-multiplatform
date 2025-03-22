@@ -39,7 +39,7 @@ internal data class JavaCompile(
     override val mustRunAfter: Set<String>? = null,
     override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
-    override val name: String = "",
+    override val name: String? = null,,
     override val destinationDirectory: String? = null,
     override val classpath: Set<String>? = null,
     override val sourceCompatibility: String? = null,

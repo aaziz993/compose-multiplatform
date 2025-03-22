@@ -21,7 +21,7 @@ internal data class Prefab(
      * This name will be the name of the module in the prefab package, and the package name will be
      * the name of the gradle project.
      */
-    override val name: String = "",
+    override val name: String? = null,,
     /**
      * Path to a directory containing headers to export to dependents of this module.
      *

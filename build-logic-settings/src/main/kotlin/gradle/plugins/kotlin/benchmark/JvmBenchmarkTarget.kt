@@ -22,7 +22,7 @@ internal abstract class JvmBenchmarkTarget : BenchmarkTarget() {
 @Serializable
 @SerialName("jvm")
 internal data class JvmBenchmarkTargetImpl(
-    override val name: String = "",
+    override val name: String? = null,,
     override val workingDir: String? = null,
     override val jmhVersion: String? = null,
 ) : JvmBenchmarkTarget()

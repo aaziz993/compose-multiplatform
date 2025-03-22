@@ -106,7 +106,7 @@ internal data class ZipImpl(
     override val setIncludes: Set<String>? = null,
     override val excludes: Set<String>? = null,
     override val setExcludes: Set<String>? = null,
-    override val name: String = ""
+    override val name: String? = null,
 ) : Zip<org.gradle.api.tasks.bundling.Zip>() {
 
     context(Project)

@@ -12,5 +12,5 @@ internal data class NativeBinaryImpl(
     override val freeCompilerArgs: List<String>? = null,
     override val outputDirectory: String? = null,
     override val outputDirectoryProperty: String? = null,
-    override val name: String = ""
+    override val name: String? = null,
 ) : NativeBinary

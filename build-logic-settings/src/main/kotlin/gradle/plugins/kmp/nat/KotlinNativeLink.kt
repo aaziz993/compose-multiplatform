@@ -27,7 +27,7 @@ internal data class KotlinNativeLink(
     override val mustRunAfter: Set<String>? = null,
     override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
-    override val name: String = "",
+    override val name: String? = null,,
     override val toolOptions: KotlinCommonCompilerToolOptions? = null,
     override val sources: List<String>? = null,
     override val setSources: List<String>? = null,

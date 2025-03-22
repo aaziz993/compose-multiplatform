@@ -172,7 +172,7 @@ internal data class AbstractArchiveTaskImpl(
     override val setIncludes: Set<String>? = null,
     override val excludes: Set<String>? = null,
     override val setExcludes: Set<String>? = null,
-    override val name: String = "",
+    override val name: String? = null,,
 ) : AbstractArchiveTask<org.gradle.api.tasks.bundling.AbstractArchiveTask>() {
 
     context(Project)

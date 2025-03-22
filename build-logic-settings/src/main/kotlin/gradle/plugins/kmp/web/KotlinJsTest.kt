@@ -36,7 +36,7 @@ internal data class KotlinJsTest(
     override val mustRunAfter: Set<String>? = null,
     override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
-    override val name: String = "",
+    override val name: String? = null,,
     val environment: Map<String, String>? = null,
     val inputFileProperty: String? = null,
     val debug: Boolean? = null,

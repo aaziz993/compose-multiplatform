@@ -24,7 +24,7 @@ internal data class Sign(
     override val mustRunAfter: Set<String>? = null,
     override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
-    override val name: String = "",
+    override val name: String? = null,,
     override val signatory: Signatory? = null,
     override val signatureType: SignatureType? = null,
     override val required: Boolean? = null,

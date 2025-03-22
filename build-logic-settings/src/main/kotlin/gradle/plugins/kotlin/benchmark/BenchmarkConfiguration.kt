@@ -17,7 +17,7 @@ internal data class BenchmarkConfiguration(
     val iterationTimeUnit: String? = null,
     val iterations: Int? = null,
     val mode: String? = null,
-    override val name: String = "",
+    override val name: String? = null,,
     val outputTimeUnit: String? = null,
     val params: Map<String, SerializableOptionalAnyList>? = null,
     val reportFormat: String? = null,

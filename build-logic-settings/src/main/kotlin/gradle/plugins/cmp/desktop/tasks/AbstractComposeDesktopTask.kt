@@ -38,7 +38,7 @@ internal data class AbstractComposeDesktopTaskImpl(
     override val mustRunAfter: Set<String>? = null,
     override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
-    override val name: String = ""
+    override val name: String? = null,
 ) : AbstractComposeDesktopTask<org.jetbrains.compose.desktop.tasks.AbstractComposeDesktopTask>() {
 
     context(Project)

@@ -82,7 +82,7 @@ internal data class AbstractProguardTaskImpl(
     override val mustRunAfter: Set<String>? = null,
     override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
-    override val name: String = ""
+    override val name: String? = null,
 ) : AbstractProguardTask<org.jetbrains.compose.desktop.application.tasks.AbstractProguardTask>() {
 
     context(Project)

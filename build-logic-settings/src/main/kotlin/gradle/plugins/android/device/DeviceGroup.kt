@@ -11,7 +11,7 @@ import org.gradle.api.Project
  */
 @Serializable
 internal data class DeviceGroup(
-    override val name: String = "",
+    override val name: String? = null,,
     val targetDevices: Set<DeviceImpl>? = null,
 ) : ProjectNamed<DeviceGroup> {
 

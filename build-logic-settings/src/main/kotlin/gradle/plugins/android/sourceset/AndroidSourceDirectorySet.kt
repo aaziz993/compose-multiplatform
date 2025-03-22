@@ -10,7 +10,7 @@ import org.gradle.api.Project
  */
 @Serializable
 internal data class AndroidSourceDirectorySet(
-    override val name: String = "",
+    override val name: String? = null,,
     /**
      * Allows to add source directories to this list. `Directories` provides `MutableList` style access to all
      * source directories that are added via list itself or variety `srcDirs` methods.

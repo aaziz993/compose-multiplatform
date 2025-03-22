@@ -9,7 +9,7 @@ import org.gradle.api.Project
 
 @Serializable
 internal data class SigningConfigImpl(
-    override val name: String = "",
+    override val name: String? = null,,
     override val enableV1Signing: Boolean? = null,
     override val enableV2Signing: Boolean? = null,
     override val enableV3Signing: Boolean? = null,

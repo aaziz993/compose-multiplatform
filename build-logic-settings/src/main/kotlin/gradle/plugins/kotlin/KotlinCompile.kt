@@ -30,7 +30,7 @@ internal data class KotlinCompile(
     override val mustRunAfter: Set<String>? = null,
     override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
-    override val name: String = "",
+    override val name: String? = null,,
     override val compilerOptions: KotlinJvmCompilerOptions? = null,
     override val jvmTargetValidationMode: JvmTargetValidationMode? = null,
     override val friendPaths: List<String>? = null,

@@ -27,7 +27,7 @@ import org.gradle.api.Project
  */
 @Serializable
 internal data class KotlinSourceSet(
-    override val name: String = "",
+    override val name: String? = null,,
     override val dependencies: List<@Serializable(with = DependencyTransformingSerializer::class) Dependency>? = null,
     /**
      * Provides the DSL to configure a subset of Kotlin compilation language settings for this [KotlinSourceSet].

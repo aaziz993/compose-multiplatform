@@ -21,5 +21,5 @@ internal data class KotlinCompilationTaskImpl<out CO : KotlinCommonCompilerOptio
     override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
     override val compilerOptions: CO? = null,
-    override val name: String = "",
+    override val name: String? = null,,
 ) : KotlinCompilationTask<CO>

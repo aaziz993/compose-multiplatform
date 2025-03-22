@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 internal data class KotlinNativeBinaryTestRunImpl(
     override val filter: DefaultTestFilter? = null,
     override val executionSource: NativeBinaryTestRunSource? = null,
-    override val name: String = ""
+    override val name: String? = null,
 ) : KotlinNativeBinaryTestRun
 
 internal object KotlinNativeBinaryTestRunTransformingSerializer : KeyTransformingSerializer<KotlinNativeBinaryTestRunImpl>(

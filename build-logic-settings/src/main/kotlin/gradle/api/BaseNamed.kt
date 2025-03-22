@@ -17,7 +17,7 @@ internal interface BaseNamed {
      *
      * @return The name. Never null.
      */
-    val name: String
+    val name: String?
 }
 
 internal interface SettingsNamed<T> : BaseNamed {
@@ -86,11 +86,11 @@ internal interface Named<T> : SettingsNamed<T>, ProjectNamed<T> {
 }
 
 internal fun <T : Named> DomainObjectCollection<out T>.maybeNamedCreateOrEach(
-    name: String,
+    name: String?,
     create: (name: String, action: Action<in T>) -> Unit = { _, _ -> },
     configureAction: Action<in T>
 ) {
-    if (name.isEmpty()) configureEach(configureAction)
+    if (name.isNullOrBlank()) configureEach(configureAction)
     else matching { it.name == name }.let {
         if (it.isEmpty()) create(name, configureAction)
         else it.configureEach(configureAction)
@@ -98,10 +98,10 @@ internal fun <T : Named> DomainObjectCollection<out T>.maybeNamedCreateOrEach(
 }
 
 internal fun <T> NamedDomainObjectCollection<out T>.maybeNamedCreateOrEach(
-    name: String,
+    name: String?,
     create: (name: String, action: Action<in T>) -> Unit = { _, _ -> },
     configureAction: Action<in T>
 ) {
-    if (name.isEmpty()) configureEach(configureAction)
+    if (name.isNullOrBlank()) configureEach(configureAction)
     else (maybeNamed(name, configureAction) ?: create(name, configureAction))
 }

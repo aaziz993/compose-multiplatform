@@ -30,5 +30,5 @@ internal data class BuildConfigClassSpecImpl(
     override val className: String? = null,
     override val packageName: String? = null,
     override val buildConfigFields: List<BuildConfigField>? = null,
-    override val name: String = ""
+    override val name: String? = null,
 ) : BuildConfigClassSpec<com.github.gmazzo.gradle.plugins.BuildConfigClassSpec>

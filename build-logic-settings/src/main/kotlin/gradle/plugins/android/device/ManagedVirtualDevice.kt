@@ -19,7 +19,7 @@ import org.gradle.api.Project
 @Serializable
 @Suppress("UnstableApiUsage")
 internal data class ManagedVirtualDevice(
-    override val name: String = "",
+    override val name: String? = null,,
     /**
      * The hardware profile of the device to be emulated.
      */
