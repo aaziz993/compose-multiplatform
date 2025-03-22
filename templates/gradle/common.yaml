@@ -201,11 +201,11 @@ plugins:
   sonar:
     enabled: true
     properties:
-      sonar.host.url: https://sonarcloud.io
-      sonar.organization: aaziz993
-      sonar.projectKey: aaziz993_compose-multiplatform
-      sonar.coverage.jacoco.xmlReportPaths: build/reports/kover/report.xml
-      sonar.androidLint.reportPaths: build/reports/lint-results.xml
+      'sonar.host.url': '"https://sonarcloud.io"'
+      'sonar.organization': '"aaziz993"'
+      'sonar.projectKey': '"aaziz993_compose-multiplatform"'
+      'sonar.coverage.jacoco.xmlReportPaths': '"build/reports/kover/report.xml"'
+      'sonar.androidLint.reportPaths': '"build/reports/lint-results.xml"'
 
   # Api documentation engine for Kotlin.
   dokka:

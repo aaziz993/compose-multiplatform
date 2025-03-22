@@ -8,6 +8,7 @@ import gradle.accessors.plugins
 import gradle.accessors.settings
 import gradle.plugins.quality.CodeQualityExtension
 import org.gradle.api.Project
+import ru.vyarus.gradle.plugin.animalsniffer.AnimalSnifferExtension
 import ru.vyarus.gradle.plugin.animalsniffer.debug.PrintAnimalsnifferSourceInfoTask
 import ru.vyarus.gradle.plugin.animalsniffer.debug.PrintAnimalsnifferTasksTask
 
@@ -18,7 +19,7 @@ import ru.vyarus.gradle.plugin.animalsniffer.debug.PrintAnimalsnifferTasksTask
  * @author Vyacheslav Rusakov
  * @since 13.12.2015
  */
-internal abstract class AnimalSnifferExtension : CodeQualityExtension() {
+internal abstract class AnimalSnifferExtension : CodeQualityExtension<AnimalSnifferExtension>() {
 
     /**
      * Enable plugin configuration debug output.
@@ -117,6 +118,8 @@ internal abstract class AnimalSnifferExtension : CodeQualityExtension() {
     context(Project)
     fun applyTo() = pluginManager.withPlugin("org.gradle.java-base") {
         pluginManager.withPlugin(settings.libs.plugins.plugin("animalsniffer").id) {
+            super.applyTo(animalSniffer)
+
             debug?.let(animalSniffer::setDebug)
             annotation?.let(animalSniffer::setAnnotation)
             ignore?.toTypedArray()?.let(animalSniffer::ignore)

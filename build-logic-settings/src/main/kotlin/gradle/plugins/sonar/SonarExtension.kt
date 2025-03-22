@@ -2,6 +2,7 @@ package gradle.plugins.sonar
 
 import gradle.accessors.sonar
 import org.gradle.api.Project
+import org.sonarqube.gradle.SonarTask
 
 /**
  * Adds an action that configures SonarQube properties for the associated Gradle project.
@@ -50,7 +51,7 @@ internal interface SonarExtension {
      *
      * @param action an action that configures SonarQube properties for the associated Gradle project
      */
-    val properties: Map<String, String>?
+    val properties: SonarProperties?
 
     /**
      * @return Name of the variant to analyze. If null we'll take the first release variant
@@ -60,14 +61,13 @@ internal interface SonarExtension {
     context(Project)
     fun applyTo() {
         skipProject?.let(sonar::setSkipProject)
-        sonar.properties {
-            property("sonar.projectVersion", version)
-        }
+
         properties?.let { properties ->
             sonar.properties {
-                properties.forEach { (key, value) -> property(key, value) }
+                properties.applyTo(this)
             }
         }
+
         androidVariant?.let(sonar::setAndroidVariant)
     }
 }

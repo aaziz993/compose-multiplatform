@@ -43,7 +43,7 @@ internal data class SourceSet(
      *
      * @param classpath The classpath. Should not be null.
      */
-    val compileClasspath: List<String>? = null,
+    val compileClasspath: Set<String>? = null,
     /**
      * Set the classpath to use to load annotation processors when compiling this source set.
      * This path is also used for annotation processor discovery. The classpath can be empty,
@@ -53,13 +53,13 @@ internal data class SourceSet(
      * @param annotationProcessorPath The annotation processor path. Should not be null.
      * @since 4.6
      */
-    val annotationProcessorPath: List<String>? = null,
+    val annotationProcessorPath: Set<String>? = null,
     /**
      * Sets the classpath used to execute this source.
      *
      * @param classpath The classpath. Should not be null.
      */
-    val runtimeClasspath: List<String>? = null,
+    val runtimeClasspath: Set<String>? = null,
     /**
      * Registers a set of tasks which are responsible for compiling this source set into the classes directory. The
      * paths are evaluated as per [org.gradle.api.Task.dependsOn].
@@ -67,7 +67,7 @@ internal data class SourceSet(
      * @param taskPaths The tasks which compile this source set.
      * @return this
      */
-    val compiledBy: List<String>? = null,
+    val compiledBy: Set<String>? = null,
     /**
      * Configures the non-Java resources for this set.
      *
@@ -84,14 +84,19 @@ internal data class SourceSet(
      * @return the Java source. Never returns null.
      */
     val java: SourceDirectorySet? = null,
+    val allJava: SourceDirectorySet? = null,
+    val allSource: SourceDirectorySet? = null,
 ) : ProjectNamed<SourceSet> {
 
     context(Project)
     override fun applyTo(recipient: SourceSet) {
-        compileClasspath
-            ?.toTypedArray()?.let(recipient::compiledBy)
-
+        compileClasspath?.toTypedArray()?.let(recipient::compiledBy)
+        annotationProcessorPath?.toTypedArray()?.let(::files)?.let(recipient::setAnnotationProcessorPath)
+        runtimeClasspath?.toTypedArray()?.let(::files)?.let(recipient::setRuntimeClasspath)
+        compiledBy?.toTypedArray()?.let(recipient::compiledBy)
         resources?.applyTo(recipient.resources)
         java?.applyTo(recipient.java)
+        allJava?.applyTo(recipient.allJava)
+        allSource?.applyTo(recipient.allSource)
     }
 }

@@ -8,7 +8,7 @@ import org.gradle.api.plugins.quality.CodeQualityExtension
 /**
  * Base Code Quality Extension.
  */
-internal abstract class CodeQualityExtension<T: CodeQualityExtension> {
+internal abstract class CodeQualityExtension<T : CodeQualityExtension> {
 
     /**
      * The version of the code quality tool to be used.
@@ -18,7 +18,7 @@ internal abstract class CodeQualityExtension<T: CodeQualityExtension> {
     /**
      * The source sets to be analyzed as part of the `check` and `build` tasks.
      */
-    abstract val sourceSets: List<SourceSet>?
+    abstract val sourceSets: Set<String>?
 
     /**
      * Whether to allow the build to continue if there are warnings.

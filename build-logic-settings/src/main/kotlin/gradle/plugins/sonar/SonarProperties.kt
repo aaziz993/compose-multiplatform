@@ -1,0 +1,37 @@
+package gradle.plugins.sonar
+
+import gradle.accessors.sonar
+import gradle.collection.SerializableAnyMap
+import gradle.collection.act
+import kotlinx.serialization.Serializable
+import org.gradle.api.Project
+import org.jetbrains.kotlin.gradle.utils.property
+import org.sonarqube.gradle.SonarProperties
+
+/**
+ * The Sonar properties for the current Gradle project that are to be passed to the Scanner.
+ *
+ *
+ * The `properties` map is already populated with the defaults provided by Gradle, and can be further manipulated as necessary.
+ * Before passing them on to the Scanner, property values are converted to Strings as follows:
+ *
+ *  * `Iterable`s are recursively converted and joined into a comma-separated String.
+ *  * All other values are converted to Strings by calling their `toString()` method.
+ *
+ */
+@Serializable
+internal data class SonarProperties(
+    /**
+     * @return The Sonar properties for the current Gradle project that are to be passed to the Sonar gradle.
+     */
+    val properties: SerializableAnyMap? = null
+    val setPproperties: SerializableAnyMap? = null
+) {
+
+    context(Project)
+    fun applyTo(recipient: SonarProperties) {
+        properties?.let(recipient::properties)
+        setPproperties?.act(recipient.properties::clear)?.let(recipient::properties)
+        recipient.property("sonar.projectVersion", version)
+    }
+}
