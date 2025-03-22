@@ -19,9 +19,6 @@ internal class JsPlugin : Plugin<Project> {
                 return@with
             }
 
-            plugins.apply(settings.libs.plugins.plugin("karakum").id)
-
-
             configureJsTestTasks<KotlinJsTargetDsl>()
         }
     }

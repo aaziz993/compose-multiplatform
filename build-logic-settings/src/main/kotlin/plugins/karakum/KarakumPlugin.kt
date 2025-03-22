@@ -1,16 +1,17 @@
 package plugins.karakum
 
 import gradle.accessors.id
-import gradle.accessors.karakum
 import gradle.accessors.kotlin
 import gradle.accessors.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
+import gradle.plugins.karakum.karakumConfig
 import gradle.plugins.kmp.KotlinTarget
 import gradle.plugins.kmp.web.KotlinJsTarget
 import gradle.serialization.decodeMapFromString
+import java.io.File
 import kotlinx.serialization.json.Json
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -26,26 +27,27 @@ internal class KarakumPlugin : Plugin<Project> {
 
                     karakum.applyTo()
 
-                    val karakumConfigFile = project.karakum.configFile.asFile.get()
+                    karakum.configFile
+                        ?.let(::file)
+                        ?.takeIf(File::exists)
+                        ?.let(File::readText)
+                        ?.let(Json.Default::decodeMapFromString)
+                        ?.let { karakumConfig ->
 
-                    if (karakumConfigFile.exists()) {
+                            val karakumOutputDir = file(karakumConfig["output"]!!)
 
-                        val karakumConfig = Json.Default.decodeMapFromString(karakumConfigFile.readText())
+                            val targetNames = projectProperties.kotlin.targets
+                                .filter { target -> target is KotlinJsTarget }
+                                .map(KotlinTarget::targetName)
 
-                        val karakumOutputDir = karakumConfigFile.parentFile.resolve(karakumConfig["output"].toString())
-
-                        val targetNames = projectProperties.kotlin.targets
-                            .filter { target -> target is KotlinJsTarget }
-                            .map(KotlinTarget::targetName)
-
-                        kotlin.sourceSets.matching { sourceSet ->
-                            targetNames.any { targetName ->
-                                sourceSet.name == "${targetName}Main" || sourceSet.name == "${targetName}Test"
+                            kotlin.sourceSets.matching { sourceSet ->
+                                targetNames.any { targetName ->
+                                    sourceSet.name == "${targetName}Main" || sourceSet.name == "${targetName}Test"
+                                }
+                            }.configureEach {
+                                kotlin.srcDir(karakumOutputDir)
                             }
-                        }.all {
-                            kotlin.srcDir(karakumOutputDir)
                         }
-                    }
                 }
         }
     }

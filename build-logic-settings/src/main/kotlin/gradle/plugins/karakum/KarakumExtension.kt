@@ -2,6 +2,9 @@ package gradle.plugins.karakum
 
 import gradle.accessors.karakum
 import gradle.api.tryAssign
+import gradle.serialization.decodeMapFromString
+import java.io.File
+import kotlinx.serialization.json.Json
 import org.gradle.api.Project
 
 internal interface KarakumExtension {
@@ -18,3 +21,4 @@ internal interface KarakumExtension {
         karakum.extensionSource tryAssign extensionSource?.let(layout.projectDirectory::dir)?.asFileTree
     }
 }
+

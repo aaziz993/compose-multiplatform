@@ -1,5 +1,7 @@
 package gradle
 
+internal fun String.doubleQuoted() = "\"$this\""
+
 internal fun String.decapitalized() = replaceFirstChar(Char::lowercase)
 
 internal fun String.ifNotEmpty(transform: (String) -> String) =

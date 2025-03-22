@@ -10,8 +10,13 @@ import gradle.api.tasks.Task
 import gradle.api.tasks.applyTo
 import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
+import gradle.doubleQuoted
+import gradle.serialization.decodeMapFromString
+import gradle.serialization.encodeAnyToString
 import io.github.sgrishchenko.karakum.gradle.plugin.tasks.KarakumGenerate
+import java.io.File
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 
@@ -52,56 +57,53 @@ internal data class KarakumGenerate(
 
             recipient.extensionDirectory tryAssign extensionDirectory?.let(layout.projectDirectory::dir)
 
+            val karakumConfigFile = configFile?.let(::file)
+
+            if (karakumConfigFile?.exists() != true) {
+                return@withPlugin
+            }
+
+            val karakumConfig = Json.Default.decodeMapFromString(karakumConfigFile.readText())
+
             recipient.doLast {
-                val imports = mutableListOf<String>()
-
-                val karakumConfigFile = file("karakum.config.json")
-
-                val generatedDir =
-                    files(""""output": "(.*?)",""".toRegex().find(karakumConfigFile.readText())!!.groupValues[1])
+                val karakumOutput = file(karakumConfig["output"]!!.toString())
 
                 // Add internal modifier to all generated declarations
-                generatedDir.asFileTree.forEach { file ->
-                    if (file.extension == "kt") {
+                karakumOutput
+                    .walkTopDown()
+                    .filter { file -> file.isFile && file.extension == "kt" }
+                    .mapNotNull { file ->
                         val content = file.readText()
-
-                        JS_TYPE_IMPORTS.entries
-                            .filter { (k, _) ->
-                                content.contains("""(:|=)$k(\?|<|$)""".toRegex())
-                            }.map { """"${it.value}"""" }
-                            .let {
-                                if (it.isNotEmpty()) {
-                                    imports.add(
-                                        """
-                            "${file.path.replaceFirst("${generatedDir.asPath}\\", "").replace("\\", "/")}" : [
-                            ${it.joinToString(",\n")}
-                            ]""",
-                                    )
-                                }
-                            }
 
                         // Use a regex to find and replace missing visibility modifiers
                         val modifiedContent =
                             content.replace(
-                                Regex("""(?<=^)((sealed\s*)?external|typealias)(?=\s+)"""),
+                                Regex("""^((?:sealed\s*)?external|typealias)(?=\s+)"""),
                                 "internal $1",
                             )
                         file.writeText(modifiedContent)
-                    }
-                }
 
-                if (imports.isNotEmpty()) {
-                    karakumConfigFile.writeText(
-                        karakumConfigFile.readText().replace(
-                            """"importInjector"[\s\S]*?:[\s\S]*?\{[\s\S]*?\}""".toRegex(),
-                            """
-                        "importInjector":{
-                           ${imports.joinToString(",\n")}
-                        }
-                        """.trimIndent(),
-                        ),
-                    )
-                }
+                        JS_TYPE_IMPORTS
+                            .filterKeys { key ->
+                                content.contains("""([:=])$key(\?|<|$)""".toRegex())
+                            }.values
+                            .takeIf(Collection<*>::isNotEmpty)
+                            ?.map(String::doubleQuoted)
+                            ?.let { imports ->
+                                file.toRelativeString(karakumOutput).replace("\\", "/") to imports
+                            }
+
+                    }.toMap()
+                    .takeIf(Map<*, *>::isNotEmpty)
+                    ?.let { imports ->
+                        karakumConfigFile.writeText(
+                            Json.Default.encodeAnyToString(
+                                karakumConfig.toMutableMap().apply {
+                                    this["importInjector"] = imports
+                                },
+                            ),
+                        )
+                    }
             }
         }
 
