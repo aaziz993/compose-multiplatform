@@ -1,10 +1,10 @@
-package gradle.plugins.web
+package gradle.plugins.web.npm.tasks
 
-
-import gradle.api.tasks.Task
+import gradle.api.tasks.DefaultTask
+import gradle.api.tasks.applyTo
 import gradle.collection.SerializableAnyMap
+import gradle.collection.act
 import kotlinx.serialization.Serializable
-import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.targets.js.npm.tasks.KotlinNpmInstallTask
@@ -25,15 +25,15 @@ internal data class KotlinNpmInstallTask(
     override val shouldRunAfter: Set<String>? = null,
     override val name: String = "",
     val args: List<String>? = null,
-) : Task {
+    val setArgs: List<String>? = null,
+) : DefaultTask<KotlinNpmInstallTask>() {
 
-        context(Project)
-    override fun applyTo(recipient: T) {
-        super.applyTo(named)
+    context(Project)
+    override fun applyTo(recipient: KotlinNpmInstallTask) {
+        super.applyTo(recipient)
 
-        named as KotlinNpmInstallTask
-
-        args?.let(named.args::addAll)
+        args?.let(recipient.args::addAll)
+        setArgs?.act(recipient.args::clear)?.let(recipient.args::addAll)
     }
 
     context(Project)

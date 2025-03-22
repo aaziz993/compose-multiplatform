@@ -5,9 +5,12 @@ import gradle.accessors.yarnEnv
 import gradle.api.tryAssign
 import gradle.collection.act
 import gradle.plugins.web.EnvSpec
+import gradle.plugins.web.npm.tasks.KotlinNpmInstallTask
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnLockCopyTask
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnLockMismatchReport
+import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnSetupTask
 
 /**
  * Spec for Yarn - package manager to install NPM dependencies
@@ -56,7 +59,7 @@ internal data class YarnRootEnvSpec(
     context(Project)
     fun applyTo() {
         super.applyTo(yarnEnv)
-
+        KotlinNpmInstallTask
         yarnEnv.ignoreScripts tryAssign ignoreScripts
         yarnEnv.yarnLockMismatchReport tryAssign yarnLockMismatchReport
         yarnEnv.reportNewYarnLock tryAssign reportNewYarnLock

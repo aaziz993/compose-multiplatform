@@ -1,0 +1,62 @@
+package gradle.plugins.web.tasks
+
+import org.gradle.kotlin.dsl.withType
+import gradle.api.tasks.DefaultTask
+import gradle.api.tasks.applyTo
+import gradle.api.tryAssign
+import gradle.collection.SerializableAnyMap
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import org.gradle.api.Project
+
+internal abstract class LockCopyTask<T : org.jetbrains.kotlin.gradle.targets.js.npm.LockCopyTask> : DefaultTask<T>() {
+
+    abstract val inputFile: String?
+
+    abstract val additionalInputFiles: Set<String>?
+
+    abstract val setAdditionalInputFiles: Set<String>?
+
+    abstract val outputDirectory: String?
+
+    abstract val fileName: String?
+
+    context(Project)
+    override fun applyTo(recipient: T) {
+        super.applyTo(recipient)
+
+        recipient.inputFile tryAssign inputFile?.let(::file)
+        additionalInputFiles?.toTypedArray()?.let(recipient.additionalInputFiles::from)
+        setAdditionalInputFiles?.let(recipient.additionalInputFiles::setFrom)
+        recipient.outputDirectory tryAssign outputDirectory?.let(layout.projectDirectory::dir)
+        recipient.fileName tryAssign fileName
+    }
+}
+
+@Serializable
+@SerialName("LockCopyTask")
+internal data class LockCopyTaskImple(
+    override val inputFile: String? = null,
+    override val additionalInputFiles: Set<String>? = null,
+    override val setAdditionalInputFiles: Set<String>? = null,
+    override val outputDirectory: String? = null,
+    override val fileName: String? = null,
+    override val dependsOn: LinkedHashSet<String>? = null,
+    override val onlyIf: Boolean? = null,
+    override val doNotTrackState: String? = null,
+    override val notCompatibleWithConfigurationCache: String? = null,
+    override val didWork: Boolean? = null,
+    override val enabled: Boolean? = null,
+    override val properties: SerializableAnyMap? = null,
+    override val description: String? = null,
+    override val group: String? = null,
+    override val mustRunAfter: Set<String>? = null,
+    override val finalizedBy: LinkedHashSet<String>? = null,
+    override val shouldRunAfter: Set<String>? = null,
+    override val name: String = ""
+) : LockCopyTask<org.jetbrains.kotlin.gradle.targets.js.npm.LockCopyTask>() {
+
+    context(Project)
+    override fun applyTo() =
+        applyTo(tasks.withType<org.jetbrains.kotlin.gradle.targets.js.npm.LockCopyTask>())
+}
