@@ -19,8 +19,9 @@ import gradle.plugins.java.JavaPluginExtension
 import gradle.plugins.java.application.JavaApplication
 import gradle.plugins.kotlin.HasKotlinDependencies
 import gradle.plugins.kotlin.KotlinSettings
-import gradle.plugins.web.NodeJsEnvSpec
+import gradle.plugins.web.node.NodeJsEnvSpec
 import gradle.plugins.web.npm.NpmExtension
+import gradle.plugins.web.yarn.YarnRootEnvSpec
 import gradle.plugins.web.yarn.YarnRootExtension
 import gradle.project.file.CodeOfConductFile
 import gradle.project.file.ContributingFile
@@ -28,7 +29,6 @@ import gradle.project.file.LicenseFile
 import gradle.project.file.LicenseHeaderFile
 import gradle.project.file.ProjectFile
 import gradle.serialization.decodeFromAny
-import java.io.File
 import java.util.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
@@ -72,6 +72,7 @@ internal data class ProjectProperties(
     val apple: AppleSettings = AppleSettings(),
     val nodeJsEnv: NodeJsEnvSpec = NodeJsEnvSpec(),
     val yarn: YarnRootExtension = YarnRootExtension(),
+    val yarnRootEnv: YarnRootEnvSpec = YarnRootEnvSpec(),
     val npm: NpmExtension = NpmExtension(),
     val compose: CMPSettings = CMPSettings(),
     val tasks: List<@Serializable(with = TaskTransformingSerializer::class) Task>? = null,

@@ -1,7 +1,8 @@
-package gradle.plugins.web
+package gradle.plugins.web.node
 
 import gradle.accessors.id
 import gradle.accessors.libs
+import gradle.accessors.node
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
@@ -19,7 +20,10 @@ internal data class NodeJsRootExtension(
     context(Project)
     fun applyTo(recipient: NodeJsRootExtension) =
         pluginManager.withPlugin(settings.libs.plugins.plugin("gradle.node.plugin").id) {
-            extension::downloadBaseUrl trySet downloadBaseUrl
-            extension::version trySet version
+            recipient::downloadBaseUrl trySet downloadBaseUrl
+            recipient::version trySet version
         }
+
+    context(Project)
+    fun applyTA() = applyTo(node)
 }

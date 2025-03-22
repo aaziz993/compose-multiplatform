@@ -58,6 +58,7 @@ import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsEnvSpec
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension
 import org.jetbrains.kotlin.gradle.targets.js.npm.NpmExtension
+import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootEnvSpec
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension
 import org.jetbrains.kotlin.noarg.gradle.NoArgExtension
 import org.jetbrains.kotlin.powerassert.gradle.PowerAssertGradleExtension
@@ -280,6 +281,12 @@ internal val Project.nodeEnv: NodeJsEnvSpec get() = the()
 
 internal fun Project.nodeEnv(configure: NodeJsEnvSpec.() -> Unit) =
     extensions.configure(configure)
+
+internal val Project.yarnEnv: YarnRootEnvSpec get() = the()
+
+internal fun Project.yarnEnv(configure: YarnRootEnvSpec.() -> Unit) =
+    extensions.configure(configure)
+
 
 internal val Project.karakum: KarakumExtension get() = the()
 

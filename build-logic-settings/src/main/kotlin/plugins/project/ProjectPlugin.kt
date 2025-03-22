@@ -168,6 +168,7 @@ public class ProjectPlugin : Plugin<Project> {
             projectProperties.nodeJsEnv.applyTo()
             projectProperties.npm.applyTo()
             projectProperties.yarn.applyTo()
+            projectProperties.yarnRootEnv.applyTo()
 
             CacheRedirector.applyTo()
 

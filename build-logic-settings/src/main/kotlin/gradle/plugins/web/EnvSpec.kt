@@ -1,0 +1,51 @@
+package gradle.plugins.web
+
+import gradle.api.tryAssign
+import org.gradle.api.Project
+import org.gradle.api.provider.ProviderFactory
+import org.jetbrains.kotlin.gradle.targets.js.EnvSpec
+
+/**
+ * Instance which describes specific runtimes for JS and Wasm targets
+ *
+ * It encapsulates necessary information about a tool to run application and tests
+ */
+internal abstract class EnvSpec {
+
+    /**
+     * Specify whether we need to download the tool
+     */
+    abstract val download: Boolean?
+
+    /**
+     * Specify url to add repository from which the tool is going to be downloaded
+     *
+     * If the property has no value, repository is not added,
+     * so this can be used to add your own repository where the tool is located
+     */
+    abstract val downloadBaseUrl: String?
+
+    /**
+     * Specify where the tool is installed
+     */
+    abstract val installationDirectory: String?
+
+    /**
+     * Specify a version of the tool is installed
+     */
+    abstract val version: String?
+
+    /**
+     * Specify a command to run the tool
+     */
+    abstract val command: String?
+
+    context(Project)
+    open fun applyTo(recipient: EnvSpec<*>) {
+        recipient.download tryAssign download
+        recipient.downloadBaseUrl tryAssign downloadBaseUrl
+        recipient.installationDirectory tryAssign installationDirectory?.let(layout.projectDirectory::dir)
+        recipient.version tryAssign version
+        recipient.command tryAssign command
+    }
+}

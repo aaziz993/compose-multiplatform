@@ -2,7 +2,7 @@ package gradle.plugins.kmp.web
 
 import gradle.api.tryAssign
 import gradle.api.trySet
-import gradle.plugins.web.NodeJsRootExtension
+import gradle.plugins.web.node.NodeJsRootExtension
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsExec
