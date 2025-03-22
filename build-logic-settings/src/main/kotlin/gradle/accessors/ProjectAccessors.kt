@@ -74,22 +74,6 @@ internal var Project.projectProperties: ProjectProperties
         extraProperties[PROJECT_PROPERTIES_EXT] = value
     }
 
-context(Settings)
-internal fun exportExtras() = extra.exportExtras()
-
-context(Project)
-internal fun exportExtras() = extra.exportExtras()
-
-private fun ExtraPropertiesExtension.exportExtras() =
-    properties.putAll(
-        mapOf(
-            "isCI" to isCI,
-        ),
-    )
-
-context(Project)
-internal fun Any.resolve() = resolve(providers, extra, projectProperties.localProperties)
-
 internal val Project.settings: Settings
     get() = (gradle as GradleInternal).settings
 

@@ -115,12 +115,10 @@ public class ProjectPlugin : Plugin<Project> {
     override fun apply(target: Project): Unit = with(SLF4JProblemReporterContext()) {
         with(target) {
             // Load and apply project.yaml to build.gradle.kts properties.
-            projectProperties = layout.projectDirectory.load(settings.layout.settingsDirectory).also { properties ->
+            projectProperties = load().also { properties ->
                 println("Load and apply $PROJECT_PROPERTIES_FILE to: $name")
                 println(yaml.dump(Json.Default.encodeToAny(properties)))
             }
-
-            exportExtras()
 
             projectProperties.buildscript?.applyTo()
 

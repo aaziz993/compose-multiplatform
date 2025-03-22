@@ -1,9 +1,12 @@
 package gradle.project
 
+import gradle.accessors.exportExtras
+import gradle.accessors.projectProperties
 import gradle.api.initialization.DependencyResolutionManagement
 import gradle.api.initialization.PluginManagement
 import gradle.api.initialization.ProjectDescriptor
 import gradle.api.initialization.ScriptHandler
+import gradle.api.isCI
 import gradle.api.publish.maven.MavenPomDeveloper
 import gradle.api.publish.maven.MavenPomLicense
 import gradle.api.publish.maven.MavenPomScm
@@ -33,7 +36,12 @@ import java.util.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import kotlinx.serialization.json.Json
+import org.gradle.api.Project
 import org.gradle.api.file.Directory
+import org.gradle.api.initialization.Settings
+import org.gradle.api.plugins.ExtraPropertiesExtension
+import org.gradle.api.provider.ProviderFactory
+import org.gradle.kotlin.dsl.extra
 import org.yaml.snakeyaml.Yaml
 import plugins.apple.model.AppleSettings
 import plugins.cmp.model.CMPSettings
@@ -91,19 +99,44 @@ internal data class ProjectProperties(
 
         val yaml = Yaml()
 
+        context(Settings)
+        @Suppress("UnstableApiUsage")
+        fun load(): ProjectProperties {
+            extra.exportExtras()
+            return load(layout.settingsDirectory, providers, extra, projectProperties.localProperties)
+        }
+
+        context(Project)
+        fun load(): ProjectProperties {
+            extra.exportExtras()
+            return load(layout.projectDirectory, providers, extra, projectProperties.localProperties)
+        }
+
+        private fun ExtraPropertiesExtension.exportExtras() =
+            properties.putAll(
+                mapOf(
+                    "isCI" to isCI,
+                ),
+            )
+
         @Suppress("UNCHECKED_CAST")
-        fun Directory.load(settingsDir: Directory): ProjectProperties {
+        private fun load(
+            directory: Directory,
+            providers: ProviderFactory,
+            extra: ExtraPropertiesExtension,
+            localProperties: Properties,
+        ): ProjectProperties {
             val propertiesFile = file(PROJECT_PROPERTIES_FILE).asFile
 
             return if (propertiesFile.exists()) {
 
                 val properties = yaml.load<MutableMap<String, *>>(propertiesFile.readText())
 
-                val templatedProperties = (properties["templates"] as List<String>?)?.fold(emptyMap<String, Any?>()) { acc, template ->
+                val templatedProperties = ((properties["templates"] as List<String>?)?.fold(emptyMap<String, Any?>()) { acc, template ->
                     acc deepMerge yaml.load<MutableMap<String, *>>(file(template).asFile.readText())
-                }.orEmpty() deepMerge properties
+                }.orEmpty() deepMerge properties).resolve(providers, extra, localProperties)
 
-                json.decodeFromAny<ProjectProperties>(templatedProperties.resolve()).apply {
+                json.decodeFromAny<ProjectProperties>(templatedProperties).apply {
                     android = templatedProperties["android"]?.let { androidProperties ->
                         if (type == ProjectType.APP)
                             androidProperties.let { json.decodeFromAny<BaseAppModuleExtension>(it) }

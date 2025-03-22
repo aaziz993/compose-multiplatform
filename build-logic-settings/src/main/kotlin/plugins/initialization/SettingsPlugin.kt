@@ -39,14 +39,11 @@ private const val COMPOSE_VERSION_CATALOG_FILE = "build-logic-settings/gradle/co
  */
 public class SettingsPlugin : Plugin<Settings> {
 
-    @Suppress("UnstableApiUsage")
     override fun apply(target: Settings) {
         with(SLF4JProblemReporterContext()) {
             with(target) {
                 // Load and apply project.yaml to settings.gradle.kts.
-                projectProperties = layout.settingsDirectory.load(layout.settingsDirectory)
-
-                exportExtras()
+                projectProperties = load()
 
                 projectProperties.buildscript?.applyTo()
 

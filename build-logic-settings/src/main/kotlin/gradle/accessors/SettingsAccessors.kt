@@ -8,9 +8,6 @@ import org.gradle.kotlin.dsl.extra
 import org.gradle.kotlin.dsl.getByType
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 
-context(Settings)
-internal fun Any.resolve() = resolve(providers, extra, projectProperties.localProperties)
-
 internal fun Settings.execute(cmd: String): String = providers.exec {
     commandLine(cmd.split(" "))
 }.standardOutput.asText.get().trim()
