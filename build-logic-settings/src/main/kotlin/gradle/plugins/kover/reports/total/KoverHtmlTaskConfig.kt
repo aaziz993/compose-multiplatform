@@ -1,4 +1,4 @@
-package gradle.plugins.kover
+package gradle.plugins.kover.reports.total
 
 import gradle.api.tryAssign
 import kotlinx.kover.gradle.plugin.dsl.KoverHtmlTaskConfig
@@ -55,9 +55,9 @@ internal data class KoverHtmlTaskConfig(
 
     context(Project)
     fun applyTo(recipient: KoverHtmlTaskConfig) {
-        html.title tryAssign title
-        html.charset tryAssign charset
-        html.onCheck tryAssign onCheck
-        html.htmlDir tryAssign htmlDir?.let(layout.projectDirectory::dir)
+        recipient.title tryAssign title
+        recipient.charset tryAssign charset
+        recipient.onCheck tryAssign onCheck
+        recipient.htmlDir tryAssign htmlDir?.let(layout.projectDirectory::dir)
     }
 }

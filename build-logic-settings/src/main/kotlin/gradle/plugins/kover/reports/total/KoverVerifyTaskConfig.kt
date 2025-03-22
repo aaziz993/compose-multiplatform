@@ -1,6 +1,8 @@
-package gradle.plugins.kover
+package gradle.plugins.kover.reports.total
 
 import gradle.api.tryAssign
+import gradle.plugins.kover.reports.verify.KoverVerificationRulesConfig
+import gradle.plugins.kover.reports.verify.KoverVerifyRuleSerializer
 import kotlinx.kover.gradle.plugin.dsl.KoverVerifyTaskConfig
 import kotlinx.serialization.Serializable
 
@@ -27,24 +29,19 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 internal data class KoverVerifyTaskConfig(
-    /**
-     * In case of a verification error, print a message to the log with the warn level instead of the Gradle task execution error.
-     *
-     * Gradle task error if `false`, warn message if `true`.
-     *
-     * `false` by default.
-     */
-    val warningInsteadOfFailure: Boolean? = null,
+    override val rule: @Serializable(with = KoverVerifyRuleSerializer::class) Any? = null,
+    override val warningInsteadOfFailure: Boolean? = null,
     /**
      * Verify coverage when running the `check` task.
      *
      * `true` for total verification of all code in the project, `false` otherwise.
      */
-    val onCheck: Boolean? = null
-) {
+    val onCheck: Boolean? = null,
+) : KoverVerificationRulesConfig<KoverVerifyTaskConfig> {
 
-    fun applyTo(recipient: KoverVerifyTaskConfig) {
-        verify.warningInsteadOfFailure tryAssign warningInsteadOfFailure
-        verify.onCheck tryAssign onCheck
+    override fun applyTo(recipient: KoverVerifyTaskConfig) {
+        super.applyTo(recipient)
+
+        recipient.onCheck tryAssign onCheck
     }
 }

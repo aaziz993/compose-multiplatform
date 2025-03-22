@@ -1,6 +1,9 @@
-package gradle.plugins.kover
+package gradle.plugins.kover.reports
 
-import gradle.api.tryAssign
+import gradle.plugins.kover.reports.filters.KoverReportFiltersConfig
+import gradle.plugins.kover.reports.total.KoverReportSetConfig
+import gradle.plugins.kover.reports.verify.KoverVerificationRulesConfig
+import gradle.plugins.kover.reports.verify.KoverVerificationRulesConfigImpl
 import kotlinx.kover.gradle.plugin.dsl.KoverReportsConfig
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -56,57 +59,56 @@ internal data class KoverReportsConfig(
      *
      * See details in [verify].
      */
-    val verify: KoverVerificationRulesConfig? = null,
+    val verify: KoverVerificationRulesConfigImpl? = null,
     /**
      * Instance to configuring of reports for all code of current project and `kover` dependencies.
      *
      * See details in [total].
      */
-    public val total: KoverReportSetConfig? = null,
+    val total: KoverReportSetConfig? = null,
+
+    /**
+     * Configure reports for classes of specified named Kover report variant.
+     *
+     * example:
+     * ```
+     * kover {
+     *      reports {
+     *          variant("debug") {
+     *              filters {
+     *                  // override report filters for reports of 'debug' variant
+     *              }
+     *
+     *              html {
+     *                  // configure HTML report for 'debug' variant
+     *              }
+     *
+     *              xml {
+     *                  // configure XML report for 'debug' variant
+     *              }
+     *
+     *              verify {
+     *                  // configure coverage verification for 'debug' variant
+     *              }
+     *
+     *              additionalBinaryReports.add(file("path/to/the/file.ic"))
+     *          }
+     *      }
+     * }
+     * ```
+     */
+    val variants: Set<Variant>? = null,
 ) {
 
     context(Project)
     fun applyTo(recipient: KoverReportsConfig) {
-        filters?.let { filters ->
-            reports.filters(filters::applyTo)
-        }
+        filters?.applyTo(recipient.filters)
+        verify?.applyTo(recipient.verify)
+        total?.applyTo(recipient.total)
 
-        verify?.let { verify ->
-            reports.verify(verify::applyTo)
-        }
-
-        total?.let { total ->
-            reports.total {
-                total.filters?.let { filters ->
-                    filters(filters::applyTo)
-                }
-
-                total.html?.let { html ->
-                    html {
-                        html.applyTo(this)
-                    }
-                }
-
-                total.xml?.let { xml ->
-                    xml {
-                        xml.applyTo(this)
-                    }
-                }
-
-                total.binary?.let { binary ->
-                    binary {
-                        binary.applyTo(this)
-                    }
-                }
-                total.verify?.let { verify ->
-                    verify(verify::applyTo)
-                }
-
-                total.log?.let { log ->
-                    log(log::applyTo)
-                }
-
-                additionalBinaryReports tryAssign total.additionalBinaryReports?.map(::file)
+        variants?.forEach { (variant, config) ->
+            recipient.variant(variant) {
+                config.applyTo(this)
             }
         }
     }

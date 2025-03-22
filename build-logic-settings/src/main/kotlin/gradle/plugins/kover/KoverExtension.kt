@@ -2,6 +2,8 @@ package gradle.plugins.kover
 
 import gradle.accessors.kover
 import gradle.api.tryAssign
+import gradle.plugins.kover.currentproject.KoverCurrentProjectVariantsConfig
+import gradle.plugins.kover.reports.KoverReportsConfig
 import kotlinx.kover.gradle.plugin.dsl.KoverVersions.JACOCO_TOOL_DEFAULT_VERSION
 import org.gradle.api.Project
 
@@ -44,15 +46,7 @@ internal interface KoverExtension {
     fun applyTo() {
         kover.useJacoco tryAssign useJacoco
         kover.jacocoVersion tryAssign jacocoVersion
-
-        currentProject?.let { currentProject ->
-            kover.currentProject(currentProject::applyTo)
-        }
-
-        reports?.let { reports ->
-            kover.reports {
-                reports.applyTo(this)
-            }
-        }
+        currentProject?.applyTo( kover.currentProject)
+        reports?.applyTo(kover.reports)
     }
 }

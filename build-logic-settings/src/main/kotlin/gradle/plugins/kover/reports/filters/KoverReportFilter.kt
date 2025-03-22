@@ -1,5 +1,7 @@
-package gradle.plugins.kover
+package gradle.plugins.kover.reports.filters
 
+import gradle.api.tryAssign
+import kotlinx.kover.gradle.plugin.dsl.KoverReportFilter
 import kotlinx.serialization.Serializable
 
 /**
@@ -86,5 +88,13 @@ internal data class KoverReportFilter(
      *  inheritedFrom.add("*Repository")
      * ```
      */
-    public val inheritedFrom: Set<String>? = null,
-)
+    val inheritedFrom: Set<String>? = null,
+){
+
+    fun applyTo(recipient: KoverReportFilter){
+        recipient.classes tryAssign classes
+        recipient.   annotatedBy tryAssign annotatedBy
+        recipient. projects tryAssign projects
+        recipient. inheritedFrom tryAssign inheritedFrom
+    }
+}

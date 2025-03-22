@@ -16,7 +16,8 @@ internal interface KnitPluginExtension {
     val moduleRoots: List<String>?
     val moduleMarkers: List<String>?
     val moduleDocs: String?
-    val files: List<String>?
+    val files: Set<String>?
+    val setFiles: Set<String>?
     val rootDir: String?
     val dokkaMultiModuleRoot: String?
     val defaultLineSeparator: String?
@@ -25,10 +26,10 @@ internal interface KnitPluginExtension {
     fun applyTo() =
         pluginManager.withPlugin(settings.libs.plugins.plugin("knit").id) {
             knit::siteRoot trySet siteRoot
-            knit.moduleRoots = moduleRoots ?: (settings.projectProperties.includes.orEmpty() + listOf("."))
+            knit.moduleRoots = moduleRoots ?: (settings.projectProperties.includes.orEmpty().toList() + listOf("."))
             knit.moduleMarkers = moduleMarkers ?: listOf("build.gradle", "build.gradle.kts", "project.yaml")
             knit::moduleDocs trySet moduleDocs
-            knit::files trySet files?.toTypedArray()?.let(::files)
+            knit::files trySet setFiles?.toTypedArray()?.let(::files)
             knit::rootDir trySet rootDir?.let(::file)
             knit::dokkaMultiModuleRoot trySet dokkaMultiModuleRoot
             knit::defaultLineSeparator trySet defaultLineSeparator

@@ -1,6 +1,7 @@
-package gradle.plugins.kover
+package gradle.plugins.kover.currentproject
 
-import gradle.api.tryAssign
+import gradle.plugins.kover.currentproject.KoverProjectInstrumentation
+import gradle.plugins.kover.currentproject.KoverVariantSources
 import kotlinx.kover.gradle.plugin.dsl.KoverCurrentProjectVariantsConfig
 import kotlinx.serialization.Serializable
 
@@ -34,25 +35,33 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 internal data class KoverCurrentProjectVariantsConfig(
-    val sources: KoverVariantSources? = null,
+    override val sources: KoverVariantSources? = null,
+    val createVariants: Set<CreateVariant>? = null,
+    val copyVariants: Set<CopyVariant>? = null,
+    val providedVariants: Set<ProvidedVariant>? = null,
+    val totalVariant: KoverVariantConfigImpl? = null,
     val instrumentation: KoverProjectInstrumentation? = null,
-) {
+) : KoverVariantConfig<KoverCurrentProjectVariantsConfig> {
 
-    fun applyTo(recipient: KoverCurrentProjectVariantsConfig) {
-        sources?.let { sources ->
-            project.sources {
-                excludeJava tryAssign sources.excludeJava
-                excludedSourceSets tryAssign sources.excludedSourceSets
-            }
+    override fun applyTo(recipient: KoverCurrentProjectVariantsConfig) {
+        super.applyTo(recipient)
+
+        createVariants?.forEach { (variantName, config) ->
+            recipient.createVariant(variantName, config::applyTo)
         }
 
-        instrumentation?.let { instrumentation ->
-            project.instrumentation {
-                disabledForAll tryAssign instrumentation.disabledForAll
-                disabledForTestTasks tryAssign instrumentation.disabledForTestTasks
-                excludedClasses tryAssign instrumentation.excludedClasses
-                includedClasses tryAssign instrumentation.includedClasses
-            }
+        copyVariants?.forEach { (variantName, originalVariantName) ->
+            recipient.copyVariant(variantName, originalVariantName)
         }
+
+        providedVariants?.forEach { (variantName, config) ->
+            recipient.providedVariant(variantName, config::applyTo)
+        }
+
+        totalVariant?.let { totalVariant ->
+            recipient.totalVariant(totalVariant::applyTo)
+        }
+
+        instrumentation?.applyTo(recipient.instrumentation)
     }
 }

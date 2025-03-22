@@ -1,5 +1,7 @@
-package gradle.plugins.kover
+package gradle.plugins.kover.currentproject
 
+import gradle.api.tryAssign
+import kotlinx.kover.gradle.plugin.dsl.KoverVariantSources
 import kotlinx.serialization.Serializable
 
 /**
@@ -29,4 +31,10 @@ internal data class KoverVariantSources(
      * Exclude source classes of specified source sets from all reports
      */
     val excludedSourceSets: Set<String>? = null
-)
+) {
+
+    fun applyTo(recipient: KoverVariantSources) {
+        recipient.excludeJava tryAssign excludeJava
+        recipient.excludedSourceSets tryAssign excludedSourceSets
+    }
+}

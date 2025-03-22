@@ -1,11 +1,10 @@
-package gradle.plugins.kover
+package gradle.plugins.kover.reports.total
 
 import gradle.api.tryAssign
 import kotlinx.kover.gradle.plugin.dsl.AggregationType
 import kotlinx.kover.gradle.plugin.dsl.CoverageUnit
 import kotlinx.kover.gradle.plugin.dsl.GroupingEntityType
 import kotlinx.kover.gradle.plugin.dsl.KoverLogTaskConfig
-import kotlinx.serialization.Serializable
 
 /**
  * Configuration of coverage printing to the log for current report variant.
@@ -74,11 +73,11 @@ internal data class KoverLogTaskConfig(
 ) {
 
     fun applyTo(recipient: KoverLogTaskConfig) {
-        log.onCheck tryAssign onCheck
-        log.header tryAssign header
-        log.format tryAssign format
-        log.groupBy tryAssign groupBy
-        log.coverageUnits tryAssign coverageUnits
-        log.aggregationForGroup tryAssign aggregationForGroup
+        recipient.onCheck tryAssign onCheck
+        recipient.header tryAssign header
+        recipient.format tryAssign format
+        recipient.groupBy tryAssign groupBy
+        recipient.coverageUnits tryAssign coverageUnits
+        recipient.aggregationForGroup tryAssign aggregationForGroup
     }
 }

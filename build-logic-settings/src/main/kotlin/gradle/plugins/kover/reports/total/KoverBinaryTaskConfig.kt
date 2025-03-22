@@ -1,4 +1,4 @@
-package gradle.plugins.kover
+package gradle.plugins.kover.reports.total
 
 import gradle.api.tryAssign
 import kotlinx.kover.gradle.plugin.dsl.KoverBinaryTaskConfig
@@ -41,7 +41,7 @@ internal data class KoverBinaryTaskConfig(
 
     context(Project)
     fun applyTo(recipient: KoverBinaryTaskConfig) {
-        binary.onCheck tryAssign onCheck
-        binary.file tryAssign file?.let(::file)
+        recipient.onCheck tryAssign onCheck
+        recipient.file tryAssign file?.let(::file)
     }
 }

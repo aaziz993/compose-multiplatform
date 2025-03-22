@@ -1,4 +1,4 @@
-package gradle.plugins.karakum
+package gradle.plugins.karakum.tasks
 
 import gradle.accessors.id
 import gradle.accessors.libs
@@ -6,7 +6,6 @@ import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
 import gradle.api.tasks.DefaultTask
-import gradle.api.tasks.Task
 import gradle.api.tasks.applyTo
 import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
@@ -14,7 +13,6 @@ import gradle.doubleQuoted
 import gradle.serialization.decodeMapFromString
 import gradle.serialization.encodeAnyToString
 import io.github.sgrishchenko.karakum.gradle.plugin.tasks.KarakumGenerate
-import java.io.File
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import org.gradle.api.Project
@@ -43,7 +41,7 @@ internal data class KarakumGenerate(
     override val mustRunAfter: Set<String>? = null,
     override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
-    override val name: String = "karakumGenerate",
+    override val name: String = "",
     val configFile: String? = null,
     val extensionDirectory: String? = null,
 ) : DefaultTask<KarakumGenerate>() {

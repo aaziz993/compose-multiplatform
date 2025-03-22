@@ -1,4 +1,4 @@
-package gradle.plugins.kover
+package gradle.plugins.kover.reports.total
 
 import gradle.api.tryAssign
 import kotlinx.kover.gradle.plugin.dsl.KoverXmlTaskConfig
@@ -50,8 +50,8 @@ internal data class KoverXmlTaskConfig(
 
     context(Project)
     fun applyTo(recipient: KoverXmlTaskConfig) {
-        xml.onCheck tryAssign onCheck
-        xml.xmlFile tryAssign xmlFile?.let(::file)
-        xml.title tryAssign title
+        recipient.onCheck tryAssign onCheck
+        recipient.xmlFile tryAssign xmlFile?.let(::file)
+        recipient.title tryAssign title
     }
 }

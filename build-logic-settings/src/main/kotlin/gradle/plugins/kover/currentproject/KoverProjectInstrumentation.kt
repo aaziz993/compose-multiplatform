@@ -1,5 +1,7 @@
-package gradle.plugins.kover
+package gradle.plugins.kover.currentproject
 
+import gradle.api.tryAssign
+import kotlinx.kover.gradle.plugin.dsl.KoverProjectInstrumentation
 import kotlinx.serialization.Serializable
 
 /**
@@ -27,28 +29,36 @@ import kotlinx.serialization.Serializable
  * ```
  */
 @Serializable
-public data class KoverProjectInstrumentation(
+internal data class KoverProjectInstrumentation(
     /**
      * Disable instrumentation in all test tasks.
      * No one task from this project will not be called when generating Kover reports and these tasks will not be instrumented even if you explicitly run them.
      */
-    public val disabledForAll: Boolean? = null,
+    val disabledForAll: Boolean? = null,
     /**
      * Specifies not to use test task with passed names to measure coverage.
      * These tasks will also not be called when generating Kover reports and these tasks will not be instrumented even if you explicitly run them.
      */
-    public val disabledForTestTasks: Set<String>? = null,
+    val disabledForTestTasks: Set<String>? = null,
     /**
      * Disable instrumentation in test tasks of specified classes
      *
      * Classes in [excludedClasses] have priority over classes from [includedClasses].
      */
-    public val excludedClasses: Set<String>? = null,
+    val excludedClasses: Set<String>? = null,
     /**
      * Enable instrumentation in test tasks only of specified classes.
      * All other classes will not be instrumented.
      *
      * Classes in [excludedClasses] have priority over classes from [includedClasses].
      */
-    public val includedClasses: Set<String>? = null,
-)
+    val includedClasses: Set<String>? = null,
+) {
+
+    fun applyTo(recipient: KoverProjectInstrumentation) {
+        recipient.disabledForAll tryAssign disabledForAll
+        recipient.disabledForTestTasks tryAssign disabledForTestTasks
+        recipient.excludedClasses tryAssign excludedClasses
+        recipient.includedClasses tryAssign includedClasses
+    }
+}
