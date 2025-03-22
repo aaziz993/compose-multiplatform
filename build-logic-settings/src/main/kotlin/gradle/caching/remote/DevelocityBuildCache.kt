@@ -2,7 +2,6 @@ package gradle.caching.remote
 
 import com.gradle.develocity.agent.gradle.buildcache.DevelocityBuildCache
 import gradle.accessors.projectProperties
-import gradle.accessors.resolveValue
 import gradle.api.isCI
 import gradle.caching.AbstractBuildCache
 import kotlinx.serialization.SerialName
@@ -27,7 +26,7 @@ internal data class DevelocityBuildCache(
     context(Settings)
     override fun applyTo(recipient: DevelocityBuildCache) {
         // better set it to true only for CI builds.
-        recipient.isPush = isCI && projectProperties.plugins.develocity.accessKey?.resolveValue() != null
+        recipient.isPush = isCI && projectProperties.plugins.develocity.accessKey != null
 
         super.applyTo(recipient)
 

@@ -1,6 +1,5 @@
 package gradle.plugins.develocity
 
-import gradle.accessors.resolveValue
 import gradle.api.tryAssign
 import gradle.plugins.develocity.buildscan.BuildScanConfiguration
 import org.gradle.api.initialization.Settings
@@ -22,6 +21,6 @@ internal interface DevelocityConfiguration {
         develocity.edgeDiscovery tryAssign edgeDiscovery
         develocity.projectId tryAssign projectId
         develocity.allowUntrustedServer tryAssign allowUntrustedServer
-        develocity.accessKey tryAssign accessKey?.resolveValue()?.toString()
+        develocity.accessKey tryAssign accessKey
     }
 }

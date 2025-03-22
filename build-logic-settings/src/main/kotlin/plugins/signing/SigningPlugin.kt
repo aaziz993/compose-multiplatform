@@ -1,7 +1,6 @@
 package plugins.signing
 
 import gradle.accessors.projectProperties
-import gradle.accessors.resolveValue
 import gradle.accessors.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -81,9 +80,7 @@ internal class SigningPlugin : Plugin<Project> {
         /** Distribute signing gpg key
          * There are 3 servers supported by Central servers: [ keyserver.ubuntu.com, keys.openpgp.org, pgp.mit.edu ]
          */
-        projectProperties.plugins.signing.useInMemoryPgpKeys?.defaultSecretKey
-            ?.resolveValue()
-            ?.let { key ->
+        projectProperties.plugins.signing.useInMemoryPgpKeys?.defaultSecretKey?.let { key ->
                 tasks.register<Exec>("distributeSigningGPGKey") {
                     description = "Distributes the signing GPG key to servers: [keyserver.ubuntu.com, keys.openpgp.org, pgp.mit.edu]"
                     group = "signing"

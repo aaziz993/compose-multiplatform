@@ -11,6 +11,7 @@ import com.osacky.doctor.DoctorExtension
 import de.jensklingenberg.ktorfit.gradle.KtorfitGradleConfiguration
 import gradle.api.isCI
 import gradle.api.maybeNamed
+import gradle.collection.resolve
 import gradle.project.ProjectProperties
 import io.github.sgrishchenko.karakum.gradle.plugin.KarakumExtension
 import java.util.*
@@ -86,34 +87,8 @@ private fun ExtraPropertiesExtension.exportExtras() =
         ),
     )
 
-context(Settings)
-internal fun String.resolveValue() = resolveValue(providers, extra, projectProperties.localProperties)
-
 context(Project)
-internal fun String.resolveValue() = resolveValue(providers, extra, projectProperties.localProperties)
-
-private fun String.resolveValue(
-    providers: ProviderFactory,
-    extra: ExtraPropertiesExtension,
-    localProperties: Properties,
-) =
-    if (startsWith("$")) {
-        val key = substringAfter(".")
-        removePrefix("$")
-            .substringBefore(".")
-            .split("|")
-            .map(String::lowercase)
-            .firstNotNullOfOrNull { reference ->
-                when (reference) {
-                    "env" -> System.getenv()[key.toScreamingSnakeCase()]
-                    "gradle" -> providers.gradleProperty(key.toDotCase()).orNull
-                    "extra" -> extra[key.toDotCase()]
-                    "local" -> localProperties[key.toDotCase()]
-                    else -> this
-                }
-            }
-    }
-    else this
+internal fun Any.resolve() = resolve(providers, extra, projectProperties.localProperties)
 
 internal val Project.settings: Settings
     get() = (gradle as GradleInternal).settings

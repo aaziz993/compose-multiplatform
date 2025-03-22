@@ -2,7 +2,6 @@ package gradle.plugins.android.signing
 
 import com.android.build.api.dsl.SigningConfig
 import gradle.accessors.android
-import gradle.accessors.resolveValue
 import gradle.api.trySet
 import org.gradle.api.Project
 
@@ -57,10 +56,10 @@ internal interface SigningConfigDsl<T: SigningConfig> {
     context(Project)
     fun applyTo(recipient: T) {
         recipient::storeFile trySet storeFile?.let(::file)
-        recipient::storePassword trySet storePassword?.resolveValue()?.toString()
-        recipient::keyAlias trySet keyAlias?.resolveValue()?.toString()
-        recipient::keyPassword trySet keyPassword?.resolveValue()?.toString()
-        recipient::storeType trySet storeType?.resolveValue()?.toString()
+        recipient::storePassword trySet storePassword
+        recipient::keyAlias trySet keyAlias
+        recipient::keyPassword trySet keyPassword
+        recipient::storeType trySet storeType
         initWith?.let(android.signingConfigs::getByName)?.let(recipient::initWith)
     }
 }
