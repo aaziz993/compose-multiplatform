@@ -10,9 +10,9 @@ import gradle.plugins.spotless.FormatExtension
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-internal abstract class BaseGroovyExtension : FormatExtension() {
+internal abstract class BaseGroovyExtension<T: BaseGroovyExtension> : FormatExtension<T>() {
 
-    abstract val importOrder: List<String>?
+    abstract val importOrder: LinkedHashSet<String>?
 
     abstract val importOrderFile: String?
 
@@ -20,36 +20,32 @@ internal abstract class BaseGroovyExtension : FormatExtension() {
 
     abstract val greclipse: GrEclipseConfig?
 
-    @Serializable
-    internal data class GrEclipseConfig(
-        val version: String? = null,
-        val configFiles: List<String>? = null,
-        val withP2Mirrors: Map<String, String>? = null
-    ) {
-
-        fun applyTo(recipient: BaseGroovyExtension.GrEclipseConfig) {
-            configFiles?.toTypedArray()?.let(config::configFile)
-
-            withP2Mirrors?.let(config::withP2Mirrors)
-        }
-    }
-
     context(Project)
-    override fun applyTo(recipient: com.diffplug.gradle.spotless.FormatExtension) {
-        super.applyTo(extension)
+    override fun applyTo(recipient: T) {
+        super.applyTo(recipient)
 
-        extension as BaseGroovyExtension
-
-        importOrder?.toTypedArray()?.let(extension::importOrder)
-
-        importOrderFile?.let(extension::importOrderFile)
-        removeSemicolons?.takeIf { it }?.run { extension.removeSemicolons() }
+        importOrder?.toTypedArray()?.let(recipient::importOrder)
+        importOrderFile?.let(recipient::importOrderFile)
+        removeSemicolons?.takeIf { it }?.run { recipient.removeSemicolons() }
 
         greclipse?.let { greclipse ->
             greclipse.applyTo(
                 (greclipse.version?.resolveVersion() ?: settings.libs.versions.version("greclipse"))
-                    ?.let(extension::greclipse) ?: extension.greclipse(),
+                    ?.let(recipient::greclipse) ?: recipient.greclipse(),
             )
+        }
+    }
+
+    @Serializable
+    internal data class GrEclipseConfig(
+        val version: String? = null,
+        val configFiles: Set<String>? = null,
+        val withP2Mirrors: Map<String, String>? = null
+    ) {
+
+        fun applyTo(recipient: BaseGroovyExtension.GrEclipseConfig) {
+            configFiles?.toTypedArray()?.let(recipient::configFile)
+            withP2Mirrors?.let(recipient::withP2Mirrors)
         }
     }
 }

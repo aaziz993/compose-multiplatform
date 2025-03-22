@@ -1,9 +1,10 @@
 package gradle.plugins.spotless.kotlin
 
 import com.diffplug.gradle.spotless.BaseKotlinExtension
+import com.diffplug.spotless.kotlin.DiktatStep
+import com.diffplug.spotless.kotlin.KtLintStep
 import com.diffplug.spotless.kotlin.KtfmtStep
 import gradle.accessors.libs
-import gradle.accessors.resolveVersion
 import gradle.accessors.settings
 import gradle.accessors.version
 import gradle.accessors.versions
@@ -11,7 +12,7 @@ import gradle.plugins.spotless.FormatExtension
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-internal abstract class BaseKotlinExtension : FormatExtension() {
+internal abstract class BaseKotlinExtension<T : BaseKotlinExtension> : FormatExtension<T>() {
 
     abstract val diktat: DiktatConfig?
 
@@ -21,29 +22,33 @@ internal abstract class BaseKotlinExtension : FormatExtension() {
     abstract val ktlint: KtlintConfig?
 
     context(Project)
-    override fun applyTo(recipient: com.diffplug.gradle.spotless.FormatExtension) {
-        super.applyTo(extension)
-
-        extension as BaseKotlinExtension
+    override fun applyTo(recipient: T) {
+        super.applyTo(recipient)
 
         diktat?.let { diktat ->
             diktat.applyTo(
-                (diktat.version?.resolveVersion() ?: settings.libs.versions.version("diktat"))
-                    ?.let(extension::diktat) ?: extension.diktat(),
+                recipient.diktat(
+                    diktat.version ?: settings.libs.versions.version("diktat")
+                    ?: DiktatStep.defaultVersionDiktat(),
+                ),
             )
         }
 
         ktfmt?.forEach { ktfmt ->
             ktfmt.applyTo(
-                (ktfmt.version?.resolveVersion() ?: settings.libs.versions.version("ktfmt"))
-                    ?.let(extension::ktfmt) ?: extension.ktfmt(),
+                recipient.ktfmt(
+                    ktfmt.version ?: settings.libs.versions.version("ktfmt")
+                    ?: KtfmtStep.defaultVersion(),
+                ),
             )
         }
 
         ktlint?.let { ktlint ->
             ktlint.applyTo(
-                (ktlint.version?.resolveVersion() ?: settings.libs.versions.version("ktlint"))
-                    ?.let(extension::ktlint) ?: extension.ktlint(),
+                recipient.ktlint(
+                    ktlint.version ?: settings.libs.versions.version("ktlint")
+                    ?: KtLintStep.defaultVersion(),
+                ),
             )
         }
     }
@@ -55,7 +60,7 @@ internal abstract class BaseKotlinExtension : FormatExtension() {
     ) {
 
         fun applyTo(recipient: BaseKotlinExtension.DiktatConfig) {
-            configFile?.let(config::configFile)
+            configFile?.let(recipient::configFile)
         }
     }
 
@@ -68,9 +73,9 @@ internal abstract class BaseKotlinExtension : FormatExtension() {
 
         fun applyTo(recipient: BaseKotlinExtension.KtfmtConfig) =
             when (style) {
-                KtfmtStep.Style.DROPBOX -> config.dropboxStyle()
-                KtfmtStep.Style.GOOGLE -> config.googleStyle()
-                KtfmtStep.Style.KOTLINLANG -> config.kotlinlangStyle()
+                KtfmtStep.Style.DROPBOX -> recipient.dropboxStyle()
+                KtfmtStep.Style.GOOGLE -> recipient.googleStyle()
+                KtfmtStep.Style.KOTLINLANG -> recipient.kotlinlangStyle()
                 else -> throw IllegalArgumentException("Unsupported ktfmt default style")
             }.configure(options::applyTo)
     }
@@ -84,10 +89,10 @@ internal abstract class BaseKotlinExtension : FormatExtension() {
     ) {
 
         fun applyTo(recipient: KtfmtStep.KtfmtFormattingOptions) {
-            maxWidth?.let(options::setMaxWidth)
-            blockIndent?.let(options::setBlockIndent)
-            continuationIndent?.let(options::setContinuationIndent)
-            removeUnusedImport?.let(options::setRemoveUnusedImport)
+            maxWidth?.let(recipient::setMaxWidth)
+            blockIndent?.let(recipient::setBlockIndent)
+            continuationIndent?.let(recipient::setContinuationIndent)
+            removeUnusedImport?.let(recipient::setRemoveUnusedImport)
         }
     }
 
@@ -100,9 +105,9 @@ internal abstract class BaseKotlinExtension : FormatExtension() {
     ) {
 
         fun applyTo(recipient: BaseKotlinExtension.KtlintConfig) {
-            editorConfigPath?.let(config::setEditorConfigPath)
-            editorConfigOverride?.let(config::editorConfigOverride)
-            customRuleSets?.let(config::customRuleSets)
+            editorConfigPath?.let(recipient::setEditorConfigPath)
+            editorConfigOverride?.let(recipient::editorConfigOverride)
+            customRuleSets?.let(recipient::customRuleSets)
         }
     }
 }

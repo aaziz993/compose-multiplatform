@@ -8,8 +8,13 @@ import gradle.accessors.settings
 import gradle.accessors.spotless
 import gradle.accessors.version
 import gradle.accessors.versions
+import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.json.JsonContentPolymorphicSerializer
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.jsonPrimitive
 import org.gradle.api.Project
 
 @Serializable
@@ -20,8 +25,8 @@ internal data class JavaExtension(
     override val excludeSteps: MutableSet<String>? = null,
     override val excludePaths: MutableSet<String>? = null,
     override val encoding: String? = null,
-    override val target: List<String>? = null,
-    override val targetExclude: List<String>? = null,
+    override val target: Set<String>? = null,
+    override val targetExclude: Set<String>? = null,
     override val targetExcludeIfContentContains: String? = null,
     override val targetExcludeIfContentContainsRegex: String? = null,
     override val replace: List<Replace>? = null,
@@ -29,9 +34,7 @@ internal data class JavaExtension(
     override val trimTrailingWhitespace: Boolean? = null,
     override val endWithNewline: Boolean? = null,
     override val indentWithSpaces: Int? = null,
-    override val indentIfWithSpaces: Boolean? = null,
     override val indentWithTabs: Int? = null,
-    override val indentIfWithTabs: Boolean? = null,
     override val nativeCmd: List<NativeCmd>? = null,
     override val licenseHeader: LicenseHeaderConfig? = null,
     override val prettier: PrettierConfig? = null,
@@ -40,11 +43,9 @@ internal data class JavaExtension(
     override val eclipseWtp: EclipseWtpConfig? = null,
     override val toggleOffOnRegex: String? = null,
     override val toggleOffOn: ToggleOffOn? = null,
-    override val toggleIfOffOn: Boolean? = null,
     override val toggleOffOnDisable: Boolean? = null,
     val importOrder: ImportOrderConfig? = null,
-    val removeIfUnusedImports: Boolean? = null,
-    val removeUnusedImports: String? = null,
+    val removeUnusedImports: @Serializable(with = RemoveUnusedImportsSerializer::class) Any? = null,
     /** Uses the [google-java-format](https://github.com/google/google-java-format) jar to format source code.  */
     val googleJavaFormat: GoogleJavaFormatConfig? = null,
     /** Uses the [palantir-java-format](https://github.com/palantir/palantir-java-format) jar to format source code.  */
@@ -54,33 +55,105 @@ internal data class JavaExtension(
     val formatAnnotations: FormatAnnotationsConfig? = null,
     /** Apply CleanThat refactoring rules.  */
     val cleanthat: CleanthatJavaConfig? = null,
-) : FormatExtension() {
+) : FormatExtension<JavaExtension>() {
 
     context(Project)
-    override fun applyTo(recipient: com.diffplug.gradle.spotless.FormatExtension) {
+    override fun applyTo(extension: JavaExtension) {
         super.applyTo(extension)
 
-        extension as JavaExtension
-
-        importOrder?.toTypedArray()?.let(extension::importOrder)
-                    ?: importOrder.importOrderFile?.let(extension::importOrderFile)!!,
+        importOrder?.let { importOrder ->
+            importOrder.applyTo(
+                importOrder.importOrder?.let { extension.importOrder(*it.toTypedArray()) }
+                    ?: extension.importOrderFile(importOrder.importOrderFile!!),
             )
         }
 
-        removeIfUnusedImports?.toTypedArray()?.let(eclipse::configFile)
+        when (removeUnusedImports) {
+            is Boolean -> removeUnusedImports.takeIf { it }?.let { extension.removeUnusedImports() }
+            is String -> extension.removeUnusedImports(removeUnusedImports)
+            else -> Unit
+        }
+
+        googleJavaFormat?.let { googleJavaFormat ->
+            googleJavaFormat.applyTo(
+                (googleJavaFormat.version?.resolveVersion() ?: settings.libs.versions.version("googleJavaFormat"))
+                    ?.let(extension::googleJavaFormat) ?: extension.googleJavaFormat(),
+            )
+        }
+
+        palantirJavaFormat?.let { palantirJavaFormat ->
+            palantirJavaFormat.applyTo(
+                (palantirJavaFormat.version?.resolveVersion() ?: settings.libs.versions.version("palantirJavaFormat"))
+                    ?.let(extension::palantirJavaFormat) ?: extension.palantirJavaFormat(),
+            )
+        }
+
+        eclipse?.let { eclipse ->
+            eclipse.applyTo(
+                (eclipse.formatterVersion?.resolveVersion() ?: settings.libs.versions.version("eclipseFormatter"))
+                    ?.let(extension::eclipse) ?: extension.eclipse(),
+            )
+        }
+
+        formatAnnotations?.applyTo(extension.formatAnnotations())
+        cleanthat?.applyTo(extension.cleanthat())
+    }
+
+    context(Project)
+    override fun applyTo() = spotless.java {
+        applyTo(this)
+    }
+
+    private object RemoveUnusedImportsSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
+
+        override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
+            if (element.jsonPrimitive.isString)
+                String.serializer()
+            else Boolean.serializer()
+    }
+
+    @Serializable
+    internal class CleanthatJavaConfig(
+        val groupArtifact: String? = null,
+        val version: String? = null,
+        val sourceJdk: String? = null,
+        val mutators: Set<String?>? = null,
+        val excludedMutators: Set<String?>? = null,
+        val includeDraft: Boolean? = null
+    ) {
+
+        fun applyTo(format: JavaExtension.CleanthatJavaConfig) {
+            groupArtifact?.let(format::groupArtifact)
+            version?.let(format::version)
+            sourceJdk?.let(format::sourceCompatibility)
+            mutators?.let(format::addMutators)
+            excludedMutators?.forEach(format::excludeMutator)
+            includeDraft?.let(format::includeDraft)
+        }
+    }
+
+    @Serializable
+    internal data class EclipseConfig(
+        val formatterVersion: String? = null,
+        val configFiles: List<String>? = null,
+        val p2Mirrors: Map<String, String>? = null
+    ) {
+
+        fun applyTo(eclipse: JavaExtension.EclipseConfig) {
+            configFiles?.toTypedArray()?.let(eclipse::configFile)
             p2Mirrors?.let(eclipse::withP2Mirrors)
         }
     }
 
     @Serializable
     internal data class FormatAnnotationsConfig(
-        val addedTypeAnnotations: List<String>? = null,
-        val removedTypeAnnotations: List<String>? = null
+        val addedTypeAnnotations: Set<String>? = null,
+        val removedTypeAnnotations: Set<String>? = null
     ) {
 
         fun applyTo(recipient: JavaExtension.FormatAnnotationsConfig) {
-            addedTypeAnnotations?.forEach(annotations::addTypeAnnotation)
-            removedTypeAnnotations?.forEach(annotations::removeTypeAnnotation)
+            addedTypeAnnotations?.forEach(recipient::addTypeAnnotation)
+            removedTypeAnnotations?.forEach(recipient::removeTypeAnnotation)
         }
     }
 
@@ -95,11 +168,11 @@ internal data class JavaExtension(
     ) {
 
         fun applyTo(recipient: JavaExtension.GoogleJavaFormatConfig) {
-            groupArtifact?.let(format::groupArtifact)
-            style?.let(format::style)
-            reflowLongStrings?.let(format::reflowLongStrings)
-            reorderImports?.let(format::reorderImports)
-            formatJavadoc?.let(format::formatJavadoc)
+            groupArtifact?.let(recipient::groupArtifact)
+            style?.let(recipient::style)
+            reflowLongStrings?.let(recipient::reflowLongStrings)
+            reorderImports?.let(recipient::reorderImports)
+            formatJavadoc?.let(recipient::formatJavadoc)
         }
     }
 
@@ -114,10 +187,17 @@ internal data class JavaExtension(
     ) {
 
         fun applyTo(recipient: JavaExtension.ImportOrderConfig) {
-            wildcardsLast?.let(importOrder::wildcardsLast)
-            semanticSort?.let(importOrder::semanticSort)
-            treatAsPackage?.let(importOrder::treatAsPackage)
-            treatAsClass?.let(importOrder::treatAsClass)
+            wildcardsLast?.let(recipient::wildcardsLast)
+            semanticSort?.let(recipient::semanticSort)
+            treatAsPackage?.let(recipient::treatAsPackage)
+            treatAsClass?.let(recipient::treatAsClass)
+        }
+    }
+
+    private object ImportOrderSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
+
+        override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> {
+            TODO("Not yet implemented")
         }
     }
 
@@ -129,8 +209,8 @@ internal data class JavaExtension(
     ) {
 
         fun applyTo(recipient: JavaExtension.PalantirJavaFormatConfig) {
-            style?.let(format::style)
-            formatJavadoc?.let(format::formatJavadoc)
+            style?.let(recipient::style)
+            formatJavadoc?.let(recipient::formatJavadoc)
         }
     }
 }

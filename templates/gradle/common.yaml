@@ -125,7 +125,7 @@ plugins:
           # include source files
           target: [ '**/*.properties' ]
           # removes any extra whitespace at the beginning of lines
-          indentIfWithSpaces: true
+          indentWithSpaces: false
       - format:
           name: html
           # remove old license header
@@ -160,6 +160,8 @@ plugins:
             delimiter: ^(?!\s*#).*
           # include source files
           target: [ '**/.editconfig' ]
+          # removes any extra whitespace at the beginning of lines
+          indentWithSpaces: false
       - format:
           name: gitignore
           # specify license header text
@@ -168,6 +170,8 @@ plugins:
             delimiter: ^(?!\s*#).*
           # include source files
           target: [ '**/.gitignore' ]
+          # removes any extra whitespace at the beginning of lines
+          indentWithSpaces: false
       - format:
           name: gitattributes
           # specify license header text
@@ -176,6 +180,8 @@ plugins:
             delimiter: ^(?!\s*#).*
           # include source files
           target: [ '**/.gitattributes' ]
+          # removes any extra whitespace at the beginning of lines
+          indentWithSpaces: false
       - format:
           # exclude source files
           targetExclude: [

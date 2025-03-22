@@ -3,27 +3,35 @@
 package gradle.plugins.spotless
 
 import com.diffplug.spotless.LineEnding
+import com.diffplug.spotless.cpp.ClangFormatStep
 import com.diffplug.spotless.extra.wtp.EclipseWtpFormatterStep
 import gradle.accessors.libs
-import gradle.accessors.resolveVersion
 import gradle.accessors.settings
 import gradle.accessors.version
 import gradle.accessors.versions
+import gradle.collection.SerializableAnyMap
+import gradle.collection.act
 import gradle.serialization.serializer.JsonPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
+import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.json.JsonContentPolymorphicSerializer
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.jsonPrimitive
 import org.gradle.api.Project
 
 @Serializable(with = FormatExtensionSerializer::class)
-internal abstract class FormatExtension {
+internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatExtension> {
 
     abstract val lineEnding: LineEnding?
     abstract val ratchetFrom: String?
     abstract val excludeSteps: Set<String>?
     abstract val excludePaths: Set<String>?
     abstract val encoding: String?
-    abstract val target: List<String>?
-    abstract val targetExclude: List<String>?
+    abstract val target: Set<String>?
+    abstract val targetExclude: Set<String>?
     abstract val targetExcludeIfContentContains: String?
     abstract val targetExcludeIfContentContainsRegex: String?
     abstract val replace: List<Replace>?
@@ -36,16 +44,10 @@ internal abstract class FormatExtension {
     abstract val endWithNewline: Boolean?
 
     /** Ensures that the files are indented using spaces.  */
-    abstract val indentWithSpaces: Int?
-
-    /** Ensures that the files are indented using spaces.  */
-    abstract val indentIfWithSpaces: Boolean?
+    abstract val indentWithSpaces: @Serializable(with = IntentSerializer::class) Any?
 
     /** Ensures that the files are indented using tabs.  */
-    abstract val indentWithTabs: Int?
-
-    /** Ensures that the files are indented using tabs.  */
-    abstract val indentIfWithTabs: Boolean?
+    abstract val indentWithTabs: @Serializable(with = IntentSerializer::class) Any?
     abstract val nativeCmd: List<NativeCmd>?
     abstract val licenseHeader: LicenseHeaderConfig?
     abstract val prettier: PrettierConfig?
@@ -55,10 +57,7 @@ internal abstract class FormatExtension {
     abstract val toggleOffOnRegex: String?
 
     /** Disables formatting between the given tags.  */
-    abstract val toggleOffOn: ToggleOffOn?
-
-    /** Disables formatting between `spotless:off` and `spotless:on`.  */
-    abstract val toggleIfOffOn: Boolean?
+    abstract val toggleOffOn: @Serializable(with = ToggleOffOnSerializer::class) Any?
 
     /**
      * Undoes all previous calls to [.toggleOffOn] and
@@ -67,7 +66,7 @@ internal abstract class FormatExtension {
     abstract val toggleOffOnDisable: Boolean?
 
     context(Project)
-    open fun applyTo(recipient: com.diffplug.gradle.spotless.FormatExtension) {
+    open fun applyTo(recipient: T) {
         lineEnding?.let(recipient::setLineEndings)
         ratchetFrom?.let(recipient::setRatchetFrom)
         excludeSteps?.forEach(recipient::ignoreErrorForStep)
@@ -81,49 +80,79 @@ internal abstract class FormatExtension {
         replaceRegex?.forEach { (name, regex, replacement) -> recipient.replaceRegex(name, regex, replacement) }
         trimTrailingWhitespace?.takeIf { it }?.run { recipient.trimTrailingWhitespace() }
         endWithNewline?.takeIf { it }?.run { recipient.endWithNewline() }
-        indentWithSpaces?.let(recipient::indentWithSpaces)
-        indentIfWithSpaces?.takeIf { it }?.let { recipient.indentWithSpaces() }
-        indentWithTabs?.let(recipient::indentWithTabs)
-        indentIfWithTabs?.takeIf { it }?.run { recipient.indentWithTabs() }
+
+        when (val indentWithSpaces = indentWithSpaces) {
+            is Boolean -> indentWithSpaces.takeIf { it }?.let { recipient.indentWithSpaces() }
+            is Int -> recipient.indentWithSpaces(indentWithSpaces)
+
+            else -> Unit
+        }
+
+        when (val indentWithTabs = indentWithTabs) {
+            is Boolean -> indentWithTabs.takeIf { it }?.let { recipient.indentWithTabs() }
+            is Int -> recipient.indentWithTabs(indentWithTabs)
+
+            else -> Unit
+        }
+
         nativeCmd?.forEach { (name, pathToExe, arguments) -> recipient.nativeCmd(name, pathToExe, arguments) }
+
         licenseHeader?.let { license ->
             license.applyTo(
                 license.header?.let { recipient.licenseHeader(it, license.delimiter) }
-                    ?: recipient.licenseHeader(license.headerFile!!, license.delimiter),
+                    ?: recipient.licenseHeaderFile(license.headerFile!!, license.delimiter),
             )
         }
+
         prettier?.let { prettier ->
-            recipient.prettier(prettier.devDependencies)
+            prettier.applyTo(recipient.prettier(prettier.devDependencies))
         }
 
         biome?.let { biome ->
             biome.applyTo(
-                biome.version?.resolveVersion()?.let(recipient::biome) ?: recipient.biome(),
+                recipient.biome(biome.version ?: settings.libs.versions.version("biome")),
             )
         }
 
         clangFormat?.let { clangFormat ->
             clangFormat.applyTo(
-                clangFormat.version?.resolveVersion()?.let(recipient::clangFormat)
-                    ?: recipient.clangFormat(),
+                recipient.clangFormat(
+                    clangFormat.version ?: settings.libs.versions.version("clang")
+                    ?: ClangFormatStep.defaultVersion(),
+                ),
             )
         }
 
         eclipseWtp?.let { eclipseWtp ->
             eclipseWtp.applyTo(
-                (eclipseWtp.version?.resolveVersion() ?: settings.libs.versions.version("eclipseWtp"))
-                    ?.let { recipient.eclipseWtp(eclipseWtp.type, it) }
-                    ?: recipient.eclipseWtp(eclipseWtp.type),
+                recipient.eclipseWtp(
+                    eclipseWtp.type,
+                    eclipseWtp.version ?: settings.libs.versions.version("eclipseWtp")
+                    ?: EclipseWtpFormatterStep.defaultVersion(),
+                ),
             )
         }
         toggleOffOnRegex?.let(recipient::toggleOffOnRegex)
-        toggleOffOn?.let { (off, on) -> recipient.toggleOffOn(off, on) }
-        toggleIfOffOn?.takeIf { it }?.run { recipient.toggleOffOn() }
+        when (val toggleOffOn = toggleOffOn) {
+            is Boolean -> toggleOffOn.takeIf { it }?.run { recipient.toggleOffOn() }
+            is ToggleOffOn -> recipient.toggleOffOn(toggleOffOn.off, toggleOffOn.on)
+
+            else -> Unit
+        }
+
         toggleOffOnDisable?.takeIf { it }?.run { recipient.toggleOffOnDisable() }
     }
 
     context(Project)
     abstract fun applyTo()
+
+    private object IntentSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
+
+        override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
+            if (element.jsonPrimitive.content.matches("\\d+".toRegex()))
+                Int.serializer()
+            else Boolean.serializer()
+    }
 
     @Serializable
     internal data class ClangFormatConfig(
@@ -142,11 +171,11 @@ internal abstract class FormatExtension {
     internal data class EclipseWtpConfig(
         val version: String? = null,
         val type: EclipseWtpFormatterStep,
-        val settingsFiles: List<String>? = null,
+        val configFiles: Set<String>? = null,
     ) {
 
         fun applyTo(recipient: com.diffplug.gradle.spotless.FormatExtension.EclipseWtpConfig) {
-            settingsFiles?.toTypedArray()?.let(recipient::configFile)
+            configFiles?.toTypedArray()?.let(recipient::configFile)
         }
     }
 
@@ -180,8 +209,16 @@ internal abstract class FormatExtension {
 
     @Serializable
     internal data class PrettierConfig(
-        val devDependencies: MutableMap<String, String>? = null
-    )
+        val devDependencies: Map<String, String>? = null,
+        var configFile: String? = null,
+        var config: SerializableAnyMap? = null
+    ) {
+
+        fun applyTo(recipient: com.diffplug.gradle.spotless.FormatExtension.PrettierConfig) {
+            configFile?.let(recipient::configFile)
+            config?.let(recipient::config)
+        }
+    }
 
     @Serializable
     internal data class Replace(
@@ -195,13 +232,19 @@ internal abstract class FormatExtension {
         val off: String,
         val on: String
     )
+
+    internal object ToggleOffOnSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
+
+        override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
+            if (element is JsonPrimitive) Boolean.serializer() else ToggleOffOn.serializer()
+    }
 }
 
-private object FormatExtensionSerializer : JsonPolymorphicSerializer<FormatExtension>(
+private object FormatExtensionSerializer : JsonPolymorphicSerializer<FormatExtension<*>>(
     FormatExtension::class,
 )
 
-internal object FormatExtensionTransformingSerializer : KeyTransformingSerializer<FormatExtension>(
-    FormatExtension.serializer(),
+internal object FormatExtensionTransformingSerializer : KeyTransformingSerializer<FormatExtension<*>>(
+    FormatExtensionSerializer,
     "type",
 )
