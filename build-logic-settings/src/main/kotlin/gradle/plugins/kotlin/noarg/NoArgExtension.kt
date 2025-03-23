@@ -19,9 +19,9 @@ internal interface NoArgExtension {
 
     context(Project)
     fun applyTo() =
-        pluginManager.withPlugin(settings.libs.plugins.plugin("noArg").id) {
-        myAnnotations?.let(noArg::annotations)
-        myPresets?.let(noArg.myPresets::addAll)
-        noArg::invokeInitializers trySet invokeInitializers
-    }
+        pluginManager.withPlugin(settings.libs.plugins.plugin("noarg").id) {
+            myAnnotations?.let(noArg::annotations)
+            myPresets?.let(noArg.myPresets::addAll)
+            noArg::invokeInitializers trySet invokeInitializers
+        }
 }

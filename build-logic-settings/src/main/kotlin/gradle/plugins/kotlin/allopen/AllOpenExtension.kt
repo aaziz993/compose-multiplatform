@@ -15,7 +15,7 @@ internal interface AllOpenExtension {
 
     context(Project)
     fun applyTo() =
-        pluginManager.withPlugin(settings.libs.plugins.plugin("allOpen").id) {
+        pluginManager.withPlugin(settings.libs.plugins.plugin("allopen").id) {
             myAnnotations?.let(allOpen::annotations)
             myPresets?.forEach(allOpen::preset)
         }

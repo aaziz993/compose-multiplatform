@@ -1375,7 +1375,7 @@ kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref 
 # data pipeline processing
 dataframe = { id = "org.jetbrains.kotlinx.dataframe", version.ref = "dataframe" }
 # providing detailed failure messages with contextual information during testing.
-power-assert = { id = "org.jetbrains.kotlin.plugin.power-assert", version.ref = "kotlin" }
+powerAssert = { id = "org.jetbrains.kotlin.plugin.power-assert", version.ref = "kotlin" }
 # testing
 kotest-multiplatform = { id = "io.kotest.multiplatform", version.ref = "kotest" }
 # sqldelight dataabase

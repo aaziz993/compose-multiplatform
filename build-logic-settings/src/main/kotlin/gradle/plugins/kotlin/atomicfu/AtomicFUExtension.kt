@@ -19,7 +19,7 @@ internal interface AtomicFUExtension {
 
     context(Project)
     fun applyTo() =
-        pluginManager.withPlugin(settings.libs.plugins.plugin("atomicFU").id) {
+        pluginManager.withPlugin(settings.libs.plugins.plugin("atomicfu").id) {
             atomicFU::dependenciesVersion trySet dependenciesVersion
             atomicFU::transformJvm trySet transformJvm
             atomicFU::jvmVariant trySet jvmVariant

@@ -262,7 +262,7 @@ dependencies {
     // data pipeline processing
 //    runtimeOnly(libs.plugins.dataframe.toDep())
     // providing detailed failure messages with contextual information during testing.
-    implementation(libs.plugins.power.assert.toDep())
+    implementation(libs.plugins.powerAssert.toDep())
     // generates typesafe Kotlin APIs from your SQL statements. It verifies your schema, statements, and migrations at compile-time and provides IDE features like autocomplete and refactoring which make writing and maintaining SQL simple.
     implementation(libs.plugins.sqldelight.toDep())
     // Abstraction layer over SQLite to allow for more robust database access while harnessing the full power of SQLite.
