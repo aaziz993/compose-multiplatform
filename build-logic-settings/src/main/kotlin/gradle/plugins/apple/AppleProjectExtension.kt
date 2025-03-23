@@ -16,8 +16,7 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
 internal interface AppleProjectExtension {
-
-    val sourceSets: Set<AppleSourceSet>?
+    val sourceSets: Set<@Serializable(with = AppleSourceSetTransformingSerializer::class) AppleSourceSet>?
 
     val targets: Set<@Serializable(with = AppleTargetTransformingSerializer::class) AppleTarget>?
 
