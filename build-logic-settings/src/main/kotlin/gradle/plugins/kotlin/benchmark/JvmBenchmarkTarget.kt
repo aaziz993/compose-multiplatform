@@ -5,24 +5,22 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-internal abstract class JvmBenchmarkTarget : BenchmarkTarget() {
+internal abstract class JvmBenchmarkTarget<T : kotlinx.benchmark.gradle.JvmBenchmarkTarget> : BenchmarkTarget<T>() {
 
     abstract val jmhVersion: String?
 
     context(Project)
-    override fun applyTo(recipient: kotlinx.benchmark.gradle.BenchmarkTarget) {
-        super.applyTo(target)
+    override fun applyTo(recipient: T) {
+        super.applyTo(recipient)
 
-        target as kotlinx.benchmark.gradle.JvmBenchmarkTarget
-
-        target::jmhVersion trySet jmhVersion
+        recipient::jmhVersion trySet jmhVersion
     }
 }
 
 @Serializable
 @SerialName("jvm")
 internal data class JvmBenchmarkTargetImpl(
-    override val name: String? = null,,
+    override val name: String? = null, ,
     override val workingDir: String? = null,
     override val jmhVersion: String? = null,
-) : JvmBenchmarkTarget()
+) : JvmBenchmarkTarget<kotlinx.benchmark.gradle.JvmBenchmarkTarget>()

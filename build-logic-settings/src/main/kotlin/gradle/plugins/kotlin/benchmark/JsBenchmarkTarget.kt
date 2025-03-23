@@ -9,36 +9,32 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-internal abstract class JsBenchmarkTarget : BenchmarkTarget() {
+internal abstract class JsBenchmarkTarget : BenchmarkTarget<kotlinx.benchmark.gradle.JsBenchmarkTarget>() {
 
     abstract val compilation: KotlinJsIrCompilation?
 
     context(Project)
     @OptIn(KotlinxBenchmarkPluginInternalApi::class)
-    override fun applyTo(recipient: kotlinx.benchmark.gradle.BenchmarkTarget) {
-        super.applyTo(target)
+    override fun applyTo(recipient: kotlinx.benchmark.gradle.JsBenchmarkTarget) {
+        super.applyTo(recipient)
 
-        target as WasmBenchmarkTarget
-
-        compilation?.applyTo(target.compilation)
+        compilation?.applyTo(recipient.compilation)
     }
 }
 
 @Serializable
 @SerialName("js")
 internal data class JsBenchmarkTargetImpl(
-    override val name: String? = null,,
+    override val name: String? = null, ,
     override val workingDir: String? = null,
     override val compilation: KotlinJsIrCompilation? = null,
     val jsBenchmarksExecutor: JsBenchmarksExecutor? = null,
 ) : JsBenchmarkTarget() {
 
     context(Project)
-    override fun applyTo(recipient: kotlinx.benchmark.gradle.BenchmarkTarget) {
-        super.applyTo(target)
+    override fun applyTo(recipient: kotlinx.benchmark.gradle.JsBenchmarkTarget) {
+        super.applyTo(recipient)
 
-        target as kotlinx.benchmark.gradle.JsBenchmarkTarget
-
-        target::jsBenchmarksExecutor trySet jsBenchmarksExecutor
+        recipient::jsBenchmarksExecutor trySet jsBenchmarksExecutor
     }
 }

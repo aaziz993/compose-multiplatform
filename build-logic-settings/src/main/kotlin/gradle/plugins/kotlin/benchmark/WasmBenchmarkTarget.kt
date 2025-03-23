@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 @SerialName("wasm")
 internal data class WasmBenchmarkTarget(
-    override val name: String? = null,,
+    override val name: String? = null,
     override val workingDir: String? = null,
     override val compilation: KotlinJsIrCompilation? = null,
 ) : JsBenchmarkTarget()

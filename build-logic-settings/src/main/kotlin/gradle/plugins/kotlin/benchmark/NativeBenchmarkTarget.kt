@@ -10,21 +10,18 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
 
 @Serializable
 internal data class NativeBenchmarkTarget(
-    override val name: String? = null,,
+    override val name: String? = null, ,
     override val workingDir: String? = null,
     val buildType: NativeBuildType? = null,
     val compilation: KotlinNativeCompilation? = null,
-) : BenchmarkTarget() {
+) : BenchmarkTarget<NativeBenchmarkTarget>() {
 
     context(Project)
     @OptIn(KotlinxBenchmarkPluginInternalApi::class)
-    override fun applyTo(recipient: kotlinx.benchmark.gradle.BenchmarkTarget) {
-        super.applyTo(target)
+    override fun applyTo(recipient: NativeBenchmarkTarget) {
+        super.applyTo(recipient)
 
-        target as NativeBenchmarkTarget
-
-        target::buildType trySet buildType
-
-        compilation?.applyTo(target.compilation)
+        recipient::buildType trySet buildType
+        compilation?.applyTo(recipient.compilation)
     }
 }

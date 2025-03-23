@@ -10,18 +10,16 @@ import org.gradle.api.Project
 @Serializable
 @SerialName("java")
 internal data class JavaBenchmarkTarget(
-    override val name: String? = null,,
+    override val name: String? = null, ,
     override val workingDir: String? = null,
     val sourceSet: SourceSet? = null,
-) : BenchmarkTarget() {
+) : BenchmarkTarget<JavaBenchmarkTarget>() {
 
     context(Project)
     @OptIn(KotlinxBenchmarkPluginInternalApi::class)
-    override fun applyTo(recipient: kotlinx.benchmark.gradle.BenchmarkTarget) {
-        super.applyTo(target)
+    override fun applyTo(recipient: JavaBenchmarkTarget) {
+        super.applyTo(recipient)
 
-        target as JavaBenchmarkTarget
-
-        sourceSet?.applyTo(target.sourceSet)
+        sourceSet?.applyTo(recipient.sourceSet)
     }
 }

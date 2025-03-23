@@ -1,12 +1,13 @@
 package gradle.plugins.kotlin.benchmark
 
+import kotlinx.benchmark.gradle.KotlinJvmBenchmarkTarget
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 @SerialName("jvm")
 internal data class KotlinJvmBenchmarkTarget(
-    override val name: String? = null,,
+    override val name: String? = null, ,
     override val workingDir: String? = null,
     override val jmhVersion: String? = null,
-) : JvmBenchmarkTarget()
+) : JvmBenchmarkTarget<KotlinJvmBenchmarkTarget>()

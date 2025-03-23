@@ -8,6 +8,7 @@ import gradle.accessors.plugins
 import gradle.accessors.settings
 import gradle.accessors.version
 import gradle.accessors.versions
+import gradle.api.applyTo
 import gradle.api.tryAssign
 import gradle.api.trySet
 import kotlinx.serialization.Serializable
@@ -19,7 +20,7 @@ internal abstract class BenchmarksExtension {
 
     abstract var buildDir: String?
 
-    abstract val configurations: List<BenchmarkConfiguration>?
+    abstract val configurations: Set<BenchmarkConfiguration>?
 
     abstract val kotlinCompilerVersion: String?
 
