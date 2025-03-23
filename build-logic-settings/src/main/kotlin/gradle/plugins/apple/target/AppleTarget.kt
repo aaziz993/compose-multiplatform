@@ -1,14 +1,19 @@
 package gradle.plugins.apple.target
 
+import gradle.api.ProjectNamed
 import gradle.api.maybeNamed
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
 import gradle.collection.act
 import gradle.plugins.apple.AppleBuildSettings
 import gradle.plugins.apple.BuildConfiguration
-import org.jetbrains.gradle.apple.targets.AppleTarget
+import gradle.serialization.serializer.JsonPolymorphicSerializer
+import gradle.serialization.serializer.KeyTransformingSerializer
+import kotlinx.serialization.Serializable
+import org.gradle.api.Project
 
-internal interface AppleTarget<T : AppleTarget> {
+@Serializable(with = AppleTargetSerializer::class)
+internal interface AppleTarget<T : org.jetbrains.gradle.apple.targets.AppleTarget> : ProjectNamed<T> {
 
     val bridgingHeader: String?
 
@@ -22,16 +27,16 @@ internal interface AppleTarget<T : AppleTarget> {
 
     val iphone: Boolean?
 
-    val name: String?
-
     val productInfo: SerializableAnyMap?
+
     val setProductInfo: SerializableAnyMap?
 
     val productModuleName: String?
 
     val productName: String?
 
-    fun applyTo(recipient: T) {
+    context(Project)
+    override fun applyTo(recipient: T) {
         recipient::bridgingHeader trySet bridgingHeader
 
         buildConfigurations?.forEach { buildConfigurations ->
@@ -55,3 +60,11 @@ internal interface AppleTarget<T : AppleTarget> {
     }
 }
 
+private object AppleTargetSerializer : JsonPolymorphicSerializer<AppleTarget<*>>(
+    AppleTarget::class,
+)
+
+internal object AppleTargetTransformingSerializer : KeyTransformingSerializer<AppleTarget<*>>(
+    AppleTargetSerializer,
+    "type",
+)
