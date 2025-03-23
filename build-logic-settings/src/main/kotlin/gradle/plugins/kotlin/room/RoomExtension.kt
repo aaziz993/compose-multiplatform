@@ -7,13 +7,14 @@ import gradle.accessors.plugins
 import gradle.accessors.room
 import gradle.accessors.settings
 import gradle.api.trySet
+import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
 internal interface RoomExtension {
 
     // User variant / target match pattern and its copy task. Multiple variant / target annotation
     // processing tasks can be finalized by the same copy task.
-    val schemaDirectories: Set<String>?
+    val schemaDirectories: Set<@Serializable(with = SchemaDirectoryTransformingSerializer::class) SchemaDirectory>?
 
     /** Causes Room annotation processor to generate Kotlin code instead of Java. */
     val generateKotlin: Boolean?
@@ -21,7 +22,10 @@ internal interface RoomExtension {
     context(Project)
     fun applyTo() =
         pluginManager.withPlugin(settings.libs.plugins.plugin("room").id) {
-            schemaDirectories?.forEach(room::schemaDirectory)
+            schemaDirectories?.forEach { (matchName, path) ->
+                room.schemaDirectory(matchName, path)
+            }
+
             room::generateKotlin trySet generateKotlin
         }
 }
