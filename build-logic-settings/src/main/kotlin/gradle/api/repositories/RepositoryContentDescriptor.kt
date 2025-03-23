@@ -96,30 +96,30 @@ internal interface RepositoryContentDescriptor : InclusiveRepositoryContentDescr
     val notForConfigurations: Set<String>?
 
     @Suppress("UnstableApiUsage")
-    override fun applyTo(recipient: org.gradle.api.artifacts.repositories.RepositoryContentDescriptor) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: org.gradle.api.artifacts.repositories.RepositoryContentDescriptor) {
+        super.applyTo(receiver)
 
-        excludeGroups?.forEach(recipient::excludeGroup)
-        excludeGroupsAndSubgroups?.forEach(recipient::excludeGroupAndSubgroups)
-        excludeGroupByRegexes?.forEach(recipient::excludeGroupByRegex)
+        excludeGroups?.forEach(receiver::excludeGroup)
+        excludeGroupsAndSubgroups?.forEach(receiver::excludeGroupAndSubgroups)
+        excludeGroupByRegexes?.forEach(receiver::excludeGroupByRegex)
 
         excludeModules?.forEach { (group, moduleName) ->
-            recipient.excludeModule(group, moduleName)
+            receiver.excludeModule(group, moduleName)
         }
 
         excludeModulesByRegexes?.forEach { (group, moduleName) ->
-            recipient.excludeModuleByRegex(group, moduleName)
+            receiver.excludeModuleByRegex(group, moduleName)
         }
 
         excludeVersions?.forEach { (group, moduleName, version) ->
-            recipient.excludeVersion(group, moduleName, version)
+            receiver.excludeVersion(group, moduleName, version)
         }
 
         excludeVersionsByRegexes?.forEach { (group, moduleName, version) ->
-            recipient.excludeVersionByRegex(group, moduleName, version)
+            receiver.excludeVersionByRegex(group, moduleName, version)
         }
 
-        notForConfigurations?.toTypedArray()?.let(recipient::notForConfigurations)
+        notForConfigurations?.toTypedArray()?.let(receiver::notForConfigurations)
     }
 }
 

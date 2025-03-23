@@ -46,23 +46,23 @@ internal data class KotlinJsTest(
 ) : KotlinTest<KotlinJsTest>() {
 
     context(Project)
-    override fun applyTo(recipient: KotlinJsTest) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: KotlinJsTest) {
+        super.applyTo(receiver)
 
-        environment?.let(recipient.environment::putAll)
-        recipient.inputFileProperty tryAssign inputFileProperty?.let(::file)
-        recipient::debug trySet debug
-        nodeJsArgs?.let(recipient.nodeJsArgs::addAll)
+        environment?.let(receiver.environment::putAll)
+        receiver.inputFileProperty tryAssign inputFileProperty?.let(::file)
+        receiver::debug trySet debug
+        nodeJsArgs?.let(receiver.nodeJsArgs::addAll)
 
         when (useMocha) {
-            is Boolean -> recipient.useKarma()
-            is KotlinMocha -> useMocha.applyTo(recipient.useMocha())
+            is Boolean -> receiver.useKarma()
+            is KotlinMocha -> useMocha.applyTo(receiver.useMocha())
             else -> Unit
         }
 
         when (useKarma) {
-            is Boolean -> recipient.useKarma()
-            is KotlinKarma -> useKarma.applyTo(recipient.useKarma(), "$moduleName-targetName")
+            is Boolean -> receiver.useKarma()
+            is KotlinKarma -> useKarma.applyTo(receiver.useKarma(), "$moduleName-targetName")
             else -> Unit
         }
     }

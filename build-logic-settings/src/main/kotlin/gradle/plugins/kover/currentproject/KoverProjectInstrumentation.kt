@@ -55,10 +55,10 @@ internal data class KoverProjectInstrumentation(
     val includedClasses: Set<String>? = null,
 ) {
 
-    fun applyTo(recipient: KoverProjectInstrumentation) {
-        recipient.disabledForAll tryAssign disabledForAll
-        recipient.disabledForTestTasks tryAssign disabledForTestTasks
-        recipient.excludedClasses tryAssign excludedClasses
-        recipient.includedClasses tryAssign includedClasses
+    fun applyTo(receiver: KoverProjectInstrumentation) {
+        receiver.disabledForAll tryAssign disabledForAll
+        receiver.disabledForTestTasks tryAssign disabledForTestTasks
+        receiver.excludedClasses tryAssign excludedClasses
+        receiver.includedClasses tryAssign includedClasses
     }
 }

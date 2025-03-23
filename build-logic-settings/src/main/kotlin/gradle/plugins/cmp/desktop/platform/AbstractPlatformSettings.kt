@@ -14,12 +14,12 @@ internal abstract class AbstractPlatformSettings<T : AbstractPlatformSettings> {
     abstract val fileAssociations: Set<FileAssociation>?
 
     context(Project)
-    open fun applyTo(recipient: T) {
-        recipient.iconFile tryAssign iconFile?.let(::file)
-        recipient::packageVersion trySet packageVersion
-        recipient::installationPath trySet installationPath
+    open fun applyTo(receiver: T) {
+        receiver.iconFile tryAssign iconFile?.let(::file)
+        receiver::packageVersion trySet packageVersion
+        receiver::installationPath trySet installationPath
         fileAssociations?.forEach { (mimeType, extension, description, iconFile) ->
-            recipient.fileAssociation(mimeType, extension, description, iconFile?.let(::file))
+            receiver.fileAssociation(mimeType, extension, description, iconFile?.let(::file))
         }
     }
 }

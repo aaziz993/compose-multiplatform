@@ -20,11 +20,11 @@ internal interface CopySourceSpec<T : CopySourceSpec> {
 
     context(Project)
     @Suppress("UNCHECKED_CAST")
-    fun applyTo(recipient: T) {
+    fun applyTo(receiver: T) {
         when (val from = from) {
-            is String -> recipient.from(from)
-            is LinkedHashSet<*> -> recipient.from(*from.toTypedArray())
-            is From -> recipient.from(from.sourcePath) {
+            is String -> receiver.from(from)
+            is LinkedHashSet<*> -> receiver.from(*from.toTypedArray())
+            is From -> receiver.from(from.sourcePath) {
                 from.copySpec.applyTo(this)
             }
 

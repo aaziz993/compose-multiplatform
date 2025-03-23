@@ -60,16 +60,16 @@ internal data class ApolloGenerateSourcesFromIrTask(
 ) : ApolloGenerateSourcesBase<ApolloGenerateSourcesFromIrTask>() {
 
     context(Project)
-    override fun applyTo(recipient: ApolloGenerateSourcesFromIrTask) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: ApolloGenerateSourcesFromIrTask) {
+        super.applyTo(receiver)
 
-        codegenSchemas?.toTypedArray()?.let(recipient.codegenSchemas::from)
-        setCodegenSchemas?.let(recipient.codegenSchemas::setFrom)
-        recipient.irOperations tryAssign irOperations?.let(::file)
-        recipient.metadataOutputFile tryAssign metadataOutputFile?.let(::file)
-        upstreamMetadata?.toTypedArray()?.let(recipient.upstreamMetadata::from)
-        setUpstreamMetadata?.let(recipient.upstreamMetadata::setFrom)
-        recipient.usedCoordinates tryAssign usedCoordinates?.let(::file)
+        codegenSchemas?.toTypedArray()?.let(receiver.codegenSchemas::from)
+        setCodegenSchemas?.let(receiver.codegenSchemas::setFrom)
+        receiver.irOperations tryAssign irOperations?.let(::file)
+        receiver.metadataOutputFile tryAssign metadataOutputFile?.let(::file)
+        upstreamMetadata?.toTypedArray()?.let(receiver.upstreamMetadata::from)
+        setUpstreamMetadata?.let(receiver.upstreamMetadata::setFrom)
+        receiver.usedCoordinates tryAssign usedCoordinates?.let(::file)
     }
 
     context(Project)

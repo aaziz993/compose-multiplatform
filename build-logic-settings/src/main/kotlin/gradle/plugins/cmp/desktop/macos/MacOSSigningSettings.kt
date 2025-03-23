@@ -12,10 +12,10 @@ internal data class MacOSSigningSettings(
     val prefix: String? = null
 ) {
 
-    fun applyTo(recipient: MacOSSigningSettings) {
-        recipient.sign tryAssign sign
-        recipient.identity tryAssign identity
-        recipient.keychain tryAssign keychain
-        recipient.prefix tryAssign prefix
+    fun applyTo(receiver: MacOSSigningSettings) {
+        receiver.sign tryAssign sign
+        receiver.identity tryAssign identity
+        receiver.keychain tryAssign keychain
+        receiver.prefix tryAssign prefix
     }
 }

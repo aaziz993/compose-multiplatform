@@ -23,10 +23,10 @@ internal abstract class BaseTask<T : com.android.build.gradle.internal.tasks.Bas
     abstract val projectPath: String?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super.applyTo(receiver)
 
-        recipient.projectPath tryAssign projectPath
+        receiver.projectPath tryAssign projectPath
     }
 }
 

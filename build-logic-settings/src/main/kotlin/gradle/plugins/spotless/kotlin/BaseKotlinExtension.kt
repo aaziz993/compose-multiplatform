@@ -22,12 +22,12 @@ internal abstract class BaseKotlinExtension<T : BaseKotlinExtension> : FormatExt
     abstract val ktlint: KtlintConfig?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super.applyTo(receiver)
 
         diktat?.let { diktat ->
             diktat.applyTo(
-                recipient.diktat(
+                receiver.diktat(
                     diktat.version ?: settings.libs.versions.version("diktat")
                     ?: DiktatStep.defaultVersionDiktat(),
                 ),
@@ -36,7 +36,7 @@ internal abstract class BaseKotlinExtension<T : BaseKotlinExtension> : FormatExt
 
         ktfmt?.forEach { ktfmt ->
             ktfmt.applyTo(
-                recipient.ktfmt(
+                receiver.ktfmt(
                     ktfmt.version ?: settings.libs.versions.version("ktfmt")
                     ?: KtfmtStep.defaultVersion(),
                 ),
@@ -45,7 +45,7 @@ internal abstract class BaseKotlinExtension<T : BaseKotlinExtension> : FormatExt
 
         ktlint?.let { ktlint ->
             ktlint.applyTo(
-                recipient.ktlint(
+                receiver.ktlint(
                     ktlint.version ?: settings.libs.versions.version("ktlint")
                     ?: KtLintStep.defaultVersion(),
                 ),
@@ -59,8 +59,8 @@ internal abstract class BaseKotlinExtension<T : BaseKotlinExtension> : FormatExt
         val configFile: String? = null
     ) {
 
-        fun applyTo(recipient: BaseKotlinExtension.DiktatConfig) {
-            configFile?.let(recipient::configFile)
+        fun applyTo(receiver: BaseKotlinExtension.DiktatConfig) {
+            configFile?.let(receiver::configFile)
         }
     }
 
@@ -71,11 +71,11 @@ internal abstract class BaseKotlinExtension<T : BaseKotlinExtension> : FormatExt
         val options: KtfmtFormattingOptions
     ) {
 
-        fun applyTo(recipient: BaseKotlinExtension.KtfmtConfig) =
+        fun applyTo(receiver: BaseKotlinExtension.KtfmtConfig) =
             when (style) {
-                KtfmtStep.Style.DROPBOX -> recipient.dropboxStyle()
-                KtfmtStep.Style.GOOGLE -> recipient.googleStyle()
-                KtfmtStep.Style.KOTLINLANG -> recipient.kotlinlangStyle()
+                KtfmtStep.Style.DROPBOX -> receiver.dropboxStyle()
+                KtfmtStep.Style.GOOGLE -> receiver.googleStyle()
+                KtfmtStep.Style.KOTLINLANG -> receiver.kotlinlangStyle()
                 else -> throw IllegalArgumentException("Unsupported ktfmt default style")
             }.configure(options::applyTo)
     }
@@ -88,11 +88,11 @@ internal abstract class BaseKotlinExtension<T : BaseKotlinExtension> : FormatExt
         val removeUnusedImport: Boolean? = null,
     ) {
 
-        fun applyTo(recipient: KtfmtStep.KtfmtFormattingOptions) {
-            maxWidth?.let(recipient::setMaxWidth)
-            blockIndent?.let(recipient::setBlockIndent)
-            continuationIndent?.let(recipient::setContinuationIndent)
-            removeUnusedImport?.let(recipient::setRemoveUnusedImport)
+        fun applyTo(receiver: KtfmtStep.KtfmtFormattingOptions) {
+            maxWidth?.let(receiver::setMaxWidth)
+            blockIndent?.let(receiver::setBlockIndent)
+            continuationIndent?.let(receiver::setContinuationIndent)
+            removeUnusedImport?.let(receiver::setRemoveUnusedImport)
         }
     }
 
@@ -104,10 +104,10 @@ internal abstract class BaseKotlinExtension<T : BaseKotlinExtension> : FormatExt
         val customRuleSets: List<String>? = null,
     ) {
 
-        fun applyTo(recipient: BaseKotlinExtension.KtlintConfig) {
-            editorConfigPath?.let(recipient::setEditorConfigPath)
-            editorConfigOverride?.let(recipient::editorConfigOverride)
-            customRuleSets?.let(recipient::customRuleSets)
+        fun applyTo(receiver: BaseKotlinExtension.KtlintConfig) {
+            editorConfigPath?.let(receiver::setEditorConfigPath)
+            editorConfigOverride?.let(receiver::editorConfigOverride)
+            customRuleSets?.let(receiver::customRuleSets)
         }
     }
 }

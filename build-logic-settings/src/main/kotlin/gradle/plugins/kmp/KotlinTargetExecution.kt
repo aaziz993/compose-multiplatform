@@ -6,9 +6,6 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinTargetExecution
 /**
  * Represents an execution in the scope of a [KotlinTarget].
  */
-internal interface KotlinTargetExecution<
-    T : KotlinTargetExecution<S>,
-    S : org.jetbrains.kotlin.gradle.plugin.KotlinExecution.ExecutionSource> :
-    KotlinExecution<T, S> {
+internal interface KotlinTargetExecution<T : KotlinTargetExecution<*>> : KotlinExecution<T> {
 
 }

@@ -18,12 +18,12 @@ internal abstract class LockStoreTask<T : org.jetbrains.kotlin.gradle.targets.js
     abstract val lockFileAutoReplace: Boolean?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super.applyTo(receiver)
 
-        recipient.lockFileMismatchReport tryAssign lockFileMismatchReport
-        recipient.reportNewLockFile tryAssign reportNewLockFile
-        recipient.lockFileAutoReplace tryAssign lockFileAutoReplace
+        receiver.lockFileMismatchReport tryAssign lockFileMismatchReport
+        receiver.reportNewLockFile tryAssign reportNewLockFile
+        receiver.lockFileAutoReplace tryAssign lockFileAutoReplace
     }
 }
 

@@ -37,26 +37,26 @@ internal data class CompileOptions(
 
     context(Project)
     @Suppress("UnstableApiUsage")
-    fun applyTo(recipient: CompileOptions) {
-        failOnError?.let(recipient::setFailOnError)
-        verbose?.let(recipient::setVerbose)
-        listFiles?.let(recipient::setListFiles)
-        deprecation?.let(recipient::setDeprecation)
-        warnings?.let(recipient::setWarnings)
-        encoding?.let(recipient::setEncoding)
-        debug?.let(recipient::setDebug)
-        fork?.let(recipient::setFork)
-        bootstrapClasspath?.toTypedArray()?.let(::files)?.let(recipient::setBootstrapClasspath)
-        extensionDirs?.let(recipient::setExtensionDirs)
-        compilerArgs?.let(recipient::setCompilerArgs)
-        incremental?.let(recipient::setIncremental)
-        sourcepath?.toTypedArray()?.let(::files).let(recipient::setSourcepath)
-        annotationProcessorPath?.toTypedArray()?.let(::files)?.let(recipient::setAnnotationProcessorPath)
-        recipient.incrementalAfterFailure tryAssign incrementalAfterFailure
-        recipient.javaModuleVersion tryAssign javaModuleVersion
-        recipient.javaModuleMainClass tryAssign javaModuleMainClass
-        recipient.release tryAssign release
-        recipient.generatedSourceOutputDirectory tryAssign generatedSourceOutputDirectory?.let(layout.projectDirectory::dir)
-        recipient.headerOutputDirectory tryAssign headerOutputDirectory?.let(layout.projectDirectory::dir)
+    fun applyTo(receiver: CompileOptions) {
+        failOnError?.let(receiver::setFailOnError)
+        verbose?.let(receiver::setVerbose)
+        listFiles?.let(receiver::setListFiles)
+        deprecation?.let(receiver::setDeprecation)
+        warnings?.let(receiver::setWarnings)
+        encoding?.let(receiver::setEncoding)
+        debug?.let(receiver::setDebug)
+        fork?.let(receiver::setFork)
+        bootstrapClasspath?.toTypedArray()?.let(::files)?.let(receiver::setBootstrapClasspath)
+        extensionDirs?.let(receiver::setExtensionDirs)
+        compilerArgs?.let(receiver::setCompilerArgs)
+        incremental?.let(receiver::setIncremental)
+        sourcepath?.toTypedArray()?.let(::files).let(receiver::setSourcepath)
+        annotationProcessorPath?.toTypedArray()?.let(::files)?.let(receiver::setAnnotationProcessorPath)
+        receiver.incrementalAfterFailure tryAssign incrementalAfterFailure
+        receiver.javaModuleVersion tryAssign javaModuleVersion
+        receiver.javaModuleMainClass tryAssign javaModuleMainClass
+        receiver.release tryAssign release
+        receiver.generatedSourceOutputDirectory tryAssign generatedSourceOutputDirectory?.let(layout.projectDirectory::dir)
+        receiver.headerOutputDirectory tryAssign headerOutputDirectory?.let(layout.projectDirectory::dir)
     }
 }

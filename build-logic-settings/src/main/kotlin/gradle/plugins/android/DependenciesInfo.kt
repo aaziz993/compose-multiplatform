@@ -20,8 +20,8 @@ internal data class DependenciesInfo(
     val includeInBundle: Boolean? = null,
 ) {
 
-    fun applyTo(recipient: DependenciesInfo) {
-        recipient::includeInApk trySet includeInApk
-        recipient::includeInBundle trySet includeInBundle
+    fun applyTo(receiver: DependenciesInfo) {
+        receiver::includeInApk trySet includeInApk
+        receiver::includeInBundle trySet includeInBundle
     }
 }

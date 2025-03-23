@@ -43,11 +43,11 @@ internal data class RpcStrictModeExtension(
     val fields: RpcStrictMode? = null,
 ) {
 
-    fun applyTo(recipient: RpcStrictModeExtension) {
-        recipient.stateFlow tryAssign stateFlow
-        recipient.sharedFlow tryAssign sharedFlow
-        recipient.nestedFlow tryAssign nestedFlow
-        recipient.notTopLevelServerFlow tryAssign notTopLevelServerFlow
-        recipient.fields tryAssign fields
+    fun applyTo(receiver: RpcStrictModeExtension) {
+        receiver.stateFlow tryAssign stateFlow
+        receiver.sharedFlow tryAssign sharedFlow
+        receiver.nestedFlow tryAssign nestedFlow
+        receiver.notTopLevelServerFlow tryAssign notTopLevelServerFlow
+        receiver.fields tryAssign fields
     }
 }

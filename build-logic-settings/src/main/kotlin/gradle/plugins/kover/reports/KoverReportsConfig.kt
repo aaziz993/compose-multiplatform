@@ -101,13 +101,13 @@ internal data class KoverReportsConfig(
 ) {
 
     context(Project)
-    fun applyTo(recipient: KoverReportsConfig) {
-        filters?.applyTo(recipient.filters)
-        verify?.applyTo(recipient.verify)
-        total?.applyTo(recipient.total)
+    fun applyTo(receiver: KoverReportsConfig) {
+        filters?.applyTo(receiver.filters)
+        verify?.applyTo(receiver.verify)
+        total?.applyTo(receiver.total)
 
         variants?.forEach { (variant, config) ->
-            recipient.variant(variant) {
+            receiver.variant(variant) {
                 config.applyTo(this)
             }
         }

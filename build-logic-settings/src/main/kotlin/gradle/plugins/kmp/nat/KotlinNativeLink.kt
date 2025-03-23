@@ -49,7 +49,7 @@ internal data class KotlinNativeLink(
 ) : AbstractKotlinCompileTool(), KotlinToolTask<KotlinCommonCompilerToolOptions> {
 
         context(Project)
-    override fun applyTo(recipient: T) {
+    override fun applyTo(receiver: T) {
         super<AbstractKotlinCompileTool>.applyTo(named)
         super<KotlinToolTask>.applyTo(named)
 

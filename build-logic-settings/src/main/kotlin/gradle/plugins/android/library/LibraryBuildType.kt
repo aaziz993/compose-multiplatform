@@ -72,12 +72,12 @@ internal data class LibraryBuildType(
 
     context(Project)
     @Suppress("UnstableApiUsage")
-    override fun applyTo(recipient: com.android.build.api.dsl.LibraryBuildType) {
-        super<BuildType>.applyTo(recipient)
+    override fun applyTo(receiver: com.android.build.api.dsl.LibraryBuildType) {
+        super<BuildType>.applyTo(receiver)
 
-        super<LibraryVariantDimension>.applyTo(recipient)
+        super<LibraryVariantDimension>.applyTo(receiver)
 
-        androidTest?.applyTo(recipient.androidTest)
+        androidTest?.applyTo(receiver.androidTest)
     }
 }
 

@@ -38,21 +38,21 @@ internal data class ManagedDevices(
 ) {
 
     context(Project)
-    fun applyTo(recipient: ManagedDevices) {
+    fun applyTo(receiver: ManagedDevices) {
         allDevices?.forEach { device ->
-            device.applyTo(recipient.allDevices)
+            device.applyTo(receiver.allDevices)
         }
 
         devices?.forEach { device ->
-            device.applyTo(recipient.devices)
+            device.applyTo(receiver.devices)
         }
 
         localDevices?.forEach { localDevice ->
-            localDevice.applyTo(recipient.localDevices)
+            localDevice.applyTo(receiver.localDevices)
         }
 
         groups?.forEach { group ->
-            group.applyTo(recipient.groups)
+            group.applyTo(receiver.groups)
         }
     }
 }

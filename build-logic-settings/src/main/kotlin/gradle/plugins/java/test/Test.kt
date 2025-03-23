@@ -232,7 +232,7 @@ internal abstract class Test : AbstractTestTask(), JavaForkOptions, PatternFilte
     abstract val javaLauncher: JavaToolchainSpec?
 
         context(Project)
-    override fun applyTo(recipient: T) {
+    override fun applyTo(receiver: T) {
         super<AbstractTestTask>.applyTo(named)
 
         named as org.gradle.api.tasks.testing.Test

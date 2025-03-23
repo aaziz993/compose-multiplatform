@@ -60,10 +60,10 @@ internal data class CheckCacheExtension(
     val mergeSignatures: Boolean? = null,
 ) {
 
-    fun applyTo(recipient: CheckCacheExtension) {
-        enabled?.let(recipient::setEnabled)
-        exclude?.toTypedArray()?.let(recipient::exclude)
-        setExclude?.let(recipient::setExclude)
-        mergeSignatures?.let(recipient::setMergeSignatures)
+    fun applyTo(receiver: CheckCacheExtension) {
+        enabled?.let(receiver::setEnabled)
+        exclude?.toTypedArray()?.let(receiver::exclude)
+        setExclude?.let(receiver::setExclude)
+        mergeSignatures?.let(receiver::setMergeSignatures)
     }
 }

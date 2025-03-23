@@ -10,7 +10,7 @@ internal data class NativeApplication(
 ) {
 
     context(Project)
-    fun applyTo(recipient: NativeApplication) {
-        distributions?.applyTo(recipient.distributions)
+    fun applyTo(receiver: NativeApplication) {
+        distributions?.applyTo(receiver.distributions)
     }
 }

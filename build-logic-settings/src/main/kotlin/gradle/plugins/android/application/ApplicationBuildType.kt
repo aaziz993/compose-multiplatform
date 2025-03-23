@@ -106,14 +106,14 @@ internal data class ApplicationBuildType(
     ApplicationVariantDimension<com.android.build.api.dsl.ApplicationBuildType> {
 
     context(Project)
-    override fun applyTo(recipient: com.android.build.api.dsl.ApplicationBuildType) {
-        super<BuildType>.applyTo(recipient)
+    override fun applyTo(receiver: com.android.build.api.dsl.ApplicationBuildType) {
+        super<BuildType>.applyTo(receiver)
 
-        recipient::isDebuggable trySet isDebuggable
-        recipient::isEmbedMicroApp trySet isEmbedMicroApp
-        recipient::isCrunchPngs trySet isCrunchPngs
-        recipient::isDefault trySet isDefault
-        recipient::isProfileable trySet isProfileable
+        receiver::isDebuggable trySet isDebuggable
+        receiver::isEmbedMicroApp trySet isEmbedMicroApp
+        receiver::isCrunchPngs trySet isCrunchPngs
+        receiver::isDefault trySet isDefault
+        receiver::isProfileable trySet isProfileable
     }
 }
 

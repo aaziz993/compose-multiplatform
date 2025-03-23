@@ -17,9 +17,9 @@ internal data class BuildConfiguration(
 ) : ProjectNamed<BuildConfiguration> {
 
     context(Project)
-    override fun applyTo(recipient: BuildConfiguration) {
-        recipient::fatFrameworks trySet fatFrameworks
-        properties?.let(recipient.properties::putAll)
-        setProperties?.act(recipient.properties::clear)?.let(recipient.properties::putAll)
+    override fun applyTo(receiver: BuildConfiguration) {
+        receiver::fatFrameworks trySet fatFrameworks
+        properties?.let(receiver.properties::putAll)
+        setProperties?.act(receiver.properties::clear)?.let(receiver.properties::putAll)
     }
 }

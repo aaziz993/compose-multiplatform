@@ -23,66 +23,66 @@ internal interface BaseNamed {
 internal interface SettingsNamed<T> : BaseNamed {
 
     context(Settings)
-    fun applyTo(recipient: T)
+    fun applyTo(receiver: T)
 }
 
 context(Settings)
 internal fun <T : Named> SettingsNamed<T>.applyTo(
-    recipient: DomainObjectCollection<out T>,
+    receiver: DomainObjectCollection<out T>,
     create: (name: String, action: Action<in T>) -> Unit
-) = recipient.maybeNamedCreateOrEach(name, create) {
+) = receiver.maybeNamedCreateOrEach(name, create) {
     applyTo(this)
 }
 
 context(Settings)
 internal fun <T> SettingsNamed<T>.applyTo(
-    recipient: NamedDomainObjectCollection<out T>,
+    receiver: NamedDomainObjectCollection<out T>,
     create: (name: String, action: Action<in T>) -> Unit
-) = recipient.maybeNamedCreateOrEach(name, create) {
+) = receiver.maybeNamedCreateOrEach(name, create) {
     applyTo(this)
 }
 
 context(Settings)
-internal fun <T> SettingsNamed<T>.applyTo(recipient: NamedDomainObjectContainer<out T>) =
-    applyTo(recipient) { name, action ->
-        recipient.register(name, action)
+internal fun <T> SettingsNamed<T>.applyTo(receiver: NamedDomainObjectContainer<out T>) =
+    applyTo(receiver) { name, action ->
+        receiver.register(name, action)
     }
 
 internal interface ProjectNamed<T> : BaseNamed {
 
     context(Project)
-    fun applyTo(recipient: T)
+    fun applyTo(receiver: T)
 }
 
 context(Project)
 internal fun <T : Named> ProjectNamed<T>.applyTo(
-    recipient: DomainObjectCollection<out T>,
+    receiver: DomainObjectCollection<out T>,
     create: (name: String, action: Action<in T>) -> Unit
-) = recipient.maybeNamedCreateOrEach(name, create) {
+) = receiver.maybeNamedCreateOrEach(name, create) {
     applyTo(this)
 }
 
 context(Project)
 internal fun <T> ProjectNamed<T>.applyTo(
-    recipient: NamedDomainObjectCollection<out T>,
+    receiver: NamedDomainObjectCollection<out T>,
     create: (name: String, action: Action<in T>) -> Unit
-) = recipient.maybeNamedCreateOrEach(name, create) {
+) = receiver.maybeNamedCreateOrEach(name, create) {
     applyTo(this)
 }
 
 context(Project)
-internal fun <T> ProjectNamed<T>.applyTo(recipient: NamedDomainObjectContainer<out T>) =
-    applyTo(recipient) { name, action ->
-        recipient.register(name, action)
+internal fun <T> ProjectNamed<T>.applyTo(receiver: NamedDomainObjectContainer<out T>) =
+    applyTo(receiver) { name, action ->
+        receiver.register(name, action)
     }
 
 internal interface Named<T> : SettingsNamed<T>, ProjectNamed<T> {
 
     context(Settings)
-    override fun applyTo(recipient: T)
+    override fun applyTo(receiver: T)
 
     context(Project)
-    override fun applyTo(recipient: T)
+    override fun applyTo(receiver: T)
 }
 
 internal fun <T : Named> DomainObjectCollection<out T>.maybeNamedCreateOrEach(

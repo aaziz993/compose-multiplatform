@@ -16,9 +16,9 @@ internal data class Packaging(
     val resources: ResourcesPackaging? = null
 ) {
 
-    fun applyTo(recipient: Packaging) {
-        dex?.applyTo(recipient.dex)
-        jniLibs?.applyTo(recipient.jniLibs)
-        resources?.applyTo(recipient.resources)
+    fun applyTo(receiver: Packaging) {
+        dex?.applyTo(receiver.dex)
+        jniLibs?.applyTo(receiver.jniLibs)
+        resources?.applyTo(receiver.resources)
     }
 }

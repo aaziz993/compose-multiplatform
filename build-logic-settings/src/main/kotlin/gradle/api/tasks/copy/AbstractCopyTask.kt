@@ -38,12 +38,12 @@ internal abstract class AbstractCopyTask<T: org.gradle.api.tasks.AbstractCopyTas
     abstract val caseSensitive: Boolean?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super<ConventionTask>.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super<ConventionTask>.applyTo(receiver)
 
-        super<CopySpec>.applyTo(recipient)
+        super<CopySpec>.applyTo(receiver)
 
-        caseSensitive?.let(recipient::setCaseSensitive)
+        caseSensitive?.let(receiver::setCaseSensitive)
     }
 }
 

@@ -42,16 +42,16 @@ internal interface LibraryVariantDimension<T : LibraryVariantDimension> : Varian
     val aarMetadata: AarMetadata?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super.applyTo(receiver)
 
-        recipient::multiDexEnabled trySet multiDexEnabled
+        receiver::multiDexEnabled trySet multiDexEnabled
 
-        consumerProguardFiles?.toTypedArray()?.let(recipient::consumerProguardFiles)
+        consumerProguardFiles?.toTypedArray()?.let(receiver::consumerProguardFiles)
 
-        setConsumerProguardFiles?.map(::file)?.act(recipient.consumerProguardFiles::clear)?.let(recipient.consumerProguardFiles::addAll)
+        setConsumerProguardFiles?.map(::file)?.act(receiver.consumerProguardFiles::clear)?.let(receiver.consumerProguardFiles::addAll)
 
-        recipient::signingConfig trySet signingConfig?.let(android.signingConfigs::getByName)
-        aarMetadata?.applyTo(recipient.aarMetadata)
+        receiver::signingConfig trySet signingConfig?.let(android.signingConfigs::getByName)
+        aarMetadata?.applyTo(receiver.aarMetadata)
     }
 }

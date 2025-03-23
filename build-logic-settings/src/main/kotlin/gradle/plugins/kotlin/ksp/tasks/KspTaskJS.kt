@@ -37,9 +37,9 @@ internal data class KspTaskJS(
 ) : Kotlin2JsCompile<KspTaskJS>(), KspTask<KspTaskJS> {
 
     context(Project)
-    override fun applyTo(recipient: KspTaskJS) {
-        super<Kotlin2JsCompile>.applyTo(recipient)
-        super<KspTask>.applyTo(recipient)
+    override fun applyTo(receiver: KspTaskJS) {
+        super<Kotlin2JsCompile>.applyTo(receiver)
+        super<KspTask>.applyTo(receiver)
     }
 
     context(Project)

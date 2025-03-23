@@ -68,23 +68,23 @@ internal data class KoverVerifyRule(
     val maxBound: @Serializable(with = KoverVerifyBoundSerializer::class) Any? = null,
 ) {
 
-    fun applyTo(recipient: kotlinx.kover.gradle.plugin.dsl.KoverVerifyRule) {
-        recipient.groupBy tryAssign groupBy
-        recipient.disabled tryAssign disabled
+    fun applyTo(receiver: kotlinx.kover.gradle.plugin.dsl.KoverVerifyRule) {
+        receiver.groupBy tryAssign groupBy
+        receiver.disabled tryAssign disabled
 
         bound?.let { bound ->
-            recipient.bound(bound::applyTo)
+            receiver.bound(bound::applyTo)
         }
 
         when (minBound) {
-            is Int -> recipient.minBound(minBound)
-            is KoverVerifyBound -> recipient.minBound(minBound.minValue!!, minBound.coverageUnits!!, minBound.aggregationForGroup!!)
+            is Int -> receiver.minBound(minBound)
+            is KoverVerifyBound -> receiver.minBound(minBound.minValue!!, minBound.coverageUnits!!, minBound.aggregationForGroup!!)
             else -> Unit
         }
 
         when (maxBound) {
-            is Int -> recipient.maxBound(maxBound)
-            is KoverVerifyBound -> recipient.maxBound(maxBound.minValue!!, maxBound.coverageUnits!!, maxBound.aggregationForGroup!!)
+            is Int -> receiver.maxBound(maxBound)
+            is KoverVerifyBound -> receiver.maxBound(maxBound.minValue!!, maxBound.coverageUnits!!, maxBound.aggregationForGroup!!)
             else -> Unit
         }
     }

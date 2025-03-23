@@ -34,12 +34,12 @@ internal data class KarakumCopy(
 ) : DefaultTask<KarakumCopy>() {
 
     context(Project)
-    override fun applyTo(recipient: KarakumCopy) =
+    override fun applyTo(receiver: KarakumCopy) =
         pluginManager.withPlugin(settings.libs.plugins.plugin("karakum").id) {
-            super.applyTo(recipient)
+            super.applyTo(receiver)
 
-            recipient.extensionSource tryAssign extensionSource?.let(layout.projectDirectory::dir)?.asFileTree
-            recipient.destinationDirectory tryAssign destinationDirectory?.let(layout.projectDirectory::dir)
+            receiver.extensionSource tryAssign extensionSource?.let(layout.projectDirectory::dir)?.asFileTree
+            receiver.destinationDirectory tryAssign destinationDirectory?.let(layout.projectDirectory::dir)
         }
 
     context(Project)

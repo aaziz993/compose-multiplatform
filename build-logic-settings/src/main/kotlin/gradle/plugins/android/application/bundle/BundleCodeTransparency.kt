@@ -25,7 +25,7 @@ internal data class BundleCodeTransparency(
 
     context(Project)
     @Suppress("UnstableApiUsage")
-    fun applyTo(recipient: BundleCodeTransparency) {
-        signing?.applyTo(recipient.signing)
+    fun applyTo(receiver: BundleCodeTransparency) {
+        signing?.applyTo(receiver.signing)
     }
 }

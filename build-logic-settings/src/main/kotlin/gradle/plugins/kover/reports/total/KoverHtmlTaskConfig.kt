@@ -54,10 +54,10 @@ internal data class KoverHtmlTaskConfig(
 ) {
 
     context(Project)
-    fun applyTo(recipient: KoverHtmlTaskConfig) {
-        recipient.title tryAssign title
-        recipient.charset tryAssign charset
-        recipient.onCheck tryAssign onCheck
-        recipient.htmlDir tryAssign htmlDir?.let(layout.projectDirectory::dir)
+    fun applyTo(receiver: KoverHtmlTaskConfig) {
+        receiver.title tryAssign title
+        receiver.charset tryAssign charset
+        receiver.onCheck tryAssign onCheck
+        receiver.htmlDir tryAssign htmlDir?.let(layout.projectDirectory::dir)
     }
 }

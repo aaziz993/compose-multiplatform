@@ -26,7 +26,7 @@ internal interface KotlinToolTask<out TO : KotlinCommonCompilerToolOptions> : Ta
     val toolOptions: TO?
 
         context(Project)
-    override fun applyTo(recipient: T) {
+    override fun applyTo(receiver: T) {
         super.applyTo(named)
 
         named as KotlinToolTask<*>

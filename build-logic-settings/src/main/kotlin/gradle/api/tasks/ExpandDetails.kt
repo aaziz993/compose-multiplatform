@@ -22,8 +22,8 @@ internal interface ExpandDetails<T : org.gradle.api.file.ExpandDetails> {
      */
     val escapeBackslash: Boolean?
 
-    fun applyTo(recipient: T) {
-        recipient.escapeBackslash tryAssign escapeBackslash
+    fun applyTo(receiver: T) {
+        receiver.escapeBackslash tryAssign escapeBackslash
     }
 }
 

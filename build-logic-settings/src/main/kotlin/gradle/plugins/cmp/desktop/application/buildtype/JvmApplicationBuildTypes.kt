@@ -10,7 +10,7 @@ internal data class JvmApplicationBuildTypes(
 ) {
 
     context(Project)
-    fun applyTo(recipient: JvmApplicationBuildTypes) {
-        release?.applyTo(recipient.release)
+    fun applyTo(receiver: JvmApplicationBuildTypes) {
+        release?.applyTo(receiver.release)
     }
 }

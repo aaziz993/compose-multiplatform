@@ -32,19 +32,19 @@ internal data class JvmApplication(
 ) {
 
     context(Project)
-    fun applyTo(recipient: JvmApplication) {
-        fromSourceSet?.let(sourceSets::getByName)?.let(recipient::from)
-        fromKotlinTarget?.let(kotlin.targets::getByName)?.let(recipient::from)
-        disableDefaultConfiguration?.takeIf { it }?.run { recipient.disableDefaultConfiguration() }
-        dependsOn?.flatMap(tasks::getByNameOrAll)?.toTypedArray()?.let(recipient::dependsOn)
-        fromFiles?.toTypedArray()?.let(recipient::fromFiles)
-        recipient::mainClass trySet mainClass
-        recipient::javaHome trySet javaHome
-        args?.let(recipient.args::addAll)
-        setArgs?.act(recipient.args::clear)?.let(recipient.args::addAll)
-        jvmArgs?.let(recipient.jvmArgs::addAll)
-        setJvmArgs?.act(recipient.jvmArgs::clear)?.let(recipient.jvmArgs::addAll)
-        nativeDistributions?.applyTo(recipient.nativeDistributions)
-        buildTypes?.applyTo(recipient.buildTypes)
+    fun applyTo(receiver: JvmApplication) {
+        fromSourceSet?.let(sourceSets::getByName)?.let(receiver::from)
+        fromKotlinTarget?.let(kotlin.targets::getByName)?.let(receiver::from)
+        disableDefaultConfiguration?.takeIf { it }?.run { receiver.disableDefaultConfiguration() }
+        dependsOn?.flatMap(tasks::getByNameOrAll)?.toTypedArray()?.let(receiver::dependsOn)
+        fromFiles?.toTypedArray()?.let(receiver::fromFiles)
+        receiver::mainClass trySet mainClass
+        receiver::javaHome trySet javaHome
+        args?.let(receiver.args::addAll)
+        setArgs?.act(receiver.args::clear)?.let(receiver.args::addAll)
+        jvmArgs?.let(receiver.jvmArgs::addAll)
+        setJvmArgs?.act(receiver.jvmArgs::clear)?.let(receiver.jvmArgs::addAll)
+        nativeDistributions?.applyTo(receiver.nativeDistributions)
+        buildTypes?.applyTo(receiver.buildTypes)
     }
 }

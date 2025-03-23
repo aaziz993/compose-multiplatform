@@ -63,10 +63,10 @@ internal abstract class Copy<T : org.gradle.api.tasks.Copy> : AbstractCopyTask<T
     abstract val destinationDir: String?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super.applyTo(receiver)
 
-        destinationDir?.let(::file)?.let(recipient::setDestinationDir)
+        destinationDir?.let(::file)?.let(receiver::setDestinationDir)
     }
 }
 

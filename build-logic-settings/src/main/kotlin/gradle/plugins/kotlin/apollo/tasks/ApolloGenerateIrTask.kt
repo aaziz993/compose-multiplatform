@@ -43,30 +43,30 @@ internal data class ApolloGenerateIrTask(
 ) : DefaultTask<ApolloGenerateIrTask>() {
 
     context(Project)
-    override fun applyTo(recipient: ApolloGenerateIrTask) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: ApolloGenerateIrTask) {
+        super.applyTo(receiver)
 
-        recipient.addTypename tryAssign addTypename
+        receiver.addTypename tryAssign addTypename
 
-        recipient.alwaysGenerateTypesMatching tryAssign alwaysGenerateTypesMatching
+        receiver.alwaysGenerateTypesMatching tryAssign alwaysGenerateTypesMatching
             ?.let { alwaysGenerateTypesMatching ->
-                recipient.alwaysGenerateTypesMatching.get() + alwaysGenerateTypesMatching
+                receiver.alwaysGenerateTypesMatching.get() + alwaysGenerateTypesMatching
             }
 
-        recipient.alwaysGenerateTypesMatching tryAssign setAlwaysGenerateTypesMatching
-        codegenSchemas?.toTypedArray()?.let(recipient.codegenSchemas::from)
-        setCodegenSchemas?.let(recipient.codegenSchemas::setFrom)
-        recipient.decapitalizeFields tryAssign decapitalizeFields
-        recipient.failOnWarnings tryAssign failOnWarnings
-        recipient.fieldsOnDisjointTypesMustMerge tryAssign fieldsOnDisjointTypesMustMerge
-        recipient.flattenModels tryAssign flattenModels
-        recipient.generateOptionalOperationVariables tryAssign generateOptionalOperationVariables
-        graphqlFiles?.toTypedArray()?.let(recipient.graphqlFiles::from)
-        setGraphqlFiles?.let(recipient.graphqlFiles::setFrom)
-        recipient.outputFile tryAssign outputFile?.let(::file)
-        upstreamIrFiles?.toTypedArray()?.let(recipient.upstreamIrFiles::from)
-        setUpstreamIrFiles?.toTypedArray()?.let(recipient.upstreamIrFiles::setFrom)
-        recipient.warnOnDeprecatedUsages tryAssign warnOnDeprecatedUsages
+        receiver.alwaysGenerateTypesMatching tryAssign setAlwaysGenerateTypesMatching
+        codegenSchemas?.toTypedArray()?.let(receiver.codegenSchemas::from)
+        setCodegenSchemas?.let(receiver.codegenSchemas::setFrom)
+        receiver.decapitalizeFields tryAssign decapitalizeFields
+        receiver.failOnWarnings tryAssign failOnWarnings
+        receiver.fieldsOnDisjointTypesMustMerge tryAssign fieldsOnDisjointTypesMustMerge
+        receiver.flattenModels tryAssign flattenModels
+        receiver.generateOptionalOperationVariables tryAssign generateOptionalOperationVariables
+        graphqlFiles?.toTypedArray()?.let(receiver.graphqlFiles::from)
+        setGraphqlFiles?.let(receiver.graphqlFiles::setFrom)
+        receiver.outputFile tryAssign outputFile?.let(::file)
+        upstreamIrFiles?.toTypedArray()?.let(receiver.upstreamIrFiles::from)
+        setUpstreamIrFiles?.toTypedArray()?.let(receiver.upstreamIrFiles::setFrom)
+        receiver.warnOnDeprecatedUsages tryAssign warnOnDeprecatedUsages
     }
 
     context(Project)

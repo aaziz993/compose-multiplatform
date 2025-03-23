@@ -21,17 +21,17 @@ internal abstract class BaseGroovyExtension<T: BaseGroovyExtension> : FormatExte
     abstract val greclipse: GrEclipseConfig?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super.applyTo(receiver)
 
-        importOrder?.toTypedArray()?.let(recipient::importOrder)
-        importOrderFile?.let(recipient::importOrderFile)
-        removeSemicolons?.takeIf { it }?.run { recipient.removeSemicolons() }
+        importOrder?.toTypedArray()?.let(receiver::importOrder)
+        importOrderFile?.let(receiver::importOrderFile)
+        removeSemicolons?.takeIf { it }?.run { receiver.removeSemicolons() }
 
         greclipse?.let { greclipse ->
             greclipse.applyTo(
                 (greclipse.version?.resolveVersion() ?: settings.libs.versions.version("greclipse"))
-                    ?.let(recipient::greclipse) ?: recipient.greclipse(),
+                    ?.let(receiver::greclipse) ?: receiver.greclipse(),
             )
         }
     }
@@ -43,9 +43,9 @@ internal abstract class BaseGroovyExtension<T: BaseGroovyExtension> : FormatExte
         val withP2Mirrors: Map<String, String>? = null
     ) {
 
-        fun applyTo(recipient: BaseGroovyExtension.GrEclipseConfig) {
-            configFiles?.toTypedArray()?.let(recipient::configFile)
-            withP2Mirrors?.let(recipient::withP2Mirrors)
+        fun applyTo(receiver: BaseGroovyExtension.GrEclipseConfig) {
+            configFiles?.toTypedArray()?.let(receiver::configFile)
+            withP2Mirrors?.let(receiver::withP2Mirrors)
         }
     }
 }

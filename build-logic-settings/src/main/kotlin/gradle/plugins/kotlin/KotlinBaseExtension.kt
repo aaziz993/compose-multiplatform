@@ -76,25 +76,25 @@ internal interface KotlinBaseExtension<T : KotlinBaseExtension> {
 
     context(Project)
     @OptIn(ExperimentalBuildToolsApi::class)
-    fun applyTo(recipient: T) {
+    fun applyTo(receiver: T) {
         jvmToolchainSpec?.let { jvmToolchainSpec ->
-            recipient.jvmToolchain {
+            receiver.jvmToolchain {
                 jvmToolchainSpec.applyTo(this)
             }
         } ?: (jvmToolchain ?: settings.libs.versions.version("java.languageVersion")?.toInt())
-            ?.let(recipient::jvmToolchain)
+            ?.let(receiver::jvmToolchain)
 
-        recipient::kotlinDaemonJvmArgs trySet kotlinDaemonJvmArgs?.let { kotlinDaemonJvmArgs ->
-            recipient.kotlinDaemonJvmArgs + kotlinDaemonJvmArgs
+        receiver::kotlinDaemonJvmArgs trySet kotlinDaemonJvmArgs?.let { kotlinDaemonJvmArgs ->
+            receiver.kotlinDaemonJvmArgs + kotlinDaemonJvmArgs
         }
 
-        recipient::kotlinDaemonJvmArgs trySet setKotlinDaemonJvmArgs
-        recipient.compilerVersion tryAssign (compilerVersion
+        receiver::kotlinDaemonJvmArgs trySet setKotlinDaemonJvmArgs
+        receiver.compilerVersion tryAssign (compilerVersion
             ?: settings.libs.versions.version("kotlin.compilerVersion"))
-        recipient::coreLibrariesVersion trySet (coreLibrariesVersion
+        receiver::coreLibrariesVersion trySet (coreLibrariesVersion
             ?: settings.libs.versions.version("kotlin.coreLibrariesVersion"))
         explicitApi?.let { explicitApi ->
-            recipient.explicitApi = explicitApi
+            receiver.explicitApi = explicitApi
         }
     }
 }

@@ -25,10 +25,10 @@ internal interface K2MultiplatformCompilationTask<
 
     context(Project)
     @Suppress("UNCHECKED_CAST")
-    override fun applyTo(recipient: T) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super.applyTo(receiver)
 
-        compilerOptions?.applyTo(recipient.compilerOptions as CO)
+        compilerOptions?.applyTo(receiver.compilerOptions as CO)
     }
 }
 

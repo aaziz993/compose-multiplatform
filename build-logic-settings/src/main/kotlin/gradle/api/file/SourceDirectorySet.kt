@@ -55,11 +55,11 @@ internal data class SourceDirectorySet(
 ) : PatternFilterable<SourceDirectorySet>, ProjectNamed<SourceDirectorySet> {
 
     context(Project)
-    override fun applyTo(recipient: SourceDirectorySet) {
-        super<PatternFilterable>.applyTo(recipient)
+    override fun applyTo(receiver: SourceDirectorySet) {
+        super<PatternFilterable>.applyTo(receiver)
 
-        srcDirs?.toTypedArray()?.let(recipient::srcDirs)
-        setSrcDirs?.let(recipient::setSrcDirs)
-        recipient.destinationDirectory tryAssign destinationDirectory?.let(layout.projectDirectory::dir)
+        srcDirs?.toTypedArray()?.let(receiver::srcDirs)
+        setSrcDirs?.let(receiver::setSrcDirs)
+        receiver.destinationDirectory tryAssign destinationDirectory?.let(layout.projectDirectory::dir)
     }
 }

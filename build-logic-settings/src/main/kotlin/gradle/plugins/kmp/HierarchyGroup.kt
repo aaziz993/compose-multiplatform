@@ -10,7 +10,7 @@ internal data class HierarchyGroup(
     val aliases: Set<String>
 ) {
 
-    fun applyTo(recipient: KotlinHierarchyBuilder) {
+    fun applyTo(receiver: KotlinHierarchyBuilder) {
         builder.group(group) {
             aliases.forEach { alias ->
                 when (alias) {

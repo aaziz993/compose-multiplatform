@@ -20,8 +20,8 @@ internal data class BundleCountrySet(
 ) {
 
     @Suppress("UnstableApiUsage")
-    fun applyTo(recipient: BundleCountrySet) {
-        recipient::enableSplit trySet enableSplit
-        recipient::defaultSet trySet defaultSet
+    fun applyTo(receiver: BundleCountrySet) {
+        receiver::enableSplit trySet enableSplit
+        receiver::defaultSet trySet defaultSet
     }
 }

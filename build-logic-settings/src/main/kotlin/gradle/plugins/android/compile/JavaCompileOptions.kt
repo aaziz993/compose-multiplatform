@@ -11,7 +11,7 @@ internal data class JavaCompileOptions(
     val annotationProcessorOptions: AnnotationProcessorOptions? = null,
 ) {
 
-    fun applyTo(recipient: JavaCompileOptions) {
-        annotationProcessorOptions?.applyTo(recipient.annotationProcessorOptions)
+    fun applyTo(receiver: JavaCompileOptions) {
+        annotationProcessorOptions?.applyTo(receiver.annotationProcessorOptions)
     }
 }

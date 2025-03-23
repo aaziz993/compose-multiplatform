@@ -91,18 +91,18 @@ internal data class DokkaHtmlPluginParameters(
         get() = DokkaHtmlPluginParameters.DOKKA_HTML_PLUGIN_FQN
 
     context(Project)
-    override fun applyTo(recipient: DokkaHtmlPluginParameters) {
-        customAssets?.toTypedArray()?.let(recipient.customAssets::from)
-        setCustomAssets?.let(recipient.customAssets::setFrom)
-        customStyleSheets?.toTypedArray()?.let(recipient.customStyleSheets::from)
-        setCustomStyleSheets?.let(recipient.customStyleSheets::setFrom)
-        recipient.separateInheritedMembers tryAssign separateInheritedMembers
-        recipient.mergeImplicitExpectActualDeclarations tryAssign mergeImplicitExpectActualDeclarations
-        recipient.footerMessage tryAssign (footerMessage ?: listOfNotNull(
+    override fun applyTo(receiver: DokkaHtmlPluginParameters) {
+        customAssets?.toTypedArray()?.let(receiver.customAssets::from)
+        setCustomAssets?.let(receiver.customAssets::setFrom)
+        customStyleSheets?.toTypedArray()?.let(receiver.customStyleSheets::from)
+        setCustomStyleSheets?.let(receiver.customStyleSheets::setFrom)
+        receiver.separateInheritedMembers tryAssign separateInheritedMembers
+        receiver.mergeImplicitExpectActualDeclarations tryAssign mergeImplicitExpectActualDeclarations
+        receiver.footerMessage tryAssign (footerMessage ?: listOfNotNull(
             projectProperties.year,
             projectProperties.developer?.name,
         ).joinToString(" - ").takeIf(String::isNotEmpty)?.let { message -> "© $message" })
-        recipient.homepageLink tryAssign homepageLink
-        recipient.templatesDir tryAssign templatesDir?.let(layout.projectDirectory::dir)
+        receiver.homepageLink tryAssign homepageLink
+        receiver.templatesDir tryAssign templatesDir?.let(layout.projectDirectory::dir)
     }
 }

@@ -1,10 +1,9 @@
 package gradle.plugins.kmp
 
+import org.jetbrains.kotlin.gradle.testing.KotlinTaskTestRun
 
-import org.gradle.api.Named
-
-internal abstract class KotlinTaskTestRun : KotlinTargetTestRun {
+internal abstract class KotlinTaskTestRun<T: KotlinTaskTestRun<>> : KotlinTargetTestRun {
 
         context(Project)
-    override fun applyTo(recipient: T) = super.applyTo(named)
+    override fun applyTo(receiver: T) = super.applyTo(named)
 }

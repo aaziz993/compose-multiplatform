@@ -112,13 +112,13 @@ internal interface KotlinCompilation<T : org.jetbrains.kotlin.gradle.plugin.Kotl
     val associatedCompilations: Set<String>?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        defaultSourceSet?.applyTo(recipient.defaultSourceSet)
-        recipient::compileDependencyFiles trySet compileDependencyFiles?.toTypedArray()?.let(::files)
-        output?.applyTo(recipient.output)
+    override fun applyTo(receiver: T) {
+        defaultSourceSet?.applyTo(receiver.defaultSourceSet)
+        receiver::compileDependencyFiles trySet compileDependencyFiles?.toTypedArray()?.let(::files)
+        output?.applyTo(receiver.output)
         associatedCompilations
-            ?.flatMap(recipient.target.compilations::getByNameOrAll)
-            ?.forEach(recipient::associateWith)
+            ?.flatMap(receiver.target.compilations::getByNameOrAll)
+            ?.forEach(receiver::associateWith)
     }
 }
 

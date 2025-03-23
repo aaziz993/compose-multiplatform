@@ -66,10 +66,10 @@ internal data class ExternalNativeBuildFlags(
 ) {
 
     @Suppress("UnstableApiUsage")
-    fun applyTo(recipient: ExternalNativeBuildFlags) {
-        ndkBuild?.applyTo(recipient.ndkBuild)
-        cmake?.applyTo(recipient.cmake)
-        experimentalProperties?.let(recipient.experimentalProperties::putAll)
-        setExperimentalProperties?.act(recipient.experimentalProperties::clear)?.let(recipient.experimentalProperties::putAll)
+    fun applyTo(receiver: ExternalNativeBuildFlags) {
+        ndkBuild?.applyTo(receiver.ndkBuild)
+        cmake?.applyTo(receiver.cmake)
+        experimentalProperties?.let(receiver.experimentalProperties::putAll)
+        setExperimentalProperties?.act(receiver.experimentalProperties::clear)?.let(receiver.experimentalProperties::putAll)
     }
 }

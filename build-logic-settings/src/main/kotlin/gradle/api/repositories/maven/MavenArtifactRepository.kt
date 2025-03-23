@@ -48,40 +48,40 @@ internal interface MavenArtifactRepository
     val mavenContent: MavenRepositoryContentDescriptor?
 
     context(Settings)
-    override fun applyTo(recipient: MavenArtifactRepository) =
-        super<ArtifactRepository>.applyTo(recipient)
+    override fun applyTo(receiver: MavenArtifactRepository) =
+        super<ArtifactRepository>.applyTo(receiver)
 
     context(Project)
-    override fun applyTo(recipient: MavenArtifactRepository) =
-        super<ArtifactRepository>.applyTo(recipient)
+    override fun applyTo(receiver: MavenArtifactRepository) =
+        super<ArtifactRepository>.applyTo(receiver)
 
     context(Directory)
-    override fun _applyTo(recipient: MavenArtifactRepository) {
-        super<ArtifactRepository>._applyTo(recipient)
-        super<UrlArtifactRepository>._applyTo(recipient)
-        super<AuthenticationSupported>._applyTo(recipient)
+    override fun _applyTo(receiver: MavenArtifactRepository) {
+        super<ArtifactRepository>._applyTo(receiver)
+        super<UrlArtifactRepository>._applyTo(receiver)
+        super<AuthenticationSupported>._applyTo(receiver)
 
-        artifactUrls?.toTypedArray()?.let (recipient::artifactUrls)
-        metadataSources?.applyTo(recipient.metadataSources)
+        artifactUrls?.toTypedArray()?.let (receiver::artifactUrls)
+        metadataSources?.applyTo(receiver.metadataSources)
 
         mavenContent?.let { mavenContent ->
-            recipient.mavenContent(mavenContent::applyTo)
+            receiver.mavenContent(mavenContent::applyTo)
         }
     }
 
     context(Settings)
-    override fun applyTo(recipient: RepositoryHandler) =
-        applyTo(recipient.withType<MavenArtifactRepository>()) { _name, action ->
-            recipient.maven {
+    override fun applyTo(receiver: RepositoryHandler) =
+        applyTo(receiver.withType<MavenArtifactRepository>()) { _name, action ->
+            receiver.maven {
                 name = _name
                 action.execute(this)
             }
         }
 
     context(Project)
-    override fun applyTo(recipient: RepositoryHandler) =
-        applyTo(recipient.withType<MavenArtifactRepository>()) { _name, action ->
-            recipient.maven {
+    override fun applyTo(receiver: RepositoryHandler) =
+        applyTo(receiver.withType<MavenArtifactRepository>()) { _name, action ->
+            receiver.maven {
                 name = _name
                 action.execute(this)
             }
@@ -118,7 +118,7 @@ internal interface MavenArtifactRepository
         val ignoreGradleMetadataRedirection: Boolean? = null,
     ) {
 
-        fun applyTo(recipient: MavenArtifactRepository.MetadataSources) {
+        fun applyTo(receiver: MavenArtifactRepository.MetadataSources) {
             gradleMetadata?.takeIf { it }?.run { sources.gradleMetadata() }
             mavenPom?.takeIf { it }?.run { sources.mavenPom() }
             artifact?.takeIf { it }?.run { sources.artifact() }

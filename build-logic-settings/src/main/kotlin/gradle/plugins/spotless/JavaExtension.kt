@@ -151,9 +151,9 @@ internal data class JavaExtension(
         val removedTypeAnnotations: Set<String>? = null
     ) {
 
-        fun applyTo(recipient: JavaExtension.FormatAnnotationsConfig) {
-            addedTypeAnnotations?.forEach(recipient::addTypeAnnotation)
-            removedTypeAnnotations?.forEach(recipient::removeTypeAnnotation)
+        fun applyTo(receiver: JavaExtension.FormatAnnotationsConfig) {
+            addedTypeAnnotations?.forEach(receiver::addTypeAnnotation)
+            removedTypeAnnotations?.forEach(receiver::removeTypeAnnotation)
         }
     }
 
@@ -167,12 +167,12 @@ internal data class JavaExtension(
         val formatJavadoc: Boolean? = null,
     ) {
 
-        fun applyTo(recipient: JavaExtension.GoogleJavaFormatConfig) {
-            groupArtifact?.let(recipient::groupArtifact)
-            style?.let(recipient::style)
-            reflowLongStrings?.let(recipient::reflowLongStrings)
-            reorderImports?.let(recipient::reorderImports)
-            formatJavadoc?.let(recipient::formatJavadoc)
+        fun applyTo(receiver: JavaExtension.GoogleJavaFormatConfig) {
+            groupArtifact?.let(receiver::groupArtifact)
+            style?.let(receiver::style)
+            reflowLongStrings?.let(receiver::reflowLongStrings)
+            reorderImports?.let(receiver::reorderImports)
+            formatJavadoc?.let(receiver::formatJavadoc)
         }
     }
 
@@ -186,11 +186,11 @@ internal data class JavaExtension(
         val treatAsClass: Set<String>? = null
     ) {
 
-        fun applyTo(recipient: JavaExtension.ImportOrderConfig) {
-            wildcardsLast?.let(recipient::wildcardsLast)
-            semanticSort?.let(recipient::semanticSort)
-            treatAsPackage?.let(recipient::treatAsPackage)
-            treatAsClass?.let(recipient::treatAsClass)
+        fun applyTo(receiver: JavaExtension.ImportOrderConfig) {
+            wildcardsLast?.let(receiver::wildcardsLast)
+            semanticSort?.let(receiver::semanticSort)
+            treatAsPackage?.let(receiver::treatAsPackage)
+            treatAsClass?.let(receiver::treatAsClass)
         }
     }
 
@@ -208,9 +208,9 @@ internal data class JavaExtension(
         val formatJavadoc: Boolean? = null
     ) {
 
-        fun applyTo(recipient: JavaExtension.PalantirJavaFormatConfig) {
-            style?.let(recipient::style)
-            formatJavadoc?.let(recipient::formatJavadoc)
+        fun applyTo(receiver: JavaExtension.PalantirJavaFormatConfig) {
+            style?.let(receiver::style)
+            formatJavadoc?.let(receiver::formatJavadoc)
         }
     }
 }

@@ -29,9 +29,9 @@ internal data class SonarProperties(
 ) {
 
     context(Project)
-    fun applyTo(recipient: SonarProperties) {
-        properties?.let(recipient::properties)
-        setPproperties?.act(recipient.properties::clear)?.let(recipient::properties)
-        recipient.property("sonar.projectVersion", version)
+    fun applyTo(receiver: SonarProperties) {
+        properties?.let(receiver::properties)
+        setPproperties?.act(receiver.properties::clear)?.let(receiver::properties)
+        receiver.property("sonar.projectVersion", version)
     }
 }

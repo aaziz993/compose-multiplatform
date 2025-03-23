@@ -13,8 +13,8 @@ internal data class KotlinMocha(
     val timeout: String? = null
 ) {
 
-    fun applyTo(recipient: org.jetbrains.kotlin.gradle.targets.js.testing.mocha.KotlinMocha) {
-        recipient::timeout trySet timeout
+    fun applyTo(receiver: org.jetbrains.kotlin.gradle.targets.js.testing.mocha.KotlinMocha) {
+        receiver::timeout trySet timeout
     }
 }
 

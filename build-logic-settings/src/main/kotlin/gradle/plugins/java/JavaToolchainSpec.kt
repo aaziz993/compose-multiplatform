@@ -60,9 +60,9 @@ internal data class JavaToolchainSpec(
 ) {
 
     context(Project)
-    fun applyTo(recipient: JavaToolchainSpec) {
-        recipient.languageVersion tryAssign (languageVersion ?: settings.libs.versions.version("java.languageVersion")
+    fun applyTo(receiver: JavaToolchainSpec) {
+        receiver.languageVersion tryAssign (languageVersion ?: settings.libs.versions.version("java.languageVersion")
             ?.let(JavaLanguageVersion::of))
-        recipient.vendor tryAssign vendor?.toVendor()
+        receiver.vendor tryAssign vendor?.toVendor()
     }
 }

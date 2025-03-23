@@ -16,9 +16,9 @@ internal interface Installation<T : Installation> {
     val installOptions: List<String>?
     val setInstallOptions: List<String>?
 
-    fun applyTo(recipient: T) {
-        recipient::timeOutInMs trySet timeOutInMs
-        installOptions?.let(recipient.installOptions::addAll)
-        setInstallOptions?.act(recipient.installOptions::clear)?.let(recipient.installOptions::addAll)
+    fun applyTo(receiver: T) {
+        receiver::timeOutInMs trySet timeOutInMs
+        installOptions?.let(receiver.installOptions::addAll)
+        setInstallOptions?.act(receiver.installOptions::clear)?.let(receiver.installOptions::addAll)
     }
 }

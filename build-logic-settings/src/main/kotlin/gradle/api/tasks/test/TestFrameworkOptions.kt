@@ -9,5 +9,5 @@ import org.gradle.api.tasks.testing.TestFrameworkOptions
 internal abstract class TestFrameworkOptions<in T: TestFrameworkOptions> {
 
     context(Project)
-    abstract fun applyTo(recipient: T)
+    abstract fun applyTo(receiver: T)
 }

@@ -25,10 +25,10 @@ internal data class JavaHomeHandler(
     val extraMessage: String? = null,
 ) {
 
-    fun applyTo(recipient: JavaHomeHandler) {
-        recipient.ensureJavaHomeMatches tryAssign ensureJavaHomeMatches
-        recipient.ensureJavaHomeIsSet tryAssign ensureJavaHomeIsSet
-        recipient.failOnError tryAssign failOnError
-        recipient.extraMessage tryAssign extraMessage
+    fun applyTo(receiver: JavaHomeHandler) {
+        receiver.ensureJavaHomeMatches tryAssign ensureJavaHomeMatches
+        receiver.ensureJavaHomeIsSet tryAssign ensureJavaHomeIsSet
+        receiver.failOnError tryAssign failOnError
+        receiver.extraMessage tryAssign extraMessage
     }
 }

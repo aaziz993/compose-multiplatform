@@ -15,12 +15,12 @@ internal interface BuildConfigClassSpec<T : com.github.gmazzo.gradle.plugins.Bui
     val buildConfigFields: List<BuildConfigField>?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        recipient.className tryAssign className
-        recipient.packageName tryAssign packageName
+    override fun applyTo(receiver: T) {
+        receiver.className tryAssign className
+        receiver.packageName tryAssign packageName
 
         buildConfigFields?.forEach { buildConfigField ->
-            buildConfigField.applyTo(recipient.buildConfigFields)
+            buildConfigField.applyTo(receiver.buildConfigFields)
         }
     }
 }

@@ -38,14 +38,14 @@ internal interface KoverVerificationRulesConfig<T : kotlinx.kover.gradle.plugin.
      */
     val warningInsteadOfFailure: Boolean?
 
-    fun applyTo(recipient: T) {
+    fun applyTo(receiver: T) {
         when (val rule = rule) {
-            is KoverVerifyRule -> recipient.rule(rule::applyTo)
-            is NamedKoverVerifyRule -> recipient.rule(rule.name, rule.rule::applyTo)
+            is KoverVerifyRule -> receiver.rule(rule::applyTo)
+            is NamedKoverVerifyRule -> receiver.rule(rule.name, rule.rule::applyTo)
             else -> Unit
         }
 
-        recipient.warningInsteadOfFailure tryAssign warningInsteadOfFailure
+        receiver.warningInsteadOfFailure tryAssign warningInsteadOfFailure
     }
 }
 

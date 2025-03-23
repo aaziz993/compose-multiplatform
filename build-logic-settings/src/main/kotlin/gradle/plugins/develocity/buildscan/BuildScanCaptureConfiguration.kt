@@ -12,10 +12,10 @@ internal data class BuildScanCaptureConfiguration(
     val resourceUsage: Boolean? = null,
 ) {
 
-    fun applyTo(recipient: BuildScanCaptureConfiguration) {
-        recipient.fileFingerprints tryAssign fileFingerprints
-        recipient.buildLogging tryAssign buildLogging
-        recipient.testLogging tryAssign testLogging
-        recipient.resourceUsage tryAssign resourceUsage
+    fun applyTo(receiver: BuildScanCaptureConfiguration) {
+        receiver.fileFingerprints tryAssign fileFingerprints
+        receiver.buildLogging tryAssign buildLogging
+        receiver.testLogging tryAssign testLogging
+        receiver.resourceUsage tryAssign resourceUsage
     }
 }

@@ -23,10 +23,10 @@ internal data class MavenArtifact(
     val classifier: String? = null,
 ) : PublicationArtifact<MavenArtifact> {
 
-    override fun applyTo(recipient: MavenArtifact) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: MavenArtifact) {
+        super.applyTo(receiver)
 
-        extension?.let(recipient::setExtension)
-        classifier?.let(recipient::setClassifier)
+        extension?.let(receiver::setExtension)
+        classifier?.let(receiver::setClassifier)
     }
 }

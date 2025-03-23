@@ -13,7 +13,7 @@ internal data class KotlinJsBinaryContainer(
 ) {
 
     context(Project)
-    fun applyTo(recipient: KotlinJsBinaryContainer) {
+    fun applyTo(receiver: KotlinJsBinaryContainer) {
         when (projectProperties.type) {
             ProjectType.APP ->
                 executable.let { binaries ->

@@ -100,18 +100,18 @@ internal data class KotlinJsCompilerOptions(
 ) : KotlinCommonCompilerOptions<KotlinJsCompilerOptions> {
 
     context(Project)
-    override fun applyTo(recipient: KotlinJsCompilerOptions) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: KotlinJsCompilerOptions) {
+        super.applyTo(receiver)
 
-        recipient.friendModulesDisabled tryAssign friendModulesDisabled
-        recipient.main tryAssign main
-        recipient.moduleKind tryAssign moduleKind
-        recipient.moduleName tryAssign moduleName
-        recipient.sourceMap tryAssign sourceMap
-        recipient.sourceMapEmbedSources tryAssign sourceMapEmbedSources
-        recipient.sourceMapNamesPolicy tryAssign sourceMapNamesPolicy
-        recipient.sourceMapPrefix tryAssign sourceMapPrefix
-        recipient.target tryAssign target
-        recipient.useEsClasses tryAssign useEsClasses
+        receiver.friendModulesDisabled tryAssign friendModulesDisabled
+        receiver.main tryAssign main
+        receiver.moduleKind tryAssign moduleKind
+        receiver.moduleName tryAssign moduleName
+        receiver.sourceMap tryAssign sourceMap
+        receiver.sourceMapEmbedSources tryAssign sourceMapEmbedSources
+        receiver.sourceMapNamesPolicy tryAssign sourceMapNamesPolicy
+        receiver.sourceMapPrefix tryAssign sourceMapPrefix
+        receiver.target tryAssign target
+        receiver.useEsClasses tryAssign useEsClasses
     }
 }

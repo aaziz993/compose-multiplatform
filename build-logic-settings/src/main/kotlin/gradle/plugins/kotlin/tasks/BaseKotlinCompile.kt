@@ -60,25 +60,25 @@ internal interface BaseKotlinCompile<T : org.jetbrains.kotlin.gradle.tasks.BaseK
     val useModuleDetection: Boolean?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super.applyTo(receiver)
 
-        friendPaths?.toTypedArray()?.let(recipient.friendPaths::from)
-        setFriendPaths?.let(recipient.friendPaths::setFrom)
-        pluginClasspath?.toTypedArray()?.let(recipient.pluginClasspath::from)
-        setPluginClasspath?.let(recipient.pluginClasspath::setFrom)
+        friendPaths?.toTypedArray()?.let(receiver.friendPaths::from)
+        setFriendPaths?.let(receiver.friendPaths::setFrom)
+        pluginClasspath?.toTypedArray()?.let(receiver.pluginClasspath::from)
+        setPluginClasspath?.let(receiver.pluginClasspath::setFrom)
 
-        recipient.pluginOptions tryAssign pluginOptions
+        receiver.pluginOptions tryAssign pluginOptions
             ?.map(CompilerPluginConfig::toCompilerPluginConfig)
             ?.let { pluginOptions ->
-                recipient.pluginOptions.get() + pluginOptions
+                receiver.pluginOptions.get() + pluginOptions
             }
 
-        recipient.pluginOptions tryAssign setPluginOptions?.map(CompilerPluginConfig::toCompilerPluginConfig)
-        recipient.moduleName tryAssign moduleName
-        recipient.sourceSetName tryAssign sourceSetName
-        recipient.multiPlatformEnabled tryAssign multiPlatformEnabled
-        recipient.useModuleDetection tryAssign useModuleDetection
+        receiver.pluginOptions tryAssign setPluginOptions?.map(CompilerPluginConfig::toCompilerPluginConfig)
+        receiver.moduleName tryAssign moduleName
+        receiver.sourceSetName tryAssign sourceSetName
+        receiver.multiPlatformEnabled tryAssign multiPlatformEnabled
+        receiver.useModuleDetection tryAssign useModuleDetection
     }
 }
 

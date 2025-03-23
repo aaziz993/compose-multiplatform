@@ -89,14 +89,14 @@ internal data class SourceSet(
 ) : ProjectNamed<SourceSet> {
 
     context(Project)
-    override fun applyTo(recipient: SourceSet) {
-        compileClasspath?.toTypedArray()?.let(recipient::compiledBy)
-        annotationProcessorPath?.toTypedArray()?.let(::files)?.let(recipient::setAnnotationProcessorPath)
-        runtimeClasspath?.toTypedArray()?.let(::files)?.let(recipient::setRuntimeClasspath)
-        compiledBy?.toTypedArray()?.let(recipient::compiledBy)
-        resources?.applyTo(recipient.resources)
-        java?.applyTo(recipient.java)
-        allJava?.applyTo(recipient.allJava)
-        allSource?.applyTo(recipient.allSource)
+    override fun applyTo(receiver: SourceSet) {
+        compileClasspath?.toTypedArray()?.let(receiver::compiledBy)
+        annotationProcessorPath?.toTypedArray()?.let(::files)?.let(receiver::setAnnotationProcessorPath)
+        runtimeClasspath?.toTypedArray()?.let(::files)?.let(receiver::setRuntimeClasspath)
+        compiledBy?.toTypedArray()?.let(receiver::compiledBy)
+        resources?.applyTo(receiver.resources)
+        java?.applyTo(receiver.java)
+        allJava?.applyTo(receiver.allJava)
+        allSource?.applyTo(receiver.allSource)
     }
 }

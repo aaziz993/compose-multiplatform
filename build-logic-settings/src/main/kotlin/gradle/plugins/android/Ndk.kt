@@ -65,9 +65,9 @@ internal data class Ndk(
     val debugSymbolLevel: String? = null,
 ) {
 
-    fun applyTo(recipient: Ndk) {
-        abiFilters?.let(recipient.abiFilters::addAll)
-        setAbiFilters?.act(recipient.abiFilters::clear)?.let(recipient.abiFilters::addAll)
-        recipient::debugSymbolLevel trySet debugSymbolLevel
+    fun applyTo(receiver: Ndk) {
+        abiFilters?.let(receiver.abiFilters::addAll)
+        setAbiFilters?.act(receiver.abiFilters::clear)?.let(receiver.abiFilters::addAll)
+        receiver::debugSymbolLevel trySet debugSymbolLevel
     }
 }

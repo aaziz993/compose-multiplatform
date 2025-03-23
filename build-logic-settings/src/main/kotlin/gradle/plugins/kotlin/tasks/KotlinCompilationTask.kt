@@ -30,10 +30,10 @@ internal interface KotlinCompilationTask<
     val compilerOptions: KotlinCommonCompilerOptions<CO>?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super.applyTo(receiver)
 
-        compilerOptions?.applyTo(recipient.compilerOptions)
+        compilerOptions?.applyTo(receiver.compilerOptions)
     }
 }
 

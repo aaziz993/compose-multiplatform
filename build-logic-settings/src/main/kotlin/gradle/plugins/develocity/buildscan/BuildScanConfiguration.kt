@@ -23,32 +23,32 @@ internal data class BuildScanConfiguration(
     context(Settings)
     @Suppress("UnstableApiUsage")
     fun applyTo(
-        recipient: com.gradle.develocity.agent.gradle.scan.BuildScanConfiguration
+        receiver: com.gradle.develocity.agent.gradle.scan.BuildScanConfiguration
     ) {
         val startParameter = gradle.startParameter
 
         val scanJournal = layout.rootDirectory.file("scan-journal.log").asFile
 
         background?.let { background ->
-            recipient.background {
+            receiver.background {
                 background.applyTo(this)
             }
         }
 
 
-        tag?.let(recipient::tag)
-        values?.forEach { (name, value) -> recipient.value(name, value) }
-        links?.forEach { (name, url) -> recipient.link(name, url) }
+        tag?.let(receiver::tag)
+        values?.forEach { (name, value) -> receiver.value(name, value) }
+        links?.forEach { (name, url) -> receiver.link(name, url) }
 
-        recipient.buildScanPublished {
+        receiver.buildScanPublished {
             scanJournal.appendText("${Date()} — $buildScanUri — $startParameter\n")
         }
 
-        recipient.termsOfUseUrl tryAssign termsOfUseUrl
-        recipient.termsOfUseAgree tryAssign termsOfUseAgree
-        recipient.uploadInBackground tryAssign uploadInBackground
-        publishing.applyTo(recipient.publishing)
-        obfuscation?.applyTo(recipient.obfuscation)
-        capture?.applyTo(recipient.capture)
+        receiver.termsOfUseUrl tryAssign termsOfUseUrl
+        receiver.termsOfUseAgree tryAssign termsOfUseAgree
+        receiver.uploadInBackground tryAssign uploadInBackground
+        publishing.applyTo(receiver.publishing)
+        obfuscation?.applyTo(receiver.obfuscation)
+        capture?.applyTo(receiver.capture)
     }
 }

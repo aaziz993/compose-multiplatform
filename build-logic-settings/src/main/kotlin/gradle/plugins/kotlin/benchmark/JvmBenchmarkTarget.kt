@@ -10,10 +10,10 @@ internal abstract class JvmBenchmarkTarget<T : kotlinx.benchmark.gradle.JvmBench
     abstract val jmhVersion: String?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super.applyTo(receiver)
 
-        recipient::jmhVersion trySet jmhVersion
+        receiver::jmhVersion trySet jmhVersion
     }
 }
 

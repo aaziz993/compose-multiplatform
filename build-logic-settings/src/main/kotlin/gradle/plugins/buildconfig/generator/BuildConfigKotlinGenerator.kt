@@ -21,9 +21,9 @@ internal data class BuildConfigKotlinGenerator(
         internalVisibility,
     )
 
-    override fun applyTo(recipient: com.github.gmazzo.gradle.plugins.generators.BuildConfigKotlinGenerator) {
-        recipient::topLevelConstants trySet topLevelConstants
-        recipient::internalVisibility trySet internalVisibility
+    override fun applyTo(receiver: com.github.gmazzo.gradle.plugins.generators.BuildConfigKotlinGenerator) {
+        receiver::topLevelConstants trySet topLevelConstants
+        receiver::internalVisibility trySet internalVisibility
     }
 }
 

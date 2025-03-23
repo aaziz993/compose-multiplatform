@@ -27,18 +27,16 @@ internal abstract class AbstractKotlinNativeCompile<T : org.jetbrains.kotlin.gra
 
     context(Project)
     @OptIn(InternalKotlinGradlePluginApi::class)
-    override fun applyTo(recipient: T) {
-        super<AbstractKotlinCompileTool>.applyTo(recipient)
-        super<ProducesKlib>.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super<AbstractKotlinCompileTool>.applyTo(receiver)
+        super<ProducesKlib>.applyTo(receiver)
 
-        recipient as org.jetbrains.kotlin.gradle.tasks.AbstractKotlinNativeCompile<*, *>
-
-        recipient::compilerPluginClasspath trySet compilerPluginClasspath?.toTypedArray()?.let(::files)
-        recipient::compilerPluginClasspath trySet compilerPluginClasspath?.toTypedArray()?.let(::files)?.let { files ->
-            recipient.compilerPluginClasspath?.let { it + files } ?: files
+        receiver::compilerPluginClasspath trySet compilerPluginClasspath?.toTypedArray()?.let(::files)
+        receiver::compilerPluginClasspath trySet compilerPluginClasspath?.toTypedArray()?.let(::files)?.let { files ->
+            receiver.compilerPluginClasspath?.let { it + files } ?: files
         }
 
-        recipient::kotlinPluginData trySet kotlinPluginData?.toKotlinCompilerPluginData()?.let { kotlinPluginData ->
+        receiver::kotlinPluginData trySet kotlinPluginData?.toKotlinCompilerPluginData()?.let { kotlinPluginData ->
             provider { kotlinPluginData }
         }
     }

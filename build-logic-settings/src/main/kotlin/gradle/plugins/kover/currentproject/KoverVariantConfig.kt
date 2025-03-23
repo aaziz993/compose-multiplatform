@@ -27,8 +27,8 @@ internal interface KoverVariantConfig<T : kotlinx.kover.gradle.plugin.dsl.KoverV
      */
     val sources: KoverVariantSources?
 
-    fun applyTo(recipient: T) {
-        sources?.applyTo(recipient.sources)
+    fun applyTo(receiver: T) {
+        sources?.applyTo(receiver.sources)
     }
 }
 

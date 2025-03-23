@@ -19,9 +19,9 @@ import org.gradle.kotlin.dsl.withType
 internal abstract class AndroidVariantTask<T : com.android.build.gradle.internal.tasks.AndroidVariantTask> : BaseTask<T>(), VariantTask {
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super<BaseTask>.applyTo(recipient)
-        super<VariantTask>.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super<BaseTask>.applyTo(receiver)
+        super<VariantTask>.applyTo(receiver)
     }
 }
 

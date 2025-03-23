@@ -20,11 +20,11 @@ internal abstract class Sync<T : org.gradle.api.tasks.Sync> : AbstractCopyTask<T
     abstract val preserve: PatternFilterableImpl?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super.applyTo(receiver)
 
-        destinationDir?.let(::file)?.let(recipient::setDestinationDir)
-        preserve?.applyTo(recipient)
+        destinationDir?.let(::file)?.let(receiver::setDestinationDir)
+        preserve?.applyTo(receiver)
     }
 }
 

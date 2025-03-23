@@ -32,15 +32,15 @@ internal data class Sign(
 ) : DefaultTask<Sign>(), SignatureSpec<Sign>, Signer {
 
     context(Project)
-    override fun applyTo(recipient: Sign) {
-        super<DefaultTask>.applyTo(recipient)
-        super<SignatureSpec>.applyTo(recipient)
+    override fun applyTo(receiver: Sign) {
+        super<DefaultTask>.applyTo(receiver)
+        super<SignatureSpec>.applyTo(receiver)
         applyTo(
-            recipient::sign,
-            recipient::sign,
-            recipient::sign,
-            recipient::sign,
-            recipient::sign,
+            receiver::sign,
+            receiver::sign,
+            receiver::sign,
+            receiver::sign,
+            receiver::sign,
         )
     }
 

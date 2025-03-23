@@ -259,46 +259,46 @@ internal data class Lint(
 ) {
 
     context(Project)
-    fun applyTo(recipient: Lint) {
-        disable?.let(recipient.disable::addAll)
-        setDisable?.act(recipient.disable::clear)?.let(recipient.disable::addAll)
-        enable?.let(recipient.enable::addAll)
-        setEnable?.act(recipient.enable::clear)?.let(recipient.enable::addAll)
-        checkOnly?.let(recipient.checkOnly::addAll)
-        recipient::abortOnError trySet abortOnError
-        recipient::absolutePaths trySet absolutePaths
-        recipient::noLines trySet noLines
-        recipient::quiet trySet quiet
-        recipient::checkAllWarnings trySet checkAllWarnings
-        recipient::ignoreWarnings trySet ignoreWarnings
-        recipient::warningsAsErrors trySet warningsAsErrors
-        recipient::checkTestSources trySet checkTestSources
-        recipient::ignoreTestSources trySet ignoreTestSources
-        recipient::ignoreTestFixturesSources trySet ignoreTestFixturesSources
-        recipient::checkGeneratedSources trySet checkGeneratedSources
-        recipient::checkDependencies trySet checkDependencies
-        recipient::explainIssues trySet explainIssues
-        recipient::showAll trySet showAll
-        recipient::checkReleaseBuilds trySet checkReleaseBuilds
-        recipient::lintConfig trySet lintConfig?.let(::file)
-        recipient::textReport trySet textReport
-        recipient::htmlReport trySet htmlReport
-        recipient::sarifReport trySet sarifReport
-        recipient::xmlReport trySet xmlReport
-        recipient::textOutput trySet textOutput?.let(::file)
-        recipient::htmlOutput trySet htmlOutput?.let(::file)
-        recipient::xmlOutput trySet xmlOutput?.let(::file)
-        recipient::sarifOutput trySet sarifOutput?.let(::file)
-        recipient::baseline trySet baseline?.let(::file)
-        informational?.let(recipient.informational::addAll)
-        setInformational?.act(recipient.informational::clear)?.let(recipient.informational::addAll)
-        warning?.let(recipient.warning::addAll)
-        setWarning?.act(recipient.warning::clear)?.let(recipient.warning::addAll)
-        error?.let(recipient.error::addAll)
-        setError?.act(recipient.error::clear)?.let(recipient.error::addAll)
-        fatal?.let(recipient.fatal::addAll)
-        setFatal?.act(recipient.fatal::clear)?.let(recipient.fatal::addAll)
-        recipient::targetSdk trySet targetSdk
-        recipient::targetSdkPreview trySet targetSdkPreview
+    fun applyTo(receiver: Lint) {
+        disable?.let(receiver.disable::addAll)
+        setDisable?.act(receiver.disable::clear)?.let(receiver.disable::addAll)
+        enable?.let(receiver.enable::addAll)
+        setEnable?.act(receiver.enable::clear)?.let(receiver.enable::addAll)
+        checkOnly?.let(receiver.checkOnly::addAll)
+        receiver::abortOnError trySet abortOnError
+        receiver::absolutePaths trySet absolutePaths
+        receiver::noLines trySet noLines
+        receiver::quiet trySet quiet
+        receiver::checkAllWarnings trySet checkAllWarnings
+        receiver::ignoreWarnings trySet ignoreWarnings
+        receiver::warningsAsErrors trySet warningsAsErrors
+        receiver::checkTestSources trySet checkTestSources
+        receiver::ignoreTestSources trySet ignoreTestSources
+        receiver::ignoreTestFixturesSources trySet ignoreTestFixturesSources
+        receiver::checkGeneratedSources trySet checkGeneratedSources
+        receiver::checkDependencies trySet checkDependencies
+        receiver::explainIssues trySet explainIssues
+        receiver::showAll trySet showAll
+        receiver::checkReleaseBuilds trySet checkReleaseBuilds
+        receiver::lintConfig trySet lintConfig?.let(::file)
+        receiver::textReport trySet textReport
+        receiver::htmlReport trySet htmlReport
+        receiver::sarifReport trySet sarifReport
+        receiver::xmlReport trySet xmlReport
+        receiver::textOutput trySet textOutput?.let(::file)
+        receiver::htmlOutput trySet htmlOutput?.let(::file)
+        receiver::xmlOutput trySet xmlOutput?.let(::file)
+        receiver::sarifOutput trySet sarifOutput?.let(::file)
+        receiver::baseline trySet baseline?.let(::file)
+        informational?.let(receiver.informational::addAll)
+        setInformational?.act(receiver.informational::clear)?.let(receiver.informational::addAll)
+        warning?.let(receiver.warning::addAll)
+        setWarning?.act(receiver.warning::clear)?.let(receiver.warning::addAll)
+        error?.let(receiver.error::addAll)
+        setError?.act(receiver.error::clear)?.let(receiver.error::addAll)
+        fatal?.let(receiver.fatal::addAll)
+        setFatal?.act(receiver.fatal::clear)?.let(receiver.fatal::addAll)
+        receiver::targetSdk trySet targetSdk
+        receiver::targetSdkPreview trySet targetSdkPreview
     }
 }

@@ -20,7 +20,7 @@ internal data class KotlinNativeSimulatorTestRun(
 ) : KotlinNativeBinaryTestRun {
 
         context(Project)
-    override fun applyTo(recipient: T) {
+    override fun applyTo(receiver: T) {
         super.applyTo(named)
 
         named as org.jetbrains.kotlin.gradle.targets.native.KotlinNativeSimulatorTestRun

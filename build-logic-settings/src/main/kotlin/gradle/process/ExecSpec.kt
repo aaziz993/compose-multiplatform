@@ -14,12 +14,12 @@ internal interface ExecSpec<T : org.gradle.process.ExecSpec> : BaseExecSpec<T> {
     val setArgs: SerializableAnyList?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super.applyTo(receiver)
 
-        commandLine?.let(recipient::commandLine)
-        setCommandLine?.let(recipient::setCommandLine)
-        args?.let(recipient::args)
-        setArgs?.let(recipient::setArgs)
+        commandLine?.let(receiver::commandLine)
+        setCommandLine?.let(receiver::setCommandLine)
+        args?.let(receiver::args)
+        setArgs?.let(receiver::setArgs)
     }
 }

@@ -33,8 +33,8 @@ internal data class KoverVariantSources(
     val excludedSourceSets: Set<String>? = null
 ) {
 
-    fun applyTo(recipient: KoverVariantSources) {
-        recipient.excludeJava tryAssign excludeJava
-        recipient.excludedSourceSets tryAssign excludedSourceSets
+    fun applyTo(receiver: KoverVariantSources) {
+        receiver.excludeJava tryAssign excludeJava
+        receiver.excludedSourceSets tryAssign excludedSourceSets
     }
 }

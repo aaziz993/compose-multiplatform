@@ -91,13 +91,13 @@ internal data class ShadowJar(
 ) : Jar<ShadowJar>(), ShadowSpec<ShadowJar> {
 
     context(Project)
-    override fun applyTo(recipient: ShadowJar) =
+    override fun applyTo(receiver: ShadowJar) =
         pluginManager.withPlugin(settings.libs.plugins.plugin("shadow").id) {
-            super<Jar>.applyTo(recipient)
-            super<ShadowSpec>.applyTo(recipient)
-            configurations?.map(Set<*>::toTypedArray)?.map(::files)?.let(recipient::setConfigurations)
-            enableRelocation?.let(recipient::setEnableRelocation)
-            relocationPrefix?.let(recipient::setRelocationPrefix)
+            super<Jar>.applyTo(receiver)
+            super<ShadowSpec>.applyTo(receiver)
+            configurations?.map(Set<*>::toTypedArray)?.map(::files)?.let(receiver::setConfigurations)
+            enableRelocation?.let(receiver::setEnableRelocation)
+            relocationPrefix?.let(receiver::setRelocationPrefix)
         }
 
     context(Project)

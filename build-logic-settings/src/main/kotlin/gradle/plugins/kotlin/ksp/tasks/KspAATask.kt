@@ -34,18 +34,18 @@ internal data class KspAATask(
 ) : DefaultTask<KspAATask>() {
 
     context(Project)
-    override fun applyTo(recipient: KspAATask) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: KspAATask) {
+        super.applyTo(receiver)
 
-        kspClasspath?.toTypedArray()?.let(recipient.kspClasspath::from)
-        setKspClasspath?.let(recipient.kspClasspath::setFrom)
-        kspConfig?.applyTo(recipient.kspConfig)
+        kspClasspath?.toTypedArray()?.let(receiver.kspClasspath::from)
+        setKspClasspath?.let(receiver.kspClasspath::setFrom)
+        kspConfig?.applyTo(receiver.kspConfig)
 
-        recipient.commandLineArgumentProviders tryAssign commandLineArgumentProviders?.let { commandLineArgumentProviders ->
-            recipient.commandLineArgumentProviders.get() + commandLineArgumentProviders
+        receiver.commandLineArgumentProviders tryAssign commandLineArgumentProviders?.let { commandLineArgumentProviders ->
+            receiver.commandLineArgumentProviders.get() + commandLineArgumentProviders
         }
 
-        recipient.commandLineArgumentProviders tryAssign setCommandLineArgumentProviders
+        receiver.commandLineArgumentProviders tryAssign setCommandLineArgumentProviders
     }
 
     context(Project)

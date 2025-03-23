@@ -59,15 +59,15 @@ internal data class JniLibsPackaging(
     val setTestOnly: Set<String>? = null,
 ) {
 
-    fun applyTo(recipient: JniLibsPackaging) {
-        recipient::useLegacyPackaging trySet useLegacyPackaging
-        excludes?.let(recipient.excludes::addAll)
-        setExcludes?.act(recipient.excludes::clear)?.let(recipient.excludes::addAll)
-        pickFirsts?.let(recipient.pickFirsts::addAll)
-        setPickFirsts?.act(recipient.pickFirsts::clear)?.let(recipient.pickFirsts::addAll)
-        keepDebugSymbols?.let(recipient.keepDebugSymbols::addAll)
-        setKeepDebugSymbols?.act(recipient.keepDebugSymbols::clear)?.let(recipient.keepDebugSymbols::addAll)
-        testOnly?.let(recipient.testOnly::addAll)
-        setTestOnly?.act(recipient.testOnly::clear)?.let(recipient.testOnly::addAll)
+    fun applyTo(receiver: JniLibsPackaging) {
+        receiver::useLegacyPackaging trySet useLegacyPackaging
+        excludes?.let(receiver.excludes::addAll)
+        setExcludes?.act(receiver.excludes::clear)?.let(receiver.excludes::addAll)
+        pickFirsts?.let(receiver.pickFirsts::addAll)
+        setPickFirsts?.act(receiver.pickFirsts::clear)?.let(receiver.pickFirsts::addAll)
+        keepDebugSymbols?.let(receiver.keepDebugSymbols::addAll)
+        setKeepDebugSymbols?.act(receiver.keepDebugSymbols::clear)?.let(receiver.keepDebugSymbols::addAll)
+        testOnly?.let(receiver.testOnly::addAll)
+        setTestOnly?.act(receiver.testOnly::clear)?.let(receiver.testOnly::addAll)
     }
 }

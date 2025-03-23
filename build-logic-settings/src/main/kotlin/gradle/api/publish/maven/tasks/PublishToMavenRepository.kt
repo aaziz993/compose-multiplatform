@@ -30,16 +30,16 @@ internal data class PublishToMavenRepository(
 ) : AbstractPublishToMaven<PublishToMavenRepository>() {
 
     context(Project)
-    override fun applyTo(recipient: PublishToMavenRepository) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: PublishToMavenRepository) {
+        super.applyTo(receiver)
 
         PublishToMavenLocal
         repository?.let { repository ->
-            if (repository.name.isEmpty() || repository.name == recipient.name) {
-                repository.applyTo(recipient.repository)
+            if (repository.name.isEmpty() || repository.name == receiver.name) {
+                repository.applyTo(receiver.repository)
             }
             else {
-                recipient.repository = publishing.repositories.maven {
+                receiver.repository = publishing.repositories.maven {
                     repository.applyTo(this)
                 }
             }

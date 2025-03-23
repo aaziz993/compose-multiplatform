@@ -43,12 +43,12 @@ internal interface KotlinJvmCompile<T : org.jetbrains.kotlin.gradle.tasks.Kotlin
     val jvmTargetValidationMode: JvmTargetValidationMode?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super<BaseKotlinCompile>.applyTo(recipient)
-        super<KotlinCompilationTask>.applyTo(recipient)
-        super<UsesKotlinJavaToolchain>.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super<BaseKotlinCompile>.applyTo(receiver)
+        super<KotlinCompilationTask>.applyTo(receiver)
+        super<UsesKotlinJavaToolchain>.applyTo(receiver)
 
-        recipient.jvmTargetValidationMode tryAssign jvmTargetValidationMode
+        receiver.jvmTargetValidationMode tryAssign jvmTargetValidationMode
     }
 }
 

@@ -186,24 +186,24 @@ internal interface BuildType<T : BuildType> : ProjectNamed<T>, VariantDimension<
 
     context(Project)
     @Suppress("UnstableApiUsage")
-    override fun applyTo(recipient: T) {
-        super<VariantDimension>.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super<VariantDimension>.applyTo(receiver)
 
-        recipient::enableUnitTestCoverage trySet enableUnitTestCoverage
-        recipient::enableAndroidTestCoverage trySet enableAndroidTestCoverage
-        recipient::isPseudoLocalesEnabled trySet isPseudoLocalesEnabled
-        recipient::isJniDebuggable trySet isJniDebuggable
-        recipient::renderscriptOptimLevel trySet renderscriptOptimLevel
-        recipient::isMinifyEnabled trySet isMinifyEnabled
-        recipient::isShrinkResources trySet isShrinkResources
-        matchingFallbacks?.let(recipient.matchingFallbacks::addAll)
+        receiver::enableUnitTestCoverage trySet enableUnitTestCoverage
+        receiver::enableAndroidTestCoverage trySet enableAndroidTestCoverage
+        receiver::isPseudoLocalesEnabled trySet isPseudoLocalesEnabled
+        receiver::isJniDebuggable trySet isJniDebuggable
+        receiver::renderscriptOptimLevel trySet renderscriptOptimLevel
+        receiver::isMinifyEnabled trySet isMinifyEnabled
+        receiver::isShrinkResources trySet isShrinkResources
+        matchingFallbacks?.let(receiver.matchingFallbacks::addAll)
 
         postprocessing?.let { postprocessing ->
-            recipient.postprocessing(postprocessing::applyTo)
+            receiver.postprocessing(postprocessing::applyTo)
         }
 
-        initWith?.let(android.buildTypes::getByName)?.let(recipient::initWith)
+        initWith?.let(android.buildTypes::getByName)?.let(receiver::initWith)
 
-        vcsInfo?.applyTo(recipient.vcsInfo)
+        vcsInfo?.applyTo(receiver.vcsInfo)
     }
 }

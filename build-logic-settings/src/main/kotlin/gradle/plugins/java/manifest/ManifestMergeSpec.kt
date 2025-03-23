@@ -10,12 +10,12 @@ internal data class ManifestMergeSpec(
     val eachEntries: List<ManifestMergeDetails>? = null,
 ) {
 
-    fun applyTo(recipient: ManifestMergeSpec) {
-        contentCharset?.let(recipient::setContentCharset)
-        from?.toTypedArray()?.let(recipient::from)
+    fun applyTo(receiver: ManifestMergeSpec) {
+        contentCharset?.let(receiver::setContentCharset)
+        from?.toTypedArray()?.let(receiver::from)
 
         eachEntries?.let { eachEntries ->
-            recipient.eachEntry {
+            receiver.eachEntry {
                 eachEntries.find { eachEntry -> eachEntry.equals(this) }?.applyTo(this)
             }
         }

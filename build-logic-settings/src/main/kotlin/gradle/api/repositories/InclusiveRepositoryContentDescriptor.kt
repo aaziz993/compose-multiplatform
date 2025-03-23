@@ -85,7 +85,7 @@ internal interface InclusiveRepositoryContentDescriptor<T: InclusiveRepositoryCo
     val includeVersionsByRegexes: Set<Version>?
 
     @Suppress("UnstableApiUsage")
-    fun applyTo(recipient: T) {
+    fun applyTo(receiver: T) {
         includeGroups?.forEach(descriptor::includeGroup)
         includeGroupsAndSubgroups?.forEach(descriptor::includeGroupAndSubgroups)
         includeGroupsByRegexes?.forEach(descriptor::includeGroupByRegex)

@@ -6,21 +6,18 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinTestRun
 /**
  * A [KotlinExecution] that runs configured tests.
  */
-internal interface KotlinTestRun<T : KotlinTestRun<S>,
-    S : org.jetbrains.kotlin.gradle.plugin.KotlinExecution.ExecutionSource,
-    F : org.gradle.api.tasks.testing.TestFilter>
-    : KotlinExecution<T, S> {
+internal interface KotlinTestRun<T : KotlinTestRun<*>, F : org.gradle.api.tasks.testing.TestFilter> : KotlinExecution<T> {
 
     /**
      * Configures filtering for executable tests using the provided [configureFilter] configuration.
      */
-    val filter: TestFilter<F>?
+    val filter: TestFilter<out org.gradle.api.tasks.testing.TestFilter>?
 
     @Suppress("UNCHECKED_CAST")
-    fun applyTo(recipient: T) {
+    fun applyTo(receiver: T) {
         filter?.let { filter ->
-            recipient.filter {
-                filter.applyTo(this as F)
+            receiver.filter {
+                filter.applyTo(this)
             }
         }
     }

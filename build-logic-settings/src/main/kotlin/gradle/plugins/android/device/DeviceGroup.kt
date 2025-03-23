@@ -17,9 +17,9 @@ internal data class DeviceGroup(
 
     context(Project)
     @Suppress("UnstableApiUsage")
-    override fun applyTo(recipient: DeviceGroup) {
+    override fun applyTo(receiver: DeviceGroup) {
         targetDevices?.forEach { targetDevice ->
-            targetDevice.applyTo(recipient.targetDevices) { _, _ -> }
+            targetDevice.applyTo(receiver.targetDevices) { _, _ -> }
         }
     }
 }

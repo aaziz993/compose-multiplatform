@@ -43,25 +43,25 @@ internal data class KoverCurrentProjectVariantsConfig(
     val instrumentation: KoverProjectInstrumentation? = null,
 ) : KoverVariantConfig<KoverCurrentProjectVariantsConfig> {
 
-    override fun applyTo(recipient: KoverCurrentProjectVariantsConfig) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: KoverCurrentProjectVariantsConfig) {
+        super.applyTo(receiver)
 
         createVariants?.forEach { (variantName, config) ->
-            recipient.createVariant(variantName, config::applyTo)
+            receiver.createVariant(variantName, config::applyTo)
         }
 
         copyVariants?.forEach { (variantName, originalVariantName) ->
-            recipient.copyVariant(variantName, originalVariantName)
+            receiver.copyVariant(variantName, originalVariantName)
         }
 
         providedVariants?.forEach { (variantName, config) ->
-            recipient.providedVariant(variantName, config::applyTo)
+            receiver.providedVariant(variantName, config::applyTo)
         }
 
         totalVariant?.let { totalVariant ->
-            recipient.totalVariant(totalVariant::applyTo)
+            receiver.totalVariant(totalVariant::applyTo)
         }
 
-        instrumentation?.applyTo(recipient.instrumentation)
+        instrumentation?.applyTo(receiver.instrumentation)
     }
 }

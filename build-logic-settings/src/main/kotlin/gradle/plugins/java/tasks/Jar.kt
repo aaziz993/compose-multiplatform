@@ -52,13 +52,13 @@ internal abstract class Jar<T : org.gradle.api.tasks.bundling.Jar> : Zip<T>() {
     abstract val metaInf: CopySpecImpl?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super.applyTo(receiver)
 
-        metadataCharset?.let(recipient::setMetadataCharset)
-        manifestContentCharset?.let(recipient::setManifestContentCharset)
-        manifest?.applyTo(recipient.manifest)
-        metaInf?.applyTo(recipient.metaInf)
+        metadataCharset?.let(receiver::setMetadataCharset)
+        manifestContentCharset?.let(receiver::setManifestContentCharset)
+        manifest?.applyTo(receiver.manifest)
+        metaInf?.applyTo(receiver.metaInf)
     }
 }
 

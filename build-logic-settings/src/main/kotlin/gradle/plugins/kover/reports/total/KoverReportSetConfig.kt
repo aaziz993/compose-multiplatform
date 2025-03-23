@@ -117,23 +117,23 @@ internal data class KoverReportSetConfig(
 ) {
 
     context(Project)
-    fun applyTo(recipient: KoverReportSetConfig) {
-        filters?.applyTo(recipient.filters)
+    fun applyTo(receiver: KoverReportSetConfig) {
+        filters?.applyTo(receiver.filters)
 
         filterAppends?.forEach { filterAppend ->
-            recipient.filtersAppend(filterAppend::applyTo)
+            receiver.filtersAppend(filterAppend::applyTo)
         }
 
-        html?.applyTo(recipient.html)
-        xml?.applyTo(recipient.xml)
-        binary?.applyTo(recipient.binary)
-        verify?.applyTo(recipient.verify)
+        html?.applyTo(receiver.html)
+        xml?.applyTo(receiver.xml)
+        binary?.applyTo(receiver.binary)
+        verify?.applyTo(receiver.verify)
 
         verifyAppends?.forEach { filterAppend ->
-            recipient.verifyAppend(filterAppend::applyTo)
+            receiver.verifyAppend(filterAppend::applyTo)
         }
 
-        log?.applyTo(recipient.log)
-        recipient.additionalBinaryReports tryAssign additionalBinaryReports?.map(::file)
+        log?.applyTo(receiver.log)
+        receiver.additionalBinaryReports tryAssign additionalBinaryReports?.map(::file)
     }
 }

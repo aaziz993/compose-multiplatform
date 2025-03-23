@@ -16,8 +16,8 @@ internal data class AppleSourceSet(
         get() = sourceSetName
 
     context(Project)
-    override fun applyTo(recipient: org.jetbrains.gradle.apple.AppleSourceSet) {
-        apple?.applyTo(recipient.apple)
+    override fun applyTo(receiver: org.jetbrains.gradle.apple.AppleSourceSet) {
+        apple?.applyTo(receiver.apple)
     }
 }
 

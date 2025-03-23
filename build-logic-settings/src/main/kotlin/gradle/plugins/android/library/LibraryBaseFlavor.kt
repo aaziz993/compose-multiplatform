@@ -12,8 +12,8 @@ import org.gradle.api.Project
 internal interface LibraryBaseFlavor<T: LibraryBaseFlavor> : BaseFlavor<T>, LibraryVariantDimension<T> {
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super<BaseFlavor>.applyTo(recipient)
-        super<LibraryVariantDimension>.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super<BaseFlavor>.applyTo(receiver)
+        super<LibraryVariantDimension>.applyTo(receiver)
     }
 }

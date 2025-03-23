@@ -45,14 +45,14 @@ internal class JUnitPlatformOptions(
 ) : TestFrameworkOptions<JUnitPlatformOptions>() {
 
     context(Project)
-    override fun applyTo(recipient: JUnitPlatformOptions) {
-        includeEngines?.toTypedArray()?.let(recipient::includeEngines)
-        setIncludeEngines?.let(recipient::setIncludeEngines)
-        excludeEngines?.toTypedArray()?.let(recipient::excludeEngines)
-        setExcludeEngines?.let(recipient::setExcludeEngines)
-        includeTags?.toTypedArray()?.let(recipient::includeTags)
-        setIncludeTags?.let(recipient::setIncludeTags)
-        excludeTags?.toTypedArray()?.let(recipient::excludeTags)
-        setExcludeTags?.let(recipient::setExcludeTags)
+    override fun applyTo(receiver: JUnitPlatformOptions) {
+        includeEngines?.toTypedArray()?.let(receiver::includeEngines)
+        setIncludeEngines?.let(receiver::setIncludeEngines)
+        excludeEngines?.toTypedArray()?.let(receiver::excludeEngines)
+        setExcludeEngines?.let(receiver::setExcludeEngines)
+        includeTags?.toTypedArray()?.let(receiver::includeTags)
+        setIncludeTags?.let(receiver::setIncludeTags)
+        excludeTags?.toTypedArray()?.let(receiver::excludeTags)
+        setExcludeTags?.let(receiver::setExcludeTags)
     }
 }

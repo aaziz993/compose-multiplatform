@@ -58,9 +58,9 @@ internal data class KspTaskMetadata(
 ) : KotlinCompileCommon<KspTaskMetadata>(), KspTask<KspTaskMetadata> {
 
     context(Project)
-    override fun applyTo(recipient: KspTaskMetadata) {
-        super<KotlinCompileCommon>.applyTo(recipient)
-        super<KspTask>.applyTo(recipient)
+    override fun applyTo(receiver: KspTaskMetadata) {
+        super<KotlinCompileCommon>.applyTo(receiver)
+        super<KspTask>.applyTo(receiver)
     }
 
     context(Project)

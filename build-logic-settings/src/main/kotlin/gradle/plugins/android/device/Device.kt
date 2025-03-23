@@ -17,6 +17,6 @@ internal data class DeviceImpl(
 ) : Device<com.android.build.api.dsl.Device> {
 
     context(Project)
-    override fun applyTo(recipient: com.android.build.api.dsl.Device) {
+    override fun applyTo(receiver: com.android.build.api.dsl.Device) {
     }
 }

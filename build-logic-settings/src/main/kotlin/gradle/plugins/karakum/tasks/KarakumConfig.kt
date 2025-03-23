@@ -34,12 +34,12 @@ internal data class KarakumConfig(
 ) : DefaultTask<KarakumConfig>() {
 
     context(Project)
-    override fun applyTo(recipient: KarakumConfig) =
+    override fun applyTo(receiver: KarakumConfig) =
         pluginManager.withPlugin(settings.libs.plugins.plugin("karakum").id) {
-            super.applyTo(recipient)
+            super.applyTo(receiver)
 
-            recipient.configFile tryAssign configFile?.let(::file)
-            recipient.destinationFile tryAssign destinationFile?.let(::file)
+            receiver.configFile tryAssign configFile?.let(::file)
+            receiver.destinationFile tryAssign destinationFile?.let(::file)
         }
 
     context(Project)

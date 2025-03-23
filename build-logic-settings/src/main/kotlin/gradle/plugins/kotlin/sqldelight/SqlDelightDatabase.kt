@@ -64,19 +64,19 @@ internal data class SqlDelightDatabase(
 ) : ProjectNamed<SqlDelightDatabase> {
 
     context(Project)
-    override fun applyTo(recipient: SqlDelightDatabase) {
-        recipient.packageName tryAssign packageName
-        recipient.schemaOutputDirectory tryAssign schemaOutputDirectory?.let(layout.projectDirectory::dir)
-        srcDirs?.toTypedArray()?.let(recipient::srcDirs)
-        setSrcDirs?.let(recipient.srcDirs::setFrom)
-        recipient.deriveSchemaFromMigrations tryAssign deriveSchemaFromMigrations
-        recipient.verifyMigrations tryAssign verifyMigrations
-        recipient.verifyDefinitions tryAssign verifyDefinitions
-        recipient.migrationOutputDirectory tryAssign migrationOutputDirectory?.let(layout.projectDirectory::dir)
-        recipient.migrationOutputFileFormat tryAssign migrationOutputFileFormat
-        recipient.generateAsync tryAssign generateAsync
-        modules?.map { module -> module.resolve() }?.forEach(recipient::module)
-        dialects?.forEach(recipient::dialect)
-        recipient.treatNullAsUnknownForEquality tryAssign treatNullAsUnknownForEquality
+    override fun applyTo(receiver: SqlDelightDatabase) {
+        receiver.packageName tryAssign packageName
+        receiver.schemaOutputDirectory tryAssign schemaOutputDirectory?.let(layout.projectDirectory::dir)
+        srcDirs?.toTypedArray()?.let(receiver::srcDirs)
+        setSrcDirs?.let(receiver.srcDirs::setFrom)
+        receiver.deriveSchemaFromMigrations tryAssign deriveSchemaFromMigrations
+        receiver.verifyMigrations tryAssign verifyMigrations
+        receiver.verifyDefinitions tryAssign verifyDefinitions
+        receiver.migrationOutputDirectory tryAssign migrationOutputDirectory?.let(layout.projectDirectory::dir)
+        receiver.migrationOutputFileFormat tryAssign migrationOutputFileFormat
+        receiver.generateAsync tryAssign generateAsync
+        modules?.map { module -> module.resolve() }?.forEach(receiver::module)
+        dialects?.forEach(receiver::dialect)
+        receiver.treatNullAsUnknownForEquality tryAssign treatNullAsUnknownForEquality
     }
 }

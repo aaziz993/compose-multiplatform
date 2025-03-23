@@ -9,10 +9,10 @@ internal abstract class SourceTask<T : SourceTask> : ConventionTask<T>(), Patter
     abstract val sourceFiles: List<String>?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super<ConventionTask>.applyTo(recipient)
-        super<PatternFilterable>.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super<ConventionTask>.applyTo(receiver)
+        super<PatternFilterable>.applyTo(receiver)
 
-        sourceFiles?.toTypedArray()?.let(recipient::setSource)
+        sourceFiles?.toTypedArray()?.let(receiver::setSource)
     }
 }

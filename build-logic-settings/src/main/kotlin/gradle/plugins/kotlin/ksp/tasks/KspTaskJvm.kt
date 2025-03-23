@@ -59,10 +59,10 @@ internal data class KspTaskJvm(
 ) : KotlinCompile<KspTaskJvm>() {
 
     context(Project)
-    override fun applyTo(recipient: KspTaskJvm) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: KspTaskJvm) {
+        super.applyTo(receiver)
 
-        recipient.destination tryAssign destination?.let(::file)
+        receiver.destination tryAssign destination?.let(::file)
     }
 
     context(Project)

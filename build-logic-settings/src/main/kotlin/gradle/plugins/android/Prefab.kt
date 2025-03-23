@@ -51,10 +51,10 @@ internal data class Prefab(
 ) : ProjectNamed<Prefab> {
 
     context(Project)
-    override fun applyTo(recipient: Prefab) {
-        recipient::name trySet name
-        recipient::headers trySet headers
-        recipient::libraryName trySet libraryName
-        recipient::headerOnly trySet headerOnly
+    override fun applyTo(receiver: Prefab) {
+        receiver::name trySet name
+        receiver::headers trySet headers
+        receiver::libraryName trySet libraryName
+        receiver::headerOnly trySet headerOnly
     }
 }

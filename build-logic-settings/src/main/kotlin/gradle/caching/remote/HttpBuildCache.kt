@@ -20,19 +20,19 @@ internal data class HttpBuildCache(
 ) : AbstractBuildCache<HttpBuildCache>() {
 
     context(Settings)
-    override fun applyTo(recipient: HttpBuildCache) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: HttpBuildCache) {
+        super.applyTo(receiver)
 
-        recipient.setUrl(url)
-        credentials?.applyTo(recipient.credentials)
-        allowUntrustedServer?.let(recipient::setAllowUntrustedServer)
-        allowInsecureProtocol?.let(recipient::setAllowInsecureProtocol)
-        useExpectContinue?.let(recipient::setUseExpectContinue)
+        receiver.setUrl(url)
+        credentials?.applyTo(receiver.credentials)
+        allowUntrustedServer?.let(receiver::setAllowUntrustedServer)
+        allowInsecureProtocol?.let(receiver::setAllowInsecureProtocol)
+        useExpectContinue?.let(receiver::setUseExpectContinue)
     }
 
     context(Settings)
-    override fun applyTo(recipient: BuildCacheConfiguration) {
-        recipient.remote(HttpBuildCache::class.java) {
+    override fun applyTo(receiver: BuildCacheConfiguration) {
+        receiver.remote(HttpBuildCache::class.java) {
             applyTo(this)
         }
     }

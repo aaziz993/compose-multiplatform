@@ -77,12 +77,12 @@ internal data class LibraryBuildFeatures(
     val prefabPublishing: Boolean? = null,
 ) : BuildFeatures<LibraryBuildFeatures> {
 
-    override fun applyTo(recipient: LibraryBuildFeatures) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: LibraryBuildFeatures) {
+        super.applyTo(receiver)
 
-        recipient::androidResources trySet androidResources
-        recipient::dataBinding trySet dataBinding
-        recipient::mlModelBinding trySet mlModelBinding
-        recipient::prefabPublishing trySet prefabPublishing
+        receiver::androidResources trySet androidResources
+        receiver::dataBinding trySet dataBinding
+        receiver::mlModelBinding trySet mlModelBinding
+        receiver::prefabPublishing trySet prefabPublishing
     }
 }

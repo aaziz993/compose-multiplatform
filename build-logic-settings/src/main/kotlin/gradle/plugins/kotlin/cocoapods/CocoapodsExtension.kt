@@ -218,20 +218,20 @@ internal interface CocoapodsExtension {
         }
 
         context(Project)
-        fun applyTo(recipient: CocoapodsExtension.CocoapodsDependency) {
-            recipient::moduleName trySet moduleName
-            recipient::headers trySet headers
-            recipient::version trySet version
-            recipient::source trySet source?.toPodLocation()
-            recipient::extraOpts trySet extraOpts?.let { extraOpts -> recipient.extraOpts + extraOpts }
-            recipient::extraOpts trySet setExtraOpts
-            recipient::packageName trySet packageName
-            recipient::linkOnly trySet linkOnly
-            interopBindingDependencies?.let(recipient.interopBindingDependencies::addAll)
+        fun applyTo(receiver: CocoapodsExtension.CocoapodsDependency) {
+            receiver::moduleName trySet moduleName
+            receiver::headers trySet headers
+            receiver::version trySet version
+            receiver::source trySet source?.toPodLocation()
+            receiver::extraOpts trySet extraOpts?.let { extraOpts -> receiver.extraOpts + extraOpts }
+            receiver::extraOpts trySet setExtraOpts
+            receiver::packageName trySet packageName
+            receiver::linkOnly trySet linkOnly
+            interopBindingDependencies?.let(receiver.interopBindingDependencies::addAll)
             setInteropBindingDependencies
-                ?.act(recipient.interopBindingDependencies::clear)
-                ?.let(recipient.interopBindingDependencies::addAll)
-            podspecDirectory?.let(recipient::path)
+                ?.act(receiver.interopBindingDependencies::clear)
+                ?.let(receiver.interopBindingDependencies::addAll)
+            podspecDirectory?.let(receiver::path)
         }
 
         @Serializable
@@ -239,8 +239,8 @@ internal interface CocoapodsExtension {
             val urls: LinkedHashSet<String>? = null,
         ) {
 
-            fun applyTo(recipient: CocoapodsExtension.SpecRepos) {
-                urls?.forEach(recipient::url)
+            fun applyTo(receiver: CocoapodsExtension.SpecRepos) {
+                urls?.forEach(receiver::url)
             }
         }
 

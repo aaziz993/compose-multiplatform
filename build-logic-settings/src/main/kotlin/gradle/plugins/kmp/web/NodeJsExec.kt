@@ -16,7 +16,7 @@ internal data class NodeJsExec(
 ) {
 
     context(Project)
-    fun applyTo(recipient: NodeJsExec) {
+    fun applyTo(receiver: NodeJsExec) {
         nodeJsRoot?.applyTo(exec.nodeJsRoot)
         nodeArgs?.let(exec.nodeArgs::addAll)
         exec::sourceMapStackTraces trySet sourceMapStackTraces

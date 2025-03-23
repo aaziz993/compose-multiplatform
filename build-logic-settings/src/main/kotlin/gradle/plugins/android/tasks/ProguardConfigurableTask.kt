@@ -52,31 +52,31 @@ internal data class ProguardConfigurableTask(
 ) : NonIncrementalTask<ProguardConfigurableTask>() {
 
     context(Project)
-    override fun applyTo(recipient: ProguardConfigurableTask) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: ProguardConfigurableTask) {
+        super.applyTo(receiver)
 
-        recipient.componentType tryAssign componentType
-        recipient.includeFeaturesInScopes tryAssign includeFeaturesInScopes
-        testedMappingFile?.toTypedArray()?.let(recipient.testedMappingFile::from)
-setTestedMappingFile?.let(recipient.testedMappingFile::setFrom)
-        classes?.toTypedArray()?.let(recipient.classes::from)
-setClasses?.let(recipient.classes::setFrom)
-        recipient.resourcesJar tryAssign resourcesJar?.let(::file)
-        referencedClasses?.toTypedArray()?.let(recipient.referencedClasses::from)
-setReferencedClasses?.let(recipient.referencedClasses::setFrom)
-        referencedResources?.toTypedArray()?.let(recipient.referencedResources::from)
-setReferencedResources?.let(recipient.referencedResources::setFrom)
-        recipient.extractedDefaultProguardFile tryAssign extractedDefaultProguardFile?.let(project.layout.projectDirectory::dir)
-        generatedProguardFile?.toTypedArray()?.let(recipient.generatedProguardFile::from)
-setGeneratedProguardFile?.let(recipient.generatedProguardFile::setFrom)
-        configurationFiles?.toTypedArray()?.let(recipient.configurationFiles::from)
-setConfigurationFiles?.let(recipient.configurationFiles::setFrom)
-        libraryKeepRulesFileCollection?.toTypedArray()?.let(recipient.libraryKeepRulesFileCollection::from)
-setLibraryKeepRulesFileCollection?.let(recipient.libraryKeepRulesFileCollection::setFrom)
-        recipient.ignoreFromInKeepRules tryAssign ignoreFromInKeepRules
-        recipient.ignoreFromAllExternalDependenciesInKeepRules tryAssign ignoreFromAllExternalDependenciesInKeepRules
-        recipient.mappingFile tryAssign mappingFile?.let(::file)
-        recipient.hasAllAccessTransformers tryAssign hasAllAccessTransformers
+        receiver.componentType tryAssign componentType
+        receiver.includeFeaturesInScopes tryAssign includeFeaturesInScopes
+        testedMappingFile?.toTypedArray()?.let(receiver.testedMappingFile::from)
+setTestedMappingFile?.let(receiver.testedMappingFile::setFrom)
+        classes?.toTypedArray()?.let(receiver.classes::from)
+setClasses?.let(receiver.classes::setFrom)
+        receiver.resourcesJar tryAssign resourcesJar?.let(::file)
+        referencedClasses?.toTypedArray()?.let(receiver.referencedClasses::from)
+setReferencedClasses?.let(receiver.referencedClasses::setFrom)
+        referencedResources?.toTypedArray()?.let(receiver.referencedResources::from)
+setReferencedResources?.let(receiver.referencedResources::setFrom)
+        receiver.extractedDefaultProguardFile tryAssign extractedDefaultProguardFile?.let(project.layout.projectDirectory::dir)
+        generatedProguardFile?.toTypedArray()?.let(receiver.generatedProguardFile::from)
+setGeneratedProguardFile?.let(receiver.generatedProguardFile::setFrom)
+        configurationFiles?.toTypedArray()?.let(receiver.configurationFiles::from)
+setConfigurationFiles?.let(receiver.configurationFiles::setFrom)
+        libraryKeepRulesFileCollection?.toTypedArray()?.let(receiver.libraryKeepRulesFileCollection::from)
+setLibraryKeepRulesFileCollection?.let(receiver.libraryKeepRulesFileCollection::setFrom)
+        receiver.ignoreFromInKeepRules tryAssign ignoreFromInKeepRules
+        receiver.ignoreFromAllExternalDependenciesInKeepRules tryAssign ignoreFromAllExternalDependenciesInKeepRules
+        receiver.mappingFile tryAssign mappingFile?.let(::file)
+        receiver.hasAllAccessTransformers tryAssign hasAllAccessTransformers
     }
 
     context(Project)

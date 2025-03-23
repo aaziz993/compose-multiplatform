@@ -23,13 +23,13 @@ internal interface MultipleVariants<T : MultipleVariants> : PublishingOptions<T>
      */
     val includeFlavorDimensionAndValues: List<FlavorDimensionAndValues>?
 
-    override fun applyTo(recipient: T) {
-        allVariants?.takeIf { it }?.run { recipient.allVariants() }
+    override fun applyTo(receiver: T) {
+        allVariants?.takeIf { it }?.run { receiver.allVariants() }
 
-        includeBuildTypeValues?.toTypedArray()?.let(recipient::includeBuildTypeValues)
+        includeBuildTypeValues?.toTypedArray()?.let(receiver::includeBuildTypeValues)
 
         includeFlavorDimensionAndValues?.forEach { (dimension, values) ->
-            recipient.includeFlavorDimensionAndValues(dimension, * values.toTypedArray())
+            receiver.includeFlavorDimensionAndValues(dimension, * values.toTypedArray())
         }
     }
 }

@@ -51,22 +51,22 @@ internal data class DokkaGeneratorParametersSpec(
 ) {
 
     context(Project)
-    fun applyTo(recipient: DokkaGeneratorParametersSpec) {
-        recipient.moduleName tryAssign moduleName
-        recipient.moduleVersion tryAssign moduleVersion
-        recipient.failOnWarning tryAssign failOnWarning
-        recipient.offlineMode tryAssign offlineMode
-        recipient.suppressObviousFunctions tryAssign suppressObviousFunctions
-        recipient.suppressInheritedMembers tryAssign suppressInheritedMembers
-        includes?.toTypedArray()?.let(recipient.includes::from)
-        setIncludes?.let(recipient.includes::setFrom)
-        pluginsClasspath?.toTypedArray()?.let(recipient.pluginsClasspath::from)
-        setPluginsClasspath?.let(recipient.pluginsClasspath::setFrom)
+    fun applyTo(receiver: DokkaGeneratorParametersSpec) {
+        receiver.moduleName tryAssign moduleName
+        receiver.moduleVersion tryAssign moduleVersion
+        receiver.failOnWarning tryAssign failOnWarning
+        receiver.offlineMode tryAssign offlineMode
+        receiver.suppressObviousFunctions tryAssign suppressObviousFunctions
+        receiver.suppressInheritedMembers tryAssign suppressInheritedMembers
+        includes?.toTypedArray()?.let(receiver.includes::from)
+        setIncludes?.let(receiver.includes::setFrom)
+        pluginsClasspath?.toTypedArray()?.let(receiver.pluginsClasspath::from)
+        setPluginsClasspath?.let(receiver.pluginsClasspath::setFrom)
 
         dokkaSourceSets?.forEach { dokkaSourceSet ->
-            dokkaSourceSet.applyTo(recipient.dokkaSourceSets)
+            dokkaSourceSet.applyTo(receiver.dokkaSourceSets)
         }
 
-        recipient.finalizeCoroutines tryAssign finalizeCoroutines
+        receiver.finalizeCoroutines tryAssign finalizeCoroutines
     }
 }

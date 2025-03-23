@@ -33,27 +33,27 @@ internal interface ShadowSpec<T : com.github.jengelman.gradle.plugins.shadow.tas
     val append: String?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super.applyTo(receiver)
 
-        relocators?.map(Relocator::toRelocator)?.forEach(recipient::relocate)
+        relocators?.map(Relocator::toRelocator)?.forEach(receiver::relocate)
 
         dependencyFilter?.let { dependencyFilter ->
-            recipient.dependencies {
+            receiver.dependencies {
                 dependencyFilter.applyTo(this)
             }
         }
 
-        minimize?.takeIf { it }?.run { recipient.minimize() }
+        minimize?.takeIf { it }?.run { receiver.minimize() }
 
         dependencyFilterForMinimize?.let { dependencyFilterForMinimize ->
-            recipient.minimize {
+            receiver.minimize {
                 dependencyFilterForMinimize.applyTo(this)
             }
         }
 
-        mergeServiceFiles?.takeIf { it }?.run { recipient.mergeServiceFiles() }
-        mergeServiceFilesPath?.let(recipient::mergeServiceFiles)
-        append?.let(recipient::append)
+        mergeServiceFiles?.takeIf { it }?.run { receiver.mergeServiceFiles() }
+        mergeServiceFilesPath?.let(receiver::mergeServiceFiles)
+        append?.let(receiver::append)
     }
 }

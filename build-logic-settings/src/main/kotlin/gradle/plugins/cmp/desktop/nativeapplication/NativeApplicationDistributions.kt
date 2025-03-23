@@ -20,8 +20,8 @@ internal data class NativeApplicationDistributions(
 ) : AbstractDistributions<NativeApplicationDistributions>() {
 
     context(Project)
-    override fun applyTo(recipient: NativeApplicationDistributions) {
-        super.applyTo(recipient)
-        macOS?.applyTo(recipient.macOS)
+    override fun applyTo(receiver: NativeApplicationDistributions) {
+        super.applyTo(receiver)
+        macOS?.applyTo(receiver.macOS)
     }
 }

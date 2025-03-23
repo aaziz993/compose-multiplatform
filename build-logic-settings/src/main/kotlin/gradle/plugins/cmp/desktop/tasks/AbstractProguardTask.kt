@@ -30,25 +30,25 @@ internal abstract class AbstractProguardTask<T : org.jetbrains.compose.desktop.a
     abstract val destinationDir: String?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super.applyTo(receiver)
 
-        inputFiles?.toTypedArray()?.let(recipient.inputFiles::from)
-setInputFiles?.let(recipient.inputFiles::setFrom)
-        recipient.mainJar tryAssign mainJar?.let(::file)
-        configurationFiles?.toTypedArray()?.let(recipient.configurationFiles::from)
-setConfigurationFiles?.let(recipient.configurationFiles::setFrom)
-        recipient.dontobfuscate tryAssign dontobfuscate
-        recipient.dontoptimize tryAssign dontoptimize
-        recipient.joinOutputJars tryAssign joinOutputJars
-        recipient.defaultComposeRulesFile tryAssign defaultComposeRulesFile?.let(::file)
-        recipient.proguardVersion tryAssign proguardVersion
-        proguardFiles?.toTypedArray()?.let(recipient.proguardFiles::from)
-setProguardFiles?.let(recipient.proguardFiles::setFrom)
-        recipient.javaHome tryAssign javaHome
-        recipient.mainClass tryAssign mainClass
-        recipient.maxHeapSize tryAssign maxHeapSize
-        recipient.destinationDir tryAssign destinationDir?.let(layout.projectDirectory::dir)
+        inputFiles?.toTypedArray()?.let(receiver.inputFiles::from)
+setInputFiles?.let(receiver.inputFiles::setFrom)
+        receiver.mainJar tryAssign mainJar?.let(::file)
+        configurationFiles?.toTypedArray()?.let(receiver.configurationFiles::from)
+setConfigurationFiles?.let(receiver.configurationFiles::setFrom)
+        receiver.dontobfuscate tryAssign dontobfuscate
+        receiver.dontoptimize tryAssign dontoptimize
+        receiver.joinOutputJars tryAssign joinOutputJars
+        receiver.defaultComposeRulesFile tryAssign defaultComposeRulesFile?.let(::file)
+        receiver.proguardVersion tryAssign proguardVersion
+        proguardFiles?.toTypedArray()?.let(receiver.proguardFiles::from)
+setProguardFiles?.let(receiver.proguardFiles::setFrom)
+        receiver.javaHome tryAssign javaHome
+        receiver.mainClass tryAssign mainClass
+        receiver.maxHeapSize tryAssign maxHeapSize
+        receiver.destinationDir tryAssign destinationDir?.let(layout.projectDirectory::dir)
     }
 }
 

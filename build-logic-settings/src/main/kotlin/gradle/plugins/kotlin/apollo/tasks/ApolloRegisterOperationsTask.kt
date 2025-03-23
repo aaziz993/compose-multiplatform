@@ -33,15 +33,15 @@ internal data class ApolloRegisterOperationsTask(
 ) : DefaultTask<ApolloRegisterOperationsTask>() {
 
     context(Project)
-    override fun applyTo(recipient: ApolloRegisterOperationsTask) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: ApolloRegisterOperationsTask) {
+        super.applyTo(receiver)
 
-        recipient.graph tryAssign graph
-        recipient.graphVariant tryAssign graphVariant
-        recipient.key tryAssign key
-        recipient.listId tryAssign listId
-        recipient.operationManifestFormat tryAssign operationManifestFormat
-        recipient.operationOutput tryAssign operationOutput?.let(::file)
+        receiver.graph tryAssign graph
+        receiver.graphVariant tryAssign graphVariant
+        receiver.key tryAssign key
+        receiver.listId tryAssign listId
+        receiver.operationManifestFormat tryAssign operationManifestFormat
+        receiver.operationOutput tryAssign operationOutput?.let(::file)
     }
 
     context(Project)

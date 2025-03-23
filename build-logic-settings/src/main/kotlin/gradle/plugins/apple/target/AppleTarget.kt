@@ -37,24 +37,24 @@ internal interface AppleTarget<T : org.jetbrains.gradle.apple.targets.AppleTarge
     val productName: String?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        recipient::bridgingHeader trySet bridgingHeader
+    override fun applyTo(receiver: T) {
+        receiver::bridgingHeader trySet bridgingHeader
 
         buildConfigurations?.forEach { buildConfigurations ->
-            buildConfigurations.applyTo(recipient.buildConfigurations)
+            buildConfigurations.applyTo(receiver.buildConfigurations)
         }
 
         buildSettings?.forEach { buildSettings ->
-            buildSettings.key.applyTo(recipient.buildSettings, buildSettings.value)
+            buildSettings.key.applyTo(receiver.buildSettings, buildSettings.value)
         }
 
-        recipient::embedFrameworks trySet embedFrameworks
-        recipient::ipad trySet ipad
-        recipient::iphone trySet iphone
-        productInfo?.let(recipient.productInfo::putAll)
-        setProductInfo?.act(recipient.productInfo::clear)?.let(recipient.productInfo::putAll)
-        recipient::productModuleName trySet productModuleName
-        recipient::productName trySet productName
+        receiver::embedFrameworks trySet embedFrameworks
+        receiver::ipad trySet ipad
+        receiver::iphone trySet iphone
+        productInfo?.let(receiver.productInfo::putAll)
+        setProductInfo?.act(receiver.productInfo::clear)?.let(receiver.productInfo::putAll)
+        receiver::productModuleName trySet productModuleName
+        receiver::productName trySet productName
     }
 }
 

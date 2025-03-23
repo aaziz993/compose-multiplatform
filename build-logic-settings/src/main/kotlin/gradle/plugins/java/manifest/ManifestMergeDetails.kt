@@ -21,8 +21,8 @@ internal data class ManifestMergeDetails(
             && (mergeValue ?: other.mergeValue) == other.mergeValue
             && (oldValue ?: other.value) == other.value
 
-    fun applyTo(recipient: ManifestMergeDetails) {
-        value?.let(recipient::setValue)
-        exclude?.takeIf { it }?.run { recipient.exclude() }
+    fun applyTo(receiver: ManifestMergeDetails) {
+        value?.let(receiver::setValue)
+        exclude?.takeIf { it }?.run { receiver.exclude() }
     }
 }

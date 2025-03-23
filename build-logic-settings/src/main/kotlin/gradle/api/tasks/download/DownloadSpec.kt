@@ -49,7 +49,7 @@ internal interface DownloadSpec {
 
     val body: String?
 
-    fun applyTo(recipient: DownloadSpec) {
+    fun applyTo(receiver: DownloadSpec) {
         spec.src(
             src.flatMap { src ->
                 if (src.endsWith("/")) {

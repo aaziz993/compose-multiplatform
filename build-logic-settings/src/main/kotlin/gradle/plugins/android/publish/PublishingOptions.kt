@@ -38,8 +38,8 @@ internal interface PublishingOptions<T : PublishingOptions> {
      */
     val withJavadocJar: Boolean?
 
-    fun applyTo(recipient: T) {
-        withSourcesJar?.takeIf { it }?.run { recipient.withSourcesJar() }
-        withJavadocJar?.takeIf { it }?.run { recipient.withJavadocJar() }
+    fun applyTo(receiver: T) {
+        withSourcesJar?.takeIf { it }?.run { receiver.withSourcesJar() }
+        withJavadocJar?.takeIf { it }?.run { receiver.withJavadocJar() }
     }
 }

@@ -12,9 +12,9 @@ internal data class JvmCompilationsTestRunSource(
 ) : JvmClasspathTestRunSource {
 
     context(Project)
-    override fun applyTo(recipient: KotlinJvmTestRun) =
-        recipient.setExecutionSourceFrom(
-            classpathCompilations.flatMap(recipient.target.compilations::getByNameOrAll),
-            testCompilations.flatMap(recipient.target.compilations::getByNameOrAll),
+    override fun applyTo(receiver: KotlinJvmTestRun) =
+        receiver.setExecutionSourceFrom(
+            classpathCompilations.flatMap(receiver.target.compilations::getByNameOrAll),
+            testCompilations.flatMap(receiver.target.compilations::getByNameOrAll),
         )
 }

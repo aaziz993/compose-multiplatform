@@ -16,8 +16,8 @@ internal interface DynamicFeatureBaseFlavor<T : DynamicFeatureBaseFlavor> :
     DynamicFeatureVariantDimension<T> {
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super<BaseFlavor>.applyTo(recipient)
-        super<DynamicFeatureVariantDimension>.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super<BaseFlavor>.applyTo(receiver)
+        super<DynamicFeatureVariantDimension>.applyTo(receiver)
     }
 }

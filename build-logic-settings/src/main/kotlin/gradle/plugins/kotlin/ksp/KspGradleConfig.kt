@@ -49,51 +49,51 @@ internal data class KspGradleConfig(
 ) {
 
     context(Project)
-    fun applyTo(recipient: KspGradleConfig) {
-        processorClasspath?.toTypedArray()?.let(recipient.processorClasspath::from)
-        setProcessorClasspath?.let(recipient.processorClasspath::setFrom)
-        recipient.moduleName tryAssign moduleName
-        sourceRoots?.toTypedArray()?.let(recipient.sourceRoots::from)
-        setSourceRoots?.let(recipient.sourceRoots::setFrom)
-        commonSourceRoots?.toTypedArray()?.let(recipient.commonSourceRoots::from)
-        setCommonSourceRoots?.let(recipient.commonSourceRoots::setFrom)
-        javaSourceRoots?.toTypedArray()?.let(recipient.javaSourceRoots::from)
-        setJavaSourceRoots?.let(recipient.javaSourceRoots::setFrom)
-        libraries?.toTypedArray()?.let(recipient.libraries::from)
-        setLibraries?.let(recipient.libraries::setFrom)
-        recipient.jdkHome tryAssign jdkHome?.let(::file)
-        recipient.projectBaseDir tryAssign projectBaseDir?.let(::file)
-        recipient.outputBaseDir tryAssign outputBaseDir?.let(::file)
-        recipient.cachesDir tryAssign cachesDir?.let(layout.projectDirectory::dir)
-        recipient.kotlinOutputDir tryAssign kotlinOutputDir?.let(::file)
-        recipient.javaOutputDir tryAssign javaOutputDir?.let(::file)
-        recipient.classOutputDir tryAssign classOutputDir?.let(::file)
-        recipient.resourceOutputDir tryAssign resourceOutputDir?.let(::file)
-        recipient.languageVersion tryAssign languageVersion
-        recipient.apiVersion tryAssign apiVersion
+    fun applyTo(receiver: KspGradleConfig) {
+        processorClasspath?.toTypedArray()?.let(receiver.processorClasspath::from)
+        setProcessorClasspath?.let(receiver.processorClasspath::setFrom)
+        receiver.moduleName tryAssign moduleName
+        sourceRoots?.toTypedArray()?.let(receiver.sourceRoots::from)
+        setSourceRoots?.let(receiver.sourceRoots::setFrom)
+        commonSourceRoots?.toTypedArray()?.let(receiver.commonSourceRoots::from)
+        setCommonSourceRoots?.let(receiver.commonSourceRoots::setFrom)
+        javaSourceRoots?.toTypedArray()?.let(receiver.javaSourceRoots::from)
+        setJavaSourceRoots?.let(receiver.javaSourceRoots::setFrom)
+        libraries?.toTypedArray()?.let(receiver.libraries::from)
+        setLibraries?.let(receiver.libraries::setFrom)
+        receiver.jdkHome tryAssign jdkHome?.let(::file)
+        receiver.projectBaseDir tryAssign projectBaseDir?.let(::file)
+        receiver.outputBaseDir tryAssign outputBaseDir?.let(::file)
+        receiver.cachesDir tryAssign cachesDir?.let(layout.projectDirectory::dir)
+        receiver.kotlinOutputDir tryAssign kotlinOutputDir?.let(::file)
+        receiver.javaOutputDir tryAssign javaOutputDir?.let(::file)
+        receiver.classOutputDir tryAssign classOutputDir?.let(::file)
+        receiver.resourceOutputDir tryAssign resourceOutputDir?.let(::file)
+        receiver.languageVersion tryAssign languageVersion
+        receiver.apiVersion tryAssign apiVersion
 
-        recipient.processorOptions tryAssign processorOptions?.let { processorOptions ->
-            recipient.processorOptions.get() + processorOptions
+        receiver.processorOptions tryAssign processorOptions?.let { processorOptions ->
+            receiver.processorOptions.get() + processorOptions
         }
 
-        recipient.processorOptions tryAssign setProcessorOptions
+        receiver.processorOptions tryAssign setProcessorOptions
         // Unfortunately, passing project.logger over is not possible.
-        recipient.logLevel tryAssign logLevel
-        recipient.allWarningsAsErrors tryAssign allWarningsAsErrors
+        receiver.logLevel tryAssign logLevel
+        receiver.allWarningsAsErrors tryAssign allWarningsAsErrors
 
-        recipient.excludedProcessors tryAssign excludedProcessors?.let { excludedProcessors ->
-            recipient.excludedProcessors.get() + excludedProcessors
+        receiver.excludedProcessors tryAssign excludedProcessors?.let { excludedProcessors ->
+            receiver.excludedProcessors.get() + excludedProcessors
         }
 
-        recipient.excludedProcessors tryAssign setExcludedProcessors
-        recipient.jvmTarget tryAssign jvmTarget
-        recipient.jvmDefaultMode tryAssign jvmDefaultMode
-        recipient.incremental tryAssign incremental
-        recipient.incrementalLog tryAssign incrementalLog
-        classpathStructure?.toTypedArray()?.let(recipient.classpathStructure::from)
-        setClasspathStructure?.let(recipient.classpathStructure::setFrom)
-        recipient.platformType tryAssign platformType
-        recipient.konanTargetName tryAssign konanTargetName
-        recipient.konanHome tryAssign konanHome
+        receiver.excludedProcessors tryAssign setExcludedProcessors
+        receiver.jvmTarget tryAssign jvmTarget
+        receiver.jvmDefaultMode tryAssign jvmDefaultMode
+        receiver.incremental tryAssign incremental
+        receiver.incrementalLog tryAssign incrementalLog
+        classpathStructure?.toTypedArray()?.let(receiver.classpathStructure::from)
+        setClasspathStructure?.let(receiver.classpathStructure::setFrom)
+        receiver.platformType tryAssign platformType
+        receiver.konanTargetName tryAssign konanTargetName
+        receiver.konanHome tryAssign konanHome
     }
 }

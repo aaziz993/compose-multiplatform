@@ -25,9 +25,9 @@ import org.gradle.api.Project
 internal interface ApplicationDefaultConfig<T : ApplicationDefaultConfig> : ApplicationBaseFlavor<T>, DefaultConfigDsl<T> {
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super<ApplicationBaseFlavor>.applyTo(recipient)
-        super<DefaultConfigDsl>.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super<ApplicationBaseFlavor>.applyTo(receiver)
+        super<DefaultConfigDsl>.applyTo(receiver)
     }
 }
 

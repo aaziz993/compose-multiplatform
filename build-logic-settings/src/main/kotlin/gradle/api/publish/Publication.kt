@@ -35,9 +35,9 @@ internal interface Publication<T : org.gradle.api.publish.Publication> : Project
     val withBuildIdentifier: Boolean?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        withoutBuildIdentifier?.takeIf { it }?.run { recipient.withoutBuildIdentifier() }
-        withBuildIdentifier?.takeIf { it }?.run { recipient.withBuildIdentifier() }
+    override fun applyTo(receiver: T) {
+        withoutBuildIdentifier?.takeIf { it }?.run { receiver.withoutBuildIdentifier() }
+        withBuildIdentifier?.takeIf { it }?.run { receiver.withBuildIdentifier() }
     }
 
     context(Project)

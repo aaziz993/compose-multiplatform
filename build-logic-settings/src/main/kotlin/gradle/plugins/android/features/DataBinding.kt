@@ -26,11 +26,11 @@ internal data class DataBinding(
     val enable: Boolean? = null,
 ) {
 
-    fun applyTo(recipient: DataBinding) {
-        recipient::version trySet version
-        recipient::addDefaultAdapters trySet addDefaultAdapters
-        recipient::addKtx trySet addKtx
-        recipient::enableForTests trySet enableForTests
-        recipient::enable trySet enable
+    fun applyTo(receiver: DataBinding) {
+        receiver::version trySet version
+        receiver::addDefaultAdapters trySet addDefaultAdapters
+        receiver::addKtx trySet addKtx
+        receiver::enableForTests trySet enableForTests
+        receiver::enable trySet enable
     }
 }

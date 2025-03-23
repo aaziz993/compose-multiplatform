@@ -26,27 +26,27 @@ internal interface ArtifactRepository<T : org.gradle.api.artifacts.repositories.
 
     context(Settings)
     @Suppress("UnstableApiUsage")
-    override fun applyTo(recipient: T) = with(layout.settingsDirectory) {
-        _applyTo(recipient)
+    override fun applyTo(receiver: T) = with(layout.settingsDirectory) {
+        _applyTo(receiver)
     }
 
     context(Project)
-    override fun applyTo(recipient: T) = with(layout.projectDirectory) {
-        _applyTo(recipient)
+    override fun applyTo(receiver: T) = with(layout.projectDirectory) {
+        _applyTo(receiver)
     }
 
     context(Directory)
-    fun _applyTo(named: T) {
+    fun _applyTo(receiver: T) {
         content?.let { content ->
-            named.content(content::applyTo)
+            receiver.content(content::applyTo)
         }
     }
 
     context(Settings)
-    fun applyTo(recipient: RepositoryHandler)
+    fun applyTo(receiver: RepositoryHandler)
 
     context(Project)
-    fun applyTo(recipient: RepositoryHandler)
+    fun applyTo(receiver: RepositoryHandler)
 }
 
 private object ArtifactRepositorySerializer : JsonPolymorphicSerializer<ArtifactRepository<*>>(

@@ -32,12 +32,12 @@ internal data class BuildConfigTask(
 ) : DefaultTask<BuildConfigTask>() {
 
     context(Project)
-    override fun applyTo(recipient: BuildConfigTask) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: BuildConfigTask) {
+        super.applyTo(receiver)
 
-        recipient.specs tryAssign specs?.map(buildConfig.sourceSets::getByName)
-        recipient.generator tryAssign generator?.toBuildConfigGenerator()
-        recipient.outputDir tryAssign outputDir?.let(layout.projectDirectory::dir)
+        receiver.specs tryAssign specs?.map(buildConfig.sourceSets::getByName)
+        receiver.generator tryAssign generator?.toBuildConfigGenerator()
+        receiver.outputDir tryAssign outputDir?.let(layout.projectDirectory::dir)
     }
 
     context(Project)

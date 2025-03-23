@@ -158,16 +158,16 @@ internal data class NdkBuildFlags(
 ) {
 
     @Suppress("UnstableApiUsage")
-    fun applyTo(recipient: NdkBuildFlags) {
-        arguments?.let(recipient.arguments::addAll)
-        setArguments?.act(recipient.arguments::clear)?.let(recipient.arguments::addAll)
-        cFlags?.let(recipient.cFlags::addAll)
-        setCFlags?.act(recipient.cFlags::clear)?.let(recipient.cFlags::addAll)
-        cppFlags?.let(recipient.cppFlags::addAll)
-        setCppFlags?.act(recipient.cppFlags::clear)?.let(recipient.cppFlags::addAll)
-        abiFilters?.let(recipient.abiFilters::addAll)
-        setAbiFilters?.act(recipient.abiFilters::clear)?.let(recipient.abiFilters::addAll)
-        targets?.let(recipient.targets::addAll)
-        setTargets?.act(recipient.targets::clear)?.let(recipient.targets::addAll)
+    fun applyTo(receiver: NdkBuildFlags) {
+        arguments?.let(receiver.arguments::addAll)
+        setArguments?.act(receiver.arguments::clear)?.let(receiver.arguments::addAll)
+        cFlags?.let(receiver.cFlags::addAll)
+        setCFlags?.act(receiver.cFlags::clear)?.let(receiver.cFlags::addAll)
+        cppFlags?.let(receiver.cppFlags::addAll)
+        setCppFlags?.act(receiver.cppFlags::clear)?.let(receiver.cppFlags::addAll)
+        abiFilters?.let(receiver.abiFilters::addAll)
+        setAbiFilters?.act(receiver.abiFilters::clear)?.let(receiver.abiFilters::addAll)
+        targets?.let(receiver.targets::addAll)
+        setTargets?.act(receiver.targets::clear)?.let(receiver.targets::addAll)
     }
 }

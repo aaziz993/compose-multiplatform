@@ -29,11 +29,11 @@ internal data class KotlinNpmInstallTask(
 ) : DefaultTask<KotlinNpmInstallTask>() {
 
     context(Project)
-    override fun applyTo(recipient: KotlinNpmInstallTask) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: KotlinNpmInstallTask) {
+        super.applyTo(receiver)
 
-        args?.let(recipient.args::addAll)
-        setArgs?.act(recipient.args::clear)?.let(recipient.args::addAll)
+        args?.let(receiver.args::addAll)
+        setArgs?.act(receiver.args::clear)?.let(receiver.args::addAll)
     }
 
     context(Project)

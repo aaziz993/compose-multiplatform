@@ -29,25 +29,25 @@ internal data class BenchmarkConfiguration(
 ) : ProjectNamed<BenchmarkConfiguration> {
 
     context(Project)
-    override fun applyTo(recipient: BenchmarkConfiguration) {
-        advanced?.let(recipient.advanced::putAll)
+    override fun applyTo(receiver: BenchmarkConfiguration) {
+        advanced?.let(receiver.advanced::putAll)
 
         setAdvanced?.let { setAdvanced ->
-            recipient.advanced = setAdvanced.toMutableMap()
+            receiver.advanced = setAdvanced.toMutableMap()
         }
 
-        excludes?.let(recipient.excludes::addAll)
-        recipient::excludes trySet setExcludes?.toMutableList()
-        includes?.let(recipient.includes::addAll)
-        recipient::includes trySet setIncludes?.toMutableList()
-        recipient::iterationTime trySet iterationTime
-        recipient::iterationTimeUnit trySet iterationTimeUnit
-        recipient::iterations trySet iterations
-        recipient::mode trySet mode
-        recipient::outputTimeUnit trySet outputTimeUnit
-        params?.mapValues { (_, value) -> value.toMutableList() }?.let(recipient.params::putAll)
-        recipient::params trySet setParams?.mapValues { (_, value) -> value.toMutableList() }?.toMutableMap()
-        recipient::reportFormat trySet reportFormat
-        recipient::warmups trySet warmups
+        excludes?.let(receiver.excludes::addAll)
+        receiver::excludes trySet setExcludes?.toMutableList()
+        includes?.let(receiver.includes::addAll)
+        receiver::includes trySet setIncludes?.toMutableList()
+        receiver::iterationTime trySet iterationTime
+        receiver::iterationTimeUnit trySet iterationTimeUnit
+        receiver::iterations trySet iterations
+        receiver::mode trySet mode
+        receiver::outputTimeUnit trySet outputTimeUnit
+        params?.mapValues { (_, value) -> value.toMutableList() }?.let(receiver.params::putAll)
+        receiver::params trySet setParams?.mapValues { (_, value) -> value.toMutableList() }?.toMutableMap()
+        receiver::reportFormat trySet reportFormat
+        receiver::warmups trySet warmups
     }
 }

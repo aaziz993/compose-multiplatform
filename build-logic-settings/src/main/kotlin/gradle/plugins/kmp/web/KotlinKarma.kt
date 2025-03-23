@@ -37,30 +37,30 @@ internal data class KotlinKarma(
 ) {
 
     context(Project)
-    fun applyTo(recipient: org.jetbrains.kotlin.gradle.targets.js.testing.karma.KotlinKarma, outputFileName: String) {
-        webpackConfig?.applyTo(recipient.webpackConfig, outputFileName)
-        useConfigDirectory?.let(recipient::useConfigDirectory)
-        useChrome?.takeIf { it }?.run { recipient.useChrome() }
-        useChromeHeadless?.takeIf { it }?.run { recipient.useChromeHeadless() }
-        useChromeHeadlessNoSandbox?.takeIf { it }?.run { recipient.useChromeHeadlessNoSandbox() }
-        useChromium?.takeIf { it }?.run { recipient.useChromium() }
-        useChromiumHeadless?.takeIf { it }?.run { recipient.useChromiumHeadless() }
-        useChromeCanary?.takeIf { it }?.run { recipient.useChromeCanary() }
-        useChromeCanaryHeadless?.takeIf { it }?.run { recipient.useChromeCanaryHeadless() }
-        useDebuggableChrome?.takeIf { it }?.run { recipient.useDebuggableChrome() }
-        usePhantomJS?.takeIf { it }?.run { recipient.usePhantomJS() }
-        useFirefox?.takeIf { it }?.run { recipient.useFirefox() }
-        useFirefoxHeadless?.takeIf { it }?.run { recipient.useFirefoxHeadless() }
-        useFirefoxDeveloper?.takeIf { it }?.run { recipient.useFirefoxDeveloper() }
-        useFirefoxDeveloperHeadless?.takeIf { it }?.run { recipient.useFirefoxDeveloperHeadless() }
-        useFirefoxAurora?.takeIf { it }?.run { recipient.useFirefoxAurora() }
-        useFirefoxAuroraHeadless?.takeIf { it }?.run { recipient.useFirefoxAuroraHeadless() }
-        useFirefoxNightly?.takeIf { it }?.run { recipient.useFirefoxNightly() }
-        useFirefoxNightlyHeadless?.takeIf { it }?.run { recipient.useFirefoxNightlyHeadless() }
-        useOpera?.takeIf { it }?.run { recipient.useOpera() }
-        useSafari?.takeIf { it }?.run { recipient.useSafari() }
-        useIe?.takeIf { it }?.run { recipient.useIe() }
-        useSourceMapSupport?.takeIf { it }?.run { recipient.useSourceMapSupport() }
+    fun applyTo(receiver: org.jetbrains.kotlin.gradle.targets.js.testing.karma.KotlinKarma, outputFileName: String) {
+        webpackConfig?.applyTo(receiver.webpackConfig, outputFileName)
+        useConfigDirectory?.let(receiver::useConfigDirectory)
+        useChrome?.takeIf { it }?.run { receiver.useChrome() }
+        useChromeHeadless?.takeIf { it }?.run { receiver.useChromeHeadless() }
+        useChromeHeadlessNoSandbox?.takeIf { it }?.run { receiver.useChromeHeadlessNoSandbox() }
+        useChromium?.takeIf { it }?.run { receiver.useChromium() }
+        useChromiumHeadless?.takeIf { it }?.run { receiver.useChromiumHeadless() }
+        useChromeCanary?.takeIf { it }?.run { receiver.useChromeCanary() }
+        useChromeCanaryHeadless?.takeIf { it }?.run { receiver.useChromeCanaryHeadless() }
+        useDebuggableChrome?.takeIf { it }?.run { receiver.useDebuggableChrome() }
+        usePhantomJS?.takeIf { it }?.run { receiver.usePhantomJS() }
+        useFirefox?.takeIf { it }?.run { receiver.useFirefox() }
+        useFirefoxHeadless?.takeIf { it }?.run { receiver.useFirefoxHeadless() }
+        useFirefoxDeveloper?.takeIf { it }?.run { receiver.useFirefoxDeveloper() }
+        useFirefoxDeveloperHeadless?.takeIf { it }?.run { receiver.useFirefoxDeveloperHeadless() }
+        useFirefoxAurora?.takeIf { it }?.run { receiver.useFirefoxAurora() }
+        useFirefoxAuroraHeadless?.takeIf { it }?.run { receiver.useFirefoxAuroraHeadless() }
+        useFirefoxNightly?.takeIf { it }?.run { receiver.useFirefoxNightly() }
+        useFirefoxNightlyHeadless?.takeIf { it }?.run { receiver.useFirefoxNightlyHeadless() }
+        useOpera?.takeIf { it }?.run { receiver.useOpera() }
+        useSafari?.takeIf { it }?.run { receiver.useSafari() }
+        useIe?.takeIf { it }?.run { receiver.useIe() }
+        useSourceMapSupport?.takeIf { it }?.run { receiver.useSourceMapSupport() }
     }
 }
 

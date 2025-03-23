@@ -41,7 +41,7 @@ internal data class ModularitySpec(
     val inferModulePath: Boolean? = null,
 ) {
 
-    fun applyTo(recipient: ModularitySpec) {
+    fun applyTo(receiver: ModularitySpec) {
         spec.inferModulePath tryAssign inferModulePath
     }
 }

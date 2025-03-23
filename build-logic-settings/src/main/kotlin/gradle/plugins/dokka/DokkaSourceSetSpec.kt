@@ -266,47 +266,47 @@ internal data class DokkaSourceSetSpec(
 ) : ProjectNamed<org.jetbrains.dokka.gradle.engine.parameters.DokkaSourceSetSpec> {
 
     context(Project)
-    override fun applyTo(recipient: org.jetbrains.dokka.gradle.engine.parameters.DokkaSourceSetSpec) {
-        recipient.sourceSetScope tryAssign sourceSetScope
-        recipient.suppress tryAssign suppress
-        recipient.displayName tryAssign displayName
-        includes?.toTypedArray()?.let(recipient.includes::from)
-        setIncludes?.let(recipient.includes::setFrom)
-        recipient.documentedVisibilities tryAssign documentedVisibilities
-        classpath?.toTypedArray()?.let(recipient.classpath::from)
-        setClasspath?.let(recipient.classpath::setFrom)
-        sourceRoots?.toTypedArray()?.let(recipient.sourceRoots::from)
-        setSourceRoots?.let(recipient.sourceRoots::setFrom)
-        samples?.toTypedArray()?.let(recipient.samples::from)
-        setSamples?.let(recipient.samples::setFrom)
-        recipient.reportUndocumented tryAssign reportUndocumented
+    override fun applyTo(receiver: org.jetbrains.dokka.gradle.engine.parameters.DokkaSourceSetSpec) {
+        receiver.sourceSetScope tryAssign sourceSetScope
+        receiver.suppress tryAssign suppress
+        receiver.displayName tryAssign displayName
+        includes?.toTypedArray()?.let(receiver.includes::from)
+        setIncludes?.let(receiver.includes::setFrom)
+        receiver.documentedVisibilities tryAssign documentedVisibilities
+        classpath?.toTypedArray()?.let(receiver.classpath::from)
+        setClasspath?.let(receiver.classpath::setFrom)
+        sourceRoots?.toTypedArray()?.let(receiver.sourceRoots::from)
+        setSourceRoots?.let(receiver.sourceRoots::setFrom)
+        samples?.toTypedArray()?.let(receiver.samples::from)
+        setSamples?.let(receiver.samples::setFrom)
+        receiver.reportUndocumented tryAssign reportUndocumented
 
         sourceLinks?.forEach { sourceLink ->
-            recipient.sourceLink {
+            receiver.sourceLink {
                 sourceLink.applyTo(this)
             }
         }
 
         perPackageOptions?.forEach { perPackageOption ->
-            recipient.perPackageOption(perPackageOption::applyTo)
+            receiver.perPackageOption(perPackageOption::applyTo)
         }
 
         externalDocumentationLinks?.forEach { externalDocumentationLink ->
-            externalDocumentationLink.applyTo(recipient.externalDocumentationLinks)
+            externalDocumentationLink.applyTo(receiver.externalDocumentationLinks)
         }
 
-        recipient.analysisPlatform tryAssign analysisPlatform
-        recipient.skipEmptyPackages tryAssign skipEmptyPackages
-        recipient.skipDeprecated tryAssign skipDeprecated
-        suppressedFiles?.toTypedArray()?.let(recipient.suppressedFiles::from)
-        setSuppressedFiles?.let(recipient.suppressedFiles::setFrom)
-        recipient.suppressGeneratedFiles tryAssign suppressGeneratedFiles
-        recipient.enableKotlinStdLibDocumentationLink tryAssign enableKotlinStdLibDocumentationLink
-        recipient.enableJdkDocumentationLink tryAssign enableJdkDocumentationLink
-        recipient.enableAndroidDocumentationLink tryAssign enableAndroidDocumentationLink
-        recipient.languageVersion tryAssign languageVersion
-        recipient.apiVersion tryAssign apiVersion
-        recipient.jdkVersion tryAssign (jdkVersion ?: settings.libs.versions.version("java.languageVersion")?.toInt())
+        receiver.analysisPlatform tryAssign analysisPlatform
+        receiver.skipEmptyPackages tryAssign skipEmptyPackages
+        receiver.skipDeprecated tryAssign skipDeprecated
+        suppressedFiles?.toTypedArray()?.let(receiver.suppressedFiles::from)
+        setSuppressedFiles?.let(receiver.suppressedFiles::setFrom)
+        receiver.suppressGeneratedFiles tryAssign suppressGeneratedFiles
+        receiver.enableKotlinStdLibDocumentationLink tryAssign enableKotlinStdLibDocumentationLink
+        receiver.enableJdkDocumentationLink tryAssign enableJdkDocumentationLink
+        receiver.enableAndroidDocumentationLink tryAssign enableAndroidDocumentationLink
+        receiver.languageVersion tryAssign languageVersion
+        receiver.apiVersion tryAssign apiVersion
+        receiver.jdkVersion tryAssign (jdkVersion ?: settings.libs.versions.version("java.languageVersion")?.toInt())
     }
 }
 

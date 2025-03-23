@@ -15,10 +15,10 @@ internal abstract class AbstractComposeDesktopTask<T : org.jetbrains.compose.des
     abstract val verbose: Boolean?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super.applyTo(receiver)
 
-        recipient.verbose tryAssign verbose
+        receiver.verbose tryAssign verbose
     }
 }
 

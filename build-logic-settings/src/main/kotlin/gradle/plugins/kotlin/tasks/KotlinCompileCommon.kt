@@ -15,9 +15,9 @@ internal abstract class KotlinCompileCommon<T : org.jetbrains.kotlin.gradle.task
     : AbstractKotlinCompile<T>(), KotlinCompilationTask<T, KotlinCommonCompilerOptions> {
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super<AbstractKotlinCompile>.applyTo(recipient)
-        super<KotlinCompilationTask>.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super<AbstractKotlinCompile>.applyTo(receiver)
+        super<KotlinCompilationTask>.applyTo(receiver)
     }
 }
 

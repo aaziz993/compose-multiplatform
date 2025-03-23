@@ -19,7 +19,7 @@ internal data class TestCoverage(
 ) {
 
     context(Project)
-    fun applyTo(recipient: TestCoverage) {
-        recipient::jacocoVersion trySet (jacocoVersion ?: settings.libs.versions.version("jacoco"))
+    fun applyTo(receiver: TestCoverage) {
+        receiver::jacocoVersion trySet (jacocoVersion ?: settings.libs.versions.version("jacoco"))
     }
 }

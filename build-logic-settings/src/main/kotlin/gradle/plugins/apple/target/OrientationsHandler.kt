@@ -11,10 +11,10 @@ internal data class OrientationsHandler(
     val portraitUpsideDown: Boolean? = null,
 ) {
 
-    fun applyTo(recipient: OrientationsHandler) {
-        landscapeLeft?.takeIf { it }?.run { recipient.landscapeLeft() }
-        landscapeRight?.takeIf { it }?.run { recipient.landscapeRight() }
-        portrait?.takeIf { it }?.run { recipient.portrait() }
-        portraitUpsideDown?.takeIf { it }?.run { recipient.portraitUpsideDown() }
+    fun applyTo(receiver: OrientationsHandler) {
+        landscapeLeft?.takeIf { it }?.run { receiver.landscapeLeft() }
+        landscapeRight?.takeIf { it }?.run { receiver.landscapeRight() }
+        portrait?.takeIf { it }?.run { receiver.portrait() }
+        portraitUpsideDown?.takeIf { it }?.run { receiver.portraitUpsideDown() }
     }
 }

@@ -8,9 +8,9 @@ internal interface BaseExecSpec<T : BaseExecSpec> : ProcessForkOptions<T> {
     val ignoreExitValue: Boolean?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super.applyTo(receiver)
 
-        ignoreExitValue?.let(recipient::setIgnoreExitValue)
+        ignoreExitValue?.let(receiver::setIgnoreExitValue)
     }
 }

@@ -72,19 +72,19 @@ internal data class DokkaGenerateTask(
 ) : DokkaBaseTask<DokkaGenerateTask>() {
 
     context(Project)
-    override fun applyTo(recipient: DokkaGenerateTask) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: DokkaGenerateTask) {
+        super.applyTo(receiver)
 
-        recipient.outputDirectory tryAssign outputDirectory?.let(layout.projectDirectory::dir)
-        runtimeClasspath?.toTypedArray()?.let(recipient.runtimeClasspath::from)
-        setRuntimeClasspath?.let(recipient.runtimeClasspath::setFrom)
-        recipient.cacheDirectory tryAssign cacheDirectory?.let(layout.projectDirectory::dir)
-        recipient.publicationEnabled tryAssign publicationEnabled
-        generator?.applyTo(recipient.generator)
-        recipient.workerIsolation tryAssign workerIsolation?.toWorkerIsolation()
-        recipient.workerLogFile tryAssign workerLogFile?.let(::file)
-        recipient.dokkaConfigurationJsonFile tryAssign dokkaConfigurationJsonFile?.let(::file)
-        recipient.overrideJsonConfig tryAssign overrideJsonConfig
+        receiver.outputDirectory tryAssign outputDirectory?.let(layout.projectDirectory::dir)
+        runtimeClasspath?.toTypedArray()?.let(receiver.runtimeClasspath::from)
+        setRuntimeClasspath?.let(receiver.runtimeClasspath::setFrom)
+        receiver.cacheDirectory tryAssign cacheDirectory?.let(layout.projectDirectory::dir)
+        receiver.publicationEnabled tryAssign publicationEnabled
+        generator?.applyTo(receiver.generator)
+        receiver.workerIsolation tryAssign workerIsolation?.toWorkerIsolation()
+        receiver.workerLogFile tryAssign workerLogFile?.let(::file)
+        receiver.dokkaConfigurationJsonFile tryAssign dokkaConfigurationJsonFile?.let(::file)
+        receiver.overrideJsonConfig tryAssign overrideJsonConfig
     }
 
     context(Project)

@@ -22,14 +22,14 @@ internal abstract class LockCopyTask<T : org.jetbrains.kotlin.gradle.targets.js.
     abstract val fileName: String?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super.applyTo(receiver)
 
-        recipient.inputFile tryAssign inputFile?.let(::file)
-        additionalInputFiles?.toTypedArray()?.let(recipient.additionalInputFiles::from)
-        setAdditionalInputFiles?.let(recipient.additionalInputFiles::setFrom)
-        recipient.outputDirectory tryAssign outputDirectory?.let(layout.projectDirectory::dir)
-        recipient.fileName tryAssign fileName
+        receiver.inputFile tryAssign inputFile?.let(::file)
+        additionalInputFiles?.toTypedArray()?.let(receiver.additionalInputFiles::from)
+        setAdditionalInputFiles?.let(receiver.additionalInputFiles::setFrom)
+        receiver.outputDirectory tryAssign outputDirectory?.let(layout.projectDirectory::dir)
+        receiver.fileName tryAssign fileName
     }
 }
 

@@ -6,6 +6,7 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.api.artifacts.repositories.FlatDirectoryArtifactRepository
+import org.gradle.api.file.Directory
 import org.gradle.api.initialization.Settings
 import org.gradle.kotlin.dsl.withType
 
@@ -43,26 +44,27 @@ internal data class FlatDirectoryArtifactRepository(
 ) : ArtifactRepository<FlatDirectoryArtifactRepository> {
 
     context(Settings)
-    override fun applyTo(recipient: RepositoryHandler) =
-        applyTo(recipient.withType<FlatDirectoryArtifactRepository>()) { _name, action ->
-            recipient.flatDir {
+    override fun applyTo(receiver: RepositoryHandler) =
+        applyTo(receiver.withType<FlatDirectoryArtifactRepository>()) { _name, action ->
+            receiver.flatDir {
                 name = _name
                 action.execute(this)
             }
         }
 
     context(Project)
-    override fun applyTo(recipient: RepositoryHandler) =
-        applyTo(recipient.withType<FlatDirectoryArtifactRepository>()) { _name, action ->
-            recipient.flatDir {
+    override fun applyTo(receiver: RepositoryHandler) =
+        applyTo(receiver.withType<FlatDirectoryArtifactRepository>()) { _name, action ->
+            receiver.flatDir {
                 name = _name
                 action.execute(this)
             }
         }
 
-    override fun _applyTo(named: FlatDirectoryArtifactRepository) {
-        super._applyTo(named)
+    context(Directory)
+    override fun _applyTo(receiver: FlatDirectoryArtifactRepository) {
+        super._applyTo(receiver)
 
-        dirs.let(named::setDirs)
+        dirs.let(receiver::setDirs)
     }
 }

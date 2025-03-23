@@ -26,7 +26,7 @@ internal interface ProjectFile {
         get() = emptyMap()
 
     context(Project)
-    fun applyTo(recipient: String): List<TaskProvider<out DefaultTask>> {
+    fun applyTo(receiver: String): List<TaskProvider<out DefaultTask>> {
         val (urls, files) = from.partition(String::isUrl)
 
         return listOfNotNull(

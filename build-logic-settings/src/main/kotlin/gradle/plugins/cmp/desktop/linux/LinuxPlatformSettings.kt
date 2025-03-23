@@ -25,17 +25,17 @@ internal data class LinuxPlatformSettings(
 ) : AbstractPlatformSettings<LinuxPlatformSettings>() {
 
     context(Project)
-    override fun applyTo(recipient: LinuxPlatformSettings) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: LinuxPlatformSettings) {
+        super.applyTo(receiver)
 
-        recipient::shortcut trySet shortcut
-        recipient::packageName trySet packageName
-        recipient::appRelease trySet appRelease
-        recipient::appCategory trySet appCategory
-        recipient::debMaintainer trySet debMaintainer
-        recipient::menuGroup trySet menuGroup
-        recipient::rpmLicenseType trySet rpmLicenseType
-        recipient::debPackageVersion trySet debPackageVersion
-        recipient::rpmPackageVersion trySet rpmPackageVersion
+        receiver::shortcut trySet shortcut
+        receiver::packageName trySet packageName
+        receiver::appRelease trySet appRelease
+        receiver::appCategory trySet appCategory
+        receiver::debMaintainer trySet debMaintainer
+        receiver::menuGroup trySet menuGroup
+        receiver::rpmLicenseType trySet rpmLicenseType
+        receiver::debPackageVersion trySet debPackageVersion
+        receiver::rpmPackageVersion trySet rpmPackageVersion
     }
 }

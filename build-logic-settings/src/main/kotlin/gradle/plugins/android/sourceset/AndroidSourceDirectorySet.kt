@@ -23,8 +23,8 @@ internal data class AndroidSourceDirectorySet(
 ) : ProjectNamed<AndroidSourceDirectorySet> {
 
     context(Project)
-    override fun applyTo(recipient: AndroidSourceDirectorySet) {
-        directories?.toTypedArray()?.let(recipient::srcDirs)
-        setDirectories?.let(recipient::setSrcDirs)
+    override fun applyTo(receiver: AndroidSourceDirectorySet) {
+        directories?.toTypedArray()?.let(receiver::srcDirs)
+        setDirectories?.let(receiver::setSrcDirs)
     }
 }

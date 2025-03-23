@@ -18,10 +18,10 @@ internal data class NativeBenchmarkTarget(
 
     context(Project)
     @OptIn(KotlinxBenchmarkPluginInternalApi::class)
-    override fun applyTo(recipient: NativeBenchmarkTarget) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: NativeBenchmarkTarget) {
+        super.applyTo(receiver)
 
-        recipient::buildType trySet buildType
-        compilation?.applyTo(recipient.compilation)
+        receiver::buildType trySet buildType
+        compilation?.applyTo(receiver.compilation)
     }
 }

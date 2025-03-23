@@ -14,7 +14,7 @@ internal data class BundleAbi(
     val enableSplit: Boolean? = null,
 ) {
 
-    fun applyTo(recipient: BundleAbi) {
-        recipient::enableSplit trySet enableSplit
+    fun applyTo(receiver: BundleAbi) {
+        receiver::enableSplit trySet enableSplit
     }
 }

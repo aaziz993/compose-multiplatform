@@ -13,10 +13,10 @@ internal abstract class DefaultConfig<T: DefaultConfig> : ApplicationDefaultConf
     TestDefaultConfig<T> {
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super<ApplicationDefaultConfig>.applyTo(recipient)
-        super<DynamicFeatureDefaultConfig>.applyTo(recipient)
-        super<LibraryDefaultConfig>.applyTo(recipient)
-        super<TestDefaultConfig>.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super<ApplicationDefaultConfig>.applyTo(receiver)
+        super<DynamicFeatureDefaultConfig>.applyTo(receiver)
+        super<LibraryDefaultConfig>.applyTo(receiver)
+        super<TestDefaultConfig>.applyTo(receiver)
     }
 }

@@ -9,7 +9,7 @@ internal data class BuildScanPublishingConfiguration(
     val ifAuthenticated: Boolean? = null
 ) {
 
-    fun applyTo(recipient: BuildScanPublishingConfiguration) {
-        recipient.onlyIf { ifAuthenticated != false && isCI }
+    fun applyTo(receiver: BuildScanPublishingConfiguration) {
+        receiver.onlyIf { ifAuthenticated != false && isCI }
     }
 }

@@ -52,7 +52,7 @@ internal data class MavenPomDeveloper(
     val properties: Map<String, String>? = null,
 ) {
 
-    fun applyTo(recipient: MavenPomDeveloper) {
+    fun applyTo(receiver: MavenPomDeveloper) {
         developer.id tryAssign id
         developer.name tryAssign name
         developer.email tryAssign email

@@ -22,15 +22,15 @@ internal abstract class AbstractDistributions<T : AbstractDistributions> {
     abstract val licenseFile: String?
 
     context(Project)
-    open fun applyTo(recipient: T) {
-        recipient.outputBaseDir tryAssign outputBaseDir?.let(layout.projectDirectory::dir)
-        recipient.packageName = packageName ?: moduleName
-        recipient::packageVersion trySet (packageVersion
+    open fun applyTo(receiver: T) {
+        receiver.outputBaseDir tryAssign outputBaseDir?.let(layout.projectDirectory::dir)
+        receiver.packageName = packageName ?: moduleName
+        receiver::packageVersion trySet (packageVersion
             ?: settings.libs.versions.version("compose.desktop.packageVersion"))
-        recipient::copyright trySet copyright
-        recipient::description trySet description
-        recipient::vendor trySet vendor
-        recipient.appResourcesRootDir tryAssign appResourcesRootDir?.let(layout.projectDirectory::dir)
-        recipient.licenseFile tryAssign licenseFile?.let(::file)
+        receiver::copyright trySet copyright
+        receiver::description trySet description
+        receiver::vendor trySet vendor
+        receiver.appResourcesRootDir tryAssign appResourcesRootDir?.let(layout.projectDirectory::dir)
+        receiver.licenseFile tryAssign licenseFile?.let(::file)
     }
 }

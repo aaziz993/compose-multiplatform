@@ -43,20 +43,20 @@ internal interface UrlArtifactRepository<T: UrlArtifactRepository> {
 
     context(Settings)
     @Suppress("UnstableApiUsage")
-    fun applyTo(recipient: T) = with(layout.settingsDirectory) {
+    fun applyTo(receiver: T) = with(layout.settingsDirectory) {
         _applyTo(repository)
     }
 
     context(Project)
-    fun applyTo(recipient: T) = with(layout.projectDirectory) {
+    fun applyTo(receiver: T) = with(layout.projectDirectory) {
         _applyTo(repository)
     }
 
     context(Directory)
-    fun _applyTo(recipient: T) {
+    fun _applyTo(receiver: T) {
         url?.let { url ->
             if (url.isUrl) url else dir(url)
-        }?.let(recipient::setUrl)
-        allowInsecureProtocol?.let(recipient::setAllowInsecureProtocol)
+        }?.let(receiver::setUrl)
+        allowInsecureProtocol?.let(receiver::setAllowInsecureProtocol)
     }
 }

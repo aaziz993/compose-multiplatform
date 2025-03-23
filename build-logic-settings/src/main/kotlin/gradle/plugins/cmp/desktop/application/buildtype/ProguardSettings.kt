@@ -18,14 +18,14 @@ internal data class ProguardSettings(
 ) {
 
     context(Project)
-    fun applyTo(recipient: ProguardSettings) {
-        recipient.version tryAssign version
-        recipient.maxHeapSize tryAssign maxHeapSize
-        configurationFiles?.toTypedArray()?.let(recipient.configurationFiles::from)
-        setConfigurationFiles?.let(recipient.configurationFiles::setFrom)
-        recipient.isEnabled tryAssign isEnabled
-        recipient.obfuscate tryAssign obfuscate
-        recipient.optimize tryAssign optimize
-        recipient.joinOutputJars tryAssign joinOutputJars
+    fun applyTo(receiver: ProguardSettings) {
+        receiver.version tryAssign version
+        receiver.maxHeapSize tryAssign maxHeapSize
+        configurationFiles?.toTypedArray()?.let(receiver.configurationFiles::from)
+        setConfigurationFiles?.let(receiver.configurationFiles::setFrom)
+        receiver.isEnabled tryAssign isEnabled
+        receiver.obfuscate tryAssign obfuscate
+        receiver.optimize tryAssign optimize
+        receiver.joinOutputJars tryAssign joinOutputJars
     }
 }

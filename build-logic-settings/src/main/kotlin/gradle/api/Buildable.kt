@@ -8,5 +8,5 @@ import org.gradle.api.Buildable
  */
 internal interface Buildable<T: Buildable> {
 
-    fun applyTo(recipient: T)
+    fun applyTo(receiver: T)
 }

@@ -109,14 +109,14 @@ internal interface BuildFeatures<T: BuildFeatures> {
      */
     val viewBinding: Boolean?
 
-    fun applyTo(recipient: T) {
-        recipient::aidl trySet aidl
-        recipient::compose trySet compose
-        recipient::buildConfig trySet buildConfig
-        recipient::prefab trySet prefab
-        recipient::renderScript trySet renderScript
-        recipient::resValues trySet resValues
-        recipient::shaders trySet shaders
-        recipient::viewBinding trySet viewBinding
+    fun applyTo(receiver: T) {
+        receiver::aidl trySet aidl
+        receiver::compose trySet compose
+        receiver::buildConfig trySet buildConfig
+        receiver::prefab trySet prefab
+        receiver::renderScript trySet renderScript
+        receiver::resValues trySet resValues
+        receiver::shaders trySet shaders
+        receiver::viewBinding trySet viewBinding
     }
 }

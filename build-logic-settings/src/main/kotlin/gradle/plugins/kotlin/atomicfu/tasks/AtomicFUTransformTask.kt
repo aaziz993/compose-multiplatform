@@ -33,14 +33,14 @@ internal data class AtomicFUTransformTask(
 ) : ConventionTask<AtomicFUTransformTask>() {
 
     context(Project)
-    override fun applyTo(recipient: AtomicFUTransformTask) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: AtomicFUTransformTask) {
+        super.applyTo(receiver)
 
-        recipient::inputFiles trySet inputFiles?.toTypedArray()?.let(::files)
-        recipient.destinationDirectory tryAssign destinationDirectory?.let(layout.projectDirectory::dir)
-        recipient::classPath trySet classPath?.toTypedArray()?.let(::files)
-        recipient::jvmVariant trySet jvmVariant
-        recipient::verbose trySet verbose
+        receiver::inputFiles trySet inputFiles?.toTypedArray()?.let(::files)
+        receiver.destinationDirectory tryAssign destinationDirectory?.let(layout.projectDirectory::dir)
+        receiver::classPath trySet classPath?.toTypedArray()?.let(::files)
+        receiver::jvmVariant trySet jvmVariant
+        receiver::verbose trySet verbose
     }
 
     context(Project)

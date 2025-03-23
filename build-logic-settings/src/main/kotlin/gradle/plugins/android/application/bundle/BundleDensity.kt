@@ -14,7 +14,7 @@ internal data class BundleDensity(
     val enableSplit: Boolean? = null,
 ) {
 
-    fun applyTo(recipient: BundleDensity) {
-        recipient::enableSplit trySet enableSplit
+    fun applyTo(receiver: BundleDensity) {
+        receiver::enableSplit trySet enableSplit
     }
 }

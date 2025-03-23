@@ -39,9 +39,9 @@ internal data class KoverVerifyTaskConfig(
     val onCheck: Boolean? = null,
 ) : KoverVerificationRulesConfig<KoverVerifyTaskConfig> {
 
-    override fun applyTo(recipient: KoverVerifyTaskConfig) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: KoverVerifyTaskConfig) {
+        super.applyTo(receiver)
 
-        recipient.onCheck tryAssign onCheck
+        receiver.onCheck tryAssign onCheck
     }
 }

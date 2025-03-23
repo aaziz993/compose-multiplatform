@@ -31,10 +31,10 @@ internal data class EmulatorControl(
 ) {
 
     @Suppress("UnstableApiUsage")
-    fun applyTo(recipient: EmulatorControl) {
-        recipient::enable trySet enable
-        allowedEndpoints?.let(recipient.allowedEndpoints::addAll)
-        setAllowedEndpoints?.act(recipient.allowedEndpoints::clear)?.let(recipient.allowedEndpoints::addAll)
-        recipient::secondsValid trySet secondsValid
+    fun applyTo(receiver: EmulatorControl) {
+        receiver::enable trySet enable
+        allowedEndpoints?.let(receiver.allowedEndpoints::addAll)
+        setAllowedEndpoints?.act(receiver.allowedEndpoints::clear)?.let(receiver.allowedEndpoints::addAll)
+        receiver::secondsValid trySet secondsValid
     }
 }

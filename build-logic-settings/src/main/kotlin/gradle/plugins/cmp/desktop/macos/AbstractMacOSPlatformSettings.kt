@@ -29,17 +29,17 @@ internal abstract class AbstractMacOSPlatformSettings<T: AbstractMacOSPlatformSe
     abstract val notarization: MacOSNotarizationSettings?
 
     context(Project)
-    open fun applyTo(recipient: T) {
-        super.applyTo(recipient)
+    open fun applyTo(receiver: T) {
+        super.applyTo(receiver)
 
-        recipient::packageName trySet packageName
-        recipient::packageBuildVersion trySet packageBuildVersion
-        recipient::dmgPackageVersion trySet dmgPackageVersion
-        recipient::dmgPackageBuildVersion trySet dmgPackageBuildVersion
-        recipient::appCategory trySet appCategory
-        recipient::minimumSystemVersion trySet minimumSystemVersion
-        recipient::bundleID trySet bundleID
-        signing?.applyTo(recipient.signing)
-        notarization?.applyTo(recipient.notarization)
+        receiver::packageName trySet packageName
+        receiver::packageBuildVersion trySet packageBuildVersion
+        receiver::dmgPackageVersion trySet dmgPackageVersion
+        receiver::dmgPackageBuildVersion trySet dmgPackageBuildVersion
+        receiver::appCategory trySet appCategory
+        receiver::minimumSystemVersion trySet minimumSystemVersion
+        receiver::bundleID trySet bundleID
+        signing?.applyTo(receiver.signing)
+        notarization?.applyTo(receiver.notarization)
     }
 }

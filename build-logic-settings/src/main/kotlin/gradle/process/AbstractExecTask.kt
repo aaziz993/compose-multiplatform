@@ -19,9 +19,9 @@ internal abstract class AbstractExecTask<T : org.gradle.api.tasks.AbstractExecTa
     : ConventionTask<T>(), ExecSpec<T> {
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super<ConventionTask>.applyTo(recipient)
-        super<ExecSpec>.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super<ConventionTask>.applyTo(receiver)
+        super<ExecSpec>.applyTo(receiver)
     }
 }
 

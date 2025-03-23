@@ -58,17 +58,17 @@ internal data class KotlinJvmCompilerOptions(
 ) : KotlinCommonCompilerOptions<KotlinJvmCompilerOptions> {
 
     context(Project)
-    override fun applyTo(recipient: KotlinJvmCompilerOptions) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: KotlinJvmCompilerOptions) {
+        super.applyTo(receiver)
 
-        recipient.javaParameters tryAssign javaParameters
-        recipient.jvmTarget tryAssign (jvmTarget
+        receiver.javaParameters tryAssign javaParameters
+        receiver.jvmTarget tryAssign (jvmTarget
             ?: settings.libs.versions.version("java.languageVersion")
                 ?.replace(".", "_")
                 ?.addPrefix("JVM_")
                 ?.let(JvmTarget::valueOf)
             )
-        recipient.moduleName tryAssign moduleName
-        recipient.noJdk tryAssign noJdk
+        receiver.moduleName tryAssign moduleName
+        receiver.noJdk tryAssign noJdk
     }
 }

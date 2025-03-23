@@ -10,7 +10,7 @@ internal abstract class Framework : AbstractNativeLibrary {
     abstract val isStatic: Boolean?
 
         context(Project)
-    override fun applyTo(recipient: T) {
+    override fun applyTo(receiver: T) {
         super.applyTo(named)
 
         named as Framework

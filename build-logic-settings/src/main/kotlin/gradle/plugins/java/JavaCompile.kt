@@ -59,11 +59,11 @@ internal data class JavaCompile(
 ) : AbstractCompile<JavaCompile>(), HasCompileOptions<JavaCompile> {
 
     context(Project)
-    override fun applyTo(recipient: JavaCompile) {
-        super<AbstractCompile>.applyTo(recipient)
-        super<HasCompileOptions>.applyTo(recipient)
+    override fun applyTo(receiver: JavaCompile) {
+        super<AbstractCompile>.applyTo(receiver)
+        super<HasCompileOptions>.applyTo(receiver)
 
-        modularity?.applyTo(recipient.modularity)
+        modularity?.applyTo(receiver.modularity)
     }
 
     context(Project)

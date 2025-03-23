@@ -65,45 +65,45 @@ internal abstract class ApolloGenerateSourcesBase<T : com.apollographql.apollo3.
     abstract val useSemanticNaming: Boolean?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super.applyTo(receiver)
 
-        recipient.addJvmOverloads tryAssign addJvmOverloads
+        receiver.addJvmOverloads tryAssign addJvmOverloads
 
-        recipient.classesForEnumsMatching tryAssign classesForEnumsMatching?.let { classesForEnumsMatching ->
-            recipient.classesForEnumsMatching.get() + classesForEnumsMatching
+        receiver.classesForEnumsMatching tryAssign classesForEnumsMatching?.let { classesForEnumsMatching ->
+            receiver.classesForEnumsMatching.get() + classesForEnumsMatching
         }
 
-        recipient.classesForEnumsMatching tryAssign setClassesForEnumsMatching
-        recipient.generateFilterNotNull tryAssign generateFilterNotNull
-        recipient.generateFragmentImplementations tryAssign generateFragmentImplementations
-        recipient.generateInputBuilders tryAssign generateInputBuilders
+        receiver.classesForEnumsMatching tryAssign setClassesForEnumsMatching
+        receiver.generateFilterNotNull tryAssign generateFilterNotNull
+        receiver.generateFragmentImplementations tryAssign generateFragmentImplementations
+        receiver.generateInputBuilders tryAssign generateInputBuilders
 
-        recipient.generateMethods tryAssign generateMethods?.let { generateMethods ->
-            recipient.generateMethods.get() + generateMethods
+        receiver.generateMethods tryAssign generateMethods?.let { generateMethods ->
+            receiver.generateMethods.get() + generateMethods
         }
 
-        recipient.generateMethods tryAssign setGenerateMethods
-        recipient.generateModelBuilders tryAssign generateModelBuilders
-        recipient.generateOptionalOperationVariables tryAssign generateOptionalOperationVariables
-        recipient.generatePrimitiveTypes tryAssign generatePrimitiveTypes
-        recipient.generateQueryDocument tryAssign generateQueryDocument
-        recipient.generateResponseFields tryAssign generateResponseFields
-        recipient.generateSchema tryAssign generateSchema
-        recipient.generatedSchemaName tryAssign generatedSchemaName
-        recipient.jsExport tryAssign jsExport
-        recipient.nullableFieldStyle tryAssign nullableFieldStyle
-        recipient.operationManifestFile tryAssign operationManifestFile?.let(::file)
-        recipient.operationManifestFormat tryAssign operationManifestFormat
-        recipient.outputDir tryAssign outputDir?.let(layout.projectDirectory::dir)
-        recipient.requiresOptInAnnotation tryAssign requiresOptInAnnotation
+        receiver.generateMethods tryAssign setGenerateMethods
+        receiver.generateModelBuilders tryAssign generateModelBuilders
+        receiver.generateOptionalOperationVariables tryAssign generateOptionalOperationVariables
+        receiver.generatePrimitiveTypes tryAssign generatePrimitiveTypes
+        receiver.generateQueryDocument tryAssign generateQueryDocument
+        receiver.generateResponseFields tryAssign generateResponseFields
+        receiver.generateSchema tryAssign generateSchema
+        receiver.generatedSchemaName tryAssign generatedSchemaName
+        receiver.jsExport tryAssign jsExport
+        receiver.nullableFieldStyle tryAssign nullableFieldStyle
+        receiver.operationManifestFile tryAssign operationManifestFile?.let(::file)
+        receiver.operationManifestFormat tryAssign operationManifestFormat
+        receiver.outputDir tryAssign outputDir?.let(layout.projectDirectory::dir)
+        receiver.requiresOptInAnnotation tryAssign requiresOptInAnnotation
 
-        recipient.sealedClassesForEnumsMatching tryAssign sealedClassesForEnumsMatching?.let { sealedClassesForEnumsMatching ->
-            recipient.sealedClassesForEnumsMatching.get() + sealedClassesForEnumsMatching
+        receiver.sealedClassesForEnumsMatching tryAssign sealedClassesForEnumsMatching?.let { sealedClassesForEnumsMatching ->
+            receiver.sealedClassesForEnumsMatching.get() + sealedClassesForEnumsMatching
         }
 
-        recipient.sealedClassesForEnumsMatching tryAssign setSealedClassesForEnumsMatching
-        recipient.useSemanticNaming tryAssign useSemanticNaming
+        receiver.sealedClassesForEnumsMatching tryAssign setSealedClassesForEnumsMatching
+        receiver.useSemanticNaming tryAssign useSemanticNaming
     }
 }
 

@@ -30,15 +30,15 @@ internal data class VectorDrawables(
 ) {
 
     @Suppress("UnstableApiUsage")
-    fun applyTo(recipient: VectorDrawables) {
+    fun applyTo(receiver: VectorDrawables) {
         generatedDensities?.let { generatedDensities ->
-            recipient.generatedDensities?.addAll(generatedDensities)
+            receiver.generatedDensities?.addAll(generatedDensities)
         }
 
         setGeneratedDensities?.let { setGeneratedDensities ->
-            recipient.generatedDensities?.also(MutableSet<*>::clear)?.addAll(setGeneratedDensities)
+            receiver.generatedDensities?.also(MutableSet<*>::clear)?.addAll(setGeneratedDensities)
         }
 
-        recipient::useSupportLibrary trySet useSupportLibrary
+        receiver::useSupportLibrary trySet useSupportLibrary
     }
 }

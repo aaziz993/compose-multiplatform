@@ -55,11 +55,11 @@ internal interface ApplicationProductFlavor<T : ApplicationProductFlavor> :
     val isDefault: Boolean?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super<ApplicationBaseFlavor>.applyTo(recipient)
-        super<ProductFlavorDsl>.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super<ApplicationBaseFlavor>.applyTo(receiver)
+        super<ProductFlavorDsl>.applyTo(receiver)
 
-        recipient::isDefault trySet isDefault
+        receiver::isDefault trySet isDefault
     }
 }
 

@@ -28,10 +28,10 @@ internal data class EmulatorSnapshots(
 ) {
 
     @Suppress("UnstableApiUsage")
-    fun applyTo(recipient: EmulatorSnapshots) {
-        recipient::enableForTestFailures trySet enableForTestFailures
-        retainAll?.takeIf { it }?.run { recipient.retainAll() }
-        recipient::maxSnapshotsForTestFailures trySet maxSnapshotsForTestFailures
-        recipient::compressSnapshots trySet compressSnapshots
+    fun applyTo(receiver: EmulatorSnapshots) {
+        receiver::enableForTestFailures trySet enableForTestFailures
+        retainAll?.takeIf { it }?.run { receiver.retainAll() }
+        receiver::maxSnapshotsForTestFailures trySet maxSnapshotsForTestFailures
+        receiver::compressSnapshots trySet compressSnapshots
     }
 }

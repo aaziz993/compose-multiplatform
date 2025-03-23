@@ -12,7 +12,7 @@ internal abstract class CompilerPluginConfig {
 
     abstract val optionsByPluginId: Map<String, List<SubpluginOption>>?
 
-    fun applyTo(recipient: CompilerPluginConfig) {
+    fun applyTo(receiver: CompilerPluginConfig) {
         optionsByPluginId?.forEach { (pluginId, options) ->
             options.forEach { option ->
                 config.addPluginArgument(pluginId, option.toSubpluginOption())

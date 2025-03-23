@@ -11,8 +11,8 @@ internal class ClasspathOnlyTestRunSource(
 ) : JvmClasspathTestRunSource {
 
     context(Project)
-    override fun applyTo(recipient: KotlinJvmTestRun) =
-        recipient.setExecutionSourceFrom(
+    override fun applyTo(receiver: KotlinJvmTestRun) =
+        receiver.setExecutionSourceFrom(
             files(*classpath.toTypedArray()),
             files(* testClassesDirs.toTypedArray()),
         )

@@ -35,16 +35,16 @@ internal data class ApolloPushSchemaTask(
 ) : DefaultTask<ApolloPushSchemaTask>() {
 
     context(Project)
-    override fun applyTo(recipient: ApolloPushSchemaTask) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: ApolloPushSchemaTask) {
+        super.applyTo(receiver)
 
-        recipient.graph tryAssign graph
-        recipient.graphVariant tryAssign graphVariant
-        recipient.key tryAssign key
-        recipient::projectRootDir trySet projectRootDir
-        recipient.revision tryAssign revision
-        recipient.schema tryAssign schema
-        recipient.subgraph tryAssign subgraph
+        receiver.graph tryAssign graph
+        receiver.graphVariant tryAssign graphVariant
+        receiver.key tryAssign key
+        receiver::projectRootDir trySet projectRootDir
+        receiver.revision tryAssign revision
+        receiver.schema tryAssign schema
+        receiver.subgraph tryAssign subgraph
     }
 
     context(Project)

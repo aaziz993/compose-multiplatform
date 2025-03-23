@@ -60,11 +60,11 @@ internal data class ApplicationAndroidResources(
 ) : AndroidResources<ApplicationAndroidResources> {
 
     @Suppress("UnstableApiUsage")
-    override fun applyTo(recipient: ApplicationAndroidResources) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: ApplicationAndroidResources) {
+        super.applyTo(receiver)
 
-        recipient::generateLocaleConfig trySet generateLocaleConfig
-        localeFilters?.let(recipient.localeFilters::addAll)
-        setLocaleFilters?.act(recipient.localeFilters::clear)?.let(recipient.localeFilters::addAll)
+        receiver::generateLocaleConfig trySet generateLocaleConfig
+        localeFilters?.let(receiver.localeFilters::addAll)
+        setLocaleFilters?.act(receiver.localeFilters::clear)?.let(receiver.localeFilters::addAll)
     }
 }

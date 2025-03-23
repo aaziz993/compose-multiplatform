@@ -19,9 +19,9 @@ internal data class ApplicationSingleVariant(
     val publishApk: Boolean? = null,
 ) : SingleVariant<ApplicationSingleVariant> {
 
-    override fun applyTo(recipient: ApplicationSingleVariant) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: ApplicationSingleVariant) {
+        super.applyTo(receiver)
 
-        publishApk?.takeIf { it }?.run { recipient.publishApk() }
+        publishApk?.takeIf { it }?.run { receiver.publishApk() }
     }
 }

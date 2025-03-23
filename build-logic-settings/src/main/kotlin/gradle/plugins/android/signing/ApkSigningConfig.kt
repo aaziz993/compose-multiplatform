@@ -39,13 +39,13 @@ internal interface ApkSigningConfig<T : ApkSigningConfig> : SigningConfigDsl<T>,
     val enableV4Signing: Boolean?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super<SigningConfigDsl>.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super<SigningConfigDsl>.applyTo(receiver)
 
-        recipient::enableV1Signing trySet enableV1Signing
-        recipient::enableV2Signing trySet enableV2Signing
-        recipient::enableV3Signing trySet enableV3Signing
-        recipient::enableV4Signing trySet enableV4Signing
+        receiver::enableV1Signing trySet enableV1Signing
+        receiver::enableV2Signing trySet enableV2Signing
+        receiver::enableV3Signing trySet enableV3Signing
+        receiver::enableV4Signing trySet enableV4Signing
     }
 }
 

@@ -326,19 +326,19 @@ internal interface Task<T : org.gradle.api.Task> : ProjectNamed<T> {
     val shouldRunAfter: Set<String>?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        dependsOn?.let(recipient::setDependsOn)
-        onlyIf?.let { onlyIf -> recipient.onlyIf { onlyIf } }
-        doNotTrackState?.let(recipient::doNotTrackState)
-        notCompatibleWithConfigurationCache?.let(recipient::notCompatibleWithConfigurationCache)
-        didWork?.let(recipient::setDidWork)
-        enabled?.let(recipient::setEnabled)
-        properties?.forEach { (name, value) -> recipient.setProperty(name, value) }
-        description?.let(recipient::setDescription)
-        group?.let(recipient::setGroup)
-        mustRunAfter?.let(recipient::setMustRunAfter)
-        finalizedBy?.let(recipient::setFinalizedBy)
-        shouldRunAfter?.let(recipient::setShouldRunAfter)
+    override fun applyTo(receiver: T) {
+        dependsOn?.let(receiver::setDependsOn)
+        onlyIf?.let { onlyIf -> receiver.onlyIf { onlyIf } }
+        doNotTrackState?.let(receiver::doNotTrackState)
+        notCompatibleWithConfigurationCache?.let(receiver::notCompatibleWithConfigurationCache)
+        didWork?.let(receiver::setDidWork)
+        enabled?.let(receiver::setEnabled)
+        properties?.forEach { (name, value) -> receiver.setProperty(name, value) }
+        description?.let(receiver::setDescription)
+        group?.let(receiver::setGroup)
+        mustRunAfter?.let(receiver::setMustRunAfter)
+        finalizedBy?.let(receiver::setFinalizedBy)
+        shouldRunAfter?.let(receiver::setShouldRunAfter)
     }
 
     context(Project)
@@ -346,9 +346,9 @@ internal interface Task<T : org.gradle.api.Task> : ProjectNamed<T> {
 }
 
 context(Project)
-internal fun <T : org.gradle.api.Task> Task<T>.applyTo(recipient: TaskCollection<out T>) =
-    applyTo(recipient as DomainObjectCollection<out T>) { name, action ->
-        tasks.register(name, recipient.elementType(), action)
+internal fun <T : org.gradle.api.Task> Task<T>.applyTo(receiver: TaskCollection<out T>) =
+    applyTo(receiver as DomainObjectCollection<out T>) { name, action ->
+        tasks.register(name, receiver.elementType(), action)
     }
 
 private object TaskSerializer : JsonPolymorphicSerializer<Task<*>>(

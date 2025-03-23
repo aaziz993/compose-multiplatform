@@ -33,9 +33,9 @@ internal data class KotlinNativeCompilerOptions(
 ) : KotlinCommonCompilerOptions<KotlinNativeCompilerOptions> {
 
     context(Project)
-    override fun applyTo(recipient: KotlinNativeCompilerOptions) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: KotlinNativeCompilerOptions) {
+        super.applyTo(receiver)
 
-        recipient.moduleName.assign(moduleName ?: project.moduleName)
+        receiver.moduleName.assign(moduleName ?: project.moduleName)
     }
 }

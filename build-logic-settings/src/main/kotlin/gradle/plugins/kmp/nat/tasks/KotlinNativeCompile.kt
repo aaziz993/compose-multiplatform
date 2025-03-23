@@ -23,13 +23,13 @@ internal abstract class KotlinNativeCompile<T : org.jetbrains.kotlin.gradle.task
     abstract val setCommonSources: Set<String>?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super<AbstractKotlinNativeCompile>.applyTo(recipient)
-        super<KotlinNativeCompileTask>.applyTo(recipient)
-        super<K2MultiplatformCompilationTask>.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super<AbstractKotlinNativeCompile>.applyTo(receiver)
+        super<KotlinNativeCompileTask>.applyTo(receiver)
+        super<K2MultiplatformCompilationTask>.applyTo(receiver)
 
-        commonSources?.toTypedArray()?.let(recipient.commonSources::from)
-        setCommonSources?.let(recipient.commonSources::setFrom)
+        commonSources?.toTypedArray()?.let(receiver.commonSources::from)
+        setCommonSources?.let(receiver.commonSources::setFrom)
     }
 }
 

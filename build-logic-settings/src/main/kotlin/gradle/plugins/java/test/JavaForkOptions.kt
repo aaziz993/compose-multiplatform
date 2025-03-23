@@ -105,25 +105,25 @@ internal interface JavaForkOptions<T : JavaForkOptions> : ProcessForkOptions<T> 
     val setAllJvmArgs: List<String>?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super.applyTo(receiver)
 
-        systemProperties?.let(recipient::systemProperties)
-        setSystemProperties?.let(recipient::setSystemProperties)
-        defaultCharacterEncoding?.let(recipient::setDefaultCharacterEncoding)
-        minHeapSize?.let(recipient::setMinHeapSize)
-        maxHeapSize?.let(recipient::setMaxHeapSize)
-        jvmArgs?.let(recipient::jvmArgs)
-        setJvmArgs?.let(recipient::setJvmArgs)
+        systemProperties?.let(receiver::systemProperties)
+        setSystemProperties?.let(receiver::setSystemProperties)
+        defaultCharacterEncoding?.let(receiver::setDefaultCharacterEncoding)
+        minHeapSize?.let(receiver::setMinHeapSize)
+        maxHeapSize?.let(receiver::setMaxHeapSize)
+        jvmArgs?.let(receiver::jvmArgs)
+        setJvmArgs?.let(receiver::setJvmArgs)
 
-        bootstrapClasspath?.toTypedArray()?.let(recipient::bootstrapClasspath)
+        bootstrapClasspath?.toTypedArray()?.let(receiver::bootstrapClasspath)
 
-        setBootstrapClasspath?.toTypedArray()?.let(::files)?.let(recipient::setBootstrapClasspath)
+        setBootstrapClasspath?.toTypedArray()?.let(::files)?.let(receiver::setBootstrapClasspath)
 
-        enableAssertions?.let(recipient::setEnableAssertions)
-        debug?.let(recipient::setDebug)
-        debugOptions?.applyTo(recipient.debugOptions)
-        allJvmArgs?.act(recipient.allJvmArgs::clear)?.let(recipient.allJvmArgs::addAll)
-        allJvmArgs?.let(recipient::setAllJvmArgs)
+        enableAssertions?.let(receiver::setEnableAssertions)
+        debug?.let(receiver::setDebug)
+        debugOptions?.applyTo(receiver.debugOptions)
+        allJvmArgs?.act(receiver.allJvmArgs::clear)?.let(receiver.allJvmArgs::addAll)
+        allJvmArgs?.let(receiver::setAllJvmArgs)
     }
 }

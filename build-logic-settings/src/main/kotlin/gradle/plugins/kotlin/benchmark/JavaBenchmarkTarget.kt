@@ -17,9 +17,9 @@ internal data class JavaBenchmarkTarget(
 
     context(Project)
     @OptIn(KotlinxBenchmarkPluginInternalApi::class)
-    override fun applyTo(recipient: JavaBenchmarkTarget) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: JavaBenchmarkTarget) {
+        super.applyTo(receiver)
 
-        sourceSet?.applyTo(recipient.sourceSet)
+        sourceSet?.applyTo(receiver.sourceSet)
     }
 }

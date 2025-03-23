@@ -15,10 +15,10 @@ internal interface ProducesKlib<T : org.jetbrains.kotlin.gradle.internal.tasks.P
     val produceUnpackagedKlib: Boolean?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super.applyTo(receiver)
 
-        recipient.produceUnpackagedKlib tryAssign produceUnpackagedKlib
+        receiver.produceUnpackagedKlib tryAssign produceUnpackagedKlib
     }
 }
 

@@ -14,7 +14,7 @@ import org.gradle.kotlin.dsl.withType
 internal interface KotlinWasmTargetDsl : KotlinTarget, HasBinaries<KotlinJsBinaryContainer> {
 
         context(Project)
-    override fun applyTo(recipient: T) {
+    override fun applyTo(receiver: T) {
         super<KotlinTarget>.applyTo(named)
 
         named as org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinWasmTargetDsl

@@ -33,10 +33,10 @@ internal abstract class CodeQualityExtension<T : CodeQualityExtension> {
     abstract val reportsDir: String?
 
     context(Project)
-    fun applyTo(recipient: T) {
-        toolVersion?.let(recipient::setToolVersion)
-        sourceSets?.flatMap(project.sourceSets::getByNameOrAll)?.let(recipient::setSourceSets)
-        ignoreFailures?.let(recipient::setIgnoreFailures)
-        reportsDir?.let(::file)?.let(recipient::setReportsDir)
+    fun applyTo(receiver: T) {
+        toolVersion?.let(receiver::setToolVersion)
+        sourceSets?.flatMap(project.sourceSets::getByNameOrAll)?.let(receiver::setSourceSets)
+        ignoreFailures?.let(receiver::setIgnoreFailures)
+        reportsDir?.let(::file)?.let(receiver::setReportsDir)
     }
 }

@@ -30,7 +30,7 @@ internal interface NativeBinary : BaseNamed {
     val outputDirectoryProperty: String?
 
         context(Project)
-    override fun applyTo(recipient: T) {
+    override fun applyTo(receiver: T) {
         with(project) {
             named as NativeBinary
 

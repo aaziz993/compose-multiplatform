@@ -15,8 +15,8 @@ internal data class DefaultTestFilter(
     val commandLineIncludePatterns: Set<String>? = null,
 ) : TestFilter<DefaultTestFilter> {
 
-    override fun applyTo(recipient: DefaultTestFilter) {
-        super.applyTo(recipient)
-        commandLineIncludePatterns?.let(recipient::setCommandLineIncludePatterns)
+    override fun applyTo(receiver: DefaultTestFilter) {
+        super.applyTo(receiver)
+        commandLineIncludePatterns?.let(receiver::setCommandLineIncludePatterns)
     }
 }

@@ -42,31 +42,31 @@ internal data class ApolloGenerateSchemaTask(
 ) : DefaultTask<ApolloGenerateSchemaTask>() {
 
     context(Project)
-    override fun applyTo(recipient: ApolloGenerateSchemaTask) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: ApolloGenerateSchemaTask) {
+        super.applyTo(receiver)
 
-        recipient.codegenModels tryAssign codegenModels
-        recipient.generateDataBuilders tryAssign generateDataBuilders
-        recipient.outputFile tryAssign outputFile?.let(::file)
+        receiver.codegenModels tryAssign codegenModels
+        receiver.generateDataBuilders tryAssign generateDataBuilders
+        receiver.outputFile tryAssign outputFile?.let(::file)
 
-        recipient.scalarAdapterMapping tryAssign scalarAdapterMapping?.let { scalarAdapterMapping ->
-            recipient.scalarAdapterMapping.get() + scalarAdapterMapping
+        receiver.scalarAdapterMapping tryAssign scalarAdapterMapping?.let { scalarAdapterMapping ->
+            receiver.scalarAdapterMapping.get() + scalarAdapterMapping
         }
 
-        recipient.scalarAdapterMapping tryAssign setScalarAdapterMapping
+        receiver.scalarAdapterMapping tryAssign setScalarAdapterMapping
 
-        recipient.scalarTypeMapping tryAssign scalarTypeMapping?.let { scalarTypeMapping ->
-            recipient.scalarTypeMapping.get() + scalarTypeMapping
+        receiver.scalarTypeMapping tryAssign scalarTypeMapping?.let { scalarTypeMapping ->
+            receiver.scalarTypeMapping.get() + scalarTypeMapping
         }
 
-        recipient.scalarTypeMapping tryAssign setScalarAdapterMapping
-        schemaFiles?.toTypedArray()?.let(recipient.schemaFiles::from)
-        setSchemaFiles?.toTypedArray()?.let(recipient.schemaFiles::setFrom)
-        recipient.targetLanguage tryAssign targetLanguage
-        upstreamSchemaFiles?.toTypedArray()?.let(recipient.upstreamSchemaFiles::from)
-        setUpstreamSchemaFiles?.toTypedArray()?.let(recipient.upstreamSchemaFiles::setFrom)
-        recipient.userCodegenModels tryAssign userCodegenModels
-        recipient.userGenerateKotlinModels tryAssign userGenerateKotlinModels
+        receiver.scalarTypeMapping tryAssign setScalarAdapterMapping
+        schemaFiles?.toTypedArray()?.let(receiver.schemaFiles::from)
+        setSchemaFiles?.toTypedArray()?.let(receiver.schemaFiles::setFrom)
+        receiver.targetLanguage tryAssign targetLanguage
+        upstreamSchemaFiles?.toTypedArray()?.let(receiver.upstreamSchemaFiles::from)
+        setUpstreamSchemaFiles?.toTypedArray()?.let(receiver.upstreamSchemaFiles::setFrom)
+        receiver.userCodegenModels tryAssign userCodegenModels
+        receiver.userGenerateKotlinModels tryAssign userGenerateKotlinModels
     }
 
     context(Project)

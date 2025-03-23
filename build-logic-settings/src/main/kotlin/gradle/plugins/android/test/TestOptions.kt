@@ -108,16 +108,16 @@ internal data class TestOptions(
 
     context(Project)
     @Suppress("UnstableApiUsage")
-    fun applyTo(recipient: TestOptions) {
-        unitTests?.applyTo(recipient.unitTests)
-        recipient::resultsDir trySet resultsDir
-        recipient::reportDir trySet reportDir
-        recipient::animationsDisabled trySet animationsDisabled
-        managedDevices?.applyTo(recipient.managedDevices)
-        recipient::execution trySet execution
-        emulatorControl?.applyTo(recipient.emulatorControl)
-        emulatorSnapshots?.applyTo(recipient.emulatorSnapshots)
-        recipient::targetSdk trySet (targetSdk ?: settings.libs.versions.version("android.targetSdk")?.toInt())
-        recipient::targetSdkPreview trySet targetSdkPreview
+    fun applyTo(receiver: TestOptions) {
+        unitTests?.applyTo(receiver.unitTests)
+        receiver::resultsDir trySet resultsDir
+        receiver::reportDir trySet reportDir
+        receiver::animationsDisabled trySet animationsDisabled
+        managedDevices?.applyTo(receiver.managedDevices)
+        receiver::execution trySet execution
+        emulatorControl?.applyTo(receiver.emulatorControl)
+        emulatorSnapshots?.applyTo(receiver.emulatorSnapshots)
+        receiver::targetSdk trySet (targetSdk ?: settings.libs.versions.version("android.targetSdk")?.toInt())
+        receiver::targetSdkPreview trySet targetSdkPreview
     }
 }

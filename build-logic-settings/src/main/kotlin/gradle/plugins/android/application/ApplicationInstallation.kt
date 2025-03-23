@@ -15,9 +15,9 @@ internal data class ApplicationInstallation(
 ) : Installation<ApplicationInstallation> {
 
     @Suppress("UnstableApiUsage")
-    override fun applyTo(recipient: ApplicationInstallation) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: ApplicationInstallation) {
+        super.applyTo(receiver)
 
-        recipient::enableBaselineProfile trySet enableBaselineProfile
+        receiver::enableBaselineProfile trySet enableBaselineProfile
     }
 }

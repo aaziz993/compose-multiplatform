@@ -20,7 +20,7 @@ internal interface KotlinWebpackRule {
      */
     val validate: Boolean?
 
-    fun applyTo(recipient: KotlinWebpackRule) {
+    fun applyTo(receiver: KotlinWebpackRule) {
         webpackRule.enabled tryAssign enabled
         webpackRule.test tryAssign test
         webpackRule.include tryAssign include

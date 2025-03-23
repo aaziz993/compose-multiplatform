@@ -83,27 +83,27 @@ internal interface CopyProcessingSpec<T : CopyProcessingSpec> : ContentFilterabl
     val eachFile: FileCopyDetails?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super.applyTo(receiver)
 
-        into?.let(recipient::into)
-        rename?.forEach(recipient::rename)
-        renamePattern?.forEach { (key, value) -> recipient.rename(Pattern.compile(key), value) }
+        into?.let(receiver::into)
+        rename?.forEach(receiver::rename)
+        renamePattern?.forEach { (key, value) -> receiver.rename(Pattern.compile(key), value) }
 
         filePermissions?.let { filePermissions ->
-            recipient.filePermissions {
+            receiver.filePermissions {
                 unix(filePermissions)
             }
         }
 
         dirPermissions?.let { dirPermissions ->
-            recipient.dirPermissions {
+            receiver.dirPermissions {
                 unix(dirPermissions)
             }
         }
 
         eachFile?.let { eachFile ->
-            recipient.eachFile(eachFile::applyTo)
+            receiver.eachFile(eachFile::applyTo)
         }
     }
 }

@@ -24,14 +24,14 @@ internal data class Shaders(
     val setScopedGlslcArgs: Map<String, List<String>>? = null,
 ) {
 
-    fun applyTo(recipient: Shaders) {
-        glslcArgs?.let(recipient.glslcArgs::addAll)
-        setGlslcArgs?.act(recipient.glslcArgs::clear)?.let(recipient.glslcArgs::addAll)
+    fun applyTo(receiver: Shaders) {
+        glslcArgs?.let(receiver.glslcArgs::addAll)
+        setGlslcArgs?.act(receiver.glslcArgs::clear)?.let(receiver.glslcArgs::addAll)
 
         scopedGlslcArgs?.forEach { key, options ->
-            recipient.glslcScopedArgs(key, *options.toTypedArray())
+            receiver.glslcScopedArgs(key, *options.toTypedArray())
         }
 
-//        setScopedGlslcArgs?.act(recipient.scopedGlslcArgs::clear)?.let(recipient.scopedGlslcArgs::addAll) // TODO
+//        setScopedGlslcArgs?.act(receiver.scopedGlslcArgs::clear)?.let(receiver.scopedGlslcArgs::addAll) // TODO
     }
 }

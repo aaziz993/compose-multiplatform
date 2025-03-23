@@ -40,20 +40,20 @@ internal data class ApolloDownloadSchemaTask(
 ) : DefaultTask<ApolloDownloadSchemaTask>() {
 
     context(Project)
-    override fun applyTo(recipient: ApolloDownloadSchemaTask) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: ApolloDownloadSchemaTask) {
+        super.applyTo(receiver)
 
-        recipient.endpoint tryAssign endpoint
-        recipient.graph tryAssign graph
-        recipient.graphVariant tryAssign graphVariant
-        recipient::header trySet header?.let { header -> recipient.header + header }
-        recipient::header trySet setHeader
-        recipient.insecure tryAssign insecure
-        recipient.key tryAssign key
-        recipient.outputFile tryAssign outputFile?.let(::file)
-        recipient::projectRootDir trySet projectRootDir
-        recipient.registryUrl tryAssign registryUrl
-        recipient.schema tryAssign schema
+        receiver.endpoint tryAssign endpoint
+        receiver.graph tryAssign graph
+        receiver.graphVariant tryAssign graphVariant
+        receiver::header trySet header?.let { header -> receiver.header + header }
+        receiver::header trySet setHeader
+        receiver.insecure tryAssign insecure
+        receiver.key tryAssign key
+        receiver.outputFile tryAssign outputFile?.let(::file)
+        receiver::projectRootDir trySet projectRootDir
+        receiver.registryUrl tryAssign registryUrl
+        receiver.schema tryAssign schema
     }
 
     context(Project)

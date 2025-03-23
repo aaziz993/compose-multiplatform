@@ -52,15 +52,15 @@ internal abstract class AbstractTestTask<T : org.gradle.api.tasks.testing.Abstra
     abstract val filter: DefaultTestFilter?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super<ConventionTask>.applyTo(recipient)
-        super<VerificationTask>.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super<ConventionTask>.applyTo(receiver)
+        super<VerificationTask>.applyTo(receiver)
 
-        recipient.binaryResultsDirectory tryAssign binaryResultsDirectory?.let(layout.projectDirectory::dir)
-        ignoreFailures?.let(recipient::setIgnoreFailures)
-        testLogging?.applyTo(recipient.testLogging)
-        testNameIncludePatterns?.let(recipient::setTestNameIncludePatterns)
-        filter?.applyTo(recipient.filter)
+        receiver.binaryResultsDirectory tryAssign binaryResultsDirectory?.let(layout.projectDirectory::dir)
+        ignoreFailures?.let(receiver::setIgnoreFailures)
+        testLogging?.applyTo(receiver.testLogging)
+        testNameIncludePatterns?.let(receiver::setTestNameIncludePatterns)
+        filter?.applyTo(receiver.filter)
     }
 }
 

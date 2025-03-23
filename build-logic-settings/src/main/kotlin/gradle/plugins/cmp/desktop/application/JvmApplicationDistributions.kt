@@ -29,14 +29,14 @@ internal data class JvmApplicationDistributions(
 ) : AbstractDistributions<JvmApplicationDistributions>() {
 
     context(Project)
-    override fun applyTo(recipient: JvmApplicationDistributions) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: JvmApplicationDistributions) {
+        super.applyTo(receiver)
 
-        modules?.let(recipient.modules::addAll)
-        setModules?.act(recipient.modules::clear)?.let(recipient.modules::addAll)
-        recipient::includeAllModules trySet includeAllModules
-        linux?.applyTo(recipient.linux)
-        macOS?.applyTo(recipient.macOS)
-        windows?.applyTo(recipient.windows)
+        modules?.let(receiver.modules::addAll)
+        setModules?.act(receiver.modules::clear)?.let(receiver.modules::addAll)
+        receiver::includeAllModules trySet includeAllModules
+        linux?.applyTo(receiver.linux)
+        macOS?.applyTo(receiver.macOS)
+        windows?.applyTo(receiver.windows)
     }
 }

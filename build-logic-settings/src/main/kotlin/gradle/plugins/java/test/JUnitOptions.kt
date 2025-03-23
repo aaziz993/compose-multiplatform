@@ -23,10 +23,10 @@ internal data class JUnitOptions(
 ) : TestFrameworkOptions<JUnitOptions>() {
 
     context(Project)
-    override fun applyTo(recipient: JUnitOptions) {
-        includeCategories?.toTypedArray()?.let(recipient::includeCategories)
-        setIncludeCategories?.let(recipient::setIncludeCategories)
-        excludeCategories?.toTypedArray()?.let(recipient::excludeCategories)
-        setExcludeCategories?.let(recipient::setExcludeCategories)
+    override fun applyTo(receiver: JUnitOptions) {
+        includeCategories?.toTypedArray()?.let(receiver::includeCategories)
+        setIncludeCategories?.let(receiver::setIncludeCategories)
+        excludeCategories?.toTypedArray()?.let(receiver::excludeCategories)
+        setExcludeCategories?.let(receiver::setExcludeCategories)
     }
 }

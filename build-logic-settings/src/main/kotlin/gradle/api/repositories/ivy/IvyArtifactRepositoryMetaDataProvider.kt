@@ -15,7 +15,7 @@ internal data class IvyArtifactRepositoryMetaDataProvider(
     val dynamicMode: Boolean? = null,
 ) {
 
-    fun applyTo(recipient: IvyArtifactRepositoryMetaDataProvider) {
+    fun applyTo(receiver: IvyArtifactRepositoryMetaDataProvider) {
         dynamicMode?.let(provider::setDynamicMode)
     }
 }

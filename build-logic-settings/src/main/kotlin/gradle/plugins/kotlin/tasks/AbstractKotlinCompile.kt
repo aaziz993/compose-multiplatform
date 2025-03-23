@@ -29,14 +29,14 @@ internal abstract class AbstractKotlinCompile<T : org.jetbrains.kotlin.gradle.ta
     abstract val abiSnapshotRelativePath: String?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super<AbstractKotlinCompileTool>.applyTo(recipient)
-        super<BaseKotlinCompile>.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super<AbstractKotlinCompileTool>.applyTo(receiver)
+        super<BaseKotlinCompile>.applyTo(receiver)
 
-        compilerOptions?.applyTo(recipient.compilerOptions)
-        recipient::incremental trySet incremental
-        recipient.explicitApiMode tryAssign explicitApiMode
-        recipient.abiSnapshotRelativePath tryAssign abiSnapshotRelativePath
+        compilerOptions?.applyTo(receiver.compilerOptions)
+        receiver::incremental trySet incremental
+        receiver.explicitApiMode tryAssign explicitApiMode
+        receiver.abiSnapshotRelativePath tryAssign abiSnapshotRelativePath
     }
 }
 

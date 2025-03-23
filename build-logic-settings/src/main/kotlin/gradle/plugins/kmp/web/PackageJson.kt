@@ -21,7 +21,7 @@ internal data class PackageJson(
 ) {
 
     context(Project)
-    fun applyTo(recipient: PackageJson) {
+    fun applyTo(receiver: PackageJson) {
         json::name trySet name
         json::version trySet version
         customFields?.forEach(json::customField)

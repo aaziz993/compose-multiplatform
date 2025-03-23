@@ -49,9 +49,9 @@ internal data class KoverXmlTaskConfig(
 ) {
 
     context(Project)
-    fun applyTo(recipient: KoverXmlTaskConfig) {
-        recipient.onCheck tryAssign onCheck
-        recipient.xmlFile tryAssign xmlFile?.let(::file)
-        recipient.title tryAssign title
+    fun applyTo(receiver: KoverXmlTaskConfig) {
+        receiver.onCheck tryAssign onCheck
+        receiver.xmlFile tryAssign xmlFile?.let(::file)
+        receiver.title tryAssign title
     }
 }

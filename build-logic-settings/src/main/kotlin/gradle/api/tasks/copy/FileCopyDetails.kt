@@ -64,12 +64,12 @@ internal data class FileCopyDetails(
     val name: String? = null,
 ) {
 
-    fun applyTo(recipient: FileCopyDetails) {
-        exclude?.takeIf { it }?.run { recipient.exclude() }
-        path?.let(recipient::setPath)
-        relativePath?.let(RelativePath::toRelativePath)?.let(recipient::setRelativePath)
-        permissions?.let(::DefaultFilePermissions)?.let(recipient::setPermissions)
-        duplicatesStrategy?.let(recipient::setDuplicatesStrategy)
-        name?.let(recipient::setName)
+    fun applyTo(receiver: FileCopyDetails) {
+        exclude?.takeIf { it }?.run { receiver.exclude() }
+        path?.let(receiver::setPath)
+        relativePath?.let(RelativePath::toRelativePath)?.let(receiver::setRelativePath)
+        permissions?.let(::DefaultFilePermissions)?.let(receiver::setPermissions)
+        duplicatesStrategy?.let(receiver::setDuplicatesStrategy)
+        name?.let(receiver::setName)
     }
 }

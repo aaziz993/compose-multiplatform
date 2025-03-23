@@ -54,16 +54,16 @@ internal interface KotlinCommonCompilerOptions<T : org.jetbrains.kotlin.gradle.d
     val progressiveMode: Boolean?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super.applyTo(receiver)
 
-        recipient.apiVersion tryAssign (apiVersion ?: settings.libs.versions.version("kotlin.apiVersion")
+        receiver.apiVersion tryAssign (apiVersion ?: settings.libs.versions.version("kotlin.apiVersion")
             ?.let(KotlinVersion::valueOf))
-        recipient.languageVersion tryAssign (languageVersion ?: settings.libs.versions.version("kotlin.languageVersion")
+        receiver.languageVersion tryAssign (languageVersion ?: settings.libs.versions.version("kotlin.languageVersion")
             ?.let(KotlinVersion::valueOf))
-        optIns?.let(recipient.optIn::addAll)
-        setOptIns?.act(recipient.optIn.get()::clear)?.let(recipient.optIn::addAll)
-        recipient.progressiveMode tryAssign progressiveMode
+        optIns?.let(receiver.optIn::addAll)
+        setOptIns?.act(receiver.optIn.get()::clear)?.let(receiver.optIn::addAll)
+        receiver.progressiveMode tryAssign progressiveMode
     }
 }
 

@@ -26,7 +26,7 @@ internal data class KotlinJvmAndroidCompilation(
 ) : KotlinCompilation {
 
         context(Project)
-    override fun applyTo(recipient: T) {
+    override fun applyTo(receiver: T) {
         super.applyTo(named)
 
         named as org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJvmAndroidCompilation

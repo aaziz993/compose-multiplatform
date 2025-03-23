@@ -52,9 +52,9 @@ internal data class KspTaskNative(
 ) : KotlinNativeCompile<KspTaskNative>(), KspTask<KspTaskNative> {
 
     context(Project)
-    override fun applyTo(recipient: KspTaskNative) {
-        super<KotlinNativeCompile>.applyTo(recipient)
-        super<KspTask>.applyTo(recipient)
+    override fun applyTo(receiver: KspTaskNative) {
+        super<KotlinNativeCompile>.applyTo(receiver)
+        super<KspTask>.applyTo(receiver)
     }
 
     context(Project)

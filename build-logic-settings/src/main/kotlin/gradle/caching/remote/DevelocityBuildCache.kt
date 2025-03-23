@@ -24,25 +24,25 @@ internal data class DevelocityBuildCache(
 ) : AbstractBuildCache<DevelocityBuildCache>() {
 
     context(Settings)
-    override fun applyTo(recipient: DevelocityBuildCache) {
+    override fun applyTo(receiver: DevelocityBuildCache) {
         // better set it to true only for CI builds.
-        recipient.isPush = isCI && projectProperties.plugins.develocity.accessKey != null
+        receiver.isPush = isCI && projectProperties.plugins.develocity.accessKey != null
 
-        super.applyTo(recipient)
+        super.applyTo(receiver)
 
-        server?.let(recipient::setServer)
-        path?.let(recipient::setPath)
-        allowUntrustedServer?.let(recipient::setAllowUntrustedServer)
-        allowInsecureProtocol?.let(recipient::setAllowInsecureProtocol)
-        useExpectContinue?.let(recipient::setUseExpectContinue)
+        server?.let(receiver::setServer)
+        path?.let(receiver::setPath)
+        allowUntrustedServer?.let(receiver::setAllowUntrustedServer)
+        allowInsecureProtocol?.let(receiver::setAllowInsecureProtocol)
+        useExpectContinue?.let(receiver::setUseExpectContinue)
         usernameAndPassword?.let { (username, password) ->
-            recipient.usernameAndPassword(username, password)
+            receiver.usernameAndPassword(username, password)
         }
     }
 
     context(Settings)
-    override fun applyTo(recipient: BuildCacheConfiguration) {
-        recipient.remote(develocity.buildCache) {
+    override fun applyTo(receiver: BuildCacheConfiguration) {
+        receiver.remote(develocity.buildCache) {
             applyTo(this)
         }
     }

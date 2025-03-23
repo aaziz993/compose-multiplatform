@@ -121,49 +121,49 @@ internal interface VariantDimension<T : VariantDimension> {
 
     context(Project)
     @Suppress("UnstableApiUsage")
-    fun applyTo(recipient: T) {
-        recipient::multiDexKeepProguard trySet multiDexKeepProguard?.let(::file)
+    fun applyTo(receiver: T) {
+        receiver::multiDexKeepProguard trySet multiDexKeepProguard?.let(::file)
 
-        ndk?.toTypedArray()?.let(recipient::proguardFiles)
+        ndk?.toTypedArray()?.let(receiver::proguardFiles)
 
         defaultProguardFiles
             ?.mapNotNull { defaultProguardFile -> getDefaultProguardFile(defaultProguardFile) }
-            ?.toTypedArray()?.let(recipient::proguardFiles)
+            ?.toTypedArray()?.let(receiver::proguardFiles)
 
-        setProguardFiles?.let(recipient::setProguardFiles)
+        setProguardFiles?.let(receiver::setProguardFiles)
 
         setDefaultProguardFiles
             ?.mapNotNull { defaultProguardFile -> getDefaultProguardFile(defaultProguardFile) }
-            ?.let(recipient::setProguardFiles)
+            ?.let(receiver::setProguardFiles)
 
-        testProguardFiles?.toTypedArray()?.let(recipient::testProguardFiles)
+        testProguardFiles?.toTypedArray()?.let(receiver::testProguardFiles)
 
-        manifestPlaceholders?.let(recipient.manifestPlaceholders::putAll)
+        manifestPlaceholders?.let(receiver.manifestPlaceholders::putAll)
 
         javaCompileOptions?.let { javaCompileOptions ->
-            recipient.javaCompileOptions(javaCompileOptions::applyTo)
+            receiver.javaCompileOptions(javaCompileOptions::applyTo)
         }
 
         shaders?.let { shaders ->
-            recipient.shaders(shaders::applyTo)
+            receiver.shaders(shaders::applyTo)
         }
 
         externalNativeBuild?.let { externalNativeBuild ->
-            recipient.externalNativeBuild(externalNativeBuild::applyTo)
+            receiver.externalNativeBuild(externalNativeBuild::applyTo)
         }
 
         buildConfigFields?.forEach { (type, name, value) ->
-            recipient.buildConfigField(type, name, value)
+            receiver.buildConfigField(type, name, value)
         }
 
         resValues?.forEach { (type, name, value) ->
-            recipient.resValue(type, name, value)
+            receiver.resValue(type, name, value)
         }
 
-        recipient.optimization { }
+        receiver.optimization { }
 
         optimization?.let { optimization ->
-            recipient.optimization(optimization::applyTo)
+            receiver.optimization(optimization::applyTo)
         }
     }
 

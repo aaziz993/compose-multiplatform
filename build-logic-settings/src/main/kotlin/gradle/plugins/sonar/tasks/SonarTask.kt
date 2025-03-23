@@ -54,12 +54,12 @@ internal data class SonarTask(
 ) : ConventionTask<SonarTask>() {
 
     context(Project)
-    override fun applyTo(recipient: SonarTask) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: SonarTask) {
+        super.applyTo(receiver)
 
-        sonarProperties?.let(recipient.properties.get()::putAll)
-        setSonarProperties?.act(recipient.properties.get()::clear)?.let(recipient.properties.get()::putAll)
-        useLoggerLevel?.let(recipient::useLoggerLevel)
+        sonarProperties?.let(receiver.properties.get()::putAll)
+        setSonarProperties?.act(receiver.properties.get()::clear)?.let(receiver.properties.get()::putAll)
+        useLoggerLevel?.let(receiver::useLoggerLevel)
     }
 
     context(Project)

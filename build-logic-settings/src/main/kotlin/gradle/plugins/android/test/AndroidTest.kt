@@ -25,7 +25,7 @@ internal data class AndroidTest(
 ) {
 
     @Suppress("UnstableApiUsage")
-    fun applyTo(recipient: AndroidTest) {
-        recipient::enableMinification trySet enableMinification
+    fun applyTo(receiver: AndroidTest) {
+        receiver::enableMinification trySet enableMinification
     }
 }

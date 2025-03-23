@@ -12,8 +12,8 @@ internal data class ExternalNativeBuild(
 ) {
 
     context(Project)
-    fun applyTo(recipient: ExternalNativeBuild) {
-        ndkBuild?.applyTo(recipient.ndkBuild)
-        cmake?.applyTo(recipient.cmake)
+    fun applyTo(receiver: ExternalNativeBuild) {
+        ndkBuild?.applyTo(receiver.ndkBuild)
+        cmake?.applyTo(receiver.cmake)
     }
 }

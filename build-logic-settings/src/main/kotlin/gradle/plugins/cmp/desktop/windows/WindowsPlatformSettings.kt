@@ -25,17 +25,17 @@ internal data class WindowsPlatformSettings(
 ) : AbstractPlatformSettings<WindowsPlatformSettings>() {
 
     context(Project)
-    override fun applyTo(recipient: WindowsPlatformSettings) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: WindowsPlatformSettings) {
+        super.applyTo(receiver)
 
-        recipient::console trySet console
-        recipient::dirChooser trySet dirChooser
-        recipient::perUserInstall trySet perUserInstall
-        recipient::shortcut trySet shortcut
-        recipient::menu trySet menu
-        recipient::menuGroup trySet menuGroup
-        recipient::upgradeUuid trySet upgradeUuid
-        recipient::msiPackageVersion trySet msiPackageVersion
-        recipient::exePackageVersion trySet exePackageVersion
+        receiver::console trySet console
+        receiver::dirChooser trySet dirChooser
+        receiver::perUserInstall trySet perUserInstall
+        receiver::shortcut trySet shortcut
+        receiver::menu trySet menu
+        receiver::menuGroup trySet menuGroup
+        receiver::upgradeUuid trySet upgradeUuid
+        receiver::msiPackageVersion trySet msiPackageVersion
+        receiver::exePackageVersion trySet exePackageVersion
     }
 }

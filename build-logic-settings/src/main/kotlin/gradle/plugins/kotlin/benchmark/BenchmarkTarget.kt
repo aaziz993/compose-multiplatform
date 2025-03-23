@@ -15,8 +15,8 @@ internal abstract class BenchmarkTarget<T : kotlinx.benchmark.gradle.BenchmarkTa
     abstract val workingDir: String?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        recipient::workingDir trySet workingDir
+    override fun applyTo(receiver: T) {
+        receiver::workingDir trySet workingDir
     }
 }
 

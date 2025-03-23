@@ -77,14 +77,14 @@ internal data class DokkaSourceLinkSpec(
 ) {
 
     context(Project)
-    fun applyTo(recipient: DokkaSourceLinkSpec) {
-        recipient.localDirectory tryAssign layout.projectDirectory.dir(
+    fun applyTo(receiver: DokkaSourceLinkSpec) {
+        receiver.localDirectory tryAssign layout.projectDirectory.dir(
             localDirectory ?: when (projectProperties.layout) {
                 ProjectLayout.FLAT -> ""
                 else -> "src"
             },
         )
-        (remoteUrl ?: settings.projectProperties.remote?.url)?.let(recipient::remoteUrl)
-        recipient.remoteLineSuffix tryAssign remoteLineSuffix
+        (remoteUrl ?: settings.projectProperties.remote?.url)?.let(receiver::remoteUrl)
+        receiver.remoteLineSuffix tryAssign remoteLineSuffix
     }
 }

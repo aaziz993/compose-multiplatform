@@ -35,20 +35,20 @@ internal data class JvmMacOSPlatformSettings(
 ) : AbstractMacOSPlatformSettings<JvmMacOSPlatformSettings>() {
 
     context(Project)
-    override fun applyTo(recipient: JvmMacOSPlatformSettings) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: JvmMacOSPlatformSettings) {
+        super.applyTo(receiver)
 
-        recipient::dockName trySet dockName
-        recipient::setDockNameSameAsPackageName trySet setDockNameSameAsPackageName
-        recipient::appStore trySet appStore
-        recipient.entitlementsFile tryAssign entitlementsFile?.let(::file)
-        recipient.runtimeEntitlementsFile tryAssign runtimeEntitlementsFile?.let(::file)
-        recipient::pkgPackageVersion trySet pkgPackageVersion
-        recipient::pkgPackageBuildVersion trySet pkgPackageBuildVersion
-        recipient.provisioningProfile tryAssign provisioningProfile?.let(::file)
-        recipient.runtimeProvisioningProfile tryAssign runtimeProvisioningProfile?.let(::file)
+        receiver::dockName trySet dockName
+        receiver::setDockNameSameAsPackageName trySet setDockNameSameAsPackageName
+        receiver::appStore trySet appStore
+        receiver.entitlementsFile tryAssign entitlementsFile?.let(::file)
+        receiver.runtimeEntitlementsFile tryAssign runtimeEntitlementsFile?.let(::file)
+        receiver::pkgPackageVersion trySet pkgPackageVersion
+        receiver::pkgPackageBuildVersion trySet pkgPackageBuildVersion
+        receiver.provisioningProfile tryAssign provisioningProfile?.let(::file)
+        receiver.runtimeProvisioningProfile tryAssign runtimeProvisioningProfile?.let(::file)
         infoPlist?.let { infoPlist ->
-            recipient.infoPlist(infoPlist::applyTo)
+            receiver.infoPlist(infoPlist::applyTo)
         }
     }
 }

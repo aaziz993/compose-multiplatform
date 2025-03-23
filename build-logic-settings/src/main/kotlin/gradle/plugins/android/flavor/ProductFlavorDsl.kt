@@ -161,10 +161,10 @@ internal interface ProductFlavorDsl<T : ProductFlavor> : ProjectNamed<T>, BaseFl
     val matchingFallbacks: List<String>?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super<BaseFlavor>.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super<BaseFlavor>.applyTo(receiver)
 
-        recipient::dimension trySet dimension
-        matchingFallbacks?.let(recipient.matchingFallbacks::addAll)
+        receiver::dimension trySet dimension
+        matchingFallbacks?.let(receiver.matchingFallbacks::addAll)
     }
 }

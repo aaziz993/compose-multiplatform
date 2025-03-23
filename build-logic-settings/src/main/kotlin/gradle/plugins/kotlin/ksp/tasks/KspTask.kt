@@ -21,20 +21,20 @@ internal interface KspTask<T : com.google.devtools.ksp.gradle.KspTask> : Task<T>
     val setCommandLineArgumentProviders: List<CommandLineArgumentProvider>?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super.applyTo(receiver)
 
-        recipient.options tryAssign options?.map(SubpluginOption::toSubpluginOption)?.let { options ->
-            recipient.options.get() + options
+        receiver.options tryAssign options?.map(SubpluginOption::toSubpluginOption)?.let { options ->
+            receiver.options.get() + options
         }
 
-        recipient.options tryAssign setOptions?.map(SubpluginOption::toSubpluginOption)
+        receiver.options tryAssign setOptions?.map(SubpluginOption::toSubpluginOption)
 
-        recipient.commandLineArgumentProviders tryAssign commandLineArgumentProviders?.let { options ->
-            recipient.commandLineArgumentProviders.get() + options
+        receiver.commandLineArgumentProviders tryAssign commandLineArgumentProviders?.let { options ->
+            receiver.commandLineArgumentProviders.get() + options
         }
 
-        recipient.commandLineArgumentProviders tryAssign setCommandLineArgumentProviders
+        receiver.commandLineArgumentProviders tryAssign setCommandLineArgumentProviders
     }
 }
 

@@ -28,15 +28,15 @@ internal abstract class KotlinCompile<T : org.jetbrains.kotlin.gradle.tasks.Kotl
     abstract val classpathSnapshotProperties: ClasspathSnapshotProperties?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super<AbstractKotlinCompileTool>.applyTo(recipient)
-        super<K2MultiplatformCompilationTask>.applyTo(recipient)
-        super<KotlinJvmCompile>.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super<AbstractKotlinCompileTool>.applyTo(receiver)
+        super<K2MultiplatformCompilationTask>.applyTo(receiver)
+        super<KotlinJvmCompile>.applyTo(receiver)
 
-        recipient::javaPackagePrefix trySet javaPackagePrefix
-        recipient::usePreciseJavaTracking trySet usePreciseJavaTracking
-        recipient.useKotlinAbiSnapshot tryAssign useKotlinAbiSnapshot
-        classpathSnapshotProperties?.applyTo(recipient.classpathSnapshotProperties)
+        receiver::javaPackagePrefix trySet javaPackagePrefix
+        receiver::usePreciseJavaTracking trySet usePreciseJavaTracking
+        receiver.useKotlinAbiSnapshot tryAssign useKotlinAbiSnapshot
+        classpathSnapshotProperties?.applyTo(receiver.classpathSnapshotProperties)
     }
 
     /** Properties related to the `kotlin.incremental.useClasspathSnapshot` feature. */
@@ -56,13 +56,13 @@ internal abstract class KotlinCompile<T : org.jetbrains.kotlin.gradle.tasks.Kotl
     ) {
 
         context(Project)
-        fun applyTo(recipient: org.jetbrains.kotlin.gradle.tasks.KotlinCompile.ClasspathSnapshotProperties) {
-            recipient.useClasspathSnapshot tryAssign useClasspathSnapshot
-            classpathSnapshot?.toTypedArray()?.let(recipient.classpathSnapshot::from)
-            setClasspathSnapshot?.let(recipient.classpathSnapshot::setFrom)
-            classpath?.toTypedArray()?.let(recipient.classpath::from)
-            setClasspath?.let(recipient.classpath::setFrom)
-            recipient.classpathSnapshotDir tryAssign classpathSnapshotDir?.let(layout.projectDirectory::dir)
+        fun applyTo(receiver: org.jetbrains.kotlin.gradle.tasks.KotlinCompile.ClasspathSnapshotProperties) {
+            receiver.useClasspathSnapshot tryAssign useClasspathSnapshot
+            classpathSnapshot?.toTypedArray()?.let(receiver.classpathSnapshot::from)
+            setClasspathSnapshot?.let(receiver.classpathSnapshot::setFrom)
+            classpath?.toTypedArray()?.let(receiver.classpath::from)
+            setClasspath?.let(receiver.classpath::setFrom)
+            receiver.classpathSnapshotDir tryAssign classpathSnapshotDir?.let(layout.projectDirectory::dir)
         }
     }
 }

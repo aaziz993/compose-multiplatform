@@ -103,26 +103,26 @@ internal abstract class AbstractArchiveTask<T : org.gradle.api.tasks.bundling.Ab
     abstract val reproducibleFileOrder: Boolean?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super.applyTo(receiver)
 
-        recipient.archiveBaseName tryAssign archiveBaseName
-        recipient.destinationDirectory tryAssign destinationDirectory?.let(layout.projectDirectory::dir)
-        recipient.archiveFileName tryAssign archiveFileName
-        recipient.archiveAppendix tryAssign archiveAppendix
-        recipient.archiveVersion tryAssign archiveVersion
-        recipient.archiveExtension tryAssign archiveExtension
-        recipient.archiveClassifier tryAssign archiveClassifier
-        into?.let(recipient::into)
+        receiver.archiveBaseName tryAssign archiveBaseName
+        receiver.destinationDirectory tryAssign destinationDirectory?.let(layout.projectDirectory::dir)
+        receiver.archiveFileName tryAssign archiveFileName
+        receiver.archiveAppendix tryAssign archiveAppendix
+        receiver.archiveVersion tryAssign archiveVersion
+        receiver.archiveExtension tryAssign archiveExtension
+        receiver.archiveClassifier tryAssign archiveClassifier
+        into?.let(receiver::into)
 
         intoSpec?.let { intoSpec ->
-            recipient.into(intoSpec.destPath) {
+            receiver.into(intoSpec.destPath) {
                 intoSpec.copySpec.applyTo(this)
             }
         }
 
-        preserveFileTimestamps?.let(recipient::setPreserveFileTimestamps)
-        reproducibleFileOrder?.let(recipient::setReproducibleFileOrder)
+        preserveFileTimestamps?.let(receiver::setPreserveFileTimestamps)
+        reproducibleFileOrder?.let(receiver::setReproducibleFileOrder)
     }
 }
 

@@ -18,10 +18,10 @@ internal data class BuildConfigField(
     fun toBuildConfigField() =com.github.gmazzo.gradle.plugins. BuildConfigField(name, type, value, optional, position)
 
     context(Project)
-    override fun applyTo(recipient: BuildConfigField) {
-        recipient.type tryAssign type
-        recipient.value tryAssign value
-        recipient.optional tryAssign optional
-        recipient.position tryAssign position
+    override fun applyTo(receiver: BuildConfigField) {
+        receiver.type tryAssign type
+        receiver.value tryAssign value
+        receiver.optional tryAssign optional
+        receiver.position tryAssign position
     }
 }

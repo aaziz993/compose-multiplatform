@@ -239,29 +239,29 @@ internal data class MavenPublication(
 ) : Publication<MavenPublication> {
 
     context(Project)
-    override fun applyTo(recipient: MavenPublication) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: MavenPublication) {
+        super.applyTo(receiver)
 
-        pom?.applyTo(recipient.pom)
-        from?.let(components::getByName)?.let(recipient::from)
+        pom?.applyTo(receiver.pom)
+        from?.let(components::getByName)?.let(receiver::from)
 
         artifacts?.forEach { artifact ->
             artifact.artifact?.also { mavenArtifact ->
-                recipient.artifact(artifact.source, mavenArtifact::applyTo)
-            } ?: recipient.artifact(artifact.source)
+                receiver.artifact(artifact.source, mavenArtifact::applyTo)
+            } ?: receiver.artifact(artifact.source)
 
         }
 
-        recipient.groupId = groupId ?: project.group.toString()
-        recipient.artifactId = artifactId ?: project.name
-        recipient.version = version ?: project.version.toString()
+        receiver.groupId = groupId ?: project.group.toString()
+        receiver.artifactId = artifactId ?: project.name
+        receiver.version = version ?: project.version.toString()
 
         versionMapping?.let { versionMapping ->
-            recipient.versionMapping(versionMapping::applyTo)
+            receiver.versionMapping(versionMapping::applyTo)
         }
 
-        suppressPomMetadataWarningsFor?.forEach(recipient::suppressPomMetadataWarningsFor)
-        suppressAllPomMetadataWarnings?.takeIf { it }?.run { recipient.suppressAllPomMetadataWarnings() }
+        suppressPomMetadataWarningsFor?.forEach(receiver::suppressPomMetadataWarningsFor)
+        suppressAllPomMetadataWarnings?.takeIf { it }?.run { receiver.suppressAllPomMetadataWarnings() }
     }
 
     context(Project)

@@ -22,8 +22,8 @@ internal data class ComposeOptions(
 ) {
 
     context(Project)
-    fun applyTo(recipient: ComposeOptions) {
-        recipient::kotlinCompilerExtensionVersion trySet (kotlinCompilerExtensionVersion
+    fun applyTo(receiver: ComposeOptions) {
+        receiver::kotlinCompilerExtensionVersion trySet (kotlinCompilerExtensionVersion
             ?: settings.libs.versions.version("kotlin"))
     }
 }

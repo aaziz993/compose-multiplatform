@@ -24,7 +24,7 @@ internal data class KotlinNativeCompilation(
 ) : KotlinCompilation {
 
         context(Project)
-    override fun applyTo(recipient: T) {
+    override fun applyTo(receiver: T) {
         super.applyTo(named)
 
         named as org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeCompilation

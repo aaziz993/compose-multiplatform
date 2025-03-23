@@ -13,27 +13,27 @@ internal data class BuildScanDataObfuscationConfiguration(
     val externalProcessName: Map<String, String>? = null,
 ) {
 
-    fun applyTo(recipient: BuildScanDataObfuscationConfiguration) {
+    fun applyTo(receiver: BuildScanDataObfuscationConfiguration) {
         username?.let { username ->
-            recipient.username {
+            receiver.username {
                 username[it] ?: username[""] ?: it
             }
         }
 
         hostname?.let { hostname ->
-            recipient.hostname {
+            receiver.hostname {
                 CI ?: hostname[it] ?: hostname[""] ?: it
             }
         }
 
         ipAddresses?.let { ipAddresses ->
-            recipient.ipAddresses {
+            receiver.ipAddresses {
                 it.map { ipAddresses[it.hostAddress] ?: ipAddresses[""] ?: it.hostAddress }
             }
         }
 
         externalProcessName?.let { externalProcessName ->
-            recipient.externalProcessName {
+            receiver.externalProcessName {
                 externalProcessName[it] ?: externalProcessName[""] ?: it
             }
         }

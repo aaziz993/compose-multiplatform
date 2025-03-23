@@ -31,13 +31,13 @@ internal data class ApolloGenerateUsedCoordinatesAndCheckFragmentsTask(
 ) : DefaultTask<ApolloGenerateUsedCoordinatesAndCheckFragmentsTask>() {
 
     context(Project)
-    override fun applyTo(recipient: ApolloGenerateUsedCoordinatesAndCheckFragmentsTask) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: ApolloGenerateUsedCoordinatesAndCheckFragmentsTask) {
+        super.applyTo(receiver)
 
-        downStreamIrOperations?.toTypedArray()?.let(recipient.downStreamIrOperations::from)
-        setDownStreamIrOperations?.let(recipient.downStreamIrOperations::setFrom)
-        recipient.irOperations tryAssign irOperations?.let(::file)
-        recipient.outputFile tryAssign outputFile?.let(::file)
+        downStreamIrOperations?.toTypedArray()?.let(receiver.downStreamIrOperations::from)
+        setDownStreamIrOperations?.let(receiver.downStreamIrOperations::setFrom)
+        receiver.irOperations tryAssign irOperations?.let(::file)
+        receiver.outputFile tryAssign outputFile?.let(::file)
     }
 
     context(Project)

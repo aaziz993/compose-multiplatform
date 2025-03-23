@@ -51,11 +51,11 @@ internal data class KoverVerifyBound(
     val aggregationForGroup: AggregationType? = null,
 ) {
 
-    fun applyTo(recipient: kotlinx.kover.gradle.plugin.dsl.KoverVerifyBound) {
-        recipient.minValue tryAssign minValue
-        recipient.maxValue tryAssign maxValue
-        recipient.coverageUnits tryAssign coverageUnits
-        recipient.aggregationForGroup tryAssign aggregationForGroup
+    fun applyTo(receiver: kotlinx.kover.gradle.plugin.dsl.KoverVerifyBound) {
+        receiver.minValue tryAssign minValue
+        receiver.maxValue tryAssign maxValue
+        receiver.coverageUnits tryAssign coverageUnits
+        receiver.aggregationForGroup tryAssign aggregationForGroup
     }
 }
 

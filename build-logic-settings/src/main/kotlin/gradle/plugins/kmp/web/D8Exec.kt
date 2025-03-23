@@ -37,7 +37,7 @@ internal data class D8Exec(
 ) : AbstractExecTask<D8Exec>() {
 
         context(Project)
-    override fun applyTo(recipient: T) {
+    override fun applyTo(receiver: T) {
         super.applyTo(named)
 
         named as org.jetbrains.kotlin.gradle.targets.js.d8.D8Exec

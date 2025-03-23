@@ -21,8 +21,8 @@ internal data class BundleDeviceTier(
 ) {
 
     @Suppress("UnstableApiUsage")
-    fun applyTo(recipient: BundleDeviceTier) {
-        recipient::enableSplit trySet enableSplit
-        recipient::defaultTier trySet defaultTier
+    fun applyTo(receiver: BundleDeviceTier) {
+        receiver::enableSplit trySet enableSplit
+        receiver::defaultTier trySet defaultTier
     }
 }

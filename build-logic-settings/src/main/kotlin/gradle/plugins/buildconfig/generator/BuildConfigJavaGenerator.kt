@@ -19,8 +19,8 @@ internal data class BuildConfigJavaGenerator(
         defaultVisibility,
     )
 
-    override fun applyTo(recipient: com.github.gmazzo.gradle.plugins.generators.BuildConfigJavaGenerator) {
-        recipient::defaultVisibility trySet defaultVisibility
+    override fun applyTo(receiver: com.github.gmazzo.gradle.plugins.generators.BuildConfigJavaGenerator) {
+        receiver::defaultVisibility trySet defaultVisibility
     }
 }
 

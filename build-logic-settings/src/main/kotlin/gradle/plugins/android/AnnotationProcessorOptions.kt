@@ -44,12 +44,12 @@ internal data class AnnotationProcessorOptions(
     val setCompilerArgumentProviders: List<CommandLineArgumentProvider>? = null
 ) {
 
-    fun applyTo(recipient: AnnotationProcessorOptions) {
-        classNames?.let(recipient.classNames::addAll)
-        setClassNames?.act(recipient.classNames::clear)?.let(recipient.classNames::addAll)
-        arguments?.let(recipient.arguments::putAll)
-        setArguments?.act(recipient.arguments::clear)?.let(recipient.arguments::putAll)
-        compilerArgumentProviders?.let(recipient.compilerArgumentProviders::addAll)
-        setCompilerArgumentProviders?.act(recipient.compilerArgumentProviders::clear)?.let(recipient.compilerArgumentProviders::addAll)
+    fun applyTo(receiver: AnnotationProcessorOptions) {
+        classNames?.let(receiver.classNames::addAll)
+        setClassNames?.act(receiver.classNames::clear)?.let(receiver.classNames::addAll)
+        arguments?.let(receiver.arguments::putAll)
+        setArguments?.act(receiver.arguments::clear)?.let(receiver.arguments::putAll)
+        compilerArgumentProviders?.let(receiver.compilerArgumentProviders::addAll)
+        setCompilerArgumentProviders?.act(receiver.compilerArgumentProviders::clear)?.let(receiver.compilerArgumentProviders::addAll)
     }
 }

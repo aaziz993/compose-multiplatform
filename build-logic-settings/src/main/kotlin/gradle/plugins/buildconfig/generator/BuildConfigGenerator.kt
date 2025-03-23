@@ -8,7 +8,7 @@ internal interface BuildConfigGenerator<T : com.github.gmazzo.gradle.plugins.gen
 
     fun toBuildConfigGenerator(): com.github.gmazzo.gradle.plugins.generators.BuildConfigGenerator
 
-    fun applyTo(recipient: T)
+    fun applyTo(receiver: T)
 }
 
 private object BuildConfigGeneratorSerializer : JsonPolymorphicSerializer<BuildConfigGenerator<*>>(

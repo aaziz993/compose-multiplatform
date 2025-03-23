@@ -91,10 +91,10 @@ internal data class KoverReportFilter(
     val inheritedFrom: Set<String>? = null,
 ){
 
-    fun applyTo(recipient: KoverReportFilter){
-        recipient.classes tryAssign classes
-        recipient.   annotatedBy tryAssign annotatedBy
-        recipient. projects tryAssign projects
-        recipient. inheritedFrom tryAssign inheritedFrom
+    fun applyTo(receiver: KoverReportFilter){
+        receiver.classes tryAssign classes
+        receiver.   annotatedBy tryAssign annotatedBy
+        receiver. projects tryAssign projects
+        receiver. inheritedFrom tryAssign inheritedFrom
     }
 }

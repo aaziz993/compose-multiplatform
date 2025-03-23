@@ -78,9 +78,9 @@ internal data class DokkaExternalDocumentationLinkSpec(
 ) : ProjectNamed<DokkaExternalDocumentationLinkSpec> {
 
     context(Project)
-    override fun applyTo(recipient: DokkaExternalDocumentationLinkSpec) {
-        url?.let(recipient::url)
-        packageListUrl?.let(recipient::packageListUrl)
-        recipient.enabled tryAssign enabled
+    override fun applyTo(receiver: DokkaExternalDocumentationLinkSpec) {
+        url?.let(receiver::url)
+        packageListUrl?.let(receiver::packageListUrl)
+        receiver.enabled tryAssign enabled
     }
 }

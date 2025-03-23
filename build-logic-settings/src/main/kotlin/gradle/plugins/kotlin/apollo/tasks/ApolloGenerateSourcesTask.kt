@@ -75,42 +75,42 @@ internal data class ApolloGenerateSourcesTask(
 ) : ApolloGenerateSourcesBase<ApolloGenerateSourcesTask>() {
 
     context(Project)
-    override fun applyTo(recipient: ApolloGenerateSourcesTask) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: ApolloGenerateSourcesTask) {
+        super.applyTo(receiver)
 
-        recipient.addTypename tryAssign addTypename
+        receiver.addTypename tryAssign addTypename
 
-        recipient.alwaysGenerateTypesMatching tryAssign alwaysGenerateTypesMatching
+        receiver.alwaysGenerateTypesMatching tryAssign alwaysGenerateTypesMatching
             ?.let { alwaysGenerateTypesMatching ->
-                recipient.alwaysGenerateTypesMatching.get() + alwaysGenerateTypesMatching
+                receiver.alwaysGenerateTypesMatching.get() + alwaysGenerateTypesMatching
             }
 
-        recipient.alwaysGenerateTypesMatching tryAssign setAlwaysGenerateTypesMatching
-        recipient.codegenModels tryAssign codegenModels
-        recipient.decapitalizeFields tryAssign decapitalizeFields
-        recipient.failOnWarnings tryAssign failOnWarnings
-        recipient.fieldsOnDisjointTypesMustMerge tryAssign fieldsOnDisjointTypesMustMerge
-        recipient.flattenModels tryAssign flattenModels
-        recipient.generateDataBuilders tryAssign generateDataBuilders
-        graphqlFiles?.toTypedArray()?.let(recipient.graphqlFiles::from)
-        setGraphqlFiles?.let(recipient.graphqlFiles::setFrom)
-        recipient.projectPath tryAssign projectPath
+        receiver.alwaysGenerateTypesMatching tryAssign setAlwaysGenerateTypesMatching
+        receiver.codegenModels tryAssign codegenModels
+        receiver.decapitalizeFields tryAssign decapitalizeFields
+        receiver.failOnWarnings tryAssign failOnWarnings
+        receiver.fieldsOnDisjointTypesMustMerge tryAssign fieldsOnDisjointTypesMustMerge
+        receiver.flattenModels tryAssign flattenModels
+        receiver.generateDataBuilders tryAssign generateDataBuilders
+        graphqlFiles?.toTypedArray()?.let(receiver.graphqlFiles::from)
+        setGraphqlFiles?.let(receiver.graphqlFiles::setFrom)
+        receiver.projectPath tryAssign projectPath
 
-        recipient.scalarAdapterMapping tryAssign scalarAdapterMapping?.let { scalarAdapterMapping ->
-            recipient.scalarAdapterMapping.get() + scalarAdapterMapping
+        receiver.scalarAdapterMapping tryAssign scalarAdapterMapping?.let { scalarAdapterMapping ->
+            receiver.scalarAdapterMapping.get() + scalarAdapterMapping
         }
 
-        recipient.scalarAdapterMapping tryAssign setScalarAdapterMapping
+        receiver.scalarAdapterMapping tryAssign setScalarAdapterMapping
 
-        recipient.scalarTypeMapping tryAssign scalarTypeMapping?.let { scalarTypeMapping ->
-            recipient.scalarTypeMapping.get() + scalarTypeMapping
+        receiver.scalarTypeMapping tryAssign scalarTypeMapping?.let { scalarTypeMapping ->
+            receiver.scalarTypeMapping.get() + scalarTypeMapping
         }
 
-        recipient.scalarTypeMapping tryAssign setScalarAdapterMapping
-        schemaFiles?.toTypedArray()?.let(recipient.schemaFiles::from)
-        setSchemaFiles?.let(recipient.schemaFiles::setFrom)
-        recipient.targetLanguage tryAssign targetLanguage
-        recipient.warnOnDeprecatedUsages tryAssign warnOnDeprecatedUsages
+        receiver.scalarTypeMapping tryAssign setScalarAdapterMapping
+        schemaFiles?.toTypedArray()?.let(receiver.schemaFiles::from)
+        setSchemaFiles?.let(receiver.schemaFiles::setFrom)
+        receiver.targetLanguage tryAssign targetLanguage
+        receiver.warnOnDeprecatedUsages tryAssign warnOnDeprecatedUsages
     }
 
     context(Project)

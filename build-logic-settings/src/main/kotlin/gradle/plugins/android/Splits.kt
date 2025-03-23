@@ -47,8 +47,8 @@ internal data class Splits(
     val density: DensitySplitOptions? = null,
 ) {
 
-    fun applyTo(recipient: Splits) {
-        abi?.applyTo(recipient.abi)
-        density?.applyTo(recipient.density)
+    fun applyTo(receiver: Splits) {
+        abi?.applyTo(receiver.abi)
+        density?.applyTo(receiver.density)
     }
 }

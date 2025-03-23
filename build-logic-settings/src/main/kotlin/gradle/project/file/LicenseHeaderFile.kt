@@ -19,7 +19,7 @@ internal data class LicenseHeaderFile(
     override val into: String = "CODE_OF_CONDUCT.md"
 
     context(Project)
-    override fun applyTo(recipient: String): List<TaskProvider<out DefaultTask>> =
+    override fun applyTo(receiver: String): List<TaskProvider<out DefaultTask>> =
         super.applyTo(name).onEach { task ->
             task.configure {
                 val intoFile = file(into)

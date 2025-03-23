@@ -13,7 +13,7 @@ internal abstract class KotlinNativeTargetWithTests<T : KotlinNativeBinaryTestRu
     KotlinNativeTarget(), KotlinTargetWithTests<T> {
 
         context(Project)
-    override fun applyTo(recipient: T) {
+    override fun applyTo(receiver: T) {
         super<KotlinNativeTarget>.applyTo(named)
         super<KotlinTargetWithTests>.applyTo(named)
     }

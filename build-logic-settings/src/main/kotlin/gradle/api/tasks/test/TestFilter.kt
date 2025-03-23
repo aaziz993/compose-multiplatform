@@ -67,13 +67,13 @@ internal interface TestFilter<T: TestFilter> {
      */
     val failOnNoMatchingTests: Boolean?
 
-    fun applyTo(recipient: T) {
-        includeTestsMatchings?.forEach(recipient::includeTestsMatching)
-        excludeTestsMatchings?.forEach(recipient::excludeTestsMatching)
-        includePatterns?.let(recipient.includePatterns::addAll)
-        excludePatterns?.let(recipient.excludePatterns::addAll)
-        includeTests?.forEach { (className, methodName) -> recipient.includeTest(className, methodName) }
-        excludeTests?.forEach { (className, methodName) -> recipient.excludeTest(className, methodName) }
-        failOnNoMatchingTests?.let(recipient::setFailOnNoMatchingTests)
+    fun applyTo(receiver: T) {
+        includeTestsMatchings?.forEach(receiver::includeTestsMatching)
+        excludeTestsMatchings?.forEach(receiver::excludeTestsMatching)
+        includePatterns?.let(receiver.includePatterns::addAll)
+        excludePatterns?.let(receiver.excludePatterns::addAll)
+        includeTests?.forEach { (className, methodName) -> receiver.includeTest(className, methodName) }
+        excludeTests?.forEach { (className, methodName) -> receiver.excludeTest(className, methodName) }
+        failOnNoMatchingTests?.let(receiver::setFailOnNoMatchingTests)
     }
 }

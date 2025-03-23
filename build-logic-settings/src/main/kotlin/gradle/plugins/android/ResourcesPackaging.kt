@@ -49,12 +49,12 @@ internal data class ResourcesPackaging(
     val setMerges: Set<String>? = null
 ) {
 
-    fun applyTo(recipient: ResourcesPackaging) {
-        excludes?.let(recipient.excludes::addAll)
-        setExcludes?.act(recipient.excludes::clear)?.let(recipient.excludes::addAll)
-        pickFirsts?.let(recipient.pickFirsts::addAll)
-        setPickFirsts?.act(recipient.pickFirsts::clear)?.let(recipient.pickFirsts::addAll)
-        merges?.let(recipient.merges::addAll)
-        setMerges?.act(recipient.merges::clear)?.let(recipient.merges::addAll)
+    fun applyTo(receiver: ResourcesPackaging) {
+        excludes?.let(receiver.excludes::addAll)
+        setExcludes?.act(receiver.excludes::clear)?.let(receiver.excludes::addAll)
+        pickFirsts?.let(receiver.pickFirsts::addAll)
+        setPickFirsts?.act(receiver.pickFirsts::clear)?.let(receiver.pickFirsts::addAll)
+        merges?.let(receiver.merges::addAll)
+        setMerges?.act(receiver.merges::clear)?.let(receiver.merges::addAll)
     }
 }

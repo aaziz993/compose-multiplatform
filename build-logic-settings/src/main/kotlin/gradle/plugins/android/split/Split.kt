@@ -25,10 +25,10 @@ internal interface Split<T : Split> {
      */
     val reset: Boolean?
 
-    fun applyTo(recipient: T) {
-        recipient::isEnable trySet isEnable
-        includes?.toTypedArray()?.let(recipient::include)
-        excludes?.toTypedArray()?.let(recipient::exclude)
-        reset?.takeIf { it }?.run { recipient.reset() }
+    fun applyTo(receiver: T) {
+        receiver::isEnable trySet isEnable
+        includes?.toTypedArray()?.let(receiver::include)
+        excludes?.toTypedArray()?.let(receiver::exclude)
+        reset?.takeIf { it }?.run { receiver.reset() }
     }
 }

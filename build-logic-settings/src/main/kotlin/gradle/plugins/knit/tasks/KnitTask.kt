@@ -31,13 +31,13 @@ internal data class KnitTask(
 ) : DefaultTask<KnitTask>() {
 
     context(Project)
-    override fun applyTo(recipient: KnitTask) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: KnitTask) {
+        super.applyTo(receiver)
 
-        recipient::check trySet check
-        recipient::rootDir trySet rootDir?.let(::file)
-        recipient.files = recipient.files + files.orEmpty().toTypedArray().let(::files)
-        recipient::files trySet setFiles?.toTypedArray()?.let(::files)
+        receiver::check trySet check
+        receiver::rootDir trySet rootDir?.let(::file)
+        receiver.files = receiver.files + files.orEmpty().toTypedArray().let(::files)
+        receiver::files trySet setFiles?.toTypedArray()?.let(::files)
     }
 
     context(Project)

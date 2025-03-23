@@ -20,11 +20,11 @@ internal abstract class AbstractPublishToMaven<T : org.gradle.api.publish.maven.
     abstract val publication: String?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super.applyTo(receiver)
 
         publication?.let(publishing.publications::getByName)?.let { publication ->
-            recipient.setPublication(publication as MavenPublication)
+            receiver.setPublication(publication as MavenPublication)
         }
     }
 }

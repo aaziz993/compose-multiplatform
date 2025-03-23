@@ -10,8 +10,8 @@ internal class SingleJvmCompilationTestRunSource(
 ) : JvmClasspathTestRunSource {
 
     context(Project)
-    override fun applyTo(recipient: KotlinJvmTestRun) =
-        recipient.setExecutionSourceFrom(
-            recipient.target.compilations.getByName(compilation),
+    override fun applyTo(receiver: KotlinJvmTestRun) =
+        receiver.setExecutionSourceFrom(
+            receiver.target.compilations.getByName(compilation),
         )
 }

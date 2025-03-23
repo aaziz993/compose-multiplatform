@@ -73,19 +73,19 @@ internal data class DokkaVersioningPluginParameters(
         get() = DokkaVersioningPluginParameters.DOKKA_VERSIONING_PLUGIN_FQN
 
     context(Project)
-    override fun applyTo(recipient: DokkaVersioningPluginParameters) {
+    override fun applyTo(receiver: DokkaVersioningPluginParameters) {
         buildscript {
             dependencies {
                 classpath(settings.libs.libraryAsDependency("dokka.versioning"))
             }
         }
 
-        recipient.olderVersionsDir tryAssign olderVersionsDir?.let(::file)
-        olderVersions?.toTypedArray()?.let(recipient.olderVersions::from)
-        setOlderVersions?.let(recipient.olderVersions::setFrom)
-        recipient.versionsOrdering tryAssign versionsOrdering
-        recipient.version tryAssign version
-        recipient.renderVersionsNavigationOnAllPages tryAssign renderVersionsNavigationOnAllPages
+        receiver.olderVersionsDir tryAssign olderVersionsDir?.let(::file)
+        olderVersions?.toTypedArray()?.let(receiver.olderVersions::from)
+        setOlderVersions?.let(receiver.olderVersions::setFrom)
+        receiver.versionsOrdering tryAssign versionsOrdering
+        receiver.version tryAssign version
+        receiver.renderVersionsNavigationOnAllPages tryAssign renderVersionsNavigationOnAllPages
     }
 }
 

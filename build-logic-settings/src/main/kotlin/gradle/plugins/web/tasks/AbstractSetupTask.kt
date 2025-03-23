@@ -14,10 +14,10 @@ internal abstract class AbstractSetupTask<T : org.jetbrains.kotlin.gradle.target
     abstract val destinationHashFileProvider: String?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super.applyTo(receiver)
 
-        recipient.destinationHashFileProvider tryAssign destinationHashFileProvider?.let(::file)
+        receiver.destinationHashFileProvider tryAssign destinationHashFileProvider?.let(::file)
     }
 }
 

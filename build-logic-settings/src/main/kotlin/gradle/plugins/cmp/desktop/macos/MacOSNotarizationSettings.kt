@@ -11,9 +11,9 @@ internal data class MacOSNotarizationSettings(
     val teamID: String? = null,
 ) {
 
-    fun applyTo(recipient: MacOSNotarizationSettings) {
-        recipient.appleID tryAssign appleID
-        recipient.password tryAssign password
-        recipient.teamID tryAssign teamID
+    fun applyTo(receiver: MacOSNotarizationSettings) {
+        receiver.appleID tryAssign appleID
+        receiver.password tryAssign password
+        receiver.teamID tryAssign teamID
     }
 }

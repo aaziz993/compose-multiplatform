@@ -46,10 +46,10 @@ internal data class ApplicationBuildFeatures(
     val mlModelBinding: Boolean? = null,
 ) : BuildFeatures<ApplicationBuildFeatures> {
 
-    override fun applyTo(recipient: ApplicationBuildFeatures) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: ApplicationBuildFeatures) {
+        super.applyTo(receiver)
 
-        recipient::dataBinding trySet dataBinding
-        recipient::mlModelBinding trySet mlModelBinding
+        receiver::dataBinding trySet dataBinding
+        receiver::mlModelBinding trySet mlModelBinding
     }
 }

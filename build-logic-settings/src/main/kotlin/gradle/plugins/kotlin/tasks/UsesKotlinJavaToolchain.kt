@@ -27,10 +27,10 @@ internal interface UsesKotlinJavaToolchain<T : org.jetbrains.kotlin.gradle.tasks
     val kotlinJavaToolchain: KotlinJavaToolchain?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super.applyTo(receiver)
 
-        kotlinJavaToolchain?.applyTo(recipient.kotlinJavaToolchain)
+        kotlinJavaToolchain?.applyTo(receiver.kotlinJavaToolchain)
     }
 }
 

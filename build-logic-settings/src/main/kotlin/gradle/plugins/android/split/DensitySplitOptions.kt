@@ -15,12 +15,12 @@ internal data class DensitySplitOptions(
     val setCompatibleScreens: Set<String>? = null,
 ) : SplitOptions<DensitySplitOptions>() {
 
-    override fun applyTo(recipient: DensitySplitOptions) {
-        super<SplitOptions>.applyTo(recipient)
-        super<DensitySplit>.applyTo(recipient)
+    override fun applyTo(receiver: DensitySplitOptions) {
+        super<SplitOptions>.applyTo(receiver)
+        super<DensitySplit>.applyTo(receiver)
 
-        compatibleScreens?.toTypedArray()?.let(recipient::compatibleScreens)
+        compatibleScreens?.toTypedArray()?.let(receiver::compatibleScreens)
 
-        setCompatibleScreens?.act(recipient.compatibleScreens::clear)?.let(recipient.compatibleScreens::addAll)
+        setCompatibleScreens?.act(receiver.compatibleScreens::clear)?.let(receiver.compatibleScreens::addAll)
     }
 }

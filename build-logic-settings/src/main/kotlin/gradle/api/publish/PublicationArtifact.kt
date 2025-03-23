@@ -17,7 +17,7 @@ internal interface PublicationArtifact<T : PublicationArtifact> : Buildable<T> {
      */
     val builtBy: Set<String>?
 
-    override fun applyTo(recipient: T) {
-        builtBy?.toTypedArray()?.let(recipient::builtBy)
+    override fun applyTo(receiver: T) {
+        builtBy?.toTypedArray()?.let(receiver::builtBy)
     }
 }

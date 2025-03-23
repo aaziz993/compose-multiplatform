@@ -63,80 +63,80 @@ internal data class Service(
 ) {
 
     context(Project)
-    fun applyTo(recipient: Service) {
-        recipient.addJvmOverloads tryAssign addJvmOverloads
-        recipient.addTypename tryAssign addTypename
+    fun applyTo(receiver: Service) {
+        receiver.addJvmOverloads tryAssign addJvmOverloads
+        receiver.addTypename tryAssign addTypename
 
-        recipient.alwaysGenerateTypesMatching tryAssign alwaysGenerateTypesMatching
+        receiver.alwaysGenerateTypesMatching tryAssign alwaysGenerateTypesMatching
             ?.let { alwaysGenerateTypesMatching ->
-                recipient.alwaysGenerateTypesMatching.get() + alwaysGenerateTypesMatching
+                receiver.alwaysGenerateTypesMatching.get() + alwaysGenerateTypesMatching
             }
 
-        recipient.alwaysGenerateTypesMatching tryAssign setAlwaysGenerateTypesMatching
+        receiver.alwaysGenerateTypesMatching tryAssign setAlwaysGenerateTypesMatching
 
-        recipient.classesForEnumsMatching tryAssign classesForEnumsMatching?.let { classesForEnumsMatching ->
-            recipient.classesForEnumsMatching.get() + classesForEnumsMatching
+        receiver.classesForEnumsMatching tryAssign classesForEnumsMatching?.let { classesForEnumsMatching ->
+            receiver.classesForEnumsMatching.get() + classesForEnumsMatching
         }
 
-        recipient.classesForEnumsMatching tryAssign setClassesForEnumsMatching
-        recipient.codegenModels tryAssign codegenModels
-        recipient.debugDir tryAssign debugDir?.let(layout.projectDirectory::dir)
-        recipient.decapitalizeFields tryAssign decapitalizeFields
+        receiver.classesForEnumsMatching tryAssign setClassesForEnumsMatching
+        receiver.codegenModels tryAssign codegenModels
+        receiver.debugDir tryAssign debugDir?.let(layout.projectDirectory::dir)
+        receiver.decapitalizeFields tryAssign decapitalizeFields
 
-        recipient.excludes tryAssign excludes?.let { excludes ->
-            recipient.excludes.get() + excludes
+        receiver.excludes tryAssign excludes?.let { excludes ->
+            receiver.excludes.get() + excludes
         }
 
-        recipient.excludes tryAssign setExcludes
-        recipient.failOnWarnings tryAssign failOnWarnings
-        recipient.fieldsOnDisjointTypesMustMerge tryAssign fieldsOnDisjointTypesMustMerge
-        recipient.flattenModels tryAssign flattenModels
-        recipient.generateApolloMetadata tryAssign generateApolloMetadata
-        recipient.generateAsInternal tryAssign generateAsInternal
-        recipient.generateDataBuilders tryAssign generateDataBuilders
-        recipient.generateFragmentImplementations tryAssign generateFragmentImplementations
-        recipient.generateInputBuilders tryAssign generateInputBuilders
-        recipient.generateKotlinModels tryAssign generateKotlinModels
+        receiver.excludes tryAssign setExcludes
+        receiver.failOnWarnings tryAssign failOnWarnings
+        receiver.fieldsOnDisjointTypesMustMerge tryAssign fieldsOnDisjointTypesMustMerge
+        receiver.flattenModels tryAssign flattenModels
+        receiver.generateApolloMetadata tryAssign generateApolloMetadata
+        receiver.generateAsInternal tryAssign generateAsInternal
+        receiver.generateDataBuilders tryAssign generateDataBuilders
+        receiver.generateFragmentImplementations tryAssign generateFragmentImplementations
+        receiver.generateInputBuilders tryAssign generateInputBuilders
+        receiver.generateKotlinModels tryAssign generateKotlinModels
 
-        recipient.generateMethods tryAssign generateMethods?.let { generateMethods ->
-            recipient.generateMethods.get() + generateMethods
+        receiver.generateMethods tryAssign generateMethods?.let { generateMethods ->
+            receiver.generateMethods.get() + generateMethods
         }
 
-        recipient.generateMethods tryAssign setGenerateMethods
-        recipient.generateModelBuilders tryAssign generateModelBuilders
-        recipient.generateOperationOutput tryAssign generateOperationOutput
-        recipient.generateOptionalOperationVariables tryAssign generateOptionalOperationVariables
-        recipient.generatePrimitiveTypes tryAssign generatePrimitiveTypes
-        recipient.generateQueryDocument tryAssign generateQueryDocument
-        recipient.generateSchema tryAssign generateSchema
-        recipient.generatedSchemaName tryAssign generatedSchemaName
+        receiver.generateMethods tryAssign setGenerateMethods
+        receiver.generateModelBuilders tryAssign generateModelBuilders
+        receiver.generateOperationOutput tryAssign generateOperationOutput
+        receiver.generateOptionalOperationVariables tryAssign generateOptionalOperationVariables
+        receiver.generatePrimitiveTypes tryAssign generatePrimitiveTypes
+        receiver.generateQueryDocument tryAssign generateQueryDocument
+        receiver.generateSchema tryAssign generateSchema
+        receiver.generatedSchemaName tryAssign generatedSchemaName
 
-        recipient.includes tryAssign includes?.let { includes ->
-            recipient.includes.get() + includes
+        receiver.includes tryAssign includes?.let { includes ->
+            receiver.includes.get() + includes
         }
 
-        recipient.includes tryAssign setIncludes
-        recipient.jsExport tryAssign jsExport
-        recipient.languageVersion tryAssign languageVersion
-        recipient.nullableFieldStyle tryAssign nullableFieldStyle
-        recipient.operationManifest tryAssign operationManifest?.let(::file)
-        recipient.operationManifestFormat tryAssign operationManifestFormat
-        recipient.operationOutputFile tryAssign operationOutputFile?.let(::file)
-        recipient.outputDir tryAssign outputDir?.let(layout.projectDirectory::dir)
-        recipient.packageName tryAssign packageName
-        recipient.requiresOptInAnnotation tryAssign requiresOptInAnnotation
-        recipient.schemaFile tryAssign schemaFile?.let(::file)
-        schemaFiles?.toTypedArray()?.let(recipient.schemaFiles::from)
-        setSchemaFiles?.let(recipient.schemaFiles::setFrom)
+        receiver.includes tryAssign setIncludes
+        receiver.jsExport tryAssign jsExport
+        receiver.languageVersion tryAssign languageVersion
+        receiver.nullableFieldStyle tryAssign nullableFieldStyle
+        receiver.operationManifest tryAssign operationManifest?.let(::file)
+        receiver.operationManifestFormat tryAssign operationManifestFormat
+        receiver.operationOutputFile tryAssign operationOutputFile?.let(::file)
+        receiver.outputDir tryAssign outputDir?.let(layout.projectDirectory::dir)
+        receiver.packageName tryAssign packageName
+        receiver.requiresOptInAnnotation tryAssign requiresOptInAnnotation
+        receiver.schemaFile tryAssign schemaFile?.let(::file)
+        schemaFiles?.toTypedArray()?.let(receiver.schemaFiles::from)
+        setSchemaFiles?.let(receiver.schemaFiles::setFrom)
 
-        recipient.sealedClassesForEnumsMatching tryAssign sealedClassesForEnumsMatching?.let { sealedClassesForEnumsMatching ->
-            recipient.sealedClassesForEnumsMatching.get() + sealedClassesForEnumsMatching
+        receiver.sealedClassesForEnumsMatching tryAssign sealedClassesForEnumsMatching?.let { sealedClassesForEnumsMatching ->
+            receiver.sealedClassesForEnumsMatching.get() + sealedClassesForEnumsMatching
         }
 
-        recipient.sealedClassesForEnumsMatching tryAssign setSealedClassesForEnumsMatching
-        recipient.sourceFolder tryAssign sourceFolder
-        recipient.testDir tryAssign testDir?.let(layout.projectDirectory::dir)
-        recipient.useSemanticNaming tryAssign useSemanticNaming
-        recipient.warnOnDeprecatedUsages tryAssign warnOnDeprecatedUsages
+        receiver.sealedClassesForEnumsMatching tryAssign setSealedClassesForEnumsMatching
+        receiver.sourceFolder tryAssign sourceFolder
+        receiver.testDir tryAssign testDir?.let(layout.projectDirectory::dir)
+        receiver.useSemanticNaming tryAssign useSemanticNaming
+        receiver.warnOnDeprecatedUsages tryAssign warnOnDeprecatedUsages
     }
 }

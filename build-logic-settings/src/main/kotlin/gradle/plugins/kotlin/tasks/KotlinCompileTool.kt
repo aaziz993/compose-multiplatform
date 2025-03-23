@@ -48,15 +48,15 @@ internal interface KotlinCompileTool<T : org.jetbrains.kotlin.gradle.tasks.Kotli
     val destinationDirectory: String?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super<Task>.applyTo(recipient)
-        super<PatternFilterable>.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super<Task>.applyTo(receiver)
+        super<PatternFilterable>.applyTo(receiver)
 
-        sources?.toTypedArray()?.let(recipient::source)
-        setSources?.toTypedArray()?.let(recipient::setSource)
-        libraries?.toTypedArray()?.let(recipient.libraries::from)
-        setLibraries?.let(recipient.libraries::setFrom)
-        recipient.destinationDirectory tryAssign destinationDirectory?.let(layout.projectDirectory::dir)
+        sources?.toTypedArray()?.let(receiver::source)
+        setSources?.toTypedArray()?.let(receiver::setSource)
+        libraries?.toTypedArray()?.let(receiver.libraries::from)
+        setLibraries?.let(receiver.libraries::setFrom)
+        receiver.destinationDirectory tryAssign destinationDirectory?.let(layout.projectDirectory::dir)
     }
 }
 

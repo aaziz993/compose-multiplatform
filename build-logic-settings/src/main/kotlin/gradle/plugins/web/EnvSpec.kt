@@ -41,11 +41,11 @@ internal abstract class EnvSpec {
     abstract val command: String?
 
     context(Project)
-    open fun applyTo(recipient: EnvSpec<*>) {
-        recipient.download tryAssign download
-        recipient.downloadBaseUrl tryAssign downloadBaseUrl
-        recipient.installationDirectory tryAssign installationDirectory?.let(layout.projectDirectory::dir)
-        recipient.version tryAssign version
-        recipient.command tryAssign command
+    open fun applyTo(receiver: EnvSpec<*>) {
+        receiver.download tryAssign download
+        receiver.downloadBaseUrl tryAssign downloadBaseUrl
+        receiver.installationDirectory tryAssign installationDirectory?.let(layout.projectDirectory::dir)
+        receiver.version tryAssign version
+        receiver.command tryAssign command
     }
 }

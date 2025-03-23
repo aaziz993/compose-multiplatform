@@ -203,31 +203,31 @@ internal interface BaseFlavor<T : BaseFlavor> : VariantDimension<T> {
     val initWith: String?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super.applyTo(receiver)
 
-        recipient.testApplicationId = testApplicationId ?: "$androidNamespace.test"
-        recipient::minSdk trySet (settings.libs.versions.version("android.minSdk")?.toInt())
-        recipient::minSdkPreview trySet minSdkPreview
-        recipient::renderscriptTargetApi trySet renderscriptTargetApi
-        recipient::renderscriptSupportModeEnabled trySet renderscriptSupportModeEnabled
-        recipient::renderscriptSupportModeBlasEnabled trySet renderscriptSupportModeBlasEnabled
-        recipient::renderscriptNdkModeEnabled trySet renderscriptNdkModeEnabled
-        recipient::testInstrumentationRunner trySet testInstrumentationRunner
-        testInstrumentationRunnerArguments?.let(recipient.testInstrumentationRunnerArguments::putAll)
-        setTestInstrumentationRunnerArguments?.act(recipient.testInstrumentationRunnerArguments::clear)?.let(recipient.testInstrumentationRunnerArguments::putAll)
-        recipient::testHandleProfiling trySet testHandleProfiling
-        recipient::testFunctionalTest trySet testFunctionalTest
+        receiver.testApplicationId = testApplicationId ?: "$androidNamespace.test"
+        receiver::minSdk trySet (settings.libs.versions.version("android.minSdk")?.toInt())
+        receiver::minSdkPreview trySet minSdkPreview
+        receiver::renderscriptTargetApi trySet renderscriptTargetApi
+        receiver::renderscriptSupportModeEnabled trySet renderscriptSupportModeEnabled
+        receiver::renderscriptSupportModeBlasEnabled trySet renderscriptSupportModeBlasEnabled
+        receiver::renderscriptNdkModeEnabled trySet renderscriptNdkModeEnabled
+        receiver::testInstrumentationRunner trySet testInstrumentationRunner
+        testInstrumentationRunnerArguments?.let(receiver.testInstrumentationRunnerArguments::putAll)
+        setTestInstrumentationRunnerArguments?.act(receiver.testInstrumentationRunnerArguments::clear)?.let(receiver.testInstrumentationRunnerArguments::putAll)
+        receiver::testHandleProfiling trySet testHandleProfiling
+        receiver::testFunctionalTest trySet testFunctionalTest
         vectorDrawables?.let { vectorDrawables ->
-            recipient.vectorDrawables(vectorDrawables::applyTo)
+            receiver.vectorDrawables(vectorDrawables::applyTo)
         }
 
-        recipient::wearAppUnbundled trySet wearAppUnbundled
+        receiver::wearAppUnbundled trySet wearAppUnbundled
 
         missingDimensionStrategies?.forEach { missingDimensionStrategy ->
-            recipient.missingDimensionStrategy(missingDimensionStrategy.dimension, missingDimensionStrategy.requestedValues)
+            receiver.missingDimensionStrategy(missingDimensionStrategy.dimension, missingDimensionStrategy.requestedValues)
         }
 
-        initWith?.let(android.productFlavors::getByName)?.let(recipient::initWith)
+        initWith?.let(android.productFlavors::getByName)?.let(receiver::initWith)
     }
 }

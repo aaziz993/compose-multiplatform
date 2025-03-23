@@ -53,15 +53,15 @@ internal interface AndroidResources<T : AndroidResources> {
     val namespaced: Boolean?
 
     @Suppress("UnstableApiUsage")
-    fun applyTo(recipient: T) {
-        recipient::ignoreAssetsPattern trySet ignoreAssetsPattern
-        ignoreAssetsPatterns?.let(recipient.ignoreAssetsPatterns::addAll)
-        setIgnoreAssetsPatterns?.act(recipient.ignoreAssetsPatterns::clear)?.let(recipient.ignoreAssetsPatterns::addAll)
-        noCompress?.let(recipient.noCompress::addAll)
-        setNoCompress?.act(recipient.noCompress::clear)?.let(recipient.noCompress::addAll)
-        recipient::failOnMissingConfigEntry trySet failOnMissingConfigEntry
-        additionalParameters?.let(recipient.additionalParameters::addAll)
-        setAdditionalParameters?.act(recipient.additionalParameters::clear)?.let(recipient.additionalParameters::addAll)
-        recipient::namespaced trySet recipient.namespaced
+    fun applyTo(receiver: T) {
+        receiver::ignoreAssetsPattern trySet ignoreAssetsPattern
+        ignoreAssetsPatterns?.let(receiver.ignoreAssetsPatterns::addAll)
+        setIgnoreAssetsPatterns?.act(receiver.ignoreAssetsPatterns::clear)?.let(receiver.ignoreAssetsPatterns::addAll)
+        noCompress?.let(receiver.noCompress::addAll)
+        setNoCompress?.act(receiver.noCompress::clear)?.let(receiver.noCompress::addAll)
+        receiver::failOnMissingConfigEntry trySet failOnMissingConfigEntry
+        additionalParameters?.let(receiver.additionalParameters::addAll)
+        setAdditionalParameters?.act(receiver.additionalParameters::clear)?.let(receiver.additionalParameters::addAll)
+        receiver::namespaced trySet receiver.namespaced
     }
 }

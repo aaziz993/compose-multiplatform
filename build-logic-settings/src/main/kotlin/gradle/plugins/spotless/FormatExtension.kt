@@ -71,51 +71,51 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
     abstract val toggleOffOnDisable: Boolean?
 
     context(Project)
-    open fun applyTo(recipient: T) {
-        lineEnding?.let(recipient::setLineEndings)
-        ratchetFrom?.let(recipient::setRatchetFrom)
-        excludeSteps?.forEach(recipient::ignoreErrorForStep)
-        excludePaths?.forEach(recipient::ignoreErrorForPath)
-        encoding?.let(recipient::setEncoding)
-        target?.toTypedArray().let(recipient::target)
-        targetExclude?.toTypedArray()?.let(recipient::targetExclude)
-        targetExcludeIfContentContains?.let(recipient::targetExcludeIfContentContains)
-        targetExcludeIfContentContainsRegex?.let(recipient::targetExcludeIfContentContainsRegex)
-        replace?.forEach { (name, original, after) -> recipient.replace(name, original, after) }
-        replaceRegex?.forEach { (name, regex, replacement) -> recipient.replaceRegex(name, regex, replacement) }
-        trimTrailingWhitespace?.takeIf { it }?.run { recipient.trimTrailingWhitespace() }
-        endWithNewline?.takeIf { it }?.run { recipient.endWithNewline() }
+    open fun applyTo(receiver: T) {
+        lineEnding?.let(receiver::setLineEndings)
+        ratchetFrom?.let(receiver::setRatchetFrom)
+        excludeSteps?.forEach(receiver::ignoreErrorForStep)
+        excludePaths?.forEach(receiver::ignoreErrorForPath)
+        encoding?.let(receiver::setEncoding)
+        target?.toTypedArray().let(receiver::target)
+        targetExclude?.toTypedArray()?.let(receiver::targetExclude)
+        targetExcludeIfContentContains?.let(receiver::targetExcludeIfContentContains)
+        targetExcludeIfContentContainsRegex?.let(receiver::targetExcludeIfContentContainsRegex)
+        replace?.forEach { (name, original, after) -> receiver.replace(name, original, after) }
+        replaceRegex?.forEach { (name, regex, replacement) -> receiver.replaceRegex(name, regex, replacement) }
+        trimTrailingWhitespace?.takeIf { it }?.run { receiver.trimTrailingWhitespace() }
+        endWithNewline?.takeIf { it }?.run { receiver.endWithNewline() }
 
         when (val indentWithSpaces = indentWithSpaces) {
-            is Boolean -> indentWithSpaces.takeIf { it }?.let { recipient.indentWithSpaces() }
-            is Int -> recipient.indentWithSpaces(indentWithSpaces)
+            is Boolean -> indentWithSpaces.takeIf { it }?.let { receiver.indentWithSpaces() }
+            is Int -> receiver.indentWithSpaces(indentWithSpaces)
 
             else -> Unit
         }
 
         when (val indentWithTabs = indentWithTabs) {
-            is Boolean -> indentWithTabs.takeIf { it }?.let { recipient.indentWithTabs() }
-            is Int -> recipient.indentWithTabs(indentWithTabs)
+            is Boolean -> indentWithTabs.takeIf { it }?.let { receiver.indentWithTabs() }
+            is Int -> receiver.indentWithTabs(indentWithTabs)
 
             else -> Unit
         }
 
-        nativeCmd?.forEach { (name, pathToExe, arguments) -> recipient.nativeCmd(name, pathToExe, arguments) }
+        nativeCmd?.forEach { (name, pathToExe, arguments) -> receiver.nativeCmd(name, pathToExe, arguments) }
 
         licenseHeader?.let { license ->
             license.applyTo(
-                license.header?.let { recipient.licenseHeader(it, license.delimiter) }
-                    ?: recipient.licenseHeaderFile(license.headerFile!!, license.delimiter),
+                license.header?.let { receiver.licenseHeader(it, license.delimiter) }
+                    ?: receiver.licenseHeaderFile(license.headerFile!!, license.delimiter),
             )
         }
 
         prettier?.let { prettier ->
-            prettier.applyTo(recipient.prettier(prettier.devDependencies))
+            prettier.applyTo(receiver.prettier(prettier.devDependencies))
         }
 
         biome?.let { biome ->
             biome.applyTo(
-                recipient.biome(
+                receiver.biome(
                     biome.version
                         ?: settings.libs.versions.version("biome"),
                 ) as com.diffplug.gradle.spotless.FormatExtension.BiomeGeneric,
@@ -124,7 +124,7 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
 
         clangFormat?.let { clangFormat ->
             clangFormat.applyTo(
-                recipient.clangFormat(
+                receiver.clangFormat(
                     clangFormat.version ?: settings.libs.versions.version("clang")
                     ?: ClangFormatStep.defaultVersion(),
                 ),
@@ -133,22 +133,22 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
 
         eclipseWtp?.let { eclipseWtp ->
             eclipseWtp.applyTo(
-                recipient.eclipseWtp(
+                receiver.eclipseWtp(
                     eclipseWtp.type,
                     eclipseWtp.version ?: settings.libs.versions.version("eclipseWtp")
                     ?: EclipseWtpFormatterStep.defaultVersion(),
                 ),
             )
         }
-        toggleOffOnRegex?.let(recipient::toggleOffOnRegex)
+        toggleOffOnRegex?.let(receiver::toggleOffOnRegex)
         when (val toggleOffOn = toggleOffOn) {
-            is Boolean -> toggleOffOn.takeIf { it }?.run { recipient.toggleOffOn() }
-            is ToggleOffOn -> recipient.toggleOffOn(toggleOffOn.off, toggleOffOn.on)
+            is Boolean -> toggleOffOn.takeIf { it }?.run { receiver.toggleOffOn() }
+            is ToggleOffOn -> receiver.toggleOffOn(toggleOffOn.off, toggleOffOn.on)
 
             else -> Unit
         }
 
-        toggleOffOnDisable?.takeIf { it }?.run { recipient.toggleOffOnDisable() }
+        toggleOffOnDisable?.takeIf { it }?.run { receiver.toggleOffOnDisable() }
     }
 
     context(Project)
@@ -177,9 +177,9 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
         val style: String? = null,
     ) {
 
-        fun applyTo(recipient: com.diffplug.gradle.spotless.FormatExtension.ClangFormatConfig) {
-            pathToExe?.let(recipient::pathToExe)
-            style?.let(recipient::style)
+        fun applyTo(receiver: com.diffplug.gradle.spotless.FormatExtension.ClangFormatConfig) {
+            pathToExe?.let(receiver::pathToExe)
+            style?.let(receiver::style)
         }
     }
 
@@ -190,8 +190,8 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
         val configFiles: Set<String>? = null,
     ) {
 
-        fun applyTo(recipient: com.diffplug.gradle.spotless.FormatExtension.EclipseWtpConfig) {
-            configFiles?.toTypedArray()?.let(recipient::configFile)
+        fun applyTo(receiver: com.diffplug.gradle.spotless.FormatExtension.EclipseWtpConfig) {
+            configFiles?.toTypedArray()?.let(receiver::configFile)
         }
     }
 
@@ -207,12 +207,12 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
         val updateYearWithLatest: Boolean? = null,
     ) {
 
-        fun applyTo(recipient: com.diffplug.gradle.spotless.FormatExtension.LicenseHeaderConfig) {
-            name?.let(recipient::named)
-            contentPattern?.let(recipient::onlyIfContentMatches)
-            yearSeparator?.let(recipient::yearSeparator)
-            skipLinesMatching?.let(recipient::skipLinesMatching)
-            updateYearWithLatest?.let(recipient::updateYearWithLatest)
+        fun applyTo(receiver: com.diffplug.gradle.spotless.FormatExtension.LicenseHeaderConfig) {
+            name?.let(receiver::named)
+            contentPattern?.let(receiver::onlyIfContentMatches)
+            yearSeparator?.let(receiver::yearSeparator)
+            skipLinesMatching?.let(receiver::skipLinesMatching)
+            updateYearWithLatest?.let(receiver::updateYearWithLatest)
         }
     }
 
@@ -230,9 +230,9 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
         val config: SerializableAnyMap? = null
     ) {
 
-        fun applyTo(recipient: com.diffplug.gradle.spotless.FormatExtension.PrettierConfig) {
-            configFile?.let(recipient::configFile)
-            config?.let(recipient::config)
+        fun applyTo(receiver: com.diffplug.gradle.spotless.FormatExtension.PrettierConfig) {
+            configFile?.let(receiver::configFile)
+            config?.let(receiver::config)
         }
     }
 

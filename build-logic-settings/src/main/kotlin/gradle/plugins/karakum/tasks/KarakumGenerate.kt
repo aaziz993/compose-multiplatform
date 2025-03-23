@@ -47,15 +47,15 @@ internal data class KarakumGenerate(
 ) : DefaultTask<KarakumGenerate>() {
 
     context(Project)
-    override fun applyTo(recipient: KarakumGenerate) =
+    override fun applyTo(receiver: KarakumGenerate) =
         pluginManager.withPlugin(settings.libs.plugins.plugin("karakum").id) {
-            super.applyTo(recipient)
+            super.applyTo(receiver)
 
-            recipient.configFile tryAssign configFile?.let(::file)
+            receiver.configFile tryAssign configFile?.let(::file)
 
-            recipient.extensionDirectory tryAssign extensionDirectory?.let(layout.projectDirectory::dir)
+            receiver.extensionDirectory tryAssign extensionDirectory?.let(layout.projectDirectory::dir)
 
-            recipient.doLast {
+            receiver.doLast {
                 this as KarakumGenerate
 
                 val karakumConfigFile = configFile.asFile.get()

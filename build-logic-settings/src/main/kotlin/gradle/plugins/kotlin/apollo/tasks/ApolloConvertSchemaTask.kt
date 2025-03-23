@@ -31,12 +31,12 @@ internal data class ApolloConvertSchemaTask(
 ) : DefaultTask<ApolloConvertSchemaTask>() {
 
     context(Project)
-    override fun applyTo(recipient: ApolloConvertSchemaTask) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: ApolloConvertSchemaTask) {
+        super.applyTo(receiver)
 
-        recipient.from tryAssign from
-        recipient::projectRootDir trySet projectRootDir
-        recipient.to tryAssign to
+        receiver.from tryAssign from
+        receiver::projectRootDir trySet projectRootDir
+        receiver.to tryAssign to
     }
 
     context(Project)

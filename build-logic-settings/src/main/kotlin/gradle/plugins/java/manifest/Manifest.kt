@@ -24,8 +24,8 @@ internal data class Manifest(
 ) {
 
     context(Project)
-    fun applyTo(recipient: org.gradle.api.java.archives.Manifest) {
-        recipient.attributes.putAll(
+    fun applyTo(receiver: org.gradle.api.java.archives.Manifest) {
+        receiver.attributes.putAll(
             mapOf(
                 "Implementation-Title" to (description ?: name),
                 "Implementation-Version" to version,
@@ -33,24 +33,24 @@ internal data class Manifest(
             ),
         )
 
-        attributes?.let(recipient::attributes)
-        setAttributes?.act(recipient.attributes::clear)?.let(recipient.attributes::putAll)
+        attributes?.let(receiver::attributes)
+        setAttributes?.act(receiver.attributes::clear)?.let(receiver.attributes::putAll)
 
         sections?.forEach { (key, value) ->
-            recipient.attributes(value, key)
+            receiver.attributes(value, key)
         }
 
         setSections?.forEach { (key, value) ->
-            recipient.sections.clear()
-            recipient.attributes(value, key)
+            receiver.sections.clear()
+            receiver.attributes(value, key)
         }
 
-        effectiveManifest?.applyTo(recipient.effectiveManifest)
+        effectiveManifest?.applyTo(receiver.effectiveManifest)
 
         when (from) {
-            is String -> recipient.from(from)
-            is LinkedHashSet<*> -> recipient.from(*from.toTypedArray())
-            is From -> recipient.from(from.mergePath, from.mergeSpec::applyTo)
+            is String -> receiver.from(from)
+            is LinkedHashSet<*> -> receiver.from(*from.toTypedArray())
+            is From -> receiver.from(from.mergePath, from.mergeSpec::applyTo)
 
             else -> Unit
         }

@@ -72,12 +72,12 @@ internal data class KoverLogTaskConfig(
     val aggregationForGroup: AggregationType? = null
 ) {
 
-    fun applyTo(recipient: KoverLogTaskConfig) {
-        recipient.onCheck tryAssign onCheck
-        recipient.header tryAssign header
-        recipient.format tryAssign format
-        recipient.groupBy tryAssign groupBy
-        recipient.coverageUnits tryAssign coverageUnits
-        recipient.aggregationForGroup tryAssign aggregationForGroup
+    fun applyTo(receiver: KoverLogTaskConfig) {
+        receiver.onCheck tryAssign onCheck
+        receiver.header tryAssign header
+        receiver.format tryAssign format
+        receiver.groupBy tryAssign groupBy
+        receiver.coverageUnits tryAssign coverageUnits
+        receiver.aggregationForGroup tryAssign aggregationForGroup
     }
 }

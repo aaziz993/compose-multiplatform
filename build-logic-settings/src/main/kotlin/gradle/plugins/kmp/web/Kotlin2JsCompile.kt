@@ -16,12 +16,12 @@ internal abstract class Kotlin2JsCompile<T : org.jetbrains.kotlin.gradle.tasks.K
     abstract val setLibraries: Set<String>?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super<K2MultiplatformCompilationTask>.applyTo(recipient)
-        super<ProducesKlib>.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super<K2MultiplatformCompilationTask>.applyTo(receiver)
+        super<ProducesKlib>.applyTo(receiver)
 
-        libraries?.toTypedArray()?.let(recipient.libraries::from)
-        setLibraries?.let(recipient.libraries::setFrom)
+        libraries?.toTypedArray()?.let(receiver.libraries::from)
+        setLibraries?.let(receiver.libraries::setFrom)
     }
 }
 

@@ -30,13 +30,13 @@ internal data class DependencyFilter(
 ) {
 
     context(Project)
-    fun applyTo(recipient: DependencyFilter) {
-        resolve?.map(Set<*>::toTypedArray)?.map(::files)?.let(recipient::resolve)
-        recipient.exclude {
+    fun applyTo(receiver: DependencyFilter) {
+        resolve?.map(Set<*>::toTypedArray)?.map(::files)?.let(receiver::resolve)
+        receiver.exclude {
             exclude?.equals(it) != false
         }
 
-        recipient.include {
+        receiver.include {
             include?.equals(it) != false
         }
     }

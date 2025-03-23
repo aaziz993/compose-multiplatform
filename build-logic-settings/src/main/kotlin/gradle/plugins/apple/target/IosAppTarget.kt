@@ -30,20 +30,20 @@ internal data class IosAppTarget(
     val sceneConfigurations: List<SceneConfiguration>? = null,
 ) : AppleTarget<IosAppTarget> {
 
-    override fun applyTo(recipient: IosAppTarget) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: IosAppTarget) {
+        super.applyTo(receiver)
 
-        recipient::launchStoryboard trySet launchStoryboard
-        recipient::mainStoryboard trySet mainStoryboard
-        recipient::multipleWindows trySet multipleWindows
-        recipient::sceneDelegateClass trySet sceneDelegateClass
+        receiver::launchStoryboard trySet launchStoryboard
+        receiver::mainStoryboard trySet mainStoryboard
+        receiver::multipleWindows trySet multipleWindows
+        receiver::sceneDelegateClass trySet sceneDelegateClass
 
         orientations?.let { orientations ->
-            recipient.orientations(orientations::applyTo)
+            receiver.orientations(orientations::applyTo)
         }
 
         sceneConfigurations?.forEach { sceneConfigurations ->
-            recipient.sceneConfiguration(sceneConfigurations.name, sceneConfigurations::applyTo)
+            receiver.sceneConfiguration(sceneConfigurations.name, sceneConfigurations::applyTo)
         }
     }
 }

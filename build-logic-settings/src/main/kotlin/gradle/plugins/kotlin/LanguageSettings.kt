@@ -1,10 +1,4 @@
-package gradle.plugins.kotlin
-
-import arrow.core.raise.recover
-import gradle.api.trySet
-import gradle.collection.act
-import kotlinx.serialization.Serializable
-import org.jetbrains.kotlin.gradle.plugin.LanguageSettingsBuilder
+package gradle.plugins.kotlin;
 
 /**
  * Represents most common Kotlin compilation settings for an entity.
@@ -14,8 +8,8 @@ import org.jetbrains.kotlin.gradle.plugin.LanguageSettingsBuilder
  *
  * See also [Compiler options DSL documentation](https://kotlinlang.org/docs/gradle-compiler-options.html).
  */
-@Serializable
-internal data class LanguageSettingsBuilder(
+internal interface LanguageSettings {
+
     /**
      * Provide source compatibility with the specified version of Kotlin.
      *
@@ -23,7 +17,8 @@ internal data class LanguageSettingsBuilder(
      *
      * Default value: `null`
      */
-    override val languageVersion: String? = null,
+    val languageVersion: String?
+
     /**
      * Allow using declarations only from the specified version of bundled libraries.
      *
@@ -31,7 +26,8 @@ internal data class LanguageSettingsBuilder(
      *
      * Default value: `null`
      */
-    override val apiVersion: String? = null,
+    val apiVersion: String?
+
     /**
      * Enable progressive compiler mode.
      *
@@ -43,25 +39,17 @@ internal data class LanguageSettingsBuilder(
      *
      *  Default value: false
      */
-    override val progressiveMode: Boolean? = null,
+    val progressiveMode: Boolean?
+
     /**
      * @suppress
      */
-    override val enabledLanguageFeatures: Set<String>? = null,
+    val enabledLanguageFeatures: Set<String>?
+
     /**
      * Enable API usages that require opt-in with an opt-in requirement marker with the given fully qualified name.
      *
      * Default value: emptyList<String>()
      */
-    override val optIns: Set<String>? = null,
-) : LanguageSettings {
-
-    fun applyTo(receiver: LanguageSettingsBuilder) {
-        receiver::languageVersion trySet languageVersion
-        receiver::apiVersion trySet apiVersion
-        receiver::progressiveMode trySet progressiveMode
-        receiver.enabledLanguageFeatures
-        enabledLanguageFeatures?.forEach(receiver::enableLanguageFeature)
-        optIns?.forEach(receiver::optIn)
-    }
+    val optIns: Set<String>?
 }

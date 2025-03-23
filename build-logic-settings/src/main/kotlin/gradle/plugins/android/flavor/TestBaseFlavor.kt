@@ -43,12 +43,12 @@ internal interface TestBaseFlavor<T : TestBaseFlavor> : BaseFlavor<T>, TestVaria
     val maxSdk: Int?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super<BaseFlavor>.applyTo(recipient)
-        super<TestVariantDimension>.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super<BaseFlavor>.applyTo(receiver)
+        super<TestVariantDimension>.applyTo(receiver)
 
-        recipient::targetSdk trySet (targetSdk ?: settings.libs.versions.version("android.targetSdk")?.toInt())
-        recipient::targetSdkPreview trySet targetSdkPreview
-        recipient::maxSdk trySet maxSdk
+        receiver::targetSdk trySet (targetSdk ?: settings.libs.versions.version("android.targetSdk")?.toInt())
+        receiver::targetSdkPreview trySet targetSdkPreview
+        receiver::maxSdk trySet maxSdk
     }
 }

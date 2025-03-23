@@ -120,26 +120,26 @@ internal interface CopySpec<T : CopySpec> : CopySourceSpec<T>, CopyProcessingSpe
     val filteringCharset: String?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super<CopySourceSpec>.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super<CopySourceSpec>.applyTo(receiver)
 
-        super<CopyProcessingSpec>.applyTo(recipient)
+        super<CopyProcessingSpec>.applyTo(receiver)
 
-        super<PatternFilterable>.applyTo(recipient)
+        super<PatternFilterable>.applyTo(receiver)
 
-        isCaseSensitive?.let(recipient::setCaseSensitive)
-        includeEmptyDirs?.let(recipient::setIncludeEmptyDirs)
-        duplicatesStrategy?.let(recipient::setDuplicatesStrategy)
+        isCaseSensitive?.let(receiver::setCaseSensitive)
+        includeEmptyDirs?.let(receiver::setIncludeEmptyDirs)
+        duplicatesStrategy?.let(receiver::setDuplicatesStrategy)
 
         filesMatching?.let { filesMatching ->
-            recipient.filesMatching(filesMatching.patterns, filesMatching.fileCopyDetails::applyTo)
+            receiver.filesMatching(filesMatching.patterns, filesMatching.fileCopyDetails::applyTo)
         }
 
         filesNotMatching?.let { filesNotMatching ->
-            recipient.filesNotMatching(filesNotMatching.patterns, filesNotMatching.fileCopyDetails::applyTo)
+            receiver.filesNotMatching(filesNotMatching.patterns, filesNotMatching.fileCopyDetails::applyTo)
         }
 
-        filteringCharset?.let(recipient::setFilteringCharset)
+        filteringCharset?.let(receiver::setFilteringCharset)
     }
 }
 

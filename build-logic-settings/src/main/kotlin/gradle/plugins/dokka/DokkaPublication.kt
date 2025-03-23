@@ -122,19 +122,19 @@ internal data class DokkaPublication(
         get() = formatName
 
     context(Project)
-    override fun applyTo(recipient: org.jetbrains.dokka.gradle.formats.DokkaPublication) {
-        recipient.enabled tryAssign enabled
-        recipient.moduleName tryAssign moduleName
-        recipient.moduleVersion tryAssign moduleVersion
-        recipient.outputDirectory tryAssign outputDirectory?.let(layout.projectDirectory::dir)
-        recipient.offlineMode tryAssign offlineMode
-        recipient.failOnWarning tryAssign failOnWarning
-        recipient.suppressObviousFunctions tryAssign suppressObviousFunctions
-        recipient.suppressInheritedMembers tryAssign suppressInheritedMembers
-        includes?.toTypedArray()?.let(recipient.includes::from)
-        setIncludes?.let(recipient.includes::setFrom)
-        recipient.cacheRoot tryAssign cacheRoot?.let(layout.projectDirectory::dir)
-        recipient.finalizeCoroutines tryAssign finalizeCoroutines
+    override fun applyTo(receiver: org.jetbrains.dokka.gradle.formats.DokkaPublication) {
+        receiver.enabled tryAssign enabled
+        receiver.moduleName tryAssign moduleName
+        receiver.moduleVersion tryAssign moduleVersion
+        receiver.outputDirectory tryAssign outputDirectory?.let(layout.projectDirectory::dir)
+        receiver.offlineMode tryAssign offlineMode
+        receiver.failOnWarning tryAssign failOnWarning
+        receiver.suppressObviousFunctions tryAssign suppressObviousFunctions
+        receiver.suppressInheritedMembers tryAssign suppressInheritedMembers
+        includes?.toTypedArray()?.let(receiver.includes::from)
+        setIncludes?.let(receiver.includes::setFrom)
+        receiver.cacheRoot tryAssign cacheRoot?.let(layout.projectDirectory::dir)
+        receiver.finalizeCoroutines tryAssign finalizeCoroutines
     }
 }
 

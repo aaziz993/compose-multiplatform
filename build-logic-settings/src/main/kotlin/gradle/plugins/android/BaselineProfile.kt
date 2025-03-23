@@ -26,9 +26,9 @@ internal data class BaselineProfile(
 ) {
 
     @Suppress("UnstableApiUsage")
-    fun applyTo(recipient: BaselineProfile) {
-        ignoreFrom?.let(recipient.ignoreFrom::addAll)
-        setIgnoreFrom?.act(recipient.ignoreFrom::clear)?.let(recipient.ignoreFrom::addAll)
-        recipient::ignoreFromAllExternalDependencies trySet ignoreFromAllExternalDependencies
+    fun applyTo(receiver: BaselineProfile) {
+        ignoreFrom?.let(receiver.ignoreFrom::addAll)
+        setIgnoreFrom?.act(receiver.ignoreFrom::clear)?.let(receiver.ignoreFrom::addAll)
+        receiver::ignoreFromAllExternalDependencies trySet ignoreFromAllExternalDependencies
     }
 }

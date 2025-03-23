@@ -29,31 +29,31 @@ internal data class BuildConfigSourceSet(
 ) : BuildConfigClassSpec<BuildConfigSourceSet> {
 
     context(Project)
-    override fun applyTo(recipient: BuildConfigSourceSet) {
-        super.applyTo(recipient)
-        recipient.className tryAssign className
-        recipient.packageName tryAssign packageName
+    override fun applyTo(receiver: BuildConfigSourceSet) {
+        super.applyTo(receiver)
+        receiver.className tryAssign className
+        receiver.packageName tryAssign packageName
 
         buildConfigFields?.forEach { buildConfigField ->
-            buildConfigField.applyTo(recipient.buildConfigFields)
+            buildConfigField.applyTo(receiver.buildConfigFields)
         }
 
-        recipient.generator tryAssign generator?.toBuildConfigGenerator()
+        receiver.generator tryAssign generator?.toBuildConfigGenerator()
 
         when (useJavaOutput) {
-            is Boolean -> recipient.useJavaOutput()
-            is BuildConfigJavaGenerator -> recipient.useJavaOutput(useJavaOutput::applyTo)
+            is Boolean -> receiver.useJavaOutput()
+            is BuildConfigJavaGenerator -> receiver.useJavaOutput(useJavaOutput::applyTo)
             else -> Unit
         }
 
         when (useKotlinOutput) {
-            is Boolean -> recipient.useKotlinOutput()
-            is BuildConfigKotlinGenerator -> recipient.useKotlinOutput(useKotlinOutput::applyTo)
+            is Boolean -> receiver.useKotlinOutput()
+            is BuildConfigKotlinGenerator -> receiver.useKotlinOutput(useKotlinOutput::applyTo)
             else -> Unit
         }
 
         forClass?.forEach { forClass ->
-            recipient.forClass(forClass.packageName, forClass.className) {
+            receiver.forClass(forClass.packageName, forClass.className) {
                 forClass.configureAction?.applyTo(this)
             }
         }

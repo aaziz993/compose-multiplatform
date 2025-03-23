@@ -51,19 +51,19 @@ internal data class AndroidSourceSet(
 
     context(Project)
     @Suppress("UnstableApiUsage")
-    override fun applyTo(recipient: AndroidSourceSet) {
-        java?.applyTo(recipient.java)
-        kotlin?.applyTo(recipient.kotlin)
-        resources?.applyTo(recipient.resources)
-        manifest?.applyTo(recipient.manifest)
-        res?.applyTo(recipient.res)
-        assets?.applyTo(recipient.assets)
-        aidl?.applyTo(recipient.aidl)
-        renderscript?.applyTo(recipient.renderscript)
-        baselineProfiles?.applyTo(recipient.baselineProfiles)
-        jniLibs?.applyTo(recipient.jniLibs)
-        shaders?.applyTo(recipient.shaders)
-        mlModels?.applyTo(recipient.mlModels)
-        root?.let(recipient::setRoot)
+    override fun applyTo(receiver: AndroidSourceSet) {
+        java?.applyTo(receiver.java)
+        kotlin?.applyTo(receiver.kotlin)
+        resources?.applyTo(receiver.resources)
+        manifest?.applyTo(receiver.manifest)
+        res?.applyTo(receiver.res)
+        assets?.applyTo(receiver.assets)
+        aidl?.applyTo(receiver.aidl)
+        renderscript?.applyTo(receiver.renderscript)
+        baselineProfiles?.applyTo(receiver.baselineProfiles)
+        jniLibs?.applyTo(receiver.jniLibs)
+        shaders?.applyTo(receiver.shaders)
+        mlModels?.applyTo(receiver.mlModels)
+        root?.let(receiver::setRoot)
     }
 }

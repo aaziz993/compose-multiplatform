@@ -32,12 +32,12 @@ internal data class ExclusiveContentRepository(
 ) {
 
     context(Project)
-    fun applyTo(recipient: ExclusiveContentRepository) {
+    fun applyTo(receiver: ExclusiveContentRepository) {
         forRepositories
-            ?.flatMap(repositories::getByNameOrAll)?.toTypedArray()?.let(recipient::forRepositories)
+            ?.flatMap(repositories::getByNameOrAll)?.toTypedArray()?.let(receiver::forRepositories)
 
         filter?.let { filter ->
-            recipient.filter(filter::applyTo)
+            receiver.filter(filter::applyTo)
         }
     }
 }

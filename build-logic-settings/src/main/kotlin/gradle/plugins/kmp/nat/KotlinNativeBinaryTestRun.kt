@@ -1,23 +1,13 @@
 package gradle.plugins.kmp.nat
 
-
 import gradle.plugins.kmp.KotlinTargetTestRun
 import org.gradle.api.Named
+import org.gradle.api.Project
+import org.gradle.api.tasks.testing.TestFilter
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTargetWithTests
 import org.jetbrains.kotlin.gradle.targets.native.KotlinNativeBinaryTestRun
 
-internal interface KotlinNativeBinaryTestRun : KotlinTargetTestRun {
+internal interface KotlinNativeBinaryTestRun<T : KotlinNativeBinaryTestRun, F : TestFilter> : KotlinTargetTestRun<T, F> {
 
-        context(Project)
-    override fun applyTo(recipient: T) {
-        named as KotlinNativeBinaryTestRun
 
-        val target = named.target as KotlinNativeTargetWithTests<*>
-
-        (executionSource as NativeBinaryTestRunSource?)?.let { executionSource ->
-            named.setExecutionSourceFrom(
-                target.binaries.getTest(executionSource.binary),
-            )
-        }
-    }
 }

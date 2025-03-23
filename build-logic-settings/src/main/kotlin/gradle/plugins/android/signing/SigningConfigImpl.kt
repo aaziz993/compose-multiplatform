@@ -23,9 +23,9 @@ internal data class SigningConfigImpl(
 ) : ProjectNamed<SigningConfig>, ApkSigningConfig<SigningConfig>, InternalSigningConfig<SigningConfig> {
 
     context(Project)
-    override fun applyTo(recipient: SigningConfig) {
-        super<ApkSigningConfig>.applyTo(recipient)
-        super<InternalSigningConfig>.applyTo(recipient)
+    override fun applyTo(receiver: SigningConfig) {
+        super<ApkSigningConfig>.applyTo(receiver)
+        super<InternalSigningConfig>.applyTo(receiver)
     }
 }
 

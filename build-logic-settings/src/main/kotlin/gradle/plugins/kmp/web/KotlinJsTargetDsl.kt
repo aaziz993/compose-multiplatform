@@ -34,7 +34,7 @@ internal interface KotlinJsTargetDsl : KotlinTarget, KotlinTargetWithNodeJsDsl,
     val generateTypeScriptDefinitions: Boolean?
 
         context(Project)
-    override fun applyTo(recipient: T) {
+    override fun applyTo(receiver: T) {
         super<KotlinTarget>._applyTo(named)
 
         named as org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl

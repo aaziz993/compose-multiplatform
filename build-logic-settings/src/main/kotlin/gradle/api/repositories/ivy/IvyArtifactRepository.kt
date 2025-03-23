@@ -143,52 +143,52 @@ internal data class IvyArtifactRepository(
      * @since 4.5
      */
     val metadataSources: MetadataSources? = null,
-) : ArtifactRepository<IvyArtifactRepository>, UrlArtifactRepository, AuthenticationSupported {
+) : ArtifactRepository<IvyArtifactRepository>, UrlArtifactRepository<IvyArtifactRepository>, AuthenticationSupported<IvyArtifactRepository> {
 
     context(Settings)
-    override fun applyTo(recipient: IvyArtifactRepository) =
-        super<ArtifactRepository>.applyTo(recipient)
+    override fun applyTo(receiver: IvyArtifactRepository) =
+        super<ArtifactRepository>.applyTo(receiver)
 
     context(Project)
-    override fun applyTo(recipient: IvyArtifactRepository) =
-        super<ArtifactRepository>.applyTo(recipient)
+    override fun applyTo(receiver: IvyArtifactRepository) =
+        super<ArtifactRepository>.applyTo(receiver)
 
     context(Settings)
-    override fun applyTo(recipient: RepositoryHandler) =
-        applyTo(recipient.withType<IvyArtifactRepository>()) { _name, action ->
-            recipient.ivy {
+    override fun applyTo(receiver: RepositoryHandler) =
+        applyTo(receiver.withType<IvyArtifactRepository>()) { _name, action ->
+            receiver.ivy {
                 name = _name
                 action.execute(this)
             }
         }
 
     context(Project)
-    override fun applyTo(recipient: RepositoryHandler) =
-        applyTo(recipient.withType<IvyArtifactRepository>()) { _name, action ->
-            recipient.ivy {
+    override fun applyTo(receiver: RepositoryHandler) =
+        applyTo(receiver.withType<IvyArtifactRepository>()) { _name, action ->
+            receiver.ivy {
                 name = _name
                 action.execute(this)
             }
         }
 
     context(Directory)
-    override fun _applyTo(named: IvyArtifactRepository) {
-        super<ArtifactRepository>._applyTo(named)
-        super<UrlArtifactRepository>._applyTo(named as org.gradle.api.artifacts.repositories.UrlArtifactRepository)
-        super<AuthenticationSupported>.applyTo(named as org.gradle.api.artifacts.repositories.AuthenticationSupported)
+    override fun _applyTo(receiver: IvyArtifactRepository) {
+        super<ArtifactRepository>._applyTo(receiver)
+        super<UrlArtifactRepository>._applyTo(receiver)
+        super<AuthenticationSupported>._applyTo(receiver)
 
-        artifactPatterns?.forEach(named::artifactPattern)
-        ivyPatterns?.forEach(named::ivyPattern)
-        layout?.let(named::layout)
+        artifactPatterns?.forEach(receiver::artifactPattern)
+        ivyPatterns?.forEach(receiver::ivyPattern)
+        layout?.let(receiver::layout)
 
         patternLayout?.let { patternLayout ->
-            named.patternLayout(patternLayout::applyTo)
+            receiver.patternLayout(patternLayout::applyTo)
         }
 
-        resolve?.applyTo(named.resolve)
+        resolve?.applyTo(receiver.resolve)
 
         metadataSources?.let { metadataSources ->
-            named.metadataSources(metadataSources::applyTo)
+            receiver.metadataSources(metadataSources::applyTo)
         }
     }
 
@@ -223,11 +223,11 @@ internal data class IvyArtifactRepository(
         val ignoreGradleMetadataRedirection: Boolean? = null,
     ) {
 
-        fun applyTo(recipient: IvyArtifactRepository.MetadataSources) {
-            gradleMetadata?.takeIf { it }?.run { sources.gradleMetadata() }
-            ivyDescriptor?.takeIf { it }?.run { sources.ivyDescriptor() }
-            artifact?.takeIf { it }?.run { sources.artifact() }
-            ignoreGradleMetadataRedirection?.takeIf { it }?.run { sources.ignoreGradleMetadataRedirection() }
+        fun applyTo(receiver: IvyArtifactRepository.MetadataSources) {
+            gradleMetadata?.takeIf { it }?.run { receiver.gradleMetadata() }
+            ivyDescriptor?.takeIf { it }?.run { receiver.ivyDescriptor() }
+            artifact?.takeIf { it }?.run { receiver.artifact() }
+            ignoreGradleMetadataRedirection?.takeIf { it }?.run { receiver.ignoreGradleMetadataRedirection() }
         }
     }
 }

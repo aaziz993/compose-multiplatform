@@ -68,11 +68,11 @@ internal data class ManagedVirtualDevice(
 ) : Device<ManagedVirtualDevice> {
 
     context(Project)
-    override fun applyTo(recipient: ManagedVirtualDevice) {
-        recipient::device trySet device
-        recipient::apiLevel trySet apiLevel
-        recipient::apiPreview trySet apiPreview
-        recipient::systemImageSource trySet systemImageSource
-        recipient::require64Bit trySet require64Bit
+    override fun applyTo(receiver: ManagedVirtualDevice) {
+        receiver::device trySet device
+        receiver::apiLevel trySet apiLevel
+        receiver::apiPreview trySet apiPreview
+        receiver::systemImageSource trySet systemImageSource
+        receiver::require64Bit trySet require64Bit
     }
 }

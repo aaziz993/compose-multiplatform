@@ -19,12 +19,12 @@ internal data class DirectoryBuildCache(
 
     context(Settings)
     @Suppress("UnstableApiUsage")
-    override fun applyTo(recipient: DirectoryBuildCache) {
-        recipient.isEnabled = !isCI
+    override fun applyTo(receiver: DirectoryBuildCache) {
+        receiver.isEnabled = !isCI
 
-        super.applyTo(recipient)
+        super.applyTo(receiver)
 
-        directory?.let(layout.rootDirectory::dir)?.let(recipient::setDirectory)
+        directory?.let(layout.rootDirectory::dir)?.let(receiver::setDirectory)
     }
 
     context(Settings)

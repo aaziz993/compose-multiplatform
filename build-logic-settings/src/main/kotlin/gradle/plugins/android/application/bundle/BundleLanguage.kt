@@ -14,7 +14,7 @@ internal data class BundleLanguage(
     val enableSplit: Boolean? = null,
 ) {
 
-    fun applyTo(recipient: BundleLanguage) {
-        recipient::enableSplit trySet enableSplit
+    fun applyTo(receiver: BundleLanguage) {
+        receiver::enableSplit trySet enableSplit
     }
 }

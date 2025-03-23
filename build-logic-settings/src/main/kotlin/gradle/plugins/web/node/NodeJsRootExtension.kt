@@ -18,10 +18,10 @@ internal data class NodeJsRootExtension(
 ) {
 
     context(Project)
-    fun applyTo(recipient: NodeJsRootExtension) =
+    fun applyTo(receiver: NodeJsRootExtension) =
         pluginManager.withPlugin(settings.libs.plugins.plugin("gradle.node.plugin").id) {
-            recipient::downloadBaseUrl trySet downloadBaseUrl
-            recipient::version trySet version
+            receiver::downloadBaseUrl trySet downloadBaseUrl
+            receiver::version trySet version
         }
 
     context(Project)

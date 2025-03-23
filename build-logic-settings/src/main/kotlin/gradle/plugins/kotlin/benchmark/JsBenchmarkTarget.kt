@@ -15,10 +15,10 @@ internal abstract class JsBenchmarkTarget : BenchmarkTarget<kotlinx.benchmark.gr
 
     context(Project)
     @OptIn(KotlinxBenchmarkPluginInternalApi::class)
-    override fun applyTo(recipient: kotlinx.benchmark.gradle.JsBenchmarkTarget) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: kotlinx.benchmark.gradle.JsBenchmarkTarget) {
+        super.applyTo(receiver)
 
-        compilation?.applyTo(recipient.compilation)
+        compilation?.applyTo(receiver.compilation)
     }
 }
 
@@ -32,9 +32,9 @@ internal data class JsBenchmarkTargetImpl(
 ) : JsBenchmarkTarget() {
 
     context(Project)
-    override fun applyTo(recipient: kotlinx.benchmark.gradle.JsBenchmarkTarget) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: kotlinx.benchmark.gradle.JsBenchmarkTarget) {
+        super.applyTo(receiver)
 
-        recipient::jsBenchmarksExecutor trySet jsBenchmarksExecutor
+        receiver::jsBenchmarksExecutor trySet jsBenchmarksExecutor
     }
 }

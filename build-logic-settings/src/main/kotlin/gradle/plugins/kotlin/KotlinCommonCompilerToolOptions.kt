@@ -51,16 +51,16 @@ internal interface KotlinCommonCompilerToolOptions<T : KotlinCommonCompilerToolO
     val setFreeCompilerArgs: List<String>?
 
     context(Project)
-    fun applyTo(recipient: T) {
-        recipient.allWarningsAsErrors tryAssign allWarningsAsErrors
-        recipient.extraWarnings tryAssign extraWarnings
-        recipient.suppressWarnings tryAssign suppressWarnings
-        recipient.verbose tryAssign verbose
+    fun applyTo(receiver: T) {
+        receiver.allWarningsAsErrors tryAssign allWarningsAsErrors
+        receiver.extraWarnings tryAssign extraWarnings
+        receiver.suppressWarnings tryAssign suppressWarnings
+        receiver.verbose tryAssign verbose
 
-        recipient.freeCompilerArgs tryAssign freeCompilerArgs?.let { freeCompilerArgs ->
-            recipient.freeCompilerArgs.get() + freeCompilerArgs
+        receiver.freeCompilerArgs tryAssign freeCompilerArgs?.let { freeCompilerArgs ->
+            receiver.freeCompilerArgs.get() + freeCompilerArgs
         }
 
-        recipient.freeCompilerArgs tryAssign setFreeCompilerArgs
+        receiver.freeCompilerArgs tryAssign setFreeCompilerArgs
     }
 }

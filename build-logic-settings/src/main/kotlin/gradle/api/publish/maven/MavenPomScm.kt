@@ -30,7 +30,7 @@ internal data class MavenPomScm(
     val tag: String? = null,
 ) {
 
-    fun applyTo(recipient: MavenPomScm) {
+    fun applyTo(receiver: MavenPomScm) {
         scm.connection tryAssign connection
         scm.developerConnection tryAssign developerConnection
         scm.url tryAssign url

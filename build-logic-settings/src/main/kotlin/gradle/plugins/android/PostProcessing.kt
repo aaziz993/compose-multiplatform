@@ -31,17 +31,17 @@ internal data class PostProcessing(
 ) {
 
     @Suppress("UnstableApiUsage")
-    fun applyTo(recipient: PostProcessing) {
-        recipient::isRemoveUnusedCode trySet isRemoveUnusedCode
-        recipient::isRemoveUnusedResources trySet isRemoveUnusedResources
-        recipient::isObfuscate trySet isObfuscate
-        recipient::isOptimizeCode trySet isOptimizeCode
+    fun applyTo(receiver: PostProcessing) {
+        receiver::isRemoveUnusedCode trySet isRemoveUnusedCode
+        receiver::isRemoveUnusedResources trySet isRemoveUnusedResources
+        receiver::isObfuscate trySet isObfuscate
+        receiver::isOptimizeCode trySet isOptimizeCode
 
-        proguardFiles?.toTypedArray()?.let(recipient::proguardFiles)
-        setProguardFiles?.let(recipient::setProguardFiles)
-        testProguardFiles?.toTypedArray()?.let(recipient::testProguardFiles)
-        testProguardFiles?.let(recipient::setTestProguardFiles)
-        consumerProguardFiles?.toTypedArray()?.let(recipient::consumerProguardFiles)
-        consumerProguardFiles?.let(recipient::setConsumerProguardFiles)
+        proguardFiles?.toTypedArray()?.let(receiver::proguardFiles)
+        setProguardFiles?.let(receiver::setProguardFiles)
+        testProguardFiles?.toTypedArray()?.let(receiver::testProguardFiles)
+        testProguardFiles?.let(receiver::setTestProguardFiles)
+        consumerProguardFiles?.toTypedArray()?.let(receiver::consumerProguardFiles)
+        consumerProguardFiles?.let(receiver::setConsumerProguardFiles)
     }
 }

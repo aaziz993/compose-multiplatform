@@ -47,13 +47,13 @@ internal abstract class Zip<T : org.gradle.api.tasks.bundling.Zip> : AbstractArc
     abstract val metadataCharset: String?
 
     context(Project)
-    override fun applyTo(recipient: T) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super.applyTo(receiver)
 
-        recipient.filePermissions
-        entryCompression?.let(recipient::setEntryCompression)
-        allowZip64?.let(recipient::setZip64)
-        metadataCharset?.let(recipient::setMetadataCharset)
+        receiver.filePermissions
+        entryCompression?.let(receiver::setEntryCompression)
+        allowZip64?.let(receiver::setZip64)
+        metadataCharset?.let(receiver::setMetadataCharset)
     }
 }
 

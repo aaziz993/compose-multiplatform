@@ -25,15 +25,15 @@ internal data class KoverVariantCreateConfig(
     val addsWithDependencies: Set<Variant>? = null,
 ) : KoverVariantConfig<KoverVariantCreateConfig> {
 
-    override fun applyTo(recipient: KoverVariantCreateConfig) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: KoverVariantCreateConfig) {
+        super.applyTo(receiver)
 
         adds?.forEach { (names, optional) ->
-            recipient.add(names, optional)
+            receiver.add(names, optional)
         }
 
         addsWithDependencies?.forEach { (names, optional) ->
-            recipient.addWithDependencies(names, optional)
+            receiver.addWithDependencies(names, optional)
         }
     }
 }

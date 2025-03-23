@@ -16,18 +16,31 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinJavaToolchain
  * The configured JDK Java version is exposed as a task input so that Gradle only reuses the task outputs stored in the
  * [build cache](https://docs.gradle.org/current/userguide/build_cache.html) with the same JDK version.
  */
-internal interface KotlinJavaToolchain<T : KotlinJavaToolchain> {
-
+@Serializable
+internal data class KotlinJavaToolchain(
     /**
      * Provides access to the [JdkSetter] to configure the JVM toolchain for the task using an explicit JDK location.
      */
-    val jdk: JdkSetter?
-
+    val jdk: JdkSetter? = null,
     /**
      * Provides access to the [JavaToolchainSetter] to configure JVM toolchain for the task
      * using the [Gradle JVM toolchain](https://docs.gradle.org/current/userguide/toolchains.html).
      */
-    val toolchain: JavaToolchainSpec?
+    val toolchain: JavaToolchainSpec? = null,
+) {
+
+    context(Project)
+    fun applyTo(receiver: KotlinJavaToolchain) {
+        jdk?.applyTo(receiver.jdk)
+
+        toolchain?.let { javaLauncher ->
+            receiver.toolchain.use(
+                javaToolchain.launcherFor {
+                    javaLauncher.applyTo(this)
+                },
+            )
+        }
+    }
 
     /**
      * Provides methods to configure the task using an explicit JDK location.
@@ -49,8 +62,8 @@ internal interface KotlinJavaToolchain<T : KotlinJavaToolchain> {
     ) {
 
         context(Project)
-        fun applyTo(recipient: KotlinJavaToolchain.JdkSetter) {
-            use?.applyTo(recipient)
+        fun applyTo(receiver: KotlinJavaToolchain.JdkSetter) {
+            use?.applyTo(receiver)
         }
 
         @Serializable
@@ -60,21 +73,9 @@ internal interface KotlinJavaToolchain<T : KotlinJavaToolchain> {
         ) {
 
             context(Project)
-            fun applyTo(recipient: KotlinJavaToolchain.JdkSetter) {
-                recipient.use(file(jdkHomeLocation), jdkVersion)
+            fun applyTo(receiver: KotlinJavaToolchain.JdkSetter) {
+                receiver.use(file(jdkHomeLocation), jdkVersion)
             }
-        }
-    }
-
-    context(Project)
-    fun applyTo(recipient: KotlinJavaToolchain) {
-        jdk?.applyTo(recipient.jdk)
-        toolchain?.let { javaLauncher ->
-            recipient.toolchain.use(
-                javaToolchain.launcherFor {
-                    javaLauncher.applyTo(this)
-                },
-            )
         }
     }
 }

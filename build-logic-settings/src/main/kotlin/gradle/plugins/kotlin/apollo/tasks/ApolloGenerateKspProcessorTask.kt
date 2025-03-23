@@ -32,13 +32,13 @@ internal data class ApolloGenerateKspProcessorTask(
 ) : DefaultTask<ApolloGenerateKspProcessorTask>() {
 
     context(Project)
-    override fun applyTo(recipient: ApolloGenerateKspProcessorTask) {
-        super.applyTo(recipient)
+    override fun applyTo(receiver: ApolloGenerateKspProcessorTask) {
+        super.applyTo(receiver)
 
-        recipient.outputJar tryAssign outputJar?.let(::file)
-        recipient.packageName tryAssign packageName
-        recipient.schema tryAssign schema?.let(::file)
-        recipient.serviceName tryAssign serviceName
+        receiver.outputJar tryAssign outputJar?.let(::file)
+        receiver.packageName tryAssign packageName
+        receiver.schema tryAssign schema?.let(::file)
+        receiver.serviceName tryAssign serviceName
     }
 
     context(Project)

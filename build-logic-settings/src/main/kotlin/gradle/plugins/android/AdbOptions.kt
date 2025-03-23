@@ -16,10 +16,10 @@ internal data class AdbOptions(
     val setInstallOptions: Set<String>? = null
 ) {
 
-    fun applyTo(recipient: AdbOptions) {
-        timeOutInMs?.let(recipient::timeOutInMs)
-        installOptions?.let(recipient.installOptions::addAll)
-        setInstallOptions?.toTypedArray()?.let(recipient::setInstallOptions)
-        recipient.dslServices
+    fun applyTo(receiver: AdbOptions) {
+        timeOutInMs?.let(receiver::timeOutInMs)
+        installOptions?.let(receiver.installOptions::addAll)
+        setInstallOptions?.toTypedArray()?.let(receiver::setInstallOptions)
+        receiver.dslServices
     }
 }

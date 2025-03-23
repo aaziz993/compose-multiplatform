@@ -9,5 +9,5 @@ import org.gradle.api.artifacts.repositories.RepositoryLayout
  */
 internal interface RepositoryLayout {
 
-    fun applyTo(recipient: RepositoryLayout)
+    fun applyTo(receiver: RepositoryLayout)
 }

@@ -22,8 +22,8 @@ internal data class KoverReportFiltersConfig(
     val includes: KoverReportFilter? = null,
 ) {
 
-    fun applyTo(recipient: KoverReportFiltersConfig) {
-        excludes?.applyTo(recipient.excludes)
-        includes?.applyTo(recipient.includes)
+    fun applyTo(receiver: KoverReportFiltersConfig) {
+        excludes?.applyTo(receiver.excludes)
+        includes?.applyTo(receiver.includes)
     }
 }
