@@ -11,6 +11,11 @@ import com.apollographql.apollo3.gradle.internal.ApolloGenerateUsedCoordinatesAn
 import com.apollographql.apollo3.gradle.internal.ApolloPushSchemaTask
 import com.apollographql.apollo3.gradle.internal.ApolloRegisterOperationsTask
 import gradle.accessors.apollo
+import gradle.accessors.id
+import gradle.accessors.libs
+import gradle.accessors.plugin
+import gradle.accessors.plugins
+import gradle.accessors.settings
 import gradle.api.tryAssign
 import org.gradle.api.Project
 
@@ -24,30 +29,31 @@ internal interface ApolloExtension {
     val services: Set<Service>?
 
     context(Project)
-    fun applyTo() {
-        processors?.forEach { (schema, service, packageName) ->
-            apollo.apolloKspProcessor(file(schema), service, packageName)
-        }
-
-        androidVariantServices?.forEach { androidVariantService ->
-            apollo.createAllAndroidVariantServices(androidVariantService.sourceFolder, androidVariantService.nameSuffix) {
-                androidVariantService.service?.applyTo(this)
+    fun applyTo() =
+        pluginManager.withPlugin(settings.libs.plugins.plugin("apollo").id) {
+            processors?.forEach { (schema, service, packageName) ->
+                apollo.apolloKspProcessor(file(schema), service, packageName)
             }
-        }
 
-        kotlinSourceSetServices?.forEach { kotlinSourceSetServices ->
-            apollo.createAllKotlinSourceSetServices(kotlinSourceSetServices.sourceFolder, kotlinSourceSetServices.nameSuffix) {
-                kotlinSourceSetServices.service?.applyTo(this)
+            androidVariantServices?.forEach { androidVariantService ->
+                apollo.createAllAndroidVariantServices(androidVariantService.sourceFolder, androidVariantService.nameSuffix) {
+                    androidVariantService.service?.applyTo(this)
+                }
             }
-        }
 
-        services?.forEach { service ->
-            apollo.service(service.name) {
-                service.applyTo(this)
+            kotlinSourceSetServices?.forEach { kotlinSourceSetServices ->
+                apollo.createAllKotlinSourceSetServices(kotlinSourceSetServices.sourceFolder, kotlinSourceSetServices.nameSuffix) {
+                    kotlinSourceSetServices.service?.applyTo(this)
+                }
             }
-        }
 
-        apollo.generateSourcesDuringGradleSync tryAssign generateSourcesDuringGradleSync
-        apollo.linkSqlite tryAssign linkSqlite
-    }
+            services?.forEach { service ->
+                apollo.service(service.name) {
+                    service.applyTo(this)
+                }
+            }
+
+            apollo.generateSourcesDuringGradleSync tryAssign generateSourcesDuringGradleSync
+            apollo.linkSqlite tryAssign linkSqlite
+        }
 }

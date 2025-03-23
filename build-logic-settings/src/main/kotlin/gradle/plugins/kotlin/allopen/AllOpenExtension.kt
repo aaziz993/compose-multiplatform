@@ -1,6 +1,11 @@
 package gradle.plugins.kotlin.allopen
 
 import gradle.accessors.allOpen
+import gradle.accessors.id
+import gradle.accessors.libs
+import gradle.accessors.plugin
+import gradle.accessors.plugins
+import gradle.accessors.settings
 import org.gradle.api.Project
 
 internal interface AllOpenExtension {
@@ -9,8 +14,9 @@ internal interface AllOpenExtension {
     val myPresets: List<String>?
 
     context(Project)
-    fun applyTo() {
-        myAnnotations?.let(allOpen::annotations)
-        myPresets?.forEach(allOpen::preset)
-    }
+    fun applyTo() =
+        pluginManager.withPlugin(settings.libs.plugins.plugin("allOpen").id) {
+            myAnnotations?.let(allOpen::annotations)
+            myPresets?.forEach(allOpen::preset)
+        }
 }

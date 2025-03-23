@@ -1,6 +1,11 @@
 package gradle.plugins.kotlin.powerassert
 
+import gradle.accessors.id
+import gradle.accessors.libs
+import gradle.accessors.plugin
+import gradle.accessors.plugins
 import gradle.accessors.powerAssert
+import gradle.accessors.settings
 import gradle.api.tryAssign
 import org.gradle.api.Project
 
@@ -11,16 +16,28 @@ internal interface PowerAssertGradleExtension {
      * If nothing is defined, defaults to [`kotlin.assert`][assert].
      */
     val functions: Set<String>?
+    val setFunctions: Set<String>?
 
     /**
      * Defines the Kotlin SourceSets by name which will be transformed by the Power-Assert compiler plugin.
      * When the provider returns `null` - which is the default - all test SourceSets will be transformed.
      */
     val includedSourceSets: Set<String>?
+    val setIncludedSourceSets: Set<String>?
 
     context(Project)
-    fun applyTo() {
-        powerAssert.functions tryAssign functions
-        powerAssert.includedSourceSets tryAssign includedSourceSets
-    }
+    fun applyTo() =
+        pluginManager.withPlugin(settings.libs.plugins.plugin("powerAssert").id) {
+            powerAssert.functions tryAssign functions?.let { functions ->
+                powerAssert.functions.get() + functions
+            }
+
+            powerAssert.functions tryAssign setFunctions
+
+            powerAssert.includedSourceSets tryAssign includedSourceSets?.let { includedSourceSets ->
+                powerAssert.includedSourceSets.get() + includedSourceSets
+            }
+
+            powerAssert.includedSourceSets tryAssign setIncludedSourceSets
+        }
 }

@@ -6,7 +6,12 @@ import com.google.devtools.ksp.gradle.KspTaskJS
 import com.google.devtools.ksp.gradle.KspTaskJvm
 import com.google.devtools.ksp.gradle.KspTaskMetadata
 import com.google.devtools.ksp.gradle.KspTaskNative
+import gradle.accessors.id
 import gradle.accessors.ksp
+import gradle.accessors.libs
+import gradle.accessors.plugin
+import gradle.accessors.plugins
+import gradle.accessors.settings
 import gradle.api.tryAssign
 import gradle.api.trySet
 import gradle.process.CommandLineArgumentProvider
@@ -35,13 +40,14 @@ internal interface KspExtension {
     val allWarningsAsErrors: Boolean?
 
     context(Project)
-    fun applyTo() {
-        ksp.useKsp2 tryAssign useKsp2
-        commandLineArgumentProviders?.forEach(ksp::arg)
-        excludedProcessors?.forEach(ksp::excludeProcessor)
-        excludedSources?.toTypedArray()?.let(ksp.excludedSources::from)
-        setExcludedSources?.let(ksp.excludedSources::setFrom)
-        arguments?.forEach { (key, value) -> ksp.arg(key, value) }
-        ksp::allWarningsAsErrors trySet allWarningsAsErrors
-    }
+    fun applyTo() =
+        pluginManager.withPlugin(settings.libs.plugins.plugin("ksp").id) {
+            ksp.useKsp2 tryAssign useKsp2
+            commandLineArgumentProviders?.forEach(ksp::arg)
+            excludedProcessors?.forEach(ksp::excludeProcessor)
+            excludedSources?.toTypedArray()?.let(ksp.excludedSources::from)
+            setExcludedSources?.let(ksp.excludedSources::setFrom)
+            arguments?.forEach { (key, value) -> ksp.arg(key, value) }
+            ksp::allWarningsAsErrors trySet allWarningsAsErrors
+        }
 }

@@ -1,6 +1,11 @@
 package gradle.plugins.kotlin.rpc
 
+import gradle.accessors.id
+import gradle.accessors.libs
+import gradle.accessors.plugin
+import gradle.accessors.plugins
 import gradle.accessors.rpc
+import gradle.accessors.settings
 import gradle.api.tryAssign
 import kotlinx.rpc.RpcDangerousApi
 import org.gradle.api.Project
@@ -23,11 +28,9 @@ internal interface RpcExtension {
 
     context(Project)
     @OptIn(RpcDangerousApi::class)
-    fun applyTo() {
-        rpc.annotationTypeSafetyEnabled tryAssign annotationTypeSafetyEnabled
-
-        strict?.let { strict ->
-            rpc.strict(strict::applyTo)
+    fun applyTo() =
+        pluginManager.withPlugin(settings.libs.plugins.plugin("rpc").id) {
+            rpc.annotationTypeSafetyEnabled tryAssign annotationTypeSafetyEnabled
+            strict?.applyTo(rpc.strict)
         }
-    }
 }

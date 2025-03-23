@@ -1,6 +1,7 @@
 package gradle.plugins.kotlin.sqldelight
 
 import app.cash.sqldelight.gradle.SqlDelightDatabase
+import gradle.api.ProjectNamed
 import gradle.api.tryAssign
 import gradle.project.Dependency
 import gradle.project.DependencyTransformingSerializer
@@ -9,18 +10,20 @@ import org.gradle.api.Project
 
 @Serializable
 internal data class SqlDelightDatabase(
-    val name: String,
+    //Note: Name of your Database and .sq file should be same
+    override val name: String,
     val packageName: String? = null,
     val schemaOutputDirectory: String? = null,
-    val srcDirs: List<String>? = null,
+    val srcDirs: Set<String>? = null,
+    val setSrcDirs: Set<String>? = null,
     val deriveSchemaFromMigrations: Boolean? = null,
     val verifyMigrations: Boolean? = null,
     val verifyDefinitions: Boolean? = null,
     val migrationOutputDirectory: String? = null,
     val migrationOutputFileFormat: String? = null,
     val generateAsync: Boolean? = null,
-    val modules: List<@Serializable(with = DependencyTransformingSerializer::class) Dependency>? = null,
-    val dialect: String? = null,
+    val modules: Set<@Serializable(with = DependencyTransformingSerializer::class) Dependency>? = null,
+    val dialects: Set<String>? = null,
     /**
      * When SqlDelight finds an equality operation with a nullable typed rvalue such as:
      *
@@ -58,22 +61,22 @@ internal data class SqlDelightDatabase(
      * @see <a href="https://en.wikipedia.org/wiki/Null_%28SQL%29#Null-specific_and_3VL-specific_comparison_predicates">Wikipedia entry on null specific comparisons in SQL</a>
      */
     val treatNullAsUnknownForEquality: Boolean? = null,
-) {
+) : ProjectNamed<SqlDelightDatabase> {
 
     context(Project)
-    fun applyTo(recipient: SqlDelightDatabase) {
-        database.packageName tryAssign packageName
-        database.schemaOutputDirectory tryAssign schemaOutputDirectory?.let(layout.projectDirectory::dir)
-        srcDirs?.toTypedArray()?.let(database.srcDirs::from)
-setSrcDirs?.let(database.srcDirs::setFrom)
-        database.deriveSchemaFromMigrations tryAssign deriveSchemaFromMigrations
-        database.verifyMigrations tryAssign verifyMigrations
-        database.verifyDefinitions tryAssign verifyDefinitions
-        database.migrationOutputDirectory tryAssign migrationOutputDirectory?.let(layout.projectDirectory::dir)
-        database.migrationOutputFileFormat tryAssign migrationOutputFileFormat
-        database.generateAsync tryAssign generateAsync
-        modules?.filterIsInstance<Dependency>()?.map { it.resolve() }?.forEach(database::module)
-        dialect?.let(database::dialect)
-        database.treatNullAsUnknownForEquality tryAssign treatNullAsUnknownForEquality
+    override fun applyTo(recipient: SqlDelightDatabase) {
+        recipient.packageName tryAssign packageName
+        recipient.schemaOutputDirectory tryAssign schemaOutputDirectory?.let(layout.projectDirectory::dir)
+        srcDirs?.toTypedArray()?.let(recipient::srcDirs)
+        setSrcDirs?.let(recipient.srcDirs::setFrom)
+        recipient.deriveSchemaFromMigrations tryAssign deriveSchemaFromMigrations
+        recipient.verifyMigrations tryAssign verifyMigrations
+        recipient.verifyDefinitions tryAssign verifyDefinitions
+        recipient.migrationOutputDirectory tryAssign migrationOutputDirectory?.let(layout.projectDirectory::dir)
+        recipient.migrationOutputFileFormat tryAssign migrationOutputFileFormat
+        recipient.generateAsync tryAssign generateAsync
+        modules?.map { module -> module.resolve() }?.forEach(recipient::module)
+        dialects?.forEach(recipient::dialect)
+        recipient.treatNullAsUnknownForEquality tryAssign treatNullAsUnknownForEquality
     }
 }

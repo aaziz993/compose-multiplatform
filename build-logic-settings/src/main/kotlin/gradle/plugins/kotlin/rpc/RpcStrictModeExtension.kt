@@ -44,10 +44,10 @@ internal data class RpcStrictModeExtension(
 ) {
 
     fun applyTo(recipient: RpcStrictModeExtension) {
-        extension.stateFlow tryAssign stateFlow
-        extension.sharedFlow tryAssign sharedFlow
-        extension.nestedFlow tryAssign nestedFlow
-        extension.notTopLevelServerFlow tryAssign notTopLevelServerFlow
-        extension.fields tryAssign fields
+        recipient.stateFlow tryAssign stateFlow
+        recipient.sharedFlow tryAssign sharedFlow
+        recipient.nestedFlow tryAssign nestedFlow
+        recipient.notTopLevelServerFlow tryAssign notTopLevelServerFlow
+        recipient.fields tryAssign fields
     }
 }

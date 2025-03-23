@@ -1,6 +1,11 @@
 package gradle.plugins.kotlin.room
 
+import gradle.accessors.id
+import gradle.accessors.libs
+import gradle.accessors.plugin
+import gradle.accessors.plugins
 import gradle.accessors.room
+import gradle.accessors.settings
 import gradle.api.trySet
 import org.gradle.api.Project
 
@@ -14,8 +19,9 @@ internal interface RoomExtension {
     val generateKotlin: Boolean?
 
     context(Project)
-    fun applyTo() {
-        schemaDirectories?.forEach(room::schemaDirectory)
-        room::generateKotlin trySet generateKotlin
-    }
+    fun applyTo() =
+        pluginManager.withPlugin(settings.libs.plugins.plugin("room").id) {
+            schemaDirectories?.forEach(room::schemaDirectory)
+            room::generateKotlin trySet generateKotlin
+        }
 }
