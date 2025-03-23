@@ -1,6 +1,11 @@
 package gradle.plugins.buildconfig
 
 import gradle.accessors.buildConfig
+import gradle.accessors.id
+import gradle.accessors.libs
+import gradle.accessors.plugin
+import gradle.accessors.plugins
+import gradle.accessors.settings
 import gradle.api.applyTo
 import org.gradle.api.Project
 
@@ -9,7 +14,8 @@ internal interface BuildConfigExtension {
     val sourceSets: List<BuildConfigSourceSet>?
 
     context(Project)
-    fun applyTo() {
+    fun applyTo() =
+        pluginManager.withPlugin(settings.libs.plugins.plugin("buildconfig").id) {
         sourceSets?.forEach { sourceSet ->
             sourceSet.applyTo(buildConfig.sourceSets)
         }

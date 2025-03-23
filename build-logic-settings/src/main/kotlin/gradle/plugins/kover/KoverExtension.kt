@@ -1,6 +1,11 @@
 package gradle.plugins.kover
 
+import gradle.accessors.id
 import gradle.accessors.kover
+import gradle.accessors.libs
+import gradle.accessors.plugin
+import gradle.accessors.plugins
+import gradle.accessors.settings
 import gradle.api.tryAssign
 import gradle.plugins.kover.currentproject.KoverCurrentProjectVariantsConfig
 import gradle.plugins.kover.reports.KoverReportsConfig
@@ -43,10 +48,11 @@ internal interface KoverExtension {
     val reports: KoverReportsConfig?
 
     context(Project)
-    fun applyTo() {
-        kover.useJacoco tryAssign useJacoco
-        kover.jacocoVersion tryAssign jacocoVersion
-        currentProject?.applyTo( kover.currentProject)
-        reports?.applyTo(kover.reports)
-    }
+    fun applyTo() =
+        pluginManager.withPlugin(settings.libs.plugins.plugin("kover").id) {
+            kover.useJacoco tryAssign useJacoco
+            kover.jacocoVersion tryAssign jacocoVersion
+            currentProject?.applyTo(kover.currentProject)
+            reports?.applyTo(kover.reports)
+        }
 }

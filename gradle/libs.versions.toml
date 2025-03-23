@@ -60,15 +60,15 @@ develocity = "3.19.1" # Should be compatible with our server: ge.jetbrains.com
 # enhances published build scans by adding a set of tags, links and custom values that have proven to be useful for many projects building with Develocity.
 develocityCommonCustomUserData = "2.1"
 # provides a repository for downloading JVMs
-foojay-resolver-convention = "0.9.0"
+foojayResolverConvention = "0.9.0"
 # creates fat/uber JARs with support for package relocation.
 shadow = "8.3.5"
 # generating BuildConstants for any kind of Gradle projects: Java, Kotlin, Android, Groovy, etc. Designed for KTS scripts, with experimental support for Kotlin's multi-platform plugin
-build-config = "4.1.1"
+buildConfig = "4.1.1"
 # string and image resource generation
 libres = "1.2.3"
 # enforcing pre-commit and commit-msg Git hooks configuration. Conventional-commits-ready.
-gradle-pre-commit-git-hooks = "2.0.4"
+gradlePreCommitGitHooks = "2.0.4"
 # set of solutions for collecting test coverage of Kotlin code compiled for JVM and Android platforms.
 kover = "0.9.0-RC"
 # can format <antlr | c | c# | c++ | css | flow | graphql | groovy | html | java | javascript | json | jsx | kotlin | less | license headers | markdown | objective-c | protobuf | python | scala | scss | shell | sql | typeScript | vue | yaml | anything> using <gradle | maven | sbt | anything>.
@@ -1325,15 +1325,15 @@ develocity = { id = "com.gradle.develocity", version.ref = "develocity" }
 # enhances published build scans by adding a set of tags, links and custom values that have proven to be useful for many projects building with Develocity.
 develocityCommonCustomUserData = { id = "com.gradle.common-custom-user-data-gradle-plugin", version.ref = "develocityCommonCustomUserData" }
 # provides a repository for downloading JVMs
-foojay-resolver-convention = { id = "org.gradle.toolchains.foojay-resolver-convention", version.ref = "foojay-resolver-convention" }
+foojayResolverConvention = { id = "org.gradle.toolchains.foojay-resolver-convention", version.ref = "foojayResolverConvention" }
 # creates fat/uber JARs with support for package relocation.
 shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
 # generating BuildConstants for any kind of Gradle projects: Java, Kotlin, Android, Groovy, etc. Designed for KTS scripts, with experimental support for Kotlin's multi-platform plugin
-build-config = { id = "com.github.gmazzo.buildconfig", version.ref = "build-config" }
+buildconfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildConfig" }
 # string and image resaource generation
 libres = { id = "io.github.skeptick.libres", version.ref = "libres" }
 # enforcing pre-commit and commit-msg Git hooks configuration. Conventional-commits-ready.
-gradle-pre-commit-git-hooks = { id = "org.danilopianini.gradle-pre-commit-git-hooks", version.ref = "gradle-pre-commit-git-hooks" }
+gradlePreCommitGitHooks = { id = "org.danilopianini.gradle-pre-commit-git-hooks", version.ref = "gradlePreCommitGitHooks" }
 # set of solutions for collecting test coverage of Kotlin code compiled for JVM and Android platforms.
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 # can format <antlr | c | c# | c++ | css | flow | graphql | groovy | html | java | javascript | json | jsx | kotlin | less | license headers | markdown | objective-c | protobuf | python | scala | scss | shell | sql | typeScript | vue | yaml | anything> using <gradle | maven | sbt | anything>.

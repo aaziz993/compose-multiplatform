@@ -19,8 +19,9 @@ internal data class DesktopExtension(
 ) {
 
     context(Project)
-    fun applyTo() = pluginManager.withPlugin(settings.libs.plugins.plugin("compose.multiplatform").id) {
-        application?.applyTo(compose.desktop.application)
-        nativeApplication?.applyTo(compose.desktop.nativeApplication)
-    }
+    fun applyTo() =
+        pluginManager.withPlugin(settings.libs.plugins.plugin("compose.multiplatform").id) {
+            application?.applyTo(compose.desktop.application)
+            nativeApplication?.applyTo(compose.desktop.nativeApplication)
+        }
 }

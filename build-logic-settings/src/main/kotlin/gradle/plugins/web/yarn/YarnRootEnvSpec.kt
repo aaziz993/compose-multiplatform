@@ -1,5 +1,10 @@
 package gradle.plugins.web.yarn
 
+import gradle.accessors.id
+import gradle.accessors.libs
+import gradle.accessors.plugin
+import gradle.accessors.plugins
+import gradle.accessors.settings
 import gradle.accessors.yarn
 import gradle.accessors.yarnEnv
 import gradle.api.tryAssign
@@ -58,14 +63,15 @@ internal data class YarnRootEnvSpec(
 ) : EnvSpec() {
 
     context(Project)
-    fun applyTo() {
-        super.applyTo(yarnEnv)
-        NodeJsSetupTask
-        yarnEnv.ignoreScripts tryAssign ignoreScripts
-        yarnEnv.yarnLockMismatchReport tryAssign yarnLockMismatchReport
-        yarnEnv.reportNewYarnLock tryAssign reportNewYarnLock
-        yarnEnv.yarnLockAutoReplace tryAssign yarnLockAutoReplace
-        resolutions?.map(YarnResolution::toYarnResolution)?.let(yarnEnv.resolutions::addAll)
-        setResolutions?.act(yarn.resolutions::clear)?.map(YarnResolution::toYarnResolution)?.let(yarnEnv.resolutions::addAll)
-    }
+    fun applyTo() =
+        pluginManager.withPlugin(settings.libs.plugins.plugin("gradle.node.plugin").id) {
+            super.applyTo(yarnEnv)
+
+            yarnEnv.ignoreScripts tryAssign ignoreScripts
+            yarnEnv.yarnLockMismatchReport tryAssign yarnLockMismatchReport
+            yarnEnv.reportNewYarnLock tryAssign reportNewYarnLock
+            yarnEnv.yarnLockAutoReplace tryAssign yarnLockAutoReplace
+            resolutions?.map(YarnResolution::toYarnResolution)?.let(yarnEnv.resolutions::addAll)
+            setResolutions?.act(yarn.resolutions::clear)?.map(YarnResolution::toYarnResolution)?.let(yarnEnv.resolutions::addAll)
+        }
 }

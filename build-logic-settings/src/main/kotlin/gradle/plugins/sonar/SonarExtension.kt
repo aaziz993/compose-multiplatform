@@ -1,5 +1,10 @@
 package gradle.plugins.sonar
 
+import gradle.accessors.id
+import gradle.accessors.libs
+import gradle.accessors.plugin
+import gradle.accessors.plugins
+import gradle.accessors.settings
 import gradle.accessors.sonar
 import org.gradle.api.Project
 import org.sonarqube.gradle.SonarTask
@@ -59,15 +64,16 @@ internal interface SonarExtension {
     val androidVariant: String?
 
     context(Project)
-    fun applyTo() {
-        skipProject?.let(sonar::setSkipProject)
+    fun applyTo() =
+        pluginManager.withPlugin(settings.libs.plugins.plugin("sonar").id) {
+            skipProject?.let(sonar::setSkipProject)
 
-        properties?.let { properties ->
-            sonar.properties {
-                properties.applyTo(this)
+            properties?.let { properties ->
+                sonar.properties {
+                    properties.applyTo(this)
+                }
             }
-        }
 
-        androidVariant?.let(sonar::setAndroidVariant)
-    }
+            androidVariant?.let(sonar::setAndroidVariant)
+        }
 }

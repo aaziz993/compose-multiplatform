@@ -1,6 +1,11 @@
 package gradle.plugins.web.node
 
+import gradle.accessors.id
+import gradle.accessors.libs
 import gradle.accessors.nodeEnv
+import gradle.accessors.plugin
+import gradle.accessors.plugins
+import gradle.accessors.settings
 import gradle.plugins.web.EnvSpec
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -16,5 +21,8 @@ internal data class NodeJsEnvSpec(
 ) : EnvSpec() {
 
     context(Project)
-    fun applyTo() = super.applyTo(nodeEnv)
+    fun applyTo() =
+        pluginManager.withPlugin(settings.libs.plugins.plugin("gradle.node.plugin").id) {
+            super.applyTo(nodeEnv)
+        }
 }

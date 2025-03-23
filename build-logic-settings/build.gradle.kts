@@ -191,7 +191,7 @@ dependencies {
     // enhances published build scans by adding a set of tags, links and custom values that have proven to be useful for many projects building with Develocity.
     implementation(libs.plugins.develocityCommonCustomUserData.toDep())
     // provides a repository for downloading JVMs
-    implementation(libs.plugins.foojay.resolver.convention.toDep())
+    implementation(libs.plugins.foojayResolverConvention.toDep())
     // software Composition Analysis (SCA) tool that attempts to detect publicly disclosed vulnerabilities contained within a project's dependencies. It does this by determining if there is a Common Platform Enumeration (CPE) identifier for a given dependency. If found, it will generate a report linking to the associated CVE entries.
     implementation(libs.plugins.dependencycheck.toDep())
     // creates fat/uber JARs with support for package relocation
@@ -217,11 +217,11 @@ dependencies {
     // produces Kotlin source example files and tests from markdown documents with embedded snippets of Kotlin code
     implementation(libs.plugins.knit.toDep())
     // Generating BuildConstants for any kind of Gradle projects: Java, Kotlin, Android, Groovy, etc. Designed for KTS scripts, with experimental support for Kotlin's multi-platform plugin
-    implementation(libs.plugins.build.config.toDep())
+    implementation(libs.plugins.buildconfig.toDep())
     // string and image resource generation
     implementation(libs.plugins.libres.toDep())
     // pre-commit hooks
-    implementation(libs.plugins.gradle.pre.commit.git.hooks.toDep())
+    implementation(libs.plugins.gradlePreCommitGitHooks.toDep())
     // publishing
     implementation(libs.plugins.vanniktech.maven.publish.toDep())
 

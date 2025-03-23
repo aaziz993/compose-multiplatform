@@ -50,19 +50,19 @@ internal data class ResourcesExtension(
 ) {
 
     context(Project)
-    fun applyTo() = pluginManager.withPlugin(settings.libs.plugins.plugin("compose.multiplatform").id) {
-        compose.resources {
-            ::publicResClass trySet this@ResourcesExtension.publicResClass
-            ::packageOfResClass trySet this@ResourcesExtension.packageOfResClass
-            ::generateResClass trySet this@ResourcesExtension.generateResClass
-            this@ResourcesExtension.customResourceDirectories?.forEach { (sourceSetName, directory) ->
-                customDirectory(sourceSetName, provider { layout.projectDirectory.dir(directory) })
+    fun applyTo() =
+        pluginManager.withPlugin(settings.libs.plugins.plugin("compose.multiplatform").id) {
+            compose.resources::publicResClass trySet publicResClass
+            compose.resources::packageOfResClass trySet packageOfResClass
+            compose.resources::generateResClass trySet generateResClass
+            customResourceDirectories?.forEach { (sourceSetName, directory) ->
+                compose.resources.customDirectory(sourceSetName, provider { layout.projectDirectory.dir(directory) })
             }
 
             // Adjust composeResources to match flatten directory structure
             when (projectProperties.layout) {
                 ProjectLayout.FLAT -> kotlin.sourceSets.forEach { sourceSet ->
-                    customDirectory(
+                    compose.resources.customDirectory(
                         sourceSet.name,
                         provider { sourceSetsToComposeResourcesDirs[sourceSet]!! },
                     )
@@ -71,5 +71,4 @@ internal data class ResourcesExtension(
                 else -> Unit
             }
         }
-    }
 }

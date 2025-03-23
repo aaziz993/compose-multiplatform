@@ -14,9 +14,10 @@ import org.gradle.api.Project
 internal class AndroidExtension {
 
     context(Project)
-    fun applyTo() = pluginManager.withPlugin(settings.libs.plugins.plugin("compose.multiplatform").id) {
-        compose.android {
+    fun applyTo() =
+        pluginManager.withPlugin(settings.libs.plugins.plugin("compose.multiplatform").id) {
+            compose.android {
 
+            }
         }
-    }
 }

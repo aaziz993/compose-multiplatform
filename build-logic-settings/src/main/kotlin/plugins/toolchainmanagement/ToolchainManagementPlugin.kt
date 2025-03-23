@@ -15,7 +15,7 @@ internal class ToolchainManagementPlugin : Plugin<Settings> {
         with(target) {
             projectProperties.plugins.toolchainManagement
                 .takeIf(ToolchainManagementSettings::enabled)?.let { toolchainManagement ->
-                    plugins.apply(settings.libs.plugins.plugin("foojay-resolver-convention").id)
+                    plugins.apply(settings.libs.plugins.plugin("foojayResolverConvention").id)
 
                     toolchainManagement.applyTo()
                 }

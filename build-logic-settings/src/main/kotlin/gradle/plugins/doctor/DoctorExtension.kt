@@ -2,6 +2,11 @@ package gradle.plugins.doctor
 
 import com.osacky.doctor.AppleRosettaTranslationCheckMode
 import gradle.accessors.doctor
+import gradle.accessors.id
+import gradle.accessors.libs
+import gradle.accessors.plugin
+import gradle.accessors.plugins
+import gradle.accessors.settings
 import gradle.api.tryAssign
 import org.gradle.api.Project
 
@@ -92,24 +97,25 @@ internal interface DoctorExtension {
     val javaHome: JavaHomeHandler?
 
     context(Project)
-    fun applyTo() {
-        doctor.disallowMultipleDaemons tryAssign disallowMultipleDaemons
-        doctor.downloadSpeedWarningThreshold tryAssign downloadSpeedWarningThreshold
-        doctor.GCWarningThreshold tryAssign GCWarningThreshold
-        doctor.GCFailThreshold tryAssign GCFailThreshold
-        doctor.daggerThreshold tryAssign daggerThreshold
-        doctor.enableTestCaching tryAssign enableTestCaching
-        doctor.failOnEmptyDirectories tryAssign failOnEmptyDirectories
-        doctor.allowBuildingAllAndroidAppsSimultaneously tryAssign allowBuildingAllAndroidAppsSimultaneously
-        doctor.warnWhenJetifierEnabled tryAssign warnWhenJetifierEnabled
-        doctor.negativeAvoidanceThreshold tryAssign negativeAvoidanceThreshold
-        doctor.warnWhenNotUsingParallelGC tryAssign warnWhenNotUsingParallelGC
-        doctor.disallowCleanTaskDependencies tryAssign disallowCleanTaskDependencies
-        doctor.warnIfKotlinCompileDaemonFallback tryAssign warnIfKotlinCompileDaemonFallback
-        doctor.appleRosettaTranslationCheckMode tryAssign appleRosettaTranslationCheckMode
+    fun applyTo() =
+        pluginManager.withPlugin(settings.libs.plugins.plugin("doctor").id) {
+            doctor.disallowMultipleDaemons tryAssign disallowMultipleDaemons
+            doctor.downloadSpeedWarningThreshold tryAssign downloadSpeedWarningThreshold
+            doctor.GCWarningThreshold tryAssign GCWarningThreshold
+            doctor.GCFailThreshold tryAssign GCFailThreshold
+            doctor.daggerThreshold tryAssign daggerThreshold
+            doctor.enableTestCaching tryAssign enableTestCaching
+            doctor.failOnEmptyDirectories tryAssign failOnEmptyDirectories
+            doctor.allowBuildingAllAndroidAppsSimultaneously tryAssign allowBuildingAllAndroidAppsSimultaneously
+            doctor.warnWhenJetifierEnabled tryAssign warnWhenJetifierEnabled
+            doctor.negativeAvoidanceThreshold tryAssign negativeAvoidanceThreshold
+            doctor.warnWhenNotUsingParallelGC tryAssign warnWhenNotUsingParallelGC
+            doctor.disallowCleanTaskDependencies tryAssign disallowCleanTaskDependencies
+            doctor.warnIfKotlinCompileDaemonFallback tryAssign warnIfKotlinCompileDaemonFallback
+            doctor.appleRosettaTranslationCheckMode tryAssign appleRosettaTranslationCheckMode
 
-        javaHome?.let { javaHome ->
-            doctor.javaHome(javaHome::applyTo)
+            javaHome?.let { javaHome ->
+                doctor.javaHome(javaHome::applyTo)
+            }
         }
-    }
 }

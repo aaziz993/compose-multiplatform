@@ -1,6 +1,11 @@
 package gradle.plugins.githooks
 
 import gradle.accessors.gitHooks
+import gradle.accessors.id
+import gradle.accessors.libs
+import gradle.accessors.plugin
+import gradle.accessors.plugins
+import gradle.accessors.settings
 import gradle.api.trySet
 import java.io.File
 import java.net.URI
@@ -31,7 +36,8 @@ internal interface GitHooksExtension {
     val hooksUrls: Map<String, String>?
 
     context(Settings)
-    fun applyTo() {
+    fun applyTo() =
+        pluginManager.withPlugin(settings.libs.plugins.plugin("gradlePreCommitGitHooks").id) {
         hooks?.forEach { name, script ->
             gitHooks.hook(name) {
                 from { script }
@@ -44,9 +50,9 @@ internal interface GitHooksExtension {
             }
         }
 
-        hooksUrls?.forEach { name, file ->
+        hooksUrls?.forEach { name, url ->
             gitHooks.hook(name) {
-                from(URI(file).toURL())
+                from(URI(url).toURL())
             }
         }
 

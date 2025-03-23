@@ -3,6 +3,11 @@
 package gradle.plugins.spotless
 
 import com.diffplug.spotless.LineEnding
+import gradle.accessors.id
+import gradle.accessors.libs
+import gradle.accessors.plugin
+import gradle.accessors.plugins
+import gradle.accessors.settings
 import gradle.accessors.spotless
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -33,21 +38,22 @@ internal interface SpotlessExtension {
     val formats: LinkedHashSet<@Serializable(with = FormatExtensionTransformingSerializer::class) FormatExtension>?
 
     context(Project)
-    fun applyTo() {
-        lineEndings?.let(spotless::setLineEndings)
-        encoding?.let(spotless::setEncoding)
-        ratchetFrom?.let(spotless::setRatchetFrom)
-        enforceCheck?.let(spotless::setEnforceCheck)
+    fun applyTo() =
+        pluginManager.withPlugin(settings.libs.plugins.plugin("spotless").id) {
+            lineEndings?.let(spotless::setLineEndings)
+            encoding?.let(spotless::setEncoding)
+            ratchetFrom?.let(spotless::setRatchetFrom)
+            enforceCheck?.let(spotless::setEnforceCheck)
 
-        // Applicable only in root project.
-        if (project == rootProject) {
-            predeclareDeps?.takeIf { it }?.run { spotless.predeclareDeps() }
-            predeclareDepsFromBuildscript?.takeIf { it }?.run { spotless.predeclareDepsFromBuildscript() }
-        }
+            // Applicable only in root project.
+            if (project == rootProject) {
+                predeclareDeps?.takeIf { it }?.run { spotless.predeclareDeps() }
+                predeclareDepsFromBuildscript?.takeIf { it }?.run { spotless.predeclareDepsFromBuildscript() }
+            }
 
-        // Format files
-        formats?.forEach { format ->
-            format.applyTo()
+            // Format files
+            formats?.forEach { format ->
+                format.applyTo()
+            }
         }
-    }
 }
