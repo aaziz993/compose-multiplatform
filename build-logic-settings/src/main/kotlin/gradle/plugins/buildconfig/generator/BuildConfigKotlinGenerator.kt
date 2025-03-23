@@ -27,7 +27,7 @@ internal data class BuildConfigKotlinGenerator(
     }
 }
 
-internal object BuildConfigKotlinGeneratorSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
+internal object BuildConfigKotlinGeneratorContentPolymorphicSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
 
     override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
         when (element) {

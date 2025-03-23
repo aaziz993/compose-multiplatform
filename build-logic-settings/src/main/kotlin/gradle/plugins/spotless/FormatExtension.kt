@@ -49,10 +49,10 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
     abstract val endWithNewline: Boolean?
 
     /** Ensures that the files are indented using spaces.  */
-    abstract val indentWithSpaces: @Serializable(with = IntentSerializer::class) Any?
+    abstract val indentWithSpaces: @Serializable(with = IntentContentPolymorphicSerializer::class) Any?
 
     /** Ensures that the files are indented using tabs.  */
-    abstract val indentWithTabs: @Serializable(with = IntentSerializer::class) Any?
+    abstract val indentWithTabs: @Serializable(with = IntentContentPolymorphicSerializer::class) Any?
     abstract val nativeCmd: List<NativeCmd>?
     abstract val licenseHeader: LicenseHeaderConfig?
     abstract val prettier: PrettierConfig?
@@ -62,7 +62,7 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
     abstract val toggleOffOnRegex: String?
 
     /** Disables formatting between the given tags.  */
-    abstract val toggleOffOn: @Serializable(with = ToggleOffOnSerializer::class) Any?
+    abstract val toggleOffOn: @Serializable(with = ToggleOffOnContentPolymorphicSerializer::class) Any?
 
     /**
      * Undoes all previous calls to [.toggleOffOn] and
@@ -154,7 +154,7 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
     context(Project)
     abstract fun applyTo()
 
-    private object IntentSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
+    private object IntentContentPolymorphicSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
 
         override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
             if (element.jsonPrimitive.content.matches("\\d+".toRegex()))
@@ -256,7 +256,7 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
         val on: String
     )
 
-    internal object ToggleOffOnSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
+    internal object ToggleOffOnContentPolymorphicSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
 
         override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
             if (element is JsonPrimitive) Boolean.serializer() else ToggleOffOn.serializer()

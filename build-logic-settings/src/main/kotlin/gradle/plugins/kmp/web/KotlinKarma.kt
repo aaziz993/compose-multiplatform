@@ -64,7 +64,7 @@ internal data class KotlinKarma(
     }
 }
 
-internal object KotlinKarmaSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
+internal object KotlinKarmaContentPolymorphicSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
 
     override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
         when (element) {

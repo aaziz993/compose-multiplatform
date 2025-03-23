@@ -41,8 +41,8 @@ internal data class KotlinJsTest(
     val inputFileProperty: String? = null,
     val debug: Boolean? = null,
     val nodeJsArgs: List<String>? = null,
-    val useMocha: @Serializable(with = KotlinMochaSerializer::class) Any? = null,
-    val useKarma: @Serializable(with = KotlinKarmaSerializer::class) Any? = null,
+    val useMocha: @Serializable(with = KotlinMochaContentPolymorphicSerializer::class) Any? = null,
+    val useKarma: @Serializable(with = KotlinKarmaContentPolymorphicSerializer::class) Any? = null,
 ) : KotlinTest<KotlinJsTest>() {
 
     context(Project)

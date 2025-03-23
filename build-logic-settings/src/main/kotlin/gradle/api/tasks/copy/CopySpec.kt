@@ -4,6 +4,7 @@ import gradle.api.tasks.Expand
 import gradle.api.tasks.FilesMatching
 import gradle.api.tasks.util.PatternFilterable
 import gradle.collection.SerializableAnyMap
+import gradle.api.tasks.copy.FromContentPolymorphicSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.file.CopySpec
@@ -151,7 +152,7 @@ internal data class CopySpecImpl(
     override val filesMatching: FilesMatching? = null,
     override val filesNotMatching: FilesMatching? = null,
     override val filteringCharset: String? = null,
-    override val from: @Serializable(with = FromSerializer::class) Any? = null,
+    override val from: @Serializable(with = FromContentPolymorphicSerializer::class) Any? = null,
     override val into: String? = null,
     override val intoSpec: IntoSpec? = null,
     override val rename: Map<String, String>? = null,

@@ -27,7 +27,7 @@ internal interface KoverVerificationRulesConfig<T : kotlinx.kover.gradle.plugin.
     /**
      * Add new coverage verification rule to check after test task execution.
      */
-    val rule: @Serializable(with = KoverVerifyRuleSerializer::class) Any?
+    val rule: @Serializable(with = KoverVerifyRuleContentPolymorphicSerializer::class) Any?
 
     /**
      * In case of a verification error, print a message to the log with the warn level instead of the Gradle task execution error.
@@ -51,6 +51,6 @@ internal interface KoverVerificationRulesConfig<T : kotlinx.kover.gradle.plugin.
 
 @Serializable
 internal data class KoverVerificationRulesConfigImpl(
-    override val rule: @Serializable(with = KoverVerifyRuleSerializer::class) Any? = null,
+    override val rule: @Serializable(with = KoverVerifyRuleContentPolymorphicSerializer::class) Any? = null,
     override val warningInsteadOfFailure: Boolean? = null
 ) : KoverVerificationRulesConfig<kotlinx.kover.gradle.plugin.dsl.KoverVerificationRulesConfig>

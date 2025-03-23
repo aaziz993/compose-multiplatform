@@ -54,7 +54,7 @@ internal data class KoverVerifyRule(
      *
      * @see bound
      */
-    val minBound: @Serializable(with = KoverVerifyBoundSerializer::class) Any? = null,
+    val minBound: @Serializable(with = KoverVerifyBoundContentPolymorphicSerializer::class) Any? = null,
     /**
      * A shortcut for
      * ```
@@ -65,7 +65,7 @@ internal data class KoverVerifyRule(
      *
      * @see bound
      */
-    val maxBound: @Serializable(with = KoverVerifyBoundSerializer::class) Any? = null,
+    val maxBound: @Serializable(with = KoverVerifyBoundContentPolymorphicSerializer::class) Any? = null,
 ) {
 
     fun applyTo(receiver: kotlinx.kover.gradle.plugin.dsl.KoverVerifyRule) {
@@ -96,7 +96,7 @@ internal data class NamedKoverVerifyRule(
     val rule: KoverVerifyRule,
 )
 
-internal object KoverVerifyRuleSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
+internal object KoverVerifyRuleContentPolymorphicSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
 
     override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
         if ("name" in element.jsonObject) NamedKoverVerifyRule.serializer()

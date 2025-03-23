@@ -75,7 +75,7 @@ internal interface Signer {
     }
 }
 
-internal object SignSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
+internal object SignContentPolymorphicSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
 
     override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
         when (element) {

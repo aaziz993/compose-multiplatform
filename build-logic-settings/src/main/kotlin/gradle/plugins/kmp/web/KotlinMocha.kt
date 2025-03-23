@@ -18,7 +18,7 @@ internal data class KotlinMocha(
     }
 }
 
-internal object KotlinMochaSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
+internal object KotlinMochaContentPolymorphicSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
 
     override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
         when (element) {

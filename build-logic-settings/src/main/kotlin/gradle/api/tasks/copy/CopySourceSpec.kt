@@ -16,7 +16,7 @@ internal interface CopySourceSpec<T : CopySourceSpec> {
      * @param sourcePath Path to source for the copy
      * @param configureAction action for configuring the child CopySpec
      */
-    val from: @Serializable(with = FromSerializer::class) Any?
+    val from: @Serializable(with = FromContentPolymorphicSerializer::class) Any?
 
     context(Project)
     @Suppress("UNCHECKED_CAST")

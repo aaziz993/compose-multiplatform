@@ -45,7 +45,7 @@ internal data class JavaExtension(
     override val toggleOffOn: ToggleOffOn? = null,
     override val toggleOffOnDisable: Boolean? = null,
     val importOrder: ImportOrderConfig? = null,
-    val removeUnusedImports: @Serializable(with = RemoveUnusedImportsSerializer::class) Any? = null,
+    val removeUnusedImports: @Serializable(with = RemoveUnusedImportsContentPolymorphicSerializer::class) Any? = null,
     /** Uses the [google-java-format](https://github.com/google/google-java-format) jar to format source code.  */
     val googleJavaFormat: GoogleJavaFormatConfig? = null,
     /** Uses the [palantir-java-format](https://github.com/palantir/palantir-java-format) jar to format source code.  */
@@ -104,7 +104,7 @@ internal data class JavaExtension(
         applyTo(this)
     }
 
-    private object RemoveUnusedImportsSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
+    private object RemoveUnusedImportsContentPolymorphicSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
 
         override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
             if (element.jsonPrimitive.isString)
@@ -194,7 +194,7 @@ internal data class JavaExtension(
         }
     }
 
-    private object ImportOrderSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
+    private object ImportOrderContentPolymorphicSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
 
         override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> {
             TODO("Not yet implemented")

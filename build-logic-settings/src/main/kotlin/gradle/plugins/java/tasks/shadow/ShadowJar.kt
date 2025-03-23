@@ -17,6 +17,7 @@ import gradle.api.tasks.copy.FileCopyDetails
 import gradle.api.tasks.copy.FromSerializer
 import gradle.api.tasks.copy.IntoSpec
 import gradle.collection.SerializableAnyMap
+import gradle.plugins.java.manifest.FromContentPolymorphicSerializer
 import gradle.plugins.java.manifest.Manifest
 import gradle.plugins.java.tasks.shadow.Relocator
 import gradle.plugins.java.tasks.DependencyFilter
@@ -64,7 +65,7 @@ internal data class ShadowJar(
     override val filesMatching: FilesMatching? = null,
     override val filesNotMatching: FilesMatching? = null,
     override val filteringCharset: String? = null,
-    override val from: @Serializable(with = FromSerializer::class) Any?? = null,
+    override val from: @Serializable(with = FromContentPolymorphicSerializer::class) Any?? = null,
     override val into: String? = null,
     override val intoSpec: IntoSpec? = null,
     override val rename: Map<String, String>? = null,

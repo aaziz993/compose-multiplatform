@@ -5,8 +5,10 @@ import gradle.api.applyTo
 import gradle.api.tryAssign
 import gradle.plugins.buildconfig.generator.BuildConfigGenerator
 import gradle.plugins.buildconfig.generator.BuildConfigJavaGenerator
+import gradle.plugins.buildconfig.generator.BuildConfigJavaGeneratorContentPolymorphicSerializer
 import gradle.plugins.buildconfig.generator.BuildConfigJavaGeneratorSerializer
 import gradle.plugins.buildconfig.generator.BuildConfigKotlinGenerator
+import gradle.plugins.buildconfig.generator.BuildConfigKotlinGeneratorContentPolymorphicSerializer
 import gradle.plugins.buildconfig.generator.BuildConfigKotlinGeneratorSerializer
 import gradle.plugins.buildconfig.tasks.BuildConfigTask
 import kotlinx.serialization.Serializable
@@ -20,8 +22,8 @@ internal data class BuildConfigSourceSet(
     override val name: String? = null,
     val generator: BuildConfigGenerator<*>? = null,
     val generateTask: BuildConfigTask? = null,
-    val useJavaOutput: @Serializable(with = BuildConfigJavaGeneratorSerializer::class) Any? = null,
-    val useKotlinOutput: @Serializable(with = BuildConfigKotlinGeneratorSerializer::class) Any? = null,
+    val useJavaOutput: @Serializable(with = BuildConfigJavaGeneratorContentPolymorphicSerializer::class) Any? = null,
+    val useKotlinOutput: @Serializable(with = BuildConfigKotlinGeneratorContentPolymorphicSerializer::class) Any? = null,
     /**
      * Creates a secondary build class with the given [className] in the same package
      */

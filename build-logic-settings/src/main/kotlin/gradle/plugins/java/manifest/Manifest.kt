@@ -20,7 +20,7 @@ internal data class Manifest(
     val sections: Map<String, SerializableAnyMap>? = null,
     val setSections: Map<String, SerializableAnyMap>? = null,
     val effectiveManifest: Manifest? = null,
-    val from: @Serializable(with = FromSerializer::class) Any? = null,
+    val from: @Serializable(with = FromContentPolymorphicSerializer::class) Any? = null,
 ) {
 
     context(Project)

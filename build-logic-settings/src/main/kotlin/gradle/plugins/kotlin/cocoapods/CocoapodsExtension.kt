@@ -278,7 +278,7 @@ internal interface CocoapodsExtension {
             abstract fun toPodLocation(): CocoapodsExtension.CocoapodsDependency.PodLocation
         }
 
-        object PodLocationSerializer : JsonContentPolymorphicSerializer<PodLocation>(PodLocation::class) {
+        object PodLocationContentPolymorphicSerializer : JsonContentPolymorphicSerializer<PodLocation>(PodLocation::class) {
 
             override fun selectDeserializer(element: JsonElement) = when {
                 element.jsonObject["dir"] != null -> PodLocation.Path.serializer()

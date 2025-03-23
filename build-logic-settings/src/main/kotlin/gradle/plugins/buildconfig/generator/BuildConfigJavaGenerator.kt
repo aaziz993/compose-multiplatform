@@ -24,7 +24,7 @@ internal data class BuildConfigJavaGenerator(
     }
 }
 
-internal object BuildConfigJavaGeneratorSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
+internal object BuildConfigJavaGeneratorContentPolymorphicSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
 
     override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
         when (element) {
