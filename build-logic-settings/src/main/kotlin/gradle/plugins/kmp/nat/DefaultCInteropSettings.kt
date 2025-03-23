@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal data class DefaultCInteropSettings(
-    override val name: String? = null,,
+    override val name: String? = null,
     override val dependencyFiles: List<String>? = null,
     override val defFile: String? = null,
     override val packageName: String? = null,

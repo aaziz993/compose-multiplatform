@@ -43,7 +43,7 @@ import org.jetbrains.dokka.gradle.engine.parameters.VisibilityModifier
  */
 @Serializable
 internal data class DokkaSourceSetSpec(
-    override val name: String? = null,,
+    override val name: String? = null,
     /**
      * An arbitrary string used to group source sets that originate from different Gradle subprojects.
      * This is primarily used by Kotlin Multiplatform projects, which can have multiple source sets

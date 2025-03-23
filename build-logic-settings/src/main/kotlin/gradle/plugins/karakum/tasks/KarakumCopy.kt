@@ -28,7 +28,7 @@ internal data class KarakumCopy(
     override val mustRunAfter: Set<String>? = null,
     override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
-    override val name: String? = null,,
+    override val name: String? = null,
     val extensionSource: String? = null,
     val destinationDirectory: String? = null,
 ) : DefaultTask<KarakumCopy>() {

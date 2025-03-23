@@ -2,6 +2,7 @@ package gradle.plugins.kotlin.ksp
 
 import com.google.devtools.ksp.gradle.KspTask
 import com.google.devtools.ksp.gradle.KspTaskJS
+import com.google.devtools.ksp.gradle.KspTaskJvm
 import gradle.accessors.ksp
 import gradle.api.tryAssign
 import gradle.api.trySet
@@ -34,7 +35,7 @@ internal interface KspExtension {
     fun applyTo() {
         KspTask
         KspTaskJS
-        KspTask
+        KspTaskJvm
         ksp.useKsp2 tryAssign useKsp2
         commandLineArgumentProviders?.forEach(ksp::arg)
         excludedProcessors?.forEach(ksp::excludeProcessor)

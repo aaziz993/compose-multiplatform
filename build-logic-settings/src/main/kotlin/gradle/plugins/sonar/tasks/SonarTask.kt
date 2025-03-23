@@ -31,7 +31,7 @@ internal data class SonarTask(
     override val mustRunAfter: Set<String>? = null,
     override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
-    override val name: String? = null,,
+    override val name: String? = null,
     /**
      * @return The String key/value pairs to be passed to the SonarQube Scanner.
      * `null` values are not permitted.

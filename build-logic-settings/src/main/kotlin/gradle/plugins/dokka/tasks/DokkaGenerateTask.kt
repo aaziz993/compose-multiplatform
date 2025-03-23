@@ -25,7 +25,7 @@ internal data class DokkaGenerateTask(
     override val mustRunAfter: Set<String>? = null,
     override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
-    override val name: String? = null,,
+    override val name: String? = null,
     /**
      * Directory containing the generation result. The content and structure depends on whether
      * the task generates a Dokka Module or a Dokka Publication.

@@ -7,11 +7,9 @@ import gradle.collection.SerializableAnyMap
 import gradle.serialization.serializer.JsonPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
 import groovy.lang.MissingPropertyException
-
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.DomainObjectCollection
-import org.gradle.api.NamedDomainObjectCollection
 import org.gradle.api.Project
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.TaskCollection
@@ -377,7 +375,7 @@ internal data class TaskImpl(
     override val mustRunAfter: Set<String>? = null,
     override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
-    override val name: String? = null,,
+    override val name: String? = null,
 ) : Task<org.gradle.api.Task> {
 
     context(Project)

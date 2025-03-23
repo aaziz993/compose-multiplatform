@@ -2,21 +2,26 @@ package gradle.plugins.kotlin.tasks
 
 import gradle.api.tasks.util.PatternFilterable
 import gradle.api.tasks.Task
+import gradle.api.tasks.applyTo
 import gradle.api.tryAssign
+import gradle.collection.SerializableAnyMap
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompileTool
+import org.gradle.kotlin.dsl.withType
 
 /**
  * Represents a Kotlin task participating in some stage of the build by compiling sources or running additional Kotlin tools.
  */
-internal interface KotlinCompileTool : PatternFilterable, Task {
+internal interface KotlinCompileTool<T : org.jetbrains.kotlin.gradle.tasks.KotlinCompileTool>
+    : PatternFilterable<T>, Task<T> {
 
     /**
      * Adds input sources for this task.
      *
-     * @param sources object is evaluated as per [org.gradle.api.Project.files].
+     * @param sources object is evaluated as per [Project.files].
      */
-    val sources: List<String>?
+    val sources: Set<String>?
 
     /**
      * Sets input sources for this task.
@@ -24,9 +29,9 @@ internal interface KotlinCompileTool : PatternFilterable, Task {
      * **Note**: due to [a bug](https://youtrack.jetbrains.com/issue/KT-59632/KotlinCompileTool.setSource-should-replace-existing-sources),
      * the `setSource()` function does not update already added sources.
      *
-     * @param sources object is evaluated as per [org.gradle.api.Project.files].
+     * @param sources object is evaluated as per [Project.files].
      */
-    val setSources: List<String>?
+    val setSources: Set<String>?
 
     /**
      * Collection of external artifacts participating in the output artifact generation.
@@ -34,7 +39,8 @@ internal interface KotlinCompileTool : PatternFilterable, Task {
      * For example, a Kotlin/JVM compilation task has external JAR files or an
      * external location with already compiled class files.
      */
-    val libraries: List<String>?
+    val libraries: Set<String>?
+    val setLibraries: Set<String>?
 
     /**
      * The destination directory where the task artifact can be found.
@@ -42,17 +48,46 @@ internal interface KotlinCompileTool : PatternFilterable, Task {
     val destinationDirectory: String?
 
     context(Project)
-    fun applyTo(recipient: KotlinCompileTool) {
-        sources?.let { sources ->
-            tool.source(* sources.toTypedArray())
-        }
+    override fun applyTo(recipient: T) {
+        super<Task>.applyTo(recipient)
+        super<PatternFilterable>.applyTo(recipient)
 
-        setSources?.let { setSources ->
-            tool.setSource(* setSources.toTypedArray())
-        }
-
-        libraries?.toTypedArray()?.let(tool.libraries::from)
-setLibraries?.let(tool.libraries::setFrom)
-        tool.destinationDirectory tryAssign destinationDirectory?.let(::file)
+        sources?.toTypedArray()?.let(recipient::source)
+        setSources?.toTypedArray()?.let(recipient::setSource)
+        libraries?.toTypedArray()?.let(recipient.libraries::from)
+        setLibraries?.let(recipient.libraries::setFrom)
+        recipient.destinationDirectory tryAssign destinationDirectory?.let(layout.projectDirectory::dir)
     }
+}
+
+@Serializable
+@SerialName("KotlinCompileTool")
+internal data class KotlinCompileToolImpl(
+    override val sources: Set<String>? = null,
+    override val setSources: Set<String>? = null,
+    override val libraries: Set<String>? = null,
+    override val setLibraries: Set<String>? = null,
+    override val destinationDirectory: String? = null,
+    override val includes: Set<String>? = null,
+    override val setIncludes: Set<String>? = null,
+    override val excludes: Set<String>? = null,
+    override val setExcludes: Set<String>? = null,
+    override val dependsOn: LinkedHashSet<String>? = null,
+    override val onlyIf: Boolean? = null,
+    override val doNotTrackState: String? = null,
+    override val notCompatibleWithConfigurationCache: String? = null,
+    override val didWork: Boolean? = null,
+    override val enabled: Boolean? = null,
+    override val properties: SerializableAnyMap? = null,
+    override val description: String? = null,
+    override val group: String? = null,
+    override val mustRunAfter: Set<String>? = null,
+    override val finalizedBy: LinkedHashSet<String>? = null,
+    override val shouldRunAfter: Set<String>? = null,
+    override val name: String? = null,
+) : KotlinCompileTool<org.jetbrains.kotlin.gradle.tasks.KotlinCompileTool> {
+
+    context(Project)
+    override fun applyTo() =
+        applyTo(tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompileTool>())
 }

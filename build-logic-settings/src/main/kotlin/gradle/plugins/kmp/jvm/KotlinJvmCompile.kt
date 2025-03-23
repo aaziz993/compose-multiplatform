@@ -1,16 +1,15 @@
 package gradle.plugins.kmp.jvm
 
-
+import gradle.api.tasks.applyTo
 import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.kmp.nat.CompilerPluginOptions
-import gradle.plugins.kotlin.BaseKotlinCompile
+import gradle.plugins.kotlin.tasks.BaseKotlinCompile
 import gradle.plugins.kotlin.KotlinJavaToolchain
-import gradle.plugins.kotlin.UsesKotlinJavaToolchain
+import gradle.plugins.kotlin.tasks.UsesKotlinJavaToolchain
 import gradle.plugins.kotlin.tasks.KotlinCompilationTask
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.jvm.JvmTargetValidationMode
@@ -18,9 +17,9 @@ import org.jetbrains.kotlin.gradle.dsl.jvm.JvmTargetValidationMode
 /**
  * Represents a Kotlin task compiling given Kotlin sources into JVM class files.
  */
-internal interface KotlinJvmCompile : BaseKotlinCompile,
-    KotlinCompilationTask<KotlinJvmCompilerOptions>,
-    UsesKotlinJavaToolchain {
+internal interface KotlinJvmCompile<T : org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile> : BaseKotlinCompile<T>,
+    KotlinCompilationTask<T, org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompilerOptions>,
+    UsesKotlinJavaToolchain<T> {
 
     /**
      * Controls JVM target validation mode between this task and the Java compilation task from Gradle for the same source set.
@@ -43,36 +42,34 @@ internal interface KotlinJvmCompile : BaseKotlinCompile,
      */
     val jvmTargetValidationMode: JvmTargetValidationMode?
 
-        context(Project)
-    override fun applyTo(recipient: T) {
-        super<BaseKotlinCompile>.applyTo(named)
-        super<KotlinCompilationTask>.applyTo(named)
-        super<UsesKotlinJavaToolchain>.applyTo(named)
-
-        named as org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
-
-        named.jvmTargetValidationMode tryAssign jvmTargetValidationMode
-    }
-
     context(Project)
-    override fun applyTo() =
-        applyTo(tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile>())
+    override fun applyTo(recipient: T) {
+        super<BaseKotlinCompile>.applyTo(recipient)
+        super<KotlinCompilationTask>.applyTo(recipient)
+        super<UsesKotlinJavaToolchain>.applyTo(recipient)
+
+        recipient.jvmTargetValidationMode tryAssign jvmTargetValidationMode
+    }
 }
 
 @Serializable
 @SerialName("KotlinJvmCompile")
 internal data class KotlinJvmCompileImpl(
     override val jvmTargetValidationMode: JvmTargetValidationMode? = null,
-    override val friendPaths: List<String>? = null,
-    override val pluginClasspath: List<String>? = null,
-    override val pluginOptions: List<CompilerPluginOptions>? = null,
+    override val friendPaths: Set<String>? = null,
+    override val setFriendPaths: Set<String>? = null,
+    override val pluginClasspath: Set<String>? = null,
+    override val setPluginClasspath: Set<String>? = null,
+    override val pluginOptions: Set<CompilerPluginOptions>? = null,
+    override val setPluginOptions: Set<CompilerPluginOptions>? = null,
     override val moduleName: String? = null,
     override val sourceSetName: String? = null,
     override val multiPlatformEnabled: Boolean? = null,
     override val useModuleDetection: Boolean? = null,
-    override val sources: List<String>? = null,
-    override val setSources: List<String>? = null,
-    override val libraries: List<String>? = null,
+    override val sources: Set<String>? = null,
+    override val setSources: Set<String>? = null,
+    override val libraries: Set<String>? = null,
+    override val setLibraries: Set<String>? = null,
     override val destinationDirectory: String? = null,
     override val includes: Set<String>? = null,
     override val setIncludes: Set<String>? = null,
@@ -90,7 +87,12 @@ internal data class KotlinJvmCompileImpl(
     override val mustRunAfter: Set<String>? = null,
     override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
-    override val name: String? = null,,
+    override val name: String? = null,
     override val compilerOptions: KotlinJvmCompilerOptions? = null,
     override val kotlinJavaToolchain: KotlinJavaToolchain?
-) : KotlinJvmCompile
+) : KotlinJvmCompile<org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile> {
+
+    context(Project)
+    override fun applyTo() =
+        applyTo(tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile>())
+}

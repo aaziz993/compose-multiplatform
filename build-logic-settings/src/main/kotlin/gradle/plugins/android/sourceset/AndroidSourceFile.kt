@@ -13,7 +13,7 @@ internal data class AndroidSourceFile(
     /**
      * A concise name for the source directory (typically used to identify it in a collection).
      */
-    override val name: String? = null,,
+    override val name: String? = null,
     /**
      * Sets the location of the file.
      *

@@ -46,7 +46,7 @@ internal data class SyncImpl(
     override val mustRunAfter: Set<String>? = null,
     override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
-    override val name: String? = null,,
+    override val name: String? = null,
     override val isCaseSensitive: Boolean? = null,
     override val includeEmptyDirs: Boolean? = null,
     override val duplicatesStrategy: DuplicatesStrategy? = null,

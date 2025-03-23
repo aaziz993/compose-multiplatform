@@ -13,7 +13,7 @@ internal interface Device<T : com.android.build.api.dsl.Device> : ProjectNamed<T
 @Serializable
 @Suppress("UnstableApiUsage")
 internal data class DeviceImpl(
-    override val name: String? = null,,
+    override val name: String? = null,
 ) : Device<com.android.build.api.dsl.Device> {
 
     context(Project)

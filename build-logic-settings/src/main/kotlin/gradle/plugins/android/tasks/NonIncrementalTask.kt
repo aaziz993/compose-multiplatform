@@ -30,7 +30,7 @@ internal data class NonIncrementalTaskImpl(
     override val mustRunAfter: Set<String>? = null,
     override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
-    override val name: String? = null,,
+    override val name: String? = null,
     override val variantName: String? = null,
 ) : NonIncrementalTask<com.android.build.gradle.internal.tasks.NonIncrementalTask>() {
 

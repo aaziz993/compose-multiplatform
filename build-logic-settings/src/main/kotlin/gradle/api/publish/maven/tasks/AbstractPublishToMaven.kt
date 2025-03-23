@@ -44,7 +44,7 @@ internal data class AbstractPublishToMavenImpl(
     override val mustRunAfter: Set<String>? = null,
     override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
-    override val name: String? = null,,
+    override val name: String? = null,
     override val publication: String? = null,
 ) : AbstractPublishToMaven<org.gradle.api.publish.maven.tasks.AbstractPublishToMaven>() {
 

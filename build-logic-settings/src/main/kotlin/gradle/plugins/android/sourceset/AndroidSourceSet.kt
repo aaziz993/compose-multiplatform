@@ -12,7 +12,7 @@ import org.gradle.api.Project
 @Serializable
 internal data class AndroidSourceSet(
     /** Returns the name of this source set. */
-    override val name: String? = null,,
+    override val name: String? = null,
     /** The Java source for this source-set */
     val java: AndroidSourceDirectorySet? = null,
     /** The Kotlin source for this source-set */

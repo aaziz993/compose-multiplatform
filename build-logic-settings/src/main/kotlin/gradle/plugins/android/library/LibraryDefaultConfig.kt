@@ -36,7 +36,7 @@ internal interface LibraryDefaultConfig<T : LibraryDefaultConfig> :
 
 @Serializable
 internal data class LibraryDefaultConfigImpl(
-    override val name: String? = null,,
+    override val name: String? = null,
     override val testApplicationId: String? = null,
     override val minSdk: Int? = null,
     override val minSdkPreview: String? = null,

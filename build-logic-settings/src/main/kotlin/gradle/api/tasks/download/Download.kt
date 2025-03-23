@@ -23,7 +23,7 @@ internal data class Download(
     override val mustRunAfter: Set<String>? = null,
     override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
-    override val name: String? = null,,
+    override val name: String? = null,
     override val src: List<String>,
     override val dest: String,
     override val quiet: Boolean? = null,

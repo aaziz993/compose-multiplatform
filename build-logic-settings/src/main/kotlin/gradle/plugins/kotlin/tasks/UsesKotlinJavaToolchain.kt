@@ -1,11 +1,11 @@
-package gradle.plugins.kotlin
-
+package gradle.plugins.kotlin.tasks
 
 import gradle.api.tasks.Task
+import gradle.api.tasks.applyTo
 import gradle.collection.SerializableAnyMap
+import gradle.plugins.kotlin.KotlinJavaToolchain
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 
@@ -18,26 +18,20 @@ import org.gradle.kotlin.dsl.withType
  * Use this interface to configure different tasks to use different JDK versions via
  * [Gradle's tasks API](https://docs.gradle.org/current/userguide/more_about_tasks.html#sec:configuring_tasks).
  */
-internal interface UsesKotlinJavaToolchain : Task {
+internal interface UsesKotlinJavaToolchain<T : org.jetbrains.kotlin.gradle.tasks.UsesKotlinJavaToolchain> : Task<T> {
 
     /**
-     * A helper shortcut to get [KotlinJavaToolchain] from [kotlinJavaToolchainProvider] without calling the `.get()` method.
+     * A helper shortcut to get [gradle.plugins.kotlin.KotlinJavaToolchain] from [kotlinJavaToolchainProvider] without calling the `.get()` method.
      */
 
     val kotlinJavaToolchain: KotlinJavaToolchain?
 
-        context(Project)
-    override fun applyTo(recipient: T) {
-        super.applyTo(named)
-
-        named as org.jetbrains.kotlin.gradle.tasks.UsesKotlinJavaToolchain
-
-        kotlinJavaToolchain?.applyTo(named.kotlinJavaToolchain)
-    }
-
     context(Project)
-    override fun applyTo() =
-        applyTo(tasks.withType<org.jetbrains.kotlin.gradle.tasks.UsesKotlinJavaToolchain>())
+    override fun applyTo(recipient: T) {
+        super.applyTo(recipient)
+
+        kotlinJavaToolchain?.applyTo(recipient.kotlinJavaToolchain)
+    }
 }
 
 @Serializable
@@ -57,4 +51,9 @@ internal data class UsesKotlinJavaToolchainImpl(
     override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
     override val name: String? = null,
-) : UsesKotlinJavaToolchain
+) : UsesKotlinJavaToolchain<org.jetbrains.kotlin.gradle.tasks.UsesKotlinJavaToolchain>{
+
+    context(Project)
+    override fun applyTo() =
+        applyTo(tasks.withType<org.jetbrains.kotlin.gradle.tasks.UsesKotlinJavaToolchain>())
+}

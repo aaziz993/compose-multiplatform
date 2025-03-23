@@ -84,7 +84,7 @@ internal data class AbstractCopyTaskImpl(
     override val setIncludes: Set<String>? = null,
     override val excludes: Set<String>? = null,
     override val setExcludes: Set<String>? = null,
-    override val name: String? = null,,
+    override val name: String? = null,
 ) : AbstractCopyTask<org.gradle.api.tasks.AbstractCopyTask>(){
 
     context(Project)

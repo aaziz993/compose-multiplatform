@@ -5,6 +5,7 @@ import gradle.api.tasks.applyTo
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.kotlin.KotlinCommonCompilerOptions
 import gradle.plugins.kotlin.KotlinCommonCompilerOptionsImpl
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
@@ -37,6 +38,7 @@ internal interface KotlinCompilationTask<
 }
 
 @Serializable
+@SerialName("KotlinCompilationTask")
 internal data class KotlinCompilationTaskImpl(
     override val compilerOptions: KotlinCommonCompilerOptionsImpl? = null,
     override val dependsOn: LinkedHashSet<String>? = null,

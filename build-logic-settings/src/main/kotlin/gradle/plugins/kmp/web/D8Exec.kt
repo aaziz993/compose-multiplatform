@@ -31,7 +31,7 @@ internal data class D8Exec(
     override val mustRunAfter: Set<String>? = null,
     override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
-    override val name: String? = null,,
+    override val name: String? = null,
     val d8Args: List<String>? = null,
     val inputFileProperty: String? = null,
 ) : AbstractExecTask<D8Exec>() {

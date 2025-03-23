@@ -21,12 +21,14 @@ internal data class KotlinJvmCompilerOptions(
     override val apiVersion: KotlinVersion? = null,
     override val languageVersion: KotlinVersion? = null,
     override val optIns: List<String>? = null,
+    override val setOptIns: List<String>? = null,
     override val progressiveMode: Boolean? = null,
     override val allWarningsAsErrors: Boolean? = null,
     override val extraWarnings: Boolean? = null,
     override val suppressWarnings: Boolean? = null,
     override val verbose: Boolean? = null,
     override val freeCompilerArgs: List<String>? = null,
+    override val setFreeCompilerArgs: List<String>? = null,
     /**
      * Generate metadata for Java 1.8 reflection on method parameters.
      *
@@ -53,22 +55,20 @@ internal data class KotlinJvmCompilerOptions(
      * Default value: false
      */
     val noJdk: Boolean? = null,
-) : KotlinCommonCompilerOptions {
+) : KotlinCommonCompilerOptions<KotlinJvmCompilerOptions> {
 
     context(Project)
-    override fun applyTo(recipient: org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerToolOptions) {
-        super.applyTo(options)
+    override fun applyTo(recipient: KotlinJvmCompilerOptions) {
+        super.applyTo(recipient)
 
-        options as KotlinJvmCompilerOptions
-
-        options.javaParameters tryAssign javaParameters
-        options.jvmTarget tryAssign (jvmTarget
+        recipient.javaParameters tryAssign javaParameters
+        recipient.jvmTarget tryAssign (jvmTarget
             ?: settings.libs.versions.version("java.languageVersion")
                 ?.replace(".", "_")
                 ?.addPrefix("JVM_")
                 ?.let(JvmTarget::valueOf)
             )
-        options.moduleName tryAssign moduleName
-        options.noJdk tryAssign noJdk
+        recipient.moduleName tryAssign moduleName
+        recipient.noJdk tryAssign noJdk
     }
 }

@@ -1,6 +1,7 @@
 package gradle.plugins.kotlin.ksp.tasks
 
 import com.google.devtools.ksp.gradle.KspTaskJS
+import gradle.api.tasks.applyTo
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.kmp.web.Kotlin2JsCompile
 import gradle.plugins.kmp.web.KotlinJsCompilerOptions
@@ -8,6 +9,7 @@ import gradle.plugins.kotlin.SubpluginOption
 import gradle.process.CommandLineArgumentProvider
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
 
 @Serializable
 internal data class KspTaskJS(
@@ -41,7 +43,6 @@ internal data class KspTaskJS(
     }
 
     context(Project)
-    override fun applyTo() {
-        TODO("Not yet implemented")
-    }
+    override fun applyTo() =
+        applyTo(tasks.withType<KspTaskJS>())
 }

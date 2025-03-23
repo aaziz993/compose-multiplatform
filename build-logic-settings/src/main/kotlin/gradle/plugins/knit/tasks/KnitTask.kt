@@ -23,7 +23,7 @@ internal data class KnitTask(
     override val mustRunAfter: Set<String>? = null,
     override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
-    override val name: String? = null,,
+    override val name: String? = null,
     val check: Boolean? = null,
     val rootDir: String? = null,
     val files: Set<String>? = null,

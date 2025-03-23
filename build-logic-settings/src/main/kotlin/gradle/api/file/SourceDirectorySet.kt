@@ -30,7 +30,7 @@ internal data class SourceDirectorySet(
     override val setIncludes: Set<String>? = null,
     override val excludes: Set<String>? = null,
     override val setExcludes: Set<String>? = null,
-    override val name: String? = null,,
+    override val name: String? = null,
     /**
      * Adds the given source directories to this set. The given directories do not need to exist. Directories that do not exist are ignored.
      *

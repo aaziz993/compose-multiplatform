@@ -25,7 +25,7 @@ internal data class BuildConfigTask(
     override val mustRunAfter: Set<String>? = null,
     override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
-    override val name: String? = null,,
+    override val name: String? = null,
     val specs: Set<String>? = null,
     val generator: BuildConfigGenerator<*>? = null,
     val outputDir: String? = null,

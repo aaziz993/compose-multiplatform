@@ -5,7 +5,7 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
 
 @Serializable
 internal data class FrameworkSettings(
-    override val name: String? = null,,
+    override val name: String? = null,
     override val baseName: String? = null,
     override val transitiveExport: Boolean? = null,
     override val debuggable: Boolean? = null,

@@ -6,6 +6,7 @@ import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.kotlin.SubpluginOption
 import gradle.process.CommandLineArgumentProvider
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
@@ -38,6 +39,7 @@ internal interface KspTask<T : com.google.devtools.ksp.gradle.KspTask> : Task<T>
 }
 
 @Serializable
+@SerialName("KspTask")
 internal data class KspTaskImpl(
     override val options: List<SubpluginOption>? = null,
     override val setOptions: List<SubpluginOption>? = null,

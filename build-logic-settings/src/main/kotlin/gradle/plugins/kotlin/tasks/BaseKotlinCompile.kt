@@ -1,36 +1,38 @@
-package gradle.plugins.kotlin
+package gradle.plugins.kotlin.tasks
 
-
+import gradle.api.tasks.applyTo
 import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.kmp.nat.CompilerPluginConfig
 import gradle.plugins.kmp.nat.CompilerPluginOptions
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 
 /**
  * Represents any Kotlin compilation task including common task inputs.
  */
-internal interface BaseKotlinCompile : KotlinCompileTool {
+internal interface BaseKotlinCompile<T : org.jetbrains.kotlin.gradle.tasks.BaseKotlinCompile> : KotlinCompileTool<T> {
 
     /**
      * Paths to the output directories of the friend modules whose internal declarations should be visible.
      */
-    val friendPaths: List<String>?
+    val friendPaths: Set<String>?
+    val setFriendPaths: Set<String>?
 
     /**
      * Kotlin compiler plugins artifacts
      * , such as JAR or class files, that participate in the compilation process. All files that are permitted in the [JVM classpath](https://docs.oracle.com/javase/8/docs/technotes/tools/windows/classpath.html) are permitted here.
      */
-    val pluginClasspath: List<String>?
+    val pluginClasspath: Set<String>?
+    val setPluginClasspath: Set<String>?
 
     /**
      * The configuration for the Kotlin compiler plugin added in [pluginClasspath] using [CompilerPluginConfig].
      */
-    val pluginOptions: List<CompilerPluginOptions>?
+    val pluginOptions: Set<CompilerPluginOptions>?
+    val setPluginOptions: Set<CompilerPluginOptions>?
 
     // Exists only to be used in 'KotlinCompileCommon' task.
     // Should be removed once 'moduleName' will be moved into CommonCompilerArguments
@@ -57,41 +59,46 @@ internal interface BaseKotlinCompile : KotlinCompileTool {
 
     val useModuleDetection: Boolean?
 
-        context(Project)
-    override fun applyTo(recipient: T) {
-        super.applyTo(named)
-
-        named as org.jetbrains.kotlin.gradle.tasks.BaseKotlinCompile
-
-        friendPaths?.toTypedArray()?.let(named.friendPaths::from)
-setFriendPaths?.let(named.friendPaths::setFrom)
-        pluginClasspath?.toTypedArray()?.let(named.pluginClasspath::from)
-setPluginClasspath?.let(named.pluginClasspath::setFrom)
-        named.pluginOptions tryAssign pluginOptions?.map(CompilerPluginConfig::toCompilerPluginConfig)
-        named.moduleName tryAssign moduleName
-        named.sourceSetName tryAssign sourceSetName
-        named.multiPlatformEnabled tryAssign multiPlatformEnabled
-        named.useModuleDetection tryAssign useModuleDetection
-    }
-
     context(Project)
-    override fun applyTo() =
-        applyTo(tasks.withType<org.jetbrains.kotlin.gradle.tasks.BaseKotlinCompile>())
+    override fun applyTo(recipient: T) {
+        super.applyTo(recipient)
+
+        friendPaths?.toTypedArray()?.let(recipient.friendPaths::from)
+        setFriendPaths?.let(recipient.friendPaths::setFrom)
+        pluginClasspath?.toTypedArray()?.let(recipient.pluginClasspath::from)
+        setPluginClasspath?.let(recipient.pluginClasspath::setFrom)
+
+        recipient.pluginOptions tryAssign pluginOptions
+            ?.map(CompilerPluginConfig::toCompilerPluginConfig)
+            ?.let { pluginOptions ->
+                recipient.pluginOptions.get() + pluginOptions
+            }
+
+        recipient.pluginOptions tryAssign setPluginOptions?.map(CompilerPluginConfig::toCompilerPluginConfig)
+        recipient.moduleName tryAssign moduleName
+        recipient.sourceSetName tryAssign sourceSetName
+        recipient.multiPlatformEnabled tryAssign multiPlatformEnabled
+        recipient.useModuleDetection tryAssign useModuleDetection
+    }
 }
 
 @Serializable
 @SerialName("BaseKotlinCompile")
 internal data class BaseKotlinCompileImpl(
-    override val friendPaths: List<String>? = null,
-    override val pluginClasspath: List<String>? = null,
-    override val pluginOptions: List<CompilerPluginOptions>? = null,
+    override val friendPaths: Set<String>? = null,
+    override val setFriendPaths: Set<String>? = null,
+    override val pluginClasspath: Set<String>? = null,
+    override val setPluginClasspath: Set<String>? = null,
+    override val pluginOptions: Set<CompilerPluginOptions>? = null,
+    override val setPluginOptions: Set<CompilerPluginOptions>? = null,
     override val moduleName: String? = null,
     override val sourceSetName: String? = null,
     override val multiPlatformEnabled: Boolean? = null,
     override val useModuleDetection: Boolean? = null,
-    override val sources: List<String>? = null,
-    override val setSources: List<String>? = null,
-    override val libraries: List<String>? = null,
+    override val sources: Set<String>? = null,
+    override val setSources: Set<String>? = null,
+    override val libraries: Set<String>? = null,
+    override val setLibraries: Set<String>? = null,
     override val destinationDirectory: String? = null,
     override val includes: Set<String>? = null,
     override val setIncludes: Set<String>? = null,
@@ -110,4 +117,9 @@ internal data class BaseKotlinCompileImpl(
     override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
     override val name: String? = null,
-) : BaseKotlinCompile
+) : BaseKotlinCompile<org.jetbrains.kotlin.gradle.tasks.BaseKotlinCompile> {
+
+    context(Project)
+    override fun applyTo() =
+        applyTo(tasks.withType<org.jetbrains.kotlin.gradle.tasks.BaseKotlinCompile>())
+}

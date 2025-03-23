@@ -8,7 +8,7 @@ import org.gradle.api.Project
 
 @Serializable
 internal data class BuildConfigField(
-    override val name: String? = null,,
+    override val name: String? = null,
     val type: String? = null,
     val value: String? = null,
     val optional: Boolean? = null,

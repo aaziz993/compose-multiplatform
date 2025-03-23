@@ -37,7 +37,7 @@ internal data class SourceSet(
      *
      * @return The name. Never returns null.
      */
-    override val name: String? = null,,
+    override val name: String? = null,
     /**
      * Sets the classpath used to compile this source.
      *

@@ -18,16 +18,17 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerToolOptions
  * type parameter `<out T : KotlinCommonOptions>`
  */
 internal interface K2MultiplatformCompilationTask<
-    T : org.jetbrains.kotlin.gradle.tasks.K2MultiplatformCompilationTask> : Task<T> {
+    T : org.jetbrains.kotlin.gradle.tasks.K2MultiplatformCompilationTask,
+    CO : org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerOptions> : Task<T> {
 
-    val compilerOptions: KotlinCommonCompilerOptions<org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerOptions>?
+    val compilerOptions: KotlinCommonCompilerOptions<CO>?
 
     context(Project)
     @Suppress("UNCHECKED_CAST")
     override fun applyTo(recipient: T) {
         super.applyTo(recipient)
 
-        compilerOptions?.applyTo(recipient.compilerOptions)
+        compilerOptions?.applyTo(recipient.compilerOptions as CO)
     }
 }
 

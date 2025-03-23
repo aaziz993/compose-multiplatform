@@ -17,7 +17,7 @@ internal data class BuildConfigSourceSet(
     override val className: String? = null,
     override val packageName: String? = null,
     override val buildConfigFields: List<BuildConfigField>? = null,
-    override val name: String? = null,,
+    override val name: String? = null,
     val generator: BuildConfigGenerator<*>? = null,
     val generateTask: BuildConfigTask? = null,
     val useJavaOutput: @Serializable(with = BuildConfigJavaGeneratorSerializer::class) Any? = null,
