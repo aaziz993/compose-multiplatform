@@ -1,4 +1,4 @@
-package gradle.plugins.kmp.nat
+package gradle.plugins.kotlin
 
 import kotlinx.serialization.Serializable
 import org.jetbrains.kotlin.gradle.plugin.SubpluginOption

@@ -1,11 +1,15 @@
 package gradle.plugins.kmp.web
 
+import gradle.api.tasks.applyTo
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.kotlin.tasks.KotlinCompilationTask
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
 
-internal interface KotlinJsCompile : KotlinCompilationTask<KotlinJsCompilerOptions>
+internal interface KotlinJsCompile<T : org.jetbrains.kotlin.gradle.dsl.KotlinJsCompile>
+    : KotlinCompilationTask<T, org.jetbrains.kotlin.gradle.dsl.KotlinJsCompilerOptions>
 
 @Serializable
 @SerialName("KotlinJsCompile")
@@ -24,4 +28,9 @@ internal data class KotlinJsCompileImpl(
     override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
     override val name: String? = null,
-) : KotlinCompilationTask<KotlinJsCompilerOptions>
+) : KotlinJsCompile<org.jetbrains.kotlin.gradle.dsl.KotlinJsCompile> {
+
+    context(Project)
+    override fun applyTo() =
+        applyTo(tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinJsCompile>())
+}

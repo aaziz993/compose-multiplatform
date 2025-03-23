@@ -5,14 +5,15 @@ import gradle.accessors.settings
 import gradle.accessors.version
 import gradle.accessors.versions
 import gradle.api.tryAssign
+import gradle.collection.act
+import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerOptions
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
 /**
  * Common compiler options for all Kotlin platforms.
  */
-internal interface KotlinCommonCompilerOptions : KotlinCommonCompilerToolOptions {
+internal interface KotlinCommonCompilerOptions<T : org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerOptions> : KotlinCommonCompilerToolOptions<T> {
 
     /**
      * Allow using declarations from only the specified version of bundled libraries.
@@ -41,6 +42,7 @@ internal interface KotlinCommonCompilerOptions : KotlinCommonCompilerToolOptions
      */
 
     val optIns: List<String>?
+    val setOptIns: List<String>?
 
     /**
      * Enable progressive compiler mode. In this mode, deprecations and bug fixes for unstable code take effect immediately instead of going through a graceful migration cycle. Code written in progressive mode is backward compatible; however, code written without progressive mode enabled may cause compilation errors in progressive mode.
@@ -51,16 +53,30 @@ internal interface KotlinCommonCompilerOptions : KotlinCommonCompilerToolOptions
     val progressiveMode: Boolean?
 
     context(Project)
-    override fun applyTo(recipient: org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerToolOptions) {
-        super.applyTo(options)
+    override fun applyTo(recipient: T) {
+        super.applyTo(recipient)
 
-        options as KotlinCommonCompilerOptions
-
-        options.apiVersion tryAssign (apiVersion ?: settings.libs.versions.version("kotlin.apiVersion")
+        recipient.apiVersion tryAssign (apiVersion ?: settings.libs.versions.version("kotlin.apiVersion")
             ?.let(KotlinVersion::valueOf))
-        options.languageVersion tryAssign (languageVersion ?: settings.libs.versions.version("kotlin.languageVersion")
+        recipient.languageVersion tryAssign (languageVersion ?: settings.libs.versions.version("kotlin.languageVersion")
             ?.let(KotlinVersion::valueOf))
-        optIns?.let(options.optIn::addAll)
-        options.progressiveMode tryAssign progressiveMode
+        optIns?.let(recipient.optIn::addAll)
+        setOptIns?.act(recipient.optIn.get()::clear)?.let(recipient.optIn::addAll)
+        recipient.progressiveMode tryAssign progressiveMode
     }
 }
+
+@Serializable
+internal data class KotlinCommonCompilerOptionsImpl(
+    override val apiVersion: KotlinVersion? = null,
+    override val languageVersion: KotlinVersion? = null,
+    override val optIns: List<String>? = null,
+    override val setOptIns: List<String>? = null,
+    override val progressiveMode: Boolean? = null,
+    override val allWarningsAsErrors: Boolean? = null,
+    override val extraWarnings: Boolean? = null,
+    override val suppressWarnings: Boolean? = null,
+    override val verbose: Boolean? = null,
+    override val freeCompilerArgs: List<String>? = null,
+    override val setFreeCompilerArgs: List<String>? = null,
+) : KotlinCommonCompilerOptions<org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerOptions>

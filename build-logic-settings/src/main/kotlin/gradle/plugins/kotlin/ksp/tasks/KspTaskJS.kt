@@ -1,0 +1,47 @@
+package gradle.plugins.kotlin.ksp.tasks
+
+import com.google.devtools.ksp.gradle.KspTaskJS
+import gradle.collection.SerializableAnyMap
+import gradle.plugins.kmp.web.Kotlin2JsCompile
+import gradle.plugins.kmp.web.KotlinJsCompilerOptions
+import gradle.plugins.kotlin.SubpluginOption
+import gradle.process.CommandLineArgumentProvider
+import kotlinx.serialization.Serializable
+import org.gradle.api.Project
+
+@Serializable
+internal data class KspTaskJS(
+    override val libraries: Set<String>? = null,
+    override val setLibraries: Set<String>? = null,
+    override val compilerOptions: KotlinJsCompilerOptions? = null,
+    override val dependsOn: LinkedHashSet<String>? = null,
+    override val onlyIf: Boolean? = null,
+    override val doNotTrackState: String? = null,
+    override val notCompatibleWithConfigurationCache: String? = null,
+    override val didWork: Boolean? = null,
+    override val enabled: Boolean? = null,
+    override val properties: SerializableAnyMap? = null,
+    override val description: String? = null,
+    override val group: String? = null,
+    override val mustRunAfter: Set<String>? = null,
+    override val finalizedBy: LinkedHashSet<String>? = null,
+    override val shouldRunAfter: Set<String>? = null,
+    override val name: String? = null,
+    override val produceUnpackagedKlib: Boolean? = null,
+    override val options: List<SubpluginOption>? = null,
+    override val setOptions: List<SubpluginOption>? = null,
+    override val commandLineArgumentProviders: List<CommandLineArgumentProvider>? = null,
+    override val setCommandLineArgumentProviders: List<CommandLineArgumentProvider>? = null,
+) : Kotlin2JsCompile<KspTaskJS>(), KspTask<KspTaskJS> {
+
+    context(Project)
+    override fun applyTo(recipient: KspTaskJS) {
+        super<Kotlin2JsCompile>.applyTo(recipient)
+        super<KspTask>.applyTo(recipient)
+    }
+
+    context(Project)
+    override fun applyTo() {
+        TODO("Not yet implemented")
+    }
+}

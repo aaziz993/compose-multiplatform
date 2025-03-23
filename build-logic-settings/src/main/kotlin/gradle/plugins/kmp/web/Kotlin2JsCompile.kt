@@ -1,16 +1,33 @@
 package gradle.plugins.kmp.web
 
-
 import gradle.api.tasks.K2MultiplatformCompilationTask
 import gradle.api.tasks.ProducesKlib
+import gradle.api.tasks.applyTo
 import gradle.collection.SerializableAnyMap
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
-import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
+
+internal abstract class Kotlin2JsCompile<T : org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile>
+    : KotlinJsCompile<T>, K2MultiplatformCompilationTask<T, org.jetbrains.kotlin.gradle.dsl.KotlinJsCompilerOptions>, ProducesKlib<T> {
+
+    abstract val libraries: Set<String>?
+    abstract val setLibraries: Set<String>?
+
+    context(Project)
+    override fun applyTo(recipient: T) {
+        super<K2MultiplatformCompilationTask>.applyTo(recipient)
+        super<ProducesKlib>.applyTo(recipient)
+
+        libraries?.toTypedArray()?.let(recipient.libraries::from)
+        setLibraries?.let(recipient.libraries::setFrom)
+    }
+}
 
 @Serializable
-internal data class Kotlin2JsCompile(
+@SerialName(value = "Kotlin2JsCompile")
+internal data class Kotlin2JsCompileImpl(
     override val dependsOn: LinkedHashSet<String>? = null,
     override val onlyIf: Boolean? = null,
     override val doNotTrackState: String? = null,
@@ -23,26 +40,14 @@ internal data class Kotlin2JsCompile(
     override val mustRunAfter: Set<String>? = null,
     override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
-    override val name: String? = null,,
+    override val name: String? = null,
     override val produceUnpackagedKlib: Boolean? = null,
     override val compilerOptions: KotlinJsCompilerOptions? = null,
-    val libraries: List<String>? = null,
-) : KotlinJsCompile,
-    K2MultiplatformCompilationTask,
-    ProducesKlib {
-
-        context(Project)
-    override fun applyTo(recipient: T) {
-        super<K2MultiplatformCompilationTask>._applyTo(named)
-        super<ProducesKlib>._applyTo(named)
-
-        named as Kotlin2JsCompile
-
-        compilerOptions?._applyTo(named.compilerOptions)
-        libraries?.toTypedArray()?.let(named.libraries::from)
-setLibraries?.let(named.libraries::setFrom)
-    }
+    override val libraries: Set<String>? = null,
+    override val setLibraries: Set<String>? = null,
+) : Kotlin2JsCompile<org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile>() {
 
     context(Project)
-    override fun applyTo() = applyTo(tasks.withType<Kotlin2JsCompile>())
+    override fun applyTo() =
+        applyTo(tasks.withType<org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile>())
 }

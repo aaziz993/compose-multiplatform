@@ -7,7 +7,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerToolOptions
 /**
  * Common options for all Kotlin platforms' compilations and tools.
  */
-internal interface KotlinCommonCompilerToolOptions {
+internal interface KotlinCommonCompilerToolOptions<T : KotlinCommonCompilerToolOptions> {
 
     /**
      * Report an error if there are any warnings.
@@ -48,13 +48,19 @@ internal interface KotlinCommonCompilerToolOptions {
      */
 
     val freeCompilerArgs: List<String>?
+    val setFreeCompilerArgs: List<String>?
 
     context(Project)
-    fun applyTo(recipient: KotlinCommonCompilerToolOptions) {
-        options.allWarningsAsErrors tryAssign allWarningsAsErrors
-        options.extraWarnings tryAssign extraWarnings
-        options.suppressWarnings tryAssign suppressWarnings
-        options.verbose tryAssign verbose
-        options.freeCompilerArgs tryAssign freeCompilerArgs
+    fun applyTo(recipient: T) {
+        recipient.allWarningsAsErrors tryAssign allWarningsAsErrors
+        recipient.extraWarnings tryAssign extraWarnings
+        recipient.suppressWarnings tryAssign suppressWarnings
+        recipient.verbose tryAssign verbose
+
+        recipient.freeCompilerArgs tryAssign freeCompilerArgs?.let { freeCompilerArgs ->
+            recipient.freeCompilerArgs.get() + freeCompilerArgs
+        }
+
+        recipient.freeCompilerArgs tryAssign setFreeCompilerArgs
     }
 }

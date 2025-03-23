@@ -8,7 +8,6 @@ import org.jetbrains.kotlin.gradle.dsl.JsMainFunctionExecutionMode
 import org.jetbrains.kotlin.gradle.dsl.JsModuleKind
 import org.jetbrains.kotlin.gradle.dsl.JsSourceMapEmbedMode
 import org.jetbrains.kotlin.gradle.dsl.JsSourceMapNamesPolicy
-import org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerToolOptions
 import org.jetbrains.kotlin.gradle.dsl.KotlinJsCompilerOptions
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
@@ -20,12 +19,14 @@ internal data class KotlinJsCompilerOptions(
     override val apiVersion: KotlinVersion? = null,
     override val languageVersion: KotlinVersion? = null,
     override val optIns: List<String>? = null,
+    override val setOptIns: List<String>? = null,
     override val progressiveMode: Boolean? = null,
     override val allWarningsAsErrors: Boolean? = null,
     override val extraWarnings: Boolean? = null,
     override val suppressWarnings: Boolean? = null,
     override val verbose: Boolean? = null,
     override val freeCompilerArgs: List<String>? = null,
+    override val setFreeCompilerArgs: List<String>? = null,
     /**
      * Disable internal declaration export.
      *
@@ -96,23 +97,21 @@ internal data class KotlinJsCompilerOptions(
      * Default value: null
      */
     val useEsClasses: Boolean? = null,
-) : KotlinCommonCompilerOptions {
+) : KotlinCommonCompilerOptions<KotlinJsCompilerOptions> {
 
     context(Project)
-    override fun applyTo(recipient: KotlinCommonCompilerToolOptions) {
-        super.applyTo(options)
+    override fun applyTo(recipient: KotlinJsCompilerOptions) {
+        super.applyTo(recipient)
 
-        options as KotlinJsCompilerOptions
-
-        options.friendModulesDisabled tryAssign friendModulesDisabled
-        options.main tryAssign main
-        options.moduleKind tryAssign moduleKind
-        options.moduleName tryAssign moduleName
-        options.sourceMap tryAssign sourceMap
-        options.sourceMapEmbedSources tryAssign sourceMapEmbedSources
-        options.sourceMapNamesPolicy tryAssign sourceMapNamesPolicy
-        options.sourceMapPrefix tryAssign sourceMapPrefix
-        options.target tryAssign target
-        options.useEsClasses tryAssign useEsClasses
+        recipient.friendModulesDisabled tryAssign friendModulesDisabled
+        recipient.main tryAssign main
+        recipient.moduleKind tryAssign moduleKind
+        recipient.moduleName tryAssign moduleName
+        recipient.sourceMap tryAssign sourceMap
+        recipient.sourceMapEmbedSources tryAssign sourceMapEmbedSources
+        recipient.sourceMapNamesPolicy tryAssign sourceMapNamesPolicy
+        recipient.sourceMapPrefix tryAssign sourceMapPrefix
+        recipient.target tryAssign target
+        recipient.useEsClasses tryAssign useEsClasses
     }
 }

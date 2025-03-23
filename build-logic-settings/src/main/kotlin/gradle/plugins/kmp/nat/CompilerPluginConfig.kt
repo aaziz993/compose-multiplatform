@@ -1,5 +1,6 @@
 package gradle.plugins.kmp.nat
 
+import gradle.plugins.kotlin.SubpluginOption
 import org.jetbrains.kotlin.gradle.plugin.CompilerPluginConfig
 
 /**
