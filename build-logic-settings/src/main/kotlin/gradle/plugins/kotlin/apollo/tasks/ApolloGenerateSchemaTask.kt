@@ -48,18 +48,18 @@ internal data class ApolloGenerateSchemaTask(
         recipient.codegenModels tryAssign codegenModels
         recipient.generateDataBuilders tryAssign generateDataBuilders
         recipient.outputFile tryAssign outputFile?.let(::file)
-        recipient.scalarAdapterMapping tryAssign scalarAdapterMapping
 
-        recipient.scalarAdapterMapping tryAssign setScalarAdapterMapping?.let { setScalarAdapterMapping ->
-            recipient.scalarAdapterMapping.get() + setScalarAdapterMapping
+        recipient.scalarAdapterMapping tryAssign scalarAdapterMapping?.let { scalarAdapterMapping ->
+            recipient.scalarAdapterMapping.get() + scalarAdapterMapping
         }
 
-        recipient.scalarTypeMapping tryAssign scalarTypeMapping
+        recipient.scalarAdapterMapping tryAssign setScalarAdapterMapping
 
-        recipient.scalarTypeMapping tryAssign setScalarTypeMapping?.let { setScalarTypeMapping ->
-            recipient.scalarTypeMapping.get() + setScalarTypeMapping
+        recipient.scalarTypeMapping tryAssign scalarTypeMapping?.let { scalarTypeMapping ->
+            recipient.scalarTypeMapping.get() + scalarTypeMapping
         }
 
+        recipient.scalarTypeMapping tryAssign setScalarAdapterMapping
         schemaFiles?.toTypedArray()?.let(recipient.schemaFiles::from)
         setSchemaFiles?.toTypedArray()?.let(recipient.schemaFiles::setFrom)
         recipient.targetLanguage tryAssign targetLanguage

@@ -69,21 +69,21 @@ internal abstract class ApolloGenerateSourcesBase<T : com.apollographql.apollo3.
         super.applyTo(recipient)
 
         recipient.addJvmOverloads tryAssign addJvmOverloads
-        recipient.classesForEnumsMatching tryAssign classesForEnumsMatching
 
-        recipient.classesForEnumsMatching tryAssign setClassesForEnumsMatching?.let { setClassesForEnumsMatching ->
-            recipient.classesForEnumsMatching.get() + setClassesForEnumsMatching
+        recipient.classesForEnumsMatching tryAssign classesForEnumsMatching?.let { classesForEnumsMatching ->
+            recipient.classesForEnumsMatching.get() + classesForEnumsMatching
         }
 
+        recipient.classesForEnumsMatching tryAssign setClassesForEnumsMatching
         recipient.generateFilterNotNull tryAssign generateFilterNotNull
         recipient.generateFragmentImplementations tryAssign generateFragmentImplementations
         recipient.generateInputBuilders tryAssign generateInputBuilders
-        recipient.generateMethods tryAssign generateMethods
 
-        recipient.generateMethods tryAssign setGenerateMethods?.let { setGenerateMethods ->
-            recipient.generateMethods.get() + setGenerateMethods
+        recipient.generateMethods tryAssign generateMethods?.let { generateMethods ->
+            recipient.generateMethods.get() + generateMethods
         }
 
+        recipient.generateMethods tryAssign setGenerateMethods
         recipient.generateModelBuilders tryAssign generateModelBuilders
         recipient.generateOptionalOperationVariables tryAssign generateOptionalOperationVariables
         recipient.generatePrimitiveTypes tryAssign generatePrimitiveTypes
@@ -97,12 +97,12 @@ internal abstract class ApolloGenerateSourcesBase<T : com.apollographql.apollo3.
         recipient.operationManifestFormat tryAssign operationManifestFormat
         recipient.outputDir tryAssign outputDir?.let(layout.projectDirectory::dir)
         recipient.requiresOptInAnnotation tryAssign requiresOptInAnnotation
-        recipient.sealedClassesForEnumsMatching tryAssign sealedClassesForEnumsMatching
 
-        recipient.sealedClassesForEnumsMatching tryAssign setSealedClassesForEnumsMatching?.let { setSealedClassesForEnumsMatching ->
-            recipient.sealedClassesForEnumsMatching.get() + setSealedClassesForEnumsMatching
+        recipient.sealedClassesForEnumsMatching tryAssign sealedClassesForEnumsMatching?.let { sealedClassesForEnumsMatching ->
+            recipient.sealedClassesForEnumsMatching.get() + sealedClassesForEnumsMatching
         }
 
+        recipient.sealedClassesForEnumsMatching tryAssign setSealedClassesForEnumsMatching
         recipient.useSemanticNaming tryAssign useSemanticNaming
     }
 }

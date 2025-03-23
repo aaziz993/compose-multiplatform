@@ -46,8 +46,8 @@ internal data class ApolloDownloadSchemaTask(
         recipient.endpoint tryAssign endpoint
         recipient.graph tryAssign graph
         recipient.graphVariant tryAssign graphVariant
-        recipient::header trySet header
-        recipient::header trySet setHeader?.let { setHeader -> recipient.header + setHeader }
+        recipient::header trySet header?.let { header -> recipient.header + header }
+        recipient::header trySet setHeader
         recipient.insecure tryAssign insecure
         recipient.key tryAssign key
         recipient.outputFile tryAssign outputFile?.let(::file)

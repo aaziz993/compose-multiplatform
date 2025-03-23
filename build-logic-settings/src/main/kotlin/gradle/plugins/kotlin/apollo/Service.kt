@@ -12,12 +12,14 @@ internal data class Service(
     val addJvmOverloads: Boolean? = null,
     val addTypename: String? = null,
     val alwaysGenerateTypesMatching: Set<String>? = null,
+    val setAlwaysGenerateTypesMatching: Set<String>? = null,
     val classesForEnumsMatching: Set<String>? = null,
+    val setClassesForEnumsMatching: Set<String>? = null,
     val codegenModels: String? = null,
-    val compilerJavaHooks: Set<ApolloCompilerJavaHooks>? = null,
     val debugDir: String? = null,
     val decapitalizeFields: Boolean? = null,
     val excludes: Set<String>? = null,
+    val setExcludes: Set<String>? = null,
     val failOnWarnings: Boolean? = null,
     val fieldsOnDisjointTypesMustMerge: Boolean? = null,
     val flattenModels: Boolean? = null,
@@ -28,6 +30,7 @@ internal data class Service(
     val generateInputBuilders: Boolean? = null,
     val generateKotlinModels: Boolean? = null,
     val generateMethods: Set<String>? = null,
+    val setGenerateMethods: Set<String>? = null,
     val generateModelBuilders: Boolean? = null,
     val generateOperationOutput: Boolean? = null,
     val generateOptionalOperationVariables: Boolean? = null,
@@ -36,6 +39,7 @@ internal data class Service(
     val generateSchema: Boolean? = null,
     val generatedSchemaName: String? = null,
     val includes: Set<String>? = null,
+    val setIncludes: Set<String>? = null,
     val jsExport: Boolean? = null,
     val languageVersion: String? = null,
     val name: String,
@@ -51,6 +55,7 @@ internal data class Service(
     val schemaFiles: Set<String>? = null,
     val setSchemaFiles: Set<String>? = null,
     val sealedClassesForEnumsMatching: Set<String>? = null,
+    val setSealedClassesForEnumsMatching: Set<String>? = null,
     val sourceFolder: String? = null,
     val testDir: String? = null,
     val useSemanticNaming: Boolean? = null,
@@ -61,13 +66,28 @@ internal data class Service(
     fun applyTo(recipient: Service) {
         recipient.addJvmOverloads tryAssign addJvmOverloads
         recipient.addTypename tryAssign addTypename
+
         recipient.alwaysGenerateTypesMatching tryAssign alwaysGenerateTypesMatching
-        recipient.classesForEnumsMatching tryAssign classesForEnumsMatching
+            ?.let { alwaysGenerateTypesMatching ->
+                recipient.alwaysGenerateTypesMatching.get() + alwaysGenerateTypesMatching
+            }
+
+        recipient.alwaysGenerateTypesMatching tryAssign setAlwaysGenerateTypesMatching
+
+        recipient.classesForEnumsMatching tryAssign classesForEnumsMatching?.let { classesForEnumsMatching ->
+            recipient.classesForEnumsMatching.get() + classesForEnumsMatching
+        }
+
+        recipient.classesForEnumsMatching tryAssign setClassesForEnumsMatching
         recipient.codegenModels tryAssign codegenModels
-        recipient.compilerJavaHooks tryAssign compilerJavaHooks
         recipient.debugDir tryAssign debugDir?.let(layout.projectDirectory::dir)
         recipient.decapitalizeFields tryAssign decapitalizeFields
-        recipient.excludes tryAssign excludes
+
+        recipient.excludes tryAssign excludes?.let { excludes ->
+            recipient.excludes.get() + excludes
+        }
+
+        recipient.excludes tryAssign setExcludes
         recipient.failOnWarnings tryAssign failOnWarnings
         recipient.fieldsOnDisjointTypesMustMerge tryAssign fieldsOnDisjointTypesMustMerge
         recipient.flattenModels tryAssign flattenModels
@@ -77,7 +97,12 @@ internal data class Service(
         recipient.generateFragmentImplementations tryAssign generateFragmentImplementations
         recipient.generateInputBuilders tryAssign generateInputBuilders
         recipient.generateKotlinModels tryAssign generateKotlinModels
-        recipient.generateMethods tryAssign generateMethods
+
+        recipient.generateMethods tryAssign generateMethods?.let { generateMethods ->
+            recipient.generateMethods.get() + generateMethods
+        }
+
+        recipient.generateMethods tryAssign setGenerateMethods
         recipient.generateModelBuilders tryAssign generateModelBuilders
         recipient.generateOperationOutput tryAssign generateOperationOutput
         recipient.generateOptionalOperationVariables tryAssign generateOptionalOperationVariables
@@ -85,7 +110,12 @@ internal data class Service(
         recipient.generateQueryDocument tryAssign generateQueryDocument
         recipient.generateSchema tryAssign generateSchema
         recipient.generatedSchemaName tryAssign generatedSchemaName
-        recipient.includes tryAssign includes
+
+        recipient.includes tryAssign includes?.let { includes ->
+            recipient.includes.get() + includes
+        }
+
+        recipient.includes tryAssign setIncludes
         recipient.jsExport tryAssign jsExport
         recipient.languageVersion tryAssign languageVersion
         recipient.nullableFieldStyle tryAssign nullableFieldStyle
@@ -98,7 +128,12 @@ internal data class Service(
         recipient.schemaFile tryAssign schemaFile?.let(::file)
         schemaFiles?.toTypedArray()?.let(recipient.schemaFiles::from)
         setSchemaFiles?.let(recipient.schemaFiles::setFrom)
-        recipient.sealedClassesForEnumsMatching tryAssign sealedClassesForEnumsMatching
+
+        recipient.sealedClassesForEnumsMatching tryAssign sealedClassesForEnumsMatching?.let { sealedClassesForEnumsMatching ->
+            recipient.sealedClassesForEnumsMatching.get() + sealedClassesForEnumsMatching
+        }
+
+        recipient.sealedClassesForEnumsMatching tryAssign setSealedClassesForEnumsMatching
         recipient.sourceFolder tryAssign sourceFolder
         recipient.testDir tryAssign testDir?.let(layout.projectDirectory::dir)
         recipient.useSemanticNaming tryAssign useSemanticNaming

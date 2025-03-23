@@ -47,13 +47,13 @@ internal data class ApolloGenerateIrTask(
         super.applyTo(recipient)
 
         recipient.addTypename tryAssign addTypename
-        recipient.alwaysGenerateTypesMatching tryAssign alwaysGenerateTypesMatching
 
-        recipient.alwaysGenerateTypesMatching tryAssign setAlwaysGenerateTypesMatching
-            ?.let { setAlwaysGenerateTypesMatching ->
-                recipient.alwaysGenerateTypesMatching.get() + setAlwaysGenerateTypesMatching
+        recipient.alwaysGenerateTypesMatching tryAssign alwaysGenerateTypesMatching
+            ?.let { alwaysGenerateTypesMatching ->
+                recipient.alwaysGenerateTypesMatching.get() + alwaysGenerateTypesMatching
             }
 
+        recipient.alwaysGenerateTypesMatching tryAssign setAlwaysGenerateTypesMatching
         codegenSchemas?.toTypedArray()?.let(recipient.codegenSchemas::from)
         setCodegenSchemas?.let(recipient.codegenSchemas::setFrom)
         recipient.decapitalizeFields tryAssign decapitalizeFields

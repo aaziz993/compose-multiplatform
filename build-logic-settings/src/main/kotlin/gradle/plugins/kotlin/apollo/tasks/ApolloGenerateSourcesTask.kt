@@ -79,36 +79,36 @@ internal data class ApolloGenerateSourcesTask(
         super.applyTo(recipient)
 
         recipient.addTypename tryAssign addTypename
-        recipient.alwaysGenerateTypesMatching tryAssign alwaysGenerateTypesMatching
 
-        recipient.alwaysGenerateTypesMatching tryAssign setAlwaysGenerateTypesMatching
-            ?.let { setAlwaysGenerateTypesMatching ->
-                recipient.alwaysGenerateTypesMatching.get() + setAlwaysGenerateTypesMatching
+        recipient.alwaysGenerateTypesMatching tryAssign alwaysGenerateTypesMatching
+            ?.let { alwaysGenerateTypesMatching ->
+                recipient.alwaysGenerateTypesMatching.get() + alwaysGenerateTypesMatching
             }
 
+        recipient.alwaysGenerateTypesMatching tryAssign setAlwaysGenerateTypesMatching
         recipient.codegenModels tryAssign codegenModels
         recipient.decapitalizeFields tryAssign decapitalizeFields
         recipient.failOnWarnings tryAssign failOnWarnings
         recipient.fieldsOnDisjointTypesMustMerge tryAssign fieldsOnDisjointTypesMustMerge
         recipient.flattenModels tryAssign flattenModels
         recipient.generateDataBuilders tryAssign generateDataBuilders
-        graphqlFiles?.toTypedArray()?.let(recipient.graphqlFiles ::from)
-        setGraphqlFiles?.let(recipient.graphqlFiles ::setFrom)
+        graphqlFiles?.toTypedArray()?.let(recipient.graphqlFiles::from)
+        setGraphqlFiles?.let(recipient.graphqlFiles::setFrom)
         recipient.projectPath tryAssign projectPath
-        recipient.scalarAdapterMapping tryAssign scalarAdapterMapping
 
-        recipient.scalarAdapterMapping tryAssign setScalarAdapterMapping?.let { setScalarAdapterMapping ->
-            recipient.scalarAdapterMapping.get() + setScalarAdapterMapping
+        recipient.scalarAdapterMapping tryAssign scalarAdapterMapping?.let { scalarAdapterMapping ->
+            recipient.scalarAdapterMapping.get() + scalarAdapterMapping
         }
 
-        recipient.scalarTypeMapping tryAssign scalarTypeMapping
+        recipient.scalarAdapterMapping tryAssign setScalarAdapterMapping
 
-        recipient.scalarTypeMapping tryAssign setScalarTypeMapping?.let { setScalarTypeMapping ->
-            recipient.scalarTypeMapping.get() + setScalarTypeMapping
+        recipient.scalarTypeMapping tryAssign scalarTypeMapping?.let { scalarTypeMapping ->
+            recipient.scalarTypeMapping.get() + scalarTypeMapping
         }
 
-        schemaFiles?.toTypedArray()?.let( recipient.schemaFiles ::from)
-        setSchemaFiles?.let( recipient.schemaFiles ::setFrom)
+        recipient.scalarTypeMapping tryAssign setScalarAdapterMapping
+        schemaFiles?.toTypedArray()?.let(recipient.schemaFiles::from)
+        setSchemaFiles?.let(recipient.schemaFiles::setFrom)
         recipient.targetLanguage tryAssign targetLanguage
         recipient.warnOnDeprecatedUsages tryAssign warnOnDeprecatedUsages
     }

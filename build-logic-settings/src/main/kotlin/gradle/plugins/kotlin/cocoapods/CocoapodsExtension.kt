@@ -10,6 +10,7 @@ import gradle.accessors.settings
 import gradle.accessors.version
 import gradle.accessors.versions
 import gradle.api.trySet
+import gradle.collection.act
 import gradle.collection.resolve
 import gradle.plugins.kmp.nat.FrameworkSettings
 import java.net.URI
@@ -74,6 +75,7 @@ internal interface CocoapodsExtension {
      * Configure other podspec attributes
      */
     val extraSpecAttributes: Map<String, String>?
+    val setExtraSpecAttributes: Map<String, String>?
 
     /**
      * Configurre framework of the pod built from this project.
@@ -92,13 +94,14 @@ internal interface CocoapodsExtension {
      * Configure custom Xcode Configurations to Native Build Types mapping
      */
     val xcodeConfigurationToNativeBuildType: Map<String, NativeBuildType>?
+    val setXcodeConfigurationToNativeBuildType: Map<String, NativeBuildType>?
 
     /**
      * Configure output directory for pod publishing
      */
     val publishDir: String?
 
-    val specRepos: Set<String>?
+    val specRepos: CocoapodsDependency.SpecRepos?
 
     /**
      * Add a CocoaPods dependency to the pod built from this project.
@@ -106,9 +109,9 @@ internal interface CocoapodsExtension {
      * @param linkOnly designates that the pod will be used only for dynamic framework linking and not for the cinterops. Code from it won't
      * be accessible for referencing from Kotlin but its native symbols will be visible while linking the framework.
      */
-    val pods: List<Pod>?
+    val pods: Set<Pod>?
 
-    val podDependencies: List<@Serializable(with = CocoapodsDependencyTransformingSerializer::class) CocoapodsDependency>?
+    val podDependencies: Set<@Serializable(with = CocoapodsDependencyTransformingSerializer::class) CocoapodsDependency>?
 
     context(Project)
     fun applyTo() {
@@ -122,6 +125,9 @@ internal interface CocoapodsExtension {
         kotlin.cocoapods::homepage trySet homepage
         kotlin.cocoapods::source trySet source
         extraSpecAttributes?.let(kotlin.cocoapods.extraSpecAttributes::putAll)
+        setExtraSpecAttributes
+            ?.act(kotlin.cocoapods.extraSpecAttributes::clear)
+            ?.let(kotlin.cocoapods.extraSpecAttributes::putAll)
 
         framework?.let { framework ->
             kotlin.cocoapods.framework {
@@ -130,12 +136,13 @@ internal interface CocoapodsExtension {
         }
 
         xcodeConfigurationToNativeBuildType?.let(kotlin.cocoapods.xcodeConfigurationToNativeBuildType::putAll)
+        setXcodeConfigurationToNativeBuildType
+            ?.act(kotlin.cocoapods.xcodeConfigurationToNativeBuildType::clear)
+            ?.let(kotlin.cocoapods.xcodeConfigurationToNativeBuildType::putAll)
         kotlin.cocoapods::publishDir trySet publishDir?.let(::file)
 
         specRepos?.let { specRepos ->
-            kotlin.cocoapods.specRepos {
-                specRepos.forEach(::url)
-            }
+            kotlin.cocoapods.specRepos(specRepos::applyTo)
         }
 
         pods?.forEach { pod ->
@@ -171,6 +178,7 @@ internal interface CocoapodsExtension {
         var version: String? = null,
         val source: PodLocation? = null,
         val extraOpts: List<String>? = null,
+        val setExtraOpts: List<String>? = null,
         val packageName: String? = null,
         /**
          * Designates that the pod will be used only for dynamic framework linking and not for the cinterops. Code from it won't be
@@ -185,7 +193,8 @@ internal interface CocoapodsExtension {
          *
          * @see useInteropBindingFrom
          */
-        val interopBindingDependencies: List<String>? = null,
+        val interopBindingDependencies: Set<String>? = null,
+        val setInteropBindingDependencies: Set<String>? = null,
         /**
          * Path to local pod
          */
@@ -194,7 +203,7 @@ internal interface CocoapodsExtension {
     ) {
 
         context(Project)
-        fun tryResolve() {
+        fun resolve() {
             notation?.let { notation ->
                 if (notation.startsWith("$")) settings.allLibs.resolveLibrary(notation).removePrefix("cocoapods:")
                 else notation
@@ -206,15 +215,29 @@ internal interface CocoapodsExtension {
 
         context(Project)
         fun applyTo(recipient: CocoapodsExtension.CocoapodsDependency) {
-            dependency::moduleName trySet moduleName
-            dependency::headers trySet headers
-            dependency::version trySet version
-            dependency::source trySet source?.toPodLocation()
-            dependency::extraOpts trySet extraOpts
-            dependency::packageName trySet packageName
-            dependency::linkOnly trySet linkOnly
-            interopBindingDependencies?.let(dependency.interopBindingDependencies::addAll)
-            podspecDirectory?.let(dependency::path)
+            recipient::moduleName trySet moduleName
+            recipient::headers trySet headers
+            recipient::version trySet version
+            recipient::source trySet source?.toPodLocation()
+            recipient::extraOpts trySet extraOpts?.let { extraOpts -> recipient.extraOpts + extraOpts }
+            recipient::extraOpts trySet setExtraOpts
+            recipient::packageName trySet packageName
+            recipient::linkOnly trySet linkOnly
+            interopBindingDependencies?.let(recipient.interopBindingDependencies::addAll)
+            setInteropBindingDependencies
+                ?.act(recipient.interopBindingDependencies::clear)
+                ?.let(recipient.interopBindingDependencies::addAll)
+            podspecDirectory?.let(recipient::path)
+        }
+
+        @Serializable
+        data class SpecRepos(
+            val urls: LinkedHashSet<String>? = null,
+        ) {
+
+            fun applyTo(recipient: CocoapodsExtension.SpecRepos) {
+                urls?.forEach(recipient::url)
+            }
         }
 
         @Serializable(with = PodLocationSerializer::class)
