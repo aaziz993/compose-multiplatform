@@ -5,10 +5,10 @@ import gradle.accessors.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
-import gradle.plugins.kotlin.apollo.AndroidService
+import gradle.plugins.kotlin.apollo.AndroidVariantService
 import gradle.plugins.kotlin.apollo.ApolloExtension
 import gradle.plugins.kotlin.apollo.ApolloKspProcessor
-import gradle.plugins.kotlin.apollo.KotlinService
+import gradle.plugins.kotlin.apollo.KotlinSourceSetService
 import gradle.plugins.kotlin.apollo.Service
 import gradle.project.EnabledSettings
 import kotlinx.serialization.Serializable
@@ -19,8 +19,8 @@ internal data class ApolloSettings(
     override val generateSourcesDuringGradleSync: Boolean? = null,
     override val linkSqlite: Boolean? = null,
     override val processors: List<ApolloKspProcessor>? = null,
-    override val androidServices: List<AndroidService>? = null,
-    override val kotlinService: List<KotlinService>? = null,
+    override val androidServices: List<AndroidVariantService>? = null,
+    override val kotlinService: List<KotlinSourceSetService>? = null,
     override val services: List<Service>? = null,
     override val enabled: Boolean = true,
 ) : ApolloExtension, EnabledSettings {

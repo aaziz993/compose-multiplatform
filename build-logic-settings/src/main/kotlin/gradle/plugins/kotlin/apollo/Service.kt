@@ -58,49 +58,49 @@ internal data class Service(
 
     context(Project)
     fun applyTo(recipient: Service) {
-        service.addJvmOverloads tryAssign addJvmOverloads
-        service.addTypename tryAssign addTypename
-        service.alwaysGenerateTypesMatching tryAssign alwaysGenerateTypesMatching
-        service.classesForEnumsMatching tryAssign classesForEnumsMatching
-        service.codegenModels tryAssign codegenModels
-        service.compilerJavaHooks tryAssign compilerJavaHooks
-        service.debugDir tryAssign debugDir?.let(layout.projectDirectory::dir)
-        service.decapitalizeFields tryAssign decapitalizeFields
-        service.excludes tryAssign excludes
-        service.failOnWarnings tryAssign failOnWarnings
-        service.fieldsOnDisjointTypesMustMerge tryAssign fieldsOnDisjointTypesMustMerge
-        service.flattenModels tryAssign flattenModels
-        service.generateApolloMetadata tryAssign generateApolloMetadata
-        service.generateAsInternal tryAssign generateAsInternal
-        service.generateDataBuilders tryAssign generateDataBuilders
-        service.generateFragmentImplementations tryAssign generateFragmentImplementations
-        service.generateInputBuilders tryAssign generateInputBuilders
-        service.generateKotlinModels tryAssign generateKotlinModels
-        service.generateMethods tryAssign generateMethods
-        service.generateModelBuilders tryAssign generateModelBuilders
-        service.generateOperationOutput tryAssign generateOperationOutput
-        service.generateOptionalOperationVariables tryAssign generateOptionalOperationVariables
-        service.generatePrimitiveTypes tryAssign generatePrimitiveTypes
-        service.generateQueryDocument tryAssign generateQueryDocument
-        service.generateSchema tryAssign generateSchema
-        service.generatedSchemaName tryAssign generatedSchemaName
-        service.includes tryAssign includes
-        service.jsExport tryAssign jsExport
-        service.languageVersion tryAssign languageVersion
-        service.nullableFieldStyle tryAssign nullableFieldStyle
-        service.operationManifest tryAssign operationManifest?.let(::file)
-        service.operationManifestFormat tryAssign operationManifestFormat
-        service.operationOutputFile tryAssign operationOutputFile?.let(::file)
-        service.outputDir tryAssign outputDir?.let(layout.projectDirectory::dir)
-        service.packageName tryAssign packageName
-        service.requiresOptInAnnotation tryAssign requiresOptInAnnotation
-        service.schemaFile tryAssign schemaFile?.let(::file)
-        schemaFiles?.toTypedArray()?.let(service.schemaFiles::from)
-setSchemaFiles?.let(service.schemaFiles::setFrom)
-        service.sealedClassesForEnumsMatching tryAssign sealedClassesForEnumsMatching
-        service.sourceFolder tryAssign sourceFolder
-        service.testDir tryAssign testDir?.let(layout.projectDirectory::dir)
-        service.useSemanticNaming tryAssign useSemanticNaming
-        service.warnOnDeprecatedUsages tryAssign warnOnDeprecatedUsages
+        recipient.addJvmOverloads tryAssign addJvmOverloads
+        recipient.addTypename tryAssign addTypename
+        recipient.alwaysGenerateTypesMatching tryAssign alwaysGenerateTypesMatching
+        recipient.classesForEnumsMatching tryAssign classesForEnumsMatching
+        recipient.codegenModels tryAssign codegenModels
+        recipient.compilerJavaHooks tryAssign compilerJavaHooks
+        recipient.debugDir tryAssign debugDir?.let(layout.projectDirectory::dir)
+        recipient.decapitalizeFields tryAssign decapitalizeFields
+        recipient.excludes tryAssign excludes
+        recipient.failOnWarnings tryAssign failOnWarnings
+        recipient.fieldsOnDisjointTypesMustMerge tryAssign fieldsOnDisjointTypesMustMerge
+        recipient.flattenModels tryAssign flattenModels
+        recipient.generateApolloMetadata tryAssign generateApolloMetadata
+        recipient.generateAsInternal tryAssign generateAsInternal
+        recipient.generateDataBuilders tryAssign generateDataBuilders
+        recipient.generateFragmentImplementations tryAssign generateFragmentImplementations
+        recipient.generateInputBuilders tryAssign generateInputBuilders
+        recipient.generateKotlinModels tryAssign generateKotlinModels
+        recipient.generateMethods tryAssign generateMethods
+        recipient.generateModelBuilders tryAssign generateModelBuilders
+        recipient.generateOperationOutput tryAssign generateOperationOutput
+        recipient.generateOptionalOperationVariables tryAssign generateOptionalOperationVariables
+        recipient.generatePrimitiveTypes tryAssign generatePrimitiveTypes
+        recipient.generateQueryDocument tryAssign generateQueryDocument
+        recipient.generateSchema tryAssign generateSchema
+        recipient.generatedSchemaName tryAssign generatedSchemaName
+        recipient.includes tryAssign includes
+        recipient.jsExport tryAssign jsExport
+        recipient.languageVersion tryAssign languageVersion
+        recipient.nullableFieldStyle tryAssign nullableFieldStyle
+        recipient.operationManifest tryAssign operationManifest?.let(::file)
+        recipient.operationManifestFormat tryAssign operationManifestFormat
+        recipient.operationOutputFile tryAssign operationOutputFile?.let(::file)
+        recipient.outputDir tryAssign outputDir?.let(layout.projectDirectory::dir)
+        recipient.packageName tryAssign packageName
+        recipient.requiresOptInAnnotation tryAssign requiresOptInAnnotation
+        recipient.schemaFile tryAssign schemaFile?.let(::file)
+        schemaFiles?.toTypedArray()?.let(recipient.schemaFiles::from)
+        setSchemaFiles?.let(recipient.schemaFiles::setFrom)
+        recipient.sealedClassesForEnumsMatching tryAssign sealedClassesForEnumsMatching
+        recipient.sourceFolder tryAssign sourceFolder
+        recipient.testDir tryAssign testDir?.let(layout.projectDirectory::dir)
+        recipient.useSemanticNaming tryAssign useSemanticNaming
+        recipient.warnOnDeprecatedUsages tryAssign warnOnDeprecatedUsages
     }
 }

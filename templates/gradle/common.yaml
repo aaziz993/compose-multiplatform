@@ -11,7 +11,7 @@ plugins:
           # remove old license header
           replaceRegex:
             - name: remove license header
-              original: ^\s*(//.*|/\*[\s\S]*?\*\/)\s*
+              regex: ^\s*(//.*|/\*[\s\S]*?\*\/)\s*
               replacement: ''
           # specify license header text
           licenseHeader:
@@ -42,7 +42,7 @@ plugins:
           # remove old license header
           replaceRegex:
             - name: remove license header
-              original: ^\s*(//.*|/\*[\s\S]*?\*\/)\s*
+              regex: ^\s*(//.*|/\*[\s\S]*?\*\/)\s*
               replacement: ''
           # specify license header text
           licenseHeader:
@@ -59,7 +59,7 @@ plugins:
           # remove old license header
           replaceRegex:
             - name: remove license header
-              original: ^\s*(//.*|/\*[\s\S]*?\*\/)\s*
+              regex: ^\s*(//.*|/\*[\s\S]*?\*\/)\s*
               replacement: ''
           # specify license header text
           licenseHeader:
@@ -73,7 +73,7 @@ plugins:
           # remove old license header
           replaceRegex:
             - name: remove license header
-              original: ^\s*(//.*|/\*[\s\S]*?\*\/)\s*
+              regex: ^\s*(//.*|/\*[\s\S]*?\*\/)\s*
               replacement: ''
           # specify license header text
           licenseHeader:
@@ -85,7 +85,7 @@ plugins:
           # remove old license header
           replaceRegex:
             - name: remove license header
-              original: ^\s*(//.*|/\*[\s\S]*?\*\/)\s*
+              regex: ^\s*(//.*|/\*[\s\S]*?\*\/)\s*
               replacement: ''
           # specify license header text
           licenseHeader:
@@ -108,7 +108,7 @@ plugins:
           # remove old license header
           replaceRegex:
             - name: remove license header
-              original: ^\s*<--[\s\S]*?-->\s*
+              regex: ^\s*<--[\s\S]*?-->\s*
               replacement: ''
           # specify license header text
           licenseHeader:
@@ -131,7 +131,7 @@ plugins:
           # remove old license header
           replaceRegex:
             - name: remove license header
-              original: ^\s*<--[\s\S]*?-->\s*
+              regex: ^\s*<--[\s\S]*?-->\s*
               replacement: ''
           # specify license header text
           licenseHeader:
@@ -144,7 +144,7 @@ plugins:
           # remove old license header
           replaceRegex:
             - name: remove license header
-              original: ^\s*<--[\s\S]*?-->\s*
+              regex: ^\s*<--[\s\S]*?-->\s*
               replacement: ''
           # specify license header text
           licenseHeader:

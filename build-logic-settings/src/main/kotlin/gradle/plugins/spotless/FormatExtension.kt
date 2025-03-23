@@ -40,7 +40,7 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
     abstract val targetExcludeIfContentContains: String?
     abstract val targetExcludeIfContentContainsRegex: String?
     abstract val replace: List<Replace>?
-    abstract val replaceRegex: List<Replace>?
+    abstract val replaceRegex: List<ReplaceRegex>?
 
     /** Removes trailing whitespace.  */
     abstract val trimTrailingWhitespace: Boolean?
@@ -81,7 +81,7 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
         targetExclude?.toTypedArray()?.let(recipient::targetExclude)
         targetExcludeIfContentContains?.let(recipient::targetExcludeIfContentContains)
         targetExcludeIfContentContainsRegex?.let(recipient::targetExcludeIfContentContainsRegex)
-        replace?.forEach { (name, original, replacement) -> recipient.replace(name, original, replacement) }
+        replace?.forEach { (name, original, after) -> recipient.replace(name, original, after) }
         replaceRegex?.forEach { (name, regex, replacement) -> recipient.replaceRegex(name, regex, replacement) }
         trimTrailingWhitespace?.takeIf { it }?.run { recipient.trimTrailingWhitespace() }
         endWithNewline?.takeIf { it }?.run { recipient.endWithNewline() }
@@ -240,6 +240,13 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
     internal data class Replace(
         val name: String,
         val original: String,
+        val after: String
+    )
+
+    @Serializable
+    internal data class ReplaceRegex(
+        val name: String,
+        val regex: String,
         val replacement: String
     )
 
