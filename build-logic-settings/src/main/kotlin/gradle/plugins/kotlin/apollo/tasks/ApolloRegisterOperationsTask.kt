@@ -7,6 +7,7 @@ import gradle.api.tasks.DefaultTask
 import org.gradle.api.Project
 import gradle.collection.SerializableAnyMap
 import gradle.api.tasks.applyTo
+import gradle.api.tryAssign
 
 @Serializable
 internal data class ApolloRegisterOperationsTask(
@@ -23,35 +24,27 @@ internal data class ApolloRegisterOperationsTask(
     override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
     override val name: String? = null,
-): DefaultTask<ApolloRegisterOperationsTask>(){
-context(Project)
-override fun applyTo(recipient: ApolloRegisterOperationsTask){
-super.applyTo(recipient)
+    val graph: String? = null,
+    val graphVariant: String? = null,
+    val key: String? = null,
+    val listId: String? = null,
+    val operationManifestFormat: String? = null,
+    val operationOutput: String? = null,
+) : DefaultTask<ApolloRegisterOperationsTask>() {
 
-}
+    context(Project)
+    override fun applyTo(recipient: ApolloRegisterOperationsTask) {
+        super.applyTo(recipient)
 
-context(Project)
-override fun applyTo() =
-applyTo(tasks.withType<ApolloRegisterOperationsTask>())
-}
+        recipient.graph tryAssign graph
+        recipient.graphVariant tryAssign graphVariant
+        recipient.key tryAssign key
+        recipient.listId tryAssign listId
+        recipient.operationManifestFormat tryAssign operationManifestFormat
+        recipient.operationOutput tryAssign operationOutput?.let(::file)
+    }
 
-    val graph: String?=null,
-
-
-    val graphVariant: String?=null,
-
-
-    val key: String?=null,
-
-
-    val listId: String?=null,
-
-
-    val operationManifestFormat: String?=null,
-
-
-    val operationOutput: String?=null,
-
-
-
+    context(Project)
+    override fun applyTo() =
+        applyTo(tasks.withType<ApolloRegisterOperationsTask>())
 }

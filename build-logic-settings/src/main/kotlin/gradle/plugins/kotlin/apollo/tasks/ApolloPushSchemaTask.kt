@@ -7,6 +7,8 @@ import gradle.api.tasks.DefaultTask
 import org.gradle.api.Project
 import gradle.collection.SerializableAnyMap
 import gradle.api.tasks.applyTo
+import gradle.api.tryAssign
+import gradle.api.trySet
 
 @Serializable
 internal data class ApolloPushSchemaTask(
@@ -23,41 +25,30 @@ internal data class ApolloPushSchemaTask(
     override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
     override val name: String? = null,
-): DefaultTask<ApolloPushSchemaTask>(){
-context(Project)
-override fun applyTo(recipient: ApolloPushSchemaTask){
-super.applyTo(recipient)
+    val graph: String? = null,
+    val graphVariant: String? = null,
+    val key: String? = null,
+    var projectRootDir: String? = null,
+    val revision: String? = null,
+    val schema: String? = null,
+    val subgraph: String? = null,
+) : DefaultTask<ApolloPushSchemaTask>() {
 
-}
+    context(Project)
+    override fun applyTo(recipient: ApolloPushSchemaTask) {
+        super.applyTo(recipient)
 
-context(Project)
-override fun applyTo() =
-applyTo(tasks.withType<ApolloPushSchemaTask>())
-}
+        recipient.graph tryAssign graph
+        recipient.graphVariant tryAssign graphVariant
+        recipient.key tryAssign key
+        recipient::projectRootDir trySet projectRootDir
+        recipient.revision tryAssign revision
+        recipient.schema tryAssign schema
+        recipient.subgraph tryAssign subgraph
+    }
 
-    val graph: String?=null,
-
-
-    val graphVariant: String?=null,
-
-
-    val key: String?=null,
-
-
-    var projectRootDir: String?=null,
-
-
-    val revision: String?=null,
-
-
-    val schema: String?=null,
-
-
-    val subgraph: String?=null,
-
-
-
-
-    private final fun org.gradle.api.provider.String?=null,.orProperty(name: String): String? { /* compiled code */ }
+    context(Project)
+    override fun applyTo() =
+        applyTo(tasks.withType<ApolloPushSchemaTask>())
 }
 

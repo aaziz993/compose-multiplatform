@@ -8,6 +8,7 @@ import gradle.api.tasks.DefaultTask
 import gradle.api.tasks.applyTo
 import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
@@ -89,6 +90,7 @@ internal abstract class ApolloGenerateSourcesBase<T : com.apollographql.apollo3.
 }
 
 @Serializable
+@SerialName("ApolloGenerateSourcesBase")
 internal data class ApolloGenerateSourcesBaseImpl(
     override val addJvmOverloads: Boolean? = null,
     override val classesForEnumsMatching: List<String>? = null,

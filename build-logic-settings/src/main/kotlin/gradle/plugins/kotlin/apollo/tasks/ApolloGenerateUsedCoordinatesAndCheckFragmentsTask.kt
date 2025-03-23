@@ -7,6 +7,7 @@ import gradle.api.tasks.DefaultTask
 import org.gradle.api.Project
 import gradle.collection.SerializableAnyMap
 import gradle.api.tasks.applyTo
+import gradle.api.tryAssign
 
 @Serializable
 internal data class ApolloGenerateUsedCoordinatesAndCheckFragmentsTask(
@@ -23,27 +24,23 @@ internal data class ApolloGenerateUsedCoordinatesAndCheckFragmentsTask(
     override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
     override val name: String? = null,
-): DefaultTask<ApolloGenerateUsedCoordinatesAndCheckFragmentsTask>(){
-context(Project)
-override fun applyTo(recipient: ApolloGenerateUsedCoordinatesAndCheckFragmentsTask){
-super.applyTo(recipient)
+    val downStreamIrOperations: Set<String>? = null,
+    val setDownStreamIrOperations: Set<String>? = null,
+    val irOperations: String? = null,
+    val outputFile: String? = null,
+) : DefaultTask<ApolloGenerateUsedCoordinatesAndCheckFragmentsTask>() {
 
-}
+    context(Project)
+    override fun applyTo(recipient: ApolloGenerateUsedCoordinatesAndCheckFragmentsTask) {
+        super.applyTo(recipient)
 
-context(Project)
-override fun applyTo() =
-applyTo(tasks.withType<ApolloGenerateUsedCoordinatesAndCheckFragmentsTask>())
-}
+        downStreamIrOperations?.toTypedArray()?.let(recipient.downStreamIrOperations::from)
+        setDownStreamIrOperations?.let(recipient.downStreamIrOperations::setFrom)
+        recipient.irOperations tryAssign irOperations?.let(::file)
+        recipient.outputFile tryAssign outputFile?.let(::file)
+    }
 
-    val downStreamIrOperations: Set<String>?=null,
-val setDownStreamIrOperations: Set<String>?=null,
-
-
-    val irOperations: String?=null,
-
-
-    val outputFile: String?=null,
-
-
-
+    context(Project)
+    override fun applyTo() =
+        applyTo(tasks.withType<ApolloGenerateUsedCoordinatesAndCheckFragmentsTask>())
 }
