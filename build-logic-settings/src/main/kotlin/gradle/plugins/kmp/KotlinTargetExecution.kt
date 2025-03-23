@@ -1,11 +1,14 @@
 package gradle.plugins.kmp
 
 import gradle.plugins.kotlin.KotlinExecution
+import org.jetbrains.kotlin.gradle.plugin.KotlinTargetExecution
 
 /**
  * Represents an execution in the scope of a [KotlinTarget].
  */
-internal interface KotlinTargetExecution :
-    KotlinExecution {
+internal interface KotlinTargetExecution<
+    T : KotlinTargetExecution<S>,
+    S : org.jetbrains.kotlin.gradle.plugin.KotlinExecution.ExecutionSource> :
+    KotlinExecution<T, S> {
 
 }

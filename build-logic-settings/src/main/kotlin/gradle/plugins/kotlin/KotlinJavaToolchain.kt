@@ -16,7 +16,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinJavaToolchain
  * The configured JDK Java version is exposed as a task input so that Gradle only reuses the task outputs stored in the
  * [build cache](https://docs.gradle.org/current/userguide/build_cache.html) with the same JDK version.
  */
-internal interface KotlinJavaToolchain {
+internal interface KotlinJavaToolchain<T : KotlinJavaToolchain> {
 
     /**
      * Provides access to the [JdkSetter] to configure the JVM toolchain for the task using an explicit JDK location.
@@ -44,21 +44,33 @@ internal interface KotlinJavaToolchain {
          * @param jdkHomeLocation The path to the JDK location on the machine
          * @param jdkVersion The JDK version located in the configured [jdkHomeLocation] path
          */
-        val jdkHomeLocation: String,
-        val jdkVersion: JavaVersion,
+
+        val use: Use? = null,
     ) {
 
         context(Project)
         fun applyTo(recipient: KotlinJavaToolchain.JdkSetter) {
-            setter.use(file(jdkHomeLocation), jdkVersion)
+            use?.applyTo(recipient)
+        }
+
+        @Serializable
+        data class Use(
+            val jdkHomeLocation: String,
+            val jdkVersion: JavaVersion,
+        ) {
+
+            context(Project)
+            fun applyTo(recipient: KotlinJavaToolchain.JdkSetter) {
+                recipient.use(file(jdkHomeLocation), jdkVersion)
+            }
         }
     }
 
     context(Project)
     fun applyTo(recipient: KotlinJavaToolchain) {
-        jdk?.applyTo(toolchain.jdk)
-        this@KotlinJavaToolchain.toolchain?.let { javaLauncher ->
-            toolchain.toolchain.use(
+        jdk?.applyTo(recipient.jdk)
+        toolchain?.let { javaLauncher ->
+            recipient.toolchain.use(
                 javaToolchain.launcherFor {
                     javaLauncher.applyTo(this)
                 },

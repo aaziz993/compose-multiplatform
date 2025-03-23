@@ -6,13 +6,13 @@ import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTestRun
 
 @Serializable
 internal class ClasspathOnlyTestRunSource(
-    val classpath: List<String>,
-    val testClassesDirs: List<String>
+    val classpath: Set<String>,
+    val testClassesDirs: Set<String>
 ) : JvmClasspathTestRunSource {
 
     context(Project)
     override fun applyTo(recipient: KotlinJvmTestRun) =
-        run.setExecutionSourceFrom(
+        recipient.setExecutionSourceFrom(
             files(*classpath.toTypedArray()),
             files(* testClassesDirs.toTypedArray()),
         )

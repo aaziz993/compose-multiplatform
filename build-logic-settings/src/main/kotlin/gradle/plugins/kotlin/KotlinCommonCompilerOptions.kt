@@ -13,7 +13,8 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 /**
  * Common compiler options for all Kotlin platforms.
  */
-internal interface KotlinCommonCompilerOptions<T : org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerOptions> : KotlinCommonCompilerToolOptions<T> {
+internal interface KotlinCommonCompilerOptions<T : org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerOptions>
+    : KotlinCommonCompilerToolOptions<T> {
 
     /**
      * Allow using declarations from only the specified version of bundled libraries.

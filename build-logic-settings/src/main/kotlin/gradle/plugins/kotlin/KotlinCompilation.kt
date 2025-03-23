@@ -76,7 +76,8 @@ Here's an example of how to use consume the outputs of the main JVM Compilation 
  * Instead, there is a dedicated compilation for each shared source set.
  *
  */
-internal interface KotlinCompilation<T : org.jetbrains.kotlin.gradle.plugin.KotlinCompilation<*>> : HasKotlinDependencies<T>, ProjectNamed<T> {
+internal interface KotlinCompilation<T : org.jetbrains.kotlin.gradle.plugin.KotlinCompilation<*>>
+    : HasKotlinDependencies<T>, ProjectNamed<T> {
 
     /**
      * The name of the compilation.

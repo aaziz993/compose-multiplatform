@@ -1,6 +1,9 @@
 package gradle.plugins.kotlin
 
 import gradle.api.BaseNamed
+import gradle.api.ProjectNamed
+import org.gradle.api.Project
+import org.jetbrains.kotlin.gradle.plugin.KotlinExecution
 
 /**
  * Represents the execution of Kotlin code, such as tests.
@@ -11,12 +14,16 @@ import gradle.api.BaseNamed
  *
  * [KotlinTestRun] is a specific type of execution that runs tests.
  */
-internal interface KotlinExecution : BaseNamed {
+internal interface KotlinExecution<T : KotlinExecution<*>, S> : ProjectNamed<T> {
 
     /**
      * Represents an execution source that provides the necessary inputs to run the execution.
      */
-    interface ExecutionSource
+    interface ExecutionSource<T> {
+
+        context(Project)
+        fun applyTo(recipient: T)
+    }
 
     /**
      * The source of the executable code that this execution runs.
@@ -24,5 +31,5 @@ internal interface KotlinExecution : BaseNamed {
      * It is typically set via members of [ExecutionSource] support interfaces,
      * such as [CompilationExecutionSourceSupport] or [ClasspathTestRunSourceSupport].
      */
-    val executionSource: ExecutionSource?
+    val executionSource: ExecutionSource<S>?
 }

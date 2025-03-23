@@ -6,17 +6,18 @@ import org.jetbrains.kotlin.gradle.dsl.HasConfigurableKotlinCompilerOptions
 /**
  * DSL entity with the ability to configure Kotlin compiler options.
  */
-internal interface HasConfigurableKotlinCompilerOptions<CO : KotlinCommonCompilerOptions> {
+internal interface HasConfigurableKotlinCompilerOptions<T : HasConfigurableKotlinCompilerOptions<CO>,
+    CO : org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerOptions> {
 
     /**
      * Represents the compiler options used by a Kotlin compilation process.
      *
      * This can be used to get the values of currently configured options or modify them.
      */
-    val compilerOptions: CO?
+    val compilerOptions: KotlinCommonCompilerOptions<CO>?
 
     context(Project)
-    fun applyTo(options: HasConfigurableKotlinCompilerOptions<*>) {
+    fun applyTo(options: T) {
         compilerOptions?.applyTo(options.compilerOptions)
     }
 }

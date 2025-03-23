@@ -7,14 +7,14 @@ import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTestRun
 
 @Serializable
 internal data class JvmCompilationsTestRunSource(
-    val classpathCompilations: List<String>,
-    val testCompilations: List<String>
+    val classpathCompilations: Set<String>,
+    val testCompilations: Set<String>
 ) : JvmClasspathTestRunSource {
 
     context(Project)
     override fun applyTo(recipient: KotlinJvmTestRun) =
-        run.setExecutionSourceFrom(
-            classpathCompilations.flatMap(run.target.compilations::getByNameOrAll),
-            testCompilations.flatMap(run.target.compilations::getByNameOrAll),
+        recipient.setExecutionSourceFrom(
+            classpathCompilations.flatMap(recipient.target.compilations::getByNameOrAll),
+            testCompilations.flatMap(recipient.target.compilations::getByNameOrAll),
         )
 }

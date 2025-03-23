@@ -12,7 +12,7 @@ import org.jetbrains.kotlin.buildtools.api.ExperimentalBuildToolsApi
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
 import org.jetbrains.kotlin.gradle.dsl.KotlinBaseExtension
 
-internal interface KotlinBaseExtension {
+internal interface KotlinBaseExtension<T : KotlinBaseExtension> {
 
     /**
      * Configures [Java toolchain](https://docs.gradle.org/current/userguide/toolchains.html)
@@ -37,6 +37,7 @@ internal interface KotlinBaseExtension {
      * a new instance of Kotlin daemon will be started.
      */
     val kotlinDaemonJvmArgs: List<String>?
+    val setKotlinDaemonJvmArgs: List<String>?
 
     /**
      * The version of the Kotlin compiler.
@@ -75,21 +76,25 @@ internal interface KotlinBaseExtension {
 
     context(Project)
     @OptIn(ExperimentalBuildToolsApi::class)
-    fun applyTo(recipient: KotlinBaseExtension) {
+    fun applyTo(recipient: T) {
         jvmToolchainSpec?.let { jvmToolchainSpec ->
-            extension.jvmToolchain {
+            recipient.jvmToolchain {
                 jvmToolchainSpec.applyTo(this)
             }
         } ?: (jvmToolchain ?: settings.libs.versions.version("java.languageVersion")?.toInt())
-            ?.let(extension::jvmToolchain)
+            ?.let(recipient::jvmToolchain)
 
-        extension::kotlinDaemonJvmArgs trySet kotlinDaemonJvmArgs
-        extension.compilerVersion tryAssign (compilerVersion
+        recipient::kotlinDaemonJvmArgs trySet kotlinDaemonJvmArgs?.let { kotlinDaemonJvmArgs ->
+            recipient.kotlinDaemonJvmArgs + kotlinDaemonJvmArgs
+        }
+
+        recipient::kotlinDaemonJvmArgs trySet setKotlinDaemonJvmArgs
+        recipient.compilerVersion tryAssign (compilerVersion
             ?: settings.libs.versions.version("kotlin.compilerVersion"))
-        extension::coreLibrariesVersion trySet (coreLibrariesVersion
+        recipient::coreLibrariesVersion trySet (coreLibrariesVersion
             ?: settings.libs.versions.version("kotlin.coreLibrariesVersion"))
         explicitApi?.let { explicitApi ->
-            extension.explicitApi = explicitApi
+            recipient.explicitApi = explicitApi
         }
     }
 }

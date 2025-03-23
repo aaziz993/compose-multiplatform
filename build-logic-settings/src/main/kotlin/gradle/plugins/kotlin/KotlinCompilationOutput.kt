@@ -14,11 +14,12 @@ internal data class KotlinCompilationOutput(
      * For example, in the case of JVM target compilation,
      * this will be directories containing class files for Java and Kotlin sources compilations.
      */
-    val classesDirs: List<String>? = null,
+    val classesDirs: Set<String>? = null,
+    val setClassesDirs: Set<String>? = null,
 ) {
 
     fun applyTo(recipient: KotlinCompilationOutput) {
-        classesDirs?.toTypedArray()?.let(output.classesDirs::from)
-setClassesDirs?.let(output.classesDirs::setFrom)
+        classesDirs?.toTypedArray()?.let(recipient.classesDirs::from)
+        setClassesDirs?.let(recipient.classesDirs::setFrom)
     }
 }
