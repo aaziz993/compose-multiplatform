@@ -1,6 +1,7 @@
 package gradle.plugins.apple.target
 
 import gradle.api.ProjectNamed
+import gradle.api.applyTo
 import gradle.api.maybeNamed
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
@@ -17,7 +18,7 @@ internal interface AppleTarget<T : org.jetbrains.gradle.apple.targets.AppleTarge
 
     val bridgingHeader: String?
 
-    val buildConfigurations: List<BuildConfiguration>?
+    val buildConfigurations: Set<BuildConfiguration>?
 
     val buildSettings: Map<AppleBuildSettings, String>?
 
@@ -40,14 +41,11 @@ internal interface AppleTarget<T : org.jetbrains.gradle.apple.targets.AppleTarge
         recipient::bridgingHeader trySet bridgingHeader
 
         buildConfigurations?.forEach { buildConfigurations ->
-            buildConfigurations.name.takeIf(String::isNotEmpty)?.also { name ->
-                recipient.buildConfigurations.maybeNamed(name, buildConfigurations::applyTo)
-            } ?: recipient.buildConfigurations.all(buildConfigurations::applyTo)
+            buildConfigurations.applyTo(recipient.buildConfigurations)
         }
 
         buildSettings?.forEach { buildSettings ->
             buildSettings.key.applyTo(recipient.buildSettings, buildSettings.value)
-
         }
 
         recipient::embedFrameworks trySet embedFrameworks
