@@ -7,12 +7,12 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTargetWithTests
 import org.jetbrains.kotlin.gradle.targets.native.KotlinNativeBinaryTestRun
 
 @Serializable
-internal data class NativeBinaryTestRunSource(
+internal data class NativeBinaryTestRunSource<T : KotlinNativeBinaryTestRun>(
     val binary: @Serializable(with = BinaryContentPolymorphicSerializer::class) Any,
-) : KotlinExecution.ExecutionSource<KotlinNativeBinaryTestRun> {
+) : KotlinExecution.ExecutionSource<T> {
 
     context(Project)
-    override fun applyTo(receiver: KotlinNativeBinaryTestRun) {
+    override fun applyTo(receiver: T) {
         val target = receiver.target as KotlinNativeTargetWithTests<*>
 
         when (binary) {

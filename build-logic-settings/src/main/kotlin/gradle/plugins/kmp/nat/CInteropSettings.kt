@@ -1,8 +1,17 @@
 package gradle.plugins.kmp.nat
 
-import gradle.api.BaseNamed
+import gradle.api.ProjectNamed
 import gradle.api.trySet
+import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.SetSerializer
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonContentPolymorphicSerializer
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
+import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.CInteropSettings
 
 /**
@@ -37,92 +46,14 @@ import org.jetbrains.kotlin.gradle.plugin.CInteropSettings
  * In this example, we've added a `cinterop` setting named `cinteropForLinuxX64` to the `linuxX64` `main` [KotlinCompilation].
  * These settings are used to create and configure a `cinterop` task, along with the necessary dependencies for the compile task.
  */
-internal interface CInteropSettings : BaseNamed {
-
-    /**
-     *  A collection of directories to look for headers.
-     */
-    @Serializable
-    data class IncludeDirectories(
-        /**
-         * A collection of directories to search for headers.
-         * It's the equivalent of the `-I<path>` compiler option.
-         *
-         * #### Usage example
-         *
-         * The following example demonstrates
-         * how to add multiple directories containing header files in a `build.gradle.kts` file:
-         *
-         * ```kotlin
-         * //build.gradle.kts
-         * kotlin {
-         *     linuxX64() {
-         *         compilations.getByName("main") {
-         *             cinterops {
-         *                 val cinterop by creating {
-         *                     defFile(project.file("custom.def"))
-         *                     includeDirs {
-         *                         allHeaders(project.file("src/main/headersDir1"), project.file("src/main/headersDir2"))
-         *                     }
-         *                 }
-         *             }
-         *         }
-         *     }
-         * }
-         * ```
-         *
-         * In the example, the directories `src/main/headersDir1` and `src/main/headersDir2` in the project directory
-         * are specified as locations containing the header files required for the cinterop process.
-         *
-         * @param includeDirs The directories to be included.
-         */
-        val allHeaders: List<String>? = null,
-
-        /**
-         * Additional directories to search for headers listed in the `headers` property in the `.def` file.
-         * It's equivalent to the `-headerFilterAdditionalSearchPrefix` cinterop tool option.
-         *
-         * #### Usage example
-         *
-         * The following example demonstrates how to add multiple directories containing header files in a `build.gradle.kts` file:
-         *
-         * ```kotlin
-         * //build.gradle.kts
-         * kotlin {
-         *     linuxX64() {
-         *         compilations.getByName("main") {
-         *             cinterops {
-         *                 val cinterop by creating {
-         *                     defFile(project.file("custom.def"))
-         *                     includeDirs {
-         *                         headerFilterOnly(project.file("include/libs"))
-         *                     }
-         *                 }
-         *             }
-         *         }
-         *     }
-         * }
-         * ```
-         *
-         * In the example, the directory `include/libs` is specified as the prefix for the directories listed in the `headers`
-         * declared in the `custom.def`.
-         *
-         * @param includeDirs The directories to be included as prefixes for the header filters.
-         */
-        val headerFilterOnly: List<String>? = null,
-    ) {
-
-        fun applyTo(receiver: CInteropSettings.IncludeDirectories) {
-            allHeaders?.let(directories::allHeaders)
-            headerFilterOnly?.let(directories::headerFilterOnly)
-        }
-    }
+internal interface CInteropSettings<T : CInteropSettings> : ProjectNamed<T> {
 
     /**
      * The collection of libraries used for building during the C interoperability process.
      * It's equivalent to the `-library`/`-l` cinterop tool options.
      */
-    val dependencyFiles: List<String>?
+    val dependencyFiles: Set<String>?
+    val setDependencyFiles: Set<String>?
 
     /**
      * Specifies the path to the `.def` file that declares bindings for the C libraries.
@@ -199,7 +130,7 @@ internal interface CInteropSettings : BaseNamed {
      * @param files The header files to be included for interoperability with C.
      * @see [header]
      */
-    val headers: List<String>?
+    val headers: Set<String>?
 
     /**
      * A collection of directories to search for headers.
@@ -229,37 +160,7 @@ internal interface CInteropSettings : BaseNamed {
      *
      * @param values The directories to be included.
      */
-    val includeDirs: List<String>?
-
-    /**
-     * A collection of directories to search for headers.
-     *
-     * #### Usage example
-     *
-     * The following example demonstrates how to add multiple directories containing header files in a `build.gradle.kts` file:
-     * ```kotlin
-     * //build.gradle.kts
-     * kotlin {
-     *     linuxX64() {
-     *         compilations.getByName("main") {
-     *             cinterops {
-     *                 val cinterop by creating {
-     *                     defFile(project.file("custom.def"))
-     *                     includeDirs { allHeaders(project.file("include/libs")) }
-     *                 }
-     *             }
-     *         }
-     *     }
-     * }
-     * ```
-     *
-     * In the example, the directory `include/libs` is specified as the prefix for the directories listed in the `headers`
-     * declared in the `custom.def`.
-     *
-     * @param configure [IncludeDirectories] configuration
-     * @see [includeDirs]
-     */
-    val includeDirectories: IncludeDirectories?
+    val includeDirs: @Serializable(with = IncludeDirContentPolymorphicSerializer::class) Any?
 
     /**
      * The options that are passed to the compiler by the cinterop tool.
@@ -336,20 +237,115 @@ internal interface CInteropSettings : BaseNamed {
      */
     val extraOpts: List<String>?
 
-        context(Project)
+    context(Project)
     override fun applyTo(receiver: T) {
-        named as CInteropSettings
-
-        named::dependencyFiles trySet dependencyFiles?.toTypedArray()?.let(named::headers)
-        includeDirs?.toTypedArray()?.let(named::includeDirs)
-
-        includeDirectories?.let { includeDirectories ->
-            named.includeDirs {
-                includeDirectories.applyTo(this)
-            }
+        receiver::dependencyFiles trySet dependencyFiles?.toTypedArray()?.let(::files)?.let { dependencyFiles ->
+            receiver.dependencyFiles + dependencyFiles
         }
-        compilerOpts?.let(named::compilerOpts)
-        linkerOpts?.let(named::linkerOpts)
-        extraOpts?.let(named::extraOpts)
+
+        receiver::dependencyFiles trySet setDependencyFiles?.toTypedArray()?.let(::files)
+
+        when (val includeDirs = includeDirs) {
+            is String -> receiver.includeDirs(includeDirs)
+            is LinkedHashSet<*> -> receiver.includeDirs(*includeDirs.toTypedArray())
+            is IncludeDirectories -> receiver.includeDirs {
+                includeDirs.applyTo(this)
+            }
+
+            else -> Unit
+        }
+
+        compilerOpts?.let(receiver::compilerOpts)
+        linkerOpts?.let(receiver::linkerOpts)
+        extraOpts?.let(receiver::extraOpts)
+    }
+
+    /**
+     *  A collection of directories to look for headers.
+     */
+    @Serializable
+    data class IncludeDirectories(
+        /**
+         * A collection of directories to search for headers.
+         * It's the equivalent of the `-I<path>` compiler option.
+         *
+         * #### Usage example
+         *
+         * The following example demonstrates
+         * how to add multiple directories containing header files in a `build.gradle.kts` file:
+         *
+         * ```kotlin
+         * //build.gradle.kts
+         * kotlin {
+         *     linuxX64() {
+         *         compilations.getByName("main") {
+         *             cinterops {
+         *                 val cinterop by creating {
+         *                     defFile(project.file("custom.def"))
+         *                     includeDirs {
+         *                         allHeaders(project.file("src/main/headersDir1"), project.file("src/main/headersDir2"))
+         *                     }
+         *                 }
+         *             }
+         *         }
+         *     }
+         * }
+         * ```
+         *
+         * In the example, the directories `src/main/headersDir1` and `src/main/headersDir2` in the project directory
+         * are specified as locations containing the header files required for the cinterop process.
+         *
+         * @param includeDirs The directories to be included.
+         */
+        val allHeaders: List<String>? = null,
+
+        /**
+         * Additional directories to search for headers listed in the `headers` property in the `.def` file.
+         * It's equivalent to the `-headerFilterAdditionalSearchPrefix` cinterop tool option.
+         *
+         * #### Usage example
+         *
+         * The following example demonstrates how to add multiple directories containing header files in a `build.gradle.kts` file:
+         *
+         * ```kotlin
+         * //build.gradle.kts
+         * kotlin {
+         *     linuxX64() {
+         *         compilations.getByName("main") {
+         *             cinterops {
+         *                 val cinterop by creating {
+         *                     defFile(project.file("custom.def"))
+         *                     includeDirs {
+         *                         headerFilterOnly(project.file("include/libs"))
+         *                     }
+         *                 }
+         *             }
+         *         }
+         *     }
+         * }
+         * ```
+         *
+         * In the example, the directory `include/libs` is specified as the prefix for the directories listed in the `headers`
+         * declared in the `custom.def`.
+         *
+         * @param includeDirs The directories to be included as prefixes for the header filters.
+         */
+        val headerFilterOnly: List<String>? = null,
+    ) {
+
+        fun applyTo(receiver: CInteropSettings.IncludeDirectories) {
+            allHeaders?.let(receiver::allHeaders)
+            headerFilterOnly?.let(receiver::headerFilterOnly)
+        }
+    }
+
+    private object IncludeDirContentPolymorphicSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
+
+        override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
+            when (element) {
+                is JsonPrimitive -> String.serializer()
+                is JsonArray -> SetSerializer(String.serializer())
+                is JsonObject -> IncludeDirectories.serializer()
+            }
     }
 }

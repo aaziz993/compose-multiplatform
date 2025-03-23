@@ -10,7 +10,7 @@ import org.gradle.api.Project
 @Serializable
 internal data class KotlinNativeSimulatorTestRun(
     override val filter: TestFilter? = null,
-    override val executionSource: NativeBinaryTestRunSource? = null,
+    override val executionSource: NativeBinaryTestRunSource<org.jetbrains.kotlin.gradle.targets.native.KotlinNativeSimulatorTestRun>? = null,
     override val name: String,
     /**
      * Determines which simulated device will be used to execute the test run.

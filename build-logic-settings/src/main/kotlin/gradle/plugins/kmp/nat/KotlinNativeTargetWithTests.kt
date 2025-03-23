@@ -13,12 +13,11 @@ import org.gradle.kotlin.dsl.withType
 internal abstract class KotlinNativeTargetWithTests<T : org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTargetWithTests> :
     KotlinNativeTarget(), KotlinTargetWithTests<T> {
 
-        context(Project)
+    context(Project)
     override fun applyTo(receiver: T) {
-        super<KotlinNativeTarget>.applyTo(named)
-        super<KotlinTargetWithTests>.applyTo(named)
+        super<KotlinNativeTarget>.applyTo(receiver)
+        super<KotlinTargetWithTests>.applyTo(receiver)
     }
-
 }
 
 @Serializable
@@ -28,15 +27,11 @@ internal data class KotlinNativeTargetWithTestsImpl(
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,
     override val testRuns: List<@Serializable(with = KotlinNativeBinaryTestRunTransformingSerializer::class) KotlinNativeBinaryTestRunImpl>? = null,
-) : KotlinNativeTargetWithTests<KotlinNativeBinaryTestRun>() {
-
-    override val targetName: String
-        get() = ""
+) : KotlinNativeTargetWithTests<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTargetWithTests<*>>() {
 
     context(Project)
     override fun applyTo() =
         super<KotlinNativeTarget>.applyTo(kotlin.targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTargetWithTests<*>>())
-
 }
 
 

@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 internal data class KotlinNativeHostTestRun(
     override val filter: TestFilter? = null,
-    override val executionSource: NativeBinaryTestRunSource? = null,
+    override val executionSource: NativeBinaryTestRunSource<org.jetbrains.kotlin.gradle.targets.native.KotlinNativeHostTestRun>? = null,
     override val name: String
 ) : KotlinNativeBinaryTestRun<org.jetbrains.kotlin.gradle.targets.native.KotlinNativeHostTestRun>
 

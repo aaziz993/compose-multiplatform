@@ -1,6 +1,8 @@
 package gradle.plugins.kmp
 
-internal interface HasBinaries<out T> {
+internal interface HasBinaries<T> {
 
-    val binaries: T
+    val binaries: T?
+
+    fun applyTo(receiver: T)
 }

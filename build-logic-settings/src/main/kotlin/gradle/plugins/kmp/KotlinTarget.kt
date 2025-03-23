@@ -11,7 +11,10 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
 @Serializable(with = KotlinTargetSerializer::class)
-internal interface KotlinTarget<T : org.jetbrains.kotlin.gradle.plugin.KotlinTarget> : ProjectNamed<T> {
+internal interface KotlinTarget<
+    T : org.jetbrains.kotlin.gradle.plugin.KotlinTarget,
+    C : org.jetbrains.kotlin.gradle.plugin.KotlinCompilation<*>
+    > : ProjectNamed<T> {
 
     val targetName: String
 
@@ -24,7 +27,7 @@ internal interface KotlinTarget<T : org.jetbrains.kotlin.gradle.plugin.KotlinTar
      * Allows access to the default [main][KotlinCompilation.MAIN_COMPILATION_NAME] or [test][KotlinCompilation.TEST_COMPILATION_NAME]
      * compilations, or the creation of additional compilations.
      */
-    val compilations: List<KotlinCompilation>?
+    val compilations: List<KotlinCompilation<C>>?
 
     val needKMP: Boolean
         get() = true

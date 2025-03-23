@@ -7,7 +7,6 @@ import kotlinx.serialization.Serializable
 
 internal interface KotlinNativeBinaryTestRun<T : org.jetbrains.kotlin.gradle.targets.native.KotlinNativeBinaryTestRun>
     : KotlinTargetTestRun<T> {
-
 }
 
 @Serializable

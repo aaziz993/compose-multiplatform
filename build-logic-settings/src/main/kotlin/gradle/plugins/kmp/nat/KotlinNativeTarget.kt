@@ -1,6 +1,7 @@
 package gradle.plugins.kmp.nat
 
 import gradle.accessors.kotlin
+import gradle.api.applyTo
 
 import gradle.plugins.kmp.HasBinaries
 import gradle.plugins.kmp.KotlinTarget
@@ -11,26 +12,20 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 
-internal abstract class KotlinNativeTarget : KotlinTarget,
-    HasConfigurableKotlinCompilerOptions<KotlinNativeCompilerOptions>,
-    HasBinaries<KotlinNativeBinaryContainer?> {
-
-    abstract override val compilations: List<KotlinNativeCompilation>?
-
-        context(Project)
-    override fun applyTo(receiver: T) {
-        super<KotlinTarget>.applyTo(named)
-
-        named as org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
-
-        super<HasConfigurableKotlinCompilerOptions>.applyTo(named)
-
-        binaries?.applyTo(named.binaries)
-    }
+internal abstract class KotlinNativeTarget<T : org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>
+    : KotlinTarget<T, org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeCompilation>,
+    HasConfigurableKotlinCompilerOptions<T, org.jetbrains.kotlin.gradle.dsl.KotlinNativeCompilerOptions>,
+    HasBinaries<T> {
 
     context(Project)
-    override fun applyTo() =
-        super<KotlinTarget>.applyTo(kotlin.targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>())
+    override fun applyTo(receiver: T) {
+        super<KotlinTarget>.applyTo(receiver)
+        super<HasConfigurableKotlinCompilerOptions>.applyTo(receiver)
+        super<HasBinaries>.applyTo(receiver)
+        super<HasConfigurableKotlinCompilerOptions>.applyTo(receiver)
+
+        binaries?.applyTo(receiver.binaries)
+    }
 }
 
 @Serializable
@@ -39,8 +34,9 @@ internal data class KotlinNativeTargetImpl(
     override val compilations: List<KotlinNativeCompilation>? = null,
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,
-) : KotlinNativeTarget() {
+) : KotlinNativeTarget<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>() {
 
-    override val targetName: String
-        get() = ""
+    context(Project)
+    override fun applyTo() =
+        applyTo(kotlin.targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>()) { _, _ -> }
 }
