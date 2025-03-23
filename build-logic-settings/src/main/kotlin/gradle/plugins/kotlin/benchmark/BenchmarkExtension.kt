@@ -16,15 +16,15 @@ import org.gradle.api.Project
 
 internal abstract class BenchmarksExtension {
 
-    abstract var benchsDescriptionDir: String?
+    abstract val benchsDescriptionDir: String?
 
-    abstract var buildDir: String?
+    abstract val buildDir: String?
 
     abstract val configurations: Set<BenchmarkConfiguration>?
 
     abstract val kotlinCompilerVersion: String?
 
-    abstract var reportsDir: String?
+    abstract val reportsDir: String?
 
     abstract val targets: List<@Serializable(with = BenchmarkTargetTransformingSerializer::class) BenchmarkTarget>?
 

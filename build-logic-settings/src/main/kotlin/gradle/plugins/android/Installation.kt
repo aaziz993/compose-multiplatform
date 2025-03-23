@@ -10,7 +10,7 @@ import gradle.collection.act
 internal interface Installation<T : Installation> {
 
     /** The time out used for all adb operations. */
-    var timeOutInMs: Int?
+    val timeOutInMs: Int?
 
     /** The list of FULL_APK installation options. */
     val installOptions: List<String>?

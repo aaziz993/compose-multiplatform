@@ -29,14 +29,14 @@ internal abstract class Jar<T : org.gradle.api.tasks.bundling.Jar> : Zip<T>() {
      * @see .getManifestContentCharset
      * @since 2.14
      */
-    abstract var manifestContentCharset: String?
+    abstract val manifestContentCharset: String?
 
     /**
      * Sets the manifest for this JAR archive.
      *
      * @param manifest The manifest. May be null.
      */
-    abstract var manifest: Manifest?
+    abstract val manifest: Manifest?
 
     /**
      * Adds content to this JAR archive's META-INF directory.
@@ -64,8 +64,8 @@ internal abstract class Jar<T : org.gradle.api.tasks.bundling.Jar> : Zip<T>() {
 
 @Serializable
 internal data class JarImpl(
-    override var manifestContentCharset: String? = null,
-    override var manifest: Manifest? = null,
+    override val manifestContentCharset: String? = null,
+    override val manifest: Manifest? = null,
     override val metaInf: CopySpecImpl? = null,
     override val entryCompression: ZipEntryCompression? = null,
     override val allowZip64: Boolean? = null,

@@ -11,7 +11,7 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 internal data class LibraryInstallation(
-    override var timeOutInMs: Int? = null,
+    override val timeOutInMs: Int? = null,
     override val installOptions: List<String>? = null,
     override val setInstallOptions: List<String>? = null,
 ) : Installation<LibraryInstallation>

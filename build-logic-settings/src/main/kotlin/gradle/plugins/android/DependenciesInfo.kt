@@ -15,9 +15,9 @@ import kotlinx.serialization.Serializable
 internal data class DependenciesInfo(
     /** If false, information about SDK dependencies of an APK will not be added to its signature
      * block. */
-    var includeInApk: Boolean? = null,
+    val includeInApk: Boolean? = null,
     /** If false, information about SDK dependencies of an App Bundle will not be added to it. */
-    var includeInBundle: Boolean? = null,
+    val includeInBundle: Boolean? = null,
 ) {
 
     fun applyTo(recipient: DependenciesInfo) {

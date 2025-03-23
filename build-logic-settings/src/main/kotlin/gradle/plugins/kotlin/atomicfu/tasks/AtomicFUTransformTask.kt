@@ -25,11 +25,11 @@ internal data class AtomicFUTransformTask(
     override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
     override val name: String? = null,
-    var inputFiles: Set<String>? = null,
+    val inputFiles: Set<String>? = null,
     val destinationDirectory: String? = null,
-    var classPath: Set<String>? = null,
-    var jvmVariant: String? = null,
-    var verbose: Boolean? = null,
+    val classPath: Set<String>? = null,
+    val jvmVariant: String? = null,
+    val verbose: Boolean? = null,
 ) : ConventionTask<AtomicFUTransformTask>() {
 
     context(Project)

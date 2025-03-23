@@ -25,7 +25,7 @@ internal abstract class KotlinCompileCommon<T : org.jetbrains.kotlin.gradle.task
 @SerialName("KotlinCompileCommon")
 internal data class KotlinCompileCommonImpl(
     override val compilerOptions: KotlinCommonCompilerOptionsImpl? = null,
-    override var incremental: Boolean? = null,
+    override val incremental: Boolean? = null,
     override val explicitApiMode: ExplicitApiMode? = null,
     override val abiSnapshotRelativePath: String? = null,
     override val dependsOn: LinkedHashSet<String>? = null,

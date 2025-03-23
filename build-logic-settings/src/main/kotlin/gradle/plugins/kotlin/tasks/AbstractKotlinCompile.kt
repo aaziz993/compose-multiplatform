@@ -22,7 +22,7 @@ internal abstract class AbstractKotlinCompile<T : org.jetbrains.kotlin.gradle.ta
     // todo: deprecate and remove (we may need to design api for configuring IC)
     // don't rely on it to check if IC is enabled, use isIncrementalCompilationEnabled instead
 
-    abstract var incremental: Boolean?
+    abstract val incremental: Boolean?
 
     abstract val explicitApiMode: ExplicitApiMode?
 
@@ -44,7 +44,7 @@ internal abstract class AbstractKotlinCompile<T : org.jetbrains.kotlin.gradle.ta
 @SerialName("AbstractKotlinCompile")
 internal data class AbstractKotlinCompileImpl(
     override val compilerOptions: KotlinCommonCompilerOptionsImpl? = null,
-    override var incremental: Boolean? = null,
+    override val incremental: Boolean? = null,
     override val explicitApiMode: ExplicitApiMode? = null,
     override val abiSnapshotRelativePath: String? = null,
     override val dependsOn: LinkedHashSet<String>? = null,

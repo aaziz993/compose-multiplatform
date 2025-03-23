@@ -16,7 +16,7 @@ import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
 @Serializable
 internal data class KspTaskMetadata(
     override val compilerOptions: KotlinCommonCompilerOptionsImpl? = null,
-    override var incremental: Boolean? = null,
+    override val incremental: Boolean? = null,
     override val explicitApiMode: ExplicitApiMode? = null,
     override val abiSnapshotRelativePath: String? = null,
     override val dependsOn: LinkedHashSet<String>? = null,

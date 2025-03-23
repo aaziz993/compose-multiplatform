@@ -204,8 +204,8 @@ internal data class JavaExtension(
     @Serializable
     internal data class PalantirJavaFormatConfig(
         val version: String? = null,
-        var style: String? = null,
-        var formatJavadoc: Boolean? = null
+        val style: String? = null,
+        val formatJavadoc: Boolean? = null
     ) {
 
         fun applyTo(recipient: JavaExtension.PalantirJavaFormatConfig) {

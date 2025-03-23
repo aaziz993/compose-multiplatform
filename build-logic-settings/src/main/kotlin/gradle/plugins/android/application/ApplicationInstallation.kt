@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal data class ApplicationInstallation(
-    override var timeOutInMs: Int? = null,
+    override val timeOutInMs: Int? = null,
     override val installOptions: List<String>? = null,
     override val setInstallOptions: List<String>? = null,
     /** Whether to generate per-SDK level baseline profiles to install with an APK. */

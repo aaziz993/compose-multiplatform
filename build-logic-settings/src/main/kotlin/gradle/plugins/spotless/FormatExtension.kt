@@ -226,8 +226,8 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
     @Serializable
     internal data class PrettierConfig(
         val devDependencies: Map<String, String>? = null,
-        var configFile: String? = null,
-        var config: SerializableAnyMap? = null
+        val configFile: String? = null,
+        val config: SerializableAnyMap? = null
     ) {
 
         fun applyTo(recipient: com.diffplug.gradle.spotless.FormatExtension.PrettierConfig) {

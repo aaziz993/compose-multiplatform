@@ -29,8 +29,8 @@ import org.gradle.kotlin.dsl.withType
 
 @Serializable
 internal data class ShadowJar(
-    override var manifestContentCharset: String? = null,
-    override var manifest: Manifest? = null,
+    override val manifestContentCharset: String? = null,
+    override val manifest: Manifest? = null,
     override val metaInf: CopySpecImpl? = null,
     override val entryCompression: ZipEntryCompression? = null,
     override val allowZip64: Boolean? = null,
