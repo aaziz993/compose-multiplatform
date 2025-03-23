@@ -4,7 +4,7 @@ import gradle.accessors.kotlin
 import gradle.plugins.kmp.nat.KotlinNativeBinaryContainer
 import gradle.plugins.kmp.nat.KotlinNativeCompilation
 import gradle.plugins.kmp.nat.KotlinNativeCompilationTransformingSerializer
-import gradle.plugins.kmp.nat.KotlinNativeCompilerOptions
+import gradle.plugins.kmp.nat.tasks.KotlinNativeCompilerOptions
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

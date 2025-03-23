@@ -1,7 +1,8 @@
 @file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
 
-package gradle.plugins.kmp.nat
+package gradle.plugins.kmp.nat.tasks
 
+import gradle.api.tasks.applyTo
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.kotlin.tasks.KotlinCompilationTask
 import kotlinx.serialization.SerialName
@@ -9,11 +10,9 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 
-internal interface KotlinNativeCompileTask : KotlinCompilationTask<KotlinNativeCompilerOptions> {
+internal interface KotlinNativeCompileTask<T : org.jetbrains.kotlin.gradle.dsl.KotlinNativeCompileTask>
+    : KotlinCompilationTask<T, org.jetbrains.kotlin.gradle.dsl.KotlinNativeCompilerOptions> {
 
-    context(Project)
-    override fun applyTo() =
-        applyTo(tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinNativeCompileTask>())
 }
 
 @Serializable
@@ -33,4 +32,9 @@ internal data class KotlinNativeCompileTaskImpl(
     override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
     override val name: String? = null,
-) : KotlinNativeCompileTask
+) : KotlinNativeCompileTask<org.jetbrains.kotlin.gradle.dsl.KotlinNativeCompileTask> {
+
+    context(Project)
+    override fun applyTo() =
+        applyTo(tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinNativeCompileTask>())
+}

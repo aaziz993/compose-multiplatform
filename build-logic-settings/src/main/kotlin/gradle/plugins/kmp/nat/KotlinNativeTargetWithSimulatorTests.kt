@@ -1,5 +1,6 @@
 package gradle.plugins.kmp.nat
 
+import gradle.plugins.kmp.nat.tasks.KotlinNativeCompilerOptions
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

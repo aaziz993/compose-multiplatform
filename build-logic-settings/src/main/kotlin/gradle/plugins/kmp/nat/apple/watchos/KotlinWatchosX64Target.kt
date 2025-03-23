@@ -4,7 +4,7 @@ import gradle.accessors.kotlin
 import gradle.plugins.kmp.nat.KotlinNativeBinaryContainer
 import gradle.plugins.kmp.nat.KotlinNativeCompilation
 import gradle.plugins.kmp.nat.KotlinNativeCompilationTransformingSerializer
-import gradle.plugins.kmp.nat.KotlinNativeCompilerOptions
+import gradle.plugins.kmp.nat.tasks.KotlinNativeCompilerOptions
 import gradle.plugins.kmp.nat.KotlinNativeSimulatorTestRun
 import gradle.plugins.kmp.nat.KotlinNativeSimulatorTestRunTransformingSerializer
 import gradle.plugins.kmp.nat.KotlinNativeTargetWithSimulatorTests

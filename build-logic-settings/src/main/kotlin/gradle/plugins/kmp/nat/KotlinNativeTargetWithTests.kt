@@ -3,9 +3,9 @@ package gradle.plugins.kmp.nat
 import gradle.accessors.kotlin
 
 import gradle.plugins.kmp.KotlinTargetWithTests
+import gradle.plugins.kmp.nat.tasks.KotlinNativeCompilerOptions
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 

@@ -1,8 +1,11 @@
 package gradle.plugins.kotlin.ksp
 
+import com.google.devtools.ksp.gradle.KspAATask
 import com.google.devtools.ksp.gradle.KspTask
 import com.google.devtools.ksp.gradle.KspTaskJS
 import com.google.devtools.ksp.gradle.KspTaskJvm
+import com.google.devtools.ksp.gradle.KspTaskMetadata
+import com.google.devtools.ksp.gradle.KspTaskNative
 import gradle.accessors.ksp
 import gradle.api.tryAssign
 import gradle.api.trySet
@@ -36,6 +39,9 @@ internal interface KspExtension {
         KspTask
         KspTaskJS
         KspTaskJvm
+        KspTaskNative
+        KspAATask
+        KspTaskMetadata
         ksp.useKsp2 tryAssign useKsp2
         commandLineArgumentProviders?.forEach(ksp::arg)
         excludedProcessors?.forEach(ksp::excludeProcessor)
