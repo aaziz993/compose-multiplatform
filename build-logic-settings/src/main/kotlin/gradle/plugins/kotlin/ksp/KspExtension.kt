@@ -36,12 +36,6 @@ internal interface KspExtension {
 
     context(Project)
     fun applyTo() {
-        KspTask
-        KspTaskJS
-        KspTaskJvm
-        KspTaskNative
-        KspAATask
-        KspTaskMetadata
         ksp.useKsp2 tryAssign useKsp2
         commandLineArgumentProviders?.forEach(ksp::arg)
         excludedProcessors?.forEach(ksp::excludeProcessor)
