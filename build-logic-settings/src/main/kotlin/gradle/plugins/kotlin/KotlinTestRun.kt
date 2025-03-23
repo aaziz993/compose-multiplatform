@@ -11,13 +11,13 @@ internal interface KotlinTestRun<T : KotlinTestRun<*>, F : org.gradle.api.tasks.
     /**
      * Configures filtering for executable tests using the provided [configureFilter] configuration.
      */
-    val filter: TestFilter<out org.gradle.api.tasks.testing.TestFilter>?
+    val filter: TestFilter<F>?
 
     @Suppress("UNCHECKED_CAST")
     fun applyTo(receiver: T) {
         filter?.let { filter ->
             receiver.filter {
-                filter.applyTo(this)
+                filter.applyTo(this as F)
             }
         }
     }
