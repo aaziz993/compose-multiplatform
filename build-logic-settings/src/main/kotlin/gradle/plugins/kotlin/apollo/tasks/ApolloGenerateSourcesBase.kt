@@ -18,6 +18,7 @@ internal abstract class ApolloGenerateSourcesBase<T : com.apollographql.apollo3.
     abstract val addJvmOverloads: Boolean?
 
     abstract val classesForEnumsMatching: List<String>?
+    abstract val setClassesForEnumsMatching: List<String>?
 
     abstract val compilerJavaHooks: ApolloCompilerJavaHooks?
 
@@ -30,6 +31,7 @@ internal abstract class ApolloGenerateSourcesBase<T : com.apollographql.apollo3.
     abstract val generateInputBuilders: Boolean?
 
     abstract val generateMethods: List<GeneratedMethod>?
+    abstract val setGenerateMethods: List<GeneratedMethod>?
 
     abstract val generateModelBuilders: Boolean?
 
@@ -58,6 +60,7 @@ internal abstract class ApolloGenerateSourcesBase<T : com.apollographql.apollo3.
     abstract val requiresOptInAnnotation: String?
 
     abstract val sealedClassesForEnumsMatching: List<String>?
+    abstract val setSealedClassesForEnumsMatching: List<String>?
 
     abstract val useSemanticNaming: Boolean?
 
@@ -67,10 +70,20 @@ internal abstract class ApolloGenerateSourcesBase<T : com.apollographql.apollo3.
 
         recipient.addJvmOverloads tryAssign addJvmOverloads
         recipient.classesForEnumsMatching tryAssign classesForEnumsMatching
+
+        recipient.classesForEnumsMatching tryAssign setClassesForEnumsMatching?.let { setClassesForEnumsMatching ->
+            recipient.classesForEnumsMatching.get() + setClassesForEnumsMatching
+        }
+
         recipient.generateFilterNotNull tryAssign generateFilterNotNull
         recipient.generateFragmentImplementations tryAssign generateFragmentImplementations
         recipient.generateInputBuilders tryAssign generateInputBuilders
         recipient.generateMethods tryAssign generateMethods
+
+        recipient.generateMethods tryAssign setGenerateMethods?.let { setGenerateMethods ->
+            recipient.generateMethods.get() + setGenerateMethods
+        }
+
         recipient.generateModelBuilders tryAssign generateModelBuilders
         recipient.generateOptionalOperationVariables tryAssign generateOptionalOperationVariables
         recipient.generatePrimitiveTypes tryAssign generatePrimitiveTypes
@@ -85,6 +98,11 @@ internal abstract class ApolloGenerateSourcesBase<T : com.apollographql.apollo3.
         recipient.outputDir tryAssign outputDir?.let(layout.projectDirectory::dir)
         recipient.requiresOptInAnnotation tryAssign requiresOptInAnnotation
         recipient.sealedClassesForEnumsMatching tryAssign sealedClassesForEnumsMatching
+
+        recipient.sealedClassesForEnumsMatching tryAssign setSealedClassesForEnumsMatching?.let { setSealedClassesForEnumsMatching ->
+            recipient.sealedClassesForEnumsMatching.get() + setSealedClassesForEnumsMatching
+        }
+
         recipient.useSemanticNaming tryAssign useSemanticNaming
     }
 }

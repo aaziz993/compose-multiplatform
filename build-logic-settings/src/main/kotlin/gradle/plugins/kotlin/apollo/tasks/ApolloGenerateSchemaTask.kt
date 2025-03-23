@@ -29,7 +29,9 @@ internal data class ApolloGenerateSchemaTask(
     val generateDataBuilders: Boolean? = null,
     val outputFile: String? = null,
     val scalarAdapterMapping: Map<String, String>? = null,
+    val setScalarAdapterMapping: Map<String, String>? = null,
     val scalarTypeMapping: Map<String, String>? = null,
+    val setScalarTypeMapping: Map<String, String>? = null,
     val schemaFiles: Set<String>? = null,
     val setSchemaFiles: Set<String>? = null,
     val targetLanguage: TargetLanguage? = null,
@@ -47,7 +49,17 @@ internal data class ApolloGenerateSchemaTask(
         recipient.generateDataBuilders tryAssign generateDataBuilders
         recipient.outputFile tryAssign outputFile?.let(::file)
         recipient.scalarAdapterMapping tryAssign scalarAdapterMapping
+
+        recipient.scalarAdapterMapping tryAssign setScalarAdapterMapping?.let { setScalarAdapterMapping ->
+            recipient.scalarAdapterMapping.get() + setScalarAdapterMapping
+        }
+
         recipient.scalarTypeMapping tryAssign scalarTypeMapping
+
+        recipient.scalarTypeMapping tryAssign setScalarTypeMapping?.let { setScalarTypeMapping ->
+            recipient.scalarTypeMapping.get() + setScalarTypeMapping
+        }
+
         schemaFiles?.toTypedArray()?.let(recipient.schemaFiles::from)
         setSchemaFiles?.toTypedArray()?.let(recipient.schemaFiles::setFrom)
         recipient.targetLanguage tryAssign targetLanguage

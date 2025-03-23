@@ -65,7 +65,9 @@ internal data class ApolloGenerateSourcesTask(
     val setGraphqlFiles: Set<String>? = null,
     val projectPath: String? = null,
     val scalarAdapterMapping: Map<String, String>? = null,
+    val setScalarAdapterMapping: Map<String, String>? = null,
     val scalarTypeMapping: Map<String, String>? = null,
+    val setScalarTypeMapping: Map<String, String>? = null,
     val schemaFiles: Set<String>? = null,
     val setSchemaFiles: Set<String>? = null,
     val targetLanguage: TargetLanguage? = null,
@@ -94,7 +96,17 @@ internal data class ApolloGenerateSourcesTask(
         setGraphqlFiles?.let(recipient.graphqlFiles ::setFrom)
         recipient.projectPath tryAssign projectPath
         recipient.scalarAdapterMapping tryAssign scalarAdapterMapping
+
+        recipient.scalarAdapterMapping tryAssign setScalarAdapterMapping?.let { setScalarAdapterMapping ->
+            recipient.scalarAdapterMapping.get() + setScalarAdapterMapping
+        }
+
         recipient.scalarTypeMapping tryAssign scalarTypeMapping
+
+        recipient.scalarTypeMapping tryAssign setScalarTypeMapping?.let { setScalarTypeMapping ->
+            recipient.scalarTypeMapping.get() + setScalarTypeMapping
+        }
+
         schemaFiles?.toTypedArray()?.let( recipient.schemaFiles ::from)
         setSchemaFiles?.let( recipient.schemaFiles ::setFrom)
         recipient.targetLanguage tryAssign targetLanguage

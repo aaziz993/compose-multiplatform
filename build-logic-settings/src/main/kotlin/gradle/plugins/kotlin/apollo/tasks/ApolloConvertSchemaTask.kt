@@ -26,7 +26,7 @@ internal data class ApolloConvertSchemaTask(
     override val shouldRunAfter: Set<String>? = null,
     override val name: String? = null,
     val from: String? = null,
-    var projectRootDir: String? = null,
+    val projectRootDir: String? = null,
     val to: String? = null,
 ) : DefaultTask<ApolloConvertSchemaTask>() {
 

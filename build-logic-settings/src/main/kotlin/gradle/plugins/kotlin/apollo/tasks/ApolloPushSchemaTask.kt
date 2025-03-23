@@ -28,7 +28,7 @@ internal data class ApolloPushSchemaTask(
     val graph: String? = null,
     val graphVariant: String? = null,
     val key: String? = null,
-    var projectRootDir: String? = null,
+    val projectRootDir: String? = null,
     val revision: String? = null,
     val schema: String? = null,
     val subgraph: String? = null,
