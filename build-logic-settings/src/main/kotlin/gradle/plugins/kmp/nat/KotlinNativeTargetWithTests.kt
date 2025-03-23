@@ -3,13 +3,14 @@ package gradle.plugins.kmp.nat
 import gradle.accessors.kotlin
 
 import gradle.plugins.kmp.KotlinTargetWithTests
+import gradle.plugins.kmp.nat.KotlinNativeTarget
 import gradle.plugins.kmp.nat.tasks.KotlinNativeCompilerOptions
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 
-internal abstract class KotlinNativeTargetWithTests<T : KotlinNativeBinaryTestRun> :
+internal abstract class KotlinNativeTargetWithTests<T : org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTargetWithTests> :
     KotlinNativeTarget(), KotlinTargetWithTests<T> {
 
         context(Project)
@@ -18,9 +19,6 @@ internal abstract class KotlinNativeTargetWithTests<T : KotlinNativeBinaryTestRu
         super<KotlinTargetWithTests>.applyTo(named)
     }
 
-    context(Project)
-    override fun applyTo() =
-        super<KotlinNativeTarget>.applyTo(kotlin.targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTargetWithTests<*>>())
 }
 
 @Serializable
@@ -34,6 +32,11 @@ internal data class KotlinNativeTargetWithTestsImpl(
 
     override val targetName: String
         get() = ""
+
+    context(Project)
+    override fun applyTo() =
+        super<KotlinNativeTarget>.applyTo(kotlin.targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTargetWithTests<*>>())
+
 }
 
 

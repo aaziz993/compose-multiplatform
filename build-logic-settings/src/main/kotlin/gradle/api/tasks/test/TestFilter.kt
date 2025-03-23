@@ -1,9 +1,10 @@
 package gradle.api.tasks.test
 
+import kotlinx.serialization.Serializable
 import org.gradle.api.tasks.testing.TestFilter
 
-internal interface TestFilter<T: TestFilter> {
-
+@Serializable
+internal data class TestFilter(
     /**
      * Appends a test name pattern to the inclusion filter. Wildcard '*' is supported, either test method name or class name is supported. Examples of test names: "com.foo.FooTest.someMethod",
      * "com.foo.FooTest", "*FooTest*", "com.foo*". See examples in the docs for [TestFilter].
@@ -11,8 +12,7 @@ internal interface TestFilter<T: TestFilter> {
      * @param testNamePattern test name pattern to include, can be class or method name, can contain wildcard '*'
      * @return this filter object
      */
-    val includeTestsMatchings: Set<String>?
-
+    val includeTestsMatchings: Set<String>? = null,
     /**
      * Appends a test name pattern to the exclusion filter. Wildcard '*' is supported, either test
      * method name or class name is supported. Examples of test names: "com.foo.FooTest.someMethod",
@@ -22,16 +22,14 @@ internal interface TestFilter<T: TestFilter> {
      * @return this filter object
      * @since 5.0
      */
-    val excludeTestsMatchings: Set<String>?
-
+    val excludeTestsMatchings: Set<String>? = null,
     /**
      * Sets the included test name patterns. They can be class or method names and may contain wildcard '*'. Test name patterns can be appended via [.includeTestsMatching] or set via
      * [.setIncludePatterns].
      *
      * @return included test name patterns
      */
-    val includePatterns: Set<String>?
-
+    val includePatterns: Set<String>? = null,
     /**
      * Sets the excluded test name patterns. They can be class or method names and may contain wildcard '*'.
      * Test name patterns can be appended via [.excludeTestsMatching] or set via
@@ -40,8 +38,7 @@ internal interface TestFilter<T: TestFilter> {
      * @return included test name patterns
      * @since 5.0
      */
-    val excludePatterns: Set<String>?
-
+    val excludePatterns: Set<String>? = null,
     /**
      * Add a test method specified by test class name and method name.
      *
@@ -49,8 +46,7 @@ internal interface TestFilter<T: TestFilter> {
      * @param methodName the method name of the test to execute. Can be null.
      * @return this filter object
      */
-    val includeTests: Set<Test>?
-
+    val includeTests: Set<Test>? = null,
     /**
      * Excludes a test method specified by test class name and method name.
      *
@@ -59,15 +55,15 @@ internal interface TestFilter<T: TestFilter> {
      * @return this filter object
      * @since 5.0
      */
-    val excludeTests: Set<Test>?
-
+    val excludeTests: Set<Test>? = null,
     /**
      * Sets whether the task should fail if no matching tests where found.
      * The default is true.
      */
-    val failOnNoMatchingTests: Boolean?
+    val failOnNoMatchingTests: Boolean? = null,
+) {
 
-    fun applyTo(receiver: T) {
+    fun applyTo(receiver: TestFilter) {
         includeTestsMatchings?.forEach(receiver::includeTestsMatching)
         excludeTestsMatchings?.forEach(receiver::excludeTestsMatching)
         includePatterns?.let(receiver.includePatterns::addAll)

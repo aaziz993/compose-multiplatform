@@ -1,11 +1,11 @@
 package gradle.plugins.kmp.nat
 
-
 import gradle.api.tasks.test.TestFilter
 import gradle.api.trySet
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
+import org.gradle.api.Project
 
 @Serializable
 internal data class KotlinNativeSimulatorTestRun(
@@ -17,15 +17,13 @@ internal data class KotlinNativeSimulatorTestRun(
      * To get list of all available devices, run `xcrun simctl list`.
      */
     val deviceId: String,
-) : KotlinNativeBinaryTestRun {
+) : KotlinNativeBinaryTestRun<org.jetbrains.kotlin.gradle.targets.native.KotlinNativeSimulatorTestRun> {
 
-        context(Project)
-    override fun applyTo(receiver: T) {
-        super.applyTo(named)
+    context(Project)
+    override fun applyTo(receiver: org.jetbrains.kotlin.gradle.targets.native.KotlinNativeSimulatorTestRun) {
+        super.applyTo(receiver)
 
-        named as org.jetbrains.kotlin.gradle.targets.native.KotlinNativeSimulatorTestRun
-
-        named::deviceId trySet deviceId
+        receiver::deviceId trySet deviceId
     }
 }
 

@@ -8,8 +8,7 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinTargetTestRun
 /**
  * A [KotlinTargetExecution] that executes configured tests in the context of a specific [KotlinTarget].
  */
-internal interface KotlinTargetTestRun<T : KotlinTargetTestRun<*>, F : TestFilter>
-    : KotlinTestRun<T, F>, KotlinTargetExecution<T> {
+internal interface KotlinTargetTestRun<T : KotlinTargetTestRun<*>> : KotlinTestRun<T>, KotlinTargetExecution<T> {
 
     context(Project)
     override fun applyTo(receiver: T) {
