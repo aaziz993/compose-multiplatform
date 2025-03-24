@@ -8,18 +8,17 @@ import gradle.accessors.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
-
 import gradle.api.tasks.Expand
 import gradle.api.tasks.FilesMatching
 import gradle.api.tasks.applyTo
 import gradle.api.tasks.copy.CopySpecImpl
 import gradle.api.tasks.copy.FileCopyDetails
-import gradle.api.tasks.copy.FromSerializer
-import gradle.api.tasks.copy.IntoSpec
+import gradle.api.tasks.copy.FromContentPolymorphicSerializer
+import gradle.api.tasks.copy.Into
+import gradle.api.tasks.copy.IntoContentPolymorphicSerializer
+import gradle.api.tasks.copy.Rename
 import gradle.collection.SerializableAnyMap
-import gradle.plugins.java.manifest.FromContentPolymorphicSerializer
 import gradle.plugins.java.manifest.Manifest
-import gradle.plugins.java.tasks.shadow.Relocator
 import gradle.plugins.java.tasks.DependencyFilter
 import gradle.plugins.java.tasks.Jar
 import kotlinx.serialization.Serializable
@@ -65,11 +64,9 @@ internal data class ShadowJar(
     override val filesMatching: FilesMatching? = null,
     override val filesNotMatching: FilesMatching? = null,
     override val filteringCharset: String? = null,
-    override val from: @Serializable(with = FromContentPolymorphicSerializer::class) Any?? = null,
-    override val into: String? = null,
-    override val intoSpec: IntoSpec? = null,
-    override val rename: Map<String, String>? = null,
-    override val renamePattern: Map<String, String>? = null,
+    override val froms: LinkedHashSet<@Serializable(with = FromContentPolymorphicSerializer::class) Any>? = null,
+    override val into: @Serializable(with = IntoContentPolymorphicSerializer::class) Any? = null,
+    override val renames: Set<Rename>? = null,
     override val filePermissions: Int? = null,
     override val dirPermissions: Int? = null,
     override val eachFile: FileCopyDetails? = null,

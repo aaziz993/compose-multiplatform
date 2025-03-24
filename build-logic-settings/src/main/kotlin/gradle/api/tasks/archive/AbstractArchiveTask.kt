@@ -5,8 +5,10 @@ import gradle.api.tasks.FilesMatching
 import gradle.api.tasks.applyTo
 import gradle.api.tasks.copy.AbstractCopyTask
 import gradle.api.tasks.copy.FileCopyDetails
-import gradle.api.tasks.copy.From
-import gradle.api.tasks.copy.IntoSpec
+import gradle.api.tasks.copy.FromContentPolymorphicSerializer
+import gradle.api.tasks.copy.Into
+import gradle.api.tasks.copy.IntoContentPolymorphicSerializer
+import gradle.api.tasks.copy.Rename
 import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
 
@@ -113,14 +115,6 @@ internal abstract class AbstractArchiveTask<T : org.gradle.api.tasks.bundling.Ab
         receiver.archiveVersion tryAssign archiveVersion
         receiver.archiveExtension tryAssign archiveExtension
         receiver.archiveClassifier tryAssign archiveClassifier
-        into?.let(receiver::into)
-
-        intoSpec?.let { intoSpec ->
-            receiver.into(intoSpec.destPath) {
-                intoSpec.copySpec.applyTo(this)
-            }
-        }
-
         preserveFileTimestamps?.let(receiver::setPreserveFileTimestamps)
         reproducibleFileOrder?.let(receiver::setReproducibleFileOrder)
     }
@@ -157,12 +151,9 @@ internal data class AbstractArchiveTaskImpl(
     override val filesMatching: FilesMatching? = null,
     override val filesNotMatching: FilesMatching? = null,
     override val filteringCharset: String? = null,
-    override val from: Set<String>? = null,
-    override val fromSpec: From? = null,
-    override val into: String? = null,
-    override val intoSpec: IntoSpec? = null,
-    override val rename: Map<String, String>? = null,
-    override val renamePattern: Map<String, String>? = null,
+    override val froms: LinkedHashSet<@Serializable(with = FromContentPolymorphicSerializer::class) Any>? = null,
+    override val into: @Serializable(with = IntoContentPolymorphicSerializer::class) Any? = null,
+    override val renames: Set<Rename>? = null,
     override val filePermissions: Int? = null,
     override val dirPermissions: Int? = null,
     override val eachFile: FileCopyDetails? = null,

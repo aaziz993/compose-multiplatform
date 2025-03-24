@@ -4,7 +4,6 @@ import gradle.api.tasks.Expand
 import gradle.api.tasks.FilesMatching
 import gradle.api.tasks.util.PatternFilterable
 import gradle.collection.SerializableAnyMap
-import gradle.api.tasks.copy.FromContentPolymorphicSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.file.CopySpec
@@ -113,6 +112,17 @@ internal interface CopySpec<T : CopySpec> : CopySourceSpec<T>, CopyProcessingSpe
     val filesNotMatching: FilesMatching?
 
     /**
+     * Creates and configures a child `CopySpec` with a destination directory *inside* the archive for the files.
+     * The destination is evaluated as per [org.gradle.api.Project.file].
+     * Don't mix it up with [.getDestinationDirectory] which specifies the output directory for the archive.
+     *
+     * @param destPath destination directory *inside* the archive for the files
+     * @param copySpec The closure to use to configure the child `CopySpec`.
+     * @return this
+     */
+    override val into: @Serializable(with = IntoContentPolymorphicSerializer::class) Any?
+
+    /**
      * Specifies the charset used to read and write files when filtering.
      *
      * @param charset the name of the charset to use when filtering files
@@ -123,9 +133,7 @@ internal interface CopySpec<T : CopySpec> : CopySourceSpec<T>, CopyProcessingSpe
     context(Project)
     override fun applyTo(receiver: T) {
         super<CopySourceSpec>.applyTo(receiver)
-
         super<CopyProcessingSpec>.applyTo(receiver)
-
         super<PatternFilterable>.applyTo(receiver)
 
         isCaseSensitive?.let(receiver::setCaseSensitive)
@@ -140,6 +148,12 @@ internal interface CopySpec<T : CopySpec> : CopySourceSpec<T>, CopyProcessingSpe
             receiver.filesNotMatching(filesNotMatching.patterns, filesNotMatching.fileCopyDetails::applyTo)
         }
 
+        into?.let { into -> into as? Into }?.let { (destPath, copySpec) ->
+            receiver.into(destPath) {
+                copySpec.applyTo(this)
+            }
+        }
+
         filteringCharset?.let(receiver::setFilteringCharset)
     }
 }
@@ -152,11 +166,9 @@ internal data class CopySpecImpl(
     override val filesMatching: FilesMatching? = null,
     override val filesNotMatching: FilesMatching? = null,
     override val filteringCharset: String? = null,
-    override val from: @Serializable(with = FromContentPolymorphicSerializer::class) Any? = null,
-    override val into: String? = null,
-    override val intoSpec: IntoSpec? = null,
-    override val rename: Map<String, String>? = null,
-    override val renamePattern: Map<String, String>? = null,
+    override val froms: LinkedHashSet<@Serializable(with = FromContentPolymorphicSerializer::class) Any>? = null,
+    override val into: @Serializable(with = IntoContentPolymorphicSerializer::class) Any? = null,
+    override val renames: Set<Rename>? = null,
     override val filePermissions: Int? = null,
     override val dirPermissions: Int? = null,
     override val eachFile: FileCopyDetails? = null,

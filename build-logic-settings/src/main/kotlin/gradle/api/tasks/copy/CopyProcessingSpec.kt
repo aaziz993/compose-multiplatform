@@ -1,7 +1,6 @@
 package gradle.api.tasks.copy
 
 import gradle.api.file.ContentFilterable
-import java.util.regex.Pattern
 import org.gradle.api.Project
 import org.gradle.api.file.CopyProcessingSpec
 
@@ -16,18 +15,7 @@ internal interface CopyProcessingSpec<T : CopyProcessingSpec> : ContentFilterabl
      * @param destPath Path to the destination directory for a Copy
      * @return this
      */
-    val into: String?
-
-    /**
-     * Creates and configures a child `CopySpec` with a destination directory *inside* the archive for the files.
-     * The destination is evaluated as per [org.gradle.api.Project.file].
-     * Don't mix it up with [.getDestinationDirectory] which specifies the output directory for the archive.
-     *
-     * @param destPath destination directory *inside* the archive for the files
-     * @param copySpec The closure to use to configure the child `CopySpec`.
-     * @return this
-     */
-    val intoSpec: IntoSpec?
+    val into: Any?
 
     /**
      * Renames files based on a regular expression.  Uses java.util.regex type of regular expressions.  Note that the
@@ -45,16 +33,7 @@ internal interface CopyProcessingSpec<T : CopyProcessingSpec> : ContentFilterabl
      * @param replaceWith Replacement string (use $ syntax for capture groups)
      * @return this
      */
-    val rename: Map<String, String>?
-
-    /**
-     * Renames files based on a regular expression. See [.rename].
-     *
-     * @param sourceRegEx Source regular expression
-     * @param replaceWith Replacement string (use $ syntax for capture groups)
-     * @return this
-     */
-    val renamePattern: Map<String, String>?
+    val renames: Set<Rename>?
 
     /**
      * Configuration action for specifying file access permissions.
@@ -86,9 +65,9 @@ internal interface CopyProcessingSpec<T : CopyProcessingSpec> : ContentFilterabl
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
-        into?.let(receiver::into)
-        rename?.forEach(receiver::rename)
-        renamePattern?.forEach { (key, value) -> receiver.rename(Pattern.compile(key), value) }
+        into?.takeIf { into -> into is String }?.let(receiver::into)
+
+        renames?.forEach { (sourceRegEx, replaceWith) -> receiver.rename(sourceRegEx, replaceWith) }
 
         filePermissions?.let { filePermissions ->
             receiver.filePermissions {

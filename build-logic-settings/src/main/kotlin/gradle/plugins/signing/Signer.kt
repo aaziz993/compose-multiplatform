@@ -31,7 +31,7 @@ internal interface Signer {
      * @param files The files to sign.
      * @return The executed [sign operation][SignOperation].
      */
-    val sign: Set<@Serializable(with = SignSerializer::class) Any>?
+    val sign: Set<@Serializable(with = SignContentPolymorphicSerializer::class) Any>?
 
     context(Project)
     fun applyTo(

@@ -3,8 +3,8 @@ package gradle.api.tasks
 import org.gradle.kotlin.dsl.withType
 import gradle.api.tasks.copy.AbstractCopyTask
 import gradle.api.tasks.copy.FileCopyDetails
-import gradle.api.tasks.copy.From
-import gradle.api.tasks.copy.IntoSpec
+import gradle.api.tasks.copy.FromContentPolymorphicSerializer
+import gradle.api.tasks.copy.Into
 import gradle.api.tasks.util.PatternFilterableImpl
 import gradle.collection.SerializableAnyMap
 
@@ -53,12 +53,9 @@ internal data class SyncImpl(
     override val filesMatching: FilesMatching? = null,
     override val filesNotMatching: FilesMatching? = null,
     override val filteringCharset: String? = null,
-    override val from: Set<String>? = null,
-    override val fromSpec: From? = null,
-    override val into: String? = null,
-    override val intoSpec: IntoSpec? = null,
-    override val rename: Map<String, String>? = null,
-    override val renamePattern: Map<String, String>? = null,
+    override val froms: LinkedHashSet<@Serializable(with = FromContentPolymorphicSerializer::class) Any>? = null,
+    override val into: @Serializable(with = IntoContentPolymorphicSerializer::class) Any? = null,
+    override val renames: Set<Rename>? = null,
     override val filePermissions: Int? = null,
     override val dirPermissions: Int? = null,
     override val eachFile: FileCopyDetails? = null,

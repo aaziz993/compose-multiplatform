@@ -30,7 +30,7 @@ import org.gradle.kotlin.dsl.withType
 /**
  * `AbstractCopyTask` is the base class for all copy tasks.
  */
-internal abstract class AbstractCopyTask<T: org.gradle.api.tasks.AbstractCopyTask> : ConventionTask<T>(), CopySpec<org.gradle.api.file.CopySpec> {
+internal abstract class AbstractCopyTask<T : org.gradle.api.tasks.AbstractCopyTask> : ConventionTask<T>(), CopySpec<org.gradle.api.file.CopySpec> {
 
     /**
      * {@inheritDoc}
@@ -69,12 +69,9 @@ internal data class AbstractCopyTaskImpl(
     override val filesMatching: FilesMatching? = null,
     override val filesNotMatching: FilesMatching? = null,
     override val filteringCharset: String? = null,
-    override val from: Set<String>? = null,
-    override val fromSpec: From? = null,
-    override val into: String? = null,
-    override val intoSpec: IntoSpec? = null,
-    override val rename: Map<String, String>? = null,
-    override val renamePattern: Map<String, String>? = null,
+    override val froms: LinkedHashSet<@Serializable(with = FromContentPolymorphicSerializer::class) Any>? = null,
+    override val into: @Serializable(with = IntoContentPolymorphicSerializer::class) Any? = null,
+    override val renames: Set<Rename>? = null,
     override val filePermissions: Int? = null,
     override val dirPermissions: Int? = null,
     override val eachFile: FileCopyDetails? = null,
@@ -85,7 +82,7 @@ internal data class AbstractCopyTaskImpl(
     override val excludes: Set<String>? = null,
     override val setExcludes: Set<String>? = null,
     override val name: String? = null,
-) : AbstractCopyTask<org.gradle.api.tasks.AbstractCopyTask>(){
+) : AbstractCopyTask<org.gradle.api.tasks.AbstractCopyTask>() {
 
     context(Project)
     override fun applyTo() =
