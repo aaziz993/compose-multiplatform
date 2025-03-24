@@ -18,7 +18,7 @@ internal interface CopySourceSpec<T : CopySourceSpec> {
      */
     val froms: LinkedHashSet<@Serializable(with = FromContentPolymorphicSerializer::class) Any>?
 
-    context(Project)
+    context(project: Project)
     @Suppress("UNCHECKED_CAST")
     fun applyTo(receiver: T) {
         froms?.filterIsInstance<String>()?.toTypedArray()?.let(receiver::from)

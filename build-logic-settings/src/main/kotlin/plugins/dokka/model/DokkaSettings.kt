@@ -6,13 +6,13 @@ import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
 import gradle.plugins.dokka.DokkaExtension
-import gradle.plugins.dokka.plugin.DokkaPluginParametersBaseSpec
-import gradle.plugins.dokka.plugin.DokkaPluginParametersBaseSpecTransformingSerializer
 import gradle.plugins.dokka.DokkaPublication
 import gradle.plugins.dokka.DokkaPublicationTransformingSerializer
 import gradle.plugins.dokka.DokkaSourceSetSpec
 import gradle.plugins.dokka.DokkaSourceSetSpecTransformingSerializer
 import gradle.plugins.dokka.WorkerIsolation
+import gradle.plugins.dokka.plugin.DokkaPluginParametersBaseSpec
+import gradle.plugins.dokka.plugin.DokkaPluginParametersBaseSpecTransformingSerializer
 import gradle.project.EnabledSettings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -35,8 +35,8 @@ internal data class DokkaSettings(
     val dependenciesFromSubprojects: Boolean = true,
 ) : DokkaExtension, EnabledSettings {
 
-    context(Project)
-    override fun applyTo() = pluginManager.withPlugin(settings.libs.plugins.plugin("dokka").id) {
+    context(project: Project)
+    override fun applyTo() = project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("dokka").id) {
         super.applyTo()
     }
 }

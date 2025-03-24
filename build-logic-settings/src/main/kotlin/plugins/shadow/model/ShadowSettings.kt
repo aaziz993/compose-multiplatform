@@ -14,9 +14,9 @@ internal data class ShadowSettings(
     override val enabled: Boolean = true
 ) : EnabledSettings {
 
-    context(Project)
+    context(project: Project)
     fun applyTo() =
-        pluginManager.withPlugin(settings.libs.plugins.plugin("kotlin.serialization").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("kotlin.serialization").id) {
 
         }
 }

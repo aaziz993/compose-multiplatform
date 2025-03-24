@@ -1,6 +1,5 @@
 package gradle.plugins.karakum.tasks
 
-import org.gradle.kotlin.dsl.withType
 import gradle.accessors.id
 import gradle.accessors.libs
 import gradle.accessors.plugin
@@ -10,9 +9,10 @@ import gradle.api.tasks.DefaultTask
 import gradle.api.tasks.applyTo
 import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
-import org.gradle.api.Project
 import io.github.sgrishchenko.karakum.gradle.plugin.tasks.KarakumConfig
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
 
 @Serializable
 internal data class KarakumConfig(
@@ -33,16 +33,16 @@ internal data class KarakumConfig(
     val destinationFile: String? = null,
 ) : DefaultTask<KarakumConfig>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: KarakumConfig) =
-        pluginManager.withPlugin(settings.libs.plugins.plugin("karakum").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("karakum").id) {
             super.applyTo(receiver)
 
-            receiver.configFile tryAssign configFile?.let(::file)
-            receiver.destinationFile tryAssign destinationFile?.let(::file)
+            receiver.configFile tryAssign configFile?.let(project::file)
+            receiver.destinationFile tryAssign destinationFile?.let(project::file)
         }
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<KarakumConfig>())
+        applyTo(project.tasks.withType<KarakumConfig>())
 }

@@ -7,7 +7,6 @@ import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
-import gradle.plugins.karakum.karakumConfig
 import gradle.plugins.kmp.KotlinTarget
 import gradle.plugins.kmp.web.KotlinJsTarget
 import gradle.serialization.decodeMapFromString
@@ -23,12 +22,12 @@ internal class KarakumPlugin : Plugin<Project> {
             projectProperties.plugins.karakum
                 .takeIf { it.enabled && projectProperties.kotlin.targets.any { target -> target is KotlinJsTarget } }
                 ?.let { karakum ->
-                    plugins.apply(settings.libs.plugins.plugin("karakum").id)
+                    plugins.apply(project.settings.libs.plugins.plugin("karakum").id)
 
                     karakum.applyTo()
 
                     karakum.configFile
-                        ?.let(::file)
+                        ?.let(project::file)
                         ?.takeIf(File::exists)
                         ?.let(File::readText)
                         ?.let(Json.Default::decodeMapFromString)

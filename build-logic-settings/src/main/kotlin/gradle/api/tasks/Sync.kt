@@ -1,17 +1,15 @@
 package gradle.api.tasks
 
-import org.gradle.kotlin.dsl.withType
 import gradle.api.tasks.copy.AbstractCopyTask
 import gradle.api.tasks.copy.FileCopyDetails
 import gradle.api.tasks.copy.FromContentPolymorphicSerializer
-import gradle.api.tasks.copy.Into
 import gradle.api.tasks.util.PatternFilterableImpl
 import gradle.collection.SerializableAnyMap
-
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.file.DuplicatesStrategy
+import org.gradle.kotlin.dsl.withType
 
 internal abstract class Sync<T : org.gradle.api.tasks.Sync> : AbstractCopyTask<T>() {
 
@@ -19,11 +17,11 @@ internal abstract class Sync<T : org.gradle.api.tasks.Sync> : AbstractCopyTask<T
 
     abstract val preserve: PatternFilterableImpl?
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
-        destinationDir?.let(::file)?.let(receiver::setDestinationDir)
+        destinationDir?.let(project::file)?.let(receiver::setDestinationDir)
         preserve?.applyTo(receiver)
     }
 }
@@ -67,7 +65,7 @@ internal data class SyncImpl(
     override val setExcludes: Set<String>? = null,
 ) : Sync<org.gradle.api.tasks.Sync>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<org.gradle.api.tasks.Sync>())
+        applyTo(project.tasks.withType<org.gradle.api.tasks.Sync>())
 }

@@ -1,19 +1,19 @@
 package gradle.plugins.java.test
 
 import gradle.accessors.javaToolchain
-
-import gradle.api.tasks.util.PatternFilterable
+import gradle.api.tasks.applyTo
 import gradle.api.tasks.test.AbstractTestTask
-import gradle.api.tasks.test.DefaultTestFilter
+import gradle.api.tasks.test.TestFilter
 import gradle.api.tasks.test.TestLoggingContainer
+import gradle.api.tasks.util.PatternFilterable
 import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
-import gradle.plugins.java.test.JavaForkOptions
 import gradle.plugins.java.JavaToolchainSpec
 import gradle.plugins.java.ModularitySpec
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.withType
 
 /**
@@ -79,7 +79,8 @@ import org.gradle.kotlin.dsl.withType
  * gradle someTestTask --debug-jvm
 </pre> *
  */
-internal abstract class Test : AbstractTestTask(), JavaForkOptions, PatternFilterable {
+internal abstract class Test<T : org.gradle.api.tasks.testing.Test>
+    : AbstractTestTask<T>(), JavaForkOptions<T>, PatternFilterable<T> {
 
     /**
      * Indicates if this task will skip individual test execution.
@@ -133,7 +134,7 @@ internal abstract class Test : AbstractTestTask(), JavaForkOptions, PatternFilte
      * @param testClassesDirs All test class directories to be used.
      * @since 4.0
      */
-    abstract val testClassesDirs: List<String>?
+    abstract val testClassesDirs: Set<String>?
 
     /**
      * Specifies that JUnit4 should be used to discover and execute the tests.
@@ -231,56 +232,51 @@ internal abstract class Test : AbstractTestTask(), JavaForkOptions, PatternFilte
 
     abstract val javaLauncher: JavaToolchainSpec?
 
-        context(Project)
-    override fun applyTo(receiver: T) {
-        super<AbstractTestTask>.applyTo(named)
+    context(project: Project)
+    @Suppress("UnstableApiUsage")
+    override fun applyTo(recipient: T) {
+        super<AbstractTestTask>.applyTo(recipient)
+        super<JavaForkOptions>.applyTo(recipient)
+        super<PatternFilterable>.applyTo(recipient)
 
-        named as org.gradle.api.tasks.testing.Test
-
-        super<JavaForkOptions>.applyTo(named)
-        super<PatternFilterable>.applyTo(named)
-
-        named.dryRun tryAssign dryRun
-        modularity?.applyTo(named.modularity)
-        testClassesDirs?.toTypedArray()?.let(::files)?.let(named::setTestClassesDirs)
-        useJUnit?.takeIf { it }?.run { named.useJUnit() }
+        recipient.dryRun tryAssign dryRun
+        modularity?.applyTo(recipient.modularity)
+        testClassesDirs?.toTypedArray()?.let(project::files)?.let(recipient::setTestClassesDirs)
+        useJUnit?.takeIf { it }?.run { recipient.useJUnit() }
 
         useJUnitDsl?.let { useJUnitDsl ->
-            named.useJUnit {
+            recipient.useJUnit {
                 useJUnitDsl.applyTo(this)
             }
         }
 
-        useJUnitPlatform?.takeIf { it }?.run { named.useJUnitPlatform() }
+        useJUnitPlatform?.takeIf { it }?.run { recipient.useJUnitPlatform() }
 
         useJUnitPlatformDsl?.let { useJUnitPlatformDsl ->
-            named.useJUnitPlatform {
+            recipient.useJUnitPlatform {
                 useJUnitPlatformDsl.applyTo(this)
             }
         }
 
-        useTestNG?.takeIf { it }?.run { named.useTestNG() }
+        useTestNG?.takeIf { it }?.run { recipient.useTestNG() }
 
         useTestNGDsl?.let { useTestNGDsl ->
-            named.useTestNG {
+            recipient.useTestNG {
                 useTestNGDsl.applyTo(this)
             }
         }
 
-        scanForTestClasses?.let(named::setScanForTestClasses)
-        forkEvery?.let(named::setForkEvery)
-        named.maxParallelForks = maxParallelForks ?: (Runtime.getRuntime().availableProcessors() / 2).coerceAtLeast(1)
+        scanForTestClasses?.let(recipient::setScanForTestClasses)
+        forkEvery?.let(recipient::setForkEvery)
+        recipient.maxParallelForks = maxParallelForks
+            ?: (Runtime.getRuntime().availableProcessors() / 2).coerceAtLeast(1)
 
         javaLauncher?.let { javaLauncher ->
-            named.javaLauncher = javaToolchain.launcherFor {
+            recipient.javaLauncher = project.javaToolchain.launcherFor {
                 javaLauncher.applyTo(this)
             }
         }
     }
-
-    context(Project)
-    override fun applyTo() =
-        super<AbstractTestTask>.applyTo(tasks.withType<org.gradle.api.tasks.testing.Test>())
 }
 
 /** Configure tests against different JDK versions. */
@@ -308,7 +304,7 @@ internal fun org.gradle.api.tasks.testing.Test.configureJavaToolchain() =
 internal data class TestImpl(
     override val dryRun: Boolean? = null,
     override val modularity: ModularitySpec? = null,
-    override val testClassesDirs: List<String>? = null,
+    override val testClassesDirs: Set<String>? = null,
     override val useJUnit: Boolean? = null,
     override val useJUnitDsl: JUnitOptions? = null,
     override val useJUnitPlatform: Boolean? = null,
@@ -323,7 +319,7 @@ internal data class TestImpl(
     override val testLogging: TestLoggingContainer? = null,
     override val testNameIncludePatterns: List<String>? = null,
     override val failFast: Boolean? = null,
-    override val filter: DefaultTestFilter? = null,
+    override val filter: TestFilter? = null,
     override val dependsOn: LinkedHashSet<String>? = null,
     override val onlyIf: Boolean? = null,
     override val doNotTrackState: String? = null,
@@ -350,6 +346,7 @@ internal data class TestImpl(
     override val debug: Boolean? = null,
     override val debugOptions: JavaDebugOptions? = null,
     override val allJvmArgs: List<String>? = null,
+    override val setAllJvmArgs: List<String>? = null,
     override val executable: String? = null,
     override val workingDir: String? = null,
     override val environment: SerializableAnyMap? = null,
@@ -359,4 +356,9 @@ internal data class TestImpl(
     override val excludes: Set<String>? = null,
     override val setExcludes: Set<String>? = null,
     override val javaLauncher: JavaToolchainSpec? = null,
-) : Test()
+) : Test<org.gradle.api.tasks.testing.Test>() {
+
+    context(project: Project)
+    override fun applyTo() =
+        applyTo(project.tasks.withType<org.gradle.api.tasks.testing.Test>())
+}

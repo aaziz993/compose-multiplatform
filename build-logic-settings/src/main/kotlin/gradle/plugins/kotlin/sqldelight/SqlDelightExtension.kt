@@ -9,20 +9,19 @@ import gradle.accessors.sqldelight
 import gradle.api.applyTo
 import gradle.api.tryAssign
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.invoke
 
 internal interface SqlDelightExtension {
 
     val databases: Set<SqlDelightDatabase>?
     val linkSqlite: Boolean?
 
-    context(Project)
+    context(project: Project)
     fun applyTo() =
-        pluginManager.withPlugin(settings.libs.plugins.plugin("sqldelight").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("sqldelight").id) {
             databases?.forEach { database ->
-                database.applyTo(sqldelight.databases)
+                database.applyTo(project.sqldelight.databases)
             }
 
-            sqldelight.linkSqlite tryAssign linkSqlite
+            project.sqldelight.linkSqlite tryAssign linkSqlite
         }
 }

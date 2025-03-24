@@ -1,8 +1,8 @@
 package gradle.api.repositories.maven
 
 import gradle.api.applyTo
-import gradle.api.repositories.RepositoryContentDescriptorImpl
 import gradle.api.repositories.PasswordCredentials
+import gradle.api.repositories.RepositoryContentDescriptorImpl
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -28,13 +28,13 @@ internal data class MavenCentral(
     override val url: String?
         get() = ArtifactRepositoryContainer.MAVEN_CENTRAL_URL
 
-    context(Settings)
+    context(settings: Settings)
     override fun applyTo(receiver: RepositoryHandler) =
         applyTo(receiver.withType<org.gradle.api.artifacts.repositories.MavenArtifactRepository>()) { _, action ->
             receiver.mavenCentral(action)
         }
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: RepositoryHandler) =
         applyTo(receiver.withType<org.gradle.api.artifacts.repositories.MavenArtifactRepository>()) { _, action ->
             receiver.mavenCentral(action)

@@ -11,7 +11,7 @@ import org.jetbrains.gradle.apple.targets.IosFrameworkTarget
 @SerialName("iosFramework")
 internal data class IosFrameworkTarget(
     override val bridgingHeader: String? = null,
-    override val buildConfigurations: List<BuildConfiguration>? = null,
+    override val buildConfigurations: Set<BuildConfiguration>? = null,
     override val buildSettings: Map<AppleBuildSettings, String>? = null,
     override val embedFrameworks: Boolean? = null,
     override val ipad: Boolean? = null,

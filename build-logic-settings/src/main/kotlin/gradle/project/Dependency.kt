@@ -31,35 +31,35 @@ internal data class Dependency(
     val subConfiguration: String? = null
 ) {
 
-    context(Settings)
+    context(settings: Settings)
     fun resolve(): Any = resolve(
-        allLibs,
-        layout.settingsDirectory,
+        settings.allLibs,
+        settings.layout.settingsDirectory,
     )
 
-    context(Settings)
+    context(settings: Settings)
     fun applyTo(receiver: DependencyHandler) {
         receiver.add(configuration, subConfiguration(receiver, resolve()))
     }
 
-    context(Project)
+    context(project: Project)
     fun resolve(): Any = resolve(
-        settings.allLibs,
-        layout.projectDirectory,
+        project.settings.allLibs,
+        project.layout.projectDirectory,
     ) { notation ->
-        if (notation.startsWith(":")) project(notation) else notation
+        if (notation.startsWith(":")) project.project(notation) else notation
     }
 
-    context(Project)
+    context(project: Project)
     fun applyTo(receiver: DependencyHandler) {
         val config = when {
-            configurations.findByName(configuration) != null -> configuration
+            project.configurations.findByName(configuration) != null -> configuration
 
-            configuration == "kspCommonMainMetadata" && configurations.findByName("ksp") != null ->
+            configuration == "kspCommonMainMetadata" && project.configurations.findByName("ksp") != null ->
                 "ksp"
 
             else -> {
-                logger.warn("Configuration doesn't exists: $configuration")
+                project.logger.warn("Configuration doesn't exists: $configuration")
                 return
             }
         }
@@ -74,7 +74,7 @@ internal data class Dependency(
             else -> error("Unsupported dependency additional configuration: $subConfiguration")
         }
 
-    context(Project)
+    context(project: Project)
     fun applyTo(receiver: KotlinDependencyHandler): Unit =
         receiver.kotlinConfigurationFunction(kotlinSubConfiguration(receiver, resolve()))
 

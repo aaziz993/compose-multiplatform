@@ -26,7 +26,7 @@ internal data class NodeJsSetupTask(
     override val name: String? = null,
 ) : AbstractSetupTask<NodeJsSetupTask>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<NodeJsSetupTask>())
+        applyTo(project.tasks.withType<NodeJsSetupTask>())
 }

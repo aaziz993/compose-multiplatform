@@ -14,7 +14,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerOptions
 internal abstract class KotlinCompileCommon<T : org.jetbrains.kotlin.gradle.tasks.KotlinCompileCommon>
     : AbstractKotlinCompile<T>(), KotlinCompilationTask<T, KotlinCommonCompilerOptions> {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: T) {
         super<AbstractKotlinCompile>.applyTo(receiver)
         super<KotlinCompilationTask>.applyTo(receiver)
@@ -62,7 +62,7 @@ internal data class KotlinCompileCommonImpl(
     override val useModuleDetection: Boolean? = null,
 ) : KotlinCompileCommon<org.jetbrains.kotlin.gradle.tasks.KotlinCompileCommon>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompileCommon>())
+        applyTo(project.tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompileCommon>())
 }

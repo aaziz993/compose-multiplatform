@@ -13,11 +13,11 @@ internal abstract class AbstractSetupTask<T : org.jetbrains.kotlin.gradle.target
 
     abstract val destinationHashFileProvider: String?
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
-        receiver.destinationHashFileProvider tryAssign destinationHashFileProvider?.let(::file)
+        receiver.destinationHashFileProvider tryAssign destinationHashFileProvider?.let(project::file)
     }
 }
 
@@ -40,7 +40,7 @@ internal data class AbstractSetupTaskImpl(
     override val name: String? = null,
 ) : AbstractSetupTask<org.jetbrains.kotlin.gradle.targets.js.AbstractSetupTask<*, *>>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<org.jetbrains.kotlin.gradle.targets.js.AbstractSetupTask<*, *>>())
+        applyTo(project.tasks.withType<org.jetbrains.kotlin.gradle.targets.js.AbstractSetupTask<*, *>>())
 }

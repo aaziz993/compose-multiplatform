@@ -1,7 +1,6 @@
 package gradle.plugins.kmp
 
 import gradle.accessors.kotlin
-import gradle.api.BaseNamed
 import gradle.api.ProjectNamed
 import gradle.api.applyTo
 import gradle.api.file.SourceDirectorySet
@@ -70,7 +69,7 @@ internal data class KotlinSourceSet(
 ) : ProjectNamed<org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet>,
     HasKotlinDependencies<org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet> {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet) {
         super.applyTo(receiver)
 
@@ -81,7 +80,7 @@ internal data class KotlinSourceSet(
         customSourceFilesExtensions?.let(receiver::addCustomSourceFilesExtensions)
     }
 
-    context(Project)
+    context(project: Project)
     fun applyTo() = applyTo(project.kotlin.sourceSets)
 }
 

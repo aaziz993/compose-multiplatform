@@ -87,27 +87,27 @@ internal interface ApiValidationExtension {
      */
     val klib: KlibValidationSettings?
 
-    context(Project)
+    context(project: Project)
     @OptIn(ExperimentalBCVApi::class)
-    fun applyTo()= pluginManager.withPlugin("binary.compatibility.validator") {
-        apiValidation::validationDisabled trySet validationDisabled
-        ignoredPackages?.let(apiValidation.ignoredPackages::addAll)
-        apiValidation::ignoredPackages trySet setIgnoredPackages?.toMutableSet()
-        ignoredProjects?.let(apiValidation.ignoredProjects::addAll)
-        apiValidation::ignoredProjects trySet setIgnoredProjects?.toMutableSet()
-        nonPublicMarkers?.let(apiValidation.nonPublicMarkers::addAll)
-        apiValidation::nonPublicMarkers trySet setNonPublicMarkers?.toMutableSet()
-        ignoredClasses?.let(apiValidation.ignoredClasses::addAll)
-        apiValidation::ignoredClasses trySet setIgnoredClasses?.toMutableSet()
-        publicMarkers?.let(apiValidation.publicMarkers::addAll)
-        apiValidation::publicMarkers trySet setPublicMarkers?.toMutableSet()
-        publicPackages?.let(apiValidation.publicPackages::addAll)
-        apiValidation::publicPackages trySet setPublicPackages?.toMutableSet()
-        publicClasses?.let(apiValidation.publicClasses::addAll)
-        apiValidation::publicClasses trySet setPublicClasses?.toMutableSet()
-        additionalSourceSets?.let(apiValidation.additionalSourceSets::addAll)
-        apiValidation::additionalSourceSets trySet setAdditionalSourceSets?.toMutableSet()
-        apiValidation::apiDumpDirectory trySet apiDumpDirectory
-        klib?.applyTo(apiValidation.klib)
+    fun applyTo() = project.pluginManager.withPlugin("binaryCompatibilityValidator") {
+        project.apiValidation::validationDisabled trySet validationDisabled
+        ignoredPackages?.let(project.apiValidation.ignoredPackages::addAll)
+        project.apiValidation::ignoredPackages trySet setIgnoredPackages?.toMutableSet()
+        ignoredProjects?.let(project.apiValidation.ignoredProjects::addAll)
+        project.apiValidation::ignoredProjects trySet setIgnoredProjects?.toMutableSet()
+        nonPublicMarkers?.let(project.apiValidation.nonPublicMarkers::addAll)
+        project.apiValidation::nonPublicMarkers trySet setNonPublicMarkers?.toMutableSet()
+        ignoredClasses?.let(project.apiValidation.ignoredClasses::addAll)
+        project.apiValidation::ignoredClasses trySet setIgnoredClasses?.toMutableSet()
+        publicMarkers?.let(project.apiValidation.publicMarkers::addAll)
+        project.apiValidation::publicMarkers trySet setPublicMarkers?.toMutableSet()
+        publicPackages?.let(project.apiValidation.publicPackages::addAll)
+        project.apiValidation::publicPackages trySet setPublicPackages?.toMutableSet()
+        publicClasses?.let(project.apiValidation.publicClasses::addAll)
+        project.apiValidation::publicClasses trySet setPublicClasses?.toMutableSet()
+        additionalSourceSets?.let(project.apiValidation.additionalSourceSets::addAll)
+        project.apiValidation::additionalSourceSets trySet setAdditionalSourceSets?.toMutableSet()
+        project.apiValidation::apiDumpDirectory trySet apiDumpDirectory
+        klib?.applyTo(project.apiValidation.klib)
     }
 }

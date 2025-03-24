@@ -25,14 +25,14 @@ internal abstract class AbstractKotlinNativeCompile<T : org.jetbrains.kotlin.gra
 
     abstract val kotlinPluginData: KotlinCompilerPluginData?
 
-    context(Project)
+    context(project: Project)
     @OptIn(InternalKotlinGradlePluginApi::class)
     override fun applyTo(receiver: T) {
         super<AbstractKotlinCompileTool>.applyTo(receiver)
         super<ProducesKlib>.applyTo(receiver)
 
-        receiver::compilerPluginClasspath trySet compilerPluginClasspath?.toTypedArray()?.let(::files)
-        receiver::compilerPluginClasspath trySet compilerPluginClasspath?.toTypedArray()?.let(::files)?.let { files ->
+        receiver::compilerPluginClasspath trySet compilerPluginClasspath?.toTypedArray()?.let(project::files)
+        receiver::compilerPluginClasspath trySet compilerPluginClasspath?.toTypedArray()?.let(project::files)?.let { files ->
             receiver.compilerPluginClasspath?.let { it + files } ?: files
         }
 
@@ -74,9 +74,9 @@ internal data class AbstractKotlinNativeCompileImpl(
     override val produceUnpackagedKlib: Boolean? = null,
 ) : AbstractKotlinNativeCompile<org.jetbrains.kotlin.gradle.tasks.AbstractKotlinNativeCompile<*, *>>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<org.jetbrains.kotlin.gradle.tasks.AbstractKotlinNativeCompile<*, *>>())
+        applyTo(project.tasks.withType<org.jetbrains.kotlin.gradle.tasks.AbstractKotlinNativeCompile<*, *>>())
 }
 
 

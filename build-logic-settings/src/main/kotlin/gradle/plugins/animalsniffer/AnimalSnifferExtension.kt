@@ -9,8 +9,6 @@ import gradle.accessors.settings
 import gradle.plugins.quality.CodeQualityExtension
 import org.gradle.api.Project
 import ru.vyarus.gradle.plugin.animalsniffer.AnimalSnifferExtension
-import ru.vyarus.gradle.plugin.animalsniffer.debug.PrintAnimalsnifferSourceInfoTask
-import ru.vyarus.gradle.plugin.animalsniffer.debug.PrintAnimalsnifferTasksTask
 
 /**
  * Animal sniffer plugin extension. Use 'sourceSets' to define target source set (all by default).
@@ -115,22 +113,22 @@ internal abstract class AnimalSnifferExtension : CodeQualityExtension<AnimalSnif
      */
     abstract val failWithoutSignatures: Boolean?
 
-    context(Project)
-    fun applyTo() = pluginManager.withPlugin("org.gradle.java-base") {
-        pluginManager.withPlugin(settings.libs.plugins.plugin("animalsniffer").id) {
-            super.applyTo(animalSniffer)
+    context(project: Project)
+    fun applyTo() = project.pluginManager.withPlugin("org.gradle.java-base") {
+        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("animalsniffer").id) {
+            super.applyTo(project.animalSniffer)
 
-            debug?.let(animalSniffer::setDebug)
-            annotation?.let(animalSniffer::setAnnotation)
-            ignore?.toTypedArray()?.let(animalSniffer::ignore)
-            setIgnore?.let(animalSniffer::setIgnore)
-            excludeJars?.toTypedArray()?.let(animalSniffer::excludeJars)
-            setExcludeJars?.let(animalSniffer::setExcludeJars)
-            cache?.applyTo(animalSniffer.cache)
-            checkTestSources?.let(animalSniffer::setCheckTestSources)
-            defaultTargets?.let(animalSniffer::setDefaultTargets)
-            setDefaultTargets?.toTypedArray()?.let(animalSniffer::defaultTargets)
-            failWithoutSignatures?.let(animalSniffer::setFailWithoutSignatures)
+            debug?.let(project.animalSniffer::setDebug)
+            annotation?.let(project.animalSniffer::setAnnotation)
+            ignore?.toTypedArray()?.let(project.animalSniffer::ignore)
+            setIgnore?.let(project.animalSniffer::setIgnore)
+            excludeJars?.toTypedArray()?.let(project.animalSniffer::excludeJars)
+            setExcludeJars?.let(project.animalSniffer::setExcludeJars)
+            cache?.applyTo(project.animalSniffer.cache)
+            checkTestSources?.let(project.animalSniffer::setCheckTestSources)
+            defaultTargets?.let(project.animalSniffer::setDefaultTargets)
+            setDefaultTargets?.toTypedArray()?.let(project.animalSniffer::defaultTargets)
+            failWithoutSignatures?.let(project.animalSniffer::setFailWithoutSignatures)
         }
     }
 }

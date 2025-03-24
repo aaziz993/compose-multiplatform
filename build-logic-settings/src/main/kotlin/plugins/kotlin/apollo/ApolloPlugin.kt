@@ -15,7 +15,7 @@ internal class ApolloPlugin : Plugin<Project> {
         with(target) {
             projectProperties.plugins.apollo
                 .takeIf { it.enabled && projectProperties.kotlin.targets.isNotEmpty() }?.let { apollo ->
-                    plugins.apply(settings.libs.plugins.plugin("apollo3").id)
+                    plugins.apply(project.settings.libs.plugins.plugin("apollo3").id)
 
                     apollo.applyTo()
                 }

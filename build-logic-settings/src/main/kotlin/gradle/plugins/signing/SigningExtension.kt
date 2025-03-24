@@ -5,22 +5,11 @@ import gradle.accessors.id
 import gradle.accessors.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
-import gradle.accessors.publishing
 import gradle.accessors.settings
 import gradle.accessors.signing
 import gradle.api.configureEach
-import gradle.api.getByNameOrAll
 import gradle.api.toVersion
-import kotlinx.serialization.DeserializationStrategy
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.SerializationException
-import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonPrimitive
 import org.gradle.api.Project
-import org.gradle.api.artifacts.Configuration
-import org.gradle.internal.impldep.kotlinx.serialization.json.JsonContentPolymorphicSerializer
 import org.gradle.kotlin.dsl.withType
 import org.gradle.plugins.signing.Sign
 import org.gradle.plugins.signing.SignOperation
@@ -95,30 +84,30 @@ internal abstract class SigningExtension : Signer {
      */
     abstract val signClassifierFiles: List<SignFile>?
 
-    context(Project)
+    context(project: Project)
     fun applyTo() =
-        pluginManager.withPlugin("signing") {
-            signing.isRequired = required ?: !version.toString().toVersion().isPreRelease
-            useGpgCmd?.takeIf { it }?.run { signing.useGpgCmd() }
+        project.pluginManager.withPlugin("signing") {
+            project.signing.isRequired = required ?: !project.version.toString().toVersion().isPreRelease
+            useGpgCmd?.takeIf { it }?.run { project.signing.useGpgCmd() }
 
             useInMemoryPgpKeys?.let { (defaultKeyId, defaultSecretKey, defaultPassword) ->
-                signing.useInMemoryPgpKeys(defaultKeyId, defaultSecretKey, defaultPassword)
+                project.signing.useInMemoryPgpKeys(defaultKeyId, defaultSecretKey, defaultPassword)
             }
 
             applyTo(
-                signing::sign,
-                signing::sign,
-                signing::sign,
-                signing::sign,
-                signing::sign,
+                project.signing::sign,
+                project.signing::sign,
+                project.signing::sign,
+                project.signing::sign,
+                project.signing::sign,
             )
 
             // TODO: https://youtrack.jetbrains.com/issue/KT-61313/ https://github.com/gradle/gradle/issues/26132
-            plugins.withId(settings.libs.plugins.plugin("kotlin.multiplatform").id) {
-                tasks.withType<Sign>().configureEach { sign ->
+            project.plugins.withId(project.settings.libs.plugins.plugin("kotlin.multiplatform").id) {
+                project.tasks.withType<Sign>().configureEach { sign ->
                     sign.signatureType = WorkaroundSignatureType(
                         sign.signatureType ?: ArmoredSignatureType(),
-                        layout.buildDirectory.dir("signatures/${sign.name}"),
+                        project.layout.buildDirectory.dir("signatures/${sign.name}"),
                     )
                 }
             }

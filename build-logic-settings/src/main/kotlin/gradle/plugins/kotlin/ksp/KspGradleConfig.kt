@@ -48,7 +48,7 @@ internal data class KspGradleConfig(
     val konanHome: String? = null,
 ) {
 
-    context(Project)
+    context(project: Project)
     fun applyTo(receiver: KspGradleConfig) {
         processorClasspath?.toTypedArray()?.let(receiver.processorClasspath::from)
         setProcessorClasspath?.let(receiver.processorClasspath::setFrom)
@@ -61,14 +61,14 @@ internal data class KspGradleConfig(
         setJavaSourceRoots?.let(receiver.javaSourceRoots::setFrom)
         libraries?.toTypedArray()?.let(receiver.libraries::from)
         setLibraries?.let(receiver.libraries::setFrom)
-        receiver.jdkHome tryAssign jdkHome?.let(::file)
-        receiver.projectBaseDir tryAssign projectBaseDir?.let(::file)
-        receiver.outputBaseDir tryAssign outputBaseDir?.let(::file)
-        receiver.cachesDir tryAssign cachesDir?.let(layout.projectDirectory::dir)
-        receiver.kotlinOutputDir tryAssign kotlinOutputDir?.let(::file)
-        receiver.javaOutputDir tryAssign javaOutputDir?.let(::file)
-        receiver.classOutputDir tryAssign classOutputDir?.let(::file)
-        receiver.resourceOutputDir tryAssign resourceOutputDir?.let(::file)
+        receiver.jdkHome tryAssign jdkHome?.let(project::file)
+        receiver.projectBaseDir tryAssign projectBaseDir?.let(project::file)
+        receiver.outputBaseDir tryAssign outputBaseDir?.let(project::file)
+        receiver.cachesDir tryAssign cachesDir?.let(project.layout.projectDirectory::dir)
+        receiver.kotlinOutputDir tryAssign kotlinOutputDir?.let(project::file)
+        receiver.javaOutputDir tryAssign javaOutputDir?.let(project::file)
+        receiver.classOutputDir tryAssign classOutputDir?.let(project::file)
+        receiver.resourceOutputDir tryAssign resourceOutputDir?.let(project::file)
         receiver.languageVersion tryAssign languageVersion
         receiver.apiVersion tryAssign apiVersion
 

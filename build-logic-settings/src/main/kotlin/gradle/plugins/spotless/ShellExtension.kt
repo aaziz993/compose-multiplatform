@@ -37,7 +37,7 @@ internal data class ShellExtension(
     override val toggleOffOnDisable: Boolean? = null,
 ) : FormatExtension<ShellExtension>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() = spotless.shell {
         super.applyTo(this)
     }

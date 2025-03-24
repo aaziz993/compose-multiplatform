@@ -7,7 +7,6 @@ import gradle.accessors.plugins
 import gradle.accessors.settings
 import gradle.accessors.sonar
 import org.gradle.api.Project
-import org.sonarqube.gradle.SonarTask
 
 /**
  * Adds an action that configures SonarQube properties for the associated Gradle project.
@@ -63,17 +62,17 @@ internal interface SonarExtension {
      */
     val androidVariant: String?
 
-    context(Project)
+    context(project: Project)
     fun applyTo() =
-        pluginManager.withPlugin(settings.libs.plugins.plugin("sonar").id) {
-            skipProject?.let(sonar::setSkipProject)
+        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("sonar").id) {
+            skipProject?.let(project.sonar::setSkipProject)
 
             properties?.let { properties ->
-                sonar.properties {
+                project.sonar.properties {
                     properties.applyTo(this)
                 }
             }
 
-            androidVariant?.let(sonar::setAndroidVariant)
+            androidVariant?.let(project.sonar::setAndroidVariant)
         }
 }

@@ -64,7 +64,7 @@ internal abstract class ApolloGenerateSourcesBase<T : com.apollographql.apollo3.
 
     abstract val useSemanticNaming: Boolean?
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
@@ -93,9 +93,9 @@ internal abstract class ApolloGenerateSourcesBase<T : com.apollographql.apollo3.
         receiver.generatedSchemaName tryAssign generatedSchemaName
         receiver.jsExport tryAssign jsExport
         receiver.nullableFieldStyle tryAssign nullableFieldStyle
-        receiver.operationManifestFile tryAssign operationManifestFile?.let(::file)
+        receiver.operationManifestFile tryAssign operationManifestFile?.let(project::file)
         receiver.operationManifestFormat tryAssign operationManifestFormat
-        receiver.outputDir tryAssign outputDir?.let(layout.projectDirectory::dir)
+        receiver.outputDir tryAssign outputDir?.let(project.layout.projectDirectory::dir)
         receiver.requiresOptInAnnotation tryAssign requiresOptInAnnotation
 
         receiver.sealedClassesForEnumsMatching tryAssign sealedClassesForEnumsMatching?.let { sealedClassesForEnumsMatching ->
@@ -148,7 +148,7 @@ internal data class ApolloGenerateSourcesBaseImpl(
     override val name: String? = null,
 ) : ApolloGenerateSourcesBase<com.apollographql.apollo3.gradle.internal.ApolloGenerateSourcesBase>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<com.apollographql.apollo3.gradle.internal.ApolloGenerateSourcesBase>())
+        applyTo(project.tasks.withType<com.apollographql.apollo3.gradle.internal.ApolloGenerateSourcesBase>())
 }

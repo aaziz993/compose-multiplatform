@@ -3,7 +3,6 @@
 package gradle.plugins.java.tasks.shadow
 
 import gradle.api.tasks.copy.CopySpec
-import gradle.plugins.java.tasks.shadow.Relocator
 import gradle.plugins.java.tasks.DependencyFilter
 import org.gradle.api.Project
 
@@ -32,7 +31,7 @@ internal interface ShadowSpec<T : com.github.jengelman.gradle.plugins.shadow.tas
      */
     val append: String?
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
@@ -53,7 +52,13 @@ internal interface ShadowSpec<T : com.github.jengelman.gradle.plugins.shadow.tas
         }
 
         mergeServiceFiles?.takeIf { it }?.run { receiver.mergeServiceFiles() }
-        mergeServiceFilesPath?.let(receiver::mergeServiceFiles)
-        append?.let(receiver::append)
+
+        mergeServiceFilesPath?.let { mergeServiceFilesPath ->
+            receiver.mergeServiceFiles(mergeServiceFilesPath)
+        }
+
+        append?.let { append ->
+            receiver.append(append)
+        }
     }
 }

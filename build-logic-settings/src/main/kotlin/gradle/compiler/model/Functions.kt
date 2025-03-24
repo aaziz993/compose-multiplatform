@@ -21,7 +21,7 @@ public data class UnresolvedFunction(override val name: String, val dimensions: 
         get() = throw IllegalStateException("Getting body of an unresolved function $this")
 }
 
-public sealed class Intrinsic(name: String, parameters: kotlin.collections.List<Variable>, public val throws: Boolean = false) : FunctionDeclaration(name, parameters, Skip) {
+public sealed class Intrinsic(name: String, parameters: List<Variable>, public val throws: Boolean = false) : FunctionDeclaration(name, parameters, Skip) {
 
     override val body: Statement get() = throw IllegalStateException("Getting body of an unresolved function $this")
 

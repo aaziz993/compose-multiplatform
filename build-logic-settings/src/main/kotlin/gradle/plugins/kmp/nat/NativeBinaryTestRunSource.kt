@@ -2,9 +2,6 @@ package gradle.plugins.kmp.nat
 
 import gradle.plugins.kotlin.KotlinExecution
 import kotlinx.serialization.Serializable
-import org.gradle.api.Project
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTargetWithTests
-import org.jetbrains.kotlin.gradle.targets.native.KotlinNativeBinaryTestRun
 
 @Serializable
 internal data class NativeBinaryTestRunSource(

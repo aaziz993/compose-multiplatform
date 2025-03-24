@@ -28,7 +28,7 @@ internal abstract class AbstractMacOSPlatformSettings<T: AbstractMacOSPlatformSe
 
     abstract val notarization: MacOSNotarizationSettings?
 
-    context(Project)
+    context(project: Project)
     open fun applyTo(receiver: T) {
         super.applyTo(receiver)
 

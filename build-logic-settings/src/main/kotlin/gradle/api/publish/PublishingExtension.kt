@@ -79,10 +79,10 @@ internal interface PublishingExtension {
      */
     val publications: Set<@Serializable(with = PublicationTransformingSerializer::class) Publication<*>>?
 
-    context(Project)
+    context(project: Project)
     @Suppress("UNCHECKED_CAST")
     fun applyTo() =
-        pluginManager.withPlugin("maven-publish") {
+        project.pluginManager.withPlugin("maven-publish") {
             repositories?.forEach { repository ->
                 repository.applyTo(publishing.repositories)
             }

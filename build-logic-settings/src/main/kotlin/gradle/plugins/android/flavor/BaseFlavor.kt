@@ -202,12 +202,12 @@ internal interface BaseFlavor<T : BaseFlavor> : VariantDimension<T> {
      */
     val initWith: String?
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
-        receiver.testApplicationId = testApplicationId ?: "$androidNamespace.test"
-        receiver::minSdk trySet (settings.libs.versions.version("android.minSdk")?.toInt())
+        receiver.testApplicationId = testApplicationId ?: "${project.androidNamespace}.test"
+        receiver::minSdk trySet (project.settings.libs.versions.version("android.minSdk")?.toInt())
         receiver::minSdkPreview trySet minSdkPreview
         receiver::renderscriptTargetApi trySet renderscriptTargetApi
         receiver::renderscriptSupportModeEnabled trySet renderscriptSupportModeEnabled
@@ -228,6 +228,6 @@ internal interface BaseFlavor<T : BaseFlavor> : VariantDimension<T> {
             receiver.missingDimensionStrategy(missingDimensionStrategy.dimension, missingDimensionStrategy.requestedValues)
         }
 
-        initWith?.let(android.productFlavors::getByName)?.let(receiver::initWith)
+        initWith?.let(project.android.productFlavors::getByName)?.let(receiver::initWith)
     }
 }

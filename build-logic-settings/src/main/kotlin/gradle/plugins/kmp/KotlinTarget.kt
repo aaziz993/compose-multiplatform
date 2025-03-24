@@ -1,6 +1,5 @@
 package gradle.plugins.kmp
 
-import gradle.accessors.kotlin
 import gradle.api.ProjectNamed
 import gradle.api.applyTo
 import gradle.plugins.kotlin.KotlinCompilation
@@ -30,7 +29,7 @@ internal interface KotlinTarget<T : org.jetbrains.kotlin.gradle.plugin.KotlinTar
     val needKMP: Boolean
         get() = true
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: T) {
         compilations?.forEach { compilation ->
             receiver.compilations.named(compilation.name) {
@@ -39,7 +38,7 @@ internal interface KotlinTarget<T : org.jetbrains.kotlin.gradle.plugin.KotlinTar
         }
     }
 
-    context(Project)
+    context(project: Project)
     fun applyTo()
 }
 
@@ -59,7 +58,7 @@ internal data class KotlinTargetIml(
     override val compilations: Set<KotlinCompilationImpl>? = null,
 ) : KotlinTarget<org.jetbrains.kotlin.gradle.plugin.KotlinTarget> {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
         applyTo(kotlin.targets) { _, _ -> }
 }

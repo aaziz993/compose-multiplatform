@@ -31,16 +31,16 @@ internal data class BuildConfigTask(
     val outputDir: String? = null,
 ) : DefaultTask<BuildConfigTask>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: BuildConfigTask) {
         super.applyTo(receiver)
 
         receiver.specs tryAssign specs?.map(buildConfig.sourceSets::getByName)
         receiver.generator tryAssign generator?.toBuildConfigGenerator()
-        receiver.outputDir tryAssign outputDir?.let(layout.projectDirectory::dir)
+        receiver.outputDir tryAssign outputDir?.let(project.layout.projectDirectory::dir)
     }
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<BuildConfigTask>())
+        applyTo(project.tasks.withType<BuildConfigTask>())
 }

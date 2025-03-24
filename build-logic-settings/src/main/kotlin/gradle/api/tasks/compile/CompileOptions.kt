@@ -35,7 +35,7 @@ internal data class CompileOptions(
     val headerOutputDirectory: String? = null,
 ) {
 
-    context(Project)
+    context(project: Project)
     @Suppress("UnstableApiUsage")
     fun applyTo(receiver: CompileOptions) {
         failOnError?.let(receiver::setFailOnError)
@@ -46,17 +46,17 @@ internal data class CompileOptions(
         encoding?.let(receiver::setEncoding)
         debug?.let(receiver::setDebug)
         fork?.let(receiver::setFork)
-        bootstrapClasspath?.toTypedArray()?.let(::files)?.let(receiver::setBootstrapClasspath)
+        bootstrapClasspath?.toTypedArray()?.let(project::files)?.let(receiver::setBootstrapClasspath)
         extensionDirs?.let(receiver::setExtensionDirs)
         compilerArgs?.let(receiver::setCompilerArgs)
         incremental?.let(receiver::setIncremental)
-        sourcepath?.toTypedArray()?.let(::files).let(receiver::setSourcepath)
-        annotationProcessorPath?.toTypedArray()?.let(::files)?.let(receiver::setAnnotationProcessorPath)
+        sourcepath?.toTypedArray()?.let(project::files).let(receiver::setSourcepath)
+        annotationProcessorPath?.toTypedArray()?.let(project::files)?.let(receiver::setAnnotationProcessorPath)
         receiver.incrementalAfterFailure tryAssign incrementalAfterFailure
         receiver.javaModuleVersion tryAssign javaModuleVersion
         receiver.javaModuleMainClass tryAssign javaModuleMainClass
         receiver.release tryAssign release
-        receiver.generatedSourceOutputDirectory tryAssign generatedSourceOutputDirectory?.let(layout.projectDirectory::dir)
-        receiver.headerOutputDirectory tryAssign headerOutputDirectory?.let(layout.projectDirectory::dir)
+        receiver.generatedSourceOutputDirectory tryAssign generatedSourceOutputDirectory?.let(project.layout.projectDirectory::dir)
+        receiver.headerOutputDirectory tryAssign headerOutputDirectory?.let(project.layout.projectDirectory::dir)
     }
 }

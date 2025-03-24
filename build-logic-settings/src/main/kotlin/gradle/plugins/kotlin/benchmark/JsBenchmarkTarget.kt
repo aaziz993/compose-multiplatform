@@ -3,7 +3,6 @@ package gradle.plugins.kotlin.benchmark
 import gradle.api.trySet
 import gradle.plugins.kmp.web.KotlinJsIrCompilation
 import kotlinx.benchmark.gradle.JsBenchmarksExecutor
-import kotlinx.benchmark.gradle.WasmBenchmarkTarget
 import kotlinx.benchmark.gradle.internal.KotlinxBenchmarkPluginInternalApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -13,7 +12,7 @@ internal abstract class JsBenchmarkTarget : BenchmarkTarget<kotlinx.benchmark.gr
 
     abstract val compilation: KotlinJsIrCompilation?
 
-    context(Project)
+    context(project: Project)
     @OptIn(KotlinxBenchmarkPluginInternalApi::class)
     override fun applyTo(receiver: kotlinx.benchmark.gradle.JsBenchmarkTarget) {
         super.applyTo(receiver)
@@ -31,7 +30,7 @@ internal data class JsBenchmarkTargetImpl(
     val jsBenchmarksExecutor: JsBenchmarksExecutor? = null,
 ) : JsBenchmarkTarget() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: kotlinx.benchmark.gradle.JsBenchmarkTarget) {
         super.applyTo(receiver)
 

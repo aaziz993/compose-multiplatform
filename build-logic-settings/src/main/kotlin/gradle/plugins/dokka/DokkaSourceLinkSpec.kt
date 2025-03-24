@@ -76,7 +76,7 @@ internal data class DokkaSourceLinkSpec(
     val remoteLineSuffix: String? = null
 ) {
 
-    context(Project)
+    context(project: Project)
     fun applyTo(receiver: DokkaSourceLinkSpec) {
         receiver.localDirectory tryAssign layout.projectDirectory.dir(
             localDirectory ?: when (projectProperties.layout) {

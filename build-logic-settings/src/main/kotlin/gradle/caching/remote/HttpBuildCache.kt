@@ -19,7 +19,7 @@ internal data class HttpBuildCache(
     val useExpectContinue: Boolean? = null,
 ) : AbstractBuildCache<HttpBuildCache>() {
 
-    context(Settings)
+    context(settings: Settings)
     override fun applyTo(receiver: HttpBuildCache) {
         super.applyTo(receiver)
 
@@ -30,7 +30,7 @@ internal data class HttpBuildCache(
         useExpectContinue?.let(receiver::setUseExpectContinue)
     }
 
-    context(Settings)
+    context(settings: Settings)
     override fun applyTo(receiver: BuildCacheConfiguration) {
         receiver.remote(HttpBuildCache::class.java) {
             applyTo(this)

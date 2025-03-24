@@ -19,13 +19,13 @@ internal interface RoomExtension {
     /** Causes Room annotation processor to generate Kotlin code instead of Java. */
     val generateKotlin: Boolean?
 
-    context(Project)
+    context(project: Project)
     fun applyTo() =
-        pluginManager.withPlugin(settings.libs.plugins.plugin("room").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("room").id) {
             schemaDirectories?.forEach { (matchName, path) ->
-                room.schemaDirectory(matchName, path)
+                project.room.schemaDirectory(matchName, path)
             }
 
-            room::generateKotlin trySet generateKotlin
+            project.room::generateKotlin trySet generateKotlin
         }
 }

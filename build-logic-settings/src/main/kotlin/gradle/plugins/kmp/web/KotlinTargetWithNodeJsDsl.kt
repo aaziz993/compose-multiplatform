@@ -7,7 +7,7 @@ internal interface KotlinTargetWithNodeJsDsl {
 
     val nodejs: KotlinJsNodeDsl?
 
-    context(Project)
+    context(project: Project)
     fun applyTo(target: KotlinTargetWithNodeJsDsl, distributionName: String) {
         nodejs?.let { nodejs ->
             target.nodejs {

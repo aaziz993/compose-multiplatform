@@ -24,7 +24,7 @@ internal data class Bundle(
     val aiModelVersion: BundleAiModelVersion? = null,
 ) {
 
-    context(Project)
+    context(project: Project)
     @Suppress("UnstableApiUsage")
     fun applyTo(receiver: Bundle) {
         abi?.applyTo(receiver.abi)
@@ -34,7 +34,7 @@ internal data class Bundle(
         deviceTier?.applyTo(receiver.deviceTier)
         codeTransparency?.applyTo(receiver.codeTransparency)
         storeArchive?.applyTo(receiver.storeArchive)
-        receiver.integrityConfigDir tryAssign integrityConfigDir?.let(layout.projectDirectory::dir)
+        receiver.integrityConfigDir tryAssign integrityConfigDir?.let(project.layout.projectDirectory::dir)
         countrySet?.applyTo(receiver.countrySet)
         aiModelVersion?.applyTo(receiver.aiModelVersion)
     }

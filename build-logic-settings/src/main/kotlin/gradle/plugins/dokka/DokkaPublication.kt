@@ -118,22 +118,22 @@ internal data class DokkaPublication(
     val finalizeCoroutines: Boolean? = null,
 ) : ProjectNamed<org.jetbrains.dokka.gradle.formats.DokkaPublication> {
 
-    override val name: String
+    override val name: String?
         get() = formatName
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: org.jetbrains.dokka.gradle.formats.DokkaPublication) {
         receiver.enabled tryAssign enabled
         receiver.moduleName tryAssign moduleName
         receiver.moduleVersion tryAssign moduleVersion
-        receiver.outputDirectory tryAssign outputDirectory?.let(layout.projectDirectory::dir)
+        receiver.outputDirectory tryAssign outputDirectory?.let(project.layout.projectDirectory::dir)
         receiver.offlineMode tryAssign offlineMode
         receiver.failOnWarning tryAssign failOnWarning
         receiver.suppressObviousFunctions tryAssign suppressObviousFunctions
         receiver.suppressInheritedMembers tryAssign suppressInheritedMembers
         includes?.toTypedArray()?.let(receiver.includes::from)
         setIncludes?.let(receiver.includes::setFrom)
-        receiver.cacheRoot tryAssign cacheRoot?.let(layout.projectDirectory::dir)
+        receiver.cacheRoot tryAssign cacheRoot?.let(project.layout.projectDirectory::dir)
         receiver.finalizeCoroutines tryAssign finalizeCoroutines
     }
 }

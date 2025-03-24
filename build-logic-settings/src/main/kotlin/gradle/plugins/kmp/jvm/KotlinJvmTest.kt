@@ -5,11 +5,11 @@ import gradle.api.tasks.test.DefaultTestFilter
 import gradle.api.tasks.test.TestLoggingContainer
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
+import gradle.plugins.java.JavaToolchainSpec
+import gradle.plugins.java.ModularitySpec
 import gradle.plugins.java.test.JUnitOptions
 import gradle.plugins.java.test.JUnitPlatformOptions
 import gradle.plugins.java.test.JavaDebugOptions
-import gradle.plugins.java.JavaToolchainSpec
-import gradle.plugins.java.ModularitySpec
 import gradle.plugins.java.test.Test
 import gradle.plugins.java.test.TestNGOptions
 import kotlinx.serialization.Serializable
@@ -75,7 +75,7 @@ internal data class KotlinJvmTest(
     val targetName: String? = null,
 ) : Test() {
 
-        context(Project)
+        context(project: Project)
     override fun applyTo(receiver: T) {
         super.applyTo(named)
 
@@ -84,7 +84,7 @@ internal data class KotlinJvmTest(
         named::targetName trySet targetName
     }
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<KotlinJvmTest>())
+        applyTo(project.tasks.withType<KotlinJvmTest>())
 }

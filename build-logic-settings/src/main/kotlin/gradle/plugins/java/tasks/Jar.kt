@@ -7,7 +7,6 @@ import gradle.api.tasks.archive.Zip
 import gradle.api.tasks.copy.CopySpecImpl
 import gradle.api.tasks.copy.FileCopyDetails
 import gradle.api.tasks.copy.FromContentPolymorphicSerializer
-import gradle.api.tasks.copy.Into
 import gradle.api.tasks.copy.IntoContentPolymorphicSerializer
 import gradle.api.tasks.copy.Rename
 import gradle.collection.SerializableAnyMap
@@ -52,7 +51,7 @@ internal abstract class Jar<T : org.gradle.api.tasks.bundling.Jar> : Zip<T>() {
 
     abstract val metaInf: CopySpecImpl?
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
@@ -114,7 +113,7 @@ internal data class JarImpl(
     override val setExcludes: Set<String>? = null,
 ) : Jar<org.gradle.api.tasks.bundling.Jar>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<org.gradle.api.tasks.bundling.Jar>())
+        applyTo(project.tasks.withType<org.gradle.api.tasks.bundling.Jar>())
 }

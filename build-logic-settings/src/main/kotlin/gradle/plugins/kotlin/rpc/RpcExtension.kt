@@ -26,11 +26,11 @@ internal interface RpcExtension {
      */
     val strict: RpcStrictModeExtension?
 
-    context(Project)
+    context(project: Project)
     @OptIn(RpcDangerousApi::class)
     fun applyTo() =
-        pluginManager.withPlugin(settings.libs.plugins.plugin("rpc").id) {
-            rpc.annotationTypeSafetyEnabled tryAssign annotationTypeSafetyEnabled
-            strict?.applyTo(rpc.strict)
+        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("rpc").id) {
+            project.rpc.annotationTypeSafetyEnabled tryAssign annotationTypeSafetyEnabled
+            strict?.applyTo(project.rpc.strict)
         }
 }

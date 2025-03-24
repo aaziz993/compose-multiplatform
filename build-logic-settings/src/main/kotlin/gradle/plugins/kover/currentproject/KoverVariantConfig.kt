@@ -1,6 +1,5 @@
 package gradle.plugins.kover.currentproject
 
-import gradle.plugins.kover.currentproject.KoverVariantSources
 import kotlinx.serialization.Serializable
 
 /**

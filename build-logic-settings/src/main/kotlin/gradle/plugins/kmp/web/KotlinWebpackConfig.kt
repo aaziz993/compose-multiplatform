@@ -34,15 +34,15 @@ internal data class KotlinWebpackConfig(
     val scssSupport: KotlinWebpackCssRule? = null,
 ) {
 
-    context(Project)
+    context(project: Project)
     fun applyTo(webpackConfig: KotlinWebpackConfig, outputFileName: String) {
         webpackConfig::mode trySet mode
-        webpackConfig::entry trySet entry?.let(::file)
+        webpackConfig::entry trySet entry?.let(project::file)
         webpackConfig::output trySet output?.toKotlinWebPackOutput()
-        webpackConfig::outputPath trySet outputPath?.let(::file)
+        webpackConfig::outputPath trySet outputPath?.let(project::file)
         webpackConfig.outputFileName = this.outputFileName ?: outputFileName
-        webpackConfig::configDirectory trySet configDirectory?.let(::file)
-        webpackConfig::reportEvaluatedConfigFile trySet reportEvaluatedConfigFile?.let(::file)
+        webpackConfig::configDirectory trySet configDirectory?.let(project::file)
+        webpackConfig::reportEvaluatedConfigFile trySet reportEvaluatedConfigFile?.let(project::file)
 
         devServer?.let { devServer ->
             webpackConfig.devServer = (webpackConfig.devServer ?: KotlinWebpackConfig.DevServer())
@@ -60,7 +60,7 @@ internal data class KotlinWebpackConfig(
         webpackConfig::sourceMaps trySet sourceMaps
         webpackConfig::export trySet export
         webpackConfig::progressReporter trySet progressReporter
-        webpackConfig::progressReporterPathFilter trySet progressReporterPathFilter?.let(::file)
+        webpackConfig::progressReporterPathFilter trySet progressReporterPathFilter?.let(project::file)
         webpackConfig::resolveFromModulesFirst trySet resolveFromModulesFirst
 
         if (cssSupport != null) {

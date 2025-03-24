@@ -11,7 +11,7 @@ internal interface InternalSigningConfig<T : InternalSigningConfig> :
     ProjectNamed<T>,
     SigningConfigDsl<T> {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: T) {
         super<ApkSigningConfig>.applyTo(receiver)
         super<SigningConfigDsl>.applyTo(receiver)

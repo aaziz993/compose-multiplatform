@@ -47,12 +47,12 @@ internal interface KoverExtension {
      */
     val reports: KoverReportsConfig?
 
-    context(Project)
+    context(project: Project)
     fun applyTo() =
-        pluginManager.withPlugin(settings.libs.plugins.plugin("kover").id) {
-            kover.useJacoco tryAssign useJacoco
-            kover.jacocoVersion tryAssign jacocoVersion
-            currentProject?.applyTo(kover.currentProject)
-            reports?.applyTo(kover.reports)
+        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("kover").id) {
+            project.kover.useJacoco tryAssign useJacoco
+            project.kover.jacocoVersion tryAssign jacocoVersion
+            currentProject?.applyTo(project.kover.currentProject)
+            reports?.applyTo(project.kover.reports)
         }
 }

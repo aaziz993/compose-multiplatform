@@ -2,7 +2,6 @@ package gradle.plugins.kover.reports
 
 import gradle.plugins.kover.reports.filters.KoverReportFiltersConfig
 import gradle.plugins.kover.reports.total.KoverReportSetConfig
-import gradle.plugins.kover.reports.verify.KoverVerificationRulesConfig
 import gradle.plugins.kover.reports.verify.KoverVerificationRulesConfigImpl
 import kotlinx.kover.gradle.plugin.dsl.KoverReportsConfig
 import kotlinx.serialization.Serializable
@@ -100,7 +99,7 @@ internal data class KoverReportsConfig(
     val variants: Set<Variant>? = null,
 ) {
 
-    context(Project)
+    context(project: Project)
     fun applyTo(receiver: KoverReportsConfig) {
         filters?.applyTo(receiver.filters)
         verify?.applyTo(receiver.verify)

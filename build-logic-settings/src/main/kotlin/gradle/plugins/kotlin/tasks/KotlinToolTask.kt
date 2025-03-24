@@ -3,7 +3,6 @@ package gradle.plugins.kotlin.tasks
 
 import gradle.api.tasks.Task
 import gradle.plugins.kotlin.KotlinCommonCompilerToolOptions
-import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.tasks.KotlinToolTask
@@ -25,7 +24,7 @@ internal interface KotlinToolTask<out TO : KotlinCommonCompilerToolOptions> : Ta
      */
     val toolOptions: TO?
 
-        context(Project)
+        context(project: Project)
     override fun applyTo(receiver: T) {
         super.applyTo(named)
 
@@ -34,7 +33,7 @@ internal interface KotlinToolTask<out TO : KotlinCommonCompilerToolOptions> : Ta
         toolOptions?.applyTo(named.toolOptions)
     }
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<KotlinToolTask<*>>())
+        applyTo(project.tasks.withType<KotlinToolTask<*>>())
 }

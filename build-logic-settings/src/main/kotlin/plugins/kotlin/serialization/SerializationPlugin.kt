@@ -15,7 +15,7 @@ internal class SerializationPlugin : Plugin<Project> {
         with(target) {
             projectProperties.plugins.serialization
                 .takeIf { it.enabled && projectProperties.kotlin.targets.isNotEmpty() }?.let { serialization ->
-                    plugins.apply(settings.libs.plugins.plugin("kotlin.serialization").id)
+                    plugins.apply(project.settings.libs.plugins.plugin("kotlin.serialization").id)
 
                     serialization.applyTo()
                 }

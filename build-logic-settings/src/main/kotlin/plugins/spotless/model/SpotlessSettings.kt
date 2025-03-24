@@ -25,9 +25,9 @@ internal data class SpotlessSettings(
     override val enabled: Boolean = true
 ) : SpotlessExtension, EnabledSettings {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        pluginManager.withPlugin(settings.libs.plugins.plugin("spotless").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("spotless").id) {
             super.applyTo()
         }
 }

@@ -21,7 +21,6 @@ import gradle.plugins.android.features.DataBinding
 import gradle.plugins.android.features.ViewBinding
 import gradle.plugins.android.flavor.ProductFlavorDsl
 import gradle.plugins.android.signing.ApkSigningConfig
-import gradle.plugins.android.signing.SigningConfigImpl
 import gradle.plugins.android.signing.SigningConfigTransformingSerializer
 import gradle.plugins.android.sourceset.AndroidSourceSet
 import gradle.plugins.android.split.SplitsDsl
@@ -526,7 +525,7 @@ internal interface CommonExtension<
      */
     val experimentalProperties: SerializableAnyMap?
 
-    context(Project)
+    context(project: Project)
     @Suppress("UnstableApiUsage", "UNCHECKED_CAST")
     fun applyTo() {
         val extension = android as CommonExtension<
@@ -573,11 +572,12 @@ internal interface CommonExtension<
 
         flavorDimensions?.let(extension.flavorDimensions::addAll)
         setFlavorDimensions?.act(extension.flavorDimensions::clear)?.let(extension.flavorDimensions::addAll)
-        resourcePrefix?.let(android::resourcePrefix)
-        android::ndkVersion trySet ndkVersion
-        android::ndkPath trySet ndkPath
+        extension::resourcePrefix trySet resourcePrefix
+        extension::ndkVersion trySet ndkVersion
+        extension::ndkPath trySet ndkPath
 
-        (buildToolsVersion ?: settings.libs.versions.version("extension.buildToolsVersion"))?.let { buildToolsVersion ->
+        (buildToolsVersion
+            ?: project.settings.libs.versions.version("extension.buildToolsVersion"))?.let { buildToolsVersion ->
             extension.buildToolsVersion = buildToolsVersion
         }
 

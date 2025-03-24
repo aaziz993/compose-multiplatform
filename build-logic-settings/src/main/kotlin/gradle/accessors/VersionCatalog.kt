@@ -42,11 +42,11 @@ internal val TomlTable.name
 internal val TomlTable.module
     get() = getString("module") ?: "${getString("group")}:${getString("name")}"
 
-context(TomlParseResult)
+context(toml: TomlParseResult)
 private val TomlTable.version: String?
     get() = get("version")?.let { version ->
         if (version is TomlTable) {
-            return@let version.getString("ref")?.let(versions::version)
+            return@let version.getString("ref")?.let(toml.versions::version)
         }
         version.toString()
     }
@@ -84,9 +84,9 @@ internal fun Map<String, TomlParseResult>.resolveVersion(version: String): Strin
     return this[catalogName]?.versions?.version(versionAlias)
 }
 
-context(Project)
+context(project: Project)
 internal fun String.resolveVersion() =
-    if (startsWith("$")) settings.allLibs.resolveVersion(removePrefix("$"))
+    if (startsWith("$")) project.settings.allLibs.resolveVersion(removePrefix("$"))
     else this
 
 internal fun String.toVersionCatalogUrlPath(): String {

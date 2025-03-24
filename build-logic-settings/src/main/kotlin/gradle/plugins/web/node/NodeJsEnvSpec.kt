@@ -9,7 +9,6 @@ import gradle.accessors.settings
 import gradle.plugins.web.EnvSpec
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsEnvSpec
 
 @Serializable
 internal data class NodeJsEnvSpec(
@@ -20,9 +19,9 @@ internal data class NodeJsEnvSpec(
     override val command: String? = null,
 ) : EnvSpec() {
 
-    context(Project)
+    context(project: Project)
     fun applyTo() =
-        pluginManager.withPlugin(settings.libs.plugins.plugin("gradle.node.plugin").id) {
-            super.applyTo(nodeEnv)
+        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("gradle.node.plugin").id) {
+            super.applyTo(project.nodeEnv)
         }
 }

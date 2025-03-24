@@ -2,14 +2,12 @@ package gradle.plugins.kmp.web
 
 import gradle.accessors.kotlin
 import gradle.accessors.moduleName
-
 import gradle.api.trySet
 import gradle.plugins.kmp.HasBinaries
 import gradle.plugins.kmp.KotlinTarget
 import gradle.plugins.kotlin.HasConfigurableKotlinCompilerOptions
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 
@@ -33,7 +31,7 @@ internal interface KotlinJsTargetDsl : KotlinTarget, KotlinTargetWithNodeJsDsl,
 
     val generateTypeScriptDefinitions: Boolean?
 
-        context(Project)
+        context(project: Project)
     override fun applyTo(receiver: T) {
         super<KotlinTarget>._applyTo(named)
 
@@ -61,7 +59,7 @@ internal interface KotlinJsTargetDsl : KotlinTarget, KotlinTargetWithNodeJsDsl,
         binaries.applyTo(named.binaries)
     }
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() = with(project) {
         super<KotlinTarget>.applyTo(kotlin.targets.withType<org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl>())
     }

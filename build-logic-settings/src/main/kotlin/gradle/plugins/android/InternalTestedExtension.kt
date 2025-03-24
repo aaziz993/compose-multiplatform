@@ -20,7 +20,7 @@ internal interface InternalTestedExtension<
     : TestedExtensionDsl,
     InternalCommonExtension<BuildFeaturesT, BuildTypeT, DefaultConfigT, ProductFlavorT, AndroidResourcesT, InstallationT> {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() {
         super<TestedExtensionDsl>.applyTo()
         super<InternalCommonExtension>.applyTo()

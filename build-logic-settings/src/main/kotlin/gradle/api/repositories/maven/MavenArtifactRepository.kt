@@ -47,15 +47,15 @@ internal interface MavenArtifactRepository
      */
     val mavenContent: MavenRepositoryContentDescriptor?
 
-    context(Settings)
+    context(settings: Settings)
     override fun applyTo(receiver: MavenArtifactRepository) =
         super<ArtifactRepository>.applyTo(receiver)
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: MavenArtifactRepository) =
         super<ArtifactRepository>.applyTo(receiver)
 
-    context(Directory)
+    context(directory: Directory)
     override fun _applyTo(receiver: MavenArtifactRepository) {
         super<ArtifactRepository>._applyTo(receiver)
         super<UrlArtifactRepository>._applyTo(receiver)
@@ -69,7 +69,7 @@ internal interface MavenArtifactRepository
         }
     }
 
-    context(Settings)
+    context(settings: Settings)
     override fun applyTo(receiver: RepositoryHandler) =
         applyTo(receiver.withType<MavenArtifactRepository>()) { _name, action ->
             receiver.maven {
@@ -78,7 +78,7 @@ internal interface MavenArtifactRepository
             }
         }
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: RepositoryHandler) =
         applyTo(receiver.withType<MavenArtifactRepository>()) { _name, action ->
             receiver.maven {

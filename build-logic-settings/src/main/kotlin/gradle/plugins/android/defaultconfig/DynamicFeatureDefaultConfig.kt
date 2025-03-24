@@ -15,7 +15,7 @@ internal interface DynamicFeatureDefaultConfig<T: DynamicFeatureDefaultConfig> :
     DynamicFeatureBaseFlavor<T>,
     DefaultConfigDsl<T> {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: T) {
         super<DynamicFeatureBaseFlavor>.applyTo(receiver)
         super<DefaultConfigDsl>.applyTo(receiver)

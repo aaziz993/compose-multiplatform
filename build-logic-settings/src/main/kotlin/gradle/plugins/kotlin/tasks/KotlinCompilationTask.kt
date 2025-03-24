@@ -29,7 +29,7 @@ internal interface KotlinCompilationTask<
      */
     val compilerOptions: KotlinCommonCompilerOptions<CO>?
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
@@ -59,7 +59,7 @@ internal data class KotlinCompilationTaskImpl(
     org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerOptions,
     > {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask<*>>())
+        applyTo(project.tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask<*>>())
 }

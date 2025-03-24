@@ -27,15 +27,15 @@ internal data class KotlinWebpack(
     val generateConfigOnly: Boolean? = null,
 ) {
 
-    context(Project)
+    context(project: Project)
     @Suppress("UnstableApiUsage")
     fun applyTo(receiver: KotlinWebpack) {
         webpack::mode trySet mode
-        webpack.inputFilesDirectory tryAssign inputFilesDirectory?.let(layout.projectDirectory::dir)
+        webpack.inputFilesDirectory tryAssign inputFilesDirectory?.let(project.layout.projectDirectory::dir)
         webpack.entryModuleName tryAssign entryModuleName
         webpack.esModules tryAssign esModules
         output?.applyTo(webpack.output)
-        webpack.outputDirectory tryAssign outputDirectory?.let(layout.projectDirectory::dir)
+        webpack.outputDirectory tryAssign outputDirectory?.let(project.layout.projectDirectory::dir)
         webpack.mainOutputFileName tryAssign mainOutputFileName
         webpack::debug trySet debug
         webpack::bin trySet bin

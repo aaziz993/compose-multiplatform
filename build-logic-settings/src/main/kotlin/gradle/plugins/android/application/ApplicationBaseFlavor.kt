@@ -68,15 +68,15 @@ internal interface ApplicationBaseFlavor<T: ApplicationBaseFlavor> : BaseFlavor<
 
     val maxSdk: Int?
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: T) {
         super<BaseFlavor>.applyTo(receiver)
         super<ApplicationVariantDimension>.applyTo(receiver)
 
-        receiver.applicationId = applicationId ?: androidNamespace
-        receiver::versionCode trySet (versionCode ?: settings.libs.versions.version("android.versionCode")?.toInt())
-        receiver::versionName trySet (versionName ?: settings.libs.versions.version("android.versionName"))
-        receiver::targetSdk trySet (targetSdk ?: settings.libs.versions.version("android.targetSdk")?.toInt())
+        receiver.applicationId = applicationId ?: project.androidNamespace
+        receiver::versionCode trySet (versionCode ?: project.settings.libs.versions.version("android.versionCode")?.toInt())
+        receiver::versionName trySet (versionName ?: project.settings.libs.versions.version("android.versionName"))
+        receiver::targetSdk trySet (targetSdk ?: project.settings.libs.versions.version("android.targetSdk")?.toInt())
         receiver::targetSdkPreview trySet targetSdkPreview
         receiver::maxSdk trySet maxSdk
     }

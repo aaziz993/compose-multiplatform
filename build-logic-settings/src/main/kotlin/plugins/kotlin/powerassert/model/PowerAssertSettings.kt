@@ -17,9 +17,9 @@ internal data class PowerAssertSettings(
     override val enabled: Boolean = true
 ) : PowerAssertGradleExtension, EnabledSettings {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        pluginManager.withPlugin(settings.libs.plugins.plugin("power.assert").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("power.assert").id) {
             super.applyTo()
         }
 }

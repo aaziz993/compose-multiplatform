@@ -59,20 +59,20 @@ internal data class ApolloGenerateSourcesFromIrTask(
     val usedCoordinates: String? = null,
 ) : ApolloGenerateSourcesBase<ApolloGenerateSourcesFromIrTask>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: ApolloGenerateSourcesFromIrTask) {
         super.applyTo(receiver)
 
         codegenSchemas?.toTypedArray()?.let(receiver.codegenSchemas::from)
         setCodegenSchemas?.let(receiver.codegenSchemas::setFrom)
-        receiver.irOperations tryAssign irOperations?.let(::file)
-        receiver.metadataOutputFile tryAssign metadataOutputFile?.let(::file)
+        receiver.irOperations tryAssign irOperations?.let(project::file)
+        receiver.metadataOutputFile tryAssign metadataOutputFile?.let(project::file)
         upstreamMetadata?.toTypedArray()?.let(receiver.upstreamMetadata::from)
         setUpstreamMetadata?.let(receiver.upstreamMetadata::setFrom)
-        receiver.usedCoordinates tryAssign usedCoordinates?.let(::file)
+        receiver.usedCoordinates tryAssign usedCoordinates?.let(project::file)
     }
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<ApolloGenerateSourcesFromIrTask>())
+        applyTo(project.tasks.withType<ApolloGenerateSourcesFromIrTask>())
 }

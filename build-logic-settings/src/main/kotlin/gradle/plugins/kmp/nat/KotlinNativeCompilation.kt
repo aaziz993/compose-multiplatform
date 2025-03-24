@@ -8,7 +8,6 @@ import gradle.plugins.kotlin.KotlinCompilationTransformingSerializer
 import gradle.project.Dependency
 import gradle.project.DependencyTransformingSerializer
 import kotlinx.serialization.Serializable
-import org.gradle.api.Named
 import org.gradle.api.Project
 
 @Serializable
@@ -23,7 +22,7 @@ internal data class KotlinNativeCompilation(
     val cinterops: List<DefaultCInteropSettings>? = null
 ) : KotlinCompilation<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeCompilation> {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeCompilation) {
         super.applyTo(receiver)
 

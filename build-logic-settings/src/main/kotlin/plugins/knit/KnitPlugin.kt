@@ -15,7 +15,7 @@ internal class KnitPlugin : Plugin<Project> {
         with(target) {
             projectProperties.plugins.knit
                 .takeIf { it.enabled && project == rootProject }?.let { knit ->
-                    plugins.apply(settings.libs.plugins.plugin("knit").id)
+                    plugins.apply(project.settings.libs.plugins.plugin("knit").id)
 
                     knit.applyTo()
 

@@ -1,13 +1,13 @@
 package gradle.plugins.kotlin.apollo.tasks
 
-import org.gradle.kotlin.dsl.withType
 import com.apollographql.apollo3.gradle.internal.ApolloGenerateUsedCoordinatesAndCheckFragmentsTask
-import kotlinx.serialization.Serializable
 import gradle.api.tasks.DefaultTask
-import org.gradle.api.Project
-import gradle.collection.SerializableAnyMap
 import gradle.api.tasks.applyTo
 import gradle.api.tryAssign
+import gradle.collection.SerializableAnyMap
+import kotlinx.serialization.Serializable
+import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
 
 @Serializable
 internal data class ApolloGenerateUsedCoordinatesAndCheckFragmentsTask(
@@ -30,17 +30,17 @@ internal data class ApolloGenerateUsedCoordinatesAndCheckFragmentsTask(
     val outputFile: String? = null,
 ) : DefaultTask<ApolloGenerateUsedCoordinatesAndCheckFragmentsTask>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: ApolloGenerateUsedCoordinatesAndCheckFragmentsTask) {
         super.applyTo(receiver)
 
         downStreamIrOperations?.toTypedArray()?.let(receiver.downStreamIrOperations::from)
         setDownStreamIrOperations?.let(receiver.downStreamIrOperations::setFrom)
-        receiver.irOperations tryAssign irOperations?.let(::file)
-        receiver.outputFile tryAssign outputFile?.let(::file)
+        receiver.irOperations tryAssign irOperations?.let(project::file)
+        receiver.outputFile tryAssign outputFile?.let(project::file)
     }
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<ApolloGenerateUsedCoordinatesAndCheckFragmentsTask>())
+        applyTo(project.tasks.withType<ApolloGenerateUsedCoordinatesAndCheckFragmentsTask>())
 }

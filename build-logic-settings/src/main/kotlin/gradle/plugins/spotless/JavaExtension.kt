@@ -57,7 +57,7 @@ internal data class JavaExtension(
     val cleanthat: CleanthatJavaConfig? = null,
 ) : FormatExtension<JavaExtension>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(extension: JavaExtension) {
         super.applyTo(extension)
 
@@ -76,21 +76,21 @@ internal data class JavaExtension(
 
         googleJavaFormat?.let { googleJavaFormat ->
             googleJavaFormat.applyTo(
-                (googleJavaFormat.version?.resolveVersion() ?: settings.libs.versions.version("googleJavaFormat"))
+                (googleJavaFormat.version?.resolveVersion() ?: project.settings.libs.versions.version("googleJavaFormat"))
                     ?.let(extension::googleJavaFormat) ?: extension.googleJavaFormat(),
             )
         }
 
         palantirJavaFormat?.let { palantirJavaFormat ->
             palantirJavaFormat.applyTo(
-                (palantirJavaFormat.version?.resolveVersion() ?: settings.libs.versions.version("palantirJavaFormat"))
+                (palantirJavaFormat.version?.resolveVersion() ?: project.settings.libs.versions.version("palantirJavaFormat"))
                     ?.let(extension::palantirJavaFormat) ?: extension.palantirJavaFormat(),
             )
         }
 
         eclipse?.let { eclipse ->
             eclipse.applyTo(
-                (eclipse.formatterVersion?.resolveVersion() ?: settings.libs.versions.version("eclipseFormatter"))
+                (eclipse.formatterVersion?.resolveVersion() ?: project.settings.libs.versions.version("eclipseFormatter"))
                     ?.let(extension::eclipse) ?: extension.eclipse(),
             )
         }
@@ -99,7 +99,7 @@ internal data class JavaExtension(
         cleanthat?.applyTo(extension.cleanthat())
     }
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() = spotless.java {
         applyTo(this)
     }

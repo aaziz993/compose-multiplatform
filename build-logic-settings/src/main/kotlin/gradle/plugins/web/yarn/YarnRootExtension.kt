@@ -29,18 +29,18 @@ internal data class YarnRootExtension(
     val setResolutions: List<YarnResolution>? = null,
 ) : AbstractSettings<YarnEnv>() {
 
-    context(Project)
+    context(project: Project)
     fun applyTo() =
-        pluginManager.withPlugin(settings.libs.plugins.plugin("gradle.node.plugin").id) {
-            super.applyTo(yarn)
+        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("gradle.node.plugin").id) {
+            super.applyTo(project.yarn)
             YarnRootEnvSpec
-            yarn::lockFileName trySet lockFileName
-            yarn::lockFileDirectory trySet lockFileDirectory?.let(::file)
-            yarn::ignoreScripts trySet ignoreScripts
-            yarn::yarnLockMismatchReport trySet yarnLockMismatchReport
-            yarn::reportNewYarnLock trySet reportNewYarnLock
-            yarn::yarnLockAutoReplace trySet yarnLockAutoReplace
-            resolutions?.map(YarnResolution::toYarnResolution)?.let(yarn.resolutions::addAll)
-            setResolutions?.act(yarn.resolutions::clear)?.map(YarnResolution::toYarnResolution)?.let(yarn.resolutions::addAll)
+            project.yarn::lockFileName trySet lockFileName
+            project.yarn::lockFileDirectory trySet lockFileDirectory?.let(project::file)
+            project.yarn::ignoreScripts trySet ignoreScripts
+            project. yarn::yarnLockMismatchReport trySet yarnLockMismatchReport
+            project.yarn::reportNewYarnLock trySet reportNewYarnLock
+            project.yarn::yarnLockAutoReplace trySet yarnLockAutoReplace
+            resolutions?.map(YarnResolution::toYarnResolution)?.let(project.yarn.resolutions::addAll)
+            setResolutions?.act(project.yarn.resolutions::clear)?.map(YarnResolution::toYarnResolution)?.let(project.yarn.resolutions::addAll)
         }
 }

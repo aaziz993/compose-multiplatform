@@ -1,8 +1,6 @@
 package gradle.plugins.kotlin.benchmark
 
-import gradle.api.BaseNamed
 import gradle.api.ProjectNamed
-
 import gradle.api.trySet
 import gradle.serialization.serializer.JsonPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
@@ -14,7 +12,7 @@ internal abstract class BenchmarkTarget<T : kotlinx.benchmark.gradle.BenchmarkTa
 
     abstract val workingDir: String?
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: T) {
         receiver::workingDir trySet workingDir
     }

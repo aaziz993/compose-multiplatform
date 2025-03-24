@@ -39,9 +39,9 @@ internal data class DoctorSettings(
     override val enabled: Boolean = true,
 ) : DoctorExtension, EnabledSettings {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        pluginManager.withPlugin(settings.libs.plugins.plugin("doctor").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("doctor").id) {
             super.applyTo()
 
             // Always monitor tasks on CI, but disable it locally by default with providing an option to opt-in.

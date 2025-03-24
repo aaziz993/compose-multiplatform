@@ -6,12 +6,10 @@ import gradle.api.tasks.applyTo
 import gradle.api.tasks.copy.AbstractCopyTask
 import gradle.api.tasks.copy.FileCopyDetails
 import gradle.api.tasks.copy.FromContentPolymorphicSerializer
-import gradle.api.tasks.copy.Into
 import gradle.api.tasks.copy.IntoContentPolymorphicSerializer
 import gradle.api.tasks.copy.Rename
 import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
-
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -104,12 +102,12 @@ internal abstract class AbstractArchiveTask<T : org.gradle.api.tasks.bundling.Ab
      */
     abstract val reproducibleFileOrder: Boolean?
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
         receiver.archiveBaseName tryAssign archiveBaseName
-        receiver.destinationDirectory tryAssign destinationDirectory?.let(layout.projectDirectory::dir)
+        receiver.destinationDirectory tryAssign destinationDirectory?.let(project.layout.projectDirectory::dir)
         receiver.archiveFileName tryAssign archiveFileName
         receiver.archiveAppendix tryAssign archiveAppendix
         receiver.archiveVersion tryAssign archiveVersion
@@ -166,7 +164,7 @@ internal data class AbstractArchiveTaskImpl(
     override val name: String? = null,
 ) : AbstractArchiveTask<org.gradle.api.tasks.bundling.AbstractArchiveTask>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<org.gradle.api.tasks.bundling.AbstractArchiveTask>())
+        applyTo(project.tasks.withType<org.gradle.api.tasks.bundling.AbstractArchiveTask>())
 }

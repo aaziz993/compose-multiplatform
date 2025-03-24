@@ -16,8 +16,8 @@ internal data class BuildConfigSettings(
     override val enabled: Boolean = true,
 ) : BuildConfigExtension, EnabledSettings {
 
-    context(Project)
-    override fun applyTo() = pluginManager.withPlugin(settings.libs.plugins.plugin("build.config").id) {
+    context(project: Project)
+    override fun applyTo() = project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("build.config").id) {
         super.applyTo()
     }
 }

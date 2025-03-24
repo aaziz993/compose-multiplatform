@@ -20,9 +20,9 @@ internal data class NoArgSettings(
     override val enabled: Boolean = true,
 ) : NoArgExtension, EnabledSettings {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        pluginManager.withPlugin(settings.libs.plugins.plugin("noarg").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("noarg").id) {
             super.applyTo()
         }
 }

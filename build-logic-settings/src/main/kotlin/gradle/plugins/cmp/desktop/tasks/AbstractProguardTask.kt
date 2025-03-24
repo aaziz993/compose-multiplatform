@@ -29,26 +29,26 @@ internal abstract class AbstractProguardTask<T : org.jetbrains.compose.desktop.a
     abstract val maxHeapSize: String?
     abstract val destinationDir: String?
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
         inputFiles?.toTypedArray()?.let(receiver.inputFiles::from)
 setInputFiles?.let(receiver.inputFiles::setFrom)
-        receiver.mainJar tryAssign mainJar?.let(::file)
+        receiver.mainJar tryAssign mainJar?.let(project::file)
         configurationFiles?.toTypedArray()?.let(receiver.configurationFiles::from)
 setConfigurationFiles?.let(receiver.configurationFiles::setFrom)
         receiver.dontobfuscate tryAssign dontobfuscate
         receiver.dontoptimize tryAssign dontoptimize
         receiver.joinOutputJars tryAssign joinOutputJars
-        receiver.defaultComposeRulesFile tryAssign defaultComposeRulesFile?.let(::file)
+        receiver.defaultComposeRulesFile tryAssign defaultComposeRulesFile?.let(project::file)
         receiver.proguardVersion tryAssign proguardVersion
         proguardFiles?.toTypedArray()?.let(receiver.proguardFiles::from)
 setProguardFiles?.let(receiver.proguardFiles::setFrom)
         receiver.javaHome tryAssign javaHome
         receiver.mainClass tryAssign mainClass
         receiver.maxHeapSize tryAssign maxHeapSize
-        receiver.destinationDir tryAssign destinationDir?.let(layout.projectDirectory::dir)
+        receiver.destinationDir tryAssign destinationDir?.let(project.layout.projectDirectory::dir)
     }
 }
 
@@ -85,7 +85,7 @@ internal data class AbstractProguardTaskImpl(
     override val name: String? = null,
 ) : AbstractProguardTask<org.jetbrains.compose.desktop.application.tasks.AbstractProguardTask>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<org.jetbrains.compose.desktop.application.tasks.AbstractProguardTask>())
+        applyTo(project.tasks.withType<org.jetbrains.compose.desktop.application.tasks.AbstractProguardTask>())
 }

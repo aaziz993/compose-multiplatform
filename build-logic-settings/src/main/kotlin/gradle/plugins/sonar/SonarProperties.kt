@@ -1,11 +1,9 @@
 package gradle.plugins.sonar
 
-import gradle.accessors.sonar
 import gradle.collection.SerializableAnyMap
 import gradle.collection.act
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import org.jetbrains.kotlin.gradle.utils.property
 import org.sonarqube.gradle.SonarProperties
 
 /**
@@ -25,13 +23,13 @@ internal data class SonarProperties(
      * @return The Sonar properties for the current Gradle project that are to be passed to the Sonar gradle.
      */
     val properties: SerializableAnyMap? = null,
-    val setPproperties: SerializableAnyMap? = null
+    val setProperties: SerializableAnyMap? = null
 ) {
 
-    context(Project)
+    context(project: Project)
     fun applyTo(receiver: SonarProperties) {
         properties?.let(receiver::properties)
-        setPproperties?.act(receiver.properties::clear)?.let(receiver::properties)
-        receiver.property("sonar.projectVersion", version)
+        setProperties?.act(receiver.properties::clear)?.let(receiver::properties)
+        receiver.property("sonar.projectVersion", project.version)
     }
 }

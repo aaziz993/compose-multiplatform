@@ -8,7 +8,6 @@ import gradle.plugins.kotlin.KotlinCompilationTransformingSerializer
 import gradle.project.Dependency
 import gradle.project.DependencyTransformingSerializer
 import kotlinx.serialization.Serializable
-import org.gradle.api.Named
 
 @Serializable
 internal data class KotlinJsIrCompilation(
@@ -22,7 +21,7 @@ internal data class KotlinJsIrCompilation(
     override val packageJson: PackageJson? = null,
 ) : KotlinJsCompilation {
 
-        context(Project)
+        context(project: Project)
     override fun applyTo(receiver: T) {
         super.applyTo(named)
 

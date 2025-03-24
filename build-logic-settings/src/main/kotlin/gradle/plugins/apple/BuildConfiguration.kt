@@ -16,7 +16,7 @@ internal data class BuildConfiguration(
     val setProperties: SerializableAnyMap? = null
 ) : ProjectNamed<BuildConfiguration> {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: BuildConfiguration) {
         receiver::fatFrameworks trySet fatFrameworks
         properties?.let(receiver.properties::putAll)

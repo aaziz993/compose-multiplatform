@@ -53,7 +53,7 @@ internal data class SonarTask(
     val useLoggerLevel: LogLevel? = null,
 ) : ConventionTask<SonarTask>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: SonarTask) {
         super.applyTo(receiver)
 
@@ -62,7 +62,7 @@ internal data class SonarTask(
         useLoggerLevel?.let(receiver::useLoggerLevel)
     }
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<SonarTask>())
+        applyTo(project.tasks.withType<SonarTask>())
 }

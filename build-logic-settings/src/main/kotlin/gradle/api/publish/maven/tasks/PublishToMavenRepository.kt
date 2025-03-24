@@ -29,7 +29,7 @@ internal data class PublishToMavenRepository(
     override val publication: String? = null,
 ) : AbstractPublishToMaven<PublishToMavenRepository>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: PublishToMavenRepository) {
         super.applyTo(receiver)
 
@@ -46,7 +46,7 @@ internal data class PublishToMavenRepository(
         }
     }
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<PublishToMavenRepository>())
+        applyTo(project.tasks.withType<PublishToMavenRepository>())
 }

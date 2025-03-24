@@ -3,8 +3,8 @@ package gradle.api.repositories.ivy
 import gradle.api.applyTo
 import gradle.api.repositories.ArtifactRepository
 import gradle.api.repositories.AuthenticationSupported
-import gradle.api.repositories.RepositoryContentDescriptorImpl
 import gradle.api.repositories.PasswordCredentials
+import gradle.api.repositories.RepositoryContentDescriptorImpl
 import gradle.api.repositories.UrlArtifactRepository
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -145,15 +145,15 @@ internal data class IvyArtifactRepository(
     val metadataSources: MetadataSources? = null,
 ) : ArtifactRepository<IvyArtifactRepository>, UrlArtifactRepository<IvyArtifactRepository>, AuthenticationSupported<IvyArtifactRepository> {
 
-    context(Settings)
+    context(settings: Settings)
     override fun applyTo(receiver: IvyArtifactRepository) =
         super<ArtifactRepository>.applyTo(receiver)
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: IvyArtifactRepository) =
         super<ArtifactRepository>.applyTo(receiver)
 
-    context(Settings)
+    context(settings: Settings)
     override fun applyTo(receiver: RepositoryHandler) =
         applyTo(receiver.withType<IvyArtifactRepository>()) { _name, action ->
             receiver.ivy {
@@ -162,7 +162,7 @@ internal data class IvyArtifactRepository(
             }
         }
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: RepositoryHandler) =
         applyTo(receiver.withType<IvyArtifactRepository>()) { _name, action ->
             receiver.ivy {
@@ -171,7 +171,7 @@ internal data class IvyArtifactRepository(
             }
         }
 
-    context(Directory)
+    context(directory: Directory)
     override fun _applyTo(receiver: IvyArtifactRepository) {
         super<ArtifactRepository>._applyTo(receiver)
         super<UrlArtifactRepository>._applyTo(receiver)

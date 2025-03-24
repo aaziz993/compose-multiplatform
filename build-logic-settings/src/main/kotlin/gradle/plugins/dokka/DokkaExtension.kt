@@ -245,30 +245,30 @@ internal interface DokkaExtension {
     // running Dokka Generator **requires** an isolated classpath.
     val dokkaGeneratorIsolation: WorkerIsolation?
 
-    context(Project)
+    context(project: Project)
     fun applyTo() =
-        pluginManager.withPlugin(settings.libs.plugins.plugin("dokka").id) {
-            dokka.basePublicationsDirectory tryAssign basePublicationsDirectory?.let(layout.projectDirectory::dir)
-            dokka.dokkaCacheDirectory tryAssign dokkaCacheDirectory?.let(layout.projectDirectory::dir)
-            dokka.moduleName tryAssign moduleName
-            dokka.moduleVersion tryAssign moduleVersion
-            dokka.modulePath tryAssign modulePath
-            dokka.sourceSetScopeDefault tryAssign sourceSetScopeDefault
-            dokka.konanHome tryAssign konanHome?.let(::file)
+        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("dokka").id) {
+            project.dokka.basePublicationsDirectory tryAssign basePublicationsDirectory?.let(project.layout.projectDirectory::dir)
+            project.dokka.dokkaCacheDirectory tryAssign dokkaCacheDirectory?.let(project.layout.projectDirectory::dir)
+            project.dokka.moduleName tryAssign moduleName
+            project.dokka.moduleVersion tryAssign moduleVersion
+            project.dokka.modulePath tryAssign modulePath
+            project.dokka.sourceSetScopeDefault tryAssign sourceSetScopeDefault
+            project.dokka.konanHome tryAssign konanHome?.let(project::file)
 
             dokkaPublications?.forEach { dokkaPublication ->
-                dokkaPublication.applyTo(dokka.dokkaPublications)
+                dokkaPublication.applyTo(project.dokka.dokkaPublications)
             }
 
             dokkaSourceSets?.forEach { dokkaSourceSet ->
-                dokkaSourceSet.applyTo(dokka.dokkaSourceSets)
+                dokkaSourceSet.applyTo(project.dokka.dokkaSourceSets)
             }
 
             pluginsConfiguration?.forEach { pluginConfiguration ->
-                pluginConfiguration.applyTo(dokka.pluginsConfiguration)
+                pluginConfiguration.applyTo(project.dokka.pluginsConfiguration)
             }
 
-            dokka.dokkaEngineVersion tryAssign dokkaEngineVersion
-            dokka.dokkaGeneratorIsolation tryAssign dokkaGeneratorIsolation?.toWorkerIsolation()
+            project.dokka.dokkaEngineVersion tryAssign dokkaEngineVersion
+            project.dokka.dokkaGeneratorIsolation tryAssign dokkaGeneratorIsolation?.toWorkerIsolation()
         }
 }

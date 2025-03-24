@@ -32,7 +32,7 @@ internal data class KotlinNativeCompilerOptions(
     val moduleName: String? = null,
 ) : KotlinCommonCompilerOptions<KotlinNativeCompilerOptions> {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: KotlinNativeCompilerOptions) {
         super.applyTo(receiver)
 

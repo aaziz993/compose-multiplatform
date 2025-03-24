@@ -2,7 +2,6 @@ package gradle.plugins.android.split
 
 import com.android.build.gradle.internal.dsl.DensitySplitOptions
 import gradle.collection.act
-import kotlin.collections.addAll
 import kotlinx.serialization.Serializable
 
 @Serializable

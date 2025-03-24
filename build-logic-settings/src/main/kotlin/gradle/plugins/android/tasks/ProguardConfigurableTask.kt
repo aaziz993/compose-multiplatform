@@ -51,7 +51,7 @@ internal data class ProguardConfigurableTask(
     val hasAllAccessTransformers: Boolean? = null,
 ) : NonIncrementalTask<ProguardConfigurableTask>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: ProguardConfigurableTask) {
         super.applyTo(receiver)
 
@@ -61,7 +61,7 @@ internal data class ProguardConfigurableTask(
 setTestedMappingFile?.let(receiver.testedMappingFile::setFrom)
         classes?.toTypedArray()?.let(receiver.classes::from)
 setClasses?.let(receiver.classes::setFrom)
-        receiver.resourcesJar tryAssign resourcesJar?.let(::file)
+        receiver.resourcesJar tryAssign resourcesJar?.let(project::file)
         referencedClasses?.toTypedArray()?.let(receiver.referencedClasses::from)
 setReferencedClasses?.let(receiver.referencedClasses::setFrom)
         referencedResources?.toTypedArray()?.let(receiver.referencedResources::from)
@@ -75,11 +75,11 @@ setConfigurationFiles?.let(receiver.configurationFiles::setFrom)
 setLibraryKeepRulesFileCollection?.let(receiver.libraryKeepRulesFileCollection::setFrom)
         receiver.ignoreFromInKeepRules tryAssign ignoreFromInKeepRules
         receiver.ignoreFromAllExternalDependenciesInKeepRules tryAssign ignoreFromAllExternalDependenciesInKeepRules
-        receiver.mappingFile tryAssign mappingFile?.let(::file)
+        receiver.mappingFile tryAssign mappingFile?.let(project::file)
         receiver.hasAllAccessTransformers tryAssign hasAllAccessTransformers
     }
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<ProguardConfigurableTask>())
+        applyTo(project.tasks.withType<ProguardConfigurableTask>())
 }

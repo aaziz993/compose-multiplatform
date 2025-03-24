@@ -98,53 +98,53 @@ internal interface BaseExtension {
     val buildFeatures: BuildFeatures<out com.android.build.api.dsl.BuildFeatures>?
     val namespace: String?
 
-    context(Project)
+    context(project: Project)
     @Suppress("UnstableApiUsage", "UNCHECKED_CAST")
     fun applyTo() {
-        composeOptions?.applyTo(android.composeOptions)
-        dataBinding?.applyTo(android.dataBinding)
-        viewBinding?.applyTo(android.viewBinding)
-        defaultPublishConfig?.let(android::defaultPublishConfig)
-        disableWrite?.takeIf { it }?.run { android.disableWrite() }
-        (compileSdkVersion ?: settings.libs.versions.version("android.compileSdk")?.toInt())
-            ?.let(android::compileSdkVersion)
-        buildToolsVersion?.let(android::buildToolsVersion)
-        flavorDimensions?.toTypedArray()?.let(android::flavorDimensions)
-        aaptOptions?.applyTo(android.aaptOptions)
-        externalNativeBuild?.applyTo(android.externalNativeBuild)
-        testOptions?.applyTo(android.testOptions)
-        compileOptions?.applyTo(android.compileOptions)
-        packaging?.applyTo(android.packagingOptions)
-        adbOptions?.applyTo(android.adbOptions)
+        composeOptions?.applyTo(project.android.composeOptions)
+        dataBinding?.applyTo(project.android.dataBinding)
+        viewBinding?.applyTo(project.android.viewBinding)
+        defaultPublishConfig?.let(project.android::defaultPublishConfig)
+        disableWrite?.takeIf { it }?.run { project.android.disableWrite() }
+        (compileSdkVersion ?: project.settings.libs.versions.version("project.android.compileSdk")?.toInt())
+            ?.let(project.android::compileSdkVersion)
+        buildToolsVersion?.let(project.android::buildToolsVersion)
+        flavorDimensions?.toTypedArray()?.let(project.android::flavorDimensions)
+        aaptOptions?.applyTo(project.android.aaptOptions)
+        externalNativeBuild?.applyTo(project.android.externalNativeBuild)
+        testOptions?.applyTo(project.android.testOptions)
+        compileOptions?.applyTo(project.android.compileOptions)
+        packaging?.applyTo(project.android.packagingOptions)
+        adbOptions?.applyTo(project.android.adbOptions)
 
         sourceSets?.forEach { sourceSet ->
-            sourceSet.applyTo(android.sourceSets)
+            sourceSet.applyTo(project.android.sourceSets)
         }
 
-        splits?.applyTo(android.splits)
-        android::generatePureSplits trySet generatePureSplits
-        flavorDimensions?.toTypedArray()?.let(android::flavorDimensions)
-        setFlavorDimensions?.act(android.flavorDimensionList::clear)?.let(android.flavorDimensionList::addAll)
-        resourcePrefix?.let(android::resourcePrefix)
-        android::ndkVersion trySet ndkVersion
-        android::ndkPath trySet ndkPath
-        libraryRequests?.map(LibraryRequest::toLibraryRequest)?.let(android.libraryRequests::addAll)
+        splits?.applyTo(project.android.splits)
+        project.android::generatePureSplits trySet generatePureSplits
+        flavorDimensions?.toTypedArray()?.let(project.android::flavorDimensions)
+        setFlavorDimensions?.act(project.android.flavorDimensionList::clear)?.let(project.android.flavorDimensionList::addAll)
+        resourcePrefix?.let(project.android::resourcePrefix)
+        project.android::ndkVersion trySet ndkVersion
+        project.android::ndkPath trySet ndkPath
+        libraryRequests?.map(LibraryRequest::toLibraryRequest)?.let(project.android.libraryRequests::addAll)
 
         buildTypes?.forEach { buildType ->
-            (buildType as BuildType<com.android.build.api.dsl.BuildType>).applyTo(android.buildTypes)
+            (buildType as BuildType<com.android.build.api.dsl.BuildType>).applyTo(project.android.buildTypes)
         }
 
-        defaultConfig?.applyTo(android.defaultConfig)
+        defaultConfig?.applyTo(project.android.defaultConfig)
 
         productFlavors?.forEach { productFlavors ->
-            productFlavors.applyTo(android.productFlavors)
+            productFlavors.applyTo(project.android.productFlavors)
         }
 
         signingConfigs?.forEach { signingConfig ->
-            signingConfig.applyTo(android.signingConfigs)
+            signingConfig.applyTo(project.android.signingConfigs)
         }
 
-        (buildFeatures as BuildFeatures<com.android.build.api.dsl.BuildFeatures>?)?.applyTo(android.buildFeatures)
-        android.namespace = namespace ?: androidNamespace
+        (buildFeatures as BuildFeatures<com.android.build.api.dsl.BuildFeatures>?)?.applyTo(project.android.buildFeatures)
+        project.android.namespace = namespace ?: project.androidNamespace
     }
 }

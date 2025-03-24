@@ -72,15 +72,15 @@ internal data class DokkaVersioningPluginParameters(
     override val pluginFqn: String
         get() = DokkaVersioningPluginParameters.DOKKA_VERSIONING_PLUGIN_FQN
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: DokkaVersioningPluginParameters) {
         buildscript {
             dependencies {
-                classpath(settings.libs.libraryAsDependency("dokka.versioning"))
+                classpath(project.settings.libs.libraryAsDependency("dokka.versioning"))
             }
         }
 
-        receiver.olderVersionsDir tryAssign olderVersionsDir?.let(::file)
+        receiver.olderVersionsDir tryAssign olderVersionsDir?.let(project::file)
         olderVersions?.toTypedArray()?.let(receiver.olderVersions::from)
         setOlderVersions?.let(receiver.olderVersions::setFrom)
         receiver.versionsOrdering tryAssign versionsOrdering

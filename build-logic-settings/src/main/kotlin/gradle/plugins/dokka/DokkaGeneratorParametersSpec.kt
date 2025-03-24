@@ -50,7 +50,7 @@ internal data class DokkaGeneratorParametersSpec(
     val finalizeCoroutines: Boolean? = null,
 ) {
 
-    context(Project)
+    context(project: Project)
     fun applyTo(receiver: DokkaGeneratorParametersSpec) {
         receiver.moduleName tryAssign moduleName
         receiver.moduleVersion tryAssign moduleVersion

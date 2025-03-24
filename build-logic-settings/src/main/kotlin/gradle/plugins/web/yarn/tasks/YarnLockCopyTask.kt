@@ -30,7 +30,7 @@ internal data class YarnLockCopyTask(
     override val name: String? = null,
 ) : LockCopyTask<YarnLockCopyTask>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<YarnLockCopyTask>())
+        applyTo(project.tasks.withType<YarnLockCopyTask>())
 }

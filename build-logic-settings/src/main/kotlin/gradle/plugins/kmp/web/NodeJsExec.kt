@@ -15,11 +15,11 @@ internal data class NodeJsExec(
     val inputFileProperty: String? = null,
 ) {
 
-    context(Project)
+    context(project: Project)
     fun applyTo(receiver: NodeJsExec) {
         nodeJsRoot?.applyTo(exec.nodeJsRoot)
         nodeArgs?.let(exec.nodeArgs::addAll)
         exec::sourceMapStackTraces trySet sourceMapStackTraces
-        exec.inputFileProperty tryAssign inputFileProperty?.let(::file)
+        exec.inputFileProperty tryAssign inputFileProperty?.let(project::file)
     }
 }

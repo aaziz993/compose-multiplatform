@@ -27,7 +27,7 @@ internal data class LicenseFile(
     @Transient
     override val replace: MutableMap<String, String> = mutableMapOf()
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: String): List<TaskProvider<out DefaultTask>> {
         from.add(source ?: settings.projectProperties.license?.url ?: return emptyList())
 

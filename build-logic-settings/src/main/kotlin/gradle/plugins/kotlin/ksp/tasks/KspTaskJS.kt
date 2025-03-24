@@ -36,13 +36,13 @@ internal data class KspTaskJS(
     override val setCommandLineArgumentProviders: List<CommandLineArgumentProvider>? = null,
 ) : Kotlin2JsCompile<KspTaskJS>(), KspTask<KspTaskJS> {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: KspTaskJS) {
         super<Kotlin2JsCompile>.applyTo(receiver)
         super<KspTask>.applyTo(receiver)
     }
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<KspTaskJS>())
+        applyTo(project.tasks.withType<KspTaskJS>())
 }

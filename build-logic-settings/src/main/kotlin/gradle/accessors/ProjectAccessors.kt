@@ -9,12 +9,9 @@ import com.github.gmazzo.gradle.plugins.BuildConfigExtension
 import com.google.devtools.ksp.gradle.KspExtension
 import com.osacky.doctor.DoctorExtension
 import de.jensklingenberg.ktorfit.gradle.KtorfitGradleConfiguration
-import gradle.api.isCI
 import gradle.api.maybeNamed
-import gradle.collection.resolve
 import gradle.project.ProjectProperties
 import io.github.sgrishchenko.karakum.gradle.plugin.KarakumExtension
-import java.util.*
 import kotlinx.atomicfu.plugin.gradle.AtomicFUPluginExtension
 import kotlinx.benchmark.gradle.BenchmarksExtension
 import kotlinx.knit.KnitPluginExtension
@@ -22,24 +19,19 @@ import kotlinx.kover.gradle.plugin.dsl.KoverProjectExtension
 import kotlinx.rpc.RpcExtension
 import kotlinx.validation.ApiValidationExtension
 import kotlinx.validation.KotlinApiBuildTask
-import net.pearx.kasechange.toDotCase
-import net.pearx.kasechange.toScreamingSnakeCase
 import org.gradle.api.Project
 import org.gradle.api.file.Directory
 import org.gradle.api.initialization.Settings
 import org.gradle.api.internal.GradleInternal
 import org.gradle.api.plugins.ExtensionAware
-import org.gradle.api.plugins.ExtraPropertiesExtension
 import org.gradle.api.plugins.JavaApplication
 import org.gradle.api.plugins.JavaPluginExtension
-import org.gradle.api.provider.ProviderFactory
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.api.tasks.TaskContainer
 import org.gradle.api.toolchain.management.ToolchainManagement
 import org.gradle.jvm.toolchain.JavaToolchainService
 import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.extra
 import org.gradle.kotlin.dsl.the
 import org.gradle.plugins.signing.SigningExtension
 import org.jetbrains.amper.gradle.getBindingMap
@@ -63,6 +55,7 @@ import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootEnvSpec
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension
 import org.jetbrains.kotlin.noarg.gradle.NoArgExtension
 import org.jetbrains.kotlin.powerassert.gradle.PowerAssertGradleExtension
+import org.owasp.dependencycheck.gradle.extension.DependencyCheckExtension
 import org.sonarqube.gradle.SonarExtension
 import ru.vyarus.gradle.plugin.animalsniffer.AnimalSnifferExtension
 
@@ -77,31 +70,21 @@ internal var Project.projectProperties: ProjectProperties
 internal val Project.settings: Settings
     get() = (gradle as GradleInternal).settings
 
-internal val Project.java: JavaPluginExtension get() = the()
+@Suppress("UnstableApiUsage")
+internal val Project.toolchain: ToolchainManagement get() = the()
 
-internal fun Project.java(configure: JavaPluginExtension.() -> Unit) =
-    extensions.configure(configure)
-
-internal val Project.javaToolchain: JavaToolchainService get() = the()
-
-internal val Project.javaApp: JavaApplication get() = the()
-
-internal fun Project.javaApp(configure: JavaApplication.() -> Unit) =
-    extensions.configure(configure)
-
-internal val Project.android: BaseExtension get() = the()
-
-internal fun Project.android(configure: BaseExtension.() -> Unit) =
-    extensions.configure(configure)
-
-internal val Project.kotlin: KotlinMultiplatformExtension get() = the()
-
-internal fun Project.kotlin(configure: KotlinMultiplatformExtension.() -> Unit) =
+@Suppress("UnstableApiUsage")
+internal fun Project.toolchain(configure: ToolchainManagement.() -> Unit) =
     extensions.configure(configure)
 
 internal val Project.doctor: DoctorExtension get() = the()
 
 internal fun Project.doctor(configure: DoctorExtension.() -> Unit) =
+    extensions.configure(configure)
+
+internal val Project.dependencyCheck: DependencyCheckExtension get() = the()
+
+internal fun Project.dependencyCheck(configure: DependencyCheckExtension.() -> Unit) =
     extensions.configure(configure)
 
 internal val Project.buildConfig: BuildConfigExtension get() = the()
@@ -149,13 +132,6 @@ internal val Project.animalSniffer: AnimalSnifferExtension get() = the()
 internal fun Project.animalSniffer(configure: AnimalSnifferExtension.() -> Unit) =
     extensions.configure(configure)
 
-@Suppress("UnstableApiUsage")
-internal val Project.toolchain: ToolchainManagement get() = the()
-
-@Suppress("UnstableApiUsage")
-internal fun Project.toolchain(configure: ToolchainManagement.() -> Unit) =
-    extensions.configure(configure)
-
 internal val Project.ksp: KspExtension get() = the()
 
 internal fun Project.ksp(configure: KspExtension.() -> Unit) =
@@ -179,6 +155,29 @@ internal fun Project.noArg(configure: NoArgExtension.() -> Unit) =
 internal val Project.benchmark: BenchmarksExtension get() = the()
 
 internal fun Project.benchmark(configure: BenchmarksExtension.() -> Unit) =
+    extensions.configure(configure)
+
+internal val Project.javaToolchain: JavaToolchainService get() = the()
+
+internal val Project.java: JavaPluginExtension get() = the()
+
+internal fun Project.java(configure: JavaPluginExtension.() -> Unit) =
+    extensions.configure(configure)
+
+
+internal val Project.javaApp: JavaApplication get() = the()
+
+internal fun Project.javaApp(configure: JavaApplication.() -> Unit) =
+    extensions.configure(configure)
+
+internal val Project.android: BaseExtension get() = the()
+
+internal fun Project.android(configure: BaseExtension.() -> Unit) =
+    extensions.configure(configure)
+
+internal val Project.kotlin: KotlinMultiplatformExtension get() = the()
+
+internal fun Project.kotlin(configure: KotlinMultiplatformExtension.() -> Unit) =
     extensions.configure(configure)
 
 internal val Project.sqldelight: SqlDelightExtension get() = the()
@@ -246,7 +245,6 @@ internal val Project.yarnEnv: YarnRootEnvSpec get() = the()
 internal fun Project.yarnEnv(configure: YarnRootEnvSpec.() -> Unit) =
     extensions.configure(configure)
 
-
 internal val Project.karakum: KarakumExtension get() = the()
 
 internal fun Project.karakum(configure: KarakumExtension.() -> Unit) =
@@ -284,29 +282,29 @@ internal val Project.signing: SigningExtension get() = the()
 internal fun Project.signing(configure: SigningExtension.() -> Unit) =
     extensions.configure(configure)
 
-context(Project)
+context(project: Project)
 internal val TaskContainer.apiBuild
-    get() = tasks.maybeNamed("apiBuild", KotlinApiBuildTask::class.java)
+    get() = project.tasks.maybeNamed("apiBuild", KotlinApiBuildTask::class.java)
 
-context(Project)
+context(project: Project)
 internal fun TaskContainer.apiBuild(configure: KotlinApiBuildTask.() -> Unit) =
-    tasks.maybeNamed("apiBuild", KotlinApiBuildTask::class.java, configure)
+    project.tasks.maybeNamed("apiBuild", KotlinApiBuildTask::class.java, configure)
 
-context(Project)
+context(project: Project)
 internal val TaskContainer.dokkaGeneratePublicationHtml
-    get() = tasks.maybeNamed("dokkaGeneratePublicationHtml", DokkaGeneratePublicationTask::class.java)
+    get() = project.tasks.maybeNamed("dokkaGeneratePublicationHtml", DokkaGeneratePublicationTask::class.java)
 
-context(Project)
+context(project: Project)
 internal fun TaskContainer.dokkaGeneratePublicationHtml(configure: KotlinApiBuildTask.() -> Unit) =
-    tasks.maybeNamed("apiBuild", KotlinApiBuildTask::class.java, configure)
+    project.tasks.maybeNamed("apiBuild", KotlinApiBuildTask::class.java, configure)
 
-context(Project)
+context(project: Project)
 internal val TaskContainer.dokkaGeneratePublicationJavadoc
-    get() = tasks.maybeNamed("dokkaGeneratePublicationJavadoc", DokkaGeneratePublicationTask::class.java)
+    get() = project.tasks.maybeNamed("dokkaGeneratePublicationJavadoc", DokkaGeneratePublicationTask::class.java)
 
-context(Project)
+context(project: Project)
 internal fun TaskContainer.dokkaGeneratePublicationJavadoc(configure: KotlinApiBuildTask.() -> Unit) =
-    tasks.maybeNamed("apiBuild", KotlinApiBuildTask::class.java, configure)
+    project.tasks.maybeNamed("apiBuild", KotlinApiBuildTask::class.java, configure)
 
 /**
  * Create native module name from project path.

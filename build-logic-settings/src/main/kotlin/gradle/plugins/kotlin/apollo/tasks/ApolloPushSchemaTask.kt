@@ -1,14 +1,14 @@
 package gradle.plugins.kotlin.apollo.tasks
 
-import org.gradle.kotlin.dsl.withType
 import com.apollographql.apollo3.gradle.internal.ApolloPushSchemaTask
-import kotlinx.serialization.Serializable
 import gradle.api.tasks.DefaultTask
-import org.gradle.api.Project
-import gradle.collection.SerializableAnyMap
 import gradle.api.tasks.applyTo
 import gradle.api.tryAssign
 import gradle.api.trySet
+import gradle.collection.SerializableAnyMap
+import kotlinx.serialization.Serializable
+import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
 
 @Serializable
 internal data class ApolloPushSchemaTask(
@@ -34,7 +34,7 @@ internal data class ApolloPushSchemaTask(
     val subgraph: String? = null,
 ) : DefaultTask<ApolloPushSchemaTask>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: ApolloPushSchemaTask) {
         super.applyTo(receiver)
 
@@ -47,8 +47,8 @@ internal data class ApolloPushSchemaTask(
         receiver.subgraph tryAssign subgraph
     }
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<ApolloPushSchemaTask>())
+        applyTo(project.tasks.withType<ApolloPushSchemaTask>())
 }
 

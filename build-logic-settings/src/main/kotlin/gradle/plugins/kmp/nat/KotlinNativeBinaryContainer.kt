@@ -18,7 +18,7 @@ internal data class KotlinNativeBinaryContainer(
     val test: TestExecutableSettings? = null,
 ) {
 
-    context(Project)
+    context(project: Project)
     fun applyTo(receiver: KotlinNativeBinaryContainer) {
         executable?.let { executable ->
             receiver.executable(executable.namePrefix, executable.buildTypes) {

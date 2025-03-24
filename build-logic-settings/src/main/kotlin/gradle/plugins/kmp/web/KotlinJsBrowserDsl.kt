@@ -13,7 +13,7 @@ internal data class KotlinJsBrowserDsl(
     val webpackTask: KotlinWebpack? = null,
 ) : KotlinJsSubTargetDsl {
 
-    context(Project)
+    context(project: Project)
     fun applyTo(browser: KotlinJsBrowserDsl, outputName: String) {
         super.applyTo(browser, outputName)
         commonWebpackConfig?.let { commonWebpackConfig ->

@@ -33,7 +33,7 @@ internal interface Signer {
      */
     val sign: Set<@Serializable(with = SignContentPolymorphicSerializer::class) Any>?
 
-    context(Project)
+    context(project: Project)
     fun applyTo(
         signConfigurations: (Array<Configuration>) -> Unit,
         signPublications: (Array<Publication>) -> Unit,
@@ -66,10 +66,10 @@ internal interface Signer {
                 .toTypedArray()
                 .let(signArtifacts)
 
-            files.map(::file).toTypedArray().let(signFiles)
+            files.map(project::file).toTypedArray().let(signFiles)
 
             sign.filterIsInstance<SignFile>().forEach { (classifier, files) ->
-                signClassifierFile(classifier, files.map(::file).toTypedArray())
+                signClassifierFile(classifier, files.map(project::file).toTypedArray())
             }
         }
     }
@@ -85,7 +85,7 @@ internal object SignContentPolymorphicSerializer : JsonContentPolymorphicSeriali
         }
 }
 
-context(Project)
+context(project: Project)
 private fun List<String>.resolveReferences(name: String): List<String> {
     val reference = "$$name."
     return filter { value -> value.startsWith(reference) }

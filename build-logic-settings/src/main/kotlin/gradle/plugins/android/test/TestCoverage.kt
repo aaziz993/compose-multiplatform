@@ -18,8 +18,8 @@ internal data class TestCoverage(
     val jacocoVersion: String? = null,
 ) {
 
-    context(Project)
+    context(project: Project)
     fun applyTo(receiver: TestCoverage) {
-        receiver::jacocoVersion trySet (jacocoVersion ?: settings.libs.versions.version("jacoco"))
+        receiver::jacocoVersion trySet (jacocoVersion ?: project.settings.libs.versions.version("jacoco"))
     }
 }

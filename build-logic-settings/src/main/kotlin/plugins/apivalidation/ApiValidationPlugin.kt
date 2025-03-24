@@ -16,7 +16,7 @@ internal class ApiValidationPlugin : Plugin<Project> {
             projectProperties.plugins.apiValidation
                 .takeIf { it.enabled && projectProperties.kotlin.targets.isNotEmpty() }?.let { apiValidation ->
                     // The tool allows dumping binary API of a JVM part of a Kotlin library that is public in the sense of Kotlin visibilities and ensures that the public binary API wasn't changed in a way that makes this change binary incompatible.
-                    plugins.apply(settings.libs.plugins.plugin("binary.compatibility.validator").id)
+                    plugins.apply(project.settings.libs.plugins.plugin("binary.compatibility.validator").id)
 
                     apiValidation.applyTo()
                 }

@@ -11,7 +11,6 @@ import gradle.plugins.android.Optimization
 import gradle.plugins.android.ResValue
 import gradle.plugins.android.Shaders
 import gradle.plugins.android.VectorDrawables
-import gradle.plugins.android.defaultconfig.DynamicFeatureDefaultConfig
 import gradle.plugins.android.application.ApplicationDefaultConfig
 import gradle.plugins.android.compile.JavaCompileOptions
 import gradle.plugins.android.library.LibraryDefaultConfig
@@ -70,7 +69,7 @@ internal data class DefaultConfig(
     LibraryDefaultConfig<DefaultConfig>,
     TestDefaultConfig<DefaultConfig> {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: DefaultConfig) {
         super<ApplicationDefaultConfig>.applyTo(receiver)
         super<DynamicFeatureDefaultConfig>.applyTo(receiver)

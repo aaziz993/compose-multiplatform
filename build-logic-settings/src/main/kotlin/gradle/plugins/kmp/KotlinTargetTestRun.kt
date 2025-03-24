@@ -2,7 +2,6 @@ package gradle.plugins.kmp
 
 import gradle.plugins.kotlin.KotlinTestRun
 import org.gradle.api.Project
-import org.gradle.api.tasks.testing.TestFilter
 import org.jetbrains.kotlin.gradle.plugin.KotlinTargetTestRun
 
 /**
@@ -10,7 +9,7 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinTargetTestRun
  */
 internal interface KotlinTargetTestRun<T : KotlinTargetTestRun<*>> : KotlinTestRun<T>, KotlinTargetExecution<T> {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: T) {
         super<KotlinTestRun>.applyTo(receiver)
         super<KotlinTargetExecution>.applyTo(receiver)

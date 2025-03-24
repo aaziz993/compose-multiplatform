@@ -20,7 +20,7 @@ internal abstract class BaseGroovyExtension<T: BaseGroovyExtension> : FormatExte
 
     abstract val greclipse: GrEclipseConfig?
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
@@ -30,7 +30,7 @@ internal abstract class BaseGroovyExtension<T: BaseGroovyExtension> : FormatExte
 
         greclipse?.let { greclipse ->
             greclipse.applyTo(
-                (greclipse.version?.resolveVersion() ?: settings.libs.versions.version("greclipse"))
+                (greclipse.version?.resolveVersion() ?: project.settings.libs.versions.version("greclipse"))
                     ?.let(receiver::greclipse) ?: receiver.greclipse(),
             )
         }

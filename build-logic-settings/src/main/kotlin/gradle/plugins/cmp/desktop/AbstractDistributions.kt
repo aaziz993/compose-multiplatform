@@ -21,16 +21,16 @@ internal abstract class AbstractDistributions<T : AbstractDistributions> {
     abstract val appResourcesRootDir: String?
     abstract val licenseFile: String?
 
-    context(Project)
+    context(project: Project)
     open fun applyTo(receiver: T) {
-        receiver.outputBaseDir tryAssign outputBaseDir?.let(layout.projectDirectory::dir)
+        receiver.outputBaseDir tryAssign outputBaseDir?.let(project.layout.projectDirectory::dir)
         receiver.packageName = packageName ?: moduleName
         receiver::packageVersion trySet (packageVersion
-            ?: settings.libs.versions.version("compose.desktop.packageVersion"))
+            ?: project.settings.libs.versions.version("compose.desktop.packageVersion"))
         receiver::copyright trySet copyright
         receiver::description trySet description
         receiver::vendor trySet vendor
-        receiver.appResourcesRootDir tryAssign appResourcesRootDir?.let(layout.projectDirectory::dir)
-        receiver.licenseFile tryAssign licenseFile?.let(::file)
+        receiver.appResourcesRootDir tryAssign appResourcesRootDir?.let(project.layout.projectDirectory::dir)
+        receiver.licenseFile tryAssign licenseFile?.let(project::file)
     }
 }

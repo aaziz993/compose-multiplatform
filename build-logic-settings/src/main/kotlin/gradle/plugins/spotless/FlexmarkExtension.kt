@@ -37,7 +37,7 @@ internal data class FlexmarkExtension(
     override val toggleOffOnDisable: Boolean? = null,
 ) : FormatExtension<FlexmarkExtension>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() = spotless.flexmark {
         super.applyTo(this)
     }

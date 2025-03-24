@@ -25,7 +25,7 @@ internal data class PublishToMavenLocal(
     override val publication: String? = null,
 ) : AbstractPublishToMaven<PublishToMavenLocal>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<PublishToMavenLocal>())
+        applyTo(project.tasks.withType<PublishToMavenLocal>())
 }

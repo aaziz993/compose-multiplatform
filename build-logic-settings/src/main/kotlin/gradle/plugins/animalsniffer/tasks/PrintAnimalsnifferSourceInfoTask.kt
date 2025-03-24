@@ -25,7 +25,7 @@ internal data class PrintAnimalsnifferSourceInfoTask(
     override val name: String? = null,
 ) : DefaultTask<PrintAnimalsnifferSourceInfoTask>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<PrintAnimalsnifferSourceInfoTask>())
+        applyTo(project.tasks.withType<PrintAnimalsnifferSourceInfoTask>())
 }

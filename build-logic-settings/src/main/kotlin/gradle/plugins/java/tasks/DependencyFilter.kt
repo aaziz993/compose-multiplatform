@@ -29,9 +29,9 @@ internal data class DependencyFilter(
     val include: ResolvedDependency? = null,
 ) {
 
-    context(Project)
+    context(project: Project)
     fun applyTo(receiver: DependencyFilter) {
-        resolve?.map(Set<*>::toTypedArray)?.map(::files)?.let(receiver::resolve)
+        resolve?.map(Set<*>::toTypedArray)?.map(project::files)?.let(receiver::resolve)
         receiver.exclude {
             exclude?.equals(it) != false
         }

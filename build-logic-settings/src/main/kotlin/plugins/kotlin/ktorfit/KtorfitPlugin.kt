@@ -15,7 +15,7 @@ internal class KtorfitPlugin : Plugin<Project> {
         with(target) {
             projectProperties.plugins.ktorfit
                 .takeIf { it.enabled && projectProperties.kotlin.targets.isNotEmpty() }?.let { ktorfit ->
-                    plugins.apply(settings.libs.plugins.plugin("ktorfit").id)
+                    plugins.apply(project.settings.libs.plugins.plugin("ktorfit").id)
 
                     ktorfit.applyTo()
                 }

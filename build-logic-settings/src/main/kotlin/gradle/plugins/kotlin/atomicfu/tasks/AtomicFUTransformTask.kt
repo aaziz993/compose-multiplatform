@@ -32,18 +32,18 @@ internal data class AtomicFUTransformTask(
     val verbose: Boolean? = null,
 ) : ConventionTask<AtomicFUTransformTask>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: AtomicFUTransformTask) {
         super.applyTo(receiver)
 
-        receiver::inputFiles trySet inputFiles?.toTypedArray()?.let(::files)
-        receiver.destinationDirectory tryAssign destinationDirectory?.let(layout.projectDirectory::dir)
-        receiver::classPath trySet classPath?.toTypedArray()?.let(::files)
+        receiver::inputFiles trySet inputFiles?.toTypedArray()?.let(project::files)
+        receiver.destinationDirectory tryAssign destinationDirectory?.let(project.layout.projectDirectory::dir)
+        receiver::classPath trySet classPath?.toTypedArray()?.let(project::files)
         receiver::jvmVariant trySet jvmVariant
         receiver::verbose trySet verbose
     }
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<AtomicFUTransformTask>())
+        applyTo(project.tasks.withType<AtomicFUTransformTask>())
 }

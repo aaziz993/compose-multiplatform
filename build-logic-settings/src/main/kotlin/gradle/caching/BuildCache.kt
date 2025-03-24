@@ -24,13 +24,13 @@ internal interface BuildCache<T: org.gradle.caching.configuration.BuildCache> {
      */
     val push: Boolean?
 
-    context(Settings)
+    context(settings: Settings)
     fun applyTo(receiver: T) {
         enabled?.let(receiver::setEnabled)
         push?.let(receiver::setPush)
     }
 
-    context(Settings)
+    context(settings: Settings)
     fun applyTo(receiver: BuildCacheConfiguration) {
         throw UnsupportedOperationException()
     }

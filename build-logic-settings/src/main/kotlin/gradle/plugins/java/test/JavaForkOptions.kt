@@ -104,7 +104,7 @@ internal interface JavaForkOptions<T : JavaForkOptions> : ProcessForkOptions<T> 
     val allJvmArgs: List<String>?
     val setAllJvmArgs: List<String>?
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
@@ -118,7 +118,7 @@ internal interface JavaForkOptions<T : JavaForkOptions> : ProcessForkOptions<T> 
 
         bootstrapClasspath?.toTypedArray()?.let(receiver::bootstrapClasspath)
 
-        setBootstrapClasspath?.toTypedArray()?.let(::files)?.let(receiver::setBootstrapClasspath)
+        setBootstrapClasspath?.toTypedArray()?.let(project::files)?.let(receiver::setBootstrapClasspath)
 
         enableAssertions?.let(receiver::setEnableAssertions)
         debug?.let(receiver::setDebug)

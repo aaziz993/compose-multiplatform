@@ -7,9 +7,6 @@ import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
 import gradle.api.tryAssign
-import gradle.serialization.decodeMapFromString
-import java.io.File
-import kotlinx.serialization.json.Json
 import org.gradle.api.Project
 
 internal interface KarakumExtension {
@@ -20,11 +17,11 @@ internal interface KarakumExtension {
     val configFile: String?
     val extensionSource: String?
 
-    context(Project)
+    context(project: Project)
     fun applyTo() =
-        pluginManager.withPlugin(settings.libs.plugins.plugin("karakum").id) {
-            karakum.configFile tryAssign configFile?.let(::file)
-            karakum.extensionSource tryAssign extensionSource?.let(layout.projectDirectory::dir)?.asFileTree
+        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("karakum").id) {
+            project.karakum.configFile tryAssign configFile?.let(project::file)
+            project.karakum.extensionSource tryAssign extensionSource?.let(project.layout.projectDirectory::dir)?.asFileTree
         }
 }
 

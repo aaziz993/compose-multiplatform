@@ -19,9 +19,9 @@ internal data class AtomicFUSettings(
     override val enabled: Boolean = true
 ) : AtomicFUExtension, EnabledSettings {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        pluginManager.withPlugin(settings.libs.plugins.plugin("atomicfu").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("atomicfu").id) {
             super.applyTo()
         }
 }

@@ -1,14 +1,14 @@
 package gradle.plugins.kotlin.apollo.tasks
 
-import org.gradle.kotlin.dsl.withType
 import com.apollographql.apollo3.gradle.internal.ApolloConvertSchemaTask
-import kotlinx.serialization.Serializable
 import gradle.api.tasks.DefaultTask
-import org.gradle.api.Project
-import gradle.collection.SerializableAnyMap
 import gradle.api.tasks.applyTo
 import gradle.api.tryAssign
 import gradle.api.trySet
+import gradle.collection.SerializableAnyMap
+import kotlinx.serialization.Serializable
+import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
 
 @Serializable
 internal data class ApolloConvertSchemaTask(
@@ -30,7 +30,7 @@ internal data class ApolloConvertSchemaTask(
     val to: String? = null,
 ) : DefaultTask<ApolloConvertSchemaTask>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: ApolloConvertSchemaTask) {
         super.applyTo(receiver)
 
@@ -39,7 +39,7 @@ internal data class ApolloConvertSchemaTask(
         receiver.to tryAssign to
     }
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<ApolloConvertSchemaTask>())
+        applyTo(project.tasks.withType<ApolloConvertSchemaTask>())
 }

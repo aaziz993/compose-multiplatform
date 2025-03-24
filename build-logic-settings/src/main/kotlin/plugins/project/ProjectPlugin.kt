@@ -3,10 +3,8 @@
 package plugins.project
 
 import com.android.build.gradle.internal.tasks.AndroidTestTask
-import gradle.accessors.exportExtras
 import gradle.accessors.kotlin
 import gradle.accessors.projectProperties
-import gradle.accessors.settings
 import gradle.api.applyTo
 import gradle.api.isCI
 import gradle.api.maybeNamed

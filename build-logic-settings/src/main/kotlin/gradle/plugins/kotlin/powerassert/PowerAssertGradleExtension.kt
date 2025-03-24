@@ -25,19 +25,19 @@ internal interface PowerAssertGradleExtension {
     val includedSourceSets: Set<String>?
     val setIncludedSourceSets: Set<String>?
 
-    context(Project)
+    context(project: Project)
     fun applyTo() =
-        pluginManager.withPlugin(settings.libs.plugins.plugin("powerAssert").id) {
-            powerAssert.functions tryAssign functions?.let { functions ->
-                powerAssert.functions.get() + functions
+        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("powerAssert").id) {
+            project.powerAssert.functions tryAssign functions?.let { functions ->
+                project.powerAssert.functions.get() + functions
             }
 
-            powerAssert.functions tryAssign setFunctions
+            project.powerAssert.functions tryAssign setFunctions
 
-            powerAssert.includedSourceSets tryAssign includedSourceSets?.let { includedSourceSets ->
-                powerAssert.includedSourceSets.get() + includedSourceSets
+            project.powerAssert.includedSourceSets tryAssign includedSourceSets?.let { includedSourceSets ->
+                project.powerAssert.includedSourceSets.get() + includedSourceSets
             }
 
-            powerAssert.includedSourceSets tryAssign setIncludedSourceSets
+            project.powerAssert.includedSourceSets tryAssign setIncludedSourceSets
         }
 }

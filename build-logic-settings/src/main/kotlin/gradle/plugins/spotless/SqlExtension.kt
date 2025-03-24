@@ -37,7 +37,7 @@ internal data class SqlExtension(
     override val toggleOffOnDisable: Boolean? = null,
 ) : FormatExtension<SqlExtension>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() = spotless.sql {
         super.applyTo(this)
     }

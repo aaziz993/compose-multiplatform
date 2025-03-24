@@ -15,7 +15,7 @@ internal class PowerAssertPlugin : Plugin<Project> {
         with(target) {
             projectProperties.plugins.powerAssert
                 .takeIf { it.enabled && projectProperties.kotlin.targets.isNotEmpty() }?.let { powerAssert ->
-                    plugins.apply(settings.libs.plugins.plugin("powerAssert").id)
+                    plugins.apply(project.settings.libs.plugins.plugin("powerAssert").id)
 
                     powerAssert.applyTo()
                 }

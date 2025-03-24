@@ -53,11 +53,11 @@ internal data class KoverHtmlTaskConfig(
     val htmlDir: String? = null,
 ) {
 
-    context(Project)
+    context(project: Project)
     fun applyTo(receiver: KoverHtmlTaskConfig) {
         receiver.title tryAssign title
         receiver.charset tryAssign charset
         receiver.onCheck tryAssign onCheck
-        receiver.htmlDir tryAssign htmlDir?.let(layout.projectDirectory::dir)
+        receiver.htmlDir tryAssign htmlDir?.let(project.layout.projectDirectory::dir)
     }
 }

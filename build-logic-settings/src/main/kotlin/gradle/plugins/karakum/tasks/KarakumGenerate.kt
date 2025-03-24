@@ -46,14 +46,14 @@ internal data class KarakumGenerate(
     val extensionDirectory: String? = null,
 ) : DefaultTask<KarakumGenerate>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: KarakumGenerate) =
-        pluginManager.withPlugin(settings.libs.plugins.plugin("karakum").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("karakum").id) {
             super.applyTo(receiver)
 
-            receiver.configFile tryAssign configFile?.let(::file)
+            receiver.configFile tryAssign configFile?.let(project::file)
 
-            receiver.extensionDirectory tryAssign extensionDirectory?.let(layout.projectDirectory::dir)
+            receiver.extensionDirectory tryAssign extensionDirectory?.let(project.layout.projectDirectory::dir)
 
             receiver.doLast {
                 this as KarakumGenerate
@@ -66,7 +66,7 @@ internal data class KarakumGenerate(
 
                 val karakumConfig = Json.Default.decodeMapFromString(karakumConfigFile.readText())
 
-                val karakumOutput = file(karakumConfig["output"]!!.toString())
+                val karakumOutput = project.file(karakumConfig["output"]!!.toString())
 
                 // Add internal modifier to all generated declarations
                 karakumOutput
@@ -107,7 +107,7 @@ internal data class KarakumGenerate(
             }
         }
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<KarakumGenerate>())
+        applyTo(project.tasks.withType<KarakumGenerate>())
 }

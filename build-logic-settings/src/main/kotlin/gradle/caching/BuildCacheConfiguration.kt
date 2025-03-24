@@ -33,7 +33,7 @@ internal data class BuildCacheConfiguration(
     val remotes: List<@Serializable(with = BuildCacheTransformingSerializer::class) BuildCache>? = null,
 ) {
 
-    context(Settings)
+    context(settings: Settings)
     @Suppress("UNCHECKED_CAST")
     fun applyTo(receiver: BuildCacheConfiguration) {
         local?.applyTo()

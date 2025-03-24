@@ -37,7 +37,7 @@ internal data class PythonExtension(
     override val toggleOffOnDisable: Boolean? = null,
 ) : FormatExtension<PythonExtension>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() = spotless.python {
         super.applyTo(this)
     }

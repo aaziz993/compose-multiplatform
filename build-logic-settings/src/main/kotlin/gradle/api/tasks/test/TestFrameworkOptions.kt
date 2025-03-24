@@ -8,6 +8,6 @@ import org.gradle.api.tasks.testing.TestFrameworkOptions
  */
 internal abstract class TestFrameworkOptions<in T: TestFrameworkOptions> {
 
-    context(Project)
+    context(project: Project)
     abstract fun applyTo(receiver: T)
 }

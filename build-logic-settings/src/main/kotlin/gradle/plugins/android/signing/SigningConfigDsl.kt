@@ -53,13 +53,13 @@ internal interface SigningConfigDsl<T: SigningConfig> {
      */
     val initWith: String?
 
-    context(Project)
+    context(project: Project)
     fun applyTo(receiver: T) {
-        receiver::storeFile trySet storeFile?.let(::file)
+        receiver::storeFile trySet storeFile?.let(project::file)
         receiver::storePassword trySet storePassword
         receiver::keyAlias trySet keyAlias
         receiver::keyPassword trySet keyPassword
         receiver::storeType trySet storeType
-        initWith?.let(android.signingConfigs::getByName)?.let(receiver::initWith)
+        initWith?.let(project.android.signingConfigs::getByName)?.let(receiver::initWith)
     }
 }

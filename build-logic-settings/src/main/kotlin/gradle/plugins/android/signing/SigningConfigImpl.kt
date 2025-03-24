@@ -2,7 +2,6 @@ package gradle.plugins.android.signing
 
 import com.android.build.gradle.internal.dsl.SigningConfig
 import gradle.api.ProjectNamed
-import gradle.plugins.android.signing.InternalSigningConfig
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -22,7 +21,7 @@ internal data class SigningConfigImpl(
     override val initWith: String? = null,
 ) : ProjectNamed<SigningConfig>, ApkSigningConfig<SigningConfig>, InternalSigningConfig<SigningConfig> {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: SigningConfig) {
         super<ApkSigningConfig>.applyTo(receiver)
         super<InternalSigningConfig>.applyTo(receiver)

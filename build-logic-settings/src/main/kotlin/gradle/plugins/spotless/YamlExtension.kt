@@ -37,7 +37,7 @@ internal data class YamlExtension(
     override val toggleOffOnDisable: Boolean? = null,
 ) : FormatExtension<YamlExtension>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() = spotless.yaml {
         super.applyTo(this)
     }

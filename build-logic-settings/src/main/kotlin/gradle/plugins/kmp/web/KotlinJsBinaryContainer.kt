@@ -12,7 +12,7 @@ internal data class KotlinJsBinaryContainer(
     val library: Library = Library(),
 ) {
 
-    context(Project)
+    context(project: Project)
     fun applyTo(receiver: KotlinJsBinaryContainer) {
         when (projectProperties.type) {
             ProjectType.APP ->

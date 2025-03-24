@@ -4,8 +4,8 @@ import gradle.accessors.kotlin
 import gradle.plugins.kmp.nat.KotlinNativeBinaryContainer
 import gradle.plugins.kmp.nat.KotlinNativeCompilation
 import gradle.plugins.kmp.nat.KotlinNativeCompilationTransformingSerializer
-import gradle.plugins.kmp.nat.tasks.KotlinNativeCompilerOptions
 import gradle.plugins.kmp.nat.KotlinNativeTarget
+import gradle.plugins.kmp.nat.tasks.KotlinNativeCompilerOptions
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -20,7 +20,7 @@ internal data class KotlinWatchosDeviceArm64Target(
     override val binaries: KotlinNativeBinaryContainer? = null,
 ) : KotlinNativeTarget(), KotlinWatchos64Target, KotlinWatchosTarget {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
         super.applyTo(kotlin.targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>(), kotlin::watchosDeviceArm64)
 }

@@ -15,7 +15,7 @@ internal class RoomPlugin : Plugin<Project> {
         with(target) {
             projectProperties.plugins.room
                 .takeIf { it.enabled && projectProperties.kotlin.targets.isNotEmpty() }?.let { room ->
-                    plugins.apply(settings.libs.plugins.plugin("room").id)
+                    plugins.apply(project.settings.libs.plugins.plugin("room").id)
 
                     room.applyTo()
                 }

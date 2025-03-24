@@ -22,11 +22,11 @@ internal interface BaseNamed {
 
 internal interface SettingsNamed<T> : BaseNamed {
 
-    context(Settings)
+    context(settings: Settings)
     fun applyTo(receiver: T)
 }
 
-context(Settings)
+context(settings: Settings)
 internal fun <T : Named> SettingsNamed<T>.applyTo(
     receiver: DomainObjectCollection<out T>,
     create: (name: String, action: Action<in T>) -> Unit
@@ -34,7 +34,7 @@ internal fun <T : Named> SettingsNamed<T>.applyTo(
     applyTo(this)
 }
 
-context(Settings)
+context(settings: Settings)
 internal fun <T> SettingsNamed<T>.applyTo(
     receiver: NamedDomainObjectCollection<out T>,
     create: (name: String, action: Action<in T>) -> Unit
@@ -42,7 +42,7 @@ internal fun <T> SettingsNamed<T>.applyTo(
     applyTo(this)
 }
 
-context(Settings)
+context(settings: Settings)
 internal fun <T> SettingsNamed<T>.applyTo(receiver: NamedDomainObjectContainer<out T>) =
     applyTo(receiver) { name, action ->
         receiver.register(name, action)
@@ -50,11 +50,11 @@ internal fun <T> SettingsNamed<T>.applyTo(receiver: NamedDomainObjectContainer<o
 
 internal interface ProjectNamed<T> : BaseNamed {
 
-    context(Project)
+    context(project: Project)
     fun applyTo(receiver: T)
 }
 
-context(Project)
+context(project: Project)
 internal fun <T : Named> ProjectNamed<T>.applyTo(
     receiver: DomainObjectCollection<out T>,
     create: (name: String, action: Action<in T>) -> Unit
@@ -62,7 +62,7 @@ internal fun <T : Named> ProjectNamed<T>.applyTo(
     applyTo(this)
 }
 
-context(Project)
+context(project: Project)
 internal fun <T> ProjectNamed<T>.applyTo(
     receiver: NamedDomainObjectCollection<out T>,
     create: (name: String, action: Action<in T>) -> Unit
@@ -70,7 +70,7 @@ internal fun <T> ProjectNamed<T>.applyTo(
     applyTo(this)
 }
 
-context(Project)
+context(project: Project)
 internal fun <T> ProjectNamed<T>.applyTo(receiver: NamedDomainObjectContainer<out T>) =
     applyTo(receiver) { name, action ->
         receiver.register(name, action)
@@ -78,10 +78,10 @@ internal fun <T> ProjectNamed<T>.applyTo(receiver: NamedDomainObjectContainer<ou
 
 internal interface Named<T> : SettingsNamed<T>, ProjectNamed<T> {
 
-    context(Settings)
+    context(settings: Settings)
     override fun applyTo(receiver: T)
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: T)
 }
 

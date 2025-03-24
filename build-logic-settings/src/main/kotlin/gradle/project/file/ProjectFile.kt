@@ -25,7 +25,7 @@ internal interface ProjectFile {
     val replace: Map<String, String>
         get() = emptyMap()
 
-    context(Project)
+    context(project: Project)
     fun applyTo(receiver: String): List<TaskProvider<out DefaultTask>> {
         val (urls, files) = from.partition(String::isUrl)
 
@@ -94,7 +94,7 @@ internal interface ProjectFile {
         )
     }
 
-    context(Project)
+    context(project: Project)
     fun AbstractCopyTask.exclude(equator: (from: File, into: File) -> Boolean) =
         exclude { fileTree ->
             if (fileTree.isDirectory) false

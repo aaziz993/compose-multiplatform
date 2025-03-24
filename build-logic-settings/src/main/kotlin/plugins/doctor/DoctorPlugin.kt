@@ -14,7 +14,7 @@ internal class DoctorPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             projectProperties.plugins.doctor.takeIf { it.enabled && project == rootProject }?.let { doctor ->
-                plugins.apply(settings.libs.plugins.plugin("doctor").id)
+                plugins.apply(project.settings.libs.plugins.plugin("doctor").id)
 
                 doctor.applyTo()
             }

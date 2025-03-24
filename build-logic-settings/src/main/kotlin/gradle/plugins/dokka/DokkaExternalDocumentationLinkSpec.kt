@@ -1,6 +1,5 @@
 package gradle.plugins.dokka
 
-import gradle.api.BaseNamed
 import gradle.api.ProjectNamed
 import gradle.api.tryAssign
 import kotlinx.serialization.Serializable
@@ -77,7 +76,7 @@ internal data class DokkaExternalDocumentationLinkSpec(
     val enabled: Boolean? = null,
 ) : ProjectNamed<DokkaExternalDocumentationLinkSpec> {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: DokkaExternalDocumentationLinkSpec) {
         url?.let(receiver::url)
         packageListUrl?.let(receiver::packageListUrl)

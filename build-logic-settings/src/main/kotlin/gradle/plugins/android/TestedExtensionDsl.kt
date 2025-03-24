@@ -74,10 +74,10 @@ internal interface TestedExtensionDsl {
      */
     val testFixtures: TestFixtures?
 
-    context(Project)
+    context(project: Project)
     @Suppress("UnstableApiUsage")
     fun applyTo() {
-        val extension = android as TestedExtension
+        val extension = project.android as TestedExtension
 
         extension::testBuildType trySet testBuildType
         extension::testNamespace trySet testNamespace

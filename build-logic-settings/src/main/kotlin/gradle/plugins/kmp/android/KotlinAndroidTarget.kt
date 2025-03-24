@@ -1,20 +1,15 @@
 package gradle.plugins.kmp.android
 
 import gradle.accessors.kotlin
-import gradle.accessors.projectProperties
 import gradle.api.applyTo
-
 import gradle.api.trySet
-import gradle.plugins.kmp.KotlinJvmAndAndroidTarget
 import gradle.plugins.kmp.KotlinJvmAndroidCompilation
 import gradle.plugins.kmp.KotlinJvmAndroidCompilationTransformingSerializer
 import gradle.plugins.kmp.KotlinTarget
 import gradle.plugins.kmp.jvm.KotlinJvmCompilerOptions
 import gradle.plugins.kotlin.HasConfigurableKotlinCompilerOptions
-import gradle.project.ProjectType
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
@@ -45,7 +40,7 @@ internal data class KotlinAndroidTarget(
 ) : KotlinTarget<KotlinAndroidTarget>,
     HasConfigurableKotlinCompilerOptions<KotlinAndroidTarget, org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompilerOptions> {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: KotlinAndroidTarget) {
         super<KotlinTarget>.applyTo(receiver)
         super<HasConfigurableKotlinCompilerOptions>.applyTo(receiver)
@@ -59,7 +54,7 @@ internal data class KotlinAndroidTarget(
         receiver::publishLibraryVariantsGroupedByFlavor trySet publishLibraryVariantsGroupedByFlavor
     }
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
         applyTo(kotlin.targets.withType<KotlinAndroidTarget>()) { name, action ->
             kotlin::androidTarget

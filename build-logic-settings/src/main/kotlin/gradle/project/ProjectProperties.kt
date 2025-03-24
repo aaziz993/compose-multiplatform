@@ -1,6 +1,5 @@
 package gradle.project
 
-import gradle.accessors.exportExtras
 import gradle.accessors.projectProperties
 import gradle.api.initialization.DependencyResolutionManagement
 import gradle.api.initialization.PluginManagement
@@ -99,17 +98,17 @@ internal data class ProjectProperties(
 
         val yaml = Yaml()
 
-        context(Settings)
+        context(settings: Settings)
         @Suppress("UnstableApiUsage")
         fun load(): ProjectProperties {
             extra.exportExtras()
-            return load(layout.settingsDirectory, providers, extra, projectProperties.localProperties)
+            return load(settings.layout.settingsDirectory, providers, extra, projectProperties.localProperties)
         }
 
-        context(Project)
+        context(project: Project)
         fun load(): ProjectProperties {
             extra.exportExtras()
-            return load(layout.projectDirectory, providers, extra, projectProperties.localProperties)
+            return load(project.layout.projectDirectory, providers, extra, projectProperties.localProperties)
         }
 
         private fun ExtraPropertiesExtension.exportExtras() =

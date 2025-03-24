@@ -33,7 +33,7 @@ internal data class KspAATask(
     val setCommandLineArgumentProviders: List<CommandLineArgumentProvider>? = null,
 ) : DefaultTask<KspAATask>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: KspAATask) {
         super.applyTo(receiver)
 
@@ -48,7 +48,7 @@ internal data class KspAATask(
         receiver.commandLineArgumentProviders tryAssign setCommandLineArgumentProviders
     }
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<KspAATask>())
+        applyTo(project.tasks.withType<KspAATask>())
 }

@@ -1,12 +1,11 @@
 package gradle.api.tasks.download
 
-import org.gradle.kotlin.dsl.withType
 import gradle.api.tasks.DefaultTask
 import gradle.api.tasks.applyTo
 import gradle.collection.SerializableAnyMap
-
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
 import org.jetbrains.compose.internal.de.undercouch.gradle.tasks.download.Download
 
 @Serializable
@@ -47,7 +46,7 @@ internal data class Download(
     override val body: String? = null,
 ) : DefaultTask<Download>(), DownloadSpec {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<Download>())
+        applyTo(project.tasks.withType<Download>())
 }

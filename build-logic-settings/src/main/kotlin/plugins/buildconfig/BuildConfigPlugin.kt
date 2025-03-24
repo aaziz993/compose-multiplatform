@@ -15,7 +15,7 @@ internal class BuildConfigPlugin : Plugin<Project> {
         with(target) {
             projectProperties.plugins.buildConfig
                 .takeIf { it.enabled && projectProperties.kotlin.targets.isNotEmpty() }?.let { buildConfig ->
-                    plugins.apply(settings.libs.plugins.plugin("build.config").id)
+                    plugins.apply(project.settings.libs.plugins.plugin("buildConfig").id)
 
                     buildConfig.applyTo()
                 }

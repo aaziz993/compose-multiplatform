@@ -7,16 +7,8 @@ import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
 import gradle.api.trySet
-import java.io.File
 import java.net.URI
-import kotlin.collections.component1
-import kotlin.collections.component2
-import org.danilopianini.gradle.git.hooks.CommitMsgScriptContext
-import org.danilopianini.gradle.git.hooks.CommonScriptContext
-import org.danilopianini.gradle.git.hooks.GitHooksExtension
-import org.danilopianini.gradle.git.hooks.ScriptContext
 import org.gradle.api.initialization.Settings
-import org.gradle.api.logging.Logging
 
 /**
  * DSL entry point, to be applied to [settings].gradle.kts.
@@ -35,27 +27,27 @@ internal interface GitHooksExtension {
 
     val hooksUrls: Map<String, String>?
 
-    context(Settings)
+    context(settings: Settings)
     fun applyTo() =
-        pluginManager.withPlugin(settings.libs.plugins.plugin("gradlePreCommitGitHooks").id) {
-        hooks?.forEach { name, script ->
-            gitHooks.hook(name) {
-                from { script }
+        settings.pluginManager.withPlugin(settings.libs.plugins.plugin("gradlePreCommitGitHooks").id) {
+            hooks?.forEach { name, script ->
+                settings.gitHooks.hook(name) {
+                    from { script }
+                }
             }
-        }
 
-        hooksFiles?.forEach { name, file ->
-            gitHooks.hook(name) {
-                from(rootDir.resolve(file))
+            hooksFiles?.forEach { name, file ->
+                settings.gitHooks.hook(name) {
+                    from(settings.settingsDir.resolve(file))
+                }
             }
-        }
 
-        hooksUrls?.forEach { name, url ->
-            gitHooks.hook(name) {
-                from(URI(url).toURL())
+            hooksUrls?.forEach { name, url ->
+                settings.gitHooks.hook(name) {
+                    from(URI(url).toURL())
+                }
             }
-        }
 
-        gitHooks::repoRoot trySet repoRoot?.let(rootDir::resolve)
-    }
+            settings.gitHooks::repoRoot trySet repoRoot?.let(settings.settingsDir::resolve)
+        }
 }

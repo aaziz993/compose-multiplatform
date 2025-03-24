@@ -1,8 +1,6 @@
 package gradle.plugins.kover.reports.total
 
 import gradle.api.tryAssign
-import gradle.plugins.kover.reports.total.KoverBinaryTaskConfig
-import gradle.plugins.kover.reports.KoverLogTaskConfig
 import gradle.plugins.kover.reports.filters.KoverReportFiltersConfig
 import kotlinx.kover.gradle.plugin.dsl.KoverReportSetConfig
 import kotlinx.serialization.Serializable
@@ -116,7 +114,7 @@ internal data class KoverReportSetConfig(
     val additionalBinaryReports: Set<String>? = null
 ) {
 
-    context(Project)
+    context(project: Project)
     fun applyTo(receiver: KoverReportSetConfig) {
         filters?.applyTo(receiver.filters)
 
@@ -134,6 +132,6 @@ internal data class KoverReportSetConfig(
         }
 
         log?.applyTo(receiver.log)
-        receiver.additionalBinaryReports tryAssign additionalBinaryReports?.map(::file)
+        receiver.additionalBinaryReports tryAssign additionalBinaryReports?.map(project::file)
     }
 }

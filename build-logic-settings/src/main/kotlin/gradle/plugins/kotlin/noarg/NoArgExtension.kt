@@ -17,11 +17,11 @@ internal interface NoArgExtension {
     val myPresets: List<String>?
     val invokeInitializers: Boolean?
 
-    context(Project)
+    context(project: Project)
     fun applyTo() =
-        pluginManager.withPlugin(settings.libs.plugins.plugin("noarg").id) {
-            myAnnotations?.let(noArg::annotations)
-            myPresets?.let(noArg.myPresets::addAll)
-            noArg::invokeInitializers trySet invokeInitializers
+        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("noarg").id) {
+            myAnnotations?.let(project.noArg::annotations)
+            myPresets?.let(project.noArg.myPresets::addAll)
+            project.noArg::invokeInitializers trySet invokeInitializers
         }
 }

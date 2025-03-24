@@ -1,17 +1,12 @@
 package gradle.plugins.kover.reports.verify
 
 import gradle.api.tryAssign
-import kotlin.math.min
-import kotlinx.kover.gradle.plugin.dsl.AggregationType
-import kotlinx.kover.gradle.plugin.dsl.CoverageUnit
 import kotlinx.kover.gradle.plugin.dsl.GroupingEntityType
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.Serializer
 import kotlinx.serialization.json.JsonContentPolymorphicSerializer
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.jsonObject
-import org.gradle.api.provider.Provider
 
 @Serializable
 internal data class KoverVerifyRule(

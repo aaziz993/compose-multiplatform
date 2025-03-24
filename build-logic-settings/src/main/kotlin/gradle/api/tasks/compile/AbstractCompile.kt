@@ -44,12 +44,12 @@ internal abstract class AbstractCompile<T : org.gradle.api.tasks.compile.Abstrac
      */
     abstract val targetCompatibility: String?
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
-        receiver.destinationDirectory tryAssign destinationDirectory?.let(layout.projectDirectory::dir)
-        classpath?.toTypedArray()?.let(::files)?.let(receiver::setClasspath)
+        receiver.destinationDirectory tryAssign destinationDirectory?.let(project.layout.projectDirectory::dir)
+        classpath?.toTypedArray()?.let(project::files)?.let(receiver::setClasspath)
         sourceCompatibility?.let(receiver::setSourceCompatibility)
         targetCompatibility?.let(receiver::setTargetCompatibility)
     }
@@ -81,7 +81,7 @@ internal data class AbstractCompileImpl(
     override val setExcludes: Set<String>? = null,
 ) : AbstractCompile<org.gradle.api.tasks.compile.AbstractCompile>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<org.gradle.api.tasks.compile.AbstractCompile>())
+        applyTo(project.tasks.withType<org.gradle.api.tasks.compile.AbstractCompile>())
 }

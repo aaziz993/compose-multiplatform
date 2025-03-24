@@ -5,11 +5,9 @@ import gradle.api.tasks.FilesMatching
 import gradle.api.tasks.applyTo
 import gradle.api.tasks.copy.FileCopyDetails
 import gradle.api.tasks.copy.FromContentPolymorphicSerializer
-import gradle.api.tasks.copy.Into
 import gradle.api.tasks.copy.IntoContentPolymorphicSerializer
 import gradle.api.tasks.copy.Rename
 import gradle.collection.SerializableAnyMap
-
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -48,7 +46,7 @@ internal abstract class Zip<T : org.gradle.api.tasks.bundling.Zip> : AbstractArc
      */
     abstract val metadataCharset: String?
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
@@ -108,7 +106,7 @@ internal data class ZipImpl(
     override val name: String? = null,
 ) : Zip<org.gradle.api.tasks.bundling.Zip>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<org.gradle.api.tasks.bundling.Zip>())
+        applyTo(project.tasks.withType<org.gradle.api.tasks.bundling.Zip>())
 }

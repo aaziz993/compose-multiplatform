@@ -44,13 +44,13 @@ internal interface ApplicationVariantDimension<T : ApplicationVariantDimension> 
     /** The associated signing config or null if none are set on the variant dimension. */
     val signingConfig: String?
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
         receiver::applicationIdSuffix trySet applicationIdSuffix
         receiver::versionNameSuffix trySet versionNameSuffix
         receiver::multiDexEnabled trySet multiDexEnabled
-        receiver::signingConfig trySet signingConfig?.let(android.signingConfigs::getByName)
+        receiver::signingConfig trySet signingConfig?.let(project.android.signingConfigs::getByName)
     }
 }

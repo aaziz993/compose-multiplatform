@@ -37,7 +37,7 @@ internal data class TypescriptExtension(
     override val toggleOffOnDisable: Boolean? = null,
 ) : FormatExtension<TypescriptExtension>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() = spotless.typescript {
         super.applyTo(this)
     }

@@ -2,7 +2,6 @@ package gradle.plugins.kmp.nat
 
 import gradle.api.tasks.test.TestFilter
 import gradle.plugins.kmp.KotlinTargetTestRun
-import gradle.plugins.kotlin.KotlinExecution
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -13,7 +12,7 @@ internal interface KotlinNativeBinaryTestRun<T : org.jetbrains.kotlin.gradle.tar
 
     override val executionSource: NativeBinaryTestRunSource?
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 

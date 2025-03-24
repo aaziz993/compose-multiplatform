@@ -1,7 +1,6 @@
 package gradle.plugins.android
 
 import com.android.build.gradle.internal.dsl.AdbOptions
-import gradle.collection.act
 import kotlinx.serialization.Serializable
 
 /**

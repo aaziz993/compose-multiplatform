@@ -39,9 +39,9 @@ internal class AndroidPlugin : Plugin<Project> {
             }
 
             if (projectProperties.type == ProjectType.APP)
-                plugins.apply(settings.libs.plugins.plugin("androidApplication").id)
+                plugins.apply(project.settings.libs.plugins.plugin("androidApplication").id)
             else
-                plugins.apply(settings.libs.plugins.plugin("androidLibrary").id)
+                plugins.apply(project.settings.libs.plugins.plugin("androidLibrary").id)
 
             projectProperties.android?.applyTo()
 
@@ -82,7 +82,7 @@ internal class AndroidPlugin : Plugin<Project> {
 
     private fun Project.applyGoogleServicesPlugin() {
         if (file("google-services.json").exists()) {
-            plugins.apply(settings.libs.plugins.plugin("google.playServices").id)
+            plugins.apply(project.settings.libs.plugins.plugin("google.playServices").id)
         }
     }
 

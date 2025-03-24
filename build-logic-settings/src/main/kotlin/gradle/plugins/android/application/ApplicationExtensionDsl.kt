@@ -9,11 +9,11 @@ import com.android.build.api.dsl.ApplicationInstallation
 import com.android.build.api.dsl.ApplicationProductFlavor
 import gradle.accessors.android
 import gradle.collection.act
-import gradle.plugins.android.application.bundle.Bundle
 import gradle.plugins.android.CommonExtension
 import gradle.plugins.android.DependenciesInfo
 import gradle.plugins.android.PrivacySandbox
 import gradle.plugins.android.TestedExtensionDsl
+import gradle.plugins.android.application.bundle.Bundle
 import org.gradle.api.Project
 
 /**
@@ -60,9 +60,9 @@ internal interface ApplicationExtensionDsl :
     /** Options related to the consumption of privacy sandbox libraries */
     val privacySandbox: PrivacySandbox?
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() {
-        val extension = android as ApplicationExtension
+        val extension = project.android as ApplicationExtension
 
         dependenciesInfo?.applyTo(extension.dependenciesInfo)
         bundle?.applyTo(extension.bundle)

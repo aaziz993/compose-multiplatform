@@ -71,23 +71,23 @@ internal data class DokkaGenerateTask(
     val overrideJsonConfig: String? = null,
 ) : DokkaBaseTask<DokkaGenerateTask>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: DokkaGenerateTask) {
         super.applyTo(receiver)
 
-        receiver.outputDirectory tryAssign outputDirectory?.let(layout.projectDirectory::dir)
+        receiver.outputDirectory tryAssign outputDirectory?.let(project.layout.projectDirectory::dir)
         runtimeClasspath?.toTypedArray()?.let(receiver.runtimeClasspath::from)
         setRuntimeClasspath?.let(receiver.runtimeClasspath::setFrom)
-        receiver.cacheDirectory tryAssign cacheDirectory?.let(layout.projectDirectory::dir)
+        receiver.cacheDirectory tryAssign cacheDirectory?.let(project.layout.projectDirectory::dir)
         receiver.publicationEnabled tryAssign publicationEnabled
         generator?.applyTo(receiver.generator)
         receiver.workerIsolation tryAssign workerIsolation?.toWorkerIsolation()
-        receiver.workerLogFile tryAssign workerLogFile?.let(::file)
-        receiver.dokkaConfigurationJsonFile tryAssign dokkaConfigurationJsonFile?.let(::file)
+        receiver.workerLogFile tryAssign workerLogFile?.let(project::file)
+        receiver.dokkaConfigurationJsonFile tryAssign dokkaConfigurationJsonFile?.let(project::file)
         receiver.overrideJsonConfig tryAssign overrideJsonConfig
     }
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<DokkaGenerateTask>())
+        applyTo(project.tasks.withType<DokkaGenerateTask>())
 }

@@ -7,7 +7,6 @@ import gradle.plugins.kotlin.KotlinCommonCompilerToolOptions
 import gradle.plugins.kotlin.tasks.AbstractKotlinCompileTool
 import gradle.plugins.kotlin.tasks.KotlinToolTask
 import kotlinx.serialization.Serializable
-import org.gradle.api.Named
 import org.jetbrains.kotlin.gradle.tasks.KotlinNativeLink
 
 /**
@@ -48,7 +47,7 @@ internal data class KotlinNativeLink(
     val kotlinPluginData: KotlinCompilerPluginData? = null,
 ) : AbstractKotlinCompileTool(), KotlinToolTask<KotlinCommonCompilerToolOptions> {
 
-        context(Project)
+        context(project: Project)
     override fun applyTo(receiver: T) {
         super<AbstractKotlinCompileTool>.applyTo(named)
         super<KotlinToolTask>.applyTo(named)
@@ -59,7 +58,7 @@ internal data class KotlinNativeLink(
         apiFiles?.toTypedArray()?.let(named.apiFiles::from)
 setApiFiles?.let(named.apiFiles::setFrom)
         compilerPluginOptions?.applyTo(named.compilerPluginOptions)
-        named::compilerPluginClasspath trySet compilerPluginClasspath?.toTypedArray()?.let(::files)
+        named::compilerPluginClasspath trySet compilerPluginClasspath?.toTypedArray()?.let(project::files)
         named::kotlinPluginData trySet kotlinPluginData?.toKotlinCompilerPluginData()?.let { kotlinPluginData ->
             provider { kotlinPluginData }
         }

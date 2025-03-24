@@ -9,12 +9,12 @@ import org.gradle.api.initialization.Settings
 
 internal interface ToolchainManagement {
 
-    context(Settings)
+    context(settings: Settings)
     @Suppress("UnstableApiUsage")
     fun applyTo() =
-        pluginManager.withPlugin(settings.libs.plugins.plugin("foojayResolverConvention").id) {
-        toolchainManagement {
+        settings.pluginManager.withPlugin(settings.libs.plugins.plugin("foojayResolverConvention").id) {
+            settings.toolchainManagement {
 
+            }
         }
-    }
 }

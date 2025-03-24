@@ -238,7 +238,7 @@ internal data class MavenPublication(
     val suppressAllPomMetadataWarnings: Boolean? = null,
 ) : Publication<MavenPublication> {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: MavenPublication) {
         super.applyTo(receiver)
 
@@ -264,7 +264,7 @@ internal data class MavenPublication(
         suppressAllPomMetadataWarnings?.takeIf { it }?.run { receiver.suppressAllPomMetadataWarnings() }
     }
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
         applyTo(publishing.publications.withType<MavenPublication>()) { name, action ->
             publishing.publications.register(name, MavenPublication::class.java, action)

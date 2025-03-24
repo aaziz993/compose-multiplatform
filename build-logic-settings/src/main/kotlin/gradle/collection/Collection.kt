@@ -1,6 +1,6 @@
 package gradle.collection
 
-import java.util.Properties
+import java.util.*
 import net.pearx.kasechange.toDotCase
 import net.pearx.kasechange.toScreamingSnakeCase
 import org.gradle.api.plugins.ExtraPropertiesExtension

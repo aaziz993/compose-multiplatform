@@ -45,13 +45,13 @@ internal data class CompileOptions(
     val isCoreLibraryDesugaringEnabled: Boolean? = null
 ) {
 
-    context(Project)
+    context(project: Project)
     fun applyTo(receiver: CompileOptions) {
-        (sourceCompatibility ?: settings.libs.versions
+        (sourceCompatibility ?: project.settings.libs.versions
             .version("java.sourceCompatibility")
             ?.let(JavaVersion::toVersion))
             ?.let(receiver::sourceCompatibility)
-        (targetCompatibility ?: settings.libs.versions
+        (targetCompatibility ?: project.settings.libs.versions
             .version("java.targetCompatibility")
             ?.let(JavaVersion::toVersion))
             ?.let(receiver::targetCompatibility)

@@ -61,7 +61,7 @@ internal interface CopyProcessingSpec<T : CopyProcessingSpec> : ContentFilterabl
      */
     val eachFile: FileCopyDetails?
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 

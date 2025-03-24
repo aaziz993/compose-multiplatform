@@ -19,10 +19,10 @@ internal data class RpcSettings(
     override val enabled: Boolean = true,
 ) : RpcExtension, EnabledSettings {
 
-    context(Project)
+    context(project: Project)
     @OptIn(RpcDangerousApi::class)
     override fun applyTo() =
-        pluginManager.withPlugin(settings.libs.plugins.plugin("kotlinx.rpc").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("kotlinx.rpc").id) {
             super.applyTo()
         }
 }

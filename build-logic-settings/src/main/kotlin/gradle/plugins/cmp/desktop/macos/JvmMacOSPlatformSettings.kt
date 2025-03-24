@@ -34,19 +34,19 @@ internal data class JvmMacOSPlatformSettings(
     val infoPlist: InfoPlistSettings? = null,
 ) : AbstractMacOSPlatformSettings<JvmMacOSPlatformSettings>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: JvmMacOSPlatformSettings) {
         super.applyTo(receiver)
 
         receiver::dockName trySet dockName
         receiver::setDockNameSameAsPackageName trySet setDockNameSameAsPackageName
         receiver::appStore trySet appStore
-        receiver.entitlementsFile tryAssign entitlementsFile?.let(::file)
-        receiver.runtimeEntitlementsFile tryAssign runtimeEntitlementsFile?.let(::file)
+        receiver.entitlementsFile tryAssign entitlementsFile?.let(project::file)
+        receiver.runtimeEntitlementsFile tryAssign runtimeEntitlementsFile?.let(project::file)
         receiver::pkgPackageVersion trySet pkgPackageVersion
         receiver::pkgPackageBuildVersion trySet pkgPackageBuildVersion
-        receiver.provisioningProfile tryAssign provisioningProfile?.let(::file)
-        receiver.runtimeProvisioningProfile tryAssign runtimeProvisioningProfile?.let(::file)
+        receiver.provisioningProfile tryAssign provisioningProfile?.let(project::file)
+        receiver.runtimeProvisioningProfile tryAssign runtimeProvisioningProfile?.let(project::file)
         infoPlist?.let { infoPlist ->
             receiver.infoPlist(infoPlist::applyTo)
         }

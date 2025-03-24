@@ -37,7 +37,7 @@ internal data class Antlr4Extension(
     override val toggleOffOnDisable: Boolean? = null,
 ) : FormatExtension<Antlr4Extension>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() = spotless.antlr4 {
         super.applyTo(this)
     }

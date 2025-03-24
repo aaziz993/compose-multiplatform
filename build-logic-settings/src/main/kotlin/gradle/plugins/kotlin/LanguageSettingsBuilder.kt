@@ -1,8 +1,6 @@
 package gradle.plugins.kotlin
 
-import arrow.core.raise.recover
 import gradle.api.trySet
-import gradle.collection.act
 import kotlinx.serialization.Serializable
 import org.jetbrains.kotlin.gradle.plugin.LanguageSettingsBuilder
 

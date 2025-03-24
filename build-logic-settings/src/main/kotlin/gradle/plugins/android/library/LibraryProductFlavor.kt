@@ -2,20 +2,7 @@ package gradle.plugins.android.library
 
 import com.android.build.api.dsl.LibraryProductFlavor
 import gradle.api.trySet
-import gradle.collection.SerializableAnyMap
-import gradle.plugins.android.AarMetadata
-import gradle.plugins.android.BuildConfigField
-import gradle.plugins.android.ExternalNativeBuildFlags
-import gradle.plugins.android.compile.JavaCompileOptions
-import gradle.plugins.android.MissingDimensionStrategy
-import gradle.plugins.android.Ndk
-import gradle.plugins.android.Optimization
 import gradle.plugins.android.flavor.ProductFlavorDsl
-import gradle.plugins.android.ResValue
-import gradle.plugins.android.Shaders
-import gradle.plugins.android.VectorDrawables
-import gradle.serialization.serializer.KeyTransformingSerializer
-import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
 /**
@@ -54,7 +41,7 @@ internal interface LibraryProductFlavor<T : LibraryProductFlavor> : LibraryBaseF
     /** Whether this product flavor should be selected in Studio by default  */
     val isDefault: Boolean?
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: T) {
         super<LibraryBaseFlavor>.applyTo(receiver)
         super<ProductFlavorDsl>.applyTo(receiver)

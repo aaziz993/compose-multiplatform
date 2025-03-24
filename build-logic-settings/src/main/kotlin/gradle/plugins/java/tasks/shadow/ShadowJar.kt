@@ -1,5 +1,3 @@
-@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
-
 package gradle.plugins.java.tasks.shadow
 
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
@@ -14,7 +12,6 @@ import gradle.api.tasks.applyTo
 import gradle.api.tasks.copy.CopySpecImpl
 import gradle.api.tasks.copy.FileCopyDetails
 import gradle.api.tasks.copy.FromContentPolymorphicSerializer
-import gradle.api.tasks.copy.Into
 import gradle.api.tasks.copy.IntoContentPolymorphicSerializer
 import gradle.api.tasks.copy.Rename
 import gradle.collection.SerializableAnyMap
@@ -88,16 +85,16 @@ internal data class ShadowJar(
     override val append: String? = null,
 ) : Jar<ShadowJar>(), ShadowSpec<ShadowJar> {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: ShadowJar) =
-        pluginManager.withPlugin(settings.libs.plugins.plugin("shadow").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("shadow").id) {
             super<Jar>.applyTo(receiver)
             super<ShadowSpec>.applyTo(receiver)
-            configurations?.map(Set<*>::toTypedArray)?.map(::files)?.let(receiver::setConfigurations)
+            configurations?.map(Set<*>::toTypedArray)?.map(project::files)?.let(receiver::setConfigurations)
             enableRelocation?.let(receiver::setEnableRelocation)
             relocationPrefix?.let(receiver::setRelocationPrefix)
         }
 
-    context(Project)
-    override fun applyTo() = applyTo(tasks.withType<ShadowJar>())
+    context(project: Project)
+    override fun applyTo() = applyTo(project.tasks.withType<ShadowJar>())
 }

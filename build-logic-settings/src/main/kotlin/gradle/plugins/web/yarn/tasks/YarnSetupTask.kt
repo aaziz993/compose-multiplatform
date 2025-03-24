@@ -26,7 +26,7 @@ internal data class YarnSetupTask(
     override val name: String? = null,
 ) : AbstractSetupTask<YarnSetupTask>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<YarnSetupTask>())
+        applyTo(project.tasks.withType<YarnSetupTask>())
 }

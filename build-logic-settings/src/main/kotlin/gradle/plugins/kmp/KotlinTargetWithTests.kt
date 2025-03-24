@@ -16,7 +16,7 @@ internal interface KotlinTargetWithTests<T : KotlinTargetWithTests<*, *>> : Kotl
      */
     val testRuns: Set<KotlinTargetTestRun<out org.jetbrains.kotlin.gradle.plugin.KotlinTargetTestRun<*>>>?
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 

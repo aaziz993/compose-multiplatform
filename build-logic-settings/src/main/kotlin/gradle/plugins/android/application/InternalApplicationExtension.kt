@@ -21,7 +21,7 @@ internal interface InternalApplicationExtension :
         ApplicationInstallation,
         > {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() {
         super<ApplicationExtensionDsl>.applyTo()
         super<InternalTestedExtension>.applyTo()

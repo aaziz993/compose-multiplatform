@@ -24,7 +24,7 @@ internal data class WindowsPlatformSettings(
     val exePackageVersion: String? = null,
 ) : AbstractPlatformSettings<WindowsPlatformSettings>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: WindowsPlatformSettings) {
         super.applyTo(receiver)
 

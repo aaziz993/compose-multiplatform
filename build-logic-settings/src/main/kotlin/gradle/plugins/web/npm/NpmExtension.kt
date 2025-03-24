@@ -23,16 +23,16 @@ internal data class NpmExtension(
     val overrides: List<NpmOverride>? = null,
 ) {
 
-    context(Project)
+    context(project: Project)
     fun applyTo() =
-        pluginManager.withPlugin(settings.libs.plugins.plugin("gradle.node.plugin").id) {
-            npm.command tryAssign command
-            npm.lockFileName tryAssign lockFileName
-            npm.lockFileDirectory tryAssign lockFileDirectory?.let(layout.projectDirectory::dir)
-            npm.ignoreScripts tryAssign ignoreScripts
-            npm.packageLockMismatchReport tryAssign packageLockMismatchReport
-            npm.reportNewPackageLock tryAssign reportNewPackageLock
-            npm.packageLockAutoReplace tryAssign packageLockAutoReplace
-            npm.overrides tryAssign overrides?.map(NpmOverride::toNpmOverride)
+        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("gradle.node.plugin").id) {
+            project.npm.command tryAssign command
+            project.npm.lockFileName tryAssign lockFileName
+            project.npm.lockFileDirectory tryAssign lockFileDirectory?.let(project.layout.projectDirectory::dir)
+            project.npm.ignoreScripts tryAssign ignoreScripts
+            project.npm.packageLockMismatchReport tryAssign packageLockMismatchReport
+            project.npm.reportNewPackageLock tryAssign reportNewPackageLock
+            project.npm.packageLockAutoReplace tryAssign packageLockAutoReplace
+            project.npm.overrides tryAssign overrides?.map(NpmOverride::toNpmOverride)
         }
 }

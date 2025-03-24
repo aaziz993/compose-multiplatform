@@ -37,7 +37,7 @@ internal data class ScalaExtension(
     override val toggleOffOnDisable: Boolean? = null,
 ) : FormatExtension<ScalaExtension>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() = spotless.scala {
         super.applyTo(this)
     }

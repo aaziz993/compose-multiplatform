@@ -54,12 +54,12 @@ internal data class SourceDirectorySet(
     val destinationDirectory: String? = null,
 ) : PatternFilterable<SourceDirectorySet>, ProjectNamed<SourceDirectorySet> {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: SourceDirectorySet) {
         super<PatternFilterable>.applyTo(receiver)
 
         srcDirs?.toTypedArray()?.let(receiver::srcDirs)
         setSrcDirs?.let(receiver::setSrcDirs)
-        receiver.destinationDirectory tryAssign destinationDirectory?.let(layout.projectDirectory::dir)
+        receiver.destinationDirectory tryAssign destinationDirectory?.let(project.layout.projectDirectory::dir)
     }
 }

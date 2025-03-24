@@ -57,13 +57,13 @@ internal data class KspTaskMetadata(
     override val setCommandLineArgumentProviders: List<CommandLineArgumentProvider>? = null,
 ) : KotlinCompileCommon<KspTaskMetadata>(), KspTask<KspTaskMetadata> {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: KspTaskMetadata) {
         super<KotlinCompileCommon>.applyTo(receiver)
         super<KspTask>.applyTo(receiver)
     }
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<KspTaskMetadata>())
+        applyTo(project.tasks.withType<KspTaskMetadata>())
 }

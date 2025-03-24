@@ -25,7 +25,7 @@ internal data class CodeOfConductFile(
     @Transient
     override val replace: MutableMap<String, String> = mutableMapOf()
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: String): List<TaskProvider<out DefaultTask>> {
         (email ?: settings.projectProperties.developer?.email)?.let { email ->
             replace[emailPlaceholder] = email

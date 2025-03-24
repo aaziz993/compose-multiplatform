@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 import plugins.animalsniffer.model.AnimalSnifferSettings
 import plugins.apivalidation.model.ApiValidationSettings
 import plugins.buildconfig.model.BuildConfigSettings
+import plugins.dependencycheck.model.DependencyCheckSettings
 import plugins.develocity.model.DevelocitySettings
 import plugins.doctor.model.DoctorSettings
 import plugins.dokka.model.DokkaSettings
@@ -36,6 +37,7 @@ internal data class Plugins(
     val toolchainManagement: ToolchainManagementSettings = ToolchainManagementSettings(),
     val gitHooks: GitHooksSettings = GitHooksSettings(),
     val doctor: DoctorSettings = DoctorSettings(),
+    val dependencyCheck: DependencyCheckSettings = DependencyCheckSettings(),
     val buildConfig: BuildConfigSettings = BuildConfigSettings(),
     val spotless: SpotlessSettings = SpotlessSettings(),
     val kover: KoverSettings = KoverSettings(),

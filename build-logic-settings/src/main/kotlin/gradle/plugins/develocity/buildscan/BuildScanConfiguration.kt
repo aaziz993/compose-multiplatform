@@ -1,7 +1,6 @@
 package gradle.plugins.develocity.buildscan
 
 import gradle.api.tryAssign
-import gradle.plugins.develocity.buildscan.Link
 import java.util.*
 import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings
@@ -20,7 +19,7 @@ internal data class BuildScanConfiguration(
     val capture: BuildScanCaptureConfiguration?
 ) {
 
-    context(Settings)
+    context(settings: Settings)
     @Suppress("UnstableApiUsage")
     fun applyTo(
         receiver: com.gradle.develocity.agent.gradle.scan.BuildScanConfiguration

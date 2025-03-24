@@ -15,7 +15,7 @@ internal class RpcPlugin : Plugin<Project> {
         with(target) {
             projectProperties.plugins.rpc
                 .takeIf { it.enabled && projectProperties.kotlin.targets.isNotEmpty() }?.let { rpc ->
-                    plugins.apply(settings.libs.plugins.plugin("kotlinx.rpc").id)
+                    plugins.apply(project.settings.libs.plugins.plugin("kotlinx.rpc").id)
 
                     rpc.applyTo()
                 }

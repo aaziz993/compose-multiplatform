@@ -20,7 +20,7 @@ internal class KoverPlugin : Plugin<Project> {
             projectProperties.plugins.kover
                 .takeIf(KoverSettings::enabled)?.let { kover ->
 
-                    plugins.apply(settings.libs.plugins.plugin("kover").id)
+                    plugins.apply(project.settings.libs.plugins.plugin("kover").id)
 
                     kover.applyTo()
 

@@ -41,21 +41,21 @@ internal interface UrlArtifactRepository<T: UrlArtifactRepository> {
      */
     val allowInsecureProtocol: Boolean?
 
-    context(Settings)
+    context(settings: Settings)
     @Suppress("UnstableApiUsage")
-    fun applyTo(receiver: T) = with(layout.settingsDirectory) {
+    fun applyTo(receiver: T) = with(settings.layout.settingsDirectory) {
         _applyTo(repository)
     }
 
-    context(Project)
-    fun applyTo(receiver: T) = with(layout.projectDirectory) {
+    context(project: Project)
+    fun applyTo(receiver: T) = with(project.layout.projectDirectory) {
         _applyTo(repository)
     }
 
-    context(Directory)
+    context(directory: Directory)
     fun _applyTo(receiver: T) {
         url?.let { url ->
-            if (url.isUrl) url else dir(url)
+            if (url.isUrl) url else directory.dir(url)
         }?.let(receiver::setUrl)
         allowInsecureProtocol?.let(receiver::setAllowInsecureProtocol)
     }

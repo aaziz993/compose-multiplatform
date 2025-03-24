@@ -48,10 +48,10 @@ internal data class KoverXmlTaskConfig(
     val title: String? = null
 ) {
 
-    context(Project)
+    context(project: Project)
     fun applyTo(receiver: KoverXmlTaskConfig) {
         receiver.onCheck tryAssign onCheck
-        receiver.xmlFile tryAssign xmlFile?.let(::file)
+        receiver.xmlFile tryAssign xmlFile?.let(project::file)
         receiver.title tryAssign title
     }
 }

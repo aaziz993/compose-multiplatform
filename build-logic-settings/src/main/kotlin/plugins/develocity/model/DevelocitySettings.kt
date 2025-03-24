@@ -12,8 +12,8 @@ import gradle.api.isCI
 import gradle.api.teamCityBuildId
 import gradle.api.teamCityBuildTypeId
 import gradle.isGithubUrl
-import gradle.plugins.develocity.buildscan.BuildScanConfiguration
 import gradle.plugins.develocity.DevelocityConfiguration
+import gradle.plugins.develocity.buildscan.BuildScanConfiguration
 import gradle.project.EnabledSettings
 import java.net.URLEncoder
 import kotlinx.serialization.Serializable
@@ -34,13 +34,13 @@ internal data class DevelocitySettings(
     val teamCityUrl: String? = null,
 ) : DevelocityConfiguration, EnabledSettings {
 
-    context(Settings)
+    context(settings: Settings)
     override fun applyTo() =
-        pluginManager.withPlugin(libs.plugins.plugin("develocity").id) {
+        settings.pluginManager.withPlugin(settings.libs.plugins.plugin("develocity").id) {
             super.applyTo()
 
-            enrichGitData()
-            enrichTeamCityData()
+            settings.enrichGitData()
+            settings.enrichTeamCityData()
         }
 
     private fun Settings.enrichGitData() = projectProperties.plugins.develocity.let { develocity ->

@@ -2,8 +2,6 @@ package gradle.plugins.android
 
 import com.android.build.api.dsl.BuildType
 import gradle.accessors.android
-
-import gradle.api.BaseNamed
 import gradle.api.ProjectNamed
 import gradle.api.trySet
 import org.gradle.api.Project
@@ -184,7 +182,7 @@ internal interface BuildType<T : BuildType> : ProjectNamed<T>, VariantDimension<
 
     val vcsInfo: VcsInfo?
 
-    context(Project)
+    context(project: Project)
     @Suppress("UnstableApiUsage")
     override fun applyTo(receiver: T) {
         super<VariantDimension>.applyTo(receiver)
@@ -202,7 +200,7 @@ internal interface BuildType<T : BuildType> : ProjectNamed<T>, VariantDimension<
             receiver.postprocessing(postprocessing::applyTo)
         }
 
-        initWith?.let(android.buildTypes::getByName)?.let(receiver::initWith)
+        initWith?.let(project.android.buildTypes::getByName)?.let(receiver::initWith)
 
         vcsInfo?.applyTo(receiver.vcsInfo)
     }

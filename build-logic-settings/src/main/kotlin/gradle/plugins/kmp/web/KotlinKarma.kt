@@ -1,6 +1,5 @@
 package gradle.plugins.kmp.web
 
-import gradle.plugins.buildconfig.generator.BuildConfigJavaGenerator
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.serializer
@@ -36,7 +35,7 @@ internal data class KotlinKarma(
     val useSourceMapSupport: Boolean? = null,
 ) {
 
-    context(Project)
+    context(project: Project)
     fun applyTo(receiver: org.jetbrains.kotlin.gradle.targets.js.testing.karma.KotlinKarma, outputFileName: String) {
         webpackConfig?.applyTo(receiver.webpackConfig, outputFileName)
         useConfigDirectory?.let(receiver::useConfigDirectory)

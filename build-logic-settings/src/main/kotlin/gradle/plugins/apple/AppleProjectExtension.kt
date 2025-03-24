@@ -16,6 +16,7 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
 internal interface AppleProjectExtension {
+
     val sourceSets: Set<@Serializable(with = AppleSourceSetTransformingSerializer::class) AppleSourceSet>?
 
     val targets: Set<@Serializable(with = AppleTargetTransformingSerializer::class) AppleTarget>?
@@ -24,29 +25,29 @@ internal interface AppleProjectExtension {
     val iosApp: IosAppTarget?
     val iosFramework: IosFrameworkTarget?
 
-    context(Project)
+    context(project: Project)
     fun applyTo() =
-        pluginManager.withPlugin(settings.libs.plugins.plugin("apple").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("apple").id) {
             targets?.forEach { target ->
-                target.applyTo(apple.targets)
+                target.applyTo(project.apple.targets)
             }
 
             sourceSets?.forEach { sourceSet ->
-                sourceSet.applyTo(apple.sourceSets)
+                sourceSet.applyTo(project.apple.sourceSets)
             }
 
-            apple.teamID = teamID ?: moduleName
+            project.apple.teamID = teamID ?: moduleName
 
             iosApp?.let { iosApp ->
                 iosApp.name?.takeIf(String::isNotEmpty)?.also { name ->
-                    apple.iosApp(name, iosApp::applyTo)
-                } ?: apple.iosApp(iosApp::applyTo)
+                    project.apple.iosApp(name, iosApp::applyTo)
+                } ?: project.apple.iosApp(iosApp::applyTo)
             }
 
             iosFramework?.let { iosFramework ->
                 iosFramework.name?.takeIf(String::isNotEmpty)?.also { name ->
-                    apple.iosFramework(name, iosFramework::applyTo)
-                } ?: apple.iosFramework(iosFramework::applyTo)
+                    project.apple.iosFramework(name, iosFramework::applyTo)
+                } ?: project.apple.iosFramework(iosFramework::applyTo)
             }
         }
 }

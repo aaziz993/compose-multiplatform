@@ -29,13 +29,13 @@ internal data class KotlinJavaToolchain(
     val toolchain: JavaToolchainSpec? = null,
 ) {
 
-    context(Project)
+    context(project: Project)
     fun applyTo(receiver: KotlinJavaToolchain) {
         jdk?.applyTo(receiver.jdk)
 
         toolchain?.let { javaLauncher ->
             receiver.toolchain.use(
-                javaToolchain.launcherFor {
+                project.javaToolchain.launcherFor {
                     javaLauncher.applyTo(this)
                 },
             )
@@ -61,7 +61,7 @@ internal data class KotlinJavaToolchain(
         val use: Use? = null,
     ) {
 
-        context(Project)
+        context(project: Project)
         fun applyTo(receiver: KotlinJavaToolchain.JdkSetter) {
             use?.applyTo(receiver)
         }
@@ -72,9 +72,9 @@ internal data class KotlinJavaToolchain(
             val jdkVersion: JavaVersion,
         ) {
 
-            context(Project)
+            context(project: Project)
             fun applyTo(receiver: KotlinJavaToolchain.JdkSetter) {
-                receiver.use(file(jdkHomeLocation), jdkVersion)
+                receiver.use(project.file(jdkHomeLocation), jdkVersion)
             }
         }
     }

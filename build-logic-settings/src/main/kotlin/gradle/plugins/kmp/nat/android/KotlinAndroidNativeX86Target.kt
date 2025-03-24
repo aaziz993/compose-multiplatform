@@ -20,7 +20,7 @@ internal data class KotlinAndroidNativeX86Target(
     override val binaries: KotlinNativeBinaryContainer? = null,
 ) : KotlinAndroidNativeTarget(), KotlinAndroidNative32Target {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
         super.applyTo(kotlin.targets.withType<KotlinNativeTarget>(), kotlin::androidNativeX86)
 }

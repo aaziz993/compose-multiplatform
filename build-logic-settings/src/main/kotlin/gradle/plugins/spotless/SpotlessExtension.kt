@@ -37,18 +37,18 @@ internal interface SpotlessExtension {
     val predeclareDeps: Boolean?
     val formats: LinkedHashSet<@Serializable(with = FormatExtensionTransformingSerializer::class) FormatExtension>?
 
-    context(Project)
+    context(project: Project)
     fun applyTo() =
-        pluginManager.withPlugin(settings.libs.plugins.plugin("spotless").id) {
-            lineEndings?.let(spotless::setLineEndings)
-            encoding?.let(spotless::setEncoding)
-            ratchetFrom?.let(spotless::setRatchetFrom)
-            enforceCheck?.let(spotless::setEnforceCheck)
+        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("spotless").id) {
+            lineEndings?.let(project.spotless::setLineEndings)
+            encoding?.let(project.spotless::setEncoding)
+            ratchetFrom?.let(project.spotless::setRatchetFrom)
+            enforceCheck?.let(project.spotless::setEnforceCheck)
 
             // Applicable only in root project.
-            if (project == rootProject) {
-                predeclareDeps?.takeIf { it }?.run { spotless.predeclareDeps() }
-                predeclareDepsFromBuildscript?.takeIf { it }?.run { spotless.predeclareDepsFromBuildscript() }
+            if (project == project.rootProject) {
+                predeclareDeps?.takeIf { it }?.run { project.spotless.predeclareDeps() }
+                predeclareDepsFromBuildscript?.takeIf { it }?.run { project.spotless.predeclareDepsFromBuildscript() }
             }
 
             // Format files

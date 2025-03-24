@@ -1,11 +1,6 @@
 package plugins.web
 
-import gradle.accessors.id
-import gradle.accessors.libs
-import gradle.accessors.plugin
-import gradle.accessors.plugins
 import gradle.accessors.projectProperties
-import gradle.accessors.settings
 import gradle.plugins.kmp.web.KotlinJsTarget
 import org.gradle.api.Plugin
 import org.gradle.api.Project

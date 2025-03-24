@@ -2,15 +2,12 @@ package gradle.plugins.kmp.jvm
 
 import gradle.accessors.kotlin
 import gradle.api.applyTo
-
-import gradle.plugins.kmp.KotlinJvmAndAndroidTarget
 import gradle.plugins.kmp.KotlinJvmAndroidCompilation
 import gradle.plugins.kmp.KotlinJvmAndroidCompilationTransformingSerializer
 import gradle.plugins.kmp.KotlinTarget
 import gradle.plugins.kotlin.HasConfigurableKotlinCompilerOptions
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
@@ -27,7 +24,7 @@ internal data class KotlinJvmTarget(
 ) : KotlinTarget<KotlinJvmTarget>,
     HasConfigurableKotlinCompilerOptions<KotlinJvmTarget, org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompilerOptions> {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: KotlinJvmTarget) {
         super<KotlinTarget>.applyTo(receiver)
         super<HasConfigurableKotlinCompilerOptions>.applyTo(receiver)
@@ -45,7 +42,7 @@ internal data class KotlinJvmTarget(
 //        }
     }
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
         applyTo(kotlin.targets.withType<KotlinJvmTarget>(), kotlin::jvm)
 }

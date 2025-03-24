@@ -2,19 +2,18 @@
 
 package gradle.api.tasks
 
-import org.gradle.kotlin.dsl.withType
 import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
-
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
 
 internal interface ProducesKlib<T : org.jetbrains.kotlin.gradle.internal.tasks.ProducesKlib> : Task<T> {
 
     val produceUnpackagedKlib: Boolean?
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
@@ -41,7 +40,7 @@ internal data class ProducesKlibImpl(
     override val name: String? = null,
 ) : ProducesKlib<org.jetbrains.kotlin.gradle.internal.tasks.ProducesKlib>{
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<org.jetbrains.kotlin.gradle.internal.tasks.ProducesKlib>())
+        applyTo(project.tasks.withType<org.jetbrains.kotlin.gradle.internal.tasks.ProducesKlib>())
 }

@@ -137,12 +137,12 @@ internal data class TestNGOptions(
     val groupByInstances: Boolean? = null,
 ) : TestFrameworkOptions() {
 
-    context(Project)
+    context(project: Project)
     @Suppress("UnstableApiUsage")
     override fun applyTo(receiver: org.gradle.api.tasks.testing.TestFrameworkOptions) {
         options as TestNGOptions
 
-        outputDirectory?.let(::file)?.let(options::setOutputDirectory)
+        outputDirectory?.let(project::file)?.let(options::setOutputDirectory)
 
         includeGroups?.toTypedArray()?.let(options::includeGroups)
 
@@ -160,7 +160,7 @@ internal data class TestNGOptions(
         threadPoolFactoryClass?.let(options::setThreadPoolFactoryClass)
         suiteName?.let(options::setSuiteName)
         testName?.let(options::setTestName)
-        suiteXmlFiles?.map(::file)?.let(options::setSuiteXmlFiles)
+        suiteXmlFiles?.map(project::file)?.let(options::setSuiteXmlFiles)
         preserveOrder?.let(options::setPreserveOrder)
         groupByInstances?.let(options::setGroupByInstances)
     }

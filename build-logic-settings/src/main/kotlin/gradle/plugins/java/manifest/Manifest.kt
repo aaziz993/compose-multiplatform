@@ -2,16 +2,8 @@ package gradle.plugins.java.manifest
 
 import gradle.collection.SerializableAnyMap
 import gradle.collection.act
-import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.builtins.SetSerializer
-import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.json.JsonArray
-import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonPrimitive
 import org.gradle.api.Project
-import org.gradle.internal.impldep.kotlinx.serialization.json.JsonContentPolymorphicSerializer
 
 @Serializable
 internal data class Manifest(
@@ -23,7 +15,7 @@ internal data class Manifest(
     val froms: LinkedHashSet<@Serializable(with = FromContentPolymorphicSerializer::class) Any>? = null,
 ) {
 
-    context(Project)
+    context(project: Project)
     fun applyTo(receiver: org.gradle.api.java.archives.Manifest) {
         receiver.attributes.putAll(
             mapOf(

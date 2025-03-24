@@ -1,8 +1,8 @@
 package gradle.plugins.kotlin.tasks
 
-import gradle.api.tasks.util.PatternFilterable
 import gradle.api.tasks.Task
 import gradle.api.tasks.applyTo
+import gradle.api.tasks.util.PatternFilterable
 import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.SerialName
@@ -47,7 +47,7 @@ internal interface KotlinCompileTool<T : org.jetbrains.kotlin.gradle.tasks.Kotli
      */
     val destinationDirectory: String?
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: T) {
         super<Task>.applyTo(receiver)
         super<PatternFilterable>.applyTo(receiver)
@@ -56,7 +56,7 @@ internal interface KotlinCompileTool<T : org.jetbrains.kotlin.gradle.tasks.Kotli
         setSources?.toTypedArray()?.let(receiver::setSource)
         libraries?.toTypedArray()?.let(receiver.libraries::from)
         setLibraries?.let(receiver.libraries::setFrom)
-        receiver.destinationDirectory tryAssign destinationDirectory?.let(layout.projectDirectory::dir)
+        receiver.destinationDirectory tryAssign destinationDirectory?.let(project.layout.projectDirectory::dir)
     }
 }
 
@@ -87,7 +87,7 @@ internal data class KotlinCompileToolImpl(
     override val name: String? = null,
 ) : KotlinCompileTool<org.jetbrains.kotlin.gradle.tasks.KotlinCompileTool> {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompileTool>())
+        applyTo(project.tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompileTool>())
 }

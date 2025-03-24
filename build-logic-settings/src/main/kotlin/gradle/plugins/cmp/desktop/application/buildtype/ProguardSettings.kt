@@ -17,7 +17,7 @@ internal data class ProguardSettings(
     val joinOutputJars: Boolean? = null,
 ) {
 
-    context(Project)
+    context(project: Project)
     fun applyTo(receiver: ProguardSettings) {
         receiver.version tryAssign version
         receiver.maxHeapSize tryAssign maxHeapSize

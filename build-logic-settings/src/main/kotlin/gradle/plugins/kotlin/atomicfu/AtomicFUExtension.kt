@@ -7,7 +7,6 @@ import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
 import gradle.api.trySet
-import kotlinx.atomicfu.plugin.gradle.AtomicFUTransformTask
 import org.gradle.api.Project
 
 internal interface AtomicFUExtension {
@@ -17,12 +16,12 @@ internal interface AtomicFUExtension {
     val jvmVariant: String?
     val verbose: Boolean?
 
-    context(Project)
+    context(project: Project)
     fun applyTo() =
-        pluginManager.withPlugin(settings.libs.plugins.plugin("atomicfu").id) {
-            atomicFU::dependenciesVersion trySet dependenciesVersion
-            atomicFU::transformJvm trySet transformJvm
-            atomicFU::jvmVariant trySet jvmVariant
-            atomicFU::verbose trySet verbose
+        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("atomicfu").id) {
+            project.atomicFU::dependenciesVersion trySet dependenciesVersion
+            project.atomicFU::transformJvm trySet transformJvm
+            project.atomicFU::jvmVariant trySet jvmVariant
+            project.atomicFU::verbose trySet verbose
         }
 }

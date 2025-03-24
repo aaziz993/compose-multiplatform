@@ -4,7 +4,6 @@ import gradle.api.tasks.test.TestFilter
 import gradle.api.trySet
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
-import org.gradle.api.Named
 import org.gradle.api.Project
 
 @Serializable
@@ -19,7 +18,7 @@ internal data class KotlinNativeSimulatorTestRun(
     val deviceId: String? = null,
 ) : KotlinNativeBinaryTestRun<org.jetbrains.kotlin.gradle.targets.native.KotlinNativeSimulatorTestRun> {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: org.jetbrains.kotlin.gradle.targets.native.KotlinNativeSimulatorTestRun) {
         super.applyTo(receiver)
 

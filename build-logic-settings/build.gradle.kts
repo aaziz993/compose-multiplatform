@@ -1,9 +1,6 @@
 import io.github.z4kn4fein.semver.Version
-import java.util.*
 import kotlinx.validation.ExperimentalBCVApi
 import org.gradle.api.services.internal.RegisteredBuildServiceProvider
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.gradle.kotlin.dsl.assign
 
 val isCI: Boolean by gradle.extra
 
@@ -12,8 +9,9 @@ plugins {
     alias(libs.plugins.doctor)
     // Software Composition Analysis (SCA) tool that attempts to detect publicly disclosed vulnerabilities contained within a project's dependencies. It does this by determining if there is a Common Platform Enumeration (CPE) identifier for a given dependency. If found, it will generate a report linking to the associated CVE entries.
     alias(libs.plugins.dependencycheck)
+    alias(libs.plugins.buildconfig)
     // Allows dumping binary API of a JVM part of a Kotlin library that is public in the sense of Kotlin visibilities and ensures that the public binary API wasn't changed in a way that makes this change binary incompatible.
-    alias(libs.plugins.binary.compatibility.validator)
+    alias(libs.plugins.binaryCompatibilityValidator)
     // Check (JDK, android SDK or any library) API compatibility for java (kotlin, scala, groovy etc.), android and kotlin multiplatform projects.
     alias(libs.plugins.animalsniffer)
     // API documentation engine for Kotlin.
@@ -68,12 +66,14 @@ kotlin {
     jvmToolchain(libs.versions.java.languageVersion.get().toInt())
 
     compilerOptions {
+        println(KotlinVersion.CURRENT)
         freeCompilerArgs.addAll(
             "-Xignore-const-optimization-errors",
             "-Xcontext-parameters",
         )
         optIn.addAll(
             listOf(
+                "org.jetbrains.dokka.gradle.internal.InternalDokkaGradlePluginApi",
                 "org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi",
                 "org.jetbrains.kotlin.gradle.ExperimentalWasmDsl",
                 "kotlinx.serialization.InternalSerializationApi",
@@ -172,7 +172,7 @@ dokka {
         }
     }
 }
-tasks.dokkaGeneratePublicationJavadoc
+
 // Having a plugin in plugins { ... } block with apply false has only one use. That is to add that plugin to the build script classpath. So the according action with a convention plugin would be to declare those plugins as runtimeOnly` dependencies for that convention plugin build. The plugin itself would then not do any actions but will just be applied so that its dependencies are dragged into the classpath too.
 dependencies {
     // Gradle
@@ -210,7 +210,7 @@ dependencies {
     // for versioning
     implementation(libs.dokka.versioning)
     // allows dumping binary API of a JVM part of a Kotlin library that is public in the sense of Kotlin visibilities and ensures that the public binary API wasn't changed in a way that makes this change binary incompatible.
-    implementation(libs.plugins.binary.compatibility.validator.toDep())
+    implementation(libs.plugins.binaryCompatibilityValidator.toDep())
     // check (JDK, android SDK or any library) API compatibility for java (kotlin, scala, groovy etc.), android and kotlin multiplatform projects.
     implementation(libs.plugins.animalsniffer.toDep())
     signature(libs.signature.java)
@@ -323,17 +323,6 @@ gradlePlugin {
             id = "settings.convention"
             implementationClass = "plugins.initialization.SettingsPlugin"
         }
-    }
-}
-
-tasks.withType<KotlinCompile>().configureEach {
-    compilerOptions {
-        freeCompilerArgs.addAll(
-            "-Xcontext-receivers",
-        )
-        optIn.addAll(
-            "org.jetbrains.dokka.gradle.internal.InternalDokkaGradlePluginApi",
-        )
     }
 }
 

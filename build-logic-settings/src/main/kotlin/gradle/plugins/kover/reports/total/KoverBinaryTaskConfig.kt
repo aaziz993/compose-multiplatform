@@ -39,9 +39,9 @@ internal data class KoverBinaryTaskConfig(
     val file: String? = null,
 ) {
 
-    context(Project)
+    context(project: Project)
     fun applyTo(receiver: KoverBinaryTaskConfig) {
         receiver.onCheck tryAssign onCheck
-        receiver.file tryAssign file?.let(::file)
+        receiver.file tryAssign file?.let(project::file)
     }
 }

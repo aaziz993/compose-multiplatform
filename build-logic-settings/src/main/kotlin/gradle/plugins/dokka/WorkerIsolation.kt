@@ -1,6 +1,5 @@
 package gradle.plugins.dokka
 
-import gradle.accessors.dokka
 import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
@@ -11,7 +10,7 @@ import org.gradle.workers.WorkerExecutor
 @Serializable
 internal sealed class WorkerIsolation {
 
-    context(Project)
+    context(project: Project)
     abstract fun toWorkerIsolation(): org.jetbrains.dokka.gradle.workers.WorkerIsolation
 }
 
@@ -27,7 +26,7 @@ internal sealed class WorkerIsolation {
 @Serializable
 internal class ClassLoader : WorkerIsolation() {
 
-    context(Project)
+    context(project: Project)
     override fun toWorkerIsolation(): org.jetbrains.dokka.gradle.workers.WorkerIsolation =
         dokka.ClassLoaderIsolation()
 }
@@ -66,7 +65,7 @@ internal data class Process(
     val systemProperties: SerializableAnyMap? = null,
 ) : WorkerIsolation() {
 
-    context(Project)
+    context(project: Project)
     override fun toWorkerIsolation(): org.jetbrains.dokka.gradle.workers.WorkerIsolation =
         dokka.ProcessIsolation {
             debug tryAssign this@Process.debug

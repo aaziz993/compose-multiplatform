@@ -53,7 +53,7 @@ internal interface ContentFilterable<T : ContentFilterable> {
      */
     val expandDetails: Expand?
 
-    context(Project)
+    context(project: Project)
     fun applyTo(receiver: T) {
         expand?.let(receiver::expand)
         expandDetails?.let { expandDetails ->

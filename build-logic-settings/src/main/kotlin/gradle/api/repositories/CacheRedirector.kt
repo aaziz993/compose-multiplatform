@@ -24,7 +24,7 @@ internal object CacheRedirector {
     /**
      * Substitutes repositories in buildScript { } block.
      */
-    context(Settings)
+    context(settings: Settings)
     @Suppress("UnstableApiUsage")
     fun applyTo() {
         if (!projectProperties.cacheRedirector) {
@@ -38,7 +38,7 @@ internal object CacheRedirector {
         buildscript.repositories.redirect()
     }
 
-    context(Project)
+    context(project: Project)
     fun applyTo() {
         if (!projectProperties.cacheRedirector) {
             return
@@ -260,7 +260,7 @@ private fun Project.overrideNativeCompilerDownloadUrl() {
  * Yarn and node download url override
  */
 private fun Project.configureYarnAndNodeRedirects() =
-    pluginManager.withPlugin(settings.libs.plugins.plugin("gradle.node.plugin").id) {
+    project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("gradle.node.plugin").id) {
         yarn.downloadBaseUrl?.let { downloadBaseUrl ->
             yarn.downloadBaseUrl = URI(downloadBaseUrl).maybeRedirect().toString()
         }
@@ -300,7 +300,7 @@ private fun Project.addCheckRepositoriesTask() {
                 logNonCachedRepo(testName, repository)
             }
 
-            pluginManager.withPlugin(settings.libs.plugins.plugin("gradle.node.plugin").id) {
+            project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("gradle.node.plugin").id) {
                 yarn.downloadBaseUrl
                     ?.takeIf { downloadBaseUrl -> URI(downloadBaseUrl).isCachedOrLocal() }
                     ?.let { downloadBaseUrl ->

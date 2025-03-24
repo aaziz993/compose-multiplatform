@@ -18,10 +18,10 @@ import org.gradle.api.Project
 // build metadata MAY be denoted by appending a plus sign and a series of dot separated identifiers immediately following the patch or pre-release gradle.api.version. Identifiers MUST comprise only ASCII alphanumerics and hyphens [0-9A-Za-z-]. Identifiers MUST NOT be empty. Examples: 1.0.0-alpha+001, 1.0.0+20130313144700, 1.0.0-beta+exp.sha.5114f85, 1.0.0+21AF26D3----117B344092BD.
 internal fun Project.version(): String =
     Version(
-        settings.libs.versions.version("$moduleName.version.major")?.toInt() ?: projectProperties.version.major,
-        settings.libs.versions.version("$moduleName.version.minor")?.toInt() ?: projectProperties.version.minor,
-        settings.libs.versions.version("$moduleName.version.patch")?.toInt() ?: projectProperties.version.patch,
-        settings.libs.versions.version("$moduleName.version.preRelease") ?: projectProperties.version.preRelease,
+        project.settings.libs.versions.version("$moduleName.version.major")?.toInt() ?: projectProperties.version.major,
+        project.settings.libs.versions.version("$moduleName.version.minor")?.toInt() ?: projectProperties.version.minor,
+        project.settings.libs.versions.version("$moduleName.version.patch")?.toInt() ?: projectProperties.version.patch,
+        project.settings.libs.versions.version("$moduleName.version.preRelease") ?: projectProperties.version.preRelease,
         "${
             gitRef?.takeIf { projectProperties.version.gitRef }.orEmpty()
         }${

@@ -9,8 +9,8 @@ import gradle.plugins.kotlin.KotlinCommonCompilerOptionsImpl
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
 import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
 
 internal abstract class AbstractKotlinCompile<T : org.jetbrains.kotlin.gradle.tasks.AbstractKotlinCompile<*>>
     : AbstractKotlinCompileTool<T>(), BaseKotlinCompile<T> {
@@ -28,7 +28,7 @@ internal abstract class AbstractKotlinCompile<T : org.jetbrains.kotlin.gradle.ta
 
     abstract val abiSnapshotRelativePath: String?
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: T) {
         super<AbstractKotlinCompileTool>.applyTo(receiver)
         super<BaseKotlinCompile>.applyTo(receiver)
@@ -81,7 +81,7 @@ internal data class AbstractKotlinCompileImpl(
     override val useModuleDetection: Boolean? = null,
 ) : AbstractKotlinCompile<org.jetbrains.kotlin.gradle.tasks.AbstractKotlinCompile<*>>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<org.jetbrains.kotlin.gradle.tasks.AbstractKotlinCompile<*>>())
+        applyTo(project.tasks.withType<org.jetbrains.kotlin.gradle.tasks.AbstractKotlinCompile<*>>())
 }

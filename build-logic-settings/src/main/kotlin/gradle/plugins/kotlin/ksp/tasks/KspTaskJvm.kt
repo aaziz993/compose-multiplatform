@@ -10,9 +10,9 @@ import gradle.plugins.kotlin.KotlinJavaToolchain
 import gradle.plugins.kotlin.tasks.KotlinCompile
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompilerOptions
 import org.jetbrains.kotlin.gradle.dsl.jvm.JvmTargetValidationMode
-import org.gradle.kotlin.dsl.withType
 
 @Serializable
 internal data class KspTaskJvm(
@@ -58,14 +58,14 @@ internal data class KspTaskJvm(
     val destination: String? = null,
 ) : KotlinCompile<KspTaskJvm>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: KspTaskJvm) {
         super.applyTo(receiver)
 
-        receiver.destination tryAssign destination?.let(::file)
+        receiver.destination tryAssign destination?.let(project::file)
     }
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<KspTaskJvm>())
+        applyTo(project.tasks.withType<KspTaskJvm>())
 }

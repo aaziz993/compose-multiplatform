@@ -6,7 +6,7 @@ import org.gradle.caching.configuration.AbstractBuildCache
 
 public abstract class AbstractBuildCache<in T: AbstractBuildCache> : BuildCache<T> {
 
-    context(Settings)
+    context(settings: Settings)
     override fun applyTo(receiver: T) {
         // better set it to true only for CI builds.
         receiver.isPush = isCI

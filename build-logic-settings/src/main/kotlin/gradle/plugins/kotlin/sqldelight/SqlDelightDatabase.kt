@@ -63,16 +63,16 @@ internal data class SqlDelightDatabase(
     val treatNullAsUnknownForEquality: Boolean? = null,
 ) : ProjectNamed<SqlDelightDatabase> {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: SqlDelightDatabase) {
         receiver.packageName tryAssign packageName
-        receiver.schemaOutputDirectory tryAssign schemaOutputDirectory?.let(layout.projectDirectory::dir)
+        receiver.schemaOutputDirectory tryAssign schemaOutputDirectory?.let(project.layout.projectDirectory::dir)
         srcDirs?.toTypedArray()?.let(receiver::srcDirs)
         setSrcDirs?.let(receiver.srcDirs::setFrom)
         receiver.deriveSchemaFromMigrations tryAssign deriveSchemaFromMigrations
         receiver.verifyMigrations tryAssign verifyMigrations
         receiver.verifyDefinitions tryAssign verifyDefinitions
-        receiver.migrationOutputDirectory tryAssign migrationOutputDirectory?.let(layout.projectDirectory::dir)
+        receiver.migrationOutputDirectory tryAssign migrationOutputDirectory?.let(project.layout.projectDirectory::dir)
         receiver.migrationOutputFileFormat tryAssign migrationOutputFileFormat
         receiver.generateAsync tryAssign generateAsync
         modules?.map { module -> module.resolve() }?.forEach(receiver::module)

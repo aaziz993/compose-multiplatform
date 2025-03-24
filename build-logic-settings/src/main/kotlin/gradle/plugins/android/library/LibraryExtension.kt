@@ -85,7 +85,7 @@ internal data class LibraryExtension(
     override val testFixtures: TestFixtures? = null
 ) : TestedExtension(), InternalLibraryExtension {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() {
         super<TestedExtension>.applyTo()
         super<InternalLibraryExtension>.applyTo()

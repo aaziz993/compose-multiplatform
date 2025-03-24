@@ -37,7 +37,7 @@ internal data class FreshmarkExtension(
     override val toggleOffOnDisable: Boolean? = null,
 ) : FormatExtension<FreshMarkExtension>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() = spotless.freshmark {
         super.applyTo(this)
     }

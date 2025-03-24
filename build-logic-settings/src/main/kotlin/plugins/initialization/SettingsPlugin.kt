@@ -3,7 +3,6 @@
 package plugins.initialization
 
 import gradle.accessors.allLibs
-import gradle.accessors.exportExtras
 import gradle.accessors.libs
 import gradle.accessors.projectProperties
 import gradle.accessors.toVersionCatalogUrlPath

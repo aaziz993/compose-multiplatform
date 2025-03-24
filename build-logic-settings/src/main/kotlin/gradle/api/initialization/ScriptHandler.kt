@@ -46,7 +46,7 @@ internal data class ScriptHandler(
     val dependencies: Set<@Serializable(with = DependencyTransformingSerializer::class) Dependency>? = null,
 ) {
 
-    context(Settings)
+    context(settings: Settings)
     fun applyTo() {
         repositories?.let { repositories ->
             buildscript.repositories {
@@ -63,7 +63,7 @@ internal data class ScriptHandler(
         }
     }
 
-    context(Project)
+    context(project: Project)
     fun applyTo() {
         repositories?.let { repositories ->
             buildscript.repositories {

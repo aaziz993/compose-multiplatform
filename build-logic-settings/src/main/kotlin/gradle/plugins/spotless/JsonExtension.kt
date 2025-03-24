@@ -37,7 +37,7 @@ internal data class JsonExtension(
     override val toggleOffOnDisable: Boolean? = null,
 ) : FormatExtension<JsonExtension>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() = spotless.json {
         super.applyTo(this)
     }

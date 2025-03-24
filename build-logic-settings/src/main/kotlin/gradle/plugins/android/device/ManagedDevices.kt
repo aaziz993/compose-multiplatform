@@ -1,6 +1,5 @@
 package gradle.plugins.android.device
 
-import com.android.build.api.dsl.Device
 import com.android.build.api.dsl.ManagedDevices
 import gradle.api.applyTo
 import kotlinx.serialization.Serializable
@@ -37,7 +36,7 @@ internal data class ManagedDevices(
     val groups: Set<DeviceGroup>? = null,
 ) {
 
-    context(Project)
+    context(project: Project)
     fun applyTo(receiver: ManagedDevices) {
         allDevices?.forEach { device ->
             device.applyTo(receiver.allDevices)

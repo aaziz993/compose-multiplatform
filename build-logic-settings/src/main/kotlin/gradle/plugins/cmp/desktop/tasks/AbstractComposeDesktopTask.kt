@@ -14,7 +14,7 @@ internal abstract class AbstractComposeDesktopTask<T : org.jetbrains.compose.des
 
     abstract val verbose: Boolean?
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
@@ -41,7 +41,7 @@ internal data class AbstractComposeDesktopTaskImpl(
     override val name: String? = null,
 ) : AbstractComposeDesktopTask<org.jetbrains.compose.desktop.tasks.AbstractComposeDesktopTask>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<org.jetbrains.compose.desktop.tasks.AbstractComposeDesktopTask>())
+        applyTo(project.tasks.withType<org.jetbrains.compose.desktop.tasks.AbstractComposeDesktopTask>())
 }

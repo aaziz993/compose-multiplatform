@@ -3,8 +3,6 @@ package gradle.plugins.spotless.kotlin
 import com.diffplug.gradle.spotless.KotlinExtension
 import com.diffplug.spotless.LineEnding
 import gradle.accessors.spotless
-import gradle.plugins.spotless.BiomeGeneric
-
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -41,7 +39,7 @@ internal data class KotlinExtension(
     override val toggleOffOnDisable: Boolean? = null,
 ) : BaseKotlinExtension<KotlinExtension>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() = spotless.kotlin {
         super.applyTo(this)
     }

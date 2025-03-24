@@ -5,7 +5,6 @@ import com.apollographql.apollo3.compiler.JavaNullable
 import com.apollographql.apollo3.compiler.TargetLanguage
 import com.apollographql.apollo3.compiler.hooks.ApolloCompilerJavaHooks
 import com.apollographql.apollo3.compiler.hooks.ApolloCompilerKotlinHooks
-import com.apollographql.apollo3.gradle.internal.ApolloGenerateSourcesFromIrTask
 import com.apollographql.apollo3.gradle.internal.ApolloGenerateSourcesTask
 import gradle.api.tasks.applyTo
 import gradle.api.tryAssign
@@ -74,7 +73,7 @@ internal data class ApolloGenerateSourcesTask(
     val warnOnDeprecatedUsages: Boolean? = null,
 ) : ApolloGenerateSourcesBase<ApolloGenerateSourcesTask>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: ApolloGenerateSourcesTask) {
         super.applyTo(receiver)
 
@@ -113,8 +112,8 @@ internal data class ApolloGenerateSourcesTask(
         receiver.warnOnDeprecatedUsages tryAssign warnOnDeprecatedUsages
     }
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<ApolloGenerateSourcesTask>())
+        applyTo(project.tasks.withType<ApolloGenerateSourcesTask>())
 }
 

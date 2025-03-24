@@ -37,7 +37,7 @@ internal data class ProjectDescriptor(
     val path: String
 ) {
 
-    context(Settings)
+    context(settings: Settings)
     @Suppress("UnstableApiUsage")
     fun applyTo() {
         val project = project(path)

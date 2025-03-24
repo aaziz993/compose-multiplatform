@@ -82,7 +82,7 @@ internal data class BaseAppModuleExtension(
     override val experimentalProperties: SerializableAnyMap? = null,
 ) : AppExtension(), InternalApplicationExtension {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() {
         super<AppExtension>.applyTo()
         super<InternalApplicationExtension>.applyTo()

@@ -98,7 +98,7 @@ internal class PublishPlugin : Plugin<Project> {
         }
 
         val javadocJar =
-            if (plugins.hasPlugin(settings.libs.plugins.plugin("dokka").id))
+            if (plugins.hasPlugin(project.settings.libs.plugins.plugin("dokka").id))
                 tasks.register<Jar>("dokkaJavadocJar") {
                     description = "A Javadoc JAR containing Dokka Javadoc"
                     from(tasks.dokkaGeneratePublicationJavadoc!!.flatMap { it.outputDirectory })
@@ -120,7 +120,7 @@ internal class PublishPlugin : Plugin<Project> {
             }
         }
 
-        if (plugins.hasPlugin(settings.libs.plugins.plugin("dokkaJavadoc").id)) {
+        if (plugins.hasPlugin(project.settings.libs.plugins.plugin("dokkaJavadoc").id)) {
             val dokkaHtmlJar by tasks.registering(Jar::class) {
                 description = "A HTML Documentation JAR containing Dokka HTML"
                 from(tasks.dokkaGeneratePublicationHtml!!.flatMap { it.outputDirectory })

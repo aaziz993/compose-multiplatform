@@ -10,7 +10,7 @@ internal interface KotlinJsSubTargetDsl {
 
     val testTask: KotlinJsTest?
 
-    context(Project)
+    context(project: Project)
     @OptIn(ExperimentalDistributionDsl::class)
     fun applyTo(target: KotlinJsSubTargetDsl, distributionName: String) {
         distribution?.let { distribution ->

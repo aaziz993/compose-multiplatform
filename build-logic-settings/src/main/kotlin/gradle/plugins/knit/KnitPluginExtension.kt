@@ -22,16 +22,16 @@ internal interface KnitPluginExtension {
     val dokkaMultiModuleRoot: String?
     val defaultLineSeparator: String?
 
-    context(Project)
+    context(project: Project)
     fun applyTo() =
-        pluginManager.withPlugin(settings.libs.plugins.plugin("knit").id) {
-            knit::siteRoot trySet siteRoot
-            knit.moduleRoots = moduleRoots ?: (settings.projectProperties.includes.orEmpty().toList() + listOf("."))
-            knit.moduleMarkers = moduleMarkers ?: listOf("build.gradle", "build.gradle.kts", "project.yaml")
-            knit::moduleDocs trySet moduleDocs
-            knit::files trySet setFiles?.toTypedArray()?.let(::files)
-            knit::rootDir trySet rootDir?.let(::file)
-            knit::dokkaMultiModuleRoot trySet dokkaMultiModuleRoot
-            knit::defaultLineSeparator trySet defaultLineSeparator
+        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("knit").id) {
+            project. knit::siteRoot trySet siteRoot
+            project. knit.moduleRoots = moduleRoots ?: (project.settings.projectProperties.includes.orEmpty().toList() + listOf("."))
+            project. knit.moduleMarkers = moduleMarkers ?: listOf("build.gradle", "build.gradle.kts", "project.yaml")
+            project. knit::moduleDocs trySet moduleDocs
+            project. knit::files trySet setFiles?.toTypedArray()?.let(project::files)
+            project.knit::rootDir trySet rootDir?.let(project::file)
+            project. knit::dokkaMultiModuleRoot trySet dokkaMultiModuleRoot
+            project.knit::defaultLineSeparator trySet defaultLineSeparator
         }
 }

@@ -1,7 +1,6 @@
 package gradle.plugins.kotlin.tasks
 
 import gradle.api.tasks.applyTo
-import org.gradle.kotlin.dsl.withType
 import gradle.api.tasks.test.AbstractTestTask
 import gradle.api.tasks.test.DefaultTestFilter
 import gradle.api.tasks.test.TestLoggingContainer
@@ -10,13 +9,14 @@ import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
 
 internal abstract class KotlinTest<T : org.jetbrains.kotlin.gradle.tasks.KotlinTest> : AbstractTestTask<T>() {
 
     abstract val targetName: String?
     abstract val ignoreRunFailures: Boolean?
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
@@ -51,7 +51,7 @@ internal data class KotlinTestImpl(
     override val name: String? = null,
 ) : KotlinTest<org.jetbrains.kotlin.gradle.tasks.KotlinTest>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinTest>())
+        applyTo(project.tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinTest>())
 }

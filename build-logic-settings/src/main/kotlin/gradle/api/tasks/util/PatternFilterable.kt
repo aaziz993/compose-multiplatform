@@ -95,7 +95,7 @@ internal interface PatternFilterable<T : org.gradle.api.tasks.util.PatternFilter
      */
     val setExcludes: Set<String>?
 
-    context(Project)
+    context(project: Project)
     fun applyTo(receiver: T) {
         includes?.let(receiver::include)
         setIncludes?.let(receiver::setIncludes)

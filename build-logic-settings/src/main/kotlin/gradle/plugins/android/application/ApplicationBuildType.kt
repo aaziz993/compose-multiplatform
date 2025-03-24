@@ -5,13 +5,13 @@ import gradle.collection.SerializableAnyMap
 import gradle.plugins.android.BuildConfigField
 import gradle.plugins.android.BuildType
 import gradle.plugins.android.ExternalNativeBuildFlags
-import gradle.plugins.android.compile.JavaCompileOptions
 import gradle.plugins.android.Ndk
 import gradle.plugins.android.Optimization
 import gradle.plugins.android.PostProcessing
 import gradle.plugins.android.ResValue
 import gradle.plugins.android.Shaders
 import gradle.plugins.android.VcsInfo
+import gradle.plugins.android.compile.JavaCompileOptions
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -105,7 +105,7 @@ internal data class ApplicationBuildType(
 ) : BuildType<com.android.build.api.dsl.ApplicationBuildType>,
     ApplicationVariantDimension<com.android.build.api.dsl.ApplicationBuildType> {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: com.android.build.api.dsl.ApplicationBuildType) {
         super<BuildType>.applyTo(receiver)
 

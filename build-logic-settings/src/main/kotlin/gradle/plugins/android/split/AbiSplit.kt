@@ -2,7 +2,6 @@ package gradle.plugins.android.split
 
 import com.android.build.api.dsl.AbiSplit
 import gradle.api.trySet
-import kotlinx.serialization.Serializable
 
 /**
  * DSL object for configuring per-abi splits options.

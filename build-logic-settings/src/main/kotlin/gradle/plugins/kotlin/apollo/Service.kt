@@ -1,7 +1,6 @@
 package gradle.plugins.kotlin.apollo
 
 import com.apollographql.apollo3.compiler.PackageNameGenerator
-import com.apollographql.apollo3.compiler.hooks.ApolloCompilerJavaHooks
 import com.apollographql.apollo3.gradle.api.Service
 import gradle.api.tryAssign
 import kotlinx.serialization.Serializable
@@ -62,7 +61,7 @@ internal data class Service(
     val warnOnDeprecatedUsages: Boolean? = null,
 ) {
 
-    context(Project)
+    context(project: Project)
     fun applyTo(receiver: Service) {
         receiver.addJvmOverloads tryAssign addJvmOverloads
         receiver.addTypename tryAssign addTypename
@@ -80,7 +79,7 @@ internal data class Service(
 
         receiver.classesForEnumsMatching tryAssign setClassesForEnumsMatching
         receiver.codegenModels tryAssign codegenModels
-        receiver.debugDir tryAssign debugDir?.let(layout.projectDirectory::dir)
+        receiver.debugDir tryAssign debugDir?.let(project.layout.projectDirectory::dir)
         receiver.decapitalizeFields tryAssign decapitalizeFields
 
         receiver.excludes tryAssign excludes?.let { excludes ->
@@ -119,13 +118,13 @@ internal data class Service(
         receiver.jsExport tryAssign jsExport
         receiver.languageVersion tryAssign languageVersion
         receiver.nullableFieldStyle tryAssign nullableFieldStyle
-        receiver.operationManifest tryAssign operationManifest?.let(::file)
+        receiver.operationManifest tryAssign operationManifest?.let(project::file)
         receiver.operationManifestFormat tryAssign operationManifestFormat
-        receiver.operationOutputFile tryAssign operationOutputFile?.let(::file)
-        receiver.outputDir tryAssign outputDir?.let(layout.projectDirectory::dir)
+        receiver.operationOutputFile tryAssign operationOutputFile?.let(project::file)
+        receiver.outputDir tryAssign outputDir?.let(project.layout.projectDirectory::dir)
         receiver.packageName tryAssign packageName
         receiver.requiresOptInAnnotation tryAssign requiresOptInAnnotation
-        receiver.schemaFile tryAssign schemaFile?.let(::file)
+        receiver.schemaFile tryAssign schemaFile?.let(project::file)
         schemaFiles?.toTypedArray()?.let(receiver.schemaFiles::from)
         setSchemaFiles?.let(receiver.schemaFiles::setFrom)
 
@@ -135,7 +134,7 @@ internal data class Service(
 
         receiver.sealedClassesForEnumsMatching tryAssign setSealedClassesForEnumsMatching
         receiver.sourceFolder tryAssign sourceFolder
-        receiver.testDir tryAssign testDir?.let(layout.projectDirectory::dir)
+        receiver.testDir tryAssign testDir?.let(project.layout.projectDirectory::dir)
         receiver.useSemanticNaming tryAssign useSemanticNaming
         receiver.warnOnDeprecatedUsages tryAssign warnOnDeprecatedUsages
     }

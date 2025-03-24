@@ -19,7 +19,7 @@ internal class AnimalSnifferPlugin : Plugin<Project> {
                     it.enabled &&
                         projectProperties.kotlin.targets.any { target -> target is KotlinJvmAndAndroidTarget }
                 }?.let { animalSniffer ->
-                    plugins.apply(settings.libs.plugins.plugin("animalsniffer").id)
+                    plugins.apply(project.settings.libs.plugins.plugin("animalsniffer").id)
 
                     animalSniffer.applyTo()
                 }

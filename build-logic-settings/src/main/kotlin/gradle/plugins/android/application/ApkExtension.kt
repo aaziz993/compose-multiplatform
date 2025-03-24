@@ -1,7 +1,5 @@
 package gradle.plugins.android.application
 
-import com.android.build.api.dsl.ApkExtension
-
 /**
  * Common extension properties for the Android Gradle Plugin Application and Dynamic Feature
  * plugins.

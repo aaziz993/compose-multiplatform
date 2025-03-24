@@ -325,7 +325,7 @@ internal interface Task<T : org.gradle.api.Task> : ProjectNamed<T> {
      */
     val shouldRunAfter: Set<String>?
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: T) {
         dependsOn?.let(receiver::setDependsOn)
         onlyIf?.let { onlyIf -> receiver.onlyIf { onlyIf } }
@@ -341,11 +341,11 @@ internal interface Task<T : org.gradle.api.Task> : ProjectNamed<T> {
         shouldRunAfter?.let(receiver::setShouldRunAfter)
     }
 
-    context(Project)
+    context(project: Project)
     fun applyTo()
 }
 
-context(Project)
+context(project: Project)
 internal fun <T : org.gradle.api.Task> Task<T>.applyTo(receiver: TaskCollection<out T>) =
     applyTo(receiver as DomainObjectCollection<out T>) { name, action ->
         tasks.register(name, receiver.elementType(), action)
@@ -378,6 +378,6 @@ internal data class TaskImpl(
     override val name: String? = null,
 ) : Task<org.gradle.api.Task> {
 
-    context(Project)
-    override fun applyTo() = applyTo(tasks as TaskCollection<org.gradle.api.Task>)
+    context(project: Project)
+    override fun applyTo() = applyTo(project.tasks as TaskCollection<org.gradle.api.Task>)
 }

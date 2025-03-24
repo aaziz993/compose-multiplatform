@@ -41,7 +41,7 @@ internal interface LibraryVariantDimension<T : LibraryVariantDimension> : Varian
     /** Options for configuring AAR metadata. */
     val aarMetadata: AarMetadata?
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
@@ -49,9 +49,9 @@ internal interface LibraryVariantDimension<T : LibraryVariantDimension> : Varian
 
         consumerProguardFiles?.toTypedArray()?.let(receiver::consumerProguardFiles)
 
-        setConsumerProguardFiles?.map(::file)?.act(receiver.consumerProguardFiles::clear)?.let(receiver.consumerProguardFiles::addAll)
+        setConsumerProguardFiles?.map(project::file)?.act(receiver.consumerProguardFiles::clear)?.let(receiver.consumerProguardFiles::addAll)
 
-        receiver::signingConfig trySet signingConfig?.let(android.signingConfigs::getByName)
+        receiver::signingConfig trySet signingConfig?.let(project.android.signingConfigs::getByName)
         aarMetadata?.applyTo(receiver.aarMetadata)
     }
 }

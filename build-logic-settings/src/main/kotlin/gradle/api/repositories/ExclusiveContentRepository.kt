@@ -31,7 +31,7 @@ internal data class ExclusiveContentRepository(
     val filter: InclusiveRepositoryContentDescriptorImpl? = null,
 ) {
 
-    context(Project)
+    context(project: Project)
     fun applyTo(receiver: ExclusiveContentRepository) {
         forRepositories
             ?.flatMap(repositories::getByNameOrAll)?.toTypedArray()?.let(receiver::forRepositories)

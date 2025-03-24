@@ -1,14 +1,14 @@
 package gradle.plugins.kotlin.apollo.tasks
 
 import com.apollographql.apollo3.compiler.TargetLanguage
-import org.gradle.kotlin.dsl.withType
 import com.apollographql.apollo3.gradle.internal.ApolloGenerateSchemaTask
-import kotlinx.serialization.Serializable
 import gradle.api.tasks.DefaultTask
-import org.gradle.api.Project
-import gradle.collection.SerializableAnyMap
 import gradle.api.tasks.applyTo
 import gradle.api.tryAssign
+import gradle.collection.SerializableAnyMap
+import kotlinx.serialization.Serializable
+import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
 
 @Serializable
 internal data class ApolloGenerateSchemaTask(
@@ -41,13 +41,13 @@ internal data class ApolloGenerateSchemaTask(
     val userGenerateKotlinModels: Boolean? = null,
 ) : DefaultTask<ApolloGenerateSchemaTask>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: ApolloGenerateSchemaTask) {
         super.applyTo(receiver)
 
         receiver.codegenModels tryAssign codegenModels
         receiver.generateDataBuilders tryAssign generateDataBuilders
-        receiver.outputFile tryAssign outputFile?.let(::file)
+        receiver.outputFile tryAssign outputFile?.let(project::file)
 
         receiver.scalarAdapterMapping tryAssign scalarAdapterMapping?.let { scalarAdapterMapping ->
             receiver.scalarAdapterMapping.get() + scalarAdapterMapping
@@ -69,7 +69,7 @@ internal data class ApolloGenerateSchemaTask(
         receiver.userGenerateKotlinModels tryAssign userGenerateKotlinModels
     }
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<ApolloGenerateSchemaTask>())
+        applyTo(project.tasks.withType<ApolloGenerateSchemaTask>())
 }

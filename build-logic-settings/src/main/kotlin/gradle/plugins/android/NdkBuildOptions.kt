@@ -72,7 +72,7 @@ internal data class NdkBuildOptions(
     val buildStagingDirectory: String? = null,
 ) {
 
-    context(Project)
+    context(project: Project)
     fun applyTo(receiver: NdkBuild) {
         path?.let(receiver::path)
         buildStagingDirectory?.let(receiver::buildStagingDirectory)

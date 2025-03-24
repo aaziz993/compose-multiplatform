@@ -15,7 +15,7 @@ internal data class DeviceGroup(
     val targetDevices: Set<DeviceImpl>? = null,
 ) : ProjectNamed<DeviceGroup> {
 
-    context(Project)
+    context(project: Project)
     @Suppress("UnstableApiUsage")
     override fun applyTo(receiver: DeviceGroup) {
         targetDevices?.forEach { targetDevice ->

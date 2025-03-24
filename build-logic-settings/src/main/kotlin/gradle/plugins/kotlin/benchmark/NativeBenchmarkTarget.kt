@@ -16,7 +16,7 @@ internal data class NativeBenchmarkTarget(
     val compilation: KotlinNativeCompilation? = null,
 ) : BenchmarkTarget<NativeBenchmarkTarget>() {
 
-    context(Project)
+    context(project: Project)
     @OptIn(KotlinxBenchmarkPluginInternalApi::class)
     override fun applyTo(receiver: NativeBenchmarkTarget) {
         super.applyTo(receiver)

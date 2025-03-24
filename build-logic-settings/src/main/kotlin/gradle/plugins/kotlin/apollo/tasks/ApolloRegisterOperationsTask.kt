@@ -1,13 +1,13 @@
 package gradle.plugins.kotlin.apollo.tasks
 
-import org.gradle.kotlin.dsl.withType
 import com.apollographql.apollo3.gradle.internal.ApolloRegisterOperationsTask
-import kotlinx.serialization.Serializable
 import gradle.api.tasks.DefaultTask
-import org.gradle.api.Project
-import gradle.collection.SerializableAnyMap
 import gradle.api.tasks.applyTo
 import gradle.api.tryAssign
+import gradle.collection.SerializableAnyMap
+import kotlinx.serialization.Serializable
+import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
 
 @Serializable
 internal data class ApolloRegisterOperationsTask(
@@ -32,7 +32,7 @@ internal data class ApolloRegisterOperationsTask(
     val operationOutput: String? = null,
 ) : DefaultTask<ApolloRegisterOperationsTask>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: ApolloRegisterOperationsTask) {
         super.applyTo(receiver)
 
@@ -41,10 +41,10 @@ internal data class ApolloRegisterOperationsTask(
         receiver.key tryAssign key
         receiver.listId tryAssign listId
         receiver.operationManifestFormat tryAssign operationManifestFormat
-        receiver.operationOutput tryAssign operationOutput?.let(::file)
+        receiver.operationOutput tryAssign operationOutput?.let(project::file)
     }
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<ApolloRegisterOperationsTask>())
+        applyTo(project.tasks.withType<ApolloRegisterOperationsTask>())
 }

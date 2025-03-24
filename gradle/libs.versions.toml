@@ -64,7 +64,7 @@ foojayResolverConvention = "0.9.0"
 # creates fat/uber JARs with support for package relocation.
 shadow = "8.3.5"
 # generating BuildConstants for any kind of Gradle projects: Java, Kotlin, Android, Groovy, etc. Designed for KTS scripts, with experimental support for Kotlin's multi-platform plugin
-buildConfig = "4.1.1"
+buildconfig = "4.1.1"
 # string and image resource generation
 libres = "1.2.3"
 # enforcing pre-commit and commit-msg Git hooks configuration. Conventional-commits-ready.
@@ -80,7 +80,7 @@ dokka = "2.0.0"
 # produces Kotlin source example files and tests from markdown documents with embedded snippets of Kotlin code
 knit = "0.5.0"
 # allows dumping binary API of a JVM part of a Kotlin library that is public in the sense of Kotlin visibilities and ensures that the public binary API wasn't changed in a way that makes this change binary incompatible.
-binary-compatibility-validator = "0.16.3"
+binaryCompatibilityValidator = "0.16.3"
 # check (JDK, android SDK or any library) API compatibility for java (kotlin, scala, groovy etc.), android and kotlin multiplatform projects.
 animalsniffer = "2.0.0"
 signature-java = "1.0"
@@ -127,7 +127,7 @@ sshj = "0.38.0"
 jsch = "0.1.55"
 
 ##Kotlin
-kotlin = "2.1.10"
+kotlin = "2.1.20"
 # ktlint code formatter
 ktlint = "1.4.1"
 # api that you can use to develop lightweight compiler plugins. KSP provides a simplified compiler plugin API that leverages the power of Kotlin while keeping the learning curve at a minimum. Compared to KAPT, annotation processors that use KSP can run up to 2x faster.
@@ -1329,7 +1329,7 @@ foojayResolverConvention = { id = "org.gradle.toolchains.foojay-resolver-convent
 # creates fat/uber JARs with support for package relocation.
 shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
 # generating BuildConstants for any kind of Gradle projects: Java, Kotlin, Android, Groovy, etc. Designed for KTS scripts, with experimental support for Kotlin's multi-platform plugin
-buildconfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildConfig" }
+buildconfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildconfig" }
 # string and image resaource generation
 libres = { id = "io.github.skeptick.libres", version.ref = "libres" }
 # enforcing pre-commit and commit-msg Git hooks configuration. Conventional-commits-ready.
@@ -1348,7 +1348,7 @@ dokkaJavadoc = { id = "org.jetbrains.dokka-javadoc", version.ref = "dokka" }
 # produces Kotlin source example files and tests from markdown documents with embedded snippets of Kotlin code
 knit = { id = "org.jetbrains.kotlinx.knit", version.ref = "knit" }
 # allows dumping binary API of a JVM part of a Kotlin library that is public in the sense of Kotlin visibilities and ensures that the public binary API wasn't changed in a way that makes this change binary incompatible.
-binary-compatibility-validator = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "binary-compatibility-validator" }
+binaryCompatibilityValidator = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "binaryCompatibilityValidator" }
 # check (JDK, android SDK or any library) API compatibility for java (kotlin, scala, groovy etc.), android and kotlin multiplatform projects.
 animalsniffer = { id = "ru.vyarus.animalsniffer", version.ref = "animalsniffer" }
 # publishing

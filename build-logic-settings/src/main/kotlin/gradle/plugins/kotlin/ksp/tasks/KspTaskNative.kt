@@ -51,13 +51,13 @@ internal data class KspTaskNative(
     override val setCommandLineArgumentProviders: List<CommandLineArgumentProvider>? = null,
 ) : KotlinNativeCompile<KspTaskNative>(), KspTask<KspTaskNative> {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: KspTaskNative) {
         super<KotlinNativeCompile>.applyTo(receiver)
         super<KspTask>.applyTo(receiver)
     }
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<KspTaskNative>())
+        applyTo(project.tasks.withType<KspTaskNative>())
 }

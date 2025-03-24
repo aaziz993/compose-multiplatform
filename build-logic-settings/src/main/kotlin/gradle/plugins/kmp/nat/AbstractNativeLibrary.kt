@@ -2,14 +2,13 @@ package gradle.plugins.kmp.nat
 
 
 import gradle.api.trySet
-import org.gradle.api.Named
 import org.jetbrains.kotlin.gradle.plugin.mpp.AbstractNativeLibrary
 
 internal interface AbstractNativeLibrary : NativeBinary {
 
     val transitiveExport: Boolean?
 
-        context(Project)
+        context(project: Project)
     override fun applyTo(receiver: T) {
         super.applyTo(named)
 

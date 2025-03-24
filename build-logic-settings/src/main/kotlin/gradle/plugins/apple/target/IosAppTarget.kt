@@ -6,13 +6,14 @@ import gradle.plugins.apple.AppleBuildSettings
 import gradle.plugins.apple.BuildConfiguration
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
 import org.jetbrains.gradle.apple.targets.IosAppTarget
 
 @Serializable
 @SerialName("iosApp")
 internal data class IosAppTarget(
     override val bridgingHeader: String? = null,
-    override val buildConfigurations: List<BuildConfiguration>? = null,
+    override val buildConfigurations: Set<BuildConfiguration>? = null,
     override val buildSettings: Map<AppleBuildSettings, String>? = null,
     override val embedFrameworks: Boolean? = null,
     override val ipad: Boolean? = null,
@@ -30,6 +31,7 @@ internal data class IosAppTarget(
     val sceneConfigurations: List<SceneConfiguration>? = null,
 ) : AppleTarget<IosAppTarget> {
 
+    context(project: Project)
     override fun applyTo(receiver: IosAppTarget) {
         super.applyTo(receiver)
 

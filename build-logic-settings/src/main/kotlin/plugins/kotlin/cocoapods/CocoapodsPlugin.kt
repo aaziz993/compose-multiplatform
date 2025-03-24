@@ -16,7 +16,7 @@ internal class CocoapodsPlugin : Plugin<Project> {
         with(target) {
             projectProperties.kotlin.cocoapods
                 .takeIf { it.enabled && projectProperties.kotlin.targets.any { target -> target is KotlinAppleTarget } == true }?.let { cocoapods ->
-                    plugins.apply(settings.libs.plugins.plugin("cocoapods").id)
+                    plugins.apply(project.settings.libs.plugins.plugin("cocoapods").id)
 
                     cocoapods.applyTo()
                 }

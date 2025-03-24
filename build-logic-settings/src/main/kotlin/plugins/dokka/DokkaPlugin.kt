@@ -19,8 +19,8 @@ internal class DokkaPlugin : Plugin<Project> {
         with(target) {
             projectProperties.plugins.dokka
                 .takeIf(DokkaSettings::enabled)?.let { dokka ->
-                    plugins.apply(settings.libs.plugins.plugin("dokka").id)
-                    plugins.apply(settings.libs.plugins.plugin("dokkaJavadoc").id)
+                    plugins.apply(project.settings.libs.plugins.plugin("dokka").id)
+                    plugins.apply(project.settings.libs.plugins.plugin("dokkaJavadoc").id)
 
                     dokka.applyTo()
 

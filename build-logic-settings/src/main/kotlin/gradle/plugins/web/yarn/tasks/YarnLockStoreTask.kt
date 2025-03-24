@@ -34,7 +34,7 @@ internal data class YarnLockStoreTask(
     override val name: String? = null,
 ) : LockStoreTask<YarnLockStoreTask>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<YarnLockStoreTask>())
+        applyTo(project.tasks.withType<YarnLockStoreTask>())
 }

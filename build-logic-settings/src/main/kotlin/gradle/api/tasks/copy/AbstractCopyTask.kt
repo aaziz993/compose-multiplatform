@@ -37,7 +37,7 @@ internal abstract class AbstractCopyTask<T : org.gradle.api.tasks.AbstractCopyTa
      */
     abstract val caseSensitive: Boolean?
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: T) {
         super<ConventionTask>.applyTo(receiver)
 
@@ -84,7 +84,7 @@ internal data class AbstractCopyTaskImpl(
     override val name: String? = null,
 ) : AbstractCopyTask<org.gradle.api.tasks.AbstractCopyTask>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<org.gradle.api.tasks.AbstractCopyTask>())
+        applyTo(project.tasks.withType<org.gradle.api.tasks.AbstractCopyTask>())
 }

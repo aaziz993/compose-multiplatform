@@ -2,7 +2,6 @@ package gradle.plugins.web
 
 import gradle.api.tryAssign
 import org.gradle.api.Project
-import org.gradle.api.provider.ProviderFactory
 import org.jetbrains.kotlin.gradle.targets.js.EnvSpec
 
 /**
@@ -40,11 +39,11 @@ internal abstract class EnvSpec {
      */
     abstract val command: String?
 
-    context(Project)
+    context(project: Project)
     open fun applyTo(receiver: EnvSpec<*>) {
         receiver.download tryAssign download
         receiver.downloadBaseUrl tryAssign downloadBaseUrl
-        receiver.installationDirectory tryAssign installationDirectory?.let(layout.projectDirectory::dir)
+        receiver.installationDirectory tryAssign installationDirectory?.let(project.layout.projectDirectory::dir)
         receiver.version tryAssign version
         receiver.command tryAssign command
     }

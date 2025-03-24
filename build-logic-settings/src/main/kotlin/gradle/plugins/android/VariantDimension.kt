@@ -119,21 +119,21 @@ internal interface VariantDimension<T : VariantDimension> {
 
     val optimization: Optimization?
 
-    context(Project)
+    context(project: Project)
     @Suppress("UnstableApiUsage")
     fun applyTo(receiver: T) {
-        receiver::multiDexKeepProguard trySet multiDexKeepProguard?.let(::file)
+        receiver::multiDexKeepProguard trySet multiDexKeepProguard?.let(project::file)
 
-        ndk?.toTypedArray()?.let(receiver::proguardFiles)
+        ndk?.applyTo(receiver.ndk)
 
         defaultProguardFiles
-            ?.mapNotNull { defaultProguardFile -> getDefaultProguardFile(defaultProguardFile) }
+            ?.mapNotNull { defaultProguardFile -> project.getDefaultProguardFile(defaultProguardFile) }
             ?.toTypedArray()?.let(receiver::proguardFiles)
 
         setProguardFiles?.let(receiver::setProguardFiles)
 
         setDefaultProguardFiles
-            ?.mapNotNull { defaultProguardFile -> getDefaultProguardFile(defaultProguardFile) }
+            ?.mapNotNull { defaultProguardFile -> project.getDefaultProguardFile(defaultProguardFile) }
             ?.let(receiver::setProguardFiles)
 
         testProguardFiles?.toTypedArray()?.let(receiver::testProguardFiles)

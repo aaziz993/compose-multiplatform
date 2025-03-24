@@ -30,17 +30,17 @@ internal data class KnitTask(
     val setFiles: Set<String>? = null,
 ) : DefaultTask<KnitTask>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: KnitTask) {
         super.applyTo(receiver)
 
         receiver::check trySet check
-        receiver::rootDir trySet rootDir?.let(::file)
-        receiver.files = receiver.files + files.orEmpty().toTypedArray().let(::files)
-        receiver::files trySet setFiles?.toTypedArray()?.let(::files)
+        receiver::rootDir trySet rootDir?.let(project::file)
+        receiver.files = receiver.files + files.orEmpty().toTypedArray().let(project::files)
+        receiver::files trySet setFiles?.toTypedArray()?.let(project::files)
     }
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<KnitTask>())
+        applyTo(project.tasks.withType<KnitTask>())
 }

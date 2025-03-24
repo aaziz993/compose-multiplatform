@@ -1,11 +1,11 @@
 package gradle.plugins.animalsniffer.tasks
 
-import org.gradle.kotlin.dsl.withType
 import gradle.api.tasks.DefaultTask
 import gradle.api.tasks.applyTo
 import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
 import ru.vyarus.gradle.plugin.animalsniffer.debug.PrintAnimalsnifferTasksTask
 
 @Serializable
@@ -25,7 +25,7 @@ internal data class PrintAnimalsnifferTasksTask(
     override val name: String? = null,
 ) : DefaultTask<PrintAnimalsnifferTasksTask>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<PrintAnimalsnifferTasksTask>())
+        applyTo(project.tasks.withType<PrintAnimalsnifferTasksTask>())
 }

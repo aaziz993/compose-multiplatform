@@ -1,10 +1,8 @@
 package gradle.plugins.kmp.web
 
 import gradle.accessors.kotlin
-
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinWasmJsTargetDsl
@@ -27,7 +25,7 @@ internal data class KotlinWasmJsTarget(
     val d8Dsl: KotlinWasmD8Dsl? = null,
 ) : KotlinWasmTargetDsl, KotlinJsTargetDsl {
 
-        context(Project)
+        context(project: Project)
     override fun applyTo(receiver: T) {
         super<KotlinWasmTargetDsl>._applyTo(named)
         super<KotlinJsTargetDsl>._applyTo(named)

@@ -5,7 +5,6 @@ import gradle.api.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.publish.maven.MavenPom
-import org.gradle.kotlin.dsl.assign
 
 /**
  * The POM for a Maven publication.
@@ -113,7 +112,7 @@ internal data class MavenPom(
     val properties: Map<String, String>? = null,
 ) {
 
-    context(Project)
+    context(project: Project)
     fun applyTo(receiver: MavenPom) {
         packaging?.let(pom::setPackaging)
         pom.name = name ?: project.name

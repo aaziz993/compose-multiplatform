@@ -1,11 +1,11 @@
 package gradle.plugins.kmp.web
 
 
-import gradle.process.AbstractExecTask
 import gradle.api.tryAssign
 import gradle.api.trySet
 import gradle.collection.SerializableAnyList
 import gradle.collection.SerializableAnyMap
+import gradle.process.AbstractExecTask
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -36,7 +36,7 @@ internal data class D8Exec(
     val inputFileProperty: String? = null,
 ) : AbstractExecTask<D8Exec>() {
 
-        context(Project)
+        context(project: Project)
     override fun applyTo(receiver: T) {
         super.applyTo(named)
 
@@ -44,6 +44,6 @@ internal data class D8Exec(
 
         named::d8Args trySet d8Args?.toMutableList()
 
-        named.inputFileProperty tryAssign inputFileProperty?.let(::file)
+        named.inputFileProperty tryAssign inputFileProperty?.let(project::file)
     }
 }

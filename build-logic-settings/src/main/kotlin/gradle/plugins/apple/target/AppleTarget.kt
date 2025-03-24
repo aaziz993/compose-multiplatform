@@ -2,7 +2,6 @@ package gradle.plugins.apple.target
 
 import gradle.api.ProjectNamed
 import gradle.api.applyTo
-import gradle.api.maybeNamed
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
 import gradle.collection.act
@@ -36,7 +35,7 @@ internal interface AppleTarget<T : org.jetbrains.gradle.apple.targets.AppleTarge
 
     val productName: String?
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: T) {
         receiver::bridgingHeader trySet bridgingHeader
 

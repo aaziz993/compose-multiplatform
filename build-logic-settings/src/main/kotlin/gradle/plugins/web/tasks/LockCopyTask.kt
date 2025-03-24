@@ -1,6 +1,5 @@
 package gradle.plugins.web.tasks
 
-import org.gradle.kotlin.dsl.withType
 import gradle.api.tasks.DefaultTask
 import gradle.api.tasks.applyTo
 import gradle.api.tryAssign
@@ -8,6 +7,7 @@ import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
 
 internal abstract class LockCopyTask<T : org.jetbrains.kotlin.gradle.targets.js.npm.LockCopyTask> : DefaultTask<T>() {
 
@@ -21,14 +21,14 @@ internal abstract class LockCopyTask<T : org.jetbrains.kotlin.gradle.targets.js.
 
     abstract val fileName: String?
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
-        receiver.inputFile tryAssign inputFile?.let(::file)
+        receiver.inputFile tryAssign inputFile?.let(project::file)
         additionalInputFiles?.toTypedArray()?.let(receiver.additionalInputFiles::from)
         setAdditionalInputFiles?.let(receiver.additionalInputFiles::setFrom)
-        receiver.outputDirectory tryAssign outputDirectory?.let(layout.projectDirectory::dir)
+        receiver.outputDirectory tryAssign outputDirectory?.let(project.layout.projectDirectory::dir)
         receiver.fileName tryAssign fileName
     }
 }
@@ -56,7 +56,7 @@ internal data class LockCopyTaskImple(
     override val name: String? = null,
 ) : LockCopyTask<org.jetbrains.kotlin.gradle.targets.js.npm.LockCopyTask>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<org.jetbrains.kotlin.gradle.targets.js.npm.LockCopyTask>())
+        applyTo(project.tasks.withType<org.jetbrains.kotlin.gradle.targets.js.npm.LockCopyTask>())
 }

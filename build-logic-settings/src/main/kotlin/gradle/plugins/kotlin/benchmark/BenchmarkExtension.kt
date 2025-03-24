@@ -28,22 +28,22 @@ internal abstract class BenchmarksExtension {
 
     abstract val targets: List<@Serializable(with = BenchmarkTargetTransformingSerializer::class) BenchmarkTarget>?
 
-    context(Project)
+    context(project: Project)
     fun applyTo() =
-        pluginManager.withPlugin(settings.libs.plugins.plugin("kotlinx.benchmark").id) {
-            benchmark::benchsDescriptionDir trySet benchsDescriptionDir
-            benchmark::buildDir trySet buildDir
+        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("kotlinx.benchmark").id) {
+            project.benchmark::benchsDescriptionDir trySet benchsDescriptionDir
+            project.benchmark::buildDir trySet buildDir
 
             configurations?.forEach { configuration ->
-                configuration.applyTo(benchmark.configurations)
+                configuration.applyTo(project.benchmark.configurations)
             }
 
-            benchmark.kotlinCompilerVersion tryAssign (kotlinCompilerVersion
-                ?: settings.libs.versions.version("kotlin"))
-            benchmark::reportsDir trySet reportsDir
+            project.benchmark.kotlinCompilerVersion tryAssign (kotlinCompilerVersion
+                ?: project.settings.libs.versions.version("kotlin"))
+            project.benchmark::reportsDir trySet reportsDir
 
             targets?.forEach { target ->
-                target.applyTo(benchmark.targets)
+                target.applyTo(project.benchmark.targets)
             }
         }
 }

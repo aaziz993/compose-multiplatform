@@ -1,8 +1,6 @@
 package gradle.plugins.kmp.nat
 
-import gradle.accessors.kotlin
 import gradle.api.applyTo
-
 import gradle.plugins.kmp.HasBinaries
 import gradle.plugins.kmp.KotlinTarget
 import gradle.plugins.kmp.nat.tasks.KotlinNativeCompilerOptions
@@ -17,7 +15,7 @@ internal abstract class KotlinNativeTarget<T : org.jetbrains.kotlin.gradle.plugi
     HasConfigurableKotlinCompilerOptions<T, org.jetbrains.kotlin.gradle.dsl.KotlinNativeCompilerOptions>,
     HasBinaries<KotlinNativeBinaryContainer> {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: T) {
         super<KotlinTarget>.applyTo(receiver)
         super<HasConfigurableKotlinCompilerOptions>.applyTo(receiver)
@@ -36,7 +34,7 @@ internal data class KotlinNativeTargetImpl(
     override val binaries: KotlinNativeBinaryContainer? = null,
 ) : KotlinNativeTarget<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
         applyTo(kotlin.targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>()) { _, _ -> }
 }

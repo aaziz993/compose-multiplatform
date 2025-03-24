@@ -8,7 +8,6 @@ import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.kotlin.tasks.KotlinTest
 import kotlinx.serialization.Serializable
-import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.targets.native.tasks.KotlinNativeTest
@@ -43,13 +42,13 @@ internal data class KotlinNativeTest(
     val trackEnvironments: List<@Serializable(with = TrackEnvironmentTransformingSerializer::class) TrackEnvironment>? = null,
 ) : KotlinTest() {
 
-        context(Project)
+        context(project: Project)
     override fun applyTo(receiver: T) {
         super.applyTo(named)
 
         named as KotlinNativeTest
 
-        named.executableProperty tryAssign executables?.toTypedArray()?.let(::files)
+        named.executableProperty tryAssign executables?.toTypedArray()?.let(project::files)
         named::args trySet args
         named::workingDir trySet workingDir
 
@@ -62,7 +61,7 @@ internal data class KotlinNativeTest(
         }
     }
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<KotlinNativeTest>())
+        applyTo(project.tasks.withType<KotlinNativeTest>())
 }

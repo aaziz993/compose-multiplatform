@@ -15,7 +15,7 @@ internal class ShadowPlugin : Plugin<Project> {
         with(target) {
             projectProperties.plugins.shadow
                 .takeIf { it.enabled && projectProperties.kotlin.targets.isNotEmpty() }?.let { shadow ->
-                    plugins.apply(settings.libs.plugins.plugin("shadow").id)
+                    plugins.apply(project.settings.libs.plugins.plugin("shadow").id)
 
                     shadow.applyTo()
                 }

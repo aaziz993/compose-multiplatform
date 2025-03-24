@@ -21,14 +21,14 @@ internal abstract class BaseKotlinExtension<T : BaseKotlinExtension> : FormatExt
 
     abstract val ktlint: KtlintConfig?
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
         diktat?.let { diktat ->
             diktat.applyTo(
                 receiver.diktat(
-                    diktat.version ?: settings.libs.versions.version("diktat")
+                    diktat.version ?: project.settings.libs.versions.version("diktat")
                     ?: DiktatStep.defaultVersionDiktat(),
                 ),
             )
@@ -37,7 +37,7 @@ internal abstract class BaseKotlinExtension<T : BaseKotlinExtension> : FormatExt
         ktfmt?.forEach { ktfmt ->
             ktfmt.applyTo(
                 receiver.ktfmt(
-                    ktfmt.version ?: settings.libs.versions.version("ktfmt")
+                    ktfmt.version ?: project.settings.libs.versions.version("ktfmt")
                     ?: KtfmtStep.defaultVersion(),
                 ),
             )
@@ -46,7 +46,7 @@ internal abstract class BaseKotlinExtension<T : BaseKotlinExtension> : FormatExt
         ktlint?.let { ktlint ->
             ktlint.applyTo(
                 receiver.ktlint(
-                    ktlint.version ?: settings.libs.versions.version("ktlint")
+                    ktlint.version ?: project.settings.libs.versions.version("ktlint")
                     ?: KtLintStep.defaultVersion(),
                 ),
             )

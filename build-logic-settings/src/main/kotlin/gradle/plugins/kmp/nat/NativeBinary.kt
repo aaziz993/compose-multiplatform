@@ -29,7 +29,7 @@ internal interface NativeBinary : BaseNamed {
 
     val outputDirectoryProperty: String?
 
-        context(Project)
+        context(project: Project)
     override fun applyTo(receiver: T) {
         with(project) {
             named as NativeBinary
@@ -40,8 +40,8 @@ internal interface NativeBinary : BaseNamed {
             linkerOpts?.let(named::linkerOpts)
             named::binaryOptions trySet binaryOptions?.toMutableMap()
             named::freeCompilerArgs trySet freeCompilerArgs
-            named::outputDirectory trySet optimized?.let(::file)
-            named.outputDirectoryProperty tryAssign outputDirectoryProperty?.let(layout.projectDirectory::dir)
+            named::outputDirectory trySet optimized?.let(project::file)
+            named.outputDirectoryProperty tryAssign outputDirectoryProperty?.let(project.layout.projectDirectory::dir)
         }
     }
 }

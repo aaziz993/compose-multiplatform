@@ -14,7 +14,7 @@ internal data class KotlinJvmTestRun(
     override val executionSource: JvmClasspathTestRunSource? = null,
 ) : KotlinTaskTestRun<KotlinJvmTestRun>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: KotlinJvmTestRun) {
         super.applyTo(receiver)
 

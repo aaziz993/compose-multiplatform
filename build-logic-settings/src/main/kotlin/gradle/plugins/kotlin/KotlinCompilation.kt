@@ -1,10 +1,8 @@
 package gradle.plugins.kotlin
 
-import gradle.api.BaseNamed
 import gradle.api.ProjectNamed
 import gradle.api.getByNameOrAll
 import gradle.api.trySet
-import gradle.collection.get
 import gradle.plugins.kmp.KotlinSourceSet
 import gradle.project.Dependency
 import gradle.project.DependencyTransformingSerializer
@@ -116,16 +114,16 @@ internal interface KotlinCompilation<T : org.jetbrains.kotlin.gradle.plugin.Kotl
      */
     val associatedCompilations: Set<String>?
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: T) {
         defaultSourceSet?.applyTo(receiver.defaultSourceSet)
         receiver::compileDependencyFiles trySet compileDependencyFiles
             ?.toTypedArray()
-            ?.let(::files)
+            ?.let(project::files)
             ?.let { files ->
                 receiver.compileDependencyFiles + files
             }
-        receiver::compileDependencyFiles trySet setCompileDependencyFiles?.toTypedArray()?.let(::files)
+        receiver::compileDependencyFiles trySet setCompileDependencyFiles?.toTypedArray()?.let(project::files)
         output?.applyTo(receiver.output)
         associatedCompilations
             ?.flatMap(receiver.target.compilations::getByNameOrAll)

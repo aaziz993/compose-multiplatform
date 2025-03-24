@@ -5,12 +5,10 @@ package gradle.api.tasks
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.kotlin.KotlinCommonCompilerOptions
 import gradle.plugins.kotlin.KotlinCommonCompilerOptionsImpl
-
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
-import org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerToolOptions
 
 /**
  * Analogous to [KotlinCompilationTask] for K2
@@ -23,7 +21,7 @@ internal interface K2MultiplatformCompilationTask<
 
     val compilerOptions: KotlinCommonCompilerOptions<CO>?
 
-    context(Project)
+    context(project: Project)
     @Suppress("UNCHECKED_CAST")
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
@@ -54,7 +52,7 @@ internal data class K2MultiplatformCompilationTaskImpl(
     org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerOptions,
     > {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<org.jetbrains.kotlin.gradle.tasks.K2MultiplatformCompilationTask>())
+        applyTo(project.tasks.withType<org.jetbrains.kotlin.gradle.tasks.K2MultiplatformCompilationTask>())
 }

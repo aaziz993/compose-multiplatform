@@ -14,11 +14,11 @@ internal data class GnupgSettings(
     val useLegacyGpg: Boolean? = null,
 ) {
 
-    context(Project)
+    context(project: Project)
     fun toGnupgSettings() = GnupgSettings().apply {
         this@GnupgSettings.executable?.let(::setExecutable)
-        this@GnupgSettings.homeDir?.let(::file)?.let(::setHomeDir)
-        this@GnupgSettings.optionsFile?.let(::file)?.let(::setOptionsFile)
+        this@GnupgSettings.homeDir?.let(project::file)?.let(::setHomeDir)
+        this@GnupgSettings.optionsFile?.let(project::file)?.let(::setOptionsFile)
         this@GnupgSettings.keyName?.let(::setKeyName)
         this@GnupgSettings.passphrase?.let(::setPassphrase)
         this@GnupgSettings.useLegacyGpg?.let(::setUseLegacyGpg)

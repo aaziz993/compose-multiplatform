@@ -1,11 +1,10 @@
 package gradle.api.tasks.test
 
-import gradle.api.VerificationTask
 import gradle.api.tasks.ConventionTask
+import gradle.api.tasks.VerificationTask
 import gradle.api.tasks.applyTo
 import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
-
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -49,14 +48,14 @@ internal abstract class AbstractTestTask<T : org.gradle.api.tasks.testing.Abstra
 
     abstract val failFast: Boolean?
 
-    abstract val filter: DefaultTestFilter?
+    abstract val filter: TestFilter?
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: T) {
         super<ConventionTask>.applyTo(receiver)
         super<VerificationTask>.applyTo(receiver)
 
-        receiver.binaryResultsDirectory tryAssign binaryResultsDirectory?.let(layout.projectDirectory::dir)
+        receiver.binaryResultsDirectory tryAssign binaryResultsDirectory?.let(project.layout.projectDirectory::dir)
         ignoreFailures?.let(receiver::setIgnoreFailures)
         testLogging?.applyTo(receiver.testLogging)
         testNameIncludePatterns?.let(receiver::setTestNameIncludePatterns)
@@ -72,7 +71,7 @@ internal data class AbstractTestTaskImpl(
     override val testLogging: TestLoggingContainer? = null,
     override val testNameIncludePatterns: List<String>? = null,
     override val failFast: Boolean? = null,
-    override val filter: DefaultTestFilter? = null,
+    override val filter: TestFilter? = null,
     override val dependsOn: LinkedHashSet<String>? = null,
     override val onlyIf: Boolean? = null,
     override val doNotTrackState: String? = null,
@@ -88,7 +87,7 @@ internal data class AbstractTestTaskImpl(
     override val name: String? = null,
 ) : AbstractTestTask<org.gradle.api.tasks.testing.AbstractTestTask>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<org.gradle.api.tasks.testing.AbstractTestTask>())
+        applyTo(project.tasks.withType<org.gradle.api.tasks.testing.AbstractTestTask>())
 }

@@ -1,6 +1,5 @@
 package gradle.plugins.kmp.web
 
-import org.gradle.kotlin.dsl.withType
 import gradle.accessors.moduleName
 import gradle.api.tasks.applyTo
 import gradle.api.tasks.test.DefaultTestFilter
@@ -8,10 +7,10 @@ import gradle.api.tasks.test.TestLoggingContainer
 import gradle.api.tryAssign
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
-import gradle.plugins.buildconfig.generator.BuildConfigKotlinGenerator
 import gradle.plugins.kotlin.tasks.KotlinTest
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
 
 @Serializable
@@ -45,12 +44,12 @@ internal data class KotlinJsTest(
     val useKarma: @Serializable(with = KotlinKarmaContentPolymorphicSerializer::class) Any? = null,
 ) : KotlinTest<KotlinJsTest>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: KotlinJsTest) {
         super.applyTo(receiver)
 
         environment?.let(receiver.environment::putAll)
-        receiver.inputFileProperty tryAssign inputFileProperty?.let(::file)
+        receiver.inputFileProperty tryAssign inputFileProperty?.let(project::file)
         receiver::debug trySet debug
         nodeJsArgs?.let(receiver.nodeJsArgs::addAll)
 
@@ -67,7 +66,7 @@ internal data class KotlinJsTest(
         }
     }
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<KotlinJsTest>())
+        applyTo(project.tasks.withType<KotlinJsTest>())
 }

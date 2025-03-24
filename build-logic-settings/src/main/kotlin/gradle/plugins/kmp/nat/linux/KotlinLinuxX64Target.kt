@@ -4,10 +4,10 @@ import gradle.accessors.kotlin
 import gradle.plugins.kmp.nat.KotlinNativeBinaryContainer
 import gradle.plugins.kmp.nat.KotlinNativeCompilation
 import gradle.plugins.kmp.nat.KotlinNativeCompilationTransformingSerializer
-import gradle.plugins.kmp.nat.tasks.KotlinNativeCompilerOptions
 import gradle.plugins.kmp.nat.KotlinNativeHostTestRun
 import gradle.plugins.kmp.nat.KotlinNativeHostTestRunTransformingSerializer
 import gradle.plugins.kmp.nat.KotlinNativeTargetWithHostTests
+import gradle.plugins.kmp.nat.tasks.KotlinNativeCompilerOptions
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -24,7 +24,7 @@ internal data class KotlinLinuxX64Target(
     override val testRuns: List<@Serializable(with = KotlinNativeHostTestRunTransformingSerializer::class) KotlinNativeHostTestRun>? = null,
 ) : KotlinNativeTargetWithHostTests(), KotlinLinuxTarget {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
         super.applyTo(kotlin.targets.withType<KotlinNativeTarget>(), kotlin::linuxX64)
 }

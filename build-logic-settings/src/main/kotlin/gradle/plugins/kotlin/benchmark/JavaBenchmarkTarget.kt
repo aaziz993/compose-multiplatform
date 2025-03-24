@@ -15,7 +15,7 @@ internal data class JavaBenchmarkTarget(
     val sourceSet: SourceSet? = null,
 ) : BenchmarkTarget<JavaBenchmarkTarget>() {
 
-    context(Project)
+    context(project: Project)
     @OptIn(KotlinxBenchmarkPluginInternalApi::class)
     override fun applyTo(receiver: JavaBenchmarkTarget) {
         super.applyTo(receiver)

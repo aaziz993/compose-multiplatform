@@ -15,7 +15,7 @@ internal class BenchmarkPlugin : Plugin<Project> {
         with(target) {
             projectProperties.plugins.benchmark
                 .takeIf { it.enabled && projectProperties.kotlin.targets.isNotEmpty() }?.let { benchmark ->
-                    plugins.apply(settings.libs.plugins.plugin("kotlinx.benchmark").id)
+                    plugins.apply(project.settings.libs.plugins.plugin("kotlinx.benchmark").id)
 
                     benchmark.applyTo()
                 }

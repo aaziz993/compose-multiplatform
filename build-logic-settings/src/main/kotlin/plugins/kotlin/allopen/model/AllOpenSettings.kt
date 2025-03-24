@@ -17,9 +17,9 @@ internal data class AllOpenSettings(
     override val enabled: Boolean = true,
 ) : AllOpenExtension, EnabledSettings {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        pluginManager.withPlugin(settings.libs.plugins.plugin("allopen").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("allopen").id) {
             super.applyTo()
         }
 }

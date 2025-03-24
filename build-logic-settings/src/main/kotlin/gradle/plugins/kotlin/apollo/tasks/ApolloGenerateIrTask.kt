@@ -1,13 +1,13 @@
 package gradle.plugins.kotlin.apollo.tasks
 
-import org.gradle.kotlin.dsl.withType
 import com.apollographql.apollo3.gradle.internal.ApolloGenerateIrTask
-import kotlinx.serialization.Serializable
 import gradle.api.tasks.DefaultTask
-import org.gradle.api.Project
-import gradle.collection.SerializableAnyMap
 import gradle.api.tasks.applyTo
 import gradle.api.tryAssign
+import gradle.collection.SerializableAnyMap
+import kotlinx.serialization.Serializable
+import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
 
 @Serializable
 internal data class ApolloGenerateIrTask(
@@ -42,7 +42,7 @@ internal data class ApolloGenerateIrTask(
     val warnOnDeprecatedUsages: Boolean? = null,
 ) : DefaultTask<ApolloGenerateIrTask>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: ApolloGenerateIrTask) {
         super.applyTo(receiver)
 
@@ -63,13 +63,13 @@ internal data class ApolloGenerateIrTask(
         receiver.generateOptionalOperationVariables tryAssign generateOptionalOperationVariables
         graphqlFiles?.toTypedArray()?.let(receiver.graphqlFiles::from)
         setGraphqlFiles?.let(receiver.graphqlFiles::setFrom)
-        receiver.outputFile tryAssign outputFile?.let(::file)
+        receiver.outputFile tryAssign outputFile?.let(project::file)
         upstreamIrFiles?.toTypedArray()?.let(receiver.upstreamIrFiles::from)
         setUpstreamIrFiles?.toTypedArray()?.let(receiver.upstreamIrFiles::setFrom)
         receiver.warnOnDeprecatedUsages tryAssign warnOnDeprecatedUsages
     }
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<ApolloGenerateIrTask>())
+        applyTo(project.tasks.withType<ApolloGenerateIrTask>())
 }

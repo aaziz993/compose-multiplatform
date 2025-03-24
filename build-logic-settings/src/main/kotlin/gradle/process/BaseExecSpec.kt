@@ -7,7 +7,7 @@ internal interface BaseExecSpec<T : BaseExecSpec> : ProcessForkOptions<T> {
 
     val ignoreExitValue: Boolean?
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 

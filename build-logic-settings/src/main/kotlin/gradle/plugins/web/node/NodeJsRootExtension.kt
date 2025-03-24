@@ -12,18 +12,14 @@ import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension
 
 @Serializable
-internal data class NodeJsRootExtension(
-    val downloadBaseUrl: String? = null,
-    val version: String? = null,
-) {
+internal class NodeJsRootExtension {
 
-    context(Project)
+    context(project: Project)
     fun applyTo(receiver: NodeJsRootExtension) =
-        pluginManager.withPlugin(settings.libs.plugins.plugin("gradle.node.plugin").id) {
-            receiver::downloadBaseUrl trySet downloadBaseUrl
-            receiver::version trySet version
+        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("gradle.node.plugin").id) {
+
         }
 
-    context(Project)
-    fun applyTA() = applyTo(node)
+    context(project: Project)
+    fun applyTA() = applyTo(project.node)
 }

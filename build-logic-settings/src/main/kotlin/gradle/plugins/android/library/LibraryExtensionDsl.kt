@@ -1,6 +1,12 @@
 package gradle.plugins.android.library
 
+import com.android.build.api.dsl.LibraryAndroidResources
+import com.android.build.api.dsl.LibraryBuildFeatures
+import com.android.build.api.dsl.LibraryBuildType
+import com.android.build.api.dsl.LibraryDefaultConfig
 import com.android.build.api.dsl.LibraryExtension
+import com.android.build.api.dsl.LibraryInstallation
+import com.android.build.api.dsl.LibraryProductFlavor
 import gradle.accessors.android
 import gradle.api.applyTo
 import gradle.plugins.android.CommonExtension
@@ -8,12 +14,6 @@ import gradle.plugins.android.Prefab
 import gradle.plugins.android.PrivacySandbox
 import gradle.plugins.android.TestedExtensionDsl
 import org.gradle.api.Project
-import com.android.build.api.dsl.LibraryAndroidResources
-import com.android.build.api.dsl.LibraryBuildFeatures
-import com.android.build.api.dsl.LibraryBuildType
-import com.android.build.api.dsl.LibraryDefaultConfig
-import com.android.build.api.dsl.LibraryInstallation
-import com.android.build.api.dsl.LibraryProductFlavor
 
 /**
  * Extension for the Android Library Gradle Plugin.
@@ -51,7 +51,7 @@ internal interface LibraryExtensionDsl :
 
     val privacySandbox: PrivacySandbox?
 
-    context(Project)
+    context(project: Project)
     @Suppress("UnstableApiUsage")
     override fun applyTo() {
         super<CommonExtension>.applyTo()

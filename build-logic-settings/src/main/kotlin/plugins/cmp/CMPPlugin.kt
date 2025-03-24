@@ -17,8 +17,8 @@ public class CMPPlugin : Plugin<Project> {
         with(target) {
             projectProperties.compose
                 .takeIf { it.enabled && projectProperties.kotlin.targets.isNotEmpty() }?.let { compose ->
-                    plugins.apply(settings.libs.plugins.plugin("compose.multiplatform").id)
-                    plugins.apply(settings.libs.plugins.plugin("compose.compiler").id)
+                    plugins.apply(project.settings.libs.plugins.plugin("compose.multiplatform").id)
+                    plugins.apply(project.settings.libs.plugins.plugin("compose.compiler").id)
 
                     compose.applyTo()
                 }

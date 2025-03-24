@@ -49,22 +49,22 @@ internal data class ResourcesExtension(
     val customResourceDirectories: Map<String, String>? = null
 ) {
 
-    context(Project)
+    context(project: Project)
     fun applyTo() =
-        pluginManager.withPlugin(settings.libs.plugins.plugin("compose.multiplatform").id) {
-            compose.resources::publicResClass trySet publicResClass
-            compose.resources::packageOfResClass trySet packageOfResClass
-            compose.resources::generateResClass trySet generateResClass
+        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("compose.multiplatform").id) {
+            project.compose.resources::publicResClass trySet publicResClass
+            project.compose.resources::packageOfResClass trySet packageOfResClass
+            project.compose.resources::generateResClass trySet generateResClass
             customResourceDirectories?.forEach { (sourceSetName, directory) ->
-                compose.resources.customDirectory(sourceSetName, provider { layout.projectDirectory.dir(directory) })
+                project.compose.resources.customDirectory(sourceSetName, project.provider { project.layout.projectDirectory.dir(directory) })
             }
 
             // Adjust composeResources to match flatten directory structure
-            when (projectProperties.layout) {
-                ProjectLayout.FLAT -> kotlin.sourceSets.forEach { sourceSet ->
-                    compose.resources.customDirectory(
+            when (project.projectProperties.layout) {
+                ProjectLayout.FLAT -> project.kotlin.sourceSets.forEach { sourceSet ->
+                    project.compose.resources.customDirectory(
                         sourceSet.name,
-                        provider { sourceSetsToComposeResourcesDirs[sourceSet]!! },
+                        project.provider { project.sourceSetsToComposeResourcesDirs[sourceSet]!! },
                     )
                 }
 

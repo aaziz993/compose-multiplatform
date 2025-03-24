@@ -75,13 +75,13 @@ internal data class JavaApplication(
      */
 ) {
 
-    context(Project)
+    context(project: Project)
     fun applyTo() =
-        pluginManager.withPlugin(ApplicationPlugin.APPLICATION_PLUGIN_NAME) {
-            applicationName?.let(javaApp::setApplicationName)
-            javaApp.mainModule tryAssign mainModule
-            javaApp.mainClass tryAssign mainClass
-            applicationDefaultJvmArgs?.let(javaApp::setApplicationDefaultJvmArgs)
-            executableDir?.let(javaApp::setExecutableDir)
+        project.pluginManager.withPlugin(ApplicationPlugin.APPLICATION_PLUGIN_NAME) {
+            applicationName?.let(project.javaApp::setApplicationName)
+            project.javaApp.mainModule tryAssign mainModule
+            project.javaApp.mainClass tryAssign mainClass
+            applicationDefaultJvmArgs?.let(project.javaApp::setApplicationDefaultJvmArgs)
+            executableDir?.let(project.javaApp::setExecutableDir)
         }
 }

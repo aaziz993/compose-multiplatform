@@ -10,13 +10,9 @@ import gradle.accessors.yarnEnv
 import gradle.api.tryAssign
 import gradle.collection.act
 import gradle.plugins.web.EnvSpec
-import gradle.plugins.web.npm.tasks.KotlinNpmInstallTask
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsSetupTask
-import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnLockCopyTask
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnLockMismatchReport
-import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnSetupTask
 
 /**
  * Spec for Yarn - package manager to install NPM dependencies
@@ -62,16 +58,16 @@ internal data class YarnRootEnvSpec(
     val setResolutions: List<YarnResolution>? = null,
 ) : EnvSpec() {
 
-    context(Project)
+    context(project: Project)
     fun applyTo() =
-        pluginManager.withPlugin(settings.libs.plugins.plugin("gradle.node.plugin").id) {
-            super.applyTo(yarnEnv)
+        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("gradle.node.plugin").id) {
+            super.applyTo(project.yarnEnv)
 
-            yarnEnv.ignoreScripts tryAssign ignoreScripts
-            yarnEnv.yarnLockMismatchReport tryAssign yarnLockMismatchReport
-            yarnEnv.reportNewYarnLock tryAssign reportNewYarnLock
-            yarnEnv.yarnLockAutoReplace tryAssign yarnLockAutoReplace
-            resolutions?.map(YarnResolution::toYarnResolution)?.let(yarnEnv.resolutions::addAll)
-            setResolutions?.act(yarn.resolutions::clear)?.map(YarnResolution::toYarnResolution)?.let(yarnEnv.resolutions::addAll)
+            project.yarnEnv.ignoreScripts tryAssign ignoreScripts
+            project.yarnEnv.yarnLockMismatchReport tryAssign yarnLockMismatchReport
+            project.yarnEnv.reportNewYarnLock tryAssign reportNewYarnLock
+            project.yarnEnv.yarnLockAutoReplace tryAssign yarnLockAutoReplace
+            resolutions?.map(YarnResolution::toYarnResolution)?.let(project.yarnEnv.resolutions::addAll)
+            setResolutions?.act(project.yarn.resolutions::clear)?.map(YarnResolution::toYarnResolution)?.let(project.yarnEnv.resolutions::addAll)
         }
 }

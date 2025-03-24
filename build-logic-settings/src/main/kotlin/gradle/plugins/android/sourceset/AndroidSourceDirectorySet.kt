@@ -22,7 +22,7 @@ internal data class AndroidSourceDirectorySet(
     val setDirectories: Set<String>? = null,
 ) : ProjectNamed<AndroidSourceDirectorySet> {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: AndroidSourceDirectorySet) {
         directories?.toTypedArray()?.let(receiver::srcDirs)
         setDirectories?.let(receiver::setSrcDirs)

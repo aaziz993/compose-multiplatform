@@ -34,7 +34,7 @@ internal data class KotlinNativeCompileTaskImpl(
     override val name: String? = null,
 ) : KotlinNativeCompileTask<org.jetbrains.kotlin.gradle.dsl.KotlinNativeCompileTask> {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinNativeCompileTask>())
+        applyTo(project.tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinNativeCompileTask>())
 }

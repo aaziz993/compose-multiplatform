@@ -1,7 +1,6 @@
 package gradle.plugins.kotlin
 
 import gradle.accessors.id
-import gradle.accessors.kotlin
 import gradle.accessors.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
@@ -36,9 +35,9 @@ internal data class KotlinSettings(
     val cocoapods: CocoapodsSettings = CocoapodsSettings(),
 ) : KotlinMultiplatformExtension {
 
-    context(Project)
+    context(project: Project)
     fun applyTo() =
-        pluginManager.withPlugin(settings.libs.plugins.plugin("kotlin.multiplatform").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("kotlin.multiplatform").id) {
             super.applyTo()
 
             targets.forEach { target -> target.applyTo() }

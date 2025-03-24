@@ -90,7 +90,7 @@ internal data class DokkaHtmlPluginParameters(
     override val pluginFqn: String
         get() = DokkaHtmlPluginParameters.DOKKA_HTML_PLUGIN_FQN
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: DokkaHtmlPluginParameters) {
         customAssets?.toTypedArray()?.let(receiver.customAssets::from)
         setCustomAssets?.let(receiver.customAssets::setFrom)
@@ -103,6 +103,6 @@ internal data class DokkaHtmlPluginParameters(
             projectProperties.developer?.name,
         ).joinToString(" - ").takeIf(String::isNotEmpty)?.let { message -> "© $message" })
         receiver.homepageLink tryAssign homepageLink
-        receiver.templatesDir tryAssign templatesDir?.let(layout.projectDirectory::dir)
+        receiver.templatesDir tryAssign templatesDir?.let(project.layout.projectDirectory::dir)
     }
 }

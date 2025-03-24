@@ -4,10 +4,10 @@ import gradle.api.tasks.applyTo
 import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.kmp.nat.CompilerPluginOptions
-import gradle.plugins.kotlin.tasks.BaseKotlinCompile
 import gradle.plugins.kotlin.KotlinJavaToolchain
-import gradle.plugins.kotlin.tasks.UsesKotlinJavaToolchain
+import gradle.plugins.kotlin.tasks.BaseKotlinCompile
 import gradle.plugins.kotlin.tasks.KotlinCompilationTask
+import gradle.plugins.kotlin.tasks.UsesKotlinJavaToolchain
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -42,7 +42,7 @@ internal interface KotlinJvmCompile<T : org.jetbrains.kotlin.gradle.tasks.Kotlin
      */
     val jvmTargetValidationMode: JvmTargetValidationMode?
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: T) {
         super<BaseKotlinCompile>.applyTo(receiver)
         super<KotlinCompilationTask>.applyTo(receiver)
@@ -92,7 +92,7 @@ internal data class KotlinJvmCompileImpl(
     override val kotlinJavaToolchain: KotlinJavaToolchain?
 ) : KotlinJvmCompile<org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile> {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile>())
+        applyTo(project.tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile>())
 }

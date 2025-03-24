@@ -19,7 +19,7 @@ internal data class NativeApplicationDistributions(
     val macOS: NativeApplicationMacOSPlatformSettings? = null,
 ) : AbstractDistributions<NativeApplicationDistributions>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: NativeApplicationDistributions) {
         super.applyTo(receiver)
         macOS?.applyTo(receiver.macOS)

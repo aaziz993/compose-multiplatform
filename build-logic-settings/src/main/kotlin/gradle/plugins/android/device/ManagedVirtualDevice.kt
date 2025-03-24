@@ -67,7 +67,7 @@ internal data class ManagedVirtualDevice(
     val require64Bit: Boolean? = null,
 ) : Device<ManagedVirtualDevice> {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: ManagedVirtualDevice) {
         receiver::device trySet device
         receiver::apiLevel trySet apiLevel

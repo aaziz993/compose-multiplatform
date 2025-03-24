@@ -258,7 +258,7 @@ internal data class Lint(
     val targetSdkPreview: String? = null,
 ) {
 
-    context(Project)
+    context(project: Project)
     fun applyTo(receiver: Lint) {
         disable?.let(receiver.disable::addAll)
         setDisable?.act(receiver.disable::clear)?.let(receiver.disable::addAll)
@@ -280,16 +280,16 @@ internal data class Lint(
         receiver::explainIssues trySet explainIssues
         receiver::showAll trySet showAll
         receiver::checkReleaseBuilds trySet checkReleaseBuilds
-        receiver::lintConfig trySet lintConfig?.let(::file)
+        receiver::lintConfig trySet lintConfig?.let(project::file)
         receiver::textReport trySet textReport
         receiver::htmlReport trySet htmlReport
         receiver::sarifReport trySet sarifReport
         receiver::xmlReport trySet xmlReport
-        receiver::textOutput trySet textOutput?.let(::file)
-        receiver::htmlOutput trySet htmlOutput?.let(::file)
-        receiver::xmlOutput trySet xmlOutput?.let(::file)
-        receiver::sarifOutput trySet sarifOutput?.let(::file)
-        receiver::baseline trySet baseline?.let(::file)
+        receiver::textOutput trySet textOutput?.let(project::file)
+        receiver::htmlOutput trySet htmlOutput?.let(project::file)
+        receiver::xmlOutput trySet xmlOutput?.let(project::file)
+        receiver::sarifOutput trySet sarifOutput?.let(project::file)
+        receiver::baseline trySet baseline?.let(project::file)
         informational?.let(receiver.informational::addAll)
         setInformational?.act(receiver.informational::clear)?.let(receiver.informational::addAll)
         warning?.let(receiver.warning::addAll)

@@ -9,7 +9,7 @@ internal data class NativeApplication(
     val distributions: NativeApplicationDistributions? = null,
 ) {
 
-    context(Project)
+    context(project: Project)
     fun applyTo(receiver: NativeApplication) {
         distributions?.applyTo(receiver.distributions)
     }

@@ -11,8 +11,8 @@ import gradle.plugins.kmp.nat.CompilerPluginOptions
 import gradle.plugins.kotlin.KotlinJavaToolchain
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import org.jetbrains.kotlin.gradle.dsl.jvm.JvmTargetValidationMode
 import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.dsl.jvm.JvmTargetValidationMode
 
 internal abstract class KotlinCompile<T : org.jetbrains.kotlin.gradle.tasks.KotlinCompile>
     : AbstractKotlinCompileTool<T>(), K2MultiplatformCompilationTask<T, org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompilerOptions>,
@@ -27,7 +27,7 @@ internal abstract class KotlinCompile<T : org.jetbrains.kotlin.gradle.tasks.Kotl
     abstract val useKotlinAbiSnapshot: Boolean?
     abstract val classpathSnapshotProperties: ClasspathSnapshotProperties?
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: T) {
         super<AbstractKotlinCompileTool>.applyTo(receiver)
         super<K2MultiplatformCompilationTask>.applyTo(receiver)
@@ -55,14 +55,14 @@ internal abstract class KotlinCompile<T : org.jetbrains.kotlin.gradle.tasks.Kotl
         val classpathSnapshotDir: String? = null,
     ) {
 
-        context(Project)
+        context(project: Project)
         fun applyTo(receiver: org.jetbrains.kotlin.gradle.tasks.KotlinCompile.ClasspathSnapshotProperties) {
             receiver.useClasspathSnapshot tryAssign useClasspathSnapshot
             classpathSnapshot?.toTypedArray()?.let(receiver.classpathSnapshot::from)
             setClasspathSnapshot?.let(receiver.classpathSnapshot::setFrom)
             classpath?.toTypedArray()?.let(receiver.classpath::from)
             setClasspath?.let(receiver.classpath::setFrom)
-            receiver.classpathSnapshotDir tryAssign classpathSnapshotDir?.let(layout.projectDirectory::dir)
+            receiver.classpathSnapshotDir tryAssign classpathSnapshotDir?.let(project.layout.projectDirectory::dir)
         }
     }
 }
@@ -110,7 +110,7 @@ internal data class KotlinCompileImpl(
     override val classpathSnapshotProperties: ClasspathSnapshotProperties? = null,
 ) : KotlinCompile<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>())
+        applyTo(project.tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>())
 }

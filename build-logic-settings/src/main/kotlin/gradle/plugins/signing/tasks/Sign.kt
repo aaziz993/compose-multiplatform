@@ -3,7 +3,7 @@ package gradle.plugins.signing.tasks
 import gradle.api.tasks.DefaultTask
 import gradle.api.tasks.applyTo
 import gradle.collection.SerializableAnyMap
-import gradle.plugins.signing.SignSerializer
+import gradle.plugins.signing.SignContentPolymorphicSerializer
 import gradle.plugins.signing.Signer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -28,10 +28,10 @@ internal data class Sign(
     override val signatory: Signatory? = null,
     override val signatureType: SignatureType? = null,
     override val required: Boolean? = null,
-   override val sign: Set<@Serializable(with = SignSerializer::class) Any>? = null,
+    override val sign: Set<@Serializable(with = SignContentPolymorphicSerializer::class) Any>? = null,
 ) : DefaultTask<Sign>(), SignatureSpec<Sign>, Signer {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: Sign) {
         super<DefaultTask>.applyTo(receiver)
         super<SignatureSpec>.applyTo(receiver)
@@ -44,7 +44,7 @@ internal data class Sign(
         )
     }
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<Sign>())
+        applyTo(project.tasks.withType<Sign>())
 }

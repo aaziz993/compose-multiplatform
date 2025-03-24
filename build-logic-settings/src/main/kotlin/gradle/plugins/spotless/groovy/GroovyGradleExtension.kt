@@ -3,7 +3,6 @@ package gradle.plugins.spotless.groovy
 import com.diffplug.gradle.spotless.GroovyGradleExtension
 import com.diffplug.spotless.LineEnding
 import gradle.accessors.spotless
-import gradle.plugins.spotless.BiomeGeneric
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -42,7 +41,7 @@ internal data class GroovyGradleExtension(
     override val greclipse: GrEclipseConfig? = null,
 ) : BaseGroovyExtension<GroovyGradleExtension>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() = spotless.groovyGradle {
         applyTo(this)
     }

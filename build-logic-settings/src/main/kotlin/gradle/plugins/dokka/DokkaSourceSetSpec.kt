@@ -4,7 +4,6 @@ import gradle.accessors.libs
 import gradle.accessors.settings
 import gradle.accessors.version
 import gradle.accessors.versions
-import gradle.api.BaseNamed
 import gradle.api.ProjectNamed
 import gradle.api.applyTo
 import gradle.api.tryAssign
@@ -265,7 +264,7 @@ internal data class DokkaSourceSetSpec(
     val jdkVersion: Int? = null,
 ) : ProjectNamed<org.jetbrains.dokka.gradle.engine.parameters.DokkaSourceSetSpec> {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: org.jetbrains.dokka.gradle.engine.parameters.DokkaSourceSetSpec) {
         receiver.sourceSetScope tryAssign sourceSetScope
         receiver.suppress tryAssign suppress
@@ -306,7 +305,7 @@ internal data class DokkaSourceSetSpec(
         receiver.enableAndroidDocumentationLink tryAssign enableAndroidDocumentationLink
         receiver.languageVersion tryAssign languageVersion
         receiver.apiVersion tryAssign apiVersion
-        receiver.jdkVersion tryAssign (jdkVersion ?: settings.libs.versions.version("java.languageVersion")?.toInt())
+        receiver.jdkVersion tryAssign (jdkVersion ?: project.settings.libs.versions.version("java.languageVersion")?.toInt())
     }
 }
 

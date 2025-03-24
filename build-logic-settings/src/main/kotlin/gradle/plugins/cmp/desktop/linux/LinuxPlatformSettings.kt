@@ -24,7 +24,7 @@ internal data class LinuxPlatformSettings(
     val rpmPackageVersion: String? = null,
 ) : AbstractPlatformSettings<LinuxPlatformSettings>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: LinuxPlatformSettings) {
         super.applyTo(receiver)
 

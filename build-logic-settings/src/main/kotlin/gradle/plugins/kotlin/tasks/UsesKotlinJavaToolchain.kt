@@ -26,7 +26,7 @@ internal interface UsesKotlinJavaToolchain<T : org.jetbrains.kotlin.gradle.tasks
 
     val kotlinJavaToolchain: KotlinJavaToolchain?
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
@@ -53,7 +53,7 @@ internal data class UsesKotlinJavaToolchainImpl(
     override val name: String? = null,
 ) : UsesKotlinJavaToolchain<org.jetbrains.kotlin.gradle.tasks.UsesKotlinJavaToolchain>{
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        applyTo(tasks.withType<org.jetbrains.kotlin.gradle.tasks.UsesKotlinJavaToolchain>())
+        applyTo(project.tasks.withType<org.jetbrains.kotlin.gradle.tasks.UsesKotlinJavaToolchain>())
 }

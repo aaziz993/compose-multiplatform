@@ -9,7 +9,7 @@ internal abstract class JvmBenchmarkTarget<T : kotlinx.benchmark.gradle.JvmBench
 
     abstract val jmhVersion: String?
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 

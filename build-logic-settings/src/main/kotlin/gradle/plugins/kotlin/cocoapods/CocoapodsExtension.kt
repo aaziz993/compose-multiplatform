@@ -14,7 +14,6 @@ import gradle.accessors.version
 import gradle.accessors.versions
 import gradle.api.trySet
 import gradle.collection.act
-import gradle.collection.resolve
 import gradle.plugins.kmp.nat.FrameworkSettings
 import java.net.URI
 import kotlinx.serialization.Serializable
@@ -116,44 +115,45 @@ internal interface CocoapodsExtension {
 
     val podDependencies: Set<@Serializable(with = CocoapodsDependencyTransformingSerializer::class) CocoapodsDependency>?
 
-    context(Project)
+    context(project: Project)
     fun applyTo() =
-        pluginManager.withPlugin(settings.libs.plugins.plugin("cocoapods").id) {
-            kotlin.cocoapods::version trySet (version ?: settings.libs.versions.version("kotlin.cocoapods.version"))
-            kotlin.cocoapods::authors trySet authors
-            kotlin.cocoapods::podfile trySet podfile?.let(::file)
-            needPodspec?.takeIf { it }?.run { kotlin.cocoapods.noPodspec() }
-            kotlin.cocoapods.name = this@CocoapodsExtension.name ?: moduleName
-            kotlin.cocoapods::license trySet license
-            kotlin.cocoapods::summary trySet summary
-            kotlin.cocoapods::homepage trySet homepage
-            kotlin.cocoapods::source trySet source
-            extraSpecAttributes?.let(kotlin.cocoapods.extraSpecAttributes::putAll)
+        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("cocoapods").id) {
+            project.kotlin.cocoapods::version trySet (version
+                ?: project.settings.libs.versions.version("kotlin.cocoapods.version"))
+            project.kotlin.cocoapods::authors trySet authors
+            project.kotlin.cocoapods::podfile trySet podfile?.let(project::file)
+            needPodspec?.takeIf { it }?.run { project.kotlin.cocoapods.noPodspec() }
+            project.kotlin.cocoapods.name = this@CocoapodsExtension.name ?: project.moduleName
+            project.kotlin.cocoapods::license trySet license
+            project.kotlin.cocoapods::summary trySet summary
+            project.kotlin.cocoapods::homepage trySet homepage
+            project.kotlin.cocoapods::source trySet source
+            extraSpecAttributes?.let(project.kotlin.cocoapods.extraSpecAttributes::putAll)
             setExtraSpecAttributes
-                ?.act(kotlin.cocoapods.extraSpecAttributes::clear)
-                ?.let(kotlin.cocoapods.extraSpecAttributes::putAll)
+                ?.act(project.kotlin.cocoapods.extraSpecAttributes::clear)
+                ?.let(project.kotlin.cocoapods.extraSpecAttributes::putAll)
 
             framework?.let { framework ->
-                kotlin.cocoapods.framework {
+                project.kotlin.cocoapods.framework {
                     framework.applyTo(this)
                 }
             }
 
-            xcodeConfigurationToNativeBuildType?.let(kotlin.cocoapods.xcodeConfigurationToNativeBuildType::putAll)
+            xcodeConfigurationToNativeBuildType?.let(project.kotlin.cocoapods.xcodeConfigurationToNativeBuildType::putAll)
             setXcodeConfigurationToNativeBuildType
-                ?.act(kotlin.cocoapods.xcodeConfigurationToNativeBuildType::clear)
-                ?.let(kotlin.cocoapods.xcodeConfigurationToNativeBuildType::putAll)
-            kotlin.cocoapods::publishDir trySet publishDir?.let(::file)
+                ?.act(project.kotlin.cocoapods.xcodeConfigurationToNativeBuildType::clear)
+                ?.let(project.kotlin.cocoapods.xcodeConfigurationToNativeBuildType::putAll)
+            project.kotlin.cocoapods::publishDir trySet publishDir?.let(project::file)
 
             specRepos?.let { specRepos ->
-                kotlin.cocoapods.specRepos(specRepos::applyTo)
+                project.kotlin.cocoapods.specRepos(specRepos::applyTo)
             }
 
             pods?.forEach { pod ->
-                kotlin.cocoapods.pod(
+                project.kotlin.cocoapods.pod(
                     pod.name,
                     pod.version,
-                    pod.path?.let(::file),
+                    pod.path?.let(project::file),
                     pod.moduleName,
                     pod.headers,
                     pod.linkOnly,
@@ -163,15 +163,15 @@ internal interface CocoapodsExtension {
 
             podDependencies?.forEach { podDependency ->
                 podDependency.resolve()
-                kotlin.cocoapods.pod(podDependency.name!!) {
+                project.kotlin.cocoapods.pod(podDependency.name!!) {
                     podDependency.applyTo(this)
                 }
             }
 
-            ios?.applyTo(kotlin.cocoapods.ios, settings.libs.versions.version("kotlin.cocoapods.iosDeploymentTarget"))
-            osx?.applyTo(kotlin.cocoapods.osx, settings.libs.versions.version("kotlin.cocoapods.osxDeploymentTarget"))
-            tvos?.applyTo(kotlin.cocoapods.tvos, settings.libs.versions.version("kotlin.cocoapods.tvosDeploymentTarget"))
-            watchos?.applyTo(kotlin.cocoapods.watchos, settings.libs.versions.version("kotlin.cocoapods.watchosDeploymentTarget"))
+            ios?.applyTo(project.kotlin.cocoapods.ios, project.settings.libs.versions.version("kotlin.cocoapods.iosDeploymentTarget"))
+            osx?.applyTo(project.kotlin.cocoapods.osx, project.settings.libs.versions.version("kotlin.cocoapods.osxDeploymentTarget"))
+            tvos?.applyTo(project.kotlin.cocoapods.tvos, project.settings.libs.versions.version("kotlin.cocoapods.tvosDeploymentTarget"))
+            watchos?.applyTo(project.kotlin.cocoapods.watchos, project.settings.libs.versions.version("kotlin.cocoapods.watchosDeploymentTarget"))
         }
 
     @Serializable
@@ -206,10 +206,10 @@ internal interface CocoapodsExtension {
         val notation: String? = null,
     ) {
 
-        context(Project)
+        context(project: Project)
         fun resolve() {
             notation?.let { notation ->
-                if (notation.startsWith("$")) settings.allLibs.resolveLibrary(notation).removePrefix("cocoapods:")
+                if (notation.startsWith("$")) project.settings.allLibs.resolveLibrary(notation).removePrefix("cocoapods:")
                 else notation
             }?.let { notation ->
                 name = notation.substringBefore(":")
@@ -217,7 +217,7 @@ internal interface CocoapodsExtension {
             }
         }
 
-        context(Project)
+        context(project: Project)
         fun applyTo(receiver: CocoapodsExtension.CocoapodsDependency) {
             receiver::moduleName trySet moduleName
             receiver::headers trySet headers
@@ -244,7 +244,7 @@ internal interface CocoapodsExtension {
             }
         }
 
-        @Serializable(with = PodLocationSerializer::class)
+        @Serializable(with = PodLocationContentPolymorphicSerializer::class)
         sealed class PodLocation {
 
             @Serializable
@@ -252,9 +252,9 @@ internal interface CocoapodsExtension {
                 val dir: String
             ) : PodLocation() {
 
-                context(Project)
+                context(project: Project)
                 override fun toPodLocation(): CocoapodsExtension.CocoapodsDependency.PodLocation =
-                    CocoapodsExtension.CocoapodsDependency.PodLocation.Path(file(dir))
+                    CocoapodsExtension.CocoapodsDependency.PodLocation.Path(project.file(dir))
             }
 
             @Serializable
@@ -265,7 +265,7 @@ internal interface CocoapodsExtension {
                 val commit: String? = null
             ) : PodLocation() {
 
-                context(Project)
+                context(project: Project)
                 override fun toPodLocation(): CocoapodsExtension.CocoapodsDependency.PodLocation =
                     CocoapodsExtension.CocoapodsDependency.PodLocation.Git(
                         URI(url),
@@ -274,7 +274,7 @@ internal interface CocoapodsExtension {
                     )
             }
 
-            context(Project)
+            context(project: Project)
             abstract fun toPodLocation(): CocoapodsExtension.CocoapodsDependency.PodLocation
         }
 

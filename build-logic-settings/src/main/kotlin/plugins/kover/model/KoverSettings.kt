@@ -5,8 +5,8 @@ import gradle.accessors.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
-import gradle.plugins.kover.currentproject.KoverCurrentProjectVariantsConfig
 import gradle.plugins.kover.KoverExtension
+import gradle.plugins.kover.currentproject.KoverCurrentProjectVariantsConfig
 import gradle.plugins.kover.reports.KoverReportsConfig
 import gradle.project.EnabledSettings
 import kotlinx.serialization.Serializable
@@ -22,9 +22,9 @@ internal data class KoverSettings(
     val dependenciesFromSubprojects: Boolean = true,
 ) : KoverExtension, EnabledSettings {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() =
-        pluginManager.withPlugin(settings.libs.plugins.plugin("kover").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("kover").id) {
             super.applyTo()
         }
 }

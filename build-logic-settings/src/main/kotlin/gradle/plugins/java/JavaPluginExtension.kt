@@ -6,9 +6,9 @@ import gradle.accessors.settings
 import gradle.accessors.version
 import gradle.accessors.versions
 import gradle.api.applyTo
+import gradle.api.tasks.SourceSet
 import gradle.api.tryAssign
 import gradle.plugins.java.manifest.Manifest
-import gradle.api.tasks.SourceSet
 import kotlinx.serialization.Serializable
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
@@ -137,36 +137,36 @@ internal data class JavaPluginExtension(
     val manifest: Manifest? = null,
 ) {
 
-    context(Project)
+    context(project: Project)
     @Suppress("UnstableApiUsage")
     fun applyTo() =
-        pluginManager.withPlugin("java") {
-            (sourceCompatibility ?: settings.libs.versions
+        project.pluginManager.withPlugin("java") {
+            (sourceCompatibility ?: project.settings.libs.versions
                 .version("java.sourceCompatibility")
                 ?.let(JavaVersion::toVersion))
-                ?.let(java::setSourceCompatibility)
-            (targetCompatibility ?: settings.libs.versions
+                ?.let(project.java::setSourceCompatibility)
+            (targetCompatibility ?: project.settings.libs.versions
                 .version("java.targetCompatibility")
                 ?.let(JavaVersion::toVersion))
-                ?.let(java::setTargetCompatibility)
+                ?.let(project.java::setTargetCompatibility)
 
-            disableAutoTargetJvm?.takeIf { it }?.run { java.disableAutoTargetJvm() }
-            withJavadocJar?.takeIf { it }?.run { java.withJavadocJar() }
-            withSourcesJar?.takeIf { it }?.run { java.withSourcesJar() }
-            modularity?.applyTo(java.modularity)
-            toolchain?.applyTo(java.toolchain)
+            disableAutoTargetJvm?.takeIf { it }?.run { project.java.disableAutoTargetJvm() }
+            withJavadocJar?.takeIf { it }?.run { project.java.withJavadocJar() }
+            withSourcesJar?.takeIf { it }?.run { project.java.withSourcesJar() }
+            modularity?.applyTo(project.java.modularity)
+            toolchain?.applyTo(project.java.toolchain)
 
             consistentResolution?.let { consistentResolution ->
-                java.consistentResolution(consistentResolution::applyTo)
+                project.java.consistentResolution(consistentResolution::applyTo)
             }
 
             sourceSets?.forEach { sourceSet ->
-                sourceSet.applyTo(java.sourceSets)
+                sourceSet.applyTo(project.java.sourceSets)
             }
 
-            java.docsDir tryAssign docsDir?.let(layout.projectDirectory::dir)
-            java.testResultsDir tryAssign testResultsDir?.let(layout.projectDirectory::dir)
-            java.testReportDir tryAssign testReportDir?.let(layout.projectDirectory::dir)
-            manifest?.applyTo(java.manifest())
+            project.java.docsDir tryAssign docsDir?.let(project.layout.projectDirectory::dir)
+            project.java.testResultsDir tryAssign testResultsDir?.let(project.layout.projectDirectory::dir)
+            project.java.testReportDir tryAssign testReportDir?.let(project.layout.projectDirectory::dir)
+            manifest?.applyTo(project.java.manifest())
         }
 }

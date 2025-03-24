@@ -24,11 +24,11 @@ internal interface TestVariantDimension<T : TestVariantDimension> :
     /** The associated signing config or null if none are set on the variant dimension. */
     val signingConfig: String?
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
         receiver::multiDexEnabled trySet multiDexEnabled
-        receiver::signingConfig trySet signingConfig?.let(android.signingConfigs::getByName)
+        receiver::signingConfig trySet signingConfig?.let(project.android.signingConfigs::getByName)
     }
 }

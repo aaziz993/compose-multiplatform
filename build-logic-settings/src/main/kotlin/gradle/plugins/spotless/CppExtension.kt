@@ -37,7 +37,7 @@ internal data class CppExtension(
     override val toggleOffOnDisable: Boolean? = null,
 ) : FormatExtension<CppExtension>() {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo() = spotless.cpp {
         super.applyTo(this)
     }

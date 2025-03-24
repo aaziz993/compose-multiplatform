@@ -15,7 +15,7 @@ internal data class AppleSourceSet(
     override val name: String?
         get() = sourceSetName
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: org.jetbrains.gradle.apple.AppleSourceSet) {
         apple?.applyTo(receiver.apple)
     }

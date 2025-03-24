@@ -9,7 +9,6 @@ import gradle.plugins.kotlin.tasks.KotlinCompilationTaskImpl
 import gradle.project.Dependency
 import gradle.project.DependencyTransformingSerializer
 import kotlinx.serialization.Serializable
-import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.invoke
 
@@ -25,7 +24,7 @@ internal data class KotlinJvmAndroidCompilation(
     val compileJavaTaskProvider: JavaCompile? = null,
 ) : KotlinCompilation<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJvmAndroidCompilation> {
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJvmAndroidCompilation) {
         super.applyTo(receiver)
 

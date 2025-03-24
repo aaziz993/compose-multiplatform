@@ -10,9 +10,7 @@ import gradle.accessors.settings
 import gradle.accessors.spotless
 import gradle.accessors.version
 import gradle.accessors.versions
-import gradle.api.ProjectNamed
 import gradle.collection.SerializableAnyMap
-import gradle.collection.act
 import gradle.serialization.serializer.JsonPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlin.reflect.full.memberProperties
@@ -70,7 +68,7 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
      */
     abstract val toggleOffOnDisable: Boolean?
 
-    context(Project)
+    context(project: Project)
     open fun applyTo(receiver: T) {
         lineEnding?.let(receiver::setLineEndings)
         ratchetFrom?.let(receiver::setRatchetFrom)
@@ -117,7 +115,7 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
             biome.applyTo(
                 receiver.biome(
                     biome.version
-                        ?: settings.libs.versions.version("biome"),
+                        ?: project.settings.libs.versions.version("biome"),
                 ) as com.diffplug.gradle.spotless.FormatExtension.BiomeGeneric,
             )
         }
@@ -125,7 +123,7 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
         clangFormat?.let { clangFormat ->
             clangFormat.applyTo(
                 receiver.clangFormat(
-                    clangFormat.version ?: settings.libs.versions.version("clang")
+                    clangFormat.version ?: project.settings.libs.versions.version("clang")
                     ?: ClangFormatStep.defaultVersion(),
                 ),
             )
@@ -135,7 +133,7 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
             eclipseWtp.applyTo(
                 receiver.eclipseWtp(
                     eclipseWtp.type,
-                    eclipseWtp.version ?: settings.libs.versions.version("eclipseWtp")
+                    eclipseWtp.version ?: project.settings.libs.versions.version("eclipseWtp")
                     ?: EclipseWtpFormatterStep.defaultVersion(),
                 ),
             )
@@ -151,7 +149,7 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
         toggleOffOnDisable?.takeIf { it }?.run { receiver.toggleOffOnDisable() }
     }
 
-    context(Project)
+    context(project: Project)
     abstract fun applyTo()
 
     private object IntentContentPolymorphicSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
@@ -285,7 +283,7 @@ internal data class FormatExtensionImpl(
     override val targetExcludeIfContentContains: String? = null,
     override val targetExcludeIfContentContainsRegex: String? = null,
     override val replace: List<Replace>? = null,
-    override val replaceRegex: List<Replace>? = null,
+    override val replaceRegex: List<ReplaceRegex>? = null,
     override val trimTrailingWhitespace: Boolean? = null,
     override val endWithNewline: Boolean? = null,
     override val indentWithSpaces: Int? = null,
@@ -299,22 +297,23 @@ internal data class FormatExtensionImpl(
     override val toggleOffOnRegex: String? = null,
     override val toggleOffOn: ToggleOffOn? = null,
     override val toggleOffOnDisable: Boolean? = null,
+    val name: String? = null,
 ) : FormatExtension<com.diffplug.gradle.spotless.FormatExtension>() {
 
-    context(Project)
+    context(project: Project)
     @Suppress("UNCHECKED_CAST")
     override fun applyTo() =
-        if (name.isEmpty()) {
-            spotless::class.memberProperties
+        if (name.isNullOrBlank()) {
+            project.spotless::class.memberProperties
                 .single { property -> property.name == "formats" }
                 .let { property ->
                     property.isAccessible = true
-                    property.call(spotless) as Map<String, com.diffplug.gradle.spotless.FormatExtension>
+                    property.call(project.spotless) as Map<String, com.diffplug.gradle.spotless.FormatExtension>
                 }.values.forEach { format ->
                     applyTo(format)
                 }
         }
-        else spotless.format(name) {
+        else project.spotless.format(name) {
             applyTo(this)
         }
 }

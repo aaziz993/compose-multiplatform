@@ -19,13 +19,13 @@ internal data class GradlePluginPortal(
     override val name: String
         get() = "gradlePluginPortal"
 
-    context(Settings)
+    context(settings: Settings)
     override fun applyTo(receiver: RepositoryHandler) =
         applyTo(receiver.withType<org.gradle.api.artifacts.repositories.ArtifactRepository>()) { _, action ->
             receiver.gradlePluginPortal(action)
         }
 
-    context(Project)
+    context(project: Project)
     override fun applyTo(receiver: RepositoryHandler) =
         applyTo(receiver.withType<org.gradle.api.artifacts.repositories.ArtifactRepository>()) { _, action ->
             receiver.gradlePluginPortal(action)

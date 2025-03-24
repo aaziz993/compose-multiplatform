@@ -15,7 +15,7 @@ internal class AtomicFUPlugin : Plugin<Project> {
         with(target) {
             projectProperties.plugins.atomicFU
                 .takeIf { it.enabled && projectProperties.kotlin.targets.isNotEmpty() }?.let { atomicFU ->
-                    plugins.apply(settings.libs.plugins.plugin("atomicfu").id)
+                    plugins.apply(project.settings.libs.plugins.plugin("atomicfu").id)
 
                     atomicFU.applyTo()
                 }
