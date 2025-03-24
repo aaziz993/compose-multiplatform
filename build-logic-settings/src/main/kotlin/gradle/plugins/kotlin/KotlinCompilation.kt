@@ -5,8 +5,11 @@ import gradle.api.ProjectNamed
 import gradle.api.getByNameOrAll
 import gradle.api.trySet
 import gradle.plugins.kmp.KotlinSourceSet
+import gradle.project.Dependency
+import gradle.project.DependencyTransformingSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
 /**
@@ -128,3 +131,12 @@ internal abstract class KotlinCompilationTransformingSerializer<T : KotlinCompil
     tSerializer,
     "compilationName",
 )
+
+@Serializable
+internal data class KotlinCompilationImpl(
+    override val compilationName: String, override val defaultSourceSet: KotlinSourceSet? = null,
+    override val compileDependencyFiles: List<String>? = null,
+    override val output: KotlinCompilationOutput? = null,
+    override val associatedCompilations: Set<String>? = null,
+    override val dependencies: List<@Serializable(with = DependencyTransformingSerializer::class) Dependency>? = null,
+) : KotlinCompilation<org.jetbrains.kotlin.gradle.plugin.KotlinCompilation<*>>

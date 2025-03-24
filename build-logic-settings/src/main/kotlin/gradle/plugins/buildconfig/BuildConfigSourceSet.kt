@@ -6,10 +6,8 @@ import gradle.api.tryAssign
 import gradle.plugins.buildconfig.generator.BuildConfigGenerator
 import gradle.plugins.buildconfig.generator.BuildConfigJavaGenerator
 import gradle.plugins.buildconfig.generator.BuildConfigJavaGeneratorContentPolymorphicSerializer
-import gradle.plugins.buildconfig.generator.BuildConfigJavaGeneratorSerializer
 import gradle.plugins.buildconfig.generator.BuildConfigKotlinGenerator
 import gradle.plugins.buildconfig.generator.BuildConfigKotlinGeneratorContentPolymorphicSerializer
-import gradle.plugins.buildconfig.generator.BuildConfigKotlinGeneratorSerializer
 import gradle.plugins.buildconfig.tasks.BuildConfigTask
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

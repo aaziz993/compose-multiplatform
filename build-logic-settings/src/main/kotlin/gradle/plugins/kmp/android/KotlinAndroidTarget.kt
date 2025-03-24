@@ -2,12 +2,15 @@ package gradle.plugins.kmp.android
 
 import gradle.accessors.kotlin
 import gradle.accessors.projectProperties
+import gradle.api.applyTo
 
 import gradle.api.trySet
 import gradle.plugins.kmp.KotlinJvmAndAndroidTarget
 import gradle.plugins.kmp.KotlinJvmAndroidCompilation
 import gradle.plugins.kmp.KotlinJvmAndroidCompilationTransformingSerializer
+import gradle.plugins.kmp.KotlinTarget
 import gradle.plugins.kmp.jvm.KotlinJvmCompilerOptions
+import gradle.plugins.kotlin.HasConfigurableKotlinCompilerOptions
 import gradle.project.ProjectType
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -20,7 +23,7 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
 @SerialName("android")
 internal data class KotlinAndroidTarget(
     override val targetName: String = "android",
-    override val compilations: List<@Serializable(with = KotlinJvmAndroidCompilationTransformingSerializer::class) KotlinJvmAndroidCompilation>? = null,
+    override val compilations: Set<@Serializable(with = KotlinJvmAndroidCompilationTransformingSerializer::class) KotlinJvmAndroidCompilation>? = null,
     override val compilerOptions: KotlinJvmCompilerOptions? = null,
     /** Names of the Android library variants that should be published from the target's project within the default publications which are
      * set up if the `maven-publish` Gradle plugin is applied.
@@ -39,27 +42,26 @@ internal data class KotlinAndroidTarget(
     /** If true, a publication will be created per merged product flavor, with the build types used as classifiers for the artifacts
      * published within each publication. If set to false, each Android variant will have a separate publication. */
     val publishLibraryVariantsGroupedByFlavor: Boolean? = null,
-) : KotlinJvmAndAndroidTarget() {
+) : KotlinTarget<KotlinAndroidTarget>,
+    HasConfigurableKotlinCompilerOptions<KotlinAndroidTarget, org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompilerOptions> {
 
-        context(Project)
-    override fun applyTo(receiver: T) {
-        super.applyTo(named)
+    context(Project)
+    override fun applyTo(receiver: KotlinAndroidTarget) {
+        super<KotlinTarget>.applyTo(receiver)
+        super<HasConfigurableKotlinCompilerOptions>.applyTo(receiver)
 
-        named as KotlinAndroidTarget
-
-        if (projectProperties.type == ProjectType.LIB) {
-            publishLibraryVariants?.let { publishLibraryVariants ->
-                named.publishLibraryVariants = publishLibraryVariants
-            }
-
-            publishAllLibraryVariants?.takeIf { it }?.run { named.publishAllLibraryVariants() }
-            named::publishLibraryVariantsGroupedByFlavor trySet publishLibraryVariantsGroupedByFlavor
+        // Apply only for library
+        publishLibraryVariants?.let { publishLibraryVariants ->
+            receiver.publishLibraryVariants = publishLibraryVariants
         }
+
+        publishAllLibraryVariants?.takeIf { it }?.run { receiver.publishAllLibraryVariants() }
+        receiver::publishLibraryVariantsGroupedByFlavor trySet publishLibraryVariantsGroupedByFlavor
     }
 
     context(Project)
     override fun applyTo() =
-        super<KotlinJvmAndAndroidTarget>.applyTo(kotlin.targets.withType<KotlinAndroidTarget>()) { name, action ->
+        applyTo(kotlin.targets.withType<KotlinAndroidTarget>()) { name, action ->
             kotlin::androidTarget
         }
 }

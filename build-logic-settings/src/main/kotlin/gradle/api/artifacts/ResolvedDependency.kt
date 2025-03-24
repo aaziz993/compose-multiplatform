@@ -16,15 +16,15 @@ internal data class ResolvedDependency(
     val allModuleArtifacts: Set<ResolvedArtifact>? = null,
 ) {
 
-    fun equals(other: org.gradle.api.artifacts.ResolvedDependency) =
+    fun equals(other: org.gradle.api.artifacts.ResolvedDependency): Boolean =
         (name ?: other.name) == other.name
-                && (moduleGroup ?: other.moduleGroup) == other.moduleGroup
-                && (moduleName ?: other.moduleName) == other.moduleName
-                && (moduleVersion ?: other.moduleVersion) == other.moduleVersion
-                && (configuration ?: other.configuration) == other.configuration
-                && module?.equals(other.module) != false
-                && children?.all { resolveDependency -> other.children.any(resolveDependency::equals) } != false
-                && parents?.all { resolveDependency -> other.parents.any(resolveDependency::equals) } != false
-                && moduleArtifacts?.all { resolveDependency -> other.moduleArtifacts.any(resolveDependency::equals) } != false
-                && allModuleArtifacts?.all { resolveDependency -> other.allModuleArtifacts.any(resolveDependency::equals) } != false
+            && (moduleGroup ?: other.moduleGroup) == other.moduleGroup
+            && (moduleName ?: other.moduleName) == other.moduleName
+            && (moduleVersion ?: other.moduleVersion) == other.moduleVersion
+            && (configuration ?: other.configuration) == other.configuration
+            && module?.equals(other.module) != false
+            && children?.all { resolveDependency -> other.children.any(resolveDependency::equals) } != false
+            && parents?.all { resolveDependency -> other.parents.any(resolveDependency::equals) } != false
+            && moduleArtifacts?.all { resolveDependency -> other.moduleArtifacts.any(resolveDependency::equals) } != false
+            && allModuleArtifacts?.all { resolveDependency -> other.allModuleArtifacts.any(resolveDependency::equals) } != false
 }

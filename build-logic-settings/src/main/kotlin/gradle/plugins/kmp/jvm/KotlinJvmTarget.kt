@@ -1,10 +1,13 @@
 package gradle.plugins.kmp.jvm
 
 import gradle.accessors.kotlin
+import gradle.api.applyTo
 
 import gradle.plugins.kmp.KotlinJvmAndAndroidTarget
 import gradle.plugins.kmp.KotlinJvmAndroidCompilation
 import gradle.plugins.kmp.KotlinJvmAndroidCompilationTransformingSerializer
+import gradle.plugins.kmp.KotlinTarget
+import gradle.plugins.kotlin.HasConfigurableKotlinCompilerOptions
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
@@ -16,27 +19,25 @@ import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
 @SerialName("jvm")
 internal data class KotlinJvmTarget(
     override val targetName: String = "jvm",
-    override val compilations: List<@Serializable(with = KotlinJvmAndroidCompilationTransformingSerializer::class) KotlinJvmAndroidCompilation>? = null,
+    override val compilations: Set<@Serializable(with = KotlinJvmAndroidCompilationTransformingSerializer::class) KotlinJvmAndroidCompilation>? = null,
     override val compilerOptions: KotlinJvmCompilerOptions? = null,
     val testRuns: List<KotlinJvmTestRun>? = null,
     val mainRun: KotlinJvmRunDsl? = null,
     val withJava: Boolean? = null,
-) : KotlinJvmAndAndroidTarget() {
+) : KotlinTarget<KotlinJvmTarget>,
+    HasConfigurableKotlinCompilerOptions<KotlinJvmTarget, org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompilerOptions> {
 
-        context(Project)
-    override fun applyTo(receiver: T) {
-        super.applyTo(named)
-
-        named as KotlinJvmTarget
+    context(Project)
+    override fun applyTo(receiver: KotlinJvmTarget) {
+        super<KotlinTarget>.applyTo(receiver)
+        super<HasConfigurableKotlinCompilerOptions>.applyTo(receiver)
 
         testRuns?.forEach { testRun ->
-            named.testRuns.named(testRun.name) {
-                testRun.applyTo(this)
-            }
+            testRun.applyTo(receiver.testRuns)
         }
 
         mainRun?.let { mainRun ->
-            named.mainRun(mainRun::applyTo)
+            receiver.mainRun(mainRun::applyTo)
         }
 
 //        if (projectProperties.kotlin.targets.none { target -> target is KotlinAndroidTarget }) {
@@ -46,5 +47,5 @@ internal data class KotlinJvmTarget(
 
     context(Project)
     override fun applyTo() =
-        super<KotlinJvmAndAndroidTarget>.applyTo(kotlin.targets.withType<KotlinJvmTarget>(), kotlin::jvm)
+        applyTo(kotlin.targets.withType<KotlinJvmTarget>(), kotlin::jvm)
 }

@@ -1,30 +1,27 @@
 package gradle.plugins.kmp
 
-
-import org.gradle.api.Named
-import org.jetbrains.kotlin.gradle.plugin.KotlinTargetTestRun
+import gradle.api.applyTo
+import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.KotlinTargetWithTests
 
 /**
  * Represents a [KotlinTarget] that includes test runs.
  */
-internal interface KotlinTargetWithTests<T : KotlinTargetTestRun<*>> : KotlinTarget {
+internal interface KotlinTargetWithTests<T : KotlinTargetWithTests<*, *>> : KotlinTarget<T> {
 
     /**
      * The container that holds test run executions.
      *
      * A test run by the name [DEFAULT_TEST_RUN_NAME] is automatically created and configured.
      */
-    val testRuns: List<T>?
+    val testRuns: Set<KotlinTargetTestRun<out org.jetbrains.kotlin.gradle.plugin.KotlinTargetTestRun<*>>>?
 
-        context(Project)
+    context(Project)
     override fun applyTo(receiver: T) {
-        super.applyTo(named)
-
-        named as KotlinTargetWithTests<*, *>
+        super.applyTo(receiver)
 
         testRuns?.forEach { testRun ->
-            testRun.applyTo(named.testRuns)
+            (testRun as KotlinTargetTestRun<org.jetbrains.kotlin.gradle.plugin.KotlinTargetTestRun<*>>).applyTo(receiver.testRuns)
         }
     }
 }

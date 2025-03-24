@@ -10,8 +10,8 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 
-internal abstract class KotlinNativeTargetWithTests<T : org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTargetWithTests> :
-    KotlinNativeTarget(), KotlinTargetWithTests<T> {
+internal abstract class KotlinNativeTargetWithTests<T : org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTargetWithTests<*>> :
+    KotlinNativeTarget<T>(), KotlinTargetWithTests<T> {
 
     context(Project)
     override fun applyTo(receiver: T) {

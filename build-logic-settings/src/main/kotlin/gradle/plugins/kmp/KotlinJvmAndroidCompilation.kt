@@ -1,6 +1,5 @@
 package gradle.plugins.kmp
 
-
 import gradle.plugins.java.JavaCompile
 import gradle.plugins.kmp.jvm.KotlinJvmCompilerOptions
 import gradle.plugins.kotlin.KotlinCompilation
@@ -11,6 +10,7 @@ import gradle.project.Dependency
 import gradle.project.DependencyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Named
+import org.gradle.api.Project
 import org.gradle.kotlin.dsl.invoke
 
 @Serializable
@@ -21,25 +21,24 @@ internal data class KotlinJvmAndroidCompilation(
     override val output: KotlinCompilationOutput? = null,
     override val associatedCompilations: Set<String>? = null,
     override val dependencies: List<@Serializable(with = DependencyTransformingSerializer::class) Dependency>? = null,
-    val compileTaskProvider: KotlinCompilationTaskImpl<KotlinJvmCompilerOptions>? = null,
+    val compileTaskProvider: KotlinCompilationTaskImpl? = null,
     val compileJavaTaskProvider: JavaCompile? = null,
-) : KotlinCompilation {
+) : KotlinCompilation<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJvmAndroidCompilation> {
 
-        context(Project)
-    override fun applyTo(receiver: T) {
-        super.applyTo(named)
-
-        named as org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJvmAndroidCompilation
+    context(Project)
+    override fun applyTo(receiver: org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJvmAndroidCompilation) {
+        super.applyTo(receiver)
 
         compileTaskProvider?.let { compileTaskProvider ->
-            named.compileTaskProvider {
+            receiver.compileTaskProvider {
+                KotlinJvmCompilerOptions
                 compileTaskProvider.applyTo(this)
             }
         }
 
         compileJavaTaskProvider?.let { compileJavaTaskProvider ->
-            named.compileJavaTaskProvider {
-                compileJavaTaskProvider.applyTo(this as Named)
+            receiver.compileJavaTaskProvider {
+                compileJavaTaskProvider.applyTo(this)
             }
         }
     }
