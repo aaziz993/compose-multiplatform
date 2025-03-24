@@ -17,7 +17,6 @@ import gradle.plugins.kmp.KotlinTargetTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
-import org.jetbrains.kotlin.gradle.dsl.KotlinBaseExtension
 import plugins.kotlin.cocoapods.model.CocoapodsSettings
 
 @Serializable

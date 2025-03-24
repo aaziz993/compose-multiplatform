@@ -14,9 +14,13 @@ internal interface KotlinMultiplatformExtension :
     val withSourcesJar: Boolean?
 
     context(Project)
-    override fun applyTo() {
-        super<KotlinBaseExtension>.applyTo(kotlin)
+    override fun applyTo(receiver: KotlinMultiplatformExtension) {
+        super<KotlinBaseExtension>.applyTo(receiver)
+        super<HasConfigurableKotlinCompilerOptions>.applyTo(receiver)
 
         withSourcesJar?.let(kotlin::withSourcesJar)
     }
+
+    context(Project)
+    fun applyTo() = applyTo(kotlin)
 }
