@@ -16,9 +16,7 @@ internal interface KotlinTestRun<T : KotlinTestRun<*>> : KotlinExecution<T> {
     @Suppress("UNCHECKED_CAST")
     fun applyTo(receiver: T) {
         filter?.let { filter ->
-            receiver.filter {
-                filter.applyTo(this as F)
-            }
+            receiver.filter(filter::applyTo)
         }
     }
 }

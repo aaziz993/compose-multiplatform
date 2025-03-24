@@ -26,20 +26,21 @@ internal data class KotlinSettings(
     override val jvmToolchainSpec: JavaToolchainSpec? = null,
     override val jvmToolchain: Int? = null,
     override val kotlinDaemonJvmArgs: List<String>? = null,
+    override val setKotlinDaemonJvmArgs: List<String>? = null,
     override val compilerVersion: String? = null,
     override val coreLibrariesVersion: String? = null,
     override val explicitApi: ExplicitApiMode? = null,
     override val compilerOptions: KotlinCommonCompilerOptionsImpl? = null,
-    val targets: List<@Serializable(with = KotlinTargetTransformingSerializer::class) KotlinTarget> = emptyList(),
-    val hierarchy: List<@Serializable(with = HierarchyAliasTransformingSerializer::class) HierarchyGroup> = emptyList(),
-    val sourceSets: List<@Serializable(with = KotlinSourceSetTransformingSerializer::class) KotlinSourceSet> = emptyList(),
+    val targets: Set<@Serializable(with = KotlinTargetTransformingSerializer::class) KotlinTarget> = emptySet(),
+    val hierarchy: Set<@Serializable(with = HierarchyAliasTransformingSerializer::class) HierarchyGroup> = emptySet(),
+    val sourceSets: Set<@Serializable(with = KotlinSourceSetTransformingSerializer::class) KotlinSourceSet> = emptySet(),
     val cocoapods: CocoapodsSettings = CocoapodsSettings(),
 ) : KotlinMultiplatformExtension {
 
     context(Project)
     fun applyTo() =
         pluginManager.withPlugin(settings.libs.plugins.plugin("kotlin.multiplatform").id) {
-            super.applyTo(kotlin as KotlinBaseExtension)
+            super.applyTo()
 
             targets.forEach { target -> target.applyTo() }
 

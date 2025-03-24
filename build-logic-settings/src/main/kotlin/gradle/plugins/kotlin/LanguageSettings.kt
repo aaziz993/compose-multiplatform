@@ -1,5 +1,7 @@
 package gradle.plugins.kotlin;
 
+import org.jetbrains.kotlin.project.model.LanguageSettings
+
 /**
  * Represents most common Kotlin compilation settings for an entity.
  *
@@ -8,7 +10,7 @@ package gradle.plugins.kotlin;
  *
  * See also [Compiler options DSL documentation](https://kotlinlang.org/docs/gradle-compiler-options.html).
  */
-internal interface LanguageSettings {
+internal interface LanguageSettings<T: LanguageSettings> {
 
     /**
      * Provide source compatibility with the specified version of Kotlin.
@@ -52,4 +54,6 @@ internal interface LanguageSettings {
      * Default value: emptyList<String>()
      */
     val optIns: Set<String>?
+
+    fun applyTo(receiver: T)
 }

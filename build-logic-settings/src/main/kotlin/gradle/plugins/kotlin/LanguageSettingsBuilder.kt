@@ -54,9 +54,9 @@ internal data class LanguageSettingsBuilder(
      * Default value: emptyList<String>()
      */
     override val optIns: Set<String>? = null,
-) : LanguageSettings {
+) : LanguageSettings<LanguageSettingsBuilder> {
 
-    fun applyTo(receiver: LanguageSettingsBuilder) {
+    override fun applyTo(receiver: LanguageSettingsBuilder) {
         receiver::languageVersion trySet languageVersion
         receiver::apiVersion trySet apiVersion
         receiver::progressiveMode trySet progressiveMode

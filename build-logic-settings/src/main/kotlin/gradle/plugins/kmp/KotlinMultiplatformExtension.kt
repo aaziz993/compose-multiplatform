@@ -1,5 +1,6 @@
 package gradle.plugins.kmp
 
+import gradle.accessors.kotlin
 import gradle.plugins.kotlin.HasConfigurableKotlinCompilerOptions
 import gradle.plugins.kotlin.KotlinBaseExtension
 import org.gradle.api.Project
@@ -13,9 +14,9 @@ internal interface KotlinMultiplatformExtension :
     val withSourcesJar: Boolean?
 
     context(Project)
-    override fun applyTo(receiver: KotlinMultiplatformExtension) {
-        super<KotlinBaseExtension>.applyTo(receiver)
+    override fun applyTo() {
+        super<KotlinBaseExtension>.applyTo(kotlin)
 
-        withSourcesJar?.let(receiver::withSourcesJar)
+        withSourcesJar?.let(kotlin::withSourcesJar)
     }
 }
