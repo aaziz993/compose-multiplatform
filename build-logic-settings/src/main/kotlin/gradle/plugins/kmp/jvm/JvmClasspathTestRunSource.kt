@@ -6,16 +6,12 @@ import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.jsonObject
-import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTestRun
 
 /**
  * A [KotlinExecution.ExecutionSource] that provides the [classpath] and [testClassesDirs] where JVM test classes can be found.
  */
 @Serializable(with = JvmClasspathTestRunSourceSerializer::class)
-internal interface JvmClasspathTestRunSource
-    : KotlinExecution.ExecutionSource<KotlinJvmTestRun> {
-
-}
+internal interface JvmClasspathTestRunSource : KotlinExecution.ExecutionSource
 
 internal object JvmClasspathTestRunSourceSerializer : JsonPolymorphicSerializer<JvmClasspathTestRunSource>(
     JvmClasspathTestRunSource::class,

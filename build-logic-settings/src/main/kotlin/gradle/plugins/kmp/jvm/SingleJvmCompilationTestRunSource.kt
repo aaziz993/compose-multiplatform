@@ -7,11 +7,4 @@ import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTestRun
 @Serializable
 internal class SingleJvmCompilationTestRunSource(
     val compilation: String
-) : JvmClasspathTestRunSource {
-
-    context(Project)
-    override fun applyTo(receiver: KotlinJvmTestRun) =
-        receiver.setExecutionSourceFrom(
-            receiver.target.compilations.getByName(compilation),
-        )
-}
+) : JvmClasspathTestRunSource

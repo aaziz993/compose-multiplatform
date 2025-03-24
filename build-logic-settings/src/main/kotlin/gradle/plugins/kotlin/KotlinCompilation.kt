@@ -4,6 +4,7 @@ import gradle.api.BaseNamed
 import gradle.api.ProjectNamed
 import gradle.api.getByNameOrAll
 import gradle.api.trySet
+import gradle.collection.get
 import gradle.plugins.kmp.KotlinSourceSet
 import gradle.project.Dependency
 import gradle.project.DependencyTransformingSerializer
@@ -85,9 +86,9 @@ internal interface KotlinCompilation<T : org.jetbrains.kotlin.gradle.plugin.Kotl
     /**
      * The name of the compilation.
      */
-    val compilationName: String
+    val compilationName: String?
 
-    override val name: String
+    override val name: String?
         get() = compilationName
 
     /**
@@ -98,7 +99,8 @@ internal interface KotlinCompilation<T : org.jetbrains.kotlin.gradle.plugin.Kotl
     /**
      * A collection of file system locations for the artifacts of compilation dependencies.
      */
-    val compileDependencyFiles: List<String>?
+    val compileDependencyFiles: Set<String>?
+    val setCompileDependencyFiles: Set<String>?
 
     /**
      * Represents the output of a Kotlin compilation.
@@ -117,7 +119,13 @@ internal interface KotlinCompilation<T : org.jetbrains.kotlin.gradle.plugin.Kotl
     context(Project)
     override fun applyTo(receiver: T) {
         defaultSourceSet?.applyTo(receiver.defaultSourceSet)
-        receiver::compileDependencyFiles trySet compileDependencyFiles?.toTypedArray()?.let(::files)
+        receiver::compileDependencyFiles trySet compileDependencyFiles
+            ?.toTypedArray()
+            ?.let(::files)
+            ?.let { files ->
+                receiver.compileDependencyFiles + files
+            }
+        receiver::compileDependencyFiles trySet setCompileDependencyFiles?.toTypedArray()?.let(::files)
         output?.applyTo(receiver.output)
         associatedCompilations
             ?.flatMap(receiver.target.compilations::getByNameOrAll)

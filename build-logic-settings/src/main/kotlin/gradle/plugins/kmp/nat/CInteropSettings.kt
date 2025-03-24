@@ -239,10 +239,8 @@ internal interface CInteropSettings<T : CInteropSettings> : ProjectNamed<T> {
 
     context(Project)
     override fun applyTo(receiver: T) {
-        receiver::dependencyFiles trySet dependencyFiles?.toTypedArray()?.let(::files)?.let { dependencyFiles ->
-            receiver.dependencyFiles + dependencyFiles
-        }
-
+        receiver::dependencyFiles trySet dependencyFiles?.toTypedArray()?.let(::files)
+            ?.from(receiver.dependencyFiles + dependencyFiles)
         receiver::dependencyFiles trySet setDependencyFiles?.toTypedArray()?.let(::files)
 
         when (val includeDirs = includeDirs) {

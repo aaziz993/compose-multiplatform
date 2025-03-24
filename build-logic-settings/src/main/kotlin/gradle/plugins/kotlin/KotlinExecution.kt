@@ -19,11 +19,7 @@ internal interface KotlinExecution<T : KotlinExecution<*>> : ProjectNamed<T> {
     /**
      * Represents an execution source that provides the necessary inputs to run the execution.
      */
-    interface ExecutionSource<T> {
-
-        context(Project)
-        fun applyTo(receiver: T)
-    }
+    interface ExecutionSource
 
     /**
      * The source of the executable code that this execution runs.
@@ -31,10 +27,8 @@ internal interface KotlinExecution<T : KotlinExecution<*>> : ProjectNamed<T> {
      * It is typically set via members of [ExecutionSource] support interfaces,
      * such as [CompilationExecutionSourceSupport] or [ClasspathTestRunSourceSupport].
      */
-    val executionSource: ExecutionSource<T>?
+    val executionSource: ExecutionSource?
 
     context(Project)
-    override fun applyTo(receiver: T) {
-        executionSource?.applyTo(receiver)
-    }
+    override fun applyTo(receiver: T)
 }

@@ -1,5 +1,6 @@
 package gradle.plugins.kmp.jvm
 
+import gradle.api.getByNameOrAll
 import gradle.api.tasks.test.TestFilter
 import gradle.plugins.kmp.KotlinTaskTestRun
 import kotlinx.serialization.Serializable
@@ -17,6 +18,22 @@ internal data class KotlinJvmTestRun(
     override fun applyTo(receiver: KotlinJvmTestRun) {
         super.applyTo(receiver)
 
-        executionSource?.applyTo(receiver)
+        when (executionSource) {
+            is ClasspathOnlyTestRunSource -> receiver.setExecutionSourceFrom(
+                files(*executionSource.classpath.toTypedArray()),
+                files(* executionSource.testClassesDirs.toTypedArray()),
+            )
+
+            is SingleJvmCompilationTestRunSource -> receiver.setExecutionSourceFrom(
+                receiver.target.compilations.getByName(executionSource.compilation),
+            )
+
+            is JvmCompilationsTestRunSource -> receiver.setExecutionSourceFrom(
+                executionSource.classpathCompilations.flatMap(receiver.target.compilations::getByNameOrAll),
+                executionSource.testCompilations.flatMap(receiver.target.compilations::getByNameOrAll),
+            )
+
+            else -> Unit
+        }
     }
 }
