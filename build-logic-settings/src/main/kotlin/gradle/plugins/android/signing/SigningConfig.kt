@@ -9,7 +9,7 @@ package gradle.plugins.android.signing
 internal interface SigningConfig {
 
     /** Returns the name of the Signing config */
-    val name: String
+    val name: String?
 
     /** The keystore file. */
     val storeFile: String?

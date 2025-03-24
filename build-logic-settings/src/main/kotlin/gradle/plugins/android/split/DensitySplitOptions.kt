@@ -17,10 +17,8 @@ internal data class DensitySplitOptions(
 
     override fun applyTo(receiver: DensitySplitOptions) {
         super<SplitOptions>.applyTo(receiver)
-        super<DensitySplit>.applyTo(receiver)
 
         compatibleScreens?.toTypedArray()?.let(receiver::compatibleScreens)
-
         setCompatibleScreens?.act(receiver.compatibleScreens::clear)?.let(receiver.compatibleScreens::addAll)
     }
 }

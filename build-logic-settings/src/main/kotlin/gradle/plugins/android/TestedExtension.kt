@@ -1,9 +1,5 @@
 package gradle.plugins.android
 
-import com.android.build.api.dsl.BuildFeatures
-import com.android.build.api.dsl.BuildType
-import com.android.build.api.dsl.DefaultConfig
-import com.android.build.api.dsl.ProductFlavor
 import org.gradle.api.Project
 
 /**
@@ -13,17 +9,7 @@ import org.gradle.api.Project
  * To learn more about testing Android projects, read
  * [Test your app](https://developer.android.com/studio/test/index.html)
  */
-internal abstract class TestedExtension<
-    BuildFeaturesT : BuildFeatures,
-    BuildTypeT : BuildType,
-    DefaultConfigT : DefaultConfig,
-    ProductFlavorT : ProductFlavor,
-    > : BaseExtension<
-    BuildFeaturesT,
-    BuildTypeT,
-    DefaultConfigT,
-    ProductFlavorT,
-    >, TestedExtensionDsl {
+internal abstract class TestedExtension : BaseExtension, TestedExtensionDsl {
 
     context(Project)
     override fun applyTo() {

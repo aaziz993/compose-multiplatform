@@ -1,6 +1,8 @@
 package gradle.plugins.android
 
 import com.android.build.api.dsl.CommonExtension
+import com.android.build.api.dsl.ProductFlavor
+import com.android.build.api.dsl.Splits
 import gradle.accessors.android
 import gradle.accessors.libs
 import gradle.accessors.settings
@@ -18,14 +20,14 @@ import gradle.plugins.android.features.BuildFeatures
 import gradle.plugins.android.features.DataBinding
 import gradle.plugins.android.features.ViewBinding
 import gradle.plugins.android.flavor.ProductFlavorDsl
+import gradle.plugins.android.signing.ApkSigningConfig
 import gradle.plugins.android.signing.SigningConfigImpl
 import gradle.plugins.android.signing.SigningConfigTransformingSerializer
 import gradle.plugins.android.sourceset.AndroidSourceSet
+import gradle.plugins.android.split.SplitsDsl
 import gradle.plugins.android.test.TestCoverage
 import gradle.plugins.android.test.TestOptions
-
 import kotlinx.serialization.Serializable
-import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 
 /**
@@ -180,7 +182,7 @@ internal interface CommonExtension<
      *
      * @see [gradle.plugins.android.flavor.ProductFlavorDsl]
      */
-    val productFlavors: Set<ProductFlavorDsl<ProductFlavorT>>?
+    val productFlavors: Set<ProductFlavorDsl<out ProductFlavorT>>?
 
     /**
      * Specifies defaults for variant properties that the Android plugin applies to all build
@@ -191,7 +193,7 @@ internal interface CommonExtension<
      *
      * For more information about the properties you can configure in this block, see [gradle.plugins.android.defaultconfig.DefaultConfigDsl].
      */
-    val defaultConfig: DefaultConfigDsl<DefaultConfigT>?
+    val defaultConfig: DefaultConfigDsl<out DefaultConfigT>?
 
     /**
      * Encapsulates signing configurations that you can apply to [ ] and [ ] configurations.
@@ -210,7 +212,7 @@ internal interface CommonExtension<
      *
      * @see [gradle.plugins.android.signing.ApkSigningConfig]
      */
-    val signingConfigs: Set<@Serializable(with = SigningConfigTransformingSerializer::class) SigningConfigImpl>?
+    val signingConfigs: Set<@Serializable(with = SigningConfigTransformingSerializer::class) ApkSigningConfig<out com.android.build.api.dsl.ApkSigningConfig>>?
 
     /**
      * Specifies options for external native build using [CMake](https://cmake.org/) or
@@ -247,7 +249,7 @@ internal interface CommonExtension<
      *
      * For more information about the properties you can configure in this block, see [Splits].
      */
-    val splits: Splits?
+    val splits: SplitsDsl<out Splits>?
 
     val composeOptions: ComposeOptions?
 
@@ -527,54 +529,60 @@ internal interface CommonExtension<
     context(Project)
     @Suppress("UnstableApiUsage", "UNCHECKED_CAST")
     fun applyTo() {
-        val extension = commonExtension()
-        extension.sourceSets
+        val extension = android as CommonExtension<
+            BuildFeaturesT,
+            BuildTypeT,
+            DefaultConfigT,
+            ProductFlavorT,
+            AndroidResourcesT,
+            InstallationT,
+            >
+
         androidResources?.applyTo(extension.androidResources)
         installation?.applyTo(extension.installation)
-        compileOptions?.applyTo(android.compileOptions)
-        buildFeatures?.applyTo(android.buildFeatures as BuildFeaturesT)
+        compileOptions?.applyTo(extension.compileOptions)
+        buildFeatures?.applyTo(extension.buildFeatures)
 
         buildTypes?.forEach { buildType ->
-            buildType.applyTo(android.buildTypes as BuildTypeT)
+            buildType.applyTo(extension.buildTypes as BuildTypeT)
         }
 
-        dataBinding?.applyTo(android.dataBinding)
-        viewBinding?.applyTo(android.viewBinding)
+        dataBinding?.applyTo(extension.dataBinding)
+        viewBinding?.applyTo(extension.viewBinding)
         testCoverage?.applyTo(extension.testCoverage)
         lint?.applyTo(extension.lint)
         packaging?.applyTo(extension.packaging)
 
         productFlavors?.forEach { productFlavors ->
-            productFlavors.applyTo(android.productFlavors as ProductFlavorT)
+            (productFlavors as ProductFlavorDsl<ProductFlavor>).applyTo(extension.productFlavors as ProductFlavorT)
         }
 
-        defaultConfig?.applyTo(android.defaultConfig as DefaultConfigT)
+        (defaultConfig as DefaultConfigDsl<DefaultConfigT>?)?.applyTo(extension.defaultConfig)
 
         signingConfigs?.forEach { signingConfigs ->
-            signingConfigs.applyTo(android.signingConfigs)
+            (signingConfigs as ApkSigningConfig<com.android.build.api.dsl.ApkSigningConfig>).applyTo(extension.signingConfigs)
         }
 
-        testOptions?.applyTo(android.testOptions)
-        splits?.applyTo(android.splits)
-        composeOptions?.applyTo(android.composeOptions)
+        testOptions?.applyTo(extension.testOptions)
+        (splits as SplitsDsl<Splits>?)?.applyTo(extension.splits)
+        composeOptions?.applyTo(extension.composeOptions)
 
         sourceSets?.forEach { sourceSet ->
-            sourceSet.applyTo(android.sourceSets)
+            sourceSet.applyTo(extension.sourceSets)
         }
 
-        flavorDimensions?.toTypedArray()?.let(android::flavorDimensions)
-
-        setFlavorDimensions?.act(android.flavorDimensionList::clear)?.let(android.flavorDimensionList::addAll)
+        flavorDimensions?.let(extension.flavorDimensions::addAll)
+        setFlavorDimensions?.act(extension.flavorDimensions::clear)?.let(extension.flavorDimensions::addAll)
         resourcePrefix?.let(android::resourcePrefix)
         android::ndkVersion trySet ndkVersion
         android::ndkPath trySet ndkPath
 
-        (buildToolsVersion ?: settings.libs.versions.version("android.buildToolsVersion"))?.let { buildToolsVersion ->
-            android.buildToolsVersion = buildToolsVersion
+        (buildToolsVersion ?: settings.libs.versions.version("extension.buildToolsVersion"))?.let { buildToolsVersion ->
+            extension.buildToolsVersion = buildToolsVersion
         }
 
         useLibraries?.forEach { (name, required) ->
-            android.useLibrary(name, required)
+            extension.useLibrary(name, required)
         }
 
         extension::compileSdk trySet compileSdk
@@ -587,15 +595,4 @@ internal interface CommonExtension<
 
         experimentalProperties?.let(extension.experimentalProperties::putAll)
     }
-
-    context(Project)
-    @Suppress("UNCHECKED_CAST")
-    private fun commonExtension() = android as CommonExtension<
-        BuildFeaturesT,
-        BuildTypeT,
-        DefaultConfigT,
-        ProductFlavorT,
-        AndroidResourcesT,
-        InstallationT,
-        >
 }

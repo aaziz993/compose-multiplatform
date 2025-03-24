@@ -1,30 +1,30 @@
 package gradle.plugins.android.library
 
-import com.android.build.api.dsl.LibraryDefaultConfig
-import com.android.build.api.dsl.LibraryProductFlavor
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.android.AaptOptions
 import gradle.plugins.android.AdbOptions
-import gradle.plugins.android.compile.CompileOptions
-import gradle.plugins.android.compile.CompileSdkAddon
 import gradle.plugins.android.ComposeOptions
-import gradle.plugins.android.features.DataBinding
 import gradle.plugins.android.ExternalNativeBuild
 import gradle.plugins.android.LibraryRequest
 import gradle.plugins.android.Lint
 import gradle.plugins.android.Packaging
 import gradle.plugins.android.Prefab
 import gradle.plugins.android.PrivacySandbox
+import gradle.plugins.android.Splits
+import gradle.plugins.android.TestedExtension
+import gradle.plugins.android.compile.CompileOptions
+import gradle.plugins.android.compile.CompileSdkAddon
+import gradle.plugins.android.defaultconfig.DefaultConfig
+import gradle.plugins.android.features.DataBinding
+import gradle.plugins.android.features.ViewBinding
+import gradle.plugins.android.flavor.ProductFlavor
+import gradle.plugins.android.flavor.ProductFlavorTransformingSerializer
 import gradle.plugins.android.signing.SigningConfigImpl
 import gradle.plugins.android.signing.SigningConfigTransformingSerializer
-import gradle.plugins.android.Splits
+import gradle.plugins.android.sourceset.AndroidSourceSet
 import gradle.plugins.android.test.TestCoverage
 import gradle.plugins.android.test.TestFixtures
 import gradle.plugins.android.test.TestOptions
-import gradle.plugins.android.TestedExtension
-import gradle.plugins.android.features.ViewBinding
-import gradle.plugins.android.sourceset.AndroidSourceSet
-
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -43,8 +43,8 @@ internal data class LibraryExtension(
     override val buildTypes: Set<@Serializable(with = LibraryBuildTypeTransformingSerializer::class) LibraryBuildType>? = null,
     override val testCoverage: TestCoverage? = null,
     override val lint: Lint? = null,
-    override val productFlavors: Set<@Serializable(with = LibraryProductFlavorTransformingSerializer::class) LibraryProductFlavorImpl>? = null,
-    override val defaultConfig: LibraryDefaultConfigImpl? = null,
+    override val productFlavors: Set<@Serializable(with = ProductFlavorTransformingSerializer::class) ProductFlavor>? = null,
+    override val defaultConfig: DefaultConfig? = null,
     override val useLibraries: Set<LibraryRequest>? = null,
     override val compileSdk: Int? = null,
     override val compileSdkExtension: Int? = null,
@@ -83,12 +83,7 @@ internal data class LibraryExtension(
     override val testBuildType: String? = null,
     override val testNamespace: String? = null,
     override val testFixtures: TestFixtures? = null
-) : TestedExtension<
-    com.android.build.api.dsl.LibraryBuildFeatures,
-    com.android.build.api.dsl.LibraryBuildType,
-    LibraryDefaultConfig,
-    LibraryProductFlavor,
-    >(), InternalLibraryExtension {
+) : TestedExtension(), InternalLibraryExtension {
 
     context(Project)
     override fun applyTo() {

@@ -10,27 +10,19 @@ import gradle.api.applyTo
 import gradle.api.trySet
 import gradle.collection.act
 import gradle.plugins.android.compile.CompileOptions
-import gradle.plugins.android.defaultconfig.DefaultConfigDsl
+import gradle.plugins.android.defaultconfig.DefaultConfig
 import gradle.plugins.android.features.BuildFeatures
 import gradle.plugins.android.features.DataBinding
 import gradle.plugins.android.features.ViewBinding
-import gradle.plugins.android.flavor.ProductFlavorDsl
+import gradle.plugins.android.flavor.ProductFlavor
 import gradle.plugins.android.signing.SigningConfigImpl
 import gradle.plugins.android.signing.SigningConfigTransformingSerializer
 import gradle.plugins.android.sourceset.AndroidSourceSet
 import gradle.plugins.android.test.TestOptions
-import java.util.*
-import kotlin.collections.addAll
 import kotlinx.serialization.Serializable
-import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 
-internal interface BaseExtension<
-    BuildFeaturesT : com.android.build.api.dsl.BuildFeatures,
-    BuildTypeT : com.android.build.api.dsl.BuildType,
-    DefaultConfigT : com.android.build.api.dsl.DefaultConfig,
-    ProductFlavorT : com.android.build.api.dsl.ProductFlavor,
-    > {
+internal interface BaseExtension {
 
     val composeOptions: ComposeOptions?
 
@@ -93,17 +85,17 @@ internal interface BaseExtension<
 
     val libraryRequests: Set<LibraryRequest>?
 
-    val buildTypes: Set<BuildType<BuildTypeT>>?
+    val buildTypes: Set<BuildType<out com.android.build.api.dsl.BuildType>>?
 
-    val defaultConfig: DefaultConfigDsl<DefaultConfigT>?
+    val defaultConfig: DefaultConfig?
 
-    val productFlavors: Set<ProductFlavorDsl<ProductFlavorT>>?
+    val productFlavors: Set<ProductFlavor>?
 
     val signingConfigs: Set<@Serializable(with = SigningConfigTransformingSerializer::class) SigningConfigImpl>?
 
     // these are indirectly implemented by extensions when they implement the new public
     // extension interfaces via delegates.
-    val buildFeatures: BuildFeatures<BuildFeaturesT>?
+    val buildFeatures: BuildFeatures<out com.android.build.api.dsl.BuildFeatures>?
     val namespace: String?
 
     context(Project)
@@ -139,20 +131,20 @@ internal interface BaseExtension<
         libraryRequests?.map(LibraryRequest::toLibraryRequest)?.let(android.libraryRequests::addAll)
 
         buildTypes?.forEach { buildType ->
-            buildType.applyTo(android.buildTypes as BuildTypeT)
+            (buildType as BuildType<com.android.build.api.dsl.BuildType>).applyTo(android.buildTypes)
         }
 
-        defaultConfig?.applyTo(android.defaultConfig as DefaultConfigT)
+        defaultConfig?.applyTo(android.defaultConfig)
 
         productFlavors?.forEach { productFlavors ->
-            productFlavors.applyTo(android.productFlavors as ProductFlavorT)
+            productFlavors.applyTo(android.productFlavors)
         }
 
         signingConfigs?.forEach { signingConfig ->
             signingConfig.applyTo(android.signingConfigs)
         }
 
-        buildFeatures?.applyTo(android.buildFeatures as BuildFeaturesT)
+        (buildFeatures as BuildFeatures<com.android.build.api.dsl.BuildFeatures>?)?.applyTo(android.buildFeatures)
         android.namespace = namespace ?: androidNamespace
     }
 }

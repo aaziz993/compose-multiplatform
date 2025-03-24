@@ -9,18 +9,14 @@ import kotlinx.serialization.Serializable
  *
  * See [FULL_APK Splits](https://developer.android.com/studio/build/configure-apk-splits.html).
  */
-@Serializable
-internal data class AbiSplit(
-    override val isEnable: Boolean? = null,
-    override val includes: Set<String>? = null,
-    override val excludes: Set<String>? = null,
-    override val reset: Boolean? = null,
-    /** Whether to create an FULL_APK with all available ABIs. */
-    val isUniversalApk: Boolean? = null,
-) : Split<AbiSplit> {
+internal interface AbiSplit<T : AbiSplit> : Split<T> {
 
-    override fun applyTo(receiver: AbiSplit) {
+    /** Whether to create an FULL_APK with all available ABIs. */
+    val isUniversalApk: Boolean?
+
+    override fun applyTo(receiver: T) {
         super.applyTo(receiver)
+
         receiver::isUniversalApk trySet isUniversalApk
     }
 }
