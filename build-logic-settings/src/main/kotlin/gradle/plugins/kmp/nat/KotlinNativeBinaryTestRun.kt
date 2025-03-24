@@ -18,16 +18,18 @@ internal interface KotlinNativeBinaryTestRun<T : org.jetbrains.kotlin.gradle.tar
 
         val target = receiver.target as KotlinNativeTargetWithTests<*>
 
-        when (val binary = executionSource.binary) {
-            is String -> receiver.setExecutionSourceFrom(
-                target.binaries.getTest(binary),
-            )
+        executionSource?.let { executionSource ->
+            when (executionSource.binary) {
+                is String -> receiver.setExecutionSourceFrom(
+                    target.binaries.getTest(executionSource.binary),
+                )
 
-            is Binary -> receiver.setExecutionSourceFrom(
-                target.binaries.getTest(binary.namePrefix, binary.buildType),
-            )
+                is Binary -> receiver.setExecutionSourceFrom(
+                    target.binaries.getTest(executionSource.binary.namePrefix, executionSource.binary.buildType),
+                )
 
-            else -> Unit
+                else -> Unit
+            }
         }
     }
 }

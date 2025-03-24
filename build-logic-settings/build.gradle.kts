@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.doctor)
     // Software Composition Analysis (SCA) tool that attempts to detect publicly disclosed vulnerabilities contained within a project's dependencies. It does this by determining if there is a Common Platform Enumeration (CPE) identifier for a given dependency. If found, it will generate a report linking to the associated CVE entries.
     alias(libs.plugins.dependencycheck)
+    // Generating BuildConstants for any kind of Gradle projects: Java, Kotlin, Android, Groovy, etc. Designed for KTS scripts, with experimental support for Kotlin's multi-platform plugin
     alias(libs.plugins.buildconfig)
     // Allows dumping binary API of a JVM part of a Kotlin library that is public in the sense of Kotlin visibilities and ensures that the public binary API wasn't changed in a way that makes this change binary incompatible.
     alias(libs.plugins.binaryCompatibilityValidator)
@@ -216,7 +217,7 @@ dependencies {
     signature(libs.signature.java)
     // produces Kotlin source example files and tests from markdown documents with embedded snippets of Kotlin code
     implementation(libs.plugins.knit.toDep())
-    // Generating BuildConstants for any kind of Gradle projects: Java, Kotlin, Android, Groovy, etc. Designed for KTS scripts, with experimental support for Kotlin's multi-platform plugin
+    // generating BuildConstants for any kind of Gradle projects: Java, Kotlin, Android, Groovy, etc. Designed for KTS scripts, with experimental support for Kotlin's multi-platform plugin
     implementation(libs.plugins.buildconfig.toDep())
     // string and image resource generation
     implementation(libs.plugins.libres.toDep())

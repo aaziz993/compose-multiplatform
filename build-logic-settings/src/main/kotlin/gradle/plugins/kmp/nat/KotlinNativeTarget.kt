@@ -9,19 +9,18 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary
 
 internal abstract class KotlinNativeTarget<T : org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>
     : KotlinTarget<T>,
     HasConfigurableKotlinCompilerOptions<T, org.jetbrains.kotlin.gradle.dsl.KotlinNativeCompilerOptions>,
-    HasBinaries<KotlinNativeBinaryContainer> {
+    HasBinaries<T, NativeBinary> {
 
     context(project: Project)
     override fun applyTo(receiver: T) {
         super<KotlinTarget>.applyTo(receiver)
         super<HasConfigurableKotlinCompilerOptions>.applyTo(receiver)
-        super<HasConfigurableKotlinCompilerOptions>.applyTo(receiver)
-
-        binaries?.applyTo(receiver.binaries)
+        super<HasBinaries>.applyTo(receiver)
     }
 }
 

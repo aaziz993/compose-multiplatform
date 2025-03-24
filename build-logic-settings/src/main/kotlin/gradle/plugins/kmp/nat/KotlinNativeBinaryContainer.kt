@@ -12,36 +12,9 @@ Use the following naming scheme:
 */
 @Serializable
 internal data class KotlinNativeBinaryContainer(
-    val executable: ExecutableSettings? = null,
-    val staticLib: SharedLibrarySettings? = null,
-    val framework: FrameworkSettings? = null,
-    val test: TestExecutableSettings? = null,
-) {
-
-    context(project: Project)
-    fun applyTo(receiver: KotlinNativeBinaryContainer) {
-        executable?.let { executable ->
-            receiver.executable(executable.namePrefix, executable.buildTypes) {
-                executable.applyTo(this)
-            }
-        }
-
-        staticLib?.let { staticLib ->
-            receiver.staticLib(staticLib.namePrefix, staticLib.buildTypes) {
-                staticLib.applyTo(this)
-            }
-        }
-
-        framework?.let { framework ->
-            receiver.framework(framework.namePrefix, framework.buildTypes) {
-                framework.applyTo(this)
-            }
-        }
-
-        test?.let { test ->
-            receiver.test(test.namePrefix, test.buildTypes) {
-                test.applyTo(this)
-            }
-        }
-    }
-}
+    override val executable: ExecutableSettings? = null,
+    override val staticLib: StaticLibrarySettings? = null,
+    override val sharedLib: SharedLibrarySettings? = null,
+    override val framework: FrameworkSettings? = null,
+    override val test: TestExecutableSettings? = null,
+) : AbstractKotlinNativeBinaryContainer<KotlinNativeBinaryContainer>()
