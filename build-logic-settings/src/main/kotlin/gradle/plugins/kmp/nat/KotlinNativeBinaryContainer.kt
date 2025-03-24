@@ -1,7 +1,7 @@
 package gradle.plugins.kmp.nat
 
 import kotlinx.serialization.Serializable
-import org.gradle.api.Project
+import kotlinx.serialization.Transient
 import org.jetbrains.kotlin.gradle.dsl.KotlinNativeBinaryContainer
 
 /*
@@ -11,10 +11,8 @@ Use the following naming scheme:
     executable([debug]) -> debugExecutable
 */
 @Serializable
-internal data class KotlinNativeBinaryContainer(
-    override val executable: ExecutableSettings? = null,
-    override val staticLib: StaticLibrarySettings? = null,
-    override val sharedLib: SharedLibrarySettings? = null,
-    override val framework: FrameworkSettings? = null,
-    override val test: TestExecutableSettings? = null,
-) : AbstractKotlinNativeBinaryContainer<KotlinNativeBinaryContainer>()
+internal class KotlinNativeBinaryContainer(
+    @Transient
+    private val binaries: Set<NativeBinary<out org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary>> = mutableSetOf()
+) : AbstractKotlinNativeBinaryContainer<KotlinNativeBinaryContainer>(),
+    Set<@Serializable(with = NativeBinaryTransformingSerializer::class) NativeBinary<out org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary>> by binaries

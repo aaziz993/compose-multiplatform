@@ -2,6 +2,8 @@ package gradle.plugins.kmp.web
 
 import gradle.accessors.kotlin
 import gradle.accessors.moduleName
+import gradle.api.ProjectNamed
+import gradle.api.applyTo
 import gradle.api.trySet
 import gradle.plugins.kmp.HasBinaries
 import gradle.plugins.kmp.KotlinTarget
@@ -10,11 +12,17 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalMainFunctionArgumentsDsl
+import org.jetbrains.kotlin.gradle.targets.js.ir.JsBinary
+import org.jetbrains.kotlin.gradle.targets.js.ir.JsIrBinary
 
-internal interface KotlinJsTargetDsl : KotlinTarget, KotlinTargetWithNodeJsDsl,
-    HasBinaries<KotlinJsBinaryContainer>, HasConfigurableKotlinCompilerOptions<KotlinJsCompilerOptions> {
+internal interface KotlinJsTargetDsl<T : org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl>
+    : KotlinTarget<T>,
+    KotlinTargetWithNodeJsDsl,
+    HasBinaries<KotlinJsBinaryContainer>,
+    HasConfigurableKotlinCompilerOptions<T, org.jetbrains.kotlin.gradle.dsl.KotlinJsCompilerOptions> {
 
-    abstract override val compilations: List<KotlinJsCompilation>?
+    abstract override val compilations: Set<KotlinJsIrCompilation>?
 
     val moduleName: String?
 
@@ -31,44 +39,41 @@ internal interface KotlinJsTargetDsl : KotlinTarget, KotlinTargetWithNodeJsDsl,
 
     val generateTypeScriptDefinitions: Boolean?
 
-        context(project: Project)
+    context(project: Project)
+    @OptIn(ExperimentalMainFunctionArgumentsDsl::class)
     override fun applyTo(receiver: T) {
-        super<KotlinTarget>._applyTo(named)
+        super<KotlinTarget>.applyTo(receiver)
 
-        named as org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
+        binaries?.applyTo(receiver.binaries)
 
         super<HasConfigurableKotlinCompilerOptions>.applyTo(named)
 
-        named::moduleName trySet (this@KotlinJsTargetDsl.moduleName
+        receiver::moduleName trySet (this@KotlinJsTargetDsl.moduleName
             ?: targetName
-                .takeIf(String::isNotEmpty)
+                ?.takeIf(String::isNotEmpty)
                 ?.let { targetName -> "${project.moduleName}-$targetName" })
 
-        super<KotlinTargetWithNodeJsDsl>.applyTo(named, named.moduleName!!)
+        super<KotlinTargetWithNodeJsDsl>.applyTo(receiver, receiver.moduleName!!)
 
         browser?.let { browser ->
-            named.browser {
-                browser.applyTo(this, named.moduleName!!)
+            receiver.browser {
+                browser.applyTo(this, receiver.moduleName!!)
             }
         }
 
-        useCommonJs?.takeIf { it }?.run { named.useCommonJs() }
-        useEsModules?.takeIf { it }?.run { named.useEsModules() }
-        passAsArgumentToMainFunction?.let(named::passAsArgumentToMainFunction)
-        generateTypeScriptDefinitions?.takeIf { it }?.let { named.generateTypeScriptDefinitions() }
-        binaries.applyTo(named.binaries)
-    }
-
-    context(project: Project)
-    override fun applyTo() = with(project) {
-        super<KotlinTarget>.applyTo(kotlin.targets.withType<org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl>())
+        useCommonJs?.takeIf { it }?.run { receiver.useCommonJs() }
+        useEsModules?.takeIf { it }?.run { receiver.useEsModules() }
+        passAsArgumentToMainFunction?.let(receiver::passAsArgumentToMainFunction)
+        generateTypeScriptDefinitions?.takeIf { it }?.let { receiver.generateTypeScriptDefinitions() }
+        binaries.applyTo(receiver.binaries)
     }
 }
 
 @Serializable
 @SerialName("jsCommon")
 internal data class KotlinJsTargetDslImpl(
-    override val compilations: List<KotlinJsCompilation>? = null,
+    override val targetName: String? = null,
+    override val compilations: Set<KotlinJsIrCompilation>? = null,
     override val moduleName: String? = null,
     override val browser: KotlinJsBrowserDsl? = null,
     override val useCommonJs: Boolean? = null,
@@ -78,8 +83,9 @@ internal data class KotlinJsTargetDslImpl(
     override val nodejs: KotlinJsNodeDsl? = null,
     override val binaries: KotlinJsBinaryContainer = KotlinJsBinaryContainer(),
     override val compilerOptions: KotlinJsCompilerOptions? = null,
-) : KotlinJsTargetDsl {
+) : KotlinJsTargetDsl<org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl> {
 
-    override val targetName: String
-        get() = ""
+    context(project: Project)
+    override fun applyTo() =
+        applyTo(kotlin.targets.withType<org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl>()) { _, _ -> }
 }

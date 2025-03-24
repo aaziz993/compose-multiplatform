@@ -1,12 +1,17 @@
 package gradle.plugins.kmp.nat
 
+import com.android.tools.r8.internal.wi
 import gradle.accessors.moduleName
 import gradle.api.ProjectNamed
 import gradle.api.tryAssign
 import gradle.api.trySet
 import gradle.collection.act
+import gradle.plugins.kmp.KotlinTarget
 import gradle.project.Dependency
+import gradle.serialization.serializer.JsonPolymorphicSerializer
+import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.DeserializationStrategy
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.JsonContentPolymorphicSerializer
@@ -30,6 +35,7 @@ internal object BinaryContentPolymorphicSerializer : JsonContentPolymorphicSeria
         else Binary.serializer()
 }
 
+@Serializable(with = NativeBinarySerializer::class)
 internal sealed class NativeBinary<T : org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary> : ProjectNamed<T> {
 
     abstract val baseName: String?
@@ -78,6 +84,15 @@ internal sealed class NativeBinary<T : org.jetbrains.kotlin.gradle.plugin.mpp.Na
     }
 }
 
+private object NativeBinarySerializer : JsonPolymorphicSerializer<NativeBinary<*>>(
+    NativeBinary::class,
+)
+
+internal object NativeBinaryTransformingSerializer : KeyTransformingSerializer<NativeBinary<*>>(
+    NativeBinarySerializer,
+    "type",
+)
+
 internal abstract class AbstractExecutable<T : org.jetbrains.kotlin.gradle.plugin.mpp.AbstractExecutable> : NativeBinary<T>()
 
 internal abstract class Executable : AbstractExecutable<org.jetbrains.kotlin.gradle.plugin.mpp.Executable>() {
@@ -101,6 +116,7 @@ internal abstract class Executable : AbstractExecutable<org.jetbrains.kotlin.gra
 }
 
 @Serializable
+@SerialName("executable")
 internal data class ExecutableSettings(
     override val name: String? = null,
     override val baseName: String? = null,
@@ -122,6 +138,7 @@ internal data class ExecutableSettings(
 internal abstract class TestExecutable : NativeBinary<org.jetbrains.kotlin.gradle.plugin.mpp.TestExecutable>()
 
 @Serializable
+@SerialName("testExecutable")
 internal data class TestExecutableSettings(
     override val name: String? = null,
     override val baseName: String? = null,
@@ -166,6 +183,7 @@ internal abstract class AbstractNativeLibrary<T : org.jetbrains.kotlin.gradle.pl
 internal abstract class StaticLibrary : AbstractNativeLibrary<org.jetbrains.kotlin.gradle.plugin.mpp.StaticLibrary>()
 
 @Serializable
+@SerialName("staticLibrary")
 internal data class StaticLibrarySettings(
     override val transitiveExport: Boolean? = null,
     override val exports: Set<Dependency>? = null,
@@ -188,6 +206,7 @@ internal data class StaticLibrarySettings(
 internal abstract class SharedLibrary : AbstractNativeLibrary<org.jetbrains.kotlin.gradle.plugin.mpp.SharedLibrary>()
 
 @Serializable
+@SerialName("sharedLibrary")
 internal data class SharedLibrarySettings(
     override val name: String? = null,
     override val baseName: String? = null,
@@ -220,6 +239,7 @@ internal abstract class Framework : AbstractNativeLibrary<org.jetbrains.kotlin.g
 }
 
 @Serializable
+@SerialName("framework")
 internal data class FrameworkSettings(
     override val name: String? = null,
     override val baseName: String? = null,

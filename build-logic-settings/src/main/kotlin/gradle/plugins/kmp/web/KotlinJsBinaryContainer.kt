@@ -1,31 +1,23 @@
 package gradle.plugins.kmp.web
 
-import gradle.accessors.projectProperties
-import gradle.project.ProjectType
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsBinaryContainer
 
 @Serializable
 internal data class KotlinJsBinaryContainer(
-    val executable: Executable = Executable(),
-    val library: Library = Library(),
-) {
+    @Transient
+    private val binaries: Set<JsIrBinary<out org.jetbrains.kotlin.gradle.targets.js.ir.JsIrBinary>> = mutableSetOf()
+) : Set<@Serializable(with = JsBinaryTransformingSerializer::class) JsIrBinary<out org.jetbrains.kotlin.gradle.targets.js.ir.JsIrBinary>> by binaries {
 
     context(project: Project)
     fun applyTo(receiver: KotlinJsBinaryContainer) {
-        when (projectProperties.type) {
-            ProjectType.APP ->
-                executable.let { binaries ->
-                    binaries.compilation?.let { compilation ->
-                        container.executable(container.target.compilations.getByName(compilation))
-                    } ?: container.executable()
-                }
-
-            ProjectType.LIB -> library.let { binaries ->
-                binaries.compilation?.let { compilation ->
-                    container.library(container.target.compilations.getByName(compilation))
-                } ?: container.library()
+        binaries.forEach { binary ->
+            when (binary) {
+                is Executable -> receiver.executable(receiver.target.compilations.getByName(binary.compilation))
+                is ExecutableWasm -> receiver.executable(receiver.target.compilations.getByName(binary.compilation))
+                is Library -> receiver.library(receiver.target.compilations.getByName(binary.compilation))
             }
         }
     }

@@ -1,6 +1,7 @@
 package gradle.plugins.kmp.web
 
 import gradle.accessors.kotlin
+import gradle.api.applyTo
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -9,9 +10,9 @@ import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinWasmJsTargetDsl
 
 @Serializable
 @SerialName("wasmJs")
-internal data class KotlinWasmJsTarget(
+internal data class KotlinWasmJsTargetDsl(
     override val targetName: String = "wasmJs",
-    override val compilations: List<@Serializable(with = KotlinJsIrCompilationTransformingSerializer::class) KotlinJsIrCompilation>? = null,
+    override val compilations: Set<@Serializable(with = KotlinJsIrCompilationTransformingSerializer::class) KotlinJsIrCompilation>? = null,
     override val nodejs: KotlinJsNodeDsl? = null,
     override val moduleName: String? = null,
     override val browser: KotlinJsBrowserDsl? = null,
@@ -23,26 +24,23 @@ internal data class KotlinWasmJsTarget(
     override val binaries: KotlinJsBinaryContainer = KotlinJsBinaryContainer(),
     val d8: Boolean? = null,
     val d8Dsl: KotlinWasmD8Dsl? = null,
-) : KotlinWasmTargetDsl, KotlinJsTargetDsl {
+) : KotlinWasmTargetDsl<KotlinWasmJsTargetDsl>, KotlinJsTargetDsl<KotlinWasmJsTargetDsl> {
 
-        context(project: Project)
-    override fun applyTo(receiver: T) {
-        super<KotlinWasmTargetDsl>._applyTo(named)
-        super<KotlinJsTargetDsl>._applyTo(named)
+    context(project: Project)
+    override fun applyTo(receiver: KotlinWasmJsTargetDsl) {
+        super<KotlinWasmTargetDsl>.applyTo(receiver)
+        super<KotlinJsTargetDsl>.applyTo(receiver)
 
-        named as KotlinWasmJsTargetDsl
-
-        d8?.takeIf { it }?.run { named.d8() }
+        d8?.takeIf { it }?.run { receiver.d8() }
 
         d8Dsl?.let { d8Dsl ->
-            named.d8 {
-                d8Dsl.applyTo(this, "$moduleName-${named.targetName}")
+            receiver.d8 {
+                d8Dsl.applyTo(this, "$moduleName-${receiver.targetName}")
             }
         }
     }
 
-    context(GradleScope)
-    override fun _applyTo() = with(project) {
-        super._applyTo(kotlin.targets.withType<KotlinWasmJsTargetDsl>(), kotlin::wasmJs)
-    }
+    context(project: Project)
+    override fun applyTo() =
+       applyTo(project.kotlin.targets.withType<KotlinWasmJsTargetDsl>(), kotlin::wasmJs)
 }

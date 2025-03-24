@@ -14,13 +14,14 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary
 internal abstract class KotlinNativeTarget<T : org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>
     : KotlinTarget<T>,
     HasConfigurableKotlinCompilerOptions<T, org.jetbrains.kotlin.gradle.dsl.KotlinNativeCompilerOptions>,
-    HasBinaries<T, NativeBinary> {
+    HasBinaries<KotlinNativeBinaryContainer> {
 
     context(project: Project)
     override fun applyTo(receiver: T) {
         super<KotlinTarget>.applyTo(receiver)
         super<HasConfigurableKotlinCompilerOptions>.applyTo(receiver)
-        super<HasBinaries>.applyTo(receiver)
+
+        binaries?.applyTo(receiver.binaries)
     }
 }
 
@@ -28,7 +29,7 @@ internal abstract class KotlinNativeTarget<T : org.jetbrains.kotlin.gradle.plugi
 @SerialName("native")
 internal data class KotlinNativeTargetImpl(
     override val targetName: String? = null,
-    override val compilations: List<KotlinNativeCompilation>? = null,
+    override val compilations: Set<KotlinNativeCompilation>? = null,
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,
 ) : KotlinNativeTarget<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>() {
