@@ -127,7 +127,7 @@ includes:
   - cmp-lib
   - compiler
   - shared
-  - compose-app
+  - cmp-app
   - server-app
 
 dependencies:
