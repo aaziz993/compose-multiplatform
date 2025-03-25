@@ -9,6 +9,6 @@ internal interface HasCompileOptions<T: HasCompileOptions> {
 
     context(project: Project)
     fun applyTo(receiver: T) {
-        options?.applyTo(hasCompileOptions.options)
+        options?.applyTo(receiver.options)
     }
 }
