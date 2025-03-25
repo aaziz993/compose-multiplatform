@@ -373,7 +373,7 @@ kotlin:
             - -Xwhen-guards
             - -Xnon-local-break-continue
             - -Xexpect-actual-classes
-            - -Xcontext-receivers
+            - -Xcontext-parameters
             - -Xmulti-dollar-interpolation
             - -Xrender-internal-diagnostic-names
     - jvmCommon:

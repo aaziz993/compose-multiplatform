@@ -67,7 +67,6 @@ kotlin {
     jvmToolchain(libs.versions.java.languageVersion.get().toInt())
 
     compilerOptions {
-        println(KotlinVersion.CURRENT)
         freeCompilerArgs.addAll(
             "-Xignore-const-optimization-errors",
             "-Xcontext-parameters",
