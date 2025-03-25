@@ -30,7 +30,7 @@ internal data class BuildCacheConfiguration(
      *
      * @param type the type of remote cache to configure.
      */
-    val remotes: List<@Serializable(with = BuildCacheTransformingSerializer::class) BuildCache>? = null,
+    val remotes: List<@Serializable(with = BuildCacheTransformingSerializer::class) BuildCache<*>>? = null,
 ) {
 
     context(settings: Settings)
@@ -39,7 +39,7 @@ internal data class BuildCacheConfiguration(
         local?.applyTo()
 
         remotes?.forEach { remote ->
-            remote.applyTo(configuration)
+            remote.applyTo(receiver)
         }
     }
 }

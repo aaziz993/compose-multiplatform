@@ -128,7 +128,7 @@ internal interface DokkaExtension {
      * }
      * ```
      */
-    val dokkaPublications: Set<DokkaPublication>?
+    val dokkaPublications: LinkedHashSet<DokkaPublication>?
 
     /**
      * The container for all [DokkaSourceSet][DokkaSourceSetSpec]s in the current project.
@@ -164,14 +164,14 @@ internal interface DokkaExtension {
      * }
      * ```
      */
-    val dokkaSourceSets: Set<DokkaSourceSetSpec>?
+    val dokkaSourceSets: LinkedHashSet<DokkaSourceSetSpec>?
 
     /**
      * Dokka Plugin are used to configure the way Dokka generates a format.
      * Some plugins can be configured via parameters, and those parameters are stored in this
      * container.
      */
-    val pluginsConfiguration: Set<@Serializable(with = DokkaPluginParametersBaseSpecTransformingSerializer::class) DokkaPluginParametersBaseSpec<in org.jetbrains.dokka.gradle.engine.plugins.DokkaPluginParametersBaseSpec>>?
+    val pluginsConfiguration: LinkedHashSet<@Serializable(with = DokkaPluginParametersBaseSpecTransformingSerializer::class) DokkaPluginParametersBaseSpec<in org.jetbrains.dokka.gradle.engine.plugins.DokkaPluginParametersBaseSpec>>?
 
     /**
      * The default version of Dokka dependencies that are used at runtime during generation.

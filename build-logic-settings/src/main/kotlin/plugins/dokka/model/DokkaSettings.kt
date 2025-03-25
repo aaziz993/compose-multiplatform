@@ -28,7 +28,7 @@ internal data class DokkaSettings(
     override val konanHome: String? = null,
     override val dokkaPublications: List<@Serializable(with = DokkaPublicationTransformingSerializer::class) DokkaPublication>? = null,
     override val dokkaSourceSets: List<@Serializable(with = DokkaSourceSetSpecTransformingSerializer::class) DokkaSourceSetSpec>? = null,
-    override val pluginsConfiguration: List<@Serializable(with = DokkaPluginParametersBaseSpecTransformingSerializer::class) DokkaPluginParametersBaseSpec>? = null,
+    override val pluginsConfiguration: List<@Serializable(with = DokkaPluginParametersBaseSpecTransformingSerializer::class) DokkaPluginParametersBaseSpec<*>>? = null,
     override val dokkaEngineVersion: String? = null,
     override val dokkaGeneratorIsolation: WorkerIsolation? = null,
     override val enabled: Boolean = true,

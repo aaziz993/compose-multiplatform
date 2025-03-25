@@ -7,7 +7,6 @@ import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalMainFunctionArgume
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsNodeDsl
 
 @Serializable
-
 internal data class KotlinJsNodeDsl(
     override val distribution: Distribution? = null,
     override val testTask: KotlinJsTest? = null,

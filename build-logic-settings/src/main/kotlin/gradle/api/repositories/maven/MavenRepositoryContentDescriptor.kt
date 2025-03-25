@@ -36,14 +36,12 @@ internal data class MavenRepositoryContentDescriptor(
      */
     val snapshotsOnly: Boolean? = null,
     override val excludeGroups: Set<String>?,
-) : RepositoryContentDescriptor {
+) : RepositoryContentDescriptor<MavenRepositoryContentDescriptor> {
 
-    override fun applyTo(receiver: org.gradle.api.artifacts.repositories.RepositoryContentDescriptor) {
-        super.applyTo(descriptor)
+    override fun applyTo(receiver: MavenRepositoryContentDescriptor) {
+        super.applyTo(receiver)
 
-        descriptor as MavenRepositoryContentDescriptor
-
-        releasesOnly?.takeIf { it }?.run { descriptor.releasesOnly() }
-        snapshotsOnly?.takeIf { it }?.run { descriptor.snapshotsOnly() }
+        releasesOnly?.takeIf { it }?.run { receiver.releasesOnly() }
+        snapshotsOnly?.takeIf { it }?.run { receiver.snapshotsOnly() }
     }
 }

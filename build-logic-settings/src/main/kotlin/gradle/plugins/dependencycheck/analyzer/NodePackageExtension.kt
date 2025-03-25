@@ -1,0 +1,27 @@
+package gradle.plugins.dependencycheck.analyzer
+
+import groovy.transform.CompileStatic
+
+/**
+ * The configuration for the Node Package Analyzer.
+ */
+import kotlinx.serialization.Serializable
+import org.owasp.dependencycheck.gradle.extension.NodePackageExtension
+
+@Serializable
+internal data class NodePackageExtension(
+    /**
+     * Sets whether the Node Package Analyzer should be used.
+     */
+    val enabled: Boolean? = null,
+    /**
+     * Sets whether the Node Package Analyzer should skip devDependencies.
+     */
+    val skipDevDependencies: Boolean? = null
+) {
+
+    fun applyTo(receiver: NodePackageExtension) {
+        enabled?.let(receiver::setEnabled)
+        skipDevDependencies?.let(receiver::setSkipDevDependencies)
+    }
+}

@@ -24,7 +24,7 @@ internal abstract class JsBenchmarkTarget : BenchmarkTarget<kotlinx.benchmark.gr
 @Serializable
 @SerialName("js")
 internal data class JsBenchmarkTargetImpl(
-    override val name: String? = null, ,
+    override val name: String? = null,
     override val workingDir: String? = null,
     override val compilation: KotlinJsIrCompilation? = null,
     val jsBenchmarksExecutor: JsBenchmarksExecutor? = null,

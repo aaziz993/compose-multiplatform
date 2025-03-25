@@ -90,11 +90,11 @@ vanniktech-maven-publish = "0.30.0"
 
 ##Java
 # in project version
-java-languageVersion = "23"
+java-languageVersion = "22"
 # in project version
-java-sourceCompatibility = "23"
+java-sourceCompatibility = "22"
 # in project version
-java-targetCompatibility = "23"
+java-targetCompatibility = "22"
 # google java format code formatter
 googleJavaFormat = "1.25.0"
 # logging
@@ -131,7 +131,7 @@ kotlin = "2.1.20"
 # ktlint code formatter
 ktlint = "1.4.1"
 # api that you can use to develop lightweight compiler plugins. KSP provides a simplified compiler plugin API that leverages the power of Kotlin while keeping the learning curve at a minimum. Compared to KAPT, annotation processors that use KSP can run up to 2x faster.
-ksp = "2.1.10-1.0.29"
+ksp = "2.1.20-1.0.31"
 # multiplatform logging
 km-logging = "2.0.3"
 # multiplatform library that provides the idiomatic and efficient way of using atomic operations in Kotlin.

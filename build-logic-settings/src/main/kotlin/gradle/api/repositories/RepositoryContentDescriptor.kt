@@ -15,7 +15,7 @@ import kotlinx.serialization.Serializable
  * @since 5.1
  */
 
-internal interface RepositoryContentDescriptor : InclusiveRepositoryContentDescriptor<org.gradle.api.artifacts.repositories.RepositoryContentDescriptor> {
+internal interface RepositoryContentDescriptor<T : org.gradle.api.artifacts.repositories.RepositoryContentDescriptor> : InclusiveRepositoryContentDescriptor<T> {
 
     /**
      * Declares that an entire group shouldn't be searched for in this repository.
@@ -96,7 +96,7 @@ internal interface RepositoryContentDescriptor : InclusiveRepositoryContentDescr
     val notForConfigurations: Set<String>?
 
     @Suppress("UnstableApiUsage")
-    override fun applyTo(receiver: org.gradle.api.artifacts.repositories.RepositoryContentDescriptor) {
+    override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
         excludeGroups?.forEach(receiver::excludeGroup)
@@ -140,4 +140,4 @@ internal data class RepositoryContentDescriptorImpl(
     override val includeModulesByRegexes: Set<Module>? = null,
     override val includeVersions: Set<Version>? = null,
     override val includeVersionsByRegexes: Set<Version>? = null,
-) : RepositoryContentDescriptor
+) : RepositoryContentDescriptor<org.gradle.api.artifacts.repositories.RepositoryContentDescriptor>

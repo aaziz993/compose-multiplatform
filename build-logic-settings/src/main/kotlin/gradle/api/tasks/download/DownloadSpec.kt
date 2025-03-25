@@ -50,7 +50,7 @@ internal interface DownloadSpec {
     val body: String?
 
     fun applyTo(receiver: DownloadSpec) {
-        spec.src(
+        receiver.src(
             src.flatMap { src ->
                 if (src.endsWith("/")) {
                     val urlLister = ApacheURLLister()
@@ -59,25 +59,25 @@ internal interface DownloadSpec {
                 else listOf(src)
             },
         )
-        spec.dest(dest)
-        quiet?.let(spec::quiet)
-        overwrite?.let(spec::overwrite)
-        onlyIfModified?.let(spec::onlyIfModified)
-        onlyIfNewer?.let(spec::onlyIfNewer)
-        compress?.let(spec::compress)
-        username?.let(spec::username)
-        password?.let(spec::password)
-        headers?.let(spec::headers)
-        preemptiveAuth?.let(spec::preemptiveAuth)
-        acceptAnyCertificate?.let(spec::acceptAnyCertificate)
-        connectTimeout?.let(spec::connectTimeout)
-        readTimeout?.let(spec::readTimeout)
-        retries?.let(spec::retries)
-        downloadTaskDir?.let(spec::downloadTaskDir)
-        tempAndMove?.let(spec::tempAndMove)
-        useETag?.let(spec::useETag)
-        cachedETagsFile?.let(spec::cachedETagsFile)
-        method?.let(spec::method)
-        body?.let(spec::body)
+        receiver.dest(dest)
+        quiet?.let(receiver::quiet)
+        overwrite?.let(receiver::overwrite)
+        onlyIfModified?.let(receiver::onlyIfModified)
+        onlyIfNewer?.let(receiver::onlyIfNewer)
+        compress?.let(receiver::compress)
+        username?.let(receiver::username)
+        password?.let(receiver::password)
+        headers?.let(receiver::headers)
+        preemptiveAuth?.let(receiver::preemptiveAuth)
+        acceptAnyCertificate?.let(receiver::acceptAnyCertificate)
+        connectTimeout?.let(receiver::connectTimeout)
+        readTimeout?.let(receiver::readTimeout)
+        retries?.let(receiver::retries)
+        downloadTaskDir?.let(receiver::downloadTaskDir)
+        tempAndMove?.let(receiver::tempAndMove)
+        useETag?.let(receiver::useETag)
+        cachedETagsFile?.let(receiver::cachedETagsFile)
+        method?.let(receiver::method)
+        body?.let(receiver::body)
     }
 }

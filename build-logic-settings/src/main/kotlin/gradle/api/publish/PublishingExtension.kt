@@ -4,7 +4,6 @@ import gradle.accessors.publishing
 import gradle.api.repositories.ArtifactRepository
 import gradle.api.repositories.ArtifactRepositoryTransformingSerializer
 import gradle.api.repositories.ExclusiveContentRepository
-
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler
@@ -44,7 +43,7 @@ internal interface PublishingExtension {
      *
      * @param configure The action to configure the container of repositories with.
      */
-    val repositories: Set<@Serializable(with = ArtifactRepositoryTransformingSerializer::class) ArtifactRepository<*>>?
+    val repositories: LinkedHashSet<@Serializable(with = ArtifactRepositoryTransformingSerializer::class) ArtifactRepository<*>>?
     val exclusiveContent: ExclusiveContentRepository?
 
     /**
@@ -77,7 +76,7 @@ internal interface PublishingExtension {
      *
      * @param configure The action or closure to configure the publications with.
      */
-    val publications: Set<@Serializable(with = PublicationTransformingSerializer::class) Publication<*>>?
+    val publications: LinkedHashSet<@Serializable(with = PublicationTransformingSerializer::class) Publication<*>>?
 
     context(project: Project)
     @Suppress("UNCHECKED_CAST")

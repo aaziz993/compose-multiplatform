@@ -47,7 +47,6 @@ internal const val PROJECT_PROPERTIES_FILE = "project.yaml"
 
 @Serializable
 internal data class ProjectProperties(
-    override val dependencies: List<@Serializable(with = DependencyTransformingSerializer::class) Dependency>? = null,
     val layout: ProjectLayout = ProjectLayout.Default,
     val group: String? = null,
     val description: String? = null,
@@ -63,6 +62,7 @@ internal data class ProjectProperties(
     val buildscript: ScriptHandler? = null,
     val pluginManagement: PluginManagement? = null,
     val dependencyResolutionManagement: DependencyResolutionManagement? = null,
+    val dependencies: List<@Serializable(with = DependencyTransformingSerializer::class) Dependency>? = null,
     val cacheRedirector: Boolean = true,
     val includes: Set<String>? = null,
     val projects: Set<ProjectDescriptor>? = null,
@@ -78,10 +78,10 @@ internal data class ProjectProperties(
     val yarnRootEnv: YarnRootEnvSpec = YarnRootEnvSpec(),
     val npm: NpmExtension = NpmExtension(),
     val compose: CMPSettings = CMPSettings(),
-    val tasks: List<@Serializable(with = TaskTransformingSerializer::class) Task>? = null,
+    val tasks: List<@Serializable(with = TaskTransformingSerializer::class) Task<*>>? = null,
     private val localPropertiesFile: String = "local.properties",
     val projectFiles: List<ProjectFile> = emptyList(),
-) : HasKotlinDependencies {
+) {
 
     @Transient
     val localProperties = Properties()

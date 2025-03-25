@@ -20,13 +20,13 @@ internal abstract class BenchmarksExtension {
 
     abstract val buildDir: String?
 
-    abstract val configurations: Set<BenchmarkConfiguration>?
+    abstract val configurations: LinkedHashSet<BenchmarkConfiguration>?
 
     abstract val kotlinCompilerVersion: String?
 
     abstract val reportsDir: String?
 
-    abstract val targets: List<@Serializable(with = BenchmarkTargetTransformingSerializer::class) BenchmarkTarget>?
+    abstract val targets: LinkedHashSet<@Serializable(with = BenchmarkTargetTransformingSerializer::class) BenchmarkTarget<*>>?
 
     context(project: Project)
     fun applyTo() =

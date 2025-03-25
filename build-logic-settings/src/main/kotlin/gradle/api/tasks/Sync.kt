@@ -3,6 +3,8 @@ package gradle.api.tasks
 import gradle.api.tasks.copy.AbstractCopyTask
 import gradle.api.tasks.copy.FileCopyDetails
 import gradle.api.tasks.copy.FromContentPolymorphicSerializer
+import gradle.api.tasks.copy.IntoContentPolymorphicSerializer
+import gradle.api.tasks.copy.Rename
 import gradle.api.tasks.util.PatternFilterableImpl
 import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.SerialName

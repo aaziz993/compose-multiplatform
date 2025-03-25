@@ -19,7 +19,7 @@ internal interface AppleProjectExtension {
 
     val sourceSets: Set<@Serializable(with = AppleSourceSetTransformingSerializer::class) AppleSourceSet>?
 
-    val targets: Set<@Serializable(with = AppleTargetTransformingSerializer::class) AppleTarget>?
+    val targets: Set<@Serializable(with = AppleTargetTransformingSerializer::class) AppleTarget<*>>?
 
     val teamID: String?
     val iosApp: IosAppTarget?

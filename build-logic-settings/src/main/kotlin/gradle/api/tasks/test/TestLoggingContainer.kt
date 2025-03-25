@@ -88,13 +88,13 @@ internal data class TestLoggingContainer(
 ) : TestLogging<TestLoggingContainer> {
 
     override fun applyTo(receiver: TestLoggingContainer) {
-        super.applyTo(logging)
+        super.applyTo(receiver)
 
-        debug?.applyTo(logging.debug)
-        info?.applyTo(logging.info)
-        lifecycle?.applyTo(logging.lifecycle)
-        warn?.applyTo(logging.warn)
-        quiet?.applyTo(logging.quiet)
-        error?.applyTo(logging.error)
+        debug?.applyTo(receiver.debug)
+        info?.applyTo(receiver.info)
+        lifecycle?.applyTo(receiver.lifecycle)
+        warn?.applyTo(receiver.warn)
+        quiet?.applyTo(receiver.quiet)
+        error?.applyTo(receiver.error)
     }
 }

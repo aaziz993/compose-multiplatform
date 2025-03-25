@@ -10,7 +10,7 @@ import org.gradle.api.Project
 @Serializable
 @SerialName("java")
 internal data class JavaBenchmarkTarget(
-    override val name: String? = null, ,
+    override val name: String? = null,
     override val workingDir: String? = null,
     val sourceSet: SourceSet? = null,
 ) : BenchmarkTarget<JavaBenchmarkTarget>() {

@@ -1,6 +1,7 @@
 import io.github.z4kn4fein.semver.Version
 import kotlinx.validation.ExperimentalBCVApi
 import org.gradle.api.services.internal.RegisteredBuildServiceProvider
+import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
 val isCI: Boolean by gradle.extra
 
@@ -26,7 +27,7 @@ plugins {
     `java-gradle-plugin`
     // Support convention plugins written in Kotlin.
     // Convention plugins are build scripts in 'src/main' that automatically become available as plugins in the main build.
-    `kotlin-dsl`
+    alias(libs.plugins.kotlin.jvm)
     // Serialization
     alias(libs.plugins.kotlin.serialization)
 }
@@ -178,6 +179,7 @@ dependencies {
     // Gradle
     // plugin
     compileOnly(libs.kotlin.gradle.plugin)
+    implementation("org.gradle.kotlin.kotlin-dsl:org.gradle.kotlin.kotlin-dsl.gradle.plugin:5.2.0")
     // Opentelemetry
     implementation(libs.bundles.opentelemetry)
     // Intellij

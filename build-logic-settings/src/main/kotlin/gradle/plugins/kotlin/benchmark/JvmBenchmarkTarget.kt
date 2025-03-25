@@ -20,7 +20,7 @@ internal abstract class JvmBenchmarkTarget<T : kotlinx.benchmark.gradle.JvmBench
 @Serializable
 @SerialName("jvm")
 internal data class JvmBenchmarkTargetImpl(
-    override val name: String? = null, ,
+    override val name: String? = null,
     override val workingDir: String? = null,
     override val jmhVersion: String? = null,
 ) : JvmBenchmarkTarget<kotlinx.benchmark.gradle.JvmBenchmarkTarget>()
