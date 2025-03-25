@@ -20,7 +20,6 @@ internal data class KotlinJvmTarget(
     override val compilerOptions: KotlinJvmCompilerOptions? = null,
     val testRuns: List<KotlinJvmTestRun>? = null,
     val mainRun: KotlinJvmRunDsl? = null,
-    val withJava: Boolean? = null,
 ) : KotlinTarget<KotlinJvmTarget>,
     HasConfigurableKotlinCompilerOptions<KotlinJvmTarget, org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompilerOptions> {
 
@@ -36,13 +35,11 @@ internal data class KotlinJvmTarget(
         mainRun?.let { mainRun ->
             receiver.mainRun(mainRun::applyTo)
         }
-
-//        if (projectProperties.kotlin.targets.none { target -> target is KotlinAndroidTarget }) {
-//            withJava?.takeIf { it }?.let { named.withJava() }
-//        }
     }
 
     context(project: Project)
     override fun applyTo() =
-        applyTo(kotlin.targets.withType<KotlinJvmTarget>(), kotlin::jvm)
+        applyTo(project.kotlin.targets.withType<KotlinJvmTarget>()) { name, action ->
+            project.kotlin.jvm(name, action::execute)
+        }
 }

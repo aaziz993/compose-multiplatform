@@ -1,6 +1,7 @@
 package gradle.plugins.kmp.android
 
 import gradle.accessors.kotlin
+import gradle.accessors.projectProperties
 import gradle.api.applyTo
 import gradle.api.trySet
 import gradle.plugins.kmp.KotlinJvmAndroidCompilation
@@ -8,6 +9,7 @@ import gradle.plugins.kmp.KotlinJvmAndroidCompilationTransformingSerializer
 import gradle.plugins.kmp.KotlinTarget
 import gradle.plugins.kmp.jvm.KotlinJvmCompilerOptions
 import gradle.plugins.kotlin.HasConfigurableKotlinCompilerOptions
+import gradle.project.ProjectType
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -31,6 +33,7 @@ internal data class KotlinAndroidTarget(
      * If set to null, which can also be done with [publishAllLibraryVariants],
      * all library variants will be published, but not test or application variants. */
     val publishLibraryVariants: List<String>? = null,
+    val setPublishLibraryVariants: List<String>? = null,
     /** Set up all of the Android library variants to be published from this target's project within the default publications, which are
      * set up if the `maven-publish` Gradle plugin is applied. This overrides the variants chosen with [publishLibraryVariants] */
     val publishAllLibraryVariants: Boolean? = null,
@@ -45,18 +48,21 @@ internal data class KotlinAndroidTarget(
         super<KotlinTarget>.applyTo(receiver)
         super<HasConfigurableKotlinCompilerOptions>.applyTo(receiver)
 
-        // Apply only for library
-        publishLibraryVariants?.let { publishLibraryVariants ->
-            receiver.publishLibraryVariants = publishLibraryVariants
-        }
+        if (project.projectProperties.type == ProjectType.LIB) {
+            publishLibraryVariants?.toTypedArray()?.let(receiver::publishLibraryVariants)
 
-        publishAllLibraryVariants?.takeIf { it }?.run { receiver.publishAllLibraryVariants() }
-        receiver::publishLibraryVariantsGroupedByFlavor trySet publishLibraryVariantsGroupedByFlavor
+            setPublishLibraryVariants?.let { setPublishLibraryVariants ->
+                receiver.publishLibraryVariants = setPublishLibraryVariants
+            }
+
+            publishAllLibraryVariants?.takeIf { it }?.run { receiver.publishAllLibraryVariants() }
+            receiver::publishLibraryVariantsGroupedByFlavor trySet publishLibraryVariantsGroupedByFlavor
+        }
     }
 
     context(project: Project)
     override fun applyTo() =
-        applyTo(kotlin.targets.withType<KotlinAndroidTarget>()) { name, action ->
+        applyTo(project.kotlin.targets.withType<KotlinAndroidTarget>()) { name, action ->
             kotlin::androidTarget
         }
 }

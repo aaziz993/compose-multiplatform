@@ -3,6 +3,14 @@ layout: FLAT
 group: io.github.aaziz993
 
 plugins:
+  # Software Composition Analysis (SCA) tool that attempts to detect publicly disclosed vulnerabilities contained within a project's dependencies. It does this by determining if there is a Common Platform Enumeration (CPE) identifier for a given dependency. If found, it will generate a report linking to the associated CVE entries.
+  dependencyCheck:
+    enabled: true
+
+  # Generating BuildConstants for any kind of Gradle projects: Java, Kotlin, Android, Groovy, etc. Designed for KTS scripts, with experimental support for Kotlin's multi-platform plugin
+  buildConfig:
+    enabled: true
+
   # Can format <antlr | c | c# | c++ | css | flow | graphql | groovy | html | java | javascript | json | jsx | kotlin | less | license headers | markdown | objective-c | protobuf | python | scala | scss | shell | sql | typeScript | vue | yaml | anything> using <gradle | maven | sbt | anything>.
   spotless:
     enabled: true
@@ -248,10 +256,6 @@ plugins:
       'room.incremental': 'true'
       'room.expandProjection': 'true'
       'room.generateKotlin': 'true'
-
-  # Generating BuildConstants for any kind of Gradle projects: Java, Kotlin, Android, Groovy, etc. Designed for KTS scripts, with experimental support for Kotlin's multi-platform plugin
-  buildConfig:
-    enabled: true
 
   # Adapts Kotlin to the requirements of those frameworks and makes classes annotated with a specific annotation and their members open
   allOpen:

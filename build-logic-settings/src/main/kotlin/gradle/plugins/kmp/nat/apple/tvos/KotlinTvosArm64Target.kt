@@ -22,5 +22,5 @@ internal data class KotlinTvosArm64Target(
 
     context(project: Project)
     override fun applyTo() =
-        super.applyTo(kotlin.targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>(), kotlin::tvosArm64)
+        super.applyTo(project.kotlin.targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>(), kotlin::tvosArm64)
 }

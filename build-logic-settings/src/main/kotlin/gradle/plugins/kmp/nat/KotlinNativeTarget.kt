@@ -36,5 +36,5 @@ internal data class KotlinNativeTargetImpl(
 
     context(project: Project)
     override fun applyTo() =
-        applyTo(kotlin.targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>()) { _, _ -> }
+        applyTo(project.kotlin.targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>()) { _, _ -> }
 }

@@ -77,6 +77,7 @@ import plugins.apivalidation.ApiValidationPlugin
 import plugins.apple.ApplePlugin
 import plugins.buildconfig.BuildConfigPlugin
 import plugins.cmp.CMPPlugin
+import plugins.dependencycheck.DependencyCheckPlugin
 import plugins.develocity.DevelocityPlugin
 import plugins.doctor.DoctorPlugin
 import plugins.dokka.DokkaPlugin
@@ -128,6 +129,7 @@ public class ProjectPlugin : Plugin<Project> {
 
             //  Don't change order!
             project.plugins.apply(DoctorPlugin::class.java)
+            project.plugins.apply(DependencyCheckPlugin::class.java)
             project.plugins.apply(BuildConfigPlugin::class.java)
             project.plugins.apply(SpotlessPlugin::class.java)
             project.plugins.apply(KoverPlugin::class.java)

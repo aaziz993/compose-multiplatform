@@ -60,7 +60,7 @@ internal data class KotlinTargetIml(
 
     context(project: Project)
     override fun applyTo() =
-        applyTo(kotlin.targets) { _, _ -> }
+        applyTo(project.kotlin.targets) { _, _ -> }
 }
 
 @Suppress("UNCHECKED_CAST")

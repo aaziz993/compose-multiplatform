@@ -29,7 +29,7 @@ internal data class KotlinSettings(
     override val coreLibrariesVersion: String? = null,
     override val explicitApi: ExplicitApiMode? = null,
     override val compilerOptions: KotlinCommonCompilerOptionsImpl? = null,
-    val targets: Set<@Serializable(with = KotlinTargetTransformingSerializer::class) KotlinTarget> = emptySet(),
+    val targets: Set<@Serializable(with = KotlinTargetTransformingSerializer::class) KotlinTarget<*>> = emptySet(),
     val hierarchy: Set<@Serializable(with = HierarchyAliasTransformingSerializer::class) HierarchyGroup> = emptySet(),
     val sourceSets: Set<@Serializable(with = KotlinSourceSetTransformingSerializer::class) KotlinSourceSet> = emptySet(),
     val cocoapods: CocoapodsSettings = CocoapodsSettings(),

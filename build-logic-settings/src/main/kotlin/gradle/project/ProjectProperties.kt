@@ -50,7 +50,7 @@ internal const val PROJECT_PROPERTIES_FILE = "project.yaml"
 @Serializable
 internal data class ProjectProperties(
     val type: ProjectType = ProjectType.LIB,
-    val layout: ProjectLayout = ProjectLayout.DEFAULT,
+    val layout: ProjectLayout = ProjectLayout.Default,
     val group: String? = null,
     val description: String? = null,
     val version: VersionSettings = VersionSettings(),

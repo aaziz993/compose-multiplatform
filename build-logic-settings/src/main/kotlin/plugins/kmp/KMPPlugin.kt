@@ -43,8 +43,8 @@ internal class KMPPlugin : Plugin<Project> {
     @Suppress("UNCHECKED_CAST")
     private fun Project.adjustSourceSets() {
         kotlin {
-            when (projectProperties.layout) {
-                ProjectLayout.FLAT -> {
+            when (val layout = projectProperties.layout) {
+                is ProjectLayout.Flat -> {
                     val androidTargets = kotlin.targets.filterIsInstance<KotlinAndroidTarget>()
                     kotlin.sourceSets.configureEach { sourceSet ->
                         var targetPart: String
@@ -79,7 +79,7 @@ internal class KMPPlugin : Plugin<Project> {
                                 }
                                 else {
                                     srcPrefixPart =
-                                        "$prefix${restPart.removePrefix(prefix).prefixIfNotEmpty("+")}"
+                                        "$prefix${restPart.removePrefix(prefix).prefixIfNotEmpty(layout.androidVariantDelimiter)}"
                                     resourcesPrefixPart = srcPrefixPart
                                 }
                             }
@@ -89,7 +89,7 @@ internal class KMPPlugin : Plugin<Project> {
                             val sourceSetNameParts = "(.*[a-z\\d])([A-Z]\\w+)$".toRegex().matchEntire(sourceSet.name)!!
 
                             targetPart = sourceSetNameParts.groupValues[1].let { targetName ->
-                                if (targetName == "common") "" else "@$targetName"
+                                if (targetName == "common") "" else "${layout.targetDelimiter}$targetName"
                             }
 
                             val compilationName = sourceSetNameParts.groupValues[2].decapitalized()
@@ -106,7 +106,7 @@ internal class KMPPlugin : Plugin<Project> {
 
                         sourceSet.kotlin.replace("src/${sourceSet.name}/kotlin", "$srcPrefixPart$targetPart")
                         sourceSet.resources.replace("src/${sourceSet.name}/resources", "${resourcesPrefixPart}Resources$targetPart".decapitalized())
-                        sourceSetsToComposeResourcesDirs[sourceSet] = layout.projectDirectory.dir("${resourcesPrefixPart}ComposeResources$targetPart".decapitalized())
+                        sourceSetsToComposeResourcesDirs[sourceSet] = project.layout.projectDirectory.dir("${resourcesPrefixPart}ComposeResources$targetPart".decapitalized())
                     }
                 }
 

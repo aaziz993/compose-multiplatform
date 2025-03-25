@@ -87,5 +87,5 @@ internal data class KotlinJsTargetDslImpl(
 
     context(project: Project)
     override fun applyTo() =
-        applyTo(kotlin.targets.withType<org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl>()) { _, _ -> }
+        applyTo(project.kotlin.targets.withType<org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl>()) { _, _ -> }
 }

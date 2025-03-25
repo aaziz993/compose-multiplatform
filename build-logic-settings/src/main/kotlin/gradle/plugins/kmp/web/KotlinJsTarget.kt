@@ -24,5 +24,5 @@ internal data class KotlinJsTarget(
 
     context(project: Project)
     override fun applyTo() =
-        super.applyTo(kotlin.targets.withType<org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl>(), kotlin::js)
+        super.applyTo(project.kotlin.targets.withType<org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl>(), kotlin::js)
 }

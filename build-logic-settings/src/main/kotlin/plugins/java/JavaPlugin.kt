@@ -32,7 +32,7 @@ internal class JavaPlugin : Plugin<Project> {
                 return@with
             }
 
-            if (projectProperties.kotlin.targets.any { target -> target is KotlinJvmTarget && target.withJava == true }) {
+            if (projectProperties.kotlin.targets.any { target -> target is KotlinJvmTarget }) {
                 projectProperties.java.applyTo()
             }
 
@@ -85,7 +85,7 @@ internal class JavaPlugin : Plugin<Project> {
          */
         val commonJavaCodegenTest = kotlin.sourceSets.create("commonJavaCodegenTest") {
             when (projectProperties.layout) {
-                ProjectLayout.FLAT -> kotlin.srcDir("test")
+                is ProjectLayout.Flat -> kotlin.srcDir("test")
                 else -> kotlin.srcDir("src/commonTest/kotlin")
             }
         }

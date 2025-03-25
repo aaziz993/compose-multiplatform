@@ -61,7 +61,7 @@ internal data class ResourcesExtension(
 
             // Adjust composeResources to match flatten directory structure
             when (project.projectProperties.layout) {
-                ProjectLayout.FLAT -> project.kotlin.sourceSets.forEach { sourceSet ->
+                is ProjectLayout.Flat -> project.kotlin.sourceSets.forEach { sourceSet ->
                     project.compose.resources.customDirectory(
                         sourceSet.name,
                         project.provider { project.sourceSetsToComposeResourcesDirs[sourceSet]!! },
