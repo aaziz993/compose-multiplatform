@@ -23,7 +23,7 @@ internal data class MavenPomOrganization(
 ) {
 
     fun applyTo(receiver: MavenPomOrganization) {
-        organization.name tryAssign name
-        organization.url tryAssign url
+        receiver.name tryAssign name
+        receiver.url tryAssign url
     }
 }

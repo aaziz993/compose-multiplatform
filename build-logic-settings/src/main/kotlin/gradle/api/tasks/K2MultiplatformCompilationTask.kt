@@ -21,7 +21,7 @@ internal interface K2MultiplatformCompilationTask<
 
     val compilerOptions: KotlinCommonCompilerOptions<CO>?
 
-    context(project: Project)
+    context(Project)
     @Suppress("UNCHECKED_CAST")
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
@@ -52,7 +52,7 @@ internal data class K2MultiplatformCompilationTaskImpl(
     org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerOptions,
     > {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<org.jetbrains.kotlin.gradle.tasks.K2MultiplatformCompilationTask>())
 }

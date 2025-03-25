@@ -33,7 +33,7 @@ internal interface Signer {
      */
     val sign: Set<@Serializable(with = SignContentPolymorphicSerializer::class) Any>?
 
-    context(project: Project)
+    context(Project)
     fun applyTo(
         signConfigurations: (Array<Configuration>) -> Unit,
         signPublications: (Array<Publication>) -> Unit,
@@ -85,7 +85,7 @@ internal object SignContentPolymorphicSerializer : JsonContentPolymorphicSeriali
         }
 }
 
-context(project: Project)
+context(Project)
 private fun List<String>.resolveReferences(name: String): List<String> {
     val reference = "$$name."
     return filter { value -> value.startsWith(reference) }

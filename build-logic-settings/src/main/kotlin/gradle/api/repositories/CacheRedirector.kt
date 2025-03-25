@@ -16,6 +16,7 @@ import org.gradle.api.artifacts.repositories.IvyArtifactRepository
 import org.gradle.api.artifacts.repositories.MavenArtifactRepository
 import org.gradle.api.initialization.Settings
 import org.gradle.internal.cc.base.logger
+import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.withGroovyBuilder
 import org.gradle.util.GradleVersion
 
@@ -24,31 +25,31 @@ internal object CacheRedirector {
     /**
      * Substitutes repositories in buildScript { } block.
      */
-    context(settings: Settings)
+    context(Settings)
     @Suppress("UnstableApiUsage")
     fun applyTo() {
-        if (!projectProperties.cacheRedirector) {
+        if (!settings.projectProperties.cacheRedirector) {
             return
         }
 
-        logger.info("Redirecting repositories for settings in ${settingsDir.absolutePath}")
+        logger.info("Redirecting repositories for settings in ${settings.settingsDir.absolutePath}")
 
-        pluginManagement.repositories.redirect()
-        dependencyResolutionManagement.repositories.redirect()
-        buildscript.repositories.redirect()
+        settings.pluginManagement.repositories.redirect()
+        settings.dependencyResolutionManagement.repositories.redirect()
+        settings.buildscript.repositories.redirect()
     }
 
-    context(project: Project)
+    context(Project)
     fun applyTo() {
-        if (!projectProperties.cacheRedirector) {
+        if (!project.projectProperties.cacheRedirector) {
             return
         }
 
-        buildscript.repositories.redirect()
-        repositories.redirect()
-        overrideNativeCompilerDownloadUrl()
-        configureYarnAndNodeRedirects()
-        addCheckRepositoriesTask()
+        project.buildscript.repositories.redirect()
+        project.repositories.redirect()
+        project.overrideNativeCompilerDownloadUrl()
+        project.configureYarnAndNodeRedirects()
+        project.addCheckRepositoriesTask()
     }
 }
 
@@ -274,7 +275,7 @@ private fun Project.configureYarnAndNodeRedirects() =
  * Check repositories are overridden section
  */
 private fun Project.addCheckRepositoriesTask() {
-    val checkRepoTask = tasks.register("checkRepositories") {
+    val checkRepoTask = project.tasks.register("checkRepositories") {
         if (GradleVersion.current() >= GradleVersion.version("7.4")) {
             withGroovyBuilder { "notCompatibleWithConfigurationCache"("Uses project in task action") }
         }
@@ -320,7 +321,7 @@ private fun Project.addCheckRepositoriesTask() {
         }
     }
 
-    tasks.configureEach {
+    project.tasks.configureEach {
         if (name == "checkBuild") {
             dependsOn(checkRepoTask)
         }

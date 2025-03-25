@@ -46,7 +46,7 @@ internal data class KarakumGenerate(
     val extensionDirectory: String? = null,
 ) : DefaultTask<KarakumGenerate>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: KarakumGenerate) =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("karakum").id) {
             super.applyTo(receiver)
@@ -107,7 +107,7 @@ internal data class KarakumGenerate(
             }
         }
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<KarakumGenerate>())
 }

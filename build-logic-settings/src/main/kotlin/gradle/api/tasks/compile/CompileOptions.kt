@@ -35,7 +35,7 @@ internal data class CompileOptions(
     val headerOutputDirectory: String? = null,
 ) {
 
-    context(project: Project)
+    context(Project)
     @Suppress("UnstableApiUsage")
     fun applyTo(receiver: CompileOptions) {
         failOnError?.let(receiver::setFailOnError)

@@ -96,7 +96,7 @@ internal interface DoctorExtension {
      */
     val javaHome: JavaHomeHandler?
 
-    context(project: Project)
+    context(Project)
     fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("doctor").id) {
             project.doctor.disallowMultipleDaemons tryAssign disallowMultipleDaemons

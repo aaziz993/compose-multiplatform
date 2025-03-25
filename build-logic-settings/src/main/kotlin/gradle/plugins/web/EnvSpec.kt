@@ -39,7 +39,7 @@ internal abstract class EnvSpec {
      */
     abstract val command: String?
 
-    context(project: Project)
+    context(Project)
     open fun applyTo(receiver: EnvSpec<*>) {
         receiver.download tryAssign download
         receiver.downloadBaseUrl tryAssign downloadBaseUrl

@@ -68,7 +68,7 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
      */
     abstract val toggleOffOnDisable: Boolean?
 
-    context(project: Project)
+    context(Project)
     open fun applyTo(receiver: T) {
         lineEnding?.let(receiver::setLineEndings)
         ratchetFrom?.let(receiver::setRatchetFrom)
@@ -137,7 +137,7 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
         toggleOffOnDisable?.takeIf { it }?.run { receiver.toggleOffOnDisable() }
     }
 
-    context(project: Project)
+    context(Project)
     abstract fun applyTo()
 
     private object IntentContentPolymorphicSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
@@ -282,7 +282,7 @@ internal data class FormatExtensionImpl(
     val name: String? = null,
 ) : FormatExtension<com.diffplug.gradle.spotless.FormatExtension>() {
 
-    context(project: Project)
+    context(Project)
     @Suppress("UNCHECKED_CAST")
     override fun applyTo() =
         if (name.isNullOrBlank()) {

@@ -9,7 +9,7 @@ internal data class JvmApplicationBuildTypes(
     val release: JvmApplicationBuildType? = null
 ) {
 
-    context(project: Project)
+    context(Project)
     fun applyTo(receiver: JvmApplicationBuildTypes) {
         release?.applyTo(receiver.release)
     }

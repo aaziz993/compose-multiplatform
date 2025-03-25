@@ -18,7 +18,7 @@ internal data class KtorfitSettings(
     override val enabled: Boolean = true
 ) : KtorfitGradleConfiguration, EnabledSettings {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("ktorfit").id) {
             super.applyTo()

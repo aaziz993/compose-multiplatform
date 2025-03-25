@@ -27,7 +27,7 @@ internal data class KotlinWebpack(
     val generateConfigOnly: Boolean? = null,
 ) {
 
-    context(project: Project)
+    context(Project)
     @Suppress("UnstableApiUsage")
     fun applyTo(receiver: KotlinWebpack) {
         webpack::mode trySet mode

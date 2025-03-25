@@ -10,7 +10,6 @@ import gradle.plugins.android.LibraryRequest
 import gradle.plugins.android.Lint
 import gradle.plugins.android.Packaging
 import gradle.plugins.android.PrivacySandbox
-import gradle.plugins.android.Splits
 import gradle.plugins.android.application.bundle.Bundle
 import gradle.plugins.android.compile.CompileOptions
 import gradle.plugins.android.compile.CompileSdkAddon
@@ -22,6 +21,7 @@ import gradle.plugins.android.flavor.ProductFlavorTransformingSerializer
 import gradle.plugins.android.signing.SigningConfigImpl
 import gradle.plugins.android.signing.SigningConfigTransformingSerializer
 import gradle.plugins.android.sourceset.AndroidSourceSet
+import gradle.plugins.android.split.Splits
 import gradle.plugins.android.test.TestCoverage
 import gradle.plugins.android.test.TestFixtures
 import gradle.plugins.android.test.TestOptions
@@ -84,7 +84,7 @@ internal data class BaseAppModuleExtension(
     override val experimentalProperties: SerializableAnyMap? = null,
 ) : AppExtension(), InternalApplicationExtension {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() {
         super<AppExtension>.applyTo()
         super<InternalApplicationExtension>.applyTo()

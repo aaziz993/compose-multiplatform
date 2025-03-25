@@ -74,7 +74,7 @@ internal interface TestedExtensionDsl {
      */
     val testFixtures: TestFixtures?
 
-    context(project: Project)
+    context(Project)
     @Suppress("UnstableApiUsage")
     fun applyTo() {
         val extension = project.android as TestedExtension

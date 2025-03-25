@@ -242,7 +242,7 @@ internal abstract class DependencyCheckExtension {
      */
     abstract val cache: CacheExtension?
 
-    context(project: Project)
+    context(Project)
     open fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("dependencycheck").id) {
             scanBuildEnv?.let(project.dependencyCheck::setScanBuildEnv)

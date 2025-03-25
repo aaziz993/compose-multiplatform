@@ -29,6 +29,6 @@ internal interface KotlinExecution<T : KotlinExecution<*>> : ProjectNamed<T> {
      */
     val executionSource: ExecutionSource?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T)
 }

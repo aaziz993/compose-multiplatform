@@ -42,7 +42,7 @@ internal interface ApplicationProductFlavor<T : ApplicationProductFlavor> :
     /** Whether this product flavor should be selected in Studio by default  */
     val isDefault: Boolean?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super<ApplicationBaseFlavor>.applyTo(receiver)
         super<ProductFlavorDsl>.applyTo(receiver)

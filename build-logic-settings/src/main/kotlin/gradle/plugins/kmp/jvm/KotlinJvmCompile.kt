@@ -42,7 +42,7 @@ internal interface KotlinJvmCompile<T : org.jetbrains.kotlin.gradle.tasks.Kotlin
      */
     val jvmTargetValidationMode: JvmTargetValidationMode?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super<BaseKotlinCompile>.applyTo(receiver)
         super<KotlinCompilationTask>.applyTo(receiver)
@@ -92,7 +92,7 @@ internal data class KotlinJvmCompileImpl(
     override val kotlinJavaToolchain: KotlinJavaToolchain?
 ) : KotlinJvmCompile<org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile> {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile>())
 }

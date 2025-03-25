@@ -46,11 +46,11 @@ internal data class MavenPomMailingList(
 ) {
 
     fun applyTo(receiver: MavenPomMailingList) {
-        list.name tryAssign name
-        list.subscribe tryAssign subscribe
-        list.unsubscribe tryAssign unsubscribe
-        list.post tryAssign post
-        list.archive tryAssign archive
-        list.otherArchives tryAssign otherArchives
+        receiver.name tryAssign name
+        receiver.subscribe tryAssign subscribe
+        receiver.unsubscribe tryAssign unsubscribe
+        receiver.post tryAssign post
+        receiver.archive tryAssign archive
+        receiver.otherArchives tryAssign otherArchives
     }
 }

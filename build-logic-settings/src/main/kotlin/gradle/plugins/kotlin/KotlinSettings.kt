@@ -30,13 +30,13 @@ internal data class KotlinSettings(
     override val coreLibrariesVersion: String? = null,
     override val explicitApi: ExplicitApiMode? = null,
     override val compilerOptions: KotlinCommonCompilerOptionsImpl? = null,
-    val targets: Set<@Serializable(with = KotlinTargetTransformingSerializer::class) KotlinTarget<*>> = emptySet(),
+    val targets: LinkedHashSet<@Serializable(with = KotlinTargetTransformingSerializer::class) KotlinTarget<*>> = emptySet(),
     val hierarchy: Set<@Serializable(with = HierarchyAliasTransformingSerializer::class) HierarchyGroup> = emptySet(),
-    val sourceSets: Set<@Serializable(with = KotlinSourceSetTransformingSerializer::class) KotlinSourceSet> = emptySet(),
+    val sourceSets: LinkedHashSet<@Serializable(with = KotlinSourceSetTransformingSerializer::class) KotlinSourceSet> = emptySet(),
     val cocoapods: CocoapodsSettings = CocoapodsSettings(),
 ) : KotlinMultiplatformExtension {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("kotlin.multiplatform").id) {
             super.applyTo()

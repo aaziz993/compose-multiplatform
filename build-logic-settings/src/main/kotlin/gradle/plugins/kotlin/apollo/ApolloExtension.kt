@@ -18,7 +18,7 @@ internal interface ApolloExtension {
     val kotlinSourceSetServices: Set<KotlinSourceSetService>?
     val services: Set<Service>?
 
-    context(project: Project)
+    context(Project)
     fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("apollo").id) {
             processors?.forEach { (schema, service, packageName) ->

@@ -23,7 +23,7 @@ internal data class BundleCodeTransparency(
     val signing: SigningConfigDslImpl? = null,
 ) {
 
-    context(project: Project)
+    context(Project)
     @Suppress("UnstableApiUsage")
     fun applyTo(receiver: BundleCodeTransparency) {
         signing?.applyTo(receiver.signing)

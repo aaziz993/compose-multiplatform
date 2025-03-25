@@ -69,7 +69,7 @@ internal data class DefaultConfig(
     LibraryDefaultConfig<DefaultConfig>,
     TestDefaultConfig<DefaultConfig> {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: DefaultConfig) {
         super<ApplicationDefaultConfig>.applyTo(receiver)
         super<DynamicFeatureDefaultConfig>.applyTo(receiver)

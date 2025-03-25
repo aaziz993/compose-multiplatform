@@ -14,7 +14,7 @@ internal data class KotlinJsNodeDsl(
     val passProcessArgvToMainFunction: Boolean? = null,
 ) : KotlinJsSubTargetDsl {
 
-    context(project: Project)
+    context(Project)
     @OptIn(ExperimentalDistributionDsl::class, ExperimentalMainFunctionArgumentsDsl::class)
     fun applyTo(node: KotlinJsNodeDsl, distributionName: String) {
         distribution?.let { distribution ->

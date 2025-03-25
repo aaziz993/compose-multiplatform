@@ -39,7 +39,7 @@ internal data class KotlinGradleExtension(
     override val toggleOffOnDisable: Boolean? = null,
 ) : BaseKotlinExtension<KotlinGradleExtension>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() = project.spotless.kotlinGradle {
         super.applyTo(this)
     }

@@ -34,7 +34,7 @@ internal data class ApolloPushSchemaTask(
     val subgraph: String? = null,
 ) : DefaultTask<ApolloPushSchemaTask>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: ApolloPushSchemaTask) {
         super.applyTo(receiver)
 
@@ -47,7 +47,7 @@ internal data class ApolloPushSchemaTask(
         receiver.subgraph tryAssign subgraph
     }
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<ApolloPushSchemaTask>())
 }

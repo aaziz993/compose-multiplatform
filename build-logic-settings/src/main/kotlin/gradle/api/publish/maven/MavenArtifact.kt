@@ -9,7 +9,7 @@ import org.gradle.api.publish.maven.MavenArtifact
  */
 @Serializable
 internal data class MavenArtifact(
-    override val builtBy: List<String>? = null,
+    override val builtBy: Set<String>? = null,
     /**
      * Sets the extension used to publish the artifact file.
      * @param extension The extension.

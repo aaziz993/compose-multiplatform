@@ -26,7 +26,7 @@ internal interface RpcExtension {
      */
     val strict: RpcStrictModeExtension?
 
-    context(project: Project)
+    context(Project)
     @OptIn(RpcDangerousApi::class)
     fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("rpc").id) {

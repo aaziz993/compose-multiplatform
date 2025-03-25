@@ -22,7 +22,7 @@ internal data class KoverSettings(
     val dependenciesFromSubprojects: Boolean = true,
 ) : KoverExtension, EnabledSettings {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("kover").id) {
             super.applyTo()

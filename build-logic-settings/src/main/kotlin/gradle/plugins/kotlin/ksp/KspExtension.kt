@@ -33,7 +33,7 @@ internal interface KspExtension {
     // Treat all warning as errors.
     val allWarningsAsErrors: Boolean?
 
-    context(project: Project)
+    context(Project)
     fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("ksp").id) {
             project.ksp.useKsp2 tryAssign useKsp2

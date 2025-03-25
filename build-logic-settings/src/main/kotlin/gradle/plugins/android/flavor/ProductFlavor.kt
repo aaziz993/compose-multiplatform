@@ -72,7 +72,7 @@ internal data class ProductFlavor(
     LibraryProductFlavor<com.android.build.gradle.internal.dsl.ProductFlavor>,
     TestProductFlavor<com.android.build.gradle.internal.dsl.ProductFlavor> {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: com.android.build.gradle.internal.dsl.ProductFlavor) {
         super<ApplicationProductFlavor>.applyTo(receiver)
         super<DynamicFeatureProductFlavor>.applyTo(receiver)

@@ -24,7 +24,7 @@ internal data class KotlinMingwX64Target(
     override val testRuns: List<@Serializable(with = KotlinNativeHostTestRunTransformingSerializer::class) KotlinNativeHostTestRun>? = null,
 ) : KotlinNativeTargetWithHostTests(), KotlinMingwTarget {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         super.applyTo(project.kotlin.targets.withType<KotlinNativeTarget>(), kotlin::mingwX64)
 }

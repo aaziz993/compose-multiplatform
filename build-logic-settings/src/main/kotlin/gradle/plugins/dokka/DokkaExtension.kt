@@ -171,7 +171,7 @@ internal interface DokkaExtension {
      * Some plugins can be configured via parameters, and those parameters are stored in this
      * container.
      */
-    val pluginsConfiguration: LinkedHashSet<@Serializable(with = DokkaPluginParametersBaseSpecTransformingSerializer::class) DokkaPluginParametersBaseSpec<in org.jetbrains.dokka.gradle.engine.plugins.DokkaPluginParametersBaseSpec>>?
+    val pluginsConfiguration: LinkedHashSet<@Serializable(with = DokkaPluginParametersBaseSpecTransformingSerializer::class) DokkaPluginParametersBaseSpec<org.jetbrains.dokka.gradle.engine.plugins.DokkaPluginParametersBaseSpec>>?
 
     /**
      * The default version of Dokka dependencies that are used at runtime during generation.
@@ -245,7 +245,7 @@ internal interface DokkaExtension {
     // running Dokka Generator **requires** an isolated classpath.
     val dokkaGeneratorIsolation: WorkerIsolation?
 
-    context(project: Project)
+    context(Project)
     fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("dokka").id) {
             project.dokka.basePublicationsDirectory tryAssign basePublicationsDirectory?.let(project.layout.projectDirectory::dir)

@@ -33,9 +33,9 @@ internal data class MavenPomLicense(
 ) {
 
     fun applyTo(receiver: MavenPomLicense) {
-        license.name tryAssign name
-        license.url tryAssign url
-        license.distribution tryAssign distribution
-        license.comments tryAssign comments
+        receiver.name tryAssign name
+        receiver.url tryAssign url
+        receiver.distribution tryAssign distribution
+        receiver.comments tryAssign comments
     }
 }

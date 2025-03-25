@@ -36,7 +36,7 @@ internal data class ManagedDevices(
     val groups: Set<DeviceGroup>? = null,
 ) {
 
-    context(project: Project)
+    context(Project)
     fun applyTo(receiver: ManagedDevices) {
         allDevices?.forEach { device ->
             device.applyTo(receiver.allDevices)

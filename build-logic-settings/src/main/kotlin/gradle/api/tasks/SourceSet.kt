@@ -88,7 +88,7 @@ internal data class SourceSet(
     val allSource: SourceDirectorySet? = null,
 ) : ProjectNamed<SourceSet> {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: SourceSet) {
         compileClasspath?.toTypedArray()?.let(receiver::compiledBy)
         annotationProcessorPath?.toTypedArray()?.let(project::files)?.let(receiver::setAnnotationProcessorPath)

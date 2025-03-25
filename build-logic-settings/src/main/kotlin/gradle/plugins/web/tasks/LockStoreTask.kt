@@ -17,7 +17,7 @@ internal abstract class LockStoreTask<T : org.jetbrains.kotlin.gradle.targets.js
 
     abstract val lockFileAutoReplace: Boolean?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
@@ -53,7 +53,7 @@ internal data class LockStoreTaskImpl(
     override val name: String? = null,
 ) : LockStoreTask<org.jetbrains.kotlin.gradle.targets.js.npm.LockStoreTask>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<org.jetbrains.kotlin.gradle.targets.js.npm.LockStoreTask>())
 }

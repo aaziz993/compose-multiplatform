@@ -116,13 +116,13 @@ internal data class MavenPom(
     val properties: Map<String, String>? = null,
 ) {
 
-    context(project: Project)
+    context(Project)
     fun applyTo(receiver: MavenPom) {
         packaging?.let(receiver::setPackaging)
         receiver.name = name ?: project.name
         receiver.description = description ?: project.description
         receiver.url tryAssign (url
-            ?: project.projectProperties.scm?.url
+            ?: project.projectProperties.remote?.url
                 ?.trimEnd('/')
                 ?.addSuffix("/")
                 ?.addSuffix(project.projectDir.toRelativeString(project.settings.settingsDir)))

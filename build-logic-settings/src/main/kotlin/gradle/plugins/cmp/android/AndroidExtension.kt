@@ -13,7 +13,7 @@ import org.gradle.api.Project
 @Serializable
 internal class AndroidExtension {
 
-    context(project: Project)
+    context(Project)
     fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("compose.multiplatform").id) {
             project.compose.android {

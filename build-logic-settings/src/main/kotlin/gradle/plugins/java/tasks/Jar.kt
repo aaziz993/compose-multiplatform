@@ -51,7 +51,7 @@ internal abstract class Jar<T : org.gradle.api.tasks.bundling.Jar> : Zip<T>() {
 
     abstract val metaInf: CopySpecImpl?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
@@ -113,7 +113,7 @@ internal data class JarImpl(
     override val setExcludes: Set<String>? = null,
 ) : Jar<org.gradle.api.tasks.bundling.Jar>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<org.gradle.api.tasks.bundling.Jar>())
 }

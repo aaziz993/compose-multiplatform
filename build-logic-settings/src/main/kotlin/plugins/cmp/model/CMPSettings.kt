@@ -20,7 +20,7 @@ internal data class CMPSettings(
     override val enabled: Boolean = false
 ) : EnabledSettings {
 
-    context(project: Project)
+    context(Project)
     fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("compose.multiplatform").id) {
             desktop.applyTo()

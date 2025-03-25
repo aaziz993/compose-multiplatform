@@ -13,7 +13,7 @@ internal data class GnupgSignatory(
     val settings: GnupgSettings
 ) : Signatory {
 
-    context(project: Project)
+    context(Project)
     override fun toSignatory(): org.gradle.plugins.signing.signatory.Signatory =
         GnupgSignatory(project, name, settings.toGnupgSettings())
 }

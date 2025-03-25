@@ -104,7 +104,7 @@ internal interface JavaForkOptions<T : JavaForkOptions> : ProcessForkOptions<T> 
     val allJvmArgs: List<String>?
     val setAllJvmArgs: List<String>?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 

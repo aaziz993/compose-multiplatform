@@ -35,7 +35,7 @@ internal interface AppleTarget<T : org.jetbrains.gradle.apple.targets.AppleTarge
 
     val productName: String?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         receiver::bridgingHeader trySet bridgingHeader
 

@@ -42,7 +42,7 @@ internal interface TestBaseFlavor<T : TestBaseFlavor> : BaseFlavor<T>, TestVaria
      */
     val maxSdk: Int?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super<BaseFlavor>.applyTo(receiver)
         super<TestVariantDimension>.applyTo(receiver)

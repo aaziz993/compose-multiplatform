@@ -30,7 +30,7 @@ internal data class ApolloGenerateKspProcessorTask(
     val serviceName: String? = null,
 ) : DefaultTask<ApolloGenerateKspProcessorTask>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: ApolloGenerateKspProcessorTask) {
         super.applyTo(receiver)
 
@@ -40,7 +40,7 @@ internal data class ApolloGenerateKspProcessorTask(
         receiver.serviceName tryAssign serviceName
     }
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<ApolloGenerateKspProcessorTask>())
 }

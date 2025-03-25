@@ -34,7 +34,7 @@ internal data class JvmMacOSPlatformSettings(
     val infoPlist: InfoPlistSettings? = null,
 ) : AbstractMacOSPlatformSettings<JvmMacOSPlatformSettings>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: JvmMacOSPlatformSettings) {
         super.applyTo(receiver)
 

@@ -21,7 +21,7 @@ internal data class KspSettings(
     override val enabled: Boolean = true,
 ) : KspExtension, EnabledSettings {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("ksp").id) {
             super.applyTo()

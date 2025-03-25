@@ -232,47 +232,47 @@ internal abstract class Test<T : org.gradle.api.tasks.testing.Test>
 
     abstract val javaLauncher: JavaToolchainSpec?
 
-    context(project: Project)
+    context(Project)
     @Suppress("UnstableApiUsage")
-    override fun applyTo(recipient: T) {
-        super<AbstractTestTask>.applyTo(recipient)
-        super<JavaForkOptions>.applyTo(recipient)
-        super<PatternFilterable>.applyTo(recipient)
+    override fun applyTo(receiver: T) {
+        super<AbstractTestTask>.applyTo(receiver)
+        super<JavaForkOptions>.applyTo(receiver)
+        super<PatternFilterable>.applyTo(receiver)
 
-        recipient.dryRun tryAssign dryRun
-        modularity?.applyTo(recipient.modularity)
-        testClassesDirs?.toTypedArray()?.let(project::files)?.let(recipient::setTestClassesDirs)
-        useJUnit?.takeIf { it }?.run { recipient.useJUnit() }
+        receiver.dryRun tryAssign dryRun
+        modularity?.applyTo(receiver.modularity)
+        testClassesDirs?.toTypedArray()?.let(project::files)?.let(receiver::setTestClassesDirs)
+        useJUnit?.takeIf { it }?.run { receiver.useJUnit() }
 
         useJUnitDsl?.let { useJUnitDsl ->
-            recipient.useJUnit {
+            receiver.useJUnit {
                 useJUnitDsl.applyTo(this)
             }
         }
 
-        useJUnitPlatform?.takeIf { it }?.run { recipient.useJUnitPlatform() }
+        useJUnitPlatform?.takeIf { it }?.run { receiver.useJUnitPlatform() }
 
         useJUnitPlatformDsl?.let { useJUnitPlatformDsl ->
-            recipient.useJUnitPlatform {
+            receiver.useJUnitPlatform {
                 useJUnitPlatformDsl.applyTo(this)
             }
         }
 
-        useTestNG?.takeIf { it }?.run { recipient.useTestNG() }
+        useTestNG?.takeIf { it }?.run { receiver.useTestNG() }
 
         useTestNGDsl?.let { useTestNGDsl ->
-            recipient.useTestNG {
+            receiver.useTestNG {
                 useTestNGDsl.applyTo(this)
             }
         }
 
-        scanForTestClasses?.let(recipient::setScanForTestClasses)
-        forkEvery?.let(recipient::setForkEvery)
-        recipient.maxParallelForks = maxParallelForks
+        scanForTestClasses?.let(receiver::setScanForTestClasses)
+        forkEvery?.let(receiver::setForkEvery)
+        receiver.maxParallelForks = maxParallelForks
             ?: (Runtime.getRuntime().availableProcessors() / 2).coerceAtLeast(1)
 
         javaLauncher?.let { javaLauncher ->
-            recipient.javaLauncher = project.javaToolchain.launcherFor {
+            receiver.javaLauncher = project.javaToolchain.launcherFor {
                 javaLauncher.applyTo(this)
             }
         }
@@ -358,7 +358,7 @@ internal data class TestImpl(
     override val javaLauncher: JavaToolchainSpec? = null,
 ) : Test<org.gradle.api.tasks.testing.Test>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<org.gradle.api.tasks.testing.Test>())
 }

@@ -86,24 +86,24 @@ internal interface InclusiveRepositoryContentDescriptor<T: InclusiveRepositoryCo
 
     @Suppress("UnstableApiUsage")
     fun applyTo(receiver: T) {
-        includeGroups?.forEach(descriptor::includeGroup)
-        includeGroupsAndSubgroups?.forEach(descriptor::includeGroupAndSubgroups)
-        includeGroupsByRegexes?.forEach(descriptor::includeGroupByRegex)
+        includeGroups?.forEach(receiver::includeGroup)
+        includeGroupsAndSubgroups?.forEach(receiver::includeGroupAndSubgroups)
+        includeGroupsByRegexes?.forEach(receiver::includeGroupByRegex)
 
         includeModules?.forEach { (group, moduleName) ->
-            descriptor.includeModule(group, moduleName)
+            receiver.includeModule(group, moduleName)
         }
 
         includeModulesByRegexes?.forEach { (group, moduleName) ->
-            descriptor.includeModuleByRegex(group, moduleName)
+            receiver.includeModuleByRegex(group, moduleName)
         }
 
         includeVersions?.forEach { (group, moduleName, version) ->
-            descriptor.includeVersion(group, moduleName, version)
+            receiver.includeVersion(group, moduleName, version)
         }
 
         includeVersionsByRegexes?.forEach { (group, moduleName, version) ->
-            descriptor.includeVersionByRegex(group, moduleName, version)
+            receiver.includeVersionByRegex(group, moduleName, version)
         }
     }
 }

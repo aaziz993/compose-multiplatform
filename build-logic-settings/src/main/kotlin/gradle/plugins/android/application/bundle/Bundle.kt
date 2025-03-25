@@ -24,7 +24,7 @@ internal data class Bundle(
     val aiModelVersion: BundleAiModelVersion? = null,
 ) {
 
-    context(project: Project)
+    context(Project)
     @Suppress("UnstableApiUsage")
     fun applyTo(receiver: Bundle) {
         abi?.applyTo(receiver.abi)

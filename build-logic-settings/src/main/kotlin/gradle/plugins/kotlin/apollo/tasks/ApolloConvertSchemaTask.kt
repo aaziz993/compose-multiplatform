@@ -30,7 +30,7 @@ internal data class ApolloConvertSchemaTask(
     val to: String? = null,
 ) : DefaultTask<ApolloConvertSchemaTask>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: ApolloConvertSchemaTask) {
         super.applyTo(receiver)
 
@@ -39,7 +39,7 @@ internal data class ApolloConvertSchemaTask(
         receiver.to tryAssign to
     }
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<ApolloConvertSchemaTask>())
 }

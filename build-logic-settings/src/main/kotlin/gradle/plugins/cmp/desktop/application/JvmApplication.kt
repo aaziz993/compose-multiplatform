@@ -30,7 +30,7 @@ internal data class JvmApplication(
     val buildTypes: JvmApplicationBuildTypes? = null,
 ) {
 
-    context(project: Project)
+    context(Project)
     fun applyTo(receiver: JvmApplication) {
         fromSourceSet?.let(sourceSets::getByName)?.let(receiver::from)
         fromKotlinTarget?.let(kotlin.targets::getByName)?.let(receiver::from)

@@ -54,7 +54,7 @@ internal data class SourceDirectorySet(
     val destinationDirectory: String? = null,
 ) : PatternFilterable<SourceDirectorySet>, ProjectNamed<SourceDirectorySet> {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: SourceDirectorySet) {
         super<PatternFilterable>.applyTo(receiver)
 

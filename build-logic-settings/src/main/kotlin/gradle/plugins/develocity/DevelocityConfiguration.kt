@@ -19,7 +19,7 @@ internal interface DevelocityConfiguration {
     val allowUntrustedServer: Boolean?
     val accessKey: String?
 
-    context(settings: Settings)
+    context(Settings)
     fun applyTo() =
         settings.pluginManager.withPlugin(settings.libs.plugins.plugin("develocity").id) {
             buildScan?.applyTo(settings.develocity.buildScan)

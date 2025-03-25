@@ -29,11 +29,11 @@ internal data class VersionMappingStrategy(
 
     fun applyTo(receiver: VersionMappingStrategy) {
         allVariants?.let { allVariants ->
-            strategy.allVariants(allVariants::applyTo)
+            receiver.allVariants(allVariants::applyTo)
         }
 
-        usages?.forEach { (usage, _strategy) ->
-            strategy.usage(usage, _strategy::applyTo)
+        usages?.forEach { (usage, strategy) ->
+            receiver.usage(usage, strategy::applyTo)
         }
     }
 }

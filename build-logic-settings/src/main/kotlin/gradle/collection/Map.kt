@@ -42,7 +42,7 @@ public infix fun Map<String, Any?>.deepMerge(source: Map<String, Any?>): Map<Str
     return resultMap
 }
 
-public fun Any.get(vararg keys: Any?) = DeepRecursiveFunction<Pair<List<Any?>, Any>, Any?> { (subKeys, obj) ->
+public fun Any.get(vararg keys: Any?): Any? = DeepRecursiveFunction<Pair<List<Any?>, Any>, Any?> { (subKeys, obj) ->
     val key = subKeys.first()
 
     val value = when (obj) {

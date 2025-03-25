@@ -121,7 +121,7 @@ internal data class DokkaPublication(
     override val name: String?
         get() = formatName
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: org.jetbrains.dokka.gradle.formats.DokkaPublication) {
         receiver.enabled tryAssign enabled
         receiver.moduleName tryAssign moduleName

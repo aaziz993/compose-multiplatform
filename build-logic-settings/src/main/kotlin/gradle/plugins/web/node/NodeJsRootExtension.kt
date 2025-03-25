@@ -14,12 +14,12 @@ import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension
 @Serializable
 internal class NodeJsRootExtension {
 
-    context(project: Project)
+    context(Project)
     fun applyTo(receiver: NodeJsRootExtension) =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("gradle.node.plugin").id) {
 
         }
 
-    context(project: Project)
+    context(Project)
     fun applyTA() = applyTo(project.node)
 }

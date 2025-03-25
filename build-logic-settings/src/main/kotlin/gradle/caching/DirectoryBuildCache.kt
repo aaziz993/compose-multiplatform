@@ -17,16 +17,16 @@ internal data class DirectoryBuildCache(
     val directory: String? = null,
 ) : BuildCache<DirectoryBuildCache> {
 
-    context(settings: Settings)
+    context(Settings)
     @Suppress("UnstableApiUsage")
     override fun applyTo(receiver: DirectoryBuildCache) {
         receiver.isEnabled = !isCI
 
         super.applyTo(receiver)
 
-        directory?.let(layout.rootDirectory::dir)?.let(receiver::setDirectory)
+        directory?.let(settings.layout.rootDirectory::dir)?.let(receiver::setDirectory)
     }
 
-    context(settings: Settings)
-    fun applyTo() = applyTo(buildCache.local)
+    context(Settings)
+    fun applyTo() = applyTo(settings.buildCache.local)
 }

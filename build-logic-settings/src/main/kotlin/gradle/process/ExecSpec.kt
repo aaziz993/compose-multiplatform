@@ -13,7 +13,7 @@ internal interface ExecSpec<T : org.gradle.process.ExecSpec> : BaseExecSpec<T> {
 
     val setArgs: SerializableAnyList?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 

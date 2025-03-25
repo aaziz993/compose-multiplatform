@@ -6,7 +6,7 @@ import org.gradle.api.Project
 
 @Serializable(with = SignatorySerializer::class)
 internal interface Signatory {
-    context(project: Project)
+    context(Project)
     fun toSignatory(): org.gradle.plugins.signing.signatory.Signatory
 }
 

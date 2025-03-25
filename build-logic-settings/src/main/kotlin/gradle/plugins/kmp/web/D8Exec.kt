@@ -36,7 +36,7 @@ internal data class D8Exec(
     val inputFileProperty: String? = null,
 ) : AbstractExecTask<D8Exec>() {
 
-        context(project: Project)
+        context(Project)
     override fun applyTo(receiver: T) {
         super.applyTo(named)
 

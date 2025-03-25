@@ -30,7 +30,7 @@ internal data class KotlinJsCompileImpl(
     override val name: String? = null,
 ) : KotlinJsCompile<org.jetbrains.kotlin.gradle.dsl.KotlinJsCompile> {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinJsCompile>())
 }

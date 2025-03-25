@@ -11,7 +11,7 @@ internal data class KotlinWasmD8Dsl(
     val runTask: D8Exec? = null,
 ) : KotlinJsSubTargetDsl {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(target: org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsSubTargetDsl, distributionName: String) {
         super.applyTo(target, distributionName)
 

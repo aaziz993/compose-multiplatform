@@ -33,7 +33,7 @@ internal data class KarakumConfig(
     val destinationFile: String? = null,
 ) : DefaultTask<KarakumConfig>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: KarakumConfig) =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("karakum").id) {
             super.applyTo(receiver)
@@ -42,7 +42,7 @@ internal data class KarakumConfig(
             receiver.destinationFile tryAssign destinationFile?.let(project::file)
         }
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<KarakumConfig>())
 }

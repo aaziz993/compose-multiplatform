@@ -31,7 +31,7 @@ internal interface ShadowSpec<T : com.github.jengelman.gradle.plugins.shadow.tas
      */
     val append: String?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 

@@ -37,7 +37,7 @@ internal data class ProtobufExtension(
     override val toggleOffOnDisable: Boolean? = null,
 ) : FormatExtension<ProtobufExtension>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() = project.spotless.protobuf {
         super.applyTo(this)
     }

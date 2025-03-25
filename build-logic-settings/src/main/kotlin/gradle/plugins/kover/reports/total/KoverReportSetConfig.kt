@@ -114,7 +114,7 @@ internal data class KoverReportSetConfig(
     val additionalBinaryReports: Set<String>? = null
 ) {
 
-    context(project: Project)
+    context(Project)
     fun applyTo(receiver: KoverReportSetConfig) {
         filters?.applyTo(receiver.filters)
 

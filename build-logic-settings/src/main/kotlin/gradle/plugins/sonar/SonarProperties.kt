@@ -26,7 +26,7 @@ internal data class SonarProperties(
     val setProperties: SerializableAnyMap? = null
 ) {
 
-    context(project: Project)
+    context(Project)
     fun applyTo(receiver: SonarProperties) {
         properties?.let(receiver::properties)
         setProperties?.act(receiver.properties::clear)?.let(receiver::properties)

@@ -17,7 +17,7 @@ internal data class KarakumSettings(
     override val enabled: Boolean = true
 ) : KarakumExtension, EnabledSettings {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("karakum").id) {
             super.applyTo()

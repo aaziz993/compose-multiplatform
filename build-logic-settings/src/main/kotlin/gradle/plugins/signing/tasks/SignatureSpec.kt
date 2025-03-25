@@ -11,7 +11,7 @@ internal interface SignatureSpec<T : SignatureSpec> {
 
     val required: Boolean?
 
-    context(project: Project)
+    context(Project)
     fun applyTo(receiver: T) {
         signatory?.toSignatory()?.let(receiver::setSignatory)
         signatureType?.value?.let(receiver::setSignatureType)

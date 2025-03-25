@@ -21,7 +21,7 @@ internal data class SigningConfigImpl(
     override val initWith: String? = null,
 ) : ProjectNamed<SigningConfig>, ApkSigningConfig<SigningConfig>, InternalSigningConfig<SigningConfig> {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: SigningConfig) {
         super<ApkSigningConfig>.applyTo(receiver)
         super<InternalSigningConfig>.applyTo(receiver)

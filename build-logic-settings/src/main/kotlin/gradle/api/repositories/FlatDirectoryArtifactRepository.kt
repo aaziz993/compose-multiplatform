@@ -43,7 +43,7 @@ internal data class FlatDirectoryArtifactRepository(
     val dirs: Set<String>,
 ) : ArtifactRepository<FlatDirectoryArtifactRepository> {
 
-    context(settings: Settings)
+    context(Settings)
     override fun applyTo(receiver: RepositoryHandler) =
         applyTo(receiver.withType<FlatDirectoryArtifactRepository>()) { _name, action ->
             receiver.flatDir {
@@ -52,7 +52,7 @@ internal data class FlatDirectoryArtifactRepository(
             }
         }
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: RepositoryHandler) =
         applyTo(receiver.withType<FlatDirectoryArtifactRepository>()) { _name, action ->
             receiver.flatDir {
@@ -61,7 +61,7 @@ internal data class FlatDirectoryArtifactRepository(
             }
         }
 
-    context(directory: Directory)
+    context(Directory)
     override fun _applyTo(receiver: FlatDirectoryArtifactRepository) {
         super._applyTo(receiver)
 

@@ -19,7 +19,7 @@ internal abstract class AbstractPublishToMaven<T : org.gradle.api.publish.maven.
 
     abstract val publication: String?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
@@ -48,7 +48,7 @@ internal data class AbstractPublishToMavenImpl(
     override val publication: String? = null,
 ) : AbstractPublishToMaven<org.gradle.api.publish.maven.tasks.AbstractPublishToMaven>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<org.gradle.api.publish.maven.tasks.AbstractPublishToMaven>())
 }

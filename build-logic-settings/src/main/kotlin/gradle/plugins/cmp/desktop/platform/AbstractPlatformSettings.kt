@@ -13,7 +13,7 @@ internal abstract class AbstractPlatformSettings<T : AbstractPlatformSettings> {
 
     abstract val fileAssociations: Set<FileAssociation>?
 
-    context(project: Project)
+    context(Project)
     open fun applyTo(receiver: T) {
         receiver.iconFile tryAssign iconFile?.let(project::file)
         receiver::packageVersion trySet packageVersion

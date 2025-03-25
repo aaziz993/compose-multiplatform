@@ -58,7 +58,7 @@ internal data class YarnRootEnvSpec(
     val setResolutions: List<YarnResolution>? = null,
 ) : EnvSpec() {
 
-    context(project: Project)
+    context(Project)
     fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("gradle.node.plugin").id) {
             super.applyTo(project.yarnEnv)

@@ -37,7 +37,7 @@ internal interface SpotlessExtension {
     val predeclareDeps: Boolean?
     val formats: LinkedHashSet<@Serializable(with = FormatExtensionTransformingSerializer::class) FormatExtension<*>>?
 
-    context(project: Project)
+    context(Project)
     fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("spotless").id) {
             lineEndings?.let(project.spotless::setLineEndings)

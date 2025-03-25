@@ -525,7 +525,7 @@ internal interface CommonExtension<
      */
     val experimentalProperties: SerializableAnyMap?
 
-    context(project: Project)
+    context(Project)
     @Suppress("UnstableApiUsage", "UNCHECKED_CAST")
     fun applyTo() {
         val extension = android as CommonExtension<

@@ -64,7 +64,7 @@ internal sealed class NativeBinary<T : org.jetbrains.kotlin.gradle.plugin.mpp.Na
 
     abstract val outputDirectoryProperty: String?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         receiver.baseName = baseName ?: project.moduleName
         receiver::debuggable trySet debuggable
@@ -107,7 +107,7 @@ internal abstract class Executable : AbstractExecutable<org.jetbrains.kotlin.gra
      */
     abstract val entryPoint: String?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: org.jetbrains.kotlin.gradle.plugin.mpp.Executable) {
         super.applyTo(receiver)
 
@@ -169,7 +169,7 @@ internal abstract class AbstractNativeLibrary<T : org.jetbrains.kotlin.gradle.pl
      */
     abstract val exports: Set<Dependency>?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
@@ -230,7 +230,7 @@ internal abstract class Framework : AbstractNativeLibrary<org.jetbrains.kotlin.g
 
     abstract val isStatic: Boolean?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: org.jetbrains.kotlin.gradle.plugin.mpp.Framework) {
         super.applyTo(receiver)
 

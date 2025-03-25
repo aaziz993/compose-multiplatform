@@ -114,7 +114,7 @@ internal data class JavaPluginExtension(
      * @since 6.8
      */
     val consistentResolution: JavaResolutionConsistency? = null,
-    val sourceSets: Set<SourceSet>? = null,
+    val sourceSets: LinkedHashSet<SourceSet>? = null,
     /**
      * Sets a file pointing to the root directory supposed to be used for all docs.
      * @since 7.1
@@ -137,7 +137,7 @@ internal data class JavaPluginExtension(
     val manifest: Manifest? = null,
 ) {
 
-    context(project: Project)
+    context(Project)
     @Suppress("UnstableApiUsage")
     fun applyTo() =
         project.pluginManager.withPlugin("java") {

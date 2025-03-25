@@ -15,7 +15,7 @@ internal interface LibraryDefaultConfig<T : LibraryDefaultConfig> :
     LibraryBaseFlavor<T>,
     DefaultConfigDsl<T> {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super<LibraryBaseFlavor>.applyTo(receiver)
         super<DefaultConfigDsl>.applyTo(receiver)

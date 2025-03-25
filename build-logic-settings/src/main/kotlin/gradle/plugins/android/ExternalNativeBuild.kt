@@ -11,7 +11,7 @@ internal data class ExternalNativeBuild(
     val cmake: CmakeOptions? = null,
 ) {
 
-    context(project: Project)
+    context(Project)
     fun applyTo(receiver: ExternalNativeBuild) {
         ndkBuild?.applyTo(receiver.ndkBuild)
         cmake?.applyTo(receiver.cmake)

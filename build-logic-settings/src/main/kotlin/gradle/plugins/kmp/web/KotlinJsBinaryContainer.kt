@@ -11,7 +11,7 @@ internal data class KotlinJsBinaryContainer(
     private val binaries: Set<JsIrBinary<out org.jetbrains.kotlin.gradle.targets.js.ir.JsIrBinary>> = mutableSetOf()
 ) : Set<@Serializable(with = JsBinaryTransformingSerializer::class) JsIrBinary<out org.jetbrains.kotlin.gradle.targets.js.ir.JsIrBinary>> by binaries {
 
-    context(project: Project)
+    context(Project)
     fun applyTo(receiver: KotlinJsBinaryContainer) {
         binaries.forEach { binary ->
             when (binary) {

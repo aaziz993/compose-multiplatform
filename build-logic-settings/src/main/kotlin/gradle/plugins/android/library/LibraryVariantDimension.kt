@@ -41,7 +41,7 @@ internal interface LibraryVariantDimension<T : LibraryVariantDimension> : Varian
     /** Options for configuring AAR metadata. */
     val aarMetadata: AarMetadata?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 

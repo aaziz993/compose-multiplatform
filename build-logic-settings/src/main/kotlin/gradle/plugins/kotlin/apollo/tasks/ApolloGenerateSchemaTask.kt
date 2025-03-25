@@ -41,7 +41,7 @@ internal data class ApolloGenerateSchemaTask(
     val userGenerateKotlinModels: Boolean? = null,
 ) : DefaultTask<ApolloGenerateSchemaTask>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: ApolloGenerateSchemaTask) {
         super.applyTo(receiver)
 
@@ -69,7 +69,7 @@ internal data class ApolloGenerateSchemaTask(
         receiver.userGenerateKotlinModels tryAssign userGenerateKotlinModels
     }
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<ApolloGenerateSchemaTask>())
 }

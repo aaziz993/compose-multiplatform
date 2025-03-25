@@ -73,7 +73,7 @@ internal data class ApolloGenerateSourcesTask(
     val warnOnDeprecatedUsages: Boolean? = null,
 ) : ApolloGenerateSourcesBase<ApolloGenerateSourcesTask>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: ApolloGenerateSourcesTask) {
         super.applyTo(receiver)
 
@@ -112,7 +112,7 @@ internal data class ApolloGenerateSourcesTask(
         receiver.warnOnDeprecatedUsages tryAssign warnOnDeprecatedUsages
     }
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<ApolloGenerateSourcesTask>())
 }

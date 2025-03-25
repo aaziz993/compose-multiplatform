@@ -44,7 +44,7 @@ internal data class KotlinNativeTest(
     val trackEnvironments: List<@Serializable(with = TrackEnvironmentTransformingSerializer::class) TrackEnvironment>? = null,
 ) : KotlinTest<KotlinNativeTest>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: KotlinNativeTest) {
         super.applyTo(receiver)
 
@@ -61,7 +61,7 @@ internal data class KotlinNativeTest(
         }
     }
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<KotlinNativeTest>())
 }

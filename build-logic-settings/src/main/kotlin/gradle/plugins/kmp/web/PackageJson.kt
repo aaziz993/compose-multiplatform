@@ -20,7 +20,7 @@ internal data class PackageJson(
     val saveTo: String? = null,
 ) {
 
-    context(project: Project)
+    context(Project)
     fun applyTo(receiver: PackageJson) {
         json::name trySet name
         json::version trySet version

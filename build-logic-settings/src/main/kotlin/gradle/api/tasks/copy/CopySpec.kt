@@ -130,7 +130,7 @@ internal interface CopySpec<T : CopySpec> : CopySourceSpec<T>, CopyProcessingSpe
      */
     val filteringCharset: String?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super<CopySourceSpec>.applyTo(receiver)
         super<CopyProcessingSpec>.applyTo(receiver)

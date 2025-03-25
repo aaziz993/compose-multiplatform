@@ -28,7 +28,7 @@ internal data class JvmApplicationDistributions(
     val windows: WindowsPlatformSettings? = null,
 ) : AbstractDistributions<JvmApplicationDistributions>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: JvmApplicationDistributions) {
         super.applyTo(receiver)
 

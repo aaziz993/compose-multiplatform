@@ -26,7 +26,7 @@ internal data class KotlinWasmJsTargetDsl(
     val d8Dsl: KotlinWasmD8Dsl? = null,
 ) : KotlinWasmTargetDsl<KotlinWasmJsTargetDsl>, KotlinJsTargetDsl<KotlinWasmJsTargetDsl> {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: KotlinWasmJsTargetDsl) {
         super<KotlinWasmTargetDsl>.applyTo(receiver)
         super<KotlinJsTargetDsl>.applyTo(receiver)
@@ -40,7 +40,7 @@ internal data class KotlinWasmJsTargetDsl(
         }
     }
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.kotlin.targets.withType<KotlinWasmJsTargetDsl>(), kotlin::wasmJs)
 }

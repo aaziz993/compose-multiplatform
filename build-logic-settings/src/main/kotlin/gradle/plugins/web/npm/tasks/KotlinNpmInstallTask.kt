@@ -28,7 +28,7 @@ internal data class KotlinNpmInstallTask(
     val setArgs: List<String>? = null,
 ) : DefaultTask<KotlinNpmInstallTask>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: KotlinNpmInstallTask) {
         super.applyTo(receiver)
 
@@ -36,7 +36,7 @@ internal data class KotlinNpmInstallTask(
         setArgs?.act(receiver.args::clear)?.let(receiver.args::addAll)
     }
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<KotlinNpmInstallTask>())
 }

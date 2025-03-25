@@ -49,7 +49,7 @@ internal data class AndroidSourceSet(
     val root: String? = null,
 ) : ProjectNamed<AndroidSourceSet> {
 
-    context(project: Project)
+    context(Project)
     @Suppress("UnstableApiUsage")
     override fun applyTo(receiver: AndroidSourceSet) {
         java?.applyTo(receiver.java)

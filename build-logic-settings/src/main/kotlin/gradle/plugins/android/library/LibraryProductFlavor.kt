@@ -41,7 +41,7 @@ internal interface LibraryProductFlavor<T : LibraryProductFlavor> : LibraryBaseF
     /** Whether this product flavor should be selected in Studio by default  */
     val isDefault: Boolean?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super<LibraryBaseFlavor>.applyTo(receiver)
         super<ProductFlavorDsl>.applyTo(receiver)

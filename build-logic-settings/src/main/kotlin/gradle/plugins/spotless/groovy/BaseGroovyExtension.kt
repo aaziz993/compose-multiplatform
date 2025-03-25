@@ -20,7 +20,7 @@ internal abstract class BaseGroovyExtension<T: BaseGroovyExtension> : FormatExte
 
     abstract val greclipse: GrEclipseConfig?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 

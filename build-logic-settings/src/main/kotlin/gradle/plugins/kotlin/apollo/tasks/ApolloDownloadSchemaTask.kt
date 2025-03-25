@@ -38,7 +38,7 @@ internal data class ApolloDownloadSchemaTask(
     val schema: String? = null,
 ) : DefaultTask<ApolloDownloadSchemaTask>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: ApolloDownloadSchemaTask) {
         super.applyTo(receiver)
 
@@ -55,7 +55,7 @@ internal data class ApolloDownloadSchemaTask(
         receiver.schema tryAssign schema
     }
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<ApolloDownloadSchemaTask>())
 }

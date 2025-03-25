@@ -14,7 +14,7 @@ internal data class ToolchainManagementSettings(
     override val enabled: Boolean = true,
 ) : ToolchainManagement, EnabledSettings {
 
-    context(settings: Settings)
+    context(Settings)
     override fun applyTo() =
         settings.pluginManager.withPlugin(settings.libs.plugins.plugin("foojay-resolver-convention").id) {
 

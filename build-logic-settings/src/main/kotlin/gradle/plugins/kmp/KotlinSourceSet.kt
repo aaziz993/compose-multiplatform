@@ -65,11 +65,11 @@ internal data class KotlinSourceSet(
      *
      * These extensions are evaluated lazily and can include additional custom source file types beyond the default ".kt" and ".kts" ones.
      */
-    val customSourceFilesExtensions: List<String>? = null,
+    val customSourceFilesExtensions: Set<String>? = null,
 ) : ProjectNamed<org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet>,
     HasKotlinDependencies<org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet> {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet) {
         super.applyTo(receiver)
 
@@ -80,7 +80,7 @@ internal data class KotlinSourceSet(
         customSourceFilesExtensions?.let(receiver::addCustomSourceFilesExtensions)
     }
 
-    context(project: Project)
+    context(Project)
     fun applyTo() = applyTo(project.kotlin.sourceSets)
 }
 

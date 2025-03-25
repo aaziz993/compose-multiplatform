@@ -18,7 +18,7 @@ internal interface JsBinary<T : org.jetbrains.kotlin.gradle.targets.js.ir.JsBina
     val name: String?
     val distribution: Distribution?
 
-    context(project: Project)
+    context(Project)
     fun applyTo(receiver: T) {
         distribution?.applyTo(receiver.distribution, project.moduleName)
     }
@@ -37,7 +37,7 @@ internal sealed class JsIrBinary<T : org.jetbrains.kotlin.gradle.targets.js.ir.J
 
     abstract val generateTs: Boolean?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 

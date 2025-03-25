@@ -31,7 +31,7 @@ internal data class BuildConfigTask(
     val outputDir: String? = null,
 ) : DefaultTask<BuildConfigTask>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: BuildConfigTask) {
         super.applyTo(receiver)
 
@@ -40,7 +40,7 @@ internal data class BuildConfigTask(
         receiver.outputDir tryAssign outputDir?.let(project.layout.projectDirectory::dir)
     }
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<BuildConfigTask>())
 }

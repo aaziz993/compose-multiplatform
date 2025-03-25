@@ -22,7 +22,7 @@ internal abstract class KotlinNativeCompile<T : org.jetbrains.kotlin.gradle.task
     abstract val commonSources: Set<String>?
     abstract val setCommonSources: Set<String>?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super<AbstractKotlinNativeCompile>.applyTo(receiver)
         super<KotlinNativeCompileTask>.applyTo(receiver)
@@ -71,7 +71,7 @@ internal data class KotlinNativeCompileImpl(
     override val setCommonSources: Set<String>? = null,
 ) : KotlinNativeCompile<org.jetbrains.kotlin.gradle.tasks.KotlinNativeCompile>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinNativeCompile>())
 }

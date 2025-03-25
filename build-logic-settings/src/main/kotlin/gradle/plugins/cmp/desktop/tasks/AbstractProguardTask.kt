@@ -29,7 +29,7 @@ internal abstract class AbstractProguardTask<T : org.jetbrains.compose.desktop.a
     abstract val maxHeapSize: String?
     abstract val destinationDir: String?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
@@ -85,7 +85,7 @@ internal data class AbstractProguardTaskImpl(
     override val name: String? = null,
 ) : AbstractProguardTask<org.jetbrains.compose.desktop.application.tasks.AbstractProguardTask>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<org.jetbrains.compose.desktop.application.tasks.AbstractProguardTask>())
 }

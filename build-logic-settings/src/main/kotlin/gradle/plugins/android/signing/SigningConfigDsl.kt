@@ -53,7 +53,7 @@ internal interface SigningConfigDsl<T: SigningConfig> {
      */
     val initWith: String?
 
-    context(project: Project)
+    context(Project)
     fun applyTo(receiver: T) {
         receiver::storeFile trySet storeFile?.let(project::file)
         receiver::storePassword trySet storePassword

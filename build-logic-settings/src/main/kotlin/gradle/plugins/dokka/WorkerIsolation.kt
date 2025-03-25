@@ -10,7 +10,7 @@ import org.gradle.workers.WorkerExecutor
 @Serializable
 internal sealed class WorkerIsolation {
 
-    context(project: Project)
+    context(Project)
     abstract fun toWorkerIsolation(): org.jetbrains.dokka.gradle.workers.WorkerIsolation
 }
 
@@ -26,7 +26,7 @@ internal sealed class WorkerIsolation {
 @Serializable
 internal class ClassLoader : WorkerIsolation() {
 
-    context(project: Project)
+    context(Project)
     override fun toWorkerIsolation(): org.jetbrains.dokka.gradle.workers.WorkerIsolation =
         dokka.ClassLoaderIsolation()
 }
@@ -65,7 +65,7 @@ internal data class Process(
     val systemProperties: SerializableAnyMap? = null,
 ) : WorkerIsolation() {
 
-    context(project: Project)
+    context(Project)
     override fun toWorkerIsolation(): org.jetbrains.dokka.gradle.workers.WorkerIsolation =
         dokka.ProcessIsolation {
             debug tryAssign this@Process.debug

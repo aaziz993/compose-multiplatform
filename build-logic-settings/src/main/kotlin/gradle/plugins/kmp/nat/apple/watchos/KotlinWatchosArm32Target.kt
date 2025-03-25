@@ -20,7 +20,7 @@ internal data class KotlinWatchosArm32Target(
     override val binaries: KotlinNativeBinaryContainer? = null,
 ) : KotlinNativeTarget(), KotlinWatchos32Target, KotlinWatchosTarget {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         super.applyTo(project.kotlin.targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>(), kotlin::watchosArm32)
 }

@@ -14,9 +14,9 @@ internal interface KotlinTargetWithTests<T : KotlinTargetWithTests<*, *>> : Kotl
      *
      * A test run by the name [DEFAULT_TEST_RUN_NAME] is automatically created and configured.
      */
-    val testRuns: Set<KotlinTargetTestRun<out org.jetbrains.kotlin.gradle.plugin.KotlinTargetTestRun<*>>>?
+    val testRuns: LinkedHashSet<KotlinTargetTestRun<out org.jetbrains.kotlin.gradle.plugin.KotlinTargetTestRun<*>>>?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 

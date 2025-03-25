@@ -19,7 +19,7 @@ internal abstract class Sync<T : org.gradle.api.tasks.Sync> : AbstractCopyTask<T
 
     abstract val preserve: PatternFilterableImpl?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
@@ -67,7 +67,7 @@ internal data class SyncImpl(
     override val setExcludes: Set<String>? = null,
 ) : Sync<org.gradle.api.tasks.Sync>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<org.gradle.api.tasks.Sync>())
 }

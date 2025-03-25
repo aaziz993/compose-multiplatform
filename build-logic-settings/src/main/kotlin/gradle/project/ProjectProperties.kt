@@ -94,17 +94,27 @@ internal data class ProjectProperties(
 
         val yaml = Yaml()
 
-        context(settings: Settings)
+        context(Settings)
         @Suppress("UnstableApiUsage")
         fun load(): ProjectProperties {
-            extra.exportExtras()
-            return load(settings.layout.settingsDirectory, providers, extra, projectProperties.localProperties)
+            settings.extra.exportExtras()
+            return load(
+                settings.layout.settingsDirectory,
+                settings.providers,
+                settings.extra,
+                settings.projectProperties.localProperties,
+            )
         }
 
-        context(project: Project)
+        context(Project)
         fun load(): ProjectProperties {
-            extra.exportExtras()
-            return load(project.layout.projectDirectory, providers, extra, projectProperties.localProperties)
+            project.extra.exportExtras()
+            return load(
+                project.layout.projectDirectory,
+                project.providers,
+                project.extra,
+                project.projectProperties.localProperties,
+            )
         }
 
         private fun ExtraPropertiesExtension.exportExtras() =

@@ -59,7 +59,7 @@ internal data class JavaToolchainSpec(
     val vendor: JvmVendorSpec? = null,
 ) {
 
-    context(project: Project)
+    context(Project)
     fun applyTo(receiver: JavaToolchainSpec) {
         receiver.languageVersion tryAssign (languageVersion ?: project.settings.libs.versions.version("java.languageVersion")
             ?.let(JavaLanguageVersion::of))

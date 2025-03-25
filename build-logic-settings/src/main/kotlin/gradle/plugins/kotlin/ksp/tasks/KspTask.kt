@@ -20,7 +20,7 @@ internal interface KspTask<T : com.google.devtools.ksp.gradle.KspTask> : Task<T>
     val commandLineArgumentProviders: List<CommandLineArgumentProvider>?
     val setCommandLineArgumentProviders: List<CommandLineArgumentProvider>?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
@@ -60,7 +60,7 @@ internal data class KspTaskImpl(
     override val name: String? = null,
 ) : KspTask<com.google.devtools.ksp.gradle.KspTask> {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<com.google.devtools.ksp.gradle.KspTask>())
 }

@@ -182,7 +182,7 @@ internal interface BuildType<T : BuildType> : ProjectNamed<T>, VariantDimension<
 
     val vcsInfo: VcsInfo?
 
-    context(project: Project)
+    context(Project)
     @Suppress("UnstableApiUsage")
     override fun applyTo(receiver: T) {
         super<VariantDimension>.applyTo(receiver)

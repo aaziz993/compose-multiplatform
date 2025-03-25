@@ -21,7 +21,7 @@ internal data class AdditionalCpe(
     val cpe: String? = null,
 ) : ProjectNamed<AdditionalCpe> {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: AdditionalCpe) {
         description?.let(receiver::setDescription)
         cpe?.let(receiver::setCpe)

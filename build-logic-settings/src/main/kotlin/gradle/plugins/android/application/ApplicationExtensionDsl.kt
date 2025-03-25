@@ -60,7 +60,7 @@ internal interface ApplicationExtensionDsl :
     /** Options related to the consumption of privacy sandbox libraries */
     val privacySandbox: PrivacySandbox?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() {
         val extension = project.android as ApplicationExtension
 

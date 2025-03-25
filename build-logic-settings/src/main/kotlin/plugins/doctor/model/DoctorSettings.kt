@@ -39,7 +39,7 @@ internal data class DoctorSettings(
     override val enabled: Boolean = true,
 ) : DoctorExtension, EnabledSettings {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("doctor").id) {
             super.applyTo()

@@ -19,7 +19,7 @@ internal data class NodeJsEnvSpec(
     override val command: String? = null,
 ) : EnvSpec() {
 
-    context(project: Project)
+    context(Project)
     fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("gradle.node.plugin").id) {
             super.applyTo(project.nodeEnv)

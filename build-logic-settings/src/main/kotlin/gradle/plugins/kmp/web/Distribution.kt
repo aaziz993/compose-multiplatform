@@ -11,7 +11,7 @@ internal data class Distribution(
     val outputDirectory: String? = null,
 ) {
 
-    context(project: Project)
+    context(Project)
     fun applyTo(distribution: Distribution, distributionName: String) {
         distribution.distributionName.set(this.distributionName ?: distributionName)
         distribution.outputDirectory tryAssign outputDirectory?.let(project.layout.projectDirectory::dir)

@@ -61,7 +61,7 @@ internal data class Service(
     val warnOnDeprecatedUsages: Boolean? = null,
 ) {
 
-    context(project: Project)
+    context(Project)
     fun applyTo(receiver: Service) {
         receiver.addJvmOverloads tryAssign addJvmOverloads
         receiver.addTypename tryAssign addTypename

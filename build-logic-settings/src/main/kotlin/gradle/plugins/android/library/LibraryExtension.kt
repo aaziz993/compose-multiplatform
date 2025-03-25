@@ -22,6 +22,7 @@ import gradle.plugins.android.flavor.ProductFlavorTransformingSerializer
 import gradle.plugins.android.signing.SigningConfigImpl
 import gradle.plugins.android.signing.SigningConfigTransformingSerializer
 import gradle.plugins.android.sourceset.AndroidSourceSet
+import gradle.plugins.android.split.Splits
 import gradle.plugins.android.test.TestCoverage
 import gradle.plugins.android.test.TestFixtures
 import gradle.plugins.android.test.TestOptions
@@ -87,7 +88,7 @@ internal data class LibraryExtension(
     override val testFixtures: TestFixtures? = null
 ) : TestedExtension(), InternalLibraryExtension {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() {
         super<TestedExtension>.applyTo()
         super<InternalLibraryExtension>.applyTo()

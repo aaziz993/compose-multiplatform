@@ -57,7 +57,7 @@ internal data class KotlinJvmCompilerOptions(
     val noJdk: Boolean? = null,
 ) : KotlinCommonCompilerOptions<KotlinJvmCompilerOptions> {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: KotlinJvmCompilerOptions) {
         super.applyTo(receiver)
 

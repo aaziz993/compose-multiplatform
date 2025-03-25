@@ -58,7 +58,7 @@ internal data class JavaCompile(
     val modularity: ModularitySpec? = null,
 ) : AbstractCompile<JavaCompile>(), HasCompileOptions<JavaCompile> {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: JavaCompile) {
         super<AbstractCompile>.applyTo(receiver)
         super<HasCompileOptions>.applyTo(receiver)
@@ -66,6 +66,6 @@ internal data class JavaCompile(
         modularity?.applyTo(receiver.modularity)
     }
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() = applyTo(project.tasks.withType<JavaCompile>())
 }

@@ -14,7 +14,7 @@ internal data class SerializationSettings(
     override val enabled: Boolean = true
 ) : EnabledSettings {
 
-    context(project: Project)
+    context(Project)
     fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("shadow").id) {
 

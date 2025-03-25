@@ -13,7 +13,7 @@ internal interface AllOpenExtension {
     val myAnnotations: List<String>?
     val myPresets: List<String>?
 
-    context(project: Project)
+    context(Project)
     fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("allopen").id) {
             myAnnotations?.let(project.allOpen::annotations)

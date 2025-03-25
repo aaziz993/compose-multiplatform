@@ -15,7 +15,7 @@ internal interface SqlDelightExtension {
     val databases: Set<SqlDelightDatabase>?
     val linkSqlite: Boolean?
 
-    context(project: Project)
+    context(Project)
     fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("sqldelight").id) {
             databases?.forEach { database ->

@@ -53,7 +53,7 @@ internal interface KotlinCommonCompilerOptions<T : org.jetbrains.kotlin.gradle.d
 
     val progressiveMode: Boolean?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 

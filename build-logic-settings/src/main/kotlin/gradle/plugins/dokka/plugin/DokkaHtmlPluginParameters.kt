@@ -90,7 +90,7 @@ internal data class DokkaHtmlPluginParameters(
     override val pluginFqn: String
         get() = DokkaHtmlPluginParameters.DOKKA_HTML_PLUGIN_FQN
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: DokkaHtmlPluginParameters) {
         customAssets?.toTypedArray()?.let(receiver.customAssets::from)
         setCustomAssets?.let(receiver.customAssets::setFrom)

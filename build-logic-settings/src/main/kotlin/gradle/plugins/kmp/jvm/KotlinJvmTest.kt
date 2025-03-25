@@ -75,7 +75,7 @@ internal data class KotlinJvmTest(
     val targetName: String? = null,
 ) : Test() {
 
-        context(project: Project)
+        context(Project)
     override fun applyTo(receiver: T) {
         super.applyTo(named)
 
@@ -84,7 +84,7 @@ internal data class KotlinJvmTest(
         named::targetName trySet targetName
     }
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<KotlinJvmTest>())
 }

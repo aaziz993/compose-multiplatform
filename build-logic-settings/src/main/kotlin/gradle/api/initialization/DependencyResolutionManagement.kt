@@ -8,6 +8,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal data class DependencyResolutionManagement(
-    val repositories: Set<@Serializable(with = ArtifactRepositoryTransformingSerializer::class) ArtifactRepository<*>>? = null,
+    val repositories: LinkedHashSet<@Serializable(with = ArtifactRepositoryTransformingSerializer::class) ArtifactRepository<*>>? = null,
     val versionCatalogs: LinkedHashSet<VersionCatalog>? = null,
 )

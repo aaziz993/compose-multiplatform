@@ -34,7 +34,7 @@ internal interface ProcessForkOptions<T: ProcessForkOptions> {
     val environment: SerializableAnyMap?
     val setEnvironment: SerializableAnyMap?
 
-    context(project: Project)
+    context(Project)
     fun applyTo(receiver: T) {
         executable?.let(receiver::setExecutable)
         workingDir?.let(receiver::setWorkingDir)

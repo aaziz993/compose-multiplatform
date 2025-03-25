@@ -87,7 +87,7 @@ internal interface ApiValidationExtension {
      */
     val klib: KlibValidationSettings?
 
-    context(project: Project)
+    context(Project)
     @OptIn(ExperimentalBCVApi::class)
     fun applyTo() = project.pluginManager.withPlugin("binaryCompatibilityValidator") {
         project.apiValidation::validationDisabled trySet validationDisabled

@@ -24,7 +24,7 @@ internal data class KotlinIosSimulatorArm64Target(
     override val testRuns: List<@Serializable(with = KotlinNativeSimulatorTestRunTransformingSerializer::class) KotlinNativeSimulatorTestRun>? = null,
 ) : KotlinNativeTargetWithSimulatorTests(), KotlinIosTarget {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         super.applyTo(project.kotlin.targets.withType<KotlinNativeTarget>(), kotlin::iosSimulatorArm64)
 }

@@ -24,13 +24,13 @@ internal data class MavenLocal(
     override val credentials: PasswordCredentials? = null,
 ) : MavenArtifactRepository {
 
-    context(settings: Settings)
+    context(Settings)
     override fun applyTo(receiver: RepositoryHandler) =
         applyTo(receiver.withType<org.gradle.api.artifacts.repositories.MavenArtifactRepository>()) { _, action ->
             receiver.mavenLocal(action)
         }
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: RepositoryHandler) =
         applyTo(receiver.withType<org.gradle.api.artifacts.repositories.MavenArtifactRepository>()) { _, action ->
             receiver.mavenLocal(action)

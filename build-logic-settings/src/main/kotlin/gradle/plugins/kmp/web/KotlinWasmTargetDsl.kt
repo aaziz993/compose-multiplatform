@@ -15,7 +15,7 @@ internal interface KotlinWasmTargetDsl<T : org.jetbrains.kotlin.gradle.targets.j
 
     override val compilations: Set<KotlinJsIrCompilation>?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super<KotlinTarget>.applyTo(receiver)
 
@@ -31,7 +31,7 @@ internal data class KotlinWasmTargetDslImpl(
     override val binaries: KotlinJsBinaryContainer = KotlinJsBinaryContainer(),
 ) : KotlinWasmTargetDsl<org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinWasmTargetDsl> {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.kotlin.targets.withType<org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinWasmTargetDsl>()) { _, _ -> }
 }

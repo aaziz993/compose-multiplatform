@@ -23,7 +23,7 @@ internal data class NpmExtension(
     val overrides: List<NpmOverride>? = null,
 ) {
 
-    context(project: Project)
+    context(Project)
     fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("gradle.node.plugin").id) {
             project.npm.command tryAssign command

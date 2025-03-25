@@ -21,7 +21,7 @@ internal interface InternalLibraryExtension :
         LibraryInstallation,
         > {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() {
         super<LibraryExtensionDsl>.applyTo()
         super<InternalTestedExtension>.applyTo()

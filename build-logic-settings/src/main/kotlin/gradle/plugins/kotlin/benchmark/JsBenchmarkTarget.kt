@@ -12,7 +12,7 @@ internal abstract class JsBenchmarkTarget : BenchmarkTarget<kotlinx.benchmark.gr
 
     abstract val compilation: KotlinJsIrCompilation?
 
-    context(project: Project)
+    context(Project)
     @OptIn(KotlinxBenchmarkPluginInternalApi::class)
     override fun applyTo(receiver: kotlinx.benchmark.gradle.JsBenchmarkTarget) {
         super.applyTo(receiver)
@@ -30,7 +30,7 @@ internal data class JsBenchmarkTargetImpl(
     val jsBenchmarksExecutor: JsBenchmarksExecutor? = null,
 ) : JsBenchmarkTarget() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: kotlinx.benchmark.gradle.JsBenchmarkTarget) {
         super.applyTo(receiver)
 

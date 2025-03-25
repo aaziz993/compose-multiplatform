@@ -19,7 +19,7 @@ internal data class BuildScanConfiguration(
     val capture: BuildScanCaptureConfiguration?
 ) {
 
-    context(settings: Settings)
+    context(Settings)
     @Suppress("UnstableApiUsage")
     fun applyTo(
         receiver: com.gradle.develocity.agent.gradle.scan.BuildScanConfiguration

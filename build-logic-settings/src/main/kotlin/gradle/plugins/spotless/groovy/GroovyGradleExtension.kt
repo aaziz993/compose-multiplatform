@@ -41,7 +41,7 @@ internal data class GroovyGradleExtension(
     override val greclipse: GrEclipseConfig? = null,
 ) : BaseGroovyExtension<GroovyGradleExtension>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() = project.spotless.groovyGradle {
         applyTo(this)
     }

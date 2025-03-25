@@ -32,7 +32,7 @@ internal data class ApolloRegisterOperationsTask(
     val operationOutput: String? = null,
 ) : DefaultTask<ApolloRegisterOperationsTask>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: ApolloRegisterOperationsTask) {
         super.applyTo(receiver)
 
@@ -44,7 +44,7 @@ internal data class ApolloRegisterOperationsTask(
         receiver.operationOutput tryAssign operationOutput?.let(project::file)
     }
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<ApolloRegisterOperationsTask>())
 }

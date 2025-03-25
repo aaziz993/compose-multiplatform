@@ -99,7 +99,7 @@ internal data class KoverReportsConfig(
     val variants: Set<Variant>? = null,
 ) {
 
-    context(project: Project)
+    context(Project)
     fun applyTo(receiver: KoverReportsConfig) {
         filters?.applyTo(receiver.filters)
         verify?.applyTo(receiver.verify)

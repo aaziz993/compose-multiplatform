@@ -18,7 +18,7 @@ internal data class AppleSettings(
     override val iosFramework: IosFrameworkTarget? = null,
 ) : AppleProjectExtension {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("apple").id) {
             super.applyTo()

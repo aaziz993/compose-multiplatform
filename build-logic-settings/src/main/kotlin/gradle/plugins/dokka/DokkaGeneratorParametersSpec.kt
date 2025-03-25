@@ -45,12 +45,12 @@ internal data class DokkaGeneratorParametersSpec(
      * The values are not used directly in this task, but they are required to be registered as a
      * task input for up-to-date checks
      */
-    val dokkaSourceSets: Set<@Serializable(with = DokkaSourceSetSpecTransformingSerializer::class) DokkaSourceSetSpec>? = null,
+    val dokkaSourceSets: LinkedHashSet<@Serializable(with = DokkaSourceSetSpecTransformingSerializer::class) DokkaSourceSetSpec>? = null,
     /** @see org.jetbrains.dokka.gradle.formats.DokkaPublication.finalizeCoroutines */
     val finalizeCoroutines: Boolean? = null,
 ) {
 
-    context(project: Project)
+    context(Project)
     fun applyTo(receiver: DokkaGeneratorParametersSpec) {
         receiver.moduleName tryAssign moduleName
         receiver.moduleVersion tryAssign moduleVersion

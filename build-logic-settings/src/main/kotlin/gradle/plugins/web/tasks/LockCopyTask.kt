@@ -21,7 +21,7 @@ internal abstract class LockCopyTask<T : org.jetbrains.kotlin.gradle.targets.js.
 
     abstract val fileName: String?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
@@ -56,7 +56,7 @@ internal data class LockCopyTaskImple(
     override val name: String? = null,
 ) : LockCopyTask<org.jetbrains.kotlin.gradle.targets.js.npm.LockCopyTask>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<org.jetbrains.kotlin.gradle.targets.js.npm.LockCopyTask>())
 }

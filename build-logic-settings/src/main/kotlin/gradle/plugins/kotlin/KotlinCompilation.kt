@@ -114,7 +114,7 @@ internal interface KotlinCompilation<T : org.jetbrains.kotlin.gradle.plugin.Kotl
      */
     val associatedCompilations: Set<String>?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         defaultSourceSet?.applyTo(receiver.defaultSourceSet)
         receiver::compileDependencyFiles trySet compileDependencyFiles

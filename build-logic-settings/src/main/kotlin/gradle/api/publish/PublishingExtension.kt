@@ -78,12 +78,12 @@ internal interface PublishingExtension {
      */
     val publications: LinkedHashSet<@Serializable(with = PublicationTransformingSerializer::class) Publication<*>>?
 
-    context(project: Project)
+    context(Project)
     @Suppress("UNCHECKED_CAST")
     fun applyTo() =
         project.pluginManager.withPlugin("maven-publish") {
             repositories?.forEach { repository ->
-                repository.applyTo(publishing.repositories)
+                repository.applyTo(project.publishing.repositories)
             }
 
             publications?.forEach { publication ->

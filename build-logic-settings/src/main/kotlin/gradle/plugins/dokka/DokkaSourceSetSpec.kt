@@ -264,7 +264,7 @@ internal data class DokkaSourceSetSpec(
     val jdkVersion: Int? = null,
 ) : ProjectNamed<org.jetbrains.dokka.gradle.engine.parameters.DokkaSourceSetSpec> {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: org.jetbrains.dokka.gradle.engine.parameters.DokkaSourceSetSpec) {
         receiver.sourceSetScope tryAssign sourceSetScope
         receiver.suppress tryAssign suppress

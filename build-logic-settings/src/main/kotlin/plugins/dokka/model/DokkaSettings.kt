@@ -35,7 +35,7 @@ internal data class DokkaSettings(
     val dependenciesFromSubprojects: Boolean = true,
 ) : DokkaExtension, EnabledSettings {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() = project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("dokka").id) {
         super.applyTo()
     }

@@ -49,13 +49,13 @@ internal data class MavenPomContributor(
 ) {
 
     fun applyTo(receiver: MavenPomContributor) {
-        contributor.name tryAssign name
-        contributor.email tryAssign email
-        contributor.url tryAssign url
-        contributor.organization tryAssign organization
-        contributor.organizationUrl tryAssign organizationUrl
-        contributor.roles tryAssign roles
-        contributor.timezone tryAssign timezone
-        contributor.properties tryAssign properties
+        receiver.name tryAssign name
+        receiver.email tryAssign email
+        receiver.url tryAssign url
+        receiver.organization tryAssign organization
+        receiver.organizationUrl tryAssign organizationUrl
+        receiver.roles tryAssign roles
+        receiver.timezone tryAssign timezone
+        receiver.properties tryAssign properties
     }
 }

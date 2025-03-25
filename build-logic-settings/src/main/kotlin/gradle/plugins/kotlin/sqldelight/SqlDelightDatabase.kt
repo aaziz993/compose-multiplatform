@@ -63,7 +63,7 @@ internal data class SqlDelightDatabase(
     val treatNullAsUnknownForEquality: Boolean? = null,
 ) : ProjectNamed<SqlDelightDatabase> {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: SqlDelightDatabase) {
         receiver.packageName tryAssign packageName
         receiver.schemaOutputDirectory tryAssign schemaOutputDirectory?.let(project.layout.projectDirectory::dir)

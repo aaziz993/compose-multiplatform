@@ -57,7 +57,7 @@ internal data class JavaExtension(
     val cleanthat: CleanthatJavaConfig? = null,
 ) : FormatExtension<JavaExtension>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: JavaExtension) {
         super.applyTo(receiver)
 
@@ -98,7 +98,7 @@ internal data class JavaExtension(
         cleanthat?.applyTo(receiver.cleanthat())
     }
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() = project.spotless.java {
         applyTo(this)
     }

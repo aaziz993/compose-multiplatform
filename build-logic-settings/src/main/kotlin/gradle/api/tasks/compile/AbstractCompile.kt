@@ -44,7 +44,7 @@ internal abstract class AbstractCompile<T : org.gradle.api.tasks.compile.Abstrac
      */
     abstract val targetCompatibility: String?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
@@ -81,7 +81,7 @@ internal data class AbstractCompileImpl(
     override val setExcludes: Set<String>? = null,
 ) : AbstractCompile<org.gradle.api.tasks.compile.AbstractCompile>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<org.gradle.api.tasks.compile.AbstractCompile>())
 }

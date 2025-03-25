@@ -32,7 +32,7 @@ internal data class AtomicFUTransformTask(
     val verbose: Boolean? = null,
 ) : ConventionTask<AtomicFUTransformTask>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: AtomicFUTransformTask) {
         super.applyTo(receiver)
 
@@ -43,7 +43,7 @@ internal data class AtomicFUTransformTask(
         receiver::verbose trySet verbose
     }
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<AtomicFUTransformTask>())
 }

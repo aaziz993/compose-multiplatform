@@ -51,7 +51,7 @@ internal interface LibraryExtensionDsl :
 
     val privacySandbox: PrivacySandbox?
 
-    context(project: Project)
+    context(Project)
     @Suppress("UnstableApiUsage")
     override fun applyTo() {
         super<CommonExtension>.applyTo()

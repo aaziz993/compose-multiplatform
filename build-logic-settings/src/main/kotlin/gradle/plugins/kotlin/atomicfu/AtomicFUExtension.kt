@@ -16,7 +16,7 @@ internal interface AtomicFUExtension {
     val jvmVariant: String?
     val verbose: Boolean?
 
-    context(project: Project)
+    context(Project)
     fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("atomicfu").id) {
             project.atomicFU::dependenciesVersion trySet dependenciesVersion

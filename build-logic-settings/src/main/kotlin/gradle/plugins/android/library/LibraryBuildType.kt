@@ -49,6 +49,7 @@ internal data class LibraryBuildType(
     override val defaultProguardFiles: List<String>? = null,
     override val testProguardFiles: List<String>? = null,
     override val consumerProguardFiles: List<String>? = null,
+    override val setConsumerProguardFiles: List<String>? = null,
     override val isMinifyEnabled: Boolean? = null,
     override val postprocessing: PostProcessing? = null,
     override val initWith: String? = null,
@@ -70,7 +71,7 @@ internal data class LibraryBuildType(
     override val isShrinkResources: Boolean?
         get() = false
 
-    context(project: Project)
+    context(Project)
     @Suppress("UnstableApiUsage")
     override fun applyTo(receiver: com.android.build.api.dsl.LibraryBuildType) {
         super<BuildType>.applyTo(receiver)

@@ -35,7 +35,7 @@ internal data class KotlinKarma(
     val useSourceMapSupport: Boolean? = null,
 ) {
 
-    context(project: Project)
+    context(Project)
     fun applyTo(receiver: org.jetbrains.kotlin.gradle.targets.js.testing.karma.KotlinKarma, outputFileName: String) {
         webpackConfig?.applyTo(receiver.webpackConfig, outputFileName)
         useConfigDirectory?.let(receiver::useConfigDirectory)

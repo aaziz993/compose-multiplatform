@@ -45,7 +45,7 @@ internal data class CompileOptions(
     val isCoreLibraryDesugaringEnabled: Boolean? = null
 ) {
 
-    context(project: Project)
+    context(Project)
     fun applyTo(receiver: CompileOptions) {
         (sourceCompatibility ?: project.settings.libs.versions
             .version("java.sourceCompatibility")

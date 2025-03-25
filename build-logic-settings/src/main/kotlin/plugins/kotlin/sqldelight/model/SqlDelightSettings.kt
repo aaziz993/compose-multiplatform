@@ -18,7 +18,7 @@ internal data class SqlDelightSettings(
     override val enabled: Boolean = false
 ) : SqlDelightExtension, EnabledSettings {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("sqldelight").id) {
             super.applyTo()

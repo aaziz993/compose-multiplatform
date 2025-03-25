@@ -7,7 +7,7 @@ import org.jetbrains.compose.internal.de.undercouch.gradle.tasks.download.Downlo
 
 internal interface DownloadSpec {
 
-    val src: LinkedHashSet<String>
+    val srcs: LinkedHashSet<String>
 
     val dest: String
 
@@ -51,7 +51,7 @@ internal interface DownloadSpec {
 
     fun applyTo(receiver: DownloadSpec) {
         receiver.src(
-            src.flatMap { src ->
+            srcs.flatMap { src ->
                 if (src.endsWith("/")) {
                     val urlLister = ApacheURLLister()
                     urlLister.listFiles(URI(src).toURL())

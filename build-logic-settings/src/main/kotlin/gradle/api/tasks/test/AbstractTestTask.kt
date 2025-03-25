@@ -50,7 +50,7 @@ internal abstract class AbstractTestTask<T : org.gradle.api.tasks.testing.Abstra
 
     abstract val filter: TestFilter?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super<ConventionTask>.applyTo(receiver)
         super<VerificationTask>.applyTo(receiver)
@@ -87,7 +87,7 @@ internal data class AbstractTestTaskImpl(
     override val name: String? = null,
 ) : AbstractTestTask<org.gradle.api.tasks.testing.AbstractTestTask>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<org.gradle.api.tasks.testing.AbstractTestTask>())
 }

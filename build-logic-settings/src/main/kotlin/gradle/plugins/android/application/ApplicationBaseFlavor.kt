@@ -68,7 +68,7 @@ internal interface ApplicationBaseFlavor<T: ApplicationBaseFlavor> : BaseFlavor<
 
     val maxSdk: Int?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super<BaseFlavor>.applyTo(receiver)
         super<ApplicationVariantDimension>.applyTo(receiver)

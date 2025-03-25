@@ -20,7 +20,7 @@ internal data class KotlinJvmCommonTarget(
 ) : KotlinTarget<org.jetbrains.kotlin.gradle.plugin.KotlinTarget>,
     HasConfigurableKotlinCompilerOptions<KotlinJvmTarget, org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompilerOptions> {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() {
         applyTo(project.kotlin.targets.withType<KotlinJvmTarget>()) { _, _ -> }
         applyTo(project.kotlin.targets.withType<KotlinAndroidTarget>()) { _, _ -> }

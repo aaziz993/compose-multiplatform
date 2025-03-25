@@ -28,7 +28,7 @@ internal data class BuildConfigSourceSet(
     val forClass: Set<ForClass>? = null,
 ) : BuildConfigClassSpec<BuildConfigSourceSet> {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: BuildConfigSourceSet) {
         super.applyTo(receiver)
         receiver.className tryAssign className

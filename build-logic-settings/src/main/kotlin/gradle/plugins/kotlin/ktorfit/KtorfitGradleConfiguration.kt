@@ -15,7 +15,7 @@ internal interface KtorfitGradleConfiguration {
     val generateQualifiedTypeName: Boolean?
     val errorCheckingMode: ErrorCheckingMode?
 
-    context(project: Project)
+    context(Project)
     fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("ktorfit").id) {
             project.ktorfit::generateQualifiedTypeName trySet generateQualifiedTypeName

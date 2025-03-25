@@ -18,6 +18,7 @@ import gradle.plugins.android.flavor.ProductFlavor
 import gradle.plugins.android.signing.SigningConfigImpl
 import gradle.plugins.android.signing.SigningConfigTransformingSerializer
 import gradle.plugins.android.sourceset.AndroidSourceSet
+import gradle.plugins.android.split.Splits
 import gradle.plugins.android.test.TestOptions
 import gradle.plugins.kmp.KotlinTarget
 import gradle.serialization.serializer.JsonPolymorphicSerializer
@@ -101,7 +102,7 @@ internal interface BaseExtension {
     val buildFeatures: BuildFeatures<out com.android.build.api.dsl.BuildFeatures>?
     val namespace: String?
 
-    context(project: Project)
+    context(Project)
     @Suppress("UnstableApiUsage", "UNCHECKED_CAST")
     fun applyTo() {
         composeOptions?.applyTo(project.android.composeOptions)

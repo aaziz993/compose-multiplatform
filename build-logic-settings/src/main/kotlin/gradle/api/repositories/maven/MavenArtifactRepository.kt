@@ -47,15 +47,15 @@ internal interface MavenArtifactRepository
      */
     val mavenContent: MavenRepositoryContentDescriptor?
 
-    context(settings: Settings)
+    context(Settings)
     override fun applyTo(receiver: MavenArtifactRepository) =
         super<ArtifactRepository>.applyTo(receiver)
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: MavenArtifactRepository) =
         super<ArtifactRepository>.applyTo(receiver)
 
-    context(directory: Directory)
+    context(Directory)
     override fun _applyTo(receiver: MavenArtifactRepository) {
         super<ArtifactRepository>._applyTo(receiver)
         super<UrlArtifactRepository>._applyTo(receiver)
@@ -69,7 +69,7 @@ internal interface MavenArtifactRepository
         }
     }
 
-    context(settings: Settings)
+    context(Settings)
     override fun applyTo(receiver: RepositoryHandler) =
         applyTo(receiver.withType<MavenArtifactRepository>()) { _name, action ->
             receiver.maven {
@@ -78,7 +78,7 @@ internal interface MavenArtifactRepository
             }
         }
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: RepositoryHandler) =
         applyTo(receiver.withType<MavenArtifactRepository>()) { _name, action ->
             receiver.maven {
@@ -119,10 +119,10 @@ internal interface MavenArtifactRepository
     ) {
 
         fun applyTo(receiver: MavenArtifactRepository.MetadataSources) {
-            gradleMetadata?.takeIf { it }?.run { sources.gradleMetadata() }
-            mavenPom?.takeIf { it }?.run { sources.mavenPom() }
-            artifact?.takeIf { it }?.run { sources.artifact() }
-            ignoreGradleMetadataRedirection?.takeIf { it }?.run { sources.ignoreGradleMetadataRedirection() }
+            gradleMetadata?.takeIf { it }?.run { receiver.gradleMetadata() }
+            mavenPom?.takeIf { it }?.run { receiver.mavenPom() }
+            artifact?.takeIf { it }?.run { receiver.artifact() }
+            ignoreGradleMetadataRedirection?.takeIf { it }?.run { receiver.ignoreGradleMetadataRedirection() }
         }
     }
 }

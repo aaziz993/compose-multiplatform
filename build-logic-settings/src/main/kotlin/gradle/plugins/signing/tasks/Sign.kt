@@ -31,7 +31,7 @@ internal data class Sign(
     override val sign: Set<@Serializable(with = SignContentPolymorphicSerializer::class) Any>? = null,
 ) : DefaultTask<Sign>(), SignatureSpec<Sign>, Signer {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: Sign) {
         super<DefaultTask>.applyTo(receiver)
         super<SignatureSpec>.applyTo(receiver)
@@ -44,7 +44,7 @@ internal data class Sign(
         )
     }
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<Sign>())
 }

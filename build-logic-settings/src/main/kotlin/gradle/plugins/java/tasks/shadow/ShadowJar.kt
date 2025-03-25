@@ -85,7 +85,7 @@ internal data class ShadowJar(
     override val append: String? = null,
 ) : Jar<ShadowJar>(), ShadowSpec<ShadowJar> {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: ShadowJar) =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("shadow").id) {
             super<Jar>.applyTo(receiver)
@@ -95,6 +95,6 @@ internal data class ShadowJar(
             relocationPrefix?.let(receiver::setRelocationPrefix)
         }
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() = applyTo(project.tasks.withType<ShadowJar>())
 }

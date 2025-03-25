@@ -34,9 +34,9 @@ internal data class MavenPomRelocation(
 ) {
 
     fun applyTo(receiver: MavenPomRelocation) {
-        relocation.groupId tryAssign groupId
-        relocation.artifactId tryAssign artifactId
-        relocation.version tryAssign version
-        relocation.message tryAssign message
+        receiver.groupId tryAssign groupId
+        receiver.artifactId tryAssign artifactId
+        receiver.version tryAssign version
+        receiver.message tryAssign message
     }
 }

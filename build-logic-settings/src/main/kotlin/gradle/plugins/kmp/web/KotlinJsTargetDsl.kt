@@ -35,7 +35,7 @@ internal interface KotlinJsTargetDsl<T : org.jetbrains.kotlin.gradle.targets.js.
 
     val generateTypeScriptDefinitions: Boolean?
 
-    context(project: Project)
+    context(Project)
     @OptIn(ExperimentalMainFunctionArgumentsDsl::class)
     override fun applyTo(receiver: T) {
         super<KotlinTarget>.applyTo(receiver)
@@ -81,7 +81,7 @@ internal data class KotlinJsTargetDslImpl(
     override val binaries: KotlinJsBinaryContainer? = null,
 ) : KotlinJsTargetDsl<org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl> {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.kotlin.targets.withType<org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl>(), kotlin::js)
 }

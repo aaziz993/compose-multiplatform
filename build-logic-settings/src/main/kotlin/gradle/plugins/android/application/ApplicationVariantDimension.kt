@@ -44,7 +44,7 @@ internal interface ApplicationVariantDimension<T : ApplicationVariantDimension> 
     /** The associated signing config or null if none are set on the variant dimension. */
     val signingConfig: String?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 

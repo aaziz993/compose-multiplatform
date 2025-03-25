@@ -27,7 +27,7 @@ internal abstract class KotlinCompile<T : org.jetbrains.kotlin.gradle.tasks.Kotl
     abstract val useKotlinAbiSnapshot: Boolean?
     abstract val classpathSnapshotProperties: ClasspathSnapshotProperties?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super<AbstractKotlinCompileTool>.applyTo(receiver)
         super<K2MultiplatformCompilationTask>.applyTo(receiver)
@@ -55,7 +55,7 @@ internal abstract class KotlinCompile<T : org.jetbrains.kotlin.gradle.tasks.Kotl
         val classpathSnapshotDir: String? = null,
     ) {
 
-        context(project: Project)
+        context(Project)
         fun applyTo(receiver: org.jetbrains.kotlin.gradle.tasks.KotlinCompile.ClasspathSnapshotProperties) {
             receiver.useClasspathSnapshot tryAssign useClasspathSnapshot
             classpathSnapshot?.toTypedArray()?.let(receiver.classpathSnapshot::from)
@@ -110,7 +110,7 @@ internal data class KotlinCompileImpl(
     override val classpathSnapshotProperties: ClasspathSnapshotProperties? = null,
 ) : KotlinCompile<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>())
 }

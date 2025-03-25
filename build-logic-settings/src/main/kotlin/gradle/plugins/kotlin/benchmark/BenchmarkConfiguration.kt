@@ -28,7 +28,7 @@ internal data class BenchmarkConfiguration(
     val warmups: Int? = null,
 ) : ProjectNamed<BenchmarkConfiguration> {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: BenchmarkConfiguration) {
         advanced?.let(receiver.advanced::putAll)
 

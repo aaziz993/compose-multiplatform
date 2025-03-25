@@ -14,7 +14,7 @@ internal data class PgpSignatory(
     val password: String,
 ) : Signatory {
 
-    context(project: Project)
+    context(Project)
     override fun toSignatory(): org.gradle.plugins.signing.signatory.Signatory =
         PgpSignatoryFactory().createSignatory(
             name,

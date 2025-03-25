@@ -8,7 +8,7 @@ internal abstract class SourceTask<T : SourceTask> : ConventionTask<T>(), Patter
 
     abstract val sourceFiles: List<String>?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super<ConventionTask>.applyTo(receiver)
         super<PatternFilterable>.applyTo(receiver)

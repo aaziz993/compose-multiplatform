@@ -21,7 +21,7 @@ internal abstract class AbstractDistributions<T : AbstractDistributions> {
     abstract val appResourcesRootDir: String?
     abstract val licenseFile: String?
 
-    context(project: Project)
+    context(Project)
     open fun applyTo(receiver: T) {
         receiver.outputBaseDir tryAssign outputBaseDir?.let(project.layout.projectDirectory::dir)
         receiver.packageName = packageName ?: moduleName

@@ -76,7 +76,7 @@ internal data class DokkaExternalDocumentationLinkSpec(
     val enabled: Boolean? = null,
 ) : ProjectNamed<DokkaExternalDocumentationLinkSpec> {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: DokkaExternalDocumentationLinkSpec) {
         url?.let(receiver::url)
         packageListUrl?.let(receiver::packageListUrl)

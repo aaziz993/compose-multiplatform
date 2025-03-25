@@ -59,7 +59,7 @@ internal interface BaseKotlinCompile<T : org.jetbrains.kotlin.gradle.tasks.BaseK
 
     val useModuleDetection: Boolean?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
@@ -119,7 +119,7 @@ internal data class BaseKotlinCompileImpl(
     override val name: String? = null,
 ) : BaseKotlinCompile<org.jetbrains.kotlin.gradle.tasks.BaseKotlinCompile> {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<org.jetbrains.kotlin.gradle.tasks.BaseKotlinCompile>())
 }

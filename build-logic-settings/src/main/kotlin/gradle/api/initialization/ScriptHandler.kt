@@ -35,7 +35,7 @@ internal data class ScriptHandler(
      *
      * @return the repository handler. Never returns null.
      */
-    val repositories: Set<@Serializable(with = ArtifactRepositoryTransformingSerializer::class) ArtifactRepository<*>>? = null,
+    val repositories: LinkedHashSet<@Serializable(with = ArtifactRepositoryTransformingSerializer::class) ArtifactRepository<*>>? = null,
     /**
      * Returns the dependencies of the script. The returned dependency handler instance can be used for adding new
      * dependencies. For accessing already declared dependencies, the configurations can be used.
@@ -46,7 +46,7 @@ internal data class ScriptHandler(
     val dependencies: Set<@Serializable(with = DependencyTransformingSerializer::class) Dependency>? = null,
 ) {
 
-    context(settings: Settings)
+    context(Settings)
     fun applyTo() {
         repositories?.let { repositories ->
             settings.buildscript.repositories {
@@ -63,7 +63,7 @@ internal data class ScriptHandler(
         }
     }
 
-    context(project: Project)
+    context(Project)
     fun applyTo() {
         repositories?.let { repositories ->
             project.buildscript.repositories {

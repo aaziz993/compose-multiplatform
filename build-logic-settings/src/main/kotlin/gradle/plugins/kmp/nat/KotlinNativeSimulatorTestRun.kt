@@ -18,7 +18,7 @@ internal data class KotlinNativeSimulatorTestRun(
     val deviceId: String? = null,
 ) : KotlinNativeBinaryTestRun<org.jetbrains.kotlin.gradle.targets.native.KotlinNativeSimulatorTestRun> {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: org.jetbrains.kotlin.gradle.targets.native.KotlinNativeSimulatorTestRun) {
         super.applyTo(receiver)
 

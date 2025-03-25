@@ -34,7 +34,7 @@ internal data class KotlinWebpackConfig(
     val scssSupport: KotlinWebpackCssRule? = null,
 ) {
 
-    context(project: Project)
+    context(Project)
     fun applyTo(webpackConfig: KotlinWebpackConfig, outputFileName: String) {
         webpackConfig::mode trySet mode
         webpackConfig::entry trySet entry?.let(project::file)

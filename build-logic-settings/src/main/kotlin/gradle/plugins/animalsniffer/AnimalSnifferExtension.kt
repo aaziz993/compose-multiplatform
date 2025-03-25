@@ -113,7 +113,7 @@ internal abstract class AnimalSnifferExtension : CodeQualityExtension<AnimalSnif
      */
     abstract val failWithoutSignatures: Boolean?
 
-    context(project: Project)
+    context(Project)
     fun applyTo() = project.pluginManager.withPlugin("org.gradle.java-base") {
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("animalsniffer").id) {
             super.applyTo(project.animalSniffer)

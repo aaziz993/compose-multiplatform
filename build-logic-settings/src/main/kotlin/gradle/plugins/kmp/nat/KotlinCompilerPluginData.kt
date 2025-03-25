@@ -15,7 +15,7 @@ internal data class KotlinCompilerPluginData(
     val inputsOutputsState: InputsOutputsState
 ) {
 
-    context(project: Project)
+    context(Project)
     @OptIn(InternalKotlinGradlePluginApi::class)
     fun toKotlinCompilerPluginData() = KotlinCompilerPluginData(
         files(*classpath.toTypedArray()),
@@ -30,7 +30,7 @@ internal data class KotlinCompilerPluginData(
         val outputFiles: Set<String>
     ) {
 
-        context(project: Project)
+        context(Project)
         @OptIn(InternalKotlinGradlePluginApi::class)
         fun toInputsOutputsState() = KotlinCompilerPluginData.InputsOutputsState(
             inputs,

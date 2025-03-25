@@ -37,7 +37,7 @@ internal data class GherkinExtension(
     override val toggleOffOnDisable: Boolean? = null,
 ) : FormatExtension<GherkinExtension>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() = project.spotless.gherkin {
         super.applyTo(this)
     }

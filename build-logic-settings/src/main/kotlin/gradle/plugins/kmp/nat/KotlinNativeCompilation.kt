@@ -22,7 +22,7 @@ internal data class KotlinNativeCompilation(
     val cinterops: List<DefaultCInteropSettings>? = null
 ) : KotlinCompilation<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeCompilation> {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeCompilation) {
         super.applyTo(receiver)
 

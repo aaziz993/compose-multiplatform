@@ -18,7 +18,7 @@ import org.gradle.kotlin.dsl.withType
 internal abstract class AbstractExecTask<T : org.gradle.api.tasks.AbstractExecTask<*>>
     : ConventionTask<T>(), ExecSpec<T> {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super<ConventionTask>.applyTo(receiver)
         super<ExecSpec>.applyTo(receiver)
@@ -52,7 +52,7 @@ internal data class AbstractExecTaskImpl(
     override val name: String? = null,
 ) : AbstractExecTask<org.gradle.api.tasks.AbstractExecTask<*>>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<org.gradle.api.tasks.AbstractExecTask<*>>())
 }

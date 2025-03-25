@@ -64,7 +64,7 @@ internal abstract class ApolloGenerateSourcesBase<T : com.apollographql.apollo3.
 
     abstract val useSemanticNaming: Boolean?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
@@ -148,7 +148,7 @@ internal data class ApolloGenerateSourcesBaseImpl(
     override val name: String? = null,
 ) : ApolloGenerateSourcesBase<com.apollographql.apollo3.gradle.internal.ApolloGenerateSourcesBase>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<com.apollographql.apollo3.gradle.internal.ApolloGenerateSourcesBase>())
 }

@@ -16,7 +16,8 @@ import org.gradle.kotlin.dsl.invoke
 internal data class KotlinJvmAndroidCompilation(
     override val compilationName: String,
     override val defaultSourceSet: KotlinSourceSet? = null,
-    override val compileDependencyFiles: List<String>? = null,
+    override val compileDependencyFiles: Set<String>? = null,
+    override val setCompileDependencyFiles: Set<String>? = null,
     override val output: KotlinCompilationOutput? = null,
     override val associatedCompilations: Set<String>? = null,
     override val dependencies: List<@Serializable(with = DependencyTransformingSerializer::class) Dependency>? = null,
@@ -24,7 +25,7 @@ internal data class KotlinJvmAndroidCompilation(
     val compileJavaTaskProvider: JavaCompile? = null,
 ) : KotlinCompilation<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJvmAndroidCompilation> {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJvmAndroidCompilation) {
         super.applyTo(receiver)
 

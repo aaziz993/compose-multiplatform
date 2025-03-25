@@ -102,7 +102,7 @@ internal abstract class AbstractArchiveTask<T : org.gradle.api.tasks.bundling.Ab
      */
     abstract val reproducibleFileOrder: Boolean?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
@@ -164,7 +164,7 @@ internal data class AbstractArchiveTaskImpl(
     override val name: String? = null,
 ) : AbstractArchiveTask<org.gradle.api.tasks.bundling.AbstractArchiveTask>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<org.gradle.api.tasks.bundling.AbstractArchiveTask>())
 }

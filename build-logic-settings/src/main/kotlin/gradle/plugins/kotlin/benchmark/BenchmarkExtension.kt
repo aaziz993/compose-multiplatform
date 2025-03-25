@@ -28,7 +28,7 @@ internal abstract class BenchmarksExtension {
 
     abstract val targets: LinkedHashSet<@Serializable(with = BenchmarkTargetTransformingSerializer::class) BenchmarkTarget<*>>?
 
-    context(project: Project)
+    context(Project)
     fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("kotlinx.benchmark").id) {
             project.benchmark::benchsDescriptionDir trySet benchsDescriptionDir

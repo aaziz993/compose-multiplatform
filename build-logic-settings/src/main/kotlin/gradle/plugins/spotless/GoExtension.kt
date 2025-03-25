@@ -36,7 +36,7 @@ internal data class GoExtension(
     override val toggleOffOnDisable: Boolean? = null,
 ) : FormatExtension<GoExtension>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() = project.spotless.go {
         super.applyTo(this)
     }

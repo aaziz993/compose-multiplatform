@@ -16,9 +16,9 @@ import org.gradle.kotlin.dsl.withType
  * - [NonIncrementalTask]
  *
  */
-internal abstract class AndroidVariantTask<T : com.android.build.gradle.internal.tasks.AndroidVariantTask> : BaseTask<T>(), VariantTask {
+internal abstract class AndroidVariantTask<T : com.android.build.gradle.internal.tasks.AndroidVariantTask> : BaseTask<T>(), VariantTask<T> {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super<BaseTask>.applyTo(receiver)
         super<VariantTask>.applyTo(receiver)
@@ -45,7 +45,7 @@ internal data class AndroidVariantTaskImpl(
     override val variantName: String? = null,
 ) : AndroidVariantTask<com.android.build.gradle.internal.tasks.AndroidVariantTask>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<com.android.build.gradle.internal.tasks.AndroidVariantTask>())
 }

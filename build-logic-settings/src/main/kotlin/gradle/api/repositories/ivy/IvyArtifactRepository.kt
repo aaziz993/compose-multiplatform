@@ -145,15 +145,15 @@ internal data class IvyArtifactRepository(
     val metadataSources: MetadataSources? = null,
 ) : ArtifactRepository<IvyArtifactRepository>, UrlArtifactRepository<IvyArtifactRepository>, AuthenticationSupported<IvyArtifactRepository> {
 
-    context(settings: Settings)
+    context(Settings)
     override fun applyTo(receiver: IvyArtifactRepository) =
         super<ArtifactRepository>.applyTo(receiver)
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: IvyArtifactRepository) =
         super<ArtifactRepository>.applyTo(receiver)
 
-    context(settings: Settings)
+    context(Settings)
     override fun applyTo(receiver: RepositoryHandler) =
         applyTo(receiver.withType<IvyArtifactRepository>()) { _name, action ->
             receiver.ivy {
@@ -162,7 +162,7 @@ internal data class IvyArtifactRepository(
             }
         }
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: RepositoryHandler) =
         applyTo(receiver.withType<IvyArtifactRepository>()) { _name, action ->
             receiver.ivy {
@@ -171,7 +171,7 @@ internal data class IvyArtifactRepository(
             }
         }
 
-    context(directory: Directory)
+    context(Directory)
     override fun _applyTo(receiver: IvyArtifactRepository) {
         super<ArtifactRepository>._applyTo(receiver)
         super<UrlArtifactRepository>._applyTo(receiver)

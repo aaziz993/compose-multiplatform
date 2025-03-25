@@ -22,7 +22,7 @@ internal interface KnitPluginExtension {
     val dokkaMultiModuleRoot: String?
     val defaultLineSeparator: String?
 
-    context(project: Project)
+    context(Project)
     fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("knit").id) {
             project. knit::siteRoot trySet siteRoot

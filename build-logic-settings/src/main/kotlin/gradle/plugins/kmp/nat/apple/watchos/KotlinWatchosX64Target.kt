@@ -24,7 +24,7 @@ internal data class KotlinWatchosX64Target(
     override val testRuns: List<@Serializable(with = KotlinNativeSimulatorTestRunTransformingSerializer::class) KotlinNativeSimulatorTestRun>? = null,
 ) : KotlinNativeTargetWithSimulatorTests(), KotlinWatchos64Target, KotlinWatchosTarget {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         super.applyTo(project.kotlin.targets.withType<KotlinNativeTarget>(), kotlin::watchosX64)
 }

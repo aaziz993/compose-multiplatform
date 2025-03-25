@@ -38,7 +38,7 @@ internal data class ApiValidationSettings(
     override val enabled: Boolean = true
 ) : ApiValidationExtension, EnabledSettings {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("binaryCompatibilityValidator").id) {
             super.applyTo()

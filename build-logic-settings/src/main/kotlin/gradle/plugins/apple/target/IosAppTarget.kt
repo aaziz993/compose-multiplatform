@@ -31,7 +31,7 @@ internal data class IosAppTarget(
     val sceneConfigurations: List<SceneConfiguration>? = null,
 ) : AppleTarget<IosAppTarget> {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: IosAppTarget) {
         super.applyTo(receiver)
 

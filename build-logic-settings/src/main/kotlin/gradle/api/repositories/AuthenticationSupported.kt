@@ -29,7 +29,7 @@ internal interface AuthenticationSupported<T: AuthenticationSupported> {
      */
     val credentials: PasswordCredentials?
 
-    context(directory: Directory)
+    context(Directory)
     fun _applyTo(receiver: T) {
         credentials?.applyTo(receiver.credentials)
     }

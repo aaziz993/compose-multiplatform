@@ -34,7 +34,7 @@ internal data class DevelocitySettings(
     val teamCityUrl: String? = null,
 ) : DevelocityConfiguration, EnabledSettings {
 
-    context(settings: Settings)
+    context(Settings)
     override fun applyTo() =
         settings.pluginManager.withPlugin(settings.libs.plugins.plugin("develocity").id) {
             super.applyTo()

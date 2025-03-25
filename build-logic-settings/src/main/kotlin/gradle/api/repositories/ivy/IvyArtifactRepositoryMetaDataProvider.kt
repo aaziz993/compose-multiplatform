@@ -16,6 +16,6 @@ internal data class IvyArtifactRepositoryMetaDataProvider(
 ) {
 
     fun applyTo(receiver: IvyArtifactRepositoryMetaDataProvider) {
-        dynamicMode?.let(provider::setDynamicMode)
+        dynamicMode?.let(receiver::setDynamicMode)
     }
 }

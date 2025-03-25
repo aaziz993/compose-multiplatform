@@ -282,27 +282,27 @@ internal val Project.signing: SigningExtension get() = the()
 internal fun Project.signing(configure: SigningExtension.() -> Unit) =
     extensions.configure(configure)
 
-context(project: Project)
+context(Project)
 internal val TaskContainer.apiBuild
     get() = project.tasks.maybeNamed("apiBuild", KotlinApiBuildTask::class.java)
 
-context(project: Project)
+context(Project)
 internal fun TaskContainer.apiBuild(configure: KotlinApiBuildTask.() -> Unit) =
     project.tasks.maybeNamed("apiBuild", KotlinApiBuildTask::class.java, configure)
 
-context(project: Project)
+context(Project)
 internal val TaskContainer.dokkaGeneratePublicationHtml
     get() = project.tasks.maybeNamed("dokkaGeneratePublicationHtml", DokkaGeneratePublicationTask::class.java)
 
-context(project: Project)
+context(Project)
 internal fun TaskContainer.dokkaGeneratePublicationHtml(configure: KotlinApiBuildTask.() -> Unit) =
     project.tasks.maybeNamed("apiBuild", KotlinApiBuildTask::class.java, configure)
 
-context(project: Project)
+context(Project)
 internal val TaskContainer.dokkaGeneratePublicationJavadoc
     get() = project.tasks.maybeNamed("dokkaGeneratePublicationJavadoc", DokkaGeneratePublicationTask::class.java)
 
-context(project: Project)
+context(Project)
 internal fun TaskContainer.dokkaGeneratePublicationJavadoc(configure: KotlinApiBuildTask.() -> Unit) =
     project.tasks.maybeNamed("apiBuild", KotlinApiBuildTask::class.java, configure)
 

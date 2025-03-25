@@ -30,7 +30,7 @@ internal class DokkaBaseTaskImpl(
     override val name: String? = null,
 ) : DokkaBaseTask<org.jetbrains.dokka.gradle.tasks.DokkaBaseTask>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<org.jetbrains.dokka.gradle.tasks.DokkaBaseTask>())
 }

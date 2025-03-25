@@ -15,7 +15,7 @@ internal abstract class Kotlin2JsCompile<T : org.jetbrains.kotlin.gradle.tasks.K
     abstract val libraries: Set<String>?
     abstract val setLibraries: Set<String>?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super<K2MultiplatformCompilationTask>.applyTo(receiver)
         super<ProducesKlib>.applyTo(receiver)
@@ -47,7 +47,7 @@ internal data class Kotlin2JsCompileImpl(
     override val setLibraries: Set<String>? = null,
 ) : Kotlin2JsCompile<org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile>())
 }

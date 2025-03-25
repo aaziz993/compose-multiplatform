@@ -46,7 +46,7 @@ internal abstract class Zip<T : org.gradle.api.tasks.bundling.Zip> : AbstractArc
      */
     abstract val metadataCharset: String?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
@@ -106,7 +106,7 @@ internal data class ZipImpl(
     override val name: String? = null,
 ) : Zip<org.gradle.api.tasks.bundling.Zip>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<org.gradle.api.tasks.bundling.Zip>())
 }

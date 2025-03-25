@@ -9,7 +9,7 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinTargetTestRun
  */
 internal interface KotlinTargetTestRun<T : KotlinTargetTestRun<*>> : KotlinTestRun<T>, KotlinTargetExecution<T> {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super<KotlinTestRun>.applyTo(receiver)
         super<KotlinTargetExecution>.applyTo(receiver)

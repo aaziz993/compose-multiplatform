@@ -32,13 +32,11 @@ internal data class IvyPatternRepositoryLayout(
      * @param m2compatible whether a Maven style layout is to be used for the 'organisation' part
      */
     val m2compatible: Boolean? = null,
-) : RepositoryLayout {
+) : RepositoryLayout<IvyPatternRepositoryLayout> {
 
-    override fun applyTo(receiver: org.gradle.api.artifacts.repositories.RepositoryLayout) {
-        layout as IvyPatternRepositoryLayout
-
-        artifacts?.forEach(layout::artifact)
-        ivys?.forEach(layout::ivy)
-        m2compatible?.let(layout::setM2compatible)
+    override fun applyTo(receiver: IvyPatternRepositoryLayout) {
+        artifacts?.forEach(receiver::artifact)
+        ivys?.forEach(receiver::ivy)
+        m2compatible?.let(receiver::setM2compatible)
     }
 }

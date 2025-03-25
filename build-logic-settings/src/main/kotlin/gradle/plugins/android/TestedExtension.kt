@@ -11,7 +11,7 @@ import org.gradle.api.Project
  */
 internal abstract class TestedExtension : BaseExtension, TestedExtensionDsl {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() {
         super<BaseExtension>.applyTo()
         super<TestedExtensionDsl>.applyTo()

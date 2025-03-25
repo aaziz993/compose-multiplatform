@@ -28,13 +28,13 @@ internal data class MavenCentral(
     override val url: String?
         get() = ArtifactRepositoryContainer.MAVEN_CENTRAL_URL
 
-    context(settings: Settings)
+    context(Settings)
     override fun applyTo(receiver: RepositoryHandler) =
         applyTo(receiver.withType<org.gradle.api.artifacts.repositories.MavenArtifactRepository>()) { _, action ->
             receiver.mavenCentral(action)
         }
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: RepositoryHandler) =
         applyTo(receiver.withType<org.gradle.api.artifacts.repositories.MavenArtifactRepository>()) { _, action ->
             receiver.mavenCentral(action)

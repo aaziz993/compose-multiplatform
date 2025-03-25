@@ -106,7 +106,7 @@ internal data class TestOptions(
     val targetSdkPreview: String? = null,
 ) {
 
-    context(project: Project)
+    context(Project)
     @Suppress("UnstableApiUsage")
     fun applyTo(receiver: TestOptions) {
         unitTests?.applyTo(receiver.unitTests)

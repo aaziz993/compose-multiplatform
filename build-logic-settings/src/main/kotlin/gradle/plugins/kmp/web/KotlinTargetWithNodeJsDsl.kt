@@ -7,10 +7,10 @@ internal interface KotlinTargetWithNodeJsDsl {
 
     val nodejs: KotlinJsNodeDsl?
 
-    context(project: Project)
-    fun applyTo(recipient: KotlinTargetWithNodeJsDsl, distributionName: String) {
+    context(Project)
+    fun applyTo(receiver: KotlinTargetWithNodeJsDsl, distributionName: String) {
         nodejs?.let { nodejs ->
-            recipient.nodejs {
+            receiver.nodejs {
                 nodejs.applyTo(this, distributionName)
             }
         }

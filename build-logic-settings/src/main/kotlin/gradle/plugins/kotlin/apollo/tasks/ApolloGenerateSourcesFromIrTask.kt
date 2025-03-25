@@ -59,7 +59,7 @@ internal data class ApolloGenerateSourcesFromIrTask(
     val usedCoordinates: String? = null,
 ) : ApolloGenerateSourcesBase<ApolloGenerateSourcesFromIrTask>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: ApolloGenerateSourcesFromIrTask) {
         super.applyTo(receiver)
 
@@ -72,7 +72,7 @@ internal data class ApolloGenerateSourcesFromIrTask(
         receiver.usedCoordinates tryAssign usedCoordinates?.let(project::file)
     }
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<ApolloGenerateSourcesFromIrTask>())
 }

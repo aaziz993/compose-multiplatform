@@ -75,7 +75,7 @@ internal data class JavaApplication(
      */
 ) {
 
-    context(project: Project)
+    context(Project)
     fun applyTo() =
         project.pluginManager.withPlugin(ApplicationPlugin.APPLICATION_PLUGIN_NAME) {
             applicationName?.let(project.javaApp::setApplicationName)

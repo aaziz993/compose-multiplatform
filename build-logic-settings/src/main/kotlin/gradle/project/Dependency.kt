@@ -31,18 +31,18 @@ internal data class Dependency(
     val subConfiguration: String? = null
 ) {
 
-    context(settings: Settings)
+    context(Settings)
     fun resolve(): Any = resolve(
         settings.allLibs,
         settings.layout.settingsDirectory,
     )
 
-    context(settings: Settings)
+    context(Settings)
     fun applyTo(receiver: DependencyHandler) {
         receiver.add(configuration, subConfiguration(receiver, resolve()))
     }
 
-    context(project: Project)
+    context(Project)
     fun resolve(): Any = resolve(
         project.settings.allLibs,
         project.layout.projectDirectory,
@@ -50,7 +50,7 @@ internal data class Dependency(
         if (notation.startsWith(":")) project.project(notation) else notation
     }
 
-    context(project: Project)
+    context(Project)
     fun applyTo(receiver: DependencyHandler) {
         val config = when {
             project.configurations.findByName(configuration) != null -> configuration
@@ -74,7 +74,7 @@ internal data class Dependency(
             else -> error("Unsupported dependency additional configuration: $subConfiguration")
         }
 
-    context(project: Project)
+    context(Project)
     fun applyTo(receiver: KotlinDependencyHandler): Unit =
         receiver.kotlinConfigurationFunction(kotlinSubConfiguration(receiver, resolve()))
 

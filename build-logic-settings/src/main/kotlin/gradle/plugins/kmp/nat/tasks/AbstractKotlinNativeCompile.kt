@@ -25,7 +25,7 @@ internal abstract class AbstractKotlinNativeCompile<T : org.jetbrains.kotlin.gra
 
     abstract val kotlinPluginData: KotlinCompilerPluginData?
 
-    context(project: Project)
+    context(Project)
     @OptIn(InternalKotlinGradlePluginApi::class)
     override fun applyTo(receiver: T) {
         super<AbstractKotlinCompileTool>.applyTo(receiver)
@@ -74,7 +74,7 @@ internal data class AbstractKotlinNativeCompileImpl(
     override val produceUnpackagedKlib: Boolean? = null,
 ) : AbstractKotlinNativeCompile<org.jetbrains.kotlin.gradle.tasks.AbstractKotlinNativeCompile<*, *>>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<org.jetbrains.kotlin.gradle.tasks.AbstractKotlinNativeCompile<*, *>>())
 }

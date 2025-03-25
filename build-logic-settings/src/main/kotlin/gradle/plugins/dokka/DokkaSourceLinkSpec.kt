@@ -76,15 +76,15 @@ internal data class DokkaSourceLinkSpec(
     val remoteLineSuffix: String? = null
 ) {
 
-    context(project: Project)
+    context(Project)
     fun applyTo(receiver: DokkaSourceLinkSpec) {
-        receiver.localDirectory tryAssign layout.projectDirectory.dir(
-            localDirectory ?: when (projectProperties.layout) {
-                ProjectLayout.FLAT -> ""
+        receiver.localDirectory tryAssign project.layout.projectDirectory.dir(
+            localDirectory ?: when (project.projectProperties.layout) {
+                is ProjectLayout.Flat -> ""
                 else -> "src"
             },
         )
-        (remoteUrl ?: settings.projectProperties.scm?.url)?.let(receiver::remoteUrl)
+        (remoteUrl ?: project.settings.projectProperties.remote?.url)?.let(receiver::remoteUrl)
         receiver.remoteLineSuffix tryAssign remoteLineSuffix
     }
 }

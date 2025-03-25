@@ -15,7 +15,7 @@ internal data class Manifest(
     val froms: LinkedHashSet<@Serializable(with = FromContentPolymorphicSerializer::class) Any>? = null,
 ) {
 
-    context(project: Project)
+    context(Project)
     fun applyTo(receiver: org.gradle.api.java.archives.Manifest) {
         receiver.attributes.putAll(
             mapOf(

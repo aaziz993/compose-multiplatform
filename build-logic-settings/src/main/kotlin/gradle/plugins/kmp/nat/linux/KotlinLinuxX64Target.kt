@@ -24,7 +24,7 @@ internal data class KotlinLinuxX64Target(
     override val testRuns: List<@Serializable(with = KotlinNativeHostTestRunTransformingSerializer::class) KotlinNativeHostTestRun>? = null,
 ) : KotlinNativeTargetWithHostTests(), KotlinLinuxTarget {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         super.applyTo(project.kotlin.targets.withType<KotlinNativeTarget>(), kotlin::linuxX64)
 }

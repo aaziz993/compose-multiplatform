@@ -17,7 +17,7 @@ internal interface KarakumExtension {
     val configFile: String?
     val extensionSource: String?
 
-    context(project: Project)
+    context(Project)
     fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("karakum").id) {
             project.karakum.configFile tryAssign configFile?.let(project::file)

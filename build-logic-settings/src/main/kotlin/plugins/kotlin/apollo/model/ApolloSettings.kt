@@ -25,7 +25,7 @@ internal data class ApolloSettings(
     override val enabled: Boolean = true,
 ) : ApolloExtension, EnabledSettings {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("apollo3").id) {
             super.applyTo()

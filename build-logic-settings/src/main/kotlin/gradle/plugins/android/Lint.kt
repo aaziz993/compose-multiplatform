@@ -258,7 +258,7 @@ internal data class Lint(
     val targetSdkPreview: String? = null,
 ) {
 
-    context(project: Project)
+    context(Project)
     fun applyTo(receiver: Lint) {
         disable?.let(receiver.disable::addAll)
         setDisable?.act(receiver.disable::clear)?.let(receiver.disable::addAll)

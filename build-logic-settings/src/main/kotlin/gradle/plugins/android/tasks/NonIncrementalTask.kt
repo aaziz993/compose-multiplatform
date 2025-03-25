@@ -34,7 +34,7 @@ internal data class NonIncrementalTaskImpl(
     override val variantName: String? = null,
 ) : NonIncrementalTask<com.android.build.gradle.internal.tasks.NonIncrementalTask>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<com.android.build.gradle.internal.tasks.NonIncrementalTask>())
 }

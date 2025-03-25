@@ -18,7 +18,7 @@ internal data class DesktopExtension(
     val nativeApplication: NativeApplication? = null,
 ) {
 
-    context(project: Project)
+    context(Project)
     fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("compose.multiplatform").id) {
             application?.applyTo(project.compose.desktop.application)

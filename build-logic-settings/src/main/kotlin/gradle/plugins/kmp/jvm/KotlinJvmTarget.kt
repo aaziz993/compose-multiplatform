@@ -23,7 +23,7 @@ internal data class KotlinJvmTarget(
 ) : KotlinTarget<KotlinJvmTarget>,
     HasConfigurableKotlinCompilerOptions<KotlinJvmTarget, org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompilerOptions> {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: KotlinJvmTarget) {
         super<KotlinTarget>.applyTo(receiver)
         super<HasConfigurableKotlinCompilerOptions>.applyTo(receiver)
@@ -37,7 +37,7 @@ internal data class KotlinJvmTarget(
         }
     }
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.kotlin.targets.withType<KotlinJvmTarget>()) { name, action ->
             project.kotlin.jvm(name, action::execute)

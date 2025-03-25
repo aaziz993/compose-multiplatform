@@ -119,7 +119,7 @@ internal data class CmakeOptions(
     val version: String? = null,
 ) {
 
-    context(project: Project)
+    context(Project)
     fun applyTo(receiver: Cmake) {
         path?.let(receiver::path)
         buildStagingDirectory?.let(receiver::buildStagingDirectory)

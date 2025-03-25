@@ -18,7 +18,7 @@ internal data class LicenseHeaderFile(
     @Transient
     override val into: String = "CODE_OF_CONDUCT.md"
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: String): List<TaskProvider<out DefaultTask>> =
         super.applyTo(name).onEach { task ->
             task.configure {

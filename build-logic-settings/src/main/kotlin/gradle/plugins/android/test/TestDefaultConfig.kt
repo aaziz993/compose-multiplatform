@@ -16,7 +16,7 @@ internal interface TestDefaultConfig<T : TestDefaultConfig> :
     TestBaseFlavor<T>,
     DefaultConfigDsl<T> {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super<TestBaseFlavor>.applyTo(receiver)
         super<DefaultConfigDsl>.applyTo(receiver)

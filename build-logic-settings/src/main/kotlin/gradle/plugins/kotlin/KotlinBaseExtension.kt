@@ -74,7 +74,7 @@ internal interface KotlinBaseExtension<T : KotlinBaseExtension> {
      */
     val explicitApi: ExplicitApiMode?
 
-    context(project: Project)
+    context(Project)
     @OptIn(ExperimentalBuildToolsApi::class)
     fun applyTo(receiver: T) {
         jvmToolchainSpec?.let { jvmToolchainSpec ->

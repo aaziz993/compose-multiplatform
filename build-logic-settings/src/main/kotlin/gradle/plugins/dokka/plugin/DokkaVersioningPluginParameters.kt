@@ -72,7 +72,7 @@ internal data class DokkaVersioningPluginParameters(
     override val pluginFqn: String
         get() = DokkaVersioningPluginParameters.DOKKA_VERSIONING_PLUGIN_FQN
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: DokkaVersioningPluginParameters) {
         buildscript {
             dependencies {

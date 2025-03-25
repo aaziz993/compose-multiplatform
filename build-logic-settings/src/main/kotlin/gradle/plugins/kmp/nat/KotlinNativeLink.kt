@@ -47,7 +47,7 @@ internal data class KotlinNativeLink(
     val kotlinPluginData: KotlinCompilerPluginData? = null,
 ) : AbstractKotlinCompileTool(), KotlinToolTask<KotlinCommonCompilerToolOptions> {
 
-        context(project: Project)
+        context(Project)
     override fun applyTo(receiver: T) {
         super<AbstractKotlinCompileTool>.applyTo(named)
         super<KotlinToolTask>.applyTo(named)

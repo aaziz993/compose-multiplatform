@@ -62,7 +62,7 @@ internal interface SonarExtension {
      */
     val androidVariant: String?
 
-    context(project: Project)
+    context(Project)
     fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("sonar").id) {
             skipProject?.let(project.sonar::setSkipProject)

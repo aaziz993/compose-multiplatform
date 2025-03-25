@@ -24,7 +24,7 @@ internal data class AndroidSourceFile(
     val srcFile: String?
 ) : ProjectNamed<AndroidSourceFile> {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: AndroidSourceFile) {
         srcFile?.let(receiver::srcFile)
     }

@@ -30,7 +30,7 @@ internal data class KnitTask(
     val setFiles: Set<String>? = null,
 ) : DefaultTask<KnitTask>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: KnitTask) {
         super.applyTo(receiver)
 
@@ -40,7 +40,7 @@ internal data class KnitTask(
         receiver::files trySet setFiles?.toTypedArray()?.let(project::files)
     }
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<KnitTask>())
 }

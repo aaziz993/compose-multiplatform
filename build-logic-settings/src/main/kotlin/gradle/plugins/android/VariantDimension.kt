@@ -119,7 +119,7 @@ internal interface VariantDimension<T : VariantDimension> {
 
     val optimization: Optimization?
 
-    context(project: Project)
+    context(Project)
     @Suppress("UnstableApiUsage")
     fun applyTo(receiver: T) {
         receiver::multiDexKeepProguard trySet multiDexKeepProguard?.let(project::file)

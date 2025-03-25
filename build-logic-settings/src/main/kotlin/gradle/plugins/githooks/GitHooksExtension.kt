@@ -27,7 +27,7 @@ internal interface GitHooksExtension {
 
     val hooksUrls: Map<String, String>?
 
-    context(settings: Settings)
+    context(Settings)
     fun applyTo() =
         settings.pluginManager.withPlugin(settings.libs.plugins.plugin("gradlePreCommitGitHooks").id) {
             hooks?.forEach { name, script ->

@@ -202,7 +202,7 @@ internal interface BaseFlavor<T : BaseFlavor> : VariantDimension<T> {
      */
     val initWith: String?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 

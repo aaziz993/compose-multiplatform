@@ -31,9 +31,9 @@ internal data class MavenPomScm(
 ) {
 
     fun applyTo(receiver: MavenPomScm) {
-        scm.connection tryAssign connection
-        scm.developerConnection tryAssign developerConnection
-        scm.url tryAssign url
-        scm.tag tryAssign tag
+        receiver.connection tryAssign connection
+        receiver.developerConnection tryAssign developerConnection
+        receiver.url tryAssign url
+        receiver.tag tryAssign tag
     }
 }

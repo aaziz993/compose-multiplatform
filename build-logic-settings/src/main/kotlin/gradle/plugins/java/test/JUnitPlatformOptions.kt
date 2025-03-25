@@ -44,7 +44,7 @@ internal class JUnitPlatformOptions(
     val setExcludeTags: Set<String>? = null,
 ) : TestFrameworkOptions<JUnitPlatformOptions>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: JUnitPlatformOptions) {
         includeEngines?.toTypedArray()?.let(receiver::includeEngines)
         setIncludeEngines?.let(receiver::setIncludeEngines)

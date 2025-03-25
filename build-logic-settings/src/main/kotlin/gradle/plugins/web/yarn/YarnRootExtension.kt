@@ -29,7 +29,7 @@ internal data class YarnRootExtension(
     val setResolutions: List<YarnResolution>? = null,
 ) : AbstractSettings<YarnEnv>() {
 
-    context(project: Project)
+    context(Project)
     fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("gradle.node.plugin").id) {
             super.applyTo(project.yarn)

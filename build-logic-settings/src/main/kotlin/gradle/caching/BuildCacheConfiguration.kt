@@ -1,8 +1,11 @@
 package gradle.caching
 
+import gradle.caching.remote.DevelocityBuildCache
+import gradle.caching.remote.HttpBuildCache
 import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings
 import org.gradle.caching.configuration.BuildCacheConfiguration
+import org.gradle.kotlin.dsl.develocity
 import org.jetbrains.dokka.plugability.configuration
 
 /**
@@ -33,13 +36,23 @@ internal data class BuildCacheConfiguration(
     val remotes: List<@Serializable(with = BuildCacheTransformingSerializer::class) BuildCache<*>>? = null,
 ) {
 
-    context(settings: Settings)
+    context(Settings)
     @Suppress("UNCHECKED_CAST")
     fun applyTo(receiver: BuildCacheConfiguration) {
         local?.applyTo()
 
         remotes?.forEach { remote ->
-            remote.applyTo(receiver)
+            when (remote) {
+                is HttpBuildCache -> receiver.remote(org.gradle.caching.http.HttpBuildCache::class.java) {
+                    remote.applyTo(this)
+                }
+
+                is DevelocityBuildCache -> receiver.remote(settings.develocity.buildCache) {
+                    remote.applyTo(this)
+                }
+
+                else -> error("Unsupported remote build cache type: ${remote::class.java.name}")
+            }
         }
     }
 }

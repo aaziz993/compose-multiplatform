@@ -84,7 +84,7 @@ internal abstract class SigningExtension : Signer {
      */
     abstract val signClassifierFiles: List<SignFile>?
 
-    context(project: Project)
+    context(Project)
     fun applyTo() =
         project.pluginManager.withPlugin("signing") {
             project.signing.isRequired = required ?: !project.version.toString().toVersion().isPreRelease

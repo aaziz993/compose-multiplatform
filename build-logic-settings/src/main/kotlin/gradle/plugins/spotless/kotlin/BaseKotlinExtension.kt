@@ -21,7 +21,7 @@ internal abstract class BaseKotlinExtension<T : BaseKotlinExtension> : FormatExt
 
     abstract val ktlint: KtlintConfig?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 

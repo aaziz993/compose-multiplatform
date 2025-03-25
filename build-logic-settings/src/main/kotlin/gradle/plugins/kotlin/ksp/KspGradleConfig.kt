@@ -48,7 +48,7 @@ internal data class KspGradleConfig(
     val konanHome: String? = null,
 ) {
 
-    context(project: Project)
+    context(Project)
     fun applyTo(receiver: KspGradleConfig) {
         processorClasspath?.toTypedArray()?.let(receiver.processorClasspath::from)
         setProcessorClasspath?.let(receiver.processorClasspath::setFrom)

@@ -38,7 +38,7 @@ internal data class CocoapodsSettings(
     override val enabled: Boolean = true
 ) : CocoapodsExtension, EnabledSettings {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("cocoapods").id) {
             super.applyTo()

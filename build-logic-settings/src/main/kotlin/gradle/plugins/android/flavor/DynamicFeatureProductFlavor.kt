@@ -28,7 +28,7 @@ internal interface DynamicFeatureProductFlavor<T : DynamicFeatureProductFlavor> 
     DynamicFeatureBaseFlavor<T>,
     ProductFlavorDsl<T> {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super<DynamicFeatureBaseFlavor>.applyTo(receiver)
         super<ProductFlavorDsl>.applyTo(receiver)

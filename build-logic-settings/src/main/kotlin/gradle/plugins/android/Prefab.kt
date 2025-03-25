@@ -50,7 +50,7 @@ internal data class Prefab(
     val headerOnly: Boolean? = null,
 ) : ProjectNamed<Prefab> {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: Prefab) {
         receiver::name trySet name
         receiver::headers trySet headers

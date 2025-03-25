@@ -23,7 +23,7 @@ internal data class MavenPomIssueManagement(
 ) {
 
     fun applyTo(receiver: MavenPomIssueManagement) {
-        management.system tryAssign system
-        management.url tryAssign url
+        receiver.system tryAssign system
+        receiver.url tryAssign url
     }
 }

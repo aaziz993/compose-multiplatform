@@ -115,7 +115,7 @@ internal interface CocoapodsExtension {
 
     val podDependencies: Set<@Serializable(with = CocoapodsDependencyTransformingSerializer::class) CocoapodsDependency>?
 
-    context(project: Project)
+    context(Project)
     fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("cocoapods").id) {
             project.kotlin.cocoapods::version trySet (version
@@ -206,7 +206,7 @@ internal interface CocoapodsExtension {
         val notation: String? = null,
     ) {
 
-        context(project: Project)
+        context(Project)
         fun resolve() {
             notation?.let { notation ->
                 if (notation.startsWith("$")) project.settings.allLibs.resolveLibrary(notation).removePrefix("cocoapods:")
@@ -217,7 +217,7 @@ internal interface CocoapodsExtension {
             }
         }
 
-        context(project: Project)
+        context(Project)
         fun applyTo(receiver: CocoapodsExtension.CocoapodsDependency) {
             receiver::moduleName trySet moduleName
             receiver::headers trySet headers
@@ -252,7 +252,7 @@ internal interface CocoapodsExtension {
                 val dir: String
             ) : PodLocation() {
 
-                context(project: Project)
+                context(Project)
                 override fun toPodLocation(): CocoapodsExtension.CocoapodsDependency.PodLocation =
                     CocoapodsExtension.CocoapodsDependency.PodLocation.Path(project.file(dir))
             }
@@ -265,7 +265,7 @@ internal interface CocoapodsExtension {
                 val commit: String? = null
             ) : PodLocation() {
 
-                context(project: Project)
+                context(Project)
                 override fun toPodLocation(): CocoapodsExtension.CocoapodsDependency.PodLocation =
                     CocoapodsExtension.CocoapodsDependency.PodLocation.Git(
                         URI(url),
@@ -274,7 +274,7 @@ internal interface CocoapodsExtension {
                     )
             }
 
-            context(project: Project)
+            context(Project)
             abstract fun toPodLocation(): CocoapodsExtension.CocoapodsDependency.PodLocation
         }
 

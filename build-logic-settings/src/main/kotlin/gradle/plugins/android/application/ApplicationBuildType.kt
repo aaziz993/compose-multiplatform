@@ -105,7 +105,7 @@ internal data class ApplicationBuildType(
 ) : BuildType<com.android.build.api.dsl.ApplicationBuildType>,
     ApplicationVariantDimension<com.android.build.api.dsl.ApplicationBuildType> {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: com.android.build.api.dsl.ApplicationBuildType) {
         super<BuildType>.applyTo(receiver)
 

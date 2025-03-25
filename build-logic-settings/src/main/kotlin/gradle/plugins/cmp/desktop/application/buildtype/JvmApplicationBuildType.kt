@@ -9,7 +9,7 @@ internal data class JvmApplicationBuildType(
     val proguard: ProguardSettings? = null,
 ) {
 
-    context(project: Project)
+    context(Project)
     fun applyTo(receiver: JvmApplicationBuildType) {
         proguard?.applyTo(receiver.proguard)
     }

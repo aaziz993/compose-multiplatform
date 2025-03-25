@@ -16,7 +16,7 @@ internal interface HasConfigurableKotlinCompilerOptions<T : HasConfigurableKotli
      */
     val compilerOptions: KotlinCommonCompilerOptions<CO>?
 
-    context(project: Project)
+    context(Project)
     fun applyTo(receiver: T) {
         compilerOptions?.applyTo(receiver.compilerOptions)
     }

@@ -19,7 +19,7 @@ internal interface TestProductFlavor<T : TestProductFlavor> :
     TestBaseFlavor<T>,
     ProductFlavorDsl<T> {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super<TestBaseFlavor>.applyTo(receiver)
         super<ProductFlavorDsl>.applyTo(receiver)

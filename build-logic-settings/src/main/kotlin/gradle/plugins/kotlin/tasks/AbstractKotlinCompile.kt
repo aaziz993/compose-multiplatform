@@ -28,7 +28,7 @@ internal abstract class AbstractKotlinCompile<T : org.jetbrains.kotlin.gradle.ta
 
     abstract val abiSnapshotRelativePath: String?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super<AbstractKotlinCompileTool>.applyTo(receiver)
         super<BaseKotlinCompile>.applyTo(receiver)
@@ -81,7 +81,7 @@ internal data class AbstractKotlinCompileImpl(
     override val useModuleDetection: Boolean? = null,
 ) : AbstractKotlinCompile<org.jetbrains.kotlin.gradle.tasks.AbstractKotlinCompile<*>>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<org.jetbrains.kotlin.gradle.tasks.AbstractKotlinCompile<*>>())
 }

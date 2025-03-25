@@ -11,7 +11,7 @@ internal interface KotlinJsCompilation<T : KotlinJsCompilation> : KotlinCompilat
     val outputModuleName: String?
     val packageJson: PackageJson?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 

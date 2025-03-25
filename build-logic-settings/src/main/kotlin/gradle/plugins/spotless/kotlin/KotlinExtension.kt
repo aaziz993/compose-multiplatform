@@ -39,7 +39,7 @@ internal data class KotlinExtension(
     override val toggleOffOnDisable: Boolean? = null,
 ) : BaseKotlinExtension<KotlinExtension>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() = project.spotless.kotlin {
         super.applyTo(this)
     }

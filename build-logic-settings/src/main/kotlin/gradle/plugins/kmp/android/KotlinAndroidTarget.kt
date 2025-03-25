@@ -43,7 +43,7 @@ internal data class KotlinAndroidTarget(
 ) : KotlinTarget<KotlinAndroidTarget>,
     HasConfigurableKotlinCompilerOptions<KotlinAndroidTarget, org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompilerOptions> {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: KotlinAndroidTarget) {
         super<KotlinTarget>.applyTo(receiver)
         super<HasConfigurableKotlinCompilerOptions>.applyTo(receiver)
@@ -60,7 +60,7 @@ internal data class KotlinAndroidTarget(
         }
     }
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.kotlin.targets.withType<KotlinAndroidTarget>()) { name, action ->
             kotlin::androidTarget

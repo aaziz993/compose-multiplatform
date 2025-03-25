@@ -71,7 +71,7 @@ internal data class DokkaGenerateTask(
     val overrideJsonConfig: String? = null,
 ) : DokkaBaseTask<DokkaGenerateTask>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: DokkaGenerateTask) {
         super.applyTo(receiver)
 
@@ -87,7 +87,7 @@ internal data class DokkaGenerateTask(
         receiver.overrideJsonConfig tryAssign overrideJsonConfig
     }
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<DokkaGenerateTask>())
 }

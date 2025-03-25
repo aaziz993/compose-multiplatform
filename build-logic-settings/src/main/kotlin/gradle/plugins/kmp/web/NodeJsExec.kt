@@ -15,7 +15,7 @@ internal data class NodeJsExec(
     val inputFileProperty: String? = null,
 ) {
 
-    context(project: Project)
+    context(Project)
     fun applyTo(receiver: NodeJsExec) {
         nodeJsRoot?.applyTo(exec.nodeJsRoot)
         nodeArgs?.let(exec.nodeArgs::addAll)

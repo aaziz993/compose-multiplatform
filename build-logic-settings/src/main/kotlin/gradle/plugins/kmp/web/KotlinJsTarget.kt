@@ -22,7 +22,7 @@ internal data class KotlinJsTarget(
     override val binaries: KotlinJsBinaryContainer? = null,
 ) : KotlinJsTargetDsl<org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl> {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(
                 project.kotlin.targets.matching { target ->

@@ -99,7 +99,7 @@ internal data class KotlinJsCompilerOptions(
     val useEsClasses: Boolean? = null,
 ) : KotlinCommonCompilerOptions<KotlinJsCompilerOptions> {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: KotlinJsCompilerOptions) {
         super.applyTo(receiver)
 

@@ -30,7 +30,7 @@ internal data class ApolloGenerateUsedCoordinatesAndCheckFragmentsTask(
     val outputFile: String? = null,
 ) : DefaultTask<ApolloGenerateUsedCoordinatesAndCheckFragmentsTask>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: ApolloGenerateUsedCoordinatesAndCheckFragmentsTask) {
         super.applyTo(receiver)
 
@@ -40,7 +40,7 @@ internal data class ApolloGenerateUsedCoordinatesAndCheckFragmentsTask(
         receiver.outputFile tryAssign outputFile?.let(project::file)
     }
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<ApolloGenerateUsedCoordinatesAndCheckFragmentsTask>())
 }

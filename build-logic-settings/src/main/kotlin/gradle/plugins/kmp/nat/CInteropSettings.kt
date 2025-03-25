@@ -237,7 +237,7 @@ internal interface CInteropSettings<T : CInteropSettings> : ProjectNamed<T> {
      */
     val extraOpts: List<String>?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         receiver::dependencyFiles trySet dependencyFiles?.toTypedArray()?.let(project::files)
             ?.from(receiver.dependencyFiles + dependencyFiles)

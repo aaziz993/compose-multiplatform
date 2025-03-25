@@ -13,7 +13,7 @@ internal interface ProducesKlib<T : org.jetbrains.kotlin.gradle.internal.tasks.P
 
     val produceUnpackagedKlib: Boolean?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
@@ -40,7 +40,7 @@ internal data class ProducesKlibImpl(
     override val name: String? = null,
 ) : ProducesKlib<org.jetbrains.kotlin.gradle.internal.tasks.ProducesKlib>{
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<org.jetbrains.kotlin.gradle.internal.tasks.ProducesKlib>())
 }

@@ -22,7 +22,7 @@ internal abstract class BaseTask<T : com.android.build.gradle.internal.tasks.Bas
 
     abstract val projectPath: String?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
@@ -49,7 +49,7 @@ internal data class BaseTaskImpl(
     override val name: String? = null,
 ) : BaseTask<com.android.build.gradle.internal.tasks.BaseTask>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<com.android.build.gradle.internal.tasks.BaseTask>())
 }

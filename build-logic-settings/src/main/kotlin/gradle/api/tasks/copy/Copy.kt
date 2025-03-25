@@ -62,7 +62,7 @@ internal abstract class Copy<T : org.gradle.api.tasks.Copy> : AbstractCopyTask<T
      */
     abstract val destinationDir: String?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
@@ -108,7 +108,7 @@ internal data class CopyImpl(
     override val destinationDir: String? = null,
 ) : Copy<org.gradle.api.tasks.Copy>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<org.gradle.api.tasks.Copy>())
 }

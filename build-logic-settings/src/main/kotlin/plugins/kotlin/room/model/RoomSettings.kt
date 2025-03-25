@@ -19,7 +19,7 @@ internal data class RoomSettings(
     override val enabled: Boolean = true
 ) : RoomExtension, EnabledSettings {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("room").id) {
             super.applyTo()

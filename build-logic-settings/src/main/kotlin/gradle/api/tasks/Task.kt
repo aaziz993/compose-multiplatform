@@ -325,7 +325,7 @@ internal interface Task<T : org.gradle.api.Task> : ProjectNamed<T> {
      */
     val shouldRunAfter: Set<String>?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         dependsOn?.let(receiver::setDependsOn)
         onlyIf?.let { onlyIf -> receiver.onlyIf { onlyIf } }
@@ -341,14 +341,14 @@ internal interface Task<T : org.gradle.api.Task> : ProjectNamed<T> {
         shouldRunAfter?.let(receiver::setShouldRunAfter)
     }
 
-    context(project: Project)
+    context(Project)
     fun applyTo()
 }
 
-context(project: Project)
+context(Project)
 internal fun <T : org.gradle.api.Task> Task<T>.applyTo(receiver: TaskCollection<out T>) =
     applyTo(receiver as DomainObjectCollection<out T>) { name, action ->
-        tasks.register(name, receiver.elementType(), action)
+        project.tasks.register(name, receiver.elementType(), action)
     }
 
 private object TaskSerializer : JsonPolymorphicSerializer<Task<*>>(
@@ -378,6 +378,6 @@ internal data class TaskImpl(
     override val name: String? = null,
 ) : Task<org.gradle.api.Task> {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() = applyTo(project.tasks as TaskCollection<org.gradle.api.Task>)
 }

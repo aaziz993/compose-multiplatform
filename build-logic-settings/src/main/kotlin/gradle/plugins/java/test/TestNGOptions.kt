@@ -137,7 +137,7 @@ internal data class TestNGOptions(
     val groupByInstances: Boolean? = null,
 ) : TestFrameworkOptions() {
 
-    context(project: Project)
+    context(Project)
     @Suppress("UnstableApiUsage")
     override fun applyTo(receiver: org.gradle.api.tasks.testing.TestFrameworkOptions) {
         options as TestNGOptions

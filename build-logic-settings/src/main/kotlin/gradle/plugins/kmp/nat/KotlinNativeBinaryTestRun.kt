@@ -12,7 +12,7 @@ internal interface KotlinNativeBinaryTestRun<T : org.jetbrains.kotlin.gradle.tar
 
     override val executionSource: NativeBinaryTestRunSource?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 

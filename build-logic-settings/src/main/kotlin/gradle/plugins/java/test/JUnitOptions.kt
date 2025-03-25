@@ -22,7 +22,7 @@ internal data class JUnitOptions(
     val setExcludeCategories: Set<String>? = null,
 ) : TestFrameworkOptions<JUnitOptions>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: JUnitOptions) {
         includeCategories?.toTypedArray()?.let(receiver::includeCategories)
         setIncludeCategories?.let(receiver::setIncludeCategories)

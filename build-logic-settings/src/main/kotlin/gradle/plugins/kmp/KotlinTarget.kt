@@ -25,12 +25,12 @@ internal interface KotlinTarget<T : org.jetbrains.kotlin.gradle.plugin.KotlinTar
      * Allows access to the default [main][KotlinCompilation.MAIN_COMPILATION_NAME] or [test][KotlinCompilation.TEST_COMPILATION_NAME]
      * compilations, or the creation of additional compilations.
      */
-    val compilations: Set<KotlinCompilation<out org.jetbrains.kotlin.gradle.plugin.KotlinCompilation<*>>>?
+    val compilations: LinkedHashSet<KotlinCompilation<out org.jetbrains.kotlin.gradle.plugin.KotlinCompilation<*>>>?
 
     val needKMP: Boolean
         get() = true
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         compilations?.forEach { compilation ->
             (compilation as KotlinCompilation<org.jetbrains.kotlin.gradle.plugin.KotlinCompilation<*>>)
@@ -38,7 +38,7 @@ internal interface KotlinTarget<T : org.jetbrains.kotlin.gradle.plugin.KotlinTar
         }
     }
 
-    context(project: Project)
+    context(Project)
     fun applyTo()
 }
 
@@ -55,10 +55,10 @@ internal object KotlinTargetTransformingSerializer : KeyTransformingSerializer<K
 @SerialName("KotlinTarget")
 internal data class KotlinTargetIml(
     override val targetName: String? = null,
-    override val compilations: Set<KotlinCompilationImpl>? = null,
+    override val compilations: LinkedHashSet<KotlinCompilationImpl>? = null,
 ) : KotlinTarget<org.jetbrains.kotlin.gradle.plugin.KotlinTarget> {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.kotlin.targets) { _, _ -> }
 }

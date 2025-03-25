@@ -160,7 +160,7 @@ internal interface ProductFlavorDsl<T : ProductFlavor> : ProjectNamed<T>, BaseFl
      */
     val matchingFallbacks: List<String>?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super<BaseFlavor>.applyTo(receiver)
 

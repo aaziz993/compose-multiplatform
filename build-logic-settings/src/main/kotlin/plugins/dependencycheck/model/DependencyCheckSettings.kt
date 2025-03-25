@@ -66,7 +66,7 @@ internal data class DependencyCheckSettings(
     override val enabled: Boolean = true
 ) : DependencyCheckExtension(), EnabledSettings {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() = project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("dependencycheck").id) {
         super.applyTo()
     }

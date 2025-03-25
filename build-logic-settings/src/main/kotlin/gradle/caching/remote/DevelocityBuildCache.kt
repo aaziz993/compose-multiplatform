@@ -23,10 +23,10 @@ internal data class DevelocityBuildCache(
     val usernameAndPassword: HttpBuildCacheCredentials? = null
 ) : AbstractBuildCache<DevelocityBuildCache>() {
 
-    context(settings: Settings)
+    context(Settings)
     override fun applyTo(receiver: DevelocityBuildCache) {
         // better set it to true only for CI builds.
-        receiver.isPush = isCI && projectProperties.plugins.develocity.accessKey != null
+        receiver.isPush = isCI && settings.projectProperties.plugins.develocity.accessKey != null
 
         super.applyTo(receiver)
 
@@ -37,13 +37,6 @@ internal data class DevelocityBuildCache(
         useExpectContinue?.let(receiver::setUseExpectContinue)
         usernameAndPassword?.let { (username, password) ->
             receiver.usernameAndPassword(username, password)
-        }
-    }
-
-    context(settings: Settings)
-    override fun applyTo(receiver: BuildCacheConfiguration) {
-        receiver.remote(develocity.buildCache) {
-            applyTo(this)
         }
     }
 }

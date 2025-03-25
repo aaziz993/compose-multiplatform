@@ -17,37 +17,38 @@ import org.gradle.api.Project
 
 internal interface AppleProjectExtension {
 
-    val sourceSets: Set<@Serializable(with = AppleSourceSetTransformingSerializer::class) AppleSourceSet>?
+    val sourceSets: LinkedHashSet<@Serializable(with = AppleSourceSetTransformingSerializer::class) AppleSourceSet>?
 
-    val targets: Set<@Serializable(with = AppleTargetTransformingSerializer::class) AppleTarget<*>>?
+    val targets: LinkedHashSet<@Serializable(with = AppleTargetTransformingSerializer::class) AppleTarget<*>>?
 
     val teamID: String?
     val iosApp: IosAppTarget?
     val iosFramework: IosFrameworkTarget?
 
-    context(project: Project)
+    context(Project)
+    @Suppress("UNCHECKED_CAST")
     fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("apple").id) {
-            targets?.forEach { target ->
-                target.applyTo(project.apple.targets)
-            }
-
             sourceSets?.forEach { sourceSet ->
                 sourceSet.applyTo(project.apple.sourceSets)
             }
 
-            project.apple.teamID = teamID ?: moduleName
+            targets?.forEach { target ->
+                (target as AppleTarget<org.jetbrains.gradle.apple.targets.AppleTarget>?).applyTo(project.apple.targets)
+            }
+
+            project.apple.teamID = teamID ?: project.moduleName
 
             iosApp?.let { iosApp ->
                 iosApp.name?.takeIf(String::isNotEmpty)?.also { name ->
-                    project.apple.iosApp(name, iosApp::applyTo)
-                } ?: project.apple.iosApp(iosApp::applyTo)
+                    project.apple.iosApp(name) { iosApp.applyTo(this) }
+                } ?: project.apple.iosApp { iosApp.applyTo(this) }
             }
 
             iosFramework?.let { iosFramework ->
                 iosFramework.name?.takeIf(String::isNotEmpty)?.also { name ->
-                    project.apple.iosFramework(name, iosFramework::applyTo)
-                } ?: project.apple.iosFramework(iosFramework::applyTo)
+                    project.apple.iosFramework(name) { iosFramework.applyTo(this) }
+                } ?: project.apple.iosFramework { iosFramework.applyTo(this) }
             }
         }
 }

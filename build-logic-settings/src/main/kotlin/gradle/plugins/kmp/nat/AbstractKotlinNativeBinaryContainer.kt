@@ -9,7 +9,7 @@ import org.jetbrains.kotlin.gradle.dsl.AbstractKotlinNativeBinaryContainer
 internal abstract class AbstractKotlinNativeBinaryContainer<T : AbstractKotlinNativeBinaryContainer>
     : Set<@Serializable(with = NativeBinaryTransformingSerializer::class) NativeBinary<out org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary>> {
 
-    context(project: Project)
+    context(Project)
     fun applyTo(receiver: T) {
         forEach { binary ->
             when (binary) {

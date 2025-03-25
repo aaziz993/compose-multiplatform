@@ -22,7 +22,7 @@ internal data class KotlinJsIrCompilation(
     override val packageJson: PackageJson? = null,
 ) : KotlinJsCompilation<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJsCompilation> {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJsCompilation) {
         super.applyTo(receiver)
 

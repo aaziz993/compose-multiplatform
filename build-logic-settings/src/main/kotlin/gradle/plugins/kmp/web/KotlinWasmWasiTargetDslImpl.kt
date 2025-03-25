@@ -20,13 +20,13 @@ internal data class KotlinWasmWasiTargetDslImpl(
     KotlinTargetWithNodeJsDsl,
     HasBinaries<KotlinJsBinaryContainer> {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: KotlinWasmWasiTargetDsl) {
         super<KotlinWasmTargetDsl>.applyTo(receiver)
         super<KotlinTargetWithNodeJsDsl>.applyTo(receiver, "${project.moduleName}-${receiver.targetName}")
     }
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.kotlin.targets.withType<KotlinWasmWasiTargetDsl>(), kotlin::wasmWasi)
 }

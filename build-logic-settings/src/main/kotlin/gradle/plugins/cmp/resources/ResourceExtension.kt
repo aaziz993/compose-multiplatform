@@ -49,7 +49,7 @@ internal data class ResourcesExtension(
     val customResourceDirectories: Map<String, String>? = null
 ) {
 
-    context(project: Project)
+    context(Project)
     fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("compose.multiplatform").id) {
             project.compose.resources::publicResClass trySet publicResClass

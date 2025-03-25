@@ -42,7 +42,7 @@ internal data class ApolloGenerateIrTask(
     val warnOnDeprecatedUsages: Boolean? = null,
 ) : DefaultTask<ApolloGenerateIrTask>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: ApolloGenerateIrTask) {
         super.applyTo(receiver)
 
@@ -69,7 +69,7 @@ internal data class ApolloGenerateIrTask(
         receiver.warnOnDeprecatedUsages tryAssign warnOnDeprecatedUsages
     }
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<ApolloGenerateIrTask>())
 }

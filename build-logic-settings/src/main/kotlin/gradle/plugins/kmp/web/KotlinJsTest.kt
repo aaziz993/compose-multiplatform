@@ -44,7 +44,7 @@ internal data class KotlinJsTest(
     val useKarma: KotlinKarma? = null,
 ) : KotlinTest<KotlinJsTest>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: KotlinJsTest) {
         super.applyTo(receiver)
 
@@ -56,7 +56,7 @@ internal data class KotlinJsTest(
         useKarma?.applyTo(receiver.useKarma(), "${project.moduleName}-targetName")
     }
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<KotlinJsTest>())
 }

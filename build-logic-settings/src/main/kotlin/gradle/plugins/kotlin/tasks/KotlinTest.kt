@@ -16,7 +16,7 @@ internal abstract class KotlinTest<T : org.jetbrains.kotlin.gradle.tasks.KotlinT
     abstract val targetName: String?
     abstract val ignoreRunFailures: Boolean?
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
@@ -51,7 +51,7 @@ internal data class KotlinTestImpl(
     override val name: String? = null,
 ) : KotlinTest<org.jetbrains.kotlin.gradle.tasks.KotlinTest>() {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinTest>())
 }

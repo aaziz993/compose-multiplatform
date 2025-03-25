@@ -13,7 +13,7 @@ internal interface BuildConfigExtension {
 
     val sourceSets: List<BuildConfigSourceSet>?
 
-    context(project: Project)
+    context(Project)
     fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("buildconfig").id) {
             sourceSets?.forEach { sourceSet ->

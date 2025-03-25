@@ -23,7 +23,7 @@ internal data class Download(
     override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
     override val name: String? = null,
-    override val src: List<String>,
+    override val srcs: LinkedHashSet<String>,
     override val dest: String,
     override val quiet: Boolean? = null,
     override val overwrite: Boolean? = null,
@@ -46,7 +46,7 @@ internal data class Download(
     override val body: String? = null,
 ) : DefaultTask<Download>(), DownloadSpec {
 
-    context(project: Project)
+    context(Project)
     override fun applyTo() =
         applyTo(project.tasks.withType<Download>())
 }

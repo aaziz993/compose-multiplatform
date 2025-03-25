@@ -24,28 +24,28 @@ internal interface ArtifactRepository<T : org.gradle.api.artifacts.repositories.
      */
     val content: RepositoryContentDescriptorImpl?
 
-    context(settings: Settings)
+    context(Settings)
     @Suppress("UnstableApiUsage")
     override fun applyTo(receiver: T) = with(settings.layout.settingsDirectory) {
         _applyTo(receiver)
     }
 
-    context(project: Project)
+    context(Project)
     override fun applyTo(receiver: T) = with(project.layout.projectDirectory) {
         _applyTo(receiver)
     }
 
-    context(directory: Directory)
+    context(Directory)
     fun _applyTo(receiver: T) {
         content?.let { content ->
             receiver.content(content::applyTo)
         }
     }
 
-    context(settings: Settings)
+    context(Settings)
     fun applyTo(receiver: RepositoryHandler)
 
-    context(project: Project)
+    context(Project)
     fun applyTo(receiver: RepositoryHandler)
 }
 
