@@ -1,0 +1,6 @@
+kotlin:
+  targets:
+    wasmJs:
+      named: ''
+      binaries:
+        - executableWasm: { }

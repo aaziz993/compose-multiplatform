@@ -1,0 +1,25 @@
+kotlin:
+  targets:
+    - js:
+        devServer:
+          static: [ src@js ]
+
+  sourceSets:
+    - jsMain:
+        dependencies:
+          - kotlin: test-js
+          #          - npm: $libs.js.joda.timezone
+          - npm: $libs.npm.copy.webpack.plugin
+          - npm: $libs.npm.openpgp
+          - npm: $libs.npm.pako
+          - npm: $libs.npm.puppeteer
+
+tasks:
+  - Kotlin2JsCompile:
+      compilerOptions:
+        target: es2015
+      freeCompilerArgs:
+        - -Xdont-warn-on-error-suppression
+        - -Xir-generate-inline-anonymous-functions #  https://youtrack.jetbrains.com/issue/KT-67355
+        - -Xsuppress-warning=NOTHING_TO_INLINE
+        - -Xpartial-linkage-loglevel=ERROR

@@ -8,7 +8,7 @@ import org.gradle.kotlin.dsl.withType
 
 @Serializable
 @SerialName("js")
-internal data class KotlinJsTargetDslImpl(
+internal data class KotlinJsTarget(
     override val targetName: String = "js",
     override val compilations: Set<@Serializable(with = KotlinJsIrCompilationTransformingSerializer::class) KotlinJsIrCompilation>? = null,
     override val nodejs: KotlinJsNodeDsl? = null,
@@ -24,5 +24,10 @@ internal data class KotlinJsTargetDslImpl(
 
     context(project: Project)
     override fun applyTo() =
-        super.applyTo(project.kotlin.targets.withType<org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl>(), kotlin::js)
+        applyTo(
+                project.kotlin.targets.matching { target ->
+                    target::class == org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl::class
+                },
+                kotlin::js,
+        )
 }

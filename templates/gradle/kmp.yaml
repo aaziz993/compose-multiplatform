@@ -18,22 +18,17 @@ kotlin:
             - -XXLanguage+ImplicitSignedToUnsignedIntegerConversion
             - -Xadd-light-debug=enable
         binaries:
-          framework:
-            # add it to avoid sqllite3 issues in iOS. Required when using NativeSQLiteDriver
-            linkerOpts:
-              - -lsqlite3
-          test:
-            buildTypes: [ RELEASE ]
+          - framework:
+              # add it to avoid sqllite3 issues in iOS. Required when using NativeSQLiteDriver
+              linkerOpts:
+                - -lsqlite3
+          - testExecutable:
+              buildTypes: [ RELEASE ]
     - nativeWithTests:
         testRuns:
           - releaseTest:
               executionSourceFrom: RELEASE
-    - js:
-        devServer:
-          static: [ src@js ]
-    - wasmJs:
-        devServer:
-          static: [ src@wasmJs ]
+
     # apply to all above js and wasm targets
     - jsCommon:
         devServer:
@@ -62,8 +57,11 @@ kotlin:
 
   hierarchy:
     - jvmCommon: [ jvm, android ]
-    - nonJvm: [ mobile, web ]
-    - nonAndroid: [ jvm, ios, web ]
+    - jvmCommonIos: [ jvmCommon, ios ]
+    - jvmIosWeb: [ jvm, ios, web ]
+    - jvmWeb: [ jvm, web ]
+    - androidIos: [ android, ios ]
+    - androidIosWeb: [ mobile, web ]
     - androidNative32: [ androidNativeArm32,androidNativeX86 ]
     - androidNative64: [ androidNativeX64, androidNativeArm64 ]
     - androidNative: [ androidNative32, androidNative32 ]
@@ -76,39 +74,13 @@ kotlin:
     - nativeNonApple: [ mingw, unix, linux, androidNative ]
     - nativeNonAndroid: [ apple, mingw, linux ]
     - native: [ nativeNonApple, nativeNonAndroid ]
-    - mobile: [ android, ios ]
-    - nonMobile: [ jvm, web ]
     - desktop: [ linux, windows, macos ]
     - multithreaded: [ jvmCommon, native ]
     - jsCommon: [ js, wasmJs ]
-    - web: [ jsCommon, wasmWasi ]
-    - nonWeb: [ jvmCommon, ios ]
     - wasm: [ wasmJs, wasmWasi ]
+    - web: [ jsCommon, wasmWasi ]
 
-  sourceSets:
-    - jsMain:
-        dependencies:
-          - kotlin: test-js
-          #          - npm: $libs.js.joda.timezone
-          - npm: $libs.npm.copy.webpack.plugin
-          - npm: $libs.npm.openpgp
-          - npm: $libs.npm.pako
-          - npm: $libs.npm.puppeteer
+  #  sourceSets:
 
-  #    - wasmJsMain:
-  #        dependencies:
-  #          - $kotlinWrappers.browser
   cocoapods:
     ios: { }
-
-tasks:
-  - Kotlin2JsCompile:
-      compilerOptions:
-        target: es2015
-      freeCompilerArgs:
-        - -Xdont-warn-on-error-suppression
-        - -Xir-generate-inline-anonymous-functions #  https://youtrack.jetbrains.com/issue/KT-67355
-        - -Xsuppress-warning=NOTHING_TO_INLINE
-        - -Xpartial-linkage-loglevel=ERROR
-  - KotlinNpmInstallTask:
-      args: [ --ignore-engines ]

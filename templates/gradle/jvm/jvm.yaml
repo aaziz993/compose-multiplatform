@@ -9,7 +9,6 @@ kotlin:
             - -Xno-param-assertions
             - -Xno-call-assertions
             - -Xno-receiver-assertions
-        withJava: true # enable *.java support
 
 dependencies:
   - kotlin: stdlib

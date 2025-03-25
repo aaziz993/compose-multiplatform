@@ -1,0 +1,10 @@
+kotlin:
+  targets:
+    - wasmJs:
+        devServer:
+          static: [ src@wasmJs ]
+
+#  sourceSets:
+#    - wasmJsMain:
+#        dependencies:
+#          - $kotlinWrappers.browser

@@ -1,10 +1,14 @@
 description: Kotlin multiplatform libraries.
 
 templates:
-  - ../templates/gradle/jvm.yaml
-  - ../templates/gradle/android.yaml
-  - ../templates/gradle/android-library.yaml
+  - ../templates/gradle/jvm/jvm.yaml
+  - ../templates/gradle/android/android.yaml
+  - ../templates/gradle/android/android-library.yaml
   - ../templates/gradle/apple.yaml
+  - ../templates/gradle/web/js/js.yaml
+  - ../templates/gradle/web/wasmJs/wasmJs.yaml
+  - ../templates/gradle/web/js-library.yaml
+  - ../templates/gradle/web/js-common.yaml
   - ../templates/gradle/kmp.yaml
   - ../templates/gradle/common.yaml
   - ../templates/gradle/publish.yaml

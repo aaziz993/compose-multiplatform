@@ -1,8 +1,8 @@
 description: Server application.
 
 templates:
-  - ../templates/gradle/jvm.yaml
-  - ../templates/gradle/jvm-app.yaml
+  - ../templates/gradle/jvm/jvm.yaml
+  - ../templates/gradle/jvm/jvm-app.yaml
   - ../templates/gradle/common.yaml
   - ../templates/gradle/root.yaml
 

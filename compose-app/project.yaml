@@ -3,10 +3,15 @@ type: APP
 description: Compose multiplatform application.
 
 templates:
-  - ../templates/gradle/jvm.yaml
-  - ../templates/gradle/android.yaml
-  - ../templates/gradle/android-app.yaml
+  - ../templates/gradle/jvm/jvm.yaml
+  - ../templates/gradle/android/android.yaml
+  - ../templates/gradle/android/android-app.yaml
   - ../templates/gradle/apple.yaml
+  - ../templates/gradle/web/js/js.yaml
+  - ../templates/gradle/web/js/js-executable.yaml
+  - ../templates/gradle/web/wasmJs/wasmJs.yaml
+  - ../templates/gradle/web/wasmJs/wasmJs-executable.yaml
+  - ../templates/gradle/web/js-common.yaml
   - ../templates/gradle/kmp.yaml
   - ../templates/gradle/cmp.yaml
   - ../templates/gradle/common.yaml
