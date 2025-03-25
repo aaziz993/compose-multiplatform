@@ -11,8 +11,8 @@ templates:
   - ../templates/gradle/web/js-common.yaml
   - ../templates/gradle/kmp.yaml
   - ../templates/gradle/common.yaml
-  - ../templates/gradle/publish.yaml
   - ../templates/gradle/root.yaml
+  - ../templates/gradle/publish.yaml
 
 plugins:
   # Converter of TypeScript declaration files to Kotlin declarations.
