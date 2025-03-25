@@ -49,7 +49,7 @@ internal const val PROJECT_PROPERTIES_FILE = "project.yaml"
 
 @Serializable
 internal data class ProjectProperties(
-    val type: ProjectType = ProjectType.LIB,
+    override val dependencies: List<@Serializable(with = DependencyTransformingSerializer::class) Dependency>? = null,
     val layout: ProjectLayout = ProjectLayout.Default,
     val group: String? = null,
     val description: String? = null,
@@ -66,7 +66,6 @@ internal data class ProjectProperties(
     val pluginManagement: PluginManagement? = null,
     val dependencyResolutionManagement: DependencyResolutionManagement? = null,
     val cacheRedirector: Boolean = true,
-    override val dependencies: List<@Serializable(with = DependencyTransformingSerializer::class) Dependency>? = null,
     val includes: Set<String>? = null,
     val projects: Set<ProjectDescriptor>? = null,
     val buildCache: BuildCacheConfiguration? = null,
@@ -74,8 +73,7 @@ internal data class ProjectProperties(
     val java: JavaPluginExtension = JavaPluginExtension(),
     val application: JavaApplication? = null,
     val kotlin: KotlinSettings = KotlinSettings(),
-    @Transient
-    var android: BaseExtension? = null,
+    val android: BaseExtension? = null,
     val apple: AppleSettings = AppleSettings(),
     val nodeJsEnv: NodeJsEnvSpec = NodeJsEnvSpec(),
     val yarn: YarnRootExtension = YarnRootExtension(),
@@ -135,20 +133,13 @@ internal data class ProjectProperties(
                     acc deepMerge yaml.load<MutableMap<String, *>>(file(template).asFile.readText())
                 }.orEmpty() deepMerge properties).resolve(providers, extra, localProperties)
 
-                json.decodeFromAny<ProjectProperties>(templatedProperties).apply {
-                    android = templatedProperties["android"]?.let { androidProperties ->
-                        if (type == ProjectType.APP)
-                            androidProperties.let { json.decodeFromAny<BaseAppModuleExtension>(it) }
-                        else
-                            androidProperties.let { json.decodeFromAny<LibraryExtension>(it) }
-                    }
-                }
+                json.decodeFromAny<ProjectProperties>(templatedProperties)
             }
             else {
                 ProjectProperties()
             }.apply {
                 localProperties.apply {
-                    val file = settingsDir.file(localPropertiesFile)
+                    val file = directory.file(localPropertiesFile)
                     if (file.exists()) {
                         load(file.reader())
                     }

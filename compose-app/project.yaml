@@ -5,6 +5,7 @@ description: Compose multiplatform application.
 templates:
   - ../templates/gradle/jvm.yaml
   - ../templates/gradle/android.yaml
+  - ../templates/gradle/android-app.yaml
   - ../templates/gradle/apple.yaml
   - ../templates/gradle/kmp.yaml
   - ../templates/gradle/cmp.yaml

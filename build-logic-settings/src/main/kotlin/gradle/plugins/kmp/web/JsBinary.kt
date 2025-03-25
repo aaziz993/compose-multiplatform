@@ -9,6 +9,7 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
 import org.jetbrains.kotlin.gradle.targets.js.ir.Executable
+import org.jetbrains.kotlin.gradle.targets.js.ir.ExecutableWasm
 
 @Serializable(with = JsBinarySerializer::class)
 internal interface JsBinary<T : org.jetbrains.kotlin.gradle.targets.js.ir.JsBinary> {
@@ -60,7 +61,7 @@ internal data class ExecutableWasm(
     override val name: String? = null,
     override val distribution: Distribution? = null,
     override val generateTs: Boolean? = null,
-) : JsIrBinary<Executable>()
+) : JsIrBinary<ExecutableWasm>()
 
 @Serializable
 @SerialName("library")

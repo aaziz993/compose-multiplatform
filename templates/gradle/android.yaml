@@ -1,8 +1,4 @@
 kotlin:
-  targets:
-    - android:
-        publishLibraryVariants: [ release ]
-
   sourceSets:
     - androidMain:
         dependencies:

@@ -5,6 +5,8 @@ package gradle.plugins.spotless
 import com.diffplug.spotless.LineEnding
 import com.diffplug.spotless.cpp.ClangFormatStep
 import com.diffplug.spotless.extra.wtp.EclipseWtpFormatterStep
+import com.diffplug.spotless.generic.IndentStep
+import com.diffplug.spotless.generic.PipeStepPair
 import gradle.accessors.libs
 import gradle.accessors.settings
 import gradle.accessors.spotless
@@ -47,10 +49,10 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
     abstract val endWithNewline: Boolean?
 
     /** Ensures that the files are indented using spaces.  */
-    abstract val indentWithSpaces: @Serializable(with = IntentContentPolymorphicSerializer::class) Any?
+    abstract val indentWithSpaces: Int?
 
     /** Ensures that the files are indented using tabs.  */
-    abstract val indentWithTabs: @Serializable(with = IntentContentPolymorphicSerializer::class) Any?
+    abstract val indentWithTabs: Int?
     abstract val nativeCmd: List<NativeCmd>?
     abstract val licenseHeader: LicenseHeaderConfig?
     abstract val prettier: PrettierConfig?
@@ -60,7 +62,7 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
     abstract val toggleOffOnRegex: String?
 
     /** Disables formatting between the given tags.  */
-    abstract val toggleOffOn: @Serializable(with = ToggleOffOnContentPolymorphicSerializer::class) Any?
+    abstract val toggleOffOn: ToggleOffOn?
 
     /**
      * Undoes all previous calls to [.toggleOffOn] and
@@ -84,19 +86,8 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
         trimTrailingWhitespace?.takeIf { it }?.run { receiver.trimTrailingWhitespace() }
         endWithNewline?.takeIf { it }?.run { receiver.endWithNewline() }
 
-        when (val indentWithSpaces = indentWithSpaces) {
-            is Boolean -> indentWithSpaces.takeIf { it }?.let { receiver.indentWithSpaces() }
-            is Int -> receiver.indentWithSpaces(indentWithSpaces)
-
-            else -> Unit
-        }
-
-        when (val indentWithTabs = indentWithTabs) {
-            is Boolean -> indentWithTabs.takeIf { it }?.let { receiver.indentWithTabs() }
-            is Int -> receiver.indentWithTabs(indentWithTabs)
-
-            else -> Unit
-        }
+        indentWithSpaces?.let(receiver::indentWithSpaces)
+        indentWithTabs?.let(receiver::indentWithTabs)
 
         nativeCmd?.forEach { (name, pathToExe, arguments) -> receiver.nativeCmd(name, pathToExe, arguments) }
 
@@ -139,12 +130,12 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
             )
         }
         toggleOffOnRegex?.let(receiver::toggleOffOnRegex)
-        when (val toggleOffOn = toggleOffOn) {
-            is Boolean -> toggleOffOn.takeIf { it }?.run { receiver.toggleOffOn() }
-            is ToggleOffOn -> receiver.toggleOffOn(toggleOffOn.off, toggleOffOn.on)
 
-            else -> Unit
+        toggleOffOn?.let { (off, on) ->
+            receiver.toggleOffOn(off, on)
         }
+
+
 
         toggleOffOnDisable?.takeIf { it }?.run { receiver.toggleOffOnDisable() }
     }
@@ -250,15 +241,9 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
 
     @Serializable
     internal data class ToggleOffOn(
-        val off: String,
-        val on: String
+        val off: String = PipeStepPair.defaultToggleOff(),
+        val on: String = PipeStepPair.defaultToggleOn()
     )
-
-    internal object ToggleOffOnContentPolymorphicSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
-
-        override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
-            if (element is JsonPrimitive) Boolean.serializer() else ToggleOffOn.serializer()
-    }
 }
 
 private object FormatExtensionSerializer : JsonPolymorphicSerializer<FormatExtension<*>>(

@@ -1,4 +1,5 @@
-layout: FLAT
+layout:
+  type: flat
 
 group: io.github.aaziz993
 
@@ -409,3 +410,5 @@ tasks:
   - ShadowJar:
       duplicatesStrategy: EXCLUDE
       mergeServiceFiles: true
+
+localPropertiesFile: ../local.properties

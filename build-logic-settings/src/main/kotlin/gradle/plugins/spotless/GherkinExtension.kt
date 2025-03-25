@@ -21,7 +21,7 @@ internal data class GherkinExtension(
     override val targetExcludeIfContentContains: String? = null,
     override val targetExcludeIfContentContainsRegex: String? = null,
     override val replace: List<Replace>? = null,
-    override val replaceRegex: List<Replace>? = null,
+    override val replaceRegex: List<ReplaceRegex>? = null,
     override val trimTrailingWhitespace: Boolean? = null,
     override val endWithNewline: Boolean? = null,
     override val indentWithSpaces: Int? = null,
@@ -38,7 +38,7 @@ internal data class GherkinExtension(
 ) : FormatExtension<GherkinExtension>() {
 
     context(project: Project)
-    override fun applyTo() = spotless.gherkin {
+    override fun applyTo() = project.spotless.gherkin {
         super.applyTo(this)
     }
 }

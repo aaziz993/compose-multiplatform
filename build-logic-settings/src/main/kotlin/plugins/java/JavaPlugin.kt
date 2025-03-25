@@ -6,7 +6,6 @@ import gradle.api.configureEach
 import gradle.plugins.kmp.android.KotlinAndroidTarget
 import gradle.plugins.kmp.jvm.KotlinJvmTarget
 import gradle.project.ProjectLayout
-import gradle.project.ProjectType
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.ApplicationPlugin
@@ -37,10 +36,9 @@ internal class JavaPlugin : Plugin<Project> {
             }
 
             // Apply java application plugin.
-            if (projectProperties.type == ProjectType.APP && !projectProperties.compose.enabled) {
+            projectProperties.application?.takeIf { !projectProperties.compose.enabled }?.let { application ->
                 plugins.apply(ApplicationPlugin::class.java)
-
-                projectProperties.application?.applyTo()
+                application.applyTo()
             }
         }
     }

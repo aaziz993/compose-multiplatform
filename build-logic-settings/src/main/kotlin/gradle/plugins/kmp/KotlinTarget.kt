@@ -1,5 +1,6 @@
 package gradle.plugins.kmp
 
+import gradle.accessors.kotlin
 import gradle.api.ProjectNamed
 import gradle.api.applyTo
 import gradle.plugins.kotlin.KotlinCompilation
@@ -32,9 +33,8 @@ internal interface KotlinTarget<T : org.jetbrains.kotlin.gradle.plugin.KotlinTar
     context(project: Project)
     override fun applyTo(receiver: T) {
         compilations?.forEach { compilation ->
-            receiver.compilations.named(compilation.name) {
-                (compilation as KotlinCompilation<org.jetbrains.kotlin.gradle.plugin.KotlinCompilation<*>>).applyTo(this)
-            }
+            (compilation as KotlinCompilation<org.jetbrains.kotlin.gradle.plugin.KotlinCompilation<*>>)
+                .applyTo(receiver.compilations)
         }
     }
 
@@ -64,5 +64,5 @@ internal data class KotlinTargetIml(
 }
 
 @Suppress("UNCHECKED_CAST")
-internal inline fun <reified T : Any> List<KotlinTarget<*>>.instanceOf(): List<KotlinTarget<*>> =
+internal inline fun <reified T : Any> Set<KotlinTarget<*>>.filterKotlinTargets(): List<KotlinTarget<*>> =
     filterIsInstance<T>() as List<KotlinTarget<*>>

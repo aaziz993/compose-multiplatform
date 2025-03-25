@@ -21,7 +21,7 @@ internal data class JavascriptExtension(
     override val targetExcludeIfContentContains: String? = null,
     override val targetExcludeIfContentContainsRegex: String? = null,
     override val replace: List<Replace>? = null,
-    override val replaceRegex: List<Replace>? = null,
+    override val replaceRegex: List<ReplaceRegex>? = null,
     override val trimTrailingWhitespace: Boolean? = null,
     override val endWithNewline: Boolean? = null,
     override val indentWithSpaces: Int? = null,
@@ -38,7 +38,7 @@ internal data class JavascriptExtension(
 ) : FormatExtension<JavascriptExtension>() {
 
     context(project: Project)
-    override fun applyTo() = spotless.javascript {
+    override fun applyTo() = project.spotless.javascript {
         super.applyTo(this)
     }
 }

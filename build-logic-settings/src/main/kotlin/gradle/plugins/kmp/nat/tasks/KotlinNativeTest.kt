@@ -1,11 +1,13 @@
-package gradle.plugins.kmp.nat
+package gradle.plugins.kmp.nat.tasks
 
-
-import gradle.api.tasks.test.DefaultTestFilter
+import gradle.api.tasks.applyTo
+import gradle.api.tasks.test.TestFilter
 import gradle.api.tasks.test.TestLoggingContainer
 import gradle.api.tryAssign
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
+import gradle.plugins.kmp.nat.TrackEnvironment
+import gradle.plugins.kmp.nat.TrackEnvironmentTransformingSerializer
 import gradle.plugins.kotlin.tasks.KotlinTest
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -21,7 +23,7 @@ internal data class KotlinNativeTest(
     override val testLogging: TestLoggingContainer? = null,
     override val testNameIncludePatterns: List<String>? = null,
     override val failFast: Boolean? = null,
-    override val filter: DefaultTestFilter? = null,
+    override val filter: TestFilter? = null,
     override val dependsOn: LinkedHashSet<String>? = null,
     override val onlyIf: Boolean? = null,
     override val doNotTrackState: String? = null,
@@ -40,24 +42,22 @@ internal data class KotlinNativeTest(
     val workingDir: String? = null,
     val environment: SerializableAnyMap? = null,
     val trackEnvironments: List<@Serializable(with = TrackEnvironmentTransformingSerializer::class) TrackEnvironment>? = null,
-) : KotlinTest() {
+) : KotlinTest<KotlinNativeTest>() {
 
-        context(project: Project)
-    override fun applyTo(receiver: T) {
-        super.applyTo(named)
+    context(project: Project)
+    override fun applyTo(receiver: KotlinNativeTest) {
+        super.applyTo(receiver)
 
-        named as KotlinNativeTest
-
-        named.executableProperty tryAssign executables?.toTypedArray()?.let(project::files)
-        named::args trySet args
-        named::workingDir trySet workingDir
+        receiver.executableProperty tryAssign executables?.toTypedArray()?.let(project::files)
+        receiver::args trySet args
+        receiver::workingDir trySet workingDir
 
         environment?.let { environment ->
-            named.environment = environment
+            receiver.environment = environment
         }
 
         trackEnvironments?.forEach { (name, tracked) ->
-            named.trackEnvironment(name, tracked)
+            receiver.trackEnvironment(name, tracked)
         }
     }
 

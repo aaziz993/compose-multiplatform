@@ -12,7 +12,7 @@ import gradle.accessors.publishing
 import gradle.accessors.settings
 import gradle.api.findByName
 import gradle.collection.associateWithNotNull
-import gradle.plugins.kmp.instanceOf
+import gradle.plugins.kmp.filterKotlinTargets
 import gradle.plugins.kmp.nat.android.KotlinAndroidNative32Target
 import gradle.plugins.kmp.nat.android.KotlinAndroidNative64Target
 import gradle.plugins.kmp.nat.android.KotlinAndroidNativeArm32Target
@@ -45,7 +45,6 @@ import gradle.plugins.kmp.nat.linux.KotlinLinuxTarget
 import gradle.plugins.kmp.nat.linux.KotlinLinuxX64Target
 import gradle.plugins.kmp.nat.mingw.KotlinMingwTarget
 import gradle.plugins.kmp.nat.mingw.KotlinMingwX64Target
-import gradle.project.ProjectType
 import java.util.regex.Pattern
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -76,9 +75,7 @@ internal class PublishPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             projectProperties.plugins.publishing
-                .takeIf {
-                    it.enabled && projectProperties.kotlin.targets.isNotEmpty() && projectProperties.type == ProjectType.LIB
-                }?.let { publishing ->
+                .takeIf { it.enabled && projectProperties.kotlin.targets.isNotEmpty() }?.let { publishing ->
                     plugins.apply(MavenPublishPlugin::class.java)
 
                     publishing.applyTo()
@@ -226,8 +223,7 @@ internal class PublishPlugin : Plugin<Project> {
         registerAggregatingPublishTask(
             name,
             projectProperties.kotlin.targets
-                .instanceOf<T>()
-                .map(`gradle.plugins.kmp`.KotlinTarget::targetName),
+                .filterKotlinTargets<T>().mapNotNull(`gradle.plugins.kmp`.KotlinTarget<*>::targetName),
         )
 
     private fun Project.registerAggregatingPublishTask(

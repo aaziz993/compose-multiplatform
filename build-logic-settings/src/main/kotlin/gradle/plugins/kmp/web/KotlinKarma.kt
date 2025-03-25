@@ -62,12 +62,3 @@ internal data class KotlinKarma(
         useSourceMapSupport?.takeIf { it }?.run { receiver.useSourceMapSupport() }
     }
 }
-
-internal object KotlinKarmaContentPolymorphicSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
-
-    override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
-        when (element) {
-            is JsonPrimitive -> Boolean.serializer()
-            else -> KotlinKarma.serializer()
-        }
-}

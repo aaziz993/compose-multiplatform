@@ -1,20 +1,12 @@
 package gradle.plugins.kmp.web
 
-import gradle.accessors.kotlin
 import gradle.accessors.moduleName
-import gradle.api.ProjectNamed
-import gradle.api.applyTo
 import gradle.api.trySet
 import gradle.plugins.kmp.HasBinaries
 import gradle.plugins.kmp.KotlinTarget
 import gradle.plugins.kotlin.HasConfigurableKotlinCompilerOptions
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalMainFunctionArgumentsDsl
-import org.jetbrains.kotlin.gradle.targets.js.ir.JsBinary
-import org.jetbrains.kotlin.gradle.targets.js.ir.JsIrBinary
 
 internal interface KotlinJsTargetDsl<T : org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl>
     : KotlinTarget<T>,
@@ -46,7 +38,7 @@ internal interface KotlinJsTargetDsl<T : org.jetbrains.kotlin.gradle.targets.js.
 
         binaries?.applyTo(receiver.binaries)
 
-        super<HasConfigurableKotlinCompilerOptions>.applyTo(named)
+        super<HasConfigurableKotlinCompilerOptions>.applyTo(receiver)
 
         receiver::moduleName trySet (this@KotlinJsTargetDsl.moduleName
             ?: targetName
@@ -65,27 +57,6 @@ internal interface KotlinJsTargetDsl<T : org.jetbrains.kotlin.gradle.targets.js.
         useEsModules?.takeIf { it }?.run { receiver.useEsModules() }
         passAsArgumentToMainFunction?.let(receiver::passAsArgumentToMainFunction)
         generateTypeScriptDefinitions?.takeIf { it }?.let { receiver.generateTypeScriptDefinitions() }
-        binaries.applyTo(receiver.binaries)
+        binaries?.applyTo(receiver.binaries)
     }
-}
-
-@Serializable
-@SerialName("jsCommon")
-internal data class KotlinJsTargetDslImpl(
-    override val targetName: String? = null,
-    override val compilations: Set<KotlinJsIrCompilation>? = null,
-    override val moduleName: String? = null,
-    override val browser: KotlinJsBrowserDsl? = null,
-    override val useCommonJs: Boolean? = null,
-    override val useEsModules: Boolean? = null,
-    override val passAsArgumentToMainFunction: String? = null,
-    override val generateTypeScriptDefinitions: Boolean? = null,
-    override val nodejs: KotlinJsNodeDsl? = null,
-    override val binaries: KotlinJsBinaryContainer = KotlinJsBinaryContainer(),
-    override val compilerOptions: KotlinJsCompilerOptions? = null,
-) : KotlinJsTargetDsl<org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl> {
-
-    context(project: Project)
-    override fun applyTo() =
-        applyTo(project.kotlin.targets.withType<org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl>()) { _, _ -> }
 }

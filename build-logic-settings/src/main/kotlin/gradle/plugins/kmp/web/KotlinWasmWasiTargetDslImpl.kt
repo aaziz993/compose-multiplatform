@@ -2,7 +2,6 @@ package gradle.plugins.kmp.web
 
 import gradle.accessors.kotlin
 import gradle.accessors.moduleName
-import gradle.api.applyTo
 import gradle.plugins.kmp.HasBinaries
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -12,7 +11,7 @@ import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinWasmWasiTargetDsl
 
 @Serializable
 @SerialName("wasmWasi")
-internal data class KotlinWasmWasiTarget(
+internal data class KotlinWasmWasiTargetDslImpl(
     override val targetName: String = "wasmWasi",
     override val compilations: Set<@Serializable(with = KotlinJsIrCompilationTransformingSerializer::class) KotlinJsIrCompilation>? = null,
     override val nodejs: KotlinJsNodeDsl? = null,

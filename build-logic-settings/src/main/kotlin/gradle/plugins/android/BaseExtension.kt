@@ -19,9 +19,12 @@ import gradle.plugins.android.signing.SigningConfigImpl
 import gradle.plugins.android.signing.SigningConfigTransformingSerializer
 import gradle.plugins.android.sourceset.AndroidSourceSet
 import gradle.plugins.android.test.TestOptions
+import gradle.plugins.kmp.KotlinTarget
+import gradle.serialization.serializer.JsonPolymorphicSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
+@Serializable(with = BaseExtensionSerializer::class)
 internal interface BaseExtension {
 
     val composeOptions: ComposeOptions?
@@ -148,3 +151,7 @@ internal interface BaseExtension {
         project.android.namespace = namespace ?: project.androidNamespace
     }
 }
+
+private object BaseExtensionSerializer : JsonPolymorphicSerializer<BaseExtension>(
+    BaseExtension::class,
+)

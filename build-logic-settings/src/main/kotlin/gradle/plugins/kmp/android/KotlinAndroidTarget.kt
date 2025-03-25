@@ -4,12 +4,12 @@ import gradle.accessors.kotlin
 import gradle.accessors.projectProperties
 import gradle.api.applyTo
 import gradle.api.trySet
+import gradle.plugins.android.library.LibraryExtension
 import gradle.plugins.kmp.KotlinJvmAndroidCompilation
 import gradle.plugins.kmp.KotlinJvmAndroidCompilationTransformingSerializer
 import gradle.plugins.kmp.KotlinTarget
 import gradle.plugins.kmp.jvm.KotlinJvmCompilerOptions
 import gradle.plugins.kotlin.HasConfigurableKotlinCompilerOptions
-import gradle.project.ProjectType
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -48,7 +48,7 @@ internal data class KotlinAndroidTarget(
         super<KotlinTarget>.applyTo(receiver)
         super<HasConfigurableKotlinCompilerOptions>.applyTo(receiver)
 
-        if (project.projectProperties.type == ProjectType.LIB) {
+        if (project.projectProperties.android is LibraryExtension) {
             publishLibraryVariants?.toTypedArray()?.let(receiver::publishLibraryVariants)
 
             setPublishLibraryVariants?.let { setPublishLibraryVariants ->

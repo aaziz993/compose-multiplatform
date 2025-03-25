@@ -17,12 +17,3 @@ internal data class KotlinMocha(
         receiver::timeout trySet timeout
     }
 }
-
-internal object KotlinMochaContentPolymorphicSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
-
-    override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
-        when (element) {
-            is JsonPrimitive -> Boolean.serializer()
-            else -> KotlinMocha.serializer()
-        }
-}

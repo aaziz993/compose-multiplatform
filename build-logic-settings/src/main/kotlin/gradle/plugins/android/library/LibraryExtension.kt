@@ -25,6 +25,7 @@ import gradle.plugins.android.sourceset.AndroidSourceSet
 import gradle.plugins.android.test.TestCoverage
 import gradle.plugins.android.test.TestFixtures
 import gradle.plugins.android.test.TestOptions
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -36,6 +37,7 @@ import org.gradle.api.Project
  * library</a>.
  */
 @Serializable
+@SerialName("library")
 internal data class LibraryExtension(
     override val androidResources: LibraryAndroidResources? = null,
     override val installation: LibraryInstallation? = null,

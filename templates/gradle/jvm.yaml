@@ -11,11 +11,6 @@ kotlin:
             - -Xno-receiver-assertions
         withJava: true # enable *.java support
 
-application:
-  mainClass: ApplicationKt
-  applicationDefaultJvmArgs:
-    - -Dio.ktor.development=true
-
 dependencies:
   - kotlin: stdlib
 

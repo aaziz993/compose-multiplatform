@@ -8,9 +8,9 @@ import org.gradle.kotlin.dsl.withType
 
 @Serializable
 @SerialName("js")
-internal data class KotlinJsTarget(
+internal data class KotlinJsTargetDslImpl(
     override val targetName: String = "js",
-    override val compilations: List<@Serializable(with = KotlinJsIrCompilationTransformingSerializer::class) KotlinJsIrCompilation>? = null,
+    override val compilations: Set<@Serializable(with = KotlinJsIrCompilationTransformingSerializer::class) KotlinJsIrCompilation>? = null,
     override val nodejs: KotlinJsNodeDsl? = null,
     override val moduleName: String? = null,
     override val browser: KotlinJsBrowserDsl? = null,
@@ -19,8 +19,8 @@ internal data class KotlinJsTarget(
     override val passAsArgumentToMainFunction: String? = null,
     override val generateTypeScriptDefinitions: Boolean? = null,
     override val compilerOptions: KotlinJsCompilerOptions? = null,
-    override val binaries: KotlinJsBinaryContainer = KotlinJsBinaryContainer(),
-) : KotlinJsTargetDsl {
+    override val binaries: KotlinJsBinaryContainer? = null,
+) : KotlinJsTargetDsl<org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl> {
 
     context(project: Project)
     override fun applyTo() =

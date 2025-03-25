@@ -21,7 +21,7 @@ internal data class KotlinWasmJsTargetDsl(
     override val passAsArgumentToMainFunction: String? = null,
     override val generateTypeScriptDefinitions: Boolean? = null,
     override val compilerOptions: KotlinJsCompilerOptions? = null,
-    override val binaries: KotlinJsBinaryContainer = KotlinJsBinaryContainer(),
+    override val binaries: KotlinJsBinaryContainer? = null,
     val d8: Boolean? = null,
     val d8Dsl: KotlinWasmD8Dsl? = null,
 ) : KotlinWasmTargetDsl<KotlinWasmJsTargetDsl>, KotlinJsTargetDsl<KotlinWasmJsTargetDsl> {
@@ -42,5 +42,5 @@ internal data class KotlinWasmJsTargetDsl(
 
     context(project: Project)
     override fun applyTo() =
-       applyTo(project.kotlin.targets.withType<KotlinWasmJsTargetDsl>(), kotlin::wasmJs)
+        applyTo(project.kotlin.targets.withType<KotlinWasmJsTargetDsl>(), kotlin::wasmJs)
 }

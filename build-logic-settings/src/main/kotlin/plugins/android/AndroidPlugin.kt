@@ -13,10 +13,11 @@ import gradle.api.configureEach
 import gradle.api.file.replace
 import gradle.api.trySetSystemProperty
 import gradle.decapitalized
+import gradle.plugins.android.application.BaseAppModuleExtension
+import gradle.plugins.android.library.LibraryExtension
 import gradle.plugins.kmp.android.KotlinAndroidTarget
 import gradle.prefixIfNotEmpty
 import gradle.project.ProjectLayout
-import gradle.project.ProjectType
 import javax.xml.stream.XMLEventFactory
 import javax.xml.stream.XMLInputFactory
 import javax.xml.stream.XMLOutputFactory
@@ -38,12 +39,16 @@ internal class AndroidPlugin : Plugin<Project> {
                 return@with
             }
 
-            if (projectProperties.type == ProjectType.APP)
-                plugins.apply(project.settings.libs.plugins.plugin("androidApplication").id)
-            else
-                plugins.apply(project.settings.libs.plugins.plugin("androidLibrary").id)
+            projectProperties.android?.let { android ->
+                when (android) {
+                    is LibraryExtension -> plugins.apply(project.settings.libs.plugins.plugin("androidLibrary").id)
+                    is BaseAppModuleExtension -> plugins.apply(project.settings.libs.plugins.plugin("androidApplication").id)
+                    else -> Unit
+                }
 
-            projectProperties.android?.applyTo()
+                android.applyTo()
+            }
+
 
             adjustAndroidSourceSets()
             applyGoogleServicesPlugin()

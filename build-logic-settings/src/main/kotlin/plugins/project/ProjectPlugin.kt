@@ -10,7 +10,7 @@ import gradle.api.isCI
 import gradle.api.maybeNamed
 import gradle.api.repositories.CacheRedirector
 import gradle.api.version
-import gradle.plugins.kmp.instanceOf
+import gradle.plugins.kmp.filterKotlinTargets
 import gradle.plugins.kmp.nat.android.KotlinAndroidNative32Target
 import gradle.plugins.kmp.nat.android.KotlinAndroidNative64Target
 import gradle.plugins.kmp.nat.android.KotlinAndroidNativeArm32Target
@@ -395,7 +395,7 @@ public class ProjectPlugin : Plugin<Project> {
 
     private inline fun <reified T : Any> Project.registerAggregationNativeTestTask(name: String) =
         projectProperties.kotlin.targets
-            .instanceOf<T>()
+            .filterKotlinTargets<T>()
             .map(`gradle.plugins.kmp`.KotlinTarget::targetName)
             .let { targetNames ->
                 registerAggregationTestTask<KotlinNativeTest>(

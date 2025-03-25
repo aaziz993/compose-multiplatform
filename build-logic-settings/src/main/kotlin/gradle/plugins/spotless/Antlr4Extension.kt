@@ -21,7 +21,7 @@ internal data class Antlr4Extension(
     override val targetExcludeIfContentContains: String? = null,
     override val targetExcludeIfContentContainsRegex: String? = null,
     override val replace: List<Replace>? = null,
-    override val replaceRegex: List<Replace>? = null,
+    override val replaceRegex: List<ReplaceRegex>? = null,
     override val trimTrailingWhitespace: Boolean? = null,
     override val endWithNewline: Boolean? = null,
     override val indentWithSpaces: Int? = null,
@@ -38,7 +38,7 @@ internal data class Antlr4Extension(
 ) : FormatExtension<Antlr4Extension>() {
 
     context(project: Project)
-    override fun applyTo() = spotless.antlr4 {
+    override fun applyTo() = project.spotless.antlr4 {
         super.applyTo(this)
     }
 }

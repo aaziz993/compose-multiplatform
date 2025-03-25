@@ -2,7 +2,7 @@ package gradle.plugins.kotlin.tasks
 
 import gradle.api.tasks.applyTo
 import gradle.api.tasks.test.AbstractTestTask
-import gradle.api.tasks.test.DefaultTestFilter
+import gradle.api.tasks.test.TestFilter
 import gradle.api.tasks.test.TestLoggingContainer
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
@@ -35,7 +35,7 @@ internal data class KotlinTestImpl(
     override val testLogging: TestLoggingContainer? = null,
     override val testNameIncludePatterns: List<String>? = null,
     override val failFast: Boolean? = null,
-    override val filter: DefaultTestFilter? = null,
+    override val filter: TestFilter? = null,
     override val dependsOn: LinkedHashSet<String>? = null,
     override val onlyIf: Boolean? = null,
     override val doNotTrackState: String? = null,

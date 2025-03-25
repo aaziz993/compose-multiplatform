@@ -2,7 +2,7 @@ package gradle.plugins.kmp.web
 
 import gradle.accessors.moduleName
 import gradle.api.tasks.applyTo
-import gradle.api.tasks.test.DefaultTestFilter
+import gradle.api.tasks.test.TestFilter
 import gradle.api.tasks.test.TestLoggingContainer
 import gradle.api.tryAssign
 import gradle.api.trySet
@@ -22,7 +22,7 @@ internal data class KotlinJsTest(
     override val testLogging: TestLoggingContainer? = null,
     override val testNameIncludePatterns: List<String>? = null,
     override val failFast: Boolean? = null,
-    override val filter: DefaultTestFilter? = null,
+    override val filter: TestFilter? = null,
     override val dependsOn: LinkedHashSet<String>? = null,
     override val onlyIf: Boolean? = null,
     override val doNotTrackState: String? = null,
@@ -40,8 +40,8 @@ internal data class KotlinJsTest(
     val inputFileProperty: String? = null,
     val debug: Boolean? = null,
     val nodeJsArgs: List<String>? = null,
-    val useMocha: @Serializable(with = KotlinMochaContentPolymorphicSerializer::class) Any? = null,
-    val useKarma: @Serializable(with = KotlinKarmaContentPolymorphicSerializer::class) Any? = null,
+    val useMocha: KotlinMocha? = null,
+    val useKarma: KotlinKarma? = null,
 ) : KotlinTest<KotlinJsTest>() {
 
     context(project: Project)
@@ -52,18 +52,8 @@ internal data class KotlinJsTest(
         receiver.inputFileProperty tryAssign inputFileProperty?.let(project::file)
         receiver::debug trySet debug
         nodeJsArgs?.let(receiver.nodeJsArgs::addAll)
-
-        when (useMocha) {
-            is Boolean -> receiver.useKarma()
-            is KotlinMocha -> useMocha.applyTo(receiver.useMocha())
-            else -> Unit
-        }
-
-        when (useKarma) {
-            is Boolean -> receiver.useKarma()
-            is KotlinKarma -> useKarma.applyTo(receiver.useKarma(), "$moduleName-targetName")
-            else -> Unit
-        }
+        useMocha?.applyTo(receiver.useMocha())
+        useKarma?.applyTo(receiver.useKarma(), "${project.moduleName}-targetName")
     }
 
     context(project: Project)

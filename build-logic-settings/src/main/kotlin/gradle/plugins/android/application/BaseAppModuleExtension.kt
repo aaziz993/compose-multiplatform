@@ -25,11 +25,13 @@ import gradle.plugins.android.sourceset.AndroidSourceSet
 import gradle.plugins.android.test.TestCoverage
 import gradle.plugins.android.test.TestFixtures
 import gradle.plugins.android.test.TestOptions
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
 /** The `android` extension for base feature module (application plugin).  */
 @Serializable
+@SerialName("baseApp")
 internal data class BaseAppModuleExtension(
     override val composeOptions: ComposeOptions? = null,
     override val sourceSets: Set<AndroidSourceSet>? = null,

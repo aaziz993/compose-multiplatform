@@ -1,6 +1,7 @@
 package gradle.plugins.kotlin
 
 import gradle.accessors.id
+import gradle.accessors.kotlin
 import gradle.accessors.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
@@ -36,13 +37,13 @@ internal data class KotlinSettings(
 ) : KotlinMultiplatformExtension {
 
     context(project: Project)
-    fun applyTo() =
+    override fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("kotlin.multiplatform").id) {
             super.applyTo()
 
             targets.forEach { target -> target.applyTo() }
 
-            kotlin.applyDefaultHierarchyTemplate {
+            project.kotlin.applyDefaultHierarchyTemplate {
                 common {
                     hierarchy.forEach { hierarchy ->
                         hierarchy.applyTo(this)

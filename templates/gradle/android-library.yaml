@@ -1,0 +1,8 @@
+kotlin:
+  targets:
+    - android:
+        name: ''
+        publishLibraryVariants: [ release ]
+
+android:
+  type: library

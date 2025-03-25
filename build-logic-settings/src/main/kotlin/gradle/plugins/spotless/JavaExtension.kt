@@ -30,7 +30,7 @@ internal data class JavaExtension(
     override val targetExcludeIfContentContains: String? = null,
     override val targetExcludeIfContentContainsRegex: String? = null,
     override val replace: List<Replace>? = null,
-    override val replaceRegex: List<Replace>? = null,
+    override val replaceRegex: List<ReplaceRegex>? = null,
     override val trimTrailingWhitespace: Boolean? = null,
     override val endWithNewline: Boolean? = null,
     override val indentWithSpaces: Int? = null,
@@ -100,7 +100,7 @@ internal data class JavaExtension(
     }
 
     context(project: Project)
-    override fun applyTo() = spotless.java {
+    override fun applyTo() = project.spotless.java {
         applyTo(this)
     }
 
