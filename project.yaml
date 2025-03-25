@@ -1,4 +1,4 @@
-scm:
+remote:
   url: https://github.com/aaziz993/compose-multiplatform
   connection: scm:git:git://github.com:aaziz993/compose-multiplatform.git
   developerConnection: scm:git:ssh://github.com:aaziz993/compose-multiplatform.git

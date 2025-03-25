@@ -1,17 +1,17 @@
 year: '2025'
 
-developers:
-  - id: aaziz993
-    name: Aziz Atoev
-    email: a.atoev93@gmail.com
-    organization: AITech
-    organizationUrl: https://github.com/aaziz993
+developer:
+  id: aaziz993
+  name: Aziz Atoev
+  email: a.atoev93@gmail.com
+  organization: AITech
+  organizationUrl: https://github.com/aaziz993
 
-licenses:
-  - name: Apache License, Version 2.0
-    url: https://www.apache.org/licenses/LICENSE-2.0.txt
-    distribution: repo
-    comments: A business-friendly OSS license.
+license:
+  name: Apache License, Version 2.0
+  url: https://www.apache.org/licenses/LICENSE-2.0.txt
+  distribution: repo
+  comments: A business-friendly OSS license.
 
 plugins:
   # Set of solutions for collecting test coverage of Kotlin code compiled for JVM and Android platforms.

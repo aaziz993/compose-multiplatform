@@ -6,7 +6,6 @@ import gradle.api.initialization.PluginManagement
 import gradle.api.initialization.ProjectDescriptor
 import gradle.api.initialization.ScriptHandler
 import gradle.api.isCI
-import gradle.api.publish.maven.MavenPomContributor
 import gradle.api.publish.maven.MavenPomDeveloper
 import gradle.api.publish.maven.MavenPomLicense
 import gradle.api.publish.maven.MavenPomScm
@@ -54,9 +53,9 @@ internal data class ProjectProperties(
     val description: String? = null,
     val version: VersionSettings = VersionSettings(),
     val year: String? = null,
-    val developers: LinkedHashSet<MavenPomDeveloper>? = null,
-    val licenses: LinkedHashSet<MavenPomLicense>? = null,
-    val scm: MavenPomScm? = null,
+    val developer: MavenPomDeveloper? = null,
+    val license: MavenPomLicense? = null,
+    val remote: MavenPomScm? = null,
     val licenseFile: LicenseFile? = null,
     val licenseHeaderFile: LicenseHeaderFile? = null,
     val codeOfConductFile: CodeOfConductFile? = null,

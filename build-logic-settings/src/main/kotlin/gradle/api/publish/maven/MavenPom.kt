@@ -128,25 +128,29 @@ internal data class MavenPom(
                 ?.addSuffix(project.projectDir.toRelativeString(project.settings.settingsDir)))
         receiver.inceptionYear tryAssign (inceptionYear ?: project.projectProperties.year)
 
-        (licenses ?: project.projectProperties.licenses)?.let { licenses ->
-            receiver.licenses {
-                licenses.forEach { license ->
-                    license(license::applyTo)
+        (project.projectProperties.license?.let(::listOf).orEmpty() + licenses.orEmpty())
+            .takeIf(List<*>::isNotEmpty)
+            ?.let { licenses ->
+                receiver.licenses {
+                    licenses.forEach { license ->
+                        license(license::applyTo)
+                    }
                 }
             }
-        }
 
         organization?.let { organization ->
             receiver.organization(organization::applyTo)
         }
 
-        (developers ?: project.projectProperties.developers)?.let { developers ->
-            receiver.developers {
-                developers.forEach { developer ->
-                    developer(developer::applyTo)
+        (project.projectProperties.developer?.let(::listOf).orEmpty() + developers.orEmpty())
+            .takeIf(List<*>::isNotEmpty)
+            ?.let { developers ->
+                receiver.developers {
+                    developers.forEach { developer ->
+                        developer(developer::applyTo)
+                    }
                 }
             }
-        }
 
         contributors?.let { contributors ->
             receiver.contributors {
@@ -156,7 +160,7 @@ internal data class MavenPom(
             }
         }
 
-        (scm ?: project.projectProperties.scm)?.let { scm ->
+        (scm ?: project.projectProperties.remote)?.let { scm ->
             receiver.scm(scm::applyTo)
         }
 
