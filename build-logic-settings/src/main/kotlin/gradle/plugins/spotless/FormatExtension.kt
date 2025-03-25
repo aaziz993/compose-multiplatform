@@ -5,7 +5,6 @@ package gradle.plugins.spotless
 import com.diffplug.spotless.LineEnding
 import com.diffplug.spotless.cpp.ClangFormatStep
 import com.diffplug.spotless.extra.wtp.EclipseWtpFormatterStep
-import com.diffplug.spotless.generic.IndentStep
 import com.diffplug.spotless.generic.PipeStepPair
 import gradle.accessors.libs
 import gradle.accessors.settings
@@ -23,7 +22,6 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.JsonContentPolymorphicSerializer
 import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.jsonPrimitive
 import org.gradle.api.Project
 
@@ -35,12 +33,12 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
     abstract val excludeSteps: Set<String>?
     abstract val excludePaths: Set<String>?
     abstract val encoding: String?
-    abstract val target: Set<String>?
-    abstract val targetExclude: Set<String>?
+    abstract val targets: Set<String>?
+    abstract val targetExcludes: Set<String>?
     abstract val targetExcludeIfContentContains: String?
     abstract val targetExcludeIfContentContainsRegex: String?
-    abstract val replace: List<Replace>?
-    abstract val replaceRegex: List<ReplaceRegex>?
+    abstract val replaces: List<Replace>?
+    abstract val replaceRegexes: List<ReplaceRegex>?
 
     /** Removes trailing whitespace.  */
     abstract val trimTrailingWhitespace: Boolean?
@@ -53,7 +51,7 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
 
     /** Ensures that the files are indented using tabs.  */
     abstract val indentWithTabs: Int?
-    abstract val nativeCmd: List<NativeCmd>?
+    abstract val nativeCmds: List<NativeCmd>?
     abstract val licenseHeader: LicenseHeaderConfig?
     abstract val prettier: PrettierConfig?
     abstract val biome: BiomeGeneric?
@@ -77,19 +75,19 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
         excludeSteps?.forEach(receiver::ignoreErrorForStep)
         excludePaths?.forEach(receiver::ignoreErrorForPath)
         encoding?.let(receiver::setEncoding)
-        target?.toTypedArray().let(receiver::target)
-        targetExclude?.toTypedArray()?.let(receiver::targetExclude)
+        targets?.toTypedArray().let(receiver::target)
+        targetExcludes?.toTypedArray()?.let(receiver::targetExclude)
         targetExcludeIfContentContains?.let(receiver::targetExcludeIfContentContains)
         targetExcludeIfContentContainsRegex?.let(receiver::targetExcludeIfContentContainsRegex)
-        replace?.forEach { (name, original, after) -> receiver.replace(name, original, after) }
-        replaceRegex?.forEach { (name, regex, replacement) -> receiver.replaceRegex(name, regex, replacement) }
+        replaces?.forEach { (name, original, after) -> receiver.replace(name, original, after) }
+        replaceRegexes?.forEach { (name, regex, replacement) -> receiver.replaceRegex(name, regex, replacement) }
         trimTrailingWhitespace?.takeIf { it }?.run { receiver.trimTrailingWhitespace() }
         endWithNewline?.takeIf { it }?.run { receiver.endWithNewline() }
 
         indentWithSpaces?.let(receiver::indentWithSpaces)
         indentWithTabs?.let(receiver::indentWithTabs)
 
-        nativeCmd?.forEach { (name, pathToExe, arguments) -> receiver.nativeCmd(name, pathToExe, arguments) }
+        nativeCmds?.forEach { (name, pathToExe, arguments) -> receiver.nativeCmd(name, pathToExe, arguments) }
 
         licenseHeader?.let { license ->
             license.applyTo(
@@ -129,13 +127,12 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
                 ),
             )
         }
+
         toggleOffOnRegex?.let(receiver::toggleOffOnRegex)
 
         toggleOffOn?.let { (off, on) ->
             receiver.toggleOffOn(off, on)
         }
-
-
 
         toggleOffOnDisable?.takeIf { it }?.run { receiver.toggleOffOnDisable() }
     }
@@ -263,17 +260,17 @@ internal data class FormatExtensionImpl(
     override val excludeSteps: MutableSet<String>? = null,
     override val excludePaths: MutableSet<String>? = null,
     override val encoding: String? = null,
-    override val target: Set<String>? = null,
-    override val targetExclude: Set<String>? = null,
+    override val targets: Set<String>? = null,
+    override val targetExcludes: Set<String>? = null,
     override val targetExcludeIfContentContains: String? = null,
     override val targetExcludeIfContentContainsRegex: String? = null,
-    override val replace: List<Replace>? = null,
-    override val replaceRegex: List<ReplaceRegex>? = null,
+    override val replaces: List<Replace>? = null,
+    override val replaceRegexes: List<ReplaceRegex>? = null,
     override val trimTrailingWhitespace: Boolean? = null,
     override val endWithNewline: Boolean? = null,
     override val indentWithSpaces: Int? = null,
     override val indentWithTabs: Int? = null,
-    override val nativeCmd: List<NativeCmd>? = null,
+    override val nativeCmds: List<NativeCmd>? = null,
     override val licenseHeader: LicenseHeaderConfig? = null,
     override val prettier: PrettierConfig? = null,
     override val biome: BiomeGeneric? = null,

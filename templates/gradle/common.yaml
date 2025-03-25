@@ -18,7 +18,7 @@ plugins:
     formats:
       - java:
           # remove old license header
-          replaceRegex:
+          replaceRegexes:
             - name: remove license header
               regex: ^\s*(//.*|/\*[\s\S]*?\*\/)\s*
               replacement: ''
@@ -49,7 +49,7 @@ plugins:
           ktlint:
             editorConfigPath: ../.editorconfig
           # remove old license header
-          replaceRegex:
+          replaceRegexes:
             - name: remove license header
               regex: ^\s*(//.*|/\*[\s\S]*?\*\/)\s*
               replacement: ''
@@ -66,7 +66,7 @@ plugins:
           ktlint:
             editorConfigPath: ../.editorconfig
           # remove old license header
-          replaceRegex:
+          replaceRegexes:
             - name: remove license header
               regex: ^\s*(//.*|/\*[\s\S]*?\*\/)\s*
               replacement: ''
@@ -77,10 +77,10 @@ plugins:
           # include source files
           targets: [ '**/*.gradle.kts' ]
           # removes any unused imports from any of your Java classes
-          removeIfUnusedImports: true
+          removeUnusedImports: google-java-format
       - javascript:
           # remove old license header
-          replaceRegex:
+          replaceRegexes:
             - name: remove license header
               regex: ^\s*(//.*|/\*[\s\S]*?\*\/)\s*
               replacement: ''
@@ -89,10 +89,10 @@ plugins:
             headerFile: ../licenses/LICENSE_HEADER_SLASHED
             delimiter: ^
           # include source files
-          target: [ '**/*.js' ]
+          targets: [ '**/*.js' ]
       - typescript:
           # remove old license header
-          replaceRegex:
+          replaceRegexes:
             - name: remove license header
               regex: ^\s*(//.*|/\*[\s\S]*?\*\/)\s*
               replacement: ''
@@ -101,21 +101,21 @@ plugins:
             headerFile: ../licenses/LICENSE_HEADER_SLASHED
             delimiter: ^
           # include source files
-          target: [ '**/*.ts' ]
+          targets: [ '**/*.ts' ]
       - json:
           # include source files
-          target: [ '**/*.json' ]
+          targets: [ '**/*.json' ]
       - yaml:
           # specify license header text
           licenseHeader:
             headerFile: ../licenses/LICENSE_HEADER_SHARPED
             delimiter: ^(?!\s*#).*
           # include source files
-          target: [ '**/*.yaml', '**/*.yml' ]
+          targets: [ '**/*.yaml', '**/*.yml' ]
       - format:
           name: xml
           # remove old license header
-          replaceRegex:
+          replaceRegexes:
             - name: remove license header
               regex: ^\s*<--[\s\S]*?-->\s*
               replacement: ''
@@ -124,7 +124,7 @@ plugins:
             headerFile: ../licenses/LICENSE_HEADER_TAGGED
             delimiter: ^
           # include source files
-          target: [ '**/*.xml' ]
+          targets: [ '**/*.xml' ]
       - format:
           name: properties
           # specify license header text
@@ -132,13 +132,13 @@ plugins:
             headerFile: ../licenses/LICENSE_HEADER_SHARPED
             delimiter: ^(?!\s*#).*
           # include source files
-          target: [ '**/*.properties' ]
+          targets: [ '**/*.properties' ]
           # removes any extra whitespace at the beginning of lines
-          indentWithSpaces: false
+          indentWithSpaces: 0
       - format:
           name: html
           # remove old license header
-          replaceRegex:
+          replaceRegexes:
             - name: remove license header
               regex: ^\s*<--[\s\S]*?-->\s*
               replacement: ''
@@ -147,11 +147,11 @@ plugins:
             headerFile: ../licenses/LICENSE_HEADER_TAGGED
             delimiter: ^
           # include source files
-          target: [ '**/*.html' ]
+          targets: [ '**/*.html' ]
       - format:
           name: md
           # remove old license header
-          replaceRegex:
+          replaceRegexes:
             - name: remove license header
               regex: ^\s*<--[\s\S]*?-->\s*
               replacement: ''
@@ -160,7 +160,7 @@ plugins:
             headerFile: ../licenses/LICENSE_HEADER_TAGGED
             delimiter: ^
           # include source files
-          target: [ '**/*.md' ]
+          targets: [ '**/*.md' ]
       - format:
           name: editconfig
           # specify license header text
@@ -168,9 +168,9 @@ plugins:
             headerFile: ../licenses/LICENSE_HEADER_SHARPED
             delimiter: ^(?!\s*#).*
           # include source files
-          target: [ '**/.editconfig' ]
+          targets: [ '**/.editconfig' ]
           # removes any extra whitespace at the beginning of lines
-          indentWithSpaces: false
+          indentWithSpaces: 0
       - format:
           name: gitignore
           # specify license header text
@@ -178,9 +178,9 @@ plugins:
             headerFile: ../licenses/LICENSE_HEADER_SHARPED
             delimiter: ^(?!\s*#).*
           # include source files
-          target: [ '**/.gitignore' ]
+          targets: [ '**/.gitignore' ]
           # removes any extra whitespace at the beginning of lines
-          indentWithSpaces: false
+          indentWithSpaces: 0
       - format:
           name: gitattributes
           # specify license header text
@@ -188,12 +188,12 @@ plugins:
             headerFile: ../licenses/LICENSE_HEADER_SHARPED
             delimiter: ^(?!\s*#).*
           # include source files
-          target: [ '**/.gitattributes' ]
+          targets: [ '**/.gitattributes' ]
           # removes any extra whitespace at the beginning of lines
-          indentWithSpaces: false
+          indentWithSpaces: 0
       - format:
           # exclude source files
-          targetExclude: [
+          targetExcludes: [
             ../licenses/LICENSE_HEADER_* ,
             '**/generated-src/**',
             '**/build-*/**',
@@ -210,7 +210,7 @@ plugins:
           # adds a newline character to the end of files content
           endWithNewline: true
           # adds the ability to have spotless ignore specific portions of a project. The usage looks like the following
-          toggleIfOffOn: true
+          toggleIfOffOn: { }
 
   # Help developers deliver high-quality, efficient code standards that benefit the entire team or organization.
   sonar:
@@ -225,9 +225,6 @@ plugins:
   # Api documentation engine for Kotlin.
   dokka:
     dokkaSourceSets:
-      - commonMain:
-          displayName: common
-          sourceSetScope: common
     pluginsConfiguration:
       - html:
           customStyleSheets: [ ../dokka/style.css, ../dokka/prism.css, ../dokka/logo-styles.css ]
@@ -333,6 +330,7 @@ plugins:
       - nativeMain
       - jsMain
       - wasmJsMain
+      - wasmWasiMain
 
 buildscript:
   repositories:
