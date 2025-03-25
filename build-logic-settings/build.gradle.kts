@@ -27,6 +27,7 @@ plugins {
     `java-gradle-plugin`
     // Support convention plugins written in Kotlin.
     // Convention plugins are build scripts in 'src/main' that automatically become available as plugins in the main build.
+//    `kotlin-dsl`
     alias(libs.plugins.kotlin.jvm)
     // Serialization
     alias(libs.plugins.kotlin.serialization)
@@ -179,6 +180,7 @@ dependencies {
     // Gradle
     // plugin
     compileOnly(libs.kotlin.gradle.plugin)
+    // https://mvnrepository.com/artifact/org.gradle.kotlin.kotlin-dsl/org.gradle.kotlin.kotlin-dsl.gradle.plugin
     implementation("org.gradle.kotlin.kotlin-dsl:org.gradle.kotlin.kotlin-dsl.gradle.plugin:5.2.0")
     // Opentelemetry
     implementation(libs.bundles.opentelemetry)
