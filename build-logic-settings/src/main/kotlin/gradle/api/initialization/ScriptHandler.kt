@@ -49,7 +49,7 @@ internal data class ScriptHandler(
     context(settings: Settings)
     fun applyTo() {
         repositories?.let { repositories ->
-            buildscript.repositories {
+            settings.buildscript.repositories {
                 repositories.forEach { repository ->
                     repository.applyTo(this)
                 }
@@ -58,7 +58,7 @@ internal data class ScriptHandler(
 
         dependencies?.let { dependencies ->
             dependencies.forEach { dependency ->
-                dependency.applyTo(buildscript.dependencies)
+                dependency.applyTo(settings.buildscript.dependencies)
             }
         }
     }
@@ -66,7 +66,7 @@ internal data class ScriptHandler(
     context(project: Project)
     fun applyTo() {
         repositories?.let { repositories ->
-            buildscript.repositories {
+            project.buildscript.repositories {
                 repositories.forEach { repository ->
                     repository.applyTo(this)
                 }
@@ -75,7 +75,7 @@ internal data class ScriptHandler(
 
         dependencies?.let { dependencies ->
             dependencies.forEach { dependency ->
-                dependency.applyTo(buildscript.dependencies)
+                dependency.applyTo(project.buildscript.dependencies)
             }
         }
     }

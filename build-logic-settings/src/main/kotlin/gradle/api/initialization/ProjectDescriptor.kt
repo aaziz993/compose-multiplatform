@@ -40,10 +40,10 @@ internal data class ProjectDescriptor(
     context(settings: Settings)
     @Suppress("UnstableApiUsage")
     fun applyTo() {
-        val project = project(path)
+        val project = settings.project(path)
         name?.let(project::setName)
         projectDir?.let { projectDir ->
-            project.projectDir = layout.settingsDirectory.file(projectDir).asFile
+            project.projectDir = settings.layout.settingsDirectory.file(projectDir).asFile
         }
         buildFileName?.let(project::setBuildFileName)
     }

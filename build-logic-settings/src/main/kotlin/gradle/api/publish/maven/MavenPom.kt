@@ -1,5 +1,6 @@
 package gradle.api.publish.maven
 
+import org.gradle.kotlin.dsl.assign
 import gradle.accessors.projectProperties
 import gradle.api.tryAssign
 import kotlinx.serialization.Serializable
@@ -114,14 +115,14 @@ internal data class MavenPom(
 
     context(project: Project)
     fun applyTo(receiver: MavenPom) {
-        packaging?.let(pom::setPackaging)
-        pom.name = name ?: project.name
-        pom.description = description ?: project.description
-        pom.url tryAssign url
-        pom.inceptionYear tryAssign (inceptionYear ?: projectProperties.year)
+        packaging?.let(receiver::setPackaging)
+        receiver.name = name ?: project.name
+        receiver.description = description ?: project.description
+        receiver.url tryAssign url
+        receiver.inceptionYear tryAssign (inceptionYear ?: project.projectProperties.year)
 
-        (licenses.orEmpty() + listOfNotNull(projectProperties.license)).let { licenses ->
-            pom.licenses {
+        (licenses.orEmpty() + listOfNotNull(project.projectProperties.license)).let { licenses ->
+            receiver.licenses {
                 licenses.forEach { license ->
                     license(license::applyTo)
                 }
@@ -129,11 +130,11 @@ internal data class MavenPom(
         }
 
         organization?.let { organization ->
-            pom.organization(organization::applyTo)
+            receiver.organization(organization::applyTo)
         }
 
-        (developers.orEmpty() + listOfNotNull(projectProperties.developer)).let { developers ->
-            pom.developers {
+        (developers.orEmpty() + listOfNotNull(project.projectProperties.developer)).let { developers ->
+            receiver.developers {
                 developers.forEach { developer ->
                     developer(developer::applyTo)
                 }
@@ -141,7 +142,7 @@ internal data class MavenPom(
         }
 
         contributors?.let { contributors ->
-            pom.contributors {
+            receiver.contributors {
                 contributors.forEach { contributor ->
                     contributor(contributor::applyTo)
                 }
@@ -149,29 +150,29 @@ internal data class MavenPom(
         }
 
         scm?.let { scm ->
-            pom.scm(scm::applyTo)
+            receiver.scm(scm::applyTo)
         }
 
         issueManagement?.let { issueManagement ->
-            pom.issueManagement(issueManagement::applyTo)
+            receiver.issueManagement(issueManagement::applyTo)
         }
 
         ciManagement?.let { ciManagement ->
-            pom.ciManagement(ciManagement::applyTo)
+            receiver.ciManagement(ciManagement::applyTo)
         }
 
         distributionManagement?.let { distributionManagement ->
-            pom.distributionManagement(distributionManagement::applyTo)
+            receiver.distributionManagement(distributionManagement::applyTo)
         }
 
         mailingLists?.let { mailingLists ->
-            pom.mailingLists {
+            receiver.mailingLists {
                 mailingLists.forEach { mailingList ->
                     mailingList(mailingList::applyTo)
                 }
             }
         }
 
-        pom.properties tryAssign properties
+        receiver.properties tryAssign properties
     }
 }
