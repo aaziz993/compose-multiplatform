@@ -84,7 +84,7 @@ internal data class DokkaSourceLinkSpec(
                 else -> "src"
             },
         )
-        (remoteUrl ?: settings.projectProperties.remote?.url)?.let(receiver::remoteUrl)
+        (remoteUrl ?: settings.projectProperties.scm?.url)?.let(receiver::remoteUrl)
         receiver.remoteLineSuffix tryAssign remoteLineSuffix
     }
 }

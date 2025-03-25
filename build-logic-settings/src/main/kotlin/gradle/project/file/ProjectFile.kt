@@ -37,7 +37,7 @@ internal interface ProjectFile {
                 }
                 else listOf(url)
             }.let { urls ->
-                rootProject.tasks.register<Download>(name) {
+                project.rootProject.tasks.register<Download>(receiver) {
                     doLast {
                         try {
                             download().run {
@@ -75,7 +75,7 @@ internal interface ProjectFile {
                 }
             },
             files.takeIf(List<*>::isNotEmpty)?.let { files ->
-                rootProject.tasks.register<Copy>(name) {
+                project.rootProject.tasks.register<Copy>(receiver) {
                     from(*files.toTypedArray())
                     into(into)
                     when (resolution) {
@@ -99,7 +99,7 @@ internal interface ProjectFile {
         exclude { fileTree ->
             if (fileTree.isDirectory) false
             else {
-                val intoFile = file(into).let { intoFile ->
+                val intoFile =project. file(into).let { intoFile ->
                     if (intoFile.isDirectory()) intoFile.resolve(fileTree.relativePath.pathString)
                     else intoFile
                 }

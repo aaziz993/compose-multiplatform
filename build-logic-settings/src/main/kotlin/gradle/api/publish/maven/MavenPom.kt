@@ -1,7 +1,10 @@
 package gradle.api.publish.maven
 
+import gradle.accessors.moduleName
 import org.gradle.kotlin.dsl.assign
 import gradle.accessors.projectProperties
+import gradle.accessors.settings
+import gradle.addSuffix
 import gradle.api.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -118,10 +121,14 @@ internal data class MavenPom(
         packaging?.let(receiver::setPackaging)
         receiver.name = name ?: project.name
         receiver.description = description ?: project.description
-        receiver.url tryAssign url
+        receiver.url tryAssign (url
+            ?: project.projectProperties.scm?.url
+                ?.trimEnd('/')
+                ?.addSuffix("/")
+                ?.addSuffix(project.projectDir.toRelativeString(project.settings.settingsDir)))
         receiver.inceptionYear tryAssign (inceptionYear ?: project.projectProperties.year)
 
-        (licenses.orEmpty() + listOfNotNull(project.projectProperties.license)).let { licenses ->
+        (licenses ?: project.projectProperties.licenses)?.let { licenses ->
             receiver.licenses {
                 licenses.forEach { license ->
                     license(license::applyTo)
@@ -133,7 +140,7 @@ internal data class MavenPom(
             receiver.organization(organization::applyTo)
         }
 
-        (developers.orEmpty() + listOfNotNull(project.projectProperties.developer)).let { developers ->
+        (developers ?: project.projectProperties.developers)?.let { developers ->
             receiver.developers {
                 developers.forEach { developer ->
                     developer(developer::applyTo)
@@ -149,7 +156,7 @@ internal data class MavenPom(
             }
         }
 
-        scm?.let { scm ->
+        (scm ?: project.projectProperties.scm)?.let { scm ->
             receiver.scm(scm::applyTo)
         }
 

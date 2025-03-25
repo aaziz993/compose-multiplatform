@@ -2,6 +2,8 @@ package gradle.project.file
 
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
+import gradle.api.publish.maven.MavenPomDeveloper
+import gradle.api.publish.maven.MavenPomLicense
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import org.gradle.api.DefaultTask
@@ -10,7 +12,8 @@ import org.gradle.api.tasks.TaskProvider
 
 @Serializable
 internal data class LicenseFile(
-    val source: String? = null,
+    val source: String,
+    override val into: String,
     override val resolution: FileResolution = FileResolution.ABSENT,
     val yearPlaceholder: String,
     val year: String? = null,
@@ -19,26 +22,23 @@ internal data class LicenseFile(
 ) : ProjectFile {
 
     @Transient
-    override val from: MutableList<String> = mutableListOf()
-
-    @Transient
-    override val into: String = "LICENSE"
+    override val from: List<String> = listOf(source)
 
     @Transient
     override val replace: MutableMap<String, String> = mutableMapOf()
 
     context(project: Project)
     override fun applyTo(receiver: String): List<TaskProvider<out DefaultTask>> {
-        from.add(source ?: settings.projectProperties.license?.url ?: return emptyList())
-
-        (year ?: settings.projectProperties.year)?.let { year ->
+        (year ?: project.settings.projectProperties.year)?.let { year ->
             replace[yearPlaceholder] = year
         }
 
-        (owner ?: settings.projectProperties.developer?.name)?.let { owner ->
+        (owner ?: project.settings.projectProperties.developers
+            ?.mapNotNull(MavenPomDeveloper::name)
+            ?.joinToString(", "))?.let { owner ->
             replace[ownerPlaceholder] = owner
         }
 
-        return super.applyTo(name)
+        return super.applyTo(receiver)
     }
 }

@@ -27,7 +27,7 @@ internal data class CodeOfConductFile(
 
     context(project: Project)
     override fun applyTo(receiver: String): List<TaskProvider<out DefaultTask>> {
-        (email ?: settings.projectProperties.developer?.email)?.let { email ->
+        (email ?: settings.projectProperties.developers?.email)?.let { email ->
             replace[emailPlaceholder] = email
         }
 

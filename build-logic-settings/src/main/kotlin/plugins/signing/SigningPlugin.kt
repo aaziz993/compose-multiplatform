@@ -102,9 +102,9 @@ internal class SigningPlugin : Plugin<Project> {
                     generateGpg.keyLength,
                     generateGpg.subkeyType,
                     generateGpg.subkeyLength,
-                    generateGpg.nameReal ?: projectProperties.developer?.name!!,
+                    generateGpg.nameReal ?: projectProperties.developers?.name!!,
                     generateGpg.nameComment,
-                    generateGpg.nameEmail ?: projectProperties.developer?.email!!,
+                    generateGpg.nameEmail ?: projectProperties.developers?.email!!,
                     generateGpg.expireDate,
                     generateGpg.passphrase,
                 )
@@ -117,7 +117,7 @@ internal class SigningPlugin : Plugin<Project> {
                 executable = settings.settingsDir.resolve("scripts/gpg/list-gpg_keys.sh").absolutePath
 
                 args(
-                    generateGpg.nameReal ?: projectProperties.developer?.name!!,
+                    generateGpg.nameReal ?: projectProperties.developers?.name!!,
                     generateGpg.passphrase,
                 )
             }
@@ -129,7 +129,7 @@ internal class SigningPlugin : Plugin<Project> {
                 executable = settings.settingsDir.resolve("scripts/gpg/clean-gpg-keys.sh").absolutePath
 
                 args(
-                    generateGpg.nameReal ?: projectProperties.developer?.name!!,
+                    generateGpg.nameReal ?: projectProperties.developers?.name!!,
                 )
             }
         }
