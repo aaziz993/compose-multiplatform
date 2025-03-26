@@ -1,12 +1,14 @@
 package gradle.plugins.apple
 
+import gradle.api.NamedKeyTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
 import gradle.collection.act
+import gradle.plugins.android.BuildType
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import org.jetbrains.gradle.apple.BuildConfiguration
 
 @Serializable
 internal data class BuildConfiguration(
@@ -14,12 +16,15 @@ internal data class BuildConfiguration(
     val fatFrameworks: Boolean? = null,
     val properties: SerializableAnyMap? = null,
     val setProperties: SerializableAnyMap? = null
-) : ProjectNamed<BuildConfiguration> {
+) : ProjectNamed<org.jetbrains.gradle.apple.BuildConfiguration> {
 
     context(Project)
-    override fun applyTo(receiver: BuildConfiguration) {
+    override fun applyTo(receiver: org.jetbrains.gradle.apple.BuildConfiguration) {
         receiver::fatFrameworks trySet fatFrameworks
         properties?.let(receiver.properties::putAll)
         setProperties?.act(receiver.properties::clear)?.let(receiver.properties::putAll)
     }
 }
+
+internal object BuildConfigurationKeyTransformingSerializer
+    : NamedKeyTransformingSerializer<BuildConfiguration>(BuildConfiguration.serializer())

@@ -7,6 +7,7 @@ import gradle.collection.SerializableAnyMap
 import gradle.collection.act
 import gradle.plugins.apple.AppleBuildSettings
 import gradle.plugins.apple.BuildConfiguration
+import gradle.plugins.apple.BuildConfigurationKeyTransformingSerializer
 import gradle.serialization.serializer.JsonPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
@@ -17,7 +18,7 @@ internal interface AppleTarget<T : org.jetbrains.gradle.apple.targets.AppleTarge
 
     val bridgingHeader: String?
 
-    val buildConfigurations: Set<BuildConfiguration>?
+    val buildConfigurations: LinkedHashSet<@Serializable(with = BuildConfigurationKeyTransformingSerializer::class) BuildConfiguration>?
 
     val buildSettings: Map<AppleBuildSettings, String>?
 
