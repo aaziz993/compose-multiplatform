@@ -19,7 +19,7 @@ internal data class PowerAssertSettings(
 
     context(Project)
     override fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("power.assert").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("powerAssert").id) {
             super.applyTo()
         }
 }
