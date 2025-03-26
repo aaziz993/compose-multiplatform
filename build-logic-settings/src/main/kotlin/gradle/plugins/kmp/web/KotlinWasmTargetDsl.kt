@@ -11,9 +11,10 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 
 internal interface KotlinWasmTargetDsl<T : org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinWasmTargetDsl>
-    : KotlinTarget<T>, HasBinaries<KotlinJsBinaryContainer> {
+    : KotlinTarget<T>,
+    HasBinaries<@Serializable(with = KotlinJsBinaryContainerTransformingSerializer::class) KotlinJsBinaryContainer> {
 
-    override val compilations: Set<KotlinJsIrCompilation>?
+    override val compilations: LinkedHashSet<@Serializable(with = KotlinJsIrCompilationTransformingSerializer::class) KotlinJsIrCompilation>?
 
     context(Project)
     override fun applyTo(receiver: T) {
@@ -27,7 +28,7 @@ internal interface KotlinWasmTargetDsl<T : org.jetbrains.kotlin.gradle.targets.j
 @SerialName("wasm")
 internal data class KotlinWasmTargetDslImpl(
     override val targetName: String = "",
-    override val compilations: Set<KotlinJsIrCompilation>? = null,
+    override val compilations: LinkedHashSet<@Serializable(with = KotlinJsIrCompilationTransformingSerializer::class) KotlinJsIrCompilation>? = null,
     override val binaries: KotlinJsBinaryContainer = KotlinJsBinaryContainer(),
 ) : KotlinWasmTargetDsl<org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinWasmTargetDsl> {
 

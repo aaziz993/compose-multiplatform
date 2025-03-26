@@ -1,6 +1,6 @@
 package gradle.plugins.kmp
 
-internal interface HasBinaries<out T : Set<*>> {
+internal interface HasBinaries<T : Set<*>> {
 
     val binaries: T?
 }

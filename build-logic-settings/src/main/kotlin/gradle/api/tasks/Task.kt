@@ -10,6 +10,7 @@ import groovy.lang.MissingPropertyException
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.DomainObjectCollection
+import org.gradle.api.NamedDomainObjectCollection
 import org.gradle.api.Project
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.TaskCollection
@@ -347,7 +348,7 @@ internal interface Task<T : org.gradle.api.Task> : ProjectNamed<T> {
 
 context(Project)
 internal fun <T : org.gradle.api.Task> Task<T>.applyTo(receiver: TaskCollection<out T>) =
-    applyTo(receiver as DomainObjectCollection<out T>) { name, action ->
+    applyTo(receiver) { name, action ->
         project.tasks.register(name, receiver.elementType(), action)
     }
 

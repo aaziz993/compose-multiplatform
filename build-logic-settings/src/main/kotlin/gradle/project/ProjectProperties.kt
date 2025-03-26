@@ -78,7 +78,7 @@ internal data class ProjectProperties(
     val yarnRootEnv: YarnRootEnvSpec = YarnRootEnvSpec(),
     val npm: NpmExtension = NpmExtension(),
     val compose: CMPSettings = CMPSettings(),
-    val tasks: List<@Serializable(with = TaskTransformingSerializer::class) Task<*>>? = null,
+    val tasks: List<@Serializable(with = TaskTransformingSerializer::class) Task<out org.gradle.api.Task>>? = null,
     private val localPropertiesFile: String = "local.properties",
     val projectFiles: List<ProjectFile> = emptyList(),
 ) {

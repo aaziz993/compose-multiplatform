@@ -2,6 +2,7 @@ package gradle.plugins.kmp.web
 
 import gradle.accessors.kotlin
 import gradle.accessors.moduleName
+import gradle.api.applyTo
 import gradle.api.trySet
 import gradle.plugins.kmp.HasBinaries
 import gradle.plugins.kmp.KotlinTarget
@@ -15,10 +16,10 @@ import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalMainFunctionArgume
 internal interface KotlinJsTargetDsl<T : org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl>
     : KotlinTarget<T>,
     KotlinTargetWithNodeJsDsl,
-    HasBinaries<KotlinJsBinaryContainer>,
+    HasBinaries<@Serializable(with = KotlinJsBinaryContainerTransformingSerializer::class) KotlinJsBinaryContainer>,
     HasConfigurableKotlinCompilerOptions<T, org.jetbrains.kotlin.gradle.dsl.KotlinJsCompilerOptions> {
 
-    abstract override val compilations: Set<KotlinJsIrCompilation>?
+    abstract override val compilations: LinkedHashSet<@Serializable(with = KotlinJsIrCompilationTransformingSerializer::class) KotlinJsIrCompilation>?
 
     val moduleName: String?
 
@@ -69,7 +70,7 @@ internal interface KotlinJsTargetDsl<T : org.jetbrains.kotlin.gradle.targets.js.
 @SerialName("jsCommon")
 internal data class KotlinJsTargetDslImpl(
     override val targetName: String = "js",
-    override val compilations: Set<@Serializable(with = KotlinJsIrCompilationTransformingSerializer::class) KotlinJsIrCompilation>? = null,
+    override val compilations: LinkedHashSet<@Serializable(with = KotlinJsIrCompilationTransformingSerializer::class) KotlinJsIrCompilation>? = null,
     override val nodejs: KotlinJsNodeDsl? = null,
     override val moduleName: String? = null,
     override val browser: KotlinJsBrowserDsl? = null,
@@ -78,10 +79,12 @@ internal data class KotlinJsTargetDslImpl(
     override val passAsArgumentToMainFunction: String? = null,
     override val generateTypeScriptDefinitions: Boolean? = null,
     override val compilerOptions: KotlinJsCompilerOptions? = null,
-    override val binaries: KotlinJsBinaryContainer? = null,
+    override val binaries: @Serializable(with = KotlinJsBinaryContainerTransformingSerializer::class) KotlinJsBinaryContainer? = null,
 ) : KotlinJsTargetDsl<org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl> {
 
     context(Project)
     override fun applyTo() =
-        applyTo(project.kotlin.targets.withType<org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl>(), kotlin::js)
+        applyTo(project.kotlin.targets.withType<org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl>()) { name, action ->
+            kotlin.js(name, action::execute)
+        }
 }

@@ -26,7 +26,7 @@ internal abstract class BenchmarksExtension {
 
     abstract val reportsDir: String?
 
-    abstract val targets: LinkedHashSet<@Serializable(with = BenchmarkTargetTransformingSerializer::class) BenchmarkTarget<*>>?
+    abstract val targets: LinkedHashSet<@Serializable(with = BenchmarkTargetTransformingSerializer::class) BenchmarkTarget<out kotlinx.benchmark.gradle.BenchmarkTarget>>?
 
     context(Project)
     fun applyTo() =
@@ -43,7 +43,7 @@ internal abstract class BenchmarksExtension {
             project.benchmark::reportsDir trySet reportsDir
 
             targets?.forEach { target ->
-                target.applyTo(project.benchmark.targets)
+                (target as BenchmarkTarget<kotlinx.benchmark.gradle.BenchmarkTarget>).applyTo(project.benchmark.targets)
             }
         }
 }

@@ -1,5 +1,6 @@
 package gradle.api.initialization
 
+import gradle.api.artifacts.dsl.RepositoryHandler
 import gradle.api.repositories.ArtifactRepository
 import gradle.api.repositories.ArtifactRepositoryTransformingSerializer
 import gradle.project.Dependency
@@ -35,7 +36,7 @@ internal data class ScriptHandler(
      *
      * @return the repository handler. Never returns null.
      */
-    val repositories: LinkedHashSet<@Serializable(with = ArtifactRepositoryTransformingSerializer::class) ArtifactRepository<*>>? = null,
+    val repositories: RepositoryHandler? = null,
     /**
      * Returns the dependencies of the script. The returned dependency handler instance can be used for adding new
      * dependencies. For accessing already declared dependencies, the configurations can be used.

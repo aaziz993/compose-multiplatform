@@ -19,14 +19,13 @@ internal interface AppleProjectExtension {
 
     val sourceSets: LinkedHashSet<@Serializable(with = AppleSourceSetTransformingSerializer::class) AppleSourceSet>?
 
-    val targets: LinkedHashSet<@Serializable(with = AppleTargetTransformingSerializer::class) AppleTarget<*>>?
+    val targets: LinkedHashSet<@Serializable(with = AppleTargetTransformingSerializer::class) AppleTarget<out org.jetbrains.gradle.apple.targets.AppleTarget>>?
 
     val teamID: String?
     val iosApp: IosAppTarget?
     val iosFramework: IosFrameworkTarget?
 
     context(Project)
-    @Suppress("UNCHECKED_CAST")
     fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("apple").id) {
             sourceSets?.forEach { sourceSet ->
@@ -34,7 +33,7 @@ internal interface AppleProjectExtension {
             }
 
             targets?.forEach { target ->
-                (target as AppleTarget<org.jetbrains.gradle.apple.targets.AppleTarget>?).applyTo(project.apple.targets)
+                (target as AppleTarget<org.jetbrains.gradle.apple.targets.AppleTarget>).applyTo(project.apple.targets)
             }
 
             project.apple.teamID = teamID ?: project.moduleName

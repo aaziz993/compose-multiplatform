@@ -2,6 +2,7 @@ package gradle.plugins.kmp.web
 
 import gradle.accessors.kotlin
 import gradle.accessors.moduleName
+import gradle.api.applyTo
 import gradle.plugins.kmp.HasBinaries
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -28,5 +29,7 @@ internal data class KotlinWasmWasiTargetDslImpl(
 
     context(Project)
     override fun applyTo() =
-        applyTo(project.kotlin.targets.withType<KotlinWasmWasiTargetDsl>(), kotlin::wasmWasi)
+        applyTo(project.kotlin.targets.withType<KotlinWasmWasiTargetDsl>()) { name, action ->
+            kotlin.wasmWasi(name, action::execute)
+        }
 }

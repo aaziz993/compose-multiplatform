@@ -55,7 +55,7 @@ internal interface UrlArtifactRepository<T: UrlArtifactRepository> {
     context(Directory)
     fun _applyTo(receiver: T) {
         url?.let { url ->
-            if (url.isUrl) url else directory.dir(url)
+            if (url.isUrl) url else dir(url)
         }?.let(receiver::setUrl)
 
         allowInsecureProtocol?.let(receiver::setAllowInsecureProtocol)

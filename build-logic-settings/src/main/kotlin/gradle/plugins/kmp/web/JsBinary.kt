@@ -11,7 +11,6 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
 import org.jetbrains.kotlin.gradle.targets.js.ir.Executable
 import org.jetbrains.kotlin.gradle.targets.js.ir.ExecutableWasm
 
-@Serializable(with = JsBinarySerializer::class)
 internal interface JsBinary<T : org.jetbrains.kotlin.gradle.targets.js.ir.JsBinary> {
 
     val compilation: String
@@ -24,15 +23,7 @@ internal interface JsBinary<T : org.jetbrains.kotlin.gradle.targets.js.ir.JsBina
     }
 }
 
-private object JsBinarySerializer : JsonPolymorphicSerializer<JsBinary<*>>(
-    JsBinary::class,
-)
-
-internal object JsBinaryTransformingSerializer : KeyTransformingSerializer<JsBinary<*>>(
-    JsBinarySerializer,
-    "type",
-)
-
+@Serializable(with = JsIrBinarySerializer::class)
 internal sealed class JsIrBinary<T : org.jetbrains.kotlin.gradle.targets.js.ir.JsIrBinary> : JsBinary<T> {
 
     abstract val generateTs: Boolean?
@@ -44,6 +35,15 @@ internal sealed class JsIrBinary<T : org.jetbrains.kotlin.gradle.targets.js.ir.J
         receiver::generateTs trySet generateTs
     }
 }
+
+private object JsIrBinarySerializer : JsonPolymorphicSerializer<JsIrBinary<*>>(
+    JsIrBinary::class,
+)
+
+internal object JsIrBinaryTransformingSerializer : KeyTransformingSerializer<JsIrBinary<*>>(
+    JsIrBinarySerializer,
+    "type",
+)
 
 @Serializable
 @SerialName("executable")

@@ -17,18 +17,15 @@ internal data class KotlinJsIrCompilation(
     override val output: KotlinCompilationOutput? = null,
     override val associatedCompilations: Set<String>? = null,
     override val dependencies: List<@Serializable(with = DependencyTransformingSerializer::class) Dependency>? = null,
-    override val binaries: KotlinJsBinaryContainer? = null,
-    override val outputModuleName: String? = null,
+    override val binaries: @Serializable(with = KotlinJsBinaryContainerTransformingSerializer::class) KotlinJsBinaryContainer? = null,
     override val packageJson: PackageJson? = null,
-) : KotlinJsCompilation<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJsCompilation> {
+) : KotlinJsCompilation<org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsIrCompilation> {
 
     context(Project)
-    override fun applyTo(receiver: org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJsCompilation) {
+    override fun applyTo(receiver: org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsIrCompilation) {
         super.applyTo(receiver)
 
         binaries?.applyTo(receiver.binaries)
-        receiver::outputModuleName trySet outputModuleName
-
         packageJson?.let { packageJson ->
             receiver.packageJson {
                 packageJson.applyTo(this)

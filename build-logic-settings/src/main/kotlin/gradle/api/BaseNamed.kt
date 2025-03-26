@@ -62,13 +62,13 @@ internal fun <T : Named> ProjectNamed<T>.applyTo(
     applyTo(this)
 }
 
-context(Project)
-internal fun <T> ProjectNamed<T>.applyTo(
-    receiver: NamedDomainObjectCollection<out T>,
-    create: (name: String, action: Action<in T>) -> Unit
-) = receiver.maybeNamedCreateOrEach(name, create) {
-    applyTo(this)
-}
+//context(Project)
+//internal fun <T> ProjectNamed<T>.applyTo(
+//    receiver: NamedDomainObjectCollection<out T>,
+//    create: (name: String, action: Action<in T>) -> Unit
+//) = receiver.maybeNamedCreateOrEach(name, create) {
+//    applyTo(this)
+//}
 
 context(Project)
 internal fun <T> ProjectNamed<T>.applyTo(receiver: NamedDomainObjectContainer<out T>) =

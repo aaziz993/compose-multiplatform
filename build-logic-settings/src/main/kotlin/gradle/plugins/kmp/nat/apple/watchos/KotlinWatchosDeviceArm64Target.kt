@@ -15,7 +15,7 @@ import org.gradle.kotlin.dsl.withType
 @SerialName("watchosDeviceArm64")
 internal data class KotlinWatchosDeviceArm64Target(
     override val targetName: String = "watchosDeviceArm64",
-    override val compilations: List<@Serializable(with = KotlinNativeCompilationTransformingSerializer::class) KotlinNativeCompilation>? = null,
+    override val compilations: LinkedHashSet<@Serializable(with = KotlinNativeCompilationTransformingSerializer::class) KotlinNativeCompilation>? = null,
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,
 ) : KotlinNativeTarget(), KotlinWatchos64Target, KotlinWatchosTarget {

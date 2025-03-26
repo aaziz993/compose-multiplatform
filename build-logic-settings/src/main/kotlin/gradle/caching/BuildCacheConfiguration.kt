@@ -33,7 +33,7 @@ internal data class BuildCacheConfiguration(
      *
      * @param type the type of remote cache to configure.
      */
-    val remotes: List<@Serializable(with = BuildCacheTransformingSerializer::class) BuildCache<*>>? = null,
+    val remotes: List<@Serializable(with = BuildCacheTransformingSerializer::class) BuildCache<out org.gradle.caching.configuration.BuildCache>>? = null,
 ) {
 
     context(Settings)

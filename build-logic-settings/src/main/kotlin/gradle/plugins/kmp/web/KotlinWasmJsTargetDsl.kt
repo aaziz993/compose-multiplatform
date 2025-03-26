@@ -24,7 +24,8 @@ internal data class KotlinWasmJsTargetDsl(
     override val binaries: KotlinJsBinaryContainer? = null,
     val d8: Boolean? = null,
     val d8Dsl: KotlinWasmD8Dsl? = null,
-) : KotlinWasmTargetDsl<KotlinWasmJsTargetDsl>, KotlinJsTargetDsl<KotlinWasmJsTargetDsl> {
+) : KotlinWasmTargetDsl<KotlinWasmJsTargetDsl>,
+    KotlinJsTargetDsl<KotlinWasmJsTargetDsl> {
 
     context(Project)
     override fun applyTo(receiver: KotlinWasmJsTargetDsl) {
