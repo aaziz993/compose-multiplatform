@@ -20,6 +20,7 @@ import gradle.plugins.android.features.BuildFeatures
 import gradle.plugins.android.features.DataBinding
 import gradle.plugins.android.features.ViewBinding
 import gradle.plugins.android.flavor.ProductFlavorDsl
+import gradle.plugins.android.library.LibraryBuildTypeKeyTransformingSerializer
 import gradle.plugins.android.signing.ApkSigningConfig
 import gradle.plugins.android.signing.SigningConfigTransformingSerializer
 import gradle.plugins.android.sourceset.AndroidSourceSet
@@ -91,7 +92,7 @@ internal interface CommonExtension<
      *
      * @see BuildType
      */
-    val buildTypes: Set<BuildType<BuildTypeT>>?
+    val buildTypes: LinkedHashSet<out @Serializable(with = LibraryBuildTypeKeyTransformingSerializer::class) BuildType<BuildTypeT>>?
 
     /**
      * Specifies options for the
@@ -182,7 +183,7 @@ internal interface CommonExtension<
      *
      * @see [gradle.plugins.android.flavor.ProductFlavorDsl]
      */
-    val productFlavors: Set<ProductFlavorDsl<out ProductFlavorT>>?
+    val productFlavors: LinkedHashSet<out ProductFlavorDsl<out ProductFlavorT>>?
 
     /**
      * Specifies defaults for variant properties that the Android plugin applies to all build
@@ -212,7 +213,7 @@ internal interface CommonExtension<
      *
      * @see [gradle.plugins.android.signing.ApkSigningConfig]
      */
-    val signingConfigs: Set<@Serializable(with = SigningConfigKeyTransformingSerializer::class) ApkSigningConfig<out com.android.build.api.dsl.ApkSigningConfig>>?
+    val signingConfigs: LinkedHashSet<out ApkSigningConfig<out com.android.build.api.dsl.ApkSigningConfig>>?
 
     /**
      * Specifies options for external native build using [CMake](https://cmake.org/) or

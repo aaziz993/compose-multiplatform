@@ -15,7 +15,9 @@ import gradle.plugins.android.features.BuildFeatures
 import gradle.plugins.android.features.DataBinding
 import gradle.plugins.android.features.ViewBinding
 import gradle.plugins.android.flavor.ProductFlavor
+import gradle.plugins.android.flavor.ProductFlavorKeyTransformingSerializer
 import gradle.plugins.android.signing.SigningConfigImpl
+import gradle.plugins.android.signing.SigningConfigKeyTransformingSerializer
 import gradle.plugins.android.signing.SigningConfigTransformingSerializer
 import gradle.plugins.android.sourceset.AndroidSourceSet
 import gradle.plugins.android.sourceset.AndroidSourceSetKeyTransformingSerializer
@@ -90,13 +92,13 @@ internal interface BaseExtension {
 
     val libraryRequests: Set<LibraryRequest>?
 
-    val buildTypes: Set<BuildType<out com.android.build.api.dsl.BuildType>>?
+    val buildTypes: LinkedHashSet<out BuildType<out com.android.build.api.dsl.BuildType>>?
 
     val defaultConfig: DefaultConfig?
 
-    val productFlavors: Set<ProductFlavor>?
+    val productFlavors: LinkedHashSet<@Serializable(with = ProductFlavorKeyTransformingSerializer::class) ProductFlavor>?
 
-    val signingConfigs: Set<@Serializable(with = SigningConfigKeyTransformingSerializer::class) SigningConfigImpl>?
+    val signingConfigs: LinkedHashSet<@Serializable(with = SigningConfigKeyTransformingSerializer::class) SigningConfigImpl>?
 
     // these are indirectly implemented by extensions when they implement the new public
     // extension interfaces via delegates.
