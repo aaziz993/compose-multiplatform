@@ -74,7 +74,7 @@ import gradle.plugins.animalsniffer.AnimalSnifferPlugin
 import gradle.plugins.apivalidation.ApiValidationPlugin
 import gradle.plugins.apple.ApplePlugin
 import gradle.plugins.buildconfig.BuildConfigPlugin
-import plugins.cmp.CMPPlugin
+import gradle.plugins.cmp.CMPPlugin
 import gradle.plugins.dependencycheck.DependencyCheckPlugin
 import gradle.plugins.develocity.DevelocityPlugin
 import gradle.plugins.doctor.DoctorPlugin

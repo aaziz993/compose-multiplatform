@@ -40,7 +40,7 @@ import org.gradle.api.provider.ProviderFactory
 import org.gradle.kotlin.dsl.extra
 import org.yaml.snakeyaml.Yaml
 import gradle.plugins.apple.model.AppleSettings
-import plugins.cmp.model.CMPSettings
+import gradle.plugins.cmp.model.CMPSettings
 import kotlin.text.get
 
 internal const val PROJECT_PROPERTIES_FILE = "project.yaml"

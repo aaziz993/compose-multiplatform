@@ -1,4 +1,4 @@
-package plugins.cmp.model
+package gradle.plugins.cmp.model
 
 import gradle.accessors.id
 import gradle.accessors.libs

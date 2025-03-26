@@ -1,6 +1,6 @@
 @file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
 
-package plugins.cmp
+package gradle.plugins.cmp
 
 import gradle.accessors.id
 import gradle.accessors.libs
@@ -10,7 +10,7 @@ import gradle.accessors.projectProperties
 import gradle.accessors.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import plugins.cmp.model.CMPSettings
+import gradle.plugins.cmp.model.CMPSettings
 
 public class CMPPlugin : Plugin<Project> {
 
