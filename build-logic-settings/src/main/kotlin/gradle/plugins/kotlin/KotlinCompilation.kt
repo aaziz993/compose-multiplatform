@@ -4,12 +4,15 @@ import gradle.api.ProjectNamed
 import gradle.api.getByNameOrAll
 import gradle.api.trySet
 import gradle.plugins.kmp.KotlinSourceSet
+import gradle.plugins.kotlin.tasks.KotlinCompilationTask
+import gradle.plugins.kotlin.tasks.KotlinCompilationTaskImpl
 import gradle.plugins.project.Dependency
 import gradle.plugins.project.DependencyKeyTransformingSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerOptions
 
 /**
  * # Kotlin compilation
@@ -93,6 +96,11 @@ internal interface KotlinCompilation<T : org.jetbrains.kotlin.gradle.plugin.Kotl
     val defaultSourceSet: KotlinSourceSet?
 
     /**
+     * Provides access to the compilation task for this compilation.
+     */
+    val compileTaskProvider: KotlinCompilationTask<out org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask<*>, *>?
+
+    /**
      * A collection of file system locations for the artifacts of compilation dependencies.
      */
     val compileDependencyFiles: Set<String>?
@@ -115,12 +123,17 @@ internal interface KotlinCompilation<T : org.jetbrains.kotlin.gradle.plugin.Kotl
     context(Project)
     override fun applyTo(receiver: T) {
         defaultSourceSet?.applyTo(receiver.defaultSourceSet)
+
+        (compileTaskProvider as KotlinCompilationTask<org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask<*>, *>?)
+            ?.applyTo(receiver.compileTaskProvider.get())
+
         receiver::compileDependencyFiles trySet compileDependencyFiles
             ?.toTypedArray()
             ?.let(project::files)
             ?.let { files ->
                 receiver.compileDependencyFiles + files
             }
+
         receiver::compileDependencyFiles trySet setCompileDependencyFiles?.toTypedArray()?.let(project::files)
         output?.applyTo(receiver.output)
         associatedCompilations
@@ -138,7 +151,9 @@ internal abstract class KotlinCompilationTransformingSerializer<T : KotlinCompil
 
 @Serializable
 internal data class KotlinCompilationImpl(
-    override val name: String, override val defaultSourceSet: KotlinSourceSet? = null,
+    override val name: String? = null,
+    override val compileTaskProvider: KotlinCompilationTaskImpl? = null,
+    override val defaultSourceSet: KotlinSourceSet? = null,
     override val compileDependencyFiles: Set<String>? = null,
     override val setCompileDependencyFiles: Set<String>? = null,
     override val output: KotlinCompilationOutput? = null,

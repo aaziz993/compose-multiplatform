@@ -13,15 +13,15 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary
 
-internal abstract class KotlinNativeTarget
-    : KotlinTarget<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>,
+internal abstract class KotlinNativeTarget<T : org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>
+    : KotlinTarget<T>,
     HasConfigurableKotlinCompilerOptions<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget, org.jetbrains.kotlin.gradle.dsl.KotlinNativeCompilerOptions>,
     HasBinaries<@Serializable(with = KotlinNativeBinaryContainerTransformingSerializer::class) KotlinNativeBinaryContainer> {
 
     abstract override val compilations: LinkedHashSet<@Serializable(with = KotlinNativeCompilationKeyTransformingSerializer::class) KotlinNativeCompilation>?
 
     context(Project)
-    override fun applyTo(receiver: org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget) {
+    override fun applyTo(receiver: T) {
         super<KotlinTarget>.applyTo(receiver)
         super<HasConfigurableKotlinCompilerOptions>.applyTo(receiver)
 

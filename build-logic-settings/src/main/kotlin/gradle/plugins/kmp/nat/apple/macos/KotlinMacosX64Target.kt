@@ -6,7 +6,7 @@ import gradle.plugins.kmp.nat.KotlinNativeCompilation
 import gradle.api.applyTo
 import gradle.plugins.kmp.nat.KotlinNativeCompilationKeyTransformingSerializer
 import gradle.plugins.kmp.nat.KotlinNativeHostTestRun
-import gradle.plugins.kmp.nat.KotlinNativeHostTestRunTransformingSerializer
+import gradle.plugins.kmp.nat.KotlinNativeHostTestRunKeyTransformingSerializer
 import gradle.plugins.kmp.nat.KotlinNativeTargetWithHostTests
 import gradle.plugins.kmp.nat.tasks.KotlinNativeCompilerOptions
 import kotlinx.serialization.SerialName

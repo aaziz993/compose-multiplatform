@@ -21,7 +21,7 @@ internal data class KotlinNativeCompilation(
     override val dependencies: Set<@Serializable(with = DependencyKeyTransformingSerializer::class) Dependency>? = null,
     // Interop DSL.
     val cinterops: LinkedHashSet<@Serializable(with = DefaultCInteropSettingsKeyTransformingSerializer::class) DefaultCInteropSettings>? = null
-) : KotlinCompilation<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeCompilation> {
+) : AbstractKotlinNativeCompilation<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeCompilation>() {
 
     context(Project)
     override fun applyTo(receiver: org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeCompilation) {
