@@ -7,13 +7,13 @@ import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
 import gradle.plugins.java.JavaToolchainSpec
-import gradle.plugins.kmp.HierarchyAliasTransformingSerializer
+import gradle.plugins.kmp.HierarchyAliasKeyTransformingSerializer
 import gradle.plugins.kmp.HierarchyGroup
 import gradle.plugins.kmp.KotlinMultiplatformExtension
 import gradle.plugins.kmp.KotlinSourceSet
-import gradle.plugins.kmp.KotlinSourceSetTransformingSerializer
+import gradle.plugins.kmp.KotlinSourceSetKeyTransformingSerializer
 import gradle.plugins.kmp.KotlinTarget
-import gradle.plugins.kmp.KotlinTargetTransformingSerializer
+import gradle.plugins.kmp.KotlinTargetKeyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
@@ -30,9 +30,9 @@ internal data class KotlinSettings(
     override val coreLibrariesVersion: String? = null,
     override val explicitApi: ExplicitApiMode? = null,
     override val compilerOptions: KotlinCommonCompilerOptionsImpl? = null,
-    val targets: LinkedHashSet<@Serializable(with = KotlinTargetKeyTransformingSerializer::class) KotlinTarget<*>> = emptySet(),
+    val targets: LinkedHashSet<@Serializable(with = KotlinTargetKeyTransformingSerializer::class) KotlinTarget<*>> = linkedSetOf(),
     val hierarchy: Set<@Serializable(with = HierarchyAliasKeyTransformingSerializer::class) HierarchyGroup> = emptySet(),
-    val sourceSets: LinkedHashSet<@Serializable(with = KotlinSourceSetKeyTransformingSerializer::class) KotlinSourceSet> = emptySet(),
+    val sourceSets: LinkedHashSet<@Serializable(with = KotlinSourceSetKeyTransformingSerializer::class) KotlinSourceSet> = linkedSetOf(),
     val cocoapods: CocoapodsSettings = CocoapodsSettings(),
 ) : KotlinMultiplatformExtension {
 

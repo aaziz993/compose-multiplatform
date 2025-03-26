@@ -9,7 +9,7 @@ import gradle.accessors.settings
 import gradle.api.applyTo
 import gradle.api.tryAssign
 import gradle.plugins.dokka.plugin.DokkaPluginParametersBaseSpec
-import gradle.plugins.dokka.plugin.DokkaPluginParametersBaseSpecTransformingSerializer
+import gradle.plugins.dokka.plugin.DokkaPluginParametersBaseSpecKeyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.dokka.gradle.workers.ClassLoaderIsolation

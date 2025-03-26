@@ -142,5 +142,5 @@ internal data class KotlinCompilationImpl(
     override val compileDependencyFiles: List<String>? = null,
     override val output: KotlinCompilationOutput? = null,
     override val associatedCompilations: Set<String>? = null,
-    override val dependencies: List<@Serializable(with = DependencyKeyTransformingSerializer::class) Dependency>? = null,
+    override val dependencies: Set<@Serializable(with = DependencyKeyTransformingSerializer::class) Dependency>? = null,
 ) : KotlinCompilation<org.jetbrains.kotlin.gradle.plugin.KotlinCompilation<*>>

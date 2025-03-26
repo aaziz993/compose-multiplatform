@@ -31,7 +31,7 @@ import org.gradle.api.Project
 @Serializable
 internal data class KotlinSourceSet(
     override val name: String? = null,
-    override val dependencies: List<@Serializable(with = DependencyKeyTransformingSerializer::class) Dependency>? = null,
+    override val dependencies: Set<@Serializable(with = DependencyKeyTransformingSerializer::class) Dependency>? = null,
     /**
      * Represents a set of Kotlin source files that are included in this [KotlinSourceSet].
      *
@@ -65,7 +65,7 @@ internal data class KotlinSourceSet(
      *
      * These extensions are evaluated lazily and can include additional custom source file types beyond the default ".kt" and ".kts" ones.
      */
-    val customSourceFilesExtensions: Set<String>? = null,
+    val customSourceFilesExtensions: List<String>? = null,
 ) : ProjectNamed<org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet>,
     HasKotlinDependencies<org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet> {
 
