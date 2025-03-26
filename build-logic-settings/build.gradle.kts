@@ -322,7 +322,7 @@ gradlePlugin {
     plugins {
         register("SettingsPlugin") {
             id = "settings.convention"
-            implementationClass = "plugins.initialization.SettingsPlugin"
+            implementationClass = "gradle.plugins.initialization.SettingsPlugin"
         }
     }
 }

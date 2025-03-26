@@ -1,10 +1,9 @@
-package gradle.plugins.java
+package gradle.plugins.kmp.jvm
 
 import gradle.accessors.kotlin
 import gradle.accessors.projectProperties
 import gradle.api.configureEach
 import gradle.plugins.kmp.android.KotlinAndroidTarget
-import gradle.plugins.kmp.jvm.KotlinJvmTarget
 import gradle.plugins.project.ProjectLayout
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -14,7 +13,7 @@ import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest
 
-internal class JavaPlugin : Plugin<Project> {
+internal class JvmPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {

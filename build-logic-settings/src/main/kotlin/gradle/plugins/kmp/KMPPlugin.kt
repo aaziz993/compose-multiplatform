@@ -1,4 +1,4 @@
-package plugins.kmp
+package gradle.plugins.kmp
 
 import gradle.accessors.id
 import gradle.accessors.kotlin

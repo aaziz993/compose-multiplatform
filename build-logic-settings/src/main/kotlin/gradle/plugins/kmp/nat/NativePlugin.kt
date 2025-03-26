@@ -1,4 +1,4 @@
-package plugins.nat
+package gradle.plugins.kmp.nat
 
 import gradle.accessors.projectProperties
 import gradle.plugins.kmp.nat.KotlinNativeTarget
@@ -9,7 +9,7 @@ internal class NativePlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (projectProperties.kotlin.targets.none { target -> target is KotlinNativeTarget } != false) {
+            if (projectProperties.kotlin.targets.none { target -> target is KotlinNativeTarget }) {
                 return@with
             }
         }

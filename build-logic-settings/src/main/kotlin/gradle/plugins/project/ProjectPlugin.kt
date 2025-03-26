@@ -80,8 +80,8 @@ import gradle.plugins.develocity.DevelocityPlugin
 import gradle.plugins.doctor.DoctorPlugin
 import gradle.plugins.dokka.DokkaPlugin
 import gradle.plugins.initialization.problemreporter.SLF4JProblemReporterContext
-import gradle.plugins.java.JavaPlugin
-import plugins.kmp.KMPPlugin
+import gradle.plugins.kmp.jvm.JvmPlugin
+import gradle.plugins.kmp.KMPPlugin
 import gradle.plugins.knit.KnitPlugin
 import gradle.plugins.kotlin.allopen.AllOpenPlugin
 import gradle.plugins.kotlin.apollo.ApolloPlugin
@@ -96,7 +96,7 @@ import gradle.plugins.kotlin.rpc.RpcPlugin
 import gradle.plugins.kotlin.serialization.SerializationPlugin
 import gradle.plugins.kotlin.sqldelight.SqlDelightPlugin
 import gradle.plugins.kover.KoverPlugin
-import plugins.nat.NativePlugin
+import gradle.plugins.kmp.nat.NativePlugin
 import gradle.plugins.publish.PublishPlugin
 import gradle.plugins.shadow.ShadowPlugin
 import gradle.plugins.signing.SigningPlugin
@@ -151,7 +151,7 @@ public class ProjectPlugin : Plugin<Project> {
             project.plugins.apply(AndroidPlugin::class.java) // apply and configure android library or application plugin.
             project.plugins.apply(AnimalSnifferPlugin::class.java)
             project.plugins.apply(KMPPlugin::class.java) // need android library or application plugin applied.
-            project.plugins.apply(JavaPlugin::class.java) //  apply after kmp plugin.
+            project.plugins.apply(JvmPlugin::class.java) //  apply after kmp plugin.
             project.plugins.apply(KspPlugin::class.java) // kspCommonMainMetadata need kmp plugin applied.
             project.plugins.apply(NativePlugin::class.java)
             project.plugins.apply(JsPlugin::class.java)
@@ -166,7 +166,7 @@ public class ProjectPlugin : Plugin<Project> {
             projectProperties.yarn.applyTo()
             projectProperties.yarnRootEnv.applyTo()
 
-            CacheRedirector.applyTo()
+            CacheRedirector.applyTo() // Apply after node, npm and yarn to adjust their downloadBaseUrls too.
 
             projectProperties.dependencies?.forEach { dependency ->
                 dependencies {

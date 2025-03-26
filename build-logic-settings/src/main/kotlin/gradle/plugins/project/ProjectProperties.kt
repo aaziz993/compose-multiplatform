@@ -42,6 +42,7 @@ import org.yaml.snakeyaml.Yaml
 import gradle.plugins.apple.model.AppleSettings
 import gradle.plugins.cmp.model.CMPSettings
 import kotlin.text.get
+import org.gradle.internal.impldep.kotlinx.serialization.descriptors.elementNames
 
 internal const val PROJECT_PROPERTIES_FILE = "project.yaml"
 
@@ -61,13 +62,13 @@ internal data class ProjectProperties(
     val contributingFile: ContributingFile? = null,
     val buildscript: ScriptHandler? = null,
     val pluginManagement: PluginManagement? = null,
+    val plugins: Plugins = Plugins(),
     val dependencyResolutionManagement: DependencyResolutionManagement? = null,
-    val dependencies: List<@Serializable(with = DependencyKeyTransformingSerializer::class) Dependency>? = null,
+    val dependencies: Set<@Serializable(with = DependencyKeyTransformingSerializer::class) Dependency>? = null,
     val cacheRedirector: Boolean = true,
     val includes: Set<String>? = null,
     val projects: Set<ProjectDescriptor>? = null,
     val buildCache: BuildCacheConfiguration? = null,
-    val plugins: Plugins = Plugins(),
     val java: JavaPluginExtension = JavaPluginExtension(),
     val application: JavaApplication? = null,
     val kotlin: KotlinSettings = KotlinSettings(),
@@ -78,13 +79,17 @@ internal data class ProjectProperties(
     val yarnRootEnv: YarnRootEnvSpec = YarnRootEnvSpec(),
     val npm: NpmExtension = NpmExtension(),
     val compose: CMPSettings = CMPSettings(),
-    val tasks: List<@Serializable(with = TaskKeyTransformingSerializer::class) Task<out org.gradle.api.Task>>? = null,
+    val tasks: LinkedHashSet<@Serializable(with = TaskKeyTransformingSerializer::class) Task<out org.gradle.api.Task>>? = null,
     private val localPropertiesFile: String = "local.properties",
     val projectFiles: List<ProjectFile> = emptyList(),
 ) {
 
     @Transient
     val localProperties = Properties()
+
+    @Transient
+    lateinit var otherProperties: Map<String, Any?>
+        private set
 
     companion object {
 
@@ -131,26 +136,28 @@ internal data class ProjectProperties(
             extra: ExtraPropertiesExtension,
             localProperties: Properties,
         ): ProjectProperties {
-            val propertiesFile = file(PROJECT_PROPERTIES_FILE).asFile
+            val propertiesFile = directory.file(PROJECT_PROPERTIES_FILE).asFile
 
             return if (propertiesFile.exists()) {
-
                 val properties = yaml.load<MutableMap<String, *>>(propertiesFile.readText())
 
-                val templatedProperties = ((properties["templates"] as List<String>?)?.fold(emptyMap<String, Any?>()) { acc, template ->
-                    acc deepMerge yaml.load<MutableMap<String, *>>(file(template).asFile.readText())
+                ((properties["templates"] as List<String>?)?.fold(emptyMap<String, Any?>()) { acc, template ->
+                    acc deepMerge yaml.load<MutableMap<String, *>>(directory.file(template).asFile.readText())
                 }.orEmpty() deepMerge properties).resolve(providers, extra, localProperties)
-
-                json.decodeFromAny<ProjectProperties>(templatedProperties)
             }
             else {
-                ProjectProperties()
-            }.apply {
-                localProperties.apply {
-                    val file = directory.file(localPropertiesFile)
-                    if (file.exists()) {
-                        load(file.reader())
+                emptyMap<String, Any?>()
+            }.let { properties ->
+                json.decodeFromAny<ProjectProperties>(properties).apply {
+
+                    localProperties.apply {
+                        val file = directory.file(localPropertiesFile).asFile
+                        if (file.exists()) {
+                            load(file.reader())
+                        }
                     }
+
+                    otherProperties = properties.filterKeys { key -> key !in ProjectProperties.serializer().descriptor.elementNames }
                 }
             }
         }
