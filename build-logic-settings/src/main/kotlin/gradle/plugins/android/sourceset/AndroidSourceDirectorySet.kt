@@ -1,7 +1,9 @@
 package gradle.plugins.android.sourceset
 
-import com.android.build.api.dsl.AndroidSourceDirectorySet
+import gradle.api.NamedKeyTransformingSerializer
 import gradle.api.ProjectNamed
+import gradle.plugins.android.BuildType
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -20,10 +22,10 @@ internal data class AndroidSourceDirectorySet(
      */
     val directories: Set<String>? = null,
     val setDirectories: Set<String>? = null,
-) : ProjectNamed<AndroidSourceDirectorySet> {
+) : ProjectNamed<com.android.build.api.dsl.AndroidSourceDirectorySet> {
 
     context(Project)
-    override fun applyTo(receiver: AndroidSourceDirectorySet) {
+    override fun applyTo(receiver: com.android.build.api.dsl.AndroidSourceDirectorySet) {
         directories?.toTypedArray()?.let(receiver::srcDirs)
         setDirectories?.let(receiver::setSrcDirs)
     }

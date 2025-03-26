@@ -22,6 +22,7 @@ import gradle.plugins.android.flavor.ProductFlavorKeyTransformingSerializer
 import gradle.plugins.android.signing.SigningConfigImpl
 import gradle.plugins.android.signing.SigningConfigKeyTransformingSerializer
 import gradle.plugins.android.sourceset.AndroidSourceSet
+import gradle.plugins.android.sourceset.AndroidSourceSetKeyTransformingSerializer
 import gradle.plugins.android.split.Splits
 import gradle.plugins.android.test.TestCoverage
 import gradle.plugins.android.test.TestFixtures
@@ -74,7 +75,7 @@ internal data class LibraryExtension(
     override val compileOptions: CompileOptions? = null,
     override val packaging: Packaging? = null,
     override val adbOptions: AdbOptions? = null,
-    override val sourceSets: Set<AndroidSourceSet>? = null,
+    override val sourceSets: LinkedHashSet<@Serializable(with = AndroidSourceSetKeyTransformingSerializer::class) AndroidSourceSet>? = null,
     override val splits: Splits? = null,
     override val generatePureSplits: Boolean? = null,
     override val resourcePrefix: String? = null,

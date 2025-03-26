@@ -18,6 +18,7 @@ import gradle.plugins.android.flavor.ProductFlavor
 import gradle.plugins.android.signing.SigningConfigImpl
 import gradle.plugins.android.signing.SigningConfigTransformingSerializer
 import gradle.plugins.android.sourceset.AndroidSourceSet
+import gradle.plugins.android.sourceset.AndroidSourceSetKeyTransformingSerializer
 import gradle.plugins.android.split.Splits
 import gradle.plugins.android.test.TestOptions
 import gradle.plugins.kmp.KotlinTarget
@@ -70,7 +71,7 @@ internal interface BaseExtension {
      */
     val adbOptions: AdbOptions?
 
-    val sourceSets: Set<AndroidSourceSet>?
+    val sourceSets: LinkedHashSet<@Serializable(with = AndroidSourceSetKeyTransformingSerializer::class) AndroidSourceSet>?
 
     val splits: Splits?
 

@@ -1,7 +1,9 @@
 package gradle.plugins.android.sourceset
 
-import com.android.build.api.dsl.AndroidSourceSet
+import gradle.api.NamedKeyTransformingSerializer
 import gradle.api.ProjectNamed
+import gradle.plugins.android.BuildType
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -47,11 +49,11 @@ internal data class AndroidSourceSet(
      * @param path the root directory path to use.
      */
     val root: String? = null,
-) : ProjectNamed<AndroidSourceSet> {
+) : ProjectNamed<com.android.build.api.dsl.AndroidSourceSet> {
 
     context(Project)
     @Suppress("UnstableApiUsage")
-    override fun applyTo(receiver: AndroidSourceSet) {
+    override fun applyTo(receiver: com.android.build.api.dsl.AndroidSourceSet) {
         java?.applyTo(receiver.java)
         kotlin?.applyTo(receiver.kotlin)
         resources?.applyTo(receiver.resources)
@@ -67,3 +69,6 @@ internal data class AndroidSourceSet(
         root?.let(receiver::setRoot)
     }
 }
+
+internal object AndroidSourceSetKeyTransformingSerializer
+    : NamedKeyTransformingSerializer<AndroidSourceSet>(AndroidSourceSet.serializer())

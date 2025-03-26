@@ -17,10 +17,13 @@ import gradle.plugins.android.defaultconfig.DefaultConfig
 import gradle.plugins.android.features.DataBinding
 import gradle.plugins.android.features.ViewBinding
 import gradle.plugins.android.flavor.ProductFlavor
+import gradle.plugins.android.flavor.ProductFlavorKeyTransformingSerializer
 import gradle.plugins.android.flavor.ProductFlavorTransformingSerializer
 import gradle.plugins.android.signing.SigningConfigImpl
+import gradle.plugins.android.signing.SigningConfigKeyTransformingSerializer
 import gradle.plugins.android.signing.SigningConfigTransformingSerializer
 import gradle.plugins.android.sourceset.AndroidSourceSet
+import gradle.plugins.android.sourceset.AndroidSourceSetKeyTransformingSerializer
 import gradle.plugins.android.split.Splits
 import gradle.plugins.android.test.TestCoverage
 import gradle.plugins.android.test.TestFixtures
@@ -34,7 +37,7 @@ import org.gradle.api.Project
 @SerialName("baseApp")
 internal data class BaseAppModuleExtension(
     override val composeOptions: ComposeOptions? = null,
-    override val sourceSets: Set<AndroidSourceSet>? = null,
+    override val sourceSets: LinkedHashSet<@Serializable(with = AndroidSourceSetKeyTransformingSerializer::class) AndroidSourceSet>? = null,
     override val dataBinding: DataBinding? = null,
     override val viewBinding: ViewBinding? = null,
     override val defaultPublishConfig: String? = null,

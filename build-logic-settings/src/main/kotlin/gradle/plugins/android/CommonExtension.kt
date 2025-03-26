@@ -23,6 +23,7 @@ import gradle.plugins.android.flavor.ProductFlavorDsl
 import gradle.plugins.android.signing.ApkSigningConfig
 import gradle.plugins.android.signing.SigningConfigTransformingSerializer
 import gradle.plugins.android.sourceset.AndroidSourceSet
+import gradle.plugins.android.sourceset.AndroidSourceSetKeyTransformingSerializer
 import gradle.plugins.android.split.SplitsDsl
 import gradle.plugins.android.test.TestCoverage
 import gradle.plugins.android.test.TestOptions
@@ -258,7 +259,7 @@ internal interface CommonExtension<
      * Note that the Android plugin uses its own implementation of source sets. For more
      * information about the properties you can configure in this block, see [AndroidSourceSet].
      */
-    val sourceSets: Set<AndroidSourceSet>?
+    val sourceSets: LinkedHashSet<@Serializable(with = AndroidSourceSetKeyTransformingSerializer::class) AndroidSourceSet>?
 
     /**
      * Specifies the names of product flavor dimensions for this project.
