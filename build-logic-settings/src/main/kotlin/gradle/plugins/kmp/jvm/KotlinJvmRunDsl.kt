@@ -3,6 +3,7 @@ package gradle.plugins.kmp.jvm
 import gradle.api.tryAssign
 import gradle.collection.SerializableAnyList
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmRunDsl
 
 /**
@@ -12,16 +13,17 @@ import org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmRunDsl
 internal data class KotlinJvmRunDsl(
     val mainClass: String? = null,
     val args: SerializableAnyList? = null,
-    val classpath: List<String>? = null,
+    val setArgs: SerializableAnyList? = null,
+    val classpath: Set<String>? = null,
+    val setClasspath: Set<String>? = null,
 ) {
 
+    context(Project)
     fun applyTo(receiver: KotlinJvmRunDsl) {
-        run.mainClass tryAssign mainClass
-
-        args?.let(run::setArgs)
-
-        classpath?.let { classpath ->
-            run.classpath(classpath)
-        }
+        receiver.mainClass tryAssign mainClass
+        args?.let(receiver::args)
+        setArgs?.let(receiver::setArgs)
+        classpath?.toTypedArray()?.let(receiver::classpath)
+        setClasspath?.toTypedArray()?.let(project::files)?.let(receiver::setClasspath)
     }
 }

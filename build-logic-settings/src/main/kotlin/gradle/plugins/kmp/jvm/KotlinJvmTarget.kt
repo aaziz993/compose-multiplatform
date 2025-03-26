@@ -4,6 +4,7 @@ import gradle.accessors.kotlin
 import gradle.api.applyTo
 import gradle.plugins.kmp.KotlinJvmAndroidCompilation
 import gradle.plugins.kmp.KotlinTarget
+import gradle.plugins.kmp.jvm.test.KotlinJvmTestRun
 import gradle.plugins.kotlin.HasConfigurableKotlinCompilerOptions
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -32,7 +33,9 @@ internal data class KotlinJvmTarget(
         }
 
         mainRun?.let { mainRun ->
-            receiver.mainRun(mainRun::applyTo)
+            receiver.mainRun {
+                mainRun.applyTo(this)
+            }
         }
     }
 

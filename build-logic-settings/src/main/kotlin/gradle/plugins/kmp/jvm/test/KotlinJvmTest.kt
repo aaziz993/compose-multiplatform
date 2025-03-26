@@ -1,6 +1,6 @@
-package gradle.plugins.kmp.jvm
+package gradle.plugins.kmp.jvm.test
 
-
+import gradle.api.tasks.applyTo
 import gradle.api.tasks.test.TestFilter
 import gradle.api.tasks.test.TestLoggingContainer
 import gradle.api.trySet
@@ -21,7 +21,7 @@ import org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest
 internal data class KotlinJvmTest(
     override val dryRun: Boolean? = null,
     override val modularity: ModularitySpec? = null,
-    override val testClassesDirs: List<String>? = null,
+    override val testClassesDirs: Set<String>? = null,
     override val useJUnit: Boolean? = null,
     override val useJUnitDsl: JUnitOptions? = null,
     override val useJUnitPlatform: Boolean? = null,
@@ -63,6 +63,7 @@ internal data class KotlinJvmTest(
     override val debug: Boolean? = null,
     override val debugOptions: JavaDebugOptions? = null,
     override val allJvmArgs: List<String>? = null,
+    override val setAllJvmArgs: List<String>? = null,
     override val executable: String? = null,
     override val workingDir: String? = null,
     override val environment: SerializableAnyMap? = null,
@@ -73,15 +74,13 @@ internal data class KotlinJvmTest(
     override val setExcludes: Set<String>? = null,
     override val javaLauncher: JavaToolchainSpec? = null,
     val targetName: String? = null,
-) : Test() {
+) : Test<KotlinJvmTest>() {
 
-        context(Project)
-    override fun applyTo(receiver: T) {
-        super.applyTo(named)
+    context(Project)
+    override fun applyTo(receiver: KotlinJvmTest) {
+        super.applyTo(receiver)
 
-        named as KotlinJvmTest
-
-        named::targetName trySet targetName
+        receiver::targetName trySet targetName
     }
 
     context(Project)

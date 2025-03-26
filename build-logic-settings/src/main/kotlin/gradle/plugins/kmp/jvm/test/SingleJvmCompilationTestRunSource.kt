@@ -1,4 +1,4 @@
-package gradle.plugins.kmp.jvm
+package gradle.plugins.kmp.jvm.test
 
 import kotlinx.serialization.Serializable
 
