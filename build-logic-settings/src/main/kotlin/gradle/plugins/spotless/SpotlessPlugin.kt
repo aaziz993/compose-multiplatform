@@ -1,4 +1,4 @@
-package plugins.spotless
+package gradle.plugins.spotless
 
 import gradle.accessors.id
 import gradle.accessors.libs
@@ -8,7 +8,7 @@ import gradle.accessors.projectProperties
 import gradle.accessors.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import plugins.spotless.model.SpotlessSettings
+import gradle.plugins.spotless.model.SpotlessSettings
 
 internal class SpotlessPlugin : Plugin<Project> {
 

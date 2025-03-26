@@ -46,10 +46,9 @@ internal interface SpotlessExtension {
             enforceCheck?.let(project.spotless::setEnforceCheck)
 
             // Applicable only in root project.
-            if (project == project.rootProject) {
-                predeclareDeps?.takeIf { it }?.run { project.spotless.predeclareDeps() }
-                predeclareDepsFromBuildscript?.takeIf { it }?.run { project.spotless.predeclareDepsFromBuildscript() }
-            }
+            predeclareDeps?.takeIf { it }?.run { project.spotless.predeclareDeps() }
+            // Applicable only in root project.
+            predeclareDepsFromBuildscript?.takeIf { it }?.run { project.spotless.predeclareDepsFromBuildscript() }
 
             // Format files
             formats?.forEach { format ->

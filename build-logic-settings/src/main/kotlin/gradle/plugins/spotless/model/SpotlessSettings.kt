@@ -1,4 +1,4 @@
-package plugins.spotless.model
+package gradle.plugins.spotless.model
 
 import com.diffplug.spotless.LineEnding
 import gradle.accessors.id

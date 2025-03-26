@@ -26,9 +26,9 @@ import plugins.kotlin.sqldelight.model.SqlDelightSettings
 import gradle.plugins.kover.model.KoverSettings
 import gradle.plugins.publish.model.PublishingSettings
 import gradle.plugins.shadow.model.ShadowSettings
-import plugins.signing.model.SigningSettings
+import gradle.plugins.signing.model.SigningSettings
 import plugins.sonar.model.SonarSettings
-import plugins.spotless.model.SpotlessSettings
+import gradle.plugins.spotless.model.SpotlessSettings
 import plugins.toolchainmanagement.model.ToolchainManagementSettings
 
 @Serializable

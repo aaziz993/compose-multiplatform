@@ -1,4 +1,4 @@
-package plugins.signing.model
+package gradle.plugins.signing.model
 
 import kotlinx.serialization.Serializable
 

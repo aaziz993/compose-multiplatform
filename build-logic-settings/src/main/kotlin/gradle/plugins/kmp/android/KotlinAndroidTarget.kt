@@ -48,12 +48,15 @@ internal data class KotlinAndroidTarget(
         super<KotlinTarget>.applyTo(receiver)
         super<HasConfigurableKotlinCompilerOptions>.applyTo(receiver)
 
+        // Applicable only in library project.
         publishLibraryVariants?.toTypedArray()?.let(receiver::publishLibraryVariants)
 
+        // Applicable only in library project.
         setPublishLibraryVariants?.let { setPublishLibraryVariants ->
             receiver.publishLibraryVariants = setPublishLibraryVariants
         }
 
+        // Applicable only in library project.
         publishAllLibraryVariants?.takeIf { it }?.run { receiver.publishAllLibraryVariants() }
         receiver::publishLibraryVariantsGroupedByFlavor trySet publishLibraryVariantsGroupedByFlavor
     }

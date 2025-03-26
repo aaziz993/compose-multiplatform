@@ -1,4 +1,4 @@
-package plugins.signing
+package gradle.plugins.signing
 
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
@@ -10,7 +10,7 @@ import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.withType
 import org.gradle.plugins.signing.Sign
 import org.gradle.plugins.signing.SigningPlugin
-import plugins.signing.model.SigningSettings
+import gradle.plugins.signing.model.SigningSettings
 
 internal class SigningPlugin : Plugin<Project> {
 
@@ -101,9 +101,9 @@ internal class SigningPlugin : Plugin<Project> {
                     generateGpg.keyLength,
                     generateGpg.subkeyType,
                     generateGpg.subkeyLength,
-                    generateGpg.nameReal ?: projectProperties.developers?.name!!,
+                    generateGpg.nameReal ?: projectProperties.developer?.name!!,
                     generateGpg.nameComment,
-                    generateGpg.nameEmail ?: projectProperties.developers?.email!!,
+                    generateGpg.nameEmail ?: projectProperties.developer?.email!!,
                     generateGpg.expireDate,
                     generateGpg.passphrase,
                 )
@@ -116,7 +116,7 @@ internal class SigningPlugin : Plugin<Project> {
                 executable = settings.settingsDir.resolve("scripts/gpg/list-gpg_keys.sh").absolutePath
 
                 args(
-                    generateGpg.nameReal ?: projectProperties.developers?.name!!,
+                    generateGpg.nameReal ?: projectProperties.developer?.name!!,
                     generateGpg.passphrase,
                 )
             }
@@ -128,7 +128,7 @@ internal class SigningPlugin : Plugin<Project> {
                 executable = settings.settingsDir.resolve("scripts/gpg/clean-gpg-keys.sh").absolutePath
 
                 args(
-                    generateGpg.nameReal ?: projectProperties.developers?.name!!,
+                    generateGpg.nameReal ?: projectProperties.developer?.name!!,
                 )
             }
         }

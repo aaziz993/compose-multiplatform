@@ -99,9 +99,9 @@ import gradle.plugins.kover.KoverPlugin
 import plugins.nat.NativePlugin
 import gradle.plugins.publish.PublishPlugin
 import gradle.plugins.shadow.ShadowPlugin
-import plugins.signing.SigningPlugin
+import gradle.plugins.signing.SigningPlugin
 import plugins.sonar.SonarPlugin
-import plugins.spotless.SpotlessPlugin
+import gradle.plugins.spotless.SpotlessPlugin
 import plugins.web.JsPlugin
 import plugins.web.WasmPlugin
 import plugins.web.WasmWasiPlugin

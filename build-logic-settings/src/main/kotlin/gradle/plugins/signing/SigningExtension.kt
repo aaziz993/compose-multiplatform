@@ -69,21 +69,6 @@ internal abstract class SigningExtension : Signer {
      */
     abstract val useInMemoryPgpKeys: InMemoryPgpKeys?
 
-    /**
-     * Digitally signs the files, generating signature files alongside them.
-     *
-     *
-     * The project's default signatory and default signature type from the [signing settings][SigningExtension] will be used to generate the signature.
-     * The returned [sign][SignOperation] gives access to the created signature files.
-     *
-     * If there is no configured default signatory available, the sign operation will fail.
-     *
-     * @param classifier The classifier to assign to the created signature artifacts.
-     * @param files The publish artifacts to sign.
-     * @return The executed [sign operation][SignOperation].
-     */
-    abstract val signClassifierFiles: List<SignFile>?
-
     context(Project)
     fun applyTo() =
         project.pluginManager.withPlugin("signing") {

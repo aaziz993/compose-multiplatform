@@ -194,6 +194,7 @@ internal interface BuildType<T : com.android.build.api.dsl.BuildType> : ProjectN
         receiver::isJniDebuggable trySet isJniDebuggable
         receiver::renderscriptOptimLevel trySet renderscriptOptimLevel
         receiver::isMinifyEnabled trySet isMinifyEnabled
+        // Applicable only in application project.
         receiver::isShrinkResources trySet isShrinkResources
         matchingFallbacks?.let(receiver.matchingFallbacks::addAll)
 
