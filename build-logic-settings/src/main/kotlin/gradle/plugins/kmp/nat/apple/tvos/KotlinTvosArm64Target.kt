@@ -19,7 +19,7 @@ internal data class KotlinTvosArm64Target(
     override val compilations: LinkedHashSet<@Serializable(with = KotlinNativeCompilationKeyTransformingSerializer::class) KotlinNativeCompilation>? = null,
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,
-) : KotlinNativeTarget(), KotlinTvosTarget {
+) : KotlinNativeTarget<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>(), KotlinTvosTarget {
 
     context(Project)
     override fun applyTo() =

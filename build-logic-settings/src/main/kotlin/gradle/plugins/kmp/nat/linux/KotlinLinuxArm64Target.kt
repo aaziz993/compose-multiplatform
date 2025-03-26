@@ -19,7 +19,7 @@ internal data class KotlinLinuxArm64Target(
     override val compilations: LinkedHashSet<@Serializable(with = KotlinNativeCompilationKeyTransformingSerializer::class) KotlinNativeCompilation>? = null,
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,
-) : KotlinNativeTarget(), KotlinLinuxTarget {
+) : KotlinNativeTarget<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>(), KotlinLinuxTarget {
 
     context(Project)
     override fun applyTo() =

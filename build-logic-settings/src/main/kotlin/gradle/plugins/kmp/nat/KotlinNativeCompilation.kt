@@ -2,6 +2,8 @@ package gradle.plugins.kmp.nat
 
 import gradle.api.applyTo
 import gradle.plugins.kmp.KotlinSourceSet
+import gradle.plugins.kmp.nat.tasks.KotlinNativeCompile
+import gradle.plugins.kmp.nat.tasks.KotlinNativeCompileImpl
 import gradle.plugins.kotlin.KotlinCompilation
 import gradle.plugins.kotlin.KotlinCompilationOutput
 import gradle.plugins.kotlin.KotlinCompilationTransformingSerializer
@@ -17,6 +19,7 @@ internal data class KotlinNativeCompilation(
     override val compileDependencyFiles: Set<String>? = null,
     override val setCompileDependencyFiles: Set<String>? = null,
     override val output: KotlinCompilationOutput? = null,
+    override val compileTaskProvider: KotlinNativeCompileImpl? = null,
     override val associatedCompilations: Set<String>? = null,
     override val dependencies: Set<@Serializable(with = DependencyKeyTransformingSerializer::class) Dependency>? = null,
     // Interop DSL.

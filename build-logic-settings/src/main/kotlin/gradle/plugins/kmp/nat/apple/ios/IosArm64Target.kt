@@ -19,7 +19,7 @@ internal data class IosArm64Target(
     override val compilations: LinkedHashSet<@Serializable(with = KotlinNativeCompilationKeyTransformingSerializer::class) KotlinNativeCompilation>? = null,
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,
-) : KotlinNativeTarget(), KotlinIosTarget {
+) : KotlinNativeTarget<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>(), KotlinIosTarget {
 
     context(Project)
     override fun applyTo() =

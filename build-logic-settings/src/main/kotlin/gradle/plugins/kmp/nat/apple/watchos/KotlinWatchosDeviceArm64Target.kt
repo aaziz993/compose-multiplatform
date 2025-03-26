@@ -19,7 +19,7 @@ internal data class KotlinWatchosDeviceArm64Target(
     override val compilations: LinkedHashSet<@Serializable(with = KotlinNativeCompilationKeyTransformingSerializer::class) KotlinNativeCompilation>? = null,
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,
-) : KotlinNativeTarget(), KotlinWatchos64Target, KotlinWatchosTarget {
+) : KotlinNativeTarget<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>(), KotlinWatchos64Target, KotlinWatchosTarget {
 
     context(Project)
     override fun applyTo() =

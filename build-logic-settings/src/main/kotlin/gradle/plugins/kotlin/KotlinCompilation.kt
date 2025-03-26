@@ -96,11 +96,6 @@ internal interface KotlinCompilation<T : org.jetbrains.kotlin.gradle.plugin.Kotl
     val defaultSourceSet: KotlinSourceSet?
 
     /**
-     * Provides access to the compilation task for this compilation.
-     */
-    val compileTaskProvider: KotlinCompilationTask<out org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask<*>, *>?
-
-    /**
      * A collection of file system locations for the artifacts of compilation dependencies.
      */
     val compileDependencyFiles: Set<String>?
@@ -110,6 +105,11 @@ internal interface KotlinCompilation<T : org.jetbrains.kotlin.gradle.plugin.Kotl
      * Represents the output of a Kotlin compilation.
      */
     val output: KotlinCompilationOutput?
+
+    /**
+     * Provides access to the compilation task for this compilation.
+     */
+    val compileTaskProvider: KotlinCompilationTask<out org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask<*>, *>?
 
     /**
      * A list of all compilations that were previously associated with this compilation using [associateWith].
