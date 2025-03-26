@@ -1,12 +1,7 @@
 package gradle.plugins.kmp.nat
 
 import gradle.serialization.serializer.DelegateTransformingSerializer
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonTransformingSerializer
-import kotlinx.serialization.json.jsonObject
 
 /*
 Use the following naming scheme:

@@ -2,23 +2,25 @@ package gradle.plugins.kmp.nat
 
 import gradle.accessors.kotlin
 import gradle.api.applyTo
-import gradle.plugins.kmp.HasBinaries
+import gradle.api.publish.maven.MavenPublication
 import gradle.plugins.kmp.KotlinTarget
+import gradle.plugins.kmp.KotlinTargetWithBinaries
 import gradle.plugins.kmp.nat.tasks.KotlinNativeCompilerOptions
 import gradle.plugins.kotlin.HasConfigurableKotlinCompilerOptions
-import gradle.plugins.kotlin.KotlinCompilation
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
-import org.jetbrains.kotlin.gradle.plugin.mpp.AbstractKotlinCompilation
-import org.jetbrains.kotlin.gradle.plugin.mpp.AbstractKotlinNativeCompilation
-import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary
 
 internal abstract class KotlinNativeTarget<T : org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>
     : KotlinTarget<T>,
     HasConfigurableKotlinCompilerOptions<T, org.jetbrains.kotlin.gradle.dsl.KotlinNativeCompilerOptions>,
-    HasBinaries<@Serializable(with = KotlinNativeBinaryContainerTransformingSerializer::class) KotlinNativeBinaryContainer> {
+    KotlinTargetWithBinaries<
+        T,
+        org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeCompilation,
+        org.jetbrains.kotlin.gradle.dsl.KotlinNativeBinaryContainer,
+        @Serializable(with = KotlinNativeBinaryContainerTransformingSerializer::class) KotlinNativeBinaryContainer,
+        >() {
 
     abstract override val compilations: LinkedHashSet<KotlinNativeCompilation>?
 
@@ -43,8 +45,7 @@ internal data class KotlinNativeTargetImpl(
     override val binaries: @Serializable(with = KotlinNativeBinaryContainerTransformingSerializer::class) KotlinNativeBinaryContainer? = null,
 ) : KotlinNativeTarget<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>() {
 
-    context(Project@Project)
-    override fun applyTo() {
-        TODO("Not yet implemented")
-    }
+    context(Project)
+    override fun applyTo() =
+        applyTo(project.kotlin.targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>()) { _, _ -> }
 }

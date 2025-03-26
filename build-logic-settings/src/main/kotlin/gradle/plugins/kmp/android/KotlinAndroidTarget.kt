@@ -2,8 +2,11 @@ package gradle.plugins.kmp.android
 
 import gradle.accessors.kotlin
 import gradle.api.applyTo
+import gradle.api.publish.maven.MavenPublication
 import gradle.api.trySet
+import gradle.plugins.kmp.AbstractKotlinTarget
 import gradle.plugins.kmp.KotlinJvmAndroidCompilation
+import gradle.plugins.kmp.KotlinJvmAndroidCompilationKeyTransformingSerializer
 import gradle.plugins.kmp.KotlinJvmAndroidKeyCompilationTransformingSerializer
 import gradle.plugins.kmp.KotlinTarget
 import gradle.plugins.kmp.jvm.KotlinJvmCompilerOptions
@@ -21,7 +24,7 @@ internal data class KotlinAndroidTarget(
     override val withSourcesJar: Boolean? = null,
     override val mavenPublication: MavenPublication? = null,
     override val onPublicationCreated: String? = null,
-    override val compilations: LinkedHashSet<@Serializable(with = KotlinJvmAndroidKeyCompilationTransformingSerializer::class) KotlinJvmAndroidCompilation>? = null,
+    override val compilations: LinkedHashSet<@Serializable(with = KotlinJvmAndroidCompilationKeyTransformingSerializer::class) KotlinJvmAndroidCompilation>? = null,
     override val compilerOptions: KotlinJvmCompilerOptions? = null,
     /** Names of the Android library variants that should be published from the target's project within the default publications which are
      * set up if the `maven-publish` Gradle plugin is applied.
@@ -41,7 +44,7 @@ internal data class KotlinAndroidTarget(
     /** If true, a publication will be created per merged product flavor, with the build types used as classifiers for the artifacts
      * published within each publication. If set to false, each Android variant will have a separate publication. */
     val publishLibraryVariantsGroupedByFlavor: Boolean? = null,
-) : KotlinTarget<KotlinAndroidTarget>,
+) : AbstractKotlinTarget<KotlinAndroidTarget>(),
     HasConfigurableKotlinCompilerOptions<KotlinAndroidTarget, org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompilerOptions> {
 
     context(Project)
