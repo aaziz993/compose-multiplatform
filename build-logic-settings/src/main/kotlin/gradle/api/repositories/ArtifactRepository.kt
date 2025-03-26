@@ -53,7 +53,7 @@ private object ArtifactRepositorySerializer : JsonPolymorphicSerializer<Artifact
     ArtifactRepository::class,
 )
 
-internal object ArtifactRepositoryTransformingSerializer : BaseKeyTransformingSerializer<ArtifactRepository<*>>(
+internal object ArtifactRepositoryKeyTransformingSerializer : BaseKeyTransformingSerializer<ArtifactRepository<*>>(
     ArtifactRepositorySerializer,
 ) {
 
