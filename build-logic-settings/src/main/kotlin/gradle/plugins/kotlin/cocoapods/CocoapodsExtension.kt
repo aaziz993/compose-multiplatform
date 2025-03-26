@@ -8,7 +8,7 @@ import gradle.accessors.libs
 import gradle.accessors.moduleName
 import gradle.accessors.plugin
 import gradle.accessors.plugins
-import gradle.accessors.resolveLibrary
+import gradle.accessors.resolveLibraryRef
 import gradle.accessors.settings
 import gradle.accessors.version
 import gradle.accessors.versions
@@ -209,7 +209,7 @@ internal interface CocoapodsExtension {
         context(Project)
         fun resolve() {
             notation?.let { notation ->
-                if (notation.startsWith("$")) project.settings.allLibs.resolveLibrary(notation).removePrefix("cocoapods:")
+                if (notation.startsWith("$")) project.settings.allLibs.resolveLibraryRef(notation).removePrefix("cocoapods:")
                 else notation
             }?.let { notation ->
                 name = notation.substringBefore(":")

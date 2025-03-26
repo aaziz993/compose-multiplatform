@@ -1,8 +1,9 @@
 package gradle.collection
 
 import java.util.*
-import net.pearx.kasechange.toDotCase
-import net.pearx.kasechange.toScreamingSnakeCase
+import net.pearx.kasechange.CaseFormat
+import net.pearx.kasechange.formatter.format
+import net.pearx.kasechange.toCase
 import net.pearx.kasechange.universalWordSplitter
 import org.gradle.api.plugins.ExtraPropertiesExtension
 import org.gradle.api.provider.ProviderFactory
@@ -37,15 +38,14 @@ private fun String.resolveReference(
     obj: Any
 ) =
     if (startsWith("$")) {
-        val key = substringAfter(".")
         removePrefix("$")
-            .let(universalWordSplitter()::splitToWords)
+            .split(".")
             .let { keys ->
                 when (keys[0]) {
-                    "env" -> System.getenv()[key.toScreamingSnakeCase()]
-                    "gradle" -> providers.gradleProperty(key.toDotCase()).orNull
+                    "env" -> System.getenv()[CaseFormat.UPPER_UNDERSCORE.format(keys.drop(1))]
+                    "gradle" -> providers.gradleProperty(CaseFormat.LOWER_DOT.format(keys.drop(1))).orNull
                     "extra" -> extra[key.toDotCase()]
-                    "local" -> localProperties[key.toDotCase()]
+                    "local" -> localProperties[CaseFormat.LOWER_DOT.format(keys.drop(1))]
                     else -> obj.get(*keys.toTypedArray())
                 }
             }

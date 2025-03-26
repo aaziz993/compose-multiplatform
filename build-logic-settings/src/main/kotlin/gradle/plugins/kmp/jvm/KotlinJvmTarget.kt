@@ -6,7 +6,6 @@ import gradle.api.publish.maven.MavenPublication
 import gradle.plugins.kmp.KotlinJvmAndroidCompilation
 import gradle.plugins.kmp.KotlinJvmAndroidCompilationKeyTransformingSerializer
 import gradle.plugins.kmp.KotlinOnlyTarget
-import gradle.plugins.kmp.KotlinTarget
 import gradle.plugins.kmp.KotlinTargetWithTests
 import gradle.plugins.kmp.jvm.test.KotlinJvmTestRun
 import gradle.plugins.kotlin.HasConfigurableKotlinCompilerOptions
@@ -27,8 +26,8 @@ internal data class KotlinJvmTarget(
     override val onPublicationCreated: String? = null,
     override val compilations: LinkedHashSet<@Serializable(with = KotlinJvmAndroidCompilationKeyTransformingSerializer::class) KotlinJvmAndroidCompilation>? = null,
     override val compilerOptions: KotlinJvmCompilerOptions? = null,
-    override val testRuns: List<KotlinJvmTestRun>? = null,
-    val mainRun: KotlinJvmRunDsl? = null,
+    override val testRuns: LinkedHashSet<KotlinJvmTestRun>? = null,
+    val mainRun: KotlinJvmRunDslImpl? = null,
 ) : KotlinOnlyTarget<KotlinJvmTarget, KotlinJvmCompilation>(),
     HasConfigurableKotlinCompilerOptions<KotlinJvmTarget, org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompilerOptions>,
     KotlinTargetWithTests<KotlinJvmTarget, JvmClasspathTestRunSource, org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTestRun> {

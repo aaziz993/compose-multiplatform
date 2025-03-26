@@ -3,7 +3,7 @@
 package gradle.plugins.project
 
 import gradle.accessors.allLibs
-import gradle.accessors.resolveLibrary
+import gradle.accessors.resolveLibraryRef
 import gradle.accessors.settings
 import gradle.isUrl
 import gradle.serialization.serializer.BaseKeyTransformingSerializer
@@ -103,7 +103,7 @@ internal data class Dependency(
                     npm(
                         handler,
                         npmNotation.substringBefore(":"),
-                        npmNotation.substringAfter(":"),
+                        npmNotation.substringAfter(":", ""),
                     )
                 }
             }
@@ -133,7 +133,7 @@ internal data class Dependency(
     ): Any =
         when {
             notation.startsWith("$") -> {
-                fromNotation(libs.resolveLibrary(notation))
+                fromNotation(libs.resolveLibraryRef(notation))
             }
 
             notation.contains("[/\\\\]".toRegex()) && !notation.isUrl -> directory.file(notation)

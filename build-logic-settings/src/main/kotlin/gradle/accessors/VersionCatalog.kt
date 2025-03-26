@@ -65,33 +65,33 @@ internal val TomlParseResult.libraries
 internal val TomlParseResult.plugins
     get() = getTable("plugins")!!
 
-internal fun Map<String, TomlParseResult>.resolveLibrary(notation: String): String {
+internal fun Map<String, TomlParseResult>.resolveLibraryRef(notation: String): String {
     val catalogName = notation
         .removePrefix("$")
         .substringBefore(".")
     val libraryName = notation
-        .substringAfter(".")
+        .substringAfter(".", "")
     return this[catalogName]?.libraryAsDependency(libraryName)
         ?: error("Not found version catalog: $catalogName")
 }
 
-internal fun Map<String, TomlParseResult>.resolveVersion(version: String): String? {
+internal fun Map<String, TomlParseResult>.resolveVersionRef(version: String): String? {
     val catalogName = version
         .removePrefix("$")
         .substringBefore(".")
     val versionAlias = version
-        .substringAfter(".")
+        .substringAfter(".", "")
     return this[catalogName]?.versions?.version(versionAlias)
 }
 
 context(Project)
 internal fun String.resolveVersion() =
-    if (startsWith("$")) project.settings.allLibs.resolveVersion(removePrefix("$"))
+    if (startsWith("$")) project.settings.allLibs.resolveVersionRef(removePrefix("$"))
     else this
 
 internal fun String.toVersionCatalogUrlPath(): String {
-    val fileNamePart = substringAfter(":").replace(":", "-")
+    val fileNamePart = substringAfter(":", "").replace(":", "-")
     return "${substringBeforeLast(":").replace("[.:]".toRegex(), "/")}/${
-        substringAfterLast(":")
+        substringAfterLast(":", "")
     }/$fileNamePart.toml"
 }
