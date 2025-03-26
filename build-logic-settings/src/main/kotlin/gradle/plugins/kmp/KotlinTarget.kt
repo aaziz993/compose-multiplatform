@@ -23,7 +23,7 @@ internal interface KotlinTarget<T : org.jetbrains.kotlin.gradle.plugin.KotlinTar
      * Allows access to the default [main][KotlinCompilation.MAIN_COMPILATION_NAME] or [test][KotlinCompilation.TEST_COMPILATION_NAME]
      * compilations, or the creation of additional compilations.
      */
-    val compilations: LinkedHashSet<KotlinCompilation<out org.jetbrains.kotlin.gradle.plugin.KotlinCompilation<*>>>?
+    val compilations: LinkedHashSet<out KotlinCompilation<out org.jetbrains.kotlin.gradle.plugin.KotlinCompilation<*>>>?
 
     val needKMP: Boolean
         get() = true

@@ -20,7 +20,7 @@ internal data class KotlinNativeCompilation(
     override val setCompileDependencyFiles: Set<String>? = null,
     override val output: KotlinCompilationOutput? = null,
     override val compileTaskProvider: KotlinNativeCompileImpl? = null,
-    override val associatedCompilations: Set<String>? = null,
+    override val associatesWith: Set<String>? = null,
     override val dependencies: Set<@Serializable(with = DependencyKeyTransformingSerializer::class) Dependency>? = null,
     // Interop DSL.
     val cinterops: LinkedHashSet<@Serializable(with = DefaultCInteropSettingsKeyTransformingSerializer::class) DefaultCInteropSettings>? = null

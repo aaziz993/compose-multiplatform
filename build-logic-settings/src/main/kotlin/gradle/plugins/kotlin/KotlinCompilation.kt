@@ -1,6 +1,7 @@
 package gradle.plugins.kotlin
 
 import gradle.api.ProjectNamed
+import gradle.api.applyTo
 import gradle.api.getByNameOrAll
 import gradle.api.trySet
 import gradle.plugins.kmp.KotlinSourceSet
@@ -12,6 +13,7 @@ import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerOptions
 
 /**
@@ -112,20 +114,18 @@ internal interface KotlinCompilation<T : org.jetbrains.kotlin.gradle.plugin.Kotl
     val compileTaskProvider: KotlinCompilationTask<out org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask<*>, *>?
 
     /**
-     * A list of all compilations that were previously associated with this compilation using [associateWith].
+     * Associates the current KotlinCompilation with another KotlinCompilation.
      *
-     * For exmaple, 'test' compilations return 'setOf(main)' by default.
-     *
-     * @since 1.9.20
+     * After this compilation will:
+     * - use the output of the [other] compilation as compile & runtime dependency
+     * - add all 'declared dependencies' present on [other] compilation
+     * - see all internal declarations of [other] compilation
      */
-    val associatedCompilations: Set<String>?
+    val associatesWith: Set<String>?
 
     context(Project)
     override fun applyTo(receiver: T) {
         defaultSourceSet?.applyTo(receiver.defaultSourceSet)
-
-        (compileTaskProvider as KotlinCompilationTask<org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask<*>, *>?)
-            ?.applyTo(receiver.compileTaskProvider.get())
 
         receiver::compileDependencyFiles trySet compileDependencyFiles
             ?.toTypedArray()
@@ -136,7 +136,9 @@ internal interface KotlinCompilation<T : org.jetbrains.kotlin.gradle.plugin.Kotl
 
         receiver::compileDependencyFiles trySet setCompileDependencyFiles?.toTypedArray()?.let(project::files)
         output?.applyTo(receiver.output)
-        associatedCompilations
+        (compileTaskProvider as KotlinCompilationTask<org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask<*>, *>?)
+            ?.applyTo(receiver.compileTaskProvider.get())
+        associatesWith
             ?.flatMap(receiver.target.compilations::getByNameOrAll)
             ?.forEach(receiver::associateWith)
     }
@@ -157,6 +159,6 @@ internal data class KotlinCompilationImpl(
     override val compileDependencyFiles: Set<String>? = null,
     override val setCompileDependencyFiles: Set<String>? = null,
     override val output: KotlinCompilationOutput? = null,
-    override val associatedCompilations: Set<String>? = null,
+    override val associatesWith: Set<String>? = null,
     override val dependencies: Set<@Serializable(with = DependencyKeyTransformingSerializer::class) Dependency>? = null,
 ) : KotlinCompilation<org.jetbrains.kotlin.gradle.plugin.KotlinCompilation<*>>

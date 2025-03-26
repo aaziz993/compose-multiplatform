@@ -11,14 +11,16 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.plugin.mpp.AbstractKotlinCompilation
+import org.jetbrains.kotlin.gradle.plugin.mpp.AbstractKotlinNativeCompilation
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary
 
 internal abstract class KotlinNativeTarget<T : org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>
     : KotlinTarget<T>,
-    HasConfigurableKotlinCompilerOptions<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget, org.jetbrains.kotlin.gradle.dsl.KotlinNativeCompilerOptions>,
+    HasConfigurableKotlinCompilerOptions<T, org.jetbrains.kotlin.gradle.dsl.KotlinNativeCompilerOptions>,
     HasBinaries<@Serializable(with = KotlinNativeBinaryContainerTransformingSerializer::class) KotlinNativeBinaryContainer> {
 
-    abstract override val compilations: LinkedHashSet<@Serializable(with = KotlinNativeCompilationKeyTransformingSerializer::class) KotlinNativeCompilation>?
+    abstract override val compilations: LinkedHashSet<KotlinNativeCompilation>?
 
     context(Project)
     override fun applyTo(receiver: T) {
@@ -35,10 +37,11 @@ internal data class KotlinNativeTargetImpl(
     override val name: String? = null,
     override val compilations: LinkedHashSet<@Serializable(with = KotlinNativeCompilationKeyTransformingSerializer::class) KotlinNativeCompilation>? = null,
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
-    override val binaries: KotlinNativeBinaryContainer? = null,
+    override val binaries: @Serializable(with = KotlinNativeBinaryContainerTransformingSerializer::class) KotlinNativeBinaryContainer? = null,
 ) : KotlinNativeTarget<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>() {
 
-    context(Project)
-    override fun applyTo() =
-        applyTo(project.kotlin.targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>()) { _, _ -> }
+    context(Project@Project)
+    override fun applyTo() {
+        TODO("Not yet implemented")
+    }
 }

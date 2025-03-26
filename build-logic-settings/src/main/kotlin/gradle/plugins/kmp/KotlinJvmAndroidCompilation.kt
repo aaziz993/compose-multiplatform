@@ -19,7 +19,7 @@ internal data class KotlinJvmAndroidCompilation(
     override val compileDependencyFiles: Set<String>? = null,
     override val setCompileDependencyFiles: Set<String>? = null,
     override val output: KotlinCompilationOutput? = null,
-    override val associatedCompilations: Set<String>? = null,
+    override val associatesWith: Set<String>? = null,
     override val dependencies: Set<@Serializable(with = DependencyKeyTransformingSerializer::class) Dependency>? = null,
     val compileTaskProvider: KotlinCompilationTaskImpl? = null,
     val compileJavaTaskProvider: JavaCompile? = null,

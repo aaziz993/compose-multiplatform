@@ -18,7 +18,7 @@ internal data class KotlinAndroidNativeArm32Target(
     override val name: String = "androidNativeArm32",
     override val compilations: LinkedHashSet<@Serializable(with = KotlinNativeCompilationKeyTransformingSerializer::class) KotlinNativeCompilation>? = null,
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
-    override val binaries: KotlinNativeBinaryContainer? = null,
+    override val binaries: @Serializable(with = KotlinNativeBinaryContainerTransformingSerializer::class) KotlinNativeBinaryContainer? = null,
 ) : KotlinAndroidNativeTarget(), KotlinAndroidNative32Target {
 
     context(Project) override fun applyTo() = applyTo(project.kotlin.targets.withType<KotlinNativeTarget>()) { name, action ->
