@@ -3,7 +3,8 @@ package gradle.plugins.kmp.nat.android
 import gradle.accessors.kotlin
 import gradle.plugins.kmp.nat.KotlinNativeBinaryContainer
 import gradle.plugins.kmp.nat.KotlinNativeCompilation
-import gradle.plugins.kmp.nat.KotlinNativeCompilationTransformingSerializer
+import gradle.api.applyTo
+import gradle.plugins.kmp.nat.KotlinNativeCompilationKeyTransformingSerializer
 import gradle.plugins.kmp.nat.tasks.KotlinNativeCompilerOptions
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -20,7 +21,7 @@ internal data class KotlinAndroidNativeArm32Target(
     override val binaries: KotlinNativeBinaryContainer? = null,
 ) : KotlinAndroidNativeTarget(), KotlinAndroidNative32Target {
 
-    context(Project)
-    override fun applyTo() =
-        super.applyTo(project.kotlin.targets.withType<KotlinNativeTarget>(), kotlin::androidNativeArm32)
+    context(Project) override fun applyTo() = applyTo(project.kotlin.targets.withType<KotlinNativeTarget>()) { name, action ->
+        project.kotlin.androidNativeArm32(name, action::execute)
+    }
 }

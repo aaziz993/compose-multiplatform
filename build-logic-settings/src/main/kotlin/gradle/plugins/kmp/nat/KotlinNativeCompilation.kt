@@ -33,7 +33,7 @@ internal data class KotlinNativeCompilation(
     }
 }
 
-internal object KotlinNativeCompilationTransformingSerializer :
+internal object KotlinNativeCompilationKeyTransformingSerializer :
     KotlinCompilationTransformingSerializer<KotlinNativeCompilation>(
         KotlinNativeCompilation.serializer(),
     )

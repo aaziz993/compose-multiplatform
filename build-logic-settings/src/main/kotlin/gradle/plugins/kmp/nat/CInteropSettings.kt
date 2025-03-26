@@ -16,7 +16,6 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import org.gradle.api.Project
 
-
 /**
  * # C interoperability settings
  *
@@ -351,7 +350,6 @@ internal interface CInteropSettings<T : org.jetbrains.kotlin.gradle.plugin.CInte
             }
     }
 }
-
 
 internal abstract class CInteropSettingsKeyTransformingSerializer<T : CInteropSettings<*>>(tSerializer: KSerializer<T>)
     : NamedKeyTransformingSerializer<T>(tSerializer)

@@ -3,7 +3,8 @@ package gradle.plugins.kmp.nat.mingw
 import gradle.accessors.kotlin
 import gradle.plugins.kmp.nat.KotlinNativeBinaryContainer
 import gradle.plugins.kmp.nat.KotlinNativeCompilation
-import gradle.plugins.kmp.nat.KotlinNativeCompilationTransformingSerializer
+import gradle.api.applyTo
+import gradle.plugins.kmp.nat.KotlinNativeCompilationKeyTransformingSerializer
 import gradle.plugins.kmp.nat.KotlinNativeHostTestRun
 import gradle.plugins.kmp.nat.KotlinNativeHostTestRunTransformingSerializer
 import gradle.plugins.kmp.nat.KotlinNativeTargetWithHostTests
@@ -26,5 +27,7 @@ internal data class KotlinMingwX64Target(
 
     context(Project)
     override fun applyTo() =
-        super.applyTo(project.kotlin.targets.withType<KotlinNativeTarget>(), kotlin::mingwX64)
+        applyTo(project.kotlin.targets.withType<KotlinNativeTarget>()) { name, action ->
+            project.kotlin.mingwX64(name, action::execute)
+        }
 }

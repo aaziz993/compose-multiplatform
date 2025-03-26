@@ -3,7 +3,8 @@ package gradle.plugins.kmp.nat.android
 import gradle.accessors.kotlin
 import gradle.plugins.kmp.nat.KotlinNativeBinaryContainer
 import gradle.plugins.kmp.nat.KotlinNativeCompilation
-import gradle.plugins.kmp.nat.KotlinNativeCompilationTransformingSerializer
+import gradle.api.applyTo
+import gradle.plugins.kmp.nat.KotlinNativeCompilationKeyTransformingSerializer
 import gradle.plugins.kmp.nat.tasks.KotlinNativeCompilerOptions
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -22,5 +23,7 @@ internal data class KotlinAndroidNativeX86Target(
 
     context(Project)
     override fun applyTo() =
-        super.applyTo(project.kotlin.targets.withType<KotlinNativeTarget>(), kotlin::androidNativeX86)
+        applyTo(project.kotlin.targets.withType<KotlinNativeTarget>()) { name, action ->
+            project.kotlin.androidNativeX86(name, action::execute)
+        }
 }

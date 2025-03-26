@@ -19,7 +19,6 @@ internal abstract class AbstractKotlinNativeBinaryContainer<T : AbstractKotlinNa
                     }
                 }
 
-
                 is TestExecutableSettings -> binary.let { binary ->
                     receiver.test(binary.namePrefix, binary.buildTypes) {
                         binary.applyTo(this)

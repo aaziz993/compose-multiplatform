@@ -3,7 +3,8 @@ package gradle.plugins.kmp.nat.linux
 import gradle.accessors.kotlin
 import gradle.plugins.kmp.nat.KotlinNativeBinaryContainer
 import gradle.plugins.kmp.nat.KotlinNativeCompilation
-import gradle.plugins.kmp.nat.KotlinNativeCompilationTransformingSerializer
+import gradle.api.applyTo
+import gradle.plugins.kmp.nat.KotlinNativeCompilationKeyTransformingSerializer
 import gradle.plugins.kmp.nat.KotlinNativeTarget
 import gradle.plugins.kmp.nat.tasks.KotlinNativeCompilerOptions
 import kotlinx.serialization.SerialName
@@ -22,5 +23,7 @@ internal data class KotlinLinuxArm64Target(
 
     context(Project)
     override fun applyTo() =
-        super.applyTo(project.kotlin.targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>(), kotlin::linuxArm64)
+        applyTo(project.kotlin.targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>()) { name, action ->
+            project.kotlin.linuxArm64(name, action::execute)
+        }
 }

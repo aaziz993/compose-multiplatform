@@ -1,6 +1,5 @@
 package gradle.plugins.kmp.web
 
-
 import gradle.api.tryAssign
 import gradle.api.trySet
 import gradle.collection.SerializableAnyList
@@ -36,7 +35,7 @@ internal data class D8Exec(
     val inputFileProperty: String? = null,
 ) : AbstractExecTask<D8Exec>() {
 
-        context(Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super.applyTo(named)
 

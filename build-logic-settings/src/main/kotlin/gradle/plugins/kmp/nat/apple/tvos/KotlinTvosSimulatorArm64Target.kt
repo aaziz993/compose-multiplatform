@@ -3,7 +3,8 @@ package gradle.plugins.kmp.nat.apple.tvos
 import gradle.accessors.kotlin
 import gradle.plugins.kmp.nat.KotlinNativeBinaryContainer
 import gradle.plugins.kmp.nat.KotlinNativeCompilation
-import gradle.plugins.kmp.nat.KotlinNativeCompilationTransformingSerializer
+import gradle.api.applyTo
+import gradle.plugins.kmp.nat.KotlinNativeCompilationKeyTransformingSerializer
 import gradle.plugins.kmp.nat.KotlinNativeSimulatorTestRun
 import gradle.plugins.kmp.nat.KotlinNativeSimulatorTestRunTransformingSerializer
 import gradle.plugins.kmp.nat.KotlinNativeTargetWithSimulatorTests
@@ -26,5 +27,7 @@ internal data class KotlinTvosSimulatorArm64Target(
 
     context(Project)
     override fun applyTo() =
-        super.applyTo(project.kotlin.targets.withType<KotlinNativeTarget>(), kotlin::tvosSimulatorArm64)
+        applyTo(project.kotlin.targets.withType<KotlinNativeTarget>()) { name, action ->
+            project.kotlin.tvosSimulatorArm64(name, action::execute)
+        }
 }
