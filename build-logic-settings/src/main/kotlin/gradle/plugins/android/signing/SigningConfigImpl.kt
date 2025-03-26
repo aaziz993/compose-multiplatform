@@ -1,6 +1,7 @@
 package gradle.plugins.android.signing
 
 import com.android.build.gradle.internal.dsl.SigningConfig
+import gradle.api.NamedKeyTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
@@ -28,7 +29,6 @@ internal data class SigningConfigImpl(
     }
 }
 
-internal object SigningConfigKeyTransformingSerializer : KeyTransformingSerializer<SigningConfigImpl>(
+internal object SigningConfigKeyTransformingSerializer : NamedKeyTransformingSerializer<SigningConfigImpl>(
     SigningConfigImpl.serializer(),
-    "name",
 )
