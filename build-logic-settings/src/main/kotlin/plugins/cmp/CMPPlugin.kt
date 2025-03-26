@@ -10,13 +10,14 @@ import gradle.accessors.projectProperties
 import gradle.accessors.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import plugins.cmp.model.CMPSettings
 
 public class CMPPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
             projectProperties.compose
-                .takeIf (::enabled)?.let { compose ->
+                .takeIf (CMPSettings::enabled)?.let { compose ->
                     plugins.apply(project.settings.libs.plugins.plugin("compose.multiplatform").id)
                     plugins.apply(project.settings.libs.plugins.plugin("compose.compiler").id)
 

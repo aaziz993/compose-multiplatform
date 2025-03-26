@@ -10,13 +10,14 @@ import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.withType
 import org.gradle.plugins.signing.Sign
 import org.gradle.plugins.signing.SigningPlugin
+import plugins.signing.model.SigningSettings
 
 internal class SigningPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
             projectProperties.plugins.signing
-                .takeIf (::enabled)?.let { signing ->
+                .takeIf(SigningSettings::enabled)?.let { signing ->
                     plugins.apply(SigningPlugin::class.java)
 
                     signing.applyTo()
@@ -79,15 +80,15 @@ internal class SigningPlugin : Plugin<Project> {
          * There are 3 servers supported by Central servers: [ keyserver.ubuntu.com, keys.openpgp.org, pgp.mit.edu ]
          */
         projectProperties.plugins.signing.useInMemoryPgpKeys?.defaultSecretKey?.let { key ->
-                tasks.register<Exec>("distributeSigningGPGKey") {
-                    description = "Distributes the signing GPG key to servers: [keyserver.ubuntu.com, keys.openpgp.org, pgp.mit.edu]"
-                    group = "signing"
+            tasks.register<Exec>("distributeSigningGPGKey") {
+                description = "Distributes the signing GPG key to servers: [keyserver.ubuntu.com, keys.openpgp.org, pgp.mit.edu]"
+                group = "signing"
 
-                    executable = settings.settingsDir.resolve("scripts/gpg/distribute-gpg-key.sh").absolutePath
+                executable = settings.settingsDir.resolve("scripts/gpg/distribute-gpg-key.sh").absolutePath
 
-                    args(key)
-                }
+                args(key)
             }
+        }
         projectProperties.plugins.signing.generateGpg?.let { generateGpg ->
             tasks.register<Exec>("generateSigningGPGKey") {
                 description = "Generates the signing GPG key"

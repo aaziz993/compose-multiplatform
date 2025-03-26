@@ -8,13 +8,14 @@ import gradle.accessors.projectProperties
 import gradle.accessors.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import plugins.kotlin.atomicfu.model.AtomicFUSettings
 
 internal class AtomicFUPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
             projectProperties.plugins.atomicFU
-                .takeIf (::enabled)?.let { atomicFU ->
+                .takeIf(AtomicFUSettings::enabled)?.let { atomicFU ->
                     plugins.apply(project.settings.libs.plugins.plugin("atomicfu").id)
 
                     atomicFU.applyTo()

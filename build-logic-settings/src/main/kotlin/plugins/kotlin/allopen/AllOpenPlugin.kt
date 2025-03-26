@@ -8,13 +8,14 @@ import gradle.accessors.projectProperties
 import gradle.accessors.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import plugins.kotlin.allopen.model.AllOpenSettings
 
 internal class AllOpenPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
             projectProperties.plugins.allOpen
-                .takeIf (::enabled)?.let { allOpen ->
+                .takeIf(AllOpenSettings::enabled)?.let { allOpen ->
                     plugins.apply(project.settings.libs.plugins.plugin("allopen").id)
 
                     allOpen.applyTo()

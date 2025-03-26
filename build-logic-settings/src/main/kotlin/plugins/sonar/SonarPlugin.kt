@@ -8,13 +8,14 @@ import gradle.accessors.projectProperties
 import gradle.accessors.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import plugins.sonar.model.SonarSettings
 
 internal class SonarPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
             projectProperties.plugins.sonar
-                .takeIf (::enabled)?.let { sonar ->
+                .takeIf(SonarSettings::enabled)?.let { sonar ->
                     plugins.apply(project.settings.libs.plugins.plugin("sonarqube").id)
 
                     sonar.applyTo()

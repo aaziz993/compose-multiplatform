@@ -8,13 +8,14 @@ import gradle.accessors.projectProperties
 import gradle.accessors.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import plugins.kotlin.apollo.model.ApolloSettings
 
 internal class ApolloPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
             projectProperties.plugins.apollo
-                .takeIf (::enabled)?.let { apollo ->
+                .takeIf(ApolloSettings::enabled)?.let { apollo ->
                     plugins.apply(project.settings.libs.plugins.plugin("apollo3").id)
 
                     apollo.applyTo()

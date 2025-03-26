@@ -8,13 +8,14 @@ import gradle.accessors.projectProperties
 import gradle.accessors.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import plugins.kotlin.rpc.model.RpcSettings
 
 internal class RpcPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
             projectProperties.plugins.rpc
-                .takeIf (::enabled)?.let { rpc ->
+                .takeIf(RpcSettings::enabled)?.let { rpc ->
                     plugins.apply(project.settings.libs.plugins.plugin("kotlinx.rpc").id)
 
                     rpc.applyTo()

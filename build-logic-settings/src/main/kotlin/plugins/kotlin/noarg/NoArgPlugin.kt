@@ -8,13 +8,14 @@ import gradle.accessors.projectProperties
 import gradle.accessors.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import plugins.kotlin.noarg.model.NoArgSettings
 
 internal class NoArgPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
             projectProperties.plugins.noArg
-                .takeIf (::enabled)?.let { noArg ->
+                .takeIf(NoArgSettings::enabled)?.let { noArg ->
                     plugins.apply(project.settings.libs.plugins.plugin("allopen").id)
 
                     noArg.applyTo()
