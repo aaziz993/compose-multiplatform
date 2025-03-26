@@ -238,13 +238,6 @@ plugins:
       enabled: true
       strictValidation: true
 
-  # Check (JDK, android SDK or any library) API compatibility for java (kotlin, scala, groovy etc.), android and kotlin multiplatform projects.
-  animalSniffer:
-    enabled: true
-    debug: true
-    ignoreFailures: true
-    sourceSets: [ main ]
-
   # Api that you can use to develop lightweight compiler plugins. KSP provides a simplified compiler plugin API that leverages the power of Kotlin while keeping the learning curve at a minimum. Compared to KAPT, annotation processors that use KSP can run up to 2x faster.
   ksp:
     enabled: true

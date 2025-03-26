@@ -20,7 +20,7 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
 @SerialName("android")
 internal data class KotlinAndroidTarget(
     override val targetName: String = "android",
-    override val compilations: Set<@Serializable(with = KotlinJvmAndroidCompilationTransformingSerializer::class) KotlinJvmAndroidCompilation>? = null,
+    override val compilations: LinkedHashSet<@Serializable(with = KotlinJvmAndroidCompilationTransformingSerializer::class) KotlinJvmAndroidCompilation>? = null,
     override val compilerOptions: KotlinJvmCompilerOptions? = null,
     /** Names of the Android library variants that should be published from the target's project within the default publications which are
      * set up if the `maven-publish` Gradle plugin is applied.
@@ -48,16 +48,14 @@ internal data class KotlinAndroidTarget(
         super<KotlinTarget>.applyTo(receiver)
         super<HasConfigurableKotlinCompilerOptions>.applyTo(receiver)
 
-        if (project.projectProperties.android is LibraryExtension) {
-            publishLibraryVariants?.toTypedArray()?.let(receiver::publishLibraryVariants)
+        publishLibraryVariants?.toTypedArray()?.let(receiver::publishLibraryVariants)
 
-            setPublishLibraryVariants?.let { setPublishLibraryVariants ->
-                receiver.publishLibraryVariants = setPublishLibraryVariants
-            }
-
-            publishAllLibraryVariants?.takeIf { it }?.run { receiver.publishAllLibraryVariants() }
-            receiver::publishLibraryVariantsGroupedByFlavor trySet publishLibraryVariantsGroupedByFlavor
+        setPublishLibraryVariants?.let { setPublishLibraryVariants ->
+            receiver.publishLibraryVariants = setPublishLibraryVariants
         }
+
+        publishAllLibraryVariants?.takeIf { it }?.run { receiver.publishAllLibraryVariants() }
+        receiver::publishLibraryVariantsGroupedByFlavor trySet publishLibraryVariantsGroupedByFlavor
     }
 
     context(Project)

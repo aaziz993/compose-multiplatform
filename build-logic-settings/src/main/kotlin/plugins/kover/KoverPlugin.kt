@@ -26,7 +26,7 @@ internal class KoverPlugin : Plugin<Project> {
 
                     registerKoverReportTask()
 
-                    if (project == rootProject && kover.dependenciesFromSubprojects) {
+                    if (kover.dependenciesFromSubprojects) {
                         configureDependencies()
                     }
                 }

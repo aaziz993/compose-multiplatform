@@ -1,0 +1,7 @@
+plugins:
+  # Check (JDK, android SDK or any library) API compatibility for java (kotlin, scala, groovy etc.), android and kotlin multiplatform projects.
+  animalSniffer:
+    enabled: true
+    debug: true
+    ignoreFailures: true
+    sourceSets: [ main ]

@@ -8,13 +8,14 @@ import gradle.accessors.projectProperties
 import gradle.accessors.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import plugins.knit.model.KnitSettings
 
 internal class KnitPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
             projectProperties.plugins.knit
-                .takeIf { it.enabled && project == rootProject }?.let { knit ->
+                .takeIf(KnitSettings::enabled)?.let { knit ->
                     plugins.apply(project.settings.libs.plugins.plugin("knit").id)
 
                     knit.applyTo()

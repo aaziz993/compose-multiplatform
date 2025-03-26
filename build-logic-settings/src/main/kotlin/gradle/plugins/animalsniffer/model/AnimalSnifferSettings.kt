@@ -1,4 +1,4 @@
-package plugins.animalsniffer.model
+package gradle.plugins.animalsniffer.model
 
 import gradle.plugins.animalsniffer.AnimalSnifferExtension
 import gradle.plugins.animalsniffer.CheckCacheExtension

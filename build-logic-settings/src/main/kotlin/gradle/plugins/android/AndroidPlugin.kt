@@ -1,6 +1,6 @@
 @file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
 
-package plugins.android
+package gradle.plugins.android
 
 import gradle.accessors.android
 import gradle.accessors.id

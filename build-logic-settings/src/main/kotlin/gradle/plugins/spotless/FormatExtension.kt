@@ -140,14 +140,6 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
     context(Project)
     abstract fun applyTo()
 
-    private object IntentContentPolymorphicSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
-
-        override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
-            if (element.jsonPrimitive.content.matches("\\d+".toRegex()))
-                Int.serializer()
-            else Boolean.serializer()
-    }
-
     @Serializable
     internal data class BiomeGeneric(
         override val configPath: String? = null,

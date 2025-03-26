@@ -24,7 +24,7 @@ internal class DokkaPlugin : Plugin<Project> {
 
                     dokka.applyTo()
 
-                    if (project == rootProject && dokka.dependenciesFromSubprojects) {
+                    if (dokka.dependenciesFromSubprojects) {
                         configureDependencies()
                     }
                 }

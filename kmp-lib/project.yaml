@@ -4,6 +4,7 @@ templates:
   - ../templates/gradle/jvm/jvm.yaml
   - ../templates/gradle/android/android.yaml
   - ../templates/gradle/android/android-library.yaml
+  - ../templates/gradle/jvm-common.yaml
   - ../templates/gradle/apple.yaml
   - ../templates/gradle/web/js/js.yaml
   - ../templates/gradle/web/wasmJs/wasmJs.yaml

@@ -5,7 +5,6 @@ package plugins.project
 import com.android.build.gradle.internal.tasks.AndroidTestTask
 import gradle.accessors.kotlin
 import gradle.accessors.projectProperties
-import gradle.api.applyTo
 import gradle.api.isCI
 import gradle.api.maybeNamed
 import gradle.api.repositories.CacheRedirector
@@ -71,8 +70,8 @@ import org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest
 import org.jetbrains.kotlin.gradle.targets.native.tasks.KotlinNativeTest
 import org.jetbrains.kotlin.gradle.tasks.KotlinNativeLink
 import org.jetbrains.kotlin.gradle.tasks.KotlinTest
-import plugins.android.AndroidPlugin
-import plugins.animalsniffer.AnimalSnifferPlugin
+import gradle.plugins.android.AndroidPlugin
+import gradle.plugins.animalsniffer.AnimalSnifferPlugin
 import plugins.apivalidation.ApiValidationPlugin
 import plugins.apple.ApplePlugin
 import plugins.buildconfig.BuildConfigPlugin

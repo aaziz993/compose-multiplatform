@@ -8,12 +8,13 @@ import gradle.accessors.projectProperties
 import gradle.accessors.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import plugins.doctor.model.DoctorSettings
 
 internal class DoctorPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            projectProperties.plugins.doctor.takeIf { it.enabled && project == rootProject }?.let { doctor ->
+            projectProperties.plugins.doctor.takeIf(DoctorSettings::enabled)?.let { doctor ->
                 plugins.apply(project.settings.libs.plugins.plugin("doctor").id)
 
                 doctor.applyTo()
