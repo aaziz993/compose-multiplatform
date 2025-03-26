@@ -44,7 +44,7 @@ private fun String.resolveReference(
                 when (keys[0]) {
                     "env" -> System.getenv()[CaseFormat.UPPER_UNDERSCORE.format(keys.drop(1))]
                     "gradle" -> providers.gradleProperty(CaseFormat.LOWER_DOT.format(keys.drop(1))).orNull
-                    "extra" -> extra[key.toDotCase()]
+                    "extra" -> extra[CaseFormat.LOWER_DOT.format(keys.drop(1))]
                     "local" -> localProperties[CaseFormat.LOWER_DOT.format(keys.drop(1))]
                     else -> obj.get(*keys.toTypedArray())
                 }
