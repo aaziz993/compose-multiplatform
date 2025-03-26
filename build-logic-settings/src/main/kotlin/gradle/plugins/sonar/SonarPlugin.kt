@@ -1,4 +1,4 @@
-package plugins.sonar
+package gradle.plugins.sonar
 
 import gradle.accessors.id
 import gradle.accessors.libs
@@ -8,7 +8,7 @@ import gradle.accessors.projectProperties
 import gradle.accessors.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import plugins.sonar.model.SonarSettings
+import gradle.plugins.sonar.model.SonarSettings
 
 internal class SonarPlugin : Plugin<Project> {
 

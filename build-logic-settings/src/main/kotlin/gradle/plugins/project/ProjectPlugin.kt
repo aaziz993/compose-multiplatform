@@ -100,7 +100,7 @@ import plugins.nat.NativePlugin
 import gradle.plugins.publish.PublishPlugin
 import gradle.plugins.shadow.ShadowPlugin
 import gradle.plugins.signing.SigningPlugin
-import plugins.sonar.SonarPlugin
+import gradle.plugins.sonar.SonarPlugin
 import gradle.plugins.spotless.SpotlessPlugin
 import plugins.web.JsPlugin
 import plugins.web.WasmPlugin

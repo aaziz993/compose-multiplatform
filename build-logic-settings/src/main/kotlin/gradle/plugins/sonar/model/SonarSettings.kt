@@ -1,4 +1,4 @@
-package plugins.sonar.model
+package gradle.plugins.sonar.model
 
 import gradle.accessors.id
 import gradle.accessors.libs

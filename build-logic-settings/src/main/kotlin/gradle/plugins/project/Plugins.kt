@@ -27,9 +27,9 @@ import gradle.plugins.kover.model.KoverSettings
 import gradle.plugins.publish.model.PublishingSettings
 import gradle.plugins.shadow.model.ShadowSettings
 import gradle.plugins.signing.model.SigningSettings
-import plugins.sonar.model.SonarSettings
+import gradle.plugins.sonar.model.SonarSettings
 import gradle.plugins.spotless.model.SpotlessSettings
-import plugins.toolchainmanagement.model.ToolchainManagementSettings
+import gradle.plugins.toolchainmanagement.model.ToolchainManagementSettings
 
 @Serializable
 internal data class Plugins(

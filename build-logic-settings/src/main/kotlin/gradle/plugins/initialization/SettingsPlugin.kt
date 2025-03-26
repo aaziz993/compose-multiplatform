@@ -24,7 +24,7 @@ import gradle.plugins.develocity.DevelocityPlugin
 import gradle.plugins.githooks.GitHooksPlugin
 import gradle.plugins.initialization.problemreporter.SLF4JProblemReporterContext
 import gradle.plugins.project.ProjectPlugin
-import plugins.toolchainmanagement.ToolchainManagementPlugin
+import gradle.plugins.toolchainmanagement.ToolchainManagementPlugin
 
 private const val VERSION_CATALOG_CACHE_DIR = "build-logic-settings/gradle"
 
