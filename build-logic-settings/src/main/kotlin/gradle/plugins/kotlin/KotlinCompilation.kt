@@ -139,7 +139,8 @@ internal abstract class KotlinCompilationTransformingSerializer<T : KotlinCompil
 @Serializable
 internal data class KotlinCompilationImpl(
     override val name: String, override val defaultSourceSet: KotlinSourceSet? = null,
-    override val compileDependencyFiles: List<String>? = null,
+    override val compileDependencyFiles: Set<String>? = null,
+    override val setCompileDependencyFiles: Set<String>? = null,
     override val output: KotlinCompilationOutput? = null,
     override val associatedCompilations: Set<String>? = null,
     override val dependencies: Set<@Serializable(with = DependencyKeyTransformingSerializer::class) Dependency>? = null,

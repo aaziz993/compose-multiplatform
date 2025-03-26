@@ -3,7 +3,6 @@ package gradle.plugins.kmp.jvm
 import gradle.accessors.kotlin
 import gradle.api.applyTo
 import gradle.plugins.kmp.KotlinJvmAndroidCompilation
-import gradle.plugins.kmp.KotlinJvmAndroidCompilationTransformingSerializer
 import gradle.plugins.kmp.KotlinTarget
 import gradle.plugins.kotlin.HasConfigurableKotlinCompilerOptions
 import kotlinx.serialization.SerialName

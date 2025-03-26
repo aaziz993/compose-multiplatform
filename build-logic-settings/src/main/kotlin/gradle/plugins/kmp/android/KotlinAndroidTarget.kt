@@ -1,12 +1,10 @@
 package gradle.plugins.kmp.android
 
 import gradle.accessors.kotlin
-import gradle.accessors.projectProperties
 import gradle.api.applyTo
 import gradle.api.trySet
-import gradle.plugins.android.library.LibraryExtension
 import gradle.plugins.kmp.KotlinJvmAndroidCompilation
-import gradle.plugins.kmp.KotlinJvmAndroidCompilationTransformingSerializer
+import gradle.plugins.kmp.KotlinJvmAndroidKeyCompilationTransformingSerializer
 import gradle.plugins.kmp.KotlinTarget
 import gradle.plugins.kmp.jvm.KotlinJvmCompilerOptions
 import gradle.plugins.kotlin.HasConfigurableKotlinCompilerOptions
@@ -20,7 +18,7 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
 @SerialName("android")
 internal data class KotlinAndroidTarget(
     override val name: String = "android",
-    override val compilations: LinkedHashSet<@Serializable(with = KotlinJvmAndroidCompilationKeyTransformingSerializer::class) KotlinJvmAndroidCompilation>? = null,
+    override val compilations: LinkedHashSet<@Serializable(with = KotlinJvmAndroidKeyCompilationTransformingSerializer::class) KotlinJvmAndroidCompilation>? = null,
     override val compilerOptions: KotlinJvmCompilerOptions? = null,
     /** Names of the Android library variants that should be published from the target's project within the default publications which are
      * set up if the `maven-publish` Gradle plugin is applied.
@@ -64,6 +62,6 @@ internal data class KotlinAndroidTarget(
     context(Project)
     override fun applyTo() =
         applyTo(project.kotlin.targets.withType<KotlinAndroidTarget>()) { name, action ->
-            kotlin::androidTarget
+            kotlin.androidTarget(name, action::execute)
         }
 }
