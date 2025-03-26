@@ -12,7 +12,7 @@ internal interface BuildConfigClassSpec<T : com.github.gmazzo.gradle.plugins.Bui
 
     val packageName: String?
 
-    val buildConfigFields: List<BuildConfigField>?
+    val buildConfigFields: LinkedHashSet<@Serializable(with = BuildConfigFieldKeyTransformingSerializer::class) BuildConfigField>?
 
     context(Project)
     override fun applyTo(receiver: T) {
@@ -29,6 +29,6 @@ internal interface BuildConfigClassSpec<T : com.github.gmazzo.gradle.plugins.Bui
 internal data class BuildConfigClassSpecImpl(
     override val className: String? = null,
     override val packageName: String? = null,
-    override val buildConfigFields: List<BuildConfigField>? = null,
+    override val buildConfigFields: LinkedHashSet<@Serializable(with = BuildConfigFieldKeyTransformingSerializer::class) BuildConfigField>? = null,
     override val name: String? = null,
 ) : BuildConfigClassSpec<com.github.gmazzo.gradle.plugins.BuildConfigClassSpec>

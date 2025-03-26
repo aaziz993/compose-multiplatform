@@ -1,8 +1,10 @@
 package gradle.plugins.buildconfig
 
-import com.github.gmazzo.gradle.plugins.BuildConfigField
+import gradle.api.NamedKeyTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.tryAssign
+import gradle.plugins.android.BuildType
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -13,15 +15,16 @@ internal data class BuildConfigField(
     val value: String? = null,
     val optional: Boolean? = null,
     val position: Int? = null,
-) : ProjectNamed<BuildConfigField> {
-
-    fun toBuildConfigField() =com.github.gmazzo.gradle.plugins. BuildConfigField(name, type, value, optional, position)
+) : ProjectNamed<com.github.gmazzo.gradle.plugins.BuildConfigField> {
 
     context(Project)
-    override fun applyTo(receiver: BuildConfigField) {
+    override fun applyTo(receiver: com.github.gmazzo.gradle.plugins.BuildConfigField) {
         receiver.type tryAssign type
         receiver.value tryAssign value
         receiver.optional tryAssign optional
         receiver.position tryAssign position
     }
 }
+
+internal object BuildConfigFieldKeyTransformingSerializer
+    : NamedKeyTransformingSerializer<BuildConfigField>(BuildConfigField.serializer())

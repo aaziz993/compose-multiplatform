@@ -16,7 +16,7 @@ import org.gradle.api.Project
 internal data class BuildConfigSourceSet(
     override val className: String? = null,
     override val packageName: String? = null,
-    override val buildConfigFields: List<BuildConfigField>? = null,
+    override val buildConfigFields: LinkedHashSet<@Serializable(with = BuildConfigFieldKeyTransformingSerializer::class) BuildConfigField>? = null,
     override val name: String? = null,
     val generator: BuildConfigGenerator<*>? = null,
     val generateTask: BuildConfigTask? = null,
