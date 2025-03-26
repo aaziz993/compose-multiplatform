@@ -1,0 +1,25 @@
+package gradle.plugins.kotlin.ktorfit
+
+import gradle.accessors.id
+import gradle.accessors.libs
+import gradle.accessors.plugin
+import gradle.accessors.plugins
+import gradle.accessors.projectProperties
+import gradle.accessors.settings
+import org.gradle.api.Plugin
+import org.gradle.api.Project
+import gradle.plugins.kotlin.ktorfit.model.KtorfitSettings
+
+internal class KtorfitPlugin : Plugin<Project> {
+
+    override fun apply(target: Project) {
+        with(target) {
+            projectProperties.plugins.ktorfit
+                .takeIf(KtorfitSettings::enabled)?.let { ktorfit ->
+                    plugins.apply(project.settings.libs.plugins.plugin("ktorfit").id)
+
+                    ktorfit.applyTo()
+                }
+        }
+    }
+}

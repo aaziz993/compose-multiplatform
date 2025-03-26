@@ -1,6 +1,6 @@
 package gradle.plugins.kotlin.sqldelight
 
-import app.cash.sqldelight.gradle.SqlDelightDatabase
+import gradle.api.NamedKeyTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.tryAssign
 import gradle.plugins.project.Dependency
@@ -80,3 +80,6 @@ internal data class SqlDelightDatabase(
         receiver.treatNullAsUnknownForEquality tryAssign treatNullAsUnknownForEquality
     }
 }
+
+internal object SqlDelightDatabaseKeyTransformingSerializer
+    : NamedKeyTransformingSerializer<SqlDelightDatabase>(SqlDelightDatabase.serializer())

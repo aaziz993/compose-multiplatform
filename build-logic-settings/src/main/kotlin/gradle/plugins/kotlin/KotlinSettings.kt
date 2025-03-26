@@ -17,7 +17,7 @@ import gradle.plugins.kmp.KotlinTargetKeyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
-import plugins.kotlin.cocoapods.model.CocoapodsSettings
+import gradle.plugins.kotlin.cocoapods.model.CocoapodsSettings
 
 @Serializable
 internal data class KotlinSettings(
