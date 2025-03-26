@@ -1,6 +1,6 @@
 package gradle.plugins.android
 
-import com.android.build.api.dsl.Prefab
+import gradle.api.NamedKeyTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.trySet
 import kotlinx.serialization.Serializable
@@ -48,13 +48,16 @@ internal data class Prefab(
      * This value defaults to false.
      */
     val headerOnly: Boolean? = null,
-) : ProjectNamed<Prefab> {
+) : ProjectNamed<com.android.build.api.dsl.Prefab> {
 
     context(Project)
-    override fun applyTo(receiver: Prefab) {
+    override fun applyTo(receiver: com.android.build.api.dsl.Prefab) {
         receiver::name trySet name
         receiver::headers trySet headers
         receiver::libraryName trySet libraryName
         receiver::headerOnly trySet headerOnly
     }
 }
+
+internal object PrefabKeyTransformingSerializer
+    : NamedKeyTransformingSerializer<Prefab>(Prefab.serializer())

@@ -9,8 +9,8 @@ import gradle.plugins.android.LibraryRequest
 import gradle.plugins.android.Lint
 import gradle.plugins.android.Packaging
 import gradle.plugins.android.Prefab
+import gradle.plugins.android.PrefabKeyTransformingSerializer
 import gradle.plugins.android.PrivacySandbox
-import gradle.plugins.android.Splits
 import gradle.plugins.android.TestedExtension
 import gradle.plugins.android.compile.CompileOptions
 import gradle.plugins.android.compile.CompileSdkAddon
@@ -18,9 +18,9 @@ import gradle.plugins.android.defaultconfig.DefaultConfig
 import gradle.plugins.android.features.DataBinding
 import gradle.plugins.android.features.ViewBinding
 import gradle.plugins.android.flavor.ProductFlavor
-import gradle.plugins.android.flavor.ProductFlavorTransformingSerializer
+import gradle.plugins.android.flavor.ProductFlavorKeyTransformingSerializer
 import gradle.plugins.android.signing.SigningConfigImpl
-import gradle.plugins.android.signing.SigningConfigTransformingSerializer
+import gradle.plugins.android.signing.SigningConfigKeyTransformingSerializer
 import gradle.plugins.android.sourceset.AndroidSourceSet
 import gradle.plugins.android.split.Splits
 import gradle.plugins.android.test.TestCoverage
@@ -56,7 +56,7 @@ internal data class LibraryExtension(
     override val experimentalProperties: SerializableAnyMap? = null,
     override val aidlPackagedList: Set<String>? = null,
     override val setAidlPackagedList: Set<String>? = null,
-    override val prefab: Set<Prefab>? = null,
+    override val prefab: LinkedHashSet<@Serializable(with = PrefabKeyTransformingSerializer::class) Prefab>? = null,
     override val publishing: LibraryPublishing? = null,
     override val privacySandbox: PrivacySandbox? = null,
     override val composeOptions: ComposeOptions? = null,

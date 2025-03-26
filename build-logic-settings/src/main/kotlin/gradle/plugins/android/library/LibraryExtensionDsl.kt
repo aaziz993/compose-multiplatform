@@ -11,8 +11,10 @@ import gradle.accessors.android
 import gradle.api.applyTo
 import gradle.plugins.android.CommonExtension
 import gradle.plugins.android.Prefab
+import gradle.plugins.android.PrefabKeyTransformingSerializer
 import gradle.plugins.android.PrivacySandbox
 import gradle.plugins.android.TestedExtensionDsl
+import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
 /**
@@ -40,7 +42,7 @@ internal interface LibraryExtensionDsl :
     /**
      * container of Prefab options
      */
-    val prefab: Set<Prefab>?
+    val prefab: LinkedHashSet<@Serializable(with = PrefabKeyTransformingSerializer::class) Prefab>?
 
     /**
      * Customizes publishing build variant artifacts from library module to a Maven repository.
