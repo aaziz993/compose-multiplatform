@@ -1,0 +1,22 @@
+package gradle.plugins.shadow.model
+
+import gradle.accessors.id
+import gradle.accessors.libs
+import gradle.accessors.plugin
+import gradle.accessors.plugins
+import gradle.accessors.settings
+import gradle.plugins.project.EnabledSettings
+import kotlinx.serialization.Serializable
+import org.gradle.api.Project
+
+@Serializable
+internal data class ShadowSettings(
+    override val enabled: Boolean = true
+) : EnabledSettings {
+
+    context(Project)
+    fun applyTo() =
+        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("kotlin.serialization").id) {
+
+        }
+}

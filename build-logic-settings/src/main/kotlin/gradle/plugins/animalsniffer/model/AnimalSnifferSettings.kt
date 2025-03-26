@@ -2,7 +2,7 @@ package gradle.plugins.animalsniffer.model
 
 import gradle.plugins.animalsniffer.AnimalSnifferExtension
 import gradle.plugins.animalsniffer.CheckCacheExtension
-import gradle.project.EnabledSettings
+import gradle.plugins.project.EnabledSettings
 import kotlinx.serialization.Serializable
 
 @Serializable

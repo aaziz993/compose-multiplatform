@@ -1,6 +1,6 @@
 package gradle.accessors
 
-import gradle.project.ProjectProperties
+import gradle.plugins.project.ProjectProperties
 import org.danilopianini.gradle.git.hooks.GitHooksExtension
 import org.gradle.api.initialization.Settings
 import org.gradle.kotlin.dsl.getByType

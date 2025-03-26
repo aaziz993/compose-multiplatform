@@ -5,7 +5,6 @@ import gradle.accessors.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
-import gradle.plugins.buildconfig.BuildConfigExtension
 import gradle.plugins.dependencycheck.AdditionalCpe
 import gradle.plugins.dependencycheck.AdditionalCpeKeyTransformingSerializer
 import gradle.plugins.dependencycheck.CacheExtension
@@ -15,7 +14,7 @@ import gradle.plugins.dependencycheck.HostedSuppressionsExtension
 import gradle.plugins.dependencycheck.NvdExtension
 import gradle.plugins.dependencycheck.SlackExtension
 import gradle.plugins.dependencycheck.analyzer.AnalyzerExtension
-import gradle.project.EnabledSettings
+import gradle.plugins.project.EnabledSettings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

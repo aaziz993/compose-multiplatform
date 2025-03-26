@@ -16,9 +16,7 @@ internal class SigningPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             projectProperties.plugins.signing
-                .takeIf {
-                    it.enabled && projectProperties.kotlin.targets.isNotEmpty()
-                }?.let { signing ->
+                .takeIf (::enabled)?.let { signing ->
                     plugins.apply(SigningPlugin::class.java)
 
                     signing.applyTo()

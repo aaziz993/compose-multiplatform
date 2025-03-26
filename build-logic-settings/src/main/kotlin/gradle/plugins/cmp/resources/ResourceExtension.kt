@@ -11,7 +11,7 @@ import gradle.accessors.resources
 import gradle.accessors.settings
 import gradle.accessors.sourceSetsToComposeResourcesDirs
 import gradle.api.trySet
-import gradle.project.ProjectLayout
+import gradle.plugins.project.ProjectLayout
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.compose.resources.ResourcesExtension

@@ -8,8 +8,8 @@ import gradle.api.file.SourceDirectorySet
 import gradle.api.getByNameOrAll
 import gradle.plugins.kotlin.HasKotlinDependencies
 import gradle.plugins.kotlin.LanguageSettingsBuilder
-import gradle.project.Dependency
-import gradle.project.DependencyKeyTransformingSerializer
+import gradle.plugins.project.Dependency
+import gradle.plugins.project.DependencyKeyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

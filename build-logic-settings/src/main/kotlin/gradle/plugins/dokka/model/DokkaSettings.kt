@@ -13,7 +13,7 @@ import gradle.plugins.dokka.DokkaSourceSetSpecKeyTransformingSerializer
 import gradle.plugins.dokka.WorkerIsolation
 import gradle.plugins.dokka.plugin.DokkaPluginParametersBaseSpec
 import gradle.plugins.dokka.plugin.DokkaPluginParametersBaseSpecKeyTransformingSerializer
-import gradle.project.EnabledSettings
+import gradle.plugins.project.EnabledSettings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

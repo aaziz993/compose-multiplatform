@@ -3,7 +3,7 @@ package plugins.signing.model
 import gradle.plugins.signing.InMemoryPgpKeys
 import gradle.plugins.signing.SignFile
 import gradle.plugins.signing.SigningExtension
-import gradle.project.EnabledSettings
+import gradle.plugins.project.EnabledSettings
 import kotlinx.serialization.Serializable
 
 @Serializable

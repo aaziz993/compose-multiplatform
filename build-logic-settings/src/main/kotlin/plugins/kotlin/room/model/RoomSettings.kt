@@ -7,8 +7,7 @@ import gradle.accessors.plugins
 import gradle.accessors.settings
 import gradle.plugins.kotlin.room.RoomExtension
 import gradle.plugins.kotlin.room.SchemaDirectory
-import gradle.plugins.kotlin.room.SchemaDirectoryTransformingSerializer
-import gradle.project.EnabledSettings
+import gradle.plugins.project.EnabledSettings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

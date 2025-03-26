@@ -8,7 +8,7 @@ import gradle.accessors.plugins
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
 import gradle.plugins.kmp.nat.apple.KotlinAppleTarget
-import gradle.project.ProjectLayout
+import gradle.plugins.project.ProjectLayout
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.extraProperties

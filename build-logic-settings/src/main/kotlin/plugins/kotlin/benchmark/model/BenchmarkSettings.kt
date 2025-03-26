@@ -2,9 +2,8 @@ package plugins.kotlin.benchmark.model
 
 import gradle.plugins.kotlin.benchmark.BenchmarkConfiguration
 import gradle.plugins.kotlin.benchmark.BenchmarkTarget
-import gradle.plugins.kotlin.benchmark.BenchmarkTargetTransformingSerializer
 import gradle.plugins.kotlin.benchmark.BenchmarksExtension
-import gradle.project.EnabledSettings
+import gradle.plugins.project.EnabledSettings
 import kotlinx.serialization.Serializable
 
 @Serializable

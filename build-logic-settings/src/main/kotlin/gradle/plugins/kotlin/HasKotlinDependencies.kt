@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin
 
-import gradle.project.Dependency
-import gradle.project.DependencyKeyTransformingSerializer
+import gradle.plugins.project.Dependency
+import gradle.plugins.project.DependencyKeyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.HasKotlinDependencies

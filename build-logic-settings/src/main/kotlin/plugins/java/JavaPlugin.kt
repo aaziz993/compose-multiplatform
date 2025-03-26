@@ -5,7 +5,7 @@ import gradle.accessors.projectProperties
 import gradle.api.configureEach
 import gradle.plugins.kmp.android.KotlinAndroidTarget
 import gradle.plugins.kmp.jvm.KotlinJvmTarget
-import gradle.project.ProjectLayout
+import gradle.plugins.project.ProjectLayout
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.ApplicationPlugin

@@ -1,8 +1,8 @@
 package gradle.api.initialization
 
 import gradle.api.artifacts.dsl.RepositoryHandler
-import gradle.project.Dependency
-import gradle.project.DependencyKeyTransformingSerializer
+import gradle.plugins.project.Dependency
+import gradle.plugins.project.DependencyKeyTransformingSerializer
 
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

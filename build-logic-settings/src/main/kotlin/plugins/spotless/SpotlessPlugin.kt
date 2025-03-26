@@ -14,7 +14,7 @@ internal class SpotlessPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             projectProperties.plugins.spotless
-                .takeIf { it.enabled && projectProperties.kotlin.targets.isNotEmpty() }?.let { spotless ->
+                .takeIf (::enabled)?.let { spotless ->
                     plugins.apply(project.settings.libs.plugins.plugin("spotless").id)
 
                     spotless.applyTo()

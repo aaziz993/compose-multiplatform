@@ -1,9 +1,7 @@
 package gradle.api.initialization
 
 import gradle.api.artifacts.dsl.RepositoryHandler
-import gradle.api.repositories.ArtifactRepository
-import gradle.api.repositories.ArtifactRepositoryTransformingSerializer
-import gradle.project.VersionCatalog
+import gradle.plugins.project.VersionCatalog
 
 import kotlinx.serialization.Serializable
 

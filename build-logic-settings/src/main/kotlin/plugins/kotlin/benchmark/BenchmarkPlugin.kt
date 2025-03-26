@@ -14,7 +14,7 @@ internal class BenchmarkPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             projectProperties.plugins.benchmark
-                .takeIf { it.enabled && projectProperties.kotlin.targets.isNotEmpty() }?.let { benchmark ->
+                .takeIf (::enabled)?.let { benchmark ->
                     plugins.apply(project.settings.libs.plugins.plugin("kotlinx.benchmark").id)
 
                     benchmark.applyTo()

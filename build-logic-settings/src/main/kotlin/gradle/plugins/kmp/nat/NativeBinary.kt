@@ -1,13 +1,11 @@
 package gradle.plugins.kmp.nat
 
-import com.android.tools.r8.internal.wi
 import gradle.accessors.moduleName
 import gradle.api.ProjectNamed
 import gradle.api.tryAssign
 import gradle.api.trySet
 import gradle.collection.act
-import gradle.plugins.kmp.KotlinTarget
-import gradle.project.Dependency
+import gradle.plugins.project.Dependency
 import gradle.serialization.serializer.JsonPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.DeserializationStrategy

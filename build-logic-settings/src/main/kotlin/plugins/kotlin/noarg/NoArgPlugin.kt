@@ -14,7 +14,7 @@ internal class NoArgPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             projectProperties.plugins.noArg
-                .takeIf { it.enabled && projectProperties.kotlin.targets.isNotEmpty() }?.let { noArg ->
+                .takeIf (::enabled)?.let { noArg ->
                     plugins.apply(project.settings.libs.plugins.plugin("allopen").id)
 
                     noArg.applyTo()

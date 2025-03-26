@@ -14,7 +14,7 @@ internal class AllOpenPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             projectProperties.plugins.allOpen
-                .takeIf { it.enabled && projectProperties.kotlin.targets.isNotEmpty() }?.let { allOpen ->
+                .takeIf (::enabled)?.let { allOpen ->
                     plugins.apply(project.settings.libs.plugins.plugin("allopen").id)
 
                     allOpen.applyTo()
