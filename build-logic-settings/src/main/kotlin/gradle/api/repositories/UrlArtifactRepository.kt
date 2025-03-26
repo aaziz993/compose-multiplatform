@@ -11,7 +11,7 @@ import org.gradle.api.initialization.Settings
  *
  * @since 6.0
  */
-internal interface UrlArtifactRepository<T: UrlArtifactRepository> {
+internal interface UrlArtifactRepository<T : UrlArtifactRepository> {
 
     /**
      * Sets the base URL of this repository.

@@ -8,7 +8,7 @@ import org.gradle.process.ProcessForkOptions
  *
  * Specifies the options to use to fork a process.
  */
-internal interface ProcessForkOptions<T: ProcessForkOptions> {
+internal interface ProcessForkOptions<T : ProcessForkOptions> {
 
     /**
      * Sets the name of the executable to use.

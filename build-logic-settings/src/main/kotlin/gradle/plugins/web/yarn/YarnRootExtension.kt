@@ -37,7 +37,7 @@ internal data class YarnRootExtension(
             project.yarn::lockFileName trySet lockFileName
             project.yarn::lockFileDirectory trySet lockFileDirectory?.let(project::file)
             project.yarn::ignoreScripts trySet ignoreScripts
-            project. yarn::yarnLockMismatchReport trySet yarnLockMismatchReport
+            project.yarn::yarnLockMismatchReport trySet yarnLockMismatchReport
             project.yarn::reportNewYarnLock trySet reportNewYarnLock
             project.yarn::yarnLockAutoReplace trySet yarnLockAutoReplace
             resolutions?.map(YarnResolution::toYarnResolution)?.let(project.yarn.resolutions::addAll)

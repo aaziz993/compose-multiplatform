@@ -49,7 +49,6 @@ internal interface ApkSigningConfig<T : ApkSigningConfig> : SigningConfigDsl<T>,
     }
 }
 
-
 @Serializable
 internal data class ApkSigningConfigImpl(
     override val enableV1Signing: Boolean? = null,

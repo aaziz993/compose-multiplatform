@@ -51,7 +51,7 @@ internal data class UsesKotlinJavaToolchainImpl(
     override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
     override val name: String? = null,
-) : UsesKotlinJavaToolchain<org.jetbrains.kotlin.gradle.tasks.UsesKotlinJavaToolchain>{
+) : UsesKotlinJavaToolchain<org.jetbrains.kotlin.gradle.tasks.UsesKotlinJavaToolchain> {
 
     context(Project)
     override fun applyTo() =

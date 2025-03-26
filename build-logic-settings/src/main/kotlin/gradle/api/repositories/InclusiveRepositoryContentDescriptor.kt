@@ -18,7 +18,7 @@ import org.gradle.api.artifacts.repositories.InclusiveRepositoryContentDescripto
  *
  * @since 6.2
  */
-internal interface InclusiveRepositoryContentDescriptor<T: InclusiveRepositoryContentDescriptor> {
+internal interface InclusiveRepositoryContentDescriptor<T : InclusiveRepositoryContentDescriptor> {
 
     /**
      * Declares that an entire group should be searched for in this repository.

@@ -16,7 +16,7 @@ import org.gradle.api.Project
  */
 @Serializable
 internal data class DokkaPublication(
-    override val name: String?=null,
+    override val name: String? = null,
     /**
      * Controls whether Dokka should generate documentation using this publication.
      *
@@ -118,7 +118,7 @@ internal data class DokkaPublication(
      *
      * The value is case-sensitive.
      */
-     val formatName: String?
+    val formatName: String?
         get() = name
 
     context(Project)

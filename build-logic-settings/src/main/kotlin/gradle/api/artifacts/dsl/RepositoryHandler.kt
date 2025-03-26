@@ -9,7 +9,7 @@ import org.gradle.api.initialization.Settings
 
 @Serializable
 @Suppress("JavaDefaultMethodsNotOverriddenByDelegation")
-internal class RepositoryHandler: ArtifactRepositoryContainer by ArrayList<@Serializable(with = ArtifactRepositoryKeyTransformingSerializer::class) ArtifactRepository<out org.gradle.api.artifacts.repositories.ArtifactRepository>>() {
+internal class RepositoryHandler : ArtifactRepositoryContainer by ArrayList<@Serializable(with = ArtifactRepositoryKeyTransformingSerializer::class) ArtifactRepository<out org.gradle.api.artifacts.repositories.ArtifactRepository>>() {
 
     context(Settings)
     fun applyTo(receiver: RepositoryHandler) =

@@ -164,7 +164,6 @@ internal val Project.java: JavaPluginExtension get() = the()
 internal fun Project.java(configure: JavaPluginExtension.() -> Unit) =
     extensions.configure(configure)
 
-
 internal val Project.javaApp: JavaApplication get() = the()
 
 internal fun Project.javaApp(configure: JavaApplication.() -> Unit) =

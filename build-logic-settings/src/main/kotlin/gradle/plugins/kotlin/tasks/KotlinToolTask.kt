@@ -1,6 +1,5 @@
 package gradle.plugins.kotlin.tasks
 
-
 import gradle.api.tasks.Task
 import gradle.plugins.kotlin.KotlinCommonCompilerToolOptions
 import org.gradle.api.Project
@@ -24,7 +23,7 @@ internal interface KotlinToolTask<out TO : KotlinCommonCompilerToolOptions> : Ta
      */
     val toolOptions: TO?
 
-        context(Project)
+    context(Project)
     override fun applyTo(receiver: T) {
         super.applyTo(named)
 

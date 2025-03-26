@@ -38,7 +38,7 @@ internal data class ProducesKlibImpl(
     override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
     override val name: String? = null,
-) : ProducesKlib<org.jetbrains.kotlin.gradle.internal.tasks.ProducesKlib>{
+) : ProducesKlib<org.jetbrains.kotlin.gradle.internal.tasks.ProducesKlib> {
 
     context(Project)
     override fun applyTo() =

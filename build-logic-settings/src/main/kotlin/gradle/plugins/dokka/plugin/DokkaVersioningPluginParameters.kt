@@ -1,6 +1,5 @@
 package gradle.plugins.dokka.plugin
 
-
 import gradle.accessors.libraryAsDependency
 import gradle.accessors.libs
 import gradle.accessors.settings

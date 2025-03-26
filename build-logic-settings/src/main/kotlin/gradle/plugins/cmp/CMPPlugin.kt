@@ -17,7 +17,7 @@ public class CMPPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             projectProperties.compose
-                .takeIf (CMPSettings::enabled)?.let { compose ->
+                .takeIf(CMPSettings::enabled)?.let { compose ->
                     plugins.apply(project.settings.libs.plugins.plugin("compose.multiplatform").id)
                     plugins.apply(project.settings.libs.plugins.plugin("compose.compiler").id)
 

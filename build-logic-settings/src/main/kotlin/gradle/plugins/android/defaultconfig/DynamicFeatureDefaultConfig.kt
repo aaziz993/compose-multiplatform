@@ -11,7 +11,7 @@ import org.gradle.api.Project
  * [configuring product flavors](https://developer.android.com/studio/build/build-variants.html#product-flavors).
  * See [gradle.plugins.android.flavor.DynamicFeatureProductFlavor].
  */
-internal interface DynamicFeatureDefaultConfig<T: DynamicFeatureDefaultConfig> :
+internal interface DynamicFeatureDefaultConfig<T : DynamicFeatureDefaultConfig> :
     DynamicFeatureBaseFlavor<T>,
     DefaultConfigDsl<T> {
 

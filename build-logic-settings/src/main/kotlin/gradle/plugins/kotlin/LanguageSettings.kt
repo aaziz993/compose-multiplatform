@@ -10,7 +10,7 @@ import org.jetbrains.kotlin.project.model.LanguageSettings
  *
  * See also [Compiler options DSL documentation](https://kotlinlang.org/docs/gradle-compiler-options.html).
  */
-internal interface LanguageSettings<T: LanguageSettings> {
+internal interface LanguageSettings<T : LanguageSettings> {
 
     /**
      * Provide source compatibility with the specified version of Kotlin.

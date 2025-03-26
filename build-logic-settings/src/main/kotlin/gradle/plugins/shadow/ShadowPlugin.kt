@@ -15,7 +15,7 @@ internal class ShadowPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             projectProperties.plugins.shadow
-                .takeIf (ShadowSettings::enabled)?.let { shadow ->
+                .takeIf(ShadowSettings::enabled)?.let { shadow ->
                     plugins.apply(project.settings.libs.plugins.plugin("shadow").id)
 
                     shadow.applyTo()

@@ -8,7 +8,7 @@ import gradle.api.trySet
  *
  * This list applies to all plugin types.
  */
-internal interface BuildFeatures<T: BuildFeatures> {
+internal interface BuildFeatures<T : BuildFeatures> {
 
     /**
      * Flag to enable AIDL compilation.

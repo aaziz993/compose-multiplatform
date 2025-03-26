@@ -12,5 +12,5 @@ internal data class ForClass(
 
 internal object ForClassKeyTransformingSerializer : KeyTransformingSerializer<ForClass>(
     ForClass.serializer(),
-    "className"
+    "className",
 )

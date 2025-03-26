@@ -102,5 +102,5 @@ internal data class SourceSet(
 }
 
 internal object SourceSetKeyTransformingSerializer : NamedKeyTransformingSerializer<SourceSet>(
-        SourceSet.serializer(),
+    SourceSet.serializer(),
 )

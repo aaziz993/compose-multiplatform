@@ -11,7 +11,6 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 
-
 internal interface KspTask<T : com.google.devtools.ksp.gradle.KspTask> : Task<T> {
 
     val options: List<SubpluginOption>?

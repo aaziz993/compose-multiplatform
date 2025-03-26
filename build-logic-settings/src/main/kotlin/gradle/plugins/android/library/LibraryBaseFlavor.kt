@@ -9,7 +9,7 @@ import org.gradle.api.Project
  *
  * See [ProductFlavorDsl] and [DefaultConfigDsl] for more information.
  */
-internal interface LibraryBaseFlavor<T: LibraryBaseFlavor> : BaseFlavor<T>, LibraryVariantDimension<T> {
+internal interface LibraryBaseFlavor<T : LibraryBaseFlavor> : BaseFlavor<T>, LibraryVariantDimension<T> {
 
     context(Project)
     override fun applyTo(receiver: T) {

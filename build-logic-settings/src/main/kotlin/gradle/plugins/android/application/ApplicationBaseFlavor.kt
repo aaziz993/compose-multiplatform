@@ -15,7 +15,7 @@ import org.gradle.api.Project
  *
  * See [gradle.model.android.ProductFlavorDsl] and [gradle.model.android.DefaultConfigDsl] for more information.
  */
-internal interface ApplicationBaseFlavor<T: ApplicationBaseFlavor> : BaseFlavor<T>, ApplicationVariantDimension<T> {
+internal interface ApplicationBaseFlavor<T : ApplicationBaseFlavor> : BaseFlavor<T>, ApplicationVariantDimension<T> {
 
     /**
      * The application ID.
@@ -74,7 +74,8 @@ internal interface ApplicationBaseFlavor<T: ApplicationBaseFlavor> : BaseFlavor<
         super<ApplicationVariantDimension>.applyTo(receiver)
 
         receiver.applicationId = applicationId ?: project.androidNamespace
-        receiver::versionCode trySet (versionCode ?: project.settings.libs.versions.version("android.versionCode")?.toInt())
+        receiver::versionCode trySet (versionCode
+            ?: project.settings.libs.versions.version("android.versionCode")?.toInt())
         receiver::versionName trySet (versionName ?: project.settings.libs.versions.version("android.versionName"))
         receiver::targetSdk trySet (targetSdk ?: project.settings.libs.versions.version("android.targetSdk")?.toInt())
         receiver::targetSdkPreview trySet targetSdkPreview

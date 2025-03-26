@@ -99,7 +99,7 @@ internal interface ProjectFile {
         exclude { fileTree ->
             if (fileTree.isDirectory) false
             else {
-                val intoFile =project. file(into).let { intoFile ->
+                val intoFile = project.file(into).let { intoFile ->
                     if (intoFile.isDirectory()) intoFile.resolve(fileTree.relativePath.pathString)
                     else intoFile
                 }

@@ -2,7 +2,7 @@ package gradle.plugins.spotless
 
 import com.diffplug.gradle.spotless.RomeStepConfig
 
-internal interface RomeStepConfig<T: RomeStepConfig<T>> {
+internal interface RomeStepConfig<T : RomeStepConfig<T>> {
 
     /**
      * Optional path to the directory with configuration file for Biome. The file

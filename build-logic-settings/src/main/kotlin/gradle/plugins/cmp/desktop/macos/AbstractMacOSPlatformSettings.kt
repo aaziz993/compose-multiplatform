@@ -5,7 +5,7 @@ import gradle.plugins.cmp.desktop.platform.AbstractPlatformSettings
 import org.gradle.api.Project
 import org.jetbrains.compose.desktop.application.dsl.AbstractMacOSPlatformSettings
 
-internal abstract class AbstractMacOSPlatformSettings<T: AbstractMacOSPlatformSettings> : AbstractPlatformSettings<T>() {
+internal abstract class AbstractMacOSPlatformSettings<T : AbstractMacOSPlatformSettings> : AbstractPlatformSettings<T>() {
 
     abstract val packageName: String?
 

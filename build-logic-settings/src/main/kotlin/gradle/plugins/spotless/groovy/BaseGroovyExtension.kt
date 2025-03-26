@@ -10,7 +10,7 @@ import gradle.plugins.spotless.FormatExtension
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-internal abstract class BaseGroovyExtension<T: BaseGroovyExtension> : FormatExtension<T>() {
+internal abstract class BaseGroovyExtension<T : BaseGroovyExtension> : FormatExtension<T>() {
 
     abstract val importOrder: LinkedHashSet<String>?
 

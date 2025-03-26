@@ -17,7 +17,7 @@ internal interface HasKotlinDependencies<T : HasKotlinDependencies> {
     val dependencies: Set<@Serializable(with = DependencyKeyTransformingSerializer::class) Dependency>?
 
     context(Project)
-    fun applyTo(receiver: T){
+    fun applyTo(receiver: T) {
         dependencies?.let { dependencies ->
             receiver.dependencies {
                 dependencies.forEach { dependency ->

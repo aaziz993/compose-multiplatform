@@ -21,7 +21,8 @@ internal fun Project.version(): String =
         project.settings.libs.versions.version("$moduleName.version.major")?.toInt() ?: projectProperties.version.major,
         project.settings.libs.versions.version("$moduleName.version.minor")?.toInt() ?: projectProperties.version.minor,
         project.settings.libs.versions.version("$moduleName.version.patch")?.toInt() ?: projectProperties.version.patch,
-        project.settings.libs.versions.version("$moduleName.version.preRelease") ?: projectProperties.version.preRelease,
+        project.settings.libs.versions.version("$moduleName.version.preRelease")
+            ?: projectProperties.version.preRelease,
         "${
             gitRef?.takeIf { projectProperties.version.gitRef }.orEmpty()
         }${

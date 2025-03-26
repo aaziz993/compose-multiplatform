@@ -59,8 +59,9 @@ internal interface KotlinCommonCompilerOptions<T : org.jetbrains.kotlin.gradle.d
 
         receiver.apiVersion tryAssign (apiVersion ?: project.settings.libs.versions.version("kotlin.apiVersion")
             ?.let(KotlinVersion::valueOf))
-        receiver.languageVersion tryAssign (languageVersion ?: project.settings.libs.versions.version("kotlin.languageVersion")
-            ?.let(KotlinVersion::valueOf))
+        receiver.languageVersion tryAssign (languageVersion
+            ?: project.settings.libs.versions.version("kotlin.languageVersion")
+                ?.let(KotlinVersion::valueOf))
         optIns?.let(receiver.optIn::addAll)
         setOptIns?.act(receiver.optIn.get()::clear)?.let(receiver.optIn::addAll)
         receiver.progressiveMode tryAssign progressiveMode

@@ -9,7 +9,7 @@ import org.gradle.api.tasks.testing.logging.TestStackTraceFilter
 /**
  * Options that determine which test events get logged, and at which detail.
  */
-internal interface TestLogging<T: TestLogging> {
+internal interface TestLogging<T : TestLogging> {
 
     /**
      * Sets the events to be logged.

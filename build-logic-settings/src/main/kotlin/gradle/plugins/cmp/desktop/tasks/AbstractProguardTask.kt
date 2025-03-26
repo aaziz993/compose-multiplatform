@@ -34,24 +34,23 @@ internal abstract class AbstractProguardTask<T : org.jetbrains.compose.desktop.a
         super.applyTo(receiver)
 
         inputFiles?.toTypedArray()?.let(receiver.inputFiles::from)
-setInputFiles?.let(receiver.inputFiles::setFrom)
+        setInputFiles?.let(receiver.inputFiles::setFrom)
         receiver.mainJar tryAssign mainJar?.let(project::file)
         configurationFiles?.toTypedArray()?.let(receiver.configurationFiles::from)
-setConfigurationFiles?.let(receiver.configurationFiles::setFrom)
+        setConfigurationFiles?.let(receiver.configurationFiles::setFrom)
         receiver.dontobfuscate tryAssign dontobfuscate
         receiver.dontoptimize tryAssign dontoptimize
         receiver.joinOutputJars tryAssign joinOutputJars
         receiver.defaultComposeRulesFile tryAssign defaultComposeRulesFile?.let(project::file)
         receiver.proguardVersion tryAssign proguardVersion
         proguardFiles?.toTypedArray()?.let(receiver.proguardFiles::from)
-setProguardFiles?.let(receiver.proguardFiles::setFrom)
+        setProguardFiles?.let(receiver.proguardFiles::setFrom)
         receiver.javaHome tryAssign javaHome
         receiver.mainClass tryAssign mainClass
         receiver.maxHeapSize tryAssign maxHeapSize
         receiver.destinationDir tryAssign destinationDir?.let(project.layout.projectDirectory::dir)
     }
 }
-
 
 @Serializable
 @SerialName("AbstractProguardTask")
