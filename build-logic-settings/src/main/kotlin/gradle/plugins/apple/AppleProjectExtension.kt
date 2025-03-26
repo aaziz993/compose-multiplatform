@@ -9,7 +9,7 @@ import gradle.accessors.plugins
 import gradle.accessors.settings
 import gradle.api.applyTo
 import gradle.plugins.apple.target.AppleTarget
-import gradle.plugins.apple.target.AppleTargetTransformingSerializer
+import gradle.plugins.apple.target.AppleTargetKeyTransformingSerializer
 import gradle.plugins.apple.target.IosAppTarget
 import gradle.plugins.apple.target.IosFrameworkTarget
 import kotlinx.serialization.Serializable

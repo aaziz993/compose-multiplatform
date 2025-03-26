@@ -21,6 +21,6 @@ internal data class AppleSourceSet(
     }
 }
 
-internal object AppleSourceSetTransformingSerializer : NamedKeyTransformingSerializer<AppleSourceSet>(
+internal object AppleSourceSetKeyTransformingSerializer : NamedKeyTransformingSerializer<AppleSourceSet>(
     AppleSourceSet.serializer(),
 )

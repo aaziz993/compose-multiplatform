@@ -128,7 +128,7 @@ internal interface DokkaExtension {
      * }
      * ```
      */
-    val dokkaPublications: LinkedHashSet<DokkaPublication>?
+    val dokkaPublications: LinkedHashSet<@Serializable(with = DokkaPublicationKeyTransformingSerializer::class) DokkaPublication>?
 
     /**
      * The container for all [DokkaSourceSet][DokkaSourceSetSpec]s in the current project.

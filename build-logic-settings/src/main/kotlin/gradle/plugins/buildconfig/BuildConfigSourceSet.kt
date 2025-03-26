@@ -60,6 +60,6 @@ internal data class BuildConfigSourceSet(
     }
 }
 
-internal object BuildConfigSourceSetTransformingSerializer : NamedKeyTransformingSerializer<BuildConfigSourceSet>(
+internal object BuildConfigSourceSetKeyTransformingSerializer : NamedKeyTransformingSerializer<BuildConfigSourceSet>(
     BuildConfigSourceSet.serializer(),
 )
