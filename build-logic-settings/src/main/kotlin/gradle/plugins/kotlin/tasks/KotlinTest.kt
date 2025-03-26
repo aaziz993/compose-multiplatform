@@ -28,7 +28,7 @@ internal abstract class KotlinTest<T : org.jetbrains.kotlin.gradle.tasks.KotlinT
 @Serializable
 @SerialName("KotlinTest")
 internal data class KotlinTestImpl(
-    override val targetName: String? = null,
+    override val name: String? = null,
     override val ignoreRunFailures: Boolean? = null,
     override val binaryResultsDirectory: String? = null,
     override val ignoreFailures: Boolean? = null,

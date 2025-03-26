@@ -17,7 +17,7 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 @Serializable
 @SerialName("macosArm64")
 internal data class KotlinMacosArm64Target(
-    override val targetName: String = "macosArm64",
+    override val name: String = "macosArm64",
     override val compilations: LinkedHashSet<@Serializable(with = KotlinNativeCompilationTransformingSerializer::class) KotlinNativeCompilation>? = null,
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,

@@ -17,7 +17,6 @@ import gradle.collection.resolve
 import gradle.plugins.android.BaseExtension
 import gradle.plugins.java.JavaPluginExtension
 import gradle.plugins.java.application.JavaApplication
-import gradle.plugins.kotlin.HasKotlinDependencies
 import gradle.plugins.kotlin.KotlinSettings
 import gradle.plugins.web.node.NodeJsEnvSpec
 import gradle.plugins.web.npm.NpmExtension
@@ -40,7 +39,7 @@ import org.gradle.api.plugins.ExtraPropertiesExtension
 import org.gradle.api.provider.ProviderFactory
 import org.gradle.kotlin.dsl.extra
 import org.yaml.snakeyaml.Yaml
-import plugins.apple.model.AppleSettings
+import gradle.plugins.apple.model.AppleSettings
 import plugins.cmp.model.CMPSettings
 
 internal const val PROJECT_PROPERTIES_FILE = "project.yaml"

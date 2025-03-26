@@ -7,9 +7,6 @@ import gradle.accessors.plugins
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
 import gradle.plugins.animalsniffer.model.AnimalSnifferSettings
-import gradle.plugins.kmp.KotlinJvmAndAndroidTarget
-import gradle.plugins.kmp.android.KotlinAndroidTarget
-import gradle.plugins.kmp.jvm.KotlinJvmTarget
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 

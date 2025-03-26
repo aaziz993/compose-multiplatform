@@ -8,12 +8,12 @@ import org.gradle.api.Project
 
 @Serializable
 internal data class AppleSourceSet(
+    override val name: String? = null,
     val apple: SourceDirectorySet? = null,
-    val sourceSetName: String? = null,
 ) : ProjectNamed<org.jetbrains.gradle.apple.AppleSourceSet> {
 
-    override val name: String?
-        get() = sourceSetName
+    val sourceSetName: String?
+        get() = name
 
     context(Project)
     override fun applyTo(receiver: org.jetbrains.gradle.apple.AppleSourceSet) {

@@ -12,7 +12,7 @@ import org.gradle.api.Project
 
 @Serializable
 internal data class KotlinNativeCompilation(
-    override val compilationName: String,
+    override val name: String,
     override val defaultSourceSet: KotlinSourceSet? = null,
     override val compileDependencyFiles: List<String>? = null,
     override val output: KotlinCompilationOutput? = null,

@@ -64,12 +64,10 @@ internal data class LibraryBuildType(
     override val buildConfigFields: List<BuildConfigField>? = null,
     override val resValues: List<ResValue>? = null,
     override val optimization: Optimization? = null,
+    override val isShrinkResources: Boolean? = null,
     val androidTest: AndroidTest? = null,
 ) : BuildType<com.android.build.api.dsl.LibraryBuildType>,
     LibraryVariantDimension<com.android.build.api.dsl.LibraryBuildType> {
-
-    override val isShrinkResources: Boolean?
-        get() = false
 
     context(Project)
     @Suppress("UnstableApiUsage")

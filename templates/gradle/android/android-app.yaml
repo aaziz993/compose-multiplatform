@@ -1,2 +1,7 @@
 android:
   type: baseApp
+  buildTypes:
+    - release:
+        isShrinkResources: true
+    - debug:
+        isShrinkResources: false

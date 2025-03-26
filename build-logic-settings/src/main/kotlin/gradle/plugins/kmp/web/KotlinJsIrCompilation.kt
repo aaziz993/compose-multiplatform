@@ -11,7 +11,7 @@ import org.gradle.api.Project
 
 @Serializable
 internal data class KotlinJsIrCompilation(
-    override val compilationName: String, override val defaultSourceSet: KotlinSourceSet? = null,
+    override val name: String, override val defaultSourceSet: KotlinSourceSet? = null,
     override val compileDependencyFiles: Set<String>? = null,
     override val setCompileDependencyFiles: Set<String>? = null,
     override val output: KotlinCompilationOutput? = null,

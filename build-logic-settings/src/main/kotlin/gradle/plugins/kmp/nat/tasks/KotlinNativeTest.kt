@@ -16,7 +16,7 @@ import org.jetbrains.kotlin.gradle.targets.native.tasks.KotlinNativeTest
 
 @Serializable
 internal data class KotlinNativeTest(
-    override val targetName: String? = null,
+    override val name: String? = null,
     override val ignoreRunFailures: Boolean? = null,
     override val binaryResultsDirectory: String? = null,
     override val ignoreFailures: Boolean? = null,

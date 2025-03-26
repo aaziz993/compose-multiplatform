@@ -15,15 +15,7 @@ import org.gradle.api.Project
  */
 @Serializable
 internal data class DokkaPublication(
-
-    /**
-     * The identifier of the generated output format.
-     *
-     * For example, `html` or `javadoc`.
-     *
-     * The value is case-sensitive.
-     */
-    val formatName: String? = null,
+    override val name: String?=null,
     /**
      * Controls whether Dokka should generate documentation using this publication.
      *
@@ -118,8 +110,15 @@ internal data class DokkaPublication(
     val finalizeCoroutines: Boolean? = null,
 ) : ProjectNamed<org.jetbrains.dokka.gradle.formats.DokkaPublication> {
 
-    override val name: String?
-        get() = formatName
+    /**
+     * The identifier of the generated output format.
+     *
+     * For example, `html` or `javadoc`.
+     *
+     * The value is case-sensitive.
+     */
+     val formatName: String?
+        get() = name
 
     context(Project)
     override fun applyTo(receiver: org.jetbrains.dokka.gradle.formats.DokkaPublication) {

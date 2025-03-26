@@ -14,7 +14,7 @@ import org.gradle.kotlin.dsl.withType
 @Serializable
 @SerialName("linuxArm64")
 internal data class KotlinLinuxArm64Target(
-    override val targetName: String = "linuxArm64",
+    override val name: String = "linuxArm64",
     override val compilations: LinkedHashSet<@Serializable(with = KotlinNativeCompilationTransformingSerializer::class) KotlinNativeCompilation>? = null,
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,

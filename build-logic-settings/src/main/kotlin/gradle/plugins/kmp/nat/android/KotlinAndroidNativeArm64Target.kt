@@ -14,7 +14,7 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 @Serializable
 @SerialName("androidNativeArm64")
 internal data class KotlinAndroidNativeArm64Target(
-    override val targetName: String = "androidNativeArm64",
+    override val name: String = "androidNativeArm64",
     override val compilations: LinkedHashSet<@Serializable(with = KotlinNativeCompilationTransformingSerializer::class) KotlinNativeCompilation>? = null,
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,

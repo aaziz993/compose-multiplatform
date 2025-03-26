@@ -15,6 +15,6 @@ internal data class KotlinNativeTargetWithSimulatorTestsImpl(
     override val testRuns: LinkedHashSet<@Serializable(with = KotlinNativeHostTestRunTransformingSerializer::class) KotlinNativeHostTestRun>? = null,
 ) : KotlinNativeTargetWithHostTests() {
 
-    override val targetName: String
+    override val name: String
         get() = ""
 }

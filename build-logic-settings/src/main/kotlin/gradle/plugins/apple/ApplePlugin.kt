@@ -1,4 +1,4 @@
-package plugins.apple
+package gradle.plugins.apple
 
 import gradle.accessors.apple
 import gradle.accessors.id

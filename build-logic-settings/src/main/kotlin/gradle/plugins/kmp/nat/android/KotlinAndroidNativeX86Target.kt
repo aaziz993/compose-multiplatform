@@ -14,7 +14,7 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 @Serializable
 @SerialName("androidNativeX86")
 internal data class KotlinAndroidNativeX86Target(
-    override val targetName: String = "androidNativeX86",
+    override val name: String = "androidNativeX86",
     override val compilations: LinkedHashSet<@Serializable(with = KotlinNativeCompilationTransformingSerializer::class) KotlinNativeCompilation>? = null,
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,

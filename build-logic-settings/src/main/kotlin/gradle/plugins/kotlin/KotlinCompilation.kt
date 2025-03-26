@@ -85,9 +85,7 @@ internal interface KotlinCompilation<T : org.jetbrains.kotlin.gradle.plugin.Kotl
      * The name of the compilation.
      */
     val compilationName: String?
-
-    override val name: String?
-        get() = compilationName
+        get() = name
 
     /**
      * The [KotlinSourceSet] by default associated with this compilation.
@@ -140,7 +138,7 @@ internal abstract class KotlinCompilationTransformingSerializer<T : KotlinCompil
 
 @Serializable
 internal data class KotlinCompilationImpl(
-    override val compilationName: String, override val defaultSourceSet: KotlinSourceSet? = null,
+    override val name: String, override val defaultSourceSet: KotlinSourceSet? = null,
     override val compileDependencyFiles: List<String>? = null,
     override val output: KotlinCompilationOutput? = null,
     override val associatedCompilations: Set<String>? = null,

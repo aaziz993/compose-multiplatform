@@ -2,8 +2,8 @@ package gradle.project
 
 import kotlinx.serialization.Serializable
 import gradle.plugins.animalsniffer.model.AnimalSnifferSettings
-import plugins.apivalidation.model.ApiValidationSettings
-import plugins.buildconfig.model.BuildConfigSettings
+import gradle.plugins.apivalidation.model.ApiValidationSettings
+import gradle.plugins.buildconfig.model.BuildConfigSettings
 import plugins.dependencycheck.model.DependencyCheckSettings
 import plugins.develocity.model.DevelocitySettings
 import plugins.doctor.model.DoctorSettings

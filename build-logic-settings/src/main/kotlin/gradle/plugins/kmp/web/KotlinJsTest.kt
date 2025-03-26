@@ -15,7 +15,7 @@ import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
 
 @Serializable
 internal data class KotlinJsTest(
-    override val targetName: String? = null,
+    override val name: String? = null,
     override val ignoreRunFailures: Boolean? = null,
     override val binaryResultsDirectory: String? = null,
     override val ignoreFailures: Boolean? = null,

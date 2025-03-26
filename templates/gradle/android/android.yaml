@@ -23,15 +23,11 @@ android:
         proguardFiles: [ proguard.pro ]
         isMinifyEnabled: true
         debuggable: false
-        # application part
-        isShrinkResources: true
         signingConfig:
           name: release
     - debug:
         isMinifyEnabled: false
         debuggable: true
-        # application part
-        isShrinkResources: false
   lint:
     xmlReport: true
     xmlOutput: build/reports/lint-results.xml # path to the lint report to consume by sonar

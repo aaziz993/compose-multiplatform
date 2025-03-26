@@ -1,6 +1,5 @@
 package gradle.plugins.buildconfig
 
-import com.github.gmazzo.gradle.plugins.BuildConfigSourceSet
 import gradle.api.applyTo
 import gradle.api.tryAssign
 import gradle.plugins.buildconfig.generator.BuildConfigGenerator
@@ -9,6 +8,7 @@ import gradle.plugins.buildconfig.generator.BuildConfigJavaGeneratorContentPolym
 import gradle.plugins.buildconfig.generator.BuildConfigKotlinGenerator
 import gradle.plugins.buildconfig.generator.BuildConfigKotlinGeneratorContentPolymorphicSerializer
 import gradle.plugins.buildconfig.tasks.BuildConfigTask
+import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -26,10 +26,10 @@ internal data class BuildConfigSourceSet(
      * Creates a secondary build class with the given [className] in the same package
      */
     val forClass: Set<ForClass>? = null,
-) : BuildConfigClassSpec<BuildConfigSourceSet> {
+) : BuildConfigClassSpec<com.github.gmazzo.gradle.plugins.BuildConfigSourceSet> {
 
     context(Project)
-    override fun applyTo(receiver: BuildConfigSourceSet) {
+    override fun applyTo(receiver: com.github.gmazzo.gradle.plugins.BuildConfigSourceSet) {
         super.applyTo(receiver)
         receiver.className tryAssign className
         receiver.packageName tryAssign packageName
@@ -59,5 +59,3 @@ internal data class BuildConfigSourceSet(
         }
     }
 }
-
-

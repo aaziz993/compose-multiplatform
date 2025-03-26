@@ -15,6 +15,6 @@ internal data class KotlinNativeTargetWithHostTestsImpl(
     override val testRuns: List<@Serializable(with = KotlinNativeSimulatorTestRunTransformingSerializer::class) KotlinNativeSimulatorTestRun>? = null,
 ) : KotlinNativeTargetWithSimulatorTests() {
 
-    override val targetName: String
+    override val name: String
         get() = ""
 }

@@ -27,7 +27,7 @@ internal interface KotlinWasmTargetDsl<T : org.jetbrains.kotlin.gradle.targets.j
 @Serializable
 @SerialName("wasm")
 internal data class KotlinWasmTargetDslImpl(
-    override val targetName: String = "",
+    override val name: String = "",
     override val compilations: LinkedHashSet<@Serializable(with = KotlinJsIrCompilationTransformingSerializer::class) KotlinJsIrCompilation>? = null,
     override val binaries: KotlinJsBinaryContainer = KotlinJsBinaryContainer(),
 ) : KotlinWasmTargetDsl<org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinWasmTargetDsl> {

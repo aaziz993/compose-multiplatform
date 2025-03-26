@@ -11,7 +11,7 @@ import org.gradle.api.Project
 
 internal interface BuildConfigExtension {
 
-    val sourceSets: List<BuildConfigSourceSet>?
+    val sourceSets: LinkedHashSet<BuildConfigSourceSet>?
 
     context(Project)
     fun applyTo() =

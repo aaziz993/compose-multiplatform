@@ -72,9 +72,9 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinNativeLink
 import org.jetbrains.kotlin.gradle.tasks.KotlinTest
 import gradle.plugins.android.AndroidPlugin
 import gradle.plugins.animalsniffer.AnimalSnifferPlugin
-import plugins.apivalidation.ApiValidationPlugin
-import plugins.apple.ApplePlugin
-import plugins.buildconfig.BuildConfigPlugin
+import gradle.plugins.apivalidation.ApiValidationPlugin
+import gradle.plugins.apple.ApplePlugin
+import gradle.plugins.buildconfig.BuildConfigPlugin
 import plugins.cmp.CMPPlugin
 import plugins.dependencycheck.DependencyCheckPlugin
 import plugins.develocity.DevelocityPlugin

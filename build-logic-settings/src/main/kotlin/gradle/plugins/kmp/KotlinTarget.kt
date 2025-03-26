@@ -15,9 +15,7 @@ import org.gradle.api.Project
 internal interface KotlinTarget<T : org.jetbrains.kotlin.gradle.plugin.KotlinTarget> : ProjectNamed<T> {
 
     val targetName: String?
-
-    override val name: String?
-        get() = targetName
+        get() = name
 
     /**
      * A container for [Kotlin compilations][KotlinCompilation] related to this target.
@@ -54,7 +52,7 @@ internal object KotlinTargetTransformingSerializer : KeyTransformingSerializer<K
 @Serializable
 @SerialName("KotlinTarget")
 internal data class KotlinTargetIml(
-    override val targetName: String? = null,
+    override val name: String? = null,
     override val compilations: LinkedHashSet<KotlinCompilationImpl>? = null,
 ) : KotlinTarget<org.jetbrains.kotlin.gradle.plugin.KotlinTarget> {
 

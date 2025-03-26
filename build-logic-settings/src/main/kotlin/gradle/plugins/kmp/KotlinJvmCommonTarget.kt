@@ -14,7 +14,7 @@ import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
 @Serializable
 @SerialName("jvmCommon")
 internal data class KotlinJvmCommonTarget(
-    override val targetName: String? = null,
+    override val name: String? = null,
     override val compilations: Set<KotlinJvmAndroidCompilation>? = null,
     override val compilerOptions: KotlinJvmCompilerOptions? = null,
 ) : KotlinTarget<org.jetbrains.kotlin.gradle.plugin.KotlinTarget>,

@@ -17,7 +17,7 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 @Serializable
 @SerialName("iosSimulatorArm64")
 internal data class KotlinIosSimulatorArm64Target(
-    override val targetName: String = "iosSimulatorArm64",
+    override val name: String = "iosSimulatorArm64",
     override val compilations: LinkedHashSet<@Serializable(with = KotlinNativeCompilationTransformingSerializer::class) KotlinNativeCompilation>? = null,
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,

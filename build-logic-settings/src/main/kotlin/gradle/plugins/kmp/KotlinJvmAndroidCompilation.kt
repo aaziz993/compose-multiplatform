@@ -14,7 +14,7 @@ import org.gradle.kotlin.dsl.invoke
 
 @Serializable
 internal data class KotlinJvmAndroidCompilation(
-    override val compilationName: String,
+    override val name: String,
     override val defaultSourceSet: KotlinSourceSet? = null,
     override val compileDependencyFiles: Set<String>? = null,
     override val setCompileDependencyFiles: Set<String>? = null,

@@ -31,7 +31,7 @@ internal abstract class KotlinNativeTarget<T : org.jetbrains.kotlin.gradle.plugi
 @Serializable
 @SerialName("native")
 internal data class KotlinNativeTargetImpl(
-    override val targetName: String? = null,
+    override val name: String? = null,
     override val compilations: LinkedHashSet<@Serializable(with = KotlinNativeCompilationTransformingSerializer::class) KotlinNativeCompilation>? = null,
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,

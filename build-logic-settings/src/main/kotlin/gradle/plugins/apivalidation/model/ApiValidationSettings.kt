@@ -1,4 +1,4 @@
-package plugins.apivalidation.model
+package gradle.plugins.apivalidation.model
 
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import gradle.accessors.apiBuild
