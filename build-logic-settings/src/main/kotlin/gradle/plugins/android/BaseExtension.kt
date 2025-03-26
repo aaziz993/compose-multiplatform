@@ -95,7 +95,7 @@ internal interface BaseExtension {
 
     val productFlavors: Set<ProductFlavor>?
 
-    val signingConfigs: Set<@Serializable(with = SigningConfigTransformingSerializer::class) SigningConfigImpl>?
+    val signingConfigs: Set<@Serializable(with = SigningConfigKeyTransformingSerializer::class) SigningConfigImpl>?
 
     // these are indirectly implemented by extensions when they implement the new public
     // extension interfaces via delegates.

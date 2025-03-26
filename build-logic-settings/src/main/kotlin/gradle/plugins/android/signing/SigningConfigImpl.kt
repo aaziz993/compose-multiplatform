@@ -28,7 +28,7 @@ internal data class SigningConfigImpl(
     }
 }
 
-internal object SigningConfigTransformingSerializer : KeyTransformingSerializer<SigningConfigImpl>(
+internal object SigningConfigKeyTransformingSerializer : KeyTransformingSerializer<SigningConfigImpl>(
     SigningConfigImpl.serializer(),
     "name",
 )

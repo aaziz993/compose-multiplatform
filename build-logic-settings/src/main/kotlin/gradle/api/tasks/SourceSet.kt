@@ -1,10 +1,10 @@
 package gradle.api.tasks
 
+import gradle.api.NamedKeyTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.file.SourceDirectorySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import org.gradle.api.tasks.SourceSet
 
 /**
  * A `SourceSet` represents a logical group of Java source and resource files. They
@@ -86,10 +86,10 @@ internal data class SourceSet(
     val java: SourceDirectorySet? = null,
     val allJava: SourceDirectorySet? = null,
     val allSource: SourceDirectorySet? = null,
-) : ProjectNamed<SourceSet> {
+) : ProjectNamed<org.gradle.api.tasks.SourceSet> {
 
     context(Project)
-    override fun applyTo(receiver: SourceSet) {
+    override fun applyTo(receiver: org.gradle.api.tasks.SourceSet) {
         compileClasspath?.toTypedArray()?.let(receiver::compiledBy)
         annotationProcessorPath?.toTypedArray()?.let(project::files)?.let(receiver::setAnnotationProcessorPath)
         runtimeClasspath?.toTypedArray()?.let(project::files)?.let(receiver::setRuntimeClasspath)
@@ -100,3 +100,7 @@ internal data class SourceSet(
         allSource?.applyTo(receiver.allSource)
     }
 }
+
+internal object SourceSetKeyTransformingSerializer : NamedKeyTransformingSerializer<SourceSet>(
+        SourceSet.serializer(),
+)

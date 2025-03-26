@@ -9,7 +9,7 @@ internal data class MissingDimensionStrategy(
     val requestedValues: List<String>
 )
 
-internal object MissingDimensionStrategyTransformingSerializer : KeyTransformingSerializer<MissingDimensionStrategy>(
+internal object MissingDimensionStrategyKeyTransformingSerializer : KeyTransformingSerializer<MissingDimensionStrategy>(
     MissingDimensionStrategy.serializer(),
     "dimension",
 )

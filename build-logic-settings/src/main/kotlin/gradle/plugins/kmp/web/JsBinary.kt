@@ -40,7 +40,7 @@ private object JsIrBinarySerializer : JsonPolymorphicSerializer<JsIrBinary<*>>(
     JsIrBinary::class,
 )
 
-internal object JsIrBinaryTransformingSerializer : KeyTransformingSerializer<JsIrBinary<*>>(
+internal object JsIrBinaryKeyTransformingSerializer : KeyTransformingSerializer<JsIrBinary<*>>(
     JsIrBinarySerializer,
     "type",
 )

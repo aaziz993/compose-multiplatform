@@ -17,7 +17,7 @@ internal data class KotlinNativeCompilation(
     override val compileDependencyFiles: List<String>? = null,
     override val output: KotlinCompilationOutput? = null,
     override val associatedCompilations: Set<String>? = null,
-    override val dependencies: List<@Serializable(with = DependencyTransformingSerializer::class) Dependency>? = null,
+    override val dependencies: List<@Serializable(with = DependencyKeyTransformingSerializer::class) Dependency>? = null,
     // Interop DSL.
     val cinterops: List<DefaultCInteropSettings>? = null
 ) : KotlinCompilation<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeCompilation> {

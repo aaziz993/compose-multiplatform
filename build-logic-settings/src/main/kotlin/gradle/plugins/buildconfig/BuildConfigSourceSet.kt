@@ -1,5 +1,6 @@
 package gradle.plugins.buildconfig
 
+import gradle.api.NamedKeyTransformingSerializer
 import gradle.api.applyTo
 import gradle.api.tryAssign
 import gradle.plugins.buildconfig.generator.BuildConfigGenerator
@@ -8,7 +9,6 @@ import gradle.plugins.buildconfig.generator.BuildConfigJavaGeneratorContentPolym
 import gradle.plugins.buildconfig.generator.BuildConfigKotlinGenerator
 import gradle.plugins.buildconfig.generator.BuildConfigKotlinGeneratorContentPolymorphicSerializer
 import gradle.plugins.buildconfig.tasks.BuildConfigTask
-import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -59,3 +59,7 @@ internal data class BuildConfigSourceSet(
         }
     }
 }
+
+internal object BuildConfigSourceSetTransformingSerializer : NamedKeyTransformingSerializer<BuildConfigSourceSet>(
+    BuildConfigSourceSet.serializer(),
+)

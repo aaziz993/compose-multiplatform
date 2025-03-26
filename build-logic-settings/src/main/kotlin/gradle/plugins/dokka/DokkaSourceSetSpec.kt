@@ -309,7 +309,7 @@ internal data class DokkaSourceSetSpec(
     }
 }
 
-internal object DokkaSourceSetSpecTransformingSerializer : KeyTransformingSerializer<DokkaSourceSetSpec>(
+internal object DokkaSourceSetSpecKeyTransformingSerializer : KeyTransformingSerializer<DokkaSourceSetSpec>(
     DokkaSourceSetSpec.serializer(),
     "name",
 )

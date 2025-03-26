@@ -18,10 +18,10 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 @SerialName("iosX64")
 internal data class KotlinIosX64Target(
     override val name: String = "iosX64",
-    override val compilations: LinkedHashSet<@Serializable(with = KotlinNativeCompilationTransformingSerializer::class) KotlinNativeCompilation>? = null,
+    override val compilations: LinkedHashSet<@Serializable(with = KotlinNativeCompilationKeyTransformingSerializer::class) KotlinNativeCompilation>? = null,
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,
-    override val testRuns: List<@Serializable(with = KotlinNativeSimulatorTestRunTransformingSerializer::class) KotlinNativeSimulatorTestRun>? = null,
+    override val testRuns: List<@Serializable(with = KotlinNativeSimulatorTestRunKeyTransformingSerializer::class) KotlinNativeSimulatorTestRun>? = null,
 ) : KotlinNativeTargetWithSimulatorTests(), KotlinIosTarget {
 
     context(Project)

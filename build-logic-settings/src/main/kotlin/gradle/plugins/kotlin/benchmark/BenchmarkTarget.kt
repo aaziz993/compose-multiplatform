@@ -22,7 +22,7 @@ private object BenchmarkTargetSerializer : JsonPolymorphicSerializer<BenchmarkTa
     BenchmarkTarget::class,
 )
 
-internal object BenchmarkTargetTransformingSerializer : KeyTransformingSerializer<BenchmarkTarget<*>>(
+internal object BenchmarkTargetKeyTransformingSerializer : KeyTransformingSerializer<BenchmarkTarget<*>>(
     BenchmarkTargetSerializer,
     "type",
 )

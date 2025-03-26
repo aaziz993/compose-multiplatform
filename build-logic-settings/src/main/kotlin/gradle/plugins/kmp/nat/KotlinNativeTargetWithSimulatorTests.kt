@@ -9,10 +9,10 @@ internal abstract class KotlinNativeTargetWithSimulatorTests : KotlinNativeTarge
 @Serializable
 @SerialName("nativeWithSimulatorTests")
 internal data class KotlinNativeTargetWithHostTestsImpl(
-    override val compilations: LinkedHashSet<@Serializable(with = KotlinNativeCompilationTransformingSerializer::class) KotlinNativeCompilation>? = null,
+    override val compilations: LinkedHashSet<@Serializable(with = KotlinNativeCompilationKeyTransformingSerializer::class) KotlinNativeCompilation>? = null,
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,
-    override val testRuns: List<@Serializable(with = KotlinNativeSimulatorTestRunTransformingSerializer::class) KotlinNativeSimulatorTestRun>? = null,
+    override val testRuns: List<@Serializable(with = KotlinNativeSimulatorTestRunKeyTransformingSerializer::class) KotlinNativeSimulatorTestRun>? = null,
 ) : KotlinNativeTargetWithSimulatorTests() {
 
     override val name: String

@@ -11,7 +11,7 @@ internal data class KotlinNativeHostTestRun(
     override val name: String
 ) : KotlinNativeBinaryTestRun<org.jetbrains.kotlin.gradle.targets.native.KotlinNativeHostTestRun>
 
-internal object KotlinNativeHostTestRunTransformingSerializer : KeyTransformingSerializer<KotlinNativeHostTestRun>(
+internal object KotlinNativeHostTestRunKeyTransformingSerializer : KeyTransformingSerializer<KotlinNativeHostTestRun>(
     KotlinNativeHostTestRun.serializer(),
     "type",
 )

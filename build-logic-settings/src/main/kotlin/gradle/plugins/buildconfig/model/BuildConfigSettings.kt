@@ -6,13 +6,15 @@ import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
 import gradle.plugins.buildconfig.BuildConfigExtension
+import gradle.plugins.buildconfig.BuildConfigSourceSet
+import gradle.plugins.buildconfig.BuildConfigSourceSetTransformingSerializer
 import gradle.project.EnabledSettings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
 @Serializable
 internal data class BuildConfigSettings(
-    override val sourceSets: Set<String>? = null,
+    override val sourceSets: LinkedHashSet<@Serializable(with = BuildConfigSourceSetKeyTransformingSerializer::class) BuildConfigSourceSet>? = null,
     override val enabled: Boolean = true,
 ) : BuildConfigExtension, EnabledSettings {
 

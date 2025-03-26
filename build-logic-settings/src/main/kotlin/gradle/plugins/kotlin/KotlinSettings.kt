@@ -30,9 +30,9 @@ internal data class KotlinSettings(
     override val coreLibrariesVersion: String? = null,
     override val explicitApi: ExplicitApiMode? = null,
     override val compilerOptions: KotlinCommonCompilerOptionsImpl? = null,
-    val targets: LinkedHashSet<@Serializable(with = KotlinTargetTransformingSerializer::class) KotlinTarget<*>> = emptySet(),
-    val hierarchy: Set<@Serializable(with = HierarchyAliasTransformingSerializer::class) HierarchyGroup> = emptySet(),
-    val sourceSets: LinkedHashSet<@Serializable(with = KotlinSourceSetTransformingSerializer::class) KotlinSourceSet> = emptySet(),
+    val targets: LinkedHashSet<@Serializable(with = KotlinTargetKeyTransformingSerializer::class) KotlinTarget<*>> = emptySet(),
+    val hierarchy: Set<@Serializable(with = HierarchyAliasKeyTransformingSerializer::class) HierarchyGroup> = emptySet(),
+    val sourceSets: LinkedHashSet<@Serializable(with = KotlinSourceSetKeyTransformingSerializer::class) KotlinSourceSet> = emptySet(),
     val cocoapods: CocoapodsSettings = CocoapodsSettings(),
 ) : KotlinMultiplatformExtension {
 

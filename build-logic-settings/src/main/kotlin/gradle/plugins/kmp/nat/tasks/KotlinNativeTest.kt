@@ -41,7 +41,7 @@ internal data class KotlinNativeTest(
     val args: List<String>? = null,
     val workingDir: String? = null,
     val environment: SerializableAnyMap? = null,
-    val trackEnvironments: List<@Serializable(with = TrackEnvironmentTransformingSerializer::class) TrackEnvironment>? = null,
+    val trackEnvironments: List<@Serializable(with = TrackEnvironmentKeyTransformingSerializer::class) TrackEnvironment>? = null,
 ) : KotlinTest<KotlinNativeTest>() {
 
     context(Project)

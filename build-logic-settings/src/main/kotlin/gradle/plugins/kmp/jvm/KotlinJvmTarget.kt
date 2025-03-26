@@ -16,7 +16,7 @@ import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
 @SerialName("jvm")
 internal data class KotlinJvmTarget(
     override val name: String = "jvm",
-    override val compilations: LinkedHashSet<@Serializable(with = KotlinJvmAndroidCompilationTransformingSerializer::class) KotlinJvmAndroidCompilation>? = null,
+    override val compilations: LinkedHashSet<@Serializable(with = KotlinJvmAndroidCompilationKeyTransformingSerializer::class) KotlinJvmAndroidCompilation>? = null,
     override val compilerOptions: KotlinJvmCompilerOptions? = null,
     val testRuns: List<KotlinJvmTestRun>? = null,
     val mainRun: KotlinJvmRunDsl? = null,

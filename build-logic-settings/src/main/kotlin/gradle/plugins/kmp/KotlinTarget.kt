@@ -44,7 +44,7 @@ private object KotlinTargetSerializer : JsonPolymorphicSerializer<KotlinTarget<*
     KotlinTarget::class,
 )
 
-internal object KotlinTargetTransformingSerializer : KeyTransformingSerializer<KotlinTarget<*>>(
+internal object KotlinTargetKeyTransformingSerializer : KeyTransformingSerializer<KotlinTarget<*>>(
     KotlinTargetSerializer,
     "type",
 )

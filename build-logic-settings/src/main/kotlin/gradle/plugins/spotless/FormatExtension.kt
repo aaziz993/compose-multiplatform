@@ -239,7 +239,7 @@ private object FormatExtensionSerializer : JsonPolymorphicSerializer<FormatExten
     FormatExtension::class,
 )
 
-internal object FormatExtensionTransformingSerializer : KeyTransformingSerializer<FormatExtension<*>>(
+internal object FormatExtensionKeyTransformingSerializer : KeyTransformingSerializer<FormatExtension<*>>(
     FormatExtensionSerializer,
     "type",
 )

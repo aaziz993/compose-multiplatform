@@ -21,10 +21,10 @@ internal abstract class KotlinNativeTargetWithTests<T : org.jetbrains.kotlin.gra
 @Serializable
 @SerialName("nativeWithTests")
 internal data class KotlinNativeTargetWithTestsImpl(
-    override val compilations: LinkedHashSet<@Serializable(with = KotlinNativeCompilationTransformingSerializer::class) KotlinNativeCompilation>? = null,
+    override val compilations: LinkedHashSet<@Serializable(with = KotlinNativeCompilationKeyTransformingSerializer::class) KotlinNativeCompilation>? = null,
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,
-    override val testRuns: Set<@Serializable(with = KotlinNativeBinaryTestRunTransformingSerializer::class) KotlinNativeBinaryTestRunImpl>? = null,
+    override val testRuns: Set<@Serializable(with = KotlinNativeBinaryTestRunKeyTransformingSerializer::class) KotlinNativeBinaryTestRunImpl>? = null,
 ) : KotlinNativeTargetWithTests<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTargetWithTests<*>>() {
 
     context(Project)

@@ -7,6 +7,7 @@ import gradle.accessors.version
 import gradle.accessors.versions
 import gradle.api.applyTo
 import gradle.api.tasks.SourceSet
+import gradle.api.tasks.SourceSetKeyTransformingSerializer
 import gradle.api.tryAssign
 import gradle.plugins.java.manifest.Manifest
 import kotlinx.serialization.Serializable
@@ -114,7 +115,7 @@ internal data class JavaPluginExtension(
      * @since 6.8
      */
     val consistentResolution: JavaResolutionConsistency? = null,
-    val sourceSets: LinkedHashSet<SourceSet>? = null,
+    val sourceSets: LinkedHashSet<@Serializable(with = SourceSetKeyTransformingSerializer::class) SourceSet>? = null,
     /**
      * Sets a file pointing to the root directory supposed to be used for all docs.
      * @since 7.1

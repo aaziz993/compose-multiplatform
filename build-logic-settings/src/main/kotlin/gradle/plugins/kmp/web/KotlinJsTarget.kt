@@ -10,7 +10,7 @@ import org.gradle.kotlin.dsl.withType
 @SerialName("js")
 internal data class KotlinJsTarget(
     override val name: String = "js",
-    override val compilations: Set<@Serializable(with = KotlinJsIrCompilationTransformingSerializer::class) KotlinJsIrCompilation>? = null,
+    override val compilations: Set<@Serializable(with = KotlinJsIrCompilationKeyTransformingSerializer::class) KotlinJsIrCompilation>? = null,
     override val nodejs: KotlinJsNodeDsl? = null,
     override val moduleName: String? = null,
     override val browser: KotlinJsBrowserDsl? = null,

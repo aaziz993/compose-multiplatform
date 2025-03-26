@@ -137,7 +137,7 @@ internal data class DokkaPublication(
     }
 }
 
-internal object DokkaPublicationTransformingSerializer : KeyTransformingSerializer<DokkaPublication>(
+internal object DokkaPublicationKeyTransformingSerializer : KeyTransformingSerializer<DokkaPublication>(
     DokkaPublication.serializer(),
     "formatName",
 )

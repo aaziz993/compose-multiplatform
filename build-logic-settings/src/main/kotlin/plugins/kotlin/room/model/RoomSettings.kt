@@ -14,7 +14,7 @@ import org.gradle.api.Project
 
 @Serializable
 internal data class RoomSettings(
-    override val schemaDirectories: Set<@Serializable(with = SchemaDirectoryTransformingSerializer::class) SchemaDirectory>? = null,
+    override val schemaDirectories: Set<@Serializable(with = SchemaDirectoryKeyTransformingSerializer::class) SchemaDirectory>? = null,
     override val generateKotlin: Boolean? = null,
     override val enabled: Boolean = true
 ) : RoomExtension, EnabledSettings {

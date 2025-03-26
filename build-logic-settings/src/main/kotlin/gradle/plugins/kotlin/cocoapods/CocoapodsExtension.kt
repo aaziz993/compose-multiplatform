@@ -113,7 +113,7 @@ internal interface CocoapodsExtension {
      */
     val pods: Set<Pod>?
 
-    val podDependencies: Set<@Serializable(with = CocoapodsDependencyTransformingSerializer::class) CocoapodsDependency>?
+    val podDependencies: Set<@Serializable(with = CocoapodsDependencyKeyTransformingSerializer::class) CocoapodsDependency>?
 
     context(Project)
     fun applyTo() =

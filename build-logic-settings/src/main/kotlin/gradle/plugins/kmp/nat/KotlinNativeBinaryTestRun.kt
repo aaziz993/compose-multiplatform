@@ -41,7 +41,7 @@ internal data class KotlinNativeBinaryTestRunImpl(
     override val name: String? = null,
 ) : KotlinNativeBinaryTestRun<org.jetbrains.kotlin.gradle.targets.native.KotlinNativeBinaryTestRun>
 
-internal object KotlinNativeBinaryTestRunTransformingSerializer : KeyTransformingSerializer<KotlinNativeBinaryTestRunImpl>(
+internal object KotlinNativeBinaryTestRunKeyTransformingSerializer : KeyTransformingSerializer<KotlinNativeBinaryTestRunImpl>(
     KotlinNativeBinaryTestRunImpl.serializer(),
     "name",
 )

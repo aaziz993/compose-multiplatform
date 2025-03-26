@@ -9,7 +9,7 @@ internal data class TrackEnvironment(
     val tracked: Boolean = true,
 )
 
-internal object TrackEnvironmentTransformingSerializer : KeyTransformingSerializer<TrackEnvironment>(
+internal object TrackEnvironmentKeyTransformingSerializer : KeyTransformingSerializer<TrackEnvironment>(
     TrackEnvironment.serializer(),
     "name",
 )

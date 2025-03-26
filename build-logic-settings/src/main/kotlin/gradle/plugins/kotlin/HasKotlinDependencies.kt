@@ -14,7 +14,7 @@ internal interface HasKotlinDependencies<T : HasKotlinDependencies> {
     /**
      * Configures all dependencies for this entity.
      */
-    val dependencies: List<@Serializable(with = DependencyTransformingSerializer::class) Dependency>?
+    val dependencies: List<@Serializable(with = DependencyKeyTransformingSerializer::class) Dependency>?
 
     context(Project)
     fun applyTo(receiver: T){

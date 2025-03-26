@@ -22,7 +22,7 @@ internal data class SqlDelightDatabase(
     val migrationOutputDirectory: String? = null,
     val migrationOutputFileFormat: String? = null,
     val generateAsync: Boolean? = null,
-    val modules: Set<@Serializable(with = DependencyTransformingSerializer::class) Dependency>? = null,
+    val modules: Set<@Serializable(with = DependencyKeyTransformingSerializer::class) Dependency>? = null,
     val dialects: Set<String>? = null,
     /**
      * When SqlDelight finds an equality operation with a nullable typed rvalue such as:

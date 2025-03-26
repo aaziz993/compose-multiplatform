@@ -19,7 +19,7 @@ internal interface KotlinJsTargetDsl<T : org.jetbrains.kotlin.gradle.targets.js.
     HasBinaries<@Serializable(with = KotlinJsBinaryContainerTransformingSerializer::class) KotlinJsBinaryContainer>,
     HasConfigurableKotlinCompilerOptions<T, org.jetbrains.kotlin.gradle.dsl.KotlinJsCompilerOptions> {
 
-    abstract override val compilations: LinkedHashSet<@Serializable(with = KotlinJsIrCompilationTransformingSerializer::class) KotlinJsIrCompilation>?
+    abstract override val compilations: LinkedHashSet<@Serializable(with = KotlinJsIrCompilationKeyTransformingSerializer::class) KotlinJsIrCompilation>?
 
     val moduleName: String?
 
@@ -70,7 +70,7 @@ internal interface KotlinJsTargetDsl<T : org.jetbrains.kotlin.gradle.targets.js.
 @SerialName("jsCommon")
 internal data class KotlinJsTargetDslImpl(
     override val name: String = "js",
-    override val compilations: LinkedHashSet<@Serializable(with = KotlinJsIrCompilationTransformingSerializer::class) KotlinJsIrCompilation>? = null,
+    override val compilations: LinkedHashSet<@Serializable(with = KotlinJsIrCompilationKeyTransformingSerializer::class) KotlinJsIrCompilation>? = null,
     override val nodejs: KotlinJsNodeDsl? = null,
     override val moduleName: String? = null,
     override val browser: KotlinJsBrowserDsl? = null,

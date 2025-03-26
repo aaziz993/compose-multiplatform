@@ -2,8 +2,10 @@ package gradle.plugins.android
 
 import com.android.build.api.dsl.BuildType
 import gradle.accessors.android
+import gradle.api.NamedKeyTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.trySet
+import kotlinx.serialization.KSerializer
 import org.gradle.api.Project
 
 /**
@@ -205,3 +207,6 @@ internal interface BuildType<T : BuildType> : ProjectNamed<T>, VariantDimension<
         vcsInfo?.applyTo(receiver.vcsInfo)
     }
 }
+
+internal class BuildTypeTransformingSerializer<T : BuildType>(tSerializer: KSerializer<T>)
+    : NamedKeyTransformingSerializer<T>(tSerializer)

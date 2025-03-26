@@ -26,7 +26,7 @@ private object DokkaPluginParametersBaseSpecSerializer : JsonPolymorphicSerializ
     DokkaPluginParametersBaseSpec::class,
 )
 
-internal object DokkaPluginParametersBaseSpecTransformingSerializer : KeyTransformingSerializer<DokkaPluginParametersBaseSpec<*>>(
+internal object DokkaPluginParametersBaseSpecKeyTransformingSerializer : KeyTransformingSerializer<DokkaPluginParametersBaseSpec<*>>(
     DokkaPluginParametersBaseSpecSerializer,
     "type",
 )

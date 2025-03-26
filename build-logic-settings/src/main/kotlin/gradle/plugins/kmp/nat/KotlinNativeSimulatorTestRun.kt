@@ -26,7 +26,7 @@ internal data class KotlinNativeSimulatorTestRun(
     }
 }
 
-internal object KotlinNativeSimulatorTestRunTransformingSerializer : KeyTransformingSerializer<KotlinNativeSimulatorTestRun>(
+internal object KotlinNativeSimulatorTestRunKeyTransformingSerializer : KeyTransformingSerializer<KotlinNativeSimulatorTestRun>(
     KotlinNativeSimulatorTestRun.serializer(),
     "name",
 )

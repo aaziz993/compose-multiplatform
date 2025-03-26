@@ -35,7 +35,7 @@ internal interface SpotlessExtension {
     val enforceCheck: Boolean?
     val predeclareDepsFromBuildscript: Boolean?
     val predeclareDeps: Boolean?
-    val formats: LinkedHashSet<@Serializable(with = FormatExtensionTransformingSerializer::class) FormatExtension<out com.diffplug.gradle.spotless.FormatExtension>>?
+    val formats: LinkedHashSet<@Serializable(with = FormatExtensionKeyTransformingSerializer::class) FormatExtension<out com.diffplug.gradle.spotless.FormatExtension>>?
 
     context(Project)
     fun applyTo() =

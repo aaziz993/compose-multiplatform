@@ -88,7 +88,7 @@ private object NativeBinarySerializer : JsonPolymorphicSerializer<NativeBinary<*
     NativeBinary::class,
 )
 
-internal object NativeBinaryTransformingSerializer : KeyTransformingSerializer<NativeBinary<*>>(
+internal object NativeBinaryKeyTransformingSerializer : KeyTransformingSerializer<NativeBinary<*>>(
     NativeBinarySerializer,
     "type",
 )

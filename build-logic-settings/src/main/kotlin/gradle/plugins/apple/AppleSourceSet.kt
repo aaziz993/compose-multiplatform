@@ -1,8 +1,8 @@
 package gradle.plugins.apple
 
+import gradle.api.NamedKeyTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.file.SourceDirectorySet
-import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -21,7 +21,6 @@ internal data class AppleSourceSet(
     }
 }
 
-internal object AppleSourceSetTransformingSerializer : KeyTransformingSerializer<AppleSourceSet>(
+internal object AppleSourceSetTransformingSerializer : NamedKeyTransformingSerializer<AppleSourceSet>(
     AppleSourceSet.serializer(),
-    "sourceSetName",
 )

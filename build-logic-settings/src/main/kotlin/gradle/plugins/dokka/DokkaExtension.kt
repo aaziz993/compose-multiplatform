@@ -171,7 +171,7 @@ internal interface DokkaExtension {
      * Some plugins can be configured via parameters, and those parameters are stored in this
      * container.
      */
-    val pluginsConfiguration: LinkedHashSet<@Serializable(with = DokkaPluginParametersBaseSpecTransformingSerializer::class) DokkaPluginParametersBaseSpec<out org.jetbrains.dokka.gradle.engine.plugins.DokkaPluginParametersBaseSpec>>?
+    val pluginsConfiguration: LinkedHashSet<@Serializable(with = DokkaPluginParametersBaseSpecKeyTransformingSerializer::class) DokkaPluginParametersBaseSpec<out org.jetbrains.dokka.gradle.engine.plugins.DokkaPluginParametersBaseSpec>>?
 
     /**
      * The default version of Dokka dependencies that are used at runtime during generation.

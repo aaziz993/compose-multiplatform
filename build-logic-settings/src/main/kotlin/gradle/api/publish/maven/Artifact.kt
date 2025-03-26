@@ -9,7 +9,7 @@ internal data class Artifact(
     val artifact: MavenArtifact? = null,
 )
 
-internal object ArtifactTransformingSerializer : KeyTransformingSerializer<Artifact>(
+internal object ArtifactKeyTransformingSerializer : KeyTransformingSerializer<Artifact>(
     Artifact.serializer(),
     "source",
 )

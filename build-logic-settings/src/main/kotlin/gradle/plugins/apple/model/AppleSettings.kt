@@ -17,8 +17,8 @@ import org.gradle.api.Project
 
 @Serializable
 internal data class AppleSettings(
-    override val sourceSets: LinkedHashSet<@Serializable(with = AppleSourceSetTransformingSerializer::class) AppleSourceSet>? = null,
-    override val targets: LinkedHashSet<@Serializable(with = AppleTargetTransformingSerializer::class) AppleTarget<out org.jetbrains.gradle.apple.targets.AppleTarget>>? = null,
+    override val sourceSets: LinkedHashSet<@Serializable(with = AppleSourceSetKeyTransformingSerializer::class) AppleSourceSet>? = null,
+    override val targets: LinkedHashSet<@Serializable(with = AppleTargetKeyTransformingSerializer::class) AppleTarget<out org.jetbrains.gradle.apple.targets.AppleTarget>>? = null,
     override val teamID: String? = null,
     override val iosApp: IosAppTarget? = null,
     override val iosFramework: IosFrameworkTarget? = null,

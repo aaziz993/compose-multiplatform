@@ -17,9 +17,9 @@ import org.gradle.api.Project
 
 internal interface AppleProjectExtension {
 
-    val sourceSets: LinkedHashSet<@Serializable(with = AppleSourceSetTransformingSerializer::class) AppleSourceSet>?
+    val sourceSets: LinkedHashSet<@Serializable(with = AppleSourceSetKeyTransformingSerializer::class) AppleSourceSet>?
 
-    val targets: LinkedHashSet<@Serializable(with = AppleTargetTransformingSerializer::class) AppleTarget<out org.jetbrains.gradle.apple.targets.AppleTarget>>?
+    val targets: LinkedHashSet<@Serializable(with = AppleTargetKeyTransformingSerializer::class) AppleTarget<out org.jetbrains.gradle.apple.targets.AppleTarget>>?
 
     val teamID: String?
     val iosApp: IosAppTarget?

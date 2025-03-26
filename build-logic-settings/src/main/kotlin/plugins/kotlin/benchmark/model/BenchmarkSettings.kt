@@ -14,6 +14,6 @@ internal data class BenchmarkSettings(
     override val configurations: LinkedHashSet<BenchmarkConfiguration>? = null,
     override val kotlinCompilerVersion: String? = null,
     override var reportsDir: String? = null,
-    override val targets: LinkedHashSet<@Serializable(with = BenchmarkTargetTransformingSerializer::class) BenchmarkTarget<*>>? = null,
+    override val targets: LinkedHashSet<@Serializable(with = BenchmarkTargetKeyTransformingSerializer::class) BenchmarkTarget<*>>? = null,
     override val enabled: Boolean = true
 ) : BenchmarksExtension(), EnabledSettings

@@ -12,7 +12,7 @@ internal data class SchemaDirectory(
     val path: String
 )
 
-internal object SchemaDirectoryTransformingSerializer : KeyTransformingSerializer<SchemaDirectory>(
+internal object SchemaDirectoryKeyTransformingSerializer : KeyTransformingSerializer<SchemaDirectory>(
     SchemaDirectory.serializer(),
     "path",
     "matchName",

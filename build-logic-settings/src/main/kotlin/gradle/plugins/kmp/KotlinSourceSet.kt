@@ -31,7 +31,7 @@ import org.gradle.api.Project
 @Serializable
 internal data class KotlinSourceSet(
     override val name: String? = null,
-    override val dependencies: List<@Serializable(with = DependencyTransformingSerializer::class) Dependency>? = null,
+    override val dependencies: List<@Serializable(with = DependencyKeyTransformingSerializer::class) Dependency>? = null,
     /**
      * Represents a set of Kotlin source files that are included in this [KotlinSourceSet].
      *
@@ -84,7 +84,7 @@ internal data class KotlinSourceSet(
     fun applyTo() = applyTo(project.kotlin.sourceSets)
 }
 
-internal object KotlinSourceSetTransformingSerializer : KeyTransformingSerializer<KotlinSourceSet>(
+internal object KotlinSourceSetKeyTransformingSerializer : KeyTransformingSerializer<KotlinSourceSet>(
     KotlinSourceSet.serializer(),
     "name",
 )

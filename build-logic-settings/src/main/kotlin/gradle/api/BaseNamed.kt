@@ -22,7 +22,7 @@ internal interface BaseNamed {
     val name: String?
 }
 
-internal class NamedTransformingSerializer<T : BaseNamed>(
+internal abstract class NamedKeyTransformingSerializer<T : BaseNamed>(
     tSerializer: KSerializer<T>
 ) : KeyTransformingSerializer<T>(
     tSerializer,

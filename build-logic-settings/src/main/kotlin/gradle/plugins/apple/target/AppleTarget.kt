@@ -61,7 +61,7 @@ private object AppleTargetSerializer : JsonPolymorphicSerializer<AppleTarget<*>>
     AppleTarget::class,
 )
 
-internal object AppleTargetTransformingSerializer : KeyTransformingSerializer<AppleTarget<*>>(
+internal object AppleTargetKeyTransformingSerializer : KeyTransformingSerializer<AppleTarget<*>>(
     AppleTargetSerializer,
     "type",
 )

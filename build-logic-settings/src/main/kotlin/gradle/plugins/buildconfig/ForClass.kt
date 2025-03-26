@@ -10,7 +10,7 @@ internal data class ForClass(
     val configureAction: BuildConfigClassSpecImpl? = null,
 )
 
-internal object ForClassTransformingSerializer : KeyTransformingSerializer<ForClass>(
+internal object ForClassKeyTransformingSerializer : KeyTransformingSerializer<ForClass>(
     ForClass.serializer(),
     "className"
 )

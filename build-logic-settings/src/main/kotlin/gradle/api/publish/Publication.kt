@@ -48,7 +48,7 @@ private object PublicationSerializer : JsonPolymorphicSerializer<Publication<*>>
     Publication::class,
 )
 
-internal object PublicationTransformingSerializer : KeyTransformingSerializer<Publication<*>>(
+internal object PublicationKeyTransformingSerializer : KeyTransformingSerializer<Publication<*>>(
     PublicationSerializer,
     "type",
 )

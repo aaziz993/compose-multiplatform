@@ -44,7 +44,7 @@ internal data class ScriptHandler(
      * @return the dependency handler. Never returns null.
      * @see .getConfigurations
      */
-    val dependencies: Set<@Serializable(with = DependencyTransformingSerializer::class) Dependency>? = null,
+    val dependencies: Set<@Serializable(with = DependencyKeyTransformingSerializer::class) Dependency>? = null,
 ) {
 
     context(Settings)

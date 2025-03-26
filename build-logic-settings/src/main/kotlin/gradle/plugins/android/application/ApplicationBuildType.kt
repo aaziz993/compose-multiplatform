@@ -117,7 +117,7 @@ internal data class ApplicationBuildType(
     }
 }
 
-internal object ApplicationBuildTypeTransformingSerializer : KeyTransformingSerializer<ApplicationBuildType>(
+internal object ApplicationBuildTypeKeyTransformingSerializer : KeyTransformingSerializer<ApplicationBuildType>(
     ApplicationBuildType.serializer(),
     "name",
 )

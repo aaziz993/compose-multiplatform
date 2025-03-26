@@ -17,7 +17,7 @@ internal abstract class KotlinNativeTarget<T : org.jetbrains.kotlin.gradle.plugi
     HasConfigurableKotlinCompilerOptions<T, org.jetbrains.kotlin.gradle.dsl.KotlinNativeCompilerOptions>,
     HasBinaries<@Serializable(with = KotlinNativeBinaryContainerTransformingSerializer::class) KotlinNativeBinaryContainer> {
 
-    abstract override val compilations: LinkedHashSet<@Serializable(with = KotlinNativeCompilationTransformingSerializer::class) KotlinNativeCompilation>?
+    abstract override val compilations: LinkedHashSet<@Serializable(with = KotlinNativeCompilationKeyTransformingSerializer::class) KotlinNativeCompilation>?
 
     context(Project)
     override fun applyTo(receiver: T) {
@@ -32,7 +32,7 @@ internal abstract class KotlinNativeTarget<T : org.jetbrains.kotlin.gradle.plugi
 @SerialName("native")
 internal data class KotlinNativeTargetImpl(
     override val name: String? = null,
-    override val compilations: LinkedHashSet<@Serializable(with = KotlinNativeCompilationTransformingSerializer::class) KotlinNativeCompilation>? = null,
+    override val compilations: LinkedHashSet<@Serializable(with = KotlinNativeCompilationKeyTransformingSerializer::class) KotlinNativeCompilation>? = null,
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: KotlinNativeBinaryContainer? = null,
 ) : KotlinNativeTarget<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>() {

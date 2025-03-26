@@ -35,7 +35,7 @@ private object BuildCacheSerializer : JsonPolymorphicSerializer<BuildCache<*>>(
     BuildCache::class,
 )
 
-internal object BuildCacheTransformingSerializer : KeyTransformingSerializer<BuildCache<*>>(
+internal object BuildCacheKeyTransformingSerializer : KeyTransformingSerializer<BuildCache<*>>(
     BuildCacheSerializer,
     "type",
 )

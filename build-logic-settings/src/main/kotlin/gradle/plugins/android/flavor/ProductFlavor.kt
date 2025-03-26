@@ -81,7 +81,7 @@ internal data class ProductFlavor(
     }
 }
 
-internal object ProductFlavorTransformingSerializer : KeyTransformingSerializer<ProductFlavor>(
+internal object ProductFlavorKeyTransformingSerializer : KeyTransformingSerializer<ProductFlavor>(
     ProductFlavor.serializer(),
     "name",
 )

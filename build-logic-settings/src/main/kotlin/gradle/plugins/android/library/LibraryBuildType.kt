@@ -80,7 +80,7 @@ internal data class LibraryBuildType(
     }
 }
 
-internal object LibraryBuildTypeTransformingSerializer : KeyTransformingSerializer<LibraryBuildType>(
+internal object LibraryBuildTypeKeyTransformingSerializer : KeyTransformingSerializer<LibraryBuildType>(
     LibraryBuildType.serializer(),
     "name",
 )

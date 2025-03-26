@@ -74,7 +74,7 @@ internal interface PublishingExtension {
      *
      * @param configure The action or closure to configure the publications with.
      */
-    val publications: LinkedHashSet<@Serializable(with = PublicationTransformingSerializer::class) Publication<out org.gradle.api.publish.Publication>>?
+    val publications: LinkedHashSet<@Serializable(with = PublicationKeyTransformingSerializer::class) Publication<out org.gradle.api.publish.Publication>>?
 
     context(Project)
     @Suppress("UNCHECKED_CAST")

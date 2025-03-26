@@ -7,11 +7,12 @@ import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
 import gradle.api.applyTo
+import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
 internal interface BuildConfigExtension {
 
-    val sourceSets: LinkedHashSet<BuildConfigSourceSet>?
+    val sourceSets: LinkedHashSet<@Serializable(with = BuildConfigSourceSetKeyTransformingSerializer::class) BuildConfigSourceSet>?
 
     context(Project)
     fun applyTo() =

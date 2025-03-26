@@ -10,7 +10,7 @@ import gradle.api.publish.maven.MavenPomDeveloper
 import gradle.api.publish.maven.MavenPomLicense
 import gradle.api.publish.maven.MavenPomScm
 import gradle.api.tasks.Task
-import gradle.api.tasks.TaskTransformingSerializer
+import gradle.api.tasks.TaskKeyTransformingSerializer
 import gradle.caching.BuildCacheConfiguration
 import gradle.collection.deepMerge
 import gradle.collection.resolve
@@ -61,7 +61,7 @@ internal data class ProjectProperties(
     val buildscript: ScriptHandler? = null,
     val pluginManagement: PluginManagement? = null,
     val dependencyResolutionManagement: DependencyResolutionManagement? = null,
-    val dependencies: List<@Serializable(with = DependencyTransformingSerializer::class) Dependency>? = null,
+    val dependencies: List<@Serializable(with = DependencyKeyTransformingSerializer::class) Dependency>? = null,
     val cacheRedirector: Boolean = true,
     val includes: Set<String>? = null,
     val projects: Set<ProjectDescriptor>? = null,
@@ -77,7 +77,7 @@ internal data class ProjectProperties(
     val yarnRootEnv: YarnRootEnvSpec = YarnRootEnvSpec(),
     val npm: NpmExtension = NpmExtension(),
     val compose: CMPSettings = CMPSettings(),
-    val tasks: List<@Serializable(with = TaskTransformingSerializer::class) Task<out org.gradle.api.Task>>? = null,
+    val tasks: List<@Serializable(with = TaskKeyTransformingSerializer::class) Task<out org.gradle.api.Task>>? = null,
     private val localPropertiesFile: String = "local.properties",
     val projectFiles: List<ProjectFile> = emptyList(),
 ) {

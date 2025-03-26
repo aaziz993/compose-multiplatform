@@ -16,7 +16,7 @@ internal data class KotlinJsIrCompilation(
     override val setCompileDependencyFiles: Set<String>? = null,
     override val output: KotlinCompilationOutput? = null,
     override val associatedCompilations: Set<String>? = null,
-    override val dependencies: List<@Serializable(with = DependencyTransformingSerializer::class) Dependency>? = null,
+    override val dependencies: List<@Serializable(with = DependencyKeyTransformingSerializer::class) Dependency>? = null,
     override val binaries: @Serializable(with = KotlinJsBinaryContainerTransformingSerializer::class) KotlinJsBinaryContainer? = null,
     override val packageJson: PackageJson? = null,
 ) : KotlinJsCompilation<org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsIrCompilation> {

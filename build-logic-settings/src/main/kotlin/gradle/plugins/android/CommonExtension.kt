@@ -211,7 +211,7 @@ internal interface CommonExtension<
      *
      * @see [gradle.plugins.android.signing.ApkSigningConfig]
      */
-    val signingConfigs: Set<@Serializable(with = SigningConfigTransformingSerializer::class) ApkSigningConfig<out com.android.build.api.dsl.ApkSigningConfig>>?
+    val signingConfigs: Set<@Serializable(with = SigningConfigKeyTransformingSerializer::class) ApkSigningConfig<out com.android.build.api.dsl.ApkSigningConfig>>?
 
     /**
      * Specifies options for external native build using [CMake](https://cmake.org/) or
