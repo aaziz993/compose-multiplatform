@@ -69,7 +69,7 @@ internal interface KotlinJsTargetDsl<T : org.jetbrains.kotlin.gradle.targets.js.
 @Serializable
 @SerialName("jsCommon")
 internal data class KotlinJsTargetDslImpl(
-    override val name: String = "js",
+    override val name: String? = null,
     override val compilations: LinkedHashSet<@Serializable(with = KotlinJsIrCompilationKeyTransformingSerializer::class) KotlinJsIrCompilation>? = null,
     override val nodejs: KotlinJsNodeDsl? = null,
     override val moduleName: String? = null,
@@ -84,7 +84,5 @@ internal data class KotlinJsTargetDslImpl(
 
     context(Project)
     override fun applyTo() =
-        applyTo(project.kotlin.targets.withType<org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl>()) { name, action ->
-            kotlin.js(name, action::execute)
-        }
+        applyTo(project.kotlin.targets.withType<org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl>()) { _, _ -> }
 }

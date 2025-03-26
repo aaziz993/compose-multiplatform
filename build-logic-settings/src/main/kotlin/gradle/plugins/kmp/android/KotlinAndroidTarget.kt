@@ -62,6 +62,6 @@ internal data class KotlinAndroidTarget(
     context(Project)
     override fun applyTo() =
         applyTo(project.kotlin.targets.withType<KotlinAndroidTarget>()) { name, action ->
-            kotlin.androidTarget(name, action::execute)
+            project.kotlin.androidTarget(name, action::execute)
         }
 }

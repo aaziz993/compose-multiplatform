@@ -1,8 +1,10 @@
 package gradle.plugins.kmp.web
 
 import gradle.accessors.kotlin
+import gradle.api.applyTo
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import org.gradle.api.NamedDomainObjectCollection
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 
@@ -10,7 +12,7 @@ import org.gradle.kotlin.dsl.withType
 @SerialName("js")
 internal data class KotlinJsTarget(
     override val name: String = "js",
-    override val compilations: Set<@Serializable(with = KotlinJsIrCompilationKeyTransformingSerializer::class) KotlinJsIrCompilation>? = null,
+    override val compilations: LinkedHashSet<@Serializable(with = KotlinJsIrCompilationKeyTransformingSerializer::class) KotlinJsIrCompilation>? = null,
     override val nodejs: KotlinJsNodeDsl? = null,
     override val moduleName: String? = null,
     override val browser: KotlinJsBrowserDsl? = null,
@@ -23,11 +25,13 @@ internal data class KotlinJsTarget(
 ) : KotlinJsTargetDsl<org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl> {
 
     context(Project)
+    @Suppress("UNCHECKED_CAST")
     override fun applyTo() =
         applyTo(
-                project.kotlin.targets.matching { target ->
-                    target::class == org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl::class
-                },
-                kotlin::js,
-        )
+            project.kotlin.targets.matching { target ->
+                target::class == org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl::class
+            } as NamedDomainObjectCollection<org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl>,
+        ) { name, action ->
+            project.kotlin.js(name, action::execute)
+        }
 }

@@ -33,7 +33,7 @@ internal data class KotlinJsIrCompilation(
     }
 }
 
-internal object KotlinJsIrCompilationTransformingSerializer :
+internal object KotlinJsIrCompilationKeyTransformingSerializer :
     KotlinCompilationTransformingSerializer<KotlinJsIrCompilation>(
         KotlinJsIrCompilation.serializer(),
     )

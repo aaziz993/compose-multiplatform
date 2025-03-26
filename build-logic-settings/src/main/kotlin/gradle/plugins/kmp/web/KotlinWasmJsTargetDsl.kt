@@ -12,7 +12,7 @@ import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinWasmJsTargetDsl
 @SerialName("wasmJs")
 internal data class KotlinWasmJsTargetDsl(
     override val name: String = "wasmJs",
-    override val compilations: Set<@Serializable(with = KotlinJsIrCompilationKeyTransformingSerializer::class) KotlinJsIrCompilation>? = null,
+    override val compilations: LinkedHashSet<@Serializable(with = KotlinJsIrCompilationKeyTransformingSerializer::class) KotlinJsIrCompilation>? = null,
     override val nodejs: KotlinJsNodeDsl? = null,
     override val moduleName: String? = null,
     override val browser: KotlinJsBrowserDsl? = null,
@@ -43,5 +43,7 @@ internal data class KotlinWasmJsTargetDsl(
 
     context(Project)
     override fun applyTo() =
-        applyTo(project.kotlin.targets.withType<KotlinWasmJsTargetDsl>(), kotlin::wasmJs)
+        applyTo(project.kotlin.targets.withType<KotlinWasmJsTargetDsl>()) { name, action ->
+            kotlin.wasmJs(name, action::execute)
+        }
 }

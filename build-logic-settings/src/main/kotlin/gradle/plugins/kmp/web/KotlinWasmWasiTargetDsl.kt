@@ -30,6 +30,6 @@ internal data class KotlinWasmWasiTargetDsl(
     context(Project)
     override fun applyTo() =
         applyTo(project.kotlin.targets.withType<KotlinWasmWasiTargetDsl>()) { name, action ->
-            kotlin.wasmWasi(name, action::execute)
+            project.kotlin.wasmWasi(name, action::execute)
         }
 }
