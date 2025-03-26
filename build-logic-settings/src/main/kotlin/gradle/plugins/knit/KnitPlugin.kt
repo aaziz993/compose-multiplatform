@@ -1,4 +1,4 @@
-package plugins.knit
+package gradle.plugins.knit
 
 import gradle.accessors.id
 import gradle.accessors.libs
@@ -8,7 +8,7 @@ import gradle.accessors.projectProperties
 import gradle.accessors.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import plugins.knit.model.KnitSettings
+import gradle.plugins.knit.model.KnitSettings
 
 internal class KnitPlugin : Plugin<Project> {
 

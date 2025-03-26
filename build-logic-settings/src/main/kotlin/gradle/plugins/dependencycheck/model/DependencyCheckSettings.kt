@@ -1,4 +1,4 @@
-package plugins.dependencycheck.model
+package gradle.plugins.dependencycheck.model
 
 import gradle.accessors.id
 import gradle.accessors.libs
@@ -7,6 +7,7 @@ import gradle.accessors.plugins
 import gradle.accessors.settings
 import gradle.plugins.buildconfig.BuildConfigExtension
 import gradle.plugins.dependencycheck.AdditionalCpe
+import gradle.plugins.dependencycheck.AdditionalCpeKeyTransformingSerializer
 import gradle.plugins.dependencycheck.CacheExtension
 import gradle.plugins.dependencycheck.DataExtension
 import gradle.plugins.dependencycheck.DependencyCheckExtension
@@ -61,7 +62,7 @@ internal data class DependencyCheckSettings(
     override val skip: Boolean? = null,
     override val scanSet: List<String>? = null,
     override val setScanSet: List<String>? = null,
-    override val additionalCpes: Set<AdditionalCpe>? = null,
+    override val additionalCpes: LinkedHashSet<@Serializable(with = AdditionalCpeKeyTransformingSerializer::class) AdditionalCpe>? = null,
     override val cache: CacheExtension? = null,
     override val enabled: Boolean = true
 ) : DependencyCheckExtension(), EnabledSettings {

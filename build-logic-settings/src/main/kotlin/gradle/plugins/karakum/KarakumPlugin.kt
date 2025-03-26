@@ -1,4 +1,4 @@
-package plugins.karakum
+package gradle.plugins.karakum
 
 import gradle.accessors.id
 import gradle.accessors.kotlin
@@ -7,6 +7,7 @@ import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
+import gradle.plugins.karakum.model.KarakumSettings
 import gradle.plugins.kmp.KotlinTarget
 import gradle.plugins.kmp.web.KotlinJsTarget
 import gradle.serialization.decodeMapFromString
@@ -20,8 +21,7 @@ internal class KarakumPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             projectProperties.plugins.karakum
-                .takeIf { it.enabled && projectProperties.kotlin.targets.any { target -> target is KotlinJsTarget } }
-                ?.let { karakum ->
+                .takeIf(KarakumSettings::enabled)?.let { karakum ->
                     plugins.apply(project.settings.libs.plugins.plugin("karakum").id)
 
                     karakum.applyTo()

@@ -1,4 +1,4 @@
-package plugins.doctor
+package gradle.plugins.doctor
 
 import gradle.accessors.id
 import gradle.accessors.libs
@@ -8,7 +8,7 @@ import gradle.accessors.projectProperties
 import gradle.accessors.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import plugins.doctor.model.DoctorSettings
+import gradle.plugins.doctor.model.DoctorSettings
 
 internal class DoctorPlugin : Plugin<Project> {
 

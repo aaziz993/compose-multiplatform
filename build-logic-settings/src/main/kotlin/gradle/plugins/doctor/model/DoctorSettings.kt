@@ -1,4 +1,4 @@
-package plugins.doctor.model
+package gradle.plugins.doctor.model
 
 import com.osacky.doctor.AppleRosettaTranslationCheckMode
 import gradle.accessors.id

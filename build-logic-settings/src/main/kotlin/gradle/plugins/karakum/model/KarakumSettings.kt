@@ -1,4 +1,4 @@
-package plugins.karakum.model
+package gradle.plugins.karakum.model
 
 import gradle.accessors.id
 import gradle.accessors.libs

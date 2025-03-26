@@ -1,4 +1,4 @@
-package plugins.knit.model
+package gradle.plugins.knit.model
 
 import gradle.plugins.knit.KnitPluginExtension
 import gradle.project.EnabledSettings
@@ -10,7 +10,8 @@ internal data class KnitSettings(
     override val moduleRoots: List<String>? = null,
     override val moduleMarkers: List<String>? = null,
     override val moduleDocs: String? = null,
-    override val files: List<String>? = null,
+    override val files: Set<String>? = null,
+    override val setFiles: Set<String>? = null,
     override val rootDir: String? = null,
     override val dokkaMultiModuleRoot: String? = null,
     override val defaultLineSeparator: String? = null,

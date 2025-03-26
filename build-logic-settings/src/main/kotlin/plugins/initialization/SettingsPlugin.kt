@@ -20,8 +20,8 @@ import org.gradle.api.internal.artifacts.repositories.DefaultMavenArtifactReposi
 import org.jetbrains.compose.internal.IDEA_IMPORT_TASK_NAME
 import org.jetbrains.compose.internal.utils.currentTarget
 import org.tomlj.Toml
-import plugins.develocity.DevelocityPlugin
-import plugins.githooks.GitHooksPlugin
+import gradle.plugins.develocity.DevelocityPlugin
+import gradle.plugins.githooks.GitHooksPlugin
 import plugins.initialization.problemreporter.SLF4JProblemReporterContext
 import plugins.project.ProjectPlugin
 import plugins.toolchainmanagement.ToolchainManagementPlugin

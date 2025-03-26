@@ -1,4 +1,4 @@
-package plugins.dokka
+package gradle.plugins.dokka
 
 import gradle.accessors.id
 import gradle.accessors.libs
@@ -11,7 +11,7 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.provideDelegate
-import plugins.dokka.model.DokkaSettings
+import gradle.plugins.dokka.model.DokkaSettings
 
 internal class DokkaPlugin : Plugin<Project> {
 

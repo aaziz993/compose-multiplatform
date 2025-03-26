@@ -1,4 +1,4 @@
-package plugins.develocity.model
+package gradle.plugins.develocity.model
 
 import gradle.accessors.id
 import gradle.accessors.libs
@@ -47,7 +47,7 @@ internal data class DevelocitySettings(
         gradle.projectsEvaluated {
             if (!isCI && !develocity.skipGitTags) {
                 develocity {
-                    (develocity.gitRepo ?: projectProperties.scm?.url?.takeIf(String::isGithubUrl))?.let { gitRepo ->
+                    (develocity.gitRepo ?: projectProperties.remote?.url?.takeIf(String::isGithubUrl))?.let { gitRepo ->
                         // Git commit id
                         val commitId = gitCommitId()
                         if (commitId.isNotEmpty()) {

@@ -1,4 +1,4 @@
-package plugins.dependencycheck
+package gradle.plugins.dependencycheck
 
 import gradle.accessors.id
 import gradle.accessors.libs
@@ -8,7 +8,7 @@ import gradle.accessors.projectProperties
 import gradle.accessors.settings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import plugins.dependencycheck.model.DependencyCheckSettings
+import gradle.plugins.dependencycheck.model.DependencyCheckSettings
 
 internal class DependencyCheckPlugin : Plugin<Project> {
 

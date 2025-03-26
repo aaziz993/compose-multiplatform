@@ -1,4 +1,4 @@
-package plugins.develocity
+package gradle.plugins.develocity
 
 import com.gradle.develocity.agent.gradle.test.DevelocityTestConfiguration
 import com.gradle.develocity.agent.gradle.test.TestRetryConfiguration
@@ -12,7 +12,7 @@ import org.gradle.api.initialization.Settings
 import org.gradle.api.tasks.testing.Test
 import org.gradle.kotlin.dsl.develocity
 import org.gradle.kotlin.dsl.getByName
-import plugins.develocity.model.DevelocitySettings
+import gradle.plugins.develocity.model.DevelocitySettings
 
 internal class DevelocityPlugin : Plugin<Settings> {
 
@@ -37,9 +37,9 @@ internal class DevelocityPlugin : Plugin<Settings> {
     companion object {
 
         // Docs: https://docs.gradle.com/develocity/gradle-plugin/current/#test_retry
-        context(test: Test)
+        context(Test)
         fun testRetry(configure: TestRetryConfiguration.() -> Unit) {
-            test.extensions.getByName<DevelocityTestConfiguration>("develocity").testRetry(configure)
+            extensions.getByName<DevelocityTestConfiguration>("develocity").testRetry(configure)
         }
     }
 }
