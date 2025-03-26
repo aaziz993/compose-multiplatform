@@ -28,6 +28,7 @@ internal data class KotlinJvmTarget(
     override val compilerOptions: KotlinJvmCompilerOptions? = null,
     override val testRuns: LinkedHashSet<KotlinJvmTestRun>? = null,
     val mainRun: KotlinJvmRunDslImpl? = null,
+    val binaries: KotlinJvmBinariesDsl? = null,
 ) : KotlinOnlyTarget<KotlinJvmTarget, KotlinJvmCompilation>(),
     HasConfigurableKotlinCompilerOptions<KotlinJvmTarget, org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompilerOptions>,
     KotlinTargetWithTests<KotlinJvmTarget, JvmClasspathTestRunSource, org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTestRun> {
@@ -43,7 +44,13 @@ internal data class KotlinJvmTarget(
 
         mainRun?.let { mainRun ->
             receiver.mainRun {
-                mainRun.applyTo(this)
+                mainRun.applyTo(this, receiver)
+            }
+        }
+
+        binaries?.let { binaries ->
+            receiver.binaries {
+                binaries.applyTo(this)
             }
         }
     }

@@ -6,7 +6,6 @@ import gradle.api.tasks.util.PatternFilterable
 import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import org.gradle.api.file.CopySpec
 import org.gradle.api.file.DuplicatesStrategy
 
 /**
@@ -68,7 +67,7 @@ import org.gradle.api.file.DuplicatesStrategy
  *
  * @see Project.copy
  */
-internal interface CopySpec<T : CopySpec> : CopySourceSpec<T>, CopyProcessingSpec<T>, PatternFilterable<T> {
+internal interface CopySpec<T : org.gradle.api.file.CopySpec> : CopySourceSpec<T>, CopyProcessingSpec<T>, PatternFilterable<T> {
 
     /**
      * Specifies whether case-sensitive pattern matching should be used.
@@ -178,5 +177,5 @@ internal data class CopySpecImpl(
     override val setIncludes: Set<String>? = null,
     override val excludes: Set<String>? = null,
     override val setExcludes: Set<String>? = null,
-) : gradle.api.tasks.copy.CopySpec<CopySpec>
+) : CopySpec<org.gradle.api.file.CopySpec>
 
