@@ -1,4 +1,4 @@
-package plugins.web
+package gradle.plugins.web
 
 import gradle.accessors.projectProperties
 import gradle.plugins.kmp.web.KotlinJsTarget
@@ -13,8 +13,6 @@ internal class JsPlugin : Plugin<Project> {
             if (projectProperties.kotlin.targets.none { target -> target is KotlinJsTarget }) {
                 return@with
             }
-
-            configureJsTestTasks<KotlinJsTargetDsl>()
         }
     }
 }

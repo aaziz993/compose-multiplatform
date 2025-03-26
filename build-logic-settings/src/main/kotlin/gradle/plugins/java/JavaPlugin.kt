@@ -1,4 +1,4 @@
-package plugins.java
+package gradle.plugins.java
 
 import gradle.accessors.kotlin
 import gradle.accessors.projectProperties

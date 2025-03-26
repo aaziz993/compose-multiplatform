@@ -80,7 +80,7 @@ import gradle.plugins.develocity.DevelocityPlugin
 import gradle.plugins.doctor.DoctorPlugin
 import gradle.plugins.dokka.DokkaPlugin
 import gradle.plugins.initialization.problemreporter.SLF4JProblemReporterContext
-import plugins.java.JavaPlugin
+import gradle.plugins.java.JavaPlugin
 import plugins.kmp.KMPPlugin
 import gradle.plugins.knit.KnitPlugin
 import gradle.plugins.kotlin.allopen.AllOpenPlugin
@@ -102,9 +102,9 @@ import gradle.plugins.shadow.ShadowPlugin
 import gradle.plugins.signing.SigningPlugin
 import gradle.plugins.sonar.SonarPlugin
 import gradle.plugins.spotless.SpotlessPlugin
-import plugins.web.JsPlugin
-import plugins.web.WasmPlugin
-import plugins.web.WasmWasiPlugin
+import gradle.plugins.web.JsPlugin
+import gradle.plugins.web.WasmJsPlugin
+import gradle.plugins.web.WasmWasiPlugin
 
 public class ProjectPlugin : Plugin<Project> {
 
@@ -155,7 +155,7 @@ public class ProjectPlugin : Plugin<Project> {
             project.plugins.apply(KspPlugin::class.java) // kspCommonMainMetadata need kmp plugin applied.
             project.plugins.apply(NativePlugin::class.java)
             project.plugins.apply(JsPlugin::class.java)
-            project.plugins.apply(WasmPlugin::class.java)
+            project.plugins.apply(WasmJsPlugin::class.java)
             project.plugins.apply(WasmWasiPlugin::class.java)
             project.plugins.apply(CMPPlugin::class.java)
             project.plugins.apply(PublishPlugin::class.java)
