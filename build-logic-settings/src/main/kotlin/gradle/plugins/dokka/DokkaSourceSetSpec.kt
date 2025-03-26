@@ -160,7 +160,7 @@ internal data class DokkaSourceSetSpec(
     /**
      * Allows linking to Dokka/Javadoc documentation of the project's dependencies.
      */
-    val externalDocumentationLinks: Set<DokkaExternalDocumentationLinkSpec>? = null,
+    val externalDocumentationLinks: LinkedHashSet<@Serializable(with = DokkaExternalDocumentationLinkSpecKeyTransformingSerializer::class) DokkaExternalDocumentationLinkSpec>? = null,
     /**
      * Platform to be used for setting up code analysis and samples.
      *
@@ -305,7 +305,8 @@ internal data class DokkaSourceSetSpec(
         receiver.enableAndroidDocumentationLink tryAssign enableAndroidDocumentationLink
         receiver.languageVersion tryAssign languageVersion
         receiver.apiVersion tryAssign apiVersion
-        receiver.jdkVersion tryAssign (jdkVersion ?: project.settings.libs.versions.version("java.languageVersion")?.toInt())
+        receiver.jdkVersion tryAssign (jdkVersion
+            ?: project.settings.libs.versions.version("java.languageVersion")?.toInt())
     }
 }
 

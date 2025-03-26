@@ -4,6 +4,7 @@ import gradle.collection.SerializableAnyMap
 import gradle.plugins.android.AarMetadata
 import gradle.plugins.android.BuildConfigField
 import gradle.plugins.android.BuildType
+import gradle.plugins.android.BuildTypeKeyTransformingSerializer
 import gradle.plugins.android.ExternalNativeBuildFlags
 import gradle.plugins.android.Ndk
 import gradle.plugins.android.Optimization
@@ -13,7 +14,6 @@ import gradle.plugins.android.Shaders
 import gradle.plugins.android.VcsInfo
 import gradle.plugins.android.compile.JavaCompileOptions
 import gradle.plugins.android.test.AndroidTest
-import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -80,7 +80,6 @@ internal data class LibraryBuildType(
     }
 }
 
-internal object LibraryBuildTypeKeyTransformingSerializer : KeyTransformingSerializer<LibraryBuildType>(
+internal object LibraryBuildTypeKeyTransformingSerializer : BuildTypeKeyTransformingSerializer<LibraryBuildType>(
     LibraryBuildType.serializer(),
-    "name",
 )

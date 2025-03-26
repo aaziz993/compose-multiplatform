@@ -1,6 +1,5 @@
 package gradle.plugins.android
 
-import com.android.build.api.dsl.BuildType
 import gradle.accessors.android
 import gradle.api.NamedKeyTransformingSerializer
 import gradle.api.ProjectNamed
@@ -23,7 +22,7 @@ import org.gradle.api.Project
  * [configuring build types](https://developer.android.com/studio/build#build-config)
  * for more information.
  */
-internal interface BuildType<T : BuildType> : ProjectNamed<T>, VariantDimension<T> {
+internal interface BuildType<T : com.android.build.api.dsl.BuildType> : ProjectNamed<T>, VariantDimension<T> {
 
     /**
      * Specifies unit test code coverage data collection by configuring the JacocoPlugin.
@@ -208,5 +207,5 @@ internal interface BuildType<T : BuildType> : ProjectNamed<T>, VariantDimension<
     }
 }
 
-internal class BuildTypeTransformingSerializer<T : BuildType>(tSerializer: KSerializer<T>)
+internal abstract class BuildTypeKeyTransformingSerializer<T : BuildType<*>>(tSerializer: KSerializer<T>)
     : NamedKeyTransformingSerializer<T>(tSerializer)

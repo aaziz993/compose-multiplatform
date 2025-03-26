@@ -1,10 +1,10 @@
 package gradle.plugins.dokka
 
+import gradle.api.NamedKeyTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import org.jetbrains.dokka.gradle.engine.parameters.DokkaExternalDocumentationLinkSpec
 
 /**
  * Configuration builder that allows creating links leading to externally hosted
@@ -74,12 +74,17 @@ internal data class DokkaExternalDocumentationLinkSpec(
      * @see org.jetbrains.dokka.gradle.engine.parameters.DokkaSourceSetSpec.enableAndroidDocumentationLink
      */
     val enabled: Boolean? = null,
-) : ProjectNamed<DokkaExternalDocumentationLinkSpec> {
+) : ProjectNamed<org.jetbrains.dokka.gradle.engine.parameters.DokkaExternalDocumentationLinkSpec> {
 
     context(Project)
-    override fun applyTo(receiver: DokkaExternalDocumentationLinkSpec) {
+    override fun applyTo(receiver: org.jetbrains.dokka.gradle.engine.parameters.DokkaExternalDocumentationLinkSpec) {
         url?.let(receiver::url)
         packageListUrl?.let(receiver::packageListUrl)
         receiver.enabled tryAssign enabled
     }
 }
+
+internal object DokkaExternalDocumentationLinkSpecKeyTransformingSerializer
+    : NamedKeyTransformingSerializer<DokkaExternalDocumentationLinkSpec>(
+    DokkaExternalDocumentationLinkSpec.serializer(),
+)

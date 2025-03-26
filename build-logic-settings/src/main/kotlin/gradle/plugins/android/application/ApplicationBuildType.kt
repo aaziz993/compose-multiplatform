@@ -4,6 +4,7 @@ import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.android.BuildConfigField
 import gradle.plugins.android.BuildType
+import gradle.plugins.android.BuildTypeKeyTransformingSerializer
 import gradle.plugins.android.ExternalNativeBuildFlags
 import gradle.plugins.android.Ndk
 import gradle.plugins.android.Optimization
@@ -12,7 +13,6 @@ import gradle.plugins.android.ResValue
 import gradle.plugins.android.Shaders
 import gradle.plugins.android.VcsInfo
 import gradle.plugins.android.compile.JavaCompileOptions
-import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -117,7 +117,6 @@ internal data class ApplicationBuildType(
     }
 }
 
-internal object ApplicationBuildTypeKeyTransformingSerializer : KeyTransformingSerializer<ApplicationBuildType>(
+internal object ApplicationBuildTypeKeyTransformingSerializer : BuildTypeKeyTransformingSerializer<ApplicationBuildType>(
     ApplicationBuildType.serializer(),
-    "name",
 )
