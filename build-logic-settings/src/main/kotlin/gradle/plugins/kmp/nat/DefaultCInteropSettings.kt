@@ -1,7 +1,7 @@
 package gradle.plugins.kmp.nat
 
+import gradle.api.NamedKeyTransformingSerializer
 import kotlinx.serialization.Serializable
-import org.jetbrains.kotlin.gradle.plugin.mpp.DefaultCInteropSettings
 
 @Serializable
 internal data class DefaultCInteropSettings(
@@ -15,4 +15,7 @@ internal data class DefaultCInteropSettings(
     override val compilerOpts: List<String>? = null,
     override val linkerOpts: List<String>? = null,
     override val extraOpts: List<String>? = null
-) : CInteropSettings<DefaultCInteropSettings>
+) : CInteropSettings<org.jetbrains.kotlin.gradle.plugin.mpp.DefaultCInteropSettings>
+
+internal object DefaultCInteropSettingsKeyTransformingSerializer
+    : CInteropSettingsKeyTransformingSerializer<DefaultCInteropSettings>(DefaultCInteropSettings.serializer())

@@ -1,8 +1,11 @@
 package gradle.plugins.kmp.nat
 
+import gradle.api.NamedKeyTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.trySet
+import gradle.plugins.android.BuildType
 import kotlinx.serialization.DeserializationStrategy
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.SetSerializer
 import kotlinx.serialization.builtins.serializer
@@ -12,7 +15,7 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import org.gradle.api.Project
-import org.jetbrains.kotlin.gradle.plugin.CInteropSettings
+
 
 /**
  * # C interoperability settings
@@ -46,7 +49,7 @@ import org.jetbrains.kotlin.gradle.plugin.CInteropSettings
  * In this example, we've added a `cinterop` setting named `cinteropForLinuxX64` to the `linuxX64` `main` [KotlinCompilation].
  * These settings are used to create and configure a `cinterop` task, along with the necessary dependencies for the compile task.
  */
-internal interface CInteropSettings<T : CInteropSettings> : ProjectNamed<T> {
+internal interface CInteropSettings<T : org.jetbrains.kotlin.gradle.plugin.CInteropSettings> : ProjectNamed<T> {
 
     /**
      * The collection of libraries used for building during the C interoperability process.
@@ -295,7 +298,7 @@ internal interface CInteropSettings<T : CInteropSettings> : ProjectNamed<T> {
          *
          * @param includeDirs The directories to be included.
          */
-        val allHeaders: List<String>? = null,
+        val allHeaders: Set<String>? = null,
 
         /**
          * Additional directories to search for headers listed in the `headers` property in the `.def` file.
@@ -316,7 +319,8 @@ internal interface CInteropSettings<T : CInteropSettings> : ProjectNamed<T> {
          *                     includeDirs {
          *                         headerFilterOnly(project.file("include/libs"))
          *                     }
-         *                 }
+         *                 }internal abstract class BuildTypeKeyTransformingSerializer<T : BuildType<*>>(tSerializer: KSerializer<T>)
+         *     : NamedKeyTransformingSerializer<T>(tSerializer)
          *             }
          *         }
          *     }
@@ -328,10 +332,10 @@ internal interface CInteropSettings<T : CInteropSettings> : ProjectNamed<T> {
          *
          * @param includeDirs The directories to be included as prefixes for the header filters.
          */
-        val headerFilterOnly: List<String>? = null,
+        val headerFilterOnly: Set<String>? = null,
     ) {
 
-        fun applyTo(receiver: CInteropSettings.IncludeDirectories) {
+        fun applyTo(receiver: org.jetbrains.kotlin.gradle.plugin.CInteropSettings.IncludeDirectories) {
             allHeaders?.let(receiver::allHeaders)
             headerFilterOnly?.let(receiver::headerFilterOnly)
         }
@@ -347,3 +351,7 @@ internal interface CInteropSettings<T : CInteropSettings> : ProjectNamed<T> {
             }
     }
 }
+
+
+internal abstract class CInteropSettingsKeyTransformingSerializer<T : CInteropSettings<*>>(tSerializer: KSerializer<T>)
+    : NamedKeyTransformingSerializer<T>(tSerializer)

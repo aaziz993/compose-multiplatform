@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 internal data class VersionCatalog(
     val name: String,
-    val from: @Serializable(with = DependencyTransformingSerializer::class) Dependency,
+    val from: @Serializable(with = DependencyKeyTransformingSerializer::class) Dependency,
 ) {
 
     override fun equals(other: Any?): Boolean = (other is VersionCatalog)

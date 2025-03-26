@@ -1,11 +1,10 @@
 package gradle.plugins.kmp.web
 
-import gradle.api.trySet
 import gradle.plugins.kmp.KotlinSourceSet
 import gradle.plugins.kotlin.KotlinCompilationOutput
 import gradle.plugins.kotlin.KotlinCompilationTransformingSerializer
 import gradle.project.Dependency
-import gradle.project.DependencyTransformingSerializer
+import gradle.project.DependencyKeyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

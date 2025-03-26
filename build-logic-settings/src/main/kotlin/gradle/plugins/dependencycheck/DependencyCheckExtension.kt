@@ -8,6 +8,7 @@ import gradle.accessors.plugins
 import gradle.accessors.settings
 import gradle.api.applyTo
 import gradle.plugins.dependencycheck.analyzer.AnalyzerExtension
+import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
 /*
@@ -232,7 +233,7 @@ internal abstract class DependencyCheckExtension {
      * Allows programmatic configuration of additional CPEs to be analyzed
      * @param action the action used to add entries to additional CPEs container.
      */
-    abstract val additionalCpes: Set<AdditionalCpe>?
+    abstract val additionalCpes: LinkedHashSet<@Serializable(with = AdditionalCpeKeyTransformingSerializer::class) AdditionalCpe>?
 
     /**
      * The configuration extension for cache settings.

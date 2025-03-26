@@ -142,7 +142,7 @@ internal data class Dependency(
         }
 }
 
-internal object DependencyTransformingSerializer : BaseKeyTransformingSerializer<Dependency>(
+internal object DependencyKeyTransformingSerializer : BaseKeyTransformingSerializer<Dependency>(
     Dependency.serializer(),
 ) {
 

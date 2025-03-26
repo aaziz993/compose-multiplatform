@@ -1,6 +1,7 @@
 package gradle.plugins.kmp
 
 import gradle.accessors.kotlin
+import gradle.api.NamedKeyTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.applyTo
 import gradle.api.file.SourceDirectorySet
@@ -8,8 +9,7 @@ import gradle.api.getByNameOrAll
 import gradle.plugins.kotlin.HasKotlinDependencies
 import gradle.plugins.kotlin.LanguageSettingsBuilder
 import gradle.project.Dependency
-import gradle.project.DependencyTransformingSerializer
-import gradle.serialization.serializer.KeyTransformingSerializer
+import gradle.project.DependencyKeyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -84,7 +84,6 @@ internal data class KotlinSourceSet(
     fun applyTo() = applyTo(project.kotlin.sourceSets)
 }
 
-internal object KotlinSourceSetKeyTransformingSerializer : KeyTransformingSerializer<KotlinSourceSet>(
+internal object KotlinSourceSetKeyTransformingSerializer : NamedKeyTransformingSerializer<KotlinSourceSet>(
     KotlinSourceSet.serializer(),
-    "name",
 )

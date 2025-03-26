@@ -7,7 +7,7 @@ import gradle.plugins.kotlin.KotlinCompilationOutput
 import gradle.plugins.kotlin.KotlinCompilationTransformingSerializer
 import gradle.plugins.kotlin.tasks.KotlinCompilationTaskImpl
 import gradle.project.Dependency
-import gradle.project.DependencyTransformingSerializer
+import gradle.project.DependencyKeyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.invoke
