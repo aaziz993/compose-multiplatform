@@ -14,6 +14,9 @@ internal abstract class KotlinNativeTargetWithHostTests
 @Serializable
 @SerialName("nativeWithHostTests")
 internal data class KotlinNativeTargetWithSimulatorTestsImpl(
+    override val withSourcesJar: Boolean? = null,
+    override val mavenPublication: MavenPublication? = null,
+    override val onPublicationCreated: String? = null,
     override val compilations: List<KotlinNativeCompilation>? = null,
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: @Serializable(with = KotlinNativeBinaryContainerTransformingSerializer::class) KotlinNativeBinaryContainer? = null,

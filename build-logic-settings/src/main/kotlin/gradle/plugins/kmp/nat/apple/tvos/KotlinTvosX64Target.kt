@@ -19,6 +19,9 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 @SerialName("tvosX64")
 internal data class KotlinTvosX64Target(
     override val name: String = "tvosX64",
+    override val withSourcesJar: Boolean? = null,
+    override val mavenPublication: MavenPublication? = null,
+    override val onPublicationCreated: String? = null,
     override val compilations: LinkedHashSet<@Serializable(with = KotlinNativeCompilationKeyTransformingSerializer::class) KotlinNativeCompilation>? = null,
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: @Serializable(with = KotlinNativeBinaryContainerTransformingSerializer::class) KotlinNativeBinaryContainer? = null,

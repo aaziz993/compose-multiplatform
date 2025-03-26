@@ -44,7 +44,7 @@ internal data class KotlinJvmAndroidCompilation(
     }
 }
 
-internal object KotlinJvmAndroidKeyCompilationTransformingSerializer :
+internal object KotlinJvmAndroidCompilationKeyTransformingSerializer :
     KotlinCompilationTransformingSerializer<KotlinJvmAndroidCompilation>(
         KotlinJvmAndroidCompilation.serializer(),
     )

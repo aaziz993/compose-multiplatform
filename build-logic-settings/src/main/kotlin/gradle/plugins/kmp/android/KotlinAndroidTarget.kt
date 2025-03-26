@@ -18,6 +18,9 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
 @SerialName("android")
 internal data class KotlinAndroidTarget(
     override val name: String = "android",
+    override val withSourcesJar: Boolean? = null,
+    override val mavenPublication: MavenPublication? = null,
+    override val onPublicationCreated: String? = null,
     override val compilations: LinkedHashSet<@Serializable(with = KotlinJvmAndroidKeyCompilationTransformingSerializer::class) KotlinJvmAndroidCompilation>? = null,
     override val compilerOptions: KotlinJvmCompilerOptions? = null,
     /** Names of the Android library variants that should be published from the target's project within the default publications which are

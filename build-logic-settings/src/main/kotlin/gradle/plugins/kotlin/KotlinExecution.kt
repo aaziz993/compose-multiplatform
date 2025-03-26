@@ -14,7 +14,7 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinExecution
  *
  * [KotlinTestRun] is a specific type of execution that runs tests.
  */
-internal interface KotlinExecution<T : KotlinExecution<*>> : ProjectNamed<T> {
+internal interface KotlinExecution<T : KotlinExecution<E>, E : KotlinExecution.ExecutionSource> : ProjectNamed<T> {
 
     /**
      * Represents an execution source that provides the necessary inputs to run the execution.
