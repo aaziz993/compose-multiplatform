@@ -105,10 +105,10 @@ import gradle.plugins.spotless.SpotlessPlugin
 import gradle.plugins.web.JsPlugin
 import gradle.plugins.web.WasmJsPlugin
 import gradle.plugins.web.WasmWasiPlugin
+import org.gradle.kotlin.dsl.plugins
 
 public class ProjectPlugin : Plugin<Project> {
 
-    @Suppress("UnstableApiUsage")
     override fun apply(target: Project): Unit = with(SLF4JProblemReporterContext()) {
         with(target) {
             // Load and apply project.yaml to build.gradle.kts properties.
@@ -122,44 +122,48 @@ public class ProjectPlugin : Plugin<Project> {
             if (projectProperties.kotlin.targets.isNotEmpty()) {
                 projectProperties.group?.let(::setGroup)
                 projectProperties.description?.let(::setDescription)
-                project.version = version()
+                version = version()
             }
 
             //  Don't change order!
-            project.plugins.apply(DoctorPlugin::class.java)
-            project.plugins.apply(DependencyCheckPlugin::class.java)
-            project.plugins.apply(BuildConfigPlugin::class.java)
-            project.plugins.apply(SpotlessPlugin::class.java)
-            project.plugins.apply(KoverPlugin::class.java)
-            project.plugins.apply(SonarPlugin::class.java)
-            project.plugins.apply(DokkaPlugin::class.java)
-            project.plugins.apply(KnitPlugin::class.java) // apply after dokka plugin to make knitPrepare be dependOn dokkaGenerate.
-            project.plugins.apply(ShadowPlugin::class.java)
-            project.plugins.apply(ApiValidationPlugin::class.java)
-            project.plugins.apply(AllOpenPlugin::class.java)
-            project.plugins.apply(NoArgPlugin::class.java)
-            project.plugins.apply(AtomicFUPlugin::class.java)
-            project.plugins.apply(SerializationPlugin::class.java)
-            project.plugins.apply(BenchmarkPlugin::class.java)
-            project.plugins.apply(SqlDelightPlugin::class.java)
-            project.plugins.apply(RoomPlugin::class.java)
-            project.plugins.apply(RpcPlugin::class.java)
-            project.plugins.apply(KtorfitPlugin::class.java)
-            project.plugins.apply(ApolloPlugin::class.java)
-            project.plugins.apply(PowerAssertPlugin::class.java)
-            project.plugins.apply(ApplePlugin::class.java) // doesn't depend on kmp
-            project.plugins.apply(AndroidPlugin::class.java) // apply and configure android library or application plugin.
-            project.plugins.apply(AnimalSnifferPlugin::class.java)
-            project.plugins.apply(KMPPlugin::class.java) // need android library or application plugin applied.
-            project.plugins.apply(JvmPlugin::class.java) //  apply after kmp plugin.
-            project.plugins.apply(KspPlugin::class.java) // kspCommonMainMetadata need kmp plugin applied.
-            project.plugins.apply(NativePlugin::class.java)
-            project.plugins.apply(JsPlugin::class.java)
-            project.plugins.apply(WasmJsPlugin::class.java)
-            project.plugins.apply(WasmWasiPlugin::class.java)
-            project.plugins.apply(CMPPlugin::class.java)
-            project.plugins.apply(PublishPlugin::class.java)
-            project.plugins.apply(SigningPlugin::class.java)
+            plugins.apply(DoctorPlugin::class.java)
+            plugins.apply(DependencyCheckPlugin::class.java)
+            plugins.apply(BuildConfigPlugin::class.java)
+            plugins.apply(SpotlessPlugin::class.java)
+            plugins.apply(KoverPlugin::class.java)
+            plugins.apply(SonarPlugin::class.java)
+            plugins.apply(DokkaPlugin::class.java)
+            plugins.apply(KnitPlugin::class.java) // apply after dokka plugin to make knitPrepare be dependOn dokkaGenerate.
+            plugins.apply(ShadowPlugin::class.java)
+            plugins.apply(ApiValidationPlugin::class.java)
+            plugins.apply(AllOpenPlugin::class.java)
+            plugins.apply(NoArgPlugin::class.java)
+            plugins.apply(AtomicFUPlugin::class.java)
+            plugins.apply(SerializationPlugin::class.java)
+            plugins.apply(BenchmarkPlugin::class.java)
+            plugins.apply(SqlDelightPlugin::class.java)
+            plugins.apply(RoomPlugin::class.java)
+            plugins.apply(RpcPlugin::class.java)
+            plugins.apply(KtorfitPlugin::class.java)
+            plugins.apply(ApolloPlugin::class.java)
+            plugins.apply(PowerAssertPlugin::class.java)
+            plugins.apply(ApplePlugin::class.java) // doesn't depend on kmp
+            plugins.apply(AndroidPlugin::class.java) // apply and configure android library or application plugin.
+            plugins.apply(AnimalSnifferPlugin::class.java)
+            plugins.apply(KMPPlugin::class.java) // need android library or application plugin applied.
+            plugins.apply(JvmPlugin::class.java) //  apply after kmp plugin.
+            plugins.apply(KspPlugin::class.java) // kspCommonMainMetadata need kmp plugin applied.
+            plugins.apply(NativePlugin::class.java)
+            plugins.apply(JsPlugin::class.java)
+            plugins.apply(WasmJsPlugin::class.java)
+            plugins.apply(WasmWasiPlugin::class.java)
+            plugins.apply(CMPPlugin::class.java)
+            plugins.apply(PublishPlugin::class.java)
+            plugins.apply(SigningPlugin::class.java)
+
+            // Other plugins.
+            projectProperties.plugins.applies?.forEach(plugins::apply)
+
 
             projectProperties.nodeJsEnv.applyTo()
             projectProperties.npm.applyTo()
