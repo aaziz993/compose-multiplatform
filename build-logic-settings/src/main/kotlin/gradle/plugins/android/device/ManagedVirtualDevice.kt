@@ -1,6 +1,5 @@
 package gradle.plugins.android.device
 
-import com.android.build.api.dsl.ManagedVirtualDevice
 import gradle.api.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -65,10 +64,10 @@ internal data class ManagedVirtualDevice(
      *   The value of this parameter has no effect. An arm64 image is always selected.
      */
     val require64Bit: Boolean? = null,
-) : Device<ManagedVirtualDevice> {
+) : Device<com.android.build.api.dsl.ManagedVirtualDevice> {
 
     context(Project)
-    override fun applyTo(receiver: ManagedVirtualDevice) {
+    override fun applyTo(receiver: com.android.build.api.dsl.ManagedVirtualDevice) {
         receiver::device trySet device
         receiver::apiLevel trySet apiLevel
         receiver::apiPreview trySet apiPreview
@@ -76,3 +75,6 @@ internal data class ManagedVirtualDevice(
         receiver::require64Bit trySet require64Bit
     }
 }
+
+internal object ManagedVirtualDeviceKeyTransformingSerializer
+    : DeviceKeyTransformingSerializer<ManagedVirtualDevice>(ManagedVirtualDevice.serializer())

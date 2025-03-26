@@ -1,6 +1,6 @@
 package gradle.plugins.android.device
 
-import com.android.build.api.dsl.DeviceGroup
+import gradle.api.NamedKeyTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.applyTo
 import kotlinx.serialization.Serializable
@@ -12,14 +12,17 @@ import org.gradle.api.Project
 @Serializable
 internal data class DeviceGroup(
     override val name: String? = null,
-    val targetDevices: Set<DeviceImpl>? = null,
-) : ProjectNamed<DeviceGroup> {
+    val targetDevices: LinkedHashSet<@Serializable(with = DeviceImlKeyTransformingSerializer::class) DeviceImpl>? = null,
+) : ProjectNamed<com.android.build.api.dsl.DeviceGroup> {
 
     context(Project)
     @Suppress("UnstableApiUsage")
-    override fun applyTo(receiver: DeviceGroup) {
+    override fun applyTo(receiver: com.android.build.api.dsl.DeviceGroup) {
         targetDevices?.forEach { targetDevice ->
             targetDevice.applyTo(receiver.targetDevices) { _, _ -> }
         }
     }
 }
+
+internal object DeviceGroupKeyTransformingSerializer
+    : NamedKeyTransformingSerializer<DeviceGroup>(DeviceGroup.serializer())
