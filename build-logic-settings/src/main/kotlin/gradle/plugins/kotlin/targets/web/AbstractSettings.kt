@@ -1,23 +1,10 @@
 package gradle.plugins.kotlin.targets.web
 
-import gradle.api.trySet
-import org.jetbrains.kotlin.gradle.targets.js.AbstractEnv
-import org.jetbrains.kotlin.gradle.targets.js.AbstractSettings
-import org.jetbrains.kotlin.gradle.targets.js.npm.tasks.KotlinNpmInstallTask
+import org.gradle.api.Project
 
-internal abstract class AbstractSettings<T : AbstractEnv> {
+internal abstract class AbstractSettings<T> {
 
-    // To prevent Kotlin build from failing (due to `-Werror`), only deprecate after upgrade of bootstrap version
-//    @Deprecated("This property has been migrated to support the Provider API. Use downloadBaseUrlProperty instead. This will be removed in version 2.2.")
-    abstract val downloadBaseUrl: String?
-
-    // To prevent Kotlin build from failing (due to `-Werror`), only deprecate after upgrade of bootstrap version
-//    @Deprecated("This property has been migrated to support the Provider API. Use corresponding spec (extension with name *Spec) instead. This will be removed in version 2.2.")
-    abstract val version: String?
-
-    fun applyTo(settings: AbstractSettings<T>) {
-        KotlinNpmInstallTask
-        settings::downloadBaseUrl trySet downloadBaseUrl
-        settings::version trySet version
+    context(Project)
+    open fun applyTo(receiver: T) {
     }
 }

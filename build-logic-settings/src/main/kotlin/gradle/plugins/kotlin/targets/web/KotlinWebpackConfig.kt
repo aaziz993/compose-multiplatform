@@ -1,6 +1,7 @@
 package gradle.plugins.kotlin.targets.web
 
-import gradle.api.tryPlus
+import gradle.api.tryApply
+import gradle.api.tryAddAll
 import gradle.api.trySet
 import gradle.plugins.kotlin.targets.web.KotlinWebpackConfig.DevServer.Client.Overlay
 import kotlinx.serialization.Serializable
@@ -74,14 +75,8 @@ internal data class KotlinWebpackConfig(
         webpackConfig::export trySet export
         webpackConfig::progressReporter trySet progressReporter
         webpackConfig::resolveFromModulesFirst trySet resolveFromModulesFirst
-
-        cssSupport?.let { cssSupport ->
-            webpackConfig.cssSupport(cssSupport::applyTo)
-        }
-
-        scssSupport?.let { scssSupport ->
-            webpackConfig.scssSupport(scssSupport::applyTo)
-        }
+        webpackConfig::cssSupport tryApply cssSupport?.let { it::applyTo }
+        webpackConfig::scssSupport tryApply scssSupport?.let { it::applyTo }
     }
 
     @Serializable
@@ -177,11 +172,11 @@ internal data class KotlinWebpackConfig(
         fun applyTo(receiver: KotlinWebpackConfig.DevServer) {
             receiver::open trySet open
             receiver::port trySet port
-            receiver::proxy tryPlus proxy?.map(Proxy::toProxy)
+            receiver::proxy tryAddAll proxy?.map(Proxy::toProxy)
             receiver::proxy trySet setProxy?.map(Proxy::toProxy)?.toMutableList()
-            receiver::static tryPlus static
+            receiver::static tryAddAll static
             receiver::static trySet setStatic?.toMutableList()
-            receiver::contentBase tryPlus contentBase
+            receiver::contentBase tryAddAll contentBase
             receiver::contentBase trySet setContentBase?.toMutableList()
 
             receiver::client.trySet(

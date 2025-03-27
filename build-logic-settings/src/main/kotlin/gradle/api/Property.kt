@@ -2,6 +2,7 @@ package gradle.api
 
 import java.io.File
 import kotlin.reflect.KMutableProperty0
+import kotlin.reflect.KFunction1
 import org.gradle.api.file.FileSystemLocation
 import org.gradle.api.file.FileSystemLocationProperty
 import org.gradle.api.provider.HasMultipleValues
@@ -22,35 +23,35 @@ public fun <T : Any> KMutableProperty0<T?>.trySet(value: () -> T?, apply: T.() -
 
 public operator fun <E> KMutableProperty0<out Collection<E>?>.plus(value: Iterable<E>) {
     this as KMutableProperty0<Collection<E>?>
-    get()?.plus(value) ?: set(value.toList())
+    set(get()?.plus(value) ?: value.toList())
 }
 
 public infix fun <E> KMutableProperty0<out Collection<E>?>.tryPlus(value: Iterable<E>?): Unit? =
     value?.let(::plus)
 
-public operator fun <E> KMutableProperty0<out MutableCollection<E>?>.plus(value: Collection<E>) {
+public fun <E> KMutableProperty0<out MutableCollection<E>?>.addAll(value: Collection<E>) {
     this as KMutableProperty0<MutableCollection<E>?>
     get()?.addAll(value) ?: set(value as MutableCollection<E>)
 }
 
-public infix fun <E> KMutableProperty0<out MutableCollection<E>?>.tryPlus(value: Collection<E>?): Unit? =
-    value?.let(::plus)
+public infix fun <E> KMutableProperty0<out MutableCollection<E>?>.tryAddAll(value: Collection<E>?): Unit? =
+    value?.let(::addAll)
 
 public operator fun <K, V> KMutableProperty0<out Map<K, V>?>.plus(value: Map<K, V>) {
     this as KMutableProperty0<Map<K, V>?>
-    get()?.plus(value) ?: set(value)
+    set(get()?.plus(value) ?: value)
 }
 
 public infix fun <K, V> KMutableProperty0<out Map<K, V>?>.tryPlus(value: Map<K, V>?): Unit? =
     value?.let(::plus)
 
-public operator fun <K, V> KMutableProperty0<out MutableMap<K, V>?>.plus(value: Map<K, V>) {
+public fun <K, V> KMutableProperty0<out MutableMap<K, V>?>.putAll(value: Map<K, V>) {
     this as KMutableProperty0<MutableMap<K, V>?>
     get()?.putAll(value) ?: set(value as MutableMap<K, V>)
 }
 
-public infix fun <K, V> KMutableProperty0<out MutableMap<K, V>?>.tryPlus(value: Map<K, V>?): Unit? =
-    value?.let(::plus)
+public infix fun <K, V> KMutableProperty0<out MutableMap<K, V>?>.tryPutAll(value: Map<K, V>?): Unit? =
+    value?.let(::putAll)
 
 public infix fun <T : FileSystemLocation> FileSystemLocationProperty<T>.tryAssign(file: File?): Unit? =
     file?.let(::assign)
@@ -72,3 +73,10 @@ public infix fun <T> Property<T>.tryAssign(value: T?): Unit? = value?.let(::assi
 
 public infix fun <T> Property<T>.tryAssign(value: Provider<out T?>): Unit? =
     value.takeIf(Provider<out T?>::isPresent)?.let(::assign)
+
+public infix fun <T> KFunction1<T, Unit>.apply(block: KFunction1<T, Unit>) {
+    call(block)
+}
+
+public infix fun <T> KFunction1<T, Unit>.tryApply(block: (KFunction1<T, Unit>)?) =
+    block?.let(::apply)
