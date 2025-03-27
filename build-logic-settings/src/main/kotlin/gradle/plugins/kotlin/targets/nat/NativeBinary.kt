@@ -91,6 +91,22 @@ internal object NativeBinaryKeyTransformingSerializer : KeyTransformingSerialize
     "type",
 )
 
+@Serializable
+internal data class NativeBinaryImpl(
+    override val baseName: String? = null,
+    override val debuggable: Boolean? = null,
+    override val optimized: Boolean? = null,
+    override val linkerOpts: List<String>? = null,
+    override val setLinkerOpts: List<String>? = null,
+    override val binaryOptions: Map<String, String>? = null,
+    override val setBinaryOptions: Map<String, String>? = null,
+    override val freeCompilerArgs: List<String>? = null,
+    override val setFreeCompilerArgs: List<String>? = null,
+    override val outputDirectory: String? = null,
+    override val outputDirectoryProperty: String? = null,
+    override val name: String? = null,
+) : NativeBinary<org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary>()
+
 internal abstract class AbstractExecutable<T : org.jetbrains.kotlin.gradle.plugin.mpp.AbstractExecutable> : NativeBinary<T>()
 
 internal abstract class Executable : AbstractExecutable<org.jetbrains.kotlin.gradle.plugin.mpp.Executable>() {

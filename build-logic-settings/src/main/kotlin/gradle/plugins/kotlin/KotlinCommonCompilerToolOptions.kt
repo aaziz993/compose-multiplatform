@@ -1,13 +1,13 @@
 package gradle.plugins.kotlin
 
 import gradle.api.tryAssign
+import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerToolOptions
 
 /**
  * Common options for all Kotlin platforms' compilations and tools.
  */
-internal interface KotlinCommonCompilerToolOptions<T : KotlinCommonCompilerToolOptions> {
+internal interface KotlinCommonCompilerToolOptions<T : org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerToolOptions> {
 
     /**
      * Report an error if there are any warnings.
@@ -64,3 +64,13 @@ internal interface KotlinCommonCompilerToolOptions<T : KotlinCommonCompilerToolO
         receiver.freeCompilerArgs tryAssign setFreeCompilerArgs
     }
 }
+
+@Serializable
+internal data class KotlinCommonCompilerToolOptionsImpl(
+    override val allWarningsAsErrors: Boolean? = null,
+    override val extraWarnings: Boolean? = null,
+    override val suppressWarnings: Boolean? = null,
+    override val verbose: Boolean? = null,
+    override val freeCompilerArgs: List<String>? = null,
+    override val setFreeCompilerArgs: List<String>? = null,
+) : KotlinCommonCompilerToolOptions<org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerToolOptions>

@@ -31,11 +31,14 @@ internal abstract class AbstractKotlinNativeCompile<T : org.jetbrains.kotlin.gra
         super<AbstractKotlinCompileTool>.applyTo(receiver)
         super<ProducesKlib>.applyTo(receiver)
 
-        receiver::compilerPluginClasspath trySet compilerPluginClasspath?.toTypedArray()?.let(project::files)
-        receiver::compilerPluginClasspath trySet compilerPluginClasspath?.toTypedArray()?.let(project::files)?.let { files ->
-            receiver.compilerPluginClasspath?.let { it + files } ?: files
-        }
+        receiver::compilerPluginClasspath trySet compilerPluginClasspath
+            ?.toTypedArray()
+            ?.let(project::files)
+            ?.let { compilerPluginClasspath ->
+                receiver.compilerPluginClasspath?.plus(   compilerPluginClasspath ) ?: compilerPluginClasspath
+            }
 
+        receiver::compilerPluginClasspath trySet setCompilerPluginClasspath?.toTypedArray()?.let(project::files)
         receiver::kotlinPluginData trySet kotlinPluginData?.toKotlinCompilerPluginData()?.let { kotlinPluginData ->
             provider { kotlinPluginData }
         }
