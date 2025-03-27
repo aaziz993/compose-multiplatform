@@ -18,12 +18,10 @@ import gradle.plugins.android.flavor.ProductFlavor
 import gradle.plugins.android.flavor.ProductFlavorKeyTransformingSerializer
 import gradle.plugins.android.signing.SigningConfigImpl
 import gradle.plugins.android.signing.SigningConfigKeyTransformingSerializer
-import gradle.plugins.android.signing.SigningConfigTransformingSerializer
 import gradle.plugins.android.sourceset.AndroidSourceSet
 import gradle.plugins.android.sourceset.AndroidSourceSetKeyTransformingSerializer
 import gradle.plugins.android.split.Splits
 import gradle.plugins.android.test.TestOptions
-import gradle.plugins.kmp.KotlinTarget
 import gradle.serialization.serializer.JsonPolymorphicSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

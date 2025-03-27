@@ -7,12 +7,12 @@ import gradle.accessors.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.projectProperties
+import gradle.plugins.develocity.model.DevelocitySettings
 import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
 import org.gradle.api.tasks.testing.Test
 import org.gradle.kotlin.dsl.develocity
 import org.gradle.kotlin.dsl.getByName
-import gradle.plugins.develocity.model.DevelocitySettings
 
 internal class DevelocityPlugin : Plugin<Settings> {
 

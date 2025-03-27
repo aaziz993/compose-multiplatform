@@ -18,10 +18,8 @@ import gradle.plugins.android.features.DataBinding
 import gradle.plugins.android.features.ViewBinding
 import gradle.plugins.android.flavor.ProductFlavor
 import gradle.plugins.android.flavor.ProductFlavorKeyTransformingSerializer
-import gradle.plugins.android.flavor.ProductFlavorTransformingSerializer
 import gradle.plugins.android.signing.SigningConfigImpl
 import gradle.plugins.android.signing.SigningConfigKeyTransformingSerializer
-import gradle.plugins.android.signing.SigningConfigTransformingSerializer
 import gradle.plugins.android.sourceset.AndroidSourceSet
 import gradle.plugins.android.sourceset.AndroidSourceSetKeyTransformingSerializer
 import gradle.plugins.android.split.Splits

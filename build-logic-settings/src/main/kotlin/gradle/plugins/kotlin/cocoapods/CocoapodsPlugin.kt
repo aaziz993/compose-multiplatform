@@ -6,7 +6,6 @@ import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
-import gradle.plugins.kmp.nat.apple.KotlinAppleTarget
 import gradle.plugins.kotlin.cocoapods.model.CocoapodsSettings
 import org.gradle.api.Plugin
 import org.gradle.api.Project

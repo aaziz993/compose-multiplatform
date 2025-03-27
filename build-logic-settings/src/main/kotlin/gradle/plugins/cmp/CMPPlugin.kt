@@ -8,9 +8,9 @@ import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
+import gradle.plugins.cmp.model.CMPSettings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import gradle.plugins.cmp.model.CMPSettings
 
 public class CMPPlugin : Plugin<Project> {
 

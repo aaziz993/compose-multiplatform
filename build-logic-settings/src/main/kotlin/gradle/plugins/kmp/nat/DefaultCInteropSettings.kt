@@ -1,6 +1,5 @@
 package gradle.plugins.kmp.nat
 
-import gradle.api.NamedKeyTransformingSerializer
 import kotlinx.serialization.Serializable
 
 @Serializable

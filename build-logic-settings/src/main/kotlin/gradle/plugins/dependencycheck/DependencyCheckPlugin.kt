@@ -6,9 +6,9 @@ import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
+import gradle.plugins.dependencycheck.model.DependencyCheckSettings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import gradle.plugins.dependencycheck.model.DependencyCheckSettings
 
 internal class DependencyCheckPlugin : Plugin<Project> {
 

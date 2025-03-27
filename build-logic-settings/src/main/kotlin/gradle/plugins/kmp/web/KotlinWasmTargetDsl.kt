@@ -4,7 +4,6 @@ import gradle.accessors.kotlin
 import gradle.api.applyTo
 import gradle.plugins.kmp.HasBinaries
 import gradle.plugins.kmp.KotlinTarget
-import gradle.plugins.kotlin.KotlinCompilation
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

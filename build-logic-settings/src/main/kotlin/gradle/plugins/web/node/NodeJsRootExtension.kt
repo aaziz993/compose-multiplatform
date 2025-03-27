@@ -6,7 +6,6 @@ import gradle.accessors.node
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
-import gradle.api.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension

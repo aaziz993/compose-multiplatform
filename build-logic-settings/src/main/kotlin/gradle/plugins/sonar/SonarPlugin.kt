@@ -6,9 +6,9 @@ import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
+import gradle.plugins.sonar.model.SonarSettings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import gradle.plugins.sonar.model.SonarSettings
 
 internal class SonarPlugin : Plugin<Project> {
 

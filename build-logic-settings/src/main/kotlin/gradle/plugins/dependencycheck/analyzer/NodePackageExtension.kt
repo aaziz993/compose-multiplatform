@@ -1,7 +1,5 @@
 package gradle.plugins.dependencycheck.analyzer
 
-import groovy.transform.CompileStatic
-
 /**
  * The configuration for the Node Package Analyzer.
  */

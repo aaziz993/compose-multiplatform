@@ -4,7 +4,6 @@ import com.android.build.api.dsl.ProductFlavor
 import gradle.api.NamedKeyTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.trySet
-import gradle.plugins.android.BuildType
 import kotlinx.serialization.KSerializer
 import org.gradle.api.Project
 

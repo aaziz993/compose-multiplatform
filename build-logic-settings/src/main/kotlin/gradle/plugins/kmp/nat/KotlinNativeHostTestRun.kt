@@ -1,7 +1,6 @@
 package gradle.plugins.kmp.nat
 
 import gradle.api.tasks.test.TestFilter
-import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
 
 @Serializable

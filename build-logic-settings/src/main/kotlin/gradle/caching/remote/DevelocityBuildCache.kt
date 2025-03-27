@@ -7,8 +7,6 @@ import gradle.caching.AbstractBuildCache
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings
-import org.gradle.caching.configuration.BuildCacheConfiguration
-import org.gradle.kotlin.dsl.develocity
 
 @Serializable
 @SerialName("develocity")

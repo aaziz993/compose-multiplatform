@@ -1,7 +1,5 @@
 package gradle.api.publish.maven
 
-import gradle.accessors.moduleName
-import org.gradle.kotlin.dsl.assign
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
 import gradle.addSuffix
@@ -9,6 +7,7 @@ import gradle.api.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.publish.maven.MavenPom
+import org.gradle.kotlin.dsl.assign
 
 /**
  * The POM for a Maven publication.

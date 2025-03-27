@@ -1,9 +1,7 @@
 package gradle.plugins.kotlin
 
 import kotlinx.serialization.Serializable
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
-import org.jetbrains.kotlin.gradle.plugin.KotlinTargetsDsl
 
 internal interface KotlinHierarchyBuilder<T : org.jetbrains.kotlin.gradle.plugin.KotlinHierarchyBuilder> {
     /**

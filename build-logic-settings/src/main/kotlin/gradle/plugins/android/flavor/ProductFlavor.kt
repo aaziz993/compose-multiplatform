@@ -14,7 +14,6 @@ import gradle.plugins.android.application.ApplicationProductFlavor
 import gradle.plugins.android.compile.JavaCompileOptions
 import gradle.plugins.android.library.LibraryProductFlavor
 import gradle.plugins.android.test.TestProductFlavor
-import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

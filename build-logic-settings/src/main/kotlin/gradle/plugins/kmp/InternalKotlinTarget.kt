@@ -2,13 +2,10 @@
 
 package gradle.plugins.kmp
 
-import org.gradle.kotlin.dsl.withType
 import gradle.accessors.publishing
-import gradle.api.trySet
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.InternalKotlinGradlePluginApi
-import org.jetbrains.kotlin.gradle.plugin.KotlinTargetComponent
-import org.jetbrains.kotlin.gradle.plugin.mpp.AbstractKotlinTarget
 
 internal interface InternalKotlinTarget<T : org.jetbrains.kotlin.gradle.plugin.mpp.InternalKotlinTarget> : KotlinTarget<T> {
 

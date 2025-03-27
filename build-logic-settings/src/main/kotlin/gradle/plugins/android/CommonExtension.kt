@@ -22,7 +22,6 @@ import gradle.plugins.android.features.ViewBinding
 import gradle.plugins.android.flavor.ProductFlavorDsl
 import gradle.plugins.android.library.LibraryBuildTypeKeyTransformingSerializer
 import gradle.plugins.android.signing.ApkSigningConfig
-import gradle.plugins.android.signing.SigningConfigTransformingSerializer
 import gradle.plugins.android.sourceset.AndroidSourceSet
 import gradle.plugins.android.sourceset.AndroidSourceSetKeyTransformingSerializer
 import gradle.plugins.android.split.SplitsDsl

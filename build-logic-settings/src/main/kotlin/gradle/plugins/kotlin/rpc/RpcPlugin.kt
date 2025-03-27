@@ -6,9 +6,9 @@ import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
+import gradle.plugins.kotlin.rpc.model.RpcSettings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import gradle.plugins.kotlin.rpc.model.RpcSettings
 
 internal class RpcPlugin : Plugin<Project> {
 

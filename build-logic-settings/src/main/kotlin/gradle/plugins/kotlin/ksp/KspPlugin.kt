@@ -6,9 +6,9 @@ import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
+import gradle.plugins.kotlin.ksp.model.KspSettings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import gradle.plugins.kotlin.ksp.model.KspSettings
 
 internal class KspPlugin : Plugin<Project> {
 

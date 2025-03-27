@@ -3,7 +3,6 @@ package gradle.plugins.kmp.nat
 import gradle.api.NamedKeyTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.trySet
-import gradle.plugins.android.BuildType
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable

@@ -7,7 +7,6 @@ import gradle.api.trySet
 import gradle.plugins.kmp.AbstractKotlinTarget
 import gradle.plugins.kmp.KotlinJvmAndroidCompilation
 import gradle.plugins.kmp.KotlinJvmAndroidCompilationKeyTransformingSerializer
-import gradle.plugins.kmp.KotlinJvmAndroidKeyCompilationTransformingSerializer
 import gradle.plugins.kmp.KotlinTarget
 import gradle.plugins.kmp.jvm.KotlinJvmCompilerOptions
 import gradle.plugins.kotlin.HasConfigurableKotlinCompilerOptions

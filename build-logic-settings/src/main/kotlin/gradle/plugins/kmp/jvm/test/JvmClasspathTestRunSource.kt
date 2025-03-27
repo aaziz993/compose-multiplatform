@@ -1,6 +1,5 @@
 package gradle.plugins.kmp.jvm.test
 
-import gradle.plugins.kmp.jvm.test.SingleJvmCompilationTestRunSource
 import gradle.plugins.kotlin.KotlinExecution
 import gradle.serialization.serializer.JsonPolymorphicSerializer
 import kotlinx.serialization.DeserializationStrategy

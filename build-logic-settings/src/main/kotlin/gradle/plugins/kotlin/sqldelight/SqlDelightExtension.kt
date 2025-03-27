@@ -6,7 +6,6 @@ import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
 import gradle.accessors.sqldelight
-import gradle.api.applyTo
 import gradle.api.tryAssign
 import org.gradle.api.Project
 

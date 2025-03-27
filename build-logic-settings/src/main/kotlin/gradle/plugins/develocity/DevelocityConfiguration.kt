@@ -4,7 +4,6 @@ import gradle.accessors.id
 import gradle.accessors.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
-import gradle.accessors.settings
 import gradle.api.tryAssign
 import gradle.plugins.develocity.buildscan.BuildScanConfiguration
 import org.gradle.api.initialization.Settings

@@ -3,7 +3,6 @@ package gradle.plugins.kmp.nat
 import gradle.accessors.kotlin
 import gradle.api.applyTo
 import gradle.api.publish.maven.MavenPublication
-import gradle.plugins.kmp.KotlinTargetTestRun
 import gradle.plugins.kmp.KotlinTargetWithTests
 import gradle.plugins.kmp.nat.tasks.KotlinNativeCompilerOptions
 import kotlinx.serialization.SerialName

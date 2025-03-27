@@ -3,8 +3,6 @@ package gradle.plugins.buildconfig
 import gradle.api.NamedKeyTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.tryAssign
-import gradle.plugins.android.BuildType
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

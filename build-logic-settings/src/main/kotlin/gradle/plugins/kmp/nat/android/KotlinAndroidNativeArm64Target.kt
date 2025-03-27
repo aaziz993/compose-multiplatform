@@ -1,9 +1,9 @@
 package gradle.plugins.kmp.nat.android
 
 import gradle.accessors.kotlin
+import gradle.api.applyTo
 import gradle.plugins.kmp.nat.KotlinNativeBinaryContainer
 import gradle.plugins.kmp.nat.KotlinNativeCompilation
-import gradle.api.applyTo
 import gradle.plugins.kmp.nat.KotlinNativeCompilationKeyTransformingSerializer
 import gradle.plugins.kmp.nat.tasks.KotlinNativeCompilerOptions
 import kotlinx.serialization.SerialName

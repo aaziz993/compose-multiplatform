@@ -15,18 +15,20 @@ import gradle.caching.BuildCacheConfiguration
 import gradle.collection.deepMerge
 import gradle.collection.resolve
 import gradle.plugins.android.BaseExtension
+import gradle.plugins.apple.model.AppleSettings
+import gradle.plugins.cmp.model.CMPSettings
 import gradle.plugins.java.JavaPluginExtension
 import gradle.plugins.java.application.JavaApplication
 import gradle.plugins.kotlin.model.KotlinSettings
-import gradle.plugins.web.node.NodeJsEnvSpec
-import gradle.plugins.web.npm.NpmExtension
-import gradle.plugins.web.yarn.YarnRootEnvSpec
-import gradle.plugins.web.yarn.YarnRootExtension
 import gradle.plugins.project.file.CodeOfConductFile
 import gradle.plugins.project.file.ContributingFile
 import gradle.plugins.project.file.LicenseFile
 import gradle.plugins.project.file.LicenseHeaderFile
 import gradle.plugins.project.file.ProjectFile
+import gradle.plugins.web.node.NodeJsEnvSpec
+import gradle.plugins.web.npm.NpmExtension
+import gradle.plugins.web.yarn.YarnRootEnvSpec
+import gradle.plugins.web.yarn.YarnRootExtension
 import gradle.serialization.decodeFromAny
 import java.util.*
 import kotlinx.serialization.Serializable
@@ -37,12 +39,9 @@ import org.gradle.api.file.Directory
 import org.gradle.api.initialization.Settings
 import org.gradle.api.plugins.ExtraPropertiesExtension
 import org.gradle.api.provider.ProviderFactory
+import org.gradle.internal.impldep.kotlinx.serialization.descriptors.elementNames
 import org.gradle.kotlin.dsl.extra
 import org.yaml.snakeyaml.Yaml
-import gradle.plugins.apple.model.AppleSettings
-import gradle.plugins.cmp.model.CMPSettings
-import kotlin.text.get
-import org.gradle.internal.impldep.kotlinx.serialization.descriptors.elementNames
 
 internal const val PROJECT_PROPERTIES_FILE = "project.yaml"
 

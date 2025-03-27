@@ -7,8 +7,6 @@ import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
 import gradle.plugins.java.JavaToolchainSpec
-import gradle.plugins.kmp.HierarchyAliasKeyTransformingSerializer
-import gradle.plugins.kmp.HierarchyGroup
 import gradle.plugins.kmp.KotlinMultiplatformExtension
 import gradle.plugins.kmp.KotlinSourceSet
 import gradle.plugins.kmp.KotlinSourceSetKeyTransformingSerializer
@@ -33,8 +31,8 @@ internal data class KotlinSettings(
     override val explicitApi: ExplicitApiMode? = null,
     override val compilerOptions: KotlinCommonCompilerOptionsImpl? = null,
     override val sourceSets: LinkedHashSet<@Serializable(with = KotlinSourceSetKeyTransformingSerializer::class) KotlinSourceSet> = linkedSetOf(),
+    override val targets: LinkedHashSet<@Serializable(with = KotlinTargetKeyTransformingSerializer::class) KotlinTarget<*>> = linkedSetOf(),
     override val applyHierarchyTemplate: KotlinHierarchyBuilder.Root? = null,
-    val targets: LinkedHashSet<@Serializable(with = KotlinTargetKeyTransformingSerializer::class) KotlinTarget<*>> = linkedSetOf(),
     val cocoapods: CocoapodsSettings = CocoapodsSettings(),
 ) : KotlinMultiplatformExtension() {
 

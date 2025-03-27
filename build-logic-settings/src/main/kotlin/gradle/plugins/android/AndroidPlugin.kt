@@ -16,8 +16,8 @@ import gradle.decapitalized
 import gradle.plugins.android.application.BaseAppModuleExtension
 import gradle.plugins.android.library.LibraryExtension
 import gradle.plugins.kmp.android.KotlinAndroidTarget
-import gradle.prefixIfNotEmpty
 import gradle.plugins.project.ProjectLayout
+import gradle.prefixIfNotEmpty
 import javax.xml.stream.XMLEventFactory
 import javax.xml.stream.XMLInputFactory
 import javax.xml.stream.XMLOutputFactory

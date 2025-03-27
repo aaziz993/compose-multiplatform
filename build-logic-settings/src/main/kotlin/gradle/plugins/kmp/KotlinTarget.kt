@@ -10,7 +10,6 @@ import gradle.serialization.serializer.JsonPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import org.gradle.api.Action
 import org.gradle.api.Project
 
 @Serializable(with = KotlinTargetSerializer::class)

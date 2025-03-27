@@ -2,8 +2,6 @@ package gradle.plugins.dependencycheck
 
 import gradle.api.NamedKeyTransformingSerializer
 import gradle.api.ProjectNamed
-import gradle.plugins.android.BuildType
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

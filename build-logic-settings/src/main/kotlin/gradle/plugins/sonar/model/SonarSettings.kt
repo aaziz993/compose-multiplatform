@@ -5,9 +5,9 @@ import gradle.accessors.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
+import gradle.plugins.project.EnabledSettings
 import gradle.plugins.sonar.SonarExtension
 import gradle.plugins.sonar.SonarProperties
-import gradle.plugins.project.EnabledSettings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

@@ -1,6 +1,5 @@
 package gradle.plugins.kmp.web
 
-import gradle.api.trySet
 import gradle.plugins.kmp.HasBinaries
 import gradle.plugins.kotlin.KotlinCompilation
 import kotlinx.serialization.Serializable

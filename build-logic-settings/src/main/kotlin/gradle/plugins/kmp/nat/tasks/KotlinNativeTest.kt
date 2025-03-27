@@ -7,7 +7,6 @@ import gradle.api.tryAssign
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.kmp.nat.TrackEnvironment
-import gradle.plugins.kmp.nat.TrackEnvironmentTransformingSerializer
 import gradle.plugins.kotlin.tasks.KotlinTest
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

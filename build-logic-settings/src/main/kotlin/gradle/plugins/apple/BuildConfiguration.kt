@@ -5,8 +5,6 @@ import gradle.api.ProjectNamed
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
 import gradle.collection.act
-import gradle.plugins.android.BuildType
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

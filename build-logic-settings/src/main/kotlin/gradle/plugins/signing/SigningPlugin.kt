@@ -2,6 +2,7 @@ package gradle.plugins.signing
 
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
+import gradle.plugins.signing.model.SigningSettings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.publish.maven.tasks.AbstractPublishToMaven
@@ -10,7 +11,6 @@ import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.withType
 import org.gradle.plugins.signing.Sign
 import org.gradle.plugins.signing.SigningPlugin
-import gradle.plugins.signing.model.SigningSettings
 
 internal class SigningPlugin : Plugin<Project> {
 

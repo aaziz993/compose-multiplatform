@@ -3,8 +3,6 @@ package gradle.collection
 import java.util.*
 import net.pearx.kasechange.CaseFormat
 import net.pearx.kasechange.formatter.format
-import net.pearx.kasechange.toCase
-import net.pearx.kasechange.universalWordSplitter
 import org.gradle.api.plugins.ExtraPropertiesExtension
 import org.gradle.api.provider.ProviderFactory
 

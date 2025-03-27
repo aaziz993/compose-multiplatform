@@ -7,9 +7,7 @@ import gradle.accessors.plugins
 import gradle.accessors.settings
 import gradle.plugins.apple.AppleProjectExtension
 import gradle.plugins.apple.AppleSourceSet
-import gradle.plugins.apple.AppleSourceSetTransformingSerializer
 import gradle.plugins.apple.target.AppleTarget
-import gradle.plugins.apple.target.AppleTargetTransformingSerializer
 import gradle.plugins.apple.target.IosAppTarget
 import gradle.plugins.apple.target.IosFrameworkTarget
 import kotlinx.serialization.Serializable

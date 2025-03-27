@@ -11,8 +11,8 @@ import gradle.accessors.sourceSetsToComposeResourcesDirs
 import gradle.api.configureEach
 import gradle.api.file.replace
 import gradle.decapitalized
-import gradle.prefixIfNotEmpty
 import gradle.plugins.project.ProjectLayout
+import gradle.prefixIfNotEmpty
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.SourceSet

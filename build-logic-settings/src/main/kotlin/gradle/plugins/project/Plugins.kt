@@ -1,6 +1,5 @@
 package gradle.plugins.project
 
-import kotlinx.serialization.Serializable
 import gradle.plugins.animalsniffer.model.AnimalSnifferSettings
 import gradle.plugins.apivalidation.model.ApiValidationSettings
 import gradle.plugins.buildconfig.model.BuildConfigSettings
@@ -30,6 +29,7 @@ import gradle.plugins.signing.model.SigningSettings
 import gradle.plugins.sonar.model.SonarSettings
 import gradle.plugins.spotless.model.SpotlessSettings
 import gradle.plugins.toolchainmanagement.model.ToolchainManagementSettings
+import kotlinx.serialization.Serializable
 
 @Serializable
 internal data class Plugins(

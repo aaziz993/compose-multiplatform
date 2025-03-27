@@ -12,7 +12,6 @@ import gradle.api.toVersion
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 import org.gradle.plugins.signing.Sign
-import org.gradle.plugins.signing.SignOperation
 import org.gradle.plugins.signing.type.pgp.ArmoredSignatureType
 
 /**

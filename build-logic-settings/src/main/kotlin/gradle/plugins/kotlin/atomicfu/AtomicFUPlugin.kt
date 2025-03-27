@@ -6,9 +6,9 @@ import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
+import gradle.plugins.kotlin.atomicfu.model.AtomicFUSettings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import gradle.plugins.kotlin.atomicfu.model.AtomicFUSettings
 
 internal class AtomicFUPlugin : Plugin<Project> {
 

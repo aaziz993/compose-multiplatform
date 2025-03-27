@@ -3,7 +3,6 @@ package gradle.plugins.kmp.jvm.test
 import gradle.api.getByNameOrAll
 import gradle.api.tasks.test.TestFilter
 import gradle.plugins.kmp.KotlinTaskTestRun
-import gradle.plugins.kmp.jvm.test.SingleJvmCompilationTestRunSource
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTestRun

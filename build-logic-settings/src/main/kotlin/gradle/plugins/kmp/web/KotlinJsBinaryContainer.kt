@@ -1,9 +1,7 @@
 package gradle.plugins.kmp.web
 
-import gradle.plugins.kmp.nat.KotlinNativeBinaryContainer
 import gradle.serialization.serializer.DelegateTransformingSerializer
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.Transient
 import org.gradle.api.Project
 
 @Serializable

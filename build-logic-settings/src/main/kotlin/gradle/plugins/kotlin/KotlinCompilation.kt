@@ -1,7 +1,6 @@
 package gradle.plugins.kotlin
 
 import gradle.api.ProjectNamed
-import gradle.api.applyTo
 import gradle.api.getByNameOrAll
 import gradle.api.trySet
 import gradle.plugins.kmp.KotlinSourceSet
@@ -13,8 +12,6 @@ import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
-import org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerOptions
 
 /**
  * # Kotlin compilation

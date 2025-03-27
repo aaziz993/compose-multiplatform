@@ -1,7 +1,7 @@
 package gradle.plugins.initialization.problemreporter
 
-import org.slf4j.LoggerFactory
 import gradle.plugins.initialization.SettingsPlugin
+import org.slf4j.LoggerFactory
 
 internal class SLF4JProblemReporterContext : ProblemReporterContext {
 

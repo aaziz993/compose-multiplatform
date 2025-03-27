@@ -1,9 +1,9 @@
 package gradle.plugins.kmp.nat.apple.watchos
 
 import gradle.accessors.kotlin
+import gradle.api.applyTo
 import gradle.plugins.kmp.nat.KotlinNativeBinaryContainer
 import gradle.plugins.kmp.nat.KotlinNativeCompilation
-import gradle.api.applyTo
 import gradle.plugins.kmp.nat.KotlinNativeCompilationKeyTransformingSerializer
 import gradle.plugins.kmp.nat.KotlinNativeTarget
 import gradle.plugins.kmp.nat.tasks.KotlinNativeCompilerOptions

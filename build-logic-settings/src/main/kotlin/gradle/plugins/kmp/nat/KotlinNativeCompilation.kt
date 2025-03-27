@@ -2,9 +2,7 @@ package gradle.plugins.kmp.nat
 
 import gradle.api.applyTo
 import gradle.plugins.kmp.KotlinSourceSet
-import gradle.plugins.kmp.nat.tasks.KotlinNativeCompile
 import gradle.plugins.kmp.nat.tasks.KotlinNativeCompileImpl
-import gradle.plugins.kotlin.KotlinCompilation
 import gradle.plugins.kotlin.KotlinCompilationOutput
 import gradle.plugins.kotlin.KotlinCompilationTransformingSerializer
 import gradle.plugins.project.Dependency

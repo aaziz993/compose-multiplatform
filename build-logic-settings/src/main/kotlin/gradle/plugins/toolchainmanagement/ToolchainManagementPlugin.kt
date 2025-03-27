@@ -5,9 +5,9 @@ import gradle.accessors.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.projectProperties
+import gradle.plugins.toolchainmanagement.model.ToolchainManagementSettings
 import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
-import gradle.plugins.toolchainmanagement.model.ToolchainManagementSettings
 
 internal class ToolchainManagementPlugin : Plugin<Settings> {
 

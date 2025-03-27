@@ -23,7 +23,7 @@ internal abstract class KotlinMultiplatformExtension :
         super<KotlinTargetsContainer>.applyTo(receiver)
         super<KotlinHierarchyDsl>.applyTo(receiver)
         super<HasConfigurableKotlinCompilerOptions>.applyTo(receiver)
-        receiver.targets
+
         withSourcesJar?.let(project.kotlin::withSourcesJar)
     }
 

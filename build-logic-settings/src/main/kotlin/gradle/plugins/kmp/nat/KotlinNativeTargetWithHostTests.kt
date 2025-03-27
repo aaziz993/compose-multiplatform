@@ -1,12 +1,11 @@
 package gradle.plugins.kmp.nat
 
-import org.gradle.kotlin.dsl.withType
 import gradle.accessors.kotlin
-import gradle.api.applyTo
 import gradle.plugins.kmp.nat.tasks.KotlinNativeCompilerOptions
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
 
 internal abstract class KotlinNativeTargetWithHostTests
     : KotlinNativeTargetWithTests<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTargetWithHostTests>()

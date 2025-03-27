@@ -4,7 +4,6 @@ import gradle.serialization.serializer.JsonPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings
-import org.gradle.caching.configuration.BuildCacheConfiguration
 
 /**
  * Configuration object for a build cache.

@@ -3,7 +3,6 @@ package gradle.plugins.kmp.nat.mingw
 import gradle.accessors.kotlin
 import gradle.plugins.kmp.nat.KotlinNativeBinaryContainer
 import gradle.plugins.kmp.nat.KotlinNativeCompilation
-import gradle.api.applyTo
 import gradle.plugins.kmp.nat.KotlinNativeCompilationKeyTransformingSerializer
 import gradle.plugins.kmp.nat.KotlinNativeHostTestRun
 import gradle.plugins.kmp.nat.KotlinNativeHostTestRunKeyTransformingSerializer
