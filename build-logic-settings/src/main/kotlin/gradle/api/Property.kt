@@ -3,6 +3,7 @@ package gradle.api
 import java.io.File
 import kotlin.reflect.KMutableProperty0
 import kotlin.reflect.KFunction1
+import org.gradle.api.Action
 import org.gradle.api.file.FileSystemLocation
 import org.gradle.api.file.FileSystemLocationProperty
 import org.gradle.api.provider.HasMultipleValues
@@ -83,7 +84,14 @@ public infix fun <T> KFunction1<T, Unit>.apply(block: KFunction1<T, Unit>) {
     call(block)
 }
 
-public infix fun <T> ((T) -> Unit).tryApply(block: ((T) -> Unit)?) =
-    block?.invoke {
-
+public infix fun <T> KFunction1<T.() -> Unit, *>.tryApply(block: ((T) -> Unit)?) =
+    block?.let { block ->
+        invoke(block::invoke)
     }
+
+public infix fun <T> KFunction1<Action<T>, *>.tryApply(block: Action<T>?) =
+    block?.let { block ->
+        invoke(block::execute)
+    }
+
+
