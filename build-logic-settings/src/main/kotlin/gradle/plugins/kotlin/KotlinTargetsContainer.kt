@@ -16,7 +16,7 @@ internal interface KotlinTargetsContainer<T : KotlinTargetsContainer> {
     context(Project)
     fun applyTo(receiver: T) {
         targets?.forEach { target ->
-            (target as KotlinTarget<org.jetbrains.kotlin.gradle.plugin.KotlinTarget>).applyTo(receiver.targets)
+            (target as KotlinTarget<org.jetbrains.kotlin.gradle.plugin.KotlinTarget>).applyTo(receiver.targets) { _, _ -> }
         }
     }
 }

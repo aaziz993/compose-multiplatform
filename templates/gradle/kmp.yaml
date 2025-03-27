@@ -56,29 +56,31 @@ kotlin:
               timeout: 600s
 
   hierarchy:
-    - jvmCommon: [ jvm, android ]
-    - jvmCommonIos: [ jvmCommon, ios ]
-    - jvmIosWeb: [ jvm, ios, web ]
-    - jvmWeb: [ jvm, web ]
-    - androidIos: [ android, ios ]
-    - androidIosWeb: [ mobile, web ]
-    - androidNative32: [ androidNativeArm32,androidNativeX86 ]
-    - androidNative64: [ androidNativeX64, androidNativeArm64 ]
-    - androidNative: [ androidNative32, androidNative32 ]
-    - apple32: [ watchosArm32, watchosArm64 ] # NB watchosArm64 is weird target w/ 32-bit numbers.
-    - apple64: [ ios, macos, tvos, watchosX64, watchosDeviceArm64, watchosSimulatorArm64 ]
-    - apple: [ apple32, apple64 ]
-    - nonIos: [ jvmCommon, web ]
-    - nix: [ linux, apple, androidNative ]
-    - posix: [ mingw, nix ]
-    - nativeNonApple: [ mingw, unix, linux, androidNative ]
-    - nativeNonAndroid: [ apple, mingw, linux ]
-    - native: [ nativeNonApple, nativeNonAndroid ]
-    - desktop: [ linux, windows, macos ]
-    - multithreaded: [ jvmCommon, native ]
-    - jsCommon: [ js, wasmJs ]
-    - wasm: [ wasmJs, wasmWasi ]
-    - web: [ jsCommon, wasmWasi ]
+    common:
+      groups:
+        - jvmCommon: [ jvm, android ]
+        - jvmCommonIos: [ jvmCommon, ios ]
+        - jvmIosWeb: [ jvm, ios, web ]
+        - jvmWeb: [ jvm, web ]
+        - androidIos: [ android, ios ]
+        - androidIosWeb: [ mobile, web ]
+        - androidNative32: [ androidNativeArm32,androidNativeX86 ]
+        - androidNative64: [ androidNativeX64, androidNativeArm64 ]
+        - androidNative: [ androidNative32, androidNative32 ]
+        - apple32: [ watchosArm32, watchosArm64 ] # NB watchosArm64 is weird target w/ 32-bit numbers.
+        - apple64: [ ios, macos, tvos, watchosX64, watchosDeviceArm64, watchosSimulatorArm64 ]
+        - apple: [ apple32, apple64 ]
+        - nonIos: [ jvmCommon, web ]
+        - nix: [ linux, apple, androidNative ]
+        - posix: [ mingw, nix ]
+        - nativeNonApple: [ mingw, unix, linux, androidNative ]
+        - nativeNonAndroid: [ apple, mingw, linux ]
+        - native: [ nativeNonApple, nativeNonAndroid ]
+        - desktop: [ linux, windows, macos ]
+        - multithreaded: [ jvmCommon, native ]
+        - jsCommon: [ js, wasmJs ]
+        - wasm: [ wasmJs, wasmWasi ]
+        - web: [ jsCommon, wasmWasi ]
 
   #  sourceSets:
 

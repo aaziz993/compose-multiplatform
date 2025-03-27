@@ -4,6 +4,7 @@ import gradle.api.applyTo
 import gradle.plugins.kmp.KotlinSourceSet
 import gradle.plugins.kmp.KotlinSourceSetKeyTransformingSerializer
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetContainer
 
 /**
@@ -16,6 +17,7 @@ internal interface KotlinSourceSetContainer<T : KotlinSourceSetContainer> {
      */
     val sourceSets: LinkedHashSet<@Serializable(with = KotlinSourceSetKeyTransformingSerializer::class) KotlinSourceSet>?
 
+    context(Project)
     fun applyTo(receiver: KotlinSourceSetContainer) {
         sourceSets?.forEach { sourceSet ->
             sourceSet.applyTo(receiver.sourceSets)

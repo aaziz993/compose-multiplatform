@@ -15,6 +15,7 @@ import gradle.plugins.kmp.KotlinSourceSetKeyTransformingSerializer
 import gradle.plugins.kmp.KotlinTarget
 import gradle.plugins.kmp.KotlinTargetKeyTransformingSerializer
 import gradle.plugins.kotlin.KotlinCommonCompilerOptionsImpl
+import gradle.plugins.kotlin.KotlinHierarchyBuilder
 import gradle.plugins.kotlin.cocoapods.model.CocoapodsSettings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -31,11 +32,11 @@ internal data class KotlinSettings(
     override val coreLibrariesVersion: String? = null,
     override val explicitApi: ExplicitApiMode? = null,
     override val compilerOptions: KotlinCommonCompilerOptionsImpl? = null,
+    override val sourceSets: LinkedHashSet<@Serializable(with = KotlinSourceSetKeyTransformingSerializer::class) KotlinSourceSet> = linkedSetOf(),
+    override val applyHierarchyTemplate: KotlinHierarchyBuilder.Root? = null,
     val targets: LinkedHashSet<@Serializable(with = KotlinTargetKeyTransformingSerializer::class) KotlinTarget<*>> = linkedSetOf(),
-    val hierarchy: Set<@Serializable(with = HierarchyAliasKeyTransformingSerializer::class) HierarchyGroup> = emptySet(),
-    val sourceSets: LinkedHashSet<@Serializable(with = KotlinSourceSetKeyTransformingSerializer::class) KotlinSourceSet> = linkedSetOf(),
     val cocoapods: CocoapodsSettings = CocoapodsSettings(),
-) : KotlinMultiplatformExtension {
+) : KotlinMultiplatformExtension() {
 
     context(Project)
     override fun applyTo() =
