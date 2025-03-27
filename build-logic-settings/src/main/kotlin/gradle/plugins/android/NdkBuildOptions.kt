@@ -75,7 +75,7 @@ internal data class NdkBuildOptions(
 
     context(Project)
     fun applyTo(receiver: NdkBuild) {
-        receiver::path trySet path
-        receiver::buildStagingDirectory trySet buildStagingDirectory
+        path?.let(receiver::path)
+        buildStagingDirectory?.let(receiver::buildStagingDirectory)
     }
 }

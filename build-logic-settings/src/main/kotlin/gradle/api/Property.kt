@@ -1,7 +1,9 @@
 package gradle.api
 
+import gradle.act
 import java.io.File
 import kotlin.reflect.KFunction1
+import kotlin.reflect.KProperty0
 import kotlin.reflect.KMutableProperty0
 import org.gradle.api.Action
 import org.gradle.api.file.FileSystemLocation
@@ -16,6 +18,12 @@ public fun trySetSystemProperty(key: String, value: String) {
     if (System.getProperty(key) == null)
         System.setProperty(key, value)
 }
+
+public infix fun <E> KProperty0<MutableCollection<E>>.tryAddAll(value: Iterable<E>?): Boolean? =
+    value?.let(get()::addAll)
+
+public infix fun <E> KProperty0<MutableCollection<E>>.trySet(value: Iterable<E>?): Boolean? =
+    tryAddAll(value?.act(get()::clear))
 
 public infix fun <T> KMutableProperty0<T>.trySet(value: T?): Unit? = value?.let(::set)
 
@@ -35,12 +43,12 @@ public operator fun <E> KMutableProperty0<out Collection<E>?>.plus(value: Iterab
 public infix fun <E> KMutableProperty0<out Collection<E>?>.tryPlus(value: Iterable<E>?): Unit? =
     value?.let(::plus)
 
-public fun <E> KMutableProperty0<out MutableCollection<E>?>.addAll(value: Collection<E>) {
+public fun <E> KMutableProperty0<out MutableCollection<E>?>.addAll(value: Iterable<E>) {
     this as KMutableProperty0<MutableCollection<E>?>
     get()?.addAll(value) ?: set(value as MutableCollection<E>)
 }
 
-public infix fun <E> KMutableProperty0<out MutableCollection<E>?>.tryAddAll(value: Collection<E>?): Unit? =
+public infix fun <E> KMutableProperty0<out MutableCollection<E>?>.tryAddAll(value: Iterable<E>?): Unit? =
     value?.let(::addAll)
 
 public operator fun <K, V> KMutableProperty0<out Map<K, V>?>.plus(value: Map<K, V>) {

@@ -38,8 +38,8 @@ internal interface ProcessForkOptions<T : ProcessForkOptions> {
     context(Project)
     fun applyTo(receiver: T) {
         receiver::setExecutable trySet executable
-        receiver::setWorkingDir trySet workingDir
-        receiver::environment trySet environment
+        receiver::setWorkingDir trySet workingDir?.let(project::file)
+        environment?.let(receiver::environment)
         receiver::setEnvironment trySet setEnvironment
     }
 }

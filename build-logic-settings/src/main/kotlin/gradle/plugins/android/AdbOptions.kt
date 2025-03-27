@@ -17,9 +17,9 @@ internal data class AdbOptions(
 ) {
 
     fun applyTo(receiver: AdbOptions) {
-        receiver::timeOutInMs trySet timeOutInMs
+        timeOutInMs?.let(receiver::timeOutInMs)
         installOptions?.let(receiver.installOptions::addAll)
-        receiver::setInstallOptions trySet setInstallOptions
+        setInstallOptions?.let(receiver::setInstallOptions)
         receiver.dslServices
     }
 }

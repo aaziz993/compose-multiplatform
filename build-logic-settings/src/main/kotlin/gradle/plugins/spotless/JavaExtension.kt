@@ -64,7 +64,7 @@ internal data class JavaExtension(
             )
         }
 
-        receiver::removeUnusedImports trySet removeUnusedImports
+        removeUnusedImports?.let(receiver::removeUnusedImports)
 
         googleJavaFormat?.let { googleJavaFormat ->
             googleJavaFormat.applyTo(
@@ -157,7 +157,7 @@ internal data class JavaExtension(
         fun applyTo(receiver: JavaExtension.GoogleJavaFormatConfig) {
             receiver::groupArtifact trySet groupArtifact
             receiver::style trySet style
-            receiver::reflowLongStrings trySet reflowLongStrings
+            reflowLongStrings?.let(receiver::reflowLongStrings)
             receiver::reorderImports trySet reorderImports
             receiver::formatJavadoc trySet formatJavadoc
         }

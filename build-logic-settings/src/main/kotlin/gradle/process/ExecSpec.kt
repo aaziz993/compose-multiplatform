@@ -6,9 +6,9 @@ import org.gradle.api.Project
 
 internal interface ExecSpec<T : org.gradle.process.ExecSpec> : BaseExecSpec<T> {
 
-    val commandLine: SerializableAnyList?
+    val commandLineArgs: SerializableAnyList?
 
-    val setCommandLine: SerializableAnyList?
+    val setCommandLineArgs: SerializableAnyList?
 
     val args: SerializableAnyList?
 
@@ -18,9 +18,9 @@ internal interface ExecSpec<T : org.gradle.process.ExecSpec> : BaseExecSpec<T> {
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
-        receiver::commandLine trySet commandLine
-        receiver::setCommandLine trySet setCommandLine
-        receiver::args trySet args
-        receiver::setArgs trySet setArgs
+        commandLineArgs?.let(receiver::commandLine)
+        setCommandLineArgs?.let(receiver::setCommandLine)
+        args?.let(receiver::args)
+        setArgs?.let(receiver::setArgs)
     }
 }

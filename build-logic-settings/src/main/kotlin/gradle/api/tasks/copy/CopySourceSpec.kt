@@ -1,4 +1,5 @@
 package gradle.api.tasks.copy
+
 import gradle.accessors.files
 
 import kotlinx.serialization.Serializable
@@ -22,7 +23,7 @@ internal interface CopySourceSpec<T : CopySourceSpec> {
     context(Project)
     @Suppress("UNCHECKED_CAST")
     fun applyTo(receiver: T) {
-receiver::from trySet         froms?.filterIsInstance<String>()
+        froms?.filterIsInstance<String>()?.toTypedArray()?.let(receiver::from)
 
         froms?.filterIsInstance<From>()?.forEach { (sourcePath, copySpec) ->
             receiver.from(sourcePath) {

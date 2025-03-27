@@ -35,7 +35,6 @@ internal data class PostProcessing(
         receiver::isRemoveUnusedResources trySet isRemoveUnusedResources
         receiver::isObfuscate trySet isObfuscate
         receiver::isOptimizeCode trySet isOptimizeCode
-
         receiver::proguardFiles trySet proguardFiles
         receiver::setProguardFiles trySet setProguardFiles
         receiver::testProguardFiles trySet testProguardFiles

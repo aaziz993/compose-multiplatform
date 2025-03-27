@@ -27,8 +27,8 @@ internal abstract class AbstractExecTask<T : org.gradle.api.tasks.AbstractExecTa
 @Serializable
 @SerialName("AbstractExecTask")
 internal data class AbstractExecTaskImpl(
-    override val commandLine: SerializableAnyList? = null,
-    override val setCommandLine: SerializableAnyList? = null,
+    override val commandLineArgs: SerializableAnyList? = null,
+    override val setCommandLineArgs: SerializableAnyList? = null,
     override val args: SerializableAnyList? = null,
     override val setArgs: SerializableAnyList? = null,
     override val executable: String? = null,

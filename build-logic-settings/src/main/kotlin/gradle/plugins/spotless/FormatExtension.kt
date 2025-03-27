@@ -71,7 +71,7 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
         receiver::setRatchetFrom trySet ratchetFrom
         excludeSteps?.forEach(receiver::ignoreErrorForStep)
         excludePaths?.forEach(receiver::ignoreErrorForPath)
-        receiver::setEncoding trySet encoding
+        encoding?.let(receiver::setEncoding)
         targets?.toTypedArray().let(receiver::target)
         receiver::targetExclude trySet targetExcludes
         receiver::targetExcludeIfContentContains trySet targetExcludeIfContentContains
@@ -80,9 +80,8 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
         replaceRegexes?.forEach { (name, regex, replacement) -> receiver.replaceRegex(name, regex, replacement) }
         trimTrailingWhitespace?.ifTrue(receiver::trimTrailingWhitespace)
         endWithNewline?.ifTrue(receiver::endWithNewline)
-
-        receiver::indentWithSpaces trySet indentWithSpaces
-        receiver::indentWithTabs trySet indentWithTabs
+        indentWithSpaces?.let(receiver::indentWithSpaces)
+        indentWithTabs?.let(receiver::indentWithTabs)
 
         nativeCmds?.forEach { (name, pathToExe, arguments) -> receiver.nativeCmd(name, pathToExe, arguments) }
 

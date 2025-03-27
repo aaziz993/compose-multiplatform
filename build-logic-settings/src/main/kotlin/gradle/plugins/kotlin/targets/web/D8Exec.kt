@@ -13,8 +13,8 @@ import org.jetbrains.kotlin.gradle.targets.js.d8.D8Exec
 
 @Serializable
 internal data class D8Exec(
-    override val commandLine: SerializableAnyList? = null,
-    override val setCommandLine: SerializableAnyList? = null,
+    override val commandLineArgs: SerializableAnyList? = null,
+    override val setCommandLineArgs: SerializableAnyList? = null,
     override val args: SerializableAnyList? = null,
     override val setArgs: SerializableAnyList? = null,
     override val executable: String? = null,
