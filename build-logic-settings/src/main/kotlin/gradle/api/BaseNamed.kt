@@ -36,10 +36,11 @@ internal interface SettingsNamed<T> : BaseNamed {
 }
 
 context(Settings)
-internal fun <T : Named> SettingsNamed<T>.applyTo(
+internal fun <T> SettingsNamed<T>.applyTo(
     receiver: DomainObjectCollection<out T>,
+    getName: (T) -> String,
     create: (name: String, action: Action<in T>) -> Unit
-) = receiver.maybeNamedCreateOrEach(name, create) {
+) = receiver.maybeNamedCreateOrEach(name, getName, create) {
     applyTo(this)
 }
 
@@ -64,20 +65,21 @@ internal interface ProjectNamed<T> : BaseNamed {
 }
 
 context(Project)
-internal fun <T : Named> ProjectNamed<T>.applyTo(
+internal fun <T> ProjectNamed<T>.applyTo(
     receiver: DomainObjectCollection<out T>,
+    getName: (T) -> String,
+    create: (name: String, action: Action<in T>) -> Unit
+) = receiver.maybeNamedCreateOrEach(name, getName, create) {
+    applyTo(this)
+}
+
+context(Project)
+internal fun <T> ProjectNamed<T>.applyTo(
+    receiver: NamedDomainObjectCollection<out T>,
     create: (name: String, action: Action<in T>) -> Unit
 ) = receiver.maybeNamedCreateOrEach(name, create) {
     applyTo(this)
 }
-
-//context(Project)
-//internal fun <T> ProjectNamed<T>.applyTo(
-//    receiver: NamedDomainObjectCollection<out T>,
-//    create: (name: String, action: Action<in T>) -> Unit
-//) = receiver.maybeNamedCreateOrEach(name, create) {
-//    applyTo(this)
-//}
 
 context(Project)
 internal fun <T> ProjectNamed<T>.applyTo(receiver: NamedDomainObjectContainer<out T>) =
@@ -94,13 +96,14 @@ internal interface Named<T> : SettingsNamed<T>, ProjectNamed<T> {
     override fun applyTo(receiver: T)
 }
 
-internal fun <T : Named> DomainObjectCollection<out T>.maybeNamedCreateOrEach(
+internal fun <T> DomainObjectCollection<out T>.maybeNamedCreateOrEach(
     name: String?,
+    getName: (T) -> String,
     create: (name: String, action: Action<in T>) -> Unit = { _, _ -> },
     configureAction: Action<in T>
 ) {
     if (name.isNullOrBlank()) configureEach(configureAction)
-    else matching { it.name == name }.let {
+    else matching { getName(it) == name }.let {
         if (it.isEmpty()) create(name, configureAction)
         else it.configureEach(configureAction)
     }

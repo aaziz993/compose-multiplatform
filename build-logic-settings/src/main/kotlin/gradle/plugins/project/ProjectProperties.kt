@@ -17,7 +17,7 @@ import gradle.collection.resolve
 import gradle.plugins.android.BaseExtension
 import gradle.plugins.java.JavaPluginExtension
 import gradle.plugins.java.application.JavaApplication
-import gradle.plugins.kotlin.KotlinSettings
+import gradle.plugins.kotlin.model.KotlinSettings
 import gradle.plugins.web.node.NodeJsEnvSpec
 import gradle.plugins.web.npm.NpmExtension
 import gradle.plugins.web.yarn.YarnRootEnvSpec

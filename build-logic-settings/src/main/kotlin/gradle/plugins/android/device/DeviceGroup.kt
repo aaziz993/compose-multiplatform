@@ -1,5 +1,6 @@
 package gradle.plugins.android.device
 
+import com.android.build.api.dsl.Device
 import gradle.api.NamedKeyTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.applyTo
@@ -19,7 +20,7 @@ internal data class DeviceGroup(
     @Suppress("UnstableApiUsage")
     override fun applyTo(receiver: com.android.build.api.dsl.DeviceGroup) {
         targetDevices?.forEach { targetDevice ->
-            targetDevice.applyTo(receiver.targetDevices) { _, _ -> }
+            targetDevice.applyTo(receiver.targetDevices, Device::getName) { _, _ -> }
         }
     }
 }

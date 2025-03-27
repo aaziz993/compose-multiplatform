@@ -1,4 +1,4 @@
-package gradle.plugins.kotlin
+package gradle.plugins.kotlin.model
 
 import gradle.accessors.id
 import gradle.accessors.kotlin
@@ -14,10 +14,11 @@ import gradle.plugins.kmp.KotlinSourceSet
 import gradle.plugins.kmp.KotlinSourceSetKeyTransformingSerializer
 import gradle.plugins.kmp.KotlinTarget
 import gradle.plugins.kmp.KotlinTargetKeyTransformingSerializer
+import gradle.plugins.kotlin.KotlinCommonCompilerOptionsImpl
+import gradle.plugins.kotlin.cocoapods.model.CocoapodsSettings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
-import gradle.plugins.kotlin.cocoapods.model.CocoapodsSettings
 
 @Serializable
 internal data class KotlinSettings(

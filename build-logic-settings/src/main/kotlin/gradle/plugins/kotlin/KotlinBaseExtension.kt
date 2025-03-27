@@ -12,7 +12,7 @@ import org.jetbrains.kotlin.buildtools.api.ExperimentalBuildToolsApi
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
 import org.jetbrains.kotlin.gradle.dsl.KotlinBaseExtension
 
-internal interface KotlinBaseExtension<T : KotlinBaseExtension> {
+internal interface KotlinBaseExtension<T : KotlinBaseExtension> : KotlinSourceSetContainer<T> {
 
     /**
      * Configures [Java toolchain](https://docs.gradle.org/current/userguide/toolchains.html)
