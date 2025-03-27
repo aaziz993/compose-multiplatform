@@ -1,7 +1,7 @@
 package gradle.plugins.java.test
-import gradle.accessors.files
 
-import gradle.act
+import gradle.accessors.files
+import gradle.api.tryAddAll
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
 import gradle.process.ProcessForkOptions
@@ -125,7 +125,7 @@ internal interface JavaForkOptions<T : JavaForkOptions> : ProcessForkOptions<T> 
         receiver::setEnableAssertions trySet enableAssertions
         receiver::setDebug trySet debug
         debugOptions?.applyTo(receiver.debugOptions)
-        allJvmArgs?.act(receiver.allJvmArgs::clear)?.let(receiver.allJvmArgs::addAll)
+        receiver.allJvmArgs tryAddAll allJvmArgs
         receiver::setAllJvmArgs trySet allJvmArgs
     }
 }

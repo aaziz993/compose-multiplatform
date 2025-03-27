@@ -1,7 +1,6 @@
 package gradle.plugins.android
 
 import com.android.build.api.dsl.NdkBuildFlags
-import gradle.act
 import kotlinx.serialization.Serializable
 
 /**
@@ -159,15 +158,15 @@ internal data class NdkBuildFlags(
 
     @Suppress("UnstableApiUsage")
     fun applyTo(receiver: NdkBuildFlags) {
-        arguments?.let(receiver.arguments::addAll)
-        setArguments?.act(receiver.arguments::clear)?.let(receiver.arguments::addAll)
-        cFlags?.let(receiver.cFlags::addAll)
-        setCFlags?.act(receiver.cFlags::clear)?.let(receiver.cFlags::addAll)
-        cppFlags?.let(receiver.cppFlags::addAll)
-        setCppFlags?.act(receiver.cppFlags::clear)?.let(receiver.cppFlags::addAll)
-        abiFilters?.let(receiver.abiFilters::addAll)
-        setAbiFilters?.act(receiver.abiFilters::clear)?.let(receiver.abiFilters::addAll)
-        targets?.let(receiver.targets::addAll)
-        setTargets?.act(receiver.targets::clear)?.let(receiver.targets::addAll)
+        receiver.arguments tryAddAll arguments
+        receiver.arguments trySet setArguments
+        receiver.cFlags tryAddAll cFlags
+        receiver.cFlags trySet setCFlags
+        receiver.cppFlags tryAddAll cppFlags
+        receiver.cppFlags trySet setCppFlags
+        receiver.abiFilters tryAddAll abiFilters
+        receiver.abiFilters trySet setAbiFilters
+        receiver.targets tryAddAll targets
+        receiver.targets trySet setTargets
     }
 }

@@ -1,7 +1,7 @@
 package gradle.plugins.android
 
 import com.android.build.api.dsl.Lint
-import gradle.act
+import gradle.api.tryAddAll
 import gradle.api.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -260,11 +260,11 @@ internal data class Lint(
 
     context(Project)
     fun applyTo(receiver: Lint) {
-        disable?.let(receiver.disable::addAll)
-        setDisable?.act(receiver.disable::clear)?.let(receiver.disable::addAll)
-        enable?.let(receiver.enable::addAll)
-        setEnable?.act(receiver.enable::clear)?.let(receiver.enable::addAll)
-        checkOnly?.let(receiver.checkOnly::addAll)
+        receiver.disable tryAddAll disable
+        receiver.disable trySet setDisable
+        receiver.enable tryAddAll enable
+        receiver.enable trySet setEnable
+        receiver.checkOnly tryAddAll checkOnly
         receiver::abortOnError trySet abortOnError
         receiver::absolutePaths trySet absolutePaths
         receiver::noLines trySet noLines
@@ -290,14 +290,14 @@ internal data class Lint(
         receiver::xmlOutput trySet xmlOutput?.let(project::file)
         receiver::sarifOutput trySet sarifOutput?.let(project::file)
         receiver::baseline trySet baseline?.let(project::file)
-        informational?.let(receiver.informational::addAll)
-        setInformational?.act(receiver.informational::clear)?.let(receiver.informational::addAll)
-        warning?.let(receiver.warning::addAll)
-        setWarning?.act(receiver.warning::clear)?.let(receiver.warning::addAll)
-        error?.let(receiver.error::addAll)
-        setError?.act(receiver.error::clear)?.let(receiver.error::addAll)
-        fatal?.let(receiver.fatal::addAll)
-        setFatal?.act(receiver.fatal::clear)?.let(receiver.fatal::addAll)
+        receiver.informational tryAddAll informational
+        receiver.informational trySet setInformational
+        receiver.warning tryAddAll warning
+        receiver.warning trySet setWarning
+        receiver.error tryAddAll error
+        receiver.error trySet setError
+        receiver.fatal tryAddAll fatal
+        receiver.fatal trySet setFatal
         receiver::targetSdk trySet targetSdk
         receiver::targetSdkPreview trySet targetSdkPreview
     }

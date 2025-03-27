@@ -1,6 +1,5 @@
 package gradle.plugins.kotlin.targets.web.npm.tasks
 
-import gradle.act
 import gradle.api.tasks.DefaultTask
 import gradle.api.tasks.applyTo
 import gradle.collection.SerializableAnyMap
@@ -32,8 +31,8 @@ internal data class KotlinNpmInstallTask(
     override fun applyTo(receiver: KotlinNpmInstallTask) {
         super.applyTo(receiver)
 
-        args?.let(receiver.args::addAll)
-        setArgs?.act(receiver.args::clear)?.let(receiver.args::addAll)
+        receiver.args tryAddAll args
+        receiver.args trySet setArgs
     }
 
     context(Project)

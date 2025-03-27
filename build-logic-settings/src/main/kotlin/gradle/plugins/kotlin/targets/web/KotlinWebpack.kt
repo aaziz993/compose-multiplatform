@@ -1,5 +1,6 @@
 package gradle.plugins.kotlin.targets.web
 
+import gradle.api.tryAddAll
 import gradle.api.tryAssign
 import gradle.api.trySet
 import kotlinx.serialization.Serializable
@@ -39,8 +40,8 @@ internal data class KotlinWebpack(
         webpack.mainOutputFileName tryAssign mainOutputFileName
         webpack::debug trySet debug
         webpack::bin trySet bin
-        args?.let(webpack.args::addAll)
-        nodeArgs?.let(webpack.nodeArgs::addAll)
+        webpack.args tryAddAll args
+        webpack.nodeArgs tryAddAll nodeArgs
         webpack::sourceMaps trySet sourceMaps
         webpack.devServerProperty tryAssign devServerProperty?.toDevServer()
 

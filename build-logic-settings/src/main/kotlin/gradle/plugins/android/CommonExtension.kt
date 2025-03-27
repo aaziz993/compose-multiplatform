@@ -10,6 +10,7 @@ import gradle.accessors.version
 import gradle.accessors.versions
 import gradle.act
 import gradle.api.applyTo
+import gradle.api.tryAddAll
 import gradle.api.trySet
 import gradle.api.version
 import gradle.collection.SerializableAnyMap
@@ -571,7 +572,7 @@ internal interface CommonExtension<
             sourceSet.applyTo(extension.sourceSets)
         }
 
-        flavorDimensions?.let(extension.flavorDimensions::addAll)
+        extension.flavorDimensions tryAddAll flavorDimensions
         setFlavorDimensions?.act(extension.flavorDimensions::clear)?.let(extension.flavorDimensions::addAll)
         extension::resourcePrefix trySet resourcePrefix
         extension::ndkVersion trySet ndkVersion

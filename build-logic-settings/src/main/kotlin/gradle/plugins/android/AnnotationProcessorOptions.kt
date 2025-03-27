@@ -45,11 +45,11 @@ internal data class AnnotationProcessorOptions(
 ) {
 
     fun applyTo(receiver: AnnotationProcessorOptions) {
-        classNames?.let(receiver.classNames::addAll)
-        setClassNames?.act(receiver.classNames::clear)?.let(receiver.classNames::addAll)
+        receiver.classNames tryAddAll classNames
+        receiver.classNames trySet setClassNames
         arguments?.let(receiver.arguments::putAll)
         setArguments?.act(receiver.arguments::clear)?.let(receiver.arguments::putAll)
-        compilerArgumentProviders?.let(receiver.compilerArgumentProviders::addAll)
-        setCompilerArgumentProviders?.act(receiver.compilerArgumentProviders::clear)?.let(receiver.compilerArgumentProviders::addAll)
+        receiver.compilerArgumentProviders tryAddAll compilerArgumentProviders
+        receiver.compilerArgumentProviders trySet setCompilerArgumentProviders
     }
 }

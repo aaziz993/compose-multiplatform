@@ -13,6 +13,7 @@ import gradle.accessors.settings
 import gradle.accessors.version
 import gradle.accessors.versions
 import gradle.act
+import gradle.api.tryAddAll
 import gradle.api.trySet
 import gradle.ifTrue
 import gradle.plugins.kotlin.targets.nat.FrameworkSettings
@@ -228,7 +229,7 @@ internal interface CocoapodsExtension {
             receiver::extraOpts trySet setExtraOpts
             receiver::packageName trySet packageName
             receiver::linkOnly trySet linkOnly
-            interopBindingDependencies?.let(receiver.interopBindingDependencies::addAll)
+            receiver.interopBindingDependencies tryAddAll interopBindingDependencies
             setInteropBindingDependencies
                 ?.act(receiver.interopBindingDependencies::clear)
                 ?.let(receiver.interopBindingDependencies::addAll)

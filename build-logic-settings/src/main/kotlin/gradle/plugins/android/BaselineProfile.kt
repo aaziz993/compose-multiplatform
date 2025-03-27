@@ -1,7 +1,7 @@
 package gradle.plugins.android
 
 import com.android.build.api.dsl.BaselineProfile
-import gradle.act
+import gradle.api.tryAddAll
 import gradle.api.trySet
 import kotlinx.serialization.Serializable
 
@@ -27,8 +27,8 @@ internal data class BaselineProfile(
 
     @Suppress("UnstableApiUsage")
     fun applyTo(receiver: BaselineProfile) {
-        ignoreFrom?.let(receiver.ignoreFrom::addAll)
-        setIgnoreFrom?.act(receiver.ignoreFrom::clear)?.let(receiver.ignoreFrom::addAll)
+        receiver.ignoreFrom tryAddAll ignoreFrom
+        receiver.ignoreFrom trySet setIgnoreFrom
         receiver::ignoreFromAllExternalDependencies trySet ignoreFromAllExternalDependencies
     }
 }

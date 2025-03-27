@@ -3,6 +3,7 @@ package gradle.plugins.android.flavor
 import com.android.build.api.dsl.ProductFlavor
 import gradle.api.NamedKeyTransformingSerializer
 import gradle.api.ProjectNamed
+import gradle.api.tryAddAll
 import gradle.api.trySet
 import kotlinx.serialization.KSerializer
 import org.gradle.api.Project
@@ -167,7 +168,7 @@ internal interface ProductFlavorDsl<T : ProductFlavor> : ProjectNamed<T>, BaseFl
         super<BaseFlavor>.applyTo(receiver)
 
         receiver::dimension trySet dimension
-        matchingFallbacks?.let(receiver.matchingFallbacks::addAll)
+        receiver.matchingFallbacks tryAddAll matchingFallbacks
     }
 }
 

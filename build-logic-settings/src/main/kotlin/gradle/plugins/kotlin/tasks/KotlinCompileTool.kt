@@ -1,6 +1,6 @@
 package gradle.plugins.kotlin.tasks
-import gradle.accessors.files
 
+import gradle.accessors.files
 import gradle.api.tasks.Task
 import gradle.api.tasks.applyTo
 import gradle.api.tasks.util.PatternFilterable

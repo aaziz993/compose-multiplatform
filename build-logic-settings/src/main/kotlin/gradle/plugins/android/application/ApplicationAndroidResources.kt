@@ -1,7 +1,7 @@
 package gradle.plugins.android.application
 
 import com.android.build.api.dsl.ApplicationAndroidResources
-import gradle.act
+import gradle.api.tryAddAll
 import gradle.api.trySet
 import gradle.plugins.android.AndroidResources
 import kotlinx.serialization.Serializable
@@ -64,7 +64,7 @@ internal data class ApplicationAndroidResources(
         super.applyTo(receiver)
 
         receiver::generateLocaleConfig trySet generateLocaleConfig
-        localeFilters?.let(receiver.localeFilters::addAll)
-        setLocaleFilters?.act(receiver.localeFilters::clear)?.let(receiver.localeFilters::addAll)
+        receiver.localeFilters tryAddAll localeFilters
+        receiver.localeFilters trySet setLocaleFilters
     }
 }

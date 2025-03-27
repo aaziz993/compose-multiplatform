@@ -1,7 +1,6 @@
 package gradle.api.tasks.compile
 
 import gradle.accessors.files
-
 import gradle.api.tasks.SourceTask
 import gradle.api.tasks.applyTo
 import gradle.api.tryAssign

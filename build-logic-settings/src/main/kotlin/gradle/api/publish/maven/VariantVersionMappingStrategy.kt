@@ -1,6 +1,5 @@
 package gradle.api.publish.maven
 
-import gradle.api.trySet
 import gradle.ifTrue
 import kotlinx.serialization.Serializable
 import org.gradle.api.publish.VariantVersionMappingStrategy

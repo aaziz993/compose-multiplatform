@@ -2,6 +2,7 @@ package gradle.plugins.kotlin.benchmark
 
 import gradle.api.NamedKeyTransformingSerializer
 import gradle.api.ProjectNamed
+import gradle.api.tryAddAll
 import gradle.api.trySet
 import gradle.collection.SerializableOptionalAnyList
 import gradle.collection.SerializableOptionalAnyMap
@@ -36,9 +37,9 @@ internal data class BenchmarkConfiguration(
             receiver.advanced = setAdvanced.toMutableMap()
         }
 
-        excludes?.let(receiver.excludes::addAll)
+        receiver.excludes tryAddAll excludes
         receiver::excludes trySet setExcludes?.toMutableList()
-        includes?.let(receiver.includes::addAll)
+        receiver.includes tryAddAll includes
         receiver::includes trySet setIncludes?.toMutableList()
         receiver::iterationTime trySet iterationTime
         receiver::iterationTimeUnit trySet iterationTimeUnit

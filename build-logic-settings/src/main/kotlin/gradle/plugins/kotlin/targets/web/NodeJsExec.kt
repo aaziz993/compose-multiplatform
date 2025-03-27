@@ -1,5 +1,6 @@
 package gradle.plugins.kotlin.targets.web
 
+import gradle.api.tryAddAll
 import gradle.api.tryAssign
 import gradle.api.trySet
 import gradle.plugins.kotlin.targets.web.node.NodeJsRootExtension
@@ -18,7 +19,7 @@ internal data class NodeJsExec(
     context(Project)
     fun applyTo(receiver: NodeJsExec) {
         nodeJsRoot?.applyTo(exec.nodeJsRoot)
-        nodeArgs?.let(exec.nodeArgs::addAll)
+        exec.nodeArgs tryAddAll nodeArgs
         exec::sourceMapStackTraces trySet sourceMapStackTraces
         exec.inputFileProperty tryAssign inputFileProperty?.let(project::file)
     }

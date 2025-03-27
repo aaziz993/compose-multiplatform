@@ -1,6 +1,6 @@
 package gradle.plugins.java.test
-import gradle.accessors.files
 
+import gradle.accessors.files
 import gradle.accessors.javaToolchain
 import gradle.api.tasks.applyTo
 import gradle.api.tasks.test.AbstractTestTask

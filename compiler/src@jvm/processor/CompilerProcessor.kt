@@ -32,6 +32,7 @@ public class CompilerProcessor(
         compiledFile += "package ai.tech.core.type\n\n"
 import gradle.accessors.files
 import gradle.api.trySet
+import gradle.api.tryAddAll
 
 
         compiledFile += imports.joinToString("\n", postfix = "\n\n") { "import $it" }

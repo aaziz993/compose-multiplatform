@@ -1,6 +1,6 @@
 package gradle.api.file
-import gradle.accessors.files
 
+import gradle.accessors.files
 import gradle.api.ProjectNamed
 import gradle.api.tasks.util.PatternFilterable
 import gradle.api.tryAssign

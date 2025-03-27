@@ -1,6 +1,6 @@
 package gradle.plugins.cmp.desktop.application
 
-import gradle.act
+import gradle.api.tryAddAll
 import gradle.api.trySet
 import gradle.plugins.cmp.desktop.AbstractDistributions
 import gradle.plugins.cmp.desktop.linux.LinuxPlatformSettings
@@ -32,8 +32,8 @@ internal data class JvmApplicationDistributions(
     override fun applyTo(receiver: JvmApplicationDistributions) {
         super.applyTo(receiver)
 
-        modules?.let(receiver.modules::addAll)
-        setModules?.act(receiver.modules::clear)?.let(receiver.modules::addAll)
+        receiver.modules tryAddAll modules
+        receiver.modules trySet setModules
         receiver::includeAllModules trySet includeAllModules
         linux?.applyTo(receiver.linux)
         macOS?.applyTo(receiver.macOS)

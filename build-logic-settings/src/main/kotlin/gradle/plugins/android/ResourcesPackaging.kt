@@ -1,7 +1,6 @@
 package gradle.plugins.android
 
 import com.android.build.api.dsl.ResourcesPackaging
-import gradle.act
 import kotlinx.serialization.Serializable
 
 /**
@@ -50,11 +49,11 @@ internal data class ResourcesPackaging(
 ) {
 
     fun applyTo(receiver: ResourcesPackaging) {
-        excludes?.let(receiver.excludes::addAll)
-        setExcludes?.act(receiver.excludes::clear)?.let(receiver.excludes::addAll)
-        pickFirsts?.let(receiver.pickFirsts::addAll)
-        setPickFirsts?.act(receiver.pickFirsts::clear)?.let(receiver.pickFirsts::addAll)
-        merges?.let(receiver.merges::addAll)
-        setMerges?.act(receiver.merges::clear)?.let(receiver.merges::addAll)
+        receiver.excludes tryAddAll excludes
+        receiver.excludes trySet setExcludes
+        receiver.pickFirsts tryAddAll pickFirsts
+        receiver.pickFirsts trySet setPickFirsts
+        receiver.merges tryAddAll merges
+        receiver.merges trySet setMerges
     }
 }

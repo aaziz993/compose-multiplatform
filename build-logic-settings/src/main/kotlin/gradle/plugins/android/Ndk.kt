@@ -1,7 +1,7 @@
 package gradle.plugins.android
 
 import com.android.build.api.dsl.Ndk
-import gradle.act
+import gradle.api.tryAddAll
 import gradle.api.trySet
 import kotlinx.serialization.Serializable
 
@@ -66,8 +66,8 @@ internal data class Ndk(
 ) {
 
     fun applyTo(receiver: Ndk) {
-        abiFilters?.let(receiver.abiFilters::addAll)
-        setAbiFilters?.act(receiver.abiFilters::clear)?.let(receiver.abiFilters::addAll)
+        receiver.abiFilters tryAddAll abiFilters
+        receiver.abiFilters trySet setAbiFilters
         receiver::debugSymbolLevel trySet debugSymbolLevel
     }
 }

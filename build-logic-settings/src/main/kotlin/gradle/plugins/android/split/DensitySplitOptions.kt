@@ -1,8 +1,7 @@
 package gradle.plugins.android.split
 
 import com.android.build.gradle.internal.dsl.DensitySplitOptions
-import gradle.act
-import gradle.api.trySet
+import gradle.api.tryAddAll
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -18,7 +17,7 @@ internal data class DensitySplitOptions(
     override fun applyTo(receiver: DensitySplitOptions) {
         super<SplitOptions>.applyTo(receiver)
 
-        receiver::compatibleScreens trySet compatibleScreens
-        setCompatibleScreens?.act(receiver.compatibleScreens::clear)?.let(receiver.compatibleScreens::addAll)
+        compatibleScreens?.toTypedArray()?.let(receiver::compatibleScreens)
+        receiver.compatibleScreens trySet setCompatibleScreens
     }
 }

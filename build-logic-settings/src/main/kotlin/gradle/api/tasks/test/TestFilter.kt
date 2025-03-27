@@ -1,5 +1,6 @@
 package gradle.api.tasks.test
 
+import gradle.api.tryAddAll
 import gradle.api.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.tasks.testing.TestFilter
@@ -67,8 +68,8 @@ internal data class TestFilter(
     fun applyTo(receiver: TestFilter) {
         includeTestsMatchings?.forEach(receiver::includeTestsMatching)
         excludeTestsMatchings?.forEach(receiver::excludeTestsMatching)
-        includePatterns?.let(receiver.includePatterns::addAll)
-        excludePatterns?.let(receiver.excludePatterns::addAll)
+        receiver.includePatterns tryAddAll includePatterns
+        receiver.excludePatterns tryAddAll excludePatterns
         includeTests?.forEach { (className, methodName) -> receiver.includeTest(className, methodName) }
         excludeTests?.forEach { (className, methodName) -> receiver.excludeTest(className, methodName) }
         receiver::setFailOnNoMatchingTests trySet failOnNoMatchingTests

@@ -1,7 +1,6 @@
 package gradle.api.file
 
 import gradle.api.tasks.Expand
-import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
 import org.gradle.api.Project
 import org.gradle.api.file.ContentFilterable

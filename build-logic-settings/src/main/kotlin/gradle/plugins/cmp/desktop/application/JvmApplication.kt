@@ -2,8 +2,8 @@ package gradle.plugins.cmp.desktop.application
 
 import gradle.accessors.kotlin
 import gradle.accessors.sourceSets
-import gradle.act
 import gradle.api.getByNameOrAll
+import gradle.api.tryAddAll
 import gradle.api.trySet
 import gradle.ifTrue
 import gradle.plugins.cmp.desktop.application.buildtype.JvmApplicationBuildTypes
@@ -41,10 +41,10 @@ internal data class JvmApplication(
         receiver::fromFiles trySet fromFiles
         receiver::mainClass trySet mainClass
         receiver::javaHome trySet javaHome
-        args?.let(receiver.args::addAll)
-        setArgs?.act(receiver.args::clear)?.let(receiver.args::addAll)
-        jvmArgs?.let(receiver.jvmArgs::addAll)
-        setJvmArgs?.act(receiver.jvmArgs::clear)?.let(receiver.jvmArgs::addAll)
+        receiver.args tryAddAll args
+        receiver.args trySet setArgs
+        receiver.jvmArgs tryAddAll jvmArgs
+        receiver.jvmArgs trySet setJvmArgs
         nativeDistributions?.applyTo(receiver.nativeDistributions)
         buildTypes?.applyTo(receiver.buildTypes)
     }

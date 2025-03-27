@@ -1,7 +1,7 @@
 package gradle.plugins.android
 
 import com.android.build.api.dsl.AndroidResources
-import gradle.act
+import gradle.api.tryAddAll
 import gradle.api.trySet
 
 /**
@@ -55,13 +55,13 @@ internal interface AndroidResources<T : AndroidResources> {
     @Suppress("UnstableApiUsage")
     fun applyTo(receiver: T) {
         receiver::ignoreAssetsPattern trySet ignoreAssetsPattern
-        ignoreAssetsPatterns?.let(receiver.ignoreAssetsPatterns::addAll)
-        setIgnoreAssetsPatterns?.act(receiver.ignoreAssetsPatterns::clear)?.let(receiver.ignoreAssetsPatterns::addAll)
-        noCompress?.let(receiver.noCompress::addAll)
-        setNoCompress?.act(receiver.noCompress::clear)?.let(receiver.noCompress::addAll)
+        receiver.ignoreAssetsPatterns tryAddAll ignoreAssetsPatterns
+        receiver.ignoreAssetsPatterns trySet setIgnoreAssetsPatterns
+        receiver.noCompress tryAddAll noCompress
+        receiver.noCompress trySet setNoCompress
         receiver::failOnMissingConfigEntry trySet failOnMissingConfigEntry
-        additionalParameters?.let(receiver.additionalParameters::addAll)
-        setAdditionalParameters?.act(receiver.additionalParameters::clear)?.let(receiver.additionalParameters::addAll)
+        receiver.additionalParameters tryAddAll additionalParameters
+        receiver.additionalParameters trySet setAdditionalParameters
         receiver::namespaced trySet receiver.namespaced
     }
 }

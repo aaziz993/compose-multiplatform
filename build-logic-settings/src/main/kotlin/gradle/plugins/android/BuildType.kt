@@ -3,6 +3,7 @@ package gradle.plugins.android
 import gradle.accessors.android
 import gradle.api.NamedKeyTransformingSerializer
 import gradle.api.ProjectNamed
+import gradle.api.tryAddAll
 import gradle.api.trySet
 import kotlinx.serialization.KSerializer
 import org.gradle.api.Project
@@ -196,7 +197,7 @@ internal interface BuildType<T : com.android.build.api.dsl.BuildType> : ProjectN
         receiver::isMinifyEnabled trySet isMinifyEnabled
         // Applicable only in application project.
         receiver::isShrinkResources trySet isShrinkResources
-        matchingFallbacks?.let(receiver.matchingFallbacks::addAll)
+        receiver.matchingFallbacks tryAddAll matchingFallbacks
 
         postprocessing?.let { postprocessing ->
             receiver.postprocessing(postprocessing::applyTo)

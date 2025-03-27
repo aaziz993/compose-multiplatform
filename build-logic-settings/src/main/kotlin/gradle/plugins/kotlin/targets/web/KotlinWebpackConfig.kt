@@ -63,7 +63,7 @@ internal data class KotlinWebpackConfig(
         )
 
         webpackConfig::watchOptions trySet setWatchOptions?.toWatchOptions()
-        experiments?.let(webpackConfig.experiments::addAll)
+        webpackConfig.experiments tryAddAll experiments
         webpackConfig::experiments trySet setExperiments?.toMutableSet()
         webpackConfig::devtool trySet devtool
         webpackConfig::showProgress trySet showProgress

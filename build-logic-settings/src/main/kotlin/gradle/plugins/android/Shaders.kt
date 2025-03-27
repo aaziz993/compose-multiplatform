@@ -4,6 +4,7 @@ package gradle.plugins.android
 
 import com.android.build.api.dsl.Shaders
 import gradle.act
+import gradle.api.tryAddAll
 import kotlinx.serialization.Serializable
 
 /**
@@ -25,13 +26,13 @@ internal data class Shaders(
 ) {
 
     fun applyTo(receiver: Shaders) {
-        glslcArgs?.let(receiver.glslcArgs::addAll)
-        setGlslcArgs?.act(receiver.glslcArgs::clear)?.let(receiver.glslcArgs::addAll)
+        receiver.glslcArgs tryAddAll glslcArgs
+        receiver.glslcArgs trySet setGlslcArgs
 
         scopedGlslcArgs?.forEach { key, options ->
             receiver.glslcScopedArgs(key, *options.toTypedArray())
         }
 
-//        setScopedGlslcArgs?.act(receiver.scopedGlslcArgs::clear)?.let(receiver.scopedGlslcArgs::addAll) // TODO
+        setScopedGlslcArgs?.act(receiver.scopedGlslcArgs::clear)?.forEach(receiver.scopedGlslcArgs::putAll)
     }
 }

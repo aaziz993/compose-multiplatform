@@ -1,6 +1,7 @@
 package gradle.plugins.apivalidation
 
 import gradle.accessors.apiValidation
+import gradle.api.tryAddAll
 import gradle.api.trySet
 import kotlinx.validation.ExperimentalBCVApi
 import org.gradle.api.Project
@@ -91,21 +92,21 @@ internal interface ApiValidationExtension {
     @OptIn(ExperimentalBCVApi::class)
     fun applyTo() = project.pluginManager.withPlugin("binaryCompatibilityValidator") {
         project.apiValidation::validationDisabled trySet validationDisabled
-        ignoredPackages?.let(project.apiValidation.ignoredPackages::addAll)
-        project.apiValidation::ignoredPackages trySet setIgnoredPackages?.toMutableSet()
-        ignoredProjects?.let(project.apiValidation.ignoredProjects::addAll)
+        project.apiValidation.ignoredPackages tryAddAll ignoredPackages
+        project.apiValidation::ignoredPackages trySet  setIgnoredPackages?.toMutableSet()
+        project.apiValidation.ignoredProjects tryAddAll ignoredProjects
         project.apiValidation::ignoredProjects trySet setIgnoredProjects?.toMutableSet()
-        nonPublicMarkers?.let(project.apiValidation.nonPublicMarkers::addAll)
+        project.apiValidation.nonPublicMarkers tryAddAll nonPublicMarkers
         project.apiValidation::nonPublicMarkers trySet setNonPublicMarkers?.toMutableSet()
-        ignoredClasses?.let(project.apiValidation.ignoredClasses::addAll)
+        project.apiValidation.ignoredClasses tryAddAll ignoredClasses
         project.apiValidation::ignoredClasses trySet setIgnoredClasses?.toMutableSet()
-        publicMarkers?.let(project.apiValidation.publicMarkers::addAll)
+        project.apiValidation.publicMarkers tryAddAll publicMarkers
         project.apiValidation::publicMarkers trySet setPublicMarkers?.toMutableSet()
-        publicPackages?.let(project.apiValidation.publicPackages::addAll)
+        project.apiValidation.publicPackages tryAddAll publicPackages
         project.apiValidation::publicPackages trySet setPublicPackages?.toMutableSet()
-        publicClasses?.let(project.apiValidation.publicClasses::addAll)
+        project.apiValidation.publicClasses tryAddAll publicClasses
         project.apiValidation::publicClasses trySet setPublicClasses?.toMutableSet()
-        additionalSourceSets?.let(project.apiValidation.additionalSourceSets::addAll)
+        project.apiValidation.additionalSourceSets tryAddAll additionalSourceSets
         project.apiValidation::additionalSourceSets trySet setAdditionalSourceSets?.toMutableSet()
         project.apiValidation::apiDumpDirectory trySet apiDumpDirectory
         klib?.applyTo(project.apiValidation.klib)

@@ -4,6 +4,7 @@ import gradle.accessors.moduleName
 import gradle.api.tasks.applyTo
 import gradle.api.tasks.test.TestFilter
 import gradle.api.tasks.test.TestLoggingContainer
+import gradle.api.tryAddAll
 import gradle.api.tryAssign
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
@@ -51,7 +52,7 @@ internal data class KotlinJsTest(
         environment?.let(receiver.environment::putAll)
         receiver.inputFileProperty tryAssign inputFileProperty?.let(project::file)
         receiver::debug trySet debug
-        nodeJsArgs?.let(receiver.nodeJsArgs::addAll)
+        receiver.nodeJsArgs tryAddAll nodeJsArgs
 
         useMocha?.let { useMocha ->
             receiver.useMocha(useMocha::applyTo)

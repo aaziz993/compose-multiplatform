@@ -257,7 +257,7 @@ internal abstract class DependencyCheckExtension {
             outputDirectory?.let(project.dependencyCheck::setOutputDirectory)
             analyzers?.applyTo(project.dependencyCheck.analyzers)
             suppressionFile?.let(project.dependencyCheck::setSuppressionFile)
-            suppressionFiles?.let(project.dependencyCheck.suppressionFiles::addAll)
+            project.dependencyCheck.suppressionFiles tryAddAll suppressionFiles
             setSuppressionFiles?.let(project.dependencyCheck::setSuppressionFiles)
             suppressionFileUser?.let(project.dependencyCheck::setSuppressionFileUser)
             suppressionFilePassword?.let(project.dependencyCheck::setSuppressionFilePassword)
@@ -266,23 +266,23 @@ internal abstract class DependencyCheckExtension {
             autoUpdate?.let(project.dependencyCheck::setAutoUpdate)
             skipTestGroups?.let(project.dependencyCheck::setSkipTestGroups)
             format?.let(project.dependencyCheck::setFormat)
-            formats?.let(project.dependencyCheck.formats::addAll)
+            project.dependencyCheck.formats tryAddAll formats
             setFormats?.let(project.dependencyCheck::setFormats)
             failBuildOnCVSS?.let(project.dependencyCheck::setFailBuildOnCVSS)
             junitFailOnCVSS?.let(project.dependencyCheck::setJunitFailOnCVSS)
             failBuildOnUnusedSuppressionRule?.let(project.dependencyCheck::setFailBuildOnUnusedSuppressionRule)
             showSummary?.let(project.dependencyCheck::setShowSummary)
-            scanConfigurations?.let(project.dependencyCheck.scanConfigurations::addAll)
+            project.dependencyCheck.scanConfigurations tryAddAll scanConfigurations
             setScanConfigurations?.let(project.dependencyCheck::setScanConfigurations)
-            skipConfigurations?.let(project.dependencyCheck.skipConfigurations::addAll)
+            project.dependencyCheck.skipConfigurations tryAddAll skipConfigurations
             setSkipConfigurations?.let(project.dependencyCheck::setSkipConfigurations)
-            scanProjects?.let(project.dependencyCheck.scanProjects::addAll)
+            project.dependencyCheck.scanProjects tryAddAll scanProjects
             setScanProjects?.let(project.dependencyCheck::setScanProjects)
-            skipProjects?.let(project.dependencyCheck.skipProjects::addAll)
+            project.dependencyCheck.skipProjects tryAddAll skipProjects
             setSkipProjects?.let(project.dependencyCheck::setSkipProjects)
-            skipGroups?.let(project.dependencyCheck.skipGroups::addAll)
+            project.dependencyCheck.skipGroups tryAddAll skipGroups
             setSkipGroups?.let(project.dependencyCheck::setSkipGroups)
-            analyzedTypes?.let(project.dependencyCheck.analyzedTypes::addAll)
+            project.dependencyCheck.analyzedTypes tryAddAll analyzedTypes
             setAnalyzedTypes?.let(project.dependencyCheck::setAnalyzedTypes)
             skip?.let(project.dependencyCheck::setSkip)
             scanSet?.map(project::file)?.let(project.dependencyCheck.scanSet::addAll)

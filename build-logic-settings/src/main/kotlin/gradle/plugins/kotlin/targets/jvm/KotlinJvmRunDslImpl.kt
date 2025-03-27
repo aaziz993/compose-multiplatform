@@ -1,7 +1,6 @@
 package gradle.plugins.kotlin.targets.jvm
 
 import gradle.accessors.files
-
 import gradle.api.getByNameOrAll
 import gradle.api.tryAssign
 import gradle.api.trySet

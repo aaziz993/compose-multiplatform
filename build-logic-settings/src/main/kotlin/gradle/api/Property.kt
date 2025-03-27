@@ -3,7 +3,6 @@ package gradle.api
 import gradle.act
 import java.io.File
 import kotlin.reflect.KFunction1
-import kotlin.reflect.KProperty0
 import kotlin.reflect.KMutableProperty0
 import org.gradle.api.Action
 import org.gradle.api.file.FileSystemLocation
@@ -19,11 +18,11 @@ public fun trySetSystemProperty(key: String, value: String) {
         System.setProperty(key, value)
 }
 
-public infix fun <E> KProperty0<MutableCollection<E>>.tryAddAll(value: Iterable<E>?): Boolean? =
-    value?.let(get()::addAll)
+public infix fun <E> MutableCollection<E>.tryAddAll(value: Iterable<E>?): Boolean? =
+    value?.let(::addAll)
 
-public infix fun <E> KProperty0<MutableCollection<E>>.trySet(value: Iterable<E>?): Boolean? =
-    tryAddAll(value?.act(get()::clear))
+public infix fun <E> MutableCollection<E>.trySet(value: Iterable<E>?): Boolean? =
+    tryAddAll(value?.act(::clear))
 
 public infix fun <T> KMutableProperty0<T>.trySet(value: T?): Unit? = value?.let(::set)
 

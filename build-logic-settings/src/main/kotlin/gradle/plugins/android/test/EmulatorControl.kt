@@ -1,7 +1,7 @@
 package gradle.plugins.android.test
 
 import com.android.build.api.dsl.EmulatorControl
-import gradle.act
+import gradle.api.tryAddAll
 import gradle.api.trySet
 import kotlinx.serialization.Serializable
 
@@ -33,8 +33,8 @@ internal data class EmulatorControl(
     @Suppress("UnstableApiUsage")
     fun applyTo(receiver: EmulatorControl) {
         receiver::enable trySet enable
-        allowedEndpoints?.let(receiver.allowedEndpoints::addAll)
-        setAllowedEndpoints?.act(receiver.allowedEndpoints::clear)?.let(receiver.allowedEndpoints::addAll)
+        receiver.allowedEndpoints tryAddAll allowedEndpoints
+        receiver.allowedEndpoints trySet setAllowedEndpoints
         receiver::secondsValid trySet secondsValid
     }
 }

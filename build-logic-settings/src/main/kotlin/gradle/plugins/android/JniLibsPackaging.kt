@@ -1,7 +1,7 @@
 package gradle.plugins.android
 
 import com.android.build.api.dsl.JniLibsPackaging
-import gradle.act
+import gradle.api.tryAddAll
 import gradle.api.trySet
 import kotlinx.serialization.Serializable
 
@@ -61,13 +61,13 @@ internal data class JniLibsPackaging(
 
     fun applyTo(receiver: JniLibsPackaging) {
         receiver::useLegacyPackaging trySet useLegacyPackaging
-        excludes?.let(receiver.excludes::addAll)
-        setExcludes?.act(receiver.excludes::clear)?.let(receiver.excludes::addAll)
-        pickFirsts?.let(receiver.pickFirsts::addAll)
-        setPickFirsts?.act(receiver.pickFirsts::clear)?.let(receiver.pickFirsts::addAll)
-        keepDebugSymbols?.let(receiver.keepDebugSymbols::addAll)
-        setKeepDebugSymbols?.act(receiver.keepDebugSymbols::clear)?.let(receiver.keepDebugSymbols::addAll)
-        testOnly?.let(receiver.testOnly::addAll)
-        setTestOnly?.act(receiver.testOnly::clear)?.let(receiver.testOnly::addAll)
+        receiver.excludes tryAddAll excludes
+        receiver.excludes trySet setExcludes
+        receiver.pickFirsts tryAddAll pickFirsts
+        receiver.pickFirsts trySet setPickFirsts
+        receiver.keepDebugSymbols tryAddAll keepDebugSymbols
+        receiver.keepDebugSymbols trySet setKeepDebugSymbols
+        receiver.testOnly tryAddAll testOnly
+        receiver.testOnly trySet setTestOnly
     }
 }

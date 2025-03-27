@@ -14,9 +14,9 @@ internal data class YarnResolution(
 ) {
 
     fun toYarnResolution() = YarnResolution(path).apply {
-        this@YarnResolution.includedVersions?.let(includedVersions::addAll)
+        this@YarnResolution.includedVersions tryAddAll includedVersions
         this@YarnResolution.setIncludedVersions?.act(includedVersions::clear)?.let(includedVersions::addAll)
-        this@YarnResolution.excludedVersions?.let(excludedVersions::addAll)
+        this@YarnResolution.excludedVersions tryAddAll excludedVersions
         this@YarnResolution.setExcludedVersions?.act(excludedVersions::clear)?.let(excludedVersions::addAll)
     }
 }

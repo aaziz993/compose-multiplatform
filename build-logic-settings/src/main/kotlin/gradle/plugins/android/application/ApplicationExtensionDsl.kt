@@ -66,9 +66,9 @@ internal interface ApplicationExtensionDsl :
 
         dependenciesInfo?.applyTo(extension.dependenciesInfo)
         bundle?.applyTo(extension.bundle)
-        dynamicFeatures?.let(extension.dynamicFeatures::addAll)
+        extension.dynamicFeatures tryAddAll dynamicFeatures
         setDynamicFeatures?.act(extension.dynamicFeatures::clear)?.let(extension.dynamicFeatures::addAll)
-        assetPacks?.let(extension.assetPacks::addAll)
+        extension.assetPacks tryAddAll assetPacks
         setAssetPacks?.act(extension.assetPacks::clear)?.let(extension.assetPacks::addAll)
         publishing?.applyTo(extension.publishing)
         privacySandbox?.applyTo(extension.privacySandbox)

@@ -1,7 +1,7 @@
 package gradle.plugins.android
 
 import com.android.build.api.dsl.Installation
-import gradle.act
+import gradle.api.tryAddAll
 import gradle.api.trySet
 
 /**
@@ -18,7 +18,7 @@ internal interface Installation<T : Installation> {
 
     fun applyTo(receiver: T) {
         receiver::timeOutInMs trySet timeOutInMs
-        installOptions?.let(receiver.installOptions::addAll)
-        setInstallOptions?.act(receiver.installOptions::clear)?.let(receiver.installOptions::addAll)
+        receiver.installOptions tryAddAll installOptions
+        receiver.installOptions trySet setInstallOptions
     }
 }

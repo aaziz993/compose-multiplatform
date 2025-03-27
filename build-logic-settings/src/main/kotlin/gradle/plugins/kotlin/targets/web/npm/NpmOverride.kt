@@ -15,9 +15,9 @@ internal data class NpmOverride(
     fun toNpmOverride() = org.jetbrains.kotlin.gradle.targets.js.npm.NpmOverride(
         path,
     ).apply {
-        this@NpmOverride.includedVersions?.let(includedVersions::addAll)
+        this@NpmOverride.includedVersions tryAddAll includedVersions
         this@NpmOverride.setIncludedVersions?.act(includedVersions::clear)?.let(includedVersions::addAll)
-        this@NpmOverride.excludedVersions?.let(excludedVersions::addAll)
+        this@NpmOverride.excludedVersions tryAddAll excludedVersions
         this@NpmOverride.setExcludedVersions?.act(excludedVersions::clear)?.let(excludedVersions::addAll)
     }
 }

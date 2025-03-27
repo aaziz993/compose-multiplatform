@@ -1,6 +1,6 @@
 package gradle.plugins.kotlin.targets.nat
-import gradle.accessors.files
 
+import gradle.accessors.files
 import gradle.api.NamedKeyTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.trySet

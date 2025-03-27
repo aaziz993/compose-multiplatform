@@ -1,7 +1,7 @@
 package gradle.plugins.android
 
 import com.android.build.gradle.internal.dsl.AdbOptions
-import gradle.api.trySet
+import gradle.api.tryAddAll
 import kotlinx.serialization.Serializable
 
 /**
@@ -18,8 +18,7 @@ internal data class AdbOptions(
 
     fun applyTo(receiver: AdbOptions) {
         timeOutInMs?.let(receiver::timeOutInMs)
-        installOptions?.let(receiver.installOptions::addAll)
+        receiver.installOptions tryAddAll installOptions
         setInstallOptions?.toTypedArray()?.let(receiver::setInstallOptions)
-        receiver.dslServices
     }
 }
