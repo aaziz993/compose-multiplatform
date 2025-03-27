@@ -18,8 +18,13 @@ public fun trySetSystemProperty(key: String, value: String) {
 
 public infix fun <T> KMutableProperty0<T>.trySet(value: T?): Unit? = value?.let(::set)
 
-public fun <T : Any> KMutableProperty0<T?>.trySet(value: () -> T?, apply: T.() -> Unit): Unit? =
-    get()?.apply() ?: value()?.let(::set)
+public fun <T : Any, O : Any> KMutableProperty0<T?>.trySet(
+    obj: O?,
+    getValue: O.() -> T,
+    applyTo: O.(T) -> Unit
+): Unit? = obj?.let { obj ->
+    get()?.let { value -> obj.applyTo(value) } ?: set(obj.getValue())
+}
 
 public operator fun <E> KMutableProperty0<out Collection<E>?>.plus(value: Iterable<E>) {
     this as KMutableProperty0<Collection<E>?>
@@ -78,5 +83,7 @@ public infix fun <T> KFunction1<T, Unit>.apply(block: KFunction1<T, Unit>) {
     call(block)
 }
 
-public infix fun <T> KFunction1<T, Unit>.tryApply(block: (KFunction1<T, Unit>)?) =
-    block?.let(::apply)
+public infix fun <T> ((T) -> Unit).tryApply(block: ((T) -> Unit)?) =
+    block?.invoke {
+
+    }

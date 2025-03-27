@@ -3,7 +3,6 @@ package gradle.plugins.kotlin.targets.web
 import gradle.api.tryApply
 import gradle.api.tryAddAll
 import gradle.api.trySet
-import gradle.plugins.kotlin.targets.web.KotlinWebpackConfig.DevServer.Client.Overlay
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonContentPolymorphicSerializer
 import kotlinx.serialization.json.JsonElement
@@ -49,22 +48,18 @@ internal data class KotlinWebpackConfig(
         webpackConfig::reportEvaluatedConfigFile trySet reportEvaluatedConfigFile?.let(project::file)
 
         webpackConfig::devServer.trySet(
-            {
-                devServer?.toDevServer()
-            },
-        ) {
-            devServer?.applyTo(this)
-        }
+            devServer,
+            DevServer::toDevServer,
+            DevServer::applyTo,
+        )
 
         webpackConfig::watchOptions trySet watchOptions?.toWatchOptions()
 
         webpackConfig::watchOptions.trySet(
-            {
-                watchOptions?.toWatchOptions()
-            },
-        ) {
-            watchOptions?.applyTo(this)
-        }
+            watchOptions,
+            WatchOptions::toWatchOptions,
+            WatchOptions::applyTo,
+        )
 
         webpackConfig::watchOptions trySet setWatchOptions?.toWatchOptions()
         experiments?.let(webpackConfig.experiments::addAll)
@@ -137,7 +132,7 @@ internal data class KotlinWebpackConfig(
         private object OverlayContentPolymorphicSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
 
             override fun selectDeserializer(element: JsonElement) = when {
-                element is JsonObject -> Overlay.serializer()
+                element is JsonObject -> Client.Overlay.serializer()
                 else -> Boolean::class.serializer()
             }
         }
@@ -160,16 +155,17 @@ internal data class KotlinWebpackConfig(
             )
         }
 
-        fun toDevServer() = KotlinWebpackConfig.DevServer(
-            open,
-            port,
-            proxy?.map(Proxy::toProxy)?.toMutableList(),
-            static?.toMutableList(),
-            contentBase?.toMutableList(),
-            client?.toClient(),
-        )
+        fun toDevServer() =
+            org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig.DevServer(
+                open,
+                port,
+                proxy?.map(Proxy::toProxy)?.toMutableList(),
+                static?.toMutableList(),
+                contentBase?.toMutableList(),
+                client?.toClient(),
+            )
 
-        fun applyTo(receiver: KotlinWebpackConfig.DevServer) {
+        fun applyTo(receiver: org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig.DevServer) {
             receiver::open trySet open
             receiver::port trySet port
             receiver::proxy tryAddAll proxy?.map(Proxy::toProxy)
@@ -180,12 +176,10 @@ internal data class KotlinWebpackConfig(
             receiver::contentBase trySet setContentBase?.toMutableList()
 
             receiver::client.trySet(
-                {
-                    client?.toClient()
-                },
-            ) {
-                client?.applyTo(this)
-            }
+                    client,
+                    Client::toClient,
+                    Client::applyTo,
+            )
 
             receiver::client trySet client?.toClient()
         }
