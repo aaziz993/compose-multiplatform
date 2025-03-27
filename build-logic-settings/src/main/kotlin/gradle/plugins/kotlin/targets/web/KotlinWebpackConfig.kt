@@ -3,10 +3,13 @@ package gradle.plugins.kotlin.targets.web
 import gradle.api.tryApply
 import gradle.api.tryAddAll
 import gradle.api.trySet
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 import kotlinx.serialization.json.JsonContentPolymorphicSerializer
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.serializer
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
@@ -105,8 +108,13 @@ internal data class KotlinWebpackConfig(
         @Serializable
         data class Client(
             @Serializable(with = OverlayContentPolymorphicSerializer::class)
-            val overlay: Any /* Overlay | Boolean */
+            @SerialName("overlay")
+            private val _overlay: Any /* Overlay | Boolean */
         ) {
+
+            val overlay by lazy {
+                if (_overlay is Overlay) _overlay.toOverlay() else _overlay
+            }
 
             @Serializable
             data class Overlay(
@@ -121,20 +129,19 @@ internal data class KotlinWebpackConfig(
             }
 
             fun toClient() = KotlinWebpackConfig.DevServer.Client(
-                if (overlay is Overlay) overlay.toOverlay() else overlay,
+                overlay,
             )
 
             fun applyTo(receiver: KotlinWebpackConfig.DevServer.Client) {
-                receiver::overlay trySet if (overlay is Overlay) overlay.toOverlay() else overlay
+                receiver::overlay trySet overlay
             }
         }
 
         private object OverlayContentPolymorphicSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
 
-            override fun selectDeserializer(element: JsonElement) = when {
-                element is JsonObject -> Client.Overlay.serializer()
-                else -> Boolean::class.serializer()
-            }
+            override fun selectDeserializer(element: JsonElement) =
+                if (element is JsonPrimitive) Boolean::class.serializer()
+                else Client.Overlay.serializer()
         }
 
         @Serializable
@@ -165,7 +172,7 @@ internal data class KotlinWebpackConfig(
                 client?.toClient(),
             )
 
-        fun applyTo(receiver: org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig.DevServer) {
+        fun applyTo(receiver: KotlinWebpackConfig.DevServer) {
             receiver::open trySet open
             receiver::port trySet port
             receiver::proxy tryAddAll proxy?.map(Proxy::toProxy)
@@ -176,9 +183,9 @@ internal data class KotlinWebpackConfig(
             receiver::contentBase trySet setContentBase?.toMutableList()
 
             receiver::client.trySet(
-                    client,
-                    Client::toClient,
-                    Client::applyTo,
+                client,
+                Client::toClient,
+                Client::applyTo,
             )
 
             receiver::client trySet client?.toClient()
