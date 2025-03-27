@@ -27,8 +27,6 @@ internal data class ResourcesExtension(
     /**
      * The unique identifier of the resources in the current project.
      * Uses as package for the generated Res class and for isolation resources in a final artefact.
-import gradle.accessors.files
-import gradle.api.trySet
      *
      * If it is empty then `{group name}.{module name}.generated.resources` will be used.
      *

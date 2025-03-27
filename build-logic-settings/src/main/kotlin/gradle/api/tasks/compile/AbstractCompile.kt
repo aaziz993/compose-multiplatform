@@ -1,4 +1,5 @@
 package gradle.api.tasks.compile
+
 import gradle.accessors.files
 
 import gradle.api.tasks.SourceTask
@@ -76,7 +77,8 @@ internal data class AbstractCompileImpl(
     override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
     override val name: String? = null,
-    override val sourceFiles: Set<String>?,
+    override val sourceFiles: Set<String>? = null,
+    override val setSourceFiles: Set<String>? = null,
     override val includes: Set<String>? = null,
     override val setIncludes: Set<String>? = null,
     override val excludes: Set<String>? = null,

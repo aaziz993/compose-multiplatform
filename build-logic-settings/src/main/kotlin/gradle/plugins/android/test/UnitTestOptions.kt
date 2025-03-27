@@ -37,8 +37,6 @@ internal data class UnitTestOptions(
      * components from their dependencies.
      *
      * `android_custom_package`: the package name (namespace) of the final R class.
-import gradle.accessors.files
-import gradle.api.trySet
      *
      * Note that the paths above are relative paths (relative to the current project directory, not
      * the root project directory).

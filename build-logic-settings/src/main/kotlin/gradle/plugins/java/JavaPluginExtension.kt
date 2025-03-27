@@ -64,8 +64,6 @@ internal data class JavaPluginExtension(
     val disableAutoTargetJvm: Boolean? = null,
     /**
      * Adds a task `javadocJar` that will package the output of the `javadoc` task in a JAR with classifier `javadoc`.
-import gradle.accessors.files
-import gradle.api.trySet
      * <P>
      * The produced artifact is registered as a documentation variant on the `java` component and added as a dependency on the `assemble` task.
      * This means that if `maven-publish` or `ivy-publish` is also applied, the javadoc JAR will be published.
@@ -81,8 +79,6 @@ import gradle.api.trySet
     val withJavadocJar: Boolean? = null,
     /**
      * Adds a task `sourcesJar` that will package the Java sources of the main [SourceSet][org.gradle.api.tasks.SourceSet] in a JAR with classifier `sources`.
-import gradle.accessors.files
-import gradle.api.trySet
      * <P>
      * The produced artifact is registered as a documentation variant on the `java` component and added as a dependency on the `assemble` task.
      * This means that if `maven-publish` or `ivy-publish` is also applied, the sources JAR will be published.

@@ -16,8 +16,6 @@ import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnLockMismatchReport
 
 /**
  * Spec for Yarn - package manager to install NPM dependencies
-import gradle.accessors.files
-import gradle.api.trySet
  */
 @Serializable
 internal data class YarnRootEnvSpec(
@@ -28,8 +26,6 @@ internal data class YarnRootEnvSpec(
     override val command: String? = null,
     /**
      * Specify whether to not run install without custom package scripts.
-import gradle.accessors.files
-import gradle.api.trySet
      * It is useful for security
      *
      * Default: true

@@ -28,6 +28,7 @@ internal data class MavenRepositoryContentDescriptor(
     override val includeModulesByRegexes: Set<Module>? = null,
     override val includeVersions: Set<Version>? = null,
     override val includeVersionsByRegexes: Set<Version>? = null,
+    override val excludeGroups: Set<String>? = null,
     /**
      * Declares that this repository only contains releases.
      */
@@ -36,7 +37,6 @@ internal data class MavenRepositoryContentDescriptor(
      * Declares that this repository only contains snapshots.
      */
     val snapshotsOnly: Boolean? = null,
-    override val excludeGroups: Set<String>?,
 ) : RepositoryContentDescriptor<MavenRepositoryContentDescriptor> {
 
     override fun applyTo(receiver: MavenRepositoryContentDescriptor) {
