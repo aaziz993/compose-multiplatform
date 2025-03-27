@@ -26,8 +26,8 @@ internal data class CacheExtension(
 ) {
 
     fun applyTo(receiver: CacheExtension) {
-        ossIndex?.let(receiver::setOssIndex)
-        central?.let(receiver::setCentral)
-        nodeAudit?.let(receiver::setNodeAudit)
+        receiver::setOssIndex trySet ossIndex
+        receiver::setCentral trySet central
+        receiver::setNodeAudit trySet nodeAudit
     }
 }

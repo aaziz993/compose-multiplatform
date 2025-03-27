@@ -1,18 +1,21 @@
 package gradle.api.tasks
 
 import gradle.api.tasks.util.PatternFilterable
+import gradle.api.trySet
 import org.gradle.api.Project
 import org.gradle.api.tasks.SourceTask
 
 internal abstract class SourceTask<T : SourceTask> : ConventionTask<T>(), PatternFilterable<T> {
 
     abstract val sourceFiles: Set<String>?
+    abstract val setSourceFiles: Set<String>?
 
     context(Project)
     override fun applyTo(receiver: T) {
         super<ConventionTask>.applyTo(receiver)
         super<PatternFilterable>.applyTo(receiver)
 
-        sourceFiles?.toTypedArray()?.let(receiver::setSource)
+        receiver::source trySet sourceFiles
+        receiver::setSource trySet setSourceFiles?.toTypedArray()?.let(project::files)?.asFileTree
     }
 }

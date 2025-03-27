@@ -61,9 +61,9 @@ internal data class CheckCacheExtension(
 ) {
 
     fun applyTo(receiver: CheckCacheExtension) {
-        enabled?.let(receiver::setEnabled)
-        exclude?.toTypedArray()?.let(receiver::exclude)
-        setExclude?.let(receiver::setExclude)
-        mergeSignatures?.let(receiver::setMergeSignatures)
+        receiver::setEnabled trySet enabled
+        receiver::exclude trySet exclude
+        receiver::setExclude trySet setExclude
+        receiver::setMergeSignatures trySet mergeSignatures
     }
 }

@@ -28,8 +28,8 @@ internal interface Split<T : Split> {
 
     fun applyTo(receiver: T) {
         receiver::isEnable trySet isEnable
-        includes?.toTypedArray()?.let(receiver::include)
-        excludes?.toTypedArray()?.let(receiver::exclude)
+        receiver::include trySet includes
+        receiver::exclude trySet excludes
         reset?.ifTrue(receiver::reset)
     }
 }

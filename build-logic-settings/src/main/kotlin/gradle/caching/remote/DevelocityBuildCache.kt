@@ -28,11 +28,11 @@ internal data class DevelocityBuildCache(
 
         super.applyTo(receiver)
 
-        server?.let(receiver::setServer)
-        path?.let(receiver::setPath)
-        allowUntrustedServer?.let(receiver::setAllowUntrustedServer)
-        allowInsecureProtocol?.let(receiver::setAllowInsecureProtocol)
-        useExpectContinue?.let(receiver::setUseExpectContinue)
+        receiver::setServer trySet server
+        receiver::setPath trySet path
+        receiver::setAllowUntrustedServer trySet allowUntrustedServer
+        receiver::setAllowInsecureProtocol trySet allowInsecureProtocol
+        receiver::setUseExpectContinue trySet useExpectContinue
         usernameAndPassword?.let { (username, password) ->
             receiver.usernameAndPassword(username, password)
         }

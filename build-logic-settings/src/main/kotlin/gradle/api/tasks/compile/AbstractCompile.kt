@@ -49,9 +49,9 @@ internal abstract class AbstractCompile<T : org.gradle.api.tasks.compile.Abstrac
         super.applyTo(receiver)
 
         receiver.destinationDirectory tryAssign destinationDirectory?.let(project.layout.projectDirectory::dir)
-        classpath?.toTypedArray()?.let(project::files)?.let(receiver::setClasspath)
-        sourceCompatibility?.let(receiver::setSourceCompatibility)
-        targetCompatibility?.let(receiver::setTargetCompatibility)
+        receiver::setClasspath trySet classpath?.let(project::files)
+        receiver::setSourceCompatibility trySet sourceCompatibility
+        receiver::setTargetCompatibility trySet targetCompatibility
     }
 }
 

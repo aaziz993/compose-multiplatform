@@ -35,7 +35,7 @@ internal data class BuildScanConfiguration(
         }
 
 
-        tag?.let(receiver::tag)
+        receiver::tag trySet tag
         values?.forEach { (name, value) -> receiver.value(name, value) }
         links?.forEach { (name, url) -> receiver.link(name, url) }
 

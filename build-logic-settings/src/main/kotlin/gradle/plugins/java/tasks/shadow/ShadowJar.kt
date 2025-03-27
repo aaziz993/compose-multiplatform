@@ -91,8 +91,8 @@ internal data class ShadowJar(
             super<Jar>.applyTo(receiver)
             super<ShadowSpec>.applyTo(receiver)
             configurations?.map(Set<*>::toTypedArray)?.map(project::files)?.let(receiver::setConfigurations)
-            enableRelocation?.let(receiver::setEnableRelocation)
-            relocationPrefix?.let(receiver::setRelocationPrefix)
+            receiver::setEnableRelocation trySet enableRelocation
+            receiver::setRelocationPrefix trySet relocationPrefix
         }
 
     context(Project)

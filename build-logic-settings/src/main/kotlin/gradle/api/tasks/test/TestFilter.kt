@@ -70,6 +70,6 @@ internal data class TestFilter(
         excludePatterns?.let(receiver.excludePatterns::addAll)
         includeTests?.forEach { (className, methodName) -> receiver.includeTest(className, methodName) }
         excludeTests?.forEach { (className, methodName) -> receiver.excludeTest(className, methodName) }
-        failOnNoMatchingTests?.let(receiver::setFailOnNoMatchingTests)
+        receiver::setFailOnNoMatchingTests trySet failOnNoMatchingTests
     }
 }

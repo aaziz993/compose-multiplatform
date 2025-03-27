@@ -26,7 +26,7 @@ internal data class MavenArtifact(
     override fun applyTo(receiver: MavenArtifact) {
         super.applyTo(receiver)
 
-        extension?.let(receiver::setExtension)
-        classifier?.let(receiver::setClassifier)
+        receiver::setExtension trySet extension
+        receiver::setClassifier trySet classifier
     }
 }

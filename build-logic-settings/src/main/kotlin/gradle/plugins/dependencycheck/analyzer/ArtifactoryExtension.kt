@@ -39,12 +39,12 @@ internal data class ArtifactoryExtension(
 ) {
 
     fun applyTo(receiver: ArtifactoryExtension) {
-        enabled?.let(receiver::setEnabled)
-        url?.let(receiver::setUrl)
-        usesProxy?.let(receiver::setUsesProxy)
-        parallelAnalysis?.let(receiver::setParallelAnalysis)
-        username?.let(receiver::setUsername)
-        apiToken?.let(receiver::setApiToken)
-        bearerToken?.let(receiver::setBearerToken)
+        receiver::setEnabled trySet enabled
+        receiver::setUrl trySet url
+        receiver::setUsesProxy trySet usesProxy
+        receiver::setParallelAnalysis trySet parallelAnalysis
+        receiver::setUsername trySet username
+        receiver::setApiToken trySet apiToken
+        receiver::setBearerToken trySet bearerToken
     }
 }

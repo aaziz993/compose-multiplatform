@@ -232,7 +232,7 @@ internal interface CocoapodsExtension {
             setInteropBindingDependencies
                 ?.act(receiver.interopBindingDependencies::clear)
                 ?.let(receiver.interopBindingDependencies::addAll)
-            podspecDirectory?.let(receiver::path)
+            receiver::path trySet podspecDirectory
         }
 
         @Serializable

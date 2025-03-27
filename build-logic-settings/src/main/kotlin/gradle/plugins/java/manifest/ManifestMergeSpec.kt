@@ -11,8 +11,8 @@ internal data class ManifestMergeSpec(
 ) {
 
     fun applyTo(receiver: ManifestMergeSpec) {
-        contentCharset?.let(receiver::setContentCharset)
-        from?.toTypedArray()?.let(receiver::from)
+        receiver::setContentCharset trySet contentCharset
+        receiver::from trySet from
 
         eachEntries?.let { eachEntries ->
             receiver.eachEntry {

@@ -11,6 +11,6 @@ internal interface BaseExecSpec<T : BaseExecSpec> : ProcessForkOptions<T> {
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
-        ignoreExitValue?.let(receiver::setIgnoreExitValue)
+        receiver::setIgnoreExitValue trySet ignoreExitValue
     }
 }

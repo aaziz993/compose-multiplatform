@@ -60,24 +60,24 @@ internal interface DownloadSpec {
             },
         )
         receiver.dest(dest)
-        quiet?.let(receiver::quiet)
-        overwrite?.let(receiver::overwrite)
-        onlyIfModified?.let(receiver::onlyIfModified)
-        onlyIfNewer?.let(receiver::onlyIfNewer)
-        compress?.let(receiver::compress)
-        username?.let(receiver::username)
-        password?.let(receiver::password)
-        headers?.let(receiver::headers)
-        preemptiveAuth?.let(receiver::preemptiveAuth)
-        acceptAnyCertificate?.let(receiver::acceptAnyCertificate)
-        connectTimeout?.let(receiver::connectTimeout)
-        readTimeout?.let(receiver::readTimeout)
-        retries?.let(receiver::retries)
-        downloadTaskDir?.let(receiver::downloadTaskDir)
-        tempAndMove?.let(receiver::tempAndMove)
-        useETag?.let(receiver::useETag)
-        cachedETagsFile?.let(receiver::cachedETagsFile)
-        method?.let(receiver::method)
-        body?.let(receiver::body)
+        receiver::quiet trySet quiet
+        receiver::overwrite trySet overwrite
+        receiver::onlyIfModified trySet onlyIfModified
+        receiver::onlyIfNewer trySet onlyIfNewer
+        receiver::compress trySet compress
+        receiver::username trySet username
+        receiver::password trySet password
+        receiver::headers trySet headers
+        receiver::preemptiveAuth trySet preemptiveAuth
+        receiver::acceptAnyCertificate trySet acceptAnyCertificate
+        receiver::connectTimeout trySet connectTimeout
+        receiver::readTimeout trySet readTimeout
+        receiver::retries trySet retries
+        receiver::downloadTaskDir trySet downloadTaskDir
+        receiver::tempAndMove trySet tempAndMove
+        receiver::useETag trySet useETag
+        receiver::cachedETagsFile trySet cachedETagsFile
+        receiver::method trySet method
+        receiver::body trySet body
     }
 }

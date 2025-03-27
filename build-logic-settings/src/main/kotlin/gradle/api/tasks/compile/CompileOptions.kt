@@ -1,6 +1,8 @@
 package gradle.api.tasks.compile
 
+import gradle.accessors.files
 import gradle.api.tryAssign
+import gradle.api.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.tasks.compile.CompileOptions
@@ -38,20 +40,20 @@ internal data class CompileOptions(
     context(Project)
     @Suppress("UnstableApiUsage")
     fun applyTo(receiver: CompileOptions) {
-        failOnError?.let(receiver::setFailOnError)
-        verbose?.let(receiver::setVerbose)
-        listFiles?.let(receiver::setListFiles)
-        deprecation?.let(receiver::setDeprecation)
-        warnings?.let(receiver::setWarnings)
-        encoding?.let(receiver::setEncoding)
-        debug?.let(receiver::setDebug)
-        fork?.let(receiver::setFork)
-        bootstrapClasspath?.toTypedArray()?.let(project::files)?.let(receiver::setBootstrapClasspath)
-        extensionDirs?.let(receiver::setExtensionDirs)
-        compilerArgs?.let(receiver::setCompilerArgs)
-        incremental?.let(receiver::setIncremental)
-        sourcepath?.toTypedArray()?.let(project::files).let(receiver::setSourcepath)
-        annotationProcessorPath?.toTypedArray()?.let(project::files)?.let(receiver::setAnnotationProcessorPath)
+        receiver::setFailOnError trySet failOnError
+        receiver::setVerbose trySet verbose
+        receiver::setListFiles trySet listFiles
+        receiver::setDeprecation trySet deprecation
+        receiver::setWarnings trySet warnings
+        receiver::setEncoding trySet encoding
+        receiver::setDebug trySet debug
+        receiver::setFork trySet fork
+        receiver::setBootstrapClasspath trySet bootstrapClasspath?.let(project::files)
+        receiver::setExtensionDirs trySet extensionDirs
+        receiver::setCompilerArgs trySet compilerArgs
+        receiver::setIncremental trySet incremental
+        receiver::setSourcepath trySet sourcepath?.let(project::files)
+        receiver::setAnnotationProcessorPath trySet annotationProcessorPath?.let(project::files)
         receiver.incrementalAfterFailure tryAssign incrementalAfterFailure
         receiver.javaModuleVersion tryAssign javaModuleVersion
         receiver.javaModuleMainClass tryAssign javaModuleMainClass

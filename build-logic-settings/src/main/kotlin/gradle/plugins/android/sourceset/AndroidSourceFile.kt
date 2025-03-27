@@ -26,6 +26,6 @@ internal data class AndroidSourceFile(
 
     context(Project)
     override fun applyTo(receiver: AndroidSourceFile) {
-        srcFile?.let(receiver::srcFile)
+        receiver::srcFile trySet srcFile
     }
 }

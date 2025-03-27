@@ -108,22 +108,22 @@ internal interface JavaForkOptions<T : JavaForkOptions> : ProcessForkOptions<T> 
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
-        systemProperties?.let(receiver::systemProperties)
-        setSystemProperties?.let(receiver::setSystemProperties)
-        defaultCharacterEncoding?.let(receiver::setDefaultCharacterEncoding)
-        minHeapSize?.let(receiver::setMinHeapSize)
-        maxHeapSize?.let(receiver::setMaxHeapSize)
-        jvmArgs?.let(receiver::jvmArgs)
-        setJvmArgs?.let(receiver::setJvmArgs)
+        receiver::systemProperties trySet systemProperties
+        receiver::setSystemProperties trySet setSystemProperties
+        receiver::setDefaultCharacterEncoding trySet defaultCharacterEncoding
+        receiver::setMinHeapSize trySet minHeapSize
+        receiver::setMaxHeapSize trySet maxHeapSize
+        receiver::jvmArgs trySet jvmArgs
+        receiver::setJvmArgs trySet setJvmArgs
 
-        bootstrapClasspath?.toTypedArray()?.let(receiver::bootstrapClasspath)
+        receiver::bootstrapClasspath trySet bootstrapClasspath
 
-        setBootstrapClasspath?.toTypedArray()?.let(project::files)?.let(receiver::setBootstrapClasspath)
+        receiver::setBootstrapClasspath trySet setBootstrapClasspath?.let(project::files)
 
-        enableAssertions?.let(receiver::setEnableAssertions)
-        debug?.let(receiver::setDebug)
+        receiver::setEnableAssertions trySet enableAssertions
+        receiver::setDebug trySet debug
         debugOptions?.applyTo(receiver.debugOptions)
         allJvmArgs?.act(receiver.allJvmArgs::clear)?.let(receiver.allJvmArgs::addAll)
-        allJvmArgs?.let(receiver::setAllJvmArgs)
+        receiver::setAllJvmArgs trySet allJvmArgs
     }
 }

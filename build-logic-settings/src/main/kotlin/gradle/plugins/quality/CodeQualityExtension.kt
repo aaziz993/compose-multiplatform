@@ -34,9 +34,9 @@ internal abstract class CodeQualityExtension<T : CodeQualityExtension> {
 
     context(Project)
     fun applyTo(receiver: T) {
-        toolVersion?.let(receiver::setToolVersion)
+        receiver::setToolVersion trySet toolVersion
         sourceSets?.flatMap(project.sourceSets::getByNameOrAll)?.let(receiver::setSourceSets)
-        ignoreFailures?.let(receiver::setIgnoreFailures)
+        receiver::setIgnoreFailures trySet ignoreFailures
         reportsDir?.let(project::file)?.let(receiver::setReportsDir)
     }
 }

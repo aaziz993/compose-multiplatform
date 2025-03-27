@@ -46,13 +46,13 @@ internal class JUnitPlatformOptions(
 
     context(Project)
     override fun applyTo(receiver: JUnitPlatformOptions) {
-        includeEngines?.toTypedArray()?.let(receiver::includeEngines)
-        setIncludeEngines?.let(receiver::setIncludeEngines)
-        excludeEngines?.toTypedArray()?.let(receiver::excludeEngines)
-        setExcludeEngines?.let(receiver::setExcludeEngines)
-        includeTags?.toTypedArray()?.let(receiver::includeTags)
-        setIncludeTags?.let(receiver::setIncludeTags)
-        excludeTags?.toTypedArray()?.let(receiver::excludeTags)
-        setExcludeTags?.let(receiver::setExcludeTags)
+        receiver::includeEngines trySet includeEngines
+        receiver::setIncludeEngines trySet setIncludeEngines
+        receiver::excludeEngines trySet excludeEngines
+        receiver::setExcludeEngines trySet setExcludeEngines
+        receiver::includeTags trySet includeTags
+        receiver::setIncludeTags trySet setIncludeTags
+        receiver::excludeTags trySet excludeTags
+        receiver::setExcludeTags trySet setExcludeTags
     }
 }

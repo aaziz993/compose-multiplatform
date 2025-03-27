@@ -102,16 +102,16 @@ internal interface TestLogging<T : TestLogging> {
     val showStandardStreams: Boolean?
 
     fun applyTo(receiver: T) {
-        events?.let(receiver::setEvents)
-        minGranularity?.let(receiver::setMinGranularity)
-        maxGranularity?.let(receiver::setMaxGranularity)
-        displayGranularity?.let(receiver::setDisplayGranularity)
-        showExceptions?.let(receiver::setShowExceptions)
-        showCauses?.let(receiver::setShowCauses)
-        showStackTraces?.let(receiver::setShowStackTraces)
-        exceptionFormat?.let(receiver::setExceptionFormat)
-        tackTraceFilters?.let(receiver::setStackTraceFilters)
-        showStandardStreams?.let(receiver::setShowStandardStreams)
+        receiver::setEvents trySet events
+        receiver::setMinGranularity trySet minGranularity
+        receiver::setMaxGranularity trySet maxGranularity
+        receiver::setDisplayGranularity trySet displayGranularity
+        receiver::setShowExceptions trySet showExceptions
+        receiver::setShowCauses trySet showCauses
+        receiver::setShowStackTraces trySet showStackTraces
+        receiver::setExceptionFormat trySet exceptionFormat
+        receiver::setStackTraceFilters trySet tackTraceFilters
+        receiver::setShowStandardStreams trySet showStandardStreams
     }
 }
 

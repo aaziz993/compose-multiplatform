@@ -178,37 +178,37 @@ internal data class AnalyzerExtension(
 ) {
 
     fun applyTo(receiver: AnalyzerExtension) {
-        experimentalEnabled?.let(receiver::setExperimentalEnabled)
-        archiveEnabled?.let(receiver::setArchiveEnabled)
-        zipExtensions?.let(receiver::setZipExtensions)
-        jarEnabled?.let(receiver::setJarEnabled)
-        centralEnabled?.let(receiver::setCentralEnabled)
-        nexusEnabled?.let(receiver::setNexusEnabled)
-        nexusUrl?.let(receiver::setNexusUrl)
-        nexusUsesProxy?.let(receiver::setNexusUsesProxy)
-        nuspecEnabled?.let(receiver::setNuspecEnabled)
-        assemblyEnabled?.let(receiver::setAssemblyEnabled)
-        msbuildEnabled?.let(receiver::setMsbuildEnabled)
-        pathToDotnet?.let(receiver::setPathToDotnet)
-        golangDepEnabled?.let(receiver::setGolangDepEnabled)
-        golangModEnabled?.let(receiver::setGolangModEnabled)
-        pathToGo?.let(receiver::setPathToGo)
-        cocoapodsEnabled?.let(receiver::setCocoapodsEnabled)
-        swiftEnabled?.let(receiver::setSwiftEnabled)
-        dartEnabled?.let(receiver::setDartEnabled)
-        swiftPackageResolvedEnabled?.let(receiver::setSwiftPackageResolvedEnabled)
-        bundleAuditEnabled?.let(receiver::setBundleAuditEnabled)
-        pathToBundleAudit?.let(receiver::setPathToBundleAudit)
-        pyDistributionEnabled?.let(receiver::setPyDistributionEnabled)
-        pyPackageEnabled?.let(receiver::setPyPackageEnabled)
-        rubygemsEnabled?.let(receiver::setRubygemsEnabled)
-        opensslEnabled?.let(receiver::setOpensslEnabled)
-        cmakeEnabled?.let(receiver::setCmakeEnabled)
-        autoconfEnabled?.let(receiver::setAutoconfEnabled)
-        composerEnabled?.let(receiver::setComposerEnabled)
-        composerSkipDev?.let(receiver::setComposerSkipDev)
-        cpanEnabled?.let(receiver::setCpanEnabled)
-        nugetconfEnabled?.let(receiver::setNugetconfEnabled)
+        receiver::setExperimentalEnabled trySet experimentalEnabled
+        receiver::setArchiveEnabled trySet archiveEnabled
+        receiver::setZipExtensions trySet zipExtensions
+        receiver::setJarEnabled trySet jarEnabled
+        receiver::setCentralEnabled trySet centralEnabled
+        receiver::setNexusEnabled trySet nexusEnabled
+        receiver::setNexusUrl trySet nexusUrl
+        receiver::setNexusUsesProxy trySet nexusUsesProxy
+        receiver::setNuspecEnabled trySet nuspecEnabled
+        receiver::setAssemblyEnabled trySet assemblyEnabled
+        receiver::setMsbuildEnabled trySet msbuildEnabled
+        receiver::setPathToDotnet trySet pathToDotnet
+        receiver::setGolangDepEnabled trySet golangDepEnabled
+        receiver::setGolangModEnabled trySet golangModEnabled
+        receiver::setPathToGo trySet pathToGo
+        receiver::setCocoapodsEnabled trySet cocoapodsEnabled
+        receiver::setSwiftEnabled trySet swiftEnabled
+        receiver::setDartEnabled trySet dartEnabled
+        receiver::setSwiftPackageResolvedEnabled trySet swiftPackageResolvedEnabled
+        receiver::setBundleAuditEnabled trySet bundleAuditEnabled
+        receiver::setPathToBundleAudit trySet pathToBundleAudit
+        receiver::setPyDistributionEnabled trySet pyDistributionEnabled
+        receiver::setPyPackageEnabled trySet pyPackageEnabled
+        receiver::setRubygemsEnabled trySet rubygemsEnabled
+        receiver::setOpensslEnabled trySet opensslEnabled
+        receiver::setCmakeEnabled trySet cmakeEnabled
+        receiver::setAutoconfEnabled trySet autoconfEnabled
+        receiver::setComposerEnabled trySet composerEnabled
+        receiver::setComposerSkipDev trySet composerSkipDev
+        receiver::setCpanEnabled trySet cpanEnabled
+        receiver::setNugetconfEnabled trySet nugetconfEnabled
         kev?.applyTo(receiver.kev)
         retirejs?.applyTo(receiver.retirejs)
         nodeAudit?.applyTo(receiver.nodeAudit)

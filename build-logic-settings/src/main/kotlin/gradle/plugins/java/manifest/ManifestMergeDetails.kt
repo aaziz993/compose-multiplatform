@@ -23,7 +23,7 @@ internal data class ManifestMergeDetails(
             && (oldValue ?: other.value) == other.value
 
     fun applyTo(receiver: ManifestMergeDetails) {
-        value?.let(receiver::setValue)
+        receiver::setValue trySet value
         exclude?.ifTrue(receiver::exclude)
     }
 }

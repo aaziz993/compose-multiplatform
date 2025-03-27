@@ -17,9 +17,9 @@ internal interface ExecSpec<T : org.gradle.process.ExecSpec> : BaseExecSpec<T> {
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
-        commandLine?.let(receiver::commandLine)
-        setCommandLine?.let(receiver::setCommandLine)
-        args?.let(receiver::args)
-        setArgs?.let(receiver::setArgs)
+        receiver::commandLine trySet commandLine
+        receiver::setCommandLine trySet setCommandLine
+        receiver::args trySet args
+        receiver::setArgs trySet setArgs
     }
 }

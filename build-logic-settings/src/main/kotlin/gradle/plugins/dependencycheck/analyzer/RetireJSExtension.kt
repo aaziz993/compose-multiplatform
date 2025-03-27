@@ -44,13 +44,13 @@ internal data class RetireJSExtension(
 ) {
 
     fun applyTo(receiver: RetireJSExtension) {
-        enabled?.let(receiver::setEnabled)
-        filters?.let(receiver::setFilters)
-        filterNonVulnerable?.let(receiver::setFilterNonVulnerable)
-        retireJsUrl?.let(receiver::setRetireJsUrl)
-        user?.let(receiver::setUser)
-        password?.let(receiver::setPassword)
-        bearerToken?.let(receiver::setBearerToken)
-        forceupdate?.let(receiver::setForceupdate)
+        receiver::setEnabled trySet enabled
+        receiver::setFilters trySet filters
+        receiver::setFilterNonVulnerable trySet filterNonVulnerable
+        receiver::setRetireJsUrl trySet retireJsUrl
+        receiver::setUser trySet user
+        receiver::setPassword trySet password
+        receiver::setBearerToken trySet bearerToken
+        receiver::setForceupdate trySet forceupdate
     }
 }

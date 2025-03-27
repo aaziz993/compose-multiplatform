@@ -32,11 +32,11 @@ internal data class KEVExtension(
 ) {
 
     fun applyTo(receiver: KEVExtension) {
-        enabled?.let(receiver::setEnabled)
-        url?.let(receiver::setUrl)
-        user?.let(receiver::setUser)
-        password?.let(receiver::setPassword)
-        bearerToken?.let(receiver::setBearerToken)
-        validForHours?.let(receiver::setValidForHours)
+        receiver::setEnabled trySet enabled
+        receiver::setUrl trySet url
+        receiver::setUser trySet user
+        receiver::setPassword trySet password
+        receiver::setBearerToken trySet bearerToken
+        receiver::setValidForHours trySet validForHours
     }
 }

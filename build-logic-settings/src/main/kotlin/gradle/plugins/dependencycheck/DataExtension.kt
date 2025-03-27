@@ -32,11 +32,11 @@ internal data class DataExtension(
 ) {
 
     fun applyTo(receiver: DataExtension) {
-        directory?.let(receiver::setDirectory)
-        connectionString?.let(receiver::setConnectionString)
-        username?.let(receiver::setUsername)
-        password?.let(receiver::setPassword)
-        driver?.let(receiver::setDriver)
-        driverPath?.let(receiver::setDriverPath)
+        receiver::setDirectory trySet directory
+        receiver::setConnectionString trySet connectionString
+        receiver::setUsername trySet username
+        receiver::setPassword trySet password
+        receiver::setDriver trySet driver
+        receiver::setDriverPath trySet driverPath
     }
 }

@@ -67,7 +67,7 @@ internal data class SqlDelightDatabase(
     override fun applyTo(receiver: app.cash.sqldelight.gradle.SqlDelightDatabase) {
         receiver.packageName tryAssign packageName
         receiver.schemaOutputDirectory tryAssign schemaOutputDirectory?.let(project.layout.projectDirectory::dir)
-        srcDirs?.toTypedArray()?.let(receiver::srcDirs)
+        receiver::srcDirs trySet srcDirs
         setSrcDirs?.let(receiver.srcDirs::setFrom)
         receiver.deriveSchemaFromMigrations tryAssign deriveSchemaFromMigrations
         receiver.verifyMigrations tryAssign verifyMigrations

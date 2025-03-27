@@ -38,7 +38,7 @@ internal data class JvmApplication(
         fromKotlinTarget?.let(project.kotlin.targets::getByName)?.let(receiver::from)
         disableDefaultConfiguration?.ifTrue(receiver::disableDefaultConfiguration)
         dependsOn?.flatMap(tasks::getByNameOrAll)?.toTypedArray()?.let(receiver::dependsOn)
-        fromFiles?.toTypedArray()?.let(receiver::fromFiles)
+        receiver::fromFiles trySet fromFiles
         receiver::mainClass trySet mainClass
         receiver::javaHome trySet javaHome
         args?.let(receiver.args::addAll)

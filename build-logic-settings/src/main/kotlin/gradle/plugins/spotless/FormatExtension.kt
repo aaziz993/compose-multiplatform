@@ -66,22 +66,22 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
 
     context(Project)
     open fun applyTo(receiver: T) {
-        lineEnding?.let(receiver::setLineEndings)
-        ratchetFrom?.let(receiver::setRatchetFrom)
+        receiver::setLineEndings trySet lineEnding
+        receiver::setRatchetFrom trySet ratchetFrom
         excludeSteps?.forEach(receiver::ignoreErrorForStep)
         excludePaths?.forEach(receiver::ignoreErrorForPath)
-        encoding?.let(receiver::setEncoding)
+        receiver::setEncoding trySet encoding
         targets?.toTypedArray().let(receiver::target)
-        targetExcludes?.toTypedArray()?.let(receiver::targetExclude)
-        targetExcludeIfContentContains?.let(receiver::targetExcludeIfContentContains)
-        targetExcludeIfContentContainsRegex?.let(receiver::targetExcludeIfContentContainsRegex)
+        receiver::targetExclude trySet targetExcludes
+        receiver::targetExcludeIfContentContains trySet targetExcludeIfContentContains
+        receiver::targetExcludeIfContentContainsRegex trySet targetExcludeIfContentContainsRegex
         replaces?.forEach { (name, original, after) -> receiver.replace(name, original, after) }
         replaceRegexes?.forEach { (name, regex, replacement) -> receiver.replaceRegex(name, regex, replacement) }
         trimTrailingWhitespace?.ifTrue(receiver::trimTrailingWhitespace)
         endWithNewline?.ifTrue(receiver::endWithNewline)
 
-        indentWithSpaces?.let(receiver::indentWithSpaces)
-        indentWithTabs?.let(receiver::indentWithTabs)
+        receiver::indentWithSpaces trySet indentWithSpaces
+        receiver::indentWithTabs trySet indentWithTabs
 
         nativeCmds?.forEach { (name, pathToExe, arguments) -> receiver.nativeCmd(name, pathToExe, arguments) }
 
@@ -124,7 +124,7 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
             )
         }
 
-        toggleOffOnRegex?.let(receiver::toggleOffOnRegex)
+        receiver::toggleOffOnRegex trySet toggleOffOnRegex
 
         toggleOffOn?.let { (off, on) ->
             receiver.toggleOffOn(off, on)
@@ -152,8 +152,8 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
     ) {
 
         fun applyTo(receiver: com.diffplug.gradle.spotless.FormatExtension.ClangFormatConfig) {
-            pathToExe?.let(receiver::pathToExe)
-            style?.let(receiver::style)
+            receiver::pathToExe trySet pathToExe
+            receiver::style trySet style
         }
     }
 
@@ -165,7 +165,7 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
     ) {
 
         fun applyTo(receiver: com.diffplug.gradle.spotless.FormatExtension.EclipseWtpConfig) {
-            configFiles?.toTypedArray()?.let(receiver::configFile)
+            receiver::configFile trySet configFiles
         }
     }
 
@@ -182,11 +182,11 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
     ) {
 
         fun applyTo(receiver: com.diffplug.gradle.spotless.FormatExtension.LicenseHeaderConfig) {
-            name?.let(receiver::named)
-            contentPattern?.let(receiver::onlyIfContentMatches)
-            yearSeparator?.let(receiver::yearSeparator)
-            skipLinesMatching?.let(receiver::skipLinesMatching)
-            updateYearWithLatest?.let(receiver::updateYearWithLatest)
+            receiver::named trySet name
+            receiver::onlyIfContentMatches trySet contentPattern
+            receiver::yearSeparator trySet yearSeparator
+            receiver::skipLinesMatching trySet skipLinesMatching
+            receiver::updateYearWithLatest trySet updateYearWithLatest
         }
     }
 
@@ -205,8 +205,8 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
     ) {
 
         fun applyTo(receiver: com.diffplug.gradle.spotless.FormatExtension.PrettierConfig) {
-            configFile?.let(receiver::configFile)
-            config?.let(receiver::config)
+            receiver::configFile trySet configFile
+            receiver::config trySet config
         }
     }
 

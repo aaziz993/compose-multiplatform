@@ -59,7 +59,7 @@ internal data class SonarTask(
 
         sonarProperties?.let(receiver.properties.get()::putAll)
         setSonarProperties?.act(receiver.properties.get()::clear)?.let(receiver.properties.get()::putAll)
-        useLoggerLevel?.let(receiver::useLoggerLevel)
+        receiver::useLoggerLevel trySet useLoggerLevel
     }
 
     context(Project)

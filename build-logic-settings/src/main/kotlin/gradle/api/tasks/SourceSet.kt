@@ -90,10 +90,10 @@ internal data class SourceSet(
 
     context(Project)
     override fun applyTo(receiver: org.gradle.api.tasks.SourceSet) {
-        compileClasspath?.toTypedArray()?.let(receiver::compiledBy)
-        annotationProcessorPath?.toTypedArray()?.let(project::files)?.let(receiver::setAnnotationProcessorPath)
-        runtimeClasspath?.toTypedArray()?.let(project::files)?.let(receiver::setRuntimeClasspath)
-        compiledBy?.toTypedArray()?.let(receiver::compiledBy)
+        receiver::compiledBy trySet compileClasspath
+        receiver::setAnnotationProcessorPath trySet annotationProcessorPath?.let(project::files)
+        receiver::setRuntimeClasspath trySet runtimeClasspath?.let(project::files)
+        receiver::compiledBy trySet compiledBy
         resources?.applyTo(receiver.resources)
         java?.applyTo(receiver.java)
         allJava?.applyTo(receiver.allJava)

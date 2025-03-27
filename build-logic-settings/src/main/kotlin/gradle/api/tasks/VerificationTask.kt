@@ -7,6 +7,6 @@ internal interface VerificationTask<T : VerificationTask> {
     val ignoreFailures: Boolean?
 
     fun applyTo(receiver: T) {
-        ignoreFailures?.let(receiver::setIgnoreFailures)
+        receiver::setIgnoreFailures trySet ignoreFailures
     }
 }

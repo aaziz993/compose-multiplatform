@@ -34,7 +34,7 @@ internal data class KotlinKarma(
     context(Project)
     fun applyTo(receiver: org.jetbrains.kotlin.gradle.targets.js.testing.karma.KotlinKarma, outputFileName: String) {
         webpackConfig?.applyTo(receiver.webpackConfig, outputFileName)
-        useConfigDirectory?.let(receiver::useConfigDirectory)
+        receiver::useConfigDirectory trySet useConfigDirectory
         useChrome?.ifTrue(receiver::useChrome)
         useChromeHeadless?.ifTrue(receiver::useChromeHeadless)
         useChromeHeadlessNoSandbox?.ifTrue(receiver::useChromeHeadlessNoSandbox)

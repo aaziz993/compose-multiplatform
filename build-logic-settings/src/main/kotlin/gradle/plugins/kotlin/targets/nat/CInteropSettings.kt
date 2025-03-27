@@ -254,9 +254,9 @@ internal interface CInteropSettings<T : org.jetbrains.kotlin.gradle.plugin.CInte
             else -> Unit
         }
 
-        compilerOpts?.let(receiver::compilerOpts)
-        linkerOpts?.let(receiver::linkerOpts)
-        extraOpts?.let(receiver::extraOpts)
+        receiver::compilerOpts trySet compilerOpts
+        receiver::linkerOpts trySet linkerOpts
+        receiver::extraOpts trySet extraOpts
     }
 
     /**
@@ -334,8 +334,8 @@ internal interface CInteropSettings<T : org.jetbrains.kotlin.gradle.plugin.CInte
     ) {
 
         fun applyTo(receiver: org.jetbrains.kotlin.gradle.plugin.CInteropSettings.IncludeDirectories) {
-            allHeaders?.let(receiver::allHeaders)
-            headerFilterOnly?.let(receiver::headerFilterOnly)
+            receiver::allHeaders trySet allHeaders
+            receiver::headerFilterOnly trySet headerFilterOnly
         }
     }
 

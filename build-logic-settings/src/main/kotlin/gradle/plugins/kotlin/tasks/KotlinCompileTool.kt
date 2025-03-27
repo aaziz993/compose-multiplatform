@@ -52,8 +52,8 @@ internal interface KotlinCompileTool<T : org.jetbrains.kotlin.gradle.tasks.Kotli
         super<Task>.applyTo(receiver)
         super<PatternFilterable>.applyTo(receiver)
 
-        sources?.toTypedArray()?.let(receiver::source)
-        setSources?.toTypedArray()?.let(receiver::setSource)
+        receiver::source trySet sources
+        receiver::setSource trySet setSources
         libraries?.toTypedArray()?.let(receiver.libraries::from)
         setLibraries?.let(receiver.libraries::setFrom)
         receiver.destinationDirectory tryAssign destinationDirectory?.let(project.layout.projectDirectory::dir)

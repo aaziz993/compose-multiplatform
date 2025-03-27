@@ -113,8 +113,8 @@ internal abstract class AbstractArchiveTask<T : org.gradle.api.tasks.bundling.Ab
         receiver.archiveVersion tryAssign archiveVersion
         receiver.archiveExtension tryAssign archiveExtension
         receiver.archiveClassifier tryAssign archiveClassifier
-        preserveFileTimestamps?.let(receiver::setPreserveFileTimestamps)
-        reproducibleFileOrder?.let(receiver::setReproducibleFileOrder)
+        receiver::setPreserveFileTimestamps trySet preserveFileTimestamps
+        receiver::setReproducibleFileOrder trySet reproducibleFileOrder
     }
 }
 

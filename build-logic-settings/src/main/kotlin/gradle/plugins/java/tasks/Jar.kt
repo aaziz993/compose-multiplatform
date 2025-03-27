@@ -55,8 +55,8 @@ internal abstract class Jar<T : org.gradle.api.tasks.bundling.Jar> : Zip<T>() {
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
-        metadataCharset?.let(receiver::setMetadataCharset)
-        manifestContentCharset?.let(receiver::setManifestContentCharset)
+        receiver::setMetadataCharset trySet metadataCharset
+        receiver::setManifestContentCharset trySet manifestContentCharset
         manifest?.applyTo(receiver.manifest)
         metaInf?.applyTo(receiver.metaInf)
     }

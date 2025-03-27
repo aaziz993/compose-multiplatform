@@ -23,8 +23,8 @@ internal data class KeepRules(
 
     @Suppress("UnstableApiUsage")
     fun applyTo(receiver: KeepRules) {
-        ignoreFrom?.toTypedArray()?.let(receiver::ignoreFrom)
+        receiver::ignoreFrom trySet ignoreFrom
 
-        ignoreFromAllExternalDependencies?.let(receiver::ignoreFromAllExternalDependencies)
+        receiver::ignoreFromAllExternalDependencies trySet ignoreFromAllExternalDependencies
     }
 }

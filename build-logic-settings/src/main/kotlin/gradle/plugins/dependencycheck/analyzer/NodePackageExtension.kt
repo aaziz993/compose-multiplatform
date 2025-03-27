@@ -19,7 +19,7 @@ internal data class NodePackageExtension(
 ) {
 
     fun applyTo(receiver: NodePackageExtension) {
-        enabled?.let(receiver::setEnabled)
-        skipDevDependencies?.let(receiver::setSkipDevDependencies)
+        receiver::setEnabled trySet enabled
+        receiver::setSkipDevDependencies trySet skipDevDependencies
     }
 }

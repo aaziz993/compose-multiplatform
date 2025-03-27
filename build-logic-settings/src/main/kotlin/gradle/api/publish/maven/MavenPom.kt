@@ -118,7 +118,7 @@ internal data class MavenPom(
 
     context(Project)
     fun applyTo(receiver: MavenPom) {
-        packaging?.let(receiver::setPackaging)
+        receiver::setPackaging trySet packaging
         receiver.name = name ?: project.name
         receiver.description = description ?: project.description
         receiver.url tryAssign (url

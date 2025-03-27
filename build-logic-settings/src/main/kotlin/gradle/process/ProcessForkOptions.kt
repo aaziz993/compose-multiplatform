@@ -36,9 +36,9 @@ internal interface ProcessForkOptions<T : ProcessForkOptions> {
 
     context(Project)
     fun applyTo(receiver: T) {
-        executable?.let(receiver::setExecutable)
-        workingDir?.let(receiver::setWorkingDir)
-        environment?.let(receiver::environment)
-        setEnvironment?.let(receiver::setEnvironment)
+        receiver::setExecutable trySet executable
+        receiver::setWorkingDir trySet workingDir
+        receiver::environment trySet environment
+        receiver::setEnvironment trySet setEnvironment
     }
 }

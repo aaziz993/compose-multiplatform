@@ -59,6 +59,25 @@ public fun <K, V> KMutableProperty0<out MutableMap<K, V>?>.putAll(value: Map<K, 
 public infix fun <K, V> KMutableProperty0<out MutableMap<K, V>?>.tryPutAll(value: Map<K, V>?): Unit? =
     value?.let(::putAll)
 
+public infix fun <T> KFunction1<T, *>.trySet(elements: T?) =
+    elements?.let(::invoke)
+
+public inline infix fun <reified T> KFunction1<Array<T>, *>.trySet(elements: Iterable<T>?) =
+    elements?.toList()?.toTypedArray()?.let(::invoke)
+
+public infix fun <T> KFunction1<Iterable<T>, *>.trySet(elements: Iterable<T>?) =
+    elements?.let(::invoke)
+
+public infix fun <T> KFunction1<T.() -> Unit, *>.tryApply(block: ((T) -> Unit)?) =
+    block?.let { block ->
+        invoke(block::invoke)
+    }
+
+public infix fun <T> KFunction1<Action<T>, *>.tryApply(block: Action<T>?) =
+    block?.let { block ->
+        invoke(block::execute)
+    }
+
 public infix fun <T : FileSystemLocation> FileSystemLocationProperty<T>.tryAssign(file: File?): Unit? =
     file?.let(::assign)
 
@@ -83,25 +102,5 @@ public infix fun <T> Property<T>.tryAssign(value: T?): Unit? = value?.let(::assi
 
 public infix fun <T> Property<T>.tryAssign(value: Provider<out T?>): Unit? =
     value.takeIf(Provider<out T?>::isPresent)?.let(::assign)
-
-public infix fun <T> KFunction1<T, Unit>.apply(block: KFunction1<T, Unit>) {
-    call(block)
-}
-
-public inline infix fun <reified T> KFunction1<Array<T>, *>.trySet(elements: Iterable<T>?) =
-    elements?.toList()?.toTypedArray()?.let(::invoke)
-
-public infix fun <T> KFunction1<Iterable<T>, *>.trySet(elements: Iterable<T>?) =
-    elements?.let(::invoke)
-
-public infix fun <T> KFunction1<T.() -> Unit, *>.tryApply(block: ((T) -> Unit)?) =
-    block?.let { block ->
-        invoke(block::invoke)
-    }
-
-public infix fun <T> KFunction1<Action<T>, *>.tryApply(block: Action<T>?) =
-    block?.let { block ->
-        invoke(block::execute)
-    }
 
 

@@ -67,10 +67,10 @@ internal data class FileCopyDetails(
 
     fun applyTo(receiver: FileCopyDetails) {
         exclude?.ifTrue(receiver::exclude)
-        path?.let(receiver::setPath)
+        receiver::setPath trySet path
         relativePath?.let(RelativePath::toRelativePath)?.let(receiver::setRelativePath)
         permissions?.let(::DefaultFilePermissions)?.let(receiver::setPermissions)
-        duplicatesStrategy?.let(receiver::setDuplicatesStrategy)
-        name?.let(receiver::setName)
+        receiver::setDuplicatesStrategy trySet duplicatesStrategy
+        receiver::setName trySet name
     }
 }

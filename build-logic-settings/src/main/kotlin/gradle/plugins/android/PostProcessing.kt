@@ -37,11 +37,11 @@ internal data class PostProcessing(
         receiver::isObfuscate trySet isObfuscate
         receiver::isOptimizeCode trySet isOptimizeCode
 
-        proguardFiles?.toTypedArray()?.let(receiver::proguardFiles)
-        setProguardFiles?.let(receiver::setProguardFiles)
-        testProguardFiles?.toTypedArray()?.let(receiver::testProguardFiles)
-        testProguardFiles?.let(receiver::setTestProguardFiles)
-        consumerProguardFiles?.toTypedArray()?.let(receiver::consumerProguardFiles)
-        consumerProguardFiles?.let(receiver::setConsumerProguardFiles)
+        receiver::proguardFiles trySet proguardFiles
+        receiver::setProguardFiles trySet setProguardFiles
+        receiver::testProguardFiles trySet testProguardFiles
+        receiver::setTestProguardFiles trySet testProguardFiles
+        receiver::consumerProguardFiles trySet consumerProguardFiles
+        receiver::setConsumerProguardFiles trySet consumerProguardFiles
     }
 }

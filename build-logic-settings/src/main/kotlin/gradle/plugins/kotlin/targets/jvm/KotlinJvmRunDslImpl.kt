@@ -38,10 +38,10 @@ internal interface KotlinJvmRunDsl {
     context(Project)
     fun applyTo(receiver: org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmRunDsl, target: KotlinJvmTarget) {
         receiver.mainClass tryAssign mainClass
-        args?.let(receiver::args)
-        setArgs?.let(receiver::setArgs)
+        receiver::args trySet args
+        receiver::setArgs trySet setArgs
         classpath?.filter { !it.startsWith("$") }?.toTypedArray()?.let(receiver::classpath)
-        setClasspath?.toTypedArray()?.let(project::files)?.let(receiver::setClasspath)
+        receiver::setClasspath trySet setClasspath?.let(project::files)
         classpath?.mapNotNull {
             if (it.startsWith("\$compilation.")) it.substringAfter(".", "")
             else null

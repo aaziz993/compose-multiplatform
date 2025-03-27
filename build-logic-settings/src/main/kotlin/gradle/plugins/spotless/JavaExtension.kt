@@ -63,7 +63,7 @@ internal data class JavaExtension(
             )
         }
 
-        removeUnusedImports?.let(receiver::removeUnusedImports)
+        receiver::removeUnusedImports trySet removeUnusedImports
 
         googleJavaFormat?.let { googleJavaFormat ->
             googleJavaFormat.applyTo(
@@ -154,11 +154,11 @@ internal data class JavaExtension(
     ) {
 
         fun applyTo(receiver: JavaExtension.GoogleJavaFormatConfig) {
-            groupArtifact?.let(receiver::groupArtifact)
-            style?.let(receiver::style)
-            reflowLongStrings?.let(receiver::reflowLongStrings)
-            reorderImports?.let(receiver::reorderImports)
-            formatJavadoc?.let(receiver::formatJavadoc)
+            receiver::groupArtifact trySet groupArtifact
+            receiver::style trySet style
+            receiver::reflowLongStrings trySet reflowLongStrings
+            receiver::reorderImports trySet reorderImports
+            receiver::formatJavadoc trySet formatJavadoc
         }
     }
 
@@ -173,10 +173,10 @@ internal data class JavaExtension(
     ) {
 
         fun applyTo(receiver: JavaExtension.ImportOrderConfig) {
-            wildcardsLast?.let(receiver::wildcardsLast)
-            semanticSort?.let(receiver::semanticSort)
-            treatAsPackage?.let(receiver::treatAsPackage)
-            treatAsClass?.let(receiver::treatAsClass)
+            receiver::wildcardsLast trySet wildcardsLast
+            receiver::semanticSort trySet semanticSort
+            receiver::treatAsPackage trySet treatAsPackage
+            receiver::treatAsClass trySet treatAsClass
         }
     }
 
@@ -188,8 +188,8 @@ internal data class JavaExtension(
     ) {
 
         fun applyTo(receiver: JavaExtension.PalantirJavaFormatConfig) {
-            style?.let(receiver::style)
-            formatJavadoc?.let(receiver::formatJavadoc)
+            receiver::style trySet style
+            receiver::formatJavadoc trySet formatJavadoc
         }
     }
 }

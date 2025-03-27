@@ -75,7 +75,7 @@ internal data class KotlinSourceSet(
         resources?.applyTo(receiver.resources)
         languageSettings?.applyTo(receiver.languageSettings)
         dependsOn?.flatMap(project.kotlin.sourceSets::getByNameOrAll)?.forEach(receiver::dependsOn)
-        customSourceFilesExtensions?.let(receiver::addCustomSourceFilesExtensions)
+        receiver::addCustomSourceFilesExtensions trySet customSourceFilesExtensions
     }
 
     context(Project)

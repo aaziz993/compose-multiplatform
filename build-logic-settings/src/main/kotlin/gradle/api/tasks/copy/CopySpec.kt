@@ -135,9 +135,9 @@ internal interface CopySpec<T : org.gradle.api.file.CopySpec> : CopySourceSpec<T
         super<CopyProcessingSpec>.applyTo(receiver)
         super<PatternFilterable>.applyTo(receiver)
 
-        isCaseSensitive?.let(receiver::setCaseSensitive)
-        includeEmptyDirs?.let(receiver::setIncludeEmptyDirs)
-        duplicatesStrategy?.let(receiver::setDuplicatesStrategy)
+        receiver::setCaseSensitive trySet isCaseSensitive
+        receiver::setIncludeEmptyDirs trySet includeEmptyDirs
+        receiver::setDuplicatesStrategy trySet duplicatesStrategy
 
         filesMatching?.let { filesMatching ->
             receiver.filesMatching(filesMatching.patterns, filesMatching.fileCopyDetails::applyTo)
@@ -153,7 +153,7 @@ internal interface CopySpec<T : org.gradle.api.file.CopySpec> : CopySourceSpec<T
             }
         }
 
-        filteringCharset?.let(receiver::setFilteringCharset)
+        receiver::setFilteringCharset trySet filteringCharset
     }
 }
 

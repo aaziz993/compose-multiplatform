@@ -58,6 +58,6 @@ internal interface UrlArtifactRepository<T : UrlArtifactRepository> {
             if (url.isUrl) url else dir(url)
         }?.let(receiver::setUrl)
 
-        allowInsecureProtocol?.let(receiver::setAllowInsecureProtocol)
+        receiver::setAllowInsecureProtocol trySet allowInsecureProtocol
     }
 }

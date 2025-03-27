@@ -326,18 +326,18 @@ internal interface Task<T : org.gradle.api.Task> : ProjectNamed<T> {
 
     context(Project)
     override fun applyTo(receiver: T) {
-        dependsOn?.let(receiver::setDependsOn)
+        receiver::setDependsOn trySet dependsOn
         onlyIf?.let { onlyIf -> receiver.onlyIf { onlyIf } }
-        doNotTrackState?.let(receiver::doNotTrackState)
-        notCompatibleWithConfigurationCache?.let(receiver::notCompatibleWithConfigurationCache)
-        didWork?.let(receiver::setDidWork)
-        enabled?.let(receiver::setEnabled)
+        receiver::doNotTrackState trySet doNotTrackState
+        receiver::notCompatibleWithConfigurationCache trySet notCompatibleWithConfigurationCache
+        receiver::setDidWork trySet didWork
+        receiver::setEnabled trySet enabled
         properties?.forEach { (name, value) -> receiver.setProperty(name, value) }
-        description?.let(receiver::setDescription)
-        group?.let(receiver::setGroup)
-        mustRunAfter?.let(receiver::setMustRunAfter)
-        finalizedBy?.let(receiver::setFinalizedBy)
-        shouldRunAfter?.let(receiver::setShouldRunAfter)
+        receiver::setDescription trySet description
+        receiver::setGroup trySet group
+        receiver::setMustRunAfter trySet mustRunAfter
+        receiver::setFinalizedBy trySet finalizedBy
+        receiver::setShouldRunAfter trySet shouldRunAfter
     }
 
     context(Project)

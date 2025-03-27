@@ -25,7 +25,7 @@ internal data class Manifest(
             ),
         )
 
-        attributes?.let(receiver::attributes)
+        receiver::attributes trySet attributes
         setAttributes?.act(receiver.attributes::clear)?.let(receiver.attributes::putAll)
 
         sections?.forEach { (key, value) ->

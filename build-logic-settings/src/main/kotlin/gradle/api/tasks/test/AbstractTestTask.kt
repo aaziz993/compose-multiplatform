@@ -56,9 +56,9 @@ internal abstract class AbstractTestTask<T : org.gradle.api.tasks.testing.Abstra
         super<VerificationTask>.applyTo(receiver)
 
         receiver.binaryResultsDirectory tryAssign binaryResultsDirectory?.let(project.layout.projectDirectory::dir)
-        ignoreFailures?.let(receiver::setIgnoreFailures)
+        receiver::setIgnoreFailures trySet ignoreFailures
         testLogging?.applyTo(receiver.testLogging)
-        testNameIncludePatterns?.let(receiver::setTestNameIncludePatterns)
+        receiver::setTestNameIncludePatterns trySet testNameIncludePatterns
         filter?.applyTo(receiver.filter)
     }
 }

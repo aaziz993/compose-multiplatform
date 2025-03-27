@@ -31,10 +31,10 @@ internal data class OssIndexExtension(
 ) {
 
     fun applyTo(receiver: OssIndexExtension) {
-        enabled?.let(receiver::setEnabled)
-        username?.let(receiver::setUsername)
-        password?.let(receiver::setPassword)
-        url?.let(receiver::setUrl)
-        warnOnlyOnRemoteErrors?.let(receiver::setWarnOnlyOnRemoteErrors)
+        receiver::setEnabled trySet enabled
+        receiver::setUsername trySet username
+        receiver::setPassword trySet password
+        receiver::setUrl trySet url
+        receiver::setWarnOnlyOnRemoteErrors trySet warnOnlyOnRemoteErrors
     }
 }

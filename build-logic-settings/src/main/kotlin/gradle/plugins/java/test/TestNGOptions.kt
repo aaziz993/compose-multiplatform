@@ -141,21 +141,21 @@ internal data class TestNGOptions(
     @Suppress("UnstableApiUsage")
     override fun applyTo(receiver: TestNGOptions) {
         outputDirectory?.let(project::file)?.let(receiver::setOutputDirectory)
-        includeGroups?.toTypedArray()?.let(receiver::includeGroups)
-        setIncludeGroups?.let(receiver::setIncludeGroups)
-        excludeGroups?.toTypedArray()?.let(receiver::excludeGroups)
-        setExcludeGroups?.let(receiver::setExcludeGroups)
-        configFailurePolicy?.let(receiver::setConfigFailurePolicy)
-        listeners?.let(receiver::setListeners)
-        parallel?.let(receiver::setParallel)
-        threadCount?.let(receiver::setThreadCount)
+        receiver::includeGroups trySet includeGroups
+        receiver::setIncludeGroups trySet setIncludeGroups
+        receiver::excludeGroups trySet excludeGroups
+        receiver::setExcludeGroups trySet setExcludeGroups
+        receiver::setConfigFailurePolicy trySet configFailurePolicy
+        receiver::setListeners trySet listeners
+        receiver::setParallel trySet parallel
+        receiver::setThreadCount trySet threadCount
         receiver.suiteThreadPoolSize tryAssign suiteThreadPoolSize
-        useDefaultListeners?.let(receiver::setUseDefaultListeners)
-        threadPoolFactoryClass?.let(receiver::setThreadPoolFactoryClass)
-        suiteName?.let(receiver::setSuiteName)
-        testName?.let(receiver::setTestName)
+        receiver::setUseDefaultListeners trySet useDefaultListeners
+        receiver::setThreadPoolFactoryClass trySet threadPoolFactoryClass
+        receiver::setSuiteName trySet suiteName
+        receiver::setTestName trySet testName
         suiteXmlFiles?.map(project::file)?.let(receiver::setSuiteXmlFiles)
-        preserveOrder?.let(receiver::setPreserveOrder)
-        groupByInstances?.let(receiver::setGroupByInstances)
+        receiver::setPreserveOrder trySet preserveOrder
+        receiver::setGroupByInstances trySet groupByInstances
     }
 }

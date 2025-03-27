@@ -43,13 +43,13 @@ internal data class NodeAuditExtension(
 ) {
 
     fun applyTo(receiver: NodeAuditExtension) {
-        enabled?.let(receiver::setEnabled)
-        useCache?.let(receiver::setUseCache)
-        skipDevDependencies?.let(receiver::setSkipDevDependencies)
-        yarnEnabled?.let(receiver::setYarnEnabled)
-        yarnPath?.let(receiver::setYarnPath)
-        pnpmEnabled?.let(receiver::setPnpmEnabled)
-        pnpmPath?.let(receiver::setPnpmPath)
-        url?.let(receiver::setUrl)
+        receiver::setEnabled trySet enabled
+        receiver::setUseCache trySet useCache
+        receiver::setSkipDevDependencies trySet skipDevDependencies
+        receiver::setYarnEnabled trySet yarnEnabled
+        receiver::setYarnPath trySet yarnPath
+        receiver::setPnpmEnabled trySet pnpmEnabled
+        receiver::setPnpmPath trySet pnpmPath
+        receiver::setUrl trySet url
     }
 }

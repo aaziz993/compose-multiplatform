@@ -10,7 +10,7 @@ internal data class SlackExtension(
 ) {
 
     fun applyTo(receiver: SlackExtension) {
-        enabled?.let(receiver::setEnabled)
-        webhookUrl?.let(receiver::setWebhookUrl)
+        receiver::setEnabled trySet enabled
+        receiver::setWebhookUrl trySet webhookUrl
     }
 }

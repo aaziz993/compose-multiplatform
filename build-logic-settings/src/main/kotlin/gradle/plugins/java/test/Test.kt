@@ -242,7 +242,7 @@ internal abstract class Test<T : org.gradle.api.tasks.testing.Test>
 
         receiver.dryRun tryAssign dryRun
         modularity?.applyTo(receiver.modularity)
-        testClassesDirs?.toTypedArray()?.let(project::files)?.let(receiver::setTestClassesDirs)
+        receiver::setTestClassesDirs trySet testClassesDirs?.let(project::files)
         useJUnit?.ifTrue(receiver::useJUnit)
 
         useJUnitDsl?.let { useJUnitDsl ->
@@ -267,8 +267,8 @@ internal abstract class Test<T : org.gradle.api.tasks.testing.Test>
             }
         }
 
-        scanForTestClasses?.let(receiver::setScanForTestClasses)
-        forkEvery?.let(receiver::setForkEvery)
+        receiver::setScanForTestClasses trySet scanForTestClasses
+        receiver::setForkEvery trySet forkEvery
         receiver.maxParallelForks = maxParallelForks
             ?: (Runtime.getRuntime().availableProcessors() / 2).coerceAtLeast(1)
 

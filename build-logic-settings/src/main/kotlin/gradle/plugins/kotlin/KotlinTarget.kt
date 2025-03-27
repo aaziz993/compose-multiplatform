@@ -35,7 +35,7 @@ internal interface KotlinTarget<T : org.jetbrains.kotlin.gradle.plugin.KotlinTar
 
     context(Project)
     override fun applyTo(receiver: T) {
-        withSourcesJar?.let(receiver::withSourcesJar)
+        receiver::withSourcesJar trySet withSourcesJar
 
         mavenPublication?.let { mavenPublication ->
             receiver.mavenPublication {

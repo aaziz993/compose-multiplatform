@@ -78,8 +78,8 @@ internal data class DokkaExternalDocumentationLinkSpec(
 
     context(Project)
     override fun applyTo(receiver: org.jetbrains.dokka.gradle.engine.parameters.DokkaExternalDocumentationLinkSpec) {
-        url?.let(receiver::url)
-        packageListUrl?.let(receiver::packageListUrl)
+        receiver::url trySet url
+        receiver::packageListUrl trySet packageListUrl
         receiver.enabled tryAssign enabled
     }
 }

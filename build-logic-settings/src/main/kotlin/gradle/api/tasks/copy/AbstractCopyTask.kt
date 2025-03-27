@@ -43,7 +43,7 @@ internal abstract class AbstractCopyTask<T : org.gradle.api.tasks.AbstractCopyTa
 
         super<CopySpec>.applyTo(receiver)
 
-        caseSensitive?.let(receiver::setCaseSensitive)
+        receiver::setCaseSensitive trySet caseSensitive
     }
 }
 

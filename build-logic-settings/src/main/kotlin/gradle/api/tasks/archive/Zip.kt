@@ -51,9 +51,9 @@ internal abstract class Zip<T : org.gradle.api.tasks.bundling.Zip> : AbstractArc
         super.applyTo(receiver)
 
         receiver.filePermissions
-        entryCompression?.let(receiver::setEntryCompression)
-        allowZip64?.let(receiver::setZip64)
-        metadataCharset?.let(receiver::setMetadataCharset)
+        receiver::setEntryCompression trySet entryCompression
+        receiver::setZip64 trySet allowZip64
+        receiver::setMetadataCharset trySet metadataCharset
     }
 }
 

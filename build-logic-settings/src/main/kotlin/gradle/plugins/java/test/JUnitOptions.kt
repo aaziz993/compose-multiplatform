@@ -24,9 +24,9 @@ internal data class JUnitOptions(
 
     context(Project)
     override fun applyTo(receiver: JUnitOptions) {
-        includeCategories?.toTypedArray()?.let(receiver::includeCategories)
-        setIncludeCategories?.let(receiver::setIncludeCategories)
-        excludeCategories?.toTypedArray()?.let(receiver::excludeCategories)
-        setExcludeCategories?.let(receiver::setExcludeCategories)
+        receiver::includeCategories trySet includeCategories
+        receiver::setIncludeCategories trySet setIncludeCategories
+        receiver::excludeCategories trySet excludeCategories
+        receiver::setExcludeCategories trySet setExcludeCategories
     }
 }

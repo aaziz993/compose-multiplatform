@@ -48,15 +48,15 @@ internal data class NvdExtension(
 ) {
 
     fun applyTo(receiver: NvdExtension) {
-        apiKey?.let(receiver::setApiKey)
-        delay?.let(receiver::setDelay)
-        resultsPerPage?.let(receiver::setResultsPerPage)
-        maxRetryCount?.let(receiver::setMaxRetryCount)
-        datafeedUrl?.let(receiver::setDatafeedUrl)
-        datafeedUser?.let(receiver::setDatafeedUser)
-        datafeedPassword?.let(receiver::setDatafeedPassword)
-        datafeedBearerToken?.let(receiver::setDatafeedBearerToken)
-        validForHours?.let(receiver::setValidForHours)
-        endpoint?.let(receiver::setEndpoint)
+        receiver::setApiKey trySet apiKey
+        receiver::setDelay trySet delay
+        receiver::setResultsPerPage trySet resultsPerPage
+        receiver::setMaxRetryCount trySet maxRetryCount
+        receiver::setDatafeedUrl trySet datafeedUrl
+        receiver::setDatafeedUser trySet datafeedUser
+        receiver::setDatafeedPassword trySet datafeedPassword
+        receiver::setDatafeedBearerToken trySet datafeedBearerToken
+        receiver::setValidForHours trySet validForHours
+        receiver::setEndpoint trySet endpoint
     }
 }

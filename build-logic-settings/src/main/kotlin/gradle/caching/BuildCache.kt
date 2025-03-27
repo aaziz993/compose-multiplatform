@@ -25,8 +25,8 @@ internal interface BuildCache<T : org.gradle.caching.configuration.BuildCache> {
 
     context(Settings)
     fun applyTo(receiver: T) {
-        enabled?.let(receiver::setEnabled)
-        push?.let(receiver::setPush)
+        receiver::setEnabled trySet enabled
+        receiver::setPush trySet push
     }
 }
 

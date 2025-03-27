@@ -55,7 +55,7 @@ internal interface ContentFilterable<T : ContentFilterable> {
 
     context(Project)
     fun applyTo(receiver: T) {
-        expand?.let(receiver::expand)
+        receiver::expand trySet expand
         expandDetails?.let { expandDetails ->
             receiver.expand(expandDetails.properties) {
                 expandDetails.expandDetails.applyTo(this)

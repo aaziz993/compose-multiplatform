@@ -25,8 +25,8 @@ internal abstract class BaseGroovyExtension<T : BaseGroovyExtension> : FormatExt
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
-        importOrder?.toTypedArray()?.let(receiver::importOrder)
-        importOrderFile?.let(receiver::importOrderFile)
+        receiver::importOrder trySet importOrder
+        receiver::importOrderFile trySet importOrderFile
         removeSemicolons?.ifTrue(receiver::removeSemicolons)
 
         greclipse?.let { greclipse ->
@@ -45,8 +45,8 @@ internal abstract class BaseGroovyExtension<T : BaseGroovyExtension> : FormatExt
     ) {
 
         fun applyTo(receiver: BaseGroovyExtension.GrEclipseConfig) {
-            configFiles?.toTypedArray()?.let(receiver::configFile)
-            withP2Mirrors?.let(receiver::withP2Mirrors)
+            receiver::configFile trySet configFiles
+            receiver::withP2Mirrors trySet withP2Mirrors
         }
     }
 }

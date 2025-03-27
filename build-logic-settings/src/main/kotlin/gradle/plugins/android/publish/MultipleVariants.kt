@@ -27,7 +27,7 @@ internal interface MultipleVariants<T : MultipleVariants> : PublishingOptions<T>
     override fun applyTo(receiver: T) {
         allVariants?.ifTrue(receiver::allVariants)
 
-        includeBuildTypeValues?.toTypedArray()?.let(receiver::includeBuildTypeValues)
+        receiver::includeBuildTypeValues trySet includeBuildTypeValues
 
         includeFlavorDimensionAndValues?.forEach { (dimension, values) ->
             receiver.includeFlavorDimensionAndValues(dimension, * values.toTypedArray())

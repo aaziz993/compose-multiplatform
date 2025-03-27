@@ -37,6 +37,6 @@ internal data class IvyPatternRepositoryLayout(
     override fun applyTo(receiver: IvyPatternRepositoryLayout) {
         artifacts?.forEach(receiver::artifact)
         ivys?.forEach(receiver::ivy)
-        m2compatible?.let(receiver::setM2compatible)
+        receiver::setM2compatible trySet m2compatible
     }
 }

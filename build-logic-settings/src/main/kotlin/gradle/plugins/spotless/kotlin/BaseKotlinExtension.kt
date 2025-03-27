@@ -60,7 +60,7 @@ internal abstract class BaseKotlinExtension<T : BaseKotlinExtension> : FormatExt
     ) {
 
         fun applyTo(receiver: BaseKotlinExtension.DiktatConfig) {
-            configFile?.let(receiver::configFile)
+            receiver::configFile trySet configFile
         }
     }
 
@@ -89,10 +89,10 @@ internal abstract class BaseKotlinExtension<T : BaseKotlinExtension> : FormatExt
     ) {
 
         fun applyTo(receiver: KtfmtStep.KtfmtFormattingOptions) {
-            maxWidth?.let(receiver::setMaxWidth)
-            blockIndent?.let(receiver::setBlockIndent)
-            continuationIndent?.let(receiver::setContinuationIndent)
-            removeUnusedImport?.let(receiver::setRemoveUnusedImport)
+            receiver::setMaxWidth trySet maxWidth
+            receiver::setBlockIndent trySet blockIndent
+            receiver::setContinuationIndent trySet continuationIndent
+            receiver::setRemoveUnusedImport trySet removeUnusedImport
         }
     }
 
@@ -105,9 +105,9 @@ internal abstract class BaseKotlinExtension<T : BaseKotlinExtension> : FormatExt
     ) {
 
         fun applyTo(receiver: BaseKotlinExtension.KtlintConfig) {
-            editorConfigPath?.let(receiver::setEditorConfigPath)
-            editorConfigOverride?.let(receiver::editorConfigOverride)
-            customRuleSets?.let(receiver::customRuleSets)
+            receiver::setEditorConfigPath trySet editorConfigPath
+            receiver::editorConfigOverride trySet editorConfigOverride
+            receiver::customRuleSets trySet customRuleSets
         }
     }
 }

@@ -24,8 +24,8 @@ internal data class HttpBuildCache(
 
         receiver.setUrl(url)
         credentials?.applyTo(receiver.credentials)
-        allowUntrustedServer?.let(receiver::setAllowUntrustedServer)
-        allowInsecureProtocol?.let(receiver::setAllowInsecureProtocol)
-        useExpectContinue?.let(receiver::setUseExpectContinue)
+        receiver::setAllowUntrustedServer trySet allowUntrustedServer
+        receiver::setAllowInsecureProtocol trySet allowInsecureProtocol
+        receiver::setUseExpectContinue trySet useExpectContinue
     }
 }

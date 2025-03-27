@@ -119,7 +119,7 @@ internal interface RepositoryContentDescriptor<T : org.gradle.api.artifacts.repo
             receiver.excludeVersionByRegex(group, moduleName, version)
         }
 
-        notForConfigurations?.toTypedArray()?.let(receiver::notForConfigurations)
+        receiver::notForConfigurations trySet notForConfigurations
     }
 }
 

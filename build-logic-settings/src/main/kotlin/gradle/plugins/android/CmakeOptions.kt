@@ -121,8 +121,8 @@ internal data class CmakeOptions(
 
     context(Project)
     fun applyTo(receiver: Cmake) {
-        path?.let(receiver::path)
-        buildStagingDirectory?.let(receiver::buildStagingDirectory)
+        receiver::path trySet path
+        receiver::buildStagingDirectory trySet buildStagingDirectory
         receiver::version trySet version
     }
 }

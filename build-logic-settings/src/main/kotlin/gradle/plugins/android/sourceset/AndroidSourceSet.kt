@@ -64,7 +64,7 @@ internal data class AndroidSourceSet(
         jniLibs?.applyTo(receiver.jniLibs)
         shaders?.applyTo(receiver.shaders)
         mlModels?.applyTo(receiver.mlModels)
-        root?.let(receiver::setRoot)
+        receiver::setRoot trySet root
     }
 }
 

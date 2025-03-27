@@ -24,7 +24,7 @@ internal interface PasswordCredentials<T : PasswordCredentials> : Credentials<T>
     val password: String?
 
     override fun applyTo(receiver: T) {
-        username?.let(receiver::setUsername)
-        password?.let(receiver::setPassword)
+        receiver::setUsername trySet username
+        receiver::setPassword trySet password
     }
 }

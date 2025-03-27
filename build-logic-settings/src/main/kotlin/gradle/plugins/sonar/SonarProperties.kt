@@ -28,7 +28,7 @@ internal data class SonarProperties(
 
     context(Project)
     fun applyTo(receiver: SonarProperties) {
-        properties?.let(receiver::properties)
+        receiver::properties trySet properties
         setProperties?.act(receiver.properties::clear)?.let(receiver::properties)
         receiver.property("sonar.projectVersion", project.version)
     }

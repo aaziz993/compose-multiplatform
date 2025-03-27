@@ -23,8 +23,8 @@ internal data class AdditionalCpe(
 
     context(Project)
     override fun applyTo(receiver: org.owasp.dependencycheck.gradle.extension.AdditionalCpe) {
-        description?.let(receiver::setDescription)
-        cpe?.let(receiver::setCpe)
+        receiver::setDescription trySet description
+        receiver::setCpe trySet cpe
     }
 }
 

@@ -20,6 +20,7 @@ import kotlinx.rpc.RpcExtension
 import kotlinx.validation.ApiValidationExtension
 import kotlinx.validation.KotlinApiBuildTask
 import org.gradle.api.Project
+import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.Directory
 import org.gradle.api.initialization.Settings
 import org.gradle.api.internal.GradleInternal
@@ -58,6 +59,9 @@ import org.jetbrains.kotlin.powerassert.gradle.PowerAssertGradleExtension
 import org.owasp.dependencycheck.gradle.extension.DependencyCheckExtension
 import org.sonarqube.gradle.SonarExtension
 import ru.vyarus.gradle.plugin.animalsniffer.AnimalSnifferExtension
+
+public fun Project.files(elements: Iterable<String>): ConfigurableFileCollection =
+    project.files(*elements.toList().toTypedArray())
 
 internal const val PROJECT_PROPERTIES_EXT = "project.properties.ext"
 
