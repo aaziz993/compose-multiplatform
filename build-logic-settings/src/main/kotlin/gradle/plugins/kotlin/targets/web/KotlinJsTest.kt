@@ -49,7 +49,7 @@ internal data class KotlinJsTest(
     override fun applyTo(receiver: KotlinJsTest) {
         super.applyTo(receiver)
 
-        environment?.let(receiver.environment::putAll)
+        receiver.environment tryPutAll environment
         receiver.inputFileProperty tryAssign inputFileProperty?.let(project::file)
         receiver::debug trySet debug
         receiver.nodeJsArgs tryAddAll nodeJsArgs

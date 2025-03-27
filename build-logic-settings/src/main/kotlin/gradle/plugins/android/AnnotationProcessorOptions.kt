@@ -2,6 +2,9 @@ package gradle.plugins.android
 
 import com.android.build.api.dsl.AnnotationProcessorOptions
 import gradle.act
+import gradle.api.tryAddAll
+import gradle.api.tryPutAll
+import gradle.api.trySet
 import gradle.process.CommandLineArgumentProvider
 import kotlinx.serialization.Serializable
 
@@ -47,8 +50,8 @@ internal data class AnnotationProcessorOptions(
     fun applyTo(receiver: AnnotationProcessorOptions) {
         receiver.classNames tryAddAll classNames
         receiver.classNames trySet setClassNames
-        arguments?.let(receiver.arguments::putAll)
-        setArguments?.act(receiver.arguments::clear)?.let(receiver.arguments::putAll)
+        receiver.arguments tryPutAll arguments
+        receiver.arguments trySet setArguments
         receiver.compilerArgumentProviders tryAddAll compilerArgumentProviders
         receiver.compilerArgumentProviders trySet setCompilerArgumentProviders
     }

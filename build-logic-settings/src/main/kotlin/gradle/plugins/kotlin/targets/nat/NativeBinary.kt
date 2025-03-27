@@ -69,7 +69,7 @@ internal sealed class NativeBinary<T : org.jetbrains.kotlin.gradle.plugin.mpp.Na
         receiver::optimized trySet optimized
         receiver::linkerOpts trySet linkerOpts
         setLinkerOpts?.act(receiver.linkerOpts::clear)?.let(receiver::linkerOpts)
-        binaryOptions?.let(receiver.binaryOptions::putAll)
+        receiver.binaryOptions tryPutAll binaryOptions
         receiver::binaryOptions trySet setBinaryOptions?.toMutableMap()
 
         receiver::freeCompilerArgs trySet freeCompilerArgs?.let { freeCompilerArgs ->
@@ -125,7 +125,7 @@ internal abstract class Executable : AbstractExecutable<org.jetbrains.kotlin.gra
     override fun applyTo(receiver: org.jetbrains.kotlin.gradle.plugin.mpp.Executable) {
         super.applyTo(receiver)
 
-        receiver::entryPoint trySet entryPoint
+         entryPoint?.let(receiver::entryPoint)
     }
 }
 

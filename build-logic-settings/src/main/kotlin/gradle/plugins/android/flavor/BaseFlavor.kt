@@ -8,6 +8,7 @@ import gradle.accessors.settings
 import gradle.accessors.version
 import gradle.accessors.versions
 import gradle.act
+import gradle.api.tryPutAll
 import gradle.api.trySet
 import gradle.plugins.android.MissingDimensionStrategy
 import gradle.plugins.android.VariantDimension
@@ -214,8 +215,8 @@ internal interface BaseFlavor<T : BaseFlavor> : VariantDimension<T> {
         receiver::renderscriptSupportModeBlasEnabled trySet renderscriptSupportModeBlasEnabled
         receiver::renderscriptNdkModeEnabled trySet renderscriptNdkModeEnabled
         receiver::testInstrumentationRunner trySet testInstrumentationRunner
-        testInstrumentationRunnerArguments?.let(receiver.testInstrumentationRunnerArguments::putAll)
-        setTestInstrumentationRunnerArguments?.act(receiver.testInstrumentationRunnerArguments::clear)?.let(receiver.testInstrumentationRunnerArguments::putAll)
+        receiver.testInstrumentationRunnerArguments tryPutAll testInstrumentationRunnerArguments
+        receiver.testInstrumentationRunnerArguments trySet setTestInstrumentationRunnerArguments
         receiver::testHandleProfiling trySet testHandleProfiling
         receiver::testFunctionalTest trySet testFunctionalTest
         vectorDrawables?.let { vectorDrawables ->

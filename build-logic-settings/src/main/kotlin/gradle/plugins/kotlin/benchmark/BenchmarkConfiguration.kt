@@ -3,6 +3,7 @@ package gradle.plugins.kotlin.benchmark
 import gradle.api.NamedKeyTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.tryAddAll
+import gradle.api.tryPutAll
 import gradle.api.trySet
 import gradle.collection.SerializableOptionalAnyList
 import gradle.collection.SerializableOptionalAnyMap
@@ -31,12 +32,8 @@ internal data class BenchmarkConfiguration(
 
     context(Project)
     override fun applyTo(receiver: kotlinx.benchmark.gradle.BenchmarkConfiguration) {
-        advanced?.let(receiver.advanced::putAll)
-
-        setAdvanced?.let { setAdvanced ->
-            receiver.advanced = setAdvanced.toMutableMap()
-        }
-
+        receiver.advanced tryPutAll advanced
+        receiver.advanced trySet setAdvanced?.toMutableMap()
         receiver.excludes tryAddAll excludes
         receiver::excludes trySet setExcludes?.toMutableList()
         receiver.includes tryAddAll includes
@@ -46,7 +43,7 @@ internal data class BenchmarkConfiguration(
         receiver::iterations trySet iterations
         receiver::mode trySet mode
         receiver::outputTimeUnit trySet outputTimeUnit
-        params?.mapValues { (_, value) -> value.toMutableList() }?.let(receiver.params::putAll)
+        receiver.params tryPutAll  params?.mapValues { (_, value) -> value.toMutableList() }
         receiver::params trySet setParams?.mapValues { (_, value) -> value.toMutableList() }?.toMutableMap()
         receiver::reportFormat trySet reportFormat
         receiver::warmups trySet warmups

@@ -1,6 +1,7 @@
 package gradle.plugins.kotlin.targets.web.yarn
 
 import gradle.act
+import gradle.api.tryAddAll
 import kotlinx.serialization.Serializable
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnResolution
 

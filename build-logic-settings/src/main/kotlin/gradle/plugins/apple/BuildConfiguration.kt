@@ -3,6 +3,7 @@ package gradle.plugins.apple
 import gradle.act
 import gradle.api.NamedKeyTransformingSerializer
 import gradle.api.ProjectNamed
+import gradle.api.tryPutAll
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
@@ -19,8 +20,8 @@ internal data class BuildConfiguration(
     context(Project)
     override fun applyTo(receiver: org.jetbrains.gradle.apple.BuildConfiguration) {
         receiver::fatFrameworks trySet fatFrameworks
-        properties?.let(receiver.properties::putAll)
-        setProperties?.act(receiver.properties::clear)?.let(receiver.properties::putAll)
+        receiver.properties tryPutAll properties
+        receiver.properties trySet setProperties
     }
 }
 

@@ -2,6 +2,7 @@ package gradle.plugins.android
 
 import com.android.build.api.dsl.ExternalNativeBuildFlags
 import gradle.act
+import gradle.api.tryPutAll
 import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
 
@@ -69,7 +70,7 @@ internal data class ExternalNativeBuildFlags(
     fun applyTo(receiver: ExternalNativeBuildFlags) {
         ndkBuild?.applyTo(receiver.ndkBuild)
         cmake?.applyTo(receiver.cmake)
-        experimentalProperties?.let(receiver.experimentalProperties::putAll)
-        setExperimentalProperties?.act(receiver.experimentalProperties::clear)?.let(receiver.experimentalProperties::putAll)
+        receiver.experimentalProperties tryPutAll experimentalProperties
+        receiver.experimentalProperties trySet setExperimentalProperties
     }
 }

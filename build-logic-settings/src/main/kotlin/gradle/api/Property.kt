@@ -24,6 +24,12 @@ public infix fun <E> MutableCollection<E>.tryAddAll(value: Iterable<E>?): Boolea
 public infix fun <E> MutableCollection<E>.trySet(value: Iterable<E>?): Boolean? =
     tryAddAll(value?.act(::clear))
 
+public infix fun <K, V> MutableMap<K, V>.tryPutAll(value: Map<K, V>?): Unit? =
+    value?.let(::putAll)
+
+public infix fun <K, V> MutableMap<K, V>.trySet(value: Map<K, V>?): Unit? =
+    tryPutAll(value?.act(::clear))
+
 public infix fun <T> KMutableProperty0<T>.trySet(value: T?): Unit? = value?.let(::set)
 
 public fun <T : Any, O : Any> KMutableProperty0<T?>.trySet(

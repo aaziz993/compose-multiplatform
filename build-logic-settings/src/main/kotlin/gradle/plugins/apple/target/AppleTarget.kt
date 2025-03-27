@@ -3,6 +3,7 @@ package gradle.plugins.apple.target
 import gradle.act
 import gradle.api.ProjectNamed
 import gradle.api.applyTo
+import gradle.api.tryPutAll
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.apple.AppleBuildSettings
@@ -51,8 +52,8 @@ internal interface AppleTarget<T : org.jetbrains.gradle.apple.targets.AppleTarge
         receiver::embedFrameworks trySet embedFrameworks
         receiver::ipad trySet ipad
         receiver::iphone trySet iphone
-        productInfo?.let(receiver.productInfo::putAll)
-        setProductInfo?.act(receiver.productInfo::clear)?.let(receiver.productInfo::putAll)
+        receiver.productInfo tryPutAll productInfo
+        receiver.productInfo trySet setProductInfo
         receiver::productModuleName trySet productModuleName
         receiver::productName trySet productName
     }

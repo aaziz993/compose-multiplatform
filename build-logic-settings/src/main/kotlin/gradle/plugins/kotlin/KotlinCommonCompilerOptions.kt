@@ -5,6 +5,7 @@ import gradle.accessors.settings
 import gradle.accessors.version
 import gradle.accessors.versions
 import gradle.act
+import gradle.api.tryAddAll
 import gradle.api.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

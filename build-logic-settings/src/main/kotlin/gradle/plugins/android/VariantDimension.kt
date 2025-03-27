@@ -4,6 +4,7 @@ import com.android.build.api.dsl.LibraryExtension
 import com.android.build.api.dsl.VariantDimension
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import gradle.accessors.android
+import gradle.api.tryPutAll
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.android.compile.JavaCompileOptions
@@ -136,7 +137,7 @@ internal interface VariantDimension<T : VariantDimension> {
 
         testProguardFiles?.toTypedArray()?.let(receiver::testProguardFiles)
 
-        manifestPlaceholders?.let(receiver.manifestPlaceholders::putAll)
+        receiver.manifestPlaceholders tryPutAll manifestPlaceholders
 
         javaCompileOptions?.let { javaCompileOptions ->
             receiver.javaCompileOptions(javaCompileOptions::applyTo)
