@@ -55,7 +55,7 @@ kotlin:
             useMocha:
               timeout: 600s
 
-  hierarchy:
+  applyDefaultHierarchyTemplate:
     common:
       groups:
         - jvmCommon:
