@@ -1,5 +1,6 @@
 package gradle.plugins.dokka
 
+import gradle.accessors.dokka
 import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
@@ -28,7 +29,7 @@ internal class ClassLoader : WorkerIsolation() {
 
     context(Project)
     override fun toWorkerIsolation(): org.jetbrains.dokka.gradle.workers.WorkerIsolation =
-        dokka.ClassLoaderIsolation()
+        project.dokka.ClassLoaderIsolation()
 }
 
 /**
@@ -67,7 +68,7 @@ internal data class Process(
 
     context(Project)
     override fun toWorkerIsolation(): org.jetbrains.dokka.gradle.workers.WorkerIsolation =
-        dokka.ProcessIsolation {
+        project.dokka.ProcessIsolation {
             debug tryAssign this@Process.debug
             enableAssertions tryAssign this@Process.enableAssertions
             minHeapSize tryAssign this@Process.minHeapSize
