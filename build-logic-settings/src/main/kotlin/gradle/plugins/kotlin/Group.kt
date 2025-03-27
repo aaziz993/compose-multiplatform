@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 internal data class Group(
     override val name: String,
-    override val groups: Set<Group>? = null,
+    override val groups: Set<@Serializable(with = GroupKeyTransformingSerializer::class) Group>? = null,
     override val common: KotlinHierarchyBuilderImpl? = null,
     override val withCompilations: Set<String>? = null,
     override val excludeCompilations: Set<String>? = null,

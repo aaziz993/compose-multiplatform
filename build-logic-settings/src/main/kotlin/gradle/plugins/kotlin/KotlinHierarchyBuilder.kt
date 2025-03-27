@@ -146,7 +146,7 @@ internal interface KotlinHierarchyBuilder<T : org.jetbrains.kotlin.gradle.plugin
      *
      * @see common
      */
-    val groups: Set<Group>?
+    val groups: Set<@Serializable(with = GroupKeyTransformingSerializer::class) Group>?
 
     /**
      * Creates a group with the name "common". It's a shortcut for `group("common") { }`.
