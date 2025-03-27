@@ -1,6 +1,7 @@
 package gradle.plugins.kotlin
 
 import gradle.api.tasks.test.TestFilter
+import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.KotlinTestRun
 
 /**
@@ -16,8 +17,9 @@ internal interface KotlinTestRun<
      */
     val filter: TestFilter?
 
+    context(Project)
     @Suppress("UNCHECKED_CAST")
-    fun applyTo(receiver: T) {
+    override fun applyTo(receiver: T) {
         filter?.let { filter ->
             receiver.filter(filter::applyTo)
         }
