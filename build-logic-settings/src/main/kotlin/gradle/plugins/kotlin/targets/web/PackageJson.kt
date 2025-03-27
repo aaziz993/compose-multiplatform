@@ -22,14 +22,14 @@ internal data class PackageJson(
 
     context(Project)
     fun applyTo(receiver: PackageJson) {
-        json::name trySet name
-        json::version trySet version
-        customFields?.forEach(json::customField)
-        json::private trySet private
-        json::main trySet main
-        json::workspaces trySet workspaces
-        json::overrides trySet overrides
-        json::types trySet types
-        saveTo?.let(project::file)?.let(json::saveTo)
+        receiver::name trySet name
+        receiver::version trySet version
+        customFields?.forEach(receiver::customField)
+        receiver::private trySet private
+        receiver::main trySet main
+        receiver::workspaces trySet workspaces
+        receiver::overrides trySet overrides
+        receiver::types trySet types
+        receiver::saveTo trySet saveTo?.let(project::file)
     }
 }

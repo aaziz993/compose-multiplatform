@@ -397,7 +397,7 @@ public class ProjectPlugin : Plugin<Project> {
     private inline fun <reified T : Any> Project.registerAggregationNativeTestTask(name: String) =
         projectProperties.kotlin.targets
             .filterKotlinTargets<T>()
-            .mapNotNull(gradle.plugins.kotlin.targets.KotlinTarget<*>::targetName)
+            .mapNotNull(`gradle.plugins.kotlin`.KotlinTarget<*>::targetName)
             .let { targetNames ->
                 registerAggregationTestTask<KotlinNativeTest>(
                     name,

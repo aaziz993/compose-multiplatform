@@ -26,7 +26,7 @@ internal data class Manifest(
             ),
         )
 
-        receiver::attributes trySet attributes
+        attributes?.let(receiver::attributes)
         receiver.attributes trySet setAttributes
 
         sections?.forEach { (key, value) ->
@@ -38,8 +38,7 @@ internal data class Manifest(
         }
 
         effectiveManifest?.applyTo(receiver.effectiveManifest)
-
-receiver::from trySet         froms?.filterIsInstance<String>()
+        froms?.filterIsInstance<String>()?.toTypedArray()?.let(receiver::from)
 
         froms?.filterIsInstance<From>()?.toTypedArray()?.forEach { (mergePath, mergeSpec) ->
             receiver.from(mergePath, mergeSpec::applyTo)

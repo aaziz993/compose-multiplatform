@@ -82,6 +82,7 @@ internal data class LibraryExtension(
     override val ndkVersion: String? = null,
     override val ndkPath: String? = null,
     override val libraryRequests: Set<LibraryRequest>? = null,
+    override val setLibraryRequests: Set<LibraryRequest>? = null,
     override val signingConfigs: LinkedHashSet<@Serializable(with = SigningConfigKeyTransformingSerializer::class) SigningConfigImpl>? = null,
     override val namespace: String? = null,
     override val testBuildType: String? = null,

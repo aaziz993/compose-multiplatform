@@ -37,7 +37,7 @@ internal class KarakumPlugin : Plugin<Project> {
 
                             val targetNames = projectProperties.kotlin.targets
                                 .filter { target -> target is KotlinJsTarget }
-                                .map(KotlinTarget::targetName)
+                                .map(KotlinTarget<*>::targetName)
 
                             kotlin.sourceSets.matching { sourceSet ->
                                 targetNames.any { targetName ->

@@ -224,7 +224,7 @@ internal class PublishPlugin : Plugin<Project> {
         registerAggregatingPublishTask(
             name,
             projectProperties.kotlin.targets
-                .filterKotlinTargets<T>().mapNotNull(gradle.plugins.kotlin.targets.KotlinTarget<*>::targetName),
+                .filterKotlinTargets<T>().mapNotNull(`gradle.plugins.kotlin`.KotlinTarget<*>::targetName),
         )
 
     private fun Project.registerAggregatingPublishTask(

@@ -6,6 +6,7 @@ import gradle.api.tasks.test.TestFilter
 import gradle.api.tasks.test.TestLoggingContainer
 import gradle.api.tryAddAll
 import gradle.api.tryAssign
+import gradle.api.tryPutAll
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.kotlin.tasks.KotlinTest
@@ -38,6 +39,7 @@ internal data class KotlinJsTest(
     override val name: String? = null,
     override val targetName: String? = null,
     val environment: Map<String, String>? = null,
+    val setEnvironment: Map<String, String>? = null,
     val inputFileProperty: String? = null,
     val debug: Boolean? = null,
     val nodeJsArgs: List<String>? = null,
@@ -50,6 +52,7 @@ internal data class KotlinJsTest(
         super.applyTo(receiver)
 
         receiver.environment tryPutAll environment
+        receiver.environment trySet setEnvironment
         receiver.inputFileProperty tryAssign inputFileProperty?.let(project::file)
         receiver::debug trySet debug
         receiver.nodeJsArgs tryAddAll nodeJsArgs

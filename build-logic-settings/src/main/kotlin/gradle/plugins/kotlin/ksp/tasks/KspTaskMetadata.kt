@@ -12,6 +12,7 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilerExecutionStrategy
 
 @Serializable
 internal data class KspTaskMetadata(
@@ -55,6 +56,10 @@ internal data class KspTaskMetadata(
     override val setOptions: List<SubpluginOption>? = null,
     override val commandLineArgumentProviders: List<CommandLineArgumentProvider>? = null,
     override val setCommandLineArgumentProviders: List<CommandLineArgumentProvider>? = null,
+    override val kotlinDaemonJvmArguments: List<String>? = null,
+    override val setKotlinDaemonJvmArguments: List<String>? = null,
+    override val compilerExecutionStrategy: KotlinCompilerExecutionStrategy? = null,
+    override val useDaemonFallbackStrategy: Boolean? = null,
 ) : KotlinCompileCommon<KspTaskMetadata>(), KspTask<KspTaskMetadata> {
 
     context(Project)

@@ -39,40 +39,40 @@ internal data class KotlinWebpackConfig(
 ) {
 
     context(Project)
-    fun applyTo(webpackConfig: KotlinWebpackConfig, outputFileName: String) {
-        webpackConfig::mode trySet mode
-        webpackConfig::entry trySet entry?.let(project::file)
-        webpackConfig::output trySet output?.toKotlinWebPackOutput()
-        webpackConfig::outputPath trySet outputPath?.let(project::file)
-        webpackConfig.outputFileName = this.outputFileName ?: outputFileName
-        webpackConfig::configDirectory trySet configDirectory?.let(project::file)
-        webpackConfig::reportEvaluatedConfigFile trySet reportEvaluatedConfigFile?.let(project::file)
+    fun applyTo(receiver: KotlinWebpackConfig, outputFileName: String) {
+        receiver::mode trySet mode
+        receiver::entry trySet entry?.let(project::file)
+        receiver::output trySet output?.toKotlinWebPackOutput()
+        receiver::outputPath trySet outputPath?.let(project::file)
+        receiver.outputFileName = this.outputFileName ?: outputFileName
+        receiver::configDirectory trySet configDirectory?.let(project::file)
+        receiver::reportEvaluatedConfigFile trySet reportEvaluatedConfigFile?.let(project::file)
 
-        webpackConfig::devServer.trySet(
+        receiver::devServer.trySet(
             devServer,
             DevServer::toDevServer,
             DevServer::applyTo,
         )
 
-        webpackConfig::watchOptions trySet watchOptions?.toWatchOptions()
+        receiver::watchOptions trySet watchOptions?.toWatchOptions()
 
-        webpackConfig::watchOptions.trySet(
+        receiver::watchOptions.trySet(
             watchOptions,
             WatchOptions::toWatchOptions,
             WatchOptions::applyTo,
         )
 
-        webpackConfig::watchOptions trySet setWatchOptions?.toWatchOptions()
-        webpackConfig.experiments tryAddAll experiments
-        webpackConfig::experiments trySet setExperiments?.toMutableSet()
-        webpackConfig::devtool trySet devtool
-        webpackConfig::showProgress trySet showProgress
-        webpackConfig::sourceMaps trySet sourceMaps
-        webpackConfig::export trySet export
-        webpackConfig::progressReporter trySet progressReporter
-        webpackConfig::resolveFromModulesFirst trySet resolveFromModulesFirst
-        webpackConfig::cssSupport tryApply cssSupport?.let { it::applyTo }
-        webpackConfig::scssSupport tryApply scssSupport?.let { it::applyTo }
+        receiver::watchOptions trySet setWatchOptions?.toWatchOptions()
+        receiver.experiments tryAddAll experiments
+        receiver::experiments trySet setExperiments?.toMutableSet()
+        receiver::devtool trySet devtool
+        receiver::showProgress trySet showProgress
+        receiver::sourceMaps trySet sourceMaps
+        receiver::export trySet export
+        receiver::progressReporter trySet progressReporter
+        receiver::resolveFromModulesFirst trySet resolveFromModulesFirst
+        receiver::cssSupport tryApply cssSupport?.let { it::applyTo }
+        receiver::scssSupport tryApply scssSupport?.let { it::applyTo }
     }
 
     @Serializable

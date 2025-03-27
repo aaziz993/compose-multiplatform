@@ -18,7 +18,7 @@ internal data class KotlinWasmJsTargetDsl(
     override val mavenPublication: MavenPublication? = null,
     override val compilations: LinkedHashSet<@Serializable(with = KotlinJsIrCompilationKeyTransformingSerializer::class) KotlinJsIrCompilation>? = null,
     override val nodejs: KotlinJsNodeDsl? = null,
-    override val moduleName: String? = null,
+    override val outputModuleName: String? = null,
     override val browser: KotlinJsBrowserDsl? = null,
     override val useCommonJs: Boolean? = null,
     override val useEsModules: Boolean? = null,

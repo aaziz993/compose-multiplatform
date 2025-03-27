@@ -18,9 +18,9 @@ internal data class NodeJsExec(
 
     context(Project)
     fun applyTo(receiver: NodeJsExec) {
-        nodeJsRoot?.applyTo(exec.nodeJsRoot)
-        exec.nodeArgs tryAddAll nodeArgs
-        exec::sourceMapStackTraces trySet sourceMapStackTraces
-        exec.inputFileProperty tryAssign inputFileProperty?.let(project::file)
+        nodeJsRoot?.applyTo(receiver.nodeJsRoot)
+        receiver.nodeArgs tryAddAll nodeArgs
+        receiver::sourceMapStackTraces trySet sourceMapStackTraces
+        receiver.inputFileProperty tryAssign inputFileProperty?.let(project::file)
     }
 }

@@ -10,7 +10,7 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 
 internal abstract class Kotlin2JsCompile<T : org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile>
-    : KotlinJsCompile<T>, K2MultiplatformCompilationTask<T, org.jetbrains.kotlin.gradle.dsl.KotlinJsCompilerOptions>, ProducesKlib<T> {
+    : KotlinJsCompile<T>, K2MultiplatformCompilationTask<T>, ProducesKlib<T> {
 
     abstract val libraries: Set<String>?
     abstract val setLibraries: Set<String>?

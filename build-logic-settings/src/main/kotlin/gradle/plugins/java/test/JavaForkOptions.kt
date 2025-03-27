@@ -115,7 +115,7 @@ internal interface JavaForkOptions<T : JavaForkOptions> : ProcessForkOptions<T> 
         receiver::setDefaultCharacterEncoding trySet defaultCharacterEncoding
         receiver::setMinHeapSize trySet minHeapSize
         receiver::setMaxHeapSize trySet maxHeapSize
-        receiver::jvmArgs trySet jvmArgs
+        jvmArgs?.let(receiver::jvmArgs)
         receiver::setJvmArgs trySet setJvmArgs
 
         receiver::bootstrapClasspath trySet bootstrapClasspath

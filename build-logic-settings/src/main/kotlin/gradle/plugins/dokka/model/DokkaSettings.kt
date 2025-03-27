@@ -14,6 +14,7 @@ import gradle.plugins.dokka.WorkerIsolation
 import gradle.plugins.dokka.plugin.DokkaPluginParametersBaseSpec
 import gradle.plugins.dokka.plugin.DokkaPluginParametersBaseSpecKeyTransformingSerializer
 import gradle.plugins.project.EnabledSettings
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -28,7 +29,7 @@ internal data class DokkaSettings(
     override val konanHome: String? = null,
     override val dokkaPublications: LinkedHashSet<@Serializable(with = DokkaPublicationKeyTransformingSerializer::class) DokkaPublication>? = null,
     override val dokkaSourceSets: LinkedHashSet<@Serializable(with = DokkaSourceSetSpecKeyTransformingSerializer::class) DokkaSourceSetSpec>? = null,
-    override val pluginsConfiguration: LinkedHashSet<@Serializable(with = DokkaPluginParametersBaseSpecKeyTransformingSerializer::class) DokkaPluginParametersBaseSpec<*>>? = null,
+    override val pluginsConfiguration: LinkedHashSet<@Serializable(with = DokkaPluginParametersBaseSpecKeyTransformingSerializer::class) DokkaPluginParametersBaseSpec<out @Contextual org.jetbrains.dokka.gradle.engine.plugins.DokkaPluginParametersBaseSpec>>? = null,
     override val dokkaEngineVersion: String? = null,
     override val dokkaGeneratorIsolation: WorkerIsolation? = null,
     override val enabled: Boolean = true,

@@ -3,6 +3,7 @@ package gradle.plugins.kotlin.targets.web
 import gradle.api.tryAddAll
 import gradle.api.tryAssign
 import gradle.api.trySet
+import gradle.plugins.kotlin.targets.web.KotlinWebpackConfig.WatchOptions
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
@@ -31,27 +32,28 @@ internal data class KotlinWebpack(
     context(Project)
     @Suppress("UnstableApiUsage")
     fun applyTo(receiver: KotlinWebpack) {
-        webpack::mode trySet mode
-        webpack.inputFilesDirectory tryAssign inputFilesDirectory?.let(project.layout.projectDirectory::dir)
-        webpack.entryModuleName tryAssign entryModuleName
-        webpack.esModules tryAssign esModules
-        output?.applyTo(webpack.output)
-        webpack.outputDirectory tryAssign outputDirectory?.let(project.layout.projectDirectory::dir)
-        webpack.mainOutputFileName tryAssign mainOutputFileName
-        webpack::debug trySet debug
-        webpack::bin trySet bin
-        webpack.args tryAddAll args
-        webpack.nodeArgs tryAddAll nodeArgs
-        webpack::sourceMaps trySet sourceMaps
-        webpack.devServerProperty tryAssign devServerProperty?.toDevServer()
+        receiver::mode trySet mode
+        receiver.inputFilesDirectory tryAssign inputFilesDirectory?.let(project.layout.projectDirectory::dir)
+        receiver.entryModuleName tryAssign entryModuleName
+        receiver.esModules tryAssign esModules
+        output?.applyTo(receiver.output)
+        receiver.outputDirectory tryAssign outputDirectory?.let(project.layout.projectDirectory::dir)
+        receiver.mainOutputFileName tryAssign mainOutputFileName
+        receiver::debug trySet debug
+        receiver::bin trySet bin
+        receiver.args tryAddAll args
+        receiver.nodeArgs tryAddAll nodeArgs
+        receiver::sourceMaps trySet sourceMaps
+        receiver.devServerProperty tryAssign devServerProperty?.toDevServer()
+        receiver::watchOptions trySet watchOptions?.toWatchOptions()
 
-        watchOptions?.let { watchOptions ->
-            webpack.watchOptions = (webpack.watchOptions
-                ?: org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig.WatchOptions())
-                .apply(watchOptions::applyTo)
-        }
+        receiver::watchOptions.trySet(
+            watchOptions,
+            WatchOptions::toWatchOptions,
+            WatchOptions::applyTo,
+        )
 
-        webpack::devtool trySet devtool
-        webpack::generateConfigOnly trySet generateConfigOnly
+        receiver::devtool trySet devtool
+        receiver::generateConfigOnly trySet generateConfigOnly
     }
 }

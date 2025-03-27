@@ -2,6 +2,7 @@ package gradle.plugins.kotlin.targets.web.npm
 
 import gradle.act
 import gradle.api.tryAddAll
+import gradle.api.trySet
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -16,9 +17,9 @@ internal data class NpmOverride(
     fun toNpmOverride() = org.jetbrains.kotlin.gradle.targets.js.npm.NpmOverride(
         path,
     ).apply {
-        this@NpmOverride.includedVersions tryAddAll includedVersions
-        this@NpmOverride.includedVersions tryAddAll setIncludedVersions
-        this@NpmOverride.excludedVersions tryAddAll excludedVersions
-        this@NpmOverride.excludedVersions tryAddAll setExcludedVersions
+        includedVersions tryAddAll this@NpmOverride.includedVersions
+        includedVersions trySet this@NpmOverride.setIncludedVersions
+        excludedVersions tryAddAll this@NpmOverride.excludedVersions
+        excludedVersions trySet this@NpmOverride.setExcludedVersions
     }
 }

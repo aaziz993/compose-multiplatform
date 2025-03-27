@@ -56,6 +56,7 @@ internal data class BaseAppModuleExtension(
     override val ndkVersion: String? = null,
     override val ndkPath: String? = null,
     override val libraryRequests: Set<LibraryRequest>? = null,
+    override val setLibraryRequests: Set<LibraryRequest>? = null,
     override val buildTypes: LinkedHashSet<@Serializable(with = ApplicationBuildTypeKeyTransformingSerializer::class) ApplicationBuildType>? = null,
     override val defaultConfig: DefaultConfig? = null,
     override val productFlavors: LinkedHashSet<@Serializable(with = ProductFlavorKeyTransformingSerializer::class) ProductFlavor>? = null,
