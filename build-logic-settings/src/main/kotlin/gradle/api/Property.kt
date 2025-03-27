@@ -23,10 +23,14 @@ public infix fun <T> KMutableProperty0<out Collection<T>>.add(value: Iterable<T>
 public infix fun <T> KMutableProperty0<out Collection<T>>.tryAdd(value: Iterable<T>?): Unit? =
     value?.let(::add)
 
-public infix fun <T : MutableCollection<E>, E> KMutableProperty0<T>.tryAdd(value: Collection<E>?): Boolean? =
-    value?.let(get()::addAll)
+public infix fun <T> KMutableProperty0<out MutableCollection<T>?>.tryAdd(value: Collection<T>?): Unit? =
+    value?.let { value ->
+        this as KMutableProperty0<MutableCollection<T>?>
+        get()?.addAll(value) ?: trySet(value as MutableCollection<T>)
+        Unit
+    }
 
-public fun <T> KMutableProperty0<T>.trySetOrApply(value: () -> T?, apply: (T & Any).() -> Unit): Unit? =
+public fun <T : Any> KMutableProperty0<T?>.trySet(value: () -> T?, apply: T.() -> Unit): Unit? =
     get()?.apply() ?: value()?.let(::set)
 
 public infix fun <T : FileSystemLocation> FileSystemLocationProperty<T>.tryAssign(file: File?): Unit? =

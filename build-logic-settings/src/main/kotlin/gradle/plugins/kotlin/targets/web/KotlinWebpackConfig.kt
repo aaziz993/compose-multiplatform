@@ -1,8 +1,7 @@
 package gradle.plugins.kotlin.targets.web
 
+import gradle.api.tryAdd
 import gradle.api.trySet
-import gradle.api.trySetIfNull
-import gradle.api.trySetOrApply
 import gradle.plugins.kotlin.targets.web.KotlinWebpackConfig.DevServer.Client.Overlay
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonContentPolymorphicSerializer
@@ -164,26 +163,14 @@ internal data class KotlinWebpackConfig(
         fun applyTo(receiver: KotlinWebpackConfig.DevServer) {
             receiver::open trySet open
             receiver::port trySet port
-
-            proxy?.map(Proxy::toProxy)?.let { proxy ->
-                receiver.proxy?.addAll(proxy)
-            }
-
+            receiver::proxy tryAdd proxy?.map(Proxy::toProxy)
             receiver::proxy trySet setProxy?.map(Proxy::toProxy)?.toMutableList()
-
-            static?.let { static ->
-                receiver.static?.addAll(static)
-            }
-
+            receiver::static tryAdd static
             receiver::static trySet setStatic?.toMutableList()
-
-            contentBase?.let { contentBase ->
-                receiver.contentBase?.addAll(contentBase)
-            }
-
+            receiver::contentBase tryAdd contentBase
             receiver::contentBase trySet setContentBase?.toMutableList()
 
-            receiver::client.trySetOrApply(
+            receiver::client.trySet(
                 {
                     client?.toClient()
                 },
