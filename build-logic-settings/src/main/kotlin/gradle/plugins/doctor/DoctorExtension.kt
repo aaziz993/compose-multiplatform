@@ -7,6 +7,7 @@ import gradle.accessors.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
+import gradle.api.tryApply
 import gradle.api.tryAssign
 import org.gradle.api.Project
 
@@ -113,9 +114,6 @@ internal interface DoctorExtension {
             project.doctor.disallowCleanTaskDependencies tryAssign disallowCleanTaskDependencies
             project.doctor.warnIfKotlinCompileDaemonFallback tryAssign warnIfKotlinCompileDaemonFallback
             project.doctor.appleRosettaTranslationCheckMode tryAssign appleRosettaTranslationCheckMode
-
-            javaHome?.let { javaHome ->
-                project.doctor.javaHome(javaHome::applyTo)
-            }
+            project.doctor::javaHome tryApply javaHome?.let{ javaHome -> javaHome::applyTo }
         }
 }

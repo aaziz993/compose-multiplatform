@@ -1,6 +1,7 @@
 package gradle.api.repositories
 
 import gradle.api.getByNameOrAll
+import gradle.api.tryApply
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.artifacts.repositories.ExclusiveContentRepository
@@ -36,8 +37,6 @@ internal data class ExclusiveContentRepository(
         forRepositories
             ?.flatMap(project.repositories::getByNameOrAll)?.toTypedArray()?.let(receiver::forRepositories)
 
-        filter?.let { filter ->
-            receiver.filter(filter::applyTo)
-        }
+        receiver::filter tryApply filter?.let{ filter -> filter::applyTo }
     }
 }

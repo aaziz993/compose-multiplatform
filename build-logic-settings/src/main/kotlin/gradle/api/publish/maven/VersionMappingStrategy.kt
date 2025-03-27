@@ -1,5 +1,6 @@
 package gradle.api.publish.maven
 
+import gradle.api.tryApply
 import kotlinx.serialization.Serializable
 import org.gradle.api.publish.VersionMappingStrategy
 
@@ -28,10 +29,8 @@ internal data class VersionMappingStrategy(
 ) {
 
     fun applyTo(receiver: VersionMappingStrategy) {
-        allVariants?.let { allVariants ->
-            receiver.allVariants(allVariants::applyTo)
-        }
-
+        receiver::allVariants tryApply allVariants?.let{ allVariants -> allVariants::applyTo }
+        
         usages?.forEach { (usage, strategy) ->
             receiver.usage(usage, strategy::applyTo)
         }

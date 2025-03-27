@@ -3,6 +3,7 @@ package gradle.api.publish.maven
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
 import gradle.addSuffix
+import gradle.api.tryApply
 import gradle.api.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -137,9 +138,7 @@ internal data class MavenPom(
                 }
             }
 
-        organization?.let { organization ->
-            receiver.organization(organization::applyTo)
-        }
+        receiver::organization tryApply organization?.let{ organization -> organization::applyTo }
 
         (project.projectProperties.developer?.let(::listOf).orEmpty() + developers.orEmpty())
             .takeIf(List<*>::isNotEmpty)
@@ -163,17 +162,9 @@ internal data class MavenPom(
             receiver.scm(scm::applyTo)
         }
 
-        issueManagement?.let { issueManagement ->
-            receiver.issueManagement(issueManagement::applyTo)
-        }
-
-        ciManagement?.let { ciManagement ->
-            receiver.ciManagement(ciManagement::applyTo)
-        }
-
-        distributionManagement?.let { distributionManagement ->
-            receiver.distributionManagement(distributionManagement::applyTo)
-        }
+        receiver::issueManagement tryApply issueManagement?.let{ issueManagement -> issueManagement::applyTo }
+        receiver::ciManagement tryApply ciManagement?.let{ ciManagement -> ciManagement::applyTo }
+        receiver::distributionManagement tryApply distributionManagement?.let{ distributionManagement -> distributionManagement::applyTo }
 
         mailingLists?.let { mailingLists ->
             receiver.mailingLists {

@@ -4,6 +4,7 @@ import gradle.accessors.publishing
 import gradle.ifTrue
 import gradle.api.applyTo
 import gradle.api.publish.Publication
+import gradle.api.tryApply
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -256,11 +257,7 @@ internal data class MavenPublication(
         receiver.groupId = groupId ?: project.group.toString()
         receiver.artifactId = artifactId ?: project.name
         receiver.version = version ?: project.version.toString()
-
-        versionMapping?.let { versionMapping ->
-            receiver.versionMapping(versionMapping::applyTo)
-        }
-
+        receiver::versionMapping tryApply versionMapping?.let{ versionMapping -> versionMapping::applyTo }
         suppressPomMetadataWarningsFor?.forEach(receiver::suppressPomMetadataWarningsFor)
         suppressAllPomMetadataWarnings?.ifTrue(receiver::suppressAllPomMetadataWarnings)
     }

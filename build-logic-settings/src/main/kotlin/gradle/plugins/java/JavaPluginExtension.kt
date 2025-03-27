@@ -9,6 +9,7 @@ import gradle.ifTrue
 import gradle.api.applyTo
 import gradle.api.tasks.SourceSet
 import gradle.api.tasks.SourceSetKeyTransformingSerializer
+import gradle.api.tryApply
 import gradle.api.tryAssign
 import gradle.plugins.java.manifest.Manifest
 import kotlinx.serialization.Serializable
@@ -157,10 +158,7 @@ internal data class JavaPluginExtension(
             withSourcesJar?.ifTrue(project.java::withSourcesJar)
             modularity?.applyTo(project.java.modularity)
             toolchain?.applyTo(project.java.toolchain)
-
-            consistentResolution?.let { consistentResolution ->
-                project.java.consistentResolution(consistentResolution::applyTo)
-            }
+            project.java::consistentResolution tryApply consistentResolution?.let{ consistentResolution -> consistentResolution::applyTo }
 
             sourceSets?.forEach { sourceSet ->
                 sourceSet.applyTo(project.java.sourceSets)

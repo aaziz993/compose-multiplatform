@@ -1,5 +1,6 @@
 package gradle.plugins.cmp.desktop.macos
 
+import gradle.api.tryApply
 import gradle.api.tryAssign
 import gradle.api.trySet
 import gradle.plugins.cmp.desktop.platform.FileAssociation
@@ -47,8 +48,6 @@ internal data class JvmMacOSPlatformSettings(
         receiver::pkgPackageBuildVersion trySet pkgPackageBuildVersion
         receiver.provisioningProfile tryAssign provisioningProfile?.let(project::file)
         receiver.runtimeProvisioningProfile tryAssign runtimeProvisioningProfile?.let(project::file)
-        infoPlist?.let { infoPlist ->
-            receiver.infoPlist(infoPlist::applyTo)
-        }
+        receiver::infoPlist tryApply infoPlist?.let{ infoPlist -> infoPlist::applyTo }
     }
 }

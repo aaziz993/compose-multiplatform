@@ -1,6 +1,7 @@
 package gradle.plugins.android
 
 import com.android.build.api.dsl.Optimization
+import gradle.api.tryApply
 import kotlinx.serialization.Serializable
 
 /**
@@ -21,12 +22,7 @@ internal data class Optimization(
 
     @Suppress("UnstableApiUsage")
     fun applyTo(receiver: Optimization) {
-        keepRules?.let { keepRules ->
-            receiver.keepRules(keepRules::applyTo)
-        }
-
-        baselineProfile?.let { baselineProfile ->
-            receiver.baselineProfile(baselineProfile::applyTo)
-        }
+        receiver::keepRules tryApply keepRules?.let{ keepRules -> keepRules::applyTo }
+        receiver::baselineProfile tryApply baselineProfile?.let{ baselineProfile -> baselineProfile::applyTo }
     }
 }

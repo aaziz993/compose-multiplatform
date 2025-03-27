@@ -1,6 +1,7 @@
 package gradle.api.repositories
 
 import gradle.api.Named
+import gradle.api.tryApply
 import gradle.isUrl
 import gradle.serialization.serializer.BaseKeyTransformingSerializer
 import gradle.serialization.serializer.JsonPolymorphicSerializer
@@ -37,9 +38,7 @@ internal interface ArtifactRepository<T : org.gradle.api.artifacts.repositories.
 
     context(Directory)
     fun _applyTo(receiver: T) {
-        content?.let { content ->
-            receiver.content(content::applyTo)
-        }
+        receiver::content tryApply content?.let{ content -> content::applyTo }
     }
 
     context(Settings)

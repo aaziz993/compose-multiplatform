@@ -7,6 +7,7 @@ import gradle.api.repositories.AuthenticationSupported
 import gradle.api.repositories.PasswordCredentials
 import gradle.api.repositories.RepositoryContentDescriptorImpl
 import gradle.api.repositories.UrlArtifactRepository
+import gradle.api.tryApply
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -181,16 +182,9 @@ internal data class IvyArtifactRepository(
         artifactPatterns?.forEach(receiver::artifactPattern)
         ivyPatterns?.forEach(receiver::ivyPattern)
         layout?.let(receiver::layout)
-
-        patternLayout?.let { patternLayout ->
-            receiver.patternLayout(patternLayout::applyTo)
-        }
-
+        receiver::patternLayout tryApply patternLayout?.let{ patternLayout -> patternLayout::applyTo }
         resolve?.applyTo(receiver.resolve)
-
-        metadataSources?.let { metadataSources ->
-            receiver.metadataSources(metadataSources::applyTo)
-        }
+        receiver::metadataSources tryApply metadataSources?.let{ metadataSources -> metadataSources::applyTo }
     }
 
     /**
