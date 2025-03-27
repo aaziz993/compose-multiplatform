@@ -151,9 +151,9 @@ internal data class JavaPluginExtension(
                 ?.let(JavaVersion::toVersion))
                 ?.let(project.java::setTargetCompatibility)
 
-            disableAutoTargetJvm?.takeIf { it }?.run { project.java.disableAutoTargetJvm() }
-            withJavadocJar?.takeIf { it }?.run { project.java.withJavadocJar() }
-            withSourcesJar?.takeIf { it }?.run { project.java.withSourcesJar() }
+            disableAutoTargetJvm?.takeIfTrue()?.act(project.java::disableAutoTargetJvm)
+            withJavadocJar?.takeIfTrue()?.act(project.java::withJavadocJar)
+            withSourcesJar?.takeIfTrue()?.act(project.java::withSourcesJar)
             modularity?.applyTo(project.java.modularity)
             toolchain?.applyTo(project.java.toolchain)
 

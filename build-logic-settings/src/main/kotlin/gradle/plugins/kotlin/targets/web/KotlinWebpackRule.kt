@@ -25,6 +25,6 @@ internal interface KotlinWebpackRule {
         webpackRule.test tryAssign test
         webpackRule.include tryAssign include
         webpackRule.exclude tryAssign exclude
-        validate?.takeIf { it }?.run { webpackRule.validate() }
+        validate?.takeIfTrue()?.act(webpackRule::validate)
     }
 }

@@ -4,7 +4,7 @@ import gradle.api.ProjectNamed
 import gradle.api.applyTo
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
-import gradle.collection.act
+import gradle.act
 import gradle.plugins.apple.AppleBuildSettings
 import gradle.plugins.apple.BuildConfiguration
 import gradle.plugins.apple.BuildConfigurationKeyTransformingSerializer

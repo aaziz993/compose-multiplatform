@@ -224,10 +224,10 @@ internal data class IvyArtifactRepository(
     ) {
 
         fun applyTo(receiver: IvyArtifactRepository.MetadataSources) {
-            gradleMetadata?.takeIf { it }?.run { receiver.gradleMetadata() }
-            ivyDescriptor?.takeIf { it }?.run { receiver.ivyDescriptor() }
-            artifact?.takeIf { it }?.run { receiver.artifact() }
-            ignoreGradleMetadataRedirection?.takeIf { it }?.run { receiver.ignoreGradleMetadataRedirection() }
+            gradleMetadata?.takeIfTrue()?.act(receiver::gradleMetadata)
+            ivyDescriptor?.takeIfTrue()?.act(receiver::ivyDescriptor)
+            artifact?.takeIfTrue()?.act(receiver::artifact)
+            ignoreGradleMetadataRedirection?.takeIfTrue()?.act(receiver::ignoreGradleMetadataRedirection)
         }
     }
 }

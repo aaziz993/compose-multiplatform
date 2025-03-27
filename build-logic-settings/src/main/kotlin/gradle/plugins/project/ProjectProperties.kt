@@ -25,10 +25,10 @@ import gradle.plugins.project.file.ContributingFile
 import gradle.plugins.project.file.LicenseFile
 import gradle.plugins.project.file.LicenseHeaderFile
 import gradle.plugins.project.file.ProjectFile
-import gradle.plugins.web.node.NodeJsEnvSpec
-import gradle.plugins.web.npm.NpmExtension
-import gradle.plugins.web.yarn.YarnRootEnvSpec
-import gradle.plugins.web.yarn.YarnRootExtension
+import gradle.plugins.kotlin.targets.web.node.NodeJsEnvSpec
+import gradle.plugins.kotlin.targets.web.npm.NpmExtension
+import gradle.plugins.kotlin.targets.web.yarn.YarnRootEnvSpec
+import gradle.plugins.kotlin.targets.web.yarn.YarnRootExtension
 import gradle.serialization.decodeFromAny
 import java.util.*
 import kotlinx.serialization.Serializable

@@ -3,7 +3,7 @@ package gradle.plugins.android.library
 import com.android.build.api.dsl.LibraryVariantDimension
 import gradle.accessors.android
 import gradle.api.trySet
-import gradle.collection.act
+import gradle.act
 import gradle.plugins.android.AarMetadata
 import gradle.plugins.android.VariantDimension
 import org.gradle.api.Project

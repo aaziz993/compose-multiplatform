@@ -8,11 +8,6 @@ internal typealias SerializableAnyMap = Map<String, @Serializable(with = AnySeri
 
 internal typealias SerializableOptionalAnyMap = Map<String, @Serializable(with = OptionalAnySerializer::class) Any?>
 
-public inline fun <K, V> Map<K, V>.act(action: () -> Unit): Map<K, V> {
-    action()
-    return this
-}
-
 @Suppress("UNCHECKED_CAST")
 public infix fun Map<String, Any?>.deepMerge(source: Map<String, Any?>): Map<String, Any?> {
     val resultMap = toMutableMap()

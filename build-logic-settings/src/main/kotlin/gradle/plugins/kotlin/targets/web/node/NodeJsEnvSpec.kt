@@ -6,7 +6,7 @@ import gradle.accessors.nodeEnv
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
-import gradle.plugins.web.EnvSpec
+import gradle.plugins.kotlin.targets.web.EnvSpec
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

@@ -1,6 +1,6 @@
 package gradle.plugins.kotlin.targets.web.npm
 
-import gradle.collection.act
+import gradle.act
 import kotlinx.serialization.Serializable
 
 @Serializable

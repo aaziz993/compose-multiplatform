@@ -24,7 +24,7 @@ internal interface MultipleVariants<T : MultipleVariants> : PublishingOptions<T>
     val includeFlavorDimensionAndValues: List<FlavorDimensionAndValues>?
 
     override fun applyTo(receiver: T) {
-        allVariants?.takeIf { it }?.run { receiver.allVariants() }
+        allVariants?.takeIfTrue()?.act(receiver::allVariants)
 
         includeBuildTypeValues?.toTypedArray()?.let(receiver::includeBuildTypeValues)
 

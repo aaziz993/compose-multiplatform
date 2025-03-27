@@ -43,7 +43,7 @@ internal interface ShadowSpec<T : com.github.jengelman.gradle.plugins.shadow.tas
             }
         }
 
-        minimize?.takeIf { it }?.run { receiver.minimize() }
+        minimize?.takeIfTrue()?.act(receiver::minimize)
 
         dependencyFilterForMinimize?.let { dependencyFilterForMinimize ->
             receiver.minimize {
@@ -51,7 +51,7 @@ internal interface ShadowSpec<T : com.github.jengelman.gradle.plugins.shadow.tas
             }
         }
 
-        mergeServiceFiles?.takeIf { it }?.run { receiver.mergeServiceFiles() }
+        mergeServiceFiles?.takeIfTrue()?.act(receiver::mergeServiceFiles)
 
         mergeServiceFilesPath?.let { mergeServiceFilesPath ->
             receiver.mergeServiceFiles(mergeServiceFilesPath)

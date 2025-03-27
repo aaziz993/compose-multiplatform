@@ -76,8 +76,8 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
         targetExcludeIfContentContainsRegex?.let(receiver::targetExcludeIfContentContainsRegex)
         replaces?.forEach { (name, original, after) -> receiver.replace(name, original, after) }
         replaceRegexes?.forEach { (name, regex, replacement) -> receiver.replaceRegex(name, regex, replacement) }
-        trimTrailingWhitespace?.takeIf { it }?.run { receiver.trimTrailingWhitespace() }
-        endWithNewline?.takeIf { it }?.run { receiver.endWithNewline() }
+        trimTrailingWhitespace?.takeIfTrue()?.act(receiver::trimTrailingWhitespace)
+        endWithNewline?.takeIfTrue()?.act(receiver::endWithNewline)
 
         indentWithSpaces?.let(receiver::indentWithSpaces)
         indentWithTabs?.let(receiver::indentWithTabs)
@@ -129,7 +129,7 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
             receiver.toggleOffOn(off, on)
         }
 
-        toggleOffOnDisable?.takeIf { it }?.run { receiver.toggleOffOnDisable() }
+        toggleOffOnDisable?.takeIfTrue()?.act(receiver::toggleOffOnDisable)
     }
 
     context(Project)

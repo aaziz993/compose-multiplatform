@@ -3,7 +3,7 @@ package gradle.plugins.sonar.tasks
 import gradle.api.tasks.ConventionTask
 import gradle.api.tasks.applyTo
 import gradle.collection.SerializableAnyMap
-import gradle.collection.act
+import gradle.act
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
 import org.gradle.kotlin.dsl.withType

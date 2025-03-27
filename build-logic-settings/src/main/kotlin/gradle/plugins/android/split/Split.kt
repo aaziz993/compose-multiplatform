@@ -29,6 +29,6 @@ internal interface Split<T : Split> {
         receiver::isEnable trySet isEnable
         includes?.toTypedArray()?.let(receiver::include)
         excludes?.toTypedArray()?.let(receiver::exclude)
-        reset?.takeIf { it }?.run { receiver.reset() }
+        reset?.takeIfTrue()?.act(receiver::reset)
     }
 }

@@ -50,7 +50,7 @@ internal data class JavaResolutionConsistency(
 
     @Suppress("UnstableApiUsage")
     fun applyTo(receiver: JavaResolutionConsistency) {
-        useCompileClasspathVersions?.takeIf { it }?.run { receiver.useCompileClasspathVersions() }
-        useRuntimeClasspathVersions?.takeIf { it }?.run { receiver.useRuntimeClasspathVersions() }
+        useCompileClasspathVersions?.takeIfTrue()?.act(receiver::useCompileClasspathVersions)
+        useRuntimeClasspathVersions?.takeIfTrue()?.act(receiver::useRuntimeClasspathVersions)
     }
 }

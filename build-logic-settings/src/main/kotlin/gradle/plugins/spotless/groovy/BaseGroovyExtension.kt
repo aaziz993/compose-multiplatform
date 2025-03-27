@@ -26,7 +26,7 @@ internal abstract class BaseGroovyExtension<T : BaseGroovyExtension> : FormatExt
 
         importOrder?.toTypedArray()?.let(receiver::importOrder)
         importOrderFile?.let(receiver::importOrderFile)
-        removeSemicolons?.takeIf { it }?.run { receiver.removeSemicolons() }
+        removeSemicolons?.takeIfTrue()?.act(receiver::removeSemicolons)
 
         greclipse?.let { greclipse ->
             greclipse.applyTo(

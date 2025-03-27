@@ -1,6 +1,8 @@
 package gradle.plugins.kotlin.targets.web
 
 import gradle.api.trySet
+import gradle.api.trySetIfNull
+import gradle.api.trySetOrApply
 import gradle.plugins.kotlin.targets.web.KotlinWebpackConfig.DevServer.Client.Overlay
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonContentPolymorphicSerializer
@@ -23,12 +25,12 @@ internal data class KotlinWebpackConfig(
     val devServer: DevServer? = null,
     val watchOptions: WatchOptions? = null,
     val experiments: Set<String>? = null,
+    val setExperiments: Set<String>? = null,
     val devtool: String? = null,
     val showProgress: Boolean = false,
     val sourceMaps: Boolean = false,
     val export: Boolean = true,
     val progressReporter: Boolean = false,
-    val progressReporterPathFilter: String? = null,
     val resolveFromModulesFirst: Boolean = false,
     val cssSupport: KotlinWebpackCssRule? = null,
     val scssSupport: KotlinWebpackCssRule? = null,
@@ -54,13 +56,13 @@ internal data class KotlinWebpackConfig(
                 .apply(watchOptions::applyTo)
         }
 
-        webpackConfig::experiments trySet experiments?.toMutableSet()
+        experiments?.let(webpackConfig.experiments::addAll)
+        webpackConfig::experiments trySet setExperiments?.toMutableSet()
         webpackConfig::devtool trySet devtool
         webpackConfig::showProgress trySet showProgress
         webpackConfig::sourceMaps trySet sourceMaps
         webpackConfig::export trySet export
         webpackConfig::progressReporter trySet progressReporter
-        webpackConfig::progressReporterPathFilter trySet progressReporterPathFilter?.let(project::file)
         webpackConfig::resolveFromModulesFirst trySet resolveFromModulesFirst
 
         if (cssSupport != null) {
@@ -79,8 +81,8 @@ internal data class KotlinWebpackConfig(
     ) {
 
         fun applyTo(receiver: KotlinWebpackConfig.WatchOptions) {
-            options::aggregateTimeout trySet aggregateTimeout
-            options::ignored trySet ignored
+            receiver::aggregateTimeout trySet aggregateTimeout
+            receiver::ignored trySet ignored
         }
     }
 
@@ -89,14 +91,17 @@ internal data class KotlinWebpackConfig(
         val open: Boolean = true,
         val port: Int? = null,
         val proxy: List<Proxy>? = null,
+        val setProxy: List<Proxy>? = null,
         val static: List<String>? = null,
+        val setStatic: List<String>? = null,
         val contentBase: List<String>? = null,
+        val setContentBase: List<String>? = null,
         val client: Client? = null
     ) {
 
         @Serializable
         data class Client(
-            @Serializable(with = OverlaySerializer::class)
+            @Serializable(with = OverlayContentPolymorphicSerializer::class)
             val overlay: Any /* Overlay | Boolean */
         ) {
 
@@ -115,6 +120,10 @@ internal data class KotlinWebpackConfig(
             fun toClient() = KotlinWebpackConfig.DevServer.Client(
                 if (overlay is Overlay) overlay.toOverlay() else overlay,
             )
+
+            fun applyTo(receiver: KotlinWebpackConfig.DevServer.Client) {
+                receiver::overlay trySet if (overlay is Overlay) overlay.toOverlay() else overlay
+            }
         }
 
         private object OverlayContentPolymorphicSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
@@ -153,32 +162,37 @@ internal data class KotlinWebpackConfig(
         )
 
         fun applyTo(receiver: KotlinWebpackConfig.DevServer) {
-            server::open trySet open
-            server::port trySet port
+            receiver::open trySet open
+            receiver::port trySet port
 
             proxy?.map(Proxy::toProxy)?.let { proxy ->
-                server.proxy = (server.proxy ?: mutableListOf()).apply {
-                    addAll(proxy)
-                }
+                receiver.proxy?.addAll(proxy)
             }
+
+            receiver::proxy trySet setProxy?.map(Proxy::toProxy)?.toMutableList()
 
             static?.let { static ->
-                server.static = (server.static ?: mutableListOf()).apply {
-                    addAll(static)
-                }
+                receiver.static?.addAll(static)
             }
+
+            receiver::static trySet setStatic?.toMutableList()
 
             contentBase?.let { contentBase ->
-                server.contentBase = (server.contentBase ?: mutableListOf()).apply {
-                    addAll(contentBase)
-                }
+                receiver.contentBase?.addAll(contentBase)
             }
 
-            client?.toClient()?.let { client ->
-                server.client = (server.client ?: KotlinWebpackConfig.DevServer.Client(
-                    client.overlay,
-                ))
+            receiver::contentBase trySet setContentBase?.toMutableList()
+
+            receiver::client.trySetOrApply(
+                receiver.client,
+                {
+                    client?.toClient()
+                },
+            ) {
+                client?.applyTo(this)
             }
         }
     }
 }
+
+

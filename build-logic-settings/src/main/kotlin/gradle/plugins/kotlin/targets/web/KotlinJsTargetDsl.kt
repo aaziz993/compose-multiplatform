@@ -59,10 +59,10 @@ internal interface KotlinJsTargetDsl<T : org.jetbrains.kotlin.gradle.targets.js.
             }
         }
 
-        useCommonJs?.takeIf { it }?.run { receiver.useCommonJs() }
-        useEsModules?.takeIf { it }?.run { receiver.useEsModules() }
+        useCommonJs?.takeIfTrue()?.act(receiver::useCommonJs)
+        useEsModules?.takeIfTrue()?.act(receiver::useEsModules)
         passAsArgumentToMainFunction?.let(receiver::passAsArgumentToMainFunction)
-        generateTypeScriptDefinitions?.takeIf { it }?.let { receiver.generateTypeScriptDefinitions() }
+        generateTypeScriptDefinitions?.takeIfTrue()?.let { receiver.generateTypeScriptDefinitions() }
         binaries?.applyTo(receiver.binaries)
     }
 }

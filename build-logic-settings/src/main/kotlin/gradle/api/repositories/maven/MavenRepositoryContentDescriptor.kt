@@ -41,7 +41,7 @@ internal data class MavenRepositoryContentDescriptor(
     override fun applyTo(receiver: MavenRepositoryContentDescriptor) {
         super.applyTo(receiver)
 
-        releasesOnly?.takeIf { it }?.run { receiver.releasesOnly() }
-        snapshotsOnly?.takeIf { it }?.run { receiver.snapshotsOnly() }
+        releasesOnly?.takeIfTrue()?.act(receiver::releasesOnly)
+        snapshotsOnly?.takeIfTrue()?.act(receiver::snapshotsOnly)
     }
 }

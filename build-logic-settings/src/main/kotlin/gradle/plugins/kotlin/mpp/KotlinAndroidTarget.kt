@@ -56,7 +56,7 @@ internal data class KotlinAndroidTarget(
         }
 
         // Applicable only in library project.
-        publishAllLibraryVariants?.takeIf { it }?.run { receiver.publishAllLibraryVariants() }
+        publishAllLibraryVariants?.takeIfTrue()?.act(receiver::publishAllLibraryVariants)
         receiver::publishLibraryVariantsGroupedByFlavor trySet publishLibraryVariantsGroupedByFlavor
     }
 

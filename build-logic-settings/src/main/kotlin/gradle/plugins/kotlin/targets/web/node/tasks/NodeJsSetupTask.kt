@@ -1,7 +1,8 @@
 package gradle.plugins.kotlin.targets.web.node.tasks
 
+import gradle.api.tasks.applyTo
 import gradle.collection.SerializableAnyMap
-import gradle.plugins.web.tasks.AbstractSetupTask
+import gradle.plugins.kotlin.targets.web.tasks.AbstractSetupTask
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType

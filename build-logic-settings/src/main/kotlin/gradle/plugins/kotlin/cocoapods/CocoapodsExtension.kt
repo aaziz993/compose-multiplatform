@@ -13,7 +13,7 @@ import gradle.accessors.settings
 import gradle.accessors.version
 import gradle.accessors.versions
 import gradle.api.trySet
-import gradle.collection.act
+import gradle.act
 import gradle.plugins.kotlin.targets.nat.FrameworkSettings
 import java.net.URI
 import kotlinx.serialization.Serializable
@@ -122,7 +122,7 @@ internal interface CocoapodsExtension {
                 ?: project.settings.libs.versions.version("kotlin.cocoapods.version"))
             project.kotlin.cocoapods::authors trySet authors
             project.kotlin.cocoapods::podfile trySet podfile?.let(project::file)
-            needPodspec?.takeIf { it }?.run { project.kotlin.cocoapods.noPodspec() }
+            needPodspec?.takeIfTrue()?.act(project.kotlin.cocoapods::noPodspec)
             project.kotlin.cocoapods.name = this@CocoapodsExtension.name ?: project.moduleName
             project.kotlin.cocoapods::license trySet license
             project.kotlin.cocoapods::summary trySet summary

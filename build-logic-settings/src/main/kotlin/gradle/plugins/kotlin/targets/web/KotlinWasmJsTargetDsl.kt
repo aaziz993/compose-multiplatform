@@ -35,7 +35,7 @@ internal data class KotlinWasmJsTargetDsl(
         super<KotlinWasmTargetDsl>.applyTo(receiver)
         super<KotlinJsTargetDsl>.applyTo(receiver)
 
-        d8?.takeIf { it }?.run { receiver.d8() }
+        d8?.takeIfTrue()?.act(receiver::d8)
 
         d8Dsl?.let { d8Dsl ->
             receiver.d8 {

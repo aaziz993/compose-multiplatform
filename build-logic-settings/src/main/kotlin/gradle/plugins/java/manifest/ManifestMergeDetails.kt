@@ -23,6 +23,6 @@ internal data class ManifestMergeDetails(
 
     fun applyTo(receiver: ManifestMergeDetails) {
         value?.let(receiver::setValue)
-        exclude?.takeIf { it }?.run { receiver.exclude() }
+        exclude?.takeIfTrue()?.act(receiver::exclude)
     }
 }

@@ -1,7 +1,7 @@
 package gradle.plugins.android
 
 import com.android.build.api.dsl.AnnotationProcessorOptions
-import gradle.collection.act
+import gradle.act
 import gradle.process.CommandLineArgumentProvider
 import kotlinx.serialization.Serializable
 

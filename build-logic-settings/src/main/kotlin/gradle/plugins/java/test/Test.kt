@@ -242,7 +242,7 @@ internal abstract class Test<T : org.gradle.api.tasks.testing.Test>
         receiver.dryRun tryAssign dryRun
         modularity?.applyTo(receiver.modularity)
         testClassesDirs?.toTypedArray()?.let(project::files)?.let(receiver::setTestClassesDirs)
-        useJUnit?.takeIf { it }?.run { receiver.useJUnit() }
+        useJUnit?.takeIfTrue()?.act(receiver::useJUnit)
 
         useJUnitDsl?.let { useJUnitDsl ->
             receiver.useJUnit {
@@ -250,7 +250,7 @@ internal abstract class Test<T : org.gradle.api.tasks.testing.Test>
             }
         }
 
-        useJUnitPlatform?.takeIf { it }?.run { receiver.useJUnitPlatform() }
+        useJUnitPlatform?.takeIfTrue()?.act(receiver::useJUnitPlatform)
 
         useJUnitPlatformDsl?.let { useJUnitPlatformDsl ->
             receiver.useJUnitPlatform {
@@ -258,7 +258,7 @@ internal abstract class Test<T : org.gradle.api.tasks.testing.Test>
             }
         }
 
-        useTestNG?.takeIf { it }?.run { receiver.useTestNG() }
+        useTestNG?.takeIfTrue()?.act(receiver::useTestNG)
 
         useTestNGDsl?.let { useTestNGDsl ->
             receiver.useTestNG {

@@ -261,7 +261,7 @@ internal data class MavenPublication(
         }
 
         suppressPomMetadataWarningsFor?.forEach(receiver::suppressPomMetadataWarningsFor)
-        suppressAllPomMetadataWarnings?.takeIf { it }?.run { receiver.suppressAllPomMetadataWarnings() }
+        suppressAllPomMetadataWarnings?.takeIfTrue()?.act(receiver::suppressAllPomMetadataWarnings)
     }
 
     context(Project)

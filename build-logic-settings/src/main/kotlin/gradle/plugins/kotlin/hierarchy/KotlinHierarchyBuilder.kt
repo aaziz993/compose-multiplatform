@@ -427,40 +427,40 @@ internal interface KotlinHierarchyBuilder<T : org.jetbrains.kotlin.gradle.plugin
             }
         }
 
-        withNative?.takeIf { it }?.run { receiver.withNative() }
-        withApple?.takeIf { it }?.run { receiver.withApple() }
-        withIos?.takeIf { it }?.run { receiver.withIos() }
-        withWatchos?.takeIf { it }?.run { receiver.withWatchos() }
-        withMacos?.takeIf { it }?.run { receiver.withMacos() }
-        withTvos?.takeIf { it }?.run { receiver.withTvos() }
-        withMingw?.takeIf { it }?.run { receiver.withMingw() }
-        withLinux?.takeIf { it }?.run { receiver.withLinux() }
-        withAndroidNative?.takeIf { it }?.run { receiver.withAndroidNative() }
-        withJs?.takeIf { it }?.run { receiver.withJs() }
-        withWasmJs?.takeIf { it }?.run { receiver.withWasmJs() }
-        withWasmWasi?.takeIf { it }?.run { receiver.withWasmWasi() }
-        withJvm?.takeIf { it }?.run { receiver.withJvm() }
-        withAndroidTarget?.takeIf { it }?.run { receiver.withAndroidTarget() }
-        withAndroidNativeX64?.takeIf { it }?.run { receiver.withAndroidNativeX64() }
-        withAndroidNativeX86?.takeIf { it }?.run { receiver.withAndroidNativeX86() }
-        withAndroidNativeArm32?.takeIf { it }?.run { receiver.withAndroidNativeArm32() }
-        withAndroidNativeArm64?.takeIf { it }?.run { receiver.withAndroidNativeArm64() }
-        withIosArm64?.takeIf { it }?.run { receiver.withIosArm64() }
-        withIosX64?.takeIf { it }?.run { receiver.withIosX64() }
-        withIosSimulatorArm64?.takeIf { it }?.run { receiver.withIosSimulatorArm64() }
-        withWatchosArm32?.takeIf { it }?.run { receiver.withWatchosArm32() }
-        withWatchosArm64?.takeIf { it }?.run { receiver.withWatchosArm64() }
-        withWatchosX64?.takeIf { it }?.run { receiver.withWatchosX64() }
-        withWatchosSimulatorArm64?.takeIf { it }?.run { receiver.withWatchosSimulatorArm64() }
-        withWatchosDeviceArm64?.takeIf { it }?.run { receiver.withWatchosDeviceArm64() }
-        withTvosArm64?.takeIf { it }?.run { receiver.withTvosArm64() }
-        withTvosX64?.takeIf { it }?.run { receiver.withTvosX64() }
-        withTvosSimulatorArm64?.takeIf { it }?.run { receiver.withTvosSimulatorArm64() }
-        withLinuxX64?.takeIf { it }?.run { receiver.withLinuxX64() }
-        withMingwX64?.takeIf { it }?.run { receiver.withMingwX64() }
-        withMacosX64?.takeIf { it }?.run { receiver.withMacosX64() }
-        withMacosArm64?.takeIf { it }?.run { receiver.withMacosArm64() }
-        withLinuxArm64?.takeIf { it }?.run { receiver.withLinuxArm64() }
+        withNative?.takeIfTrue()?.act(receiver::withNative)
+        withApple?.takeIfTrue()?.act(receiver::withApple)
+        withIos?.takeIfTrue()?.act(receiver::withIos)
+        withWatchos?.takeIfTrue()?.act(receiver::withWatchos)
+        withMacos?.takeIfTrue()?.act(receiver::withMacos)
+        withTvos?.takeIfTrue()?.act(receiver::withTvos)
+        withMingw?.takeIfTrue()?.act(receiver::withMingw)
+        withLinux?.takeIfTrue()?.act(receiver::withLinux)
+        withAndroidNative?.takeIfTrue()?.act(receiver::withAndroidNative)
+        withJs?.takeIfTrue()?.act(receiver::withJs)
+        withWasmJs?.takeIfTrue()?.act(receiver::withWasmJs)
+        withWasmWasi?.takeIfTrue()?.act(receiver::withWasmWasi)
+        withJvm?.takeIfTrue()?.act(receiver::withJvm)
+        withAndroidTarget?.takeIfTrue()?.act(receiver::withAndroidTarget)
+        withAndroidNativeX64?.takeIfTrue()?.act(receiver::withAndroidNativeX64)
+        withAndroidNativeX86?.takeIfTrue()?.act(receiver::withAndroidNativeX86)
+        withAndroidNativeArm32?.takeIfTrue()?.act(receiver::withAndroidNativeArm32)
+        withAndroidNativeArm64?.takeIfTrue()?.act(receiver::withAndroidNativeArm64)
+        withIosArm64?.takeIfTrue()?.act(receiver::withIosArm64)
+        withIosX64?.takeIfTrue()?.act(receiver::withIosX64)
+        withIosSimulatorArm64?.takeIfTrue()?.act(receiver::withIosSimulatorArm64)
+        withWatchosArm32?.takeIfTrue()?.act(receiver::withWatchosArm32)
+        withWatchosArm64?.takeIfTrue()?.act(receiver::withWatchosArm64)
+        withWatchosX64?.takeIfTrue()?.act(receiver::withWatchosX64)
+        withWatchosSimulatorArm64?.takeIfTrue()?.act(receiver::withWatchosSimulatorArm64)
+        withWatchosDeviceArm64?.takeIfTrue()?.act(receiver::withWatchosDeviceArm64)
+        withTvosArm64?.takeIfTrue()?.act(receiver::withTvosArm64)
+        withTvosX64?.takeIfTrue()?.act(receiver::withTvosX64)
+        withTvosSimulatorArm64?.takeIfTrue()?.act(receiver::withTvosSimulatorArm64)
+        withLinuxX64?.takeIfTrue()?.act(receiver::withLinuxX64)
+        withMingwX64?.takeIfTrue()?.act(receiver::withMingwX64)
+        withMacosX64?.takeIfTrue()?.act(receiver::withMacosX64)
+        withMacosArm64?.takeIfTrue()?.act(receiver::withMacosArm64)
+        withLinuxArm64?.takeIfTrue()?.act(receiver::withLinuxArm64)
     }
 }
 

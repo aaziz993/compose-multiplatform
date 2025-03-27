@@ -1,7 +1,7 @@
 package gradle.plugins.sonar
 
 import gradle.collection.SerializableAnyMap
-import gradle.collection.act
+import gradle.act
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.sonarqube.gradle.SonarProperties

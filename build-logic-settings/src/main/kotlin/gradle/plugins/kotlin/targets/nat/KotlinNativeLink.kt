@@ -55,8 +55,8 @@ internal data class KotlinNativeLink(
 ) : AbstractKotlinCompileTool<KotlinNativeLink>(),
     KotlinToolTask<KotlinNativeLink, org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerToolOptions> {
 
-    @OptIn(InternalKotlinGradlePluginApi::class)
     context(Project)
+    @OptIn(InternalKotlinGradlePluginApi::class)
     override fun applyTo(receiver: KotlinNativeLink) {
         super<AbstractKotlinCompileTool>.applyTo(receiver)
         super<KotlinToolTask>.applyTo(receiver)

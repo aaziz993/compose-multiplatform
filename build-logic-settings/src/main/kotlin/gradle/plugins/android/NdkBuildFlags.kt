@@ -1,7 +1,7 @@
 package gradle.plugins.android
 
 import com.android.build.api.dsl.NdkBuildFlags
-import gradle.collection.act
+import gradle.act
 import kotlinx.serialization.Serializable
 
 /**

@@ -8,8 +8,8 @@ import gradle.accessors.settings
 import gradle.accessors.yarn
 import gradle.accessors.yarnEnv
 import gradle.api.tryAssign
-import gradle.collection.act
-import gradle.plugins.web.EnvSpec
+import gradle.act
+import gradle.plugins.kotlin.targets.web.EnvSpec
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnLockMismatchReport

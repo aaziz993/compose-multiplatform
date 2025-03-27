@@ -34,26 +34,26 @@ internal data class KotlinKarma(
     fun applyTo(receiver: org.jetbrains.kotlin.gradle.targets.js.testing.karma.KotlinKarma, outputFileName: String) {
         webpackConfig?.applyTo(receiver.webpackConfig, outputFileName)
         useConfigDirectory?.let(receiver::useConfigDirectory)
-        useChrome?.takeIf { it }?.run { receiver.useChrome() }
-        useChromeHeadless?.takeIf { it }?.run { receiver.useChromeHeadless() }
-        useChromeHeadlessNoSandbox?.takeIf { it }?.run { receiver.useChromeHeadlessNoSandbox() }
-        useChromium?.takeIf { it }?.run { receiver.useChromium() }
-        useChromiumHeadless?.takeIf { it }?.run { receiver.useChromiumHeadless() }
-        useChromeCanary?.takeIf { it }?.run { receiver.useChromeCanary() }
-        useChromeCanaryHeadless?.takeIf { it }?.run { receiver.useChromeCanaryHeadless() }
-        useDebuggableChrome?.takeIf { it }?.run { receiver.useDebuggableChrome() }
-        usePhantomJS?.takeIf { it }?.run { receiver.usePhantomJS() }
-        useFirefox?.takeIf { it }?.run { receiver.useFirefox() }
-        useFirefoxHeadless?.takeIf { it }?.run { receiver.useFirefoxHeadless() }
-        useFirefoxDeveloper?.takeIf { it }?.run { receiver.useFirefoxDeveloper() }
-        useFirefoxDeveloperHeadless?.takeIf { it }?.run { receiver.useFirefoxDeveloperHeadless() }
-        useFirefoxAurora?.takeIf { it }?.run { receiver.useFirefoxAurora() }
-        useFirefoxAuroraHeadless?.takeIf { it }?.run { receiver.useFirefoxAuroraHeadless() }
-        useFirefoxNightly?.takeIf { it }?.run { receiver.useFirefoxNightly() }
-        useFirefoxNightlyHeadless?.takeIf { it }?.run { receiver.useFirefoxNightlyHeadless() }
-        useOpera?.takeIf { it }?.run { receiver.useOpera() }
-        useSafari?.takeIf { it }?.run { receiver.useSafari() }
-        useIe?.takeIf { it }?.run { receiver.useIe() }
-        useSourceMapSupport?.takeIf { it }?.run { receiver.useSourceMapSupport() }
+        useChrome?.takeIfTrue()?.act(receiver::useChrome)
+        useChromeHeadless?.takeIfTrue()?.act(receiver::useChromeHeadless)
+        useChromeHeadlessNoSandbox?.takeIfTrue()?.act(receiver::useChromeHeadlessNoSandbox)
+        useChromium?.takeIfTrue()?.act(receiver::useChromium)
+        useChromiumHeadless?.takeIfTrue()?.act(receiver::useChromiumHeadless)
+        useChromeCanary?.takeIfTrue()?.act(receiver::useChromeCanary)
+        useChromeCanaryHeadless?.takeIfTrue()?.act(receiver::useChromeCanaryHeadless)
+        useDebuggableChrome?.takeIfTrue()?.act(receiver::useDebuggableChrome)
+        usePhantomJS?.takeIfTrue()?.act(receiver::usePhantomJS)
+        useFirefox?.takeIfTrue()?.act(receiver::useFirefox)
+        useFirefoxHeadless?.takeIfTrue()?.act(receiver::useFirefoxHeadless)
+        useFirefoxDeveloper?.takeIfTrue()?.act(receiver::useFirefoxDeveloper)
+        useFirefoxDeveloperHeadless?.takeIfTrue()?.act(receiver::useFirefoxDeveloperHeadless)
+        useFirefoxAurora?.takeIfTrue()?.act(receiver::useFirefoxAurora)
+        useFirefoxAuroraHeadless?.takeIfTrue()?.act(receiver::useFirefoxAuroraHeadless)
+        useFirefoxNightly?.takeIfTrue()?.act(receiver::useFirefoxNightly)
+        useFirefoxNightlyHeadless?.takeIfTrue()?.act(receiver::useFirefoxNightlyHeadless)
+        useOpera?.takeIfTrue()?.act(receiver::useOpera)
+        useSafari?.takeIfTrue()?.act(receiver::useSafari)
+        useIe?.takeIfTrue()?.act(receiver::useIe)
+        useSourceMapSupport?.takeIfTrue()?.act(receiver::useSourceMapSupport)
     }
 }

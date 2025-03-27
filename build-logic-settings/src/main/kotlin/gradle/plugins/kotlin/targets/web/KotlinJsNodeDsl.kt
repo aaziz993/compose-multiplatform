@@ -35,6 +35,6 @@ internal data class KotlinJsNodeDsl(
             }
         }
 
-        passProcessArgvToMainFunction?.takeIf { it }?.run { node.passProcessArgvToMainFunction() }
+        passProcessArgvToMainFunction?.takeIfTrue()?.act(node::passProcessArgvToMainFunction)
     }
 }

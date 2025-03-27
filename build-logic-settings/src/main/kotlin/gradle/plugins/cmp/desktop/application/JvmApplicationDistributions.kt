@@ -1,7 +1,7 @@
 package gradle.plugins.cmp.desktop.application
 
 import gradle.api.trySet
-import gradle.collection.act
+import gradle.act
 import gradle.plugins.cmp.desktop.AbstractDistributions
 import gradle.plugins.cmp.desktop.linux.LinuxPlatformSettings
 import gradle.plugins.cmp.desktop.macos.JvmMacOSPlatformSettings

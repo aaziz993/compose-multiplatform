@@ -77,9 +77,9 @@ import gradle.plugins.shadow.ShadowPlugin
 import gradle.plugins.signing.SigningPlugin
 import gradle.plugins.sonar.SonarPlugin
 import gradle.plugins.spotless.SpotlessPlugin
-import gradle.plugins.web.JsPlugin
-import gradle.plugins.web.WasmJsPlugin
-import gradle.plugins.web.WasmWasiPlugin
+import gradle.plugins.kotlin.targets.web.JsPlugin
+import gradle.plugins.kotlin.targets.web.WasmJsPlugin
+import gradle.plugins.kotlin.targets.web.WasmWasiPlugin
 import gradle.serialization.encodeToAny
 import kotlinx.serialization.json.Json
 import org.gradle.api.GradleException

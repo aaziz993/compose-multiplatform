@@ -7,8 +7,8 @@ import gradle.accessors.plugins
 import gradle.accessors.settings
 import gradle.accessors.yarn
 import gradle.api.trySet
-import gradle.collection.act
-import gradle.plugins.web.AbstractSettings
+import gradle.act
+import gradle.plugins.kotlin.targets.web.AbstractSettings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnEnv

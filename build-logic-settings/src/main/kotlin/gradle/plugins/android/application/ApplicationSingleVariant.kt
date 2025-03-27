@@ -22,6 +22,6 @@ internal data class ApplicationSingleVariant(
     override fun applyTo(receiver: ApplicationSingleVariant) {
         super.applyTo(receiver)
 
-        publishApk?.takeIf { it }?.run { receiver.publishApk() }
+        publishApk?.takeIfTrue()?.act(receiver::publishApk)
     }
 }

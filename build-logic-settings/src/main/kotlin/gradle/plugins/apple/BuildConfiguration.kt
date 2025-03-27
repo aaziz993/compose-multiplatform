@@ -4,7 +4,7 @@ import gradle.api.NamedKeyTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
-import gradle.collection.act
+import gradle.act
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

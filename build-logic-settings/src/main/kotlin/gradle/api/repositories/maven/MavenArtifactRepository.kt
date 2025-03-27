@@ -119,10 +119,10 @@ internal interface MavenArtifactRepository
     ) {
 
         fun applyTo(receiver: MavenArtifactRepository.MetadataSources) {
-            gradleMetadata?.takeIf { it }?.run { receiver.gradleMetadata() }
-            mavenPom?.takeIf { it }?.run { receiver.mavenPom() }
-            artifact?.takeIf { it }?.run { receiver.artifact() }
-            ignoreGradleMetadataRedirection?.takeIf { it }?.run { receiver.ignoreGradleMetadataRedirection() }
+            gradleMetadata?.takeIfTrue()?.act(receiver::gradleMetadata)
+            mavenPom?.takeIfTrue()?.act(receiver::mavenPom)
+            artifact?.takeIfTrue()?.act(receiver::artifact)
+            ignoreGradleMetadataRedirection?.takeIfTrue()?.act(receiver::ignoreGradleMetadataRedirection)
         }
     }
 }

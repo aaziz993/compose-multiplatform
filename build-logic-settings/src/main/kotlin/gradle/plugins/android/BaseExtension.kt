@@ -8,7 +8,7 @@ import gradle.accessors.version
 import gradle.accessors.versions
 import gradle.api.applyTo
 import gradle.api.trySet
-import gradle.collection.act
+import gradle.act
 import gradle.plugins.android.compile.CompileOptions
 import gradle.plugins.android.defaultconfig.DefaultConfig
 import gradle.plugins.android.features.BuildFeatures
@@ -23,6 +23,7 @@ import gradle.plugins.android.sourceset.AndroidSourceSetKeyTransformingSerialize
 import gradle.plugins.android.split.Splits
 import gradle.plugins.android.test.TestOptions
 import gradle.serialization.serializer.JsonPolymorphicSerializer
+import gradle.takeIfTrue
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -110,7 +111,7 @@ internal interface BaseExtension {
         dataBinding?.applyTo(project.android.dataBinding)
         viewBinding?.applyTo(project.android.viewBinding)
         defaultPublishConfig?.let(project.android::defaultPublishConfig)
-        disableWrite?.takeIf { it }?.run { project.android.disableWrite() }
+        disableWrite?.takeIfTrue()?.act(project.android::disableWrite)
         (compileSdkVersion ?: project.settings.libs.versions.version("project.android.compileSdk")?.toInt())
             ?.let(project.android::compileSdkVersion)
         buildToolsVersion?.let(project.android::buildToolsVersion)
