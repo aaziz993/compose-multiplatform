@@ -42,6 +42,6 @@ internal data class ModularitySpec(
 ) {
 
     fun applyTo(receiver: ModularitySpec) {
-        spec.inferModulePath tryAssign inferModulePath
+        receiver.inferModulePath tryAssign inferModulePath
     }
 }

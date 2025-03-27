@@ -33,7 +33,6 @@ internal data class DataExtension(
 ) {
 
     fun applyTo(receiver: DataExtension) {
-        DependencyCheckExtension
         directory?.let(receiver::setDirectory)
         connectionString?.let(receiver::setConnectionString)
         username?.let(receiver::setUsername)

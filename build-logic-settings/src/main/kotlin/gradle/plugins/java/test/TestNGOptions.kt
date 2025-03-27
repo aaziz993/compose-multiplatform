@@ -135,33 +135,27 @@ internal data class TestNGOptions(
      * If not present, the tests will not be grouped by instances.
      */
     val groupByInstances: Boolean? = null,
-) : TestFrameworkOptions() {
+) : TestFrameworkOptions<TestNGOptions>() {
 
     context(Project)
     @Suppress("UnstableApiUsage")
-    override fun applyTo(receiver: org.gradle.api.tasks.testing.TestFrameworkOptions) {
-        options as TestNGOptions
-
-        outputDirectory?.let(project::file)?.let(options::setOutputDirectory)
-
-        includeGroups?.toTypedArray()?.let(options::includeGroups)
-
-        setIncludeGroups?.let(options::setIncludeGroups)
-
-        excludeGroups?.toTypedArray()?.let(options::excludeGroups)
-
-        setExcludeGroups?.let(options::setExcludeGroups)
-        configFailurePolicy?.let(options::setConfigFailurePolicy)
-        listeners?.let(options::setListeners)
-        parallel?.let(options::setParallel)
-        threadCount?.let(options::setThreadCount)
-        options.suiteThreadPoolSize tryAssign suiteThreadPoolSize
-        useDefaultListeners?.let(options::setUseDefaultListeners)
-        threadPoolFactoryClass?.let(options::setThreadPoolFactoryClass)
-        suiteName?.let(options::setSuiteName)
-        testName?.let(options::setTestName)
-        suiteXmlFiles?.map(project::file)?.let(options::setSuiteXmlFiles)
-        preserveOrder?.let(options::setPreserveOrder)
-        groupByInstances?.let(options::setGroupByInstances)
+    override fun applyTo(receiver: TestNGOptions) {
+        outputDirectory?.let(project::file)?.let(receiver::setOutputDirectory)
+        includeGroups?.toTypedArray()?.let(receiver::includeGroups)
+        setIncludeGroups?.let(receiver::setIncludeGroups)
+        excludeGroups?.toTypedArray()?.let(receiver::excludeGroups)
+        setExcludeGroups?.let(receiver::setExcludeGroups)
+        configFailurePolicy?.let(receiver::setConfigFailurePolicy)
+        listeners?.let(receiver::setListeners)
+        parallel?.let(receiver::setParallel)
+        threadCount?.let(receiver::setThreadCount)
+        receiver.suiteThreadPoolSize tryAssign suiteThreadPoolSize
+        useDefaultListeners?.let(receiver::setUseDefaultListeners)
+        threadPoolFactoryClass?.let(receiver::setThreadPoolFactoryClass)
+        suiteName?.let(receiver::setSuiteName)
+        testName?.let(receiver::setTestName)
+        suiteXmlFiles?.map(project::file)?.let(receiver::setSuiteXmlFiles)
+        preserveOrder?.let(receiver::setPreserveOrder)
+        groupByInstances?.let(receiver::setGroupByInstances)
     }
 }
