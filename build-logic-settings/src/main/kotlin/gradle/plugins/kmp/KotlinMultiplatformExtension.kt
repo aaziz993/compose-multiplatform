@@ -1,6 +1,11 @@
 package gradle.plugins.kmp
 
+import gradle.accessors.id
 import gradle.accessors.kotlin
+import gradle.accessors.libs
+import gradle.accessors.plugin
+import gradle.accessors.plugins
+import gradle.accessors.settings
 import gradle.plugins.kotlin.HasConfigurableKotlinCompilerOptions
 import gradle.plugins.kotlin.KotlinHierarchyDsl
 import gradle.plugins.kotlin.KotlinProjectExtension
@@ -28,5 +33,7 @@ internal abstract class KotlinMultiplatformExtension :
     }
 
     context(Project)
-    fun applyTo() = applyTo(project.kotlin)
+    open fun applyTo() = project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("kotlin.multiplatform").id) {
+        applyTo(project.kotlin)
+    }
 }

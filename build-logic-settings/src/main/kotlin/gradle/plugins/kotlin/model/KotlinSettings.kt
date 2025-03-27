@@ -40,19 +40,5 @@ internal data class KotlinSettings(
     override fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("kotlin.multiplatform").id) {
             super.applyTo()
-
-            targets.forEach { target -> target.applyTo() }
-
-            project.kotlin.applyDefaultHierarchyTemplate {
-                common {
-                    hierarchy.forEach { hierarchy ->
-                        hierarchy.applyTo(this)
-                    }
-                }
-            }
-
-            sourceSets.forEach { sourceSet ->
-                sourceSet.applyTo()
-            }
         }
 }
