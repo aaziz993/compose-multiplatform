@@ -5,6 +5,7 @@ import kotlinx.kover.gradle.plugin.dsl.AggregationType
 import kotlinx.kover.gradle.plugin.dsl.CoverageUnit
 import kotlinx.kover.gradle.plugin.dsl.GroupingEntityType
 import kotlinx.kover.gradle.plugin.dsl.KoverLogTaskConfig
+import kotlinx.serialization.Serializable
 
 /**
  * Configuration of coverage printing to the log for current report variant.

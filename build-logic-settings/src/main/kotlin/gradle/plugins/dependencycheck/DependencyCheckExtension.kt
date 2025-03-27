@@ -7,6 +7,7 @@ import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
 import gradle.api.applyTo
+import gradle.api.tryAddAll
 import gradle.plugins.dependencycheck.analyzer.AnalyzerExtension
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -285,7 +286,7 @@ internal abstract class DependencyCheckExtension {
             project.dependencyCheck.analyzedTypes tryAddAll analyzedTypes
             setAnalyzedTypes?.let(project.dependencyCheck::setAnalyzedTypes)
             skip?.let(project.dependencyCheck::setSkip)
-            scanSet?.map(project::file)?.let(project.dependencyCheck.scanSet::addAll)
+            project.dependencyCheck.scanSet tryAddAll scanSet?.map(project::file)
             setScanSet?.map(project::file)?.let(project.dependencyCheck::setScanSet)
 
             additionalCpes?.forEach { additionalCpe ->

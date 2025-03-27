@@ -573,7 +573,7 @@ internal interface CommonExtension<
         }
 
         extension.flavorDimensions tryAddAll flavorDimensions
-        setFlavorDimensions?.act(extension.flavorDimensions::clear)?.let(extension.flavorDimensions::addAll)
+        extension.flavorDimensions tryAddAll setFlavorDimensions
         extension::resourcePrefix trySet resourcePrefix
         extension::ndkVersion trySet ndkVersion
         extension::ndkPath trySet ndkPath

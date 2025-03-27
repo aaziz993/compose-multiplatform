@@ -1,6 +1,8 @@
 package gradle.plugins.android
 
 import com.android.build.api.dsl.CmakeFlags
+import gradle.api.tryAddAll
+import gradle.api.trySet
 import kotlinx.serialization.Serializable
 
 /**

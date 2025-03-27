@@ -7,6 +7,7 @@ import gradle.accessors.versions
 import gradle.act
 import gradle.api.tryAddAll
 import gradle.api.tryAssign
+import gradle.api.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
@@ -64,7 +65,7 @@ internal interface KotlinCommonCompilerOptions<T : org.jetbrains.kotlin.gradle.d
             ?: project.settings.libs.versions.version("kotlin.languageVersion")
                 ?.let(KotlinVersion::valueOf))
         receiver.optIn tryAddAll optIns
-        setOptIns?.act(receiver.optIn.get()::clear)?.let(receiver.optIn::addAll)
+        receiver.optIn trySet setOptIns
         receiver.progressiveMode tryAssign progressiveMode
     }
 }

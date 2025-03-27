@@ -8,6 +8,7 @@ import gradle.accessors.plugins
 import gradle.accessors.settings
 import gradle.plugins.project.EnabledSettings
 import gradle.plugins.spotless.FormatExtension
+import gradle.plugins.spotless.FormatExtensionKeyTransformingSerializer
 import gradle.plugins.spotless.SpotlessExtension
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

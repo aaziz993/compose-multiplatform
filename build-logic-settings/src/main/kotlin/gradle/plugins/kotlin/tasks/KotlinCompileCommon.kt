@@ -10,6 +10,7 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
 import org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerOptions
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilerExecutionStrategy
 
 internal abstract class KotlinCompileCommon<T : org.jetbrains.kotlin.gradle.tasks.KotlinCompileCommon>
     : AbstractKotlinCompile<T>(), KotlinCompilationTask<T, KotlinCommonCompilerOptions> {
@@ -60,6 +61,10 @@ internal data class KotlinCompileCommonImpl(
     override val sourceSetName: String? = null,
     override val multiPlatformEnabled: Boolean? = null,
     override val useModuleDetection: Boolean? = null,
+    override val kotlinDaemonJvmArguments: List<String>? = null,
+    override val setKotlinDaemonJvmArguments: List<String>? = null,
+    override val compilerExecutionStrategy: KotlinCompilerExecutionStrategy? = null,
+    override val useDaemonFallbackStrategy: Boolean? = null,
 ) : KotlinCompileCommon<org.jetbrains.kotlin.gradle.tasks.KotlinCompileCommon>() {
 
     context(Project)

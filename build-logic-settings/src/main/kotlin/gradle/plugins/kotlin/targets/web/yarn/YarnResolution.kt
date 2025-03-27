@@ -2,6 +2,7 @@ package gradle.plugins.kotlin.targets.web.yarn
 
 import gradle.act
 import gradle.api.tryAddAll
+import gradle.api.trySet
 import kotlinx.serialization.Serializable
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnResolution
 
@@ -15,9 +16,9 @@ internal data class YarnResolution(
 ) {
 
     fun toYarnResolution() = YarnResolution(path).apply {
-        this@YarnResolution.includedVersions tryAddAll includedVersions
-        this@YarnResolution.setIncludedVersions?.act(includedVersions::clear)?.let(includedVersions::addAll)
-        this@YarnResolution.excludedVersions tryAddAll excludedVersions
-        this@YarnResolution.setExcludedVersions?.act(excludedVersions::clear)?.let(excludedVersions::addAll)
+        includedVersions tryAddAll this@YarnResolution.includedVersions
+        includedVersions trySet this@YarnResolution.setIncludedVersions
+        excludedVersions tryAddAll this@YarnResolution.excludedVersions
+        excludedVersions trySet this@YarnResolution.setExcludedVersions
     }
 }

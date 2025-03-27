@@ -230,10 +230,8 @@ internal interface CocoapodsExtension {
             receiver::packageName trySet packageName
             receiver::linkOnly trySet linkOnly
             receiver.interopBindingDependencies tryAddAll interopBindingDependencies
-            setInteropBindingDependencies
-                ?.act(receiver.interopBindingDependencies::clear)
-                ?.let(receiver.interopBindingDependencies::addAll)
-            receiver::path trySet podspecDirectory
+            receiver.interopBindingDependencies trySet setInteropBindingDependencies
+            podspecDirectory?.let(receiver::path)
         }
 
         @Serializable

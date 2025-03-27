@@ -47,7 +47,7 @@ internal interface LibraryVariantDimension<T : LibraryVariantDimension> : Varian
 
         receiver::multiDexEnabled trySet multiDexEnabled
         consumerProguardFiles?.toTypedArray()?.let(receiver::consumerProguardFiles)
-        setConsumerProguardFiles?.map(project::file)?.act(receiver.consumerProguardFiles::clear)?.let(receiver.consumerProguardFiles::addAll)
+        receiver.consumerProguardFiles trySet setConsumerProguardFiles?.map(project::file)
         receiver::signingConfig trySet signingConfig?.let(project.android.signingConfigs::getByName)
         aarMetadata?.applyTo(receiver.aarMetadata)
     }

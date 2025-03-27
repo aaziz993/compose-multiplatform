@@ -104,6 +104,10 @@ public infix fun <T> HasMultipleValues<T>.tryAssign(provider: Provider<out Itera
 
 public infix fun <T> HasMultipleValues<T>.tryAddAll(elements: Iterable<T?>?): Unit? = elements?.let(::addAll)
 
+public infix fun <T, E> T.trySet(elements: Iterable<E>?): Unit? where T : Provider<out MutableCollection<E>>,
+                                                                      T : HasMultipleValues<E> =
+    tryAddAll(elements?.act(get()::clear))
+
 public infix fun <K, V> MapProperty<K, V>.tryPutAll(entries: Map<out K?, V?>?): Unit? = entries?.let(::putAll)
 
 public infix fun <K, V> MapProperty<K, V>.tryAssign(entries: Map<out K?, V?>?): Unit? = entries?.let(::assign)

@@ -8,7 +8,9 @@ import gradle.accessors.settings
 import gradle.accessors.yarn
 import gradle.accessors.yarnEnv
 import gradle.act
+import gradle.api.tryAddAll
 import gradle.api.tryAssign
+import gradle.api.trySet
 import gradle.plugins.kotlin.targets.web.EnvSpec
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -67,7 +69,7 @@ internal data class YarnRootEnvSpec(
             project.yarnEnv.yarnLockMismatchReport tryAssign yarnLockMismatchReport
             project.yarnEnv.reportNewYarnLock tryAssign reportNewYarnLock
             project.yarnEnv.yarnLockAutoReplace tryAssign yarnLockAutoReplace
-            resolutions?.map(YarnResolution::toYarnResolution)?.let(project.yarnEnv.resolutions::addAll)
-            setResolutions?.act(project.yarn.resolutions::clear)?.map(YarnResolution::toYarnResolution)?.let(project.yarnEnv.resolutions::addAll)
+            project.yarnEnv.resolutions tryAddAll resolutions?.map(YarnResolution::toYarnResolution)
+            project.yarnEnv.resolutions trySet setResolutions?.map(YarnResolution::toYarnResolution)
         }
 }

@@ -8,6 +8,7 @@ import gradle.accessors.version
 import gradle.accessors.versions
 import gradle.act
 import gradle.api.applyTo
+import gradle.api.tryAddAll
 import gradle.api.trySet
 import gradle.ifTrue
 import gradle.plugins.android.compile.CompileOptions
@@ -91,6 +92,8 @@ internal interface BaseExtension {
 
     val libraryRequests: Set<LibraryRequest>?
 
+    val setLibraryRequests: Set<LibraryRequest>?
+
     val buildTypes: LinkedHashSet<out BuildType<out com.android.build.api.dsl.BuildType>>?
 
     val defaultConfig: DefaultConfig?
@@ -130,11 +133,12 @@ internal interface BaseExtension {
         splits?.applyTo(project.android.splits)
         project.android::generatePureSplits trySet generatePureSplits
         flavorDimensions?.toTypedArray()?.let(project.android::flavorDimensions)
-        setFlavorDimensions?.act(project.android.flavorDimensionList::clear)?.let(project.android.flavorDimensionList::addAll)
+        project.android.flavorDimensionList tryAddAll setFlavorDimensions
         resourcePrefix?.let(project.android::resourcePrefix)
         project.android::ndkVersion trySet ndkVersion
         project.android::ndkPath trySet ndkPath
-        libraryRequests?.map(LibraryRequest::toLibraryRequest)?.let(project.android.libraryRequests::addAll)
+        project.android.libraryRequests tryAddAll libraryRequests?.map(LibraryRequest::toLibraryRequest)
+        project.android.libraryRequests trySet libraryRequests?.map(LibraryRequest::toLibraryRequest)
 
         buildTypes?.forEach { buildType ->
             (buildType as BuildType<com.android.build.api.dsl.BuildType>).applyTo(project.android.buildTypes)

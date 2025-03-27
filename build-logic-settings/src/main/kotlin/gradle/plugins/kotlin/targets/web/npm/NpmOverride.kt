@@ -17,8 +17,8 @@ internal data class NpmOverride(
         path,
     ).apply {
         this@NpmOverride.includedVersions tryAddAll includedVersions
-        this@NpmOverride.setIncludedVersions?.act(includedVersions::clear)?.let(includedVersions::addAll)
+        this@NpmOverride.includedVersions tryAddAll setIncludedVersions
         this@NpmOverride.excludedVersions tryAddAll excludedVersions
-        this@NpmOverride.setExcludedVersions?.act(excludedVersions::clear)?.let(excludedVersions::addAll)
+        this@NpmOverride.excludedVersions tryAddAll setExcludedVersions
     }
 }
