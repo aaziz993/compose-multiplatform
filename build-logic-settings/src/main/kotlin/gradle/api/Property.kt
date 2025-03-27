@@ -17,18 +17,19 @@ internal fun trySetSystemProperty(key: String, value: String) {
 
 public infix fun <T> KMutableProperty0<T>.trySet(value: T?): Unit? = value?.let(::set)
 
-public infix fun <T> KMutableProperty0<out Collection<T>>.add(value: Iterable<T>): Unit? =
+public operator fun <T> KMutableProperty0<out Collection<T>>.plus(value: Iterable<T>): Unit? =
     (this as KMutableProperty0<Collection<T>>).set(get() + value)
 
 public infix fun <T> KMutableProperty0<out Collection<T>>.tryAdd(value: Iterable<T>?): Unit? =
-    value?.let(::add)
+    value?.let(::plus)
+
+public operator fun <T> KMutableProperty0<out MutableCollection<T>?>.plus(value: Collection<T>): Unit {
+    this as KMutableProperty0<MutableCollection<T>?>
+    get()?.addAll(value) ?: set(value as MutableCollection<T>)
+}
 
 public infix fun <T> KMutableProperty0<out MutableCollection<T>?>.tryAdd(value: Collection<T>?): Unit? =
-    value?.let { value ->
-        this as KMutableProperty0<MutableCollection<T>?>
-        get()?.addAll(value) ?: trySet(value as MutableCollection<T>)
-        Unit
-    }
+    value?.let(::plus)
 
 public fun <T : Any> KMutableProperty0<T?>.trySet(value: () -> T?, apply: T.() -> Unit): Unit? =
     get()?.apply() ?: value()?.let(::set)

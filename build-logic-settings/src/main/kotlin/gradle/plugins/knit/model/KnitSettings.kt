@@ -4,6 +4,7 @@ import gradle.accessors.knit
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
 import gradle.api.add
+import gradle.api.plus
 import gradle.ifTrue
 import gradle.api.tryAdd
 import gradle.plugins.knit.KnitPluginExtension
@@ -35,7 +36,7 @@ internal data class KnitSettings(
         super.applyTo()
 
         moduleRootsFromIncludes.ifTrue {
-            project.knit::moduleRoots add project.settings.projectProperties.includesAsPaths.orEmpty() + listOf(".")
+            project.knit::moduleRoots + project.settings.projectProperties.includesAsPaths.orEmpty() + listOf(".")
         }
     }
 }

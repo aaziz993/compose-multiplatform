@@ -22,7 +22,9 @@ internal data class KotlinWebpackConfig(
     val configDirectory: String? = null,
     val reportEvaluatedConfigFile: String? = null,
     val devServer: DevServer? = null,
+    val setDevServer: DevServer? = null,
     val watchOptions: WatchOptions? = null,
+    val setWatchOptions: WatchOptions? = null,
     val experiments: Set<String>? = null,
     val setExperiments: Set<String>? = null,
     val devtool: String? = null,
@@ -45,16 +47,25 @@ internal data class KotlinWebpackConfig(
         webpackConfig::configDirectory trySet configDirectory?.let(project::file)
         webpackConfig::reportEvaluatedConfigFile trySet reportEvaluatedConfigFile?.let(project::file)
 
-        devServer?.let { devServer ->
-            webpackConfig.devServer = (webpackConfig.devServer ?: KotlinWebpackConfig.DevServer())
-                .apply(devServer::applyTo)
+        webpackConfig::devServer.trySet(
+            {
+                devServer?.toDevServer()
+            },
+        ) {
+            devServer?.applyTo(this)
         }
 
-        watchOptions?.let { watchOptions ->
-            webpackConfig.watchOptions = (webpackConfig.watchOptions ?: KotlinWebpackConfig.WatchOptions())
-                .apply(watchOptions::applyTo)
+        webpackConfig::watchOptions trySet watchOptions?.toWatchOptions()
+
+        webpackConfig::watchOptions.trySet(
+            {
+                watchOptions?.toWatchOptions()
+            },
+        ) {
+            watchOptions?.applyTo(this)
         }
 
+        webpackConfig::watchOptions trySet setWatchOptions?.toWatchOptions()
         experiments?.let(webpackConfig.experiments::addAll)
         webpackConfig::experiments trySet setExperiments?.toMutableSet()
         webpackConfig::devtool trySet devtool
@@ -64,11 +75,11 @@ internal data class KotlinWebpackConfig(
         webpackConfig::progressReporter trySet progressReporter
         webpackConfig::resolveFromModulesFirst trySet resolveFromModulesFirst
 
-        if (cssSupport != null) {
+        cssSupport?.let { cssSupport ->
             webpackConfig.cssSupport(cssSupport::applyTo)
         }
 
-        if (scssSupport != null) {
+        scssSupport?.let { scssSupport ->
             webpackConfig.scssSupport(scssSupport::applyTo)
         }
     }
@@ -78,6 +89,8 @@ internal data class KotlinWebpackConfig(
         val aggregateTimeout: Int? = null,
         val ignored: Boolean? = null
     ) {
+
+        fun toWatchOptions() = KotlinWebpackConfig.WatchOptions(aggregateTimeout, ignored)
 
         fun applyTo(receiver: KotlinWebpackConfig.WatchOptions) {
             receiver::aggregateTimeout trySet aggregateTimeout
@@ -138,7 +151,7 @@ internal data class KotlinWebpackConfig(
         data class Proxy(
             val context: List<String>,
             val target: String,
-            val pathRewrite: MutableMap<String, String>? = null,
+            val pathRewrite: Map<String, String>? = null,
             val secure: Boolean? = null,
             val changeOrigin: Boolean? = null
         ) {
@@ -146,7 +159,7 @@ internal data class KotlinWebpackConfig(
             fun toProxy() = KotlinWebpackConfig.DevServer.Proxy(
                 context.toMutableList(),
                 target,
-                pathRewrite,
+                pathRewrite?.toMutableMap(),
                 secure,
                 changeOrigin,
             )
