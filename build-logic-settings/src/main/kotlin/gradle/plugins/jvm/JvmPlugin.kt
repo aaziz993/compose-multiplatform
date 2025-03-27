@@ -1,9 +1,10 @@
-package gradle.plugins.kmp.jvm
+package gradle.plugins.jvm
 
 import gradle.accessors.kotlin
 import gradle.accessors.projectProperties
 import gradle.api.configureEach
 import gradle.plugins.kmp.android.KotlinAndroidTarget
+import gradle.plugins.kmp.jvm.KotlinJvmTarget
 import gradle.plugins.project.ProjectLayout
 import org.gradle.api.Plugin
 import org.gradle.api.Project

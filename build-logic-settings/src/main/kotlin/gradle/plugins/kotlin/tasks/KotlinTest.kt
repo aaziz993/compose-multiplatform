@@ -14,6 +14,7 @@ import org.gradle.kotlin.dsl.withType
 internal abstract class KotlinTest<T : org.jetbrains.kotlin.gradle.tasks.KotlinTest> : AbstractTestTask<T>() {
 
     abstract val targetName: String?
+
     abstract val ignoreRunFailures: Boolean?
 
     context(Project)
@@ -28,7 +29,6 @@ internal abstract class KotlinTest<T : org.jetbrains.kotlin.gradle.tasks.KotlinT
 @Serializable
 @SerialName("KotlinTest")
 internal data class KotlinTestImpl(
-    override val name: String? = null,
     override val ignoreRunFailures: Boolean? = null,
     override val binaryResultsDirectory: String? = null,
     override val ignoreFailures: Boolean? = null,
@@ -49,6 +49,7 @@ internal data class KotlinTestImpl(
     override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
     override val name: String? = null,
+    override val targetName: String? = null,
 ) : KotlinTest<org.jetbrains.kotlin.gradle.tasks.KotlinTest>() {
 
     context(Project)

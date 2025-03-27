@@ -22,7 +22,7 @@ import gradle.plugins.dokka.DokkaPlugin
 import gradle.plugins.initialization.problemreporter.SLF4JProblemReporterContext
 import gradle.plugins.kmp.KMPPlugin
 import gradle.plugins.kmp.filterKotlinTargets
-import gradle.plugins.kmp.jvm.JvmPlugin
+import gradle.plugins.jvm.JvmPlugin
 import gradle.plugins.kmp.nat.NativePlugin
 import gradle.plugins.kmp.nat.android.KotlinAndroidNative32Target
 import gradle.plugins.kmp.nat.android.KotlinAndroidNative64Target

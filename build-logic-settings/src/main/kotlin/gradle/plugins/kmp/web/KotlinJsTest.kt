@@ -15,7 +15,6 @@ import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
 
 @Serializable
 internal data class KotlinJsTest(
-    override val name: String? = null,
     override val ignoreRunFailures: Boolean? = null,
     override val binaryResultsDirectory: String? = null,
     override val ignoreFailures: Boolean? = null,
@@ -36,6 +35,7 @@ internal data class KotlinJsTest(
     override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
     override val name: String? = null,
+    override val targetName: String? = null,
     val environment: Map<String, String>? = null,
     val inputFileProperty: String? = null,
     val debug: Boolean? = null,
@@ -52,7 +52,11 @@ internal data class KotlinJsTest(
         receiver.inputFileProperty tryAssign inputFileProperty?.let(project::file)
         receiver::debug trySet debug
         nodeJsArgs?.let(receiver.nodeJsArgs::addAll)
-        useMocha?.applyTo(receiver.useMocha())
+
+        useMocha?.let { useMocha ->
+            receiver.useMocha(useMocha::applyTo)
+        }
+
         useKarma?.applyTo(receiver.useKarma(), "${project.moduleName}-targetName")
     }
 

@@ -1,16 +1,20 @@
 package gradle.plugins.kmp.web
 
+import gradle.api.tasks.applyTo
+import org.gradle.kotlin.dsl.withType
 import gradle.api.tryAssign
 import gradle.api.trySet
 import gradle.collection.SerializableAnyList
 import gradle.collection.SerializableAnyMap
 import gradle.process.AbstractExecTask
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
+import org.jetbrains.kotlin.gradle.targets.js.d8.D8Exec
 
 @Serializable
 internal data class D8Exec(
-    override val commandLineArgs: SerializableAnyList? = null,
-    override val setCommandLineArgs: SerializableAnyList? = null,
+    override val commandLine: SerializableAnyList? = null,
+    override val setCommandLine: SerializableAnyList? = null,
     override val args: SerializableAnyList? = null,
     override val setArgs: SerializableAnyList? = null,
     override val executable: String? = null,
@@ -36,13 +40,15 @@ internal data class D8Exec(
 ) : AbstractExecTask<D8Exec>() {
 
     context(Project)
-    override fun applyTo(receiver: T) {
-        super.applyTo(named)
+    override fun applyTo(receiver: D8Exec) {
+        super.applyTo(receiver)
 
-        named as org.jetbrains.kotlin.gradle.targets.js.d8.D8Exec
+        receiver::d8Args trySet d8Args?.toMutableList()
 
-        named::d8Args trySet d8Args?.toMutableList()
-
-        named.inputFileProperty tryAssign inputFileProperty?.let(project::file)
+        receiver.inputFileProperty tryAssign inputFileProperty?.let(project::file)
     }
+
+    context(Project)
+    override fun applyTo() =
+        applyTo(project.tasks.withType<D8Exec>())
 }
