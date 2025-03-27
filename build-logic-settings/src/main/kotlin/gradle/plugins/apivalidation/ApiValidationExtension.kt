@@ -14,6 +14,8 @@ internal interface ApiValidationExtension {
 
     /**
      * Fully qualified package names that are not consider  API.
+import gradle.accessors.files
+import gradle.api.trySet
      * For example, it could be `kotlinx.coroutines.internal` or `kotlinx.serialization.implementation`.
      */
     val ignoredPackages: Set<String>?
@@ -50,6 +52,8 @@ internal interface ApiValidationExtension {
 
     /**
      * Fully qualified package names that contain  declarations.
+import gradle.accessors.files
+import gradle.api.trySet
      * If at least one of [Markers], [Packages] or [Classes] is defined,
      * all declarations not covered by any of them will be considered non-.
      * [ignoredPackages], [ignoredClasses] and [nonMarkers] can be used for additional filtering.

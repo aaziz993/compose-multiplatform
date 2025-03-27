@@ -83,8 +83,12 @@ internal data class DokkaPublication(
     val suppressInheritedMembers: Boolean? = null,
     /**
      * A list of Markdown files that contain module and package documentation.
+import gradle.accessors.files
+import gradle.api.trySet
      *
      * The contents of the specified files are parsed and embedded into documentation as module and package descriptions.
+import gradle.accessors.files
+import gradle.api.trySet
      *
      * The format of the Markdown files is very specific and must be exactly correct to be readable by Dokka.
      *

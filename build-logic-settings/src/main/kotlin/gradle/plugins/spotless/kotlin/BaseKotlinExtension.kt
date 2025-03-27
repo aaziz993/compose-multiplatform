@@ -8,6 +8,7 @@ import gradle.accessors.libs
 import gradle.accessors.settings
 import gradle.accessors.version
 import gradle.accessors.versions
+import gradle.api.trySet
 import gradle.plugins.spotless.FormatExtension
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

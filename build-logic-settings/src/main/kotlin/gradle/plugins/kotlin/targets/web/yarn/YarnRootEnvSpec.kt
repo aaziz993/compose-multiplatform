@@ -7,8 +7,8 @@ import gradle.accessors.plugins
 import gradle.accessors.settings
 import gradle.accessors.yarn
 import gradle.accessors.yarnEnv
-import gradle.api.tryAssign
 import gradle.act
+import gradle.api.tryAssign
 import gradle.plugins.kotlin.targets.web.EnvSpec
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -16,6 +16,8 @@ import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnLockMismatchReport
 
 /**
  * Spec for Yarn - package manager to install NPM dependencies
+import gradle.accessors.files
+import gradle.api.trySet
  */
 @Serializable
 internal data class YarnRootEnvSpec(
@@ -26,6 +28,8 @@ internal data class YarnRootEnvSpec(
     override val command: String? = null,
     /**
      * Specify whether to not run install without custom package scripts.
+import gradle.accessors.files
+import gradle.api.trySet
      * It is useful for security
      *
      * Default: true

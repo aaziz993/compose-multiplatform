@@ -2,9 +2,9 @@ package gradle.plugins.cmp.desktop.application
 
 import gradle.accessors.kotlin
 import gradle.accessors.sourceSets
+import gradle.act
 import gradle.api.getByNameOrAll
 import gradle.api.trySet
-import gradle.act
 import gradle.ifTrue
 import gradle.plugins.cmp.desktop.application.buildtype.JvmApplicationBuildTypes
 import kotlinx.serialization.Serializable

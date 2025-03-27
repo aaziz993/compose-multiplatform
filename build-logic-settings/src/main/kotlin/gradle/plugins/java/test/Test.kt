@@ -1,14 +1,16 @@
 package gradle.plugins.java.test
+import gradle.accessors.files
 
 import gradle.accessors.javaToolchain
-import gradle.ifTrue
 import gradle.api.tasks.applyTo
 import gradle.api.tasks.test.AbstractTestTask
 import gradle.api.tasks.test.TestFilter
 import gradle.api.tasks.test.TestLoggingContainer
 import gradle.api.tasks.util.PatternFilterable
 import gradle.api.tryAssign
+import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
+import gradle.ifTrue
 import gradle.plugins.java.JavaToolchainSpec
 import gradle.plugins.java.ModularitySpec
 import kotlinx.serialization.SerialName

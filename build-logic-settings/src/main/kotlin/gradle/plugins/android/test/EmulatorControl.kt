@@ -1,8 +1,8 @@
 package gradle.plugins.android.test
 
 import com.android.build.api.dsl.EmulatorControl
-import gradle.api.trySet
 import gradle.act
+import gradle.api.trySet
 import kotlinx.serialization.Serializable
 
 /**

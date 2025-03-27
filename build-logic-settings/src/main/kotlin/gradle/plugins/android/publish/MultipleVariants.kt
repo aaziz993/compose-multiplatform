@@ -1,6 +1,7 @@
 package gradle.plugins.android.publish
 
 import com.android.build.api.dsl.MultipleVariants
+import gradle.api.trySet
 import gradle.ifTrue
 import gradle.plugins.android.flavor.FlavorDimensionAndValues
 

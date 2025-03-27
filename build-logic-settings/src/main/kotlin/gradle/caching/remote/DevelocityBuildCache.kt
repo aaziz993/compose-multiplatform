@@ -3,6 +3,7 @@ package gradle.caching.remote
 import com.gradle.develocity.agent.gradle.buildcache.DevelocityBuildCache
 import gradle.accessors.projectProperties
 import gradle.api.isCI
+import gradle.api.trySet
 import gradle.caching.AbstractBuildCache
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

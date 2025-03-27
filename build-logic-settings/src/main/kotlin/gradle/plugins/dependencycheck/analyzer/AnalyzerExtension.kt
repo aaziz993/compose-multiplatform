@@ -1,5 +1,6 @@
 package gradle.plugins.dependencycheck.analyzer
 
+import gradle.api.trySet
 import kotlinx.serialization.Serializable
 import org.owasp.dependencycheck.gradle.extension.AnalyzerExtension
 
@@ -75,14 +76,20 @@ internal data class AnalyzerExtension(
     val cocoapodsEnabled: Boolean? = null,
     /**
      * Sets whether the swift package manager analyzer is enabled.
+import gradle.accessors.files
+import gradle.api.trySet
      */
     val swiftEnabled: Boolean? = null,
     /**
      * Sets whether the swift package manager analyzer is enabled.
+import gradle.accessors.files
+import gradle.api.trySet
      */
     val dartEnabled: Boolean? = null,
     /**
      * Sets whether the swift package resolved analyzer is enabled.
+import gradle.accessors.files
+import gradle.api.trySet
      */
     val swiftPackageResolvedEnabled: Boolean? = null,
     /**
@@ -156,7 +163,11 @@ internal data class AnalyzerExtension(
     val nodeAudit: NodeAuditExtension? = null,
     /**
      * The configuration extension for the node package settings.
+import gradle.accessors.files
+import gradle.api.trySet
      * Allows programmatic configuration of the node package extension
+import gradle.accessors.files
+import gradle.api.trySet
      * @param config the action to configure the node extension
      * @return the node extension
      */

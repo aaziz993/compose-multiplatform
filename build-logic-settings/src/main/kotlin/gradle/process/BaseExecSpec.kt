@@ -1,5 +1,6 @@
 package gradle.process
 
+import gradle.api.trySet
 import org.gradle.api.Project
 import org.gradle.process.BaseExecSpec
 

@@ -1,10 +1,10 @@
 package gradle.plugins.apple
 
+import gradle.act
 import gradle.api.NamedKeyTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
-import gradle.act
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

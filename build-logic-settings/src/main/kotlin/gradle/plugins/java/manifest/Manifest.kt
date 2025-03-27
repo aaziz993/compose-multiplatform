@@ -1,7 +1,8 @@
 package gradle.plugins.java.manifest
 
-import gradle.collection.SerializableAnyMap
 import gradle.act
+import gradle.api.trySet
+import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -32,14 +33,13 @@ internal data class Manifest(
             receiver.attributes(value, key)
         }
 
-        setSections?.forEach { (key, value) ->
-            receiver.sections.clear()
+        setSections?.act(receiver.sections::clear)?.forEach { (key, value) ->
             receiver.attributes(value, key)
         }
 
         effectiveManifest?.applyTo(receiver.effectiveManifest)
 
-        froms?.filterIsInstance<String>()?.toTypedArray()?.let(receiver::from)
+receiver::from trySet         froms?.filterIsInstance<String>()
 
         froms?.filterIsInstance<From>()?.toTypedArray()?.forEach { (mergePath, mergeSpec) ->
             receiver.from(mergePath, mergeSpec::applyTo)

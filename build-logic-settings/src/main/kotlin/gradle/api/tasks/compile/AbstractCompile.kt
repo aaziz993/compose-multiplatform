@@ -1,10 +1,11 @@
 package gradle.api.tasks.compile
+import gradle.accessors.files
 
 import gradle.api.tasks.SourceTask
 import gradle.api.tasks.applyTo
 import gradle.api.tryAssign
+import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
-
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

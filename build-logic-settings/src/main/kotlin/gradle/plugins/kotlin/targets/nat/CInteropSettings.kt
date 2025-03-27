@@ -1,4 +1,5 @@
 package gradle.plugins.kotlin.targets.nat
+import gradle.accessors.files
 
 import gradle.api.NamedKeyTransformingSerializer
 import gradle.api.ProjectNamed
@@ -84,6 +85,8 @@ internal interface CInteropSettings<T : org.jetbrains.kotlin.gradle.plugin.CInte
 
     /**
      * Defines the package name for the generated bindings.
+import gradle.accessors.files
+import gradle.api.trySet
      * It is equivalent to passing `-pkg` to the cinterop tool.
      *
      * #### Example
@@ -101,9 +104,15 @@ internal interface CInteropSettings<T : org.jetbrains.kotlin.gradle.plugin.CInte
      * ```
      *
      * In the example, the com.test.cinterop package contains all the declarations collected from headers by the cinterop tool.
+import gradle.accessors.files
+import gradle.api.trySet
      * These declarations are then available in this package during the final Kotlin compilation.
+import gradle.accessors.files
+import gradle.api.trySet
      *
      * @param value The package name to be assigned.
+import gradle.accessors.files
+import gradle.api.trySet
      */
     val packageName: String?
 

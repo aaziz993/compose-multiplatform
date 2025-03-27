@@ -1,5 +1,6 @@
 package gradle.process
 
+import gradle.api.trySet
 import gradle.collection.SerializableAnyList
 import org.gradle.api.Project
 

@@ -3,6 +3,7 @@ package gradle.plugins.kotlin.sqldelight
 import gradle.api.NamedKeyTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.tryAssign
+import gradle.api.trySet
 import gradle.plugins.project.Dependency
 import gradle.plugins.project.DependencyKeyTransformingSerializer
 import kotlinx.serialization.Serializable

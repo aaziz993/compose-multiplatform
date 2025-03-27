@@ -1,5 +1,6 @@
 package gradle.caching.remote
 
+import gradle.api.trySet
 import gradle.caching.AbstractBuildCache
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

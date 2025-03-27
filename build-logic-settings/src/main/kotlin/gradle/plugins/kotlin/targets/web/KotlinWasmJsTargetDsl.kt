@@ -1,9 +1,9 @@
 package gradle.plugins.kotlin.targets.web
 
 import gradle.accessors.kotlin
-import gradle.ifTrue
 import gradle.api.applyTo
 import gradle.api.publish.maven.MavenPublication
+import gradle.ifTrue
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

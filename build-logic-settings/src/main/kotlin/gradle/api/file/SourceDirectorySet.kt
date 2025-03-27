@@ -1,8 +1,8 @@
 package gradle.api.file
+import gradle.accessors.files
 
 import gradle.api.ProjectNamed
 import gradle.api.tasks.util.PatternFilterable
-import gradle.api.tryApply
 import gradle.api.tryAssign
 import gradle.api.trySet
 import kotlinx.serialization.Serializable

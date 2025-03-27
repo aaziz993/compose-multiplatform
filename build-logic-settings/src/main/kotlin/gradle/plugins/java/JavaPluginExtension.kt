@@ -5,12 +5,12 @@ import gradle.accessors.libs
 import gradle.accessors.settings
 import gradle.accessors.version
 import gradle.accessors.versions
-import gradle.ifTrue
 import gradle.api.applyTo
 import gradle.api.tasks.SourceSet
 import gradle.api.tasks.SourceSetKeyTransformingSerializer
 import gradle.api.tryApply
 import gradle.api.tryAssign
+import gradle.ifTrue
 import gradle.plugins.java.manifest.Manifest
 import kotlinx.serialization.Serializable
 import org.gradle.api.JavaVersion
@@ -64,6 +64,8 @@ internal data class JavaPluginExtension(
     val disableAutoTargetJvm: Boolean? = null,
     /**
      * Adds a task `javadocJar` that will package the output of the `javadoc` task in a JAR with classifier `javadoc`.
+import gradle.accessors.files
+import gradle.api.trySet
      * <P>
      * The produced artifact is registered as a documentation variant on the `java` component and added as a dependency on the `assemble` task.
      * This means that if `maven-publish` or `ivy-publish` is also applied, the javadoc JAR will be published.
@@ -79,6 +81,8 @@ internal data class JavaPluginExtension(
     val withJavadocJar: Boolean? = null,
     /**
      * Adds a task `sourcesJar` that will package the Java sources of the main [SourceSet][org.gradle.api.tasks.SourceSet] in a JAR with classifier `sources`.
+import gradle.accessors.files
+import gradle.api.trySet
      * <P>
      * The produced artifact is registered as a documentation variant on the `java` component and added as a dependency on the `assemble` task.
      * This means that if `maven-publish` or `ivy-publish` is also applied, the sources JAR will be published.

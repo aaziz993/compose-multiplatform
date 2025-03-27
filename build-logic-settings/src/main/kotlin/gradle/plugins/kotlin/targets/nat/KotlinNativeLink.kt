@@ -1,15 +1,14 @@
 package gradle.plugins.kotlin.targets.nat
 
 import gradle.api.tasks.applyTo
-import org.gradle.kotlin.dsl.withType
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
-import gradle.plugins.kotlin.KotlinCommonCompilerToolOptions
 import gradle.plugins.kotlin.KotlinCommonCompilerToolOptionsImpl
 import gradle.plugins.kotlin.tasks.AbstractKotlinCompileTool
 import gradle.plugins.kotlin.tasks.KotlinToolTask
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.InternalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.tasks.KotlinNativeLink
 

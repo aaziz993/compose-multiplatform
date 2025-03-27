@@ -1,9 +1,9 @@
 package gradle.plugins.kotlin.targets.web
 
-import org.gradle.kotlin.dsl.assign
 import gradle.api.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.assign
 import org.jetbrains.kotlin.gradle.targets.js.dsl.Distribution
 
 @Serializable

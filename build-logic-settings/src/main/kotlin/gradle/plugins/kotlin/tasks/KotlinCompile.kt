@@ -7,7 +7,6 @@ import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.kotlin.KotlinCommonCompilerOptions
 import gradle.plugins.kotlin.targets.jvm.KotlinJvmCompile
-import gradle.plugins.kotlin.targets.jvm.KotlinJvmCompilerOptions
 import gradle.plugins.kotlin.targets.nat.CompilerPluginOptions
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -22,9 +21,15 @@ internal abstract class KotlinCompile<T : org.jetbrains.kotlin.gradle.tasks.Kotl
     KotlinJvmCompile<T> {
 
     /** A package prefix that is used for locating Java sources in a directory structure with non-full-depth packages.
+import gradle.accessors.files
+import gradle.api.trySet
      *
      * Example: a Java source file with `package com.example.my.package` is located in directory `src/main/java/my/package`.
+import gradle.accessors.files
+import gradle.api.trySet
      * Then, for the Kotlin compilation to locate the source file, use package prefix `"com.example"` */
+import gradle.accessors.files
+import gradle.api.trySet
     abstract val javaPackagePrefix: String?
     abstract val usePreciseJavaTracking: Boolean?
     abstract val useKotlinAbiSnapshot: Boolean?

@@ -6,9 +6,9 @@ import gradle.accessors.libs
 import gradle.accessors.settings
 import gradle.accessors.version
 import gradle.accessors.versions
+import gradle.act
 import gradle.api.applyTo
 import gradle.api.trySet
-import gradle.act
 import gradle.ifTrue
 import gradle.plugins.android.compile.CompileOptions
 import gradle.plugins.android.defaultconfig.DefaultConfig

@@ -1,14 +1,12 @@
 package gradle.plugins.kotlin.targets.web
 
-import gradle.api.tryApply
 import gradle.api.tryAddAll
+import gradle.api.tryApply
 import gradle.api.trySet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.Transient
 import kotlinx.serialization.json.JsonContentPolymorphicSerializer
 import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.serializer
 import org.gradle.api.Project

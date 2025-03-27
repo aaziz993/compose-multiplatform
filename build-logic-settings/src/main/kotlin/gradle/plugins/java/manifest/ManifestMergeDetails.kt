@@ -1,5 +1,6 @@
 package gradle.plugins.java.manifest
 
+import gradle.api.trySet
 import gradle.ifTrue
 import kotlinx.serialization.Serializable
 import org.gradle.api.java.archives.ManifestMergeDetails

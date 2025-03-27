@@ -1,10 +1,10 @@
 package gradle.plugins.kotlin.mpp
 
 import gradle.accessors.kotlin
-import gradle.ifTrue
 import gradle.api.applyTo
 import gradle.api.publish.maven.MavenPublication
 import gradle.api.trySet
+import gradle.ifTrue
 import gradle.plugins.kotlin.HasConfigurableKotlinCompilerOptions
 import gradle.plugins.kotlin.targets.jvm.KotlinJvmCompilerOptions
 import kotlinx.serialization.SerialName

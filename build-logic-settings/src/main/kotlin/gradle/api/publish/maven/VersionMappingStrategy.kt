@@ -30,7 +30,7 @@ internal data class VersionMappingStrategy(
 
     fun applyTo(receiver: VersionMappingStrategy) {
         receiver::allVariants tryApply allVariants?.let{ allVariants -> allVariants::applyTo }
-        
+
         usages?.forEach { (usage, strategy) ->
             receiver.usage(usage, strategy::applyTo)
         }

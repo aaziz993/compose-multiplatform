@@ -1,7 +1,10 @@
 package gradle.plugins.kotlin.targets.jvm
 
+import gradle.accessors.files
+
 import gradle.api.getByNameOrAll
 import gradle.api.tryAssign
+import gradle.api.trySet
 import gradle.collection.SerializableAnyList
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -38,14 +41,14 @@ internal interface KotlinJvmRunDsl {
     context(Project)
     fun applyTo(receiver: org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmRunDsl, target: KotlinJvmTarget) {
         receiver.mainClass tryAssign mainClass
-        receiver::args trySet args
+        args?.let(receiver::args)
         receiver::setArgs trySet setArgs
-        classpath?.filter { !it.startsWith("$") }?.toTypedArray()?.let(receiver::classpath)
+receiver::classpath trySet         classpath?.filter { !it.startsWith("$") }
         receiver::setClasspath trySet setClasspath?.let(project::files)
         classpath?.mapNotNull {
             if (it.startsWith("\$compilation.")) it.substringAfter(".", "")
             else null
-        }?.map(target.compilations::getByNameOrAll)?.toTypedArray()?.let(receiver::classpath)
+receiver::classpath trySet         }?.map(target.compilations::getByNameOrAll)
     }
 }
 

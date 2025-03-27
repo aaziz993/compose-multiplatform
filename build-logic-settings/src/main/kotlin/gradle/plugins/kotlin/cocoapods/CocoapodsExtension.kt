@@ -12,8 +12,8 @@ import gradle.accessors.resolveLibraryRef
 import gradle.accessors.settings
 import gradle.accessors.version
 import gradle.accessors.versions
-import gradle.api.trySet
 import gradle.act
+import gradle.api.trySet
 import gradle.ifTrue
 import gradle.plugins.kotlin.targets.nat.FrameworkSettings
 import java.net.URI

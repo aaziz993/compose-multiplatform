@@ -19,6 +19,8 @@ internal data class Prefab(
      * name of the target.
      *
      * This name will be the name of the module in the prefab package, and the package name will be
+import gradle.accessors.files
+import gradle.api.trySet
      * the name of the gradle project.
      */
     override val name: String? = null,

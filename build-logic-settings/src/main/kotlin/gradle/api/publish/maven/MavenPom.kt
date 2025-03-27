@@ -5,6 +5,7 @@ import gradle.accessors.settings
 import gradle.addSuffix
 import gradle.api.tryApply
 import gradle.api.tryAssign
+import gradle.api.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.publish.maven.MavenPom

@@ -1,7 +1,8 @@
 package gradle.api.tasks.copy
 
-import gradle.ifTrue
 import gradle.api.file.RelativePath
+import gradle.api.trySet
+import gradle.ifTrue
 import kotlinx.serialization.Serializable
 import org.gradle.api.file.DuplicatesStrategy
 import org.gradle.api.file.FileCopyDetails

@@ -2,6 +2,7 @@ package gradle.plugins.quality
 
 import gradle.accessors.sourceSets
 import gradle.api.getByNameOrAll
+import gradle.api.trySet
 import org.gradle.api.Project
 import org.gradle.api.plugins.quality.CodeQualityExtension
 

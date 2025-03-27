@@ -1,5 +1,6 @@
 package gradle.plugins.signing.tasks
 
+import gradle.api.trySet
 import org.gradle.api.Project
 import org.gradle.plugins.signing.SignatureSpec
 

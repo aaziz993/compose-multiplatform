@@ -1,6 +1,5 @@
 package gradle.api.repositories.ivy
 
-import gradle.ifTrue
 import gradle.api.applyTo
 import gradle.api.repositories.ArtifactRepository
 import gradle.api.repositories.AuthenticationSupported
@@ -8,6 +7,8 @@ import gradle.api.repositories.PasswordCredentials
 import gradle.api.repositories.RepositoryContentDescriptorImpl
 import gradle.api.repositories.UrlArtifactRepository
 import gradle.api.tryApply
+import gradle.api.trySet
+import gradle.ifTrue
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

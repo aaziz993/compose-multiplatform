@@ -2,10 +2,11 @@ package gradle.plugins.kotlin.targets.web
 
 import gradle.accessors.kotlin
 import gradle.accessors.moduleName
-import gradle.ifTrue
 import gradle.api.applyTo
 import gradle.api.publish.maven.MavenPublication
 import gradle.api.tryAssign
+import gradle.api.trySet
+import gradle.ifTrue
 import gradle.plugins.kotlin.HasConfigurableKotlinCompilerOptions
 import gradle.plugins.kotlin.KotlinTarget
 import gradle.plugins.kotlin.mpp.HasBinaries

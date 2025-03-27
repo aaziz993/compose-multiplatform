@@ -126,9 +126,7 @@ internal interface VariantDimension<T : VariantDimension> {
 
         ndk?.applyTo(receiver.ndk)
 
-        defaultProguardFiles
-            ?.mapNotNull { defaultProguardFile -> project.getDefaultProguardFile(defaultProguardFile) }
-            ?.toTypedArray()?.let(receiver::proguardFiles)
+        defaultProguardFiles?.mapNotNull { defaultProguardFile -> project.getDefaultProguardFile(defaultProguardFile) }
 
         receiver::setProguardFiles trySet setProguardFiles
 

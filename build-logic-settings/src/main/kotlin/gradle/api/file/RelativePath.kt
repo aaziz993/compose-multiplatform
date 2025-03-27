@@ -6,11 +6,11 @@ import org.gradle.api.file.RelativePath
 @Serializable
 internal data class RelativePath(
     val endsWithFile: Boolean,
-    val segments: List<String>? = null
+    val segments: List<String>
 ) {
 
     fun toRelativePath() = RelativePath(
         endsWithFile,
-        *segments.orEmpty().toTypedArray(),
+        *segments.toTypedArray(),
     )
 }

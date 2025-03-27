@@ -11,8 +11,9 @@ import gradle.accessors.settings
 import gradle.accessors.spotless
 import gradle.accessors.version
 import gradle.accessors.versions
-import gradle.ifTrue
+import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
+import gradle.ifTrue
 import gradle.serialization.serializer.JsonPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlin.reflect.full.memberProperties

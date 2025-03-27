@@ -6,6 +6,7 @@ import gradle.api.ProjectNamed
 import gradle.api.applyTo
 import gradle.api.file.SourceDirectorySet
 import gradle.api.getByNameOrAll
+import gradle.api.trySet
 import gradle.plugins.project.Dependency
 import gradle.plugins.project.DependencyKeyTransformingSerializer
 import kotlinx.serialization.Serializable

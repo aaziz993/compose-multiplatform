@@ -2,8 +2,8 @@
 
 package gradle.plugins.java.tasks.shadow
 
-import gradle.ifTrue
 import gradle.api.tasks.copy.CopySpec
+import gradle.ifTrue
 import gradle.plugins.java.tasks.DependencyFilter
 import org.gradle.api.Project
 

@@ -1,5 +1,6 @@
 package gradle.api.tasks.test
 
+import gradle.api.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.tasks.testing.TestFilter
 

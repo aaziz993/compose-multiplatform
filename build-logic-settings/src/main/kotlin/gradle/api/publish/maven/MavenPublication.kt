@@ -1,10 +1,10 @@
 package gradle.api.publish.maven
 
 import gradle.accessors.publishing
-import gradle.ifTrue
 import gradle.api.applyTo
 import gradle.api.publish.Publication
 import gradle.api.tryApply
+import gradle.ifTrue
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

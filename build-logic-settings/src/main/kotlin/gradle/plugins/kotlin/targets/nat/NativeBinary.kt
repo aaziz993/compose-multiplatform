@@ -1,10 +1,10 @@
 package gradle.plugins.kotlin.targets.nat
 
 import gradle.accessors.moduleName
+import gradle.act
 import gradle.api.ProjectNamed
 import gradle.api.tryAssign
 import gradle.api.trySet
-import gradle.act
 import gradle.plugins.project.Dependency
 import gradle.serialization.serializer.JsonPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer

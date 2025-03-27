@@ -69,6 +69,9 @@ import gradle.plugins.kotlin.targets.nat.linux.KotlinLinuxTarget
 import gradle.plugins.kotlin.targets.nat.linux.KotlinLinuxX64Target
 import gradle.plugins.kotlin.targets.nat.mingw.KotlinMingwTarget
 import gradle.plugins.kotlin.targets.nat.mingw.KotlinMingwX64Target
+import gradle.plugins.kotlin.targets.web.JsPlugin
+import gradle.plugins.kotlin.targets.web.WasmJsPlugin
+import gradle.plugins.kotlin.targets.web.WasmWasiPlugin
 import gradle.plugins.kover.KoverPlugin
 import gradle.plugins.project.ProjectProperties.Companion.load
 import gradle.plugins.project.ProjectProperties.Companion.yaml
@@ -77,9 +80,6 @@ import gradle.plugins.shadow.ShadowPlugin
 import gradle.plugins.signing.SigningPlugin
 import gradle.plugins.sonar.SonarPlugin
 import gradle.plugins.spotless.SpotlessPlugin
-import gradle.plugins.kotlin.targets.web.JsPlugin
-import gradle.plugins.kotlin.targets.web.WasmJsPlugin
-import gradle.plugins.kotlin.targets.web.WasmWasiPlugin
 import gradle.serialization.encodeToAny
 import kotlinx.serialization.json.Json
 import org.gradle.api.GradleException

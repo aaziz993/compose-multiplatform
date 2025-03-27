@@ -1,6 +1,8 @@
 @file:Suppress("UnnecessaryVariable")
 
 package processor
+import gradle.accessors.files
+import gradle.api.trySet
 
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.Dependencies
@@ -30,6 +32,8 @@ public class CompilerProcessor(
         val compiledFile = codeGenerator.getFile("ai.tech.core.type", "Compiled")
 
         compiledFile += "package ai.tech.core.type\n\n"
+import gradle.accessors.files
+import gradle.api.trySet
 
 
         compiledFile += imports.joinToString("\n", postfix = "\n\n") { "import $it" }

@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin.targets.web
 
-import gradle.ifTrue
 import gradle.api.tryAssign
+import gradle.ifTrue
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackRule
 
 internal interface KotlinWebpackRule {

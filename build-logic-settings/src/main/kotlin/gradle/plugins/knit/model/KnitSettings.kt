@@ -7,7 +7,6 @@ import gradle.api.plus
 import gradle.ifTrue
 import gradle.plugins.knit.KnitPluginExtension
 import gradle.plugins.project.EnabledSettings
-import kotlin.collections.orEmpty
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

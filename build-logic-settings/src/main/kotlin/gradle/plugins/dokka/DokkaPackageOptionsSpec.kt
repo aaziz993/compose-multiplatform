@@ -33,6 +33,8 @@ internal data class DokkaPackageOptionsSpec(
     val matchingRegex: String? = null,
     /**
      * Whether this package should be skipped when generating documentation.
+import gradle.accessors.files
+import gradle.api.trySet
      *
      * Default is `false`.
      */
@@ -60,6 +62,8 @@ internal data class DokkaPackageOptionsSpec(
     /**
      * Whether to emit warnings about visible undocumented declarations, that is declarations from
      * this package and without KDocs, after they have been filtered by [documentedVisibilities].
+import gradle.accessors.files
+import gradle.api.trySet
      *
      *
      * Can be overridden on source set level by setting [DokkaSourceSetSpec.reportUndocumented].

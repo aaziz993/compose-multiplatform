@@ -6,10 +6,8 @@ import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
 import gradle.accessors.yarn
-import gradle.api.trySet
-import gradle.act
 import gradle.api.tryAddAll
-import gradle.api.tryPlus
+import gradle.api.trySet
 import gradle.plugins.kotlin.targets.web.AbstractSettings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

@@ -1,5 +1,6 @@
 package gradle.process
 
+import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
 import org.gradle.api.Project
 import org.gradle.process.ProcessForkOptions

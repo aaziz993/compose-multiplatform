@@ -1,5 +1,6 @@
 package gradle.api.repositories
 
+import gradle.api.trySet
 import gradle.isUrl
 import org.gradle.api.Project
 import org.gradle.api.artifacts.repositories.UrlArtifactRepository

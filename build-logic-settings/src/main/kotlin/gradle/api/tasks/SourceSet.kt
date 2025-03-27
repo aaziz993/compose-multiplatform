@@ -1,8 +1,10 @@
 package gradle.api.tasks
 
+import gradle.accessors.files
 import gradle.api.NamedKeyTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.file.SourceDirectorySet
+import gradle.api.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -14,6 +16,8 @@ import org.gradle.api.Project
  *
  * The following example shows how you can configure the 'main' source set, which in this
  * case involves excluding classes whose package begins 'some.unwanted.package' from
+import gradle.accessors.files
+import gradle.api.trySet
  * compilation of the source files in the 'java' [gradle.api.file.SourceDirectorySet]:
  *
  * <pre class='autoTested'>

@@ -1,7 +1,6 @@
 package gradle.api.publish.maven.tasks
 
 import gradle.accessors.publishing
-
 import gradle.api.repositories.maven.Maven
 import gradle.api.tasks.applyTo
 import gradle.collection.SerializableAnyMap

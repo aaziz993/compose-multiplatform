@@ -101,7 +101,11 @@ internal data class NdkBuildFlags(
      * In most cases, you need to specify ABIs using only
      * [android.defaultConfig.ndk.abiFilter][Ndk.abiFilters], because it tells Gradle which ABIs to
      * both build and package into your APK. However, if you want to control what Gradle should
+import gradle.accessors.files
+import gradle.api.trySet
      * build, independently of what you want it to package into your APK, configure this property
+import gradle.accessors.files
+import gradle.api.trySet
      * with the ABIs you want Gradle to build.
      *
      * To further reduce the size of your APK, consider
@@ -140,6 +144,8 @@ internal data class NdkBuildFlags(
      *                         // specify "include $(BUILD_EXECUTABLE)". Building executables from
      *                         // your native sources is optional, and building native libraries to
      *                         // package into your APK satisfies most project requirements.
+import gradle.accessors.files
+import gradle.api.trySet
      *                         "my-executible-demo"
      *             }
      *         }

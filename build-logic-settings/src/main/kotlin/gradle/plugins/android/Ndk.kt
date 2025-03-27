@@ -1,8 +1,8 @@
 package gradle.plugins.android
 
 import com.android.build.api.dsl.Ndk
-import gradle.api.trySet
 import gradle.act
+import gradle.api.trySet
 import kotlinx.serialization.Serializable
 
 /**
@@ -13,6 +13,8 @@ internal data class Ndk(
     /**
      * Specifies the Application Binary Interfaces (ABI) that Gradle should build outputs for and
      * package with your APK.
+import gradle.accessors.files
+import gradle.api.trySet
      *
      * You can list any subset of the
      * [ABIs the NDK supports](https://developer.android.com/ndk/guides/abis.html#sa),

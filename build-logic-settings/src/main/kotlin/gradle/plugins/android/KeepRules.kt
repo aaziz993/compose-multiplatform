@@ -1,6 +1,7 @@
 package gradle.plugins.android
 
 import com.android.build.api.dsl.KeepRules
+import gradle.api.trySet
 import kotlinx.serialization.Serializable
 
 /**

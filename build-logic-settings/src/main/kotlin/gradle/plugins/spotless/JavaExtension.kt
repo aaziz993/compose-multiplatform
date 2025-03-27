@@ -8,6 +8,7 @@ import gradle.accessors.settings
 import gradle.accessors.spotless
 import gradle.accessors.version
 import gradle.accessors.versions
+import gradle.api.trySet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

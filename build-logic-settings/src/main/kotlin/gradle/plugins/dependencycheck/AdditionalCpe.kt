@@ -2,6 +2,7 @@ package gradle.plugins.dependencycheck
 
 import gradle.api.NamedKeyTransformingSerializer
 import gradle.api.ProjectNamed
+import gradle.api.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

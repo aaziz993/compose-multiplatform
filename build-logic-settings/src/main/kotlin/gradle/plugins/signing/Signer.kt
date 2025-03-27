@@ -1,4 +1,5 @@
 package gradle.plugins.signing
+import gradle.accessors.files
 
 import gradle.accessors.publishing
 import gradle.api.getByNameOrAll

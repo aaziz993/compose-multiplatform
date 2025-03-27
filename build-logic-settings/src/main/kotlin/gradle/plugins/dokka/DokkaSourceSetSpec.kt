@@ -71,8 +71,12 @@ internal data class DokkaSourceSetSpec(
     /**
      * List of Markdown files that contain
      * [module and package documentation](https://kotlinlang.org/docs/reference/dokka-module-and-package-docs.html).
+import gradle.accessors.files
+import gradle.api.trySet
      *
      * Contents of specified files will be parsed and embedded into documentation as module and package descriptions.
+import gradle.accessors.files
+import gradle.api.trySet
      *
      * Example of such a file:
      *
@@ -103,6 +107,8 @@ internal data class DokkaSourceSetSpec(
      * as well as if you want to exclude public declarations and only document internal API.
      *
      * Can be configured on per-package basis, see [DokkaPackageOptionsSpec.documentedVisibilities].
+import gradle.accessors.files
+import gradle.api.trySet
      *
      * Default is [VisibilityModifier.Public].
      */
@@ -136,6 +142,8 @@ internal data class DokkaSourceSetSpec(
      * after they have been filtered by [documentedVisibilities].
      *
      * Can be overridden for a specific package by setting [DokkaPackageOptionsSpec.reportUndocumented].
+import gradle.accessors.files
+import gradle.api.trySet
      *
      * Default is `false`.
      */
@@ -151,6 +159,8 @@ internal data class DokkaSourceSetSpec(
     val sourceLinks: Set<DokkaSourceLinkSpec>? = null,
     /**
      * Allows customising documentation generation options on a per-package basis.
+import gradle.accessors.files
+import gradle.api.trySet
      *
      * Use the [perPackageOptions] function to add a new item.
      *
@@ -172,6 +182,8 @@ internal data class DokkaSourceSetSpec(
      * various filters have been applied.
      *
      * For instance, if [skipDeprecated] is set to `true` and your package contains only
+import gradle.accessors.files
+import gradle.api.trySet
      * deprecated declarations, it will be considered to be empty.
      *
      * Default is `true`.
@@ -181,6 +193,8 @@ internal data class DokkaSourceSetSpec(
      * Whether to document declarations annotated with [Deprecated].
      *
      * Can be overridden on package level by setting [DokkaPackageOptionsSpes.skipDeprecated].
+import gradle.accessors.files
+import gradle.api.trySet
      *
      * Default is `false`.
      */

@@ -4,10 +4,8 @@ import com.android.build.gradle.internal.tasks.ProguardConfigurableTask
 import com.android.builder.core.ComponentTypeImpl
 import gradle.api.tasks.applyTo
 import gradle.api.tryAddAll
-
 import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
-
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType

@@ -2,7 +2,6 @@ package gradle.plugins.android
 
 import com.android.build.api.dsl.PostProcessing
 import gradle.api.trySet
-
 import kotlinx.serialization.Serializable
 
 /**

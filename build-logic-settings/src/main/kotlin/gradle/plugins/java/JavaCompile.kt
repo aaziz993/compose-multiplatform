@@ -5,7 +5,6 @@ import gradle.api.tasks.compile.AbstractCompile
 import gradle.api.tasks.compile.CompileOptions
 import gradle.api.tasks.compile.HasCompileOptions
 import gradle.collection.SerializableAnyMap
-
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.tasks.compile.JavaCompile

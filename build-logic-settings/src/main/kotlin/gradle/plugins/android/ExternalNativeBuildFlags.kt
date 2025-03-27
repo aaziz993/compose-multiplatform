@@ -1,8 +1,8 @@
 package gradle.plugins.android
 
 import com.android.build.api.dsl.ExternalNativeBuildFlags
-import gradle.collection.SerializableAnyMap
 import gradle.act
+import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
 
 /**

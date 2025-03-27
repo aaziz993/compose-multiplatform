@@ -1,6 +1,7 @@
 package gradle.plugins.android.sourceset
 
 import gradle.api.ProjectNamed
+import gradle.api.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

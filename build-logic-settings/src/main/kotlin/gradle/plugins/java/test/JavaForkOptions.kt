@@ -1,7 +1,9 @@
 package gradle.plugins.java.test
+import gradle.accessors.files
 
-import gradle.collection.SerializableAnyMap
 import gradle.act
+import gradle.api.trySet
+import gradle.collection.SerializableAnyMap
 import gradle.process.ProcessForkOptions
 import org.gradle.api.Project
 import org.gradle.process.JavaForkOptions

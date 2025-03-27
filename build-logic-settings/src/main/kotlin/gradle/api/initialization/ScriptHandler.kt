@@ -3,7 +3,6 @@ package gradle.api.initialization
 import gradle.api.artifacts.dsl.RepositoryHandler
 import gradle.plugins.project.Dependency
 import gradle.plugins.project.DependencyKeyTransformingSerializer
-
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.initialization.Settings
