@@ -44,7 +44,7 @@ internal data class KotlinAndroidTarget(
 
     context(Project)
     override fun applyTo(receiver: KotlinAndroidTarget) {
-        super<KotlinTarget>.applyTo(receiver)
+        super<AbstractKotlinTarget>.applyTo(receiver)
         super<HasConfigurableKotlinCompilerOptions>.applyTo(receiver)
 
         // Applicable only in library project.

@@ -412,7 +412,7 @@ internal interface KotlinHierarchyBuilder<T : org.jetbrains.kotlin.gradle.plugin
         }
 
         common?.let { common ->
-            receiver.common(common::applyTo)
+            receiver.common((common as KotlinHierarchyBuilder<org.jetbrains.kotlin.gradle.plugin.KotlinHierarchyBuilder>)::applyTo)
         }
 
         withCompilations?.let { withCompilations ->
@@ -466,8 +466,8 @@ internal interface KotlinHierarchyBuilder<T : org.jetbrains.kotlin.gradle.plugin
 
 @Serializable
 internal data class KotlinHierarchyBuilderImpl(
-    override val groups: Set<Group>? = null,
-    override val common: KotlinHierarchyBuilder? = null,
+    override val groups: Set<@Serializable(with = GroupKeyTransformingSerializer::class) Group>? = null,
+    override val common: KotlinHierarchyBuilderImpl? = null,
     override val withCompilations: Set<String>? = null,
     override val excludeCompilations: Set<String>? = null,
     override val withNative: Boolean? = null,

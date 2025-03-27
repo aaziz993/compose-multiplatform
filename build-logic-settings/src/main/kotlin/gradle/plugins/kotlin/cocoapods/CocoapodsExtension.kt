@@ -287,7 +287,7 @@ internal interface CocoapodsExtension {
         }
     }
 
-    object CocoapodsDependencyTransformingSerializer : JsonTransformingSerializer<CocoapodsDependency>(
+    object CocoapodsDependencyKeyTransformingSerializer : JsonTransformingSerializer<CocoapodsDependency>(
         CocoapodsDependency.serializer(),
     ) {
 
