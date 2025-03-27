@@ -11,6 +11,7 @@ import gradle.accessors.projectProperties
 import gradle.accessors.settings
 import gradle.api.configureEach
 import gradle.api.file.replace
+import gradle.api.trySetSystemProperty
 import gradle.decapitalized
 import gradle.plugins.android.application.BaseAppModuleExtension
 import gradle.plugins.android.library.LibraryExtension
