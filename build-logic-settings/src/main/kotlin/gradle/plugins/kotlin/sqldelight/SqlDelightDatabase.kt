@@ -69,7 +69,7 @@ internal data class SqlDelightDatabase(
         receiver.packageName tryAssign packageName
         receiver.schemaOutputDirectory tryAssign schemaOutputDirectory?.let(project.layout.projectDirectory::dir)
         receiver::srcDirs trySet srcDirs
-        setSrcDirs?.let(receiver.srcDirs::setFrom)
+        receiver.srcDirs trySetFrom setSrcDirs
         receiver.deriveSchemaFromMigrations tryAssign deriveSchemaFromMigrations
         receiver.verifyMigrations tryAssign verifyMigrations
         receiver.verifyDefinitions tryAssign verifyDefinitions

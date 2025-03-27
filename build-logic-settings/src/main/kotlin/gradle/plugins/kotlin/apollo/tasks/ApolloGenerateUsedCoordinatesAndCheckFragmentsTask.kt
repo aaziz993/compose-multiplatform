@@ -34,8 +34,8 @@ internal data class ApolloGenerateUsedCoordinatesAndCheckFragmentsTask(
     override fun applyTo(receiver: ApolloGenerateUsedCoordinatesAndCheckFragmentsTask) {
         super.applyTo(receiver)
 
-        downStreamIrOperations?.toTypedArray()?.let(receiver.downStreamIrOperations::from)
-        setDownStreamIrOperations?.let(receiver.downStreamIrOperations::setFrom)
+        receiver.downStreamIrOperations tryFrom downStreamIrOperations
+        receiver.downStreamIrOperations trySetFrom setDownStreamIrOperations
         receiver.irOperations tryAssign irOperations?.let(project::file)
         receiver.outputFile tryAssign outputFile?.let(project::file)
     }

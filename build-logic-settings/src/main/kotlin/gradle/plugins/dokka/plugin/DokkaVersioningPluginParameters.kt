@@ -80,8 +80,8 @@ internal data class DokkaVersioningPluginParameters(
         }
 
         receiver.olderVersionsDir tryAssign olderVersionsDir?.let(project::file)
-        olderVersions?.toTypedArray()?.let(receiver.olderVersions::from)
-        setOlderVersions?.let(receiver.olderVersions::setFrom)
+        receiver.olderVersions tryFrom olderVersions
+        receiver.olderVersions trySetFrom setOlderVersions
         receiver.versionsOrdering tryAssign versionsOrdering
         receiver.version tryAssign version
         receiver.renderVersionsNavigationOnAllPages tryAssign renderVersionsNavigationOnAllPages

@@ -63,10 +63,10 @@ internal interface BaseKotlinCompile<T : org.jetbrains.kotlin.gradle.tasks.BaseK
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
-        friendPaths?.toTypedArray()?.let(receiver.friendPaths::from)
-        setFriendPaths?.let(receiver.friendPaths::setFrom)
-        pluginClasspath?.toTypedArray()?.let(receiver.pluginClasspath::from)
-        setPluginClasspath?.let(receiver.pluginClasspath::setFrom)
+        receiver.friendPaths tryFrom friendPaths
+        receiver.friendPaths trySetFrom setFriendPaths
+        receiver.pluginClasspath tryFrom pluginClasspath
+        receiver.pluginClasspath trySetFrom setPluginClasspath
 
         receiver.pluginOptions tryAssign pluginOptions
             ?.map(CompilerPluginConfig::toCompilerPluginConfig)

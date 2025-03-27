@@ -105,8 +105,8 @@ internal data class Service(
         receiver.packageName tryAssign packageName
         receiver.requiresOptInAnnotation tryAssign requiresOptInAnnotation
         receiver.schemaFile tryAssign schemaFile?.let(project::file)
-        schemaFiles?.toTypedArray()?.let(receiver.schemaFiles::from)
-        setSchemaFiles?.let(receiver.schemaFiles::setFrom)
+        receiver.schemaFiles tryFrom schemaFiles
+        receiver.schemaFiles trySetFrom setSchemaFiles
         receiver.sealedClassesForEnumsMatching tryAddAll  sealedClassesForEnumsMatching
         receiver.sealedClassesForEnumsMatching tryAssign setSealedClassesForEnumsMatching
         receiver.sourceFolder tryAssign sourceFolder

@@ -3,6 +3,8 @@ package gradle.plugins.kotlin.targets.web
 import gradle.api.tasks.K2MultiplatformCompilationTask
 import gradle.api.tasks.ProducesKlib
 import gradle.api.tasks.applyTo
+import gradle.api.tryFrom
+import gradle.api.trySetFrom
 import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -20,8 +22,8 @@ internal abstract class Kotlin2JsCompile<T : org.jetbrains.kotlin.gradle.tasks.K
         super<K2MultiplatformCompilationTask>.applyTo(receiver)
         super<ProducesKlib>.applyTo(receiver)
 
-        libraries?.toTypedArray()?.let(receiver.libraries::from)
-        setLibraries?.let(receiver.libraries::setFrom)
+        receiver.libraries tryFrom libraries
+        receiver.libraries trySetFrom setLibraries
     }
 }
 

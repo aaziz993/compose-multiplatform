@@ -21,8 +21,8 @@ internal data class ProguardSettings(
     fun applyTo(receiver: ProguardSettings) {
         receiver.version tryAssign version
         receiver.maxHeapSize tryAssign maxHeapSize
-        configurationFiles?.toTypedArray()?.let(receiver.configurationFiles::from)
-        setConfigurationFiles?.let(receiver.configurationFiles::setFrom)
+        receiver.configurationFiles tryFrom configurationFiles
+        receiver.configurationFiles trySetFrom setConfigurationFiles
         receiver.isEnabled tryAssign isEnabled
         receiver.obfuscate tryAssign obfuscate
         receiver.optimize tryAssign optimize

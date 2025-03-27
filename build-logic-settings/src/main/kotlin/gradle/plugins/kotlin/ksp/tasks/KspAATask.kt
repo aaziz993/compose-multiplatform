@@ -38,8 +38,8 @@ internal data class KspAATask(
     override fun applyTo(receiver: KspAATask) {
         super.applyTo(receiver)
 
-        kspClasspath?.toTypedArray()?.let(receiver.kspClasspath::from)
-        setKspClasspath?.let(receiver.kspClasspath::setFrom)
+        receiver.kspClasspath tryFrom kspClasspath
+        receiver.kspClasspath trySetFrom setKspClasspath
         kspConfig?.applyTo(receiver.kspConfig)
         receiver.commandLineArgumentProviders tryAddAll commandLineArgumentProviders
         receiver.commandLineArgumentProviders tryAssign setCommandLineArgumentProviders

@@ -52,17 +52,17 @@ internal data class KspGradleConfig(
 
     context(Project)
     fun applyTo(receiver: KspGradleConfig) {
-        processorClasspath?.toTypedArray()?.let(receiver.processorClasspath::from)
-        setProcessorClasspath?.let(receiver.processorClasspath::setFrom)
+        receiver.processorClasspath tryFrom processorClasspath
+        receiver.processorClasspath trySetFrom setProcessorClasspath
         receiver.moduleName tryAssign moduleName
-        sourceRoots?.toTypedArray()?.let(receiver.sourceRoots::from)
-        setSourceRoots?.let(receiver.sourceRoots::setFrom)
-        commonSourceRoots?.toTypedArray()?.let(receiver.commonSourceRoots::from)
-        setCommonSourceRoots?.let(receiver.commonSourceRoots::setFrom)
-        javaSourceRoots?.toTypedArray()?.let(receiver.javaSourceRoots::from)
-        setJavaSourceRoots?.let(receiver.javaSourceRoots::setFrom)
-        libraries?.toTypedArray()?.let(receiver.libraries::from)
-        setLibraries?.let(receiver.libraries::setFrom)
+        receiver.sourceRoots tryFrom sourceRoots
+        receiver.sourceRoots trySetFrom setSourceRoots
+        receiver.commonSourceRoots tryFrom commonSourceRoots
+        receiver.commonSourceRoots trySetFrom setCommonSourceRoots
+        receiver.javaSourceRoots tryFrom javaSourceRoots
+        receiver.javaSourceRoots trySetFrom setJavaSourceRoots
+        receiver.libraries tryFrom libraries
+        receiver.libraries trySetFrom setLibraries
         receiver.jdkHome tryAssign jdkHome?.let(project::file)
         receiver.projectBaseDir tryAssign projectBaseDir?.let(project::file)
         receiver.outputBaseDir tryAssign outputBaseDir?.let(project::file)
@@ -84,8 +84,8 @@ internal data class KspGradleConfig(
         receiver.jvmDefaultMode tryAssign jvmDefaultMode
         receiver.incremental tryAssign incremental
         receiver.incrementalLog tryAssign incrementalLog
-        classpathStructure?.toTypedArray()?.let(receiver.classpathStructure::from)
-        setClasspathStructure?.let(receiver.classpathStructure::setFrom)
+        receiver.classpathStructure tryFrom classpathStructure
+        receiver.classpathStructure trySetFrom setClasspathStructure
         receiver.platformType tryAssign platformType
         receiver.konanTargetName tryAssign konanTargetName
         receiver.konanHome tryAssign konanHome

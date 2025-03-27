@@ -53,11 +53,11 @@ internal data class ApolloGenerateSchemaTask(
         receiver.scalarAdapterMapping tryAssign setScalarAdapterMapping
         receiver.scalarTypeMapping tryPutAll scalarTypeMapping
         receiver.scalarTypeMapping tryAssign setScalarAdapterMapping
-        schemaFiles?.toTypedArray()?.let(receiver.schemaFiles::from)
-        setSchemaFiles?.toTypedArray()?.let(receiver.schemaFiles::setFrom)
+        receiver.schemaFiles tryFrom schemaFiles
+        receiver.schemaFiles trySetFrom setSchemaFiles
         receiver.targetLanguage tryAssign targetLanguage
-        upstreamSchemaFiles?.toTypedArray()?.let(receiver.upstreamSchemaFiles::from)
-        setUpstreamSchemaFiles?.toTypedArray()?.let(receiver.upstreamSchemaFiles::setFrom)
+        receiver.upstreamSchemaFiles tryFrom upstreamSchemaFiles
+        receiver.upstreamSchemaFiles trySetFrom setUpstreamSchemaFiles
         receiver.userCodegenModels tryAssign userCodegenModels
         receiver.userGenerateKotlinModels tryAssign userGenerateKotlinModels
     }

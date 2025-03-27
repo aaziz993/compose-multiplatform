@@ -62,10 +62,10 @@ internal abstract class KotlinCompile<T : org.jetbrains.kotlin.gradle.tasks.Kotl
         context(Project)
         fun applyTo(receiver: org.jetbrains.kotlin.gradle.tasks.KotlinCompile.ClasspathSnapshotProperties) {
             receiver.useClasspathSnapshot tryAssign useClasspathSnapshot
-            classpathSnapshot?.toTypedArray()?.let(receiver.classpathSnapshot::from)
-            setClasspathSnapshot?.let(receiver.classpathSnapshot::setFrom)
-            classpath?.toTypedArray()?.let(receiver.classpath::from)
-            setClasspath?.let(receiver.classpath::setFrom)
+            receiver.classpathSnapshot tryFrom classpathSnapshot
+            receiver.classpathSnapshot trySetFrom setClasspathSnapshot
+            receiver.classpath tryFrom classpath
+            receiver.classpath trySetFrom setClasspath
             receiver.classpathSnapshotDir tryAssign classpathSnapshotDir?.let(project.layout.projectDirectory::dir)
         }
     }

@@ -4,6 +4,8 @@ import com.apollographql.apollo3.gradle.internal.ApolloGenerateIrTask
 import gradle.api.tasks.DefaultTask
 import gradle.api.tasks.applyTo
 import gradle.api.tryAssign
+import gradle.api.tryFrom
+import gradle.api.trySetFrom
 import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -54,18 +56,18 @@ internal data class ApolloGenerateIrTask(
             }
 
         receiver.alwaysGenerateTypesMatching tryAssign setAlwaysGenerateTypesMatching
-        codegenSchemas?.toTypedArray()?.let(receiver.codegenSchemas::from)
-        setCodegenSchemas?.let(receiver.codegenSchemas::setFrom)
+        receiver.codegenSchemas tryFrom codegenSchemas
+        receiver.codegenSchemas trySetFrom setCodegenSchemas
         receiver.decapitalizeFields tryAssign decapitalizeFields
         receiver.failOnWarnings tryAssign failOnWarnings
         receiver.fieldsOnDisjointTypesMustMerge tryAssign fieldsOnDisjointTypesMustMerge
         receiver.flattenModels tryAssign flattenModels
         receiver.generateOptionalOperationVariables tryAssign generateOptionalOperationVariables
-        graphqlFiles?.toTypedArray()?.let(receiver.graphqlFiles::from)
-        setGraphqlFiles?.let(receiver.graphqlFiles::setFrom)
+        receiver.graphqlFiles tryFrom graphqlFiles
+        receiver.graphqlFiles trySetFrom setGraphqlFiles
         receiver.outputFile tryAssign outputFile?.let(project::file)
-        upstreamIrFiles?.toTypedArray()?.let(receiver.upstreamIrFiles::from)
-        setUpstreamIrFiles?.toTypedArray()?.let(receiver.upstreamIrFiles::setFrom)
+        receiver.upstreamIrFiles tryFrom upstreamIrFiles
+        receiver.upstreamIrFiles trySetFrom setUpstreamIrFiles
         receiver.warnOnDeprecatedUsages tryAssign warnOnDeprecatedUsages
     }
 

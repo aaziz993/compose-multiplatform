@@ -269,15 +269,15 @@ internal data class DokkaSourceSetSpec(
         receiver.sourceSetScope tryAssign sourceSetScope
         receiver.suppress tryAssign suppress
         receiver.displayName tryAssign displayName
-        includes?.toTypedArray()?.let(receiver.includes::from)
-        setIncludes?.let(receiver.includes::setFrom)
+        receiver.includes tryFrom includes
+        receiver.includes trySetFrom setIncludes
         receiver.documentedVisibilities tryAssign documentedVisibilities
-        classpath?.toTypedArray()?.let(receiver.classpath::from)
-        setClasspath?.let(receiver.classpath::setFrom)
-        sourceRoots?.toTypedArray()?.let(receiver.sourceRoots::from)
-        setSourceRoots?.let(receiver.sourceRoots::setFrom)
-        samples?.toTypedArray()?.let(receiver.samples::from)
-        setSamples?.let(receiver.samples::setFrom)
+        receiver.classpath tryFrom classpath
+        receiver.classpath trySetFrom setClasspath
+        receiver.sourceRoots tryFrom sourceRoots
+        receiver.sourceRoots trySetFrom setSourceRoots
+        receiver.samples tryFrom samples
+        receiver.samples trySetFrom setSamples
         receiver.reportUndocumented tryAssign reportUndocumented
 
         sourceLinks?.forEach { sourceLink ->
@@ -297,8 +297,8 @@ internal data class DokkaSourceSetSpec(
         receiver.analysisPlatform tryAssign analysisPlatform
         receiver.skipEmptyPackages tryAssign skipEmptyPackages
         receiver.skipDeprecated tryAssign skipDeprecated
-        suppressedFiles?.toTypedArray()?.let(receiver.suppressedFiles::from)
-        setSuppressedFiles?.let(receiver.suppressedFiles::setFrom)
+        receiver.suppressedFiles tryFrom suppressedFiles
+        receiver.suppressedFiles trySetFrom setSuppressedFiles
         receiver.suppressGeneratedFiles tryAssign suppressGeneratedFiles
         receiver.enableKotlinStdLibDocumentationLink tryAssign enableKotlinStdLibDocumentationLink
         receiver.enableJdkDocumentationLink tryAssign enableJdkDocumentationLink

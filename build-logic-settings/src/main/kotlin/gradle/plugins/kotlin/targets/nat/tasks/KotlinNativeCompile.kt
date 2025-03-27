@@ -2,6 +2,8 @@ package gradle.plugins.kotlin.targets.nat.tasks
 
 import gradle.api.tasks.K2MultiplatformCompilationTask
 import gradle.api.tasks.applyTo
+import gradle.api.tryFrom
+import gradle.api.trySetFrom
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.kotlin.targets.nat.CompilerPluginOptions
 import gradle.plugins.kotlin.targets.nat.KotlinCompilerPluginData
@@ -16,7 +18,7 @@ import org.gradle.kotlin.dsl.withType
 internal abstract class KotlinNativeCompile<T : org.jetbrains.kotlin.gradle.tasks.KotlinNativeCompile> :
     AbstractKotlinNativeCompile<T>(),
     KotlinNativeCompileTask<T>,
-    K2MultiplatformCompilationTask<T, org.jetbrains.kotlin.gradle.dsl.KotlinNativeCompilerOptions> {
+    K2MultiplatformCompilationTask<T> {
 
     // these sources are normally a subset of `source` ones which are already tracked
     abstract val commonSources: Set<String>?
@@ -28,8 +30,8 @@ internal abstract class KotlinNativeCompile<T : org.jetbrains.kotlin.gradle.task
         super<KotlinNativeCompileTask>.applyTo(receiver)
         super<K2MultiplatformCompilationTask>.applyTo(receiver)
 
-        commonSources?.toTypedArray()?.let(receiver.commonSources::from)
-        setCommonSources?.let(receiver.commonSources::setFrom)
+        receiver.commonSources tryFrom commonSources
+        receiver.commonSources trySetFrom setCommonSources
     }
 }
 

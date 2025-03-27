@@ -19,7 +19,7 @@ internal data class KotlinCompilationOutput(
 ) {
 
     fun applyTo(receiver: KotlinCompilationOutput) {
-        classesDirs?.toTypedArray()?.let(receiver.classesDirs::from)
-        setClassesDirs?.let(receiver.classesDirs::setFrom)
+        receiver.classesDirs tryFrom classesDirs
+        receiver.classesDirs trySetFrom setClassesDirs
     }
 }

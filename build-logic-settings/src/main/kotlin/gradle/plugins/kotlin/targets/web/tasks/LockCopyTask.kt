@@ -26,8 +26,8 @@ internal abstract class LockCopyTask<T : org.jetbrains.kotlin.gradle.targets.js.
         super.applyTo(receiver)
 
         receiver.inputFile tryAssign inputFile?.let(project::file)
-        additionalInputFiles?.toTypedArray()?.let(receiver.additionalInputFiles::from)
-        setAdditionalInputFiles?.let(receiver.additionalInputFiles::setFrom)
+        receiver.additionalInputFiles tryFrom additionalInputFiles
+        receiver.additionalInputFiles trySetFrom setAdditionalInputFiles
         receiver.outputDirectory tryAssign outputDirectory?.let(project.layout.projectDirectory::dir)
         receiver.fileName tryAssign fileName
     }

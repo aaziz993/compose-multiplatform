@@ -59,10 +59,10 @@ internal data class DokkaGeneratorParametersSpec(
         receiver.offlineMode tryAssign offlineMode
         receiver.suppressObviousFunctions tryAssign suppressObviousFunctions
         receiver.suppressInheritedMembers tryAssign suppressInheritedMembers
-        includes?.toTypedArray()?.let(receiver.includes::from)
-        setIncludes?.let(receiver.includes::setFrom)
-        pluginsClasspath?.toTypedArray()?.let(receiver.pluginsClasspath::from)
-        setPluginsClasspath?.let(receiver.pluginsClasspath::setFrom)
+        receiver.includes tryFrom includes
+        receiver.includes trySetFrom setIncludes
+        receiver.pluginsClasspath tryFrom pluginsClasspath
+        receiver.pluginsClasspath trySetFrom setPluginsClasspath
 
         dokkaSourceSets?.forEach { dokkaSourceSet ->
             dokkaSourceSet.applyTo(receiver.dokkaSourceSets)

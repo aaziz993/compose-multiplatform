@@ -64,22 +64,22 @@ internal data class ProguardConfigurableTask(
 
         receiver.componentType tryAssign componentType
         receiver.includeFeaturesInScopes tryAssign includeFeaturesInScopes
-        testedMappingFile?.toTypedArray()?.let(receiver.testedMappingFile::from)
-        setTestedMappingFile?.let(receiver.testedMappingFile::setFrom)
-        classes?.toTypedArray()?.let(receiver.classes::from)
-        setClasses?.let(receiver.classes::setFrom)
+        receiver.testedMappingFile tryFrom testedMappingFile
+        receiver.testedMappingFile trySetFrom setTestedMappingFile
+        receiver.classes tryFrom classes
+        receiver.classes trySetFrom setClasses
         receiver.resourcesJar tryAssign resourcesJar?.let(project::file)
-        referencedClasses?.toTypedArray()?.let(receiver.referencedClasses::from)
-        setReferencedClasses?.let(receiver.referencedClasses::setFrom)
-        referencedResources?.toTypedArray()?.let(receiver.referencedResources::from)
-        setReferencedResources?.let(receiver.referencedResources::setFrom)
+        receiver.referencedClasses tryFrom referencedClasses
+        receiver.referencedClasses trySetFrom setReferencedClasses
+        receiver.referencedResources tryFrom referencedResources
+        receiver.referencedResources trySetFrom setReferencedResources
         receiver.extractedDefaultProguardFile tryAssign extractedDefaultProguardFile?.let(project.layout.projectDirectory::dir)
-        generatedProguardFile?.toTypedArray()?.let(receiver.generatedProguardFile::from)
-        setGeneratedProguardFile?.let(receiver.generatedProguardFile::setFrom)
-        configurationFiles?.toTypedArray()?.let(receiver.configurationFiles::from)
-        setConfigurationFiles?.let(receiver.configurationFiles::setFrom)
-        libraryKeepRulesFileCollection?.toTypedArray()?.let(receiver.libraryKeepRulesFileCollection::from)
-        setLibraryKeepRulesFileCollection?.let(receiver.libraryKeepRulesFileCollection::setFrom)
+        receiver.generatedProguardFile tryFrom generatedProguardFile
+        receiver.generatedProguardFile trySetFrom setGeneratedProguardFile
+        receiver.configurationFiles tryFrom configurationFiles
+        receiver.configurationFiles trySetFrom setConfigurationFiles
+        receiver.libraryKeepRulesFileCollection tryFrom libraryKeepRulesFileCollection
+        receiver.libraryKeepRulesFileCollection trySetFrom setLibraryKeepRulesFileCollection
         receiver.ignoreFromInKeepRules tryAddAll ignoreFromInKeepRules
         receiver.ignoreFromInKeepRules tryAssign setIgnoreFromInKeepRules
         receiver.ignoreFromAllExternalDependenciesInKeepRules tryAssign ignoreFromAllExternalDependenciesInKeepRules

@@ -66,12 +66,12 @@ internal data class ApolloGenerateSourcesFromIrTask(
     override fun applyTo(receiver: ApolloGenerateSourcesFromIrTask) {
         super.applyTo(receiver)
 
-        codegenSchemas?.toTypedArray()?.let(receiver.codegenSchemas::from)
-        setCodegenSchemas?.let(receiver.codegenSchemas::setFrom)
+        receiver.codegenSchemas tryFrom codegenSchemas
+        receiver.codegenSchemas trySetFrom setCodegenSchemas
         receiver.irOperations tryAssign irOperations?.let(project::file)
         receiver.metadataOutputFile tryAssign metadataOutputFile?.let(project::file)
-        upstreamMetadata?.toTypedArray()?.let(receiver.upstreamMetadata::from)
-        setUpstreamMetadata?.let(receiver.upstreamMetadata::setFrom)
+        receiver.upstreamMetadata tryFrom upstreamMetadata
+        receiver.upstreamMetadata trySetFrom setUpstreamMetadata
         receiver.usedCoordinates tryAssign usedCoordinates?.let(project::file)
     }
 

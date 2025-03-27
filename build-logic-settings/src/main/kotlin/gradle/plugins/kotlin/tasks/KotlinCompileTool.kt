@@ -56,8 +56,8 @@ internal interface KotlinCompileTool<T : org.jetbrains.kotlin.gradle.tasks.Kotli
 
         receiver::source trySet sources
         receiver::setSource trySet setSources
-        libraries?.toTypedArray()?.let(receiver.libraries::from)
-        setLibraries?.let(receiver.libraries::setFrom)
+        receiver.libraries tryFrom libraries
+        receiver.libraries trySetFrom setLibraries
         receiver.destinationDirectory tryAssign destinationDirectory?.let(project.layout.projectDirectory::dir)
     }
 }

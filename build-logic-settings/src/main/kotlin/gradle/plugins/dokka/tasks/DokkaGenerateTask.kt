@@ -76,8 +76,8 @@ internal data class DokkaGenerateTask(
         super.applyTo(receiver)
 
         receiver.outputDirectory tryAssign outputDirectory?.let(project.layout.projectDirectory::dir)
-        runtimeClasspath?.toTypedArray()?.let(receiver.runtimeClasspath::from)
-        setRuntimeClasspath?.let(receiver.runtimeClasspath::setFrom)
+        receiver.runtimeClasspath tryFrom runtimeClasspath
+        receiver.runtimeClasspath trySetFrom setRuntimeClasspath
         receiver.cacheDirectory tryAssign cacheDirectory?.let(project.layout.projectDirectory::dir)
         receiver.publicationEnabled tryAssign publicationEnabled
         generator?.applyTo(receiver.generator)

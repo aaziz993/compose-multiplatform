@@ -92,10 +92,10 @@ internal data class DokkaHtmlPluginParameters(
 
     context(Project)
     override fun applyTo(receiver: DokkaHtmlPluginParameters) {
-        customAssets?.toTypedArray()?.let(receiver.customAssets::from)
-        setCustomAssets?.let(receiver.customAssets::setFrom)
-        customStyleSheets?.toTypedArray()?.let(receiver.customStyleSheets::from)
-        setCustomStyleSheets?.let(receiver.customStyleSheets::setFrom)
+        receiver.customAssets tryFrom customAssets
+        receiver.customAssets trySetFrom setCustomAssets
+        receiver.customStyleSheets tryFrom customStyleSheets
+        receiver.customStyleSheets trySetFrom setCustomStyleSheets
         receiver.separateInheritedMembers tryAssign separateInheritedMembers
         receiver.mergeImplicitExpectActualDeclarations tryAssign mergeImplicitExpectActualDeclarations
         receiver.footerMessage tryAssign (footerMessage ?: listOfNotNull(

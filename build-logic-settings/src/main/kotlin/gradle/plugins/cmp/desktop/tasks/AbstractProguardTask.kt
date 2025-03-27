@@ -36,18 +36,18 @@ internal abstract class AbstractProguardTask<T : org.jetbrains.compose.desktop.a
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
-        inputFiles?.toTypedArray()?.let(receiver.inputFiles::from)
-        setInputFiles?.let(receiver.inputFiles::setFrom)
+        receiver.inputFiles tryFrom inputFiles
+        receiver.inputFiles trySetFrom setInputFiles
         receiver.mainJar tryAssign mainJar?.let(project::file)
-        configurationFiles?.toTypedArray()?.let(receiver.configurationFiles::from)
-        setConfigurationFiles?.let(receiver.configurationFiles::setFrom)
+        receiver.configurationFiles tryFrom configurationFiles
+        receiver.configurationFiles trySetFrom setConfigurationFiles
         receiver.dontobfuscate tryAssign dontobfuscate
         receiver.dontoptimize tryAssign dontoptimize
         receiver.joinOutputJars tryAssign joinOutputJars
         receiver.defaultComposeRulesFile tryAssign defaultComposeRulesFile?.let(project::file)
         receiver.proguardVersion tryAssign proguardVersion
-        proguardFiles?.toTypedArray()?.let(receiver.proguardFiles::from)
-        setProguardFiles?.let(receiver.proguardFiles::setFrom)
+        receiver.proguardFiles tryFrom proguardFiles
+        receiver.proguardFiles trySetFrom setProguardFiles
         receiver.javaHome tryAssign javaHome
         receiver.mainClass tryAssign mainClass
         receiver.maxHeapSize tryAssign maxHeapSize

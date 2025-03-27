@@ -91,15 +91,15 @@ internal data class ApolloGenerateSourcesTask(
         receiver.fieldsOnDisjointTypesMustMerge tryAssign fieldsOnDisjointTypesMustMerge
         receiver.flattenModels tryAssign flattenModels
         receiver.generateDataBuilders tryAssign generateDataBuilders
-        graphqlFiles?.toTypedArray()?.let(receiver.graphqlFiles::from)
-        setGraphqlFiles?.let(receiver.graphqlFiles::setFrom)
+        receiver.graphqlFiles tryFrom graphqlFiles
+        receiver.graphqlFiles trySetFrom setGraphqlFiles
         receiver.projectPath tryAssign projectPath
         receiver.scalarAdapterMapping tryPutAll  scalarAdapterMapping
         receiver.scalarAdapterMapping tryAssign setScalarAdapterMapping
         receiver.scalarTypeMapping tryPutAll  scalarTypeMapping
         receiver.scalarTypeMapping tryAssign setScalarAdapterMapping
-        schemaFiles?.toTypedArray()?.let(receiver.schemaFiles::from)
-        setSchemaFiles?.let(receiver.schemaFiles::setFrom)
+        receiver.schemaFiles tryFrom schemaFiles
+        receiver.schemaFiles trySetFrom setSchemaFiles
         receiver.targetLanguage tryAssign targetLanguage
         receiver.warnOnDeprecatedUsages tryAssign warnOnDeprecatedUsages
     }

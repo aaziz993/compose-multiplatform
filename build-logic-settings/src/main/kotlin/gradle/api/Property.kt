@@ -5,6 +5,7 @@ import java.io.File
 import kotlin.reflect.KFunction1
 import kotlin.reflect.KMutableProperty0
 import org.gradle.api.Action
+import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.FileSystemLocation
 import org.gradle.api.file.FileSystemLocationProperty
 import org.gradle.api.provider.HasMultipleValues
@@ -29,6 +30,15 @@ public infix fun <K, V> MutableMap<K, V>.tryPutAll(value: Map<K, V>?): Unit? =
 
 public infix fun <K, V> MutableMap<K, V>.trySet(value: Map<K, V>?): Unit? =
     tryPutAll(value?.act(::clear))
+
+public infix fun ConfigurableFileCollection.from(value: Iterable<*>) =
+    from(* value.toList().toTypedArray())
+
+public infix fun ConfigurableFileCollection.tryFrom(value: Iterable<*>?) =
+    value?.let(::from)
+
+public infix fun ConfigurableFileCollection.trySetFrom(value: Iterable<*>?) =
+    value?.let(::setFrom)
 
 public infix fun <T> KMutableProperty0<T>.trySet(value: T?): Unit? = value?.let(::set)
 

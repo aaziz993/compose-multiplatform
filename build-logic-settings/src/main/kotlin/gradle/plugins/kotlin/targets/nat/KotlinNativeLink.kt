@@ -61,8 +61,8 @@ internal data class KotlinNativeLink(
         super<KotlinToolTask>.applyTo(receiver)
 
         binary?.applyTo(receiver.binary)
-        apiFiles?.toTypedArray()?.let(receiver.apiFiles::from)
-        setApiFiles?.let(receiver.apiFiles::setFrom)
+        receiver.apiFiles tryFrom apiFiles
+        receiver.apiFiles trySetFrom setApiFiles
         compilerPluginOptions?.applyTo(receiver.compilerPluginOptions)
 
         receiver::compilerPluginClasspath trySet compilerPluginClasspath
