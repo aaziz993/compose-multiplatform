@@ -2,6 +2,7 @@ package io.github.aaziz993.compose.app
 import gradle.accessors.files
 import gradle.api.trySet
 import gradle.api.tryAddAll
+import gradle.api.trySet
 
 import App
 import android.os.Bundle

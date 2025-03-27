@@ -5,6 +5,7 @@ package gradle.plugins.android
 import com.android.build.api.dsl.Shaders
 import gradle.act
 import gradle.api.tryAddAll
+import gradle.api.trySet
 import kotlinx.serialization.Serializable
 
 /**

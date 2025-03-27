@@ -33,6 +33,7 @@ public class CompilerProcessor(
 import gradle.accessors.files
 import gradle.api.trySet
 import gradle.api.tryAddAll
+import gradle.api.trySet
 
 
         compiledFile += imports.joinToString("\n", postfix = "\n\n") { "import $it" }
