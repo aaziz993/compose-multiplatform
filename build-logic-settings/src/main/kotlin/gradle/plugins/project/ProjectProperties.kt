@@ -80,7 +80,7 @@ internal data class ProjectProperties(
     val compose: CMPSettings = CMPSettings(),
     val tasks: LinkedHashSet<@Serializable(with = TaskKeyTransformingSerializer::class) Task<out org.gradle.api.Task>>? = null,
     private val localPropertiesFile: String = "local.properties",
-    val projectFiles: List<ProjectFile> = emptyList(),
+    val projectFiles: Set<ProjectFile> = emptySet(),
 ) {
 
     @Transient

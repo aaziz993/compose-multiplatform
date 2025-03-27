@@ -45,7 +45,7 @@ internal data class JavaCompile(
     override val sourceCompatibility: String? = null,
     override val targetCompatibility: String? = null,
     override val options: CompileOptions? = null,
-    override val sourceFiles: List<String>? = null,
+    override val sourceFiles: Set<String>? = null,
     override val includes: Set<String>? = null,
     override val setIncludes: Set<String>? = null,
     override val excludes: Set<String>? = null,

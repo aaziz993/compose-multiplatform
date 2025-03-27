@@ -116,7 +116,7 @@ internal data class TestNGOptions(
      *
      * Note: The suiteXmlFiles can be used in conjunction with the suiteXmlBuilder.
      */
-    val suiteXmlFiles: List<String>? = null,
+    val suiteXmlFiles: Set<String>? = null,
     /**
      * Indicates whether the tests should be run in deterministic order. Preserving the order guarantees that the complete test
      * (including @BeforeXXX and @AfterXXX) is run in a test thread before the next test is run.
