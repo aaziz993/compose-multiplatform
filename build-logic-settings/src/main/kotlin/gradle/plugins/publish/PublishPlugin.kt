@@ -122,7 +122,7 @@ internal class PublishPlugin : Plugin<Project> {
             val dokkaHtmlJar by tasks.registering(Jar::class) {
                 description = "A HTML Documentation JAR containing Dokka HTML"
                 from(tasks.dokkaGeneratePublicationHtml!!.flatMap { it.outputDirectory })
-                archiveClassifier.set("html-doc")
+                archiveClassifier = "html-doc"
             }
 
             targetPublications.values.forEach { publication ->

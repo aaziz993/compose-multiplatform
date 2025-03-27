@@ -1,5 +1,8 @@
 package gradle.api.publish.maven
 
+import gradle.act
+import gradle.actIfTrue
+import gradle.takeIfTrue
 import kotlinx.serialization.Serializable
 import org.gradle.api.publish.VariantVersionMappingStrategy
 
@@ -25,7 +28,7 @@ internal data class VariantVersionMappingStrategy(
 ) {
 
     fun applyTo(receiver: VariantVersionMappingStrategy) {
-        fromResolutionResult?.takeIfTrue()?.act(receiver::fromResolutionResult)
+        fromResolutionResult?.actIfTrue(receiver::fromResolutionResult)
         fromResolutionOf?.let(receiver::fromResolutionOf)
     }
 }

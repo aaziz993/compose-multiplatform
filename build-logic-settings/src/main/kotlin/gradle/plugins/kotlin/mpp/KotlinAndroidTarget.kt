@@ -1,6 +1,7 @@
 package gradle.plugins.kotlin.mpp
 
 import gradle.accessors.kotlin
+import gradle.actIfTrue
 import gradle.api.applyTo
 import gradle.api.publish.maven.MavenPublication
 import gradle.api.trySet
@@ -56,7 +57,7 @@ internal data class KotlinAndroidTarget(
         }
 
         // Applicable only in library project.
-        publishAllLibraryVariants?.takeIfTrue()?.act(receiver::publishAllLibraryVariants)
+        publishAllLibraryVariants?.actIfTrue(receiver::publishAllLibraryVariants)
         receiver::publishLibraryVariantsGroupedByFlavor trySet publishLibraryVariantsGroupedByFlavor
     }
 

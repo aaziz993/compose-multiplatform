@@ -2,8 +2,10 @@ package gradle.plugins.kotlin.targets.web
 
 import gradle.accessors.kotlin
 import gradle.accessors.moduleName
+import gradle.actIfTrue
 import gradle.api.applyTo
 import gradle.api.publish.maven.MavenPublication
+import gradle.api.tryAssign
 import gradle.api.trySet
 import gradle.plugins.kotlin.HasConfigurableKotlinCompilerOptions
 import gradle.plugins.kotlin.KotlinTarget
@@ -22,7 +24,7 @@ internal interface KotlinJsTargetDsl<T : org.jetbrains.kotlin.gradle.targets.js.
 
     abstract override val compilations: LinkedHashSet<@Serializable(with = KotlinJsIrCompilationKeyTransformingSerializer::class) KotlinJsIrCompilation>?
 
-    val moduleName: String?
+    val outputModuleName: String?
 
     val browser: KotlinJsBrowserDsl?
 
@@ -46,7 +48,7 @@ internal interface KotlinJsTargetDsl<T : org.jetbrains.kotlin.gradle.targets.js.
 
         super<HasConfigurableKotlinCompilerOptions>.applyTo(receiver)
 
-        receiver::moduleName trySet (this@KotlinJsTargetDsl.moduleName
+        receiver.outputModuleName tryAssign (this@KotlinJsTargetDsl.outputModuleName
             ?: targetName
                 ?.takeIf(String::isNotEmpty)
                 ?.let { targetName -> "${project.moduleName}-$targetName" })
@@ -55,14 +57,14 @@ internal interface KotlinJsTargetDsl<T : org.jetbrains.kotlin.gradle.targets.js.
 
         browser?.let { browser ->
             receiver.browser {
-                browser.applyTo(this, receiver.moduleName!!)
+                browser.applyTo(this, receiver.outputModuleName.get())
             }
         }
 
-        useCommonJs?.takeIfTrue()?.act(receiver::useCommonJs)
-        useEsModules?.takeIfTrue()?.act(receiver::useEsModules)
+        useCommonJs?.actIfTrue(receiver::useCommonJs)
+        useEsModules?.actIfTrue(receiver::useEsModules)
         passAsArgumentToMainFunction?.let(receiver::passAsArgumentToMainFunction)
-        generateTypeScriptDefinitions?.takeIfTrue()?.let { receiver.generateTypeScriptDefinitions() }
+        generateTypeScriptDefinitions?.actIfTrue(receiver::generateTypeScriptDefinitions)
         binaries?.applyTo(receiver.binaries)
     }
 }

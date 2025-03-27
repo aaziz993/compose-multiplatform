@@ -1,9 +1,11 @@
 package gradle.api.publish
 
 import gradle.act
+import gradle.actIfTrue
 import gradle.api.ProjectNamed
 import gradle.serialization.serializer.JsonPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
+import gradle.takeIfTrue
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -37,8 +39,8 @@ internal interface Publication<T : org.gradle.api.publish.Publication> : Project
 
     context(Project)
     override fun applyTo(receiver: T) {
-        withoutBuildIdentifier?.takeIfTrue()?.act(receiver::withoutBuildIdentifier)
-        withBuildIdentifier?.takeIfTrue()?.act(receiver::withBuildIdentifier)
+        withoutBuildIdentifier?.actIfTrue(receiver::withoutBuildIdentifier)
+        withBuildIdentifier?.actIfTrue(receiver::withBuildIdentifier)
     }
 
     context(Project)

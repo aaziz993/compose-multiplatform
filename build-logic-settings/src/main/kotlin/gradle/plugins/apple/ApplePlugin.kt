@@ -21,7 +21,7 @@ internal class ApplePlugin : Plugin<Project> {
                 return@with
             }
 
-            extraProperties.set("generateBuildableXcodeproj.skipKotlinFrameworkDependencies", "true")
+            extraProperties["generateBuildableXcodeproj.skipKotlinFrameworkDependencies"] = "true"
 
             plugins.apply(project.settings.libs.plugins.plugin("apple").id)
 

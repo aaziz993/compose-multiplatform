@@ -1,5 +1,6 @@
 package gradle.plugins.kotlin.targets.web
 
+import org.gradle.kotlin.dsl.assign
 import gradle.api.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -13,7 +14,7 @@ internal data class Distribution(
 
     context(Project)
     fun applyTo(distribution: Distribution, distributionName: String) {
-        distribution.distributionName.set(this.distributionName ?: distributionName)
+        distribution.distributionName = this.distributionName ?: distributionName
         distribution.outputDirectory tryAssign outputDirectory?.let(project.layout.projectDirectory::dir)
     }
 }

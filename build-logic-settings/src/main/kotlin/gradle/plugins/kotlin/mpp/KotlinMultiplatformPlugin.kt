@@ -28,10 +28,10 @@ internal class KotlinMultiplatformPlugin : Plugin<Project> {
                 plugins.apply(project.settings.libs.plugins.plugin("kotlin.multiplatform").id)
 
                 // Enable Default Kotlin Hierarchy.
-                extraProperties.set("kotlin.mpp.applyDefaultHierarchyTemplate", "true")
+                extraProperties["kotlin.mpp.applyDefaultHierarchyTemplate"] = "true"
 
                 // IOS Compose uses UiKit, so we need to explicitly enable it, since it is experimental.
-                extraProperties.set("org.jetbrains.compose.experimental.uikit.enabled", "true")
+                extraProperties["org.jetbrains.compose.experimental.uikit.enabled"] = "true"
 
                 kotlin.applyTo()
 

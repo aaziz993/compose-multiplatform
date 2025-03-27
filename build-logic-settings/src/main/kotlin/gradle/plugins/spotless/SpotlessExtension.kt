@@ -9,6 +9,7 @@ import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
 import gradle.accessors.spotless
+import gradle.actIfTrue
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -46,9 +47,9 @@ internal interface SpotlessExtension {
             enforceCheck?.let(project.spotless::setEnforceCheck)
 
             // Applicable only in root project.
-            predeclareDeps?.takeIfTrue()?.act(project.spotless::predeclareDeps)
+            predeclareDeps?.actIfTrue(project.spotless::predeclareDeps)
             // Applicable only in root project.
-            predeclareDepsFromBuildscript?.takeIfTrue()?.act(project.spotless::predeclareDepsFromBuildscript)
+            predeclareDepsFromBuildscript?.actIfTrue(project.spotless::predeclareDepsFromBuildscript)
 
             // Format files
             formats?.forEach { format ->

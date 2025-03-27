@@ -9,6 +9,7 @@ import gradle.accessors.versions
 import gradle.api.applyTo
 import gradle.api.trySet
 import gradle.act
+import gradle.actIfTrue
 import gradle.plugins.android.compile.CompileOptions
 import gradle.plugins.android.defaultconfig.DefaultConfig
 import gradle.plugins.android.features.BuildFeatures
@@ -111,7 +112,7 @@ internal interface BaseExtension {
         dataBinding?.applyTo(project.android.dataBinding)
         viewBinding?.applyTo(project.android.viewBinding)
         defaultPublishConfig?.let(project.android::defaultPublishConfig)
-        disableWrite?.takeIfTrue()?.act(project.android::disableWrite)
+        disableWrite?.actIfTrue(project.android::disableWrite)
         (compileSdkVersion ?: project.settings.libs.versions.version("project.android.compileSdk")?.toInt())
             ?.let(project.android::compileSdkVersion)
         buildToolsVersion?.let(project.android::buildToolsVersion)

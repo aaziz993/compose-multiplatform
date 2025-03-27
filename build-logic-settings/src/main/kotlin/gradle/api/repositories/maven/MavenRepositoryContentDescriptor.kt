@@ -1,5 +1,6 @@
 package gradle.api.repositories.maven
 
+import gradle.actIfTrue
 import gradle.api.repositories.Module
 import gradle.api.repositories.RepositoryContentDescriptor
 import gradle.api.repositories.Version
@@ -41,7 +42,7 @@ internal data class MavenRepositoryContentDescriptor(
     override fun applyTo(receiver: MavenRepositoryContentDescriptor) {
         super.applyTo(receiver)
 
-        releasesOnly?.takeIfTrue()?.act(receiver::releasesOnly)
-        snapshotsOnly?.takeIfTrue()?.act(receiver::snapshotsOnly)
+        releasesOnly?.actIfTrue(receiver::releasesOnly)
+        snapshotsOnly?.actIfTrue(receiver::snapshotsOnly)
     }
 }

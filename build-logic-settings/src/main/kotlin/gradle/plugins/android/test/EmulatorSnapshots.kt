@@ -1,6 +1,7 @@
 package gradle.plugins.android.test
 
 import com.android.build.api.dsl.EmulatorSnapshots
+import gradle.actIfTrue
 import gradle.api.trySet
 import kotlinx.serialization.Serializable
 
@@ -30,7 +31,7 @@ internal data class EmulatorSnapshots(
     @Suppress("UnstableApiUsage")
     fun applyTo(receiver: EmulatorSnapshots) {
         receiver::enableForTestFailures trySet enableForTestFailures
-        retainAll?.takeIfTrue()?.act(receiver::retainAll)
+        retainAll?.actIfTrue(receiver::retainAll)
         receiver::maxSnapshotsForTestFailures trySet maxSnapshotsForTestFailures
         receiver::compressSnapshots trySet compressSnapshots
     }

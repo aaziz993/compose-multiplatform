@@ -1,5 +1,6 @@
 package gradle.plugins.apple.target
 
+import gradle.actIfTrue
 import kotlinx.serialization.Serializable
 import org.jetbrains.gradle.apple.dsl.OrientationsHandler
 
@@ -12,9 +13,9 @@ internal data class OrientationsHandler(
 ) {
 
     fun applyTo(receiver: OrientationsHandler) {
-        landscapeLeft?.takeIfTrue()?.act(receiver::landscapeLeft)
-        landscapeRight?.takeIfTrue()?.act(receiver::landscapeRight)
-        portrait?.takeIfTrue()?.act(receiver::portrait)
-        portraitUpsideDown?.takeIfTrue()?.act(receiver::portraitUpsideDown)
+        landscapeLeft?.actIfTrue(receiver::landscapeLeft)
+        landscapeRight?.actIfTrue(receiver::landscapeRight)
+        portrait?.actIfTrue(receiver::portrait)
+        portraitUpsideDown?.actIfTrue(receiver::portraitUpsideDown)
     }
 }

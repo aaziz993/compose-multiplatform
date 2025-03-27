@@ -1,5 +1,6 @@
 package gradle.plugins.kotlin.targets.web
 
+import gradle.actIfTrue
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalDistributionDsl
@@ -35,6 +36,6 @@ internal data class KotlinJsNodeDsl(
             }
         }
 
-        passProcessArgvToMainFunction?.takeIfTrue()?.act(node::passProcessArgvToMainFunction)
+        passProcessArgvToMainFunction?.actIfTrue(node::passProcessArgvToMainFunction)
     }
 }

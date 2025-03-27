@@ -6,6 +6,7 @@ import gradle.accessors.resolveVersion
 import gradle.accessors.settings
 import gradle.accessors.version
 import gradle.accessors.versions
+import gradle.actIfTrue
 import gradle.plugins.spotless.FormatExtension
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -26,7 +27,7 @@ internal abstract class BaseGroovyExtension<T : BaseGroovyExtension> : FormatExt
 
         importOrder?.toTypedArray()?.let(receiver::importOrder)
         importOrderFile?.let(receiver::importOrderFile)
-        removeSemicolons?.takeIfTrue()?.act(receiver::removeSemicolons)
+        removeSemicolons?.actIfTrue(receiver::removeSemicolons)
 
         greclipse?.let { greclipse ->
             greclipse.applyTo(

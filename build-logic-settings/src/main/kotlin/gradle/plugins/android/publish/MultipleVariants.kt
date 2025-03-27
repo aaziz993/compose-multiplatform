@@ -1,6 +1,7 @@
 package gradle.plugins.android.publish
 
 import com.android.build.api.dsl.MultipleVariants
+import gradle.actIfTrue
 import gradle.plugins.android.flavor.FlavorDimensionAndValues
 
 /**
@@ -24,7 +25,7 @@ internal interface MultipleVariants<T : MultipleVariants> : PublishingOptions<T>
     val includeFlavorDimensionAndValues: List<FlavorDimensionAndValues>?
 
     override fun applyTo(receiver: T) {
-        allVariants?.takeIfTrue()?.act(receiver::allVariants)
+        allVariants?.actIfTrue(receiver::allVariants)
 
         includeBuildTypeValues?.toTypedArray()?.let(receiver::includeBuildTypeValues)
 

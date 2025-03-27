@@ -1,6 +1,7 @@
 package gradle.plugins.android.application
 
 import com.android.build.api.dsl.ApplicationSingleVariant
+import gradle.actIfTrue
 import gradle.plugins.android.publish.SingleVariant
 import kotlinx.serialization.Serializable
 
@@ -22,6 +23,6 @@ internal data class ApplicationSingleVariant(
     override fun applyTo(receiver: ApplicationSingleVariant) {
         super.applyTo(receiver)
 
-        publishApk?.takeIfTrue()?.act(receiver::publishApk)
+        publishApk?.actIfTrue(receiver::publishApk)
     }
 }

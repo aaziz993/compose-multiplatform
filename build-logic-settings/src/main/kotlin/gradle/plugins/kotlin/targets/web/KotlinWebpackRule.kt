@@ -1,5 +1,6 @@
 package gradle.plugins.kotlin.targets.web
 
+import gradle.actIfTrue
 import gradle.api.tryAssign
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackRule
 
@@ -21,10 +22,10 @@ internal interface KotlinWebpackRule {
     val validate: Boolean?
 
     fun applyTo(receiver: KotlinWebpackRule) {
-        webpackRule.enabled tryAssign enabled
-        webpackRule.test tryAssign test
-        webpackRule.include tryAssign include
-        webpackRule.exclude tryAssign exclude
-        validate?.takeIfTrue()?.act(webpackRule::validate)
+        receiver.enabled tryAssign enabled
+        receiver.test tryAssign test
+        receiver.include tryAssign include
+        receiver.exclude tryAssign exclude
+        validate?.actIfTrue(receiver::validate)
     }
 }
