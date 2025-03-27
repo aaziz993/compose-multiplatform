@@ -3,6 +3,7 @@ package gradle.plugins.kmp.web
 import gradle.accessors.kotlin
 import gradle.accessors.moduleName
 import gradle.api.applyTo
+import gradle.api.publish.maven.MavenPublication
 import gradle.api.trySet
 import gradle.plugins.kmp.HasBinaries
 import gradle.plugins.kmp.KotlinTarget
@@ -72,7 +73,6 @@ internal data class KotlinJsTargetDslImpl(
     override val name: String? = null,
     override val withSourcesJar: Boolean? = null,
     override val mavenPublication: MavenPublication? = null,
-    override val onPublicationCreated: String? = null,
     override val compilations: LinkedHashSet<@Serializable(with = KotlinJsIrCompilationKeyTransformingSerializer::class) KotlinJsIrCompilation>? = null,
     override val nodejs: KotlinJsNodeDsl? = null,
     override val moduleName: String? = null,

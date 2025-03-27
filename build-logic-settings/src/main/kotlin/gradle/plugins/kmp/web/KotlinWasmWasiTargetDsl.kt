@@ -3,6 +3,7 @@ package gradle.plugins.kmp.web
 import gradle.accessors.kotlin
 import gradle.accessors.moduleName
 import gradle.api.applyTo
+import gradle.api.publish.maven.MavenPublication
 import gradle.plugins.kmp.HasBinaries
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -16,8 +17,7 @@ internal data class KotlinWasmWasiTargetDsl(
     override val name: String = "wasmWasi",
     override val withSourcesJar: Boolean? = null,
     override val mavenPublication: MavenPublication? = null,
-    override val onPublicationCreated: String? = null,
-    override val compilations: LinkedHashSet<@Serializable(with = KotlinJsIrCompilationTransformingSerializer::class) KotlinJsIrCompilation>? = null,
+    override val compilations: LinkedHashSet<@Serializable(with = KotlinJsIrCompilationKeyTransformingSerializer::class) KotlinJsIrCompilation>? = null,
     override val nodejs: KotlinJsNodeDsl? = null,
     override val binaries: KotlinJsBinaryContainer? = null,
 ) : KotlinWasmTargetDsl<KotlinWasmWasiTargetDsl>,
@@ -28,6 +28,8 @@ internal data class KotlinWasmWasiTargetDsl(
     override fun applyTo(receiver: KotlinWasmWasiTargetDsl) {
         super<KotlinWasmTargetDsl>.applyTo(receiver)
         super<KotlinTargetWithNodeJsDsl>.applyTo(receiver, "${project.moduleName}-${receiver.targetName}")
+
+        binaries?.applyTo(receiver.binaries)
     }
 
     context(Project)

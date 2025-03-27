@@ -2,6 +2,7 @@ package gradle.plugins.kmp.web
 
 import gradle.accessors.kotlin
 import gradle.api.applyTo
+import gradle.api.publish.maven.MavenPublication
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -14,7 +15,6 @@ internal data class KotlinWasmJsTargetDsl(
     override val name: String = "wasmJs",
     override val withSourcesJar: Boolean? = null,
     override val mavenPublication: MavenPublication? = null,
-    override val onPublicationCreated: String? = null,
     override val compilations: LinkedHashSet<@Serializable(with = KotlinJsIrCompilationKeyTransformingSerializer::class) KotlinJsIrCompilation>? = null,
     override val nodejs: KotlinJsNodeDsl? = null,
     override val moduleName: String? = null,

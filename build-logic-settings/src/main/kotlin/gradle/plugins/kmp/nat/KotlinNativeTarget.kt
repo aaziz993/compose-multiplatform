@@ -22,7 +22,7 @@ internal abstract class KotlinNativeTarget<T : org.jetbrains.kotlin.gradle.plugi
         @Serializable(with = KotlinNativeBinaryContainerTransformingSerializer::class) KotlinNativeBinaryContainer,
         >() {
 
-    abstract override val compilations: LinkedHashSet<KotlinNativeCompilation>?
+    abstract override val compilations: LinkedHashSet<@Serializable(with = KotlinNativeCompilationKeyTransformingSerializer::class) KotlinNativeCompilation>?
 
     context(Project)
     override fun applyTo(receiver: T) {

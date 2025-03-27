@@ -118,7 +118,7 @@ internal interface KotlinCompilation<T : org.jetbrains.kotlin.gradle.plugin.Kotl
      * - add all 'declared dependencies' present on [other] compilation
      * - see all internal declarations of [other] compilation
      */
-    val associatesWith: Set<String>?
+    val associatedCompilations: Set<String>?
 
     context(Project)
     override fun applyTo(receiver: T) {
@@ -135,7 +135,7 @@ internal interface KotlinCompilation<T : org.jetbrains.kotlin.gradle.plugin.Kotl
         output?.applyTo(receiver.output)
         (compileTaskProvider as KotlinCompilationTask<org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask<*>, *>?)
             ?.applyTo(receiver.compileTaskProvider.get())
-        associatesWith
+        associatedCompilations
             ?.flatMap(receiver.target.compilations::getByNameOrAll)
             ?.forEach(receiver::associateWith)
     }
@@ -156,6 +156,6 @@ internal data class KotlinCompilationImpl(
     override val compileDependencyFiles: Set<String>? = null,
     override val setCompileDependencyFiles: Set<String>? = null,
     override val output: KotlinCompilationOutput? = null,
-    override val associatesWith: Set<String>? = null,
+    override val associatedCompilations: Set<String>? = null,
     override val dependencies: Set<@Serializable(with = DependencyKeyTransformingSerializer::class) Dependency>? = null,
 ) : KotlinCompilation<org.jetbrains.kotlin.gradle.plugin.KotlinCompilation<*>>

@@ -14,10 +14,9 @@ import org.jetbrains.kotlin.gradle.targets.native.NativeBinaryTestRunSource
 internal abstract class KotlinNativeTargetWithTests<
     T : org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTargetWithTests<R>,
     R : org.jetbrains.kotlin.gradle.targets.native.KotlinNativeBinaryTestRun
-    > : KotlinNativeTarget<T>(),
-    KotlinTargetWithTests<T, NativeBinaryTestRunSource, R> {
+    > : KotlinNativeTarget<T>(), KotlinTargetWithTests<T, NativeBinaryTestRunSource, R> {
 
-    abstract override val testRuns: LinkedHashSet<out KotlinNativeBinaryTestRun<R>>
+    abstract override val testRuns: LinkedHashSet<out KotlinNativeBinaryTestRun<R>>?
 
     context(Project)
     override fun applyTo(receiver: T) {

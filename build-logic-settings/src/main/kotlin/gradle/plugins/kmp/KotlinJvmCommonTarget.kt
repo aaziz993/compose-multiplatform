@@ -2,6 +2,7 @@ package gradle.plugins.kmp
 
 import gradle.accessors.kotlin
 import gradle.api.applyTo
+import gradle.api.publish.maven.MavenPublication
 import gradle.plugins.kmp.jvm.KotlinJvmCompilerOptions
 import gradle.plugins.kotlin.HasConfigurableKotlinCompilerOptions
 import kotlinx.serialization.SerialName
@@ -17,7 +18,6 @@ internal data class KotlinJvmCommonTarget(
     override val name: String? = null,
     override val withSourcesJar: Boolean? = null,
     override val mavenPublication: MavenPublication? = null,
-    override val onPublicationCreated: String? = null,
     override val compilations: LinkedHashSet<KotlinJvmAndroidCompilation>? = null,
     override val compilerOptions: KotlinJvmCompilerOptions? = null,
 ) : KotlinTarget<org.jetbrains.kotlin.gradle.plugin.KotlinTarget>,
