@@ -2,6 +2,7 @@ package gradle.plugins.kotlin.tasks
 
 import gradle.api.tasks.Task
 import gradle.api.tasks.applyTo
+import gradle.api.tryAddAll
 import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.SerialName
@@ -40,10 +41,7 @@ internal interface CompileUsingKotlinDaemon<T : org.jetbrains.kotlin.gradle.task
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
-        receiver.kotlinDaemonJvmArguments tryAssign kotlinDaemonJvmArguments?.let { kotlinDaemonJvmArguments ->
-            receiver.kotlinDaemonJvmArguments.get() + kotlinDaemonJvmArguments
-        }
-
+        receiver.kotlinDaemonJvmArguments tryAddAll kotlinDaemonJvmArguments
         receiver.kotlinDaemonJvmArguments tryAssign setKotlinDaemonJvmArguments
         receiver.compilerExecutionStrategy tryAssign compilerExecutionStrategy
         receiver.useDaemonFallbackStrategy tryAssign useDaemonFallbackStrategy

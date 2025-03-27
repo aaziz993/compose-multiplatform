@@ -2,6 +2,7 @@ package gradle.plugins.kotlin.apollo
 
 import com.apollographql.apollo3.compiler.PackageNameGenerator
 import com.apollographql.apollo3.gradle.api.Service
+import gradle.api.tryAddAll
 import gradle.api.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -65,27 +66,14 @@ internal data class Service(
     fun applyTo(receiver: Service) {
         receiver.addJvmOverloads tryAssign addJvmOverloads
         receiver.addTypename tryAssign addTypename
-
-        receiver.alwaysGenerateTypesMatching tryAssign alwaysGenerateTypesMatching
-            ?.let { alwaysGenerateTypesMatching ->
-                receiver.alwaysGenerateTypesMatching.get() + alwaysGenerateTypesMatching
-            }
-
+        receiver.alwaysGenerateTypesMatching tryAddAll alwaysGenerateTypesMatching
         receiver.alwaysGenerateTypesMatching tryAssign setAlwaysGenerateTypesMatching
-
-        receiver.classesForEnumsMatching tryAssign classesForEnumsMatching?.let { classesForEnumsMatching ->
-            receiver.classesForEnumsMatching.get() + classesForEnumsMatching
-        }
-
+        receiver.classesForEnumsMatching tryAddAll classesForEnumsMatching
         receiver.classesForEnumsMatching tryAssign setClassesForEnumsMatching
         receiver.codegenModels tryAssign codegenModels
         receiver.debugDir tryAssign debugDir?.let(project.layout.projectDirectory::dir)
         receiver.decapitalizeFields tryAssign decapitalizeFields
-
-        receiver.excludes tryAssign excludes?.let { excludes ->
-            receiver.excludes.get() + excludes
-        }
-
+        receiver.excludes tryAddAll excludes
         receiver.excludes tryAssign setExcludes
         receiver.failOnWarnings tryAssign failOnWarnings
         receiver.fieldsOnDisjointTypesMustMerge tryAssign fieldsOnDisjointTypesMustMerge
@@ -96,11 +84,7 @@ internal data class Service(
         receiver.generateFragmentImplementations tryAssign generateFragmentImplementations
         receiver.generateInputBuilders tryAssign generateInputBuilders
         receiver.generateKotlinModels tryAssign generateKotlinModels
-
-        receiver.generateMethods tryAssign generateMethods?.let { generateMethods ->
-            receiver.generateMethods.get() + generateMethods
-        }
-
+        receiver.generateMethods tryAddAll generateMethods
         receiver.generateMethods tryAssign setGenerateMethods
         receiver.generateModelBuilders tryAssign generateModelBuilders
         receiver.generateOperationOutput tryAssign generateOperationOutput
@@ -109,11 +93,7 @@ internal data class Service(
         receiver.generateQueryDocument tryAssign generateQueryDocument
         receiver.generateSchema tryAssign generateSchema
         receiver.generatedSchemaName tryAssign generatedSchemaName
-
-        receiver.includes tryAssign includes?.let { includes ->
-            receiver.includes.get() + includes
-        }
-
+        receiver.includes tryAddAll  includes
         receiver.includes tryAssign setIncludes
         receiver.jsExport tryAssign jsExport
         receiver.languageVersion tryAssign languageVersion
@@ -127,11 +107,7 @@ internal data class Service(
         receiver.schemaFile tryAssign schemaFile?.let(project::file)
         schemaFiles?.toTypedArray()?.let(receiver.schemaFiles::from)
         setSchemaFiles?.let(receiver.schemaFiles::setFrom)
-
-        receiver.sealedClassesForEnumsMatching tryAssign sealedClassesForEnumsMatching?.let { sealedClassesForEnumsMatching ->
-            receiver.sealedClassesForEnumsMatching.get() + sealedClassesForEnumsMatching
-        }
-
+        receiver.sealedClassesForEnumsMatching tryAddAll  sealedClassesForEnumsMatching
         receiver.sealedClassesForEnumsMatching tryAssign setSealedClassesForEnumsMatching
         receiver.sourceFolder tryAssign sourceFolder
         receiver.testDir tryAssign testDir?.let(project.layout.projectDirectory::dir)

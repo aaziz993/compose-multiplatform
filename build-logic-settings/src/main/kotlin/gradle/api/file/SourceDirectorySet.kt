@@ -2,7 +2,9 @@ package gradle.api.file
 
 import gradle.api.ProjectNamed
 import gradle.api.tasks.util.PatternFilterable
+import gradle.api.tryApply
 import gradle.api.tryAssign
+import gradle.api.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.file.SourceDirectorySet
@@ -58,8 +60,8 @@ internal data class SourceDirectorySet(
     override fun applyTo(receiver: SourceDirectorySet) {
         super<PatternFilterable>.applyTo(receiver)
 
-        srcDirs?.toTypedArray()?.let(receiver::srcDirs)
-        setSrcDirs?.let(receiver::setSrcDirs)
+        receiver::srcDirs trySet srcDirs
+        receiver::setSrcDirs trySet setSrcDirs
         receiver.destinationDirectory tryAssign destinationDirectory?.let(project.layout.projectDirectory::dir)
     }
 }

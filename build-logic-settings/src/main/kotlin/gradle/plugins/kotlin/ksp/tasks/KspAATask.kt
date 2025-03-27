@@ -3,6 +3,7 @@ package gradle.plugins.kotlin.ksp.tasks
 import com.google.devtools.ksp.gradle.KspAATask
 import gradle.api.tasks.DefaultTask
 import gradle.api.tasks.applyTo
+import gradle.api.tryAddAll
 import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.kotlin.ksp.KspGradleConfig
@@ -40,11 +41,7 @@ internal data class KspAATask(
         kspClasspath?.toTypedArray()?.let(receiver.kspClasspath::from)
         setKspClasspath?.let(receiver.kspClasspath::setFrom)
         kspConfig?.applyTo(receiver.kspConfig)
-
-        receiver.commandLineArgumentProviders tryAssign commandLineArgumentProviders?.let { commandLineArgumentProviders ->
-            receiver.commandLineArgumentProviders.get() + commandLineArgumentProviders
-        }
-
+        receiver.commandLineArgumentProviders tryAddAll commandLineArgumentProviders
         receiver.commandLineArgumentProviders tryAssign setCommandLineArgumentProviders
     }
 

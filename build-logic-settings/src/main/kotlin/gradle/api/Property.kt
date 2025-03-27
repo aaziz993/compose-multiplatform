@@ -70,6 +70,10 @@ public infix fun <T> HasMultipleValues<T>.tryAssign(elements: Iterable<T?>?): Un
 public infix fun <T> HasMultipleValues<T>.tryAssign(provider: Provider<out Iterable<T?>?>): Unit? =
     provider.takeIf(Provider<out Iterable<T?>?>::isPresent)?.let(::assign)
 
+public infix fun <T> HasMultipleValues<T>.tryAddAll(elements: Iterable<T?>?): Unit? = elements?.let(::addAll)
+
+public infix fun <K, V> MapProperty<K, V>.tryPutAll(entries: Map<out K?, V?>?): Unit? = entries?.let(::putAll)
+
 public infix fun <K, V> MapProperty<K, V>.tryAssign(entries: Map<out K?, V?>?): Unit? = entries?.let(::assign)
 
 public infix fun <K, V> MapProperty<K, V>.tryAssign(provider: Provider<out Map<out K?, V?>?>): Unit? =
@@ -83,6 +87,12 @@ public infix fun <T> Property<T>.tryAssign(value: Provider<out T?>): Unit? =
 public infix fun <T> KFunction1<T, Unit>.apply(block: KFunction1<T, Unit>) {
     call(block)
 }
+
+public inline infix fun <reified T> KFunction1<Array<T>, *>.trySet(elements: Iterable<T>?) =
+    elements?.toList()?.toTypedArray()?.let(::invoke)
+
+public infix fun <T> KFunction1<Iterable<T>, *>.trySet(elements: Iterable<T>?) =
+    elements?.let(::invoke)
 
 public infix fun <T> KFunction1<T.() -> Unit, *>.tryApply(block: ((T) -> Unit)?) =
     block?.let { block ->

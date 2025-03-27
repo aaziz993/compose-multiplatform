@@ -6,6 +6,7 @@ import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.powerAssert
 import gradle.accessors.settings
+import gradle.api.tryAddAll
 import gradle.api.tryAssign
 import org.gradle.api.Project
 
@@ -28,16 +29,9 @@ internal interface PowerAssertGradleExtension {
     context(Project)
     fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("powerAssert").id) {
-            project.powerAssert.functions tryAssign functions?.let { functions ->
-                project.powerAssert.functions.get() + functions
-            }
-
+            project.powerAssert.functions tryAddAll functions
             project.powerAssert.functions tryAssign setFunctions
-
-            project.powerAssert.includedSourceSets tryAssign includedSourceSets?.let { includedSourceSets ->
-                project.powerAssert.includedSourceSets.get() + includedSourceSets
-            }
-
+            project.powerAssert.includedSourceSets tryAddAll includedSourceSets
             project.powerAssert.includedSourceSets tryAssign setIncludedSourceSets
         }
 }

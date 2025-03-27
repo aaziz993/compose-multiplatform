@@ -7,7 +7,9 @@ import com.apollographql.apollo3.compiler.hooks.ApolloCompilerJavaHooks
 import com.apollographql.apollo3.compiler.hooks.ApolloCompilerKotlinHooks
 import com.apollographql.apollo3.gradle.internal.ApolloGenerateSourcesTask
 import gradle.api.tasks.applyTo
+import gradle.api.tryAddAll
 import gradle.api.tryAssign
+import gradle.api.tryPutAll
 import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -81,12 +83,7 @@ internal data class ApolloGenerateSourcesTask(
         super.applyTo(receiver)
 
         receiver.addTypename tryAssign addTypename
-
-        receiver.alwaysGenerateTypesMatching tryAssign alwaysGenerateTypesMatching
-            ?.let { alwaysGenerateTypesMatching ->
-                receiver.alwaysGenerateTypesMatching.get() + alwaysGenerateTypesMatching
-            }
-
+        receiver.alwaysGenerateTypesMatching tryAddAll  alwaysGenerateTypesMatching
         receiver.alwaysGenerateTypesMatching tryAssign setAlwaysGenerateTypesMatching
         receiver.codegenModels tryAssign codegenModels
         receiver.decapitalizeFields tryAssign decapitalizeFields
@@ -97,17 +94,9 @@ internal data class ApolloGenerateSourcesTask(
         graphqlFiles?.toTypedArray()?.let(receiver.graphqlFiles::from)
         setGraphqlFiles?.let(receiver.graphqlFiles::setFrom)
         receiver.projectPath tryAssign projectPath
-
-        receiver.scalarAdapterMapping tryAssign scalarAdapterMapping?.let { scalarAdapterMapping ->
-            receiver.scalarAdapterMapping.get() + scalarAdapterMapping
-        }
-
+        receiver.scalarAdapterMapping tryPutAll  scalarAdapterMapping
         receiver.scalarAdapterMapping tryAssign setScalarAdapterMapping
-
-        receiver.scalarTypeMapping tryAssign scalarTypeMapping?.let { scalarTypeMapping ->
-            receiver.scalarTypeMapping.get() + scalarTypeMapping
-        }
-
+        receiver.scalarTypeMapping tryPutAll  scalarTypeMapping
         receiver.scalarTypeMapping tryAssign setScalarAdapterMapping
         schemaFiles?.toTypedArray()?.let(receiver.schemaFiles::from)
         setSchemaFiles?.let(receiver.schemaFiles::setFrom)

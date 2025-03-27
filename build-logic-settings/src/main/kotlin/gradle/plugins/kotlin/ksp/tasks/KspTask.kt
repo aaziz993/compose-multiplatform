@@ -2,6 +2,7 @@ package gradle.plugins.kotlin.ksp.tasks
 
 import gradle.api.tasks.Task
 import gradle.api.tasks.applyTo
+import gradle.api.tryAddAll
 import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.kotlin.SubpluginOption
@@ -23,16 +24,9 @@ internal interface KspTask<T : com.google.devtools.ksp.gradle.KspTask> : Task<T>
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
-        receiver.options tryAssign options?.map(SubpluginOption::toSubpluginOption)?.let { options ->
-            receiver.options.get() + options
-        }
-
+        receiver.options tryAddAll options?.map(SubpluginOption::toSubpluginOption)
         receiver.options tryAssign setOptions?.map(SubpluginOption::toSubpluginOption)
-
-        receiver.commandLineArgumentProviders tryAssign commandLineArgumentProviders?.let { options ->
-            receiver.commandLineArgumentProviders.get() + options
-        }
-
+        receiver.commandLineArgumentProviders tryAddAll commandLineArgumentProviders
         receiver.commandLineArgumentProviders tryAssign setCommandLineArgumentProviders
     }
 }

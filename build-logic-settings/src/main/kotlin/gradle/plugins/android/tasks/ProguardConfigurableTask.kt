@@ -3,6 +3,7 @@ package gradle.plugins.android.tasks
 import com.android.build.gradle.internal.tasks.ProguardConfigurableTask
 import com.android.builder.core.ComponentTypeImpl
 import gradle.api.tasks.applyTo
+import gradle.api.tryAddAll
 
 import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
@@ -81,11 +82,7 @@ internal data class ProguardConfigurableTask(
         setConfigurationFiles?.let(receiver.configurationFiles::setFrom)
         libraryKeepRulesFileCollection?.toTypedArray()?.let(receiver.libraryKeepRulesFileCollection::from)
         setLibraryKeepRulesFileCollection?.let(receiver.libraryKeepRulesFileCollection::setFrom)
-
-        receiver.ignoreFromInKeepRules tryAssign ignoreFromInKeepRules?.let { ignoreFromInKeepRules ->
-            receiver.ignoreFromInKeepRules.get() + ignoreFromInKeepRules
-        }
-
+        receiver.ignoreFromInKeepRules tryAddAll ignoreFromInKeepRules
         receiver.ignoreFromInKeepRules tryAssign setIgnoreFromInKeepRules
         receiver.ignoreFromAllExternalDependenciesInKeepRules tryAssign ignoreFromAllExternalDependenciesInKeepRules
         receiver.mappingFile tryAssign mappingFile?.let(project::file)

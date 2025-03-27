@@ -5,6 +5,7 @@ import com.apollographql.apollo3.gradle.internal.ApolloGenerateSchemaTask
 import gradle.api.tasks.DefaultTask
 import gradle.api.tasks.applyTo
 import gradle.api.tryAssign
+import gradle.api.tryPutAll
 import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -48,17 +49,9 @@ internal data class ApolloGenerateSchemaTask(
         receiver.codegenModels tryAssign codegenModels
         receiver.generateDataBuilders tryAssign generateDataBuilders
         receiver.outputFile tryAssign outputFile?.let(project::file)
-
-        receiver.scalarAdapterMapping tryAssign scalarAdapterMapping?.let { scalarAdapterMapping ->
-            receiver.scalarAdapterMapping.get() + scalarAdapterMapping
-        }
-
+        receiver.scalarAdapterMapping tryPutAll scalarAdapterMapping
         receiver.scalarAdapterMapping tryAssign setScalarAdapterMapping
-
-        receiver.scalarTypeMapping tryAssign scalarTypeMapping?.let { scalarTypeMapping ->
-            receiver.scalarTypeMapping.get() + scalarTypeMapping
-        }
-
+        receiver.scalarTypeMapping tryPutAll scalarTypeMapping
         receiver.scalarTypeMapping tryAssign setScalarAdapterMapping
         schemaFiles?.toTypedArray()?.let(receiver.schemaFiles::from)
         setSchemaFiles?.toTypedArray()?.let(receiver.schemaFiles::setFrom)

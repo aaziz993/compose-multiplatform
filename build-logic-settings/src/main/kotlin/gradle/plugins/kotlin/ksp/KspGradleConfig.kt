@@ -1,7 +1,9 @@
 package gradle.plugins.kotlin.ksp
 
 import com.google.devtools.ksp.gradle.KspGradleConfig
+import gradle.api.tryAddAll
 import gradle.api.tryAssign
+import gradle.api.tryPutAll
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
@@ -71,20 +73,12 @@ internal data class KspGradleConfig(
         receiver.resourceOutputDir tryAssign resourceOutputDir?.let(project::file)
         receiver.languageVersion tryAssign languageVersion
         receiver.apiVersion tryAssign apiVersion
-
-        receiver.processorOptions tryAssign processorOptions?.let { processorOptions ->
-            receiver.processorOptions.get() + processorOptions
-        }
-
+        receiver.processorOptions tryPutAll  processorOptions
         receiver.processorOptions tryAssign setProcessorOptions
         // Unfortunately, passing project.logger over is not possible.
         receiver.logLevel tryAssign logLevel
         receiver.allWarningsAsErrors tryAssign allWarningsAsErrors
-
-        receiver.excludedProcessors tryAssign excludedProcessors?.let { excludedProcessors ->
-            receiver.excludedProcessors.get() + excludedProcessors
-        }
-
+        receiver.excludedProcessors tryAddAll  excludedProcessors
         receiver.excludedProcessors tryAssign setExcludedProcessors
         receiver.jvmTarget tryAssign jvmTarget
         receiver.jvmDefaultMode tryAssign jvmDefaultMode

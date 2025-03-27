@@ -1,5 +1,6 @@
 package gradle.plugins.kotlin
 
+import gradle.api.tryAddAll
 import gradle.api.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -56,11 +57,7 @@ internal interface KotlinCommonCompilerToolOptions<T : org.jetbrains.kotlin.grad
         receiver.extraWarnings tryAssign extraWarnings
         receiver.suppressWarnings tryAssign suppressWarnings
         receiver.verbose tryAssign verbose
-
-        receiver.freeCompilerArgs tryAssign freeCompilerArgs?.let { freeCompilerArgs ->
-            receiver.freeCompilerArgs.get() + freeCompilerArgs
-        }
-
+        receiver.freeCompilerArgs tryAddAll freeCompilerArgs
         receiver.freeCompilerArgs tryAssign setFreeCompilerArgs
     }
 }
