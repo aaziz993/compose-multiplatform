@@ -36,7 +36,7 @@ internal data class KnitSettings(
         super.applyTo()
 
         moduleRootsFromIncludes.ifTrue {
-            project.knit::moduleRoots + project.settings.projectProperties.includesAsPaths.orEmpty() + listOf(".")
+            project.knit::moduleRoots + (project.settings.projectProperties.includesAsPaths.orEmpty() + listOf("."))
         }
     }
 }
