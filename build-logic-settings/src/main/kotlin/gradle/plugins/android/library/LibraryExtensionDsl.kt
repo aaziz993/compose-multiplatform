@@ -36,8 +36,6 @@ internal interface LibraryExtensionDsl :
     // TODO(b/140406102)
 
     /** Aidl files to package in the aar. */
-import gradle.accessors.files
-import gradle.api.trySet
     val aidlPackagedList: Set<String>?
     val setAidlPackagedList: Set<String>?
 

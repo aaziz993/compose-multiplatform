@@ -81,7 +81,7 @@ public infix fun <T> KFunction1<T.() -> Unit, *>.tryApply(block: ((T) -> Unit)?)
         invoke(block::invoke)
     }
 
-public infix fun <T> KFunction1<Action<in T>, *>.tryApply(block: ((T) -> Unit)?): Any? =
+public infix fun <T> KFunction1<Action<T>, *>.tryApply(block: ((T) -> Unit)?): Any? =
     block?.let { block ->
         invoke(block)
     }

@@ -72,7 +72,7 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
         excludeSteps?.forEach(receiver::ignoreErrorForStep)
         excludePaths?.forEach(receiver::ignoreErrorForPath)
         encoding?.let(receiver::setEncoding)
-        targets?.toTypedArray().let(receiver::target)
+        targets?.toTypedArray()?.let(receiver::target)
         receiver::targetExclude trySet targetExcludes
         receiver::targetExcludeIfContentContains trySet targetExcludeIfContentContains
         receiver::targetExcludeIfContentContainsRegex trySet targetExcludeIfContentContainsRegex

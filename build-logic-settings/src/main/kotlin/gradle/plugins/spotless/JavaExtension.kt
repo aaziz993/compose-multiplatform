@@ -174,10 +174,10 @@ internal data class JavaExtension(
     ) {
 
         fun applyTo(receiver: JavaExtension.ImportOrderConfig) {
-            receiver::wildcardsLast trySet wildcardsLast
-            receiver::semanticSort trySet semanticSort
-            receiver::treatAsPackage trySet treatAsPackage
-            receiver::treatAsClass trySet treatAsClass
+            wildcardsLast?.let(receiver::wildcardsLast)
+            semanticSort?.let(receiver::semanticSort)
+            treatAsPackage?.let(receiver::treatAsPackage)
+            treatAsClass?.let(receiver::treatAsClass)
         }
     }
 
