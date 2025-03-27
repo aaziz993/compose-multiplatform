@@ -67,21 +67,21 @@ public fun <K, V> KMutableProperty0<out MutableMap<K, V>?>.putAll(value: Map<K, 
 public infix fun <K, V> KMutableProperty0<out MutableMap<K, V>?>.tryPutAll(value: Map<K, V>?): Unit? =
     value?.let(::putAll)
 
-public infix fun <T> KFunction1<T, *>.trySet(elements: T?) =
+public infix fun <T> KFunction1<T, *>.trySet(elements: T?): Any? =
     elements?.let(::invoke)
 
-public inline infix fun <reified T> KFunction1<Array<T>, *>.trySet(elements: Iterable<T>?) =
+public inline infix fun <reified T> KFunction1<Array<T>, *>.trySet(elements: Iterable<T>?): Any? =
     elements?.toList()?.toTypedArray()?.let(::invoke)
 
-public infix fun <T> KFunction1<Iterable<T>, *>.trySet(elements: Iterable<T>?) =
+public infix fun <T> KFunction1<Iterable<T>, *>.trySet(elements: Iterable<T>?): Any? =
     elements?.let(::invoke)
 
-public infix fun <T> KFunction1<T.() -> Unit, *>.tryApply(block: ((T) -> Unit)?) =
+public infix fun <T> KFunction1<T.() -> Unit, *>.tryApply(block: ((T) -> Unit)?): Any? =
     block?.let { block ->
         invoke(block::invoke)
     }
 
-public infix fun <T> KFunction1<Action<T>, *>.tryApply(block: Action<T>?) =
+public infix fun <T> KFunction1<Action<T>, *>.tryApply(block: Action<T>?): Any? =
     block?.let { block ->
         invoke(block::execute)
     }
