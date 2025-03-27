@@ -5,9 +5,9 @@ import gradle.accessors.moduleName
 import gradle.api.applyTo
 import gradle.api.publish.maven.MavenPublication
 import gradle.api.trySet
-import gradle.plugins.kotlin.mpp.HasBinaries
-import gradle.plugins.kotlin.KotlinTarget
 import gradle.plugins.kotlin.HasConfigurableKotlinCompilerOptions
+import gradle.plugins.kotlin.KotlinTarget
+import gradle.plugins.kotlin.mpp.HasBinaries
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

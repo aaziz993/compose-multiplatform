@@ -4,8 +4,8 @@ import gradle.accessors.kotlin
 import gradle.api.applyTo
 import gradle.api.publish.maven.MavenPublication
 import gradle.api.trySet
-import gradle.plugins.kotlin.targets.jvm.KotlinJvmCompilerOptions
 import gradle.plugins.kotlin.HasConfigurableKotlinCompilerOptions
+import gradle.plugins.kotlin.targets.jvm.KotlinJvmCompilerOptions
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

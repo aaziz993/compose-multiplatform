@@ -15,18 +15,17 @@ import org.gradle.kotlin.dsl.withType
  * This does not extend [KotlinCompilationTask], since [KotlinCompilationTask] carries an unwanted/conflicting
  * type parameter `<out T : KotlinCommonOptions>`
  */
-internal interface K2MultiplatformCompilationTask<
-    T : org.jetbrains.kotlin.gradle.tasks.K2MultiplatformCompilationTask,
-    CO : org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerOptions> : Task<T> {
+internal interface K2MultiplatformCompilationTask<T : org.jetbrains.kotlin.gradle.tasks.K2MultiplatformCompilationTask> : Task<T> {
 
-    val compilerOptions: KotlinCommonCompilerOptions<CO>?
+    val compilerOptions: KotlinCommonCompilerOptions<out org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerOptions>?
 
     context(Project)
     @Suppress("UNCHECKED_CAST")
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
-        compilerOptions?.applyTo(receiver.compilerOptions as CO)
+        (compilerOptions as KotlinCommonCompilerOptions<org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerOptions>?)
+            ?.applyTo(receiver.compilerOptions)
     }
 }
 
@@ -47,10 +46,7 @@ internal data class K2MultiplatformCompilationTaskImpl(
     override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
     override val name: String? = null,
-) : K2MultiplatformCompilationTask<
-    org.jetbrains.kotlin.gradle.tasks.K2MultiplatformCompilationTask,
-    org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerOptions,
-    > {
+) : K2MultiplatformCompilationTask<org.jetbrains.kotlin.gradle.tasks.K2MultiplatformCompilationTask> {
 
     context(Project)
     override fun applyTo() =

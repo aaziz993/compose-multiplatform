@@ -5,9 +5,9 @@ import gradle.accessors.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
-import gradle.plugins.kotlin.targets.nat.FrameworkSettings
 import gradle.plugins.kotlin.cocoapods.CocoapodsExtension
 import gradle.plugins.kotlin.cocoapods.Pod
+import gradle.plugins.kotlin.targets.nat.FrameworkSettings
 import gradle.plugins.project.EnabledSettings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

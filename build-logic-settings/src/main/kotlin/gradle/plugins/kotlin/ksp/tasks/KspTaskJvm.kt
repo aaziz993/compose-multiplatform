@@ -4,10 +4,10 @@ import com.google.devtools.ksp.gradle.KspTaskJvm
 import gradle.api.tasks.applyTo
 import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
-import gradle.plugins.kotlin.targets.nat.CompilerPluginOptions
 import gradle.plugins.kotlin.KotlinCommonCompilerOptions
-import gradle.plugins.kotlin.tasks.KotlinJavaToolchain
+import gradle.plugins.kotlin.targets.nat.CompilerPluginOptions
 import gradle.plugins.kotlin.tasks.KotlinCompile
+import gradle.plugins.kotlin.tasks.KotlinJavaToolchain
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType

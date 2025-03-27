@@ -1,10 +1,10 @@
 package gradle.plugins.kotlin.benchmark
 
+import gradle.api.NamedKeyTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.trySet
 import gradle.collection.SerializableOptionalAnyList
 import gradle.collection.SerializableOptionalAnyMap
-import kotlinx.benchmark.gradle.BenchmarkConfiguration
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -26,10 +26,10 @@ internal data class BenchmarkConfiguration(
     val setParams: Map<String, SerializableOptionalAnyList>? = null,
     val reportFormat: String? = null,
     val warmups: Int? = null,
-) : ProjectNamed<BenchmarkConfiguration> {
+) : ProjectNamed<kotlinx.benchmark.gradle.BenchmarkConfiguration> {
 
     context(Project)
-    override fun applyTo(receiver: BenchmarkConfiguration) {
+    override fun applyTo(receiver: kotlinx.benchmark.gradle.BenchmarkConfiguration) {
         advanced?.let(receiver.advanced::putAll)
 
         setAdvanced?.let { setAdvanced ->
@@ -51,3 +51,6 @@ internal data class BenchmarkConfiguration(
         receiver::warmups trySet warmups
     }
 }
+
+internal object BenchmarkConfigurationKeyTransformingSerializer
+    : NamedKeyTransformingSerializer<BenchmarkConfiguration>(BenchmarkConfiguration.serializer())

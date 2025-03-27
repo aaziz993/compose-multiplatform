@@ -1,7 +1,6 @@
 package gradle.plugins.kotlin.targets.web
 
 import gradle.api.tasks.applyTo
-import org.gradle.kotlin.dsl.withType
 import gradle.api.tryAssign
 import gradle.api.trySet
 import gradle.collection.SerializableAnyList
@@ -9,6 +8,7 @@ import gradle.collection.SerializableAnyMap
 import gradle.process.AbstractExecTask
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.targets.js.d8.D8Exec
 
 @Serializable

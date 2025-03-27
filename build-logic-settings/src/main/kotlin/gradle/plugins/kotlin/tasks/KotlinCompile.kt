@@ -5,17 +5,20 @@ import gradle.api.tasks.applyTo
 import gradle.api.tryAssign
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
+import gradle.plugins.kotlin.KotlinCommonCompilerOptions
 import gradle.plugins.kotlin.targets.jvm.KotlinJvmCompile
 import gradle.plugins.kotlin.targets.jvm.KotlinJvmCompilerOptions
 import gradle.plugins.kotlin.targets.nat.CompilerPluginOptions
-import gradle.plugins.kotlin.tasks.KotlinJavaToolchain
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
 import org.jetbrains.kotlin.gradle.dsl.jvm.JvmTargetValidationMode
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilerExecutionStrategy
 
 internal abstract class KotlinCompile<T : org.jetbrains.kotlin.gradle.tasks.KotlinCompile>
-    : AbstractKotlinCompileTool<T>(), K2MultiplatformCompilationTask<T, org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompilerOptions>,
+    : AbstractKotlinCompile<T>(),
+    K2MultiplatformCompilationTask<T>,
     KotlinJvmCompile<T> {
 
     /** A package prefix that is used for locating Java sources in a directory structure with non-full-depth packages.
@@ -29,13 +32,14 @@ internal abstract class KotlinCompile<T : org.jetbrains.kotlin.gradle.tasks.Kotl
 
     context(Project)
     override fun applyTo(receiver: T) {
-        super<AbstractKotlinCompileTool>.applyTo(receiver)
+        super<AbstractKotlinCompile>.applyTo(receiver)
         super<K2MultiplatformCompilationTask>.applyTo(receiver)
         super<KotlinJvmCompile>.applyTo(receiver)
 
         receiver::javaPackagePrefix trySet javaPackagePrefix
         receiver::usePreciseJavaTracking trySet usePreciseJavaTracking
-        receiver.useKotlinAbiSnapshot tryAssign useKotlinAbiSnapshot
+        receiver.useDaemonFallbackStrategy tryAssign useKotlinAbiSnapshot
+        receiver.useModuleDetection tryAssign useKotlinAbiSnapshot
         classpathSnapshotProperties?.applyTo(receiver.classpathSnapshotProperties)
     }
 
@@ -81,9 +85,28 @@ internal data class KotlinCompileImpl(
     override val mustRunAfter: Set<String>? = null,
     override val finalizedBy: LinkedHashSet<String>? = null,
     override val shouldRunAfter: Set<String>? = null,
+    override val javaPackagePrefix: String? = null,
+    override val usePreciseJavaTracking: Boolean? = null,
+    override val useKotlinAbiSnapshot: Boolean? = null,
+    override val classpathSnapshotProperties: ClasspathSnapshotProperties? = null,
+    override val compilerOptions: KotlinCommonCompilerOptions<org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompilerOptions>? = null,
+    override val incremental: Boolean? = null,
+    override val explicitApiMode: ExplicitApiMode? = null,
+    override val abiSnapshotRelativePath: String? = null,
     override val name: String? = null,
-    override val compilerOptions: KotlinJvmCompilerOptions? = null,
-    override val jvmTargetValidationMode: JvmTargetValidationMode? = null,
+    override val sources: Set<String>? = null,
+    override val setSources: Set<String>? = null,
+    override val libraries: Set<String>? = null,
+    override val setLibraries: Set<String>? = null,
+    override val destinationDirectory: String? = null,
+    override val includes: Set<String>? = null,
+    override val setIncludes: Set<String>? = null,
+    override val excludes: Set<String>? = null,
+    override val setExcludes: Set<String>? = null,
+    override val kotlinDaemonJvmArguments: List<String>? = null,
+    override val setKotlinDaemonJvmArguments: List<String>? = null,
+    override val compilerExecutionStrategy: KotlinCompilerExecutionStrategy? = null,
+    override val useDaemonFallbackStrategy: Boolean? = null,
     override val friendPaths: Set<String>? = null,
     override val setFriendPaths: Set<String>? = null,
     override val pluginClasspath: Set<String>? = null,
@@ -94,20 +117,8 @@ internal data class KotlinCompileImpl(
     override val sourceSetName: String? = null,
     override val multiPlatformEnabled: Boolean? = null,
     override val useModuleDetection: Boolean? = null,
+    override val jvmTargetValidationMode: JvmTargetValidationMode? = null,
     override val kotlinJavaToolchain: KotlinJavaToolchain? = null,
-    override val sources: Set<String>? = null,
-    override val setSources: Set<String>? = null,
-    override val libraries: Set<String>? = null,
-    override val setLibraries: Set<String>? = null,
-    override val destinationDirectory: String? = null,
-    override val includes: Set<String>? = null,
-    override val setIncludes: Set<String>? = null,
-    override val excludes: Set<String>? = null,
-    override val setExcludes: Set<String>? = null,
-    override val javaPackagePrefix: String? = null,
-    override val usePreciseJavaTracking: Boolean? = null,
-    override val useKotlinAbiSnapshot: Boolean? = null,
-    override val classpathSnapshotProperties: ClasspathSnapshotProperties? = null,
 ) : KotlinCompile<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>() {
 
     context(Project)

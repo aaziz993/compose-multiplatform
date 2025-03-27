@@ -1,6 +1,5 @@
 package gradle.plugins.kotlin.targets.web.yarn.tasks
 
-import gradle.api.tasks.applyTo
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.web.tasks.AbstractSetupTask
 import kotlinx.serialization.Serializable

@@ -2,7 +2,6 @@ package gradle.plugins.dependencycheck
 
 import kotlinx.serialization.Serializable
 import org.owasp.dependencycheck.gradle.extension.DataExtension
-import org.owasp.dependencycheck.gradle.extension.DependencyCheckExtension
 
 @Serializable
 internal data class DataExtension(

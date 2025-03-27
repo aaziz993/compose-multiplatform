@@ -1,7 +1,6 @@
 package gradle.plugins.kotlin.targets.web
 
 import gradle.accessors.projectProperties
-import gradle.plugins.kotlin.targets.web.KotlinJsTarget
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 

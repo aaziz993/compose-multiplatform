@@ -1,10 +1,10 @@
 package gradle.plugins.kotlin.targets.nat
 
 import gradle.api.applyTo
-import gradle.plugins.kotlin.KotlinSourceSet
-import gradle.plugins.kotlin.targets.nat.tasks.KotlinNativeCompileImpl
 import gradle.plugins.kotlin.KotlinCompilationOutput
 import gradle.plugins.kotlin.KotlinCompilationTransformingSerializer
+import gradle.plugins.kotlin.KotlinSourceSet
+import gradle.plugins.kotlin.targets.nat.tasks.KotlinNativeCompileImpl
 import gradle.plugins.project.Dependency
 import gradle.plugins.project.DependencyKeyTransformingSerializer
 import kotlinx.serialization.Serializable

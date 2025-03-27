@@ -17,7 +17,7 @@ import org.gradle.kotlin.dsl.withType
 internal data class ApolloGenerateSourcesTask(
     override val addJvmOverloads: Boolean? = null,
     override val classesForEnumsMatching: List<String>? = null,
-override val setClassesForEnumsMatching: List<String>? = null,
+    override val setClassesForEnumsMatching: List<String>? = null,
     override val compilerJavaHooks: ApolloCompilerJavaHooks? = null,
     override val compilerKotlinHooks: ApolloCompilerKotlinHooks? = null,
     override val generateFilterNotNull: Boolean? = null,

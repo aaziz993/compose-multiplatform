@@ -4,9 +4,9 @@ import gradle.api.tasks.applyTo
 import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.kotlin.targets.nat.CompilerPluginOptions
-import gradle.plugins.kotlin.tasks.KotlinJavaToolchain
 import gradle.plugins.kotlin.tasks.BaseKotlinCompile
 import gradle.plugins.kotlin.tasks.KotlinCompilationTask
+import gradle.plugins.kotlin.tasks.KotlinJavaToolchain
 import gradle.plugins.kotlin.tasks.UsesKotlinJavaToolchain
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

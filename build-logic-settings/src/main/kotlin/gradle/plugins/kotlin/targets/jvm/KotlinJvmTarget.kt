@@ -3,11 +3,11 @@ package gradle.plugins.kotlin.targets.jvm
 import gradle.accessors.kotlin
 import gradle.api.applyTo
 import gradle.api.publish.maven.MavenPublication
+import gradle.plugins.kotlin.HasConfigurableKotlinCompilerOptions
+import gradle.plugins.kotlin.KotlinTargetWithTests
 import gradle.plugins.kotlin.mpp.KotlinJvmAndroidCompilation
 import gradle.plugins.kotlin.mpp.KotlinJvmAndroidCompilationKeyTransformingSerializer
 import gradle.plugins.kotlin.mpp.KotlinOnlyTarget
-import gradle.plugins.kotlin.KotlinTargetWithTests
-import gradle.plugins.kotlin.HasConfigurableKotlinCompilerOptions
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

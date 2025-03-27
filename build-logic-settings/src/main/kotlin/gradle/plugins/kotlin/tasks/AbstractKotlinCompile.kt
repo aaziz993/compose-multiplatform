@@ -4,18 +4,22 @@ import gradle.api.tasks.applyTo
 import gradle.api.tryAssign
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
-import gradle.plugins.kotlin.targets.nat.CompilerPluginOptions
+import gradle.plugins.kotlin.KotlinCommonCompilerOptions
 import gradle.plugins.kotlin.KotlinCommonCompilerOptionsImpl
+import gradle.plugins.kotlin.targets.nat.CompilerPluginOptions
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilerExecutionStrategy
 
 internal abstract class AbstractKotlinCompile<T : org.jetbrains.kotlin.gradle.tasks.AbstractKotlinCompile<*>>
-    : AbstractKotlinCompileTool<T>(), BaseKotlinCompile<T> {
+    : AbstractKotlinCompileTool<T>(),
+    CompileUsingKotlinDaemonWithNormalization<T>,
+    BaseKotlinCompile<T> {
 
-    abstract val compilerOptions: KotlinCommonCompilerOptionsImpl?
+    abstract val compilerOptions: KotlinCommonCompilerOptions<out org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerOptions>?
 
     // indicates that task should compile kotlin incrementally if possible
     // it's not possible when IncrementalTaskInputs#isIncremental returns false (i.e first build)
@@ -33,7 +37,8 @@ internal abstract class AbstractKotlinCompile<T : org.jetbrains.kotlin.gradle.ta
         super<AbstractKotlinCompileTool>.applyTo(receiver)
         super<BaseKotlinCompile>.applyTo(receiver)
 
-        compilerOptions?.applyTo(receiver.compilerOptions)
+        (compilerOptions as KotlinCommonCompilerOptions<org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerOptions>?)
+            ?.applyTo(receiver.compilerOptions)
         receiver::incremental trySet incremental
         receiver.explicitApiMode tryAssign explicitApiMode
         receiver.abiSnapshotRelativePath tryAssign abiSnapshotRelativePath
@@ -79,6 +84,10 @@ internal data class AbstractKotlinCompileImpl(
     override val sourceSetName: String? = null,
     override val multiPlatformEnabled: Boolean? = null,
     override val useModuleDetection: Boolean? = null,
+    override val kotlinDaemonJvmArguments: List<String>? = null,
+    override val setKotlinDaemonJvmArguments: List<String>? = null,
+    override val compilerExecutionStrategy: KotlinCompilerExecutionStrategy? = null,
+    override val useDaemonFallbackStrategy: Boolean? = null,
 ) : AbstractKotlinCompile<org.jetbrains.kotlin.gradle.tasks.AbstractKotlinCompile<*>>() {
 
     context(Project)

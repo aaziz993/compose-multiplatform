@@ -7,12 +7,12 @@ import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
 import gradle.plugins.kotlin.HasConfigurableKotlinCompilerOptions
-import gradle.plugins.kotlin.hierarchy.KotlinHierarchyDsl
 import gradle.plugins.kotlin.KotlinProjectExtension
 import gradle.plugins.kotlin.KotlinTargetContainerWithJsPresetFunctions
 import gradle.plugins.kotlin.KotlinTargetContainerWithPresetFunctions
 import gradle.plugins.kotlin.KotlinTargetContainerWithWasmPresetFunctions
 import gradle.plugins.kotlin.KotlinTargetsContainer
+import gradle.plugins.kotlin.hierarchy.KotlinHierarchyDsl
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerOptions
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension

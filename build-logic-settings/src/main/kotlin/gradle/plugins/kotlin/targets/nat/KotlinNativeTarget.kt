@@ -3,10 +3,10 @@ package gradle.plugins.kotlin.targets.nat
 import gradle.accessors.kotlin
 import gradle.api.applyTo
 import gradle.api.publish.maven.MavenPublication
+import gradle.plugins.kotlin.HasConfigurableKotlinCompilerOptions
 import gradle.plugins.kotlin.KotlinTarget
 import gradle.plugins.kotlin.mpp.KotlinTargetWithBinaries
 import gradle.plugins.kotlin.targets.nat.tasks.KotlinNativeCompilerOptions
-import gradle.plugins.kotlin.HasConfigurableKotlinCompilerOptions
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
