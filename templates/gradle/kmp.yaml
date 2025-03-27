@@ -58,29 +58,85 @@ kotlin:
   hierarchy:
     common:
       groups:
-        - jvmCommon: [ jvm, android ]
-        - jvmCommonIos: [ jvmCommon, ios ]
-        - jvmIosWeb: [ jvm, ios, web ]
-        - jvmWeb: [ jvm, web ]
-        - androidIos: [ android, ios ]
-        - androidIosWeb: [ mobile, web ]
-        - androidNative32: [ androidNativeArm32,androidNativeX86 ]
-        - androidNative64: [ androidNativeX64, androidNativeArm64 ]
-        - androidNative: [ androidNative32, androidNative32 ]
-        - apple32: [ watchosArm32, watchosArm64 ] # NB watchosArm64 is weird target w/ 32-bit numbers.
-        - apple64: [ ios, macos, tvos, watchosX64, watchosDeviceArm64, watchosSimulatorArm64 ]
-        - apple: [ apple32, apple64 ]
-        - nonIos: [ jvmCommon, web ]
-        - nix: [ linux, apple, androidNative ]
-        - posix: [ mingw, nix ]
-        - nativeNonApple: [ mingw, unix, linux, androidNative ]
-        - nativeNonAndroid: [ apple, mingw, linux ]
-        - native: [ nativeNonApple, nativeNonAndroid ]
-        - desktop: [ linux, windows, macos ]
-        - multithreaded: [ jvmCommon, native ]
-        - jsCommon: [ js, wasmJs ]
-        - wasm: [ wasmJs, wasmWasi ]
-        - web: [ jsCommon, wasmWasi ]
+        - jvmCommon:
+            withJvm: true
+            withAndroid: true
+        - jvmCommonIos:
+            withJvmCommon: true
+            withIos: true
+        - jvmIosWeb:
+            withJvm: true
+            withIos: true
+            withWeb: true
+        - jvmWeb:
+            withJvm: true
+            withWeb: true
+        - androidIos:
+            withAndroid: true
+            withIos: true
+        - androidIosWeb:
+            withMobile: true
+            withWeb: true
+        - androidNative32:
+            withAndroidNativeArm32: true
+            withAndroidNativeX86: true
+        - androidNative64:
+            withAndroidNativeX64: true
+            withAndroidNativeArm64: true
+        - androidNative:
+            withAndroidNative32: true
+            withAndroidNative64: true
+        - apple32:
+            withWatchosArm32: true
+            withWatchosArm64: true  # NB watchosArm64 is weird target w/ 32-bit numbers.
+        - apple64:
+            withIos: true
+            withMacos: true
+            withTvos: true
+            withWatchosX64: true
+            withWatchosDeviceArm64: true
+            withWatchosSimulatorArm64: true
+        - apple:
+            withApple32: true
+            withApple64: true
+        - nonIos:
+            withJvmCommon: true
+            withWeb: true
+        - nix:
+            withLinux: true
+            withApple: true
+            withAndroidNative: true
+        - posix:
+            withMingw: true
+            withNix: true
+        - nativeNonApple:
+            withMingw: true
+            withUnix: true
+            withLinux: true
+            withAndroidNative: true
+        - nativeNonAndroid:
+            withApple: true
+            withMingw: true
+            withLinux: true
+        - native:
+            withNativeNonApple: true
+            withNativeNonAndroid: true
+        - desktop:
+            withLinux: true
+            withWindows: true
+            withMacos: true
+        - multithreaded:
+            withJvmCommon: true
+            withNative: true
+        - jsCommon:
+            withJs: true
+            withWasmJs: true
+        - wasm:
+            withWasmJs: true
+            withWasmWasi: true
+        - web:
+            withJsCommon: true
+            withWasmWasi: true
 
   #  sourceSets:
 
