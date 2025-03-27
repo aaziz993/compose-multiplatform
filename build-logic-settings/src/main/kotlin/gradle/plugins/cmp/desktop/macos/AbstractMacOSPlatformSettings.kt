@@ -29,7 +29,7 @@ internal abstract class AbstractMacOSPlatformSettings<T : AbstractMacOSPlatformS
     abstract val notarization: MacOSNotarizationSettings?
 
     context(Project)
-    open fun applyTo(receiver: T) {
+    override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
         receiver::packageName trySet packageName

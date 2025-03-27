@@ -1,5 +1,6 @@
 package gradle.plugins.cmp.desktop.application
 
+import gradle.accessors.kotlin
 import gradle.accessors.sourceSets
 import gradle.api.getByNameOrAll
 import gradle.api.trySet
@@ -33,7 +34,7 @@ internal data class JvmApplication(
     context(Project)
     fun applyTo(receiver: JvmApplication) {
         fromSourceSet?.let(sourceSets::getByName)?.let(receiver::from)
-        fromKotlinTarget?.let(kotlin.targets::getByName)?.let(receiver::from)
+        fromKotlinTarget?.let(project.kotlin.targets::getByName)?.let(receiver::from)
         disableDefaultConfiguration?.takeIf { it }?.run { receiver.disableDefaultConfiguration() }
         dependsOn?.flatMap(tasks::getByNameOrAll)?.toTypedArray()?.let(receiver::dependsOn)
         fromFiles?.toTypedArray()?.let(receiver::fromFiles)

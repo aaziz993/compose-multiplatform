@@ -20,7 +20,7 @@ import gradle.plugins.develocity.DevelocityPlugin
 import gradle.plugins.doctor.DoctorPlugin
 import gradle.plugins.dokka.DokkaPlugin
 import gradle.plugins.initialization.problemreporter.SLF4JProblemReporterContext
-import gradle.plugins.kotlin.mpp.KMPPlugin
+import gradle.plugins.kotlin.mpp.KotlinMultiplatformPlugin
 import gradle.plugins.kotlin.filterKotlinTargets
 import gradle.plugins.jvm.JvmPlugin
 import gradle.plugins.kotlin.targets.nat.NativePlugin
@@ -149,7 +149,7 @@ public class ProjectPlugin : Plugin<Project> {
             plugins.apply(ApplePlugin::class.java) // doesn't depend on kmp
             plugins.apply(AndroidPlugin::class.java) // apply and configure android library or application plugin.
             plugins.apply(AnimalSnifferPlugin::class.java)
-            plugins.apply(KMPPlugin::class.java) // need android library or application plugin applied.
+            plugins.apply(KotlinMultiplatformPlugin::class.java) // need android library or application plugin applied.
             plugins.apply(JvmPlugin::class.java) //  apply after kmp plugin.
             plugins.apply(KspPlugin::class.java) // kspCommonMainMetadata need kmp plugin applied.
             plugins.apply(NativePlugin::class.java)

@@ -19,7 +19,7 @@ import gradle.plugins.apple.model.AppleSettings
 import gradle.plugins.cmp.model.CMPSettings
 import gradle.plugins.java.JavaPluginExtension
 import gradle.plugins.java.application.JavaApplication
-import gradle.plugins.kotlin.model.KotlinSettings
+import gradle.plugins.kotlin.mpp.model.KotlinMultiplatformSettings
 import gradle.plugins.project.file.CodeOfConductFile
 import gradle.plugins.project.file.ContributingFile
 import gradle.plugins.project.file.LicenseFile
@@ -70,7 +70,7 @@ internal data class ProjectProperties(
     val buildCache: BuildCacheConfiguration? = null,
     val java: JavaPluginExtension = JavaPluginExtension(),
     val application: JavaApplication? = null,
-    val kotlin: KotlinSettings = KotlinSettings(),
+    val kotlin: KotlinMultiplatformSettings = KotlinMultiplatformSettings(),
     val android: BaseExtension? = null,
     val apple: AppleSettings = AppleSettings(),
     val nodeJsEnv: NodeJsEnvSpec = NodeJsEnvSpec(),

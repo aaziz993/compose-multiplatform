@@ -20,7 +20,7 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
 
-internal class KMPPlugin : Plugin<Project> {
+internal class KotlinMultiplatformPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {

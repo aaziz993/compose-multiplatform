@@ -12,8 +12,10 @@ internal abstract class AbstractProguardTask<T : org.jetbrains.compose.desktop.a
     : AbstractComposeDesktopTask<T>() {
 
     abstract val inputFiles: Set<String>?
+    abstract val setInputFiles: Set<String>?
     abstract val mainJar: String?
     abstract val configurationFiles: LinkedHashSet<String>?
+    abstract val setConfigurationFiles: LinkedHashSet<String>?
     abstract val dontobfuscate: Boolean?
     abstract val dontoptimize: Boolean?
     abstract val joinOutputJars: Boolean?
@@ -24,6 +26,7 @@ internal abstract class AbstractProguardTask<T : org.jetbrains.compose.desktop.a
     abstract val defaultComposeRulesFile: String?
     abstract val proguardVersion: String?
     abstract val proguardFiles: LinkedHashSet<String>?
+    abstract val setProguardFiles: LinkedHashSet<String>?
     abstract val javaHome: String?
     abstract val mainClass: String?
     abstract val maxHeapSize: String?
@@ -56,14 +59,17 @@ internal abstract class AbstractProguardTask<T : org.jetbrains.compose.desktop.a
 @SerialName("AbstractProguardTask")
 internal data class AbstractProguardTaskImpl(
     override val inputFiles: Set<String>? = null,
+    override val setInputFiles: Set<String>? = null,
     override val mainJar: String? = null,
     override val configurationFiles: LinkedHashSet<String>? = null,
+    override val setConfigurationFiles: LinkedHashSet<String>? = null,
     override val dontobfuscate: Boolean? = null,
     override val dontoptimize: Boolean? = null,
     override val joinOutputJars: Boolean? = null,
     override val defaultComposeRulesFile: String? = null,
     override val proguardVersion: String? = null,
     override val proguardFiles: LinkedHashSet<String>? = null,
+    override val setProguardFiles: LinkedHashSet<String>? = null,
     override val javaHome: String? = null,
     override val mainClass: String? = null,
     override val maxHeapSize: String? = null,

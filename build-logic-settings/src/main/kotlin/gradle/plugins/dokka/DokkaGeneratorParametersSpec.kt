@@ -1,5 +1,6 @@
 package gradle.plugins.dokka
 
+import gradle.api.applyTo
 import gradle.api.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

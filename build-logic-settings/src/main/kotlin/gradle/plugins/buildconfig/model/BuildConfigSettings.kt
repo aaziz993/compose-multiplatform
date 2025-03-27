@@ -7,6 +7,7 @@ import gradle.accessors.plugins
 import gradle.accessors.settings
 import gradle.plugins.buildconfig.BuildConfigExtension
 import gradle.plugins.buildconfig.BuildConfigSourceSet
+import gradle.plugins.buildconfig.BuildConfigSourceSetKeyTransformingSerializer
 import gradle.plugins.project.EnabledSettings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

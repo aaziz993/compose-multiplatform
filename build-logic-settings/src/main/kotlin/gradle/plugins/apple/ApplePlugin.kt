@@ -32,7 +32,7 @@ internal class ApplePlugin : Plugin<Project> {
     }
 
     private fun Project.adjustSourceSets() = when (projectProperties.layout) {
-        ProjectLayout.FLAT -> apple.sourceSets.configureEach {
+        is ProjectLayout.Flat -> apple.sourceSets.configureEach {
             apple.srcDir(
                 if (sourceSetName.endsWith("AppMain"))
                     "src@${sourceSetName.removeSuffix("AppMain")}"
