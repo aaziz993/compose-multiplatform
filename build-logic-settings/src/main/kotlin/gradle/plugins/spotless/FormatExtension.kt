@@ -11,7 +11,7 @@ import gradle.accessors.settings
 import gradle.accessors.spotless
 import gradle.accessors.version
 import gradle.accessors.versions
-import gradle.actIfTrue
+import gradle.ifTrue
 import gradle.collection.SerializableAnyMap
 import gradle.serialization.serializer.JsonPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
@@ -77,8 +77,8 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
         targetExcludeIfContentContainsRegex?.let(receiver::targetExcludeIfContentContainsRegex)
         replaces?.forEach { (name, original, after) -> receiver.replace(name, original, after) }
         replaceRegexes?.forEach { (name, regex, replacement) -> receiver.replaceRegex(name, regex, replacement) }
-        trimTrailingWhitespace?.actIfTrue(receiver::trimTrailingWhitespace)
-        endWithNewline?.actIfTrue(receiver::endWithNewline)
+        trimTrailingWhitespace?.ifTrue(receiver::trimTrailingWhitespace)
+        endWithNewline?.ifTrue(receiver::endWithNewline)
 
         indentWithSpaces?.let(receiver::indentWithSpaces)
         indentWithTabs?.let(receiver::indentWithTabs)
@@ -130,7 +130,7 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
             receiver.toggleOffOn(off, on)
         }
 
-        toggleOffOnDisable?.actIfTrue(receiver::toggleOffOnDisable)
+        toggleOffOnDisable?.ifTrue(receiver::toggleOffOnDisable)
     }
 
     context(Project)

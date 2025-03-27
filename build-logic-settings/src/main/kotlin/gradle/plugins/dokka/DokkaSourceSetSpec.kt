@@ -115,8 +115,8 @@ internal data class DokkaSourceSetSpec(
      *
      * By default, classpath is deduced from information provided by the Kotlin Gradle plugin.
      */
-    val classpath: List<String>? = null,
-    val setClasspath: List<String>? = null,
+    val classpath: Set<String>? = null,
+    val setClasspath: Set<String>? = null,
     /**
      * Source code roots to be analyzed and documented.
      * Accepts directories and individual `.kt` / `.java` files.

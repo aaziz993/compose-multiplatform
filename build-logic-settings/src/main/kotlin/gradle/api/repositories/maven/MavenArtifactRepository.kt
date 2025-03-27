@@ -1,6 +1,6 @@
 package gradle.api.repositories.maven
 
-import gradle.actIfTrue
+import gradle.ifTrue
 import gradle.api.applyTo
 import gradle.api.repositories.ArtifactRepository
 import gradle.api.repositories.AuthenticationSupported
@@ -120,10 +120,10 @@ internal interface MavenArtifactRepository
     ) {
 
         fun applyTo(receiver: MavenArtifactRepository.MetadataSources) {
-            gradleMetadata?.actIfTrue(receiver::gradleMetadata)
-            mavenPom?.actIfTrue(receiver::mavenPom)
-            artifact?.actIfTrue(receiver::artifact)
-            ignoreGradleMetadataRedirection?.actIfTrue(receiver::ignoreGradleMetadataRedirection)
+            gradleMetadata?.ifTrue(receiver::gradleMetadata)
+            mavenPom?.ifTrue(receiver::mavenPom)
+            artifact?.ifTrue(receiver::artifact)
+            ignoreGradleMetadataRedirection?.ifTrue(receiver::ignoreGradleMetadataRedirection)
         }
     }
 }

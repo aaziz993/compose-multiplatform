@@ -184,7 +184,6 @@ internal data class KotlinWebpackConfig(
             receiver::contentBase trySet setContentBase?.toMutableList()
 
             receiver::client.trySetOrApply(
-                receiver.client,
                 {
                     client?.toClient()
                 },

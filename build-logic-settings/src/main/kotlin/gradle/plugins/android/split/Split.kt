@@ -1,7 +1,7 @@
 package gradle.plugins.android.split
 
 import com.android.build.api.dsl.Split
-import gradle.actIfTrue
+import gradle.ifTrue
 import gradle.api.trySet
 
 /**
@@ -30,6 +30,6 @@ internal interface Split<T : Split> {
         receiver::isEnable trySet isEnable
         includes?.toTypedArray()?.let(receiver::include)
         excludes?.toTypedArray()?.let(receiver::exclude)
-        reset?.actIfTrue(receiver::reset)
+        reset?.ifTrue(receiver::reset)
     }
 }

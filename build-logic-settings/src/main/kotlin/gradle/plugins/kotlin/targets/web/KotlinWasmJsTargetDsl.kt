@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin.targets.web
 
 import gradle.accessors.kotlin
-import gradle.actIfTrue
+import gradle.ifTrue
 import gradle.api.applyTo
 import gradle.api.publish.maven.MavenPublication
 import kotlinx.serialization.SerialName
@@ -36,7 +36,7 @@ internal data class KotlinWasmJsTargetDsl(
         super<KotlinWasmTargetDsl>.applyTo(receiver)
         super<KotlinJsTargetDsl>.applyTo(receiver)
 
-        d8?.actIfTrue(receiver::d8)
+        d8?.ifTrue(receiver::d8)
 
         d8Dsl?.let { d8Dsl ->
             receiver.d8 {

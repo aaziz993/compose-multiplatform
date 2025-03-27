@@ -2,7 +2,7 @@
 
 package gradle.plugins.java.tasks.shadow
 
-import gradle.actIfTrue
+import gradle.ifTrue
 import gradle.api.tasks.copy.CopySpec
 import gradle.plugins.java.tasks.DependencyFilter
 import org.gradle.api.Project
@@ -44,7 +44,7 @@ internal interface ShadowSpec<T : com.github.jengelman.gradle.plugins.shadow.tas
             }
         }
 
-        minimize?.actIfTrue(receiver::minimize)
+        minimize?.ifTrue(receiver::minimize)
 
         dependencyFilterForMinimize?.let { dependencyFilterForMinimize ->
             receiver.minimize {
@@ -52,7 +52,7 @@ internal interface ShadowSpec<T : com.github.jengelman.gradle.plugins.shadow.tas
             }
         }
 
-        mergeServiceFiles?.actIfTrue(receiver::mergeServiceFiles)
+        mergeServiceFiles?.ifTrue(receiver::mergeServiceFiles)
 
         mergeServiceFilesPath?.let { mergeServiceFilesPath ->
             receiver.mergeServiceFiles(mergeServiceFilesPath)

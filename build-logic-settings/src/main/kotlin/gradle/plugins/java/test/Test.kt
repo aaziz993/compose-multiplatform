@@ -1,7 +1,7 @@
 package gradle.plugins.java.test
 
 import gradle.accessors.javaToolchain
-import gradle.actIfTrue
+import gradle.ifTrue
 import gradle.api.tasks.applyTo
 import gradle.api.tasks.test.AbstractTestTask
 import gradle.api.tasks.test.TestFilter
@@ -243,7 +243,7 @@ internal abstract class Test<T : org.gradle.api.tasks.testing.Test>
         receiver.dryRun tryAssign dryRun
         modularity?.applyTo(receiver.modularity)
         testClassesDirs?.toTypedArray()?.let(project::files)?.let(receiver::setTestClassesDirs)
-        useJUnit?.actIfTrue(receiver::useJUnit)
+        useJUnit?.ifTrue(receiver::useJUnit)
 
         useJUnitDsl?.let { useJUnitDsl ->
             receiver.useJUnit {
@@ -251,7 +251,7 @@ internal abstract class Test<T : org.gradle.api.tasks.testing.Test>
             }
         }
 
-        useJUnitPlatform?.actIfTrue(receiver::useJUnitPlatform)
+        useJUnitPlatform?.ifTrue(receiver::useJUnitPlatform)
 
         useJUnitPlatformDsl?.let { useJUnitPlatformDsl ->
             receiver.useJUnitPlatform {
@@ -259,7 +259,7 @@ internal abstract class Test<T : org.gradle.api.tasks.testing.Test>
             }
         }
 
-        useTestNG?.actIfTrue(receiver::useTestNG)
+        useTestNG?.ifTrue(receiver::useTestNG)
 
         useTestNGDsl?.let { useTestNGDsl ->
             receiver.useTestNG {

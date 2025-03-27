@@ -1,6 +1,6 @@
 package gradle.api.tasks.copy
 
-import gradle.actIfTrue
+import gradle.ifTrue
 import gradle.api.file.RelativePath
 import kotlinx.serialization.Serializable
 import org.gradle.api.file.DuplicatesStrategy
@@ -66,7 +66,7 @@ internal data class FileCopyDetails(
 ) {
 
     fun applyTo(receiver: FileCopyDetails) {
-        exclude?.actIfTrue(receiver::exclude)
+        exclude?.ifTrue(receiver::exclude)
         path?.let(receiver::setPath)
         relativePath?.let(RelativePath::toRelativePath)?.let(receiver::setRelativePath)
         permissions?.let(::DefaultFilePermissions)?.let(receiver::setPermissions)

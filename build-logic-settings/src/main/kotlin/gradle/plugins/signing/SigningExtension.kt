@@ -7,11 +7,9 @@ import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
 import gradle.accessors.signing
-import gradle.act
-import gradle.actIfTrue
+import gradle.ifTrue
 import gradle.api.configureEach
 import gradle.api.toVersion
-import gradle.takeIfTrue
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 import org.gradle.plugins.signing.Sign
@@ -75,7 +73,7 @@ internal abstract class SigningExtension : Signer {
     fun applyTo() =
         project.pluginManager.withPlugin("signing") {
             project.signing.isRequired = required ?: !project.version.toString().toVersion().isPreRelease
-            useGpgCmd?.actIfTrue(project.signing::useGpgCmd)
+            useGpgCmd?.ifTrue(project.signing::useGpgCmd)
 
             useInMemoryPgpKeys?.let { (defaultKeyId, defaultSecretKey, defaultPassword) ->
                 project.signing.useInMemoryPgpKeys(defaultKeyId, defaultSecretKey, defaultPassword)

@@ -5,7 +5,7 @@ import gradle.accessors.libs
 import gradle.accessors.settings
 import gradle.accessors.version
 import gradle.accessors.versions
-import gradle.actIfTrue
+import gradle.ifTrue
 import gradle.api.applyTo
 import gradle.api.tasks.SourceSet
 import gradle.api.tasks.SourceSetKeyTransformingSerializer
@@ -152,9 +152,9 @@ internal data class JavaPluginExtension(
                 ?.let(JavaVersion::toVersion))
                 ?.let(project.java::setTargetCompatibility)
 
-            disableAutoTargetJvm?.actIfTrue(project.java::disableAutoTargetJvm)
-            withJavadocJar?.actIfTrue(project.java::withJavadocJar)
-            withSourcesJar?.actIfTrue(project.java::withSourcesJar)
+            disableAutoTargetJvm?.ifTrue(project.java::disableAutoTargetJvm)
+            withJavadocJar?.ifTrue(project.java::withJavadocJar)
+            withSourcesJar?.ifTrue(project.java::withSourcesJar)
             modularity?.applyTo(project.java.modularity)
             toolchain?.applyTo(project.java.toolchain)
 

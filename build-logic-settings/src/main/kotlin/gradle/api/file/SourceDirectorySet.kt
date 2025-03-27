@@ -37,14 +37,14 @@ internal data class SourceDirectorySet(
      * @param srcPaths The source directories. These are evaluated as per [org.gradle.api.Project.files]
      * @return this
      */
-    val srcDirs: List<String>? = null,
+    val srcDirs: Set<String>? = null,
     /**
      * Sets the source directories for this set.
      *
      * @param srcPaths The source directories. These are evaluated as per [org.gradle.api.Project.files]
      * @return this
      */
-    val setSrcDirs: List<String>? = null,
+    val setSrcDirs: Set<String>? = null,
     /**
      * Configure the directory to assemble the compiled classes into.
      *

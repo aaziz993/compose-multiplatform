@@ -1,11 +1,9 @@
 package gradle.api.publish.maven
 
 import gradle.accessors.publishing
-import gradle.act
-import gradle.actIfTrue
+import gradle.ifTrue
 import gradle.api.applyTo
 import gradle.api.publish.Publication
-import gradle.takeIfTrue
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -264,7 +262,7 @@ internal data class MavenPublication(
         }
 
         suppressPomMetadataWarningsFor?.forEach(receiver::suppressPomMetadataWarningsFor)
-        suppressAllPomMetadataWarnings?.actIfTrue(receiver::suppressAllPomMetadataWarnings)
+        suppressAllPomMetadataWarnings?.ifTrue(receiver::suppressAllPomMetadataWarnings)
     }
 
     context(Project)

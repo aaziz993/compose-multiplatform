@@ -83,6 +83,9 @@ internal data class ProjectProperties(
     val projectFiles: Set<ProjectFile> = emptySet(),
 ) {
 
+    val includesAsPaths: List<String>?
+        get() = includes?.map { include -> include.replace(":", System.lineSeparator()) }
+
     @Transient
     val localProperties = Properties()
 

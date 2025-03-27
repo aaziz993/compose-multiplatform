@@ -1,6 +1,6 @@
 package gradle.plugins.java.manifest
 
-import gradle.actIfTrue
+import gradle.ifTrue
 import kotlinx.serialization.Serializable
 import org.gradle.api.java.archives.ManifestMergeDetails
 
@@ -24,6 +24,6 @@ internal data class ManifestMergeDetails(
 
     fun applyTo(receiver: ManifestMergeDetails) {
         value?.let(receiver::setValue)
-        exclude?.actIfTrue(receiver::exclude)
+        exclude?.ifTrue(receiver::exclude)
     }
 }

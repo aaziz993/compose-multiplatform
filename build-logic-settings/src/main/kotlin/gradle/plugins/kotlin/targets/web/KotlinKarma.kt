@@ -1,6 +1,6 @@
 package gradle.plugins.kotlin.targets.web
 
-import gradle.actIfTrue
+import gradle.ifTrue
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -35,26 +35,26 @@ internal data class KotlinKarma(
     fun applyTo(receiver: org.jetbrains.kotlin.gradle.targets.js.testing.karma.KotlinKarma, outputFileName: String) {
         webpackConfig?.applyTo(receiver.webpackConfig, outputFileName)
         useConfigDirectory?.let(receiver::useConfigDirectory)
-        useChrome?.actIfTrue(receiver::useChrome)
-        useChromeHeadless?.actIfTrue(receiver::useChromeHeadless)
-        useChromeHeadlessNoSandbox?.actIfTrue(receiver::useChromeHeadlessNoSandbox)
-        useChromium?.actIfTrue(receiver::useChromium)
-        useChromiumHeadless?.actIfTrue(receiver::useChromiumHeadless)
-        useChromeCanary?.actIfTrue(receiver::useChromeCanary)
-        useChromeCanaryHeadless?.actIfTrue(receiver::useChromeCanaryHeadless)
-        useDebuggableChrome?.actIfTrue(receiver::useDebuggableChrome)
-        usePhantomJS?.actIfTrue(receiver::usePhantomJS)
-        useFirefox?.actIfTrue(receiver::useFirefox)
-        useFirefoxHeadless?.actIfTrue(receiver::useFirefoxHeadless)
-        useFirefoxDeveloper?.actIfTrue(receiver::useFirefoxDeveloper)
-        useFirefoxDeveloperHeadless?.actIfTrue(receiver::useFirefoxDeveloperHeadless)
-        useFirefoxAurora?.actIfTrue(receiver::useFirefoxAurora)
-        useFirefoxAuroraHeadless?.actIfTrue(receiver::useFirefoxAuroraHeadless)
-        useFirefoxNightly?.actIfTrue(receiver::useFirefoxNightly)
-        useFirefoxNightlyHeadless?.actIfTrue(receiver::useFirefoxNightlyHeadless)
-        useOpera?.actIfTrue(receiver::useOpera)
-        useSafari?.actIfTrue(receiver::useSafari)
-        useIe?.actIfTrue(receiver::useIe)
-        useSourceMapSupport?.actIfTrue(receiver::useSourceMapSupport)
+        useChrome?.ifTrue(receiver::useChrome)
+        useChromeHeadless?.ifTrue(receiver::useChromeHeadless)
+        useChromeHeadlessNoSandbox?.ifTrue(receiver::useChromeHeadlessNoSandbox)
+        useChromium?.ifTrue(receiver::useChromium)
+        useChromiumHeadless?.ifTrue(receiver::useChromiumHeadless)
+        useChromeCanary?.ifTrue(receiver::useChromeCanary)
+        useChromeCanaryHeadless?.ifTrue(receiver::useChromeCanaryHeadless)
+        useDebuggableChrome?.ifTrue(receiver::useDebuggableChrome)
+        usePhantomJS?.ifTrue(receiver::usePhantomJS)
+        useFirefox?.ifTrue(receiver::useFirefox)
+        useFirefoxHeadless?.ifTrue(receiver::useFirefoxHeadless)
+        useFirefoxDeveloper?.ifTrue(receiver::useFirefoxDeveloper)
+        useFirefoxDeveloperHeadless?.ifTrue(receiver::useFirefoxDeveloperHeadless)
+        useFirefoxAurora?.ifTrue(receiver::useFirefoxAurora)
+        useFirefoxAuroraHeadless?.ifTrue(receiver::useFirefoxAuroraHeadless)
+        useFirefoxNightly?.ifTrue(receiver::useFirefoxNightly)
+        useFirefoxNightlyHeadless?.ifTrue(receiver::useFirefoxNightlyHeadless)
+        useOpera?.ifTrue(receiver::useOpera)
+        useSafari?.ifTrue(receiver::useSafari)
+        useIe?.ifTrue(receiver::useIe)
+        useSourceMapSupport?.ifTrue(receiver::useSourceMapSupport)
     }
 }

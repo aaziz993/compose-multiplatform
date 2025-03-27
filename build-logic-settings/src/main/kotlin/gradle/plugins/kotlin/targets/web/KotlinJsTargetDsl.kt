@@ -2,11 +2,10 @@ package gradle.plugins.kotlin.targets.web
 
 import gradle.accessors.kotlin
 import gradle.accessors.moduleName
-import gradle.actIfTrue
+import gradle.ifTrue
 import gradle.api.applyTo
 import gradle.api.publish.maven.MavenPublication
 import gradle.api.tryAssign
-import gradle.api.trySet
 import gradle.plugins.kotlin.HasConfigurableKotlinCompilerOptions
 import gradle.plugins.kotlin.KotlinTarget
 import gradle.plugins.kotlin.mpp.HasBinaries
@@ -61,10 +60,10 @@ internal interface KotlinJsTargetDsl<T : org.jetbrains.kotlin.gradle.targets.js.
             }
         }
 
-        useCommonJs?.actIfTrue(receiver::useCommonJs)
-        useEsModules?.actIfTrue(receiver::useEsModules)
+        useCommonJs?.ifTrue(receiver::useCommonJs)
+        useEsModules?.ifTrue(receiver::useEsModules)
         passAsArgumentToMainFunction?.let(receiver::passAsArgumentToMainFunction)
-        generateTypeScriptDefinitions?.actIfTrue(receiver::generateTypeScriptDefinitions)
+        generateTypeScriptDefinitions?.ifTrue(receiver::generateTypeScriptDefinitions)
         binaries?.applyTo(receiver.binaries)
     }
 }
