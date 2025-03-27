@@ -61,10 +61,10 @@ internal data class SqlDelightDatabase(
      * @see <a href="https://en.wikipedia.org/wiki/Null_%28SQL%29#Null-specific_and_3VL-specific_comparison_predicates">Wikipedia entry on null specific comparisons in SQL</a>
      */
     val treatNullAsUnknownForEquality: Boolean? = null,
-) : ProjectNamed<SqlDelightDatabase> {
+) : ProjectNamed<app.cash.sqldelight.gradle.SqlDelightDatabase> {
 
     context(Project)
-    override fun applyTo(receiver: SqlDelightDatabase) {
+    override fun applyTo(receiver: app.cash.sqldelight.gradle.SqlDelightDatabase) {
         receiver.packageName tryAssign packageName
         receiver.schemaOutputDirectory tryAssign schemaOutputDirectory?.let(project.layout.projectDirectory::dir)
         srcDirs?.toTypedArray()?.let(receiver::srcDirs)
