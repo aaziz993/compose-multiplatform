@@ -5,10 +5,10 @@ import gradle.api.tasks.applyTo
 import gradle.api.tryAssign
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
-import gradle.plugins.kmp.jvm.KotlinJvmCompile
-import gradle.plugins.kmp.jvm.KotlinJvmCompilerOptions
-import gradle.plugins.kmp.nat.CompilerPluginOptions
-import gradle.plugins.kotlin.KotlinJavaToolchain
+import gradle.plugins.kotlin.targets.jvm.KotlinJvmCompile
+import gradle.plugins.kotlin.targets.jvm.KotlinJvmCompilerOptions
+import gradle.plugins.kotlin.targets.nat.CompilerPluginOptions
+import gradle.plugins.kotlin.tasks.KotlinJavaToolchain
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType

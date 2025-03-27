@@ -1,12 +1,9 @@
 package gradle.plugins.kotlin
 
 import gradle.api.applyTo
-import gradle.plugins.kmp.KotlinSourceSet
-import gradle.plugins.kmp.KotlinSourceSetKeyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetContainer
-
 
 /**
  * Represents a Kotlin DSL entity containing a collection of multiple [KotlinSourceSets][KotlinSourceSet].

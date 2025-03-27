@@ -8,8 +8,8 @@ import gradle.accessors.plugins
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
 import gradle.plugins.karakum.model.KarakumSettings
-import gradle.plugins.kmp.KotlinTarget
-import gradle.plugins.kmp.web.KotlinJsTarget
+import gradle.plugins.kotlin.KotlinTarget
+import gradle.plugins.kotlin.targets.web.KotlinJsTarget
 import gradle.serialization.decodeMapFromString
 import java.io.File
 import kotlinx.serialization.json.Json

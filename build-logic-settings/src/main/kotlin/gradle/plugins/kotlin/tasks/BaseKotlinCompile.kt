@@ -3,8 +3,8 @@ package gradle.plugins.kotlin.tasks
 import gradle.api.tasks.applyTo
 import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
-import gradle.plugins.kmp.nat.CompilerPluginConfig
-import gradle.plugins.kmp.nat.CompilerPluginOptions
+import gradle.plugins.kotlin.targets.nat.CompilerPluginConfig
+import gradle.plugins.kotlin.targets.nat.CompilerPluginOptions
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

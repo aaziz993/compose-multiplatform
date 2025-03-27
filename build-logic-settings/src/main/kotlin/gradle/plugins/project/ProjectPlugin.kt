@@ -20,42 +20,42 @@ import gradle.plugins.develocity.DevelocityPlugin
 import gradle.plugins.doctor.DoctorPlugin
 import gradle.plugins.dokka.DokkaPlugin
 import gradle.plugins.initialization.problemreporter.SLF4JProblemReporterContext
-import gradle.plugins.kmp.KMPPlugin
-import gradle.plugins.kmp.filterKotlinTargets
+import gradle.plugins.kotlin.mpp.KMPPlugin
+import gradle.plugins.kotlin.filterKotlinTargets
 import gradle.plugins.jvm.JvmPlugin
-import gradle.plugins.kmp.nat.NativePlugin
-import gradle.plugins.kmp.nat.android.KotlinAndroidNative32Target
-import gradle.plugins.kmp.nat.android.KotlinAndroidNative64Target
-import gradle.plugins.kmp.nat.android.KotlinAndroidNativeArm32Target
-import gradle.plugins.kmp.nat.android.KotlinAndroidNativeArm64Target
-import gradle.plugins.kmp.nat.android.KotlinAndroidNativeTarget
-import gradle.plugins.kmp.nat.android.KotlinAndroidNativeX64Target
-import gradle.plugins.kmp.nat.android.KotlinAndroidNativeX86Target
-import gradle.plugins.kmp.nat.apple.KotlinAppleTarget
-import gradle.plugins.kmp.nat.apple.ios.IosArm64Target
-import gradle.plugins.kmp.nat.apple.ios.KotlinIosSimulatorArm64Target
-import gradle.plugins.kmp.nat.apple.ios.KotlinIosTarget
-import gradle.plugins.kmp.nat.apple.ios.KotlinIosX64Target
-import gradle.plugins.kmp.nat.apple.macos.KotlinMacosArm64Target
-import gradle.plugins.kmp.nat.apple.macos.KotlinMacosTarget
-import gradle.plugins.kmp.nat.apple.macos.KotlinMacosX64Target
-import gradle.plugins.kmp.nat.apple.tvos.KotlinTvosArm64Target
-import gradle.plugins.kmp.nat.apple.tvos.KotlinTvosSimulatorArm64Target
-import gradle.plugins.kmp.nat.apple.tvos.KotlinTvosTarget
-import gradle.plugins.kmp.nat.apple.tvos.KotlinTvosX64Target
-import gradle.plugins.kmp.nat.apple.watchos.KotlinWatchos32Target
-import gradle.plugins.kmp.nat.apple.watchos.KotlinWatchos64Target
-import gradle.plugins.kmp.nat.apple.watchos.KotlinWatchosArm32Target
-import gradle.plugins.kmp.nat.apple.watchos.KotlinWatchosArm64Target
-import gradle.plugins.kmp.nat.apple.watchos.KotlinWatchosDeviceArm64Target
-import gradle.plugins.kmp.nat.apple.watchos.KotlinWatchosSimulatorArm64Target
-import gradle.plugins.kmp.nat.apple.watchos.KotlinWatchosTarget
-import gradle.plugins.kmp.nat.apple.watchos.KotlinWatchosX64Target
-import gradle.plugins.kmp.nat.linux.KotlinLinuxArm64Target
-import gradle.plugins.kmp.nat.linux.KotlinLinuxTarget
-import gradle.plugins.kmp.nat.linux.KotlinLinuxX64Target
-import gradle.plugins.kmp.nat.mingw.KotlinMingwTarget
-import gradle.plugins.kmp.nat.mingw.KotlinMingwX64Target
+import gradle.plugins.kotlin.targets.nat.NativePlugin
+import gradle.plugins.kotlin.targets.nat.android.KotlinAndroidNative32Target
+import gradle.plugins.kotlin.targets.nat.android.KotlinAndroidNative64Target
+import gradle.plugins.kotlin.targets.nat.android.KotlinAndroidNativeArm32Target
+import gradle.plugins.kotlin.targets.nat.android.KotlinAndroidNativeArm64Target
+import gradle.plugins.kotlin.targets.nat.android.KotlinAndroidNativeTarget
+import gradle.plugins.kotlin.targets.nat.android.KotlinAndroidNativeX64Target
+import gradle.plugins.kotlin.targets.nat.android.KotlinAndroidNativeX86Target
+import gradle.plugins.kotlin.targets.nat.apple.KotlinAppleTarget
+import gradle.plugins.kotlin.targets.nat.apple.ios.IosArm64Target
+import gradle.plugins.kotlin.targets.nat.apple.ios.KotlinIosSimulatorArm64Target
+import gradle.plugins.kotlin.targets.nat.apple.ios.KotlinIosTarget
+import gradle.plugins.kotlin.targets.nat.apple.ios.KotlinIosX64Target
+import gradle.plugins.kotlin.targets.nat.apple.macos.KotlinMacosArm64Target
+import gradle.plugins.kotlin.targets.nat.apple.macos.KotlinMacosTarget
+import gradle.plugins.kotlin.targets.nat.apple.macos.KotlinMacosX64Target
+import gradle.plugins.kotlin.targets.nat.apple.tvos.KotlinTvosArm64Target
+import gradle.plugins.kotlin.targets.nat.apple.tvos.KotlinTvosSimulatorArm64Target
+import gradle.plugins.kotlin.targets.nat.apple.tvos.KotlinTvosTarget
+import gradle.plugins.kotlin.targets.nat.apple.tvos.KotlinTvosX64Target
+import gradle.plugins.kotlin.targets.nat.apple.watchos.KotlinWatchos32Target
+import gradle.plugins.kotlin.targets.nat.apple.watchos.KotlinWatchos64Target
+import gradle.plugins.kotlin.targets.nat.apple.watchos.KotlinWatchosArm32Target
+import gradle.plugins.kotlin.targets.nat.apple.watchos.KotlinWatchosArm64Target
+import gradle.plugins.kotlin.targets.nat.apple.watchos.KotlinWatchosDeviceArm64Target
+import gradle.plugins.kotlin.targets.nat.apple.watchos.KotlinWatchosSimulatorArm64Target
+import gradle.plugins.kotlin.targets.nat.apple.watchos.KotlinWatchosTarget
+import gradle.plugins.kotlin.targets.nat.apple.watchos.KotlinWatchosX64Target
+import gradle.plugins.kotlin.targets.nat.linux.KotlinLinuxArm64Target
+import gradle.plugins.kotlin.targets.nat.linux.KotlinLinuxTarget
+import gradle.plugins.kotlin.targets.nat.linux.KotlinLinuxX64Target
+import gradle.plugins.kotlin.targets.nat.mingw.KotlinMingwTarget
+import gradle.plugins.kotlin.targets.nat.mingw.KotlinMingwX64Target
 import gradle.plugins.knit.KnitPlugin
 import gradle.plugins.kotlin.allopen.AllOpenPlugin
 import gradle.plugins.kotlin.apollo.ApolloPlugin
@@ -397,7 +397,7 @@ public class ProjectPlugin : Plugin<Project> {
     private inline fun <reified T : Any> Project.registerAggregationNativeTestTask(name: String) =
         projectProperties.kotlin.targets
             .filterKotlinTargets<T>()
-            .mapNotNull(`gradle.plugins.kmp`.KotlinTarget<*>::targetName)
+            .mapNotNull(gradle.plugins.kotlin.targets.KotlinTarget<*>::targetName)
             .let { targetNames ->
                 registerAggregationTestTask<KotlinNativeTest>(
                     name,

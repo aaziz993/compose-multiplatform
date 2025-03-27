@@ -1,6 +1,6 @@
 package gradle.plugins.kotlin
 
-import gradle.plugins.kmp.web.KotlinJsTarget
+import gradle.plugins.kotlin.targets.web.KotlinJsTarget
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.KotlinTargetContainerWithJsPresetFunctions
 

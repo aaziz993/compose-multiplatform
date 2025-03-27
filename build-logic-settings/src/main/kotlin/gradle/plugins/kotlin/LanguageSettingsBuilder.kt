@@ -1,6 +1,7 @@
 package gradle.plugins.kotlin
 
 import gradle.api.trySet
+import gradle.plugins.kotlin.model.LanguageSettings
 import kotlinx.serialization.Serializable
 import org.jetbrains.kotlin.gradle.plugin.LanguageSettingsBuilder
 

@@ -1,6 +1,6 @@
 package gradle.plugins.kotlin
 
-import gradle.plugins.kmp.web.KotlinWasmJsTargetDsl
+import gradle.plugins.kotlin.targets.web.KotlinWasmJsTargetDsl
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.KotlinTargetContainerWithWasmPresetFunctions
 

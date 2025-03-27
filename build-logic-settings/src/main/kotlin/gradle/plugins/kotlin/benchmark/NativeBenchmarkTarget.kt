@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin.benchmark
 
 import gradle.api.trySet
-import gradle.plugins.kmp.nat.KotlinNativeCompilation
+import gradle.plugins.kotlin.targets.nat.KotlinNativeCompilation
 import kotlinx.benchmark.gradle.NativeBenchmarkTarget
 import kotlinx.benchmark.gradle.internal.KotlinxBenchmarkPluginInternalApi
 import kotlinx.serialization.Serializable

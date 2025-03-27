@@ -14,7 +14,7 @@ import gradle.accessors.version
 import gradle.accessors.versions
 import gradle.api.trySet
 import gradle.collection.act
-import gradle.plugins.kmp.nat.FrameworkSettings
+import gradle.plugins.kotlin.targets.nat.FrameworkSettings
 import java.net.URI
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonContentPolymorphicSerializer

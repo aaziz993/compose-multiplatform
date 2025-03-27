@@ -3,7 +3,7 @@ package gradle.plugins.kotlin.ksp.tasks
 import com.google.devtools.ksp.gradle.KspTaskMetadata
 import gradle.api.tasks.applyTo
 import gradle.collection.SerializableAnyMap
-import gradle.plugins.kmp.nat.CompilerPluginOptions
+import gradle.plugins.kotlin.targets.nat.CompilerPluginOptions
 import gradle.plugins.kotlin.KotlinCommonCompilerOptionsImpl
 import gradle.plugins.kotlin.SubpluginOption
 import gradle.plugins.kotlin.tasks.KotlinCompileCommon

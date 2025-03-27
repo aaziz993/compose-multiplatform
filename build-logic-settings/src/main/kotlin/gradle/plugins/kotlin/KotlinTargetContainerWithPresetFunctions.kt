@@ -1,12 +1,10 @@
 package gradle.plugins.kotlin
 
-import gradle.plugins.kmp.android.KotlinAndroidTarget
-import gradle.plugins.kmp.jvm.KotlinJvmTarget
-import gradle.plugins.kmp.nat.KotlinNativeTarget
-import gradle.plugins.kmp.nat.KotlinNativeTargetImpl
+import gradle.plugins.kotlin.mpp.KotlinAndroidTarget
+import gradle.plugins.kotlin.targets.jvm.KotlinJvmTarget
+import gradle.plugins.kotlin.targets.nat.KotlinNativeTargetImpl
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.KotlinTargetContainerWithPresetFunctions
-import org.jetbrains.kotlin.gradle.plugin.KotlinTargetsContainerWithPresets
 
 internal interface KotlinTargetContainerWithPresetFunctions<T : KotlinTargetContainerWithPresetFunctions> :
     KotlinTargetsContainer<T> {

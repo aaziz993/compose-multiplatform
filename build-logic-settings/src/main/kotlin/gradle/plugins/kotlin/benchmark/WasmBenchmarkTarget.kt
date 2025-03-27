@@ -1,6 +1,6 @@
 package gradle.plugins.kotlin.benchmark
 
-import gradle.plugins.kmp.web.KotlinJsIrCompilation
+import gradle.plugins.kotlin.targets.web.KotlinJsIrCompilation
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

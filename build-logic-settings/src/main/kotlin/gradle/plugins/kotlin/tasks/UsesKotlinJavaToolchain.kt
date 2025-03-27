@@ -3,7 +3,7 @@ package gradle.plugins.kotlin.tasks
 import gradle.api.tasks.Task
 import gradle.api.tasks.applyTo
 import gradle.collection.SerializableAnyMap
-import gradle.plugins.kotlin.KotlinJavaToolchain
+import gradle.plugins.kotlin.tasks.KotlinJavaToolchain
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -21,7 +21,7 @@ import org.gradle.kotlin.dsl.withType
 internal interface UsesKotlinJavaToolchain<T : org.jetbrains.kotlin.gradle.tasks.UsesKotlinJavaToolchain> : Task<T> {
 
     /**
-     * A helper shortcut to get [gradle.plugins.kotlin.KotlinJavaToolchain] from [kotlinJavaToolchainProvider] without calling the `.get()` method.
+     * A helper shortcut to get [KotlinJavaToolchain] from [kotlinJavaToolchainProvider] without calling the `.get()` method.
      */
 
     val kotlinJavaToolchain: KotlinJavaToolchain?

@@ -3,10 +3,10 @@ package gradle.plugins.kotlin.ksp.tasks
 import com.google.devtools.ksp.gradle.KspTaskNative
 import gradle.api.tasks.applyTo
 import gradle.collection.SerializableAnyMap
-import gradle.plugins.kmp.nat.CompilerPluginOptions
-import gradle.plugins.kmp.nat.KotlinCompilerPluginData
-import gradle.plugins.kmp.nat.tasks.KotlinNativeCompile
-import gradle.plugins.kmp.nat.tasks.KotlinNativeCompilerOptions
+import gradle.plugins.kotlin.targets.nat.CompilerPluginOptions
+import gradle.plugins.kotlin.targets.nat.KotlinCompilerPluginData
+import gradle.plugins.kotlin.targets.nat.tasks.KotlinNativeCompile
+import gradle.plugins.kotlin.targets.nat.tasks.KotlinNativeCompilerOptions
 import gradle.plugins.kotlin.SubpluginOption
 import gradle.process.CommandLineArgumentProvider
 import kotlinx.serialization.Serializable

@@ -7,6 +7,7 @@ import gradle.accessors.versions
 import gradle.api.tryAssign
 import gradle.api.trySet
 import gradle.plugins.java.JavaToolchainSpec
+import gradle.plugins.kotlin.KotlinSourceSetContainer
 import org.gradle.api.Project
 import org.jetbrains.kotlin.buildtools.api.ExperimentalBuildToolsApi
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode

@@ -1,0 +1,18 @@
+package gradle.plugins.kotlin.targets.web
+
+import org.gradle.api.Project
+import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinTargetWithNodeJsDsl
+
+internal interface KotlinTargetWithNodeJsDsl {
+
+    val nodejs: KotlinJsNodeDsl?
+
+    context(Project)
+    fun applyTo(receiver: KotlinTargetWithNodeJsDsl, distributionName: String) {
+        nodejs?.let { nodejs ->
+            receiver.nodejs {
+                nodejs.applyTo(this, distributionName)
+            }
+        }
+    }
+}

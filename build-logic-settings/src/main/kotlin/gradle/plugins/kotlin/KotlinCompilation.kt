@@ -3,7 +3,6 @@ package gradle.plugins.kotlin
 import gradle.api.ProjectNamed
 import gradle.api.getByNameOrAll
 import gradle.api.trySet
-import gradle.plugins.kmp.KotlinSourceSet
 import gradle.plugins.kotlin.tasks.KotlinCompilationTask
 import gradle.plugins.kotlin.tasks.KotlinCompilationTaskImpl
 import gradle.plugins.project.Dependency

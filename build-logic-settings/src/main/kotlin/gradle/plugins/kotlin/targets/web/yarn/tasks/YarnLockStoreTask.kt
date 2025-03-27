@@ -1,0 +1,40 @@
+package gradle.plugins.kotlin.targets.web.yarn.tasks
+
+import gradle.api.tasks.applyTo
+import gradle.collection.SerializableAnyMap
+import gradle.plugins.web.tasks.LockStoreTask
+import kotlinx.serialization.Serializable
+import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.targets.js.npm.LockFileMismatchReport
+import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnLockStoreTask
+
+@Serializable
+internal data class YarnLockStoreTask(
+    override val dependsOn: LinkedHashSet<String>? = null,
+    override val onlyIf: Boolean? = null,
+    override val doNotTrackState: String? = null,
+    override val notCompatibleWithConfigurationCache: String? = null,
+    override val didWork: Boolean? = null,
+    override val enabled: Boolean? = null,
+    override val properties: SerializableAnyMap? = null,
+    override val description: String? = null,
+    override val group: String? = null,
+    override val mustRunAfter: Set<String>? = null,
+    override val finalizedBy: LinkedHashSet<String>? = null,
+    override val shouldRunAfter: Set<String>? = null,
+    override val lockFileMismatchReport: LockFileMismatchReport? = null,
+    override val reportNewLockFile: Boolean? = null,
+    override val lockFileAutoReplace: Boolean? = null,
+    override val inputFile: String? = null,
+    override val additionalInputFiles: Set<String>? = null,
+    override val setAdditionalInputFiles: Set<String>? = null,
+    override val outputDirectory: String? = null,
+    override val fileName: String? = null,
+    override val name: String? = null,
+) : LockStoreTask<YarnLockStoreTask>() {
+
+    context(Project)
+    override fun applyTo() =
+        applyTo(project.tasks.withType<YarnLockStoreTask>())
+}
