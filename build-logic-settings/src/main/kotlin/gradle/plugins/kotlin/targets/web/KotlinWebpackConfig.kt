@@ -95,7 +95,8 @@ internal data class KotlinWebpackConfig(
         val setStatic: List<String>? = null,
         val contentBase: List<String>? = null,
         val setContentBase: List<String>? = null,
-        val client: Client? = null
+        val client: Client? = null,
+        val setClient: Client? = null
     ) {
 
         @Serializable
@@ -177,6 +178,8 @@ internal data class KotlinWebpackConfig(
             ) {
                 client?.applyTo(this)
             }
+
+            receiver::client trySet client?.toClient()
         }
     }
 }
