@@ -81,7 +81,7 @@ internal data class ProjectProperties(
     val tasks: LinkedHashSet<@Serializable(with = TaskKeyTransformingSerializer::class) Task<out org.gradle.api.Task>>? = null,
     private val localPropertiesFile: String = "local.properties",
     val projectFiles: Set<ProjectFile> = emptySet(),
-) {
+) : HashMap<String, Any?>() {
 
     val includesAsPaths: List<String>?
         get() = includes?.map { include -> include.replace(":", System.lineSeparator()) }

@@ -3,14 +3,11 @@ package gradle.plugins.knit.model
 import gradle.accessors.knit
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
-import gradle.api.add
 import gradle.api.plus
 import gradle.ifTrue
-import gradle.api.tryAdd
 import gradle.plugins.knit.KnitPluginExtension
 import gradle.plugins.project.EnabledSettings
 import kotlin.collections.orEmpty
-import kotlin.collections.toList
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

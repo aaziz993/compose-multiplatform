@@ -6,7 +6,7 @@ import gradle.accessors.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
-import gradle.api.tryAdd
+import gradle.api.tryPlus
 import gradle.api.trySet
 import org.gradle.api.Project
 
@@ -28,9 +28,9 @@ internal interface KnitPluginExtension {
     fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("knit").id) {
             project.knit::siteRoot trySet siteRoot
-            project.knit::moduleRoots tryAdd moduleRoots
+            project.knit::moduleRoots tryPlus moduleRoots
             project.knit::moduleRoots trySet setModuleRoots
-            project.knit::moduleMarkers tryAdd moduleMarkers
+            project.knit::moduleMarkers tryPlus moduleMarkers
             project.knit::moduleMarkers trySet setModuleMarkers
             project.knit::moduleDocs trySet moduleDocs
             project.knit::files trySet setFiles?.toTypedArray()?.let(project::files)

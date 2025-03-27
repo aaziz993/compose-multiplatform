@@ -1,6 +1,6 @@
 package gradle.plugins.kotlin.targets.web
 
-import gradle.api.tryAdd
+import gradle.api.tryPlus
 import gradle.api.trySet
 import gradle.plugins.kotlin.targets.web.KotlinWebpackConfig.DevServer.Client.Overlay
 import kotlinx.serialization.Serializable
@@ -177,11 +177,11 @@ internal data class KotlinWebpackConfig(
         fun applyTo(receiver: KotlinWebpackConfig.DevServer) {
             receiver::open trySet open
             receiver::port trySet port
-            receiver::proxy tryAdd proxy?.map(Proxy::toProxy)
+            receiver::proxy tryPlus proxy?.map(Proxy::toProxy)
             receiver::proxy trySet setProxy?.map(Proxy::toProxy)?.toMutableList()
-            receiver::static tryAdd static
+            receiver::static tryPlus static
             receiver::static trySet setStatic?.toMutableList()
-            receiver::contentBase tryAdd contentBase
+            receiver::contentBase tryPlus contentBase
             receiver::contentBase trySet setContentBase?.toMutableList()
 
             receiver::client.trySet(

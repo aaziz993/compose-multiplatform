@@ -10,29 +10,47 @@ import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import org.gradle.kotlin.dsl.assign
 
-internal fun trySetSystemProperty(key: String, value: String) {
+public fun trySetSystemProperty(key: String, value: String) {
     if (System.getProperty(key) == null)
         System.setProperty(key, value)
 }
 
 public infix fun <T> KMutableProperty0<T>.trySet(value: T?): Unit? = value?.let(::set)
 
-public operator fun <T> KMutableProperty0<out Collection<T>>.plus(value: Iterable<T>): Unit? =
-    (this as KMutableProperty0<Collection<T>>).set(get() + value)
-
-public infix fun <T> KMutableProperty0<out Collection<T>>.tryAdd(value: Iterable<T>?): Unit? =
-    value?.let(::plus)
-
-public operator fun <T> KMutableProperty0<out MutableCollection<T>?>.plus(value: Collection<T>): Unit {
-    this as KMutableProperty0<MutableCollection<T>?>
-    get()?.addAll(value) ?: set(value as MutableCollection<T>)
-}
-
-public infix fun <T> KMutableProperty0<out MutableCollection<T>?>.tryAdd(value: Collection<T>?): Unit? =
-    value?.let(::plus)
-
 public fun <T : Any> KMutableProperty0<T?>.trySet(value: () -> T?, apply: T.() -> Unit): Unit? =
     get()?.apply() ?: value()?.let(::set)
+
+public operator fun <E> KMutableProperty0<out Collection<E>?>.plus(value: Iterable<E>) {
+    this as KMutableProperty0<Collection<E>?>
+    get()?.plus(value) ?: set(value.toList())
+}
+
+public infix fun <E> KMutableProperty0<out Collection<E>?>.tryPlus(value: Iterable<E>?): Unit? =
+    value?.let(::plus)
+
+public operator fun <E> KMutableProperty0<out MutableCollection<E>?>.plus(value: Collection<E>) {
+    this as KMutableProperty0<MutableCollection<E>?>
+    get()?.addAll(value) ?: set(value as MutableCollection<E>)
+}
+
+public infix fun <E> KMutableProperty0<out MutableCollection<E>?>.tryPlus(value: Collection<E>?): Unit? =
+    value?.let(::plus)
+
+public operator fun <K, V> KMutableProperty0<out Map<K, V>?>.plus(value: Map<K, V>) {
+    this as KMutableProperty0<Map<K, V>?>
+    get()?.plus(value) ?: set(value)
+}
+
+public infix fun <K, V> KMutableProperty0<out Map<K, V>?>.tryPlus(value: Map<K, V>?): Unit? =
+    value?.let(::plus)
+
+public operator fun <K, V> KMutableProperty0<out MutableMap<K, V>?>.plus(value: Map<K, V>) {
+    this as KMutableProperty0<MutableMap<K, V>?>
+    get()?.putAll(value) ?: set(value as MutableMap<K, V>)
+}
+
+public infix fun <K, V> KMutableProperty0<out MutableMap<K, V>?>.tryPlus(value: Map<K, V>?): Unit? =
+    value?.let(::plus)
 
 public infix fun <T : FileSystemLocation> FileSystemLocationProperty<T>.tryAssign(file: File?): Unit? =
     file?.let(::assign)
