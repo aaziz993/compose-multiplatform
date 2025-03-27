@@ -28,6 +28,6 @@ internal data class VariantVersionMappingStrategy(
 
     fun applyTo(receiver: VariantVersionMappingStrategy) {
         fromResolutionResult?.ifTrue(receiver::fromResolutionResult)
-        receiver::fromResolutionOf trySet fromResolutionOf
+        fromResolutionOf?.let(receiver::fromResolutionOf)
     }
 }
