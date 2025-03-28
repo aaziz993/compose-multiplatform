@@ -2,7 +2,9 @@ package gradle.plugins.kotlin.targets.nat.android
 
 import gradle.accessors.kotlin
 import gradle.api.applyTo
+import gradle.api.publish.maven.MavenPublication
 import gradle.plugins.kotlin.targets.nat.KotlinNativeBinaryContainer
+import gradle.plugins.kotlin.targets.nat.KotlinNativeBinaryContainerTransformingSerializer
 import gradle.plugins.kotlin.targets.nat.KotlinNativeCompilation
 import gradle.plugins.kotlin.targets.nat.KotlinNativeCompilationKeyTransformingSerializer
 import gradle.plugins.kotlin.targets.nat.tasks.KotlinNativeCompilerOptions

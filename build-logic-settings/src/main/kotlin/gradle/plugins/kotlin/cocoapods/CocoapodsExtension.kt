@@ -14,6 +14,7 @@ import gradle.accessors.version
 import gradle.accessors.versions
 import gradle.act
 import gradle.api.tryAddAll
+import gradle.api.tryPlus
 import gradle.api.trySet
 import gradle.ifTrue
 import gradle.plugins.kotlin.targets.nat.FrameworkSettings
@@ -225,7 +226,7 @@ internal interface CocoapodsExtension {
             receiver::headers trySet headers
             receiver::version trySet version
             receiver::source trySet source?.toPodLocation()
-            receiver::extraOpts trySet extraOpts?.let { extraOpts -> receiver.extraOpts + extraOpts }
+            receiver::extraOpts tryPlus extraOpts
             receiver::extraOpts trySet setExtraOpts
             receiver::packageName trySet packageName
             receiver::linkOnly trySet linkOnly

@@ -91,7 +91,8 @@ internal data class ShadowJar(
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("shadow").id) {
             super<Jar>.applyTo(receiver)
             super<ShadowSpec>.applyTo(receiver)
-            configurations?.map(Set<*>::toTypedArray)?.map(project::files)?.let(receiver::setConfigurations)
+
+            receiver::setConfigurations trySet configurations?.map(Set<*>::toTypedArray)?.map(project::files)
             receiver::setEnableRelocation trySet enableRelocation
             receiver::setRelocationPrefix trySet relocationPrefix
         }

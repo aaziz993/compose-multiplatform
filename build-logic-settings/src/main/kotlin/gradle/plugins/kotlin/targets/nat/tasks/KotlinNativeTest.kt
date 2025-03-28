@@ -48,7 +48,7 @@ internal data class KotlinNativeTest(
     override fun applyTo(receiver: KotlinNativeTest) {
         super.applyTo(receiver)
 
-        receiver.executableProperty tryAssign executables?.toTypedArray()?.let(project::files)
+        receiver.executableProperty tryAssign executables?.let(project::files)
         receiver::args trySet args
         receiver::workingDir trySet workingDir
 

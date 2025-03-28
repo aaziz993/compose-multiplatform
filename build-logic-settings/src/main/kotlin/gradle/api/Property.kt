@@ -6,6 +6,7 @@ import kotlin.reflect.KFunction1
 import kotlin.reflect.KMutableProperty0
 import org.gradle.api.Action
 import org.gradle.api.file.ConfigurableFileCollection
+import org.gradle.api.file.FileCollection
 import org.gradle.api.file.FileSystemLocation
 import org.gradle.api.file.FileSystemLocationProperty
 import org.gradle.api.provider.HasMultipleValues
@@ -81,6 +82,14 @@ public fun <K, V> KMutableProperty0<out MutableMap<K, V>?>.putAll(value: Map<K, 
 
 public infix fun <K, V> KMutableProperty0<out MutableMap<K, V>?>.tryPutAll(value: Map<K, V>?): Unit? =
     value?.let(::putAll)
+
+public operator fun KMutableProperty0<out FileCollection?>.plus(value: FileCollection): Unit {
+    this as KMutableProperty0<FileCollection?>
+    set(get()?.plus(value) ?: value)
+}
+
+public infix fun KMutableProperty0<out FileCollection?>.tryPlus(value: FileCollection?): Unit? =
+    value?.let(::plus)
 
 public infix fun <T> KFunction1<T, *>.trySet(elements: T?): Any? =
     elements?.let(::invoke)

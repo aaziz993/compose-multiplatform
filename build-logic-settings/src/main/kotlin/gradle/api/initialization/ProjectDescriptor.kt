@@ -1,5 +1,6 @@
 package gradle.api.initialization
 
+import gradle.api.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings
 
@@ -40,12 +41,11 @@ internal data class ProjectDescriptor(
     context(Settings)
     @Suppress("UnstableApiUsage")
     fun applyTo() {
-        val project = settings.project(path)
-        name?.let(project::setName)
-        projectDir?.let { projectDir ->
-            project.projectDir = settings.layout.settingsDirectory.file(projectDir).asFile
+        settings.project(path).apply {
+            ::setName trySet name
+            ::setProjectDir trySet this@ProjectDescriptor.projectDir?.let(settings.layout.settingsDirectory::file)?.asFile
+            ::setBuildFileName trySet buildFileName
         }
-        buildFileName?.let(project::setBuildFileName)
     }
 }
 

@@ -8,6 +8,7 @@ import gradle.accessors.plugins
 import gradle.accessors.settings
 import gradle.api.applyTo
 import gradle.api.tryAddAll
+import gradle.api.trySet
 import gradle.plugins.dependencycheck.analyzer.AnalyzerExtension
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -247,47 +248,47 @@ internal abstract class DependencyCheckExtension {
     context(Project)
     open fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("dependencycheck").id) {
-            scanBuildEnv?.let(project.dependencyCheck::setScanBuildEnv)
-            scanDependencies?.let(project.dependencyCheck::setScanDependencies)
+            project.dependencyCheck::setScanBuildEnv trySet scanBuildEnv
+            project.dependencyCheck::setScanDependencies trySet scanDependencies
             slack?.applyTo(project.dependencyCheck.slack)
             nvd?.applyTo(project.dependencyCheck.nvd)
             hostedSuppressions?.applyTo(project.dependencyCheck.hostedSuppressions)
-            failOnError?.let(project.dependencyCheck::setFailOnError)
+            project.dependencyCheck::setFailOnError trySet failOnError
             data?.applyTo(project.dependencyCheck.data)
-            quickQueryTimestamp?.let(project.dependencyCheck::setQuickQueryTimestamp)
-            outputDirectory?.let(project.dependencyCheck::setOutputDirectory)
+            project.dependencyCheck::setQuickQueryTimestamp trySet quickQueryTimestamp
+            project.dependencyCheck::setOutputDirectory trySet outputDirectory
             analyzers?.applyTo(project.dependencyCheck.analyzers)
-            suppressionFile?.let(project.dependencyCheck::setSuppressionFile)
+            project.dependencyCheck::setSuppressionFile trySet suppressionFile
             project.dependencyCheck.suppressionFiles tryAddAll suppressionFiles
             setSuppressionFiles?.let(project.dependencyCheck::setSuppressionFiles)
-            suppressionFileUser?.let(project.dependencyCheck::setSuppressionFileUser)
-            suppressionFilePassword?.let(project.dependencyCheck::setSuppressionFilePassword)
-            suppressionFileBearerToken?.let(project.dependencyCheck::setSuppressionFileBearerToken)
-            hintsFile?.let(project.dependencyCheck::setHintsFile)
-            autoUpdate?.let(project.dependencyCheck::setAutoUpdate)
-            skipTestGroups?.let(project.dependencyCheck::setSkipTestGroups)
-            format?.let(project.dependencyCheck::setFormat)
+            project.dependencyCheck::setSuppressionFileUser trySet suppressionFileUser
+            project.dependencyCheck::setSuppressionFilePassword trySet suppressionFilePassword
+            project.dependencyCheck::setSuppressionFileBearerToken trySet suppressionFileBearerToken
+            project.dependencyCheck::setHintsFile trySet hintsFile
+            project.dependencyCheck::setAutoUpdate trySet autoUpdate
+            project.dependencyCheck::setSkipTestGroups trySet skipTestGroups
+            project.dependencyCheck::setFormat trySet format
             project.dependencyCheck.formats tryAddAll formats
-            setFormats?.let(project.dependencyCheck::setFormats)
-            failBuildOnCVSS?.let(project.dependencyCheck::setFailBuildOnCVSS)
-            junitFailOnCVSS?.let(project.dependencyCheck::setJunitFailOnCVSS)
-            failBuildOnUnusedSuppressionRule?.let(project.dependencyCheck::setFailBuildOnUnusedSuppressionRule)
-            showSummary?.let(project.dependencyCheck::setShowSummary)
+            project.dependencyCheck::setFormats trySet setFormats
+            project.dependencyCheck::setFailBuildOnCVSS trySet failBuildOnCVSS
+            project.dependencyCheck::setJunitFailOnCVSS trySet junitFailOnCVSS
+            project.dependencyCheck::setFailBuildOnUnusedSuppressionRule trySet failBuildOnUnusedSuppressionRule
+            project.dependencyCheck::setShowSummary trySet showSummary
             project.dependencyCheck.scanConfigurations tryAddAll scanConfigurations
-            setScanConfigurations?.let(project.dependencyCheck::setScanConfigurations)
+            project.dependencyCheck::setScanConfigurations trySet setScanConfigurations
             project.dependencyCheck.skipConfigurations tryAddAll skipConfigurations
-            setSkipConfigurations?.let(project.dependencyCheck::setSkipConfigurations)
+            project.dependencyCheck::setSkipConfigurations trySet setSkipConfigurations
             project.dependencyCheck.scanProjects tryAddAll scanProjects
-            setScanProjects?.let(project.dependencyCheck::setScanProjects)
+            project.dependencyCheck::setScanProjects trySet setScanProjects
             project.dependencyCheck.skipProjects tryAddAll skipProjects
-            setSkipProjects?.let(project.dependencyCheck::setSkipProjects)
+            project.dependencyCheck::setSkipProjects trySet setSkipProjects
             project.dependencyCheck.skipGroups tryAddAll skipGroups
-            setSkipGroups?.let(project.dependencyCheck::setSkipGroups)
+            project.dependencyCheck::setSkipGroups trySet setSkipGroups
             project.dependencyCheck.analyzedTypes tryAddAll analyzedTypes
-            setAnalyzedTypes?.let(project.dependencyCheck::setAnalyzedTypes)
-            skip?.let(project.dependencyCheck::setSkip)
+            project.dependencyCheck::setAnalyzedTypes trySet setAnalyzedTypes
+            project.dependencyCheck::setSkip trySet skip
             project.dependencyCheck.scanSet tryAddAll scanSet?.map(project::file)
-            setScanSet?.map(project::file)?.let(project.dependencyCheck::setScanSet)
+            project.dependencyCheck::setScanSet trySet setScanSet?.map(project::file)
 
             additionalCpes?.forEach { additionalCpe ->
                 additionalCpe.applyTo(project.dependencyCheck.additionalCpes)

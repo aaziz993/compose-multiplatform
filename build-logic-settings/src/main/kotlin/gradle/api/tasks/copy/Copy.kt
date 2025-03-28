@@ -3,6 +3,7 @@ package gradle.api.tasks.copy
 import gradle.api.tasks.Expand
 import gradle.api.tasks.FilesMatching
 import gradle.api.tasks.applyTo
+import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -65,7 +66,7 @@ internal abstract class Copy<T : org.gradle.api.tasks.Copy> : AbstractCopyTask<T
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
-        destinationDir?.let(project::file)?.let(receiver::setDestinationDir)
+        receiver::setDestinationDir trySet destinationDir?.let(project::file)
     }
 }
 

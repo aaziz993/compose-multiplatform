@@ -4,6 +4,7 @@ import com.apollographql.apollo3.gradle.internal.ApolloDownloadSchemaTask
 import gradle.api.tasks.DefaultTask
 import gradle.api.tasks.applyTo
 import gradle.api.tryAssign
+import gradle.api.tryPlus
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
@@ -45,7 +46,7 @@ internal data class ApolloDownloadSchemaTask(
         receiver.endpoint tryAssign endpoint
         receiver.graph tryAssign graph
         receiver.graphVariant tryAssign graphVariant
-        receiver::header trySet header?.let { header -> receiver.header + header }
+        receiver::header tryPlus header
         receiver::header trySet setHeader
         receiver.insecure tryAssign insecure
         receiver.key tryAssign key

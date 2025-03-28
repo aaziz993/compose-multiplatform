@@ -131,9 +131,8 @@ internal interface VariantDimension<T : VariantDimension> {
 
         receiver::setProguardFiles trySet setProguardFiles
 
-        setDefaultProguardFiles
+        receiver::setProguardFiles trySet setDefaultProguardFiles
             ?.mapNotNull { defaultProguardFile -> project.getDefaultProguardFile(defaultProguardFile) }
-            ?.let(receiver::setProguardFiles)
 
         testProguardFiles?.toTypedArray()?.let(receiver::testProguardFiles)
 

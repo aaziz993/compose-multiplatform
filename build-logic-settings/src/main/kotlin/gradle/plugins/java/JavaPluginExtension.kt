@@ -10,6 +10,7 @@ import gradle.api.tasks.SourceSet
 import gradle.api.tasks.SourceSetKeyTransformingSerializer
 import gradle.api.tryApply
 import gradle.api.tryAssign
+import gradle.api.trySet
 import gradle.ifTrue
 import gradle.plugins.java.manifest.Manifest
 import kotlinx.serialization.Serializable
@@ -144,21 +145,18 @@ internal data class JavaPluginExtension(
     @Suppress("UnstableApiUsage")
     fun applyTo() =
         project.pluginManager.withPlugin("java") {
-            (sourceCompatibility ?: project.settings.libs.versions
+            project.java::setSourceCompatibility trySet (sourceCompatibility ?: project.settings.libs.versions
                 .version("java.sourceCompatibility")
                 ?.let(JavaVersion::toVersion))
-                ?.let(project.java::setSourceCompatibility)
-            (targetCompatibility ?: project.settings.libs.versions
+            project.java::setTargetCompatibility trySet (targetCompatibility ?: project.settings.libs.versions
                 .version("java.targetCompatibility")
                 ?.let(JavaVersion::toVersion))
-                ?.let(project.java::setTargetCompatibility)
-
             disableAutoTargetJvm?.ifTrue(project.java::disableAutoTargetJvm)
             withJavadocJar?.ifTrue(project.java::withJavadocJar)
             withSourcesJar?.ifTrue(project.java::withSourcesJar)
             modularity?.applyTo(project.java.modularity)
             toolchain?.applyTo(project.java.toolchain)
-            project.java::consistentResolution tryApply consistentResolution?.let{ consistentResolution -> consistentResolution::applyTo }
+            project.java::consistentResolution tryApply consistentResolution?.let { consistentResolution -> consistentResolution::applyTo }
 
             sourceSets?.forEach { sourceSet ->
                 sourceSet.applyTo(project.java.sourceSets)

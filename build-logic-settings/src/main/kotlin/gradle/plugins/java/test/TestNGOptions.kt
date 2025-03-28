@@ -141,7 +141,7 @@ internal data class TestNGOptions(
     context(Project)
     @Suppress("UnstableApiUsage")
     override fun applyTo(receiver: TestNGOptions) {
-        outputDirectory?.let(project::file)?.let(receiver::setOutputDirectory)
+        receiver::setOutputDirectory trySet outputDirectory?.let(project::file)
         receiver::includeGroups trySet includeGroups
         receiver::setIncludeGroups trySet setIncludeGroups
         receiver::excludeGroups trySet excludeGroups
@@ -155,7 +155,7 @@ internal data class TestNGOptions(
         receiver::setThreadPoolFactoryClass trySet threadPoolFactoryClass
         receiver::setSuiteName trySet suiteName
         receiver::setTestName trySet testName
-        suiteXmlFiles?.map(project::file)?.let(receiver::setSuiteXmlFiles)
+        receiver::setSuiteXmlFiles trySet suiteXmlFiles?.map(project::file)
         receiver::setPreserveOrder trySet preserveOrder
         receiver::setGroupByInstances trySet groupByInstances
     }

@@ -1,7 +1,10 @@
 package gradle.plugins.kotlin.targets.nat.linux
 
 import gradle.accessors.kotlin
+import gradle.api.applyTo
+import gradle.api.publish.maven.MavenPublication
 import gradle.plugins.kotlin.targets.nat.KotlinNativeBinaryContainer
+import gradle.plugins.kotlin.targets.nat.KotlinNativeBinaryContainerTransformingSerializer
 import gradle.plugins.kotlin.targets.nat.KotlinNativeCompilation
 import gradle.plugins.kotlin.targets.nat.KotlinNativeCompilationKeyTransformingSerializer
 import gradle.plugins.kotlin.targets.nat.KotlinNativeHostTestRun
@@ -29,7 +32,7 @@ internal data class KotlinLinuxX64Target(
 
     context(Project)
     override fun applyTo() =
-        applyTo(project.kotlin.targets.withType<KotlinNativeTarget>()) { name, action ->
+        applyTo(project.kotlin.targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTargetWithHostTests>()) { name, action ->
             project.kotlin.linuxX64(name, action::execute)
         }
 }

@@ -1,7 +1,11 @@
 package gradle.plugins.kotlin.targets.nat
 
+import gradle.accessors.files
 import gradle.api.tasks.applyTo
+import gradle.api.tryFrom
+import gradle.api.tryPlus
 import gradle.api.trySet
+import gradle.api.trySetFrom
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.kotlin.KotlinCommonCompilerToolOptionsImpl
 import gradle.plugins.kotlin.tasks.AbstractKotlinCompileTool
@@ -64,15 +68,8 @@ internal data class KotlinNativeLink(
         receiver.apiFiles tryFrom apiFiles
         receiver.apiFiles trySetFrom setApiFiles
         compilerPluginOptions?.applyTo(receiver.compilerPluginOptions)
-
-        receiver::compilerPluginClasspath trySet compilerPluginClasspath
-            ?.toTypedArray()
-            ?.let(project::files)
-            ?.let { compilerPluginClasspath ->
-                receiver.compilerPluginClasspath?.plus(compilerPluginClasspath) ?: compilerPluginClasspath
-            }
-
-        receiver::compilerPluginClasspath trySet setCompilerPluginClasspath?.toTypedArray()?.let(project::files)
+        receiver::compilerPluginClasspath tryPlus compilerPluginClasspath?.let(project::files)
+        receiver::compilerPluginClasspath trySet setCompilerPluginClasspath?.let(project::files)
         receiver::kotlinPluginData trySet kotlinPluginData?.toKotlinCompilerPluginData()?.let { kotlinPluginData ->
             provider { kotlinPluginData }
         }

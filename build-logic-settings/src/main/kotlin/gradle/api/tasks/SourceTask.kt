@@ -16,6 +16,6 @@ internal abstract class SourceTask<T : SourceTask> : ConventionTask<T>(), Patter
         super<PatternFilterable>.applyTo(receiver)
 
         receiver::source trySet sourceFiles
-        receiver::setSource trySet setSourceFiles?.toTypedArray()?.let(project::files)?.asFileTree
+        receiver::setSource trySet setSourceFiles?.let(project::files)?.asFileTree
     }
 }

@@ -1,10 +1,13 @@
 package gradle.plugins.kotlin.targets.nat.apple.watchos
 
 import gradle.accessors.kotlin
+import gradle.api.publish.maven.MavenPublication
 import gradle.plugins.kotlin.targets.nat.KotlinNativeBinaryContainer
+import gradle.plugins.kotlin.targets.nat.KotlinNativeBinaryContainerTransformingSerializer
 import gradle.plugins.kotlin.targets.nat.KotlinNativeCompilation
 import gradle.plugins.kotlin.targets.nat.KotlinNativeCompilationKeyTransformingSerializer
 import gradle.plugins.kotlin.targets.nat.KotlinNativeSimulatorTestRun
+import gradle.plugins.kotlin.targets.nat.KotlinNativeSimulatorTestRunKeyTransformingSerializer
 import gradle.plugins.kotlin.targets.nat.KotlinNativeTargetWithSimulatorTests
 import gradle.plugins.kotlin.targets.nat.tasks.KotlinNativeCompilerOptions
 import kotlinx.serialization.SerialName
@@ -23,7 +26,7 @@ internal data class KotlinWatchosX64Target(
     override val compilations: LinkedHashSet<@Serializable(with = KotlinNativeCompilationKeyTransformingSerializer::class) KotlinNativeCompilation>? = null,
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: @Serializable(with = KotlinNativeBinaryContainerTransformingSerializer::class) KotlinNativeBinaryContainer? = null,
-    override val testRuns: List<@Serializable(with = KotlinNativeSimulatorTestRunKeyTransformingSerializer::class) KotlinNativeSimulatorTestRun>? = null,
+    override val testRuns: LinkedHashSet<@Serializable(with = KotlinNativeSimulatorTestRunKeyTransformingSerializer::class) KotlinNativeSimulatorTestRun>? = null,
 ) : KotlinNativeTargetWithSimulatorTests(), KotlinWatchos64Target, KotlinWatchosTarget {
 
     context(Project)

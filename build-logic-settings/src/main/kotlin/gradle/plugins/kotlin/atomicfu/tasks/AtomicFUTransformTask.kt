@@ -36,9 +36,9 @@ internal data class AtomicFUTransformTask(
     override fun applyTo(receiver: AtomicFUTransformTask) {
         super.applyTo(receiver)
 
-        receiver::inputFiles trySet inputFiles?.toTypedArray()?.let(project::files)
+        receiver::inputFiles trySet inputFiles?.let(project::files)
         receiver.destinationDirectory tryAssign destinationDirectory?.let(project.layout.projectDirectory::dir)
-        receiver::classPath trySet classPath?.toTypedArray()?.let(project::files)
+        receiver::classPath trySet classPath?.let(project::files)
         receiver::jvmVariant trySet jvmVariant
         receiver::verbose trySet verbose
     }

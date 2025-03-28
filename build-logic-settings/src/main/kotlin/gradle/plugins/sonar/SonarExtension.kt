@@ -6,6 +6,7 @@ import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
 import gradle.accessors.sonar
+import gradle.api.trySet
 import org.gradle.api.Project
 
 /**
@@ -65,7 +66,7 @@ internal interface SonarExtension {
     context(Project)
     fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("sonar").id) {
-            skipProject?.let(project.sonar::setSkipProject)
+            project.sonar::setSkipProject trySet skipProject
 
             properties?.let { properties ->
                 project.sonar.properties {
@@ -73,6 +74,6 @@ internal interface SonarExtension {
                 }
             }
 
-            androidVariant?.let(project.sonar::setAndroidVariant)
+            project.sonar::setAndroidVariant trySet androidVariant
         }
 }

@@ -1,6 +1,7 @@
 package gradle.caching
 
 import gradle.api.isCI
+import gradle.api.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings
 import org.gradle.caching.local.DirectoryBuildCache
@@ -24,7 +25,7 @@ internal data class DirectoryBuildCache(
 
         super.applyTo(receiver)
 
-        directory?.let(settings.layout.rootDirectory::dir)?.let(receiver::setDirectory)
+        receiver::setDirectory trySet directory?.let(settings.layout.rootDirectory::dir)
     }
 
     context(Settings)

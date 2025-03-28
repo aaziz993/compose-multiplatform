@@ -4,6 +4,8 @@ import gradle.accessors.moduleName
 import gradle.act
 import gradle.api.ProjectNamed
 import gradle.api.tryAssign
+import gradle.api.tryPlus
+import gradle.api.tryPutAll
 import gradle.api.trySet
 import gradle.plugins.project.Dependency
 import gradle.serialization.serializer.JsonPolymorphicSerializer
@@ -67,15 +69,11 @@ internal sealed class NativeBinary<T : org.jetbrains.kotlin.gradle.plugin.mpp.Na
         receiver.baseName = baseName ?: project.moduleName
         receiver::debuggable trySet debuggable
         receiver::optimized trySet optimized
-        receiver::linkerOpts trySet linkerOpts
-        setLinkerOpts?.act(receiver.linkerOpts::clear)?.let(receiver::linkerOpts)
+        linkerOpts?.let(receiver::linkerOpts)
+        receiver.linkerOpts trySet setLinkerOpts
         receiver.binaryOptions tryPutAll binaryOptions
         receiver::binaryOptions trySet setBinaryOptions?.toMutableMap()
-
-        receiver::freeCompilerArgs trySet freeCompilerArgs?.let { freeCompilerArgs ->
-            receiver.freeCompilerArgs + freeCompilerArgs
-        }
-
+        receiver::freeCompilerArgs tryPlus freeCompilerArgs
         receiver::freeCompilerArgs trySet setFreeCompilerArgs
         receiver::outputDirectory trySet optimized?.let(project::file)
         receiver.outputDirectoryProperty tryAssign outputDirectoryProperty?.let(project.layout.projectDirectory::dir)
@@ -125,7 +123,7 @@ internal abstract class Executable : AbstractExecutable<org.jetbrains.kotlin.gra
     override fun applyTo(receiver: org.jetbrains.kotlin.gradle.plugin.mpp.Executable) {
         super.applyTo(receiver)
 
-         entryPoint?.let(receiver::entryPoint)
+        entryPoint?.let(receiver::entryPoint)
     }
 }
 

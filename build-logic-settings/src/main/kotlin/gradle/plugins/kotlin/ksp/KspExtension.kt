@@ -7,7 +7,9 @@ import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
 import gradle.api.tryAssign
+import gradle.api.tryFrom
 import gradle.api.trySet
+import gradle.api.trySetFrom
 import gradle.process.CommandLineArgumentProvider
 import org.gradle.api.Project
 
@@ -39,8 +41,8 @@ internal interface KspExtension {
             project.ksp.useKsp2 tryAssign useKsp2
             commandLineArgumentProviders?.forEach(project.ksp::arg)
             excludedProcessors?.forEach(project.ksp::excludeProcessor)
-            excludedSources?.toTypedArray()?.let(project.ksp.excludedSources::from)
-            setExcludedSources?.let(project.ksp.excludedSources::setFrom)
+            project.ksp.excludedSources tryFrom excludedSources
+            project.ksp.excludedSources trySetFrom setExcludedSources
             arguments?.forEach { (key, value) -> project.ksp.arg(key, value) }
             project.ksp::allWarningsAsErrors trySet allWarningsAsErrors
         }

@@ -8,6 +8,7 @@ import gradle.accessors.projectProperties
 import gradle.api.isCI
 import gradle.api.maybeNamed
 import gradle.api.repositories.CacheRedirector
+import gradle.api.trySet
 import gradle.api.version
 import gradle.plugins.android.AndroidPlugin
 import gradle.plugins.animalsniffer.AnimalSnifferPlugin
@@ -119,8 +120,8 @@ public class ProjectPlugin : Plugin<Project> {
             projectProperties.buildscript?.applyTo()
 
             if (projectProperties.kotlin.targets.isNotEmpty()) {
-                projectProperties.group?.let(::setGroup)
-                projectProperties.description?.let(::setDescription)
+                ::setGroup trySet projectProperties.group
+                ::setDescription trySet projectProperties.description
                 version = version()
             }
 

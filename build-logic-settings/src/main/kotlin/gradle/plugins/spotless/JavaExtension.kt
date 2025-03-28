@@ -127,7 +127,7 @@ internal data class JavaExtension(
     ) {
 
         fun applyTo(eclipse: JavaExtension.EclipseConfig) {
-            configFiles?.toTypedArray()?.let(eclipse::configFile)
+            eclipse::configFile trySet configFiles
             p2Mirrors?.let(eclipse::withP2Mirrors)
         }
     }

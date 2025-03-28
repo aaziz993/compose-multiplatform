@@ -118,7 +118,7 @@ internal interface BaseExtension {
         (compileSdkVersion ?: project.settings.libs.versions.version("project.android.compileSdk")?.toInt())
             ?.let(project.android::compileSdkVersion)
         buildToolsVersion?.let(project.android::buildToolsVersion)
-        flavorDimensions?.toTypedArray()?.let(project.android::flavorDimensions)
+        project.android::flavorDimensions trySet flavorDimensions
         aaptOptions?.applyTo(project.android.aaptOptions)
         externalNativeBuild?.applyTo(project.android.externalNativeBuild)
         testOptions?.applyTo(project.android.testOptions)
@@ -132,7 +132,7 @@ internal interface BaseExtension {
 
         splits?.applyTo(project.android.splits)
         project.android::generatePureSplits trySet generatePureSplits
-        flavorDimensions?.toTypedArray()?.let(project.android::flavorDimensions)
+        project.android::flavorDimensions trySet flavorDimensions
         project.android.flavorDimensionList tryAddAll setFlavorDimensions
         resourcePrefix?.let(project.android::resourcePrefix)
         project.android::ndkVersion trySet ndkVersion

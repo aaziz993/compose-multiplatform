@@ -40,7 +40,7 @@ internal data class Manifest(
         effectiveManifest?.applyTo(receiver.effectiveManifest)
         froms?.filterIsInstance<String>()?.toTypedArray()?.let(receiver::from)
 
-        froms?.filterIsInstance<From>()?.toTypedArray()?.forEach { (mergePath, mergeSpec) ->
+        froms?.filterIsInstance<From>()?.forEach { (mergePath, mergeSpec) ->
             receiver.from(mergePath, mergeSpec::applyTo)
         }
     }

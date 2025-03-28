@@ -1,7 +1,9 @@
 package gradle.plugins.kotlin
 
+import gradle.accessors.files
 import gradle.api.ProjectNamed
 import gradle.api.getByNameOrAll
+import gradle.api.tryPlus
 import gradle.api.trySet
 import gradle.plugins.kotlin.tasks.KotlinCompilationTask
 import gradle.plugins.kotlin.tasks.KotlinCompilationTaskImpl
@@ -121,16 +123,11 @@ internal interface KotlinCompilation<T : org.jetbrains.kotlin.gradle.plugin.Kotl
 
     context(Project)
     override fun applyTo(receiver: T) {
+        super<HasKotlinDependencies>.applyTo(receiver)
+
         defaultSourceSet?.applyTo(receiver.defaultSourceSet)
-
-        receiver::compileDependencyFiles trySet compileDependencyFiles
-            ?.toTypedArray()
-            ?.let(project::files)
-            ?.let { files ->
-                receiver.compileDependencyFiles + files
-            }
-
-        receiver::compileDependencyFiles trySet setCompileDependencyFiles?.toTypedArray()?.let(project::files)
+        receiver::compileDependencyFiles tryPlus compileDependencyFiles?.let(project::files)
+        receiver::compileDependencyFiles trySet setCompileDependencyFiles?.let(project::files)
         output?.applyTo(receiver.output)
         (compileTaskProvider as KotlinCompilationTask<org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask<*>, *>?)
             ?.applyTo(receiver.compileTaskProvider.get())

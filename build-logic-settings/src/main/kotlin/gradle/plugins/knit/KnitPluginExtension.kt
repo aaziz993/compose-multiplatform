@@ -33,7 +33,7 @@ internal interface KnitPluginExtension {
             project.knit::moduleMarkers tryPlus moduleMarkers
             project.knit::moduleMarkers trySet setModuleMarkers
             project.knit::moduleDocs trySet moduleDocs
-            project.knit::files trySet setFiles?.toTypedArray()?.let(project::files)
+            project.knit::files trySet setFiles?.let(project::files)
             project.knit::rootDir trySet rootDir?.let(project::file)
             project.knit::dokkaMultiModuleRoot trySet dokkaMultiModuleRoot
             project.knit::defaultLineSeparator trySet defaultLineSeparator

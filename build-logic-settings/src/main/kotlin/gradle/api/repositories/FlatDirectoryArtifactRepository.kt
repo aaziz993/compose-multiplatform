@@ -1,12 +1,14 @@
 package gradle.api.repositories
 
 import gradle.api.applyTo
+import gradle.api.trySet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.api.artifacts.repositories.FlatDirectoryArtifactRepository
 import org.gradle.api.file.Directory
+import org.gradle.api.file.RegularFile
 import org.gradle.api.initialization.Settings
 import org.gradle.kotlin.dsl.withType
 
@@ -40,7 +42,7 @@ internal data class FlatDirectoryArtifactRepository(
      * @param dirs the directories.
      * @since 4.0
      */
-    val dirs: Set<String>,
+    val dirs: Set<String>? = null,
 ) : ArtifactRepository<FlatDirectoryArtifactRepository> {
 
     context(Settings)
@@ -65,6 +67,6 @@ internal data class FlatDirectoryArtifactRepository(
     override fun _applyTo(receiver: FlatDirectoryArtifactRepository) {
         super._applyTo(receiver)
 
-        dirs.let(receiver::setDirs)
+        receiver::setDirs trySet dirs?.map(::file)?.map(RegularFile::getAsFile)?.toSet()
     }
 }

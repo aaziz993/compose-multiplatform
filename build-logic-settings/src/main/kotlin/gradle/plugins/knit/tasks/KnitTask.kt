@@ -1,7 +1,9 @@
 package gradle.plugins.knit.tasks
 
+import gradle.accessors.files
 import gradle.api.tasks.DefaultTask
 import gradle.api.tasks.applyTo
+import gradle.api.tryPlus
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
 import kotlinx.knit.KnitTask
@@ -36,8 +38,8 @@ internal data class KnitTask(
 
         receiver::check trySet check
         receiver::rootDir trySet rootDir?.let(project::file)
-        receiver.files = receiver.files + files.orEmpty().toTypedArray().let(project::files)
-        receiver::files trySet setFiles?.toTypedArray()?.let(project::files)
+        receiver::files tryPlus files?.let(project::files)
+        receiver::files trySet setFiles?.let(project::files)
     }
 
     context(Project)

@@ -3,6 +3,7 @@ package gradle.plugins.kotlin.targets.nat
 import gradle.accessors.files
 import gradle.api.NamedKeyTransformingSerializer
 import gradle.api.ProjectNamed
+import gradle.api.tryPlus
 import gradle.api.trySet
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.KSerializer
@@ -241,9 +242,8 @@ internal interface CInteropSettings<T : org.jetbrains.kotlin.gradle.plugin.CInte
 
     context(Project)
     override fun applyTo(receiver: T) {
-        receiver::dependencyFiles trySet dependencyFiles?.toTypedArray()?.let(project::files)
-            ?.from(receiver.dependencyFiles + dependencyFiles)
-        receiver::dependencyFiles trySet setDependencyFiles?.toTypedArray()?.let(project::files)
+        receiver::dependencyFiles tryPlus dependencyFiles?.let(project::files)
+        receiver::dependencyFiles trySet setDependencyFiles?.let(project::files)
 
         when (val includeDirs = includeDirs) {
             is String -> receiver.includeDirs(includeDirs)

@@ -6,6 +6,7 @@ import gradle.api.tasks.copy.FromContentPolymorphicSerializer
 import gradle.api.tasks.copy.IntoContentPolymorphicSerializer
 import gradle.api.tasks.copy.Rename
 import gradle.api.tasks.util.PatternFilterableImpl
+import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -23,7 +24,7 @@ internal abstract class Sync<T : org.gradle.api.tasks.Sync> : AbstractCopyTask<T
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
-        destinationDir?.let(project::file)?.let(receiver::setDestinationDir)
+        receiver::setDestinationDir trySet destinationDir?.let(project::file)
         preserve?.applyTo(receiver)
     }
 }

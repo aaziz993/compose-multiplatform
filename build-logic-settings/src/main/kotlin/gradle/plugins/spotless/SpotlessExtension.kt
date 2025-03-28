@@ -9,6 +9,7 @@ import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
 import gradle.accessors.spotless
+import gradle.api.trySet
 import gradle.ifTrue
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -41,10 +42,10 @@ internal interface SpotlessExtension {
     context(Project)
     fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("spotless").id) {
-            lineEndings?.let(project.spotless::setLineEndings)
+            project.spotless::setLineEndings trySet lineEndings
             encoding?.let(project.spotless::setEncoding)
-            ratchetFrom?.let(project.spotless::setRatchetFrom)
-            enforceCheck?.let(project.spotless::setEnforceCheck)
+            project.spotless::setRatchetFrom trySet ratchetFrom
+            project.spotless::setEnforceCheck trySet enforceCheck
 
             // Applicable only in root project.
             predeclareDeps?.ifTrue(project.spotless::predeclareDeps)

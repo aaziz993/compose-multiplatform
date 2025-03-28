@@ -5,6 +5,7 @@ import gradle.accessors.settings
 import gradle.accessors.version
 import gradle.accessors.versions
 import gradle.api.tryAssign
+import gradle.api.tryPlus
 import gradle.api.trySet
 import gradle.plugins.java.JavaToolchainSpec
 import org.gradle.api.Project
@@ -84,10 +85,7 @@ internal interface KotlinBaseExtension<T : KotlinBaseExtension> : KotlinSourceSe
         } ?: (jvmToolchain ?: project.settings.libs.versions.version("java.languageVersion")?.toInt())
             ?.let(receiver::jvmToolchain)
 
-        receiver::kotlinDaemonJvmArgs trySet kotlinDaemonJvmArgs?.let { kotlinDaemonJvmArgs ->
-            receiver.kotlinDaemonJvmArgs + kotlinDaemonJvmArgs
-        }
-
+        receiver::kotlinDaemonJvmArgs tryPlus kotlinDaemonJvmArgs
         receiver::kotlinDaemonJvmArgs trySet setKotlinDaemonJvmArgs
         receiver.compilerVersion tryAssign (compilerVersion
             ?: project.settings.libs.versions.version("kotlin.compilerVersion"))

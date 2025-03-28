@@ -1,5 +1,6 @@
 package gradle.plugins.signing.tasks.gnupg
 
+import gradle.api.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.security.internal.gnupg.GnupgSettings
@@ -16,11 +17,11 @@ internal data class GnupgSettings(
 
     context(Project)
     fun toGnupgSettings() = GnupgSettings().apply {
-        this@GnupgSettings.executable?.let(::setExecutable)
-        this@GnupgSettings.homeDir?.let(project::file)?.let(::setHomeDir)
-        this@GnupgSettings.optionsFile?.let(project::file)?.let(::setOptionsFile)
-        this@GnupgSettings.keyName?.let(::setKeyName)
-        this@GnupgSettings.passphrase?.let(::setPassphrase)
-        this@GnupgSettings.useLegacyGpg?.let(::setUseLegacyGpg)
+        ::setExecutable trySet this@GnupgSettings.executable
+        ::setHomeDir trySet this@GnupgSettings.homeDir?.let(project::file)
+        ::setOptionsFile trySet this@GnupgSettings.optionsFile?.let(project::file)
+        ::setKeyName trySet this@GnupgSettings.keyName
+        ::setPassphrase trySet this@GnupgSettings.passphrase
+        ::setUseLegacyGpg trySet this@GnupgSettings.useLegacyGpg
     }
 }
