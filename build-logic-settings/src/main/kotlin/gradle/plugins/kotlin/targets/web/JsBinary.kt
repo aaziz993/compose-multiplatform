@@ -2,7 +2,7 @@ package gradle.plugins.kotlin.targets.web
 
 import gradle.accessors.moduleName
 import gradle.api.trySet
-import gradle.serialization.serializer.JsonPolymorphicSerializer
+import gradle.serialization.serializer.JsonContentPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -36,7 +36,7 @@ internal sealed class JsIrBinary<T : org.jetbrains.kotlin.gradle.targets.js.ir.J
     }
 }
 
-private object JsIrBinarySerializer : JsonPolymorphicSerializer<JsIrBinary<*>>(
+private object JsIrBinarySerializer : JsonContentPolymorphicSerializer<JsIrBinary<*>>(
     JsIrBinary::class,
 )
 

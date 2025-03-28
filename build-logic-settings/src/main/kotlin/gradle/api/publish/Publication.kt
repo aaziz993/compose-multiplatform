@@ -2,7 +2,7 @@ package gradle.api.publish
 
 import gradle.api.ProjectNamed
 import gradle.ifTrue
-import gradle.serialization.serializer.JsonPolymorphicSerializer
+import gradle.serialization.serializer.JsonContentPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -45,7 +45,7 @@ internal interface Publication<T : org.gradle.api.publish.Publication> : Project
     fun applyTo()
 }
 
-private object PublicationSerializer : JsonPolymorphicSerializer<Publication<*>>(
+private object PublicationSerializer : JsonContentPolymorphicSerializer<Publication<*>>(
     Publication::class,
 )
 

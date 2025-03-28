@@ -2,7 +2,7 @@ package gradle.plugins.kotlin.benchmark
 
 import gradle.api.ProjectNamed
 import gradle.api.trySet
-import gradle.serialization.serializer.JsonPolymorphicSerializer
+import gradle.serialization.serializer.JsonContentPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -18,7 +18,7 @@ internal abstract class BenchmarkTarget<T : kotlinx.benchmark.gradle.BenchmarkTa
     }
 }
 
-private object BenchmarkTargetSerializer : JsonPolymorphicSerializer<BenchmarkTarget<*>>(
+private object BenchmarkTargetSerializer : JsonContentPolymorphicSerializer<BenchmarkTarget<*>>(
     BenchmarkTarget::class,
 )
 

@@ -4,7 +4,7 @@ import gradle.api.Named
 import gradle.api.tryApply
 import gradle.isUrl
 import gradle.serialization.serializer.BaseKeyTransformingSerializer
-import gradle.serialization.serializer.JsonPolymorphicSerializer
+import gradle.serialization.serializer.JsonContentPolymorphicSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
@@ -48,7 +48,7 @@ internal interface ArtifactRepository<T : org.gradle.api.artifacts.repositories.
     fun applyTo(receiver: RepositoryHandler)
 }
 
-private object ArtifactRepositorySerializer : JsonPolymorphicSerializer<ArtifactRepository<*>>(
+private object ArtifactRepositorySerializer : JsonContentPolymorphicSerializer<ArtifactRepository<*>>(
     ArtifactRepository::class,
 )
 

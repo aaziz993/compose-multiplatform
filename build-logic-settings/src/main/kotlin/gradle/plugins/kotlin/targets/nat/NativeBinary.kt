@@ -1,14 +1,13 @@
 package gradle.plugins.kotlin.targets.nat
 
 import gradle.accessors.moduleName
-import gradle.act
 import gradle.api.ProjectNamed
 import gradle.api.tryAssign
 import gradle.api.tryPlus
 import gradle.api.tryPutAll
 import gradle.api.trySet
 import gradle.plugins.project.Dependency
-import gradle.serialization.serializer.JsonPolymorphicSerializer
+import gradle.serialization.serializer.JsonContentPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.SerialName
@@ -26,7 +25,7 @@ internal data class Binary(
     val buildType: NativeBuildType,
 )
 
-internal object BinaryContentPolymorphicSerializer : JsonContentPolymorphicSerializer<Any>(
+internal object BinaryContentPolymorphicSerializer : kotlinx.serialization.json.JsonContentPolymorphicSerializer<Any>(
     Any::class,
 ) {
 
@@ -80,7 +79,7 @@ internal sealed class NativeBinary<T : org.jetbrains.kotlin.gradle.plugin.mpp.Na
     }
 }
 
-private object NativeBinarySerializer : JsonPolymorphicSerializer<NativeBinary<*>>(
+private object NativeBinarySerializer : JsonContentPolymorphicSerializer<NativeBinary<*>>(
     NativeBinary::class,
 )
 

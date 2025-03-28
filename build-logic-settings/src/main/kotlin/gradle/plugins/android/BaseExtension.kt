@@ -6,7 +6,6 @@ import gradle.accessors.libs
 import gradle.accessors.settings
 import gradle.accessors.version
 import gradle.accessors.versions
-import gradle.act
 import gradle.api.applyTo
 import gradle.api.tryAddAll
 import gradle.api.trySet
@@ -24,7 +23,7 @@ import gradle.plugins.android.sourceset.AndroidSourceSet
 import gradle.plugins.android.sourceset.AndroidSourceSetKeyTransformingSerializer
 import gradle.plugins.android.split.Splits
 import gradle.plugins.android.test.TestOptions
-import gradle.serialization.serializer.JsonPolymorphicSerializer
+import gradle.serialization.serializer.JsonContentPolymorphicSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -159,6 +158,6 @@ internal interface BaseExtension {
     }
 }
 
-private object BaseExtensionSerializer : JsonPolymorphicSerializer<BaseExtension>(
+private object BaseExtensionSerializer : JsonContentPolymorphicSerializer<BaseExtension>(
     BaseExtension::class,
 )
