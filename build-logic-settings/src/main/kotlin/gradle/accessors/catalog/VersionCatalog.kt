@@ -53,7 +53,7 @@ internal val Settings.libs: VersionCatalog
 internal fun Set<VersionCatalog>.versionCatalog(name: String) =
     find { versionCatalog -> versionCatalog.name == name }
 
-internal fun Set<VersionCatalog>.resolveDependency(
+internal fun Set<VersionCatalog>.resolveDependencyNotation(
     notation: String,
     directory: Directory,
 ): Any = when {
@@ -73,7 +73,7 @@ private val String.asVersionCatalogUrl: String
     }
 
 context(Project)
-internal fun String.resolvePlugin() =
+internal fun String.resolvePluginId() =
     if (startsWith("$")) project.settings.allLibs.resolveRef(removePrefix("$"), VersionCatalog::plugin).id
     else this
 

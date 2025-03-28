@@ -2,12 +2,9 @@
 
 package gradle.plugins.project
 
-import gradle.accessors.catalog.VersionCatalog
 import gradle.accessors.catalog.allLibs
-import gradle.accessors.catalog.resolveDependency
-import gradle.accessors.catalog.resolveLibrary
+import gradle.accessors.catalog.resolveDependencyNotation
 import gradle.accessors.settings
-import gradle.isUrl
 import gradle.serialization.serializer.BaseKeyTransformingSerializer
 import java.io.File
 import kotlinx.serialization.Serializable
@@ -16,13 +13,11 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.DependencyHandler
-import org.gradle.api.file.Directory
 import org.gradle.api.file.FileCollection
 import org.gradle.api.initialization.Settings
 import org.gradle.api.internal.tasks.JvmConstants
 import org.gradle.kotlin.dsl.kotlin
 import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
-import org.tomlj.TomlParseResult
 
 private val SUB_CONFIGURATIONS = listOf("kotlin", "npm", "devNpm", "optionalNpm", "peerNpm")
 
@@ -34,7 +29,7 @@ internal data class Dependency(
 ) {
 
     context(Settings)
-    fun resolve(): Any = settings.allLibs.resolveDependency(
+    fun resolve(): Any = settings.allLibs.resolveDependencyNotation(
         notation,
         settings.layout.settingsDirectory,
     )
@@ -45,7 +40,7 @@ internal data class Dependency(
     }
 
     context(Project)
-    fun resolve(): Any = project.settings.allLibs.resolveDependency(
+    fun resolve(): Any = project.settings.allLibs.resolveDependencyNotation(
         notation,
         project.layout.projectDirectory,
     ) { notation ->
