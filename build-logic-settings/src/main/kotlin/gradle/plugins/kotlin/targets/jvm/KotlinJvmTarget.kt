@@ -8,6 +8,8 @@ import gradle.plugins.kotlin.KotlinTargetWithTests
 import gradle.plugins.kotlin.mpp.KotlinJvmAndroidCompilation
 import gradle.plugins.kotlin.mpp.KotlinJvmAndroidCompilationKeyTransformingSerializer
 import gradle.plugins.kotlin.mpp.KotlinOnlyTarget
+import gradle.plugins.kotlin.targets.jvm.test.KotlinJvmTestRun
+import gradle.plugins.kotlin.targets.jvm.test.KotlinJvmTestRunKeyTransformingSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -15,7 +17,6 @@ import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.plugin.JvmClasspathTestRunSource
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJvmCompilation
 import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
-import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTestRun
 
 @Serializable
 @SerialName("jvm")
@@ -26,12 +27,12 @@ internal data class KotlinJvmTarget(
     override val onPublicationCreated: String? = null,
     override val compilations: LinkedHashSet<@Serializable(with = KotlinJvmAndroidCompilationKeyTransformingSerializer::class) KotlinJvmAndroidCompilation>? = null,
     override val compilerOptions: KotlinJvmCompilerOptions? = null,
-    override val testRuns: LinkedHashSet<KotlinJvmTestRun>? = null,
+    override val testRuns: LinkedHashSet<@Serializable(with = KotlinJvmTestRunKeyTransformingSerializer::class) KotlinJvmTestRun>? = null,
     val mainRun: KotlinJvmRunDslImpl? = null,
     val binaries: KotlinJvmBinariesDsl? = null,
 ) : KotlinOnlyTarget<KotlinJvmTarget, KotlinJvmCompilation>(),
     HasConfigurableKotlinCompilerOptions<KotlinJvmTarget, org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompilerOptions>,
-    KotlinTargetWithTests<KotlinJvmTarget, JvmClasspathTestRunSource, KotlinJvmTestRun> {
+    KotlinTargetWithTests<KotlinJvmTarget, JvmClasspathTestRunSource, org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTestRun> {
 
     context(Project)
     override fun applyTo(receiver: KotlinJvmTarget) {

@@ -35,7 +35,7 @@ internal data class KotlinNativeTargetWithTestsImpl(
     override val compilations: LinkedHashSet<@Serializable(with = KotlinNativeCompilationKeyTransformingSerializer::class) KotlinNativeCompilation>? = null,
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
     override val binaries: @Serializable(with = KotlinNativeBinaryContainerTransformingSerializer::class) KotlinNativeBinaryContainer? = null,
-    override val testRuns: LinkedHashSet<@Serializable(with = KotlinNativeBinaryTestRunKeyTransformingSerializer::class) KotlinNativeBinaryTestRunImpl>? = null,
+    override val testRuns: LinkedHashSet<@Serializable(with = KotlinNativeBinaryTestRunKeyImplTransformingSerializer::class) KotlinNativeBinaryTestRunImpl>? = null,
 ) : KotlinNativeTargetWithTests<
     org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTargetWithTests<org.jetbrains.kotlin.gradle.targets.native.KotlinNativeBinaryTestRun>,
     org.jetbrains.kotlin.gradle.targets.native.KotlinNativeBinaryTestRun,

@@ -1,21 +1,24 @@
 package gradle.plugins.kotlin.targets.jvm.test
 
+import gradle.api.NamedKeyTransformingSerializer
 import gradle.api.getByNameOrAll
 import gradle.api.tasks.test.TestFilter
 import gradle.plugins.kotlin.testing.KotlinTaskTestRun
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTestRun
 
 @Serializable
 internal data class KotlinJvmTestRun(
     override val name: String? = null,
     override val filter: TestFilter? = null,
     override val executionSource: JvmClasspathTestRunSource? = null,
-) : KotlinTaskTestRun<KotlinJvmTestRun, org.jetbrains.kotlin.gradle.plugin.JvmClasspathTestRunSource>() {
+) : KotlinTaskTestRun<
+        org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTestRun,
+        org.jetbrains.kotlin.gradle.plugin.JvmClasspathTestRunSource,
+        >() {
 
     context(Project)
-    override fun applyTo(receiver: KotlinJvmTestRun) {
+    override fun applyTo(receiver: org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTestRun) {
         super.applyTo(receiver)
 
         when (executionSource) {
@@ -37,3 +40,6 @@ internal data class KotlinJvmTestRun(
         }
     }
 }
+
+internal object KotlinJvmTestRunKeyTransformingSerializer
+    : NamedKeyTransformingSerializer<KotlinJvmTestRun>(KotlinJvmTestRun.serializer())
