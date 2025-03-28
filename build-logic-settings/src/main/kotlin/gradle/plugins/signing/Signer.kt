@@ -1,4 +1,5 @@
 package gradle.plugins.signing
+
 import gradle.accessors.files
 
 import gradle.accessors.publishing
@@ -8,6 +9,7 @@ import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.json.JsonContentPolymorphicSerializer
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
@@ -15,7 +17,6 @@ import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.PublishArtifact
 import org.gradle.api.publish.Publication
-import org.gradle.internal.impldep.kotlinx.serialization.json.JsonContentPolymorphicSerializer
 import org.gradle.plugins.signing.SignOperation
 
 internal interface Signer {
@@ -79,11 +80,7 @@ internal interface Signer {
 internal object SignContentPolymorphicSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
 
     override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
-        when (element) {
-            is JsonPrimitive -> String.serializer()
-            is JsonObject -> SignFile.serializer()
-            else -> throw SerializationException("Unsupported element: $element")
-        }
+        if (element is JsonPrimitive) String.serializer() else SignFile.serializer()
 }
 
 context(Project)

@@ -3,6 +3,7 @@ package gradle.plugins.java.manifest
 import gradle.act
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
+import java.util.LinkedHashSet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -13,7 +14,7 @@ internal data class Manifest(
     val sections: Map<String, SerializableAnyMap>? = null,
     val setSections: Map<String, SerializableAnyMap>? = null,
     val effectiveManifest: Manifest? = null,
-    val froms: LinkedHashSet<@Serializable(with = FromContentPolymorphicSerializer::class) Any>? = null,
+    val from: @Serializable(with = FromContentPolymorphicSerializer::class) Any? = null,
 ) {
 
     context(Project)
@@ -38,10 +39,22 @@ internal data class Manifest(
         }
 
         effectiveManifest?.applyTo(receiver.effectiveManifest)
-        froms?.filterIsInstance<String>()?.toTypedArray()?.let(receiver::from)
 
-        froms?.filterIsInstance<From>()?.forEach { (mergePath, mergeSpec) ->
-            receiver.from(mergePath, mergeSpec::applyTo)
+
+        when (from) {
+            is String -> receiver.from(from)
+
+            is LinkedHashSet<*> -> {
+                from.filterIsInstance<String>().toTypedArray().let(receiver::from)
+
+                from.filterIsInstance<From>().forEach { (mergePath, mergeSpec) ->
+                    receiver.from(mergePath) {
+                        mergeSpec.applyTo(this)
+                    }
+                }
+            }
+
+            else -> Unit
         }
     }
 }

@@ -13,7 +13,6 @@ import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.json.JsonContentPolymorphicSerializer
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonPrimitive
 import org.gradle.api.Project
@@ -30,8 +29,7 @@ internal object BinaryContentPolymorphicSerializer : kotlinx.serialization.json.
 ) {
 
     override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
-        if (element is JsonPrimitive) String.serializer()
-        else Binary.serializer()
+        if (element is JsonPrimitive) String.serializer() else Binary.serializer()
 }
 
 @Serializable(with = NativeBinarySerializer::class)

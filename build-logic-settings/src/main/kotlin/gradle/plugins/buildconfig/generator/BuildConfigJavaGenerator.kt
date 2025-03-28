@@ -5,9 +5,9 @@ import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.json.JsonContentPolymorphicSerializer
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonPrimitive
-import org.gradle.internal.impldep.kotlinx.serialization.json.JsonContentPolymorphicSerializer
 
 @Serializable
 @SerialName("java")
@@ -27,8 +27,5 @@ internal data class BuildConfigJavaGenerator(
 internal object BuildConfigJavaGeneratorContentPolymorphicSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
 
     override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
-        when (element) {
-            is JsonPrimitive -> Boolean.serializer()
-            else -> BuildConfigJavaGenerator.serializer()
-        }
+        if (element is JsonPrimitive) Boolean.serializer() else BuildConfigJavaGenerator.serializer()
 }

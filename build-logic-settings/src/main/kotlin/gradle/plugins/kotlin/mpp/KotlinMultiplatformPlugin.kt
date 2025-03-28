@@ -46,6 +46,7 @@ internal class KotlinMultiplatformPlugin : Plugin<Project> {
             when (val layout = projectProperties.layout) {
                 is ProjectLayout.Flat -> {
                     val androidTargets = kotlin.targets.filterIsInstance<KotlinAndroidTarget>()
+
                     kotlin.sourceSets.configureEach { sourceSet ->
                         var targetPart: String
                         var srcPrefixPart: String

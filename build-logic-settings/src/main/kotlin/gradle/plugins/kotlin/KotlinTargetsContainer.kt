@@ -2,7 +2,6 @@ package gradle.plugins.kotlin
 
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import org.jetbrains.kotlin.gradle.plugin.KotlinTargetsContainer
 
 internal interface KotlinTargetsContainer {
 

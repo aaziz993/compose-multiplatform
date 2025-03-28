@@ -62,6 +62,5 @@ internal data class KoverVerifyBound(
 internal object KoverVerifyBoundContentPolymorphicSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
 
     override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
-        if (element is JsonPrimitive) Int.serializer()
-        else KoverVerifyBound.serializer()
+        if (element is JsonPrimitive) Int.serializer() else KoverVerifyBound.serializer()
 }
