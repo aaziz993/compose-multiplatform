@@ -9,6 +9,7 @@ import gradle.serialization.serializer.JsonPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import org.gradle.api.NamedDomainObjectCollection
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.KotlinTargetsContainer
 
@@ -51,7 +52,8 @@ internal interface KotlinTarget<T : org.jetbrains.kotlin.gradle.plugin.KotlinTar
         }
     }
 
-    fun applyTo(receiver: KotlinTargetsContainer)
+    context(Project)
+    fun applyTo()
 }
 
 private object KotlinTargetSerializer : JsonPolymorphicSerializer<KotlinTarget<*>>(

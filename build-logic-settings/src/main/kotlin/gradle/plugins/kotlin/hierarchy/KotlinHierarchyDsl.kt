@@ -1,11 +1,13 @@
 package gradle.plugins.kotlin.hierarchy
 
+import gradle.accessors.kotlin
+import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.KotlinHierarchyDsl
 
 /**
  * A DSL to apply hierarchy templates in a Kotlin project.
  */
-internal interface KotlinHierarchyDsl<T : KotlinHierarchyDsl> {
+internal interface KotlinHierarchyDsl {
 
     /**
      * Allows creating a fully custom hierarchy (no defaults applied).
@@ -97,9 +99,10 @@ internal interface KotlinHierarchyDsl<T : KotlinHierarchyDsl> {
      */
     val applyHierarchyTemplate: KotlinHierarchyBuilder.Root?
 
-    fun applyTo(receiver: KotlinHierarchyDsl) {
+    context(Project)
+    fun applyTo() {
         applyHierarchyTemplate?.let { applyHierarchyTemplate ->
-            receiver.applyHierarchyTemplate(applyHierarchyTemplate::applyTo)
+            project.kotlin.applyHierarchyTemplate(applyHierarchyTemplate::applyTo)
         }
     }
 }
