@@ -1,5 +1,5 @@
-.PHONY: chmod-scrips dependencies-check build-config signatures-check format-check format quality-check test \
-coverage-verify coverage doc doc-samples-check doc-samples full-check kotlin-ts jar generate signing-gpg \
+.PHONY: chmod-scrips dependencies-check build-config signatures-check format-check format quality-check \
+coverage-verify coverage doc doc-samples-check doc-samples test full-check kotlin-ts jar generate signing-gpg \
 list-signing-gpg clean-signing-gpg dist-signing-gpg publish-local publish-github publish-space publish-maven publish clean
 
 chmod-scripts: # 🔓 Give permission to execute gradlew.

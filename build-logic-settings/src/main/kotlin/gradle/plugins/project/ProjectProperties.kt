@@ -81,6 +81,7 @@ internal data class ProjectProperties(
     val tasks: LinkedHashSet<@Serializable(with = TaskKeyTransformingSerializer::class) Task<out org.gradle.api.Task>>? = null,
     private val localPropertiesFile: String = "local.properties",
     val projectFiles: Set<ProjectFile> = emptySet(),
+    val ci: Set<@Serializable(with = CIKeyTransformingSerializer::class) CI> = emptySet(),
 ) : HashMap<String, Any?>() {
 
     val includesAsPaths: List<String>?
