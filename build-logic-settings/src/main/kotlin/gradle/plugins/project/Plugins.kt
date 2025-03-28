@@ -62,5 +62,5 @@ internal data class Plugins(
     val sqldelight: SqlDelightSettings = SqlDelightSettings(),
     val room: RoomSettings = RoomSettings(),
     val powerAssert: PowerAssertSettings = PowerAssertSettings(),
-    val ids: Set<String>? = null,
+    val ids: Set<String> = emptySet(),
 )

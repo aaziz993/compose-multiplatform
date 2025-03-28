@@ -163,8 +163,7 @@ public class ProjectPlugin : Plugin<Project> {
             plugins.apply(SigningPlugin::class.java)
 
             // Other plugins.
-            projectProperties.plugins.ids?.map { id -> id.resolvePluginId() }?.forEach(plugins::apply)
-
+            projectProperties.plugins.ids.map { id -> id.resolvePluginId() }.forEach(plugins::apply)
 
             projectProperties.nodeJsEnv.applyTo()
             projectProperties.npm.applyTo()

@@ -96,11 +96,11 @@ internal data class ProjectProperties(
 
     companion object {
 
-        val json = Json {
+        private val json = Json {
             ignoreUnknownKeys = true
         }
 
-        val yaml = Yaml()
+        private val yaml = Yaml()
 
         context(Settings)
         @Suppress("UnstableApiUsage")

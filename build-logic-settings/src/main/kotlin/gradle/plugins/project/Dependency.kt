@@ -3,7 +3,7 @@
 package gradle.plugins.project
 
 import gradle.accessors.catalog.allLibs
-import gradle.accessors.catalog.resolveDependencyNotation
+import gradle.accessors.catalog.resolveDependency
 import gradle.accessors.settings
 import gradle.serialization.serializer.BaseKeyTransformingSerializer
 import java.io.File
@@ -29,7 +29,7 @@ internal data class Dependency(
 ) {
 
     context(Settings)
-    fun resolve(): Any = settings.allLibs.resolveDependencyNotation(
+    fun resolve(): Any = settings.allLibs.resolveDependency(
         notation,
         settings.layout.settingsDirectory,
     )
@@ -40,12 +40,8 @@ internal data class Dependency(
     }
 
     context(Project)
-    fun resolve(): Any = project.settings.allLibs.resolveDependencyNotation(
-        notation,
-        project.layout.projectDirectory,
-    ) { notation ->
-        if (notation.startsWith(":")) project.project(notation) else notation
-    }
+    fun resolve(): Any =
+        project.settings.allLibs.resolveDependency(notation, project.layout.projectDirectory, project::project)
 
     context(Project)
     fun applyTo(receiver: DependencyHandler) {

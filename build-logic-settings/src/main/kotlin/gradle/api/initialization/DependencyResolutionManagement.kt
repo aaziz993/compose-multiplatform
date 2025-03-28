@@ -7,5 +7,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 internal data class DependencyResolutionManagement(
     val repositories: RepositoryHandler? = null,
-    val versionCatalogs: LinkedHashSet<VersionCatalog>? = null,
+    val versionCatalogs: LinkedHashSet<VersionCatalog> = linkedSetOf(),
 )
