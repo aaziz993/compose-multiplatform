@@ -16,7 +16,7 @@ import gradle.collection.deepMerge
 import gradle.collection.resolve
 import gradle.plugins.android.BaseExtension
 import gradle.plugins.apple.model.AppleSettings
-import gradle.plugins.cmp.model.CMPSettings
+import gradle.plugins.compose.model.CMPSettings
 import gradle.plugins.java.JavaPluginExtension
 import gradle.plugins.java.application.JavaApplication
 import gradle.plugins.kotlin.mpp.model.KotlinMultiplatformSettings

@@ -15,7 +15,7 @@ import gradle.plugins.animalsniffer.AnimalSnifferPlugin
 import gradle.plugins.apivalidation.ApiValidationPlugin
 import gradle.plugins.apple.ApplePlugin
 import gradle.plugins.buildconfig.BuildConfigPlugin
-import gradle.plugins.cmp.CMPPlugin
+import gradle.plugins.compose.ComposePlugin
 import gradle.plugins.dependencycheck.DependencyCheckPlugin
 import gradle.plugins.develocity.DevelocityPlugin
 import gradle.plugins.doctor.DoctorPlugin
@@ -157,7 +157,7 @@ public class ProjectPlugin : Plugin<Project> {
             plugins.apply(JsPlugin::class.java)
             plugins.apply(WasmJsPlugin::class.java)
             plugins.apply(WasmWasiPlugin::class.java)
-            plugins.apply(CMPPlugin::class.java)
+            plugins.apply(ComposePlugin::class.java)
             plugins.apply(PublishPlugin::class.java)
             plugins.apply(SigningPlugin::class.java)
 

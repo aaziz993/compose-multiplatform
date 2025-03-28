@@ -1,60 +1,66 @@
-.PHONY: chmod-scrips test format format-check quality-check signatures-check full-check build-config coverage doc \
-doc-samples generate signing-gpg list-signing-gpg clean-signing-gpg dist-signing-gpg publish-local publish-github \
-publish-space publish-maven publish clean
+.PHONY: chmod-scrips dependencies-check build-config signatures-check format-check format quality-check test \
+coverage-verify coverage doc doc-samples-check doc-samples full-check kotlin-ts jar generate signing-gpg \
+list-signing-gpg clean-signing-gpg dist-signing-gpg publish-local publish-github publish-space publish-maven publish clean
 
 chmod-scripts: # 🔓 Give permission to execute gradlew.
 	git update-index --chmod=+x gradlew && chmod -R 777 scripts/
 
+dependencies-check:  # 🔬 Monitor dependent libraries for known, published vulnerabilities.
+	./gradlew dependencyCheckAnalyze
+
+signatures-check: # 🔬 Check (JDK, android SDK or any library) API compatibility for java (kotlin, scala, groovy etc.), android and kotlin multiplatform projects.
+	./gradlew animalsnifferRelease
+
+format-check: # 🔬 # Format <antlr | c | c# | c++ | css | flow | graphql | groovy | html | java | javascript | json | jsx | kotlin | less | license headers | markdown | objective-c | protobuf | python | scala | scss | shell | sql | typeScript | vue | yaml | anything> using <gradle | maven | sbt | anything>.
+	./gradlew spotlessCheck
+
+format: # 📝 # Format <antlr | c | c# | c++ | css | flow | graphql | groovy | html | java | javascript | json | jsx | kotlin | less | license headers | markdown | objective-c | protobuf | python | scala | scss | shell | sql | typeScript | vue | yaml | anything> using <gradle | maven | sbt | anything>.
+	./gradlew spotlessApply
+
+quality-check: # 🔬Help developers deliver high-quality, efficient code standards that benefit the entire team or organization.
+	./gradlew sonar
+
 test: # 🧪 Run all tests.
 	./gradlew check
 
-format: # 📝 Format code with spotless.
-	./gradlew spotlessApply
+coverage-verify: # ✅ Set of solutions for collecting test coverage of Kotlin code compiled for JVM and Android platforms.
+	./gradlew koverVerify
 
-format-check: # 🔬 Check code format with spotless.
-	./gradlew spotlessCheck
+coverage: # 📊 Set of solutions for collecting test coverage of Kotlin code compiled for JVM and Android platforms.
+	./gradlew koverReport
 
-quality-check: # 🔬 Check code quality with sonar.
-	./gradlew sonar
+doc: # 📄 Api documentation engine for Kotlin.
+	./gradlew dokkaGenerate
 
-signatures-check: # 🔬 Check source code compatibility with jdk and android signatures
-	./gradlew animalsnifferRelease
+doc-samples-check: # 🔬 Produces Kotlin source example files and tests from markdown documents with embedded snippets of Kotlin code
+	./gradlew knitCheck
+
+doc-samples: # 📜 Produces Kotlin source example files and tests from markdown documents with embedded snippets of Kotlin code
+	./gradlew knitPrepare
 
 full-check: test format quality-check signatures-check  # ✅ Code format, test and quality check.
 
-coverage: # 📊 Generate code coverage report.
-	./gradlew koverReport
-
-doc: # 📄 Generate documentation
-	./gradlew dokkaGenerate
-
-check-doc-samples: # 🔬 Generate documentation and code samples from documentation.
-	./gradlew knitCheck
-
-doc-samples: # 📜 Generate documentation and code samples from documentation.
-	./gradlew knitPrepare
-
-build-config: # 📜 Generate build properties.
+build-config: # 📜 Generating BuildConstants for any kind of Gradle projects: Java, Kotlin, Android, Groovy, etc. Designed for KTS scripts, with experimental support for Kotlin's multi-platform plugin
 	./gradlew generateBuildConfig
 
-kotlin-ts: # 📜 Convert of TypeScript declaration files to Kotlin declarations.
+kotlin-ts: # 📜 Converter of TypeScript declaration files to Kotlin declarations.
 	./gradlew gerateKarakumExternals
 
-jar:
+jar: # 📦 Creates fat/uber JARs with support for package relocation.
 	./gradlew shadowJar
 
 generate: coverage doc doc-samples build-config kotlin-ts  # 🔨 Generate code coverage, documentation and code samples from documentation
 
-signing-gpg: # 🔑 Generate gpg key.
+signing-gpg: # 🔑 Generates signing gpg key.
 	./gradlew generateSigningGPGKey
 
-list-signing-gpg:
+list-signing-gpg: # 📋 Lists signing gpg keys.
 	./gradlew listSigningGPGKey
 
-clean-signing-gpg: # 🧹 Clean all gpg keys.
+clean-signing-gpg: # 🧹 Cleans all signing gpg keys.
 	./gradlew cleanSigningGPGKey
 
-dist-signing-gpg: # 🌐 Distribute signing gpg key
+dist-signing-gpg: # 🌐 Distributes signing gpg key.
 	./gradlew distributeSigningGPGKey
 
 publish-local: full-check # 📦🚀 Publish to GitHub Packages.
@@ -66,10 +72,10 @@ publish-github: full-check # 📦🚀 Publish to GitHub Packages.
 publish-space: full-check # 📦🚀 Publish to Space Packages.
 	./gradlew publishAllPublicationsToSpacePackagesRepository
 
-publish-maven: full-check # 📦🚀 Publish to Maven.
+publish-maven: full-check # 📦🚀 Publish to Maven Repository.
 	./gradlew publishAllPublicationsToMavenRepository
 
-publish: full-check # 📦🚀 Publish to Space Packages, GitHub Packages and Maven.
+publish: full-check # 📦🚀 Publish to Maven Local, Space Packages, GitHub Packages and Maven Repository.
 	./scripts/publish/publish.sh
 
 warmup: # 🔥 Warmup for jetbrains development environment

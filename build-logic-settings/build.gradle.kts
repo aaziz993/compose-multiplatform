@@ -199,7 +199,7 @@ dependencies {
     implementation(libs.plugins.shadow.toDep()) // conflict io.ktor.plugin:io.ktor.plugin.gradle.plugin:3.0.0 > io.ktor.plugin:plugin:3.0.0 > com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:7.1.2
     // set of solutions for collecting test coverage of Kotlin code compiled for JVM and Android platforms.
     implementation(libs.plugins.kover.toDep())
-    // can format <antlr | c | c# | c++ | css | flow | graphql | groovy | html | java | javascript | json | jsx | kotlin | less | license headers | markdown | objective-c | protobuf | python | scala | scss | shell | sql | typeScript | vue | yaml | anything> using <gradle | maven | sbt | anything>.
+    // format <antlr | c | c# | c++ | css | flow | graphql | groovy | html | java | javascript | json | jsx | kotlin | less | license headers | markdown | objective-c | protobuf | python | scala | scss | shell | sql | typeScript | vue | yaml | anything> using <gradle | maven | sbt | anything>.
     implementation(libs.plugins.spotless.toDep())
     // help developers deliver high-quality, efficient code standards that benefit the entire team or organization.
     implementation(libs.plugins.sonarqube.toDep())

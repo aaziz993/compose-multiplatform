@@ -123,11 +123,11 @@ dependencyResolutionManagement:
       from: $libs.kotlin.wrappers.catalog
 
 includes:
-  - kmp-lib
-  - cmp-lib
+  - kotlin-lib
+  - compose-lib
   - compiler
   - shared
-  - cmp-app
+  - compose-app
   - server-app
 
 dependencies:

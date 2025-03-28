@@ -13,15 +13,15 @@ buildLigicSettings-version-minor = "0"
 buildLigicSettings-version-patch = "0"
 buildLigicSettings-version-preRelase = "release" # optional
 # kmp-lib
-kmp-lib-version-major = "1"
-kmp-lib-version-minor = "0"
-kmp-lib-version-patch = "0"
-kmp-lib-version-preRelase = "release" # optional
+kotlinLib-version-major = "1"
+kotlinLib-version-minor = "0"
+kotlinLib-version-patch = "0"
+kotlinLib-version-preRelase = "release" # optional
 # cmp-lib
-cmp-lib-version-major = "1"
-cmp-lib-version-minor = "0"
-cmp-lib-version-patch = "0"
-cmp-lib-version-preRelase = "release" # optional
+composeLib-version-major = "1"
+composeLib-version-minor = "0"
+composeLib-version-patch = "0"
+composeLib-version-preRelase = "release" # optional
 # compiler
 compiler-version-major = "1"
 compiler-version-minor = "0"
@@ -33,15 +33,15 @@ shared-version-minor = "0"
 shared-version-patch = "0"
 shared-version-preRelase = "release" # optional
 # compose-app
-compose-app-version-major = "1"
-compose-app-version-minor = "0"
-compose-app-version-patch = "0"
-compose-app-version-preRelase = "release" # optional
+composeApp-version-major = "1"
+composeApp-version-minor = "0"
+composeApp-version-patch = "0"
+composeApp-version-preRelase = "release" # optional
 # server-app
-server-app-version-major = "1"
-server-app-version-minor = "0"
-server-app-version-patch = "0"
-server-app-version-preRelase = "release" # optional
+serverApp-version-major = "1"
+serverApp-version-minor = "0"
+serverApp-version-patch = "0"
+serverApp-version-preRelase = "release" # optional
 ##Gradle
 # intellij
 intellij-platform = "243.23654.166"
@@ -71,7 +71,7 @@ libres = "1.2.3"
 gradlePreCommitGitHooks = "2.0.4"
 # set of solutions for collecting test coverage of Kotlin code compiled for JVM and Android platforms.
 kover = "0.9.0-RC"
-# can format <antlr | c | c# | c++ | css | flow | graphql | groovy | html | java | javascript | json | jsx | kotlin | less | license headers | markdown | objective-c | protobuf | python | scala | scss | shell | sql | typeScript | vue | yaml | anything> using <gradle | maven | sbt | anything>.
+# format <antlr | c | c# | c++ | css | flow | graphql | groovy | html | java | javascript | json | jsx | kotlin | less | license headers | markdown | objective-c | protobuf | python | scala | scss | shell | sql | typeScript | vue | yaml | anything> using <gradle | maven | sbt | anything>.
 spotless = "6.25.0"
 # help developers deliver high-quality, efficient code standards that benefit the entire team or organization.
 sonarqube = "5.0.0.4638"
@@ -1336,7 +1336,7 @@ libres = { id = "io.github.skeptick.libres", version.ref = "libres" }
 gradlePreCommitGitHooks = { id = "org.danilopianini.gradle-pre-commit-git-hooks", version.ref = "gradlePreCommitGitHooks" }
 # set of solutions for collecting test coverage of Kotlin code compiled for JVM and Android platforms.
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
-# can format <antlr | c | c# | c++ | css | flow | graphql | groovy | html | java | javascript | json | jsx | kotlin | less | license headers | markdown | objective-c | protobuf | python | scala | scss | shell | sql | typeScript | vue | yaml | anything> using <gradle | maven | sbt | anything>.
+# format <antlr | c | c# | c++ | css | flow | graphql | groovy | html | java | javascript | json | jsx | kotlin | less | license headers | markdown | objective-c | protobuf | python | scala | scss | shell | sql | typeScript | vue | yaml | anything> using <gradle | maven | sbt | anything>.
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 # help developers deliver high-quality, efficient code standards that benefit the entire team or organization.
 sonarqube = { id = "org.sonarqube", version.ref = "sonarqube" }
