@@ -1,10 +1,10 @@
 package gradle.plugins.doctor.model
 
 import com.osacky.doctor.AppleRosettaTranslationCheckMode
-import gradle.accessors.id
+
 import gradle.accessors.catalog.libs
-import gradle.accessors.plugin
-import gradle.accessors.plugins
+
+
 import gradle.accessors.settings
 import gradle.api.isCI
 import gradle.api.services.unregister

@@ -3,10 +3,10 @@
 package gradle.plugins.android
 
 import gradle.accessors.android
-import gradle.accessors.id
+
 import gradle.accessors.catalog.libs
-import gradle.accessors.plugin
-import gradle.accessors.plugins
+
+
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
 import gradle.api.configureEach

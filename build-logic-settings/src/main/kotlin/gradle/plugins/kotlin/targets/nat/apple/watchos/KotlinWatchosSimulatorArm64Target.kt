@@ -15,7 +15,6 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 @Serializable
 @SerialName("watchosSimulatorArm64")

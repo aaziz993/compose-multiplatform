@@ -1,9 +1,9 @@
 package gradle.plugins.buildconfig.model
 
-import gradle.accessors.id
+
 import gradle.accessors.catalog.libs
-import gradle.accessors.plugin
-import gradle.accessors.plugins
+
+
 import gradle.accessors.settings
 import gradle.plugins.buildconfig.BuildConfigExtension
 import gradle.plugins.buildconfig.BuildConfigSourceSet

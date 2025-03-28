@@ -1,9 +1,9 @@
 package gradle.plugins.develocity.model
 
-import gradle.accessors.id
+
 import gradle.accessors.catalog.libs
-import gradle.accessors.plugin
-import gradle.accessors.plugins
+
+
 import gradle.accessors.projectProperties
 import gradle.api.gitBranchName
 import gradle.api.gitCommitId

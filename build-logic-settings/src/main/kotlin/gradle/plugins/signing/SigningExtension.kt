@@ -1,10 +1,10 @@
 package gradle.plugins.signing
 
 import com.vanniktech.maven.publish.tasks.WorkaroundSignatureType
-import gradle.accessors.id
+
 import gradle.accessors.catalog.libs
-import gradle.accessors.plugin
-import gradle.accessors.plugins
+
+
 import gradle.accessors.settings
 import gradle.accessors.signing
 import gradle.api.configureEach

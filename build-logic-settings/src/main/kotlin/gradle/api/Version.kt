@@ -1,11 +1,8 @@
 package gradle.api
 
 import gradle.accessors.catalog.libs
-import gradle.accessors.moduleName
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
-import gradle.accessors.version
-import gradle.accessors.versions
 import io.github.z4kn4fein.semver.Version
 import net.pearx.kasechange.toCamelCase
 import org.gradle.api.Project

@@ -1,10 +1,8 @@
 package gradle.plugins.karakum
 
-import gradle.accessors.id
-import gradle.accessors.kotlin
+
 import gradle.accessors.catalog.libs
-import gradle.accessors.plugin
-import gradle.accessors.plugins
+import gradle.accessors.kotlin
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
 import gradle.plugins.karakum.model.KarakumSettings

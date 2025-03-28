@@ -1,13 +1,13 @@
 package gradle.plugins.kotlin.benchmark
 
 import gradle.accessors.benchmark
-import gradle.accessors.id
+
 import gradle.accessors.catalog.libs
-import gradle.accessors.plugin
-import gradle.accessors.plugins
+
+
 import gradle.accessors.settings
-import gradle.accessors.version
-import gradle.accessors.versions
+
+
 import gradle.api.applyTo
 import gradle.api.tryAssign
 import gradle.api.trySet

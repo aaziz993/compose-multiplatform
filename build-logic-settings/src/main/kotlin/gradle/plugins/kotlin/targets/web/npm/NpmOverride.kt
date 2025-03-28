@@ -1,6 +1,5 @@
 package gradle.plugins.kotlin.targets.web.npm
 
-import gradle.act
 import gradle.api.tryAddAll
 import gradle.api.trySet
 import kotlinx.serialization.Serializable

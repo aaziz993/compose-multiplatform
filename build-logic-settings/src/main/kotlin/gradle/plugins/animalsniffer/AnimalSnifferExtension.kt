@@ -1,10 +1,10 @@
 package gradle.plugins.animalsniffer
 
 import gradle.accessors.animalSniffer
-import gradle.accessors.id
+
 import gradle.accessors.catalog.libs
-import gradle.accessors.plugin
-import gradle.accessors.plugins
+
+
 import gradle.accessors.settings
 import gradle.api.trySet
 import gradle.plugins.quality.CodeQualityExtension

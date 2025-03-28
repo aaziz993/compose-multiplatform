@@ -1,11 +1,8 @@
 package gradle.plugins.compose.resources
 
-import gradle.accessors.compose
-import gradle.accessors.id
-import gradle.accessors.kotlin
 import gradle.accessors.catalog.libs
-import gradle.accessors.plugin
-import gradle.accessors.plugins
+import gradle.accessors.compose
+import gradle.accessors.kotlin
 import gradle.accessors.projectProperties
 import gradle.accessors.resources
 import gradle.accessors.settings

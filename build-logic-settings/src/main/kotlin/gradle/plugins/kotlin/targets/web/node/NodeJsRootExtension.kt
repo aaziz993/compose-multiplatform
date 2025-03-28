@@ -1,10 +1,10 @@
 package gradle.plugins.kotlin.targets.web.node
 
-import gradle.accessors.id
+
 import gradle.accessors.catalog.libs
 import gradle.accessors.node
-import gradle.accessors.plugin
-import gradle.accessors.plugins
+
+
 import gradle.accessors.settings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

@@ -1,7 +1,7 @@
 package gradle.api.repositories
 
 import gradle.api.trySet
-import gradle.isUrl
+import gradle.isValidUrl
 import org.gradle.api.Project
 import org.gradle.api.artifacts.repositories.UrlArtifactRepository
 import org.gradle.api.file.Directory
@@ -55,9 +55,7 @@ internal interface UrlArtifactRepository<T : UrlArtifactRepository> {
 
     context(Directory)
     fun _applyTo(receiver: T) {
-        url?.let { url ->
-            if (url.isUrl) url else dir(url)
-        }?.let(receiver::setUrl)
+        url?.let { url -> if (url.isValidUrl) url else dir(url) }?.let(receiver::setUrl)
 
         receiver::setAllowInsecureProtocol trySet allowInsecureProtocol
     }

@@ -1,10 +1,10 @@
 package gradle.plugins.kotlin.ktorfit.model
 
 import de.jensklingenberg.ktorfit.gradle.ErrorCheckingMode
-import gradle.accessors.id
+
 import gradle.accessors.catalog.libs
-import gradle.accessors.plugin
-import gradle.accessors.plugins
+
+
 import gradle.accessors.settings
 import gradle.plugins.kotlin.ktorfit.KtorfitGradleConfiguration
 import gradle.plugins.project.EnabledSettings

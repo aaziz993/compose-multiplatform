@@ -1,10 +1,8 @@
 package gradle.plugins.kotlin.ksp
 
-import gradle.accessors.id
-import gradle.accessors.ksp
+
 import gradle.accessors.catalog.libs
-import gradle.accessors.plugin
-import gradle.accessors.plugins
+import gradle.accessors.ksp
 import gradle.accessors.settings
 import gradle.api.tryAssign
 import gradle.api.tryFrom

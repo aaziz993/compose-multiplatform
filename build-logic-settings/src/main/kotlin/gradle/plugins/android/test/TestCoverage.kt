@@ -3,8 +3,8 @@ package gradle.plugins.android.test
 import com.android.build.api.dsl.TestCoverage
 import gradle.accessors.catalog.libs
 import gradle.accessors.settings
-import gradle.accessors.version
-import gradle.accessors.versions
+
+
 import gradle.api.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

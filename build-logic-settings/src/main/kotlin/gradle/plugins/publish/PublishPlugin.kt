@@ -1,12 +1,9 @@
 package gradle.plugins.publish
 
+import gradle.accessors.catalog.libs
 import gradle.accessors.dokkaGeneratePublicationHtml
 import gradle.accessors.dokkaGeneratePublicationJavadoc
-import gradle.accessors.id
 import gradle.accessors.kotlin
-import gradle.accessors.catalog.libs
-import gradle.accessors.plugin
-import gradle.accessors.plugins
 import gradle.accessors.projectProperties
 import gradle.accessors.publishing
 import gradle.accessors.settings

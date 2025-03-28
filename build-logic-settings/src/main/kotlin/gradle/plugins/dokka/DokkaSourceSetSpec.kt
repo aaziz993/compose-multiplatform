@@ -2,8 +2,8 @@ package gradle.plugins.dokka
 
 import gradle.accessors.catalog.libs
 import gradle.accessors.settings
-import gradle.accessors.version
-import gradle.accessors.versions
+
+
 import gradle.api.NamedKeyTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.applyTo

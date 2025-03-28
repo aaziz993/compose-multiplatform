@@ -1,7 +1,7 @@
 package gradle.plugins.dokka.plugin
 
-import gradle.accessors.libraryAsDependency
 import gradle.accessors.catalog.libs
+import gradle.accessors.libraryAsDependency
 import gradle.accessors.settings
 import gradle.api.tryAssign
 import gradle.api.tryFrom

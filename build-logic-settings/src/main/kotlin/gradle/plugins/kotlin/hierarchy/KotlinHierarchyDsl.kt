@@ -2,7 +2,6 @@ package gradle.plugins.kotlin.hierarchy
 
 import gradle.accessors.kotlin
 import org.gradle.api.Project
-import org.jetbrains.kotlin.gradle.dsl.KotlinHierarchyDsl
 
 /**
  * A DSL to apply hierarchy templates in a Kotlin project.

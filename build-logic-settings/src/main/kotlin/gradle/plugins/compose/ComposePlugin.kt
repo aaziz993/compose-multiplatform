@@ -2,10 +2,10 @@
 
 package gradle.plugins.compose
 
-import gradle.accessors.id
+
 import gradle.accessors.catalog.libs
-import gradle.accessors.plugin
-import gradle.accessors.plugins
+
+
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
 import gradle.plugins.compose.model.CMPSettings

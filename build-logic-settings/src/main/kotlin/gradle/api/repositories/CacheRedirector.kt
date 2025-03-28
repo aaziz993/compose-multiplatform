@@ -1,10 +1,7 @@
 package gradle.api.repositories
 
-import gradle.accessors.id
 import gradle.accessors.catalog.libs
 import gradle.accessors.node
-import gradle.accessors.plugin
-import gradle.accessors.plugins
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
 import gradle.accessors.yarn

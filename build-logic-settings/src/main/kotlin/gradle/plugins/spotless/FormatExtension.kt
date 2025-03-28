@@ -9,8 +9,8 @@ import com.diffplug.spotless.generic.PipeStepPair
 import gradle.accessors.catalog.libs
 import gradle.accessors.settings
 import gradle.accessors.spotless
-import gradle.accessors.version
-import gradle.accessors.versions
+
+
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
 import gradle.ifTrue

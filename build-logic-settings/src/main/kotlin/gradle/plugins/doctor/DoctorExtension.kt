@@ -1,11 +1,8 @@
 package gradle.plugins.doctor
 
 import com.osacky.doctor.AppleRosettaTranslationCheckMode
-import gradle.accessors.doctor
-import gradle.accessors.id
 import gradle.accessors.catalog.libs
-import gradle.accessors.plugin
-import gradle.accessors.plugins
+import gradle.accessors.doctor
 import gradle.accessors.settings
 import gradle.api.tryApply
 import gradle.api.tryAssign

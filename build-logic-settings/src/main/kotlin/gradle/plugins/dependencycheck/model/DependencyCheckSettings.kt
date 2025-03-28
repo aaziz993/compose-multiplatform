@@ -1,9 +1,9 @@
 package gradle.plugins.dependencycheck.model
 
-import gradle.accessors.id
+
 import gradle.accessors.catalog.libs
-import gradle.accessors.plugin
-import gradle.accessors.plugins
+
+
 import gradle.accessors.settings
 import gradle.plugins.dependencycheck.AdditionalCpe
 import gradle.plugins.dependencycheck.AdditionalCpeKeyTransformingSerializer

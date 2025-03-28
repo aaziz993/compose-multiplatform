@@ -1,9 +1,9 @@
 package gradle.plugins.kotlin.ksp.model
 
-import gradle.accessors.id
+
 import gradle.accessors.catalog.libs
-import gradle.accessors.plugin
-import gradle.accessors.plugins
+
+
 import gradle.accessors.settings
 import gradle.plugins.kotlin.ksp.KspExtension
 import gradle.plugins.project.EnabledSettings

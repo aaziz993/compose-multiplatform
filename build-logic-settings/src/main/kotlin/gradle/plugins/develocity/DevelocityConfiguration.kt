@@ -1,9 +1,9 @@
 package gradle.plugins.develocity
 
-import gradle.accessors.id
+
 import gradle.accessors.catalog.libs
-import gradle.accessors.plugin
-import gradle.accessors.plugins
+
+
 import gradle.api.tryAssign
 import gradle.plugins.develocity.buildscan.BuildScanConfiguration
 import org.gradle.api.initialization.Settings

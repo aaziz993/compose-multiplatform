@@ -1,9 +1,9 @@
 package gradle.plugins.kotlin.powerassert
 
-import gradle.accessors.id
+
 import gradle.accessors.catalog.libs
-import gradle.accessors.plugin
-import gradle.accessors.plugins
+
+
 import gradle.accessors.powerAssert
 import gradle.accessors.settings
 import gradle.api.tryAddAll

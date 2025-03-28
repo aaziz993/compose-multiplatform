@@ -1,6 +1,5 @@
 package gradle.plugins.apple
 
-import gradle.act
 import gradle.api.NamedKeyTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.tryPutAll

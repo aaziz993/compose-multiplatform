@@ -1,11 +1,8 @@
 package gradle.plugins.knit
 
-import gradle.accessors.files
-import gradle.accessors.id
-import gradle.accessors.knit
 import gradle.accessors.catalog.libs
-import gradle.accessors.plugin
-import gradle.accessors.plugins
+import gradle.accessors.files
+import gradle.accessors.knit
 import gradle.accessors.settings
 import gradle.api.tryPlus
 import gradle.api.trySet

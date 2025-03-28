@@ -3,10 +3,10 @@
 package gradle.plugins.spotless
 
 import com.diffplug.spotless.LineEnding
-import gradle.accessors.id
+
 import gradle.accessors.catalog.libs
-import gradle.accessors.plugin
-import gradle.accessors.plugins
+
+
 import gradle.accessors.settings
 import gradle.accessors.spotless
 import gradle.api.trySet

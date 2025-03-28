@@ -1,9 +1,9 @@
 package gradle.plugins.githooks
 
-import gradle.accessors.id
+
 import gradle.accessors.catalog.libs
-import gradle.accessors.plugin
-import gradle.accessors.plugins
+
+
 import gradle.accessors.projectProperties
 import gradle.plugins.githooks.model.GitHooksSettings
 import org.gradle.api.Plugin

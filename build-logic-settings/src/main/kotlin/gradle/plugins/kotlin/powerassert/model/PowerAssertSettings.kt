@@ -1,9 +1,9 @@
 package gradle.plugins.kotlin.powerassert.model
 
-import gradle.accessors.id
+
 import gradle.accessors.catalog.libs
-import gradle.accessors.plugin
-import gradle.accessors.plugins
+
+
 import gradle.accessors.settings
 import gradle.plugins.kotlin.powerassert.PowerAssertGradleExtension
 import gradle.plugins.project.EnabledSettings

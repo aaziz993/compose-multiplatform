@@ -2,8 +2,8 @@ package gradle.plugins.kotlin.targets.jvm
 
 import gradle.accessors.catalog.libs
 import gradle.accessors.settings
-import gradle.accessors.version
-import gradle.accessors.versions
+
+
 import gradle.addPrefix
 import gradle.api.tryAssign
 import gradle.plugins.kotlin.KotlinCommonCompilerOptions

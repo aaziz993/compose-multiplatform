@@ -1,13 +1,9 @@
 package gradle.plugins.kotlin.targets.web.yarn
 
-import gradle.accessors.id
+
 import gradle.accessors.catalog.libs
-import gradle.accessors.plugin
-import gradle.accessors.plugins
 import gradle.accessors.settings
-import gradle.accessors.yarn
 import gradle.accessors.yarnEnv
-import gradle.act
 import gradle.api.tryAddAll
 import gradle.api.tryAssign
 import gradle.api.trySet

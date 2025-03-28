@@ -9,10 +9,6 @@ import kotlinx.serialization.json.Json
 import org.gradle.api.Project
 import org.gradle.api.file.Directory
 import org.gradle.api.initialization.Settings
-import org.jetbrains.amper.gradle.AMPER_MODULE_EXT
-import org.jetbrains.amper.gradle.AmperModuleWrapper
-import org.jetbrains.amper.gradle.getBindingMap
-import org.jetbrains.amper.gradle.getOrNull
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import org.tomlj.TomlParseResult
 
@@ -34,9 +30,7 @@ internal data class VersionCatalog(
         }
     }
 
-    fun version(alias: String) = alias.asVersionCatalogAlias.let { alias ->
-        versions[alias] ?: error("Version '$alias' not found in version catalog: $name")
-    }
+    fun version(alias: String) = versions[alias.asVersionCatalogAlias]
 
     fun library(alias: String): Library = alias.asVersionCatalogAlias.let { alias ->
         libraries[alias] ?: error("Library  '$alias'  not found in version catalog: $name")

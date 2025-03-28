@@ -1,10 +1,10 @@
 package gradle.plugins.kotlin.allopen
 
 import gradle.accessors.allOpen
-import gradle.accessors.id
+
 import gradle.accessors.catalog.libs
-import gradle.accessors.plugin
-import gradle.accessors.plugins
+
+
 import gradle.accessors.settings
 import org.gradle.api.Project
 

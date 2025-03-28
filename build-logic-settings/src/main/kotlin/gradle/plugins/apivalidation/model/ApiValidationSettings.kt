@@ -2,10 +2,10 @@ package gradle.plugins.apivalidation.model
 
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import gradle.accessors.apiBuild
-import gradle.accessors.id
+
 import gradle.accessors.catalog.libs
-import gradle.accessors.plugin
-import gradle.accessors.plugins
+
+
 import gradle.accessors.settings
 import gradle.plugins.apivalidation.ApiValidationExtension
 import gradle.plugins.apivalidation.KlibValidationSettings

@@ -1,10 +1,8 @@
 package gradle.plugins.java
 
-import gradle.accessors.java
 import gradle.accessors.catalog.libs
+import gradle.accessors.java
 import gradle.accessors.settings
-import gradle.accessors.version
-import gradle.accessors.versions
 import gradle.api.applyTo
 import gradle.api.tasks.SourceSet
 import gradle.api.tasks.SourceSetKeyTransformingSerializer

@@ -1,17 +1,14 @@
 package gradle.plugins.signing
 
 import gradle.accessors.files
-
 import gradle.accessors.publishing
 import gradle.api.getByNameOrAll
 import java.io.File
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.JsonContentPolymorphicSerializer
 import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration

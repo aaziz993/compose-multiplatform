@@ -1,10 +1,10 @@
 package gradle.plugins.java.tasks.shadow
 
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-import gradle.accessors.id
+
 import gradle.accessors.catalog.libs
-import gradle.accessors.plugin
-import gradle.accessors.plugins
+
+
 import gradle.accessors.settings
 import gradle.api.tasks.Expand
 import gradle.api.tasks.FilesMatching

@@ -1,17 +1,12 @@
 package gradle.plugins.kotlin.cocoapods
 
 import gradle.accessors.catalog.allLibs
-import gradle.accessors.cocoapods
-import gradle.accessors.id
-import gradle.accessors.kotlin
 import gradle.accessors.catalog.libs
+import gradle.accessors.cocoapods
+import gradle.accessors.kotlin
 import gradle.accessors.moduleName
-import gradle.accessors.plugin
-import gradle.accessors.plugins
 import gradle.accessors.resolveLibraryRef
 import gradle.accessors.settings
-import gradle.accessors.version
-import gradle.accessors.versions
 import gradle.act
 import gradle.api.tryAddAll
 import gradle.api.tryPlus

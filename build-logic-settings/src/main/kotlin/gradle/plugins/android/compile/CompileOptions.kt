@@ -3,8 +3,8 @@ package gradle.plugins.android.compile
 import com.android.build.api.dsl.CompileOptions
 import gradle.accessors.catalog.libs
 import gradle.accessors.settings
-import gradle.accessors.version
-import gradle.accessors.versions
+
+
 import gradle.api.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.JavaVersion
@@ -47,12 +47,10 @@ internal data class CompileOptions(
 
     context(Project)
     fun applyTo(receiver: CompileOptions) {
-        (sourceCompatibility ?: project.settings.libs.versions
-            .version("java.sourceCompatibility")
+        (sourceCompatibility ?: project.settings.libs.version("java.sourceCompatibility")
             ?.let(JavaVersion::toVersion))
             ?.let(receiver::sourceCompatibility)
-        (targetCompatibility ?: project.settings.libs.versions
-            .version("java.targetCompatibility")
+        (targetCompatibility ?: project.settings.libs.version("java.targetCompatibility")
             ?.let(JavaVersion::toVersion))
             ?.let(receiver::targetCompatibility)
 

@@ -1,10 +1,10 @@
 package gradle.plugins.apple
 
 import gradle.accessors.apple
-import gradle.accessors.id
+
 import gradle.accessors.catalog.libs
-import gradle.accessors.plugin
-import gradle.accessors.plugins
+
+
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
 import gradle.plugins.kotlin.targets.nat.apple.KotlinAppleTarget

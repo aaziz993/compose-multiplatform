@@ -1,9 +1,9 @@
 package gradle.plugins.karakum.tasks
 
-import gradle.accessors.id
+
 import gradle.accessors.catalog.libs
-import gradle.accessors.plugin
-import gradle.accessors.plugins
+
+
 import gradle.accessors.settings
 import gradle.api.tasks.DefaultTask
 import gradle.api.tasks.applyTo

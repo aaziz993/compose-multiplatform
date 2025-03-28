@@ -1,10 +1,10 @@
 package gradle.plugins.kotlin.apollo
 
 import gradle.accessors.apollo
-import gradle.accessors.id
+
 import gradle.accessors.catalog.libs
-import gradle.accessors.plugin
-import gradle.accessors.plugins
+
+
 import gradle.accessors.settings
 import gradle.api.tryAssign
 import org.gradle.api.Project

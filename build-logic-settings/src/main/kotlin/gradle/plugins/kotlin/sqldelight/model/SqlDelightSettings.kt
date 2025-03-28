@@ -1,9 +1,9 @@
 package gradle.plugins.kotlin.sqldelight.model
 
-import gradle.accessors.id
+
 import gradle.accessors.catalog.libs
-import gradle.accessors.plugin
-import gradle.accessors.plugins
+
+
 import gradle.accessors.settings
 import gradle.plugins.kotlin.sqldelight.SqlDelightDatabase
 import gradle.plugins.kotlin.sqldelight.SqlDelightDatabaseKeyTransformingSerializer

@@ -1,8 +1,6 @@
 package gradle.api.tasks.copy
 
 import gradle.accessors.files
-import java.util.LinkedHashSet
-
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.file.CopySourceSpec

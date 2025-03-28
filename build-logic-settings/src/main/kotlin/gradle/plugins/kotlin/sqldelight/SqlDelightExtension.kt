@@ -1,9 +1,9 @@
 package gradle.plugins.kotlin.sqldelight
 
-import gradle.accessors.id
+
 import gradle.accessors.catalog.libs
-import gradle.accessors.plugin
-import gradle.accessors.plugins
+
+
 import gradle.accessors.settings
 import gradle.accessors.sqldelight
 import gradle.api.applyTo

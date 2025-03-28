@@ -1,9 +1,9 @@
 package gradle.plugins.githooks.model
 
-import gradle.accessors.id
+
 import gradle.accessors.catalog.libs
-import gradle.accessors.plugin
-import gradle.accessors.plugins
+
+
 import gradle.plugins.githooks.GitHooksExtension
 import gradle.plugins.project.EnabledSettings
 import kotlinx.serialization.Serializable

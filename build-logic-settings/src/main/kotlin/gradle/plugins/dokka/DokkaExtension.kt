@@ -1,10 +1,7 @@
 package gradle.plugins.dokka
 
-import gradle.accessors.dokka
-import gradle.accessors.id
 import gradle.accessors.catalog.libs
-import gradle.accessors.plugin
-import gradle.accessors.plugins
+import gradle.accessors.dokka
 import gradle.accessors.settings
 import gradle.api.applyTo
 import gradle.api.tryAssign

@@ -3,8 +3,8 @@ package gradle.plugins.compose.desktop
 import gradle.accessors.catalog.libs
 import gradle.accessors.moduleName
 import gradle.accessors.settings
-import gradle.accessors.version
-import gradle.accessors.versions
+
+
 import gradle.api.tryAssign
 import gradle.api.trySet
 import org.gradle.api.Project

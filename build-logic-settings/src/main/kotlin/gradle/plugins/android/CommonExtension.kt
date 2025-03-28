@@ -6,9 +6,6 @@ import com.android.build.api.dsl.Splits
 import gradle.accessors.android
 import gradle.accessors.catalog.libs
 import gradle.accessors.settings
-import gradle.accessors.version
-import gradle.accessors.versions
-import gradle.act
 import gradle.api.applyTo
 import gradle.api.tryAddAll
 import gradle.api.trySet

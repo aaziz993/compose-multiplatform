@@ -1,10 +1,8 @@
 package gradle.plugins.kotlin.mpp
 
-import gradle.accessors.id
-import gradle.accessors.kotlin
+
 import gradle.accessors.catalog.libs
-import gradle.accessors.plugin
-import gradle.accessors.plugins
+import gradle.accessors.kotlin
 import gradle.accessors.settings
 import gradle.plugins.kotlin.HasConfigurableKotlinCompilerOptions
 import gradle.plugins.kotlin.KotlinProjectExtension

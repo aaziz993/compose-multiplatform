@@ -1,9 +1,9 @@
 package gradle.plugins.toolchainmanagement
 
-import gradle.accessors.id
+
 import gradle.accessors.catalog.libs
-import gradle.accessors.plugin
-import gradle.accessors.plugins
+
+
 import org.gradle.api.initialization.Settings
 
 internal interface ToolchainManagement {

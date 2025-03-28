@@ -2,7 +2,6 @@ package gradle.plugins.android.library
 
 import com.android.build.api.dsl.LibraryVariantDimension
 import gradle.accessors.android
-import gradle.act
 import gradle.api.trySet
 import gradle.plugins.android.AarMetadata
 import gradle.plugins.android.VariantDimension

@@ -2,9 +2,6 @@ package gradle.plugins.kotlin
 
 import gradle.accessors.catalog.libs
 import gradle.accessors.settings
-import gradle.accessors.version
-import gradle.accessors.versions
-import gradle.act
 import gradle.api.tryAddAll
 import gradle.api.tryAssign
 import gradle.api.trySet
