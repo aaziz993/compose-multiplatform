@@ -1,7 +1,6 @@
 package gradle.plugins.dokka.plugin
 
 import gradle.accessors.catalog.libs
-import gradle.accessors.libraryAsDependency
 import gradle.accessors.settings
 import gradle.api.tryAssign
 import gradle.api.tryFrom
@@ -77,7 +76,7 @@ internal data class DokkaVersioningPluginParameters(
     override fun applyTo(receiver: DokkaVersioningPluginParameters) {
         buildscript {
             dependencies {
-                classpath(project.settings.libs.libraryAsDependency("dokka.versioning"))
+                classpath(project.settings.libs.library("dokka.versioning").notation)
             }
         }
 

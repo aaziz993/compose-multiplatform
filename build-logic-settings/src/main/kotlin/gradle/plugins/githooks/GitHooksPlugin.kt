@@ -14,7 +14,7 @@ internal class GitHooksPlugin : Plugin<Settings> {
     override fun apply(target: Settings) {
         with(target) {
             projectProperties.plugins.gitHooks.takeIf(GitHooksSettings::enabled)?.let { gitHooks ->
-                plugins.apply(libs.plugins.plugin("gradlePreCommitGitHooks").id)
+                plugins.apply(libs.plugin("gradlePreCommitGitHooks").id)
 
                 gitHooks.applyTo()
             }

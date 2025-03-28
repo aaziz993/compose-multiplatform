@@ -20,10 +20,10 @@ internal class DevelocityPlugin : Plugin<Settings> {
         with(target) {
             projectProperties.plugins.develocity.takeIf(DevelocitySettings::enabled)?.let { develocity ->
                 // Gives the data to speed up your build, improve build reliability and accelerate build debugging.
-                plugins.apply(libs.plugins.plugin("develocity").id)
+                plugins.apply(libs.plugin("develocity").id)
 
                 // Enhances published build scans by adding a set of tags, links and custom values that have proven to be useful for many projects building with Develocity.
-                plugins.apply(libs.plugins.plugin("develocityCommonCustomUserData").id)
+                plugins.apply(libs.plugin("develocityCommonCustomUserData").id)
 
                 develocity.applyTo()
 

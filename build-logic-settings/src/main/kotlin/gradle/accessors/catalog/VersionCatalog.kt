@@ -30,7 +30,9 @@ internal data class VersionCatalog(
         }
     }
 
-    fun version(alias: String) = versions[alias.asVersionCatalogAlias]
+    fun versionOrNull(alias: String) = versions[alias.asVersionCatalogAlias]
+    fun version(alias: String) =
+        versionOrNull(alias) ?: error("Version '$alias' not found in version catalog: $name")
 
     fun library(alias: String): Library = alias.asVersionCatalogAlias.let { alias ->
         libraries[alias] ?: error("Library  '$alias'  not found in version catalog: $name")
@@ -91,7 +93,7 @@ internal fun String.resolvePluginId() =
 
 context(Project)
 internal fun String.resolveVersion() =
-    if (startsWith("$")) project.settings.allLibs.resolveRef(removePrefix("$"), VersionCatalog::version)
+    if (startsWith("$")) project.settings.allLibs.resolveRef(removePrefix("$"), VersionCatalog::versionOrNull)
     else this
 
 private fun <T> Set<VersionCatalog>.resolveRef(

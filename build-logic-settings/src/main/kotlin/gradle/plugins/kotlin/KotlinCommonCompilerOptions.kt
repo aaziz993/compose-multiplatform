@@ -56,10 +56,10 @@ internal interface KotlinCommonCompilerOptions<T : org.jetbrains.kotlin.gradle.d
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
-        receiver.apiVersion tryAssign (apiVersion ?: project.settings.libs.version("kotlin.apiVersion")
+        receiver.apiVersion tryAssign (apiVersion ?: project.settings.libs.versionOrNull("kotlin.apiVersion")
             ?.let(KotlinVersion::valueOf))
         receiver.languageVersion tryAssign (languageVersion
-            ?: project.settings.libs.version("kotlin.languageVersion")
+            ?: project.settings.libs.versionOrNull("kotlin.languageVersion")
                 ?.let(KotlinVersion::valueOf))
         receiver.optIn tryAddAll optIns
         receiver.optIn trySet setOptIns

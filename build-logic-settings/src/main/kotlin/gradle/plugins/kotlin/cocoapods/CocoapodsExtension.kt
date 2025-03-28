@@ -2,10 +2,10 @@ package gradle.plugins.kotlin.cocoapods
 
 import gradle.accessors.catalog.allLibs
 import gradle.accessors.catalog.libs
+import gradle.accessors.catalog.resolveDependency
 import gradle.accessors.cocoapods
 import gradle.accessors.kotlin
 import gradle.accessors.moduleName
-import gradle.accessors.resolveLibraryRef
 import gradle.accessors.settings
 import gradle.act
 import gradle.api.tryAddAll
@@ -117,7 +117,7 @@ internal interface CocoapodsExtension {
     fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugin("cocoapods").id) {
             project.kotlin.cocoapods::version trySet (version
-                ?: project.settings.libs.version("kotlin.cocoapods.version"))
+                ?: project.settings.libs.versionOrNull("kotlin.cocoapods.version"))
             project.kotlin.cocoapods::authors trySet authors
             project.kotlin.cocoapods::podfile trySet podfile?.let(project::file)
             needPodspec?.ifTrue(project.kotlin.cocoapods::noPodspec)
@@ -166,10 +166,10 @@ internal interface CocoapodsExtension {
                 }
             }
 
-            ios?.applyTo(project.kotlin.cocoapods.ios, project.settings.libs.version("kotlin.cocoapods.iosDeploymentTarget"))
-            osx?.applyTo(project.kotlin.cocoapods.osx, project.settings.libs.version("kotlin.cocoapods.osxDeploymentTarget"))
-            tvos?.applyTo(project.kotlin.cocoapods.tvos, project.settings.libs.version("kotlin.cocoapods.tvosDeploymentTarget"))
-            watchos?.applyTo(project.kotlin.cocoapods.watchos, project.settings.libs.version("kotlin.cocoapods.watchosDeploymentTarget"))
+            ios?.applyTo(project.kotlin.cocoapods.ios, project.settings.libs.versionOrNull("kotlin.cocoapods.iosDeploymentTarget"))
+            osx?.applyTo(project.kotlin.cocoapods.osx, project.settings.libs.versionOrNull("kotlin.cocoapods.osxDeploymentTarget"))
+            tvos?.applyTo(project.kotlin.cocoapods.tvos, project.settings.libs.versionOrNull("kotlin.cocoapods.tvosDeploymentTarget"))
+            watchos?.applyTo(project.kotlin.cocoapods.watchos, project.settings.libs.versionOrNull("kotlin.cocoapods.watchosDeploymentTarget"))
         }
 
     @Serializable
@@ -207,8 +207,9 @@ internal interface CocoapodsExtension {
         context(Project)
         fun resolve() {
             notation?.let { notation ->
-                if (notation.startsWith("$")) project.settings.allLibs.resolveLibraryRef(notation).removePrefix("cocoapods:")
-                else notation
+                (project.settings.allLibs.resolveDependency(notation, project.layout.projectDirectory) as? String
+                    ?: throw UnsupportedOperationException("Couldn't resolve cocoapods dependency"))
+                    .removePrefix("cocoapods:")
             }?.let { notation ->
                 name = notation.substringBefore(":")
                 version = notation.substringAfter(":", "").ifEmpty { null }

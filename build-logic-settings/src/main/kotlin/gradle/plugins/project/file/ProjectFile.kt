@@ -1,7 +1,7 @@
 package gradle.plugins.project.file
 
 import arrow.core.fold
-import gradle.isUrl
+import gradle.isValidUrl
 import java.io.File
 import java.net.URI
 import org.apache.commons.io.FileUtils
@@ -27,7 +27,7 @@ internal interface ProjectFile {
 
     context(Project)
     fun applyTo(receiver: String): List<TaskProvider<out DefaultTask>> {
-        val (urls, files) = from.partition(String::isUrl)
+        val (urls, files) = from.partition(String::isValidUrl)
 
         return listOfNotNull(
             urls.takeIf(List<*>::isNotEmpty)?.flatMap { url ->

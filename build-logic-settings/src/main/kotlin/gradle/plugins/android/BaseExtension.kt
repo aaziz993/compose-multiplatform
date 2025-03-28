@@ -114,7 +114,7 @@ internal interface BaseExtension {
         viewBinding?.applyTo(project.android.viewBinding)
         defaultPublishConfig?.let(project.android::defaultPublishConfig)
         disableWrite?.ifTrue(project.android::disableWrite)
-        (compileSdkVersion ?: project.settings.libs.version("project.android.compileSdk")?.toInt())
+        (compileSdkVersion ?: project.settings.libs.versionOrNull("project.android.compileSdk")?.toInt())
             ?.let(project.android::compileSdkVersion)
         buildToolsVersion?.let(project.android::buildToolsVersion)
         project.android::flavorDimensions trySet flavorDimensions

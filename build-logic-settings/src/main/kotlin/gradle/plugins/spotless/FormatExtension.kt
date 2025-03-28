@@ -100,7 +100,7 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
             biome.applyTo(
                 receiver.biome(
                     biome.version
-                        ?: project.settings.libs.version("biome"),
+                        ?: project.settings.libs.versionOrNull("biome"),
                 ) as com.diffplug.gradle.spotless.FormatExtension.BiomeGeneric,
             )
         }
@@ -108,7 +108,7 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
         clangFormat?.let { clangFormat ->
             clangFormat.applyTo(
                 receiver.clangFormat(
-                    clangFormat.version ?: project.settings.libs.version("clang")
+                    clangFormat.version ?: project.settings.libs.versionOrNull("clang")
                     ?: ClangFormatStep.defaultVersion(),
                 ),
             )
@@ -118,7 +118,7 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
             eclipseWtp.applyTo(
                 receiver.eclipseWtp(
                     eclipseWtp.type,
-                    eclipseWtp.version ?: project.settings.libs.version("eclipseWtp")
+                    eclipseWtp.version ?: project.settings.libs.versionOrNull("eclipseWtp")
                     ?: EclipseWtpFormatterStep.defaultVersion(),
                 ),
             )

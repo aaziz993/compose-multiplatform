@@ -75,9 +75,9 @@ internal interface ApplicationBaseFlavor<T : ApplicationBaseFlavor> : BaseFlavor
 
         receiver.applicationId = applicationId ?: project.androidNamespace
         receiver::versionCode trySet (versionCode
-            ?: project.settings.libs.version("android.versionCode")?.toInt())
-        receiver::versionName trySet (versionName ?: project.settings.libs.version("android.versionName"))
-        receiver::targetSdk trySet (targetSdk ?: project.settings.libs.version("android.targetSdk")?.toInt())
+            ?: project.settings.libs.versionOrNull("android.versionCode")?.toInt())
+        receiver::versionName trySet (versionName ?: project.settings.libs.versionOrNull("android.versionName"))
+        receiver::targetSdk trySet (targetSdk ?: project.settings.libs.versionOrNull("android.targetSdk")?.toInt())
         receiver::targetSdkPreview trySet targetSdkPreview
         receiver::maxSdk trySet maxSdk
     }

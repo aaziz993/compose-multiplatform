@@ -47,10 +47,10 @@ internal data class CompileOptions(
 
     context(Project)
     fun applyTo(receiver: CompileOptions) {
-        (sourceCompatibility ?: project.settings.libs.version("java.sourceCompatibility")
+        (sourceCompatibility ?: project.settings.libs.versionOrNull("java.sourceCompatibility")
             ?.let(JavaVersion::toVersion))
             ?.let(receiver::sourceCompatibility)
-        (targetCompatibility ?: project.settings.libs.version("java.targetCompatibility")
+        (targetCompatibility ?: project.settings.libs.versionOrNull("java.targetCompatibility")
             ?.let(JavaVersion::toVersion))
             ?.let(receiver::targetCompatibility)
 

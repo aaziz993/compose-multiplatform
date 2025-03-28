@@ -67,7 +67,7 @@ internal data class JavaExtension(
         googleJavaFormat?.let { googleJavaFormat ->
             googleJavaFormat.applyTo(
                 (googleJavaFormat.version?.resolveVersion()
-                    ?: project.settings.libs.version("googleJavaFormat"))
+                    ?: project.settings.libs.versionOrNull("googleJavaFormat"))
                     ?.let(receiver::googleJavaFormat) ?: receiver.googleJavaFormat(),
             )
         }
@@ -75,7 +75,7 @@ internal data class JavaExtension(
         palantirJavaFormat?.let { palantirJavaFormat ->
             palantirJavaFormat.applyTo(
                 (palantirJavaFormat.version?.resolveVersion()
-                    ?: project.settings.libs.version("palantirJavaFormat"))
+                    ?: project.settings.libs.versionOrNull("palantirJavaFormat"))
                     ?.let(receiver::palantirJavaFormat) ?: receiver.palantirJavaFormat(),
             )
         }
@@ -83,7 +83,7 @@ internal data class JavaExtension(
         eclipse?.let { eclipse ->
             eclipse.applyTo(
                 (eclipse.formatterVersion?.resolveVersion()
-                    ?: project.settings.libs.version("eclipseFormatter"))
+                    ?: project.settings.libs.versionOrNull("eclipseFormatter"))
                     ?.let(receiver::eclipse) ?: receiver.eclipse(),
             )
         }

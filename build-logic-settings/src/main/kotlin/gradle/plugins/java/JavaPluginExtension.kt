@@ -143,12 +143,12 @@ internal data class JavaPluginExtension(
     @Suppress("UnstableApiUsage")
     fun applyTo() =
         project.pluginManager.withPlugin("java") {
-            project.java::setSourceCompatibility trySet (sourceCompatibility ?: project.settings.libs.versions
-                .version("java.sourceCompatibility")
-                ?.let(JavaVersion::toVersion))
-            project.java::setTargetCompatibility trySet (targetCompatibility ?: project.settings.libs.versions
-                .version("java.targetCompatibility")
-                ?.let(JavaVersion::toVersion))
+            project.java::setSourceCompatibility trySet (sourceCompatibility
+                ?: project.settings.libs.versionOrNull("java.sourceCompatibility")
+                    ?.let(JavaVersion::toVersion))
+            project.java::setTargetCompatibility trySet (targetCompatibility
+                ?: project.settings.libs.versionOrNull("java.targetCompatibility")
+                    ?.let(JavaVersion::toVersion))
             disableAutoTargetJvm?.ifTrue(project.java::disableAutoTargetJvm)
             withJavadocJar?.ifTrue(project.java::withJavadocJar)
             withSourcesJar?.ifTrue(project.java::withSourcesJar)

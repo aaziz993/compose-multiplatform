@@ -17,15 +17,15 @@ import org.gradle.api.Project
 internal fun Project.version(): String {
     val camelCaseName = project.name.toCamelCase()
     return Version(
-        project.settings.libs.version("$camelCaseName.version.major")?.toInt()
+        project.settings.libs.versionOrNull("$camelCaseName.version.major")?.toInt()
             ?: projectProperties.version.major,
-        project.settings.libs.version("$camelCaseName.version.minor")?.toInt()
+        project.settings.libs.versionOrNull("$camelCaseName.version.minor")?.toInt()
             ?: projectProperties.version.minor,
-        project.settings.libs.version("$camelCaseName.version.patch")?.toInt()
+        project.settings.libs.versionOrNull("$camelCaseName.version.patch")?.toInt()
             ?: projectProperties.version.patch,
-        project.settings.libs.version("$camelCaseName.version.preRelease")
+        project.settings.libs.versionOrNull("$camelCaseName.version.preRelease")
             ?: projectProperties.version.preRelease,
-        project.settings.libs.version("$camelCaseName.version.buildMeta") ?: "${
+        project.settings.libs.versionOrNull("$camelCaseName.version.buildMeta") ?: "${
             gitRef?.takeIf { projectProperties.version.gitRef }.orEmpty()
         }${
             gitRunNumber?.takeIf { projectProperties.version.gitRunNumber }.orEmpty()
