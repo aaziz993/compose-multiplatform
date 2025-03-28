@@ -8,7 +8,7 @@ import kotlinx.serialization.Transient
 internal data class Plugin(
     val id: String,
     override val _version: @Serializable(with = VersionContentPolymorphicSerializer::class) Any? = null,
-) : VersionCatalogMember() {
+) : VersionCatalogDependency() {
 
     @Transient
     override lateinit var versionCatalog: VersionCatalog

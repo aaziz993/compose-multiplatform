@@ -63,7 +63,7 @@ internal data class KotlinJvmCompilerOptions(
 
         receiver.javaParameters tryAssign javaParameters
         receiver.jvmTarget tryAssign (jvmTarget
-            ?: project.settings.libs.versions.version("java.languageVersion")
+            ?: project.settings.libs.version("java.languageVersion")
                 ?.replace(".", "_")
                 ?.addPrefix("JVM_")
                 ?.let(JvmTarget::valueOf)

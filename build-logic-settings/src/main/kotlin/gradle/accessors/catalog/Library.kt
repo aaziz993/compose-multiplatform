@@ -14,7 +14,7 @@ internal data class Library(
     @SerialName("module")
     private val _module: String? = null,
     override val _version: @Serializable(with = VersionContentPolymorphicSerializer::class) Any? = null,
-) : VersionCatalogMember() {
+) : VersionCatalogDependency() {
 
     @Transient
     override lateinit var versionCatalog: VersionCatalog

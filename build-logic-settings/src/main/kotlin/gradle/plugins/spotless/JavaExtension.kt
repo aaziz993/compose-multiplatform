@@ -3,11 +3,9 @@ package gradle.plugins.spotless
 import com.diffplug.gradle.spotless.JavaExtension
 import com.diffplug.spotless.LineEnding
 import gradle.accessors.catalog.libs
-import gradle.accessors.resolveVersion
+import gradle.accessors.catalog.resolveVersion
 import gradle.accessors.settings
 import gradle.accessors.spotless
-import gradle.accessors.version
-import gradle.accessors.versions
 import gradle.api.trySet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -69,7 +67,7 @@ internal data class JavaExtension(
         googleJavaFormat?.let { googleJavaFormat ->
             googleJavaFormat.applyTo(
                 (googleJavaFormat.version?.resolveVersion()
-                    ?: project.settings.libs.versions.version("googleJavaFormat"))
+                    ?: project.settings.libs.version("googleJavaFormat"))
                     ?.let(receiver::googleJavaFormat) ?: receiver.googleJavaFormat(),
             )
         }
@@ -77,7 +75,7 @@ internal data class JavaExtension(
         palantirJavaFormat?.let { palantirJavaFormat ->
             palantirJavaFormat.applyTo(
                 (palantirJavaFormat.version?.resolveVersion()
-                    ?: project.settings.libs.versions.version("palantirJavaFormat"))
+                    ?: project.settings.libs.version("palantirJavaFormat"))
                     ?.let(receiver::palantirJavaFormat) ?: receiver.palantirJavaFormat(),
             )
         }
@@ -85,7 +83,7 @@ internal data class JavaExtension(
         eclipse?.let { eclipse ->
             eclipse.applyTo(
                 (eclipse.formatterVersion?.resolveVersion()
-                    ?: project.settings.libs.versions.version("eclipseFormatter"))
+                    ?: project.settings.libs.version("eclipseFormatter"))
                     ?.let(receiver::eclipse) ?: receiver.eclipse(),
             )
         }

@@ -2,7 +2,7 @@ package gradle.plugins.spotless.groovy
 
 import com.diffplug.gradle.spotless.BaseGroovyExtension
 import gradle.accessors.catalog.libs
-import gradle.accessors.resolveVersion
+import gradle.accessors.catalog.resolveVersion
 import gradle.accessors.settings
 import gradle.accessors.version
 import gradle.accessors.versions
@@ -32,7 +32,7 @@ internal abstract class BaseGroovyExtension<T : BaseGroovyExtension> : FormatExt
 
         greclipse?.let { greclipse ->
             greclipse.applyTo(
-                (greclipse.version?.resolveVersion() ?: project.settings.libs.versions.version("greclipse"))
+                (greclipse.version?.resolveVersion() ?: project.settings.libs.version("greclipse"))
                     ?.let(receiver::greclipse) ?: receiver.greclipse(),
             )
         }

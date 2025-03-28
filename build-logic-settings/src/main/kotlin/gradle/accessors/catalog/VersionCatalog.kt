@@ -2,7 +2,6 @@ package gradle.accessors.catalog
 
 import gradle.accessors.settings
 import gradle.isPath
-import gradle.isUrl
 import gradle.isValidUrl
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -13,6 +12,7 @@ import org.jetbrains.kotlin.gradle.plugin.extraProperties
 
 @Serializable
 internal data class VersionCatalog(
+    val name: String,
     val versions: Map<String, String> = emptyMap(),
     val libraries: Map<String, Library> = emptyMap(),
     val plugins: Map<String, Plugin> = emptyMap()
@@ -28,47 +28,39 @@ internal data class VersionCatalog(
         }
     }
 
-    fun version(alias: String) = versions[alias.asCatalogAlias()]
-
-    fun library(alias: String): Library = alias.asCatalogAlias().let { name ->
-        libraries[name] ?: error("Not found library: $name")
+    fun version(alias: String) = alias.asVersionCatalogAlias.let { alias ->
+        versions[alias] ?: error("Version '$alias' not found in version catalog: $name")
     }
 
-    fun plugin(alias: String): Plugin = alias.asCatalogAlias().let { name ->
-        plugins[name] ?: error("Not found plugin: $name")
+    fun library(alias: String): Library = alias.asVersionCatalogAlias.let { alias ->
+        libraries[alias] ?: error("Library  '$alias'  not found in version catalog: $name")
     }
 
-    private fun String.asCatalogAlias() = replace(".", "-")
+    fun plugin(alias: String): Plugin = alias.asVersionCatalogAlias.let { alias ->
+        plugins[alias] ?: error("Plugin '$alias' not found in version catalog: $name")
+    }
 }
 
 private const val VERSION_CATALOG = "version.catalog"
 
 @Suppress("UNCHECKED_CAST")
-internal val Settings.allLibs: MutableMap<String, VersionCatalog>
+internal val Settings.allLibs: MutableSet<VersionCatalog>
     get() = extraProperties.getBindingMap(VERSION_CATALOG)
 
 internal val Settings.libs: VersionCatalog
-    get() = allLibs["libs"]!!
+    get() = allLibs.versionCatalog("libs")!!
 
-internal fun Map<String, VersionCatalog>.resolveLibrary(
-    directory: Directory,
+internal fun Set<VersionCatalog>.versionCatalog(name: String) =
+    find { versionCatalog -> versionCatalog.name == name }
+
+internal fun Set<VersionCatalog>.resolveDependency(
     notation: String,
-    fromNotation: (String) -> Any = { it }
+    directory: Directory,
 ): Any = when {
-    notation.startsWith("$") -> fromNotation(resolveLibraryRef(notation).notation)
+    notation.startsWith("$") -> resolveRef(notation, VersionCatalog::library).notation
     notation.isPath -> directory.file(notation)
     notation.isValidUrl -> notation.asVersionCatalogUrl
-    else -> fromNotation(notation)
-}
-
-private fun Map<String, VersionCatalog>.resolveLibraryRef(notation: String): Library {
-    val catalogName = notation
-        .removePrefix("$")
-        .substringBefore(".")
-    val libraryName = notation
-        .substringAfter(".", "")
-    return this[catalogName]?.library(libraryName)
-        ?: error("Not found version catalog: $catalogName")
+    else -> notation
 }
 
 private val String.asVersionCatalogUrl: String
@@ -81,15 +73,32 @@ private val String.asVersionCatalogUrl: String
     }
 
 context(Project)
-internal fun String.resolveVersion() =
-    if (startsWith("$")) project.settings.allLibs.resolveVersionRef(removePrefix("$"))
+internal fun String.resolvePlugin() =
+    if (startsWith("$")) project.settings.allLibs.resolveRef(removePrefix("$"), VersionCatalog::plugin).id
     else this
 
-private fun Map<String, VersionCatalog>.resolveVersionRef(version: String): String? {
-    val catalogName = version
+context(Project)
+internal fun String.resolveVersion() =
+    if (startsWith("$")) project.settings.allLibs.resolveRef(removePrefix("$"), VersionCatalog::version)
+    else this
+
+private fun <T> Set<VersionCatalog>.resolveRef(
+    ref: String,
+    resolver: VersionCatalog.(name: String) -> T
+): T {
+    val versionCatalogName = ref
         .removePrefix("$")
         .substringBefore(".")
-    val versionAlias = version
-        .substringAfter(".", "")
-    return this[catalogName]?.version(versionAlias)
+    val name = ref.substringAfter(".", "")
+
+    return resolver(
+            (versionCatalog(versionCatalogName)
+                    ?: error("Not found version catalog: $versionCatalogName")),
+            name,
+    )
 }
+
+private
+val String.asVersionCatalogAlias
+    get() = replace(".", "-")
+

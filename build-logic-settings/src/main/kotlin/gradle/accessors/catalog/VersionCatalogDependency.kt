@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal abstract class VersionCatalogMember {
+internal abstract class VersionCatalogDependency {
 
     abstract var versionCatalog: VersionCatalog
 

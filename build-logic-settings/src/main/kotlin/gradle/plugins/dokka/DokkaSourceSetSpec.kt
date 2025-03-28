@@ -308,7 +308,7 @@ internal data class DokkaSourceSetSpec(
         receiver.languageVersion tryAssign languageVersion
         receiver.apiVersion tryAssign apiVersion
         receiver.jdkVersion tryAssign (jdkVersion
-            ?: project.settings.libs.versions.version("java.languageVersion")?.toInt())
+            ?: project.settings.libs.version("java.languageVersion")?.toInt())
     }
 }
 

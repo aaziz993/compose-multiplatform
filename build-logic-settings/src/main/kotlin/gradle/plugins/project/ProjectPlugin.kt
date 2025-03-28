@@ -3,8 +3,12 @@
 package gradle.plugins.project
 
 import com.android.build.gradle.internal.tasks.AndroidTestTask
+import gradle.accessors.catalog.allLibs
+import gradle.accessors.catalog.libs
+import gradle.accessors.catalog.resolvePlugin
 import gradle.accessors.kotlin
 import gradle.accessors.projectProperties
+import gradle.accessors.settings
 import gradle.api.isCI
 import gradle.api.maybeNamed
 import gradle.api.repositories.CacheRedirector
@@ -162,7 +166,9 @@ public class ProjectPlugin : Plugin<Project> {
             plugins.apply(SigningPlugin::class.java)
 
             // Other plugins.
-            projectProperties.plugins.applies?.forEach(plugins::apply)
+            projectProperties.plugins.applies?.map { apply ->
+                apply.resolvePlugin()
+            }?.forEach(plugins::apply)
 
 
             projectProperties.nodeJsEnv.applyTo()

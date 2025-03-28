@@ -47,7 +47,7 @@ internal interface TestBaseFlavor<T : TestBaseFlavor> : BaseFlavor<T>, TestVaria
         super<BaseFlavor>.applyTo(receiver)
         super<TestVariantDimension>.applyTo(receiver)
 
-        receiver::targetSdk trySet (targetSdk ?: project.settings.libs.versions.version("android.targetSdk")?.toInt())
+        receiver::targetSdk trySet (targetSdk ?: project.settings.libs.version("android.targetSdk")?.toInt())
         receiver::targetSdkPreview trySet targetSdkPreview
         receiver::maxSdk trySet maxSdk
     }

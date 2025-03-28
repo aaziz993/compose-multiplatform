@@ -4,6 +4,8 @@ package gradle.plugins.project
 
 import gradle.accessors.catalog.VersionCatalog
 import gradle.accessors.catalog.allLibs
+import gradle.accessors.catalog.resolveDependency
+import gradle.accessors.catalog.resolveLibrary
 import gradle.accessors.settings
 import gradle.isUrl
 import gradle.serialization.serializer.BaseKeyTransformingSerializer
@@ -32,8 +34,8 @@ internal data class Dependency(
 ) {
 
     context(Settings)
-    fun resolve(): Any = resolve(
-        settings.allLibs,
+    fun resolve(): Any = settings.allLibs.resolveDependency(
+        notation,
         settings.layout.settingsDirectory,
     )
 
@@ -43,8 +45,8 @@ internal data class Dependency(
     }
 
     context(Project)
-    fun resolve(): Any = resolve(
-        project.settings.allLibs,
+    fun resolve(): Any = project.settings.allLibs.resolveDependency(
+        notation,
         project.layout.projectDirectory,
     ) { notation ->
         if (notation.startsWith(":")) project.project(notation) else notation
@@ -125,8 +127,6 @@ internal data class Dependency(
         "peerNpm" -> handler.peerNpm(name, version)
         else -> error("Unsupported dependency npm configuration: $subConfiguration")
     }
-
-
 }
 
 internal object DependencyKeyTransformingSerializer : BaseKeyTransformingSerializer<Dependency>(
