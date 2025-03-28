@@ -14,7 +14,7 @@ import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinWasmJsTargetDsl
 @Serializable
 @SerialName("wasmJs")
 internal data class KotlinWasmJsTargetDsl(
-    override val name: String = "wasmJs",
+    override val name: String? = "wasmJs",
     override val withSourcesJar: Boolean? = null,
     override val mavenPublication: MavenPublication? = null,
     override val compilations: LinkedHashSet<@Serializable(with = KotlinJsIrCompilationKeyTransformingSerializer::class) KotlinJsIrCompilation>? = null,

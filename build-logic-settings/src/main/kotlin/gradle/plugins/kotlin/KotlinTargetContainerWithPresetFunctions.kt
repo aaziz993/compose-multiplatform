@@ -1,10 +1,13 @@
 package gradle.plugins.kotlin
 
+import gradle.api.applyTo
+import org.gradle.kotlin.dsl.withType
 import gradle.plugins.kotlin.mpp.KotlinAndroidTarget
 import gradle.plugins.kotlin.targets.jvm.KotlinJvmTarget
 import gradle.plugins.kotlin.targets.nat.KotlinNativeTargetImpl
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.KotlinTargetContainerWithPresetFunctions
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 internal interface KotlinTargetContainerWithPresetFunctions<T : KotlinTargetContainerWithPresetFunctions> :
     KotlinTargetsContainer<T> {
@@ -58,134 +61,134 @@ internal interface KotlinTargetContainerWithPresetFunctions<T : KotlinTargetCont
         super.applyTo(receiver)
 
         jvm?.forEach { jvm ->
-            receiver.jvm(jvm.name) {
-                jvm.applyTo(this)
+            jvm.applyTo(receiver.targets.withType<org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget>()) { name, action ->
+                receiver.jvm(name, action::execute)
             }
         }
 
         androidTarget?.forEach { androidTarget ->
-            receiver.androidTarget(androidTarget.name) {
-                androidTarget.applyTo(this)
+            androidTarget.applyTo(receiver.targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget>()) { name, action ->
+                receiver.androidTarget(name, action::execute)
             }
         }
 
         androidNativeX64?.forEach { androidNativeX64 ->
-            receiver.androidNativeX64(androidNativeX64.name) {
-                androidNativeX64.applyTo(this)
+            androidNativeX64.applyTo(receiver.targets.withType<KotlinNativeTarget>()) { name, action ->
+                receiver.androidNativeX64(name, action::execute)
             }
         }
 
         androidNativeX86?.forEach { androidNativeX86 ->
-            receiver.androidNativeX86(androidNativeX86.name) {
-                androidNativeX86.applyTo(this)
+            androidNativeX86.applyTo(receiver.targets.withType<KotlinNativeTarget>()) { name, action ->
+                receiver.androidNativeX86(name, action::execute)
             }
         }
 
         androidNativeArm32?.forEach { androidNativeArm32 ->
-            receiver.androidNativeArm32(androidNativeArm32.name) {
-                androidNativeArm32.applyTo(this)
+            androidNativeArm32.applyTo(receiver.targets.withType<KotlinNativeTarget>()) { name, action ->
+                receiver.androidNativeArm32(name, action::execute)
             }
         }
 
         androidNativeArm64?.forEach { androidNativeArm64 ->
-            receiver.androidNativeArm64(androidNativeArm64.name) {
-                androidNativeArm64.applyTo(this)
+            androidNativeArm64.applyTo(receiver.targets.withType<KotlinNativeTarget>()) { name, action ->
+                receiver.androidNativeArm64(name, action::execute)
             }
         }
 
         iosArm64?.forEach { iosArm64 ->
-            receiver.iosArm64(iosArm64.name) {
-                iosArm64.applyTo(this)
+            iosArm64.applyTo(receiver.targets.withType<KotlinNativeTarget>()) { name, action ->
+                receiver.iosArm64(name, action::execute)
             }
         }
 
         iosX64?.forEach { iosX64 ->
-            receiver.iosX64(iosX64.name) {
-                iosX64.applyTo(this)
+            iosX64.applyTo(receiver.targets.withType<KotlinNativeTarget>()) { name, action ->
+                receiver.iosX64(name, action::execute)
             }
         }
 
         iosSimulatorArm64?.forEach { iosSimulatorArm64 ->
-            receiver.iosSimulatorArm64(iosSimulatorArm64.name) {
-                iosSimulatorArm64.applyTo(this)
+            iosSimulatorArm64.applyTo(receiver.targets.withType<KotlinNativeTarget>()) { name, action ->
+                receiver.iosSimulatorArm64(name, action::execute)
             }
         }
 
         watchosArm32?.forEach { watchosArm32 ->
-            receiver.watchosArm32(watchosArm32.name) {
-                watchosArm32.applyTo(this)
+            watchosArm32.applyTo(receiver.targets.withType<KotlinNativeTarget>()) { name, action ->
+                receiver.watchosArm32(name, action::execute)
             }
         }
 
         watchosArm64?.forEach { watchosArm64 ->
-            receiver.watchosArm64(watchosArm64.name) {
-                watchosArm64.applyTo(this)
+            watchosArm64.applyTo(receiver.targets.withType<KotlinNativeTarget>()) { name, action ->
+                receiver.watchosArm64(name, action::execute)
             }
         }
 
         watchosX64?.forEach { watchosX64 ->
-            receiver.watchosX64(watchosX64.name) {
-                watchosX64.applyTo(this)
+            watchosX64.applyTo(receiver.targets.withType<KotlinNativeTarget>()) { name, action ->
+                receiver.watchosX64(name, action::execute)
             }
         }
 
         watchosSimulatorArm64?.forEach { watchosSimulatorArm64 ->
-            receiver.watchosSimulatorArm64(watchosSimulatorArm64.name) {
-                watchosSimulatorArm64.applyTo(this)
+            watchosSimulatorArm64.applyTo(receiver.targets.withType<KotlinNativeTarget>()) { name, action ->
+                receiver.watchosSimulatorArm64(name, action::execute)
             }
         }
 
         watchosDeviceArm64?.forEach { watchosDeviceArm64 ->
-            receiver.watchosDeviceArm64(watchosDeviceArm64.name) {
-                watchosDeviceArm64.applyTo(this)
+            watchosDeviceArm64.applyTo(receiver.targets.withType<KotlinNativeTarget>()) { name, action ->
+                receiver.watchosDeviceArm64(name, action::execute)
             }
         }
 
         tvosArm64?.forEach { tvosArm64 ->
-            receiver.tvosArm64(tvosArm64.name) {
-                tvosArm64.applyTo(this)
+            tvosArm64.applyTo(receiver.targets.withType<KotlinNativeTarget>()) { name, action ->
+                receiver.tvosArm64(name, action::execute)
             }
         }
 
         tvosX64?.forEach { tvosX64 ->
-            receiver.tvosX64(tvosX64.name) {
-                tvosX64.applyTo(this)
+            tvosX64.applyTo(receiver.targets.withType<KotlinNativeTarget>()) { name, action ->
+                receiver.tvosX64(name, action::execute)
             }
         }
 
         tvosSimulatorArm64?.forEach { tvosSimulatorArm64 ->
-            receiver.tvosSimulatorArm64(tvosSimulatorArm64.name) {
-                tvosSimulatorArm64.applyTo(this)
+            tvosSimulatorArm64.applyTo(receiver.targets.withType<KotlinNativeTarget>()) { name, action ->
+                receiver.tvosSimulatorArm64(name, action::execute)
             }
         }
 
         linuxX64?.forEach { linuxX64 ->
-            receiver.linuxX64(linuxX64.name) {
-                linuxX64.applyTo(this)
+            linuxX64.applyTo(receiver.targets.withType<KotlinNativeTarget>()) { name, action ->
+                receiver.linuxX64(name, action::execute)
             }
         }
 
         mingwX64?.forEach { mingwX64 ->
-            receiver.mingwX64(mingwX64.name) {
-                mingwX64.applyTo(this)
+            mingwX64.applyTo(receiver.targets.withType<KotlinNativeTarget>()) { name, action ->
+                receiver.mingwX64(name, action::execute)
             }
         }
 
         macosX64?.forEach { macosX64 ->
-            receiver.macosX64(macosX64.name) {
-                macosX64.applyTo(this)
+            macosX64.applyTo(receiver.targets.withType<KotlinNativeTarget>()) { name, action ->
+                receiver.macosX64(name, action::execute)
             }
         }
 
         macosArm64?.forEach { macosArm64 ->
-            receiver.macosArm64(macosArm64.name) {
-                macosArm64.applyTo(this)
+            macosArm64.applyTo(receiver.targets.withType<KotlinNativeTarget>()) { name, action ->
+                receiver.macosArm64(name, action::execute)
             }
         }
 
         linuxArm64?.forEach { linuxArm64 ->
-            receiver.linuxArm64(linuxArm64.name) {
-                linuxArm64.applyTo(this)
+            linuxArm64.applyTo(receiver.targets.withType<KotlinNativeTarget>()) { name, action ->
+                receiver.linuxArm64(name, action::execute)
             }
         }
     }

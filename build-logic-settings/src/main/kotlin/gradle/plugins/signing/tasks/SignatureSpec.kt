@@ -15,7 +15,7 @@ internal interface SignatureSpec<T : SignatureSpec> {
     context(Project)
     fun applyTo(receiver: T) {
         receiver::setSignatory trySet signatory?.toSignatory()
-        receiver::setSignatureType trySet signatureType?.value
+        receiver::setSignatureType trySet signatureType?.toSignatureType()
         receiver::setRequired trySet required
     }
 }

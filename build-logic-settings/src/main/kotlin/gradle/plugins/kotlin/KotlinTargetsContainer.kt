@@ -10,12 +10,11 @@ internal interface KotlinTargetsContainer<T : KotlinTargetsContainer> {
     /**
      * A [NamedDomainObjectContainer] containing all registered [Kotlin targets][KotlinTarget] in this project.
      */
-    val targets: LinkedHashSet<@Serializable(with = KotlinTargetKeyTransformingSerializer::class) KotlinTarget<out org.jetbrains.kotlin.gradle.plugin.KotlinTarget>>?
+    val targets: LinkedHashSet<KotlinTarget<out org.jetbrains.kotlin.gradle.plugin.KotlinTarget>>?
 
     context(Project)
-    fun applyTo(receiver: T) {
+    fun applyTo(receiver: T) =
         targets?.forEach { target ->
-            (target as KotlinTarget<org.jetbrains.kotlin.gradle.plugin.KotlinTarget>).applyTo(receiver.targets) { _, _ -> }
+            target.applyTo(receiver)
         }
-    }
 }
