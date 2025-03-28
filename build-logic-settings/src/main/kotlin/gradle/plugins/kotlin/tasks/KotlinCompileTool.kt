@@ -5,7 +5,9 @@ import gradle.api.tasks.Task
 import gradle.api.tasks.applyTo
 import gradle.api.tasks.util.PatternFilterable
 import gradle.api.tryAssign
+import gradle.api.tryFrom
 import gradle.api.trySet
+import gradle.api.trySetFrom
 import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

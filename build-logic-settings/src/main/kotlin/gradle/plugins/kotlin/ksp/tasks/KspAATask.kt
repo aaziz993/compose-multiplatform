@@ -5,6 +5,8 @@ import gradle.api.tasks.DefaultTask
 import gradle.api.tasks.applyTo
 import gradle.api.tryAddAll
 import gradle.api.tryAssign
+import gradle.api.tryFrom
+import gradle.api.trySetFrom
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.kotlin.ksp.KspGradleConfig
 import gradle.process.CommandLineArgumentProvider

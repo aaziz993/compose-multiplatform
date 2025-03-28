@@ -3,6 +3,8 @@ package gradle.plugins.dokka
 import gradle.api.NamedKeyTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.tryAssign
+import gradle.api.tryFrom
+import gradle.api.trySetFrom
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

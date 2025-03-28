@@ -4,6 +4,8 @@ import gradle.accessors.libraryAsDependency
 import gradle.accessors.libs
 import gradle.accessors.settings
 import gradle.api.tryAssign
+import gradle.api.tryFrom
+import gradle.api.trySetFrom
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

@@ -1,5 +1,6 @@
 package gradle.plugins.kotlin.atomicfu.tasks
 
+import gradle.accessors.files
 import gradle.api.tasks.ConventionTask
 import gradle.api.tasks.applyTo
 import gradle.api.tryAssign

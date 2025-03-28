@@ -1,6 +1,7 @@
 package gradle.plugins.kotlin.targets.nat.apple.watchos
 
 import gradle.accessors.kotlin
+import gradle.api.applyTo
 import gradle.api.publish.maven.MavenPublication
 import gradle.plugins.kotlin.targets.nat.KotlinNativeBinaryContainer
 import gradle.plugins.kotlin.targets.nat.KotlinNativeBinaryContainerTransformingSerializer
@@ -31,7 +32,7 @@ internal data class KotlinWatchosX64Target(
 
     context(Project)
     override fun applyTo() =
-        applyTo(project.kotlin.targets.withType<KotlinNativeTarget>()) { name, action ->
+        applyTo(project.kotlin.targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTargetWithSimulatorTests>()) { name, action ->
             project.kotlin.watchosX64(name, action::execute)
         }
 }

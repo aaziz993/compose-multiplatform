@@ -7,6 +7,8 @@ import com.apollographql.apollo3.compiler.hooks.ApolloCompilerKotlinHooks
 import com.apollographql.apollo3.gradle.internal.ApolloGenerateSourcesFromIrTask
 import gradle.api.tasks.applyTo
 import gradle.api.tryAssign
+import gradle.api.tryFrom
+import gradle.api.trySetFrom
 import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

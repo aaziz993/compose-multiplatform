@@ -1,5 +1,6 @@
 package gradle.plugins.kotlin.targets.nat.tasks
 
+import gradle.accessors.files
 import gradle.api.tasks.applyTo
 import gradle.api.tasks.test.TestFilter
 import gradle.api.tasks.test.TestLoggingContainer

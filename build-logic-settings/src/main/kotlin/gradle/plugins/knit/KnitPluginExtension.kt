@@ -1,5 +1,6 @@
 package gradle.plugins.knit
 
+import gradle.accessors.files
 import gradle.accessors.id
 import gradle.accessors.knit
 import gradle.accessors.libs

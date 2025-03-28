@@ -3,7 +3,9 @@ package gradle.plugins.kotlin.ksp
 import com.google.devtools.ksp.gradle.KspGradleConfig
 import gradle.api.tryAddAll
 import gradle.api.tryAssign
+import gradle.api.tryFrom
 import gradle.api.tryPutAll
+import gradle.api.trySetFrom
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel

@@ -4,6 +4,8 @@ import com.apollographql.apollo3.compiler.PackageNameGenerator
 import com.apollographql.apollo3.gradle.api.Service
 import gradle.api.tryAddAll
 import gradle.api.tryAssign
+import gradle.api.tryFrom
+import gradle.api.trySetFrom
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

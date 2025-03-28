@@ -2,6 +2,8 @@ package gradle.plugins.dokka.tasks
 
 import gradle.api.tasks.applyTo
 import gradle.api.tryAssign
+import gradle.api.tryFrom
+import gradle.api.trySetFrom
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.dokka.DokkaGeneratorParametersSpec
 import gradle.plugins.dokka.WorkerIsolation

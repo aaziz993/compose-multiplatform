@@ -2,6 +2,8 @@ package gradle.plugins.kotlin.tasks
 
 import gradle.api.tasks.applyTo
 import gradle.api.tryAssign
+import gradle.api.tryFrom
+import gradle.api.trySetFrom
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.kotlin.targets.nat.CompilerPluginConfig
 import gradle.plugins.kotlin.targets.nat.CompilerPluginOptions

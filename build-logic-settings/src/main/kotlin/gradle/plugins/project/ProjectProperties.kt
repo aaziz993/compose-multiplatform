@@ -33,13 +33,13 @@ import gradle.serialization.decodeFromAny
 import java.util.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
+import kotlinx.serialization.descriptors.elementNames
 import kotlinx.serialization.json.Json
 import org.gradle.api.Project
 import org.gradle.api.file.Directory
 import org.gradle.api.initialization.Settings
 import org.gradle.api.plugins.ExtraPropertiesExtension
 import org.gradle.api.provider.ProviderFactory
-import org.gradle.internal.impldep.kotlinx.serialization.descriptors.elementNames
 import org.gradle.kotlin.dsl.extra
 import org.yaml.snakeyaml.Yaml
 

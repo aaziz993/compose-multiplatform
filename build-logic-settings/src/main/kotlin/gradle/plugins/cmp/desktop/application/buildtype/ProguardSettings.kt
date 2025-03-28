@@ -1,6 +1,8 @@
 package gradle.plugins.cmp.desktop.application.buildtype
 
 import gradle.api.tryAssign
+import gradle.api.tryFrom
+import gradle.api.trySetFrom
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.compose.desktop.application.dsl.ProguardSettings

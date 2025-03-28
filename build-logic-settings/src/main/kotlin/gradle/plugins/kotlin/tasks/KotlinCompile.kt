@@ -3,7 +3,9 @@ package gradle.plugins.kotlin.tasks
 import gradle.api.tasks.K2MultiplatformCompilationTask
 import gradle.api.tasks.applyTo
 import gradle.api.tryAssign
+import gradle.api.tryFrom
 import gradle.api.trySet
+import gradle.api.trySetFrom
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.kotlin.KotlinCommonCompilerOptions
 import gradle.plugins.kotlin.targets.jvm.KotlinJvmCompile

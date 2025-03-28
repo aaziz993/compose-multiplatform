@@ -5,7 +5,9 @@ import com.apollographql.apollo3.gradle.internal.ApolloGenerateSchemaTask
 import gradle.api.tasks.DefaultTask
 import gradle.api.tasks.applyTo
 import gradle.api.tryAssign
+import gradle.api.tryFrom
 import gradle.api.tryPutAll
+import gradle.api.trySetFrom
 import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

@@ -5,6 +5,8 @@ import com.android.builder.core.ComponentTypeImpl
 import gradle.api.tasks.applyTo
 import gradle.api.tryAddAll
 import gradle.api.tryAssign
+import gradle.api.tryFrom
+import gradle.api.trySetFrom
 import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

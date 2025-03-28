@@ -1,6 +1,7 @@
 package gradle.plugins.kotlin.targets.web
 
 import gradle.accessors.kotlin
+import gradle.accessors.moduleName
 import gradle.api.applyTo
 import gradle.api.publish.maven.MavenPublication
 import gradle.ifTrue
@@ -40,7 +41,7 @@ internal data class KotlinWasmJsTargetDsl(
 
         d8Dsl?.let { d8Dsl ->
             receiver.d8 {
-                d8Dsl.applyTo(this, "$moduleName-${receiver.targetName}")
+                d8Dsl.applyTo(this, "${project.moduleName}-${receiver.targetName}")
             }
         }
     }
