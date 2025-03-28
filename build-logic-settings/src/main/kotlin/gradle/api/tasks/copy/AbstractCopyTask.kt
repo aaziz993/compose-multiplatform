@@ -30,7 +30,7 @@ import org.gradle.kotlin.dsl.withType
 /**
  * `AbstractCopyTask` is the base class for all copy tasks.
  */
-internal abstract class AbstractCopyTask<T : org.gradle.api.tasks.AbstractCopyTask> : ConventionTask<T>(), CopySpec<org.gradle.api.file.CopySpec> {
+internal abstract class AbstractCopyTask<T : org.gradle.api.tasks.AbstractCopyTask> : ConventionTask<T>(), CopySpec<T> {
 
     /**
      * {@inheritDoc}
