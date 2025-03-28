@@ -1,5 +1,6 @@
 package gradle.plugins.kotlin
 
+import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.KotlinTargetExecution
 
 /**
@@ -8,4 +9,6 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinTargetExecution
 internal interface KotlinTargetExecution<T : KotlinTargetExecution<E>,
     E : org.jetbrains.kotlin.gradle.plugin.KotlinExecution.ExecutionSource> : KotlinExecution<T, E> {
 
+    context(Project)
+    override fun applyTo(receiver: T){}
 }

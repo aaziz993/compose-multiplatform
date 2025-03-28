@@ -11,8 +11,10 @@ import gradle.plugins.kotlin.tasks.KotlinJavaToolchain
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompilerOptions
 import org.jetbrains.kotlin.gradle.dsl.jvm.JvmTargetValidationMode
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilerExecutionStrategy
 
 @Serializable
 internal data class KspTaskJvm(
@@ -55,6 +57,13 @@ internal data class KspTaskJvm(
     override val multiPlatformEnabled: Boolean? = null,
     override val useModuleDetection: Boolean? = null,
     override val kotlinJavaToolchain: KotlinJavaToolchain? = null,
+    override val incremental: Boolean? = null,
+    override val explicitApiMode: ExplicitApiMode? = null,
+    override val abiSnapshotRelativePath: String? = null,
+    override val kotlinDaemonJvmArguments: List<String>? = null,
+    override val setKotlinDaemonJvmArguments: List<String>? = null,
+    override val compilerExecutionStrategy: KotlinCompilerExecutionStrategy? = null,
+    override val useDaemonFallbackStrategy: Boolean? = null,
     val destination: String? = null,
 ) : KotlinCompile<KspTaskJvm>() {
 

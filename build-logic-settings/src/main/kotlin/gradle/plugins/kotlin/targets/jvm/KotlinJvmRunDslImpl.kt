@@ -42,12 +42,12 @@ internal interface KotlinJvmRunDsl {
         receiver.mainClass tryAssign mainClass
         args?.let(receiver::args)
         receiver::setArgs trySet setArgs
-receiver::classpath trySet         classpath?.filter { !it.startsWith("$") }
+        classpath?.filter { !it.startsWith("$") }?.toTypedArray()?.let(receiver::classpath)
         receiver::setClasspath trySet setClasspath?.let(project::files)
         classpath?.mapNotNull {
             if (it.startsWith("\$compilation.")) it.substringAfter(".", "")
             else null
-receiver::classpath trySet         }?.map(target.compilations::getByNameOrAll)
+        }?.map(target.compilations::getByNameOrAll)?.toTypedArray()?.let(receiver::classpath)
     }
 }
 

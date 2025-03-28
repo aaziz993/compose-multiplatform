@@ -38,10 +38,6 @@ internal data class KotlinJvmTarget(
         super<KotlinOnlyTarget>.applyTo(receiver)
         super<HasConfigurableKotlinCompilerOptions>.applyTo(receiver)
 
-        testRuns?.forEach { testRun ->
-            testRun.applyTo(receiver.testRuns)
-        }
-
         mainRun?.let { mainRun ->
             receiver.mainRun {
                 mainRun.applyTo(this, receiver)

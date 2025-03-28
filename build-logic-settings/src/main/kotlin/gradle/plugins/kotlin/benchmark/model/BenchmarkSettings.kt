@@ -6,6 +6,7 @@ import gradle.plugins.kotlin.benchmark.BenchmarkTarget
 import gradle.plugins.kotlin.benchmark.BenchmarkTargetKeyTransformingSerializer
 import gradle.plugins.kotlin.benchmark.BenchmarksExtension
 import gradle.plugins.project.EnabledSettings
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -15,6 +16,6 @@ internal data class BenchmarkSettings(
     override val configurations: LinkedHashSet<@Serializable(with = BenchmarkConfigurationKeyTransformingSerializer::class) BenchmarkConfiguration>? = null,
     override val kotlinCompilerVersion: String? = null,
     override var reportsDir: String? = null,
-    override val targets: LinkedHashSet<@Serializable(with = BenchmarkTargetKeyTransformingSerializer::class) BenchmarkTarget<*>>? = null,
+    override val targets: LinkedHashSet<@Serializable(with = BenchmarkTargetKeyTransformingSerializer::class) BenchmarkTarget<out @Contextual kotlinx.benchmark.gradle.BenchmarkTarget>>? = null,
     override val enabled: Boolean = true
 ) : BenchmarksExtension(), EnabledSettings

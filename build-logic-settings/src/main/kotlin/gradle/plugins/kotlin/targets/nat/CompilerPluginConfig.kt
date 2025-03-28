@@ -15,7 +15,7 @@ internal abstract class CompilerPluginConfig {
     fun applyTo(receiver: CompilerPluginConfig) {
         optionsByPluginId?.forEach { (pluginId, options) ->
             options.forEach { option ->
-                config.addPluginArgument(pluginId, option.toSubpluginOption())
+                receiver.addPluginArgument(pluginId, option.toSubpluginOption())
             }
         }
     }

@@ -4,6 +4,7 @@ import gradle.api.NamedKeyTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.tryAssign
 import gradle.api.trySet
+import gradle.api.trySetFrom
 import gradle.plugins.project.Dependency
 import gradle.plugins.project.DependencyKeyTransformingSerializer
 import kotlinx.serialization.Serializable
@@ -68,7 +69,7 @@ internal data class SqlDelightDatabase(
     override fun applyTo(receiver: app.cash.sqldelight.gradle.SqlDelightDatabase) {
         receiver.packageName tryAssign packageName
         receiver.schemaOutputDirectory tryAssign schemaOutputDirectory?.let(project.layout.projectDirectory::dir)
-        receiver::srcDirs trySet srcDirs
+        srcDirs?.toTypedArray()?.let(receiver::srcDirs)
         receiver.srcDirs trySetFrom setSrcDirs
         receiver.deriveSchemaFromMigrations tryAssign deriveSchemaFromMigrations
         receiver.verifyMigrations tryAssign verifyMigrations

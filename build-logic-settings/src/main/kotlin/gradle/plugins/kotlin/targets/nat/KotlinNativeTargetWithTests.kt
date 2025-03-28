@@ -43,7 +43,7 @@ internal data class KotlinNativeTargetWithTestsImpl(
 
     context(Project)
     override fun applyTo() =
-        applyTo(project.kotlin.targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTargetWithTests<*>>()) { _, _ -> }
+        applyTo(project.kotlin.targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTargetWithTests<org.jetbrains.kotlin.gradle.targets.native.KotlinNativeBinaryTestRun>>()) { _, _ -> }
 }
 
 
