@@ -13,6 +13,8 @@ import gradle.api.file.replace
 import gradle.decapitalized
 import gradle.plugins.project.ProjectLayout
 import gradle.prefixIfNotEmpty
+import net.pearx.kasechange.splitToWords
+import net.pearx.kasechange.universalWordSplitter
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.SourceSet
@@ -72,15 +74,25 @@ internal class KotlinMultiplatformPlugin : Plugin<Project> {
                                 resourcesPrefixPart = ""
                             }
                             else {
+                                val wordSplitter = universalWordSplitter()
+
                                 val prefix = testSourceSetNamePrefixes.find { prefix -> restPart.startsWith(prefix) }
 
                                 if (prefix == null) {
                                     srcPrefixPart = restPart
+                                        .splitToWords()
+                                        .joinToString(layout.androidVariantDelimiter)
                                     resourcesPrefixPart = srcPrefixPart
                                 }
                                 else {
                                     srcPrefixPart =
-                                        "$prefix${restPart.removePrefix(prefix).prefixIfNotEmpty(layout.androidVariantsDelimiter)}"
+                                        "$prefix${
+                                            restPart
+                                                .removePrefix(prefix)
+                                                .splitToWords()
+                                                .joinToString(layout.androidVariantDelimiter)
+                                                .prefixIfNotEmpty(layout.androidVariantsDelimiter)
+                                        }"
                                     resourcesPrefixPart = srcPrefixPart
                                 }
                             }
