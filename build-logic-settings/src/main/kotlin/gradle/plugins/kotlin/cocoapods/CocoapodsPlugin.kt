@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin.cocoapods
 
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.projectProperties
@@ -16,7 +16,7 @@ internal class CocoapodsPlugin : Plugin<Project> {
         with(target) {
             projectProperties.kotlin.cocoapods
                 .takeIf(CocoapodsSettings::enabled)?.let { cocoapods ->
-                    plugins.apply(project.settings.libs.plugins.plugin("cocoapods").id)
+                    plugins.apply(project.settings.libs.plugin("cocoapods").id)
 
                     cocoapods.applyTo()
                 }

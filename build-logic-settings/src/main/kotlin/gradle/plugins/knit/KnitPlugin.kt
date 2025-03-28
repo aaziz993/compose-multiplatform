@@ -1,7 +1,7 @@
 package gradle.plugins.knit
 
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.projectProperties
@@ -16,7 +16,7 @@ internal class KnitPlugin : Plugin<Project> {
         with(target) {
             projectProperties.plugins.knit
                 .takeIf(KnitSettings::enabled)?.let { knit ->
-                    plugins.apply(project.settings.libs.plugins.plugin("knit").id)
+                    plugins.apply(project.settings.libs.plugin("knit").id)
 
                     knit.applyTo()
 

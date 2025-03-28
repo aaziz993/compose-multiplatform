@@ -3,7 +3,7 @@
 package gradle.plugins.compose
 
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.projectProperties
@@ -18,8 +18,8 @@ public class ComposePlugin : Plugin<Project> {
         with(target) {
             projectProperties.compose
                 .takeIf(CMPSettings::enabled)?.let { compose ->
-                    plugins.apply(project.settings.libs.plugins.plugin("compose.multiplatform").id)
-                    plugins.apply(project.settings.libs.plugins.plugin("compose.compiler").id)
+                    plugins.apply(project.settings.libs.plugin("compose.multiplatform").id)
+                    plugins.apply(project.settings.libs.plugin("compose.compiler").id)
 
                     compose.applyTo()
                 }

@@ -2,7 +2,7 @@ package gradle.plugins.kotlin.ksp
 
 import gradle.accessors.id
 import gradle.accessors.ksp
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
@@ -37,7 +37,7 @@ internal interface KspExtension {
 
     context(Project)
     fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("ksp").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugin("ksp").id) {
             project.ksp.useKsp2 tryAssign useKsp2
             commandLineArgumentProviders?.forEach(project.ksp::arg)
             excludedProcessors?.forEach(project.ksp::excludeProcessor)

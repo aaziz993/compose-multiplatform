@@ -1,7 +1,7 @@
 package gradle.plugins.buildconfig
 
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.projectProperties
@@ -16,7 +16,7 @@ internal class BuildConfigPlugin : Plugin<Project> {
         with(target) {
             projectProperties.plugins.buildConfig
                 .takeIf(BuildConfigSettings::enabled)?.let { buildConfig ->
-                    plugins.apply(project.settings.libs.plugins.plugin("buildConfig").id)
+                    plugins.apply(project.settings.libs.plugin("buildConfig").id)
 
                     buildConfig.applyTo()
                 }

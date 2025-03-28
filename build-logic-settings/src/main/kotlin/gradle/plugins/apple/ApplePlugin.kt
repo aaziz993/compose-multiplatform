@@ -2,7 +2,7 @@ package gradle.plugins.apple
 
 import gradle.accessors.apple
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.projectProperties
@@ -23,7 +23,7 @@ internal class ApplePlugin : Plugin<Project> {
 
             extraProperties["generateBuildableXcodeproj.skipKotlinFrameworkDependencies"] = "true"
 
-            plugins.apply(project.settings.libs.plugins.plugin("apple").id)
+            plugins.apply(project.settings.libs.plugin("apple").id)
 
             projectProperties.apple.applyTo()
 

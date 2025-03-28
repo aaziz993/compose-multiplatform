@@ -1,7 +1,7 @@
 package gradle.plugins.spotless.groovy
 
 import com.diffplug.gradle.spotless.BaseGroovyExtension
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.resolveVersion
 import gradle.accessors.settings
 import gradle.accessors.version

@@ -1,7 +1,7 @@
 package gradle.plugins.compose.model
 
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
@@ -22,7 +22,7 @@ internal data class CMPSettings(
 
     context(Project)
     fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("compose.multiplatform").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugin("compose.multiplatform").id) {
             desktop.applyTo()
             android.applyTo()
             resources.applyTo()

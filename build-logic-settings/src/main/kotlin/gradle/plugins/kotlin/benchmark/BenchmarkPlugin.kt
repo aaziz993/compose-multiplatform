@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin.benchmark
 
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.projectProperties
@@ -16,7 +16,7 @@ internal class BenchmarkPlugin : Plugin<Project> {
         with(target) {
             projectProperties.plugins.benchmark
                 .takeIf(BenchmarkSettings::enabled)?.let { benchmark ->
-                    plugins.apply(project.settings.libs.plugins.plugin("kotlinx.benchmark").id)
+                    plugins.apply(project.settings.libs.plugin("kotlinx.benchmark").id)
 
                     benchmark.applyTo()
                 }

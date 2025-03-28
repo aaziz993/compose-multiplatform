@@ -3,7 +3,7 @@ package gradle.plugins.apivalidation.model
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import gradle.accessors.apiBuild
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
@@ -40,7 +40,7 @@ internal data class ApiValidationSettings(
 
     context(Project)
     override fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("binaryCompatibilityValidator").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugin("binaryCompatibilityValidator").id) {
             super.applyTo()
 
             project.tasks.apiBuild {

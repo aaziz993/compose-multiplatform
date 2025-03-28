@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin.targets.web.yarn
 
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
@@ -42,7 +42,7 @@ internal data class YarnRootExtension(
 
     context(Project)
     fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("gradle.node.plugin").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugin("gradle.node.plugin").id) {
             applyTo(project.yarn)
         }
 }

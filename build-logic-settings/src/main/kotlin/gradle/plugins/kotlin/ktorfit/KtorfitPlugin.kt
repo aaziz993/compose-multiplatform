@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin.ktorfit
 
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.projectProperties
@@ -16,7 +16,7 @@ internal class KtorfitPlugin : Plugin<Project> {
         with(target) {
             projectProperties.plugins.ktorfit
                 .takeIf(KtorfitSettings::enabled)?.let { ktorfit ->
-                    plugins.apply(project.settings.libs.plugins.plugin("ktorfit").id)
+                    plugins.apply(project.settings.libs.plugin("ktorfit").id)
 
                     ktorfit.applyTo()
                 }

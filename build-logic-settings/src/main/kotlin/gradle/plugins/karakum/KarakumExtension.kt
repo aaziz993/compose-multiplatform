@@ -2,7 +2,7 @@ package gradle.plugins.karakum
 
 import gradle.accessors.id
 import gradle.accessors.karakum
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
@@ -19,7 +19,7 @@ internal interface KarakumExtension {
 
     context(Project)
     fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("karakum").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugin("karakum").id) {
             project.karakum.configFile tryAssign configFile?.let(project::file)
             project.karakum.extensionSource tryAssign extensionSource?.let(project.layout.projectDirectory::dir)?.asFileTree
         }

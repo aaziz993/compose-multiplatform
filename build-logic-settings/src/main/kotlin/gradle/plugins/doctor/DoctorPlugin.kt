@@ -1,7 +1,7 @@
 package gradle.plugins.doctor
 
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.projectProperties
@@ -15,7 +15,7 @@ internal class DoctorPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             projectProperties.plugins.doctor.takeIf(DoctorSettings::enabled)?.let { doctor ->
-                plugins.apply(project.settings.libs.plugins.plugin("doctor").id)
+                plugins.apply(project.settings.libs.plugin("doctor").id)
 
                 doctor.applyTo()
             }

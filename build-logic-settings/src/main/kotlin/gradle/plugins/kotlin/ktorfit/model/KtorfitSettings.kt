@@ -2,7 +2,7 @@ package gradle.plugins.kotlin.ktorfit.model
 
 import de.jensklingenberg.ktorfit.gradle.ErrorCheckingMode
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
@@ -20,7 +20,7 @@ internal data class KtorfitSettings(
 
     context(Project)
     override fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("ktorfit").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugin("ktorfit").id) {
             super.applyTo()
         }
 }

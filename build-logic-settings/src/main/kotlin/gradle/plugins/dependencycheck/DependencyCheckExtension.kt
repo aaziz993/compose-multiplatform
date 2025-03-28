@@ -2,7 +2,7 @@ package gradle.plugins.dependencycheck
 
 import gradle.accessors.dependencyCheck
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
@@ -247,7 +247,7 @@ internal abstract class DependencyCheckExtension {
 
     context(Project)
     open fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("dependencycheck").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugin("dependencycheck").id) {
             project.dependencyCheck::setScanBuildEnv trySet scanBuildEnv
             project.dependencyCheck::setScanDependencies trySet scanDependencies
             slack?.applyTo(project.dependencyCheck.slack)

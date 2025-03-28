@@ -2,8 +2,8 @@
 
 package gradle.plugins.project
 
-import gradle.accessors.allLibs
-import gradle.accessors.resolveLibraryRef
+import gradle.accessors.catalog.VersionCatalog
+import gradle.accessors.catalog.allLibs
 import gradle.accessors.settings
 import gradle.isUrl
 import gradle.serialization.serializer.BaseKeyTransformingSerializer
@@ -126,20 +126,7 @@ internal data class Dependency(
         else -> error("Unsupported dependency npm configuration: $subConfiguration")
     }
 
-    private fun resolve(
-        libs: Map<String, TomlParseResult>,
-        directory: Directory,
-        fromNotation: (String) -> Any = { it }
-    ): Any =
-        when {
-            notation.startsWith("$") -> {
-                fromNotation(libs.resolveLibraryRef(notation))
-            }
 
-            notation.contains("[/\\\\]".toRegex()) && !notation.isUrl -> directory.file(notation)
-
-            else -> fromNotation(notation)
-        }
 }
 
 internal object DependencyKeyTransformingSerializer : BaseKeyTransformingSerializer<Dependency>(

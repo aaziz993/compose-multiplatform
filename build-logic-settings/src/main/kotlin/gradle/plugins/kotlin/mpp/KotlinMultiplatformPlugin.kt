@@ -2,7 +2,7 @@ package gradle.plugins.kotlin.mpp
 
 import gradle.accessors.id
 import gradle.accessors.kotlin
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.projectProperties
@@ -25,7 +25,7 @@ internal class KotlinMultiplatformPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             projectProperties.kotlin.takeIf { kotlin -> kotlin.targets.isNotEmpty() }?.let { kotlin ->
-                plugins.apply(project.settings.libs.plugins.plugin("kotlin.multiplatform").id)
+                plugins.apply(project.settings.libs.plugin("kotlin.multiplatform").id)
 
                 // Enable Default Kotlin Hierarchy.
                 extraProperties["kotlin.mpp.applyDefaultHierarchyTemplate"] = "true"
@@ -80,7 +80,7 @@ internal class KotlinMultiplatformPlugin : Plugin<Project> {
                                 }
                                 else {
                                     srcPrefixPart =
-                                        "$prefix${restPart.removePrefix(prefix).prefixIfNotEmpty(layout.androidVariantDelimiter)}"
+                                        "$prefix${restPart.removePrefix(prefix).prefixIfNotEmpty(layout.androidVariantsDelimiter)}"
                                     resourcesPrefixPart = srcPrefixPart
                                 }
                             }

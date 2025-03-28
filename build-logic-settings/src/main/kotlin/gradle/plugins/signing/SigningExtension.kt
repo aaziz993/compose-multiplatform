@@ -2,7 +2,7 @@ package gradle.plugins.signing
 
 import com.vanniktech.maven.publish.tasks.WorkaroundSignatureType
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
@@ -88,7 +88,7 @@ internal abstract class SigningExtension : Signer {
             )
 
             // TODO: https://youtrack.jetbrains.com/issue/KT-61313/ https://github.com/gradle/gradle/issues/26132
-            project.plugins.withId(project.settings.libs.plugins.plugin("kotlin.multiplatform").id) {
+            project.plugins.withId(project.settings.libs.plugin("kotlin.multiplatform").id) {
                 project.tasks.withType<Sign>().configureEach { sign ->
                     sign.signatureType = WorkaroundSignatureType(
                         sign.signatureType ?: ArmoredSignatureType(),

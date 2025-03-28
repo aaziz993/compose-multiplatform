@@ -3,7 +3,7 @@ package gradle.plugins.doctor
 import com.osacky.doctor.AppleRosettaTranslationCheckMode
 import gradle.accessors.doctor
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
@@ -99,7 +99,7 @@ internal interface DoctorExtension {
 
     context(Project)
     fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("doctor").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugin("doctor").id) {
             project.doctor.disallowMultipleDaemons tryAssign disallowMultipleDaemons
             project.doctor.downloadSpeedWarningThreshold tryAssign downloadSpeedWarningThreshold
             project.doctor.GCWarningThreshold tryAssign GCWarningThreshold

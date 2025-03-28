@@ -1,7 +1,7 @@
 package gradle.plugins.sonar
 
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.projectProperties
@@ -16,7 +16,7 @@ internal class SonarPlugin : Plugin<Project> {
         with(target) {
             projectProperties.plugins.sonar
                 .takeIf(SonarSettings::enabled)?.let { sonar ->
-                    plugins.apply(project.settings.libs.plugins.plugin("sonarqube").id)
+                    plugins.apply(project.settings.libs.plugin("sonarqube").id)
 
                     sonar.applyTo()
                 }

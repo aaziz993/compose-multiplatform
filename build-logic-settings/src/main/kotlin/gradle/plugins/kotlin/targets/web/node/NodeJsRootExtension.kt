@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin.targets.web.node
 
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.node
 import gradle.accessors.plugin
 import gradle.accessors.plugins
@@ -15,7 +15,7 @@ internal class NodeJsRootExtension {
 
     context(Project)
     fun applyTo(receiver: NodeJsRootExtension) =
-        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("gradle.node.plugin").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugin("gradle.node.plugin").id) {
 
         }
 

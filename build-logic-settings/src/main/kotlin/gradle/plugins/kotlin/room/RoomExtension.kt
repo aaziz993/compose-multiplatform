@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin.room
 
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.room
@@ -21,7 +21,7 @@ internal interface RoomExtension {
 
     context(Project)
     fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("room").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugin("room").id) {
             schemaDirectories?.forEach { (matchName, path) ->
                 project.room.schemaDirectory(matchName, path)
             }

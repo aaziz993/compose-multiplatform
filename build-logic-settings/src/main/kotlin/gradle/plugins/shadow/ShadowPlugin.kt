@@ -1,7 +1,7 @@
 package gradle.plugins.shadow
 
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.projectProperties
@@ -16,7 +16,7 @@ internal class ShadowPlugin : Plugin<Project> {
         with(target) {
             projectProperties.plugins.shadow
                 .takeIf(ShadowSettings::enabled)?.let { shadow ->
-                    plugins.apply(project.settings.libs.plugins.plugin("shadow").id)
+                    plugins.apply(project.settings.libs.plugin("shadow").id)
 
                     shadow.applyTo()
                 }

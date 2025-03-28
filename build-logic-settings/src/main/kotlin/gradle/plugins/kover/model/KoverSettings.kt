@@ -1,7 +1,7 @@
 package gradle.plugins.kover.model
 
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
@@ -24,7 +24,7 @@ internal data class KoverSettings(
 
     context(Project)
     override fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("kover").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugin("kover").id) {
             super.applyTo()
         }
 }

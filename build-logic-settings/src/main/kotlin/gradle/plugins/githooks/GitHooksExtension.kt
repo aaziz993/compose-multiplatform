@@ -2,7 +2,7 @@ package gradle.plugins.githooks
 
 import gradle.accessors.gitHooks
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
@@ -29,7 +29,7 @@ internal interface GitHooksExtension {
 
     context(Settings)
     fun applyTo() =
-        settings.pluginManager.withPlugin(settings.libs.plugins.plugin("gradlePreCommitGitHooks").id) {
+        settings.pluginManager.withPlugin(settings.libs.plugin("gradlePreCommitGitHooks").id) {
             hooks?.forEach { name, script ->
                 settings.gitHooks.hook(name) {
                     from { script }

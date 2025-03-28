@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin.sqldelight
 
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.projectProperties
@@ -16,7 +16,7 @@ internal class SqlDelightPlugin : Plugin<Project> {
         with(target) {
             projectProperties.plugins.sqldelight
                 .takeIf(SqlDelightSettings::enabled)?.let { sqldelight ->
-                    plugins.apply(project.settings.libs.plugins.plugin("sqldelight").id)
+                    plugins.apply(project.settings.libs.plugin("sqldelight").id)
 
                     sqldelight.applyTo()
                 }

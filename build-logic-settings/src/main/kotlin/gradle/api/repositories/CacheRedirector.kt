@@ -1,7 +1,7 @@
 package gradle.api.repositories
 
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.node
 import gradle.accessors.plugin
 import gradle.accessors.plugins
@@ -260,7 +260,7 @@ private fun Project.overrideNativeCompilerDownloadUrl() {
  * Yarn and node download url override
  */
 private fun Project.configureYarnAndNodeRedirects() =
-    project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("gradle.node.plugin").id) {
+    project.pluginManager.withPlugin(project.settings.libs.plugin("gradle.node.plugin").id) {
         yarn.downloadBaseUrl?.let { downloadBaseUrl ->
             yarn.downloadBaseUrl = URI(downloadBaseUrl).maybeRedirect().toString()
         }
@@ -300,7 +300,7 @@ private fun Project.addCheckRepositoriesTask() {
                 logNonCachedRepo(testName, repository)
             }
 
-            project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("gradle.node.plugin").id) {
+            project.pluginManager.withPlugin(project.settings.libs.plugin("gradle.node.plugin").id) {
                 yarn.downloadBaseUrl
                     ?.takeIf { downloadBaseUrl -> URI(downloadBaseUrl).isCachedOrLocal() }
                     ?.let { downloadBaseUrl ->

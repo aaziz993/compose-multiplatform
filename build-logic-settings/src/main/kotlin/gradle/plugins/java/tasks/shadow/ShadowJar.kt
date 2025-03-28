@@ -2,7 +2,7 @@ package gradle.plugins.java.tasks.shadow
 
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
@@ -88,7 +88,7 @@ internal data class ShadowJar(
 
     context(Project)
     override fun applyTo(receiver: ShadowJar) =
-        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("shadow").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugin("shadow").id) {
             super<Jar>.applyTo(receiver)
             super<ShadowSpec>.applyTo(receiver)
 

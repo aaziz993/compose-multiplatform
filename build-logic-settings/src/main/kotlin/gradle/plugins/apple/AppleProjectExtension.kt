@@ -2,7 +2,7 @@ package gradle.plugins.apple
 
 import gradle.accessors.apple
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.moduleName
 import gradle.accessors.plugin
 import gradle.accessors.plugins
@@ -27,7 +27,7 @@ internal interface AppleProjectExtension {
 
     context(Project)
     fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("apple").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugin("apple").id) {
             sourceSets?.forEach { sourceSet ->
                 sourceSet.applyTo(project.apple.sourceSets)
             }

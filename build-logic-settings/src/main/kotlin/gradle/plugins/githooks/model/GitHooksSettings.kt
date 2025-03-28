@@ -1,7 +1,7 @@
 package gradle.plugins.githooks.model
 
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.plugins.githooks.GitHooksExtension
@@ -20,7 +20,7 @@ internal data class GitHooksSettings(
 
     context(Settings)
     override fun applyTo() =
-        settings.pluginManager.withPlugin(settings.libs.plugins.plugin("gradle-pre-commit-git-hooks").id) {
+        settings.pluginManager.withPlugin(settings.libs.plugin("gradle-pre-commit-git-hooks").id) {
             super.applyTo()
         }
 }

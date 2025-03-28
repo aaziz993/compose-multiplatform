@@ -2,7 +2,7 @@ package gradle.plugins.kover
 
 import gradle.accessors.id
 import gradle.accessors.kover
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
@@ -49,7 +49,7 @@ internal interface KoverExtension {
 
     context(Project)
     fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("kover").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugin("kover").id) {
             project.kover.useJacoco tryAssign useJacoco
             project.kover.jacocoVersion tryAssign jacocoVersion
             currentProject?.applyTo(project.kover.currentProject)

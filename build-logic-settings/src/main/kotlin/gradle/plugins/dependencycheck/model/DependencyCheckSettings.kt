@@ -1,7 +1,7 @@
 package gradle.plugins.dependencycheck.model
 
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
@@ -67,7 +67,7 @@ internal data class DependencyCheckSettings(
 ) : DependencyCheckExtension(), EnabledSettings {
 
     context(Project)
-    override fun applyTo() = project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("dependencycheck").id) {
+    override fun applyTo() = project.pluginManager.withPlugin(project.settings.libs.plugin("dependencycheck").id) {
         super.applyTo()
     }
 }

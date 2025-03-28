@@ -2,8 +2,8 @@
 
 package gradle.plugins.initialization
 
-import gradle.accessors.allLibs
-import gradle.accessors.libs
+import gradle.accessors.catalog.allLibs
+import gradle.accessors.catalog.libs
 import gradle.accessors.projectProperties
 import gradle.accessors.toVersionCatalogUrlPath
 import gradle.accessors.version

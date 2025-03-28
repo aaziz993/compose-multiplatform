@@ -1,7 +1,7 @@
 package gradle.plugins.dokka
 
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.projectProperties
@@ -19,8 +19,8 @@ internal class DokkaPlugin : Plugin<Project> {
         with(target) {
             projectProperties.plugins.dokka
                 .takeIf(DokkaSettings::enabled)?.let { dokka ->
-                    plugins.apply(project.settings.libs.plugins.plugin("dokka").id)
-                    plugins.apply(project.settings.libs.plugins.plugin("dokkaJavadoc").id)
+                    plugins.apply(project.settings.libs.plugin("dokka").id)
+                    plugins.apply(project.settings.libs.plugin("dokkaJavadoc").id)
 
                     dokka.applyTo()
 

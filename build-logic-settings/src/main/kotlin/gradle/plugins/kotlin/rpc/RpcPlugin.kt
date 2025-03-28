@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin.rpc
 
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.projectProperties
@@ -16,7 +16,7 @@ internal class RpcPlugin : Plugin<Project> {
         with(target) {
             projectProperties.plugins.rpc
                 .takeIf(RpcSettings::enabled)?.let { rpc ->
-                    plugins.apply(project.settings.libs.plugins.plugin("kotlinx.rpc").id)
+                    plugins.apply(project.settings.libs.plugin("kotlinx.rpc").id)
 
                     rpc.applyTo()
                 }

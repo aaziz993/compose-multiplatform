@@ -2,7 +2,7 @@ package gradle.plugins.animalsniffer
 
 import gradle.accessors.animalSniffer
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
@@ -116,7 +116,7 @@ internal abstract class AnimalSnifferExtension : CodeQualityExtension<AnimalSnif
 
     context(Project)
     fun applyTo() = project.pluginManager.withPlugin("org.gradle.java-base") {
-        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("animalsniffer").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugin("animalsniffer").id) {
             super.applyTo(project.animalSniffer)
 
             project.animalSniffer::setDebug trySet debug

@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin.allopen.model
 
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
@@ -19,7 +19,7 @@ internal data class AllOpenSettings(
 
     context(Project)
     override fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("allopen").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugin("allopen").id) {
             super.applyTo()
         }
 }

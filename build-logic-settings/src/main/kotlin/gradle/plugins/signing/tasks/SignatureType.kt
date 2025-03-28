@@ -1,42 +1,40 @@
 package gradle.plugins.signing.tasks
 
-import com.vanniktech.maven.publish.tasks.WorkaroundSignatureType
+import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonContentPolymorphicSerializer
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.JsonTransformingSerializer
+import kotlinx.serialization.json.jsonObject
 import org.gradle.api.Project
 import org.gradle.plugins.signing.type.BinarySignatureType
 import org.gradle.plugins.signing.type.pgp.ArmoredSignatureType
 
 @Serializable
-internal sealed class SignatureType {
+internal enum class SignatureType(val value: org.gradle.plugins.signing.type.SignatureType) {
+
+    BINARY(BinarySignatureType()),
+    ARMORED(ArmoredSignatureType()),
+}
+
+@Serializable
+internal data class WorkaroundSignatureType(val actual: SignatureType, val directory: String) {
 
     context(Project)
-    abstract fun toSignatureType(): org.gradle.plugins.signing.type.SignatureType
+    fun toSignatureType(): org.gradle.plugins.signing.type.SignatureType =
+        com.vanniktech.maven.publish.tasks.WorkaroundSignatureType(
+                actual.value, project.layout.buildDirectory.dir(directory),
+        )
+}
 
-    @Serializable
-    @SerialName("binary")
-    object Binary : SignatureType() {
+// Layout
+internal object SignatureTypeContentPolymorphicSerializer :
+    JsonContentPolymorphicSerializer<Any>(Any::class) {
 
-        context(Project)
-        override fun toSignatureType(): org.gradle.plugins.signing.type.SignatureType =
-            BinarySignatureType()
-    }
-
-    @Serializable
-    @SerialName("armored")
-    object Armored : SignatureType() {
-
-        context(Project)
-        override fun toSignatureType(): org.gradle.plugins.signing.type.SignatureType =
-            ArmoredSignatureType()
-    }
-
-    @Serializable
-    @SerialName("workaround")
-    data class Workaround(val actual: SignatureType, val directory: String) : SignatureType() {
-
-        context(Project)
-        override fun toSignatureType(): org.gradle.plugins.signing.type.SignatureType =
-            WorkaroundSignatureType(actual.toSignatureType(), project.layout.buildDirectory.dir(directory))
-    }
+    override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
+        if (element is JsonPrimitive) SignatureType.serializer()
+        else WorkaroundSignatureType.serializer()
 }

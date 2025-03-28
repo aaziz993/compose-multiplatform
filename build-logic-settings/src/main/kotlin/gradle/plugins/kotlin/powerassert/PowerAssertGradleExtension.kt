@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin.powerassert
 
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.powerAssert
@@ -28,7 +28,7 @@ internal interface PowerAssertGradleExtension {
 
     context(Project)
     fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("powerAssert").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugin("powerAssert").id) {
             project.powerAssert.functions tryAddAll functions
             project.powerAssert.functions tryAssign setFunctions
             project.powerAssert.includedSourceSets tryAddAll includedSourceSets

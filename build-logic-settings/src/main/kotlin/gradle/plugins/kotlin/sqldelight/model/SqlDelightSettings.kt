@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin.sqldelight.model
 
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
@@ -21,7 +21,7 @@ internal data class SqlDelightSettings(
 
     context(Project)
     override fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("sqldelight").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugin("sqldelight").id) {
             super.applyTo()
         }
 }

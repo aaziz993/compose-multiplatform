@@ -2,7 +2,7 @@ package gradle.plugins.kotlin.apollo
 
 import gradle.accessors.apollo
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
@@ -20,7 +20,7 @@ internal interface ApolloExtension {
 
     context(Project)
     fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("apollo").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugin("apollo").id) {
             processors?.forEach { (schema, service, packageName) ->
                 project.apollo.apolloKspProcessor(project.file(schema), service, packageName)
             }

@@ -1,6 +1,6 @@
 package gradle.plugins.java
 
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.settings
 import gradle.accessors.version
 import gradle.accessors.versions

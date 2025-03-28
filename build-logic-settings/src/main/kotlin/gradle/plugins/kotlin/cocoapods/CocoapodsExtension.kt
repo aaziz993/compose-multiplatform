@@ -1,10 +1,10 @@
 package gradle.plugins.kotlin.cocoapods
 
-import gradle.accessors.allLibs
+import gradle.accessors.catalog.allLibs
 import gradle.accessors.cocoapods
 import gradle.accessors.id
 import gradle.accessors.kotlin
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.moduleName
 import gradle.accessors.plugin
 import gradle.accessors.plugins
@@ -120,7 +120,7 @@ internal interface CocoapodsExtension {
 
     context(Project)
     fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("cocoapods").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugin("cocoapods").id) {
             project.kotlin.cocoapods::version trySet (version
                 ?: project.settings.libs.versions.version("kotlin.cocoapods.version"))
             project.kotlin.cocoapods::authors trySet authors

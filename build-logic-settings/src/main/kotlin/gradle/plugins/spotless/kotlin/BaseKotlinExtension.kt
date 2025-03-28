@@ -4,7 +4,7 @@ import com.diffplug.gradle.spotless.BaseKotlinExtension
 import com.diffplug.spotless.kotlin.DiktatStep
 import com.diffplug.spotless.kotlin.KtLintStep
 import com.diffplug.spotless.kotlin.KtfmtStep
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.settings
 import gradle.accessors.version
 import gradle.accessors.versions

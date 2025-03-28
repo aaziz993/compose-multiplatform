@@ -1,7 +1,7 @@
 package gradle.plugins.spotless
 
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.projectProperties
@@ -16,7 +16,7 @@ internal class SpotlessPlugin : Plugin<Project> {
         with(target) {
             projectProperties.plugins.spotless
                 .takeIf(SpotlessSettings::enabled)?.let { spotless ->
-                    plugins.apply(project.settings.libs.plugins.plugin("spotless").id)
+                    plugins.apply(project.settings.libs.plugin("spotless").id)
 
                     spotless.applyTo()
                 }

@@ -2,7 +2,7 @@ package gradle.plugins.kotlin.mpp
 
 import gradle.accessors.id
 import gradle.accessors.kotlin
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
@@ -33,7 +33,7 @@ internal abstract class KotlinMultiplatformExtension :
     }
 
     context(Project)
-    override fun applyTo() = project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("kotlin.multiplatform").id) {
+    override fun applyTo() = project.pluginManager.withPlugin(project.settings.libs.plugin("kotlin.multiplatform").id) {
         applyTo(project.kotlin)
     }
 }

@@ -4,7 +4,7 @@ package gradle.plugins.spotless
 
 import com.diffplug.spotless.LineEnding
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
@@ -41,7 +41,7 @@ internal interface SpotlessExtension {
 
     context(Project)
     fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("spotless").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugin("spotless").id) {
             project.spotless::setLineEndings trySet lineEndings
             encoding?.let(project.spotless::setEncoding)
             project.spotless::setRatchetFrom trySet ratchetFrom

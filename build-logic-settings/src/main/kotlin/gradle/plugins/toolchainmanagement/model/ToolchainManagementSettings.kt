@@ -1,7 +1,7 @@
 package gradle.plugins.toolchainmanagement.model
 
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.plugins.project.EnabledSettings
@@ -16,7 +16,7 @@ internal data class ToolchainManagementSettings(
 
     context(Settings)
     override fun applyTo() =
-        settings.pluginManager.withPlugin(settings.libs.plugins.plugin("foojayResolverConvention").id) {
+        settings.pluginManager.withPlugin(settings.libs.plugin("foojayResolverConvention").id) {
 
         }
 }

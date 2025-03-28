@@ -4,7 +4,7 @@ package gradle.plugins.android
 
 import gradle.accessors.android
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.projectProperties
@@ -41,8 +41,8 @@ internal class AndroidPlugin : Plugin<Project> {
 
             projectProperties.android?.let { android ->
                 when (android) {
-                    is LibraryExtension -> plugins.apply(project.settings.libs.plugins.plugin("androidLibrary").id)
-                    is BaseAppModuleExtension -> plugins.apply(project.settings.libs.plugins.plugin("androidApplication").id)
+                    is LibraryExtension -> plugins.apply(project.settings.libs.plugin("androidLibrary").id)
+                    is BaseAppModuleExtension -> plugins.apply(project.settings.libs.plugin("androidApplication").id)
                     else -> Unit
                 }
 
@@ -88,7 +88,7 @@ internal class AndroidPlugin : Plugin<Project> {
 
     private fun Project.applyGoogleServicesPlugin() {
         if (file("google-services.json").exists()) {
-            plugins.apply(project.settings.libs.plugins.plugin("google.playServices").id)
+            plugins.apply(project.settings.libs.plugin("google.playServices").id)
         }
     }
 

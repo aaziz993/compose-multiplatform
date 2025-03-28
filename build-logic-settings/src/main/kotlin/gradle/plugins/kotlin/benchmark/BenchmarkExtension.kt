@@ -2,7 +2,7 @@ package gradle.plugins.kotlin.benchmark
 
 import gradle.accessors.benchmark
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
@@ -30,7 +30,7 @@ internal abstract class BenchmarksExtension {
 
     context(Project)
     fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("kotlinx.benchmark").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugin("kotlinx.benchmark").id) {
             project.benchmark::benchsDescriptionDir trySet benchsDescriptionDir
             project.benchmark::buildDir trySet buildDir
 

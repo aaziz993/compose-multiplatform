@@ -1,7 +1,7 @@
 package gradle.plugins.karakum.model
 
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
@@ -19,7 +19,7 @@ internal data class KarakumSettings(
 
     context(Project)
     override fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("karakum").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugin("karakum").id) {
             super.applyTo()
         }
 }

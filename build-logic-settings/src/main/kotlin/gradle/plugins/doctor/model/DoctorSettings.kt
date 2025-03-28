@@ -2,7 +2,7 @@ package gradle.plugins.doctor.model
 
 import com.osacky.doctor.AppleRosettaTranslationCheckMode
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
@@ -41,7 +41,7 @@ internal data class DoctorSettings(
 
     context(Project)
     override fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("doctor").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugin("doctor").id) {
             super.applyTo()
 
             // Always monitor tasks on CI, but disable it locally by default with providing an option to opt-in.

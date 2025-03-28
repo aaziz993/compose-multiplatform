@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin.allopen
 
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.projectProperties
@@ -16,7 +16,7 @@ internal class AllOpenPlugin : Plugin<Project> {
         with(target) {
             projectProperties.plugins.allOpen
                 .takeIf(AllOpenSettings::enabled)?.let { allOpen ->
-                    plugins.apply(project.settings.libs.plugins.plugin("allopen").id)
+                    plugins.apply(project.settings.libs.plugin("allopen").id)
 
                     allOpen.applyTo()
                 }

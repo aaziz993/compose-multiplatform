@@ -1,7 +1,7 @@
 package gradle.plugins.karakum.tasks
 
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
@@ -35,7 +35,7 @@ internal data class KarakumConfig(
 
     context(Project)
     override fun applyTo(receiver: KarakumConfig) =
-        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("karakum").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugin("karakum").id) {
             super.applyTo(receiver)
 
             receiver.configFile tryAssign configFile?.let(project::file)

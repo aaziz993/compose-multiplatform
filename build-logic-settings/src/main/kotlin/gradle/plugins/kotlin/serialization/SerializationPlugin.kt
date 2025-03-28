@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin.serialization
 
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.projectProperties
@@ -16,7 +16,7 @@ internal class SerializationPlugin : Plugin<Project> {
         with(target) {
             projectProperties.plugins.serialization
                 .takeIf(SerializationSettings::enabled)?.let { serialization ->
-                    plugins.apply(project.settings.libs.plugins.plugin("kotlinx.serialization").id)
+                    plugins.apply(project.settings.libs.plugin("kotlinx.serialization").id)
 
                     serialization.applyTo()
                 }

@@ -1,7 +1,7 @@
 package gradle.plugins.kover
 
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.projectProperties
@@ -19,7 +19,7 @@ internal class KoverPlugin : Plugin<Project> {
         with(target) {
             projectProperties.plugins.kover
                 .takeIf(KoverSettings::enabled)?.let { kover ->
-                    plugins.apply(project.settings.libs.plugins.plugin("kover").id)
+                    plugins.apply(project.settings.libs.plugin("kover").id)
 
                     kover.applyTo()
 

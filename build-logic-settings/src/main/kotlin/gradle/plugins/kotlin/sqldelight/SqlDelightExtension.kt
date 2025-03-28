@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin.sqldelight
 
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
@@ -17,7 +17,7 @@ internal interface SqlDelightExtension {
 
     context(Project)
     fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("sqldelight").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugin("sqldelight").id) {
             databases?.forEach { database ->
                 database.applyTo(project.sqldelight.databases)
             }

@@ -1,7 +1,7 @@
 package gradle.plugins.dokka.model
 
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
@@ -37,7 +37,7 @@ internal data class DokkaSettings(
 ) : DokkaExtension, EnabledSettings {
 
     context(Project)
-    override fun applyTo() = project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("dokka").id) {
+    override fun applyTo() = project.pluginManager.withPlugin(project.settings.libs.plugin("dokka").id) {
         super.applyTo()
     }
 }

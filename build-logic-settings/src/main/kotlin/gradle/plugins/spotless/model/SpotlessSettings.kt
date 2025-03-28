@@ -2,7 +2,7 @@ package gradle.plugins.spotless.model
 
 import com.diffplug.spotless.LineEnding
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
@@ -28,7 +28,7 @@ internal data class SpotlessSettings(
 
     context(Project)
     override fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("spotless").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugin("spotless").id) {
             super.applyTo()
         }
 }

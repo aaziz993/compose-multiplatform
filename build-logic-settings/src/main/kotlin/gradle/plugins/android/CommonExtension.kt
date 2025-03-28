@@ -4,7 +4,7 @@ import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.ProductFlavor
 import com.android.build.api.dsl.Splits
 import gradle.accessors.android
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.settings
 import gradle.accessors.version
 import gradle.accessors.versions

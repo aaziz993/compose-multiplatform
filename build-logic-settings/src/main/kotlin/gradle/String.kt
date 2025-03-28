@@ -1,5 +1,9 @@
 package gradle
 
+import java.net.URI
+import java.nio.file.InvalidPathException
+import java.nio.file.Paths
+
 internal fun String.doubleQuoted() = "\"$this\""
 
 internal fun String.decapitalized() = replaceFirstChar(Char::lowercase)
@@ -19,10 +23,28 @@ internal fun String.prefixIfNotEmpty(prefix: String) =
 internal fun String.suffixIfNotEmpty(suffix: String) =
     ifNotEmpty { "$it$suffix" }
 
-private val URL_REGEX = "^(https|http)://.*".toRegex()
+internal val String.isValidUrl
+    get() =
+        try {
+            URI(this).let { uri ->
+                uri.scheme.equals("http", true) || uri.scheme.equals("https", true)
+            }
+        }
+        catch (_: Exception) {
+            false
+        }
 
-internal val String.isUrl
-    get() = matches(URL_REGEX)
+internal val String.isPath
+    get() = try {
+        Paths.get(this)
+        true
+    }
+    catch (e: Exception) {
+        when (e) {
+            is InvalidPathException, is NullPointerException -> false
+            else -> throw e
+        }
+    }
 
 private val GITHUB_URL_REGEX = """https?://(www\.)?github\.com/.*""".toRegex()
 

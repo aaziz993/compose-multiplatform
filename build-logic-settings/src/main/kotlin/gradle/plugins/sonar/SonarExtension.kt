@@ -1,7 +1,7 @@
 package gradle.plugins.sonar
 
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
@@ -65,7 +65,7 @@ internal interface SonarExtension {
 
     context(Project)
     fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("sonar").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugin("sonar").id) {
             project.sonar::setSkipProject trySet skipProject
 
             properties?.let { properties ->

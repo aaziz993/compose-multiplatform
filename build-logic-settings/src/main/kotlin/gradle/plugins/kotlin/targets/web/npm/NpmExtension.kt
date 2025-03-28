@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin.targets.web.npm
 
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.npm
 import gradle.accessors.plugin
 import gradle.accessors.plugins
@@ -25,7 +25,7 @@ internal data class NpmExtension(
 
     context(Project)
     fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("gradle.node.plugin").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugin("gradle.node.plugin").id) {
             project.npm.command tryAssign command
             project.npm.lockFileName tryAssign lockFileName
             project.npm.lockFileDirectory tryAssign lockFileDirectory?.let(project.layout.projectDirectory::dir)

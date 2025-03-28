@@ -1,7 +1,7 @@
 package gradle.plugins.develocity
 
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.api.tryAssign
@@ -20,7 +20,7 @@ internal interface DevelocityConfiguration {
 
     context(Settings)
     fun applyTo() =
-        settings.pluginManager.withPlugin(settings.libs.plugins.plugin("develocity").id) {
+        settings.pluginManager.withPlugin(settings.libs.plugin("develocity").id) {
             buildScan?.applyTo(settings.develocity.buildScan)
             settings.develocity.server tryAssign server
             settings.develocity.edgeDiscovery tryAssign edgeDiscovery

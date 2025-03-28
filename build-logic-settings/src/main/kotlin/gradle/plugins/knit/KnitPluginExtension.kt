@@ -3,7 +3,7 @@ package gradle.plugins.knit
 import gradle.accessors.files
 import gradle.accessors.id
 import gradle.accessors.knit
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
@@ -27,7 +27,7 @@ internal interface KnitPluginExtension {
 
     context(Project)
     fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("knit").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugin("knit").id) {
             project.knit::siteRoot trySet siteRoot
             project.knit::moduleRoots tryPlus moduleRoots
             project.knit::moduleRoots trySet setModuleRoots

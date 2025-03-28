@@ -2,7 +2,7 @@ package gradle.plugins.android.application
 
 import com.android.build.api.dsl.ApplicationBaseFlavor
 import gradle.accessors.androidNamespace
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.settings
 import gradle.accessors.version
 import gradle.accessors.versions

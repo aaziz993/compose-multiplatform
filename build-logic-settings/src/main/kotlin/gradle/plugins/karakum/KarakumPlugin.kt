@@ -2,7 +2,7 @@ package gradle.plugins.karakum
 
 import gradle.accessors.id
 import gradle.accessors.kotlin
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.projectProperties
@@ -22,7 +22,7 @@ internal class KarakumPlugin : Plugin<Project> {
         with(target) {
             projectProperties.plugins.karakum
                 .takeIf(KarakumSettings::enabled)?.let { karakum ->
-                    plugins.apply(project.settings.libs.plugins.plugin("karakum").id)
+                    plugins.apply(project.settings.libs.plugin("karakum").id)
 
                     karakum.applyTo()
 

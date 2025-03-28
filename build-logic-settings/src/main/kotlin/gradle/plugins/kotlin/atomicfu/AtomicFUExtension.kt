@@ -2,7 +2,7 @@ package gradle.plugins.kotlin.atomicfu
 
 import gradle.accessors.atomicFU
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
@@ -18,7 +18,7 @@ internal interface AtomicFUExtension {
 
     context(Project)
     fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("atomicfu").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugin("atomicfu").id) {
             project.atomicFU::dependenciesVersion trySet dependenciesVersion
             project.atomicFU::transformJvm trySet transformJvm
             project.atomicFU::jvmVariant trySet jvmVariant

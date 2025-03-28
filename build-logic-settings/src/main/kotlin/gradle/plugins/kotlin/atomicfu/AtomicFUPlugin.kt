@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin.atomicfu
 
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.projectProperties
@@ -16,7 +16,7 @@ internal class AtomicFUPlugin : Plugin<Project> {
         with(target) {
             projectProperties.plugins.atomicFU
                 .takeIf(AtomicFUSettings::enabled)?.let { atomicFU ->
-                    plugins.apply(project.settings.libs.plugins.plugin("atomicfu").id)
+                    plugins.apply(project.settings.libs.plugin("atomicfu").id)
 
                     atomicFU.applyTo()
                 }

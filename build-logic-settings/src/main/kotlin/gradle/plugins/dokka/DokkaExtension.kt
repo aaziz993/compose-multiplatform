@@ -2,7 +2,7 @@ package gradle.plugins.dokka
 
 import gradle.accessors.dokka
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
@@ -247,7 +247,7 @@ internal interface DokkaExtension {
 
     context(Project)
     fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("dokka").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugin("dokka").id) {
             project.dokka.basePublicationsDirectory tryAssign basePublicationsDirectory?.let(project.layout.projectDirectory::dir)
             project.dokka.dokkaCacheDirectory tryAssign dokkaCacheDirectory?.let(project.layout.projectDirectory::dir)
             project.dokka.moduleName tryAssign moduleName

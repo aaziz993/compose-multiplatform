@@ -3,7 +3,7 @@ package gradle.plugins.compose.resources
 import gradle.accessors.compose
 import gradle.accessors.id
 import gradle.accessors.kotlin
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.projectProperties
@@ -51,7 +51,7 @@ internal data class ResourcesExtension(
 
     context(Project)
     fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("compose.multiplatform").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugin("compose.multiplatform").id) {
             project.compose.resources::publicResClass trySet publicResClass
             project.compose.resources::packageOfResClass trySet packageOfResClass
             project.compose.resources::generateResClass trySet generateResClass

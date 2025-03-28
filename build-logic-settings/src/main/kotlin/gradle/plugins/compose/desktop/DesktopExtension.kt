@@ -3,7 +3,7 @@ package gradle.plugins.compose.desktop
 import gradle.accessors.compose
 import gradle.accessors.desktop
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
@@ -20,7 +20,7 @@ internal data class DesktopExtension(
 
     context(Project)
     fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("compose.multiplatform").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugin("compose.multiplatform").id) {
             application?.applyTo(project.compose.desktop.application)
             nativeApplication?.applyTo(project.compose.desktop.nativeApplication)
         }

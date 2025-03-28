@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin.rpc.model
 
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.plugin
 import gradle.accessors.plugins
 import gradle.accessors.settings
@@ -22,7 +22,7 @@ internal data class RpcSettings(
     context(Project)
     @OptIn(RpcDangerousApi::class)
     override fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("kotlinx.rpc").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugin("kotlinx.rpc").id) {
             super.applyTo()
         }
 }

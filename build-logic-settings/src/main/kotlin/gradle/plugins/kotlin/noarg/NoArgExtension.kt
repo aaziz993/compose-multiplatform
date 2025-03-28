@@ -3,7 +3,7 @@
 package gradle.plugins.kotlin.noarg
 
 import gradle.accessors.id
-import gradle.accessors.libs
+import gradle.accessors.catalog.libs
 import gradle.accessors.noArg
 import gradle.accessors.plugin
 import gradle.accessors.plugins
@@ -20,7 +20,7 @@ internal interface NoArgExtension {
 
     context(Project)
     fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugins.plugin("noarg").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugin("noarg").id) {
             myAnnotations?.let(project.noArg::annotations)
             project.noArg.myPresets tryAddAll myPresets
             project.noArg::invokeInitializers trySet invokeInitializers
