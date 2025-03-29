@@ -1,6 +1,7 @@
 package gradle.api.repositories
 
 import gradle.api.Named
+import gradle.api.tryApply
 import gradle.serialization.serializer.JsonBaseObjectTransformingContentPolymorphicSerializer
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
@@ -26,7 +27,8 @@ internal interface ArtifactRepository<T : org.gradle.api.artifacts.repositories.
 
     context(Settings)
     @Suppress("UnstableApiUsage")
-    override fun applyTo(receiver: T) {
+    override fun applyTo(receiver: T) = with(settings.layout.settingsDirectory) {
+        _applyTo(receiver)
     }
 
     context(Project)
@@ -36,6 +38,7 @@ internal interface ArtifactRepository<T : org.gradle.api.artifacts.repositories.
 
     context(Directory)
     fun _applyTo(receiver: T) {
+        receiver::content tryApply content?.let { content -> content::applyTo }
     }
 
     context(Settings)

@@ -2,4 +2,4 @@
 
 echo Publish to local
 
-./gradlew publishAllPublicationsToBuildRepoRepository publishAllPublicationsToMavenLocalRepository
+./gradlew publishAllPublicationsToMavenLocalRepository publishAllPublicationsToBuildRepoRepository

@@ -63,13 +63,13 @@ clean-signing-gpg: # 🧹 Cleans all signing gpg keys.
 dist-signing-gpg: # 🌐 Distributes signing gpg key.
 	./gradlew distributeSigningGPGKey
 
-publish-local: full-check # 📦🚀 Publish to GitHub Packages.
+publish-local: full-check # 📦🚀 Publish to Maven Local.
 	./scripts/publish/publish-local.sh
 
 publish-github: full-check # 📦🚀 Publish to GitHub Packages.
 	./gradlew publishAllPublicationsToGithubPackagesRepository
 
-publish-space: full-check # 📦🚀 Publish to Space Packages.
+publish-space: full-check # 📦🚀 Publish to Jetbrains Space Packages.
 	./gradlew publishAllPublicationsToSpacePackagesRepository
 
 publish-maven: full-check # 📦🚀 Publish to Maven Repository.

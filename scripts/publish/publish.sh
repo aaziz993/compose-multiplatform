@@ -4,4 +4,5 @@ echo Publish
 
 source publish-local.sh
 
-./gradlew publishAllPublicationsToGithubPackagesRepository publishAllPublicationsToSpacePackagesRepository publishAllPublicationsToMavenRepository
+./gradlew publishAllPublicationsToMavenLocalRepository publishAllPublicationsToBuildRepoRepository \
+    publishAllPublicationsToGithubPackagesRepository publishAllPublicationsToSpacePackagesRepository publishAllPublicationsToMavenRepository
