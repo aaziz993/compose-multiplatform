@@ -1,4 +1,7 @@
-application:
-  mainClass: ApplicationKt
-  applicationDefaultJvmArgs:
-    - -Dio.ktor.development=true
+kotlin:
+  targets:
+    - jvm:
+      name: ''
+      binaries:
+        executables:
+          - mainClass: ApplicationKt
