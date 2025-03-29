@@ -4,9 +4,7 @@ import gradle.accessors.kotlin
 import gradle.api.applyTo
 import gradle.api.publish.maven.MavenPublication
 import gradle.plugins.kotlin.targets.nat.KotlinNativeBinaryContainer
-import gradle.plugins.kotlin.targets.nat.KotlinNativeBinaryContainerTransformingSerializer
 import gradle.plugins.kotlin.targets.nat.KotlinNativeCompilation
-import gradle.plugins.kotlin.targets.nat.KotlinNativeCompilationKeyTransformingSerializer
 import gradle.plugins.kotlin.targets.nat.KotlinNativeTarget
 import gradle.plugins.kotlin.targets.nat.tasks.KotlinNativeCompilerOptions
 import kotlinx.serialization.SerialName
@@ -21,9 +19,9 @@ internal data class KotlinWatchosArm32Target(
     override val withSourcesJar: Boolean? = null,
     override val mavenPublication: MavenPublication? = null,
     override val onPublicationCreated: String? = null,
-    override val compilations: LinkedHashSet<@Serializable(with = KotlinNativeCompilationKeyTransformingSerializer::class) KotlinNativeCompilation>? = null,
+    override val compilations: LinkedHashSet<KotlinNativeCompilation>? = null,
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
-    override val binaries: @Serializable(with = KotlinNativeBinaryContainerTransformingSerializer::class) KotlinNativeBinaryContainer? = null,
+    override val binaries: KotlinNativeBinaryContainer? = null,
 ) : KotlinNativeTarget<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>(), KotlinWatchos32Target, KotlinWatchosTarget {
 
     context(Project)

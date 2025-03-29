@@ -3,15 +3,11 @@
 package gradle.plugins.spotless
 
 import com.diffplug.spotless.LineEnding
-
 import gradle.accessors.catalog.libs
-
-
 import gradle.accessors.settings
 import gradle.accessors.spotless
 import gradle.api.trySet
 import gradle.ifTrue
-import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
 internal interface SpotlessExtension {
@@ -37,7 +33,7 @@ internal interface SpotlessExtension {
     val enforceCheck: Boolean?
     val predeclareDepsFromBuildscript: Boolean?
     val predeclareDeps: Boolean?
-    val formats: LinkedHashSet<@Serializable(with = FormatExtensionKeyTransformingSerializer::class) FormatExtension<out com.diffplug.gradle.spotless.FormatExtension>>?
+    val formats: LinkedHashSet<FormatExtension<out com.diffplug.gradle.spotless.FormatExtension>>?
 
     context(Project)
     fun applyTo() =

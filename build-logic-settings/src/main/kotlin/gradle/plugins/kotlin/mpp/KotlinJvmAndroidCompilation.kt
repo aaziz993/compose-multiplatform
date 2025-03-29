@@ -8,12 +8,16 @@ import gradle.plugins.kotlin.KotlinSourceSet
 import gradle.plugins.kotlin.targets.jvm.KotlinJvmCompilerOptions
 import gradle.plugins.kotlin.tasks.KotlinCompilationTaskImpl
 import gradle.plugins.project.Dependency
-import gradle.plugins.project.DependencyKeyTransformingSerializer
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.KeepGeneratedSerializer
+
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.invoke
 
-@Serializable
+@OptIn(ExperimentalSerializationApi::class)
+@KeepGeneratedSerializer
+@Serializable(with = KotlinJvmAndroidCompilationKeyTransformingSerializer::class)
 internal data class KotlinJvmAndroidCompilation(
     override val name: String,
     override val defaultSourceSet: KotlinSourceSet? = null,
@@ -21,7 +25,7 @@ internal data class KotlinJvmAndroidCompilation(
     override val setCompileDependencyFiles: Set<String>? = null,
     override val output: KotlinCompilationOutput? = null,
     override val associatedCompilations: Set<String>? = null,
-    override val dependencies: Set<@Serializable(with = DependencyKeyTransformingSerializer::class) Dependency>? = null,
+    override val dependencies: Set<Dependency>? = null,
     override val compileTaskProvider: KotlinCompilationTaskImpl? = null,
     val compileJavaTaskProvider: JavaCompile? = null,
 ) : KotlinCompilation<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJvmAndroidCompilation> {
@@ -45,7 +49,7 @@ internal data class KotlinJvmAndroidCompilation(
     }
 }
 
-internal object KotlinJvmAndroidCompilationKeyTransformingSerializer :
+private object KotlinJvmAndroidCompilationKeyTransformingSerializer :
     KotlinCompilationTransformingSerializer<KotlinJvmAndroidCompilation>(
-        KotlinJvmAndroidCompilation.serializer(),
+        KotlinJvmAndroidCompilation.generatedSerializer(),
     )

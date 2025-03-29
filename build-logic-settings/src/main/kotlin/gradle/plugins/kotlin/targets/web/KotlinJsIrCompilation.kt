@@ -4,11 +4,15 @@ import gradle.plugins.kotlin.KotlinCompilationOutput
 import gradle.plugins.kotlin.KotlinCompilationTransformingSerializer
 import gradle.plugins.kotlin.KotlinSourceSet
 import gradle.plugins.project.Dependency
-import gradle.plugins.project.DependencyKeyTransformingSerializer
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.KeepGeneratedSerializer
+
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-@Serializable
+@OptIn(ExperimentalSerializationApi::class)
+@KeepGeneratedSerializer
+@Serializable(with = KotlinJsIrCompilationKeyTransformingSerializer::class)
 internal data class KotlinJsIrCompilation(
     override val name: String, override val defaultSourceSet: KotlinSourceSet? = null,
     override val compileDependencyFiles: Set<String>? = null,
@@ -16,8 +20,8 @@ internal data class KotlinJsIrCompilation(
     override val output: KotlinCompilationOutput? = null,
     override val compileTaskProvider: Kotlin2JsCompileImpl? = null,
     override val associatedCompilations: Set<String>? = null,
-    override val dependencies: Set<@Serializable(with = DependencyKeyTransformingSerializer::class) Dependency>? = null,
-    override val binaries: @Serializable(with = KotlinJsBinaryContainerTransformingSerializer::class) KotlinJsBinaryContainer? = null,
+    override val dependencies: Set<Dependency>? = null,
+    override val binaries: KotlinJsBinaryContainer? = null,
     override val packageJson: PackageJson? = null,
 ) : KotlinJsCompilation<org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsIrCompilation> {
 
@@ -33,7 +37,7 @@ internal data class KotlinJsIrCompilation(
     }
 }
 
-internal object KotlinJsIrCompilationKeyTransformingSerializer :
+private object KotlinJsIrCompilationKeyTransformingSerializer :
     KotlinCompilationTransformingSerializer<KotlinJsIrCompilation>(
-        KotlinJsIrCompilation.serializer(),
+        KotlinJsIrCompilation.generatedSerializer(),
     )

@@ -1,12 +1,13 @@
 package gradle.plugins.project
 
+import gradle.serialization.serializer.JsonContentPolymorphicSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.JsonTransformingSerializer
 
-@Serializable
+@Serializable(with = ProjectLayoutTransformingSerializer::class)
 internal sealed class ProjectLayout {
 
     @Serializable
@@ -20,8 +21,12 @@ internal sealed class ProjectLayout {
     ) : ProjectLayout()
 }
 
-internal object ProjectLayoutTransformingSerializer :
-    JsonTransformingSerializer<ProjectLayout>(ProjectLayout.serializer()) {
+private object ProjectLayoutContentPolymorphicSerializer : JsonContentPolymorphicSerializer<ProjectLayout>(
+    ProjectLayout::class,
+)
+
+private object ProjectLayoutTransformingSerializer :
+    JsonTransformingSerializer<ProjectLayout>(ProjectLayoutContentPolymorphicSerializer) {
 
     override fun transformDeserialize(element: JsonElement): JsonElement =
         if (element is JsonPrimitive) JsonObject(

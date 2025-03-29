@@ -20,20 +20,20 @@ internal data class ManagedDevices(
      *
      * This is replaced with [allDevices]
      */
-    val devices: LinkedHashSet<@Serializable(with = DeviceImlKeyTransformingSerializer::class) DeviceImpl>? = null,
+    val devices: LinkedHashSet<DeviceImpl>? = null,
     /**
      * Convenience container for specifying managed devices of type [ManagedVirtualDevice].
      *
      * This list is managed in sync with [allDevices]. [ManagedVirtualDevice] definitions added or
      * removed in this container are correspondingly handled in [allDevices], and vice versa.
      */
-    val localDevices: LinkedHashSet<@Serializable(with = ManagedVirtualDeviceKeyTransformingSerializer::class) ManagedVirtualDevice>? = null,
+    val localDevices: LinkedHashSet<ManagedVirtualDevice>? = null,
     /**
      * List of DeviceGroups to create tasks for.
      *
      * These APIs are experimental and may change without notice.
      */
-    val groups: LinkedHashSet<@Serializable(with = DeviceGroupKeyTransformingSerializer::class) DeviceGroup>? = null,
+    val groups: LinkedHashSet<DeviceGroup>? = null,
 ) {
 
     context(Project)

@@ -8,7 +8,7 @@ import gradle.api.trySet
 import gradle.plugins.kotlin.tasks.KotlinCompilationTask
 import gradle.plugins.kotlin.tasks.KotlinCompilationTaskImpl
 import gradle.plugins.project.Dependency
-import gradle.plugins.project.DependencyKeyTransformingSerializer
+
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
@@ -153,5 +153,5 @@ internal data class KotlinCompilationImpl(
     override val setCompileDependencyFiles: Set<String>? = null,
     override val output: KotlinCompilationOutput? = null,
     override val associatedCompilations: Set<String>? = null,
-    override val dependencies: Set<@Serializable(with = DependencyKeyTransformingSerializer::class) Dependency>? = null,
+    override val dependencies: Set<Dependency>? = null,
 ) : KotlinCompilation<org.jetbrains.kotlin.gradle.plugin.KotlinCompilation<*>>

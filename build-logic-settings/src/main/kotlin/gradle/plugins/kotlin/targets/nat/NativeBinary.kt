@@ -32,7 +32,7 @@ internal object BinaryContentPolymorphicSerializer : kotlinx.serialization.json.
         if (element is JsonPrimitive) String.serializer() else Binary.serializer()
 }
 
-@Serializable(with = NativeBinarySerializer::class)
+@Serializable(with = NativeBinaryKeyTransformingSerializer::class)
 internal sealed class NativeBinary<T : org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary> : ProjectNamed<T> {
 
     abstract val baseName: String?
@@ -77,12 +77,12 @@ internal sealed class NativeBinary<T : org.jetbrains.kotlin.gradle.plugin.mpp.Na
     }
 }
 
-private object NativeBinarySerializer : JsonContentPolymorphicSerializer<NativeBinary<*>>(
+private object NativeBinaryContentTransformingSerializer : JsonContentPolymorphicSerializer<NativeBinary<*>>(
     NativeBinary::class,
 )
 
-internal object NativeBinaryKeyTransformingSerializer : KeyTransformingSerializer<NativeBinary<*>>(
-    NativeBinarySerializer,
+private object NativeBinaryKeyTransformingSerializer : KeyTransformingSerializer<NativeBinary<*>>(
+    NativeBinaryContentTransformingSerializer,
     "type",
 )
 

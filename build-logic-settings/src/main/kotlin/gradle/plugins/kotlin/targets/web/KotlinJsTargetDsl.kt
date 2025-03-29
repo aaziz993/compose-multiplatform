@@ -19,10 +19,10 @@ import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalMainFunctionArgume
 internal interface KotlinJsTargetDsl<T : org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl>
     : KotlinTarget<T>,
     KotlinTargetWithNodeJsDsl,
-    HasBinaries<@Serializable(with = KotlinJsBinaryContainerTransformingSerializer::class) KotlinJsBinaryContainer>,
+    HasBinaries<KotlinJsBinaryContainer>,
     HasConfigurableKotlinCompilerOptions<T, org.jetbrains.kotlin.gradle.dsl.KotlinJsCompilerOptions> {
 
-    abstract override val compilations: LinkedHashSet<@Serializable(with = KotlinJsIrCompilationKeyTransformingSerializer::class) KotlinJsIrCompilation>?
+    abstract override val compilations: LinkedHashSet<KotlinJsIrCompilation>?
 
     val outputModuleName: String?
 
@@ -75,7 +75,7 @@ internal data class KotlinJsTargetDslImpl(
     override val name: String? = null,
     override val withSourcesJar: Boolean? = null,
     override val mavenPublication: MavenPublication? = null,
-    override val compilations: LinkedHashSet<@Serializable(with = KotlinJsIrCompilationKeyTransformingSerializer::class) KotlinJsIrCompilation>? = null,
+    override val compilations: LinkedHashSet<KotlinJsIrCompilation>? = null,
     override val nodejs: KotlinJsNodeDsl? = null,
     override val outputModuleName: String? = null,
     override val browser: KotlinJsBrowserDsl? = null,
@@ -84,7 +84,7 @@ internal data class KotlinJsTargetDslImpl(
     override val passAsArgumentToMainFunction: String? = null,
     override val generateTypeScriptDefinitions: Boolean? = null,
     override val compilerOptions: KotlinJsCompilerOptions? = null,
-    override val binaries: @Serializable(with = KotlinJsBinaryContainerTransformingSerializer::class) KotlinJsBinaryContainer? = null,
+    override val binaries: KotlinJsBinaryContainer? = null,
 ) : KotlinJsTargetDsl<org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl> {
 
     context(Project)

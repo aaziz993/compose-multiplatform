@@ -3,7 +3,6 @@ package gradle.plugins.apple.target
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.apple.AppleBuildSettings
 import gradle.plugins.apple.BuildConfiguration
-import gradle.plugins.apple.BuildConfigurationKeyTransformingSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.jetbrains.gradle.apple.targets.IosFrameworkTarget
@@ -12,7 +11,7 @@ import org.jetbrains.gradle.apple.targets.IosFrameworkTarget
 @SerialName("iosFramework")
 internal data class IosFrameworkTarget(
     override val bridgingHeader: String? = null,
-    override val buildConfigurations: LinkedHashSet<@Serializable(with = BuildConfigurationKeyTransformingSerializer::class) BuildConfiguration>? = null,
+    override val buildConfigurations: LinkedHashSet<BuildConfiguration>? = null,
     override val buildSettings: Map<AppleBuildSettings, String>? = null,
     override val embedFrameworks: Boolean? = null,
     override val ipad: Boolean? = null,

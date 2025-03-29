@@ -11,7 +11,7 @@ internal interface KotlinHierarchyBuilder<T : org.jetbrains.kotlin.gradle.plugin
      */
     @Serializable
     data class Root(
-        override val groups: Set<@Serializable(with = GroupKeyTransformingSerializer::class) Group>? = null,
+        override val groups: Set<Group>? = null,
         override val common: KotlinHierarchyBuilder<out org.jetbrains.kotlin.gradle.plugin.KotlinHierarchyBuilder>? = null,
         override val withCompilations: Set<String>? = null,
         override val excludeCompilations: Set<String>? = null,
@@ -145,7 +145,7 @@ internal interface KotlinHierarchyBuilder<T : org.jetbrains.kotlin.gradle.plugin
      *
      * @see common
      */
-    val groups: Set<@Serializable(with = GroupKeyTransformingSerializer::class) Group>?
+    val groups: Set<Group>?
 
     /**
      * Creates a group with the name "common". It's a shortcut for `group("common") { }`.
@@ -467,7 +467,7 @@ internal interface KotlinHierarchyBuilder<T : org.jetbrains.kotlin.gradle.plugin
 
 @Serializable
 internal data class KotlinHierarchyBuilderImpl(
-    override val groups: Set<@Serializable(with = GroupKeyTransformingSerializer::class) Group>? = null,
+    override val groups: Set<Group>? = null,
     override val common: KotlinHierarchyBuilderImpl? = null,
     override val withCompilations: Set<String>? = null,
     override val excludeCompilations: Set<String>? = null,

@@ -2,13 +2,17 @@ package gradle.plugins.kotlin.targets.web
 
 import gradle.serialization.serializer.DelegateTransformingSerializer
 import kotlinx.serialization.Contextual
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-@Serializable
+@OptIn(ExperimentalSerializationApi::class)
+@KeepGeneratedSerializer
+@Serializable(with = KotlinJsBinaryContainerTransformingSerializer::class)
 @Suppress("JavaDefaultMethodsNotOverriddenByDelegation")
 internal data class KotlinJsBinaryContainer(
-    private val delegate: Set<@Serializable(with = JsIrBinaryKeyTransformingSerializer::class) JsIrBinary<out @Contextual org.jetbrains.kotlin.gradle.targets.js.ir.JsIrBinary>> = mutableSetOf()
+    private val delegate: Set<JsIrBinary<out @Contextual org.jetbrains.kotlin.gradle.targets.js.ir.JsIrBinary>> = mutableSetOf()
 ) : Set<JsIrBinary<out org.jetbrains.kotlin.gradle.targets.js.ir.JsIrBinary>> by delegate {
 
     context(Project)
@@ -23,5 +27,5 @@ internal data class KotlinJsBinaryContainer(
     }
 }
 
-internal object KotlinJsBinaryContainerTransformingSerializer
-    : DelegateTransformingSerializer<KotlinJsBinaryContainer>(KotlinJsBinaryContainer.serializer())
+private object KotlinJsBinaryContainerTransformingSerializer
+    : DelegateTransformingSerializer<KotlinJsBinaryContainer>(KotlinJsBinaryContainer.generatedSerializer())

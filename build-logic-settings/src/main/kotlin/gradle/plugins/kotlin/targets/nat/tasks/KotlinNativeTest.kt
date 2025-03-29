@@ -8,7 +8,6 @@ import gradle.api.tryAssign
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.kotlin.targets.nat.TrackEnvironment
-import gradle.plugins.kotlin.targets.nat.TrackEnvironmentKeyTransformingSerializer
 import gradle.plugins.kotlin.tasks.KotlinTest
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -42,7 +41,7 @@ internal data class KotlinNativeTest(
     val args: List<String>? = null,
     val workingDir: String? = null,
     val environment: SerializableAnyMap? = null,
-    val trackEnvironments: List<@Serializable(with = TrackEnvironmentKeyTransformingSerializer::class) TrackEnvironment>? = null,
+    val trackEnvironments: List<TrackEnvironment>? = null,
 ) : KotlinTest<KotlinNativeTest>() {
 
     context(Project)

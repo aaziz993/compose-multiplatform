@@ -22,7 +22,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-@Serializable(with = FormatExtensionSerializer::class)
+@Serializable(with = FormatExtensionKeyTransformingSerializer::class)
 internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatExtension> {
 
     abstract val lineEnding: LineEnding?
@@ -231,12 +231,12 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
     )
 }
 
-private object FormatExtensionSerializer : JsonContentPolymorphicSerializer<FormatExtension<*>>(
+private object FormatExtensionContentPolymorphicSerializer : JsonContentPolymorphicSerializer<FormatExtension<*>>(
     FormatExtension::class,
 )
 
-internal object FormatExtensionKeyTransformingSerializer : KeyTransformingSerializer<FormatExtension<*>>(
-    FormatExtensionSerializer,
+private object FormatExtensionKeyTransformingSerializer : KeyTransformingSerializer<FormatExtension<*>>(
+    FormatExtensionContentPolymorphicSerializer,
     "type",
 )
 

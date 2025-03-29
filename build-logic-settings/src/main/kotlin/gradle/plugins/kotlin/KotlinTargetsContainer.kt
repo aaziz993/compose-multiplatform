@@ -1,6 +1,5 @@
 package gradle.plugins.kotlin
 
-import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
 internal interface KotlinTargetsContainer {
@@ -8,7 +7,7 @@ internal interface KotlinTargetsContainer {
     /**
      * A [NamedDomainObjectContainer] containing all registered [Kotlin targets][KotlinTarget] in this project.
      */
-    val targets: LinkedHashSet<@Serializable(with = KotlinTargetKeyTransformingSerializer::class) KotlinTarget<out org.jetbrains.kotlin.gradle.plugin.KotlinTarget>>?
+    val targets: LinkedHashSet<KotlinTarget<out org.jetbrains.kotlin.gradle.plugin.KotlinTarget>>?
 
     context(Project)
     fun applyTo() {

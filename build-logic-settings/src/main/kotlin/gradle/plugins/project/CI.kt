@@ -1,9 +1,13 @@
 package gradle.plugins.project
 
 import gradle.serialization.serializer.KeyTransformingSerializer
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 
-@Serializable
+@OptIn(ExperimentalSerializationApi::class)
+@KeepGeneratedSerializer
+@Serializable(with = CIKeyTransformingSerializer::class)
 internal sealed class CI {
 
     abstract val dependenciesCheck: Boolean
@@ -70,7 +74,7 @@ internal sealed class CI {
     ) : CI()
 }
 
-internal object CIKeyTransformingSerializer : KeyTransformingSerializer<CI>(
-    CI.serializer(),
+private object CIKeyTransformingSerializer : KeyTransformingSerializer<CI>(
+    CI.generatedSerializer(),
     "type",
 )

@@ -8,7 +8,9 @@ import gradle.api.file.SourceDirectorySet
 import gradle.api.getByNameOrAll
 import gradle.api.trySet
 import gradle.plugins.project.Dependency
-import gradle.plugins.project.DependencyKeyTransformingSerializer
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.KeepGeneratedSerializer
+
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -27,10 +29,12 @@ import org.gradle.api.Project
  *
  * @see KotlinSourceSetContainer
  */
-@Serializable
+@OptIn(ExperimentalSerializationApi::class)
+@KeepGeneratedSerializer
+@Serializable(with = KotlinSourceSetKeyTransformingSerializer::class)
 internal data class KotlinSourceSet(
     override val name: String? = null,
-    override val dependencies: Set<@Serializable(with = DependencyKeyTransformingSerializer::class) Dependency>? = null,
+    override val dependencies: Set<Dependency>? = null,
     /**
      * Represents a set of Kotlin source files that are included in this [KotlinSourceSet].
      *
@@ -83,6 +87,6 @@ internal data class KotlinSourceSet(
     fun applyTo() = applyTo(project.kotlin.sourceSets)
 }
 
-internal object KotlinSourceSetKeyTransformingSerializer : NamedKeyTransformingSerializer<KotlinSourceSet>(
-    KotlinSourceSet.serializer(),
+private object KotlinSourceSetKeyTransformingSerializer : NamedKeyTransformingSerializer<KotlinSourceSet>(
+    KotlinSourceSet.generatedSerializer(),
 )

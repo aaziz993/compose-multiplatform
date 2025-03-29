@@ -3,7 +3,6 @@ package gradle.api.publish
 import gradle.accessors.publishing
 import gradle.api.artifacts.dsl.RepositoryHandler
 import gradle.api.repositories.ExclusiveContentRepository
-import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
 /**
@@ -74,7 +73,7 @@ internal interface PublishingExtension {
      *
      * @param configure The action or closure to configure the publications with.
      */
-    val publications: LinkedHashSet<@Serializable(with = PublicationKeyTransformingSerializer::class) Publication<out org.gradle.api.publish.Publication>>?
+    val publications: LinkedHashSet<Publication<out org.gradle.api.publish.Publication>>?
 
     context(Project)
     @Suppress("UNCHECKED_CAST")

@@ -14,6 +14,8 @@ import gradle.plugins.android.Shaders
 import gradle.plugins.android.VcsInfo
 import gradle.plugins.android.compile.JavaCompileOptions
 import gradle.plugins.android.test.AndroidTest
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -32,7 +34,9 @@ import org.gradle.api.Project
  * [configuring build types](https://developer.android.com/studio/build#build-config)
  * for more information.
  */
-@Serializable
+@OptIn(ExperimentalSerializationApi::class)
+@KeepGeneratedSerializer
+@Serializable(with = LibraryBuildTypeKeyTransformingSerializer::class)
 internal data class LibraryBuildType(
     override val name: String,
     override val enableUnitTestCoverage: Boolean? = null,
@@ -80,6 +84,6 @@ internal data class LibraryBuildType(
     }
 }
 
-internal object LibraryBuildTypeKeyTransformingSerializer : BuildTypeKeyTransformingSerializer<LibraryBuildType>(
-    LibraryBuildType.serializer(),
+private object LibraryBuildTypeKeyTransformingSerializer : BuildTypeKeyTransformingSerializer<LibraryBuildType>(
+    LibraryBuildType.generatedSerializer(),
 )

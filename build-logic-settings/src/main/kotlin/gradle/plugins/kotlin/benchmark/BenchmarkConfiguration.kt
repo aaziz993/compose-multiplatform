@@ -7,10 +7,14 @@ import gradle.api.tryPutAll
 import gradle.api.trySet
 import gradle.collection.SerializableOptionalAnyList
 import gradle.collection.SerializableOptionalAnyMap
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-@Serializable
+@OptIn(ExperimentalSerializationApi::class)
+@KeepGeneratedSerializer
+@Serializable(with = BenchmarkConfigurationKeyTransformingSerializer::class)
 internal data class BenchmarkConfiguration(
     override val name: String? = null,
     val advanced: SerializableOptionalAnyMap? = null,
@@ -43,12 +47,12 @@ internal data class BenchmarkConfiguration(
         receiver::iterations trySet iterations
         receiver::mode trySet mode
         receiver::outputTimeUnit trySet outputTimeUnit
-        receiver.params tryPutAll  params?.mapValues { (_, value) -> value.toMutableList() }
+        receiver.params tryPutAll params?.mapValues { (_, value) -> value.toMutableList() }
         receiver::params trySet setParams?.mapValues { (_, value) -> value.toMutableList() }?.toMutableMap()
         receiver::reportFormat trySet reportFormat
         receiver::warmups trySet warmups
     }
 }
 
-internal object BenchmarkConfigurationKeyTransformingSerializer
-    : NamedKeyTransformingSerializer<BenchmarkConfiguration>(BenchmarkConfiguration.serializer())
+private object BenchmarkConfigurationKeyTransformingSerializer
+    : NamedKeyTransformingSerializer<BenchmarkConfiguration>(BenchmarkConfiguration.generatedSerializer())

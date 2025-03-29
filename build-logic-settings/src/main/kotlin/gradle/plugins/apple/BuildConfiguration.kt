@@ -5,10 +5,14 @@ import gradle.api.ProjectNamed
 import gradle.api.tryPutAll
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-@Serializable
+@OptIn(ExperimentalSerializationApi::class)
+@KeepGeneratedSerializer
+@Serializable(with = BuildConfigurationKeyTransformingSerializer::class)
 internal data class BuildConfiguration(
     override val name: String? = null,
     val fatFrameworks: Boolean? = null,
@@ -24,5 +28,5 @@ internal data class BuildConfiguration(
     }
 }
 
-internal object BuildConfigurationKeyTransformingSerializer
-    : NamedKeyTransformingSerializer<BuildConfiguration>(BuildConfiguration.serializer())
+private object BuildConfigurationKeyTransformingSerializer
+    : NamedKeyTransformingSerializer<BuildConfiguration>(BuildConfiguration.generatedSerializer())

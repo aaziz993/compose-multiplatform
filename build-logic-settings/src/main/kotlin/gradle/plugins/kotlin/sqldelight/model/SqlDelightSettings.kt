@@ -2,11 +2,8 @@ package gradle.plugins.kotlin.sqldelight.model
 
 
 import gradle.accessors.catalog.libs
-
-
 import gradle.accessors.settings
 import gradle.plugins.kotlin.sqldelight.SqlDelightDatabase
-import gradle.plugins.kotlin.sqldelight.SqlDelightDatabaseKeyTransformingSerializer
 import gradle.plugins.kotlin.sqldelight.SqlDelightExtension
 import gradle.plugins.project.EnabledSettings
 import kotlinx.serialization.Serializable
@@ -14,7 +11,7 @@ import org.gradle.api.Project
 
 @Serializable
 internal data class SqlDelightSettings(
-    override val databases: LinkedHashSet<@Serializable(with = SqlDelightDatabaseKeyTransformingSerializer::class) SqlDelightDatabase>? = null,
+    override val databases: LinkedHashSet<SqlDelightDatabase>? = null,
     override val linkSqlite: Boolean? = null,
     override val enabled: Boolean = false
 ) : SqlDelightExtension, EnabledSettings {

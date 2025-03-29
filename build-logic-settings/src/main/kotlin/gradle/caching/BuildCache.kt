@@ -11,7 +11,7 @@ import org.gradle.api.initialization.Settings
  *
  * @since 3.5
  */
-@Serializable(with = BuildCacheSerializer::class)
+@Serializable(with = BuildCacheKeyTransformingSerializer::class)
 internal interface BuildCache<T : org.gradle.caching.configuration.BuildCache> {
 
     /**
@@ -31,11 +31,11 @@ internal interface BuildCache<T : org.gradle.caching.configuration.BuildCache> {
     }
 }
 
-private object BuildCacheSerializer : JsonContentPolymorphicSerializer<BuildCache<*>>(
+private object BuildCacheContentPolymorphicSerializer : JsonContentPolymorphicSerializer<BuildCache<*>>(
     BuildCache::class,
 )
 
-internal object BuildCacheKeyTransformingSerializer : KeyTransformingSerializer<BuildCache<*>>(
-    BuildCacheSerializer,
+private object BuildCacheKeyTransformingSerializer : KeyTransformingSerializer<BuildCache<*>>(
+    BuildCacheContentPolymorphicSerializer,
     "type",
 )

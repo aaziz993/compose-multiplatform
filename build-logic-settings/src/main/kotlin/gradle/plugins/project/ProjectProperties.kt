@@ -10,7 +10,6 @@ import gradle.api.publish.maven.MavenPomDeveloper
 import gradle.api.publish.maven.MavenPomLicense
 import gradle.api.publish.maven.MavenPomScm
 import gradle.api.tasks.Task
-import gradle.api.tasks.TaskKeyTransformingSerializer
 import gradle.caching.BuildCacheConfiguration
 import gradle.collection.deepMerge
 import gradle.collection.resolve
@@ -47,7 +46,7 @@ internal const val PROJECT_PROPERTIES_FILE = "project.yaml"
 
 @Serializable
 internal data class ProjectProperties(
-    val layout: @Serializable(with = ProjectLayoutTransformingSerializer::class) ProjectLayout = ProjectLayout.Default,
+    val layout: ProjectLayout = ProjectLayout.Default,
     val group: String? = null,
     val description: String? = null,
     val version: VersionSettings = VersionSettings(),
@@ -63,7 +62,7 @@ internal data class ProjectProperties(
     val pluginManagement: PluginManagement? = null,
     val plugins: Plugins = Plugins(),
     val dependencyResolutionManagement: DependencyResolutionManagement? = null,
-    val dependencies: Set<@Serializable(with = DependencyKeyTransformingSerializer::class) Dependency>? = null,
+    val dependencies: Set<Dependency>? = null,
     val cacheRedirector: Boolean = true,
     val includes: Set<String>? = null,
     val projects: Set<ProjectDescriptor>? = null,
@@ -78,10 +77,10 @@ internal data class ProjectProperties(
     val yarnRootEnv: YarnRootEnvSpec = YarnRootEnvSpec(),
     val npm: NpmExtension = NpmExtension(),
     val compose: CMPSettings = CMPSettings(),
-    val tasks: LinkedHashSet<@Serializable(with = TaskKeyTransformingSerializer::class) Task<out org.gradle.api.Task>>? = null,
+    val tasks: LinkedHashSet<Task<out org.gradle.api.Task>>? = null,
     private val localPropertiesFile: String = "local.properties",
     val projectFiles: Set<ProjectFile> = emptySet(),
-    val ci: Set<@Serializable(with = CIKeyTransformingSerializer::class) CI> = emptySet(),
+    val ci: Set<CI> = emptySet(),
 ) : HashMap<String, Any?>() {
 
     val includesAsPaths: List<String>?

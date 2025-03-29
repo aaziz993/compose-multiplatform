@@ -15,18 +15,18 @@ import kotlinx.serialization.Serializable
  * The name is only used for identification in the Gradle buildscripts.
  * @param[pluginFqn] Fully qualified classname of the Dokka Plugin
  */
-@Serializable()
+@Serializable(with = DokkaPluginParametersBaseSpecKeyTransformingSerializer::class)
 internal abstract class DokkaPluginParametersBaseSpec<T : org.jetbrains.dokka.gradle.engine.plugins.DokkaPluginParametersBaseSpec>
     : ProjectNamed<T> {
 
     abstract val pluginFqn: String
 }
 
-private object DokkaPluginParametersBaseSpecSerializer : JsonContentPolymorphicSerializer<DokkaPluginParametersBaseSpec<*>>(
+private object DokkaPluginParametersBaseSpecContentPolymorphicSerializer : JsonContentPolymorphicSerializer<DokkaPluginParametersBaseSpec<*>>(
     DokkaPluginParametersBaseSpec::class,
 )
 
-internal object DokkaPluginParametersBaseSpecKeyTransformingSerializer : KeyTransformingSerializer<DokkaPluginParametersBaseSpec<*>>(
-    DokkaPluginParametersBaseSpecSerializer,
+private object DokkaPluginParametersBaseSpecKeyTransformingSerializer : KeyTransformingSerializer<DokkaPluginParametersBaseSpec<*>>(
+    DokkaPluginParametersBaseSpecContentPolymorphicSerializer,
     "type",
 )

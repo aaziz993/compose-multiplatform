@@ -6,10 +6,8 @@ import gradle.api.publish.maven.MavenPublication
 import gradle.plugins.kotlin.HasConfigurableKotlinCompilerOptions
 import gradle.plugins.kotlin.KotlinTargetWithTests
 import gradle.plugins.kotlin.mpp.KotlinJvmAndroidCompilation
-import gradle.plugins.kotlin.mpp.KotlinJvmAndroidCompilationKeyTransformingSerializer
 import gradle.plugins.kotlin.mpp.KotlinOnlyTarget
 import gradle.plugins.kotlin.targets.jvm.test.KotlinJvmTestRun
-import gradle.plugins.kotlin.targets.jvm.test.KotlinJvmTestRunKeyTransformingSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -25,9 +23,9 @@ internal data class KotlinJvmTarget(
     override val withSourcesJar: Boolean? = null,
     override val mavenPublication: MavenPublication? = null,
     override val onPublicationCreated: String? = null,
-    override val compilations: LinkedHashSet<@Serializable(with = KotlinJvmAndroidCompilationKeyTransformingSerializer::class) KotlinJvmAndroidCompilation>? = null,
+    override val compilations: LinkedHashSet<KotlinJvmAndroidCompilation>? = null,
     override val compilerOptions: KotlinJvmCompilerOptions? = null,
-    override val testRuns: LinkedHashSet<@Serializable(with = KotlinJvmTestRunKeyTransformingSerializer::class) KotlinJvmTestRun>? = null,
+    override val testRuns: LinkedHashSet<KotlinJvmTestRun>? = null,
     val mainRun: KotlinJvmRunDslImpl? = null,
     val binaries: KotlinJvmBinariesDsl? = null,
 ) : KotlinOnlyTarget<KotlinJvmTarget, KotlinJvmCompilation>(),

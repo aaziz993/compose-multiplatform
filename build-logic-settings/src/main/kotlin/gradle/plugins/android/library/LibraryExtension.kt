@@ -9,7 +9,6 @@ import gradle.plugins.android.LibraryRequest
 import gradle.plugins.android.Lint
 import gradle.plugins.android.Packaging
 import gradle.plugins.android.Prefab
-import gradle.plugins.android.PrefabKeyTransformingSerializer
 import gradle.plugins.android.PrivacySandbox
 import gradle.plugins.android.TestedExtension
 import gradle.plugins.android.compile.CompileOptions
@@ -18,11 +17,8 @@ import gradle.plugins.android.defaultconfig.DefaultConfig
 import gradle.plugins.android.features.DataBinding
 import gradle.plugins.android.features.ViewBinding
 import gradle.plugins.android.flavor.ProductFlavor
-import gradle.plugins.android.flavor.ProductFlavorKeyTransformingSerializer
 import gradle.plugins.android.signing.SigningConfigImpl
-import gradle.plugins.android.signing.SigningConfigKeyTransformingSerializer
 import gradle.plugins.android.sourceset.AndroidSourceSet
-import gradle.plugins.android.sourceset.AndroidSourceSetKeyTransformingSerializer
 import gradle.plugins.android.split.Splits
 import gradle.plugins.android.test.TestCoverage
 import gradle.plugins.android.test.TestFixtures
@@ -44,10 +40,10 @@ internal data class LibraryExtension(
     override val androidResources: LibraryAndroidResources? = null,
     override val installation: LibraryInstallation? = null,
     override val buildFeatures: LibraryBuildFeatures? = null,
-    override val buildTypes: LinkedHashSet<@Serializable(with = LibraryBuildTypeKeyTransformingSerializer::class) LibraryBuildType>? = null,
+    override val buildTypes: LinkedHashSet<LibraryBuildType>? = null,
     override val testCoverage: TestCoverage? = null,
     override val lint: Lint? = null,
-    override val productFlavors: LinkedHashSet<@Serializable(with = ProductFlavorKeyTransformingSerializer::class) ProductFlavor>? = null,
+    override val productFlavors: LinkedHashSet<ProductFlavor>? = null,
     override val defaultConfig: DefaultConfig? = null,
     override val useLibraries: Set<LibraryRequest>? = null,
     override val compileSdk: Int? = null,
@@ -57,7 +53,7 @@ internal data class LibraryExtension(
     override val experimentalProperties: SerializableAnyMap? = null,
     override val aidlPackagedList: Set<String>? = null,
     override val setAidlPackagedList: Set<String>? = null,
-    override val prefab: LinkedHashSet<@Serializable(with = PrefabKeyTransformingSerializer::class) Prefab>? = null,
+    override val prefab: LinkedHashSet<Prefab>? = null,
     override val publishing: LibraryPublishing? = null,
     override val privacySandbox: PrivacySandbox? = null,
     override val composeOptions: ComposeOptions? = null,
@@ -75,7 +71,7 @@ internal data class LibraryExtension(
     override val compileOptions: CompileOptions? = null,
     override val packaging: Packaging? = null,
     override val adbOptions: AdbOptions? = null,
-    override val sourceSets: LinkedHashSet<@Serializable(with = AndroidSourceSetKeyTransformingSerializer::class) AndroidSourceSet>? = null,
+    override val sourceSets: LinkedHashSet<AndroidSourceSet>? = null,
     override val splits: Splits? = null,
     override val generatePureSplits: Boolean? = null,
     override val resourcePrefix: String? = null,
@@ -83,7 +79,7 @@ internal data class LibraryExtension(
     override val ndkPath: String? = null,
     override val libraryRequests: Set<LibraryRequest>? = null,
     override val setLibraryRequests: Set<LibraryRequest>? = null,
-    override val signingConfigs: LinkedHashSet<@Serializable(with = SigningConfigKeyTransformingSerializer::class) SigningConfigImpl>? = null,
+    override val signingConfigs: LinkedHashSet<SigningConfigImpl>? = null,
     override val namespace: String? = null,
     override val testBuildType: String? = null,
     override val testNamespace: String? = null,

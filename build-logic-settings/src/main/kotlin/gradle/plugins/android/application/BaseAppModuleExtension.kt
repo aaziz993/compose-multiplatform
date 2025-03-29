@@ -17,11 +17,8 @@ import gradle.plugins.android.defaultconfig.DefaultConfig
 import gradle.plugins.android.features.DataBinding
 import gradle.plugins.android.features.ViewBinding
 import gradle.plugins.android.flavor.ProductFlavor
-import gradle.plugins.android.flavor.ProductFlavorKeyTransformingSerializer
 import gradle.plugins.android.signing.SigningConfigImpl
-import gradle.plugins.android.signing.SigningConfigKeyTransformingSerializer
 import gradle.plugins.android.sourceset.AndroidSourceSet
-import gradle.plugins.android.sourceset.AndroidSourceSetKeyTransformingSerializer
 import gradle.plugins.android.split.Splits
 import gradle.plugins.android.test.TestCoverage
 import gradle.plugins.android.test.TestFixtures
@@ -35,7 +32,7 @@ import org.gradle.api.Project
 @SerialName("baseApp")
 internal data class BaseAppModuleExtension(
     override val composeOptions: ComposeOptions? = null,
-    override val sourceSets: LinkedHashSet<@Serializable(with = AndroidSourceSetKeyTransformingSerializer::class) AndroidSourceSet>? = null,
+    override val sourceSets: LinkedHashSet<AndroidSourceSet>? = null,
     override val dataBinding: DataBinding? = null,
     override val viewBinding: ViewBinding? = null,
     override val defaultPublishConfig: String? = null,
@@ -57,10 +54,10 @@ internal data class BaseAppModuleExtension(
     override val ndkPath: String? = null,
     override val libraryRequests: Set<LibraryRequest>? = null,
     override val setLibraryRequests: Set<LibraryRequest>? = null,
-    override val buildTypes: LinkedHashSet<@Serializable(with = ApplicationBuildTypeKeyTransformingSerializer::class) ApplicationBuildType>? = null,
+    override val buildTypes: LinkedHashSet<ApplicationBuildType>? = null,
     override val defaultConfig: DefaultConfig? = null,
-    override val productFlavors: LinkedHashSet<@Serializable(with = ProductFlavorKeyTransformingSerializer::class) ProductFlavor>? = null,
-    override val signingConfigs: LinkedHashSet<@Serializable(with = SigningConfigKeyTransformingSerializer::class) SigningConfigImpl>? = null,
+    override val productFlavors: LinkedHashSet<ProductFlavor>? = null,
+    override val signingConfigs: LinkedHashSet<SigningConfigImpl>? = null,
     override val buildFeatures: ApplicationBuildFeatures? = null,
     override val namespace: String? = null,
     override val testBuildType: String? = null,

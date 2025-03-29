@@ -3,13 +3,14 @@ package gradle.plugins.dokka
 import gradle.accessors.catalog.libs
 import gradle.accessors.settings
 
-
 import gradle.api.NamedKeyTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.applyTo
 import gradle.api.tryAssign
 import gradle.api.tryFrom
 import gradle.api.trySetFrom
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.dokka.gradle.engine.parameters.KotlinPlatform
@@ -42,7 +43,9 @@ import org.jetbrains.dokka.gradle.engine.parameters.VisibilityModifier
  *
  * @see org.jetbrains.dokka.DokkaSourceSetImpl
  */
-@Serializable
+@OptIn(ExperimentalSerializationApi::class)
+@KeepGeneratedSerializer
+@Serializable(with = DokkaSourceSetSpecKeyTransformingSerializer::class)
 internal data class DokkaSourceSetSpec(
     override val name: String? = null,
     /**
@@ -162,7 +165,7 @@ internal data class DokkaSourceSetSpec(
     /**
      * Allows linking to Dokka/Javadoc documentation of the project's dependencies.
      */
-    val externalDocumentationLinks: LinkedHashSet<@Serializable(with = DokkaExternalDocumentationLinkSpecKeyTransformingSerializer::class) DokkaExternalDocumentationLinkSpec>? = null,
+    val externalDocumentationLinks: LinkedHashSet<DokkaExternalDocumentationLinkSpec>? = null,
     /**
      * Platform to be used for setting up code analysis and samples.
      *
@@ -312,6 +315,6 @@ internal data class DokkaSourceSetSpec(
     }
 }
 
-internal object DokkaSourceSetSpecKeyTransformingSerializer : NamedKeyTransformingSerializer<DokkaSourceSetSpec>(
-    DokkaSourceSetSpec.serializer(),
+private object DokkaSourceSetSpecKeyTransformingSerializer : NamedKeyTransformingSerializer<DokkaSourceSetSpec>(
+    DokkaSourceSetSpec.generatedSerializer(),
 )

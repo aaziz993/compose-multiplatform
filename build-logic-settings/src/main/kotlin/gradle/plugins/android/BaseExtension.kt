@@ -4,8 +4,6 @@ import gradle.accessors.android
 import gradle.accessors.androidNamespace
 import gradle.accessors.catalog.libs
 import gradle.accessors.settings
-
-
 import gradle.api.applyTo
 import gradle.api.tryAddAll
 import gradle.api.trySet
@@ -16,11 +14,8 @@ import gradle.plugins.android.features.BuildFeatures
 import gradle.plugins.android.features.DataBinding
 import gradle.plugins.android.features.ViewBinding
 import gradle.plugins.android.flavor.ProductFlavor
-import gradle.plugins.android.flavor.ProductFlavorKeyTransformingSerializer
 import gradle.plugins.android.signing.SigningConfigImpl
-import gradle.plugins.android.signing.SigningConfigKeyTransformingSerializer
 import gradle.plugins.android.sourceset.AndroidSourceSet
-import gradle.plugins.android.sourceset.AndroidSourceSetKeyTransformingSerializer
 import gradle.plugins.android.split.Splits
 import gradle.plugins.android.test.TestOptions
 import gradle.serialization.serializer.JsonContentPolymorphicSerializer
@@ -72,7 +67,7 @@ internal interface BaseExtension {
      */
     val adbOptions: AdbOptions?
 
-    val sourceSets: LinkedHashSet<@Serializable(with = AndroidSourceSetKeyTransformingSerializer::class) AndroidSourceSet>?
+    val sourceSets: LinkedHashSet<AndroidSourceSet>?
 
     val splits: Splits?
 
@@ -97,9 +92,9 @@ internal interface BaseExtension {
 
     val defaultConfig: DefaultConfig?
 
-    val productFlavors: LinkedHashSet<@Serializable(with = ProductFlavorKeyTransformingSerializer::class) ProductFlavor>?
+    val productFlavors: LinkedHashSet<ProductFlavor>?
 
-    val signingConfigs: LinkedHashSet<@Serializable(with = SigningConfigKeyTransformingSerializer::class) SigningConfigImpl>?
+    val signingConfigs: LinkedHashSet<SigningConfigImpl>?
 
     // these are indirectly implemented by extensions when they implement the new public
     // extension interfaces via delegates.

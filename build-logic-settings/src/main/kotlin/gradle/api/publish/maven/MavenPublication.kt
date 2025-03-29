@@ -178,7 +178,7 @@ internal data class MavenPublication(
      * @param source The source of the artifact.
      * @param config An action to configure the values of the constructed [MavenArtifact].
      */
-    val artifacts: List<@Serializable(with = ArtifactKeyTransformingSerializer::class) Artifact>? = null,
+    val artifacts: Set<Artifact>? = null,
     /**
      * Sets the groupId for this publication.
      */

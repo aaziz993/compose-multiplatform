@@ -7,7 +7,7 @@ import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-@Serializable(with = BenchmarkTargetSerializer::class)
+@Serializable(with = BenchmarkTargetKeyTransformingSerializer::class)
 internal abstract class BenchmarkTarget<T : kotlinx.benchmark.gradle.BenchmarkTarget> : ProjectNamed<T> {
 
     abstract val workingDir: String?
@@ -18,11 +18,11 @@ internal abstract class BenchmarkTarget<T : kotlinx.benchmark.gradle.BenchmarkTa
     }
 }
 
-private object BenchmarkTargetSerializer : JsonContentPolymorphicSerializer<BenchmarkTarget<*>>(
+private object BenchmarkTargetContentPolymorphicSerialize : JsonContentPolymorphicSerializer<BenchmarkTarget<*>>(
     BenchmarkTarget::class,
 )
 
-internal object BenchmarkTargetKeyTransformingSerializer : KeyTransformingSerializer<BenchmarkTarget<*>>(
-    BenchmarkTargetSerializer,
+private object BenchmarkTargetKeyTransformingSerializer : KeyTransformingSerializer<BenchmarkTarget<*>>(
+    BenchmarkTargetContentPolymorphicSerialize,
     "type",
 )

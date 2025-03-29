@@ -19,10 +19,10 @@ internal data class KotlinNativeTargetWithHostTestsImpl(
     override val withSourcesJar: Boolean? = null,
     override val mavenPublication: MavenPublication? = null,
     override val onPublicationCreated: String? = null,
-    override val compilations: LinkedHashSet<@Serializable(with = KotlinNativeCompilationKeyTransformingSerializer::class) KotlinNativeCompilation>? = null,
+    override val compilations: LinkedHashSet<KotlinNativeCompilation>? = null,
     override val compilerOptions: KotlinNativeCompilerOptions? = null,
-    override val binaries: @Serializable(with = KotlinNativeBinaryContainerTransformingSerializer::class) KotlinNativeBinaryContainer? = null,
-    override val testRuns: LinkedHashSet<@Serializable(with = KotlinNativeHostTestRunKeyTransformingSerializer::class) KotlinNativeHostTestRun>
+    override val binaries: KotlinNativeBinaryContainer? = null,
+    override val testRuns: LinkedHashSet<KotlinNativeHostTestRun>
 ) : KotlinNativeTargetWithHostTests() {
 
     context(Project)

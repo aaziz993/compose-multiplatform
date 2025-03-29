@@ -2,10 +2,14 @@ package gradle.plugins.kotlin.targets.nat
 
 import gradle.api.tasks.test.TestFilter
 import gradle.api.trySet
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-@Serializable
+@OptIn(ExperimentalSerializationApi::class)
+@KeepGeneratedSerializer
+@Serializable(with = KotlinNativeSimulatorTestRunKeyTransformingSerializer::class)
 internal data class KotlinNativeSimulatorTestRun(
     override val filter: TestFilter? = null,
     override val executionSource: NativeBinaryTestRunSource? = null,
@@ -25,6 +29,6 @@ internal data class KotlinNativeSimulatorTestRun(
     }
 }
 
-internal object KotlinNativeSimulatorTestRunKeyTransformingSerializer : KotlinNativeBinaryTestRunKeyTransformingSerializer<KotlinNativeSimulatorTestRun>(
-    KotlinNativeSimulatorTestRun.serializer(),
+private object KotlinNativeSimulatorTestRunKeyTransformingSerializer : KotlinNativeBinaryTestRunKeyTransformingSerializer<KotlinNativeSimulatorTestRun>(
+    KotlinNativeSimulatorTestRun.generatedSerializer(),
 )

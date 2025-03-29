@@ -1,7 +1,6 @@
 package gradle.plugins.kotlin
 
 import gradle.api.applyTo
-import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetContainer
 
@@ -13,7 +12,7 @@ internal interface KotlinSourceSetContainer<T : KotlinSourceSetContainer> {
     /**
      * A [NamedDomainObjectContainer] containing all registered [KotlinSourceSets][KotlinSourceSet] in this project.
      */
-    val sourceSets: LinkedHashSet<@Serializable(with = KotlinSourceSetKeyTransformingSerializer::class) KotlinSourceSet>?
+    val sourceSets: LinkedHashSet<KotlinSourceSet>?
 
     context(Project)
     fun applyTo(receiver: KotlinSourceSetContainer) {

@@ -2,19 +2,16 @@ package gradle.plugins.kotlin.room
 
 
 import gradle.accessors.catalog.libs
-
-
 import gradle.accessors.room
 import gradle.accessors.settings
 import gradle.api.trySet
-import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
 internal interface RoomExtension {
 
     // User variant / target match pattern and its copy task. Multiple variant / target annotation
     // processing tasks can be finalized by the same copy task.
-    val schemaDirectories: Set<@Serializable(with = SchemaDirectoryKeyTransformingSerializer::class) SchemaDirectory>?
+    val schemaDirectories: Set<SchemaDirectory>?
 
     /** Causes Room annotation processor to generate Kotlin code instead of Java. */
     val generateKotlin: Boolean?

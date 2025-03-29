@@ -2,13 +2,12 @@ package gradle.plugins.kotlin.targets.web
 
 import gradle.plugins.kotlin.KotlinCompilation
 import gradle.plugins.kotlin.mpp.HasBinaries
-import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJsCompilation
 
 internal interface KotlinJsCompilation<T : KotlinJsCompilation>
     : KotlinCompilation<T>,
-    HasBinaries<@Serializable(with = KotlinJsBinaryContainerTransformingSerializer::class) KotlinJsBinaryContainer> {
+    HasBinaries<KotlinJsBinaryContainer> {
 
     val packageJson: PackageJson?
 

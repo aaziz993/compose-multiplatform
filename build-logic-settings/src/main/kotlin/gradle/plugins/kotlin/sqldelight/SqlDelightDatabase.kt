@@ -5,11 +5,15 @@ import gradle.api.ProjectNamed
 import gradle.api.tryAssign
 import gradle.api.trySetFrom
 import gradle.plugins.project.Dependency
-import gradle.plugins.project.DependencyKeyTransformingSerializer
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.KeepGeneratedSerializer
+
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-@Serializable
+@OptIn(ExperimentalSerializationApi::class)
+@KeepGeneratedSerializer
+@Serializable(with = SqlDelightDatabaseKeyTransformingSerializer::class)
 internal data class SqlDelightDatabase(
     //Note: Name of your Database and .sq file should be same
     override val name: String,
@@ -23,7 +27,7 @@ internal data class SqlDelightDatabase(
     val migrationOutputDirectory: String? = null,
     val migrationOutputFileFormat: String? = null,
     val generateAsync: Boolean? = null,
-    val modules: Set<@Serializable(with = DependencyKeyTransformingSerializer::class) Dependency>? = null,
+    val modules: Set<Dependency>? = null,
     val dialects: Set<String>? = null,
     /**
      * When SqlDelight finds an equality operation with a nullable typed rvalue such as:
@@ -82,5 +86,5 @@ internal data class SqlDelightDatabase(
     }
 }
 
-internal object SqlDelightDatabaseKeyTransformingSerializer
-    : NamedKeyTransformingSerializer<SqlDelightDatabase>(SqlDelightDatabase.serializer())
+private object SqlDelightDatabaseKeyTransformingSerializer
+    : NamedKeyTransformingSerializer<SqlDelightDatabase>(SqlDelightDatabase.generatedSerializer())

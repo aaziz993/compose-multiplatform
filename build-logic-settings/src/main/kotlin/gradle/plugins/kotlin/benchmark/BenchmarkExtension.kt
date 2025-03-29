@@ -1,17 +1,11 @@
 package gradle.plugins.kotlin.benchmark
 
 import gradle.accessors.benchmark
-
 import gradle.accessors.catalog.libs
-
-
 import gradle.accessors.settings
-
-
 import gradle.api.applyTo
 import gradle.api.tryAssign
 import gradle.api.trySet
-import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
 internal abstract class BenchmarksExtension {
@@ -26,7 +20,7 @@ internal abstract class BenchmarksExtension {
 
     abstract val reportsDir: String?
 
-    abstract val targets: LinkedHashSet<@Serializable(with = BenchmarkTargetKeyTransformingSerializer::class) BenchmarkTarget<out kotlinx.benchmark.gradle.BenchmarkTarget>>?
+    abstract val targets: LinkedHashSet<BenchmarkTarget<out kotlinx.benchmark.gradle.BenchmarkTarget>>?
 
     context(Project)
     fun applyTo() =

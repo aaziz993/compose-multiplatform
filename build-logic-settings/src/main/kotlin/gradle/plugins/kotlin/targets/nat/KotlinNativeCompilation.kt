@@ -6,11 +6,15 @@ import gradle.plugins.kotlin.KotlinCompilationTransformingSerializer
 import gradle.plugins.kotlin.KotlinSourceSet
 import gradle.plugins.kotlin.targets.nat.tasks.KotlinNativeCompileImpl
 import gradle.plugins.project.Dependency
-import gradle.plugins.project.DependencyKeyTransformingSerializer
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.KeepGeneratedSerializer
+
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-@Serializable
+@OptIn(ExperimentalSerializationApi::class)
+@KeepGeneratedSerializer
+@Serializable(with = KotlinNativeCompilationKeyTransformingSerializer::class)
 internal data class KotlinNativeCompilation(
     override val name: String,
     override val defaultSourceSet: KotlinSourceSet? = null,
@@ -19,9 +23,9 @@ internal data class KotlinNativeCompilation(
     override val output: KotlinCompilationOutput? = null,
     override val compileTaskProvider: KotlinNativeCompileImpl? = null,
     override val associatedCompilations: Set<String>? = null,
-    override val dependencies: Set<@Serializable(with = DependencyKeyTransformingSerializer::class) Dependency>? = null,
+    override val dependencies: Set<Dependency>? = null,
     // Interop DSL.
-    val cinterops: LinkedHashSet<@Serializable(with = DefaultCInteropSettingsKeyTransformingSerializer::class) DefaultCInteropSettings>? = null
+    val cinterops: LinkedHashSet<DefaultCInteropSettings>? = null
 ) : AbstractKotlinNativeCompilation<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeCompilation>() {
 
     context(Project)
@@ -34,7 +38,7 @@ internal data class KotlinNativeCompilation(
     }
 }
 
-internal object KotlinNativeCompilationKeyTransformingSerializer :
+private object KotlinNativeCompilationKeyTransformingSerializer :
     KotlinCompilationTransformingSerializer<KotlinNativeCompilation>(
-        KotlinNativeCompilation.serializer(),
+        KotlinNativeCompilation.generatedSerializer(),
     )

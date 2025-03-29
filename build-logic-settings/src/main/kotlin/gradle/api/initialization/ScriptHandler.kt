@@ -2,7 +2,7 @@ package gradle.api.initialization
 
 import gradle.api.artifacts.dsl.RepositoryHandler
 import gradle.plugins.project.Dependency
-import gradle.plugins.project.DependencyKeyTransformingSerializer
+
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.initialization.Settings
@@ -41,7 +41,7 @@ internal data class ScriptHandler(
      * @return the dependency handler. Never returns null.
      * @see .getConfigurations
      */
-    val dependencies: Set<@Serializable(with = DependencyKeyTransformingSerializer::class) Dependency>? = null,
+    val dependencies: Set<Dependency>? = null,
 ) {
 
     context(Settings)

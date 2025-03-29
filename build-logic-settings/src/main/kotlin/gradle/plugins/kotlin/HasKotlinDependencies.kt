@@ -1,8 +1,6 @@
 package gradle.plugins.kotlin
 
 import gradle.plugins.project.Dependency
-import gradle.plugins.project.DependencyKeyTransformingSerializer
-import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.HasKotlinDependencies
 
@@ -14,7 +12,7 @@ internal interface HasKotlinDependencies<T : HasKotlinDependencies> {
     /**
      * Configures all dependencies for this entity.
      */
-    val dependencies: Set<@Serializable(with = DependencyKeyTransformingSerializer::class) Dependency>?
+    val dependencies: Set<Dependency>?
 
     context(Project)
     fun applyTo(receiver: T) {

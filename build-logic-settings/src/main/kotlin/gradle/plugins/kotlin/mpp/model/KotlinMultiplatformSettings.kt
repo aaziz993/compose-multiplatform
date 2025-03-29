@@ -1,14 +1,11 @@
 package gradle.plugins.kotlin.mpp.model
 
-
 import gradle.accessors.catalog.libs
 import gradle.accessors.settings
 import gradle.plugins.java.JavaToolchainSpec
 import gradle.plugins.kotlin.KotlinCommonCompilerOptionsImpl
 import gradle.plugins.kotlin.KotlinSourceSet
-import gradle.plugins.kotlin.KotlinSourceSetKeyTransformingSerializer
 import gradle.plugins.kotlin.KotlinTarget
-import gradle.plugins.kotlin.KotlinTargetKeyTransformingSerializer
 import gradle.plugins.kotlin.cocoapods.model.CocoapodsSettings
 import gradle.plugins.kotlin.hierarchy.KotlinHierarchyBuilder
 import gradle.plugins.kotlin.mpp.KotlinMultiplatformExtension
@@ -27,8 +24,8 @@ internal data class KotlinMultiplatformSettings(
     override val coreLibrariesVersion: String? = null,
     override val explicitApi: ExplicitApiMode? = null,
     override val compilerOptions: KotlinCommonCompilerOptionsImpl? = null,
-    override val sourceSets: LinkedHashSet<@Serializable(with = KotlinSourceSetKeyTransformingSerializer::class) KotlinSourceSet> = linkedSetOf(),
-    override val targets: LinkedHashSet<@Serializable(with = KotlinTargetKeyTransformingSerializer::class) KotlinTarget<*>> = linkedSetOf(),
+    override val sourceSets: LinkedHashSet<KotlinSourceSet> = linkedSetOf(),
+    override val targets: LinkedHashSet<KotlinTarget<*>> = linkedSetOf(),
     override val applyHierarchyTemplate: KotlinHierarchyBuilder.Root? = null,
     val cocoapods: CocoapodsSettings = CocoapodsSettings(),
 ) : KotlinMultiplatformExtension() {

@@ -48,7 +48,7 @@ internal data class DokkaGeneratorParametersSpec(
      * The values are not used directly in this task, but they are required to be registered as a
      * task input for up-to-date checks
      */
-    val dokkaSourceSets: LinkedHashSet<@Serializable(with = DokkaSourceSetSpecKeyTransformingSerializer::class) DokkaSourceSetSpec>? = null,
+    val dokkaSourceSets: LinkedHashSet<DokkaSourceSetSpec>? = null,
     /** @see org.jetbrains.dokka.gradle.formats.DokkaPublication.finalizeCoroutines */
     val finalizeCoroutines: Boolean? = null,
 ) {

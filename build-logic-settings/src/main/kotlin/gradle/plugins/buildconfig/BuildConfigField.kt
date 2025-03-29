@@ -3,10 +3,14 @@ package gradle.plugins.buildconfig
 import gradle.api.NamedKeyTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.tryAssign
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-@Serializable
+@OptIn(ExperimentalSerializationApi::class)
+@KeepGeneratedSerializer
+@Serializable(with = BuildConfigFieldKeyTransformingSerializer::class)
 internal data class BuildConfigField(
     override val name: String? = null,
     val type: String? = null,
@@ -24,5 +28,5 @@ internal data class BuildConfigField(
     }
 }
 
-internal object BuildConfigFieldKeyTransformingSerializer
-    : NamedKeyTransformingSerializer<BuildConfigField>(BuildConfigField.serializer())
+private object BuildConfigFieldKeyTransformingSerializer
+    : NamedKeyTransformingSerializer<BuildConfigField>(BuildConfigField.generatedSerializer())

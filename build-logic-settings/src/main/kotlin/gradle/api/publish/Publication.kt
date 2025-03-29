@@ -12,7 +12,7 @@ import org.gradle.api.Project
  *
  * @since 1.3
  */
-@Serializable(with = PublicationSerializer::class)
+@Serializable(with = PublicationKeyTransformingSerializer::class)
 internal interface Publication<T : org.gradle.api.publish.Publication> : ProjectNamed<T> {
 
     /**
@@ -45,11 +45,11 @@ internal interface Publication<T : org.gradle.api.publish.Publication> : Project
     fun applyTo()
 }
 
-private object PublicationSerializer : JsonContentPolymorphicSerializer<Publication<*>>(
+private object PublicationContentPolymorphicSerializer : JsonContentPolymorphicSerializer<Publication<*>>(
     Publication::class,
 )
 
-internal object PublicationKeyTransformingSerializer : KeyTransformingSerializer<Publication<*>>(
-    PublicationSerializer,
+private object PublicationKeyTransformingSerializer : KeyTransformingSerializer<Publication<*>>(
+    PublicationContentPolymorphicSerializer,
     "type",
 )

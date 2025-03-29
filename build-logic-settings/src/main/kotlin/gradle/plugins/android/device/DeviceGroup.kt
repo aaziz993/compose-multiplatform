@@ -4,16 +4,20 @@ import com.android.build.api.dsl.Device
 import gradle.api.NamedKeyTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.applyTo
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
 /**
  * A group of devices to be run with tests using the Unified Test Platform.
  */
-@Serializable
+@OptIn(ExperimentalSerializationApi::class)
+@KeepGeneratedSerializer
+@Serializable(with = DeviceGroupKeyTransformingSerializer::class)
 internal data class DeviceGroup(
     override val name: String? = null,
-    val targetDevices: LinkedHashSet<@Serializable(with = DeviceImlKeyTransformingSerializer::class) DeviceImpl>? = null,
+    val targetDevices: LinkedHashSet<DeviceImpl>? = null,
 ) : ProjectNamed<com.android.build.api.dsl.DeviceGroup> {
 
     context(Project)
@@ -25,5 +29,5 @@ internal data class DeviceGroup(
     }
 }
 
-internal object DeviceGroupKeyTransformingSerializer
-    : NamedKeyTransformingSerializer<DeviceGroup>(DeviceGroup.serializer())
+private object DeviceGroupKeyTransformingSerializer
+    : NamedKeyTransformingSerializer<DeviceGroup>(DeviceGroup.generatedSerializer())

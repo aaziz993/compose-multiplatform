@@ -6,8 +6,6 @@ import gradle.accessors.settings
 import gradle.api.applyTo
 import gradle.api.tryAssign
 import gradle.plugins.dokka.plugin.DokkaPluginParametersBaseSpec
-import gradle.plugins.dokka.plugin.DokkaPluginParametersBaseSpecKeyTransformingSerializer
-import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.dokka.gradle.workers.ClassLoaderIsolation
 
@@ -125,7 +123,7 @@ internal interface DokkaExtension {
      * }
      * ```
      */
-    val dokkaPublications: LinkedHashSet<@Serializable(with = DokkaPublicationKeyTransformingSerializer::class) DokkaPublication>?
+    val dokkaPublications: LinkedHashSet<DokkaPublication>?
 
     /**
      * The container for all [DokkaSourceSet][DokkaSourceSetSpec]s in the current project.
@@ -168,7 +166,7 @@ internal interface DokkaExtension {
      * Some plugins can be configured via parameters, and those parameters are stored in this
      * container.
      */
-    val pluginsConfiguration: LinkedHashSet<@Serializable(with = DokkaPluginParametersBaseSpecKeyTransformingSerializer::class) DokkaPluginParametersBaseSpec<out org.jetbrains.dokka.gradle.engine.plugins.DokkaPluginParametersBaseSpec>>?
+    val pluginsConfiguration: LinkedHashSet<DokkaPluginParametersBaseSpec<out org.jetbrains.dokka.gradle.engine.plugins.DokkaPluginParametersBaseSpec>>?
 
     /**
      * The default version of Dokka dependencies that are used at runtime during generation.

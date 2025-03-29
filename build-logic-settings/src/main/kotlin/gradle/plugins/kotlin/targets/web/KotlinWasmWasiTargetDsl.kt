@@ -17,9 +17,9 @@ internal data class KotlinWasmWasiTargetDsl(
     override val name: String = "wasmWasi",
     override val withSourcesJar: Boolean? = null,
     override val mavenPublication: MavenPublication? = null,
-    override val compilations: LinkedHashSet<@Serializable(with = KotlinJsIrCompilationKeyTransformingSerializer::class) KotlinJsIrCompilation>? = null,
+    override val compilations: LinkedHashSet<KotlinJsIrCompilation>? = null,
     override val nodejs: KotlinJsNodeDsl? = null,
-    override val binaries: @Serializable(with = KotlinJsBinaryContainerTransformingSerializer::class) KotlinJsBinaryContainer? = null,
+    override val binaries: KotlinJsBinaryContainer? = null,
 ) : KotlinWasmTargetDsl<KotlinWasmWasiTargetDsl>,
     KotlinTargetWithNodeJsDsl,
     HasBinaries<KotlinJsBinaryContainer> {

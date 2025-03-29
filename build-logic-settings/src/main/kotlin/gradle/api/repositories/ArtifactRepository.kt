@@ -14,7 +14,7 @@ import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.api.file.Directory
 import org.gradle.api.initialization.Settings
 
-@Serializable(with = ArtifactRepositorySerializer::class)
+@Serializable(with = ArtifactRepositoryKeyTransformingSerializer::class)
 internal interface ArtifactRepository<T : org.gradle.api.artifacts.repositories.ArtifactRepository> : Named<T> {
 
     /**
@@ -48,12 +48,12 @@ internal interface ArtifactRepository<T : org.gradle.api.artifacts.repositories.
     fun applyTo(receiver: RepositoryHandler)
 }
 
-private object ArtifactRepositorySerializer : JsonContentPolymorphicSerializer<ArtifactRepository<*>>(
+private object ArtifactRepositoryContentPolymorphicSerializer : JsonContentPolymorphicSerializer<ArtifactRepository<*>>(
     ArtifactRepository::class,
 )
 
-internal object ArtifactRepositoryKeyTransformingSerializer : BaseKeyTransformingSerializer<ArtifactRepository<*>>(
-    ArtifactRepositorySerializer,
+private object ArtifactRepositoryKeyTransformingSerializer : BaseKeyTransformingSerializer<ArtifactRepository<*>>(
+    ArtifactRepositoryContentPolymorphicSerializer,
 ) {
 
     override fun transformKey(key: String, value: JsonElement?): JsonObject = JsonObject(

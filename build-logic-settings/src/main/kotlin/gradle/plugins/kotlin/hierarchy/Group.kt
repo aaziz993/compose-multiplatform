@@ -2,12 +2,16 @@ package gradle.plugins.kotlin.hierarchy
 
 import gradle.api.BaseNamed
 import gradle.api.NamedKeyTransformingSerializer
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 
-@Serializable
+@OptIn(ExperimentalSerializationApi::class)
+@KeepGeneratedSerializer
+@Serializable(with = GroupKeyTransformingSerializer::class)
 internal data class Group(
     override val name: String,
-    override val groups: Set<@Serializable(with = GroupKeyTransformingSerializer::class) Group>? = null,
+    override val groups: Set<Group>? = null,
     override val common: KotlinHierarchyBuilderImpl? = null,
     override val withCompilations: Set<String>? = null,
     override val excludeCompilations: Set<String>? = null,
@@ -47,4 +51,5 @@ internal data class Group(
     override val withLinuxArm64: Boolean? = null,
 ) : KotlinHierarchyBuilder<org.jetbrains.kotlin.gradle.plugin.KotlinHierarchyBuilder>, BaseNamed
 
-internal object GroupKeyTransformingSerializer : NamedKeyTransformingSerializer<Group>(Group.serializer())
+private object GroupKeyTransformingSerializer :
+    NamedKeyTransformingSerializer<Group>(Group.generatedSerializer())

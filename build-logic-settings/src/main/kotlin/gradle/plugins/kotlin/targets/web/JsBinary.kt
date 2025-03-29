@@ -23,7 +23,7 @@ internal interface JsBinary<T : org.jetbrains.kotlin.gradle.targets.js.ir.JsBina
     }
 }
 
-@Serializable(with = JsIrBinarySerializer::class)
+@Serializable(with = JsIrBinaryKeyTransformingSerializer::class)
 internal sealed class JsIrBinary<T : org.jetbrains.kotlin.gradle.targets.js.ir.JsIrBinary> : JsBinary<T> {
 
     abstract val generateTs: Boolean?
@@ -36,12 +36,12 @@ internal sealed class JsIrBinary<T : org.jetbrains.kotlin.gradle.targets.js.ir.J
     }
 }
 
-private object JsIrBinarySerializer : JsonContentPolymorphicSerializer<JsIrBinary<*>>(
+private object JsIrBinaryContentPolymorphicSerializer : JsonContentPolymorphicSerializer<JsIrBinary<*>>(
     JsIrBinary::class,
 )
 
-internal object JsIrBinaryKeyTransformingSerializer : KeyTransformingSerializer<JsIrBinary<*>>(
-    JsIrBinarySerializer,
+private object JsIrBinaryKeyTransformingSerializer : KeyTransformingSerializer<JsIrBinary<*>>(
+    JsIrBinaryContentPolymorphicSerializer,
     "type",
 )
 

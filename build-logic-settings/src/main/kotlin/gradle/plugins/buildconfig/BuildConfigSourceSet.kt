@@ -9,14 +9,18 @@ import gradle.plugins.buildconfig.generator.BuildConfigJavaGeneratorContentPolym
 import gradle.plugins.buildconfig.generator.BuildConfigKotlinGenerator
 import gradle.plugins.buildconfig.generator.BuildConfigKotlinGeneratorContentPolymorphicSerializer
 import gradle.plugins.buildconfig.tasks.BuildConfigTask
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-@Serializable
+@OptIn(ExperimentalSerializationApi::class)
+@KeepGeneratedSerializer
+@Serializable(with = BuildConfigSourceSetKeyTransformingSerializer::class)
 internal data class BuildConfigSourceSet(
     override val className: String? = null,
     override val packageName: String? = null,
-    override val buildConfigFields: LinkedHashSet<@Serializable(with = BuildConfigFieldKeyTransformingSerializer::class) BuildConfigField>? = null,
+    override val buildConfigFields: LinkedHashSet<BuildConfigField>? = null,
     override val name: String? = null,
     val generator: BuildConfigGenerator<*>? = null,
     val generateTask: BuildConfigTask? = null,
@@ -60,6 +64,6 @@ internal data class BuildConfigSourceSet(
     }
 }
 
-internal object BuildConfigSourceSetKeyTransformingSerializer : NamedKeyTransformingSerializer<BuildConfigSourceSet>(
-    BuildConfigSourceSet.serializer(),
+private object BuildConfigSourceSetKeyTransformingSerializer : NamedKeyTransformingSerializer<BuildConfigSourceSet>(
+    BuildConfigSourceSet.generatedSerializer(),
 )

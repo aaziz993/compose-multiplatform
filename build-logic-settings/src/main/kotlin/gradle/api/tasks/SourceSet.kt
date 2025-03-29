@@ -5,6 +5,8 @@ import gradle.api.NamedKeyTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.file.SourceDirectorySet
 import gradle.api.trySet
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -32,7 +34,9 @@ import org.gradle.api.Project
  * }
 </pre> *
  */
-@Serializable
+@OptIn(ExperimentalSerializationApi::class)
+@KeepGeneratedSerializer
+@Serializable(with = SourceSetKeyTransformingSerializer::class)
 internal data class SourceSet(
     /**
      * Returns the name of this source set.
@@ -103,6 +107,6 @@ internal data class SourceSet(
     }
 }
 
-internal object SourceSetKeyTransformingSerializer : NamedKeyTransformingSerializer<SourceSet>(
-    SourceSet.serializer(),
+private object SourceSetKeyTransformingSerializer : NamedKeyTransformingSerializer<SourceSet>(
+    SourceSet.generatedSerializer(),
 )

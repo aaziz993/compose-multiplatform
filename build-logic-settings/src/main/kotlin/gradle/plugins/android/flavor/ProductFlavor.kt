@@ -14,10 +14,14 @@ import gradle.plugins.android.application.ApplicationProductFlavor
 import gradle.plugins.android.compile.JavaCompileOptions
 import gradle.plugins.android.library.LibraryProductFlavor
 import gradle.plugins.android.test.TestProductFlavor
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-@Serializable
+@OptIn(ExperimentalSerializationApi::class)
+@KeepGeneratedSerializer
+@Serializable(with = ProductFlavorKeyTransformingSerializer::class)
 internal data class ProductFlavor(
     override val isDefault: Boolean? = null,
     override val applicationId: String? = null,
@@ -80,6 +84,6 @@ internal data class ProductFlavor(
     }
 }
 
-internal object ProductFlavorKeyTransformingSerializer : ProductFlavorDslKeyTransformingSerializer<ProductFlavor>(
-    ProductFlavor.serializer(),
+private object ProductFlavorKeyTransformingSerializer : ProductFlavorDslKeyTransformingSerializer<ProductFlavor>(
+    ProductFlavor.generatedSerializer(),
 )

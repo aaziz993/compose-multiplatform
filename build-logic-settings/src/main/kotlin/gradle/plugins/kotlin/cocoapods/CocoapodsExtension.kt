@@ -14,6 +14,8 @@ import gradle.api.trySet
 import gradle.ifTrue
 import gradle.plugins.kotlin.targets.nat.FrameworkSettings
 import java.net.URI
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonContentPolymorphicSerializer
 import kotlinx.serialization.json.JsonElement
@@ -111,7 +113,7 @@ internal interface CocoapodsExtension {
      */
     val pods: Set<Pod>?
 
-    val podDependencies: Set<@Serializable(with = CocoapodsDependencyKeyTransformingSerializer::class) CocoapodsDependency>?
+    val podDependencies: Set<CocoapodsDependency>?
 
     context(Project)
     fun applyTo() =
@@ -172,7 +174,9 @@ internal interface CocoapodsExtension {
             watchos?.applyTo(project.kotlin.cocoapods.watchos, project.settings.libs.versionOrNull("kotlin.cocoapods.watchosDeploymentTarget"))
         }
 
-    @Serializable
+    @OptIn(ExperimentalSerializationApi::class)
+    @KeepGeneratedSerializer
+    @Serializable(with = CocoapodsDependencyKeyTransformingSerializer::class)
     data class CocoapodsDependency(
         var name: String? = null,
         val moduleName: String? = null,
@@ -284,7 +288,7 @@ internal interface CocoapodsExtension {
     }
 
     object CocoapodsDependencyKeyTransformingSerializer : JsonTransformingSerializer<CocoapodsDependency>(
-        CocoapodsDependency.serializer(),
+        CocoapodsDependency.generatedSerializer(),
     ) {
 
         override fun transformDeserialize(element: JsonElement): JsonElement =

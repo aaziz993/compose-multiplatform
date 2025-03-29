@@ -3,13 +3,17 @@ package gradle.plugins.android
 import gradle.api.NamedKeyTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.trySet
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
 /**
  * Options for including [Prefab](https://google.github.io/prefab/) packages in AARs.
  */
-@Serializable
+@OptIn(ExperimentalSerializationApi::class)
+@KeepGeneratedSerializer
+@Serializable(with = PrefabKeyTransformingSerializer::class)
 internal data class Prefab(
     /**
      * The name of the library from the external native build to include in the AAR.
@@ -59,5 +63,5 @@ internal data class Prefab(
     }
 }
 
-internal object PrefabKeyTransformingSerializer
-    : NamedKeyTransformingSerializer<Prefab>(Prefab.serializer())
+private object PrefabKeyTransformingSerializer
+    : NamedKeyTransformingSerializer<Prefab>(Prefab.generatedSerializer())

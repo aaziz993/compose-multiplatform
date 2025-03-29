@@ -7,6 +7,8 @@ import gradle.accessors.catalog.resolveDependency
 import gradle.accessors.settings
 import gradle.serialization.serializer.BaseKeyTransformingSerializer
 import java.io.File
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
@@ -21,7 +23,9 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
 
 private val SUB_CONFIGURATIONS = listOf("kotlin", "npm", "devNpm", "optionalNpm", "peerNpm")
 
-@Serializable
+@OptIn(ExperimentalSerializationApi::class)
+@KeepGeneratedSerializer
+@Serializable(with = DependencyKeyTransformingSerializer::class)
 internal data class Dependency(
     val notation: String,
     val configuration: String = "implementation",
@@ -120,8 +124,8 @@ internal data class Dependency(
     }
 }
 
-internal object DependencyKeyTransformingSerializer : BaseKeyTransformingSerializer<Dependency>(
-    Dependency.serializer(),
+private object DependencyKeyTransformingSerializer : BaseKeyTransformingSerializer<Dependency>(
+    Dependency.generatedSerializer(),
 ) {
 
     override fun transformKey(key: String, value: JsonElement?): JsonObject = JsonObject(

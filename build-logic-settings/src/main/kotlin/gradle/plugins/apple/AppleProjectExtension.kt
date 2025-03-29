@@ -1,25 +1,20 @@
 package gradle.plugins.apple
 
 import gradle.accessors.apple
-
 import gradle.accessors.catalog.libs
 import gradle.accessors.moduleName
-
-
 import gradle.accessors.settings
 import gradle.api.applyTo
 import gradle.plugins.apple.target.AppleTarget
-import gradle.plugins.apple.target.AppleTargetKeyTransformingSerializer
 import gradle.plugins.apple.target.IosAppTarget
 import gradle.plugins.apple.target.IosFrameworkTarget
-import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
 internal interface AppleProjectExtension {
 
-    val sourceSets: LinkedHashSet<@Serializable(with = AppleSourceSetKeyTransformingSerializer::class) AppleSourceSet>?
+    val sourceSets: LinkedHashSet<AppleSourceSet>?
 
-    val targets: LinkedHashSet<@Serializable(with = AppleTargetKeyTransformingSerializer::class) AppleTarget<out org.jetbrains.gradle.apple.targets.AppleTarget>>?
+    val targets: LinkedHashSet<AppleTarget<out org.jetbrains.gradle.apple.targets.AppleTarget>>?
 
     val teamID: String?
     val iosApp: IosAppTarget?

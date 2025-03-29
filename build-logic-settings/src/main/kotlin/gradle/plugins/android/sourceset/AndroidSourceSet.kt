@@ -3,6 +3,8 @@ package gradle.plugins.android.sourceset
 import gradle.api.NamedKeyTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.trySet
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -10,7 +12,9 @@ import org.gradle.api.Project
  * An AndroidSourceSet represents a logical group of Java, aidl and RenderScript sources
  * as well as Android and non-Android (Java-style) resources.
  */
-@Serializable
+@OptIn(ExperimentalSerializationApi::class)
+@KeepGeneratedSerializer
+@Serializable(with = AndroidSourceSetKeyTransformingSerializer::class)
 internal data class AndroidSourceSet(
     /** Returns the name of this source set. */
     override val name: String? = null,
@@ -69,5 +73,5 @@ internal data class AndroidSourceSet(
     }
 }
 
-internal object AndroidSourceSetKeyTransformingSerializer
-    : NamedKeyTransformingSerializer<AndroidSourceSet>(AndroidSourceSet.serializer())
+private object AndroidSourceSetKeyTransformingSerializer
+    : NamedKeyTransformingSerializer<AndroidSourceSet>(AndroidSourceSet.generatedSerializer())
