@@ -44,7 +44,9 @@ internal data class Manifest(
             is Set<*> -> from
             else -> null
         }?.let { from ->
-            from.filterIsInstance<String>().toTypedArray().let(receiver::from)
+            from.filterIsInstance<String>().takeIf(List<*>::isNotEmpty)?.toTypedArray()?.let { from ->
+                receiver.from(*from)
+            }
 
             from.filterIsInstance<From>().forEach { (mergePath, mergeSpec) ->
                 receiver.from(mergePath) {

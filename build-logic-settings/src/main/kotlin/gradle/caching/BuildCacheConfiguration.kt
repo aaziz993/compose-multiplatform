@@ -2,6 +2,7 @@ package gradle.caching
 
 import gradle.caching.remote.DevelocityBuildCache
 import gradle.caching.remote.HttpBuildCache
+import gradle.serialization.serializer.NotSerializable
 import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings
 import org.gradle.caching.configuration.BuildCacheConfiguration
@@ -33,7 +34,7 @@ internal data class BuildCacheConfiguration(
      *
      * @param type the type of remote cache to configure.
      */
-    val remotes: LinkedHashSet<BuildCache<out org.gradle.caching.configuration.BuildCache>>? = null,
+    val remotes: LinkedHashSet<out BuildCache<org.gradle.caching.configuration.BuildCache>>? = null,
 ) {
 
     context(Settings)
