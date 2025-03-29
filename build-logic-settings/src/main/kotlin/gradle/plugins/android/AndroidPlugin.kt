@@ -6,7 +6,6 @@ import gradle.accessors.android
 
 import gradle.accessors.catalog.libs
 
-
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
 import gradle.api.configureEach
@@ -24,6 +23,7 @@ import javax.xml.stream.XMLOutputFactory
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.SourceSet
+import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
 
 private val testSourceSetNamePrefixes = listOf(
     SourceSet.TEST_SOURCE_SET_NAME,
@@ -35,11 +35,16 @@ internal class AndroidPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (projectProperties.kotlin.targets.none { target -> target is KotlinAndroidTarget }) {
+            val targetNames = projectProperties.kotlin.targets
+                .filterIsInstance<KotlinAndroidTarget>()
+                .map(KotlinAndroidTarget::targetName)
+
+            if (targetNames.isEmpty()) {
                 return@with
             }
 
-            (projectProperties.android?.let { android ->
+            (projectProperties.android
+                ?: error("Settings not provided for kotlin android targets: $targetNames")).let { android ->
                 when (android) {
                     is LibraryExtension -> plugins.apply(project.settings.libs.plugin("androidLibrary").id)
                     is BaseAppModuleExtension -> plugins.apply(project.settings.libs.plugin("androidApplication").id)
