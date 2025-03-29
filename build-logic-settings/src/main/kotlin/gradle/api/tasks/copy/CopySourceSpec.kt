@@ -1,6 +1,7 @@
 package gradle.api.tasks.copy
 
 import gradle.accessors.files
+import java.util.LinkedHashSet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.file.CopySourceSpec
@@ -17,12 +18,16 @@ internal interface CopySourceSpec<T : CopySourceSpec> {
      * @param sourcePath Path to source for the copy
      * @param configureAction action for configuring the child CopySpec
      */
-    val from: @Serializable(with = FromTransformingSerializer::class) LinkedHashSet<Any>?
+    val from: @Serializable(with = FromContentPolymorphicSerializer::class) Any?
 
     context(Project)
     @Suppress("UNCHECKED_CAST")
     fun applyTo(receiver: T) {
-        from?.let { from ->
+        when (val from = from) {
+            is String, is From -> setOf(from)
+            is Set<*> -> from
+            else -> null
+        }?.let { from ->
             from.filterIsInstance<String>().toTypedArray().let(receiver::from)
 
             from.filterIsInstance<From>().forEach { (sourcePath, copySpec) ->
