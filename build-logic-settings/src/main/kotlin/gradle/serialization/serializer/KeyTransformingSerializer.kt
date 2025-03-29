@@ -8,8 +8,8 @@ import kotlinx.serialization.json.JsonPrimitive
 
 public abstract class KeyTransformingSerializer<T : Any>(
     tSerializer: KSerializer<T>,
-    val keyAs: String,
-    val valueAs: String? = null,
+    public val keyAs: String,
+    public val valueAs: String? = null,
 ) : BaseKeyTransformingSerializer<T>(tSerializer) {
 
     override fun transformKey(key: String, value: JsonElement?): JsonObject = JsonObject(
