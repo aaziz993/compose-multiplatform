@@ -26,9 +26,3 @@ internal data class BuildConfigKotlinGenerator(
         receiver::internalVisibility trySet internalVisibility
     }
 }
-
-internal object BuildConfigKotlinGeneratorContentPolymorphicSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
-
-    override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
-        if (element is JsonPrimitive) Boolean.serializer() else BuildConfigKotlinGenerator.serializer()
-}

@@ -23,9 +23,3 @@ internal data class BuildConfigJavaGenerator(
         receiver::defaultVisibility trySet defaultVisibility
     }
 }
-
-internal object BuildConfigJavaGeneratorContentPolymorphicSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
-
-    override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
-        if (element is JsonPrimitive) Boolean.serializer() else BuildConfigJavaGenerator.serializer()
-}

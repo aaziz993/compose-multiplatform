@@ -24,8 +24,8 @@ internal data class BuildConfigSourceSet(
     override val name: String? = null,
     val generator: BuildConfigGenerator<*>? = null,
     val generateTask: BuildConfigTask? = null,
-    val useJavaOutput: @Serializable(with = BuildConfigJavaGeneratorContentPolymorphicSerializer::class) Any? = null,
-    val useKotlinOutput: @Serializable(with = BuildConfigKotlinGeneratorContentPolymorphicSerializer::class) Any? = null,
+    val useJavaOutput: BuildConfigJavaGenerator? = null,
+    val useKotlinOutput: BuildConfigKotlinGenerator? = null,
     /**
      * Creates a secondary build class with the given [className] in the same package
      */
@@ -44,16 +44,12 @@ internal data class BuildConfigSourceSet(
 
         receiver.generator tryAssign generator?.toBuildConfigGenerator()
 
-        when (useJavaOutput) {
-            is Boolean -> receiver.useJavaOutput()
-            is BuildConfigJavaGenerator -> receiver.useJavaOutput(useJavaOutput::applyTo)
-            else -> Unit
+        useJavaOutput?.let { useJavaOutput ->
+            receiver.useJavaOutput(useJavaOutput::applyTo)
         }
 
-        when (useKotlinOutput) {
-            is Boolean -> receiver.useKotlinOutput()
-            is BuildConfigKotlinGenerator -> receiver.useKotlinOutput(useKotlinOutput::applyTo)
-            else -> Unit
+        useKotlinOutput?.let { useKotlinOutput ->
+            receiver.useKotlinOutput(useKotlinOutput::applyTo)
         }
 
         forClass?.forEach { forClass ->
@@ -64,6 +60,5 @@ internal data class BuildConfigSourceSet(
     }
 }
 
-private object BuildConfigSourceSetKeyValueTransformingSerializer : NamedKeyValueTransformingSerializer<BuildConfigSourceSet>(
-    BuildConfigSourceSet.generatedSerializer(),
-)
+private object BuildConfigSourceSetKeyValueTransformingSerializer
+    : NamedKeyValueTransformingSerializer<BuildConfigSourceSet>(BuildConfigSourceSet.generatedSerializer())
