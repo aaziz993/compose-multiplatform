@@ -7,6 +7,7 @@ import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
 import gradle.serialization.serializer.JsonKeyValueTransformingContentPolymorphicSerializer
 import groovy.lang.MissingPropertyException
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -344,7 +345,8 @@ internal interface Task<T : org.gradle.api.Task> : ProjectNamed<T> {
     fun applyTo()
 }
 
-private object TaskKeyValueTransformingContentPolymorphicSerializer : JsonKeyValueTransformingContentPolymorphicSerializer<Task<*>>(
+private class TaskKeyValueTransformingContentPolymorphicSerializer<T : org.gradle.api.Task>(serializer: KSerializer<T>)
+    : JsonKeyValueTransformingContentPolymorphicSerializer<Task<*>>(
     Task::class,
 )
 
@@ -353,8 +355,6 @@ internal fun <T : org.gradle.api.Task> Task<T>.applyTo(receiver: TaskCollection<
     applyTo(receiver) { name, action ->
         project.tasks.register(name, receiver.elementType(), action)
     }
-
-
 
 @Serializable
 @SerialName("Task")

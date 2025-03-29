@@ -8,6 +8,7 @@ import gradle.collection.SerializableAnyMap
 import gradle.plugins.apple.AppleBuildSettings
 import gradle.plugins.apple.BuildConfiguration
 import gradle.serialization.serializer.JsonKeyValueTransformingContentPolymorphicSerializer
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -56,6 +57,9 @@ internal interface AppleTarget<T : org.jetbrains.gradle.apple.targets.AppleTarge
     }
 }
 
-private object AppleTargetKeyValueTransformingContentPolymorphicSerializer : JsonKeyValueTransformingContentPolymorphicSerializer<AppleTarget<*>>(
+private class AppleTargetKeyValueTransformingContentPolymorphicSerializer<
+    T : org.jetbrains.gradle.apple.targets.AppleTarget
+    >(serializer: KSerializer<T>)
+    : JsonKeyValueTransformingContentPolymorphicSerializer<AppleTarget<*>>(
     AppleTarget::class,
 )

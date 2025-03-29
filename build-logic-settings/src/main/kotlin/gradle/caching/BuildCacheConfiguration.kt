@@ -34,7 +34,7 @@ internal data class BuildCacheConfiguration(
      *
      * @param type the type of remote cache to configure.
      */
-    val remotes: LinkedHashSet<BuildCache<*>>? = null,
+    val remotes: LinkedHashSet<BuildCache<out org.gradle.caching.configuration.BuildCache>>? = null,
 ) {
 
     context(Settings)

@@ -10,7 +10,7 @@ public open class JsonKeyValueTransformingContentPolymorphicSerializer<T : Any>(
     keyAs: String = classDiscriminator,
     valueAs: String? = null,
 ) : JsonKeyValueTransformingSerializer<T>(
-    JsonContentPolymorphicSerializer<T>(
+    JsonContentPolymorphicSerializer(
         baseClass,
         classDiscriminator,
     ),

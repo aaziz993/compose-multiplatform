@@ -28,9 +28,9 @@ public object NotSerializable : KSerializer<Nothing> {
  * This requires that the type parameter is not used during serialization.
  */
 @Suppress("UNCHECKED_CAST")
-public fun <T, T1> ignoreTypeParameters(createSerializer: KFunction1<KSerializer<T1>, KSerializer<T>>): KSerializer<T> =
+public fun <T> ignoreTypeParameters(createSerializer: (KSerializer<Nothing>) -> KSerializer<T>): KSerializer<T> =
     object : KSerializer<T> {
-        val innerSerializer = createSerializer.invoke(NotSerializable as KSerializer<T1>)
+        val innerSerializer = createSerializer(NotSerializable)
         override val descriptor: SerialDescriptor = innerSerializer.descriptor
 
         override fun serialize(encoder: Encoder, value: T) =
