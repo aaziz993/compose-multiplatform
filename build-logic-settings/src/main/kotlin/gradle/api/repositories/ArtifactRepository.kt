@@ -56,7 +56,6 @@ private class ArtifactRepositoryObjectTransformingContentPolymorphicSerializer(s
                 value?.let { value ->
                     put("type", JsonPrimitive(key))
                     if (value is JsonPrimitive) put("url", value)
-                    else putAll(value.jsonObject)
                 } ?: run {
                     put("type", JsonPrimitive("maven"))
                     put("url", JsonPrimitive(key))

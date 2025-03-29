@@ -126,21 +126,19 @@ private object DependencyObjectTransformingSerializer : JsonBaseObjectTransformi
     Dependency.generatedSerializer(),
 ) {
 
-    override fun transformKey(key: String, value: JsonElement?): JsonObject = JsonObject(
-        mapOf(
-            when {
-                value == null -> "notation"
-                key in SUB_CONFIGURATIONS -> "subConfiguration"
-                else -> "configuration"
-            } to JsonPrimitive(key),
-        ),
-    )
-
-    override fun transformValue(key: String, value: JsonElement): JsonObject = JsonObject(
-        mapOf(
-            "notation" to value,
-        ),
-    )
+    override fun transformDeserialize(key: String, value: JsonElement?): JsonObject =
+        JsonObject(
+            buildMap {
+                value?.let { value ->
+                    put(
+                        if (key in SUB_CONFIGURATIONS) "subConfiguration"
+                        else "configuration",
+                        JsonPrimitive(key),
+                    )
+                    if (value is JsonPrimitive) put("notation", value)
+                } ?: put("notation", JsonPrimitive(key))
+            },
+        )
 }
 
 
