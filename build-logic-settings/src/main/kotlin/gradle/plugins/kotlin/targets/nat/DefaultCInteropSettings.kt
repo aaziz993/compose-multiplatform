@@ -1,5 +1,6 @@
 package gradle.plugins.kotlin.targets.nat
 
+import gradle.api.NamedKeyValueTransformingSerializer
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
@@ -21,4 +22,4 @@ internal data class DefaultCInteropSettings(
 ) : CInteropSettings<org.jetbrains.kotlin.gradle.plugin.mpp.DefaultCInteropSettings>
 
 private object DefaultCInteropSettingsKeyValueTransformingSerializer
-    : CInteropSettingsKeyValueTransformingSerializer<DefaultCInteropSettings>(DefaultCInteropSettings.generatedSerializer())
+    : NamedKeyValueTransformingSerializer<DefaultCInteropSettings>(DefaultCInteropSettings.generatedSerializer())

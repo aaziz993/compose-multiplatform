@@ -4,7 +4,7 @@ import gradle.collection.SerializableAnyMap
 import gradle.plugins.android.AarMetadata
 import gradle.plugins.android.BuildConfigField
 import gradle.plugins.android.BuildType
-import gradle.plugins.android.BuildTypeKeyValueTransformingSerializer
+
 import gradle.plugins.android.ExternalNativeBuildFlags
 import gradle.plugins.android.Ndk
 import gradle.plugins.android.Optimization
@@ -36,7 +36,7 @@ import org.gradle.api.Project
  */
 @OptIn(ExperimentalSerializationApi::class)
 @KeepGeneratedSerializer
-@Serializable(with = LibraryBuildTypeKeyValueTransformingSerializer::class)
+@Serializable(with = LibraryNamedKeyValueTransformingSerializer::class)
 internal data class LibraryBuildType(
     override val name: String,
     override val enableUnitTestCoverage: Boolean? = null,
@@ -84,6 +84,6 @@ internal data class LibraryBuildType(
     }
 }
 
-private object LibraryBuildTypeKeyValueTransformingSerializer : BuildTypeKeyValueTransformingSerializer<LibraryBuildType>(
+private object LibraryNamedKeyValueTransformingSerializer : NamedKeyValueTransformingSerializer<LibraryBuildType>(
     LibraryBuildType.generatedSerializer(),
 )

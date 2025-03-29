@@ -37,10 +37,6 @@ internal interface KotlinNativeBinaryTestRun<T : org.jetbrains.kotlin.gradle.tar
     }
 }
 
-internal abstract class KotlinNativeBinaryTestRunKeyValueTransformingSerializer<T : KotlinNativeBinaryTestRun<*>>(
-    tSerializer: KSerializer<T>
-) : NamedKeyValueTransformingSerializer<T>(tSerializer)
-
 @OptIn(ExperimentalSerializationApi::class)
 @KeepGeneratedSerializer
 @Serializable(with = KotlinNativeBinaryTestRunKeyImplTransformingSerializer::class)
@@ -50,6 +46,7 @@ internal data class KotlinNativeBinaryTestRunImpl(
     override val name: String? = null,
 ) : KotlinNativeBinaryTestRun<org.jetbrains.kotlin.gradle.targets.native.KotlinNativeBinaryTestRun>
 
-private object KotlinNativeBinaryTestRunKeyImplTransformingSerializer : KotlinNativeBinaryTestRunKeyValueTransformingSerializer<KotlinNativeBinaryTestRunImpl>(
+private object KotlinNativeBinaryTestRunKeyImplTransformingSerializer
+    : NamedKeyValueTransformingSerializer<KotlinNativeBinaryTestRunImpl>(
     KotlinNativeBinaryTestRunImpl.generatedSerializer(),
 )

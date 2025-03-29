@@ -57,9 +57,7 @@ internal interface AppleTarget<T : org.jetbrains.gradle.apple.targets.AppleTarge
     }
 }
 
-private class AppleTargetKeyValueTransformingContentPolymorphicSerializer<
-    T : org.jetbrains.gradle.apple.targets.AppleTarget
-    >(serializer: KSerializer<T>)
+private class AppleTargetKeyValueTransformingContentPolymorphicSerializer(serializer: KSerializer<Nothing>)
     : JsonKeyValueTransformingContentPolymorphicSerializer<AppleTarget<*>>(
     AppleTarget::class,
 )

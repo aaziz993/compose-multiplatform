@@ -318,7 +318,7 @@ internal interface CInteropSettings<T : org.jetbrains.kotlin.gradle.plugin.CInte
          *                     includeDirs {
          *                         headerFilterOnly(project.file("include/libs"))
          *                     }
-         *                 }internal abstract class BuildTypeKeyValueTransformingSerializer<T : BuildType<*>>(tSerializer: KSerializer<T>)
+         *                 }internal abstract class NamedKeyValueTransformingSerializer<T : BuildType<*>>(tSerializer: KSerializer<T>)
          *     : NamedKeyValueTransformingSerializer<T>(tSerializer)
          *             }
          *         }
@@ -350,6 +350,3 @@ internal interface CInteropSettings<T : org.jetbrains.kotlin.gradle.plugin.CInte
             }
     }
 }
-
-internal abstract class CInteropSettingsKeyValueTransformingSerializer<T : CInteropSettings<*>>(tSerializer: KSerializer<T>)
-    : NamedKeyValueTransformingSerializer<T>(tSerializer)

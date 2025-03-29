@@ -54,9 +54,7 @@ internal interface KotlinTarget<T : org.jetbrains.kotlin.gradle.plugin.KotlinTar
     fun applyTo()
 }
 
-private class KotlinTargetKeyValueTransformingContentPolymorphicSerializer<
-    T: org.jetbrains.kotlin.gradle.plugin.KotlinTarget
-    >(serializer: KSerializer<T>)
+private class KotlinTargetKeyValueTransformingContentPolymorphicSerializer(serializer: KSerializer<Nothing>)
     : JsonKeyValueTransformingContentPolymorphicSerializer<KotlinTarget<*>>(KotlinTarget::class)
 
 @Serializable

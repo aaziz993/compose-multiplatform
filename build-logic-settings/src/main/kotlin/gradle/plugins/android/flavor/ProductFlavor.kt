@@ -1,5 +1,6 @@
 package gradle.plugins.android.flavor
 
+import gradle.api.NamedKeyValueTransformingSerializer
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.android.AarMetadata
 import gradle.plugins.android.BuildConfigField
@@ -84,6 +85,6 @@ internal data class ProductFlavor(
     }
 }
 
-private object ProductFlavorKeyValueTransformingSerializer : ProductFlavorDslKeyValueTransformingSerializer<ProductFlavor>(
+private object ProductFlavorKeyValueTransformingSerializer : NamedKeyValueTransformingSerializer<ProductFlavor>(
     ProductFlavor.generatedSerializer(),
 )

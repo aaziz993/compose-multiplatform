@@ -14,10 +14,6 @@ import org.gradle.api.Project
 @Suppress("UnstableApiUsage")
 internal interface Device<T : com.android.build.api.dsl.Device> : ProjectNamed<T>
 
-internal abstract class DeviceKeyValueTransformingSerializer<T : Device<*>>(
-    tSerializer: KSerializer<T>
-) : NamedKeyValueTransformingSerializer<T>(tSerializer)
-
 @Suppress("UnstableApiUsage")
 @OptIn(ExperimentalSerializationApi::class)
 @KeepGeneratedSerializer
@@ -32,4 +28,4 @@ internal data class DeviceImpl(
 }
 
 private object DeviceImlKeyValueTransformingSerializer
-    : DeviceKeyValueTransformingSerializer<DeviceImpl>(DeviceImpl.generatedSerializer())
+    : NamedKeyValueTransformingSerializer<DeviceImpl>(DeviceImpl.generatedSerializer())

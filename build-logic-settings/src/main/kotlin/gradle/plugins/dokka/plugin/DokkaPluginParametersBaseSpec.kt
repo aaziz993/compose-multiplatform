@@ -22,9 +22,7 @@ internal abstract class DokkaPluginParametersBaseSpec<T : org.jetbrains.dokka.gr
     abstract val pluginFqn: String
 }
 
-private class DokkaPluginParametersBaseSpecKeyValueTransformingContentPolymorphicSerializer<
-    T : org.jetbrains.dokka.gradle.engine.plugins.DokkaPluginParametersBaseSpec
-    >(serializer: KSerializer<T>)
+private class DokkaPluginParametersBaseSpecKeyValueTransformingContentPolymorphicSerializer(serializer: KSerializer<Nothing>)
     : JsonKeyValueTransformingContentPolymorphicSerializer<DokkaPluginParametersBaseSpec<*>>(
     DokkaPluginParametersBaseSpec::class,
 )

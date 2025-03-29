@@ -45,9 +45,7 @@ internal interface Publication<T : org.gradle.api.publish.Publication> : Project
     fun applyTo()
 }
 
-private class PublicationKeyValueTransformingContentPolymorphicSerializer<
-    T : org.gradle.api.publish.Publication
-    >(serializer: KSerializer<T>)
+private class PublicationKeyValueTransformingContentPolymorphicSerializer(serializer: KSerializer<Nothing>)
     : JsonKeyValueTransformingContentPolymorphicSerializer<Publication<*>>(
     Publication::class,
 )

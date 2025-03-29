@@ -345,7 +345,7 @@ internal interface Task<T : org.gradle.api.Task> : ProjectNamed<T> {
     fun applyTo()
 }
 
-private class TaskKeyValueTransformingContentPolymorphicSerializer<T : org.gradle.api.Task>(serializer: KSerializer<T>)
+private class TaskKeyValueTransformingContentPolymorphicSerializer(serializer: KSerializer<Nothing>)
     : JsonKeyValueTransformingContentPolymorphicSerializer<Task<*>>(
     Task::class,
 )

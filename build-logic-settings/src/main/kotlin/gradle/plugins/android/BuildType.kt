@@ -208,6 +208,3 @@ internal interface BuildType<T : com.android.build.api.dsl.BuildType> : ProjectN
         vcsInfo?.applyTo(receiver.vcsInfo)
     }
 }
-
-internal abstract class BuildTypeKeyValueTransformingSerializer<T : BuildType<*>>(tSerializer: KSerializer<T>)
-    : NamedKeyValueTransformingSerializer<T>(tSerializer)

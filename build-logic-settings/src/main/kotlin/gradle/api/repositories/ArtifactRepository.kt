@@ -48,9 +48,7 @@ internal interface ArtifactRepository<T : org.gradle.api.artifacts.repositories.
     fun applyTo(receiver: RepositoryHandler)
 }
 
-private class ArtifactRepositoryKeyValueTransformingContentPolymorphicSerializer<
-    T : org.gradle.api.artifacts.repositories.ArtifactRepository
-    >(serializer: KSerializer<T>)
+private class ArtifactRepositoryKeyValueTransformingContentPolymorphicSerializer(serializer: KSerializer<Nothing>)
     : JsonBaseKeyValueTransformingContentPolymorphicSerializer<ArtifactRepository<*>>(
     ArtifactRepository::class,
 ) {

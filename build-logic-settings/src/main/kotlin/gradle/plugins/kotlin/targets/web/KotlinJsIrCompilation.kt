@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin.targets.web
 
 import gradle.plugins.kotlin.KotlinCompilationOutput
-import gradle.plugins.kotlin.KotlinCompilationTransformingSerializer
+
 import gradle.plugins.kotlin.KotlinSourceSet
 import gradle.plugins.project.Dependency
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -38,6 +38,6 @@ internal data class KotlinJsIrCompilation(
 }
 
 private object KotlinJsIrCompilationKeyValueTransformingSerializer :
-    KotlinCompilationTransformingSerializer<KotlinJsIrCompilation>(
+    NamedKeyValueTransformingSerializer<KotlinJsIrCompilation>(
         KotlinJsIrCompilation.generatedSerializer(),
     )

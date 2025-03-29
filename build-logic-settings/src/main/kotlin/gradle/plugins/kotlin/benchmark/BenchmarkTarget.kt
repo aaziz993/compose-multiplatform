@@ -18,8 +18,6 @@ internal abstract class BenchmarkTarget<T : kotlinx.benchmark.gradle.BenchmarkTa
     }
 }
 
-private class BenchmarkTargetKeyValueTransformingContentPolymorphicSerializer<
-    T: kotlinx.benchmark.gradle.BenchmarkTarget
-    >(serializer: KSerializer<T>) : JsonKeyValueTransformingContentPolymorphicSerializer<BenchmarkTarget<*>>(
+private class BenchmarkTargetKeyValueTransformingContentPolymorphicSerializer(serializer: KSerializer<Nothing>) : JsonKeyValueTransformingContentPolymorphicSerializer<BenchmarkTarget<*>>(
     BenchmarkTarget::class,
 )

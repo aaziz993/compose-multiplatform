@@ -171,6 +171,3 @@ internal interface ProductFlavorDsl<T : ProductFlavor> : ProjectNamed<T>, BaseFl
         receiver.matchingFallbacks tryAddAll matchingFallbacks
     }
 }
-
-internal abstract class ProductFlavorDslKeyValueTransformingSerializer<T : ProductFlavorDsl<*>>(tSerializer: KSerializer<T>)
-    : NamedKeyValueTransformingSerializer<T>(tSerializer)

@@ -1,6 +1,7 @@
 package gradle.plugins.kotlin
 
 import gradle.accessors.files
+import gradle.api.NamedKeyValueTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.getByNameOrAll
 import gradle.api.tryPlus
@@ -136,13 +137,6 @@ internal interface KotlinCompilation<T : org.jetbrains.kotlin.gradle.plugin.Kotl
             ?.forEach(receiver::associateWith)
     }
 }
-
-internal abstract class KotlinCompilationTransformingSerializer<T : KotlinCompilation<*>>(
-    tSerializer: KSerializer<T>
-) : JsonKeyValueTransformingSerializer<T>(
-    tSerializer,
-    "compilationName",
-)
 
 @Serializable
 internal data class KotlinCompilationImpl(

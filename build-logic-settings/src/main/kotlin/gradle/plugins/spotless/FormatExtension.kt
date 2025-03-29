@@ -230,9 +230,7 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
     )
 }
 
-private class FormatExtensionKeyValueTransformingContentPolymorphicSerializer<
-    T : com.diffplug.gradle.spotless.FormatExtension
-    >(serializer: KSerializer<T>) : JsonKeyValueTransformingContentPolymorphicSerializer<FormatExtension<*>>(
+private class FormatExtensionKeyValueTransformingContentPolymorphicSerializer(serializer: KSerializer<Nothing>) : JsonKeyValueTransformingContentPolymorphicSerializer<FormatExtension<*>>(
     FormatExtension::class,
 )
 

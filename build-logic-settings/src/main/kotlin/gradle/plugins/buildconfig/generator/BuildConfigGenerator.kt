@@ -1,9 +1,10 @@
 package gradle.plugins.buildconfig.generator
 
 import gradle.serialization.serializer.JsonContentPolymorphicSerializer
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 
-@Serializable(with = BuildConfigGeneratorSerializer::class)
+@Serializable(with = BuildConfigGeneratorContentPolymorphicSerializer::class)
 internal interface BuildConfigGenerator<T : com.github.gmazzo.gradle.plugins.generators.BuildConfigGenerator> {
 
     fun toBuildConfigGenerator(): com.github.gmazzo.gradle.plugins.generators.BuildConfigGenerator
@@ -11,6 +12,7 @@ internal interface BuildConfigGenerator<T : com.github.gmazzo.gradle.plugins.gen
     fun applyTo(receiver: T)
 }
 
-private object BuildConfigGeneratorSerializer : JsonContentPolymorphicSerializer<BuildConfigGenerator<*>>(
+private class BuildConfigGeneratorContentPolymorphicSerializer(serializer: KSerializer<Nothing>)
+    : JsonContentPolymorphicSerializer<BuildConfigGenerator<*>>(
     BuildConfigGenerator::class,
 )

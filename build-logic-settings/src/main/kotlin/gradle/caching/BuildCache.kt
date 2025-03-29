@@ -33,9 +33,7 @@ internal interface BuildCache<T : org.gradle.caching.configuration.BuildCache> {
     }
 }
 
-private class BuildKeyValueTransformingContentPolymorphicSerializer<
-    T : org.gradle.caching.configuration.BuildCache
-    >(serializer: KSerializer<T>)
+private class BuildKeyValueTransformingContentPolymorphicSerializer(serializer: KSerializer<Nothing>)
     : JsonKeyValueTransformingContentPolymorphicSerializer<BuildCache<*>>(
     BuildCache::class,
 )

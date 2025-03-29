@@ -1,10 +1,12 @@
 package gradle.plugins.kotlin.mpp
 
+import gradle.api.NamedKeyValueTransformingSerializer
 import gradle.plugins.java.JavaCompile
 import gradle.plugins.kotlin.KotlinCompilation
 import gradle.plugins.kotlin.KotlinCompilationOutput
-import gradle.plugins.kotlin.KotlinCompilationTransformingSerializer
+
 import gradle.plugins.kotlin.KotlinSourceSet
+import gradle.plugins.kotlin.NamedKeyValueTransformingSerializer
 import gradle.plugins.kotlin.targets.jvm.KotlinJvmCompilerOptions
 import gradle.plugins.kotlin.tasks.KotlinCompilationTaskImpl
 import gradle.plugins.project.Dependency
@@ -50,6 +52,6 @@ internal data class KotlinJvmAndroidCompilation(
 }
 
 private object KotlinJvmAndroidCompilationKeyValueTransformingSerializer :
-    KotlinCompilationTransformingSerializer<KotlinJvmAndroidCompilation>(
+    NamedKeyValueTransformingSerializer<KotlinJvmAndroidCompilation>(
         KotlinJvmAndroidCompilation.generatedSerializer(),
     )
