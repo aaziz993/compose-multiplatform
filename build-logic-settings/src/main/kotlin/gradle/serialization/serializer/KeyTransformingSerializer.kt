@@ -6,7 +6,7 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 
-internal abstract class KeyTransformingSerializer<T : Any>(
+public abstract class KeyTransformingSerializer<T : Any>(
     tSerializer: KSerializer<T>,
     val keyAs: String,
     val valueAs: String? = null,

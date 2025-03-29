@@ -11,7 +11,7 @@ import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.json.JsonDecoder
 import kotlinx.serialization.json.JsonEncoder
 
-internal object AnySerializer : KSerializer<Any> {
+public object AnySerializer : KSerializer<Any> {
 
     override val descriptor: SerialDescriptor
         get() = PrimitiveSerialDescriptor("Any", PrimitiveKind.STRING)

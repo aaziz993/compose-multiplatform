@@ -14,7 +14,7 @@ import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.serializer
 import org.reflections.Reflections
 
-internal open class JsonContentPolymorphicSerializer<T : Any>(
+public open class JsonContentPolymorphicSerializer<T : Any>(
     private val baseClass: KClass<T>,
     private val classDiscriminator: String = "type",
 ) : JsonContentPolymorphicSerializer<T>(baseClass) {
@@ -26,7 +26,7 @@ internal open class JsonContentPolymorphicSerializer<T : Any>(
             ?: throw SerializationException("Polymorphic serializer not found for: $element")
     }
 
-    companion object {
+    public companion object {
 
         @Suppress("UNCHECKED_CAST")
         private fun <T : Any> KClass<out T>.getPolymorphicSerializer(type: String): KSerializer<T>? =
