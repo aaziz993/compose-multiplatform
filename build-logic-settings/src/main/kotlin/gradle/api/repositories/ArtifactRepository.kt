@@ -9,6 +9,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.jsonObject
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.api.file.Directory
@@ -51,17 +52,17 @@ private class ArtifactRepositoryObjectTransformingContentPolymorphicSerializer(s
     ArtifactRepository::class,
 ) {
 
-    override fun transformKey(key: String, value: JsonElement?): JsonObject = JsonObject(
-        if (value == null && key.isValidUrl) mapOf(
-            "type" to JsonPrimitive("maven"),
-            "url" to JsonPrimitive(key),
+    override fun transformDeserialize(key: String, value: JsonElement?): JsonObject =
+        JsonObject(
+            buildMap {
+                value?.let { value ->
+                    put("type", JsonPrimitive(key))
+                    if (value is JsonPrimitive) put("url", value)
+                    else putAll(value.jsonObject)
+                } ?: run {
+                    put("type", JsonPrimitive("maven"))
+                    put("url", JsonPrimitive(key))
+                }
+            },
         )
-        else mapOf("type" to JsonPrimitive(key)),
-    )
-
-    override fun transformValue(key: String, value: JsonElement): JsonObject = JsonObject(
-        mapOf(
-            "url" to value,
-        ),
-    )
 }
