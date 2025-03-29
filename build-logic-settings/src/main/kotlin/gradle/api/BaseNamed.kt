@@ -88,11 +88,11 @@ internal fun <T> ProjectNamed<T>.applyTo(receiver: NamedDomainObjectContainer<ou
 
 internal interface Named<T> : SettingsNamed<T>, ProjectNamed<T> {
 
-//    context(Settings)
-//    override fun applyTo(receiver: T)
-//
-//    context(Project)
-//    override fun applyTo(receiver: T)
+    context(Settings)
+    override fun applyTo(receiver: T)
+
+    context(Project)
+    override fun applyTo(receiver: T)
 }
 
 internal fun <T> DomainObjectCollection<out T>.maybeNamedCreateOrEach(

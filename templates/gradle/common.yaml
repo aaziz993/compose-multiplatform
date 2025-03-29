@@ -402,5 +402,3 @@ tasks:
   - ShadowJar:
       duplicatesStrategy: EXCLUDE
       mergeServiceFiles: true
-
-localPropertiesFile: ../local.properties

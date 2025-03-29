@@ -144,6 +144,9 @@ public class SettingsPlugin : Plugin<Settings> {
                     project.applyTo()
                 }
 
+                // Include flat subprojects.
+                projectProperties.includeFlat?.let(::includeFlat)
+
                 projectProperties.buildCache?.applyTo(buildCache)
             }
 

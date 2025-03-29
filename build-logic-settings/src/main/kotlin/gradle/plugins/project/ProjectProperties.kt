@@ -1,6 +1,7 @@
 package gradle.plugins.project
 
 import gradle.accessors.projectProperties
+import gradle.accessors.settings
 import gradle.api.initialization.DependencyResolutionManagement
 import gradle.api.initialization.PluginManagement
 import gradle.api.initialization.ProjectDescriptor
@@ -11,6 +12,7 @@ import gradle.api.publish.maven.MavenPomLicense
 import gradle.api.publish.maven.MavenPomScm
 import gradle.api.tasks.Task
 import gradle.caching.BuildCacheConfiguration
+import gradle.collection.SerializableOptionalAnyMap
 import gradle.collection.deepMerge
 import gradle.collection.resolve
 import gradle.plugins.android.BaseExtension
@@ -30,9 +32,9 @@ import gradle.plugins.project.file.LicenseHeaderFile
 import gradle.plugins.project.file.ProjectFile
 import gradle.serialization.decodeFromAny
 import java.util.*
+import kotlin.io.path.Path
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
-import kotlinx.serialization.descriptors.elementNames
 import kotlinx.serialization.json.Json
 import org.gradle.api.Project
 import org.gradle.api.file.Directory
@@ -65,6 +67,7 @@ internal data class ProjectProperties(
     val dependencies: Set<Dependency>? = null,
     val cacheRedirector: Boolean = true,
     val includes: Set<String>? = null,
+    val includeFlat: Set<String>? = null,
     val projects: Set<ProjectDescriptor>? = null,
     val buildCache: BuildCacheConfiguration? = null,
     val java: JavaPluginExtension = JavaPluginExtension(),
@@ -78,20 +81,16 @@ internal data class ProjectProperties(
     val npm: NpmExtension = NpmExtension(),
     val compose: CMPSettings = CMPSettings(),
     val tasks: LinkedHashSet<Task<out org.gradle.api.Task>>? = null,
-    private val localPropertiesFile: String = "local.properties",
     val projectFiles: Set<ProjectFile> = emptySet(),
     val ci: Set<CI> = emptySet(),
-) : HashMap<String, Any?>() {
+    val otherProperties: SerializableOptionalAnyMap,
+) : Map<String, Any?> by otherProperties {
 
     val includesAsPaths: List<String>?
         get() = includes?.map { include -> include.replace(":", System.lineSeparator()) }
 
     @Transient
     val localProperties = Properties()
-
-    @Transient
-    lateinit var otherProperties: Map<String, Any?>
-        private set
 
     companion object {
 
@@ -107,6 +106,7 @@ internal data class ProjectProperties(
             settings.extra.exportExtras()
             return load(
                 settings.layout.settingsDirectory,
+                settings.layout.settingsDirectory,
                 settings.providers,
                 settings.extra,
                 settings.projectProperties.localProperties,
@@ -114,10 +114,12 @@ internal data class ProjectProperties(
         }
 
         context(Project)
+        @Suppress("UnstableApiUsage")
         fun load(): ProjectProperties {
             project.extra.exportExtras()
             return load(
                 project.layout.projectDirectory,
+                project.settings.layout.settingsDirectory,
                 project.providers,
                 project.extra,
                 project.projectProperties.localProperties,
@@ -134,6 +136,7 @@ internal data class ProjectProperties(
         @Suppress("UNCHECKED_CAST")
         private fun load(
             directory: Directory,
+            settingsDirectory: Directory,
             providers: ProviderFactory,
             extra: ExtraPropertiesExtension,
             localProperties: Properties,
@@ -143,25 +146,35 @@ internal data class ProjectProperties(
             return if (propertiesFile.exists()) {
                 val properties = yaml.load<MutableMap<String, *>>(propertiesFile.readText())
 
-                ((properties["templates"] as List<String>?)?.fold(emptyMap<String, Any?>()) { acc, template ->
-                    acc deepMerge yaml.load<MutableMap<String, *>>(directory.file(template).asFile.readText())
-                }.orEmpty() deepMerge properties).resolve(providers, extra, localProperties)
+                val templatesProperties = (properties["templates"] as List<String>?)?.loadTemplates(directory).orEmpty()
+
+                (templatesProperties deepMerge properties).resolve(providers, extra, localProperties)
             }
             else {
-                emptyMap<String, Any?>()
+                emptyMap()
             }.let { properties ->
                 json.decodeFromAny<ProjectProperties>(properties).apply {
-
                     localProperties.apply {
-                        val file = directory.file(localPropertiesFile).asFile
+                        val file = settingsDirectory.file("local.properties").asFile
                         if (file.exists()) {
                             load(file.reader())
                         }
                     }
-
-                    otherProperties = properties.filterKeys { key -> key !in ProjectProperties.serializer().descriptor.elementNames }
                 }
             }
         }
+
+        /** Resolves deep templates.
+         * Templates also can contain templates.
+         */
+        @Suppress("UNCHECKED_CAST")
+        private fun List<String>.loadTemplates(directory: Directory): Map<String, Any?> =
+            fold(emptyMap()) { acc, templatePath ->
+                val template = yaml.load<MutableMap<String, *>>(directory.file(templatePath).asFile.readText())
+
+                acc deepMerge (template["templates"] as List<String>?)?.map { subTemplatePath ->
+                    Path(templatePath).resolve(subTemplatePath).normalize().toString()
+                }?.loadTemplates(directory).orEmpty() deepMerge template
+            }
     }
 }
