@@ -14,6 +14,6 @@ internal data class BenchmarkSettings(
     override val configurations: LinkedHashSet<BenchmarkConfiguration>? = null,
     override val kotlinCompilerVersion: String? = null,
     override var reportsDir: String? = null,
-    override val targets: LinkedHashSet<BenchmarkTarget<out kotlinx.benchmark.gradle.BenchmarkTarget>>? = null,
+    override val targets: LinkedHashSet<BenchmarkTarget<out @Contextual kotlinx.benchmark.gradle.BenchmarkTarget>>? = null,
     override val enabled: Boolean = true
 ) : BenchmarksExtension(), EnabledSettings
