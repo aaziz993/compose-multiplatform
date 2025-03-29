@@ -5,4 +5,4 @@ kotlin:
         publishLibraryVariants: [ release ]
 
 android:
-  type: library
+  type: LibraryExtension

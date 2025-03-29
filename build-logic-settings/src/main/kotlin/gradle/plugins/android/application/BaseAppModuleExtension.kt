@@ -29,7 +29,6 @@ import org.gradle.api.Project
 
 /** The `android` extension for base feature module (application plugin).  */
 @Serializable
-@SerialName("baseApp")
 internal data class BaseAppModuleExtension(
     override val composeOptions: ComposeOptions? = null,
     override val sourceSets: LinkedHashSet<AndroidSourceSet>? = null,

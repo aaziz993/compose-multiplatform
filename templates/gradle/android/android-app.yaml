@@ -1,5 +1,5 @@
 android:
-  type: baseApp
+  type: BaseAppModuleExtension
   buildTypes:
     - release:
         isShrinkResources: true

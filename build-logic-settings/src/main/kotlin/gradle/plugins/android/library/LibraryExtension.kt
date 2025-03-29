@@ -35,7 +35,6 @@ import org.gradle.api.Project
  * library</a>.
  */
 @Serializable
-@SerialName("library")
 internal data class LibraryExtension(
     override val androidResources: LibraryAndroidResources? = null,
     override val installation: LibraryInstallation? = null,

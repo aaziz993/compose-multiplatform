@@ -39,7 +39,7 @@ internal class AndroidPlugin : Plugin<Project> {
                 return@with
             }
 
-            projectProperties.android?.let { android ->
+            (projectProperties.android?.let { android ->
                 when (android) {
                     is LibraryExtension -> plugins.apply(project.settings.libs.plugin("androidLibrary").id)
                     is BaseAppModuleExtension -> plugins.apply(project.settings.libs.plugin("androidApplication").id)
