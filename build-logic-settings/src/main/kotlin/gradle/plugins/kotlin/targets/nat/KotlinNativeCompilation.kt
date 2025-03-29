@@ -1,5 +1,6 @@
 package gradle.plugins.kotlin.targets.nat
 
+import gradle.api.NamedKeyValueTransformingSerializer
 import gradle.api.applyTo
 import gradle.plugins.kotlin.KotlinCompilationOutput
 

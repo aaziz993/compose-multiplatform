@@ -1,5 +1,6 @@
 package gradle.plugins.kotlin.targets.web
 
+import gradle.api.NamedKeyValueTransformingSerializer
 import gradle.plugins.kotlin.KotlinCompilationOutput
 
 import gradle.plugins.kotlin.KotlinSourceSet

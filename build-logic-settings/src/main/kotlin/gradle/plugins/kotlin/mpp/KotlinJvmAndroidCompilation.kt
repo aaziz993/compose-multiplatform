@@ -6,7 +6,6 @@ import gradle.plugins.kotlin.KotlinCompilation
 import gradle.plugins.kotlin.KotlinCompilationOutput
 
 import gradle.plugins.kotlin.KotlinSourceSet
-import gradle.plugins.kotlin.NamedKeyValueTransformingSerializer
 import gradle.plugins.kotlin.targets.jvm.KotlinJvmCompilerOptions
 import gradle.plugins.kotlin.tasks.KotlinCompilationTaskImpl
 import gradle.plugins.project.Dependency

@@ -1,5 +1,6 @@
 package gradle.plugins.kotlin.targets.nat
 
+import gradle.api.NamedKeyValueTransformingSerializer
 import gradle.api.tasks.test.TestFilter
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KeepGeneratedSerializer
@@ -14,6 +15,6 @@ internal data class KotlinNativeHostTestRun(
     override val name: String
 ) : KotlinNativeBinaryTestRun<org.jetbrains.kotlin.gradle.targets.native.KotlinNativeHostTestRun>
 
-private object KotlinNativeHostTestRunKeyValueTransformingSerializer : KotlinNativeBinaryTestRunKeyValueTransformingSerializer<KotlinNativeHostTestRun>(
+private object KotlinNativeHostTestRunKeyValueTransformingSerializer : NamedKeyValueTransformingSerializer<KotlinNativeHostTestRun>(
     KotlinNativeHostTestRun.generatedSerializer(),
 )

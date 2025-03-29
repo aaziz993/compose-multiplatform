@@ -1,5 +1,6 @@
 package gradle.plugins.android.library
 
+import gradle.api.NamedKeyValueTransformingSerializer
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.android.AarMetadata
 import gradle.plugins.android.BuildConfigField

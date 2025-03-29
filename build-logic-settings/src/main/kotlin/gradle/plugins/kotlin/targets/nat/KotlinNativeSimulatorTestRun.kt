@@ -1,5 +1,6 @@
 package gradle.plugins.kotlin.targets.nat
 
+import gradle.api.NamedKeyValueTransformingSerializer
 import gradle.api.tasks.test.TestFilter
 import gradle.api.trySet
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -29,6 +30,7 @@ internal data class KotlinNativeSimulatorTestRun(
     }
 }
 
-private object KotlinNativeSimulatorTestRunKeyValueTransformingSerializer : KotlinNativeBinaryTestRunKeyValueTransformingSerializer<KotlinNativeSimulatorTestRun>(
+private object KotlinNativeSimulatorTestRunKeyValueTransformingSerializer
+    : NamedKeyValueTransformingSerializer<KotlinNativeSimulatorTestRun>(
     KotlinNativeSimulatorTestRun.generatedSerializer(),
 )
