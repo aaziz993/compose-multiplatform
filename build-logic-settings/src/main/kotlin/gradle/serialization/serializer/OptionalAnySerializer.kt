@@ -22,5 +22,5 @@ public object OptionalAnySerializer : KSerializer<Any?> {
 
     override fun deserialize(decoder: Decoder): Any? =
         (decoder as? JsonDecoder ?: error("Only JsonDecoder is supported"))
-            .json.decodeAnyFromString(decoder.decodeString())!!
+            .json.decodeAnyFromString(decoder.decodeString())
 }
