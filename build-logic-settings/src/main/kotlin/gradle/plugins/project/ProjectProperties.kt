@@ -30,13 +30,23 @@ import gradle.plugins.project.file.ContributingFile
 import gradle.plugins.project.file.LicenseFile
 import gradle.plugins.project.file.LicenseHeaderFile
 import gradle.plugins.project.file.ProjectFile
+import gradle.serialization.decodeAnyFromJsonElement
 import gradle.serialization.decodeFromAny
+import gradle.serialization.decodeMapFromJsonElement
+import gradle.serialization.serializer.JsonBaseObjectTransformingSerializer
 import gradle.serialization.serializer.JsonObjectTransformingSerializer
 import java.util.*
 import kotlin.io.path.Path
+import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
+import kotlinx.serialization.descriptors.elementNames
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonContentPolymorphicSerializer
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonTransformingSerializer
+import kotlinx.serialization.json.jsonObject
 import org.gradle.api.Project
 import org.gradle.api.file.Directory
 import org.gradle.api.initialization.Settings
@@ -47,7 +57,8 @@ import org.yaml.snakeyaml.Yaml
 
 internal const val PROJECT_PROPERTIES_FILE = "project.yaml"
 
-@Serializable
+@KeepGeneratedSerializer
+@Serializable(with = ProjectPropertiesTransformingSerializer::class)
 internal data class ProjectProperties(
     val layout: ProjectLayout = ProjectLayout.Default,
     val group: String? = null,
@@ -84,8 +95,8 @@ internal data class ProjectProperties(
     val tasks: LinkedHashSet<Task<out org.gradle.api.Task>>? = null,
     val projectFiles: Set<ProjectFile> = emptySet(),
     val ci: Set<CI> = emptySet(),
-    val otherProperties: SerializableOptionalAnyMap,
-) : Map<String, Any?> by otherProperties {
+    val delegate: SerializableOptionalAnyMap,
+) : Map<String, Any?> by delegate {
 
     val includesAsPaths: List<String>?
         get() = includes?.map { include -> include.replace(":", System.lineSeparator()) }
@@ -180,8 +191,17 @@ internal data class ProjectProperties(
     }
 }
 
-private object ProjectPropertiesObjectTransformingSerializer
-    : JsonObjectTransformingSerializer<ProjectProperties>(
-    ProjectProperties.serializer(),
-    "",
-)
+private object ProjectPropertiesTransformingSerializer
+    : JsonTransformingSerializer<ProjectProperties>(ProjectProperties.generatedSerializer()) {
+
+    override fun transformDeserialize(element: JsonElement): JsonElement = JsonObject(
+        buildMap {
+            putAll(element.jsonObject)
+            put("delegate", element)
+        },
+    )
+
+    override fun transformSerialize(element: JsonElement): JsonElement = JsonObject(
+            element.jsonObject.filterKeys { key -> key != "delegate" },
+    )
+}

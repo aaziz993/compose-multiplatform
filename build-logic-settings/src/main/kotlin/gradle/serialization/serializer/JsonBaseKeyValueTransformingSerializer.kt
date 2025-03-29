@@ -15,15 +15,18 @@ public abstract class JsonBaseObjectTransformingSerializer<T : Any>(
 
     final override fun transformDeserialize(element: JsonElement): JsonElement =
         if (element is JsonObject) {
-            val key = element.keys.single()
-            val value = element.values.single()
+            if (element.keys.size == 1) {
+                val key = element.keys.single()
+                val value = element.values.single()
 
-            JsonObject(
-                buildMap {
-                    putAll(transformDeserialize(key, value))
-                    putAll(if (value is JsonObject) value.jsonObject else transformDeserialize(key, value))
-                },
-            )
+                JsonObject(
+                    buildMap {
+                        putAll(transformDeserialize(key, value))
+                        putAll(if (value is JsonObject) value.jsonObject else transformDeserialize(key, value))
+                    },
+                )
+            }
+            else element
         }
         else transformDeserialize(element.jsonPrimitive.content, null)
 }

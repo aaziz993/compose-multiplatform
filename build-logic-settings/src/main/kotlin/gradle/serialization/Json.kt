@@ -46,6 +46,13 @@ public fun Json.decodeAnyFromJsonElement(element: JsonElement): Any? = with(elem
     }
 }
 
+public fun Json.decodeListFromJsonElement(element: JsonElement): List<Any?> =
+    decodeAnyFromJsonElement(element) as List<Any?>
+
+@Suppress("UNCHECKED_CAST")
+public fun Json.decodeMapFromJsonElement(element: JsonElement): Map<String, Any?> =
+    decodeAnyFromJsonElement(element) as Map<String, Any?>
+
 public fun <T> Json.encodeToAny(serializer: SerializationStrategy<T>, value: T): Any? = decodeAnyFromJsonElement(encodeToJsonElement(serializer, value))
 
 public inline fun <reified T> Json.encodeToAny(value: T): Any? = encodeToAny(serializersModule.serializer(), value)
