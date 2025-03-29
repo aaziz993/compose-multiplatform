@@ -4,7 +4,6 @@ import gradle.api.NamedObjectTransformingSerializer
 import gradle.api.getByNameOrAll
 import gradle.api.tasks.test.TestFilter
 import gradle.plugins.kotlin.testing.KotlinTaskTestRun
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

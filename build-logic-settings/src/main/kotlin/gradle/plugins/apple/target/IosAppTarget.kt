@@ -40,7 +40,7 @@ internal data class IosAppTarget(
         receiver::mainStoryboard trySet mainStoryboard
         receiver::multipleWindows trySet multipleWindows
         receiver::sceneDelegateClass trySet sceneDelegateClass
-        receiver::orientations tryApply orientations?.let{ orientations -> orientations::applyTo }
+        receiver::orientations tryApply orientations?.let { orientations -> orientations::applyTo }
 
         sceneConfigurations?.forEach { sceneConfigurations ->
             receiver.sceneConfiguration(sceneConfigurations.name, sceneConfigurations::applyTo)

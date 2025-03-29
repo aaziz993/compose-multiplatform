@@ -93,7 +93,7 @@ internal interface ApiValidationExtension {
     fun applyTo() = project.pluginManager.withPlugin("binaryCompatibilityValidator") {
         project.apiValidation::validationDisabled trySet validationDisabled
         project.apiValidation.ignoredPackages tryAddAll ignoredPackages
-        project.apiValidation::ignoredPackages trySet  setIgnoredPackages?.toMutableSet()
+        project.apiValidation::ignoredPackages trySet setIgnoredPackages?.toMutableSet()
         project.apiValidation.ignoredProjects tryAddAll ignoredProjects
         project.apiValidation::ignoredProjects trySet setIgnoredProjects?.toMutableSet()
         project.apiValidation.nonPublicMarkers tryAddAll nonPublicMarkers

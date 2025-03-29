@@ -8,9 +8,7 @@ import gradle.api.file.SourceDirectorySet
 import gradle.api.getByNameOrAll
 import gradle.api.trySet
 import gradle.plugins.project.Dependency
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KeepGeneratedSerializer
-
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

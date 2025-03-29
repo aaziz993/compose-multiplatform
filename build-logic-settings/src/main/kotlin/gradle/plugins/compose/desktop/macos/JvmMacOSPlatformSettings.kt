@@ -48,6 +48,6 @@ internal data class JvmMacOSPlatformSettings(
         receiver::pkgPackageBuildVersion trySet pkgPackageBuildVersion
         receiver.provisioningProfile tryAssign provisioningProfile?.let(project::file)
         receiver.runtimeProvisioningProfile tryAssign runtimeProvisioningProfile?.let(project::file)
-        receiver::infoPlist tryApply infoPlist?.let{ infoPlist -> infoPlist::applyTo }
+        receiver::infoPlist tryApply infoPlist?.let { infoPlist -> infoPlist::applyTo }
     }
 }

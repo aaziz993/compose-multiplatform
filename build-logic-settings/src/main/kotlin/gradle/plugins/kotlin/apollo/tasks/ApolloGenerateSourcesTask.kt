@@ -85,7 +85,7 @@ internal data class ApolloGenerateSourcesTask(
         super.applyTo(receiver)
 
         receiver.addTypename tryAssign addTypename
-        receiver.alwaysGenerateTypesMatching tryAddAll  alwaysGenerateTypesMatching
+        receiver.alwaysGenerateTypesMatching tryAddAll alwaysGenerateTypesMatching
         receiver.alwaysGenerateTypesMatching tryAssign setAlwaysGenerateTypesMatching
         receiver.codegenModels tryAssign codegenModels
         receiver.decapitalizeFields tryAssign decapitalizeFields
@@ -96,9 +96,9 @@ internal data class ApolloGenerateSourcesTask(
         receiver.graphqlFiles tryFrom graphqlFiles
         receiver.graphqlFiles trySetFrom setGraphqlFiles
         receiver.projectPath tryAssign projectPath
-        receiver.scalarAdapterMapping tryPutAll  scalarAdapterMapping
+        receiver.scalarAdapterMapping tryPutAll scalarAdapterMapping
         receiver.scalarAdapterMapping tryAssign setScalarAdapterMapping
-        receiver.scalarTypeMapping tryPutAll  scalarTypeMapping
+        receiver.scalarTypeMapping tryPutAll scalarTypeMapping
         receiver.scalarTypeMapping tryAssign setScalarAdapterMapping
         receiver.schemaFiles tryFrom schemaFiles
         receiver.schemaFiles trySetFrom setSchemaFiles

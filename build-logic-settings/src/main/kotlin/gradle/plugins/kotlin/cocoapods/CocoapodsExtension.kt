@@ -14,7 +14,6 @@ import gradle.api.trySet
 import gradle.ifTrue
 import gradle.plugins.kotlin.targets.nat.FrameworkSettings
 import java.net.URI
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonContentPolymorphicSerializer
@@ -174,7 +173,7 @@ internal interface CocoapodsExtension {
             watchos?.applyTo(project.kotlin.cocoapods.watchos, project.settings.libs.versionOrNull("kotlin.cocoapods.watchosDeploymentTarget"))
         }
 
-        @KeepGeneratedSerializer
+    @KeepGeneratedSerializer
     @Serializable(with = CocoapodsDependencyObjectTransformingSerializer::class)
     data class CocoapodsDependency(
         var name: String? = null,

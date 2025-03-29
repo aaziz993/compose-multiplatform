@@ -1,6 +1,5 @@
 package gradle.plugins.karakum
 
-
 import gradle.accessors.catalog.libs
 import gradle.accessors.kotlin
 import gradle.accessors.projectProperties

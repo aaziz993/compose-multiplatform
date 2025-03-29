@@ -4,7 +4,6 @@ package gradle.plugins.kotlin.room
 
 import androidx.room.gradle.RoomExtension
 import gradle.serialization.serializer.JsonObjectTransformingSerializer
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 

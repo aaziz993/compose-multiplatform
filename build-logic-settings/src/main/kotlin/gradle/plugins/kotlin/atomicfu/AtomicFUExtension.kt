@@ -4,7 +4,6 @@ import gradle.accessors.atomicFU
 
 import gradle.accessors.catalog.libs
 
-
 import gradle.accessors.settings
 import gradle.api.trySet
 import org.gradle.api.Project

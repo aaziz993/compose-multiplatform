@@ -1,8 +1,6 @@
 package gradle.plugins.spotless
 
-
 import gradle.accessors.catalog.libs
-
 
 import gradle.accessors.projectProperties
 import gradle.accessors.settings

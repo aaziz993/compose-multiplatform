@@ -1,8 +1,6 @@
 package gradle.plugins.kotlin.rpc
 
-
 import gradle.accessors.catalog.libs
-
 
 import gradle.accessors.rpc
 import gradle.accessors.settings

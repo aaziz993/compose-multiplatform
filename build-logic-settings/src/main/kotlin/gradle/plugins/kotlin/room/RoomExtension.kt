@@ -1,6 +1,5 @@
 package gradle.plugins.kotlin.room
 
-
 import gradle.accessors.catalog.libs
 import gradle.accessors.room
 import gradle.accessors.settings

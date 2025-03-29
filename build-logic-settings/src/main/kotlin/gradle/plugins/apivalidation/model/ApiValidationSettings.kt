@@ -5,7 +5,6 @@ import gradle.accessors.apiBuild
 
 import gradle.accessors.catalog.libs
 
-
 import gradle.accessors.settings
 import gradle.plugins.apivalidation.ApiValidationExtension
 import gradle.plugins.apivalidation.KlibValidationSettings

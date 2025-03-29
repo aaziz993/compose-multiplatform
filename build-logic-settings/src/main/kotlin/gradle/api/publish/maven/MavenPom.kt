@@ -139,7 +139,7 @@ internal data class MavenPom(
                 }
             }
 
-        receiver::organization tryApply organization?.let{ organization -> organization::applyTo }
+        receiver::organization tryApply organization?.let { organization -> organization::applyTo }
 
         (project.projectProperties.developer?.let(::listOf).orEmpty() + developers.orEmpty())
             .takeIf(List<*>::isNotEmpty)
@@ -163,9 +163,9 @@ internal data class MavenPom(
             receiver.scm(scm::applyTo)
         }
 
-        receiver::issueManagement tryApply issueManagement?.let{ issueManagement -> issueManagement::applyTo }
-        receiver::ciManagement tryApply ciManagement?.let{ ciManagement -> ciManagement::applyTo }
-        receiver::distributionManagement tryApply distributionManagement?.let{ distributionManagement -> distributionManagement::applyTo }
+        receiver::issueManagement tryApply issueManagement?.let { issueManagement -> issueManagement::applyTo }
+        receiver::ciManagement tryApply ciManagement?.let { ciManagement -> ciManagement::applyTo }
+        receiver::distributionManagement tryApply distributionManagement?.let { distributionManagement -> distributionManagement::applyTo }
 
         mailingLists?.let { mailingLists ->
             receiver.mailingLists {

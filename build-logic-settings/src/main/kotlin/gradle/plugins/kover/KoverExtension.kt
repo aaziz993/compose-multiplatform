@@ -1,6 +1,5 @@
 package gradle.plugins.kover
 
-
 import gradle.accessors.catalog.libs
 import gradle.accessors.kover
 import gradle.accessors.settings

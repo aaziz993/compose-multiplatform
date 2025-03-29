@@ -1,8 +1,6 @@
 package gradle.plugins.toolchainmanagement
 
-
 import gradle.accessors.catalog.libs
-
 
 import org.gradle.api.initialization.Settings
 

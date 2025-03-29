@@ -1,8 +1,6 @@
 package gradle.plugins.kotlin.sqldelight
 
-
 import gradle.accessors.catalog.libs
-
 
 import gradle.accessors.settings
 import gradle.accessors.sqldelight

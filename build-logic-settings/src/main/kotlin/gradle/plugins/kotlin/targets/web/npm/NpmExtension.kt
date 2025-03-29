@@ -1,9 +1,7 @@
 package gradle.plugins.kotlin.targets.web.npm
 
-
 import gradle.accessors.catalog.libs
 import gradle.accessors.npm
-
 
 import gradle.accessors.settings
 import gradle.api.tryAssign

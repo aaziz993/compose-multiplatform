@@ -1,8 +1,6 @@
 package gradle.plugins.githooks.model
 
-
 import gradle.accessors.catalog.libs
-
 
 import gradle.plugins.githooks.GitHooksExtension
 import gradle.plugins.project.EnabledSettings

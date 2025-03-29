@@ -1,8 +1,6 @@
 package gradle.plugins.kotlin.powerassert
 
-
 import gradle.accessors.catalog.libs
-
 
 import gradle.accessors.powerAssert
 import gradle.accessors.settings

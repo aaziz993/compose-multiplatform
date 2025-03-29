@@ -7,7 +7,6 @@ import gradle.plugins.buildconfig.generator.BuildConfigGenerator
 import gradle.plugins.buildconfig.generator.BuildConfigJavaGenerator
 import gradle.plugins.buildconfig.generator.BuildConfigKotlinGenerator
 import gradle.plugins.buildconfig.tasks.BuildConfigTask
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

@@ -3,7 +3,6 @@ package gradle.plugins.android.signing
 import com.android.build.gradle.internal.dsl.SigningConfig
 import gradle.api.NamedObjectTransformingSerializer
 import gradle.api.ProjectNamed
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

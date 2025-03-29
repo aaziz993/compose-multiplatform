@@ -4,7 +4,6 @@ import com.osacky.doctor.AppleRosettaTranslationCheckMode
 
 import gradle.accessors.catalog.libs
 
-
 import gradle.accessors.settings
 import gradle.api.isCI
 import gradle.api.services.unregister

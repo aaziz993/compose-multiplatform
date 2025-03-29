@@ -4,7 +4,6 @@ import gradle.accessors.allOpen
 
 import gradle.accessors.catalog.libs
 
-
 import gradle.accessors.settings
 import org.gradle.api.Project
 

@@ -3,11 +3,10 @@
 package gradle.plugins.android
 
 import gradle.accessors.android
-
 import gradle.accessors.catalog.libs
-
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
+import gradle.addPrefixIfNotEmpty
 import gradle.api.configureEach
 import gradle.api.file.replace
 import gradle.api.trySetSystemProperty
@@ -16,14 +15,12 @@ import gradle.plugins.android.application.BaseAppModuleExtension
 import gradle.plugins.android.library.LibraryExtension
 import gradle.plugins.kotlin.mpp.KotlinAndroidTarget
 import gradle.plugins.project.ProjectLayout
-import gradle.addPrefixIfNotEmpty
 import javax.xml.stream.XMLEventFactory
 import javax.xml.stream.XMLInputFactory
 import javax.xml.stream.XMLOutputFactory
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.SourceSet
-import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
 
 private val testSourceSetNamePrefixes = listOf(
     SourceSet.TEST_SOURCE_SET_NAME,

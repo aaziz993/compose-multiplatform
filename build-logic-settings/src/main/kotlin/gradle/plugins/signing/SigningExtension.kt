@@ -4,7 +4,6 @@ import com.vanniktech.maven.publish.tasks.WorkaroundSignatureType
 
 import gradle.accessors.catalog.libs
 
-
 import gradle.accessors.settings
 import gradle.accessors.signing
 import gradle.api.configureEach

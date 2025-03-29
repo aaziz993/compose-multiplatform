@@ -4,7 +4,6 @@ import gradle.accessors.apollo
 
 import gradle.accessors.catalog.libs
 
-
 import gradle.accessors.settings
 import gradle.api.tryAssign
 import org.gradle.api.Project

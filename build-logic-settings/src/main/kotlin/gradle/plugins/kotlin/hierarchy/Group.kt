@@ -2,7 +2,6 @@ package gradle.plugins.kotlin.hierarchy
 
 import gradle.api.BaseNamed
 import gradle.api.NamedObjectTransformingSerializer
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 

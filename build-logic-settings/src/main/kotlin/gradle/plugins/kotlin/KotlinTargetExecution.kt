@@ -10,5 +10,6 @@ internal interface KotlinTargetExecution<T : KotlinTargetExecution<E>,
     E : org.jetbrains.kotlin.gradle.plugin.KotlinExecution.ExecutionSource> : KotlinExecution<T, E> {
 
     context(Project)
-    override fun applyTo(receiver: T){}
+    override fun applyTo(receiver: T) {
+    }
 }

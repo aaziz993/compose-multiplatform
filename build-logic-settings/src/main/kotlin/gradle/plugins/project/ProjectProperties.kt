@@ -196,6 +196,6 @@ private object ProjectPropertiesTransformingSerializer
     )
 
     override fun transformSerialize(element: JsonElement): JsonElement = JsonObject(
-            element.jsonObject.filterKeys { key -> key != "delegate" },
+        element.jsonObject.filterKeys { key -> key != "delegate" },
     )
 }

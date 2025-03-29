@@ -57,7 +57,7 @@ internal data class KoverCurrentProjectVariantsConfig(
             receiver.providedVariant(variantName, config::applyTo)
         }
 
-        receiver::totalVariant tryApply totalVariant?.let{ totalVariant -> totalVariant::applyTo }
+        receiver::totalVariant tryApply totalVariant?.let { totalVariant -> totalVariant::applyTo }
         instrumentation?.applyTo(receiver.instrumentation)
     }
 }

@@ -5,7 +5,6 @@ import gradle.api.ProjectNamed
 import gradle.api.tryPutAll
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

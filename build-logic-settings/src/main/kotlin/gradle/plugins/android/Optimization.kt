@@ -22,7 +22,7 @@ internal data class Optimization(
 
     @Suppress("UnstableApiUsage")
     fun applyTo(receiver: Optimization) {
-        receiver::keepRules tryApply keepRules?.let{ keepRules -> keepRules::applyTo }
-        receiver::baselineProfile tryApply baselineProfile?.let{ baselineProfile -> baselineProfile::applyTo }
+        receiver::keepRules tryApply keepRules?.let { keepRules -> keepRules::applyTo }
+        receiver::baselineProfile tryApply baselineProfile?.let { baselineProfile -> baselineProfile::applyTo }
     }
 }

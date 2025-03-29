@@ -5,7 +5,6 @@ import gradle.accessors.catalog.libs
 import gradle.accessors.catalog.resolveVersion
 import gradle.accessors.settings
 
-
 import gradle.api.trySet
 import gradle.ifTrue
 import gradle.plugins.spotless.FormatExtension

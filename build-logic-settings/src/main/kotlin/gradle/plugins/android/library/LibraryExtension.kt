@@ -23,7 +23,6 @@ import gradle.plugins.android.split.Splits
 import gradle.plugins.android.test.TestCoverage
 import gradle.plugins.android.test.TestFixtures
 import gradle.plugins.android.test.TestOptions
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

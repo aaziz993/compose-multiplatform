@@ -2,7 +2,6 @@ package gradle.plugins.android.device
 
 import gradle.api.NamedObjectTransformingSerializer
 import gradle.api.trySet
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

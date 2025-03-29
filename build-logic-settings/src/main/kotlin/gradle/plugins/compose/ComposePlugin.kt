@@ -2,9 +2,7 @@
 
 package gradle.plugins.compose
 
-
 import gradle.accessors.catalog.libs
-
 
 import gradle.accessors.projectProperties
 import gradle.accessors.settings

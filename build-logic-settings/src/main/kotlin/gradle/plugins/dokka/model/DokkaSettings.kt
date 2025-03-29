@@ -1,6 +1,5 @@
 package gradle.plugins.dokka.model
 
-import gradle.serialization.serializer.NotSerializable
 import gradle.accessors.catalog.libs
 import gradle.accessors.settings
 import gradle.plugins.dokka.DokkaExtension

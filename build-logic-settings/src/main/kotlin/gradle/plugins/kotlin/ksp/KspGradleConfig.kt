@@ -75,12 +75,12 @@ internal data class KspGradleConfig(
         receiver.resourceOutputDir tryAssign resourceOutputDir?.let(project::file)
         receiver.languageVersion tryAssign languageVersion
         receiver.apiVersion tryAssign apiVersion
-        receiver.processorOptions tryPutAll  processorOptions
+        receiver.processorOptions tryPutAll processorOptions
         receiver.processorOptions tryAssign setProcessorOptions
         // Unfortunately, passing project.logger over is not possible.
         receiver.logLevel tryAssign logLevel
         receiver.allWarningsAsErrors tryAssign allWarningsAsErrors
-        receiver.excludedProcessors tryAddAll  excludedProcessors
+        receiver.excludedProcessors tryAddAll excludedProcessors
         receiver.excludedProcessors tryAssign setExcludedProcessors
         receiver.jvmTarget tryAssign jvmTarget
         receiver.jvmDefaultMode tryAssign jvmDefaultMode

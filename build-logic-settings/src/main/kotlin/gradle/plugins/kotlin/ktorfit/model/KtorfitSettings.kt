@@ -4,7 +4,6 @@ import de.jensklingenberg.ktorfit.gradle.ErrorCheckingMode
 
 import gradle.accessors.catalog.libs
 
-
 import gradle.accessors.settings
 import gradle.plugins.kotlin.ktorfit.KtorfitGradleConfiguration
 import gradle.plugins.project.EnabledSettings

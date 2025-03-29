@@ -4,7 +4,6 @@ import gradle.accessors.catalog.libs
 import gradle.accessors.moduleName
 import gradle.accessors.settings
 
-
 import gradle.api.tryAssign
 import gradle.api.trySet
 import org.gradle.api.Project

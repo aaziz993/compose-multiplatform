@@ -5,11 +5,11 @@ import gradle.accessors.kotlin
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
 import gradle.accessors.sourceSetsToComposeResourcesDirs
+import gradle.addPrefixIfNotEmpty
 import gradle.api.configureEach
 import gradle.api.file.replace
 import gradle.decapitalized
 import gradle.plugins.project.ProjectLayout
-import gradle.addPrefixIfNotEmpty
 import net.pearx.kasechange.splitToWords
 import org.gradle.api.Plugin
 import org.gradle.api.Project

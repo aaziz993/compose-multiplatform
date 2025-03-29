@@ -1,7 +1,6 @@
 package gradle.plugins.kotlin.targets.nat
 
 import gradle.api.NamedObjectTransformingSerializer
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 

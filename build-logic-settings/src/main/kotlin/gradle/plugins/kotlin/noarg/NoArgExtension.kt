@@ -2,10 +2,8 @@
 
 package gradle.plugins.kotlin.noarg
 
-
 import gradle.accessors.catalog.libs
 import gradle.accessors.noArg
-
 
 import gradle.accessors.settings
 import gradle.api.tryAddAll

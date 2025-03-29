@@ -5,7 +5,6 @@ import gradle.accessors.androidNamespace
 import gradle.accessors.catalog.libs
 import gradle.accessors.settings
 
-
 import gradle.api.trySet
 import gradle.plugins.android.flavor.BaseFlavor
 import org.gradle.api.Project

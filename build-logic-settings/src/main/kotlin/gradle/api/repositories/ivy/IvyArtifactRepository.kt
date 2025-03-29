@@ -183,9 +183,9 @@ internal data class IvyArtifactRepository(
         artifactPatterns?.forEach(receiver::artifactPattern)
         ivyPatterns?.forEach(receiver::ivyPattern)
         receiver::layout trySet layout
-        receiver::patternLayout tryApply patternLayout?.let{ patternLayout -> patternLayout::applyTo }
+        receiver::patternLayout tryApply patternLayout?.let { patternLayout -> patternLayout::applyTo }
         resolve?.applyTo(receiver.resolve)
-        receiver::metadataSources tryApply metadataSources?.let{ metadataSources -> metadataSources::applyTo }
+        receiver::metadataSources tryApply metadataSources?.let { metadataSources -> metadataSources::applyTo }
     }
 
     /**

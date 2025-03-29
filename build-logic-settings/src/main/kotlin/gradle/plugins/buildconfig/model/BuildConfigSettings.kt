@@ -1,6 +1,5 @@
 package gradle.plugins.buildconfig.model
 
-
 import gradle.accessors.catalog.libs
 import gradle.accessors.settings
 import gradle.plugins.buildconfig.BuildConfigExtension

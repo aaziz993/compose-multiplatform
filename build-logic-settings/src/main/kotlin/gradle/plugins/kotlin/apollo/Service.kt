@@ -95,7 +95,7 @@ internal data class Service(
         receiver.generateQueryDocument tryAssign generateQueryDocument
         receiver.generateSchema tryAssign generateSchema
         receiver.generatedSchemaName tryAssign generatedSchemaName
-        receiver.includes tryAddAll  includes
+        receiver.includes tryAddAll includes
         receiver.includes tryAssign setIncludes
         receiver.jsExport tryAssign jsExport
         receiver.languageVersion tryAssign languageVersion
@@ -109,7 +109,7 @@ internal data class Service(
         receiver.schemaFile tryAssign schemaFile?.let(project::file)
         receiver.schemaFiles tryFrom schemaFiles
         receiver.schemaFiles trySetFrom setSchemaFiles
-        receiver.sealedClassesForEnumsMatching tryAddAll  sealedClassesForEnumsMatching
+        receiver.sealedClassesForEnumsMatching tryAddAll sealedClassesForEnumsMatching
         receiver.sealedClassesForEnumsMatching tryAssign setSealedClassesForEnumsMatching
         receiver.sourceFolder tryAssign sourceFolder
         receiver.testDir tryAssign testDir?.let(project.layout.projectDirectory::dir)

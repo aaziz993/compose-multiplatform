@@ -3,13 +3,10 @@ package gradle.plugins.kotlin.targets.nat
 import gradle.api.NamedObjectTransformingSerializer
 import gradle.api.applyTo
 import gradle.plugins.kotlin.KotlinCompilationOutput
-
 import gradle.plugins.kotlin.KotlinSourceSet
 import gradle.plugins.kotlin.targets.nat.tasks.KotlinNativeCompileImpl
 import gradle.plugins.project.Dependency
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KeepGeneratedSerializer
-
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

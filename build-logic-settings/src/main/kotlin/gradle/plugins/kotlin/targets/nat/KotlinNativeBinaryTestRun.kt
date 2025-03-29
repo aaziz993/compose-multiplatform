@@ -3,8 +3,6 @@ package gradle.plugins.kotlin.targets.nat
 import gradle.api.NamedObjectTransformingSerializer
 import gradle.api.tasks.test.TestFilter
 import gradle.plugins.kotlin.KotlinTargetTestRun
-import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

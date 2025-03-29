@@ -5,9 +5,7 @@ import gradle.api.ProjectNamed
 import gradle.api.tryAssign
 import gradle.api.trySetFrom
 import gradle.plugins.project.Dependency
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KeepGeneratedSerializer
-
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

@@ -1,8 +1,6 @@
 package gradle.plugins.kotlin.apollo.model
 
-
 import gradle.accessors.catalog.libs
-
 
 import gradle.accessors.settings
 import gradle.plugins.kotlin.apollo.AndroidVariantService

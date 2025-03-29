@@ -1,7 +1,6 @@
 package gradle.plugins.project
 
 import gradle.serialization.serializer.JsonObjectTransformingContentPolymorphicSerializer
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 
 @Serializable(with = CIObjectTransformingContentPolymorphicSerializer::class)

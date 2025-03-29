@@ -3,7 +3,6 @@ package gradle.plugins.kotlin
 import gradle.accessors.catalog.libs
 import gradle.accessors.settings
 
-
 import gradle.api.tryAssign
 import gradle.api.tryPlus
 import gradle.api.trySet

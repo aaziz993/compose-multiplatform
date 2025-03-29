@@ -1,6 +1,5 @@
 package gradle.plugins.apple.model
 
-
 import gradle.accessors.catalog.libs
 import gradle.accessors.settings
 import gradle.plugins.apple.AppleProjectExtension

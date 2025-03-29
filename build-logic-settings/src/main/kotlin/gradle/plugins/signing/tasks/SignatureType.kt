@@ -22,7 +22,7 @@ internal data class WorkaroundSignatureType(val actual: SignatureType, val direc
     context(Project)
     fun toSignatureType(): org.gradle.plugins.signing.type.SignatureType =
         com.vanniktech.maven.publish.tasks.WorkaroundSignatureType(
-                actual.value, project.layout.buildDirectory.dir(directory),
+            actual.value, project.layout.buildDirectory.dir(directory),
         )
 }
 

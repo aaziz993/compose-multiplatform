@@ -1,9 +1,7 @@
 package gradle.plugins.kotlin.targets.nat
 
-import gradle.serialization.serializer.DelegateTransformingSerializer
 import gradle.serialization.serializer.JsonObjectTransformingSerializer
 import kotlinx.serialization.Contextual
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 
@@ -23,6 +21,6 @@ internal class KotlinNativeBinaryContainer(
 
 private object KotlinNativeBinaryContainerTransformingSerializer
     : JsonObjectTransformingSerializer<KotlinNativeBinaryContainer>(
-        KotlinNativeBinaryContainer.generatedSerializer(),
-        "delegate",
+    KotlinNativeBinaryContainer.generatedSerializer(),
+    "delegate",
 )

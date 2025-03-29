@@ -5,7 +5,6 @@ import com.gradle.develocity.agent.gradle.test.TestRetryConfiguration
 
 import gradle.accessors.catalog.libs
 
-
 import gradle.accessors.projectProperties
 import gradle.plugins.develocity.model.DevelocitySettings
 import org.gradle.api.Plugin

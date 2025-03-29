@@ -1,6 +1,5 @@
 package gradle.plugins.kotlin.ksp
 
-
 import gradle.accessors.catalog.libs
 import gradle.accessors.ksp
 import gradle.accessors.settings

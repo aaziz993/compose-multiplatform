@@ -2,14 +2,12 @@ package gradle.plugins.dokka
 
 import gradle.accessors.catalog.libs
 import gradle.accessors.settings
-
 import gradle.api.NamedObjectTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.applyTo
 import gradle.api.tryAssign
 import gradle.api.tryFrom
 import gradle.api.trySetFrom
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

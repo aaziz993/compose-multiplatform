@@ -5,7 +5,6 @@ import gradle.collection.SerializableAnyMap
 import gradle.plugins.android.AarMetadata
 import gradle.plugins.android.BuildConfigField
 import gradle.plugins.android.BuildType
-
 import gradle.plugins.android.ExternalNativeBuildFlags
 import gradle.plugins.android.Ndk
 import gradle.plugins.android.Optimization
@@ -15,7 +14,6 @@ import gradle.plugins.android.Shaders
 import gradle.plugins.android.VcsInfo
 import gradle.plugins.android.compile.JavaCompileOptions
 import gradle.plugins.android.test.AndroidTest
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

@@ -1,6 +1,5 @@
 package gradle.plugins.kotlin.targets.web.yarn
 
-
 import gradle.accessors.catalog.libs
 import gradle.accessors.settings
 import gradle.accessors.yarnEnv

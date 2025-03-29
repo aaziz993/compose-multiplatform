@@ -111,6 +111,6 @@ internal interface DoctorExtension {
             project.doctor.disallowCleanTaskDependencies tryAssign disallowCleanTaskDependencies
             project.doctor.warnIfKotlinCompileDaemonFallback tryAssign warnIfKotlinCompileDaemonFallback
             project.doctor.appleRosettaTranslationCheckMode tryAssign appleRosettaTranslationCheckMode
-            project.doctor::javaHome tryApply javaHome?.let{ javaHome -> javaHome::applyTo }
+            project.doctor::javaHome tryApply javaHome?.let { javaHome -> javaHome::applyTo }
         }
 }

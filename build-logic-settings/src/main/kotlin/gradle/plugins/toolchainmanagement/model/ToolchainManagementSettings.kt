@@ -1,8 +1,6 @@
 package gradle.plugins.toolchainmanagement.model
 
-
 import gradle.accessors.catalog.libs
-
 
 import gradle.plugins.project.EnabledSettings
 import gradle.plugins.toolchainmanagement.ToolchainManagement

@@ -22,7 +22,6 @@ import gradle.plugins.develocity.DevelocityPlugin
 import gradle.plugins.doctor.DoctorPlugin
 import gradle.plugins.dokka.DokkaPlugin
 import gradle.plugins.initialization.problemreporter.SLF4JProblemReporterContext
-import gradle.plugins.kotlin.targets.jvm.JvmPlugin
 import gradle.plugins.knit.KnitPlugin
 import gradle.plugins.kotlin.allopen.AllOpenPlugin
 import gradle.plugins.kotlin.apollo.ApolloPlugin
@@ -38,6 +37,7 @@ import gradle.plugins.kotlin.room.RoomPlugin
 import gradle.plugins.kotlin.rpc.RpcPlugin
 import gradle.plugins.kotlin.serialization.SerializationPlugin
 import gradle.plugins.kotlin.sqldelight.SqlDelightPlugin
+import gradle.plugins.kotlin.targets.jvm.JvmPlugin
 import gradle.plugins.kotlin.targets.nat.NativePlugin
 import gradle.plugins.kotlin.targets.nat.android.KotlinAndroidNative32Target
 import gradle.plugins.kotlin.targets.nat.android.KotlinAndroidNative64Target

@@ -25,6 +25,6 @@ internal data class MavenPomDistributionManagement(
 
     fun applyTo(receiver: MavenPomDistributionManagement) {
         receiver.downloadUrl tryAssign downloadUrl
-        receiver::relocation tryApply relocation?.let{ relocation -> relocation::applyTo }
+        receiver::relocation tryApply relocation?.let { relocation -> relocation::applyTo }
     }
 }
