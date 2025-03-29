@@ -15,6 +15,7 @@ import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
 import gradle.ifTrue
 import gradle.serialization.serializer.JsonContentPolymorphicSerializer
+import gradle.serialization.serializer.JsonKeyTransformingContentPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.isAccessible
@@ -22,7 +23,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-@Serializable(with = FormatExtensionKeyTransformingSerializer::class)
+@Serializable(with = FormatExtensionKeyTransformingContentPolymorphicSerializer::class)
 internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatExtension> {
 
     abstract val lineEnding: LineEnding?
@@ -231,13 +232,8 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
     )
 }
 
-private object FormatExtensionContentPolymorphicSerializer : JsonContentPolymorphicSerializer<FormatExtension<*>>(
+private object FormatExtensionKeyTransformingContentPolymorphicSerializer : JsonKeyTransformingContentPolymorphicSerializer<FormatExtension<*>>(
     FormatExtension::class,
-)
-
-private object FormatExtensionKeyTransformingSerializer : KeyTransformingSerializer<FormatExtension<*>>(
-    FormatExtensionContentPolymorphicSerializer,
-    "type",
 )
 
 @Serializable

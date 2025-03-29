@@ -6,6 +6,7 @@ import gradle.api.elementType
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
 import gradle.serialization.serializer.JsonContentPolymorphicSerializer
+import gradle.serialization.serializer.JsonKeyTransformingContentPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
 import groovy.lang.MissingPropertyException
 import kotlinx.serialization.SerialName
@@ -138,7 +139,7 @@ import org.gradle.api.tasks.TaskDependency
  * Parallel execution can be enabled by the `--parallel` flag when the build is initiated.
  * In parallel mode, the tasks of different projects (i.e. in a multi project build) are able to be executed in parallel.
  */
-@Serializable(with = TaskKeyTransformingSerializer::class)
+@Serializable(with = TaskKeyTransformingContentPolymorphicSerializer::class)
 internal interface Task<T : org.gradle.api.Task> : ProjectNamed<T> {
 
     /**
@@ -351,13 +352,8 @@ internal fun <T : org.gradle.api.Task> Task<T>.applyTo(receiver: TaskCollection<
         project.tasks.register(name, receiver.elementType(), action)
     }
 
-private object TaskContentPolymorphicSerializer : JsonContentPolymorphicSerializer<Task<*>>(
+private object TaskKeyTransformingContentPolymorphicSerializer : JsonKeyTransformingContentPolymorphicSerializer<Task<*>>(
     Task::class,
-)
-
-private object TaskKeyTransformingSerializer : KeyTransformingSerializer<Task<*>>(
-    TaskContentPolymorphicSerializer,
-    "type",
 )
 
 @Serializable

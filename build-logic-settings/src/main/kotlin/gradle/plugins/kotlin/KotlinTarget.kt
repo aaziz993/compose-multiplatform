@@ -6,12 +6,13 @@ import gradle.api.applyTo
 import gradle.api.publish.maven.MavenPublication
 import gradle.api.trySet
 import gradle.serialization.serializer.JsonContentPolymorphicSerializer
+import gradle.serialization.serializer.JsonKeyTransformingContentPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-@Serializable(with = KotlinTargetKeyTransformingSerializer::class)
+@Serializable(with = KotlinTargetKeyTransformingContentPolymorphicSerializer::class)
 internal interface KotlinTarget<T : org.jetbrains.kotlin.gradle.plugin.KotlinTarget> : ProjectNamed<T> {
 
     val targetName: String?
@@ -54,14 +55,8 @@ internal interface KotlinTarget<T : org.jetbrains.kotlin.gradle.plugin.KotlinTar
     fun applyTo()
 }
 
-private object KotlinTargetContentPolymorphicSerializer : JsonContentPolymorphicSerializer<KotlinTarget<*>>(
-    KotlinTarget::class,
-)
-
-private object KotlinTargetKeyTransformingSerializer : KeyTransformingSerializer<KotlinTarget<*>>(
-    KotlinTargetContentPolymorphicSerializer,
-    "type",
-)
+private object KotlinTargetKeyTransformingContentPolymorphicSerializer
+    : JsonKeyTransformingContentPolymorphicSerializer<KotlinTarget<*>>(KotlinTarget::class)
 
 @Serializable
 @SerialName("KotlinTarget")

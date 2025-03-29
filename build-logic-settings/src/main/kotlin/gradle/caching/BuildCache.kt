@@ -2,6 +2,7 @@ package gradle.caching
 
 import gradle.api.trySet
 import gradle.serialization.serializer.JsonContentPolymorphicSerializer
+import gradle.serialization.serializer.JsonKeyTransformingContentPolymorphicSerializer
 import gradle.serialization.serializer.KeyTransformingSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings
@@ -11,7 +12,7 @@ import org.gradle.api.initialization.Settings
  *
  * @since 3.5
  */
-@Serializable(with = BuildCacheKeyTransformingSerializer::class)
+@Serializable(with = BuildKeyTransformingContentPolymorphicSerializer::class)
 internal interface BuildCache<T : org.gradle.caching.configuration.BuildCache> {
 
     /**
@@ -31,11 +32,6 @@ internal interface BuildCache<T : org.gradle.caching.configuration.BuildCache> {
     }
 }
 
-private object BuildCacheContentPolymorphicSerializer : JsonContentPolymorphicSerializer<BuildCache<*>>(
+private object BuildKeyTransformingContentPolymorphicSerializer : JsonKeyTransformingContentPolymorphicSerializer<BuildCache<*>>(
     BuildCache::class,
-)
-
-private object BuildCacheKeyTransformingSerializer : KeyTransformingSerializer<BuildCache<*>>(
-    BuildCacheContentPolymorphicSerializer,
-    "type",
 )

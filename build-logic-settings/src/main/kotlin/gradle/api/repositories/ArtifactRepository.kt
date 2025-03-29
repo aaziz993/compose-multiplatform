@@ -4,7 +4,9 @@ import gradle.api.Named
 import gradle.api.tryApply
 import gradle.isValidUrl
 import gradle.serialization.serializer.BaseKeyTransformingSerializer
+import gradle.serialization.serializer.JsonBaseKeyTransformingContentPolymorphicSerializer
 import gradle.serialization.serializer.JsonContentPolymorphicSerializer
+import gradle.serialization.serializer.JsonKeyTransformingContentPolymorphicSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
@@ -14,7 +16,7 @@ import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.api.file.Directory
 import org.gradle.api.initialization.Settings
 
-@Serializable(with = ArtifactRepositoryKeyTransformingSerializer::class)
+@Serializable(with = ArtifactRepositoryKeyTransformingContentPolymorphicSerializer::class)
 internal interface ArtifactRepository<T : org.gradle.api.artifacts.repositories.ArtifactRepository> : Named<T> {
 
     /**
@@ -48,13 +50,9 @@ internal interface ArtifactRepository<T : org.gradle.api.artifacts.repositories.
     fun applyTo(receiver: RepositoryHandler)
 }
 
-private object ArtifactRepositoryContentPolymorphicSerializer : JsonContentPolymorphicSerializer<ArtifactRepository<*>>(
+private object ArtifactRepositoryKeyTransformingContentPolymorphicSerializer : JsonBaseKeyTransformingContentPolymorphicSerializer<ArtifactRepository<*>>(
     ArtifactRepository::class,
-)
-
-private object ArtifactRepositoryKeyTransformingSerializer : BaseKeyTransformingSerializer<ArtifactRepository<*>>(
-    ArtifactRepositoryContentPolymorphicSerializer,
-) {
+){
 
     override fun transformKey(key: String, value: JsonElement?): JsonObject = JsonObject(
         if (value == null && key.isValidUrl) mapOf(
