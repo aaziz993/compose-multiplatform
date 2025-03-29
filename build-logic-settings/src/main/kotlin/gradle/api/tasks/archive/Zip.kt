@@ -4,6 +4,7 @@ import gradle.api.tasks.Expand
 import gradle.api.tasks.FilesMatching
 import gradle.api.tasks.applyTo
 import gradle.api.tasks.copy.FileCopyDetails
+import gradle.api.tasks.copy.FromContentPolymorphicSerializer
 import gradle.api.tasks.copy.IntoContentPolymorphicSerializer
 import gradle.api.tasks.copy.Rename
 import gradle.api.trySet
