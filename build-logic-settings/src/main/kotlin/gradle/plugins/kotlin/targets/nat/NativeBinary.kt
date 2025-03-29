@@ -7,9 +7,7 @@ import gradle.api.tryPlus
 import gradle.api.tryPutAll
 import gradle.api.trySet
 import gradle.plugins.project.Dependency
-import gradle.serialization.serializer.JsonContentPolymorphicSerializer
 import gradle.serialization.serializer.JsonKeyValueTransformingContentPolymorphicSerializer
-import gradle.serialization.serializer.JsonKeyValueTransformingSerializer
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName

@@ -2,6 +2,7 @@ package gradle.plugins.java.test
 
 import gradle.api.tasks.test.TestFrameworkOptions
 import gradle.api.trySet
+import gradle.api.trySetArray
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.tasks.testing.junit.JUnitOptions
@@ -25,9 +26,9 @@ internal data class JUnitOptions(
 
     context(Project)
     override fun applyTo(receiver: JUnitOptions) {
-        receiver::includeCategories trySet includeCategories
+        receiver::includeCategories trySetArray includeCategories
         receiver::setIncludeCategories trySet setIncludeCategories
-        receiver::excludeCategories trySet excludeCategories
+        receiver::excludeCategories trySetArray excludeCategories
         receiver::setExcludeCategories trySet setExcludeCategories
     }
 }

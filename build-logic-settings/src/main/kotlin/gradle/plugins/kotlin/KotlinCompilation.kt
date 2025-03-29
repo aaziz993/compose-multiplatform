@@ -1,7 +1,6 @@
 package gradle.plugins.kotlin
 
 import gradle.accessors.files
-import gradle.api.NamedKeyValueTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.getByNameOrAll
 import gradle.api.tryPlus
@@ -10,8 +9,6 @@ import gradle.plugins.kotlin.tasks.KotlinCompilationTask
 import gradle.plugins.kotlin.tasks.KotlinCompilationTaskImpl
 import gradle.plugins.project.Dependency
 
-import gradle.serialization.serializer.JsonKeyValueTransformingSerializer
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

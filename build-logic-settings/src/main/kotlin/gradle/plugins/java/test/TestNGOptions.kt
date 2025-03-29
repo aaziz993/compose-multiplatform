@@ -3,6 +3,7 @@ package gradle.plugins.java.test
 import gradle.api.tasks.test.TestFrameworkOptions
 import gradle.api.tryAssign
 import gradle.api.trySet
+import gradle.api.trySetArray
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.tasks.testing.testng.TestNGOptions
@@ -142,9 +143,9 @@ internal data class TestNGOptions(
     @Suppress("UnstableApiUsage")
     override fun applyTo(receiver: TestNGOptions) {
         receiver::setOutputDirectory trySet outputDirectory?.let(project::file)
-        receiver::includeGroups trySet includeGroups
+        receiver::includeGroups trySetArray includeGroups
         receiver::setIncludeGroups trySet setIncludeGroups
-        receiver::excludeGroups trySet excludeGroups
+        receiver::excludeGroups trySetArray excludeGroups
         receiver::setExcludeGroups trySet setExcludeGroups
         receiver::setConfigFailurePolicy trySet configFailurePolicy
         receiver::setListeners trySet listeners

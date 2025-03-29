@@ -4,8 +4,8 @@ import gradle.api.applyTo
 import gradle.api.repositories.ArtifactRepository
 import gradle.api.repositories.AuthenticationSupported
 import gradle.api.repositories.UrlArtifactRepository
-import gradle.api.tryApply
-import gradle.api.trySet
+import gradle.api.tryApplyAction
+import gradle.api.trySetArray
 import gradle.ifTrue
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -64,9 +64,9 @@ internal interface MavenArtifactRepository
         super<UrlArtifactRepository>._applyTo(receiver)
         super<AuthenticationSupported>._applyTo(receiver)
 
-        receiver::artifactUrls trySet artifactUrls
+        receiver::artifactUrls trySetArray artifactUrls
         metadataSources?.applyTo(receiver.metadataSources)
-        receiver::mavenContent tryApply mavenContent?.let{ mavenContent -> mavenContent::applyTo }
+        receiver::mavenContent tryApplyAction mavenContent?.let{ mavenContent -> mavenContent::applyTo }
     }
 
     context(Settings)

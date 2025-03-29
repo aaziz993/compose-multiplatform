@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin.targets.web
 
 import gradle.api.tryAddAll
-import gradle.api.tryApply
+import gradle.api.tryApplyAction
 import gradle.api.trySet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -71,8 +71,8 @@ internal data class KotlinWebpackConfig(
         receiver::export trySet export
         receiver::progressReporter trySet progressReporter
         receiver::resolveFromModulesFirst trySet resolveFromModulesFirst
-        receiver::cssSupport tryApply cssSupport?.let { it::applyTo }
-        receiver::scssSupport tryApply scssSupport?.let { it::applyTo }
+        receiver::cssSupport tryApplyAction cssSupport?.let { it::applyTo }
+        receiver::scssSupport tryApplyAction scssSupport?.let { it::applyTo }
     }
 
     @Serializable

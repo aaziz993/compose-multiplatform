@@ -2,6 +2,7 @@ package gradle.plugins.android
 
 import com.android.build.api.dsl.KeepRules
 import gradle.api.trySet
+import gradle.api.trySetArray
 import kotlinx.serialization.Serializable
 
 /**
@@ -24,7 +25,7 @@ internal data class KeepRules(
 
     @Suppress("UnstableApiUsage")
     fun applyTo(receiver: KeepRules) {
-        receiver::ignoreFrom trySet ignoreFrom
+        receiver::ignoreFrom trySetArray ignoreFrom
 
         receiver::ignoreFromAllExternalDependencies trySet ignoreFromAllExternalDependencies
     }

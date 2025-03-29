@@ -2,8 +2,8 @@ package gradle.plugins.kotlin.targets.web
 
 import gradle.accessors.moduleName
 import gradle.api.trySet
-import gradle.serialization.serializer.JsonContentPolymorphicSerializer
-import gradle.serialization.serializer.JsonKeyValueTransformingSerializer
+import gradle.serialization.serializer.JsonKeyValueTransformingContentPolymorphicSerializer
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -23,7 +23,7 @@ internal interface JsBinary<T : org.jetbrains.kotlin.gradle.targets.js.ir.JsBina
     }
 }
 
-@Serializable(with = JsIrBinaryKeyValueTransformingSerializer::class)
+@Serializable(with = JsIrBinaryKeyValueTransformingContentPolymorphicSerializer::class)
 internal sealed class JsIrBinary<T : org.jetbrains.kotlin.gradle.targets.js.ir.JsIrBinary> : JsBinary<T> {
 
     abstract val generateTs: Boolean?
@@ -36,14 +36,8 @@ internal sealed class JsIrBinary<T : org.jetbrains.kotlin.gradle.targets.js.ir.J
     }
 }
 
-private object JsIrBinaryContentPolymorphicSerializer : JsonContentPolymorphicSerializer<JsIrBinary<*>>(
-    JsIrBinary::class,
-)
-
-private object JsIrBinaryKeyValueTransformingSerializer : JsonKeyValueTransformingSerializer<JsIrBinary<*>>(
-    JsIrBinaryContentPolymorphicSerializer,
-    "type",
-)
+private class JsIrBinaryKeyValueTransformingContentPolymorphicSerializer(serializer: KSerializer<Nothing>)
+    : JsonKeyValueTransformingContentPolymorphicSerializer<JsIrBinary<*>>(JsIrBinary::class)
 
 @Serializable
 @SerialName("executable")

@@ -1,7 +1,8 @@
 package gradle.plugins.android.sourceset
 
 import gradle.api.ProjectNamed
-import gradle.api.trySet
+import gradle.api.trySetIterable
+import gradle.api.trySetArray
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -24,7 +25,7 @@ internal data class AndroidSourceDirectorySet(
 
     context(Project)
     override fun applyTo(receiver: com.android.build.api.dsl.AndroidSourceDirectorySet) {
-        receiver::srcDirs trySet directories
-        receiver::setSrcDirs trySet setDirectories
+        receiver::srcDirs trySetArray directories
+        receiver::setSrcDirs trySetIterable setDirectories
     }
 }

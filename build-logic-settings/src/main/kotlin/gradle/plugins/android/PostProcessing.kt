@@ -2,6 +2,7 @@ package gradle.plugins.android
 
 import com.android.build.api.dsl.PostProcessing
 import gradle.api.trySet
+import gradle.api.trySetArray
 import kotlinx.serialization.Serializable
 
 /**
@@ -35,11 +36,11 @@ internal data class PostProcessing(
         receiver::isRemoveUnusedResources trySet isRemoveUnusedResources
         receiver::isObfuscate trySet isObfuscate
         receiver::isOptimizeCode trySet isOptimizeCode
-        receiver::proguardFiles trySet proguardFiles
+        receiver::proguardFiles trySetArray proguardFiles
         receiver::setProguardFiles trySet setProguardFiles
-        receiver::testProguardFiles trySet testProguardFiles
+        receiver::testProguardFiles trySetArray testProguardFiles
         receiver::setTestProguardFiles trySet testProguardFiles
-        receiver::consumerProguardFiles trySet consumerProguardFiles
+        receiver::consumerProguardFiles trySetArray consumerProguardFiles
         receiver::setConsumerProguardFiles trySet consumerProguardFiles
     }
 }

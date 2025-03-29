@@ -1,6 +1,6 @@
 package gradle.plugins.apple.target
 
-import gradle.api.tryApply
+import gradle.api.tryApplyFunction
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.apple.AppleBuildSettings
@@ -40,7 +40,7 @@ internal data class IosAppTarget(
         receiver::mainStoryboard trySet mainStoryboard
         receiver::multipleWindows trySet multipleWindows
         receiver::sceneDelegateClass trySet sceneDelegateClass
-        receiver::orientations tryApply orientations?.let{ orientations -> orientations::applyTo }
+        receiver::orientations tryApplyFunction orientations?.let{ orientations -> orientations::applyTo }
 
         sceneConfigurations?.forEach { sceneConfigurations ->
             receiver.sceneConfiguration(sceneConfigurations.name, sceneConfigurations::applyTo)

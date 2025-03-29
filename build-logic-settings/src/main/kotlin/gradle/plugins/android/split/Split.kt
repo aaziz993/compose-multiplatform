@@ -2,6 +2,7 @@ package gradle.plugins.android.split
 
 import com.android.build.api.dsl.Split
 import gradle.api.trySet
+import gradle.api.trySetArray
 import gradle.ifTrue
 
 /**
@@ -28,8 +29,8 @@ internal interface Split<T : Split> {
 
     fun applyTo(receiver: T) {
         receiver::isEnable trySet isEnable
-        receiver::include trySet includes
-        receiver::exclude trySet excludes
+        receiver::include trySetArray includes
+        receiver::exclude trySetArray excludes
         reset?.ifTrue(receiver::reset)
     }
 }

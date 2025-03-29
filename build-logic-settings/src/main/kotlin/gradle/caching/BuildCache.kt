@@ -2,8 +2,6 @@ package gradle.caching
 
 import gradle.api.trySet
 import gradle.serialization.serializer.JsonKeyValueTransformingContentPolymorphicSerializer
-import gradle.serialization.serializer.NotSerializable
-import gradle.serialization.serializer.ignoreTypeParameters
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings

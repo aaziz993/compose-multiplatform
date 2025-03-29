@@ -3,6 +3,7 @@ package gradle.plugins.java.test
 import gradle.accessors.files
 import gradle.api.tryAddAll
 import gradle.api.trySet
+import gradle.api.trySetArray
 import gradle.collection.SerializableAnyMap
 import gradle.process.ProcessForkOptions
 import org.gradle.api.Project
@@ -118,7 +119,7 @@ internal interface JavaForkOptions<T : JavaForkOptions> : ProcessForkOptions<T> 
         jvmArgs?.let(receiver::jvmArgs)
         receiver::setJvmArgs trySet setJvmArgs
 
-        receiver::bootstrapClasspath trySet bootstrapClasspath
+        receiver::bootstrapClasspath trySetArray bootstrapClasspath
 
         receiver::setBootstrapClasspath trySet setBootstrapClasspath?.let(project::files)
 

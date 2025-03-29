@@ -1,6 +1,7 @@
 package gradle.plugins.animalsniffer
 
 import gradle.api.trySet
+import gradle.api.trySetArray
 import kotlinx.serialization.Serializable
 import ru.vyarus.gradle.plugin.animalsniffer.CheckCacheExtension
 
@@ -63,7 +64,7 @@ internal data class CheckCacheExtension(
 
     fun applyTo(receiver: CheckCacheExtension) {
         receiver::setEnabled trySet enabled
-        receiver::exclude trySet exclude
+        receiver::exclude trySetArray exclude
         receiver::setExclude trySet setExclude
         receiver::setMergeSignatures trySet mergeSignatures
     }

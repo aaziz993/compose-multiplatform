@@ -1,11 +1,9 @@
 package gradle.plugins.android
 
 import gradle.accessors.android
-import gradle.api.NamedKeyValueTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.tryAddAll
 import gradle.api.trySet
-import kotlinx.serialization.KSerializer
 import org.gradle.api.Project
 
 /**

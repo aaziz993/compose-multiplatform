@@ -1,6 +1,6 @@
 package gradle.api.tasks.util
 
-import gradle.api.trySet
+import gradle.api.trySetIterable
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -99,9 +99,9 @@ internal interface PatternFilterable<T : org.gradle.api.tasks.util.PatternFilter
     context(Project)
     fun applyTo(receiver: T) {
         includes?.let(receiver::include)
-        receiver::setIncludes trySet setIncludes
+        receiver::setIncludes trySetIterable setIncludes
         excludes?.let(receiver::exclude)
-        receiver::setExcludes trySet setExcludes
+        receiver::setExcludes trySetIterable setExcludes
     }
 }
 

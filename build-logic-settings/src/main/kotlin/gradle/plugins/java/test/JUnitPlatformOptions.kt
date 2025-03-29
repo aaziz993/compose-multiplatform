@@ -2,6 +2,7 @@ package gradle.plugins.java.test
 
 import gradle.api.tasks.test.TestFrameworkOptions
 import gradle.api.trySet
+import gradle.api.trySetArray
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.tasks.testing.junitplatform.JUnitPlatformOptions
@@ -47,13 +48,13 @@ internal class JUnitPlatformOptions(
 
     context(Project)
     override fun applyTo(receiver: JUnitPlatformOptions) {
-        receiver::includeEngines trySet includeEngines
+        receiver::includeEngines trySetArray includeEngines
         receiver::setIncludeEngines trySet setIncludeEngines
-        receiver::excludeEngines trySet excludeEngines
+        receiver::excludeEngines trySetArray excludeEngines
         receiver::setExcludeEngines trySet setExcludeEngines
-        receiver::includeTags trySet includeTags
+        receiver::includeTags trySetArray includeTags
         receiver::setIncludeTags trySet setIncludeTags
-        receiver::excludeTags trySet excludeTags
+        receiver::excludeTags trySetArray excludeTags
         receiver::setExcludeTags trySet setExcludeTags
     }
 }

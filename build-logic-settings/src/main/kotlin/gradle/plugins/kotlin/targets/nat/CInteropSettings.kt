@@ -1,12 +1,10 @@
 package gradle.plugins.kotlin.targets.nat
 
 import gradle.accessors.files
-import gradle.api.NamedKeyValueTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.tryPlus
 import gradle.api.trySet
 import kotlinx.serialization.DeserializationStrategy
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.SetSerializer
 import kotlinx.serialization.builtins.serializer

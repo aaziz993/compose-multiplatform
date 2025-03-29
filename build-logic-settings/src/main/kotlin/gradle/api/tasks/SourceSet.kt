@@ -5,6 +5,7 @@ import gradle.api.NamedKeyValueTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.file.SourceDirectorySet
 import gradle.api.trySet
+import gradle.api.trySetArray
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
@@ -96,10 +97,10 @@ internal data class SourceSet(
 
     context(Project)
     override fun applyTo(receiver: org.gradle.api.tasks.SourceSet) {
-        receiver::compiledBy trySet compileClasspath
+        receiver::compiledBy trySetArray compileClasspath
         receiver::setAnnotationProcessorPath trySet annotationProcessorPath?.let(project::files)
         receiver::setRuntimeClasspath trySet runtimeClasspath?.let(project::files)
-        receiver::compiledBy trySet compiledBy
+        receiver::compiledBy trySetArray compiledBy
         resources?.applyTo(receiver.resources)
         java?.applyTo(receiver.java)
         allJava?.applyTo(receiver.allJava)

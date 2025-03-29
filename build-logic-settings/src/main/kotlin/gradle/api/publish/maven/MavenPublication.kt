@@ -3,7 +3,7 @@ package gradle.api.publish.maven
 import gradle.accessors.publishing
 import gradle.api.applyTo
 import gradle.api.publish.Publication
-import gradle.api.tryApply
+import gradle.api.tryApplyAction
 import gradle.ifTrue
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -257,7 +257,7 @@ internal data class MavenPublication(
         receiver.groupId = groupId ?: project.group.toString()
         receiver.artifactId = artifactId ?: project.name
         receiver.version = version ?: project.version.toString()
-        receiver::versionMapping tryApply versionMapping?.let{ versionMapping -> versionMapping::applyTo }
+        receiver::versionMapping tryApplyAction versionMapping?.let{ versionMapping -> versionMapping::applyTo }
         suppressPomMetadataWarningsFor?.forEach(receiver::suppressPomMetadataWarningsFor)
         suppressAllPomMetadataWarnings?.ifTrue(receiver::suppressAllPomMetadataWarnings)
     }

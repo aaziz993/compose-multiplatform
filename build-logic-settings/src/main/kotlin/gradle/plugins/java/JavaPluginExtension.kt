@@ -5,7 +5,7 @@ import gradle.accessors.java
 import gradle.accessors.settings
 import gradle.api.applyTo
 import gradle.api.tasks.SourceSet
-import gradle.api.tryApply
+import gradle.api.tryApplyAction
 import gradle.api.tryAssign
 import gradle.api.trySet
 import gradle.ifTrue
@@ -153,7 +153,7 @@ internal data class JavaPluginExtension(
             withSourcesJar?.ifTrue(project.java::withSourcesJar)
             modularity?.applyTo(project.java.modularity)
             toolchain?.applyTo(project.java.toolchain)
-            project.java::consistentResolution tryApply consistentResolution?.let { consistentResolution -> consistentResolution::applyTo }
+            project.java::consistentResolution tryApplyAction consistentResolution?.let { consistentResolution -> consistentResolution::applyTo }
 
             sourceSets?.forEach { sourceSet ->
                 sourceSet.applyTo(project.java.sourceSets)

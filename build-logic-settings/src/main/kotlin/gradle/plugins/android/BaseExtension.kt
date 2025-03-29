@@ -7,6 +7,7 @@ import gradle.accessors.settings
 import gradle.api.applyTo
 import gradle.api.tryAddAll
 import gradle.api.trySet
+import gradle.api.trySetArray
 import gradle.ifTrue
 import gradle.plugins.android.compile.CompileOptions
 import gradle.plugins.android.defaultconfig.DefaultConfig
@@ -112,7 +113,7 @@ internal interface BaseExtension {
         (compileSdkVersion ?: project.settings.libs.versionOrNull("project.android.compileSdk")?.toInt())
             ?.let(project.android::compileSdkVersion)
         buildToolsVersion?.let(project.android::buildToolsVersion)
-        project.android::flavorDimensions trySet flavorDimensions
+        project.android::flavorDimensions trySetArray flavorDimensions
         aaptOptions?.applyTo(project.android.aaptOptions)
         externalNativeBuild?.applyTo(project.android.externalNativeBuild)
         testOptions?.applyTo(project.android.testOptions)
@@ -126,7 +127,7 @@ internal interface BaseExtension {
 
         splits?.applyTo(project.android.splits)
         project.android::generatePureSplits trySet generatePureSplits
-        project.android::flavorDimensions trySet flavorDimensions
+        project.android::flavorDimensions trySetArray flavorDimensions
         project.android.flavorDimensionList tryAddAll setFlavorDimensions
         resourcePrefix?.let(project.android::resourcePrefix)
         project.android::ndkVersion trySet ndkVersion

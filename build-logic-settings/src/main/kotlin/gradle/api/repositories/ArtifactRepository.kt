@@ -1,7 +1,7 @@
 package gradle.api.repositories
 
 import gradle.api.Named
-import gradle.api.tryApply
+import gradle.api.tryApplyAction
 import gradle.isValidUrl
 import gradle.serialization.serializer.JsonBaseKeyValueTransformingContentPolymorphicSerializer
 import kotlinx.serialization.KSerializer
@@ -38,7 +38,7 @@ internal interface ArtifactRepository<T : org.gradle.api.artifacts.repositories.
 
     context(Directory)
     fun _applyTo(receiver: T) {
-        receiver::content tryApply content?.let { content -> content::applyTo }
+        receiver::content tryApplyAction content?.let { content -> content::applyTo }
     }
 
     context(Settings)

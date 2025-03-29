@@ -1,8 +1,8 @@
 package gradle.api.repositories
 
 import gradle.api.getByNameOrAll
-import gradle.api.tryApply
-import gradle.api.trySet
+import gradle.api.tryApplyAction
+import gradle.api.trySetArray
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.artifacts.repositories.ExclusiveContentRepository
@@ -35,7 +35,7 @@ internal data class ExclusiveContentRepository(
 
     context(Project)
     fun applyTo(receiver: ExclusiveContentRepository) {
-        receiver::forRepositories trySet forRepositories?.flatMap(project.repositories::getByNameOrAll)
-        receiver::filter tryApply filter?.let { filter -> filter::applyTo }
+        receiver::forRepositories trySetArray forRepositories?.flatMap(project.repositories::getByNameOrAll)
+        receiver::filter tryApplyAction filter?.let { filter -> filter::applyTo }
     }
 }

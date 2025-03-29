@@ -4,6 +4,7 @@ import gradle.accessors.files
 import gradle.api.getByNameOrAll
 import gradle.api.tryAssign
 import gradle.api.trySet
+import gradle.api.trySetIterable
 import gradle.collection.SerializableAnyList
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -41,7 +42,7 @@ internal interface KotlinJvmRunDsl {
     fun applyTo(receiver: org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmRunDsl, target: KotlinJvmTarget) {
         receiver.mainClass tryAssign mainClass
         args?.let(receiver::args)
-        receiver::setArgs trySet setArgs
+        receiver::setArgs trySetIterable setArgs
         classpath?.filter { !it.startsWith("$") }?.toTypedArray()?.let(receiver::classpath)
         receiver::setClasspath trySet setClasspath?.let(project::files)
         classpath?.mapNotNull {
