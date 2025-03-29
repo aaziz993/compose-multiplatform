@@ -1,6 +1,6 @@
 package gradle.plugins.apple
 
-import gradle.api.NamedKeyTransformingSerializer
+import gradle.api.NamedKeyValueTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.file.SourceDirectorySet
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -10,7 +10,7 @@ import org.gradle.api.Project
 
 @OptIn(ExperimentalSerializationApi::class)
 @KeepGeneratedSerializer
-@Serializable(with = AppleSourceSetKeyTransformingSerializer::class)
+@Serializable(with = AppleSourceSetKeyValueTransformingSerializer::class)
 internal data class AppleSourceSet(
     override val name: String? = null,
     val apple: SourceDirectorySet? = null,
@@ -25,6 +25,6 @@ internal data class AppleSourceSet(
     }
 }
 
-private object AppleSourceSetKeyTransformingSerializer : NamedKeyTransformingSerializer<AppleSourceSet>(
+private object AppleSourceSetKeyValueTransformingSerializer : NamedKeyValueTransformingSerializer<AppleSourceSet>(
     AppleSourceSet.generatedSerializer(),
 )

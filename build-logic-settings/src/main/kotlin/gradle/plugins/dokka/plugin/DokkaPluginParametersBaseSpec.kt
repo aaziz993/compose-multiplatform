@@ -1,9 +1,7 @@
 package gradle.plugins.dokka.plugin
 
 import gradle.api.ProjectNamed
-import gradle.serialization.serializer.JsonContentPolymorphicSerializer
-import gradle.serialization.serializer.JsonKeyTransformingContentPolymorphicSerializer
-import gradle.serialization.serializer.KeyTransformingSerializer
+import gradle.serialization.serializer.JsonKeyValueTransformingContentPolymorphicSerializer
 import kotlinx.serialization.Serializable
 
 /**
@@ -23,6 +21,6 @@ internal abstract class DokkaPluginParametersBaseSpec<T : org.jetbrains.dokka.gr
     abstract val pluginFqn: String
 }
 
-private object DokkaPluginParametersBaseSpecKeyTransformingContentPolymorphicSerializer : JsonKeyTransformingContentPolymorphicSerializer<DokkaPluginParametersBaseSpec<*>>(
+private object DokkaPluginParametersBaseSpecKeyTransformingContentPolymorphicSerializer : JsonKeyValueTransformingContentPolymorphicSerializer<DokkaPluginParametersBaseSpec<*>>(
     DokkaPluginParametersBaseSpec::class,
 )

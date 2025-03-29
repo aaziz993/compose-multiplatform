@@ -1,7 +1,7 @@
 package gradle.plugins.android.device
 
 import com.android.build.api.dsl.Device
-import gradle.api.NamedKeyTransformingSerializer
+import gradle.api.NamedKeyValueTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.applyTo
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -14,7 +14,7 @@ import org.gradle.api.Project
  */
 @OptIn(ExperimentalSerializationApi::class)
 @KeepGeneratedSerializer
-@Serializable(with = DeviceGroupKeyTransformingSerializer::class)
+@Serializable(with = DeviceGroupKeyValueTransformingSerializer::class)
 internal data class DeviceGroup(
     override val name: String? = null,
     val targetDevices: LinkedHashSet<DeviceImpl>? = null,
@@ -29,5 +29,5 @@ internal data class DeviceGroup(
     }
 }
 
-private object DeviceGroupKeyTransformingSerializer
-    : NamedKeyTransformingSerializer<DeviceGroup>(DeviceGroup.generatedSerializer())
+private object DeviceGroupKeyValueTransformingSerializer
+    : NamedKeyValueTransformingSerializer<DeviceGroup>(DeviceGroup.generatedSerializer())

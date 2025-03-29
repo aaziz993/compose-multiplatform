@@ -1,6 +1,6 @@
 package gradle.plugins.android
 
-import gradle.serialization.serializer.KeyTransformingSerializer
+import gradle.serialization.serializer.KeyValueTransformingSerializer
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -9,7 +9,7 @@ internal data class MissingDimensionStrategy(
     val requestedValues: List<String>
 )
 
-internal object MissingDimensionStrategyKeyTransformingSerializer : KeyTransformingSerializer<MissingDimensionStrategy>(
+internal object MissingDimensionStrategyKeyValueTransformingSerializer : KeyValueTransformingSerializer<MissingDimensionStrategy>(
     MissingDimensionStrategy.serializer(),
     "dimension",
 )

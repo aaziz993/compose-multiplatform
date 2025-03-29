@@ -176,7 +176,7 @@ internal interface CocoapodsExtension {
 
     @OptIn(ExperimentalSerializationApi::class)
     @KeepGeneratedSerializer
-    @Serializable(with = CocoapodsDependencyKeyTransformingSerializer::class)
+    @Serializable(with = CocoapodsDependencyKeyValueTransformingSerializer::class)
     data class CocoapodsDependency(
         var name: String? = null,
         val moduleName: String? = null,
@@ -287,7 +287,7 @@ internal interface CocoapodsExtension {
         }
     }
 
-    object CocoapodsDependencyKeyTransformingSerializer : JsonTransformingSerializer<CocoapodsDependency>(
+    object CocoapodsDependencyKeyValueTransformingSerializer : JsonTransformingSerializer<CocoapodsDependency>(
         CocoapodsDependency.generatedSerializer(),
     ) {
 

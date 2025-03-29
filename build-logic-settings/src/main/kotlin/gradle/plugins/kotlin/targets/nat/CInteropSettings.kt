@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin.targets.nat
 
 import gradle.accessors.files
-import gradle.api.NamedKeyTransformingSerializer
+import gradle.api.NamedKeyValueTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.tryPlus
 import gradle.api.trySet
@@ -318,8 +318,8 @@ internal interface CInteropSettings<T : org.jetbrains.kotlin.gradle.plugin.CInte
          *                     includeDirs {
          *                         headerFilterOnly(project.file("include/libs"))
          *                     }
-         *                 }internal abstract class BuildTypeKeyTransformingSerializer<T : BuildType<*>>(tSerializer: KSerializer<T>)
-         *     : NamedKeyTransformingSerializer<T>(tSerializer)
+         *                 }internal abstract class BuildTypeKeyValueTransformingSerializer<T : BuildType<*>>(tSerializer: KSerializer<T>)
+         *     : NamedKeyValueTransformingSerializer<T>(tSerializer)
          *             }
          *         }
          *     }
@@ -351,5 +351,5 @@ internal interface CInteropSettings<T : org.jetbrains.kotlin.gradle.plugin.CInte
     }
 }
 
-internal abstract class CInteropSettingsKeyTransformingSerializer<T : CInteropSettings<*>>(tSerializer: KSerializer<T>)
-    : NamedKeyTransformingSerializer<T>(tSerializer)
+internal abstract class CInteropSettingsKeyValueTransformingSerializer<T : CInteropSettings<*>>(tSerializer: KSerializer<T>)
+    : NamedKeyValueTransformingSerializer<T>(tSerializer)

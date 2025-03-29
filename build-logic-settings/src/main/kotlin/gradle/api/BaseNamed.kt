@@ -1,6 +1,6 @@
 package gradle.api
 
-import gradle.serialization.serializer.KeyTransformingSerializer
+import gradle.serialization.serializer.KeyValueTransformingSerializer
 import kotlinx.serialization.KSerializer
 import org.gradle.api.Action
 import org.gradle.api.DomainObjectCollection
@@ -21,9 +21,9 @@ internal interface BaseNamed {
     val name: String?
 }
 
-internal abstract class NamedKeyTransformingSerializer<T : BaseNamed>(
+internal abstract class NamedKeyValueTransformingSerializer<T : BaseNamed>(
     tSerializer: KSerializer<T>
-) : KeyTransformingSerializer<T>(
+) : KeyValueTransformingSerializer<T>(
     tSerializer,
     "name",
 )

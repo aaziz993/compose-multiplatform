@@ -17,7 +17,7 @@ import org.gradle.kotlin.dsl.invoke
 
 @OptIn(ExperimentalSerializationApi::class)
 @KeepGeneratedSerializer
-@Serializable(with = KotlinJvmAndroidCompilationKeyTransformingSerializer::class)
+@Serializable(with = KotlinJvmAndroidCompilationKeyValueTransformingSerializer::class)
 internal data class KotlinJvmAndroidCompilation(
     override val name: String,
     override val defaultSourceSet: KotlinSourceSet? = null,
@@ -49,7 +49,7 @@ internal data class KotlinJvmAndroidCompilation(
     }
 }
 
-private object KotlinJvmAndroidCompilationKeyTransformingSerializer :
+private object KotlinJvmAndroidCompilationKeyValueTransformingSerializer :
     KotlinCompilationTransformingSerializer<KotlinJvmAndroidCompilation>(
         KotlinJvmAndroidCompilation.generatedSerializer(),
     )

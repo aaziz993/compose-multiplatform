@@ -9,7 +9,7 @@ import gradle.plugins.kotlin.tasks.KotlinCompilationTask
 import gradle.plugins.kotlin.tasks.KotlinCompilationTaskImpl
 import gradle.plugins.project.Dependency
 
-import gradle.serialization.serializer.KeyTransformingSerializer
+import gradle.serialization.serializer.KeyValueTransformingSerializer
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -139,7 +139,7 @@ internal interface KotlinCompilation<T : org.jetbrains.kotlin.gradle.plugin.Kotl
 
 internal abstract class KotlinCompilationTransformingSerializer<T : KotlinCompilation<*>>(
     tSerializer: KSerializer<T>
-) : KeyTransformingSerializer<T>(
+) : KeyValueTransformingSerializer<T>(
     tSerializer,
     "compilationName",
 )

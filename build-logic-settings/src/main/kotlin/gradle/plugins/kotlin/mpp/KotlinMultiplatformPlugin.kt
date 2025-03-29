@@ -1,6 +1,5 @@
 package gradle.plugins.kotlin.mpp
 
-
 import gradle.accessors.catalog.libs
 import gradle.accessors.kotlin
 import gradle.accessors.projectProperties
@@ -10,9 +9,8 @@ import gradle.api.configureEach
 import gradle.api.file.replace
 import gradle.decapitalized
 import gradle.plugins.project.ProjectLayout
-import gradle.prefixIfNotEmpty
+import gradle.addPrefixIfNotEmpty
 import net.pearx.kasechange.splitToWords
-import net.pearx.kasechange.universalWordSplitter
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.SourceSet
@@ -72,14 +70,18 @@ internal class KotlinMultiplatformPlugin : Plugin<Project> {
                                 resourcesPrefixPart = ""
                             }
                             else {
-                                val wordSplitter = universalWordSplitter()
-
                                 val prefix = testSourceSetNamePrefixes.find { prefix -> restPart.startsWith(prefix) }
 
                                 if (prefix == null) {
                                     srcPrefixPart = restPart
                                         .splitToWords()
-                                        .joinToString(layout.androidVariantDelimiter)
+                                        .let { words ->
+                                            words.firstOrNull()
+                                                .orEmpty() +
+                                                words.drop(1)
+                                                    .joinToString(layout.androidVariantDelimiter)
+                                                    .addPrefixIfNotEmpty(layout.androidAllVariantsDelimiter)
+                                        }
                                     resourcesPrefixPart = srcPrefixPart
                                 }
                                 else {
@@ -89,7 +91,7 @@ internal class KotlinMultiplatformPlugin : Plugin<Project> {
                                                 .removePrefix(prefix)
                                                 .splitToWords()
                                                 .joinToString(layout.androidVariantDelimiter)
-                                                .prefixIfNotEmpty(layout.androidVariantsDelimiter)
+                                                .addPrefixIfNotEmpty(layout.androidAllVariantsDelimiter)
                                         }"
                                     resourcesPrefixPart = srcPrefixPart
                                 }

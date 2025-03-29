@@ -9,7 +9,7 @@ import org.gradle.api.Project
 
 @OptIn(ExperimentalSerializationApi::class)
 @KeepGeneratedSerializer
-@Serializable(with = KotlinNativeSimulatorTestRunKeyTransformingSerializer::class)
+@Serializable(with = KotlinNativeSimulatorTestRunKeyValueTransformingSerializer::class)
 internal data class KotlinNativeSimulatorTestRun(
     override val filter: TestFilter? = null,
     override val executionSource: NativeBinaryTestRunSource? = null,
@@ -29,6 +29,6 @@ internal data class KotlinNativeSimulatorTestRun(
     }
 }
 
-private object KotlinNativeSimulatorTestRunKeyTransformingSerializer : KotlinNativeBinaryTestRunKeyTransformingSerializer<KotlinNativeSimulatorTestRun>(
+private object KotlinNativeSimulatorTestRunKeyValueTransformingSerializer : KotlinNativeBinaryTestRunKeyValueTransformingSerializer<KotlinNativeSimulatorTestRun>(
     KotlinNativeSimulatorTestRun.generatedSerializer(),
 )

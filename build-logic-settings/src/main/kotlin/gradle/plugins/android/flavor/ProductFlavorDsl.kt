@@ -1,7 +1,7 @@
 package gradle.plugins.android.flavor
 
 import com.android.build.api.dsl.ProductFlavor
-import gradle.api.NamedKeyTransformingSerializer
+import gradle.api.NamedKeyValueTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.tryAddAll
 import gradle.api.trySet
@@ -172,5 +172,5 @@ internal interface ProductFlavorDsl<T : ProductFlavor> : ProjectNamed<T>, BaseFl
     }
 }
 
-internal abstract class ProductFlavorDslKeyTransformingSerializer<T : ProductFlavorDsl<*>>(tSerializer: KSerializer<T>)
-    : NamedKeyTransformingSerializer<T>(tSerializer)
+internal abstract class ProductFlavorDslKeyValueTransformingSerializer<T : ProductFlavorDsl<*>>(tSerializer: KSerializer<T>)
+    : NamedKeyValueTransformingSerializer<T>(tSerializer)

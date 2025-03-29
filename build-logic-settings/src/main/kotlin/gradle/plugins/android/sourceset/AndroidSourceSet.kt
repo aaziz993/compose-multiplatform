@@ -1,6 +1,6 @@
 package gradle.plugins.android.sourceset
 
-import gradle.api.NamedKeyTransformingSerializer
+import gradle.api.NamedKeyValueTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.trySet
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -14,7 +14,7 @@ import org.gradle.api.Project
  */
 @OptIn(ExperimentalSerializationApi::class)
 @KeepGeneratedSerializer
-@Serializable(with = AndroidSourceSetKeyTransformingSerializer::class)
+@Serializable(with = AndroidSourceSetKeyValueTransformingSerializer::class)
 internal data class AndroidSourceSet(
     /** Returns the name of this source set. */
     override val name: String? = null,
@@ -73,5 +73,5 @@ internal data class AndroidSourceSet(
     }
 }
 
-private object AndroidSourceSetKeyTransformingSerializer
-    : NamedKeyTransformingSerializer<AndroidSourceSet>(AndroidSourceSet.generatedSerializer())
+private object AndroidSourceSetKeyValueTransformingSerializer
+    : NamedKeyValueTransformingSerializer<AndroidSourceSet>(AndroidSourceSet.generatedSerializer())

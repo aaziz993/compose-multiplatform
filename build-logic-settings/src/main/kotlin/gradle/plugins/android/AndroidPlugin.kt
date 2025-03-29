@@ -17,7 +17,7 @@ import gradle.plugins.android.application.BaseAppModuleExtension
 import gradle.plugins.android.library.LibraryExtension
 import gradle.plugins.kotlin.mpp.KotlinAndroidTarget
 import gradle.plugins.project.ProjectLayout
-import gradle.prefixIfNotEmpty
+import gradle.addPrefixIfNotEmpty
 import javax.xml.stream.XMLEventFactory
 import javax.xml.stream.XMLInputFactory
 import javax.xml.stream.XMLOutputFactory
@@ -67,7 +67,7 @@ internal class AndroidPlugin : Plugin<Project> {
                     else testSourceSetNamePrefixes.find { prefix ->
                         sourceSet.name.startsWith(prefix)
                     }?.let { prefix ->
-                        "$prefix${sourceSet.name.removePrefix(prefix).prefixIfNotEmpty("+")}".let { it to it }
+                        "$prefix${sourceSet.name.removePrefix(prefix).addPrefixIfNotEmpty("+")}".let { it to it }
                     } ?: sourceSet.name.let { it to it }
 
                 sourceSet.kotlin.replace("src/${sourceSet.name}/kotlin", "$srcPrefixPart${layout.targetDelimiter}android")

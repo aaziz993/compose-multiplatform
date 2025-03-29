@@ -7,13 +7,13 @@ import kotlinx.serialization.Serializable
 
 @OptIn(ExperimentalSerializationApi::class)
 @KeepGeneratedSerializer
-@Serializable(with = KotlinNativeHostTestRunKeyTransformingSerializer::class)
+@Serializable(with = KotlinNativeHostTestRunKeyValueTransformingSerializer::class)
 internal data class KotlinNativeHostTestRun(
     override val filter: TestFilter? = null,
     override val executionSource: NativeBinaryTestRunSource? = null,
     override val name: String
 ) : KotlinNativeBinaryTestRun<org.jetbrains.kotlin.gradle.targets.native.KotlinNativeHostTestRun>
 
-private object KotlinNativeHostTestRunKeyTransformingSerializer : KotlinNativeBinaryTestRunKeyTransformingSerializer<KotlinNativeHostTestRun>(
+private object KotlinNativeHostTestRunKeyValueTransformingSerializer : KotlinNativeBinaryTestRunKeyValueTransformingSerializer<KotlinNativeHostTestRun>(
     KotlinNativeHostTestRun.generatedSerializer(),
 )

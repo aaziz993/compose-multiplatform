@@ -17,10 +17,10 @@ internal fun String.addPrefix(prefix: String) =
 internal fun String.addSuffix(suffix: String) =
     "$this$suffix"
 
-internal fun String.prefixIfNotEmpty(prefix: String) =
+internal fun String.addPrefixIfNotEmpty(prefix: String) =
     ifNotEmpty { "$prefix$it" }
 
-internal fun String.suffixIfNotEmpty(suffix: String) =
+internal fun String.addSuffixIfNotEmpty(suffix: String) =
     ifNotEmpty { "$it$suffix" }
 
 internal val String.isValidUrl

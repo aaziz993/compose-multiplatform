@@ -1,6 +1,6 @@
 package gradle.plugins.dokka
 
-import gradle.api.NamedKeyTransformingSerializer
+import gradle.api.NamedKeyValueTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.tryAssign
 import gradle.api.tryFrom
@@ -19,7 +19,7 @@ import org.gradle.api.Project
  */
 @OptIn(ExperimentalSerializationApi::class)
 @KeepGeneratedSerializer
-@Serializable(with = DokkaPublicationKeyTransformingSerializer::class)
+@Serializable(with = DokkaPublicationKeyValueTransformingSerializer::class)
 internal data class DokkaPublication(
     override val name: String? = null,
     /**
@@ -143,6 +143,6 @@ internal data class DokkaPublication(
     }
 }
 
-private object DokkaPublicationKeyTransformingSerializer : NamedKeyTransformingSerializer<DokkaPublication>(
+private object DokkaPublicationKeyValueTransformingSerializer : NamedKeyValueTransformingSerializer<DokkaPublication>(
     DokkaPublication.generatedSerializer(),
 )

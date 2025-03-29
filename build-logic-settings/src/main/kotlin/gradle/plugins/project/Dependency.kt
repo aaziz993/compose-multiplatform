@@ -5,7 +5,7 @@ package gradle.plugins.project
 import gradle.accessors.catalog.allLibs
 import gradle.accessors.catalog.resolveDependency
 import gradle.accessors.settings
-import gradle.serialization.serializer.BaseKeyTransformingSerializer
+import gradle.serialization.serializer.BaseKeyValueTransformingSerializer
 import java.io.File
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KeepGeneratedSerializer
@@ -25,7 +25,7 @@ private val SUB_CONFIGURATIONS = listOf("kotlin", "npm", "devNpm", "optionalNpm"
 
 @OptIn(ExperimentalSerializationApi::class)
 @KeepGeneratedSerializer
-@Serializable(with = DependencyKeyTransformingSerializer::class)
+@Serializable(with = DependencyKeyValueTransformingSerializer::class)
 internal data class Dependency(
     val notation: String,
     val configuration: String = "implementation",
@@ -124,7 +124,7 @@ internal data class Dependency(
     }
 }
 
-private object DependencyKeyTransformingSerializer : BaseKeyTransformingSerializer<Dependency>(
+private object DependencyKeyValueTransformingSerializer : BaseKeyValueTransformingSerializer<Dependency>(
     Dependency.generatedSerializer(),
 ) {
 

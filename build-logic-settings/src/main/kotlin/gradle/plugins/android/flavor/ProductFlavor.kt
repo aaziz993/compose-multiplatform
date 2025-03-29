@@ -21,7 +21,7 @@ import org.gradle.api.Project
 
 @OptIn(ExperimentalSerializationApi::class)
 @KeepGeneratedSerializer
-@Serializable(with = ProductFlavorKeyTransformingSerializer::class)
+@Serializable(with = ProductFlavorKeyValueTransformingSerializer::class)
 internal data class ProductFlavor(
     override val isDefault: Boolean? = null,
     override val applicationId: String? = null,
@@ -84,6 +84,6 @@ internal data class ProductFlavor(
     }
 }
 
-private object ProductFlavorKeyTransformingSerializer : ProductFlavorDslKeyTransformingSerializer<ProductFlavor>(
+private object ProductFlavorKeyValueTransformingSerializer : ProductFlavorDslKeyValueTransformingSerializer<ProductFlavor>(
     ProductFlavor.generatedSerializer(),
 )

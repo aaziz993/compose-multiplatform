@@ -14,9 +14,7 @@ import gradle.accessors.spotless
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
 import gradle.ifTrue
-import gradle.serialization.serializer.JsonContentPolymorphicSerializer
-import gradle.serialization.serializer.JsonKeyTransformingContentPolymorphicSerializer
-import gradle.serialization.serializer.KeyTransformingSerializer
+import gradle.serialization.serializer.JsonKeyValueTransformingContentPolymorphicSerializer
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.isAccessible
 import kotlinx.serialization.SerialName
@@ -232,7 +230,7 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
     )
 }
 
-private object FormatExtensionKeyTransformingContentPolymorphicSerializer : JsonKeyTransformingContentPolymorphicSerializer<FormatExtension<*>>(
+private object FormatExtensionKeyTransformingContentPolymorphicSerializer : JsonKeyValueTransformingContentPolymorphicSerializer<FormatExtension<*>>(
     FormatExtension::class,
 )
 

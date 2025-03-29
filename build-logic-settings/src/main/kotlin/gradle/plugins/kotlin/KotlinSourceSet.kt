@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin
 
 import gradle.accessors.kotlin
-import gradle.api.NamedKeyTransformingSerializer
+import gradle.api.NamedKeyValueTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.applyTo
 import gradle.api.file.SourceDirectorySet
@@ -31,7 +31,7 @@ import org.gradle.api.Project
  */
 @OptIn(ExperimentalSerializationApi::class)
 @KeepGeneratedSerializer
-@Serializable(with = KotlinSourceSetKeyTransformingSerializer::class)
+@Serializable(with = KotlinSourceSetKeyValueTransformingSerializer::class)
 internal data class KotlinSourceSet(
     override val name: String? = null,
     override val dependencies: Set<Dependency>? = null,
@@ -87,6 +87,6 @@ internal data class KotlinSourceSet(
     fun applyTo() = applyTo(project.kotlin.sourceSets)
 }
 
-private object KotlinSourceSetKeyTransformingSerializer : NamedKeyTransformingSerializer<KotlinSourceSet>(
+private object KotlinSourceSetKeyValueTransformingSerializer : NamedKeyValueTransformingSerializer<KotlinSourceSet>(
     KotlinSourceSet.generatedSerializer(),
 )

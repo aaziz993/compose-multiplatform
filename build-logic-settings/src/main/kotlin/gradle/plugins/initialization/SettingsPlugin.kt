@@ -67,6 +67,8 @@ public class SettingsPlugin : Plugin<Settings> {
                             }
                         }
 
+                        allLibs = emptySet()
+
                         if (dependencyResolutionManagement.versionCatalogs.none { it.name == "libs" }) {
                             settings.layout.settingsDirectory.file("gradle/libs.versions.toml").asFile
                                 .takeIf(File::exists)?.let { libsFile ->

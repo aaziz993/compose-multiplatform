@@ -1,6 +1,6 @@
 package gradle.plugins.dokka
 
-import gradle.api.NamedKeyTransformingSerializer
+import gradle.api.NamedKeyValueTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.tryAssign
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -32,7 +32,7 @@ import org.gradle.api.Project
  */
 @OptIn(ExperimentalSerializationApi::class)
 @KeepGeneratedSerializer
-@Serializable(with = DokkaExternalDocumentationLinkSpecKeyTransformingSerializer::class)
+@Serializable(with = DokkaExternalDocumentationLinkSpecKeyValueTransformingSerializer::class)
 internal data class DokkaExternalDocumentationLinkSpec(
     override val name: String? = null,
     /**
@@ -88,7 +88,7 @@ internal data class DokkaExternalDocumentationLinkSpec(
     }
 }
 
-internal object DokkaExternalDocumentationLinkSpecKeyTransformingSerializer
-    : NamedKeyTransformingSerializer<DokkaExternalDocumentationLinkSpec>(
+internal object DokkaExternalDocumentationLinkSpecKeyValueTransformingSerializer
+    : NamedKeyValueTransformingSerializer<DokkaExternalDocumentationLinkSpec>(
     DokkaExternalDocumentationLinkSpec.generatedSerializer(),
 )

@@ -20,7 +20,7 @@ import org.gradle.api.Project
 @Suppress("UnstableApiUsage")
 @OptIn(ExperimentalSerializationApi::class)
 @KeepGeneratedSerializer
-@Serializable(with = ManagedVirtualDeviceKeyTransformingSerializer::class)
+@Serializable(with = ManagedVirtualDeviceKeyValueTransformingSerializer::class)
 internal data class ManagedVirtualDevice(
     override val name: String? = null,
     /**
@@ -80,5 +80,5 @@ internal data class ManagedVirtualDevice(
     }
 }
 
-private object ManagedVirtualDeviceKeyTransformingSerializer
-    : DeviceKeyTransformingSerializer<ManagedVirtualDevice>(ManagedVirtualDevice.generatedSerializer())
+private object ManagedVirtualDeviceKeyValueTransformingSerializer
+    : DeviceKeyValueTransformingSerializer<ManagedVirtualDevice>(ManagedVirtualDevice.generatedSerializer())

@@ -16,7 +16,7 @@ internal sealed class ProjectLayout {
     @Serializable
     internal data class Flat(
         val targetDelimiter: String = "@",
-        val androidVariantsDelimiter: String = "+",
+        val androidAllVariantsDelimiter: String = "+",
         val androidVariantDelimiter: String = ""
     ) : ProjectLayout()
 }

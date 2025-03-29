@@ -5,9 +5,7 @@ import gradle.api.ProjectNamed
 import gradle.api.applyTo
 import gradle.api.publish.maven.MavenPublication
 import gradle.api.trySet
-import gradle.serialization.serializer.JsonContentPolymorphicSerializer
-import gradle.serialization.serializer.JsonKeyTransformingContentPolymorphicSerializer
-import gradle.serialization.serializer.KeyTransformingSerializer
+import gradle.serialization.serializer.JsonKeyValueTransformingContentPolymorphicSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -56,7 +54,7 @@ internal interface KotlinTarget<T : org.jetbrains.kotlin.gradle.plugin.KotlinTar
 }
 
 private object KotlinTargetKeyTransformingContentPolymorphicSerializer
-    : JsonKeyTransformingContentPolymorphicSerializer<KotlinTarget<*>>(KotlinTarget::class)
+    : JsonKeyValueTransformingContentPolymorphicSerializer<KotlinTarget<*>>(KotlinTarget::class)
 
 @Serializable
 @SerialName("KotlinTarget")

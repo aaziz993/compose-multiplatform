@@ -1,16 +1,15 @@
 package gradle.serialization.serializer
 
-import kotlin.reflect.KClass
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 
-public abstract class KeyTransformingSerializer<T : Any>(
+public abstract class KeyValueTransformingSerializer<T : Any>(
     tSerializer: KSerializer<T>,
     public val keyAs: String,
     public val valueAs: String? = null,
-) : BaseKeyTransformingSerializer<T>(tSerializer) {
+) : BaseKeyValueTransformingSerializer<T>(tSerializer) {
 
     override fun transformKey(key: String, value: JsonElement?): JsonObject = JsonObject(
         mapOf(

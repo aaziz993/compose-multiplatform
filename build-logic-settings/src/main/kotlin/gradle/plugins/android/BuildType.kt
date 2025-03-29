@@ -1,7 +1,7 @@
 package gradle.plugins.android
 
 import gradle.accessors.android
-import gradle.api.NamedKeyTransformingSerializer
+import gradle.api.NamedKeyValueTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.tryAddAll
 import gradle.api.trySet
@@ -209,5 +209,5 @@ internal interface BuildType<T : com.android.build.api.dsl.BuildType> : ProjectN
     }
 }
 
-internal abstract class BuildTypeKeyTransformingSerializer<T : BuildType<*>>(tSerializer: KSerializer<T>)
-    : NamedKeyTransformingSerializer<T>(tSerializer)
+internal abstract class BuildTypeKeyValueTransformingSerializer<T : BuildType<*>>(tSerializer: KSerializer<T>)
+    : NamedKeyValueTransformingSerializer<T>(tSerializer)

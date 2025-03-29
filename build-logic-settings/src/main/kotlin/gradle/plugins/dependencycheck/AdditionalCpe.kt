@@ -1,6 +1,6 @@
 package gradle.plugins.dependencycheck
 
-import gradle.api.NamedKeyTransformingSerializer
+import gradle.api.NamedKeyValueTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.trySet
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -13,7 +13,7 @@ import org.gradle.api.Project
  */
 @OptIn(ExperimentalSerializationApi::class)
 @KeepGeneratedSerializer
-@Serializable(with = AdditionalCpeKeyTransformingSerializer::class)
+@Serializable(with = AdditionalCpeKeyValueTransformingSerializer::class)
 internal data class AdditionalCpe(
     override val name: String? = null,
     /**
@@ -33,5 +33,5 @@ internal data class AdditionalCpe(
     }
 }
 
-private object AdditionalCpeKeyTransformingSerializer
-    : NamedKeyTransformingSerializer<AdditionalCpe>(AdditionalCpe.generatedSerializer())
+private object AdditionalCpeKeyValueTransformingSerializer
+    : NamedKeyValueTransformingSerializer<AdditionalCpe>(AdditionalCpe.generatedSerializer())

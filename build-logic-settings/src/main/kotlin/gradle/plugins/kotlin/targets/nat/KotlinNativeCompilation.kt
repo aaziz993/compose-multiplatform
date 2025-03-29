@@ -14,7 +14,7 @@ import org.gradle.api.Project
 
 @OptIn(ExperimentalSerializationApi::class)
 @KeepGeneratedSerializer
-@Serializable(with = KotlinNativeCompilationKeyTransformingSerializer::class)
+@Serializable(with = KotlinNativeCompilationKeyValueTransformingSerializer::class)
 internal data class KotlinNativeCompilation(
     override val name: String,
     override val defaultSourceSet: KotlinSourceSet? = null,
@@ -38,7 +38,7 @@ internal data class KotlinNativeCompilation(
     }
 }
 
-private object KotlinNativeCompilationKeyTransformingSerializer :
+private object KotlinNativeCompilationKeyValueTransformingSerializer :
     KotlinCompilationTransformingSerializer<KotlinNativeCompilation>(
         KotlinNativeCompilation.generatedSerializer(),
     )

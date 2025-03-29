@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 @OptIn(ExperimentalSerializationApi::class)
 @KeepGeneratedSerializer
-@Serializable(with = DefaultCInteropSettingsKeyTransformingSerializer::class)
+@Serializable(with = DefaultCInteropSettingsKeyValueTransformingSerializer::class)
 internal data class DefaultCInteropSettings(
     override val name: String? = null,
     override val dependencyFiles: Set<String>? = null,
@@ -20,5 +20,5 @@ internal data class DefaultCInteropSettings(
     override val extraOpts: List<String>? = null
 ) : CInteropSettings<org.jetbrains.kotlin.gradle.plugin.mpp.DefaultCInteropSettings>
 
-private object DefaultCInteropSettingsKeyTransformingSerializer
-    : CInteropSettingsKeyTransformingSerializer<DefaultCInteropSettings>(DefaultCInteropSettings.generatedSerializer())
+private object DefaultCInteropSettingsKeyValueTransformingSerializer
+    : CInteropSettingsKeyValueTransformingSerializer<DefaultCInteropSettings>(DefaultCInteropSettings.generatedSerializer())
