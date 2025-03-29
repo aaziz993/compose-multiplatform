@@ -1,6 +1,6 @@
 package gradle.plugins.kotlin.targets.nat
 
-import gradle.api.NamedKeyValueTransformingSerializer
+import gradle.api.NamedObjectTransformingSerializer
 import gradle.api.applyTo
 import gradle.plugins.kotlin.KotlinCompilationOutput
 
@@ -13,9 +13,8 @@ import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-@OptIn(ExperimentalSerializationApi::class)
 @KeepGeneratedSerializer
-@Serializable(with = KotlinNativeCompilationKeyValueTransformingSerializer::class)
+@Serializable(with = KotlinNativeCompilationObjectTransformingSerializer::class)
 internal data class KotlinNativeCompilation(
     override val name: String,
     override val defaultSourceSet: KotlinSourceSet? = null,
@@ -39,7 +38,7 @@ internal data class KotlinNativeCompilation(
     }
 }
 
-private object KotlinNativeCompilationKeyValueTransformingSerializer :
-    NamedKeyValueTransformingSerializer<KotlinNativeCompilation>(
+private object KotlinNativeCompilationObjectTransformingSerializer :
+    NamedObjectTransformingSerializer<KotlinNativeCompilation>(
         KotlinNativeCompilation.generatedSerializer(),
     )

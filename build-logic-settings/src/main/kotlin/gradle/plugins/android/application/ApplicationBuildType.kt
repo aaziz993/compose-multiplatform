@@ -1,6 +1,6 @@
 package gradle.plugins.android.application
 
-import gradle.api.NamedKeyValueTransformingSerializer
+import gradle.api.NamedObjectTransformingSerializer
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.android.BuildConfigField
@@ -33,9 +33,8 @@ import org.gradle.api.Project
  * [configuring build types](https://developer.android.com/studio/build#build-config)
  * for more information.
  */
-@OptIn(ExperimentalSerializationApi::class)
 @KeepGeneratedSerializer
-@Serializable(with = ApplicationNamedKeyValueTransformingSerializer::class)
+@Serializable(with = ApplicationNamedObjectTransformingSerializer::class)
 internal data class ApplicationBuildType(
     override val enableUnitTestCoverage: Boolean? = null,
     override val enableAndroidTestCoverage: Boolean? = null,
@@ -121,6 +120,6 @@ internal data class ApplicationBuildType(
     }
 }
 
-internal object ApplicationNamedKeyValueTransformingSerializer : NamedKeyValueTransformingSerializer<ApplicationBuildType>(
+internal object ApplicationNamedObjectTransformingSerializer : NamedObjectTransformingSerializer<ApplicationBuildType>(
     ApplicationBuildType.generatedSerializer(),
 )

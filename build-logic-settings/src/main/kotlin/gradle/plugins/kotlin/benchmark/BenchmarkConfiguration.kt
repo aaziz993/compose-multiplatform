@@ -1,6 +1,6 @@
 package gradle.plugins.kotlin.benchmark
 
-import gradle.api.NamedKeyValueTransformingSerializer
+import gradle.api.NamedObjectTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.tryAddAll
 import gradle.api.tryPutAll
@@ -12,9 +12,8 @@ import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-@OptIn(ExperimentalSerializationApi::class)
 @KeepGeneratedSerializer
-@Serializable(with = BenchmarkConfigurationKeyValueTransformingSerializer::class)
+@Serializable(with = BenchmarkConfigurationObjectTransformingSerializer::class)
 internal data class BenchmarkConfiguration(
     override val name: String? = null,
     val advanced: SerializableOptionalAnyMap? = null,
@@ -54,5 +53,5 @@ internal data class BenchmarkConfiguration(
     }
 }
 
-private object BenchmarkConfigurationKeyValueTransformingSerializer
-    : NamedKeyValueTransformingSerializer<BenchmarkConfiguration>(BenchmarkConfiguration.generatedSerializer())
+private object BenchmarkConfigurationObjectTransformingSerializer
+    : NamedObjectTransformingSerializer<BenchmarkConfiguration>(BenchmarkConfiguration.generatedSerializer())

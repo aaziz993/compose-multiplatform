@@ -1,6 +1,6 @@
 package gradle.plugins.android.device
 
-import gradle.api.NamedKeyValueTransformingSerializer
+import gradle.api.NamedObjectTransformingSerializer
 import gradle.api.trySet
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KeepGeneratedSerializer
@@ -19,9 +19,8 @@ import org.gradle.api.Project
  * These APIs are experimental and may change without notice.
  */
 @Suppress("UnstableApiUsage")
-@OptIn(ExperimentalSerializationApi::class)
 @KeepGeneratedSerializer
-@Serializable(with = ManagedVirtualDeviceKeyValueTransformingSerializer::class)
+@Serializable(with = ManagedVirtualDeviceObjectTransformingSerializer::class)
 internal data class ManagedVirtualDevice(
     override val name: String? = null,
     /**
@@ -81,5 +80,5 @@ internal data class ManagedVirtualDevice(
     }
 }
 
-private object ManagedVirtualDeviceKeyValueTransformingSerializer
-    : NamedKeyValueTransformingSerializer<ManagedVirtualDevice>(ManagedVirtualDevice.generatedSerializer())
+private object ManagedVirtualDeviceObjectTransformingSerializer
+    : NamedObjectTransformingSerializer<ManagedVirtualDevice>(ManagedVirtualDevice.generatedSerializer())

@@ -7,12 +7,12 @@ import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.apple.AppleBuildSettings
 import gradle.plugins.apple.BuildConfiguration
-import gradle.serialization.serializer.JsonKeyValueTransformingContentPolymorphicSerializer
+import gradle.serialization.serializer.JsonObjectTransformingContentPolymorphicSerializer
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-@Serializable(with = AppleTargetKeyValueTransformingContentPolymorphicSerializer::class)
+@Serializable(with = AppleTargetObjectTransformingContentPolymorphicSerializer::class)
 internal interface AppleTarget<T : org.jetbrains.gradle.apple.targets.AppleTarget> : ProjectNamed<T> {
 
     val bridgingHeader: String?
@@ -57,7 +57,7 @@ internal interface AppleTarget<T : org.jetbrains.gradle.apple.targets.AppleTarge
     }
 }
 
-private class AppleTargetKeyValueTransformingContentPolymorphicSerializer(serializer: KSerializer<Nothing>)
-    : JsonKeyValueTransformingContentPolymorphicSerializer<AppleTarget<*>>(
+private class AppleTargetObjectTransformingContentPolymorphicSerializer(serializer: KSerializer<Nothing>)
+    : JsonObjectTransformingContentPolymorphicSerializer<AppleTarget<*>>(
     AppleTarget::class,
 )

@@ -1,5 +1,7 @@
 package gradle.plugins.project
 
+import gradle.serialization.serializer.JsonObjectTransformingContentPolymorphicSerializer
+import gradle.serialization.serializer.JsonObjectTransformingSerializer
 import gradle.serialization.serializer.JsonValueTransformingContentPolymorphicSerializer
 import kotlinx.serialization.Serializable
 
@@ -18,7 +20,9 @@ internal sealed class ProjectLayout {
 }
 
 private object ProjectLayoutValueTransformingContentPolymorphicSerializer
-    : JsonValueTransformingContentPolymorphicSerializer<ProjectLayout>(ProjectLayout::class)
+    : JsonObjectTransformingContentPolymorphicSerializer<ProjectLayout>(
+    ProjectLayout::class,
+)
 
 
 

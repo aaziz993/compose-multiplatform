@@ -3,7 +3,7 @@ package gradle.plugins.dokka
 import gradle.accessors.catalog.libs
 import gradle.accessors.settings
 
-import gradle.api.NamedKeyValueTransformingSerializer
+import gradle.api.NamedObjectTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.applyTo
 import gradle.api.tryAssign
@@ -43,9 +43,8 @@ import org.jetbrains.dokka.gradle.engine.parameters.VisibilityModifier
  *
  * @see org.jetbrains.dokka.DokkaSourceSetImpl
  */
-@OptIn(ExperimentalSerializationApi::class)
 @KeepGeneratedSerializer
-@Serializable(with = DokkaSourceSetSpecKeyValueTransformingSerializer::class)
+@Serializable(with = DokkaSourceSetSpecObjectTransformingSerializer::class)
 internal data class DokkaSourceSetSpec(
     override val name: String? = null,
     /**
@@ -315,6 +314,6 @@ internal data class DokkaSourceSetSpec(
     }
 }
 
-private object DokkaSourceSetSpecKeyValueTransformingSerializer : NamedKeyValueTransformingSerializer<DokkaSourceSetSpec>(
+private object DokkaSourceSetSpecObjectTransformingSerializer : NamedObjectTransformingSerializer<DokkaSourceSetSpec>(
     DokkaSourceSetSpec.generatedSerializer(),
 )

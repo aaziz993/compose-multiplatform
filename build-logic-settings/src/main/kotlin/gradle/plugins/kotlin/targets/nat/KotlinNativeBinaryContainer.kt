@@ -1,6 +1,7 @@
 package gradle.plugins.kotlin.targets.nat
 
 import gradle.serialization.serializer.DelegateTransformingSerializer
+import gradle.serialization.serializer.JsonObjectTransformingSerializer
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KeepGeneratedSerializer
@@ -13,7 +14,6 @@ Use the following naming scheme:
     executable([debug]) -> debugExecutable
 */
 @Suppress("JavaDefaultMethodsNotOverriddenByDelegation")
-@OptIn(ExperimentalSerializationApi::class)
 @KeepGeneratedSerializer
 @Serializable(with = KotlinNativeBinaryContainerTransformingSerializer::class)
 internal class KotlinNativeBinaryContainer(
@@ -22,4 +22,7 @@ internal class KotlinNativeBinaryContainer(
     Set<NativeBinary<out org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary>> by delegate
 
 private object KotlinNativeBinaryContainerTransformingSerializer
-    : DelegateTransformingSerializer<KotlinNativeBinaryContainer>(KotlinNativeBinaryContainer.generatedSerializer())
+    : JsonObjectTransformingSerializer<KotlinNativeBinaryContainer>(
+        KotlinNativeBinaryContainer.generatedSerializer(),
+        "delegate",
+)

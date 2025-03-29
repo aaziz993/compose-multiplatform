@@ -2,7 +2,7 @@ package gradle.api.publish
 
 import gradle.api.ProjectNamed
 import gradle.ifTrue
-import gradle.serialization.serializer.JsonKeyValueTransformingContentPolymorphicSerializer
+import gradle.serialization.serializer.JsonObjectTransformingContentPolymorphicSerializer
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -12,7 +12,7 @@ import org.gradle.api.Project
  *
  * @since 1.3
  */
-@Serializable(with = PublicationKeyValueTransformingContentPolymorphicSerializer::class)
+@Serializable(with = PublicationObjectTransformingContentPolymorphicSerializer::class)
 internal interface Publication<T : org.gradle.api.publish.Publication> : ProjectNamed<T> {
 
     /**
@@ -45,7 +45,7 @@ internal interface Publication<T : org.gradle.api.publish.Publication> : Project
     fun applyTo()
 }
 
-private class PublicationKeyValueTransformingContentPolymorphicSerializer(serializer: KSerializer<Nothing>)
-    : JsonKeyValueTransformingContentPolymorphicSerializer<Publication<*>>(
+private class PublicationObjectTransformingContentPolymorphicSerializer(serializer: KSerializer<Nothing>)
+    : JsonObjectTransformingContentPolymorphicSerializer<Publication<*>>(
     Publication::class,
 )

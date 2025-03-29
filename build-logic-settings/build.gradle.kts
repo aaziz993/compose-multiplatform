@@ -74,11 +74,13 @@ kotlin {
         )
         optIn.addAll(
             listOf(
+                "kotlinx.serialization.InternalSerializationApi",
+                "kotlinx.serialization.ExperimentalSerializationApi",
                 "org.jetbrains.dokka.gradle.internal.InternalDokkaGradlePluginApi",
                 "org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi",
                 "org.jetbrains.kotlin.gradle.ExperimentalWasmDsl",
-                "kotlinx.serialization.InternalSerializationApi",
-            ),
+
+                ),
         )
     }
 

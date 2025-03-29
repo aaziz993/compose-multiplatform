@@ -1,6 +1,6 @@
 package gradle.plugins.apple
 
-import gradle.api.NamedKeyValueTransformingSerializer
+import gradle.api.NamedObjectTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.tryPutAll
 import gradle.api.trySet
@@ -10,9 +10,8 @@ import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-@OptIn(ExperimentalSerializationApi::class)
 @KeepGeneratedSerializer
-@Serializable(with = BuildConfigurationKeyValueTransformingSerializer::class)
+@Serializable(with = BuildConfigurationObjectTransformingSerializer::class)
 internal data class BuildConfiguration(
     override val name: String? = null,
     val fatFrameworks: Boolean? = null,
@@ -28,5 +27,5 @@ internal data class BuildConfiguration(
     }
 }
 
-private object BuildConfigurationKeyValueTransformingSerializer
-    : NamedKeyValueTransformingSerializer<BuildConfiguration>(BuildConfiguration.generatedSerializer())
+private object BuildConfigurationObjectTransformingSerializer
+    : NamedObjectTransformingSerializer<BuildConfiguration>(BuildConfiguration.generatedSerializer())

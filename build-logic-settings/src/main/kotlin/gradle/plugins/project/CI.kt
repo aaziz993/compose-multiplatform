@@ -1,10 +1,10 @@
 package gradle.plugins.project
 
-import gradle.serialization.serializer.JsonKeyValueTransformingContentPolymorphicSerializer
+import gradle.serialization.serializer.JsonObjectTransformingContentPolymorphicSerializer
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 
-@Serializable(with = CIKeyValueTransformingContentPolymorphicSerializer::class)
+@Serializable(with = CIObjectTransformingContentPolymorphicSerializer::class)
 internal sealed class CI {
 
     abstract val dependenciesCheck: Boolean
@@ -21,11 +21,7 @@ internal sealed class CI {
 
     abstract val test: Boolean
 
-    abstract val publishToGithubPackages: Boolean
-
-    abstract val publishToSpacePackages: Boolean
-
-    abstract val publishToMavenRepository: Boolean
+    abstract val publishTo: LinkedHashSet<String>
 
     @Serializable
     data class GithubActions(
@@ -36,9 +32,7 @@ internal sealed class CI {
         override val coverageVerify: Boolean = true,
         override val docSamplesCheck: Boolean = true,
         override val test: Boolean = true,
-        override val publishToGithubPackages: Boolean = true,
-        override val publishToSpacePackages: Boolean = false,
-        override val publishToMavenRepository: Boolean = false,
+        override val publishTo: LinkedHashSet<String> = linkedSetOf(),
     ) : CI()
 
     @Serializable
@@ -50,9 +44,7 @@ internal sealed class CI {
         override val coverageVerify: Boolean = true,
         override val docSamplesCheck: Boolean = true,
         override val test: Boolean = true,
-        override val publishToGithubPackages: Boolean = false,
-        override val publishToSpacePackages: Boolean = true,
-        override val publishToMavenRepository: Boolean = true,
+        override val publishTo: LinkedHashSet<String> = linkedSetOf(),
     ) : CI()
 
     @Serializable
@@ -64,12 +56,10 @@ internal sealed class CI {
         override val coverageVerify: Boolean = true,
         override val docSamplesCheck: Boolean = true,
         override val test: Boolean = true,
-        override val publishToGithubPackages: Boolean = false,
-        override val publishToSpacePackages: Boolean = true,
-        override val publishToMavenRepository: Boolean = true,
+        override val publishTo: LinkedHashSet<String> = linkedSetOf(),
         val runEnv: String? = null,
     ) : CI()
 }
 
-private object CIKeyValueTransformingContentPolymorphicSerializer
-    : JsonKeyValueTransformingContentPolymorphicSerializer<CI>(CI::class)
+private object CIObjectTransformingContentPolymorphicSerializer
+    : JsonObjectTransformingContentPolymorphicSerializer<CI>(CI::class)

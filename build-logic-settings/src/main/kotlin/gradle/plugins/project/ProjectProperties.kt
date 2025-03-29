@@ -31,6 +31,7 @@ import gradle.plugins.project.file.LicenseFile
 import gradle.plugins.project.file.LicenseHeaderFile
 import gradle.plugins.project.file.ProjectFile
 import gradle.serialization.decodeFromAny
+import gradle.serialization.serializer.JsonObjectTransformingSerializer
 import java.util.*
 import kotlin.io.path.Path
 import kotlinx.serialization.Serializable
@@ -178,3 +179,9 @@ internal data class ProjectProperties(
             }
     }
 }
+
+private object ProjectPropertiesObjectTransformingSerializer
+    : JsonObjectTransformingSerializer<ProjectProperties>(
+    ProjectProperties.serializer(),
+    "",
+)

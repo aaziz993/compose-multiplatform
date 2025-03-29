@@ -4,12 +4,12 @@ import kotlin.reflect.KClass
 
 
 
-public open class JsonKeyValueTransformingContentPolymorphicSerializer<T : Any>(
+public open class JsonObjectTransformingContentPolymorphicSerializer<T : Any>(
     baseClass: KClass<T>,
     classDiscriminator: String = "type",
     keyAs: String = classDiscriminator,
     valueAs: String? = null,
-) : JsonKeyValueTransformingSerializer<T>(
+) : JsonObjectTransformingSerializer<T>(
     JsonContentPolymorphicSerializer(
         baseClass,
         classDiscriminator,

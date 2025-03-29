@@ -1,6 +1,6 @@
 package gradle.plugins.kotlin.targets.web
 
-import gradle.api.NamedKeyValueTransformingSerializer
+import gradle.api.NamedObjectTransformingSerializer
 import gradle.plugins.kotlin.KotlinCompilationOutput
 
 import gradle.plugins.kotlin.KotlinSourceSet
@@ -11,9 +11,8 @@ import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-@OptIn(ExperimentalSerializationApi::class)
 @KeepGeneratedSerializer
-@Serializable(with = KotlinJsIrCompilationKeyValueTransformingSerializer::class)
+@Serializable(with = KotlinJsIrCompilationObjectTransformingSerializer::class)
 internal data class KotlinJsIrCompilation(
     override val name: String, override val defaultSourceSet: KotlinSourceSet? = null,
     override val compileDependencyFiles: Set<String>? = null,
@@ -38,7 +37,7 @@ internal data class KotlinJsIrCompilation(
     }
 }
 
-private object KotlinJsIrCompilationKeyValueTransformingSerializer :
-    NamedKeyValueTransformingSerializer<KotlinJsIrCompilation>(
+private object KotlinJsIrCompilationObjectTransformingSerializer :
+    NamedObjectTransformingSerializer<KotlinJsIrCompilation>(
         KotlinJsIrCompilation.generatedSerializer(),
     )

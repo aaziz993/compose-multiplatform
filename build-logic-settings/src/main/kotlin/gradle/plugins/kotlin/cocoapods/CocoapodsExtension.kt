@@ -174,9 +174,8 @@ internal interface CocoapodsExtension {
             watchos?.applyTo(project.kotlin.cocoapods.watchos, project.settings.libs.versionOrNull("kotlin.cocoapods.watchosDeploymentTarget"))
         }
 
-    @OptIn(ExperimentalSerializationApi::class)
-    @KeepGeneratedSerializer
-    @Serializable(with = CocoapodsDependencyKeyValueTransformingSerializer::class)
+        @KeepGeneratedSerializer
+    @Serializable(with = CocoapodsDependencyObjectTransformingSerializer::class)
     data class CocoapodsDependency(
         var name: String? = null,
         val moduleName: String? = null,
@@ -287,7 +286,7 @@ internal interface CocoapodsExtension {
         }
     }
 
-    object CocoapodsDependencyKeyValueTransformingSerializer : JsonTransformingSerializer<CocoapodsDependency>(
+    object CocoapodsDependencyObjectTransformingSerializer : JsonTransformingSerializer<CocoapodsDependency>(
         CocoapodsDependency.generatedSerializer(),
     ) {
 

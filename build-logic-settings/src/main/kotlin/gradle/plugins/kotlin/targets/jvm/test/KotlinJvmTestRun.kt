@@ -1,6 +1,6 @@
 package gradle.plugins.kotlin.targets.jvm.test
 
-import gradle.api.NamedKeyValueTransformingSerializer
+import gradle.api.NamedObjectTransformingSerializer
 import gradle.api.getByNameOrAll
 import gradle.api.tasks.test.TestFilter
 import gradle.plugins.kotlin.testing.KotlinTaskTestRun
@@ -9,9 +9,8 @@ import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-@OptIn(ExperimentalSerializationApi::class)
 @KeepGeneratedSerializer
-@Serializable(with = KotlinJvmTestRunKeyValueTransformingSerializer::class)
+@Serializable(with = KotlinJvmTestRunObjectTransformingSerializer::class)
 internal data class KotlinJvmTestRun(
     override val name: String? = null,
     override val filter: TestFilter? = null,
@@ -45,5 +44,5 @@ internal data class KotlinJvmTestRun(
     }
 }
 
-private object KotlinJvmTestRunKeyValueTransformingSerializer
-    : NamedKeyValueTransformingSerializer<KotlinJvmTestRun>(KotlinJvmTestRun.generatedSerializer())
+private object KotlinJvmTestRunObjectTransformingSerializer
+    : NamedObjectTransformingSerializer<KotlinJvmTestRun>(KotlinJvmTestRun.generatedSerializer())

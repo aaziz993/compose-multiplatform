@@ -7,13 +7,11 @@ import kotlinx.serialization.json.JsonTransformingSerializer
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 
-public abstract class JsonBaseKeyValueTransformingSerializer<T : Any>(
+public abstract class JsonBaseObjectTransformingSerializer<T : Any>(
     tSerializer: KSerializer<T>,
 ) : JsonTransformingSerializer<T>(tSerializer) {
 
-    public abstract fun transformKey(key: String, value: JsonElement?): JsonObject
-
-    public abstract fun transformValue(key: String, value: JsonElement): JsonObject
+    public abstract fun transformDeserialize(key: String, value: JsonElement?): JsonObject
 
     final override fun transformDeserialize(element: JsonElement): JsonElement =
         if (element is JsonObject) {
@@ -22,10 +20,10 @@ public abstract class JsonBaseKeyValueTransformingSerializer<T : Any>(
 
             JsonObject(
                 buildMap {
-                    putAll(transformKey(key, value))
-                    putAll(if (value is JsonObject) value.jsonObject else transformValue(key, value))
+                    putAll(transformDeserialize(key, value))
+                    putAll(if (value is JsonObject) value.jsonObject else transformDeserialize(key, value))
                 },
             )
         }
-        else transformKey(element.jsonPrimitive.content, null)
+        else transformDeserialize(element.jsonPrimitive.content, null)
 }

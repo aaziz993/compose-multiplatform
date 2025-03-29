@@ -1,6 +1,6 @@
 package gradle.api
 
-import gradle.serialization.serializer.JsonKeyValueTransformingSerializer
+import gradle.serialization.serializer.JsonObjectTransformingSerializer
 import kotlinx.serialization.KSerializer
 import org.gradle.api.Action
 import org.gradle.api.DomainObjectCollection
@@ -21,9 +21,9 @@ internal interface BaseNamed {
     val name: String?
 }
 
-internal abstract class NamedKeyValueTransformingSerializer<T : BaseNamed>(
+internal abstract class NamedObjectTransformingSerializer<T : BaseNamed>(
     tSerializer: KSerializer<T>
-) : JsonKeyValueTransformingSerializer<T>(
+) : JsonObjectTransformingSerializer<T>(
     tSerializer,
     "name",
 )

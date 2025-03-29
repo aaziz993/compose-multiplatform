@@ -7,7 +7,7 @@ import gradle.api.tryPlus
 import gradle.api.tryPutAll
 import gradle.api.trySet
 import gradle.plugins.project.Dependency
-import gradle.serialization.serializer.JsonKeyValueTransformingContentPolymorphicSerializer
+import gradle.serialization.serializer.JsonObjectTransformingContentPolymorphicSerializer
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
@@ -32,7 +32,7 @@ internal object BinaryContentPolymorphicSerializer : kotlinx.serialization.json.
         if (element is JsonPrimitive) String.serializer() else Binary.serializer()
 }
 
-@Serializable(with = NativeBinaryKeyValueTransformingContentPolymorphicSerializer::class)
+@Serializable(with = NativeBinaryObjectTransformingContentPolymorphicSerializer::class)
 internal sealed class NativeBinary<T : org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary> : ProjectNamed<T> {
 
     abstract val baseName: String?
@@ -77,8 +77,8 @@ internal sealed class NativeBinary<T : org.jetbrains.kotlin.gradle.plugin.mpp.Na
     }
 }
 
-private class NativeBinaryKeyValueTransformingContentPolymorphicSerializer(serializer: KSerializer<Nothing>)
-    : JsonKeyValueTransformingContentPolymorphicSerializer<NativeBinary<*>>(
+private class NativeBinaryObjectTransformingContentPolymorphicSerializer(serializer: KSerializer<Nothing>)
+    : JsonObjectTransformingContentPolymorphicSerializer<NativeBinary<*>>(
     NativeBinary::class,
 )
 

@@ -1,6 +1,6 @@
 package gradle.plugins.kotlin.mpp
 
-import gradle.api.NamedKeyValueTransformingSerializer
+import gradle.api.NamedObjectTransformingSerializer
 import gradle.plugins.java.JavaCompile
 import gradle.plugins.kotlin.KotlinCompilation
 import gradle.plugins.kotlin.KotlinCompilationOutput
@@ -16,9 +16,8 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.invoke
 
-@OptIn(ExperimentalSerializationApi::class)
 @KeepGeneratedSerializer
-@Serializable(with = KotlinJvmAndroidCompilationKeyValueTransformingSerializer::class)
+@Serializable(with = KotlinJvmAndroidCompilationObjectTransformingSerializer::class)
 internal data class KotlinJvmAndroidCompilation(
     override val name: String,
     override val defaultSourceSet: KotlinSourceSet? = null,
@@ -50,7 +49,7 @@ internal data class KotlinJvmAndroidCompilation(
     }
 }
 
-private object KotlinJvmAndroidCompilationKeyValueTransformingSerializer :
-    NamedKeyValueTransformingSerializer<KotlinJvmAndroidCompilation>(
+private object KotlinJvmAndroidCompilationObjectTransformingSerializer :
+    NamedObjectTransformingSerializer<KotlinJvmAndroidCompilation>(
         KotlinJvmAndroidCompilation.generatedSerializer(),
     )
