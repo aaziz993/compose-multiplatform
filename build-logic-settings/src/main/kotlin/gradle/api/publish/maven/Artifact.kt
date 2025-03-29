@@ -1,6 +1,6 @@
 package gradle.api.publish.maven
 
-import gradle.serialization.serializer.KeyValueTransformingSerializer
+import gradle.serialization.serializer.JsonKeyValueTransformingSerializer
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
@@ -13,7 +13,7 @@ internal data class Artifact(
     val artifact: MavenArtifact? = null,
 )
 
-private object ArtifactKeyValueTransformingSerializer : KeyValueTransformingSerializer<Artifact>(
+private object ArtifactKeyValueTransformingSerializer : JsonKeyValueTransformingSerializer<Artifact>(
     Artifact.generatedSerializer(),
     "source",
 )

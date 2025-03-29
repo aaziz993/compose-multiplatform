@@ -3,7 +3,7 @@
 package gradle.plugins.kotlin.room
 
 import androidx.room.gradle.RoomExtension
-import gradle.serialization.serializer.KeyValueTransformingSerializer
+import gradle.serialization.serializer.JsonKeyValueTransformingSerializer
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
@@ -16,7 +16,7 @@ internal data class SchemaDirectory(
     val path: String
 )
 
-private object SchemaDirectoryKeyValueTransformingSerializer : KeyValueTransformingSerializer<SchemaDirectory>(
+private object SchemaDirectoryKeyValueTransformingSerializer : JsonKeyValueTransformingSerializer<SchemaDirectory>(
     SchemaDirectory.generatedSerializer(),
     "path",
     "matchName",

@@ -10,7 +10,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-@Serializable(with = KotlinTargetKeyTransformingContentPolymorphicSerializer::class)
+@Serializable(with = KotlinTargetKeyValueTransformingContentPolymorphicSerializer::class)
 internal interface KotlinTarget<T : org.jetbrains.kotlin.gradle.plugin.KotlinTarget> : ProjectNamed<T> {
 
     val targetName: String?
@@ -53,7 +53,7 @@ internal interface KotlinTarget<T : org.jetbrains.kotlin.gradle.plugin.KotlinTar
     fun applyTo()
 }
 
-private object KotlinTargetKeyTransformingContentPolymorphicSerializer
+private object KotlinTargetKeyValueTransformingContentPolymorphicSerializer
     : JsonKeyValueTransformingContentPolymorphicSerializer<KotlinTarget<*>>(KotlinTarget::class)
 
 @Serializable

@@ -137,7 +137,7 @@ import org.gradle.api.tasks.TaskDependency
  * Parallel execution can be enabled by the `--parallel` flag when the build is initiated.
  * In parallel mode, the tasks of different projects (i.e. in a multi project build) are able to be executed in parallel.
  */
-@Serializable(with = TaskKeyTransformingContentPolymorphicSerializer::class)
+@Serializable(with = TaskKeyValueTransformingContentPolymorphicSerializer::class)
 internal interface Task<T : org.gradle.api.Task> : ProjectNamed<T> {
 
     /**
@@ -344,15 +344,17 @@ internal interface Task<T : org.gradle.api.Task> : ProjectNamed<T> {
     fun applyTo()
 }
 
+private object TaskKeyValueTransformingContentPolymorphicSerializer : JsonKeyValueTransformingContentPolymorphicSerializer<Task<*>>(
+    Task::class,
+)
+
 context(Project)
 internal fun <T : org.gradle.api.Task> Task<T>.applyTo(receiver: TaskCollection<out T>) =
     applyTo(receiver) { name, action ->
         project.tasks.register(name, receiver.elementType(), action)
     }
 
-private object TaskKeyTransformingContentPolymorphicSerializer : JsonKeyValueTransformingContentPolymorphicSerializer<Task<*>>(
-    Task::class,
-)
+
 
 @Serializable
 @SerialName("Task")

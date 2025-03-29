@@ -10,7 +10,6 @@ import gradle.accessors.catalog.libs
 import gradle.accessors.settings
 import gradle.accessors.spotless
 
-
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
 import gradle.ifTrue
@@ -21,7 +20,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-@Serializable(with = FormatExtensionKeyTransformingContentPolymorphicSerializer::class)
+@Serializable(with = FormatExtensionKeyValueTransformingContentPolymorphicSerializer::class)
 internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatExtension> {
 
     abstract val lineEnding: LineEnding?
@@ -230,7 +229,7 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
     )
 }
 
-private object FormatExtensionKeyTransformingContentPolymorphicSerializer : JsonKeyValueTransformingContentPolymorphicSerializer<FormatExtension<*>>(
+private object FormatExtensionKeyValueTransformingContentPolymorphicSerializer : JsonKeyValueTransformingContentPolymorphicSerializer<FormatExtension<*>>(
     FormatExtension::class,
 )
 

@@ -13,7 +13,7 @@ import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.api.file.Directory
 import org.gradle.api.initialization.Settings
 
-@Serializable(with = ArtifactRepositoryKeyTransformingContentPolymorphicSerializer::class)
+@Serializable(with = ArtifactRepositoryKeyValueTransformingContentPolymorphicSerializer::class)
 internal interface ArtifactRepository<T : org.gradle.api.artifacts.repositories.ArtifactRepository> : Named<T> {
 
     /**
@@ -47,7 +47,7 @@ internal interface ArtifactRepository<T : org.gradle.api.artifacts.repositories.
     fun applyTo(receiver: RepositoryHandler)
 }
 
-private object ArtifactRepositoryKeyTransformingContentPolymorphicSerializer : JsonBaseKeyValueTransformingContentPolymorphicSerializer<ArtifactRepository<*>>(
+private object ArtifactRepositoryKeyValueTransformingContentPolymorphicSerializer : JsonBaseKeyValueTransformingContentPolymorphicSerializer<ArtifactRepository<*>>(
     ArtifactRepository::class,
 ){
 

@@ -5,7 +5,7 @@ package gradle.plugins.project
 import gradle.accessors.catalog.allLibs
 import gradle.accessors.catalog.resolveDependency
 import gradle.accessors.settings
-import gradle.serialization.serializer.BaseKeyValueTransformingSerializer
+import gradle.serialization.serializer.JsonBaseKeyValueTransformingSerializer
 import java.io.File
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KeepGeneratedSerializer
@@ -124,7 +124,7 @@ internal data class Dependency(
     }
 }
 
-private object DependencyKeyValueTransformingSerializer : BaseKeyValueTransformingSerializer<Dependency>(
+private object DependencyKeyValueTransformingSerializer : JsonBaseKeyValueTransformingSerializer<Dependency>(
     Dependency.generatedSerializer(),
 ) {
 

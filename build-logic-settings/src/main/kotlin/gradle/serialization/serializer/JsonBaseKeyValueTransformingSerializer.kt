@@ -7,7 +7,7 @@ import kotlinx.serialization.json.JsonTransformingSerializer
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 
-public abstract class BaseKeyValueTransformingSerializer<T : Any>(
+public abstract class JsonBaseKeyValueTransformingSerializer<T : Any>(
     tSerializer: KSerializer<T>,
 ) : JsonTransformingSerializer<T>(tSerializer) {
 

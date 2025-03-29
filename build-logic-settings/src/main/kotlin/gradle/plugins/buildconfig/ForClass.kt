@@ -1,6 +1,6 @@
 package gradle.plugins.buildconfig
 
-import gradle.serialization.serializer.KeyValueTransformingSerializer
+import gradle.serialization.serializer.JsonKeyValueTransformingSerializer
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -10,7 +10,7 @@ internal data class ForClass(
     val configureAction: BuildConfigClassSpecImpl? = null,
 )
 
-internal object ForClassKeyValueTransformingSerializer : KeyValueTransformingSerializer<ForClass>(
+internal object ForClassKeyValueTransformingSerializer : JsonKeyValueTransformingSerializer<ForClass>(
     ForClass.serializer(),
     "className",
 )

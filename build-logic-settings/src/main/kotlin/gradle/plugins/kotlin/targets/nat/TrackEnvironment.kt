@@ -1,6 +1,6 @@
 package gradle.plugins.kotlin.targets.nat
 
-import gradle.serialization.serializer.KeyValueTransformingSerializer
+import gradle.serialization.serializer.JsonKeyValueTransformingSerializer
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
@@ -13,7 +13,7 @@ internal data class TrackEnvironment(
     val tracked: Boolean = true,
 )
 
-private object TrackEnvironmentKeyValueTransformingSerializer : KeyValueTransformingSerializer<TrackEnvironment>(
+private object TrackEnvironmentKeyValueTransformingSerializer : JsonKeyValueTransformingSerializer<TrackEnvironment>(
     TrackEnvironment.generatedSerializer(),
     "name",
 )

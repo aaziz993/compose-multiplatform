@@ -5,11 +5,11 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 
-public abstract class KeyValueTransformingSerializer<T : Any>(
+public open class JsonKeyValueTransformingSerializer<T : Any>(
     tSerializer: KSerializer<T>,
     public val keyAs: String,
     public val valueAs: String? = null,
-) : BaseKeyValueTransformingSerializer<T>(tSerializer) {
+) : JsonBaseKeyValueTransformingSerializer<T>(tSerializer) {
 
     override fun transformKey(key: String, value: JsonElement?): JsonObject = JsonObject(
         mapOf(

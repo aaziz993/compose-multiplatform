@@ -3,7 +3,7 @@ package gradle.plugins.kotlin.targets.web
 import gradle.accessors.moduleName
 import gradle.api.trySet
 import gradle.serialization.serializer.JsonContentPolymorphicSerializer
-import gradle.serialization.serializer.KeyValueTransformingSerializer
+import gradle.serialization.serializer.JsonKeyValueTransformingSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -40,7 +40,7 @@ private object JsIrBinaryContentPolymorphicSerializer : JsonContentPolymorphicSe
     JsIrBinary::class,
 )
 
-private object JsIrBinaryKeyValueTransformingSerializer : KeyValueTransformingSerializer<JsIrBinary<*>>(
+private object JsIrBinaryKeyValueTransformingSerializer : JsonKeyValueTransformingSerializer<JsIrBinary<*>>(
     JsIrBinaryContentPolymorphicSerializer,
     "type",
 )

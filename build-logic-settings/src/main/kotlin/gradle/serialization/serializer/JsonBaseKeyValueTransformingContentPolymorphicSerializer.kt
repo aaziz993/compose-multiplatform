@@ -2,18 +2,12 @@ package gradle.serialization.serializer
 
 import kotlin.reflect.KClass
 
-
-
-public open class JsonKeyValueTransformingContentPolymorphicSerializer<T : Any>(
+public abstract class JsonBaseKeyValueTransformingContentPolymorphicSerializer<T : Any>(
     baseClass: KClass<T>,
     classDiscriminator: String = "type",
-    keyAs: String = classDiscriminator,
-    valueAs: String? = null,
-) : JsonKeyValueTransformingSerializer<T>(
+) : JsonBaseKeyValueTransformingSerializer<T>(
     JsonContentPolymorphicSerializer<T>(
         baseClass,
         classDiscriminator,
     ),
-    keyAs,
-    valueAs,
 )

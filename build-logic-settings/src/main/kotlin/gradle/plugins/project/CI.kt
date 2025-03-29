@@ -3,7 +3,7 @@ package gradle.plugins.project
 import gradle.serialization.serializer.JsonKeyValueTransformingContentPolymorphicSerializer
 import kotlinx.serialization.Serializable
 
-@Serializable(with = CIKeyTransformingContentPolymorphicSerializer::class)
+@Serializable(with = CIKeyValueTransformingContentPolymorphicSerializer::class)
 internal sealed class CI {
 
     abstract val dependenciesCheck: Boolean
@@ -70,6 +70,6 @@ internal sealed class CI {
     ) : CI()
 }
 
-private object CIKeyTransformingContentPolymorphicSerializer : JsonKeyValueTransformingContentPolymorphicSerializer<CI>(
+private object CIKeyValueTransformingContentPolymorphicSerializer : JsonKeyValueTransformingContentPolymorphicSerializer<CI>(
     CI::class,
 )
