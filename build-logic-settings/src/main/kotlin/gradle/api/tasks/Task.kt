@@ -4,7 +4,6 @@ import gradle.api.ProjectNamed
 import gradle.api.applyTo
 import gradle.api.elementType
 import gradle.api.trySet
-import gradle.api.trySetIterable
 import gradle.collection.SerializableAnyMap
 import gradle.serialization.serializer.JsonKeyValueTransformingContentPolymorphicSerializer
 import groovy.lang.MissingPropertyException
@@ -328,7 +327,7 @@ internal interface Task<T : org.gradle.api.Task> : ProjectNamed<T> {
 
     context(Project)
     override fun applyTo(receiver: T) {
-        receiver::setDependsOn trySetIterable dependsOn
+        receiver::setDependsOn trySet dependsOn
         onlyIf?.let { onlyIf -> receiver.onlyIf { onlyIf } }
         receiver::doNotTrackState trySet doNotTrackState
         receiver::notCompatibleWithConfigurationCache trySet notCompatibleWithConfigurationCache
@@ -337,9 +336,9 @@ internal interface Task<T : org.gradle.api.Task> : ProjectNamed<T> {
         properties?.forEach { (name, value) -> receiver.setProperty(name, value) }
         receiver::setDescription trySet description
         receiver::setGroup trySet group
-        receiver::setMustRunAfter trySetIterable mustRunAfter
-        receiver::setFinalizedBy trySetIterable finalizedBy
-        receiver::setShouldRunAfter trySetIterable shouldRunAfter
+        receiver::setMustRunAfter trySet mustRunAfter
+        receiver::setFinalizedBy trySet finalizedBy
+        receiver::setShouldRunAfter trySet shouldRunAfter
     }
 
     context(Project)

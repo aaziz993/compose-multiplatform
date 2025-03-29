@@ -7,7 +7,6 @@ import gradle.accessors.catalog.resolveVersion
 import gradle.accessors.settings
 import gradle.accessors.spotless
 import gradle.api.trySet
-import gradle.api.trySetArray
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -126,7 +125,7 @@ internal data class JavaExtension(
     ) {
 
         fun applyTo(eclipse: JavaExtension.EclipseConfig) {
-            eclipse::configFile trySetArray configFiles
+            eclipse::configFile trySet configFiles
             p2Mirrors?.let(eclipse::withP2Mirrors)
         }
     }

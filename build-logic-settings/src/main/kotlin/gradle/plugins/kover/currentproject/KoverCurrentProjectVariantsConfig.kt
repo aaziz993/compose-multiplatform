@@ -1,6 +1,6 @@
 package gradle.plugins.kover.currentproject
 
-import gradle.api.tryApplyAction
+import gradle.api.tryApply
 import kotlinx.kover.gradle.plugin.dsl.KoverCurrentProjectVariantsConfig
 import kotlinx.serialization.Serializable
 
@@ -57,7 +57,7 @@ internal data class KoverCurrentProjectVariantsConfig(
             receiver.providedVariant(variantName, config::applyTo)
         }
 
-        receiver::totalVariant tryApplyAction totalVariant?.let{ totalVariant -> totalVariant::applyTo }
+        receiver::totalVariant tryApply totalVariant?.let{ totalVariant -> totalVariant::applyTo }
         instrumentation?.applyTo(receiver.instrumentation)
     }
 }

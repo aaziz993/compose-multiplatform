@@ -6,7 +6,6 @@ import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import gradle.accessors.android
 import gradle.api.tryPutAll
 import gradle.api.trySet
-import gradle.api.trySetIterable
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.android.compile.JavaCompileOptions
 import org.gradle.api.Project
@@ -130,9 +129,9 @@ internal interface VariantDimension<T : VariantDimension> {
 
         defaultProguardFiles?.mapNotNull { defaultProguardFile -> project.getDefaultProguardFile(defaultProguardFile) }
 
-        receiver::setProguardFiles trySetIterable setProguardFiles
+        receiver::setProguardFiles trySet setProguardFiles
 
-        receiver::setProguardFiles trySetIterable setDefaultProguardFiles
+        receiver::setProguardFiles trySet setDefaultProguardFiles
             ?.mapNotNull { defaultProguardFile -> project.getDefaultProguardFile(defaultProguardFile) }
 
         testProguardFiles?.toTypedArray()?.let(receiver::testProguardFiles)

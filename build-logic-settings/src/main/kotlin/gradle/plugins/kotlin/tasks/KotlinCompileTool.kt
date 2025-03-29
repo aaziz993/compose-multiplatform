@@ -6,7 +6,7 @@ import gradle.api.tasks.applyTo
 import gradle.api.tasks.util.PatternFilterable
 import gradle.api.tryAssign
 import gradle.api.tryFrom
-import gradle.api.trySetArray
+import gradle.api.trySet
 import gradle.api.trySetFrom
 import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.SerialName
@@ -56,8 +56,8 @@ internal interface KotlinCompileTool<T : org.jetbrains.kotlin.gradle.tasks.Kotli
         super<Task>.applyTo(receiver)
         super<PatternFilterable>.applyTo(receiver)
 
-        receiver::source trySetArray sources
-        receiver::setSource trySetArray setSources
+        receiver::source trySet sources
+        receiver::setSource trySet setSources
         receiver.libraries tryFrom libraries
         receiver.libraries trySetFrom setLibraries
         receiver.destinationDirectory tryAssign destinationDirectory?.let(project.layout.projectDirectory::dir)

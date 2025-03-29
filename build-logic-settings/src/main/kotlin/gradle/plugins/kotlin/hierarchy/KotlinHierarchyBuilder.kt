@@ -1,6 +1,6 @@
 package gradle.plugins.kotlin.hierarchy
 
-import gradle.api.trySetArray
+import gradle.api.trySet
 import gradle.ifTrue
 import kotlinx.serialization.Serializable
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
@@ -134,9 +134,9 @@ internal interface KotlinHierarchyBuilder<T : org.jetbrains.kotlin.gradle.plugin
 
         override fun applyTo(receiver: org.jetbrains.kotlin.gradle.plugin.KotlinHierarchyBuilder.Root) {
             super.applyTo(receiver)
-            receiver::sourceSetTrees trySetArray sourceSetTrees?.map(::KotlinSourceSetTree)
-            receiver::withSourceSetTree trySetArray withSourceSetTree?.map(::KotlinSourceSetTree)
-            receiver::excludeSourceSetTree trySetArray excludeSourceSetTree?.map(::KotlinSourceSetTree)
+            receiver::sourceSetTrees trySet sourceSetTrees?.map(::KotlinSourceSetTree)
+            receiver::withSourceSetTree trySet withSourceSetTree?.map(::KotlinSourceSetTree)
+            receiver::excludeSourceSetTree trySet excludeSourceSetTree?.map(::KotlinSourceSetTree)
         }
     }
 

@@ -11,7 +11,6 @@ import gradle.accessors.settings
 import gradle.accessors.spotless
 
 import gradle.api.trySet
-import gradle.api.trySetArray
 import gradle.collection.SerializableAnyMap
 import gradle.ifTrue
 import gradle.serialization.serializer.JsonKeyValueTransformingContentPolymorphicSerializer
@@ -72,8 +71,8 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
         excludeSteps?.forEach(receiver::ignoreErrorForStep)
         excludePaths?.forEach(receiver::ignoreErrorForPath)
         encoding?.let(receiver::setEncoding)
-        receiver::target trySetArray targets
-        receiver::targetExclude trySetArray targetExcludes
+        receiver::target trySet targets
+        receiver::targetExclude trySet targetExcludes
         receiver::targetExcludeIfContentContains trySet targetExcludeIfContentContains
         receiver::targetExcludeIfContentContainsRegex trySet targetExcludeIfContentContainsRegex
         replaces?.forEach { (name, original, after) -> receiver.replace(name, original, after) }
@@ -165,7 +164,7 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
     ) {
 
         fun applyTo(receiver: com.diffplug.gradle.spotless.FormatExtension.EclipseWtpConfig) {
-            receiver::configFile trySetArray configFiles
+            receiver::configFile trySet configFiles
         }
     }
 

@@ -6,7 +6,7 @@ import gradle.api.repositories.AuthenticationSupported
 import gradle.api.repositories.PasswordCredentials
 import gradle.api.repositories.RepositoryContentDescriptorImpl
 import gradle.api.repositories.UrlArtifactRepository
-import gradle.api.tryApplyAction
+import gradle.api.tryApply
 import gradle.api.trySet
 import gradle.ifTrue
 import kotlinx.serialization.SerialName
@@ -183,9 +183,9 @@ internal data class IvyArtifactRepository(
         artifactPatterns?.forEach(receiver::artifactPattern)
         ivyPatterns?.forEach(receiver::ivyPattern)
         receiver::layout trySet layout
-        receiver::patternLayout tryApplyAction patternLayout?.let{ patternLayout -> patternLayout::applyTo }
+        receiver::patternLayout tryApply patternLayout?.let{ patternLayout -> patternLayout::applyTo }
         resolve?.applyTo(receiver.resolve)
-        receiver::metadataSources tryApplyAction metadataSources?.let{ metadataSources -> metadataSources::applyTo }
+        receiver::metadataSources tryApply metadataSources?.let{ metadataSources -> metadataSources::applyTo }
     }
 
     /**

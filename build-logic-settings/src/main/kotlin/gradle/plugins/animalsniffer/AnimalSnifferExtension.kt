@@ -7,7 +7,6 @@ import gradle.accessors.catalog.libs
 
 import gradle.accessors.settings
 import gradle.api.trySet
-import gradle.api.trySetArray
 import gradle.plugins.quality.CodeQualityExtension
 import org.gradle.api.Project
 import ru.vyarus.gradle.plugin.animalsniffer.AnimalSnifferExtension
@@ -122,14 +121,14 @@ internal abstract class AnimalSnifferExtension : CodeQualityExtension<AnimalSnif
 
             project.animalSniffer::setDebug trySet debug
             project.animalSniffer::setAnnotation trySet annotation
-            project.animalSniffer::ignore trySetArray ignore
+            project.animalSniffer::ignore trySet ignore
             project.animalSniffer::setIgnore trySet setIgnore
-            project.animalSniffer::excludeJars trySetArray excludeJars
+            project.animalSniffer::excludeJars trySet excludeJars
             project.animalSniffer::setExcludeJars trySet setExcludeJars
             cache?.applyTo(project.animalSniffer.cache)
             project.animalSniffer::setCheckTestSources trySet checkTestSources
             project.animalSniffer::setDefaultTargets trySet defaultTargets
-            project.animalSniffer::defaultTargets trySetArray setDefaultTargets
+            project.animalSniffer::defaultTargets trySet setDefaultTargets
             project.animalSniffer::setFailWithoutSignatures trySet failWithoutSignatures
         }
     }

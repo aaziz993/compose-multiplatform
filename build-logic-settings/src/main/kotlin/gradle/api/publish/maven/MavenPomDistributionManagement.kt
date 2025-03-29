@@ -1,6 +1,6 @@
 package gradle.api.publish.maven
 
-import gradle.api.tryApplyAction
+import gradle.api.tryApply
 import gradle.api.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.publish.maven.MavenPomDistributionManagement
@@ -25,6 +25,6 @@ internal data class MavenPomDistributionManagement(
 
     fun applyTo(receiver: MavenPomDistributionManagement) {
         receiver.downloadUrl tryAssign downloadUrl
-        receiver::relocation tryApplyAction relocation?.let{ relocation -> relocation::applyTo }
+        receiver::relocation tryApply relocation?.let{ relocation -> relocation::applyTo }
     }
 }

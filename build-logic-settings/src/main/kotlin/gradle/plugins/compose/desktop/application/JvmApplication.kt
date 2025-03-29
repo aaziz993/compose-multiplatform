@@ -5,7 +5,6 @@ import gradle.accessors.sourceSets
 import gradle.api.getByNameOrAll
 import gradle.api.tryAddAll
 import gradle.api.trySet
-import gradle.api.trySetArray
 import gradle.ifTrue
 import gradle.plugins.compose.desktop.application.buildtype.JvmApplicationBuildTypes
 import kotlinx.serialization.Serializable
@@ -39,7 +38,7 @@ internal data class JvmApplication(
         fromKotlinTarget?.let(project.kotlin.targets::getByName)?.let(receiver::from)
         disableDefaultConfiguration?.ifTrue(receiver::disableDefaultConfiguration)
         dependsOn?.flatMap(tasks::getByNameOrAll)?.toTypedArray()?.let(receiver::dependsOn)
-        receiver::fromFiles trySetArray fromFiles
+        receiver::fromFiles trySet fromFiles
         receiver::mainClass trySet mainClass
         receiver::javaHome trySet javaHome
         receiver.args tryAddAll args

@@ -3,7 +3,6 @@ package gradle.plugins.java.application
 import gradle.accessors.javaApp
 import gradle.api.tryAssign
 import gradle.api.trySet
-import gradle.api.trySetIterable
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.plugins.ApplicationPlugin
@@ -83,7 +82,7 @@ internal data class JavaApplication(
             project.javaApp::setApplicationName trySet applicationName
             project.javaApp.mainModule tryAssign mainModule
             project.javaApp.mainClass tryAssign mainClass
-            project.javaApp::setApplicationDefaultJvmArgs trySetIterable applicationDefaultJvmArgs
+            project.javaApp::setApplicationDefaultJvmArgs trySet applicationDefaultJvmArgs
             project.javaApp::setExecutableDir trySet executableDir
         }
 }

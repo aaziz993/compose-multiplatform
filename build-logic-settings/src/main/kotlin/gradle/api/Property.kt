@@ -94,18 +94,22 @@ public infix fun KMutableProperty0<out FileCollection?>.tryPlus(value: FileColle
 public infix fun <T> KFunction1<T, *>.trySet(elements: T?): Any? =
     elements?.let(::invoke)
 
-public inline infix fun <reified T> KFunction1<Array<T>, *>.trySetArray(elements: Iterable<T>?): Any? =
+@JvmName("trySetArray")
+public inline infix fun <reified T> KFunction1<Array<T>, *>.trySet(elements: Iterable<T>?): Any? =
     elements?.toList()?.toTypedArray()?.let(::invoke)
 
-public infix fun <T> KFunction1<Iterable<T>, *>.trySetIterable(elements: Iterable<T>?): Any? =
+@JvmName("trySetIterable")
+public infix fun <T> KFunction1<Iterable<T>, *>.trySet(elements: Iterable<T>?): Any? =
     elements?.let(::invoke)
 
-public infix fun <T> KFunction1<Action<T>, *>.tryApplyAction(block: ((T) -> Unit)?): Any? =
+@JvmName("tryApplyAction")
+public infix fun <T> KFunction1<Action<T>, *>.tryApply(block: ((T) -> Unit)?): Any? =
     block?.let { block ->
         invoke(block)
     }
 
-public infix fun <T> KFunction1<KFunction1<T, Unit>, *>.tryApplyFunction(block: ((T) -> Unit)?): Any? =
+@JvmName("tryApplyFunction")
+public infix fun <T> KFunction1<KFunction1<T, Unit>, *>.tryApply(block: ((T) -> Unit)?): Any? =
     block?.let { block ->
         invoke(block::invoke)
     }

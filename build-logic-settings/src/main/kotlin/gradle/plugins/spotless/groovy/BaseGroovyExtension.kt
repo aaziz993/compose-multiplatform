@@ -7,7 +7,6 @@ import gradle.accessors.settings
 
 
 import gradle.api.trySet
-import gradle.api.trySetArray
 import gradle.ifTrue
 import gradle.plugins.spotless.FormatExtension
 import kotlinx.serialization.Serializable
@@ -27,7 +26,7 @@ internal abstract class BaseGroovyExtension<T : BaseGroovyExtension> : FormatExt
     override fun applyTo(receiver: T) {
         super.applyTo(receiver)
 
-        receiver::importOrder trySetArray importOrder
+        receiver::importOrder trySet importOrder
         receiver::importOrderFile trySet importOrderFile
         removeSemicolons?.ifTrue(receiver::removeSemicolons)
 
@@ -47,7 +46,7 @@ internal abstract class BaseGroovyExtension<T : BaseGroovyExtension> : FormatExt
     ) {
 
         fun applyTo(receiver: BaseGroovyExtension.GrEclipseConfig) {
-            receiver::configFile trySetArray configFiles
+            receiver::configFile trySet configFiles
             receiver::withP2Mirrors trySet withP2Mirrors
         }
     }

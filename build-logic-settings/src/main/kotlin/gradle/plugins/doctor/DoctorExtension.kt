@@ -4,7 +4,7 @@ import com.osacky.doctor.AppleRosettaTranslationCheckMode
 import gradle.accessors.catalog.libs
 import gradle.accessors.doctor
 import gradle.accessors.settings
-import gradle.api.tryApplyAction
+import gradle.api.tryApply
 import gradle.api.tryAssign
 import org.gradle.api.Project
 
@@ -111,6 +111,6 @@ internal interface DoctorExtension {
             project.doctor.disallowCleanTaskDependencies tryAssign disallowCleanTaskDependencies
             project.doctor.warnIfKotlinCompileDaemonFallback tryAssign warnIfKotlinCompileDaemonFallback
             project.doctor.appleRosettaTranslationCheckMode tryAssign appleRosettaTranslationCheckMode
-            project.doctor::javaHome tryApplyAction javaHome?.let{ javaHome -> javaHome::applyTo }
+            project.doctor::javaHome tryApply javaHome?.let{ javaHome -> javaHome::applyTo }
         }
 }

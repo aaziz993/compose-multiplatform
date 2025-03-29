@@ -3,7 +3,6 @@ package gradle.api.tasks
 import gradle.accessors.files
 import gradle.api.tasks.util.PatternFilterable
 import gradle.api.trySet
-import gradle.api.trySetArray
 import org.gradle.api.Project
 import org.gradle.api.tasks.SourceTask
 
@@ -17,7 +16,7 @@ internal abstract class SourceTask<T : SourceTask> : ConventionTask<T>(), Patter
         super<ConventionTask>.applyTo(receiver)
         super<PatternFilterable>.applyTo(receiver)
 
-        receiver::source trySetArray sourceFiles
+        receiver::source trySet sourceFiles
         receiver::setSource trySet setSourceFiles?.let(project::files)?.asFileTree
     }
 }

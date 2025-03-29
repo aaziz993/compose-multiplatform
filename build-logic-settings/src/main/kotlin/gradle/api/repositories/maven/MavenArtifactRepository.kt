@@ -4,8 +4,8 @@ import gradle.api.applyTo
 import gradle.api.repositories.ArtifactRepository
 import gradle.api.repositories.AuthenticationSupported
 import gradle.api.repositories.UrlArtifactRepository
-import gradle.api.tryApplyAction
-import gradle.api.trySetArray
+import gradle.api.tryApply
+import gradle.api.trySet
 import gradle.ifTrue
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -22,7 +22,9 @@ import org.gradle.kotlin.dsl.withType
  * Repositories of this type are created by the [RepositoryHandler.maven] group of methods.
  */
 internal interface MavenArtifactRepository
-    : ArtifactRepository<MavenArtifactRepository>, UrlArtifactRepository<MavenArtifactRepository>, AuthenticationSupported<MavenArtifactRepository> {
+    : ArtifactRepository<MavenArtifactRepository>,
+    UrlArtifactRepository<MavenArtifactRepository>,
+    AuthenticationSupported<MavenArtifactRepository> {
 
     /**
      * Sets the additional URLs to use to find artifact files. Note that these URLs are not used to find POM files.
@@ -64,9 +66,9 @@ internal interface MavenArtifactRepository
         super<UrlArtifactRepository>._applyTo(receiver)
         super<AuthenticationSupported>._applyTo(receiver)
 
-        receiver::artifactUrls trySetArray artifactUrls
+        receiver::artifactUrls trySet artifactUrls
         metadataSources?.applyTo(receiver.metadataSources)
-        receiver::mavenContent tryApplyAction mavenContent?.let{ mavenContent -> mavenContent::applyTo }
+        receiver::mavenContent tryApply mavenContent?.let { mavenContent -> mavenContent::applyTo }
     }
 
     context(Settings)

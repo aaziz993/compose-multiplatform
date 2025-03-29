@@ -1,7 +1,7 @@
 package gradle.api.publish
 
 import gradle.api.Buildable
-import gradle.api.trySetArray
+import gradle.api.trySet
 import org.gradle.api.publish.PublicationArtifact
 
 /**
@@ -19,6 +19,6 @@ internal interface PublicationArtifact<T : PublicationArtifact> : Buildable<T> {
     val builtBy: Set<String>?
 
     override fun applyTo(receiver: T) {
-        receiver::builtBy trySetArray builtBy
+        receiver::builtBy trySet builtBy
     }
 }

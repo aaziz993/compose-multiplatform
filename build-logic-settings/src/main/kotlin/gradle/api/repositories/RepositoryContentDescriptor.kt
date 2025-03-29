@@ -1,6 +1,6 @@
 package gradle.api.repositories
 
-import gradle.api.trySetArray
+import gradle.api.trySet
 import kotlinx.serialization.Serializable
 
 /**
@@ -120,7 +120,7 @@ internal interface RepositoryContentDescriptor<T : org.gradle.api.artifacts.repo
             receiver.excludeVersionByRegex(group, moduleName, version)
         }
 
-        receiver::notForConfigurations trySetArray notForConfigurations
+        receiver::notForConfigurations trySet notForConfigurations
     }
 }
 

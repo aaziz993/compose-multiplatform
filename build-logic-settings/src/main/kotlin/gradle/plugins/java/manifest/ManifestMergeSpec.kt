@@ -1,7 +1,6 @@
 package gradle.plugins.java.manifest
 
 import gradle.api.trySet
-import gradle.api.trySetArray
 import kotlinx.serialization.Serializable
 import org.gradle.api.java.archives.ManifestMergeSpec
 
@@ -14,7 +13,7 @@ internal data class ManifestMergeSpec(
 
     fun applyTo(receiver: ManifestMergeSpec) {
         receiver::setContentCharset trySet contentCharset
-        receiver::from trySetArray from
+        receiver::from trySet from
 
         eachEntries?.let { eachEntries ->
             receiver.eachEntry {
