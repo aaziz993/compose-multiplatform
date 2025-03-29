@@ -34,7 +34,7 @@ internal data class BuildCacheConfiguration(
      *
      * @param type the type of remote cache to configure.
      */
-    val remotes: LinkedHashSet<out BuildCache<org.gradle.caching.configuration.BuildCache>>? = null,
+    val remotes: LinkedHashSet<BuildCache<*>>? = null,
 ) {
 
     context(Settings)
@@ -42,19 +42,19 @@ internal data class BuildCacheConfiguration(
     fun applyTo(receiver: BuildCacheConfiguration) {
         local?.applyTo()
 
-        remotes?.forEach { remote ->
-            when (remote) {
-                is HttpBuildCache -> receiver.remote(org.gradle.caching.http.HttpBuildCache::class.java) {
-                    remote.applyTo(this)
-                }
-
-                is DevelocityBuildCache -> receiver.remote(settings.develocity.buildCache) {
-                    remote.applyTo(this)
-                }
-
-                else -> error("Unsupported remote build cache type: ${remote::class.java.name}")
-            }
-        }
+//        remotes?.forEach { remote ->
+//            when (remote) {
+//                is HttpBuildCache -> receiver.remote(org.gradle.caching.http.HttpBuildCache::class.java) {
+//                    remote.applyTo(this)
+//                }
+//
+//                is DevelocityBuildCache -> receiver.remote(settings.develocity.buildCache) {
+//                    remote.applyTo(this)
+//                }
+//
+//                else -> error("Unsupported remote build cache type: ${remote::class.java.name}")
+//            }
+//        }
     }
 }
 
