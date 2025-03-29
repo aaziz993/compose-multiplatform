@@ -1,5 +1,6 @@
 package gradle.serialization.serializer
 
+import kotlin.reflect.KClass
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
