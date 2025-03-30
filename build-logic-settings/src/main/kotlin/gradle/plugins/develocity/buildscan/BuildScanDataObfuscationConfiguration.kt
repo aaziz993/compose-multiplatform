@@ -1,7 +1,7 @@
 package gradle.plugins.develocity.buildscan
 
 import com.gradle.develocity.agent.gradle.scan.BuildScanDataObfuscationConfiguration
-import gradle.api.CI
+
 import kotlinx.serialization.Serializable
 
 @Serializable

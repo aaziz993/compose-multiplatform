@@ -2,10 +2,13 @@ package gradle.api.repositories
 
 import gradle.accessors.catalog.libs
 import gradle.accessors.node
+import gradle.accessors.nodeJsEnv
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
 import gradle.accessors.yarn
-import gradle.api.CI
+import gradle.accessors.yarnEnv
+import org.gradle.kotlin.dsl.assign
+import gradle.api.ci.CI
 import java.net.URI
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler
@@ -258,13 +261,9 @@ private fun Project.overrideNativeCompilerDownloadUrl() {
  */
 private fun Project.configureYarnAndNodeRedirects() =
     project.pluginManager.withPlugin(project.settings.libs.plugin("gradle.node.plugin").id) {
-        yarn.downloadBaseUrl?.let { downloadBaseUrl ->
-            yarn.downloadBaseUrl = URI(downloadBaseUrl).maybeRedirect().toString()
-        }
+        yarnEnv.downloadBaseUrl = URI(yarnEnv.downloadBaseUrl.get()).maybeRedirect().toString()
 
-        node.downloadBaseUrl?.let { downloadBaseUrl ->
-            node.downloadBaseUrl = URI(downloadBaseUrl).maybeRedirect().toString()
-        }
+        nodeJsEnv.downloadBaseUrl = URI(nodeJsEnv.downloadBaseUrl.get()).maybeRedirect().toString()
     }
 
 /**
@@ -279,7 +278,7 @@ private fun Project.addCheckRepositoriesTask() {
         doLast {
             val testName = "$name in ${project.displayName}"
 
-            CI?.run {
+            if (CI.present) {
                 testStarted(testName)
             }
 

@@ -7,8 +7,8 @@ import kotlinx.serialization.Serializable
 @Serializable(with = PublishRepositoryObjectTransformingSerializer::class)
 internal data class PublishRepository(
     val name: String,
-    override val enabled: Boolean = true
-) : EnabledSettings
+    val enabled: Boolean = true
+)
 
 private object PublishRepositoryObjectTransformingSerializer :
     JsonObjectTransformingSerializer<PublishRepository>(

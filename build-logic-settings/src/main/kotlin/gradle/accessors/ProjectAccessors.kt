@@ -247,7 +247,7 @@ internal val Project.node: NodeJsRootExtension get() = the()
 internal fun Project.node(configure: NodeJsRootExtension.() -> Unit) =
     extensions.configure(configure)
 
-internal val Project.nodeEnv: NodeJsEnvSpec get() = the()
+internal val Project.nodeJsEnv: NodeJsEnvSpec get() = the()
 
 internal fun Project.nodeEnv(configure: NodeJsEnvSpec.() -> Unit) =
     extensions.configure(configure)

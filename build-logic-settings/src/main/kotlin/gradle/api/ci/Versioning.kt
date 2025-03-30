@@ -7,7 +7,7 @@ import org.gradle.api.Project
 @Serializable
 internal data class Versioning(
     val branch: Boolean = true,
-    val runNumber: Boolean = true,
+    val run: Boolean = true,
 ) {
 
     @Transient
@@ -15,5 +15,5 @@ internal data class Versioning(
 
     context(Project)
     val buildMetadata: String
-        get() = "${ci.branch?.takeIf { branch }.orEmpty()}${ci.runNumber?.takeIf { runNumber }.orEmpty()}"
+        get() = "${ci.branch?.takeIf { branch }.orEmpty()}${ci.run?.takeIf { run }.orEmpty()}"
 }

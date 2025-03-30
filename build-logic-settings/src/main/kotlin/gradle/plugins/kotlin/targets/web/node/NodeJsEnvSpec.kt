@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin.targets.web.node
 
 import gradle.accessors.catalog.libs
-import gradle.accessors.nodeEnv
+import gradle.accessors.nodeJsEnv
 
 import gradle.accessors.settings
 import gradle.plugins.kotlin.targets.web.EnvSpec
@@ -20,6 +20,6 @@ internal data class NodeJsEnvSpec(
     context(Project)
     fun applyTo() =
         project.pluginManager.withPlugin(project.settings.libs.plugin("gradle.node.plugin").id) {
-            super.applyTo(project.nodeEnv)
+            super.applyTo(project.nodeJsEnv)
         }
 }
