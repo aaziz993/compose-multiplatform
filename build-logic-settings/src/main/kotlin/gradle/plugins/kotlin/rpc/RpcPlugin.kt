@@ -12,8 +12,7 @@ internal class RpcPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            projectProperties.plugins.rpc
-                .takeIf(RpcSettings::enabled)?.let { rpc ->
+            projectProperties.rpc?.takeIf{ pluginManager.hasPlugin("rpc") }?.let { rpc ->
                     plugins.apply(project.settings.libs.plugin("kotlinx.rpc").id)
 
                     rpc.applyTo()

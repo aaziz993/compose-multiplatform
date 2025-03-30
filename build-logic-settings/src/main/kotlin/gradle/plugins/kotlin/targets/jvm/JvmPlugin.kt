@@ -17,7 +17,7 @@ internal class JvmPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (projectProperties.kotlin.targets.none { target -> target is KotlinJvmTarget }) {
+            if (projectProperties.kotlin?.targets.orEmpty().none { target -> target is KotlinJvmTarget }) {
                 return@with
             }
 
@@ -26,19 +26,17 @@ internal class JvmPlugin : Plugin<Project> {
             registerJavaCodegenTestTask()
 
             // When there are android targets disable KotlinJvmTarget.withJava property and JavaPlugin
-            if (projectProperties.kotlin.targets.any { target -> target is KotlinAndroidTarget }) {
+            if (projectProperties.kotlin?.targets.orEmpty().any { target -> target is KotlinAndroidTarget }) {
                 return@with
             }
 
-            if (projectProperties.kotlin.targets.any { target -> target is KotlinJvmTarget }) {
-                projectProperties.java.applyTo()
-            }
+            // Apply java properteis.
+            projectProperties.java?.applyTo()
 
-            // Apply java application plugin.
-            projectProperties.application?.takeIf { !projectProperties.compose.enabled }?.let { application ->
-                plugins.apply(ApplicationPlugin::class.java)
-                application.applyTo()
-            }
+            // Apply java application properties.
+            projectProperties.application?.takeIf {
+                pluginManager.hasPlugin("application") && projectProperties.compose?.enabled != true
+            }?.applyTo()
         }
     }
 

@@ -12,7 +12,7 @@ internal class KspPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            projectProperties.plugins.ksp.takeIf(KspSettings::enabled)?.let { ksp ->
+            projectProperties.ksp?.takeIf{ pluginManager.hasPlugin("ksp") }?.let { ksp ->
                 plugins.apply(project.settings.libs.plugin("ksp").id)
 
                 ksp.applyTo()

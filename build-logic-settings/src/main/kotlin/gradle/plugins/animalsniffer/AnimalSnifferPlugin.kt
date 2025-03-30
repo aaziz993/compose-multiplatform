@@ -12,8 +12,7 @@ internal class AnimalSnifferPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            projectProperties.plugins.animalSniffer
-                .takeIf(AnimalSnifferSettings::enabled)?.let { animalSniffer ->
+            projectProperties.animalSniffer?.takeIf{ pluginManager.hasPlugin("animalSniffer") }?.let { animalSniffer ->
                     plugins.apply(project.settings.libs.plugin("animalsniffer").id)
 
                     animalSniffer.applyTo()

@@ -12,8 +12,7 @@ internal class KtorfitPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            projectProperties.plugins.ktorfit
-                .takeIf(KtorfitSettings::enabled)?.let { ktorfit ->
+            projectProperties.ktorfit?.takeIf{ pluginManager.hasPlugin("ktorfit") }?.let { ktorfit ->
                     plugins.apply(project.settings.libs.plugin("ktorfit").id)
 
                     ktorfit.applyTo()

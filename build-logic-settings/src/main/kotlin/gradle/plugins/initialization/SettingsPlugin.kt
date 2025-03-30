@@ -71,63 +71,61 @@ public class SettingsPlugin : Plugin<Settings> {
 
                         allLibs = emptySet()
 
-                        if (dependencyResolutionManagement.versionCatalogs.none { it.name == "libs" }) {
+                        if (dependencyResolutionManagement.versionCatalogs.orEmpty().none { it.name == "libs" }) {
                             settings.layout.settingsDirectory.file("gradle/libs.versions.toml").asFile
                                 .takeIf(File::exists)?.let { libsFile ->
                                     allLibs += Toml.parse(libsFile.readText()).toVersionCatalog("libs")
                                 }
                         }
 
-                        dependencyResolutionManagement.versionCatalogs
-                            .takeIf(Set<*>::isNotEmpty)
-                            ?.let { versionCatalogs ->
-                                versionCatalogs {
-                                    allLibs += versionCatalogs
-                                        .map { (name, dependency) -> name to dependency.resolve() }
-                                        .map { (name, notation) ->
-                                            create(name) {
-                                                from(notation)
-                                            }
-
-
-                                            when (notation) {
-
-                                                is String -> {
-                                                    val versionCatalogCacheFile = settings.layout.settingsDirectory.file("$VERSION_CATALOG_CACHE_DIR/$name.versions.toml").asFile
-
-                                                    if (versionCatalogCacheFile.exists())
-                                                        Toml.parse(versionCatalogCacheFile.readText()).toVersionCatalog(name)
-                                                    else repositories.map { (it as DefaultMavenArtifactRepository).url.toString().removeSuffix("/") }
-                                                        .firstNotNullOf { url ->
-                                                            try {
-                                                                Toml.parse(
-                                                                    URI("$url/$notation").toURL().readText()
-                                                                        .also(versionCatalogCacheFile::writeText), // write to cache
-                                                                ).toVersionCatalog(name)
-                                                            }
-                                                            catch (_: Throwable) {
-                                                                null
-                                                            }
-                                                        }
-                                                }
-
-                                                is FileCollection -> Toml.parse(notation.files.single().readText()).toVersionCatalog(name)
-
-                                                else -> throw IllegalArgumentException("Unknown version catalog notation: $notation")
-                                            }
+                        dependencyResolutionManagement.versionCatalogs?.let { versionCatalogs ->
+                            versionCatalogs {
+                                allLibs += versionCatalogs
+                                    .map { (name, dependency) -> name to dependency.resolve() }
+                                    .map { (name, notation) ->
+                                        create(name) {
+                                            from(notation)
                                         }
-                                }
 
-                                // Load pre-defined compose version catalog
-                                allLibs += Toml.parse(
-                                    settings.layout.settingsDirectory.file(COMPOSE_VERSION_CATALOG_FILE).asFile
-                                        .readText()
-                                        .replace("\$kotlin", libs.version("kotlin"))
-                                        .replace("\$compose", libs.version("compose"))
-                                        .replace("\$materialExtendedIcon", libs.version("materialExtendedIcon"))
-                                        .replace("\$currentTargetId", currentTarget.id),
-                                ).toVersionCatalog("compose")
+
+                                        when (notation) {
+
+                                            is String -> {
+                                                val versionCatalogCacheFile = settings.layout.settingsDirectory.file("$VERSION_CATALOG_CACHE_DIR/$name.versions.toml").asFile
+
+                                                if (versionCatalogCacheFile.exists())
+                                                    Toml.parse(versionCatalogCacheFile.readText()).toVersionCatalog(name)
+                                                else repositories.map { (it as DefaultMavenArtifactRepository).url.toString().removeSuffix("/") }
+                                                    .firstNotNullOf { url ->
+                                                        try {
+                                                            Toml.parse(
+                                                                URI("$url/$notation").toURL().readText()
+                                                                    .also(versionCatalogCacheFile::writeText), // write to cache
+                                                            ).toVersionCatalog(name)
+                                                        }
+                                                        catch (_: Throwable) {
+                                                            null
+                                                        }
+                                                    }
+                                            }
+
+                                            is FileCollection -> Toml.parse(notation.files.single().readText()).toVersionCatalog(name)
+
+                                            else -> throw IllegalArgumentException("Unknown version catalog notation: $notation")
+                                        }
+                                    }
                             }
+
+                            // Load pre-defined compose version catalog
+                            allLibs += Toml.parse(
+                                settings.layout.settingsDirectory.file(COMPOSE_VERSION_CATALOG_FILE).asFile
+                                    .readText()
+                                    .replace("\$kotlin", libs.version("kotlin"))
+                                    .replace("\$compose", libs.version("compose"))
+                                    .replace("\$materialExtendedIcon", libs.version("materialExtendedIcon"))
+                                    .replace("\$currentTargetId", currentTarget.id),
+                            ).toVersionCatalog("compose")
+                        }
                     }
                 }
 
@@ -155,7 +153,7 @@ public class SettingsPlugin : Plugin<Settings> {
             target.gradle.projectsLoaded {
                 // Apply project files
                 with(rootProject) {
-                    val projectFiles = (target.projectProperties.projectFiles + listOfNotNull(
+                    val projectFiles = (listOfNotNull(
                         target.projectProperties.licenseFile,
                         target.projectProperties.codeOfConductFile,
                         target.projectProperties.contributingFile,
@@ -172,7 +170,7 @@ public class SettingsPlugin : Plugin<Settings> {
 //                            "templates/LICENSE_HEADER_TAGGED",
 //                            "licenses",
 //                        ),
-                    )).flatMapIndexed { index, projectFile ->
+                    ) + target.projectProperties.projectFiles.orEmpty()).flatMapIndexed { index, projectFile ->
                         projectFile.applyTo("projectFile$index")
                     }
 

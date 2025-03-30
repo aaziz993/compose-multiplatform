@@ -12,8 +12,7 @@ internal class SqlDelightPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            projectProperties.plugins.sqldelight
-                .takeIf(SqlDelightSettings::enabled)?.let { sqldelight ->
+            projectProperties.sqldelight?.takeIf{ pluginManager.hasPlugin("sqldelight") }?.let { sqldelight ->
                     plugins.apply(project.settings.libs.plugin("sqldelight").id)
 
                     sqldelight.applyTo()

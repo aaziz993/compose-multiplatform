@@ -12,8 +12,7 @@ internal class SerializationPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            projectProperties.plugins.serialization
-                .takeIf(SerializationSettings::enabled)?.let { serialization ->
+            projectProperties.serialization?.takeIf{ pluginManager.hasPlugin("serialization") }?.let { serialization ->
                     plugins.apply(project.settings.libs.plugin("kotlinx.serialization").id)
 
                     serialization.applyTo()

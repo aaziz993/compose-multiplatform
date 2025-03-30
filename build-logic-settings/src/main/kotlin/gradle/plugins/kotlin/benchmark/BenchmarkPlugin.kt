@@ -12,8 +12,7 @@ internal class BenchmarkPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            projectProperties.plugins.benchmark
-                .takeIf(BenchmarkSettings::enabled)?.let { benchmark ->
+            projectProperties.benchmark?.takeIf{ pluginManager.hasPlugin("benchmark") }?.let { benchmark ->
                     plugins.apply(project.settings.libs.plugin("kotlinx.benchmark").id)
 
                     benchmark.applyTo()

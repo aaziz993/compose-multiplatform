@@ -17,8 +17,7 @@ internal class KarakumPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            projectProperties.plugins.karakum
-                .takeIf(KarakumSettings::enabled)?.let { karakum ->
+            projectProperties.karakum?.takeIf{ pluginManager.hasPlugin("karakum") }?.let { karakum ->
                     plugins.apply(project.settings.libs.plugin("karakum").id)
 
                     karakum.applyTo()

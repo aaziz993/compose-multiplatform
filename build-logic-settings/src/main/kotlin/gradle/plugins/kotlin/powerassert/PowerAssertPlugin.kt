@@ -12,8 +12,7 @@ internal class PowerAssertPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            projectProperties.plugins.powerAssert
-                .takeIf(PowerAssertSettings::enabled)?.let { powerAssert ->
+            projectProperties.powerAssert?.takeIf{ pluginManager.hasPlugin("powerAssert") }?.let { powerAssert ->
                     plugins.apply(project.settings.libs.plugin("powerAssert").id)
 
                     powerAssert.applyTo()

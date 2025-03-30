@@ -12,8 +12,7 @@ internal class ApolloPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            projectProperties.plugins.apollo
-                .takeIf(ApolloSettings::enabled)?.let { apollo ->
+            projectProperties.apollo?.takeIf{ pluginManager.hasPlugin("apollo") }?.let { apollo ->
                     plugins.apply(project.settings.libs.plugin("apollo3").id)
 
                     apollo.applyTo()

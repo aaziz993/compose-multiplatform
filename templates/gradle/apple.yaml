@@ -1,3 +1,6 @@
+plugins:
+  ids: [ $libs.apple ]
+
 apple:
   teamID: io.github.aaziz993
   iosApp:

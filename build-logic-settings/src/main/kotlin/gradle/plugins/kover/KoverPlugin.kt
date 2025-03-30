@@ -15,8 +15,7 @@ internal class KoverPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            projectProperties.plugins.kover
-                .takeIf(KoverSettings::enabled)?.let { kover ->
+            projectProperties.kover?.takeIf{ pluginManager.hasPlugin("kover") }?.let { kover ->
                     plugins.apply(project.settings.libs.plugin("kover").id)
 
                     kover.applyTo()

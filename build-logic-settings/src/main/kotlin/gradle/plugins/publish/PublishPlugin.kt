@@ -72,8 +72,7 @@ internal class PublishPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            projectProperties.plugins.publishing
-                .takeIf(PublishingSettings::enabled)?.let { publishing ->
+            projectProperties.publishing?.takeIf{ pluginManager.hasPlugin("publishing") }?.let { publishing ->
                     plugins.apply(MavenPublishPlugin::class.java)
 
                     publishing.applyTo()

@@ -3,6 +3,8 @@ package gradle.api
 import gradle.accessors.catalog.libs
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
+import gradle.api.ci.CI
+import gradle.api.ci.current
 import io.github.z4kn4fein.semver.Version
 import net.pearx.kasechange.toCamelCase
 import org.gradle.api.Project
@@ -25,21 +27,8 @@ internal fun Project.version(): String {
             ?: projectProperties.version.patch,
         project.settings.libs.versionOrNull("$camelCaseName.version.preRelease")
             ?: projectProperties.version.preRelease,
-        project.settings.libs.versionOrNull("$camelCaseName.version.buildMeta") ?: "${
-            gitRef?.takeIf { projectProperties.version.gitRef }.orEmpty()
-        }${
-            gitRunNumber?.takeIf { projectProperties.version.gitRunNumber }.orEmpty()
-        }${
-            spaceGitBranch?.takeIf { projectProperties.version.spaceGitBranch }.orEmpty()
-        }${
-            spaceExecutionNumber?.takeIf { projectProperties.version.spaceExecutionNumber }.orEmpty()
-        }${
-//            teamCityGitBranch?.takeIf{projectProperties.version.teamCityGitBranch}.orEmpty()
-            ""
-        }${
-//            teamCityBuildNumber?.takeIf{projectProperties.version.teamCityBuildNumber}.orEmpty()
-            ""
-        }".ifEmpty { null },
+        project.settings.libs.versionOrNull("$camelCaseName.version.buildMetadata")
+            ?: projectProperties.version.buildMetadata ?: projectProperties.cis?.current?.versioning?.buildMetadata,
     ).toString()
 }
 

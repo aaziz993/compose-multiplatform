@@ -13,8 +13,8 @@ templates:
   - ../templates/gradle/web/wasmJs/wasmJs.yaml
   - ../templates/gradle/web/wasmJs/wasmJs-executable.yaml
   - ../templates/gradle/web/js-common.yaml
-  - ../templates/gradle/kmp.yaml
-  - ../templates/gradle/cmp.yaml
+  - ../templates/gradle/mpp.yaml
+  - ../templates/gradle/compose.yaml
   - ../templates/gradle/common.yaml
   - ../templates/gradle/root.yaml
 

@@ -12,8 +12,7 @@ internal class BuildConfigPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            projectProperties.plugins.buildConfig
-                .takeIf(BuildConfigSettings::enabled)?.let { buildConfig ->
+            projectProperties.buildConfig?.takeIf{ pluginManager.hasPlugin("buildConfig") }?.let { buildConfig ->
                     plugins.apply(project.settings.libs.plugin("buildConfig").id)
 
                     buildConfig.applyTo()

@@ -26,10 +26,10 @@ internal data class KotlinMultiplatformSettings(
     override val coreLibrariesVersion: String? = null,
     override val explicitApi: ExplicitApiMode? = null,
     override val compilerOptions: KotlinCommonCompilerOptionsImpl? = null,
-    override val sourceSets: LinkedHashSet<KotlinSourceSet> = linkedSetOf(),
-    override val targets: LinkedHashSet<KotlinTarget<*>> = linkedSetOf(),
+    override val sourceSets: LinkedHashSet<KotlinSourceSet>? = null,
+    override val targets: LinkedHashSet<KotlinTarget<*>>? = null,
     override val applyHierarchyTemplate: KotlinHierarchyBuilder.Root? = null,
-    val cocoapods: CocoapodsSettings = CocoapodsSettings(),
+    val cocoapods: CocoapodsSettings? = null, ,
 ) : KotlinMultiplatformExtension() {
 
     context(Project)

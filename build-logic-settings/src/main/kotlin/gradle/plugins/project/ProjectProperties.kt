@@ -6,7 +6,6 @@ import gradle.api.initialization.DependencyResolutionManagement
 import gradle.api.initialization.PluginManagement
 import gradle.api.initialization.ProjectDescriptor
 import gradle.api.initialization.ScriptHandler
-import gradle.api.isCI
 import gradle.api.publish.maven.MavenPomDeveloper
 import gradle.api.publish.maven.MavenPomLicense
 import gradle.api.publish.maven.MavenPomScm
@@ -16,20 +15,49 @@ import gradle.collection.SerializableOptionalAnyMap
 import gradle.collection.deepMerge
 import gradle.collection.resolve
 import gradle.plugins.android.BaseExtension
+import gradle.plugins.animalsniffer.model.AnimalSnifferSettings
+import gradle.plugins.apivalidation.model.ApiValidationSettings
 import gradle.plugins.apple.model.AppleSettings
+import gradle.plugins.buildconfig.model.BuildConfigSettings
 import gradle.plugins.compose.model.CMPSettings
+import gradle.plugins.dependencycheck.model.DependencyCheckSettings
+import gradle.plugins.develocity.model.DevelocitySettings
+import gradle.plugins.doctor.model.DoctorSettings
+import gradle.plugins.dokka.model.DokkaSettings
+import gradle.plugins.githooks.model.GitHooksSettings
 import gradle.plugins.java.JavaPluginExtension
 import gradle.plugins.java.application.JavaApplication
+import gradle.plugins.karakum.model.KarakumSettings
+import gradle.plugins.knit.model.KnitSettings
+import gradle.plugins.kotlin.allopen.model.AllOpenSettings
+import gradle.plugins.kotlin.apollo.model.ApolloSettings
+import gradle.plugins.kotlin.atomicfu.model.AtomicFUSettings
+import gradle.plugins.kotlin.benchmark.model.BenchmarkSettings
+import gradle.plugins.kotlin.ksp.model.KspSettings
+import gradle.plugins.kotlin.ktorfit.model.KtorfitSettings
 import gradle.plugins.kotlin.mpp.model.KotlinMultiplatformSettings
+import gradle.plugins.kotlin.noarg.model.NoArgSettings
+import gradle.plugins.kotlin.powerassert.model.PowerAssertSettings
+import gradle.plugins.kotlin.room.model.RoomSettings
+import gradle.plugins.kotlin.rpc.model.RpcSettings
+import gradle.plugins.kotlin.serialization.model.SerializationSettings
+import gradle.plugins.kotlin.sqldelight.model.SqlDelightSettings
 import gradle.plugins.kotlin.targets.web.node.NodeJsEnvSpec
 import gradle.plugins.kotlin.targets.web.npm.NpmExtension
 import gradle.plugins.kotlin.targets.web.yarn.YarnRootEnvSpec
 import gradle.plugins.kotlin.targets.web.yarn.YarnRootExtension
+import gradle.plugins.kover.model.KoverSettings
 import gradle.plugins.project.file.CodeOfConductFile
 import gradle.plugins.project.file.ContributingFile
 import gradle.plugins.project.file.LicenseFile
 import gradle.plugins.project.file.LicenseHeaderFile
 import gradle.plugins.project.file.ProjectFile
+import gradle.plugins.publish.model.PublishingSettings
+import gradle.plugins.shadow.model.ShadowSettings
+import gradle.plugins.signing.model.SigningSettings
+import gradle.plugins.sonar.model.SonarSettings
+import gradle.plugins.spotless.model.SpotlessSettings
+import gradle.plugins.toolchainmanagement.model.ToolchainManagementSettings
 import gradle.serialization.decodeFromAny
 import java.io.File
 import java.util.*
@@ -57,13 +85,13 @@ internal const val PROJECT_PROPERTIES_FILE = "project.yaml"
 @Serializable(with = ProjectPropertiesTransformingSerializer::class)
 internal data class ProjectProperties(
     val layout: ProjectLayout = ProjectLayout.Default,
+    val year: String? = null,
     val group: String? = null,
     val description: String? = null,
     val version: VersionSettings = VersionSettings(),
-    val year: String? = null,
+    val remote: MavenPomScm? = null,
     val developer: MavenPomDeveloper? = null,
     val license: MavenPomLicense? = null,
-    val remote: MavenPomScm? = null,
     val licenseFile: LicenseFile? = null,
     val licenseHeaderFile: LicenseHeaderFile? = null,
     val codeOfConductFile: CodeOfConductFile? = null,
@@ -78,19 +106,48 @@ internal data class ProjectProperties(
     val includeFlat: Set<String>? = null,
     val projects: Set<ProjectDescriptor>? = null,
     val buildCache: BuildCacheConfiguration? = null,
-    val java: JavaPluginExtension = JavaPluginExtension(),
+    val develocity: DevelocitySettings? = null,
+    val toolchainManagement: ToolchainManagementSettings? = null,
+    val gitHooks: GitHooksSettings? = null,
+    val doctor: DoctorSettings? = null,
+    val dependencyCheck: DependencyCheckSettings? = null,
+    val buildConfig: BuildConfigSettings? = null,
+    val spotless: SpotlessSettings? = null,
+    val kover: KoverSettings? = null,
+    val sonar: SonarSettings? = null,
+    val dokka: DokkaSettings? = null,
+    val shadow: ShadowSettings? = null,
+    val apiValidation: ApiValidationSettings? = null,
+    val animalSniffer: AnimalSnifferSettings? = null,
+    val knit: KnitSettings? = null,
+    val publishing: PublishingSettings? = null,
+    val signing: SigningSettings? = null,
+    val ksp: KspSettings? = null,
+    val karakum: KarakumSettings? = null,
+    val allOpen: AllOpenSettings? = null,
+    val noArg: NoArgSettings? = null,
+    val atomicFU: AtomicFUSettings? = null,
+    val serialization: SerializationSettings? = null,
+    val benchmark: BenchmarkSettings? = null,
+    val ktorfit: KtorfitSettings? = null,
+    val apollo: ApolloSettings? = null,
+    val rpc: RpcSettings? = null,
+    val sqldelight: SqlDelightSettings? = null,
+    val room: RoomSettings? = null,
+    val powerAssert: PowerAssertSettings? = null,
+    val java: JavaPluginExtension? = null,
     val application: JavaApplication? = null,
-    val kotlin: KotlinMultiplatformSettings = KotlinMultiplatformSettings(),
+    val kotlin: KotlinMultiplatformSettings? = null,
     val android: BaseExtension? = null,
-    val apple: AppleSettings = AppleSettings(),
-    val nodeJsEnv: NodeJsEnvSpec = NodeJsEnvSpec(),
-    val yarn: YarnRootExtension = YarnRootExtension(),
-    val yarnRootEnv: YarnRootEnvSpec = YarnRootEnvSpec(),
-    val npm: NpmExtension = NpmExtension(),
-    val compose: CMPSettings = CMPSettings(),
+    val apple: AppleSettings? = null,
+    val nodeJsEnv: NodeJsEnvSpec? = null,
+    val yarn: YarnRootExtension? = null,
+    val yarnRootEnv: YarnRootEnvSpec? = null,
+    val npm: NpmExtension? = null,
+    val compose: CMPSettings? = null,
     val tasks: LinkedHashSet<Task<out org.gradle.api.Task>>? = null,
-    val projectFiles: Set<ProjectFile> = emptySet(),
-    val ci: Set<CI> = emptySet(),
+    val projectFiles: Set<ProjectFile>? = null,
+    val cis: Set<CI>? = null,
     val delegate: SerializableOptionalAnyMap = emptyMap(),
 ) : Map<String, Any?> by delegate {
 
@@ -126,7 +183,6 @@ internal data class ProjectProperties(
         }
 
         context(Project)
-        @Suppress("UnstableApiUsage")
         fun load(): ProjectProperties {
             // Load local.properties.
             localProperties = loadLocalProperties(
@@ -153,7 +209,10 @@ internal data class ProjectProperties(
         private fun ExtraPropertiesExtension.exportExtras() =
             properties.putAll(
                 mapOf(
-                    "isCI" to isCI,
+                    "ci" to buildMap {
+                        put("present", CI.present)
+                        CI.name?.let { name -> put("name", name) }
+                    },
                 ),
             )
 

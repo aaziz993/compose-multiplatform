@@ -17,7 +17,7 @@ internal class DevelocityPlugin : Plugin<Settings> {
 
     override fun apply(target: Settings) {
         with(target) {
-            projectProperties.plugins.develocity.takeIf(DevelocitySettings::enabled)?.let { develocity ->
+            projectProperties.develocity?.takeIf{ pluginManager.hasPlugin("develocity") }?.let { develocity ->
                 // Gives the data to speed up your build, improve build reliability and accelerate build debugging.
                 plugins.apply(libs.plugin("develocity").id)
 

@@ -12,8 +12,7 @@ internal class RoomPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            projectProperties.plugins.room
-                .takeIf(RoomSettings::enabled)?.let { room ->
+            projectProperties.room?.takeIf{ pluginManager.hasPlugin("room") }?.let { room ->
                     plugins.apply(project.settings.libs.plugin("room").id)
 
                     room.applyTo()

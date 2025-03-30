@@ -16,8 +16,7 @@ internal class SigningPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            projectProperties.plugins.signing
-                .takeIf(SigningSettings::enabled)?.let { signing ->
+            projectProperties.signing?.takeIf{ pluginManager.hasPlugin("signing") }?.let { signing ->
                     plugins.apply(SigningPlugin::class.java)
 
                     signing.applyTo()

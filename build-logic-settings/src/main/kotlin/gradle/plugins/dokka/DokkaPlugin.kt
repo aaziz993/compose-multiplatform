@@ -15,8 +15,7 @@ internal class DokkaPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            projectProperties.plugins.dokka
-                .takeIf(DokkaSettings::enabled)?.let { dokka ->
+            projectProperties.dokka?.takeIf{ pluginManager.hasPlugin("dokka") }?.let { dokka ->
                     plugins.apply(project.settings.libs.plugin("dokka").id)
                     plugins.apply(project.settings.libs.plugin("dokkaJavadoc").id)
 

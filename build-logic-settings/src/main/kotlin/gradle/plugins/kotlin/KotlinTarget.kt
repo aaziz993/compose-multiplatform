@@ -72,5 +72,5 @@ internal data class KotlinTargetIml(
 }
 
 @Suppress("UNCHECKED_CAST")
-internal inline fun <reified T : Any> Set<KotlinTarget<*>>.filterKotlinTargets(): List<KotlinTarget<*>> =
+internal inline fun <reified T : Any> Collection<KotlinTarget<*>>.filterKotlinTargets(): List<KotlinTarget<*>> =
     filterIsInstance<T>() as List<KotlinTarget<*>>

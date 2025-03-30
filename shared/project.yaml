@@ -10,7 +10,7 @@ templates:
   - ../templates/gradle/web/wasmJs/wasmJs.yaml
   - ../templates/gradle/web/js-library.yaml
   - ../templates/gradle/web/js-common.yaml
-  - ../templates/gradle/kmp.yaml
+  - ../templates/gradle/mpp.yaml
   - ../templates/gradle/common.yaml
   - ../templates/gradle/root.yaml
 

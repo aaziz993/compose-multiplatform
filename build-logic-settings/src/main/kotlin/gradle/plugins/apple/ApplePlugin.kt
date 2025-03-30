@@ -16,17 +16,18 @@ internal class ApplePlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (projectProperties.kotlin.targets.none { target -> target is KotlinAppleTarget }) {
+            if (pluginManager.hasPlugin("org.jetbrains.gradle.apple.applePlugin")) {
+                // Apply apple properties.
+                projectProperties.apple?.applyTo()
+
+                adjustSourceSets()
+            }
+
+            if (projectProperties.kotlin?.targets.orEmpty().none { target -> target is KotlinAppleTarget }) {
                 return@with
             }
 
             extraProperties["generateBuildableXcodeproj.skipKotlinFrameworkDependencies"] = "true"
-
-            plugins.apply(project.settings.libs.plugin("apple").id)
-
-            projectProperties.apple.applyTo()
-
-            adjustSourceSets()
         }
     }
 

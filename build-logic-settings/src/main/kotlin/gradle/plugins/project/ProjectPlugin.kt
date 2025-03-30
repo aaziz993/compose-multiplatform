@@ -6,7 +6,7 @@ import com.android.build.gradle.internal.tasks.AndroidTestTask
 import gradle.accessors.catalog.resolvePluginId
 import gradle.accessors.kotlin
 import gradle.accessors.projectProperties
-import gradle.api.isCI
+import gradle.api.ci.CI
 import gradle.api.maybeNamed
 import gradle.api.repositories.CacheRedirector
 import gradle.api.trySet
@@ -119,15 +119,16 @@ public class ProjectPlugin : Plugin<Project> {
                 println(yaml.dump(Json.Default.encodeToAny(properties)))
             }
 
+            ::setGroup trySet projectProperties.group
+            ::setDescription trySet projectProperties.description
+            version = version()
+
+            // Apply here to be able to add plugin dependency to classpath.
             projectProperties.buildscript?.applyTo()
 
-            if (projectProperties.kotlin.targets.isNotEmpty()) {
-                ::setGroup trySet projectProperties.group
-                ::setDescription trySet projectProperties.description
-                version = version()
-            }
-
-            //  Don't change order!
+            // Apply plugins.
+            projectProperties.plugins.ids?.map { id -> id.resolvePluginId() }?.forEach(plugins::apply)
+            // preserve order!
             plugins.apply(DoctorPlugin::class.java)
             plugins.apply(DependencyCheckPlugin::class.java)
             plugins.apply(BuildConfigPlugin::class.java)
@@ -163,13 +164,10 @@ public class ProjectPlugin : Plugin<Project> {
             plugins.apply(PublishPlugin::class.java)
             plugins.apply(SigningPlugin::class.java)
 
-            // Other plugins.
-            projectProperties.plugins.ids.map { id -> id.resolvePluginId() }.forEach(plugins::apply)
-
-            projectProperties.nodeJsEnv.applyTo()
-            projectProperties.npm.applyTo()
-            projectProperties.yarn.applyTo()
-            projectProperties.yarnRootEnv.applyTo()
+            projectProperties.nodeJsEnv?.applyTo()
+            projectProperties.npm?.applyTo()
+            projectProperties.yarn?.applyTo()
+            projectProperties.yarnRootEnv?.applyTo()
 
             CacheRedirector.applyTo() // Apply after node, npm and yarn to adjust their downloadBaseUrls too.
 
@@ -179,14 +177,15 @@ public class ProjectPlugin : Plugin<Project> {
                 }
             }
 
-            projectProperties.tasks?.forEach { task ->
-                task.applyTo()
-            }
-
             configureLinkTasks()
 
-            if (isCI) {
+            if (CI.present) {
                 configureCI()
+            }
+
+            // Apply here to be able to configure manually created tasks.
+            projectProperties.tasks?.forEach { task ->
+                task.applyTo()
             }
 
             if (problemReporter.getErrors().isNotEmpty()) {
@@ -217,45 +216,47 @@ public class ProjectPlugin : Plugin<Project> {
     }
 
     private fun Project.configureCI() {
-        projectProperties.ci.forEach { ci ->
-            tasks.register(ci.name) {
+        projectProperties.cis?.forEach { ci ->
+            val ciName = ci::class.simpleName!!.lowercase()
+
+            tasks.register(ciName) {
                 dependsOn(tasks.named("dependencyCheckAnalyze"))
                 onlyIf { ci.dependenciesCheck }
             }
 
-            tasks.register(ci.name) {
+            tasks.register(ciName) {
                 dependsOn(tasks.named("animalsnifferRelease"))
                 onlyIf { ci.signaturesCheck }
             }
 
-            tasks.register(ci.name) {
+            tasks.register(ciName) {
                 dependsOn(tasks.named("spotlessCheck"))
                 onlyIf { ci.formatCheck }
             }
 
-            tasks.register(ci.name) {
+            tasks.register(ciName) {
                 dependsOn(tasks.named("sonar"))
                 onlyIf { ci.qualityCheck }
             }
 
-            tasks.register(ci.name) {
+            tasks.register(ciName) {
                 dependsOn(tasks.named("check"))
                 onlyIf { ci.test }
             }
 
-            tasks.register(ci.name) {
+            tasks.register(ciName) {
                 dependsOn(tasks.named("koverVerify"))
                 onlyIf { ci.coverageVerify }
             }
 
-            tasks.register(ci.name) {
+            tasks.register(ciName) {
                 dependsOn(tasks.named("knitCheck"))
                 onlyIf { ci.docSamplesCheck }
             }
 
             ci.publishRepositories.forEach { (name, enabled) ->
                 val publishTaskName = "publishAllPublicationsTo${name.capitalized()}Repository"
-                tasks.register("${ci.name}${publishTaskName.capitalized()}") {
+                tasks.register("${ciName}${publishTaskName.capitalized()}") {
                     dependsOn(tasks.named(publishTaskName))
                     onlyIf { enabled }
                 }
@@ -446,7 +447,8 @@ public class ProjectPlugin : Plugin<Project> {
         }
 
     private inline fun <reified T : Any> Project.registerAggregationNativeTestTask(name: String) =
-        projectProperties.kotlin.targets
+        projectProperties.kotlin?.targets
+            .orEmpty()
             .filterKotlinTargets<T>()
             .mapNotNull(`gradle.plugins.kotlin`.KotlinTarget<*>::targetName)
             .let { targetNames ->

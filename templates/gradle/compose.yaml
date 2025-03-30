@@ -1,3 +1,6 @@
+plugins:
+  ids: [ $libs.compose.multiplatform, $libs.compose.compiler ]
+
 kotlin:
   sourceSets:
     - commonMain:
@@ -37,7 +40,6 @@ android:
     compose: true
 
 compose:
-  enabled: true
   resources:
     publicResClass: true
     generateResClass: Auto

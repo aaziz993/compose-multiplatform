@@ -12,8 +12,7 @@ internal class AtomicFUPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            projectProperties.plugins.atomicFU
-                .takeIf(AtomicFUSettings::enabled)?.let { atomicFU ->
+            projectProperties.atomicFU?.takeIf{ pluginManager.hasPlugin("atomicFU") }?.let { atomicFU ->
                     plugins.apply(project.settings.libs.plugin("atomicfu").id)
 
                     atomicFU.applyTo()

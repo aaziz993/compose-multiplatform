@@ -12,8 +12,7 @@ internal class NoArgPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            projectProperties.plugins.noArg
-                .takeIf(NoArgSettings::enabled)?.let { noArg ->
+            projectProperties.noArg?.takeIf{ pluginManager.hasPlugin("noArg") }?.let { noArg ->
                     plugins.apply(project.settings.libs.plugin("allopen").id)
 
                     noArg.applyTo()

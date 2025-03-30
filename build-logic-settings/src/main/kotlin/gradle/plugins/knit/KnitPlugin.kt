@@ -12,8 +12,7 @@ internal class KnitPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            projectProperties.plugins.knit
-                .takeIf(KnitSettings::enabled)?.let { knit ->
+            projectProperties.knit?.takeIf{ pluginManager.hasPlugin("knit") }?.let { knit ->
                     plugins.apply(project.settings.libs.plugin("knit").id)
 
                     knit.applyTo()

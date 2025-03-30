@@ -12,8 +12,7 @@ internal class AllOpenPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            projectProperties.plugins.allOpen
-                .takeIf(AllOpenSettings::enabled)?.let { allOpen ->
+            projectProperties.allOpen?.takeIf{ pluginManager.hasPlugin("allOpen") }?.let { allOpen ->
                     plugins.apply(project.settings.libs.plugin("allopen").id)
 
                     allOpen.applyTo()

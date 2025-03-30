@@ -12,8 +12,7 @@ internal class DependencyCheckPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            projectProperties.plugins.dependencyCheck
-                .takeIf(DependencyCheckSettings::enabled)?.let { dependencyCheck ->
+            projectProperties.dependencyCheck?.takeIf{ pluginManager.hasPlugin("dependencyCheck") }?.let { dependencyCheck ->
                     plugins.apply(project.settings.libs.plugin("dependencycheck").id)
 
                     dependencyCheck.applyTo()

@@ -22,19 +22,18 @@ internal class KotlinMultiplatformPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            projectProperties.kotlin.takeIf { kotlin -> kotlin.targets.isNotEmpty() }?.let { kotlin ->
-                plugins.apply(project.settings.libs.plugin("kotlin.multiplatform").id)
+            plugins.apply("org.jetbrains.kotlin.multiplatform")
 
-                // Enable Default Kotlin Hierarchy.
-                extraProperties["kotlin.mpp.applyDefaultHierarchyTemplate"] = "true"
+            // Enable Default Kotlin Hierarchy.
+            extraProperties["kotlin.mpp.applyDefaultHierarchyTemplate"] = "true"
 
-                // IOS Compose uses UiKit, so we need to explicitly enable it, since it is experimental.
-                extraProperties["org.jetbrains.compose.experimental.uikit.enabled"] = "true"
+            // IOS Compose uses UiKit, so we need to explicitly enable it, since it is experimental.
+            extraProperties["org.jetbrains.compose.experimental.uikit.enabled"] = "true"
 
-                kotlin.applyTo()
+            // Apply properties.
+            projectProperties.kotlin?.takeIf { kotlin -> kotlin.targets.isNotEmpty() }?.applyTo()
 
-                adjustSourceSets()
-            }
+            adjustSourceSets()
         }
     }
 
