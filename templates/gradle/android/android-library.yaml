@@ -3,6 +3,3 @@ kotlin:
     - android:
         name: ''
         publishLibraryVariants: [ release ]
-
-android:
-  type: LibraryExtension
