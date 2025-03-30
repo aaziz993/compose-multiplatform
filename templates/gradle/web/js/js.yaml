@@ -1,3 +1,6 @@
+plugins:
+  ids: [ $libs.karakum ]
+
 kotlin:
   targets:
     - js:
@@ -14,12 +17,7 @@ kotlin:
           - npm: $libs.npm.pako
           - npm: $libs.npm.puppeteer
 
-tasks:
-  - Kotlin2JsCompile:
-      compilerOptions:
-        target: es2015
-      freeCompilerArgs:
-        - -Xdont-warn-on-error-suppression
-        - -Xir-generate-inline-anonymous-functions #  https://youtrack.jetbrains.com/issue/KT-67355
-        - -Xsuppress-warning=NOTHING_TO_INLINE
-        - -Xpartial-linkage-loglevel=ERROR
+
+# Converter of TypeScript declaration files to Kotlin declarations.
+karakum:
+  configFile: karakum.config.json

@@ -38,7 +38,7 @@ internal abstract class KotlinMultiplatformExtension :
     }
 
     context(Project)
-    override fun applyTo() = project.pluginManager.withPlugin(project.settings.libs.plugin("kotlin.multiplatform").id) {
+    override fun applyTo() = project.pluginManager.withPlugin("org.jetbrains.kotlin.multiplatform") {
         applyTo(project.kotlin)
     }
 }

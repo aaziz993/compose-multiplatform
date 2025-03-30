@@ -116,7 +116,7 @@ internal interface CocoapodsExtension {
 
     context(Project)
     fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugin("cocoapods").id) {
+        project.pluginManager.withPlugin("org.jetbrains.kotlin.native.cocoapods") {
             project.kotlin.cocoapods::version trySet (version
                 ?: project.settings.libs.versionOrNull("kotlin.cocoapods.version"))
             project.kotlin.cocoapods::authors trySet authors

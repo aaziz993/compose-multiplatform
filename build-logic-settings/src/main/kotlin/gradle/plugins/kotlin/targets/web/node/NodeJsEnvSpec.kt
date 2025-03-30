@@ -19,7 +19,7 @@ internal data class NodeJsEnvSpec(
 
     context(Project)
     fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugin("gradle.node.plugin").id) {
+        project.pluginManager.withPlugin("com.github.node-gradle.node") {
             super.applyTo(project.nodeJsEnv)
         }
 }

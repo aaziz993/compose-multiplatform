@@ -12,7 +12,7 @@ internal class AndroidExtension {
 
     context(Project)
     fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugin("compose.multiplatform").id) {
+        project.pluginManager.withPlugin("org.jetbrains.compose") {
             project.compose.android {
 
             }

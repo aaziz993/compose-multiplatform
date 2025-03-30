@@ -33,7 +33,7 @@ internal data class KarakumCopy(
 
     context(Project)
     override fun applyTo(receiver: KarakumCopy) =
-        project.pluginManager.withPlugin(project.settings.libs.plugin("karakum").id) {
+        project.pluginManager.withPlugin("io.github.sgrishchenko.karakum") {
             super.applyTo(receiver)
 
             receiver.extensionSource tryAssign extensionSource?.let(project.layout.projectDirectory::dir)?.asFileTree

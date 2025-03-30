@@ -57,7 +57,7 @@ internal data class YarnRootEnvSpec(
 
     context(Project)
     fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugin("gradle.node.plugin").id) {
+        project.pluginManager.withPlugin("com.github.node-gradle.node") {
             super.applyTo(project.yarnEnv)
 
             project.yarnEnv.ignoreScripts tryAssign ignoreScripts

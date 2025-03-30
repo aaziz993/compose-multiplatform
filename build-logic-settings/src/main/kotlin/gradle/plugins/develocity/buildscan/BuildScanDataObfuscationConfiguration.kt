@@ -1,6 +1,7 @@
 package gradle.plugins.develocity.buildscan
 
 import com.gradle.develocity.agent.gradle.scan.BuildScanDataObfuscationConfiguration
+import gradle.api.ci.CI
 
 import kotlinx.serialization.Serializable
 
@@ -21,7 +22,7 @@ internal data class BuildScanDataObfuscationConfiguration(
 
         hostname?.let { hostname ->
             receiver.hostname {
-                CI ?: hostname[it] ?: hostname[""] ?: it
+                CI.name ?: hostname[it] ?: hostname[""] ?: it
             }
         }
 

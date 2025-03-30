@@ -45,7 +45,7 @@ kover:
           # but some places are definitely worth visiting.
           minBound: 85 # COVERED_LINES_PERCENTAGE
 
-# api documentation engine for Kotlin.
+# Api documentation engine for Kotlin.
 dokka:
   dokkaPublications:
     - '':

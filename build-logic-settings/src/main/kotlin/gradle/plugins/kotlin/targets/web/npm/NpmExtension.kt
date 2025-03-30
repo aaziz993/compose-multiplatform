@@ -23,7 +23,7 @@ internal data class NpmExtension(
 
     context(Project)
     fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugin("gradle.node.plugin").id) {
+        project.pluginManager.withPlugin("com.github.node-gradle.node") {
             project.npm.command tryAssign command
             project.npm.lockFileName tryAssign lockFileName
             project.npm.lockFileDirectory tryAssign lockFileDirectory?.let(project.layout.projectDirectory::dir)

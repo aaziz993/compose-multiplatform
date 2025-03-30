@@ -40,7 +40,7 @@ internal data class YarnRootExtension(
 
     context(Project)
     fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugin("gradle.node.plugin").id) {
+        project.pluginManager.withPlugin("com.github.node-gradle.node") {
             applyTo(project.yarn)
         }
 }

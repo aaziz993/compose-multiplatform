@@ -18,7 +18,7 @@ internal interface DevelocityConfiguration {
 
     context(Settings)
     fun applyTo() =
-        settings.pluginManager.withPlugin(settings.libs.plugin("develocity").id) {
+        settings.pluginManager.withPlugin("com.gradle.develocity") {
             buildScan?.applyTo(settings.develocity.buildScan)
             settings.develocity.server tryAssign server
             settings.develocity.edgeDiscovery tryAssign edgeDiscovery

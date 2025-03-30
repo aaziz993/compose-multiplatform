@@ -33,7 +33,7 @@ internal data class KarakumConfig(
 
     context(Project)
     override fun applyTo(receiver: KarakumConfig) =
-        project.pluginManager.withPlugin(project.settings.libs.plugin("karakum").id) {
+        project.pluginManager.withPlugin("io.github.sgrishchenko.karakum") {
             super.applyTo(receiver)
 
             receiver.configFile tryAssign configFile?.let(project::file)

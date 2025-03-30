@@ -1,15 +1,15 @@
 package gradle.plugins.toolchainmanagement
 
-import gradle.accessors.catalog.libs
-
+import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings
 
-internal interface ToolchainManagement {
+@Serializable
+internal class ToolchainManagement {
 
     context(Settings)
     @Suppress("UnstableApiUsage")
     fun applyTo() =
-        settings.pluginManager.withPlugin(settings.libs.plugin("foojayResolverConvention").id) {
+        settings.pluginManager.withPlugin("org.gradle.toolchains.foojay-resolver-convention") {
             settings.toolchainManagement {
 
             }

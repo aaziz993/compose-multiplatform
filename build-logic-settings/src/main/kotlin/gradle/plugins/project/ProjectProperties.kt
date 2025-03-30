@@ -26,10 +26,9 @@ import gradle.plugins.develocity.model.DevelocitySettings
 import gradle.plugins.doctor.model.DoctorSettings
 import gradle.plugins.dokka.model.DokkaSettings
 import gradle.plugins.githooks.GitHooksExtension
-import gradle.plugins.githooks.model.GitHooksSettings
 import gradle.plugins.java.JavaPluginExtension
 import gradle.plugins.java.application.JavaApplication
-import gradle.plugins.karakum.model.KarakumSettings
+import gradle.plugins.karakum.KarakumExtension
 import gradle.plugins.knit.model.KnitSettings
 import gradle.plugins.kotlin.allopen.AllOpenExtension
 import gradle.plugins.kotlin.apollo.ApolloExtension
@@ -58,6 +57,7 @@ import gradle.plugins.shadow.model.ShadowSettings
 import gradle.plugins.signing.model.SigningSettings
 import gradle.plugins.sonar.SonarExtension
 import gradle.plugins.spotless.SpotlessExtension
+import gradle.plugins.toolchainmanagement.ToolchainManagement
 import gradle.plugins.toolchainmanagement.model.ToolchainManagementSettings
 import gradle.serialization.decodeFromAny
 import java.io.File
@@ -110,7 +110,7 @@ internal data class ProjectProperties(
     val projects: Set<ProjectDescriptor>? = null,
     val buildCache: BuildCacheConfiguration? = null,
     val develocity: DevelocitySettings? = null,
-    val toolchainManagement: ToolchainManagementSettings? = null,
+    val toolchainManagement: ToolchainManagement? = null,
     val gitHooks: GitHooksExtension? = null,
     val kotlin: KotlinMultiplatformSettings? = null,
     val doctor: DoctorSettings? = null,
@@ -125,7 +125,7 @@ internal data class ProjectProperties(
     val animalSniffer: AnimalSnifferExtension? = null,
     val knit: KnitSettings? = null,
     val ksp: KspExtension? = null,
-    val karakum: KarakumSettings? = null,
+    val karakum: KarakumExtension? = null,
     val allopen: AllOpenExtension? = null,
     val noarg: NoArgExtension? = null,
     val atomicfu: AtomicFuExtension? = null,

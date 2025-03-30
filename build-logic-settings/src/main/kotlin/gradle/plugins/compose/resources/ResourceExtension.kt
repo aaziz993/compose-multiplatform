@@ -48,7 +48,7 @@ internal data class ResourcesExtension(
 
     context(Project)
     fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugin("compose.multiplatform").id) {
+        project.pluginManager.withPlugin("org.jetbrains.compose") {
             project.compose.resources::publicResClass trySet publicResClass
             project.compose.resources::packageOfResClass trySet packageOfResClass
             project.compose.resources::generateResClass trySet generateResClass

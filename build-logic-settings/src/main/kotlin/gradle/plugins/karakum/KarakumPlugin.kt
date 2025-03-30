@@ -1,10 +1,7 @@
 package gradle.plugins.karakum
 
-import gradle.accessors.catalog.libs
 import gradle.accessors.kotlin
 import gradle.accessors.projectProperties
-import gradle.accessors.settings
-import gradle.plugins.karakum.model.KarakumSettings
 import gradle.plugins.kotlin.KotlinTarget
 import gradle.plugins.kotlin.targets.web.KotlinJsTarget
 import gradle.serialization.decodeMapFromString
@@ -17,11 +14,11 @@ internal class KarakumPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            projectProperties.karakum?.takeIf{ pluginManager.hasPlugin("karakum") }?.let { karakum ->
-                    plugins.apply(project.settings.libs.plugin("karakum").id)
+            // Apply karakum properties.
+            projectProperties.karakum?.let { karakum ->
+                karakum.applyTo()
 
-                    karakum.applyTo()
-
+                project.pluginManager.withPlugin("io.github.sgrishchenko.karakum") {
                     karakum.configFile
                         ?.let(project::file)
                         ?.takeIf(File::exists)
@@ -31,8 +28,8 @@ internal class KarakumPlugin : Plugin<Project> {
 
                             val karakumOutputDir = file(karakumConfig["output"]!!)
 
-                            val targetNames = projectProperties.kotlin.targets
-                                .filter { target -> target is KotlinJsTarget }
+                            val targetNames = projectProperties.kotlin?.targets.orEmpty()
+                                .filterIsInstance<KotlinJsTarget>()
                                 .map(KotlinTarget<*>::targetName)
 
                             kotlin.sourceSets.matching { sourceSet ->
@@ -44,6 +41,7 @@ internal class KarakumPlugin : Plugin<Project> {
                             }
                         }
                 }
+            }
         }
     }
 }

@@ -13,7 +13,7 @@ internal class NodeJsRootExtension {
 
     context(Project)
     fun applyTo(receiver: NodeJsRootExtension) =
-        project.pluginManager.withPlugin(project.settings.libs.plugin("gradle.node.plugin").id) {
+        project.pluginManager.withPlugin("com.github.node-gradle.node") {
 
         }
 

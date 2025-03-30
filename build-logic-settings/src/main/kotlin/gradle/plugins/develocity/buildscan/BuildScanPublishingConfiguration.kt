@@ -1,6 +1,7 @@
 package gradle.plugins.develocity.buildscan
 
 import com.gradle.develocity.agent.gradle.scan.BuildScanPublishingConfiguration
+import gradle.api.ci.CI
 
 import kotlinx.serialization.Serializable
 
@@ -10,6 +11,6 @@ internal data class BuildScanPublishingConfiguration(
 ) {
 
     fun applyTo(receiver: BuildScanPublishingConfiguration) {
-        receiver.onlyIf { ifAuthenticated != false && isCI }
+        receiver.onlyIf { ifAuthenticated != false && CI.present }
     }
 }

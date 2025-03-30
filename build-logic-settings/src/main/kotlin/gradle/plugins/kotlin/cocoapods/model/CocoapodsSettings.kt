@@ -40,7 +40,7 @@ internal data class CocoapodsSettings(
 
     context(Project)
     override fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugin("cocoapods").id) {
+        project.pluginManager.withPlugin("org.jetbrains.kotlin.native.cocoapods") {
             super.applyTo()
         }
 }

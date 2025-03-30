@@ -1,9 +1,7 @@
 package gradle.plugins.knit
 
-import gradle.accessors.catalog.libs
 import gradle.accessors.files
 import gradle.accessors.knit
-import gradle.accessors.settings
 import gradle.api.tryPlus
 import gradle.api.trySet
 import org.gradle.api.Project
@@ -24,7 +22,7 @@ internal interface KnitPluginExtension {
 
     context(Project)
     fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugin("knit").id) {
+        project.pluginManager.withPlugin("org.jetbrains.kotlinx.knit") {
             project.knit::siteRoot trySet siteRoot
             project.knit::moduleRoots tryPlus moduleRoots
             project.knit::moduleRoots trySet setModuleRoots

@@ -14,7 +14,7 @@ internal class CocoapodsPlugin : Plugin<Project> {
         with(target) {
             projectProperties.kotlin.cocoapods
                 .takeIf(CocoapodsSettings::enabled)?.let { cocoapods ->
-                    plugins.apply(project.settings.libs.plugin("cocoapods").id)
+                    plugins.apply("org.jetbrains.kotlin.native.cocoapods")
 
                     cocoapods.applyTo()
                 }

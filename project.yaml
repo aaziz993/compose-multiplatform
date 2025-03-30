@@ -63,8 +63,6 @@ toolchainManagement: { }
 # Enforcing pre-commit and commit-msg Git hooks configuration. Conventional-commits-ready.
 gitHooks: { }
 
-###################################################Project plugins####################################################
-
 # Print suggestions for your build as you run regular tasks.
 doctor:
   enabled: true

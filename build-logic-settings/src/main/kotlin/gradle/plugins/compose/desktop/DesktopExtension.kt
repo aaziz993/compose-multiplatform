@@ -17,7 +17,7 @@ internal data class DesktopExtension(
 
     context(Project)
     fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugin("compose.multiplatform").id) {
+        project.pluginManager.withPlugin("org.jetbrains.compose") {
             application?.applyTo(project.compose.desktop.application)
             nativeApplication?.applyTo(project.compose.desktop.nativeApplication)
         }

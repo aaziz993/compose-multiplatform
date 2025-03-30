@@ -1,22 +1,22 @@
 package gradle.plugins.karakum
 
-import gradle.accessors.catalog.libs
 import gradle.accessors.karakum
-import gradle.accessors.settings
 import gradle.api.tryAssign
+import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-internal interface KarakumExtension {
-
+@Serializable
+internal data class KarakumExtension(
     /**
      *  config file path relative to project
      */
-    val configFile: String?
-    val extensionSource: String?
+    val configFile: String? = null,
+    val extensionSource: String? = null,
+) {
 
     context(Project)
     fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugin("karakum").id) {
+        project.pluginManager.withPlugin("io.github.sgrishchenko.karakum") {
             project.karakum.configFile tryAssign configFile?.let(project::file)
             project.karakum.extensionSource tryAssign extensionSource?.let(project.layout.projectDirectory::dir)?.asFileTree
         }

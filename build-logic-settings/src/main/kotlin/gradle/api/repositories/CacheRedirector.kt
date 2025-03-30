@@ -260,7 +260,7 @@ private fun Project.overrideNativeCompilerDownloadUrl() {
  * Yarn and node download url override
  */
 private fun Project.configureYarnAndNodeRedirects() =
-    project.pluginManager.withPlugin(project.settings.libs.plugin("gradle.node.plugin").id) {
+    project.pluginManager.withPlugin("com.github.node-gradle.node") {
         yarnEnv.downloadBaseUrl = URI(yarnEnv.downloadBaseUrl.get()).maybeRedirect().toString()
 
         nodeJsEnv.downloadBaseUrl = URI(nodeJsEnv.downloadBaseUrl.get()).maybeRedirect().toString()
@@ -296,7 +296,7 @@ private fun Project.addCheckRepositoriesTask() {
                 logNonCachedRepo(testName, repository)
             }
 
-            project.pluginManager.withPlugin(project.settings.libs.plugin("gradle.node.plugin").id) {
+            project.pluginManager.withPlugin("com.github.node-gradle.node") {
                 yarn.downloadBaseUrl
                     ?.takeIf { downloadBaseUrl -> URI(downloadBaseUrl).isCachedOrLocal() }
                     ?.let { downloadBaseUrl ->
