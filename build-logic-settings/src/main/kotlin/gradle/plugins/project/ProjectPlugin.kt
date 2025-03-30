@@ -158,16 +158,22 @@ public class ProjectPlugin : Plugin<Project> {
             plugins.apply(PublishPlugin::class.java)
             plugins.apply(SigningPlugin::class.java)
 
+            AndroidPlugin.adjustXmlFactories()
+
             projectProperties.nodeJsEnv?.applyTo()
             projectProperties.npm?.applyTo()
             projectProperties.yarn?.applyTo()
             projectProperties.yarnRootEnv?.applyTo()
 
-            CacheRedirector.applyTo() // Apply after node, npm and yarn to adjust their downloadBaseUrls too.
+            // Apply after node and yarn to adjust their downloadBaseUrls too.
+            CacheRedirector.applyTo()
 
-            projectProperties.dependencies?.forEach { dependency ->
+            // Apply root dependencies.
+            projectProperties.dependencies?.let { dependencies ->
                 dependencies {
-                    dependency.applyTo(this)
+                    dependencies.forEach { dependency ->
+                        dependency.applyTo(this)
+                    }
                 }
             }
 
@@ -177,12 +183,10 @@ public class ProjectPlugin : Plugin<Project> {
                 configureCI()
             }
 
-            // Apply here to be able to configure manually created tasks.
+            // Apply here to be able to configure all tasks including manually created.
             projectProperties.tasks?.forEach { task ->
                 task.applyTo()
             }
-
-            AndroidPlugin.adjustXmlFactories()
 
             if (problemReporter.getErrors().isNotEmpty()) {
                 throw GradleException(problemReporter.getGradleError())
