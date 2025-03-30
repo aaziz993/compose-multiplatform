@@ -1,6 +1,6 @@
 package gradle.api.ci
 
-import gradle.api.EnabledSettings
+
 import gradle.serialization.serializer.JsonObjectTransformingSerializer
 import kotlinx.serialization.Serializable
 

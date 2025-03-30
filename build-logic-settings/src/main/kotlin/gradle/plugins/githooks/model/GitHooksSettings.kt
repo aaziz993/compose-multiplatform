@@ -3,7 +3,7 @@ package gradle.plugins.githooks.model
 import gradle.accessors.catalog.libs
 
 import gradle.plugins.githooks.GitHooksExtension
-import gradle.api.EnabledSettings
+
 import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings
 

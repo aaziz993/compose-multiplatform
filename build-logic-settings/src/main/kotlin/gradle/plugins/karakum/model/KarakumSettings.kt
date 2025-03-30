@@ -4,7 +4,7 @@ import gradle.accessors.catalog.libs
 
 import gradle.accessors.settings
 import gradle.plugins.karakum.KarakumExtension
-import gradle.api.EnabledSettings
+
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
