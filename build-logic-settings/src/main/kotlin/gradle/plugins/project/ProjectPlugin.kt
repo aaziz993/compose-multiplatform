@@ -91,6 +91,7 @@ import org.gradle.api.Task
 import org.gradle.api.tasks.TaskCollection
 import org.gradle.api.tasks.testing.AbstractTestTask
 import org.gradle.internal.extensions.core.extra
+import org.gradle.internal.extensions.stdlib.capitalized
 import org.gradle.internal.os.OperatingSystem
 import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.dependencies
@@ -185,7 +186,7 @@ public class ProjectPlugin : Plugin<Project> {
             configureLinkTasks()
 
             if (isCI) {
-                configureTestTasksOnCI()
+                configureCI()
             }
 
             if (problemReporter.getErrors().isNotEmpty()) {
@@ -213,6 +214,54 @@ public class ProjectPlugin : Plugin<Project> {
         tasks.maybeNamed("linkDebugTestMingwX64") {
             onlyIf("run only on Windows") { os == OperatingSystem.WINDOWS }
         }
+    }
+
+    private fun Project.configureCI() {
+        projectProperties.ci.forEach { ci ->
+            tasks.register(ci.name) {
+                dependsOn(tasks.named("dependencyCheckAnalyze"))
+                onlyIf { ci.dependenciesCheck }
+            }
+
+            tasks.register(ci.name) {
+                dependsOn(tasks.named("animalsnifferRelease"))
+                onlyIf { ci.signaturesCheck }
+            }
+
+            tasks.register(ci.name) {
+                dependsOn(tasks.named("spotlessCheck"))
+                onlyIf { ci.formatCheck }
+            }
+
+            tasks.register(ci.name) {
+                dependsOn(tasks.named("sonar"))
+                onlyIf { ci.qualityCheck }
+            }
+
+            tasks.register(ci.name) {
+                dependsOn(tasks.named("check"))
+                onlyIf { ci.test }
+            }
+
+            tasks.register(ci.name) {
+                dependsOn(tasks.named("koverVerify"))
+                onlyIf { ci.coverageVerify }
+            }
+
+            tasks.register(ci.name) {
+                dependsOn(tasks.named("knitCheck"))
+                onlyIf { ci.docSamplesCheck }
+            }
+
+            ci.publishRepositories.forEach { repository ->
+                val publishTaskName = "publishAllPublicationsTo${repository.capitalized()}Repository"
+                tasks.register("${ci.name}${publishTaskName.capitalized()}") {
+                    dependsOn(tasks.named(publishTaskName))
+                }
+            }
+        }
+
+        configureTestTasksOnCI()
     }
 
     /** Applies CI-specific configurations to test tasks. */

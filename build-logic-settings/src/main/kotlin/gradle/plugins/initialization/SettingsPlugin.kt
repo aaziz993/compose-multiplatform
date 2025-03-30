@@ -5,6 +5,7 @@ package gradle.plugins.initialization
 import gradle.accessors.catalog.allLibs
 import gradle.accessors.catalog.libs
 import gradle.accessors.catalog.toVersionCatalog
+import gradle.accessors.localProperties
 import gradle.accessors.projectProperties
 import gradle.api.configureEach
 import gradle.api.repositories.CacheRedirector
@@ -16,6 +17,7 @@ import gradle.plugins.project.ProjectProperties.Companion.load
 import gradle.plugins.toolchainmanagement.ToolchainManagementPlugin
 import java.io.File
 import java.net.URI
+import java.util.Properties
 import org.gradle.api.Plugin
 import org.gradle.api.file.FileCollection
 import org.gradle.api.initialization.Settings

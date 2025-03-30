@@ -1,5 +1,6 @@
 package gradle.plugins.project
 
+import gradle.accessors.localProperties
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
 import gradle.api.initialization.DependencyResolutionManagement
@@ -31,11 +32,13 @@ import gradle.plugins.project.file.LicenseFile
 import gradle.plugins.project.file.LicenseHeaderFile
 import gradle.plugins.project.file.ProjectFile
 import gradle.serialization.decodeFromAny
+import java.io.File
 import java.util.*
 import kotlin.io.path.Path
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
+import kotlinx.serialization.descriptors.elementNames
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
@@ -43,10 +46,12 @@ import kotlinx.serialization.json.JsonTransformingSerializer
 import kotlinx.serialization.json.jsonObject
 import org.gradle.api.Project
 import org.gradle.api.file.Directory
+import org.gradle.api.file.RegularFile
 import org.gradle.api.initialization.Settings
 import org.gradle.api.plugins.ExtraPropertiesExtension
 import org.gradle.api.provider.ProviderFactory
 import org.gradle.kotlin.dsl.extra
+import org.jetbrains.compose.internal.utils.localPropertiesFile
 import org.yaml.snakeyaml.Yaml
 
 internal const val PROJECT_PROPERTIES_FILE = "project.yaml"
@@ -89,14 +94,12 @@ internal data class ProjectProperties(
     val tasks: LinkedHashSet<Task<out org.gradle.api.Task>>? = null,
     val projectFiles: Set<ProjectFile> = emptySet(),
     val ci: Set<CI> = emptySet(),
-    val delegate: SerializableOptionalAnyMap,
+    val delegate: SerializableOptionalAnyMap = emptyMap(),
 ) : Map<String, Any?> by delegate {
 
-    val includesAsPaths: List<String>?
-        get() = includes?.map { include -> include.replace(":", System.lineSeparator()) }
-
-    @Transient
-    val localProperties = Properties()
+    val includesAsPaths by lazy {
+        includes?.map { include -> include.replace(":", System.lineSeparator()) }
+    }
 
     companion object {
 
@@ -109,28 +112,46 @@ internal data class ProjectProperties(
         context(Settings)
         @Suppress("UnstableApiUsage")
         fun load(): ProjectProperties {
+            // Load local.properties.
+            localProperties = loadLocalProperties(
+                layout.settingsDirectory
+                    .file("local.properties").asFile,
+            )
+            // Export extras.
             settings.extra.exportExtras()
+            // Load project.yaml.
             return load(
-                settings.layout.settingsDirectory,
                 settings.layout.settingsDirectory,
                 settings.providers,
                 settings.extra,
-                settings.projectProperties.localProperties,
+                settings.localProperties,
             )
         }
 
         context(Project)
         @Suppress("UnstableApiUsage")
         fun load(): ProjectProperties {
+            // Load local.properties.
+            localProperties = loadLocalProperties(
+                project.localPropertiesFile,
+            )
+            // Export extras.
             project.extra.exportExtras()
+            // Load project.yaml.
             return load(
                 project.layout.projectDirectory,
-                project.settings.layout.settingsDirectory,
                 project.providers,
                 project.extra,
-                project.projectProperties.localProperties,
+                project.localProperties,
             )
         }
+
+        private fun loadLocalProperties(file: File) =
+            Properties().apply {
+                file.takeIf(File::exists)
+                    ?.reader()
+                    ?.let(::load)
+            }
 
         private fun ExtraPropertiesExtension.exportExtras() =
             properties.putAll(
@@ -142,32 +163,21 @@ internal data class ProjectProperties(
         @Suppress("UNCHECKED_CAST")
         private fun load(
             directory: Directory,
-            settingsDirectory: Directory,
             providers: ProviderFactory,
             extra: ExtraPropertiesExtension,
             localProperties: Properties,
         ): ProjectProperties {
             val propertiesFile = directory.file(PROJECT_PROPERTIES_FILE).asFile
 
-            return if (propertiesFile.exists()) {
+            if (propertiesFile.exists()) {
                 val properties = yaml.load<MutableMap<String, *>>(propertiesFile.readText())
 
                 val templatesProperties = (properties["templates"] as List<String>?)?.loadTemplates(directory).orEmpty()
 
-                (templatesProperties deepMerge properties).resolve(providers, extra, localProperties)
+                return json.decodeFromAny<ProjectProperties>((templatesProperties deepMerge properties).resolve(providers, extra, localProperties))
             }
-            else {
-                emptyMap()
-            }.let { properties ->
-                json.decodeFromAny<ProjectProperties>(properties).apply {
-                    localProperties.apply {
-                        val file = settingsDirectory.file("local.properties").asFile
-                        if (file.exists()) {
-                            load(file.reader())
-                        }
-                    }
-                }
-            }
+
+            return ProjectProperties()
         }
 
         /** Resolves deep templates.
@@ -191,7 +201,9 @@ private object ProjectPropertiesTransformingSerializer
     override fun transformDeserialize(element: JsonElement): JsonElement = JsonObject(
         buildMap {
             putAll(element.jsonObject)
-            put("delegate", element)
+
+            val elementNames = ProjectProperties.generatedSerializer().descriptor.elementNames - "delegate"
+            put("delegate", JsonObject(element.jsonObject.filterKeys { key -> key !in elementNames }))
         },
     )
 

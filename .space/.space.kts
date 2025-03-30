@@ -13,24 +13,6 @@ job("Code format check, quality check, test and publish") {
         }
     }
 
-    container("\uD83D\uDC40 Read gradle.properties", "amazoncorretto:17-alpine") {
-        kotlinScript { api ->
-            // Do not use workDir to get the path to the working directory in a shellScript or kotlinScript.
-            // Instead, use the JB_SPACE_WORK_DIR_PATH environment variable.
-            File("${System.getenv("JB_SPACE_WORK_DIR_PATH")}/gradle.properties").let { file ->
-                Properties().apply {
-                    if (file.exists()) {
-                        load(file.reader())
-                    }
-                }.entries.forEach {
-                    // 🖨️ Print gradle.properties
-                    println("${it.key}=${it.value}")
-                    api.parameters[it.key.toString()] = it.value.toString()
-                }
-            }
-        }
-    }
-
     container("\uD83D\uDD2C Spotless code format check", "{{ jetbrains.space.automation.run.env }}") {
         // The only way to get a secret in a shell script is an env variable
         env["JB_SPACE_GRADLE_BUILD_CACHE_USERNAME"] = System.getenv("JETBRAINS_SPACE_CLIENT_ID")

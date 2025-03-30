@@ -2,28 +2,31 @@ package gradle.plugins.project
 
 import gradle.serialization.serializer.JsonObjectTransformingContentPolymorphicSerializer
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
 @Serializable(with = CIObjectTransformingContentPolymorphicSerializer::class)
-internal sealed class CI {
+public sealed class CI {
 
-    abstract val dependenciesCheck: Boolean
+    public abstract val name: String
 
-    abstract val signaturesCheck: Boolean
+    public abstract val dependenciesCheck: Boolean
 
-    abstract val formatCheck: Boolean
+    public abstract val signaturesCheck: Boolean
 
-    abstract val qualityCheck: Boolean
+    public abstract val formatCheck: Boolean
 
-    abstract val coverageVerify: Boolean
+    public abstract val qualityCheck: Boolean
 
-    abstract val docSamplesCheck: Boolean
+    public abstract val coverageVerify: Boolean
 
-    abstract val test: Boolean
+    public abstract val docSamplesCheck: Boolean
 
-    abstract val publishTo: LinkedHashSet<String>
+    public abstract val test: Boolean
+
+    public abstract val publishRepositories: Map<String, Boolean>
 
     @Serializable
-    data class GithubActions(
+    public data class GithubActions(
         override val dependenciesCheck: Boolean = true,
         override val signaturesCheck: Boolean = true,
         override val formatCheck: Boolean = true,
@@ -31,11 +34,15 @@ internal sealed class CI {
         override val coverageVerify: Boolean = true,
         override val docSamplesCheck: Boolean = true,
         override val test: Boolean = true,
-        override val publishTo: LinkedHashSet<String> = linkedSetOf(),
-    ) : CI()
+        override val publishRepositories: Map<String, Boolean> = emptyMap(),
+    ) : CI() {
+
+        @Transient
+        override val name: String = "github"
+    }
 
     @Serializable
-    data class TeamCity(
+    public data class TeamCity(
         override val dependenciesCheck: Boolean = true,
         override val signaturesCheck: Boolean = true,
         override val formatCheck: Boolean = true,
@@ -43,11 +50,15 @@ internal sealed class CI {
         override val coverageVerify: Boolean = true,
         override val docSamplesCheck: Boolean = true,
         override val test: Boolean = true,
-        override val publishTo: LinkedHashSet<String> = linkedSetOf(),
-    ) : CI()
+        override val publishRepositories: LinkedHashSet<String> = linkedSetOf(),
+    ) : CI() {
+
+        @Transient
+        override val name: String = "teamcity"
+    }
 
     @Serializable
-    data class JBSpaceAutomation(
+    public data class JBSpaceAutomation(
         override val dependenciesCheck: Boolean = true,
         override val signaturesCheck: Boolean = true,
         override val formatCheck: Boolean = true,
@@ -55,9 +66,19 @@ internal sealed class CI {
         override val coverageVerify: Boolean = true,
         override val docSamplesCheck: Boolean = true,
         override val test: Boolean = true,
-        override val publishTo: LinkedHashSet<String> = linkedSetOf(),
-        val runEnv: String? = null,
-    ) : CI()
+        override val publishRepositories: LinkedHashSet<String> = linkedSetOf(),
+        public val runEnv: String? = null,
+    ) : CI() {
+
+        @Transient
+        override val name: String = "space"
+    }
+
+    public companion object {
+
+        public val name: String?
+            get() = CI::class.sealedSubclasses.
+    }
 }
 
 private object CIObjectTransformingContentPolymorphicSerializer
