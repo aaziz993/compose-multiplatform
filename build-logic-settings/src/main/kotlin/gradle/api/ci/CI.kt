@@ -3,6 +3,7 @@ package gradle.api.ci
 import gradle.accessors.execute
 import gradle.serialization.serializer.JsonObjectTransformingContentPolymorphicSerializer
 import kotlin.reflect.full.companionObject
+import kotlin.reflect.full.companionObjectInstance
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.initialization.Settings
@@ -135,7 +136,7 @@ internal sealed class CI {
         override val key = "CI"
 
         private val key_names = CI::class.sealedSubclasses.associate { ci ->
-            (ci.companionObject as CompanionObject).key to ci::class.simpleName
+            (ci.companionObject!!.companionObjectInstance as CompanionObject).key to ci::class.simpleName
         } + ("CI" to "CI")
 
         val github: Boolean by lazy {
