@@ -8,8 +8,8 @@ internal class AnimalSnifferPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            // Apply animalsniffer properties.
-            projectProperties.animalsniffer?.applyTo()
+            // Apply animalSniffer properties.
+            projectProperties.animalSniffer?.applyTo()
         }
     }
 }

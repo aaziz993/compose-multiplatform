@@ -1,32 +1,30 @@
 package gradle.plugins.githooks
 
-import gradle.accessors.catalog.libs
 import gradle.accessors.gitHooks
 import gradle.accessors.settings
 import gradle.api.trySet
 import java.net.URI
+import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings
 
 /**
  * DSL entry point, to be applied to [settings].gradle.kts.
  */
-internal interface GitHooksExtension {
-
-    val hooks: Map<String, String>?
-
+@Serializable
+internal data class GitHooksExtension(
+    val hooks: Map<String, String>? = null,
     /**
      * The git repository root. If unset, it will be searched recursively from the project root towards the
      * filesystem root.
      */
-    val repoRoot: String?
-
-    val hooksFiles: Map<String, String>?
-
-    val hooksUrls: Map<String, String>?
+    val repoRoot: String? = null,
+    val hooksFiles: Map<String, String>? = null,
+    val hooksUrls: Map<String, String>? = null,
+) {
 
     context(Settings)
     fun applyTo() =
-        settings.pluginManager.withPlugin(settings.libs.plugin("gradlePreCommitGitHooks").id) {
+        settings.pluginManager.withPlugin("org.danilopianini.gradle-pre-commit-git-hooks") {
             hooks?.forEach { name, script ->
                 settings.gitHooks.hook(name) {
                     from { script }

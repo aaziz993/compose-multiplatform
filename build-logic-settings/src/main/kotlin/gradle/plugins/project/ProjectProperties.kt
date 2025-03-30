@@ -25,6 +25,7 @@ import gradle.plugins.dependencycheck.DependencyCheckExtension
 import gradle.plugins.develocity.model.DevelocitySettings
 import gradle.plugins.doctor.model.DoctorSettings
 import gradle.plugins.dokka.model.DokkaSettings
+import gradle.plugins.githooks.GitHooksExtension
 import gradle.plugins.githooks.model.GitHooksSettings
 import gradle.plugins.java.JavaPluginExtension
 import gradle.plugins.java.application.JavaApplication
@@ -110,7 +111,7 @@ internal data class ProjectProperties(
     val buildCache: BuildCacheConfiguration? = null,
     val develocity: DevelocitySettings? = null,
     val toolchainManagement: ToolchainManagementSettings? = null,
-    val gitHooks: GitHooksSettings? = null,
+    val gitHooks: GitHooksExtension? = null,
     val kotlin: KotlinMultiplatformSettings? = null,
     val doctor: DoctorSettings? = null,
     val dependencyCheck: DependencyCheckExtension? = null,
@@ -121,7 +122,7 @@ internal data class ProjectProperties(
     val dokka: DokkaSettings? = null,
     val shadow: ShadowSettings? = null,
     val apiValidation: ApiValidationExtension? = null,
-    val animalsniffer: AnimalSnifferExtension? = null,
+    val animalSniffer: AnimalSnifferExtension? = null,
     val knit: KnitSettings? = null,
     val ksp: KspExtension? = null,
     val karakum: KarakumSettings? = null,
