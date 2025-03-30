@@ -3,7 +3,7 @@ package gradle.plugins.kotlin.benchmark.model
 import gradle.plugins.kotlin.benchmark.BenchmarkConfiguration
 import gradle.plugins.kotlin.benchmark.BenchmarkTarget
 import gradle.plugins.kotlin.benchmark.BenchmarksExtension
-import gradle.plugins.project.EnabledSettings
+import gradle.api.EnabledSettings
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 

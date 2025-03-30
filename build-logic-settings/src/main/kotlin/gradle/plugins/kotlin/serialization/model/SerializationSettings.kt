@@ -3,7 +3,7 @@ package gradle.plugins.kotlin.serialization.model
 import gradle.accessors.catalog.libs
 
 import gradle.accessors.settings
-import gradle.plugins.project.EnabledSettings
+import gradle.api.EnabledSettings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

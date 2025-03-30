@@ -4,7 +4,7 @@ import gradle.api.artifacts.dsl.RepositoryHandler
 import gradle.api.publish.Publication
 import gradle.api.publish.PublishingExtension
 import gradle.api.repositories.ExclusiveContentRepository
-import gradle.plugins.project.EnabledSettings
+import gradle.api.EnabledSettings
 import kotlinx.serialization.Serializable
 
 @Serializable

@@ -6,7 +6,7 @@ import gradle.accessors.settings
 import gradle.plugins.kover.KoverExtension
 import gradle.plugins.kover.currentproject.KoverCurrentProjectVariantsConfig
 import gradle.plugins.kover.reports.KoverReportsConfig
-import gradle.plugins.project.EnabledSettings
+import gradle.api.EnabledSettings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

@@ -253,10 +253,11 @@ public class ProjectPlugin : Plugin<Project> {
                 onlyIf { ci.docSamplesCheck }
             }
 
-            ci.publishRepositories.forEach { repository ->
-                val publishTaskName = "publishAllPublicationsTo${repository.capitalized()}Repository"
+            ci.publishRepositories.forEach { (name, enabled) ->
+                val publishTaskName = "publishAllPublicationsTo${name.capitalized()}Repository"
                 tasks.register("${ci.name}${publishTaskName.capitalized()}") {
                     dependsOn(tasks.named(publishTaskName))
+                    onlyIf { enabled }
                 }
             }
         }

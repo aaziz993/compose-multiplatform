@@ -6,7 +6,7 @@ import gradle.accessors.settings
 import gradle.plugins.compose.android.AndroidExtension
 import gradle.plugins.compose.desktop.DesktopExtension
 import gradle.plugins.compose.resources.ResourcesExtension
-import gradle.plugins.project.EnabledSettings
+import gradle.api.EnabledSettings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

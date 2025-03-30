@@ -1,8 +1,7 @@
 package gradle.plugins.project
 
 import gradle.accessors.localProperties
-import gradle.accessors.projectProperties
-import gradle.accessors.settings
+import gradle.api.ci.CI
 import gradle.api.initialization.DependencyResolutionManagement
 import gradle.api.initialization.PluginManagement
 import gradle.api.initialization.ProjectDescriptor
@@ -37,7 +36,6 @@ import java.util.*
 import kotlin.io.path.Path
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.Transient
 import kotlinx.serialization.descriptors.elementNames
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
@@ -46,7 +44,6 @@ import kotlinx.serialization.json.JsonTransformingSerializer
 import kotlinx.serialization.json.jsonObject
 import org.gradle.api.Project
 import org.gradle.api.file.Directory
-import org.gradle.api.file.RegularFile
 import org.gradle.api.initialization.Settings
 import org.gradle.api.plugins.ExtraPropertiesExtension
 import org.gradle.api.provider.ProviderFactory

@@ -7,7 +7,7 @@ import gradle.plugins.dokka.DokkaPublication
 import gradle.plugins.dokka.DokkaSourceSetSpec
 import gradle.plugins.dokka.WorkerIsolation
 import gradle.plugins.dokka.plugin.DokkaPluginParametersBaseSpec
-import gradle.plugins.project.EnabledSettings
+import gradle.api.EnabledSettings
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

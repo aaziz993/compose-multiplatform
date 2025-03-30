@@ -4,7 +4,7 @@ import gradle.accessors.catalog.libs
 
 import gradle.accessors.settings
 import gradle.plugins.kotlin.ksp.KspExtension
-import gradle.plugins.project.EnabledSettings
+import gradle.api.EnabledSettings
 import gradle.process.CommandLineArgumentProvider
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

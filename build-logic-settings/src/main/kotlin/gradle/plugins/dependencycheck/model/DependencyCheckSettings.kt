@@ -10,7 +10,7 @@ import gradle.plugins.dependencycheck.HostedSuppressionsExtension
 import gradle.plugins.dependencycheck.NvdExtension
 import gradle.plugins.dependencycheck.SlackExtension
 import gradle.plugins.dependencycheck.analyzer.AnalyzerExtension
-import gradle.plugins.project.EnabledSettings
+import gradle.api.EnabledSettings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

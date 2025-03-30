@@ -9,7 +9,7 @@ import gradle.api.isCI
 import gradle.api.services.unregister
 import gradle.plugins.doctor.DoctorExtension
 import gradle.plugins.doctor.JavaHomeHandler
-import gradle.plugins.project.EnabledSettings
+import gradle.api.EnabledSettings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

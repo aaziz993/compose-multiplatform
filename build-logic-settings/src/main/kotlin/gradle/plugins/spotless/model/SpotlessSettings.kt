@@ -3,7 +3,7 @@ package gradle.plugins.spotless.model
 import com.diffplug.spotless.LineEnding
 import gradle.accessors.catalog.libs
 import gradle.accessors.settings
-import gradle.plugins.project.EnabledSettings
+import gradle.api.EnabledSettings
 import gradle.plugins.spotless.FormatExtension
 import gradle.plugins.spotless.SpotlessExtension
 import kotlinx.serialization.Contextual

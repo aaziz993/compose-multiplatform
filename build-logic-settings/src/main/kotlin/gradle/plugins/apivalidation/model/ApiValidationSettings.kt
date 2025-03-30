@@ -8,7 +8,7 @@ import gradle.accessors.catalog.libs
 import gradle.accessors.settings
 import gradle.plugins.apivalidation.ApiValidationExtension
 import gradle.plugins.apivalidation.KlibValidationSettings
-import gradle.plugins.project.EnabledSettings
+import gradle.api.EnabledSettings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.named

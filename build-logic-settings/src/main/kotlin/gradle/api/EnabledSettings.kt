@@ -1,4 +1,4 @@
-package gradle.plugins.project
+package gradle.api
 
 internal interface EnabledSettings {
 

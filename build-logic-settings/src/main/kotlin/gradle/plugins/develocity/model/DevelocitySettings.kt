@@ -12,7 +12,7 @@ import gradle.api.teamCityBuildTypeId
 import gradle.isGithubUrl
 import gradle.plugins.develocity.DevelocityConfiguration
 import gradle.plugins.develocity.buildscan.BuildScanConfiguration
-import gradle.plugins.project.EnabledSettings
+import gradle.api.EnabledSettings
 import java.net.URLEncoder
 import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings
