@@ -1,6 +1,6 @@
 package gradle.caching
 
-import gradle.api.isCI
+import gradle.api.ci.CI
 import gradle.api.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings
@@ -21,7 +21,7 @@ internal data class DirectoryBuildCache(
     context(Settings)
     @Suppress("UnstableApiUsage")
     override fun applyTo(receiver: DirectoryBuildCache) {
-        receiver.isEnabled = !isCI
+        receiver.isEnabled = !CI.present
 
         super.applyTo(receiver)
 

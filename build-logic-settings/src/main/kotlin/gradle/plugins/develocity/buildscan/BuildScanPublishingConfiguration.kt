@@ -1,7 +1,7 @@
 package gradle.plugins.develocity.buildscan
 
 import com.gradle.develocity.agent.gradle.scan.BuildScanPublishingConfiguration
-import gradle.api.isCI
+
 import kotlinx.serialization.Serializable
 
 @Serializable

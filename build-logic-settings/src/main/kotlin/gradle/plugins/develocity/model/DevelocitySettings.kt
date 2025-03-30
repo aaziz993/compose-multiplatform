@@ -6,7 +6,7 @@ import gradle.accessors.projectProperties
 import gradle.api.gitBranchName
 import gradle.api.gitCommitId
 import gradle.api.gitStatus
-import gradle.api.isCI
+
 import gradle.api.teamCityBuildId
 import gradle.api.teamCityBuildTypeId
 import gradle.isGithubUrl

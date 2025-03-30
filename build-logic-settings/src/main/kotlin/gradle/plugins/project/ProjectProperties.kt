@@ -16,7 +16,7 @@ import gradle.collection.SerializableOptionalAnyMap
 import gradle.collection.deepMerge
 import gradle.collection.resolve
 import gradle.plugins.android.BaseExtension
-import gradle.plugins.animalsniffer.model.AnimalSnifferSettings
+import gradle.plugins.animalsniffer.AnimalSnifferExtension
 import gradle.plugins.apivalidation.ApiValidationExtension
 import gradle.plugins.apple.AppleProjectExtension
 import gradle.plugins.buildconfig.BuildConfigExtension
@@ -121,7 +121,7 @@ internal data class ProjectProperties(
     val dokka: DokkaSettings? = null,
     val shadow: ShadowSettings? = null,
     val apiValidation: ApiValidationExtension? = null,
-    val animalSniffer: AnimalSnifferSettings? = null,
+    val animalsniffer: AnimalSnifferExtension? = null,
     val knit: KnitSettings? = null,
     val ksp: KspExtension? = null,
     val karakum: KarakumSettings? = null,

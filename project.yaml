@@ -34,65 +34,66 @@ pluginManagement:
     - https://packages.jetbrains.team/maven/p/ij/intellij-dependencies
 
 plugins:
-  ###################################################Project plugins####################################################
+  ids:
+    - $libs.develocity
+    - $libs.develocityCommonCustomUserData
+    - $libs.foojayResolverConvention
+    - $libs.gradlePreCommitGitHooks
 
-  # Gives the data to speed up your build, improve build reliability and accelerate build debugging.
-  # servers: https://ge.solutions-team.gradle.com, https://ge.jetbrains.com
-  develocity:
-    enabled: true
-    server: https://ge.solutions-team.gradle.com
-    buildScan:
-      uploadInBackground: true
-      publishing:
-        onlyIfAuthenticated: true
-      obfuscation:
-        ipAddresses:
-          '': 0.0.0.0
-      capture:
-        fileFingerprints: true
-        buildLogging: true
-    #    gitRepo: https://github.com/aaziz993/cmp # Populated from remote.url.
-    skipGitTags: false
+# Gives the data to speed up your build, improve build reliability and accelerate build debugging.
+# servers: https://ge.solutions-team.gradle.com, https://ge.jetbrains.com
+develocity:
+  server: https://ge.solutions-team.gradle.com
+  buildScan:
+    uploadInBackground: true
+    publishing:
+      onlyIfAuthenticated: true
+    obfuscation:
+      ipAddresses:
+        '': 0.0.0.0
+    capture:
+      fileFingerprints: true
+      buildLogging: true
+  #    gitRepo: https://github.com/aaziz993/cmp # Populated from remote.url.
+  skipGitTags: false
 
-  # Provides a repository for downloading JVMs
-  toolchainManagement:
-    enabled: true
+# Provides a repository for downloading JVMs
+toolchainManagement: { }
 
-  # Enforcing pre-commit and commit-msg Git hooks configuration. Conventional-commits-ready.
-  gitHooks:
-    enabled: true
+# Enforcing pre-commit and commit-msg Git hooks configuration. Conventional-commits-ready.
+gitHooks: { }
 
-  ###################################################Project plugins####################################################
+###################################################Project plugins####################################################
 
-  # Print suggestions for your build as you run regular tasks.
-  doctor:
-    enabled: true
-    enableTaskMonitoring: true
-    enableTestCaching: true
-    javaHome:
-      ensureJavaHomeIsSet: false
-      ensureJavaHomeMatches: false
+# Print suggestions for your build as you run regular tasks.
+doctor:
+  enabled: true
+  enableTaskMonitoring: true
+  enableTestCaching: true
+  javaHome:
+    ensureJavaHomeIsSet: false
+    ensureJavaHomeMatches: false
 
-  # api documentation engine for Kotlin.
-  dokka:
-    pluginsConfiguration:
-      - html:
-          customStyleSheets: [ dokka/style.css, dokka/prism.css, dokka/logo-styles.css ]
-          customAssets: [ dokka/logo-icon.svg ]
+# api documentation engine for Kotlin.
+dokka:
+  pluginsConfiguration:
+    - html:
+        customStyleSheets: [ dokka/style.css, dokka/prism.css, dokka/logo-styles.css ]
+        customAssets: [ dokka/logo-icon.svg ]
 
-  # produces Kotlin source example files and tests from markdown documents with embedded snippets of Kotlin code
-  knit:
-    enabled: true
-    siteRoot: https://github.com/aaziz993/compose-multiplatform
-    #    moduleRoots: [
-    #      kmp-lib,
-    #      cmp-lib,
-    #      compiler,
-    #      shared,
-    #      compose-app,
-    #      server-app ] # by default taken from includes
-    moduleDocs: build/dokka
-    dokkaMultiModuleRoot: build/dokka
+# produces Kotlin source example files and tests from markdown documents with embedded snippets of Kotlin code
+knit:
+  enabled: true
+  siteRoot: https://github.com/aaziz993/compose-multiplatform
+  #    moduleRoots: [
+  #      kmp-lib,
+  #      cmp-lib,
+  #      compiler,
+  #      shared,
+  #      compose-app,
+  #      server-app ] # by default taken from includes
+  moduleDocs: build/dokka
+  dokkaMultiModuleRoot: build/dokka
 
 dependencyResolutionManagement:
   repositories:

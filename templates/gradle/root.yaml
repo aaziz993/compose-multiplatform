@@ -21,6 +21,7 @@ plugins:
   ids:
     - $libs.kover
     - $libs.dokka
+    - $libs.dokkaJavadoc
 
 # Set of solutions for collecting test coverage of Kotlin code compiled for JVM and Android platforms.
 kover:
