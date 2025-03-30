@@ -26,7 +26,7 @@ import gradle.plugins.develocity.model.DevelocitySettings
 import gradle.plugins.doctor.model.DoctorSettings
 import gradle.plugins.dokka.model.DokkaSettings
 import gradle.plugins.githooks.GitHooksExtension
-import gradle.plugins.initialization.includebuild.IncludeBuild
+import gradle.plugins.initialization.IncludeBuild
 import gradle.plugins.java.JavaPluginExtension
 import gradle.plugins.java.application.JavaApplication
 import gradle.plugins.karakum.KarakumExtension

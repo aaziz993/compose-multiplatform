@@ -1,4 +1,4 @@
-package gradle.plugins.initialization.includebuild
+package gradle.plugins.initialization
 
 import gradle.api.initialization.ConfigurableIncludedBuild
 import kotlinx.serialization.Serializable
