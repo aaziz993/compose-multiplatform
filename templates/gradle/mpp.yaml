@@ -1,3 +1,5 @@
+plugins:
+  ids: [ $libs.kotlin.multiplatform ]
 kotlin:
   targets:
     - iosArm64

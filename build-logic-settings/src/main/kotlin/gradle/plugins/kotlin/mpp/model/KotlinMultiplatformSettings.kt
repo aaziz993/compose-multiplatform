@@ -1,7 +1,5 @@
 package gradle.plugins.kotlin.mpp.model
 
-import gradle.accessors.catalog.libs
-import gradle.accessors.settings
 import gradle.plugins.java.JavaToolchainSpec
 import gradle.plugins.kotlin.KotlinCommonCompilerOptionsImpl
 import gradle.plugins.kotlin.KotlinSourceSet
@@ -29,12 +27,12 @@ internal data class KotlinMultiplatformSettings(
     override val sourceSets: LinkedHashSet<KotlinSourceSet>? = null,
     override val targets: LinkedHashSet<KotlinTarget<*>>? = null,
     override val applyHierarchyTemplate: KotlinHierarchyBuilder.Root? = null,
-    val cocoapods: CocoapodsSettings? = null, ,
+    val cocoapods: CocoapodsSettings? = null,
 ) : KotlinMultiplatformExtension() {
 
     context(Project)
     override fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugin("kotlin.multiplatform").id) {
+        project.pluginManager.withPlugin("org.jetbrains.kotlin.multiplatform") {
             super.applyTo()
         }
 }

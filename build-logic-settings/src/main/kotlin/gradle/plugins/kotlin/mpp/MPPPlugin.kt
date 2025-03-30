@@ -1,9 +1,7 @@
 package gradle.plugins.kotlin.mpp
 
-import gradle.accessors.catalog.libs
 import gradle.accessors.kotlin
 import gradle.accessors.projectProperties
-import gradle.accessors.settings
 import gradle.accessors.sourceSetsToComposeResourcesDirs
 import gradle.addPrefixIfNotEmpty
 import gradle.api.configureEach
@@ -15,25 +13,18 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.SourceSet
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
-import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
 
-internal class KotlinMultiplatformPlugin : Plugin<Project> {
+internal class MPPPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            plugins.apply("org.jetbrains.kotlin.multiplatform")
+            // Apply kotlin multiplatform properties.
+            projectProperties.kotlin?.applyTo()
 
-            // Enable Default Kotlin Hierarchy.
-            extraProperties["kotlin.mpp.applyDefaultHierarchyTemplate"] = "true"
-
-            // IOS Compose uses UiKit, so we need to explicitly enable it, since it is experimental.
-            extraProperties["org.jetbrains.compose.experimental.uikit.enabled"] = "true"
-
-            // Apply properties.
-            projectProperties.kotlin?.takeIf { kotlin -> kotlin.targets.isNotEmpty() }?.applyTo()
-
-            adjustSourceSets()
+            pluginManager.withPlugin("org.jetbrains.kotlin.multiplatform") {
+                adjustSourceSets()
+            }
         }
     }
 

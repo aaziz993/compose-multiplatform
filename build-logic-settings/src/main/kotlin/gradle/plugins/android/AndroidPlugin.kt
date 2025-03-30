@@ -32,31 +32,14 @@ internal class AndroidPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            val targetNames = projectProperties.kotlin.targets
-                .filterIsInstance<KotlinAndroidTarget>()
-                .map(KotlinAndroidTarget::targetName)
+            // Apply android properties.
+            projectProperties.android?.applyTo()
 
-            if (targetNames.isEmpty()) {
-                return@with
-            }
+            if (project.pluginManager.hasPlugin("com.android.library")
+                || project.pluginManager.hasPlugin("com.android.application")) {
 
-            (projectProperties.android
-                ?: error("Settings not provided for kotlin android targets: $targetNames")).let { android ->
-                when (android) {
-                    is LibraryExtension -> plugins.apply(project.settings.libs.plugin("androidLibrary").id)
-                    is BaseAppModuleExtension -> plugins.apply(project.settings.libs.plugin("androidApplication").id)
-                    else -> Unit
-                }
-
-                android.applyTo()
-            }
-
-
-            adjustAndroidSourceSets()
-            applyGoogleServicesPlugin()
-
-            afterEvaluate {
-                adjustXmlFactories()
+                adjustAndroidSourceSets()
+                applyGoogleServicesPlugin()
             }
         }
     }
@@ -90,26 +73,29 @@ internal class AndroidPlugin : Plugin<Project> {
 
     private fun Project.applyGoogleServicesPlugin() {
         if (file("google-services.json").exists()) {
-            plugins.apply(project.settings.libs.plugin("google.playServices").id)
+            plugins.apply("com.google.gms.google-services")
         }
     }
 
-    /**
-     * W/A for service loading conflict between apple plugin
-     * and android plugin.
-     */
-    private fun adjustXmlFactories() {
-        trySetSystemProperty(
-            XMLInputFactory::class.qualifiedName!!,
-            "com.sun.xml.internal.stream.XMLInputFactoryImpl",
-        )
-        trySetSystemProperty(
-            XMLOutputFactory::class.qualifiedName!!,
-            "com.sun.xml.internal.stream.XMLOutputFactoryImpl",
-        )
-        trySetSystemProperty(
-            XMLEventFactory::class.qualifiedName!!,
-            "com.sun.xml.internal.stream.events.XMLEventFactoryImpl",
-        )
+    companion object {
+
+        /**
+         * W/A for service loading conflict between apple plugin
+         * and android plugin.
+         */
+        fun adjustXmlFactories() {
+            trySetSystemProperty(
+                XMLInputFactory::class.qualifiedName!!,
+                "com.sun.xml.internal.stream.XMLInputFactoryImpl",
+            )
+            trySetSystemProperty(
+                XMLOutputFactory::class.qualifiedName!!,
+                "com.sun.xml.internal.stream.XMLOutputFactoryImpl",
+            )
+            trySetSystemProperty(
+                XMLEventFactory::class.qualifiedName!!,
+                "com.sun.xml.internal.stream.events.XMLEventFactoryImpl",
+            )
+        }
     }
 }

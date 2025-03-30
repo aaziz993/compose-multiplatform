@@ -1,12 +1,10 @@
 package gradle.plugins.publish
 
-import gradle.accessors.catalog.libs
 import gradle.accessors.dokkaGeneratePublicationHtml
 import gradle.accessors.dokkaGeneratePublicationJavadoc
 import gradle.accessors.kotlin
 import gradle.accessors.projectProperties
 import gradle.accessors.publishing
-import gradle.accessors.settings
 import gradle.api.findByName
 import gradle.collection.associateWithNotNull
 import gradle.plugins.kotlin.filterKotlinTargets
@@ -42,12 +40,10 @@ import gradle.plugins.kotlin.targets.nat.linux.KotlinLinuxTarget
 import gradle.plugins.kotlin.targets.nat.linux.KotlinLinuxX64Target
 import gradle.plugins.kotlin.targets.nat.mingw.KotlinMingwTarget
 import gradle.plugins.kotlin.targets.nat.mingw.KotlinMingwX64Target
-import gradle.plugins.publish.model.PublishingSettings
 import java.util.regex.Pattern
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.publish.maven.MavenPublication
-import org.gradle.api.publish.maven.plugins.MavenPublishPlugin
 import org.gradle.api.publish.maven.tasks.AbstractPublishToMaven
 import org.gradle.api.publish.plugins.PublishingPlugin
 import org.gradle.api.tasks.TaskCollection
@@ -72,17 +68,14 @@ internal class PublishPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            projectProperties.publishing?.takeIf{ pluginManager.hasPlugin("publishing") }?.let { publishing ->
-                    plugins.apply(MavenPublishPlugin::class.java)
+            // Apply maven publish properties.
+            projectProperties.publishing?.applyTo()
 
-                    publishing.applyTo()
-
-                    configureJavadocArtifact()
-
-                    registerAggregatingPublishTasks()
-
-                    configurePublishTask()
-                }
+            pluginManager.withPlugin("maven-publish") {
+                configureJavadocArtifact()
+                registerAggregatingPublishTasks()
+                configurePublishTask()
+            }
         }
     }
 
@@ -92,7 +85,7 @@ internal class PublishPlugin : Plugin<Project> {
         }
 
         val javadocJar =
-            if (plugins.hasPlugin(project.settings.libs.plugin("dokka").id))
+            if (pluginManager.hasPlugin("org.jetbrains.dokka-javadoc"))
                 tasks.register<Jar>("dokkaJavadocJar") {
                     description = "A Javadoc JAR containing Dokka Javadoc"
                     from(tasks.dokkaGeneratePublicationJavadoc!!.flatMap { it.outputDirectory })
@@ -114,7 +107,7 @@ internal class PublishPlugin : Plugin<Project> {
             }
         }
 
-        if (plugins.hasPlugin(project.settings.libs.plugin("dokkaJavadoc").id)) {
+        if (pluginManager.hasPlugin("org.jetbrains.dokka")) {
             val dokkaHtmlJar by tasks.registering(Jar::class) {
                 description = "A HTML Documentation JAR containing Dokka HTML"
                 from(tasks.dokkaGeneratePublicationHtml!!.flatMap { it.outputDirectory })
@@ -219,7 +212,7 @@ internal class PublishPlugin : Plugin<Project> {
     ) =
         registerAggregatingPublishTask(
             name,
-            projectProperties.kotlin.targets
+            projectProperties.kotlin?.targets.orEmpty()
                 .filterKotlinTargets<T>().mapNotNull(`gradle.plugins.kotlin`.KotlinTarget<*>::targetName),
         )
 

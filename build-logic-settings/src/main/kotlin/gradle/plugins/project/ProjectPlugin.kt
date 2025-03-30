@@ -30,7 +30,7 @@ import gradle.plugins.kotlin.benchmark.BenchmarkPlugin
 import gradle.plugins.kotlin.filterKotlinTargets
 import gradle.plugins.kotlin.ksp.KspPlugin
 import gradle.plugins.kotlin.ktorfit.KtorfitPlugin
-import gradle.plugins.kotlin.mpp.KotlinMultiplatformPlugin
+import gradle.plugins.kotlin.mpp.MPPPlugin
 import gradle.plugins.kotlin.noarg.NoArgPlugin
 import gradle.plugins.kotlin.powerassert.PowerAssertPlugin
 import gradle.plugins.kotlin.room.RoomPlugin
@@ -38,7 +38,6 @@ import gradle.plugins.kotlin.rpc.RpcPlugin
 import gradle.plugins.kotlin.serialization.SerializationPlugin
 import gradle.plugins.kotlin.sqldelight.SqlDelightPlugin
 import gradle.plugins.kotlin.targets.jvm.JvmPlugin
-import gradle.plugins.kotlin.targets.nat.NativePlugin
 import gradle.plugins.kotlin.targets.nat.android.KotlinAndroidNative32Target
 import gradle.plugins.kotlin.targets.nat.android.KotlinAndroidNative64Target
 import gradle.plugins.kotlin.targets.nat.android.KotlinAndroidNativeArm32Target
@@ -71,9 +70,6 @@ import gradle.plugins.kotlin.targets.nat.linux.KotlinLinuxTarget
 import gradle.plugins.kotlin.targets.nat.linux.KotlinLinuxX64Target
 import gradle.plugins.kotlin.targets.nat.mingw.KotlinMingwTarget
 import gradle.plugins.kotlin.targets.nat.mingw.KotlinMingwX64Target
-import gradle.plugins.kotlin.targets.web.JsPlugin
-import gradle.plugins.kotlin.targets.web.WasmJsPlugin
-import gradle.plugins.kotlin.targets.web.WasmWasiPlugin
 import gradle.plugins.kover.KoverPlugin
 import gradle.plugins.project.ProjectProperties.Companion.load
 import gradle.plugins.project.ProjectProperties.Companion.yaml
@@ -109,7 +105,7 @@ import org.jetbrains.kotlin.gradle.targets.native.tasks.KotlinNativeTest
 import org.jetbrains.kotlin.gradle.tasks.KotlinNativeLink
 import org.jetbrains.kotlin.gradle.tasks.KotlinTest
 
-public class  ProjectPlugin : Plugin<Project> {
+public class ProjectPlugin : Plugin<Project> {
 
     override fun apply(target: Project): Unit = with(SLF4JProblemReporterContext()) {
         with(target) {
@@ -131,14 +127,16 @@ public class  ProjectPlugin : Plugin<Project> {
             // preserve order!
             plugins.apply(DoctorPlugin::class.java)
             plugins.apply(DependencyCheckPlugin::class.java)
+            plugins.apply(AnimalSnifferPlugin::class.java)
             plugins.apply(BuildConfigPlugin::class.java)
             plugins.apply(SpotlessPlugin::class.java)
             plugins.apply(KoverPlugin::class.java)
             plugins.apply(SonarPlugin::class.java)
             plugins.apply(DokkaPlugin::class.java)
-            plugins.apply(KnitPlugin::class.java) // apply after dokka plugin to make knitPrepare be dependOn dokkaGenerate.
+            plugins.apply(KnitPlugin::class.java) // make dependOn dokkaGenerate.
             plugins.apply(ShadowPlugin::class.java)
             plugins.apply(ApiValidationPlugin::class.java)
+            plugins.apply(KspPlugin::class.java)
             plugins.apply(AllOpenPlugin::class.java)
             plugins.apply(NoArgPlugin::class.java)
             plugins.apply(AtomicFUPlugin::class.java)
@@ -150,16 +148,10 @@ public class  ProjectPlugin : Plugin<Project> {
             plugins.apply(KtorfitPlugin::class.java)
             plugins.apply(ApolloPlugin::class.java)
             plugins.apply(PowerAssertPlugin::class.java)
-            plugins.apply(ApplePlugin::class.java) // doesn't depend on kmp
-            plugins.apply(AndroidPlugin::class.java) // apply and configure android library or application plugin.
-            plugins.apply(AnimalSnifferPlugin::class.java)
-            plugins.apply(KotlinMultiplatformPlugin::class.java) // need android library or application plugin applied.
-            plugins.apply(JvmPlugin::class.java) //  apply after kmp plugin.
-            plugins.apply(KspPlugin::class.java) // kspCommonMainMetadata need kmp plugin applied.
-            plugins.apply(NativePlugin::class.java)
-            plugins.apply(JsPlugin::class.java)
-            plugins.apply(WasmJsPlugin::class.java)
-            plugins.apply(WasmWasiPlugin::class.java)
+            plugins.apply(ApplePlugin::class.java) // doesn't depend on mpp
+            plugins.apply(AndroidPlugin::class.java) // doesn't depend on mpp
+            plugins.apply(MPPPlugin::class.java) // need android library or application plugin applied.
+            plugins.apply(JvmPlugin::class.java) //  apply after mpp plugin to deal with jvm targets.
             plugins.apply(ComposePlugin::class.java)
             plugins.apply(PublishPlugin::class.java)
             plugins.apply(SigningPlugin::class.java)
@@ -187,6 +179,8 @@ public class  ProjectPlugin : Plugin<Project> {
             projectProperties.tasks?.forEach { task ->
                 task.applyTo()
             }
+
+            AndroidPlugin.adjustXmlFactories()
 
             if (problemReporter.getErrors().isNotEmpty()) {
                 throw GradleException(problemReporter.getGradleError())

@@ -12,10 +12,12 @@ internal class KnitPlugin : Plugin<Project> {
             projectProperties.knit?.applyTo()
 
             project.pluginManager.withPlugin("org.jetbrains.kotlinx.knit") {
-                tasks.named("knitPrepare") {
-                    // In order for knit to operate, it should depend on and collect
-                    // all Dokka outputs from each module
-                    dependsOn(tasks.named("dokkaGenerate"))
+                project.pluginManager.withPlugin("org.jetbrains.dokka") {
+                    tasks.named("knitPrepare") {
+                        // In order for knit to operate, it should depend on and collect
+                        // all Dokka outputs from each module
+                        dependsOn(tasks.named("dokkaGenerate"))
+                    }
                 }
             }
         }

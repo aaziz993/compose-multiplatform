@@ -3,6 +3,7 @@ package gradle.api.publish
 import gradle.accessors.publishing
 import gradle.api.artifacts.dsl.RepositoryHandler
 import gradle.api.repositories.ExclusiveContentRepository
+import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
 /**
@@ -10,8 +11,8 @@ import org.gradle.api.Project
  *
  * @since 1.3
  */
-internal interface PublishingExtension {
-
+@Serializable
+internal data class PublishingExtension(
     /**
      * Configures the container of possible repositories to publish to.
      *
@@ -40,9 +41,8 @@ internal interface PublishingExtension {
      *
      * @param configure The action to configure the container of repositories with.
      */
-    val repositories: RepositoryHandler?
-    val exclusiveContent: ExclusiveContentRepository?
-
+    val repositories: RepositoryHandler? = null,
+    val exclusiveContent: ExclusiveContentRepository? = null,
     /**
      * Configures the publications of this project.
      *
@@ -73,7 +73,8 @@ internal interface PublishingExtension {
      *
      * @param configure The action or closure to configure the publications with.
      */
-    val publications: LinkedHashSet<Publication<out org.gradle.api.publish.Publication>>?
+    val publications: LinkedHashSet<Publication<out org.gradle.api.publish.Publication>>? = null,
+) {
 
     context(Project)
     @Suppress("UNCHECKED_CAST")

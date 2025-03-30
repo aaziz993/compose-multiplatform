@@ -10,6 +10,7 @@ import gradle.plugins.kotlin.targets.nat.apple.KotlinAppleTarget
 import gradle.plugins.project.ProjectLayout
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.jetbrains.amper.gradle.apple.AppleBindingPluginPart
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 
 internal class ApplePlugin : Plugin<Project> {
@@ -19,15 +20,9 @@ internal class ApplePlugin : Plugin<Project> {
             // Apply apple properties.
             projectProperties.apple?.applyTo()
 
-            if (pluginManager.hasPlugin("org.jetbrains.gradle.apple.applePlugin")) {
+            pluginManager.withPlugin("org.jetbrains.gradle.apple.applePlugin") {
                 adjustSourceSets()
             }
-
-            if (projectProperties.kotlin?.targets.orEmpty().none { target -> target is KotlinAppleTarget }) {
-                return@with
-            }
-
-            extraProperties["generateBuildableXcodeproj.skipKotlinFrameworkDependencies"] = "true"
         }
     }
 

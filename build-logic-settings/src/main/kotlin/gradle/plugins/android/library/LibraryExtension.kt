@@ -85,8 +85,9 @@ internal data class LibraryExtension(
 ) : TestedExtension(), InternalLibraryExtension {
 
     context(Project)
-    override fun applyTo() {
-        super<TestedExtension>.applyTo()
-        super<InternalLibraryExtension>.applyTo()
-    }
+    override fun applyTo() =
+        project.pluginManager.withPlugin("com.android.library") {
+            super<TestedExtension>.applyTo()
+            super<InternalLibraryExtension>.applyTo()
+        }
 }

@@ -10,10 +10,8 @@ public class ComposePlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            projectProperties.compose?.takeIf {
-                pluginManager.hasPlugin("org.jetbrains.compose") &&
-                    pluginManager.hasPlugin("org.jetbrains.kotlin.plugin.compose")
-            }?.applyTo()
+            // Apply compose properties.
+            projectProperties.compose?.applyTo()
         }
     }
 }

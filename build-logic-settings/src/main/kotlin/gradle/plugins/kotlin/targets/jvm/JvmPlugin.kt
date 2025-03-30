@@ -5,6 +5,7 @@ import gradle.accessors.projectProperties
 import gradle.api.configureEach
 import gradle.plugins.kotlin.mpp.KotlinAndroidTarget
 import gradle.plugins.project.ProjectLayout
+import org.gradle.api.NamedDomainObjectCollection
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.ApplicationPlugin
@@ -17,26 +18,14 @@ internal class JvmPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (projectProperties.kotlin?.targets.orEmpty().none { target -> target is KotlinJvmTarget }) {
-                return@with
-            }
-
             registerJvmStressTest()
-
             registerJavaCodegenTestTask()
 
-            // When there are android targets disable KotlinJvmTarget.withJava property and JavaPlugin
-            if (projectProperties.kotlin?.targets.orEmpty().any { target -> target is KotlinAndroidTarget }) {
-                return@with
-            }
-
-            // Apply java properteis.
+            // Apply java properties.
             projectProperties.java?.applyTo()
 
             // Apply java application properties.
-            projectProperties.application?.takeIf {
-                pluginManager.hasPlugin("application") && projectProperties.compose?.enabled != true
-            }?.applyTo()
+            projectProperties.application?.applyTo()
         }
     }
 
@@ -44,7 +33,6 @@ internal class JvmPlugin : Plugin<Project> {
         val jvmTest = tasks.withType<KotlinJvmTest>()
 
         if (jvmTest.isNotEmpty()) {
-
             tasks.register<Test>("stressTest") {
                 classpath = files(jvmTest.map { it.classpath })
                 testClassesDirs = files(jvmTest.map { it.testClassesDirs })
@@ -76,31 +64,34 @@ internal class JvmPlugin : Plugin<Project> {
     private fun Project.registerJavaCodegenTestTask() {
         /**
          * This is an intermediate source set to make sure that we do not have expect/actual
-         * in the same Kotlin module
+         *in the same Kotlin module
          */
-        val commonJavaCodegenTest = kotlin.sourceSets.create("commonJavaCodegenTest") {
-            when (projectProperties.layout) {
-                is ProjectLayout.Flat -> kotlin.srcDir("test")
-                else -> kotlin.srcDir("src/commonTest/kotlin")
+        kotlin.targets.withType<org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget>()
+            .takeIf(NamedDomainObjectCollection<*>::isNotEmpty)?.let { jvmTargets ->
+                val commonJavaCodegenTest = kotlin.sourceSets.create("commonJavaCodegenTest") {
+                    when (projectProperties.layout) {
+                        is ProjectLayout.Flat -> kotlin.srcDir("test")
+                        else -> kotlin.srcDir("src/commonTest/kotlin")
+                    }
+                }
+
+                jvmTargets.configureEach { jvmTarget ->
+                    val javaCodegenCompilation = jvmTarget.compilations.create("javaCodegenTest")
+
+                    val testRun = jvmTarget.testRuns.create("javaCodegen")
+
+                    testRun.setExecutionSourceFrom(javaCodegenCompilation)
+
+                    val testCompileClasspath = configurations.getByName("${jvmTarget.targetName}TestCompileClasspath")
+
+                    javaCodegenCompilation.compileJavaTaskProvider?.configure {
+                        classpath += testCompileClasspath
+                    }
+
+                    javaCodegenCompilation.configurations.compileDependencyConfiguration.extendsFrom(testCompileClasspath)
+                    javaCodegenCompilation.configurations.runtimeDependencyConfiguration?.extendsFrom(configurations.getByName("${jvmTarget.targetName}TestRuntimeClasspath"))
+                    javaCodegenCompilation.defaultSourceSet.dependsOn(commonJavaCodegenTest)
+                }
             }
-        }
-
-        kotlin.targets.withType<org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget>().configureEach { jvmTarget ->
-            val javaCodegenCompilation = jvmTarget.compilations.create("javaCodegenTest")
-
-            val testRun = jvmTarget.testRuns.create("javaCodegen")
-
-            testRun.setExecutionSourceFrom(javaCodegenCompilation)
-
-            val testCompileClasspath = configurations.getByName("${jvmTarget.targetName}TestCompileClasspath")
-
-            javaCodegenCompilation.compileJavaTaskProvider?.configure {
-                classpath += testCompileClasspath
-            }
-
-            javaCodegenCompilation.configurations.compileDependencyConfiguration.extendsFrom(testCompileClasspath)
-            javaCodegenCompilation.configurations.runtimeDependencyConfiguration?.extendsFrom(configurations.getByName("${jvmTarget.targetName}TestRuntimeClasspath"))
-            javaCodegenCompilation.defaultSourceSet.dependsOn(commonJavaCodegenTest)
-        }
     }
 }

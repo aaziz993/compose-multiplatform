@@ -6,6 +6,7 @@ import gradle.api.initialization.DependencyResolutionManagement
 import gradle.api.initialization.PluginManagement
 import gradle.api.initialization.ProjectDescriptor
 import gradle.api.initialization.ScriptHandler
+import gradle.api.publish.PublishingExtension
 import gradle.api.publish.maven.MavenPomDeveloper
 import gradle.api.publish.maven.MavenPomLicense
 import gradle.api.publish.maven.MavenPomScm
@@ -18,9 +19,8 @@ import gradle.plugins.android.BaseExtension
 import gradle.plugins.animalsniffer.model.AnimalSnifferSettings
 import gradle.plugins.apivalidation.ApiValidationExtension
 import gradle.plugins.apple.AppleProjectExtension
-import gradle.plugins.apple.model.AppleSettings
 import gradle.plugins.buildconfig.BuildConfigExtension
-import gradle.plugins.compose.model.CMPSettings
+import gradle.plugins.compose.model.ComposeSettings
 import gradle.plugins.dependencycheck.DependencyCheckExtension
 import gradle.plugins.develocity.model.DevelocitySettings
 import gradle.plugins.doctor.model.DoctorSettings
@@ -32,23 +32,17 @@ import gradle.plugins.karakum.model.KarakumSettings
 import gradle.plugins.knit.model.KnitSettings
 import gradle.plugins.kotlin.allopen.AllOpenExtension
 import gradle.plugins.kotlin.apollo.ApolloExtension
-import gradle.plugins.kotlin.apollo.model.ApolloSettings
 import gradle.plugins.kotlin.atomicfu.AtomicFuExtension
 import gradle.plugins.kotlin.benchmark.BenchmarksExtension
-import gradle.plugins.kotlin.ksp.model.KspSettings
+import gradle.plugins.kotlin.ksp.KspExtension
 import gradle.plugins.kotlin.ktorfit.KtorfitGradleConfiguration
-import gradle.plugins.kotlin.ktorfit.model.KtorfitSettings
 import gradle.plugins.kotlin.mpp.model.KotlinMultiplatformSettings
 import gradle.plugins.kotlin.noarg.NoArgExtension
 import gradle.plugins.kotlin.powerassert.PowerAssertGradleExtension
-import gradle.plugins.kotlin.powerassert.model.PowerAssertSettings
 import gradle.plugins.kotlin.room.RoomExtension
-import gradle.plugins.kotlin.room.model.RoomSettings
 import gradle.plugins.kotlin.rpc.RpcExtension
-import gradle.plugins.kotlin.rpc.model.RpcSettings
 import gradle.plugins.kotlin.serialization.model.SerializationSettings
 import gradle.plugins.kotlin.sqldelight.SqlDelightExtension
-import gradle.plugins.kotlin.sqldelight.model.SqlDelightSettings
 import gradle.plugins.kotlin.targets.web.node.NodeJsEnvSpec
 import gradle.plugins.kotlin.targets.web.npm.NpmExtension
 import gradle.plugins.kotlin.targets.web.yarn.YarnRootEnvSpec
@@ -59,7 +53,6 @@ import gradle.plugins.project.file.ContributingFile
 import gradle.plugins.project.file.LicenseFile
 import gradle.plugins.project.file.LicenseHeaderFile
 import gradle.plugins.project.file.ProjectFile
-import gradle.plugins.publish.model.PublishingSettings
 import gradle.plugins.shadow.model.ShadowSettings
 import gradle.plugins.signing.model.SigningSettings
 import gradle.plugins.sonar.SonarExtension
@@ -84,6 +77,7 @@ import org.gradle.api.plugins.ExtraPropertiesExtension
 import org.gradle.api.provider.ProviderFactory
 import org.gradle.kotlin.dsl.extra
 import org.jetbrains.compose.internal.utils.localPropertiesFile
+import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import org.yaml.snakeyaml.Yaml
 
 internal const val PROJECT_PROPERTIES_FILE = "project.yaml"
@@ -103,6 +97,7 @@ internal data class ProjectProperties(
     val licenseHeaderFile: LicenseHeaderFile? = null,
     val codeOfConductFile: CodeOfConductFile? = null,
     val contributingFile: ContributingFile? = null,
+    val projectFiles: Set<ProjectFile>? = null,
     val buildscript: ScriptHandler? = null,
     val pluginManagement: PluginManagement? = null,
     val plugins: Plugins = Plugins(),
@@ -127,9 +122,7 @@ internal data class ProjectProperties(
     val apiValidation: ApiValidationExtension? = null,
     val animalSniffer: AnimalSnifferSettings? = null,
     val knit: KnitSettings? = null,
-    val publishing: PublishingSettings? = null,
-    val signing: SigningSettings? = null,
-    val ksp: KspSettings? = null,
+    val ksp: KspExtension? = null,
     val karakum: KarakumSettings? = null,
     val allOpen: AllOpenExtension? = null,
     val noArg: NoArgExtension? = null,
@@ -151,10 +144,11 @@ internal data class ProjectProperties(
     val yarn: YarnRootExtension? = null,
     val yarnRootEnv: YarnRootEnvSpec? = null,
     val npm: NpmExtension? = null,
-    val compose: CMPSettings? = null,
-    val tasks: LinkedHashSet<Task<out org.gradle.api.Task>>? = null,
-    val projectFiles: Set<ProjectFile>? = null,
+    val compose: ComposeSettings? = null,
+    val publishing: PublishingExtension? = null,
+    val signing: SigningSettings? = null,
     val cis: Set<CI>? = null,
+    val tasks: LinkedHashSet<Task<out org.gradle.api.Task>>? = null,
     val delegate: SerializableOptionalAnyMap = emptyMap(),
 ) : Map<String, Any?> by delegate {
 
@@ -195,7 +189,15 @@ internal data class ProjectProperties(
             localProperties = loadLocalProperties(
                 project.localPropertiesFile,
             )
+
             // Export extras.
+            // enable Default Kotlin Hierarchy.
+            extraProperties["kotlin.mpp.applyDefaultHierarchyTemplate"] = "true"
+            // ios Compose uses UiKit, so we need to explicitly enable it, since it is experimental.
+            extraProperties["org.jetbrains.compose.experimental.uikit.enabled"] = "true"
+
+            project.extraProperties["generateBuildableXcodeproj.skipKotlinFrameworkDependencies"] = "true"
+
             project.extra.exportExtras()
             // Load project.yaml.
             return load(

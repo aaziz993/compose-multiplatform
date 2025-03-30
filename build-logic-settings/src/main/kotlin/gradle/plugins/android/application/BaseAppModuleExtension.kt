@@ -82,8 +82,9 @@ internal data class BaseAppModuleExtension(
 ) : AppExtension(), InternalApplicationExtension {
 
     context(Project)
-    override fun applyTo() {
-        super<AppExtension>.applyTo()
-        super<InternalApplicationExtension>.applyTo()
-    }
+    override fun applyTo() =
+        project.pluginManager.withPlugin("com.android.application") {
+            super<AppExtension>.applyTo()
+            super<InternalApplicationExtension>.applyTo()
+        }
 }

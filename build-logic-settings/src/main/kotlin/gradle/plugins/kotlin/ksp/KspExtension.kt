@@ -1,40 +1,36 @@
 package gradle.plugins.kotlin.ksp
 
-import gradle.accessors.catalog.libs
 import gradle.accessors.ksp
-import gradle.accessors.settings
 import gradle.api.tryAssign
 import gradle.api.tryFrom
 import gradle.api.trySet
 import gradle.api.trySetFrom
 import gradle.process.CommandLineArgumentProvider
+import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-internal interface KspExtension {
-
+@Serializable
+internal data class KspExtension(
     /**
      * Enables or disables KSP 2, defaults to the `ksp.useKsp2` gradle property or `false` if that's not set.
      *
      * This API is temporary and will be removed once KSP1 is removed.
      */
-    val useKsp2: Boolean?
-    val commandLineArgumentProviders: List<CommandLineArgumentProvider>?
-    val excludedProcessors: Set<String>?
-
+    val useKsp2: Boolean? = null,
+    val commandLineArgumentProviders: List<CommandLineArgumentProvider>? = null,
+    val excludedProcessors: Set<String>? = null,
     // Specify sources that should be excluded from KSP.
     // If you have a task that generates sources, you can call `ksp.excludedSources.from(task)`.
-    val excludedSources: Set<String>?
-
-    val setExcludedSources: Set<String>?
-
-    val arguments: Map<String, String>?
-
+    val excludedSources: Set<String>? = null,
+    val setExcludedSources: Set<String>? = null,
+    val arguments: Map<String, String>? = null,
     // Treat all warning as errors.
-    val allWarningsAsErrors: Boolean?
+    val allWarningsAsErrors: Boolean? = null,
+) {
 
     context(Project)
     fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugin("ksp").id) {
+        project.pluginManager.withPlugin("com.google.devtools.ksp") {
             project.ksp.useKsp2 tryAssign useKsp2
             commandLineArgumentProviders?.forEach(project.ksp::arg)
             excludedProcessors?.forEach(project.ksp::excludeProcessor)
