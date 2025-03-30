@@ -19,6 +19,7 @@ import gradle.plugins.android.sourceset.AndroidSourceSet
 import gradle.plugins.android.split.Splits
 import gradle.plugins.android.test.TestOptions
 import gradle.serialization.serializer.JsonContentPolymorphicSerializer
+import gradle.serialization.serializer.JsonObjectTransformingContentPolymorphicSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -153,6 +154,6 @@ internal interface BaseExtension {
     }
 }
 
-private object BaseExtensionSerializer : JsonContentPolymorphicSerializer<BaseExtension>(
+private object BaseExtensionSerializer : JsonObjectTransformingContentPolymorphicSerializer<BaseExtension>(
     BaseExtension::class,
 )
