@@ -58,7 +58,6 @@ import gradle.plugins.signing.model.SigningSettings
 import gradle.plugins.sonar.SonarExtension
 import gradle.plugins.spotless.SpotlessExtension
 import gradle.plugins.toolchainmanagement.ToolchainManagement
-import gradle.plugins.toolchainmanagement.model.ToolchainManagementSettings
 import gradle.serialization.decodeFromAny
 import java.io.File
 import java.util.*

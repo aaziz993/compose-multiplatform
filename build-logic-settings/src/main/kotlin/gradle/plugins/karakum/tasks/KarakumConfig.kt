@@ -1,8 +1,5 @@
 package gradle.plugins.karakum.tasks
 
-import gradle.accessors.catalog.libs
-
-import gradle.accessors.settings
 import gradle.api.tasks.DefaultTask
 import gradle.api.tasks.applyTo
 import gradle.api.tryAssign

@@ -1,8 +1,6 @@
 package gradle.plugins.kover
 
-import gradle.accessors.catalog.libs
 import gradle.accessors.kover
-import gradle.accessors.settings
 import gradle.api.tryAssign
 import gradle.plugins.kover.currentproject.KoverCurrentProjectVariantsConfig
 import gradle.plugins.kover.reports.KoverReportsConfig

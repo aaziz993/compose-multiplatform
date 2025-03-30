@@ -3,12 +3,10 @@ package gradle.plugins.kotlin.targets.jvm
 import gradle.accessors.kotlin
 import gradle.accessors.projectProperties
 import gradle.api.configureEach
-import gradle.plugins.kotlin.mpp.KotlinAndroidTarget
 import gradle.plugins.project.ProjectLayout
 import org.gradle.api.NamedDomainObjectCollection
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.plugins.ApplicationPlugin
 import org.gradle.api.tasks.testing.Test
 import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.withType

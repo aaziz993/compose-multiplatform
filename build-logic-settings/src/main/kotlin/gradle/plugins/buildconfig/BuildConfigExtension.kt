@@ -1,8 +1,6 @@
 package gradle.plugins.buildconfig
 
 import gradle.accessors.buildConfig
-import gradle.accessors.catalog.libs
-import gradle.accessors.settings
 import gradle.api.applyTo
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

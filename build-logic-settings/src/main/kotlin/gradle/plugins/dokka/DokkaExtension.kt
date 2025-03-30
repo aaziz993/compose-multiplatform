@@ -1,8 +1,6 @@
 package gradle.plugins.dokka
 
-import gradle.accessors.catalog.libs
 import gradle.accessors.dokka
-import gradle.accessors.settings
 import gradle.api.applyTo
 import gradle.api.tryAssign
 import gradle.plugins.dokka.plugin.DokkaPluginParametersBaseSpec

@@ -9,11 +9,12 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
 @Serializable
-internal data class NoArgExtension (
-    val myAnnotations: List<String>?=null,
-    val myPresets: List<String>?=null,
-    val invokeInitializers: Boolean?=null,
-){
+internal data class NoArgExtension(
+    val myAnnotations: List<String>? = null,
+    val myPresets: List<String>? = null,
+    val invokeInitializers: Boolean? = null,
+) {
+
     context(Project)
     fun applyTo() =
         project.pluginManager.withPlugin("org.jetbrains.kotlin.plugin.noarg") {

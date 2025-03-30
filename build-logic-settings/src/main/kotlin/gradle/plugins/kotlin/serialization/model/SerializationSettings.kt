@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
 @Serializable
-internal  class SerializationSettings{
+internal class SerializationSettings {
 
     context(Project)
     fun applyTo() =

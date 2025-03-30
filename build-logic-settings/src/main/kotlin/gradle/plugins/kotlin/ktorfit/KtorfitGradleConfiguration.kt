@@ -1,9 +1,7 @@
 package gradle.plugins.kotlin.ktorfit
 
 import de.jensklingenberg.ktorfit.gradle.ErrorCheckingMode
-import gradle.accessors.catalog.libs
 import gradle.accessors.ktorfit
-import gradle.accessors.settings
 import gradle.api.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

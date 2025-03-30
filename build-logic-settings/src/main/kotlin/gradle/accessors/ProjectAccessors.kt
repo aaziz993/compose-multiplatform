@@ -12,7 +12,7 @@ import de.jensklingenberg.ktorfit.gradle.KtorfitGradleConfiguration
 import gradle.api.maybeNamed
 import gradle.plugins.project.ProjectProperties
 import io.github.sgrishchenko.karakum.gradle.plugin.KarakumExtension
-import java.util.Properties
+import java.util.*
 import kotlinx.atomicfu.plugin.gradle.AtomicFUPluginExtension
 import kotlinx.benchmark.gradle.BenchmarksExtension
 import kotlinx.knit.KnitPluginExtension

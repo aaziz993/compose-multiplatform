@@ -1,10 +1,6 @@
 package gradle.plugins.kotlin.apollo
 
 import gradle.accessors.apollo
-
-import gradle.accessors.catalog.libs
-
-import gradle.accessors.settings
 import gradle.api.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

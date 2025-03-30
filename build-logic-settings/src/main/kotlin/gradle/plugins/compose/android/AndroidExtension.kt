@@ -1,9 +1,7 @@
 package gradle.plugins.compose.android
 
 import gradle.accessors.android
-import gradle.accessors.catalog.libs
 import gradle.accessors.compose
-import gradle.accessors.settings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

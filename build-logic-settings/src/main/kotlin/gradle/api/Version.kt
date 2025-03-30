@@ -3,7 +3,6 @@ package gradle.api
 import gradle.accessors.catalog.libs
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
-import gradle.api.ci.CI
 import gradle.api.ci.current
 import io.github.z4kn4fein.semver.Version
 import net.pearx.kasechange.toCamelCase

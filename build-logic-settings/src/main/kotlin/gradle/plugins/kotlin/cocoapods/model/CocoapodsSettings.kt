@@ -1,12 +1,8 @@
 package gradle.plugins.kotlin.cocoapods.model
 
-import gradle.accessors.catalog.libs
-
-import gradle.accessors.settings
 import gradle.plugins.kotlin.cocoapods.CocoapodsExtension
 import gradle.plugins.kotlin.cocoapods.Pod
 import gradle.plugins.kotlin.targets.nat.FrameworkSettings
-
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType

@@ -1,10 +1,6 @@
 package gradle.plugins.kotlin.allopen
 
 import gradle.accessors.allOpen
-
-import gradle.accessors.catalog.libs
-
-import gradle.accessors.settings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

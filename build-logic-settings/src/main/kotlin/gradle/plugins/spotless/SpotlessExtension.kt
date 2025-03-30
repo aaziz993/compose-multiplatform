@@ -3,8 +3,6 @@
 package gradle.plugins.spotless
 
 import com.diffplug.spotless.LineEnding
-import gradle.accessors.catalog.libs
-import gradle.accessors.settings
 import gradle.accessors.spotless
 import gradle.api.trySet
 import gradle.ifTrue

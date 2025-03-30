@@ -1,10 +1,6 @@
 package gradle.plugins.shadow
 
-import gradle.accessors.catalog.libs
-
 import gradle.accessors.projectProperties
-import gradle.accessors.settings
-import gradle.plugins.shadow.model.ShadowSettings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 

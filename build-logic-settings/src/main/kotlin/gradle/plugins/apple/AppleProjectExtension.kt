@@ -1,9 +1,7 @@
 package gradle.plugins.apple
 
 import gradle.accessors.apple
-import gradle.accessors.catalog.libs
 import gradle.accessors.moduleName
-import gradle.accessors.settings
 import gradle.api.applyTo
 import gradle.plugins.apple.target.AppleTarget
 import gradle.plugins.apple.target.IosAppTarget

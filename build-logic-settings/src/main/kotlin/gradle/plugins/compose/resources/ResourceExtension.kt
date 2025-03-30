@@ -1,11 +1,9 @@
 package gradle.plugins.compose.resources
 
-import gradle.accessors.catalog.libs
 import gradle.accessors.compose
 import gradle.accessors.kotlin
 import gradle.accessors.projectProperties
 import gradle.accessors.resources
-import gradle.accessors.settings
 import gradle.accessors.sourceSetsToComposeResourcesDirs
 import gradle.api.trySet
 import gradle.plugins.project.ProjectLayout

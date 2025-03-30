@@ -1,13 +1,10 @@
 package gradle.api.repositories
 
-import gradle.accessors.catalog.libs
 import gradle.accessors.node
 import gradle.accessors.nodeJsEnv
 import gradle.accessors.projectProperties
-import gradle.accessors.settings
 import gradle.accessors.yarn
 import gradle.accessors.yarnEnv
-import org.gradle.kotlin.dsl.assign
 import gradle.api.ci.CI
 import java.net.URI
 import org.gradle.api.Project
@@ -16,6 +13,7 @@ import org.gradle.api.artifacts.repositories.IvyArtifactRepository
 import org.gradle.api.artifacts.repositories.MavenArtifactRepository
 import org.gradle.api.initialization.Settings
 import org.gradle.internal.cc.base.logger
+import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.withGroovyBuilder
 import org.gradle.util.GradleVersion
 

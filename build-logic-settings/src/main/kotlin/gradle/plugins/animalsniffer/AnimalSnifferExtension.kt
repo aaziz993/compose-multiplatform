@@ -1,10 +1,6 @@
 package gradle.plugins.animalsniffer
 
 import gradle.accessors.animalSniffer
-
-import gradle.accessors.catalog.libs
-
-import gradle.accessors.settings
 import gradle.api.trySet
 import gradle.plugins.quality.CodeQualityExtension
 import kotlinx.serialization.Serializable

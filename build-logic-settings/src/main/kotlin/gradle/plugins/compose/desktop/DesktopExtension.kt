@@ -1,9 +1,7 @@
 package gradle.plugins.compose.desktop
 
-import gradle.accessors.catalog.libs
 import gradle.accessors.compose
 import gradle.accessors.desktop
-import gradle.accessors.settings
 import gradle.plugins.compose.desktop.application.JvmApplication
 import gradle.plugins.compose.desktop.nativeapplication.NativeApplication
 import kotlinx.serialization.Serializable

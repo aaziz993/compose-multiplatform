@@ -1,17 +1,10 @@
 package gradle.plugins.apple
 
 import gradle.accessors.apple
-
-import gradle.accessors.catalog.libs
-
 import gradle.accessors.projectProperties
-import gradle.accessors.settings
-import gradle.plugins.kotlin.targets.nat.apple.KotlinAppleTarget
 import gradle.plugins.project.ProjectLayout
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.jetbrains.amper.gradle.apple.AppleBindingPluginPart
-import org.jetbrains.kotlin.gradle.plugin.extraProperties
 
 internal class ApplePlugin : Plugin<Project> {
 

@@ -1,9 +1,6 @@
 package gradle.plugins.kotlin.cocoapods
 
-import gradle.accessors.catalog.libs
-
 import gradle.accessors.projectProperties
-import gradle.accessors.settings
 import gradle.plugins.kotlin.cocoapods.model.CocoapodsSettings
 import org.gradle.api.Plugin
 import org.gradle.api.Project

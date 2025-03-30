@@ -1,8 +1,6 @@
 package gradle.plugins.kotlin.mpp
 
-import gradle.accessors.catalog.libs
 import gradle.accessors.kotlin
-import gradle.accessors.settings
 import gradle.plugins.kotlin.HasConfigurableKotlinCompilerOptions
 import gradle.plugins.kotlin.KotlinProjectExtension
 import gradle.plugins.kotlin.KotlinTargetsContainer

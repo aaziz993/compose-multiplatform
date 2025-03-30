@@ -1,8 +1,6 @@
 package gradle.plugins.dependencycheck
 
-import gradle.accessors.catalog.libs
 import gradle.accessors.dependencyCheck
-import gradle.accessors.settings
 import gradle.api.applyTo
 import gradle.api.tryAddAll
 import gradle.api.trySet

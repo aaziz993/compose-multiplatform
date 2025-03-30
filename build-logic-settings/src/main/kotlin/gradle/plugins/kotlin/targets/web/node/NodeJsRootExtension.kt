@@ -1,9 +1,6 @@
 package gradle.plugins.kotlin.targets.web.node
 
-import gradle.accessors.catalog.libs
 import gradle.accessors.node
-
-import gradle.accessors.settings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension

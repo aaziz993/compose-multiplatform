@@ -1,7 +1,5 @@
 package gradle.plugins.develocity
 
-import gradle.accessors.catalog.libs
-
 import gradle.api.tryAssign
 import gradle.plugins.develocity.buildscan.BuildScanConfiguration
 import org.gradle.api.initialization.Settings
