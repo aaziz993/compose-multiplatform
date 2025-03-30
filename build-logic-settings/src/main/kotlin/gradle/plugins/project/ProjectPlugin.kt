@@ -27,6 +27,7 @@ import gradle.plugins.kotlin.allopen.AllOpenPlugin
 import gradle.plugins.kotlin.apollo.ApolloPlugin
 import gradle.plugins.kotlin.atomicfu.AtomicFUPlugin
 import gradle.plugins.kotlin.benchmark.BenchmarkPlugin
+import gradle.plugins.kotlin.cocoapods.CocoapodsPlugin
 import gradle.plugins.kotlin.filterKotlinTargets
 import gradle.plugins.kotlin.ksp.KspPlugin
 import gradle.plugins.kotlin.ktorfit.KtorfitPlugin
@@ -149,6 +150,7 @@ public class ProjectPlugin : Plugin<Project> {
             plugins.apply(ApolloPlugin::class.java)
             plugins.apply(PowerAssertPlugin::class.java)
             plugins.apply(ApplePlugin::class.java) // doesn't depend on mpp
+            plugins.apply(CocoapodsPlugin::class.java)
             plugins.apply(AndroidPlugin::class.java) // doesn't depend on mpp
             plugins.apply(MPPPlugin::class.java) // need android library or application plugin applied.
             plugins.apply(JvmPlugin::class.java) //  apply after mpp plugin to deal with jvm targets.

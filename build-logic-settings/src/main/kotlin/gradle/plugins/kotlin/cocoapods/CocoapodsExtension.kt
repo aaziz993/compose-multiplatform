@@ -25,94 +25,76 @@ import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.cocoapods.CocoapodsExtension
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
 
-internal interface CocoapodsExtension {
-
+@Serializable
+internal data class CocoapodsExtension(
     /**
      * Configure version of the pod
      */
-    val version: String?
-
+    val version: String? = null,
     /**
      * Configure authors of the pod built from this project.
      */
-    val authors: String?
-
+    val authors: String? = null,
     /**
      * Configure existing file `Podfile`.
      */
-    val podfile: String?
-
+    val podfile: String? = null,
     /**
      * Setup plugin not to produce podspec file for cocoapods section
      */
-    val needPodspec: Boolean?
-
+    val needPodspec: Boolean? = null,
     /**
      * Configure name of the pod built from this project.
      */
-    val name: String?
-
+    val name: String? = null,
     /**
      * Configure license of the pod built from this project.
      */
-    val license: String?
-
+    val license: String? = null,
     /**
      * Configure description of the pod built from this project.
      */
-    val summary: String?
-
+    val summary: String? = null,
     /**
      * Configure homepage of the pod built from this project.
      */
-    val homepage: String?
-
+    val homepage: String? = null,
     /**
      * Configure location of the pod built from this project.
      */
-    val source: String?
-
+    val source: String? = null,
     /**
      * Configure other podspec attributes
      */
-    val extraSpecAttributes: Map<String, String>?
-    val setExtraSpecAttributes: Map<String, String>?
-
+    val extraSpecAttributes: Map<String, String>? = null,
+    val setExtraSpecAttributes: Map<String, String>? = null,
     /**
      * Configurre framework of the pod built from this project.
      */
-    val framework: FrameworkSettings?
-
-    val ios: PodspecPlatformSettings?
-
-    val osx: PodspecPlatformSettings?
-
-    val tvos: PodspecPlatformSettings?
-
-    val watchos: PodspecPlatformSettings?
-
+    val framework: FrameworkSettings? = null,
+    val ios: PodspecPlatformSettings? = null,
+    val osx: PodspecPlatformSettings? = null,
+    val tvos: PodspecPlatformSettings? = null,
+    val watchos: PodspecPlatformSettings? = null,
     /**
      * Configure custom Xcode Configurations to Native Build Types mapping
      */
-    val xcodeConfigurationToNativeBuildType: Map<String, NativeBuildType>?
-    val setXcodeConfigurationToNativeBuildType: Map<String, NativeBuildType>?
-
+    val xcodeConfigurationToNativeBuildType: Map<String, NativeBuildType>? = null,
+    val setXcodeConfigurationToNativeBuildType: Map<String, NativeBuildType>? = null,
     /**
      * Configure output directory for pod publishing
      */
-    val publishDir: String?
-
-    val specRepos: CocoapodsDependency.SpecRepos?
-
+    val publishDir: String? = null,
+    val specRepos: CocoapodsDependency.SpecRepos? = null,
     /**
      * Add a CocoaPods dependency to the pod built from this project.
      *
      * @param linkOnly designates that the pod will be used only for dynamic framework linking and not for the cinterops. Code from it won't
      * be accessible for referencing from Kotlin but its native symbols will be visible while linking the framework.
      */
-    val pods: Set<Pod>?
-
-    val podDependencies: Set<CocoapodsDependency>?
+    val pods: Set<Pod>? = null,
+    val podDependencies: Set<CocoapodsDependency>? = null,
+) {
 
     context(Project)
     fun applyTo() =

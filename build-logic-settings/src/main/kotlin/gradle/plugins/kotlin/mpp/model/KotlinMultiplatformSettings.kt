@@ -4,7 +4,7 @@ import gradle.plugins.java.JavaToolchainSpec
 import gradle.plugins.kotlin.KotlinCommonCompilerOptionsImpl
 import gradle.plugins.kotlin.KotlinSourceSet
 import gradle.plugins.kotlin.KotlinTarget
-import gradle.plugins.kotlin.cocoapods.model.CocoapodsSettings
+import gradle.plugins.kotlin.cocoapods.CocoapodsExtension
 import gradle.plugins.kotlin.hierarchy.KotlinHierarchyBuilder
 import gradle.plugins.kotlin.mpp.KotlinMultiplatformExtension
 import gradle.plugins.kotlin.mpp.Metadata
@@ -27,7 +27,7 @@ internal data class KotlinMultiplatformSettings(
     override val sourceSets: LinkedHashSet<KotlinSourceSet>? = null,
     override val targets: LinkedHashSet<KotlinTarget<*>>? = null,
     override val applyHierarchyTemplate: KotlinHierarchyBuilder.Root? = null,
-    val cocoapods: CocoapodsSettings? = null,
+    val cocoapods: CocoapodsExtension? = null,
 ) : KotlinMultiplatformExtension() {
 
     context(Project)
