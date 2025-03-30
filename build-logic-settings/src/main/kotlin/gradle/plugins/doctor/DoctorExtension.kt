@@ -23,12 +23,12 @@ internal interface DoctorExtension {
     /**
      * The level at which to warn when a build spends more than this percent garbage collecting.
      */
-    val GCWarningThreshold: Float?
+    val gcWarningThreshold: Float?
 
     /**
      * The level at which to fail when a build spends more than this percent garbage collecting.
      */
-    val GCFailThreshold: Float?
+    val gcFailThreshold: Float?
 
     /**
      * Print a warning to the console if we spend more than this amount of time with Dagger annotation processors.
@@ -96,11 +96,11 @@ internal interface DoctorExtension {
 
     context(Project)
     fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugin("doctor").id) {
+        project.pluginManager.withPlugin(project.settings.libs.plugin("com.osacky.doctor").id) {
             project.doctor.disallowMultipleDaemons tryAssign disallowMultipleDaemons
             project.doctor.downloadSpeedWarningThreshold tryAssign downloadSpeedWarningThreshold
-            project.doctor.GCWarningThreshold tryAssign GCWarningThreshold
-            project.doctor.GCFailThreshold tryAssign GCFailThreshold
+            project.doctor.GCWarningThreshold tryAssign gcWarningThreshold
+            project.doctor.GCFailThreshold tryAssign gcFailThreshold
             project.doctor.daggerThreshold tryAssign daggerThreshold
             project.doctor.enableTestCaching tryAssign enableTestCaching
             project.doctor.failOnEmptyDirectories tryAssign failOnEmptyDirectories

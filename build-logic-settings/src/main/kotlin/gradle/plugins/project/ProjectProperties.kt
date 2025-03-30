@@ -16,11 +16,11 @@ import gradle.collection.deepMerge
 import gradle.collection.resolve
 import gradle.plugins.android.BaseExtension
 import gradle.plugins.animalsniffer.model.AnimalSnifferSettings
-import gradle.plugins.apivalidation.model.ApiValidationSettings
+import gradle.plugins.apivalidation.ApiValidationExtension
 import gradle.plugins.apple.model.AppleSettings
-import gradle.plugins.buildconfig.model.BuildConfigSettings
+import gradle.plugins.buildconfig.BuildConfigExtension
 import gradle.plugins.compose.model.CMPSettings
-import gradle.plugins.dependencycheck.model.DependencyCheckSettings
+import gradle.plugins.dependencycheck.DependencyCheckExtension
 import gradle.plugins.develocity.model.DevelocitySettings
 import gradle.plugins.doctor.model.DoctorSettings
 import gradle.plugins.dokka.model.DokkaSettings
@@ -29,18 +29,19 @@ import gradle.plugins.java.JavaPluginExtension
 import gradle.plugins.java.application.JavaApplication
 import gradle.plugins.karakum.model.KarakumSettings
 import gradle.plugins.knit.model.KnitSettings
-import gradle.plugins.kotlin.allopen.model.AllOpenSettings
+import gradle.plugins.kotlin.allopen.AllOpenExtension
 import gradle.plugins.kotlin.apollo.model.ApolloSettings
-import gradle.plugins.kotlin.atomicfu.model.AtomicFUSettings
-import gradle.plugins.kotlin.benchmark.model.BenchmarkSettings
+import gradle.plugins.kotlin.atomicfu.AtomicFuExtension
+import gradle.plugins.kotlin.benchmark.BenchmarksExtension
 import gradle.plugins.kotlin.ksp.model.KspSettings
 import gradle.plugins.kotlin.ktorfit.model.KtorfitSettings
 import gradle.plugins.kotlin.mpp.model.KotlinMultiplatformSettings
-import gradle.plugins.kotlin.noarg.model.NoArgSettings
+import gradle.plugins.kotlin.noarg.NoArgExtension
 import gradle.plugins.kotlin.powerassert.model.PowerAssertSettings
 import gradle.plugins.kotlin.room.model.RoomSettings
 import gradle.plugins.kotlin.rpc.model.RpcSettings
 import gradle.plugins.kotlin.serialization.model.SerializationSettings
+import gradle.plugins.kotlin.sqldelight.SqlDelightExtension
 import gradle.plugins.kotlin.sqldelight.model.SqlDelightSettings
 import gradle.plugins.kotlin.targets.web.node.NodeJsEnvSpec
 import gradle.plugins.kotlin.targets.web.npm.NpmExtension
@@ -55,8 +56,8 @@ import gradle.plugins.project.file.ProjectFile
 import gradle.plugins.publish.model.PublishingSettings
 import gradle.plugins.shadow.model.ShadowSettings
 import gradle.plugins.signing.model.SigningSettings
-import gradle.plugins.sonar.model.SonarSettings
-import gradle.plugins.spotless.model.SpotlessSettings
+import gradle.plugins.sonar.SonarExtension
+import gradle.plugins.spotless.SpotlessExtension
 import gradle.plugins.toolchainmanagement.model.ToolchainManagementSettings
 import gradle.serialization.decodeFromAny
 import java.io.File
@@ -110,29 +111,29 @@ internal data class ProjectProperties(
     val toolchainManagement: ToolchainManagementSettings? = null,
     val gitHooks: GitHooksSettings? = null,
     val doctor: DoctorSettings? = null,
-    val dependencyCheck: DependencyCheckSettings? = null,
-    val buildConfig: BuildConfigSettings? = null,
-    val spotless: SpotlessSettings? = null,
+    val dependencyCheck: DependencyCheckExtension? = null,
+    val buildConfig: BuildConfigExtension? = null,
+    val spotless: SpotlessExtension? = null,
     val kover: KoverSettings? = null,
-    val sonar: SonarSettings? = null,
+    val sonar: SonarExtension? = null,
     val dokka: DokkaSettings? = null,
     val shadow: ShadowSettings? = null,
-    val apiValidation: ApiValidationSettings? = null,
+    val apiValidation: ApiValidationExtension? = null,
     val animalSniffer: AnimalSnifferSettings? = null,
     val knit: KnitSettings? = null,
     val publishing: PublishingSettings? = null,
     val signing: SigningSettings? = null,
     val ksp: KspSettings? = null,
     val karakum: KarakumSettings? = null,
-    val allOpen: AllOpenSettings? = null,
-    val noArg: NoArgSettings? = null,
-    val atomicFU: AtomicFUSettings? = null,
+    val allOpen: AllOpenExtension? = null,
+    val noArg: NoArgExtension? = null,
+    val atomicFu: AtomicFuExtension? = null,
     val serialization: SerializationSettings? = null,
-    val benchmark: BenchmarkSettings? = null,
+    val benchmark: BenchmarksExtension? = null,
     val ktorfit: KtorfitSettings? = null,
     val apollo: ApolloSettings? = null,
     val rpc: RpcSettings? = null,
-    val sqldelight: SqlDelightSettings? = null,
+    val sqldelight: SqlDelightExtension? = null,
     val room: RoomSettings? = null,
     val powerAssert: PowerAssertSettings? = null,
     val java: JavaPluginExtension? = null,

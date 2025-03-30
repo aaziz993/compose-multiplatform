@@ -1,10 +1,6 @@
 package gradle.plugins.knit
 
-import gradle.accessors.catalog.libs
-
 import gradle.accessors.projectProperties
-import gradle.accessors.settings
-import gradle.plugins.knit.model.KnitSettings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -12,17 +8,16 @@ internal class KnitPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            projectProperties.knit?.takeIf{ pluginManager.hasPlugin("knit") }?.let { knit ->
-                    plugins.apply(project.settings.libs.plugin("knit").id)
+            // Apply knit properties.
+            projectProperties.knit?.applyTo()
 
-                    knit.applyTo()
-
-                    tasks.named("knitPrepare") {
-                        // In order for knit to operate, it should depend on and collect
-                        // all Dokka outputs from each module
-                        dependsOn(tasks.named("dokkaGenerate"))
-                    }
+            project.pluginManager.withPlugin("org.jetbrains.kotlinx.knit") {
+                tasks.named("knitPrepare") {
+                    // In order for knit to operate, it should depend on and collect
+                    // all Dokka outputs from each module
+                    dependsOn(tasks.named("dokkaGenerate"))
                 }
+            }
         }
     }
 }

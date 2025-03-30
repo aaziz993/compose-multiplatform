@@ -1,21 +1,20 @@
 package gradle.plugins.kotlin.sqldelight
 
-import gradle.accessors.catalog.libs
-
-import gradle.accessors.settings
 import gradle.accessors.sqldelight
 import gradle.api.applyTo
 import gradle.api.tryAssign
+import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-internal interface SqlDelightExtension {
-
-    val databases: Set<SqlDelightDatabase>?
-    val linkSqlite: Boolean?
+@Serializable
+internal data class SqlDelightExtension(
+    val databases: Set<SqlDelightDatabase>? = null,
+    val linkSqlite: Boolean? = null,
+) {
 
     context(Project)
     fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugin("sqldelight").id) {
+        project.pluginManager.withPlugin("app.cash.sqldelight") {
             databases?.forEach { database ->
                 database.applyTo(project.sqldelight.databases)
             }

@@ -6,25 +6,23 @@ import gradle.accessors.settings
 import gradle.api.applyTo
 import gradle.api.tryAssign
 import gradle.api.trySet
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-internal abstract class BenchmarksExtension {
-
-    abstract val benchsDescriptionDir: String?
-
-    abstract val buildDir: String?
-
-    abstract val configurations: LinkedHashSet<BenchmarkConfiguration>?
-
-    abstract val kotlinCompilerVersion: String?
-
-    abstract val reportsDir: String?
-
-    abstract val targets: LinkedHashSet<BenchmarkTarget<out kotlinx.benchmark.gradle.BenchmarkTarget>>?
+@Serializable
+internal data class BenchmarksExtension(
+    val benchsDescriptionDir: String? = null,
+    val buildDir: String? = null,
+    val configurations: LinkedHashSet<BenchmarkConfiguration>? = null,
+    val kotlinCompilerVersion: String? = null,
+    val reportsDir: String? = null,
+    val targets: LinkedHashSet<BenchmarkTarget<out @Contextual kotlinx.benchmark.gradle.BenchmarkTarget>>? = null,
+) {
 
     context(Project)
     fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugin("kotlinx.benchmark").id) {
+        project.pluginManager.withPlugin("org.jetbrains.kotlinx.benchmark") {
             project.benchmark::benchsDescriptionDir trySet benchsDescriptionDir
             project.benchmark::buildDir trySet buildDir
 

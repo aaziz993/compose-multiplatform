@@ -109,7 +109,7 @@ import org.jetbrains.kotlin.gradle.targets.native.tasks.KotlinNativeTest
 import org.jetbrains.kotlin.gradle.tasks.KotlinNativeLink
 import org.jetbrains.kotlin.gradle.tasks.KotlinTest
 
-public class ProjectPlugin : Plugin<Project> {
+public class  ProjectPlugin : Plugin<Project> {
 
     override fun apply(target: Project): Unit = with(SLF4JProblemReporterContext()) {
         with(target) {

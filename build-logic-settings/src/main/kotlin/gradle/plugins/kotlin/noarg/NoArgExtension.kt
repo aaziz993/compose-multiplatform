@@ -2,23 +2,21 @@
 
 package gradle.plugins.kotlin.noarg
 
-import gradle.accessors.catalog.libs
 import gradle.accessors.noArg
-
-import gradle.accessors.settings
 import gradle.api.tryAddAll
 import gradle.api.trySet
+import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-internal interface NoArgExtension {
-
-    val myAnnotations: List<String>?
-    val myPresets: List<String>?
-    val invokeInitializers: Boolean?
-
+@Serializable
+internal data class NoArgExtension (
+    val myAnnotations: List<String>?=null,
+    val myPresets: List<String>?=null,
+    val invokeInitializers: Boolean?=null,
+){
     context(Project)
     fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugin("noarg").id) {
+        project.pluginManager.withPlugin("org.jetbrains.kotlin.plugin.noarg") {
             myAnnotations?.let(project.noArg::annotations)
             project.noArg.myPresets tryAddAll myPresets
             project.noArg::invokeInitializers trySet invokeInitializers

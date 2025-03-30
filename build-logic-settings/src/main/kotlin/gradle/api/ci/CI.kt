@@ -2,6 +2,7 @@ package gradle.api.ci
 
 import gradle.accessors.execute
 import gradle.serialization.serializer.JsonObjectTransformingContentPolymorphicSerializer
+import kotlin.reflect.full.companionObject
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.initialization.Settings
@@ -15,7 +16,7 @@ internal sealed class CI {
     abstract val branch: String?
 
     context(Project)
-    abstract val runNumber: String?
+    abstract val run: String?
 
     abstract val dependenciesCheck: Boolean
 
@@ -33,6 +34,15 @@ internal sealed class CI {
 
     abstract val publishRepositories: LinkedHashSet<PublishRepository>
 
+    init {
+        versioning.ci = this
+    }
+
+    abstract class CompanionObject {
+
+        abstract val key: String
+    }
+
     @Serializable
     data class Github(
         override val versioning: Versioning = Versioning(),
@@ -46,21 +56,17 @@ internal sealed class CI {
         override val publishRepositories: LinkedHashSet<PublishRepository> = linkedSetOf(),
     ) : CI() {
 
-        init {
-            versioning.ci = this
-        }
-
         context(Project)
         override val branch: String?
             get() = ref
 
         context(Project)
-        override val runNumber: String?
-            get() = Github.runNumber
+        override val run: String?
+            get() = runNumber
 
-        companion object {
+        companion object : CompanionObject() {
 
-            const val CI_KEY = "GITHUB_ACTION"
+            override val key = "GITHUB_ACTION"
 
             // The GITHUB_REF_NAME provide the reference name.
             val ref: String?
@@ -95,21 +101,17 @@ internal sealed class CI {
         override val publishRepositories: LinkedHashSet<PublishRepository> = linkedSetOf(),
     ) : CI() {
 
-        init {
-            versioning.ci = this
-        }
-
         context(Project)
         override val branch: String?
             get() = gitBranch
 
         context(Project)
-        override val runNumber: String?
+        override val run: String?
             get() = buildNumber
 
-        companion object {
+        companion object : CompanionObject() {
 
-            const val CI_KEY = "TEAMCITY_VERSION"
+            override val key = "TEAMCITY_VERSION"
 
             context(Project)
             val gitBranch: String?
@@ -128,30 +130,28 @@ internal sealed class CI {
         }
     }
 
-    companion object {
+    companion object : CompanionObject() {
 
-        const val CI_KEY = "CI"
+        override val key = "CI"
 
-        private val CI_KEYS_NAMES = mapOf(
-            Github.CI_KEY to Github::class.simpleName,
-            TeamCity.CI_KEY to TeamCity::class.simpleName,
-            CI_KEY to "CI",
-        )
+        private val key_names = CI::class.sealedSubclasses.associate { ci ->
+            (ci.companionObject as CompanionObject).key to ci::class.simpleName
+        } + ("CI" to "CI")
 
         val github: Boolean by lazy {
-            System.getenv().contains(Github.CI_KEY)
+            System.getenv().contains(Github.key)
         }
 
         val teamCity: Boolean by lazy {
-            System.getenv().contains(TeamCity.CI_KEY)
+            System.getenv().contains(TeamCity.key)
         }
 
         val present: Boolean by lazy {
-            CI_KEYS_NAMES.keys.any(System.getenv()::contains)
+            key_names.keys.any(System.getenv()::contains)
         }
 
         val name: String? by lazy {
-            CI_KEYS_NAMES.entries.find { (key, _) -> System.getenv().contains(key) }?.value
+            key_names.entries.find { (key, _) -> System.getenv().contains(key) }?.value
         }
     }
 }

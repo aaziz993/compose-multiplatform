@@ -6,7 +6,6 @@ import gradle.accessors.settings
 import gradle.api.plus
 import gradle.ifTrue
 import gradle.plugins.knit.KnitPluginExtension
-import gradle.api.EnabledSettings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -23,16 +22,16 @@ internal data class KnitSettings(
     override val rootDir: String? = null,
     override val dokkaMultiModuleRoot: String? = null,
     override val defaultLineSeparator: String? = null,
-    override val enabled: Boolean = true,
     val moduleRootsFromIncludes: Boolean = true,
-) : KnitPluginExtension, EnabledSettings {
+) : KnitPluginExtension {
 
     context(Project)
-    override fun applyTo() {
-        super.applyTo()
+    override fun applyTo() =
+        project.pluginManager.withPlugin("org.jetbrains.kotlinx.knit") {
+            super.applyTo()
 
-        moduleRootsFromIncludes.ifTrue {
-            project.knit::moduleRoots + (project.settings.projectProperties.includesAsPaths.orEmpty() + listOf("."))
+            moduleRootsFromIncludes.ifTrue {
+                project.knit::moduleRoots + (project.settings.projectProperties.includesAsPaths.orEmpty() + listOf("."))
+            }
         }
-    }
 }

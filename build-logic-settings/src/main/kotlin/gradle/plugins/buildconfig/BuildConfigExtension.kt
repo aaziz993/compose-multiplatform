@@ -4,15 +4,17 @@ import gradle.accessors.buildConfig
 import gradle.accessors.catalog.libs
 import gradle.accessors.settings
 import gradle.api.applyTo
+import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-internal interface BuildConfigExtension {
-
-    val sourceSets: LinkedHashSet<BuildConfigSourceSet>?
+@Serializable
+internal data class BuildConfigExtension(
+    val sourceSets: LinkedHashSet<BuildConfigSourceSet>? = null,
+) {
 
     context(Project)
     fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugin("buildconfig").id) {
+        project.pluginManager.withPlugin("com.github.gmazzo.buildconfig") {
             sourceSets?.forEach { sourceSet ->
                 sourceSet.applyTo(project.buildConfig.sourceSets)
             }

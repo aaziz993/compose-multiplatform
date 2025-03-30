@@ -7,6 +7,7 @@ import gradle.api.applyTo
 import gradle.api.tryAddAll
 import gradle.api.trySet
 import gradle.plugins.dependencycheck.analyzer.AnalyzerExtension
+import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
 /*
@@ -15,109 +16,92 @@ import org.gradle.api.Project
  * @author Wei Ma
  * @author Jeremy Long
  */
-internal abstract class DependencyCheckExtension {
-
+@Serializable
+internal data class DependencyCheckExtension(
     /**
      * Whether the buildEnv should be analyzed.
      */
-    abstract val scanBuildEnv: Boolean?
-
+    val scanBuildEnv: Boolean? = null,
     /**
      * Whether the dependencies should be analyzed.
      */
-    abstract val scanDependencies: Boolean?
-
+    val scanDependencies: Boolean? = null,
     /**
      * The configuration extension for proxy settings.
      * Allows programmatic configuration of the slack extension
      * @param config the action to configure the slack extension
      * @return the slack extension
      */
-    abstract val slack: SlackExtension?
-
+    val slack: SlackExtension? = null,
     /**
      * The configuration extension that defines the location of the NVD CVE data.
      * Allows programmatic configuration of the nvd extension
      * @param config the action to configure the nvd extension
      * @return the nvd extension
      */
-    abstract val nvd: NvdExtension?
-
+    val nvd: NvdExtension? = null,
     /**
      * The configuration extension that configures the hosted suppressions file.
      * Allows programmatic configuration of the hostedSuppressions extension.
      * @param config the action to configure the hostedSuppressions extension
      * @return the hostedSuppressions extension
      */
-    abstract val hostedSuppressions: HostedSuppressionsExtension?
-
+    val hostedSuppressions: HostedSuppressionsExtension? = null,
     /**
      * Whether the plugin should fail when errors occur.
      */
-    abstract val failOnError: Boolean?
-
+    val failOnError: Boolean? = null,
     /**
      * The configuration extension for data related configuration options.
      * Allows programmatic configuration of the data extension
      * @param config the action to configure the data extension
      * @return the data extension
      */
-    abstract val data: DataExtension?
-
+    val data: DataExtension? = null,
     /**
      * Set to false if the proxy does not support HEAD requests. The default is true.
      */
-    abstract val quickQueryTimestamp: Boolean?
-
+    val quickQueryTimestamp: Boolean? = null,
     /**
      * The directory where the reports will be written. Defaults to 'build/reports'.
      */
-    abstract val outputDirectory: String?
-
+    val outputDirectory: String? = null,
     /**
      * Configuration for the analyzers.
      * Allows programmatic configuration of the analyzer extension
      * @param config the action to configure the analyzers extension
      * @return the analyzers extension
      */
-    abstract val analyzers: AnalyzerExtension?
-
+    val analyzers: AnalyzerExtension? = null,
     /**
      * The path to the suppression file.
      */
-    abstract val suppressionFile: String?
-
+    val suppressionFile: String? = null,
     /**
      * The list of paths to suppression files.
      */
-    abstract val suppressionFiles: Set<String>?
-    abstract val setSuppressionFiles: Set<String>?
-
+    val suppressionFiles: Set<String>? = null,
+    val setSuppressionFiles: Set<String>? = null,
     /**
      * The username for downloading the suppression file(s) from HTTP Basic protected locations
      */
-    abstract val suppressionFileUser: String?
-
+    val suppressionFileUser: String? = null,
     /**
      * The password for downloading the suppression file(s) from HTTP Basic protected locations
      */
-    abstract val suppressionFilePassword: String?
-
+    val suppressionFilePassword: String? = null,
     /**
      * The token for downloading the suppression file(s) from HTTP Bearer protected locations
      */
-    abstract val suppressionFileBearerToken: String?
-
+    val suppressionFileBearerToken: String? = null,
     /**
      * The path to the hints file.
      */
-    abstract val hintsFile: String?
-
+    val hintsFile: String? = null,
     /**
      * Sets whether auto-updating of the NVD CVE/CPE data is enabled.
      */
-    abstract val autoUpdate: Boolean?
-
+    val autoUpdate: Boolean? = null,
     //The following properties are not used via the settings object, instead
     // they are directly used by the check task.
     /**
@@ -132,118 +116,103 @@ internal abstract class DependencyCheckExtension {
      *
      * The default value is true.
      */
-    abstract val skipTestGroups: Boolean?
-
+    val skipTestGroups: Boolean? = null,
     /**
      * The report format to be generated (HTML, XML, CSV, JUNIT, SARIF, ALL). This configuration option has
      * no affect if using this within the Site plugin unless the externalReport is set to true.
      * The default is HTML.
      */
-    abstract val format: String?
-
+    val format: String? = null,
     /**
      * The list of formats to generate to report (HTML, XML, CSV, JUNIT, SARIF, ALL).
      */
-    abstract val formats: List<String>?
-    abstract val setFormats: List<String>?
-
+    val formats: List<String>? = null,
+    val setFormats: List<String>? = null,
     /**
      * Specifies if the build should be failed if a CVSS score above a specified level is identified. The default is
      * 11 which means since the CVSS scores are 0-10, by default the build will never fail.
      */
-    abstract val failBuildOnCVSS: Float?
-
+    val failBuildOnCVSS: Float? = null,
     /**
      * Specifies the CVSS score that should be considered a failure when generating a JUNIT formatted report. The default
      * is 0.0 which means all identified vulnerabilities would be considered a failure.
      */
-    abstract val junitFailOnCVSS: Float?
-
+    val junitFailOnCVSS: Float? = null,
     /**
      * Specifies that if any unused suppression rule is found, the build will fail.
      */
-    abstract val failBuildOnUnusedSuppressionRule: Boolean?
-
+    val failBuildOnUnusedSuppressionRule: Boolean? = null,
     /**
      * Displays a summary of the findings. Defaults to true.
      */
-    abstract val showSummary: Boolean?
-
+    val showSummary: Boolean? = null,
     /**
      * Names of the configurations to scan.
      *
      * This is mutually exclusive with the skipConfigurations property.
      */
-    abstract val scanConfigurations: List<String>?
-    abstract val setScanConfigurations: List<String>?
-
+    val scanConfigurations: List<String>? = null,
+    val setScanConfigurations: List<String>? = null,
     /**
      * Names of the configurations to skip when scanning.
      *
      * This is mutually exclusive with the scanConfigurations property.
      */
-    abstract val skipConfigurations: List<String>?
-    abstract val setSkipConfigurations: List<String>?
-
+    val skipConfigurations: List<String>? = null,
+    val setSkipConfigurations: List<String>? = null,
     /**
      * Paths of the projects to scan.
      *
      * This is mutually exclusive with the skipProjects property.
      */
-    abstract val scanProjects: List<String>?
-    abstract val setScanProjects: List<String>?
-
+    val scanProjects: List<String>? = null,
+    val setScanProjects: List<String>? = null,
     /**
      * Paths of the projects to skip when scanning.
      *
      * This is mutually exclusive with the scanProjects property.
      */
-    abstract val skipProjects: List<String>?
-    abstract val setSkipProjects: List<String>?
-
+    val skipProjects: List<String>? = null,
+    val setSkipProjects: List<String>? = null,
     /**
      * Group prefixes of the modules to skip when scanning.
      *
      * The 'project' prefix can be used to skip all internal dependencies from multi-project build.
      */
-    abstract val skipGroups: List<String>?
-    abstract val setSkipGroups: List<String>?
-
+    val skipGroups: List<String>? = null,
+    val setSkipGroups: List<String>? = null,
     /**
      * The artifact types that will be analyzed in the gradle build.
      */
-    abstract val analyzedTypes: List<String>?
-    abstract val setAnalyzedTypes: List<String>?
-
+    val analyzedTypes: List<String>? = null,
+    val setAnalyzedTypes: List<String>? = null,
     /**
      * whether to skip the execution of dependency-check.
      */
-    abstract val skip: Boolean?
-
+    val skip: Boolean? = null,
     /**
      * A set of files or folders to scan.
      */
-    abstract val scanSet: List<String>?
-    abstract val setScanSet: List<String>?
-
+    val scanSet: List<String>? = null,
+    val setScanSet: List<String>? = null,
     /**
      * Additional CPE to be analyzed.
      * Allows programmatic configuration of additional CPEs to be analyzed
      * @param action the action used to add entries to additional CPEs container.
      */
-    abstract val additionalCpes: LinkedHashSet<AdditionalCpe>?
-
+    val additionalCpes: LinkedHashSet<AdditionalCpe>? = null,
     /**
      * The configuration extension for cache settings.
      * Allows programmatic configuration of the cache extension
      * @param config the action to configure the cache extension
      * @return the cache extension
      */
-    abstract val cache: CacheExtension?
+    val cache: CacheExtension?
+) {
 
     context(Project)
-    open fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugin("dependencycheck").id) {
+    fun applyTo() =
+        project.pluginManager.withPlugin("org.owasp.dependencycheck") {
             project.dependencyCheck::setScanBuildEnv trySet scanBuildEnv
             project.dependencyCheck::setScanDependencies trySet scanDependencies
             slack?.applyTo(project.dependencyCheck.slack)

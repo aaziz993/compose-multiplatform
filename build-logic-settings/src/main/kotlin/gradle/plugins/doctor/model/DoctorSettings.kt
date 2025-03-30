@@ -1,29 +1,20 @@
 package gradle.plugins.doctor.model
 
 import com.osacky.doctor.AppleRosettaTranslationCheckMode
-
-import gradle.accessors.catalog.libs
-
-import gradle.accessors.settings
-import gradle.api.isCI
+import gradle.api.ci.CI
 import gradle.api.services.unregister
 import gradle.plugins.doctor.DoctorExtension
 import gradle.plugins.doctor.JavaHomeHandler
-import gradle.api.EnabledSettings
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
 @Suppress("PropertyName", "ktlint:standard:property-naming")
 @Serializable
 internal data class DoctorSettings(
-    /** Always monitor tasks on CI, but disable it locally by default with providing an option to opt-in.
-     * See 'doctor.enableTaskMonitoring' in gradle.properties for details.
-     */
-    val enableTaskMonitoring: Boolean = true,
     override val disallowMultipleDaemons: Boolean? = null,
     override val downloadSpeedWarningThreshold: Float? = null,
-    override val GCWarningThreshold: Float? = null,
-    override val GCFailThreshold: Float? = null,
+    override val gcWarningThreshold: Float? = null,
+    override val gcFailThreshold: Float? = null,
     override val daggerThreshold: Int? = null,
     override val enableTestCaching: Boolean? = null,
     override val failOnEmptyDirectories: Boolean? = null,
@@ -35,17 +26,20 @@ internal data class DoctorSettings(
     override val warnIfKotlinCompileDaemonFallback: Boolean? = null,
     override val appleRosettaTranslationCheckMode: AppleRosettaTranslationCheckMode? = null,
     override val javaHome: JavaHomeHandler? = null,
-    override val enabled: Boolean = true,
-) : DoctorExtension, EnabledSettings {
+    /** Always monitor tasks on CI, but disable it locally by default with providing an option to opt-in.
+     * See 'doctor.enableTaskMonitoring' in gradle.properties for details.
+     */
+    val enableTaskMonitoring: Boolean = true,
+) : DoctorExtension {
 
     context(Project)
     override fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugin("doctor").id) {
+        project.pluginManager.withPlugin("com.osacky.doctor") {
             super.applyTo()
 
             // Always monitor tasks on CI, but disable it locally by default with providing an option to opt-in.
             // See 'doctor.enableTaskMonitoring' in gradle.properties for details.
-            val enableTasksMonitoring = isCI || enableTaskMonitoring
+            val enableTasksMonitoring = CI.present || enableTaskMonitoring
 
             if (!enableTasksMonitoring) {
                 logger.info("Gradle Doctor task monitoring is disabled.")

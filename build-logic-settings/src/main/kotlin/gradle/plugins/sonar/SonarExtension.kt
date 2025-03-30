@@ -1,10 +1,8 @@
 package gradle.plugins.sonar
 
-import gradle.accessors.catalog.libs
-
-import gradle.accessors.settings
 import gradle.accessors.sonar
 import gradle.api.trySet
+import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
 /**
@@ -28,14 +26,13 @@ import org.gradle.api.Project
  *
  * @param action an action that configures SonarQube properties for the associated Gradle project
  */
-internal interface SonarExtension {
-
+@Serializable
+internal data class SonarExtension(
     /**
      * Defaults to `false`.
      * @return true if the project should be excluded from analysis.
      */
-    val skipProject: Boolean?
-
+    val skipProject: Boolean? = null,
     /**
      * Adds an action that configures SonarQube properties for the associated Gradle project.
      * <p>
@@ -54,16 +51,16 @@ internal interface SonarExtension {
      *
      * @param action an action that configures SonarQube properties for the associated Gradle project
      */
-    val properties: SonarProperties?
-
+    val properties: SonarProperties? = null,
     /**
      * @return Name of the variant to analyze. If null we'll take the first release variant
      */
-    val androidVariant: String?
+    val androidVariant: String? = null,
+) {
 
     context(Project)
     fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugin("sonar").id) {
+        project.pluginManager.withPlugin("org.sonarqube") {
             project.sonar::setSkipProject trySet skipProject
 
             properties?.let { properties ->

@@ -1,16 +1,16 @@
 package gradle.plugins.dokka.model
 
-import gradle.accessors.catalog.libs
-import gradle.accessors.settings
 import gradle.plugins.dokka.DokkaExtension
 import gradle.plugins.dokka.DokkaPublication
 import gradle.plugins.dokka.DokkaSourceSetSpec
 import gradle.plugins.dokka.WorkerIsolation
 import gradle.plugins.dokka.plugin.DokkaPluginParametersBaseSpec
-import gradle.api.EnabledSettings
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.dependencies
+import org.gradle.kotlin.dsl.getValue
+import org.gradle.kotlin.dsl.provideDelegate
 
 @Serializable
 internal data class DokkaSettings(
@@ -26,12 +26,20 @@ internal data class DokkaSettings(
     override val pluginsConfiguration: LinkedHashSet<DokkaPluginParametersBaseSpec<out @Contextual org.jetbrains.dokka.gradle.engine.plugins.DokkaPluginParametersBaseSpec>>? = null,
     override val dokkaEngineVersion: String? = null,
     override val dokkaGeneratorIsolation: WorkerIsolation? = null,
-    override val enabled: Boolean = true,
     val dependenciesFromSubprojects: Boolean = true,
-) : DokkaExtension, EnabledSettings {
+) : DokkaExtension {
 
     context(Project)
-    override fun applyTo() = project.pluginManager.withPlugin(project.settings.libs.plugin("dokka").id) {
+    override fun applyTo() = project.pluginManager.withPlugin("org.jetbrains.dokka") {
         super.applyTo()
+
+        if (dependenciesFromSubprojects) {
+            val dokka by configurations
+            project.dependencies {
+                subprojects.forEach { subproject ->
+                    dokka(subproject)
+                }
+            }
+        }
     }
 }

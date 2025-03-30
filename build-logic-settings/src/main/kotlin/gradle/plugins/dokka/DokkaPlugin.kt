@@ -15,25 +15,8 @@ internal class DokkaPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            projectProperties.dokka?.takeIf{ pluginManager.hasPlugin("dokka") }?.let { dokka ->
-                    plugins.apply(project.settings.libs.plugin("dokka").id)
-                    plugins.apply(project.settings.libs.plugin("dokkaJavadoc").id)
-
-                    dokka.applyTo()
-
-                    if (dokka.dependenciesFromSubprojects) {
-                        configureDependencies()
-                    }
-                }
-        }
-    }
-
-    private fun Project.configureDependencies() {
-        val dokka by configurations
-        dependencies {
-            subprojects.forEach { subproject ->
-                dokka(subproject)
-            }
+            // Apply dokka properties.
+            projectProperties.dokka?.applyTo()
         }
     }
 }
