@@ -134,16 +134,23 @@ public class SettingsPlugin : Plugin<Settings> {
                 settings.plugins.apply(ToolchainManagementPlugin::class.java)
                 settings.plugins.apply(GitHooksPlugin::class.java)
 
-                // Include subprojects.
+                // Include projects.
                 projectProperties.includes?.forEach(::include)
 
-                // Configure subprojects.
+                // Include flat projects.
+                projectProperties.includeFlats?.let(::includeFlat)
+
+                // Include flat builds.
+                projectProperties.includeBuilds?.forEach { (rootProject, configuration) ->
+                    includeBuild(rootProject) {
+                        configuration?.applyTo(this)
+                    }
+                }
+
+                // Apply to configure all above included rojects.
                 projectProperties.projects?.forEach { project ->
                     project.applyTo()
                 }
-
-                // Include flat subprojects.
-                projectProperties.includeFlat?.let(::includeFlat)
 
                 projectProperties.buildCache?.applyTo(buildCache)
             }

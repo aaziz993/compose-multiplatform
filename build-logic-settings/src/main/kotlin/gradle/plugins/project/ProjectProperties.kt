@@ -26,6 +26,7 @@ import gradle.plugins.develocity.model.DevelocitySettings
 import gradle.plugins.doctor.model.DoctorSettings
 import gradle.plugins.dokka.model.DokkaSettings
 import gradle.plugins.githooks.GitHooksExtension
+import gradle.plugins.initialization.includebuild.IncludeBuild
 import gradle.plugins.java.JavaPluginExtension
 import gradle.plugins.java.application.JavaApplication
 import gradle.plugins.karakum.KarakumExtension
@@ -105,7 +106,8 @@ internal data class ProjectProperties(
     val dependencies: Set<Dependency>? = null,
     val cacheRedirector: Boolean = true,
     val includes: Set<String>? = null,
-    val includeFlat: Set<String>? = null,
+    val includeFlats: Set<String>? = null,
+    val includeBuilds: Set<IncludeBuild>? = null,
     val projects: Set<ProjectDescriptor>? = null,
     val buildCache: BuildCacheConfiguration? = null,
     val develocity: DevelocitySettings? = null,
