@@ -12,7 +12,6 @@ plugins:
     - $libs.buildconfig
     - $libs.spotless
     - $libs.sonar
-    - $libs.dokka
     - $libs.binaryCompatibilityValidator
     - $libs.ksp
     - $libs.allopen
@@ -25,7 +24,6 @@ plugins:
     - $libs.kotlinx.rpc
     - $libs.ktorfit
     - $libs.apollo3
-    - $libs.powerAssert
     - $libs.powerAssert
 
 kotlin:
@@ -91,7 +89,7 @@ dependencyCheck:
   format: ALL
 
 # Generating BuildConstants for any kind of Gradle projects: Java, Kotlin, Android, Groovy, etc. Designed for KTS scripts, with experimental support for Kotlin's multi-platform plugin
-buildconfig: {}
+buildconfig: { }
 
 # Can format <antlr | c | c# | c++ | css | flow | graphql | groovy | html | java | javascript | json | jsx | kotlin | less | license headers | markdown | objective-c | protobuf | python | scala | scss | shell | sql | typeScript | vue | yaml | anything> using <gradle | maven | sbt | anything>.
 spotless:
@@ -340,7 +338,7 @@ noarg:
     - data.type.annotation.NoArg
 
 # Multiplatform library that provides the idiomatic and efficient way of using atomic operations in Kotlin.
-atomicfu: {}
+atomicfu: { }
 
 # Compiler plugin, that generates visitor code for serializable classes, runtime library with core serialization API and support libraries with various serialization formats.
 serialization:
