@@ -87,7 +87,7 @@ internal data class ShadowJar(
 
     context(Project)
     override fun applyTo(receiver: ShadowJar) =
-        project.pluginManager.withPlugin(project.settings.libs.plugin("shadow").id) {
+        project.pluginManager.withPlugin("com.gradleup.shadow") {
             super<Jar>.applyTo(receiver)
             super<ShadowSpec>.applyTo(receiver)
 

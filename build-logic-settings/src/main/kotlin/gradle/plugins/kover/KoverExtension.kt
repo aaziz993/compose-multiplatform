@@ -46,7 +46,7 @@ internal interface KoverExtension {
 
     context(Project)
     fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugin("kover").id) {
+        project.pluginManager.withPlugin("org.jetbrains.kotlinx.kover") {
             project.kover.useJacoco tryAssign useJacoco
             project.kover.jacocoVersion tryAssign jacocoVersion
             currentProject?.applyTo(project.kover.currentProject)

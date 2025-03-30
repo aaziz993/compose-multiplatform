@@ -96,7 +96,7 @@ internal interface DoctorExtension {
 
     context(Project)
     fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugin("com.osacky.doctor").id) {
+        project.pluginManager.withPlugin("com.osacky.doctor") {
             project.doctor.disallowMultipleDaemons tryAssign disallowMultipleDaemons
             project.doctor.downloadSpeedWarningThreshold tryAssign downloadSpeedWarningThreshold
             project.doctor.GCWarningThreshold tryAssign gcWarningThreshold
