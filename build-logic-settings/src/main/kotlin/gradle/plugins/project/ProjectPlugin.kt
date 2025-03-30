@@ -124,7 +124,7 @@ public class ProjectPlugin : Plugin<Project> {
 
             // Apply plugins.
             projectProperties.plugins.ids?.map { id -> id.resolvePluginId() }?.forEach(plugins::apply)
-            // preserve order!
+
             plugins.apply(DoctorPlugin::class.java)
             plugins.apply(DependencyCheckPlugin::class.java)
             plugins.apply(AnimalSnifferPlugin::class.java)
@@ -133,7 +133,7 @@ public class ProjectPlugin : Plugin<Project> {
             plugins.apply(KoverPlugin::class.java)
             plugins.apply(SonarPlugin::class.java)
             plugins.apply(DokkaPlugin::class.java)
-            plugins.apply(KnitPlugin::class.java) // make dependOn dokkaGenerate.
+            plugins.apply(KnitPlugin::class.java)
             plugins.apply(ShadowPlugin::class.java)
             plugins.apply(ApiValidationPlugin::class.java)
             plugins.apply(KspPlugin::class.java)

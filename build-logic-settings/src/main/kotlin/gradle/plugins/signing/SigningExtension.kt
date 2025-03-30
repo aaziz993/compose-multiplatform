@@ -69,7 +69,7 @@ internal abstract class SigningExtension : Signer {
     abstract val useInMemoryPgpKeys: InMemoryPgpKeys?
 
     context(Project)
-    fun applyTo() =
+    open fun applyTo() =
         project.pluginManager.withPlugin("signing") {
             project.signing.isRequired = required ?: !project.version.toString().toVersion().isPreRelease
             useGpgCmd?.ifTrue(project.signing::useGpgCmd)

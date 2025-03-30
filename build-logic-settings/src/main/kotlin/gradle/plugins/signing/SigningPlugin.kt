@@ -16,16 +16,12 @@ internal class SigningPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            projectProperties.signing?.takeIf{ pluginManager.hasPlugin("signing") }?.let { signing ->
-                    plugins.apply(SigningPlugin::class.java)
+            projectProperties.signing?.applyTo()
 
-                    signing.applyTo()
-
-                    // NOTE: This is a temporary WA, see KT-61313.
-                    establishSignDependencies()
-
-                    registerGenerateSigningGPGKeyTasks()
-                }
+            project.pluginManager.withPlugin("signing") {
+                // NOTE: This is a temporary WA, see KT-61313.
+                configureSignTask()
+            }
         }
     }
 
@@ -56,7 +52,7 @@ internal class SigningPlugin : Plugin<Project> {
      * Reason: Task ':kotlinx-coroutines-core:publishAndroidNativeArm32PublicationToMavenLocal' uses this output of task ':kotlinx-coroutines-core:signAndroidNativeArm64Publication' without declaring an explicit or implicit dependency.
      * ```
      */
-    fun Project.establishSignDependencies() {
+    private fun Project.configureSignTask() {
         tasks.withType<Sign>().configureEach {
             val pubName = name.removePrefix("sign").removeSuffix("Publication")
             // Gradle#26132 -- establish dependency between sign and link tasks, as well as compile ones
@@ -71,65 +67,6 @@ internal class SigningPlugin : Plugin<Project> {
         // Establish dependency between 'sign' and 'publish*' tasks
         tasks.withType<AbstractPublishToMaven>().configureEach {
             dependsOn(tasks.withType<Sign>())
-        }
-    }
-
-    private fun Project.registerGenerateSigningGPGKeyTasks() {
-        /** Distribute signing gpg key
-         * There are 3 servers supported by Central servers: [ keyserver.ubuntu.com, keys.openpgp.org, pgp.mit.edu ]
-         */
-        projectProperties.plugins.signing.useInMemoryPgpKeys?.defaultSecretKey?.let { key ->
-            tasks.register<Exec>("distributeSigningGPGKey") {
-                description = "Distributes the signing GPG key to servers: [keyserver.ubuntu.com, keys.openpgp.org, pgp.mit.edu]"
-                group = "signing"
-
-                executable = settings.settingsDir.resolve("scripts/gpg/distribute-gpg-key.sh").absolutePath
-
-                args(key)
-            }
-        }
-        projectProperties.plugins.signing.generateGpg?.let { generateGpg ->
-            tasks.register<Exec>("generateSigningGPGKey") {
-                description = "Generates the signing GPG key"
-                group = "signing"
-
-                executable = settings.settingsDir.resolve("scripts/gpg/generate-gpg-key.sh").absolutePath
-
-                args(
-                    generateGpg.keyType,
-                    generateGpg.keyLength,
-                    generateGpg.subkeyType,
-                    generateGpg.subkeyLength,
-                    generateGpg.nameReal ?: projectProperties.developer?.name!!,
-                    generateGpg.nameComment,
-                    generateGpg.nameEmail ?: projectProperties.developer?.email!!,
-                    generateGpg.expireDate,
-                    generateGpg.passphrase,
-                )
-            }
-
-            tasks.register<Exec>("listSigningGPGKey") {
-                description = "List the signing GPG keys"
-                group = "signing"
-
-                executable = settings.settingsDir.resolve("scripts/gpg/list-gpg_keys.sh").absolutePath
-
-                args(
-                    generateGpg.nameReal ?: projectProperties.developer?.name!!,
-                    generateGpg.passphrase,
-                )
-            }
-
-            tasks.register<Exec>("cleanSigningGPGKey") {
-                description = "Clean the signing GPG keys"
-                group = "signing"
-
-                executable = settings.settingsDir.resolve("scripts/gpg/clean-gpg-keys.sh").absolutePath
-
-                args(
-                    generateGpg.nameReal ?: projectProperties.developer?.name!!,
-                )
-            }
         }
     }
 }
