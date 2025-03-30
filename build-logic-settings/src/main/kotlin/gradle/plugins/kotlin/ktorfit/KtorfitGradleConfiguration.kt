@@ -5,16 +5,18 @@ import gradle.accessors.catalog.libs
 import gradle.accessors.ktorfit
 import gradle.accessors.settings
 import gradle.api.trySet
+import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-internal interface KtorfitGradleConfiguration {
-
-    val generateQualifiedTypeName: Boolean?
-    val errorCheckingMode: ErrorCheckingMode?
+@Serializable
+internal data class KtorfitGradleConfiguration(
+    val generateQualifiedTypeName: Boolean? = null,
+    val errorCheckingMode: ErrorCheckingMode? = null,
+) {
 
     context(Project)
     fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugin("ktorfit").id) {
+        project.pluginManager.withPlugin("de.jensklingenberg.ktorfit") {
             project.ktorfit::generateQualifiedTypeName trySet generateQualifiedTypeName
             project.ktorfit::errorCheckingMode trySet errorCheckingMode
         }

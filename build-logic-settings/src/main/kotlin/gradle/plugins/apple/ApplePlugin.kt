@@ -16,10 +16,10 @@ internal class ApplePlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            if (pluginManager.hasPlugin("org.jetbrains.gradle.apple.applePlugin")) {
-                // Apply apple properties.
-                projectProperties.apple?.applyTo()
+            // Apply apple properties.
+            projectProperties.apple?.applyTo()
 
+            if (pluginManager.hasPlugin("org.jetbrains.gradle.apple.applePlugin")) {
                 adjustSourceSets()
             }
 

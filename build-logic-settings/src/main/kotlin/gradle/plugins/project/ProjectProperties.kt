@@ -17,6 +17,7 @@ import gradle.collection.resolve
 import gradle.plugins.android.BaseExtension
 import gradle.plugins.animalsniffer.model.AnimalSnifferSettings
 import gradle.plugins.apivalidation.ApiValidationExtension
+import gradle.plugins.apple.AppleProjectExtension
 import gradle.plugins.apple.model.AppleSettings
 import gradle.plugins.buildconfig.BuildConfigExtension
 import gradle.plugins.compose.model.CMPSettings
@@ -30,15 +31,20 @@ import gradle.plugins.java.application.JavaApplication
 import gradle.plugins.karakum.model.KarakumSettings
 import gradle.plugins.knit.model.KnitSettings
 import gradle.plugins.kotlin.allopen.AllOpenExtension
+import gradle.plugins.kotlin.apollo.ApolloExtension
 import gradle.plugins.kotlin.apollo.model.ApolloSettings
 import gradle.plugins.kotlin.atomicfu.AtomicFuExtension
 import gradle.plugins.kotlin.benchmark.BenchmarksExtension
 import gradle.plugins.kotlin.ksp.model.KspSettings
+import gradle.plugins.kotlin.ktorfit.KtorfitGradleConfiguration
 import gradle.plugins.kotlin.ktorfit.model.KtorfitSettings
 import gradle.plugins.kotlin.mpp.model.KotlinMultiplatformSettings
 import gradle.plugins.kotlin.noarg.NoArgExtension
+import gradle.plugins.kotlin.powerassert.PowerAssertGradleExtension
 import gradle.plugins.kotlin.powerassert.model.PowerAssertSettings
+import gradle.plugins.kotlin.room.RoomExtension
 import gradle.plugins.kotlin.room.model.RoomSettings
+import gradle.plugins.kotlin.rpc.RpcExtension
 import gradle.plugins.kotlin.rpc.model.RpcSettings
 import gradle.plugins.kotlin.serialization.model.SerializationSettings
 import gradle.plugins.kotlin.sqldelight.SqlDelightExtension
@@ -130,17 +136,17 @@ internal data class ProjectProperties(
     val atomicFu: AtomicFuExtension? = null,
     val serialization: SerializationSettings? = null,
     val benchmark: BenchmarksExtension? = null,
-    val ktorfit: KtorfitSettings? = null,
-    val apollo: ApolloSettings? = null,
-    val rpc: RpcSettings? = null,
     val sqldelight: SqlDelightExtension? = null,
-    val room: RoomSettings? = null,
-    val powerAssert: PowerAssertSettings? = null,
+    val room: RoomExtension? = null,
+    val rpc: RpcExtension? = null,
+    val ktorfit: KtorfitGradleConfiguration? = null,
+    val apollo: ApolloExtension? = null,
+    val powerAssert: PowerAssertGradleExtension? = null,
     val java: JavaPluginExtension? = null,
     val application: JavaApplication? = null,
     val kotlin: KotlinMultiplatformSettings? = null,
     val android: BaseExtension? = null,
-    val apple: AppleSettings? = null,
+    val apple: AppleProjectExtension? = null,
     val nodeJsEnv: NodeJsEnvSpec? = null,
     val yarn: YarnRootExtension? = null,
     val yarnRootEnv: YarnRootEnvSpec? = null,

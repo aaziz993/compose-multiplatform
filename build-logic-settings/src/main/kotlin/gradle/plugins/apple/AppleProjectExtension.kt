@@ -8,21 +8,21 @@ import gradle.api.applyTo
 import gradle.plugins.apple.target.AppleTarget
 import gradle.plugins.apple.target.IosAppTarget
 import gradle.plugins.apple.target.IosFrameworkTarget
+import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-internal interface AppleProjectExtension {
-
-    val sourceSets: LinkedHashSet<AppleSourceSet>?
-
-    val targets: LinkedHashSet<AppleTarget<out org.jetbrains.gradle.apple.targets.AppleTarget>>?
-
-    val teamID: String?
-    val iosApp: IosAppTarget?
-    val iosFramework: IosFrameworkTarget?
+@Serializable
+internal data class AppleProjectExtension(
+    val sourceSets: LinkedHashSet<AppleSourceSet>? = null,
+    val targets: LinkedHashSet<AppleTarget<out org.jetbrains.gradle.apple.targets.AppleTarget>>? = null,
+    val teamID: String? = null,
+    val iosApp: IosAppTarget? = null,
+    val iosFramework: IosFrameworkTarget? = null,
+) {
 
     context(Project)
     fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugin("apple").id) {
+        project.pluginManager.withPlugin("org.jetbrains.gradle.apple.applePlugin") {
             sourceSets?.forEach { sourceSet ->
                 sourceSet.applyTo(project.apple.sourceSets)
             }

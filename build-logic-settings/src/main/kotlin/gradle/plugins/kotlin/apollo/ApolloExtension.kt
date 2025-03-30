@@ -6,20 +6,22 @@ import gradle.accessors.catalog.libs
 
 import gradle.accessors.settings
 import gradle.api.tryAssign
+import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-internal interface ApolloExtension {
-
-    val generateSourcesDuringGradleSync: Boolean?
-    val linkSqlite: Boolean?
-    val processors: Set<ApolloKspProcessor>?
-    val androidVariantServices: Set<AndroidVariantService>?
-    val kotlinSourceSetServices: Set<KotlinSourceSetService>?
-    val services: Set<Service>?
+@Serializable
+internal data class ApolloExtension(
+    val generateSourcesDuringGradleSync: Boolean? = null,
+    val linkSqlite: Boolean? = null,
+    val processors: Set<ApolloKspProcessor>? = null,
+    val androidVariantServices: Set<AndroidVariantService>? = null,
+    val kotlinSourceSetServices: Set<KotlinSourceSetService>? = null,
+    val services: Set<Service>? = null,
+) {
 
     context(Project)
     fun applyTo() =
-        project.pluginManager.withPlugin(project.settings.libs.plugin("apollo").id) {
+        project.pluginManager.withPlugin("com.apollographql.apollo3") {
             processors?.forEach { (schema, service, packageName) ->
                 project.apollo.apolloKspProcessor(project.file(schema), service, packageName)
             }
