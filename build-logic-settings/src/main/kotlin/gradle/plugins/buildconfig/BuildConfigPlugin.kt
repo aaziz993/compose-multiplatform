@@ -8,8 +8,8 @@ internal class BuildConfigPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            // Apply buildConfig properties.
-            projectProperties.buildConfig?.applyTo()
+            // Apply buildconfig properties.
+            projectProperties.buildconfig?.applyTo()
         }
     }
 }

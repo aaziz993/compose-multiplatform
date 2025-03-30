@@ -8,8 +8,8 @@ internal class AllOpenPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            // Apply allOpen properties.
-            projectProperties.allOpen?.applyTo()
+            // Apply allopen properties.
+            projectProperties.allopen?.applyTo()
         }
     }
 }

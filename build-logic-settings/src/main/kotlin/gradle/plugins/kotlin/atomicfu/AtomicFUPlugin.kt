@@ -9,7 +9,7 @@ internal class AtomicFUPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             // Apply atomicFu properties
-            projectProperties.atomicFu?.applyTo()
+            projectProperties.atomicfu?.applyTo()
         }
     }
 }

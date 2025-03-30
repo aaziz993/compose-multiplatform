@@ -8,8 +8,8 @@ internal class NoArgPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            // Apply noArg properties.
-            projectProperties.noArg?.applyTo()
+            // Apply noarg properties.
+            projectProperties.noarg?.applyTo()
         }
     }
 }
