@@ -1,6 +1,7 @@
 package gradle.plugins.project
 
 import gradle.accessors.localProperties
+import gradle.api.Version
 import gradle.api.ci.CI
 import gradle.api.initialization.DependencyResolutionManagement
 import gradle.api.initialization.PluginManagement
@@ -64,7 +65,6 @@ import java.io.File
 import java.util.*
 import kotlin.io.path.Path
 import kotlinx.serialization.KeepGeneratedSerializer
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.descriptors.elementNames
 import kotlinx.serialization.json.Json

@@ -1,4 +1,4 @@
-package gradle.plugins.project
+package gradle.api
 
 import gradle.accessors.catalog.libs
 import gradle.accessors.projectProperties
@@ -73,3 +73,5 @@ private object VersionObjectTransformingSerializer :
         }
         else element
 }
+
+internal fun String.toVersion() = io.github.z4kn4fein.semver.Version.parse(this)
