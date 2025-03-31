@@ -10,7 +10,6 @@ import gradle.api.ci.CI
 import gradle.api.maybeNamed
 import gradle.api.repositories.CacheRedirector
 import gradle.api.trySet
-import gradle.api.version
 import gradle.plugins.android.AndroidPlugin
 import gradle.plugins.animalsniffer.AnimalSnifferPlugin
 import gradle.plugins.apivalidation.ApiValidationPlugin
