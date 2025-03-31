@@ -4,6 +4,7 @@ import gradle.api.ProjectNamed
 import gradle.api.applyTo
 import gradle.api.elementType
 import gradle.collection.SerializableAnyMap
+import gradle.reflect.genericTypes
 import gradle.reflect.trySet
 import gradle.serialization.serializer.JsonObjectTransformingContentPolymorphicSerializer
 import groovy.lang.MissingPropertyException
@@ -351,9 +352,10 @@ private class TaskObjectTransformingContentPolymorphicSerializer(serializer: KSe
 )
 
 context(Project)
+@Suppress("UNCHECKED_CAST")
 internal fun <T : org.gradle.api.Task> Task<T>.applyTo(receiver: TaskCollection<out T>) =
     applyTo(receiver) { name, action ->
-        project.tasks.register(name, receiver.elementType(), action)
+        project.tasks.register(name, receiver.genericTypes()[0] as Class<T>, action)
     }
 
 @Serializable

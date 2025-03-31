@@ -10,10 +10,15 @@ import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.JsonContentPolymorphicSerializer
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonPrimitive
+import org.gradle.api.NamedDomainObjectCollection
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
+import org.gradle.api.artifacts.ConfigurationContainer
+import org.gradle.api.artifacts.DependencySubstitutions
 import org.gradle.api.artifacts.PublishArtifact
 import org.gradle.api.publish.Publication
+import org.gradle.api.publish.PublicationContainer
+import org.gradle.api.publish.PublishingExtension
 import org.gradle.plugins.signing.SignOperation
 
 internal interface Signer {
@@ -45,7 +50,7 @@ internal interface Signer {
 
             references
                 .resolveReferences("configurations")
-                .flatMap(configurations::getByNameOrAll)
+
                 .toTypedArray()
                 .let(signConfigurations)
 
@@ -80,9 +85,4 @@ internal object SignContentPolymorphicSerializer : JsonContentPolymorphicSeriali
         if (element is JsonPrimitive) String.serializer() else SignFile.serializer()
 }
 
-context(Project)
-private fun List<String>.resolveReferences(name: String): List<String> {
-    val reference = "$$name."
-    return filter { value -> value.startsWith(reference) }
-        .map { reference -> reference.removePrefix(reference) }
-}
+

@@ -1,6 +1,5 @@
 package gradle.api
 
-import java.lang.reflect.ParameterizedType
 import org.gradle.api.Action
 import org.gradle.api.DomainObjectCollection
 import org.gradle.api.Named
@@ -8,11 +7,6 @@ import org.gradle.api.NamedDomainObjectCollection
 import org.gradle.api.NamedDomainObjectProvider
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.container
-
-@Suppress("UNCHECKED_CAST")
-internal fun <T> NamedDomainObjectCollection<T>.elementType() =
-    (javaClass.getGenericSuperclass() as ParameterizedType)
-        .actualTypeArguments[0] as Class<T>
 
 internal inline fun <reified T : Named> Project.containerize(vararg values: T) =
     container { name ->

@@ -1,10 +1,13 @@
 package gradle.api.artifacts
 
-import gradle.collection.trySet
+import arrow.core.raise.recover
+import gradle.collection.resolveComponentReference
 import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
 import org.gradle.api.artifacts.DependencySubstitution
 import org.gradle.api.artifacts.DependencySubstitutions
+import org.gradle.api.artifacts.component.ComponentSelector
 
 /**
  * Allows replacing dependencies with other dependencies.
@@ -76,8 +79,19 @@ internal data class DependencySubstitutions(
      * }
     </pre> *
      */
-    val substitutes: Set<Substitution>? = null,
+    val substitutes: Set<Substitute>? = null,
 ) {
+
+    context(Project)
+    fun applyTo(receiver: DependencySubstitutions) {
+        substitutes?.forEach { substitute ->
+            receiver.substitute(
+                receiver.resolveComponentSelectorReference(substitute.componentSelector),
+            ).apply {
+                substitute.substitution?.applyTo(this,receiver::resolveComponentSelectorReference)
+            }
+        }
+    }
 
     /**
      * Provides a DSL-friendly mechanism for specifying the target of a substitution.
@@ -125,12 +139,16 @@ internal data class DependencySubstitutions(
         val using: String? = null,
     ) {
 
-        fun applyTo(receiver: DependencySubstitutions.Substitution) {
+        context(Project)
+        fun applyTo(receiver: DependencySubstitutions.Substitution, getComponentSelector: (componentSelector: String) -> ComponentSelector) {
             receiver::because trySet because
             receiver::withClassifier trySet withClassifier
             receiver::withoutClassifier trySet withoutClassifier
             receiver::withoutArtifactSelectors trySet withoutArtifactSelectors
-            receiver::using trySet using?.let()
+            receiver::using trySet using?.let(getComponentSelector)
         }
     }
 }
+
+private fun DependencySubstitutions.resolveComponentSelectorReference(componentSelector: String): ComponentSelector =
+    resolveComponentReference(componentSelector) as ComponentSelector
