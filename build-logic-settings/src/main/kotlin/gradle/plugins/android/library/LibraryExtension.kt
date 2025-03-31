@@ -49,6 +49,7 @@ internal data class LibraryExtension(
     override val compileSdkPreview: String? = null,
     override val compileSdkAddon: CompileSdkAddon? = null,
     override val experimentalProperties: SerializableAnyMap? = null,
+    override val setExperimentalProperties: SerializableAnyMap? = null,
     override val aidlPackagedList: Set<String>? = null,
     override val setAidlPackagedList: Set<String>? = null,
     override val prefab: LinkedHashSet<Prefab>? = null,

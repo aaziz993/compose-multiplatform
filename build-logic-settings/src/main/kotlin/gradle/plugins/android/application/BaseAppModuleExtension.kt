@@ -79,6 +79,7 @@ internal data class BaseAppModuleExtension(
     override val compileSdkPreview: String? = null,
     override val compileSdkAddon: CompileSdkAddon? = null,
     override val experimentalProperties: SerializableAnyMap? = null,
+    override val setExperimentalProperties: SerializableAnyMap? = null,
 ) : AppExtension(), InternalApplicationExtension {
 
     context(Project)
