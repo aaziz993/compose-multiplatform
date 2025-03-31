@@ -12,13 +12,13 @@ internal data class KotlinWasmD8Dsl(
 ) : KotlinJsSubTargetDsl {
 
     context(Project)
-    override fun applyTo(target: org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsSubTargetDsl, distributionName: String) {
-        super.applyTo(target, distributionName)
+    override fun applyTo(receiver: org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsSubTargetDsl, distributionName: String) {
+        super.applyTo(receiver, distributionName)
 
-        target as KotlinWasmD8Dsl
+        receiver as KotlinWasmD8Dsl
 
         runTask?.let { runTask ->
-            target.runTask {
+            receiver.runTask {
                 runTask.applyTo(this)
             }
         }

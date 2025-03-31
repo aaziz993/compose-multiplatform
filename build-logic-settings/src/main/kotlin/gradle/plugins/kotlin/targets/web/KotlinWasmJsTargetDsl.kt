@@ -27,8 +27,7 @@ internal data class KotlinWasmJsTargetDsl(
     override val generateTypeScriptDefinitions: Boolean? = null,
     override val compilerOptions: KotlinJsCompilerOptions? = null,
     override val binaries: KotlinJsBinaryContainer? = null,
-    val d8: Boolean? = null,
-    val d8Dsl: KotlinWasmD8Dsl? = null,
+    val d8: KotlinWasmD8Dsl? = null,
 ) : KotlinWasmTargetDsl<KotlinWasmJsTargetDsl>,
     KotlinJsTargetDsl<KotlinWasmJsTargetDsl> {
 
@@ -37,11 +36,9 @@ internal data class KotlinWasmJsTargetDsl(
         super<KotlinWasmTargetDsl>.applyTo(receiver)
         super<KotlinJsTargetDsl>.applyTo(receiver)
 
-        receiver::d8 trySet d8
-
-        d8Dsl?.let { d8Dsl ->
+        d8?.let { d8 ->
             receiver.d8 {
-                d8Dsl.applyTo(this, "${project.moduleName}-${receiver.targetName}")
+                d8.applyTo(this, "${project.moduleName}-${receiver.targetName}")
             }
         }
     }

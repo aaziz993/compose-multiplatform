@@ -3,14 +3,11 @@
 package gradle.plugins.java.tasks.shadow
 
 import gradle.api.tasks.copy.CopySpec
-import gradle.reflect.trySet
-import gradle.plugins.java.tasks.DependencyFilter
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.JsonContentPolymorphicSerializer
 import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.jsonPrimitive
 import org.gradle.api.Project
 
@@ -18,11 +15,9 @@ internal interface ShadowSpec<T : com.github.jengelman.gradle.plugins.shadow.tas
 
     val relocators: Set<Relocator>?
 
-    val dependencyFilter: DependencyFilter?
+    val dependencies: DependencyFilter?
 
-    val minimize: @Serializable(with = MinimizeContentPolymorphicSerializer::class) Any?
-
-    val dependencyFilterForMinimize: DependencyFilter?
+    val minimize: @Serializable(with = DependencyFilterContentPolymorphicSerializer::class) Any?
 
     /**
      * Syntactic sugar for merging service files in JARs.
@@ -44,9 +39,9 @@ internal interface ShadowSpec<T : com.github.jengelman.gradle.plugins.shadow.tas
 
         relocators?.map(Relocator::toRelocator)?.forEach(receiver::relocate)
 
-        dependencyFilter?.let { dependencyFilter ->
+        dependencies?.let { dependencies ->
             receiver.dependencies {
-                dependencyFilter.applyTo(this)
+                dependencies.applyTo(this)
             }
         }
 
@@ -60,12 +55,6 @@ internal interface ShadowSpec<T : com.github.jengelman.gradle.plugins.shadow.tas
             else -> Unit
         }
 
-        dependencyFilterForMinimize?.let { dependencyFilterForMinimize ->
-            receiver.minimize {
-                dependencyFilterForMinimize.applyTo(this)
-            }
-        }
-
         when (val mergeServiceFiles = mergeServiceFiles) {
             is Boolean -> receiver.mergeServiceFiles()
             is String -> receiver.mergeServiceFiles(mergeServiceFiles)
@@ -76,13 +65,6 @@ internal interface ShadowSpec<T : com.github.jengelman.gradle.plugins.shadow.tas
             receiver.append(append)
         }
     }
-}
-
-internal object MinimizeContentPolymorphicSerializer :
-    JsonContentPolymorphicSerializer<Any>(Any::class) {
-
-    override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
-        if (element is JsonPrimitive) Boolean.serializer() else DependencyFilter.serializer()
 }
 
 internal object MergeServiceFilesContentPolymorphicSerializer :

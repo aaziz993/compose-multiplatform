@@ -1,8 +1,13 @@
-package gradle.plugins.java.tasks
+package gradle.plugins.java.tasks.shadow
 
-import com.github.jengelman.gradle.plugins.shadow.internal.DependencyFilter
+import gradle.accessors.files
 import gradle.api.artifacts.ResolvedDependency
+import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.json.JsonContentPolymorphicSerializer
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonPrimitive
 import org.gradle.api.Project
 
 @Serializable
@@ -30,8 +35,8 @@ internal data class DependencyFilter(
 ) {
 
     context(Project)
-    fun applyTo(receiver: DependencyFilter) {
-        resolve?.map(Set<*>::toTypedArray)?.map(project::files)?.let(receiver::resolve)
+    fun applyTo(receiver: com.github.jengelman.gradle.plugins.shadow.internal.DependencyFilter) {
+        resolve?.map(project::files)?.let(receiver::resolve)
 
         receiver.exclude {
             exclude?.equals(it) != false
@@ -41,4 +46,11 @@ internal data class DependencyFilter(
             include?.equals(it) != false
         }
     }
+}
+
+internal object DependencyFilterContentPolymorphicSerializer :
+    JsonContentPolymorphicSerializer<Any>(Any::class) {
+
+    override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
+        if (element is JsonPrimitive) Boolean.serializer() else DependencyFilter.serializer()
 }

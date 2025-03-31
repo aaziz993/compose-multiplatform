@@ -12,14 +12,8 @@ import gradle.collection.SerializableAnyMap
 import gradle.reflect.trySet
 import gradle.plugins.java.JavaToolchainSpec
 import gradle.plugins.java.ModularitySpec
-import gradle.plugins.java.tasks.DependencyFilter
-import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.json.JsonContentPolymorphicSerializer
-import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonPrimitive
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.withType
@@ -268,7 +262,7 @@ internal abstract class Test<T : org.gradle.api.tasks.testing.Test>
 }
 
 /** Configure tests against different JDK versions. */
-internal fun org.gradle.api.tasks.testing.Test.adjustJvmArgs() =
+private fun org.gradle.api.tasks.testing.Test.adjustJvmArgs() =
     javaLauncher.get().metadata.languageVersion.asInt().let { languageVersion ->
 
         if (languageVersion >= 16) {

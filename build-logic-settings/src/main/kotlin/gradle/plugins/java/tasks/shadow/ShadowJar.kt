@@ -1,6 +1,7 @@
 package gradle.plugins.java.tasks.shadow
 
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import gradle.accessors.files
 import gradle.api.tasks.Expand
 import gradle.api.tasks.FilesMatching
 import gradle.api.tasks.applyTo
@@ -11,7 +12,6 @@ import gradle.api.tasks.copy.IntoContentPolymorphicSerializer
 import gradle.api.tasks.copy.Rename
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.java.manifest.Manifest
-import gradle.plugins.java.tasks.DependencyFilter
 import gradle.plugins.java.tasks.Jar
 import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
@@ -70,14 +70,13 @@ internal data class ShadowJar(
     override val excludes: Set<String>? = null,
     override val setExcludes: Set<String>? = null,
     override val relocators: Set<Relocator>? = null,
-    val configurations: List<Set<String>>? = null,
-    override val dependencyFilter: DependencyFilter? = null,
-    val enableRelocation: Boolean? = null,
-    val relocationPrefix: String? = null,
-    override val minimize: @Serializable(with = MinimizeContentPolymorphicSerializer::class) Any? = null,
-    override val dependencyFilterForMinimize: DependencyFilter? = null,
+    override val dependencies: DependencyFilter? = null,
+    override val minimize: @Serializable(with = DependencyFilterContentPolymorphicSerializer::class) Any? = null,
     override val mergeServiceFiles: @Serializable(with = MergeServiceFilesContentPolymorphicSerializer::class) Any? = null,
     override val append: String? = null,
+    val configurations: List<Set<String>>? = null,
+    val enableRelocation: Boolean? = null,
+    val relocationPrefix: String? = null,
 ) : Jar<ShadowJar>(), ShadowSpec<ShadowJar> {
 
     context(Project)
@@ -86,7 +85,7 @@ internal data class ShadowJar(
             super<Jar>.applyTo(receiver)
             super<ShadowSpec>.applyTo(receiver)
 
-            receiver::setConfigurations trySet configurations?.map(Set<*>::toTypedArray)?.map(project::files)
+            receiver::setConfigurations trySet configurations?.map(project::files)
             receiver::setEnableRelocation trySet enableRelocation
             receiver::setRelocationPrefix trySet relocationPrefix
         }
