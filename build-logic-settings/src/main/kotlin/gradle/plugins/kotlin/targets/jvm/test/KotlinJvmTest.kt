@@ -3,7 +3,6 @@ package gradle.plugins.kotlin.targets.jvm.test
 import gradle.api.tasks.applyTo
 import gradle.api.tasks.test.TestFilter
 import gradle.api.tasks.test.TestLoggingContainer
-import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.java.JavaToolchainSpec
 import gradle.plugins.java.ModularitySpec
@@ -12,6 +11,7 @@ import gradle.plugins.java.test.JUnitPlatformOptions
 import gradle.plugins.java.test.JavaDebugOptions
 import gradle.plugins.java.test.Test
 import gradle.plugins.java.test.TestNGOptions
+import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType

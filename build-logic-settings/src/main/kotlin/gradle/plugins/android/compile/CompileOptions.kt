@@ -3,8 +3,7 @@ package gradle.plugins.android.compile
 import com.android.build.api.dsl.CompileOptions
 import gradle.accessors.catalog.libs
 import gradle.accessors.settings
-
-import gradle.api.trySet
+import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project

@@ -2,7 +2,7 @@ package gradle.plugins.dokka
 
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
-import gradle.api.tryAssign
+import gradle.api.provider.tryAssign
 import gradle.plugins.project.ProjectLayout
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

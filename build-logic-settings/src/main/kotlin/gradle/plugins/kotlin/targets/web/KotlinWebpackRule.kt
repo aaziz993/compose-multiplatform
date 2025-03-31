@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin.targets.web
 
-import gradle.api.tryAssign
-import gradle.ifTrue
+import gradle.api.provider.tryAssign
+import gradle.reflect.trySet
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackRule
 
 internal interface KotlinWebpackRule {
@@ -26,6 +26,6 @@ internal interface KotlinWebpackRule {
         receiver.test tryAssign test
         receiver.include tryAssign include
         receiver.exclude tryAssign exclude
-        validate?.ifTrue(receiver::validate)
+        receiver::validate trySet validate
     }
 }

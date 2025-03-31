@@ -1,9 +1,9 @@
 package gradle.plugins.android.publish
 
 import com.android.build.api.dsl.MultipleVariants
-import gradle.api.trySet
-import gradle.ifTrue
+import gradle.reflect.trySet
 import gradle.plugins.android.flavor.FlavorDimensionAndValues
+import gradle.reflect.trySet
 
 /**
  * Multi variant publishing options.
@@ -26,7 +26,7 @@ internal interface MultipleVariants<T : MultipleVariants> : PublishingOptions<T>
     val includeFlavorDimensionAndValues: List<FlavorDimensionAndValues>?
 
     override fun applyTo(receiver: T) {
-        allVariants?.ifTrue(receiver::allVariants)
+        receiver::allVariants trySet allVariants
 
         receiver::includeBuildTypeValues trySet includeBuildTypeValues
 

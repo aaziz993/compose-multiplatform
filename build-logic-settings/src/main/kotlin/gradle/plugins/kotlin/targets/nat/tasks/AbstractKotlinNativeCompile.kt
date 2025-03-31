@@ -3,12 +3,12 @@ package gradle.plugins.kotlin.targets.nat.tasks
 import gradle.accessors.files
 import gradle.api.tasks.ProducesKlib
 import gradle.api.tasks.applyTo
-import gradle.api.tryPlus
-import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.kotlin.targets.nat.CompilerPluginOptions
 import gradle.plugins.kotlin.targets.nat.KotlinCompilerPluginData
 import gradle.plugins.kotlin.tasks.AbstractKotlinCompileTool
+import gradle.reflect.tryPlus
+import gradle.reflect.trySet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

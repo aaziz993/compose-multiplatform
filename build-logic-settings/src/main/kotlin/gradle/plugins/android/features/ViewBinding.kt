@@ -1,7 +1,7 @@
 package gradle.plugins.android.features
 
 import com.android.build.api.dsl.ViewBinding
-import gradle.api.trySet
+import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 
 /**

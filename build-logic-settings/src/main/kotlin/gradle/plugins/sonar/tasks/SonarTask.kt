@@ -1,11 +1,11 @@
 package gradle.plugins.sonar.tasks
 
-import gradle.act
 import gradle.api.tasks.ConventionTask
 import gradle.api.tasks.applyTo
-import gradle.api.tryPutAll
-import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
+import gradle.collection.tryPutAll
+import gradle.collection.trySet
+import gradle.reflect.trySet
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
 import org.gradle.kotlin.dsl.withType

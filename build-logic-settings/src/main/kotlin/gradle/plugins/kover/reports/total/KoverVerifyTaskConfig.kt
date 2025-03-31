@@ -1,6 +1,6 @@
 package gradle.plugins.kover.reports.total
 
-import gradle.api.tryAssign
+import gradle.api.provider.tryAssign
 import gradle.plugins.kover.reports.verify.KoverVerificationRulesConfig
 import gradle.plugins.kover.reports.verify.KoverVerifyRuleContentPolymorphicSerializer
 import kotlinx.kover.gradle.plugin.dsl.KoverVerifyTaskConfig

@@ -1,6 +1,6 @@
 package gradle.plugins.java.test
 
-import gradle.api.tryAssign
+import gradle.api.provider.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.process.JavaDebugOptions
 

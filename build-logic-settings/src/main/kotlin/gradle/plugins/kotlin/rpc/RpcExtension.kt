@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin.rpc
 
 import gradle.accessors.rpc
-import gradle.api.tryAssign
+import gradle.api.provider.tryAssign
 import kotlinx.rpc.RpcDangerousApi
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

@@ -1,9 +1,9 @@
 package gradle.plugins.android
 
 import com.android.build.api.dsl.ExternalNativeBuildFlags
-import gradle.api.tryPutAll
-import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
+import gradle.collection.tryPutAll
+import gradle.collection.trySet
 import kotlinx.serialization.Serializable
 
 /**

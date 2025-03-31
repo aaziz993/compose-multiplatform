@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin.apollo
 
 import gradle.accessors.apollo
-import gradle.api.tryAssign
+import gradle.api.provider.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

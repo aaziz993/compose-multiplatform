@@ -1,7 +1,7 @@
 package gradle.plugins.develocity.buildscan
 
 import com.gradle.develocity.agent.gradle.scan.BuildScanCaptureConfiguration
-import gradle.api.tryAssign
+import gradle.api.provider.tryAssign
 import kotlinx.serialization.Serializable
 
 @Serializable

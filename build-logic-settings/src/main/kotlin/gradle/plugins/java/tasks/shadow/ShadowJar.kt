@@ -9,11 +9,11 @@ import gradle.api.tasks.copy.FileCopyDetails
 import gradle.api.tasks.copy.FromContentPolymorphicSerializer
 import gradle.api.tasks.copy.IntoContentPolymorphicSerializer
 import gradle.api.tasks.copy.Rename
-import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.java.manifest.Manifest
 import gradle.plugins.java.tasks.DependencyFilter
 import gradle.plugins.java.tasks.Jar
+import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.file.DuplicatesStrategy

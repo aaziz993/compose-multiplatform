@@ -7,13 +7,13 @@ import gradle.accessors.cocoapods
 import gradle.accessors.kotlin
 import gradle.accessors.moduleName
 import gradle.accessors.settings
-import gradle.act
-import gradle.api.tryAddAll
-import gradle.api.tryPlus
-import gradle.api.tryPutAll
-import gradle.api.trySet
-import gradle.ifTrue
+import gradle.collection.tryAddAll
+import gradle.collection.tryPutAll
+import gradle.collection.trySet
+import gradle.reflect.trySet
 import gradle.plugins.kotlin.targets.nat.FrameworkSettings
+import gradle.reflect.tryPlus
+import gradle.reflect.trySet
 import java.net.URI
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
@@ -104,7 +104,7 @@ internal data class CocoapodsExtension(
                 ?: project.settings.libs.versionOrNull("kotlin.cocoapods.version"))
             project.kotlin.cocoapods::authors trySet authors
             project.kotlin.cocoapods::podfile trySet podfile?.let(project::file)
-            needPodspec?.ifTrue(project.kotlin.cocoapods::noPodspec)
+            project.kotlin.cocoapods::noPodspec trySet needPodspec
             project.kotlin.cocoapods.name = this@CocoapodsExtension.name ?: project.moduleName
             project.kotlin.cocoapods::license trySet license
             project.kotlin.cocoapods::summary trySet summary

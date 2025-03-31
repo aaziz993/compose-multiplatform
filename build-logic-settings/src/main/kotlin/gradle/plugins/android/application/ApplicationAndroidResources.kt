@@ -1,9 +1,10 @@
 package gradle.plugins.android.application
 
 import com.android.build.api.dsl.ApplicationAndroidResources
-import gradle.api.tryAddAll
-import gradle.api.trySet
+import gradle.collection.tryAddAll
+import gradle.collection.trySet
 import gradle.plugins.android.AndroidResources
+import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 
 /**

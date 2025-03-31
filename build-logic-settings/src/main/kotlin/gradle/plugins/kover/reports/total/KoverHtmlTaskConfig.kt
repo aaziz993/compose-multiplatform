@@ -1,6 +1,6 @@
 package gradle.plugins.kover.reports.total
 
-import gradle.api.tryAssign
+import gradle.api.provider.tryAssign
 import kotlinx.kover.gradle.plugin.dsl.KoverHtmlTaskConfig
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

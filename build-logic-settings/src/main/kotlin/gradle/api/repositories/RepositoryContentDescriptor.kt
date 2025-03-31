@@ -1,6 +1,6 @@
 package gradle.api.repositories
 
-import gradle.api.trySet
+import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 
 /**

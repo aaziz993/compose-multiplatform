@@ -9,10 +9,9 @@ import com.diffplug.spotless.generic.PipeStepPair
 import gradle.accessors.catalog.libs
 import gradle.accessors.settings
 import gradle.accessors.spotless
-
-import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
-import gradle.ifTrue
+import gradle.reflect.trySet
+import gradle.reflect.trySet
 import gradle.serialization.serializer.JsonObjectTransformingContentPolymorphicSerializer
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.isAccessible
@@ -77,8 +76,8 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
         receiver::targetExcludeIfContentContainsRegex trySet targetExcludeIfContentContainsRegex
         replaces?.forEach { (name, original, after) -> receiver.replace(name, original, after) }
         replaceRegexes?.forEach { (name, regex, replacement) -> receiver.replaceRegex(name, regex, replacement) }
-        trimTrailingWhitespace?.ifTrue(receiver::trimTrailingWhitespace)
-        endWithNewline?.ifTrue(receiver::endWithNewline)
+        receiver::trimTrailingWhitespace trySet trimTrailingWhitespace
+        receiver::endWithNewline trySet endWithNewline
         indentWithSpaces?.let(receiver::indentWithSpaces)
         indentWithTabs?.let(receiver::indentWithTabs)
 
@@ -129,7 +128,7 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
             receiver.toggleOffOn(off, on)
         }
 
-        toggleOffOnDisable?.ifTrue(receiver::toggleOffOnDisable)
+        receiver::toggleOffOnDisable trySet toggleOffOnDisable
     }
 
     context(Project)

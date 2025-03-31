@@ -1,6 +1,6 @@
 package gradle.plugins.kover.reports.total
 
-import gradle.api.tryAssign
+import gradle.api.provider.tryAssign
 import gradle.plugins.kover.reports.filters.KoverReportFiltersConfig
 import kotlinx.kover.gradle.plugin.dsl.KoverReportSetConfig
 import kotlinx.serialization.Serializable

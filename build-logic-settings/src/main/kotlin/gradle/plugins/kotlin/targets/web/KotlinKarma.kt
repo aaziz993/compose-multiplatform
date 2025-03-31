@@ -1,6 +1,6 @@
 package gradle.plugins.kotlin.targets.web
 
-import gradle.ifTrue
+import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -35,26 +35,26 @@ internal data class KotlinKarma(
     fun applyTo(receiver: org.jetbrains.kotlin.gradle.targets.js.testing.karma.KotlinKarma, outputFileName: String) {
         webpackConfig?.applyTo(receiver.webpackConfig, outputFileName)
         useConfigDirectory?.let(receiver::useConfigDirectory)
-        useChrome?.ifTrue(receiver::useChrome)
-        useChromeHeadless?.ifTrue(receiver::useChromeHeadless)
-        useChromeHeadlessNoSandbox?.ifTrue(receiver::useChromeHeadlessNoSandbox)
-        useChromium?.ifTrue(receiver::useChromium)
-        useChromiumHeadless?.ifTrue(receiver::useChromiumHeadless)
-        useChromeCanary?.ifTrue(receiver::useChromeCanary)
-        useChromeCanaryHeadless?.ifTrue(receiver::useChromeCanaryHeadless)
-        useDebuggableChrome?.ifTrue(receiver::useDebuggableChrome)
-        usePhantomJS?.ifTrue(receiver::usePhantomJS)
-        useFirefox?.ifTrue(receiver::useFirefox)
-        useFirefoxHeadless?.ifTrue(receiver::useFirefoxHeadless)
-        useFirefoxDeveloper?.ifTrue(receiver::useFirefoxDeveloper)
-        useFirefoxDeveloperHeadless?.ifTrue(receiver::useFirefoxDeveloperHeadless)
-        useFirefoxAurora?.ifTrue(receiver::useFirefoxAurora)
-        useFirefoxAuroraHeadless?.ifTrue(receiver::useFirefoxAuroraHeadless)
-        useFirefoxNightly?.ifTrue(receiver::useFirefoxNightly)
-        useFirefoxNightlyHeadless?.ifTrue(receiver::useFirefoxNightlyHeadless)
-        useOpera?.ifTrue(receiver::useOpera)
-        useSafari?.ifTrue(receiver::useSafari)
-        useIe?.ifTrue(receiver::useIe)
-        useSourceMapSupport?.ifTrue(receiver::useSourceMapSupport)
+        receiver::useChrome trySet useChrome
+        receiver::useChromeHeadless trySet useChromeHeadless
+        receiver::useChromeHeadlessNoSandbox trySet useChromeHeadlessNoSandbox
+        receiver::useChromium trySet useChromium
+        receiver::useChromiumHeadless trySet useChromiumHeadless
+        receiver::useChromeCanary trySet useChromeCanary
+        receiver::useChromeCanaryHeadless trySet useChromeCanaryHeadless
+        receiver::useDebuggableChrome trySet useDebuggableChrome
+        receiver::usePhantomJS trySet usePhantomJS
+        receiver::useFirefox trySet useFirefox
+        receiver::useFirefoxHeadless trySet useFirefoxHeadless
+        receiver::useFirefoxDeveloper trySet useFirefoxDeveloper
+        receiver::useFirefoxDeveloperHeadless trySet useFirefoxDeveloperHeadless
+        receiver::useFirefoxAurora trySet useFirefoxAurora
+        receiver::useFirefoxAuroraHeadless trySet useFirefoxAuroraHeadless
+        receiver::useFirefoxNightly trySet useFirefoxNightly
+        receiver::useFirefoxNightlyHeadless trySet useFirefoxNightlyHeadless
+        receiver::useOpera trySet useOpera
+        receiver::useSafari trySet useSafari
+        receiver::useIe trySet useIe
+        receiver::useSourceMapSupport trySet useSourceMapSupport
     }
 }

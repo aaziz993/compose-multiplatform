@@ -1,7 +1,7 @@
 package gradle.plugins.android.test
 
 import com.android.build.api.dsl.TestFixtures
-import gradle.api.trySet
+import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 
 /**

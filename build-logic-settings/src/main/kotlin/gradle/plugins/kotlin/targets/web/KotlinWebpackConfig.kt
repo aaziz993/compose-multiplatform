@@ -1,8 +1,9 @@
 package gradle.plugins.kotlin.targets.web
 
-import gradle.api.tryAddAll
-import gradle.api.tryApply
-import gradle.api.trySet
+import gradle.collection.tryAddAll
+import gradle.reflect.tryAddAll
+import gradle.reflect.tryApply
+import gradle.reflect.trySet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonContentPolymorphicSerializer
@@ -174,7 +175,7 @@ internal data class KotlinWebpackConfig(
             receiver::port trySet port
             receiver::proxy tryAddAll proxy?.map(Proxy::toProxy)
             receiver::proxy trySet setProxy?.map(Proxy::toProxy)?.toMutableList()
-            receiver::static tryAddAll static
+            receiver::static tryAddAll  static
             receiver::static trySet setStatic?.toMutableList()
             receiver::contentBase tryAddAll contentBase
             receiver::contentBase trySet setContentBase?.toMutableList()

@@ -4,7 +4,7 @@ import gradle.accessors.kotlin
 import gradle.api.ProjectNamed
 import gradle.api.applyTo
 import gradle.api.publish.maven.MavenPublication
-import gradle.api.trySet
+import gradle.reflect.trySet
 import gradle.serialization.serializer.JsonObjectTransformingContentPolymorphicSerializer
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName

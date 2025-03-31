@@ -1,8 +1,8 @@
 package gradle.plugins.compose.desktop.tasks
 
+import gradle.api.provider.tryAssign
 import gradle.api.tasks.DefaultTask
 import gradle.api.tasks.applyTo
-import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

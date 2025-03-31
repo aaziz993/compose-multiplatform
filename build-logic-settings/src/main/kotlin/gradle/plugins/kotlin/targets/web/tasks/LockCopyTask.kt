@@ -1,10 +1,11 @@
 package gradle.plugins.kotlin.targets.web.tasks
 
+import gradle.api.file.tryAssign
+import gradle.api.file.tryFrom
+import gradle.api.file.trySetFrom
+import gradle.api.provider.tryAssign
 import gradle.api.tasks.DefaultTask
 import gradle.api.tasks.applyTo
-import gradle.api.tryAssign
-import gradle.api.tryFrom
-import gradle.api.trySetFrom
 import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

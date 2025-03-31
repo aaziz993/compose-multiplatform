@@ -1,9 +1,9 @@
 package gradle.plugins.kotlin.targets.web.yarn
 
 import gradle.accessors.yarnEnv
-import gradle.api.tryAddAll
-import gradle.api.tryAssign
-import gradle.api.trySet
+import gradle.api.provider.tryAddAll
+import gradle.api.provider.tryAssign
+import gradle.api.provider.trySet
 import gradle.plugins.kotlin.targets.web.EnvSpec
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

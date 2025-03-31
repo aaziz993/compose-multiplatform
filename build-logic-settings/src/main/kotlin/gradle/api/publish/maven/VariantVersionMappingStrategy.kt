@@ -1,6 +1,6 @@
 package gradle.api.publish.maven
 
-import gradle.ifTrue
+import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.publish.VariantVersionMappingStrategy
 
@@ -26,7 +26,7 @@ internal data class VariantVersionMappingStrategy(
 ) {
 
     fun applyTo(receiver: VariantVersionMappingStrategy) {
-        fromResolutionResult?.ifTrue(receiver::fromResolutionResult)
+        receiver::fromResolutionResult trySet fromResolutionResult
         fromResolutionOf?.let(receiver::fromResolutionOf)
     }
 }

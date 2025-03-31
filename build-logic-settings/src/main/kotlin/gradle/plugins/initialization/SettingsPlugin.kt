@@ -143,6 +143,13 @@ public class SettingsPlugin : Plugin<Settings> {
                 projectProperties.includeBuilds?.forEach { (rootProject, configuration) ->
                     includeBuild(rootProject) {
                         configuration?.applyTo(this)
+
+                        dependencySubstitution {
+                            substitute(module("com.squareup.wire:wire-gradle-plugin"))
+                                .using(project(":wire-gradle-plugin"))
+                            substitute(module("com.squareup.wire:wire-runtime"))
+                                .using(project(":wire-runtime"))
+                        }
                     }
                 }
 

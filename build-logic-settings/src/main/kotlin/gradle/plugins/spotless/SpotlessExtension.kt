@@ -4,8 +4,8 @@ package gradle.plugins.spotless
 
 import com.diffplug.spotless.LineEnding
 import gradle.accessors.spotless
-import gradle.api.trySet
-import gradle.ifTrue
+import gradle.reflect.trySet
+import gradle.reflect.trySet
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -42,9 +42,9 @@ internal data class SpotlessExtension(
             project.spotless::setEnforceCheck trySet enforceCheck
 
             // Applicable only in root project.
-            predeclareDeps?.ifTrue(project.spotless::predeclareDeps)
+            project.spotless::predeclareDeps trySet predeclareDeps
             // Applicable only in root project.
-            predeclareDepsFromBuildscript?.ifTrue(project.spotless::predeclareDepsFromBuildscript)
+            project.spotless::predeclareDepsFromBuildscript trySet predeclareDepsFromBuildscript
 
             // Format files
             formats?.forEach { format ->

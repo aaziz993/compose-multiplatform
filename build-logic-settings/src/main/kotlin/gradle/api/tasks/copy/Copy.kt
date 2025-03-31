@@ -3,8 +3,8 @@ package gradle.api.tasks.copy
 import gradle.api.tasks.Expand
 import gradle.api.tasks.FilesMatching
 import gradle.api.tasks.applyTo
-import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
+import gradle.reflect.trySet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

@@ -1,7 +1,7 @@
 package gradle.api.publish
 
 import gradle.api.Buildable
-import gradle.api.trySet
+import gradle.reflect.trySet
 import org.gradle.api.publish.PublicationArtifact
 
 /**

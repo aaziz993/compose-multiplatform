@@ -2,8 +2,7 @@ package gradle.plugins.java
 
 import gradle.accessors.catalog.libs
 import gradle.accessors.settings
-
-import gradle.api.tryAssign
+import gradle.api.provider.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.jvm.toolchain.JavaLanguageVersion

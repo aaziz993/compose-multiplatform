@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin.benchmark
 
-import gradle.api.trySet
 import gradle.plugins.kotlin.targets.web.KotlinJsIrCompilation
+import gradle.reflect.trySet
 import kotlinx.benchmark.gradle.JsBenchmarksExecutor
 import kotlinx.benchmark.gradle.internal.KotlinxBenchmarkPluginInternalApi
 import kotlinx.serialization.SerialName

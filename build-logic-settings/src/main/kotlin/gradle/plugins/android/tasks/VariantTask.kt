@@ -1,7 +1,7 @@
 package gradle.plugins.android.tasks
 
 import com.android.build.gradle.internal.tasks.VariantTask
-import gradle.api.trySet
+import gradle.reflect.trySet
 
 /** Represents a variant-specific task. */
 internal interface VariantTask<T : VariantTask> {

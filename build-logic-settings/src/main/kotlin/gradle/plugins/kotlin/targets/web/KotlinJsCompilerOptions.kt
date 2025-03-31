@@ -1,6 +1,6 @@
 package gradle.plugins.kotlin.targets.web
 
-import gradle.api.tryAssign
+import gradle.api.provider.tryAssign
 import gradle.plugins.kotlin.KotlinCommonCompilerOptions
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

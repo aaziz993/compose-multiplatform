@@ -1,7 +1,7 @@
 package gradle.plugins.android.application.bundle
 
 import com.android.build.api.dsl.BundleCountrySet
-import gradle.api.trySet
+import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 
 /**

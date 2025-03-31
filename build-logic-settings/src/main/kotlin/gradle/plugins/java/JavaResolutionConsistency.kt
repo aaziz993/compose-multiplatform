@@ -1,6 +1,6 @@
 package gradle.plugins.java
 
-import gradle.ifTrue
+import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.plugins.JavaResolutionConsistency
 
@@ -51,7 +51,7 @@ internal data class JavaResolutionConsistency(
 
     @Suppress("UnstableApiUsage")
     fun applyTo(receiver: JavaResolutionConsistency) {
-        useCompileClasspathVersions?.ifTrue(receiver::useCompileClasspathVersions)
-        useRuntimeClasspathVersions?.ifTrue(receiver::useRuntimeClasspathVersions)
+        receiver::useCompileClasspathVersions trySet useCompileClasspathVersions
+        receiver::useRuntimeClasspathVersions trySet useRuntimeClasspathVersions
     }
 }

@@ -2,7 +2,7 @@ package gradle.plugins.kotlin.sqldelight
 
 import gradle.accessors.sqldelight
 import gradle.api.applyTo
-import gradle.api.tryAssign
+import gradle.api.provider.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

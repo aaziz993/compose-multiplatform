@@ -2,7 +2,7 @@ package gradle.api.tasks
 
 import gradle.accessors.files
 import gradle.api.tasks.util.PatternFilterable
-import gradle.api.trySet
+import gradle.reflect.trySet
 import org.gradle.api.Project
 import org.gradle.api.tasks.SourceTask
 

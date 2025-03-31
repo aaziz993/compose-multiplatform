@@ -1,8 +1,8 @@
 package gradle.api.repositories
 
 import gradle.api.getByNameOrAll
-import gradle.api.tryApply
-import gradle.api.trySet
+import gradle.reflect.tryApply
+import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.artifacts.repositories.ExclusiveContentRepository

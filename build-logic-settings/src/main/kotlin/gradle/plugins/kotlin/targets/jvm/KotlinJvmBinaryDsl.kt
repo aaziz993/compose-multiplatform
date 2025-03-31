@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin.targets.jvm
 
+import gradle.api.provider.tryAssign
 import gradle.api.tasks.copy.CopySpecImpl
-import gradle.api.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation

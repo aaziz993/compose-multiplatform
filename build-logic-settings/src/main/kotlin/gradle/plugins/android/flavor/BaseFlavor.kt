@@ -5,11 +5,12 @@ import gradle.accessors.android
 import gradle.accessors.androidNamespace
 import gradle.accessors.catalog.libs
 import gradle.accessors.settings
-import gradle.api.tryPutAll
-import gradle.api.trySet
+import gradle.collection.tryPutAll
+import gradle.collection.trySet
 import gradle.plugins.android.MissingDimensionStrategy
 import gradle.plugins.android.VariantDimension
 import gradle.plugins.android.VectorDrawables
+import gradle.reflect.trySet
 import org.gradle.api.Project
 
 /**

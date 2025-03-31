@@ -1,15 +1,15 @@
 package gradle.plugins.kotlin.targets.nat
 
 import gradle.accessors.files
+import gradle.api.file.tryFrom
+import gradle.api.file.trySetFrom
 import gradle.api.tasks.applyTo
-import gradle.api.tryFrom
-import gradle.api.tryPlus
-import gradle.api.trySet
-import gradle.api.trySetFrom
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.kotlin.KotlinCommonCompilerToolOptionsImpl
 import gradle.plugins.kotlin.tasks.AbstractKotlinCompileTool
 import gradle.plugins.kotlin.tasks.KotlinToolTask
+import gradle.reflect.tryPlus
+import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType

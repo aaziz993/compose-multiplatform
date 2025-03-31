@@ -1,6 +1,6 @@
 package gradle.plugins.kotlin.targets.web
 
-import gradle.api.tryAssign
+import gradle.api.provider.tryAssign
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.EnvSpec
 

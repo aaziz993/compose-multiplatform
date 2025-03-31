@@ -1,7 +1,7 @@
 package gradle.plugins.compose.desktop.macos
 
-import gradle.api.trySet
 import gradle.plugins.compose.desktop.platform.AbstractPlatformSettings
+import gradle.reflect.trySet
 import org.gradle.api.Project
 import org.jetbrains.compose.desktop.application.dsl.AbstractMacOSPlatformSettings
 

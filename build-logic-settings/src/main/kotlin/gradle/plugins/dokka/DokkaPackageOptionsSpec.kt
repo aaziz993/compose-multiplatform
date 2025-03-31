@@ -1,6 +1,6 @@
 package gradle.plugins.dokka
 
-import gradle.api.tryAssign
+import gradle.api.provider.tryAssign
 import kotlinx.serialization.Serializable
 import org.jetbrains.dokka.gradle.engine.parameters.DokkaPackageOptionsSpec
 import org.jetbrains.dokka.gradle.engine.parameters.VisibilityModifier

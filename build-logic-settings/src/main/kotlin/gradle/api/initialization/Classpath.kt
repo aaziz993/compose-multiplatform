@@ -1,6 +1,7 @@
 package gradle.api.initialization
 
 
+import java.lang.reflect.Field
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.api.artifacts.dsl.RepositoryHandler
@@ -15,7 +16,6 @@ import org.gradle.api.internal.initialization.ClassLoaderScope
 import org.gradle.api.internal.initialization.ScriptClassPathResolver
 import org.gradle.initialization.DefaultSettings
 import org.gradle.internal.classpath.ClassPath
-import java.lang.reflect.Field
 
 private const val DYNAMIC_DEPENDENCIES_CLASSPATH = "dynamicDependenciesClasspath"
 

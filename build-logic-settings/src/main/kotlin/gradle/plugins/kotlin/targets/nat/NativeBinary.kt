@@ -2,11 +2,12 @@ package gradle.plugins.kotlin.targets.nat
 
 import gradle.accessors.moduleName
 import gradle.api.ProjectNamed
-import gradle.api.tryAssign
-import gradle.api.tryPlus
-import gradle.api.tryPutAll
-import gradle.api.trySet
+import gradle.api.provider.tryAssign
+import gradle.collection.tryPutAll
+import gradle.collection.trySet
 import gradle.plugins.project.Dependency
+import gradle.reflect.tryPlus
+import gradle.reflect.trySet
 import gradle.serialization.serializer.JsonObjectTransformingContentPolymorphicSerializer
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.KSerializer

@@ -1,7 +1,7 @@
 package gradle.api.repositories.ivy
 
 import gradle.api.repositories.RepositoryLayout
-import gradle.api.trySet
+import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.artifacts.repositories.IvyPatternRepositoryLayout
 

@@ -1,8 +1,8 @@
 package gradle.plugins.animalsniffer
 
 import gradle.accessors.animalSniffer
-import gradle.api.trySet
 import gradle.plugins.quality.CodeQualityExtension
+import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import ru.vyarus.gradle.plugin.animalsniffer.AnimalSnifferExtension

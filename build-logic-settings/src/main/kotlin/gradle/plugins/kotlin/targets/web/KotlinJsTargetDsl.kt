@@ -3,13 +3,13 @@ package gradle.plugins.kotlin.targets.web
 import gradle.accessors.kotlin
 import gradle.accessors.moduleName
 import gradle.api.applyTo
+import gradle.api.provider.tryAssign
 import gradle.api.publish.maven.MavenPublication
-import gradle.api.tryAssign
-import gradle.api.trySet
-import gradle.ifTrue
+import gradle.reflect.trySet
 import gradle.plugins.kotlin.HasConfigurableKotlinCompilerOptions
 import gradle.plugins.kotlin.KotlinTarget
 import gradle.plugins.kotlin.mpp.HasBinaries
+import gradle.reflect.trySet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -61,10 +61,10 @@ internal interface KotlinJsTargetDsl<T : org.jetbrains.kotlin.gradle.targets.js.
             }
         }
 
-        useCommonJs?.ifTrue(receiver::useCommonJs)
-        useEsModules?.ifTrue(receiver::useEsModules)
+        receiver::useCommonJs trySet useCommonJs
+        receiver::useEsModules trySet useEsModules
         receiver::passAsArgumentToMainFunction trySet passAsArgumentToMainFunction
-        generateTypeScriptDefinitions?.ifTrue(receiver::generateTypeScriptDefinitions)
+        receiver::generateTypeScriptDefinitions trySet generateTypeScriptDefinitions
         binaries?.applyTo(receiver.binaries)
     }
 }

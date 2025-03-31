@@ -2,8 +2,8 @@ package gradle.plugins.android
 
 import gradle.accessors.android
 import gradle.api.ProjectNamed
-import gradle.api.tryAddAll
-import gradle.api.trySet
+import gradle.collection.tryAddAll
+import gradle.reflect.trySet
 import org.gradle.api.Project
 
 /**

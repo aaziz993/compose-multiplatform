@@ -2,9 +2,9 @@ package gradle.plugins.buildconfig.tasks
 
 import com.github.gmazzo.gradle.plugins.BuildConfigTask
 import gradle.accessors.buildConfig
+import gradle.api.provider.tryAssign
 import gradle.api.tasks.DefaultTask
 import gradle.api.tasks.applyTo
-import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.buildconfig.generator.BuildConfigGenerator
 import kotlinx.serialization.Serializable

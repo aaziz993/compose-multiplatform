@@ -1,7 +1,7 @@
 package gradle.plugins.android.split
 
 import com.android.build.gradle.internal.dsl.DensitySplitOptions
-import gradle.api.trySet
+import gradle.collection.trySet
 import kotlinx.serialization.Serializable
 
 @Serializable

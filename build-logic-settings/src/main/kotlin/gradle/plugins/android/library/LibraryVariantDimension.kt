@@ -2,9 +2,10 @@ package gradle.plugins.android.library
 
 import com.android.build.api.dsl.LibraryVariantDimension
 import gradle.accessors.android
-import gradle.api.trySet
+import gradle.collection.trySet
 import gradle.plugins.android.AarMetadata
 import gradle.plugins.android.VariantDimension
+import gradle.reflect.trySet
 import org.gradle.api.Project
 
 /**

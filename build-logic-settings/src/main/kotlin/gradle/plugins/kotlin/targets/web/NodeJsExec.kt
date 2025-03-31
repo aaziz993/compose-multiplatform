@@ -1,9 +1,9 @@
 package gradle.plugins.kotlin.targets.web
 
-import gradle.api.tryAddAll
-import gradle.api.tryAssign
-import gradle.api.trySet
+import gradle.api.file.tryAssign
+import gradle.collection.tryAddAll
 import gradle.plugins.kotlin.targets.web.node.NodeJsRootExtension
+import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsExec

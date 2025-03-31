@@ -1,8 +1,9 @@
 package gradle.plugins.android
 
 import com.android.build.api.dsl.Installation
-import gradle.api.tryAddAll
-import gradle.api.trySet
+import gradle.collection.tryAddAll
+import gradle.collection.trySet
+import gradle.reflect.trySet
 
 /**
  * Local installation options for the adb tool.

@@ -2,7 +2,7 @@ package gradle.plugins.githooks
 
 import gradle.accessors.gitHooks
 import gradle.accessors.settings
-import gradle.api.trySet
+import gradle.reflect.trySet
 import java.net.URI
 import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings

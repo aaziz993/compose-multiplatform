@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin
 
-import gradle.api.tryFrom
-import gradle.api.trySetFrom
+import gradle.api.file.tryFrom
+import gradle.api.file.trySetFrom
 import kotlinx.serialization.Serializable
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilationOutput
 

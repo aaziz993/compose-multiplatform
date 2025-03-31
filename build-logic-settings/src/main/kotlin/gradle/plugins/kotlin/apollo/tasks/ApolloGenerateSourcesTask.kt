@@ -6,12 +6,12 @@ import com.apollographql.apollo3.compiler.TargetLanguage
 import com.apollographql.apollo3.compiler.hooks.ApolloCompilerJavaHooks
 import com.apollographql.apollo3.compiler.hooks.ApolloCompilerKotlinHooks
 import com.apollographql.apollo3.gradle.internal.ApolloGenerateSourcesTask
+import gradle.api.file.tryFrom
+import gradle.api.file.trySetFrom
+import gradle.api.provider.tryAddAll
+import gradle.api.provider.tryAssign
+import gradle.api.provider.tryPutAll
 import gradle.api.tasks.applyTo
-import gradle.api.tryAddAll
-import gradle.api.tryAssign
-import gradle.api.tryFrom
-import gradle.api.tryPutAll
-import gradle.api.trySetFrom
 import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

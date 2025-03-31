@@ -2,7 +2,7 @@ package gradle.plugins.buildconfig
 
 import gradle.api.ProjectNamed
 import gradle.api.applyTo
-import gradle.api.tryAssign
+import gradle.api.provider.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

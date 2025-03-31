@@ -2,7 +2,7 @@ package gradle.plugins.android.sourceset
 
 import com.android.build.api.dsl.AndroidSourceFile
 import gradle.api.ProjectNamed
-import gradle.api.trySet
+import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

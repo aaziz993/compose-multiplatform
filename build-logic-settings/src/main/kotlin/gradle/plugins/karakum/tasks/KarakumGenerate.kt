@@ -1,8 +1,9 @@
 package gradle.plugins.karakum.tasks
 
+import gradle.api.file.tryAssign
+import gradle.api.provider.tryAssign
 import gradle.api.tasks.DefaultTask
 import gradle.api.tasks.applyTo
-import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
 import gradle.doubleQuoted
 import gradle.serialization.decodeMapFromString

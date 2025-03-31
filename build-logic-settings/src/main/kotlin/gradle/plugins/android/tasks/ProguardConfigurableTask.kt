@@ -2,11 +2,12 @@ package gradle.plugins.android.tasks
 
 import com.android.build.gradle.internal.tasks.ProguardConfigurableTask
 import com.android.builder.core.ComponentTypeImpl
+import gradle.api.file.tryAssign
+import gradle.api.file.tryFrom
+import gradle.api.file.trySetFrom
+import gradle.api.provider.tryAddAll
+import gradle.api.provider.tryAssign
 import gradle.api.tasks.applyTo
-import gradle.api.tryAddAll
-import gradle.api.tryAssign
-import gradle.api.tryFrom
-import gradle.api.trySetFrom
 import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

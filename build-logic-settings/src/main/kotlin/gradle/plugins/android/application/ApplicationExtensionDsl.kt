@@ -8,7 +8,7 @@ import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.dsl.ApplicationInstallation
 import com.android.build.api.dsl.ApplicationProductFlavor
 import gradle.accessors.android
-import gradle.api.tryAddAll
+import gradle.collection.tryAddAll
 import gradle.plugins.android.CommonExtension
 import gradle.plugins.android.DependenciesInfo
 import gradle.plugins.android.PrivacySandbox

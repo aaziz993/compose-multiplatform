@@ -4,9 +4,9 @@ import gradle.api.applyTo
 import gradle.api.repositories.ArtifactRepository
 import gradle.api.repositories.AuthenticationSupported
 import gradle.api.repositories.UrlArtifactRepository
-import gradle.api.tryApply
-import gradle.api.trySet
-import gradle.ifTrue
+import gradle.reflect.trySet
+import gradle.reflect.tryApply
+import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler
@@ -121,10 +121,10 @@ internal interface MavenArtifactRepository
     ) {
 
         fun applyTo(receiver: MavenArtifactRepository.MetadataSources) {
-            gradleMetadata?.ifTrue(receiver::gradleMetadata)
-            mavenPom?.ifTrue(receiver::mavenPom)
-            artifact?.ifTrue(receiver::artifact)
-            ignoreGradleMetadataRedirection?.ifTrue(receiver::ignoreGradleMetadataRedirection)
+            receiver::gradleMetadata trySet gradleMetadata
+            receiver::mavenPom trySet mavenPom
+            receiver::artifact trySet artifact
+            receiver::ignoreGradleMetadataRedirection trySet ignoreGradleMetadataRedirection
         }
     }
 }

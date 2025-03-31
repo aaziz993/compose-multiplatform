@@ -1,10 +1,17 @@
 package gradle.collection
 
+import gradle.act
 import java.util.*
 import net.pearx.kasechange.CaseFormat
 import net.pearx.kasechange.formatter.format
 import org.gradle.api.plugins.ExtraPropertiesExtension
 import org.gradle.api.provider.ProviderFactory
+
+public infix fun <E> MutableCollection<E>.tryAddAll(value: Iterable<E>?): Boolean? =
+    value?.let(::addAll)
+
+public infix fun <E> MutableCollection<E>.trySet(value: Iterable<E>?): Boolean? =
+    tryAddAll(value?.act(::clear))
 
 @Suppress("UNCHECKED_CAST")
 internal fun <T : Any> T.resolve(
@@ -49,3 +56,6 @@ private fun String.resolveReference(
             }
     }
     else this
+
+
+

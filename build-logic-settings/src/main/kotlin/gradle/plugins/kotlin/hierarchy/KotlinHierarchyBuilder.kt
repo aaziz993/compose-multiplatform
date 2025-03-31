@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin.hierarchy
 
-import gradle.api.trySet
-import gradle.ifTrue
+import gradle.reflect.trySet
+import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 
@@ -428,40 +428,40 @@ internal interface KotlinHierarchyBuilder<T : org.jetbrains.kotlin.gradle.plugin
             }
         }
 
-        withNative?.ifTrue(receiver::withNative)
-        withApple?.ifTrue(receiver::withApple)
-        withIos?.ifTrue(receiver::withIos)
-        withWatchos?.ifTrue(receiver::withWatchos)
-        withMacos?.ifTrue(receiver::withMacos)
-        withTvos?.ifTrue(receiver::withTvos)
-        withMingw?.ifTrue(receiver::withMingw)
-        withLinux?.ifTrue(receiver::withLinux)
-        withAndroidNative?.ifTrue(receiver::withAndroidNative)
-        withJs?.ifTrue(receiver::withJs)
-        withWasmJs?.ifTrue(receiver::withWasmJs)
-        withWasmWasi?.ifTrue(receiver::withWasmWasi)
-        withJvm?.ifTrue(receiver::withJvm)
-        withAndroidTarget?.ifTrue(receiver::withAndroidTarget)
-        withAndroidNativeX64?.ifTrue(receiver::withAndroidNativeX64)
-        withAndroidNativeX86?.ifTrue(receiver::withAndroidNativeX86)
-        withAndroidNativeArm32?.ifTrue(receiver::withAndroidNativeArm32)
-        withAndroidNativeArm64?.ifTrue(receiver::withAndroidNativeArm64)
-        withIosArm64?.ifTrue(receiver::withIosArm64)
-        withIosX64?.ifTrue(receiver::withIosX64)
-        withIosSimulatorArm64?.ifTrue(receiver::withIosSimulatorArm64)
-        withWatchosArm32?.ifTrue(receiver::withWatchosArm32)
-        withWatchosArm64?.ifTrue(receiver::withWatchosArm64)
-        withWatchosX64?.ifTrue(receiver::withWatchosX64)
-        withWatchosSimulatorArm64?.ifTrue(receiver::withWatchosSimulatorArm64)
-        withWatchosDeviceArm64?.ifTrue(receiver::withWatchosDeviceArm64)
-        withTvosArm64?.ifTrue(receiver::withTvosArm64)
-        withTvosX64?.ifTrue(receiver::withTvosX64)
-        withTvosSimulatorArm64?.ifTrue(receiver::withTvosSimulatorArm64)
-        withLinuxX64?.ifTrue(receiver::withLinuxX64)
-        withMingwX64?.ifTrue(receiver::withMingwX64)
-        withMacosX64?.ifTrue(receiver::withMacosX64)
-        withMacosArm64?.ifTrue(receiver::withMacosArm64)
-        withLinuxArm64?.ifTrue(receiver::withLinuxArm64)
+        receiver::withNative trySet withNative
+        receiver::withApple trySet withApple
+        receiver::withIos trySet withIos
+        receiver::withWatchos trySet withWatchos
+        receiver::withMacos trySet withMacos
+        receiver::withTvos trySet withTvos
+        receiver::withMingw trySet withMingw
+        receiver::withLinux trySet withLinux
+        receiver::withAndroidNative trySet withAndroidNative
+        receiver::withJs trySet withJs
+        receiver::withWasmJs trySet withWasmJs
+        receiver::withWasmWasi trySet withWasmWasi
+        receiver::withJvm trySet withJvm
+        receiver::withAndroidTarget trySet withAndroidTarget
+        receiver::withAndroidNativeX64 trySet withAndroidNativeX64
+        receiver::withAndroidNativeX86 trySet withAndroidNativeX86
+        receiver::withAndroidNativeArm32 trySet withAndroidNativeArm32
+        receiver::withAndroidNativeArm64 trySet withAndroidNativeArm64
+        receiver::withIosArm64 trySet withIosArm64
+        receiver::withIosX64 trySet withIosX64
+        receiver::withIosSimulatorArm64 trySet withIosSimulatorArm64
+        receiver::withWatchosArm32 trySet withWatchosArm32
+        receiver::withWatchosArm64 trySet withWatchosArm64
+        receiver::withWatchosX64 trySet withWatchosX64
+        receiver::withWatchosSimulatorArm64 trySet withWatchosSimulatorArm64
+        receiver::withWatchosDeviceArm64 trySet withWatchosDeviceArm64
+        receiver::withTvosArm64 trySet withTvosArm64
+        receiver::withTvosX64 trySet withTvosX64
+        receiver::withTvosSimulatorArm64 trySet withTvosSimulatorArm64
+        receiver::withLinuxX64 trySet withLinuxX64
+        receiver::withMingwX64 trySet withMingwX64
+        receiver::withMacosX64 trySet withMacosX64
+        receiver::withMacosArm64 trySet withMacosArm64
+        receiver::withLinuxArm64 trySet withLinuxArm64
     }
 }
 

@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin.targets.jvm
 
+import gradle.api.provider.tryAssign
 import gradle.api.tasks.applyTo
-import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.kotlin.targets.nat.CompilerPluginOptions
 import gradle.plugins.kotlin.tasks.BaseKotlinCompile

@@ -2,7 +2,7 @@ package gradle.plugins.buildconfig
 
 import gradle.api.NamedObjectTransformingSerializer
 import gradle.api.applyTo
-import gradle.api.tryAssign
+import gradle.api.provider.tryAssign
 import gradle.plugins.buildconfig.generator.BuildConfigGenerator
 import gradle.plugins.buildconfig.generator.BuildConfigJavaGenerator
 import gradle.plugins.buildconfig.generator.BuildConfigKotlinGenerator

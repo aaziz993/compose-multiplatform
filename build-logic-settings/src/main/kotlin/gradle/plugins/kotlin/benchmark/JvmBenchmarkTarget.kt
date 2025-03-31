@@ -1,6 +1,6 @@
 package gradle.plugins.kotlin.benchmark
 
-import gradle.api.trySet
+import gradle.reflect.trySet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

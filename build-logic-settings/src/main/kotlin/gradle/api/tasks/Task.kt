@@ -3,8 +3,8 @@ package gradle.api.tasks
 import gradle.api.ProjectNamed
 import gradle.api.applyTo
 import gradle.api.elementType
-import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
+import gradle.reflect.trySet
 import gradle.serialization.serializer.JsonObjectTransformingContentPolymorphicSerializer
 import groovy.lang.MissingPropertyException
 import kotlinx.serialization.KSerializer

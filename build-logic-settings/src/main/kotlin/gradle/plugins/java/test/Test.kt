@@ -2,17 +2,17 @@ package gradle.plugins.java.test
 
 import gradle.accessors.files
 import gradle.accessors.javaToolchain
+import gradle.api.provider.tryAssign
 import gradle.api.tasks.applyTo
 import gradle.api.tasks.test.AbstractTestTask
 import gradle.api.tasks.test.TestFilter
 import gradle.api.tasks.test.TestLoggingContainer
 import gradle.api.tasks.util.PatternFilterable
-import gradle.api.tryAssign
-import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
-import gradle.ifTrue
+import gradle.reflect.trySet
 import gradle.plugins.java.JavaToolchainSpec
 import gradle.plugins.java.ModularitySpec
+import gradle.reflect.trySet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -245,7 +245,7 @@ internal abstract class Test<T : org.gradle.api.tasks.testing.Test>
         receiver.dryRun tryAssign dryRun
         modularity?.applyTo(receiver.modularity)
         receiver::setTestClassesDirs trySet testClassesDirs?.let(project::files)
-        useJUnit?.ifTrue(receiver::useJUnit)
+        receiver::useJUnit trySet useJUnit
 
         useJUnitDsl?.let { useJUnitDsl ->
             receiver.useJUnit {
@@ -253,7 +253,7 @@ internal abstract class Test<T : org.gradle.api.tasks.testing.Test>
             }
         }
 
-        useJUnitPlatform?.ifTrue(receiver::useJUnitPlatform)
+        receiver::useJUnitPlatform trySet useJUnitPlatform
 
         useJUnitPlatformDsl?.let { useJUnitPlatformDsl ->
             receiver.useJUnitPlatform {
@@ -261,7 +261,7 @@ internal abstract class Test<T : org.gradle.api.tasks.testing.Test>
             }
         }
 
-        useTestNG?.ifTrue(receiver::useTestNG)
+        receiver::useTestNG trySet useTestNG
 
         useTestNGDsl?.let { useTestNGDsl ->
             receiver.useTestNG {

@@ -1,7 +1,7 @@
 package gradle.api.tasks.test
 
-import gradle.api.tryAddAll
-import gradle.api.trySet
+import gradle.collection.tryAddAll
+import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.tasks.testing.TestFilter
 

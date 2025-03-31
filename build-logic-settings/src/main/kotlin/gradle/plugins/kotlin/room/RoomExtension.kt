@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin.room
 
 import gradle.accessors.room
-import gradle.api.trySet
+import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

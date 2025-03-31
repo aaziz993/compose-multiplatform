@@ -3,9 +3,9 @@ package gradle.api.publish.maven
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
 import gradle.addSuffix
-import gradle.api.tryApply
-import gradle.api.tryAssign
-import gradle.api.trySet
+import gradle.api.provider.tryAssign
+import gradle.reflect.tryApply
+import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.publish.maven.MavenPom

@@ -1,6 +1,6 @@
 package gradle.api.publish.maven
 
-import gradle.api.tryApply
+import gradle.reflect.tryApply
 import kotlinx.serialization.Serializable
 import org.gradle.api.publish.VersionMappingStrategy
 

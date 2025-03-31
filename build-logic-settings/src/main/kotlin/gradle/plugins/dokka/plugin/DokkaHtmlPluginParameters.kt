@@ -1,9 +1,9 @@
 package gradle.plugins.dokka.plugin
 
 import gradle.accessors.projectProperties
-import gradle.api.tryAssign
-import gradle.api.tryFrom
-import gradle.api.trySetFrom
+import gradle.api.file.tryFrom
+import gradle.api.file.trySetFrom
+import gradle.api.provider.tryAssign
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

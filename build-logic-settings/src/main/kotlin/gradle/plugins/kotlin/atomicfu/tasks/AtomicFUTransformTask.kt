@@ -1,11 +1,11 @@
 package gradle.plugins.kotlin.atomicfu.tasks
 
 import gradle.accessors.files
+import gradle.api.provider.tryAssign
 import gradle.api.tasks.ConventionTask
 import gradle.api.tasks.applyTo
-import gradle.api.tryAssign
-import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
+import gradle.reflect.trySet
 import kotlinx.atomicfu.plugin.gradle.AtomicFUTransformTask
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

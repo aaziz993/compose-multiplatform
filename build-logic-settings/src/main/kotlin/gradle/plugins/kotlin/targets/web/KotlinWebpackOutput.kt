@@ -1,6 +1,6 @@
 package gradle.plugins.kotlin.targets.web
 
-import gradle.api.trySet
+import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackOutput
 

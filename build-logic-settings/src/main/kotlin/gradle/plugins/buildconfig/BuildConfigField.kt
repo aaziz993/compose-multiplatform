@@ -2,7 +2,7 @@ package gradle.plugins.buildconfig
 
 import gradle.api.NamedObjectTransformingSerializer
 import gradle.api.ProjectNamed
-import gradle.api.tryAssign
+import gradle.api.provider.tryAssign
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

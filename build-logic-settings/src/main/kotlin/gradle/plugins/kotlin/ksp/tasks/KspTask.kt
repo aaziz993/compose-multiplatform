@@ -1,9 +1,9 @@
 package gradle.plugins.kotlin.ksp.tasks
 
+import gradle.api.provider.tryAddAll
+import gradle.api.provider.tryAssign
 import gradle.api.tasks.Task
 import gradle.api.tasks.applyTo
-import gradle.api.tryAddAll
-import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.kotlin.SubpluginOption
 import gradle.process.CommandLineArgumentProvider

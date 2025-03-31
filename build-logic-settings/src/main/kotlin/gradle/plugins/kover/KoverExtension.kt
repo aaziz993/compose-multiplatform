@@ -1,7 +1,7 @@
 package gradle.plugins.kover
 
 import gradle.accessors.kover
-import gradle.api.tryAssign
+import gradle.api.provider.tryAssign
 import gradle.plugins.kover.currentproject.KoverCurrentProjectVariantsConfig
 import gradle.plugins.kover.reports.KoverReportsConfig
 import kotlinx.kover.gradle.plugin.dsl.KoverVersions.JACOCO_TOOL_DEFAULT_VERSION

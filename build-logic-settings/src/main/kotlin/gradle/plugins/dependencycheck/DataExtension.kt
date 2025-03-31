@@ -1,6 +1,6 @@
 package gradle.plugins.dependencycheck
 
-import gradle.api.trySet
+import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 import org.owasp.dependencycheck.gradle.extension.DataExtension
 

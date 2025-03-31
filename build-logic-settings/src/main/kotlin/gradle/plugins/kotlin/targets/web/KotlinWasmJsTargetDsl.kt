@@ -4,7 +4,7 @@ import gradle.accessors.kotlin
 import gradle.accessors.moduleName
 import gradle.api.applyTo
 import gradle.api.publish.maven.MavenPublication
-import gradle.ifTrue
+import gradle.reflect.trySet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -37,7 +37,7 @@ internal data class KotlinWasmJsTargetDsl(
         super<KotlinWasmTargetDsl>.applyTo(receiver)
         super<KotlinJsTargetDsl>.applyTo(receiver)
 
-        d8?.ifTrue(receiver::d8)
+        receiver::d8 trySet d8
 
         d8Dsl?.let { d8Dsl ->
             receiver.d8 {

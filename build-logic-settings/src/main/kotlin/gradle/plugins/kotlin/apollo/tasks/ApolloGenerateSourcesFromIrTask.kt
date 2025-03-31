@@ -5,10 +5,10 @@ import com.apollographql.apollo3.compiler.JavaNullable
 import com.apollographql.apollo3.compiler.hooks.ApolloCompilerJavaHooks
 import com.apollographql.apollo3.compiler.hooks.ApolloCompilerKotlinHooks
 import com.apollographql.apollo3.gradle.internal.ApolloGenerateSourcesFromIrTask
+import gradle.api.file.tryAssign
+import gradle.api.file.tryFrom
+import gradle.api.file.trySetFrom
 import gradle.api.tasks.applyTo
-import gradle.api.tryAssign
-import gradle.api.tryFrom
-import gradle.api.trySetFrom
 import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

@@ -1,9 +1,10 @@
 package gradle.plugins.kotlin.apollo.tasks
 
 import com.apollographql.apollo3.gradle.internal.ApolloGenerateKspProcessorTask
+import gradle.api.file.tryAssign
+import gradle.api.provider.tryAssign
 import gradle.api.tasks.DefaultTask
 import gradle.api.tasks.applyTo
-import gradle.api.tryAssign
 import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

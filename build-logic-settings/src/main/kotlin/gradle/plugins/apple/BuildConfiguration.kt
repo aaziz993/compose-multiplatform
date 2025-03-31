@@ -2,9 +2,10 @@ package gradle.plugins.apple
 
 import gradle.api.NamedObjectTransformingSerializer
 import gradle.api.ProjectNamed
-import gradle.api.tryPutAll
-import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
+import gradle.collection.tryPutAll
+import gradle.collection.trySet
+import gradle.reflect.trySet
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

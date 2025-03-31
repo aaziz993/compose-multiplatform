@@ -1,9 +1,9 @@
 package gradle.plugins.kotlin.targets.nat.tasks
 
+import gradle.api.file.tryFrom
+import gradle.api.file.trySetFrom
 import gradle.api.tasks.K2MultiplatformCompilationTask
 import gradle.api.tasks.applyTo
-import gradle.api.tryFrom
-import gradle.api.trySetFrom
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.kotlin.targets.nat.CompilerPluginOptions
 import gradle.plugins.kotlin.targets.nat.KotlinCompilerPluginData

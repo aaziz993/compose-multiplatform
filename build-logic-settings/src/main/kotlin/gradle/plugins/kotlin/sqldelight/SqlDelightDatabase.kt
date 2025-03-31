@@ -2,8 +2,8 @@ package gradle.plugins.kotlin.sqldelight
 
 import gradle.api.NamedObjectTransformingSerializer
 import gradle.api.ProjectNamed
-import gradle.api.tryAssign
-import gradle.api.trySetFrom
+import gradle.api.file.trySetFrom
+import gradle.api.provider.tryAssign
 import gradle.plugins.project.Dependency
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable

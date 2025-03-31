@@ -3,10 +3,10 @@ package gradle.plugins.kotlin.mpp
 import gradle.accessors.kotlin
 import gradle.api.applyTo
 import gradle.api.publish.maven.MavenPublication
-import gradle.api.trySet
-import gradle.ifTrue
+import gradle.reflect.trySet
 import gradle.plugins.kotlin.HasConfigurableKotlinCompilerOptions
 import gradle.plugins.kotlin.targets.jvm.KotlinJvmCompilerOptions
+import gradle.reflect.trySet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -57,7 +57,7 @@ internal data class KotlinAndroidTarget(
         }
 
         // Applicable only in library project.
-        publishAllLibraryVariants?.ifTrue(receiver::publishAllLibraryVariants)
+        receiver::publishAllLibraryVariants trySet publishAllLibraryVariants
         receiver::publishLibraryVariantsGroupedByFlavor trySet publishLibraryVariantsGroupedByFlavor
     }
 

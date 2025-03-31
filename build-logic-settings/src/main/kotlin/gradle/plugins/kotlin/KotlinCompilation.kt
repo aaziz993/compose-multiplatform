@@ -3,12 +3,11 @@ package gradle.plugins.kotlin
 import gradle.accessors.files
 import gradle.api.ProjectNamed
 import gradle.api.getByNameOrAll
-import gradle.api.tryPlus
-import gradle.api.trySet
 import gradle.plugins.kotlin.tasks.KotlinCompilationTask
 import gradle.plugins.kotlin.tasks.KotlinCompilationTaskImpl
 import gradle.plugins.project.Dependency
-
+import gradle.reflect.tryPlus
+import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

@@ -4,8 +4,8 @@ import gradle.accessors.benchmark
 import gradle.accessors.catalog.libs
 import gradle.accessors.settings
 import gradle.api.applyTo
-import gradle.api.tryAssign
-import gradle.api.trySet
+import gradle.api.provider.tryAssign
+import gradle.reflect.trySet
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

@@ -2,9 +2,9 @@ package gradle.plugins.dokka
 
 import gradle.api.NamedObjectTransformingSerializer
 import gradle.api.ProjectNamed
-import gradle.api.tryAssign
-import gradle.api.tryFrom
-import gradle.api.trySetFrom
+import gradle.api.file.tryFrom
+import gradle.api.file.trySetFrom
+import gradle.api.provider.tryAssign
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

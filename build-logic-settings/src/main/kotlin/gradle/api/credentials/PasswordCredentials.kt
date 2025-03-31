@@ -1,6 +1,6 @@
 package gradle.api.credentials
 
-import gradle.api.trySet
+import gradle.reflect.trySet
 import org.gradle.api.credentials.PasswordCredentials
 
 /**

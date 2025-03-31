@@ -1,7 +1,7 @@
 package gradle.plugins.android.application.bundle
 
 import com.android.build.api.dsl.Bundle
-import gradle.api.tryAssign
+import gradle.api.provider.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

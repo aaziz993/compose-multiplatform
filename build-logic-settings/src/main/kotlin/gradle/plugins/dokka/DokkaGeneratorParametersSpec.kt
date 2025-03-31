@@ -1,9 +1,9 @@
 package gradle.plugins.dokka
 
 import gradle.api.applyTo
-import gradle.api.tryAssign
-import gradle.api.tryFrom
-import gradle.api.trySetFrom
+import gradle.api.file.tryFrom
+import gradle.api.file.trySetFrom
+import gradle.api.provider.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.dokka.gradle.engine.parameters.DokkaGeneratorParametersSpec

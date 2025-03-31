@@ -3,7 +3,8 @@ package gradle.api.repositories.maven
 import gradle.api.repositories.Module
 import gradle.api.repositories.RepositoryContentDescriptor
 import gradle.api.repositories.Version
-import gradle.ifTrue
+import gradle.reflect.trySet
+import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.artifacts.repositories.MavenRepositoryContentDescriptor
 
@@ -42,7 +43,7 @@ internal data class MavenRepositoryContentDescriptor(
     override fun applyTo(receiver: MavenRepositoryContentDescriptor) {
         super.applyTo(receiver)
 
-        releasesOnly?.ifTrue(receiver::releasesOnly)
-        snapshotsOnly?.ifTrue(receiver::snapshotsOnly)
+        receiver::releasesOnly trySet releasesOnly
+        receiver::snapshotsOnly trySet snapshotsOnly
     }
 }

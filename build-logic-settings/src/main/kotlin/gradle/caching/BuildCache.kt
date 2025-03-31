@@ -1,6 +1,6 @@
 package gradle.caching
 
-import gradle.api.trySet
+import gradle.reflect.trySet
 import gradle.serialization.serializer.JsonObjectTransformingContentPolymorphicSerializer
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable

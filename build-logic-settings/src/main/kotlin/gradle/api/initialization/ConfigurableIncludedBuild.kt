@@ -1,6 +1,6 @@
 package gradle.api.initialization
 
-import gradle.api.trySet
+import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.artifacts.DependencySubstitutions
 import org.gradle.api.initialization.ConfigurableIncludedBuild

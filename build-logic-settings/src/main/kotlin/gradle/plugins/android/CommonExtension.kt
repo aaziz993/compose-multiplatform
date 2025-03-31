@@ -7,10 +7,10 @@ import gradle.accessors.android
 import gradle.accessors.catalog.libs
 import gradle.accessors.settings
 import gradle.api.applyTo
-import gradle.api.tryAddAll
-import gradle.api.tryPutAll
-import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
+import gradle.collection.tryAddAll
+import gradle.collection.tryPutAll
+import gradle.collection.trySet
 import gradle.plugins.android.compile.CompileOptions
 import gradle.plugins.android.compile.CompileSdkAddon
 import gradle.plugins.android.defaultconfig.DefaultConfigDsl
@@ -23,6 +23,7 @@ import gradle.plugins.android.sourceset.AndroidSourceSet
 import gradle.plugins.android.split.SplitsDsl
 import gradle.plugins.android.test.TestCoverage
 import gradle.plugins.android.test.TestOptions
+import gradle.reflect.trySet
 import org.gradle.api.Project
 
 /**

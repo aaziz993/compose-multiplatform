@@ -1,6 +1,6 @@
 package gradle.plugins.kover.currentproject
 
-import gradle.api.tryAssign
+import gradle.api.provider.tryAssign
 import kotlinx.kover.gradle.plugin.dsl.KoverProjectInstrumentation
 import kotlinx.serialization.Serializable
 

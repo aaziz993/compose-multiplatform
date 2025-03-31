@@ -4,12 +4,12 @@ import gradle.accessors.catalog.libs
 import gradle.accessors.java
 import gradle.accessors.settings
 import gradle.api.applyTo
+import gradle.api.provider.tryAssign
 import gradle.api.tasks.SourceSet
-import gradle.api.tryApply
-import gradle.api.tryAssign
-import gradle.api.trySet
-import gradle.ifTrue
+import gradle.reflect.trySet
 import gradle.plugins.java.manifest.Manifest
+import gradle.reflect.tryApply
+import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
@@ -148,9 +148,9 @@ internal data class JavaPluginExtension(
             project.java::setTargetCompatibility trySet (targetCompatibility
                 ?: project.settings.libs.versionOrNull("java.targetCompatibility")
                     ?.let(JavaVersion::toVersion))
-            disableAutoTargetJvm?.ifTrue(project.java::disableAutoTargetJvm)
-            withJavadocJar?.ifTrue(project.java::withJavadocJar)
-            withSourcesJar?.ifTrue(project.java::withSourcesJar)
+            project.java::disableAutoTargetJvm trySet disableAutoTargetJvm
+            project.java::withJavadocJar trySet withJavadocJar
+            project.java::withSourcesJar trySet withSourcesJar
             modularity?.applyTo(project.java.modularity)
             toolchain?.applyTo(project.java.toolchain)
             project.java::consistentResolution tryApply consistentResolution?.let { consistentResolution -> consistentResolution::applyTo }

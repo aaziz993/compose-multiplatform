@@ -1,7 +1,8 @@
 package gradle.plugins.karakum
 
 import gradle.accessors.karakum
-import gradle.api.tryAssign
+import gradle.api.file.tryAssign
+import gradle.api.provider.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

@@ -1,6 +1,6 @@
 package gradle.plugins.compose.desktop.macos
 
-import gradle.api.trySet
+import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.desktop.application.dsl.InfoPlistSettings
 

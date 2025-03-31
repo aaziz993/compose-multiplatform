@@ -1,7 +1,7 @@
 package gradle.plugins.android.publish
 
 import com.android.build.api.dsl.PublishingOptions
-import gradle.ifTrue
+import gradle.reflect.trySet
 
 /**
  * Maven publishing options shared by [SingleVariant] and [MultipleVariants].
@@ -40,7 +40,7 @@ internal interface PublishingOptions<T : PublishingOptions> {
     val withJavadocJar: Boolean?
 
     fun applyTo(receiver: T) {
-        withSourcesJar?.ifTrue(receiver::withSourcesJar)
-        withJavadocJar?.ifTrue(receiver::withJavadocJar)
+        receiver::withSourcesJar trySet withSourcesJar
+        receiver::withJavadocJar trySet withJavadocJar
     }
 }

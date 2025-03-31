@@ -2,11 +2,12 @@ package gradle.plugins.apple.target
 
 import gradle.api.ProjectNamed
 import gradle.api.applyTo
-import gradle.api.tryPutAll
-import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
+import gradle.collection.tryPutAll
+import gradle.collection.trySet
 import gradle.plugins.apple.AppleBuildSettings
 import gradle.plugins.apple.BuildConfiguration
+import gradle.reflect.trySet
 import gradle.serialization.serializer.JsonObjectTransformingContentPolymorphicSerializer
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable

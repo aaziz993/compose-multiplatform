@@ -1,8 +1,8 @@
 package gradle.plugins.compose.desktop.linux
 
-import gradle.api.trySet
 import gradle.plugins.compose.desktop.platform.AbstractPlatformSettings
 import gradle.plugins.compose.desktop.platform.FileAssociation
+import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.compose.desktop.application.dsl.LinuxPlatformSettings

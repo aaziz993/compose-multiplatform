@@ -1,14 +1,14 @@
 package gradle.plugins.kotlin.targets.nat.tasks
 
 import gradle.accessors.files
+import gradle.api.provider.tryAssign
 import gradle.api.tasks.applyTo
 import gradle.api.tasks.test.TestFilter
 import gradle.api.tasks.test.TestLoggingContainer
-import gradle.api.tryAssign
-import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.kotlin.targets.nat.TrackEnvironment
 import gradle.plugins.kotlin.tasks.KotlinTest
+import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType

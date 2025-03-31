@@ -3,9 +3,8 @@ package gradle.plugins.knit.model
 import gradle.accessors.knit
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
-import gradle.api.plus
-import gradle.ifTrue
 import gradle.plugins.knit.KnitPluginExtension
+import gradle.reflect.plus
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -30,8 +29,8 @@ internal data class KnitSettings(
         project.pluginManager.withPlugin("org.jetbrains.kotlinx.knit") {
             super.applyTo()
 
-            moduleRootsFromIncludes.ifTrue {
-                project.knit::moduleRoots + (project.settings.projectProperties.includesAsPaths.orEmpty() + listOf("."))
+            if (moduleRootsFromIncludes) {
+                project.knit::moduleRoots + (listOf(".") + project.settings.projectProperties.includesAsPaths.orEmpty())
             }
         }
 }

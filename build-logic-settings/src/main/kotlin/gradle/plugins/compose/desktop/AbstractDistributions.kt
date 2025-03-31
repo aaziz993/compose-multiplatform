@@ -3,9 +3,9 @@ package gradle.plugins.compose.desktop
 import gradle.accessors.catalog.libs
 import gradle.accessors.moduleName
 import gradle.accessors.settings
-
-import gradle.api.tryAssign
-import gradle.api.trySet
+import gradle.api.file.tryAssign
+import gradle.api.provider.tryAssign
+import gradle.reflect.trySet
 import org.gradle.api.Project
 import org.jetbrains.compose.desktop.application.dsl.AbstractDistributions
 

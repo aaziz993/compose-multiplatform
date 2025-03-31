@@ -1,5 +1,6 @@
 package gradle.api.tasks.archive
 
+import gradle.api.provider.tryAssign
 import gradle.api.tasks.Expand
 import gradle.api.tasks.FilesMatching
 import gradle.api.tasks.applyTo
@@ -8,9 +9,8 @@ import gradle.api.tasks.copy.FileCopyDetails
 import gradle.api.tasks.copy.FromContentPolymorphicSerializer
 import gradle.api.tasks.copy.IntoContentPolymorphicSerializer
 import gradle.api.tasks.copy.Rename
-import gradle.api.tryAssign
-import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
+import gradle.reflect.trySet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

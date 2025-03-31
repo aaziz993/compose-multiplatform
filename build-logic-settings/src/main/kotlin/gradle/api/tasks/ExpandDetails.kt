@@ -1,6 +1,6 @@
 package gradle.api.tasks
 
-import gradle.api.tryAssign
+import gradle.api.provider.tryAssign
 import kotlinx.serialization.Serializable
 
 /**

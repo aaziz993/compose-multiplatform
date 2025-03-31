@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin.targets.web.npm
 
 import gradle.accessors.npm
-import gradle.api.tryAssign
+import gradle.api.provider.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.npm.LockFileMismatchReport

@@ -1,8 +1,8 @@
 package gradle.plugins.apivalidation
 
 import gradle.accessors.apiValidation
-import gradle.api.tryAddAll
-import gradle.api.trySet
+import gradle.collection.tryAddAll
+import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 import kotlinx.validation.ExperimentalBCVApi
 import org.gradle.api.Project

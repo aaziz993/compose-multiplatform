@@ -1,11 +1,11 @@
 package gradle.api.tasks.test
 
+import gradle.api.provider.tryAssign
 import gradle.api.tasks.ConventionTask
 import gradle.api.tasks.VerificationTask
 import gradle.api.tasks.applyTo
-import gradle.api.tryAssign
-import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
+import gradle.reflect.trySet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

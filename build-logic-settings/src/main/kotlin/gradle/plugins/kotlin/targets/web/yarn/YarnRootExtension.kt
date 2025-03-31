@@ -1,9 +1,9 @@
 package gradle.plugins.kotlin.targets.web.yarn
 
 import gradle.accessors.yarn
-import gradle.api.tryAddAll
-import gradle.api.trySet
 import gradle.plugins.kotlin.targets.web.AbstractSettings
+import gradle.reflect.tryAddAll
+import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnLockMismatchReport

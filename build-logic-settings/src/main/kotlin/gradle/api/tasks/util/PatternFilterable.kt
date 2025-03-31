@@ -1,6 +1,6 @@
 package gradle.api.tasks.util
 
-import gradle.api.trySet
+import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

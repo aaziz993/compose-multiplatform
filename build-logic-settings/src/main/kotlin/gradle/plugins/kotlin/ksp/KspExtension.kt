@@ -1,11 +1,11 @@
 package gradle.plugins.kotlin.ksp
 
 import gradle.accessors.ksp
-import gradle.api.tryAssign
-import gradle.api.tryFrom
-import gradle.api.trySet
-import gradle.api.trySetFrom
+import gradle.api.file.tryFrom
+import gradle.api.file.trySetFrom
+import gradle.api.provider.tryAssign
 import gradle.process.CommandLineArgumentProvider
+import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

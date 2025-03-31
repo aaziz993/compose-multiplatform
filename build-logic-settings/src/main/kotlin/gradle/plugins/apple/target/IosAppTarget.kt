@@ -1,10 +1,10 @@
 package gradle.plugins.apple.target
 
-import gradle.api.tryApply
-import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.apple.AppleBuildSettings
 import gradle.plugins.apple.BuildConfiguration
+import gradle.reflect.tryApply
+import gradle.reflect.trySet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

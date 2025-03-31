@@ -1,6 +1,6 @@
 package gradle.plugins.kover.reports.total
 
-import gradle.api.tryAssign
+import gradle.api.provider.tryAssign
 import kotlinx.kover.gradle.plugin.dsl.AggregationType
 import kotlinx.kover.gradle.plugin.dsl.CoverageUnit
 import kotlinx.kover.gradle.plugin.dsl.GroupingEntityType

@@ -1,14 +1,14 @@
 package gradle.plugins.kotlin.tasks
 
 import gradle.accessors.files
+import gradle.api.file.tryFrom
+import gradle.api.file.trySetFrom
+import gradle.api.provider.tryAssign
 import gradle.api.tasks.Task
 import gradle.api.tasks.applyTo
 import gradle.api.tasks.util.PatternFilterable
-import gradle.api.tryAssign
-import gradle.api.tryFrom
-import gradle.api.trySet
-import gradle.api.trySetFrom
 import gradle.collection.SerializableAnyMap
+import gradle.reflect.trySet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

@@ -1,10 +1,10 @@
 package gradle.plugins.kotlin.targets.web
 
+import gradle.api.file.tryFrom
+import gradle.api.file.trySetFrom
 import gradle.api.tasks.K2MultiplatformCompilationTask
 import gradle.api.tasks.ProducesKlib
 import gradle.api.tasks.applyTo
-import gradle.api.tryFrom
-import gradle.api.trySetFrom
 import gradle.collection.SerializableAnyMap
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

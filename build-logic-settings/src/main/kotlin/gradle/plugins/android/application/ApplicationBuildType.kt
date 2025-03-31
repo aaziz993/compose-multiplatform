@@ -1,7 +1,6 @@
 package gradle.plugins.android.application
 
 import gradle.api.NamedObjectTransformingSerializer
-import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.android.BuildConfigField
 import gradle.plugins.android.BuildType
@@ -13,6 +12,7 @@ import gradle.plugins.android.ResValue
 import gradle.plugins.android.Shaders
 import gradle.plugins.android.VcsInfo
 import gradle.plugins.android.compile.JavaCompileOptions
+import gradle.reflect.trySet
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

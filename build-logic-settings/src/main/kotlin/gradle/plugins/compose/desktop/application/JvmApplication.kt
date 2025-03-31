@@ -3,10 +3,11 @@ package gradle.plugins.compose.desktop.application
 import gradle.accessors.kotlin
 import gradle.accessors.sourceSets
 import gradle.api.getByNameOrAll
-import gradle.api.tryAddAll
-import gradle.api.trySet
-import gradle.ifTrue
+import gradle.collection.tryAddAll
+import gradle.collection.trySet
+import gradle.reflect.trySet
 import gradle.plugins.compose.desktop.application.buildtype.JvmApplicationBuildTypes
+import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.compose.desktop.application.dsl.JvmApplication
@@ -36,7 +37,7 @@ internal data class JvmApplication(
     fun applyTo(receiver: JvmApplication) {
         fromSourceSet?.let(sourceSets::getByName)?.let(receiver::from)
         fromKotlinTarget?.let(project.kotlin.targets::getByName)?.let(receiver::from)
-        disableDefaultConfiguration?.ifTrue(receiver::disableDefaultConfiguration)
+        receiver::disableDefaultConfiguration trySet disableDefaultConfiguration
         dependsOn?.flatMap(tasks::getByNameOrAll)?.toTypedArray()?.let(receiver::dependsOn)
         receiver::fromFiles trySet fromFiles
         receiver::mainClass trySet mainClass

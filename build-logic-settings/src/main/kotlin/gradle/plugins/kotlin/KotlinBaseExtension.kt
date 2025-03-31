@@ -2,11 +2,10 @@ package gradle.plugins.kotlin
 
 import gradle.accessors.catalog.libs
 import gradle.accessors.settings
-
-import gradle.api.tryAssign
-import gradle.api.tryPlus
-import gradle.api.trySet
+import gradle.api.provider.tryAssign
 import gradle.plugins.java.JavaToolchainSpec
+import gradle.reflect.tryPlus
+import gradle.reflect.trySet
 import org.gradle.api.Project
 import org.jetbrains.kotlin.buildtools.api.ExperimentalBuildToolsApi
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode

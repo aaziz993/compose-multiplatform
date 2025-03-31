@@ -1,6 +1,6 @@
 package gradle.plugins.kover.reports.verify
 
-import gradle.api.tryAssign
+import gradle.api.provider.tryAssign
 import kotlinx.serialization.Serializable
 
 /**

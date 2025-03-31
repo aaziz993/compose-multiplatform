@@ -1,7 +1,7 @@
 package gradle.api.publish.maven
 
 import gradle.api.publish.PublicationArtifact
-import gradle.api.trySet
+import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.publish.maven.MavenArtifact
 

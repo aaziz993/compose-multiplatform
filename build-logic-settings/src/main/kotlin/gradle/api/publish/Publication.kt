@@ -1,7 +1,7 @@
 package gradle.api.publish
 
 import gradle.api.ProjectNamed
-import gradle.ifTrue
+import gradle.reflect.trySet
 import gradle.serialization.serializer.JsonObjectTransformingContentPolymorphicSerializer
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
@@ -37,8 +37,8 @@ internal interface Publication<T : org.gradle.api.publish.Publication> : Project
 
     context(Project)
     override fun applyTo(receiver: T) {
-        withoutBuildIdentifier?.ifTrue(receiver::withoutBuildIdentifier)
-        withBuildIdentifier?.ifTrue(receiver::withBuildIdentifier)
+        receiver::withoutBuildIdentifier trySet withoutBuildIdentifier
+        receiver::withBuildIdentifier trySet withBuildIdentifier
     }
 
     context(Project)

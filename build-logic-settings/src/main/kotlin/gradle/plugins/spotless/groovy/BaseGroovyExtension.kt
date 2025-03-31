@@ -4,10 +4,9 @@ import com.diffplug.gradle.spotless.BaseGroovyExtension
 import gradle.accessors.catalog.libs
 import gradle.accessors.catalog.resolveVersion
 import gradle.accessors.settings
-
-import gradle.api.trySet
-import gradle.ifTrue
+import gradle.reflect.trySet
 import gradle.plugins.spotless.FormatExtension
+import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -27,7 +26,7 @@ internal abstract class BaseGroovyExtension<T : BaseGroovyExtension> : FormatExt
 
         receiver::importOrder trySet importOrder
         receiver::importOrderFile trySet importOrderFile
-        removeSemicolons?.ifTrue(receiver::removeSemicolons)
+        receiver::removeSemicolons trySet removeSemicolons
 
         greclipse?.let { greclipse ->
             greclipse.applyTo(

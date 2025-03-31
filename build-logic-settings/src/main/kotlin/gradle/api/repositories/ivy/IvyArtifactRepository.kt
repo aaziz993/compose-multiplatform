@@ -6,9 +6,9 @@ import gradle.api.repositories.AuthenticationSupported
 import gradle.api.repositories.PasswordCredentials
 import gradle.api.repositories.RepositoryContentDescriptorImpl
 import gradle.api.repositories.UrlArtifactRepository
-import gradle.api.tryApply
-import gradle.api.trySet
-import gradle.ifTrue
+import gradle.reflect.trySet
+import gradle.reflect.tryApply
+import gradle.reflect.trySet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -220,10 +220,10 @@ internal data class IvyArtifactRepository(
     ) {
 
         fun applyTo(receiver: IvyArtifactRepository.MetadataSources) {
-            gradleMetadata?.ifTrue(receiver::gradleMetadata)
-            ivyDescriptor?.ifTrue(receiver::ivyDescriptor)
-            artifact?.ifTrue(receiver::artifact)
-            ignoreGradleMetadataRedirection?.ifTrue(receiver::ignoreGradleMetadataRedirection)
+            receiver::gradleMetadata trySet gradleMetadata
+            receiver::ivyDescriptor trySet ivyDescriptor
+            receiver::artifact trySet artifact
+            receiver::ignoreGradleMetadataRedirection trySet ignoreGradleMetadataRedirection
         }
     }
 }

@@ -1,8 +1,8 @@
 package gradle.plugins.kotlin.powerassert
 
 import gradle.accessors.powerAssert
-import gradle.api.tryAddAll
-import gradle.api.tryAssign
+import gradle.api.provider.tryAddAll
+import gradle.api.provider.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

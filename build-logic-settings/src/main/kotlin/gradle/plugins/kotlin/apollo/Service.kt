@@ -2,10 +2,11 @@ package gradle.plugins.kotlin.apollo
 
 import com.apollographql.apollo3.compiler.PackageNameGenerator
 import com.apollographql.apollo3.gradle.api.Service
-import gradle.api.tryAddAll
-import gradle.api.tryAssign
-import gradle.api.tryFrom
-import gradle.api.trySetFrom
+import gradle.api.file.tryAssign
+import gradle.api.file.tryFrom
+import gradle.api.file.trySetFrom
+import gradle.api.provider.tryAddAll
+import gradle.api.provider.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

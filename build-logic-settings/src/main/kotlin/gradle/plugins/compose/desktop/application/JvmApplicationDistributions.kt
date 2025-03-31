@@ -1,11 +1,12 @@
 package gradle.plugins.compose.desktop.application
 
-import gradle.api.tryAddAll
-import gradle.api.trySet
+import gradle.collection.tryAddAll
+import gradle.collection.trySet
 import gradle.plugins.compose.desktop.AbstractDistributions
 import gradle.plugins.compose.desktop.linux.LinuxPlatformSettings
 import gradle.plugins.compose.desktop.macos.JvmMacOSPlatformSettings
 import gradle.plugins.compose.desktop.windows.WindowsPlatformSettings
+import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.compose.desktop.application.dsl.JvmApplicationDistributions

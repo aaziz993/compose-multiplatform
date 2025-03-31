@@ -2,9 +2,9 @@ package gradle.plugins.kotlin.targets.jvm
 
 import gradle.accessors.files
 import gradle.api.getByNameOrAll
-import gradle.api.tryAssign
-import gradle.api.trySet
+import gradle.api.provider.tryAssign
 import gradle.collection.SerializableAnyList
+import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.tasks.JavaExec

@@ -1,6 +1,6 @@
 package gradle.plugins.signing.tasks.gnupg
 
-import gradle.api.trySet
+import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.security.internal.gnupg.GnupgSettings

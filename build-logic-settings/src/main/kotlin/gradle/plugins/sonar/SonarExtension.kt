@@ -1,7 +1,7 @@
 package gradle.plugins.sonar
 
 import gradle.accessors.sonar
-import gradle.api.trySet
+import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

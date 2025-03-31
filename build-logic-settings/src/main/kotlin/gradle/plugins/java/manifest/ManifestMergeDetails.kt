@@ -1,7 +1,7 @@
 package gradle.plugins.java.manifest
 
-import gradle.api.trySet
-import gradle.ifTrue
+import gradle.reflect.trySet
+import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.java.archives.ManifestMergeDetails
 
@@ -25,6 +25,6 @@ internal data class ManifestMergeDetails(
 
     fun applyTo(receiver: ManifestMergeDetails) {
         receiver::setValue trySet value
-        exclude?.ifTrue(receiver::exclude)
+        receiver::exclude trySet exclude
     }
 }

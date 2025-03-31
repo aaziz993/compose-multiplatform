@@ -1,9 +1,9 @@
 package gradle.plugins.kotlin.targets.web
 
-import gradle.api.tryAddAll
-import gradle.api.tryAssign
-import gradle.api.trySet
+import gradle.api.provider.tryAssign
+import gradle.collection.tryAddAll
 import gradle.plugins.kotlin.targets.web.KotlinWebpackConfig.WatchOptions
+import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack

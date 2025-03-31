@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin.targets.web
 
-import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
+import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.npm.PackageJson

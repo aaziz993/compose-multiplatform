@@ -1,8 +1,8 @@
 package gradle.plugins.android.library
 
 import com.android.build.api.dsl.LibraryProductFlavor
-import gradle.api.trySet
 import gradle.plugins.android.flavor.ProductFlavorDsl
+import gradle.reflect.trySet
 import org.gradle.api.Project
 
 /**

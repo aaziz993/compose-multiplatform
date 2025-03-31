@@ -2,8 +2,8 @@ package gradle.plugins.android.test
 
 import com.android.build.api.dsl.TestVariantDimension
 import gradle.accessors.android
-import gradle.api.trySet
 import gradle.plugins.android.VariantDimension
+import gradle.reflect.trySet
 import org.gradle.api.Project
 
 /**

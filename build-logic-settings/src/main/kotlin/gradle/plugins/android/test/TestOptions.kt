@@ -3,9 +3,8 @@ package gradle.plugins.android.test
 import com.android.build.api.dsl.TestOptions
 import gradle.accessors.catalog.libs
 import gradle.accessors.settings
-
-import gradle.api.trySet
 import gradle.plugins.android.device.ManagedDevices
+import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

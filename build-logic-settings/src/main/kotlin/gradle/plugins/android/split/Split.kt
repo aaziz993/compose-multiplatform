@@ -1,8 +1,8 @@
 package gradle.plugins.android.split
 
 import com.android.build.api.dsl.Split
-import gradle.api.trySet
-import gradle.ifTrue
+import gradle.reflect.trySet
+import gradle.reflect.trySet
 
 /**
  *  Base data representing how an APK should be split for a given dimension (density, abi).
@@ -30,6 +30,6 @@ internal interface Split<T : Split> {
         receiver::isEnable trySet isEnable
         receiver::include trySet includes
         receiver::exclude trySet excludes
-        reset?.ifTrue(receiver::reset)
+        receiver::reset trySet reset
     }
 }

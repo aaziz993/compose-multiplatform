@@ -1,12 +1,13 @@
 package gradle.plugins.kotlin.apollo.tasks
 
 import com.apollographql.apollo3.gradle.internal.ApolloDownloadSchemaTask
+import gradle.api.file.tryAssign
+import gradle.api.provider.tryAssign
 import gradle.api.tasks.DefaultTask
 import gradle.api.tasks.applyTo
-import gradle.api.tryAssign
-import gradle.api.tryPlus
-import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
+import gradle.reflect.tryPlus
+import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
