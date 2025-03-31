@@ -3,9 +3,13 @@ package gradle.plugins.java.test
 import gradle.api.provider.tryAssign
 import gradle.api.tasks.test.TestFrameworkOptions
 import gradle.reflect.trySet
+import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.json.JsonContentPolymorphicSerializer
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonPrimitive
 import org.gradle.api.Project
-import org.gradle.api.tasks.testing.testng.TestNGOptions
 
 /**
  * The TestNG specific test options.
@@ -136,11 +140,11 @@ internal data class TestNGOptions(
      * If not present, the tests will not be grouped by instances.
      */
     val groupByInstances: Boolean? = null,
-) : TestFrameworkOptions<TestNGOptions>() {
+) : TestFrameworkOptions<org.gradle.api.tasks.testing.testng.TestNGOptions>() {
 
     context(Project)
     @Suppress("UnstableApiUsage")
-    override fun applyTo(receiver: TestNGOptions) {
+    override fun applyTo(receiver: org.gradle.api.tasks.testing.testng.TestNGOptions) {
         receiver::setOutputDirectory trySet outputDirectory?.let(project::file)
         receiver::includeGroups trySet includeGroups
         receiver::setIncludeGroups trySet setIncludeGroups
@@ -159,4 +163,11 @@ internal data class TestNGOptions(
         receiver::setPreserveOrder trySet preserveOrder
         receiver::setGroupByInstances trySet groupByInstances
     }
+}
+
+internal object TestNGContentPolymorphicSerializer :
+    JsonContentPolymorphicSerializer<Any>(Any::class) {
+
+    override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
+        if (element is JsonPrimitive) Boolean.serializer() else TestNGOptions.serializer()
 }

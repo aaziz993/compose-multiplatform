@@ -6,10 +6,13 @@ import gradle.api.tasks.test.TestLoggingContainer
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.java.JavaToolchainSpec
 import gradle.plugins.java.ModularitySpec
+import gradle.plugins.java.test.JUnitContentPolymorphicSerializer
 import gradle.plugins.java.test.JUnitOptions
+import gradle.plugins.java.test.JUnitPlatformContentPolymorphicSerializer
 import gradle.plugins.java.test.JUnitPlatformOptions
 import gradle.plugins.java.test.JavaDebugOptions
 import gradle.plugins.java.test.Test
+import gradle.plugins.java.test.TestNGContentPolymorphicSerializer
 import gradle.plugins.java.test.TestNGOptions
 import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
@@ -22,12 +25,9 @@ internal data class KotlinJvmTest(
     override val dryRun: Boolean? = null,
     override val modularity: ModularitySpec? = null,
     override val testClassesDirs: Set<String>? = null,
-    override val useJUnit: Boolean? = null,
-    override val useJUnitDsl: JUnitOptions? = null,
-    override val useJUnitPlatform: Boolean? = null,
-    override val useJUnitPlatformDsl: JUnitPlatformOptions? = null,
-    override val useTestNG: Boolean? = null,
-    override val useTestNGDsl: TestNGOptions? = null,
+    override val useJUnit: @Serializable(with = JUnitContentPolymorphicSerializer::class) Any? = null,
+    override val useJUnitPlatform: @Serializable(with = JUnitPlatformContentPolymorphicSerializer::class) Any? = null,
+    override val useTestNG: @Serializable(with = TestNGContentPolymorphicSerializer::class) Any? = null,
     override val scanForTestClasses: Boolean? = null,
     override val forkEvery: Long? = null,
     override val maxParallelForks: Int? = null,

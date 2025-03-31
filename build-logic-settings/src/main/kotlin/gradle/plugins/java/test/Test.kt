@@ -12,9 +12,14 @@ import gradle.collection.SerializableAnyMap
 import gradle.reflect.trySet
 import gradle.plugins.java.JavaToolchainSpec
 import gradle.plugins.java.ModularitySpec
-import gradle.reflect.trySet
+import gradle.plugins.java.tasks.DependencyFilter
+import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.json.JsonContentPolymorphicSerializer
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonPrimitive
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.withType
@@ -140,13 +145,6 @@ internal abstract class Test<T : org.gradle.api.tasks.testing.Test>
     abstract val testClassesDirs: Set<String>?
 
     /**
-     * Specifies that JUnit4 should be used to discover and execute the tests.
-     *
-     * @see .useJUnit
-     */
-    abstract val useJUnit: Boolean?
-
-    /**
      * Specifies that JUnit4 should be used to discover and execute the tests with additional configuration.
      *
      *
@@ -155,22 +153,7 @@ internal abstract class Test<T : org.gradle.api.tasks.testing.Test>
      * @param testFrameworkConfigure An action used to configure JUnit4 options.
      * @since 3.5
      */
-    abstract val useJUnitDsl: JUnitOptions?
-
-    /**
-     * Specifies that JUnit Platform should be used to discover and execute the tests.
-     *
-     *
-     * Use this option if your tests use JUnit Jupiter/JUnit5.
-     *
-     *
-     * JUnit Platform supports multiple test engines, which allows other testing frameworks to be built on top of it.
-     * You may need to use this option even if you are not using JUnit directly.
-     *
-     * @see .useJUnitPlatform
-     * @since 4.6
-     */
-    abstract val useJUnitPlatform: Boolean?
+    abstract val useJUnit: @Serializable(with = JUnitContentPolymorphicSerializer::class) Any?
 
     /**
      * Specifies that JUnit Platform should be used to discover and execute the tests with additional configuration.
@@ -188,14 +171,7 @@ internal abstract class Test<T : org.gradle.api.tasks.testing.Test>
      * @param testFrameworkConfigure A closure used to configure JUnit platform options.
      * @since 4.6
      */
-    abstract val useJUnitPlatformDsl: JUnitPlatformOptions?
-
-    /**
-     * Specifies that TestNG should be used to discover and execute the tests.
-     *
-     * @see .useTestNG
-     */
-    abstract val useTestNG: Boolean?
+    abstract val useJUnitPlatform: @Serializable(with = JUnitPlatformContentPolymorphicSerializer::class) Any?
 
     /**
      * Specifies that TestNG should be used to discover and execute the tests with additional configuration.
@@ -206,7 +182,7 @@ internal abstract class Test<T : org.gradle.api.tasks.testing.Test>
      * @param testFrameworkConfigure An action used to configure TestNG options.
      * @since 3.5
      */
-    abstract val useTestNGDsl: TestNGOptions?
+    abstract val useTestNG: @Serializable(with = TestNGContentPolymorphicSerializer::class) Any?
 
     abstract val scanForTestClasses: Boolean?
 
@@ -245,28 +221,35 @@ internal abstract class Test<T : org.gradle.api.tasks.testing.Test>
         receiver.dryRun tryAssign dryRun
         modularity?.applyTo(receiver.modularity)
         receiver::setTestClassesDirs trySet testClassesDirs?.let(project::files)
-        receiver::useJUnit trySet useJUnit
 
-        useJUnitDsl?.let { useJUnitDsl ->
-            receiver.useJUnit {
-                useJUnitDsl.applyTo(this)
+        when (val useJUnit = useJUnit) {
+            is Boolean -> receiver.useJUnit()
+
+            is JUnitOptions -> receiver.useJUnit {
+                useJUnit.applyTo(this)
             }
+
+            else -> Unit
         }
 
-        receiver::useJUnitPlatform trySet useJUnitPlatform
+        when (val useJUnitPlatform = useJUnitPlatform) {
+            is Boolean -> receiver.useJUnitPlatform()
 
-        useJUnitPlatformDsl?.let { useJUnitPlatformDsl ->
-            receiver.useJUnitPlatform {
-                useJUnitPlatformDsl.applyTo(this)
+            is JUnitPlatformOptions -> receiver.useJUnitPlatform {
+                useJUnitPlatform.applyTo(this)
             }
+
+            else -> Unit
         }
 
-        receiver::useTestNG trySet useTestNG
+        when (val useTestNG = useTestNG) {
+            is Boolean -> receiver.useTestNG()
 
-        useTestNGDsl?.let { useTestNGDsl ->
-            receiver.useTestNG {
-                useTestNGDsl.applyTo(this)
+            is TestNGOptions -> receiver.useTestNG {
+                useTestNG.applyTo(this)
             }
+
+            else -> Unit
         }
 
         receiver::setScanForTestClasses trySet scanForTestClasses
@@ -279,11 +262,13 @@ internal abstract class Test<T : org.gradle.api.tasks.testing.Test>
                 javaLauncher.applyTo(this)
             }
         }
+
+        receiver.adjustJvmArgs()
     }
 }
 
 /** Configure tests against different JDK versions. */
-internal fun org.gradle.api.tasks.testing.Test.configureJavaToolchain() =
+internal fun org.gradle.api.tasks.testing.Test.adjustJvmArgs() =
     javaLauncher.get().metadata.languageVersion.asInt().let { languageVersion ->
 
         if (languageVersion >= 16) {
@@ -308,12 +293,9 @@ internal data class TestImpl(
     override val dryRun: Boolean? = null,
     override val modularity: ModularitySpec? = null,
     override val testClassesDirs: Set<String>? = null,
-    override val useJUnit: Boolean? = null,
-    override val useJUnitDsl: JUnitOptions? = null,
-    override val useJUnitPlatform: Boolean? = null,
-    override val useJUnitPlatformDsl: JUnitPlatformOptions? = null,
-    override val useTestNG: Boolean? = null,
-    override val useTestNGDsl: TestNGOptions? = null,
+    override val useJUnit: @Serializable(with = JUnitContentPolymorphicSerializer::class) Any? = null,
+    override val useJUnitPlatform: @Serializable(with = JUnitPlatformContentPolymorphicSerializer::class) Any? = null,
+    override val useTestNG: @Serializable(with = TestNGContentPolymorphicSerializer::class) Any? = null,
     override val scanForTestClasses: Boolean? = null,
     override val forkEvery: Long? = null,
     override val maxParallelForks: Int? = null,

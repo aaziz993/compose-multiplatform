@@ -2,9 +2,13 @@ package gradle.plugins.java.test
 
 import gradle.api.tasks.test.TestFrameworkOptions
 import gradle.reflect.trySet
+import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.json.JsonContentPolymorphicSerializer
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonPrimitive
 import org.gradle.api.Project
-import org.gradle.api.tasks.testing.junitplatform.JUnitPlatformOptions
 
 /**
  * The JUnit platform specific test options.
@@ -43,10 +47,10 @@ internal class JUnitPlatformOptions(
      */
     val excludeTags: Set<String>? = null,
     val setExcludeTags: Set<String>? = null,
-) : TestFrameworkOptions<JUnitPlatformOptions>() {
+) : TestFrameworkOptions<org.gradle.api.tasks.testing.junitplatform.JUnitPlatformOptions>() {
 
     context(Project)
-    override fun applyTo(receiver: JUnitPlatformOptions) {
+    override fun applyTo(receiver: org.gradle.api.tasks.testing.junitplatform.JUnitPlatformOptions) {
         receiver::includeEngines trySet includeEngines
         receiver::setIncludeEngines trySet setIncludeEngines
         receiver::excludeEngines trySet excludeEngines
@@ -56,4 +60,11 @@ internal class JUnitPlatformOptions(
         receiver::excludeTags trySet excludeTags
         receiver::setExcludeTags trySet setExcludeTags
     }
+}
+
+internal object JUnitPlatformContentPolymorphicSerializer :
+    JsonContentPolymorphicSerializer<Any>(Any::class) {
+
+    override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
+        if (element is JsonPrimitive) Boolean.serializer() else JUnitPlatformOptions.serializer()
 }
