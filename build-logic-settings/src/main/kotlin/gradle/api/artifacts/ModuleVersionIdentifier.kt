@@ -11,9 +11,19 @@ internal data class ModuleVersionIdentifier(
     val module: ModuleIdentifier? = null,
 ) {
 
-    fun equals(other: ModuleVersionIdentifier): Boolean =
-        (version ?: other.version) == other.version
+    override fun equals(other: Any?): Boolean =
+        super.equals(other) || (other is ModuleVersionIdentifier &&
+            (version ?: other.version) == other.version
             && (group ?: other.group) == other.group
             && (name ?: other.name) == other.name
             && module?.equals(other) != false
+            )
+
+    override fun hashCode(): Int {
+        var result = version?.hashCode() ?: 0
+        result = 31 * result + (group?.hashCode() ?: 0)
+        result = 31 * result + (name?.hashCode() ?: 0)
+        result = 31 * result + (module?.hashCode() ?: 0)
+        return result
+    }
 }

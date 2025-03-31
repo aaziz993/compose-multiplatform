@@ -5,6 +5,12 @@ package gradle.plugins.java.tasks.shadow
 import gradle.api.tasks.copy.CopySpec
 import gradle.reflect.trySet
 import gradle.plugins.java.tasks.DependencyFilter
+import kotlinx.serialization.DeserializationStrategy
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.json.JsonContentPolymorphicSerializer
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.jsonPrimitive
 import org.gradle.api.Project
 
 internal interface ShadowSpec<T : com.github.jengelman.gradle.plugins.shadow.tasks.ShadowSpec> : CopySpec<T> {
@@ -22,8 +28,7 @@ internal interface ShadowSpec<T : com.github.jengelman.gradle.plugins.shadow.tas
      *
      * @return this
      */
-    val mergeServiceFiles: Boolean?
-    val mergeServiceFilesPath: String?
+    val mergeServiceFiles: @Serializable(with = MergeServiceFilesContentPolymorphicSerializer::class) Any?
 
     /**
      * Syntax sugar for merging service files in JARs
@@ -45,21 +50,32 @@ internal interface ShadowSpec<T : com.github.jengelman.gradle.plugins.shadow.tas
         }
 
         receiver::minimize trySet minimize
-
+        DependencyFilter
         dependencyFilterForMinimize?.let { dependencyFilterForMinimize ->
             receiver.minimize {
                 dependencyFilterForMinimize.applyTo(this)
             }
         }
 
-        receiver::mergeServiceFiles trySet mergeServiceFiles
+        when (mergeServiceFiles) {
+            is Boolean -> receiver.mergeServiceFiles()
 
-        mergeServiceFilesPath?.let { mergeServiceFilesPath ->
-            receiver.mergeServiceFiles(mergeServiceFilesPath)
+            is String -> mergeServiceFiles?.let { mergeServiceFiles ->
+                receiver.mergeServiceFiles(mergeServiceFiles)
+            }
+
+            else -> Unit
         }
 
         append?.let { append ->
             receiver.append(append)
         }
     }
+}
+
+private object MergeServiceFilesContentPolymorphicSerializer :
+    JsonContentPolymorphicSerializer<Any>(Any::class) {
+
+    override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
+        if (element.jsonPrimitive.isString) String.serializer() else Boolean.serializer()
 }

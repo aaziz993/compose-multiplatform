@@ -8,6 +8,12 @@ internal data class ComponentIdentifier(
     val displayName: String? = null
 ) {
 
-    fun equals(other: ComponentIdentifier) =
-        (displayName ?: other.displayName) == other.displayName
+    override fun equals(other: Any?) =
+        super.equals(other) || (other is ComponentIdentifier &&
+            (displayName ?: other.displayName) == other.displayName
+            )
+
+    override fun hashCode(): Int {
+        return displayName?.hashCode() ?: 0
+    }
 }

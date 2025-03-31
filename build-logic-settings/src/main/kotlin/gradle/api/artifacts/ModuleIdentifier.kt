@@ -9,6 +9,14 @@ internal data class ModuleIdentifier(
     val name: String? = null,
 ) {
 
-    fun equals(other: ModuleIdentifier): Boolean =
-        (group ?: other.group) == other.group && (name ?: other.name) == other.name
+    override fun equals(other: Any?): Boolean =
+        super.equals(other) || (other is ModuleIdentifier &&
+            (group ?: other.group) == other.group && (name ?: other.name) == other.name
+            )
+
+    override fun hashCode(): Int {
+        var result = group?.hashCode() ?: 0
+        result = 31 * result + (name?.hashCode() ?: 0)
+        return result
+    }
 }

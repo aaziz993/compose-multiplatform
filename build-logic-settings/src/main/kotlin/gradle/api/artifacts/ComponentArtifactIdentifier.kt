@@ -9,7 +9,15 @@ internal data class ComponentArtifactIdentifier(
     val displayName: String? = null,
 ) {
 
-    fun equals(other: ComponentArtifactIdentifier) =
-        componentIdentifier?.equals(other.componentIdentifier) != false
+    override fun equals(other: Any?) =
+        super.equals(other) || (other is ComponentArtifactIdentifier &&
+            componentIdentifier?.equals(other.componentIdentifier) != false
             && (displayName ?: other.displayName) == other.displayName
+            )
+
+    override fun hashCode(): Int {
+        var result = componentIdentifier?.hashCode() ?: 0
+        result = 31 * result + (displayName?.hashCode() ?: 0)
+        return result
+    }
 }

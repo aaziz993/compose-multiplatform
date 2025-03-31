@@ -14,12 +14,25 @@ internal data class ResolvedArtifact(
     val id: ComponentArtifactIdentifier? = null,
 ) {
 
-    fun equals(other: ResolvedArtifact) =
-        (file ?: other.file.absolutePath) == other.file.absolutePath
+    override fun equals(other: Any?) =
+        super.equals(other) || (other is ResolvedArtifact &&
+            (file ?: other.file.absolutePath) == other.file.absolutePath
             && moduleVersion?.equals(other.moduleVersion) != false
             && (name ?: other.name) == other.name
             && (type ?: other.type) == other.type
             && (extension ?: other.extension) == other.extension
             && (classifier ?: other.classifier) == other.classifier
             && id?.equals(other.id) != false
+            )
+
+    override fun hashCode(): Int {
+        var result = file?.hashCode() ?: 0
+        result = 31 * result + (moduleVersion?.hashCode() ?: 0)
+        result = 31 * result + (name?.hashCode() ?: 0)
+        result = 31 * result + (type?.hashCode() ?: 0)
+        result = 31 * result + (extension?.hashCode() ?: 0)
+        result = 31 * result + (classifier?.hashCode() ?: 0)
+        result = 31 * result + (id?.hashCode() ?: 0)
+        return result
+    }
 }
