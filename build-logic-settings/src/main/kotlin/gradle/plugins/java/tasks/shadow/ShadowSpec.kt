@@ -10,6 +10,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.JsonContentPolymorphicSerializer
 import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.jsonPrimitive
 import org.gradle.api.Project
 
@@ -19,7 +20,7 @@ internal interface ShadowSpec<T : com.github.jengelman.gradle.plugins.shadow.tas
 
     val dependencyFilter: DependencyFilter?
 
-    val minimize: Boolean?
+    val minimize: @Serializable(with = MinimizeContentPolymorphicSerializer::class) Any?
 
     val dependencyFilterForMinimize: DependencyFilter?
 
@@ -49,21 +50,25 @@ internal interface ShadowSpec<T : com.github.jengelman.gradle.plugins.shadow.tas
             }
         }
 
-        receiver::minimize trySet minimize
-        DependencyFilter
+        when (val minimize = minimize) {
+            is Boolean -> receiver.minimize()
+
+            is DependencyFilter -> receiver.minimize {
+                minimize.applyTo(this)
+            }
+
+            else -> Unit
+        }
+
         dependencyFilterForMinimize?.let { dependencyFilterForMinimize ->
             receiver.minimize {
                 dependencyFilterForMinimize.applyTo(this)
             }
         }
 
-        when (mergeServiceFiles) {
+        when (val mergeServiceFiles = mergeServiceFiles) {
             is Boolean -> receiver.mergeServiceFiles()
-
-            is String -> mergeServiceFiles?.let { mergeServiceFiles ->
-                receiver.mergeServiceFiles(mergeServiceFiles)
-            }
-
+            is String -> receiver.mergeServiceFiles(mergeServiceFiles)
             else -> Unit
         }
 
@@ -73,7 +78,14 @@ internal interface ShadowSpec<T : com.github.jengelman.gradle.plugins.shadow.tas
     }
 }
 
-private object MergeServiceFilesContentPolymorphicSerializer :
+internal object MinimizeContentPolymorphicSerializer :
+    JsonContentPolymorphicSerializer<Any>(Any::class) {
+
+    override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
+        if (element is JsonPrimitive) Boolean.serializer() else DependencyFilter.serializer()
+}
+
+internal object MergeServiceFilesContentPolymorphicSerializer :
     JsonContentPolymorphicSerializer<Any>(Any::class) {
 
     override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =

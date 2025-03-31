@@ -74,10 +74,9 @@ internal data class ShadowJar(
     override val dependencyFilter: DependencyFilter? = null,
     val enableRelocation: Boolean? = null,
     val relocationPrefix: String? = null,
-    override val minimize: Boolean? = null,
+    override val minimize: @Serializable(with = MinimizeContentPolymorphicSerializer::class) Any? = null,
     override val dependencyFilterForMinimize: DependencyFilter? = null,
-    override val mergeServiceFiles: Boolean? = null,
-    override val mergeServiceFilesPath: String? = null,
+    override val mergeServiceFiles: @Serializable(with = MergeServiceFilesContentPolymorphicSerializer::class) Any? = null,
     override val append: String? = null,
 ) : Jar<ShadowJar>(), ShadowSpec<ShadowJar> {
 
