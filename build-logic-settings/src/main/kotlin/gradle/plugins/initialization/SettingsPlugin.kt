@@ -129,9 +129,9 @@ public class SettingsPlugin : Plugin<Settings> {
                 CacheRedirector.applyTo()
 
                 // Apply plugins after version catalogs are loaded in settings phase.
-                settings.plugins.apply(DevelocityPlugin::class.java)
-                settings.plugins.apply(ToolchainManagementPlugin::class.java)
-                settings.plugins.apply(GitHooksPlugin::class.java)
+                settings.pluginManager.apply(DevelocityPlugin::class.java)
+                settings.pluginManager.apply(ToolchainManagementPlugin::class.java)
+                settings.pluginManager.apply(GitHooksPlugin::class.java)
 
                 // Include projects.
                 projectProperties.includes?.forEach(::include)
@@ -188,7 +188,7 @@ public class SettingsPlugin : Plugin<Settings> {
 
                 // at this point all projects have been created by settings.gradle.kts, but none were evaluated yet
                 allprojects {
-                    plugins.apply(ProjectPlugin::class.java)
+                    pluginManager.apply(ProjectPlugin::class.java)
                 }
             }
         }

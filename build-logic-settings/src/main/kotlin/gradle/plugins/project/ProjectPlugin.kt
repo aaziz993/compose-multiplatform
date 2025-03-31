@@ -125,37 +125,37 @@ public class ProjectPlugin : Plugin<Project> {
             // Apply plugins.
             projectProperties.plugins.ids?.map { id -> id.resolvePluginId() }?.forEach(plugins::apply)
 
-            plugins.apply(DoctorPlugin::class.java)
-            plugins.apply(DependencyCheckPlugin::class.java)
-            plugins.apply(AnimalSnifferPlugin::class.java)
-            plugins.apply(BuildConfigPlugin::class.java)
-            plugins.apply(SpotlessPlugin::class.java)
-            plugins.apply(KoverPlugin::class.java)
-            plugins.apply(SonarPlugin::class.java)
-            plugins.apply(DokkaPlugin::class.java)
-            plugins.apply(KnitPlugin::class.java)
-            plugins.apply(ShadowPlugin::class.java)
-            plugins.apply(ApiValidationPlugin::class.java)
-            plugins.apply(KspPlugin::class.java)
-            plugins.apply(AllOpenPlugin::class.java)
-            plugins.apply(NoArgPlugin::class.java)
-            plugins.apply(AtomicFUPlugin::class.java)
-            plugins.apply(SerializationPlugin::class.java)
-            plugins.apply(BenchmarkPlugin::class.java)
-            plugins.apply(SqlDelightPlugin::class.java)
-            plugins.apply(RoomPlugin::class.java)
-            plugins.apply(RpcPlugin::class.java)
-            plugins.apply(KtorfitPlugin::class.java)
-            plugins.apply(ApolloPlugin::class.java)
-            plugins.apply(PowerAssertPlugin::class.java)
-            plugins.apply(ApplePlugin::class.java) // doesn't depend on mpp
-            plugins.apply(CocoapodsPlugin::class.java)
-            plugins.apply(AndroidPlugin::class.java) // doesn't depend on mpp
-            plugins.apply(MPPPlugin::class.java) // need android library or application plugin applied.
-            plugins.apply(JvmPlugin::class.java) //  apply after mpp plugin to deal with jvm targets.
-            plugins.apply(ComposePlugin::class.java)
-            plugins.apply(PublishPlugin::class.java)
-            plugins.apply(SigningPlugin::class.java)
+            pluginManager.apply(DoctorPlugin::class.java)
+            pluginManager.apply(DependencyCheckPlugin::class.java)
+            pluginManager.apply(AnimalSnifferPlugin::class.java)
+            pluginManager.apply(BuildConfigPlugin::class.java)
+            pluginManager.apply(SpotlessPlugin::class.java)
+            pluginManager.apply(KoverPlugin::class.java)
+            pluginManager.apply(SonarPlugin::class.java)
+            pluginManager.apply(DokkaPlugin::class.java)
+            pluginManager.apply(KnitPlugin::class.java)
+            pluginManager.apply(ShadowPlugin::class.java)
+            pluginManager.apply(ApiValidationPlugin::class.java)
+            pluginManager.apply(KspPlugin::class.java)
+            pluginManager.apply(AllOpenPlugin::class.java)
+            pluginManager.apply(NoArgPlugin::class.java)
+            pluginManager.apply(AtomicFUPlugin::class.java)
+            pluginManager.apply(SerializationPlugin::class.java)
+            pluginManager.apply(BenchmarkPlugin::class.java)
+            pluginManager.apply(SqlDelightPlugin::class.java)
+            pluginManager.apply(RoomPlugin::class.java)
+            pluginManager.apply(RpcPlugin::class.java)
+            pluginManager.apply(KtorfitPlugin::class.java)
+            pluginManager.apply(ApolloPlugin::class.java)
+            pluginManager.apply(PowerAssertPlugin::class.java)
+            pluginManager.apply(ApplePlugin::class.java) // doesn't depend on mpp
+            pluginManager.apply(CocoapodsPlugin::class.java)
+            pluginManager.apply(AndroidPlugin::class.java) // doesn't depend on mpp
+            pluginManager.apply(MPPPlugin::class.java) // need android library or application plugin applied.
+            pluginManager.apply(JvmPlugin::class.java) //  apply after mpp plugin to deal with jvm targets.
+            pluginManager.apply(ComposePlugin::class.java)
+            pluginManager.apply(PublishPlugin::class.java)
+            pluginManager.apply(SigningPlugin::class.java)
 
             AndroidPlugin.adjustXmlFactories()
 

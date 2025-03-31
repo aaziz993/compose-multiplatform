@@ -68,7 +68,7 @@ internal class AndroidPlugin : Plugin<Project> {
 
     private fun Project.applyGoogleServicesPlugin() {
         if (file("google-services.json").exists()) {
-            plugins.apply("com.google.gms.google-services")
+            pluginManager.apply("com.google.gms.google-services")
         }
     }
 
