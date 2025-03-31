@@ -1,6 +1,6 @@
 package gradle.api.repositories
 
-import gradle.plugins.credentials.PasswordCredentials
+import gradle.api.credentials.PasswordCredentials
 import kotlinx.serialization.Serializable
 
 /**

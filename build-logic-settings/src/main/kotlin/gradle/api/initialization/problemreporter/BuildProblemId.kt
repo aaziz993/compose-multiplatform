@@ -1,10 +1,10 @@
-package gradle.plugins.initialization.problemreporter
+package gradle.api.initialization.problemreporter
 
 import java.nio.file.Path
 
-internal typealias BuildProblemId = String
+public typealias BuildProblemId = String
 
-internal enum class Level {
+public enum class Level {
     /**
      * Cannot process build or import further.
      */
@@ -30,57 +30,57 @@ internal enum class Level {
 /**
  * Designates the place where the cause of the problem is located.
  */
-internal sealed interface BuildProblemSource
+public sealed interface BuildProblemSource
 
 /**
  * Use only when there is no way to pinpoint the cause of the problem inside the Amper files.
  */
 @NonIdealDiagnostic
-internal object GlobalBuildProblemSource : BuildProblemSource
+public object GlobalBuildProblemSource : BuildProblemSource
 
 /**
  * Can be used to express the problem with multiple locations (e.g., conflicting declarations).
  */
-internal class MultipleLocationsBuildProblemSource(val sources: List<BuildProblemSource>) : BuildProblemSource {
+public class MultipleLocationsBuildProblemSource(public val sources: List<BuildProblemSource>) : BuildProblemSource {
 
-    constructor(vararg sources: BuildProblemSource) : this(sources.toList())
+    public constructor(vararg sources: BuildProblemSource) : this(sources.toList())
 
     init {
         require(sources.none { it is MultipleLocationsBuildProblemSource }) { "Only non-nested sources are allowed in a MultipleLocationsBuildProblemSource" }
     }
 }
 
-internal interface FileBuildProblemSource : BuildProblemSource {
+public interface FileBuildProblemSource : BuildProblemSource {
 
     /**
      * Path to the file containing a problem.
      */
-    val file: Path
+    public val file: Path
 }
 
-internal interface FileWithRangesBuildProblemSource : FileBuildProblemSource {
+public interface FileWithRangesBuildProblemSource : FileBuildProblemSource {
 
     /**
      * Range of problematic code expressed in terms of lines and columns.
      * Can be used by clients to render the links to the exact location in the file or display an erroneous part of the
      * code.
      */
-    val range: LineAndColumnRange
+    public val range: LineAndColumnRange
 
     /**
      * Range of problematic code expressed in terms of character offsets inside the file.
      * Depending on the client, it might choose [range] or [offsetRange] for displaying an error.
      * The choice depends on what primitives does the client operate with.
      */
-    val offsetRange: IntRange
+    public val offsetRange: IntRange
 }
 
-internal interface BuildProblem {
+public interface BuildProblem {
 
-    val buildProblemId: BuildProblemId
-    val source: BuildProblemSource
-    val message: String
-    val level: Level
+    public val buildProblemId: BuildProblemId
+    public val source: BuildProblemSource
+    public val message: String
+    public val level: Level
 }
 
 /**
@@ -88,17 +88,17 @@ internal interface BuildProblem {
  * (see inheritors of [PsiBuildProblem][org.jetbrains.amper.frontend.messages.PsiBuildProblem] for a reference).
  * They can incorporate additional properties for the IDE to simplify quick-fixes implementation.
  */
-internal data class BuildProblemImpl(
+public data class BuildProblemImpl(
     override val buildProblemId: BuildProblemId,
     override val source: BuildProblemSource,
     override val message: String,
     override val level: Level,
 ) : BuildProblem
 
-internal data class LineAndColumn(val line: Int, val column: Int, val lineContent: String?) {
-    companion object {
+public data class LineAndColumn(val line: Int, val column: Int, val lineContent: String?) {
+    public companion object {
 
-        val NONE: LineAndColumn = LineAndColumn(-1, -1, null)
+        public val NONE: LineAndColumn = LineAndColumn(-1, -1, null)
     }
 }
 
@@ -106,4 +106,4 @@ internal data class LineAndColumn(val line: Int, val column: Int, val lineConten
  * This range should be interpreted as all the symbols between [start] and [end] inclusive.
  * All the intermediate lines between [start] and [end] are included entirely.
  */
-internal data class LineAndColumnRange(val start: LineAndColumn, val end: LineAndColumn)
+public data class LineAndColumnRange(val start: LineAndColumn, val end: LineAndColumn)

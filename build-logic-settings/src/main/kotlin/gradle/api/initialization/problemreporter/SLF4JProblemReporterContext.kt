@@ -1,15 +1,9 @@
-package gradle.plugins.initialization.problemreporter
+package gradle.api.initialization.problemreporter
 
-import gradle.plugins.initialization.SettingsPlugin
 import org.slf4j.LoggerFactory
 
-internal class SLF4JProblemReporterContext : ProblemReporterContext {
-
-    override val problemReporter: SLF4JProblemReporter = SLF4JProblemReporter(SettingsPlugin::class.java)
-}
-
-internal class SLF4JProblemReporter(loggerClass: Class<*> = ProblemReporter::class.java) : CollectingProblemReporter() {
-    companion object {
+public class SLF4JProblemReporter(loggerClass: Class<*> = ProblemReporter::class.java) : CollectingProblemReporter() {
+    public companion object {
 
         private const val ERROR_PREFIX = "  - "
         private const val ERROR_INDENT = "    "
@@ -26,9 +20,9 @@ internal class SLF4JProblemReporter(loggerClass: Class<*> = ProblemReporter::cla
         }
     }
 
-    fun getErrors(): List<String> = problems.map(::renderMessage)
+    public fun getErrors(): List<String> = problems.map(::renderMessage)
 
-    fun getGradleError(): String =
+    public fun getGradleError(): String =
         """
         |Amper model initialization failed.
         |Errors:

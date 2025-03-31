@@ -21,7 +21,7 @@ import gradle.plugins.dependencycheck.DependencyCheckPlugin
 import gradle.plugins.develocity.DevelocityPlugin
 import gradle.plugins.doctor.DoctorPlugin
 import gradle.plugins.dokka.DokkaPlugin
-import gradle.plugins.initialization.problemreporter.SLF4JProblemReporterContext
+import gradle.plugins.initialization.SLF4JProblemReporterContext
 import gradle.plugins.knit.KnitPlugin
 import gradle.plugins.kotlin.allopen.AllOpenPlugin
 import gradle.plugins.kotlin.apollo.ApolloPlugin

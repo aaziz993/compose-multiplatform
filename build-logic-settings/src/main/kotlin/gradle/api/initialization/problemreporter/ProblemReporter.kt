@@ -1,26 +1,27 @@
-package gradle.plugins.initialization.problemreporter
+package gradle.api.initialization.problemreporter
 
-internal interface ProblemReporter {
+public interface ProblemReporter {
 
     /**
      * Check if we reported any fatal errors.
      */
-    val hasFatal: Boolean
+    public val hasFatal: Boolean
 
-    fun reportMessage(message: BuildProblem)
+    public fun reportMessage(message: BuildProblem)
 }
 
-internal interface ProblemReporterContext {
+public interface ProblemReporterContext {
 
-    val problemReporter: ProblemReporter
+    public val problemReporter: ProblemReporter
 }
 
 // TODO: Can be refactored to the reporter chain to avoid inheritance.
 // Note: This class is not thread-safe.
 // Problems collecting might misbehave when used from multiple threads (e.g. in Gradle).
-internal abstract class CollectingProblemReporter : ProblemReporter {
+public abstract class CollectingProblemReporter : ProblemReporter {
 
-    override val hasFatal get() = problems.any { it.level == Level.Fatal }
+    override val hasFatal: Boolean
+        get() = problems.any { it.level == Level.Fatal }
 
     protected val problems: MutableList<BuildProblem> = mutableListOf()
 
@@ -32,16 +33,16 @@ internal abstract class CollectingProblemReporter : ProblemReporter {
     }
 }
 
-internal class NoOpCollectingProblemReporter : CollectingProblemReporter() {
+public class NoOpCollectingProblemReporter : CollectingProblemReporter() {
 
-    fun getProblems(): Collection<BuildProblem> = problems
+    public fun getProblems(): Collection<BuildProblem> = problems
 
     override fun doReportMessage(message: BuildProblem) {
     }
 }
 
 @OptIn(NonIdealDiagnostic::class)
-internal fun renderMessage(problem: BuildProblem): String = buildString {
+public fun renderMessage(problem: BuildProblem): String = buildString {
     fun appendSource(source: BuildProblemSource) {
         when (source) {
             is FileBuildProblemSource -> {

@@ -1,6 +1,6 @@
 package gradle.caching.remote
 
-import gradle.plugins.credentials.PasswordCredentials
+import gradle.api.credentials.PasswordCredentials
 import kotlinx.serialization.Serializable
 import org.gradle.caching.http.HttpBuildCacheCredentials
 

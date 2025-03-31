@@ -1,4 +1,4 @@
-package gradle.plugins.credentials
+package gradle.api.credentials
 
 import org.gradle.api.credentials.Credentials
 

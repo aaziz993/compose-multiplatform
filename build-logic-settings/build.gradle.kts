@@ -71,7 +71,6 @@ kotlin {
         freeCompilerArgs.addAll(
             "-Xignore-const-optimization-errors",
             "-Xcontext-receivers",
-            "-Xjvm-default=all",
         )
         optIn.addAll(
             listOf(
