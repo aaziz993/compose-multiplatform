@@ -10,7 +10,6 @@ import gradle.api.configureEach
 import gradle.api.repositories.CacheRedirector
 import gradle.plugins.develocity.DevelocityPlugin
 import gradle.plugins.githooks.GitHooksPlugin
-import gradle.plugins.initialization.problemreporter.SLF4JProblemReporterContext
 import gradle.plugins.project.ProjectPlugin
 import gradle.plugins.project.ProjectProperties.Companion.load
 import gradle.plugins.toolchainmanagement.ToolchainManagementPlugin
