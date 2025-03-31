@@ -118,7 +118,7 @@ public class ProjectPlugin : Plugin<Project> {
 
             ::setGroup trySet projectProperties.group
             ::setDescription trySet projectProperties.description
-            version = version()
+            version = projectProperties.version.toVersion().toString()
 
             // Apply here to be able to add plugin dependency to classpath.
             projectProperties.buildscript?.applyTo()

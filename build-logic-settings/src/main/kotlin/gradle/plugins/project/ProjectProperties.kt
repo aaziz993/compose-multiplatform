@@ -64,6 +64,7 @@ import java.io.File
 import java.util.*
 import kotlin.io.path.Path
 import kotlinx.serialization.KeepGeneratedSerializer
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.descriptors.elementNames
 import kotlinx.serialization.json.Json
@@ -90,7 +91,7 @@ internal data class ProjectProperties(
     val year: String? = null,
     val group: String? = null,
     val description: String? = null,
-    val version: VersionSettings = VersionSettings(),
+    val version: Version = Version(),
     val remote: MavenPomScm? = null,
     val developer: MavenPomDeveloper? = null,
     val license: MavenPomLicense? = null,
