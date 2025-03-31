@@ -8,8 +8,8 @@ import gradle.accessors.catalog.libs
 import gradle.accessors.settings
 import gradle.api.applyTo
 import gradle.api.tryAddAll
+import gradle.api.tryPutAll
 import gradle.api.trySet
-import gradle.api.version
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.android.compile.CompileOptions
 import gradle.plugins.android.compile.CompileSdkAddon
@@ -520,6 +520,7 @@ internal interface CommonExtension<
      * are read during configuration.
      */
     val experimentalProperties: SerializableAnyMap?
+    val setExperimentalProperties: SerializableAnyMap?
 
     context(Project)
     @Suppress("UnstableApiUsage", "UNCHECKED_CAST")
@@ -589,6 +590,7 @@ internal interface CommonExtension<
             extension.compileSdkAddon(vendor, name, version)
         }
 
-        experimentalProperties?.let(extension.experimentalProperties::putAll)
+        extension.experimentalProperties tryPutAll experimentalProperties
+        extension.experimentalProperties trySet setExperimentalProperties
     }
 }

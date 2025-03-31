@@ -10,6 +10,7 @@ import gradle.accessors.settings
 import gradle.act
 import gradle.api.tryAddAll
 import gradle.api.tryPlus
+import gradle.api.tryPutAll
 import gradle.api.trySet
 import gradle.ifTrue
 import gradle.plugins.kotlin.targets.nat.FrameworkSettings
@@ -109,10 +110,8 @@ internal data class CocoapodsExtension(
             project.kotlin.cocoapods::summary trySet summary
             project.kotlin.cocoapods::homepage trySet homepage
             project.kotlin.cocoapods::source trySet source
-            extraSpecAttributes?.let(project.kotlin.cocoapods.extraSpecAttributes::putAll)
-            setExtraSpecAttributes
-                ?.act(project.kotlin.cocoapods.extraSpecAttributes::clear)
-                ?.let(project.kotlin.cocoapods.extraSpecAttributes::putAll)
+            project.kotlin.cocoapods.extraSpecAttributes tryPutAll extraSpecAttributes
+            project.kotlin.cocoapods.extraSpecAttributes trySet setExtraSpecAttributes
 
             framework?.let { framework ->
                 project.kotlin.cocoapods.framework {
@@ -120,10 +119,8 @@ internal data class CocoapodsExtension(
                 }
             }
 
-            xcodeConfigurationToNativeBuildType?.let(project.kotlin.cocoapods.xcodeConfigurationToNativeBuildType::putAll)
-            setXcodeConfigurationToNativeBuildType
-                ?.act(project.kotlin.cocoapods.xcodeConfigurationToNativeBuildType::clear)
-                ?.let(project.kotlin.cocoapods.xcodeConfigurationToNativeBuildType::putAll)
+            project.kotlin.cocoapods.xcodeConfigurationToNativeBuildType tryPutAll xcodeConfigurationToNativeBuildType
+            project.kotlin.cocoapods.xcodeConfigurationToNativeBuildType trySet setXcodeConfigurationToNativeBuildType
             project.kotlin.cocoapods::publishDir trySet publishDir?.let(project::file)
 
             specRepos?.let { specRepos ->

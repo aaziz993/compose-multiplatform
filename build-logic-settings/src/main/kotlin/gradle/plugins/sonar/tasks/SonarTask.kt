@@ -3,6 +3,7 @@ package gradle.plugins.sonar.tasks
 import gradle.act
 import gradle.api.tasks.ConventionTask
 import gradle.api.tasks.applyTo
+import gradle.api.tryPutAll
 import gradle.api.trySet
 import gradle.collection.SerializableAnyMap
 import org.gradle.api.Project
@@ -58,8 +59,8 @@ internal data class SonarTask(
     override fun applyTo(receiver: SonarTask) {
         super.applyTo(receiver)
 
-        sonarProperties?.let(receiver.properties.get()::putAll)
-        setSonarProperties?.act(receiver.properties.get()::clear)?.let(receiver.properties.get()::putAll)
+        receiver.properties.get() tryPutAll sonarProperties
+        receiver.properties.get() trySet setSonarProperties
         receiver::useLoggerLevel trySet useLoggerLevel
     }
 
