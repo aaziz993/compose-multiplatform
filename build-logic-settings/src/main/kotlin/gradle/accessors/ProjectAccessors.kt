@@ -64,6 +64,9 @@ import ru.vyarus.gradle.plugin.animalsniffer.AnimalSnifferExtension
 public fun Project.files(elements: Iterable<String>): ConfigurableFileCollection =
     project.files(*elements.toList().toTypedArray())
 
+internal val Project.env
+    get() = System.getenv()
+
 internal const val LOCAL_PROPERTIES_EXT = "local.properties.ext"
 
 internal var Project.localProperties: Properties

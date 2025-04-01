@@ -13,6 +13,7 @@ import gradle.api.publish.maven.MavenPomLicense
 import gradle.api.publish.maven.MavenPomScm
 import gradle.api.tasks.Task
 import gradle.caching.BuildCacheConfiguration
+import gradle.get
 import gradle.plugins.android.BaseExtension
 import gradle.plugins.animalsniffer.AnimalSnifferExtension
 import gradle.plugins.apivalidation.ApiValidationExtension
@@ -235,7 +236,10 @@ internal data class ProjectProperties(
 
                 val templatesProperties = (properties["templates"] as List<String>?)?.loadTemplates(directory).orEmpty()
 
-                return json.decodeFromAny<ProjectProperties>((templatesProperties deepMerge properties).resolve(context))
+                return json.decodeFromAny<ProjectProperties>(
+                    (templatesProperties deepMerge properties)
+                        .resolve(context) { keys -> get(*keys.toTypedArray()) },
+                )
             }
 
             return ProjectProperties()

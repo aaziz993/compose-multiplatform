@@ -7,6 +7,9 @@ import org.gradle.api.initialization.Settings
 import org.gradle.kotlin.dsl.getByType
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 
+internal val Settings.env
+    get() = System.getenv()
+
 internal var Settings.localProperties: Properties
     get() = extraProperties[LOCAL_PROPERTIES_EXT] as Properties
     set(value) {

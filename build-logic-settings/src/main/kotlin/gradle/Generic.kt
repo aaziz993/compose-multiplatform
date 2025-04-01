@@ -1,5 +1,6 @@
 package gradle
 
+import gradle.accessors.env
 import gradle.accessors.localProperties
 import gradle.accessors.publishing
 import gradle.api.getByNameOrAll
@@ -20,14 +21,10 @@ import org.gradle.api.publish.PublishingExtension
 import org.gradle.kotlin.dsl.extra
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 
-@Suppress("UNCHECKED_CAST")
+@Suppress("FunctionName", "UNCHECKED_CAST")
 private fun <T : Any> T._get(key: String): Any? = when (this) {
-    is System -> when (key) {
-        "getenv" -> System.getenv()
-        else -> memberGetter(key)
-    }
-
     is Settings -> when (key) {
+        "env" -> env
         "providers" -> providers
         "extra" -> extra
         "extraProperties" -> extraProperties
@@ -36,6 +33,7 @@ private fun <T : Any> T._get(key: String): Any? = when (this) {
     }
 
     is Project -> when (key) {
+        "env" -> env
         "providers" -> providers
         "extra" -> extra
         "extraProperties" -> extraProperties
@@ -73,9 +71,7 @@ private fun <T : Any> T._get(key: String): Any? = when (this) {
 
     is DependencySubstitutions -> when (key) {
         "project" -> ::project
-
         "module" -> ::module
-
         else -> memberGetter(key)
     }
 
