@@ -3,7 +3,7 @@
 package gradle.plugins.kotlin.tasks
 
 import gradle.api.tasks.applyTo
-import gradle.collection.SerializableAnyMap
+import klib.data.type.collection.SerializableAnyMap
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

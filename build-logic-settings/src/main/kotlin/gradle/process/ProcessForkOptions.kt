@@ -1,6 +1,6 @@
 package gradle.process
 
-import gradle.collection.SerializableAnyMap
+import klib.data.type.collection.SerializableAnyMap
 import klib.data.type.reflection.trySet
 import org.gradle.api.Project
 import org.gradle.process.ProcessForkOptions

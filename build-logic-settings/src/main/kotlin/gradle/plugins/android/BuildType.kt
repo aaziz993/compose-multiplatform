@@ -2,7 +2,7 @@ package gradle.plugins.android
 
 import gradle.accessors.android
 import gradle.api.ProjectNamed
-import gradle.collection.tryAddAll
+import klib.data.type.collection.tryAddAll
 import klib.data.type.reflection.trySet
 import org.gradle.api.Project
 

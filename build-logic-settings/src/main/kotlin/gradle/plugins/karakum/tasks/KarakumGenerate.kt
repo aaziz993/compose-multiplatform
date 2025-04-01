@@ -4,7 +4,7 @@ import gradle.api.file.tryAssign
 import gradle.api.provider.tryAssign
 import gradle.api.tasks.DefaultTask
 import gradle.api.tasks.applyTo
-import gradle.collection.SerializableAnyMap
+import klib.data.type.collection.SerializableAnyMap
 import klib.data.type.doubleQuoted
 import klib.data.type.serialization.decodeMapFromString
 import klib.data.type.serialization.encodeAnyToString

@@ -14,6 +14,7 @@ import kotlin.reflect.full.declaredMemberExtensionProperties
 import kotlin.reflect.full.declaredMemberFunctions
 import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.full.declaredMembers
+import kotlin.reflect.full.instanceParameter
 import kotlin.reflect.full.memberFunctions
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.full.staticFunctions
@@ -69,15 +70,17 @@ private operator fun Collection<KProperty<*>>.get(propertyName: String): KProper
 private fun <T : KCallable<*>> Collection<T>.get(funName: String, vararg argKTypes: KType): T? {
     val parametersSize = argKTypes.size + 1
 
-    return find { function ->
-        function.name == funName && function.parameters.size == parametersSize
-        function.parameters.drop(1).map(KParameter::type).zip(argKTypes).all { (parameterType, argKType) ->
-            if (parameterType.classifier is KTypeParameter) {
-                (parameterType.classifier as KTypeParameter).upperBounds.contains(argKType)
+    return find { kCallable ->
+        kCallable.name == funName && kCallable.parameters.size == parametersSize
+        // Drop instance parameter if it is instance method, not static.
+        (if (kCallable.instanceParameter == null) kCallable.parameters else kCallable.parameters.drop(1))
+            .map(KParameter::type).zip(argKTypes).all { (parameterType, argKType) ->
+                if (parameterType.classifier is KTypeParameter) {
+                    (parameterType.classifier as KTypeParameter).upperBounds.contains(argKType)
+                }
+                else {
+                    parameterType == argKType
+                }
             }
-            else {
-                parameterType == argKType
-            }
-        }
     }
 }

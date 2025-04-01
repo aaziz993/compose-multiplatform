@@ -4,8 +4,8 @@ package gradle.plugins.android
 
 import com.android.build.api.dsl.Shaders
 import klib.data.type.act
-import gradle.collection.tryAddAll
-import gradle.collection.trySet
+import klib.data.type.collection.tryAddAll
+import klib.data.type.collection.trySet
 import kotlinx.serialization.Serializable
 
 /**

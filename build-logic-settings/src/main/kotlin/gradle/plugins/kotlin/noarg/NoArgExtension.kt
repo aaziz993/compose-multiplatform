@@ -3,7 +3,7 @@
 package gradle.plugins.kotlin.noarg
 
 import gradle.accessors.noArg
-import gradle.collection.tryAddAll
+import klib.data.type.collection.tryAddAll
 import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

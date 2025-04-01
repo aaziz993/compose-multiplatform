@@ -1,9 +1,9 @@
 package gradle.plugins.android
 
 import com.android.build.api.dsl.AnnotationProcessorOptions
-import gradle.collection.tryAddAll
-import gradle.collection.tryPutAll
-import gradle.collection.trySet
+import klib.data.type.collection.tryAddAll
+import klib.data.type.collection.tryPutAll
+import klib.data.type.collection.trySet
 import gradle.process.CommandLineArgumentProvider
 import kotlinx.serialization.Serializable
 

@@ -2,9 +2,9 @@ package gradle.plugins.kotlin.targets.web.npm.tasks
 
 import gradle.api.tasks.DefaultTask
 import gradle.api.tasks.applyTo
-import gradle.collection.SerializableAnyMap
-import gradle.collection.tryAddAll
-import gradle.collection.trySet
+import klib.data.type.collection.SerializableAnyMap
+import klib.data.type.collection.tryAddAll
+import klib.data.type.collection.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType

@@ -5,8 +5,8 @@ import gradle.accessors.androidNamespace
 import gradle.accessors.catalog.libs
 import gradle.accessors.settings
 import gradle.api.applyTo
-import gradle.collection.tryAddAll
-import gradle.collection.trySet
+import klib.data.type.collection.tryAddAll
+import klib.data.type.collection.trySet
 import klib.data.type.reflection.trySet
 import gradle.plugins.android.compile.CompileOptions
 import gradle.plugins.android.defaultconfig.DefaultConfig

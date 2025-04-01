@@ -7,9 +7,9 @@ import gradle.accessors.cocoapods
 import gradle.accessors.kotlin
 import gradle.accessors.moduleName
 import gradle.accessors.settings
-import gradle.collection.tryAddAll
-import gradle.collection.tryPutAll
-import gradle.collection.trySet
+import klib.data.type.collection.tryAddAll
+import klib.data.type.collection.tryPutAll
+import klib.data.type.collection.trySet
 import klib.data.type.reflection.trySet
 import gradle.plugins.kotlin.targets.nat.FrameworkSettings
 import klib.data.type.reflection.tryPlus

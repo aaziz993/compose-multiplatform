@@ -1,6 +1,6 @@
 package gradle.plugins.kotlin.targets.web
 
-import gradle.collection.tryAddAll
+import klib.data.type.collection.tryAddAll
 import klib.data.type.reflection.tryAddAll
 import klib.data.type.reflection.tryApply
 import klib.data.type.reflection.trySet

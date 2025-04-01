@@ -2,7 +2,7 @@ package gradle.plugins.dependencycheck
 
 import gradle.accessors.dependencyCheck
 import gradle.api.applyTo
-import gradle.collection.tryAddAll
+import klib.data.type.collection.tryAddAll
 import gradle.plugins.dependencycheck.analyzer.AnalyzerExtension
 import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable

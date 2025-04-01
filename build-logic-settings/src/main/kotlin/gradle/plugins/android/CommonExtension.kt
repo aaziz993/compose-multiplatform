@@ -7,10 +7,10 @@ import gradle.accessors.android
 import gradle.accessors.catalog.libs
 import gradle.accessors.settings
 import gradle.api.applyTo
-import gradle.collection.SerializableAnyMap
-import gradle.collection.tryAddAll
-import gradle.collection.tryPutAll
-import gradle.collection.trySet
+import klib.data.type.collection.SerializableAnyMap
+import klib.data.type.collection.tryAddAll
+import klib.data.type.collection.tryPutAll
+import klib.data.type.collection.trySet
 import gradle.plugins.android.compile.CompileOptions
 import gradle.plugins.android.compile.CompileSdkAddon
 import gradle.plugins.android.defaultconfig.DefaultConfigDsl

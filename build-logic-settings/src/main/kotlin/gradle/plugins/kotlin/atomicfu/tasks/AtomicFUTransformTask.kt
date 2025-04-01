@@ -4,7 +4,7 @@ import gradle.accessors.files
 import gradle.api.provider.tryAssign
 import gradle.api.tasks.ConventionTask
 import gradle.api.tasks.applyTo
-import gradle.collection.SerializableAnyMap
+import klib.data.type.collection.SerializableAnyMap
 import klib.data.type.reflection.trySet
 import kotlinx.atomicfu.plugin.gradle.AtomicFUTransformTask
 import kotlinx.serialization.Serializable

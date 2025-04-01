@@ -4,8 +4,8 @@ import com.android.build.api.dsl.LibraryExtension
 import com.android.build.api.dsl.VariantDimension
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import gradle.accessors.android
-import gradle.collection.SerializableAnyMap
-import gradle.collection.tryPutAll
+import klib.data.type.collection.SerializableAnyMap
+import klib.data.type.collection.tryPutAll
 import gradle.plugins.android.compile.JavaCompileOptions
 import klib.data.type.reflection.trySet
 import org.gradle.api.Project

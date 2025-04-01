@@ -4,7 +4,7 @@ import gradle.api.tasks.applyTo
 import gradle.api.tasks.test.AbstractTestTask
 import gradle.api.tasks.test.TestFilter
 import gradle.api.tasks.test.TestLoggingContainer
-import gradle.collection.SerializableAnyMap
+import klib.data.type.collection.SerializableAnyMap
 import klib.data.type.reflection.trySet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

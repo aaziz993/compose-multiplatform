@@ -84,8 +84,8 @@ knit:
   enabled: true
   siteRoot: https://github.com/aaziz993/compose-multiplatform
   #    moduleRoots: [
-  #      kmp-lib,
-  #      cmp-lib,
+  #      klib,
+  #      compose-lib,
   #      compiler,
   #      shared,
   #      compose-app,
@@ -122,7 +122,7 @@ dependencyResolutionManagement:
       from: $libs.kotlin.wrappers.catalog
 
 includes:
-  - kotlin-lib
+  - klib
   - compose-lib
   - compiler
   - shared
@@ -131,8 +131,8 @@ includes:
 
 dependencies:
   # dokka multimodule module dependencies. By default taken from includes see dokka.dependenciesFromIncludes.
-  #  - dokka: :kmp-lib
-  #  - dokka: :cmp-lib
+  #  - dokka: :klib
+  #  - dokka: :compose-lib
   #  - dokka: :compiler
   #  - dokka: :shared
   #  - dokka: :compose-app

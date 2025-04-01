@@ -1,4 +1,4 @@
-package gradle.collection
+package klib.data.type.collection
 
 public inline fun <K, V : Any> Iterable<K>.associateWithNotNull(valueSelector: (K) -> V?): Map<K, V> {
     @Suppress("UNCHECKED_CAST")

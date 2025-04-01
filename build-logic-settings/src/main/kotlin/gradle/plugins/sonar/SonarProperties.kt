@@ -1,7 +1,7 @@
 package gradle.plugins.sonar
 
 import klib.data.type.act
-import gradle.collection.SerializableAnyMap
+import klib.data.type.collection.SerializableAnyMap
 import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

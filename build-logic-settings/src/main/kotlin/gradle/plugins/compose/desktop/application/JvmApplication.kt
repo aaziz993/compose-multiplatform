@@ -3,8 +3,8 @@ package gradle.plugins.compose.desktop.application
 import gradle.accessors.kotlin
 import gradle.accessors.sourceSets
 import gradle.api.getByNameOrAll
-import gradle.collection.tryAddAll
-import gradle.collection.trySet
+import klib.data.type.collection.tryAddAll
+import klib.data.type.collection.trySet
 import klib.data.type.reflection.trySet
 import gradle.plugins.compose.desktop.application.buildtype.JvmApplicationBuildTypes
 import kotlinx.serialization.Serializable

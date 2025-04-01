@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin.targets.web.yarn.tasks
 
 import gradle.api.tasks.applyTo
-import gradle.collection.SerializableAnyMap
+import klib.data.type.collection.SerializableAnyMap
 import gradle.plugins.kotlin.targets.web.tasks.LockCopyTask
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

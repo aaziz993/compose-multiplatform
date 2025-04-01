@@ -2,7 +2,7 @@ package gradle.plugins.dokka
 
 import gradle.accessors.dokka
 import gradle.api.provider.tryAssign
-import gradle.collection.SerializableAnyMap
+import klib.data.type.collection.SerializableAnyMap
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.process.JavaForkOptions

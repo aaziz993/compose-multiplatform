@@ -1,6 +1,6 @@
 package gradle.process
 
-import gradle.collection.SerializableAnyList
+import klib.data.type.collection.SerializableAnyList
 import org.gradle.api.Project
 
 internal interface ExecSpec<T : org.gradle.process.ExecSpec> : BaseExecSpec<T> {

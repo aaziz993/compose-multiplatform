@@ -4,7 +4,7 @@ import gradle.api.file.tryFrom
 import gradle.api.file.trySetFrom
 import gradle.api.tasks.K2MultiplatformCompilationTask
 import gradle.api.tasks.applyTo
-import gradle.collection.SerializableAnyMap
+import klib.data.type.collection.SerializableAnyMap
 import gradle.plugins.kotlin.targets.nat.CompilerPluginOptions
 import gradle.plugins.kotlin.targets.nat.KotlinCompilerPluginData
 import kotlinx.serialization.SerialName

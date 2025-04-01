@@ -1,7 +1,7 @@
 package gradle.plugins.android.defaultconfig
 
 import com.android.build.gradle.internal.dsl.DefaultConfig
-import gradle.collection.SerializableAnyMap
+import klib.data.type.collection.SerializableAnyMap
 import gradle.plugins.android.AarMetadata
 import gradle.plugins.android.BuildConfigField
 import gradle.plugins.android.ExternalNativeBuildFlags

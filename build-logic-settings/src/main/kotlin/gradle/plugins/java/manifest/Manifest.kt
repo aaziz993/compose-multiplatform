@@ -1,8 +1,8 @@
 package gradle.plugins.java.manifest
 
 import klib.data.type.act
-import gradle.collection.SerializableAnyMap
-import gradle.collection.trySet
+import klib.data.type.collection.SerializableAnyMap
+import klib.data.type.collection.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

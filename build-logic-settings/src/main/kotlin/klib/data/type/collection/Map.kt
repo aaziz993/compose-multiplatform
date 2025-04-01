@@ -1,9 +1,11 @@
-package gradle.collection
+package klib.data.type.collection
 
 import klib.data.type.act
 import klib.data.type.serialization.serializer.AnySerializer
 import klib.data.type.serialization.serializer.OptionalAnySerializer
 import kotlinx.serialization.Serializable
+import kotlin.collections.get
+import kotlin.invoke
 
 internal typealias SerializableAnyMap = Map<String, @Serializable(with = AnySerializer::class) Any>
 
@@ -14,7 +16,6 @@ public infix fun <K, V> MutableMap<K, V>.tryPutAll(value: Map<K, V>?): Unit? =
 
 public infix fun <K, V> MutableMap<K, V>.trySet(value: Map<K, V>?): Unit? =
     tryPutAll(value?.act(::clear))
-
 
 @Suppress("UNCHECKED_CAST")
 public infix fun Map<String, Any?>.deepMerge(source: Map<String, Any?>): Map<String, Any?> {
@@ -44,21 +45,3 @@ public infix fun Map<String, Any?>.deepMerge(source: Map<String, Any?>): Map<Str
     }
     return resultMap
 }
-
-public fun Any.get(vararg keys: Any?): Any? = DeepRecursiveFunction<Pair<List<Any?>, Any>, Any?> { (subKeys, obj) ->
-    val key = subKeys.first()
-
-    val value = when (obj) {
-        is List<*> -> obj[key.toString().toInt()]
-        is Map<*, *> -> obj[key]
-        else -> error("Neither list or map to get value by key: $key")
-    }
-
-    if (value == null) {
-        return@DeepRecursiveFunction value
-    }
-
-    subKeys.drop(1).takeIf(List<*>::isNotEmpty)?.let {
-        callRecursive(it to value)
-    } ?: value
-}(keys.toList() to this)

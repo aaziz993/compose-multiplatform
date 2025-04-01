@@ -2,7 +2,7 @@ package gradle.plugins.android.library
 
 import com.android.build.api.dsl.LibraryVariantDimension
 import gradle.accessors.android
-import gradle.collection.trySet
+import klib.data.type.collection.trySet
 import gradle.plugins.android.AarMetadata
 import gradle.plugins.android.VariantDimension
 import klib.data.type.reflection.trySet

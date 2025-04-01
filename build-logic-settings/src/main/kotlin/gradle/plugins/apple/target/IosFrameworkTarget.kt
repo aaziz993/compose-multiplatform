@@ -1,6 +1,6 @@
 package gradle.plugins.apple.target
 
-import gradle.collection.SerializableAnyMap
+import klib.data.type.collection.SerializableAnyMap
 import gradle.plugins.apple.AppleBuildSettings
 import gradle.plugins.apple.BuildConfiguration
 import kotlinx.serialization.SerialName

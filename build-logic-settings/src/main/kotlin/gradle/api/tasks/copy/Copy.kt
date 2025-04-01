@@ -3,7 +3,7 @@ package gradle.api.tasks.copy
 import gradle.api.tasks.Expand
 import gradle.api.tasks.FilesMatching
 import gradle.api.tasks.applyTo
-import gradle.collection.SerializableAnyMap
+import klib.data.type.collection.SerializableAnyMap
 import klib.data.type.reflection.trySet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

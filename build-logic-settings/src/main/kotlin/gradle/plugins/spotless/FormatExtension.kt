@@ -9,7 +9,7 @@ import com.diffplug.spotless.generic.PipeStepPair
 import gradle.accessors.catalog.libs
 import gradle.accessors.settings
 import gradle.accessors.spotless
-import gradle.collection.SerializableAnyMap
+import klib.data.type.collection.SerializableAnyMap
 import klib.data.type.reflection.trySet
 import klib.data.type.serialization.serializer.JsonObjectTransformingContentPolymorphicSerializer
 import kotlin.reflect.full.memberProperties

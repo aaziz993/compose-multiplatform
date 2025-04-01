@@ -1,7 +1,7 @@
 package gradle.api.file
 
 import gradle.api.tasks.Expand
-import gradle.collection.SerializableAnyMap
+import klib.data.type.collection.SerializableAnyMap
 import org.gradle.api.Project
 import org.gradle.api.file.ContentFilterable
 

@@ -1,7 +1,7 @@
 package gradle.plugins.compose.desktop.application
 
-import gradle.collection.tryAddAll
-import gradle.collection.trySet
+import klib.data.type.collection.tryAddAll
+import klib.data.type.collection.trySet
 import gradle.plugins.compose.desktop.AbstractDistributions
 import gradle.plugins.compose.desktop.linux.LinuxPlatformSettings
 import gradle.plugins.compose.desktop.macos.JvmMacOSPlatformSettings

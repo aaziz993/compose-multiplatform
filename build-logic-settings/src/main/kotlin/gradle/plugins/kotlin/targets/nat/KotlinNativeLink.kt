@@ -4,7 +4,7 @@ import gradle.accessors.files
 import gradle.api.file.tryFrom
 import gradle.api.file.trySetFrom
 import gradle.api.tasks.applyTo
-import gradle.collection.SerializableAnyMap
+import klib.data.type.collection.SerializableAnyMap
 import gradle.plugins.kotlin.KotlinCommonCompilerToolOptionsImpl
 import gradle.plugins.kotlin.tasks.AbstractKotlinCompileTool
 import gradle.plugins.kotlin.tasks.KotlinToolTask

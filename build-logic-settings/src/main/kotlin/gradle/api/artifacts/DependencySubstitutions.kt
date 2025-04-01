@@ -150,4 +150,4 @@ internal data class DependencySubstitutions(
 }
 
 private fun DependencySubstitutions.resolveComponentSelectorReference(componentSelector: String): ComponentSelector =
-    resolveComponentReference(componentSelector) as ComponentSelector
+    resolveReference(componentSelector) as ComponentSelector

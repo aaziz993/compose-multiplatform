@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin.targets.web
 
 import gradle.api.file.tryAssign
-import gradle.collection.tryAddAll
+import klib.data.type.collection.tryAddAll
 import gradle.plugins.kotlin.targets.web.node.NodeJsRootExtension
 import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable

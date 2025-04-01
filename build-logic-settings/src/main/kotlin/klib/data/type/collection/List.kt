@@ -1,4 +1,4 @@
-package gradle.collection
+package klib.data.type.collection
 
 import klib.data.type.serialization.serializer.AnySerializer
 import klib.data.type.serialization.serializer.OptionalAnySerializer

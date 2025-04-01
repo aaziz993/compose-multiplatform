@@ -6,7 +6,7 @@ import gradle.accessors.kotlin
 import gradle.accessors.projectProperties
 import gradle.accessors.publishing
 import gradle.api.findByName
-import gradle.collection.associateWithNotNull
+import klib.data.type.collection.associateWithNotNull
 import gradle.plugins.kotlin.filterKotlinTargets
 import gradle.plugins.kotlin.targets.nat.android.KotlinAndroidNative32Target
 import gradle.plugins.kotlin.targets.nat.android.KotlinAndroidNative64Target

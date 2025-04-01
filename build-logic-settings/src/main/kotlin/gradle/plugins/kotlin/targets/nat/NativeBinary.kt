@@ -3,8 +3,8 @@ package gradle.plugins.kotlin.targets.nat
 import gradle.accessors.moduleName
 import gradle.api.ProjectNamed
 import gradle.api.provider.tryAssign
-import gradle.collection.tryPutAll
-import gradle.collection.trySet
+import klib.data.type.collection.tryPutAll
+import klib.data.type.collection.trySet
 import gradle.plugins.project.Dependency
 import klib.data.type.reflection.tryPlus
 import klib.data.type.reflection.trySet

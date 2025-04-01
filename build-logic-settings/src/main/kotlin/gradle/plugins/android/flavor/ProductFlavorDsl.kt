@@ -2,7 +2,7 @@ package gradle.plugins.android.flavor
 
 import com.android.build.api.dsl.ProductFlavor
 import gradle.api.ProjectNamed
-import gradle.collection.tryAddAll
+import klib.data.type.collection.tryAddAll
 import klib.data.type.reflection.trySet
 import org.gradle.api.Project
 

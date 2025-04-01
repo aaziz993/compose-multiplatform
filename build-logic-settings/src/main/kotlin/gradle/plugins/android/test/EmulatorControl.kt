@@ -1,8 +1,8 @@
 package gradle.plugins.android.test
 
 import com.android.build.api.dsl.EmulatorControl
-import gradle.collection.tryAddAll
-import gradle.collection.trySet
+import klib.data.type.collection.tryAddAll
+import klib.data.type.collection.trySet
 import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable
 

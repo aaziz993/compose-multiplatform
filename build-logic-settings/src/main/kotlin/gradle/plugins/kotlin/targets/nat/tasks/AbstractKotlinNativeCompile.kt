@@ -3,7 +3,7 @@ package gradle.plugins.kotlin.targets.nat.tasks
 import gradle.accessors.files
 import gradle.api.tasks.ProducesKlib
 import gradle.api.tasks.applyTo
-import gradle.collection.SerializableAnyMap
+import klib.data.type.collection.SerializableAnyMap
 import gradle.plugins.kotlin.targets.nat.CompilerPluginOptions
 import gradle.plugins.kotlin.targets.nat.KotlinCompilerPluginData
 import gradle.plugins.kotlin.tasks.AbstractKotlinCompileTool

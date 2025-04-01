@@ -5,10 +5,10 @@ import gradle.api.file.tryAssign
 import gradle.api.tasks.applyTo
 import gradle.api.tasks.test.TestFilter
 import gradle.api.tasks.test.TestLoggingContainer
-import gradle.collection.SerializableAnyMap
-import gradle.collection.tryAddAll
-import gradle.collection.tryPutAll
-import gradle.collection.trySet
+import klib.data.type.collection.SerializableAnyMap
+import klib.data.type.collection.tryAddAll
+import klib.data.type.collection.tryPutAll
+import klib.data.type.collection.trySet
 import gradle.plugins.kotlin.tasks.KotlinTest
 import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable

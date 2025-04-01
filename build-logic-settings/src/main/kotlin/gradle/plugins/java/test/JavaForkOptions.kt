@@ -1,8 +1,8 @@
 package gradle.plugins.java.test
 
 import gradle.accessors.files
-import gradle.collection.SerializableAnyMap
-import gradle.collection.tryAddAll
+import klib.data.type.collection.SerializableAnyMap
+import klib.data.type.collection.tryAddAll
 import gradle.process.ProcessForkOptions
 import klib.data.type.reflection.trySet
 import org.gradle.api.Project

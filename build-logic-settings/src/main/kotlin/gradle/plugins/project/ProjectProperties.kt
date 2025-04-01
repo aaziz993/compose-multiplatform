@@ -11,11 +11,8 @@ import gradle.api.publish.PublishingExtension
 import gradle.api.publish.maven.MavenPomDeveloper
 import gradle.api.publish.maven.MavenPomLicense
 import gradle.api.publish.maven.MavenPomScm
-import gradle.api.resolve
 import gradle.api.tasks.Task
 import gradle.caching.BuildCacheConfiguration
-import gradle.collection.SerializableOptionalAnyMap
-import gradle.collection.deepMerge
 import gradle.plugins.android.BaseExtension
 import gradle.plugins.animalsniffer.AnimalSnifferExtension
 import gradle.plugins.apivalidation.ApiValidationExtension
@@ -60,9 +57,12 @@ import gradle.plugins.signing.model.SigningSettings
 import gradle.plugins.sonar.SonarExtension
 import gradle.plugins.spotless.SpotlessExtension
 import gradle.plugins.toolchainmanagement.ToolchainManagement
-import klib.data.type.serialization.decodeFromAny
 import java.io.File
 import java.util.*
+import klib.data.type.collection.SerializableOptionalAnyMap
+import klib.data.type.collection.deepMerge
+import klib.data.type.resolve
+import klib.data.type.serialization.decodeFromAny
 import kotlin.io.path.Path
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable

@@ -2,9 +2,9 @@ package gradle.plugins.sonar.tasks
 
 import gradle.api.tasks.ConventionTask
 import gradle.api.tasks.applyTo
-import gradle.collection.SerializableAnyMap
-import gradle.collection.tryPutAll
-import gradle.collection.trySet
+import klib.data.type.collection.SerializableAnyMap
+import klib.data.type.collection.tryPutAll
+import klib.data.type.collection.trySet
 import klib.data.type.reflection.trySet
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel

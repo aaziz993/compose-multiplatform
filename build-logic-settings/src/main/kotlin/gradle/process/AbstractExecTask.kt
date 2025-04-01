@@ -2,8 +2,8 @@ package gradle.process
 
 import gradle.api.tasks.ConventionTask
 import gradle.api.tasks.applyTo
-import gradle.collection.SerializableAnyList
-import gradle.collection.SerializableAnyMap
+import klib.data.type.collection.SerializableAnyList
+import klib.data.type.collection.SerializableAnyMap
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
