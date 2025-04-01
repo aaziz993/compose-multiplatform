@@ -4,7 +4,7 @@ import gradle.accessors.knit
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
 import gradle.plugins.knit.KnitPluginExtension
-import gradle.reflect.plus
+import klib.data.type.reflection.plus
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

@@ -3,7 +3,7 @@ package gradle.plugins.android
 import com.android.build.api.dsl.ComposeOptions
 import gradle.accessors.catalog.libs
 import gradle.accessors.settings
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

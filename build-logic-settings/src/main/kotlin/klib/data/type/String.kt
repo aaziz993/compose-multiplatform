@@ -1,4 +1,4 @@
-package gradle
+package klib.data.type
 
 import java.net.URI
 import java.nio.file.InvalidPathException

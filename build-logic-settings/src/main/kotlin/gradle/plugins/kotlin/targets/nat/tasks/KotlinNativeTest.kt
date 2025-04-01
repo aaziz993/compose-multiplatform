@@ -8,7 +8,7 @@ import gradle.api.tasks.test.TestLoggingContainer
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.kotlin.targets.nat.TrackEnvironment
 import gradle.plugins.kotlin.tasks.KotlinTest
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType

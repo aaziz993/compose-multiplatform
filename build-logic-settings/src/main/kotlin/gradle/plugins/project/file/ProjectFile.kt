@@ -1,7 +1,7 @@
 package gradle.plugins.project.file
 
 import arrow.core.fold
-import gradle.isValidUrl
+import klib.data.type.isValidUrl
 import java.io.File
 import java.net.URI
 import org.apache.commons.io.FileUtils

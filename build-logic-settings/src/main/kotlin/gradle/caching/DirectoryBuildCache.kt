@@ -1,7 +1,7 @@
 package gradle.caching
 
 import gradle.api.ci.CI
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings
 import org.gradle.caching.local.DirectoryBuildCache

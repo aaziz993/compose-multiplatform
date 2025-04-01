@@ -11,11 +11,11 @@ import gradle.api.publish.PublishingExtension
 import gradle.api.publish.maven.MavenPomDeveloper
 import gradle.api.publish.maven.MavenPomLicense
 import gradle.api.publish.maven.MavenPomScm
+import gradle.api.resolve
 import gradle.api.tasks.Task
 import gradle.caching.BuildCacheConfiguration
 import gradle.collection.SerializableOptionalAnyMap
 import gradle.collection.deepMerge
-import gradle.collection.resolve
 import gradle.plugins.android.BaseExtension
 import gradle.plugins.animalsniffer.AnimalSnifferExtension
 import gradle.plugins.apivalidation.ApiValidationExtension
@@ -60,7 +60,7 @@ import gradle.plugins.signing.model.SigningSettings
 import gradle.plugins.sonar.SonarExtension
 import gradle.plugins.spotless.SpotlessExtension
 import gradle.plugins.toolchainmanagement.ToolchainManagement
-import gradle.serialization.decodeFromAny
+import klib.data.type.serialization.decodeFromAny
 import java.io.File
 import java.util.*
 import kotlin.io.path.Path
@@ -76,7 +76,6 @@ import org.gradle.api.Project
 import org.gradle.api.file.Directory
 import org.gradle.api.initialization.Settings
 import org.gradle.api.plugins.ExtraPropertiesExtension
-import org.gradle.api.provider.ProviderFactory
 import org.gradle.kotlin.dsl.extra
 import org.jetbrains.compose.internal.utils.localPropertiesFile
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
@@ -180,9 +179,7 @@ internal data class ProjectProperties(
             // Load project.yaml.
             return load(
                 settings.layout.settingsDirectory,
-                settings.providers,
-                settings.extra,
-                settings.localProperties,
+                settings,
             )
         }
 
@@ -205,9 +202,7 @@ internal data class ProjectProperties(
             // Load project.yaml.
             return load(
                 project.layout.projectDirectory,
-                project.providers,
-                project.extra,
-                project.localProperties,
+                project,
             )
         }
 
@@ -231,9 +226,7 @@ internal data class ProjectProperties(
         @Suppress("UNCHECKED_CAST")
         private fun load(
             directory: Directory,
-            providers: ProviderFactory,
-            extra: ExtraPropertiesExtension,
-            localProperties: Properties,
+            context: Any,
         ): ProjectProperties {
             val propertiesFile = directory.file(PROJECT_PROPERTIES_FILE).asFile
 
@@ -242,7 +235,7 @@ internal data class ProjectProperties(
 
                 val templatesProperties = (properties["templates"] as List<String>?)?.loadTemplates(directory).orEmpty()
 
-                return json.decodeFromAny<ProjectProperties>((templatesProperties deepMerge properties).resolve(providers, extra, localProperties))
+                return json.decodeFromAny<ProjectProperties>((templatesProperties deepMerge properties).resolve(context))
             }
 
             return ProjectProperties()

@@ -1,7 +1,7 @@
 package gradle.plugins.android.test
 
 import com.android.build.api.dsl.AndroidTest
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable
 
 /**

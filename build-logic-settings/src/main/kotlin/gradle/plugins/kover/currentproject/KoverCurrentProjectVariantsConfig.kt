@@ -1,6 +1,6 @@
 package gradle.plugins.kover.currentproject
 
-import gradle.reflect.tryApply
+import klib.data.type.reflection.tryApply
 import kotlinx.kover.gradle.plugin.dsl.KoverCurrentProjectVariantsConfig
 import kotlinx.serialization.Serializable
 

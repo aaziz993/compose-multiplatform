@@ -1,4 +1,4 @@
-package gradle.serialization.serializer
+package klib.data.type.serialization.serializer
 
 import kotlin.reflect.KClass
 import kotlin.reflect.full.hasAnnotation

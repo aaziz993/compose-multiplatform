@@ -8,8 +8,8 @@ import gradle.collection.SerializableAnyMap
 import gradle.plugins.kotlin.KotlinCommonCompilerToolOptionsImpl
 import gradle.plugins.kotlin.tasks.AbstractKotlinCompileTool
 import gradle.plugins.kotlin.tasks.KotlinToolTask
-import gradle.reflect.tryPlus
-import gradle.reflect.trySet
+import klib.data.type.reflection.tryPlus
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType

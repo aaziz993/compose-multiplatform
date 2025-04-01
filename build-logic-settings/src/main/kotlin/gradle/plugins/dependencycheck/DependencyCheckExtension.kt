@@ -4,7 +4,7 @@ import gradle.accessors.dependencyCheck
 import gradle.api.applyTo
 import gradle.collection.tryAddAll
 import gradle.plugins.dependencycheck.analyzer.AnalyzerExtension
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

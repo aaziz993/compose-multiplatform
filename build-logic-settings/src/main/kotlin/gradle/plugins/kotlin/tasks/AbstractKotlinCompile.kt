@@ -6,7 +6,7 @@ import gradle.collection.SerializableAnyMap
 import gradle.plugins.kotlin.KotlinCommonCompilerOptions
 import gradle.plugins.kotlin.KotlinCommonCompilerOptionsImpl
 import gradle.plugins.kotlin.targets.nat.CompilerPluginOptions
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

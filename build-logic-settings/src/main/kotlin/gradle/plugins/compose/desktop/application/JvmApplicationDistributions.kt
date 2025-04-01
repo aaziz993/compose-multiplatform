@@ -6,7 +6,7 @@ import gradle.plugins.compose.desktop.AbstractDistributions
 import gradle.plugins.compose.desktop.linux.LinuxPlatformSettings
 import gradle.plugins.compose.desktop.macos.JvmMacOSPlatformSettings
 import gradle.plugins.compose.desktop.windows.WindowsPlatformSettings
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.compose.desktop.application.dsl.JvmApplicationDistributions

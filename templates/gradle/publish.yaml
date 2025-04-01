@@ -78,7 +78,7 @@ plugins:
       defaultSecretKeyId: $envOrLocal.signing.gnupg.key.id
       defaultSecretKey: $envOrLocal.signing.gnupg.key
       defaultPassword: $envOrLocal.signing.gnupg.key.passphrase
-    sign: [ $publications. ] # sign all publications by specifying empty name
+    sign: [ $publishing.publications. ] # sign all publications by specifying empty name
     # register generateSigningGPG task
     generateGpg:
       keyType: RSA

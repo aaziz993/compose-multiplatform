@@ -8,7 +8,7 @@ import org.gradle.api.NamedDomainObjectProvider
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.container
 
-internal inline fun <reified T : Named> Project.containerize(vararg values: T) =
+public inline fun <reified T : Named> Project.containerize(vararg values: T) =
     container { name ->
         values.single { value -> value.name == name }
     }.apply {
@@ -17,29 +17,29 @@ internal inline fun <reified T : Named> Project.containerize(vararg values: T) =
         }
     }
 
-internal fun <T> NamedDomainObjectCollection<T>.maybeRegister(name: String) =
+public fun <T> NamedDomainObjectCollection<T>.maybeRegister(name: String) =
     if (name.isEmpty()) toList() else listOf(getByName(name))
 
-internal fun <T> NamedDomainObjectCollection<T>.getByNameOrAll(name: String) =
+public fun <T> NamedDomainObjectCollection<T>.getByNameOrAll(name: String) =
     if (name.isEmpty()) toList() else listOf(getByName(name))
 
-internal fun <T> DomainObjectCollection<T>.all(action: (T & Any) -> Unit) =
+public fun <T> DomainObjectCollection<T>.all(action: (T & Any) -> Unit) =
     all(action)
 
-internal fun <T> DomainObjectCollection<T>.configureEach(action: (T & Any) -> Unit) =
+public fun <T> DomainObjectCollection<T>.configureEach(action: (T & Any) -> Unit) =
     configureEach(action)
 
-internal fun <T> NamedDomainObjectCollection<T>.maybeNamed(name: String): NamedDomainObjectProvider<T>? =
+public fun <T> NamedDomainObjectCollection<T>.maybeNamed(name: String): NamedDomainObjectProvider<T>? =
     if (name in names) named(name) else null
 
-internal fun <T, S : T> NamedDomainObjectCollection<T>.maybeNamed(name: String, type: Class<S>): NamedDomainObjectProvider<S>? =
+public fun <T, S : T> NamedDomainObjectCollection<T>.maybeNamed(name: String, type: Class<S>): NamedDomainObjectProvider<S>? =
     if (name in names) named(name, type) else null
 
-internal fun <T> NamedDomainObjectCollection<T>.maybeNamed(name: String, configureAction: Action<in T>): NamedDomainObjectProvider<T>? =
+public fun <T> NamedDomainObjectCollection<T>.maybeNamed(name: String, configureAction: Action<in T>): NamedDomainObjectProvider<T>? =
     if (name in names) named(name, configureAction) else null
 
-internal fun <T, S : T> NamedDomainObjectCollection<T>.maybeNamed(name: String, type: Class<S>, configureAction: Action<in S>) =
+public fun <T, S : T> NamedDomainObjectCollection<T>.maybeNamed(name: String, type: Class<S>, configureAction: Action<in S>) =
     if (name in names) named(name, type, configureAction) else null
 
 @Suppress("EXTENSION_SHADOWED_BY_MEMBER")
-internal inline fun <reified T> NamedDomainObjectCollection<*>.findByName(name: String): T? = findByName(name) as? T
+public inline fun <reified T> NamedDomainObjectCollection<*>.findByName(name: String): T? = findByName(name) as? T

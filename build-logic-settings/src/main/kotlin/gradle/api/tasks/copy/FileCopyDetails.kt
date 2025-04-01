@@ -1,8 +1,7 @@
 package gradle.api.tasks.copy
 
 import gradle.api.file.RelativePath
-import gradle.reflect.trySet
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.file.DuplicatesStrategy
 import org.gradle.api.file.FileCopyDetails

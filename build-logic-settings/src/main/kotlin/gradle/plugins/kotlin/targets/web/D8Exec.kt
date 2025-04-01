@@ -5,7 +5,7 @@ import gradle.api.tasks.applyTo
 import gradle.collection.SerializableAnyList
 import gradle.collection.SerializableAnyMap
 import gradle.process.AbstractExecTask
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType

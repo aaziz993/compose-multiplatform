@@ -1,4 +1,4 @@
-package gradle.reflect
+package klib.data.type.reflection
 
 import kotlin.reflect.KFunction1
 import org.gradle.api.Action

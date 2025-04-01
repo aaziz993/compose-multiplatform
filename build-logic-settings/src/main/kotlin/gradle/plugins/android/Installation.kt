@@ -3,7 +3,7 @@ package gradle.plugins.android
 import com.android.build.api.dsl.Installation
 import gradle.collection.tryAddAll
 import gradle.collection.trySet
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 
 /**
  * Local installation options for the adb tool.

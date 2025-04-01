@@ -2,7 +2,7 @@ package gradle.plugins.android.application
 
 import com.android.build.api.dsl.ApplicationBuildFeatures
 import gradle.plugins.android.features.BuildFeatures
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable
 
 /**

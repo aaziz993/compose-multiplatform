@@ -2,8 +2,8 @@ package gradle.plugins.kotlin.targets.nat
 
 import gradle.accessors.files
 import gradle.api.ProjectNamed
-import gradle.reflect.tryPlus
-import gradle.reflect.trySet
+import klib.data.type.reflection.tryPlus
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.SetSerializer

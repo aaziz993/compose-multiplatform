@@ -5,11 +5,10 @@ import gradle.accessors.moduleName
 import gradle.api.applyTo
 import gradle.api.provider.tryAssign
 import gradle.api.publish.maven.MavenPublication
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import gradle.plugins.kotlin.HasConfigurableKotlinCompilerOptions
 import gradle.plugins.kotlin.KotlinTarget
 import gradle.plugins.kotlin.mpp.HasBinaries
-import gradle.reflect.trySet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

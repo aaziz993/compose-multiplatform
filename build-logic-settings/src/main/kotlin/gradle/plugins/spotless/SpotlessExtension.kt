@@ -4,8 +4,7 @@ package gradle.plugins.spotless
 
 import com.diffplug.spotless.LineEnding
 import gradle.accessors.spotless
-import gradle.reflect.trySet
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

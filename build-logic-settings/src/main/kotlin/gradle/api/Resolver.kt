@@ -2,11 +2,7 @@ package gradle.api
 
 import gradle.accessors.localProperties
 import gradle.accessors.publishing
-import gradle.collection.get
-import gradle.reflect.get
-import java.util.Properties
-import net.pearx.kasechange.CaseFormat
-import net.pearx.kasechange.formatter.format
+import java.util.*
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.ConfigurationContainer
@@ -20,61 +16,36 @@ import org.gradle.kotlin.dsl.extra
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 
 @Suppress("UNCHECKED_CAST")
-internal fun <T : Any> T.resolve(
-    providers: ProviderFactory,
-    extra: ExtraPropertiesExtension,
-    localProperties: Properties,
-): T = DeepRecursiveFunction<Any, Any?> { obj ->
-    when (obj) {
-        is String -> obj.resolveValue(providers, extra, localProperties, this@resolve)
-        is Map<*, *> -> obj.mapValues { (_, value) -> value?.let { callRecursive(it) } }
-        is List<*> -> obj.map { value -> value?.let { callRecursive(it) } }
-        else -> obj
-    }
-}(this) as T
+public fun <T : Any> T.resolve(
+    context: Any
+): T {
+    val sources = listOf(context, this)
+    return DeepRecursiveFunction<Any, Any?> { obj ->
+        when (obj) {
+            is String -> sources.resolveValue(obj)
+            is Map<*, *> -> obj.mapValues { (_, value) -> value?.let { callRecursive(it) } }
+            is List<*> -> obj.map { value -> value?.let { callRecursive(it) } }
+            else -> obj
+        }
+    }(this) as T
+}
 
-internal fun String.resolveValue(
-    providers: ProviderFactory,
-    extra: ExtraPropertiesExtension,
-    localProperties: Properties,
-    obj: Any
+public fun List<Any>.resolveValue(
+    reference: String,
 ): Any? {
-    if (startsWith("$"))
-        removePrefix("$").resolveReference(providers, extra, localProperties, obj)
+    if (reference.startsWith("$"))
+        reference.removePrefix("$").let { reference ->
+            firstNotNullOfOrNull { obj -> obj.get(reference) }
+        }
     else this
 }
 
-private fun String.resolveReference(
-    providers: ProviderFactory,
-    extra: ExtraPropertiesExtension,
-    localProperties: Properties,
-    obj: Any
-) =
-    if (startsWith("$")) {
-        removePrefix("$")
-            .split(".")
-            .let { keys ->
-                when (keys[0]) {
-                    "env" -> System.getenv()[CaseFormat.UPPER_UNDERSCORE.format(keys.drop(1))]
-                    "gradle" -> providers.gradleProperty(CaseFormat.LOWER_DOT.format(keys.drop(1))).orNull
-                    "extra" -> extra[CaseFormat.LOWER_DOT.format(keys.drop(1))]
-                    "local" -> localProperties[CaseFormat.LOWER_DOT.format(keys.drop(1))]
-                    else -> obj.get(*keys.toTypedArray())
-                }
-            }
-    }
-    else this
-
-internal fun Any.resolveComponentReference(reference: String): Any? {
-    if (reference.isEmpty()) {
-        return this
-    }
-
+public operator fun Any.get(reference: String): Any? {
     val key = reference.substringBefore(".")
 
     var restReference = reference.substringAfter(".", "")
 
-    return when (this) {
+    val resolved = when (this) {
         is Boolean,
         is Byte,
         is Short,
@@ -119,6 +90,8 @@ internal fun Any.resolveComponentReference(reference: String): Any? {
             else -> this[key]
         }
 
+        is Properties -> getProperty(key)
+
         is ConfigurationContainer -> getByNameOrAll(key)
 
         is Configuration -> when (key) {
@@ -152,5 +125,9 @@ internal fun Any.resolveComponentReference(reference: String): Any? {
         }
 
         else -> this[key]
-    }?.resolveComponentReference(restReference)
+    }
+
+    return resolved
+
+//        ?.resolveComponentReference(restReference)
 }

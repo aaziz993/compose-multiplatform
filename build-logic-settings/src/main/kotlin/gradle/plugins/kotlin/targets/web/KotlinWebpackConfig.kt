@@ -1,9 +1,9 @@
 package gradle.plugins.kotlin.targets.web
 
 import gradle.collection.tryAddAll
-import gradle.reflect.tryAddAll
-import gradle.reflect.tryApply
-import gradle.reflect.trySet
+import klib.data.type.reflection.tryAddAll
+import klib.data.type.reflection.tryApply
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonContentPolymorphicSerializer

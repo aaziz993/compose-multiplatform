@@ -2,7 +2,7 @@ package gradle.plugins.android
 
 import com.android.build.api.dsl.Cmake
 import com.android.build.api.dsl.NdkBuild
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

@@ -1,6 +1,6 @@
 package gradle.plugins.signing.tasks
 
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.plugins.signing.SignatureSpec

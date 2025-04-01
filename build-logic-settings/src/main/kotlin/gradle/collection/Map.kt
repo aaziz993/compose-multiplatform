@@ -1,8 +1,8 @@
 package gradle.collection
 
-import gradle.act
-import gradle.serialization.serializer.AnySerializer
-import gradle.serialization.serializer.OptionalAnySerializer
+import klib.data.type.act
+import klib.data.type.serialization.serializer.AnySerializer
+import klib.data.type.serialization.serializer.OptionalAnySerializer
 import kotlinx.serialization.Serializable
 
 internal typealias SerializableAnyMap = Map<String, @Serializable(with = AnySerializer::class) Any>

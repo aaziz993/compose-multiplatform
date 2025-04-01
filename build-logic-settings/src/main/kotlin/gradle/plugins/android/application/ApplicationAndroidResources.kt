@@ -4,7 +4,7 @@ import com.android.build.api.dsl.ApplicationAndroidResources
 import gradle.collection.tryAddAll
 import gradle.collection.trySet
 import gradle.plugins.android.AndroidResources
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable
 
 /**

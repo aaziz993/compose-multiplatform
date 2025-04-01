@@ -4,12 +4,12 @@ package gradle.plugins.android
 
 import gradle.accessors.android
 import gradle.accessors.projectProperties
-import gradle.addPrefixIfNotEmpty
+import klib.data.type.addPrefixIfNotEmpty
 import gradle.api.configureEach
 import gradle.api.file.replace
-import gradle.decapitalized
+import klib.data.type.decapitalized
 import gradle.plugins.project.ProjectLayout
-import gradle.trySetSystemProperty
+import klib.data.type.trySetSystemProperty
 import javax.xml.stream.XMLEventFactory
 import javax.xml.stream.XMLInputFactory
 import javax.xml.stream.XMLOutputFactory

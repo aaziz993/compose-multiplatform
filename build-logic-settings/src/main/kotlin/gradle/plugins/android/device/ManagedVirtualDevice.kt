@@ -1,7 +1,7 @@
 package gradle.plugins.android.device
 
 import gradle.api.NamedObjectTransformingSerializer
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

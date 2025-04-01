@@ -5,7 +5,7 @@ import gradle.accessors.androidNamespace
 import gradle.accessors.catalog.libs
 import gradle.accessors.settings
 import gradle.plugins.android.flavor.BaseFlavor
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import org.gradle.api.Project
 
 /**

@@ -6,8 +6,8 @@ import gradle.api.getByNameOrAll
 import gradle.plugins.kotlin.tasks.KotlinCompilationTask
 import gradle.plugins.kotlin.tasks.KotlinCompilationTaskImpl
 import gradle.plugins.project.Dependency
-import gradle.reflect.tryPlus
-import gradle.reflect.trySet
+import klib.data.type.reflection.tryPlus
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

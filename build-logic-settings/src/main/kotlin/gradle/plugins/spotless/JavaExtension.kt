@@ -6,7 +6,7 @@ import gradle.accessors.catalog.libs
 import gradle.accessors.catalog.resolveVersion
 import gradle.accessors.settings
 import gradle.accessors.spotless
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

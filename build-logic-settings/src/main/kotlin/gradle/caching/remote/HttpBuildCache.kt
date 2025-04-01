@@ -1,7 +1,7 @@
 package gradle.caching.remote
 
 import gradle.caching.AbstractBuildCache
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings

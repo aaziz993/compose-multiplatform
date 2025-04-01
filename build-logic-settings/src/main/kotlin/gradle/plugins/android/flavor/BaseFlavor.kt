@@ -10,7 +10,7 @@ import gradle.collection.trySet
 import gradle.plugins.android.MissingDimensionStrategy
 import gradle.plugins.android.VariantDimension
 import gradle.plugins.android.VectorDrawables
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import org.gradle.api.Project
 
 /**

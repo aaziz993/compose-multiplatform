@@ -5,9 +5,9 @@ import gradle.api.provider.tryAssign
 import gradle.api.tasks.DefaultTask
 import gradle.api.tasks.applyTo
 import gradle.collection.SerializableAnyMap
-import gradle.doubleQuoted
-import gradle.serialization.decodeMapFromString
-import gradle.serialization.encodeAnyToString
+import klib.data.type.doubleQuoted
+import klib.data.type.serialization.decodeMapFromString
+import klib.data.type.serialization.encodeAnyToString
 import io.github.sgrishchenko.karakum.gradle.plugin.tasks.KarakumGenerate
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json

@@ -8,7 +8,7 @@ import gradle.accessors.settings
 import gradle.accessors.signing
 import gradle.api.configureEach
 import gradle.api.toVersion
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 import org.gradle.plugins.signing.Sign

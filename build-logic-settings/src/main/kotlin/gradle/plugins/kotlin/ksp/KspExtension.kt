@@ -5,7 +5,7 @@ import gradle.api.file.tryFrom
 import gradle.api.file.trySetFrom
 import gradle.api.provider.tryAssign
 import gradle.process.CommandLineArgumentProvider
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

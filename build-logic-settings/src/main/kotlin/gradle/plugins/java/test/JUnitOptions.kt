@@ -1,14 +1,13 @@
 package gradle.plugins.java.test
 
 import gradle.api.tasks.test.TestFrameworkOptions
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.JsonContentPolymorphicSerializer
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonPrimitive
-import kotlinx.serialization.json.jsonPrimitive
 import org.gradle.api.Project
 
 /**

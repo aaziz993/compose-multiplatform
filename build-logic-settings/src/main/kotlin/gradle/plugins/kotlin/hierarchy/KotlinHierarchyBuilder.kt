@@ -1,7 +1,6 @@
 package gradle.plugins.kotlin.hierarchy
 
-import gradle.reflect.trySet
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 

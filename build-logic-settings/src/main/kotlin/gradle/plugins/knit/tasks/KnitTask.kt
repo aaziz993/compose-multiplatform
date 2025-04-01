@@ -4,8 +4,8 @@ import gradle.accessors.files
 import gradle.api.tasks.DefaultTask
 import gradle.api.tasks.applyTo
 import gradle.collection.SerializableAnyMap
-import gradle.reflect.tryPlus
-import gradle.reflect.trySet
+import klib.data.type.reflection.tryPlus
+import klib.data.type.reflection.trySet
 import kotlinx.knit.KnitTask
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

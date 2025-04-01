@@ -1,7 +1,7 @@
 package gradle.plugins.java.test
 
 import gradle.api.tasks.test.TestFrameworkOptions
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.serializer

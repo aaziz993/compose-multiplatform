@@ -6,9 +6,8 @@ import gradle.api.repositories.AuthenticationSupported
 import gradle.api.repositories.PasswordCredentials
 import gradle.api.repositories.RepositoryContentDescriptorImpl
 import gradle.api.repositories.UrlArtifactRepository
-import gradle.reflect.trySet
-import gradle.reflect.tryApply
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
+import klib.data.type.reflection.tryApply
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

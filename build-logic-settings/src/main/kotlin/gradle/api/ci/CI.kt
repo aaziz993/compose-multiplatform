@@ -1,7 +1,7 @@
 package gradle.api.ci
 
 import gradle.accessors.execute
-import gradle.serialization.serializer.JsonObjectTransformingContentPolymorphicSerializer
+import klib.data.type.serialization.serializer.JsonObjectTransformingContentPolymorphicSerializer
 import kotlin.reflect.full.companionObject
 import kotlin.reflect.full.companionObjectInstance
 import kotlinx.serialization.Serializable

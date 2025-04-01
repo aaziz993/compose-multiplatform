@@ -1,7 +1,7 @@
 package gradle.plugins.compose.desktop.platform
 
 import gradle.api.file.tryAssign
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import org.gradle.api.Project
 import org.jetbrains.compose.desktop.application.dsl.AbstractPlatformSettings
 

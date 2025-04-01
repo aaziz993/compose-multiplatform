@@ -5,7 +5,7 @@ import gradle.accessors.catalog.libs
 import gradle.accessors.settings
 import gradle.api.applyTo
 import gradle.api.provider.tryAssign
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

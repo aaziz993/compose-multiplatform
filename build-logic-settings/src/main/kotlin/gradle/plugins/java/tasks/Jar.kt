@@ -11,7 +11,7 @@ import gradle.api.tasks.copy.IntoContentPolymorphicSerializer
 import gradle.api.tasks.copy.Rename
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.java.manifest.Manifest
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.file.DuplicatesStrategy

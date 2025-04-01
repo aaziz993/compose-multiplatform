@@ -2,8 +2,8 @@ package gradle.plugins.compose.desktop.macos
 
 import gradle.api.file.tryAssign
 import gradle.plugins.compose.desktop.platform.FileAssociation
-import gradle.reflect.tryApply
-import gradle.reflect.trySet
+import klib.data.type.reflection.tryApply
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.compose.desktop.application.dsl.JvmMacOSPlatformSettings

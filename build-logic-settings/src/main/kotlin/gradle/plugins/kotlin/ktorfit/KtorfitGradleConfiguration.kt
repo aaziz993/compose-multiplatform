@@ -2,7 +2,7 @@ package gradle.plugins.kotlin.ktorfit
 
 import de.jensklingenberg.ktorfit.gradle.ErrorCheckingMode
 import gradle.accessors.ktorfit
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

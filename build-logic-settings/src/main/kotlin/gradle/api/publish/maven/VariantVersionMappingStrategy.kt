@@ -1,6 +1,6 @@
 package gradle.api.publish.maven
 
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.publish.VariantVersionMappingStrategy
 

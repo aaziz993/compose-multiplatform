@@ -1,6 +1,6 @@
 package gradle.api.repositories.ivy
 
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.artifacts.repositories.IvyArtifactRepositoryMetaDataProvider
 

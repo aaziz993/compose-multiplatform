@@ -9,7 +9,7 @@ import gradle.collection.SerializableAnyMap
 import gradle.plugins.kotlin.KotlinCommonCompilerOptions
 import gradle.plugins.kotlin.targets.jvm.KotlinJvmCompile
 import gradle.plugins.kotlin.targets.nat.CompilerPluginOptions
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType

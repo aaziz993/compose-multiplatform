@@ -1,8 +1,8 @@
 package gradle.api.repositories
 
 import gradle.api.Named
-import gradle.reflect.tryApply
-import gradle.serialization.serializer.JsonBaseObjectTransformingContentPolymorphicSerializer
+import klib.data.type.reflection.tryApply
+import klib.data.type.serialization.serializer.JsonBaseObjectTransformingContentPolymorphicSerializer
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement

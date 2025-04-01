@@ -1,6 +1,6 @@
 package gradle.plugins.java.manifest
 
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.java.archives.ManifestMergeSpec
 

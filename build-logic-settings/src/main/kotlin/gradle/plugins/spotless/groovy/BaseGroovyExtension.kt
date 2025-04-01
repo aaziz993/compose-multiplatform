@@ -4,9 +4,8 @@ import com.diffplug.gradle.spotless.BaseGroovyExtension
 import gradle.accessors.catalog.libs
 import gradle.accessors.catalog.resolveVersion
 import gradle.accessors.settings
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import gradle.plugins.spotless.FormatExtension
-import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

@@ -3,7 +3,7 @@ package gradle.plugins.dependencycheck.analyzer
 /**
  * The configuration for the RetireJS Analyzer.
  */
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable
 import org.owasp.dependencycheck.gradle.extension.RetireJSExtension
 

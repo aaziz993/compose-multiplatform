@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin
 
 import gradle.plugins.kotlin.model.LanguageSettings
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable
 import org.jetbrains.kotlin.gradle.plugin.LanguageSettingsBuilder
 

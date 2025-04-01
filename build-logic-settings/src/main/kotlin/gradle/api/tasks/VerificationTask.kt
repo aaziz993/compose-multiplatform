@@ -1,6 +1,6 @@
 package gradle.api.tasks
 
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import org.gradle.api.tasks.VerificationTask
 
 internal interface VerificationTask<T : VerificationTask> {

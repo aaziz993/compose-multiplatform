@@ -1,8 +1,8 @@
 package gradle.plugins.kotlin.targets.web
 
 import gradle.accessors.moduleName
-import gradle.reflect.trySet
-import gradle.serialization.serializer.JsonObjectTransformingContentPolymorphicSerializer
+import klib.data.type.reflection.trySet
+import klib.data.type.serialization.serializer.JsonObjectTransformingContentPolymorphicSerializer
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

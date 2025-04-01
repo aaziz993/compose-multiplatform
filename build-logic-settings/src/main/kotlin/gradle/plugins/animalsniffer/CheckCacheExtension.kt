@@ -1,6 +1,6 @@
 package gradle.plugins.animalsniffer
 
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable
 import ru.vyarus.gradle.plugin.animalsniffer.CheckCacheExtension
 

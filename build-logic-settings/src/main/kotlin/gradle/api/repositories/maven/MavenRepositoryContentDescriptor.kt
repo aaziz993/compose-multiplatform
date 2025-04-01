@@ -3,8 +3,7 @@ package gradle.api.repositories.maven
 import gradle.api.repositories.Module
 import gradle.api.repositories.RepositoryContentDescriptor
 import gradle.api.repositories.Version
-import gradle.reflect.trySet
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.artifacts.repositories.MavenRepositoryContentDescriptor
 

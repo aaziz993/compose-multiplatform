@@ -2,7 +2,7 @@ package gradle.plugins.android.library
 
 import com.android.build.api.dsl.LibraryProductFlavor
 import gradle.plugins.android.flavor.ProductFlavorDsl
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import org.gradle.api.Project
 
 /**

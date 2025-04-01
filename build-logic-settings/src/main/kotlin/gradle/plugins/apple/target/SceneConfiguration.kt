@@ -1,6 +1,6 @@
 package gradle.plugins.apple.target
 
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable
 import org.jetbrains.gradle.apple.dsl.SceneConfiguration
 

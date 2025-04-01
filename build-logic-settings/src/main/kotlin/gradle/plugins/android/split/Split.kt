@@ -1,8 +1,7 @@
 package gradle.plugins.android.split
 
 import com.android.build.api.dsl.Split
-import gradle.reflect.trySet
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 
 /**
  *  Base data representing how an APK should be split for a given dimension (density, abi).

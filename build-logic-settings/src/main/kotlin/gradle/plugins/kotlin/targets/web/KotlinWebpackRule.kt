@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin.targets.web
 
 import gradle.api.provider.tryAssign
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackRule
 
 internal interface KotlinWebpackRule {

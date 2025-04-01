@@ -7,7 +7,7 @@ import gradle.accessors.android
 import gradle.collection.SerializableAnyMap
 import gradle.collection.tryPutAll
 import gradle.plugins.android.compile.JavaCompileOptions
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import org.gradle.api.Project
 
 /**

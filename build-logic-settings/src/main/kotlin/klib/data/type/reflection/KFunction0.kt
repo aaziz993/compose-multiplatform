@@ -1,6 +1,6 @@
-package gradle.reflect
+package klib.data.type.reflection
 
-import gradle.ifTrue
+import klib.data.type.ifTrue
 import kotlin.reflect.KFunction0
 
 public infix fun <T> KFunction0<T>.trySet(value: Boolean?): Boolean? =

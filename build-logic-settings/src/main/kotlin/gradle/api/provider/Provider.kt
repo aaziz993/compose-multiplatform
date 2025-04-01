@@ -1,6 +1,6 @@
 package gradle.api.provider
 
-import gradle.act
+import klib.data.type.act
 import org.gradle.api.provider.HasMultipleValues
 import org.gradle.api.provider.Provider
 

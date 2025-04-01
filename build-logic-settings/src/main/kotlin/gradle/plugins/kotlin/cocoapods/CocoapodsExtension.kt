@@ -10,10 +10,9 @@ import gradle.accessors.settings
 import gradle.collection.tryAddAll
 import gradle.collection.tryPutAll
 import gradle.collection.trySet
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import gradle.plugins.kotlin.targets.nat.FrameworkSettings
-import gradle.reflect.tryPlus
-import gradle.reflect.trySet
+import klib.data.type.reflection.tryPlus
 import java.net.URI
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable

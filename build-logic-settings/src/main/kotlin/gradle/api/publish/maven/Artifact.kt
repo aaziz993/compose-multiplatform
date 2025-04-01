@@ -1,6 +1,6 @@
 package gradle.api.publish.maven
 
-import gradle.serialization.serializer.JsonObjectTransformingSerializer
+import klib.data.type.serialization.serializer.JsonObjectTransformingSerializer
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 

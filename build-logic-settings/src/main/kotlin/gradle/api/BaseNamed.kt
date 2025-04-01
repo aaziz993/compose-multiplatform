@@ -1,6 +1,6 @@
 package gradle.api
 
-import gradle.serialization.serializer.JsonObjectTransformingSerializer
+import klib.data.type.serialization.serializer.JsonObjectTransformingSerializer
 import kotlinx.serialization.KSerializer
 import org.gradle.api.Action
 import org.gradle.api.DomainObjectCollection
@@ -9,7 +9,7 @@ import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 import org.gradle.api.initialization.Settings
 
-internal interface BaseNamed {
+public interface BaseNamed {
 
     /**
      * The object's name.
@@ -18,24 +18,24 @@ internal interface BaseNamed {
      *
      * @return The name. Never null.
      */
-    val name: String?
+    public  val name: String?
 }
 
-internal abstract class NamedObjectTransformingSerializer<T : BaseNamed>(
+public abstract class NamedObjectTransformingSerializer<T : BaseNamed>(
     tSerializer: KSerializer<T>
 ) : JsonObjectTransformingSerializer<T>(
     tSerializer,
     "name",
 )
 
-internal interface SettingsNamed<T> : BaseNamed {
+public interface SettingsNamed<T> : BaseNamed {
 
     context(Settings)
-    fun applyTo(receiver: T)
+    public fun applyTo(receiver: T)
 }
 
 context(Settings)
-internal fun <T> SettingsNamed<T>.applyTo(
+public fun <T> SettingsNamed<T>.applyTo(
     receiver: DomainObjectCollection<out T>,
     getName: (T) -> String,
     create: (name: String, action: Action<in T>) -> Unit
@@ -44,7 +44,7 @@ internal fun <T> SettingsNamed<T>.applyTo(
 }
 
 context(Settings)
-internal fun <T> SettingsNamed<T>.applyTo(
+public fun <T> SettingsNamed<T>.applyTo(
     receiver: NamedDomainObjectCollection<out T>,
     create: (name: String, action: Action<in T>) -> Unit
 ) = receiver.maybeNamedCreateOrEach(name, create) {
@@ -52,19 +52,19 @@ internal fun <T> SettingsNamed<T>.applyTo(
 }
 
 context(Settings)
-internal fun <T> SettingsNamed<T>.applyTo(receiver: NamedDomainObjectContainer<out T>) =
+public fun <T> SettingsNamed<T>.applyTo(receiver: NamedDomainObjectContainer<out T>) =
     applyTo(receiver) { name, action ->
         receiver.register(name, action)
     }
 
-internal interface ProjectNamed<T> : BaseNamed {
+public interface ProjectNamed<T> : BaseNamed {
 
     context(Project)
-    fun applyTo(receiver: T)
+    public fun applyTo(receiver: T)
 }
 
 context(Project)
-internal fun <T> ProjectNamed<T>.applyTo(
+public fun <T> ProjectNamed<T>.applyTo(
     receiver: DomainObjectCollection<out T>,
     getName: (T) -> String,
     create: (name: String, action: Action<in T>) -> Unit
@@ -73,7 +73,7 @@ internal fun <T> ProjectNamed<T>.applyTo(
 }
 
 context(Project)
-internal fun <T> ProjectNamed<T>.applyTo(
+public fun <T> ProjectNamed<T>.applyTo(
     receiver: NamedDomainObjectCollection<out T>,
     create: (name: String, action: Action<in T>) -> Unit
 ) = receiver.maybeNamedCreateOrEach(name, create) {
@@ -81,12 +81,12 @@ internal fun <T> ProjectNamed<T>.applyTo(
 }
 
 context(Project)
-internal fun <T> ProjectNamed<T>.applyTo(receiver: NamedDomainObjectContainer<out T>) =
+public fun <T> ProjectNamed<T>.applyTo(receiver: NamedDomainObjectContainer<out T>) =
     applyTo(receiver) { name, action ->
         receiver.register(name, action)
     }
 
-internal interface Named<T> : SettingsNamed<T>, ProjectNamed<T> {
+public interface Named<T> : SettingsNamed<T>, ProjectNamed<T> {
 
     context(Settings)
     override fun applyTo(receiver: T)
@@ -95,7 +95,7 @@ internal interface Named<T> : SettingsNamed<T>, ProjectNamed<T> {
     override fun applyTo(receiver: T)
 }
 
-internal fun <T> DomainObjectCollection<out T>.maybeNamedCreateOrEach(
+public fun <T> DomainObjectCollection<out T>.maybeNamedCreateOrEach(
     name: String?,
     getName: (T) -> String,
     create: (name: String, action: Action<in T>) -> Unit = { _, _ -> },
@@ -108,7 +108,7 @@ internal fun <T> DomainObjectCollection<out T>.maybeNamedCreateOrEach(
     }
 }
 
-internal fun <T> NamedDomainObjectCollection<out T>.maybeNamedCreateOrEach(
+public fun <T> NamedDomainObjectCollection<out T>.maybeNamedCreateOrEach(
     name: String?,
     create: (name: String, action: Action<in T>) -> Unit = { _, _ -> },
     configureAction: Action<in T>

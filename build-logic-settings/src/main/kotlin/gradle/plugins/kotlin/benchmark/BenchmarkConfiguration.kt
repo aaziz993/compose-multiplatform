@@ -7,7 +7,7 @@ import gradle.collection.SerializableOptionalAnyMap
 import gradle.collection.tryAddAll
 import gradle.collection.tryPutAll
 import gradle.collection.trySet
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

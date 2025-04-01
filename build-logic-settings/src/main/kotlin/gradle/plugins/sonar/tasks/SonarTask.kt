@@ -5,7 +5,7 @@ import gradle.api.tasks.applyTo
 import gradle.collection.SerializableAnyMap
 import gradle.collection.tryPutAll
 import gradle.collection.trySet
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
 import org.gradle.kotlin.dsl.withType

@@ -1,7 +1,7 @@
 package gradle.plugins.android.split
 
 import com.android.build.api.dsl.AbiSplit
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 
 /**
  * DSL object for configuring per-abi splits options.

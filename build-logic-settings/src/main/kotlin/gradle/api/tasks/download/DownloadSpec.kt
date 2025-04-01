@@ -1,6 +1,6 @@
 package gradle.api.tasks.download
 
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import java.net.URI
 import org.gradle.internal.impldep.org.apache.ivy.util.url.ApacheURLLister
 import org.jetbrains.compose.internal.de.undercouch.gradle.tasks.download.DownloadSpec

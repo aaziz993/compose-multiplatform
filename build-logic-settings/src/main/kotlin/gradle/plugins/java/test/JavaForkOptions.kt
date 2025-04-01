@@ -4,7 +4,7 @@ import gradle.accessors.files
 import gradle.collection.SerializableAnyMap
 import gradle.collection.tryAddAll
 import gradle.process.ProcessForkOptions
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import org.gradle.api.Project
 import org.gradle.process.JavaForkOptions
 

@@ -3,10 +3,9 @@ package gradle.plugins.kotlin.mpp
 import gradle.accessors.kotlin
 import gradle.api.applyTo
 import gradle.api.publish.maven.MavenPublication
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import gradle.plugins.kotlin.HasConfigurableKotlinCompilerOptions
 import gradle.plugins.kotlin.targets.jvm.KotlinJvmCompilerOptions
-import gradle.reflect.trySet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

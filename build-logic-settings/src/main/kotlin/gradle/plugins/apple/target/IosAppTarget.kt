@@ -3,8 +3,8 @@ package gradle.plugins.apple.target
 import gradle.collection.SerializableAnyMap
 import gradle.plugins.apple.AppleBuildSettings
 import gradle.plugins.apple.BuildConfiguration
-import gradle.reflect.tryApply
-import gradle.reflect.trySet
+import klib.data.type.reflection.tryApply
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

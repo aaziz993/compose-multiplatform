@@ -1,7 +1,7 @@
 package gradle.plugins.develocity.buildscan
 
 import gradle.api.provider.tryAssign
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import java.util.*
 import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings

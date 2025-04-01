@@ -1,9 +1,8 @@
 package gradle.plugins.android.publish
 
 import com.android.build.api.dsl.MultipleVariants
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import gradle.plugins.android.flavor.FlavorDimensionAndValues
-import gradle.reflect.trySet
 
 /**
  * Multi variant publishing options.

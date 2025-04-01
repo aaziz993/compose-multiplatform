@@ -10,9 +10,8 @@ import gradle.accessors.catalog.libs
 import gradle.accessors.settings
 import gradle.accessors.spotless
 import gradle.collection.SerializableAnyMap
-import gradle.reflect.trySet
-import gradle.reflect.trySet
-import gradle.serialization.serializer.JsonObjectTransformingContentPolymorphicSerializer
+import klib.data.type.reflection.trySet
+import klib.data.type.serialization.serializer.JsonObjectTransformingContentPolymorphicSerializer
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.isAccessible
 import kotlinx.serialization.KSerializer

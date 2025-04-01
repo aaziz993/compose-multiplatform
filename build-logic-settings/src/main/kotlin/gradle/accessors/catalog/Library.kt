@@ -1,6 +1,6 @@
 package gradle.accessors.catalog
 
-import gradle.addPrefix
+import klib.data.type.addPrefix
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient

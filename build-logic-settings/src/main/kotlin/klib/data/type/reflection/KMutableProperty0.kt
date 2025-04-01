@@ -1,4 +1,4 @@
-package gradle.reflect
+package klib.data.type.reflection
 
 import kotlin.reflect.KMutableProperty0
 import org.gradle.api.file.FileCollection

@@ -23,7 +23,7 @@ import gradle.plugins.android.sourceset.AndroidSourceSet
 import gradle.plugins.android.split.SplitsDsl
 import gradle.plugins.android.test.TestCoverage
 import gradle.plugins.android.test.TestOptions
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import org.gradle.api.Project
 
 /**

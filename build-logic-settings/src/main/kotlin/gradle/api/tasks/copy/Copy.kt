@@ -4,7 +4,7 @@ import gradle.api.tasks.Expand
 import gradle.api.tasks.FilesMatching
 import gradle.api.tasks.applyTo
 import gradle.collection.SerializableAnyMap
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

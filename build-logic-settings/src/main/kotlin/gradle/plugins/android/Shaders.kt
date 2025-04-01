@@ -3,7 +3,7 @@
 package gradle.plugins.android
 
 import com.android.build.api.dsl.Shaders
-import gradle.act
+import klib.data.type.act
 import gradle.collection.tryAddAll
 import gradle.collection.trySet
 import kotlinx.serialization.Serializable

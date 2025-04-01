@@ -1,7 +1,7 @@
 package gradle.api.publish
 
 import gradle.api.Buildable
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import org.gradle.api.publish.PublicationArtifact
 
 /**

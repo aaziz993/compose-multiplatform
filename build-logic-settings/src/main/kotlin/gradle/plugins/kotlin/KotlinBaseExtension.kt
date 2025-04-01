@@ -4,8 +4,8 @@ import gradle.accessors.catalog.libs
 import gradle.accessors.settings
 import gradle.api.provider.tryAssign
 import gradle.plugins.java.JavaToolchainSpec
-import gradle.reflect.tryPlus
-import gradle.reflect.trySet
+import klib.data.type.reflection.tryPlus
+import klib.data.type.reflection.trySet
 import org.gradle.api.Project
 import org.jetbrains.kotlin.buildtools.api.ExperimentalBuildToolsApi
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode

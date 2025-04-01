@@ -1,4 +1,4 @@
-package gradle.serialization.serializer
+package klib.data.type.serialization.serializer
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException

@@ -1,8 +1,7 @@
 package gradle.api.artifacts
 
-import arrow.core.raise.recover
 import gradle.collection.resolveComponentReference
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.artifacts.DependencySubstitution

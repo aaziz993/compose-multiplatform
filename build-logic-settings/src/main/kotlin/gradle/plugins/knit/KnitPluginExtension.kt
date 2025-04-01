@@ -2,8 +2,8 @@ package gradle.plugins.knit
 
 import gradle.accessors.files
 import gradle.accessors.knit
-import gradle.reflect.tryPlus
-import gradle.reflect.trySet
+import klib.data.type.reflection.tryPlus
+import klib.data.type.reflection.trySet
 import org.gradle.api.Project
 
 internal interface KnitPluginExtension {

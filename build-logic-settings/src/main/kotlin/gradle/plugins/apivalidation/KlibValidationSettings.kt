@@ -1,6 +1,6 @@
 package gradle.plugins.apivalidation
 
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable
 import kotlinx.validation.ExperimentalBCVApi
 import kotlinx.validation.KlibValidationSettings

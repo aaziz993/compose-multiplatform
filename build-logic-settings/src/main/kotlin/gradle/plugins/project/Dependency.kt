@@ -5,7 +5,7 @@ package gradle.plugins.project
 import gradle.accessors.catalog.allLibs
 import gradle.accessors.catalog.resolveDependency
 import gradle.accessors.settings
-import gradle.serialization.serializer.JsonBaseObjectTransformingSerializer
+import klib.data.type.serialization.serializer.JsonBaseObjectTransformingSerializer
 import java.io.File
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable

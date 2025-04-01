@@ -5,9 +5,8 @@ import gradle.accessors.sourceSets
 import gradle.api.getByNameOrAll
 import gradle.collection.tryAddAll
 import gradle.collection.trySet
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import gradle.plugins.compose.desktop.application.buildtype.JvmApplicationBuildTypes
-import gradle.reflect.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.compose.desktop.application.dsl.JvmApplication

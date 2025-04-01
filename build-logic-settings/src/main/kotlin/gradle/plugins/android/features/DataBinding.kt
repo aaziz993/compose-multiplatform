@@ -1,7 +1,7 @@
 package gradle.plugins.android.features
 
 import com.android.build.api.dsl.DataBinding
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable
 
 /**

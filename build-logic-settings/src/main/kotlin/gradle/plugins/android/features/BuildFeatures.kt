@@ -1,7 +1,7 @@
 package gradle.plugins.android.features
 
 import com.android.build.api.dsl.BuildFeatures
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 
 /**
  * A list of build features that can be disabled or enabled in an Android project.

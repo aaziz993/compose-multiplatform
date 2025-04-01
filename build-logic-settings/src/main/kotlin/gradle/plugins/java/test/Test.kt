@@ -9,7 +9,7 @@ import gradle.api.tasks.test.TestFilter
 import gradle.api.tasks.test.TestLoggingContainer
 import gradle.api.tasks.util.PatternFilterable
 import gradle.collection.SerializableAnyMap
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import gradle.plugins.java.JavaToolchainSpec
 import gradle.plugins.java.ModularitySpec
 import kotlinx.serialization.SerialName

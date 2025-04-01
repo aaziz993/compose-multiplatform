@@ -4,7 +4,7 @@ import gradle.accessors.files
 import gradle.api.ProjectNamed
 import gradle.api.provider.tryAssign
 import gradle.api.tasks.util.PatternFilterable
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.file.SourceDirectorySet

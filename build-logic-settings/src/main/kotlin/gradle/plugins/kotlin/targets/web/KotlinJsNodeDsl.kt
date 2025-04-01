@@ -1,6 +1,6 @@
 package gradle.plugins.kotlin.targets.web
 
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalDistributionDsl

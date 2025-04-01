@@ -77,8 +77,8 @@ import gradle.plugins.shadow.ShadowPlugin
 import gradle.plugins.signing.SigningPlugin
 import gradle.plugins.sonar.SonarPlugin
 import gradle.plugins.spotless.SpotlessPlugin
-import gradle.reflect.trySet
-import gradle.serialization.encodeToAny
+import klib.data.type.reflection.trySet
+import klib.data.type.serialization.encodeToAny
 import kotlinx.serialization.json.Json
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin

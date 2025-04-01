@@ -7,8 +7,8 @@ import gradle.collection.tryPutAll
 import gradle.collection.trySet
 import gradle.plugins.apple.AppleBuildSettings
 import gradle.plugins.apple.BuildConfiguration
-import gradle.reflect.trySet
-import gradle.serialization.serializer.JsonObjectTransformingContentPolymorphicSerializer
+import klib.data.type.reflection.trySet
+import klib.data.type.serialization.serializer.JsonObjectTransformingContentPolymorphicSerializer
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

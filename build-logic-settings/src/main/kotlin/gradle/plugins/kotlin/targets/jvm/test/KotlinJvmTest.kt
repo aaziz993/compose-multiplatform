@@ -7,14 +7,11 @@ import gradle.collection.SerializableAnyMap
 import gradle.plugins.java.JavaToolchainSpec
 import gradle.plugins.java.ModularitySpec
 import gradle.plugins.java.test.JUnitContentPolymorphicSerializer
-import gradle.plugins.java.test.JUnitOptions
 import gradle.plugins.java.test.JUnitPlatformContentPolymorphicSerializer
-import gradle.plugins.java.test.JUnitPlatformOptions
 import gradle.plugins.java.test.JavaDebugOptions
 import gradle.plugins.java.test.Test
 import gradle.plugins.java.test.TestNGContentPolymorphicSerializer
-import gradle.plugins.java.test.TestNGOptions
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType

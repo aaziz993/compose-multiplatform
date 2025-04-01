@@ -6,9 +6,9 @@ import gradle.api.provider.tryAssign
 import gradle.collection.tryPutAll
 import gradle.collection.trySet
 import gradle.plugins.project.Dependency
-import gradle.reflect.tryPlus
-import gradle.reflect.trySet
-import gradle.serialization.serializer.JsonObjectTransformingContentPolymorphicSerializer
+import klib.data.type.reflection.tryPlus
+import klib.data.type.reflection.trySet
+import klib.data.type.serialization.serializer.JsonObjectTransformingContentPolymorphicSerializer
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName

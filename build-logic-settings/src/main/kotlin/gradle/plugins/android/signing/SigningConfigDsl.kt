@@ -2,7 +2,7 @@ package gradle.plugins.android.signing
 
 import com.android.build.api.dsl.SigningConfig
 import gradle.accessors.android
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import org.gradle.api.Project
 
 /**

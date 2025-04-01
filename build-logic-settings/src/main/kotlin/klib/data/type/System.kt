@@ -1,4 +1,4 @@
-package gradle
+package klib.data.type
 
 import java.lang.System.getProperty
 import java.lang.System.setProperty

@@ -3,7 +3,7 @@ package gradle.plugins.kotlin.targets.web
 import gradle.api.provider.tryAssign
 import gradle.collection.tryAddAll
 import gradle.plugins.kotlin.targets.web.KotlinWebpackConfig.WatchOptions
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack

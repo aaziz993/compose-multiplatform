@@ -1,4 +1,4 @@
-package gradle
+package klib.data.type
 
 public inline fun <T> T.act(action: () -> Unit): T {
     action()

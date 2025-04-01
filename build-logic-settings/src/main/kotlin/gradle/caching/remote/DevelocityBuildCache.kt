@@ -4,7 +4,7 @@ import com.gradle.develocity.agent.gradle.buildcache.DevelocityBuildCache
 import gradle.accessors.projectProperties
 import gradle.api.ci.CI
 import gradle.caching.AbstractBuildCache
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings

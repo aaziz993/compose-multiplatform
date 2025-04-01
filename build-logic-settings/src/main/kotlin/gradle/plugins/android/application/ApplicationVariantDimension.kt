@@ -3,7 +3,7 @@ package gradle.plugins.android.application
 import com.android.build.api.dsl.ApplicationVariantDimension
 import gradle.accessors.android
 import gradle.plugins.android.VariantDimension
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import org.gradle.api.Project
 
 /**

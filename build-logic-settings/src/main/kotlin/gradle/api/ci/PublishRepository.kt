@@ -1,6 +1,6 @@
 package gradle.api.ci
 
-import gradle.serialization.serializer.JsonObjectTransformingSerializer
+import klib.data.type.serialization.serializer.JsonObjectTransformingSerializer
 import kotlinx.serialization.Serializable
 
 @Serializable(with = PublishRepositoryObjectTransformingSerializer::class)

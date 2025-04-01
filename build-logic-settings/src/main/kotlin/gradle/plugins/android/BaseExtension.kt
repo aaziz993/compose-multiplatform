@@ -7,7 +7,7 @@ import gradle.accessors.settings
 import gradle.api.applyTo
 import gradle.collection.tryAddAll
 import gradle.collection.trySet
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import gradle.plugins.android.compile.CompileOptions
 import gradle.plugins.android.defaultconfig.DefaultConfig
 import gradle.plugins.android.features.BuildFeatures
@@ -18,8 +18,7 @@ import gradle.plugins.android.signing.SigningConfigImpl
 import gradle.plugins.android.sourceset.AndroidSourceSet
 import gradle.plugins.android.split.Splits
 import gradle.plugins.android.test.TestOptions
-import gradle.reflect.trySet
-import gradle.serialization.serializer.JsonObjectTransformingContentPolymorphicSerializer
+import klib.data.type.serialization.serializer.JsonObjectTransformingContentPolymorphicSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

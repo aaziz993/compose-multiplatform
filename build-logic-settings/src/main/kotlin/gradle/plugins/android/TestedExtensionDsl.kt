@@ -3,7 +3,7 @@ package gradle.plugins.android
 import com.android.build.api.dsl.TestedExtension
 import gradle.accessors.android
 import gradle.plugins.android.test.TestFixtures
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import org.gradle.api.Project
 
 /**

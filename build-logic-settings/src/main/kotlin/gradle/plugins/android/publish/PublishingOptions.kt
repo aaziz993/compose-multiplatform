@@ -1,7 +1,7 @@
 package gradle.plugins.android.publish
 
 import com.android.build.api.dsl.PublishingOptions
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 
 /**
  * Maven publishing options shared by [SingleVariant] and [MultipleVariants].

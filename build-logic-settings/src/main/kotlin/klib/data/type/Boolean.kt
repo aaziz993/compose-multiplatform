@@ -1,4 +1,4 @@
-package gradle
+package klib.data.type
 
 public fun Boolean.takeIfTrue(): Boolean? = takeIfTrue()
 

@@ -4,7 +4,6 @@ import gradle.accessors.kotlin
 import gradle.accessors.moduleName
 import gradle.api.applyTo
 import gradle.api.publish.maven.MavenPublication
-import gradle.reflect.trySet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

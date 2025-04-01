@@ -7,7 +7,7 @@ import com.diffplug.spotless.kotlin.KtfmtStep
 import gradle.accessors.catalog.libs
 import gradle.accessors.settings
 import gradle.plugins.spotless.FormatExtension
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

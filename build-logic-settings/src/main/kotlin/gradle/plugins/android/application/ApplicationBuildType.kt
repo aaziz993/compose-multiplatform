@@ -12,7 +12,7 @@ import gradle.plugins.android.ResValue
 import gradle.plugins.android.Shaders
 import gradle.plugins.android.VcsInfo
 import gradle.plugins.android.compile.JavaCompileOptions
-import gradle.reflect.trySet
+import klib.data.type.reflection.trySet
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
