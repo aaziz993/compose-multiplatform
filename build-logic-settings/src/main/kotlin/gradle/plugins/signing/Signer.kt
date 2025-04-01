@@ -46,29 +46,7 @@ internal interface Signer {
         signClassifierFile: (classifier: String, Array<File>) -> Unit,
     ) {
         sign?.let { sign ->
-            val (references, files) = sign.filterIsInstance<String>().partition { value -> value.startsWith("$") }
-
-            references
-                .resolveReferences("configurations")
-
-                .toTypedArray()
-                .let(signConfigurations)
-
-            references
-                .resolveReferences("publications")
-                .flatMap(publishing.publications::getByNameOrAll)
-                .toTypedArray()
-                .let(signPublications)
-
-            val allArtifacts = configurations.flatMap(Configuration::getAllArtifacts)
-
-            references
-                .resolveReferences("artifacts")
-                .flatMap { name ->
-                    if (name.isEmpty()) allArtifacts else allArtifacts.filter { artifact -> artifact.classifier == name }
-                }
-                .toTypedArray()
-                .let(signArtifacts)
+            sign.filterIsInstance<String>().
 
             files.map(project::file).toTypedArray().let(signFiles)
 
