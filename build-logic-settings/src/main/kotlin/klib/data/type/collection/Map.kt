@@ -3,13 +3,17 @@ package klib.data.type.collection
 import klib.data.type.act
 import klib.data.type.serialization.serializer.AnySerializer
 import klib.data.type.serialization.serializer.OptionalAnySerializer
-import kotlinx.serialization.Serializable
-import kotlin.collections.get
-import kotlin.invoke
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.builtins.MapSerializer
+import kotlinx.serialization.builtins.serializer
 
-public typealias SerializableAnyMap = Map<String, @Serializable(with = AnySerializer::class) Any>
+public object SerializableAnyMap : KSerializer<Map<String, Any>> by MapSerializer(
+    String.serializer(), AnySerializer,
+)
 
-public typealias SerializableOptionalAnyMap = Map<String, @Serializable(with = OptionalAnySerializer::class) Any?>
+public object SerializableOptionalAnyMap : KSerializer<Map<String, Any?>> by MapSerializer(
+    String.serializer(), OptionalAnySerializer,
+)
 
 public infix fun <K, V> MutableMap<K, V>.tryPutAll(value: Map<K, V>?): Unit? =
     value?.let(::putAll)
