@@ -1,7 +1,7 @@
 package gradle.api.initialization
 
 import gradle.api.Properties
-import gradle.api.PropertiesMapInheritedSerializer
+import gradle.api.PropertiesUnknownPreservingSerializer
 import gradle.api.catalog.PluginNotationContentPolymorphicSerializer
 import gradle.api.initialization.file.CodeOfConductFile
 import gradle.api.initialization.file.ContributingFile
@@ -16,9 +16,6 @@ import gradle.plugins.develocity.model.DevelocitySettings
 import gradle.plugins.githooks.GitHooksExtension
 import gradle.plugins.initialization.IncludeBuild
 import gradle.plugins.toolchainmanagement.ToolchainManagement
-import java.util.*
-import klib.data.type.collection.SerializableOptionalAnyMap
-import klib.data.type.serialization.serializer.JsonMapInheritedSerializer
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings
@@ -26,7 +23,7 @@ import org.gradle.kotlin.dsl.extra
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 
 @KeepGeneratedSerializer
-@Serializable(with = InitializationPropertiesMapInheritedSerializer::class)
+@Serializable(with = InitializationPropertiesUnknownPreservingSerializer::class)
 internal data class InitializationProperties(
     override val buildscript: ScriptHandler? = null,
     override val plugins: Set<@Serializable(with = PluginNotationContentPolymorphicSerializer::class) Any>? = null,
@@ -79,9 +76,9 @@ internal data class InitializationProperties(
     }
 }
 
-private object InitializationPropertiesMapInheritedSerializer :
-    PropertiesMapInheritedSerializer<InitializationProperties>(
-        InitializationProperties.generatedSerializer(),
+private object InitializationPropertiesUnknownPreservingSerializer :
+    PropertiesUnknownPreservingSerializer<InitializationProperties>(
+            InitializationProperties.generatedSerializer(),
     )
 
 internal var Settings.localProperties: java.util.Properties

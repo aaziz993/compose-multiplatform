@@ -2,6 +2,7 @@ package gradle.api.project
 
 import gradle.api.Properties
 import gradle.api.PropertiesMapInheritedSerializer
+import gradle.api.PropertiesUnknownPreservingSerializer
 import gradle.api.Version
 import gradle.api.artifacts.Dependency
 import gradle.api.catalog.PluginNotationContentPolymorphicSerializer
@@ -52,7 +53,7 @@ import org.jetbrains.compose.internal.utils.localPropertiesFile
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 
 @KeepGeneratedSerializer
-@Serializable(with = ProjectPropertiesMapInheritedSerializer::class)
+@Serializable(with = ProjectPropertiesUnknownPreservingSerializer::class)
 internal data class ProjectProperties(
     override val buildscript: ScriptHandler? = null,
     override val plugins: Set<@Serializable(with = PluginNotationContentPolymorphicSerializer::class) Any>? = null,
@@ -130,10 +131,8 @@ internal data class ProjectProperties(
     }
 }
 
-private object ProjectPropertiesMapInheritedSerializer :
-    PropertiesMapInheritedSerializer<ProjectProperties>(
-        ProjectProperties.generatedSerializer(),
-    )
+private object ProjectPropertiesUnknownPreservingSerializer :
+    PropertiesUnknownPreservingSerializer<ProjectProperties>(ProjectProperties.generatedSerializer())
 
 internal var Project.localProperties: java.util.Properties
     get() = extraProperties[Properties.LOCAL_PROPERTIES_EXT] as java.util.Properties

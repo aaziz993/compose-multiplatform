@@ -6,7 +6,8 @@ import gradle.api.initialization.ScriptHandler
 import java.io.File
 import klib.data.type.collection.deepMerge
 import klib.data.type.serialization.decodeFromAny
-import klib.data.type.serialization.serializer.JsonMapInheritedSerializer
+import klib.data.type.serialization.serializer.JsonUnknownPreservingSerializer
+import klib.data.type.serialization.serializer.OptionalAnySerializer
 import kotlin.io.path.Path
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
@@ -81,7 +82,8 @@ internal abstract class Properties : HashMap<String, Any?>() {
     }
 }
 
-internal abstract class PropertiesMapInheritedSerializer<T : Properties>(tSerializer: KSerializer<T>) :
-    JsonMapInheritedSerializer<T, Any?>(
-        tSerializer,
+internal abstract class PropertiesUnknownPreservingSerializer<T : Properties>(tSerializer: KSerializer<T>) :
+    JsonUnknownPreservingSerializer<T, Any?>(
+            tSerializer,
+            OptionalAnySerializer,
     )
