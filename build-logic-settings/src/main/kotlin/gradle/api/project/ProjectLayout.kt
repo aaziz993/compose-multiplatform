@@ -1,4 +1,4 @@
-package gradle.plugins.project
+package gradle.api.project
 
 import klib.data.type.serialization.serializer.JsonObjectTransformingContentPolymorphicSerializer
 import kotlinx.serialization.Serializable

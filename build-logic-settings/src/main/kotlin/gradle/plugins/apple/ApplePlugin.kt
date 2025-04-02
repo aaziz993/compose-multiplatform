@@ -2,7 +2,7 @@ package gradle.plugins.apple
 
 import gradle.accessors.apple
 import gradle.accessors.projectProperties
-import gradle.plugins.project.ProjectLayout
+import gradle.api.project.ProjectLayout
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 

@@ -3,7 +3,7 @@ package gradle.plugins.kotlin.targets.web
 import gradle.api.NamedObjectTransformingSerializer
 import gradle.plugins.kotlin.KotlinCompilationOutput
 import gradle.plugins.kotlin.KotlinSourceSet
-import gradle.plugins.project.Dependency
+import gradle.api.artifacts.Dependency
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

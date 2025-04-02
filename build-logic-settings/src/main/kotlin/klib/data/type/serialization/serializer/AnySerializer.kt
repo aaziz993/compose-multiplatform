@@ -1,6 +1,8 @@
 package klib.data.type.serialization.serializer
 
+import klib.data.type.serialization.decodeAnyFromJsonElement
 import klib.data.type.serialization.decodeAnyFromString
+import klib.data.type.serialization.encodeAnyToJsonElement
 import klib.data.type.serialization.encodeAnyToString
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.PrimitiveKind
@@ -16,12 +18,13 @@ public object AnySerializer : KSerializer<Any> {
     override val descriptor: SerialDescriptor
         get() = PrimitiveSerialDescriptor("Any", PrimitiveKind.STRING)
 
-    override fun serialize(encoder: Encoder, value: Any) {
-        (encoder as? JsonEncoder ?: error("Only JsonEncoder is supported")).json.encodeAnyToString(value)
-    }
+    override fun serialize(encoder: Encoder, value: Any): Unit =
+        (encoder as? JsonEncoder ?: error("Only JsonEncoder is supported")).json.let { json ->
+            encoder.encodeJsonElement(json.encodeAnyToJsonElement(value))
+        }
 
     override fun deserialize(decoder: Decoder): Any =
         (decoder as? JsonDecoder ?: error("Only JsonDecoder is supported"))
-            .json.decodeAnyFromString(decoder.decodeString())!!
+            .json.decodeAnyFromJsonElement(decoder.decodeJsonElement())!!
 }
 

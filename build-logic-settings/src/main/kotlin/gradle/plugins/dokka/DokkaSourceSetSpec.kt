@@ -1,6 +1,6 @@
 package gradle.plugins.dokka
 
-import gradle.accessors.catalog.libs
+import gradle.api.catalog.libs
 import gradle.accessors.settings
 import gradle.api.NamedObjectTransformingSerializer
 import gradle.api.ProjectNamed

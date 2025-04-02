@@ -2,6 +2,7 @@ package gradle.plugins.kotlin.targets.web
 
 import klib.data.type.collection.tryAddAll
 import klib.data.type.reflection.tryAddAll
+import gradle.reflection.tryApply
 import klib.data.type.reflection.tryApply
 import klib.data.type.reflection.trySet
 import kotlinx.serialization.SerialName

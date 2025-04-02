@@ -1,8 +1,8 @@
 package gradle.plugins.kotlin.cocoapods
 
-import gradle.accessors.catalog.allLibs
-import gradle.accessors.catalog.libs
-import gradle.accessors.catalog.resolveDependency
+import gradle.api.catalog.allLibs
+import gradle.api.catalog.libs
+import gradle.api.catalog.resolveDependency
 import gradle.accessors.cocoapods
 import gradle.accessors.kotlin
 import gradle.accessors.moduleName

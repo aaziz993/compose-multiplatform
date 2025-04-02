@@ -15,7 +15,7 @@ internal data class SigningSettings(
     override val required: Boolean? = null,
     override val useGpgCmd: Boolean? = null,
     override val useInMemoryPgpKeys: InMemoryPgpKeys? = null,
-    override val sign: Set<@Serializable(with = SignContentPolymorphicSerializer::class) Any>? = null,
+    override val signs: Set<@Serializable(with = SignContentPolymorphicSerializer::class) Any>? = null,
     val generateGpg: GenerateGgp? = null,
 ) : SigningExtension() {
 

@@ -10,9 +10,7 @@ import com.google.devtools.ksp.gradle.KspExtension
 import com.osacky.doctor.DoctorExtension
 import de.jensklingenberg.ktorfit.gradle.KtorfitGradleConfiguration
 import gradle.api.maybeNamed
-import gradle.plugins.project.ProjectProperties
 import io.github.sgrishchenko.karakum.gradle.plugin.KarakumExtension
-import java.util.*
 import kotlinx.atomicfu.plugin.gradle.AtomicFUPluginExtension
 import kotlinx.benchmark.gradle.BenchmarksExtension
 import kotlinx.knit.KnitPluginExtension
@@ -63,25 +61,6 @@ import ru.vyarus.gradle.plugin.animalsniffer.AnimalSnifferExtension
 
 public fun Project.files(elements: Iterable<String>): ConfigurableFileCollection =
     project.files(*elements.toList().toTypedArray())
-
-internal val Project.env
-    get() = System.getenv()
-
-internal const val LOCAL_PROPERTIES_EXT = "local.properties.ext"
-
-internal var Project.localProperties: Properties
-    get() = extraProperties[LOCAL_PROPERTIES_EXT] as Properties
-    set(value) {
-        extraProperties[LOCAL_PROPERTIES_EXT] = value
-    }
-
-internal const val PROJECT_PROPERTIES_EXT = "project.properties.ext"
-
-internal var Project.projectProperties: ProjectProperties
-    get() = extraProperties[PROJECT_PROPERTIES_EXT] as ProjectProperties
-    set(value) {
-        extraProperties[PROJECT_PROPERTIES_EXT] = value
-    }
 
 internal val Project.settings: Settings
     get() = (gradle as GradleInternal).settings

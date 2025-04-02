@@ -5,7 +5,7 @@ import gradle.accessors.kotlin
 import gradle.accessors.projectProperties
 import gradle.accessors.resources
 import gradle.accessors.sourceSetsToComposeResourcesDirs
-import gradle.plugins.project.ProjectLayout
+import gradle.api.project.ProjectLayout
 import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

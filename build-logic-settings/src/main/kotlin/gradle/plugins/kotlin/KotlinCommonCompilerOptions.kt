@@ -1,6 +1,6 @@
 package gradle.plugins.kotlin
 
-import gradle.accessors.catalog.libs
+import gradle.api.catalog.libs
 import gradle.accessors.settings
 import gradle.api.provider.tryAddAll
 import gradle.api.provider.tryAssign

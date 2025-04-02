@@ -1,6 +1,6 @@
 package gradle.plugins.kotlin.targets.jvm
 
-import gradle.accessors.catalog.libs
+import gradle.api.catalog.libs
 import gradle.accessors.settings
 import klib.data.type.addPrefix
 import gradle.api.provider.tryAssign

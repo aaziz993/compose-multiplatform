@@ -3,11 +3,12 @@
 package gradle.plugins.project
 
 import com.android.build.gradle.internal.tasks.AndroidTestTask
-import gradle.accessors.catalog.resolvePluginId
+import gradle.api.catalog.resolvePluginId
 import gradle.accessors.kotlin
 import gradle.accessors.projectProperties
 import gradle.api.ci.CI
 import gradle.api.maybeNamed
+import gradle.api.project.PROJECT_PROPERTIES_FILE
 import gradle.api.repositories.CacheRedirector
 import gradle.plugins.android.AndroidPlugin
 import gradle.plugins.animalsniffer.AnimalSnifferPlugin
@@ -70,8 +71,8 @@ import gradle.plugins.kotlin.targets.nat.linux.KotlinLinuxX64Target
 import gradle.plugins.kotlin.targets.nat.mingw.KotlinMingwTarget
 import gradle.plugins.kotlin.targets.nat.mingw.KotlinMingwX64Target
 import gradle.plugins.kover.KoverPlugin
-import gradle.plugins.project.ProjectProperties.Companion.load
-import gradle.plugins.project.ProjectProperties.Companion.yaml
+import gradle.api.project.ProjectProperties.Companion.load
+import gradle.api.project.ProjectProperties.Companion.yaml
 import gradle.plugins.publish.PublishPlugin
 import gradle.plugins.shadow.ShadowPlugin
 import gradle.plugins.signing.SigningPlugin
@@ -111,7 +112,7 @@ public class ProjectPlugin : Plugin<Project> {
         with(target) {
             // Load and apply project.yaml to build.gradle.kts properties.
             projectProperties = load().also { properties ->
-                println("Load and apply $PROJECT_PROPERTIES_FILE to: $name")
+                println("Load and apply ${PROJECT_PROPERTIES_FILE} to: $name")
                 println(yaml.dump(Json.Default.encodeToAny(properties)))
             }
 

@@ -1,4 +1,4 @@
-package gradle.plugins.project.file
+package gradle.api.initialization.file
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient

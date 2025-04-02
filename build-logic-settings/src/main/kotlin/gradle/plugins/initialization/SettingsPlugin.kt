@@ -2,16 +2,16 @@
 
 package gradle.plugins.initialization
 
-import gradle.accessors.catalog.allLibs
-import gradle.accessors.catalog.libs
-import gradle.accessors.catalog.toVersionCatalog
+import gradle.api.catalog.allLibs
+import gradle.api.catalog.libs
+import gradle.api.catalog.toVersionCatalog
 import gradle.accessors.projectProperties
 import gradle.api.configureEach
 import gradle.api.repositories.CacheRedirector
 import gradle.plugins.develocity.DevelocityPlugin
 import gradle.plugins.githooks.GitHooksPlugin
 import gradle.plugins.project.ProjectPlugin
-import gradle.plugins.project.ProjectProperties.Companion.load
+import gradle.api.project.ProjectProperties.Companion.load
 import gradle.plugins.toolchainmanagement.ToolchainManagementPlugin
 import java.io.File
 import java.net.URI

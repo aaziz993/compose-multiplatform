@@ -1,67 +1,5 @@
-remote:
-  url: https://github.com/aaziz993/compose-multiplatform
-  connection: scm:git:git://github.com:aaziz993/compose-multiplatform.git
-  developerConnection: scm:git:ssh://github.com:aaziz993/compose-multiplatform.git
-  tag: HEAD
-
-licenseFile:
-  yearPlaceholder: '[yyyy]'
-  ownerPlaceholder: '[name of copyright owner]'
-  resolution: MODIFIED
-
-licenseHeaderFile:
-  source: templates/LICENSE_HEADER
-  resolution: MODIFIED
-
-codeOfConductFile:
-  source: https://www.contributor-covenant.org/version/1/4/code-of-conduct/code_of_conduct.md
-  emailPlaceholder: '[INSERT EMAIL ADDRESS]'
-  resolution: MODIFIED
-
-contributingFile:
-  source: https://www.contributor-covenant.org/version/1/4/code-of-conduct/code_of_conduct.md
-  resolution: MODIFIED
-
 templates:
   - templates/gradle/root.yaml
-
-pluginManagement:
-  repositories:
-    - mavenCentral
-    - google
-    - gradlePluginPortal
-    - https://www.jetbrains.com/intellij-repository/releases
-    - https://packages.jetbrains.team/maven/p/ij/intellij-dependencies
-
-plugins:
-  ids:
-    - $libs.develocity
-    - $libs.develocityCommonCustomUserData
-    - $libs.foojayResolverConvention
-    - $libs.gradlePreCommitGitHooks
-
-# Gives the data to speed up your build, improve build reliability and accelerate build debugging.
-# servers: https://ge.solutions-team.gradle.com, https://ge.jetbrains.com
-develocity:
-  server: https://ge.solutions-team.gradle.com
-  buildScan:
-    uploadInBackground: true
-    publishing:
-      onlyIfAuthenticated: true
-    obfuscation:
-      ipAddresses:
-        '': 0.0.0.0
-    capture:
-      fileFingerprints: true
-      buildLogging: true
-  #    gitRepo: https://github.com/aaziz993/cmp # Populated from remote.url.
-  skipGitTags: false
-
-# Provides a repository for downloading JVMs
-toolchainManagement: { }
-
-# Enforcing pre-commit and commit-msg Git hooks configuration. Conventional-commits-ready.
-gitHooks: { }
 
 # Print suggestions for your build as you run regular tasks.
 doctor:
@@ -93,42 +31,6 @@ knit:
   moduleDocs: build/dokka
   dokkaMultiModuleRoot: build/dokka
 
-dependencyResolutionManagement:
-  repositories:
-    - mavenCentral
-    # For the Android plugin and dependencies
-    - google
-    # For other Gradle plugins
-    - gradlePluginPortal
-    # For dev versions of kotlin
-    - https://maven.pkg.jetbrains.space/kotlin/p/kotlin/dev
-    # For dev versions of compose plugin and dependencies
-    - jetbrainsCompose
-    # For compose experimental builds
-    - https://packages.jetbrains.team/maven/p/firework/dev
-    # Sonatype OSS Snapshot Repository
-    - https://oss.sonatype.org/content/repositories/snapshots
-    - https://repo.gradle.org/gradle/libs-releases
-    - https://cache-redirector.jetbrains.com/www.jetbrains.com/intellij-repository/releases
-    - https://cache-redirector.jetbrains.com/packages.jetbrains.team/maven/p/ij/intellij-dependencies
-    - https://cache-redirector.jetbrains.com/download.jetbrains.com/teamcity-repository
-    # Space Packages releases
-    - https://maven.pkg.jetbrains.space/aaziz93/p/aaziz-93/maven
-    # GitHub Packages
-    - https://maven.pkg.github.com/aaziz993
-
-  versionCatalogs:
-    - name: kotlinWrappers
-      from: $libs.kotlin.wrappers.catalog
-
-includes:
-  - klib
-  - compose-lib
-  - compiler
-  - shared
-  - compose-app
-  - server-app
-
 dependencies:
   # dokka multimodule module dependencies. By default taken from includes see dokka.dependenciesFromIncludes.
   #  - dokka: :klib
@@ -139,18 +41,3 @@ dependencies:
   #  - dokka: :server-app
   # knit
   - testImplementation: org.jetbrains.kotlinx:kotlinx-knit-test
-
-buildCache:
-  local:
-  #    enabled: true # Default is if not CI.
-  remotes:
-    # JB Space build cache
-    - http:
-        enabled: true
-        url: https://files.pkg.jetbrains.space/aaziz93/p/aaziz-93/compose-multiplatform
-        credentials:
-          username: aaziz93
-          password: $envOrLocal.jb.space.gradle.build.cache.password
-    # Develocity build cache configured by default
-    - develocity:
-        enabled: true

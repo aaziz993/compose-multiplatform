@@ -2,7 +2,7 @@ package gradle.plugins.android.application
 
 import com.android.build.api.dsl.ApplicationBaseFlavor
 import gradle.accessors.androidNamespace
-import gradle.accessors.catalog.libs
+import gradle.api.catalog.libs
 import gradle.accessors.settings
 import gradle.plugins.android.flavor.BaseFlavor
 import klib.data.type.reflection.trySet

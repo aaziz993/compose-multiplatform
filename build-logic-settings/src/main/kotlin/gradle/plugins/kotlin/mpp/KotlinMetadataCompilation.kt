@@ -4,7 +4,7 @@ import gradle.plugins.kotlin.KotlinCompilation
 import gradle.plugins.kotlin.KotlinCompilationOutput
 import gradle.plugins.kotlin.KotlinSourceSet
 import gradle.plugins.kotlin.tasks.KotlinCompilationTask
-import gradle.plugins.project.Dependency
+import gradle.api.artifacts.Dependency
 import kotlinx.serialization.Serializable
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinMetadataCompilation
 

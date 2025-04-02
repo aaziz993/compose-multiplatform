@@ -4,6 +4,7 @@ import gradle.accessors.projectProperties
 import gradle.accessors.settings
 import klib.data.type.addSuffix
 import gradle.api.provider.tryAssign
+import gradle.reflection.tryApply
 import klib.data.type.reflection.tryApply
 import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable

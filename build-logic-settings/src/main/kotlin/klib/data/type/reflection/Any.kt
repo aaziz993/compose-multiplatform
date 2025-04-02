@@ -64,11 +64,6 @@ public fun Any.callDeclaredMember(memberName: String, vararg arguments: Pair<Any
         else declaredMember(this, * arguments.map(Pair<*, *>::first).toTypedArray())
     }
 
-public fun Any.callDeclaredMember(memberName: String, arg: String): Any? =
-    callDeclaredMember(memberName, *arrayOf(arg to typeOf<String>()))
-
-public fun Any.declaredMemberGetter(key: String): (String) -> Any? = { callMember(key, it) }
-
 public fun Any.callMember(memberName: String, vararg arguments: Pair<Any?, KType>): Any? =
     this::class.member(
         memberName,
@@ -79,8 +74,3 @@ public fun Any.callMember(memberName: String, vararg arguments: Pair<Any?, KType
             member(*arguments.map(Pair<*, *>::first).toTypedArray())
         else member(this, *arguments.map(Pair<*, *>::first).toTypedArray())
     }
-
-public fun Any.callMember(memberName: String, arg: String): Any? =
-    callMember(memberName, *arrayOf(arg to typeOf<String>()))
-
-public fun Any.memberGetter(key: String): (String) -> Any? = { callMember(key, it) }

@@ -1,6 +1,6 @@
 package gradle.plugins.kotlin
 
-import gradle.plugins.project.Dependency
+import gradle.api.artifacts.Dependency
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.HasKotlinDependencies
 

@@ -2,8 +2,8 @@ package gradle.plugins.spotless
 
 import com.diffplug.gradle.spotless.JavaExtension
 import com.diffplug.spotless.LineEnding
-import gradle.accessors.catalog.libs
-import gradle.accessors.catalog.resolveVersion
+import gradle.api.catalog.libs
+import gradle.api.catalog.resolveVersion
 import gradle.accessors.settings
 import gradle.accessors.spotless
 import klib.data.type.reflection.trySet

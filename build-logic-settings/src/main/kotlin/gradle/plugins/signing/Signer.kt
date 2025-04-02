@@ -1,24 +1,19 @@
 package gradle.plugins.signing
 
 import gradle.accessors.files
-import gradle.accessors.publishing
-import gradle.api.getByNameOrAll
+import gradle.get
 import java.io.File
+import klib.data.type.collection.takeIfNotEmpty
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.JsonContentPolymorphicSerializer
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonPrimitive
-import org.gradle.api.NamedDomainObjectCollection
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
-import org.gradle.api.artifacts.ConfigurationContainer
-import org.gradle.api.artifacts.DependencySubstitutions
 import org.gradle.api.artifacts.PublishArtifact
 import org.gradle.api.publish.Publication
-import org.gradle.api.publish.PublicationContainer
-import org.gradle.api.publish.PublishingExtension
 import org.gradle.plugins.signing.SignOperation
 
 internal interface Signer {
@@ -35,7 +30,7 @@ internal interface Signer {
      * @param files The files to sign.
      * @return The executed [sign operation][SignOperation].
      */
-    val sign: Set<@Serializable(with = SignContentPolymorphicSerializer::class) Any>?
+    val signs: Set<@Serializable(with = SignContentPolymorphicSerializer::class) Any>?
 
     context(Project)
     fun applyTo(
@@ -45,8 +40,32 @@ internal interface Signer {
         signFiles: (Array<File>) -> Unit,
         signClassifierFile: (classifier: String, Array<File>) -> Unit,
     ) {
-        sign?.let { sign ->
-            sign.filterIsInstance<String>().
+        signs?.let { sign ->
+            val (references, files) = sign.filterIsInstance<String>().partition { sign -> sign.startsWith("$") }
+
+            references
+                .map { reference ->
+                    reference.removePrefix("$").split(".").toTypedArray()
+                }
+                .flatMap { keys ->
+                    project.get(*keys).let { it as? List<*> ?: listOf(it) }
+                }.let { signs ->
+                    signs.filterIsInstance<Configuration>()
+                        .takeIfNotEmpty()
+                        ?.toTypedArray()
+                        ?.let(signConfigurations)
+
+                    signs.filterIsInstance<Publication>()
+                        .takeIfNotEmpty()
+                        ?.toTypedArray()
+                        ?.let(signPublications)
+
+                    signs.filterIsInstance<PublishArtifact>()
+                        .takeIfNotEmpty()
+                        ?.toTypedArray()
+                        ?.let(signArtifacts)
+                }
+
 
             files.map(project::file).toTypedArray().let(signFiles)
 

@@ -1,4 +1,4 @@
-package gradle.plugins.project.file
+package gradle.api.initialization.file
 
 import arrow.core.fold
 import klib.data.type.isValidUrl

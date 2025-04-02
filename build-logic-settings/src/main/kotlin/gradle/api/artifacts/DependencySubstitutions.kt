@@ -1,11 +1,11 @@
 package gradle.api.artifacts
 
-import gradle.collection.resolveComponentReference
+import gradle.get
 import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
-import org.gradle.api.artifacts.DependencySubstitution
 import org.gradle.api.artifacts.DependencySubstitutions
+import org.gradle.api.artifacts.VariantSelectionDetails
 import org.gradle.api.artifacts.component.ComponentSelector
 
 /**
@@ -56,9 +56,9 @@ internal data class DependencySubstitutions(
      * @param detailsAction the variant selection details configuration
      * @since 6.6
      */
-//public fun variant(
+//val  variant(
 //    selector: ComponentSelector?,
-//    detailsAction: Action<in VariantSelectionDetails?>?
+//    detailsAction:  VariantSelectionDetails?>?
 //): ComponentSelector?
 
     /**
@@ -83,11 +83,18 @@ internal data class DependencySubstitutions(
 
     context(Project)
     fun applyTo(receiver: DependencySubstitutions) {
+        all?.let { all ->
+            receiver.all {
+                all.applyTo(this)
+            }
+        }
+
+
         substitutes?.forEach { substitute ->
             receiver.substitute(
-                receiver.resolveComponentSelectorReference(substitute.componentSelector),
+                receiver[substitute.componentSelector],
             ).apply {
-                substitute.substitution?.applyTo(this,receiver::resolveComponentSelectorReference)
+                substitute.substitution?.applyTo(this, receiver::get)
             }
         }
     }
@@ -149,5 +156,6 @@ internal data class DependencySubstitutions(
     }
 }
 
-private fun DependencySubstitutions.resolveComponentSelectorReference(componentSelector: String): ComponentSelector =
-    resolveReference(componentSelector) as ComponentSelector
+private operator fun DependencySubstitutions.get(componentSelector: String): ComponentSelector =
+    get(*componentSelector.removePrefix("$").split(".").toTypedArray()) as ComponentSelector
+

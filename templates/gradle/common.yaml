@@ -29,43 +29,46 @@ plugins:
 kotlin:
   explicitApi: Strict
 
+  compilerOptions:
+    allWarningsAsErrors: false
+    debug: false
+    progressiveMode: true
+    suppressWarnings: false
+    verbose: true
+    languageFeatures:
+      - ContextReceivers
+      - ExplicitBackingFields
+    optIns:
+      - kotlin.RequiresOptIn
+      - kotlin.ExperimentalSubclassOptIn
+      - kotlin.ExperimentalStdlibApi
+      - kotlin.ExperimentalUnsignedTypes
+      - kotlin.ExperimentalUuidApi
+      - kotlin.time.ExperimentalTime
+      - kotlin.ExperimentalAtomicApi
+      - kotlin.contracts.ExperimentalContracts
+      - kotlin.experimental.ExperimentalObjCName
+      - kotlin.js.ExperimentalJsExport
+      - kotlinx.coroutines.ExperimentalCoroutinesApi
+      - kotlinx.coroutines.DelicateCoroutinesApi
+      - kotlinx.coroutines.FlowPreview
+      - kotlinx.serialization.ExperimentalSerializationApi
+      - kotlinx.serialization.InternalSerializationApi
+      - dev.whyoleg.cryptography.DelicateCryptographyApi
+    freeCompilerArgs:
+      - -Xignore-const-optimization-errors
+      - -Xexplicit-api=strict
+      - -Xexport-kdoc
+      - -Xinline-classes
+      - -Xwhen-guards
+      - -Xnon-local-break-continue
+      - -Xexpect-actual-classes
+      - -Xcontext-parameters
+      - -Xmulti-dollar-interpolation
+      - -Xrender-internal-diagnostic-names
+      - -Xbinary=preCodegenInlineThreshold=40
+
   targets:
-    - KotlinTarget:
-        compilerOptions:
-          allWarningsAsErrors: false
-          debug: false
-          progressiveMode: true
-          suppressWarnings: false
-          verbose: true
-          languageFeatures:
-            - ContextReceivers
-            - ExplicitBackingFields
-          optIns:
-            - kotlin.RequiresOptIn, kotlin.ExperimentalSubclassOptIn
-            - kotlin.ExperimentalStdlibApi
-            - kotlin.ExperimentalUnsignedTypes
-            - kotlin.ExperimentalUuidApi
-            - kotlin.time.ExperimentalTime
-            - kotlin.contracts.ExperimentalContracts
-            - kotlin.experimental.ExperimentalObjCName
-            - kotlin.js.ExperimentalJsExport
-            - kotlinx.coroutines.ExperimentalCoroutinesApi
-            - kotlinx.coroutines.DelicateCoroutinesApi
-            - kotlinx.coroutines.FlowPreview
-            - kotlinx.serialization.ExperimentalSerializationApi
-            - kotlinx.serialization.InternalSerializationApi
-            - dev.whyoleg.cryptography.DelicateCryptographyApi
-          freeCompilerArgs:
-            - -Xignore-const-optimization-errors
-            - -Xexplicit-api=strict
-            - -Xexport-kdoc
-            - -Xinline-classes
-            - -Xwhen-guards
-            - -Xnon-local-break-continue
-            - -Xexpect-actual-classes
-            - -Xcontext-parameters
-            - -Xmulti-dollar-interpolation
-            - -Xrender-internal-diagnostic-names
     - jvmCommon:
         compilerOptions:
           freeCompilerArgs:

@@ -1,6 +1,9 @@
 kotlin:
   targets:
     - wasmJs:
+        compilerOptions:
+          freeCompilerArgs:
+            - -Xwasm-debugger-custom-formatters
         devServer:
           static: [ src@wasmJs ]
 

@@ -5,7 +5,7 @@ import gradle.api.applyTo
 import gradle.plugins.kotlin.KotlinCompilationOutput
 import gradle.plugins.kotlin.KotlinSourceSet
 import gradle.plugins.kotlin.targets.nat.tasks.KotlinNativeCompileImpl
-import gradle.plugins.project.Dependency
+import gradle.api.artifacts.Dependency
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

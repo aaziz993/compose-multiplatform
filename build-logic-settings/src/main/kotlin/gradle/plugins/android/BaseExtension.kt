@@ -2,7 +2,7 @@ package gradle.plugins.android
 
 import gradle.accessors.android
 import gradle.accessors.androidNamespace
-import gradle.accessors.catalog.libs
+import gradle.api.catalog.libs
 import gradle.accessors.settings
 import gradle.api.applyTo
 import klib.data.type.collection.tryAddAll

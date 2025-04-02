@@ -1,8 +1,8 @@
 package gradle.plugins.spotless.groovy
 
 import com.diffplug.gradle.spotless.BaseGroovyExtension
-import gradle.accessors.catalog.libs
-import gradle.accessors.catalog.resolveVersion
+import gradle.api.catalog.libs
+import gradle.api.catalog.resolveVersion
 import gradle.accessors.settings
 import klib.data.type.reflection.trySet
 import gradle.plugins.spotless.FormatExtension

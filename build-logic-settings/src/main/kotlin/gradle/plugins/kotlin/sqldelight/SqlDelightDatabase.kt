@@ -4,7 +4,7 @@ import gradle.api.NamedObjectTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.file.trySetFrom
 import gradle.api.provider.tryAssign
-import gradle.plugins.project.Dependency
+import gradle.api.artifacts.Dependency
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

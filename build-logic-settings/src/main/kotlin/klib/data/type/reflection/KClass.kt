@@ -15,6 +15,7 @@ import kotlin.reflect.full.declaredMemberFunctions
 import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.full.declaredMembers
 import kotlin.reflect.full.instanceParameter
+import kotlin.reflect.full.isSubtypeOf
 import kotlin.reflect.full.memberFunctions
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.full.staticFunctions
@@ -38,49 +39,50 @@ public operator fun KClass<*>.get(propertyName: String): KProperty<*>? = memberP
 public fun KClass<*>.staticProperty(propertyName: String): KProperty<*>? = staticProperties[propertyName]
 
 /////////////////////////////////////////////////////////FUNCTIONS//////////////////////////////////////////////////////
-public fun KClass<*>.declaredMemberFunction(funName: String, vararg argKTypes: KType): KFunction<*>? =
-    declaredMemberFunctions.get(funName, *argKTypes)
+public fun KClass<*>.declaredMemberFunction(funName: String, vararg arguments: KType): KFunction<*>? =
+    declaredMemberFunctions.get(funName, *arguments)
 
-public fun KClass<*>.declaredMemberExtensionFunction(funName: String, vararg argKTypes: KType): KFunction<*>? =
-    declaredMemberExtensionFunctions.get(funName, *argKTypes)
+public fun KClass<*>.declaredMemberExtensionFunction(funName: String, vararg arguments: KType): KFunction<*>? =
+    declaredMemberExtensionFunctions.get(funName, *arguments)
 
-public fun KClass<*>.memberFunction(funName: String, vararg argKTypes: KType): KFunction<*>? =
-    memberFunctions.get(funName, * argKTypes)
+public fun KClass<*>.memberFunction(funName: String, vararg arguments: KType): KFunction<*>? =
+    memberFunctions.get(funName, * arguments)
 
-public fun KClass<*>.staticFunction(funName: String, vararg argKTypes: KType): KFunction<*>? =
-    staticFunctions.get(funName, *argKTypes)
+public fun KClass<*>.staticFunction(funName: String, vararg arguments: KType): KFunction<*>? =
+    staticFunctions.get(funName, *arguments)
 
-public fun KClass<*>.callStaticFunction(funName: String, vararg argKTypes: Pair<Any?, KType>): Any? =
+public fun KClass<*>.callStaticFunction(funName: String, vararg arguments: Pair<Any?, KType>): Any? =
     staticFunction(
         funName,
-        *argKTypes.map(Pair<*, KType>::second)
+        *arguments.map(Pair<*, KType>::second)
             .toTypedArray(),
-    )!!(*argKTypes.map(Pair<*, *>::first).toTypedArray())
+    )!!(*arguments.map(Pair<*, *>::first).toTypedArray())
 
-public fun KClass<*>.declaredFunction(funName: String, vararg argKTypes: KType): KFunction<*>? =
-    declaredFunctions.get(funName, *argKTypes)
+public fun KClass<*>.declaredFunction(funName: String, vararg arguments: KType): KFunction<*>? =
+    declaredFunctions.get(funName, *arguments)
 
 //////////////////////////////////////////////////////////MEMBERS///////////////////////////////////////////////////////
-public fun KClass<*>.declaredMember(memberName: String, vararg argKTypes: KType): KCallable<*>? = declaredMembers.get(memberName, * argKTypes)
+public fun KClass<*>.declaredMember(memberName: String, vararg arguments: KType): KCallable<*>? = declaredMembers.get(memberName, * arguments)
 
-public fun KClass<*>.member(memberName: String, vararg argKTypes: KType): KCallable<*>? = members.get(memberName, * argKTypes)
+public fun KClass<*>.member(memberName: String, vararg arguments: KType): KCallable<*>? = members.get(memberName, * arguments)
 
 private operator fun Collection<KProperty<*>>.get(propertyName: String): KProperty<*>? = find { it.name == propertyName }
 
-private fun <T : KCallable<*>> Collection<T>.get(funName: String, vararg argKTypes: KType): T? {
-    val parametersSize = argKTypes.size + 1
-
-    return find { kCallable ->
-        kCallable.name == funName && kCallable.parameters.size == parametersSize
+private fun <T : KCallable<*>> Collection<T>.get(funName: String, vararg arguments: KType): T? =
+    find { kCallable ->
+        if (kCallable.name != funName) {
+            return@find false
+        }
         // Drop instance parameter if it is instance method, not static.
-        (if (kCallable.instanceParameter == null) kCallable.parameters else kCallable.parameters.drop(1))
-            .map(KParameter::type).zip(argKTypes).all { (parameterType, argKType) ->
-                if (parameterType.classifier is KTypeParameter) {
-                    (parameterType.classifier as KTypeParameter).upperBounds.contains(argKType)
-                }
-                else {
-                    parameterType == argKType
-                }
+        val parameters = if (kCallable.instanceParameter == null) kCallable.parameters
+        else kCallable.parameters.drop(1)
+
+        parameters.size == arguments.size &&
+            parameters.map(KParameter::type).zip(arguments).all { (parameterType, argType) ->
+                if (parameterType is KTypeParameter)
+                    (parameterType.classifier as KTypeParameter).upperBounds.any { bound ->
+                        argType.classifier == parameterType.classifier || argType.isSubtypeOf(bound)
+                    }
+                else argType.classifier == parameterType.classifier || argType.isSubtypeOf(parameterType)
             }
     }
-}

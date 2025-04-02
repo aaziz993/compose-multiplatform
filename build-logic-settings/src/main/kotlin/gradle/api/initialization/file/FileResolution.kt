@@ -1,4 +1,4 @@
-package gradle.plugins.project.file
+package gradle.api.initialization.file
 
 internal enum class FileResolution {
     ABSENT,

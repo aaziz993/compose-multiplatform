@@ -6,7 +6,7 @@ import gradle.api.ProjectNamed
 import gradle.api.applyTo
 import gradle.api.file.SourceDirectorySet
 import gradle.api.getByNameOrAll
-import gradle.plugins.project.Dependency
+import gradle.api.artifacts.Dependency
 import klib.data.type.reflection.trySet
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable

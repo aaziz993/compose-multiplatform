@@ -1,4 +1,4 @@
-package gradle.accessors.catalog
+package gradle.api.catalog
 
 import gradle.accessors.settings
 import klib.data.type.isPath
@@ -16,8 +16,8 @@ import org.tomlj.TomlParseResult
 internal data class VersionCatalog(
     val name: String,
     val versions: Map<String, String> = emptyMap(),
-    val libraries: Map<String, Library> = emptyMap(),
-    val plugins: Map<String, Plugin> = emptyMap()
+    val libraries: Map<String, Notation> = emptyMap(),
+    val plugins: Map<String, PluginNotation> = emptyMap()
 ) {
 
     init {
@@ -34,11 +34,11 @@ internal data class VersionCatalog(
     fun version(alias: String) =
         versionOrNull(alias) ?: error("Version '$alias' not found in version catalog: $name")
 
-    fun library(alias: String): Library = alias.asVersionCatalogAlias.let { alias ->
+    fun library(alias: String): Notation = alias.asVersionCatalogAlias.let { alias ->
         libraries[alias] ?: error("Library  '$alias'  not found in version catalog: $name")
     }
 
-    fun plugin(alias: String): Plugin = alias.asVersionCatalogAlias.let { alias ->
+    fun plugin(alias: String): PluginNotation = alias.asVersionCatalogAlias.let { alias ->
         plugins[alias] ?: error("Plugin '$alias' not found in version catalog: $name")
     }
 }
@@ -70,7 +70,7 @@ internal fun Set<VersionCatalog>.resolveDependency(
     directory: Directory,
     project: (name: String) -> Project = { name -> throw UnsupportedOperationException("Can't resolve project: '$name'") }
 ): Any = when {
-    notation.startsWith("$") -> resolveRef(notation, VersionCatalog::library).notation
+    notation.startsWith("$") -> resolveRef(notation, VersionCatalog::library).toString()
     notation.startsWith(":") -> project(notation)
     notation.isPath -> directory.files(notation)
     notation.isValidUrl -> notation.asVersionCatalogUrl

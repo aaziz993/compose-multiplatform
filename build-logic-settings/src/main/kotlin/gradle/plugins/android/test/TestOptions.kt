@@ -1,7 +1,7 @@
 package gradle.plugins.android.test
 
 import com.android.build.api.dsl.TestOptions
-import gradle.accessors.catalog.libs
+import gradle.api.catalog.libs
 import gradle.accessors.settings
 import gradle.plugins.android.device.ManagedDevices
 import klib.data.type.reflection.trySet

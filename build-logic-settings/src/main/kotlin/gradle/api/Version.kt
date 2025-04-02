@@ -1,6 +1,6 @@
 package gradle.api
 
-import gradle.accessors.catalog.libs
+import gradle.api.catalog.libs
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
 import gradle.api.ci.current

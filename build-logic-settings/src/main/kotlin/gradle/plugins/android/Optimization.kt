@@ -1,6 +1,7 @@
 package gradle.plugins.android
 
 import com.android.build.api.dsl.Optimization
+import gradle.reflection.tryApply
 import klib.data.type.reflection.tryApply
 import kotlinx.serialization.Serializable
 

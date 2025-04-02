@@ -34,7 +34,7 @@ android:
   defaultConfig:
     testInstrumentationRunner: androidx.test.runner.AndroidJUnitRunner
     manifestPlaceholders:
-      appAuthRedirectScheme: '"empty"'
+      appAuthRedirectScheme: empty
     javaCompileOptions:
       annotationProcessorOptions:
         arguments:

@@ -1,6 +1,6 @@
 package gradle.plugins.java
 
-import gradle.accessors.catalog.libs
+import gradle.api.catalog.libs
 import gradle.accessors.java
 import gradle.accessors.settings
 import gradle.api.applyTo
@@ -8,7 +8,7 @@ import gradle.api.provider.tryAssign
 import gradle.api.tasks.SourceSet
 import klib.data.type.reflection.trySet
 import gradle.plugins.java.manifest.Manifest
-import klib.data.type.reflection.tryApply
+import gradle.reflection.tryApply
 import kotlinx.serialization.Serializable
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project

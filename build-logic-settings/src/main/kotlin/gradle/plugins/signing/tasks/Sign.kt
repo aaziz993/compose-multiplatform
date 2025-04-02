@@ -28,7 +28,7 @@ internal data class Sign(
     override val signatory: Signatory? = null,
     override val signatureType: SignatureType? = null,
     override val required: Boolean? = null,
-    override val sign: Set<@Serializable(with = SignContentPolymorphicSerializer::class) Any>? = null,
+    override val signs: Set<@Serializable(with = SignContentPolymorphicSerializer::class) Any>? = null,
 ) : DefaultTask<Sign>(), SignatureSpec<Sign>, Signer {
 
     context(Project)

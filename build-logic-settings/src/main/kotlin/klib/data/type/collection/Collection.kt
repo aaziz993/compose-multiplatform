@@ -5,6 +5,9 @@ import klib.data.type.act
 public fun <T> Collection<T>.singleOrAll(): Any? =
     if (size == 1) single() else this
 
+public fun <T : Collection<E>, E> T.takeIfNotEmpty(): T? =
+    takeIf(Collection<*>::isNotEmpty)
+
 public infix fun <E> MutableCollection<E>.tryAddAll(value: Iterable<E>?): Boolean? =
     value?.let(::addAll)
 

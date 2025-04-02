@@ -3,7 +3,7 @@ package gradle.plugins.dokka
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
 import gradle.api.provider.tryAssign
-import gradle.plugins.project.ProjectLayout
+import gradle.api.project.ProjectLayout
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.dokka.gradle.engine.parameters.DokkaSourceLinkSpec

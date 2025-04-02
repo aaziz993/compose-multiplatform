@@ -1,4 +1,4 @@
-package gradle.accessors.catalog
+package gradle.api.catalog
 
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.Serializable

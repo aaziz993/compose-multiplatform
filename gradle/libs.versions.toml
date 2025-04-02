@@ -11,37 +11,44 @@
 buildLigicSettings-version-major = "1"
 buildLigicSettings-version-minor = "0"
 buildLigicSettings-version-patch = "0"
-buildLigicSettings-version-preRelase = "release" # optional
+buildLigicSettings-version-preRelase = "alpha" # optional
+#buildLigicSettings-version-buildMetadata = "" # optional
 # kmp-lib
 kotlinLib-version-major = "1"
 kotlinLib-version-minor = "0"
 kotlinLib-version-patch = "0"
-kotlinLib-version-preRelase = "release" # optional
+kotlinLib-version-preRelase = "alpha" # optional
+#kotlinLib-version-buildMetadata = "" # optional
 # cmp-lib
 composeLib-version-major = "1"
 composeLib-version-minor = "0"
 composeLib-version-patch = "0"
-composeLib-version-preRelase = "release" # optional
+composeLib-version-preRelase = "alpha" # optional
+#composeLib-version-buildMetadata = "" # optional
 # compiler
 compiler-version-major = "1"
 compiler-version-minor = "0"
 compiler-version-patch = "0"
-compiler-version-preRelase = "release" # optional
+compiler-version-preRelase = "alpha" # optional
+#compiler-version-buildMetadata = "" # optional
 # shared
 shared-version-major = "1"
 shared-version-minor = "0"
 shared-version-patch = "0"
-shared-version-preRelase = "release" # optional
+shared-version-preRelase = "alpha" # optional
+#shared-version-buildMetadata = "" # optional
 # compose-app
 composeApp-version-major = "1"
 composeApp-version-minor = "0"
 composeApp-version-patch = "0"
-composeApp-version-preRelase = "release" # optional
+composeApp-version-preRelase = "alpha" # optional
+#composeApp-version-buildMetadata = "" # optional
 # server-app
 serverApp-version-major = "1"
 serverApp-version-minor = "0"
 serverApp-version-patch = "0"
-serverApp-version-preRelase = "release" # optional
+serverApp-version-preRelase = "alpha" # optional
+#serverApp-version-buildMetadata = "" # optional
 ##Gradle
 # intellij
 intellij-platform = "243.23654.166"

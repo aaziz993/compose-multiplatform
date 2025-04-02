@@ -7,15 +7,23 @@ import kotlinx.serialization.Serializable
 import kotlin.collections.get
 import kotlin.invoke
 
-internal typealias SerializableAnyMap = Map<String, @Serializable(with = AnySerializer::class) Any>
+public typealias SerializableAnyMap = Map<String, @Serializable(with = AnySerializer::class) Any>
 
-internal typealias SerializableOptionalAnyMap = Map<String, @Serializable(with = OptionalAnySerializer::class) Any?>
+public typealias SerializableOptionalAnyMap = Map<String, @Serializable(with = OptionalAnySerializer::class) Any?>
 
 public infix fun <K, V> MutableMap<K, V>.tryPutAll(value: Map<K, V>?): Unit? =
     value?.let(::putAll)
 
 public infix fun <K, V> MutableMap<K, V>.trySet(value: Map<K, V>?): Unit? =
     tryPutAll(value?.act(::clear))
+
+public fun <K, V> Map<K, V>.slice(keys: Iterable<K>): Map<K, V> =
+    buildMap {
+        keys.forEach { key ->
+            if (containsKey(key))
+                put(key, this@slice[key]!!)
+        }
+    }
 
 @Suppress("UNCHECKED_CAST")
 public infix fun Map<String, Any?>.deepMerge(source: Map<String, Any?>): Map<String, Any?> {

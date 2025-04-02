@@ -1,5 +1,6 @@
-package gradle.plugins.project
+package gradle.api.project
 
+import gradle.api.artifacts.Dependency
 import kotlinx.serialization.Serializable
 
 @Serializable
