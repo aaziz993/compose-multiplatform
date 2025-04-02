@@ -1,9 +1,7 @@
 package gradle.api.initialization
 
-import gradle.api.BaseProperties
-import gradle.api.BaseProperties.Companion.exportExtraProperties
-import gradle.api.BaseProperties.Companion.loadLocalProperties
-import gradle.api.BaseProperties.Companion.load
+import gradle.api.Properties
+import gradle.api.PropertiesMapInheritedSerializer
 import gradle.api.catalog.PluginNotationContentPolymorphicSerializer
 import gradle.api.initialization.file.CodeOfConductFile
 import gradle.api.initialization.file.ContributingFile
@@ -19,8 +17,8 @@ import gradle.plugins.githooks.GitHooksExtension
 import gradle.plugins.initialization.IncludeBuild
 import gradle.plugins.toolchainmanagement.ToolchainManagement
 import java.util.*
-import klib.data.type.collection.DelegatedMapTransformingSerializer
 import klib.data.type.collection.SerializableOptionalAnyMap
+import klib.data.type.serialization.serializer.JsonMapInheritedSerializer
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings
@@ -28,9 +26,8 @@ import org.gradle.kotlin.dsl.extra
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 
 @KeepGeneratedSerializer
-@Serializable(with = InitializationPropertiesTransformingSerializer::class)
+@Serializable(with = InitializationPropertiesMapInheritedSerializer::class)
 internal data class InitializationProperties(
-    override val delegate: SerializableOptionalAnyMap,
     override val buildscript: ScriptHandler? = null,
     override val plugins: Set<@Serializable(with = PluginNotationContentPolymorphicSerializer::class) Any>? = null,
     override val cacheRedirector: Boolean = true,
@@ -52,7 +49,7 @@ internal data class InitializationProperties(
     val develocity: DevelocitySettings? = null,
     val toolchainManagement: ToolchainManagement? = null,
     val gitHooks: GitHooksExtension? = null,
-) : BaseProperties {
+) : Properties() {
 
     val includesPaths by lazy {
         includes?.map { include -> include.replace(":", System.lineSeparator()) }
@@ -82,15 +79,15 @@ internal data class InitializationProperties(
     }
 }
 
-private object InitializationPropertiesTransformingSerializer :
-    DelegatedMapTransformingSerializer<InitializationProperties>(
+private object InitializationPropertiesMapInheritedSerializer :
+    PropertiesMapInheritedSerializer<InitializationProperties>(
         InitializationProperties.generatedSerializer(),
     )
 
-internal var Settings.localProperties: Properties
-    get() = extraProperties[BaseProperties.LOCAL_PROPERTIES_EXT] as Properties
+internal var Settings.localProperties: java.util.Properties
+    get() = extraProperties[Properties.LOCAL_PROPERTIES_EXT] as java.util.Properties
     private set(value) {
-        extraProperties[BaseProperties.LOCAL_PROPERTIES_EXT] = value
+        extraProperties[Properties.LOCAL_PROPERTIES_EXT] = value
     }
 
 private const val INITIALIZATION_PROPERTIES_EXT = "initialization.properties.ext"

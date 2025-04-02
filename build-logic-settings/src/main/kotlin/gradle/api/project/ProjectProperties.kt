@@ -1,9 +1,7 @@
 package gradle.api.project
 
-import gradle.api.BaseProperties
-import gradle.api.BaseProperties.Companion.exportExtraProperties
-import gradle.api.BaseProperties.Companion.loadLocalProperties
-import gradle.api.BaseProperties.Companion.load
+import gradle.api.Properties
+import gradle.api.PropertiesMapInheritedSerializer
 import gradle.api.Version
 import gradle.api.artifacts.Dependency
 import gradle.api.catalog.PluginNotationContentPolymorphicSerializer
@@ -46,9 +44,6 @@ import gradle.plugins.shadow.model.ShadowSettings
 import gradle.plugins.signing.model.SigningSettings
 import gradle.plugins.sonar.SonarExtension
 import gradle.plugins.spotless.SpotlessExtension
-import java.util.*
-import klib.data.type.collection.DelegatedMapTransformingSerializer
-import klib.data.type.collection.SerializableOptionalAnyMap
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -57,9 +52,8 @@ import org.jetbrains.compose.internal.utils.localPropertiesFile
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 
 @KeepGeneratedSerializer
-@Serializable(with = ProjectPropertiesTransformingSerializer::class)
+@Serializable(with = ProjectPropertiesMapInheritedSerializer::class)
 internal data class ProjectProperties(
-    override val delegate: SerializableOptionalAnyMap,
     override val buildscript: ScriptHandler? = null,
     override val plugins: Set<@Serializable(with = PluginNotationContentPolymorphicSerializer::class) Any>? = null,
     override val cacheRedirector: Boolean = true,
@@ -107,7 +101,7 @@ internal data class ProjectProperties(
     val signing: SigningSettings? = null,
     val cis: Set<CI>? = null,
     val tasks: LinkedHashSet<Task<out org.gradle.api.Task>>? = null,
-) : BaseProperties {
+) : Properties() {
 
     companion object {
 
@@ -136,13 +130,15 @@ internal data class ProjectProperties(
     }
 }
 
-private object ProjectPropertiesTransformingSerializer :
-    DelegatedMapTransformingSerializer<ProjectProperties>(ProjectProperties.generatedSerializer())
+private object ProjectPropertiesMapInheritedSerializer :
+    PropertiesMapInheritedSerializer<ProjectProperties>(
+        ProjectProperties.generatedSerializer(),
+    )
 
-internal var Project.localProperties: Properties
-    get() = extraProperties[BaseProperties.LOCAL_PROPERTIES_EXT] as Properties
+internal var Project.localProperties: java.util.Properties
+    get() = extraProperties[Properties.LOCAL_PROPERTIES_EXT] as java.util.Properties
     private set(value) {
-        extraProperties[BaseProperties.LOCAL_PROPERTIES_EXT] = value
+        extraProperties[Properties.LOCAL_PROPERTIES_EXT] = value
     }
 
 private const val PROJECT_PROPERTIES_EXT = "project.properties.ext"

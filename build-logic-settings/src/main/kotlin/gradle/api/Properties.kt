@@ -4,23 +4,22 @@ import gradle.api.catalog.PluginNotationContentPolymorphicSerializer
 import gradle.api.ci.CI
 import gradle.api.initialization.ScriptHandler
 import java.io.File
-import java.util.*
-import klib.data.type.collection.DelegatedMap
-import klib.data.type.collection.SerializableOptionalAnyMap
 import klib.data.type.collection.deepMerge
 import klib.data.type.serialization.decodeFromAny
+import klib.data.type.serialization.serializer.JsonMapInheritedSerializer
 import kotlin.io.path.Path
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import org.gradle.api.file.Directory
 import org.gradle.api.plugins.ExtraPropertiesExtension
 import org.yaml.snakeyaml.Yaml
 
-internal interface BaseProperties : DelegatedMap {
+internal abstract class Properties : HashMap<String, Any?>() {
 
-    val buildscript: ScriptHandler?
-    val plugins: Set<@Serializable(with = PluginNotationContentPolymorphicSerializer::class) Any>?
-    val cacheRedirector: Boolean
+    abstract val buildscript: ScriptHandler?
+    abstract val plugins: Set<@Serializable(with = PluginNotationContentPolymorphicSerializer::class) Any>?
+    abstract val cacheRedirector: Boolean
 
     companion object {
 
@@ -33,7 +32,7 @@ internal interface BaseProperties : DelegatedMap {
         val yaml = Yaml()
 
         fun loadLocalProperties(file: File) =
-            Properties().apply {
+            java.util.Properties().apply {
                 file.takeIf(File::exists)
                     ?.reader()
                     ?.let(::load)
@@ -81,3 +80,8 @@ internal interface BaseProperties : DelegatedMap {
             }
     }
 }
+
+internal abstract class PropertiesMapInheritedSerializer<T : Properties>(tSerializer: KSerializer<T>) :
+    JsonMapInheritedSerializer<T, Any?>(
+        tSerializer,
+    )
