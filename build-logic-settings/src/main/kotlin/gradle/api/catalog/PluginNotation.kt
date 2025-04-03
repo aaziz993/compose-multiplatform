@@ -19,7 +19,7 @@ internal data class PluginNotation(
     @SerialName("version")
     override val _version: @Serializable(with = VersionContentPolymorphicSerializer::class) Any? = null,
     val apply: Boolean = true,
-) : VersionCatalogDependency() {
+) : VersionCatalogNotation() {
 
     @Transient
     override lateinit var versionCatalog: VersionCatalog

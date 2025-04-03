@@ -2,10 +2,10 @@
 
 package gradle.api.artifacts
 
-import gradle.api.catalog.NotationContentPolymorphicSerializer
 import gradle.api.catalog.allLibs
 import gradle.api.catalog.resolveDependency
 import gradle.accessors.settings
+import gradle.api.catalog.DependencyNotation
 import java.io.File
 import klib.data.type.serialization.serializer.JsonBaseObjectTransformingSerializer
 import kotlinx.serialization.KeepGeneratedSerializer
@@ -26,29 +26,17 @@ private val SUB_CONFIGURATIONS = listOf("kotlin", "npm", "devNpm", "optionalNpm"
 @KeepGeneratedSerializer
 @Serializable(with = DependencyObjectTransformingSerializer::class)
 internal data class Dependency(
-    val notation: @Serializable(with = NotationContentPolymorphicSerializer::class) Any,
+    val notation: DependencyNotation,
     val configuration: String = "implementation",
     val subConfiguration: String? = null
 ) {
 
-    context(Settings)
-    fun resolve(): Any =
-        settings.allLibs.resolveDependency(
-            notation.toString(),
-            settings.layout.settingsDirectory,
-        )
+
 
     context(Settings)
     fun applyTo(receiver: DependencyHandler) {
         receiver.add(configuration, subConfiguration(receiver, resolve()))
     }
-
-    context(Project)
-    fun resolve(): Any =
-        project.settings.allLibs.resolveDependency(
-            notation.toString(),
-            project.layout.projectDirectory, project::project,
-        )
 
     context(Project)
     fun applyTo(receiver: DependencyHandler) {

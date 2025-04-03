@@ -20,20 +20,8 @@ internal data class KotlinJsIrCompilation(
     override val associatedCompilations: Set<String>? = null,
     override val dependencies: Set<Dependency>? = null,
     override val binaries: KotlinJsBinaryContainer? = null,
-    override val packageJson: PackageJson? = null,
-) : KotlinJsCompilation<org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsIrCompilation>() {
-
-    context(Project)
-    override fun applyTo(receiver: org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsIrCompilation) {
-        super.applyTo(receiver)
-
-        packageJson?.let { packageJson ->
-            receiver.packageJson {
-                packageJson.applyTo(this)
-            }
-        }
-    }
-}
+    override val packageJsonHandlers: List<PackageJson>? = null,
+) : KotlinJsCompilation<org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsIrCompilation>()
 
 private object KotlinJsIrCompilationObjectTransformingSerializer :
     NamedObjectTransformingSerializer<KotlinJsIrCompilation>(

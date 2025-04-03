@@ -55,11 +55,11 @@ internal data class KotlinCompilationTaskImpl(
     override val shouldRunAfter: Set<String>? = null,
     override val name: String? = null,
 ) : KotlinCompilationTask<
-    org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask<*>,
+    org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask<org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerOptions>,
     org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerOptions,
     > {
 
     context(Project)
     override fun applyTo() =
-        applyTo(project.tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask<*>>())
+        applyTo(project.tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask<org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerOptions>>())
 }

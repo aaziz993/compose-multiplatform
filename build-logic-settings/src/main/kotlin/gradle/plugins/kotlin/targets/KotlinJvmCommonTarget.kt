@@ -6,7 +6,7 @@ import gradle.api.publish.maven.MavenPublication
 import gradle.plugins.kotlin.HasConfigurableKotlinCompilerOptions
 import gradle.plugins.kotlin.KotlinTarget
 import gradle.plugins.kotlin.mpp.KotlinJvmAndroidCompilation
-import gradle.plugins.kotlin.targets.jvm.KotlinJvmCompilerOptions
+import gradle.plugins.kotlin.KotlinJvmCompilerOptions
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

@@ -5,7 +5,7 @@ import gradle.api.applyTo
 import gradle.api.publish.maven.MavenPublication
 import klib.data.type.reflection.trySet
 import gradle.plugins.kotlin.HasConfigurableKotlinCompilerOptions
-import gradle.plugins.kotlin.targets.jvm.KotlinJvmCompilerOptions
+import gradle.plugins.kotlin.KotlinJvmCompilerOptions
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

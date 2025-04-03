@@ -1,10 +1,9 @@
-package gradle.plugins.kotlin.targets.jvm
+package gradle.plugins.kotlin
 
-import gradle.api.catalog.libs
 import gradle.accessors.settings
-import klib.data.type.primitive.addPrefix
+import gradle.api.catalog.libs
 import gradle.api.provider.tryAssign
-import gradle.plugins.kotlin.KotlinCommonCompilerOptions
+import klib.data.type.primitive.addPrefix
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget

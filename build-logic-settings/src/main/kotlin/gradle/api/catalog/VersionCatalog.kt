@@ -16,7 +16,7 @@ import org.tomlj.TomlParseResult
 internal data class VersionCatalog(
     val name: String,
     val versions: Map<String, String> = emptyMap(),
-    val libraries: Map<String, Notation> = emptyMap(),
+    val libraries: Map<String, DependencyNotation> = emptyMap(),
     val plugins: Map<String, PluginNotation> = emptyMap()
 ) {
 
@@ -34,7 +34,7 @@ internal data class VersionCatalog(
     fun version(alias: String) =
         versionOrNull(alias) ?: error("Version '$alias' not found in version catalog: $name")
 
-    fun library(alias: String): Notation = alias.asVersionCatalogAlias.let { alias ->
+    fun library(alias: String): DependencyNotation = alias.asVersionCatalogAlias.let { alias ->
         libraries[alias] ?: error("Library  '$alias'  not found in version catalog: $name")
     }
 

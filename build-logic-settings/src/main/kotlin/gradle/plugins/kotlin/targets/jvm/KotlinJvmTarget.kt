@@ -4,6 +4,7 @@ import gradle.accessors.kotlin
 import gradle.api.applyTo
 import gradle.api.publish.maven.MavenPublication
 import gradle.plugins.kotlin.HasConfigurableKotlinCompilerOptions
+import gradle.plugins.kotlin.KotlinJvmCompilerOptions
 import gradle.plugins.kotlin.KotlinTargetWithTests
 import gradle.plugins.kotlin.mpp.KotlinJvmAndroidCompilation
 import gradle.plugins.kotlin.mpp.KotlinOnlyTarget
