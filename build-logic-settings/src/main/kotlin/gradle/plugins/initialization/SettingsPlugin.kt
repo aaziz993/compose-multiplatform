@@ -5,7 +5,7 @@ package gradle.plugins.initialization
 import gradle.api.catalog.allLibs
 import gradle.api.catalog.libs
 import gradle.api.catalog.toVersionCatalog
-import gradle.accessors.projectProperties
+import gradle.api.project.projectProperties
 import gradle.api.configureEach
 import gradle.api.repositories.CacheRedirector
 import gradle.plugins.develocity.DevelocityPlugin

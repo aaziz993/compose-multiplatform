@@ -26,9 +26,9 @@ internal data class VariantSelectionDetails(
      */
     val library: Boolean? = null,
     /**
- * Replaces the provided selector capabilities with the capabilities configured
- * via the configuration action.
- * @param configurationAction the configuration action
- */
-val capabilities: ModuleDependencyCapabilitiesHandler?=null,
-}
+     * Replaces the provided selector capabilities with the capabilities configured
+     * via the configuration action.
+     * @param configurationAction the configuration action
+     */
+    val capabilities: ModuleDependencyCapabilitiesHandler? = null,
+)

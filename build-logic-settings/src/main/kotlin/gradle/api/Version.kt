@@ -1,7 +1,7 @@
 package gradle.api
 
 import gradle.api.catalog.libs
-import gradle.accessors.projectProperties
+import gradle.api.project.projectProperties
 import gradle.accessors.settings
 import gradle.api.ci.current
 import kotlinx.serialization.KeepGeneratedSerializer

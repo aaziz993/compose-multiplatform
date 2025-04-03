@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin.targets.jvm
 
 import gradle.accessors.kotlin
-import gradle.accessors.projectProperties
+import gradle.api.project.projectProperties
 import gradle.api.configureEach
 import gradle.api.project.ProjectLayout
 import org.gradle.api.NamedDomainObjectCollection

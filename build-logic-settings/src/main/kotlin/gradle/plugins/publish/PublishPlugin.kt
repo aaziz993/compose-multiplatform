@@ -3,7 +3,7 @@ package gradle.plugins.publish
 import gradle.accessors.dokkaGeneratePublicationHtml
 import gradle.accessors.dokkaGeneratePublicationJavadoc
 import gradle.accessors.kotlin
-import gradle.accessors.projectProperties
+import gradle.api.project.projectProperties
 import gradle.accessors.publishing
 import gradle.api.findByName
 import klib.data.type.collection.associateWithNotNull

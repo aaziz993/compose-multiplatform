@@ -5,7 +5,7 @@ package gradle.plugins.project
 import com.android.build.gradle.internal.tasks.AndroidTestTask
 import gradle.api.catalog.resolvePluginId
 import gradle.accessors.kotlin
-import gradle.accessors.projectProperties
+import gradle.api.project.projectProperties
 import gradle.api.ci.CI
 import gradle.api.maybeNamed
 import gradle.api.project.PROJECT_PROPERTIES_FILE

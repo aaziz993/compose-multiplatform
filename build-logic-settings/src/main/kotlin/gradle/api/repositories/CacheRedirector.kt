@@ -2,7 +2,7 @@ package gradle.api.repositories
 
 import gradle.accessors.node
 import gradle.accessors.nodeJsEnv
-import gradle.accessors.projectProperties
+import gradle.api.project.projectProperties
 import gradle.accessors.yarn
 import gradle.accessors.yarnEnv
 import gradle.api.ci.CI

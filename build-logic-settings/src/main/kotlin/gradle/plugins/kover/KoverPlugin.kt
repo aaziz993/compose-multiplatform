@@ -1,6 +1,6 @@
 package gradle.plugins.kover
 
-import gradle.accessors.projectProperties
+import gradle.api.project.projectProperties
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 

@@ -1,6 +1,6 @@
 package gradle.plugins.develocity.model
 
-import gradle.accessors.projectProperties
+import gradle.api.project.projectProperties
 import gradle.api.ci.CI
 import klib.data.type.primitive.isGithubUrl
 import gradle.plugins.develocity.DevelocityConfiguration

@@ -1,7 +1,7 @@
 package gradle.plugins.karakum
 
 import gradle.accessors.kotlin
-import gradle.accessors.projectProperties
+import gradle.api.project.projectProperties
 import gradle.plugins.kotlin.KotlinTarget
 import gradle.plugins.kotlin.targets.web.KotlinJsTarget
 import klib.data.type.serialization.decodeMapFromString

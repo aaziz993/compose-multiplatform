@@ -1,6 +1,6 @@
 package gradle.plugins.signing.model
 
-import gradle.accessors.projectProperties
+import gradle.api.project.projectProperties
 import gradle.accessors.settings
 import gradle.plugins.signing.InMemoryPgpKeys
 import gradle.plugins.signing.SignContentPolymorphicSerializer

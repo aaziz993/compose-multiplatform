@@ -1,7 +1,7 @@
 package gradle.plugins.knit.model
 
 import gradle.accessors.knit
-import gradle.accessors.projectProperties
+import gradle.api.project.projectProperties
 import gradle.accessors.settings
 import gradle.plugins.knit.KnitPluginExtension
 import klib.data.type.reflection.plus

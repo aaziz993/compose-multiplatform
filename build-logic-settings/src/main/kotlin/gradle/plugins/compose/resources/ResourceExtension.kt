@@ -2,7 +2,7 @@ package gradle.plugins.compose.resources
 
 import gradle.accessors.compose
 import gradle.accessors.kotlin
-import gradle.accessors.projectProperties
+import gradle.api.project.projectProperties
 import gradle.accessors.resources
 import gradle.accessors.sourceSetsToComposeResourcesDirs
 import gradle.api.project.ProjectLayout

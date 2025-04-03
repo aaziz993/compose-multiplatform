@@ -3,7 +3,7 @@
 package gradle.plugins.android
 
 import gradle.accessors.android
-import gradle.accessors.projectProperties
+import gradle.api.project.projectProperties
 import klib.data.type.primitive.addPrefixIfNotEmpty
 import gradle.api.configureEach
 import gradle.api.file.replace

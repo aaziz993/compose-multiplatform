@@ -1,6 +1,6 @@
 package gradle.api.initialization.file
 
-import gradle.accessors.projectProperties
+import gradle.api.project.projectProperties
 import gradle.accessors.settings
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient

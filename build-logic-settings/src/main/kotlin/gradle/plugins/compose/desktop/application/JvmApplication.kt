@@ -37,7 +37,7 @@ internal data class JvmApplication(
         fromSourceSet?.let(sourceSets::getByName)?.let(receiver::from)
         fromKotlinTarget?.let(project.kotlin.targets::getByName)?.let(receiver::from)
         receiver::disableDefaultConfiguration trySet disableDefaultConfiguration
-        dependsOn?.flatMap(tasks::getByNameOrAll)?.toTypedArray()?.let(receiver::dependsOn)
+        dependsOn?.flatMap(project.tasks::getByNameOrAll)?.toTypedArray()?.let(receiver::dependsOn)
         receiver::fromFiles trySet fromFiles
         receiver::mainClass trySet mainClass
         receiver::javaHome trySet javaHome

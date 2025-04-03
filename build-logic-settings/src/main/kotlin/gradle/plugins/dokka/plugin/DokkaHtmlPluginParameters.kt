@@ -1,6 +1,6 @@
 package gradle.plugins.dokka.plugin
 
-import gradle.accessors.projectProperties
+import gradle.api.project.projectProperties
 import gradle.api.file.tryFrom
 import gradle.api.file.trySetFrom
 import gradle.api.provider.tryAssign

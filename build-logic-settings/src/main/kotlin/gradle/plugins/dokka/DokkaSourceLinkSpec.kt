@@ -1,6 +1,6 @@
 package gradle.plugins.dokka
 
-import gradle.accessors.projectProperties
+import gradle.api.project.projectProperties
 import gradle.accessors.settings
 import gradle.api.provider.tryAssign
 import gradle.api.project.ProjectLayout

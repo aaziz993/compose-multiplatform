@@ -2,7 +2,7 @@ package gradle.plugins.develocity
 
 import com.gradle.develocity.agent.gradle.test.DevelocityTestConfiguration
 import com.gradle.develocity.agent.gradle.test.TestRetryConfiguration
-import gradle.accessors.projectProperties
+import gradle.api.project.projectProperties
 import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
 import org.gradle.api.tasks.testing.Test

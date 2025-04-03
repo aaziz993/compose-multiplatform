@@ -1,7 +1,7 @@
 package gradle.caching.remote
 
 import com.gradle.develocity.agent.gradle.buildcache.DevelocityBuildCache
-import gradle.accessors.projectProperties
+import gradle.api.project.projectProperties
 import gradle.api.ci.CI
 import gradle.caching.AbstractBuildCache
 import klib.data.type.reflection.trySet

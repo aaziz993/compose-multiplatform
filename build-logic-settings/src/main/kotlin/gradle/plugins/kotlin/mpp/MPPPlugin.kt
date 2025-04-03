@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin.mpp
 
 import gradle.accessors.kotlin
-import gradle.accessors.projectProperties
+import gradle.api.project.projectProperties
 import gradle.accessors.sourceSetsToComposeResourcesDirs
 import klib.data.type.primitive.addPrefixIfNotEmpty
 import gradle.api.configureEach

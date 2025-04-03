@@ -1,6 +1,6 @@
 package gradle.plugins.kotlin.noarg
 
-import gradle.accessors.projectProperties
+import gradle.api.project.projectProperties
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
