@@ -1,0 +1,6 @@
+kotlin:
+  targets:
+    js:
+      name: ''
+      binaries:
+        - Library: { }

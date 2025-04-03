@@ -1,6 +1,6 @@
 package gradle.api.repositories
 
-import klib.data.type.isValidUrl
+import klib.data.type.primitive.isValidUrl
 import klib.data.type.reflection.trySet
 import org.gradle.api.Project
 import org.gradle.api.artifacts.repositories.UrlArtifactRepository

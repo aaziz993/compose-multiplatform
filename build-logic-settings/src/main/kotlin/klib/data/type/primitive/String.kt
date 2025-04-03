@@ -1,4 +1,4 @@
-package klib.data.type
+package klib.data.type.primitive
 
 import java.net.URI
 import java.nio.file.InvalidPathException

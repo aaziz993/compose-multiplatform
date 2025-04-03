@@ -3,7 +3,7 @@ package gradle.plugins.knit.tasks
 import gradle.accessors.files
 import gradle.api.tasks.DefaultTask
 import gradle.api.tasks.applyTo
-import klib.data.type.collection.SerializableAnyMap
+import klib.data.type.serialization.serializer.SerializableAnyMap
 import klib.data.type.reflection.tryPlus
 import klib.data.type.reflection.trySet
 import kotlinx.knit.KnitTask

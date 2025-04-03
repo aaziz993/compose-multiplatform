@@ -1,6 +1,6 @@
 package gradle.api.tasks
 
-import klib.data.type.collection.SerializableAnyMap
+import klib.data.type.serialization.serializer.SerializableAnyMap
 import kotlinx.serialization.Serializable
 
 @Serializable

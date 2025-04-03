@@ -2,7 +2,7 @@ package gradle.plugins.kotlin.targets.jvm
 
 import gradle.api.catalog.libs
 import gradle.accessors.settings
-import klib.data.type.addPrefix
+import klib.data.type.primitive.addPrefix
 import gradle.api.provider.tryAssign
 import gradle.plugins.kotlin.KotlinCommonCompilerOptions
 import kotlinx.serialization.Serializable

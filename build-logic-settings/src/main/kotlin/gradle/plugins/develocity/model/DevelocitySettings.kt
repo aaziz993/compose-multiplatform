@@ -2,7 +2,7 @@ package gradle.plugins.develocity.model
 
 import gradle.accessors.projectProperties
 import gradle.api.ci.CI
-import klib.data.type.isGithubUrl
+import klib.data.type.primitive.isGithubUrl
 import gradle.plugins.develocity.DevelocityConfiguration
 import gradle.plugins.develocity.buildscan.BuildScanConfiguration
 import java.net.URLEncoder

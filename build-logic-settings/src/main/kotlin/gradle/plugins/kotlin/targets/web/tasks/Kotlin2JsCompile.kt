@@ -1,29 +1,26 @@
-package gradle.plugins.kotlin.targets.web
+package gradle.plugins.kotlin.targets.web.tasks
 
-import gradle.api.file.tryFrom
-import gradle.api.file.trySetFrom
 import gradle.api.tasks.K2MultiplatformCompilationTask
 import gradle.api.tasks.ProducesKlib
 import gradle.api.tasks.applyTo
-import klib.data.type.collection.SerializableAnyMap
+import gradle.plugins.kotlin.targets.web.KotlinJsCompilerOptions
+import gradle.plugins.kotlin.tasks.AbstractKotlinCompile
+import klib.data.type.serialization.serializer.SerializableAnyMap
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 
 internal abstract class Kotlin2JsCompile<T : org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile>
-    : KotlinJsCompile<T>, K2MultiplatformCompilationTask<T>, ProducesKlib<T> {
-
-    abstract val libraries: Set<String>?
-    abstract val setLibraries: Set<String>?
+    : AbstractKotlinCompile<T>(),
+    KotlinJsCompile<T>,
+    K2MultiplatformCompilationTask<T>,
+    ProducesKlib<T> {
 
     context(Project)
     override fun applyTo(receiver: T) {
         super<K2MultiplatformCompilationTask>.applyTo(receiver)
         super<ProducesKlib>.applyTo(receiver)
-
-        receiver.libraries tryFrom libraries
-        receiver.libraries trySetFrom setLibraries
     }
 }
 

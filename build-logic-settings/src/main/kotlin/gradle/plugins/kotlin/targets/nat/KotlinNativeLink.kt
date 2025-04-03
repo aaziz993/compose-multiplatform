@@ -4,7 +4,7 @@ import gradle.accessors.files
 import gradle.api.file.tryFrom
 import gradle.api.file.trySetFrom
 import gradle.api.tasks.applyTo
-import klib.data.type.collection.SerializableAnyMap
+import klib.data.type.serialization.serializer.SerializableAnyMap
 import gradle.plugins.kotlin.KotlinCommonCompilerToolOptionsImpl
 import gradle.plugins.kotlin.tasks.AbstractKotlinCompileTool
 import gradle.plugins.kotlin.tasks.KotlinToolTask
@@ -14,13 +14,52 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.InternalKotlinGradlePluginApi
-import org.jetbrains.kotlin.gradle.tasks.KotlinNativeLink
 
 /**
  * A task producing a final binary from a compilation.
  */
+internal abstract class KotlinNativeLink<T : org.jetbrains.kotlin.gradle.tasks.KotlinNativeLink>
+    : AbstractKotlinCompileTool<T>(),
+    KotlinToolTask<T, org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerToolOptions> {
+
+    // This property can't be accessed in the execution phase
+    abstract val binary: NativeBinaryImpl?
+
+    abstract val apiFiles: Set<String>?
+
+    abstract val setApiFiles: Set<String>?
+
+    abstract val compilerPluginOptions: CompilerPluginOptions?
+
+    abstract val compilerPluginClasspath: Set<String>?
+
+    abstract val setCompilerPluginClasspath: Set<String>?
+
+    /**
+     * Plugin Data provided by [KpmCompilerPlugin]
+     */
+    abstract val kotlinPluginData: KotlinCompilerPluginData?
+
+    context(Project)
+    @OptIn(InternalKotlinGradlePluginApi::class)
+    override fun applyTo(receiver: T) {
+        super<AbstractKotlinCompileTool>.applyTo(receiver)
+        super<KotlinToolTask>.applyTo(receiver)
+
+        binary?.applyTo(receiver.binary)
+        receiver.apiFiles tryFrom apiFiles
+        receiver.apiFiles trySetFrom setApiFiles
+        compilerPluginOptions?.applyTo(receiver.compilerPluginOptions)
+        receiver::compilerPluginClasspath tryPlus compilerPluginClasspath?.let(project::files)
+        receiver::compilerPluginClasspath trySet setCompilerPluginClasspath?.let(project::files)
+        receiver::kotlinPluginData trySet kotlinPluginData?.toKotlinCompilerPluginData()?.let { kotlinPluginData ->
+            provider { kotlinPluginData }
+        }
+    }
+}
+
 @Serializable
-internal data class KotlinNativeLink(
+internal data class KotlinNativeLinkImpl(
     override val dependsOn: LinkedHashSet<String>? = null,
     override val onlyIf: Boolean? = null,
     override val doNotTrackState: String? = null,
@@ -44,38 +83,16 @@ internal data class KotlinNativeLink(
     override val setIncludes: Set<String>? = null,
     override val excludes: Set<String>? = null,
     override val setExcludes: Set<String>? = null,
-    // This property can't be accessed in the execution phase
-    val binary: NativeBinaryImpl? = null,
-    val apiFiles: Set<String>? = null,
-    val setApiFiles: Set<String>? = null,
-    val compilerPluginOptions: CompilerPluginOptions? = null,
-    val compilerPluginClasspath: Set<String>? = null,
-    val setCompilerPluginClasspath: Set<String>? = null,
-    /**
-     * Plugin Data provided by [KpmCompilerPlugin]
-     */
-    val kotlinPluginData: KotlinCompilerPluginData? = null,
-) : AbstractKotlinCompileTool<KotlinNativeLink>(),
-    KotlinToolTask<KotlinNativeLink, org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerToolOptions> {
-
-    context(Project)
-    @OptIn(InternalKotlinGradlePluginApi::class)
-    override fun applyTo(receiver: KotlinNativeLink) {
-        super<AbstractKotlinCompileTool>.applyTo(receiver)
-        super<KotlinToolTask>.applyTo(receiver)
-
-        binary?.applyTo(receiver.binary)
-        receiver.apiFiles tryFrom apiFiles
-        receiver.apiFiles trySetFrom setApiFiles
-        compilerPluginOptions?.applyTo(receiver.compilerPluginOptions)
-        receiver::compilerPluginClasspath tryPlus compilerPluginClasspath?.let(project::files)
-        receiver::compilerPluginClasspath trySet setCompilerPluginClasspath?.let(project::files)
-        receiver::kotlinPluginData trySet kotlinPluginData?.toKotlinCompilerPluginData()?.let { kotlinPluginData ->
-            provider { kotlinPluginData }
-        }
-    }
+    override val binary: NativeBinaryImpl? = null,
+    override val apiFiles: Set<String>? = null,
+    override val setApiFiles: Set<String>? = null,
+    override val compilerPluginOptions: CompilerPluginOptions? = null,
+    override val compilerPluginClasspath: Set<String>? = null,
+    override val setCompilerPluginClasspath: Set<String>? = null,
+    override val kotlinPluginData: KotlinCompilerPluginData? = null,
+) : KotlinNativeLink<org.jetbrains.kotlin.gradle.tasks.KotlinNativeLink>() {
 
     context(Project)
     override fun applyTo() =
-        applyTo(project.tasks.withType<KotlinNativeLink>())
+        applyTo(project.tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinNativeLink>())
 }

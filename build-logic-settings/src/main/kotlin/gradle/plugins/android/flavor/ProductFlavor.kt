@@ -1,7 +1,7 @@
 package gradle.plugins.android.flavor
 
 import gradle.api.NamedObjectTransformingSerializer
-import klib.data.type.collection.SerializableAnyMap
+import klib.data.type.serialization.serializer.SerializableAnyMap
 import gradle.plugins.android.AarMetadata
 import gradle.plugins.android.BuildConfigField
 import gradle.plugins.android.ExternalNativeBuildFlags

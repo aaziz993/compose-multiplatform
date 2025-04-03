@@ -1,4 +1,6 @@
-package klib.data.type
+package klib.data.type.primitive
+
+import klib.data.type.act
 
 public fun Boolean.takeIfTrue(): Boolean? = takeIfTrue()
 

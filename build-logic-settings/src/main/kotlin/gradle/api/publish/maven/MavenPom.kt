@@ -2,10 +2,9 @@ package gradle.api.publish.maven
 
 import gradle.accessors.projectProperties
 import gradle.accessors.settings
-import klib.data.type.addSuffix
+import klib.data.type.primitive.addSuffix
 import gradle.api.provider.tryAssign
 import gradle.reflection.tryApply
-import klib.data.type.reflection.tryApply
 import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

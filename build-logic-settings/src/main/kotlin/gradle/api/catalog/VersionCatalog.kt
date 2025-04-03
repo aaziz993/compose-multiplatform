@@ -1,8 +1,8 @@
 package gradle.api.catalog
 
 import gradle.accessors.settings
-import klib.data.type.isPath
-import klib.data.type.isValidUrl
+import klib.data.type.primitive.isPath
+import klib.data.type.primitive.isValidUrl
 import klib.data.type.serialization.decodeFromAny
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json

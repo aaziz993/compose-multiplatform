@@ -3,7 +3,7 @@ package gradle.plugins.kotlin.targets.jvm
 import gradle.accessors.files
 import gradle.api.getByNameOrAll
 import gradle.api.provider.tryAssign
-import klib.data.type.collection.SerializableAnyList
+import klib.data.type.serialization.serializer.SerializableAnyList
 import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

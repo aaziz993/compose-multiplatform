@@ -3,10 +3,10 @@ package gradle.plugins.kotlin.mpp
 import gradle.accessors.kotlin
 import gradle.accessors.projectProperties
 import gradle.accessors.sourceSetsToComposeResourcesDirs
-import klib.data.type.addPrefixIfNotEmpty
+import klib.data.type.primitive.addPrefixIfNotEmpty
 import gradle.api.configureEach
 import gradle.api.file.replace
-import klib.data.type.decapitalized
+import klib.data.type.primitive.decapitalized
 import gradle.api.project.ProjectLayout
 import net.pearx.kasechange.splitToWords
 import org.gradle.api.Plugin

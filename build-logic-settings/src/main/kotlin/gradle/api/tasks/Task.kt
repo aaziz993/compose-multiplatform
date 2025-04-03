@@ -2,7 +2,7 @@ package gradle.api.tasks
 
 import gradle.api.ProjectNamed
 import gradle.api.applyTo
-import klib.data.type.collection.SerializableAnyMap
+import klib.data.type.serialization.serializer.SerializableAnyMap
 import klib.data.type.reflection.genericTypes
 import klib.data.type.reflection.trySet
 import klib.data.type.serialization.serializer.JsonObjectTransformingContentPolymorphicSerializer

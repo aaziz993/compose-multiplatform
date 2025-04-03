@@ -4,6 +4,7 @@ import gradle.api.NamedObjectTransformingSerializer
 import gradle.plugins.kotlin.KotlinCompilationOutput
 import gradle.plugins.kotlin.KotlinSourceSet
 import gradle.api.artifacts.Dependency
+import gradle.plugins.kotlin.targets.web.tasks.Kotlin2JsCompileImpl
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -20,7 +21,7 @@ internal data class KotlinJsIrCompilation(
     override val dependencies: Set<Dependency>? = null,
     override val binaries: KotlinJsBinaryContainer? = null,
     override val packageJson: PackageJson? = null,
-) : KotlinJsCompilation<org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsIrCompilation> {
+) : KotlinJsCompilation<org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsIrCompilation>() {
 
     context(Project)
     override fun applyTo(receiver: org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsIrCompilation) {

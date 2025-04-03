@@ -1,5 +1,6 @@
 package gradle.plugins.kotlin.targets.web
 
+import gradle.plugins.kotlin.targets.web.tasks.KotlinJsTest
 import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

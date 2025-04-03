@@ -3,7 +3,7 @@ package gradle.plugins.kotlin.targets.jvm.test
 import gradle.api.tasks.applyTo
 import gradle.api.tasks.test.TestFilter
 import gradle.api.tasks.test.TestLoggingContainer
-import klib.data.type.collection.SerializableAnyMap
+import klib.data.type.serialization.serializer.SerializableAnyMap
 import gradle.plugins.java.JavaToolchainSpec
 import gradle.plugins.java.ModularitySpec
 import gradle.plugins.java.test.JUnitContentPolymorphicSerializer

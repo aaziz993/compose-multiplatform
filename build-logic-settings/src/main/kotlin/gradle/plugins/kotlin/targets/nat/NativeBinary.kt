@@ -2,16 +2,17 @@ package gradle.plugins.kotlin.targets.nat
 
 import gradle.accessors.moduleName
 import gradle.api.ProjectNamed
+import gradle.api.artifacts.Dependency
 import gradle.api.provider.tryAssign
+import gradle.process.AbstractExecTask
+import gradle.process.AbstractExecTaskImpl
 import klib.data.type.collection.tryPutAll
 import klib.data.type.collection.trySet
-import gradle.api.artifacts.Dependency
 import klib.data.type.reflection.tryPlus
 import klib.data.type.reflection.trySet
 import klib.data.type.serialization.serializer.JsonObjectTransformingContentPolymorphicSerializer
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.JsonElement
@@ -56,6 +57,8 @@ internal sealed class NativeBinary<T : org.jetbrains.kotlin.gradle.plugin.mpp.Na
 
     abstract val setFreeCompilerArgs: List<String>?
 
+    abstract val linkTaskProvider: KotlinNativeLink<out org.jetbrains.kotlin.gradle.tasks.KotlinNativeLink>?
+
     // Output access.
     // TODO: Provide output configurations and integrate them with Gradle Native.
     abstract val outputDirectory: String?
@@ -73,6 +76,8 @@ internal sealed class NativeBinary<T : org.jetbrains.kotlin.gradle.plugin.mpp.Na
         receiver::binaryOptions trySet setBinaryOptions?.toMutableMap()
         receiver::freeCompilerArgs tryPlus freeCompilerArgs
         receiver::freeCompilerArgs trySet setFreeCompilerArgs
+        (linkTaskProvider as KotlinNativeLink<org.jetbrains.kotlin.gradle.tasks.KotlinNativeLink>?)
+            ?.applyTo(receiver.linkTaskProvider.get())
         receiver::outputDirectory trySet optimized?.let(project::file)
         receiver.outputDirectoryProperty tryAssign outputDirectoryProperty?.let(project.layout.projectDirectory::dir)
     }
@@ -94,6 +99,7 @@ internal data class NativeBinaryImpl(
     override val setBinaryOptions: Map<String, String>? = null,
     override val freeCompilerArgs: List<String>? = null,
     override val setFreeCompilerArgs: List<String>? = null,
+    override val linkTaskProvider: KotlinNativeLinkImpl? = null,
     override val outputDirectory: String? = null,
     override val outputDirectoryProperty: String? = null,
     override val name: String? = null,
@@ -113,16 +119,24 @@ internal abstract class Executable : AbstractExecutable<org.jetbrains.kotlin.gra
      */
     abstract val entryPoint: String?
 
+    abstract val runTaskProvider: AbstractExecTask<out org.gradle.api.tasks.AbstractExecTask<*>>?
+
     context(Project)
     override fun applyTo(receiver: org.jetbrains.kotlin.gradle.plugin.mpp.Executable) {
         super.applyTo(receiver)
 
         entryPoint?.let(receiver::entryPoint)
+
+        (runTaskProvider as AbstractExecTask<org.gradle.api.tasks.AbstractExecTask<*>>?)
+            ?.let { runTaskProvider ->
+                receiver.runTaskProvider?.get()?.let {
+                    runTaskProvider.applyTo(it)
+                }
+            }
     }
 }
 
 @Serializable
-@SerialName("executable")
 internal data class ExecutableSettings(
     override val name: String? = null,
     override val baseName: String? = null,
@@ -134,6 +148,8 @@ internal data class ExecutableSettings(
     override val setBinaryOptions: Map<String, String>? = null,
     override val freeCompilerArgs: List<String>? = null,
     override val setFreeCompilerArgs: List<String>? = null,
+    override val linkTaskProvider: KotlinNativeLinkImpl? = null,
+    override val runTaskProvider: AbstractExecTaskImpl? = null,
     override val outputDirectory: String? = null,
     override val outputDirectoryProperty: String? = null,
     override val entryPoint: String? = null,
@@ -144,7 +160,6 @@ internal data class ExecutableSettings(
 internal abstract class TestExecutable : NativeBinary<org.jetbrains.kotlin.gradle.plugin.mpp.TestExecutable>()
 
 @Serializable
-@SerialName("testExecutable")
 internal data class TestExecutableSettings(
     override val name: String? = null,
     override val baseName: String? = null,
@@ -156,6 +171,7 @@ internal data class TestExecutableSettings(
     override val setBinaryOptions: Map<String, String>? = null,
     override val freeCompilerArgs: List<String>? = null,
     override val setFreeCompilerArgs: List<String>? = null,
+    override val linkTaskProvider: KotlinNativeLinkImpl? = null,
     override val outputDirectory: String? = null,
     override val outputDirectoryProperty: String? = null,
     val namePrefix: String = "",
@@ -189,7 +205,6 @@ internal abstract class AbstractNativeLibrary<T : org.jetbrains.kotlin.gradle.pl
 internal abstract class StaticLibrary : AbstractNativeLibrary<org.jetbrains.kotlin.gradle.plugin.mpp.StaticLibrary>()
 
 @Serializable
-@SerialName("staticLibrary")
 internal data class StaticLibrarySettings(
     override val transitiveExport: Boolean? = null,
     override val exports: Set<Dependency>? = null,
@@ -202,6 +217,7 @@ internal data class StaticLibrarySettings(
     override val setBinaryOptions: Map<String, String>? = null,
     override val freeCompilerArgs: List<String>? = null,
     override val setFreeCompilerArgs: List<String>? = null,
+    override val linkTaskProvider: KotlinNativeLinkImpl? = null,
     override val outputDirectory: String? = null,
     override val outputDirectoryProperty: String? = null,
     override val name: String? = null,
@@ -212,7 +228,6 @@ internal data class StaticLibrarySettings(
 internal abstract class SharedLibrary : AbstractNativeLibrary<org.jetbrains.kotlin.gradle.plugin.mpp.SharedLibrary>()
 
 @Serializable
-@SerialName("sharedLibrary")
 internal data class SharedLibrarySettings(
     override val name: String? = null,
     override val baseName: String? = null,
@@ -226,6 +241,7 @@ internal data class SharedLibrarySettings(
     override val setBinaryOptions: Map<String, String>? = null,
     override val freeCompilerArgs: List<String>? = null,
     override val setFreeCompilerArgs: List<String>? = null,
+    override val linkTaskProvider: KotlinNativeLinkImpl? = null,
     override val outputDirectory: String? = null,
     override val outputDirectoryProperty: String? = null,
     val namePrefix: String = "",
@@ -245,7 +261,6 @@ internal abstract class Framework : AbstractNativeLibrary<org.jetbrains.kotlin.g
 }
 
 @Serializable
-@SerialName("framework")
 internal data class FrameworkSettings(
     override val name: String? = null,
     override val baseName: String? = null,
@@ -259,6 +274,7 @@ internal data class FrameworkSettings(
     override val setBinaryOptions: Map<String, String>? = null,
     override val freeCompilerArgs: List<String>? = null,
     override val setFreeCompilerArgs: List<String>? = null,
+    override val linkTaskProvider: KotlinNativeLinkImpl? = null,
     override val outputDirectory: String? = null,
     override val outputDirectoryProperty: String? = null,
     override val isStatic: Boolean? = null,

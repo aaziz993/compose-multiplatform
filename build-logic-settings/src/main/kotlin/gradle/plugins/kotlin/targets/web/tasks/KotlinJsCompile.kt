@@ -1,20 +1,21 @@
-package gradle.plugins.kotlin.targets.web
+package gradle.plugins.kotlin.targets.web.tasks
 
 import gradle.api.tasks.applyTo
-import klib.data.type.collection.SerializableAnyMap
+import klib.data.type.serialization.serializer.SerializableAnyMap
 import gradle.plugins.kotlin.tasks.KotlinCompilationTask
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.dsl.KotlinJsCompilerOptions
 
 internal interface KotlinJsCompile<T : org.jetbrains.kotlin.gradle.dsl.KotlinJsCompile>
-    : KotlinCompilationTask<T, org.jetbrains.kotlin.gradle.dsl.KotlinJsCompilerOptions>
+    : KotlinCompilationTask<T, KotlinJsCompilerOptions>
 
 @Serializable
 @SerialName("KotlinJsCompile")
 internal data class KotlinJsCompileImpl(
-    override val compilerOptions: KotlinJsCompilerOptions? = null,
+    override val compilerOptions: gradle.plugins.kotlin.targets.web.KotlinJsCompilerOptions? = null,
     override val dependsOn: LinkedHashSet<String>? = null,
     override val onlyIf: Boolean? = null,
     override val doNotTrackState: String? = null,

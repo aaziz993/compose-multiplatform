@@ -1,6 +1,6 @@
 package gradle.api.catalog
 
-import klib.data.type.addPrefix
+import klib.data.type.primitive.addPrefix
 import klib.data.type.serialization.serializer.JsonObjectTransformingSerializer
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.KeepGeneratedSerializer

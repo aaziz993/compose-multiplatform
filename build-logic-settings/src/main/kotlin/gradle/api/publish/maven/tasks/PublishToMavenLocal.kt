@@ -1,7 +1,7 @@
 package gradle.api.publish.maven.tasks
 
 import gradle.api.tasks.applyTo
-import klib.data.type.collection.SerializableAnyMap
+import klib.data.type.serialization.serializer.SerializableAnyMap
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.publish.maven.tasks.PublishToMavenLocal

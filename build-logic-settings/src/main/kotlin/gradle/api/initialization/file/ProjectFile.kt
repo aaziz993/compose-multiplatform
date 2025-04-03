@@ -1,7 +1,7 @@
 package gradle.api.initialization.file
 
 import arrow.core.fold
-import klib.data.type.isValidUrl
+import klib.data.type.primitive.isValidUrl
 import java.io.File
 import java.net.URI
 import org.apache.commons.io.FileUtils

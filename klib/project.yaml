@@ -7,8 +7,9 @@ templates:
   - ../templates/gradle/jvm-common.yaml
   - ../templates/gradle/apple.yaml
   - ../templates/gradle/web/js/js.yaml
-  - ../templates/gradle/web/wasmJs/wasmJs.yaml
-  - ../templates/gradle/web/js-library.yaml
+  - ../templates/gradle/web/js/js-library.yaml
+  - ../templates/gradle/web/wasmJs.yaml
+  - ../templates/gradle/web/wasm-library.yaml
   - ../templates/gradle/web/js-common.yaml
   - ../templates/gradle/mpp.yaml
   - ../templates/gradle/common.yaml

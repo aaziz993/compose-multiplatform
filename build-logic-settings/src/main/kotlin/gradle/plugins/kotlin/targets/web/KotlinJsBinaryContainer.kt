@@ -1,21 +1,26 @@
 package gradle.plugins.kotlin.targets.web
 
 import klib.data.type.serialization.serializer.JsonObjectTransformingSerializer
+import klib.data.type.serialization.serializer.NotSerializable
+import klib.data.type.serialization.serializer.NothingSerializer
+import klib.data.type.serialization.serializer.SetSerializer
+import klib.data.type.serialization.serializer.ignoreTypeParameters
 import kotlinx.serialization.Contextual
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.serializer
 import org.gradle.api.Project
 
 @Suppress("JavaDefaultMethodsNotOverriddenByDelegation")
 @KeepGeneratedSerializer
 @Serializable(with = KotlinJsBinaryContainerTransformingSerializer::class)
-internal data class KotlinJsBinaryContainer(
-    private val delegate: Set<JsIrBinary<out @Contextual org.jetbrains.kotlin.gradle.targets.js.ir.JsIrBinary>> = mutableSetOf()
-) : Set<JsIrBinary<out org.jetbrains.kotlin.gradle.targets.js.ir.JsIrBinary>> by delegate {
+internal class KotlinJsBinaryContainer
+    : HashSet<JsIrBinary<out org.jetbrains.kotlin.gradle.targets.js.ir.JsIrBinary>>() {
 
     context(Project)
     fun applyTo(receiver: org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsBinaryContainer) {
-        delegate.forEach { binary ->
+        forEach { binary ->
             when (binary) {
                 is Executable -> receiver.executable(receiver.target.compilations.getByName(binary.compilation))
                 is ExecutableWasm -> receiver.executable(receiver.target.compilations.getByName(binary.compilation))
@@ -26,7 +31,6 @@ internal data class KotlinJsBinaryContainer(
 }
 
 private object KotlinJsBinaryContainerTransformingSerializer
-    : JsonObjectTransformingSerializer<KotlinJsBinaryContainer>(
-    KotlinJsBinaryContainer.generatedSerializer(),
-    "delegate",
+    : SetSerializer<KotlinJsBinaryContainer, JsIrBinary<out org.jetbrains.kotlin.gradle.targets.js.ir.JsIrBinary>>(
+    JsIrBinary.serializer(org.jetbrains.kotlin.gradle.targets.js.ir.JsIrBinary::class.serializer()) as KSerializer<JsIrBinary<out org.jetbrains.kotlin.gradle.targets.js.ir.JsIrBinary>>,
 )

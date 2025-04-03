@@ -7,7 +7,7 @@ import gradle.api.provider.tryAddAll
 import gradle.api.provider.tryAssign
 import gradle.api.tasks.DefaultTask
 import gradle.api.tasks.applyTo
-import klib.data.type.collection.SerializableAnyMap
+import klib.data.type.serialization.serializer.SerializableAnyMap
 import gradle.plugins.kotlin.ksp.KspGradleConfig
 import gradle.process.CommandLineArgumentProvider
 import kotlinx.serialization.Serializable

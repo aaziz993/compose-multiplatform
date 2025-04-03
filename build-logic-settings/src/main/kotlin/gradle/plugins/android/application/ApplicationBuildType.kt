@@ -1,7 +1,7 @@
 package gradle.plugins.android.application
 
 import gradle.api.NamedObjectTransformingSerializer
-import klib.data.type.collection.SerializableAnyMap
+import klib.data.type.serialization.serializer.SerializableAnyMap
 import gradle.plugins.android.BuildConfigField
 import gradle.plugins.android.BuildType
 import gradle.plugins.android.ExternalNativeBuildFlags

@@ -10,7 +10,7 @@ import gradle.api.tasks.copy.FileCopyDetails
 import gradle.api.tasks.copy.FromContentPolymorphicSerializer
 import gradle.api.tasks.copy.IntoContentPolymorphicSerializer
 import gradle.api.tasks.copy.Rename
-import klib.data.type.collection.SerializableAnyMap
+import klib.data.type.serialization.serializer.SerializableAnyMap
 import gradle.plugins.java.manifest.Manifest
 import gradle.plugins.java.tasks.Jar
 import klib.data.type.reflection.trySet

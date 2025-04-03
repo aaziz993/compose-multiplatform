@@ -10,8 +10,8 @@ templates:
   - ../templates/gradle/apple.yaml
   - ../templates/gradle/web/js/js.yaml
   - ../templates/gradle/web/js/js-executable.yaml
-  - ../templates/gradle/web/wasmJs/wasmJs.yaml
-  - ../templates/gradle/web/wasmJs/wasmJs-executable.yaml
+  - ../templates/gradle/web/wasmJs.yaml
+  - ../templates/gradle/web/wasm-executable.yaml
   - ../templates/gradle/web/js-common.yaml
   - ../templates/gradle/mpp.yaml
   - ../templates/gradle/compose.yaml

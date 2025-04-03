@@ -7,7 +7,7 @@ import gradle.accessors.android
 import gradle.api.catalog.libs
 import gradle.accessors.settings
 import gradle.api.applyTo
-import klib.data.type.collection.SerializableAnyMap
+import klib.data.type.serialization.serializer.SerializableAnyMap
 import klib.data.type.collection.tryAddAll
 import klib.data.type.collection.tryPutAll
 import klib.data.type.collection.trySet

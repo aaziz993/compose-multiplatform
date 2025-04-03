@@ -2,7 +2,7 @@ package gradle.plugins.apple.target
 
 import gradle.api.ProjectNamed
 import gradle.api.applyTo
-import klib.data.type.collection.SerializableAnyMap
+import klib.data.type.serialization.serializer.SerializableAnyMap
 import klib.data.type.collection.tryPutAll
 import klib.data.type.collection.trySet
 import gradle.plugins.apple.AppleBuildSettings

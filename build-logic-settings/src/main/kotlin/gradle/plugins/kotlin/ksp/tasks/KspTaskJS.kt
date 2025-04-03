@@ -2,9 +2,9 @@ package gradle.plugins.kotlin.ksp.tasks
 
 import com.google.devtools.ksp.gradle.KspTaskJS
 import gradle.api.tasks.applyTo
-import klib.data.type.collection.SerializableAnyMap
+import klib.data.type.serialization.serializer.SerializableAnyMap
 import gradle.plugins.kotlin.SubpluginOption
-import gradle.plugins.kotlin.targets.web.Kotlin2JsCompile
+import gradle.plugins.kotlin.targets.web.tasks.Kotlin2JsCompile
 import gradle.plugins.kotlin.targets.web.KotlinJsCompilerOptions
 import gradle.process.CommandLineArgumentProvider
 import kotlinx.serialization.Serializable

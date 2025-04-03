@@ -3,7 +3,7 @@
 package gradle.api.tasks
 
 import gradle.api.provider.tryAssign
-import klib.data.type.collection.SerializableAnyMap
+import klib.data.type.serialization.serializer.SerializableAnyMap
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

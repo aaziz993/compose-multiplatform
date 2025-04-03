@@ -5,11 +5,11 @@ import gradle.plugins.kotlin.mpp.HasBinaries
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJsCompilation
 
-internal interface KotlinJsCompilation<T : KotlinJsCompilation>
+internal abstract class KotlinJsCompilation<T : KotlinJsCompilation>
     : KotlinCompilation<T>,
     HasBinaries<KotlinJsBinaryContainer> {
 
-    val packageJson: PackageJson?
+   abstract val packageJson: PackageJson?
 
     context(Project)
     override fun applyTo(receiver: T) {

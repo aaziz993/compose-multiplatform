@@ -1,16 +1,18 @@
-package gradle.plugins.kotlin.targets.web
+package gradle.plugins.kotlin.targets.web.tasks
 
 import gradle.accessors.moduleName
 import gradle.api.file.tryAssign
 import gradle.api.tasks.applyTo
 import gradle.api.tasks.test.TestFilter
 import gradle.api.tasks.test.TestLoggingContainer
-import klib.data.type.collection.SerializableAnyMap
+import gradle.plugins.kotlin.targets.web.KotlinKarma
+import gradle.plugins.kotlin.targets.web.KotlinMocha
+import gradle.plugins.kotlin.tasks.KotlinTest
 import klib.data.type.collection.tryAddAll
 import klib.data.type.collection.tryPutAll
 import klib.data.type.collection.trySet
-import gradle.plugins.kotlin.tasks.KotlinTest
 import klib.data.type.reflection.trySet
+import klib.data.type.serialization.serializer.SerializableAnyMap
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
