@@ -1,5 +1,6 @@
 package klib.data.type
 
+import com.ionspin.kotlin.bignum.integer.Quadruple
 import klib.data.type.collection.get
 
 public inline fun <T> T.act(action: () -> Unit): T {
@@ -22,25 +23,29 @@ public fun <T : Any, K> T.get(
 }(Triple(this, keys.toList(), getter))
 
 @Suppress("UNCHECKED_CAST")
-public fun <T : Any> T.evalValues(
-    thisSource: Any,
+public fun <T : Any> T.eval(
+    context: Any,
     getter: Any.(keys: List<String>) -> Any? = { keys -> get(*keys.toTypedArray()) }
-): T = DeepRecursiveFunction<Any, Any?> { receiver ->
-    when (receiver) {
-        is String -> receiver.eval(thisSource, this@resolve, getter = getter)
-        is List<*> -> receiver.map { value -> value?.let { callRecursive(it) } }
-        is Map<*, *> -> receiver.mapValues { (_, value) -> value?.let { callRecursive(it) } }
-        else -> receiver
+): T = evalDeepRecursiveFunction(Quadruple(this, this, context, getter)) as T
+
+private val evalDeepRecursiveFunction =
+    DeepRecursiveFunction<Quadruple<Any, Any, Any, Any.(keys: List<String>) -> Any?>, Any?>
+    { (rootReceiver, receiver, context, getter) ->
+        when (receiver) {
+            is String -> receiver.eval(context, rootReceiver, getter = getter)
+            is List<*> -> receiver.map { value -> value?.let { callRecursive(Quadruple(rootReceiver, it, context, getter)) } }
+            is Map<*, *> -> receiver.mapValues { (_, value) -> value?.let { callRecursive(Quadruple(rootReceiver, it, context, getter)) } }
+            else -> receiver
+        }
     }
-}(this) as T
 
 public fun String.eval(
-    thisSource: Any,
-    vararg sources: Any,
-    getter: Any.(keys: List<String>) -> Any?
+    context: Any,
+    vararg contexts: Any,
+    getter: Any.(keys: List<String>) -> Any? = { keys -> get(*keys.toTypedArray()) }
 ): Any? = if (startsWith("$"))
     removePrefix("$").split(".").let { keys ->
-        (listOf(thisSource) + sources).firstNotNullOfOrNull { source -> source.getter(keys) }
+        (listOf(context) + contexts).firstNotNullOfOrNull { context -> context.getter(keys) }
     }
 else this
 

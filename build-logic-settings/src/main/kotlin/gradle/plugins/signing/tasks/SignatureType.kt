@@ -31,6 +31,5 @@ internal object SignatureTypeContentPolymorphicSerializer :
     JsonContentPolymorphicSerializer<Any>(Any::class) {
 
     override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
-        if (element is JsonPrimitive) SignatureType.serializer()
-        else WorkaroundSignatureType.serializer()
+        if (element is JsonPrimitive) SignatureType.serializer() else WorkaroundSignatureType.serializer()
 }

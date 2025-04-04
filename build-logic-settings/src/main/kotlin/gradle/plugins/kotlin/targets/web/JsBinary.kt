@@ -51,7 +51,7 @@ internal sealed class JsIrBinary<T : org.jetbrains.kotlin.gradle.targets.js.ir.J
 }
 
 private class JsIrBinaryObjectTransformingContentPolymorphicSerializer(serializer: KSerializer<Nothing>)
-    : JsonObjectTransformingContentPolymorphicSerializer<JsIrBinary<out org.jetbrains.kotlin.gradle.targets.js.ir.JsIrBinary>>(JsIrBinary::class)
+    : JsonObjectTransformingContentPolymorphicSerializer<JsIrBinary<*>>(JsIrBinary::class)
 
 internal interface WasmBinary<T : org.jetbrains.kotlin.gradle.targets.js.ir.WasmBinary> {
 

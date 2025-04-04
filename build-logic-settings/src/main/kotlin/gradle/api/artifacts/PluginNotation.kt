@@ -8,8 +8,6 @@ import kotlinx.serialization.Serializable
 
 @KeepGeneratedSerializer
 @Serializable(with = PluginNotationObjectTransformingSerializer::class)
-
-
 internal data class PluginNotation(
     override val version: String? = null,
     @SerialName("notation")
