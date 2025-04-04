@@ -1,6 +1,5 @@
 package gradle.plugins.dokka.plugin
 
-import gradle.api.catalog.libs
 import gradle.accessors.settings
 import gradle.api.file.tryAssign
 import gradle.api.file.tryFrom

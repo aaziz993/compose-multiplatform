@@ -1,6 +1,5 @@
 package gradle.plugins.compose.desktop
 
-import gradle.api.catalog.libs
 import gradle.accessors.moduleName
 import gradle.accessors.settings
 import gradle.api.file.tryAssign

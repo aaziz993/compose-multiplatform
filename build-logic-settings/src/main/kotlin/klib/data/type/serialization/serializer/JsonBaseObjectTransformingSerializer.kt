@@ -10,19 +10,20 @@ import kotlinx.serialization.json.jsonPrimitive
 
 public abstract class JsonBaseObjectTransformingSerializer<T : Any>(
     tSerializer: KSerializer<T>,
+    private val keys: Set<String>?
 ) : JsonTransformingSerializer<T>(tSerializer) {
 
     public abstract fun transformDeserialize(key: String, value: JsonElement?): JsonObject
 
     final override fun transformDeserialize(element: JsonElement): JsonElement =
         if (element is JsonObject) {
-            if (element.keys.size == 1) {
+            if (element.keys.size == 1 && (keys == null || element.keys.single() in keys)) {
                 val key = element.keys.single()
                 val value = element.values.single()
 
                 JsonObject(
-                        transformDeserialize(key, value) +
-                                if (value is JsonObject) value.jsonObject else transformDeserialize(key, value),
+                    transformDeserialize(key, value) +
+                        if (value is JsonObject) value.jsonObject else transformDeserialize(key, value),
                 )
             }
             else element

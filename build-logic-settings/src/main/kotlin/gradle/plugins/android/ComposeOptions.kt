@@ -1,7 +1,6 @@
 package gradle.plugins.android
 
 import com.android.build.api.dsl.ComposeOptions
-import gradle.api.catalog.libs
 import gradle.accessors.settings
 import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable

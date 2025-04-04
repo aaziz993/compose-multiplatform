@@ -1,7 +1,6 @@
 package gradle.plugins.kotlin.benchmark
 
 import gradle.accessors.benchmark
-import gradle.api.catalog.libs
 import gradle.accessors.settings
 import gradle.api.applyTo
 import gradle.api.provider.tryAssign

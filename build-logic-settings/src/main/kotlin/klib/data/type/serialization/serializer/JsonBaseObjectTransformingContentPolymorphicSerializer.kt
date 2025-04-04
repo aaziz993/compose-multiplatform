@@ -6,8 +6,9 @@ public abstract class JsonBaseObjectTransformingContentPolymorphicSerializer<T :
     baseClass: KClass<T>,
     classDiscriminator: String = "type",
 ) : JsonBaseObjectTransformingSerializer<T>(
-    JsonContentPolymorphicSerializer<T>(
+    JsonContentPolymorphicSerializer(
         baseClass,
         classDiscriminator,
     ),
+    baseClass.polymorphicSerialNames.toSet(),
 )

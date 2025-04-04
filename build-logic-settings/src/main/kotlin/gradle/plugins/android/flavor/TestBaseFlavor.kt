@@ -1,7 +1,6 @@
 package gradle.plugins.android.flavor
 
 import com.android.build.api.dsl.TestBaseFlavor
-import gradle.api.catalog.libs
 import gradle.accessors.settings
 import gradle.plugins.android.test.TestVariantDimension
 import klib.data.type.reflection.trySet

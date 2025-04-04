@@ -2,10 +2,6 @@
 
 package gradle.api.artifacts
 
-import gradle.api.catalog.allLibs
-import gradle.api.catalog.resolveDependency
-import gradle.accessors.settings
-import gradle.api.catalog.DependencyNotation
 import java.io.File
 import klib.data.type.serialization.serializer.JsonBaseObjectTransformingSerializer
 import kotlinx.serialization.KeepGeneratedSerializer
@@ -27,7 +23,7 @@ private val SUB_CONFIGURATIONS = listOf("kotlin", "npm", "devNpm", "optionalNpm"
 @KeepGeneratedSerializer
 @Serializable(with = DependencyObjectTransformingSerializer::class)
 internal data class Dependency(
-    val notation: DependencyNotation,
+    val  notation: DependencyNotation,
     val configuration: String = "implementation",
     val subConfiguration: String? = null
 ) {

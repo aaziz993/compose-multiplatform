@@ -1,6 +1,6 @@
 package gradle
 
-import gradle.api.catalog.VersionCatalog
+import gradle.api.VersionCatalog
 import gradle.accessors.env
 import gradle.accessors.localProperties
 import gradle.accessors.publishing
@@ -8,7 +8,6 @@ import gradle.api.getByNameOrAll
 import klib.data.type.collection.singleOrAll
 import klib.data.type.function.func1
 import klib.data.type.get
-import klib.data.type.reflection.callMember
 import klib.data.type.reflection.memberGetter
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration

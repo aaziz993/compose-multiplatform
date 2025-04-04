@@ -3,7 +3,6 @@
 package gradle.plugins.project
 
 import com.android.build.gradle.internal.tasks.AndroidTestTask
-import gradle.api.catalog.resolvePluginId
 import gradle.accessors.kotlin
 import gradle.api.project.projectProperties
 import gradle.api.ci.CI

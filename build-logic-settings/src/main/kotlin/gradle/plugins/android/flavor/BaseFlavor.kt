@@ -3,7 +3,6 @@ package gradle.plugins.android.flavor
 import com.android.build.api.dsl.BaseFlavor
 import gradle.accessors.android
 import gradle.accessors.androidNamespace
-import gradle.api.catalog.libs
 import gradle.accessors.settings
 import klib.data.type.collection.tryPutAll
 import klib.data.type.collection.trySet

@@ -2,10 +2,7 @@
 
 package gradle.plugins.initialization
 
-import gradle.api.catalog.allLibs
-import gradle.api.catalog.libs
-import gradle.api.catalog.toVersionCatalog
-import gradle.api.project.projectProperties
+import gradle.api.VersionCatalog
 import gradle.api.configureEach
 import gradle.api.initialization.InitializationProperties
 import gradle.api.initialization.initializationProperties
@@ -13,7 +10,6 @@ import gradle.api.repositories.CacheRedirector
 import gradle.plugins.develocity.DevelocityPlugin
 import gradle.plugins.githooks.GitHooksPlugin
 import gradle.plugins.project.ProjectPlugin
-import gradle.api.project.ProjectProperties.Companion.load
 import gradle.plugins.toolchainmanagement.ToolchainManagementPlugin
 import java.io.File
 import java.net.URI
@@ -24,7 +20,6 @@ import org.gradle.api.internal.artifacts.repositories.DefaultMavenArtifactReposi
 import org.gradle.kotlin.dsl.apply
 import org.jetbrains.compose.internal.IDEA_IMPORT_TASK_NAME
 import org.jetbrains.compose.internal.utils.currentTarget
-import org.tomlj.Toml
 
 private const val VERSION_CATALOG_CACHE_DIR = "build-logic-settings/gradle"
 
@@ -74,57 +69,65 @@ public class SettingsPlugin : Plugin<Settings> {
                         if (dependencyResolutionManagement.versionCatalogs.orEmpty().none { it.name == "libs" }) {
                             settings.layout.settingsDirectory.file("gradle/libs.versions.toml").asFile
                                 .takeIf(File::exists)?.let { libsFile ->
-                                    allLibs += Toml.parse(libsFile.readText()).toVersionCatalog("libs")
+                                    allLibs += VersionCatalog.parse("libs", libsFile.readText())
                                 }
                         }
 
                         dependencyResolutionManagement.versionCatalogs?.let { versionCatalogs ->
                             versionCatalogs {
                                 allLibs += versionCatalogs
-                                    .map { (name, dependency) -> name to dependency.resolve() }
+                                    .map { (name, dependency) -> name to dependency.notation.notation }
                                     .map { (name, notation) ->
                                         create(name) {
                                             from(notation)
                                         }
 
 
-                                        when (notation) {
+                                        VersionCatalog.parse(
+                                            name,
+                                            when (notation) {
+                                                is String -> {
+                                                    val versionCatalogCacheFile =
+                                                        settings.layout.settingsDirectory.file(
+                                                            "$VERSION_CATALOG_CACHE_DIR/$name.versions.toml",
+                                                        ).asFile
 
-                                            is String -> {
-                                                val versionCatalogCacheFile = settings.layout.settingsDirectory.file("$VERSION_CATALOG_CACHE_DIR/$name.versions.toml").asFile
-
-                                                if (versionCatalogCacheFile.exists())
-                                                    Toml.parse(versionCatalogCacheFile.readText()).toVersionCatalog(name)
-                                                else repositories.map { (it as DefaultMavenArtifactRepository).url.toString().removeSuffix("/") }
-                                                    .firstNotNullOf { url ->
-                                                        try {
-                                                            Toml.parse(
-                                                                URI("$url/$notation").toURL().readText()
-                                                                    .also(versionCatalogCacheFile::writeText), // write to cache
-                                                            ).toVersionCatalog(name)
+                                                    if (versionCatalogCacheFile.exists())
+                                                        versionCatalogCacheFile.readText()
+                                                    else repositories
+                                                        .map {
+                                                            (it as DefaultMavenArtifactRepository)
+                                                                .url
+                                                                .toString()
+                                                                .removeSuffix("/")
                                                         }
-                                                        catch (_: Throwable) {
-                                                            null
+                                                        .firstNotNullOf { url ->
+                                                            URI("$url/$notation")
+                                                                .toURL()
+                                                                .readText()
+                                                                // write to version catalog cache
+                                                                .also(versionCatalogCacheFile::writeText)
                                                         }
-                                                    }
-                                            }
+                                                }
 
-                                            is FileCollection -> Toml.parse(notation.files.single().readText()).toVersionCatalog(name)
+                                                is FileCollection -> notation.files.single().readText()
 
-                                            else -> throw IllegalArgumentException("Unknown version catalog notation: $notation")
-                                        }
+                                                else -> throw IllegalArgumentException("Unknown version catalog notation: $notation")
+                                            },
+                                        )
                                     }
                             }
 
                             // Load pre-defined compose version catalog
-                            allLibs += Toml.parse(
+                            allLibs += VersionCatalog.parse(
+                                "compose",
                                 settings.layout.settingsDirectory.file(COMPOSE_VERSION_CATALOG_FILE).asFile
                                     .readText()
                                     .replace("\$kotlin", libs.version("kotlin"))
                                     .replace("\$compose", libs.version("compose"))
                                     .replace("\$materialExtendedIcon", libs.version("materialExtendedIcon"))
                                     .replace("\$currentTargetId", currentTarget.id),
-                            ).toVersionCatalog("compose")
+                            )
                         }
                     }
                 }

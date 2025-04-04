@@ -4,7 +4,6 @@ import com.diffplug.gradle.spotless.BaseKotlinExtension
 import com.diffplug.spotless.kotlin.DiktatStep
 import com.diffplug.spotless.kotlin.KtLintStep
 import com.diffplug.spotless.kotlin.KtfmtStep
-import gradle.api.catalog.libs
 import gradle.accessors.settings
 import gradle.plugins.spotless.FormatExtension
 import klib.data.type.reflection.trySet

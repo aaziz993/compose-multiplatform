@@ -1,6 +1,8 @@
-package gradle.api.catalog
+package gradle.api
 
 import gradle.accessors.settings
+import gradle.api.artifacts.DependencyNotation
+import gradle.api.artifacts.PluginNotation
 import klib.data.type.primitive.isPath
 import klib.data.type.primitive.isValidUrl
 import klib.data.type.serialization.decodeFromAny
@@ -10,27 +12,20 @@ import org.gradle.api.Project
 import org.gradle.api.file.Directory
 import org.gradle.api.initialization.Settings
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
-import org.tomlj.TomlParseResult
+import org.tomlj.Toml
+import org.tomlj.TomlTable
 
 @Serializable
 internal data class VersionCatalog(
     val name: String,
     val versions: Map<String, String> = emptyMap(),
     val libraries: Map<String, DependencyNotation> = emptyMap(),
-    val plugins: Map<String, PluginNotation> = emptyMap()
+    val plugins: Map<String, PluginNotation> = emptyMap(),
+    val bundles: Map<String, List<DependencyNotation>> = emptyMap(),
 ) {
 
-    init {
-        libraries.values.forEach { library ->
-            library.versionCatalog = this
-        }
-
-        plugins.values.forEach { plugin ->
-            plugin.versionCatalog = this
-        }
-    }
-
     fun versionOrNull(alias: String) = versions[alias.asVersionCatalogAlias]
+
     fun version(alias: String) =
         versionOrNull(alias) ?: error("Version '$alias' not found in version catalog: $name")
 
@@ -41,14 +36,47 @@ internal data class VersionCatalog(
     fun plugin(alias: String): PluginNotation = alias.asVersionCatalogAlias.let { alias ->
         plugins[alias] ?: error("Plugin '$alias' not found in version catalog: $name")
     }
+
+    companion object {
+
+        private val json = Json {
+            ignoreUnknownKeys = true
+        }
+
+        @Suppress("UNCHECKED_CAST")
+        fun parse(name: String, value: String): VersionCatalog =
+            json.decodeFromAny(
+                mapOf("name" to name) +
+                    Toml.parse(value).let { toml ->
+                        val versions = toml["versions"] as TomlTable
+
+                        val libraries = (toml["libraries"] as TomlTable).toAliasMap().resolveVersions(versions)
+
+                        mapOf(
+                            "versions" to versions.toAliasMap(),
+                            "libraries" to libraries,
+                            "bundles" to (toml["bundles"] as TomlTable).toAliasMap().mapValues { (_, references) ->
+                                (references as List<String>).map(String::asAlias).map(libraries::get)
+                            },
+                            "plugins" to (toml["plugins"] as TomlTable).toAliasMap().resolveVersions(versions),
+                        )
+                    },
+            )
+
+        private fun TomlTable.toAliasMap() = toMap().mapKeys { (key, _) -> key.asAlias }
+
+        @Suppress("UNCHECKED_CAST")
+        private fun Map<String, Any>.resolveVersions(versions: TomlTable) =
+            toMutableMap().mapValues { (_, value) ->
+                value as Map<String, Any>
+                if (value["version"] is String) value
+                else versions.getString((value["version"] as Map<String, Any>)["ref"] as String)
+            }
+    }
 }
 
-private val json = Json {
-    ignoreUnknownKeys = true
-}
-
-internal fun TomlParseResult.toVersionCatalog(name: String): VersionCatalog =
-    json.decodeFromAny(toMap() + ("name" to name))
+private val String.asAlias
+    get() = replace("-", ".")
 
 private const val VERSION_CATALOG_EXT = "version.catalog.ext"
 
@@ -60,12 +88,20 @@ internal var Settings.allLibs: Set<VersionCatalog>
     }
 
 internal val Settings.libs: VersionCatalog
-    get() = allLibs.versionCatalog("libs")!!
+    get() = allLibs["libs"]!!
 
-internal fun Set<VersionCatalog>.versionCatalog(name: String) =
+private operator fun Set<VersionCatalog>.get(name: String) =
     find { versionCatalog -> versionCatalog.name == name }
 
-internal fun Set<VersionCatalog>.resolveDependency(
+context(Settings)
+@Suppress("UnstableApiUsage")
+internal val DependencyNotation.notation
+    get() = settings.allLibs.resolveDependency(
+        toString(),
+        settings.layout.settingsDirectory,
+    )
+
+private fun Set<VersionCatalog>.resolveDependency(
     notation: String,
     directory: Directory,
     project: (name: String) -> Project = { name -> throw UnsupportedOperationException("Can't resolve project: '$name'") }
@@ -76,6 +112,13 @@ internal fun Set<VersionCatalog>.resolveDependency(
     notation.isValidUrl -> notation.asVersionCatalogUrl
     else -> notation
 }
+
+context(Settings)
+@Suppress("UnstableApiUsage")
+internal fun PluginNotation.resolve() = settings.allLibs.resolve(
+    toString(),
+    settings.layout.settingsDirectory,
+)
 
 private val String.asVersionCatalogUrl: String
     get() {
@@ -106,7 +149,7 @@ private fun <T> Set<VersionCatalog>.resolveRef(
     val name = ref.substringAfter(".", "")
 
     return resolver(
-        (versionCatalog(versionCatalogName)
+        (this[versionCatalogName]
             ?: error("Not found version catalog: $versionCatalogName")),
         name,
     )

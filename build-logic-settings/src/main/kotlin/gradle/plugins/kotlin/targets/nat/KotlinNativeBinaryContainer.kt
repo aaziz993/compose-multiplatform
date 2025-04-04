@@ -1,10 +1,9 @@
 package gradle.plugins.kotlin.targets.nat
 
-import klib.data.type.serialization.serializer.JsonObjectTransformingSerializer
 import klib.data.type.serialization.serializer.SetSerializer
-import kotlinx.serialization.Contextual
-import kotlinx.serialization.KeepGeneratedSerializer
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.NothingSerializer
 
 /*
 Use the following naming scheme:
@@ -14,11 +13,12 @@ Use the following naming scheme:
 */
 @Suppress("JavaDefaultMethodsNotOverriddenByDelegation")
 @Serializable(with = KotlinNativeBinaryContainerTransformingSerializer::class)
-internal abstract class KotlinNativeBinaryContainer
-    : AbstractKotlinNativeBinaryContainer<org.jetbrains.kotlin.gradle.dsl.KotlinNativeBinaryContainer>(),
-    Set<NativeBinary<out org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary>> by hashSetOf()
+internal class KotlinNativeBinaryContainer
+    : AbstractKotlinNativeBinaryContainer<org.jetbrains.kotlin.gradle.dsl.KotlinNativeBinaryContainer>()
 
+@Suppress("UNCHECKED_CAST")
 private object KotlinNativeBinaryContainerTransformingSerializer
-    : SetSerializer<KotlinNativeBinaryContainer, NativeBinary<out org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary>>(
-    NativeBinary.serializer(),
+    : KSerializer<KotlinNativeBinaryContainer> by SetSerializer(
+    NativeBinary.serializer(NothingSerializer()) as KSerializer<NativeBinary<out org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary>>,
+    ::KotlinNativeBinaryContainer,
 )

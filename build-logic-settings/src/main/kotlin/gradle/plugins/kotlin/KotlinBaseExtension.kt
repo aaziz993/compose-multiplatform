@@ -1,6 +1,5 @@
 package gradle.plugins.kotlin
 
-import gradle.api.catalog.libs
 import gradle.accessors.settings
 import gradle.api.provider.tryAssign
 import gradle.plugins.java.JavaToolchainSpec

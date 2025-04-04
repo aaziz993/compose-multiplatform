@@ -1,7 +1,5 @@
 package gradle.api.artifacts
 
-import gradle.api.catalog.allLibs
-import gradle.api.catalog.resolveDependency
 import kotlinx.serialization.Serializable
 import org.gradle.api.artifacts.DependencySubstitution
 import org.gradle.api.initialization.Settings

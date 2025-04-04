@@ -1,13 +1,11 @@
 package gradle.api
 
-import gradle.api.catalog.libs
 import gradle.api.project.projectProperties
 import gradle.accessors.settings
 import gradle.api.ci.current
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.JsonTransformingSerializer
 import kotlinx.serialization.json.buildJsonObject

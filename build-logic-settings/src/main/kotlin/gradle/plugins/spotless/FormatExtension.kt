@@ -6,7 +6,6 @@ import com.diffplug.spotless.LineEnding
 import com.diffplug.spotless.cpp.ClangFormatStep
 import com.diffplug.spotless.extra.wtp.EclipseWtpFormatterStep
 import com.diffplug.spotless.generic.PipeStepPair
-import gradle.api.catalog.libs
 import gradle.accessors.settings
 import gradle.accessors.spotless
 import klib.data.type.serialization.serializer.SerializableAnyMap

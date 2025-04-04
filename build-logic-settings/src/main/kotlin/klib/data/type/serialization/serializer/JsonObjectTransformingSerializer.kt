@@ -8,9 +8,10 @@ import kotlinx.serialization.json.buildJsonObject
 
 public open class JsonObjectTransformingSerializer<T : Any>(
     tSerializer: KSerializer<T>,
-    public val keyAs: String,
-    public val valueAs: String? = null,
-) : JsonBaseObjectTransformingSerializer<T>(tSerializer) {
+    private val keyAs: String,
+    private val valueAs: String? = null,
+    keys: Set<String>? = null,
+) : JsonBaseObjectTransformingSerializer<T>(tSerializer, keys) {
 
     override fun transformDeserialize(key: String, value: JsonElement?): JsonObject =
         buildJsonObject {

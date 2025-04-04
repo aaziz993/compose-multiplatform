@@ -1,6 +1,5 @@
 package gradle.plugins.java
 
-import gradle.api.catalog.libs
 import gradle.accessors.java
 import gradle.accessors.settings
 import gradle.api.applyTo
