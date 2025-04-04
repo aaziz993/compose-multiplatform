@@ -14,6 +14,7 @@ import gradle.api.publish.maven.MavenPomScm
 import gradle.caching.BuildCacheConfiguration
 import gradle.plugins.develocity.model.DevelocitySettings
 import gradle.plugins.githooks.GitHooksExtension
+import gradle.plugins.initialization.Apply
 import gradle.plugins.initialization.IncludeBuild
 import gradle.plugins.toolchainmanagement.ToolchainManagement
 import kotlinx.serialization.KeepGeneratedSerializer
@@ -37,6 +38,7 @@ internal data class InitializationProperties(
     val contributingFile: ContributingFile? = null,
     val projectFiles: Set<ProjectFile>? = null,
     val pluginManagement: PluginManagement? = null,
+    val applies: Set<Apply>? = null,
     val dependencyResolutionManagement: DependencyResolutionManagement? = null,
     val includes: Set<String>? = null,
     val includeFlats: Set<String>? = null,
@@ -78,7 +80,7 @@ internal data class InitializationProperties(
 
 private object InitializationPropertiesUnknownPreservingSerializer :
     PropertiesUnknownPreservingSerializer<InitializationProperties>(
-            InitializationProperties.generatedSerializer(),
+        InitializationProperties.generatedSerializer(),
     )
 
 internal var Settings.localProperties: java.util.Properties

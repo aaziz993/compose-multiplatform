@@ -7,6 +7,8 @@ import gradle.api.catalog.libs
 import gradle.api.catalog.toVersionCatalog
 import gradle.api.project.projectProperties
 import gradle.api.configureEach
+import gradle.api.initialization.InitializationProperties
+import gradle.api.initialization.initializationProperties
 import gradle.api.repositories.CacheRedirector
 import gradle.plugins.develocity.DevelocityPlugin
 import gradle.plugins.githooks.GitHooksPlugin
@@ -19,6 +21,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.file.FileCollection
 import org.gradle.api.initialization.Settings
 import org.gradle.api.internal.artifacts.repositories.DefaultMavenArtifactRepository
+import org.gradle.kotlin.dsl.apply
 import org.jetbrains.compose.internal.IDEA_IMPORT_TASK_NAME
 import org.jetbrains.compose.internal.utils.currentTarget
 import org.tomlj.Toml
@@ -40,11 +43,11 @@ public class SettingsPlugin : Plugin<Settings> {
         with(SLF4JProblemReporterContext()) {
             with(target) {
                 // Load and apply project.yaml to settings.gradle.kts.
-                projectProperties = load()
+                InitializationProperties.load()
 
-                projectProperties.buildscript?.applyTo()
+                initializationProperties.buildscript?.applyTo()
 
-                projectProperties.pluginManagement.let { pluginManagement ->
+                initializationProperties.pluginManagement.let { pluginManagement ->
                     pluginManagement {
                         pluginManagement?.repositories?.let { repositories ->
                             repositories {
@@ -56,9 +59,9 @@ public class SettingsPlugin : Plugin<Settings> {
                     }
                 }
 
-                projectProperties.dependencyResolutionManagement?.let { dependencyResolutionManagement ->
+                initializationProperties.dependencyResolutionManagement?.let { dependencyResolutionManagement ->
                     dependencyResolutionManagement {
-                        projectProperties.dependencyResolutionManagement?.repositories?.let { repositories ->
+                        initializationProperties.dependencyResolutionManagement?.repositories?.let { repositories ->
                             repositories {
                                 repositories.forEach { repository ->
                                     repository.applyTo(this)
@@ -129,18 +132,22 @@ public class SettingsPlugin : Plugin<Settings> {
                 CacheRedirector.applyTo()
 
                 // Apply plugins after version catalogs are loaded in settings phase.
-                settings.pluginManager.apply(DevelocityPlugin::class.java)
-                settings.pluginManager.apply(ToolchainManagementPlugin::class.java)
-                settings.pluginManager.apply(GitHooksPlugin::class.java)
+                pluginManager.apply(DevelocityPlugin::class.java)
+                pluginManager.apply(ToolchainManagementPlugin::class.java)
+                pluginManager.apply(GitHooksPlugin::class.java)
+
+                initializationProperties.applies?.forEach { (from, plugin, to) ->
+                    apply(from, plugin, to)
+                }
 
                 // Include projects.
-                projectProperties.includes?.forEach(::include)
+                initializationProperties.includes?.forEach(::include)
 
                 // Include flat projects.
-                projectProperties.includeFlats?.let(::includeFlat)
+                initializationProperties.includeFlats?.let(::includeFlat)
 
                 // Include flat builds.
-                projectProperties.includeBuilds?.forEach { (rootProject, configuration) ->
+                initializationProperties.includeBuilds?.forEach { (rootProject, configuration) ->
                     includeBuild(rootProject) {
                         configuration?.applyTo(this)
 
@@ -154,20 +161,20 @@ public class SettingsPlugin : Plugin<Settings> {
                 }
 
                 // Apply to configure all above included rojects.
-                projectProperties.projects?.forEach { project ->
+                initializationProperties.projects?.forEach { project ->
                     project.applyTo()
                 }
 
-                projectProperties.buildCache?.applyTo(buildCache)
+                initializationProperties.buildCache?.applyTo(buildCache)
             }
 
             target.gradle.projectsLoaded {
                 // Apply project files
                 with(rootProject) {
                     val projectFiles = (listOfNotNull(
-                        target.projectProperties.licenseFile,
-                        target.projectProperties.codeOfConductFile,
-                        target.projectProperties.contributingFile,
+                        target.initializationProperties.licenseFile,
+                        target.initializationProperties.codeOfConductFile,
+                        target.initializationProperties.contributingFile,
                     ) + listOf(
 //                        LicenseHeaderFile(
 //                            "templates/LICENSE_HEADER_SLASHED",
@@ -181,7 +188,7 @@ public class SettingsPlugin : Plugin<Settings> {
 //                            "templates/LICENSE_HEADER_TAGGED",
 //                            "licenses",
 //                        ),
-                    ) + target.projectProperties.projectFiles.orEmpty()).flatMapIndexed { index, projectFile ->
+                    ) + target.initializationProperties.projectFiles.orEmpty()).flatMapIndexed { index, projectFile ->
                         projectFile.applyTo("projectFile$index")
                     }
 

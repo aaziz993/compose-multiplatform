@@ -10,6 +10,7 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.JsonTransformingSerializer
+import kotlinx.serialization.json.buildJsonObject
 import net.pearx.kasechange.toCamelCase
 import org.gradle.api.Project
 
@@ -32,20 +33,20 @@ internal data class Version(
     // build metadata MAY be denoted by appending a plus sign and a series of dot separated identifiers immediately following the patch or pre-release gradle.api.version. Identifiers MUST comprise only ASCII alphanumerics and hyphens [0-9A-Za-z-]. Identifiers MUST NOT be empty. Examples: 1.0.0-alpha+001, 1.0.0+20130313144700, 1.0.0-beta+exp.sha.5114f85, 1.0.0+21AF26D3----117B344092BD.
     context(Project)
     fun toVersion(): io.github.z4kn4fein.semver.Version? {
-        val camelCaseName =project.name.toCamelCase()
+        val camelCaseName = project.name.toCamelCase()
 
-            return io.github.z4kn4fein.semver.Version(
-                project.settings.libs.versionOrNull("$camelCaseName.version.major")?.toInt()
-                    ?: major,
-                project.settings.libs.versionOrNull("$camelCaseName.version.minor")?.toInt()
-                    ?: minor,
-                project.settings.libs.versionOrNull("$camelCaseName.version.patch")?.toInt()
-                    ?: patch,
-                project.settings.libs.versionOrNull("$camelCaseName.version.preRelease")
-                    ?: preRelease,
-                project.settings.libs.versionOrNull("$camelCaseName.version.buildMetadata")
-                    ?: buildMetadata ?: projectProperties.cis?.current?.versioning?.buildMetadata,
-            )
+        return io.github.z4kn4fein.semver.Version(
+            project.settings.libs.versionOrNull("$camelCaseName.version.major")?.toInt()
+                ?: major,
+            project.settings.libs.versionOrNull("$camelCaseName.version.minor")?.toInt()
+                ?: minor,
+            project.settings.libs.versionOrNull("$camelCaseName.version.patch")?.toInt()
+                ?: patch,
+            project.settings.libs.versionOrNull("$camelCaseName.version.preRelease")
+                ?: preRelease,
+            project.settings.libs.versionOrNull("$camelCaseName.version.buildMetadata")
+                ?: buildMetadata ?: projectProperties.cis?.current?.versioning?.buildMetadata,
+        )
     }
 
     companion object {
@@ -61,15 +62,13 @@ private object VersionObjectTransformingSerializer :
 
     override fun transformDeserialize(element: JsonElement): JsonElement =
         if (element is JsonPrimitive) element.content.split(".").let { versionParts ->
-            JsonObject(
-                buildMap {
-                    put("major", JsonPrimitive(versionParts.first().toInt()))
-                    versionParts.getOrNull(1)?.toInt()?.let { minor -> put("minor", JsonPrimitive(minor)) }
-                    versionParts.getOrNull(2)?.toInt()?.let { patch -> put("patch", JsonPrimitive(patch)) }
-                    versionParts.getOrNull(3)?.let { preRelease -> put("preRelease", JsonPrimitive(preRelease)) }
-                    versionParts.getOrNull(4)?.let { buildMetadata -> put("buildMetadata", JsonPrimitive(buildMetadata)) }
-                },
-            )
+            buildJsonObject {
+                put("major", JsonPrimitive(versionParts.first().toInt()))
+                versionParts.getOrNull(1)?.toInt()?.let { minor -> put("minor", JsonPrimitive(minor)) }
+                versionParts.getOrNull(2)?.toInt()?.let { patch -> put("patch", JsonPrimitive(patch)) }
+                versionParts.getOrNull(3)?.let { preRelease -> put("preRelease", JsonPrimitive(preRelease)) }
+                versionParts.getOrNull(4)?.let { buildMetadata -> put("buildMetadata", JsonPrimitive(buildMetadata)) }
+            }
         }
         else element
 }

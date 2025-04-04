@@ -19,13 +19,13 @@ internal object JvmClasspathTestRunSourceSerializer : JsonContentPolymorphicSeri
 
     override fun selectDeserializer(element: JsonElement): DeserializationStrategy<JvmClasspathTestRunSource> =
         when {
-            element.jsonObject.containsKey("compilation") -> SingleJvmCompilationTestRunSource.serializer()
+            SingleJvmCompilationTestRunSource::compilation.name in element.jsonObject -> SingleJvmCompilationTestRunSource.serializer()
 
-            element.jsonObject.containsKey("classpath") &&
-                element.jsonObject.containsKey("testClassesDirs") -> ClasspathOnlyTestRunSource.serializer()
+            ClasspathOnlyTestRunSource::classpath.name in element.jsonObject &&
+                ClasspathOnlyTestRunSource::testClassesDirs.name in element.jsonObject -> ClasspathOnlyTestRunSource.serializer()
 
-            element.jsonObject.containsKey("classpathCompilations") &&
-                element.jsonObject.containsKey("testCompilations") -> JvmCompilationsTestRunSource.serializer()
+            JvmCompilationsTestRunSource::classpathCompilations.name in element.jsonObject &&
+                JvmCompilationsTestRunSource::testCompilations.name in element.jsonObject -> JvmCompilationsTestRunSource.serializer()
 
             else -> throw IllegalArgumentException("Unknown json value: $element")
         }

@@ -4,6 +4,7 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.buildJsonObject
 
 public open class JsonObjectTransformingSerializer<T : Any>(
     tSerializer: KSerializer<T>,
@@ -12,10 +13,8 @@ public open class JsonObjectTransformingSerializer<T : Any>(
 ) : JsonBaseObjectTransformingSerializer<T>(tSerializer) {
 
     override fun transformDeserialize(key: String, value: JsonElement?): JsonObject =
-        JsonObject(
-            buildMap {
-                put(keyAs, JsonPrimitive(key))
-                value?.let { value -> put(valueAs!!, value) }
-            },
-        )
+        buildJsonObject {
+            put(keyAs, JsonPrimitive(key))
+            value?.let { value -> put(valueAs!!, value) }
+        }
 }

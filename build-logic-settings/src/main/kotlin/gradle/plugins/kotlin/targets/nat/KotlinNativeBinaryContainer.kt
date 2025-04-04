@@ -13,13 +13,12 @@ Use the following naming scheme:
     executable([debug]) -> debugExecutable
 */
 @Suppress("JavaDefaultMethodsNotOverriddenByDelegation")
-@KeepGeneratedSerializer
 @Serializable(with = KotlinNativeBinaryContainerTransformingSerializer::class)
-internal class KotlinNativeBinaryContainer
+internal abstract class KotlinNativeBinaryContainer
     : AbstractKotlinNativeBinaryContainer<org.jetbrains.kotlin.gradle.dsl.KotlinNativeBinaryContainer>(),
     Set<NativeBinary<out org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary>> by hashSetOf()
 
 private object KotlinNativeBinaryContainerTransformingSerializer
-    : SetSerializer<KotlinNativeBinaryContainer,NativeBinary<org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary>>(
-    NativeBinary.serializer()
-    )
+    : SetSerializer<KotlinNativeBinaryContainer, NativeBinary<out org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary>>(
+    NativeBinary.serializer(),
+)

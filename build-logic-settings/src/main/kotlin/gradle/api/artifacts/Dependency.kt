@@ -13,6 +13,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.buildJsonObject
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.api.file.FileCollection
@@ -30,8 +31,6 @@ internal data class Dependency(
     val configuration: String = "implementation",
     val subConfiguration: String? = null
 ) {
-
-
 
     context(Settings)
     fun applyTo(receiver: DependencyHandler) {
@@ -120,18 +119,16 @@ private object DependencyObjectTransformingSerializer : JsonBaseObjectTransformi
 ) {
 
     override fun transformDeserialize(key: String, value: JsonElement?): JsonObject =
-        JsonObject(
-            buildMap {
-                value?.let { value ->
-                    put(
-                        if (key in SUB_CONFIGURATIONS) "subConfiguration"
-                        else "configuration",
-                        JsonPrimitive(key),
-                    )
-                    if (value is JsonPrimitive) put("notation", value)
-                } ?: put("notation", JsonPrimitive(key))
-            },
-        )
+        buildJsonObject {
+            value?.let { value ->
+                put(
+                    if (key in SUB_CONFIGURATIONS) "subConfiguration"
+                    else "configuration",
+                    JsonPrimitive(key),
+                )
+                if (value is JsonPrimitive) put("notation", value)
+            } ?: put("notation", JsonPrimitive(key))
+        }
 }
 
 

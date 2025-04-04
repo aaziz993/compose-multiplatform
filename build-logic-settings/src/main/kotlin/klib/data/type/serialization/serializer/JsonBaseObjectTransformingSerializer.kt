@@ -4,6 +4,7 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonTransformingSerializer
+import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 
@@ -20,10 +21,8 @@ public abstract class JsonBaseObjectTransformingSerializer<T : Any>(
                 val value = element.values.single()
 
                 JsonObject(
-                    buildMap {
-                        putAll(transformDeserialize(key, value))
-                        putAll(if (value is JsonObject) value.jsonObject else transformDeserialize(key, value))
-                    },
+                        transformDeserialize(key, value) +
+                                if (value is JsonObject) value.jsonObject else transformDeserialize(key, value),
                 )
             }
             else element

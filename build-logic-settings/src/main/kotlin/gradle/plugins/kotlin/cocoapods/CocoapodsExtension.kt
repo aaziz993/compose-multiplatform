@@ -258,7 +258,7 @@ internal data class CocoapodsExtension(
         object PodLocationContentPolymorphicSerializer : JsonContentPolymorphicSerializer<PodLocation>(PodLocation::class) {
 
             override fun selectDeserializer(element: JsonElement) =
-                if (element.jsonObject.containsKey("dir")) PodLocation.Path.serializer()
+                if (PodLocation.Path::dir.name in element.jsonObject) PodLocation.Path.serializer()
                 else PodLocation.Git.serializer()
         }
     }
