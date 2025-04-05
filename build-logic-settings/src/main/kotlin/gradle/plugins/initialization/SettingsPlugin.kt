@@ -71,7 +71,7 @@ public class SettingsPlugin : Plugin<Settings> {
                         if (dependencyResolutionManagement.versionCatalogs.orEmpty().none { it.name == "libs" }) {
                             settings.layout.settingsDirectory.file("gradle/libs.versions.toml").asFile
                                 .takeIf(File::exists)?.let { libsFile ->
-                                    allLibs += VersionCatalog.parse("libs", libsFile.readText())
+                                    allLibs += VersionCatalog("libs", libsFile.readText())
                                 }
                         }
 
@@ -85,7 +85,7 @@ public class SettingsPlugin : Plugin<Settings> {
                                         }
 
 
-                                        VersionCatalog.parse(
+                                        VersionCatalog(
                                             name,
                                             when (notation) {
                                                 is String -> {
@@ -121,7 +121,7 @@ public class SettingsPlugin : Plugin<Settings> {
                             }
 
                             // Load pre-defined compose version catalog
-                            allLibs += VersionCatalog.parse(
+                            allLibs += VersionCatalog(
                                 "compose",
                                 settings.layout.settingsDirectory.file(COMPOSE_VERSION_CATALOG_FILE).asFile
                                     .readText()

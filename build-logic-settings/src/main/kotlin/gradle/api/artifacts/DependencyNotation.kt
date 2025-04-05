@@ -1,15 +1,13 @@
 package gradle.api.artifacts
 
 import klib.data.type.primitive.addPrefix
-import klib.data.type.serialization.serializer.JsonObjectTransformingSerializer
-import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 
-@KeepGeneratedSerializer
-@Serializable(with = DependencyNotationObjectTransformingSerializer::class)
+@Serializable
 internal data class DependencyNotation(
+    @SerialName("version")
     override val version: String? = null,
     @SerialName("group")
     private val _group: String? = null,
@@ -17,24 +15,25 @@ internal data class DependencyNotation(
     private val _name: String? = null,
     @SerialName("module")
     private val _module: String? = null,
-    @SerialName("notation")
-    override val _notation: String? = null,
 ) : Notation() {
 
     @Transient
-    val group = _group ?: _module!!.substringBefore(":")
+    val group = _group ?: _module?.substringBefore(":")
 
     @Transient
-    val name = _name ?: _module!!.substringAfter(":")
+    val name = _name ?: _module?.substringAfter(":")
 
-    @Transient
-    val module = _module ?: "$_group:$_name"
+    override fun toString(): String = "$group:$name${version?.addPrefix(":")}"
 
-    override fun toString(): String = _notation ?: "$module${version?.addPrefix(":")}"
+    companion object {
+
+        operator fun invoke(notation: String) =
+            notation.split(":").let { notationParts ->
+                DependencyNotation(
+                    notationParts.getOrNull(2),
+                    notationParts.first(),
+                    notationParts[1],
+                )
+            }
+    }
 }
-
-private object DependencyNotationObjectTransformingSerializer :
-    JsonObjectTransformingSerializer<DependencyNotation>(
-        DependencyNotation.generatedSerializer(),
-        "notation",
-    )

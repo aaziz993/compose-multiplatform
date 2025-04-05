@@ -3,6 +3,7 @@ package gradle.api
 import gradle.accessors.settings
 import gradle.api.artifacts.DependencyNotation
 import gradle.api.artifacts.PluginNotation
+import gradle.get
 import klib.data.type.primitive.isPath
 import klib.data.type.primitive.isValidUrl
 import klib.data.type.serialization.decodeFromAny
@@ -31,7 +32,7 @@ internal data class VersionCatalog(
         }
 
         @Suppress("UNCHECKED_CAST")
-        fun parse(name: String, value: String): VersionCatalog =
+        operator fun invoke(name: String, value: String): VersionCatalog =
             json.decodeFromAny(
                 mapOf("name" to name) +
                     Toml.parse(value).let { toml ->
@@ -95,19 +96,12 @@ private fun Set<VersionCatalog>.resolveDependency(
     directory: Directory,
     project: (name: String) -> Project = { name -> throw UnsupportedOperationException("Can't resolve project: '$name'") }
 ): Any = when {
-    notation.startsWith("$") -> resolveRef(notation, VersionCatalog::library).toString()
+    notation.startsWith("$") -> resolveVersionCatalogReference(notation.removePrefix("$"), VersionCatalog::libraries).toString()
     notation.startsWith(":") -> project(notation)
     notation.isPath -> directory.files(notation)
     notation.isValidUrl -> notation.asVersionCatalogUrl
     else -> notation
 }
-
-context(Settings)
-@Suppress("UnstableApiUsage")
-internal fun PluginNotation.resolve() = settings.allLibs.resolve(
-    toString(),
-    settings.layout.settingsDirectory,
-)
 
 private val String.asVersionCatalogUrl: String
     get() {
@@ -118,29 +112,25 @@ private val String.asVersionCatalogUrl: String
         }/$fileNamePart.toml"
     }
 
-context(Project)
-internal fun String.resolvePluginId() =
-    if (startsWith("$")) project.settings.allLibs.resolveRef(removePrefix("$"), VersionCatalog::plugin).id
-    else this
+context(Settings)
+@Suppress("UnstableApiUsage")
+internal fun PluginNotation.resolve() = settings.allLibs.resolve(
+    toString(),
+    settings.layout.settingsDirectory,
+)
 
 context(Project)
 internal fun String.resolveVersion() =
-    if (startsWith("$")) project.settings.allLibs.resolveRef(removePrefix("$"), VersionCatalog::versionOrNull)
+    if (startsWith("$")) project.settings.allLibs.resolveVersionCatalogReference(removePrefix("$"), VersionCatalog::versions)!!
     else this
 
-private fun <T> Set<VersionCatalog>.resolveRef(
-    ref: String,
-    resolver: VersionCatalog.(name: String) -> T
-): T {
-    val versionCatalogName = ref
-        .removePrefix("$")
-        .substringBefore(".")
-    val name = ref.substringAfter(".", "")
+private fun <T> Set<VersionCatalog>.resolveVersionCatalogReference(
+    reference: String,
+): T? {
+    val versionCatalogName = reference.substringBefore(".")
+    val keys = reference.substringAfter(".", "").split(".").toTypedArray()
 
-    return resolver(
-        (this[versionCatalogName]
-            ?: error("Not found version catalog: $versionCatalogName")),
-        name,
-    )
+    return (this[versionCatalogName]
+        ?: error("Not found version catalog: $versionCatalogName")).get(* keys)
 }
 

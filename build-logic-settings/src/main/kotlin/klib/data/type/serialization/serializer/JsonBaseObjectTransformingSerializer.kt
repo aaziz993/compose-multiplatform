@@ -10,7 +10,7 @@ import kotlinx.serialization.json.jsonPrimitive
 
 public abstract class JsonBaseObjectTransformingSerializer<T : Any>(
     tSerializer: KSerializer<T>,
-    private val keys: Set<String>?
+    private val keys: Set<String>? = null,
 ) : JsonTransformingSerializer<T>(tSerializer) {
 
     public abstract fun transformDeserialize(key: String, value: JsonElement?): JsonObject

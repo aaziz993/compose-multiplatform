@@ -16,7 +16,7 @@ public infix fun <E> MutableCollection<E>.trySet(value: Iterable<E>?): Boolean? 
 
 @Suppress("UNCHECKED_CAST")
 public fun <T : Any, K> T.get(key: K, defaultValue: T.(K) -> Any? = { key -> error("Unknown key '$key' in type: ${this::class::simpleName}") }): Any? = when (this) {
-    is List<*> -> key!!.toString().toInt().let { index -> if (index in indices) this[index] else defaultValue(key) }
-    is Map<*, *> -> if (containsKey(key)) this[key] else defaultValue(key)
+    is List<*> -> getOrElse(key!!.toString().toInt()) { defaultValue(key) }
+    is Map<*, *> -> getOrDefault(key) { defaultValue(key) }
     else -> throw IllegalArgumentException("Unknown type: ${this@get::class::simpleName}")
 }

@@ -23,7 +23,7 @@ private val SUB_CONFIGURATIONS = listOf("kotlin", "npm", "devNpm", "optionalNpm"
 @KeepGeneratedSerializer
 @Serializable(with = DependencyObjectTransformingSerializer::class)
 internal data class Dependency(
-    val  notation: DependencyNotation,
+    val notation: DependencyNotation,
     val configuration: String = "implementation",
     val subConfiguration: String? = null
 ) {
@@ -34,21 +34,8 @@ internal data class Dependency(
     }
 
     context(Project)
-    fun applyTo(receiver: DependencyHandler) {
-        val config = when {
-            project.configurations.findByName(configuration) != null -> configuration
-
-            configuration == "kspCommonMainMetadata" && project.configurations.findByName("ksp") != null ->
-                "ksp"
-
-            else -> {
-                project.logger.warn("Configuration doesn't exists: $configuration")
-                return
-            }
-        }
-
-        receiver.add(config, subConfiguration(receiver, resolve()))
-    }
+    fun applyTo(receiver: DependencyHandler) =
+        receiver.add(configuration, subConfiguration(receiver, resolve()))
 
     private fun subConfiguration(handler: DependencyHandler, notation: Any) =
         when (subConfiguration) {

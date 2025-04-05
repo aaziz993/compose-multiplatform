@@ -6,21 +6,20 @@ import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-@KeepGeneratedSerializer
-@Serializable(with = PluginNotationObjectTransformingSerializer::class)
+@Serializable
 internal data class PluginNotation(
     override val version: String? = null,
-    @SerialName("notation")
-    override val _notation: String? = null,
     val id: String,
     val apply: Boolean = true,
 ) : Notation() {
 
-    override fun toString(): String = _notation ?: "$id:$id.gradle.plugin${version?.addPrefix(":")}"
-}
+    override fun toString(): String = "$id:$id.gradle.plugin${version?.addPrefix(":")}"
 
-private object PluginNotationObjectTransformingSerializer :
-    JsonObjectTransformingSerializer<PluginNotation>(
-        PluginNotation.generatedSerializer(),
-        "notation",
-    )
+    companion object {
+
+        operator fun invoke(notation: String) =
+            notation.split(":").let { notationParts ->
+                PluginNotation(notationParts[1], notationParts.first())
+            }
+    }
+}
