@@ -6,18 +6,21 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.internal.LinkedHashSetClassDesc
 
-internal class LinkedHashSetSerializer<T : LinkedHashSet<E>, E>(
+internal class LinkedHashSetSerializer<E, C : Set<E>, B : LinkedHashSet<E>>(
     eSerializer: KSerializer<E>,
-    _builder: () -> T,
-) : CollectionSerializer<T, E>(
+    builder: () -> B,
+    toResult: B.() -> C
+) : CollectionSerializer<E, C, B>(
     eSerializer,
-    _builder
+    builder,
+    toResult
 ) {
     override val descriptor: SerialDescriptor = LinkedHashSetClassDesc(eSerializer.descriptor)
 }
 
-@Suppress("FunctionName")
-public fun <T : LinkedHashSet<E>, E> SetSerializer(
+@Suppress("FunctionName", "UNCHECKED_CAST")
+public fun <E, C : Set<E>, B : LinkedHashSet<E>> SetSerializer(
     elementSerializer: KSerializer<E>,
-    builder: () -> T
-): KSerializer<T> = LinkedHashSetSerializer<T, E>(elementSerializer, builder)
+    builder: () -> B,
+    toResult: B.() -> C = { this as C }
+): KSerializer<C> = LinkedHashSetSerializer(elementSerializer, builder, toResult)

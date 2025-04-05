@@ -6,16 +6,17 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.internal.ArrayListClassDesc
 
-
-internal class ArrayListSerializer<T : ArrayList<E>, E>(
+internal class ArrayListSerializer<E, C : List<E>, B : ArrayList<E>>(
     eSerializer: KSerializer<E>,
-    _builder: () -> T,
-) : CollectionSerializer<T, E>(eSerializer, _builder) {
+    builder: () -> B,
+    toResult: B.() -> C
+) : CollectionSerializer<E, C, B>(eSerializer, builder, toResult) {
     override val descriptor: SerialDescriptor = ArrayListClassDesc(eSerializer.descriptor)
 }
 
-@Suppress("FunctionName")
-public fun <T : java.util.ArrayList<E>, E> ListSerializer(
+@Suppress("FunctionName", "UNCHECKED_CAST")
+public fun <E, C : List<E>, B : ArrayList<E>> ListSerializer(
     elementSerializer: KSerializer<E>,
-    builder: () -> T
-): KSerializer<T> = ArrayListSerializer<T, E>(elementSerializer, builder)
+    builder: () -> B,
+    toResult: B.() -> C = { this as C }
+): KSerializer<C> = ArrayListSerializer(elementSerializer, builder, toResult)
