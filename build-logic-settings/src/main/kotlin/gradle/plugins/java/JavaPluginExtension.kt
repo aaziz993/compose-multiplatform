@@ -142,10 +142,10 @@ internal data class JavaPluginExtension(
     fun applyTo() =
         project.pluginManager.withPlugin("java") {
             project.java::setSourceCompatibility trySet (sourceCompatibility
-                ?: project.settings.libs.versionOrNull("java.sourceCompatibility")
+                ?: project.settings.libs.versions["java.sourceCompatibility"]
                     ?.let(JavaVersion::toVersion))
             project.java::setTargetCompatibility trySet (targetCompatibility
-                ?: project.settings.libs.versionOrNull("java.targetCompatibility")
+                ?: project.settings.libs.versions["java.targetCompatibility"]
                     ?.let(JavaVersion::toVersion))
             project.java::disableAutoTargetJvm trySet disableAutoTargetJvm
             project.java::withJavadocJar trySet withJavadocJar

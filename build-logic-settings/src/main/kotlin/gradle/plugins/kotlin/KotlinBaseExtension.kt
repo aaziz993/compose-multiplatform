@@ -80,15 +80,15 @@ internal interface KotlinBaseExtension<T : KotlinBaseExtension> : KotlinSourceSe
             receiver.jvmToolchain {
                 jvmToolchainSpec.applyTo(this)
             }
-        } ?: (jvmToolchain ?: project.settings.libs.versionOrNull("java.languageVersion")?.toInt())
+        } ?: (jvmToolchain ?: project.settings.libs.versions["java.languageVersion"]?.toInt())
             ?.let(receiver::jvmToolchain)
 
         receiver::kotlinDaemonJvmArgs tryPlus kotlinDaemonJvmArgs
         receiver::kotlinDaemonJvmArgs trySet setKotlinDaemonJvmArgs
         receiver.compilerVersion tryAssign (compilerVersion
-            ?: project.settings.libs.versionOrNull("kotlin.compilerVersion"))
+            ?: project.settings.libs.versions["kotlin.compilerVersion"])
         receiver::coreLibrariesVersion trySet (coreLibrariesVersion
-            ?: project.settings.libs.versionOrNull("kotlin.coreLibrariesVersion"))
+            ?: project.settings.libs.versions["kotlin.coreLibrariesVersion"])
         explicitApi?.let { explicitApi ->
             receiver.explicitApi = explicitApi
         }

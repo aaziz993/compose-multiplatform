@@ -125,9 +125,9 @@ public class SettingsPlugin : Plugin<Settings> {
                                 "compose",
                                 settings.layout.settingsDirectory.file(COMPOSE_VERSION_CATALOG_FILE).asFile
                                     .readText()
-                                    .replace("\$kotlin", libs.version("kotlin"))
-                                    .replace("\$compose", libs.version("compose"))
-                                    .replace("\$materialExtendedIcon", libs.version("materialExtendedIcon"))
+                                    .replace("\$kotlin", libs.versions["kotlin"]!!)
+                                    .replace("\$compose", libs.versions["compose"]!!)
+                                    .replace("\$materialExtendedIcon", libs.versions["materialExtendedIcon"]!!)
                                     .replace("\$currentTargetId", currentTarget.id),
                             )
                         }

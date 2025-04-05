@@ -24,19 +24,6 @@ internal data class VersionCatalog(
     val bundles: Map<String, List<DependencyNotation>> = emptyMap(),
 ) {
 
-    fun versionOrNull(alias: String) = versions[alias.asVersionCatalogAlias]
-
-    fun version(alias: String) =
-        versionOrNull(alias) ?: error("Version '$alias' not found in version catalog: $name")
-
-    fun library(alias: String): DependencyNotation = alias.asVersionCatalogAlias.let { alias ->
-        libraries[alias] ?: error("Library  '$alias'  not found in version catalog: $name")
-    }
-
-    fun plugin(alias: String): PluginNotation = alias.asVersionCatalogAlias.let { alias ->
-        plugins[alias] ?: error("Plugin '$alias' not found in version catalog: $name")
-    }
-
     companion object {
 
         private val json = Json {
@@ -56,14 +43,16 @@ internal data class VersionCatalog(
                             "versions" to versions.toAliasMap(),
                             "libraries" to libraries,
                             "bundles" to (toml["bundles"] as TomlTable).toAliasMap().mapValues { (_, references) ->
-                                (references as List<String>).map(String::asAlias).map(libraries::get)
+                                (references as List<String>)
+                                    .map(String::asVersionCatalogAlias)
+                                    .map(libraries::get)
                             },
                             "plugins" to (toml["plugins"] as TomlTable).toAliasMap().resolveVersions(versions),
                         )
                     },
             )
 
-        private fun TomlTable.toAliasMap() = toMap().mapKeys { (key, _) -> key.asAlias }
+        private fun TomlTable.toAliasMap() = toMap().mapKeys { (key, _) -> key.asVersionCatalogAlias }
 
         @Suppress("UNCHECKED_CAST")
         private fun Map<String, Any>.resolveVersions(versions: TomlTable) =
@@ -75,8 +64,8 @@ internal data class VersionCatalog(
     }
 }
 
-private val String.asAlias
-    get() = replace("-", ".")
+private val String.asVersionCatalogAlias
+    get() = replace(".", "-")
 
 private const val VERSION_CATALOG_EXT = "version.catalog.ext"
 
@@ -154,7 +143,4 @@ private fun <T> Set<VersionCatalog>.resolveRef(
         name,
     )
 }
-
-private val String.asVersionCatalogAlias
-    get() = replace(".", "-")
 

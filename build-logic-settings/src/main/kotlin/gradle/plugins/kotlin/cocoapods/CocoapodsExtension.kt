@@ -98,7 +98,7 @@ internal data class CocoapodsExtension(
     fun applyTo() =
         project.pluginManager.withPlugin("org.jetbrains.kotlin.native.cocoapods") {
             project.kotlin.cocoapods::version trySet (version
-                ?: project.settings.libs.versionOrNull("kotlin.cocoapods.version"))
+                ?: project.settings.libs.versions["kotlin.cocoapods.version"])
             project.kotlin.cocoapods::authors trySet authors
             project.kotlin.cocoapods::podfile trySet podfile?.let(project::file)
             project.kotlin.cocoapods::noPodspec trySet needPodspec
@@ -143,10 +143,10 @@ internal data class CocoapodsExtension(
                 }
             }
 
-            ios?.applyTo(project.kotlin.cocoapods.ios, project.settings.libs.versionOrNull("kotlin.cocoapods.iosDeploymentTarget"))
-            osx?.applyTo(project.kotlin.cocoapods.osx, project.settings.libs.versionOrNull("kotlin.cocoapods.osxDeploymentTarget"))
-            tvos?.applyTo(project.kotlin.cocoapods.tvos, project.settings.libs.versionOrNull("kotlin.cocoapods.tvosDeploymentTarget"))
-            watchos?.applyTo(project.kotlin.cocoapods.watchos, project.settings.libs.versionOrNull("kotlin.cocoapods.watchosDeploymentTarget"))
+            ios?.applyTo(project.kotlin.cocoapods.ios, project.settings.libs.versions["kotlin.cocoapods.iosDeploymentTarget"])
+            osx?.applyTo(project.kotlin.cocoapods.osx, project.settings.libs.versions["kotlin.cocoapods.osxDeploymentTarget"])
+            tvos?.applyTo(project.kotlin.cocoapods.tvos, project.settings.libs.versions["kotlin.cocoapods.tvosDeploymentTarget"])
+            watchos?.applyTo(project.kotlin.cocoapods.watchos, project.settings.libs.versions["kotlin.cocoapods.watchosDeploymentTarget"])
         }
 
     @KeepGeneratedSerializer

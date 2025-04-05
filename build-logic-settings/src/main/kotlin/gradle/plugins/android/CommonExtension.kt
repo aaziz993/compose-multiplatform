@@ -575,7 +575,7 @@ internal interface CommonExtension<
         extension::ndkPath trySet ndkPath
 
         (buildToolsVersion
-            ?: project.settings.libs.versionOrNull("extension.buildToolsVersion"))?.let { buildToolsVersion ->
+            ?: project.settings.libs.versions["extension.buildToolsVersion"])?.let { buildToolsVersion ->
             extension.buildToolsVersion = buildToolsVersion
         }
 

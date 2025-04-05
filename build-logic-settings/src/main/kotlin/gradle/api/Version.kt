@@ -34,15 +34,15 @@ internal data class Version(
         val camelCaseName = project.name.toCamelCase()
 
         return io.github.z4kn4fein.semver.Version(
-            project.settings.libs.versionOrNull("$camelCaseName.version.major")?.toInt()
+            project.settings.libs.versions["$camelCaseName.version.major"]?.toInt()
                 ?: major,
-            project.settings.libs.versionOrNull("$camelCaseName.version.minor")?.toInt()
+            project.settings.libs.versions["$camelCaseName.version.minor"]?.toInt()
                 ?: minor,
-            project.settings.libs.versionOrNull("$camelCaseName.version.patch")?.toInt()
+            project.settings.libs.versions["$camelCaseName.version.patch"]?.toInt()
                 ?: patch,
-            project.settings.libs.versionOrNull("$camelCaseName.version.preRelease")
+            project.settings.libs.versions["$camelCaseName.version.preRelease"]
                 ?: preRelease,
-            project.settings.libs.versionOrNull("$camelCaseName.version.buildMetadata")
+            project.settings.libs.versions["$camelCaseName.version.buildMetadata"]
                 ?: buildMetadata ?: projectProperties.cis?.current?.versioning?.buildMetadata,
         )
     }

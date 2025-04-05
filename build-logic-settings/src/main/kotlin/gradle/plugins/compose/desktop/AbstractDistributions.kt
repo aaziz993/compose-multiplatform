@@ -25,7 +25,7 @@ internal abstract class AbstractDistributions<T : AbstractDistributions> {
         receiver.outputBaseDir tryAssign outputBaseDir?.let(project.layout.projectDirectory::dir)
         receiver.packageName = packageName ?: moduleName
         receiver::packageVersion trySet (packageVersion
-            ?: project.settings.libs.versionOrNull("compose.desktop.packageVersion"))
+            ?: project.settings.libs.versions["compose.desktop.packageVersion"])
         receiver::copyright trySet copyright
         receiver::description trySet description
         receiver::vendor trySet vendor

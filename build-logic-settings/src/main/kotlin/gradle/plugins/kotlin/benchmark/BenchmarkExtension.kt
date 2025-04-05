@@ -31,7 +31,7 @@ internal data class BenchmarksExtension(
             }
 
             project.benchmark.kotlinCompilerVersion tryAssign (kotlinCompilerVersion
-                ?: project.settings.libs.versionOrNull("kotlin"))
+                ?: project.settings.libs.versions["kotlin"])
             project.benchmark::reportsDir trySet reportsDir
 
             targets?.forEach { target ->

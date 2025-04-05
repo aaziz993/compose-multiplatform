@@ -28,7 +28,7 @@ internal abstract class BaseGroovyExtension<T : BaseGroovyExtension> : FormatExt
 
         greclipse?.let { greclipse ->
             greclipse.applyTo(
-                (greclipse.version?.resolveVersion() ?: project.settings.libs.versionOrNull("greclipse"))
+                (greclipse.version?.resolveVersion() ?: project.settings.libs.versions["greclipse"])
                     ?.let(receiver::greclipse) ?: receiver.greclipse(),
             )
         }

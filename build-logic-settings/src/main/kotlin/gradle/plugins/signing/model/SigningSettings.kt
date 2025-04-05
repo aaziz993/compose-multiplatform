@@ -1,6 +1,5 @@
 package gradle.plugins.signing.model
 
-import gradle.api.project.projectProperties
 import gradle.accessors.settings
 import gradle.api.initialization.initializationProperties
 import gradle.plugins.signing.InMemoryPgpKeys
@@ -70,7 +69,7 @@ internal data class SigningSettings(
                 executable = settings.settingsDir.resolve("scripts/gpg/list-gpg_keys.sh").absolutePath
 
                 args(
-                    generateGpg.nameReal ?: projectProperties.developer?.name!!,
+                    generateGpg.nameReal ?: settings.initializationProperties.developer?.name!!,
                     generateGpg.passphrase,
                 )
             }
@@ -82,7 +81,7 @@ internal data class SigningSettings(
                 executable = settings.settingsDir.resolve("scripts/gpg/clean-gpg-keys.sh").absolutePath
 
                 args(
-                    generateGpg.nameReal ?: projectProperties.developer?.name!!,
+                    generateGpg.nameReal ?: settings.initializationProperties.developer?.name!!,
                 )
             }
         }

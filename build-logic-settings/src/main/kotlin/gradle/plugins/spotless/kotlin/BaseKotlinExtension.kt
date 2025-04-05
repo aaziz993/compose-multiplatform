@@ -27,7 +27,7 @@ internal abstract class BaseKotlinExtension<T : BaseKotlinExtension> : FormatExt
         diktat?.let { diktat ->
             diktat.applyTo(
                 receiver.diktat(
-                    diktat.version ?: project.settings.libs.versionOrNull("diktat")
+                    diktat.version ?: project.settings.libs.versions["diktat"]
                     ?: DiktatStep.defaultVersionDiktat(),
                 ),
             )
@@ -36,7 +36,7 @@ internal abstract class BaseKotlinExtension<T : BaseKotlinExtension> : FormatExt
         ktfmt?.forEach { ktfmt ->
             ktfmt.applyTo(
                 receiver.ktfmt(
-                    ktfmt.version ?: project.settings.libs.versionOrNull("ktfmt")
+                    ktfmt.version ?: project.settings.libs.versions["ktfmt"]
                     ?: KtfmtStep.defaultVersion(),
                 ),
             )
@@ -45,7 +45,7 @@ internal abstract class BaseKotlinExtension<T : BaseKotlinExtension> : FormatExt
         ktlint?.let { ktlint ->
             ktlint.applyTo(
                 receiver.ktlint(
-                    ktlint.version ?: project.settings.libs.versionOrNull("ktlint")
+                    ktlint.version ?: project.settings.libs.versions["ktlint"]
                     ?: KtLintStep.defaultVersion(),
                 ),
             )

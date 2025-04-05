@@ -206,7 +206,7 @@ internal interface BaseFlavor<T : BaseFlavor> : VariantDimension<T> {
         super.applyTo(receiver)
 
         receiver.testApplicationId = testApplicationId ?: "${project.androidNamespace}.test"
-        receiver::minSdk trySet (project.settings.libs.versionOrNull("android.minSdk")?.toInt())
+        receiver::minSdk trySet (project.settings.libs.versions["android.minSdk"]?.toInt())
         receiver::minSdkPreview trySet minSdkPreview
         receiver::renderscriptTargetApi trySet renderscriptTargetApi
         receiver::renderscriptSupportModeEnabled trySet renderscriptSupportModeEnabled

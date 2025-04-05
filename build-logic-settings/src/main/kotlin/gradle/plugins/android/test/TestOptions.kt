@@ -115,7 +115,7 @@ internal data class TestOptions(
         receiver::execution trySet execution
         emulatorControl?.applyTo(receiver.emulatorControl)
         emulatorSnapshots?.applyTo(receiver.emulatorSnapshots)
-        receiver::targetSdk trySet (targetSdk ?: project.settings.libs.versionOrNull("android.targetSdk")?.toInt())
+        receiver::targetSdk trySet (targetSdk ?: project.settings.libs.versions["android.targetSdk"]?.toInt())
         receiver::targetSdkPreview trySet targetSdkPreview
     }
 }
