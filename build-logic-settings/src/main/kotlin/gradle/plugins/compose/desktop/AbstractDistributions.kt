@@ -3,6 +3,7 @@ package gradle.plugins.compose.desktop
 import gradle.accessors.moduleName
 import gradle.accessors.settings
 import gradle.api.file.tryAssign
+import gradle.api.libs
 import gradle.api.provider.tryAssign
 import klib.data.type.reflection.trySet
 import org.gradle.api.Project

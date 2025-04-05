@@ -2,6 +2,7 @@ package gradle.plugins.signing.model
 
 import gradle.api.project.projectProperties
 import gradle.accessors.settings
+import gradle.api.initialization.initializationProperties
 import gradle.plugins.signing.InMemoryPgpKeys
 import gradle.plugins.signing.SignContentPolymorphicSerializer
 import gradle.plugins.signing.SigningExtension
@@ -54,9 +55,9 @@ internal data class SigningSettings(
                     generateGpg.keyLength,
                     generateGpg.subkeyType,
                     generateGpg.subkeyLength,
-                    generateGpg.nameReal ?: projectProperties.developer?.name!!,
+                    generateGpg.nameReal ?: settings.initializationProperties.developer?.name!!,
                     generateGpg.nameComment,
-                    generateGpg.nameEmail ?: projectProperties.developer?.email!!,
+                    generateGpg.nameEmail ?: settings.initializationProperties.developer?.email!!,
                     generateGpg.expireDate,
                     generateGpg.passphrase,
                 )

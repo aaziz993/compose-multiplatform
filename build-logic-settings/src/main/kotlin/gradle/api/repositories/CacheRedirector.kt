@@ -6,6 +6,7 @@ import gradle.api.project.projectProperties
 import gradle.accessors.yarn
 import gradle.accessors.yarnEnv
 import gradle.api.ci.CI
+import gradle.api.initialization.initializationProperties
 import java.net.URI
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler
@@ -25,7 +26,7 @@ internal object CacheRedirector {
     context(Settings)
     @Suppress("UnstableApiUsage")
     fun applyTo() {
-        if (!settings.projectProperties.cacheRedirector) {
+        if (!settings.initializationProperties.cacheRedirector) {
             return
         }
 

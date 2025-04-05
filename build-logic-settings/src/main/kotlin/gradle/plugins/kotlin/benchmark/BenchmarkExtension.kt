@@ -3,6 +3,7 @@ package gradle.plugins.kotlin.benchmark
 import gradle.accessors.benchmark
 import gradle.accessors.settings
 import gradle.api.applyTo
+import gradle.api.libs
 import gradle.api.provider.tryAssign
 import klib.data.type.reflection.trySet
 import kotlinx.serialization.Contextual

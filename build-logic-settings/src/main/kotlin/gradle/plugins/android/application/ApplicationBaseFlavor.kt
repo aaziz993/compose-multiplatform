@@ -3,6 +3,7 @@ package gradle.plugins.android.application
 import com.android.build.api.dsl.ApplicationBaseFlavor
 import gradle.accessors.androidNamespace
 import gradle.accessors.settings
+import gradle.api.libs
 import gradle.plugins.android.flavor.BaseFlavor
 import klib.data.type.reflection.trySet
 import org.gradle.api.Project

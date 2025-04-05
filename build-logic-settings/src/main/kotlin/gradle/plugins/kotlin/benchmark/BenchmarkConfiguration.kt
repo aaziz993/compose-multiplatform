@@ -2,12 +2,12 @@ package gradle.plugins.kotlin.benchmark
 
 import gradle.api.NamedObjectTransformingSerializer
 import gradle.api.ProjectNamed
-import klib.data.type.collection.SerializableOptionalAnyList
-import klib.data.type.collection.SerializableOptionalAnyMap
 import klib.data.type.collection.tryAddAll
 import klib.data.type.collection.tryPutAll
 import klib.data.type.collection.trySet
 import klib.data.type.reflection.trySet
+import klib.data.type.serialization.serializer.SerializableOptionalAnyList
+import klib.data.type.serialization.serializer.SerializableOptionalAnyMap
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

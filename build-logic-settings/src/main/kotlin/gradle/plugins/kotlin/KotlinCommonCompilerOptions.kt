@@ -1,6 +1,7 @@
 package gradle.plugins.kotlin
 
 import gradle.accessors.settings
+import gradle.api.libs
 import gradle.api.provider.tryAddAll
 import gradle.api.provider.tryAssign
 import gradle.api.provider.trySet

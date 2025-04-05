@@ -1,7 +1,7 @@
 package gradle.api.initialization.file
 
-import gradle.api.project.projectProperties
 import gradle.accessors.settings
+import gradle.api.initialization.initializationProperties
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import org.gradle.api.DefaultTask
@@ -27,7 +27,7 @@ internal data class CodeOfConductFile(
 
     context(Project)
     override fun applyTo(receiver: String): List<TaskProvider<out DefaultTask>> {
-        (email ?: settings.projectProperties.developer?.email)?.let { email ->
+        (email ?: project.settings.initializationProperties.developer?.email)?.let { email ->
             replace[emailPlaceholder] = email
         }
 

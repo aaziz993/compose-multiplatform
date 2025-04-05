@@ -2,6 +2,7 @@ package gradle.plugins.spotless.groovy
 
 import com.diffplug.gradle.spotless.BaseGroovyExtension
 import gradle.accessors.settings
+import gradle.api.libs
 import klib.data.type.reflection.trySet
 import gradle.plugins.spotless.FormatExtension
 import kotlinx.serialization.Serializable

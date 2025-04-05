@@ -3,7 +3,7 @@ package gradle.plugins.doctor
 import com.osacky.doctor.AppleRosettaTranslationCheckMode
 import gradle.accessors.doctor
 import gradle.api.provider.tryAssign
-import gradle.reflection.tryApply
+import klib.data.type.reflection.tryApply
 import klib.data.type.reflection.tryApply
 import org.gradle.api.Project
 

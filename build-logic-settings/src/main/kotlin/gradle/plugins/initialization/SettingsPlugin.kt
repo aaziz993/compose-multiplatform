@@ -3,9 +3,11 @@
 package gradle.plugins.initialization
 
 import gradle.api.VersionCatalog
+import gradle.api.allLibs
 import gradle.api.configureEach
 import gradle.api.initialization.InitializationProperties
 import gradle.api.initialization.initializationProperties
+import gradle.api.libs
 import gradle.api.repositories.CacheRedirector
 import gradle.plugins.develocity.DevelocityPlugin
 import gradle.plugins.githooks.GitHooksPlugin

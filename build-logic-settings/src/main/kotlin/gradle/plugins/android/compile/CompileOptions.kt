@@ -2,6 +2,7 @@ package gradle.plugins.android.compile
 
 import com.android.build.api.dsl.CompileOptions
 import gradle.accessors.settings
+import gradle.api.libs
 import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.JavaVersion

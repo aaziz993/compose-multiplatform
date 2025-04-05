@@ -2,7 +2,7 @@ package gradle.plugins.compose.desktop.macos
 
 import gradle.api.file.tryAssign
 import gradle.plugins.compose.desktop.platform.FileAssociation
-import gradle.reflection.tryApply
+import klib.data.type.reflection.tryApply
 import klib.data.type.reflection.tryApply
 import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable

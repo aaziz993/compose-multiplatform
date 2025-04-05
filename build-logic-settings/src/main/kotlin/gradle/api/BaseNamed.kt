@@ -9,7 +9,7 @@ import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 import org.gradle.api.initialization.Settings
 
-public interface BaseNamed {
+internal interface BaseNamed {
 
     /**
      * The object's name.
@@ -21,21 +21,21 @@ public interface BaseNamed {
     public  val name: String?
 }
 
-public abstract class NamedObjectTransformingSerializer<T : BaseNamed>(
+internal abstract class NamedObjectTransformingSerializer<T : BaseNamed>(
     tSerializer: KSerializer<T>
 ) : JsonObjectTransformingSerializer<T>(
     tSerializer,
     "name",
 )
 
-public interface SettingsNamed<T> : BaseNamed {
+internal interface SettingsNamed<T> : BaseNamed {
 
     context(Settings)
     public fun applyTo(receiver: T)
 }
 
 context(Settings)
-public fun <T> SettingsNamed<T>.applyTo(
+internal fun <T> SettingsNamed<T>.applyTo(
     receiver: DomainObjectCollection<out T>,
     getName: (T) -> String,
     create: (name: String, action: Action<in T>) -> Unit
@@ -44,7 +44,7 @@ public fun <T> SettingsNamed<T>.applyTo(
 }
 
 context(Settings)
-public fun <T> SettingsNamed<T>.applyTo(
+internal fun <T> SettingsNamed<T>.applyTo(
     receiver: NamedDomainObjectCollection<out T>,
     create: (name: String, action: Action<in T>) -> Unit
 ) = receiver.maybeNamedCreateOrEach(name, create) {
@@ -52,19 +52,19 @@ public fun <T> SettingsNamed<T>.applyTo(
 }
 
 context(Settings)
-public fun <T> SettingsNamed<T>.applyTo(receiver: NamedDomainObjectContainer<out T>) =
+internal fun <T> SettingsNamed<T>.applyTo(receiver: NamedDomainObjectContainer<out T>) =
     applyTo(receiver) { name, action ->
         receiver.register(name, action)
     }
 
-public interface ProjectNamed<T> : BaseNamed {
+internal interface ProjectNamed<T> : BaseNamed {
 
     context(Project)
     public fun applyTo(receiver: T)
 }
 
 context(Project)
-public fun <T> ProjectNamed<T>.applyTo(
+internal fun <T> ProjectNamed<T>.applyTo(
     receiver: DomainObjectCollection<out T>,
     getName: (T) -> String,
     create: (name: String, action: Action<in T>) -> Unit
@@ -73,7 +73,7 @@ public fun <T> ProjectNamed<T>.applyTo(
 }
 
 context(Project)
-public fun <T> ProjectNamed<T>.applyTo(
+internal fun <T> ProjectNamed<T>.applyTo(
     receiver: NamedDomainObjectCollection<out T>,
     create: (name: String, action: Action<in T>) -> Unit
 ) = receiver.maybeNamedCreateOrEach(name, create) {
@@ -81,12 +81,12 @@ public fun <T> ProjectNamed<T>.applyTo(
 }
 
 context(Project)
-public fun <T> ProjectNamed<T>.applyTo(receiver: NamedDomainObjectContainer<out T>) =
+internal fun <T> ProjectNamed<T>.applyTo(receiver: NamedDomainObjectContainer<out T>) =
     applyTo(receiver) { name, action ->
         receiver.register(name, action)
     }
 
-public interface Named<T> : SettingsNamed<T>, ProjectNamed<T> {
+internal interface Named<T> : SettingsNamed<T>, ProjectNamed<T> {
 
     context(Settings)
     override fun applyTo(receiver: T)
@@ -95,7 +95,7 @@ public interface Named<T> : SettingsNamed<T>, ProjectNamed<T> {
     override fun applyTo(receiver: T)
 }
 
-public fun <T> DomainObjectCollection<out T>.maybeNamedCreateOrEach(
+internal fun <T> DomainObjectCollection<out T>.maybeNamedCreateOrEach(
     name: String?,
     getName: (T) -> String,
     create: (name: String, action: Action<in T>) -> Unit = { _, _ -> },
@@ -108,7 +108,7 @@ public fun <T> DomainObjectCollection<out T>.maybeNamedCreateOrEach(
     }
 }
 
-public fun <T> NamedDomainObjectCollection<out T>.maybeNamedCreateOrEach(
+internal fun <T> NamedDomainObjectCollection<out T>.maybeNamedCreateOrEach(
     name: String?,
     create: (name: String, action: Action<in T>) -> Unit = { _, _ -> },
     configureAction: Action<in T>

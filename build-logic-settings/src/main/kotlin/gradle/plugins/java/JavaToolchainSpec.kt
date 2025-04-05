@@ -1,6 +1,7 @@
 package gradle.plugins.java
 
 import gradle.accessors.settings
+import gradle.api.libs
 import gradle.api.provider.tryAssign
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

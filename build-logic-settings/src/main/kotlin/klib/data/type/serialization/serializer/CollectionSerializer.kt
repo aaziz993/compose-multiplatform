@@ -2,8 +2,10 @@
 
 package klib.data.type.serialization.serializer
 
+import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.KSerializer
 
+@OptIn(InternalSerializationApi::class)
 internal abstract class CollectionSerializer<E, C : Collection<E>, B : MutableCollection<E>>(
     eSerializer: KSerializer<E>,
     private val _builder: () -> B,

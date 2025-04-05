@@ -1,7 +1,6 @@
 package gradle.api.publish.maven
 
 import gradle.api.provider.tryAssign
-import gradle.reflection.tryApply
 import klib.data.type.reflection.tryApply
 import kotlinx.serialization.Serializable
 import org.gradle.api.publish.maven.MavenPomDistributionManagement

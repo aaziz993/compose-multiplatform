@@ -1,6 +1,7 @@
 package gradle.plugins.kotlin
 
 import gradle.accessors.settings
+import gradle.api.libs
 import gradle.api.provider.tryAssign
 import gradle.plugins.java.JavaToolchainSpec
 import klib.data.type.reflection.tryPlus

@@ -4,6 +4,7 @@ import gradle.accessors.android
 import gradle.accessors.androidNamespace
 import gradle.accessors.settings
 import gradle.api.applyTo
+import gradle.api.libs
 import klib.data.type.collection.tryAddAll
 import klib.data.type.collection.trySet
 import klib.data.type.reflection.trySet

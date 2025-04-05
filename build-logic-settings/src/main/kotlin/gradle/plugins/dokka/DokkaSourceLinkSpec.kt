@@ -2,6 +2,7 @@ package gradle.plugins.dokka
 
 import gradle.api.project.projectProperties
 import gradle.accessors.settings
+import gradle.api.initialization.initializationProperties
 import gradle.api.provider.tryAssign
 import gradle.api.project.ProjectLayout
 import kotlinx.serialization.Serializable
@@ -84,7 +85,7 @@ internal data class DokkaSourceLinkSpec(
                 else -> "src"
             },
         )
-        (remoteUrl ?: project.settings.projectProperties.remote?.url)?.let(receiver::remoteUrl)
+        (remoteUrl ?: project.settings.initializationProperties.remote?.url)?.let(receiver::remoteUrl)
         receiver.remoteLineSuffix tryAssign remoteLineSuffix
     }
 }

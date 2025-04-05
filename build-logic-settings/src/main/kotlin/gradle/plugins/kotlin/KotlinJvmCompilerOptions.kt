@@ -1,6 +1,7 @@
 package gradle.plugins.kotlin
 
 import gradle.accessors.settings
+import gradle.api.libs
 import gradle.api.provider.tryAssign
 import klib.data.type.primitive.addPrefix
 import kotlinx.serialization.Serializable

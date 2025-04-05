@@ -2,6 +2,7 @@ package gradle.api.initialization.file
 
 import gradle.api.project.projectProperties
 import gradle.accessors.settings
+import gradle.api.initialization.initializationProperties
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import org.gradle.api.DefaultTask
@@ -29,13 +30,13 @@ internal data class LicenseFile(
 
     context(Project)
     override fun applyTo(receiver: String): List<TaskProvider<out DefaultTask>> {
-        from.add(source ?: project.settings.projectProperties.license?.url ?: return emptyList())
+        from.add(source ?: project.settings.initializationProperties.license?.url ?: return emptyList())
 
-        (year ?: project.settings.projectProperties.year)?.let { year ->
+        (year ?: project.settings.initializationProperties.year)?.let { year ->
             replace[yearPlaceholder] = year
         }
 
-        (owner ?: project.settings.projectProperties.developer?.name)?.let { owner ->
+        (owner ?: project.settings.initializationProperties.developer?.name)?.let { owner ->
             replace[ownerPlaceholder] = owner
         }
 

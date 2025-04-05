@@ -4,6 +4,7 @@ import gradle.accessors.settings
 import gradle.api.file.tryAssign
 import gradle.api.file.tryFrom
 import gradle.api.file.trySetFrom
+import gradle.api.libs
 import gradle.api.provider.tryAssign
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

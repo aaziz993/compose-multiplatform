@@ -1,8 +1,10 @@
 package gradle.plugins.dokka.plugin
 
+import gradle.accessors.settings
 import gradle.api.project.projectProperties
 import gradle.api.file.tryFrom
 import gradle.api.file.trySetFrom
+import gradle.api.initialization.initializationProperties
 import gradle.api.provider.tryAssign
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -101,8 +103,8 @@ internal data class DokkaHtmlPluginParameters(
         receiver.separateInheritedMembers tryAssign separateInheritedMembers
         receiver.mergeImplicitExpectActualDeclarations tryAssign mergeImplicitExpectActualDeclarations
         receiver.footerMessage tryAssign (footerMessage ?: listOfNotNull(
-            projectProperties.year,
-            projectProperties.developer?.name,
+            project.settings.initializationProperties.year,
+            project.settings.initializationProperties.developer?.name,
         ).joinToString(" - ").takeIf(String::isNotEmpty)?.let { message -> "© $message" })
         receiver.homepageLink tryAssign homepageLink
         receiver.templatesDir tryAssign templatesDir?.let(project.layout.projectDirectory::dir)

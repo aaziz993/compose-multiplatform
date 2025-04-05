@@ -2,6 +2,7 @@ package gradle.plugins.develocity.model
 
 import gradle.api.project.projectProperties
 import gradle.api.ci.CI
+import gradle.api.initialization.initializationProperties
 import klib.data.type.primitive.isGithubUrl
 import gradle.plugins.develocity.DevelocityConfiguration
 import gradle.plugins.develocity.buildscan.BuildScanConfiguration
@@ -32,10 +33,10 @@ internal data class DevelocitySettings(
             settings.enrichTeamCityData()
         }
 
-    private fun Settings.enrichGitData() = projectProperties.develocity?.let { _develocity ->
+    private fun Settings.enrichGitData() = initializationProperties.develocity?.let { _develocity ->
         gradle.projectsEvaluated {
             if (!CI.present && !_develocity.skipGitTags) {
-                (_develocity.gitRepo ?: projectProperties.remote?.url?.takeIf(String::isGithubUrl))?.let { gitRepo ->
+                (_develocity.gitRepo ?: initializationProperties.remote?.url?.takeIf(String::isGithubUrl))?.let { gitRepo ->
                     // Git commit id
                     val commitId = CI.Github.commitId
                     if (commitId.isNotEmpty()) {

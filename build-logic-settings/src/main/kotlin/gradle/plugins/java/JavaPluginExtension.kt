@@ -3,11 +3,12 @@ package gradle.plugins.java
 import gradle.accessors.java
 import gradle.accessors.settings
 import gradle.api.applyTo
+import gradle.api.libs
 import gradle.api.provider.tryAssign
 import gradle.api.tasks.SourceSet
 import klib.data.type.reflection.trySet
 import gradle.plugins.java.manifest.Manifest
-import gradle.reflection.tryApply
+import klib.data.type.reflection.tryApply
 import kotlinx.serialization.Serializable
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project

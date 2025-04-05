@@ -3,6 +3,7 @@ package gradle.plugins.knit.model
 import gradle.accessors.knit
 import gradle.api.project.projectProperties
 import gradle.accessors.settings
+import gradle.api.initialization.initializationProperties
 import gradle.plugins.knit.KnitPluginExtension
 import klib.data.type.reflection.plus
 import kotlinx.serialization.Serializable
@@ -30,7 +31,7 @@ internal data class KnitSettings(
             super.applyTo()
 
             if (moduleRootsFromIncludes) {
-                project.knit::moduleRoots + (listOf(".") + project.settings.projectProperties.includesAsPaths.orEmpty())
+                project.knit::moduleRoots + (listOf(".") + project.settings.initializationProperties.includesPaths.orEmpty())
             }
         }
 }

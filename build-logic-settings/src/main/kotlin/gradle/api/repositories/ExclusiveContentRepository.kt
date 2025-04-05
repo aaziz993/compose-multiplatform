@@ -1,7 +1,7 @@
 package gradle.api.repositories
 
 import gradle.api.getByNameOrAll
-import gradle.reflection.tryApply
+import klib.data.type.reflection.tryApply
 import klib.data.type.reflection.tryApply
 import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable

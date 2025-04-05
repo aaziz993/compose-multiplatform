@@ -29,6 +29,7 @@ internal data class InitializationProperties(
     override val buildscript: ScriptHandler? = null,
     override val plugins: Set<@Serializable(with = PluginNotationContentPolymorphicSerializer::class) Any>? = null,
     override val cacheRedirector: Boolean = true,
+    val year: String? = null,
     val remote: MavenPomScm? = null,
     val developer: MavenPomDeveloper? = null,
     val license: MavenPomLicense? = null,

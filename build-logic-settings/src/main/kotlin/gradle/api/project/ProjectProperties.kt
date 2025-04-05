@@ -1,7 +1,6 @@
 package gradle.api.project
 
 import gradle.api.Properties
-import gradle.api.PropertiesMapInheritedSerializer
 import gradle.api.PropertiesUnknownPreservingSerializer
 import gradle.api.Version
 import gradle.api.artifacts.Dependency
@@ -45,8 +44,10 @@ import gradle.plugins.shadow.model.ShadowSettings
 import gradle.plugins.signing.model.SigningSettings
 import gradle.plugins.sonar.SonarExtension
 import gradle.plugins.spotless.SpotlessExtension
+import klib.data.type.serialization.encodeToAny
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.extra
 import org.jetbrains.compose.internal.utils.localPropertiesFile
@@ -59,7 +60,6 @@ internal data class ProjectProperties(
     override val plugins: Set<@Serializable(with = PluginNotationContentPolymorphicSerializer::class) Any>? = null,
     override val cacheRedirector: Boolean = true,
     val layout: ProjectLayout = ProjectLayout.Default,
-    val year: String? = null,
     val group: String? = null,
     val description: String? = null,
     val version: Version = Version(),
@@ -109,7 +109,7 @@ internal data class ProjectProperties(
         private const val PROJECT_PROPERTIES_FILE = "project.yaml"
 
         context(Project)
-        fun load(): ProjectProperties {
+        fun load() {
             // Load local.properties.
             project.localProperties = loadLocalProperties(project.localPropertiesFile)
             // Export extras.
@@ -122,11 +122,14 @@ internal data class ProjectProperties(
 
             project.extra.exportExtraProperties()
             // Load project.yaml.
-            return load(
+            project.projectProperties = load<ProjectProperties>(
                 PROJECT_PROPERTIES_FILE,
                 project.layout.projectDirectory,
                 project,
-            )
+            ).also { properties ->
+                println("Load $PROJECT_PROPERTIES_FILE for project: $name")
+                println(yaml.dump(Json.Default.encodeToAny(properties)))
+            }
         }
     }
 }

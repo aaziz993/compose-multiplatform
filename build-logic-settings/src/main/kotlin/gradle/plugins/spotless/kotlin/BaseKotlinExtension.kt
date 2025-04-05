@@ -5,6 +5,7 @@ import com.diffplug.spotless.kotlin.DiktatStep
 import com.diffplug.spotless.kotlin.KtLintStep
 import com.diffplug.spotless.kotlin.KtfmtStep
 import gradle.accessors.settings
+import gradle.api.libs
 import gradle.plugins.spotless.FormatExtension
 import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable

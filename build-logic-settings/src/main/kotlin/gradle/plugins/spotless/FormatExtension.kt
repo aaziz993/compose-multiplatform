@@ -8,6 +8,7 @@ import com.diffplug.spotless.extra.wtp.EclipseWtpFormatterStep
 import com.diffplug.spotless.generic.PipeStepPair
 import gradle.accessors.settings
 import gradle.accessors.spotless
+import gradle.api.libs
 import klib.data.type.serialization.serializer.SerializableAnyMap
 import klib.data.type.reflection.trySet
 import klib.data.type.serialization.serializer.JsonObjectTransformingContentPolymorphicSerializer

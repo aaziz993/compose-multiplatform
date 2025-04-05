@@ -6,6 +6,7 @@ import gradle.api.ProjectNamed
 import gradle.api.applyTo
 import gradle.api.file.tryFrom
 import gradle.api.file.trySetFrom
+import gradle.api.libs
 import gradle.api.provider.tryAssign
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable

@@ -4,6 +4,7 @@ import gradle.accessors.cocoapods
 import gradle.accessors.kotlin
 import gradle.accessors.moduleName
 import gradle.accessors.settings
+import gradle.api.libs
 import klib.data.type.collection.tryAddAll
 import klib.data.type.collection.tryPutAll
 import klib.data.type.collection.trySet

@@ -5,7 +5,7 @@ import gradle.api.repositories.ArtifactRepository
 import gradle.api.repositories.AuthenticationSupported
 import gradle.api.repositories.UrlArtifactRepository
 import klib.data.type.reflection.trySet
-import gradle.reflection.tryApply
+import klib.data.type.reflection.tryApply
 import klib.data.type.reflection.tryApply
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

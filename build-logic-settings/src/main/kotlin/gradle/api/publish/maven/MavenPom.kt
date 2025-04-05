@@ -2,9 +2,10 @@ package gradle.api.publish.maven
 
 import gradle.api.project.projectProperties
 import gradle.accessors.settings
+import gradle.api.initialization.initializationProperties
 import klib.data.type.primitive.addSuffix
 import gradle.api.provider.tryAssign
-import gradle.reflection.tryApply
+import klib.data.type.reflection.tryApply
 import klib.data.type.reflection.trySet
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -123,13 +124,13 @@ internal data class MavenPom(
         receiver.name = name ?: project.name
         receiver.description = description ?: project.description
         receiver.url tryAssign (url
-            ?: project.projectProperties.remote?.url
+            ?: project.settings.initializationProperties.remote?.url
                 ?.trimEnd('/')
                 ?.addSuffix("/")
                 ?.addSuffix(project.projectDir.toRelativeString(project.settings.settingsDir)))
-        receiver.inceptionYear tryAssign (inceptionYear ?: project.projectProperties.year)
+        receiver.inceptionYear tryAssign (inceptionYear ?: project.settings.initializationProperties.year)
 
-        (project.projectProperties.license?.let(::listOf).orEmpty() + licenses.orEmpty())
+        (project.settings.initializationProperties.license?.let(::listOf).orEmpty() + licenses.orEmpty())
             .takeIf(List<*>::isNotEmpty)
             ?.let { licenses ->
                 receiver.licenses {
@@ -141,7 +142,7 @@ internal data class MavenPom(
 
         receiver::organization tryApply organization?.let { organization -> organization::applyTo }
 
-        (project.projectProperties.developer?.let(::listOf).orEmpty() + developers.orEmpty())
+        (project.settings.initializationProperties.developer?.let(::listOf).orEmpty() + developers.orEmpty())
             .takeIf(List<*>::isNotEmpty)
             ?.let { developers ->
                 receiver.developers {
@@ -159,7 +160,7 @@ internal data class MavenPom(
             }
         }
 
-        (scm ?: project.projectProperties.remote)?.let { scm ->
+        (scm ?: project.settings.initializationProperties.remote)?.let { scm ->
             receiver.scm(scm::applyTo)
         }
 

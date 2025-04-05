@@ -5,6 +5,7 @@ import com.vanniktech.maven.publish.tasks.WorkaroundSignatureType
 import gradle.accessors.settings
 import gradle.accessors.signing
 import gradle.api.configureEach
+import gradle.api.libs
 import gradle.api.toVersion
 import klib.data.type.reflection.trySet
 import org.gradle.api.Project
@@ -85,7 +86,7 @@ internal abstract class SigningExtension : Signer {
             )
 
             // TODO: https://youtrack.jetbrains.com/issue/KT-61313/ https://github.com/gradle/gradle/issues/26132
-            project.plugins.withId(project.settings.libs.plugin("kotlin.multiplatform").id) {
+            project.plugins.withId("org.jetbrains.kotlin.multiplatform") {
                 project.tasks.withType<Sign>().configureEach { sign ->
                     sign.signatureType = WorkaroundSignatureType(
                         sign.signatureType ?: ArmoredSignatureType(),

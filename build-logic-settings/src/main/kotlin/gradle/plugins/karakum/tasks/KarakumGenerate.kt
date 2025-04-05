@@ -60,7 +60,7 @@ internal data class KarakumGenerate(
                     return@doLast
                 }
 
-                val karakumConfig = Json.Default.decodeMapFromString(karakumConfigFile.readText())
+                val karakumConfig = Json.Default.decodeMapFromString<Any?>(karakumConfigFile.readText())
 
                 val karakumOutput = project.file(karakumConfig["output"]!!.toString())
 

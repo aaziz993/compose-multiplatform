@@ -3,7 +3,7 @@ package gradle.api.publish.maven
 import gradle.accessors.publishing
 import gradle.api.applyTo
 import gradle.api.publish.Publication
-import gradle.reflection.tryApply
+import klib.data.type.reflection.tryApply
 import klib.data.type.reflection.trySet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

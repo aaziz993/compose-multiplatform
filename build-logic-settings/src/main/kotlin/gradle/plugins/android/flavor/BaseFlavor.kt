@@ -4,6 +4,7 @@ import com.android.build.api.dsl.BaseFlavor
 import gradle.accessors.android
 import gradle.accessors.androidNamespace
 import gradle.accessors.settings
+import gradle.api.libs
 import klib.data.type.collection.tryPutAll
 import klib.data.type.collection.trySet
 import gradle.plugins.android.MissingDimensionStrategy

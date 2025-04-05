@@ -2,6 +2,7 @@ package gradle.plugins.develocity
 
 import com.gradle.develocity.agent.gradle.test.DevelocityTestConfiguration
 import com.gradle.develocity.agent.gradle.test.TestRetryConfiguration
+import gradle.api.initialization.initializationProperties
 import gradle.api.project.projectProperties
 import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
@@ -13,7 +14,7 @@ internal class DevelocityPlugin : Plugin<Settings> {
     override fun apply(target: Settings) {
         with(target) {
             // Apply develocity properties.
-            projectProperties.develocity?.applyTo()
+            initializationProperties.develocity?.applyTo()
 
             pluginManager.withPlugin("com.gradle.develocity") {
                 buildCache {

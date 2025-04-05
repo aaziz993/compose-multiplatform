@@ -7,7 +7,6 @@ import gradle.accessors.kotlin
 import gradle.api.project.projectProperties
 import gradle.api.ci.CI
 import gradle.api.maybeNamed
-import gradle.api.project.PROJECT_PROPERTIES_FILE
 import gradle.api.repositories.CacheRedirector
 import gradle.plugins.android.AndroidPlugin
 import gradle.plugins.animalsniffer.AnimalSnifferPlugin
@@ -71,7 +70,6 @@ import gradle.plugins.kotlin.targets.nat.mingw.KotlinMingwTarget
 import gradle.plugins.kotlin.targets.nat.mingw.KotlinMingwX64Target
 import gradle.plugins.kover.KoverPlugin
 import gradle.api.project.ProjectProperties.Companion.load
-import gradle.api.project.ProjectProperties.Companion.yaml
 import gradle.plugins.publish.PublishPlugin
 import gradle.plugins.shadow.ShadowPlugin
 import gradle.plugins.signing.SigningPlugin
@@ -110,10 +108,7 @@ public class ProjectPlugin : Plugin<Project> {
     override fun apply(target: Project): Unit = with(SLF4JProblemReporterContext()) {
         with(target) {
             // Load and apply project.yaml to build.gradle.kts properties.
-            projectProperties = load().also { properties ->
-                println("Load and apply ${PROJECT_PROPERTIES_FILE} to: $name")
-                println(yaml.dump(Json.Default.encodeToAny(properties)))
-            }
+            load()
 
             ::setGroup trySet projectProperties.group
             ::setDescription trySet projectProperties.description

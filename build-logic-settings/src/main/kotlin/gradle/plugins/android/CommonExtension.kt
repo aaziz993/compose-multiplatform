@@ -6,6 +6,7 @@ import com.android.build.api.dsl.Splits
 import gradle.accessors.android
 import gradle.accessors.settings
 import gradle.api.applyTo
+import gradle.api.libs
 import klib.data.type.serialization.serializer.SerializableAnyMap
 import klib.data.type.collection.tryAddAll
 import klib.data.type.collection.tryPutAll
