@@ -2,7 +2,6 @@ package gradle.api.artifacts.dsl
 
 import gradle.api.repositories.ArtifactRepository
 import klib.data.type.serialization.serializer.ListSerializer
-import klib.data.type.serialization.serializer.SetSerializer
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.NothingSerializer
@@ -14,13 +13,13 @@ import org.gradle.api.initialization.Settings
 internal abstract class RepositoryHandler : ArtifactRepositoryContainer {
 
     context(Settings)
-    fun applyTo(receiver: RepositoryHandler) =
+    fun applyTo(receiver: org.gradle.api.artifacts.dsl.RepositoryHandler) =
         forEach { repository ->
             repository.applyTo(receiver)
         }
 
     context(Project)
-    fun applyTo(receiver: RepositoryHandler) =
+    fun applyTo(receiver: org.gradle.api.artifacts.dsl.RepositoryHandler) =
         forEach { repository ->
             repository.applyTo(receiver)
         }
