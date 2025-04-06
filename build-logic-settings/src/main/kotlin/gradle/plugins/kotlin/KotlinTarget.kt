@@ -5,7 +5,7 @@ import gradle.api.ProjectNamed
 import gradle.api.applyTo
 import gradle.api.publish.maven.MavenPublication
 import klib.data.type.reflection.trySet
-import klib.data.type.serialization.serializer.JsonObjectTransformingContentPolymorphicSerializer
+import klib.data.type.serialization.json.serializer.JsonObjectTransformingContentPolymorphicSerializer
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

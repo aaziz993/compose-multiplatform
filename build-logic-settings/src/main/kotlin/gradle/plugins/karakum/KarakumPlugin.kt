@@ -4,7 +4,7 @@ import gradle.accessors.kotlin
 import gradle.api.project.projectProperties
 import gradle.plugins.kotlin.KotlinTarget
 import gradle.plugins.kotlin.targets.web.KotlinJsTarget
-import klib.data.type.serialization.decodeMapFromString
+import klib.data.type.serialization.json.decodeMapFromString
 import java.io.File
 import kotlinx.serialization.json.Json
 import org.gradle.api.Plugin

@@ -1,6 +1,6 @@
 package gradle.plugins.buildconfig.generator
 
-import klib.data.type.serialization.serializer.JsonContentPolymorphicSerializer
+import klib.data.type.serialization.json.serializer.JsonContentPolymorphicSerializer
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 

@@ -5,7 +5,7 @@ import gradle.api.provider.tryAssign
 import gradle.api.tasks.applyTo
 import gradle.api.tasks.test.TestFilter
 import gradle.api.tasks.test.TestLoggingContainer
-import klib.data.type.serialization.serializer.SerializableAnyMap
+import klib.data.type.serialization.json.serializer.SerializableAnyMap
 import gradle.plugins.kotlin.targets.nat.TrackEnvironment
 import gradle.plugins.kotlin.tasks.KotlinTest
 import klib.data.type.reflection.trySet

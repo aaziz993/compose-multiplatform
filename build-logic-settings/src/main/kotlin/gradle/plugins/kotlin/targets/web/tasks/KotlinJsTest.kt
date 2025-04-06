@@ -12,7 +12,7 @@ import klib.data.type.collection.tryAddAll
 import klib.data.type.collection.tryPutAll
 import klib.data.type.collection.trySet
 import klib.data.type.reflection.trySet
-import klib.data.type.serialization.serializer.SerializableAnyMap
+import klib.data.type.serialization.json.serializer.SerializableAnyMap
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType

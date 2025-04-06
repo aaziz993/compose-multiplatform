@@ -1,4 +1,4 @@
-package klib.data.type.serialization.serializer
+package klib.data.type.serialization.json.serializer
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor

@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin.targets.jvm.test
 
 import gradle.plugins.kotlin.KotlinExecution
-import klib.data.type.serialization.serializer.JsonContentPolymorphicSerializer
+import klib.data.type.serialization.json.serializer.JsonContentPolymorphicSerializer
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement

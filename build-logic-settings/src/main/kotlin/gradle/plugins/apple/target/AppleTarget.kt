@@ -2,13 +2,13 @@ package gradle.plugins.apple.target
 
 import gradle.api.ProjectNamed
 import gradle.api.applyTo
-import klib.data.type.serialization.serializer.SerializableAnyMap
+import klib.data.type.serialization.json.serializer.SerializableAnyMap
 import klib.data.type.collection.tryPutAll
 import klib.data.type.collection.trySet
 import gradle.plugins.apple.AppleBuildSettings
 import gradle.plugins.apple.BuildConfiguration
 import klib.data.type.reflection.trySet
-import klib.data.type.serialization.serializer.JsonObjectTransformingContentPolymorphicSerializer
+import klib.data.type.serialization.json.serializer.JsonObjectTransformingContentPolymorphicSerializer
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

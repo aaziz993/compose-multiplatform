@@ -1,7 +1,7 @@
 package gradle.plugins.dokka.plugin
 
 import gradle.api.ProjectNamed
-import klib.data.type.serialization.serializer.JsonObjectTransformingContentPolymorphicSerializer
+import klib.data.type.serialization.json.serializer.JsonObjectTransformingContentPolymorphicSerializer
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 

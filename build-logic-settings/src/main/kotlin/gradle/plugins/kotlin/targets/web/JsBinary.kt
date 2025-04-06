@@ -7,7 +7,7 @@ import gradle.plugins.kotlin.targets.web.tasks.DefaultIncrementalSyncTaskImpl
 import gradle.plugins.kotlin.targets.web.tasks.KotlinJsIrLink
 import gradle.plugins.kotlin.targets.web.tasks.KotlinJsIrLinkImpl
 import klib.data.type.reflection.trySet
-import klib.data.type.serialization.serializer.JsonObjectTransformingContentPolymorphicSerializer
+import klib.data.type.serialization.json.serializer.JsonObjectTransformingContentPolymorphicSerializer
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

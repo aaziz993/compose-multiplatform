@@ -5,7 +5,7 @@ import gradle.api.file.tryFrom
 import gradle.api.file.trySetFrom
 import gradle.api.provider.tryAssign
 import gradle.api.tasks.applyTo
-import klib.data.type.serialization.serializer.SerializableAnyMap
+import klib.data.type.serialization.json.serializer.SerializableAnyMap
 import gradle.plugins.dokka.DokkaGeneratorParametersSpec
 import gradle.plugins.dokka.WorkerIsolation
 import kotlinx.serialization.Serializable

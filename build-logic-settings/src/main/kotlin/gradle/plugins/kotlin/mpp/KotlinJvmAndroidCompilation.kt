@@ -8,7 +8,7 @@ import gradle.plugins.kotlin.KotlinCompilationOutput
 import gradle.plugins.kotlin.KotlinJvmCompilerOptions
 import gradle.plugins.kotlin.KotlinSourceSet
 import gradle.plugins.kotlin.tasks.KotlinCompilationTask
-import klib.data.type.serialization.serializer.SerializableAnyMap
+import klib.data.type.serialization.json.serializer.SerializableAnyMap
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

@@ -1,9 +1,8 @@
 package gradle.plugins.apple.target
 
-import klib.data.type.serialization.serializer.SerializableAnyMap
+import klib.data.type.serialization.json.serializer.SerializableAnyMap
 import gradle.plugins.apple.AppleBuildSettings
 import gradle.plugins.apple.BuildConfiguration
-import klib.data.type.reflection.tryApply
 import klib.data.type.reflection.tryApply
 import klib.data.type.reflection.trySet
 import kotlinx.serialization.SerialName

@@ -18,7 +18,7 @@ import gradle.plugins.android.signing.SigningConfigImpl
 import gradle.plugins.android.sourceset.AndroidSourceSet
 import gradle.plugins.android.split.Splits
 import gradle.plugins.android.test.TestOptions
-import klib.data.type.serialization.serializer.JsonObjectTransformingContentPolymorphicSerializer
+import klib.data.type.serialization.json.serializer.JsonObjectTransformingContentPolymorphicSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

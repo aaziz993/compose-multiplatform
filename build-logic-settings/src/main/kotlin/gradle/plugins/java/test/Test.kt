@@ -8,7 +8,7 @@ import gradle.api.tasks.test.AbstractTestTask
 import gradle.api.tasks.test.TestFilter
 import gradle.api.tasks.test.TestLoggingContainer
 import gradle.api.tasks.util.PatternFilterable
-import klib.data.type.serialization.serializer.SerializableAnyMap
+import klib.data.type.serialization.json.serializer.SerializableAnyMap
 import klib.data.type.reflection.trySet
 import gradle.plugins.java.JavaToolchainSpec
 import gradle.plugins.java.ModularitySpec

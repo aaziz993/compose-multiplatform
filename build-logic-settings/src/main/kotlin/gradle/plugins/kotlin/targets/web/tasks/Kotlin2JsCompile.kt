@@ -3,11 +3,10 @@ package gradle.plugins.kotlin.targets.web.tasks
 import gradle.api.tasks.K2MultiplatformCompilationTask
 import gradle.api.tasks.ProducesKlib
 import gradle.api.tasks.applyTo
-import gradle.plugins.kotlin.KotlinCommonCompilerOptions
 import gradle.plugins.kotlin.targets.nat.CompilerPluginOptions
 import gradle.plugins.kotlin.targets.web.KotlinJsCompilerOptions
 import gradle.plugins.kotlin.tasks.AbstractKotlinCompile
-import klib.data.type.serialization.serializer.SerializableAnyMap
+import klib.data.type.serialization.json.serializer.SerializableAnyMap
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

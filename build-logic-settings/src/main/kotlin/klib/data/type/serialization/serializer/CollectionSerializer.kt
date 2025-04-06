@@ -1,14 +1,14 @@
-@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
+@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")package klib.data.type.serialization.serializer
 
-package kotlinx.serialization.internal
 
 import kotlinx.serialization.KSerializer
 
-internal abstract class CollectionClassSerializer<E, C : Collection<E>, B : MutableCollection<E>>(
+@Suppress("BOUNDS_NOT_ALLOWED_IF_BOUNDED_BY_TYPE_PARAMETER")
+internal abstract class CollectionSerializer<E, C : Collection<E>, B>(
     eSerializer: KSerializer<E>,
     private val _builder: () -> B,
     private val _toResult: B.() -> C
-) : CollectionSerializer<E, C, B>(eSerializer) {
+) : kotlinx.serialization.internal.CollectionSerializer<E, C, B>(eSerializer) where B : C, B : MutableCollection<E> {
 
     override fun builder(): B = _builder()
     override fun B.builderSize(): Int = size

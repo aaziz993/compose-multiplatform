@@ -10,7 +10,7 @@ import klib.data.type.collection.tryPutAll
 import klib.data.type.collection.trySet
 import klib.data.type.reflection.tryPlus
 import klib.data.type.reflection.trySet
-import klib.data.type.serialization.serializer.JsonObjectTransformingContentPolymorphicSerializer
+import klib.data.type.serialization.json.serializer.JsonObjectTransformingContentPolymorphicSerializer
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable

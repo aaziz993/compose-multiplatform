@@ -2,7 +2,7 @@ package gradle.api.publish
 
 import gradle.api.ProjectNamed
 import klib.data.type.reflection.trySet
-import klib.data.type.serialization.serializer.JsonObjectTransformingContentPolymorphicSerializer
+import klib.data.type.serialization.json.serializer.JsonObjectTransformingContentPolymorphicSerializer
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

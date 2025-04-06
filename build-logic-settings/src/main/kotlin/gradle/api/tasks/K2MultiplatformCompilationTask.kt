@@ -2,7 +2,7 @@
 
 package gradle.api.tasks
 
-import klib.data.type.serialization.serializer.SerializableAnyMap
+import klib.data.type.serialization.json.serializer.SerializableAnyMap
 import gradle.plugins.kotlin.KotlinCommonCompilerOptions
 import gradle.plugins.kotlin.KotlinCommonCompilerOptionsImpl
 import kotlinx.serialization.SerialName

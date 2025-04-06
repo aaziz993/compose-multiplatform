@@ -7,7 +7,7 @@ import kotlinx.serialization.builtins.NothingSerializer
 import org.gradle.api.Project
 
 @Serializable(with = KotlinJsBinaryContainerSetSerializer::class)
-internal class KotlinJsBinaryContainer : LinkedHashSet<JsIrBinary<out org.jetbrains.kotlin.gradle.targets.js.ir.JsIrBinary>>() {
+internal abstract class KotlinJsBinaryContainer : Set<JsIrBinary<out org.jetbrains.kotlin.gradle.targets.js.ir.JsIrBinary>> {
 
     context(Project)
     fun applyTo(receiver: org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsBinaryContainer) {
@@ -23,9 +23,12 @@ internal class KotlinJsBinaryContainer : LinkedHashSet<JsIrBinary<out org.jetbra
     }
 }
 
+@Serializable
+private class MutableKotlinJsBinaryContainer : KotlinJsBinaryContainer(), MutableSet<JsIrBinary<out org.jetbrains.kotlin.gradle.targets.js.ir.JsIrBinary>> by linkedSetOf()
+
 @Suppress("UNCHECKED_CAST")
-private object KotlinJsBinaryContainerSetSerializer
-    : KSerializer<KotlinJsBinaryContainer> by SetSerializer(
-    JsIrBinary.serializer(NothingSerializer()) as KSerializer<JsIrBinary<out org.jetbrains.kotlin.gradle.targets.js.ir.JsIrBinary>>,
-    ::KotlinJsBinaryContainer,
-)
+private object KotlinJsBinaryContainerSetSerializer :
+    KSerializer<KotlinJsBinaryContainer> by SetSerializer(
+        JsIrBinary.serializer(NothingSerializer()) as KSerializer<JsIrBinary<out org.jetbrains.kotlin.gradle.targets.js.ir.JsIrBinary>>,
+        ::MutableKotlinJsBinaryContainer,
+    )

@@ -44,7 +44,7 @@ import gradle.plugins.shadow.model.ShadowSettings
 import gradle.plugins.signing.model.SigningSettings
 import gradle.plugins.sonar.SonarExtension
 import gradle.plugins.spotless.SpotlessExtension
-import klib.data.type.serialization.encodeToAny
+import klib.data.type.serialization.json.encodeToAny
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json

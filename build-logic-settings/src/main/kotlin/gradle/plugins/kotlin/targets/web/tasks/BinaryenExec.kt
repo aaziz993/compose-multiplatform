@@ -6,8 +6,8 @@ import gradle.api.tasks.applyTo
 import gradle.process.AbstractExecTask
 import klib.data.type.collection.tryAddAll
 import klib.data.type.collection.trySet
-import klib.data.type.serialization.serializer.SerializableAnyList
-import klib.data.type.serialization.serializer.SerializableAnyMap
+import klib.data.type.serialization.json.serializer.SerializableAnyList
+import klib.data.type.serialization.json.serializer.SerializableAnyMap
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

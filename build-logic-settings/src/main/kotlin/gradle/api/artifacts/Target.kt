@@ -1,7 +1,7 @@
 package gradle.api.artifacts
 
 import gradle.api.catalog.NotationContentPolymorphicSerializer
-import klib.data.type.serialization.serializer.JsonObjectTransformingSerializer
+import klib.data.type.serialization.json.serializer.JsonObjectTransformingSerializer
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 

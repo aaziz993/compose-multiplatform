@@ -1,6 +1,6 @@
 package gradle.api
 
-import klib.data.type.serialization.serializer.JsonObjectTransformingSerializer
+import klib.data.type.serialization.json.serializer.JsonObjectTransformingSerializer
 import kotlinx.serialization.KSerializer
 import org.gradle.api.Action
 import org.gradle.api.DomainObjectCollection

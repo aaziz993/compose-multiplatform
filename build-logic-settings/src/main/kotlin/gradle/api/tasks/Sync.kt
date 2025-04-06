@@ -6,7 +6,7 @@ import gradle.api.tasks.copy.FromContentPolymorphicSerializer
 import gradle.api.tasks.copy.IntoContentPolymorphicSerializer
 import gradle.api.tasks.copy.Rename
 import gradle.api.tasks.util.PatternFilterableImpl
-import klib.data.type.serialization.serializer.SerializableAnyMap
+import klib.data.type.serialization.json.serializer.SerializableAnyMap
 import klib.data.type.reflection.trySet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

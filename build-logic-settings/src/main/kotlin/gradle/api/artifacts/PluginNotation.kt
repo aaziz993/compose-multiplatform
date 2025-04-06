@@ -1,9 +1,6 @@
 package gradle.api.artifacts
 
 import klib.data.type.primitive.addPrefix
-import klib.data.type.serialization.serializer.JsonObjectTransformingSerializer
-import kotlinx.serialization.KeepGeneratedSerializer
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable

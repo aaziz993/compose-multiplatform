@@ -2,7 +2,7 @@ package gradle.plugins.sonar.tasks
 
 import gradle.api.tasks.ConventionTask
 import gradle.api.tasks.applyTo
-import klib.data.type.serialization.serializer.SerializableAnyMap
+import klib.data.type.serialization.json.serializer.SerializableAnyMap
 import klib.data.type.collection.tryPutAll
 import klib.data.type.collection.trySet
 import klib.data.type.reflection.trySet

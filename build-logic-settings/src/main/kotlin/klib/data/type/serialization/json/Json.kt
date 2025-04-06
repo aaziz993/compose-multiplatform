@@ -1,4 +1,4 @@
-package klib.data.type.serialization
+package klib.data.type.serialization.json
 
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.KSerializer
@@ -13,6 +13,7 @@ import kotlinx.serialization.json.booleanOrNull
 import kotlinx.serialization.json.doubleOrNull
 import kotlinx.serialization.json.longOrNull
 import kotlinx.serialization.serializer
+import kotlin.invoke
 
 @Suppress("UNCHECKED_CAST")
 public fun Json.encodeAnyToJsonElement(value: Any?): JsonElement =

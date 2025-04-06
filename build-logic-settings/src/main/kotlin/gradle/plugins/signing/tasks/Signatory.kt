@@ -1,6 +1,6 @@
 package gradle.plugins.signing.tasks
 
-import klib.data.type.serialization.serializer.JsonContentPolymorphicSerializer
+import klib.data.type.serialization.json.serializer.JsonContentPolymorphicSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 

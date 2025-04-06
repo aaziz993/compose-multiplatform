@@ -1,121 +1,24 @@
-@file:Suppress("UnstableApiUsage")
-
 package gradle.api.artifacts
 
-import java.io.File
-import klib.data.type.serialization.serializer.JsonBaseObjectTransformingSerializer
-import kotlinx.serialization.KeepGeneratedSerializer
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonPrimitive
-import kotlinx.serialization.json.buildJsonObject
+import klib.data.type.reflection.trySet
 import org.gradle.api.Project
-import org.gradle.api.artifacts.dsl.DependencyHandler
-import org.gradle.api.file.FileCollection
-import org.gradle.api.initialization.Settings
-import org.gradle.api.internal.tasks.JvmConstants
-import org.gradle.kotlin.dsl.kotlin
-import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
+import org.gradle.api.artifacts.Dependency
 
-private val SUB_CONFIGURATIONS = listOf("kotlin", "npm", "devNpm", "optionalNpm", "peerNpm")
+/**
+ * A `Dependency` represents a dependency on the artifacts from a particular source. A source can be an Ivy
+ * module, a Maven POM, another Gradle project, a collection of Files, etc... A source can have zero or more artifacts.
+ */
+internal interface Dependency<T : Dependency> {
 
-@KeepGeneratedSerializer
-@Serializable(with = DependencyObjectTransformingSerializer::class)
-internal data class Dependency(
-    val notation: DependencyNotation,
-    val configuration: String = "implementation",
-    val subConfiguration: String? = null
-) {
-
-    context(Settings)
-    fun applyTo(receiver: DependencyHandler) {
-        receiver.add(configuration, subConfiguration(receiver, resolve()))
-    }
+    /**
+     * Sets the reason why this dependency should be used.
+     *
+     * @since 4.6
+     */
+    val because: String?
 
     context(Project)
-    fun applyTo(receiver: DependencyHandler) =
-        receiver.add(configuration, subConfiguration(receiver, resolve()))
-
-    private fun subConfiguration(handler: DependencyHandler, notation: Any) =
-        when (subConfiguration) {
-            null -> notation
-            "kotlin" -> handler.kotlin(notation.toString())
-            else -> error("Unsupported dependency additional configuration: $subConfiguration")
-        }
-
-    context(Project)
-    fun applyTo(receiver: KotlinDependencyHandler): Unit =
-        receiver.kotlinConfigurationFunction(kotlinSubConfiguration(receiver, resolve()))
-
-    private val kotlinConfigurationFunction: KotlinDependencyHandler.(Any) -> Unit
-        get() = when (configuration) {
-            JvmConstants.API_CONFIGURATION_NAME -> KotlinDependencyHandler::api
-            JvmConstants.IMPLEMENTATION_CONFIGURATION_NAME -> KotlinDependencyHandler::implementation
-            JvmConstants.COMPILE_ONLY_CONFIGURATION_NAME -> KotlinDependencyHandler::compileOnly
-            JvmConstants.RUNTIME_ONLY_CONFIGURATION_NAME -> KotlinDependencyHandler::runtimeOnly
-            else -> error("Unsupported dependency configuration: $configuration")
-        }
-
-    private fun kotlinSubConfiguration(handler: KotlinDependencyHandler, notation: Any) =
-        when {
-            subConfiguration == null -> notation
-            subConfiguration == "kotlin" -> handler.kotlin(notation.toString())
-
-            subConfiguration.endsWith("npm") -> {
-                if (notation is FileCollection) {
-                    npm(handler, notation.singleFile)
-                }
-                else {
-
-                    val npmNotation = notation.toString().removePrefix("npm:")
-
-                    npm(
-                        handler,
-                        npmNotation.substringBefore(":"),
-                        npmNotation.substringAfter(":", ""),
-                    )
-                }
-            }
-
-            else -> error("Unsupported dependency additional configuration: $subConfiguration")
-        }
-
-    private fun npm(handler: KotlinDependencyHandler, file: File) = when (subConfiguration) {
-        "npm" -> handler.npm(file)
-        "devNpm" -> handler.devNpm(file)
-        "optionalNpm" -> handler.optionalNpm(file)
-        else -> error("Unsupported dependency npm configuration: $subConfiguration")
-    }
-
-    private fun npm(handler: KotlinDependencyHandler, name: String, version: String) = when (subConfiguration) {
-        "npm" -> handler.npm(name, version)
-        "devNpm" -> handler.devNpm(name, version)
-        "optionalNpm" -> handler.optionalNpm(name, version)
-        "peerNpm" -> handler.peerNpm(name, version)
-        else -> error("Unsupported dependency npm configuration: $subConfiguration")
+    fun applyTo(receiver: T) {
+        receiver::because trySet because
     }
 }
-
-private object DependencyObjectTransformingSerializer : JsonBaseObjectTransformingSerializer<Dependency>(
-    Dependency.generatedSerializer(),
-) {
-
-    override fun transformDeserialize(key: String, value: JsonElement?): JsonObject =
-        buildJsonObject {
-            value?.let { value ->
-                put(
-                    if (key in SUB_CONFIGURATIONS) "subConfiguration"
-                    else "configuration",
-                    JsonPrimitive(key),
-                )
-                if (value is JsonPrimitive) put("notation", value)
-            } ?: put("notation", JsonPrimitive(key))
-        }
-}
-
-
-
-
-
-
