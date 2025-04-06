@@ -17,19 +17,18 @@ internal interface CopySourceSpec<T : CopySourceSpec> {
      * @param sourcePath Path to source for the copy
      * @param configureAction action for configuring the child CopySpec
      */
-    val from: @Serializable(with = FromContentPolymorphicSerializer::class) Any?
+    val froms: LinkedHashSet<@Serializable(with = FromContentPolymorphicSerializer::class) Any>?
 
     context(Project)
     @Suppress("UNCHECKED_CAST")
     fun applyTo(receiver: T) {
-        when (val from = from) {
-            is String, is From -> setOf(from)
-            is Set<*> -> from
-            else -> null
-        }?.let { from ->
-            from.filterIsInstance<String>().toTypedArray().let(receiver::from)
+        froms?.let { froms ->
+            froms.filterIsInstance<String>()
+                .takeIf(List<*>::isNotEmpty)
+                ?.toTypedArray()
+                ?.let(receiver::from)
 
-            from.filterIsInstance<From>().forEach { (sourcePath, copySpec) ->
+            froms.filterIsInstance<From>().forEach { (sourcePath, copySpec) ->
                 receiver.from(sourcePath) {
                     copySpec.applyTo(this)
                 }

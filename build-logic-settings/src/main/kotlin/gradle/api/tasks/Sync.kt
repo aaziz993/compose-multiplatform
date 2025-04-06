@@ -54,7 +54,7 @@ internal data class SyncImpl(
     override val filesMatching: FilesMatching? = null,
     override val filesNotMatching: FilesMatching? = null,
     override val filteringCharset: String? = null,
-    override val from: @Serializable(with = FromContentPolymorphicSerializer::class) Any? = null,
+    override val froms: LinkedHashSet<@Serializable(with = FromContentPolymorphicSerializer::class) Any>? = null,
     override val into: @Serializable(with = IntoContentPolymorphicSerializer::class) Any? = null,
     override val renames: Set<Rename>? = null,
     override val filePermissions: Int? = null,

@@ -16,18 +16,8 @@ internal data class From(
     val mergeSpec: ManifestMergeSpec,
 )
 
-private object FromElementContentPolymorphicSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
-
-    override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
-        if (element is JsonPrimitive) String.serializer() else From.serializer()
-}
-
 internal object FromContentPolymorphicSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
 
     override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
-        when (element) {
-            is JsonPrimitive -> String.serializer()
-            is JsonArray -> SetSerializer(FromElementContentPolymorphicSerializer)
-            is JsonObject -> From.serializer()
-        }
+        if (element is JsonPrimitive) String.serializer() else From.serializer()
 }

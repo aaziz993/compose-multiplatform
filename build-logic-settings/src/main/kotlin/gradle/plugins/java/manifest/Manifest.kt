@@ -13,7 +13,7 @@ internal data class Manifest(
     val sections: Map<String, SerializableAnyMap>? = null,
     val setSections: Map<String, SerializableAnyMap>? = null,
     val effectiveManifest: Manifest? = null,
-    val from: @Serializable(with = FromContentPolymorphicSerializer::class) Any? = null,
+    val froms: LinkedHashSet<@Serializable(with = FromContentPolymorphicSerializer::class) Any>? = null,
 ) {
 
     context(Project)
@@ -39,16 +39,13 @@ internal data class Manifest(
 
         effectiveManifest?.applyTo(receiver.effectiveManifest)
 
-        when (from) {
-            is String, is From -> setOf(from)
-            is Set<*> -> from
-            else -> null
-        }?.let { from ->
-            from.filterIsInstance<String>().takeIf(List<*>::isNotEmpty)?.toTypedArray()?.let { from ->
-                receiver.from(*from)
-            }
+        froms?.let { froms ->
+            froms.filterIsInstance<String>()
+                .takeIf(List<*>::isNotEmpty)
+                ?.toTypedArray()
+                ?.let(receiver::from)
 
-            from.filterIsInstance<From>().forEach { (mergePath, mergeSpec) ->
+            froms.filterIsInstance<From>().forEach { (mergePath, mergeSpec) ->
                 receiver.from(mergePath) {
                     mergeSpec.applyTo(this)
                 }
