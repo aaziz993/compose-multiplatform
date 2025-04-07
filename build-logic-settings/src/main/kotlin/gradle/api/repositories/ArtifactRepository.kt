@@ -2,7 +2,7 @@ package gradle.api.repositories
 
 import gradle.api.Named
 import klib.data.type.reflection.tryApply
-import klib.data.type.serialization.json.serializer.JsonBaseObjectTransformingContentPolymorphicSerializer
+import klib.data.type.serialization.json.serializer.ReflectionJsonBaseObjectTransformingPolymorphicSerializer
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
@@ -14,7 +14,7 @@ import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.api.file.Directory
 import org.gradle.api.initialization.Settings
 
-@Serializable(with = ArtifactRepositoryObjectTransformingContentPolymorphicSerializer::class)
+@Serializable(with = ReflectionArtifactRepositoryObjectTransformingPolymorphicSerializer::class)
 internal interface ArtifactRepository<T : org.gradle.api.artifacts.repositories.ArtifactRepository> : Named<T> {
 
     /**
@@ -48,8 +48,8 @@ internal interface ArtifactRepository<T : org.gradle.api.artifacts.repositories.
     fun applyTo(receiver: RepositoryHandler)
 }
 
-private class ArtifactRepositoryObjectTransformingContentPolymorphicSerializer(serializer: KSerializer<Nothing>)
-    : JsonBaseObjectTransformingContentPolymorphicSerializer<ArtifactRepository<*>>(
+private class ReflectionArtifactRepositoryObjectTransformingPolymorphicSerializer(serializer: KSerializer<Nothing>)
+    : ReflectionJsonBaseObjectTransformingPolymorphicSerializer<ArtifactRepository<*>>(
     ArtifactRepository::class,
 ) {
 

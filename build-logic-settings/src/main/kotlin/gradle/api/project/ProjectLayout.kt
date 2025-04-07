@@ -1,9 +1,9 @@
 package gradle.api.project
 
-import klib.data.type.serialization.json.serializer.JsonObjectTransformingContentPolymorphicSerializer
+import klib.data.type.serialization.json.serializer.ReflectionJsonObjectTransformingPolymorphicSerializer
 import kotlinx.serialization.Serializable
 
-@Serializable(with = ProjectLayoutValueTransformingContentPolymorphicSerializer::class)
+@Serializable(with = ReflectionProjectLayoutObjectTransformingPolymorphicSerializer::class)
 internal sealed class ProjectLayout {
 
     @Serializable
@@ -17,8 +17,8 @@ internal sealed class ProjectLayout {
     ) : ProjectLayout()
 }
 
-private object ProjectLayoutValueTransformingContentPolymorphicSerializer
-    : JsonObjectTransformingContentPolymorphicSerializer<ProjectLayout>(
+private object ReflectionProjectLayoutObjectTransformingPolymorphicSerializer
+    : ReflectionJsonObjectTransformingPolymorphicSerializer<ProjectLayout>(
     ProjectLayout::class,
 )
 

@@ -18,7 +18,7 @@ import gradle.plugins.android.signing.SigningConfigImpl
 import gradle.plugins.android.sourceset.AndroidSourceSet
 import gradle.plugins.android.split.Splits
 import gradle.plugins.android.test.TestOptions
-import klib.data.type.serialization.json.serializer.JsonObjectTransformingContentPolymorphicSerializer
+import klib.data.type.serialization.json.serializer.ReflectionJsonObjectTransformingPolymorphicSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
@@ -153,6 +153,6 @@ internal interface BaseExtension {
     }
 }
 
-private object BaseExtensionSerializer : JsonObjectTransformingContentPolymorphicSerializer<BaseExtension>(
+private object BaseExtensionSerializer : ReflectionJsonObjectTransformingPolymorphicSerializer<BaseExtension>(
     BaseExtension::class,
 )

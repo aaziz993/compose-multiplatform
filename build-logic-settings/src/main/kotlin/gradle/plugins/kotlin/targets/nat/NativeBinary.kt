@@ -10,7 +10,7 @@ import klib.data.type.collection.tryPutAll
 import klib.data.type.collection.trySet
 import klib.data.type.reflection.tryPlus
 import klib.data.type.reflection.trySet
-import klib.data.type.serialization.json.serializer.JsonObjectTransformingContentPolymorphicSerializer
+import klib.data.type.serialization.json.serializer.ReflectionJsonObjectTransformingPolymorphicSerializer
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
@@ -34,7 +34,7 @@ internal object BinaryContentPolymorphicSerializer : kotlinx.serialization.json.
         if (element is JsonPrimitive) String.serializer() else Binary.serializer()
 }
 
-@Serializable(with = NativeBinaryObjectTransformingContentPolymorphicSerializer::class)
+@Serializable(with = ReflectionNativeBinaryObjectTransformingPolymorphicSerializer::class)
 internal sealed class NativeBinary<T : org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary> : ProjectNamed<T> {
 
     abstract val baseName: String?
@@ -83,8 +83,8 @@ internal sealed class NativeBinary<T : org.jetbrains.kotlin.gradle.plugin.mpp.Na
     }
 }
 
-private class NativeBinaryObjectTransformingContentPolymorphicSerializer(serializer: KSerializer<Nothing>)
-    : JsonObjectTransformingContentPolymorphicSerializer<NativeBinary<*>>(
+private class ReflectionNativeBinaryObjectTransformingPolymorphicSerializer(serializer: KSerializer<Nothing>)
+    : ReflectionJsonObjectTransformingPolymorphicSerializer<NativeBinary<*>>(
     NativeBinary::class,
 )
 
