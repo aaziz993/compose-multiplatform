@@ -1,26 +1,21 @@
 package gradle.api
 
-import gradle.api.catalog.PluginNotationContentPolymorphicSerializer
 import gradle.api.ci.CI
 import gradle.api.initialization.ScriptHandler
 import java.io.File
 import klib.data.type.collection.deepMerge
 import klib.data.type.serialization.json.decodeFromAny
-import klib.data.type.serialization.json.serializer.JsonUnknownPreservingSerializer
-import klib.data.type.serialization.json.serializer.JsonOptionalAnySerializer
 import kotlin.io.path.Path
-import kotlinx.serialization.KSerializer
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import org.gradle.api.file.Directory
 import org.gradle.api.plugins.ExtraPropertiesExtension
 import org.yaml.snakeyaml.Yaml
 
-internal abstract class Properties : HashMap<String, Any?>() {
+internal interface Properties : Map<String, Any?> {
 
-    abstract val buildscript: ScriptHandler?
-    abstract val plugins: Set<@Serializable(with = PluginNotationContentPolymorphicSerializer::class) Any>?
-    abstract val cacheRedirector: Boolean
+    val buildscript: ScriptHandler?
+    val plugins: Set<Any>?
+    val cacheRedirector: Boolean
 
     companion object {
 
@@ -81,9 +76,3 @@ internal abstract class Properties : HashMap<String, Any?>() {
             }
     }
 }
-
-internal abstract class PropertiesUnknownPreservingSerializer<T : Properties>(tSerializer: KSerializer<T>) :
-    JsonUnknownPreservingSerializer<T, Any?>(
-            tSerializer,
-            JsonOptionalAnySerializer,
-    )

@@ -1,8 +1,9 @@
 package gradle.api.initialization
 
 import gradle.api.Properties
-import gradle.api.PropertiesUnknownPreservingSerializer
-import gradle.api.catalog.PluginNotationContentPolymorphicSerializer
+import gradle.api.Properties.Companion.exportExtraProperties
+import gradle.api.Properties.Companion.loadLocalProperties
+import gradle.api.Properties.Companion.load
 import gradle.api.initialization.file.CodeOfConductFile
 import gradle.api.initialization.file.ContributingFile
 import gradle.api.initialization.file.LicenseFile
@@ -17,43 +18,58 @@ import gradle.plugins.githooks.GitHooksExtension
 import gradle.plugins.initialization.Apply
 import gradle.plugins.initialization.IncludeBuild
 import gradle.plugins.toolchainmanagement.ToolchainManagement
-import kotlinx.serialization.KeepGeneratedSerializer
+import klib.data.type.serialization.json.serializer.JsonOptionalAnySerializer
+import klib.data.type.serialization.serializer.MapSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings
 import org.gradle.kotlin.dsl.extra
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 
-@KeepGeneratedSerializer
-@Serializable(with = InitializationPropertiesUnknownPreservingSerializer::class)
-internal data class InitializationProperties(
-    override val buildscript: ScriptHandler? = null,
-    override val plugins: Set<@Serializable(with = PluginNotationContentPolymorphicSerializer::class) Any>? = null,
-    override val cacheRedirector: Boolean = true,
-    val year: String? = null,
-    val remote: MavenPomScm? = null,
-    val developer: MavenPomDeveloper? = null,
-    val license: MavenPomLicense? = null,
-    val licenseFile: LicenseFile? = null,
-    val licenseHeaderFile: LicenseHeaderFile? = null,
-    val codeOfConductFile: CodeOfConductFile? = null,
-    val contributingFile: ContributingFile? = null,
-    val projectFiles: Set<ProjectFile>? = null,
-    val pluginManagement: PluginManagement? = null,
-    val applies: Set<Apply>? = null,
-    val dependencyResolutionManagement: DependencyResolutionManagement? = null,
-    val includes: Set<String>? = null,
-    val includeFlats: Set<String>? = null,
-    val includeBuilds: Set<IncludeBuild>? = null,
-    val projects: Set<ProjectDescriptor>? = null,
-    val buildCache: BuildCacheConfiguration? = null,
-    val develocity: DevelocitySettings? = null,
-    val toolchainManagement: ToolchainManagement? = null,
-    val gitHooks: GitHooksExtension? = null,
-) : Properties() {
+@Serializable(with = InitializationPropertiesMapSerializer::class)
+internal interface InitializationProperties : Properties {
 
-    val includesPaths by lazy {
-        includes?.map { include -> include.replace(":", System.lineSeparator()) }
-    }
+    val year: String?
+
+    val remote: MavenPomScm?
+
+    val developer: MavenPomDeveloper?
+
+    val license: MavenPomLicense?
+
+    val licenseFile: LicenseFile?
+
+    val licenseHeaderFile: LicenseHeaderFile?
+
+    val codeOfConductFile: CodeOfConductFile?
+
+    val contributingFile: ContributingFile?
+
+    val projectFiles: Set<ProjectFile>?
+
+    val pluginManagement: PluginManagement?
+
+    val applies: Set<Apply>?
+
+    val dependencyResolutionManagement: DependencyResolutionManagement?
+
+    val includes: Set<String>?
+
+    val includeFlats: Set<String>?
+
+    val includeBuilds: Set<IncludeBuild>?
+
+    val projects: Set<ProjectDescriptor>?
+
+    val buildCache: BuildCacheConfiguration?
+
+    val develocity: DevelocitySettings?
+
+    val toolchainManagement: ToolchainManagement?
+
+    val gitHooks: GitHooksExtension?
+
+    val includesPaths
+        get() = includes?.map { include -> include.replace(":", System.lineSeparator()) }
 
     companion object {
 
@@ -79,10 +95,38 @@ internal data class InitializationProperties(
     }
 }
 
-private object InitializationPropertiesUnknownPreservingSerializer :
-    PropertiesUnknownPreservingSerializer<InitializationProperties>(
-        InitializationProperties.generatedSerializer(),
+private object InitializationPropertiesMapSerializer :
+    MapSerializer<Any?, InitializationProperties, InitializationPropertiesImpl>(
+        InitializationPropertiesImpl.serializer(),
+        JsonOptionalAnySerializer,
     )
+
+@Serializable
+private data class InitializationPropertiesImpl(
+    override val buildscript: ScriptHandler? = null,
+    override val plugins: Set<Any>? = null,
+    override val cacheRedirector: Boolean = true,
+    override val year: String? = null,
+    override val remote: MavenPomScm? = null,
+    override val developer: MavenPomDeveloper? = null,
+    override val license: MavenPomLicense? = null,
+    override val licenseFile: LicenseFile? = null,
+    override val licenseHeaderFile: LicenseHeaderFile? = null,
+    override val codeOfConductFile: CodeOfConductFile? = null,
+    override val contributingFile: ContributingFile? = null,
+    override val projectFiles: Set<ProjectFile>? = null,
+    override val pluginManagement: PluginManagement? = null,
+    override val applies: Set<Apply>? = null,
+    override val dependencyResolutionManagement: DependencyResolutionManagement? = null,
+    override val includes: Set<String>? = null,
+    override val includeFlats: Set<String>? = null,
+    override val includeBuilds: Set<IncludeBuild>? = null,
+    override val projects: Set<ProjectDescriptor>? = null,
+    override val buildCache: BuildCacheConfiguration? = null,
+    override val develocity: DevelocitySettings? = null,
+    override val toolchainManagement: ToolchainManagement? = null,
+    override val gitHooks: GitHooksExtension? = null,
+) : InitializationProperties, MutableMap<String, Any?> by mutableMapOf()
 
 internal var Settings.localProperties: java.util.Properties
     get() = extraProperties[Properties.LOCAL_PROPERTIES_EXT] as java.util.Properties

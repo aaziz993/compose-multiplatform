@@ -1,10 +1,11 @@
 package gradle.api.project
 
 import gradle.api.Properties
-import gradle.api.PropertiesUnknownPreservingSerializer
+import gradle.api.Properties.Companion.exportExtraProperties
+import gradle.api.Properties.Companion.load
+import gradle.api.Properties.Companion.loadLocalProperties
+import gradle.api.Properties.Companion.yaml
 import gradle.api.Version
-import gradle.api.artifacts.Dependency
-import gradle.api.catalog.PluginNotationContentPolymorphicSerializer
 import gradle.api.ci.CI
 import gradle.api.initialization.ScriptHandler
 import gradle.api.publish.PublishingExtension
@@ -45,7 +46,8 @@ import gradle.plugins.signing.model.SigningSettings
 import gradle.plugins.sonar.SonarExtension
 import gradle.plugins.spotless.SpotlessExtension
 import klib.data.type.serialization.json.encodeToAny
-import kotlinx.serialization.KeepGeneratedSerializer
+import klib.data.type.serialization.json.serializer.JsonOptionalAnySerializer
+import klib.data.type.serialization.serializer.MapSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import org.gradle.api.Project
@@ -53,56 +55,94 @@ import org.gradle.kotlin.dsl.extra
 import org.jetbrains.compose.internal.utils.localPropertiesFile
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 
-@KeepGeneratedSerializer
-@Serializable(with = ProjectPropertiesUnknownPreservingSerializer::class)
-internal data class ProjectProperties(
-    override val buildscript: ScriptHandler? = null,
-    override val plugins: Set<@Serializable(with = PluginNotationContentPolymorphicSerializer::class) Any>? = null,
-    override val cacheRedirector: Boolean = true,
-    val layout: ProjectLayout = ProjectLayout.Default,
-    val group: String? = null,
-    val description: String? = null,
-    val version: Version = Version(),
-    val dependencies: Set<Dependency>? = null,
-    val kotlin: KotlinMultiplatformSettings? = null,
-    val doctor: DoctorSettings? = null,
-    val dependencyCheck: DependencyCheckExtension? = null,
-    val buildconfig: BuildConfigExtension? = null,
-    val spotless: SpotlessExtension? = null,
-    val kover: KoverSettings? = null,
-    val sonar: SonarExtension? = null,
-    val dokka: DokkaSettings? = null,
-    val shadow: ShadowSettings? = null,
-    val apiValidation: ApiValidationExtension? = null,
-    val animalSniffer: AnimalSnifferExtension? = null,
-    val knit: KnitSettings? = null,
-    val ksp: KspExtension? = null,
-    val karakum: KarakumExtension? = null,
-    val allopen: AllOpenExtension? = null,
-    val noarg: NoArgExtension? = null,
-    val atomicfu: AtomicFuExtension? = null,
-    val serialization: SerializationSettings? = null,
-    val benchmark: BenchmarksExtension? = null,
-    val sqldelight: SqlDelightExtension? = null,
-    val room: RoomExtension? = null,
-    val rpc: RpcExtension? = null,
-    val ktorfit: KtorfitGradleConfiguration? = null,
-    val apollo: ApolloExtension? = null,
-    val powerAssert: PowerAssertGradleExtension? = null,
-    val java: JavaPluginExtension? = null,
-    val application: JavaApplication? = null,
-    val android: BaseExtension? = null,
-    val apple: AppleProjectExtension? = null,
-    val nodeJsEnv: NodeJsEnvSpec? = null,
-    val yarn: YarnRootExtension? = null,
-    val yarnRootEnv: YarnRootEnvSpec? = null,
-    val npm: NpmExtension? = null,
-    val compose: ComposeSettings? = null,
-    val publishing: PublishingExtension? = null,
-    val signing: SigningSettings? = null,
-    val cis: Set<CI>? = null,
-    val tasks: LinkedHashSet<Task<out org.gradle.api.Task>>? = null,
-) : Properties() {
+@Serializable(with = ProjectPropertiesMapSerializer::class)
+internal interface ProjectProperties : Properties {
+
+    val layout: ProjectLayout
+
+    val group: String?
+
+    val description: String?
+
+    val version: Version
+
+    val dependencies: Set<Dependency>?
+
+    val kotlin: KotlinMultiplatformSettings?
+
+    val doctor: DoctorSettings?
+
+    val dependencyCheck: DependencyCheckExtension?
+
+    val buildconfig: BuildConfigExtension?
+
+    val spotless: SpotlessExtension?
+
+    val kover: KoverSettings?
+
+    val sonar: SonarExtension?
+
+    val dokka: DokkaSettings?
+
+    val shadow: ShadowSettings?
+
+    val apiValidation: ApiValidationExtension?
+
+    val animalSniffer: AnimalSnifferExtension?
+
+    val knit: KnitSettings?
+
+    val ksp: KspExtension?
+
+    val karakum: KarakumExtension?
+
+    val allopen: AllOpenExtension?
+
+    val noarg: NoArgExtension?
+
+    val atomicfu: AtomicFuExtension?
+
+    val serialization: SerializationSettings?
+
+    val benchmark: BenchmarksExtension?
+
+    val sqldelight: SqlDelightExtension?
+
+    val room: RoomExtension?
+
+    val rpc: RpcExtension?
+
+    val ktorfit: KtorfitGradleConfiguration?
+
+    val apollo: ApolloExtension?
+
+    val powerAssert: PowerAssertGradleExtension?
+
+    val java: JavaPluginExtension?
+
+    val application: JavaApplication?
+
+    val android: BaseExtension?
+
+    val apple: AppleProjectExtension?
+
+    val nodeJsEnv: NodeJsEnvSpec?
+
+    val yarn: YarnRootExtension?
+
+    val yarnRootEnv: YarnRootEnvSpec?
+
+    val npm: NpmExtension?
+
+    val compose: ComposeSettings?
+
+    val publishing: PublishingExtension?
+
+    val signing: SigningSettings?
+
+    val cis: Set<CI>?
+
+    val tasks: LinkedHashSet<Task<out org.gradle.api.Task>>?
 
     companion object {
 
@@ -134,8 +174,61 @@ internal data class ProjectProperties(
     }
 }
 
-private object ProjectPropertiesUnknownPreservingSerializer :
-    PropertiesUnknownPreservingSerializer<ProjectProperties>(ProjectProperties.generatedSerializer())
+private object ProjectPropertiesMapSerializer :
+    MapSerializer<Any?, ProjectProperties, ProjectPropertiesImpl>(
+        ProjectPropertiesImpl.serializer(),
+        JsonOptionalAnySerializer,
+    )
+
+@Serializable
+private data class ProjectPropertiesImpl(
+    override val buildscript: ScriptHandler? = null,
+    override val plugins: Set<Any>? = null,
+    override val cacheRedirector: Boolean = true,
+    override val layout: ProjectLayout = ProjectLayout.Default,
+    override val group: String? = null,
+    override val description: String? = null,
+    override val version: Version = Version(),
+    override val dependencies: Set<Dependency>? = null,
+    override val kotlin: KotlinMultiplatformSettings? = null,
+    override val doctor: DoctorSettings? = null,
+    override val dependencyCheck: DependencyCheckExtension? = null,
+    override val buildconfig: BuildConfigExtension? = null,
+    override val spotless: SpotlessExtension? = null,
+    override val kover: KoverSettings? = null,
+    override val sonar: SonarExtension? = null,
+    override val dokka: DokkaSettings? = null,
+    override val shadow: ShadowSettings? = null,
+    override val apiValidation: ApiValidationExtension? = null,
+    override val animalSniffer: AnimalSnifferExtension? = null,
+    override val knit: KnitSettings? = null,
+    override val ksp: KspExtension? = null,
+    override val karakum: KarakumExtension? = null,
+    override val allopen: AllOpenExtension? = null,
+    override val noarg: NoArgExtension? = null,
+    override val atomicfu: AtomicFuExtension? = null,
+    override val serialization: SerializationSettings? = null,
+    override val benchmark: BenchmarksExtension? = null,
+    override val sqldelight: SqlDelightExtension? = null,
+    override val room: RoomExtension? = null,
+    override val rpc: RpcExtension? = null,
+    override val ktorfit: KtorfitGradleConfiguration? = null,
+    override val apollo: ApolloExtension? = null,
+    override val powerAssert: PowerAssertGradleExtension? = null,
+    override val java: JavaPluginExtension? = null,
+    override val application: JavaApplication? = null,
+    override val android: BaseExtension? = null,
+    override val apple: AppleProjectExtension? = null,
+    override val nodeJsEnv: NodeJsEnvSpec? = null,
+    override val yarn: YarnRootExtension? = null,
+    override val yarnRootEnv: YarnRootEnvSpec? = null,
+    override val npm: NpmExtension? = null,
+    override val compose: ComposeSettings? = null,
+    override val publishing: PublishingExtension? = null,
+    override val signing: SigningSettings? = null,
+    override val cis: Set<CI>? = null,
+    override val tasks: LinkedHashSet<Task<out org.gradle.api.Task>>? = null,
+) : ProjectProperties, MutableMap<String, Any?> by mutableMapOf<String, Any?>()
 
 internal var Project.localProperties: java.util.Properties
     get() = extraProperties[Properties.LOCAL_PROPERTIES_EXT] as java.util.Properties
