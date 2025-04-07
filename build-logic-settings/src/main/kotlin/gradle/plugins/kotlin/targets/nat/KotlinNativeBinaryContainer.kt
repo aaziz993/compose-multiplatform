@@ -13,16 +13,14 @@ Use the following naming scheme:
 */
 @Suppress("JavaDefaultMethodsNotOverriddenByDelegation")
 @Serializable(with = KotlinNativeBinaryContainerSetSerializer::class)
-internal abstract class KotlinNativeBinaryContainer
-    : AbstractKotlinNativeBinaryContainer<org.jetbrains.kotlin.gradle.dsl.KotlinNativeBinaryContainer>(),
-    Set<NativeBinary<out org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary>>
-
-@Serializable
-private class MutableKotlinNativeBinaryContainer : KotlinNativeBinaryContainer(), MutableSet<NativeBinary<out org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary>> by linkedSetOf()
+internal class KotlinNativeBinaryContainer(
+    delegate: Set<NativeBinary<out org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary>>
+) : AbstractKotlinNativeBinaryContainer<org.jetbrains.kotlin.gradle.dsl.KotlinNativeBinaryContainer>(),
+    Set<NativeBinary<out org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary>> by delegate
 
 @Suppress("UNCHECKED_CAST")
-private object KotlinNativeBinaryContainerSetSerializer :
-    KSerializer<KotlinNativeBinaryContainer> by SetSerializer(
-        NativeBinary.serializer(NothingSerializer()) as KSerializer<NativeBinary<out org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary>>,
-        ::MutableKotlinNativeBinaryContainer,
-    )
+private object KotlinNativeBinaryContainerSetSerializer
+    : SetSerializer<NativeBinary<out org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary>, KotlinNativeBinaryContainer>(
+    NativeBinary.serializer(NothingSerializer()) as KSerializer<NativeBinary<out org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary>>,
+    ::KotlinNativeBinaryContainer,
+)

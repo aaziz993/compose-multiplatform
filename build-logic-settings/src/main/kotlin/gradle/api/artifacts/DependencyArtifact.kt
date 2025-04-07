@@ -1,11 +1,13 @@
 package gradle.api.artifacts
 
 import klib.data.type.reflection.trySet
+import kotlinx.serialization.Serializable
 import org.gradle.api.artifacts.DependencyArtifact
 
 /**
  * Data class that represents an artifact included in a [org.gradle.api.artifacts.Dependency].
  */
+@Serializable
 internal data class DependencyArtifact(
     /**
      * Sets the name of this artifact.

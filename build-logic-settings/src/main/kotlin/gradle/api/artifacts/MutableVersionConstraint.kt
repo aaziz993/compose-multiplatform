@@ -1,6 +1,8 @@
 package gradle.api.artifacts
 
 import klib.data.type.reflection.trySet
+import klib.data.type.serialization.json.serializer.JsonObjectTransformingSerializer
+import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 
 /**
@@ -9,7 +11,8 @@ import kotlinx.serialization.Serializable
  *
  * @since 4.4
  */
-@Serializable
+@KeepGeneratedSerializer
+@Serializable(with = MutableVersionConstraintTransformingSerializer::class)
 internal data class MutableVersionConstraint(
     override val branch: String? = null,
     override val require: String? = null,
@@ -34,3 +37,9 @@ internal data class MutableVersionConstraint(
         receiver::rejectAll trySet rejectAll
     }
 }
+
+private object MutableVersionConstraintTransformingSerializer :
+    JsonObjectTransformingSerializer<MutableVersionConstraint>(
+        MutableVersionConstraint.generatedSerializer(),
+        "require",
+    )

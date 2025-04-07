@@ -10,5 +10,4 @@ public abstract class JsonBaseObjectTransformingContentPolymorphicSerializer<T :
         baseClass,
         classDiscriminator,
     ),
-    baseClass.polymorphicSerialNames.toSet(),
 )

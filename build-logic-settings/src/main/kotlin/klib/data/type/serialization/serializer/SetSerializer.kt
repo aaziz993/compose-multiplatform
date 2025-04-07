@@ -1,28 +1,23 @@
-@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE", "BOUNDS_NOT_ALLOWED_IF_BOUNDED_BY_TYPE_PARAMETER")
-
 package klib.data.type.serialization.serializer
 
-import CollectionSerializer
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.builtins.SetSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.internal.LinkedHashSetClassDesc
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 
-internal class LinkedHashSetSerializer<E, C : Set<E>, B>(
+public open class SetSerializer<E, C : Set<E>>(
     eSerializer: KSerializer<E>,
-    builder: () -> B,
-    toResult: B.() -> C
-) : CollectionSerializer<E, C, B>(
-    eSerializer,
-    builder,
-    toResult
-) where B : C, B : MutableSet<E> {
-    override val descriptor: SerialDescriptor = LinkedHashSetClassDesc(eSerializer.descriptor)
-}
+    private val toResult: Set<E>.() -> C,
+) : KSerializer<C> {
+    private val delegate = SetSerializer(eSerializer)
 
-@Suppress("FunctionName")
-public fun <E, C : Set<E>, B> SetSerializer(
-    elementSerializer: KSerializer<E>,
-    builder: () -> B,
-    toResult: B.() -> C = { this as C }
-): KSerializer<C> where B : C, B : MutableSet<E> = LinkedHashSetSerializer(elementSerializer, builder, toResult)
+    override val descriptor: SerialDescriptor = delegate.descriptor
+
+    override fun serialize(encoder: Encoder, value: C) {
+        delegate.serialize(encoder, value)
+    }
+
+    override fun deserialize(decoder: Decoder): C = delegate.deserialize(decoder).toResult()
+}

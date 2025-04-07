@@ -114,20 +114,8 @@ private object DependencyObjectTransformingSerializer : JsonBaseObjectTransformi
         }
 }
 
-@Serializable
-internal data class Project(
-    val path: String,
-    val configuration: String? = null,
-)
 
-@Serializable
-internal data class Kotlin(
-    val simpleModuleName: String,
-    val version: String? = null,
-)
 
-@Serializable
-internal data class Npm(
-    val name: String,
-    val version: String,
-)
+
+
+

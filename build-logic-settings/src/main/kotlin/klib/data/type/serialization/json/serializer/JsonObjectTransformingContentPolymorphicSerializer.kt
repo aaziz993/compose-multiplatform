@@ -14,5 +14,4 @@ public open class JsonObjectTransformingContentPolymorphicSerializer<T : Any>(
     ),
     keyAs,
     valueAs,
-    baseClass.polymorphicSerialNames.toSet(),
 )

@@ -1,22 +1,23 @@
-@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE", "BOUNDS_NOT_ALLOWED_IF_BOUNDED_BY_TYPE_PARAMETER")
-
 package klib.data.type.serialization.serializer
 
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.internal.ArrayListClassDesc
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
-internal class ArrayListSerializer<E, C : List<E>, B>(
+
+public open class ListSerializer<E, C : List<E>>(
     eSerializer: KSerializer<E>,
-    builder: () -> B,
-    toResult: B.() -> C
-) : CollectionSerializer<E, C, B>(eSerializer, builder, toResult) where B : C, B : MutableList<E> {
-    override val descriptor: SerialDescriptor = ArrayListClassDesc(eSerializer.descriptor)
-}
+    private val toResult: List<E>.() -> C,
+) : KSerializer<C> {
+    private val delegate = ListSerializer(eSerializer)
 
-@Suppress("FunctionName")
-public fun <E, C : List<E>, B> ListSerializer(
-    elementSerializer: KSerializer<E>,
-    builder: () -> B,
-    toResult: B.() -> C = { this as C }
-): KSerializer<C> where B : C, B : MutableList<E> = ArrayListSerializer(elementSerializer, builder, toResult)
+    override val descriptor: SerialDescriptor = delegate.descriptor
+
+    override fun serialize(encoder: Encoder, value: C) {
+        delegate.serialize(encoder, value)
+    }
+
+    override fun deserialize(decoder: Decoder): C = delegate.deserialize(decoder).toResult()
+}
