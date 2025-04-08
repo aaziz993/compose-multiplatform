@@ -23,7 +23,7 @@ internal class KarakumPlugin : Plugin<Project> {
                         ?.let(project::file)
                         ?.takeIf(File::exists)
                         ?.let(File::readText)
-                        ?.let { text -> Json.Default.decodeMapFromString<Any?>(text) }
+                        ?.let(Json.Default::decodeMapFromString)
                         ?.let { karakumConfig ->
 
                             val karakumOutputDir = file(karakumConfig["output"]!!)
