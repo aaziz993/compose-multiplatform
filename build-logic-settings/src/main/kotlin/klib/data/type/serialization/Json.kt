@@ -1,17 +1,11 @@
-package klib.data.type.serialization.json
+package klib.data.type.serialization
 
+import klib.data.type.asList
+import klib.data.type.asMap
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationStrategy
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonArray
-import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonNull
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonPrimitive
-import kotlinx.serialization.json.booleanOrNull
-import kotlinx.serialization.json.doubleOrNull
-import kotlinx.serialization.json.longOrNull
+import kotlinx.serialization.json.*
 import kotlinx.serialization.serializer
 import kotlin.invoke
 
@@ -53,34 +47,10 @@ private val decodeAnyFromJsonElementDeepRecursiveFunction =
         }
     }
 
-@Suppress("UNCHECKED_CAST")
-public fun Json.decodeListFromJsonElement(element: JsonElement): List<Any?> =
-    decodeAnyFromJsonElement(element) as List<Any?>
-
-@Suppress("UNCHECKED_CAST")
-public fun Json.decodeMapFromJsonElement(element: JsonElement): Map<String, Any?> =
-    decodeAnyFromJsonElement(element) as Map<String, Any?>
-
 public fun <T> Json.encodeToAny(serializer: SerializationStrategy<T>, value: T): Any? =
     decodeAnyFromJsonElement(encodeToJsonElement(serializer, value))
 
 public inline fun <reified T> Json.encodeToAny(value: T): Any? = encodeToAny(serializersModule.serializer(), value)
-
-@Suppress("UNCHECKED_CAST")
-public fun <T> Json.encodeToList(serializer: SerializationStrategy<T>, value: T): List<Any?> =
-    encodeToAny(serializer, value) as List<Any?>
-
-@Suppress("UNCHECKED_CAST")
-public inline fun <reified T> Json.encodeToList(value: T): List<Any?> =
-    encodeToAny(value) as List<Any?>
-
-@Suppress("UNCHECKED_CAST")
-public fun <T> Json.encodeToMap(serializer: SerializationStrategy<T>, value: T): Map<String, Any?> =
-    encodeToAny(serializer, value) as Map<String, Any?>
-
-@Suppress("UNCHECKED_CAST")
-public inline fun <reified T> Json.encodeToMap(value: T): Map<String, Any?> =
-    encodeToAny(value) as Map<String, Any?>
 
 public fun <T> Json.decodeFromAny(deserializer: DeserializationStrategy<T>, value: Any?): T =
     decodeFromJsonElement(deserializer, encodeAnyToJsonElement(value))
@@ -94,29 +64,8 @@ public fun Json.decodeAnyFromString(value: String): Any? = decodeAnyFromJsonElem
 public val String.jsonAny: Any?
     get() = Json.Default.decodeAnyFromString(this)
 
-@Suppress("UNCHECKED_CAST")
-public fun Json.decodeListFromString(value: String): List<Any?> =
-    decodeAnyFromJsonElement(parseToJsonElement(value)) as List<Any?>
-
 public val String.jsonList: List<Any?>
-    get() = Json.Default.decodeListFromString(this)
-
-@Suppress("UNCHECKED_CAST")
-public fun Json.decodeMapFromString(value: String): Map<String, Any?> =
-    decodeAnyFromJsonElement(parseToJsonElement(value)) as Map<String, Any?>
+    get() = Json.Default.decodeAnyFromString(this).asList
 
 public val String.jsonMap: Map<String, Any?>
-    get() = Json.Default.decodeMapFromString(this)
-
-// Make deep copy of an object
-@Suppress("UNCHECKED_CAST")
-public fun <T : Any> Json.decodeFrom(
-    serializer: KSerializer<T>,
-    value: T,
-    block: (Map<String, Any?>) -> Map<String, Any?> = { it }
-): T = decodeFromAny(serializer, block(encodeToAny(serializer, value) as Map<String, Any?>))
-
-public inline fun <reified T : Any> Json.decodeFrom(
-    value: T,
-    noinline block: (Map<String, Any?>) -> Map<String, Any?> = { it }
-): T = decodeFrom(serializersModule.serializer(), value, block)
+    get() = Json.Default.decodeAnyFromString(this).asMap

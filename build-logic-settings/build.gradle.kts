@@ -254,6 +254,8 @@ dependencies {
     // compiler plugin, that generates visitor code for serializable classes, runtime library with core serialization API and support libraries with various serialization formats.
     implementation(libs.plugins.kotlin.serialization.toDep())
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.kaml)
+    implementation(libs.tomlkt)
     // toolkit for running benchmarks for multiplatform code written in Kotlin. It is designed to work with Kotlin/JVM, Kotlin/JS, Kotlin/Native, and Kotlin/WasmJs (experimental) targets.
     implementation(libs.plugins.kotlinx.benchmark.toDep())
     // multiplatform

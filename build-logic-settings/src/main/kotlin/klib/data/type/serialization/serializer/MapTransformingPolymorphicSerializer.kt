@@ -1,14 +1,13 @@
-package klib.data.type.serialization.json.serializer
+package klib.data.type.serialization.serializer
 
-import klib.data.type.serialization.serializer.PolymorphicSerializer
 import kotlin.reflect.KClass
 
-public open class JsonObjectTransformingPolymorphicSerializer<T : Any>(
+public open class MapTransformingPolymorphicSerializer<T : Any>(
     baseClass: KClass<T>,
     subclasses: List<KClass<out T>> = emptyList(),
     keyAs: String = "type",
     valueAs: String? = null,
-) : JsonObjectTransformingSerializer<T>(
+) : MapTransformingSerializer<T>(
     PolymorphicSerializer(
         baseClass,
         subclasses,

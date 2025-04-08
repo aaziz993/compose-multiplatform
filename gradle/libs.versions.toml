@@ -192,6 +192,7 @@ kotlinx-benchmark = "0.4.13"
 # community-supported serialization
 knbt = "0.11.5"
 tomlkt = "0.3.7"
+kaml = "0.74.0"
 yamlkt = "0.13.0"
 ksoup = "0.2.2"
 rssparser = "6.0.9"
@@ -536,6 +537,7 @@ xmlutil-serialization = { module = "io.github.pdvrieze.xmlutil:serialization", v
 serialization-msgpack = { module = "com.ensarsarajcic.kotlinx:serialization-msgpack", version.ref = "serialization-msgpack" }
 serialization-msgpack-timestamp-extension = { module = "com.ensarsarajcic.kotlinx:serialization-msgpack-timestamp-extension", version.ref = "serialization-msgpack" }
 knbt = { module = "net.benwoodworth.knbt:knbt", version.ref = "knbt" }
+kaml = { module = "com.charleskorn.kaml:kaml", version.ref = "kaml" }
 yamlkt = { module = "net.mamoe.yamlkt:yamlkt", version.ref = "yamlkt" }
 tomlkt = { module = "net.peanuuutz.tomlkt:tomlkt", version.ref = "tomlkt" }
 # jsonpath

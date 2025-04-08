@@ -1,7 +1,6 @@
 package klib.data.type.serialization.yaml
 
 import com.charleskorn.kaml.*
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.JsonObject
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
@@ -29,7 +28,7 @@ public class YamlListBuilder @PublishedApi internal constructor(val path: YamlPa
      *
      * @return `true` if the list was changed as the result of the operation.
      */
-    
+
     public fun addAll(nodes: Collection<YamlNode>): Boolean = content.addAll(nodes)
 
     /**
@@ -59,9 +58,9 @@ public class YamlListBuilder @PublishedApi internal constructor(val path: YamlPa
      *
      * Always returns `true` similarly to [ArrayList] specification.
      */
-    
+
     @Suppress("UNUSED_PARAMETER") // allows to call `add(null)`
-    public fun add(value: Nothing?): Boolean = add(YamlNull(lastIndexPath))
+    public fun addNull(): Boolean = add(null as String?)
 
     /**
      * Adds the [YAML object][JsonObject] produced by the [builderAction] function to a resulting YAML array.
@@ -109,10 +108,17 @@ public class YamlListBuilder @PublishedApi internal constructor(val path: YamlPa
     public fun addAll(values: Collection<Number?>): Boolean =
         addAll(values.map { value -> value?.toString() })
 
-    private val Int.asIndexPath
-        get() = YamlPath(path.segments + YamlPathSegment.ListEntry(this, Location(0, 0)))
+    public val Int.asIndexPath
+        get() = YamlPath(
+            path.segments + YamlPathSegment.ListEntry(
+                this,
+                path.segments.last().location.let { location ->
+                    Location(location.line + this, location.column + 2)
+                }
+            )
+        )
 
-    private val lastIndexPath
+    public val lastIndexPath
         get() = content.size.asIndexPath
 
     @PublishedApi

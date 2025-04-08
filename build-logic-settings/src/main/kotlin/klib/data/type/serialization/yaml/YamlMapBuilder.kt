@@ -28,6 +28,12 @@ public class YamlMapBuilder @PublishedApi internal constructor(val path: YamlPat
      */
     public fun put(key: YamlScalar, node: YamlNode): YamlNode? = content.put(key, node)
 
+    /**
+     * Adds the given YAML [map] to a resulting YAML map.
+     *
+     * @return `true` if the list was changed as the result of the operation.
+     */
+    public fun putAll(map: Map<YamlScalar, YamlNode>): Unit = content.putAll(map)
 
     /**
      * Add the [YAML object][YamlMap] produced by the [builderAction] function to a resulting YAML object using the given [key].
@@ -35,7 +41,9 @@ public class YamlMapBuilder @PublishedApi internal constructor(val path: YamlPat
      * Returns the previous value associated with [key], or `null` if the key was not present.
      */
     public fun putYamlMap(key: String, builderAction: YamlMapBuilder.() -> Unit): YamlNode? =
-        put(key.asKeyScalar, buildYamlMap(valuePath, builderAction))
+        key.asKeyScalar().let { keyScalar ->
+            put(keyScalar, buildYamlMap(keyScalar.valuePath, builderAction))
+        }
 
     /**
      * Add the [YAML array][YamlList] produced by the [builderAction] function to a resulting YAML object using the given [key].
@@ -43,7 +51,9 @@ public class YamlMapBuilder @PublishedApi internal constructor(val path: YamlPat
      * Returns the previous value associated with [key], or `null` if the key was not present.
      */
     public fun putYamlList(key: String, builderAction: YamlListBuilder.() -> Unit): YamlNode? =
-        put(key.asKeyScalar, buildYamlList(valuePath, builderAction))
+        key.asKeyScalar().let { keyScalar ->
+            put(keyScalar, buildYamlList(keyScalar.valuePath, builderAction))
+        }
 
     /**
      * Add the given boolean [value] to a resulting YAML object using the given [key].
@@ -67,9 +77,13 @@ public class YamlMapBuilder @PublishedApi internal constructor(val path: YamlPat
      * Returns the previous value associated with [key], or `null` if the key was not present.
      */
     public fun put(key: String, value: String?): YamlNode? =
-        put(
-            key.asKeyScalar,
-            value?.let { value -> YamlScalar(value, valuePath) } ?: YamlNull(valuePath))
+        key.asKeyScalar().let { keyScalar ->
+            put(
+                keyScalar,
+                value?.let { value -> YamlScalar(value, keyScalar.valuePath) }
+                    ?: YamlNull(keyScalar.valuePath)
+            )
+        }
 
     /**
      * Add `null` to a resulting YAML object using the given [key].
@@ -78,14 +92,29 @@ public class YamlMapBuilder @PublishedApi internal constructor(val path: YamlPat
      */
     @ExperimentalSerializationApi
     @Suppress("UNUSED_PARAMETER") // allows to call `put("key", null)`
-    public fun put(key: String, value: Nothing?): YamlNode? =
-        put(key.asKeyScalar, YamlNull(valuePath))
+    public fun putNull(key: String): YamlNode? = put(key, null as String?)
 
-    private val String.asKeyScalar
-        get() = YamlScalar(this, YamlPath(path.segments + YamlPathSegment.MapElementKey(this, Location(0, 0))))
+    public fun String.asKeyScalar(index: Int = content.size) = YamlScalar(
+        this, YamlPath(
+            path.segments + YamlPathSegment.MapElementKey(
+                this,
+                path.segments.last().location.let { location ->
+                    Location(
+                        location.line + index,
+                        location.column
+                    )
+                }
+            )
+        )
+    )
 
-    private val valuePath
-        get() = YamlPath(path.segments + YamlPathSegment.MapElementValue(Location(0, 0)))
+    public val YamlScalar.valuePath
+        get() = YamlPath(
+            path.segments + YamlPathSegment.MapElementValue(
+                path.segments.last().location.let { (line, column) ->
+                    Location(line, column + content.length + 3)
+                }
+            ))
 
     @PublishedApi
     internal fun build(): YamlMap = YamlMap(content, path)
