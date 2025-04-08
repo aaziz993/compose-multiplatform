@@ -20,7 +20,11 @@ internal class KotlinNativeBinaryContainer(
 
 @Suppress("UNCHECKED_CAST")
 private object KotlinNativeBinaryContainerSetSerializer
-    : SetSerializer<NativeBinary<out org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary>, KotlinNativeBinaryContainer>(
+    : SetSerializer<
+    NativeBinary<out org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary>,
+    KotlinNativeBinaryContainer,
+    KotlinNativeBinaryContainer,
+    >(
     NativeBinary.serializer(NothingSerializer()) as KSerializer<NativeBinary<out org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary>>,
     ::KotlinNativeBinaryContainer,
 )

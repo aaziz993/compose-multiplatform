@@ -1,3 +1,5 @@
+@file:Suppress("BOUNDS_NOT_ALLOWED_IF_BOUNDED_BY_TYPE_PARAMETER")
+
 package klib.data.type.serialization.serializer
 
 import kotlinx.serialization.KSerializer
@@ -7,10 +9,10 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
 
-public open class ListSerializer<E, C : List<E>>(
+public open class ListSerializer<E, C : List<E>, B>(
     eSerializer: KSerializer<E>,
     private val toResult: List<E>.() -> C,
-) : KSerializer<C> {
+) : KSerializer<C> where B : C, B : List<E> {
     private val delegate = ListSerializer(eSerializer)
 
     override val descriptor: SerialDescriptor = delegate.descriptor

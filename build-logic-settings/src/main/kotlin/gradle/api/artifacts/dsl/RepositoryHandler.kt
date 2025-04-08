@@ -10,7 +10,10 @@ import org.gradle.api.initialization.Settings
 
 @Suppress("JavaDefaultMethodsNotOverriddenByDelegation")
 @Serializable(with = RepositoryHandlerListSerializer::class)
-internal abstract class RepositoryHandler : ArtifactRepositoryContainer {
+internal class RepositoryHandler(
+    delegate: List<ArtifactRepository<out org.gradle.api.artifacts.repositories.ArtifactRepository>>
+) : ArtifactRepositoryContainer,
+    List<ArtifactRepository<out org.gradle.api.artifacts.repositories.ArtifactRepository>> by delegate {
 
     context(Settings)
     fun applyTo(receiver: org.gradle.api.artifacts.dsl.RepositoryHandler) =
@@ -25,13 +28,13 @@ internal abstract class RepositoryHandler : ArtifactRepositoryContainer {
         }
 }
 
-@Serializable
-private class MutableRepositoryHandler
-    : RepositoryHandler(), MutableList<ArtifactRepository<out org.gradle.api.artifacts.repositories.ArtifactRepository>> by mutableListOf()
-
 @Suppress("UNCHECKED_CAST")
 private object RepositoryHandlerListSerializer :
-    KSerializer<RepositoryHandler> by ListSerializer(
+    ListSerializer<
+        ArtifactRepository<out org.gradle.api.artifacts.repositories.ArtifactRepository>,
+        RepositoryHandler,
+        RepositoryHandler,
+        >(
         ArtifactRepository.serializer(NothingSerializer()) as KSerializer<ArtifactRepository<out org.gradle.api.artifacts.repositories.ArtifactRepository>>,
-        ::MutableRepositoryHandler,
+        ::RepositoryHandler,
     )

@@ -27,7 +27,11 @@ internal class KotlinJsBinaryContainer(
 
 @Suppress("UNCHECKED_CAST")
 private object KotlinJsBinaryContainerSetSerializer
-    : SetSerializer<JsIrBinary<out org.jetbrains.kotlin.gradle.targets.js.ir.JsIrBinary>, KotlinJsBinaryContainer>(
+    : SetSerializer<
+        JsIrBinary<out org.jetbrains.kotlin.gradle.targets.js.ir.JsIrBinary>,
+        KotlinJsBinaryContainer,
+        KotlinJsBinaryContainer,
+        >(
     JsIrBinary.serializer(NothingSerializer()) as KSerializer<JsIrBinary<out org.jetbrains.kotlin.gradle.targets.js.ir.JsIrBinary>>,
     ::KotlinJsBinaryContainer,
 )
