@@ -3,6 +3,16 @@ package klib.data.type
 import com.ionspin.kotlin.bignum.integer.Quadruple
 import klib.data.type.collection.get
 
+@Suppress("UNCHECKED_CAST")
+public fun <E> Any.asListOrNull(): List<E>? = this as? List<E>
+
+public fun <E> Any.asList(): List<E> = asListOrNull()!!
+
+@Suppress("UNCHECKED_CAST")
+public fun <K, V> Any?.asMapOrNull(): Map<K, V>? = this as? Map<K, V>
+
+public fun <K, V> Any?.asMap(): Map<K, V> = asMapOrNull()!!
+
 public inline fun <T> T.act(action: () -> Unit): T {
     action()
     return this

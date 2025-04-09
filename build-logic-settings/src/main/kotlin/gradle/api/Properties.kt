@@ -4,15 +4,17 @@ import com.charleskorn.kaml.Yaml
 import com.charleskorn.kaml.YamlConfiguration
 import gradle.api.ci.CI
 import gradle.api.initialization.ScriptHandler
+import gradle.get
 import java.io.File
 import klib.data.type.asListOrNull
 import klib.data.type.asMap
 import klib.data.type.collection.deepMerge
-import klib.data.type.serialization.decodeFromAny
+import klib.data.type.eval
+import klib.data.type.serialization.encoder.deserialize
 import klib.data.type.serialization.yaml.decodeAnyFromString
-import klib.data.type.serialization.yaml.decodeFromAny
 import kotlin.io.path.Path
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.serializer
 import org.gradle.api.file.Directory
 import org.gradle.api.plugins.ExtraPropertiesExtension
 
@@ -65,20 +67,21 @@ internal interface Properties : Map<String, Any?> {
                 val templatesProperties = (properties["templates"] as List<String>?)?.loadTemplates(directory).orEmpty()
 
                 (templatesProperties deepMerge properties)
-//                        .resolve(context) { keys -> get(*keys.toTypedArray()) },
+                    .eval(context) { keys -> get(*keys.toTypedArray()) }
             }
             else emptyMap()
-        }.let(yaml::decodeFromAny)
+        }.let(T::class.serializer()::deserialize)
 
-        /** Resolves deep templates.
-         * Templates also can contain templates.
+        /** Templates also can contain templates.
+         * Loads templates recursively.
+         *
          */
         @Suppress("UNCHECKED_CAST")
         private fun List<String>.loadTemplates(directory: Directory): Map<String, Any?> =
             fold(emptyMap()) { acc, templatePath ->
                 val template = yaml.decodeAnyFromString(directory.file(templatePath).asFile.readText()).asMap
 
-                acc deepMerge template["templates"].asListOrNull?.map { subTemplatePath ->
+                acc deepMerge template["templates"]?.asListOrNull<String>()?.map { subTemplatePath ->
                     Path(templatePath).resolve(subTemplatePath).normalize().toString()
                 }?.loadTemplates(directory).orEmpty() deepMerge template
             }
