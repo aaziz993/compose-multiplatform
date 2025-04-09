@@ -1,15 +1,20 @@
 package gradle.api
 
+import com.charleskorn.kaml.Yaml
+import com.charleskorn.kaml.YamlConfiguration
 import gradle.api.ci.CI
 import gradle.api.initialization.ScriptHandler
 import java.io.File
+import klib.data.type.asListOrNull
+import klib.data.type.asMap
 import klib.data.type.collection.deepMerge
-import klib.data.type.serialization.json.decodeFromAny
+import klib.data.type.serialization.decodeFromAny
+import klib.data.type.serialization.yaml.decodeAnyFromString
+import klib.data.type.serialization.yaml.decodeFromAny
 import kotlin.io.path.Path
 import kotlinx.serialization.json.Json
 import org.gradle.api.file.Directory
 import org.gradle.api.plugins.ExtraPropertiesExtension
-import org.yaml.snakeyaml.Yaml
 
 internal interface Properties : Map<String, Any?> {
 
@@ -25,7 +30,11 @@ internal interface Properties : Map<String, Any?> {
             ignoreUnknownKeys = true
         }
 
-        val yaml = Yaml()
+        val yaml = Yaml(
+            configuration = YamlConfiguration(
+                strictMode = false,
+            ),
+        )
 
         fun loadLocalProperties(file: File) =
             java.util.Properties().apply {
@@ -51,16 +60,15 @@ internal interface Properties : Map<String, Any?> {
             context: Any,
         ): T = directory.file(path).asFile.let { propertiesFile ->
             if (propertiesFile.exists()) {
-                val properties = yaml.load<MutableMap<String, *>>(propertiesFile.readText())
+                val properties = yaml.decodeAnyFromString(propertiesFile.readText()).asMap
 
                 val templatesProperties = (properties["templates"] as List<String>?)?.loadTemplates(directory).orEmpty()
-
 
                 (templatesProperties deepMerge properties)
 //                        .resolve(context) { keys -> get(*keys.toTypedArray()) },
             }
             else emptyMap()
-        }.let(json::decodeFromAny)
+        }.let(yaml::decodeFromAny)
 
         /** Resolves deep templates.
          * Templates also can contain templates.
@@ -68,9 +76,9 @@ internal interface Properties : Map<String, Any?> {
         @Suppress("UNCHECKED_CAST")
         private fun List<String>.loadTemplates(directory: Directory): Map<String, Any?> =
             fold(emptyMap()) { acc, templatePath ->
-                val template = yaml.load<MutableMap<String, *>>(directory.file(templatePath).asFile.readText())
+                val template = yaml.decodeAnyFromString(directory.file(templatePath).asFile.readText()).asMap
 
-                acc deepMerge (template["templates"] as List<String>?)?.map { subTemplatePath ->
+                acc deepMerge template["templates"].asListOrNull?.map { subTemplatePath ->
                     Path(templatePath).resolve(subTemplatePath).normalize().toString()
                 }?.loadTemplates(directory).orEmpty() deepMerge template
             }

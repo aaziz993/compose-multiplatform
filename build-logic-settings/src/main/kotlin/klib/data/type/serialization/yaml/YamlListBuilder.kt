@@ -9,27 +9,7 @@ import kotlin.contracts.contract
 /**
  * DSL builder for a [YamlList]. To create an instance of builder, use [buildYamlList] build function.
  */
-public class YamlListBuilder @PublishedApi internal constructor(val path: YamlPath) {
-
-    private val content: MutableList<YamlNode> = mutableListOf()
-
-    /**
-     * Adds the given YAML [node] to a resulting YAML array.
-     *
-     * Always returns `true` similarly to [ArrayList] specification.
-     */
-    public fun add(node: YamlNode): Boolean {
-        content += node
-        return true
-    }
-
-    /**
-     * Adds the given YAML [nodes] to a resulting YAML array.
-     *
-     * @return `true` if the list was changed as the result of the operation.
-     */
-
-    public fun addAll(nodes: Collection<YamlNode>): Boolean = content.addAll(nodes)
+public class YamlListBuilder @PublishedApi internal constructor(public val path: YamlPath) : ArrayList<YamlNode>() {
 
     /**
      * Adds the given boolean [value] to a resulting YAML array.
@@ -51,7 +31,7 @@ public class YamlListBuilder @PublishedApi internal constructor(val path: YamlPa
      * Always returns `true` similarly to [ArrayList] specification.
      */
     public fun add(value: String?): Boolean =
-        add(value?.let { value -> YamlScalar(value, lastIndexPath) } ?: YamlNull(lastIndexPath))
+        add(value?.let { value -> YamlScalar(value, withListEntry()) } ?: YamlNull(withListEntry()))
 
     /**
      * Adds `null` to a resulting YAML array.
@@ -68,7 +48,7 @@ public class YamlListBuilder @PublishedApi internal constructor(val path: YamlPa
      * Always returns `true` similarly to [ArrayList] specification.
      */
     public fun addYamlMap(builderAction: YamlMapBuilder.() -> Unit): Boolean =
-        add(buildYamlMap(lastIndexPath, builderAction))
+        add(buildYamlMap(withListEntry(), builderAction))
 
     /**
      * Adds the [YAML array][YamlList] produced by the [builderAction] function to a resulting YAML array.
@@ -76,7 +56,7 @@ public class YamlListBuilder @PublishedApi internal constructor(val path: YamlPa
      * Always returns `true` similarly to [ArrayList] specification.
      */
     public fun addYamlList(builderAction: YamlListBuilder.() -> Unit): Boolean =
-        add(buildYamlList(lastIndexPath, builderAction))
+        add(buildYamlList(withListEntry(), builderAction))
 
     /**
      * Adds the given string [values] to a resulting YAML array.
@@ -86,7 +66,7 @@ public class YamlListBuilder @PublishedApi internal constructor(val path: YamlPa
     @JvmName("addAllStrings")
     public fun addAll(values: Collection<String?>): Boolean =
         addAll(values.mapIndexed { index, value ->
-            val indexPath = (content.size + index).asIndexPath
+            val indexPath = withListEntry(index)
             value?.let { value -> YamlScalar(value, indexPath) } ?: YamlNull(indexPath)
         })
 
@@ -108,21 +88,17 @@ public class YamlListBuilder @PublishedApi internal constructor(val path: YamlPa
     public fun addAll(values: Collection<Number?>): Boolean =
         addAll(values.map { value -> value?.toString() })
 
-    public val Int.asIndexPath
-        get() = YamlPath(
-            path.segments + YamlPathSegment.ListEntry(
-                this,
-                path.segments.last().location.let { location ->
-                    Location(location.line + this, location.column + 2)
-                }
-            )
+    public fun withListEntry(index: Int = size, line: Int = endLine + 1) =
+        path.withListEntry(
+            index,
+            Location(line, path.endLocation.column + 2)
         )
 
-    public val lastIndexPath
-        get() = content.size.asIndexPath
+    private val endLine
+        get() = lastOrNull()?.location?.line ?: (path.endLocation.line - 1)
 
     @PublishedApi
-    internal fun build(): YamlList = YamlList(content, path)
+    internal fun build(): YamlList = YamlList(this, path)
 }
 
 /**

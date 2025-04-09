@@ -1,7 +1,7 @@
 package gradle.api.artifacts
 
 import klib.data.type.reflection.trySet
-import klib.data.type.serialization.json.serializer.JsonObjectTransformingSerializer
+import klib.data.type.serialization.serializer.MapTransformingSerializer
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 
@@ -39,7 +39,7 @@ internal data class MutableVersionConstraint(
 }
 
 private object MutableVersionConstraintTransformingSerializer :
-    JsonObjectTransformingSerializer<MutableVersionConstraint>(
+    MapTransformingSerializer<MutableVersionConstraint>(
         MutableVersionConstraint.generatedSerializer(),
         "require",
     )

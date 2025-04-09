@@ -6,7 +6,7 @@ import gradle.api.tasks.applyTo
 import gradle.plugins.kotlin.targets.nat.CompilerPluginOptions
 import gradle.plugins.kotlin.targets.web.KotlinJsCompilerOptions
 import gradle.plugins.kotlin.tasks.AbstractKotlinCompile
-import klib.data.type.serialization.json.serializer.SerializableAnyMap
+import klib.data.type.serialization.serializer.SerializableAnyMap
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

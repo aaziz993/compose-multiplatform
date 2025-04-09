@@ -5,13 +5,13 @@ import gradle.api.ProjectNamed
 import gradle.api.applyTo
 import gradle.api.publish.maven.MavenPublication
 import klib.data.type.reflection.trySet
-import klib.data.type.serialization.json.serializer.ReflectionJsonObjectTransformingPolymorphicSerializer
+import klib.data.type.serialization.json.serializer.ReflectionMapTransformingPolymorphicSerializer
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-@Serializable(with = ReflectionKotlinTargetObjectTransformingPolymorphicSerializer::class)
+@Serializable(with = ReflectionKotlinTargetMapTransformingPolymorphicSerializer::class)
 internal interface KotlinTarget<T : org.jetbrains.kotlin.gradle.plugin.KotlinTarget> : ProjectNamed<T> {
 
     val targetName: String?
@@ -54,8 +54,8 @@ internal interface KotlinTarget<T : org.jetbrains.kotlin.gradle.plugin.KotlinTar
     fun applyTo()
 }
 
-private class ReflectionKotlinTargetObjectTransformingPolymorphicSerializer(serializer: KSerializer<Nothing>)
-    : ReflectionJsonObjectTransformingPolymorphicSerializer<KotlinTarget<*>>(KotlinTarget::class)
+private class ReflectionKotlinTargetMapTransformingPolymorphicSerializer(serializer: KSerializer<Nothing>)
+    : ReflectionMapTransformingPolymorphicSerializer<KotlinTarget<*>>(KotlinTarget::class)
 
 @Serializable
 @SerialName("KotlinTarget")

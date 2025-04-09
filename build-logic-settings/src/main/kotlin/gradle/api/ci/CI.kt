@@ -1,14 +1,14 @@
 package gradle.api.ci
 
 import gradle.accessors.execute
-import klib.data.type.serialization.json.serializer.ReflectionJsonObjectTransformingPolymorphicSerializer
+import klib.data.type.serialization.json.serializer.ReflectionMapTransformingPolymorphicSerializer
 import kotlin.reflect.full.companionObject
 import kotlin.reflect.full.companionObjectInstance
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.gradle.api.initialization.Settings
 
-@Serializable(with = ReflectionCIObjectTransformingPolymorphicSerializer::class)
+@Serializable(with = ReflectionCIMapTransformingPolymorphicSerializer::class)
 internal sealed class CI {
 
     abstract val versioning: Versioning
@@ -157,8 +157,8 @@ internal sealed class CI {
     }
 }
 
-private object ReflectionCIObjectTransformingPolymorphicSerializer
-    : ReflectionJsonObjectTransformingPolymorphicSerializer<CI>(CI::class)
+private object ReflectionCIMapTransformingPolymorphicSerializer
+    : ReflectionMapTransformingPolymorphicSerializer<CI>(CI::class)
 
 internal val Collection<CI>.current
     get() = find { ci -> ci::class.simpleName == CI.name }

@@ -2,7 +2,7 @@ package gradle.plugins.signing.tasks
 
 import gradle.api.tasks.DefaultTask
 import gradle.api.tasks.applyTo
-import klib.data.type.serialization.json.serializer.SerializableAnyMap
+import klib.data.type.serialization.serializer.SerializableAnyMap
 import gradle.plugins.signing.SignContentPolymorphicSerializer
 import gradle.plugins.signing.Signer
 import kotlinx.serialization.Serializable

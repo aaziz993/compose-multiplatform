@@ -7,9 +7,9 @@ import klib.data.type.reflection.tryApply
 import klib.data.type.reflection.trySet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.JsonContentPolymorphicSerializer
-import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonPrimitive
+import klib.data.type.serialization.serializer.ContentPolymorphicSerializer
+import kotlinx.serialization.builtins.serializer
+
 import kotlinx.serialization.serializer
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
@@ -137,10 +137,10 @@ internal data class KotlinWebpackConfig(
             }
         }
 
-        private object OverlayContentPolymorphicSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
+        private object OverlayContentPolymorphicSerializer : ContentPolymorphicSerializer<Any>(Any::class) {
 
-            override fun selectDeserializer(element: JsonElement) =
-                if (element is JsonPrimitive) Boolean::class.serializer() else Client.Overlay.serializer()
+            override fun selectDeserializer(value: Any?) =
+                if (value is Boolean) Boolean.serializer() else Client.Overlay.serializer()
         }
 
         @Serializable

@@ -1,11 +1,11 @@
 package gradle.plugins.kotlin.targets.nat
 
-import gradle.api.NamedObjectTransformingSerializer
+import gradle.api.NamedMapTransformingSerializer
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 
 @KeepGeneratedSerializer
-@Serializable(with = DefaultCInteropSettingsObjectTransformingSerializer::class)
+@Serializable(with = DefaultCInteropSettingsMapTransformingSerializer::class)
 internal data class DefaultCInteropSettings(
     override val name: String? = null,
     override val dependencyFiles: Set<String>? = null,
@@ -19,5 +19,5 @@ internal data class DefaultCInteropSettings(
     override val extraOpts: List<String>? = null
 ) : CInteropSettings<org.jetbrains.kotlin.gradle.plugin.mpp.DefaultCInteropSettings>
 
-private object DefaultCInteropSettingsObjectTransformingSerializer
-    : NamedObjectTransformingSerializer<DefaultCInteropSettings>(DefaultCInteropSettings.generatedSerializer())
+private object DefaultCInteropSettingsMapTransformingSerializer
+    : NamedMapTransformingSerializer<DefaultCInteropSettings>(DefaultCInteropSettings.generatedSerializer())

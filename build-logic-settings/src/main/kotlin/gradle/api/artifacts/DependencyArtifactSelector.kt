@@ -1,11 +1,11 @@
 package gradle.api.artifacts
 
-import klib.data.type.serialization.json.serializer.JsonObjectTransformingSerializer
+import klib.data.type.serialization.serializer.MapTransformingSerializer
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 
 @KeepGeneratedSerializer
-@Serializable(with = DependencyArtifactSelectorObjectTransformingSerializer::class)
+@Serializable(with = DependencyArtifactSelectorMapTransformingSerializer::class)
 internal data class DependencyArtifactSelector(
     val type: String,
     val extension: String? = null,
@@ -19,8 +19,8 @@ internal data class DependencyArtifactSelector(
     override fun getClassifier(): String? = classifier
 }
 
-private object DependencyArtifactSelectorObjectTransformingSerializer :
-    JsonObjectTransformingSerializer<DependencyArtifactSelector>(
+private object DependencyArtifactSelectorMapTransformingSerializer :
+    MapTransformingSerializer<DependencyArtifactSelector>(
         DependencyArtifactSelector.generatedSerializer(),
         "type",
     )

@@ -2,6 +2,7 @@
 
 package klib.data.type.serialization.encoder
 
+import klib.data.type.toNumberOrNull
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.descriptors.SerialDescriptor
@@ -12,7 +13,6 @@ import kotlinx.serialization.internal.MapLikeDescriptor
 import kotlinx.serialization.modules.EmptySerializersModule
 import kotlinx.serialization.modules.SerializersModule
 
-@PublishedApi
 internal class AnyTreeDecoder(
     val value: Any?
 ) : TreeDecoder() {
@@ -49,27 +49,26 @@ internal class AnyTreeDecoder(
 
     override fun decodeInline(descriptor: SerialDescriptor): Decoder = this
 
-    private inline fun <reified T> get(): T = value as T
+    private inline fun <reified T : Any> get(): T = value?.toNumberOrNull() ?: value as T
 
     override fun beginStructure(descriptor: SerialDescriptor): CompositeDecoder =
         StructureCompositeDecoder(
-                when {
-                    descriptor is ListLikeDescriptor -> value as List<*>
+            when {
+                descriptor is ListLikeDescriptor -> value as List<*>
 
-                    descriptor is MapLikeDescriptor -> (value as Map<*, *>).flatMap { (key, value) ->
-                        listOf(key, value)
-                    }
+                descriptor is MapLikeDescriptor -> (value as Map<*, *>).flatMap { (key, value) ->
+                    listOf(key, value)
+                }
 
-                    value is Map<*, *> -> value.values
+                value is Map<*, *> -> value.values
 
-                    else -> throw IllegalArgumentException()
-                }.toTypedArray(),
+                else -> throw IllegalArgumentException()
+            }.toTypedArray()
         )
 
     private inner class StructureCompositeDecoder(
         val array: Array<Any?>
     ) : CompositeDecoder {
-
         private var index = 0
 
         override val serializersModule: SerializersModule = EmptySerializersModule()
@@ -111,9 +110,11 @@ internal class AnyTreeDecoder(
             decodeSerializableElement(descriptor, index, deserializer)
         }
 
-        private inline fun <reified T> get(index: Int): T = array[index] as T
+        private inline fun <reified T> get(index: Int): T = array[index].let { value ->
+            value?.toNumberOrNull() ?: value as T
+        }
     }
 }
 
-public fun <T> DeserializationStrategy<T>.decodeFromAny(value: Any?): T =
+public fun <T> DeserializationStrategy<T>.deserialize(value: Any?): T =
     deserialize(AnyTreeDecoder(value))

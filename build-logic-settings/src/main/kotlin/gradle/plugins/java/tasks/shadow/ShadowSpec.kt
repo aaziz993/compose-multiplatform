@@ -6,8 +6,8 @@ import gradle.api.tasks.copy.CopySpec
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.json.JsonContentPolymorphicSerializer
-import kotlinx.serialization.json.JsonElement
+import klib.data.type.serialization.serializer.ContentPolymorphicSerializer
+
 import kotlinx.serialization.json.jsonPrimitive
 import org.gradle.api.Project
 
@@ -68,8 +68,8 @@ internal interface ShadowSpec<T : com.github.jengelman.gradle.plugins.shadow.tas
 }
 
 internal object MergeServiceFilesContentPolymorphicSerializer :
-    JsonContentPolymorphicSerializer<Any>(Any::class) {
+    ContentPolymorphicSerializer<Any>(Any::class) {
 
-    override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
+    override fun selectDeserializer(value: Any?): DeserializationStrategy<Any> =
         if (element.jsonPrimitive.isString) String.serializer() else Boolean.serializer()
 }

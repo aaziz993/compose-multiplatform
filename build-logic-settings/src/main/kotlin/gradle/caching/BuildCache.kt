@@ -1,7 +1,7 @@
 package gradle.caching
 
 import klib.data.type.reflection.trySet
-import klib.data.type.serialization.json.serializer.ReflectionJsonObjectTransformingPolymorphicSerializer
+import klib.data.type.serialization.json.serializer.ReflectionMapTransformingPolymorphicSerializer
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings
@@ -11,7 +11,7 @@ import org.gradle.api.initialization.Settings
  *
  * @since 3.5
  */
-@Serializable(with = ReflectionBuildCacheObjectTransformingPolymorphicSerializer::class)
+@Serializable(with = ReflectionBuildCacheMapTransformingPolymorphicSerializer::class)
 internal interface BuildCache<T : org.gradle.caching.configuration.BuildCache> {
 
     /**
@@ -31,7 +31,7 @@ internal interface BuildCache<T : org.gradle.caching.configuration.BuildCache> {
     }
 }
 
-private class ReflectionBuildCacheObjectTransformingPolymorphicSerializer(serializer: KSerializer<Nothing>)
-    : ReflectionJsonObjectTransformingPolymorphicSerializer<BuildCache<*>>(
+private class ReflectionBuildCacheMapTransformingPolymorphicSerializer(serializer: KSerializer<Nothing>)
+    : ReflectionMapTransformingPolymorphicSerializer<BuildCache<*>>(
     BuildCache::class,
 )

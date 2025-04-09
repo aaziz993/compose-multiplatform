@@ -7,7 +7,7 @@ import gradle.plugins.kotlin.targets.web.tasks.DefaultIncrementalSyncTaskImpl
 import gradle.plugins.kotlin.targets.web.tasks.KotlinJsIrLink
 import gradle.plugins.kotlin.targets.web.tasks.KotlinJsIrLinkImpl
 import klib.data.type.reflection.trySet
-import klib.data.type.serialization.json.serializer.ReflectionJsonObjectTransformingPolymorphicSerializer
+import klib.data.type.serialization.json.serializer.ReflectionMapTransformingPolymorphicSerializer
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
@@ -29,7 +29,7 @@ internal interface JsBinary<T : org.jetbrains.kotlin.gradle.targets.js.ir.JsBina
     }
 }
 
-@Serializable(with = ReflectionJsIrBinaryObjectTransformingPolymorphicSerializer::class)
+@Serializable(with = ReflectionJsIrBinaryMapTransformingPolymorphicSerializer::class)
 internal sealed class JsIrBinary<T : org.jetbrains.kotlin.gradle.targets.js.ir.JsIrBinary> : JsBinary<T> {
     abstract val generateTs: Boolean?
 
@@ -50,8 +50,8 @@ internal sealed class JsIrBinary<T : org.jetbrains.kotlin.gradle.targets.js.ir.J
     }
 }
 
-private class ReflectionJsIrBinaryObjectTransformingPolymorphicSerializer(serializer: KSerializer<Nothing>)
-    : ReflectionJsonObjectTransformingPolymorphicSerializer<JsIrBinary<*>>(JsIrBinary::class)
+private class ReflectionJsIrBinaryMapTransformingPolymorphicSerializer(serializer: KSerializer<Nothing>)
+    : ReflectionMapTransformingPolymorphicSerializer<JsIrBinary<*>>(JsIrBinary::class)
 
 internal interface WasmBinary<T : org.jetbrains.kotlin.gradle.targets.js.ir.WasmBinary> {
 

@@ -1,15 +1,7 @@
 package klib.data.type.serialization.yaml
 
-import com.charleskorn.kaml.Location
-import com.charleskorn.kaml.YamlList
-import com.charleskorn.kaml.YamlMap
-import com.charleskorn.kaml.YamlNode
-import com.charleskorn.kaml.YamlNull
-import com.charleskorn.kaml.YamlPath
-import com.charleskorn.kaml.YamlPathSegment
-import com.charleskorn.kaml.YamlScalar
+import com.charleskorn.kaml.*
 import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.json.*
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
@@ -17,23 +9,8 @@ import kotlin.contracts.contract
 /**
  * DSL builder for a [YamlMap]. To create an instance of builder, use [buildYamlMap] build function.
  */
-public class YamlMapBuilder @PublishedApi internal constructor(val path: YamlPath) {
-
-    private val content: MutableMap<YamlScalar, YamlNode> = linkedMapOf()
-
-    /**
-     * Add the given YAML [element] to a resulting YAML object using the given [key].
-     *
-     * Returns the previous value associated with [key], or `null` if the key was not present.
-     */
-    public fun put(key: YamlScalar, node: YamlNode): YamlNode? = content.put(key, node)
-
-    /**
-     * Adds the given YAML [map] to a resulting YAML map.
-     *
-     * @return `true` if the list was changed as the result of the operation.
-     */
-    public fun putAll(map: Map<YamlScalar, YamlNode>): Unit = content.putAll(map)
+public class YamlMapBuilder @PublishedApi internal constructor(public val path: YamlPath) :
+    LinkedHashMap<YamlScalar, YamlNode>() {
 
     /**
      * Add the [YAML object][YamlMap] produced by the [builderAction] function to a resulting YAML object using the given [key].
@@ -42,7 +19,7 @@ public class YamlMapBuilder @PublishedApi internal constructor(val path: YamlPat
      */
     public fun putYamlMap(key: String, builderAction: YamlMapBuilder.() -> Unit): YamlNode? =
         key.asKeyScalar().let { keyScalar ->
-            put(keyScalar, buildYamlMap(keyScalar.valuePath, builderAction))
+            put(keyScalar, buildYamlMap(keyScalar.path.withMapElementValue(), builderAction))
         }
 
     /**
@@ -52,7 +29,7 @@ public class YamlMapBuilder @PublishedApi internal constructor(val path: YamlPat
      */
     public fun putYamlList(key: String, builderAction: YamlListBuilder.() -> Unit): YamlNode? =
         key.asKeyScalar().let { keyScalar ->
-            put(keyScalar, buildYamlList(keyScalar.valuePath, builderAction))
+            put(keyScalar, buildYamlList(keyScalar.path.withMapElementValue(column = 0), builderAction))
         }
 
     /**
@@ -78,10 +55,10 @@ public class YamlMapBuilder @PublishedApi internal constructor(val path: YamlPat
      */
     public fun put(key: String, value: String?): YamlNode? =
         key.asKeyScalar().let { keyScalar ->
+            val valuePath = keyScalar.path.withMapElementValue(0, key.length + 2)
             put(
                 keyScalar,
-                value?.let { value -> YamlScalar(value, keyScalar.valuePath) }
-                    ?: YamlNull(keyScalar.valuePath)
+                value?.let { value -> YamlScalar(value, valuePath) } ?: YamlNull(valuePath)
             )
         }
 
@@ -94,31 +71,32 @@ public class YamlMapBuilder @PublishedApi internal constructor(val path: YamlPat
     @Suppress("UNUSED_PARAMETER") // allows to call `put("key", null)`
     public fun putNull(key: String): YamlNode? = put(key, null as String?)
 
-    public fun String.asKeyScalar(index: Int = content.size) = YamlScalar(
-        this, YamlPath(
-            path.segments + YamlPathSegment.MapElementKey(
-                this,
-                path.segments.last().location.let { location ->
-                    Location(
-                        location.line + index,
-                        location.column
-                    )
-                }
-            )
-        )
+    public fun withMapElementKey(
+        key: String,
+        line: Int = endLine + 1
+    ): YamlPath = path.withMapElementKey(
+        key,
+        path.endLocation.copy(line)
     )
 
-    public val YamlScalar.valuePath
-        get() = YamlPath(
-            path.segments + YamlPathSegment.MapElementValue(
-                path.segments.last().location.let { (line, column) ->
-                    Location(line, column + content.length + 3)
-                }
-            ))
+    public fun String.asKeyScalar(line: Int = endLine + 1) =
+        YamlScalar(
+            this,
+            withMapElementKey(this, line)
+        )
+
+    private val endLine
+        get() = lastEntry()?.value?.location?.line ?: (path.endLocation.line - 1)
 
     @PublishedApi
-    internal fun build(): YamlMap = YamlMap(content, path)
+    internal fun build(): YamlMap = YamlMap(this, path)
 }
+
+public fun YamlPath.withMapElementValue(line: Int = 1, column: Int = 2): YamlPath =
+    withMapElementValue(Location(endLocation.line + line, endLocation.column + column))
+
+public fun YamlPath.withMapElementValue(key: String, value: Any?): YamlPath =
+    if (value is List<*> || value is Map<*, *>) withMapElementValue() else withMapElementValue(0, key.length + 2)
 
 
 /**

@@ -1,6 +1,6 @@
 package gradle.plugins.kotlin.sqldelight
 
-import gradle.api.NamedObjectTransformingSerializer
+import gradle.api.NamedMapTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.file.trySetFrom
 import gradle.api.provider.tryAssign
@@ -10,7 +10,7 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
 @KeepGeneratedSerializer
-@Serializable(with = SqlDelightDatabaseObjectTransformingSerializer::class)
+@Serializable(with = SqlDelightDatabaseMapTransformingSerializer::class)
 internal data class SqlDelightDatabase(
     //Note: Name of your Database and .sq file should be same
     override val name: String,
@@ -83,5 +83,5 @@ internal data class SqlDelightDatabase(
     }
 }
 
-private object SqlDelightDatabaseObjectTransformingSerializer
-    : NamedObjectTransformingSerializer<SqlDelightDatabase>(SqlDelightDatabase.generatedSerializer())
+private object SqlDelightDatabaseMapTransformingSerializer
+    : NamedMapTransformingSerializer<SqlDelightDatabase>(SqlDelightDatabase.generatedSerializer())

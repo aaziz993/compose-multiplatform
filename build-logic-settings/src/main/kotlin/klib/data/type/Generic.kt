@@ -8,6 +8,20 @@ public inline fun <T> T.act(action: () -> Unit): T {
     return this
 }
 
+public inline fun <reified T : Any> Any.toNumberOrNull(): T = when (T::class) {
+    UByte::class -> toString().toUByte()
+    UShort::class -> toString().toUShort()
+    UInt::class -> toString().toUInt()
+    ULong::class -> toString().toULong()
+    Byte::class -> toString().toByte()
+    Short::class -> toString().toShort()
+    Int::class -> toString().toInt()
+    Long::class -> toString().toLong()
+    Float::class -> toString().toFloat()
+    Double::class -> toString().toDouble()
+    else -> null
+} as T
+
 @Suppress("UNCHECKED_CAST")
 public fun <T : Any, K> T.get(
     vararg keys: K,

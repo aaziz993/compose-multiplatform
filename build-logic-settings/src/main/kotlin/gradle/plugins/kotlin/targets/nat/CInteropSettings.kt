@@ -8,11 +8,9 @@ import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.SetSerializer
 import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.json.JsonArray
-import kotlinx.serialization.json.JsonContentPolymorphicSerializer
-import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonPrimitive
+
+import klib.data.type.serialization.serializer.ContentPolymorphicSerializer
+
 import org.gradle.api.Project
 
 /**
@@ -316,8 +314,8 @@ internal interface CInteropSettings<T : org.jetbrains.kotlin.gradle.plugin.CInte
          *                     includeDirs {
          *                         headerFilterOnly(project.file("include/libs"))
          *                     }
-         *                 }internal abstract class NamedObjectTransformingSerializer<T : BuildType<*>>(tSerializer: KSerializer<T>)
-         *     : NamedObjectTransformingSerializer<T>(tSerializer)
+         *                 }internal abstract class NamedMapTransformingSerializer<T : BuildType<*>>(tSerializer: KSerializer<T>)
+         *     : NamedMapTransformingSerializer<T>(tSerializer)
          *             }
          *         }
          *     }
@@ -338,13 +336,15 @@ internal interface CInteropSettings<T : org.jetbrains.kotlin.gradle.plugin.CInte
         }
     }
 
-    private object IncludeDirContentPolymorphicSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
+    private object IncludeDirContentPolymorphicSerializer : ContentPolymorphicSerializer<Any>(Any::class) {
 
-        override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
-            when (element) {
-                is JsonPrimitive -> String.serializer()
-                is JsonArray -> SetSerializer(String.serializer())
-                is JsonObject -> IncludeDirectories.serializer()
+        override fun selectDeserializer(value: Any?): DeserializationStrategy<Any> =
+            when (value) {
+                is String -> String.serializer()
+                is List<*> -> SetSerializer(String.serializer())
+                is Map<*, *> -> IncludeDirectories.serializer()
+
+                else -> throw IllegalArgumentException("Unknown value: $value")
             }
     }
 }

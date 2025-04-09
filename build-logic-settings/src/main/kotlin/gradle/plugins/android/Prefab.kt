@@ -1,6 +1,6 @@
 package gradle.plugins.android
 
-import gradle.api.NamedObjectTransformingSerializer
+import gradle.api.NamedMapTransformingSerializer
 import gradle.api.ProjectNamed
 import klib.data.type.reflection.trySet
 import kotlinx.serialization.KeepGeneratedSerializer
@@ -11,7 +11,7 @@ import org.gradle.api.Project
  * Options for including [Prefab](https://google.github.io/prefab/) packages in AARs.
  */
 @KeepGeneratedSerializer
-@Serializable(with = PrefabObjectTransformingSerializer::class)
+@Serializable(with = PrefabMapTransformingSerializer::class)
 internal data class Prefab(
     /**
      * The name of the library from the external native build to include in the AAR.
@@ -61,5 +61,5 @@ internal data class Prefab(
     }
 }
 
-private object PrefabObjectTransformingSerializer
-    : NamedObjectTransformingSerializer<Prefab>(Prefab.generatedSerializer())
+private object PrefabMapTransformingSerializer
+    : NamedMapTransformingSerializer<Prefab>(Prefab.generatedSerializer())

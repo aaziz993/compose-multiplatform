@@ -1,7 +1,7 @@
 package gradle.plugins.android.library
 
-import gradle.api.NamedObjectTransformingSerializer
-import klib.data.type.serialization.json.serializer.SerializableAnyMap
+import gradle.api.NamedMapTransformingSerializer
+import klib.data.type.serialization.serializer.SerializableAnyMap
 import gradle.plugins.android.AarMetadata
 import gradle.plugins.android.BuildConfigField
 import gradle.plugins.android.BuildType
@@ -34,7 +34,7 @@ import org.gradle.api.Project
  * for more information.
  */
 @KeepGeneratedSerializer
-@Serializable(with = LibraryNamedObjectTransformingSerializer::class)
+@Serializable(with = LibraryNamedMapTransformingSerializer::class)
 internal data class LibraryBuildType(
     override val name: String,
     override val enableUnitTestCoverage: Boolean? = null,
@@ -82,6 +82,6 @@ internal data class LibraryBuildType(
     }
 }
 
-private object LibraryNamedObjectTransformingSerializer : NamedObjectTransformingSerializer<LibraryBuildType>(
+private object LibraryNamedMapTransformingSerializer : NamedMapTransformingSerializer<LibraryBuildType>(
     LibraryBuildType.generatedSerializer(),
 )

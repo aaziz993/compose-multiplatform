@@ -1,8 +1,8 @@
 package gradle.plugins.apple
 
-import gradle.api.NamedObjectTransformingSerializer
+import gradle.api.NamedMapTransformingSerializer
 import gradle.api.ProjectNamed
-import klib.data.type.serialization.json.serializer.SerializableAnyMap
+import klib.data.type.serialization.serializer.SerializableAnyMap
 import klib.data.type.collection.tryPutAll
 import klib.data.type.collection.trySet
 import klib.data.type.reflection.trySet
@@ -11,7 +11,7 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
 @KeepGeneratedSerializer
-@Serializable(with = BuildConfigurationObjectTransformingSerializer::class)
+@Serializable(with = BuildConfigurationMapTransformingSerializer::class)
 internal data class BuildConfiguration(
     override val name: String? = null,
     val fatFrameworks: Boolean? = null,
@@ -27,5 +27,5 @@ internal data class BuildConfiguration(
     }
 }
 
-private object BuildConfigurationObjectTransformingSerializer
-    : NamedObjectTransformingSerializer<BuildConfiguration>(BuildConfiguration.generatedSerializer())
+private object BuildConfigurationMapTransformingSerializer
+    : NamedMapTransformingSerializer<BuildConfiguration>(BuildConfiguration.generatedSerializer())

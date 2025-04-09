@@ -1,7 +1,7 @@
 package gradle.plugins.dokka.plugin
 
 import gradle.api.ProjectNamed
-import klib.data.type.serialization.json.serializer.ReflectionJsonObjectTransformingPolymorphicSerializer
+import klib.data.type.serialization.json.serializer.ReflectionMapTransformingPolymorphicSerializer
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 
@@ -15,14 +15,14 @@ import kotlinx.serialization.Serializable
  * The name is only used for identification in the Gradle buildscripts.
  * @param[pluginFqn] Fully qualified classname of the Dokka Plugin
  */
-@Serializable(with = ReflectionDokkaPluginParametersBaseSpecObjectTransformingPolymorphicSerializer::class)
+@Serializable(with = ReflectionDokkaPluginParametersBaseSpecMapTransformingPolymorphicSerializer::class)
 internal abstract class DokkaPluginParametersBaseSpec<T : org.jetbrains.dokka.gradle.engine.plugins.DokkaPluginParametersBaseSpec>
     : ProjectNamed<T> {
 
     abstract val pluginFqn: String
 }
 
-private class ReflectionDokkaPluginParametersBaseSpecObjectTransformingPolymorphicSerializer(serializer: KSerializer<Nothing>)
-    : ReflectionJsonObjectTransformingPolymorphicSerializer<DokkaPluginParametersBaseSpec<*>>(
+private class ReflectionDokkaPluginParametersBaseSpecMapTransformingPolymorphicSerializer(serializer: KSerializer<Nothing>)
+    : ReflectionMapTransformingPolymorphicSerializer<DokkaPluginParametersBaseSpec<*>>(
     DokkaPluginParametersBaseSpec::class,
 )

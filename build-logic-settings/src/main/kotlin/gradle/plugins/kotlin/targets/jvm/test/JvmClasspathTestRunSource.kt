@@ -1,10 +1,10 @@
 package gradle.plugins.kotlin.targets.jvm.test
 
 import gradle.plugins.kotlin.KotlinExecution
-import klib.data.type.serialization.json.serializer.JsonContentPolymorphicSerializer
+import klib.data.type.serialization.json.serializer.ContentPolymorphicSerializer
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.JsonElement
+
 import kotlinx.serialization.json.jsonObject
 
 /**
@@ -13,11 +13,11 @@ import kotlinx.serialization.json.jsonObject
 @Serializable(with = JvmClasspathTestRunSourceSerializer::class)
 internal interface JvmClasspathTestRunSource : KotlinExecution.ExecutionSource
 
-internal object JvmClasspathTestRunSourceSerializer : JsonContentPolymorphicSerializer<JvmClasspathTestRunSource>(
+internal object JvmClasspathTestRunSourceSerializer : ContentPolymorphicSerializer<JvmClasspathTestRunSource>(
     JvmClasspathTestRunSource::class,
 ) {
 
-    override fun selectDeserializer(element: JsonElement): DeserializationStrategy<JvmClasspathTestRunSource> =
+    override fun selectDeserializer(value: Any?): DeserializationStrategy<JvmClasspathTestRunSource> =
         when {
             SingleJvmCompilationTestRunSource::compilation.name in element.jsonObject -> SingleJvmCompilationTestRunSource.serializer()
 

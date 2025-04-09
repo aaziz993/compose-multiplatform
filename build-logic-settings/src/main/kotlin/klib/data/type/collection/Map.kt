@@ -11,7 +11,7 @@ public infix fun <K, V> MutableMap<K, V>.trySet(value: Map<K, V>?): Unit? =
 public fun <K, V> Map<K, V>.slice(keys: Iterable<K>): Map<K, V> =
     buildMap {
         keys.forEach { key ->
-            if (containsKey(key))
+            if (this@slice.containsKey(key))
                 put(key, this@slice[key]!!)
         }
     }

@@ -1,9 +1,9 @@
 package klib.data.type.serialization.serializer
 
-import klib.data.type.serialization.encoder.TreeEncoder
-import klib.data.type.serialization.encoder.asTreeDecoder
-import klib.data.type.serialization.encoder.decodeFromAny
-import klib.data.type.serialization.encoder.encodeToAny
+import klib.data.type.serialization.encoder.decodeAny
+import klib.data.type.serialization.encoder.deserialize
+import klib.data.type.serialization.encoder.encodeAny
+import klib.data.type.serialization.encoder.serialize
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
@@ -64,15 +64,15 @@ public abstract class TransformingSerializer<T : Any>(
     override val descriptor: SerialDescriptor get() = tSerializer.descriptor
 
     final override fun serialize(encoder: Encoder, value: T) {
-        var value = tSerializer.encodeToAny(value)
+        var value = tSerializer.serialize(value)
         value = transformSerialize(value)
-        TreeEncoder(encoder).encodeAny(value)
+        encoder.encodeAny(value)
     }
 
     final override fun deserialize(decoder: Decoder): T {
-        val value = decoder.asTreeDecoder.decodeAny()
+        val value = decoder.decodeAny()
         val transformedValue = transformDeserialize(value)
-        return tSerializer.decodeFromAny(transformedValue)
+        return tSerializer.deserialize(transformedValue)
     }
 
     /**

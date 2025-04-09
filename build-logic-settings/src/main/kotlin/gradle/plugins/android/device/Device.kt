@@ -1,6 +1,6 @@
 package gradle.plugins.android.device
 
-import gradle.api.NamedObjectTransformingSerializer
+import gradle.api.NamedMapTransformingSerializer
 import gradle.api.ProjectNamed
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
@@ -14,7 +14,7 @@ internal interface Device<T : com.android.build.api.dsl.Device> : ProjectNamed<T
 
 @Suppress("UnstableApiUsage")
 @KeepGeneratedSerializer
-@Serializable(with = DeviceImlObjectTransformingSerializer::class)
+@Serializable(with = DeviceImlMapTransformingSerializer::class)
 internal data class DeviceImpl(
     override val name: String? = null,
 ) : Device<com.android.build.api.dsl.Device> {
@@ -24,5 +24,5 @@ internal data class DeviceImpl(
     }
 }
 
-private object DeviceImlObjectTransformingSerializer
-    : NamedObjectTransformingSerializer<DeviceImpl>(DeviceImpl.generatedSerializer())
+private object DeviceImlMapTransformingSerializer
+    : NamedMapTransformingSerializer<DeviceImpl>(DeviceImpl.generatedSerializer())

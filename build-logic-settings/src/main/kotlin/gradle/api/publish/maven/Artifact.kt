@@ -1,17 +1,17 @@
 package gradle.api.publish.maven
 
-import klib.data.type.serialization.json.serializer.JsonObjectTransformingSerializer
+import klib.data.type.serialization.serializer.MapTransformingSerializer
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 
 @KeepGeneratedSerializer
-@Serializable(with = ArtifactObjectTransformingSerializer::class)
+@Serializable(with = ArtifactMapTransformingSerializer::class)
 internal data class Artifact(
     val source: String,
     val artifact: MavenArtifact? = null,
 )
 
-private object ArtifactObjectTransformingSerializer : JsonObjectTransformingSerializer<Artifact>(
+private object ArtifactMapTransformingSerializer : MapTransformingSerializer<Artifact>(
     Artifact.generatedSerializer(),
     "source",
 )

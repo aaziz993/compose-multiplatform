@@ -1,6 +1,6 @@
 package gradle.plugins.android.sourceset
 
-import gradle.api.NamedObjectTransformingSerializer
+import gradle.api.NamedMapTransformingSerializer
 import gradle.api.ProjectNamed
 import klib.data.type.reflection.trySet
 import kotlinx.serialization.KeepGeneratedSerializer
@@ -12,7 +12,7 @@ import org.gradle.api.Project
  * as well as Android and non-Android (Java-style) resources.
  */
 @KeepGeneratedSerializer
-@Serializable(with = AndroidSourceSetObjectTransformingSerializer::class)
+@Serializable(with = AndroidSourceSetMapTransformingSerializer::class)
 internal data class AndroidSourceSet(
     /** Returns the name of this source set. */
     override val name: String? = null,
@@ -71,5 +71,5 @@ internal data class AndroidSourceSet(
     }
 }
 
-private object AndroidSourceSetObjectTransformingSerializer
-    : NamedObjectTransformingSerializer<AndroidSourceSet>(AndroidSourceSet.generatedSerializer())
+private object AndroidSourceSetMapTransformingSerializer
+    : NamedMapTransformingSerializer<AndroidSourceSet>(AndroidSourceSet.generatedSerializer())

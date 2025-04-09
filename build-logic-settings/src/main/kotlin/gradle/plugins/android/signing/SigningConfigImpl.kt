@@ -1,14 +1,14 @@
 package gradle.plugins.android.signing
 
 import com.android.build.gradle.internal.dsl.SigningConfig
-import gradle.api.NamedObjectTransformingSerializer
+import gradle.api.NamedMapTransformingSerializer
 import gradle.api.ProjectNamed
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
 @KeepGeneratedSerializer
-@Serializable(with = SigningConfigObjectTransformingSerializer::class)
+@Serializable(with = SigningConfigMapTransformingSerializer::class)
 internal data class SigningConfigImpl(
     override val name: String? = null,
     override val enableV1Signing: Boolean? = null,
@@ -30,6 +30,6 @@ internal data class SigningConfigImpl(
     }
 }
 
-private object SigningConfigObjectTransformingSerializer : NamedObjectTransformingSerializer<SigningConfigImpl>(
+private object SigningConfigMapTransformingSerializer : NamedMapTransformingSerializer<SigningConfigImpl>(
     SigningConfigImpl.generatedSerializer(),
 )

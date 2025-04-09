@@ -11,8 +11,7 @@ import kotlinx.serialization.internal.MapLikeDescriptor
 import kotlinx.serialization.modules.EmptySerializersModule
 import kotlinx.serialization.modules.SerializersModule
 
-@PublishedApi
-internal class AnyTreeEncoder : Encoder {
+private class AnyTreeEncoder : Encoder {
 
     override val serializersModule: SerializersModule = EmptySerializersModule()
 
@@ -136,7 +135,7 @@ internal class AnyTreeEncoder : Encoder {
             index: Int,
             serializer: SerializationStrategy<T>,
             value: T
-        ) = set(index, serializer.encodeToAny(value))
+        ) = set(index, serializer.serialize(value))
 
         @ExperimentalSerializationApi
         override fun <T : Any> encodeNullableSerializableElement(
@@ -215,6 +214,6 @@ internal class AnyTreeEncoder : Encoder {
     }
 }
 
-public fun <T> SerializationStrategy<T>.encodeToAny(value: T): Any? = AnyTreeEncoder().apply {
+public fun <T> SerializationStrategy<T>.serialize(value: T): Any? = AnyTreeEncoder().apply {
     serialize(this, value)
 }.value

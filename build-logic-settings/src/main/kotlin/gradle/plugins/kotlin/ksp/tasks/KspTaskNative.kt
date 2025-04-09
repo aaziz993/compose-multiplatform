@@ -2,7 +2,7 @@ package gradle.plugins.kotlin.ksp.tasks
 
 import com.google.devtools.ksp.gradle.KspTaskNative
 import gradle.api.tasks.applyTo
-import klib.data.type.serialization.json.serializer.SerializableAnyMap
+import klib.data.type.serialization.serializer.SerializableAnyMap
 import gradle.plugins.kotlin.SubpluginOption
 import gradle.plugins.kotlin.targets.nat.CompilerPluginOptions
 import gradle.plugins.kotlin.targets.nat.KotlinCompilerPluginData

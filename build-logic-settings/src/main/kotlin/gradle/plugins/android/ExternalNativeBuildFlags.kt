@@ -1,7 +1,7 @@
 package gradle.plugins.android
 
 import com.android.build.api.dsl.ExternalNativeBuildFlags
-import klib.data.type.serialization.json.serializer.SerializableAnyMap
+import klib.data.type.serialization.serializer.SerializableAnyMap
 import klib.data.type.collection.tryPutAll
 import klib.data.type.collection.trySet
 import kotlinx.serialization.Serializable

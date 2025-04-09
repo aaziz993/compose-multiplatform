@@ -3,7 +3,7 @@ package gradle.plugins.kotlin.ksp.tasks
 import com.google.devtools.ksp.gradle.KspTaskJvm
 import gradle.api.provider.tryAssign
 import gradle.api.tasks.applyTo
-import klib.data.type.serialization.json.serializer.SerializableAnyMap
+import klib.data.type.serialization.serializer.SerializableAnyMap
 import gradle.plugins.kotlin.KotlinCommonCompilerOptions
 import gradle.plugins.kotlin.targets.nat.CompilerPluginOptions
 import gradle.plugins.kotlin.tasks.KotlinCompile

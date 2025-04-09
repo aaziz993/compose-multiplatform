@@ -5,11 +5,14 @@ package klib.data.type.serialization.yaml
 import com.charleskorn.kaml.*
 import klib.data.type.asList
 import klib.data.type.asMap
-import klib.data.type.serialization.copyFrom
+import klib.data.type.exceptionToNull
 import kotlinx.serialization.*
 
 public fun <T> Yaml.encodeToYamlNode(serializer: SerializationStrategy<T>, value: T): YamlNode =
     parseToYamlNode(encodeToString(serializer, value))
+
+public inline fun <reified T> Yaml.encodeToYamlNode(value: T): YamlNode =
+    encodeToYamlNode(serializersModule.serializer<T>(), value)
 
 @Suppress("UNCHECKED_CAST")
 public fun Yaml.encodeAnyToYamlNode(value: Any?): YamlNode =
@@ -23,26 +26,32 @@ private val encodeAnyToYamlNodeDeepRecursiveFunction =
             is YamlNode -> value
 
             is List<*> -> buildYamlList(path) {
+                var line = path.endLocation.line - 1
                 addAll(value.mapIndexed { index, element ->
-                    callRecursive(Triple(yaml, index.asIndexPath, element))
-                })
-            }
-
-            is Map<*, *> -> buildYamlMap(path) {
-                putAll(value.entries.withIndex().associate { (index, entry) ->
-                    entry.key.toString().asKeyScalar(index).let { keyScalar ->
-                        keyScalar to callRecursive(
-                            Triple(
-                                yaml,
-                                keyScalar.valuePath,
-                                entry.value
-                            )
-                        )
+                    callRecursive(Triple(yaml, withListEntry(size + index, line + 1), element)).also { node ->
+                        line = node.location.line
                     }
                 })
             }
 
-            else -> yaml.encodeToYamlNode(value::class.serializer() as KSerializer<Any>, value)
+            is Map<*, *> -> buildYamlMap(path) {
+                var line = path.endLocation.line - 1
+                putAll(value.entries.associate { (key, value) ->
+                    key.toString().asKeyScalar(line + 1).let { keyScalar ->
+                        keyScalar to callRecursive(
+                            Triple(
+                                yaml,
+                                keyScalar.path.withMapElementValue(key.toString(), value),
+                                value
+                            )
+                        ).also { node ->
+                            line = node.location.line
+                        }
+                    }
+                })
+            }
+
+            else -> yaml.encodeToYamlNode(value::class.serializer() as KSerializer<Any>, value).withPath(path)
         }
     }
 
@@ -56,8 +65,15 @@ private val decodeAnyFromYamlNodeDeepRecursiveFunction =
 
             is YamlTaggedNode -> mapOf(node.tag to callRecursive(yaml to node.innerNode))
 
-            is YamlScalar -> node.toBooleanOrNull() ?: node.toLongOrNull() ?: node.toDoubleOrNull()
-            ?: node.toCharOrNull() ?: node.content
+            is YamlScalar -> node.toBooleanOrNull()
+                ?: node::toByte.exceptionToNull()
+                ?: node::toShort.exceptionToNull()
+                ?: node::toInt.exceptionToNull()
+                ?: node.toLongOrNull()
+                ?: node::toFloat.exceptionToNull()
+                ?: node.toDoubleOrNull()
+                ?: node.toCharOrNull()
+                ?: node.content
 
             is YamlList -> node.items.map { callRecursive(yaml to it) }
 

@@ -1,7 +1,7 @@
 package gradle.plugins.android.flavor
 
-import gradle.api.NamedObjectTransformingSerializer
-import klib.data.type.serialization.json.serializer.SerializableAnyMap
+import gradle.api.NamedMapTransformingSerializer
+import klib.data.type.serialization.serializer.SerializableAnyMap
 import gradle.plugins.android.AarMetadata
 import gradle.plugins.android.BuildConfigField
 import gradle.plugins.android.ExternalNativeBuildFlags
@@ -20,7 +20,7 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
 @KeepGeneratedSerializer
-@Serializable(with = ProductFlavorObjectTransformingSerializer::class)
+@Serializable(with = ProductFlavorMapTransformingSerializer::class)
 internal data class ProductFlavor(
     override val isDefault: Boolean? = null,
     override val applicationId: String? = null,
@@ -83,6 +83,6 @@ internal data class ProductFlavor(
     }
 }
 
-private object ProductFlavorObjectTransformingSerializer : NamedObjectTransformingSerializer<ProductFlavor>(
+private object ProductFlavorMapTransformingSerializer : NamedMapTransformingSerializer<ProductFlavor>(
     ProductFlavor.generatedSerializer(),
 )

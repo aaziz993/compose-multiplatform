@@ -10,13 +10,14 @@ import klib.data.type.collection.tryPutAll
 import klib.data.type.collection.trySet
 import klib.data.type.reflection.tryPlus
 import klib.data.type.reflection.trySet
-import klib.data.type.serialization.json.serializer.ReflectionJsonObjectTransformingPolymorphicSerializer
+import klib.data.type.serialization.json.serializer.ReflectionMapTransformingPolymorphicSerializer
+import klib.data.type.serialization.serializer.ContentPolymorphicSerializer
+import klib.data.type.serialization.serializer.ReflectionMapTransformingPolymorphicSerializer
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonPrimitive
+
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
 
@@ -26,15 +27,15 @@ internal data class Binary(
     val buildType: NativeBuildType,
 )
 
-internal object BinaryContentPolymorphicSerializer : kotlinx.serialization.json.JsonContentPolymorphicSerializer<Any>(
+internal object BinaryContentPolymorphicSerializer : ContentPolymorphicSerializer<Any>(
     Any::class,
 ) {
 
-    override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
-        if (element is JsonPrimitive) String.serializer() else Binary.serializer()
+    override fun selectDeserializer(value: Any?): DeserializationStrategy<Any> =
+        if (value is String) String.serializer() else Binary.serializer()
 }
 
-@Serializable(with = ReflectionNativeBinaryObjectTransformingPolymorphicSerializer::class)
+@Serializable(with = ReflectionNativeBinaryMapTransformingPolymorphicSerializer::class)
 internal sealed class NativeBinary<T : org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary> : ProjectNamed<T> {
 
     abstract val baseName: String?
@@ -83,8 +84,8 @@ internal sealed class NativeBinary<T : org.jetbrains.kotlin.gradle.plugin.mpp.Na
     }
 }
 
-private class ReflectionNativeBinaryObjectTransformingPolymorphicSerializer(serializer: KSerializer<Nothing>)
-    : ReflectionJsonObjectTransformingPolymorphicSerializer<NativeBinary<*>>(
+private class ReflectionNativeBinaryMapTransformingPolymorphicSerializer(serializer: KSerializer<Nothing>)
+    : ReflectionMapTransformingPolymorphicSerializer<NativeBinary<*>>(
     NativeBinary::class,
 )
 

@@ -1,6 +1,6 @@
 package gradle.plugins.buildconfig.generator
 
-import klib.data.type.serialization.json.serializer.JsonContentPolymorphicSerializer
+import klib.data.type.serialization.json.serializer.ContentPolymorphicSerializer
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 
@@ -13,6 +13,6 @@ internal interface BuildConfigGenerator<T : com.github.gmazzo.gradle.plugins.gen
 }
 
 private class BuildConfigGeneratorContentPolymorphicSerializer(serializer: KSerializer<Nothing>)
-    : JsonContentPolymorphicSerializer<BuildConfigGenerator<*>>(
+    : ContentPolymorphicSerializer<BuildConfigGenerator<*>>(
     BuildConfigGenerator::class,
 )

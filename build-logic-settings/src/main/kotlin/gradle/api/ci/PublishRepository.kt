@@ -1,16 +1,16 @@
 package gradle.api.ci
 
-import klib.data.type.serialization.json.serializer.JsonObjectTransformingSerializer
+import klib.data.type.serialization.serializer.MapTransformingSerializer
 import kotlinx.serialization.Serializable
 
-@Serializable(with = PublishRepositoryObjectTransformingSerializer::class)
+@Serializable(with = PublishRepositoryMapTransformingSerializer::class)
 internal data class PublishRepository(
     val name: String,
     val enabled: Boolean = true
 )
 
-private object PublishRepositoryObjectTransformingSerializer :
-    JsonObjectTransformingSerializer<PublishRepository>(
+private object PublishRepositoryMapTransformingSerializer :
+    MapTransformingSerializer<PublishRepository>(
         PublishRepository.serializer(),
         "name",
         "enabled",

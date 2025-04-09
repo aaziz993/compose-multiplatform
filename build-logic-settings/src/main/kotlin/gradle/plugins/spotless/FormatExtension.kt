@@ -9,9 +9,9 @@ import com.diffplug.spotless.generic.PipeStepPair
 import gradle.accessors.settings
 import gradle.accessors.spotless
 import gradle.api.libs
-import klib.data.type.serialization.json.serializer.SerializableAnyMap
+import klib.data.type.serialization.serializer.SerializableAnyMap
 import klib.data.type.reflection.trySet
-import klib.data.type.serialization.json.serializer.ReflectionJsonObjectTransformingPolymorphicSerializer
+import klib.data.type.serialization.json.serializer.ReflectionMapTransformingPolymorphicSerializer
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.isAccessible
 import kotlinx.serialization.KSerializer
@@ -19,7 +19,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-@Serializable(with = ReflectionFormatExtensionObjectTransformingPolymorphicSerializer::class)
+@Serializable(with = ReflectionFormatExtensionMapTransformingPolymorphicSerializer::class)
 internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatExtension> {
 
     abstract val lineEnding: LineEnding?
@@ -228,7 +228,7 @@ internal abstract class FormatExtension<T : com.diffplug.gradle.spotless.FormatE
     )
 }
 
-private class ReflectionFormatExtensionObjectTransformingPolymorphicSerializer(serializer: KSerializer<Nothing>) : ReflectionJsonObjectTransformingPolymorphicSerializer<FormatExtension<*>>(
+private class ReflectionFormatExtensionMapTransformingPolymorphicSerializer(serializer: KSerializer<Nothing>) : ReflectionMapTransformingPolymorphicSerializer<FormatExtension<*>>(
     FormatExtension::class,
 )
 

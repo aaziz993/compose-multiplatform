@@ -1,19 +1,19 @@
 package gradle.api.artifacts
 
 import gradle.api.catalog.NotationContentPolymorphicSerializer
-import klib.data.type.serialization.json.serializer.JsonObjectTransformingSerializer
+import klib.data.type.serialization.serializer.MapTransformingSerializer
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
 
 @KeepGeneratedSerializer
-@Serializable(with = TargetObjectTransformingSerializer::class)
+@Serializable(with = TargetMapTransformingSerializer::class)
 internal data class Target(
     val notation: @Serializable(with = NotationContentPolymorphicSerializer::class) Any,
     val reason: String? = null
 )
 
-private object TargetObjectTransformingSerializer :
-    JsonObjectTransformingSerializer<Target>(
+private object TargetMapTransformingSerializer :
+    MapTransformingSerializer<Target>(
         Target.generatedSerializer(),
         "notation",
         "reason",

@@ -1,7 +1,7 @@
 package gradle.plugins.dokka
 
 import gradle.accessors.settings
-import gradle.api.NamedObjectTransformingSerializer
+import gradle.api.NamedMapTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.applyTo
 import gradle.api.file.tryFrom
@@ -42,7 +42,7 @@ import org.jetbrains.dokka.gradle.engine.parameters.VisibilityModifier
  * @see org.jetbrains.dokka.DokkaSourceSetImpl
  */
 @KeepGeneratedSerializer
-@Serializable(with = DokkaSourceSetSpecObjectTransformingSerializer::class)
+@Serializable(with = DokkaSourceSetSpecMapTransformingSerializer::class)
 internal data class DokkaSourceSetSpec(
     override val name: String? = null,
     /**
@@ -312,6 +312,6 @@ internal data class DokkaSourceSetSpec(
     }
 }
 
-private object DokkaSourceSetSpecObjectTransformingSerializer : NamedObjectTransformingSerializer<DokkaSourceSetSpec>(
+private object DokkaSourceSetSpecMapTransformingSerializer : NamedMapTransformingSerializer<DokkaSourceSetSpec>(
     DokkaSourceSetSpec.generatedSerializer(),
 )

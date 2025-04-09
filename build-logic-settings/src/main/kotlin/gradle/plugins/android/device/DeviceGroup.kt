@@ -1,7 +1,7 @@
 package gradle.plugins.android.device
 
 import com.android.build.api.dsl.Device
-import gradle.api.NamedObjectTransformingSerializer
+import gradle.api.NamedMapTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.applyTo
 import kotlinx.serialization.KeepGeneratedSerializer
@@ -12,7 +12,7 @@ import org.gradle.api.Project
  * A group of devices to be run with tests using the Unified Test Platform.
  */
 @KeepGeneratedSerializer
-@Serializable(with = DeviceGroupObjectTransformingSerializer::class)
+@Serializable(with = DeviceGroupMapTransformingSerializer::class)
 internal data class DeviceGroup(
     override val name: String? = null,
     val targetDevices: LinkedHashSet<DeviceImpl>? = null,
@@ -27,5 +27,5 @@ internal data class DeviceGroup(
     }
 }
 
-private object DeviceGroupObjectTransformingSerializer
-    : NamedObjectTransformingSerializer<DeviceGroup>(DeviceGroup.generatedSerializer())
+private object DeviceGroupMapTransformingSerializer
+    : NamedMapTransformingSerializer<DeviceGroup>(DeviceGroup.generatedSerializer())

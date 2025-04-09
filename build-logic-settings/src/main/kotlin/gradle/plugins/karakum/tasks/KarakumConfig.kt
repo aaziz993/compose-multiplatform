@@ -3,7 +3,7 @@ package gradle.plugins.karakum.tasks
 import gradle.api.file.tryAssign
 import gradle.api.tasks.DefaultTask
 import gradle.api.tasks.applyTo
-import klib.data.type.serialization.json.serializer.SerializableAnyMap
+import klib.data.type.serialization.serializer.SerializableAnyMap
 import io.github.sgrishchenko.karakum.gradle.plugin.tasks.KarakumConfig
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

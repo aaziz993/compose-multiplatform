@@ -5,7 +5,7 @@ import gradle.accessors.buildConfig
 import gradle.api.provider.tryAssign
 import gradle.api.tasks.DefaultTask
 import gradle.api.tasks.applyTo
-import klib.data.type.serialization.json.serializer.SerializableAnyMap
+import klib.data.type.serialization.serializer.SerializableAnyMap
 import gradle.plugins.buildconfig.generator.BuildConfigGenerator
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project

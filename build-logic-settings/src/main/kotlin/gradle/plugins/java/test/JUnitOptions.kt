@@ -2,12 +2,10 @@ package gradle.plugins.java.test
 
 import gradle.api.tasks.test.TestFrameworkOptions
 import klib.data.type.reflection.trySet
+import klib.data.type.serialization.serializer.ContentPolymorphicSerializer
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.json.JsonContentPolymorphicSerializer
-import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonPrimitive
 import org.gradle.api.Project
 
 /**
@@ -37,8 +35,8 @@ internal data class JUnitOptions(
 }
 
 internal object JUnitContentPolymorphicSerializer :
-    JsonContentPolymorphicSerializer<Any>(Any::class) {
+    ContentPolymorphicSerializer<Any>(Any::class) {
 
-    override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
-        if (element is JsonPrimitive) Boolean.serializer() else JUnitOptions.serializer()
+    override fun selectDeserializer(value: Any?): DeserializationStrategy<Any> =
+        if (value is Boolean) Boolean.serializer() else JUnitOptions.serializer()
 }

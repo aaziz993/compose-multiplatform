@@ -1,6 +1,6 @@
 package gradle.plugins.buildconfig
 
-import gradle.api.NamedObjectTransformingSerializer
+import gradle.api.NamedMapTransformingSerializer
 import gradle.api.applyTo
 import gradle.api.provider.tryAssign
 import gradle.plugins.buildconfig.generator.BuildConfigGenerator
@@ -12,7 +12,7 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
 @KeepGeneratedSerializer
-@Serializable(with = BuildConfigSourceSetObjectTransformingSerializer::class)
+@Serializable(with = BuildConfigSourceSetMapTransformingSerializer::class)
 internal data class BuildConfigSourceSet(
     override val className: String? = null,
     override val packageName: String? = null,
@@ -56,5 +56,5 @@ internal data class BuildConfigSourceSet(
     }
 }
 
-private object BuildConfigSourceSetObjectTransformingSerializer
-    : NamedObjectTransformingSerializer<BuildConfigSourceSet>(BuildConfigSourceSet.generatedSerializer())
+private object BuildConfigSourceSetMapTransformingSerializer
+    : NamedMapTransformingSerializer<BuildConfigSourceSet>(BuildConfigSourceSet.generatedSerializer())

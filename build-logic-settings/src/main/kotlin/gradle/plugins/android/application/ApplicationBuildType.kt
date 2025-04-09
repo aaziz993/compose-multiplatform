@@ -1,7 +1,7 @@
 package gradle.plugins.android.application
 
-import gradle.api.NamedObjectTransformingSerializer
-import klib.data.type.serialization.json.serializer.SerializableAnyMap
+import gradle.api.NamedMapTransformingSerializer
+import klib.data.type.serialization.serializer.SerializableAnyMap
 import gradle.plugins.android.BuildConfigField
 import gradle.plugins.android.BuildType
 import gradle.plugins.android.ExternalNativeBuildFlags
@@ -33,7 +33,7 @@ import org.gradle.api.Project
  * for more information.
  */
 @KeepGeneratedSerializer
-@Serializable(with = ApplicationNamedObjectTransformingSerializer::class)
+@Serializable(with = ApplicationNamedMapTransformingSerializer::class)
 internal data class ApplicationBuildType(
     override val enableUnitTestCoverage: Boolean? = null,
     override val enableAndroidTestCoverage: Boolean? = null,
@@ -119,6 +119,6 @@ internal data class ApplicationBuildType(
     }
 }
 
-internal object ApplicationNamedObjectTransformingSerializer : NamedObjectTransformingSerializer<ApplicationBuildType>(
+internal object ApplicationNamedMapTransformingSerializer : NamedMapTransformingSerializer<ApplicationBuildType>(
     ApplicationBuildType.generatedSerializer(),
 )

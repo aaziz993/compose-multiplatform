@@ -1,6 +1,6 @@
 package gradle.plugins.kotlin.targets.nat
 
-import gradle.api.NamedObjectTransformingSerializer
+import gradle.api.NamedMapTransformingSerializer
 import gradle.api.tasks.test.TestFilter
 import klib.data.type.reflection.trySet
 import kotlinx.serialization.KeepGeneratedSerializer
@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
 @KeepGeneratedSerializer
-@Serializable(with = KotlinNativeSimulatorTestRunObjectTransformingSerializer::class)
+@Serializable(with = KotlinNativeSimulatorTestRunMapTransformingSerializer::class)
 internal data class KotlinNativeSimulatorTestRun(
     override val filter: TestFilter? = null,
     override val executionSource: NativeBinaryTestRunSource? = null,
@@ -28,7 +28,7 @@ internal data class KotlinNativeSimulatorTestRun(
     }
 }
 
-private object KotlinNativeSimulatorTestRunObjectTransformingSerializer
-    : NamedObjectTransformingSerializer<KotlinNativeSimulatorTestRun>(
+private object KotlinNativeSimulatorTestRunMapTransformingSerializer
+    : NamedMapTransformingSerializer<KotlinNativeSimulatorTestRun>(
     KotlinNativeSimulatorTestRun.generatedSerializer(),
 )

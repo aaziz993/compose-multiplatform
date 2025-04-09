@@ -2,9 +2,8 @@ package gradle.plugins.signing.tasks
 
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.JsonContentPolymorphicSerializer
-import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonPrimitive
+import klib.data.type.serialization.serializer.ContentPolymorphicSerializer
+
 import org.gradle.api.Project
 import org.gradle.plugins.signing.type.BinarySignatureType
 import org.gradle.plugins.signing.type.pgp.ArmoredSignatureType
@@ -28,8 +27,8 @@ internal data class WorkaroundSignatureType(val actual: SignatureType, val direc
 
 // Layout
 internal object SignatureTypeContentPolymorphicSerializer :
-    JsonContentPolymorphicSerializer<Any>(Any::class) {
+    ContentPolymorphicSerializer<Any>(Any::class) {
 
-    override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
-        if (element is JsonPrimitive) SignatureType.serializer() else WorkaroundSignatureType.serializer()
+    override fun selectDeserializer(value: Any?): DeserializationStrategy<Any> =
+        if (value is String) SignatureType.serializer() else WorkaroundSignatureType.serializer()
 }

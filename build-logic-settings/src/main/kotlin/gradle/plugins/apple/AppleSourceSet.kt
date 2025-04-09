@@ -1,6 +1,6 @@
 package gradle.plugins.apple
 
-import gradle.api.NamedObjectTransformingSerializer
+import gradle.api.NamedMapTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.file.SourceDirectorySet
 import kotlinx.serialization.KeepGeneratedSerializer
@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
 @KeepGeneratedSerializer
-@Serializable(with = AppleSourceSetObjectTransformingSerializer::class)
+@Serializable(with = AppleSourceSetMapTransformingSerializer::class)
 internal data class AppleSourceSet(
     override val name: String? = null,
     val apple: SourceDirectorySet? = null,
@@ -23,6 +23,6 @@ internal data class AppleSourceSet(
     }
 }
 
-private object AppleSourceSetObjectTransformingSerializer : NamedObjectTransformingSerializer<AppleSourceSet>(
+private object AppleSourceSetMapTransformingSerializer : NamedMapTransformingSerializer<AppleSourceSet>(
     AppleSourceSet.generatedSerializer(),
 )

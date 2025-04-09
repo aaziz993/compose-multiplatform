@@ -1,6 +1,6 @@
 package gradle.plugins.dokka
 
-import gradle.api.NamedObjectTransformingSerializer
+import gradle.api.NamedMapTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.provider.tryAssign
 import kotlinx.serialization.KeepGeneratedSerializer
@@ -30,7 +30,7 @@ import org.gradle.api.Project
  * ```
  */
 @KeepGeneratedSerializer
-@Serializable(with = DokkaExternalDocumentationLinkSpecObjectTransformingSerializer::class)
+@Serializable(with = DokkaExternalDocumentationLinkSpecMapTransformingSerializer::class)
 internal data class DokkaExternalDocumentationLinkSpec(
     override val name: String? = null,
     /**
@@ -86,7 +86,7 @@ internal data class DokkaExternalDocumentationLinkSpec(
     }
 }
 
-internal object DokkaExternalDocumentationLinkSpecObjectTransformingSerializer
-    : NamedObjectTransformingSerializer<DokkaExternalDocumentationLinkSpec>(
+internal object DokkaExternalDocumentationLinkSpecMapTransformingSerializer
+    : NamedMapTransformingSerializer<DokkaExternalDocumentationLinkSpec>(
     DokkaExternalDocumentationLinkSpec.generatedSerializer(),
 )

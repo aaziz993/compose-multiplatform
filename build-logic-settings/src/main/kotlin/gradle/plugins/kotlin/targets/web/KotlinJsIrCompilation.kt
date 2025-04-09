@@ -1,6 +1,6 @@
 package gradle.plugins.kotlin.targets.web
 
-import gradle.api.NamedObjectTransformingSerializer
+import gradle.api.NamedMapTransformingSerializer
 import gradle.plugins.kotlin.KotlinCompilationOutput
 import gradle.plugins.kotlin.KotlinSourceSet
 import gradle.api.artifacts.Dependency
@@ -10,7 +10,7 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
 @KeepGeneratedSerializer
-@Serializable(with = KotlinJsIrCompilationObjectTransformingSerializer::class)
+@Serializable(with = KotlinJsIrCompilationMapTransformingSerializer::class)
 internal data class KotlinJsIrCompilation(
     override val name: String, override val defaultSourceSet: KotlinSourceSet? = null,
     override val compileDependencyFiles: Set<String>? = null,
@@ -23,7 +23,7 @@ internal data class KotlinJsIrCompilation(
     override val packageJsonHandlers: List<PackageJson>? = null,
 ) : KotlinJsCompilation<org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsIrCompilation>()
 
-private object KotlinJsIrCompilationObjectTransformingSerializer :
-    NamedObjectTransformingSerializer<KotlinJsIrCompilation>(
+private object KotlinJsIrCompilationMapTransformingSerializer :
+    NamedMapTransformingSerializer<KotlinJsIrCompilation>(
         KotlinJsIrCompilation.generatedSerializer(),
     )

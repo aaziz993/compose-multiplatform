@@ -12,8 +12,7 @@ import kotlinx.serialization.internal.LinkedHashMapClassDesc
 
 
 @Suppress("UNCHECKED_CAST")
-@PublishedApi
-internal class TreeEncoder(
+private class TreeEncoder(
     private val encoder: Encoder,
 ) : Encoder by encoder {
 
@@ -55,7 +54,7 @@ internal class TreeEncoder(
 
             is Map<*, *> -> encodeCollection(
                 mapDescriptor,
-                value.size * 2
+                value.size
             ) {
                 value.entries.forEachIndexed { index, (key, value) ->
                     val keyIndex = index * 2
@@ -66,3 +65,5 @@ internal class TreeEncoder(
         }
     }
 }
+
+public fun Encoder.encodeAny(value: Any?) = TreeEncoder(this).encodeAny(value)

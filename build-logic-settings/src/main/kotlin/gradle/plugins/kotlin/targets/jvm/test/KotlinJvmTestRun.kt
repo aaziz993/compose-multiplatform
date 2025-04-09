@@ -1,6 +1,6 @@
 package gradle.plugins.kotlin.targets.jvm.test
 
-import gradle.api.NamedObjectTransformingSerializer
+import gradle.api.NamedMapTransformingSerializer
 import gradle.api.getByNameOrAll
 import gradle.api.tasks.test.TestFilter
 import gradle.plugins.kotlin.testing.KotlinTaskTestRun
@@ -9,7 +9,7 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
 @KeepGeneratedSerializer
-@Serializable(with = KotlinJvmTestRunObjectTransformingSerializer::class)
+@Serializable(with = KotlinJvmTestRunMapTransformingSerializer::class)
 internal data class KotlinJvmTestRun(
     override val name: String? = null,
     override val filter: TestFilter? = null,
@@ -43,5 +43,5 @@ internal data class KotlinJvmTestRun(
     }
 }
 
-private object KotlinJvmTestRunObjectTransformingSerializer
-    : NamedObjectTransformingSerializer<KotlinJvmTestRun>(KotlinJvmTestRun.generatedSerializer())
+private object KotlinJvmTestRunMapTransformingSerializer
+    : NamedMapTransformingSerializer<KotlinJvmTestRun>(KotlinJvmTestRun.generatedSerializer())

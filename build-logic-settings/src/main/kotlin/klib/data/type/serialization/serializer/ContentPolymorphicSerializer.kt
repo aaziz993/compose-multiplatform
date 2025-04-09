@@ -3,8 +3,8 @@
 package klib.data.type.serialization.serializer
 
 import com.charleskorn.kaml.YamlContentPolymorphicSerializer
-import klib.data.type.serialization.encoder.asTreeDecoder
-import klib.data.type.serialization.encoder.decodeFromAny
+import klib.data.type.serialization.encoder.decodeAny
+import klib.data.type.serialization.encoder.deserialize
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
@@ -95,12 +95,11 @@ public abstract class ContentPolymorphicSerializer<T : Any>(private val baseClas
     }
 
     final override fun deserialize(decoder: Decoder): T {
-        val input = decoder.asTreeDecoder
-        val tree = input.decodeAny()
+        val tree = decoder.decodeAny()
 
         @Suppress("UNCHECKED_CAST")
         val actualSerializer = selectDeserializer(tree) as KSerializer<T>
-        return actualSerializer.decodeFromAny(tree)
+        return actualSerializer.deserialize(tree)
     }
 
     /**

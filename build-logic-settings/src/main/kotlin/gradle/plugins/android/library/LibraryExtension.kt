@@ -1,6 +1,6 @@
 package gradle.plugins.android.library
 
-import klib.data.type.serialization.json.serializer.SerializableAnyMap
+import klib.data.type.serialization.serializer.SerializableAnyMap
 import gradle.plugins.android.AaptOptions
 import gradle.plugins.android.AdbOptions
 import gradle.plugins.android.ComposeOptions

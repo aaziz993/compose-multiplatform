@@ -4,11 +4,10 @@ import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.SetSerializer
 import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.json.JsonArray
-import kotlinx.serialization.json.JsonContentPolymorphicSerializer
-import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonPrimitive
+
+import klib.data.type.serialization.serializer.ContentPolymorphicSerializer
+
+
 
 @Serializable
 internal data class From(
@@ -16,8 +15,8 @@ internal data class From(
     val copySpec: CopySpecImpl,
 )
 
-internal object FromContentPolymorphicSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
+internal object FromContentPolymorphicSerializer : ContentPolymorphicSerializer<Any>(Any::class) {
 
-    override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
-        if (element is JsonPrimitive) String.serializer() else From.serializer()
+    override fun selectDeserializer(value: Any?): DeserializationStrategy<Any> =
+        if (value is String) String.serializer() else From.serializer()
 }

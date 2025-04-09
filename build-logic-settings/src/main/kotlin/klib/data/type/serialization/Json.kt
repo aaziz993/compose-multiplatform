@@ -39,7 +39,11 @@ private val decodeAnyFromJsonElementDeepRecursiveFunction =
             JsonNull -> null
 
             is JsonPrimitive -> if (element.isString) element.content
-            else (element.booleanOrNull ?: element.longOrNull ?: element.doubleOrNull)!!
+            else (element.booleanOrNull
+                ?: element.intOrNull
+                ?: element.longOrNull
+                ?: element.floatOrNull
+                ?: element.doubleOrNull)!!
 
             is JsonArray -> element.map { callRecursive(json to it) }
 

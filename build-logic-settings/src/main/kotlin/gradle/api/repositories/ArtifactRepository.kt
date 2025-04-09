@@ -2,19 +2,15 @@ package gradle.api.repositories
 
 import gradle.api.Named
 import klib.data.type.reflection.tryApply
-import klib.data.type.serialization.json.serializer.ReflectionJsonBaseObjectTransformingPolymorphicSerializer
+import klib.data.type.serialization.serializer.ReflectionBaseMapTransformingPolymorphicSerializer
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonPrimitive
-import kotlinx.serialization.json.buildJsonObject
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.api.file.Directory
 import org.gradle.api.initialization.Settings
 
-@Serializable(with = ReflectionArtifactRepositoryObjectTransformingPolymorphicSerializer::class)
+@Serializable(with = ReflectionArtifactRepositoryMapTransformingPolymorphicSerializer::class)
 internal interface ArtifactRepository<T : org.gradle.api.artifacts.repositories.ArtifactRepository> : Named<T> {
 
     /**
@@ -48,19 +44,19 @@ internal interface ArtifactRepository<T : org.gradle.api.artifacts.repositories.
     fun applyTo(receiver: RepositoryHandler)
 }
 
-private class ReflectionArtifactRepositoryObjectTransformingPolymorphicSerializer(serializer: KSerializer<Nothing>)
-    : ReflectionJsonBaseObjectTransformingPolymorphicSerializer<ArtifactRepository<*>>(
+private class ReflectionArtifactRepositoryMapTransformingPolymorphicSerializer(serializer: KSerializer<Nothing>)
+    : ReflectionBaseMapTransformingPolymorphicSerializer<ArtifactRepository<*>>(
     ArtifactRepository::class,
 ) {
 
-    override fun transformDeserialize(key: String, value: JsonElement?): JsonObject =
-        buildJsonObject {
+    override fun transformDeserialize(key: String, value: Any?): Map<String, Any?> =
+        buildMap {
             value?.let { value ->
-                put("type", JsonPrimitive(key))
-                if (value is JsonPrimitive) put("url", value)
+                put("type", key)
+                if (value is String) put("url", value)
             } ?: run {
-                put("type", JsonPrimitive("maven"))
-                put("url", JsonPrimitive(key))
+                put("type", "maven")
+                put("url", key)
             }
         }
 }

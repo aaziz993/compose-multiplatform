@@ -1,6 +1,6 @@
 package gradle.plugins.kotlin.targets.nat
 
-import gradle.api.NamedObjectTransformingSerializer
+import gradle.api.NamedMapTransformingSerializer
 import gradle.api.tasks.test.TestFilter
 import gradle.plugins.kotlin.KotlinTargetTestRun
 import kotlinx.serialization.KeepGeneratedSerializer
@@ -44,6 +44,6 @@ internal data class KotlinNativeBinaryTestRunImpl(
 ) : KotlinNativeBinaryTestRun<org.jetbrains.kotlin.gradle.targets.native.KotlinNativeBinaryTestRun>
 
 private object KotlinNativeBinaryTestRunKeyImplTransformingSerializer
-    : NamedObjectTransformingSerializer<KotlinNativeBinaryTestRunImpl>(
+    : NamedMapTransformingSerializer<KotlinNativeBinaryTestRunImpl>(
     KotlinNativeBinaryTestRunImpl.generatedSerializer(),
 )

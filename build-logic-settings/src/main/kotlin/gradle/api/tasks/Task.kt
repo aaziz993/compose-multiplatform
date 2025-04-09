@@ -2,10 +2,10 @@ package gradle.api.tasks
 
 import gradle.api.ProjectNamed
 import gradle.api.applyTo
-import klib.data.type.serialization.json.serializer.SerializableAnyMap
+import klib.data.type.serialization.serializer.SerializableAnyMap
 import klib.data.type.reflection.genericTypes
 import klib.data.type.reflection.trySet
-import klib.data.type.serialization.json.serializer.ReflectionJsonObjectTransformingPolymorphicSerializer
+import klib.data.type.serialization.json.serializer.ReflectionMapTransformingPolymorphicSerializer
 import groovy.lang.MissingPropertyException
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
@@ -138,7 +138,7 @@ import org.gradle.api.tasks.TaskDependency
  * Parallel execution can be enabled by the `--parallel` flag when the build is initiated.
  * In parallel mode, the tasks of different projects (i.e. in a multi project build) are able to be executed in parallel.
  */
-@Serializable(with = ReflectionTaskObjectTransformingPolymorphicSerializer::class)
+@Serializable(with = ReflectionTaskMapTransformingPolymorphicSerializer::class)
 internal interface Task<T : org.gradle.api.Task> : ProjectNamed<T> {
 
     /**
@@ -345,8 +345,8 @@ internal interface Task<T : org.gradle.api.Task> : ProjectNamed<T> {
     fun applyTo()
 }
 
-private class ReflectionTaskObjectTransformingPolymorphicSerializer(serializer: KSerializer<Nothing>)
-    : ReflectionJsonObjectTransformingPolymorphicSerializer<Task<*>>(
+private class ReflectionTaskMapTransformingPolymorphicSerializer(serializer: KSerializer<Nothing>)
+    : ReflectionMapTransformingPolymorphicSerializer<Task<*>>(
     Task::class,
 )
 

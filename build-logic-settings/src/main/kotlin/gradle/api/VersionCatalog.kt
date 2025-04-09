@@ -6,7 +6,7 @@ import gradle.api.artifacts.PluginNotation
 import gradle.get
 import klib.data.type.primitive.isPath
 import klib.data.type.primitive.isValidUrl
-import klib.data.type.serialization.json.decodeFromAny
+import klib.data.type.serialization.decodeFromAny
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import org.gradle.api.Project

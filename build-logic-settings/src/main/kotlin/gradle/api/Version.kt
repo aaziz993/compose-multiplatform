@@ -3,17 +3,15 @@ package gradle.api
 import gradle.api.project.projectProperties
 import gradle.accessors.settings
 import gradle.api.ci.current
+import klib.data.type.asMap
+import klib.data.type.serialization.serializer.TransformingSerializer
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonPrimitive
-import kotlinx.serialization.json.JsonTransformingSerializer
-import kotlinx.serialization.json.buildJsonObject
 import net.pearx.kasechange.toCamelCase
 import org.gradle.api.Project
 
 @KeepGeneratedSerializer
-@Serializable(with = VersionObjectTransformingSerializer::class)
+@Serializable(with = VersionMapTransformingSerializer::class)
 internal data class Version(
     val major: Int = MAJOR_DEFAULT,
     val minor: Int = MINOR_DEFAULT,
@@ -55,20 +53,20 @@ internal data class Version(
     }
 }
 
-private object VersionObjectTransformingSerializer :
-    JsonTransformingSerializer<Version>(Version.generatedSerializer()) {
+private object VersionMapTransformingSerializer :
+    TransformingSerializer<Version>(Version.generatedSerializer()) {
 
-    override fun transformDeserialize(element: JsonElement): JsonElement =
-        if (element is JsonPrimitive) element.content.split(".").let { versionParts ->
-            buildJsonObject {
-                put("major", JsonPrimitive(versionParts.first().toInt()))
-                versionParts.getOrNull(1)?.toInt()?.let { minor -> put("minor", JsonPrimitive(minor)) }
-                versionParts.getOrNull(2)?.toInt()?.let { patch -> put("patch", JsonPrimitive(patch)) }
-                versionParts.getOrNull(3)?.let { preRelease -> put("preRelease", JsonPrimitive(preRelease)) }
-                versionParts.getOrNull(4)?.let { buildMetadata -> put("buildMetadata", JsonPrimitive(buildMetadata)) }
+    override fun transformDeserialize(value: Any?): Map<String, Any?> =
+        if (value is String) value.split(".").let { versionParts ->
+            buildMap {
+                put("major", versionParts.first().toInt())
+                versionParts.getOrNull(1)?.toInt()?.let { minor -> put("minor", minor) }
+                versionParts.getOrNull(2)?.toInt()?.let { patch -> put("patch", patch) }
+                versionParts.getOrNull(3)?.let { preRelease -> put("preRelease", preRelease) }
+                versionParts.getOrNull(4)?.let { buildMetadata -> put("buildMetadata", buildMetadata) }
             }
         }
-        else element
+        else value.asMap
 }
 
 internal fun String.toVersion() = io.github.z4kn4fein.semver.Version.parse(this)

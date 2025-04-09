@@ -1,7 +1,7 @@
 package gradle.api.tasks
 
 import gradle.accessors.files
-import gradle.api.NamedObjectTransformingSerializer
+import gradle.api.NamedMapTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.file.SourceDirectorySet
 import klib.data.type.reflection.trySet
@@ -34,7 +34,7 @@ import org.gradle.api.Project
 </pre> *
  */
 @KeepGeneratedSerializer
-@Serializable(with = SourceSetObjectTransformingSerializer::class)
+@Serializable(with = SourceSetMapTransformingSerializer::class)
 internal data class SourceSet(
     /**
      * Returns the name of this source set.
@@ -105,6 +105,6 @@ internal data class SourceSet(
     }
 }
 
-private object SourceSetObjectTransformingSerializer : NamedObjectTransformingSerializer<SourceSet>(
+private object SourceSetMapTransformingSerializer : NamedMapTransformingSerializer<SourceSet>(
     SourceSet.generatedSerializer(),
 )

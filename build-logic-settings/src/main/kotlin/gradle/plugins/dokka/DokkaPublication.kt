@@ -1,6 +1,6 @@
 package gradle.plugins.dokka
 
-import gradle.api.NamedObjectTransformingSerializer
+import gradle.api.NamedMapTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.file.tryFrom
 import gradle.api.file.trySetFrom
@@ -17,7 +17,7 @@ import org.gradle.api.Project
  * Each Dokka Publication has its own set of Gradle tasks and [org.gradle.api.artifacts.Configuration]s.
  */
 @KeepGeneratedSerializer
-@Serializable(with = DokkaPublicationObjectTransformingSerializer::class)
+@Serializable(with = DokkaPublicationMapTransformingSerializer::class)
 internal data class DokkaPublication(
     override val name: String? = null,
     /**
@@ -141,6 +141,6 @@ internal data class DokkaPublication(
     }
 }
 
-private object DokkaPublicationObjectTransformingSerializer : NamedObjectTransformingSerializer<DokkaPublication>(
+private object DokkaPublicationMapTransformingSerializer : NamedMapTransformingSerializer<DokkaPublication>(
     DokkaPublication.generatedSerializer(),
 )

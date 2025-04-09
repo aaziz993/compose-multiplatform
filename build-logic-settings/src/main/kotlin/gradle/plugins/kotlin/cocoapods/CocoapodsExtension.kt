@@ -4,6 +4,7 @@ import gradle.accessors.cocoapods
 import gradle.accessors.kotlin
 import gradle.accessors.moduleName
 import gradle.accessors.settings
+import gradle.api.allLibs
 import gradle.api.libs
 import klib.data.type.collection.tryAddAll
 import klib.data.type.collection.tryPutAll
@@ -12,12 +13,17 @@ import klib.data.type.reflection.trySet
 import gradle.plugins.kotlin.targets.nat.FrameworkSettings
 import klib.data.type.reflection.tryPlus
 import java.net.URI
+import klib.data.type.asMap
+import klib.data.type.asMapOrNull
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.JsonContentPolymorphicSerializer
-import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonTransformingSerializer
+import klib.data.type.serialization.serializer.ContentPolymorphicSerializer
+import klib.data.type.serialization.serializer.MapTransformingSerializer
+import klib.data.type.serialization.serializer.TransformingSerializer
+import kotlinx.serialization.DeserializationStrategy
+
+
+
 import kotlinx.serialization.json.jsonObject
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.cocoapods.CocoapodsExtension
@@ -150,7 +156,7 @@ internal data class CocoapodsExtension(
         }
 
     @KeepGeneratedSerializer
-    @Serializable(with = CocoapodsDependencyObjectTransformingSerializer::class)
+    @Serializable(with = CocoapodsDependencyMapTransformingSerializer::class)
     data class CocoapodsDependency(
         var name: String? = null,
         val moduleName: String? = null,
@@ -253,26 +259,18 @@ internal data class CocoapodsExtension(
             abstract fun toPodLocation(): CocoapodsExtension.CocoapodsDependency.PodLocation
         }
 
-        object PodLocationContentPolymorphicSerializer : JsonContentPolymorphicSerializer<PodLocation>(PodLocation::class) {
+        object PodLocationContentPolymorphicSerializer : ContentPolymorphicSerializer<PodLocation>(PodLocation::class) {
 
-            override fun selectDeserializer(element: JsonElement) =
-                if (PodLocation.Path::dir.name in element.jsonObject) PodLocation.Path.serializer()
+            override fun selectDeserializer(value: Any?): DeserializationStrategy<PodLocation> =
+                if (PodLocation.Path::dir.name in value.asMap) PodLocation.Path.serializer()
                 else PodLocation.Git.serializer()
         }
     }
 
-    object CocoapodsDependencyObjectTransformingSerializer : JsonTransformingSerializer<CocoapodsDependency>(
+    object CocoapodsDependencyMapTransformingSerializer : MapTransformingSerializer<CocoapodsDependency>(
         CocoapodsDependency.generatedSerializer(),
-    ) {
-
-        override fun transformDeserialize(element: JsonElement): JsonElement =
-            element as? JsonObject
-                ?: JsonObject(
-                    mapOf(
-                        "notation" to element,
-                    ),
-                )
-    }
+        "notation",
+    )
 
     @Serializable
     data class PodspecPlatformSettings(

@@ -1,6 +1,6 @@
 package gradle.plugins.kotlin.targets.nat
 
-import gradle.api.NamedObjectTransformingSerializer
+import gradle.api.NamedMapTransformingSerializer
 import gradle.api.applyTo
 import gradle.plugins.kotlin.KotlinCompilationOutput
 import gradle.plugins.kotlin.KotlinSourceSet
@@ -11,7 +11,7 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
 @KeepGeneratedSerializer
-@Serializable(with = KotlinNativeCompilationObjectTransformingSerializer::class)
+@Serializable(with = KotlinNativeCompilationMapTransformingSerializer::class)
 internal data class KotlinNativeCompilation(
     override val name: String,
     override val defaultSourceSet: KotlinSourceSet? = null,
@@ -35,7 +35,7 @@ internal data class KotlinNativeCompilation(
     }
 }
 
-private object KotlinNativeCompilationObjectTransformingSerializer :
-    NamedObjectTransformingSerializer<KotlinNativeCompilation>(
+private object KotlinNativeCompilationMapTransformingSerializer :
+    NamedMapTransformingSerializer<KotlinNativeCompilation>(
         KotlinNativeCompilation.generatedSerializer(),
     )

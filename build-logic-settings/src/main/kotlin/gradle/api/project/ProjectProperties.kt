@@ -45,11 +45,10 @@ import gradle.plugins.shadow.model.ShadowSettings
 import gradle.plugins.signing.model.SigningSettings
 import gradle.plugins.sonar.SonarExtension
 import gradle.plugins.spotless.SpotlessExtension
-import klib.data.type.serialization.json.encodeToAny
-import klib.data.type.serialization.json.serializer.JsonOptionalAnySerializer
 import klib.data.type.serialization.serializer.MapSerializer
+import klib.data.type.serialization.serializer.NullableAnySerializer
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.Json
+import kotlinx.serialization.encodeToString
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.extra
 import org.jetbrains.compose.internal.utils.localPropertiesFile
@@ -168,7 +167,7 @@ internal interface ProjectProperties : Properties {
                 project,
             ).also { properties ->
                 println("Load $PROJECT_PROPERTIES_FILE for project: $name")
-                println(yaml.dump(Json.Default.encodeToAny(properties)))
+                println(yaml.encodeToString(properties))
             }
         }
     }
@@ -177,7 +176,7 @@ internal interface ProjectProperties : Properties {
 private object ProjectPropertiesMapSerializer :
     MapSerializer<Any?, ProjectProperties, ProjectPropertiesImpl>(
         ProjectPropertiesImpl.serializer(),
-        JsonOptionalAnySerializer,
+        NullableAnySerializer,
     )
 
 @Serializable

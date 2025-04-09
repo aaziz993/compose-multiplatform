@@ -18,8 +18,8 @@ import gradle.plugins.githooks.GitHooksExtension
 import gradle.plugins.initialization.Apply
 import gradle.plugins.initialization.IncludeBuild
 import gradle.plugins.toolchainmanagement.ToolchainManagement
-import klib.data.type.serialization.json.serializer.JsonOptionalAnySerializer
 import klib.data.type.serialization.serializer.MapSerializer
+import klib.data.type.serialization.serializer.NullableAnySerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings
 import org.gradle.kotlin.dsl.extra
@@ -98,7 +98,7 @@ internal interface InitializationProperties : Properties {
 private object InitializationPropertiesMapSerializer :
     MapSerializer<Any?, InitializationProperties, InitializationPropertiesImpl>(
         InitializationPropertiesImpl.serializer(),
-        JsonOptionalAnySerializer,
+        NullableAnySerializer,
     )
 
 @Serializable

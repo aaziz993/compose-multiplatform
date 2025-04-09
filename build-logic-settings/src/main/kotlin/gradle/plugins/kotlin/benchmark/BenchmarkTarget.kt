@@ -2,12 +2,12 @@ package gradle.plugins.kotlin.benchmark
 
 import gradle.api.ProjectNamed
 import klib.data.type.reflection.trySet
-import klib.data.type.serialization.json.serializer.ReflectionJsonObjectTransformingPolymorphicSerializer
+import klib.data.type.serialization.json.serializer.ReflectionMapTransformingPolymorphicSerializer
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 
-@Serializable(with = ReflectionBenchmarkTargetObjectTransformingPolymorphicSerializer::class)
+@Serializable(with = ReflectionBenchmarkTargetMapTransformingPolymorphicSerializer::class)
 internal abstract class BenchmarkTarget<T : kotlinx.benchmark.gradle.BenchmarkTarget> : ProjectNamed<T> {
 
     abstract val workingDir: String?
@@ -18,6 +18,6 @@ internal abstract class BenchmarkTarget<T : kotlinx.benchmark.gradle.BenchmarkTa
     }
 }
 
-private class ReflectionBenchmarkTargetObjectTransformingPolymorphicSerializer(serializer: KSerializer<Nothing>) : ReflectionJsonObjectTransformingPolymorphicSerializer<BenchmarkTarget<*>>(
+private class ReflectionBenchmarkTargetMapTransformingPolymorphicSerializer(serializer: KSerializer<Nothing>) : ReflectionMapTransformingPolymorphicSerializer<BenchmarkTarget<*>>(
     BenchmarkTarget::class,
 )

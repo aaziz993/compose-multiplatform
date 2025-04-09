@@ -3,13 +3,13 @@
 package gradle.api.artifacts
 
 import java.io.File
-import klib.data.type.serialization.json.serializer.JsonBaseObjectTransformingSerializer
+import klib.data.type.serialization.serializer.BaseMapTransformingSerializer
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonPrimitive
-import kotlinx.serialization.json.buildJsonObject
+
+
+
+
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.api.file.FileCollection
@@ -21,7 +21,7 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
 private val SUB_CONFIGURATIONS = listOf("kotlin", "npm", "devNpm", "optionalNpm", "peerNpm")
 
 @KeepGeneratedSerializer
-@Serializable(with = DependencyObjectTransformingSerializer::class)
+@Serializable(with = DependencyMapTransformingSerializer::class)
 internal data class PDependency(
     val notation: DependencyNotation,
     val configuration: String = "implementation",
@@ -97,12 +97,12 @@ internal data class PDependency(
     }
 }
 
-private object DependencyObjectTransformingSerializer : JsonBaseObjectTransformingSerializer<Dependency>(
+private object DependencyMapTransformingSerializer : BaseMapTransformingSerializer<Dependency>(
     Dependency.generatedSerializer(),
 ) {
 
-    override fun transformDeserialize(key: String, value: JsonElement?): JsonObject =
-        buildJsonObject {
+    override fun transformDeserialize(key: String, value: Any?): Map<String, Any?> =
+        buildMap {
             value?.let { value ->
                 put(
                     if (key in SUB_CONFIGURATIONS) "subConfiguration"

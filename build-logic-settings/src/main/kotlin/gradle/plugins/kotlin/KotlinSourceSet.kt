@@ -1,7 +1,7 @@
 package gradle.plugins.kotlin
 
 import gradle.accessors.kotlin
-import gradle.api.NamedObjectTransformingSerializer
+import gradle.api.NamedMapTransformingSerializer
 import gradle.api.ProjectNamed
 import gradle.api.applyTo
 import gradle.api.file.SourceDirectorySet
@@ -28,7 +28,7 @@ import org.gradle.api.Project
  * @see KotlinSourceSetContainer
  */
 @KeepGeneratedSerializer
-@Serializable(with = KotlinSourceSetObjectTransformingSerializer::class)
+@Serializable(with = KotlinSourceSetMapTransformingSerializer::class)
 internal data class KotlinSourceSet(
     override val name: String? = null,
     override val dependencies: Set<Dependency>? = null,
@@ -84,6 +84,6 @@ internal data class KotlinSourceSet(
     fun applyTo() = applyTo(project.kotlin.sourceSets)
 }
 
-private object KotlinSourceSetObjectTransformingSerializer : NamedObjectTransformingSerializer<KotlinSourceSet>(
+private object KotlinSourceSetMapTransformingSerializer : NamedMapTransformingSerializer<KotlinSourceSet>(
     KotlinSourceSet.generatedSerializer(),
 )

@@ -7,9 +7,8 @@ import klib.data.type.collection.takeIfNotEmpty
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.json.JsonContentPolymorphicSerializer
-import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonPrimitive
+import klib.data.type.serialization.serializer.ContentPolymorphicSerializer
+
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.PublishArtifact
@@ -76,10 +75,10 @@ internal interface Signer {
     }
 }
 
-internal object SignContentPolymorphicSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
+internal object SignContentPolymorphicSerializer : ContentPolymorphicSerializer<Any>(Any::class) {
 
-    override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
-        if (element is JsonPrimitive) String.serializer() else SignFile.serializer()
+    override fun selectDeserializer(value: Any?): DeserializationStrategy<Any> =
+        if (value is String) String.serializer() else SignFile.serializer()
 }
 
 

@@ -4,6 +4,7 @@ import klib.data.type.asMap
 import kotlinx.serialization.*
 import net.peanuuutz.tomlkt.*
 import kotlin.invoke
+import kotlin.ranges.contains
 
 @Suppress("UNCHECKED_CAST")
 public fun Toml.encodeAnyToTomlElement(value: Any?): TomlElement =
@@ -36,8 +37,17 @@ private val decodeAnyFromTomlElementDeepRecursiveFunction =
 
             is TomlLiteral -> when (element.type) {
                 TomlLiteral.Type.Boolean -> element.toBoolean()
-                TomlLiteral.Type.Integer -> element.toInt()
-                TomlLiteral.Type.Float -> element.toFloat()
+                TomlLiteral.Type.Integer ->
+                    (element.toByteOrNull()
+                        ?: element.toShortOrNull()
+                        ?: element.toIntOrNull()
+                        ?: element.toLongOrNull()
+                        ?: element.toUByteOrNull()
+                        ?: element.toUShortOrNull()
+                        ?: element.toUIntOrNull()
+                        ?: element.toULongOrNull())!!
+
+                TomlLiteral.Type.Float -> (element.toFloatOrNull() ?: element.toDoubleOrNull())!!
                 TomlLiteral.Type.String -> element.content
                 TomlLiteral.Type.LocalDateTime -> element.toLocalDateTime()
                 TomlLiteral.Type.OffsetDateTime -> element.toOffsetDateTime()

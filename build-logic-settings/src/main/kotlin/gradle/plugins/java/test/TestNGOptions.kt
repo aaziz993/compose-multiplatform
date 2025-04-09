@@ -6,9 +6,9 @@ import klib.data.type.reflection.trySet
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.json.JsonContentPolymorphicSerializer
-import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonPrimitive
+import klib.data.type.serialization.serializer.ContentPolymorphicSerializer
+
+
 import org.gradle.api.Project
 
 /**
@@ -166,8 +166,8 @@ internal data class TestNGOptions(
 }
 
 internal object TestNGContentPolymorphicSerializer :
-    JsonContentPolymorphicSerializer<Any>(Any::class) {
+    ContentPolymorphicSerializer<Any>(Any::class) {
 
-    override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
-        if (element is JsonPrimitive) Boolean.serializer() else TestNGOptions.serializer()
+    override fun selectDeserializer(value: Any?): DeserializationStrategy<Any> =
+        if (value is Boolean) Boolean.serializer() else TestNGOptions.serializer()
 }

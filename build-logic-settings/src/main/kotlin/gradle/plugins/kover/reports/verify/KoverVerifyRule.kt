@@ -4,8 +4,8 @@ import gradle.api.provider.tryAssign
 import kotlinx.kover.gradle.plugin.dsl.GroupingEntityType
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.JsonContentPolymorphicSerializer
-import kotlinx.serialization.json.JsonElement
+import klib.data.type.serialization.serializer.ContentPolymorphicSerializer
+
 import kotlinx.serialization.json.jsonObject
 
 @Serializable
@@ -91,9 +91,9 @@ internal data class NamedKoverVerifyRule(
     val rule: KoverVerifyRule,
 )
 
-internal object KoverVerifyRuleContentPolymorphicSerializer : JsonContentPolymorphicSerializer<Any>(Any::class) {
+internal object KoverVerifyRuleContentPolymorphicSerializer : ContentPolymorphicSerializer<Any>(Any::class) {
 
-    override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Any> =
+    override fun selectDeserializer(value: Any?): DeserializationStrategy<Any> =
         if ("name" in element.jsonObject) NamedKoverVerifyRule.serializer()
         else KoverVerifyRule.serializer()
 }
