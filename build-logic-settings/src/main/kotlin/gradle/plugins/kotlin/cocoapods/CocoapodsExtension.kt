@@ -6,25 +6,19 @@ import gradle.accessors.moduleName
 import gradle.accessors.settings
 import gradle.api.allLibs
 import gradle.api.libs
+import gradle.plugins.kotlin.targets.nat.FrameworkSettings
+import java.net.URI
+import klib.data.type.asMap
 import klib.data.type.collection.tryAddAll
 import klib.data.type.collection.tryPutAll
 import klib.data.type.collection.trySet
-import klib.data.type.reflection.trySet
-import gradle.plugins.kotlin.targets.nat.FrameworkSettings
 import klib.data.type.reflection.tryPlus
-import java.net.URI
-import klib.data.type.asMap
-import klib.data.type.asMapOrNull
+import klib.data.type.reflection.trySet
+import klib.data.type.serialization.serializer.BaseMapTransformingSerializer
+import klib.data.type.serialization.serializer.ContentPolymorphicSerializer
+import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
-import klib.data.type.serialization.serializer.ContentPolymorphicSerializer
-import klib.data.type.serialization.serializer.MapTransformingSerializer
-import klib.data.type.serialization.serializer.TransformingSerializer
-import kotlinx.serialization.DeserializationStrategy
-
-
-
-import kotlinx.serialization.json.jsonObject
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.cocoapods.CocoapodsExtension
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
@@ -267,10 +261,18 @@ internal data class CocoapodsExtension(
         }
     }
 
-    object CocoapodsDependencyMapTransformingSerializer : MapTransformingSerializer<CocoapodsDependency>(
+    object CocoapodsDependencyMapTransformingSerializer : BaseMapTransformingSerializer<CocoapodsDependency>(
         CocoapodsDependency.generatedSerializer(),
-        "notation",
-    )
+    ) {
+
+        override fun transformDeserialize(key: String, value: Any?): Map<String, Any?> =
+            buildMap {
+                value?.let { value ->
+                    put("name", key)
+                    put("version", value)
+                } ?: put("notation", key)
+            }
+    }
 
     @Serializable
     data class PodspecPlatformSettings(
