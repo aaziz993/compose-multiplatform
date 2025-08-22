@@ -1,0 +1,74 @@
+kotlin:
+  sourceSets:
+    - androidMain:
+        dependencies:
+          - implementation(libs("androidx.activity.ktx"))
+          - implementation(libs("androidx.fragment.ktx"))
+          - implementation(libs("android.documentation.plugin"))
+          - implementation(libs("androidx.room.runtime.android"))
+          - implementation(libs("androidx.room.paging"))
+
+android:
+  compileOptions:
+    isCoreLibraryDesugaringEnabled: true
+  lintOptions:
+    checkReleaseBuilds: false
+    abortOnError: false
+  buildTypes:
+    - release:
+        # List additional ProGuard rules for the given build type here. By default,
+        # Android Studio creates and includes an empty rules file for you (located
+        # at the root directory of each module).
+        defaultProguardFile: [ proguard-android-optimize.txt ]
+        proguardFiles: [ proguard.pro ]
+        isMinifyEnabled: true
+        debuggable: false
+        signingConfig:
+          name: release
+    - debug:
+        isMinifyEnabled: false
+        debuggable: true
+  lint:
+    xmlReport: true
+    xmlOutput: build/reports/lint-results.xml # path to the lint report to consume by sonar
+  defaultConfig:
+    testInstrumentationRunner: androidx.test.runner.AndroidJUnitRunner
+    manifestPlaceholders:
+      appAuthRedirectScheme: empty
+    javaCompileOptions:
+      annotationProcessorOptions:
+        arguments:
+          'room.schemaLocation': schemas
+          'room.incremental': 'true'
+          'room.expandProjection': 'true'
+    vectorDrawables:
+      useSupportLibrary: true
+    # The proguard files listed here are included in the
+    # test APK only.
+    testProguardFiles: [ test-proguard-rules.pro ]
+    consumerProguardFiles: [ consumer-proguard.pro ]
+  flavourDimensions: [ api, mode ]
+  productFlavours:
+    - demo:
+        dimension: mode
+    - full:
+        dimension: mode
+  signingConfigs:
+    - release:
+        storeFile: resources@android/release.keystore
+        storePassword: $envOrLocal.android.release.signing.store.password
+        storeType: $envOrLocal.android.release.signing.store.type
+        keyAlias: $envOrLocal.android.release.signing.key.alias
+        keyPassword: $envOrLocal.android.release.signing.key.password
+        v2SigningEnabled: true
+  packagingOptions:
+    resources:
+      excludes: /META-INF/{AL2.0,LGPL2.1
+  buildFeatures:
+    buildConfig: true
+    viewBinding: true
+
+dependencies:
+  - coreLibraryDesugaring: $libs.android.desugar.jdk.libs
+  - androidTestImplementation: $libs.androidx.test.core
+  - androidTestImplementation: $libs.androidx.test.runner

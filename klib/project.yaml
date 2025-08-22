@@ -1,38 +1,45 @@
-description: Kotlin multiplatform libraries.
+apply:
+  - ../properties/root.yaml
+  - ../properties/jvm/jvm.yaml
+#  - ../properties/android/android.yaml
+#  - ../properties/android/android-library.yaml
+  - ../properties/mpp.yaml
+  - ../properties/subproject.yaml
 
-templates:
-  - ../templates/gradle/jvm/jvm.yaml
-  - ../templates/gradle/android/android.yaml
-  - ../templates/gradle/android/android-library.yaml
-  - ../templates/gradle/jvm-common.yaml
-  - ../templates/gradle/apple.yaml
-  - ../templates/gradle/web/js/js.yaml
-  - ../templates/gradle/web/js/js-library.yaml
-  - ../templates/gradle/web/wasmJs.yaml
-  - ../templates/gradle/web/wasm-library.yaml
-  - ../templates/gradle/web/js-common.yaml
-  - ../templates/gradle/mpp.yaml
-  - ../templates/gradle/common.yaml
-  - ../templates/gradle/root.yaml
-  - ../templates/gradle/publish.yaml
+description: '"Kotlin multiplatform libraries."'
+
+#templates:
+#  - ../templates/gradle/jvm/jvm.yaml
+#  - ../templates/gradle/android/android.yaml
+#  - ../templates/gradle/android/android-library.yaml
+#  - ../templates/gradle/jvm-subproject.yaml
+#  - ../templates/gradle/apple.yaml
+#  - ../templates/gradle/web/js/js.yaml
+#  - ../templates/gradle/web/js/js-library.yaml
+#  - ../templates/gradle/web/wasmJs.yaml
+#  - ../templates/gradle/web/wasm-library.yaml
+#  - ../templates/gradle/web/js-subproject.yaml
+#  - ../templates/gradle/mpp.yaml
+#  - ../templates/gradle/subproject.yaml
+#  - ../templates/gradle/root.yaml
+#  - ../templates/gradle/publish.yaml
 
 plugins:
   # Converter of TypeScript declaration files to Kotlin declarations.
-  karakum:
-    enabled: true
+  - alias(libs.plugins("karakum"))
 
-  # Publishing
-  publishing:
-    publications:
-      - maven:
-          pom:
-            url: https://github.com/aaziz993/compose-multiplatform/kmp-lib
-
-  # Generates typesafe Kotlin APIs from your SQL statements. It verifies your schema, statements, and migrations at compile-time and provides IDE features like autocomplete and refactoring which make writing and maintaining SQL simple.
-  sqldelight:
-    enabled: false
-    databases:
-      - name: Cache
-        packageName: data.database.sqldelight
-        # required by asynchronous web-worker-driver for js.
-        generateAsync: true
+## Publishing
+#publishing:
+#  publications:
+#    - maven:
+#        pom:
+#          url: https://github.com/aaziz993/compose-multiplatform/kmp-lib
+#
+## Generates typesafe Kotlin APIs from your SQL statements. It verifies your schema, statements, and migrations at compile-time and provides IDE features like autocomplete and refactoring which make writing and maintaining SQL simple.
+#sqldelight:
+#  enabled: false
+#  databases:
+#    - name: Cache
+#      packageName: data.database.sqldelight
+#      # required by asynchronous web-worker-driver for js.
+#      generateAsync: true

@@ -1,0 +1,79 @@
+apply:
+  - scripting.yaml
+
+scripting:
+  imports:
+    - org.gradle.api.Project
+    - org.jetbrains.dokka.gradle.engine.parameters.VisibilityModifier
+    - org.jetbrains.kotlin.gradle.dsl.*
+    - org.gradle.api.tasks.testing.logging.TestExceptionFormat
+    - org.gradle.api.tasks.testing.logging.TestLogEvent
+
+buildscript:
+  repositories:
+    - mavenCentral()
+    - google()
+    - gradlePluginPortal()
+
+repositories:
+  - mavenCentral()
+
+plugins:
+  - alias(libs.plugins("kover"))
+  - alias(libs.plugins("dokka"))
+  - alias(libs.plugins("dokkaJavadoc"))
+
+# Set of solutions for collecting test coverage of Kotlin code compiled for JVM and Android platforms.
+kover:
+  useJacoco: true
+  reports:
+    total:
+      html:
+        title: '"Generate coverage report"'
+        htmlDir: file("build/reports/kover")
+        onCheck: true
+        charset: '"UTF8"'
+      xml:
+        xmlFile: file("build/reports/kover/report.xml")
+        onCheck: true
+      verify:
+        rule: |
+          { rule ->
+            // 85 is our baseline that we aim to raise to 90+.
+            // Missing coverage is typically due to bugs in the agent
+            // (e.g. signatures deprecated with an error are counted),
+            // sometimes it's various diagnostic toString or catch for OOMs/VerificationErrors,
+            // but some places are definitely worth visiting.
+            rule.minBound(85) // COVERED_LINES_PERCENTAGE
+          }
+
+## Api documentation engine for Kotlin.
+dokka:
+  dokkaPublications:
+    - configureEach: |
+        { dokkaPublication ->
+          dokkaPublication.suppressObviousFunctions /= true
+          dokkaPublication.suppressInheritedMembers /= false
+        }
+  dokkaSourceSets:
+    - configureEach: |
+        { dokkaSourceSet ->
+          dokkaSourceSet.includes.from("README.md")
+          dokkaSourceSet.documentedVisibilities /= setOf<VisibilityModifier>(VisibilityModifier.Public)
+          dokkaSourceSet.reportUndocumented /= false
+          dokkaSourceSet.sourceLink { sourceLink ->
+            sourceLink.remoteLineSuffix /= "#L"
+          }
+          dokkaSourceSet.skipEmptyPackages /= true
+          dokkaSourceSet.skipDeprecated /= true
+          dokkaSourceSet.enableKotlinStdLibDocumentationLink /= true
+          dokkaSourceSet.enableJdkDocumentationLink /= true
+          dokkaSourceSet.enableAndroidDocumentationLink /= true
+        }
+
+  pluginsConfiguration:
+    - html:
+        footerMessage: '"© ${settings.settingsProperties.year!!} - ${settings.settingsProperties.developer!!.name}"'
+        templatesDir: layout.projectDirectory.dir("dokka-templates")
+    - versioning:
+        olderVersionsDir: layout.projectDirectory.dir("documentation/version")

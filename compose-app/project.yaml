@@ -6,16 +6,16 @@ templates:
   - ../templates/gradle/jvm/jvm.yaml
   - ../templates/gradle/android/android.yaml
   - ../templates/gradle/android/android-app.yaml
-  - ../templates/gradle/jvm-common.yaml
+  - ../templates/gradle/jvm-subproject.yaml
   - ../templates/gradle/apple.yaml
   - ../templates/gradle/web/js/js.yaml
   - ../templates/gradle/web/js/js-executable.yaml
   - ../templates/gradle/web/wasmJs.yaml
   - ../templates/gradle/web/wasm-executable.yaml
-  - ../templates/gradle/web/js-common.yaml
+  - ../templates/gradle/web/js-subproject.yaml
   - ../templates/gradle/mpp.yaml
   - ../templates/gradle/compose.yaml
-  - ../templates/gradle/common.yaml
+  - ../templates/gradle/subproject.yaml
   - ../templates/gradle/root.yaml
 
 kotlin:

@@ -1,126 +1,120 @@
-year: '2025'
+imports:
+  - properties/scripting.yaml
 
-remote:
-  url: https://github.com/aaziz993/compose-multiplatform
-  connection: scm:git:git://github.com:aaziz993/compose-multiplatform.git
-  developerConnection: scm:git:ssh://github.com:aaziz993/compose-multiplatform.git
-  tag: HEAD
+config:
+  imports:
+    - org.gradle.caching.http.HttpBuildCache
+    - com.gradle.develocity.agent.gradle.buildcache.DevelocityBuildCache
 
-developer:
-  id: aaziz993
-  name: Aziz Atoev
-  email: a.atoev93@gmail.com
-  organization: AITech
-  organizationUrl: https://github.com/aaziz993
-
-license:
-  name: Apache License, Version 2.0
-  url: https://www.apache.org/licenses/LICENSE-2.0.txt
-  distribution: repo
-  comments: A business-friendly OSS license.
-
-licenseFile:
-  yearPlaceholder: '[yyyy]'
-  ownerPlaceholder: '[name of copyright owner]'
-  resolution: MODIFIED
-
-licenseHeaderFile:
-  source: templates/LICENSE_HEADER
-  resolution: MODIFIED
-
-codeOfConductFile:
-  source: https://www.contributor-covenant.org/version/1/4/code-of-conduct/code_of_conduct.md
-  emailPlaceholder: '[INSERT EMAIL ADDRESS]'
-  resolution: MODIFIED
-
-contributingFile:
-  source: https://www.contributor-covenant.org/version/1/4/code-of-conduct/code_of_conduct.md
-  resolution: MODIFIED
-
-pluginManagement:
-  repositories:
-    - mavenCentral
-    - google
-    - gradlePluginPortal
-    - https://www.jetbrains.com/intellij-repository/releases
-    - https://packages.jetbrains.team/maven/p/ij/intellij-dependencies
-
-plugins:
-  - $libs.develocity
-  - $libs.develocityCommonCustomUserData
-  - $libs.foojayResolverConvention
-  - $libs.gradlePreCommitGitHooks
-
-# Gives the data to speed up your build, improve build reliability and accelerate build debugging.
-# servers: https://ge.solutions-team.gradle.com, https://ge.jetbrains.com
-develocity:
-  server: https://ge.solutions-team.gradle.com
-  buildScan:
-    uploadInBackground: true
-    publishing:
-      onlyIfAuthenticated: true
-    obfuscation:
-      ipAddresses:
-        '': 0.0.0.0
-    capture:
-      fileFingerprints: true
-      buildLogging: true
-  #    gitRepo: https://github.com/aaziz993/cmp # Populated from remote.url.
-  skipGitTags: false
-
-# Provides a repository for downloading JVMs
-toolchainManagement: { }
-
-# Enforcing pre-commit and commit-msg Git hooks configuration. Conventional-commits-ready.
-gitHooks: { }
-
-dependencyResolutionManagement:
-  repositories:
-    - mavenCentral
-    # For the Android plugin and dependencies
-    - google
-    # For other Gradle plugins
-    - gradlePluginPortal
-    # For dev versions of kotlin
-    - https://maven.pkg.jetbrains.space/kotlin/p/kotlin/dev
-    # For dev versions of compose plugin and dependencies
-    - jetbrainsCompose
-    # For compose experimental builds
-    - https://packages.jetbrains.team/maven/p/firework/dev
-    # Sonatype OSS Snapshot Repository
-    - https://oss.sonatype.org/content/repositories/snapshots
-    - https://repo.gradle.org/gradle/libs-releases
-    - https://cache-redirector.jetbrains.com/www.jetbrains.com/intellij-repository/releases
-    - https://cache-redirector.jetbrains.com/packages.jetbrains.team/maven/p/ij/intellij-dependencies
-    - https://cache-redirector.jetbrains.com/download.jetbrains.com/teamcity-repository
-    # Space Packages releases
-    - https://maven.pkg.jetbrains.space/aaziz93/p/aaziz-93/maven
-    # GitHub Packages
-    - https://maven.pkg.github.com/aaziz993
-
-  versionCatalogs:
-    - name: kotlinWrappers
-      from: $libs.kotlin.wrappers.catalog
-
-buildCache:
-  local:
-  #    enabled: true # Default is if not CI.
-  remotes:
-    # JB Space build cache
-    - http:
-        enabled: true
-        url: https://files.pkg.jetbrains.space/aaziz93/p/aaziz-93/compose-multiplatform
-        credentials:
-          username: aaziz93
-          password: $envOrLocal.jb.space.gradle.build.cache.password
-    # Develocity build cache configured by default
-    - develocity:
-        enabled: true
-
-includes:
-  - klib
-  - compose-lib
-  - compiler
-  - shared
-  - compose-app
-  - server-app
+script:
+  - enableFeaturePreview: ("TYPESAFE_PROJECT_ACCESSORS")
+  - pluginManagement:
+      repositories:
+        - mavenCentral: ()
+        - google: ()
+        - gradlePluginPortal: ()
+        - maven: ("https://company/com/maven2")
+        - maven: ("https://packages.jetbrains.team/maven/p/ij/intellij-dependencies")
+  - plugins:
+      - alias: (libs.plugins("develocity"))
+      - alias: (libs.plugins("develocityCommonCustomUserData"))
+      - alias: (libs.plugins("foojayResolverConvention"))
+      - alias: (libs.plugins("gradlePreCommitGitHooks"))
+  # Gives the data to speed up your build, improve build reliability and accelerate build debugging.
+  # servers: https://ge.solutions-team.gradle.com, https://ge.jetbrains.com
+  - develocity:
+      server: '"https://ge.solutions-team.gradle.com"'
+      buildScan:
+        - tag: (if (CI.current == null) "Local" else "CI")
+        - tag: (System.getProperty("os.name"))
+        - buildScanPublished: |
+            { buildScanPublished ->
+                layout.rootDirectory.file("scan-journal.log").asFile.appendText("${Date()} — ${buildScanPublished.buildScanUri} — $startParameter\n")
+            }
+        - termsOfUseUrl: '"https://gradle.com/help/legal-terms-of-use"'
+        - termsOfUseAgree: '"yes"'
+        # By default, Build Scans are uploaded in the background after the build has finished.
+        # This allows the build to finish sooner, but can be problematic in build environments (e.g. ephemeral CI agents) that terminate as soon as the build is finished, as the upload may be terminated before it completes.
+        # Background uploading should be disabled for such environments.
+        - uploadInBackground: CI.current == null
+        - publishing: |
+            { publishing ->
+              publishing.onlyIf { context -> 
+                context.isAuthenticated && (context.buildResult.failures.isNotEmpty() || CI.current != null)
+              }
+            }
+        # obfuscate NIC since we don't want to expose user real IP (will be relevant without VPN)
+        - obfuscation:
+            ipAddresses: |
+              { addresses ->
+                addresses.map { _ -> "0.0.0.0" }
+              }
+            hostname: |
+              {
+                "concealed"
+              }
+            username: |
+              { username ->
+                CI.current?.name ?: username
+              }
+        - capture:
+            fileFingerprints: true
+            buildLogging: true
+      enrichGitData: ("") # TODO GitHub repo url populated from remote.url if not provided.
+  # Provides a repository for downloading JVMs
+  - toolchainManagement: { }
+  # Enforcing pre-commit and commit-msg Git hooks configuration. Conventional-commits-ready.
+  - gitHooks: { }
+  - dependencyResolutionManagement:
+      repositories:
+        - mavenCentral: ()
+        # For the Android plugin and dependencies
+        - google: ()
+        # For other Gradle plugins
+        - gradlePluginPortal: ()
+        # For dev versions of kotlin
+        - maven: ("https://maven.pkg.jetbrains.space/kotlin/p/kotlin/dev")
+        # For dev versions of compose plugin and dependencies
+        - jetbrainsCompose: ()
+        # For compose experimental builds
+        - maven: ("https://packages.jetbrains.team/maven/p/firework/dev")
+        # Sonatype OSS Snapshot Repository
+        - maven: ("https://oss.sonatype.org/content/repositories/snapshots")
+        - maven: ("https://repo.gradle.org/gradle/libs-releases")
+        - maven: ("https://cache-redirector.jetbrains.com/www.jetbrains.com/intellij-repository/releases")
+        - maven: ("https://cache-redirector.jetbrains.com/packages.jetbrains.team/maven/p/ij/intellij-dependencies")
+        - maven: ("https://cache-redirector.jetbrains.com/download.jetbrains.com/teamcity-repository")
+        # Space Packages releases
+        - maven: ("https://maven.pkg.jetbrains.space/aaziz93/p/aaziz-93/maven")
+        # GitHub Packages
+        - maven: ("https://maven.pkg.github.com/aaziz993")
+      versionCatalogs:
+        - create: ("kotlinWrappers"){ catalog -> catalog.from(libs("kotlin.wrappers.catalog")) }
+  - enableCacheRedirector: ()
+  - buildCache:
+      - local:
+          isEnabled: CI.current == null # Default is if not CI.
+      # Remote http cache
+      - remote<HttpBuildCache>: |
+          {
+             isEnabled = true
+             url = URI("https://files.pkg.jetbrains.space/aaziz93/p/aaziz-93/compose-multiplatform")
+             credentials { credentials ->
+                 credentials.username = "aaziz93"
+                 credentials.password = System.getenv()["jb.space.gradle.build.cache.password"]
+             }
+          }
+      # Develocity build cache configured by default
+      - remote<DevelocityBuildCache>: |
+          {
+            isPush = CI.current != null
+          }
+  - include: |
+      (
+        ":klib",
+        ":compose-lib",
+        ":compiler",
+        ":shared",
+        ":compose-app",
+        ":server-app"
+      )

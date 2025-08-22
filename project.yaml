@@ -1,43 +1,31 @@
-templates:
-  - templates/gradle/root.yaml
+apply:
+  - properties/root.yaml
 
 # Print suggestions for your build as you run regular tasks.
 doctor:
-  enabled: true
-  enableTaskMonitoring: true
+  disableTaskMonitoring: ()
   enableTestCaching: true
-  javaHome:
-    ensureJavaHomeIsSet: false
-    ensureJavaHomeMatches: false
+  javaHome: |
+    { javaHome ->
+      javaHome.ensureJavaHomeIsSet /= false
+      javaHome.ensureJavaHomeMatches /= false
+    }
 
 # api documentation engine for Kotlin.
 dokka:
+  dependenciesFromIncludes: ()
   pluginsConfiguration:
     - html:
-        customStyleSheets: [ dokka/style.css, dokka/prism.css, dokka/logo-styles.css ]
-        customAssets: [ dokka/logo-icon.svg ]
+        customStyleSheets.from: ("dokka/style.css", "dokka/prism.css", "dokka/logo-styles.css")
+        customAssets.from: ("dokka/logo-icon.svg")
 
 # produces Kotlin source example files and tests from markdown documents with embedded snippets of Kotlin code
 knit:
-  enabled: true
-  siteRoot: https://github.com/aaziz993/compose-multiplatform
-  #    moduleRoots: [
-  #      klib,
-  #      compose-lib,
-  #      compiler,
-  #      shared,
-  #      compose-app,
-  #      server-app ] # by default taken from includes
-  moduleDocs: build/dokka
-  dokkaMultiModuleRoot: build/dokka
+  siteRoot: settings.settingsProperties.remote!!.url
+  moduleRootsFromIncludes: ()
+  moduleDocs: '"build/dokka"'
+  dokkaMultiModuleRoot: '"build/dokka"'
 
 dependencies:
-  # dokka multimodule module dependencies. By default taken from includes see dokka.dependenciesFromIncludes.
-  #  - dokka: :klib
-  #  - dokka: :compose-lib
-  #  - dokka: :compiler
-  #  - dokka: :shared
-  #  - dokka: :compose-app
-  #  - dokka: :server-app
   # knit
-  - testImplementation: org.jetbrains.kotlinx:kotlinx-knit-test
+  - testImplementation("org.jetbrains.kotlinx:kotlinx-knit-test")

@@ -3,8 +3,8 @@ description: Server application.
 templates:
   - ../templates/gradle/jvm/jvm.yaml
   - ../templates/gradle/jvm/jvm-app.yaml
-  - ../templates/gradle/jvm-common.yaml
-  - ../templates/gradle/common.yaml
+  - ../templates/gradle/jvm-subproject.yaml
+  - ../templates/gradle/subproject.yaml
   - ../templates/gradle/root.yaml
 
 kotlin:

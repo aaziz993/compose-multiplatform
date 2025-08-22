@@ -2,8 +2,8 @@ description: Ksp source generator.
 
 templates:
   - ../templates/gradle/jvm/jvm.yaml
-  - ../templates/gradle/jvm-common.yaml
-  - ../templates/gradle/common.yaml
+  - ../templates/gradle/jvm-subproject.yaml
+  - ../templates/gradle/subproject.yaml
   - ../templates/gradle/publish.yaml
   - ../templates/gradle/root.yaml
 

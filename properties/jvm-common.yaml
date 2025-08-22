@@ -1,0 +1,8 @@
+plugins:
+  - alias(libs.plugins("animalsniffer"))
+
+# Check (JDK, android SDK or any library) API compatibility for java (kotlin, scala, groovy etc.), android and kotlin multiplatform projects.
+animalSniffer:
+  debug: true
+  ignoreFailures: true
+  sourceSets: [ main ]

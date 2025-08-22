@@ -1,0 +1,50 @@
+package gradle.api.initialization
+
+import gradle.api.Properties
+import gradle.api.initialization.SettingsProperties.Companion.SETTINGS_PROPERTIES_EXT
+import gradle.api.initialization.file.CodeOfConductFile
+import gradle.api.initialization.file.ContributingFile
+import gradle.api.initialization.file.LicenseFile
+import gradle.api.initialization.file.LicenseHeaderFile
+import gradle.api.initialization.file.ProjectFileImpl
+import gradle.api.publish.maven.MavenPomDeveloper
+import gradle.api.publish.maven.MavenPomLicense
+import gradle.api.publish.maven.MavenPomScm
+import klib.data.scripting.ScriptConfig
+import klib.data.scripting.ScriptProperties
+import klib.data.type.serialization.serializers.collections.SerializableNullableAnyMap
+import kotlinx.serialization.Serializable
+import org.gradle.api.initialization.Settings
+import org.jetbrains.kotlin.gradle.plugin.extraProperties
+import klib.data.type.serialization.serializers.any.SerializableAny
+
+@Serializable
+public data class SettingsProperties(
+    override val config: ScriptConfig,
+    override val script: List<SerializableAny>
+) : Properties() {
+
+    public companion object {
+
+        internal const val LIBS_VERSION_CATALOG_EXT = "libs.versions.catalog.ext"
+
+        internal const val LOCAL_PROPERTIES_EXT = "local.properties.ext"
+
+        internal const val SETTINGS_PROPERTIES_EXT = "settings.properties.ext"
+
+        private const val SETTINGS_PROPERTIES_FILE = "initialization.yaml"
+
+        context(settings: Settings)
+        @Suppress("UnstableApiUsage")
+        internal operator fun invoke() = with(settings) {
+            settingsProperties =
+                layout.settingsDirectory.file(SETTINGS_PROPERTIES_FILE).asFile(settings)
+        }
+    }
+}
+
+public var Settings.settingsProperties: SettingsProperties
+    get() = extraProperties[SETTINGS_PROPERTIES_EXT] as SettingsProperties
+    private set(value) {
+        extraProperties[SETTINGS_PROPERTIES_EXT] = value
+    }
