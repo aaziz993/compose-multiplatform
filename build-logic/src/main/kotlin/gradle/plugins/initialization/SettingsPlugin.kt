@@ -1,8 +1,6 @@
 package gradle.plugins.initialization
 
 import gradle.api.initialization.SettingsProperties
-import gradle.api.initialization.settingsProperties
-import klib.data.scripting.invoke
 import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
 import org.h2.Driver

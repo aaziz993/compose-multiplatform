@@ -2,17 +2,7 @@ package gradle.api.initialization
 
 import gradle.api.Properties
 import gradle.api.initialization.SettingsProperties.Companion.SETTINGS_PROPERTIES_EXT
-import gradle.api.initialization.file.CodeOfConductFile
-import gradle.api.initialization.file.ContributingFile
-import gradle.api.initialization.file.LicenseFile
-import gradle.api.initialization.file.LicenseHeaderFile
-import gradle.api.initialization.file.ProjectFileImpl
-import gradle.api.publish.maven.MavenPomDeveloper
-import gradle.api.publish.maven.MavenPomLicense
-import gradle.api.publish.maven.MavenPomScm
-import klib.data.scripting.ScriptConfig
-import klib.data.scripting.ScriptProperties
-import klib.data.type.serialization.serializers.collections.SerializableNullableAnyMap
+import klib.data.script.ScriptConfig
 import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings
 import org.jetbrains.kotlin.gradle.plugin.extraProperties

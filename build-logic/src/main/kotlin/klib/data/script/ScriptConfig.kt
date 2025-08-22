@@ -1,4 +1,4 @@
-package klib.data.scripting
+package klib.data.script
 
 import java.io.File
 import java.lang.RuntimeException
@@ -19,6 +19,7 @@ import kotlin.script.experimental.jvm.jvm
 import kotlin.script.experimental.jvm.jvmTarget
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
+import kotlin.script.experimental.util.PropertiesCollection.Builder.invoke
 
 @Serializable
 public data class ScriptConfig(

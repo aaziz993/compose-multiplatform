@@ -1,4 +1,4 @@
-package klib.data.scripting
+package klib.data.script
 
 import klib.data.cache.Cache
 import klib.data.cache.NoCache

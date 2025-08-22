@@ -19,11 +19,7 @@ import klib.data.type.serialization.coders.model.TreeDecoderConfiguration
 import klib.data.type.serialization.getElementAnnotation
 import klib.data.type.serialization.hasElementAnnotation
 import klib.data.type.serialization.toPolymorphicValues
-import kotlin.collections.plus
-import kotlin.reflect.KClass
-import kotlinx.serialization.DeserializationStrategy
-import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
+import kotlinx.serialization.*
 import kotlinx.serialization.descriptors.PolymorphicKind
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.StructureKind
@@ -32,8 +28,6 @@ import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.decodeIfNullable
 import kotlinx.serialization.modules.EmptySerializersModule
 import kotlinx.serialization.modules.SerializersModule
-import kotlinx.serialization.serializer
-import kotlinx.serialization.serializerOrNull
 
 public open class TreeDecoder(
     protected val value: Any?,
@@ -151,19 +145,20 @@ public open class TreeDecoder(
             }
         }
 
-        protected abstract fun decodeUnknownKeys(): Any?
+        public abstract fun decodeUnknownKeys(): Any?
 
-        protected abstract fun setChildUnknownKeys(unknownKeys: Any?)
+        public abstract fun setChildUnknownKeys(unknownKeys: Any?)
     }
 
     private inner class ListDecoder(descriptor: SerialDescriptor) : StructureLikeDecoder(descriptor) {
 
-        override val values: List<Any?> = (value?.asNullableListOrNull ?: value!!.asMap<Any?, Any?>().valuesByKeysAsIndices)
-            .withIndex()
-            .filter { (index, element) -> configuration.filterElement(descriptor, index, element) }
-            .map { (index, element) ->
-                configuration.transformElement(descriptor, index, element)
-            }
+        override val values: List<Any?> =
+            (value?.asNullableListOrNull ?: value!!.asMap<Any?, Any?>().valuesByKeysAsIndices)
+                .withIndex()
+                .filter { (index, element) -> configuration.filterElement(descriptor, index, element) }
+                .map { (index, element) ->
+                    configuration.transformElement(descriptor, index, element)
+                }
 
         private var unknownKeys = listOf<Any?>()
 

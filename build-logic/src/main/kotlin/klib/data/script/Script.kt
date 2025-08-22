@@ -1,16 +1,9 @@
-package klib.data.scripting
+package klib.data.script
 
-import java.lang.RuntimeException
-import kotlin.collections.orEmpty
-import kotlin.script.experimental.api.EvaluationResult
 import kotlin.script.experimental.api.ResultValue
-import kotlin.script.experimental.api.ResultWithDiagnostics
 import kotlin.script.experimental.api.ScriptCompilationConfiguration
-import kotlin.script.experimental.api.ScriptDiagnostic
-import kotlin.script.experimental.api.ScriptDiagnostic.Severity
 import kotlin.script.experimental.api.ScriptEvaluationConfiguration
 import kotlin.script.experimental.api.SourceCode
-import kotlin.script.experimental.api.valueOr
 import kotlin.script.experimental.api.valueOrThrow
 import kotlin.script.experimental.host.toScriptSource
 import kotlin.script.experimental.jvmhost.BasicJvmScriptingHost
