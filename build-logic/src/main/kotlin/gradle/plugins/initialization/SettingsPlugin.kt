@@ -1,6 +1,8 @@
 package gradle.plugins.initialization
 
 import gradle.api.initialization.SettingsProperties
+import gradle.api.initialization.libs
+import gradle.plugins.project.ProjectPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
 import org.h2.Driver
@@ -20,8 +22,7 @@ public class SettingsPlugin : Plugin<Settings> {
                 gradle.projectsLoaded {
                     // at this point all projects have been created by settings.gradle.kts, but none were evaluated yet
                     allprojects {
-                        println(project.name)
-//                        pluginManager.apply(ProjectPlugin::class.java)
+                        pluginManager.apply(ProjectPlugin::class.java)
                     }
                 }
             }

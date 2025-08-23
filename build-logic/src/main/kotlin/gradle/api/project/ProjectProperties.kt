@@ -10,7 +10,7 @@ import klib.data.type.serialization.serializers.any.SerializableAny
 
 @Serializable
 public class ProjectProperties(
-    override val config: ScriptConfig,
+    override val config: ScriptConfig = ScriptConfig(),
     override val script: List<SerializableAny>
 ) : Properties() {
 

@@ -57,7 +57,7 @@ opentelemetry = "1.47.0"
 # configuration and build tool. Its goal is to provide a great and smooth user experience and IDE support
 amper = "0.6.0-dev-2425"
 # print suggestions for your build as you run regular tasks
-doctor = "0.10.0"
+doctor = "0.11.0"
 # ktlint
 gradle-ktlint = "11.1.0"
 # software Composition Analysis (SCA) tool that attempts to detect publicly disclosed vulnerabilities contained within a project's dependencies. It does this by determining if there is a Common Platform Enumeration (CPE) identifier for a given dependency. If found, it will generate a report linking to the associated CVE entries.
@@ -77,7 +77,7 @@ libres = "1.2.3"
 # enforcing pre-commit and commit-msg Git hooks configuration. Conventional-commits-ready.
 gradlePreCommitGitHooks = "2.0.4"
 # set of solutions for collecting test coverage of Kotlin code compiled for JVM and Android platforms.
-kover = "0.9.0-RC"
+kover = "0.9.1"
 # format <antlr | c | c# | c++ | css | flow | graphql | groovy | html | java | javascript | json | jsx | kotlin | less | license headers | markdown | objective-c | protobuf | python | scala | scss | shell | sql | typeScript | vue | yaml | anything> using <gradle | maven | sbt | anything>.
 spotless = "6.25.0"
 # help developers deliver high-quality, efficient code standards that benefit the entire team or organization.

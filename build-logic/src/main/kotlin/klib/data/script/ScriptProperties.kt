@@ -65,8 +65,8 @@ public abstract class ScriptProperties {
         }
     }
 
-    public operator fun invoke() {
-        compiled(config)
+    public operator fun invoke(): Unit = compiled(config).run {
+        if (this is Throwable) throw this
     }
 
     override fun toString(): String = compiled
@@ -167,8 +167,9 @@ public abstract class ScriptProperties {
                 listOf(importsKey),
                 decoder = decoder
             ) { mergedImports ->
-                (this - importsKey).deepMapValues(
+                emptyMap<String, Any?>().deepMapValues(
                     *mergedImports.toTypedArray(),
+                    (this - importsKey),
                     sourceIteratorOrNull = { value ->
                         if (firstOrNull()?.second == scriptKey) null else value.iteratorOrNull()
                     },

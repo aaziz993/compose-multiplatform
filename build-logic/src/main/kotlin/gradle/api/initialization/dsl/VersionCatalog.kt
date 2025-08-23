@@ -18,13 +18,16 @@ public data class VersionCatalog(
 
     public fun versions(alias: String): VersionConstraint? = versions[alias]
 
-    public fun libraries(alias: String): Library = libraries[alias]!!
+    public fun libraries(alias: String): Library =
+        libraries[alias] ?: throw IllegalArgumentException("Unresolved library '$alias'")
 
-    public fun plugins(alias: String): Plugin = plugins[alias]!!
+    public fun plugins(alias: String): Plugin =
+        plugins[alias] ?: throw IllegalArgumentException("Unresolved plugin '$alias'")
 
-    public fun bundles(alias: String): List<Library> = bundles[alias]!!
+    public fun bundles(alias: String): List<Library> =
+        bundles[alias] ?: throw IllegalArgumentException("Unresolved bundle '$alias'")
 
-    public operator fun invoke(alias: String): String = libraries[alias]!!.toString()
+    public operator fun invoke(alias: String): String = libraries(alias).toString()
 }
 
 private object VersionCatalogTransformingSerializer :

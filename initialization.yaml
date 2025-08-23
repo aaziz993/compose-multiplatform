@@ -1,11 +1,9 @@
 imports:
   - properties/scripting.yaml
-
 config:
   imports:
     - org.gradle.caching.http.HttpBuildCache
     - com.gradle.develocity.agent.gradle.buildcache.DevelocityBuildCache
-
 script:
   - enableFeaturePreview: ("TYPESAFE_PROJECT_ACCESSORS")
   - pluginManagement:
@@ -16,10 +14,34 @@ script:
         - maven: ("https://company/com/maven2")
         - maven: ("https://packages.jetbrains.team/maven/p/ij/intellij-dependencies")
   - plugins:
+      # Settings plugins.
       - alias: (libs.plugins("develocity"))
       - alias: (libs.plugins("develocityCommonCustomUserData"))
       - alias: (libs.plugins("foojayResolverConvention"))
       - alias: (libs.plugins("gradlePreCommitGitHooks"))
+      # Project plugins.
+      - alias: (libs.plugins("doctor"), false)
+      - alias: (libs.plugins("kover"), false)
+      - alias: (libs.plugins("dokka"), false)
+      - alias: (libs.plugins("dokkaJavadoc"), false)
+      - alias: (libs.plugins("dependencycheck"), false)
+      - alias: (libs.plugins("knit"), false)
+      - alias: (libs.plugins("buildconfig"), false)
+      - alias: (libs.plugins("spotless"), false)
+      - alias: (libs.plugins("sonarqube"), false)
+      - alias: (libs.plugins("binaryCompatibilityValidator"), false)
+      - alias: (libs.plugins("ksp"), false)
+      - alias: (libs.plugins("allopen"), false)
+      - alias: (libs.plugins("noarg"), false)
+      - alias: (libs.plugins("atomicfu"), false)
+      - alias: (libs.plugins("kotlin.serialization"), false)
+      - alias: (libs.plugins("kotlinx.benchmark"), false)
+      - alias: (libs.plugins("sqldelight"), false)
+      - alias: (libs.plugins("room"), false)
+      - alias: (libs.plugins("kotlinx.rpc"), false)
+      - alias: (libs.plugins("ktorfit"), false)
+      - alias: (libs.plugins("apollo3"), false)
+      - alias: (libs.plugins("powerAssert"), false)
   # Gives the data to speed up your build, improve build reliability and accelerate build debugging.
   # servers: https://ge.solutions-team.gradle.com, https://ge.jetbrains.com
   - develocity:
@@ -60,11 +82,11 @@ script:
         - capture:
             fileFingerprints: true
             buildLogging: true
-      enrichGitData: ("") # TODO GitHub repo url populated from remote.url if not provided.
+      enrichGitData: ("settings.settingsProperties.remote!!.url") # GitHub repo url populated from remote.url if not provided.
   # Provides a repository for downloading JVMs
-  - toolchainManagement: { }
+  - toolchainManagement: '{ }'
   # Enforcing pre-commit and commit-msg Git hooks configuration. Conventional-commits-ready.
-  - gitHooks: { }
+  - gitHooks: '{ }'
   - dependencyResolutionManagement:
       repositories:
         - mavenCentral: ()
@@ -105,16 +127,16 @@ script:
              }
           }
       # Develocity build cache configured by default
-      - remote<DevelocityBuildCache>: |
-          {
-            isPush = CI.current != null
+      - remote: |
+          (develocity.buildCache) { buildCache ->
+            buildCache.isPush = CI.current != null
           }
   - include: |
       (
-        ":klib",
-        ":compose-lib",
-        ":compiler",
-        ":shared",
-        ":compose-app",
-        ":server-app"
+        //":klib",
+        //":compose-lib",
+        //":compiler",
+        //":shared",
+        //":compose-app",
+        //":server-app"
       )

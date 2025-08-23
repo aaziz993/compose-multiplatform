@@ -12,7 +12,6 @@ pluginManagement {
     }
 }
 
-
 plugins {
     id("settings.convention")
 }

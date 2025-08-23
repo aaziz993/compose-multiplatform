@@ -1,8 +1,11 @@
 package gradle.plugins.project
 
+import gradle.api.artifacts.dsl.testImplementation
 import gradle.api.ci.CI
 import gradle.api.maybeNamed
 import gradle.api.project.ProjectProperties
+import gradle.api.project.doctor
+import gradle.plugins.doctor.disableTaskMonitoring
 import gradle.plugins.initialization.SLF4JProblemReporterContext
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
