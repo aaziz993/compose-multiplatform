@@ -1,12 +1,11 @@
 package klib.data.type.serialization
 
 import klib.data.type.collections.deepGetOrNull
-import klib.data.type.collections.deepMap
-import klib.data.type.collections.list.asList
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.modules.EmptySerializersModule
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.serializer
+import kotlin.reflect.KClass
 
 @Suppress("UNCHECKED_CAST")
 public fun <T : Any> decodeFile(
@@ -75,16 +74,15 @@ private data class DecodeFileArgs<T>(
 public inline fun <reified T : Any> T.plus(
     vararg values: T,
     serializersModule: SerializersModule = EmptySerializersModule()
-): T = (this::class.serializer() as KSerializer<T>).plus(*values, serializersModule = serializersModule)
+): T = serializer<T>().plus(this, *values, serializersModule = serializersModule)
 
 public inline fun <reified T : Any> T.deepPlus(
     vararg values: T,
     serializersModule: SerializersModule = EmptySerializersModule()
-): T = (values.first()::class.serializer() as KSerializer<T>)
-    .deepPlus(this, *values, serializersModule = serializersModule)
+): T = serializer<T>().deepPlus(this, *values, serializersModule = serializersModule)
 
-public inline fun <T : Any> T.deepCopy(
+public inline fun <reified T : Any> T.deepCopy(
     serializersModule: SerializersModule = EmptySerializersModule(),
     transform: Any.() -> Any = { this }
-): T = (this::class.serializer() as KSerializer<T>).deepCopy(this, serializersModule, transform)
+): T = serializer<T>().deepCopy(this, serializersModule, transform)
 

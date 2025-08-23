@@ -3,6 +3,7 @@ package klib.data.type.serialization
 import klib.data.type.collections.deepMap
 import klib.data.type.collections.list.drop
 import klib.data.type.collections.map
+import klib.data.type.collections.toNewMutableCollection
 import klib.data.type.reflection.callMember
 import klib.data.type.serialization.coders.tree.deserialize
 import klib.data.type.serialization.coders.tree.serialize
@@ -69,28 +70,32 @@ private class ElementDecoder(private val index: Int) : AbstractDecoder() {
     private inline fun <reified T : Any> decodeSerializer(): T = decodeSerializer(T::class.serializer())
 }
 
-@Suppress("UNCHECKED_CAST")
-public inline fun <reified T : Any> KSerializer<T>.plus(
+public fun <T : Any> KSerializer<T>.plus(
     vararg values: T,
     serializersModule: SerializersModule = EmptySerializersModule()
-): T {
-    val values = values.map { value -> serialize(value, serializersModule = serializersModule) } as List<Any>
-
-    return deserialize(values.first().map(*values.drop().toTypedArray()), serializersModule)
+): T = values.map { value -> serialize(value, serializersModule)!! }.let { sources ->
+    deserialize(
+        sources.fold(sources.first().toNewMutableCollection()) { destination, source ->
+            source.map(destination = destination)
+        },
+        serializersModule
+    )
 }
 
-@Suppress("UNCHECKED_CAST")
-public inline fun <reified T : Any> KSerializer<T>.deepPlus(
+public fun <T : Any> KSerializer<T>.deepPlus(
     vararg values: T,
     serializersModule: SerializersModule = EmptySerializersModule(),
-): T {
-    val values = values.map { value -> serialize(value, serializersModule = serializersModule) } as List<Any>
-
-    return deserialize(values.first().deepMap(*values.drop().toTypedArray()), serializersModule)
+): T = values.map { value -> serialize(value, serializersModule)!! }.let { sources ->
+    deserialize(
+        sources.fold(sources.first().toNewMutableCollection()) { destination, source ->
+            source.deepMap(destination = destination)
+        },
+        serializersModule
+    )
 }
 
 public inline fun <T : Any> KSerializer<T>.deepCopy(
     value: T,
     serializersModule: SerializersModule = EmptySerializersModule(),
     transform: Any.() -> Any = { this }
-): T = deserialize(serialize(value, serializersModule = serializersModule)!!.transform(), serializersModule)
+): T = deserialize(serialize(value, serializersModule)!!.transform(), serializersModule)
