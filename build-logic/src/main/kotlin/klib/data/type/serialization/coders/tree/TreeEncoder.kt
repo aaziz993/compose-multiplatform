@@ -15,6 +15,7 @@ import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.StructureKind
 import kotlinx.serialization.encoding.AbstractEncoder
 import kotlinx.serialization.encoding.CompositeEncoder
+import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.EmptySerializersModule
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.serializer
@@ -154,7 +155,7 @@ public fun <T> SerializationStrategy<T>.serialize(
     encodeSerializableValue(this@serialize, value)
 }.value
 
-public fun <T : Any> T.serialize(
+public inline fun <reified T : Any> T.serialize(
     serializersModule: SerializersModule = EmptySerializersModule(),
     configuration: TreeEncoderConfiguration = TreeEncoderConfiguration(),
-): Any? = (this::class.serializer() as KSerializer<T>).serialize(this, serializersModule, configuration)
+): Any? = serializer<T>().serialize(this, serializersModule, configuration)

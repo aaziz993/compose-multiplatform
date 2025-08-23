@@ -3,18 +3,26 @@ package klib.data.type.collections.set
 import klib.data.type.collections.list.add
 import klib.data.type.functions.Equator
 import klib.data.type.functions.Merger
+import kotlin.collections.LinkedHashSet
 
 public class MutableMergeSet<E>(
+    initialCapacity: Int = 0,
     override val equator: Equator<E> = Equator.default(),
     override val merger: Merger<E> = Merger.default(),
 ) : MergeSet<E>, MutableSet<E> {
+    public constructor(
+        elements: Collection<E>,
+        equator: Equator<E> = Equator.default(),
+        merger: Merger<E> = Merger.default()
+    ) : this(equator = equator, merger = merger) {
+        addAll(elements)
+    }
 
-    private val delegate: MutableList<E> = mutableListOf()
+    private val delegate: MutableList<E> = ArrayList(initialCapacity)
 
     override val size: Int
         get() = delegate.size
 
-    @Suppress("UNCHECKED_CAST")
     override fun add(element: E): Boolean = delegate.add(element, equator, merger)
 
     override fun addAll(elements: Collection<E>): Boolean = elements.fold(true) { acc, e -> add(e) }
@@ -35,20 +43,3 @@ public class MutableMergeSet<E>(
 
     override fun isEmpty(): Boolean = delegate.isEmpty()
 }
-
-public fun <T> mutableMergeSetOf(
-    vararg elements: T,
-    equator: Equator<T> = Equator.default(),
-    merger: Merger<T> = Merger.default()
-): MutableMergeSet<T> =
-    MutableMergeSet(equator, merger).apply {
-        addAll(elements)
-    }
-
-public fun <T> mergeSetOf(
-    vararg elements: T,
-    equator: Equator<T> = Equator.default(),
-    merger: Merger<T> = Merger.default()
-): MergeSet<T> = mutableMergeSetOf(*elements, equator = equator, merger = merger)
-
-public fun <T> emptyMergeSet(): MergeSet<T> = mergeSetOf()

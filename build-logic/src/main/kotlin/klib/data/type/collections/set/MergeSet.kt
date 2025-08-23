@@ -1,3 +1,5 @@
+@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
+
 package klib.data.type.collections.set
 
 import klib.data.type.functions.Equator
@@ -12,11 +14,12 @@ import kotlinx.serialization.descriptors.StructureKind
 import kotlinx.serialization.descriptors.setSerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
+import kotlin.collections.LinkedHashSet
 
 @Serializable(with = MergeSetSerializer::class)
-public interface MergeSet<E> : Set<E> {
-    public val equator: Equator<E>
-    public val merger: Merger<E>
+public interface MergeSet<out E> : Set<E> {
+    public val equator: Equator<@UnsafeVariance E>
+    public val merger: Merger<@UnsafeVariance E>
 }
 
 public class MergeSetSerializer<E>(public val eSerializer: KSerializer<E>) : KSerializer<MergeSet<E>> {
@@ -30,24 +33,69 @@ public class MergeSetSerializer<E>(public val eSerializer: KSerializer<E>) : KSe
 
     @Suppress("UNCHECKED_CAST")
     override fun deserialize(decoder: Decoder): MergeSet<E> {
-        eSerializer as KSerializer<E & Any>
-
         val elements = delegate.deserialize(decoder)
 
-        return (if (
+        return if (
             eSerializer.descriptor.kind is StructureKind ||
             eSerializer.descriptor.kind is PolymorphicKind
-        ) MutableMergeSet<E>(
+        ) MutableMergeSet(
+            elements,
             merger = { o1, o2 ->
                 when {
                     o1 == null -> o2
                     o2 == null -> o1
-                    else -> eSerializer.deepPlus(o1, o2, serializersModule = decoder.serializersModule)
+                    else -> eSerializer.deepPlus(o1, o2, serializersModule = decoder.serializersModule) as E
                 }
             },
         )
-        else MutableMergeSet()).apply {
-            addAll(elements)
-        }
+        else MutableMergeSet(elements)
+    }
+}
+
+internal object EmptyMergeSet : MergeSet<Nothing> {
+    override val equator: Equator<Nothing> = Equator { _, _ -> false }
+    override val merger: Merger<Nothing> = Merger { _, _ ->
+        throw UnsupportedOperationException("Cannot merge elements of EmptyMergeSet")
+    }
+
+    override fun equals(other: Any?): Boolean = other is MergeSet<*> && other.isEmpty()
+    override fun hashCode(): Int = 0
+    override fun toString(): String = "[]"
+
+    override val size: Int get() = 0
+    override fun isEmpty(): Boolean = true
+    override fun contains(element: Nothing): Boolean = false
+    override fun containsAll(elements: Collection<Nothing>): Boolean = elements.isEmpty()
+
+    override fun iterator(): Iterator<Nothing> = EmptyIterator
+}
+
+public fun <T> mutableMergeSetOf(
+    vararg elements: T,
+    equator: Equator<T> = Equator.default(),
+    merger: Merger<T> = Merger.default()
+): MutableMergeSet<T> =
+    elements.toCollection(MutableMergeSet(mapCapacity(elements.size), equator, merger))
+
+public fun <T> mergeSetOf(
+    vararg elements: T,
+    equator: Equator<T> = Equator.default(),
+    merger: Merger<T> = Merger.default()
+): MergeSet<T> = elements.toMergeSet(equator, merger)
+
+public fun <T> emptyMergeSet(): MergeSet<T> = EmptyMergeSet
+
+/**
+ * Returns a [MergeSet] of all elements.
+ *
+ * The returned set preserves the element iteration order of the original array.
+ */
+public fun <T> Array<out T>.toMergeSet(
+    equator: Equator<T> = Equator.default(),
+    merger: Merger<T> = Merger.default()
+): MergeSet<T> {
+    return when (size) {
+        0 -> emptyMergeSet()
+        else -> mutableMergeSetOf(*this, equator = equator, merger = merger)
     }
 }

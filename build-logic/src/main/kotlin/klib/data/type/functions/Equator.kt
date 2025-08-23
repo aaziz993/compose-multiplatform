@@ -11,7 +11,7 @@ package klib.data.type.functions
  * @param <T> the types of object this [Equator] can evaluate.
  * @since 4.0
 </T> */
-public fun interface Equator<T> {
+public fun interface Equator<in T> {
 
     /**
      * Evaluates the two arguments for their equality.
@@ -20,7 +20,7 @@ public fun interface Equator<T> {
      * @param o2 the second object to be equated.
      * @return whether the two objects are equal.
      */
-    public fun equate(o1: T?, o2: T?): Boolean
+    public fun equate(o1: T, o2: T): Boolean
 
     public companion object {
         public fun <E> default(): Equator<E> = Equator { o1, o2 -> o1 == o2 }
