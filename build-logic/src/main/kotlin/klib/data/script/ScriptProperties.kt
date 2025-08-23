@@ -2,15 +2,20 @@ package klib.data.script
 
 import klib.data.cache.Cache
 import klib.data.cache.NoCache
+import klib.data.type.collections.deepMap
 import klib.data.type.collections.deepMapValues
 import klib.data.type.collections.deepRunOnPenultimate
 import klib.data.type.collections.flattenKeys
+import klib.data.type.collections.getOrPut
 import klib.data.type.collections.iteratorOrNull
 import klib.data.type.collections.list.asList
 import klib.data.type.collections.list.asMutableList
+import klib.data.type.collections.list.drop
+import klib.data.type.collections.map.asMapOrNull
 import klib.data.type.collections.map.asMutableMap
 import klib.data.type.collections.map.asNullableMap
 import klib.data.type.collections.put
+import klib.data.type.collections.toNewMutableCollection
 import klib.data.type.reflection.asGetterName
 import klib.data.type.reflection.asSetterName
 import klib.data.type.reflection.declaredMemberExtensionFunction
@@ -167,25 +172,33 @@ public abstract class ScriptProperties {
                 listOf(importsKey),
                 decoder = decoder
             ) { mergedImports ->
-                (this - importsKey).deepMapValues(
+                emptyMap<String, Any?>().deepMap(
                     *mergedImports.toTypedArray(),
+                    (this - importsKey).let { decodedFile ->
+                        decodedFile[scriptKey]?.asMapOrNull?.let { script ->
+                            decodedFile + (scriptKey to script.map { (key, value) -> mapOf(key to value) })
+                        } ?: decodedFile
+                    },
                     sourceIteratorOrNull = { value ->
                         if (firstOrNull()?.second == scriptKey) null else value.iteratorOrNull()
                     },
-                    sourceTransform = { value ->
-                        if (firstOrNull()?.second == scriptKey && value is Map<*, *>)
-                            value.map { (key, value) -> mapOf(key to value) }
-                        else value
+                    destination = mutableMapOf(
+                        "script" to mutableListOf<Any>()
+                    ),
+                    destinationGetter = { source ->
+                        last().first.getOrPut(last().second) { key ->
+                            put(key, source.toNewMutableCollection())
+                        }
                     },
                     destinationSetter = { value ->
                         if (firstOrNull()?.second == scriptKey)
                             first().first
-                                .asMutableMap
-                                .getOrPut(scriptKey) { mutableListOf<Any>() }
-                                .asMutableList.addAll(value?.asList.orEmpty())
+                                .asMutableMap[scriptKey]!!
+                                .asMutableList
+                                .addAll(value?.asList.orEmpty())
                         else last().first.put(last().second, value)
                     }
-                ).asNullableMap
+                )
             }).apply {
             this.cache = cache
             this.explicitOperationReceivers = EXPLICIT_OPERATION_RECEIVERS + explicitOperationReceivers

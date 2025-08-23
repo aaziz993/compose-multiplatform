@@ -160,7 +160,7 @@ public fun SerialDescriptor.toPolymorphicMap(
 
 @Suppress("UNCHECKED_CAST")
 public fun <T : Any> SerialDescriptor.unknownKeysOf(value: T): T =
-    value.deepMinusKeys<Pair<Any?, SerialDescriptor>>(
+    value.deepMinusKeys<T, Pair<Any?, SerialDescriptor>>(
         *elementNames.zip(elementDescriptors).toTypedArray(),
         sourcePathKey = { sourcePath -> sourcePath.first },
         sourceSubPaths = { value, (_, descriptor) ->
@@ -178,4 +178,4 @@ public fun <T : Any> SerialDescriptor.unknownKeysOf(value: T): T =
                 else -> emptyList()
             }
         }
-    ) as T
+    )

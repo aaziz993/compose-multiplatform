@@ -112,69 +112,76 @@ public fun <V> Any.remove(key: Any?): V? =
     }
 
 ////////////////////////////////////////////////////////////DEEP////////////////////////////////////////////////////////
-public fun <P> Any.deepRemove(
+public fun <P : Any> Any.deepRemove(
     vararg paths: P,
     pathKey: List<Pair<Any, Any?>>.(sourcePath: P) -> Any?,
     subPaths: List<Pair<Any, Any?>>.(value: Any, sourcePath: P) -> List<P>,
     getter: List<Pair<Any, Any?>>.() -> Any? = { last().first.getOrNull(last().second) },
-    remover: List<Pair<Any, Any?>>.() -> Unit = {
-        last().first.remove<Any?>(last().second)
+    remover: List<Pair<Any, Any?>>.() -> Any? = {
+        last().first.remove(last().second)
     },
-): Unit = DeepRecursiveFunction<DeepRemoveArgs<P>, Unit> { (
-                                                               sourcePaths,
-                                                               sourcePathKey,
-                                                               sourceSubPaths,
-                                                               sources,
-                                                               sourceGetter,
-                                                               sourceRemover
-                                                           ) ->
-    sourcePaths.groupBy { path -> sources.sourcePathKey(path) }.map { (key, paths) ->
-        val currentSources = sources.replaceLast { copy(second = key) }
+): List<Pair<List<Pair<Any, Any?>>, Any?>> = buildList {
+    DeepRecursiveFunction<DeepRemoveArgs<P>, Unit> { (
+                                                         sourcePaths,
+                                                         sourcePathKey,
+                                                         sourceSubPaths,
+                                                         sources,
+                                                         sourceGetter,
+                                                         sourceRemover,
+                                                         sourceRemoves
+                                                     ) ->
+        sourcePaths.groupBy { path -> sources.sourcePathKey(path) }.map { (key, paths) ->
+            val currentSources = sources.replaceLast { copy(second = key) }
 
-        val value = currentSources.sourceGetter()
+            val value = currentSources.sourceGetter()
 
-        val nextSourcePaths = if (value == null) emptyList() else paths.flatMap { path ->
-            currentSources.sourceSubPaths(value, path)
-        }
+            val nextSourcePaths = if (value == null) emptyList() else paths.flatMap { path ->
+                currentSources.sourceSubPaths(value, path)
+            }
 
-        if (nextSourcePaths.isEmpty()) return@map currentSources.sourceRemover()
+            if (nextSourcePaths.isEmpty())
+                return@map sourceRemoves.add(currentSources to currentSources.sourceRemover())
 
-        callRecursive(
-            DeepRemoveArgs(
-                nextSourcePaths,
-                sourcePathKey,
-                sourceSubPaths,
-                currentSources + (value!! to null),
-                sourceGetter,
-                sourceRemover
+            callRecursive(
+                DeepRemoveArgs(
+                    nextSourcePaths,
+                    sourcePathKey,
+                    sourceSubPaths,
+                    currentSources + (value!! to null),
+                    sourceGetter,
+                    sourceRemover,
+                    sourceRemoves,
+                )
             )
+        }
+    }(
+        DeepRemoveArgs(
+            paths.toList(),
+            pathKey,
+            subPaths,
+            listOf(this@deepRemove to null),
+            getter,
+            remover,
+            this
         )
-    }
-}(
-    DeepRemoveArgs(
-        paths.toList(),
-        pathKey,
-        subPaths,
-        listOf(this to null),
-        getter,
-        remover
     )
-)
+}
 
-private data class DeepRemoveArgs<P>(
+private data class DeepRemoveArgs<P : Any>(
     val sourcePaths: List<P>,
     val sourcePathKey: List<Pair<Any, Any?>>.(sourcePath: P) -> Any?,
     val sourceSubPaths: List<Pair<Any, Any?>>.(value: Any, sourcePath: P) -> List<P>,
     val sources: List<Pair<Any, Any?>>,
     val sourceGetter: List<Pair<Any, Any?>>.() -> Any?,
-    val sourceRemover: List<Pair<Any, Any?>>.() -> Unit,
+    val sourceRemover: List<Pair<Any, Any?>>.() -> Any?,
+    val sourceRemoves: MutableList<Pair<List<Pair<Any, Any?>>, Any?>>,
 )
 
 public fun Any.deepRemove(
     vararg paths: List<Any?>,
     getter: List<Pair<Any, Any?>>.() -> Any? = { last().first.getOrNull(last().second) },
     remover: List<Pair<Any, Any?>>.() -> Unit = { last().first.remove<Any?>(last().second) },
-): Any = deepRemove(
+): List<Pair<List<Pair<Any, Any?>>, Any?>> = deepRemove(
     *paths,
     pathKey = { sourcePath -> sourcePath.first() },
     subPaths = { _, sourcePath ->
