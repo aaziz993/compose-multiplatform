@@ -385,7 +385,9 @@ public fun Any.deepMap(
     sourceTransform: List<Pair<Any, Any?>>.(value: Any?) -> Pair<Any?, Any?>? = { value -> last().second to value },
     destination: Any = toNewMutableCollection(),
     destinationGetter: List<Pair<Any, Any?>>.(source: Any) -> Any = { source ->
-        last().first.getOrPut(last().second) { key -> put(key, source.toNewMutableCollection()) }
+        last().first.getOrPut(last().second) { key -> put(key, source.toNewMutableCollection()) }.apply {
+            (this as? MutableList<*>)?.clear()
+        }
     },
     destinationSetter: List<Pair<Any, Any?>>.(value: Any?) -> Unit = { value ->
         last().first.put(last().second, value)
@@ -463,7 +465,9 @@ public fun Any.deepMapKeys(
     sourceTransform: List<Pair<Any, Any?>>.(value: Any?) -> Any?,
     destination: Any = toNewMutableCollection(),
     destinationGetter: List<Pair<Any, Any?>>.(source: Any) -> Any = { source ->
-        last().first.getOrPut(last().second) { key -> put(key, source.toNewMutableCollection()) }
+        last().first.getOrPut(last().second) { key -> put(key, source.toNewMutableCollection()) }.apply {
+            (this as? MutableList<*>)?.clear()
+        }
     },
     destinationSetter: List<Pair<Any, Any?>>.(value: Any?) -> Unit = { value ->
         last().first.put(last().second, value)
@@ -488,7 +492,9 @@ public fun Any.deepMapValues(
     sourceTransform: List<Pair<Any, Any?>>.(value: Any?) -> Any?,
     destination: Any = toNewMutableCollection(),
     destinationGetter: List<Pair<Any, Any?>>.(source: Any) -> Any = { source ->
-        last().first.getOrPut(last().second) { key -> put(key, source.toNewMutableCollection()) }
+        last().first.getOrPut(last().second) { key -> put(key, source.toNewMutableCollection()) }.apply {
+            (this as? MutableList<*>)?.clear()
+        }
     },
     destinationSetter: List<Pair<Any, Any?>>.(value: Any?) -> Unit = { value ->
         last().first.put(last().second, value)

@@ -3,6 +3,7 @@ package gradle.plugins.initialization
 import gradle.api.initialization.SettingsProperties
 import gradle.api.initialization.libs
 import gradle.plugins.project.ProjectPlugin
+import klib.data.type.collections.deepMap
 import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
 import org.h2.Driver

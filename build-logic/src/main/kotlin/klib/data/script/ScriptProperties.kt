@@ -167,9 +167,8 @@ public abstract class ScriptProperties {
                 listOf(importsKey),
                 decoder = decoder
             ) { mergedImports ->
-                emptyMap<String, Any?>().deepMapValues(
+                (this - importsKey).deepMapValues(
                     *mergedImports.toTypedArray(),
-                    (this - importsKey),
                     sourceIteratorOrNull = { value ->
                         if (firstOrNull()?.second == scriptKey) null else value.iteratorOrNull()
                     },
