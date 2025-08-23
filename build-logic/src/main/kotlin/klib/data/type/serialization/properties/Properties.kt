@@ -2,13 +2,8 @@ package klib.data.type.serialization.properties
 
 import klib.data.type.collections.getOrPut
 import klib.data.type.collections.isZeroConsecutive
-import klib.data.type.collections.map.asNullableMap
-import klib.data.type.collections.map.pairs
-import klib.data.type.collections.map.valuesByKeysAsIndices
-import klib.data.type.collections.mapKeys
 import klib.data.type.collections.put
 import klib.data.type.collections.unflattenKeys
-import klib.data.type.primitives.pow
 import klib.data.type.primitives.string.asBufferedSource
 import klib.data.type.serialization.coders.tree.serialize
 import klib.data.type.serialization.serializers.any.NullableAnySerializer
@@ -22,7 +17,6 @@ import kotlinx.serialization.serializer
 import okio.Buffer
 import okio.BufferedSink
 import okio.BufferedSource
-import kotlin.math.pow
 
 public open class Properties(
     public val configuration: PropertiesConfiguration = PropertiesConfiguration(),
@@ -91,7 +85,7 @@ public open class Properties(
 
     private fun List<String>.toNewMutableCollection() =
         if (all { key -> key.matches("\\d+".toRegex()) } &&
-            map(String::toInt).sorted().isZeroConsecutive)
+            map(String::toInt).sorted().isZeroConsecutive())
             ArrayList<Any?>(size)
         else LinkedHashMap<Any?, Any?>(size)
 
