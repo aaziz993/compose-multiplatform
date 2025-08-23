@@ -54,11 +54,9 @@ public fun Any.iteratorOrNull(): Iterator<Map.Entry<Any?, Any?>>? = entriesOrNul
 
 public fun Any.iterator(): Iterator<Map.Entry<Any?, Any?>> = iteratorOrNull()!!
 
-public val Collection<Int>.isZeroConsecutive: Boolean
-    get() = withIndex().all { (index, element) -> index == element }
+public fun Collection<Int>.isZeroConsecutive(): Boolean = withIndex().all { (index, element) -> index == element }
 
-public val Collection<Int>.isConsecutive: Boolean
-    get() = zipWithNext().all { (a, b) -> b == a + 1 }
+public fun Collection<Int>.isConsecutive(): Boolean = zipWithNext().all { (a, b) -> b == a + 1 }
 
 @Suppress("UNCHECKED_CAST")
 public fun Any.getOrElse(key: Any?, defaultValue: Any.(Any?) -> Any?): Any? =
@@ -97,18 +95,15 @@ public fun <T : Any> T.minusKeys(vararg keys: Any?): T = when (this) {
 //////////////////////////////////////////////////////////SHALLOW//////////////////////////////////////////////////////
 @Suppress("UNCHECKED_CAST")
 public fun <T : Any> Any.map(
-    vararg sources: Any,
     sourceIterator: Any.() -> Iterator<Map.Entry<Any?, Any?>> = Any::iterator,
     sourceTransform: Any.(key: Any?, value: Any?) -> Pair<Any?, Any?>? = { key, value -> key to value },
     destination: T = toNewMutableCollection() as T,
     destinationSetter: Any.(key: Any?, value: Any?) -> Unit = { key, value -> put(key, value) },
 ): T {
-    listOf(this, *sources).forEach { source ->
-        source.sourceIterator().forEach { (key, value) ->
-            val (key, value) = source.sourceTransform(key, value) ?: return@forEach
+    sourceIterator().forEach { (key, value) ->
+        val (key, value) = sourceTransform(key, value) ?: return@forEach
 
-            destination.destinationSetter(key, value)
-        }
+        destination.destinationSetter(key, value)
     }
 
     return destination
@@ -116,38 +111,34 @@ public fun <T : Any> Any.map(
 
 @Suppress("UNCHECKED_CAST")
 public fun <T : Any> Any.mapKeys(
-    vararg sources: Any,
     sourceIterator: Any.() -> Iterator<Map.Entry<Any?, Any?>> = Any::iterator,
     sourceFilter: Any.(key: Any?, value: Any?) -> Boolean = { _, _ -> true },
     sourceTransform: Any.(key: Any?, value: Any?) -> Any?,
     destination: T = toNewMutableCollection() as T,
     destinationSetter: Any.(key: Any?, value: Any?) -> Unit = { key, value -> put(key, value) },
 ): T = map(
-    sources,
-    sourceIterator = sourceIterator,
-    sourceTransform = { key, value ->
+    sourceIterator,
+    { key, value ->
         if (sourceFilter(key, value)) sourceTransform(key, value) to value else null
     },
-    destination = destination,
-    destinationSetter = destinationSetter,
+    destination,
+    destinationSetter,
 )
 
 @Suppress("UNCHECKED_CAST")
 public fun <T : Any> Any.mapValues(
-    vararg sources: Any,
     sourceIterator: Any.() -> Iterator<Map.Entry<Any?, Any?>> = Any::iterator,
     sourceFilter: Any.(key: Any?, value: Any?) -> Boolean = { _, _ -> true },
     sourceTransform: Any.(key: Any?, value: Any?) -> Any?,
     destination: T = toNewMutableCollection() as T,
     destinationSetter: Any.(key: Any?, value: Any?) -> Unit = { key, value -> put(key, value) },
 ): T = map(
-    sources,
-    sourceIterator = sourceIterator,
-    sourceTransform = { key, value ->
+    sourceIterator,
+    { key, value ->
         if (sourceFilter(key, value)) key to sourceTransform(key, value) else null
     },
-    destination = destination,
-    destinationSetter = destinationSetter,
+    destination,
+    destinationSetter,
 )
 
 @Suppress("UNCHECKED_CAST")
@@ -269,18 +260,13 @@ public fun Any.flattenKeys(
     suspend fun SequenceScope<Pair<List<Pair<Any, Any?>>, Any?>>.flattenKeys(
         sources: List<Pair<Any, Any?>>,
         iterator: Iterator<Map.Entry<Any?, Any?>>,
-        iteratorOrNull: List<Pair<Any, Any?>>.(value: Any) -> Iterator<Map.Entry<Any?, Any?>>?,
     ) {
         iterator.forEach { (key, value) ->
             val currentSources = sources.replaceLast { copy(second = key) }
 
             if (value != null)
                 currentSources.iteratorOrNull(value)?.also { nextSourceIterator ->
-                    return@forEach flattenKeys(
-                        currentSources + (value to null),
-                        nextSourceIterator,
-                        iteratorOrNull,
-                    )
+                    return@forEach flattenKeys(currentSources + (value to null), nextSourceIterator)
                 }
 
             yield(currentSources to value)
@@ -290,7 +276,6 @@ public fun Any.flattenKeys(
     flattenKeys(
         listOf(this@flattenKeys to null),
         emptyList<Pair<Any, Any?>>().iteratorOrNull(this@flattenKeys)!!,
-        iteratorOrNull,
     )
 }
 
@@ -304,13 +289,7 @@ public fun <E, K> Collection<Pair<List<E>, Any?>>.unflattenKeys(
     destinationSetter: List<Pair<Any, K>>.(value: Any?) -> Unit = { value ->
         last().first.put(last().second, value)
     },
-): Any = DeepRecursiveFunction<UnflattenKeysArgs<E, K>, Any> { (
-                                                                   sourceKey,
-                                                                   sources,
-                                                                   destinations,
-                                                                   destinationGetter,
-                                                                   destinationSetter
-                                                               ) ->
+): Any = DeepRecursiveFunction<UnflattenKeysArgs<E, K>, Any> { (sources, destinations) ->
     val (keysPaths, paths) = sources.partition { (sourcePath, _) -> sourcePath.size == 1 }
 
     val nextDestination = destinations.destinationGetter(sources.map { source -> source.first[0] })
@@ -324,32 +303,18 @@ public fun <E, K> Collection<Pair<List<E>, Any?>>.unflattenKeys(
     paths.groupBy { (sourcePath, _) -> sourcePath[0] }.forEach { (key, sources) ->
         callRecursive(
             UnflattenKeysArgs(
-                sourceKey,
                 sources.map { source -> source.copy(first = source.first.drop()) },
                 destinations + (nextDestination to sourceKey(key)),
-                destinationGetter,
-                destinationSetter
             )
         )
     }
 
     nextDestination
-}(
-    UnflattenKeysArgs(
-        sourceKey,
-        toList(),
-        emptyList(),
-        destinationGetter,
-        destinationSetter
-    )
-)
+}(UnflattenKeysArgs(toList(), emptyList()))
 
 private data class UnflattenKeysArgs<E, K>(
-    val sourceKey: (E) -> K,
     val sources: List<Pair<List<E>, Any?>>,
     val destinations: List<Pair<Any, K>>,
-    val destinationGetter: List<Pair<Any, K>>.(sourcesKeys: List<E>) -> Any,
-    val destinationSetter: List<Pair<Any, K>>.(value: Any?) -> Unit,
 )
 
 public fun <K> Collection<Pair<List<Pair<Any, K>>, Any?>>.unflattenKeys(
@@ -362,15 +327,10 @@ public fun <K> Collection<Pair<List<Pair<Any, K>>, Any?>>.unflattenKeys(
     destinationSetter: List<Pair<Any, K>>.(value: Any?) -> Unit = { value ->
         last().first.put(last().second, value)
     },
-): Any = unflattenKeys(
-    { (_, key) -> key },
-    destinationGetter,
-    destinationSetter
-)
+): Any = unflattenKeys({ (_, key) -> key }, destinationGetter, destinationSetter)
 
 @Suppress("UNCHECKED_CAST")
 public fun <T : Any> Any.deepMap(
-    vararg sources: Any,
     sourceIteratorOrNull: List<Pair<Any, Any?>>.(value: Any) -> Iterator<Map.Entry<Any?, Any?>>? = { value ->
         value.iteratorOrNull()
     },
@@ -385,41 +345,7 @@ public fun <T : Any> Any.deepMap(
         last().first.put(last().second, value)
     },
 ): T {
-    listOf(this, *sources).forEach { source ->
-        DEEP_MAP_TO_DEEP_RECURSIVE_FUNCTION(
-            DeepMapToArgs(
-                listOf(source to null),
-                emptyList<Pair<Any, Any?>>().sourceIteratorOrNull(source)!!,
-                sourceIteratorOrNull,
-                sourceTransform,
-                listOf(destination to null),
-                destinationGetter,
-                destinationSetter,
-            ),
-        )
-    }
-
-    return destination
-}
-
-private data class DeepMapToArgs(
-    val sources: List<Pair<Any, Any?>>,
-    val sourceIterator: Iterator<Map.Entry<Any?, Any?>>,
-    val sourceIteratorOrNull: List<Pair<Any, Any?>>.(value: Any) -> Iterator<Map.Entry<Any?, Any?>>?,
-    val sourceTransform: List<Pair<Any, Any?>>.(value: Any?) -> Pair<Any?, Any?>?,
-    val destinations: List<Pair<Any, Any?>>,
-    val destinationGetter: List<Pair<Any, Any?>>.(source: Any) -> Any,
-    val destinationSetter: List<Pair<Any, Any?>>.(value: Any?) -> Unit,
-)
-
-private val DEEP_MAP_TO_DEEP_RECURSIVE_FUNCTION: DeepRecursiveFunction<DeepMapToArgs, Unit> =
-    DeepRecursiveFunction { (sources,
-                                sourceIterator,
-                                sourceIteratorOrNull,
-                                sourceTransform,
-                                destinations,
-                                destinationGetter,
-                                destinationSetter) ->
+    DeepRecursiveFunction<DeepMapToArgs, Unit> { (sources, sourceIterator, destinations) ->
         sourceIterator.forEach { (key, value) ->
             val currentSources = sources.replaceLast { copy(second = key) }
 
@@ -435,22 +361,33 @@ private val DEEP_MAP_TO_DEEP_RECURSIVE_FUNCTION: DeepRecursiveFunction<DeepMapTo
                         DeepMapToArgs(
                             currentSources + (value to null),
                             nextSourceIterator,
-                            sourceIteratorOrNull,
-                            sourceTransform,
                             currentDestinations + (nextDestination to null),
-                            destinationGetter,
-                            destinationSetter,
-                        ),
+
+                            ),
                     )
                 }
 
             currentDestinations.destinationSetter(value)
         }
-    }
+    }(
+        DeepMapToArgs(
+            listOf(this to null),
+            emptyList<Pair<Any, Any?>>().sourceIteratorOrNull(this)!!,
+            listOf(destination to null),
+        ),
+    )
+
+    return destination
+}
+
+private data class DeepMapToArgs(
+    val sources: List<Pair<Any, Any?>>,
+    val sourceIterator: Iterator<Map.Entry<Any?, Any?>>,
+    val destinations: List<Pair<Any, Any?>>,
+)
 
 @Suppress("UNCHECKED_CAST")
 public fun <T : Any> Any.deepMapKeys(
-    vararg sources: Any,
     sourceIteratorOrNull: List<Pair<Any, Any?>>.(value: Any) -> Iterator<Map.Entry<Any?, Any?>>? = { value ->
         value.iteratorOrNull()
     },
@@ -466,19 +403,17 @@ public fun <T : Any> Any.deepMapKeys(
         last().first.put(last().second, value)
     },
 ): T = deepMap(
-    *sources,
-    sourceIteratorOrNull = sourceIteratorOrNull,
-    sourceTransform = { value ->
+    sourceIteratorOrNull,
+    { value ->
         if (sourceFilter(value)) sourceTransform(value) to value else null
     },
-    destination = destination,
-    destinationGetter = destinationGetter,
-    destinationSetter = destinationSetter,
+    destination,
+    destinationGetter,
+    destinationSetter,
 )
 
 @Suppress("UNCHECKED_CAST")
 public fun <T : Any> Any.deepMapValues(
-    vararg sources: Any,
     sourceIteratorOrNull: List<Pair<Any, Any?>>.(value: Any) -> Iterator<Map.Entry<Any?, Any?>>? = { value ->
         value.iteratorOrNull()
     },
@@ -494,14 +429,13 @@ public fun <T : Any> Any.deepMapValues(
         last().first.put(last().second, value)
     },
 ): T = deepMap(
-    *sources,
-    sourceIteratorOrNull = sourceIteratorOrNull,
-    sourceTransform = { value ->
+    sourceIteratorOrNull,
+    { value ->
         if (sourceFilter(value)) last().second to sourceTransform(value) else null
     },
-    destination = destination,
-    destinationGetter = destinationGetter,
-    destinationSetter = destinationSetter,
+    destination,
+    destinationGetter,
+    destinationSetter,
 )
 
 @Suppress("UNCHECKED_CAST")
@@ -518,17 +452,7 @@ public fun <T : Any, P : Any> Any.deepSlice(
         last().first.put(last().second, value)
     },
 ): T {
-
-    DeepRecursiveFunction<DeepSliceArgs<P>, Unit> { (
-                                                        sourcePaths,
-                                                        sourcePathKey,
-                                                        sourceSubPaths,
-                                                        sources,
-                                                        sourceGetter,
-                                                        destinations,
-                                                        destinationGetter,
-                                                        destinationSetter
-                                                    ) ->
+    DeepRecursiveFunction<DeepSliceArgs<P>, Unit> { (sourcePaths, sources, destinations) ->
         sourcePaths.groupBy { path -> sources.sourcePathKey(path) }.map { (key, paths) ->
             val currentSources = sources.replaceLast { copy(second = key) }
             val currentDestinations = destinations.replaceLast { copy(second = key) }
@@ -546,26 +470,16 @@ public fun <T : Any, P : Any> Any.deepSlice(
             callRecursive(
                 DeepSliceArgs(
                     nextSourcePaths,
-                    sourcePathKey,
-                    sourceSubPaths,
                     currentSources + (value to null),
-                    sourceGetter,
                     currentDestinations + (nextDestination to null),
-                    destinationGetter,
-                    destinationSetter
                 )
             )
         }
     }(
         DeepSliceArgs(
             sourcePaths.toList(),
-            sourcePathKey,
-            sourceSubPaths,
             listOf(this to null),
-            sourceGetter,
             listOf(destination to null),
-            destinationGetter,
-            destinationSetter
         )
     )
 
@@ -574,13 +488,8 @@ public fun <T : Any, P : Any> Any.deepSlice(
 
 private data class DeepSliceArgs<P : Any>(
     val sourcePaths: List<P>,
-    val sourcePathKey: List<Pair<Any, Any?>>.(sourcePath: P) -> Any?,
-    val sourceSubPaths: List<Pair<Any, Any?>>.(value: Any, sourcePath: P) -> List<P>,
     val sources: List<Pair<Any, Any?>>,
-    val sourceGetter: List<Pair<Any, Any?>>.() -> Any?,
     val destinations: List<Pair<Any, Any?>>,
-    val destinationGetter: List<Pair<Any, Any?>>.(source: Any) -> Any,
-    val destinationSetter: List<Pair<Any, Any?>>.(value: Any?) -> Unit,
 )
 
 @Suppress("UNCHECKED_CAST")
@@ -622,17 +531,7 @@ public fun <T : Any, P : Any> Any.deepMinusKeys(
         last().first.put(last().second, value)
     },
 ): T {
-    DeepRecursiveFunction<DeepMinusKeysArgs<P>, Unit> { (
-                                                            sourcePaths,
-                                                            sourcePathKey,
-                                                            sourceSubPaths,
-                                                            sources,
-                                                            sourceIterator,
-                                                            sourceIteratorOrNull,
-                                                            destinations,
-                                                            destinationGetter,
-                                                            destinationSetter
-                                                        ) ->
+    DeepRecursiveFunction<DeepMinusKeysArgs<P>, Unit> { (sourcePaths, sources, sourceIterator, destinations) ->
         val keysPaths = sourcePaths.groupBy { path -> sources.sourcePathKey(path) }
 
         sourceIterator.forEach { (key, value) ->
@@ -653,14 +552,9 @@ public fun <T : Any, P : Any> Any.deepMinusKeys(
                 callRecursive(
                     DeepMinusKeysArgs(
                         nextSourcePaths,
-                        sourcePathKey,
-                        sourceSubPaths,
                         currentSources + (value to null),
                         nextSourceIterator,
-                        sourceIteratorOrNull,
                         currentDestinations + (nextDestination to null),
-                        destinationGetter,
-                        destinationSetter
                     )
                 )
             }
@@ -668,14 +562,9 @@ public fun <T : Any, P : Any> Any.deepMinusKeys(
     }(
         DeepMinusKeysArgs(
             sourcePaths.toList(),
-            sourcePathKey,
-            sourceSubPaths,
             listOf(this to null),
             emptyList<Pair<Any, Any?>>().sourceIteratorOrNull(this)!!,
-            sourceIteratorOrNull,
             listOf(destination to null),
-            destinationGetter,
-            destinationSetter
         )
     )
 
@@ -684,14 +573,9 @@ public fun <T : Any, P : Any> Any.deepMinusKeys(
 
 private data class DeepMinusKeysArgs<P : Any>(
     val sourcePaths: List<P>,
-    val sourcePathKey: List<Pair<Any, Any?>>.(sourcePath: P) -> Any?,
-    val sourceSubPaths: List<Pair<Any, Any?>>.(value: Any, sourcePath: P) -> List<P>,
     val sources: List<Pair<Any, Any?>>,
     val sourceIterator: Iterator<Map.Entry<Any?, Any?>>,
-    val sourceIteratorOrNull: List<Pair<Any, Any?>>.(source: Any) -> Iterator<Map.Entry<Any?, Any?>>?,
     val destinations: List<Pair<Any, Any?>>,
-    val destinationGetter: List<Pair<Any, Any?>>.(source: Any) -> Any,
-    val destinationSetter: List<Pair<Any, Any?>>.(value: Any?) -> Unit,
 )
 
 @Suppress("UNCHECKED_CAST")
