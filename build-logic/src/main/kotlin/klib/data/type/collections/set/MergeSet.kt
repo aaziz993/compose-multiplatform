@@ -93,9 +93,4 @@ public fun <T> emptyMergeSet(): MergeSet<T> = EmptyMergeSet
 public fun <T> Array<out T>.toMergeSet(
     equator: Equator<T> = Equator.default(),
     merger: Merger<T> = Merger.default()
-): MergeSet<T> {
-    return when (size) {
-        0 -> emptyMergeSet()
-        else -> mutableMergeSetOf(*this, equator = equator, merger = merger)
-    }
-}
+): MergeSet<T> = if (isEmpty()) emptyMergeSet() else mutableMergeSetOf(*this, equator = equator, merger = merger)
