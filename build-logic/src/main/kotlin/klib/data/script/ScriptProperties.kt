@@ -149,7 +149,8 @@ public abstract class ScriptProperties {
     }
 
     public companion object {
-        public val EXPLICIT_OPERATION_RECEIVERS: Set<KClass<out Any>> = setOf(
+        @PublishedApi
+        internal val EXPLICIT_OPERATION_RECEIVERS: Set<KClass<out Any>> = setOf(
             Array::class,
             MutableCollection::class,
             MutableMap::class,
@@ -171,39 +172,40 @@ public abstract class ScriptProperties {
                 importToFile,
                 listOf(importsKey),
                 decoder = decoder
-            ) { mergedImports ->
-                emptyMap<String, Any?>().deepMap(
-                    *mergedImports.toTypedArray(),
-                    (this - importsKey).let { decodedFile ->
-                        decodedFile[scriptKey]?.asMapOrNull?.let { script ->
-                            decodedFile + (scriptKey to script.map { (key, value) -> mapOf(key to value) })
-                        } ?: decodedFile
-                    },
-                    sourceIteratorOrNull = { value ->
-                        if (firstOrNull()?.second == scriptKey) null else value.iteratorOrNull()
-                    },
-                    destination = mutableMapOf(
-                        "script" to mutableListOf<Any>()
-                    ),
-                    destinationGetter = { source ->
-                        last().first.getOrPut(last().second) { key ->
-                            put(key, source.toNewMutableCollection())
-                        }
-                    },
-                    destinationSetter = { value ->
-                        if (firstOrNull()?.second == scriptKey)
-                            first().first
-                                .asMutableMap[scriptKey]!!
-                                .asMutableList
-                                .addAll(value?.asList.orEmpty())
-                        else last().first.put(last().second, value)
-                    }
-                )
+            ) { decodedImports ->
+                val decodedFile = (this - importsKey).let { decodedFile ->
+                    decodedFile[scriptKey]?.asMapOrNull?.let { script ->
+                        decodedFile + (scriptKey to script.map { (key, value) -> mapOf(key to value) })
+                    } ?: decodedFile
+                }
+
+                val mergedImports = mutableMapOf("script" to mutableListOf<Any>())
+
+                decodedImports.forEach { decodedImport -> decodedImport.deepMap(mergedImports) }
+
+                decodedFile.deepMap(mergedImports)
             }).apply {
             this.cache = cache
             this.explicitOperationReceivers = EXPLICIT_OPERATION_RECEIVERS + explicitOperationReceivers
             this.implicitOperation = implicitOperation
             this.config.config()
+        }
+
+        @PublishedApi
+        internal fun Map<String, Any?>.deepMap(other: Map<String, Any?>): Map<String, Any?> = deepMap(
+            destination = other,
+            destinationGetter = { source ->
+                last().first.getOrPut(last().second) { key ->
+                    put(key, source.toNewMutableCollection())
+                }
+            }
+        ) { value ->
+            if (firstOrNull()?.second == SCRIPT_KEY)
+                first().first
+                    .asMutableMap[SCRIPT_KEY]!!
+                    .asMutableList
+                    .addAll(value?.asList.orEmpty())
+            else last().first.put(last().second, value)
         }
     }
 }

@@ -4,6 +4,7 @@ import klib.data.type.asInt
 import klib.data.type.collections.list.drop
 import klib.data.type.collections.list.minusIndices
 import klib.data.type.collections.list.updateLast
+import klib.data.type.collections.map.asMap
 import kotlin.collections.Collection
 import kotlin.collections.Iterator
 import kotlin.collections.List
@@ -59,11 +60,11 @@ public fun Collection<Int>.isZeroConsecutive(): Boolean = withIndex().all { (ind
 public fun Collection<Int>.isConsecutive(): Boolean = zipWithNext().all { (a, b) -> b == a + 1 }
 
 @Suppress("UNCHECKED_CAST")
-public fun Any.getOrElse(key: Any?, defaultValue: Any.(Any?) -> Any?): Any? =
+public fun <T : Any, K> T.getOrElse(key: K, defaultValue: T.(K) -> Any?): Any? =
     when (this) {
         is List<*> -> getOrElse(key!!.asInt) { defaultValue(key) }
 
-        is Map<*, *> -> (this as Map<Any?, Any?>).getOrElse(key) { defaultValue(key) }
+        is Map<*, *> -> asMap<K, Any?>().getOrElse(key) { defaultValue(key) }
 
         else -> throw IllegalArgumentException("Expected a List or Map, but got ${this::class.simpleName}")
     }
@@ -98,7 +99,7 @@ public fun <T : Any> Any.map(
     sourceIterator: Any.() -> Iterator<Map.Entry<Any?, Any?>> = Any::iterator,
     sourceTransform: Any.(key: Any?, value: Any?) -> Pair<Any?, Any?>? = { key, value -> key to value },
     destination: T = toNewMutableCollection() as T,
-    destinationSetter: Any.(key: Any?, value: Any?) -> Unit = { key, value -> put(key, value) },
+    destinationSetter: T.(key: Any?, value: Any?) -> Unit = { key, value -> put(key, value) },
 ): T {
     sourceIterator().forEach { (key, value) ->
         val (key, value) = sourceTransform(key, value) ?: return@forEach
@@ -115,7 +116,7 @@ public fun <T : Any> Any.mapKeys(
     sourceFilter: Any.(key: Any?, value: Any?) -> Boolean = { _, _ -> true },
     sourceTransform: Any.(key: Any?, value: Any?) -> Any?,
     destination: T = toNewMutableCollection() as T,
-    destinationSetter: Any.(key: Any?, value: Any?) -> Unit = { key, value -> put(key, value) },
+    destinationSetter: T.(key: Any?, value: Any?) -> Unit = { key, value -> put(key, value) },
 ): T = map(
     sourceIterator,
     { key, value ->
@@ -131,7 +132,7 @@ public fun <T : Any> Any.mapValues(
     sourceFilter: Any.(key: Any?, value: Any?) -> Boolean = { _, _ -> true },
     sourceTransform: Any.(key: Any?, value: Any?) -> Any?,
     destination: T = toNewMutableCollection() as T,
-    destinationSetter: Any.(key: Any?, value: Any?) -> Unit = { key, value -> put(key, value) },
+    destinationSetter: T.(key: Any?, value: Any?) -> Unit = { key, value -> put(key, value) },
 ): T = map(
     sourceIterator,
     { key, value ->
@@ -146,7 +147,7 @@ public fun <T : Any> Any.slice(
     vararg sourceKeys: Any?,
     sourceGetter: Any.(key: Any?) -> Any? = Any::getOrNull,
     destination: T = toNewMutableCollection() as T,
-    destinationSetter: Any.(key: Any?, value: Any?) -> Unit = { key, value -> put(key, value) },
+    destinationSetter: T.(key: Any?, value: Any?) -> Unit = { key, value -> put(key, value) },
 ): T {
     sourceKeys.forEach { key ->
         destination.destinationSetter(key, sourceGetter(key))
@@ -160,7 +161,7 @@ public fun <T : Any> Any.minusKeys(
     vararg sourceKeys: Any?,
     sourceIterator: Any.() -> Iterator<Map.Entry<Any?, Any?>> = Any::iterator,
     destination: T = toNewMutableCollection() as T,
-    destinationSetter: Any.(key: Any?, value: Any?) -> Unit = { key, value -> put(key, value) },
+    destinationSetter: T.(key: Any?, value: Any?) -> Unit = { key, value -> put(key, value) },
 ): T {
     sourceIterator().forEach { (key, value) ->
         if (key in sourceKeys) return@forEach
