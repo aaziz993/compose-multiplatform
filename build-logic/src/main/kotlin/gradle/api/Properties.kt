@@ -77,9 +77,6 @@ public abstract class Properties : ScriptProperties() {
             evaluationImplicitReceiver: T,
         ): P where T : PluginAware, T : ExtensionAware = ScriptProperties<P>(
             path,
-            { path, templatePath ->
-                File(path).parentFile.resolve(templatePath).path
-            },
             decoder = { file ->
                 yaml.decodeAnyFromString(File(file).readText())!!.cast()
             },

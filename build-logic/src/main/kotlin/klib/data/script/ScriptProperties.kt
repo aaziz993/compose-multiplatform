@@ -2,11 +2,13 @@ package klib.data.script
 
 import klib.data.cache.Cache
 import klib.data.cache.NoCache
+import klib.data.type.collections.deepGetOrNull
 import klib.data.type.collections.deepMap
-import klib.data.type.collections.deepRun
+import klib.data.type.collections.deepRunOnPenultimate
 import klib.data.type.collections.flattenKeys
 import klib.data.type.collections.getOrPut
 import klib.data.type.collections.iteratorOrNull
+import klib.data.type.collections.list.asList
 import klib.data.type.collections.map.asMapOrNull
 import klib.data.type.collections.put
 import klib.data.type.collections.toNewMutableCollection
@@ -25,6 +27,7 @@ import klib.data.type.serialization.serializers.any.SerializableAny
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.serializer
 import kotlinx.serialization.Transient
+import java.io.File
 import java.lang.reflect.Modifier
 import kotlin.collections.last
 import kotlin.reflect.KClass
@@ -77,7 +80,7 @@ public abstract class ScriptProperties {
 
         return config.compilationImplicitReceivers
             .firstNotNullOfOrNull { implicitReceiver ->
-                implicitReceiver.deepRun(
+                implicitReceiver.deepRunOnPenultimate(
                     *path,
                     getter = {
                         val kClass = last().first as KClass<*>
@@ -102,7 +105,7 @@ public abstract class ScriptProperties {
                     val receiver = last().first
 
                     if (receiver !is KClass<*> || explicitOperationReceivers.any(receiver::isSubclassOf))
-                        return@deepRun null
+                        return@deepRunOnPenultimate null
 
                     val memberName = last().second as String
 
@@ -112,7 +115,7 @@ public abstract class ScriptProperties {
                     (receiver.memberProperty(memberName) ?: receiver.declaredMemberExtensionProperty(memberName))
                         ?.takeIf { property -> property.visibility == KVisibility.PUBLIC }
                         ?.let { property ->
-                            return@deepRun if (property is KMutableProperty<*>) " = $value"
+                            return@deepRunOnPenultimate if (property is KMutableProperty<*>) " = $value"
                             else implicitOperation(property.returnType.classifier as KClass<*>, value)
                         }
 
@@ -125,7 +128,7 @@ public abstract class ScriptProperties {
                         receiver.packageExtensions(setterName, packages).any { method ->
                             Modifier.isPublic(method.modifiers)
                         }) {
-                        return@deepRun " = $value"
+                        return@deepRunOnPenultimate " = $value"
                     }
 
                     ((receiver.memberFunction(getterName)
@@ -144,6 +147,12 @@ public abstract class ScriptProperties {
 
     public companion object {
         @PublishedApi
+        internal const val IMPORTS_KEY: String = "imports"
+
+        @PublishedApi
+        internal const val SCRIPT_KEY: String = "imports"
+
+        @PublishedApi
         internal val EXPLICIT_OPERATION_RECEIVERS: Set<KClass<out Any>> = setOf(
             Array::class,
             MutableCollection::class,
@@ -152,9 +161,6 @@ public abstract class ScriptProperties {
 
         public inline operator fun <reified T : ScriptProperties> invoke(
             file: String,
-            noinline importToFile: (file: String, import: String) -> String = { _, import -> import },
-            importsKey: String = "imports",
-            scriptKey: String = "script",
             noinline decoder: (file: String) -> Map<String, Any?>,
             cache: Cache<String, String> = NoCache(),
             explicitOperationReceivers: Set<KClass<*>> = emptySet(),
@@ -163,21 +169,24 @@ public abstract class ScriptProperties {
         ): T = T::class.serializer().deserialize(
             decodeFile(
                 file,
-                importToFile,
-                listOf(importsKey),
-                decoder = decoder
+                { decodedFile ->
+                    decodedFile.deepGetOrNull("imports").second?.asList<String>()?.map { import ->
+                        File(this).parentFile.resolve(import).path
+                    }
+                },
+                decoder
             ) { decodedImports ->
-                val decodedFile = (this - importsKey).let { decodedFile ->
-                    decodedFile[scriptKey]?.asMapOrNull?.let { script ->
-                        decodedFile + (scriptKey to script.map { (key, value) -> mapOf(key to value) })
+                val decodedFile = (this - IMPORTS_KEY).let { decodedFile ->
+                    decodedFile[SCRIPT_KEY]?.asMapOrNull?.let { script ->
+                        decodedFile + (SCRIPT_KEY to script.map { (key, value) -> mapOf(key to value) })
                     } ?: decodedFile
                 }
 
                 val mergedImports = mutableMapOf("script" to mutableListOf<Any>())
 
-                decodedImports.forEach { decodedImport -> decodedImport.deepMap(mergedImports, scriptKey) }
+                decodedImports.forEach { decodedImport -> decodedImport.deepMap(mergedImports) }
 
-                decodedFile.deepMap(mergedImports, scriptKey)
+                decodedFile.deepMap(mergedImports)
             }).apply {
             this.cache = cache
             this.explicitOperationReceivers = EXPLICIT_OPERATION_RECEIVERS + explicitOperationReceivers
@@ -186,10 +195,10 @@ public abstract class ScriptProperties {
         }
 
         @PublishedApi
-        internal fun Map<String, Any?>.deepMap(other: Map<String, Any?>, scriptKey: String): Map<String, Any?> =
+        internal fun Map<String, Any?>.deepMap(other: Map<String, Any?>): Map<String, Any?> =
             deepMap(
                 sourceIteratorOrNull = { value ->
-                    if (size == 2 && first().second == scriptKey) null else value.iteratorOrNull()
+                    if (size == 2 && first().second == SCRIPT_KEY) null else value.iteratorOrNull()
                 },
                 destination = other,
                 destinationGetter = { source ->

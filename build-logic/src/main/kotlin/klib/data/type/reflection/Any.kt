@@ -1,5 +1,6 @@
 package klib.data.type.reflection
 
+import klib.data.type.cast
 import klib.data.type.collections.deepGet
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
@@ -24,12 +25,12 @@ public fun Any.getMemberProperty(propertyName: String): Any? = this::class[prope
 public fun Any.getOrNull(propertyName: String): Any? = getMemberPropertyOrNull(propertyName)
 
 public fun Any.deepGetOrNull(vararg propertyNamePath: String): Pair<List<Pair<Any, Any?>>, Any?> =
-    deepGet(*propertyNamePath) { last().first.getOrNull(last().second as String) }
+    deepGet(*propertyNamePath) { last().first.getOrNull(last().second!!.cast()) }
 
 public operator fun Any.get(propertyName: String): Any? = getMemberProperty(propertyName)
 
 public fun Any.deepGet(vararg propertyNamePath: String): Pair<List<Pair<Any, Any?>>, Any?> =
-    deepGet(*propertyNamePath) { last().first[last().second as String] }
+    deepGet(*propertyNamePath) { last().first[last().second!!.cast()] }
 
 public fun Any.getStaticPropertyOrNull(propertyName: String): Any? =
     this::class.getStaticPropertyOrNull(propertyName)

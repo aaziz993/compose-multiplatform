@@ -2,6 +2,8 @@ package gradle.plugins.initialization
 
 import gradle.api.initialization.SettingsProperties
 import gradle.plugins.project.ProjectPlugin
+import klib.data.type.collections.deepGet
+import klib.data.type.collections.deepGetOrNull
 import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
 import org.h2.Driver
