@@ -3,17 +3,11 @@ package klib.data.script
 import klib.data.cache.Cache
 import klib.data.cache.NoCache
 import klib.data.type.collections.deepMap
-import klib.data.type.collections.deepMapValues
-import klib.data.type.collections.deepRunOnPenultimate
+import klib.data.type.collections.deepRun
 import klib.data.type.collections.flattenKeys
 import klib.data.type.collections.getOrPut
 import klib.data.type.collections.iteratorOrNull
-import klib.data.type.collections.list.asList
-import klib.data.type.collections.list.asMutableList
-import klib.data.type.collections.list.drop
 import klib.data.type.collections.map.asMapOrNull
-import klib.data.type.collections.map.asMutableMap
-import klib.data.type.collections.map.asNullableMap
 import klib.data.type.collections.put
 import klib.data.type.collections.toNewMutableCollection
 import klib.data.type.reflection.asGetterName
@@ -83,7 +77,7 @@ public abstract class ScriptProperties {
 
         return config.compilationImplicitReceivers
             .firstNotNullOfOrNull { implicitReceiver ->
-                implicitReceiver.deepRunOnPenultimate(
+                implicitReceiver.deepRun(
                     *path,
                     getter = {
                         val kClass = last().first as KClass<*>
@@ -108,7 +102,7 @@ public abstract class ScriptProperties {
                     val receiver = last().first
 
                     if (receiver !is KClass<*> || explicitOperationReceivers.any(receiver::isSubclassOf))
-                        return@deepRunOnPenultimate null
+                        return@deepRun null
 
                     val memberName = last().second as String
 
@@ -118,7 +112,7 @@ public abstract class ScriptProperties {
                     (receiver.memberProperty(memberName) ?: receiver.declaredMemberExtensionProperty(memberName))
                         ?.takeIf { property -> property.visibility == KVisibility.PUBLIC }
                         ?.let { property ->
-                            return@deepRunOnPenultimate if (property is KMutableProperty<*>) " = $value"
+                            return@deepRun if (property is KMutableProperty<*>) " = $value"
                             else implicitOperation(property.returnType.classifier as KClass<*>, value)
                         }
 
@@ -131,7 +125,7 @@ public abstract class ScriptProperties {
                         receiver.packageExtensions(setterName, packages).any { method ->
                             Modifier.isPublic(method.modifiers)
                         }) {
-                        return@deepRunOnPenultimate " = $value"
+                        return@deepRun " = $value"
                     }
 
                     ((receiver.memberFunction(getterName)
@@ -181,9 +175,9 @@ public abstract class ScriptProperties {
 
                 val mergedImports = mutableMapOf("script" to mutableListOf<Any>())
 
-                decodedImports.forEach { decodedImport -> decodedImport.deepMap(mergedImports) }
+                decodedImports.forEach { decodedImport -> decodedImport.deepMap(mergedImports, scriptKey) }
 
-                decodedFile.deepMap(mergedImports)
+                decodedFile.deepMap(mergedImports, scriptKey)
             }).apply {
             this.cache = cache
             this.explicitOperationReceivers = EXPLICIT_OPERATION_RECEIVERS + explicitOperationReceivers
@@ -192,21 +186,18 @@ public abstract class ScriptProperties {
         }
 
         @PublishedApi
-        internal fun Map<String, Any?>.deepMap(other: Map<String, Any?>): Map<String, Any?> = deepMap(
-            destination = other,
-            destinationGetter = { source ->
-                last().first.getOrPut(last().second) { key ->
-                    put(key, source.toNewMutableCollection())
+        internal fun Map<String, Any?>.deepMap(other: Map<String, Any?>, scriptKey: String): Map<String, Any?> =
+            deepMap(
+                sourceIteratorOrNull = { value ->
+                    if (size == 2 && first().second == scriptKey) null else value.iteratorOrNull()
+                },
+                destination = other,
+                destinationGetter = { source ->
+                    last().first.getOrPut(last().second) { key ->
+                        put(key, source.toNewMutableCollection())
+                    }
                 }
-            }
-        ) { value ->
-            if (firstOrNull()?.second == SCRIPT_KEY)
-                first().first
-                    .asMutableMap[SCRIPT_KEY]!!
-                    .asMutableList
-                    .addAll(value?.asList.orEmpty())
-            else last().first.put(last().second, value)
-        }
+            )
     }
 }
 

@@ -3,7 +3,6 @@ package klib.data.type.collections
 import klib.data.type.asInt
 import klib.data.type.collections.list.drop
 import klib.data.type.collections.list.minusIndices
-import klib.data.type.collections.list.updateLast
 import klib.data.type.collections.map.asMap
 import kotlin.collections.Collection
 import kotlin.collections.Iterator
@@ -11,7 +10,6 @@ import kotlin.collections.List
 import kotlin.collections.Map
 import kotlin.collections.MutableList
 import kotlin.collections.all
-import kotlin.collections.buildList
 import kotlin.collections.component1
 import kotlin.collections.component2
 import kotlin.collections.contains
@@ -26,15 +24,12 @@ import kotlin.collections.last
 import kotlin.collections.listOf
 import kotlin.collections.map
 import kotlin.collections.minus
-import kotlin.collections.mutableListOf
 import kotlin.collections.mutableMapOf
 import kotlin.collections.partition
 import kotlin.collections.plus
-import kotlin.collections.single
 import kotlin.collections.toList
 import kotlin.collections.toTypedArray
 import kotlin.collections.withIndex
-import kotlin.collections.zip
 import kotlin.collections.zipWithNext
 
 public fun <T : Collection<E>, E> T.takeIfNotEmpty(): T? = takeIf(Collection<*>::isNotEmpty)
@@ -59,7 +54,6 @@ public fun Collection<Int>.isZeroConsecutive(): Boolean = withIndex().all { (ind
 
 public fun Collection<Int>.isConsecutive(): Boolean = zipWithNext().all { (a, b) -> b == a + 1 }
 
-@Suppress("UNCHECKED_CAST")
 public fun <T : Any, K> T.getOrElse(key: K, defaultValue: T.(K) -> Any?): Any? =
     when (this) {
         is List<*> -> getOrElse(key!!.asInt) { defaultValue(key) }
@@ -143,11 +137,11 @@ public fun <T : Any> Any.mapValues(
 )
 
 @Suppress("UNCHECKED_CAST")
-public fun <T : Any> Any.slice(
-    vararg sourceKeys: Any?,
-    sourceGetter: Any.(key: Any?) -> Any? = Any::getOrNull,
+public fun <T : Any, K> Any.slice(
+    vararg sourceKeys: K,
+    sourceGetter: Any.(key: K) -> Any? = Any::getOrNull,
     destination: T = toNewMutableCollection() as T,
-    destinationSetter: T.(key: Any?, value: Any?) -> Unit = { key, value -> put(key, value) },
+    destinationSetter: T.(key: K, value: Any?) -> Unit = { key, value -> put(key, value) },
 ): T {
     sourceKeys.forEach { key ->
         destination.destinationSetter(key, sourceGetter(key))
@@ -174,65 +168,39 @@ public fun <T : Any> Any.minusKeys(
 
 ////////////////////////////////////////////////////////////DEEP////////////////////////////////////////////////////////
 @Suppress("UNCHECKED_CAST")
-public fun Any.deepGet(
-    vararg path: Any?,
-    sources: MutableList<Pair<Any, Any?>> = mutableListOf(),
-    getter: List<Pair<Any, Any?>>.() -> Any?
-): Any? {
-    sources.add(this to null)
+public fun Any.deepGet(vararg path: Any?, getter: List<Pair<Any, Any?>>.() -> Any?): Pair<List<Pair<Any, Any?>>, Any?> {
+    var sources = listOf<Pair<Any, Any?>>(this to null)
 
-    return DEEP_GET_DEEP_RECURSIVE_FUNCTION(
-        DeepGetArgs(
-            sources,
-            path.toList(),
-            getter,
-        ),
-    )
-}
-
-private data class DeepGetArgs(
-    val sources: MutableList<Pair<Any, Any?>>,
-    val path: List<Any?>,
-    val getter: List<Pair<Any, Any?>>.() -> Any?,
-)
-
-private val DEEP_GET_DEEP_RECURSIVE_FUNCTION: DeepRecursiveFunction<DeepGetArgs, Any?> =
-    DeepRecursiveFunction { (sources, path, getter) ->
+    val value = DeepRecursiveFunction<Unit, Any?> { _ ->
         if (sources.size > path.size) return@DeepRecursiveFunction sources.last().first
 
-        sources.updateLast { copy(second = path[sources.size - 1]) }
+        sources.replaceLast { copy(second = path[sources.size - 1]) }
 
         sources.getter()?.let { value ->
-            sources.add(value to null)
+            sources = sources + (value to null)
 
-            callRecursive(
-                DeepGetArgs(sources, path, getter),
-            )
+            callRecursive(Unit)
         }
-    }
+    }(Unit)
+
+    return sources to value
+}
 
 @Suppress("UNCHECKED_CAST")
-public fun Any.deepGetOrElse(
-    vararg path: Any?,
-    sources: MutableList<Pair<Any, Any?>> = mutableListOf(),
-    defaultValue: Any.(Any?) -> Any?
-): Any? = deepGet(*path, sources = sources) { last().first.getOrElse(last().second, defaultValue) }
+public fun Any.deepGetOrElse(vararg path: Any?, defaultValue: Any.(Any?) -> Any?): Pair<List<Pair<Any, Any?>>, Any?> =
+    deepGet(*path) { last().first.getOrElse(last().second, defaultValue) }
 
 @Suppress("UNCHECKED_CAST")
-public fun Any.deepGetOrNull(
-    vararg path: Any?,
-    sources: MutableList<Pair<Any, Any?>> = mutableListOf(),
-): Any? = deepGet(*path, sources = sources) { last().first.getOrNull(last().second) }
+public fun Any.deepGetOrNull(vararg path: Any?): Pair<List<Pair<Any, Any?>>, Any?> =
+    deepGet(*path) { last().first.getOrNull(last().second) }
 
-public fun <V> Any.deepRunOnPenultimate(
+public fun <V> Any.deepRun(
     vararg path: Any?,
     getter: List<Pair<Any, Any?>>.() -> Any? = { last().first.getOrNull(last().second) },
-    run: List<Pair<Any, Any?>>.(path: List<Any?>) -> V
-): V = buildList {
-    this@deepRunOnPenultimate.deepGet(*path.dropLast().toTypedArray(), sources = this, getter = getter)
-
-    updateLast { copy(second = path.last()) }
-}.run(path.toList())
+    run: List<Pair<Any, Any?>>.(path: Array<out Any?>) -> V
+): V = deepGet(*path.dropLast().toTypedArray(), getter = getter).first.replaceLast {
+    copy(second = path.last())
+}.run(path)
 
 @Suppress("UNCHECKED_CAST")
 public fun Any.deepSet(
@@ -240,18 +208,18 @@ public fun Any.deepSet(
     getter: List<Pair<Any, Any?>>.() -> Any? = {
         last().first.getOrPut(last().second) { key -> put(key, mutableMapOf<Any?, Any?>()) }
     },
-    setter: List<Pair<Any, Any?>>.(path: List<Any?>) -> Unit,
-): Unit = deepRunOnPenultimate(*path, getter = getter, run = setter)
+    setter: List<Pair<Any, Any?>>.(path: Array<out Any?>) -> Unit,
+): Unit = deepRun(*path, getter = getter, run = setter)
 
-public fun Any.deepContainsKey(
+public fun Any.deepContains(
     vararg path: Any?,
     getter: List<Pair<Any, Any?>>.() -> Any? = { last().first.getOrNull(last().second) },
-    contains: List<Pair<Any, Any?>>.(path: List<Any?>) -> Boolean = { path ->
+    contains: List<Pair<Any, Any?>>.(path: Array<out Any?>) -> Boolean = { path ->
         size == path.size && last().first.containsKey(
             last().second
         )
     },
-): Boolean = deepRunOnPenultimate(*path, getter = getter, run = contains)
+): Boolean = deepRun(*path, getter = getter, run = contains)
 
 public fun Any.flattenKeys(
     iteratorOrNull: List<Pair<Any, Any?>>.(value: Any) -> Iterator<Map.Entry<Any?, Any?>>? = { value ->
