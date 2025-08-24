@@ -23,15 +23,13 @@ public fun Any.getMemberProperty(propertyName: String): Any? = this::class[prope
 
 public fun Any.getOrNull(propertyName: String): Any? = getMemberPropertyOrNull(propertyName)
 
-public fun Any.deepGetOrNull(vararg propertyNames: String): Any? = deepGet(*propertyNames) {
-    last().first.getOrNull(last().second as String)
-}
+public fun Any.deepGetOrNull(vararg propertyNamePath: String): Pair<List<Pair<Any, Any?>>, Any?> =
+    deepGet(*propertyNamePath) { last().first.getOrNull(last().second as String) }
 
 public operator fun Any.get(propertyName: String): Any? = getMemberProperty(propertyName)
 
-public fun Any.deepGet(vararg propertyNames: String): Any? = deepGet(*propertyNames) {
-    last().first[last().second as String]
-}
+public fun Any.deepGet(vararg propertyNamePath: String): Pair<List<Pair<Any, Any?>>, Any?> =
+    deepGet(*propertyNamePath) { last().first[last().second as String] }
 
 public fun Any.getStaticPropertyOrNull(propertyName: String): Any? =
     this::class.getStaticPropertyOrNull(propertyName)
