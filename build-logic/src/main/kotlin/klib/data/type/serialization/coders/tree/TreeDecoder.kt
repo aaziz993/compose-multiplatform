@@ -153,7 +153,7 @@ public open class TreeDecoder(
     private inner class ListDecoder(descriptor: SerialDescriptor) : StructureLikeDecoder(descriptor) {
 
         override val values: List<Any?> =
-            (value?.asNullableListOrNull ?: value!!.asMap<Any?, Any?>().valuesByKeysAsIndices)
+            (value?.asNullableListOrNull ?: value!!.asMap<Any?, Any?>().valuesByKeysAsIndices())
                 .withIndex()
                 .filter { (index, element) -> configuration.filterElement(descriptor, index, element) }
                 .map { (index, element) ->

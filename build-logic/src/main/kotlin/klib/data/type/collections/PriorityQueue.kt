@@ -7,6 +7,10 @@ import kotlin.math.max
 @Suppress("UNCHECKED_CAST")
 public class PriorityQueue<T>(initialCapacity: Int, private val comparator: Comparator<in T>? = null) : Collection<T> {
 
+    init {
+        require(initialCapacity >= 0) { "initialCapacity must be >= 0" }
+    }
+
     private var arr: Array<T?> = arrayOfNulls(max(2, initialCapacity + 1))
 
     override var size: Int = 0
@@ -30,12 +34,17 @@ public class PriorityQueue<T>(initialCapacity: Int, private val comparator: Comp
         swim(size)
     }
 
+    public fun addAll(elements: Iterable<T>) {
+        if (elements is Collection<*>) ensureCapacity(size + elements.size)
+        for (e in elements) add(e)
+    }
+
     public fun peek(): T {
         if (isEmpty()) throw NoSuchElementException()
         return arr[1] as T
     }
 
-    public fun peekOrNull(): T? = if (isEmpty()) null else peek()
+    public fun peekOrNull(): T? = if (isEmpty()) null else arr[1] as T
 
     public fun poll(): T {
         if (isEmpty()) throw NoSuchElementException()
@@ -49,6 +58,17 @@ public class PriorityQueue<T>(initialCapacity: Int, private val comparator: Comp
     }
 
     public fun pollOrNull(): T? = if (isEmpty()) null else poll()
+
+    public fun clear() {
+        arr.fill(null, 1, size + 1)
+        size = 0
+    }
+
+    public fun toList(): List<T> = buildList(size) {
+        for (i in 1..size) add(arr[i] as T)
+    }
+
+    public fun toSortedList(): List<T> = toList().sortedWith(::compare)
 
     override fun isEmpty(): Boolean = size == 0
 
@@ -80,8 +100,8 @@ public class PriorityQueue<T>(initialCapacity: Int, private val comparator: Comp
         if (arr.size > 2 && size <= (arr.size - 1) / 4) arr = arr.copyOf(max(2, (arr.size / 2)))
     }
 
-    private fun swim(size: Int) {
-        var i = size
+    private fun swim(pos: Int) {
+        var i = pos
         while (i > 1 && greater(i / 2, i)) {
             arr.swap(i, i / 2)
             i /= 2
@@ -99,11 +119,9 @@ public class PriorityQueue<T>(initialCapacity: Int, private val comparator: Comp
         }
     }
 
-    private fun greater(i: Int, j: Int): Boolean {
-        val a = arr[i] as T
-        val b = arr[j] as T
-        return (comparator?.compare(a, b) ?: (a as Comparable<T>).compareTo(b)) > 0
-    }
+    private fun greater(i: Int, j: Int): Boolean = compare(arr[i] as T, arr[j] as T) > 0
+
+    private fun compare(a: T, b: T): Int = comparator?.compare(a, b) ?: (a as Comparable<T>).compareTo(b)
 }
 
 public fun <T> priorityQueueOf(elements: Collection<T>, comparator: Comparator<in T>? = null): PriorityQueue<T> =

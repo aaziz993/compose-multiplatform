@@ -21,11 +21,9 @@ public fun <K, V> Any.asMapOrNull(): Map<K, V>? = this as? Map<K, V>
 
 public fun <K, V> Any.asMap(): Map<K, V> = asMapOrNull()!!
 
-public val <K, V> Map<K, V>.pairs: Set<Pair<K, V>>
-    get() = entries.map(Map.Entry<K, V>::toPair).toSet()
+public fun <K, V> Map<K, V>.pairs(): Set<Pair<K, V>> = entries.map(Map.Entry<K, V>::toPair).toSet()
 
-public val <T> Map<*, T>.valuesByKeysAsIndices: List<T>
-    get() = entries.sortedBy { (key, _) -> key!!.toInt() }
+public fun <T> Map<*, T>.valuesByKeysAsIndices(): List<T> = entries.sortedBy { (key, _) -> key!!.toInt() }
         .map(Map.Entry<*, T>::value)
 
 public infix fun <K, V> Map<K, V>.tryPlus(map: Map<K, V>?): Map<K, V> =
