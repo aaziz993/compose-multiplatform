@@ -4,6 +4,9 @@ import gradle.api.initialization.SettingsProperties
 import gradle.plugins.project.ProjectPlugin
 import klib.data.type.collections.deepGet
 import klib.data.type.collections.deepGetOrNull
+import klib.data.type.collections.findKthLargest
+import klib.data.type.collections.topKElements
+import klib.data.type.collections.topKFrequent
 import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
 import org.h2.Driver
