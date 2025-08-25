@@ -1,7 +1,6 @@
 package klib.data.type.serialization.properties
 
 import klib.data.type.cast
-import klib.data.type.collections.map.asNullableMap
 import klib.data.type.serialization.coders.any.AnyEncoder
 import kotlinx.serialization.SerializationStrategy
 

@@ -1,12 +1,10 @@
 package klib.data.type.collections.map
 
-import klib.data.type.toInt
-
 @Suppress("UNCHECKED_CAST")
 public val Any.asNullableMapOrNull: Map<String, Any?>?
     get() = this as? Map<String, Any?>
 
-public val Any.asNullableMap: Map<String, Any?>
+public val Any.asStringNullableMap: Map<String, Any?>
     get() = asNullableMapOrNull!!
 
 @Suppress("UNCHECKED_CAST")

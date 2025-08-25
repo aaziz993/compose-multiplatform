@@ -1,15 +1,14 @@
 package klib.data.script
 
 import com.charleskorn.kaml.Yaml
-import gradle.api.Properties.Companion.yaml
 import klib.data.cache.Cache
 import klib.data.cache.NoCache
-import klib.data.type.cast
 import klib.data.type.collections.*
 import klib.data.type.collections.deepGetOrNull
 import klib.data.type.collections.list.asList
 import klib.data.type.collections.list.asMutableList
 import klib.data.type.collections.map.asMapOrNull
+import klib.data.type.collections.map.asStringNullableMap
 import klib.data.type.collections.map.asNullableMutableMap
 import klib.data.type.reflection.asGetterName
 import klib.data.type.reflection.asSetterName
@@ -172,7 +171,7 @@ public abstract class ScriptProperties {
                 { decodedFile ->
                     decodedFile.deepGetOrNull("imports").second?.asList<String>()?.map { import ->
                         File(this).parentFile.resolve(import).path
-                    }
+                    }.orEmpty()
                 },
                 decoder = { file ->
                     val file = File(file)
@@ -183,7 +182,7 @@ public abstract class ScriptProperties {
                         "properties" -> klib.data.type.serialization.properties.Properties.decodeAnyFromString(text)
 
                         else -> error("Unsupported file extension ${file.extension}")
-                    }!!.cast()
+                    }!!.asStringNullableMap
                 },
             ) { decodedImports ->
                 val decodedFile = (this - IMPORTS_KEY).let { decodedFile ->

@@ -2,10 +2,14 @@
 
 package klib.data.type.collections
 
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 import kotlin.math.max
 
 @Suppress("UNCHECKED_CAST")
-public class PriorityQueue<T>(initialCapacity: Int, private val comparator: Comparator<in T>? = null) : Collection<T> {
+public class PriorityQueue<T>(initialCapacity: Int = 16, private val comparator: Comparator<in T>? = null) :
+    Collection<T> {
 
     init {
         require(initialCapacity >= 0) { "initialCapacity must be >= 0" }
@@ -126,3 +130,13 @@ public class PriorityQueue<T>(initialCapacity: Int, private val comparator: Comp
 
 public fun <T> priorityQueueOf(elements: Collection<T>, comparator: Comparator<in T>? = null): PriorityQueue<T> =
     PriorityQueue(elements, comparator)
+
+@OptIn(ExperimentalContracts::class)
+public inline fun <E> buildPriorityQueue(
+    initialCapacity: Int = 16,
+    comparator: Comparator<in E>? = null,
+    builderAction: PriorityQueue<E>.() -> Unit
+): PriorityQueue<E> {
+    contract { callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE) }
+    return PriorityQueue(initialCapacity, comparator).apply(builderAction)
+}

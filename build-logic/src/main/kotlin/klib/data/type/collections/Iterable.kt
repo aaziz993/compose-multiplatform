@@ -140,57 +140,33 @@ public fun <E> Iterable<E>.merge(merger: Merger<E>): List<E> = buildList {
     }
 }
 
-public infix fun <E : Comparable<E>> Iterable<E>.topKElements(k: Int): List<E> {
-    val minHeap = PriorityQueue<E>(k)
-
-    forEach { element ->
-        minHeap.add(element)
-        if (minHeap.size > k) minHeap.poll()  // Remove the smallest element
-    }
-
-    return minHeap.toList()
-}
-
-public infix fun <E : Comparable<E>> Iterable<E>.topKFrequent(k: Int): List<E> {
-    val frequencyMap = groupingBy { it }.eachCount()
-    val minHeap = PriorityQueue(k, compareBy<E> { element -> frequencyMap[element] })
-
-    frequencyMap.keys.forEach { element ->
-        minHeap.add(element)
-        if (minHeap.size > k) minHeap.poll()
-    }
-
-    return minHeap.toList()
-}
-
-public infix fun <E : Comparable<E>> Iterable<E>.findKthLargest(k: Int): E {
-    val minHeap = PriorityQueue<E>(k)
-
-    forEach { element ->
-        minHeap.add(element)
-        if (minHeap.size > k) minHeap.poll()
-    }
-
-    return minHeap.poll()
-}
-
-public infix fun <E : Comparable<E>> Iterable<E>.topKHeap(k: Int): List<E> {
-    val pq = PriorityQueue<E>(k)
-
-    forEach { element ->
-        if (pq.size < k) pq.add(element)
-        else if (element > pq.peek()) {
-            pq.poll()
-            pq.add(element)
+public inline fun <E, T> Iterable<E>.topKHeap(
+    k: Int,
+    crossinline selector: (E) -> T,
+    comparator: Comparator<in T>
+): PriorityQueue<T> = buildPriorityQueue(k + 1, comparator) {
+    this@topKHeap.map(selector).forEach { element ->
+        if (size < k) add(element)
+        else if (comparator.compare(element, peek()) > 0) {
+            poll()
+            add(element)
         }
     }
-
-    val result = ArrayList<E>(pq.size)
-
-    while (pq.isNotEmpty()) result.add(pq.poll())
-
-    return result
 }
+
+public infix fun <E : Comparable<E>> Iterable<E>.topKElements(k: Int): PriorityQueue<E> =
+    topKHeap(k, { element -> element }) { a, b -> a.compareTo(b) }
+
+public infix fun <E : Comparable<E>> Iterable<E>.topKFrequent(k: Int): PriorityQueue<E> =
+    groupingBy { element -> element }.eachCount().let { frequencyMap ->
+        frequencyMap.entries.topKHeap(
+            k,
+            { (element, _) -> element },
+            compareBy { element -> frequencyMap[element] }
+        )
+    }
+
+public infix fun <E : Comparable<E>> Iterable<E>.findKthLargest(k: Int): E = topKElements(k).poll()
 
 public fun Iterable<Boolean>.all(): Boolean = all { it }
 
