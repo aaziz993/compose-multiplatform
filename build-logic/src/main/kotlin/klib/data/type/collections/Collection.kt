@@ -1,6 +1,6 @@
 package klib.data.type.collections
 
-import klib.data.type.asInt
+import klib.data.type.toInt
 import klib.data.type.collections.list.asList
 import klib.data.type.collections.list.drop
 import klib.data.type.collections.list.minusIndices
@@ -65,7 +65,7 @@ public inline fun <T : Any, K, V> T.getOrElse(key: K, defaultValue: () -> V): V 
     }
 
     return when (this) {
-        is List<*> -> asList<V>().getOrElse(key!!.asInt) { defaultValue() }
+        is List<*> -> asList<V>().getOrElse(key!!.toInt()) { defaultValue() }
 
         is Map<*, *> -> asMap<K, V>().getOrElse(key, defaultValue)
 
@@ -74,7 +74,7 @@ public inline fun <T : Any, K, V> T.getOrElse(key: K, defaultValue: () -> V): V 
 }
 
 public fun Any.getOrNull(key: Any?): Any? = when (this) {
-    is List<*> -> asList<Any?>().getOrNull(key!!.asInt)
+    is List<*> -> asList<Any?>().getOrNull(key!!.toInt())
 
     is Map<*, *> -> asMap<Any?, Any?>()[key]
 
@@ -87,7 +87,7 @@ public operator fun Any.get(key: Any?): Any =
 @Suppress("UNCHECKED_CAST")
 public fun Any.containsKey(key: Any?): Boolean =
     when (this) {
-        is List<*> -> key!!.asInt in indices
+        is List<*> -> key!!.toInt() in indices
 
         is Map<*, *> -> (this as Map<Any?, *>).containsKey(key)
 
@@ -96,7 +96,7 @@ public fun Any.containsKey(key: Any?): Boolean =
 
 @Suppress("UNCHECKED_CAST")
 public fun <T : Any> T.minusKeys(vararg keys: Any?): T = when (this) {
-    is List<*> -> minusIndices(keys.map { key -> key!!.asInt })
+    is List<*> -> minusIndices(keys.map { key -> key!!.toInt() })
 
     is Map<*, *> -> minus(keys)
 

@@ -2,7 +2,7 @@ package klib.data.type.collections
 
 import klib.data.type.functions.Equator
 import klib.data.type.act
-import klib.data.type.asInt
+import klib.data.type.toInt
 import klib.data.type.collections.list.drop
 import klib.data.type.collections.list.getOrPut
 import klib.data.type.collections.list.put
@@ -78,7 +78,7 @@ public fun <E> MutableCollection<E>.updateSymmetric(
 
 @Suppress("UNCHECKED_CAST")
 public inline fun <K, V> Any.getOrPut(key: K, defaultValue: () -> V, set: Boolean = true): V = when (this) {
-    is MutableList<*> -> (this as MutableList<V>).getOrPut(key!!.asInt, defaultValue, set)
+    is MutableList<*> -> (this as MutableList<V>).getOrPut(key!!.toInt(), defaultValue, set)
 
     is MutableMap<*, *> -> (this as MutableMap<K, V>).getOrPut(key, defaultValue)
 
@@ -87,7 +87,7 @@ public inline fun <K, V> Any.getOrPut(key: K, defaultValue: () -> V, set: Boolea
 
 @Suppress("UNCHECKED_CAST")
 public fun <K, V> Any.put(key: K, value: V, set: Boolean = false): V? = when (this) {
-    is MutableList<*> -> (this as MutableList<V>).put(key!!.asInt, value, set)
+    is MutableList<*> -> (this as MutableList<V>).put(key!!.toInt(), value, set)
 
     is MutableMap<*, *> -> (this as MutableMap<K, V>).put(key, value)
 
@@ -97,7 +97,9 @@ public fun <K, V> Any.put(key: K, value: V, set: Boolean = false): V? = when (th
 @Suppress("UNCHECKED_CAST")
 public fun <V> Any.remove(key: Any?): V? =
     when (this) {
-        is MutableList<*> -> (this as MutableList<V>).removeAt(key!!.asInt)
+        is MutableList<*> -> key!!.toInt().let { index ->
+            if (index in indices) (this as MutableList<V>).removeAt(index) else null
+        }
 
         is MutableMap<*, *> -> (this as MutableMap<Any?, V>).remove(key)
 

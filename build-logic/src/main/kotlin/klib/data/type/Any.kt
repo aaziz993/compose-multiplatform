@@ -4,11 +4,10 @@ public inline fun <reified T> Any.cast(): T {
     return this as T
 }
 
-public val Any.asInt: Int
-    get() = when (this) {
-        is Int -> this
+public fun Any.toInt(): Int = when (this) {
+    is Int -> this
 
-        is String -> toInt()
+    is String -> toInt()
 
-        else -> throw IllegalArgumentException("Expected integer value, but got $this")
-    }
+    else -> throw IllegalArgumentException("Expected integer value, but got $this")
+}
