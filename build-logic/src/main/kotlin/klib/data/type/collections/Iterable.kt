@@ -141,7 +141,7 @@ public fun <E> Iterable<E>.merge(merger: Merger<E>): List<E> = buildList {
 }
 
 public infix fun <E : Comparable<E>> Iterable<E>.topKElements(k: Int): List<E> {
-    val minHeap = PriorityQueue<E>(count())
+    val minHeap = PriorityQueue<E>(k)
 
     forEach { element ->
         minHeap.add(element)
@@ -153,7 +153,7 @@ public infix fun <E : Comparable<E>> Iterable<E>.topKElements(k: Int): List<E> {
 
 public infix fun <E : Comparable<E>> Iterable<E>.topKFrequent(k: Int): List<E> {
     val frequencyMap = groupingBy { it }.eachCount()
-    val minHeap = PriorityQueue(count(), compareBy<E> { element -> frequencyMap[element] })
+    val minHeap = PriorityQueue(k, compareBy<E> { element -> frequencyMap[element] })
 
     frequencyMap.keys.forEach { element ->
         minHeap.add(element)
@@ -164,7 +164,7 @@ public infix fun <E : Comparable<E>> Iterable<E>.topKFrequent(k: Int): List<E> {
 }
 
 public infix fun <E : Comparable<E>> Iterable<E>.findKthLargest(k: Int): E {
-    val minHeap = PriorityQueue<E>(count())
+    val minHeap = PriorityQueue<E>(k)
 
     forEach { element ->
         minHeap.add(element)
@@ -175,7 +175,7 @@ public infix fun <E : Comparable<E>> Iterable<E>.findKthLargest(k: Int): E {
 }
 
 public infix fun <E : Comparable<E>> Iterable<E>.topKHeap(k: Int): List<E> {
-    val pq = PriorityQueue<E>(count())
+    val pq = PriorityQueue<E>(k)
 
     forEach { element ->
         if (pq.size < k) pq.add(element)
@@ -189,13 +189,6 @@ public infix fun <E : Comparable<E>> Iterable<E>.topKHeap(k: Int): List<E> {
 
     while (pq.isNotEmpty()) result.add(pq.poll())
 
-    try {
-        for (i in 1..k) {
-            result.add(pq.poll())
-        }
-    } catch (_: NoSuchElementException) {
-
-    }
     return result
 }
 
