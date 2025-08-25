@@ -1,6 +1,7 @@
 package klib.data.type.collections
 
 import klib.data.type.asInt
+import klib.data.type.collections.list.asList
 import klib.data.type.collections.list.drop
 import klib.data.type.collections.list.minusIndices
 import klib.data.type.collections.map.asMap
@@ -30,6 +31,10 @@ import kotlin.collections.plus
 import kotlin.collections.toList
 import kotlin.collections.withIndex
 import kotlin.collections.zipWithNext
+import kotlin.collections.getOrNull
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 
 public fun <T : Collection<E>, E> T.takeIfNotEmpty(): T? = takeIf(Collection<*>::isNotEmpty)
 
@@ -53,19 +58,31 @@ public fun Collection<Int>.isZeroConsecutive(): Boolean = withIndex().all { (ind
 
 public fun Collection<Int>.isConsecutive(): Boolean = zipWithNext().all { (a, b) -> b == a + 1 }
 
-public fun <T : Any, K> T.getOrElse(key: K, defaultValue: T.(K) -> Any?): Any? =
-    when (this) {
-        is List<*> -> getOrElse(key!!.asInt) { defaultValue(key) }
+@OptIn(ExperimentalContracts::class)
+public inline fun <T : Any, K, V> T.getOrElse(key: K, defaultValue: () -> V): V {
+    contract {
+        callsInPlace(defaultValue, InvocationKind.AT_MOST_ONCE)
+    }
 
-        is Map<*, *> -> asMap<K, Any?>().getOrElse(key) { defaultValue(key) }
+    return when (this) {
+        is List<*> -> asList<V>().getOrElse(key!!.asInt) { defaultValue() }
+
+        is Map<*, *> -> asMap<K, V>().getOrElse(key, defaultValue)
 
         else -> throw IllegalArgumentException("Expected a List or Map, but got ${this::class.simpleName}")
     }
+}
 
-public fun Any.getOrNull(key: Any?): Any? = getOrElse(key) { null }
+public fun Any.getOrNull(key: Any?): Any? = when (this) {
+    is List<*> -> asList<Any?>().getOrNull(key!!.asInt)
 
-public operator fun Any.get(key: Any?): Any? =
-    getOrElse(key) { key -> throw IllegalArgumentException("Unknown key '$key' in: ${this::class::simpleName}") }
+    is Map<*, *> -> asMap<Any?, Any?>()[key]
+
+    else -> throw IllegalArgumentException("Expected a List or Map, but got ${this::class.simpleName}")
+}
+
+public operator fun Any.get(key: Any?): Any =
+    getOrElse(key) { throw IllegalArgumentException("Unknown key '$key' in: ${this::class::simpleName}") }
 
 @Suppress("UNCHECKED_CAST")
 public fun Any.containsKey(key: Any?): Boolean =
@@ -182,8 +199,10 @@ public fun <K> Any.deepGet(vararg path: K, getter: List<Pair<Any, K>>.() -> Any?
 }
 
 @Suppress("UNCHECKED_CAST")
-public fun <K> Any.deepGetOrElse(vararg path: K, defaultValue: Any.(Any?) -> Any?): Pair<List<Pair<Any, K>>, Any?> =
-    deepGet(*path) { last().first.getOrElse(last().second, defaultValue) }
+public fun <K> Any.deepGetOrElse(
+    vararg path: K,
+    defaultValue: List<Pair<Any, K>>.() -> Any?
+): Pair<List<Pair<Any, K>>, Any?> = deepGet(*path) { last().first.getOrElse(last().second) { defaultValue() } }
 
 @Suppress("UNCHECKED_CAST")
 public fun <K> Any.deepGetOrNull(vararg path: K): Pair<List<Pair<Any, K>>, Any?> =
@@ -201,7 +220,7 @@ public fun <V, K> Any.deepRunOnPenultimate(
 public fun <K> Any.deepSet(
     vararg path: K,
     getter: List<Pair<Any, K>>.() -> Any? = {
-        last().first.getOrPut(last().second) { key -> put(key, mutableMapOf<Any?, Any?>()) }
+        last().first.getOrPut(last().second, { mutableMapOf<Any?, Any?>() })
     },
     setter: List<Pair<Any, K>>.(path: Array<out K>) -> Unit,
 ): Unit = deepRunOnPenultimate(*path, getter = getter, run = setter)
@@ -246,7 +265,7 @@ public fun <E, K> Collection<Pair<List<E>, Any?>>.unflattenKeys(
     sourceKey: (E) -> K = { sourceKey -> sourceKey as K },
     destinationGetter: List<Pair<Any, K>>.(sourcesKeys: List<E>) -> Any = { _ ->
         if (isEmpty()) mutableMapOf<Any?, Any?>()
-        else last().first.getOrPut(last().second) { key -> put(key, mutableMapOf()) }
+        else last().first.getOrPut(last().second, ::mutableMapOf)
     },
     destinationSetter: List<Pair<Any, K>>.(value: Any?) -> Unit = { value ->
         last().first.put(last().second, value)
@@ -282,9 +301,7 @@ private data class UnflattenKeysArgs<E, K>(
 public fun <K> Collection<Pair<List<Pair<Any, K>>, Any?>>.unflattenKeys(
     destinationGetter: List<Pair<Any, K>>.(sourcesKeys: List<Pair<Any, K>>) -> Any = { sourcesKeys ->
         if (isEmpty()) sourcesKeys[0].first.toNewMutableCollection()
-        else last().first.getOrPut(last().second) { key ->
-            put(key, sourcesKeys[0].first.toNewMutableCollection())
-        }
+        else last().first.getOrPut(last().second, sourcesKeys[0].first::toNewMutableCollection)
     },
     destinationSetter: List<Pair<Any, K>>.(value: Any?) -> Unit = { value ->
         last().first.put(last().second, value)
@@ -299,7 +316,7 @@ public fun <T : Any> Any.deepMap(
     sourceTransform: List<Pair<Any, Any?>>.(value: Any?) -> Pair<Any?, Any?>? = { value -> last().second to value },
     destination: T = toNewMutableCollection() as T,
     destinationGetter: List<Pair<Any, Any?>>.(source: Any) -> Any = { source ->
-        last().first.getOrPut(last().second) { key -> put(key, source.toNewMutableCollection()) }.apply {
+        last().first.getOrPut(last().second, source::toNewMutableCollection).apply {
             (this as? MutableList<*>)?.clear()
         }
     },
@@ -357,7 +374,7 @@ public fun <T : Any> Any.deepMapKeys(
     sourceTransform: List<Pair<Any, Any?>>.(value: Any?) -> Any?,
     destination: T = toNewMutableCollection() as T,
     destinationGetter: List<Pair<Any, Any?>>.(source: Any) -> Any = { source ->
-        last().first.getOrPut(last().second) { key -> put(key, source.toNewMutableCollection()) }.apply {
+        last().first.getOrPut(last().second, source::toNewMutableCollection).apply {
             (this as? MutableList<*>)?.clear()
         }
     },
@@ -383,7 +400,7 @@ public fun <T : Any> Any.deepMapValues(
     sourceTransform: List<Pair<Any, Any?>>.(value: Any?) -> Any?,
     destination: T = toNewMutableCollection() as T,
     destinationGetter: List<Pair<Any, Any?>>.(source: Any) -> Any = { source ->
-        last().first.getOrPut(last().second) { key -> put(key, source.toNewMutableCollection()) }.apply {
+        last().first.getOrPut(last().second, source::toNewMutableCollection).apply {
             (this as? MutableList<*>)?.clear()
         }
     },
@@ -408,7 +425,7 @@ public fun <T : Any, P : Any> Any.deepSlice(
     sourceGetter: List<Pair<Any, Any?>>.() -> Any? = { last().first.getOrNull(last().second) },
     destination: T = toNewMutableCollection() as T,
     destinationGetter: List<Pair<Any, Any?>>.(source: Any) -> Any = { source ->
-        last().first.getOrPut(last().second) { key -> put(key, source.toNewMutableCollection()) }
+        last().first.getOrPut(last().second, source::toNewMutableCollection)
     },
     destinationSetter: List<Pair<Any, Any?>>.(value: Any?) -> Unit = { value ->
         last().first.put(last().second, value)
@@ -460,7 +477,7 @@ public fun <T : Any> Any.deepSlice(
     sourceGetter: List<Pair<Any, Any?>>.() -> Any? = { last().first.getOrNull(last().second) },
     destination: T = toNewMutableCollection() as T,
     destinationGetter: List<Pair<Any, Any?>>.(source: Any) -> Any = { source ->
-        last().first.getOrPut(last().second) { key -> put(key, source.toNewMutableCollection()) }
+        last().first.getOrPut(last().second, source::toNewMutableCollection)
     },
     destinationSetter: List<Pair<Any, Any?>>.(value: Any?) -> Unit = { value ->
         last().first.put(last().second, value)
@@ -487,7 +504,7 @@ public fun <T : Any, P : Any> Any.deepMinusKeys(
     },
     destination: T = toNewMutableCollection() as T,
     destinationGetter: List<Pair<Any, Any?>>.(source: Any) -> Any = { source ->
-        last().first.getOrPut(last().second) { key -> put(key, source.toNewMutableCollection()) }
+        last().first.getOrPut(last().second, source::toNewMutableCollection)
     },
     destinationSetter: List<Pair<Any, Any?>>.(value: Any?) -> Unit = { value ->
         last().first.put(last().second, value)
@@ -548,7 +565,7 @@ public fun <T : Any> Any.deepMinusKeys(
     },
     destination: T = toNewMutableCollection() as T,
     destinationGetter: List<Pair<Any, Any?>>.(source: Any) -> Any = { source ->
-        last().first.getOrPut(last().second) { key -> put(key, source.toNewMutableCollection()) }
+        last().first.getOrPut(last().second, source::toNewMutableCollection)
     },
     destinationSetter: List<Pair<Any, Any?>>.(value: Any?) -> Unit = { value ->
         last().first.put(last().second, value)

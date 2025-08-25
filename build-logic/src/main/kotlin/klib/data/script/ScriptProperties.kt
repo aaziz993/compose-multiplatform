@@ -2,16 +2,12 @@ package klib.data.script
 
 import klib.data.cache.Cache
 import klib.data.cache.NoCache
+import klib.data.type.collections.*
 import klib.data.type.collections.deepGetOrNull
-import klib.data.type.collections.deepMap
-import klib.data.type.collections.deepRunOnPenultimate
-import klib.data.type.collections.flattenKeys
-import klib.data.type.collections.getOrPut
-import klib.data.type.collections.iteratorOrNull
 import klib.data.type.collections.list.asList
+import klib.data.type.collections.list.asMutableList
 import klib.data.type.collections.map.asMapOrNull
-import klib.data.type.collections.put
-import klib.data.type.collections.toNewMutableCollection
+import klib.data.type.collections.map.asNullableMutableMap
 import klib.data.type.reflection.asGetterName
 import klib.data.type.reflection.asSetterName
 import klib.data.type.reflection.declaredMemberExtensionFunction
@@ -25,11 +21,10 @@ import klib.data.type.serialization.coders.tree.deserialize
 import klib.data.type.serialization.decodeFile
 import klib.data.type.serialization.serializers.any.SerializableAny
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.serializer
 import kotlinx.serialization.Transient
+import kotlinx.serialization.serializer
 import java.io.File
 import java.lang.reflect.Modifier
-import kotlin.collections.last
 import kotlin.reflect.KClass
 import kotlin.reflect.KMutableProperty
 import kotlin.reflect.KVisibility
@@ -60,7 +55,7 @@ public abstract class ScriptProperties {
 
             cacheKeys.add(cacheKey)
 
-            cache[cacheKey] ?: "$reference${tryOperation(referencePath.toTypedArray(), value)}"
+            cache[cacheKey] ?: "$reference${tryAssign(referencePath.toTypedArray(), value)}"
                 .also { operation -> cache[cacheKey] = operation }
         }.also {
             (cache.asMap().keys - cacheKeys).forEach(cache::remove)
@@ -73,7 +68,7 @@ public abstract class ScriptProperties {
 
     override fun toString(): String = compiled
 
-    private fun tryOperation(path: Array<String>, value: Any?): Any? {
+    private fun tryAssign(path: Array<String>, value: Any?): Any? {
         val packages = config.imports.filter { import -> import.endsWith(".*") }.map { import ->
             import.removeSuffix(".*")
         }.toSet()
@@ -85,7 +80,7 @@ public abstract class ScriptProperties {
                     getter = {
                         val kClass = last().first as KClass<*>
 
-                        val memberName = last().second as String
+                        val memberName = last().second
                         val getterName = memberName.asGetterName
 
                         (kClass.memberProperty(memberName)
@@ -107,7 +102,7 @@ public abstract class ScriptProperties {
                     if (receiver !is KClass<*> || explicitOperationReceivers.any(receiver::isSubclassOf))
                         return@deepRunOnPenultimate null
 
-                    val memberName = last().second as String
+                    val memberName = last().second
 
                     val getterName = memberName.asGetterName
                     val setterName = memberName.asSetterName
@@ -150,7 +145,7 @@ public abstract class ScriptProperties {
         internal const val IMPORTS_KEY: String = "imports"
 
         @PublishedApi
-        internal const val SCRIPT_KEY: String = "imports"
+        internal const val SCRIPT_KEY: String = "script"
 
         @PublishedApi
         internal val EXPLICIT_OPERATION_RECEIVERS: Set<KClass<out Any>> = setOf(
@@ -182,9 +177,10 @@ public abstract class ScriptProperties {
                     } ?: decodedFile
                 }
 
-                val mergedImports = mutableMapOf("script" to mutableListOf<Any>())
-
-                decodedImports.forEach { decodedImport -> decodedImport.deepMap(mergedImports) }
+                val mergedImports = decodedImports.fold(mutableMapOf<String, Any?>()) { mergedImports, decodedImport ->
+                    decodedImport.deepMap(mergedImports)
+                    mergedImports
+                }
 
                 decodedFile.deepMap(mergedImports)
             }).apply {
@@ -198,15 +194,19 @@ public abstract class ScriptProperties {
         internal fun Map<String, Any?>.deepMap(other: Map<String, Any?>): Map<String, Any?> =
             deepMap(
                 sourceIteratorOrNull = { value ->
-                    if (size == 2 && first().second == SCRIPT_KEY) null else value.iteratorOrNull()
+                    if (firstOrNull()?.second == SCRIPT_KEY) null else value.iteratorOrNull()
                 },
                 destination = other,
                 destinationGetter = { source ->
-                    last().first.getOrPut(last().second) { key ->
-                        put(key, source.toNewMutableCollection())
-                    }
+                    last().first.getOrPut(last().second, source::toNewMutableCollection)
                 }
-            )
+            ) { value ->
+                if (first().second == SCRIPT_KEY)
+                    first().first
+                        .asNullableMutableMap.getOrPut(first().second as String) { mutableListOf<Any>() }!!
+                        .asMutableList.addAll(value?.asList.orEmpty())
+                else last().first.put(last().second, value)
+            }
     }
 }
 

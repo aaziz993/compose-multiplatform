@@ -27,8 +27,7 @@ public inline fun <E> MutableList<E>.updateAt(index: Int, replacement: E.() -> E
     if (index in indices) {
         this[index] = this[index].replacement()
         true
-    }
-    else false
+    } else false
 
 public inline fun <E> MutableList<E>.updateFirst(replacement: E.() -> E): MutableList<E> = apply {
     if (isNotEmpty())
@@ -88,18 +87,17 @@ public fun <E> MutableList<E>.add(element: E, equator: Equator<E>, merger: Merge
 public fun <E> MutableList<E>.add(element: E, merger: Merger<E>): Boolean =
     if (updateFirstOf(element) { merger.merge(this, element) } == -1) add(element) else false
 
-public inline fun <E> MutableList<E>.getOrPut(index: Int, putter: MutableList<E>.(index: Int) -> E): E =
-    getOrNull(index) ?: putter(index)
+public inline fun <E> MutableList<E>.getOrPut(index: Int, defaultValue: () -> E, set: Boolean = true): E =
+    getOrNull(index) ?: defaultValue().also { element -> put(index, element, set) }
 
-public inline fun <E> MutableList<E>.put(
-    index: Int,
-    element: E,
-    overrider: MutableList<E>.(index: Int, element: E) -> Unit
-): E {
-    if (index in indices) overrider(index, element) else add(index.coerceIn(0, size), element)
-
-    return element
-}
+public fun <E> MutableList<E>.put(index: Int, element: E, set: Boolean = true): E? =
+    if (index in indices && set) {
+        set(index, element)
+        element
+    } else {
+        add(index.coerceIn(0, size), element)
+        null
+    }
 
 public fun <E> MutableList<E>.swap(i: Int, j: Int) {
     val tmp = this[i]

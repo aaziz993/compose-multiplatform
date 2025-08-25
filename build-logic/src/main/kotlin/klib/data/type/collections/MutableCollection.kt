@@ -6,10 +6,9 @@ import klib.data.type.asInt
 import klib.data.type.collections.list.drop
 import klib.data.type.collections.list.getOrPut
 import klib.data.type.collections.list.put
-import klib.data.type.collections.map.getOrPut
-import klib.data.type.collections.map.put
 import kotlin.collections.map
 import kotlin.collections.plus
+import kotlin.collections.getOrPut
 
 @Suppress("UNCHECKED_CAST")
 public fun Any?.toNewMutableCollection(
@@ -78,25 +77,19 @@ public fun <E> MutableCollection<E>.updateSymmetric(
     }
 
 @Suppress("UNCHECKED_CAST")
-public inline fun <V> Any.getOrPut(key: Any?, defaultValue: Any.(key: Any?) -> V): V =
-    when (this) {
-        is MutableList<*> -> (this as MutableList<V>).getOrPut(key!!.asInt, defaultValue)
+public inline fun <K, V> Any.getOrPut(key: K, defaultValue: () -> V, set: Boolean = true): V = when (this) {
+    is MutableList<*> -> (this as MutableList<V>).getOrPut(key!!.asInt, defaultValue, set)
 
-        is MutableMap<*, *> -> (this as MutableMap<Any?, V>).getOrPut(key, defaultValue)
+    is MutableMap<*, *> -> (this as MutableMap<K, V>).getOrPut(key, defaultValue)
 
-        else -> throw IllegalArgumentException("Expected a List or Map, but got ${this::class.simpleName}")
-    }
+    else -> throw IllegalArgumentException("Expected a MutableList or MutableMap, but got ${this::class.simpleName}")
+}
 
 @Suppress("UNCHECKED_CAST")
-public fun <V> Any.put(
-    key: Any?,
-    value: V,
-    overrideList: MutableList<V>.(index: Int, value: V) -> Unit = { _, value -> add(value) },
-    overrideMap: MutableMap<Any?, V>.(key: Any?, value: V) -> Unit = { key, value -> put(key, value) }
-): V = when (this) {
-    is MutableList<*> -> (this as MutableList<V>).put(key!!.asInt, value, overrideList)
+public fun <K, V> Any.put(key: K, value: V, set: Boolean = false): V? = when (this) {
+    is MutableList<*> -> (this as MutableList<V>).put(key!!.asInt, value, set)
 
-    is MutableMap<*, *> -> (this as MutableMap<Any?, V>).put(key, value, overrideMap)
+    is MutableMap<*, *> -> (this as MutableMap<K, V>).put(key, value)
 
     else -> throw IllegalArgumentException("Expected a MutableList or MutableMap, but got ${this::class.simpleName}")
 }
