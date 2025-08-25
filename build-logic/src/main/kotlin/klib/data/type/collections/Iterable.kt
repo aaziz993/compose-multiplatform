@@ -7,6 +7,7 @@ import klib.data.type.collections.list.updateFirst
 import klib.data.type.collections.list.updateLast
 import klib.data.type.collections.map.with
 import klib.data.type.primitives.ifTrue
+import java.util.ArrayList
 import kotlin.comparisons.compareBy
 
 public val <E> Iterable<E>.entries: List<Map.Entry<Int, E>>
@@ -184,10 +185,12 @@ public infix fun <E : Comparable<E>> Iterable<E>.topKHeap(k: Int): List<E> {
         }
     }
 
-    val result = mutableListOf<E>()
+    val result = ArrayList<E>(pq.size)
+
+    while (pq.isNotEmpty()) result.add(pq.poll())
 
     try {
-        for (_ in 1..k) {
+        for (i in 1..k) {
             result.add(pq.poll())
         }
     } catch (_: NoSuchElementException) {

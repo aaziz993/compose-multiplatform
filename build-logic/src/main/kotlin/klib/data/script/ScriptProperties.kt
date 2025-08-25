@@ -1,7 +1,10 @@
 package klib.data.script
 
+import com.charleskorn.kaml.Yaml
+import gradle.api.Properties.Companion.yaml
 import klib.data.cache.Cache
 import klib.data.cache.NoCache
+import klib.data.type.cast
 import klib.data.type.collections.*
 import klib.data.type.collections.deepGetOrNull
 import klib.data.type.collections.list.asList
@@ -19,9 +22,12 @@ import klib.data.type.reflection.memberProperty
 import klib.data.type.reflection.packageExtensions
 import klib.data.type.serialization.coders.tree.deserialize
 import klib.data.type.serialization.decodeFile
+import klib.data.type.serialization.json.decodeAnyFromString
 import klib.data.type.serialization.serializers.any.SerializableAny
+import klib.data.type.serialization.yaml.decodeAnyFromString
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
+import kotlinx.serialization.json.Json
 import kotlinx.serialization.serializer
 import java.io.File
 import java.lang.reflect.Modifier
@@ -156,7 +162,6 @@ public abstract class ScriptProperties {
 
         public inline operator fun <reified T : ScriptProperties> invoke(
             file: String,
-            noinline decoder: (file: String) -> Map<String, Any?>,
             cache: Cache<String, String> = NoCache(),
             explicitOperationReceivers: Set<KClass<*>> = emptySet(),
             noinline implicitOperation: (valueClass: KClass<*>, value: Any?) -> String? = { _, _ -> null },
@@ -169,7 +174,17 @@ public abstract class ScriptProperties {
                         File(this).parentFile.resolve(import).path
                     }
                 },
-                decoder
+                decoder = { file ->
+                    val file = File(file)
+                    val text = file.readText()
+                    when (file.extension) {
+                        "yaml" -> Yaml.default.decodeAnyFromString(text)
+                        "json" -> Json.decodeAnyFromString(text)
+                        "properties" -> klib.data.type.serialization.properties.Properties.decodeAnyFromString(text)
+
+                        else -> error("Unsupported file extension ${file.extension}")
+                    }!!.cast()
+                },
             ) { decodedImports ->
                 val decodedFile = (this - IMPORTS_KEY).let { decodedFile ->
                     decodedFile[SCRIPT_KEY]?.asMapOrNull?.let { script ->

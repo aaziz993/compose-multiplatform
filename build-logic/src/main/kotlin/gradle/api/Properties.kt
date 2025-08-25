@@ -7,7 +7,9 @@ import com.charleskorn.kaml.YamlConfiguration
 import gradle.api.cache.H2Cache
 import klib.data.script.ScriptProperties
 import klib.data.type.cast
+import klib.data.type.serialization.json.decodeAnyFromString
 import klib.data.type.serialization.yaml.decodeAnyFromString
+import kotlinx.serialization.json.Json
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.plugins.ExtensionAware
 import org.gradle.api.plugins.PluginAware
@@ -24,14 +26,6 @@ import kotlin.script.experimental.jvm.jvm
 public abstract class Properties : ScriptProperties() {
 
     public companion object {
-
-        private val yaml = Yaml(
-            configuration = YamlConfiguration(
-                singleLineStringStyle = SingleLineStringStyle.PlainExceptAmbiguous,
-                multiLineStringStyle = MultiLineStringStyle.Plain,
-            ),
-        )
-
         private val EXPLICIT_OPERATION_RECEIVERS = setOf(
             Property::class,
             HasMultipleValues::class,
@@ -77,9 +71,6 @@ public abstract class Properties : ScriptProperties() {
             evaluationImplicitReceiver: T,
         ): P where T : PluginAware, T : ExtensionAware = ScriptProperties<P>(
             path,
-            decoder = { file ->
-                yaml.decodeAnyFromString(File(file).readText())!!.cast()
-            },
             cache = H2Cache(parentFile.resolve("$nameWithoutExtension.cache")),
             explicitOperationReceivers = EXPLICIT_OPERATION_RECEIVERS,
             implicitOperation = ::tryAssignProperty,

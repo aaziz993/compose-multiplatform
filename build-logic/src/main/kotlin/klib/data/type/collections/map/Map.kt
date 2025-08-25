@@ -23,8 +23,13 @@ public fun <K, V> Any.asMap(): Map<K, V> = asMapOrNull()!!
 
 public fun <K, V> Map<K, V>.pairs(): Set<Pair<K, V>> = entries.map(Map.Entry<K, V>::toPair).toSet()
 
-public fun <T> Map<*, T>.valuesByKeysAsIndices(): List<T> = entries.sortedBy { (key, _) -> key!!.toInt() }
-        .map(Map.Entry<*, T>::value)
+public inline fun <K, V, R : Comparable<R>> Map<K, V>.toSortedKeys(
+    crossinline selector: (Map.Entry<K, V>) -> R?
+): List<K> = entries.sortedBy(selector).map(Map.Entry<K, *>::key)
+
+public inline fun <K, V, R : Comparable<R>> Map<K, V>.toSortedValues(
+    crossinline selector: (Map.Entry<K, V>) -> R?
+): List<V> = entries.sortedBy(selector).map(Map.Entry<*, V>::value)
 
 public infix fun <K, V> Map<K, V>.tryPlus(map: Map<K, V>?): Map<K, V> =
     map?.let(::plus) ?: this

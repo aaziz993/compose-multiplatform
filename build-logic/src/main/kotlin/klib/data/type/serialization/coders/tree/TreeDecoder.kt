@@ -8,7 +8,7 @@ import klib.data.type.collections.list.asNullableList
 import klib.data.type.collections.list.asNullableListOrNull
 import klib.data.type.collections.map.asMap
 import klib.data.type.collections.map.asMapOrNull
-import klib.data.type.collections.map.valuesByKeysAsIndices
+import klib.data.type.collections.map.toSortedValues
 import klib.data.type.primitives.toNumber
 import klib.data.type.serialization.annotations.SerialContext
 import klib.data.type.serialization.annotations.SerialScript
@@ -19,6 +19,7 @@ import klib.data.type.serialization.coders.model.TreeDecoderConfiguration
 import klib.data.type.serialization.getElementAnnotation
 import klib.data.type.serialization.hasElementAnnotation
 import klib.data.type.serialization.toPolymorphicValues
+import klib.data.type.toInt
 import kotlinx.serialization.*
 import kotlinx.serialization.descriptors.PolymorphicKind
 import kotlinx.serialization.descriptors.SerialDescriptor
@@ -153,7 +154,7 @@ public open class TreeDecoder(
     private inner class ListDecoder(descriptor: SerialDescriptor) : StructureLikeDecoder(descriptor) {
 
         override val values: List<Any?> =
-            (value?.asNullableListOrNull ?: value!!.asMap<Any?, Any?>().valuesByKeysAsIndices())
+            (value?.asNullableListOrNull ?: value!!.asMap<Any?, Any?>().toSortedValues { (key, _) -> key!!.toInt() })
                 .withIndex()
                 .filter { (index, element) -> configuration.filterElement(descriptor, index, element) }
                 .map { (index, element) ->
