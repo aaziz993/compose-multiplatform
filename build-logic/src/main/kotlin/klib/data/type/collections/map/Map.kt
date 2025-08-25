@@ -25,7 +25,7 @@ public val <K, V> Map<K, V>.pairs: Set<Pair<K, V>>
     get() = entries.map(Map.Entry<K, V>::toPair).toSet()
 
 public val <T> Map<*, T>.valuesByKeysAsIndices: List<T>
-    get() = entries.sortedBy { (key, _) -> key!!.toInt }
+    get() = entries.sortedBy { (key, _) -> key!!.toInt() }
         .map(Map.Entry<*, T>::value)
 
 public infix fun <K, V> Map<K, V>.tryPlus(map: Map<K, V>?): Map<K, V> =

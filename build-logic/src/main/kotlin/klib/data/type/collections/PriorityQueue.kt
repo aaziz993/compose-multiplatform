@@ -2,103 +2,109 @@
 
 package klib.data.type.collections
 
-@Suppress("UNCHECKED_CAST", "SameParameterValue")
-public class PriorityQueue<T>(size: Int, private val comparator: Comparator<T>? = null) : Collection<T> {
+import kotlin.math.max
+
+@Suppress("UNCHECKED_CAST")
+public class PriorityQueue<T>(initialCapacity: Int, private val comparator: Comparator<in T>? = null) : Collection<T> {
+
+    private var arr: Array<T?> = arrayOfNulls(max(2, initialCapacity + 1))
 
     override var size: Int = 0
         private set
 
-    private var arr: Array<T?> = Array<Comparable<T>?>(size) { null } as Array<T?>
+    public constructor(
+        elements: Collection<T>,
+        comparator: Comparator<in T>? = null
+    ) : this(elements.size, comparator) {
+        // bulk copy into 1-based backing array
+        var i = 0
+        for (e in elements) arr[++i] = e
+        size = i
+        // bottom-up heapify (linear time)
+        for (j in size / 2 downTo 1) sink(j)
+    }
 
     public fun add(element: T) {
-        if (size + 1 == arr.size) {
-            resize()
-        }
+        ensureCapacity(size + 1)
         arr[++size] = element
         swim(size)
     }
 
     public fun peek(): T {
         if (isEmpty()) throw NoSuchElementException()
-        return arr[1]!!
+        return arr[1] as T
     }
+
+    public fun peekOrNull(): T? = if (isEmpty()) null else peek()
 
     public fun poll(): T {
         if (isEmpty()) throw NoSuchElementException()
-        val res = peek()
-        arr.swap(1, size--)
-        sink(1)
-        arr[size + 1] = null
-        if (isNotEmpty() && (size == (arr.size - 1) / 4)) {
-            resize()
-        }
+        val res = arr[1] as T
+        arr.swap(1, size)
+        arr[size] = null
+        size--
+        if (isNotEmpty()) sink(1)
+        resizeIfSparse()
         return res
     }
 
-    private fun swim(n: Int) {
-        swim(arr as Array<T>, n, comparator)
-    }
-
-    private fun sink(n: Int) {
-        sink(arr as Array<T>, n, size, comparator)
-    }
-
-    private fun resize() {
-        val old = arr
-//        arr = Array<Comparable<T>?>(size * 2, { null }) as Array<T?>
-        arr = old.copyOf(old.size + 1)
-//        System.arraycopy(old, 0, arr, 0, size + 1)
-    }
+    public fun pollOrNull(): T? = if (isEmpty()) null else poll()
 
     override fun isEmpty(): Boolean = size == 0
 
     override fun contains(element: T): Boolean {
-        for (obj in this) {
-            if (obj == element) return true
-        }
+        for (i in 1..size) if (arr[i] == element) return true
         return false
     }
 
     override fun containsAll(elements: Collection<T>): Boolean {
-        for (element in elements) {
-            if (!contains(element)) return false
-        }
+        for (element in elements) if (!contains(element)) return false
         return true
     }
 
-    override fun iterator(): Iterator<T> {
-        return arr.copyOfRange(1, size + 1).map { it!! }.iterator()
+    override fun iterator(): Iterator<T> = object : Iterator<T> {
+        private var i = 1
+        override fun hasNext(): Boolean = i <= size
+
+        override fun next(): T {
+            if (!hasNext()) throw NoSuchElementException()
+            return arr[i++] as T
+        }
     }
 
-    public companion object {
+    private fun ensureCapacity(required: Int) {
+        if (required >= arr.size) arr = arr.copyOf(max(arr.size * 2, required + 1))
+    }
 
-        private fun <T> greater(arr: Array<T>, i: Int, j: Int, comparator: Comparator<T>? = null): Boolean {
-            return if (comparator != null) {
-                comparator.compare(arr[i], arr[j]) > 0
-            }
-            else {
-                val left = arr[i]!! as Comparable<T>
-                left > arr[j]!!
-            }
-        }
+    private fun resizeIfSparse() {
+        if (arr.size > 2 && size <= (arr.size - 1) / 4) arr = arr.copyOf(max(2, (arr.size / 2)))
+    }
 
-        public fun <T> sink(arr: Array<T>, a: Int, size: Int, comparator: Comparator<T>? = null) {
-            var k = a
-            while (2 * k <= size) {
-                var j = 2 * k
-                if (j < size && greater(arr, j, j + 1, comparator)) j++
-                if (!greater(arr, k, j, comparator)) break
-                arr.swap(k, j)
-                k = j
-            }
+    private fun swim(size: Int) {
+        var i = size
+        while (i > 1 && greater(i / 2, i)) {
+            arr.swap(i, i / 2)
+            i /= 2
         }
+    }
 
-        public fun <T> swim(arr: Array<T>, size: Int, comparator: Comparator<T>? = null) {
-            var n = size
-            while (n > 1 && greater(arr, n / 2, n, comparator)) {
-                arr.swap(n, n / 2)
-                n /= 2
-            }
+    private fun sink(a: Int) {
+        var i = a
+        while (2 * i <= size) {
+            var j = 2 * i
+            if (j < size && greater(j, j + 1)) j++
+            if (!greater(i, j)) break
+            arr.swap(i, j)
+            i = j
         }
+    }
+
+    private fun greater(i: Int, j: Int): Boolean {
+        val a = arr[i] as T
+        val b = arr[j] as T
+        return (comparator?.compare(a, b) ?: (a as Comparable<T>).compareTo(b)) > 0
     }
 }
+
+public fun <T> priorityQueueOf(elements: Collection<T>, comparator: Comparator<in T>? = null): PriorityQueue<T> =
+    PriorityQueue(elements, comparator)

@@ -7,18 +7,16 @@ import klib.data.type.collections.list.updateFirst
 import klib.data.type.collections.list.updateLast
 import klib.data.type.collections.map.with
 import klib.data.type.primitives.ifTrue
-
-public infix fun <E> Iterable<E>.tryPlus(elements: Iterable<E>?): Iterable<E> =
-    elements?.let(::plus) ?: this
+import kotlin.comparisons.compareBy
 
 public val <E> Iterable<E>.entries: List<Map.Entry<Int, E>>
     get() = mapIndexed { index, value -> index with value }
 
-public fun <K, V> Iterable<Map.Entry<K, V>>.toMap(): Map<K, V> = associate { (key, value) -> key to value }
+public infix fun <E> Iterable<E>.tryPlus(elements: Iterable<E>?): Iterable<E> =
+    elements?.let(::plus) ?: this
 
-public inline fun <K, V : Any> Iterable<K>.associateWithNotNull(valueSelector: (K) -> V?): Map<K, V> {
-    @Suppress("UNCHECKED_CAST")
-    return associateWith { valueSelector(it) }.filterValues { it != null } as Map<K, V>
+public infix fun <E> Iterable<E>.minusIndices(indices: Iterable<Int>): List<E> = filterIndexed { index, _ ->
+    index !in indices
 }
 
 public inline fun <E> Iterable<E>.replaceAt(index: Int, replacement: E.() -> E): List<E> {
@@ -39,7 +37,7 @@ public inline fun <E> Iterable<E>.replaceFirst(predicate: (E) -> Boolean, replac
 
 public fun <E> Iterable<E>.replaceFirst(elements: Iterable<E>, equator: Equator<E>): List<E> =
     elements.fold(toList()) { acc, element ->
-        replaceFirst({ equator.equate(it, element) }) { element }
+        acc.replaceFirst({ equator.equate(it, element) }) { element }
     }
 
 public inline fun <E> Iterable<E>.replaceFirstOf(element: E, replacement: E.() -> E): List<E> =
@@ -47,7 +45,7 @@ public inline fun <E> Iterable<E>.replaceFirstOf(element: E, replacement: E.() -
 
 public fun <E> Iterable<E>.replaceFirstOf(elements: Iterable<E>): List<E> =
     elements.fold(toList()) { acc, element ->
-        replaceFirstOf(element) { element }
+        acc.replaceFirstOf(element) { element }
     }
 
 public inline fun <E> Iterable<E>.replaceLast(replacement: E.() -> E): List<E> = toMutableList().updateLast(replacement)
@@ -57,7 +55,7 @@ public inline fun <E> Iterable<E>.replaceLast(predicate: (E) -> Boolean, replace
 
 public fun <E> Iterable<E>.replaceLast(elements: Iterable<E>, equator: Equator<E>): List<E> =
     elements.fold(toList()) { acc, element ->
-        replaceLast({ equator.equate(it, element) }) { element }
+        acc.replaceLast({ equator.equate(it, element) }) { element }
     }
 
 public inline fun <E> Iterable<E>.replaceLastOf(element: E, replacement: E.() -> E): List<E> =
@@ -65,7 +63,7 @@ public inline fun <E> Iterable<E>.replaceLastOf(element: E, replacement: E.() ->
 
 public infix fun <E> Iterable<E>.replaceLastOf(elements: Iterable<E>): List<E> =
     elements.fold(toList()) { acc, element ->
-        replaceLastOf(element) { element }
+        acc.replaceLastOf(element) { element }
     }
 
 public fun <E> Iterable<E>.containsAll(other: Iterable<E>, equator: Equator<E>): Boolean =
@@ -116,8 +114,8 @@ public inline fun <E, R : Any> Iterable<E>.firstNotThrowOf(transform: (E) -> R?)
 }
 
 public infix fun <E> Iterable<E>.symmetricMinus(other: Iterable<E>): Pair<List<E>, List<E>> {
-    val left = this - other
-    val right = other - this
+    val left = this - other.toSet()
+    val right = other - this.toSet()
     return left to right
 }
 
@@ -141,22 +139,55 @@ public fun <E> Iterable<E>.merge(merger: Merger<E>): List<E> = buildList {
     }
 }
 
-public infix fun <E : Comparable<E>> Iterable<E>.findTopKHeap(k: Int): List<E> {
+public infix fun <E : Comparable<E>> Iterable<E>.topKElements(k: Int): List<E> {
+    val minHeap = PriorityQueue<E>(count())
+
+    forEach { element ->
+        minHeap.add(element)
+        if (minHeap.size > k) minHeap.poll()  // Remove the smallest element
+    }
+
+    return minHeap.toList()
+}
+
+public infix fun <E : Comparable<E>> Iterable<E>.topKFrequent(k: Int): List<E> {
+    val frequencyMap = groupingBy { it }.eachCount()
+    val minHeap = PriorityQueue(count(), compareBy<E> { element -> frequencyMap[element] })
+
+    frequencyMap.keys.forEach { element ->
+        minHeap.add(element)
+        if (minHeap.size > k) minHeap.poll()
+    }
+
+    return minHeap.toList()
+}
+
+public infix fun <E : Comparable<E>> Iterable<E>.findKthLargest(k: Int): E {
+    val minHeap = PriorityQueue<E>(count())
+
+    forEach { element ->
+        minHeap.add(element)
+        if (minHeap.size > k) minHeap.poll()
+    }
+
+    return minHeap.poll()
+}
+
+public infix fun <E : Comparable<E>> Iterable<E>.topKHeap(k: Int): List<E> {
     val pq = PriorityQueue<E>(count())
 
-    forEach {
-        if (pq.size < k)
-            pq.add(it)
-        else if (it > pq.peek()) {
+    forEach { element ->
+        if (pq.size < k) pq.add(element)
+        else if (element > pq.peek()) {
             pq.poll()
-            pq.add(it)
+            pq.add(element)
         }
     }
 
     val result = mutableListOf<E>()
 
     try {
-        for (i in k downTo 1) {
+        for (_ in 1..k) {
             result.add(pq.poll())
         }
     } catch (_: NoSuchElementException) {
@@ -165,6 +196,12 @@ public infix fun <E : Comparable<E>> Iterable<E>.findTopKHeap(k: Int): List<E> {
     return result
 }
 
-public fun Iterable<Boolean>.isAllTrue(): Boolean = all { it }
+public fun Iterable<Boolean>.all(): Boolean = all { it }
 
-public fun Iterable<Boolean>.ifAllTrue(action: () -> Unit): Boolean? = isAllTrue().ifTrue(action)
+public fun Iterable<Boolean>.ifAll(action: () -> Unit): Boolean? = all().ifTrue(action)
+
+@Suppress("UNCHECKED_CAST")
+public inline fun <K, V : Any> Iterable<K>.associateWithNotNull(valueSelector: (K) -> V?): Map<K, V> =
+    associateWith(valueSelector).filterValues { it != null } as Map<K, V>
+
+public fun <K, V> Iterable<Map.Entry<K, V>>.toMap(): Map<K, V> = associate { (key, value) -> key to value }

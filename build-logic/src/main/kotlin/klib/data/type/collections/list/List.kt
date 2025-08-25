@@ -24,10 +24,6 @@ public inline fun <E> List<E>.withDefault(defaultValue: (Int) -> E): List<E> =
 
 public infix fun <E> List<E>.slice(indices: Iterable<Int>): List<E> = indices.map(::get)
 
-public infix fun <E> Iterable<E>.minusIndices(indices: Iterable<Int>): List<E> = filterIndexed { index, _ ->
-    index !in indices
-}
-
 public fun <E> List<E>.drop(): List<E> = drop(1)
 
 public fun <E> List<E>.dropLast(): List<E> = dropLast(1)

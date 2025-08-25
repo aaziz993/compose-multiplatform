@@ -1,6 +1,6 @@
 package klib.data.type.primitives.string.fuzzywuzzy
 
-import klib.data.type.collections.findTopKHeap
+import klib.data.type.collections.topKHeap
 import klib.data.type.primitives.string.fuzzywuzzy.model.BoundExtractedResult
 import klib.data.type.primitives.string.fuzzywuzzy.model.ExtractedResult
 
@@ -137,7 +137,7 @@ public class Extractor(private val cutoff: Int = 0) {
         choices: Iterable<String>,
         func: Applicable,
         limit: Int
-    ): List<ExtractedResult> = extractWithoutOrder(query, choices, func).findTopKHeap(limit).sortedDescending()
+    ): List<ExtractedResult> = extractWithoutOrder(query, choices, func).topKHeap(limit).sortedDescending()
 
     /**
      * Creates a **sorted** list of [ExtractedResult] which contain the
@@ -156,6 +156,6 @@ public class Extractor(private val cutoff: Int = 0) {
         func: Applicable,
         limit: Int
     ): List<BoundExtractedResult<T>> = extractWithoutOrder(query, choices, toStringFunction, func)
-        .findTopKHeap(limit)
+        .topKHeap(limit)
         .sortedDescending()
 }
