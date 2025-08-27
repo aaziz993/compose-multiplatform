@@ -3,10 +3,9 @@ package klib.data.type.collections.set
 import klib.data.type.collections.list.add
 import klib.data.type.functions.Equator
 import klib.data.type.functions.Merger
-import kotlin.collections.LinkedHashSet
 
 public class MutableMergeSet<E>(
-    initialCapacity: Int = 0,
+    initialCapacity: Int = 16,
     override val equator: Equator<E> = Equator.default(),
     override val merger: Merger<E> = Merger.default(),
 ) : MergeSet<E>, MutableSet<E> {
@@ -16,6 +15,10 @@ public class MutableMergeSet<E>(
         merger: Merger<E> = Merger.default()
     ) : this(equator = equator, merger = merger) {
         addAll(elements)
+    }
+
+    init {
+        require(initialCapacity >= 0) { "initialCapacity must be >= 0" }
     }
 
     private val delegate: MutableList<E> = ArrayList(initialCapacity)

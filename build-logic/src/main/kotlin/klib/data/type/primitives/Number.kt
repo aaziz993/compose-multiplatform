@@ -7,8 +7,6 @@ import kotlin.math.pow
 import kotlin.reflect.KClass
 import kotlin.toUInt
 import kotlin.toULong
-import kotlinx.serialization.json.JsonPrimitive
-import kotlinx.serialization.json.intOrNull
 
 @Suppress("UNCHECKED_CAST")
 public fun <T : Comparable<T>> Any.toNumber(kClass: KClass<T>): T = when (kClass) {
@@ -266,7 +264,6 @@ public fun ByteArray.toULong(
 }
 
 // ////////////////////////////////////////////////////////LONG/////////////////////////////////////////////////////////
-@Suppress("SameReturnValue")
 public val Long.Companion.DEFAULT: Long
     get() = 0L
 
@@ -384,14 +381,18 @@ public val BigDecimal.Companion.DEFAULT: BigDecimal
 public fun BigDecimal.Companion.parseOrNull(s: String): BigDecimal? = s.runCatching { parseString(this) }.getOrNull()
 
 /////////////////////////////////////////////////////NUMBER/////////////////////////////////////////////////////////////
-public fun Number.toBigInteger(): BigInteger = BigInteger.parseString(toString())
+public fun String.toBigInteger(): BigInteger = BigInteger.parseString(this)
+
+public fun Number.toBigInteger(): BigInteger = toString().toBigInteger()
 
 private fun Any.toBigInteger(): BigInteger = when (this) {
     is BigInteger -> this
     else -> BigInteger.parseString(toString())
 }
 
-public fun Number.toBigDecimal(): BigDecimal = BigDecimal.parseString(toString())
+public fun String.toBigDecimal(): BigDecimal = BigDecimal.parseString(this)
+
+public fun Number.toBigDecimal(): BigDecimal = toString().toBigDecimal()
 
 private fun Any.toBigDecimal(): BigDecimal = when (this) {
     is BigDecimal -> this
@@ -414,22 +415,25 @@ private fun BigDecimal.toNumber(vararg types: KClass<*>) = when {
     else -> this
 }
 
-public operator fun Any.inc(): Any = toBigDecimal().inc().toNumber(this::class)
+private fun Any.numUnaryOperate(block: (BigDecimal) -> BigDecimal): Any =
+    block(toBigDecimal()).toNumber(this::class)
 
-public operator fun Any.dec(): Any = toBigDecimal().dec().toNumber(this::class)
+public operator fun Any.inc(): Any = numUnaryOperate(BigDecimal::inc)
 
-private fun Any.operate(other: Any, block: (BigDecimal, BigDecimal) -> BigDecimal): Any =
+public operator fun Any.dec(): Any = numUnaryOperate(BigDecimal::dec)
+
+private fun Any.numBinaryOperate(other: Any, block: (BigDecimal, BigDecimal) -> BigDecimal): Any =
     block(toBigDecimal(), other.toBigDecimal()).toNumber(this::class, other::class)
 
-public operator fun Any.plus(other: Any): Any = operate(other) { v1, v2 -> v1 + v2 }
+public operator fun Any.plus(other: Any): Any = numBinaryOperate(other) { v1, v2 -> v1 + v2 }
 
-public operator fun Any.minus(other: Any): Any = operate(other) { v1, v2 -> v1 - v2 }
+public operator fun Any.minus(other: Any): Any = numBinaryOperate(other) { v1, v2 -> v1 - v2 }
 
-public operator fun Any.times(other: Any): Any = operate(other) { v1, v2 -> v1 * v2 }
+public operator fun Any.times(other: Any): Any = numBinaryOperate(other) { v1, v2 -> v1 * v2 }
 
-public operator fun Any.div(other: Any): Any = operate(other) { v1, v2 -> v1 / v2 }
+public operator fun Any.div(other: Any): Any = numBinaryOperate(other) { v1, v2 -> v1 / v2 }
 
-public operator fun Any.rem(other: Any): Any = operate(other) { v1, v2 -> v1 % v2 }
+public operator fun Any.rem(other: Any): Any = numBinaryOperate(other) { v1, v2 -> v1 % v2 }
 
 public fun Any.pow(exponent: Long): Any = toBigDecimal().pow(exponent).toNumber(this::class)
 
@@ -438,6 +442,8 @@ public fun Any.abs(): Any = toBigDecimal().abs().toNumber(this::class)
 public fun Any.negate(): Any = toBigDecimal().negate().toNumber(this::class)
 
 public fun Any.signum(): Int = toBigDecimal().signum()
+
+public fun Any.compareTo(other: Any): Int = toBigDecimal().compareTo(other.toBigDecimal())
 
 // ///////////////////////////////////////////////////////ARRAY/////////////////////////////////////////////////////////
 public fun UInt.toBitArray(): BooleanArray =

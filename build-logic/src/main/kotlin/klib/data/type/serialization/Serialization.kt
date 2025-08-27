@@ -1,6 +1,5 @@
 package klib.data.type.serialization
 
-import klib.data.type.cast
 import klib.data.type.collections.deepGetOrNull
 import klib.data.type.collections.list.asList
 import kotlinx.serialization.modules.EmptySerializersModule

@@ -1,5 +1,5 @@
 imports:
-  - properties/scripting.yaml
+  - properties/config.yaml
 year: 2025
 remote:
   url: https://github.com/aaziz993/compose-multiplatform
@@ -113,7 +113,7 @@ script:
         - capture:
             fileFingerprints: true
             buildLogging: true
-      enrichGitData: ("settings.settingsProperties.remote!!.url") # GitHub repo url populated from remote.url if not provided.
+#      enrichGitData: ("${remote.url}") # GitHub repo url populated from remote.url if not provided.
   # Provides a repository for downloading JVMs
   - toolchainManagement: '{ }'
   # Enforcing pre-commit and commit-msg Git hooks configuration. Conventional-commits-ready.

@@ -158,7 +158,10 @@ public fun <T : Any> Any.minusKeys(
 
 ////////////////////////////////////////////////////////////DEEP////////////////////////////////////////////////////////
 @Suppress("UNCHECKED_CAST")
-public fun <K> Any.deepGet(vararg path: K, getter: List<Pair<Any, K>>.() -> Any?): Pair<List<Pair<Any, K>>, Any?> {
+public fun <K> Any.deepGet(
+    vararg path: K,
+    getter: List<Pair<Any, K>>.() -> Any? = { last().first[last().second] }
+): Pair<List<Pair<Any, K>>, Any?> {
     var sources = emptyList<Pair<Any, K>>()
 
     val value = DeepRecursiveFunction<Any, Any?> { source ->
