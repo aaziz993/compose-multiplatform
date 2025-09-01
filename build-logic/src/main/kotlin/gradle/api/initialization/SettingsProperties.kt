@@ -2,7 +2,7 @@ package gradle.api.initialization
 
 import gradle.api.Properties
 import gradle.api.initialization.SettingsProperties.Companion.SETTINGS_PROPERTIES_EXT
-import klib.data.type.primitives.string.tokenization.scripting.ScriptConfig
+import klib.data.type.primitives.string.scripting.ScriptConfig
 import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings
 import org.jetbrains.kotlin.gradle.plugin.extraProperties

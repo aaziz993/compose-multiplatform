@@ -1,15 +1,7 @@
 package gradle.api
 
-import com.charleskorn.kaml.MultiLineStringStyle
-import com.charleskorn.kaml.SingleLineStringStyle
-import com.charleskorn.kaml.Yaml
-import com.charleskorn.kaml.YamlConfiguration
 import gradle.api.cache.H2Cache
-import klib.data.type.cast
-import klib.data.type.primitives.string.tokenization.scripting.ScriptProperties
-import klib.data.type.serialization.json.decodeAnyFromString
-import klib.data.type.serialization.yaml.decodeAnyFromString
-import kotlinx.serialization.json.Json
+import klib.data.type.primitives.string.scripting.ScriptProperties
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.plugins.ExtensionAware
 import org.gradle.api.plugins.PluginAware
