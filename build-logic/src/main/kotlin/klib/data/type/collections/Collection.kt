@@ -3,9 +3,12 @@ package klib.data.type.collections
 import klib.data.type.collections.list.asList
 import klib.data.type.collections.list.drop
 import klib.data.type.collections.map.asMap
-import klib.data.type.toInt
+import klib.data.type.primitives.string.tokenization.substitution.SubstituteOption
+import klib.data.type.primitives.string.tokenization.substitution.substitute
+import klib.data.type.primitives.toInt
 import kotlin.collections.getOrElse
 import kotlin.collections.getOrNull
+import kotlin.collections.toTypedArray
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
@@ -28,9 +31,14 @@ public fun Any.iteratorOrNull(): Iterator<Map.Entry<Any?, Any?>>? = entriesOrNul
 
 public fun Any.iterator(): Iterator<Map.Entry<Any?, Any?>> = iteratorOrNull()!!
 
-public fun Collection<Int>.isZeroConsecutive(): Boolean = withIndex().all { (index, element) -> index == element }
+public val Any.size: Int
+    get() = when (this) {
+        is MutableList<*> -> size
 
-public fun Collection<Int>.isConsecutive(): Boolean = zipWithNext().all { (a, b) -> b == a + 1 }
+        is MutableMap<*, *> -> size
+
+        else -> throw IllegalArgumentException("Expected a List or Map, but got ${this::class.simpleName}")
+    }
 
 @OptIn(ExperimentalContracts::class)
 public inline fun <T : Any, K, V> T.getOrElse(key: K, defaultValue: () -> V): V {
@@ -76,6 +84,10 @@ public fun <T : Any> T.minusKeys(vararg keys: Any?): T = when (this) {
 
     else -> throw IllegalArgumentException("Expected a List or Map, but got ${this::class.simpleName}")
 } as T
+
+public fun Collection<Int>.isZeroConsecutive(): Boolean = withIndex().all { (index, element) -> index == element }
+
+public fun Collection<Int>.isConsecutive(): Boolean = zipWithNext().all { (a, b) -> b == a + 1 }
 
 //////////////////////////////////////////////////////////SHALLOW//////////////////////////////////////////////////////
 @Suppress("UNCHECKED_CAST")
@@ -210,7 +222,7 @@ public fun <K> Any.deepContains(
     },
 ): Boolean = deepRunOnPenultimate(*path, getter = getter, run = contains)
 
-public fun Any.flattenKeys(
+public fun Any.flatten(
     iteratorOrNull: List<Pair<Any, Any?>>.(value: Any) -> Iterator<Map.Entry<Any?, Any?>>? = { value ->
         value.iteratorOrNull()
     },
@@ -232,14 +244,14 @@ public fun Any.flattenKeys(
     }
 
     flattenKeys(
-        listOf(this@flattenKeys to null),
-        emptyList<Pair<Any, Any?>>().iteratorOrNull(this@flattenKeys)!!,
+        listOf(this@flatten to null),
+        emptyList<Pair<Any, Any?>>().iteratorOrNull(this@flatten)!!,
     )
 }
 
-@Suppress("UNCHECKED_CAST")
-public fun <E, K> Collection<Pair<List<E>, Any?>>.unflattenKeys(
-    sourceKey: (E) -> K = { sourceKey -> sourceKey as K },
+
+public fun <E, K> Collection<Pair<List<E>, Any?>>.unflatten(
+    sourceKey: (E) -> K,
     destinationGetter: List<Pair<Any, K>>.(sourcesKeys: List<E>) -> Any = { _ ->
         if (isEmpty()) mutableMapOf<Any?, Any?>()
         else last().first.getOrPut(last().second, ::mutableMapOf)
@@ -275,7 +287,7 @@ private data class UnflattenKeysArgs<E, K>(
     val destinations: List<Pair<Any, K>>,
 )
 
-public fun <K> Collection<Pair<List<Pair<Any, K>>, Any?>>.unflattenKeys(
+public fun <K> Collection<Pair<List<Pair<Any, K>>, Any?>>.unflatten(
     destinationGetter: List<Pair<Any, K>>.(sourcesKeys: List<Pair<Any, K>>) -> Any = { sourcesKeys ->
         if (isEmpty()) sourcesKeys[0].first.toNewMutableCollection()
         else last().first.getOrPut(last().second, sourcesKeys[0].first::toNewMutableCollection)
@@ -283,7 +295,16 @@ public fun <K> Collection<Pair<List<Pair<Any, K>>, Any?>>.unflattenKeys(
     destinationSetter: List<Pair<Any, K>>.(value: Any?) -> Unit = { value ->
         last().first.put(last().second, value)
     },
-): Any = unflattenKeys({ (_, key) -> key }, destinationGetter, destinationSetter)
+): Any = unflatten({ (_, key) -> key }, destinationGetter, destinationSetter)
+
+public fun <K> Collection<Pair<List<K>, Any?>>.unflattenKeys(
+    destinationGetter: List<Pair<Any, K>>.(sourcesKeys: List<K>) -> Any = { sourcesKeys ->
+        if (isEmpty()) mutableMapOf<Any?, Any?>() else last().first.getOrPut(last().second, ::mutableMapOf)
+    },
+    destinationSetter: List<Pair<Any, K>>.(value: Any?) -> Unit = { value ->
+        last().first.put(last().second, value)
+    },
+): Any = unflatten({ key -> key }, destinationGetter, destinationSetter)
 
 @Suppress("UNCHECKED_CAST")
 public fun <T : Any> Any.deepMap(
@@ -557,4 +578,18 @@ public fun <T : Any> Any.deepMinusKeys(
     destination = destination,
     destinationGetter = destinationGetter,
     destinationSetter = destinationSetter
+)
+
+@Suppress("UNCHECKED_CAST")
+public fun <T : Any> T.substitute(
+    vararg options: SubstituteOption = arrayOf(
+        SubstituteOption.DEEP_INTERPOLATION,
+        SubstituteOption.ESCAPE_INTERPOLATION,
+        SubstituteOption.ESCAPE_EVALUATION
+    ),
+    getter: (path: List<String>) -> Any? = { path -> deepGetOrNull(*path.toTypedArray()).second }
+): T = deepMapValues(
+    sourceTransform = { value ->
+        if (value is String) value.substitute(*options, getter = getter) else value
+    },
 )

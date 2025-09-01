@@ -2,7 +2,7 @@ package gradle.api.project
 
 import gradle.api.Properties
 import gradle.api.project.ProjectProperties.Companion.PROJECT_PROPERTIES_EXT
-import klib.data.script.ScriptConfig
+import klib.data.type.primitives.string.tokenization.scripting.ScriptConfig
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.extraProperties

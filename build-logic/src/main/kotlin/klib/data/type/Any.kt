@@ -1,5 +1,7 @@
 package klib.data.type
 
+import kotlin.text.toInt
+
 public fun Any?.hashCode(): Int = this?.hashCode() ?: 0
 
 public fun hashCode(vararg values: Any?, fromIndex: Int = 0, length: Int = values.size, initialValue: Int = 1): Int {
@@ -13,12 +15,4 @@ public fun hashCode(vararg values: Any?, fromIndex: Int = 0, length: Int = value
 
 public inline fun <reified T> Any.cast(): T {
     return this as T
-}
-
-public fun Any.toInt(): Int = when (this) {
-    is Int -> this
-
-    is String -> toInt()
-
-    else -> throw IllegalArgumentException("Expected integer value, but got $this")
 }

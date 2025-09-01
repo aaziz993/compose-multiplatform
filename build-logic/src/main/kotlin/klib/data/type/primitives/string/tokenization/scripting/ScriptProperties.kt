@@ -1,4 +1,4 @@
-package klib.data.script
+package klib.data.type.primitives.string.tokenization.scripting
 
 import com.charleskorn.kaml.Yaml
 import klib.data.cache.Cache
@@ -10,8 +10,7 @@ import klib.data.type.collections.list.asMutableList
 import klib.data.type.collections.map.asMapOrNull
 import klib.data.type.collections.map.asStringNullableMap
 import klib.data.type.collections.map.asNullableMutableMap
-import klib.data.type.reflection.asGetterName
-import klib.data.type.reflection.asSetterName
+import klib.data.type.primitives.string.tokenization.substitution.SubstituteOption
 import klib.data.type.reflection.declaredMemberExtensionFunction
 import klib.data.type.reflection.declaredMemberExtensionFunctions
 import klib.data.type.reflection.declaredMemberExtensionProperty
@@ -19,9 +18,12 @@ import klib.data.type.reflection.memberFunction
 import klib.data.type.reflection.memberFunctions
 import klib.data.type.reflection.memberProperty
 import klib.data.type.reflection.packageExtensions
+import klib.data.type.reflection.toGetterName
+import klib.data.type.reflection.toSetterName
 import klib.data.type.serialization.coders.tree.deserialize
 import klib.data.type.serialization.decodeFile
 import klib.data.type.serialization.json.decodeAnyFromString
+import klib.data.type.serialization.properties.Properties
 import klib.data.type.serialization.serializers.any.SerializableAny
 import klib.data.type.serialization.yaml.decodeAnyFromString
 import kotlinx.serialization.Serializable
@@ -53,7 +55,7 @@ public abstract class ScriptProperties {
     public val compiled: String by lazy {
         val cacheKeys = mutableSetOf<String>()
 
-        script.flattenKeys().joinToString("\n") { (path, value) ->
+        script.flatten().joinToString("\n") { (path, value) ->
             val referencePath = path.filter { (source, _) -> source !is List<*> }.map { (_, key) -> key!!.toString() }
             val reference = referencePath.joinToString(".")
             val cacheKey = "$reference:$value"
@@ -86,7 +88,7 @@ public abstract class ScriptProperties {
                         val kClass = last().first as KClass<*>
 
                         val memberName = last().second
-                        val getterName = memberName.asGetterName
+                        val getterName = memberName.toGetterName()
 
                         (kClass.memberProperty(memberName)
                             ?: kClass.declaredMemberExtensionProperty(memberName)
@@ -109,8 +111,8 @@ public abstract class ScriptProperties {
 
                     val memberName = last().second
 
-                    val getterName = memberName.asGetterName
-                    val setterName = memberName.asSetterName
+                    val getterName = memberName.toGetterName()
+                    val setterName = memberName.toSetterName()
 
                     (receiver.memberProperty(memberName) ?: receiver.declaredMemberExtensionProperty(memberName))
                         ?.takeIf { property -> property.visibility == KVisibility.PUBLIC }
@@ -161,6 +163,20 @@ public abstract class ScriptProperties {
 
         public inline operator fun <reified T : ScriptProperties> invoke(
             file: String,
+            noinline importToFile: (file: String, import: String) -> String = { file, import ->
+                File(file).parentFile.resolve(import).path
+            },
+            noinline decoder: (file: String) -> Map<String, Any?> = { file ->
+                val file = File(file)
+                val text = file.readText()
+                when (file.extension) {
+                    "yaml" -> Yaml.default.decodeAnyFromString(text)
+                    "json" -> Json.decodeAnyFromString(text)
+                    "properties" -> Properties.decodeAnyFromString(text)
+
+                    else -> error("Unsupported file extension ${file.extension}")
+                }!!.asStringNullableMap
+            },
             cache: Cache<String, String> = NoCache(),
             explicitOperationReceivers: Set<KClass<*>> = emptySet(),
             noinline implicitOperation: (valueClass: KClass<*>, value: Any?) -> String? = { _, _ -> null },
@@ -168,35 +184,32 @@ public abstract class ScriptProperties {
         ): T = T::class.serializer().deserialize(
             decodeFile(
                 file,
-                { decodedFile ->
+                { file, decodedFile ->
                     decodedFile.deepGetOrNull("imports").second?.asList<String>()?.map { import ->
-                        File(this).parentFile.resolve(import).path
+                        importToFile(file, import)
                     }.orEmpty()
                 },
-                decoder = { file ->
-                    val file = File(file)
-                    val text = file.readText()
-                    when (file.extension) {
-                        "yaml" -> Yaml.default.decodeAnyFromString(text)
-                        "json" -> Json.decodeAnyFromString(text)
-                        "properties" -> klib.data.type.serialization.properties.Properties.decodeAnyFromString(text)
+                decoder = decoder,
+            ) { decodedFile, decodedImports ->
+                val substitutedFile = (decodedFile - IMPORTS_KEY).let { decodedFile ->
+                    val script = decodedFile[SCRIPT_KEY]
 
-                        else -> error("Unsupported file extension ${file.extension}")
-                    }!!.asStringNullableMap
-                },
-            ) { decodedImports ->
-                val decodedFile = (this - IMPORTS_KEY).let { decodedFile ->
-                    decodedFile[SCRIPT_KEY]?.asMapOrNull?.let { script ->
+                    if (script is Map<*, *>)
                         decodedFile + (SCRIPT_KEY to script.map { (key, value) -> mapOf(key to value) })
-                    } ?: decodedFile
-                }
+                    else decodedFile
+                }.substitute(SubstituteOption.DEEP_INTERPOLATION)
 
                 val mergedImports = decodedImports.fold(mutableMapOf<String, Any?>()) { mergedImports, decodedImport ->
                     decodedImport.deepMap(mergedImports)
-                    mergedImports
                 }
 
-                decodedFile.deepMap(mergedImports)
+                substitutedFile.substitute { path ->
+                    mergedImports.deepGetOrNull(*path.toTypedArray()).second
+                }.deepMap(mergedImports)
+            }.also {
+
+                val t = it
+                val f = 0
             }).apply {
             this.cache = cache
             this.explicitOperationReceivers = EXPLICIT_OPERATION_RECEIVERS + explicitOperationReceivers
@@ -205,7 +218,7 @@ public abstract class ScriptProperties {
         }
 
         @PublishedApi
-        internal fun Map<String, Any?>.deepMap(other: Map<String, Any?>): Map<String, Any?> =
+        internal fun Map<String, Any?>.deepMap(other: MutableMap<String, Any?>): MutableMap<String, Any?> =
             deepMap(
                 sourceIteratorOrNull = { value ->
                     if (firstOrNull()?.second == SCRIPT_KEY) null else value.iteratorOrNull()

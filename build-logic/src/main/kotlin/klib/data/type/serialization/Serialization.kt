@@ -9,17 +9,17 @@ import kotlinx.serialization.serializer
 @Suppress("UNCHECKED_CAST")
 public fun <T : Any> decodeFile(
     file: String,
-    imports: String.(decodedFile: T) -> List<String> = {
-        deepGetOrNull("imports").second?.asList<String>().orEmpty()
+    imports: (file: String, decodedFile: T) -> List<String> = { file, decodedFile ->
+        decodedFile.deepGetOrNull("imports").second?.asList<String>().orEmpty()
     },
     decoder: (file: String) -> T,
-    merger: T.(mergedImports: List<T>) -> T,
+    merger: (decodedFile: T, mergedImports: List<T>) -> T,
 ): T = DeepRecursiveFunction<DecodeFileArgs<T>, T> { (file, mergedFiles) ->
     mergedFiles[file] = null
 
     val decodedFile = decoder(file)
 
-    decodedFile.merger(file.imports(decodedFile).map { importFile ->
+    merger(decodedFile, imports(file, decodedFile).map { importFile ->
         if (importFile in mergedFiles) mergedFiles[importFile] ?: error("Cyclic import: $file -> $importFile")
         else callRecursive(
             DecodeFileArgs(

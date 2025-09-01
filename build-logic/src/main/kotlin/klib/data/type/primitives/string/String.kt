@@ -67,8 +67,7 @@ public const val LDP: String = """[$LP\d]"""
 public val String.Companion.DEFAULT: String
     get() = ""
 
-public val String.unescaped: String
-    get() = replace("""\\(.)""".toRegex(), "$1")
+public fun String.unescape(): String = replace("""\\(.)""".toRegex(), "$1")
 
 public fun String.unescapeStartsWith(value: String): String =
     """^(\\+)(${value.escapedPattern}.*)""".toRegex().matchEntire(this)?.let { matchResult ->
@@ -88,14 +87,13 @@ public fun String.splitUnescaped(pattern: String): List<String> =
             }.toList() + substring(index)
         }
 
-public val String.doubleQuoted: String
-    get() = "\"$this\""
+public fun String.singleQuote(): String = "'$this'"
 
-public val String.capitalized: String
-    get() = replaceFirstChar(Char::uppercase)
+public fun String.doubleQuote(): String = "\"$this\""
 
-public val String.decapitalized: String
-    get() = replaceFirstChar(Char::lowercase)
+public fun String.capitalize(): String = replaceFirstChar(Char::uppercase)
+
+public fun String.decapitalize(): String = replaceFirstChar(Char::lowercase)
 
 public fun String.ifNotEmpty(transform: (String) -> String): String =
     if (isNotEmpty()) transform(this) else this
@@ -146,7 +144,7 @@ public fun String.toTemporal(kClass: KClass<*>): Any =
         Duration::class -> Duration.parse(this)
         DatePeriod::class -> DatePeriod.parse(this)
         DateTimePeriod::class -> DateTimePeriod.parse(this)
-        else -> IllegalArgumentException("Can't convert $doubleQuoted to ${kClass.simpleName?.doubleQuoted}")
+        else -> IllegalArgumentException("Can't convert ${singleQuote()} to ${kClass.simpleName?.singleQuote()}")
     }
 
 public fun String.toPrime(kClass: KClass<*>): Any =

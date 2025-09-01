@@ -17,9 +17,9 @@ public val Any.asMutableMap: MutableMap<String, Any>
     get() = asMutableMapOrNull!!
 
 @Suppress("UNCHECKED_CAST")
-public fun <K, V> Any.asMutableMapOrNull(): Map<K, V>? = this as? Map<K, V>
+public fun <K, V> Any.asMutableMapOrNull(): MutableMap<K, V>? = this as? MutableMap<K, V>
 
-public fun <K, V> Any.asMutableMap(): Map<K, V> = asMutableMapOrNull()!!
+public fun <K, V> Any.asMutableMap(): MutableMap<K, V> = asMutableMapOrNull()!!
 
 public infix fun <K, V> MutableMap<K, V>.tryPutAll(value: Map<K, V>?): Unit? =
     value?.let(::putAll)

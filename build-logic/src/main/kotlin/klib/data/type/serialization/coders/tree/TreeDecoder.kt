@@ -19,7 +19,7 @@ import klib.data.type.serialization.coders.model.TreeDecoderConfiguration
 import klib.data.type.serialization.getElementAnnotation
 import klib.data.type.serialization.hasElementAnnotation
 import klib.data.type.serialization.toPolymorphicValues
-import klib.data.type.toInt
+import klib.data.type.primitives.toInt
 import kotlinx.serialization.*
 import kotlinx.serialization.descriptors.PolymorphicKind
 import kotlinx.serialization.descriptors.SerialDescriptor

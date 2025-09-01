@@ -5,8 +5,77 @@ import com.ionspin.kotlin.bignum.integer.BigInteger
 import kotlin.math.absoluteValue
 import kotlin.math.pow
 import kotlin.reflect.KClass
+import kotlin.text.toInt
 import kotlin.toUInt
 import kotlin.toULong
+
+private val INT_MIN = BigInteger(Int.MIN_VALUE)
+private val INT_MAX = BigInteger(Int.MAX_VALUE)
+private val LONG_MIN = BigInteger(Long.MIN_VALUE)
+private val LONG_MAX = BigInteger(Long.MAX_VALUE)
+
+private val UINT_MIN = BigInteger.ZERO
+private val UINT_MAX = BigInteger.parseString(UInt.MAX_VALUE.toString())
+private val ULONG_MIN = BigInteger.ZERO
+private val ULONG_MAX = BigInteger.parseString(ULong.MAX_VALUE.toString())
+
+public fun String.toNumber(): Any {
+    val cleaned = replace("_", "").lowercase()
+
+    // Detect suffix (UL/uL/Ul/ul, U/u, F/f, L/l). Prefer longest match.
+    val suffix = when {
+        cleaned.endsWith("ul") -> "ul"
+        cleaned.endsWith("u") -> "u"
+        cleaned.endsWith("f") -> "f"
+        cleaned.endsWith("l") -> "l"
+        else -> null
+    }
+
+    val body = if (suffix != null) cleaned.dropLast(suffix.length) else cleaned
+
+    val hasSign = body.startsWith('+') || body.startsWith('-')
+    val isNegative = body.startsWith('-')
+    val unsignedRequested = suffix == "u" || suffix == "ul"
+
+    // Body without sign to ease BigInteger parsing for bounds checks.
+    val core = if (hasSign) body.drop(1) else body
+
+    val isFloating = '.' in core || 'e' in core
+
+    // Unsigned rules.
+    if (unsignedRequested) {
+        require(!isNegative) { "Unsigned literal cannot be negative: $this" }
+        require(!isFloating) { "Unsigned literal must be an integer (no '.' or exponent): $this" }
+        val bi = core.toBigInteger()
+        return if (suffix == "ul") {
+            require(bi in ULONG_MIN..ULONG_MAX) { "ULong literal out of range: $this" }
+            bi.ulongValue()
+        } else {
+            require(bi in UINT_MIN..UINT_MAX) { "UInt literal out of range: $this" }
+            bi.uintValue()
+        }
+    }
+
+    // Floating numbers.
+    if (suffix == "f")
+        return body.toFloat().also { float -> require(float.isFinite()) { "Float literal out of range: $this" } }
+    if (isFloating)
+        return body.toDouble().also { double -> require(double.isFinite()) { "Double literal out of range: $this" } }
+
+    // Integers (signed, no unsigned suffix).
+    val bi = body.toBigInteger()
+    return when {
+        suffix == "l" -> {
+            require(bi in LONG_MIN..LONG_MAX) { "Long literal out of range: $this" }
+            bi.longValue()
+        }
+
+        bi in INT_MIN..INT_MAX -> bi.intValue()
+        bi in LONG_MIN..LONG_MAX -> bi.longValue()
+
+        else -> bi
+    }
+}
 
 @Suppress("UNCHECKED_CAST")
 public fun <T : Comparable<T>> Any.toNumber(kClass: KClass<T>): T = when (kClass) {
@@ -190,6 +259,22 @@ public fun ByteArray.toInt(
     var value = 0
     (0 until size).forEach { value = value or (this[offset + it].toIntLSB() shl (it * 8)) }
     return value
+}
+
+public fun Any.toInt(): Int = when (this) {
+    is UByte -> toInt()
+    is UShort -> toInt()
+    is UInt -> toInt()
+    is ULong -> toInt()
+    is Byte -> toInt()
+    is Short -> toInt()
+    is Int -> this
+    is Long -> toInt()
+    is Float -> toInt()
+    is Double -> toInt()
+    is String -> toInt()
+
+    else -> throw IllegalArgumentException("Expected integer value, but got $this")
 }
 
 // ///////////////////////////////////////////////////////ULONG/////////////////////////////////////////////////////////
@@ -385,8 +470,12 @@ public fun String.toBigInteger(): BigInteger = BigInteger.parseString(this)
 
 public fun Number.toBigInteger(): BigInteger = toString().toBigInteger()
 
-private fun Any.toBigInteger(): BigInteger = when (this) {
+public fun Any.toBigInteger(): BigInteger = when (this) {
     is BigInteger -> this
+    is Byte -> BigInteger(this)
+    is Short -> BigInteger(this)
+    is Int -> BigInteger(this)
+    is Long -> BigInteger(this)
     else -> BigInteger.parseString(toString())
 }
 
@@ -394,36 +483,43 @@ public fun String.toBigDecimal(): BigDecimal = BigDecimal.parseString(this)
 
 public fun Number.toBigDecimal(): BigDecimal = toString().toBigDecimal()
 
-private fun Any.toBigDecimal(): BigDecimal = when (this) {
+public fun Any.toBigDecimal(): BigDecimal = when (this) {
     is BigDecimal -> this
+    is Float -> BigDecimal.fromFloat(this)
+    is Double -> BigDecimal.fromDouble(this)
     else -> BigDecimal.parseString(toString())
 }
 
-private fun BigDecimal.toNumber(vararg types: KClass<*>) = when {
+private fun BigDecimal.toNumber(vararg types: KClass<*>, exactRequired: Boolean = true) = when {
     types.any { it == BigDecimal::class } -> this
     types.any { it == BigInteger::class } -> toBigInteger()
-    types.any { it == Double::class } -> doubleValue()
-    types.any { it == Float::class } -> floatValue()
-    types.any { it == Long::class } -> longValue()
-    types.any { it == Int::class } -> intValue()
-    types.any { it == Short::class } -> shortValue()
-    types.any { it == Byte::class } -> byteValue()
-    types.any { it == ULong::class } -> ulongValue()
-    types.any { it == UInt::class } -> uintValue()
-    types.any { it == UShort::class } -> ushortValue()
-    types.any { it == UByte::class } -> ubyteValue()
+    types.any { it == Double::class } -> doubleValue(exactRequired)
+    types.any { it == Float::class } -> floatValue(exactRequired)
+    types.any { it == Long::class } -> longValue(exactRequired)
+    types.any { it == Int::class } -> intValue(exactRequired)
+    types.any { it == Short::class } -> shortValue(exactRequired)
+    types.any { it == Byte::class } -> byteValue(exactRequired)
+    types.any { it == ULong::class } -> ulongValue(exactRequired)
+    types.any { it == UInt::class } -> uintValue(exactRequired)
+    types.any { it == UShort::class } -> ushortValue(exactRequired)
+    types.any { it == UByte::class } -> ubyteValue(exactRequired)
     else -> this
 }
 
-private fun Any.numUnaryOperate(block: (BigDecimal) -> BigDecimal): Any =
-    block(toBigDecimal()).toNumber(this::class)
+private fun Any.numUnaryOperate(exactRequired: Boolean = true, block: (BigDecimal) -> BigDecimal): Any =
+    block(toBigDecimal()).toNumber(this::class, exactRequired = exactRequired)
 
-public operator fun Any.inc(): Any = numUnaryOperate(BigDecimal::inc)
+public operator fun Any.unaryMinus(): Any = numUnaryOperate(block = BigDecimal::unaryMinus)
 
-public operator fun Any.dec(): Any = numUnaryOperate(BigDecimal::dec)
+public operator fun Any.inc(): Any = numUnaryOperate(block = BigDecimal::inc)
 
-private fun Any.numBinaryOperate(other: Any, block: (BigDecimal, BigDecimal) -> BigDecimal): Any =
-    block(toBigDecimal(), other.toBigDecimal()).toNumber(this::class, other::class)
+public operator fun Any.dec(): Any = numUnaryOperate(block = BigDecimal::dec)
+
+private fun Any.numBinaryOperate(
+    other: Any,
+    exactRequired: Boolean = true,
+    block: (BigDecimal, BigDecimal) -> BigDecimal
+): Any = block(toBigDecimal(), other.toBigDecimal()).toNumber(this::class, other::class, exactRequired = exactRequired)
 
 public operator fun Any.plus(other: Any): Any = numBinaryOperate(other) { v1, v2 -> v1 + v2 }
 
@@ -431,11 +527,16 @@ public operator fun Any.minus(other: Any): Any = numBinaryOperate(other) { v1, v
 
 public operator fun Any.times(other: Any): Any = numBinaryOperate(other) { v1, v2 -> v1 * v2 }
 
-public operator fun Any.div(other: Any): Any = numBinaryOperate(other) { v1, v2 -> v1 / v2 }
+public operator fun Any.div(other: Any): Any = numBinaryOperate(other, false) { v1, v2 -> v1 / v2 }
 
 public operator fun Any.rem(other: Any): Any = numBinaryOperate(other) { v1, v2 -> v1 % v2 }
 
-public fun Any.pow(exponent: Long): Any = toBigDecimal().pow(exponent).toNumber(this::class)
+public fun Any.pow(exponent: Any): Any = when (exponent) {
+    is Int -> toBigDecimal().pow(exponent)
+    is Long -> toBigDecimal().pow(exponent)
+
+    else -> throw IllegalArgumentException("Expected Int or Long but got ${exponent::class.simpleName}")
+}.toNumber(this::class, exactRequired = false)
 
 public fun Any.abs(): Any = toBigDecimal().abs().toNumber(this::class)
 
@@ -444,6 +545,14 @@ public fun Any.negate(): Any = toBigDecimal().negate().toNumber(this::class)
 public fun Any.signum(): Int = toBigDecimal().signum()
 
 public fun Any.compareTo(other: Any): Int = toBigDecimal().compareTo(other.toBigDecimal())
+
+public infix fun Any.lt(other: Any): Boolean = compareTo(other) < 0
+
+public infix fun Any.lte(other: Any): Boolean = compareTo(other) <= 0
+
+public infix fun Any.gt(other: Any): Boolean = compareTo(other) > 0
+
+public infix fun Any.gte(other: Any): Boolean = compareTo(other) >= 0
 
 // ///////////////////////////////////////////////////////ARRAY/////////////////////////////////////////////////////////
 public fun UInt.toBitArray(): BooleanArray =
@@ -513,4 +622,3 @@ public fun Long.toByteArray(): ByteArray =
     )
 
 public fun Long.toByteArray(size: Int): ByteArray = ByteArray(size) { sliceByte(it * 8).toByte() }
-

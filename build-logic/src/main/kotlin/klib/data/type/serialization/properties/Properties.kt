@@ -75,7 +75,7 @@ public open class Properties(
     ): Any = PropertiesReader(source)
         .read()
         .map { (path, value) -> path.split(".") to value }
-        .unflattenKeys<String, String>(
+        .unflattenKeys(
             destinationGetter = { sourceKeys ->
                 if (isEmpty()) sourceKeys.toNewMutableCollection()
                 else last().first.getOrPut(last().second, { sourceKeys.toNewMutableCollection() })

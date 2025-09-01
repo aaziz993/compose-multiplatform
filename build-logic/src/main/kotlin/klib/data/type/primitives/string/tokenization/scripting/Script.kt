@@ -1,4 +1,4 @@
-package klib.data.script
+package klib.data.type.primitives.string.tokenization.scripting
 
 import kotlin.script.experimental.api.ResultValue
 import kotlin.script.experimental.api.ScriptCompilationConfiguration

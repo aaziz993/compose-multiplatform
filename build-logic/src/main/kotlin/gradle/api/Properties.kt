@@ -5,8 +5,8 @@ import com.charleskorn.kaml.SingleLineStringStyle
 import com.charleskorn.kaml.Yaml
 import com.charleskorn.kaml.YamlConfiguration
 import gradle.api.cache.H2Cache
-import klib.data.script.ScriptProperties
 import klib.data.type.cast
+import klib.data.type.primitives.string.tokenization.scripting.ScriptProperties
 import klib.data.type.serialization.json.decodeAnyFromString
 import klib.data.type.serialization.yaml.decodeAnyFromString
 import kotlinx.serialization.json.Json

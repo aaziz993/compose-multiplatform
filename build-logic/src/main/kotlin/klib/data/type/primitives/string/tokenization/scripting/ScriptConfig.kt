@@ -1,10 +1,8 @@
-package klib.data.script
+package klib.data.type.primitives.string.tokenization.scripting
 
 import java.io.File
-import java.lang.RuntimeException
 import kotlin.collections.toTypedArray
 import kotlin.reflect.KClass
-import kotlin.script.experimental.api.ResultWithDiagnostics
 import kotlin.script.experimental.api.ScriptCompilationConfiguration
 import kotlin.script.experimental.api.ScriptEvaluationConfiguration
 import kotlin.script.experimental.api.compilerOptions

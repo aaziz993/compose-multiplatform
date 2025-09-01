@@ -2,12 +2,15 @@ package klib.data.type.collections
 
 import klib.data.type.functions.Equator
 import klib.data.type.act
-import klib.data.type.toInt
+import klib.data.type.collections.list.asMutableList
+import klib.data.type.primitives.toInt
 import klib.data.type.collections.list.drop
 import klib.data.type.collections.list.getOrPut
 import klib.data.type.collections.list.put
+import klib.data.type.collections.map.asMutableMap
 import kotlin.collections.map
 import kotlin.collections.plus
+import kotlin.collections.set
 import kotlin.collections.getOrPut
 
 @Suppress("UNCHECKED_CAST")
@@ -78,18 +81,27 @@ public fun <E> MutableCollection<E>.updateSymmetric(
 
 @Suppress("UNCHECKED_CAST")
 public inline fun <K, V> Any.getOrPut(key: K, defaultValue: () -> V, set: Boolean = true): V = when (this) {
-    is MutableList<*> -> (this as MutableList<V>).getOrPut(key!!.toInt(), defaultValue, set)
+    is MutableList<*> -> asMutableList<V>().getOrPut(key!!.toInt(), defaultValue, set)
 
-    is MutableMap<*, *> -> (this as MutableMap<K, V>).getOrPut(key, defaultValue)
+    is MutableMap<*, *> -> asMutableMap<K, V>().getOrPut(key, defaultValue)
+
+    else -> throw IllegalArgumentException("Expected a MutableList or MutableMap, but got ${this::class.simpleName}")
+}
+
+@Suppress("UNCHECKED_CAST")
+public operator fun <K, V> Any.set(key: K, value: V): Unit = when (this) {
+    is MutableList<*> -> asMutableList<V>()[key!!.toInt()] = value
+
+    is MutableMap<*, *> -> asMutableMap<K, V>()[key] = value
 
     else -> throw IllegalArgumentException("Expected a MutableList or MutableMap, but got ${this::class.simpleName}")
 }
 
 @Suppress("UNCHECKED_CAST")
 public fun <K, V> Any.put(key: K, value: V, set: Boolean = false): V? = when (this) {
-    is MutableList<*> -> (this as MutableList<V>).put(key!!.toInt(), value, set)
+    is MutableList<*> -> asMutableList<V>().put(key!!.toInt(), value, set)
 
-    is MutableMap<*, *> -> (this as MutableMap<K, V>).put(key, value)
+    is MutableMap<*, *> -> asMutableMap<K, V>().put(key, value)
 
     else -> throw IllegalArgumentException("Expected a MutableList or MutableMap, but got ${this::class.simpleName}")
 }
@@ -98,10 +110,19 @@ public fun <K, V> Any.put(key: K, value: V, set: Boolean = false): V? = when (th
 public fun <V> Any.remove(key: Any?): V? =
     when (this) {
         is MutableList<*> -> key!!.toInt().let { index ->
-            if (index in indices) (this as MutableList<V>).removeAt(index) else null
+            if (index in indices) asMutableList<V>().removeAt(index) else null
         }
 
-        is MutableMap<*, *> -> (this as MutableMap<Any?, V>).remove(key)
+        is MutableMap<*, *> -> asMutableMap<Any?, V>().remove(key)
+
+        else -> throw IllegalArgumentException("Expected a MutableList or MutableMap, but got ${this::class.simpleName}")
+    }
+
+public fun Any.clear(): Unit =
+    when (this) {
+        is MutableList<*> -> clear()
+
+        is MutableMap<*, *> -> clear()
 
         else -> throw IllegalArgumentException("Expected a MutableList or MutableMap, but got ${this::class.simpleName}")
     }

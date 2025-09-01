@@ -31,7 +31,7 @@ import kotlinx.serialization.encoding.CompositeDecoder
 
 
 @OptIn(ExperimentalUuidApi::class)
-private val SERIAL_TYPES = mapOf(
+private val PRIMITIVE_SERIAL_TYPES = mapOf(
     Boolean.serializer().descriptor.serialName to typeOf<Boolean>(),
     Boolean.serializer().nullable.descriptor.serialName to typeOf<Boolean?>(),
     UByte.serializer().descriptor.serialName to typeOf<UByte>(),
@@ -72,11 +72,11 @@ private val SERIAL_TYPES = mapOf(
     Uuid.serializer().nullable.descriptor.serialName to typeOf<Uuid?>(),
 )
 
-public val SerialDescriptor.primeTypeOrNull: KType?
-    get() = SERIAL_TYPES[serialName]
+public val String.primitiveTypeOrNull: KType?
+    get() = PRIMITIVE_SERIAL_TYPES[this]
 
-public val SerialDescriptor.primeType: KType
-    get() = primeTypeOrNull!!
+public val String.primitiveType: KType
+    get() = primitiveTypeOrNull!!
 
 @Suppress("UNCHECKED_CAST")
 public val SerialDescriptor.typeParameterDescriptors: Array<SerialDescriptor>
