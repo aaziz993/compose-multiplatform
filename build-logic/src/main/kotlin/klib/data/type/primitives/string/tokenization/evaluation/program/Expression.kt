@@ -6,6 +6,7 @@ import klib.data.type.collections.list.asMutableList
 import klib.data.type.collections.map.asMap
 import klib.data.type.collections.map.pairs
 import klib.data.type.primitives.*
+import klib.data.type.primitives.string.tokenization.substitution.SubstituteOption
 import klib.data.type.primitives.string.tokenization.substitution.substitute
 import kotlin.Pair
 import kotlin.collections.plus
@@ -58,7 +59,14 @@ public data class Literal(val value: Any?) : Expression() {
 
 public data class StringLiteral(val value: String) : Expression() {
     override fun invoke(machine: MachineState): MachineState = machine.copy(
-        result = value.substitute { path ->
+        result = value.substitute(
+            SubstituteOption.INTERPOLATE,
+            SubstituteOption.INTERPOLATE_BRACES,
+            SubstituteOption.DEEP_INTERPOLATION,
+            SubstituteOption.ESCAPE_INTERPOLATION,
+            SubstituteOption.EVALUATE,
+            SubstituteOption.ESCAPE_EVALUATION
+        ) { path ->
             machine[path.first()]?.deepGetOrNull(*path.drop(1).toTypedArray())?.second
         }
     )
@@ -144,12 +152,6 @@ public class FunctionCall(public val name: String, arguments: List<Expression>) 
 
         return after.copy(scopes = machine.scopes)
     }
-}
-
-// Log.
-public class Println(arguments: List<Expression>) : Call(arguments) {
-    override fun operate(machine: MachineState, arguments: List<Any?>): MachineState =
-        machine.copy(log = machine.log + arguments[0].toString())
 }
 
 public sealed class Unary(operand: Expression) : Call(listOf(operand))

@@ -6,11 +6,7 @@ public data class Program(
     val mainFunction: Function,
     val functions: List<Function>,
 ) {
-    public operator fun invoke(
-        input: (name: String) -> Any? = { name ->
-            throw error("Undeclared variable $name")
-        }
-    ): Any? =
+    public operator fun invoke(input: (name: String) -> Any? = { null }): Any? =
         NaiveProgramInterpreter()(this, input).run {
             log.forEach(::println)
 

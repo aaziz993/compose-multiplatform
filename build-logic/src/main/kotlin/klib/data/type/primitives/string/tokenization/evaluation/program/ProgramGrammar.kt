@@ -45,15 +45,15 @@ public object ProgramGrammar : Grammar<Program>() {
     private val lessThanToken by Tokens.lessThan
     private val greaterThanToken by Tokens.greaterThan
 
-    // Log tokens.
-    private val log by Tokens.log
+    // Println token.
+    private val printlnToken by Tokens.println
+
+    // Skip token.
+    private val skipToken by Tokens.skip
 
     // Declaration.
     private val valToken by Tokens.`val`
     private val varToken by Tokens.`var`
-
-    // Skip token.
-    private val skipToken by Tokens.skip
 
     // If-else tokens.
     private val ifToken by Tokens.`if`
@@ -87,12 +87,11 @@ public object ProgramGrammar : Grammar<Program>() {
 
     // Literal tokens.
     private val nullToken by Tokens.`null`
-    private val trueToken by Tokens.`true`
-    private val falseToken by Tokens.`false`
+    private val booleanToken by Tokens.boolean
     private val integerToken by Tokens.integer
     private val exponentToken by Tokens.exponent
     private val numberSuffixToken by Tokens.numberSuffix
-    private val stringToken by Tokens.string
+    private val doubleQuotedStringToken by Tokens.doubleQuotedString
     private val characterToken by Tokens.character
 
     // Id token.
@@ -101,13 +100,13 @@ public object ProgramGrammar : Grammar<Program>() {
 
     // Literals.
     private val literal by (Parsers.`null` or
-            Parsers.bool or
+            Parsers.boolean or
             Parsers.number or
             Parsers.character) map ::Literal or
-            Parsers.string.map(::StringLiteral)
+            Parsers.doubleQuotedString.map(::StringLiteral)
 
     // Variable.
-    private val id by (Tokens.id or exponentToken or numberSuffixToken use { text } or Parsers.string)
+    private val id by (Tokens.id or exponentToken or numberSuffixToken use { text } or Parsers.doubleQuotedString)
     private val type by (idToken * optional(questionMarkToken)) map { (type, optional) ->
         "${type.text}${optional?.text.orEmpty()}".toType()
     }
@@ -123,13 +122,8 @@ public object ProgramGrammar : Grammar<Program>() {
     private val funCall by
     (id * arguments)
         .map { (name, arguments) ->
-            when (name) {
-                // Log.
-                Println::class.simpleName!!.toCamelCase() -> Println(arguments)
-
-                else -> name.toTypeOrNull()?.let { type -> TypeCall(type, arguments) }
-                    ?: FunctionCall(name, arguments)
-            }
+            name.toTypeOrNull()?.let { type -> TypeCall(type, arguments) }
+                ?: FunctionCall(name, arguments)
         }
 
     private val parenthesesTerm by -leftParToken * parser(::expr) * -rightParToken
@@ -284,6 +278,8 @@ public object ProgramGrammar : Grammar<Program>() {
 
     private val expr by pair or coalesceChain
 
+    private val printlnStatement by -printlnToken * -leftParToken * expr * -rightParToken map ::Println
+
     private val skipStatement by skipToken.map { Skip }
 
     private val declareStatement by ((valToken asJust false) or (varToken asJust true)) *
@@ -373,7 +369,8 @@ public object ProgramGrammar : Grammar<Program>() {
 
     private val expressionStatement by expr map ::ExpressionStatement
 
-    private val statement: Parser<Statement> by skipStatement or
+    private val statement: Parser<Statement> by printlnStatement or
+            skipStatement or
             declareStatement or
             assignStatement or
             ifStatement or

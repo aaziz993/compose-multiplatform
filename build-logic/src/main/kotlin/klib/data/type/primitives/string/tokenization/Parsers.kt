@@ -5,19 +5,17 @@ import com.github.h0tk3y.betterParse.combinators.asJust
 import com.github.h0tk3y.betterParse.combinators.map
 import com.github.h0tk3y.betterParse.combinators.optional
 import com.github.h0tk3y.betterParse.combinators.or
-import com.github.h0tk3y.betterParse.combinators.separatedTerms
 import com.github.h0tk3y.betterParse.combinators.times
 import com.github.h0tk3y.betterParse.combinators.unaryMinus
 import com.github.h0tk3y.betterParse.combinators.use
-import com.github.h0tk3y.betterParse.grammar.parser
-import com.github.h0tk3y.betterParse.lexer.TokenMatch
 import com.github.h0tk3y.betterParse.parser.Parser
+import klib.data.type.primitives.string.escape
 import klib.data.type.primitives.toNumber
 
 public object Parsers {
     // Literals.
     public val `null`: Parser<Any?> = Tokens.`null` asJust null
-    public val bool: Parser<Boolean> = (Tokens.`true` asJust true) or (Tokens.`false` asJust false)
+    public val boolean: Parser<Boolean> = Tokens.boolean use { text.toBoolean() }
     private val sign = Tokens.plus or Tokens.hyphen
     private val exponentPart = (-Tokens.exponent * optional(sign) * Tokens.integer).map { (s, exp) ->
         "e${s?.text.orEmpty()}${exp.text}"
@@ -46,14 +44,10 @@ public object Parsers {
                 else -> body.firstOrNull() ?: '\uFFFD'
             }
         }
-    public val string: Parser<String> =  Tokens.string use {
-        text.substring(1, text.lastIndex)
-            .replace("\\\"", "\"")
-            .replace("\\n", "\n")
-            .replace("\\r", "\r")
-            .replace("\\t", "\t")
-            .replace("\\b", "\b")
-            .replace("\\f", "\u000C")
-            .replace("\\\\", "\\")
+    public val singleQuotedString: Parser<String> = Tokens.doubleQuotedString use {
+        text.substring(1, length - 1).escape('\'')
+    }
+    public val doubleQuotedString: Parser<String> = Tokens.doubleQuotedString use {
+        text.substring(1, length - 1).escape('"')
     }
 }

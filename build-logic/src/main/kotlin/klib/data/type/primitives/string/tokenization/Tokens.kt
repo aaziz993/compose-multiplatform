@@ -121,15 +121,15 @@ public object Tokens {
     // Comment tokens.
     public val sharpCommentIgnore: Token = regexToken("#[^\\n]*", true)
 
-    // Log tokens.
-    public val log: RegexToken = keyword("debug|info|warn|error")
+    // Println token.
+    public val println: RegexToken = keyword("println")
+
+    // Skip token.
+    public val skip: RegexToken = keyword("skip")
 
     // Declare tokens.
     public val `val`: RegexToken = keyword("val")
     public val `var`: RegexToken = keyword("var")
-
-    // Skip token.
-    public val skip: RegexToken = keyword("skip")
 
     // If-else tokens.
     public val `if`: RegexToken = keyword("if")
@@ -163,13 +163,22 @@ public object Tokens {
     public val to: RegexToken = keyword("to")
 
     // Literal tokens.
-    public val `null`: RegexToken = regexToken("null\\b")
-    public val `true`: RegexToken = regexToken("true\\b")
-    public val `false`: RegexToken = regexToken("false\\b")
+    public val `null`: RegexToken = keyword("null")
+    public val boolean: RegexToken = keyword("true|false")
     public val integer: RegexToken = regexToken("""\d(?:_?\d)*""")
     public val exponent: RegexToken = suffix("e", ignoreCase = true)
     public val numberSuffix: RegexToken = suffix("ul|u|f|l", ignoreCase = true)
     public val character: RegexToken = regexToken("""'(?:\\.|[^'\\])'""")
+
+    // the regex "[^\\"]*(\\["nrtbf\\][^\\"]*)*" matches:
+    // '               – opening singe quote,
+    // [^\\"]*         – any number of not escaped characters, nor double quotes
+    // (
+    //   \\["nrtbf\\]  – backslash followed by special character (\", \n, \r, \\, etc.)
+    //   [^\\"]*       – and any number of non-special characters
+    // )*              – repeating as a group any number of times
+    // '               – closing single quote
+    public val singleQuotedStringRegex: RegexToken = regexToken("""'[^\\']*(\\['nrtb\\][^\\']*)*'""")
 
     // the regex "[^\\"]*(\\["nrtbf\\][^\\"]*)*" matches:
     // "               – opening double quote,
@@ -179,7 +188,7 @@ public object Tokens {
     //   [^\\"]*       – and any number of non-special characters
     // )*              – repeating as a group any number of times
     // "               – closing double quote
-    public val string: RegexToken = regexToken("\"[^\\\\\"]*(\\\\[\"nrtbf\\\\][^\\\\\"]*)*\"")
+    public val doubleQuotedString: RegexToken = regexToken(""""[^\\"]*(\\["nrtb\\][^\\"]*)*"""")
 
     // Id token.
     public val id: RegexToken = regexToken("[_\\p{L}][_\\p{L}\\p{N}]*")

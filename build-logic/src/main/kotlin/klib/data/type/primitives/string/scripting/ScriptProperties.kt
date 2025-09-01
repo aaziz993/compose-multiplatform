@@ -206,6 +206,9 @@ public abstract class ScriptProperties {
                 substitutedFile.substitute { path ->
                     mergedImports.deepGetOrNull(*path.toTypedArray()).second
                 }.deepMap(mergedImports)
+            }.also {
+                val k = it
+                val t = 0
             }).apply {
             this.cache = cache
             this.explicitOperationReceivers = EXPLICIT_OPERATION_RECEIVERS + explicitOperationReceivers

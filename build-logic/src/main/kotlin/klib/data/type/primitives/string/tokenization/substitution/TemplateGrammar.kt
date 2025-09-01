@@ -9,11 +9,14 @@ import com.github.h0tk3y.betterParse.lexer.regexToken
 import com.github.h0tk3y.betterParse.parser.Parser
 import klib.data.type.primitives.string.tokenization.Tokens
 import klib.data.type.primitives.string.tokenization.evaluation.program.ProgramGrammar
+import org.example.klib.data.type.primitives.string.tokenization.mapToken
 
 public fun String.substitute(
     vararg options: SubstituteOption = arrayOf(
+        SubstituteOption.INTERPOLATE_BRACES,
         SubstituteOption.DEEP_INTERPOLATION,
         SubstituteOption.ESCAPE_INTERPOLATION,
+        SubstituteOption.EVALUATE,
         SubstituteOption.ESCAPE_EVALUATION
     ),
     getter: (path: List<String>) -> Any?
@@ -40,8 +43,8 @@ public class TemplateGrammar(
         else getter
 
     // Whitespace and newline tokens.
-    private val wsIgnoreToken by Tokens.wsIgnore
-    private val nlIgnoreToken by Tokens.nlIgnore
+    private val wsToken by Tokens.ws
+    private val nlToken by Tokens.nl
 
     // Symbol tokens.
     private val leftParToken by Tokens.leftPar
@@ -70,15 +73,15 @@ public class TemplateGrammar(
     private val lessThanToken by Tokens.lessThan
     private val greaterThanToken by Tokens.greaterThan
 
-    // Log tokens.
-    private val logToken by Tokens.log
+    // Println token.
+    private val printlnToken by Tokens.println
+
+    // Skip token.
+    private val skipToken by Tokens.skip
 
     // Declaration.
     private val valToken by Tokens.`val`
     private val varToken by Tokens.`var`
-
-    // Skip token.
-    private val skipToken by Tokens.skip
 
     // If-else tokens.
     private val ifToken by Tokens.`if`
@@ -112,12 +115,11 @@ public class TemplateGrammar(
 
     // Literal tokens.
     private val nullToken by Tokens.`null`
-    private val trueToken by Tokens.`true`
-    private val falseToken by Tokens.`false`
+    private val booleanToken by Tokens.boolean
     private val integerToken by Tokens.integer
     private val exponentToken by Tokens.exponent
     private val numberSuffixToken by Tokens.numberSuffix
-    private val stringToken by Tokens.string
+    private val doubleQuotedStringToken by Tokens.doubleQuotedString
     private val charToken by Tokens.character
 
     // Id token.
@@ -126,34 +128,23 @@ public class TemplateGrammar(
     // Other token.
     private val otherToken by regexToken($$"""[^$\\{]+""")
 
-    private val ws by wsIgnoreToken use { text }
-
     private val evenDollars by oneOrMore(dollarToken * -dollarToken) use {
-        dollarsEscaper(joinToString("", transform = TokenMatch::text))
+        dollarsEscaper(joinToString("", transform = TokenMatch::text).repeat(2))
     }
 
-    private val dollarWS by (dollarToken * ws).map { (d, ws) -> "${d.text}$ws" }
-
-    private val plainString by stringToken use { text.substring(1, text.lastIndex) }
+    private val plainString by doubleQuotedStringToken use { text.substring(1, text.lastIndex) }
 
     private val key = (idToken or integerToken).use { text } or parser(::plainString)
 
-    // Reference.
+    // Interpolate.
     private val interpolate =
+        -dollarToken * separatedTerms(key, periodToken) map valueGetter
+
+    private val interpolateBraces =
         -dollarToken * -leftBrToken * separatedTerms(key, periodToken) * -rightBrToken map valueGetter
 
     private val evenBS by oneOrMore(backslashToken * -backslashToken) use {
         joinToString("", transform = TokenMatch::text)
-    }
-
-    // Explicitly consume ...\\whitespaces because whitespaces are implicitly ignored.
-    private val evenBSWS by (evenBS * ws) map { (ebs, ws) ->
-        "${ebs}$ws"
-    }
-
-    // Explicitly consume ...\whitespaces because whitespace are implicitly ignored.
-    private val oddBSWS by (evenBS * backslashToken * ws) map { (ebs, bs, ws) ->
-        "${ebs}${bs.text}$ws"
     }
 
     private val escEvaluate by (optional(evenBS) * backslashToken * leftBrToken) map { (ebs, bs, lbr) ->
@@ -161,15 +152,22 @@ public class TemplateGrammar(
     }
 
     private val evaluate =
-        (optional(evenBS) * -leftBrToken * ProgramGrammar.rootParser * -rightBrToken) map { (bs, program) ->
-            "${bs?.let(evaluateEscaper).orEmpty()}${program { name -> getter(listOf(name)) }}"
-        }
+        (optional(evenBS) * -leftBrToken * -leftBrToken * ProgramGrammar.mapToken { token ->
+            when (token.type) {
+                wsToken -> token.copy(type = Tokens.wsIgnore)
+                nlToken -> token.copy(type = Tokens.nlIgnore)
+                else -> token
+            }
+        } * -optional(wsToken) * -rightBrToken * -rightBrToken)
+            .map { (bs, program) ->
+                var result = program { name -> getter(listOf(name)) }
+                if (bs != null) result = "$bs$result"
+                result
+            }
 
-    private val string by plainString map { text ->
-        "\"${parseToEnd(text)}\""
-    }
-
-    private val text by (leftParToken or
+    private val text by (wsToken or
+            nlToken or
+            leftParToken or
             rightParToken or
             leftSqBrToken or
             rightSqBrToken or
@@ -194,10 +192,10 @@ public class TemplateGrammar(
             equalsToken or
             lessThanToken or
             greaterThanToken or
-            logToken or
+            printlnToken or
+            skipToken or
             valToken or
             varToken or
-            skipToken or
             ifToken or
             thenToken or
             elifToken or
@@ -219,17 +217,27 @@ public class TemplateGrammar(
             returnToken or
             toToken or
             nullToken or
-            trueToken or
-            falseToken or
+            booleanToken or
             integerToken or
             exponentToken or
             numberSuffixToken or
+            doubleQuotedStringToken or
             charToken or
             idToken or
             otherToken) use { text }
 
     // Explicitly consume whitespaces because they  are implicitly ignored.
     override val rootParser: Parser<Any?> =
-        zeroOrMore(ws or dollarWS or evenDollars or interpolate or evenBSWS or oddBSWS or escEvaluate or evaluate or string or text)
-            .map { values -> if (values.size == 1) values.single() else values.joinToString("") }
+        zeroOrMore(
+            listOfNotNull(
+                if (SubstituteOption.INTERPOLATE in options || SubstituteOption.INTERPOLATE_BRACES in options)
+                    evenDollars else null,
+                if (SubstituteOption.INTERPOLATE in options) interpolate else null,
+                if (SubstituteOption.INTERPOLATE_BRACES in options) interpolateBraces else null,
+                if (SubstituteOption.EVALUATE in options) escEvaluate else null,
+                if (SubstituteOption.EVALUATE in options) evaluate else null,
+                text
+            ).reduce { l, r -> l or r }
+        ).map { values -> if (values.size == 1) values.single() else values.joinToString("") }
 }
+

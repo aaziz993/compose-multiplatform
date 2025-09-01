@@ -1,6 +1,5 @@
 package klib.data.type.primitives.string.tokenization.evaluation.program
 
-import klib.data.type.collections.iterator
 import klib.data.type.collections.map.pairs
 
 public sealed class Statement {
@@ -13,6 +12,13 @@ public data class Scoped(val statement: Statement) : Statement() {
 
 public data class ExpressionStatement(val expression: Expression) : Statement() {
     override fun join(machine: MachineState): MachineState = expression(machine)
+}
+
+// Log.
+public data class Println(val message: Expression) : Statement() {
+    override fun join(machine: MachineState): MachineState = message(machine).run {
+        if (shouldReturn) this else copy(log = log + result.toString(), result = Unit)
+    }
 }
 
 // Skip.
@@ -76,7 +82,7 @@ public data class While(
     val body: Statement
 ) : Statement() {
     override fun join(machine: MachineState): MachineState = condition(machine).run {
-        if (shouldReturn || !(result as Boolean)) this else join(body.join(this))
+        if (shouldReturn || !(result as Boolean)) copy(result = Unit) else join(body.join(this))
     }
 }
 
@@ -85,13 +91,11 @@ public data class Foreach(
     val receiver: Expression,
     val body: Statement
 ) : Statement() {
-
-
     override fun join(machine: MachineState): MachineState {
         var state = receiver(machine)
         if (state.shouldReturn) return state
 
-        val iterator = state.result!!.iterator()
+        val iterator = state.result?.iterator() ?: throw NullPointerException("Cannot iterate")
 
         for (item in iterator) {
             val boundType = element.type.takeUnless { type -> type == Type.UNDEFINED }
@@ -104,6 +108,7 @@ public data class Foreach(
             if (afterBody.shouldReturn) return afterBody
             state = afterBody
         }
+
         return state
     }
 
