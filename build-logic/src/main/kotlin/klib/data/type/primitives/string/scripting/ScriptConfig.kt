@@ -1,4 +1,4 @@
-package klib.data.type.primitives.string.tokenization.scripting
+package klib.data.type.primitives.string.scripting
 
 import java.io.File
 import kotlin.collections.toTypedArray

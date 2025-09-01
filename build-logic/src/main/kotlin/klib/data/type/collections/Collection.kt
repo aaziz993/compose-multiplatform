@@ -590,6 +590,8 @@ public fun <T : Any> T.substitute(
     getter: (path: List<String>) -> Any? = { path -> deepGetOrNull(*path.toTypedArray()).second }
 ): T = deepMapValues(
     sourceTransform = { value ->
-        if (value is String) value.substitute(*options, getter = getter) else value
+        if (value is String)
+            value.substitute(*options, getter = getter)
+        else value
     },
 )

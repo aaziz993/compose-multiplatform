@@ -1,4 +1,4 @@
-package klib.data.type.primitives.string.tokenization.scripting
+package klib.data.type.primitives.string.scripting
 
 import com.charleskorn.kaml.Yaml
 import klib.data.cache.Cache
@@ -206,10 +206,6 @@ public abstract class ScriptProperties {
                 substitutedFile.substitute { path ->
                     mergedImports.deepGetOrNull(*path.toTypedArray()).second
                 }.deepMap(mergedImports)
-            }.also {
-
-                val t = it
-                val f = 0
             }).apply {
             this.cache = cache
             this.explicitOperationReceivers = EXPLICIT_OPERATION_RECEIVERS + explicitOperationReceivers
