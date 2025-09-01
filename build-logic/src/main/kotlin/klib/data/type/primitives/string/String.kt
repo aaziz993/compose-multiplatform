@@ -67,25 +67,14 @@ public const val LDP: String = """[$LP\d]"""
 public val String.Companion.DEFAULT: String
     get() = ""
 
-public fun String.unescape(): String = replace("""\\(.)""".toRegex(), "$1")
-
-public fun String.unescapeStartsWith(value: String): String =
-    """^(\\+)(${value.escapedPattern}.*)""".toRegex().matchEntire(this)?.let { matchResult ->
-        val backslashes = matchResult.groupValues[1]
-        "${backslashes.substring(0, backslashes.length / 2)}${matchResult.groupValues[2]}"
-    } ?: this
-
-public fun String.splitUnescaped(pattern: String): List<String> =
-    Regex("""(?<!\\)(?:\\\\)*$pattern""")
-        .findAll(this).let { matches ->
-            var index = 0
-            matches.map { match ->
-                match.value
-                substring(index, match.range.first + (match.value.length - 1) / 2).also {
-                    index = match.range.last + 1
-                }
-            }.toList() + substring(index)
-        }
+public fun String.escape(quoteMark: Char): String =
+    replace("\\$quoteMark", "$quoteMark")
+        .replace("\\n", "\n")
+        .replace("\\r", "\r")
+        .replace("\\t", "\t")
+        .replace("\\b", "\b")
+        .replace("\\f", "\u000C")
+        .replace("\\\\", "\\")
 
 public fun String.singleQuote(): String = "'$this'"
 
