@@ -33,7 +33,10 @@ public object Tokens {
     public val colon: CharToken = literalToken(":") as CharToken
     public val semicolon: CharToken = literalToken(";") as CharToken
     public val apostrophe: CharToken = literalToken("‘") as CharToken
-    public val quotationMarks: LiteralToken = literalToken("” “") as LiteralToken
+    public val leftQuotMark: CharToken = literalToken("”") as CharToken
+    public val rightQuotMark: CharToken = literalToken("“") as CharToken
+    public val singleQuotMark: CharToken = literalToken("'") as CharToken
+    public val doubleQuotMark: CharToken = literalToken("\"") as CharToken
     public val hyphen: CharToken = literalToken("-") as CharToken
     public val dash: CharToken = literalToken("—") as CharToken
 
@@ -176,7 +179,7 @@ public object Tokens {
     //   [^\\"]*       – and any number of non-special characters
     // )*              – repeating as a group any number of times
     // "               – closing double quote
-    public val string: RegexToken = regexToken("\"[^\\\\\"]*(\\\\[\"nrtbf\\\\][^\\\\\"]*)*\"")
+    public val stringPlain: RegexToken = regexToken("[^\\\\\"]*(\\\\[\"nrtbf\\\\][^\\\\\"]*)*")
 
     // Id token.
     public val id: RegexToken = regexToken("[_\\p{L}][_\\p{L}\\p{N}]*")

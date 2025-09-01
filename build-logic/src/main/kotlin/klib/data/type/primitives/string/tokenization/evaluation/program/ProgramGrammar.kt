@@ -6,11 +6,9 @@ import com.github.h0tk3y.betterParse.combinators.times
 import com.github.h0tk3y.betterParse.grammar.Grammar
 import com.github.h0tk3y.betterParse.grammar.parseToEnd
 import com.github.h0tk3y.betterParse.grammar.parser
-import com.github.h0tk3y.betterParse.lexer.RegexToken
 import com.github.h0tk3y.betterParse.parser.Parser
 import klib.data.type.primitives.string.tokenization.Parsers
 import klib.data.type.primitives.string.tokenization.Tokens
-import klib.data.type.primitives.string.tokenization.Tokens.keyword
 import net.pearx.kasechange.toCamelCase
 import kotlin.collections.map
 
@@ -94,8 +92,8 @@ public object ProgramGrammar : Grammar<Program>() {
     private val integerToken by Tokens.integer
     private val exponentToken by Tokens.exponent
     private val numberSuffixToken by Tokens.numberSuffix
-    private val characterToken by Tokens.character
     private val stringToken by Tokens.string
+    private val characterToken by Tokens.character
 
     // Id token.
     private val idToken by Tokens.id

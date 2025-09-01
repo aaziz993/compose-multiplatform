@@ -46,7 +46,7 @@ public object Parsers {
                 else -> body.firstOrNull() ?: '\uFFFD'
             }
         }
-    public val string: Parser<String> = Tokens.string use {
+    public val string: Parser<String> = -Tokens.doubleQuotMark * Tokens.stringPlain * -Tokens.doubleQuotMark use {
         text.substring(1, text.lastIndex)
             .replace("\\\"", "\"")
             .replace("\\n", "\n")

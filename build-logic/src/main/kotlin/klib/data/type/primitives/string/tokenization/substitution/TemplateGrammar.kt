@@ -7,10 +7,8 @@ import com.github.h0tk3y.betterParse.grammar.parser
 import com.github.h0tk3y.betterParse.lexer.TokenMatch
 import com.github.h0tk3y.betterParse.lexer.regexToken
 import com.github.h0tk3y.betterParse.parser.Parser
-import klib.data.type.primitives.string.tokenization.evaluation.program.ProgramGrammar
-import klib.data.type.primitives.string.tokenization.Parsers
-import klib.data.type.primitives.string.tokenization.Parsers.string
 import klib.data.type.primitives.string.tokenization.Tokens
+import klib.data.type.primitives.string.tokenization.evaluation.program.ProgramGrammar
 
 public fun String.substitute(
     vararg options: SubstituteOption = arrayOf(
@@ -119,8 +117,8 @@ public class TemplateGrammar(
     private val integerToken by Tokens.integer
     private val exponentToken by Tokens.exponent
     private val numberSuffixToken by Tokens.numberSuffix
-    private val charToken by Tokens.character
     private val stringToken by Tokens.string
+    private val charToken by Tokens.character
 
     // Id token.
     private val idToken by Tokens.id
@@ -131,12 +129,14 @@ public class TemplateGrammar(
     private val ws by wsIgnoreToken use { text }
 
     private val evenDollars by oneOrMore(dollarToken * -dollarToken) use {
-        joinToString("", transform = TokenMatch::text)
+        dollarsEscaper(joinToString("", transform = TokenMatch::text))
     }
 
     private val dollarWS by (dollarToken * ws).map { (d, ws) -> "${d.text}$ws" }
 
-    private val key = (Tokens.id or Tokens.integer) use { text } or parser(::string)
+    private val plainString by stringToken use { text.substring(1, text.lastIndex) }
+
+    private val key = (idToken or integerToken).use { text } or parser(::plainString)
 
     // Reference.
     private val interpolate =
@@ -164,6 +164,10 @@ public class TemplateGrammar(
         (optional(evenBS) * -leftBrToken * ProgramGrammar.rootParser * -rightBrToken) map { (bs, program) ->
             "${bs?.let(evaluateEscaper).orEmpty()}${program { name -> getter(listOf(name)) }}"
         }
+
+    private val string by plainString map { text ->
+        "\"${parseToEnd(text)}\""
+    }
 
     private val text by (leftParToken or
             rightParToken or
@@ -221,12 +225,11 @@ public class TemplateGrammar(
             exponentToken or
             numberSuffixToken or
             charToken or
-            stringToken or
             idToken or
             otherToken) use { text }
 
     // Explicitly consume whitespaces because they  are implicitly ignored.
     override val rootParser: Parser<Any?> =
-        zeroOrMore(ws or dollarWS or evenDollars or interpolate or evenBSWS or oddBSWS or escEvaluate or evaluate or text)
+        zeroOrMore(ws or dollarWS or evenDollars or interpolate or evenBSWS or oddBSWS or escEvaluate or evaluate or string or text)
             .map { values -> if (values.size == 1) values.single() else values.joinToString("") }
 }
