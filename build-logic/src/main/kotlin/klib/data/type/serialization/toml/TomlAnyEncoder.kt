@@ -1,5 +1,3 @@
-@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
-
 package klib.data.type.serialization.toml
 
 import klib.data.type.serialization.coders.any.AnyEncoder

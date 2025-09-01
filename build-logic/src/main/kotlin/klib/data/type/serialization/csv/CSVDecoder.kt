@@ -1,5 +1,3 @@
-@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
-
 package klib.data.type.serialization.csv
 
 import app.softwork.serialization.csv.CSVDecoder

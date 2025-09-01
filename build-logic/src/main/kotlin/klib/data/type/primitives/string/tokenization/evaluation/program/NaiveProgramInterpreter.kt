@@ -7,9 +7,9 @@ public class NaiveProgramInterpreter : Interpreter<MachineState, Program, (Strin
 
     override fun initialState(input: (name: String) -> Any?): MachineState = interpreter.initialState(input)
 
-    override fun join(state: MachineState, program: Program): MachineState =
+    override fun join(s: MachineState, p: Program): MachineState =
         interpreter.join(
-            program.functions.fold(state) { acc, function -> acc.declareFunction(function) },
-            program.mainFunction.body
+            p.functions.fold(s) { acc, function -> acc.declareFunction(function) },
+            p.mainFunction.body
         )
 }
