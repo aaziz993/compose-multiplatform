@@ -179,7 +179,7 @@ public object Tokens {
     //   [^\\"]*       – and any number of non-special characters
     // )*              – repeating as a group any number of times
     // "               – closing double quote
-    public val stringPlain: RegexToken = regexToken("[^\\\\\"]*(\\\\[\"nrtbf\\\\][^\\\\\"]*)*")
+    public val string: RegexToken = regexToken("\"[^\\\\\"]*(\\\\[\"nrtbf\\\\][^\\\\\"]*)*\"")
 
     // Id token.
     public val id: RegexToken = regexToken("[_\\p{L}][_\\p{L}\\p{N}]*")
