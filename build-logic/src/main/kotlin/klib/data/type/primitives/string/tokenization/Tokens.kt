@@ -10,6 +10,7 @@ import com.github.h0tk3y.betterParse.lexer.regexToken
 public object Tokens {
     public const val PREFIX: String = """(?<![\p{L}\p{N}_])"""
     public const val SUFFIX: String = """(?![\p{L}\p{N}_])"""
+    public const val STRING: String = """[^\\"]*(\\["nrtb\\][^\\"]*)*"""
 
     // Whitespace and newline tokens.
     public val ws: RegexToken = regexToken("\\s+")
@@ -33,10 +34,10 @@ public object Tokens {
     public val colon: CharToken = literalToken(":") as CharToken
     public val semicolon: CharToken = literalToken(";") as CharToken
     public val apostrophe: CharToken = literalToken("‘") as CharToken
-    public val leftQuotMark: CharToken = literalToken("”") as CharToken
-    public val rightQuotMark: CharToken = literalToken("“") as CharToken
-    public val singleQuotMark: CharToken = literalToken("'") as CharToken
-    public val doubleQuotMark: CharToken = literalToken("\"") as CharToken
+    public val leftQuoteMark: CharToken = literalToken("”") as CharToken
+    public val rightQuoteMark: CharToken = literalToken("“") as CharToken
+    public val singleQuoteMark: CharToken = literalToken("'") as CharToken
+    public val doubleQuoteMark: CharToken = literalToken("\"") as CharToken
     public val hyphen: CharToken = literalToken("-") as CharToken
     public val dash: CharToken = literalToken("—") as CharToken
 
@@ -169,7 +170,6 @@ public object Tokens {
     public val exponent: RegexToken = suffix("e", ignoreCase = true)
     public val numberSuffix: RegexToken = suffix("ul|u|f|l", ignoreCase = true)
     public val character: RegexToken = regexToken("""'(?:\\.|[^'\\])'""")
-
     // the regex "[^\\"]*(\\["nrtbf\\][^\\"]*)*" matches:
     // '               – opening singe quote,
     // [^\\"]*         – any number of not escaped characters, nor double quotes
@@ -178,7 +178,7 @@ public object Tokens {
     //   [^\\"]*       – and any number of non-special characters
     // )*              – repeating as a group any number of times
     // '               – closing single quote
-    public val singleQuotedStringRegex: RegexToken = regexToken("""'[^\\']*(\\['nrtb\\][^\\']*)*'""")
+    public val singleQuotedStringRegex: RegexToken = regexToken("""'$STRING'""")
 
     // the regex "[^\\"]*(\\["nrtbf\\][^\\"]*)*" matches:
     // "               – opening double quote,
@@ -188,7 +188,7 @@ public object Tokens {
     //   [^\\"]*       – and any number of non-special characters
     // )*              – repeating as a group any number of times
     // "               – closing double quote
-    public val doubleQuotedString: RegexToken = regexToken(""""[^\\"]*(\\["nrtb\\][^\\"]*)*"""")
+    public val doubleQuotedString: RegexToken = regexToken(""""$STRING"""")
 
     // Id token.
     public val id: RegexToken = regexToken("[_\\p{L}][_\\p{L}\\p{N}]*")

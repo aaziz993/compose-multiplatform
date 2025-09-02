@@ -48,6 +48,6 @@ public object Parsers {
         text.substring(1, length - 1).escape('\'')
     }
     public val doubleQuotedString: Parser<String> = Tokens.doubleQuotedString use {
-        text.substring(1, length - 1).escape('"')
+        text.substring(1, length - 1).escape()
     }
 }

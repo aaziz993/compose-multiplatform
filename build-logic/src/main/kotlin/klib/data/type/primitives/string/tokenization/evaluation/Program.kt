@@ -1,6 +1,6 @@
-package klib.data.type.primitives.string.tokenization.evaluation.program
+package klib.data.type.primitives.string.tokenization.evaluation
 
-import klib.data.type.primitives.string.tokenization.evaluation.invoke
+import klib.data.type.primitives.string.tokenization.invoke
 
 public data class Program(
     val mainFunction: Function,

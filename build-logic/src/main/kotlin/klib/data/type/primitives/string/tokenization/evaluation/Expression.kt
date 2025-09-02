@@ -1,4 +1,4 @@
-package klib.data.type.primitives.string.tokenization.evaluation.program
+package klib.data.type.primitives.string.tokenization.evaluation
 
 import klib.data.type.cast
 import klib.data.type.collections.*
@@ -6,10 +6,8 @@ import klib.data.type.collections.list.asMutableList
 import klib.data.type.collections.map.asMap
 import klib.data.type.collections.map.pairs
 import klib.data.type.primitives.*
-import klib.data.type.primitives.string.tokenization.substitution.SubstituteOption
-import klib.data.type.primitives.string.tokenization.substitution.substitute
+import org.example.klib.data.type.primitives.string.tokenization.evaluation.SubstituteOption
 import kotlin.Pair
-import kotlin.collections.plus
 
 public sealed class Expression {
     public infix fun coalesce(other: Expression): Coalesce = Coalesce(this, other)
@@ -63,12 +61,12 @@ public data class StringLiteral(val value: String) : Expression() {
             SubstituteOption.INTERPOLATE,
             SubstituteOption.INTERPOLATE_BRACES,
             SubstituteOption.DEEP_INTERPOLATION,
-            SubstituteOption.ESCAPE_INTERPOLATION,
+            SubstituteOption.ESCAPE_DOLLARS,
             SubstituteOption.EVALUATE,
-            SubstituteOption.ESCAPE_EVALUATION
-        ) { path ->
-            machine[path.first()]?.deepGetOrNull(*path.drop(1).toTypedArray())?.second
-        }
+            SubstituteOption.ESCAPE_BACKSLASHES,
+            getter = { path ->
+                machine[path.first()]?.deepGetOrNull(*path.drop(1).toTypedArray())?.second
+            })
     )
 }
 

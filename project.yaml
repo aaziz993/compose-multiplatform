@@ -23,6 +23,6 @@ script:
       moduleRootsFromIncludes: ()
       moduleDocs: '"build/dokka"'
       dokkaMultiModuleRoot: '"build/dokka"'
-#  - dependencies:
-#      # knit
-#      - testImplementation: ("org.jetbrains.kotlinx:kotlinx-knit-test")
+  - dependencies:
+      # knit
+      - testImplementation: ("org.jetbrains.kotlinx:kotlinx-knit-test")

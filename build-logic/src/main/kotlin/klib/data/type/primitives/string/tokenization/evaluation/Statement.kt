@@ -1,6 +1,7 @@
-package klib.data.type.primitives.string.tokenization.evaluation.program
+package klib.data.type.primitives.string.tokenization.evaluation
 
 import klib.data.type.collections.map.pairs
+import kotlin.collections.iterator
 
 public sealed class Statement {
     public open fun join(machine: MachineState): MachineState = machine

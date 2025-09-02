@@ -1,4 +1,4 @@
-package klib.data.type.primitives.string.tokenization.evaluation.program
+package klib.data.type.primitives.string.tokenization.evaluation
 
 public data class Function(
     val name: String,

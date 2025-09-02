@@ -1,4 +1,4 @@
-package klib.data.type.primitives.string.tokenization.evaluation
+package klib.data.type.primitives.string.tokenization
 
 public interface Interpreter<TState, TProgram, TInput> {
     public fun initialState(input: TInput): TState

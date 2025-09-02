@@ -1,4 +1,4 @@
-package klib.data.type.primitives.string.tokenization.evaluation.program
+package klib.data.type.primitives.string.tokenization.evaluation
 
 import klib.data.type.collections.list.dropLast
 import klib.data.type.collections.replaceAt
