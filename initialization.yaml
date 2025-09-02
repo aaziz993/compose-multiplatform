@@ -113,7 +113,7 @@ script:
         - capture:
             fileFingerprints: true
             buildLogging: true
-#      enrichGitData: ("${settingsProperties.remote.url}") # GitHub repo url populated from remote.url if not provided.
+#      enrichGitData: ("${settingsProperties?.remote?.url?:""}") # GitHub repo url populated from remote.url if not provided.
   # Provides a repository for downloading JVMs
   - toolchainManagement: '{ }'
   # Enforcing pre-commit and commit-msg Git hooks configuration. Conventional-commits-ready.

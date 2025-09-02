@@ -31,13 +31,16 @@ public class ProjectProperties(
             extraProperties["generateBuildableXcodeproj.skipKotlinFrameworkDependencies"] = "true"
 
             // Load project.yaml.
-            projectProperties = file(PROJECT_PROPERTIES_FILE)(project)
+            file(PROJECT_PROPERTIES_FILE)<ProjectProperties, Project>(project) { properties ->
+                projectProperties = properties
+            }
         }
     }
 }
 
 public var Project.projectProperties: ProjectProperties
     get() = extraProperties[PROJECT_PROPERTIES_EXT] as ProjectProperties
-    private set(value) {this.properties
+    private set(value) {
+        this.properties
         extraProperties[PROJECT_PROPERTIES_EXT] = value
     }

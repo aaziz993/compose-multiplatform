@@ -2,6 +2,12 @@ package gradle.api.initialization
 
 import gradle.api.Properties
 import gradle.api.initialization.SettingsProperties.Companion.SETTINGS_PROPERTIES_EXT
+import gradle.api.initialization.file.CodeOfConductFile
+import gradle.api.initialization.file.ContributingFile
+import gradle.api.initialization.file.LicenseFile
+import gradle.api.initialization.file.LicenseHeaderFile
+import gradle.api.publish.maven.MavenPomDeveloper
+import gradle.api.publish.maven.MavenPomLicense
 import gradle.api.publish.maven.MavenPomScm
 import klib.data.type.primitives.string.scripting.ScriptConfig
 import kotlinx.serialization.Serializable
@@ -13,6 +19,12 @@ import klib.data.type.serialization.serializers.any.SerializableAny
 public data class SettingsProperties(
     val year: String,
     val remote: MavenPomScm,
+    val developer: MavenPomDeveloper,
+    val license: MavenPomLicense,
+    val licenseFile: LicenseFile,
+    val licenseHeaderFile: LicenseHeaderFile,
+    val codeOfConductFile: CodeOfConductFile,
+    val contributingFile: ContributingFile,
     override val config: ScriptConfig = ScriptConfig(),
     override val script: List<SerializableAny>
 ) : Properties() {
@@ -30,7 +42,10 @@ public data class SettingsProperties(
         context(settings: Settings)
         @Suppress("UnstableApiUsage")
         internal operator fun invoke() = with(settings) {
-            settingsProperties = layout.settingsDirectory.file(SETTINGS_PROPERTIES_FILE).asFile(settings)
+            layout.settingsDirectory.file(SETTINGS_PROPERTIES_FILE)
+                .asFile<SettingsProperties, Settings>(settings) { properties ->
+                    settingsProperties = properties
+                }
         }
     }
 }

@@ -194,23 +194,23 @@ public abstract class ScriptProperties {
                         SubstituteOption.EVALUATE,
                     )
 
-                val script: List<Any?> = decodedFile[SCRIPT_KEY]?.let { script ->
+                val decodedFileScript: List<Any?> = decodedFile[SCRIPT_KEY]?.let { script ->
                     script.asMapOrNull?.map { (key, value) -> mapOf(key to value) } ?: script.asList
                 } ?: emptyList()
 
-                if (decodedImports.isEmpty()) substitutedFile + (SCRIPT_KEY to script)
+                if (decodedImports.isEmpty()) substitutedFile + (SCRIPT_KEY to decodedFileScript)
                 else {
                     val mergedImports =
                         decodedImports.fold(mutableMapOf<String, Any?>()) { mergedImportsConfig, decodedImport ->
                             (decodedImport - SCRIPT_KEY).deepMap(mergedImportsConfig)
                         }
 
-                    val mergedScripts =
-                        decodedImports.flatMap { decodedImport -> decodedImport[SCRIPT_KEY]!!.asList } + script
+                    val mergedImportsScripts =
+                        decodedImports.flatMap { decodedImport -> decodedImport[SCRIPT_KEY]!!.asList }
 
                     substitutedFile.substitute { path ->
                         mergedImports.deepGetOrNull(*path.toTypedArray()).second
-                    }.deepMap(mergedImports) + (SCRIPT_KEY to mergedScripts)
+                    }.deepMap(mergedImports) + (SCRIPT_KEY to mergedImportsScripts + decodedFileScript)
                 }
             }).apply {
             this.cache = cache

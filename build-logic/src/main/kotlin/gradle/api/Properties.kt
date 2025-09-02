@@ -61,6 +61,7 @@ public abstract class Properties : ScriptProperties() {
 
         internal inline operator fun <reified P : Properties, reified T> File.invoke(
             evaluationImplicitReceiver: T,
+            setter: (P) -> Unit,
         ): P where T : PluginAware, T : ExtensionAware = ScriptProperties<P>(
             path,
             cache = H2Cache(parentFile.resolve("$nameWithoutExtension.cache")),
@@ -77,7 +78,7 @@ public abstract class Properties : ScriptProperties() {
 
                 defaultImports(*IMPORTS)
             }
-        }
+        }.also(setter).also(Properties::invoke)
 
         internal fun tryAssignProperty(valueClass: KClass<*>, value: Any?): String? =
             when {
