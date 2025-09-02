@@ -2,6 +2,9 @@ package klib.data.type.primitives.string.tokenization.evaluation
 
 import klib.data.type.cast
 import klib.data.type.collections.*
+import kotlin.collections.plus
+import kotlin.collections.minus
+import klib.data.type.collections.list.asList
 import klib.data.type.collections.list.asMutableList
 import klib.data.type.collections.map.asMap
 import klib.data.type.collections.map.pairs
@@ -234,11 +237,23 @@ public class Coalesce(left: Expression, right: Expression) : Binary(left, right)
 }
 
 public class Plus(left: Expression, right: Expression) : Binary(left, right) {
-    override fun operate(arguments: List<Any?>): Any? = arguments[0]!! + arguments[1]!!
+    override fun operate(arguments: List<Any?>): Any? = when {
+        arguments.any { argument -> argument is String } -> arguments.joinToString("")
+        arguments.any { argument -> argument is List<*> } -> arguments.reduce { a, b -> a!!.asList + b!!.asList }
+        arguments.any { argument -> argument is Map<*, *> } -> arguments.reduce { a, b -> a!!.asMap<Any?, Any?>() + b!!.asMap<Any?, Any?>() }
+
+        else -> arguments[0]!! + arguments[1]!!
+    }
 }
 
 public class Minus(left: Expression, right: Expression) : Binary(left, right) {
-    override fun operate(arguments: List<Any?>): Any? = arguments[0]!! - arguments[1]!!
+    override fun operate(arguments: List<Any?>): Any? = when {
+        arguments.any { argument -> argument is String } -> arguments.joinToString("")
+        arguments.any { argument -> argument is List<*> } -> arguments.reduce { a, b -> a!!.asList - b!!.asList }
+        arguments.any { argument -> argument is Map<*, *> } -> arguments.reduce { a, b -> a!!.asMap<Any?, Any?>() - b!!.asMap<Any?, Any?>() }
+
+        else -> arguments[0]!! - arguments[1]!!
+    }
 }
 
 public class Times(left: Expression, right: Expression) : Binary(left, right) {

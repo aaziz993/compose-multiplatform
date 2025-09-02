@@ -14,48 +14,18 @@ import com.github.h0tk3y.betterParse.utils.Tuple2
 import klib.data.type.primitives.string.tokenization.Parsers
 import klib.data.type.primitives.string.tokenization.Tokens
 import klib.data.type.primitives.string.tokenization.mapToken
-import net.pearx.kasechange.toCamelCase
 import klib.data.type.primitives.string.tokenization.mapWithMatches
+import net.pearx.kasechange.toCamelCase
 import kotlin.collections.Set
 import kotlin.collections.map
 
 public fun String.compile(): Program = ProgramGrammar.parseToEnd(this)
 
-public fun String.substitute(
-    vararg options: SubstituteOption = arrayOf(
-        SubstituteOption.INTERPOLATE_BRACES,
-        SubstituteOption.DEEP_INTERPOLATION,
-        SubstituteOption.ESCAPE_DOLLARS,
-        SubstituteOption.EVALUATE,
-        SubstituteOption.ESCAPE_BACKSLASHES
-    ),
-    getter: (path: List<String>) -> Any?,
-    evaluator: (text: String, Program) -> Any? = { _, program -> program { name -> getter(listOf(name)) } }
-): Any? = TemplateGrammar(options.toSet(), getter, evaluator).let { grammar ->
-    var str = this
-
-    buildString {
-        while (true) {
-            val tokens = grammar.tokenizer.tokenize(str)
-
-            val tokenList = tokens.toList()
-
-            val result = grammar.tryParse(tokens, 0).toParsedOrThrow()
-
-            append(result.value)
-
-            if (result.nextPosition >= tokenList.size) break
-
-            append(tokenList[result.nextPosition].text[0])
-
-            str = tokenList[result.nextPosition].text.drop(1) + tokenList.drop(result.nextPosition + 1)
-                .joinToString("") { it.text }
-        }
-    }
-}
-
 @Suppress("UNUSED")
 private object ProgramGrammar : Grammar<Program>() {
+    // Comment tokens.
+    private val hashCommentIgnoreToken by Tokens.hashCommentIgnore
+
     // Whitespace and newline tokens.
     private val wsIgnoreToken by Tokens.wsIgnore
     private val nlIgnoreToken by Tokens.nlIgnore
@@ -447,6 +417,40 @@ private object ProgramGrammar : Grammar<Program>() {
         }
 }
 
+
+public fun String.substitute(
+    vararg options: SubstituteOption = arrayOf(
+        SubstituteOption.INTERPOLATE_BRACES,
+        SubstituteOption.DEEP_INTERPOLATION,
+        SubstituteOption.ESCAPE_DOLLARS,
+        SubstituteOption.EVALUATE,
+        SubstituteOption.ESCAPE_BACKSLASHES
+    ),
+    getter: (path: List<String>) -> Any?,
+    evaluator: (text: String, Program) -> Any? = { _, program -> program { name -> getter(listOf(name)) } }
+): Any? = TemplateGrammar(options.toSet(), getter, evaluator).let { grammar ->
+    var str = this
+
+    buildString {
+        while (true) {
+            val tokens = grammar.tokenizer.tokenize(str)
+
+            val tokenList = tokens.toList()
+
+            val result = grammar.tryParse(tokens, 0).toParsedOrThrow()
+
+            append(result.value)
+
+            if (result.nextPosition >= tokenList.size) break
+
+            append(tokenList[result.nextPosition].text[0])
+
+            str = tokenList[result.nextPosition].text.drop(1) + tokenList.drop(result.nextPosition + 1)
+                .joinToString("") { it.text }
+        }
+    }
+}
+
 @Suppress("UNUSED")
 private class TemplateGrammar(
     options: Set<SubstituteOption>,
@@ -468,11 +472,14 @@ private class TemplateGrammar(
         }
         else getter
 
+    // Comment tokens.
+    private val hashCommentToken by Tokens.hashComment
+
     // Whitespace and newline tokens.
     private val wsToken by Tokens.ws
     private val nlToken by Tokens.nl
 
-    // Symbol tokens.
+    // Symbol token.
     private val leftParToken by Tokens.leftPar
     private val rightParToken by Tokens.rightPar
     private val leftSqBrToken by Tokens.leftSqBr
@@ -552,7 +559,7 @@ private class TemplateGrammar(
     private val idToken by Tokens.id
 
     // Other token.
-    private val otherToken by regexToken($$"""[^$\\{]+""")
+    private val otherToken by regexToken("""[^$\\{#\r\n]+""")
 
     private val evenDollars by oneOrMore(dollarToken * dollarToken) use {
         dollarsEscaper(joinToString("") { (d0, d1) -> "${d0.text}${d1.text}" })
@@ -584,6 +591,7 @@ private class TemplateGrammar(
             when (token.type) {
                 wsToken -> token.copy(type = Tokens.wsIgnore)
                 nlToken -> token.copy(type = Tokens.nlIgnore)
+                hashCommentToken -> token.copy(type = Tokens.hashCommentIgnore)
                 else -> token
             }
         }.mapWithMatches { (matches, program) ->
@@ -593,66 +601,66 @@ private class TemplateGrammar(
             if (bs == null) result else "${backslashEscaper(bs)}$result"
         }
 
-
-    private val text by (wsToken or
-            nlToken or
-            leftParToken or
-            rightParToken or
-            leftSqBrToken or
-            rightSqBrToken or
-            leftBrToken or
-            rightBrToken or
-            exclamationMarkToken or
-            ampersandToken or
-            pipeToken or
-            periodToken or
-            commaToken or
-            colonToken or
-            semicolonToken or
-            questionMarkToken or
-            backslashToken or
-            dollarToken or
-            hyphenToken or
-            plusToken or
-            asteriskToken or
-            forwardSlashToken or
-            modToken or
-            powToken or
-            equalsToken or
-            lessThanToken or
-            greaterThanToken or
-            printlnToken or
-            skipToken or
-            valToken or
-            varToken or
-            ifToken or
-            thenToken or
-            elifToken or
-            elseToken or
-            fiToken or
-            forToken or
-            whileToken or
-            doToken or
-            odToken or
-            inToken or
-            tryToken or
-            catchToken or
-            finallyToken or
-            yrtToken or
-            throwToken or
-            funToken or
-            beginToken or
-            endToken or
-            returnToken or
-            toToken or
-            nullToken or
-            booleanToken or
-            integerToken or
-            exponentToken or
-            numberSuffixToken or
-            charToken or
-            idToken or
-            otherToken) use { text }
+    private val text by (
+            wsToken or
+                    nlToken or
+                    leftParToken or
+                    rightParToken or
+                    leftSqBrToken or
+                    rightSqBrToken or
+                    leftBrToken or
+                    rightBrToken or
+                    exclamationMarkToken or
+                    ampersandToken or
+                    pipeToken or
+                    periodToken or
+                    commaToken or
+                    colonToken or
+                    semicolonToken or
+                    questionMarkToken or
+                    backslashToken or
+                    dollarToken or
+                    hyphenToken or
+                    plusToken or
+                    asteriskToken or
+                    forwardSlashToken or
+                    modToken or
+                    powToken or
+                    equalsToken or
+                    lessThanToken or
+                    greaterThanToken or
+                    printlnToken or
+                    skipToken or
+                    valToken or
+                    varToken or
+                    ifToken or
+                    thenToken or
+                    elifToken or
+                    elseToken or
+                    fiToken or
+                    forToken or
+                    whileToken or
+                    doToken or
+                    odToken or
+                    inToken or
+                    tryToken or
+                    catchToken or
+                    finallyToken or
+                    yrtToken or
+                    throwToken or
+                    funToken or
+                    beginToken or
+                    endToken or
+                    returnToken or
+                    toToken or
+                    nullToken or
+                    booleanToken or
+                    integerToken or
+                    exponentToken or
+                    numberSuffixToken or
+                    charToken or
+                    idToken or
+                    otherToken) use { text }
 
     // Explicitly consume whitespaces because they  are implicitly ignored.
     override val rootParser: Parser<Any?> =

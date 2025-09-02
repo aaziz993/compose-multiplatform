@@ -15,7 +15,7 @@ public data class ExpressionStatement(val expression: Expression) : Statement() 
     override fun join(machine: MachineState): MachineState = expression(machine)
 }
 
-// Log.
+// Println.
 public data class Println(val message: Expression) : Statement() {
     override fun join(machine: MachineState): MachineState = message(machine).run {
         if (shouldReturn) this else copy(log = log + result.toString(), result = Unit)
@@ -162,8 +162,7 @@ public data class Try(
 
 public data class Throw(val exceptionType: Type, val message: Expression) : Statement() {
     override fun join(machine: MachineState): MachineState = message(machine).run {
-        if (exceptionType == null) copy(exceptionType = this@Throw.exceptionType, shouldReturn = true, result = Unit)
-        else this
+        if (exceptionType == null) copy(exceptionType = this@Throw.exceptionType, shouldReturn = true) else this
     }
 }
 

@@ -3,7 +3,6 @@ package klib.data.type.primitives.string.tokenization
 import com.github.h0tk3y.betterParse.lexer.CharToken
 import com.github.h0tk3y.betterParse.lexer.LiteralToken
 import com.github.h0tk3y.betterParse.lexer.RegexToken
-import com.github.h0tk3y.betterParse.lexer.Token
 import com.github.h0tk3y.betterParse.lexer.literalToken
 import com.github.h0tk3y.betterParse.lexer.regexToken
 
@@ -12,11 +11,15 @@ public object Tokens {
     public const val SUFFIX: String = """(?![\p{L}\p{N}_])"""
     public const val STRING: String = """[^\\"]*(\\["nrtb\\][^\\"]*)*"""
 
+    // Comment tokens.
+    public val hashComment: RegexToken = regexToken("""#[^\r\n]*""")
+    public val hashCommentIgnore: RegexToken = regexToken("""#[^\r\n]*""", ignore = true)
+
     // Whitespace and newline tokens.
     public val ws: RegexToken = regexToken("\\s+")
     public val wsIgnore: RegexToken = regexToken("\\s+", ignore = true)
-    public val nl: RegexToken = regexToken("[\r\n]+")
-    public val nlIgnore: RegexToken = regexToken("[\r\n]+", ignore = true)
+    public val nl: RegexToken = regexToken("""[\r\n]+""")
+    public val nlIgnore: RegexToken = regexToken("""[\r\n]+""", ignore = true)
 
     // Parentheses and brackets tokens.
     public val leftPar: CharToken = literalToken("(") as CharToken
@@ -119,9 +122,6 @@ public object Tokens {
     public val ankh: CharToken = literalToken("☥") as CharToken
     public val menorah: LiteralToken = literalToken("🕎") as LiteralToken
 
-    // Comment tokens.
-    public val sharpCommentIgnore: Token = regexToken("#[^\\n]*", true)
-
     // Println token.
     public val println: RegexToken = keyword("println")
 
@@ -170,6 +170,7 @@ public object Tokens {
     public val exponent: RegexToken = suffix("e", ignoreCase = true)
     public val numberSuffix: RegexToken = suffix("ul|u|f|l", ignoreCase = true)
     public val character: RegexToken = regexToken("""'(?:\\.|[^'\\])'""")
+
     // the regex "[^\\"]*(\\["nrtbf\\][^\\"]*)*" matches:
     // '               – opening singe quote,
     // [^\\"]*         – any number of not escaped characters, nor double quotes
