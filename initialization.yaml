@@ -143,7 +143,7 @@ script:
         - maven: ("https://maven.pkg.github.com/aaziz993")
       versionCatalogs:
         - create: ("kotlinWrappers"){ catalog -> catalog.from(libs("kotlin.wrappers.catalog")) }
-  - enableCacheRedirector: ()
+  - enableCacheRedirect: ()
   - buildCache:
       - local:
           isEnabled: CI.current == null # Default is if not CI.

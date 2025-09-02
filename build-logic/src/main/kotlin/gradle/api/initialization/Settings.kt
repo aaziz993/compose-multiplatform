@@ -32,7 +32,7 @@ public val Settings.libs: VersionCatalog
 public val Settings.gitHooks: GitHooksExtension
     get() = extensions.getByType<GitHooksExtension>()
 
-public fun Settings.enableCacheRedirector(): Unit = CacheRedirector.applyTo(settings)
+public fun Settings.enableCacheRedirect(): Unit = CacheRedirector.applyTo(settings)
 
 public fun Settings.execute(cmd: String): String = providers.exec {
     commandLine(cmd.split(" "))

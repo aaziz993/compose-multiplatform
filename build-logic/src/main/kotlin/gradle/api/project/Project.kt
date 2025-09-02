@@ -382,7 +382,7 @@ public inline fun <reified T : Task> Project.registerAggregationTestTask(
         }
 }
 
-public fun Project.enableCacheRedirector(): Unit = CacheRedirector.applyTo(project)
+public fun Project.enableCacheRedirect(): Unit = CacheRedirector.applyTo(project)
 
 public fun Project.execute(cmd: String): String = providers.exec {
     commandLine(cmd.split(" "))
