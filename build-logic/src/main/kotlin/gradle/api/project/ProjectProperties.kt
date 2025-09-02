@@ -38,6 +38,6 @@ public class ProjectProperties(
 
 public var Project.projectProperties: ProjectProperties
     get() = extraProperties[PROJECT_PROPERTIES_EXT] as ProjectProperties
-    private set(value) {
+    private set(value) {this.properties
         extraProperties[PROJECT_PROPERTIES_EXT] = value
     }

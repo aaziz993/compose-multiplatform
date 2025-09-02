@@ -583,15 +583,15 @@ public fun <T : Any> Any.deepMinusKeys(
 @Suppress("UNCHECKED_CAST")
 public fun <T : Any> T.substitute(
     vararg options: SubstituteOption = arrayOf(
+        SubstituteOption.INTERPOLATE_BRACES,
         SubstituteOption.DEEP_INTERPOLATION,
         SubstituteOption.ESCAPE_INTERPOLATION,
+        SubstituteOption.EVALUATE,
         SubstituteOption.ESCAPE_EVALUATION
     ),
     getter: (path: List<String>) -> Any? = { path -> deepGetOrNull(*path.toTypedArray()).second }
 ): T = deepMapValues(
     sourceTransform = { value ->
-        if (value is String)
-            value.substitute(*options, getter = getter)
-        else value
+        if (value is String) value.substitute(*options, getter = getter) else value
     },
 )

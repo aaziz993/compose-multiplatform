@@ -77,7 +77,7 @@ public abstract class Properties : ScriptProperties() {
 
                 defaultImports(*IMPORTS)
             }
-        }.also(Properties::invoke)
+        }
 
         internal fun tryAssignProperty(valueClass: KClass<*>, value: Any?): String? =
             when {

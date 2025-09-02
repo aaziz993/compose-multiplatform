@@ -107,13 +107,13 @@ public fun <K, V> Any.put(key: K, value: V, set: Boolean = false): V? = when (th
 }
 
 @Suppress("UNCHECKED_CAST")
-public fun <V> Any.remove(key: Any?): V? =
+public fun Any.remove(key: Any?): Any? =
     when (this) {
         is MutableList<*> -> key!!.toInt().let { index ->
-            if (index in indices) asMutableList<V>().removeAt(index) else null
+            if (index in indices) removeAt(index) else null
         }
 
-        is MutableMap<*, *> -> asMutableMap<Any?, V>().remove(key)
+        is MutableMap<*, *> -> asMutableMap<Any?, Any?>().remove(key)
 
         else -> throw IllegalArgumentException("Expected a MutableList or MutableMap, but got ${this::class.simpleName}")
     }
@@ -176,7 +176,7 @@ private data class DeepRemoveArgs<P : Any>(
 public fun Any.deepRemove(
     vararg paths: List<Any?>,
     getter: List<Pair<Any, Any?>>.() -> Any? = { last().first.getOrNull(last().second) },
-    remover: List<Pair<Any, Any?>>.() -> Unit = { last().first.remove<Any?>(last().second) },
+    remover: List<Pair<Any, Any?>>.() -> Unit = { last().first.remove(last().second) },
 ): List<Pair<List<Pair<Any, Any?>>, Any?>> = deepRemove(
     *paths,
     pathKey = { sourcePath -> sourcePath.first() },

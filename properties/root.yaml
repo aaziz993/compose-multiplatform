@@ -70,7 +70,7 @@ script:
             }
       pluginsConfiguration:
         - html:
-            footerMessage: '"© ${year} - ${developer.name}"'
+            footerMessage: '"© ${settingsProperties.year} - ${settingsProperties.remote.developer.name}"'
             templatesDir: layout.projectDirectory.dir("dokka-templates")
         - versioning:
             olderVersionsDir: layout.projectDirectory.dir("documentation/version")

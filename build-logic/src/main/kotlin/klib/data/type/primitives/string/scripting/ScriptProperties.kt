@@ -6,10 +6,8 @@ import klib.data.cache.NoCache
 import klib.data.type.collections.*
 import klib.data.type.collections.deepGetOrNull
 import klib.data.type.collections.list.asList
-import klib.data.type.collections.list.asMutableList
 import klib.data.type.collections.map.asMapOrNull
 import klib.data.type.collections.map.asStringNullableMap
-import klib.data.type.collections.map.asNullableMutableMap
 import klib.data.type.primitives.string.tokenization.substitution.SubstituteOption
 import klib.data.type.reflection.declaredMemberExtensionFunction
 import klib.data.type.reflection.declaredMemberExtensionFunctions
@@ -20,6 +18,7 @@ import klib.data.type.reflection.memberProperty
 import klib.data.type.reflection.packageExtensions
 import klib.data.type.reflection.toGetterName
 import klib.data.type.reflection.toSetterName
+import klib.data.type.serialization.IMPORTS_KEY
 import klib.data.type.serialization.coders.tree.deserialize
 import klib.data.type.serialization.decodeFile
 import klib.data.type.serialization.json.decodeAnyFromString
@@ -36,6 +35,8 @@ import kotlin.reflect.KClass
 import kotlin.reflect.KMutableProperty
 import kotlin.reflect.KVisibility
 import kotlin.reflect.full.isSubclassOf
+
+public const val SCRIPT_KEY: String = "script"
 
 @Serializable
 public abstract class ScriptProperties {
@@ -148,11 +149,6 @@ public abstract class ScriptProperties {
     }
 
     public companion object {
-        @PublishedApi
-        internal const val IMPORTS_KEY: String = "imports"
-
-        @PublishedApi
-        internal const val SCRIPT_KEY: String = "script"
 
         @PublishedApi
         internal val EXPLICIT_OPERATION_RECEIVERS: Set<KClass<out Any>> = setOf(
@@ -182,33 +178,40 @@ public abstract class ScriptProperties {
             noinline implicitOperation: (valueClass: KClass<*>, value: Any?) -> String? = { _, _ -> null },
             config: ScriptConfig.() -> Unit = { },
         ): T = T::class.serializer().deserialize(
-            decodeFile(
+            decodeFile<Map<String, Any?>>(
                 file,
                 { file, decodedFile ->
-                    decodedFile.deepGetOrNull("imports").second?.asList<String>()?.map { import ->
+                    decodedFile.deepGetOrNull(IMPORTS_KEY).second?.asList<String>()?.map { import ->
                         importToFile(file, import)
-                    }.orEmpty()
+                    }
                 },
                 decoder = decoder,
             ) { decodedFile, decodedImports ->
-                val substitutedFile = (decodedFile - IMPORTS_KEY).let { decodedFile ->
-                    val script = decodedFile[SCRIPT_KEY]
+                val substitutedFile =
+                    (decodedFile - listOf(IMPORTS_KEY, SCRIPT_KEY)).substitute(
+                        SubstituteOption.INTERPOLATE_BRACES,
+                        SubstituteOption.DEEP_INTERPOLATION,
+                        SubstituteOption.EVALUATE,
+                    )
 
-                    if (script is Map<*, *>)
-                        decodedFile + (SCRIPT_KEY to script.map { (key, value) -> mapOf(key to value) })
-                    else decodedFile
-                }.substitute(SubstituteOption.DEEP_INTERPOLATION)
+                val script: List<Any?> = decodedFile[SCRIPT_KEY]?.let { script ->
+                    script.asMapOrNull?.map { (key, value) -> mapOf(key to value) } ?: script.asList
+                } ?: emptyList()
 
-                val mergedImports = decodedImports.fold(mutableMapOf<String, Any?>()) { mergedImports, decodedImport ->
-                    decodedImport.deepMap(mergedImports)
+                if (decodedImports.isEmpty()) substitutedFile + (SCRIPT_KEY to script)
+                else {
+                    val mergedImports =
+                        decodedImports.fold(mutableMapOf<String, Any?>()) { mergedImportsConfig, decodedImport ->
+                            (decodedImport - SCRIPT_KEY).deepMap(mergedImportsConfig)
+                        }
+
+                    val mergedScripts =
+                        decodedImports.flatMap { decodedImport -> decodedImport[SCRIPT_KEY]!!.asList } + script
+
+                    substitutedFile.substitute { path ->
+                        mergedImports.deepGetOrNull(*path.toTypedArray()).second
+                    }.deepMap(mergedImports) + (SCRIPT_KEY to mergedScripts)
                 }
-
-                substitutedFile.substitute { path ->
-                    mergedImports.deepGetOrNull(*path.toTypedArray()).second
-                }.deepMap(mergedImports)
-            }.also {
-                val k = it
-                val t = 0
             }).apply {
             this.cache = cache
             this.explicitOperationReceivers = EXPLICIT_OPERATION_RECEIVERS + explicitOperationReceivers
@@ -219,20 +222,11 @@ public abstract class ScriptProperties {
         @PublishedApi
         internal fun Map<String, Any?>.deepMap(other: MutableMap<String, Any?>): MutableMap<String, Any?> =
             deepMap(
-                sourceIteratorOrNull = { value ->
-                    if (firstOrNull()?.second == SCRIPT_KEY) null else value.iteratorOrNull()
-                },
                 destination = other,
                 destinationGetter = { source ->
                     last().first.getOrPut(last().second, source::toNewMutableCollection)
                 }
-            ) { value ->
-                if (first().second == SCRIPT_KEY)
-                    first().first
-                        .asNullableMutableMap.getOrPut(first().second as String) { mutableListOf<Any>() }!!
-                        .asMutableList.addAll(value?.asList.orEmpty())
-                else last().first.put(last().second, value)
-            }
+            )
     }
 }
 

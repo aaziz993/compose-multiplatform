@@ -18,12 +18,12 @@ public class SettingsPlugin : Plugin<Settings> {
                 // Load and apply settings.yaml to settings.gradle.kts.
                 SettingsProperties()
 
-                gradle.projectsLoaded {
-                    // at this point all projects have been created by settings.gradle.kts, but none were evaluated yet
-                    allprojects {
-                        pluginManager.apply(ProjectPlugin::class.java)
-                    }
-                }
+//                gradle.projectsLoaded {
+//                    // at this point all projects have been created by settings.gradle.kts, but none were evaluated yet
+//                    allprojects {
+//                        pluginManager.apply(ProjectPlugin::class.java)
+//                    }
+//                }
             }
         }
     }
