@@ -594,6 +594,6 @@ public fun <T : Any> T.substitute(
     evaluator: (text: String, Program) -> Any? = { _, program -> program { name -> getter(listOf(name)) } }
 ): T = deepMapValues(
     sourceTransform = { value ->
-        (value as? String)?.substitute(*options, getter = getter, evaluator = evaluator) ?: value
+        if (value is String) value.substitute(*options, getter = getter, evaluator = evaluator) else value
     }
 )

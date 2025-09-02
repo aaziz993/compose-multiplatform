@@ -468,7 +468,7 @@ private class TemplateGrammar(
 
     private val valueGetter: (path: List<String>) -> Any? =
         if (SubstituteOption.DEEP_INTERPOLATION in options) { path ->
-            getter(path)?.let { value -> (value as? String)?.let(::parseToEnd) ?: value }
+            getter(path)?.let { value -> if (value is String) parseToEnd(value) else value }
         }
         else getter
 

@@ -235,7 +235,7 @@ realm = "10.19.0"
 # sqlite
 sqlite = "2.5.0-rc01"
 # h2 database driver
-h2 = "2.2.224"
+h2 = "2.3.232"
 # jdbc
 mariadb-java-client = "3.5.0"
 postgresql = "42.7.4"

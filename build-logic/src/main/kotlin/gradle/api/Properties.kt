@@ -64,7 +64,7 @@ public abstract class Properties : ScriptProperties() {
             setter: (P) -> Unit,
         ): P where T : PluginAware, T : ExtensionAware = ScriptProperties<P>(
             path,
-            cache = H2Cache(parentFile.resolve("$nameWithoutExtension.cache")),
+//            cache = H2Cache(parentFile.resolve("$nameWithoutExtension.cache")),
             explicitOperationReceivers = EXPLICIT_OPERATION_RECEIVERS,
             implicitOperation = ::tryAssignProperty,
         ) {
