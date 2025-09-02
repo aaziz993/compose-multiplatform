@@ -19,7 +19,7 @@ script:
             customAssets.from: ("dokka/logo-icon.svg")
   # Produces Kotlin source example files and tests from markdown documents with embedded snippets of Kotlin code
   - knit:
-      siteRoot: '"${remote.url}"'
+      siteRoot: '"${settings.settingsProperties.remote.url}"'
       moduleRootsFromIncludes: ()
       moduleDocs: '"build/dokka"'
       dokkaMultiModuleRoot: '"build/dokka"'

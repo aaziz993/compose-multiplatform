@@ -205,12 +205,12 @@ public abstract class ScriptProperties {
                             (decodedImport - SCRIPT_KEY).deepMap(mergedImportsConfig)
                         }
 
-                    val mergedImportsScripts =
+                    val mergedImportScripts =
                         decodedImports.flatMap { decodedImport -> decodedImport[SCRIPT_KEY]!!.asList }
 
                     substitutedFile.substitute { path ->
                         mergedImports.deepGetOrNull(*path.toTypedArray()).second
-                    }.deepMap(mergedImports) + (SCRIPT_KEY to mergedImportsScripts + decodedFileScript)
+                    }.deepMap(mergedImports) + (SCRIPT_KEY to mergedImportScripts + decodedFileScript)
                 }
             }).apply {
             this.cache = cache
