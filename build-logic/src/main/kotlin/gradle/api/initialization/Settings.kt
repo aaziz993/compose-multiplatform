@@ -37,3 +37,10 @@ public fun Settings.enableCacheRedirector(): Unit = CacheRedirector.applyTo(sett
 public fun Settings.execute(cmd: String): String = providers.exec {
     commandLine(cmd.split(" "))
 }.standardOutput.asText.get().trim()
+
+public fun Settings.gitCommitId(): String = execute("git rev-parse --verify HEAD")
+
+public fun Settings.gitBranch(): String = execute("git rev-parse --abbrev-ref HEAD")
+
+public fun Settings.gitStatus(): String = execute("git status --porcelain")
+

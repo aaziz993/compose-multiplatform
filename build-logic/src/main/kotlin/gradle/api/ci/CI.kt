@@ -86,21 +86,13 @@ public sealed class CI {
 
             // The GITHUB_REF_NAME provide the reference name.
             public val ref: String
-                get() = System.getenv("GITHUB_REF_NAME")!!
+                get() = System.getenv("GITHUB_REF_NAME") ?: "unknown"
 
             // The GITHUB_RUN_NUMBER A unique number for each run of a particular workflow in a repository.
             // This number begins at 1 for the workflow's first run, and increments with each new run.
             // This number does not change if you re-run the workflow run.
-            public val runNumber: String
-                get() = System.getenv("GITHUB_RUN_NUMBER")!!
-
-            context(settings: Settings)
-            public val commitId: String
-                get() = settings.execute("git rev-parse --verify HEAD")
-
-            context(settings: Settings)
-            public val status: String
-                get() = settings.execute("git status --porcelain")
+            public val runNumber: String?
+                get() = System.getenv("GITHUB_RUN_NUMBER")
         }
     }
 
