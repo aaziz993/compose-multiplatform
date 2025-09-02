@@ -8,7 +8,7 @@ import klib.data.type.collections.deepGetOrNull
 import klib.data.type.collections.list.asList
 import klib.data.type.collections.map.asMapOrNull
 import klib.data.type.collections.map.asStringNullableMap
-import klib.data.type.primitives.string.tokenization.substitution.SubstituteOption
+import klib.data.type.primitives.string.tokenization.evaluation.SubstituteOption
 import klib.data.type.reflection.declaredMemberExtensionFunction
 import klib.data.type.reflection.declaredMemberExtensionFunctions
 import klib.data.type.reflection.declaredMemberExtensionProperty
@@ -208,9 +208,9 @@ public abstract class ScriptProperties {
                     val mergedImportScripts =
                         decodedImports.flatMap { decodedImport -> decodedImport[SCRIPT_KEY]!!.asList }
 
-                    substitutedFile.substitute { path ->
+                    substitutedFile.substitute(getter = { path ->
                         mergedImports.deepGetOrNull(*path.toTypedArray()).second
-                    }.deepMap(mergedImports) + (SCRIPT_KEY to mergedImportScripts + decodedFileScript)
+                    }).deepMap(mergedImports) + (SCRIPT_KEY to mergedImportScripts + decodedFileScript)
                 }
             }).apply {
             this.cache = cache

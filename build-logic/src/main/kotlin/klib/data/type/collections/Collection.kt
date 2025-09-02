@@ -3,9 +3,10 @@ package klib.data.type.collections
 import klib.data.type.collections.list.asList
 import klib.data.type.collections.list.drop
 import klib.data.type.collections.map.asMap
-import klib.data.type.primitives.string.tokenization.substitution.SubstituteOption
-import klib.data.type.primitives.string.tokenization.substitution.substitute
+import klib.data.type.primitives.string.tokenization.evaluation.Program
+import klib.data.type.primitives.string.tokenization.evaluation.substitute
 import klib.data.type.primitives.toInt
+import klib.data.type.primitives.string.tokenization.evaluation.SubstituteOption
 import kotlin.collections.getOrElse
 import kotlin.collections.getOrNull
 import kotlin.collections.toTypedArray
@@ -585,13 +586,14 @@ public fun <T : Any> T.substitute(
     vararg options: SubstituteOption = arrayOf(
         SubstituteOption.INTERPOLATE_BRACES,
         SubstituteOption.DEEP_INTERPOLATION,
-        SubstituteOption.ESCAPE_INTERPOLATION,
+        SubstituteOption.ESCAPE_DOLLARS,
         SubstituteOption.EVALUATE,
-        SubstituteOption.ESCAPE_EVALUATION
+        SubstituteOption.ESCAPE_BACKSLASHES
     ),
-    getter: (path: List<String>) -> Any? = { path -> deepGetOrNull(*path.toTypedArray()).second }
+    getter: (path: List<String>) -> Any? = { path -> deepGetOrNull(*path.toTypedArray()).second },
+    evaluator: (text: String, Program) -> Any? = { _, program -> program { name -> getter(listOf(name)) } }
 ): T = deepMapValues(
     sourceTransform = { value ->
-        if (value is String) value.substitute(*options, getter = getter) else value
-    },
+        if (value is String) value.substitute(*options, getter = getter, evaluator = evaluator) else value
+    }
 )

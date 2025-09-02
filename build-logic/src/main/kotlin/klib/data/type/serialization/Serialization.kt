@@ -6,7 +6,7 @@ import klib.data.type.collections.list.asList
 import klib.data.type.collections.minusKeys
 import klib.data.type.collections.substitute
 import klib.data.type.collections.toNewMutableCollection
-import klib.data.type.primitives.string.tokenization.substitution.SubstituteOption
+import klib.data.type.primitives.string.tokenization.evaluation.SubstituteOption
 import kotlinx.serialization.modules.EmptySerializersModule
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.serializer
@@ -44,9 +44,9 @@ public fun <T : Any> decodeFile(
                     decodedImport.deepMap(destination = mergedImports)
                 }
 
-            substitutedFile.substitute { path ->
+            substitutedFile.substitute(getter = { path ->
                 mergedImports.deepGetOrNull(*path.toTypedArray()).second
-            }.deepMap(destination = mergedImports) as T
+            }).deepMap(destination = mergedImports) as T
         }
     },
 ): T = DeepRecursiveFunction<DecodeFileArgs<T>, T> { (file, mergedFiles) ->

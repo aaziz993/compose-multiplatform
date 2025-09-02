@@ -67,7 +67,7 @@ public const val LDP: String = """[$LP\d]"""
 public val String.Companion.DEFAULT: String
     get() = ""
 
-public fun String.escape(quoteMark: Char): String =
+public fun String.escape(quoteMark: Char = '"'): String =
     replace("\\$quoteMark", "$quoteMark")
         .replace("\\n", "\n")
         .replace("\\r", "\r")

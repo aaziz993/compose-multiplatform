@@ -14,9 +14,8 @@ import com.github.h0tk3y.betterParse.utils.Tuple2
 import klib.data.type.primitives.string.tokenization.Parsers
 import klib.data.type.primitives.string.tokenization.Tokens
 import klib.data.type.primitives.string.tokenization.mapToken
-import org.example.klib.data.type.primitives.string.tokenization.evaluation.SubstituteOption
 import net.pearx.kasechange.toCamelCase
-import org.example.klib.data.type.primitives.string.tokenization.mapWithMatches
+import klib.data.type.primitives.string.tokenization.mapWithMatches
 import kotlin.collections.Set
 import kotlin.collections.map
 

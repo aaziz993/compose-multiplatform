@@ -6,7 +6,6 @@ import klib.data.type.collections.list.asMutableList
 import klib.data.type.collections.map.asMap
 import klib.data.type.collections.map.pairs
 import klib.data.type.primitives.*
-import org.example.klib.data.type.primitives.string.tokenization.evaluation.SubstituteOption
 import kotlin.Pair
 
 public sealed class Expression {
