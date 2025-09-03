@@ -1,14 +1,19 @@
 package gradle.api
 
-import gradle.api.cache.H2Cache
+import com.charleskorn.kaml.Yaml
+import klib.data.type.Ansi
 import klib.data.type.primitives.string.scripting.ScriptProperties
+import klib.data.type.serialization.yaml.encodeAnyToString
 import org.gradle.api.file.ConfigurableFileCollection
+import org.gradle.api.logging.Logger
+import org.gradle.api.logging.Logging
 import org.gradle.api.plugins.ExtensionAware
 import org.gradle.api.plugins.PluginAware
 import org.gradle.api.provider.HasMultipleValues
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import java.io.File
+import kotlin.math.log
 import kotlin.reflect.KClass
 import kotlin.reflect.full.isSubclassOf
 import kotlin.script.experimental.api.defaultImports
@@ -16,7 +21,6 @@ import kotlin.script.experimental.jvm.dependenciesFromCurrentContext
 import kotlin.script.experimental.jvm.jvm
 
 public abstract class Properties : ScriptProperties() {
-
     public companion object {
         private val EXPLICIT_OPERATION_RECEIVERS = setOf(
             Property::class,
@@ -59,26 +63,39 @@ public abstract class Properties : ScriptProperties() {
             "klib.data.type.serialization.xml.*",
         )
 
+        private val logger: Logger = Logging.getLogger(Properties::class.java)
+
+
         internal inline operator fun <reified P : Properties, reified T> File.invoke(
             evaluationImplicitReceiver: T,
-            setter: (P) -> Unit,
-        ): P where T : PluginAware, T : ExtensionAware = ScriptProperties<P>(
-            path,
+            beforeInvoke: (P) -> Unit,
+        ): P where T : PluginAware, T : ExtensionAware {
+            logger.lifecycle(
+                "${Ansi.CYAN}--- ${evaluationImplicitReceiver.toString().uppercase()} ---${Ansi.RESET}"
+            )
+
+            return ScriptProperties<P>(
+                path,
 //            cache = H2Cache(parentFile.resolve("$nameWithoutExtension.cache")),
-            explicitOperationReceivers = EXPLICIT_OPERATION_RECEIVERS,
-            implicitOperation = ::tryAssignProperty,
-        ) {
-            compilationImplicitReceivers = listOf(T::class)
-            evaluationImplicitReceivers = listOf(evaluationImplicitReceiver)
+                explicitOperationReceivers = EXPLICIT_OPERATION_RECEIVERS,
+                implicitOperation = ::tryAssignProperty,
+            ) {
+                compilationImplicitReceivers = listOf(T::class)
+                evaluationImplicitReceivers = listOf(evaluationImplicitReceiver)
 
-            compilationBody = {
-                jvm {
-                    dependenciesFromCurrentContext(wholeClasspath = true)
+                compilationBody = {
+                    jvm {
+                        dependenciesFromCurrentContext(wholeClasspath = true)
+                    }
+
+                    defaultImports(*IMPORTS)
                 }
-
-                defaultImports(*IMPORTS)
+            }.also { properties ->
+                logger.lifecycle("${Ansi.GREEN}${properties.compiled}${Ansi.RESET}")
+                beforeInvoke(properties)
+                properties()
             }
-        }.also(setter).also(Properties::invoke)
+        }
 
         internal fun tryAssignProperty(valueClass: KClass<*>, value: Any?): String? =
             when {
