@@ -8,6 +8,7 @@ import com.diffplug.gradle.spotless.SpotlessExtension
 import com.github.gmazzo.gradle.plugins.BuildConfigExtension
 import com.google.devtools.ksp.gradle.KspExtension
 import com.osacky.doctor.DoctorExtension
+import de.jensklingenberg.ktorfit.gradle.KtorfitPluginExtension
 import gradle.api.ci.CI
 import gradle.api.initialization.libs
 import gradle.api.repositories.CacheRedirector
@@ -224,10 +225,10 @@ public val Project.rpc: RpcExtension get() = the()
 public fun Project.rpc(configure: RpcExtension.() -> Unit): Unit =
     extensions.configure(configure)
 
-//public val Project.ktorfit: KtorfitGradleConfiguration get() = the()
-//
-//public fun Project.ktorfit(configure: KtorfitGradleConfiguration.() -> Unit): Unit =
-//    extensions.configure(configure)
+public val Project.ktorfit: KtorfitPluginExtension get() = the()
+
+public fun Project.ktorfit(configure: KtorfitPluginExtension.() -> Unit): Unit =
+    extensions.configure(configure)
 
 public val Project.apollo: ApolloExtension get() = the()
 

@@ -311,14 +311,12 @@ script:
   #    strictValidation: true
   #
   ## Api that you can use to develop lightweight compiler plugins. KSP provides a simplified compiler plugin API that leverages the power of Kotlin while keeping the learning curve at a minimum. Compared to KAPT, annotation processors that use KSP can run up to 2x faster.
-  #ksp:
-  #  arguments:
-  #    # room
-  #    'room.schemaLocation': schemas
-  #    'room.incremental': 'true'
-  #    'room.expandProjection': 'true'
-  #    'room.generateKotlin': 'true'
-  #
+  - ksp:
+      # room
+      - arg: ("room.schemaLocation", "schemas")
+      - arg: ("room.incremental", "true")
+      - arg: ("room.expandProjection", "true")
+      - arg: ("room.generateKotlin", "true")
   ## Adapts Kotlin to the requirements of those frameworks and makes classes annotated with a specific annotation and their members open
   #allopen:
   #  myAnnotations:
@@ -352,9 +350,8 @@ script:
   #  linkSqlite: true
   #
   ## Abstraction layer over SQLite to allow for more robust database access while harnessing the full power of SQLite.
-  #room:
-  #  schemaDirectories:
-  #    - schemas
+  - room:
+     - schemaDirectory: ("schemas")
   #
   ## Kotlin library for adding asynchronous Remote Procedure Call (RPC) services to your applications. Build your RPC with already known language constructs and nothing more!
   #rpc:
@@ -386,21 +383,21 @@ script:
   #    - wasmJsMain
   #    - wasmWasiMain
   #
-  #dependencies:
-  #  - kspCommonMainMetadata: $libs.arrow.optics.ksp.plugin
-  #  - kspCommonMainMetadata: $libs.androidx.room.compiler
-  #  - kspCommonMainMetadata: $libs.ktorfit.ksp
-  #    # Use import org.koin.ksp.generated.*
-  #  - kspCommonMainMetadata: $libs.koin.ksp.compiler
-  #  # animalsniffer java signature
-  #  - signature: $libs.signature.java
-  #    # animalsniffer android signature
-  #  - signature: $libs.signature.android
-  #
+  - dependencies:
+      - add: ("kspCommonMainMetadata", libs("arrow.optics.ksp.plugin"))
+      - add: ("kspCommonMainMetadata", libs("androidx.room.compiler")
+      - add: ("kspCommonMainMetadata", libs("ktorfit.ksp")
+      # Use import org.koin.ksp.generated.* in project.
+      - add: ("kspCommonMainMetadata", libs("koin.ksp.compiler")
+#      # animalsniffer java signature
+#      - signature: $libs.signature.java
+#        # animalsniffer android signature
+#      - signature: $libs.signature.android
+
   #tasks:
   #  - ShadowJar:
   #      duplicatesStrategy: EXCLUDE
   #      mergeServiceFiles: true
-  - dependencies:
-      # knit
-      - testImplementation: ("org.jetbrains.kotlinx:kotlinx-knit-test")
+#  - dependencies:
+#      # knit
+#      - testImplementation: ("org.jetbrains.kotlinx:kotlinx-knit-test")
