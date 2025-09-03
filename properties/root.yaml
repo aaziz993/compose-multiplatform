@@ -7,6 +7,7 @@ config:
     - org.gradle.api.tasks.testing.logging.TestExceptionFormat
     - org.gradle.api.tasks.testing.logging.TestLogEvent
     - org.jetbrains.dokka.gradle.engine.parameters.VisibilityModifier
+    - gradle.api.project.*
 script:
   - buildscript:
       repositories:

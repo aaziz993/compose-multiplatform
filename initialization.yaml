@@ -35,6 +35,7 @@ config:
   imports:
     - org.gradle.caching.http.HttpBuildCache
     - com.gradle.develocity.agent.gradle.buildcache.DevelocityBuildCache
+    - gradle.api.initialization.*
 script:
   - enableFeaturePreview: ("TYPESAFE_PROJECT_ACCESSORS")
   - pluginManagement:
