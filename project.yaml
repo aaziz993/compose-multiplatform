@@ -1,5 +1,8 @@
 imports:
   - properties/root.yaml
+config:
+  imports:
+    - gradle.plugins.doctor.*
 script:
   - plugins:
       - id: (libs.plugins("doctor").pluginId)

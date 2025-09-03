@@ -266,7 +266,7 @@ ktor-swagger-ui = "2.9.0"
 # kotlin library for adding asynchronous Remote Procedure Call (RPC) services to your applications. Build your RPC with already known language constructs and nothing more!
 kotlinx-rpc = "0.5.1"
 # http client/Kotlin Symbol Processor for Kotlin Multiplatform ( Android, iOS, Js, Jvm, Linux) using KSP and Ktor clients inspired by Retrofit
-ktorfit = "2.2.0"
+ktorfit = "2.6.4"
 # http2
 tcnative = "2.0.62.Final"
 # strongly typed GraphQL client that generates Kotlin models for your GraphQL operations.

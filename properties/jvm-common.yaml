@@ -1,5 +1,5 @@
 plugins:
-  - alias(libs.plugins("animalsniffer"))
+  - id: (libs.plugins("animalsniffer").pluginId)
 
 # Check (JDK, android SDK or any library) API compatibility for java (kotlin, scala, groovy etc.), android and kotlin multiplatform projects.
 animalSniffer:

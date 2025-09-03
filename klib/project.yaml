@@ -3,7 +3,7 @@ imports:
 #  - ../properties/jvm/jvm.yaml
 #  - ../properties/android/android.yaml
 #  - ../properties/android/android-library.yaml
-#  - ../properties/mpp.yaml
+  - ../properties/mpp.yaml
   - ../properties/subproject.yaml
 
 

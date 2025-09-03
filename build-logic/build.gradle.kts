@@ -16,7 +16,7 @@ plugins {
 
 group = "io.github.aaziz993"
 
-version = Version(1, 0, 0)
+version = Version(1, 0, 0).toString()
 
 // Configure the build-logic plugins to target JDK
 // This matches the JDK used to build the project, and is not related to what is running on device.
@@ -129,7 +129,6 @@ dependencies {
     implementation(libs.snakeyaml)
 
     // Kotlin
-    implementation(kotlin("stdlib-jdk8"))
     // scripting
     implementation(libs.kotlin.scripting.common)
     implementation(libs.kotlin.scripting.jvm)
@@ -214,7 +213,6 @@ dependencies {
 
     // Web
     runtimeOnly(libs.kotlinx.html)
-    runtimeOnly(libs.plugins.js.plain.objects.toDep())
     runtimeOnly(libs.plugins.js.plain.objects.toDep())
     implementation(libs.plugins.seskar.toDep())
     // converter of TypeScript declaration files to Kotlin declarations.

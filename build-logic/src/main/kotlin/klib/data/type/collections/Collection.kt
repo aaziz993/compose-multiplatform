@@ -201,10 +201,10 @@ public fun <K> Any.deepGetOrNull(vararg path: K): Pair<List<Pair<Any, K>>, Any?>
 public fun <V, K> Any.deepRunOnPenultimate(
     vararg path: K,
     getter: List<Pair<Any, K>>.() -> Any? = { last().first.getOrNull(last().second) },
-    run: List<Pair<Any, K>>.(path: Array<out K>) -> V
-): V = deepGet(*path.copyOfRange(0, path.size - 1), getter = getter).let { (sources, value) ->
-    sources + (value!! to path[sources.size])
-}.run(path)
+    run: List<Pair<Any, K>>.() -> V
+): V? = deepGet(*path.copyOfRange(0, path.size - 1), getter = getter).let { (sources, value) ->
+    if (value == null) null else (sources + (value to path[sources.size])).run()
+}
 
 @Suppress("UNCHECKED_CAST")
 public fun <K> Any.deepSet(
@@ -212,16 +212,18 @@ public fun <K> Any.deepSet(
     getter: List<Pair<Any, K>>.() -> Any? = {
         last().first.getOrPut(last().second, { mutableMapOf<Any?, Any?>() })
     },
-    setter: List<Pair<Any, K>>.(path: Array<out K>) -> Unit,
-): Unit = deepRunOnPenultimate(*path, getter = getter, run = setter)
+    setter: List<Pair<Any, K>>.() -> Unit,
+) {
+    deepRunOnPenultimate(*path, getter = getter, run = setter)
+}
 
 public fun <K> Any.deepContains(
     vararg path: K,
     getter: List<Pair<Any, K>>.() -> Any? = { last().first.getOrNull(last().second) },
-    contains: List<Pair<Any, K>>.(path: Array<out K>) -> Boolean = { path ->
+    contains: List<Pair<Any, K>>.() -> Boolean = {
         size == path.size && last().first.containsKey(last().second)
     },
-): Boolean = deepRunOnPenultimate(*path, getter = getter, run = contains)
+): Boolean = deepRunOnPenultimate(*path, getter = getter, run = contains) == true
 
 public fun Any.flatten(
     iteratorOrNull: List<Pair<Any, Any?>>.(value: Any) -> Iterator<Map.Entry<Any?, Any?>>? = { value ->

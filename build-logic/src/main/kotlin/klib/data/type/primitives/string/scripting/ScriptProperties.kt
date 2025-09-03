@@ -100,11 +100,9 @@ public abstract class ScriptProperties {
                             ?: kClass.packageExtensions(getterName, packages).singleOrNull { method ->
                                 Modifier.isPublic(method.modifiers)
                             }?.returnType?.kotlin
+                            ?: if (size < path.size) error("Unresolved reference '${path.joinToString(".")}'") else null
                     },
                 ) {
-                    if (size < path.size)
-                        error("Unresolved reference '${path.joinToString(".")}'")
-
                     val receiver = last().first
 
                     if (receiver !is KClass<*> || explicitOperationReceivers.any(receiver::isSubclassOf))

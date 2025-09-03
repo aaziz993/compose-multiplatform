@@ -6,7 +6,6 @@ config:
     - org.jetbrains.kotlin.gradle.dsl.*
     - org.gradle.api.tasks.testing.logging.TestExceptionFormat
     - org.gradle.api.tasks.testing.logging.TestLogEvent
-    - gradle.plugins.doctor.*
     - org.jetbrains.dokka.gradle.engine.parameters.VisibilityModifier
 script:
   - buildscript:

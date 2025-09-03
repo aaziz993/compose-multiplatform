@@ -20,9 +20,9 @@ public class H2Cache(databaseFile: File) : Cache<String, String>, AutoCloseable 
 
     override fun get(key: String): String? {
         val preparedStatement = connection.prepareStatement("""SELECT "value" FROM cache WHERE "key" = ?""")
-        preparedStatement.use { preparedStatement ->
-            preparedStatement.setString(1, key)
-            val rs = preparedStatement.executeQuery()
+        preparedStatement.use { statement ->
+            statement.setString(1, key)
+            val rs = statement.executeQuery()
             return if (rs.next()) rs.getString(1) else null
         }
     }
@@ -30,18 +30,18 @@ public class H2Cache(databaseFile: File) : Cache<String, String>, AutoCloseable 
     override fun set(key: String, value: String) {
         val preparedStatement =
             connection.prepareStatement("""MERGE INTO cache ("key", "value") KEY("key") VALUES (?, ?)""")
-        preparedStatement.use { preparedStatement ->
-            preparedStatement.setString(1, key)
-            preparedStatement.setString(2, value)
-            preparedStatement.executeUpdate()
+        preparedStatement.use { statement ->
+            statement.setString(1, key)
+            statement.setString(2, value)
+            statement.executeUpdate()
         }
     }
 
     override fun remove(key: String) {
         val preparedStatement = connection.prepareStatement("""DELETE FROM cache WHERE "key" = ?""")
-        preparedStatement.use { preparedStatement ->
-            preparedStatement.setString(1, key)
-            preparedStatement.executeUpdate()
+        preparedStatement.use { statement ->
+            statement.setString(1, key)
+            statement.executeUpdate()
         }
     }
 
@@ -55,8 +55,8 @@ public class H2Cache(databaseFile: File) : Cache<String, String>, AutoCloseable 
 
     override fun asMap(): Map<String, String> = buildMap {
         val preparedStatement = connection.prepareStatement("""SELECT * FROM cache""")
-        preparedStatement.use { preparedStatement ->
-            val resultSet = preparedStatement.executeQuery()
+        preparedStatement.use { statement ->
+            val resultSet = statement.executeQuery()
 
             while (resultSet.next()) {
                 put(resultSet.getString("key"), resultSet.getString("value"))
