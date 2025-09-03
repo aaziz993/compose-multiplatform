@@ -107,10 +107,10 @@ script:
             // Tells spotless to format according to the Google Style Guide
             // (https://google.github.io/styleguide/javaguide.html)
             googleJavaFormat().apply {
-            groupArtifact("com.google.googlejavaformat:google-java-format")
-            reflowLongStrings(true)
-            reorderImports(true)
-            formatJavadoc(false)
+              groupArtifact("com.google.googlejavaformat:google-java-format")
+              reflowLongStrings(true)
+              reorderImports(true)
+              formatJavadoc(false)
             }
             // fixes formatting of type annotations
             formatAnnotations()

@@ -1,6 +1,7 @@
 package gradle.api
 
 import com.charleskorn.kaml.Yaml
+import gradle.api.cache.H2Cache
 import klib.data.type.Ansi
 import klib.data.type.primitives.string.scripting.ScriptProperties
 import klib.data.type.serialization.yaml.encodeAnyToString
@@ -71,12 +72,12 @@ public abstract class Properties : ScriptProperties() {
             beforeInvoke: (P) -> Unit,
         ): P where T : PluginAware, T : ExtensionAware {
             logger.lifecycle(
-                "${Ansi.CYAN}${evaluationImplicitReceiver.toString().uppercase()}${Ansi.RESET}"
+                "${Ansi.CYAN}${Ansi.BOLD}${evaluationImplicitReceiver.toString().uppercase()}${Ansi.RESET}"
             )
 
             return ScriptProperties<P>(
                 path,
-//            cache = H2Cache(parentFile.resolve("$nameWithoutExtension.cache")),
+                cache = H2Cache(parentFile.resolve("$nameWithoutExtension.cache")),
                 explicitOperationReceivers = EXPLICIT_OPERATION_RECEIVERS,
                 implicitOperation = ::tryAssignProperty,
             ) {
@@ -91,7 +92,7 @@ public abstract class Properties : ScriptProperties() {
                     defaultImports(*IMPORTS)
                 }
             }.also { properties ->
-                logger.lifecycle("${Ansi.GREEN}${properties.compiled}${Ansi.RESET}")
+                logger.lifecycle("${Ansi.GREEN}${Ansi.ITALIC}$properties${Ansi.RESET}")
                 beforeInvoke(properties)
                 properties()
             }

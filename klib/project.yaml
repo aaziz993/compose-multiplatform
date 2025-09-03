@@ -4,7 +4,7 @@ imports:
   #  - ../properties/android/android.yaml
   #  - ../properties/android/android-library.yaml
   - ../properties/mpp.yaml
-  - ../properties/subproject.yaml
+#  - ../properties/subproject.yaml
 
 #templates:
 #  - ../templates/gradle/jvm/jvm.yaml
