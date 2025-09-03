@@ -385,10 +385,10 @@ script:
   #
   - dependencies:
       - add: ("kspCommonMainMetadata", libs("arrow.optics.ksp.plugin"))
-      - add: ("kspCommonMainMetadata", libs("androidx.room.compiler")
-      - add: ("kspCommonMainMetadata", libs("ktorfit.ksp")
+      - add: ("kspCommonMainMetadata", libs("androidx.room.compiler"))
+      - add: ("kspCommonMainMetadata", libs("ktorfit.ksp"))
       # Use import org.koin.ksp.generated.* in project.
-      - add: ("kspCommonMainMetadata", libs("koin.ksp.compiler")
+      - add: ("kspCommonMainMetadata", libs("koin.ksp.compiler"))
 #      # animalsniffer java signature
 #      - signature: $libs.signature.java
 #        # animalsniffer android signature

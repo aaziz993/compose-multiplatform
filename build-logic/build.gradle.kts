@@ -4,6 +4,8 @@ import org.gradle.api.services.internal.RegisteredBuildServiceProvider
 plugins {
     // Print suggestions for your build as you run regular tasks
     alias(libs.plugins.doctor)
+    // Print suggestions for your build as you run regular tasks
+    alias(libs.plugins.animalsniffer)
     // API documentation engine for Kotlin.
     // Used to assist in the development of Gradle plugins. It automatically applies the Java Library.
     `java-gradle-plugin`
