@@ -1,3 +1,9 @@
+config:
+  imports:
+    - kotlinx.rpc.RpcStrictMode
+    - com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+    - org.gradle.api.file.DuplicatesStrategy
+    - gradle.plugins.spotless.*
 script:
   # Flatten source code directories.
   - flatten: ()
@@ -60,13 +66,13 @@ script:
             "-Xrender-internal-diagnostic-names",
             "-Xbinary=preCodegenInlineThreshold=40"
           )
-
-  #  targets:
-  #    - jvmCommon:
-  #        compilerOptions:
-  #          freeCompilerArgs:
-  #            - -Xjvm-default=all
-  #
+      targets:
+        - withType<KotlinJsTargetDsl>: |
+            {
+              compilerOptions.optIn.addAll(
+                "-Xjvm-default=all",
+              )
+            }
   #  sourceSets:
   #    - commonMain:
   #        dependencies:
@@ -80,324 +86,284 @@ script:
   #          - $libs.androidx.room.runtime.ktx
   #
   ## Software Composition Analysis (SCA) tool that attempts to detect publicly disclosed vulnerabilities contained within a project's dependencies. It does this by determining if there is a Common Platform Enumeration (CPE) identifier for a given dependency. If found, it will generate a report linking to the associated CVE entries.
-  #dependencyCheck:
-  #  outputDirectory: build/reports
-  #  format: ALL
-  #
-  ## Generating BuildConstants for any kind of Gradle projects: Java, Kotlin, Android, Groovy, etc. Designed for KTS scripts, with experimental support for Kotlin's multi-platform plugin
-  #buildconfig: { }
-  #
-  ## Can format <antlr | c | c# | c++ | css | flow | graphql | groovy | html | java | javascript | json | jsx | kotlin | less | license headers | markdown | objective-c | protobuf | python | scala | scss | shell | sql | typeScript | vue | yaml | anything> using <gradle | maven | sbt | anything>.
-  #spotless:
-  #  formats:
-  #    - java:
-  #        # remove old license header
-  #        replaceRegexes:
-  #          - name: remove license header
-  #            regex: ^\s*(//.*|/\*[\s\S]*?\*\/)\s*
-  #            replacement: ''
-  #        # specify license header text
-  #        licenseHeader:
-  #          headerFile: ../licenses/LICENSE_HEADER_SLASHED
-  #          delimiter: ^
-  #        # include source files
-  #        targets: [ '**/*.java' ]
-  #        # uses the default importOrder configuration
-  #        importOrder:
-  #          importOrder: [ ]
-  #        # removes any unused imports from any of your Java classes
-  #        removeIfUnusedImports: true
-  #        # Tells spotless to format according to the Google Style Guide
-  #        # (https://google.github.io/styleguide/javaguide.html)
-  #        googleJavaFormat:
-  #          groupArtifact: com.google.googlejavaformat:google-java-format
-  #          reflowLongStrings: true
-  #          reorderImports: true
-  #          formatJavadoc: false
-  #        # fixes formatting of type annotations
-  #        formatAnnotations: { }
-  #        # cleanthat will refactor your code, but it may break your style: apply it before your formatter
-  #        cleanthat: { }
-  #    - kotlin:
-  #        # use ktlint with version and custom .editorconfig
-  #        ktlint:
-  #          editorConfigPath: ../.editorconfig
-  #        # remove old license header
-  #        replaceRegexes:
-  #          - name: remove license header
-  #            regex: ^\s*(//.*|/\*[\s\S]*?\*\/)\s*
-  #            replacement: ''
-  #        # specify license header text
-  #        licenseHeader:
-  #          headerFile: ../licenses/LICENSE_HEADER_SLASHED
-  #          delimiter: ^
-  #        # include source files
-  #        targets: [ '**/*.kt','**/*.kts' ]
-  #        # removes any unused imports from any of your Java classes
-  #        removeIfUnusedImports: true
-  #    - kotlinGradle:
-  #        # use ktlint with version and custom .editorconfig
-  #        ktlint:
-  #          editorConfigPath: ../.editorconfig
-  #        # remove old license header
-  #        replaceRegexes:
-  #          - name: remove license header
-  #            regex: ^\s*(//.*|/\*[\s\S]*?\*\/)\s*
-  #            replacement: ''
-  #        # specify license header text
-  #        licenseHeader:
-  #          headerFile: ../licenses/LICENSE_HEADER_SLASHED
-  #          delimiter: ^
-  #        # include source files
-  #        targets: [ '**/*.gradle.kts' ]
-  #        # removes any unused imports from any of your Java classes
-  #        removeUnusedImports: google-java-format
-  #    - javascript:
-  #        # remove old license header
-  #        replaceRegexes:
-  #          - name: remove license header
-  #            regex: ^\s*(//.*|/\*[\s\S]*?\*\/)\s*
-  #            replacement: ''
-  #        # specify license header text
-  #        licenseHeader:
-  #          headerFile: ../licenses/LICENSE_HEADER_SLASHED
-  #          delimiter: ^
-  #        # include source files
-  #        targets: [ '**/*.js' ]
-  #    - typescript:
-  #        # remove old license header
-  #        replaceRegexes:
-  #          - name: remove license header
-  #            regex: ^\s*(//.*|/\*[\s\S]*?\*\/)\s*
-  #            replacement: ''
-  #        # specify license header text
-  #        licenseHeader:
-  #          headerFile: ../licenses/LICENSE_HEADER_SLASHED
-  #          delimiter: ^
-  #        # include source files
-  #        targets: [ '**/*.ts' ]
-  #    - json:
-  #        # include source files
-  #        targets: [ '**/*.json' ]
-  #    - yaml:
-  #        # specify license header text
-  #        licenseHeader:
-  #          headerFile: ../licenses/LICENSE_HEADER_SHARPED
-  #          delimiter: ^(?!\s*#).*
-  #        # include source files
-  #        targets: [ '**/*.yaml', '**/*.yml' ]
-  #    - format:
-  #        name: xml
-  #        # remove old license header
-  #        replaceRegexes:
-  #          - name: remove license header
-  #            regex: ^\s*<--[\s\S]*?-->\s*
-  #            replacement: ''
-  #        # specify license header text
-  #        licenseHeader:
-  #          headerFile: ../licenses/LICENSE_HEADER_TAGGED
-  #          delimiter: ^
-  #        # include source files
-  #        targets: [ '**/*.xml' ]
-  #    - format:
-  #        name: properties
-  #        # specify license header text
-  #        licenseHeader:
-  #          headerFile: ../licenses/LICENSE_HEADER_SHARPED
-  #          delimiter: ^(?!\s*#).*
-  #        # include source files
-  #        targets: [ '**/*.properties' ]
-  #        # removes any extra whitespace at the beginning of lines
-  #        indentWithSpaces: 0
-  #    - format:
-  #        name: html
-  #        # remove old license header
-  #        replaceRegexes:
-  #          - name: remove license header
-  #            regex: ^\s*<--[\s\S]*?-->\s*
-  #            replacement: ''
-  #        # specify license header text
-  #        licenseHeader:
-  #          headerFile: ../licenses/LICENSE_HEADER_TAGGED
-  #          delimiter: ^
-  #        # include source files
-  #        targets: [ '**/*.html' ]
-  #    - format:
-  #        name: md
-  #        # remove old license header
-  #        replaceRegexes:
-  #          - name: remove license header
-  #            regex: ^\s*<--[\s\S]*?-->\s*
-  #            replacement: ''
-  #        # specify license header text
-  #        licenseHeader:
-  #          headerFile: ../licenses/LICENSE_HEADER_TAGGED
-  #          delimiter: ^
-  #        # include source files
-  #        targets: [ '**/*.md' ]
-  #    - format:
-  #        name: editconfig
-  #        # specify license header text
-  #        licenseHeader:
-  #          headerFile: ../licenses/LICENSE_HEADER_SHARPED
-  #          delimiter: ^(?!\s*#).*
-  #        # include source files
-  #        targets: [ '**/.editconfig' ]
-  #        # removes any extra whitespace at the beginning of lines
-  #        indentWithSpaces: 0
-  #    - format:
-  #        name: gitignore
-  #        # specify license header text
-  #        licenseHeader:
-  #          headerFile: ../licenses/LICENSE_HEADER_SHARPED
-  #          delimiter: ^(?!\s*#).*
-  #        # include source files
-  #        targets: [ '**/.gitignore' ]
-  #        # removes any extra whitespace at the beginning of lines
-  #        indentWithSpaces: 0
-  #    - format:
-  #        name: gitattributes
-  #        # specify license header text
-  #        licenseHeader:
-  #          headerFile: ../licenses/LICENSE_HEADER_SHARPED
-  #          delimiter: ^(?!\s*#).*
-  #        # include source files
-  #        targets: [ '**/.gitattributes' ]
-  #        # removes any extra whitespace at the beginning of lines
-  #        indentWithSpaces: 0
-  #    - format:
-  #        # exclude source files
-  #        targetExcludes: [
-  #          ../licenses/LICENSE_HEADER_* ,
-  #          '**/generated-src/**',
-  #          '**/build-*/**',
-  #          '**/.idea/**',
-  #          '**/.fleet/**',
-  #          '**/.idea/**',
-  #          '**/.gradle/**',
-  #          '/spotless/**',
-  #          '**/resources/**',
-  #          '**/buildSrc/**'
-  #        ]
-  #        # removes any extra whitespace at the end of lines
-  #        trimTrailingWhitespace: true
-  #        # adds a newline character to the end of files content
-  #        endWithNewline: true
-  #        # adds the ability to have spotless ignore specific portions of a project. The usage looks like the following
-  #        toggleIfOffOn: { }
-  #
-  ## Help developers deliver high-quality, efficient code standards that benefit the entire team or organization.
-  #sonar:
-  #  properties:
-  #    'sonar.host.url': '"https://sonarcloud.io"'
-  #    'sonar.organization': '"aaziz993"'
-  #    'sonar.projectKey': '"aaziz993_compose-multiplatform"'
-  #    'sonar.coverage.jacoco.xmlReportPaths': '"build/reports/kover/report.xml"'
-  #    'sonar.androidLint.reportPaths': '"build/reports/lint-results.xml"'
-  #
-  ## Api documentation engine for Kotlin.
-  #dokka:
-  #  dokkaSourceSets:
-  #  pluginsConfiguration:
-  #    - html:
-  #        customStyleSheets: [ ../dokka/style.css, ../dokka/prism.css, ../dokka/logo-styles.css ]
-  #        customAssets: [ ../dokka/logo-icon.svg ]
-  #
-  ## Allows dumping binary API of a JVM part of a Kotlin library that is public in the sense of Kotlin visibilities and ensures that the public binary API wasn't changed in a way that makes this change binary incompatible.
-  #apiValidation:
-  #  apiDumpDirectory: api-validation
-  #  klib:
-  #    enabled: true
-  #    strictValidation: true
-  #
-  ## Api that you can use to develop lightweight compiler plugins. KSP provides a simplified compiler plugin API that leverages the power of Kotlin while keeping the learning curve at a minimum. Compared to KAPT, annotation processors that use KSP can run up to 2x faster.
+  - dependencyCheck:
+      outputDirectory: '"build/reports"'
+      format: "'ALL'"
+  # Generating BuildConstants for any kind of Gradle projects: Java, Kotlin, Android, Groovy, etc. Designed for KTS scripts, with experimental support for Kotlin's multi-platform plugin
+  - buildconfig: { }
+  # Can format <antlr | c | c# | c++ | css | flow | graphql | groovy | html | java | javascript | json | jsx | kotlin | less | license headers | markdown | objective-c | protobuf | python | scala | scss | shell | sql | typeScript | vue | yaml | anything> using <gradle | maven | sbt | anything>.
+  - spotless:
+      - java: | 
+          {
+            replaceRegex("remove license header", """^\s*(//.*|/\*[\s\S]*?\*\/)\s*""", "")
+            // specify license header text
+            licenseHeader("../licenses/LICENSE_HEADER_SLASHED", "^")
+            // include source files
+            target("**/*.java")
+            // uses the default importOrder configuration
+            importOrder()
+            // removes any unused imports from any of your Java classes
+            removeUnusedImports()
+            // Tells spotless to format according to the Google Style Guide
+            // (https://google.github.io/styleguide/javaguide.html)
+            googleJavaFormat().apply {
+            groupArtifact("com.google.googlejavaformat:google-java-format")
+            reflowLongStrings(true)
+            reorderImports(true)
+            formatJavadoc(false)
+            }
+            // fixes formatting of type annotations
+            formatAnnotations()
+            // cleanthat will refactor your code, but it may break your style: apply it before your formatter
+            cleanthat()
+          }
+      - kotlin: |
+          {
+            // use ktlint with version and custom .editorconfig
+            ktlint().setEditorConfigPath("../.editorconfig")
+            // remove old license header
+            replaceRegex("remove license header", """^\s*(//.*|/\*[\s\S]*?\*\/)\s*""", "")
+            // specify license header text
+            licenseHeader("../licenses/LICENSE_HEADER_SLASHED", "^")
+            // include source files
+            target("**/*.kt", "**/*.kts")
+          }
+      - kotlinGradle: |
+          {
+            // use ktlint with version and custom .editorconfig
+            ktlint().setEditorConfigPath("../.editorconfig")
+            // remove old license header
+            replaceRegex("remove license header", """^\s*(//.*|/\*[\s\S]*?\*\/)\s*""", "")
+            // specify license header text
+            licenseHeader("../licenses/LICENSE_HEADER_SLASHED", "^")
+            // include source files
+            target("**/*.gradle.kts")
+          }
+      - javascript: |
+          {
+            // remove old license header
+            replaceRegex("remove license header", """^\s*(//.*|/\*[\s\S]*?\*\/)\s*""", "")
+            // specify license header text
+            licenseHeader("../licenses/LICENSE_HEADER_SLASHED", "^")
+            // include source files
+            target("**/*.js")
+          }
+      - typescript: |
+          {
+            // remove old license header
+            replaceRegex("remove license header", """^\s*(//.*|/\*[\s\S]*?\*\/)\s*""", "")
+            // specify license header text
+            licenseHeader("../licenses/LICENSE_HEADER_SLASHED", "^")
+            // include source files
+            target("**/*.ts")
+          }
+      - json: | 
+          {
+            // include source files
+            target("**/*.json")
+          }
+      - yaml: |
+          {
+            // specify license header text
+            licenseHeader("../licenses/LICENSE_HEADER_SHARPED", """^(?!\s*#).*""")
+            // include source files
+            target("**/*.yaml", "**/*.yml")
+          }
+      - format: |
+          ("xml") {
+            // remove old license header
+            replaceRegex("remove license header", """^\s*<--[\s\S]*?-->\s*""", "")
+            // specify license header text
+            licenseHeader("../licenses/LICENSE_HEADER_TAGGED", "^")
+            // include source files
+            target("**/*.xml")
+          }
+      - format: |
+          ("properties") {
+            // specify license header text
+            licenseHeader("../licenses/LICENSE_HEADER_SHARPED", """^(?!\s*#).*""", "")
+            // include source files
+            target("**/*.properties")
+            // removes any extra whitespace at the beginning of lines
+            indentWithSpaces()
+          }
+      - format:
+          ("html") {
+            // remove old license header
+            replaceRegex("remove license header", """^\s*<--[\s\S]*?-->\s*""", "")
+            // specify license header text
+            licenseHeader("../licenses/LICENSE_HEADER_TAGGED", "^")
+            // include source files
+            target("**/*.html")
+          }
+      - format:
+          ("md") {
+            // remove old license header
+            replaceRegex("remove license header", """^\s*<--[\s\S]*?-->\s*""", "")
+            // specify license header text
+            licenseHeader("../licenses/LICENSE_HEADER_TAGGED", "^")
+            // include source files
+            target("**/*.md")
+          }
+      - format: |
+          ("editconfig") {
+            // specify license header text
+            licenseHeader("../licenses/LICENSE_HEADER_SHARPED", """^(?!\s*#).*""")
+            // include source files
+            target("**/.editconfig")
+            // removes any extra whitespace at the beginning of lines
+            indentWithSpaces()
+          }
+      - format: |
+          ("gitignore") {
+            // specify license header text
+            licenseHeader("../licenses/LICENSE_HEADER_SHARPED", """^(?!\s*#).*""")
+            // include source files
+            target("**/.gitignore")
+            // removes any extra whitespace at the beginning of lines
+            indentWithSpaces()
+          }
+      - format: |
+          ("gitattributes") {
+            // specify license header text
+            licenseHeader("../licenses/LICENSE_HEADER_SHARPED", """^(?!\s*#).*""")
+            // include source files
+            target("**/.gitattributes")
+            // removes any extra whitespace at the beginning of lines
+            indentWithSpaces()
+          }
+      - formats: |
+          {
+            // exclude source files
+            targetExclude(
+              "../licenses/LICENSE_HEADER_*",
+              "**/generated-src/**",
+              "**/build-*/**",
+              "**/.idea/**",
+              "**/.fleet/**",
+              "**/.idea/**",
+              "**/.gradle/**",
+              "/spotless/**",
+              "**/resources/**",
+              "**/buildSrc/**"
+            )
+            // removes any extra whitespace at the end of lines
+            trimTrailingWhitespace()
+            // adds a newline character to the end of files content
+            endWithNewline()
+            // adds the ability to have spotless ignore specific portions of a project. The usage looks like the following
+            toggleOffOn()
+          }
+  # Help developers deliver high-quality, efficient code standards that benefit the entire team or organization.
+  - sonar:
+      properties: |
+        {
+          property("sonar.host.url", "https://sonarcloud.io")
+          property("sonar.organization", "aaziz993")
+          property("sonar.projectKey", "aaziz993_compose-multiplatform")
+          property("sonar.coverage.jacoco.xmlReportPaths", "build/reports/kover/report.xml")
+          property("sonar.androidLint.reportPaths", "build/reports/lint-results.xml")
+        }
+  # Api documentation engine for Kotlin.
+  - dokka:
+      pluginsConfiguration:
+        - html:
+            customStyleSheets: '*arrayOf("../dokka/style.css", "../dokka/prism.css", "../dokka/logo-styles.css")'
+            customAssets: '*arrayOf("../dokka/logo-icon.svg")'
+  # Allows dumping binary API of a JVM part of a Kotlin library that is public in the sense of Kotlin visibilities and ensures that the public binary API wasn't changed in a way that makes this change binary incompatible.
+  - apiValidation:
+      apiDumpDirectory: '"api-validation"'
+      klib:
+        enabled: true
+        strictValidation: true
+  # Api that you can use to develop lightweight compiler plugins. KSP provides a simplified compiler plugin API that leverages the power of Kotlin while keeping the learning curve at a minimum. Compared to KAPT, annotation processors that use KSP can run up to 2x faster.
   - ksp:
       # room
       - arg: ("room.schemaLocation", "schemas")
       - arg: ("room.incremental", "true")
       - arg: ("room.expandProjection", "true")
       - arg: ("room.generateKotlin", "true")
-  ## Adapts Kotlin to the requirements of those frameworks and makes classes annotated with a specific annotation and their members open
-  #allopen:
-  #  myAnnotations:
-  #    - javax.ws.rs.Path
-  #    - javax.enterprise.context.ApplicationScoped
-  #    - javax.persistence.Entity
-  #    - org.openjdk.jmh.annotations.State # apply to ensure your benchmark classes and methods are open.
-  #    - data.type.annotation.AllOpen
-  #
-  ## Generates an additional zero-argument constructor for classes with a specific annotation.
-  #noarg:
-  #  myAnnotations:
-  #    - data.type.annotation.NoArg
-  #
-  ## Multiplatform library that provides the idiomatic and efficient way of using atomic operations in Kotlin.
-  #atomicfu: { }
-  #
-  ## Compiler plugin, that generates visitor code for serializable classes, runtime library with core serialization API and support libraries with various serialization formats.
-  #serialization:
-  #  version: 1.8.0
-  #
-  ## Toolkit for running benchmarks for multiplatform code written in Kotlin. It is designed to work with Kotlin/JVM, Kotlin/JS, Kotlin/Native, and Kotlin/WasmJs (experimental) targets.
-  #benchmark:
-  #  reportsDir: build/reports
-  #  targets:
-  #    - jvm:
-  #        jmhVersion: '1.37'
-  #
-  ## Generates typesafe Kotlin APIs from your SQL statements. It verifies your schema, statements, and migrations at compile-time and provides IDE features like autocomplete and refactoring which make writing and maintaining SQL simple.
-  #sqldelight:
-  #  linkSqlite: true
-  #
-  ## Abstraction layer over SQLite to allow for more robust database access while harnessing the full power of SQLite.
+  # Adapts Kotlin to the requirements of those frameworks and makes classes annotated with a specific annotation and their members open
+  - allOpen:
+      - annotations: |
+          (
+            "javax.ws.rs.Path",
+            "javax.enterprise.context.ApplicationScoped",
+            "javax.persistence.Entity",
+            "org.openjdk.jmh.annotations.State",
+            // apply to ensure your benchmark classes and methods are open.
+            "data.type.annotation.AllOpen",
+          )
+  # Generates an additional zero-argument constructor for classes with a specific annotation.
+  - noArg:
+      - annotations: |
+          (
+            "data.type.annotation.NoArg",
+          )
+  # Multiplatform library that provides the idiomatic and efficient way of using atomic operations in Kotlin.
+  - atomicfu: { }
+  # Toolkit for running benchmarks for multiplatform code written in Kotlin. It is designed to work with Kotlin/JVM, Kotlin/JS, Kotlin/Native, and Kotlin/WasmJs (experimental) targets.
+  - benchmark:
+      reportsDir: '"build/reports"'
+      targets:
+        - benchmark.targets.withType<JvmBenchmarkTarget>: |
+            {
+              jmhVersion = "1.37"
+            }
+  # Generates typesafe Kotlin APIs from your SQL statements. It verifies your schema, statements, and migrations at compile-time and provides IDE features like autocomplete and refactoring which make writing and maintaining SQL simple.
+  - sqldelight:
+      linkSqlite: true
+  # Abstraction layer over SQLite to allow for more robust database access while harnessing the full power of SQLite.
   - room:
-     - schemaDirectory: ("schemas")
-  #
+      - schemaDirectory: ("schemas")
   ## Kotlin library for adding asynchronous Remote Procedure Call (RPC) services to your applications. Build your RPC with already known language constructs and nothing more!
-  #rpc:
-  #  annotationTypeSafetyEnabled: true
-  #
+  - rpc:
+      strict:
+        stateFlow: RpcStrictMode.WARNING
+        sharedFlow: RpcStrictMode.WARNING
+        nestedFlow: RpcStrictMode.WARNING
   ## Http client/Kotlin Symbol Processor for Kotlin Multiplatform ( Android, iOS, Js, Jvm, Linux) using KSP and Ktor clients inspired by Retrofit
-  #ktorfit:
-  #  generateQualifiedTypeName: true
-  #
+  - ktorfit:
+      generateQualifiedTypeName: true
   ## Strongly typed GraphQL client that generates Kotlin models for your GraphQL operations.
-  #apollo:
-  #  generateSourcesDuringGradleSync: true
-  #
-  ## Providing detailed failure messages with contextual information during testing.
-  #powerAssert:
-  #  functions:
-  #    - kotlin.assert
-  #    - kotlin.test.assertTrue
-  #    - kotlin.test.assertEquals
-  #    - kotlin.test.assertNull
-  #    - kotlin.test.assertFails
-  #    - kotlin.test.assertFailsWith
-  #  includedSourceSets:
-  #    - commonMain
-  #    - jvmMain
-  #    - androidMain
-  #    - nativeMain
-  #    - jsMain
-  #    - wasmJsMain
-  #    - wasmWasiMain
-  #
+  - apollo:
+      generateSourcesDuringGradleSync: true
+  # Providing detailed failure messages with contextual information during testing.
+  - powerAssert:
+      functions.addAll: |
+        (
+          "kotlin.assert",
+          "kotlin.test.assertTrue",
+          "kotlin.test.assertEquals",
+          "kotlin.test.assertNull",
+          "kotlin.test.assertFails",
+          "kotlin.test.assertFailsWith",
+        )
+      includedSourceSets.addAll: |
+        (
+          "commonMain",
+          "jvmMain",
+          "androidMain",
+          "nativeMain",
+          "jsMain",
+          "wasmJsMain",
+          "wasmWasiMain",
+        )
   - dependencies:
       - add: ("kspCommonMainMetadata", libs("arrow.optics.ksp.plugin"))
       - add: ("kspCommonMainMetadata", libs("androidx.room.compiler"))
       - add: ("kspCommonMainMetadata", libs("ktorfit.ksp"))
       # Use import org.koin.ksp.generated.* in project.
       - add: ("kspCommonMainMetadata", libs("koin.ksp.compiler"))
-#      # animalsniffer java signature
-#      - signature: $libs.signature.java
-#        # animalsniffer android signature
-#      - signature: $libs.signature.android
-
-  #tasks:
-  #  - ShadowJar:
-  #      duplicatesStrategy: EXCLUDE
-  #      mergeServiceFiles: true
-#  - dependencies:
-#      # knit
-#      - testImplementation: ("org.jetbrains.kotlinx:kotlinx-knit-test")
+      # animalsniffer java signature
+      - signature: ("libs.signature.java")
+      # animalsniffer android signature
+      - signature: ("libs.signature.android")
+      # knit
+      - testImplementation: ("org.jetbrains.kotlinx:kotlinx-knit-test")
+#  - tasks:
+#      - withType<ShadowJar>: |
+#          { shadowJar ->
+#              shadowJar.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+#              shadowJar.mergeServiceFiles()
+#          }

@@ -2,9 +2,9 @@ import io.github.z4kn4fein.semver.Version
 import org.gradle.api.services.internal.RegisteredBuildServiceProvider
 
 plugins {
-    // Print suggestions for your build as you run regular tasks
+    // Print suggestions for your build as you run regular tasks.
     alias(libs.plugins.doctor)
-    // Print suggestions for your build as you run regular tasks
+    // Check (JDK, android SDK or any library) API compatibility for java (kotlin, scala, groovy etc.), android and kotlin multiplatform projects.
     alias(libs.plugins.animalsniffer)
     // API documentation engine for Kotlin.
     // Used to assist in the development of Gradle plugins. It automatically applies the Java Library.
@@ -12,7 +12,7 @@ plugins {
     // Support convention plugins written in Kotlin.
     // Convention plugins are build scripts in 'src/main' that automatically become available as plugins in the main build.
     `kotlin-dsl`
-    // Serialization
+    // Serialization.
     alias(libs.plugins.kotlin.serialization)
 }
 
@@ -111,6 +111,7 @@ dependencies {
     implementation(libs.plugins.binaryCompatibilityValidator.toDep())
     // check (JDK, android SDK or any library) API compatibility for java (kotlin, scala, groovy etc.), android and kotlin multiplatform projects.
     implementation(libs.plugins.animalsniffer.toDep())
+    signature(libs.signature.java)
     // produces Kotlin source example files and tests from markdown documents with embedded snippets of Kotlin code
     implementation(libs.plugins.knit.toDep())
     // generating BuildConstants for any kind of Gradle projects: Java, Kotlin, Android, Groovy, etc. Designed for KTS scripts, with experimental support for Kotlin's multi-platform plugin

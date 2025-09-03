@@ -15,14 +15,8 @@
 
 package gradle.api.artifacts.dsl
 
-import klib.data.type.primitives.string.addPrefix
 import org.gradle.api.Action
-import org.gradle.api.artifacts.ConfigurablePublishArtifact
-import org.gradle.api.artifacts.Dependency
-import org.gradle.api.artifacts.DependencyConstraint
-import org.gradle.api.artifacts.ExternalModuleDependency
-import org.gradle.api.artifacts.ModuleDependency
-import org.gradle.api.artifacts.PublishArtifact
+import org.gradle.api.artifacts.*
 import org.gradle.api.artifacts.dsl.ArtifactHandler
 import org.gradle.api.artifacts.dsl.DependencyConstraintHandler
 import org.gradle.api.artifacts.dsl.DependencyHandler
@@ -1694,3 +1688,154 @@ public fun ArtifactHandler.dokka(
     configureAction: ConfigurablePublishArtifact.() -> Unit
 ): PublishArtifact =
     add("dokka", artifactNotation, configureAction)
+
+/**
+ * Adds a dependency to the 'implementation' configuration.
+ *
+ * @param dependencyNotation notation for the dependency to be added.
+ * @return The dependency.
+ *
+ * @see [DependencyHandler.add]
+ */
+public fun DependencyHandler.signature(dependencyNotation: Any): Dependency? =
+    add("signature", dependencyNotation)
+
+/**
+ * Adds a dependency to the 'implementation' configuration.
+ *
+ * @param dependencyNotation notation for the dependency to be added.
+ * @param dependencyConfiguration expression to use to configure the dependency.
+ * @return The dependency.
+ *
+ * @see [DependencyHandler.add]
+ */
+public fun DependencyHandler.signature(
+    dependencyNotation: String,
+    dependencyConfiguration: Action<ExternalModuleDependency>
+): ExternalModuleDependency = addDependencyTo(
+    this, "signature", dependencyNotation, dependencyConfiguration,
+) as ExternalModuleDependency
+
+/**
+ * Adds a dependency to the 'implementation' configuration.
+ *
+ * @param dependencyNotation notation for the dependency to be added.
+ * @param dependencyConfiguration expression to use to configure the dependency.
+ * @return The dependency.
+ *
+ * @see [DependencyHandler.add]
+ */
+public fun DependencyHandler.signature(
+    dependencyNotation: Provider<*>,
+    dependencyConfiguration: Action<ExternalModuleDependency>
+): Unit = addConfiguredDependencyTo(
+    this, "signature", dependencyNotation, dependencyConfiguration,
+)
+
+/**
+ * Adds a dependency to the 'implementation' configuration.
+ *
+ * @param dependencyNotation notation for the dependency to be added.
+ * @param dependencyConfiguration expression to use to configure the dependency.
+ * @return The dependency.
+ *
+ * @see [DependencyHandler.add]
+ */
+public fun DependencyHandler.signature(
+    dependencyNotation: ProviderConvertible<*>,
+    dependencyConfiguration: Action<ExternalModuleDependency>
+): Unit = addConfiguredDependencyTo(
+    this, "signature", dependencyNotation, dependencyConfiguration,
+)
+
+/**
+ * Adds a dependency to the 'implementation' configuration.
+ *
+ * @param group the group of the module to be added as a dependency.
+ * @param name the name of the module to be added as a dependency.
+ * @param version the optional version of the module to be added as a dependency.
+ * @param configuration the optional configuration of the module to be added as a dependency.
+ * @param classifier the optional classifier of the module artifact to be added as a dependency.
+ * @param ext the optional extension of the module artifact to be added as a dependency.
+ * @param dependencyConfiguration expression to use to configure the dependency.
+ * @return The dependency.
+ *
+ * @see [DependencyHandler.create]
+ * @see [DependencyHandler.add]
+ */
+public fun DependencyHandler.signature(
+    group: String,
+    name: String,
+    version: String? = null,
+    configuration: String? = null,
+    classifier: String? = null,
+    ext: String? = null,
+    dependencyConfiguration: Action<ExternalModuleDependency>? = null
+): ExternalModuleDependency = addExternalModuleDependencyTo(
+    this, "signature", group, name, version, configuration, classifier, ext, dependencyConfiguration,
+)
+
+/**
+ * Adds a dependency to the 'implementation' configuration.
+ *
+ * @param dependency dependency to be added.
+ * @param dependencyConfiguration expression to use to configure the dependency.
+ * @return The dependency.
+ *
+ * @see [DependencyHandler.add]
+ */
+public fun <T : ModuleDependency> DependencyHandler.signature(
+    dependency: T,
+    dependencyConfiguration: T.() -> Unit
+): T = add("signature", dependency, dependencyConfiguration)
+
+/**
+ * Adds a dependency constraint to the 'implementation' configuration.
+ *
+ * @param constraintNotation the dependency constraint notation
+ *
+ * @return the added dependency constraint
+ *
+ * @see [DependencyConstraintHandler.add]
+ */
+public fun DependencyConstraintHandler.signature(constraintNotation: Any): DependencyConstraint =
+    add("signature", constraintNotation)
+
+/**
+ * Adds a dependency constraint to the 'implementation' configuration.
+ *
+ * @param constraintNotation the dependency constraint notation
+ * @param block the block to use to configure the dependency constraint
+ *
+ * @return the added dependency constraint
+ *
+ * @see [DependencyConstraintHandler.add]
+ */
+public fun DependencyConstraintHandler.signature(constraintNotation: Any, block: DependencyConstraint.() -> Unit): DependencyConstraint =
+    add("signature", constraintNotation, block)
+
+/**
+ * Adds an artifact to the 'implementation' configuration.
+ *
+ * @param artifactNotation the group of the module to be added as a dependency.
+ * @return The artifact.
+ *
+ * @see [ArtifactHandler.add]
+ */
+public fun ArtifactHandler.signature(artifactNotation: Any): PublishArtifact =
+    add("signature", artifactNotation)
+
+/**
+ * Adds an artifact to the 'implementation' configuration.
+ *
+ * @param artifactNotation the group of the module to be added as a dependency.
+ * @param configureAction The action to execute to configure the artifact.
+ * @return The artifact.
+ *
+ * @see [ArtifactHandler.add]
+ */
+public fun ArtifactHandler.signature(
+    artifactNotation: Any,
+    configureAction: ConfigurablePublishArtifact.() -> Unit
+): PublishArtifact =
+    add("signature", artifactNotation, configureAction)
