@@ -68,7 +68,6 @@ import org.jetbrains.kotlin.noarg.gradle.NoArgExtension
 import org.jetbrains.kotlin.powerassert.gradle.PowerAssertGradleExtension
 import org.owasp.dependencycheck.gradle.extension.DependencyCheckExtension
 import org.sonarqube.gradle.SonarExtension
-import ru.vyarus.gradle.plugin.animalsniffer.AnimalSnifferExtension
 
 /**
  * Create native module name from project path.
@@ -157,11 +156,6 @@ public fun Project.versioning(configure: VersioningConfiguration.() -> Unit): Un
 public val Project.apiValidation: ApiValidationExtension get() = the()
 
 public fun Project.apiValidation(configure: ApiValidationExtension.() -> Unit): Unit =
-    extensions.configure(configure)
-
-public val Project.animalSniffer: AnimalSnifferExtension get() = the()
-
-public fun Project.animalSniffer(configure: AnimalSnifferExtension.() -> Unit): Unit =
     extensions.configure(configure)
 
 public val Project.ksp: KspExtension get() = the()

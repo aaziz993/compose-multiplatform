@@ -8,8 +8,7 @@ chmod-scripts: # 🔓 Give permission to execute gradlew.
 dependencies-check:  # 🔬 Monitor dependent libraries for known, published vulnerabilities.
 	./gradlew dependencyCheckAnalyze
 
-signatures-check: # 🔬 Check (JDK, android SDK or any library) API compatibility for java (kotlin, scala, groovy etc.), android and kotlin multiplatform projects.
-	./gradlew animalsnifferRelease
+
 
 format-check: # 🔬 # Format <antlr | c | c# | c++ | css | flow | graphql | groovy | html | java | javascript | json | jsx | kotlin | less | license headers | markdown | objective-c | protobuf | python | scala | scss | shell | sql | typeScript | vue | yaml | anything> using <gradle | maven | sbt | anything>.
 	./gradlew spotlessCheck

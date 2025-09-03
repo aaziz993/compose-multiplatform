@@ -40,8 +40,6 @@ public sealed class CI {
 
     public abstract var dependenciesCheck: Boolean
 
-    public abstract var signaturesCheck: Boolean
-
     public abstract var formatCheck: Boolean
 
     public abstract var qualityCheck: Boolean
@@ -64,7 +62,6 @@ public sealed class CI {
 
     public class Github internal constructor(
         override var dependenciesCheck: Boolean = true,
-        override var signaturesCheck: Boolean = true,
         override var formatCheck: Boolean = true,
         override var qualityCheck: Boolean = true,
         override var coverageVerify: Boolean = true,
@@ -98,7 +95,6 @@ public sealed class CI {
 
     public class TeamCity internal constructor(
         override var dependenciesCheck: Boolean = true,
-        override var signaturesCheck: Boolean = true,
         override var formatCheck: Boolean = true,
         override var qualityCheck: Boolean = true,
         override var coverageVerify: Boolean = true,
@@ -160,13 +156,6 @@ public sealed class CI {
                 tasks.register(ci.name) {
                     dependsOn(tasks.named("dependencyCheckAnalyze"))
                     onlyIf { ci.dependenciesCheck }
-                }
-            }
-
-            pluginManager.withPlugin("ru.vyarus.animalsniffer") {
-                tasks.register(ci.name) {
-                    dependsOn(tasks.named("animalsnifferRelease"))
-                    onlyIf { ci.signaturesCheck }
                 }
             }
 

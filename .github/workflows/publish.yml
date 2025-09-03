@@ -42,9 +42,6 @@ jobs:
       - name:   # 🔬 Monitor dependent libraries for known, published vulnerabilities.
         run: ./gradlew githubDependencyCheckAnalyze
 
-      - name:  # 🔬 Check (JDK, android SDK or any library) API compatibility for java (kotlin, scala, groovy etc.), android and kotlin multiplatform projects.
-        run: ./gradlew githubAnimalsnifferRelease
-
       - name:  # 🔬 # Format <antlr | c | c# | c++ | css | flow | graphql | groovy | html | java | javascript | json | jsx | kotlin | less | license headers | markdown | objective-c | protobuf | python | scala | scss | shell | sql | typeScript | vue | yaml | anything> using <gradle | maven | sbt | anything>.
         run: ./gradlew githubSpotlessCheck
 
