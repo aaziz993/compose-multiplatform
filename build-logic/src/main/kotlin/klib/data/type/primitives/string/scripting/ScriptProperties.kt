@@ -103,7 +103,7 @@ public abstract class ScriptProperties {
                     },
                 ) {
                     if (size < path.size)
-                        error("Unresolved reference '${path.joinToString(".")}'")
+                        error("Unresolved reference '${path.joinToString(".")}' with imports ${config.imports}")
 
                     val receiver = last().first
 
