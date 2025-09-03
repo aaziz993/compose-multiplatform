@@ -70,7 +70,7 @@ public abstract class ScriptProperties {
         }
     }
 
-    public operator fun invoke(): Unit {
+    public operator fun invoke() {
         compiled(config)
     }
 
