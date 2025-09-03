@@ -1,7 +1,10 @@
 package gradle.plugins.project
 
+import gradle.api.artifacts.dsl.signature
+import gradle.api.artifacts.dsl.testImplementation
 import gradle.api.ci.CI
 import gradle.api.maybeNamed
+import gradle.api.plugins.id
 import gradle.api.project.ProjectProperties
 import gradle.api.project.allOpen
 import gradle.api.project.apiValidation
@@ -11,6 +14,7 @@ import gradle.api.project.cocoapods
 import gradle.api.project.dependencyCheck
 import gradle.api.project.dokka
 import gradle.api.project.kotlin
+import gradle.api.project.kover
 import gradle.api.project.ktorfit
 import gradle.api.project.noArg
 import gradle.api.project.powerAssert
@@ -30,6 +34,8 @@ import org.gradle.api.file.DuplicatesStrategy
 import org.gradle.internal.os.OperatingSystem
 import org.gradle.kotlin.dsl.*
 import org.jetbrains.kotlin.gradle.tasks.KotlinNativeLink
+import gradle.api.project.*
+import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
 
 public class ProjectPlugin : Plugin<Project> {
 

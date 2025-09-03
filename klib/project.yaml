@@ -6,7 +6,6 @@ imports:
   - ../properties/mpp.yaml
   - ../properties/subproject.yaml
 
-
 #templates:
 #  - ../templates/gradle/jvm/jvm.yaml
 #  - ../templates/gradle/android/android.yaml
