@@ -17,7 +17,6 @@ script:
   - repositories:
       - mavenCentral: ()
   - plugins:
-      - id: (libs.plugins("doctor").pluginId)
       - id: (libs.plugins("kover").pluginId)
       - id: (libs.plugins("dokka").pluginId)
       - id: (libs.plugins("dokkaJavadoc").pluginId)

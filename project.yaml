@@ -1,6 +1,8 @@
 imports:
   - properties/root.yaml
 script:
+  - plugins:
+      - id: (libs.plugins("doctor").pluginId)
   # Print suggestions for your build as you run regular tasks.
   - doctor:
       disableTaskMonitoring: ()
@@ -23,6 +25,3 @@ script:
       moduleRootsFromIncludes: ()
       moduleDocs: '"build/dokka"'
       dokkaMultiModuleRoot: '"build/dokka"'
-#  - dependencies:
-#      # knit
-#      - testImplementation: ("org.jetbrains.kotlinx:kotlinx-knit-test")

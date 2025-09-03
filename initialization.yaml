@@ -164,7 +164,7 @@ script:
           }
   - include: |
       (
-        //":klib",
+        ":klib",
         //":compose-lib",
         //":compiler",
         //":shared",

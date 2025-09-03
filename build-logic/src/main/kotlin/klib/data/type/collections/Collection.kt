@@ -79,9 +79,9 @@ public fun Any.containsKey(key: Any?): Boolean =
 
 @Suppress("UNCHECKED_CAST")
 public fun <T : Any> T.minusKeys(vararg keys: Any?): T = when (this) {
-    is List<*> -> minusIndices(keys.map { key -> key!!.toInt() })
+    is List<*> -> this minusIndices keys.map { key -> key!!.toInt() }
 
-    is Map<*, *> -> minus(keys)
+    is Map<*, *> -> this - keys
 
     else -> throw IllegalArgumentException("Expected a List or Map, but got ${this::class.simpleName}")
 } as T

@@ -21,6 +21,6 @@ context(project: Project)
 public fun DokkaExtension.dependenciesFromIncludes(): Unit =
     project.pluginManager.withPlugin("org.jetbrains.dokka") {
         project.settings.gradle.rootProject.subprojects
-            .map(Project::moduleName)
+            .map { project -> project.path }
             .forEach(project.dependencies::dokka)
     }

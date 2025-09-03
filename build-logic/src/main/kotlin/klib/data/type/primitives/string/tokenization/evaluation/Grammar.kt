@@ -426,7 +426,7 @@ public fun String.substitute(
         SubstituteOption.EVALUATE,
         SubstituteOption.ESCAPE_BACKSLASHES
     ),
-    getter: (path: List<String>) -> Any?,
+    getter: (path: List<String>) -> Any? = { null },
     evaluator: (text: String, Program) -> Any? = { _, program -> program { name -> getter(listOf(name)) } }
 ): Any? = TemplateGrammar(options.toSet(), getter, evaluator).let { grammar ->
     var str = this

@@ -345,6 +345,10 @@ public fun Project.version(
     ).toString()
 }
 
+public fun Project.flatten() {
+
+}
+
 public inline fun <reified T : Task> Project.registerAggregationTestTask(
     name: String,
     noinline targetFilter: (KotlinTarget) -> Boolean,

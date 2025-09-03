@@ -1,12 +1,11 @@
-apply:
+imports:
   - ../properties/root.yaml
-  - ../properties/jvm/jvm.yaml
+#  - ../properties/jvm/jvm.yaml
 #  - ../properties/android/android.yaml
 #  - ../properties/android/android-library.yaml
-  - ../properties/mpp.yaml
+#  - ../properties/mpp.yaml
   - ../properties/subproject.yaml
 
-description: '"Kotlin multiplatform libraries."'
 
 #templates:
 #  - ../templates/gradle/jvm/jvm.yaml
@@ -23,10 +22,11 @@ description: '"Kotlin multiplatform libraries."'
 #  - ../templates/gradle/subproject.yaml
 #  - ../templates/gradle/root.yaml
 #  - ../templates/gradle/publish.yaml
-
-plugins:
-  # Converter of TypeScript declaration files to Kotlin declarations.
-  - alias(libs.plugins("karakum"))
+script:
+  - description: '"Kotlin multiplatform libraries."'
+  - plugins:
+      # Converter of TypeScript declaration files to Kotlin declarations.
+      - id: (libs.plugins("karakum").pluginId)
 
 ## Publishing
 #publishing:
