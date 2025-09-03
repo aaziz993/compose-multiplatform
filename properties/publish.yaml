@@ -47,11 +47,12 @@ script:
       publications:
         - create<MavenPublication>: |
             ("maven") {
+              artifactId = "${project.name}"
+              groupId = project.group.toString()
+              version = project.version.toString()
+              description /= project.description
+              
               pom {
-                  description /= project.description
-                  groupId = project.group.toString()
-                  version = project.version.toString()
-
                   licenses {
                       license {
                           name /= settings.settingsProperties.license.name

@@ -27,14 +27,14 @@ script:
       # Converter of TypeScript declaration files to Kotlin declarations.
       - id: (libs.plugins("karakum").pluginId)
   # Publishing
-  - publishing:
-      - publications:
-          - withType<MavenPublication>: |
-              {
-                pom {
-                    url /= "https://github.com/aaziz993/compose-multiplatform/kmp-lib"
-                }
-              }
+#  - publishing:
+#      - publications:
+#          - withType<MavenPublication>: |
+#              {
+#                pom {
+#                    url /= "https://github.com/aaziz993/compose-multiplatform/kmp-lib"
+#                }
+#              }
   # Generates typesafe Kotlin APIs from your SQL statements. It verifies your schema, statements, and migrations at compile-time and provides IDE features like autocomplete and refactoring which make writing and maintaining SQL simple.
   - sqldelight:
       databases:

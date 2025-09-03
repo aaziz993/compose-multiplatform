@@ -46,7 +46,7 @@ public class ProjectPlugin : Plugin<Project> {
         with(target) {
             // Load and apply project.yaml to build.gradle.kts.
             ProjectProperties()
-          
+
             configureLinkTasks()
 
             CI.configureTasks()
