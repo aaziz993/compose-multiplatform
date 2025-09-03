@@ -3,6 +3,8 @@ package gradle.plugins.project
 import gradle.api.artifacts.dsl.signature
 import gradle.api.artifacts.dsl.testImplementation
 import gradle.api.ci.CI
+import gradle.api.initialization.localProperties
+import gradle.api.initialization.settingsProperties
 import gradle.api.maybeNamed
 import gradle.api.plugins.id
 import gradle.api.project.ProjectProperties
@@ -35,6 +37,7 @@ import org.gradle.internal.os.OperatingSystem
 import org.gradle.kotlin.dsl.*
 import org.jetbrains.kotlin.gradle.tasks.KotlinNativeLink
 import gradle.api.project.*
+import org.gradle.api.publish.maven.MavenPublication
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
 
 public class ProjectPlugin : Plugin<Project> {
@@ -43,7 +46,7 @@ public class ProjectPlugin : Plugin<Project> {
         with(target) {
             // Load and apply project.yaml to build.gradle.kts.
             ProjectProperties()
-
+          
             configureLinkTasks()
 
             CI.configureTasks()
