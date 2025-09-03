@@ -203,8 +203,8 @@ public fun <V, K> Any.deepRunOnPenultimate(
     getter: List<Pair<Any, K>>.() -> Any? = { last().first.getOrNull(last().second) },
     run: List<Pair<Any, K>>.() -> V
 ): V? = deepGet(*path.copyOfRange(0, path.size - 1), getter = getter).let { (sources, value) ->
-    if (value == null) null else (sources + (value to path[sources.size])).run()
-}
+    if (value == null) sources else (sources + (value to path[sources.size]))
+}.run()
 
 @Suppress("UNCHECKED_CAST")
 public fun <K> Any.deepSet(
