@@ -46,13 +46,17 @@ script:
               password: sensitive("password")
       publications:
         - create<MavenPublication>: |
-            ("maven") {
+            ("mavenJar") {
               artifactId = "${project.name}"
               groupId = project.group.toString()
               version = project.version.toString()
-              description /= project.description
-              
+
               pom {
+                  packaging = "jar"
+                  name /=project.name
+                  url /=settings.settingsProperties.license.url
+                  description /= project.description
+            
                   licenses {
                       license {
                           name /= settings.settingsProperties.license.name

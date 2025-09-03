@@ -4,8 +4,6 @@ import org.gradle.api.services.internal.RegisteredBuildServiceProvider
 plugins {
     // Print suggestions for your build as you run regular tasks.
     alias(libs.plugins.doctor)
-    // Check (JDK, android SDK or any library) API compatibility for java (kotlin, scala, groovy etc.), android and kotlin multiplatform projects.
-    alias(libs.plugins.animalsniffer)
     // API documentation engine for Kotlin.
     // Used to assist in the development of Gradle plugins. It automatically applies the Java Library.
     `java-gradle-plugin`
@@ -109,9 +107,6 @@ dependencies {
     implementation(libs.dokka.versioning)
     // allows dumping binary API of a JVM part of a Kotlin library that is public in the sense of Kotlin visibilities and ensures that the public binary API wasn't changed in a way that makes this change binary incompatible.
     implementation(libs.plugins.binaryCompatibilityValidator.toDep())
-    // check (JDK, android SDK or any library) API compatibility for java (kotlin, scala, groovy etc.), android and kotlin multiplatform projects.
-    implementation(libs.plugins.animalsniffer.toDep())
-    signature(libs.signature.java)
     // produces Kotlin source example files and tests from markdown documents with embedded snippets of Kotlin code
     implementation(libs.plugins.knit.toDep())
     // generating BuildConstants for any kind of Gradle projects: Java, Kotlin, Android, Groovy, etc. Designed for KTS scripts, with experimental support for Kotlin's multi-platform plugin

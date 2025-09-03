@@ -48,7 +48,7 @@ public class ProjectPlugin : Plugin<Project> {
             ProjectProperties()
 
             configureLinkTasks()
-
+            
             CI.configureTasks()
 
             if (problemReporter.getErrors().isNotEmpty()) {
