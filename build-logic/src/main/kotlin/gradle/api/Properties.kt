@@ -71,7 +71,7 @@ public abstract class Properties : ScriptProperties() {
             beforeInvoke: (P) -> Unit,
         ): P where T : PluginAware, T : ExtensionAware {
             logger.lifecycle(
-                "${Ansi.CYAN}--- ${evaluationImplicitReceiver.toString().uppercase()} ---${Ansi.RESET}"
+                "${Ansi.CYAN}${evaluationImplicitReceiver.toString().uppercase()}${Ansi.RESET}"
             )
 
             return ScriptProperties<P>(
