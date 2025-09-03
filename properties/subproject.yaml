@@ -1,6 +1,5 @@
 config:
   imports:
-    - kotlinx.benchmark.gradle.JvmBenchmarkTarget
     - kotlinx.rpc.RpcStrictMode
     - com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
     - org.gradle.api.file.DuplicatesStrategy
@@ -91,7 +90,7 @@ script:
       outputDirectory: '"build/reports"'
       format: '"ALL"'
   # Generating BuildConstants for any kind of Gradle projects: Java, Kotlin, Android, Groovy, etc. Designed for KTS scripts, with experimental support for Kotlin's multi-platform plugin
-  - buildconfig: { }
+  - buildconfig: '{ }'
   # Can format <antlr | c | c# | c++ | css | flow | graphql | groovy | html | java | javascript | json | jsx | kotlin | less | license headers | markdown | objective-c | protobuf | python | scala | scss | shell | sql | typeScript | vue | yaml | anything> using <gradle | maven | sbt | anything>.
   - spotless:
       - java: | 
@@ -302,7 +301,7 @@ script:
             "data.type.annotation.NoArg",
           )
   # Multiplatform library that provides the idiomatic and efficient way of using atomic operations in Kotlin.
-  - atomicfu: { }
+  - atomicfu: '{ }'
   # Toolkit for running benchmarks for multiplatform code written in Kotlin. It is designed to work with Kotlin/JVM, Kotlin/JS, Kotlin/Native, and Kotlin/WasmJs (experimental) targets.
   - benchmark:
       reportsDir: '"build/reports"'
