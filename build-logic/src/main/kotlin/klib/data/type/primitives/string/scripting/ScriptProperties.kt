@@ -6,8 +6,10 @@ import klib.data.cache.NoCache
 import klib.data.type.collections.*
 import klib.data.type.collections.deepGetOrNull
 import klib.data.type.collections.list.asList
+import klib.data.type.collections.list.dropLast
 import klib.data.type.collections.map.asMapOrNull
 import klib.data.type.collections.map.asStringNullableMap
+import klib.data.type.primitives.string.addSuffixIfNotEmpty
 import klib.data.type.primitives.string.tokenization.evaluation.SubstituteOption
 import klib.data.type.reflection.declaredMemberExtensionFunction
 import klib.data.type.reflection.declaredMemberExtensionFunctions
@@ -103,7 +105,11 @@ public abstract class ScriptProperties {
                     },
                 ) {
                     if (size < path.size)
-                        error("Unresolved reference '${path.joinToString(".")}' with imports ${config.imports}")
+                        error(
+                            "Unresolved reference '${
+                                dropLast().map(Pair<*, Any?>::second).joinToString(".").addSuffixIfNotEmpty("->")
+                            }${last().second}' on '${last().first}' with imports ${config.imports}"
+                        )
 
                     val receiver = last().first
 

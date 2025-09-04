@@ -2,7 +2,7 @@ imports:
   - ../properties/root.yaml
   - ../properties/jvm/jvm.yaml
   - ../properties/android/android.yaml
-  #  - ../properties/android/android-library.yaml
+  - ../properties/android/android-library.yaml
   - ../properties/mpp.yaml
   - ../properties/subproject.yaml
   - ../properties/publish.yaml
@@ -25,6 +25,7 @@ imports:
 script:
   - description: '"Kotlin multiplatform libraries."'
   - plugins:
+      - id: (libs.plugins("android.library").pluginId)
       # Converter of TypeScript declaration files to Kotlin declarations.
       - id: (libs.plugins("karakum").pluginId)
   # Publishing

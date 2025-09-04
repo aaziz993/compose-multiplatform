@@ -93,7 +93,7 @@ public abstract class Properties : ScriptProperties() {
                     defaultImports(*IMPORTS)
                 }
             }.also { properties ->
-                logger.lifecycle("${Ansi.GREEN}${Ansi.ITALIC}$properties${Ansi.RESET}")
+                logger.lifecycle("${Ansi.GREEN}${Ansi.ITALIC}${properties.compiled}${Ansi.RESET}")
                 beforeInvoke(properties)
                 properties()
             }
