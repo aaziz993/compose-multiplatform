@@ -14,19 +14,21 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import klib.data.type.serialization.serializers.any.SerializableAny
+import java.util.Calendar
+import java.util.Date
 
 @Serializable
 public data class SettingsProperties(
-    val year: String,
+    val year: String = Calendar.getInstance().get(Calendar.YEAR).toString(),
     val remote: MavenPomScm = MavenPomScm(),
     val developer: MavenPomDeveloper = MavenPomDeveloper(),
     val license: MavenPomLicense = MavenPomLicense(),
-    val licenseFile: LicenseFile,
-    val licenseHeaderFile: LicenseHeaderFile,
-    val codeOfConductFile: CodeOfConductFile,
-    val contributingFile: ContributingFile,
+    val licenseFile: LicenseFile? = null,
+    val licenseHeaderFile: LicenseHeaderFile? = null,
+    val codeOfConductFile: CodeOfConductFile? = null,
+    val contributingFile: ContributingFile? = null,
     override val config: ScriptConfig = ScriptConfig(),
-    override val script: List<SerializableAny>
+    override val script: List<SerializableAny> = emptyList()
 ) : Properties() {
 
     public companion object {
