@@ -2,41 +2,38 @@ config:
   imports:
     - org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
     - org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest
-
-kotlin:
-  jvm: ()
-
-  targets:
-    # apply to all above jvm targets by providing empty name
-    - withType<KotlinJvmTarget>: |
-        {
-          compilerOptions {
-            freeCompilerArgs.addAll(
-               "-Xno-param-assertions",
-               "-Xno-call-assertions",
-               "-Xno-receiver-assertions"
-              )
+script:
+  - kotlin:
+      jvm: ()
+      targets:
+        # apply to all above jvm targets by providing empty name
+        - withType<KotlinJvmTarget>: |
+            {
+              compilerOptions {
+                freeCompilerArgs.addAll(
+                   "-Xno-param-assertions",
+                   "-Xno-call-assertions",
+                   "-Xno-receiver-assertions"
+                  )
+              }
+            }
+  - dependencies:
+      - implementation: (dependencies.kotlin("stdlib"))
+  - tasks:
+      - withType<KotlinJvmTest>: |
+          {
+            maxHeapSize = "2g"
+      
+            useJUnitPlatform()
+      
+            filter { filter ->
+              filter.isFailOnNoMatchingTests = false
+            }
+      
+            testLogging { testLogging ->
+              testLogging.showExceptions = true
+              testLogging.showStandardStreams = true
+              testLogging.events = setOf(TestLogEvent.FAILED, TestLogEvent.PASSED)
+              testLogging.exceptionFormat = TestExceptionFormat.FULL
+            }
           }
-        }
-
-dependencies:
-  - implementation(dependencies.kotlin("stdlib"))
-
-tasks:
-  - withType<KotlinJvmTest>: |
-      {
-        maxHeapSize = "2g"
-  
-        useJUnitPlatform()
-  
-        filter { filter ->
-          filter.isFailOnNoMatchingTests = false
-        }
-  
-        testLogging { testLogging ->
-          testLogging.showExceptions = true
-          testLogging.showStandardStreams = true
-          testLogging.events = setOf(TestLogEvent.FAILED, TestLogEvent.PASSED)
-          testLogging.exceptionFormat = TestExceptionFormat.FULL
-        }
-      }
