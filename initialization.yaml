@@ -18,7 +18,10 @@ license:
   distribution: repo
   comments: A business-friendly OSS license.
 licenseFile:
+  source: ${licence.url}
+  year: ${year}
   yearPlaceholder: '[yyyy]'
+  owner: ${developer.name}
   ownerPlaceholder: '[name of copyright owner]'
   resolution: MODIFIED
 licenseHeaderFile:
@@ -148,16 +151,6 @@ script:
   - buildCache:
       - local:
           isEnabled: CI.current == null # Default is if not CI.
-      # Remote http cache
-      - remote<HttpBuildCache>: |
-          {
-             isEnabled = true
-             url = URI("https://files.pkg.jetbrains.space/aaziz93/p/aaziz-93/compose-multiplatform")
-             credentials { credentials ->
-                 credentials.username = "aaziz93"
-                 credentials.password = System.getenv()["jb.space.gradle.build.cache.password"]
-             }
-          }
       # Develocity build cache configured by default
       - remote: |
           (develocity.buildCache) { buildCache ->

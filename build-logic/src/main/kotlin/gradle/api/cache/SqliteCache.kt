@@ -3,24 +3,22 @@ package gradle.api.cache
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 import java.io.File
-import java.sql.Connection
-import java.sql.DriverManager
-import kotlin.use
 
-public class H2Cache<K, V>(
+public class SqliteCache<K, V>(
     dbFile: File,
     keySerializer: KSerializer<K>,
     valueSerializer: KSerializer<V>,
     json: Json = Json { ignoreUnknownKeys = true }
 ) : JdbcCache<K, V>(dbFile, keySerializer, valueSerializer, json) {
+
     override fun jdbcUrl(dbFile: File): String {
-        dbFile.parentFile.mkdirs()
-        return "jdbc:h2:file:${dbFile.absolutePath};AUTO_SERVER=TRUE"
+        dbFile.parentFile?.mkdirs()
+        return "jdbc:sqlite:${dbFile.absolutePath}"
     }
 
     override fun createTableSql(): String =
-        """CREATE TABLE IF NOT EXISTS cache ("key" VARCHAR PRIMARY KEY, "value" VARCHAR)"""
+        """CREATE TABLE IF NOT EXISTS cache ("key" TEXT PRIMARY KEY, "value" TEXT NOT NULL)"""
 
     override fun upsertSql(): String =
-        """MERGE INTO cache ("key", "value") KEY("key") VALUES (?, ?)"""
+        """INSERT OR REPLACE INTO cache ("key", "value") VALUES (?, ?)"""
 }

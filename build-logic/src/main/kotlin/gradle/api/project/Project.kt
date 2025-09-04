@@ -12,6 +12,7 @@ import de.jensklingenberg.ktorfit.gradle.KtorfitPluginExtension
 import gradle.api.ci.CI
 import gradle.api.initialization.libs
 import gradle.api.initialization.localProperties
+import gradle.api.initialization.sensitive
 import gradle.api.repositories.CacheRedirector
 import io.github.sgrishchenko.karakum.gradle.plugin.KarakumExtension
 import kotlin.jvm.optionals.getOrNull
@@ -387,6 +388,5 @@ public fun Project.execute(cmd: String): String = providers.exec {
     commandLine(cmd.split(" "))
 }.standardOutput.asText.get().trim()
 
-public fun Project.sensitive(key: String): String =
-    System.getenv(key) ?: settings.localProperties.getProperty(key)
+public fun Project.sensitive(key: String): String = settings.sensitive(key)
 

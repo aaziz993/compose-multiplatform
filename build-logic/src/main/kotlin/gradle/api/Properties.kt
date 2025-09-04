@@ -1,10 +1,9 @@
 package gradle.api
 
-import com.charleskorn.kaml.Yaml
-import gradle.api.cache.H2Cache
+import gradle.api.cache.SqliteCache
 import klib.data.type.Ansi
 import klib.data.type.primitives.string.scripting.ScriptProperties
-import klib.data.type.serialization.yaml.encodeAnyToString
+import kotlinx.serialization.builtins.serializer
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.logging.Logger
 import org.gradle.api.logging.Logging
@@ -14,7 +13,6 @@ import org.gradle.api.provider.HasMultipleValues
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import java.io.File
-import kotlin.math.log
 import kotlin.reflect.KClass
 import kotlin.reflect.full.isSubclassOf
 import kotlin.script.experimental.api.defaultImports
@@ -66,7 +64,6 @@ public abstract class Properties : ScriptProperties() {
 
         private val logger: Logger = Logging.getLogger(Properties::class.java)
 
-
         internal inline operator fun <reified P : Properties, reified T> File.invoke(
             evaluationImplicitReceiver: T,
             beforeInvoke: (P) -> Unit,
@@ -77,7 +74,11 @@ public abstract class Properties : ScriptProperties() {
 
             return ScriptProperties<P>(
                 path,
-                cache = H2Cache(parentFile.resolve("$nameWithoutExtension.cache")),
+                cache = SqliteCache(
+                    parentFile.resolve("$nameWithoutExtension.cache"),
+                    String.serializer(),
+                    String.serializer()
+                ),
                 explicitOperationReceivers = EXPLICIT_OPERATION_RECEIVERS,
                 implicitOperation = ::tryAssignProperty,
             ) {

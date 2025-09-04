@@ -229,9 +229,11 @@ room = "2.7.0-rc01"
 # realm database
 realm = "10.19.0"
 # sqlite
-sqlite = "2.5.0-rc01"
-# h2 database driver
+androidx-sqlite = "2.5.0-rc01"
+# h2 jdbc driver
 h2 = "2.3.232"
+# sqlite jdbc driver
+sqlite="3.50.3.0"
 # jdbc
 mariadb-java-client = "3.5.0"
 postgresql = "42.7.4"
@@ -615,12 +617,14 @@ androidx-room-runtime-android = { module = "androidx.room:room-runtime-android",
 androidx-room-paging = { module = "androidx.room:room-paging", version.ref = "room" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 # sqlite database
-sqlite = { module = "androidx.sqlite:sqlite", version.ref = "sqlite" }
-androidx-sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
+androidx-sqlite = { module = "androidx.sqlite:sqlite", version.ref = "androidx-sqlite" }
+androidx-sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "androidx-sqlite" }
 # realm database
 realm = { module = "io.realm:realm-gradle-plugin", version.ref = "realm" }
-# h2 database driver
+# h2 jdbc driver.
 h2 = { module = "com.h2database:h2", version.ref = "h2" }
+sqlite = { module = "org.xerial:sqlite-jdbc", version.ref = "sqlite" }
+# sqlite jdbc driver.
 # jdbc drivers
 mariadb-java-client = { module = "org.mariadb.jdbc:mariadb-java-client", version.ref = "mariadb-java-client" }
 postgresql = { module = "org.postgresql:postgresql", version.ref = "postgresql" }

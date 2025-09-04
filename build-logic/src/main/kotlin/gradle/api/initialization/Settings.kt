@@ -1,12 +1,14 @@
 package gradle.api.initialization
 
 import gradle.api.initialization.dsl.VersionCatalog
+import gradle.api.project.settings
 import gradle.api.repositories.CacheRedirector
 import gradle.plugins.getOrPut
 import java.io.File
 import kotlinx.serialization.decodeFromString
 import net.peanuuutz.tomlkt.Toml
 import org.danilopianini.gradle.git.hooks.GitHooksExtension
+import org.gradle.api.Project
 import org.gradle.api.initialization.Settings
 import org.gradle.kotlin.dsl.getByType
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
@@ -43,4 +45,6 @@ public fun Settings.gitCommitId(): String = execute("git rev-parse --verify HEAD
 public fun Settings.gitBranch(): String = execute("git rev-parse --abbrev-ref HEAD")
 
 public fun Settings.gitStatus(): String = execute("git status --porcelain")
+
+public fun Settings.sensitive(key: String): String = System.getenv(key) ?: localProperties.getProperty(key)
 

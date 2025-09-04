@@ -1,21 +1,19 @@
 package gradle.api.initialization.file
 
-import gradle.api.initialization.settingsProperties
-import gradle.api.project.settings
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import org.gradle.api.DefaultTask
-import org.gradle.api.Project
 import org.gradle.api.tasks.TaskProvider
+import org.gradle.api.Project
 
 @Serializable
 public data class LicenseFile(
-    val source: String? = null,
+    val source: String,
     override val resolution: FileResolution = FileResolution.ABSENT,
-    val yearPlaceholder: String,
-    val year: String? = null,
-    val ownerPlaceholder: String,
-    val owner: String? = null
+    val year: String,
+    val yearPlaceholder: String ="[yyyy]",
+    val owner: String,
+    val ownerPlaceholder: String ="[name of copyright owner]"
 ) : ProjectFile() {
 
     @Transient

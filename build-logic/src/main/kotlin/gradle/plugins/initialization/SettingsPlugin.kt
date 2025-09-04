@@ -1,18 +1,17 @@
 package gradle.plugins.initialization
 
 import gradle.api.initialization.SettingsProperties
-import gradle.api.initialization.settingsProperties
 import gradle.plugins.project.ProjectPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
-import org.h2.Driver
+import org.sqlite.JDBC
 import java.sql.DriverManager
 
 public class SettingsPlugin : Plugin<Settings> {
 
     override fun apply(target: Settings) {
         // Register H2 driver to avoid "No suitable driver" error. H2 is used by Gradle to store the build cache.
-        DriverManager.registerDriver(Driver())
+        DriverManager.registerDriver(JDBC())
 
         with(SLF4JProblemReporterContext()) {
             with(target) {

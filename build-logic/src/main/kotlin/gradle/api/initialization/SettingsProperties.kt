@@ -18,9 +18,9 @@ import klib.data.type.serialization.serializers.any.SerializableAny
 @Serializable
 public data class SettingsProperties(
     val year: String,
-    val remote: MavenPomScm,
-    val developer: MavenPomDeveloper,
-    val license: MavenPomLicense,
+    val remote: MavenPomScm = MavenPomScm(),
+    val developer: MavenPomDeveloper = MavenPomDeveloper(),
+    val license: MavenPomLicense = MavenPomLicense(),
     val licenseFile: LicenseFile,
     val licenseHeaderFile: LicenseHeaderFile,
     val codeOfConductFile: CodeOfConductFile,
