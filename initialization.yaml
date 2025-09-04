@@ -78,6 +78,9 @@ script:
       - alias: (libs.plugins("ktorfit"), false)
       - alias: (libs.plugins("apollo3"), false)
       - alias: (libs.plugins("powerAssert"), false)
+      # Android.
+#      - alias: (libs.plugins("android.library"), false)
+#      - alias: (libs.plugins("android.application"), false)
   # Gives the data to speed up your build, improve build reliability and accelerate build debugging.
   # servers: https://ge.solutions-team.gradle.com, https://ge.jetbrains.com
   - develocity:

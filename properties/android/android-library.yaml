@@ -1,6 +1,4 @@
 script:
-  - plugins:
-      - id: (libs.plugins("android.library").pluginId)
   - kotlin:
       targets:
         - withType<KotlinAndroidTarget>: |

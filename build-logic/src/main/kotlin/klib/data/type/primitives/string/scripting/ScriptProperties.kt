@@ -37,6 +37,7 @@ import kotlin.reflect.KClass
 import kotlin.reflect.KMutableProperty
 import kotlin.reflect.KVisibility
 import kotlin.reflect.full.isSubclassOf
+import kotlin.reflect.full.memberProperties
 
 public const val SCRIPT_KEY: String = "script"
 

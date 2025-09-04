@@ -1,9 +1,13 @@
 package gradle.api
 
+import com.charleskorn.kaml.Yaml
 import gradle.api.cache.SqliteCache
 import klib.data.type.Ansi
+import klib.data.type.collections.takeIfNotEmpty
 import klib.data.type.primitives.string.scripting.ScriptProperties
+import klib.data.type.serialization.yaml.encodeAnyToString
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.encodeToString
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.logging.Logger
 import org.gradle.api.logging.Logging
@@ -67,36 +71,39 @@ public abstract class Properties : ScriptProperties() {
         internal inline operator fun <reified P : Properties, reified T> File.invoke(
             evaluationImplicitReceiver: T,
             beforeInvoke: (P) -> Unit,
-        ): P where T : PluginAware, T : ExtensionAware {
+        ): P where T : PluginAware, T : ExtensionAware = ScriptProperties<P>(
+            path,
+            cache = SqliteCache(
+                parentFile.resolve("$nameWithoutExtension.cache"),
+                String.serializer(),
+                String.serializer()
+            ),
+            explicitOperationReceivers = EXPLICIT_OPERATION_RECEIVERS,
+            implicitOperation = ::tryAssignProperty,
+        ) {
+            compilationImplicitReceivers = listOf(T::class)
+            evaluationImplicitReceivers = listOf(evaluationImplicitReceiver)
+
+            compilationBody = {
+                jvm {
+                    dependenciesFromCurrentContext(wholeClasspath = true)
+                }
+
+                defaultImports(*IMPORTS)
+            }
+        }.also { properties ->
             logger.lifecycle(
                 "${Ansi.CYAN}${Ansi.BOLD}${evaluationImplicitReceiver.toString().uppercase()}${Ansi.RESET}"
             )
-
-            return ScriptProperties<P>(
-                path,
-                cache = SqliteCache(
-                    parentFile.resolve("$nameWithoutExtension.cache"),
-                    String.serializer(),
-                    String.serializer()
-                ),
-                explicitOperationReceivers = EXPLICIT_OPERATION_RECEIVERS,
-                implicitOperation = ::tryAssignProperty,
-            ) {
-                compilationImplicitReceivers = listOf(T::class)
-                evaluationImplicitReceivers = listOf(evaluationImplicitReceiver)
-
-                compilationBody = {
-                    jvm {
-                        dependenciesFromCurrentContext(wholeClasspath = true)
-                    }
-
-                    defaultImports(*IMPORTS)
-                }
-            }.also { properties ->
-                logger.lifecycle("${Ansi.GREEN}${Ansi.ITALIC}${properties.compiled}${Ansi.RESET}")
-                beforeInvoke(properties)
-                properties()
+            properties.config.imports.takeIfNotEmpty()?.let { imports ->
+                logger.lifecycle(
+                    "${Ansi.PURPLE}${Ansi.ITALIC}${
+                        imports.joinToString("\n") { import -> "import $import" }
+                    }${Ansi.RESET}\n")
             }
+            logger.lifecycle("${Ansi.GREEN}${Ansi.ITALIC}${properties.compiled}${Ansi.RESET}")
+            beforeInvoke(properties)
+            properties()
         }
 
         internal fun tryAssignProperty(valueClass: KClass<*>, value: Any?): String? =
