@@ -71,39 +71,36 @@ public abstract class Properties : ScriptProperties() {
         internal inline operator fun <reified P : Properties, reified T> File.invoke(
             evaluationImplicitReceiver: T,
             beforeInvoke: (P) -> Unit,
-        ): P where T : PluginAware, T : ExtensionAware = ScriptProperties<P>(
-            path,
-            cache = SqliteCache(
-                parentFile.resolve(".$name.cache"),
-                String.serializer(),
-                String.serializer()
-            ),
-            explicitOperationReceivers = EXPLICIT_OPERATION_RECEIVERS,
-            implicitOperation = ::tryAssignProperty,
-        ) {
-            compilationImplicitReceivers = listOf(T::class)
-            evaluationImplicitReceivers = listOf(evaluationImplicitReceiver)
-
-            compilationBody = {
-                jvm {
-                    dependenciesFromCurrentContext(wholeClasspath = true)
-                }
-
-                defaultImports(*IMPORTS)
-            }
-        }.also { properties ->
+        ): P where T : PluginAware, T : ExtensionAware {
             logger.lifecycle(
                 "${Ansi.CYAN}${Ansi.BOLD}${evaluationImplicitReceiver.toString().uppercase()}${Ansi.RESET}"
             )
-            properties.config.imports.takeIfNotEmpty()?.let { imports ->
-                logger.lifecycle(
-                    "${Ansi.PURPLE}${Ansi.ITALIC}${
-                        imports.sorted().joinToString("\n") { import -> "import $import" }
-                    }${Ansi.RESET}\n")
+
+            return ScriptProperties<P>(
+                path,
+                cache = SqliteCache(
+                    parentFile.resolve(".$name.cache"),
+                    String.serializer(),
+                    String.serializer()
+                ),
+                explicitOperationReceivers = EXPLICIT_OPERATION_RECEIVERS,
+                implicitOperation = ::tryAssignProperty,
+            ) {
+                compilationImplicitReceivers = listOf(T::class)
+                evaluationImplicitReceivers = listOf(evaluationImplicitReceiver)
+
+                compilationBody = {
+                    jvm {
+                        dependenciesFromCurrentContext(wholeClasspath = true)
+                    }
+
+                    defaultImports(*IMPORTS)
+                }
+            }.also { properties ->
+                logger.lifecycle("${Ansi.GREEN}${Ansi.ITALIC}${properties.toString()}${Ansi.RESET}")
+                beforeInvoke(properties)
+                properties()
             }
-            logger.lifecycle("${Ansi.GREEN}${Ansi.ITALIC}${properties.compiled}${Ansi.RESET}")
-            beforeInvoke(properties)
-            properties()
         }
 
         internal fun tryAssignProperty(valueClass: KClass<*>, value: Any?): String? =

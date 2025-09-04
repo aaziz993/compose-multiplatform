@@ -38,7 +38,6 @@ import kotlin.reflect.KClass
 import kotlin.reflect.KMutableProperty
 import kotlin.reflect.KVisibility
 import kotlin.reflect.full.isSubclassOf
-import kotlin.reflect.full.memberProperties
 
 public const val SCRIPT_KEY: String = "script"
 
@@ -78,7 +77,13 @@ public abstract class ScriptProperties {
         compiled(config)
     }
 
-    override fun toString(): String = compiled
+    override fun toString(): String = buildString {
+        config.imports.takeIfNotEmpty()?.let { imports ->
+            appendLine(imports.sorted().joinToString("\n") { import -> "import $import" })
+            appendLine()
+        }
+        append(compiled)
+    }
 
     private fun tryAssign(path: Array<String>, value: Any?): Any? {
         val packages = config.imports.filter { import -> import.endsWith(".*") }.map { import ->
@@ -192,13 +197,9 @@ public abstract class ScriptProperties {
                 decodeFile<Map<String, Any?>>(
                     file,
                     { file, decodedFile ->
-                        val imports = decodedFile.deepGetOrNull(IMPORTS_KEY).second?.asList<String>()?.map { import ->
+                        decodedFile.deepGetOrNull(IMPORTS_KEY).second?.asList<String>()?.map { import ->
                             importToFile(file, import)
-                        }.orEmpty()
-
-                        importGraph[file] = imports
-
-                        imports
+                        }.also { imports -> importGraph[file] = imports.orEmpty() }
                     },
                     decoder = decoder,
                 ) { decodedFile, decodedImports ->
@@ -228,11 +229,11 @@ public abstract class ScriptProperties {
                         }).deepMap(mergedImports) + (SCRIPT_KEY to mergedImportScripts + decodedFileScript)
                     }
                 }).apply {
+                importGraph.printTree(file)
                 this.cache = cache
                 this.explicitOperationReceivers = EXPLICIT_OPERATION_RECEIVERS + explicitOperationReceivers
                 this.implicitOperation = implicitOperation
                 this.config.config()
-                importGraph.printTree(file)
             }
         }
 
@@ -247,41 +248,34 @@ public abstract class ScriptProperties {
     }
 }
 
-/**
- * Pretty-prints a dependency tree with connectors.
- *
- * @receiver A map where each key is a node (file) and its value is the list of children (imports).
- * @param root The root node to start printing from.
- * @param prefix Internal: indentation and vertical lines.
- * @param isLast Internal: whether this node is the last child of its parent.
- */
-/**
- * Pretty-prints a dependency tree with connectors.
- *
- * @receiver A map where each key is a node (file) and its value is the list of children (imports).
- * @param root The root node to start printing from.
- * @param prefix Internal: indentation and vertical lines.
- * @param isLast Internal: whether this node is the last child of its parent.
- */
+
 public fun Map<String, List<String>>.printTree(
     root: String,
-    prefix: String = "",
-    isLast: Boolean = true,
-): Unit = DeepRecursiveFunction<PrintTreeArgs, Unit> { (root, prefix, isLast) ->
+    printer: (prefix: String, value: String, cycle: Boolean) -> Unit = { prefix, value, cycle ->
+        if (cycle) println("$prefix${Ansi.YELLOW} File :${Ansi.RESET} $root ↺ (cycle)")
+        else println("$prefix${Ansi.GREEN}File:${Ansi.RESET} $root")
+    }
+): Unit = DeepRecursiveFunction<PrintTreeArgs, Unit> { (root, prefix, isLast, visited) ->
     val connector = if (prefix.isEmpty()) "" else if (isLast) "└── " else "├── "
 
-    println("$prefix$connector${Ansi.GREEN}File:${Ansi.RESET} $root")
+    if (root in visited)
+        return@DeepRecursiveFunction printer("$prefix$connector", root, true)
+
+    printer("$prefix$connector", root, false)
+
+    val currentVisited = visited + root
 
     val children = this@printTree[root].orEmpty()
     children.forEachIndexed { index, child ->
         val childIsLast = index == children.lastIndex
         val newPrefix = prefix + if (isLast) "    " else "│   "
-        callRecursive(PrintTreeArgs(child, newPrefix, childIsLast))
+        callRecursive(PrintTreeArgs(child, newPrefix, childIsLast, currentVisited))
     }
-}(PrintTreeArgs(root, prefix, isLast))
+}(PrintTreeArgs(root, "", true))
 
 private data class PrintTreeArgs(
     val root: String,
-    val prefix: String = "",
-    val isLast: Boolean
+    val prefix: String,
+    val isLast: Boolean,
+    val visited: Set<String> = setOf(),
 )
