@@ -16,7 +16,7 @@ public class SettingsPlugin : Plugin<Settings> {
         with(SLF4JProblemReporterContext()) {
             with(target) {
                 // Load and apply settings.yaml to settings.gradle.kts.
-                SettingsProperties()
+                SettingsProperties.invoke()
 
                 gradle.projectsLoaded {
                     // at this point all projects have been created by settings.gradle.kts, but none were evaluated yet
