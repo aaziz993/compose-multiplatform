@@ -11,7 +11,8 @@ import klib.data.type.serialization.serializers.any.SerializableAny
 @Serializable
 public class ProjectProperties(
     override val config: ScriptConfig = ScriptConfig(),
-    override val script: List<SerializableAny>
+    override val script: List<SerializableAny>,
+    override val fileTree: Map<String, List<String>>,
 ) : Properties() {
 
     public companion object {

@@ -97,6 +97,7 @@ public abstract class Properties : ScriptProperties() {
                     defaultImports(*IMPORTS)
                 }
             }.also { properties ->
+                logger.lifecycle(properties.toString())
                 beforeInvoke(properties)
                 properties()
             }

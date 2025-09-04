@@ -10,6 +10,7 @@ import klib.data.type.collections.list.asList
 import klib.data.type.collections.list.dropLast
 import klib.data.type.collections.map.asMapOrNull
 import klib.data.type.collections.map.asStringNullableMap
+import klib.data.type.collections.map.printTree
 import klib.data.type.primitives.string.addSuffixIfNotEmpty
 import klib.data.type.primitives.string.tokenization.evaluation.SubstituteOption
 import klib.data.type.reflection.declaredMemberExtensionFunction
@@ -47,6 +48,8 @@ public abstract class ScriptProperties {
 
     public abstract val script: List<SerializableAny>
 
+    public abstract val fileTree: Map<String, List<String>>
+
     @Transient
     public var cache: Cache<String, String> = NoCache()
 
@@ -78,11 +81,16 @@ public abstract class ScriptProperties {
     }
 
     override fun toString(): String = buildString {
+        fileTree.printTree(fileTree.entries.first().key) { prefix ->
+            appendLine("$prefix${Ansi.GREEN}File:${Ansi.RESET} ${last().second}")
+        }
+        append("```")
         config.imports.takeIfNotEmpty()?.let { imports ->
             appendLine(imports.sorted().joinToString("\n") { import -> "import $import" })
             appendLine()
         }
         append(compiled)
+        append("```")
     }
 
     private fun tryAssign(path: Array<String>, value: Any?): Any? {
@@ -191,7 +199,7 @@ public abstract class ScriptProperties {
             noinline implicitOperation: (valueClass: KClass<*>, value: Any?) -> String? = { _, _ -> null },
             config: ScriptConfig.() -> Unit = { },
         ): T {
-            val importGraph = mutableMapOf<String, List<String>>()
+            val fileTree = mutableMapOf<String, List<String>>()
 
             return T::class.serializer().deserialize(
                 decodeFile(
@@ -199,7 +207,7 @@ public abstract class ScriptProperties {
                     { file, decodedFile ->
                         decodedFile.deepGetOrNull(IMPORTS_KEY).second?.asList<String>()?.map { import ->
                             importToFile(file, import)
-                        }.also { imports -> importGraph[file] = imports.orEmpty() }
+                        }.also { imports -> fileTree[file] = imports.orEmpty() }
                     },
                     decoder = decoder,
                 ) { decodedFile, decodedImports ->
@@ -228,15 +236,14 @@ public abstract class ScriptProperties {
                             mergedImports.deepGetOrNull(*path.toTypedArray()).second
                         }).deepMap(mergedImports) + (SCRIPT_KEY to mergedImportScripts + decodedFileScript)
                     }
-                }).apply {
+                }.apply {
+                    this["fileTree"] = fileTree
+                }
+            ).apply {
                 this.cache = cache
                 this.explicitOperationReceivers = EXPLICIT_OPERATION_RECEIVERS + explicitOperationReceivers
                 this.implicitOperation = implicitOperation
                 this.config.config()
-                importGraph.printTree(file) { prefix ->
-                    println("$prefix${Ansi.GREEN}File:${Ansi.RESET} ${last().second}")
-                }
-                println("${Ansi.BRIGHT_PURPLE}${Ansi.ITALIC}$this${Ansi.RESET}")
             }
         }
 

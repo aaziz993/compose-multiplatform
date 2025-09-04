@@ -53,3 +53,5 @@ public object Ansi {
     public const val REVERSE: String = "\u001B[7m"
     public const val HIDDEN: String = "\u001B[8m"
 }
+
+public fun String.toAnsi(ansi: Ansi): String = "$ansi$this${Ansi.RESET}"
