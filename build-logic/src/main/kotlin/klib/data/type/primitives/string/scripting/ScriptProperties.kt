@@ -194,7 +194,7 @@ public abstract class ScriptProperties {
             val importGraph = mutableMapOf<String, List<String>>()
 
             return T::class.serializer().deserialize(
-                decodeFile<Map<String, Any?>>(
+                decodeFile(
                     file,
                     { file, decodedFile ->
                         decodedFile.deepGetOrNull(IMPORTS_KEY).second?.asList<String>()?.map { import ->
@@ -229,11 +229,14 @@ public abstract class ScriptProperties {
                         }).deepMap(mergedImports) + (SCRIPT_KEY to mergedImportScripts + decodedFileScript)
                     }
                 }).apply {
-                importGraph.printTree(file)
                 this.cache = cache
                 this.explicitOperationReceivers = EXPLICIT_OPERATION_RECEIVERS + explicitOperationReceivers
                 this.implicitOperation = implicitOperation
                 this.config.config()
+                importGraph.printTree(file) { prefix ->
+                    println("$prefix${Ansi.GREEN}File:${Ansi.RESET} ${last().second}")
+                }
+                println("${Ansi.BRIGHT_PURPLE}${Ansi.ITALIC}$this${Ansi.RESET}")
             }
         }
 
@@ -247,35 +250,3 @@ public abstract class ScriptProperties {
             )
     }
 }
-
-
-public fun Map<String, List<String>>.printTree(
-    root: String,
-    printer: (prefix: String, value: String, cycle: Boolean) -> Unit = { prefix, value, cycle ->
-        if (cycle) println("$prefix${Ansi.YELLOW} File :${Ansi.RESET} $root ↺ (cycle)")
-        else println("$prefix${Ansi.GREEN}File:${Ansi.RESET} $root")
-    }
-): Unit = DeepRecursiveFunction<PrintTreeArgs, Unit> { (root, prefix, isLast, visited) ->
-    val connector = if (prefix.isEmpty()) "" else if (isLast) "└── " else "├── "
-
-    if (root in visited)
-        return@DeepRecursiveFunction printer("$prefix$connector", root, true)
-
-    printer("$prefix$connector", root, false)
-
-    val currentVisited = visited + root
-
-    val children = this@printTree[root].orEmpty()
-    children.forEachIndexed { index, child ->
-        val childIsLast = index == children.lastIndex
-        val newPrefix = prefix + if (isLast) "    " else "│   "
-        callRecursive(PrintTreeArgs(child, newPrefix, childIsLast, currentVisited))
-    }
-}(PrintTreeArgs(root, "", true))
-
-private data class PrintTreeArgs(
-    val root: String,
-    val prefix: String,
-    val isLast: Boolean,
-    val visited: Set<String> = setOf(),
-)

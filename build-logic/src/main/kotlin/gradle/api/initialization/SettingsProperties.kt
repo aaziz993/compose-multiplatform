@@ -10,12 +10,11 @@ import gradle.api.publish.maven.MavenPomDeveloper
 import gradle.api.publish.maven.MavenPomLicense
 import gradle.api.publish.maven.MavenPomScm
 import klib.data.type.primitives.string.scripting.ScriptConfig
+import klib.data.type.serialization.serializers.any.SerializableAny
 import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
-import klib.data.type.serialization.serializers.any.SerializableAny
-import java.util.Calendar
-import java.util.Date
+import java.util.*
 
 @Serializable
 public data class SettingsProperties(

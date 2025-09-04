@@ -1,5 +1,6 @@
 package klib.data.type.collections
 
+import klib.data.type.Ansi
 import klib.data.type.collections.list.asList
 import klib.data.type.collections.list.drop
 import klib.data.type.collections.map.asMap
@@ -598,4 +599,47 @@ public fun <T : Any> T.substitute(
     sourceTransform = { value ->
         if (value is String) value.substitute(*options, getter = getter, evaluator = evaluator) else value
     }
+)
+
+public fun Any.printTree(
+    sourceIteratorOrNull: List<Pair<Any, Any?>>.(value: Any) -> Iterator<Map.Entry<Any?, Any?>>? = { value ->
+        value.iteratorOrNull()
+    },
+    printer: List<Pair<Any, Any?>>.(prefix: String) -> Unit = { prefix ->
+        println("$prefix${Ansi.GREEN}File:${Ansi.RESET} ${last().second}")
+    }
+): Unit = DeepRecursiveFunction<PrintTreeArgs, Unit> { (sources, sourceIterator, prefix) ->
+    val entries = sourceIterator.asSequence().toList()
+
+    entries.forEachIndexed { index, (key, value) ->
+        val currentSources = sources.replaceLast { copy(second = key) }
+
+        val childIsLast = index == entries.lastIndex
+        val connector = if (prefix.isEmpty()) "" else if (childIsLast) "└── " else "├── "
+
+        currentSources.printer("$prefix$connector${Ansi.GREEN}")
+
+        if (value != null)
+            currentSources.sourceIteratorOrNull(value)?.let { nextSourceIterator ->
+                callRecursive(
+                    PrintTreeArgs(
+                        currentSources + (value to 0),
+                        nextSourceIterator,
+                        prefix + if (childIsLast) "    " else "│   ",
+                    ),
+                )
+            }
+    }
+}(
+    PrintTreeArgs(
+        listOf(this to 0),
+        emptyList<Pair<Any, Int>>().sourceIteratorOrNull(this)!!,
+        ""
+    ),
+)
+
+private data class PrintTreeArgs(
+    val sources: List<Pair<Any, Any?>>,
+    val sourceIterator: Iterator<Map.Entry<Any?, Any?>>,
+    val prefix: String
 )
