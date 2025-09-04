@@ -25,7 +25,7 @@ public class ProjectPlugin : Plugin<Project> {
             ProjectProperties()
 
             configureLinkTasks()
-android.productFlavors
+
             CI.configureTasks()
 
             if (problemReporter.getErrors().isNotEmpty()) {

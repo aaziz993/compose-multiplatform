@@ -1,8 +1,8 @@
 imports:
   - ../properties/root.yaml
   - ../properties/jvm/jvm.yaml
-  - ../properties/android/android.yaml
   - ../properties/android/android-library.yaml
+#  - ../properties/android/android.yaml
   - ../properties/mpp.yaml
   - ../properties/subproject.yaml
   - ../properties/publish.yaml
@@ -25,18 +25,17 @@ imports:
 script:
   - description: '"Kotlin multiplatform libraries."'
   - plugins:
-      - id: (libs.plugins("android.library").pluginId)
       # Converter of TypeScript declaration files to Kotlin declarations.
       - id: (libs.plugins("karakum").pluginId)
   # Publishing
-#  - publishing:
-#      - publications:
-#          - withType<MavenPublication>: |
-#              {
-#                pom {
-#                    url /= "https://github.com/aaziz993/compose-multiplatform/kmp-lib"
-#                }
-#              }
+  - publishing:
+      - publications:
+          - withType<MavenPublication>: |
+              {
+                pom { pom ->
+                    pom.url /= "https://github.com/aaziz993/compose-multiplatform/kmp-lib"
+                }
+              }
   # Generates typesafe Kotlin APIs from your SQL statements. It verifies your schema, statements, and migrations at compile-time and provides IDE features like autocomplete and refactoring which make writing and maintaining SQL simple.
   - sqldelight:
       databases:
