@@ -29,6 +29,7 @@ licenseHeaderFile:
   resolution: MODIFIED
 codeOfConductFile:
   source: https://www.contributor-covenant.org/version/1/4/code-of-conduct/code_of_conduct.md
+  email: ${developer.email}
   emailPlaceholder: '[INSERT EMAIL ADDRESS]'
   resolution: MODIFIED
 contributingFile:

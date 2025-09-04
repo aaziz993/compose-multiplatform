@@ -1,19 +1,17 @@
 package gradle.api.initialization.file
 
-import gradle.api.initialization.settingsProperties
-import gradle.api.project.settings
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import org.gradle.api.DefaultTask
-import org.gradle.api.Project
 import org.gradle.api.tasks.TaskProvider
+import org.gradle.api.Project
 
 @Serializable
 public data class CodeOfConductFile(
     val source: String,
     override val resolution: FileResolution = FileResolution.ABSENT,
-    val emailPlaceholder: String,
-    val email: String? = null
+    val email: String? = null,
+    val emailPlaceholder: String
 ) : ProjectFile() {
 
     @Transient
@@ -27,9 +25,7 @@ public data class CodeOfConductFile(
 
     context(project: Project)
     override fun applyTo(receiver: String): List<TaskProvider<out DefaultTask>> {
-//        (email ?: project.settings.settingsProperties.developer?.email)?.let { email ->
-//            replace[emailPlaceholder] = email
-//        }
+        email?.let { email -> replace[emailPlaceholder] = email }
 
         return super.applyTo(receiver)
     }

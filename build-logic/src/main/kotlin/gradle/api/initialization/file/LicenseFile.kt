@@ -10,10 +10,10 @@ import org.gradle.api.Project
 public data class LicenseFile(
     val source: String,
     override val resolution: FileResolution = FileResolution.ABSENT,
-    val year: String,
-    val yearPlaceholder: String ="[yyyy]",
-    val owner: String,
-    val ownerPlaceholder: String ="[name of copyright owner]"
+    val year: String? = null,
+    val yearPlaceholder: String = "[yyyy]",
+    val owner: String? = null,
+    val ownerPlaceholder: String = "[name of copyright owner]"
 ) : ProjectFile() {
 
     @Transient
@@ -27,15 +27,9 @@ public data class LicenseFile(
 
     context(project: Project)
     override fun applyTo(receiver: String): List<TaskProvider<out DefaultTask>> {
-//        from.add(source ?: project.settings.settingsProperties.license?.url ?: return emptyList())
-
-//        (year ?: project.settings.settingsProperties.year)?.let { year ->
-//            replace[yearPlaceholder] = year
-//        }
-//
-//        (owner ?: project.settings.settingsProperties.developer?.name)?.let { owner ->
-//            replace[ownerPlaceholder] = owner
-//        }
+        from.add(source)
+        year?.let { year -> replace[yearPlaceholder] = year }
+        owner?.let { owner -> replace[ownerPlaceholder] = owner }
 
         return super.applyTo(receiver)
     }
