@@ -2,6 +2,9 @@ config:
   imports:
     - org.gradle.api.publish.maven.MavenPublication
 script:
+  - plugins:
+      - id: ("maven-publish")
+      - id: (libs("vanniktech.maven.publish1"))
   # publishing
   - publishing:
       repositories:
@@ -20,8 +23,8 @@ script:
               repository.name = "GithubPackages"
               repository.url = uri("https://maven.pkg.github.com/aaziz993")
               repository.credentials { credentials -> 
-                credentials.username = sensitive("publication.repositories.githubPackages.username")
-                credentials.password = sensitive("publication.repositories.githubPackages.password")
+                credentials.username = sensitive("publishing.repositories.githubPackages.username")
+                credentials.password = sensitive("publishing.repositories.githubPackages.password")
               }
             }
         - maven: |
@@ -29,8 +32,8 @@ script:
               repository.name = "Sonatype"
               repository.url = uri("https://oss.sonatype.org")
               repository.credentials { credentials -> 
-                credentials.username = sensitive("publication.repositories.sonatype.username")
-                credentials.password = sensitive("publication.repositories.sonatype.password")
+                credentials.username = sensitive("publishing.repositories.sonatype.username")
+                credentials.password = sensitive("publishing.repositories.sonatype.password")
               }
             }
         - maven: |
@@ -38,8 +41,8 @@ script:
               repository.name = "SonatypeS01"
               repository.url = uri("https://s01.oss.sonatype.org")
               repository.credentials { credentials -> 
-                credentials.username = sensitive("publication.repositories.sonatype.s01.username")
-                credentials.password = sensitive("publication.repositories.sonatype.s01.password")
+                credentials.username = sensitive("publishing.repositories.sonatype.s01.username")
+                credentials.password = sensitive("publishing.repositories.sonatype.s01.password")
               }
             }
         - maven: |
@@ -47,8 +50,8 @@ script:
               repository.name = "SonatypeCentral"
               repository.url = uri("https://central.sonatype.com")
               repository.credentials { credentials -> 
-                credentials.username = sensitive("publication.repositories.sonatype.central.username")
-                credentials.password = sensitive("publication.repositories.sonatype.central.password")
+                credentials.username = sensitive("publishing.repositories.sonatype.central.username")
+                credentials.password = sensitive("publishing.repositories.sonatype.central.password")
               }
             }
         - maven: |
@@ -56,8 +59,8 @@ script:
               repository.name = "SonatypeStaging"
               repository.url = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2")
               repository.credentials { credentials -> 
-                credentials.username = sensitive("publication.repositories.sonatype.staging.username")
-                credentials.password = sensitive("publication.repositories.sonatype.staging.password")
+                credentials.username = sensitive("publishing.repositories.sonatype.staging.username")
+                credentials.password = sensitive("publishing.repositories.sonatype.staging.password")
               }
             }
       publications:

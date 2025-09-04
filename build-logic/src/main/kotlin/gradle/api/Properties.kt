@@ -74,7 +74,7 @@ public abstract class Properties : ScriptProperties() {
         ): P where T : PluginAware, T : ExtensionAware = ScriptProperties<P>(
             path,
             cache = SqliteCache(
-                parentFile.resolve("$nameWithoutExtension.cache"),
+                parentFile.resolve(".$name.cache"),
                 String.serializer(),
                 String.serializer()
             ),

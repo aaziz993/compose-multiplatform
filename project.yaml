@@ -20,8 +20,8 @@ script:
       dependenciesFromIncludes: ()
       pluginsConfiguration:
         - html:
-            customStyleSheets.setFrom: ("dokka/style.css", "dokka/prism.css", "dokka/logo-styles.css")
-            customAssets.setFrom: ("dokka/logo-icon.svg")
+            customStyleSheets.from: ("dokka/style.css", "dokka/prism.css", "dokka/logo-styles.css")
+            customAssets.from: ("dokka/logo-icon.svg")
   # Produces Kotlin source example files and tests from markdown documents with embedded snippets of Kotlin code
   - knit:
       siteRoot: '"${settings.settingsProperties.remote.url}"'
