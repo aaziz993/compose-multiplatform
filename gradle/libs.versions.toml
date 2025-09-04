@@ -225,11 +225,11 @@ multiplatform-settings = "1.1.1"
 # generates typesafe Kotlin APIs from your SQL statements. It verifies your schema, statements, and migrations at compile-time and provides IDE features like autocomplete and refactoring which make writing and maintaining SQL simple.
 sqldelight = "2.0.2"
 # abstraction layer over SQLite to allow for more robust database access while harnessing the full power of SQLite.
-room = "2.7.0-rc01"
+room = "2.7.2"
 # realm database
 realm = "10.19.0"
 # sqlite
-androidx-sqlite = "2.5.0-rc01"
+androidx-sqlite = "2.5.2"
 # h2 jdbc driver
 h2 = "2.3.232"
 # sqlite jdbc driver
@@ -616,6 +616,8 @@ androidx-room-runtime-ktx = { module = "androidx.room:room-runtime", version.ref
 androidx-room-runtime-android = { module = "androidx.room:room-runtime-android", version.ref = "room" }
 androidx-room-paging = { module = "androidx.room:room-paging", version.ref = "room" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+# Optional SQLite Wrapper available in version 2.8.0 and higher
+androidx-room-sqlite-wrapper = { module = "androidx.room:room-sqlite-wrapper", version.ref = "room" }
 # sqlite database
 androidx-sqlite = { module = "androidx.sqlite:sqlite", version.ref = "androidx-sqlite" }
 androidx-sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "androidx-sqlite" }

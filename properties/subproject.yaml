@@ -75,18 +75,22 @@ script:
                 "-Xjvm-default=all",
               )
             }
-  #  sourceSets:
-  #    - commonMain:
-  #        dependencies:
-  #          - $libs.atomicfu
-  #          - $libs.kotlinx.serialization.json
-  #          - $libs.kotlinx.serialization.properties
-  #          - $libs.kotlinx.benchmark.runtime
-  #
-  #    - nonWebMain:
-  #        dependencies:
-  #          - $libs.androidx.room.runtime.ktx
-  #
+      sourceSets:
+        - named: |
+            ("commonMain") {
+              dependencies {
+                implementation(libs("atomicfu"))
+                implementation(libs("kotlinx.serialization.json"))
+                implementation(libs("kotlinx.serialization.properties"))
+                implementation(libs("kotlinx.benchmark.runtime"))
+              }
+            }
+        - named: |
+            ("nonWebMain") {
+              dependencies {
+                implementation(libs("androidx.room.runtime.ktx"))
+              }
+            }
   ## Software Composition Analysis (SCA) tool that attempts to detect publicly disclosed vulnerabilities contained within a project's dependencies. It does this by determining if there is a Common Platform Enumeration (CPE) identifier for a given dependency. If found, it will generate a report linking to the associated CVE entries.
   - dependencyCheck:
       outputDirectory: '"build/reports"'
@@ -321,7 +325,7 @@ script:
       linkSqlite: true
   # Abstraction layer over SQLite to allow for more robust database access while harnessing the full power of SQLite.
   - room:
-      - schemaDirectory: ("schemas")
+      - schemaDirectory: ("$projectDir/schemas")
   ## Kotlin library for adding asynchronous Remote Procedure Call (RPC) services to your applications. Build your RPC with already known language constructs and nothing more!
   - rpc:
       strict:
@@ -363,9 +367,9 @@ script:
       - add: ("kspCommonMainMetadata", libs("koin.ksp.compiler"))
       # knit
       - testImplementation: ("org.jetbrains.kotlinx:kotlinx-knit-test")
-#  - tasks:
-#      - withType<ShadowJar>: |
-#          { shadowJar ->
-#              shadowJar.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-#              shadowJar.mergeServiceFiles()
-#          }
+  - tasks:
+      - withType<ShadowJar>: |
+          { 
+            duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+            mergeServiceFiles()
+          }

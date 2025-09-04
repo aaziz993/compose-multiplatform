@@ -16,7 +16,7 @@ public class ProjectPlugin : Plugin<Project> {
     override fun apply(target: Project): Unit = with(SLF4JProblemReporterContext()) {
         with(target) {
             // Load and apply project.yaml to build.gradle.kts.
-            ProjectProperties.invoke()
+            ProjectProperties()
 
             configureLinkTasks()
 

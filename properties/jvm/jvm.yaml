@@ -1,4 +1,4 @@
-scripting:
+config:
   imports:
     - org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
     - org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest
@@ -8,8 +8,8 @@ kotlin:
 
   targets:
     # apply to all above jvm targets by providing empty name
-    - |
-      withType<KotlinJvmTarget> {
+    - withType<KotlinJvmTarget>: |
+        {
           compilerOptions {
             freeCompilerArgs.addAll(
                "-Xno-param-assertions",
@@ -23,20 +23,20 @@ dependencies:
   - implementation(dependencies.kotlin("stdlib"))
 
 tasks:
-  - |
-    withType<KotlinJvmTest> {
-      maxHeapSize = "2g"
-
-      useJUnitPlatform()
-
-      filter { filter ->
-        filter.isFailOnNoMatchingTests = false
+  - withType<KotlinJvmTest>: |
+      {
+        maxHeapSize = "2g"
+  
+        useJUnitPlatform()
+  
+        filter { filter ->
+          filter.isFailOnNoMatchingTests = false
+        }
+  
+        testLogging { testLogging ->
+          testLogging.showExceptions = true
+          testLogging.showStandardStreams = true
+          testLogging.events = setOf(TestLogEvent.FAILED, TestLogEvent.PASSED)
+          testLogging.exceptionFormat = TestExceptionFormat.FULL
+        }
       }
-
-      testLogging { testLogging ->
-        testLogging.showExceptions = true
-        testLogging.showStandardStreams = true
-        testLogging.events = setOf(TestLogEvent.FAILED, TestLogEvent.PASSED)
-        testLogging.exceptionFormat = TestExceptionFormat.FULL
-      }
-    }

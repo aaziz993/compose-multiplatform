@@ -28,7 +28,7 @@ public data class SettingsProperties(
     val codeOfConductFile: CodeOfConductFile? = null,
     val contributingFile: ContributingFile? = null,
     override val config: ScriptConfig = ScriptConfig(),
-    override val script: List<SerializableAny> = emptyList()
+    override val script: List<SerializableAny>
 ) : Properties() {
 
     public companion object {
