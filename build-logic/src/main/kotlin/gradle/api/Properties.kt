@@ -98,7 +98,7 @@ public abstract class Properties : ScriptProperties() {
             properties.config.imports.takeIfNotEmpty()?.let { imports ->
                 logger.lifecycle(
                     "${Ansi.PURPLE}${Ansi.ITALIC}${
-                        imports.joinToString("\n") { import -> "import $import" }
+                        imports.sorted().joinToString("\n") { import -> "import $import" }
                     }${Ansi.RESET}\n")
             }
             logger.lifecycle("${Ansi.GREEN}${Ansi.ITALIC}${properties.compiled}${Ansi.RESET}")
