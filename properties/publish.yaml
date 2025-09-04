@@ -1,90 +1,107 @@
+config:
+  imports:
+    - org.gradle.api.publish.maven.MavenPublication
 script:
   # publishing
   - publishing:
       repositories:
-        - mavenLocal:
-            url: '"build/m2"'
+        - mavenLocal: |
+            { repository ->
+              repository.url = uri("build/m2")
+            }
         # Something that's easy to "clean" for development not mavenLocal
-        - maven:
-            name: '"buildRepo"'
-            url: '"../build/repo"' # root build/repo
-        - maven:
-            name: '"GithubPackages"'
-            url: '"https://maven.pkg.github.com/aaziz993"'
-            credentials:
-              username: sensitive("username")
-              password: sensitive("password")
-        - maven:
-            name: '"SpacePackages"'
-            url: '"https://maven.pkg.jetbrains.space/aaziz93/p/aaziz-93/maven"'
-            credentials:
-              username: sensitive("username")
-              password: sensitive("password")
-        - maven:
-            name: '"Sonatype"'
-            url: '"https://oss.sonatype.org"'
-            credentials:
-              username: sensitive("username")
-              password: sensitive("password")
-        - maven:
-            name: '"SonatypeS01"'
-            url: '"https://s01.oss.sonatype.org"'
-            credentials:
-              username: sensitive("username")
-              password: sensitive("password")
-        - maven:
-            name: '"SonatypeCentral"'
-            url: '"https://central.sonatype.com"'
-            credentials:
-              username: sensitive("username")
-              password: sensitive("password")
-        - maven:
-            name: '"SonatypeStaging"'
-            url: '"https://oss.sonatype.org/service/local/staging/deploy/maven2"'
-            credentials:
-              username: sensitive("username")
-              password: sensitive("password")
+        - maven: |
+            { repository ->
+              repository.name = "buildRepo"
+              repository.url = uri("../build/repo") // root build/repo
+            }
+        - maven: |
+            { repository ->
+              repository.name = "GithubPackages"
+              repository.url = uri("https://maven.pkg.github.com/aaziz993")
+              repository.credentials { credentials -> 
+                credentials.username = sensitive("publication.repositories.githubPackages.username")
+                credentials.password = sensitive("publication.repositories.githubPackages.password")
+              }
+            }
+        - maven: |
+            { repository ->
+              repository.name = "Sonatype"
+              repository.url = uri("https://oss.sonatype.org")
+              repository.credentials { credentials -> 
+                credentials.username = sensitive("publication.repositories.sonatype.username")
+                credentials.password = sensitive("publication.repositories.sonatype.password")
+              }
+            }
+        - maven: |
+            { repository ->
+              repository.name = "SonatypeS01"
+              repository.url = uri("https://s01.oss.sonatype.org")
+              repository.credentials { credentials -> 
+                credentials.username = sensitive("publication.repositories.sonatype.s01.username")
+                credentials.password = sensitive("publication.repositories.sonatype.s01.password")
+              }
+            }
+        - maven: |
+            { repository ->
+              repository.name = "SonatypeCentral"
+              repository.url = uri("https://central.sonatype.com")
+              repository.credentials { credentials -> 
+                credentials.username = sensitive("publication.repositories.sonatype.central.username")
+                credentials.password = sensitive("publication.repositories.sonatype.central.password")
+              }
+            }
+        - maven: |
+            { repository ->
+              repository.name = "SonatypeStaging"
+              repository.url = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2")
+              repository.credentials { credentials -> 
+                credentials.username = sensitive("publication.repositories.sonatype.staging.username")
+                credentials.password = sensitive("publication.repositories.sonatype.staging.password")
+              }
+            }
       publications:
         - create<MavenPublication>: |
-            ("mavenJar") {
-              artifactId = "${project.name}"
+            ("jar") { 
+              artifactId = project.name
               groupId = project.group.toString()
               version = project.version.toString()
 
-              pom {
-                  packaging = "jar"
-                  name /=project.name
-                  url /=settings.settingsProperties.license.url
-                  description /= project.description
+              pom { pom ->
+                  pom.packaging = "jar"
+                  pom.name /=project.name
+                  pom.url /=settings.settingsProperties.license.url
+                  pom.description /= project.description
             
-                  licenses {
-                      license {
-                          name /= settings.settingsProperties.license.name
-                          url /= settings.settingsProperties.license.url
-                          distribution /= settings.settingsProperties.license.distribution
-                          comments /= settings.settingsProperties.license.comments
+                  pom.licenses { licenses ->
+                      licenses.license { license ->
+                          license.name /= settings.settingsProperties.license.name
+                          license.url /= settings.settingsProperties.license.url
+                          license.distribution /= settings.settingsProperties.license.distribution
+                          license.comments /= settings.settingsProperties.license.comments
                       }
                   }
 
-                  developers {
-                      developer {
-                          id /= settings.settingsProperties.developer.id
-                          name /= settings.settingsProperties.developer.name
-                          email /= settings.settingsProperties.developer.email
-                          organization /= settings.settingsProperties.developer.organization
-                          organizationUrl /= settings.settingsProperties.developer.organizationUrl
+                  pom.developers { developers ->
+                      developers.developer { developer ->
+                          developer.id /= settings.settingsProperties.developer.id
+                          developer.name /= settings.settingsProperties.developer.name
+                          developer.email /= settings.settingsProperties.developer.email
+                          developer.organization /= settings.settingsProperties.developer.organization
+                          developer.organizationUrl /= settings.settingsProperties.developer.organizationUrl
                       }
                   }
 
-                  issueManagement {
-                      system /= "GitHub Issues"
-                      url /= "https://github.com/aaziz993/compose-multiplatform/issues"
+                  pom.issueManagement { issueManagement ->
+                      issueManagement.system /= "GitHub Issues"
+                      issueManagement.url /= "https://github.com/aaziz993/compose-multiplatform/issues"
                   }
-                  scm {
-                      url /= settings.settingsProperties.remote.url
-                      connection /= settings.settingsProperties.remote.connection
-                      developerConnection /= settings.settingsProperties.remote.developerConnection
-                      tag /= settings.settingsProperties.remote.tag
+            
+                  pom.scm { scm ->
+                      scm.url /= settings.settingsProperties.remote.url
+                      scm.connection /= settings.settingsProperties.remote.connection
+                      scm.developerConnection /= settings.settingsProperties.remote.developerConnection
+                      scm.tag /= settings.settingsProperties.remote.tag
                   }
               }
 
@@ -101,7 +118,3 @@ script:
                   sign(publishing.publications)
               }
             }
-
-
-
-

@@ -1,7 +1,11 @@
-android:
-  BaseAppModuleExtension:
-    buildTypes:
-      - release:
-          isShrinkResources: true
-      - debug:
-          isShrinkResources: false
+script:
+  - android:
+      buildTypes:
+        - getByName: |
+            ("release") {
+              isShrinkResources = true
+            }
+        - getByName: |
+            ("debug") {
+              isShrinkResources = false
+            }

@@ -1,10 +1,11 @@
 imports:
   - ../properties/root.yaml
   - ../properties/jvm/jvm.yaml
-#  - ../properties/android/android.yaml
+  - ../properties/android/android.yaml
   #  - ../properties/android/android-library.yaml
   - ../properties/mpp.yaml
   - ../properties/subproject.yaml
+  - ../properties/publish.yaml
 
 #templates:
 #  - ../templates/gradle/jvm/jvm.yaml

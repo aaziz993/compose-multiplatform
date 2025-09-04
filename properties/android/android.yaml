@@ -1,74 +1,150 @@
-kotlin:
-  sourceSets:
-    - androidMain:
-        dependencies:
-          - implementation(libs("androidx.activity.ktx"))
-          - implementation(libs("androidx.fragment.ktx"))
-          - implementation(libs("android.documentation.plugin"))
-          - implementation(libs("androidx.room.runtime.android"))
-          - implementation(libs("androidx.room.paging"))
-
-android:
-  compileOptions:
-    isCoreLibraryDesugaringEnabled: true
-  lintOptions:
-    checkReleaseBuilds: false
-    abortOnError: false
-  buildTypes:
-    - release:
-        # List additional ProGuard rules for the given build type here. By default,
-        # Android Studio creates and includes an empty rules file for you (located
-        # at the root directory of each module).
-        defaultProguardFile: [ proguard-android-optimize.txt ]
-        proguardFiles: [ proguard.pro ]
-        isMinifyEnabled: true
-        debuggable: false
-        signingConfig:
-          name: release
-    - debug:
-        isMinifyEnabled: false
-        debuggable: true
-  lint:
-    xmlReport: true
-    xmlOutput: build/reports/lint-results.xml # path to the lint report to consume by sonar
-  defaultConfig:
-    testInstrumentationRunner: androidx.test.runner.AndroidJUnitRunner
-    manifestPlaceholders:
-      appAuthRedirectScheme: empty
-    javaCompileOptions:
-      annotationProcessorOptions:
-        arguments:
-          'room.schemaLocation': schemas
-          'room.incremental': 'true'
-          'room.expandProjection': 'true'
-    vectorDrawables:
-      useSupportLibrary: true
-    # The proguard files listed here are included in the
-    # test APK only.
-    testProguardFiles: [ test-proguard-rules.pro ]
-    consumerProguardFiles: [ consumer-proguard.pro ]
-  flavourDimensions: [ api, mode ]
-  productFlavours:
-    - demo:
-        dimension: mode
-    - full:
-        dimension: mode
-  signingConfigs:
-    - release:
-        storeFile: resources@android/release.keystore
-        storePassword: $envOrLocal.android.release.signing.store.password
-        storeType: $envOrLocal.android.release.signing.store.type
-        keyAlias: $envOrLocal.android.release.signing.key.alias
-        keyPassword: $envOrLocal.android.release.signing.key.password
-        v2SigningEnabled: true
-  packagingOptions:
-    resources:
-      excludes: /META-INF/{AL2.0,LGPL2.1
-  buildFeatures:
-    buildConfig: true
-    viewBinding: true
-
-dependencies:
-  - coreLibraryDesugaring: $libs.android.desugar.jdk.libs
-  - androidTestImplementation: $libs.androidx.test.core
-  - androidTestImplementation: $libs.androidx.test.runner
+script:
+  - kotlin:
+      sourceSets:
+        - named: |
+            ("androidMain") {
+              dependencies {
+                implementation(libs("androidx.activity.ktx"))
+                implementation(libs("androidx.fragment.ktx"))
+                implementation(libs("android.documentation.plugin"))
+                implementation(libs("androidx.room.runtime.android"))
+                implementation(libs("androidx.room.paging"))
+              }
+            }
+  - android:
+      compileOptions:
+        isCoreLibraryDesugaringEnabled: true
+      lintOptions:
+        isCheckReleaseBuilds: false
+        isAbortOnError: false
+        xmlReport: true
+        xmlOutput: file("build/reports/lint-results.xml") # path to the lint report to consume by sonar
+      defaultConfig:
+        testInstrumentationRunner: '"androidx.test.runner.AndroidJUnitRunner"'
+        manifestPlaceholders.putAll: |
+          (mapOf(
+            "hostName" to "www.example.com",
+            "appAuthRedirectScheme" to "empty",
+          ))
+        javaCompileOptions:
+          annotationProcessorOptions:
+            arguments.putAll: |
+              (mapOf(
+                "room.schemaLocation" to "schemas",
+                "room.incremental" to "true",
+                "room.expandProjection" to "true",
+              ))
+        vectorDrawables:
+          useSupportLibrary: true
+        # The proguard files listed here are included in the
+        # test APK only.
+        testProguardFiles.addAll: |
+          (listOf(
+            "test-proguard-rules.pro"
+          ).map(::file))
+        consumerProguardFiles.addAll: |
+          (listOf(
+            "consumer-proguard-rules.pro",
+          ).map(::file))
+      buildTypes:
+        - getByName: |
+            ("release") {
+                isMinifyEnabled = true
+                proguardFiles(
+                    getDefaultProguardFile("sf", layout.buildDirectory),
+                    "proguard-rules.pro",
+                )
+                signingConfig = android.signingConfigs.getByName("release")
+                buildConfigField("String", "API_URL", "https://api.example.com")
+            }
+        - getByName: |
+            ("debug") {
+                applicationIdSuffix = ".debug"
+                versionNameSuffix = "-DEBUG"
+                isDebuggable = true
+                buildConfigField("String", "API_URL", "https://dev.api.example.com")
+            }
+        - create: |
+            ("staging") {
+              applicationIdSuffix = ".staging"
+              versionNameSuffix = "-STAGING"
+              buildConfigField("String", "API_URL", "https://staging.api.example.com")
+            }
+      # Specifies the flavor dimensions you want to use. The order in which you
+      # list the dimensions determines their priority, from highest to lowest,
+      # when Gradle merges variant sources and configurations. You must assign
+      # each product flavor you configure to one of the flavor dimensions.
+      flavourDimensionList.addAll: |
+        (listOf(
+          "api",
+          "mode",
+        ))
+      productFlavours:
+        - create: |
+            ("demo") {
+              // Assigns this product flavor to the "mode" flavor dimension.
+              // If you are using only one dimension, this property is optional,
+              // and the plugin automatically assigns all the module's flavors to
+              // that dimension.
+              dimension = "mode"
+              applicationIdSuffix = ".demo"
+              versionNameSuffix = "-demo"
+            }
+        - create: |
+            ("full") {
+              dimension = "mode"
+              applicationIdSuffix = ".full"
+              versionNameSuffix = "-full"
+            }
+        # Configurations in the "api" product flavors override those in "mode"
+        # flavors and the defaultConfig block. Gradle determines the priority
+        # between flavor dimensions based on the order in which they appear next
+        # to the flavorDimensions property, with the first dimension having a higher
+        # priority than the second, and so on.
+        - create: |
+            ("minApi24") {
+              dimension = "api"
+              minSdk = 24
+              // To ensure the target device receives the version of the app with
+              // the highest compatible API level, assign version codes in increasing
+              // value with API level.
+              versionCode = 30000 + (android.defaultConfig.versionCode ?: 0)
+              versionNameSuffix = "-minApi24"
+            }
+        - create: |
+            ("minApi23") {
+              dimension = "api"
+              minSdk = 23
+              versionCode = 20000  + (android.defaultConfig.versionCode ?: 0)
+              versionNameSuffix = "-minApi23"
+            }
+        - create: |
+            ("minApi21") {
+              dimension = "api"
+              minSdk = 21
+              versionCode = 10000  + (android.defaultConfig.versionCode ?: 0)
+              versionNameSuffix = "-minApi21"
+            }
+      signingConfigs:
+        - create: |
+            ("release") {
+              storeFile = file("resources@android/release.keystore")
+              storePassword = sensitive("android.release.signing.store.password")
+              storeType = sensitive("android.release.signing.store.type")
+              keyAlias = sensitive("android.release.signing.key.alias")
+              keyPassword = sensitive("android.release.signing.key.password")
+              isV2SigningEnabled = true
+            }
+      packagingOptions:
+        resources:
+          excludes.addAll: |
+            (setOf(
+              "/META-INF/{AL2.0,LGPL2.1",
+            ))
+      buildFeatures:
+        buildConfig: true
+        viewBinding: true
+  - dependencies:
+      - add: ("coreLibraryDesugaring", libs("android.desugar.jdk.libs"))
+      - add: ("androidTestImplementation", libs("androidx.test.core"))
+      - add: ("androidTestImplementation", libs("androidx.test.runner"))

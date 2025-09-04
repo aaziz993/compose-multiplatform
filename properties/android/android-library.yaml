@@ -1,5 +1,9 @@
-kotlin:
-  targets:
-    - android:
-        name: ''
-        publishLibraryVariants: [ release ]
+script:
+  - kotlin:
+      targets:
+        - withType<KotlinAndroidTarget>: |
+            {
+              publishLibraryVariants(
+                "release",
+              )
+            }
