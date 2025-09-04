@@ -3,6 +3,7 @@ package klib.data.type.primitives.string.scripting
 import com.charleskorn.kaml.Yaml
 import klib.data.cache.Cache
 import klib.data.cache.NoCache
+import klib.data.type.Ansi
 import klib.data.type.collections.*
 import klib.data.type.collections.deepGetOrNull
 import klib.data.type.collections.list.asList
@@ -184,46 +185,55 @@ public abstract class ScriptProperties {
             explicitOperationReceivers: Set<KClass<*>> = emptySet(),
             noinline implicitOperation: (valueClass: KClass<*>, value: Any?) -> String? = { _, _ -> null },
             config: ScriptConfig.() -> Unit = { },
-        ): T = T::class.serializer().deserialize(
-            decodeFile<Map<String, Any?>>(
-                file,
-                { file, decodedFile ->
-                    decodedFile.deepGetOrNull(IMPORTS_KEY).second?.asList<String>()?.map { import ->
-                        importToFile(file, import)
+        ): T {
+            val importGraph = mutableMapOf<String, List<String>>()
+
+            return T::class.serializer().deserialize(
+                decodeFile<Map<String, Any?>>(
+                    file,
+                    { file, decodedFile ->
+                        val imports = decodedFile.deepGetOrNull(IMPORTS_KEY).second?.asList<String>()?.map { import ->
+                            importToFile(file, import)
+                        }.orEmpty()
+
+                        importGraph[file] = imports
+
+                        imports
+                    },
+                    decoder = decoder,
+                ) { decodedFile, decodedImports ->
+                    val substitutedFile =
+                        (decodedFile - listOf(IMPORTS_KEY, SCRIPT_KEY)).substitute(
+                            SubstituteOption.INTERPOLATE_BRACES,
+                            SubstituteOption.DEEP_INTERPOLATION,
+                            SubstituteOption.EVALUATE,
+                        )
+
+                    val decodedFileScript: List<Any?> = decodedFile[SCRIPT_KEY]?.let { script ->
+                        script.asMapOrNull?.map { (key, value) -> mapOf(key to value) } ?: script.asList
+                    } ?: emptyList()
+
+                    if (decodedImports.isEmpty()) substitutedFile + (SCRIPT_KEY to decodedFileScript)
+                    else {
+                        val mergedImports =
+                            decodedImports.fold(mutableMapOf<String, Any?>()) { mergedImportsConfig, decodedImport ->
+                                (decodedImport - SCRIPT_KEY).deepMap(mergedImportsConfig)
+                            }
+
+                        val mergedImportScripts =
+                            decodedImports.flatMap { decodedImport -> decodedImport[SCRIPT_KEY]!!.asList }
+
+                        substitutedFile.substitute(getter = { path ->
+                            mergedImports.deepGetOrNull(*path.toTypedArray()).second
+                        }).deepMap(mergedImports) + (SCRIPT_KEY to mergedImportScripts + decodedFileScript)
                     }
-                },
-                decoder = decoder,
-            ) { decodedFile, decodedImports ->
-                val substitutedFile =
-                    (decodedFile - listOf(IMPORTS_KEY, SCRIPT_KEY)).substitute(
-                        SubstituteOption.INTERPOLATE_BRACES,
-                        SubstituteOption.DEEP_INTERPOLATION,
-                        SubstituteOption.EVALUATE,
-                    )
-
-                val decodedFileScript: List<Any?> = decodedFile[SCRIPT_KEY]?.let { script ->
-                    script.asMapOrNull?.map { (key, value) -> mapOf(key to value) } ?: script.asList
-                } ?: emptyList()
-
-                if (decodedImports.isEmpty()) substitutedFile + (SCRIPT_KEY to decodedFileScript)
-                else {
-                    val mergedImports =
-                        decodedImports.fold(mutableMapOf<String, Any?>()) { mergedImportsConfig, decodedImport ->
-                            (decodedImport - SCRIPT_KEY).deepMap(mergedImportsConfig)
-                        }
-
-                    val mergedImportScripts =
-                        decodedImports.flatMap { decodedImport -> decodedImport[SCRIPT_KEY]!!.asList }
-
-                    substitutedFile.substitute(getter = { path ->
-                        mergedImports.deepGetOrNull(*path.toTypedArray()).second
-                    }).deepMap(mergedImports) + (SCRIPT_KEY to mergedImportScripts + decodedFileScript)
-                }
-            }).apply {
-            this.cache = cache
-            this.explicitOperationReceivers = EXPLICIT_OPERATION_RECEIVERS + explicitOperationReceivers
-            this.implicitOperation = implicitOperation
-            this.config.config()
+                }).apply {
+                this.cache = cache
+                this.explicitOperationReceivers = EXPLICIT_OPERATION_RECEIVERS + explicitOperationReceivers
+                this.implicitOperation = implicitOperation
+                this.config.config()
+                importGraph.printTree(file)
+            }
         }
 
         @PublishedApi
@@ -237,3 +247,41 @@ public abstract class ScriptProperties {
     }
 }
 
+/**
+ * Pretty-prints a dependency tree with connectors.
+ *
+ * @receiver A map where each key is a node (file) and its value is the list of children (imports).
+ * @param root The root node to start printing from.
+ * @param prefix Internal: indentation and vertical lines.
+ * @param isLast Internal: whether this node is the last child of its parent.
+ */
+/**
+ * Pretty-prints a dependency tree with connectors.
+ *
+ * @receiver A map where each key is a node (file) and its value is the list of children (imports).
+ * @param root The root node to start printing from.
+ * @param prefix Internal: indentation and vertical lines.
+ * @param isLast Internal: whether this node is the last child of its parent.
+ */
+public fun Map<String, List<String>>.printTree(
+    root: String,
+    prefix: String = "",
+    isLast: Boolean = true,
+): Unit = DeepRecursiveFunction<PrintTreeArgs, Unit> { (root, prefix, isLast) ->
+    val connector = if (prefix.isEmpty()) "" else if (isLast) "└── " else "├── "
+
+    println("$prefix$connector${Ansi.GREEN}File:${Ansi.RESET} $root")
+
+    val children = this@printTree[root].orEmpty()
+    children.forEachIndexed { index, child ->
+        val childIsLast = index == children.lastIndex
+        val newPrefix = prefix + if (isLast) "    " else "│   "
+        callRecursive(PrintTreeArgs(child, newPrefix, childIsLast))
+    }
+}(PrintTreeArgs(root, prefix, isLast))
+
+private data class PrintTreeArgs(
+    val root: String,
+    val prefix: String = "",
+    val isLast: Boolean
+)
