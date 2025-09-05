@@ -1,0 +1,15 @@
+import:
+  - wasm-js.yaml
+script:
+  - kotlin:
+      targets:
+        - withType<KotlinWasmJsTargetDsl>: |
+            {
+              outputModuleName.set(moduleName)
+              browser {
+                  commonWebpackConfig { commonWebpackConfig ->
+                      commonWebpackConfig.outputFileName = "$moduleName.js"
+                  }
+              }
+              binaries.executable()
+            }

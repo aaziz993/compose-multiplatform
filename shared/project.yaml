@@ -8,8 +8,8 @@ templates:
   - ../templates/gradle/apple.yaml
   - ../templates/gradle/web/js/js.yaml
   - ../templates/gradle/web/js/js-library.yaml
-  - ../templates/gradle/web/wasmJs.yaml
-  - ../templates/gradle/web/wasm-library.yaml
+  - ../templates/gradle/web/wasm-js.yaml
+  - ../templates/gradle/web/wasm-js-library.yaml
   - ../templates/gradle/web/js-subproject.yaml
   - ../templates/gradle/mpp.yaml
   - ../templates/gradle/subproject.yaml

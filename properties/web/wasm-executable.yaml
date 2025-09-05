@@ -1,5 +1,0 @@
-kotlin:
-  targets:
-    wasmCommon:
-      binaries:
-        - ExecutableWasm: { }

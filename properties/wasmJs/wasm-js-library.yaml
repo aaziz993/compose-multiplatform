@@ -1,0 +1,9 @@
+import:
+  - wasm-js.yaml
+script:
+  - kotlin:
+      targets:
+        - withType<KotlinWasmJsTargetDsl>: |
+            {
+              binaries.library()
+            }
