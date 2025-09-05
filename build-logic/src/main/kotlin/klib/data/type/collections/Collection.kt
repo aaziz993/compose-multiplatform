@@ -1,6 +1,5 @@
 package klib.data.type.collections
 
-import klib.data.type.Ansi
 import klib.data.type.collections.list.asList
 import klib.data.type.collections.list.drop
 import klib.data.type.collections.map.asMap
@@ -601,44 +600,47 @@ public fun <T : Any> T.substitute(
     }
 )
 
-public fun Any.printTree(
+public fun Any.deepString(
     sourceIteratorOrNull: List<Pair<Any, Any?>>.(value: Any) -> Iterator<Map.Entry<Any?, Any?>>? = { value ->
         value.iteratorOrNull()
     },
-    printer: List<Pair<Any, Any?>>.(prefix: String) -> Unit = { prefix ->
-        println("$prefix${Ansi.GREEN}File:${Ansi.RESET} ${last().second}")
-    }
-): Unit = DeepRecursiveFunction<PrintTreeArgs, Unit> { (sources, sourceIterator, prefix) ->
-    val entries = sourceIterator.asSequence().toList()
+    intermediateConnector: String = "├── ",
+    verticalConnector: String = "│",
+    lastConnector: String = "└── ",
+    transform: List<Pair<Any, Any?>>.() -> String = { "${last().second}" }
+): String = buildString {
+    DeepRecursiveFunction<deepStringArgs, Unit> { (sources, sourceIterator, prefix) ->
+        val entries = sourceIterator.asSequence().toList()
 
-    entries.forEachIndexed { index, (key, value) ->
-        val currentSources = sources.replaceLast { copy(second = key) }
+        entries.forEachIndexed { index, (key, value) ->
+            val currentSources = sources.replaceLast { copy(second = key) }
 
-        val childIsLast = index == entries.lastIndex
-        val connector = if (prefix.isEmpty()) "" else if (childIsLast) "└── " else "├── "
+            val isLast = index == entries.lastIndex
+            val connector = if (prefix.isEmpty()) "" else if (isLast) lastConnector else intermediateConnector
 
-        currentSources.printer("$prefix$connector${Ansi.GREEN}")
+            appendLine("$prefix$connector${currentSources.transform()}")
 
-        if (value != null)
-            currentSources.sourceIteratorOrNull(value)?.let { nextSourceIterator ->
-                callRecursive(
-                    PrintTreeArgs(
-                        currentSources + (value to 0),
-                        nextSourceIterator,
-                        prefix + if (childIsLast) "    " else "│   ",
-                    ),
-                )
-            }
-    }
-}(
-    PrintTreeArgs(
-        listOf(this to 0),
-        emptyList<Pair<Any, Int>>().sourceIteratorOrNull(this)!!,
-        ""
-    ),
-)
+            if (value != null)
+                currentSources.sourceIteratorOrNull(value)?.let { nextSourceIterator ->
+                    callRecursive(
+                        deepStringArgs(
+                            currentSources + (value to 0),
+                            nextSourceIterator,
+                            prefix + if (isLast) "    " else "$verticalConnector   ",
+                        ),
+                    )
+                }
+        }
+    }(
+        deepStringArgs(
+            listOf(this@deepString to 0),
+            emptyList<Pair<Any, Int>>().sourceIteratorOrNull(this)!!,
+            ""
+        ),
+    )
+}
 
-private data class PrintTreeArgs(
+private data class deepStringArgs(
     val sources: List<Pair<Any, Any?>>,
     val sourceIterator: Iterator<Map.Entry<Any?, Any?>>,
     val prefix: String

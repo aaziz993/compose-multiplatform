@@ -84,13 +84,13 @@ public abstract class ScriptProperties {
         fileTree.printTree(fileTree.entries.first().key) { prefix ->
             appendLine("$prefix${Ansi.GREEN}File:${Ansi.RESET} ${last().second}")
         }
-        append("```")
+        appendLine(Ansi.BRIGHT_PURPLE)
         config.imports.takeIfNotEmpty()?.let { imports ->
             appendLine(imports.sorted().joinToString("\n") { import -> "import $import" })
             appendLine()
         }
         append(compiled)
-        append("```")
+        appendLine(Ansi.RESET)
     }
 
     private fun tryAssign(path: Array<String>, value: Any?): Any? {
