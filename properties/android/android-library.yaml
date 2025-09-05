@@ -1,10 +1,11 @@
+imports:
+  - android-library-plugin.yaml
+  - android.yaml
 config:
   imports:
     - org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
     - com.android.build.api.dsl.androidLibrary
 script:
-  - plugins:
-      - id: (libs.plugins("android.kotlin.multiplatform.library").pluginId)
   - kotlin:
       androidLibrary: |
         {
