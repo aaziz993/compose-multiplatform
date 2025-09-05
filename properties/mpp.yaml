@@ -207,7 +207,7 @@ script:
         - named: |
             ("jvmCommon") { sourceSet ->
               sourceSet.dependencies {
-                implementation: (dependencies.kotlin("stdlib"))
+                implementation(dependencies.kotlin("stdlib"))
               }
             }
         - named: |
