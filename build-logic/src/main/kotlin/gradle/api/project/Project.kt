@@ -203,11 +203,6 @@ public val Project.android: BaseExtension get() = the()
 public fun Project.android(configure: BaseExtension.() -> Unit): Unit =
     extensions.configure(configure)
 
-public val Project.androidLibrary: LibraryExtension get() = the()
-
-public fun Project.androidLibrary(configure: LibraryExtension.() -> Unit): Unit =
-    extensions.configure(configure)
-
 public val Project.androidApplication: BaseAppModuleExtension get() = the()
 
 public fun Project.androidApplication(configure: BaseAppModuleExtension.() -> Unit): Unit =

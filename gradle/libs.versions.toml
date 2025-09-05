@@ -293,7 +293,7 @@ kotlin-cocoapods-tvosDeploymentTarget = "18.2"
 kotlin-cocoapods-watchosDeploymentTarget = "11.2"
 
 ##Android
-agp = "8.11.0"
+agp = "8.13.0"
 # in project version
 android-compileSdk = "35"
 # in project version
@@ -1389,7 +1389,7 @@ kmp-nativecoroutines = { id = "com.rickclephas.kmp.nativecoroutines", version.re
 # jvm
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 # multiplatform
-kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 # data pipeline processing
 dataframe = { id = "org.jetbrains.kotlinx.dataframe", version.ref = "dataframe" }
 # providing detailed failure messages with contextual information during testing.
@@ -1415,9 +1415,8 @@ firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "
 google-playServices = { id = "com.google.gms.google-services", version.ref = "google-play-services" }
 
 ##Android
-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-androidLibrary = { id = "com.android.library", version.ref = "agp" }
-androidApplication = { id = "com.android.application", version.ref = "agp" }
+android-kotlin-multiplatform-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "agp" }
+android-application = { id = "com.android.application", version.ref = "agp" }
 
 ##IOS
 # cocoapods

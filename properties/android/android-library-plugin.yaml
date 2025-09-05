@@ -1,3 +1,3 @@
 script:
   - plugins:
-      - id: (libs.plugins("androidLibrary").pluginId)
+      - id: (libs.plugins("android.kotlin.multiplatform.library").pluginId)

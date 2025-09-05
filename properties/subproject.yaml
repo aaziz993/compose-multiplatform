@@ -77,8 +77,8 @@ script:
             }
       sourceSets:
         - named: |
-            ("commonMain") {
-              dependencies {
+            ("commonMain") { sourceSet ->
+              sourceSet.dependencies {
                 implementation(libs("atomicfu"))
                 implementation(libs("kotlinx.serialization.json"))
                 implementation(libs("kotlinx.serialization.properties"))
@@ -86,8 +86,8 @@ script:
               }
             }
         - named: |
-            ("jvmCommonIosMain") {
-              dependencies {
+            ("jvmCommonIosMain") { sourceSet ->
+              sourceSet.dependencies {
                 implementation(libs("androidx.room.runtime.ktx"))
               }
             }
@@ -366,7 +366,7 @@ script:
       # Use import org.koin.ksp.generated.* in project.
       - add: ("kspCommonMainMetadata", libs("koin.ksp.compiler"))
       # knit
-      - testImplementation: ("org.jetbrains.kotlinx:kotlinx-knit-test")
+#      - testImplementation: ("org.jetbrains.kotlinx:kotlinx-knit-test")
   - tasks:
       - withType<ShadowJar>: |
           { 

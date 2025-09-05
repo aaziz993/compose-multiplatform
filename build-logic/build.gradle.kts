@@ -131,6 +131,7 @@ dependencies {
     implementation(libs.kotlin.scripting.common)
     implementation(libs.kotlin.scripting.jvm)
     implementation(libs.kotlin.scripting.jvm.host)
+    implementation(kotlin("script-runtime"))
     // api that you can use to develop lightweight compiler plugins. KSP provides a simplified compiler plugin API that leverages the power of Kotlin while keeping the learning curve at a minimum. Compared to KAPT, annotation processors that use KSP can run up to 2x faster.
     implementation(libs.plugins.ksp.toDep())
     // generates an additional zero-argument constructor for classes with a specific annotation.
@@ -171,7 +172,7 @@ dependencies {
     // toolkit for running benchmarks for multiplatform code written in Kotlin. It is designed to work with Kotlin/JVM, Kotlin/JS, Kotlin/Native, and Kotlin/WasmJs (experimental) targets.
     implementation(libs.plugins.kotlinx.benchmark.toDep())
     // multiplatform
-    implementation(libs.plugins.kotlinMultiplatform.toDep())
+    implementation(libs.plugins.kotlin.multiplatform.toDep())
     // multiplatform library that provides the idiomatic and efficient way of using atomic operations in Kotlin.
     implementation(libs.plugins.atomicfu.toDep())
     // jvm
@@ -197,10 +198,8 @@ dependencies {
 
     // Android
     compileOnly(libs.android.gradle.plugin)
-    runtimeOnly(libs.plugins.android.toDep())
-    runtimeOnly(libs.plugins.androidLibrary.toDep())
-    runtimeOnly(libs.plugins.androidApplication.toDep())
-    implementation(kotlin("script-runtime"))
+    runtimeOnly(libs.plugins.android.kotlin.multiplatform.library.toDep())
+    runtimeOnly(libs.plugins.android.application.toDep())
 
     // IOS
     implementation(libs.plugins.apple.toDep())
