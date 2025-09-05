@@ -1697,8 +1697,8 @@ public fun ArtifactHandler.dokka(
  *
  * @see [DependencyHandler.add]
  */
-public fun DependencyHandler.signature(dependencyNotation: Any): Dependency? =
-    add("signature", dependencyNotation)
+public fun DependencyHandler.dokkaPlugin(dependencyNotation: Any): Dependency? =
+    add("dokkaPlugin", dependencyNotation)
 
 /**
  * Adds a dependency to the 'implementation' configuration.
@@ -1709,11 +1709,11 @@ public fun DependencyHandler.signature(dependencyNotation: Any): Dependency? =
  *
  * @see [DependencyHandler.add]
  */
-public fun DependencyHandler.signature(
+public fun DependencyHandler.dokkaPlugin(
     dependencyNotation: String,
     dependencyConfiguration: Action<ExternalModuleDependency>
 ): ExternalModuleDependency = addDependencyTo(
-    this, "signature", dependencyNotation, dependencyConfiguration,
+    this, "dokkaPlugin", dependencyNotation, dependencyConfiguration,
 ) as ExternalModuleDependency
 
 /**
@@ -1725,11 +1725,11 @@ public fun DependencyHandler.signature(
  *
  * @see [DependencyHandler.add]
  */
-public fun DependencyHandler.signature(
+public fun DependencyHandler.dokkaPlugin(
     dependencyNotation: Provider<*>,
     dependencyConfiguration: Action<ExternalModuleDependency>
 ): Unit = addConfiguredDependencyTo(
-    this, "signature", dependencyNotation, dependencyConfiguration,
+    this, "dokkaPlugin", dependencyNotation, dependencyConfiguration,
 )
 
 /**
@@ -1741,11 +1741,11 @@ public fun DependencyHandler.signature(
  *
  * @see [DependencyHandler.add]
  */
-public fun DependencyHandler.signature(
+public fun DependencyHandler.dokkaPlugin(
     dependencyNotation: ProviderConvertible<*>,
     dependencyConfiguration: Action<ExternalModuleDependency>
 ): Unit = addConfiguredDependencyTo(
-    this, "signature", dependencyNotation, dependencyConfiguration,
+    this, "dokkaPlugin", dependencyNotation, dependencyConfiguration,
 )
 
 /**
@@ -1763,7 +1763,7 @@ public fun DependencyHandler.signature(
  * @see [DependencyHandler.create]
  * @see [DependencyHandler.add]
  */
-public fun DependencyHandler.signature(
+public fun DependencyHandler.dokkaPlugin(
     group: String,
     name: String,
     version: String? = null,
@@ -1772,7 +1772,7 @@ public fun DependencyHandler.signature(
     ext: String? = null,
     dependencyConfiguration: Action<ExternalModuleDependency>? = null
 ): ExternalModuleDependency = addExternalModuleDependencyTo(
-    this, "signature", group, name, version, configuration, classifier, ext, dependencyConfiguration,
+    this, "dokkaPlugin", group, name, version, configuration, classifier, ext, dependencyConfiguration,
 )
 
 /**
@@ -1784,10 +1784,10 @@ public fun DependencyHandler.signature(
  *
  * @see [DependencyHandler.add]
  */
-public fun <T : ModuleDependency> DependencyHandler.signature(
+public fun <T : ModuleDependency> DependencyHandler.dokkaPlugin(
     dependency: T,
     dependencyConfiguration: T.() -> Unit
-): T = add("signature", dependency, dependencyConfiguration)
+): T = add("dokkaPlugin", dependency, dependencyConfiguration)
 
 /**
  * Adds a dependency constraint to the 'implementation' configuration.
@@ -1798,8 +1798,8 @@ public fun <T : ModuleDependency> DependencyHandler.signature(
  *
  * @see [DependencyConstraintHandler.add]
  */
-public fun DependencyConstraintHandler.signature(constraintNotation: Any): DependencyConstraint =
-    add("signature", constraintNotation)
+public fun DependencyConstraintHandler.dokkaPlugin(constraintNotation: Any): DependencyConstraint =
+    add("dokkaPlugin", constraintNotation)
 
 /**
  * Adds a dependency constraint to the 'implementation' configuration.
@@ -1811,8 +1811,8 @@ public fun DependencyConstraintHandler.signature(constraintNotation: Any): Depen
  *
  * @see [DependencyConstraintHandler.add]
  */
-public fun DependencyConstraintHandler.signature(constraintNotation: Any, block: DependencyConstraint.() -> Unit): DependencyConstraint =
-    add("signature", constraintNotation, block)
+public fun DependencyConstraintHandler.dokkaPlugin(constraintNotation: Any, block: DependencyConstraint.() -> Unit): DependencyConstraint =
+    add("dokkaPlugin", constraintNotation, block)
 
 /**
  * Adds an artifact to the 'implementation' configuration.
@@ -1822,8 +1822,8 @@ public fun DependencyConstraintHandler.signature(constraintNotation: Any, block:
  *
  * @see [ArtifactHandler.add]
  */
-public fun ArtifactHandler.signature(artifactNotation: Any): PublishArtifact =
-    add("signature", artifactNotation)
+public fun ArtifactHandler.dokkaPlugin(artifactNotation: Any): PublishArtifact =
+    add("dokkaPlugin", artifactNotation)
 
 /**
  * Adds an artifact to the 'implementation' configuration.
@@ -1834,8 +1834,8 @@ public fun ArtifactHandler.signature(artifactNotation: Any): PublishArtifact =
  *
  * @see [ArtifactHandler.add]
  */
-public fun ArtifactHandler.signature(
+public fun ArtifactHandler.dokkaPlugin(
     artifactNotation: Any,
     configureAction: ConfigurablePublishArtifact.() -> Unit
 ): PublishArtifact =
-    add("signature", artifactNotation, configureAction)
+    add("dokkaPlugin", artifactNotation, configureAction)

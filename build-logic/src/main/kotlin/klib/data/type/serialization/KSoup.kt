@@ -84,16 +84,16 @@ public fun Parser.parse(
         this,
     )
 
-public suspend fun Parser.parseGetRequest(
-    url: String,
-    httpRequestBuilder: HttpRequestBuilder.() -> Unit = {},
-): Document = Ksoup.parseGetRequest(url, httpRequestBuilder, this)
-
-public suspend fun Parser.parseSubmitRequest(
-    url: String,
-    params: Map<String, String> = emptyMap(),
-    httpRequestBuilder: HttpRequestBuilder.() -> Unit = {},
-): Document = Ksoup.parseSubmitRequest(url, params, httpRequestBuilder, this)
+//public suspend fun Parser.parseGetRequest(
+//    url: String,
+//    httpRequestBuilder: HttpRequestBuilder.() -> Unit = {},
+//): Document = Ksoup.parseGetRequest (url, httpRequestBuilder, this)
+//
+//public suspend fun Parser.parseSubmitRequest(
+//    url: String,
+//    params: Map<String, String> = emptyMap(),
+//    httpRequestBuilder: HttpRequestBuilder.() -> Unit = {},
+//): Document = Ksoup.parseSubmitRequest(url, params, httpRequestBuilder, this)
 
 public suspend fun Parser.parsePostRequest(
     url: String,

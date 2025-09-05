@@ -3,6 +3,7 @@ package klib.data.type.primitives.string.humanreadable
 import klib.data.type.primitives.string.humanreadable.model.RelativeTime
 import klib.data.type.primitives.string.humanreadable.model.TimeUnit
 import kotlinx.datetime.Instant
+import kotlin.time.ExperimentalTime
 
 /**
  * Returns the difference between now and instant, in human-readable format. Also supports
@@ -10,6 +11,7 @@ import kotlinx.datetime.Instant
  *
  * @return a formatted string
  */
+@ExperimentalTime
 public fun Instant.toHumanReadable(
     baseInstant: Instant,
     nanosecondsUnit: TimeUnit = TimeUnit(

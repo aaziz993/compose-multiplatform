@@ -29,21 +29,6 @@ public class ProjectPlugin : Plugin<Project> {
             // Load and apply project.yaml to build.gradle.kts.
             ProjectProperties()
 
-            kotlin.androidLibrary {
-                namespace = androidNamespace
-                withHostTestBuilder {}.configure {
-                    isIncludeAndroidResources = true
-                }
-                withDeviceTestBuilder {
-                    sourceSetTreeName = "test"
-
-                }.configure {
-                    instrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-                    execution = "ANDROIDX_TEST_ORCHESTRATOR"
-                }
-
-            }
-
             configureLinkTasks()
 
             CI.configureTasks()
