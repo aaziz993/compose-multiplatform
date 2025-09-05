@@ -5,6 +5,7 @@ import gradle.api.ci.CI
 import gradle.api.maybeNamed
 import gradle.api.project.ProjectProperties
 import gradle.api.project.android
+import gradle.api.project.androidNamespace
 import gradle.api.project.kotlin
 import gradle.api.project.libs
 import gradle.api.project.moduleName
@@ -28,20 +29,20 @@ public class ProjectPlugin : Plugin<Project> {
             // Load and apply project.yaml to build.gradle.kts.
             ProjectProperties()
 
-//            kotlin.androidLibrary {
-//                namespace = moduleName
-//                withHostTestBuilder {}.configure {
-//                    isIncludeAndroidResources = true
-//                }
-//                withDeviceTestBuilder {
-//                    sourceSetTreeName = "test"
-//
-//                }.configure {
-//                    instrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-//                    execution = "ANDROIDX_TEST_ORCHESTRATOR"
-//                }
-//
-//            }
+            kotlin.androidLibrary {
+                namespace = androidNamespace
+                withHostTestBuilder {}.configure {
+                    isIncludeAndroidResources = true
+                }
+                withDeviceTestBuilder {
+                    sourceSetTreeName = "test"
+
+                }.configure {
+                    instrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+                    execution = "ANDROIDX_TEST_ORCHESTRATOR"
+                }
+
+            }
 
             configureLinkTasks()
 

@@ -7,126 +7,20 @@ script:
       androidTarget: ()
       sourceSets:
         - named: |
-            ("androidMain") {
-              dependencies {
+            ("androidMain") { sourceSet ->
+              sourceSet.dependencies {
                 implementation(libs("androidx.activity.ktx"))
                 implementation(libs("androidx.fragment.ktx"))
-                implementation(libs("android.documentation.plugin"))
                 implementation(libs("androidx.room.runtime.android"))
                 implementation(libs("androidx.room.paging"))
               }
             }
-  - android:
-      compileOptions:
-        isCoreLibraryDesugaringEnabled: true
-      lintOptions:
-        isCheckReleaseBuilds: false
-        isAbortOnError: false
-        xmlReport: true
-        xmlOutput: file("build/reports/lint-results.xml") # path to the lint report to consume by sonar
-      defaultConfig:
-        testInstrumentationRunner: '"androidx.test.runner.AndroidJUnitRunner"'
-        manifestPlaceholders.putAll: |
-          (mapOf(
-            "hostName" to "www.example.com",
-            "appAuthRedirectScheme" to "empty",
-          ))
-        javaCompileOptions:
-          annotationProcessorOptions:
-            arguments.putAll: |
-              (mapOf(
-                "room.schemaLocation" to "schemas",
-                "room.incremental" to "true",
-                "room.expandProjection" to "true",
-              ))
-        vectorDrawables:
-          useSupportLibrary: true
-        # The proguard files listed here are included in the
-        # test APK only.
-        testProguardFiles.addAll: |
-          (listOf(
-            "test-proguard-rules.pro"
-          ).map(::file))
-        consumerProguardFiles.addAll: |
-          (listOf(
-            "consumer-proguard-rules.pro",
-          ).map(::file))
-      signingConfigs:
-        - create: |
-            ("release") { signingConfig ->
-              signingConfig.storeFile = file("resources@android/release.keystore")
-              signingConfig.storePassword = sensitive("android.release.signing.store.password")
-              signingConfig.storeType = sensitive("android.release.signing.store.type")
-              signingConfig.keyAlias = sensitive("android.release.signing.key.alias")
-              signingConfig.keyPassword = sensitive("android.release.signing.key.password")
-              signingConfig.isV2SigningEnabled = true
-            }
-      buildTypes:
-        - getByName: |
-            ("release") { builtType ->
-                builtType.isMinifyEnabled = true
-                builtType.proguardFiles(
-                    getDefaultProguardFile("proguard-android-optimize.txt", layout.buildDirectory),
-                    "proguard-rules.pro",
-                )
-                builtType.signingConfig = android.signingConfigs.getByName("release")
-            }
-        - getByName: |
-            ("debug") { builtType ->
-                builtType.isDebuggable = true
-            }
-      # Specifies the flavor dimensions you want to use. The order in which you
-      # list the dimensions determines their priority, from highest to lowest,
-      # when Gradle merges variant sources and configurations. You must assign
-      # each product flavor you configure to one of the flavor dimensions.
-      flavorDimensionList.addAll: |
-        (listOf(
-          "api",
-          "mode",
-        ))
-      productFlavors:
-        - create: |
-            ("demo") { productFlavor ->
-              // Assigns this product flavor to the "mode" flavor dimension.
-              // If you are using only one dimension, this property is optional,
-              // and the plugin automatically assigns all the module's flavors to
-              // that dimension.
-              productFlavor.dimension = "mode"
-            }
-        - create: |
-            ("full") { productFlavor ->
-              productFlavor.dimension = "mode"
-            }
-        # Configurations in the "api" product flavors override those in "mode"
-        # flavors and the defaultConfig block. Gradle determines the priority
-        # between flavor dimensions based on the order in which they appear next
-        # to the flavorDimensions property, with the first dimension having a higher
-        # priority than the second, and so on.
-        - create: |
-            ("minApi24") { productFlavor ->
-              productFlavor.dimension = "api"
-              productFlavor.minSdk = 24
-            }
-        - create: |
-            ("minApi23") { productFlavor ->
-              productFlavor.dimension = "api"
-              productFlavor.minSdk = 23
-            }
-        - create: |
-            ("minApi21") { productFlavor ->
-              productFlavor.dimension = "api"
-              productFlavor.minSdk = 21
-            }
-      packagingOptions:
-        resources:
-          excludes.addAll: |
-            (setOf(
-              "/META-INF/{AL2.0,LGPL2.1",
-            ))
-      buildFeatures:
-        buildConfig: true
-        viewBinding: true
+
   - dependencies:
-      - add: ("coreLibraryDesugaring", libs("android.desugar.jdk.libs"))
       - add: ("androidTestImplementation", libs("androidx.test.core"))
       - add: ("androidTestImplementation", libs("androidx.test.runner"))
+      - add: ("androidTestImplementation", libs("androidx.test.ext.junit"))
+      - add: ("androidTestImplementation", libs("androidx.test.espresso.core"))
+      - add: ("androidTestImplementation", libs("androidx.test.rules"))
+      - add: ("androidTestImplementation", libs("androidx.test.monitor"))
+      - dokkaPlugin: (libs("android.documentation.plugin"))
