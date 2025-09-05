@@ -86,7 +86,7 @@ script:
               }
             }
         - named: |
-            ("androidMain") { sourceSet ->
+            ("jvmCommonIosMain") { sourceSet ->
               sourceSet.dependencies {
                 implementation(libs("androidx.room.runtime.ktx"))
                 implementation(libs("androidx.sqlite.bundled"))

@@ -14,9 +14,6 @@ script:
         - mavenCentral: ()
         - google: ()
         - gradlePluginPortal: ()
-  - repositories:
-      - google: ()
-      - mavenCentral: ()
   - plugins:
       - id: (libs.plugins("kover").pluginId)
       - id: (libs.plugins("dokka").pluginId)

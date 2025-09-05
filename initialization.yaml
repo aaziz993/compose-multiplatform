@@ -37,6 +37,7 @@ contributingFile:
   resolution: MODIFIED
 config:
   imports:
+    - org.gradle.api.initialization.resolve.RepositoriesMode
     - org.gradle.caching.http.HttpBuildCache
     - com.gradle.develocity.agent.gradle.buildcache.DevelocityBuildCache
     - gradle.api.initialization.*
@@ -127,6 +128,7 @@ script:
   # Enforcing pre-commit and commit-msg Git hooks configuration. Conventional-commits-ready.
   - gitHooks: '{ }'
   - dependencyResolutionManagement:
+      repositoriesMode.set: (RepositoriesMode.FAIL_ON_PROJECT_REPOS)
       repositories:
         - mavenCentral: ()
         # For the Android plugin and dependencies
