@@ -5,10 +5,17 @@ script:
   - android:
       buildTypes:
         - getByName: |
-            ("release") {
-              isShrinkResources = true
+            ("release") { buildType ->
+              buildType.isShrinkResources = true
+              builtType.buildConfigField("String", "API_URL", "https://api.example.com")
+            }
+        - getByName: |
+            ("debug") { buildType ->
+              builtType.applicationIdSuffix = ".debug"
+              builtType.buildConfigField("String", "API_URL", "https://dev.api.example.com")
             }
         - getByName: |
             ("debug") {
-              isShrinkResources = false
+              builtType.applicationIdSuffix = ".staging"
+              builtType.buildConfigField("String", "API_URL", "https://staging.api.example.com")
             }
