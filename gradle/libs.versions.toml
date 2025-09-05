@@ -293,7 +293,7 @@ kotlin-cocoapods-tvosDeploymentTarget = "18.2"
 kotlin-cocoapods-watchosDeploymentTarget = "11.2"
 
 ##Android
-agp = "8.8.0-alpha05"
+agp = "8.11.0"
 # in project version
 android-compileSdk = "35"
 # in project version

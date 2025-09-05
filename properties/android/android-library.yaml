@@ -2,17 +2,11 @@ imports:
   - android-library-plugin.yaml
   - android.yaml
 script:
-  - androidLibrary:
-      publishing:
-        singleVariant: |
-          ("release") {
-            withSourcesJar()
-          }
   - kotlin:
       targets:
         - withType<KotlinAndroidTarget>: |
             {
               publishLibraryVariants(
-                "release",
+                 "demoRelease",
               )
             }
