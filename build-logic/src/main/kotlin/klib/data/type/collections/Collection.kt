@@ -600,30 +600,39 @@ public fun <T : Any> T.substitute(
     }
 )
 
-public fun Any.deepString(
+public fun Any.toTreeString(
     sourceIteratorOrNull: List<Pair<Any, Any?>>.(value: Any) -> Iterator<Map.Entry<Any?, Any?>>? = { value ->
         value.iteratorOrNull()
     },
     intermediateConnector: String = "├── ",
     verticalConnector: String = "│",
     lastConnector: String = "└── ",
-    transform: List<Pair<Any, Any?>>.() -> String = { "${last().second}" }
+    transform: List<Pair<Any, Any?>>.(visited: Boolean) -> String = { "${last().second}" }
 ): String = buildString {
-    DeepRecursiveFunction<deepStringArgs, Unit> { (sources, sourceIterator, prefix) ->
+    val visits = mutableSetOf<Any>()
+
+    DeepRecursiveFunction<ToTreeStringArgs, Unit> { (sources, sourceIterator, prefix) ->
         val entries = sourceIterator.asSequence().toList()
 
         entries.forEachIndexed { index, (key, value) ->
             val currentSources = sources.replaceLast { copy(second = key) }
 
             val isLast = index == entries.lastIndex
-            val connector = if (prefix.isEmpty()) "" else if (isLast) lastConnector else intermediateConnector
 
-            appendLine("$prefix$connector${currentSources.transform()}")
+            val connector = when {
+                prefix.isEmpty() -> ""
+                isLast -> lastConnector
+                else -> intermediateConnector
+            }
+
+            val visited = key != null && !visits.add(key)
+
+            appendLine("$prefix$connector${currentSources.transform(visited)}")
 
             if (value != null)
                 currentSources.sourceIteratorOrNull(value)?.let { nextSourceIterator ->
                     callRecursive(
-                        deepStringArgs(
+                        ToTreeStringArgs(
                             currentSources + (value to 0),
                             nextSourceIterator,
                             prefix + if (isLast) "    " else "$verticalConnector   ",
@@ -632,16 +641,16 @@ public fun Any.deepString(
                 }
         }
     }(
-        deepStringArgs(
-            listOf(this@deepString to 0),
-            emptyList<Pair<Any, Int>>().sourceIteratorOrNull(this)!!,
-            ""
+        ToTreeStringArgs(
+            listOf(this@toTreeString to 0),
+            emptyList<Pair<Any, Int>>().sourceIteratorOrNull(this@toTreeString)!!,
+            "",
         ),
     )
 }
 
-private data class deepStringArgs(
+private data class ToTreeStringArgs(
     val sources: List<Pair<Any, Any?>>,
     val sourceIterator: Iterator<Map.Entry<Any?, Any?>>,
-    val prefix: String
+    val prefix: String,
 )

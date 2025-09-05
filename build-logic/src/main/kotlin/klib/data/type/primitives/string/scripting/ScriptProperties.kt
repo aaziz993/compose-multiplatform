@@ -4,13 +4,14 @@ import com.charleskorn.kaml.Yaml
 import klib.data.cache.Cache
 import klib.data.cache.NoCache
 import klib.data.type.Ansi
+import klib.data.type.ansi
 import klib.data.type.collections.*
 import klib.data.type.collections.deepGetOrNull
 import klib.data.type.collections.list.asList
 import klib.data.type.collections.list.dropLast
 import klib.data.type.collections.map.asMapOrNull
 import klib.data.type.collections.map.asStringNullableMap
-import klib.data.type.collections.map.printTree
+import klib.data.type.collections.map.toTreeString
 import klib.data.type.primitives.string.addSuffixIfNotEmpty
 import klib.data.type.primitives.string.tokenization.evaluation.SubstituteOption
 import klib.data.type.reflection.declaredMemberExtensionFunction
@@ -29,6 +30,7 @@ import klib.data.type.serialization.json.decodeAnyFromString
 import klib.data.type.serialization.properties.Properties
 import klib.data.type.serialization.serializers.any.SerializableAny
 import klib.data.type.serialization.yaml.decodeAnyFromString
+import klib.data.type.toAnsi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import kotlinx.serialization.json.Json
@@ -81,16 +83,19 @@ public abstract class ScriptProperties {
     }
 
     override fun toString(): String = buildString {
-        fileTree.printTree(fileTree.entries.first().key) { prefix ->
-            appendLine("$prefix${Ansi.GREEN}File:${Ansi.RESET} ${last().second}")
+        append(fileTree.toTreeString(fileTree.entries.first().key) { value, visited ->
+            if (visited) "${"File:".toAnsi(Ansi.YELLOW)} $value ↻"
+            else "${"File:".toAnsi(Ansi.GREEN)} $value"
+        })
+
+        ansi(Ansi.GREEN) {
+            config.imports.takeIfNotEmpty()?.let { imports ->
+                appendLine(imports.sorted().joinToString("\n") { import -> "import $import" })
+                appendLine()
+            }
+
+            append(compiled)
         }
-        appendLine(Ansi.BRIGHT_PURPLE)
-        config.imports.takeIfNotEmpty()?.let { imports ->
-            appendLine(imports.sorted().joinToString("\n") { import -> "import $import" })
-            appendLine()
-        }
-        append(compiled)
-        appendLine(Ansi.RESET)
     }
 
     private fun tryAssign(path: Array<String>, value: Any?): Any? {

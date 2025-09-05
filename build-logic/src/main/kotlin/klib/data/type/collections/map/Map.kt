@@ -1,9 +1,8 @@
 package klib.data.type.collections.map
 
-import klib.data.type.collections.deepString
 import klib.data.type.collections.iterator
 import klib.data.type.collections.list.asList
-import kotlin.collections.last
+import klib.data.type.collections.toTreeString
 
 @Suppress("UNCHECKED_CAST")
 public val Any.asNullableMapOrNull: Map<String, Any?>?
@@ -44,15 +43,16 @@ public fun <K : V, V> Map<K, V>.getOrKey(key: K): V = this[key] ?: key
 public infix fun <K, V> Map<K, V>.slice(keys: Iterable<K>): Map<K, V> =
     keys.filter(::containsKey).associateWith(::get).asMap()
 
-public fun Map<String, List<String>>.deepString(
+public fun Map<String, List<String>>.toTreeString(
+    root: String,
     intermediateConnector: String = "├── ",
     verticalConnector: String = "│",
     lastConnector: String = "└── ",
-    transform: List<Pair<Any, Any?>>.() -> String = { "${last().second}" }
-) {
+    transform: (value: String, visited: Boolean) -> String = { value, visited -> "$value ${if (visited) "↻" else ""}" }
+): String {
     val map = this
 
-    deepString(
+    return this[root]!!.toTreeString(
         { source ->
             if (source is List<*>) source.asList<String>().associateWith(map::get).iterator()
             else source.iterator()
@@ -60,6 +60,5 @@ public fun Map<String, List<String>>.deepString(
         intermediateConnector,
         verticalConnector,
         lastConnector,
-        transform
-    )
+    ) { visited -> transform(last().second as String, visited) }
 }

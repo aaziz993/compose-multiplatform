@@ -54,4 +54,10 @@ public object Ansi {
     public const val HIDDEN: String = "\u001B[8m"
 }
 
-public fun String.toAnsi(ansi: Ansi): String = "$ansi$this${Ansi.RESET}"
+public fun String.toAnsi(ansi: String): String = "$ansi$this${Ansi.RESET}"
+
+public inline fun StringBuilder.ansi(ansi: String, block: () -> Unit) {
+    append(ansi)
+    block()
+    append(Ansi.RESET)
+}
