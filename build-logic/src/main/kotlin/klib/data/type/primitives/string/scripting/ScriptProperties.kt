@@ -88,20 +88,20 @@ public abstract class ScriptProperties {
     }
 
     override fun toString(): String = buildString {
-        append(fileTree.entries.first().key.toTreeString({
+        appendLine(fileTree.entries.first().key.toTreeString({
             fileTree[this].orEmpty()
         }) { value, visited ->
             if (visited) "${"File:".toAnsi(Ansi.YELLOW)} $value ↻" else "${"File:".toAnsi(Ansi.GREEN)} $value"
         })
 
-        ansi(Ansi.GREEN) {
+        ansi(Ansi.BRIGHT_PURPLE) {
             config.imports.takeIfNotEmpty()?.let { imports ->
                 appendLine(imports.sorted().joinToString("\n") { import -> "import $import" })
                 appendLine()
             }
-
-            append(compiled)
         }
+
+        append(compiled.toAnsi(Ansi.GREEN))
     }
 
     private fun tryAssign(path: Array<String>, value: Any?): Any? {
