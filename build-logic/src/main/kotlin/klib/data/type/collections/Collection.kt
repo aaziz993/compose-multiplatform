@@ -422,7 +422,7 @@ public fun <T : Any> Any.deepMapValues(
 public fun <T : Any, P : Any> Any.deepSlice(
     vararg sourcePaths: P,
     sourcePathKey: List<Pair<Any, Any?>>.(sourcePath: P) -> Any?,
-    sourceSubPaths: List<Pair<Any, Any?>>.(value: Any, sourcePath: P) -> List<P>,
+    sourcePathChildren: List<Pair<Any, Any?>>.(value: Any, sourcePath: P) -> List<P>,
     sourceGetter: List<Pair<Any, Any?>>.() -> Any? = { last().first.getOrNull(last().second) },
     destination: T = toNewMutableCollection() as T,
     destinationGetter: List<Pair<Any, Any?>>.(source: Any) -> Any = { source ->
@@ -440,7 +440,7 @@ public fun <T : Any, P : Any> Any.deepSlice(
             val value = currentSources.sourceGetter()
 
             val nextSourcePaths = if (value == null) emptyList() else paths.flatMap { path ->
-                currentSources.sourceSubPaths(value, path)
+                currentSources.sourcePathChildren(value, path)
             }
 
             if (nextSourcePaths.isEmpty()) return@map currentDestinations.destinationSetter(value)
@@ -486,7 +486,7 @@ public fun <T : Any> Any.deepSlice(
 ): T = deepSlice(
     *sourcePaths,
     sourcePathKey = { sourcePath -> sourcePath.first() },
-    sourceSubPaths = { _, sourcePath ->
+    sourcePathChildren = { _, sourcePath ->
         sourcePath.drop().let { path -> if (path.isEmpty()) emptyList() else listOf(path) }
     },
     sourceGetter = sourceGetter,
@@ -499,7 +499,7 @@ public fun <T : Any> Any.deepSlice(
 public fun <T : Any, P : Any> Any.deepMinusKeys(
     vararg sourcePaths: P,
     sourcePathKey: List<Pair<Any, Any?>>.(sourcePath: P) -> Any?,
-    sourceSubPaths: List<Pair<Any, Any?>>.(value: Any, sourcePath: P) -> List<P>,
+    sourcePathChildren: List<Pair<Any, Any?>>.(value: Any, sourcePath: P) -> List<P>,
     sourceIteratorOrNull: List<Pair<Any, Any?>>.(source: Any) -> Iterator<Map.Entry<Any?, Any?>>? = { source ->
         source.iteratorOrNull()
     },
@@ -522,7 +522,7 @@ public fun <T : Any, P : Any> Any.deepMinusKeys(
 
             if (value == null) return@forEach
 
-            val nextSourcePaths = keysPaths[key]!!.flatMap { path -> currentSources.sourceSubPaths(value, path) }
+            val nextSourcePaths = keysPaths[key]!!.flatMap { path -> currentSources.sourcePathChildren(value, path) }
 
             if (nextSourcePaths.isEmpty()) return@forEach
 
@@ -574,7 +574,7 @@ public fun <T : Any> Any.deepMinusKeys(
 ): T = deepMinusKeys(
     *sourcePaths,
     sourcePathKey = { sourcePath -> sourcePath.first() },
-    sourceSubPaths = { _, sourcePath ->
+    sourcePathChildren = { _, sourcePath ->
         sourcePath.drop().let { path -> if (path.isEmpty()) emptyList() else listOf(path) }
     },
     sourceIteratorOrNull = sourceIteratorOrNull,
@@ -600,8 +600,9 @@ public fun <T : Any> T.substitute(
     }
 )
 
-public fun <T> Collection<T>.toTreeString(
-    childrenOf: T.() -> List<T>,
+public fun <T> treeString(
+    vararg nodes: T,
+    nodeChildren: T.() -> List<T>?,
     intermediateConnector: String = "├──",
     verticalConnector: String = "│",
     lastConnector: String = "└──",
@@ -625,34 +626,20 @@ public fun <T> Collection<T>.toTreeString(
 
             appendLine(transform(node, !visits.add(node)))
 
-            callRecursive(
-                PrintTreeArgs(
-                    node.childrenOf(),
-                    prefix + if (isLast) "    " else "$verticalConnector   "
+            node.nodeChildren()?.let { nextNodes ->
+                callRecursive(
+                    PrintTreeArgs(
+                        nextNodes,
+                        prefix + if (isLast) "    " else "$verticalConnector   "
+                    )
                 )
-            )
+            }
         }
-    }(PrintTreeArgs(this@toTreeString.toList(), ""))
+    }(PrintTreeArgs(nodes.toList(), ""))
 }
 
 
 private data class PrintTreeArgs<T>(
     val node: List<T>,
     val prefix: String,
-)
-
-public fun <T> T.toTreeString(
-    childrenOf: T.() -> List<T>,
-    intermediateConnector: String = "├──",
-    verticalConnector: String = "│",
-    lastConnector: String = "└──",
-    transform: (T, visited: Boolean) -> String = { value, visited ->
-        value.toString() + if (visited) " ↻" else ""
-    }
-): String = listOf(this).toTreeString(
-    childrenOf,
-    intermediateConnector,
-    verticalConnector,
-    lastConnector,
-    transform
 )

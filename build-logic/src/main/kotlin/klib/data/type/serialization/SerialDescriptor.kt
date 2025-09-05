@@ -163,7 +163,7 @@ public fun <T : Any> SerialDescriptor.unknownKeysOf(value: T): T =
     value.deepMinusKeys<T, Pair<Any?, SerialDescriptor>>(
         *elementNames.zip(elementDescriptors).toTypedArray(),
         sourcePathKey = { sourcePath -> sourcePath.first },
-        sourceSubPaths = { value, (_, descriptor) ->
+        sourcePathChildren = { value, (_, descriptor) ->
             when (descriptor.kind) {
                 StructureKind.LIST -> value.asList.indices.map { index ->
                     index to descriptor.getElementDescriptor(0)

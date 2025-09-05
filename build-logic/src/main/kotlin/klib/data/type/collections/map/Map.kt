@@ -1,12 +1,5 @@
 package klib.data.type.collections.map
 
-import klib.data.type.Ansi
-import klib.data.type.collections.deepGet
-import klib.data.type.collections.iterator
-import klib.data.type.collections.list.asList
-import klib.data.type.collections.replaceLast
-import klib.data.type.collections.toTreeString
-
 @Suppress("UNCHECKED_CAST")
 public val Any.asNullableMapOrNull: Map<String, Any?>?
     get() = this as? Map<String, Any?>
