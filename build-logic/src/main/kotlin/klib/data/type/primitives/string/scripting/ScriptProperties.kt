@@ -83,8 +83,8 @@ public abstract class ScriptProperties {
         }
     }
 
-    public operator fun invoke() {
-        compiled(config)
+    public operator fun invoke(): Unit = compiled(config).run {
+        if (this is Throwable) throw this else Unit
     }
 
     override fun toString(): String = buildString {
