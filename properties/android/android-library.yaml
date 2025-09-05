@@ -34,10 +34,3 @@ script:
             jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_1_8)
           }
         }
-      targets:
-        - withType<KotlinAndroidTarget>: |
-            {
-              publishLibraryVariants(
-                 "demoRelease",
-              )
-            }
