@@ -4,7 +4,6 @@ config:
     - com.android.build.gradle.ProguardFiles.getDefaultProguardFile
 script:
   - kotlin:
-      androidTarget: ()
       sourceSets:
         - named: |
             ("androidMain") { sourceSet ->
@@ -15,12 +14,21 @@ script:
                 implementation(libs("androidx.room.paging"))
               }
             }
+        - all: |
+            { sourceSet ->
+              println("KotlinSourceSet: ${sourceSet.name}")
+            }
+        - named: |
+            ("androidDeviceTest") { sourceSet ->
+              sourceSet.dependencies {
+                implementation(libs("androidx.test.core"))
+                implementation(libs("androidx.test.runner"))
+                implementation(libs("androidx.test.ext.junit"))
+                implementation(libs("androidx.test.espresso.core"))
+                implementation(libs("androidx.test.rules"))
+                implementation(libs("androidx.test.monitor"))
+              }
+            }
 
   - dependencies:
-      - add: ("androidTestImplementation", libs("androidx.test.core"))
-      - add: ("androidTestImplementation", libs("androidx.test.runner"))
-      - add: ("androidTestImplementation", libs("androidx.test.ext.junit"))
-      - add: ("androidTestImplementation", libs("androidx.test.espresso.core"))
-      - add: ("androidTestImplementation", libs("androidx.test.rules"))
-      - add: ("androidTestImplementation", libs("androidx.test.monitor"))
       - dokkaPlugin: (libs("android.documentation.plugin"))
