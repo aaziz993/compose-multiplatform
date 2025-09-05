@@ -17,15 +17,15 @@ import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import java.util.*
 
 @Serializable
-public data class SettingsProperties(
-    val year: String = Calendar.getInstance().get(Calendar.YEAR).toString(),
-    val remote: MavenPomScm = MavenPomScm(),
-    val developer: MavenPomDeveloper = MavenPomDeveloper(),
-    val license: MavenPomLicense = MavenPomLicense(),
-    val licenseFile: LicenseFile? = null,
-    val licenseHeaderFile: LicenseHeaderFile? = null,
-    val codeOfConductFile: CodeOfConductFile? = null,
-    val contributingFile: ContributingFile? = null,
+public class SettingsProperties(
+    public val year: String = Calendar.getInstance().get(Calendar.YEAR).toString(),
+    public val remote: MavenPomScm = MavenPomScm(),
+    public val developer: MavenPomDeveloper = MavenPomDeveloper(),
+    public val license: MavenPomLicense = MavenPomLicense(),
+    public val licenseFile: LicenseFile? = null,
+    public val licenseHeaderFile: LicenseHeaderFile? = null,
+    public val codeOfConductFile: CodeOfConductFile? = null,
+    public val contributingFile: ContributingFile? = null,
     override val config: ScriptConfig = ScriptConfig(),
     override val script: List<SerializableAny>,
     override val fileTree: Map<String, List<String>>,

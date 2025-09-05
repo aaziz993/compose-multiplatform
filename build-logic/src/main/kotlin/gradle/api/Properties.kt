@@ -1,13 +1,9 @@
 package gradle.api
 
-import com.charleskorn.kaml.Yaml
 import gradle.api.cache.SqliteCache
 import klib.data.type.Ansi
-import klib.data.type.collections.takeIfNotEmpty
 import klib.data.type.primitives.string.scripting.ScriptProperties
-import klib.data.type.serialization.yaml.encodeAnyToString
 import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.encodeToString
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.logging.Logger
 import org.gradle.api.logging.Logging
