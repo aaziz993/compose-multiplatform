@@ -3,6 +3,8 @@ package gradle.api.project
 import androidx.room.gradle.RoomExtension
 import app.cash.sqldelight.gradle.SqlDelightExtension
 import com.android.build.gradle.BaseExtension
+import com.android.build.gradle.LibraryExtension
+import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import com.apollographql.apollo3.gradle.api.ApolloExtension
 import com.diffplug.gradle.spotless.SpotlessExtension
 import com.github.gmazzo.gradle.plugins.BuildConfigExtension
@@ -199,6 +201,16 @@ public fun Project.javaApp(configure: JavaApplication.() -> Unit): Unit =
 public val Project.android: BaseExtension get() = the()
 
 public fun Project.android(configure: BaseExtension.() -> Unit): Unit =
+    extensions.configure(configure)
+
+public val Project.androidLibrary: LibraryExtension get() = the()
+
+public fun Project.androidLibrary(configure: LibraryExtension.() -> Unit): Unit =
+    extensions.configure(configure)
+
+public val Project.androidApplication: BaseAppModuleExtension get() = the()
+
+public fun Project.androidApplication(configure: BaseAppModuleExtension.() -> Unit): Unit =
     extensions.configure(configure)
 
 public val Project.kotlin: KotlinMultiplatformExtension get() = the()

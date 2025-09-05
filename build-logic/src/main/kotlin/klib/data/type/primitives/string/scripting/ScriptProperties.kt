@@ -115,20 +115,15 @@ public abstract class ScriptProperties {
             import.removeSuffix(".*")
         }.toSet()
 
-        return config.evaluationImplicitReceivers
+        return config.compilationImplicitReceivers
             .firstNotNullOfOrNull { implicitReceiver ->
                 implicitReceiver.deepRunOnPenultimate(
                     *path,
                     getter = {
-                        val receiver = last().first
+                        val kClass = last().first as KClass<*>
 
                         val memberName = last().second
                         val getterName = memberName.toGetterName()
-
-                        receiver.getMemberPropertyOrNull(memberName)
-                            ?:receiver.getDeclaredMemberPropertyOrNull(memberName)
-                            ?: receiver.callMemberOrNull(getterName)
-                            ?:receiver.callDeclaredFunctionOrNull(getterName)
 
                         (kClass.memberProperty(memberName)
                             ?: kClass.declaredMemberExtensionProperty(memberName)
@@ -184,9 +179,7 @@ public abstract class ScriptProperties {
                         ?: receiver.packageExtensions(getterName, packages).singleOrNull { property ->
                             Modifier.isPublic(property.modifiers)
                         }?.returnType?.kotlin)
-                        ?.let { kClass ->
-                            implicitOperation(kClass, value)
-                        }
+                        ?.let { kClass -> implicitOperation(kClass, value) }
                 }
             } ?: value
     }

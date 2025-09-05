@@ -2,7 +2,7 @@ imports:
   - android-app-plugin.yaml
   - android.yaml
 script:
-  - android:
+  - androidApplication:
       buildTypes:
         - getByName: |
             ("release") { buildType ->
