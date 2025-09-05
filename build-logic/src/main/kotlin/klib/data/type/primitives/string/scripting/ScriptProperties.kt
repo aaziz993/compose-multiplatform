@@ -44,6 +44,12 @@ import kotlin.reflect.full.isSubclassOf
 
 public const val SCRIPT_KEY: String = "script"
 
+public val EXPLICIT_OPERATION_RECEIVERS: Set<KClass<out Any>> = setOf(
+    Array::class,
+    MutableCollection::class,
+    MutableMap::class,
+)
+
 @Serializable
 public abstract class ScriptProperties {
     public abstract val config: ScriptConfig
@@ -175,13 +181,6 @@ public abstract class ScriptProperties {
     }
 
     public companion object {
-
-        @PublishedApi
-        internal val EXPLICIT_OPERATION_RECEIVERS: Set<KClass<out Any>> = setOf(
-            Array::class,
-            MutableCollection::class,
-            MutableMap::class,
-        )
 
         public inline operator fun <reified T : ScriptProperties> invoke(
             file: String,

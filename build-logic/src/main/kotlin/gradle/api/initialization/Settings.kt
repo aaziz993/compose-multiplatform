@@ -12,11 +12,16 @@ import org.gradle.api.Project
 import org.gradle.api.initialization.Settings
 import org.gradle.kotlin.dsl.getByType
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
+import java.util.Properties
+
+public const val LIBS_VERSION_CATALOG_EXT: String = "libs.versions.catalog.ext"
+
+public const val LOCAL_PROPERTIES_EXT: String = "local.properties.ext"
 
 @Suppress("UnstableApiUsage")
-public val Settings.localProperties: java.util.Properties
-    get() = extraProperties.getOrPut(SettingsProperties.LOCAL_PROPERTIES_EXT) {
-        java.util.Properties().apply {
+public val Settings.localProperties: Properties
+    get() = extraProperties.getOrPut(LOCAL_PROPERTIES_EXT) {
+        Properties().apply {
             layout.settingsDirectory.file("local.properties").asFile.takeIf(File::exists)
                 ?.reader()
                 ?.let(::load)
@@ -25,7 +30,7 @@ public val Settings.localProperties: java.util.Properties
 
 @Suppress("UnstableApiUsage")
 public val Settings.libs: VersionCatalog
-    get() = extraProperties.getOrPut(SettingsProperties.LIBS_VERSION_CATALOG_EXT) {
+    get() = extraProperties.getOrPut(LIBS_VERSION_CATALOG_EXT) {
         Toml.Default.decodeFromString(
             settings.layout.settingsDirectory.file("gradle/libs.versions.toml").asFile.readText(),
         )

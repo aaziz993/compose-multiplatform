@@ -16,9 +16,9 @@ import org.gradle.api.initialization.Settings
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import java.util.*
 
-private const val SETTINGS_PROPERTIES_EXT = "settings.properties.ext"
+public const val SETTINGS_PROPERTIES_EXT: String = "settings.properties.ext"
 
-private const val SETTINGS_PROPERTIES_FILE = "initialization.yaml"
+public const val SETTINGS_PROPERTIES_FILE: String = "initialization.yaml"
 
 @Serializable
 public class SettingsProperties(

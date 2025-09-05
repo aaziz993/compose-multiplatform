@@ -7,9 +7,9 @@ import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 
-private const val PROJECT_PROPERTIES_EXT = "project.properties.ext"
+public const val PROJECT_PROPERTIES_EXT: String = "project.properties.ext"
 
-private const val PROJECT_PROPERTIES_FILE = "project.yaml"
+public const val PROJECT_PROPERTIES_FILE: String = "project.yaml"
 
 @Serializable
 public class ProjectProperties(
@@ -40,6 +40,5 @@ public class ProjectProperties(
 public var Project.projectProperties: ProjectProperties
     get() = extraProperties[PROJECT_PROPERTIES_EXT] as ProjectProperties
     private set(value) {
-        this.properties
         extraProperties[PROJECT_PROPERTIES_EXT] = value
     }

@@ -19,79 +19,78 @@ import kotlin.script.experimental.api.defaultImports
 import kotlin.script.experimental.jvm.dependenciesFromCurrentContext
 import kotlin.script.experimental.jvm.jvm
 
+public val EXPLICIT_OPERATION_RECEIVERS: Set<KClass<out Any>> = setOf(
+    Property::class,
+    HasMultipleValues::class,
+    MapProperty::class,
+    ConfigurableFileCollection::class,
+)
+
+public val IMPORTS: Array<String> = arrayOf(
+    "gradle.api.*",
+    "gradle.api.artifacts.*",
+    "gradle.api.artifacts.dsl.*",
+    "gradle.api.plugins.*",
+    "gradle.api.ci.*",
+    "gradle.api.file.*",
+    "gradle.api.initialization.*",
+    "gradle.api.initialization.dsl.*",
+    "gradle.api.project.*",
+    "gradle.api.provider.*",
+    "gradle.plugins.develocity.*",
+    "gradle.plugins.doctor.*",
+    "gradle.plugins.dokka.*",
+    "gradle.plugins.knit.*",
+    "klib.data.type.*",
+    "klib.data.type.primitives.*",
+    "klib.data.type.primitives.string.*",
+    "klib.data.type.collections.*",
+    "klib.data.type.functions.*",
+    "klib.data.type.reflection.*",
+    "klib.data.type.tuples.*",
+    "klib.data.type.serialization.*",
+    "klib.data.type.serialization.annotations.*",
+    "klib.data.type.serialization.coders.*",
+    "klib.data.type.serialization.serializers.*",
+    "klib.data.type.serialization.json.*",
+    "klib.data.type.serialization.yaml.*",
+    "klib.data.type.serialization.toml.*",
+    "klib.data.type.serialization.properties.*",
+    "klib.data.type.serialization.csv.*",
+    "klib.data.type.serialization.xml.*",
+)
+
 public abstract class Properties : ScriptProperties() {
     public companion object {
-        private val EXPLICIT_OPERATION_RECEIVERS = setOf(
-            Property::class,
-            HasMultipleValues::class,
-            MapProperty::class,
-            ConfigurableFileCollection::class,
-        )
-
-        private val IMPORTS = arrayOf(
-            "gradle.api.*",
-            "gradle.api.artifacts.*",
-            "gradle.api.artifacts.dsl.*",
-            "gradle.api.plugins.*",
-            "gradle.api.ci.*",
-            "gradle.api.file.*",
-            "gradle.api.initialization.*",
-            "gradle.api.initialization.dsl.*",
-            "gradle.api.project.*",
-            "gradle.api.provider.*",
-            "gradle.plugins.develocity.*",
-            "gradle.plugins.doctor.*",
-            "gradle.plugins.dokka.*",
-            "gradle.plugins.knit.*",
-            "klib.data.type.*",
-            "klib.data.type.primitives.*",
-            "klib.data.type.primitives.string.*",
-            "klib.data.type.collections.*",
-            "klib.data.type.functions.*",
-            "klib.data.type.reflection.*",
-            "klib.data.type.tuples.*",
-            "klib.data.type.serialization.*",
-            "klib.data.type.serialization.annotations.*",
-            "klib.data.type.serialization.coders.*",
-            "klib.data.type.serialization.serializers.*",
-            "klib.data.type.serialization.json.*",
-            "klib.data.type.serialization.yaml.*",
-            "klib.data.type.serialization.toml.*",
-            "klib.data.type.serialization.properties.*",
-            "klib.data.type.serialization.csv.*",
-            "klib.data.type.serialization.xml.*",
-        )
-
         private val logger: Logger = Logging.getLogger(Properties::class.java)
 
         internal inline operator fun <reified P : Properties, reified T> File.invoke(
             evaluationImplicitReceiver: T
-        ): P where T : PluginAware, T : ExtensionAware {
+        ): P where T : PluginAware, T : ExtensionAware = ScriptProperties<P>(
+            path,
+            cache = SqliteCache(
+                parentFile.resolve(".$name.cache"),
+                String.serializer(),
+                String.serializer()
+            ),
+            explicitOperationReceivers = EXPLICIT_OPERATION_RECEIVERS,
+            implicitOperation = ::tryAssignProperty,
+        ) {
+            compilationImplicitReceivers = listOf(T::class)
+            evaluationImplicitReceivers = listOf(evaluationImplicitReceiver)
+
+            compilationBody = {
+                jvm {
+                    dependenciesFromCurrentContext(wholeClasspath = true)
+                }
+
+                defaultImports(*IMPORTS)
+            }
+        }.also { properties ->
             logger.lifecycle(
                 "${Ansi.CYAN}${Ansi.BOLD}${evaluationImplicitReceiver.toString().uppercase()}${Ansi.RESET}"
             )
-
-            return ScriptProperties<P>(
-                path,
-                cache = SqliteCache(
-                    parentFile.resolve(".$name.cache"),
-                    String.serializer(),
-                    String.serializer()
-                ),
-                explicitOperationReceivers = EXPLICIT_OPERATION_RECEIVERS,
-                implicitOperation = ::tryAssignProperty,
-            ) {
-                compilationImplicitReceivers = listOf(T::class)
-                evaluationImplicitReceivers = listOf(evaluationImplicitReceiver)
-
-                compilationBody = {
-                    jvm {
-                        dependenciesFromCurrentContext(wholeClasspath = true)
-                    }
-
-                    defaultImports(*IMPORTS)
-                }
-            }.also { properties -> logger.lifecycle(properties.toString()) }
+            logger.lifecycle(properties.toString())
         }
 
         internal fun tryAssignProperty(valueClass: KClass<*>, value: Any?): String? =
