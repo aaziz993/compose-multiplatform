@@ -600,8 +600,8 @@ public fun <T : Any> T.substitute(
     }
 )
 
-public fun <T> T.toTreeString(
-    children: T.() -> List<T>,
+public fun <T> Collection<T>.toTreeString(
+    childrenOf: T.() -> List<T>,
     intermediateConnector: String = "├──",
     verticalConnector: String = "│",
     lastConnector: String = "└──",
@@ -609,31 +609,50 @@ public fun <T> T.toTreeString(
         value.toString() + if (visited) " ↻" else ""
     }
 ): String = buildString {
-    appendLine(transform(this@toTreeString, false))
-
-    val visits = mutableSetOf(this@toTreeString)
+    val visits = mutableSetOf<T>()
 
     DeepRecursiveFunction<PrintTreeArgs<T>, Unit> { (nodes, prefix) ->
         nodes.forEachIndexed { index, node ->
             val isLast = index == nodes.lastIndex
-            val connector = if (isLast) "$lastConnector " else "$intermediateConnector "
+            val connector = when {
+                prefix.isEmpty() -> ""
+                isLast -> "$lastConnector "
+                else -> "$intermediateConnector "
+            }
 
             append(prefix)
             append(connector)
 
-            appendLine(transform(node, node != null && !visits.add(node)))
+            appendLine(transform(node, !visits.add(node)))
 
             callRecursive(
                 PrintTreeArgs(
-                    children(node),
+                    node.childrenOf(),
                     prefix + if (isLast) "    " else "$verticalConnector   "
                 )
             )
         }
-    }(PrintTreeArgs(this@toTreeString.children(), ""))
+    }(PrintTreeArgs(this@toTreeString.toList(), ""))
 }
+
 
 private data class PrintTreeArgs<T>(
     val node: List<T>,
     val prefix: String,
+)
+
+public fun <T> T.toTreeString(
+    childrenOf: T.() -> List<T>,
+    intermediateConnector: String = "├──",
+    verticalConnector: String = "│",
+    lastConnector: String = "└──",
+    transform: (T, visited: Boolean) -> String = { value, visited ->
+        value.toString() + if (visited) " ↻" else ""
+    }
+): String = listOf(this).toTreeString(
+    childrenOf,
+    intermediateConnector,
+    verticalConnector,
+    lastConnector,
+    transform
 )
