@@ -12,10 +12,43 @@ script:
         - getByName: |
             ("debug") { buildType ->
               builtType.applicationIdSuffix = ".debug"
+              builtType.versionNameSuffix = "-DEBUG"
               builtType.buildConfigField("String", "API_URL", "https://dev.api.example.com")
             }
-        - getByName: |
-            ("debug") {
+        - create: |
+            ("staging") {
               builtType.applicationIdSuffix = ".staging"
+              builtType.versionNameSuffix = "-STAGING"
               builtType.buildConfigField("String", "API_URL", "https://staging.api.example.com")
             }
+      productFlavors:
+        - getByName: |
+            ("demo") {
+              productFlavor.applicationIdSuffix = ".demo"
+              productFlavor.versionNameSuffix = "-demo"
+            }
+        - getByName: |
+            ("full") {
+              productFlavor.applicationIdSuffix = ".full"
+              productFlavor.versionNameSuffix = "-full"
+            }
+        - getByName: |
+            ("minApi24") {
+              // To ensure the target device receives the version of the app with
+              // the highest compatible API level, assign version codes in increasing
+              // value with API level.
+              productFlavor.versionCode = 30000 + (android.defaultConfig.versionCode ?: 0)
+              productFlavor.versionNameSuffix = "-minApi24"
+            }
+        - getByName: |
+            ("minApi23") {
+              productFlavor.versionCode = 20000  + (android.defaultConfig.versionCode ?: 0)
+              productFlavor.versionNameSuffix = "-minApi23"
+            }
+        - getByName: |
+            ("minApi21") {
+              productFlavor.versionCode = 10000  + (android.defaultConfig.versionCode ?: 0)
+              productFlavor.versionNameSuffix = "-minApi21"
+            }
+        
+            

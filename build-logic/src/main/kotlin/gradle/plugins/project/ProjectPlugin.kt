@@ -1,5 +1,6 @@
 package gradle.plugins.project
 
+import com.android.build.gradle.LibraryExtension
 import com.android.build.gradle.ProguardFiles.getDefaultProguardFile
 import gradle.api.ci.CI
 import gradle.api.maybeNamed

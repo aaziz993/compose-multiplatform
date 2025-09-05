@@ -73,12 +73,7 @@ script:
             }
         - getByName: |
             ("debug") { builtType ->
-                builtType.versionNameSuffix = "-DEBUG"
                 builtType.isDebuggable = true
-            }
-        - create: |
-            ("staging") { builtType ->
-              builtType.versionNameSuffix = "-STAGING"
             }
       # Specifies the flavor dimensions you want to use. The order in which you
       # list the dimensions determines their priority, from highest to lowest,
@@ -97,14 +92,10 @@ script:
               // and the plugin automatically assigns all the module's flavors to
               // that dimension.
               productFlavor.dimension = "mode"
-              productFlavor.applicationIdSuffix = ".demo"
-              productFlavor.versionNameSuffix = "-demo"
             }
         - create: |
             ("full") { productFlavor ->
               productFlavor.dimension = "mode"
-              productFlavor.applicationIdSuffix = ".full"
-              productFlavor.versionNameSuffix = "-full"
             }
         # Configurations in the "api" product flavors override those in "mode"
         # flavors and the defaultConfig block. Gradle determines the priority
@@ -115,25 +106,16 @@ script:
             ("minApi24") { productFlavor ->
               productFlavor.dimension = "api"
               productFlavor.minSdk = 24
-              // To ensure the target device receives the version of the app with
-              // the highest compatible API level, assign version codes in increasing
-              // value with API level.
-              productFlavor.versionCode = 30000 + (android.defaultConfig.versionCode ?: 0)
-              productFlavor.versionNameSuffix = "-minApi24"
             }
         - create: |
             ("minApi23") { productFlavor ->
               productFlavor.dimension = "api"
               productFlavor.minSdk = 23
-              productFlavor.versionCode = 20000  + (android.defaultConfig.versionCode ?: 0)
-              productFlavor.versionNameSuffix = "-minApi23"
             }
         - create: |
             ("minApi21") { productFlavor ->
               productFlavor.dimension = "api"
               productFlavor.minSdk = 21
-              productFlavor.versionCode = 10000  + (android.defaultConfig.versionCode ?: 0)
-              productFlavor.versionNameSuffix = "-minApi21"
             }
       packagingOptions:
         resources:
