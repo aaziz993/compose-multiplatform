@@ -1,11 +1,30 @@
-kotlin:
-  targets:
-    - wasmJs:
-        compilerOptions:
-          freeCompilerArgs:
-            - -Xwasm-debugger-custom-formatters
-        devServer:
-          static: [ src@wasmJs ]
+config:
+  imports:
+    - org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
+script:
+  - kotlin:
+      wasmJs: |
+        {
+          browser {
+              val rootDirPath = project.rootDir.path
+              val projectDirPath = project.projectDir.path
+              commonWebpackConfig { commonWebpackConfig ->
+                  commonWebpackConfig.devServer = (commonWebpackConfig.devServer ?: KotlinWebpackConfig.DevServer()).apply {
+                      static = (static ?: mutableListOf()).apply {
+                          // Serve sources to debug inside browser
+                          add(rootDirPath)
+                          add(projectDirPath)
+                      }
+                  }
+              }
+          }
+        }
+
+#  targets:
+#    - wasmJs:
+#
+#        devServer:
+#          static: [ src@wasmJs ]
 
 #  sourceSets:
 #    - wasmJsMain:

@@ -3,7 +3,8 @@ imports:
   - ../properties/mpp.yaml
   - ../properties/jvm/jvm.yaml
   - ../properties/android/android-library.yaml
-  - ../properties/jvm-common.yaml
+  - ../properties/jvmCommon.yaml
+  - ../properties/web/wasmJs.yaml
   - ../properties/subproject.yaml
   - ../properties/publish.yaml
 

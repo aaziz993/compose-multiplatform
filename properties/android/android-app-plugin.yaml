@@ -4,6 +4,8 @@ script:
   - kotlin:
       androidTarget: ()
   - android:
+      namespace: androidNamespace
+      compileSdk: libs.versions("android.compileSdk")!!.requiredVersion.toInt()
       compileOptions:
         isCoreLibraryDesugaringEnabled: true
       lintOptions:
@@ -12,6 +14,7 @@ script:
         xmlReport: true
         xmlOutput: file("build/reports/lint-results.xml") # path to the lint report to consume by sonar
       defaultConfig:
+        minSdk: libs.versions("android.minSdk")!!.requiredVersion.toInt()
         testInstrumentationRunner: '"androidx.test.runner.AndroidJUnitRunner"'
         manifestPlaceholders.putAll: |
           (mapOf(
