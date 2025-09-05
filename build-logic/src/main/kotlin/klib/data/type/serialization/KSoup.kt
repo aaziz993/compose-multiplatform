@@ -11,6 +11,7 @@ import com.fleeksoft.ksoup.parseFile
 import com.fleeksoft.ksoup.parseSource
 import com.fleeksoft.ksoup.parser.Parser
 import com.fleeksoft.ksoup.safety.Safelist
+import io.ktor.client.HttpClient
 import io.ktor.client.request.*
 import kotlinx.io.RawSource
 import kotlinx.io.Source
@@ -84,16 +85,18 @@ public fun Parser.parse(
         this,
     )
 
-//public suspend fun Parser.parseGetRequest(
-//    url: String,
-//    httpRequestBuilder: HttpRequestBuilder.() -> Unit = {},
-//): Document = Ksoup.parseGetRequest (url, httpRequestBuilder, this)
-//
-//public suspend fun Parser.parseSubmitRequest(
-//    url: String,
-//    params: Map<String, String> = emptyMap(),
-//    httpRequestBuilder: HttpRequestBuilder.() -> Unit = {},
-//): Document = Ksoup.parseSubmitRequest(url, params, httpRequestBuilder, this)
+public suspend fun Parser.parseGetRequest(
+    url: String,
+    httpClient: HttpClient? = null,
+    httpRequestBuilder: HttpRequestBuilder.() -> Unit = {},
+): Document = Ksoup.parseGetRequest(url, this, httpClient, httpRequestBuilder)
+
+public suspend fun Parser.parseSubmitRequest(
+    url: String,
+    params: Map<String, String> = emptyMap(),
+    httpClient: HttpClient? = null,
+    httpRequestBuilder: HttpRequestBuilder.() -> Unit = {},
+): Document = Ksoup.parseSubmitRequest(url, params, this, httpClient, httpRequestBuilder)
 
 public suspend fun Parser.parsePostRequest(
     url: String,
