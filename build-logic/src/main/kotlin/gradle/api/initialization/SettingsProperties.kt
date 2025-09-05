@@ -1,7 +1,6 @@
 package gradle.api.initialization
 
 import gradle.api.Properties
-import gradle.api.initialization.SettingsProperties.Companion.SETTINGS_PROPERTIES_EXT
 import gradle.api.initialization.file.CodeOfConductFile
 import gradle.api.initialization.file.ContributingFile
 import gradle.api.initialization.file.LicenseFile
@@ -10,11 +9,16 @@ import gradle.api.publish.maven.MavenPomDeveloper
 import gradle.api.publish.maven.MavenPomLicense
 import gradle.api.publish.maven.MavenPomScm
 import klib.data.type.primitives.string.scripting.ScriptConfig
+import klib.data.type.primitives.string.scripting.ScriptProperties
 import klib.data.type.serialization.serializers.any.SerializableAny
 import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import java.util.*
+
+private const val SETTINGS_PROPERTIES_EXT = "settings.properties.ext"
+
+private const val SETTINGS_PROPERTIES_FILE = "initialization.yaml"
 
 @Serializable
 public class SettingsProperties(
@@ -33,21 +37,13 @@ public class SettingsProperties(
 
     public companion object {
 
-        internal const val LIBS_VERSION_CATALOG_EXT = "libs.versions.catalog.ext"
-
-        internal const val LOCAL_PROPERTIES_EXT = "local.properties.ext"
-
-        internal const val SETTINGS_PROPERTIES_EXT = "settings.properties.ext"
-
-        private const val SETTINGS_PROPERTIES_FILE = "initialization.yaml"
-
         context(settings: Settings)
         @Suppress("UnstableApiUsage")
-        internal operator fun invoke() = with(settings) {
+        public operator fun invoke(): SettingsProperties = with(settings) {
             layout.settingsDirectory.file(SETTINGS_PROPERTIES_FILE)
-                .asFile<SettingsProperties, Settings>(settings) { properties ->
+                .asFile<SettingsProperties, Settings>(settings).also { properties ->
                     settingsProperties = properties
-                }
+                }.also(SettingsProperties::invoke)
         }
     }
 }

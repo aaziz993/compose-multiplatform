@@ -1,12 +1,15 @@
 package gradle.api.project
 
 import gradle.api.Properties
-import gradle.api.project.ProjectProperties.Companion.PROJECT_PROPERTIES_EXT
 import klib.data.type.primitives.string.scripting.ScriptConfig
+import klib.data.type.serialization.serializers.any.SerializableAny
 import kotlinx.serialization.Serializable
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
-import klib.data.type.serialization.serializers.any.SerializableAny
+
+private const val PROJECT_PROPERTIES_EXT = "project.properties.ext"
+
+private const val PROJECT_PROPERTIES_FILE = "project.yaml"
 
 @Serializable
 public class ProjectProperties(
@@ -16,13 +19,8 @@ public class ProjectProperties(
 ) : Properties() {
 
     public companion object {
-
-        internal const val PROJECT_PROPERTIES_EXT = "project.properties.ext"
-
-        private const val PROJECT_PROPERTIES_FILE = "project.yaml"
-
         context(project: Project)
-        internal operator fun invoke() = with(project) {
+        public operator fun invoke(): ProjectProperties = with(project) {
             // Export extras.
             // enable Default Kotlin Hierarchy.
             extraProperties["kotlin.mpp.applyDefaultHierarchyTemplate"] = "true"
@@ -32,9 +30,9 @@ public class ProjectProperties(
             extraProperties["generateBuildableXcodeproj.skipKotlinFrameworkDependencies"] = "true"
 
             // Load project.yaml.
-            file(PROJECT_PROPERTIES_FILE)<ProjectProperties, Project>(project) { properties ->
-                projectProperties = properties
-            }
+            file(PROJECT_PROPERTIES_FILE)<ProjectProperties, Project>(project)
+                .also { properties -> projectProperties = properties }
+                .also(ProjectProperties::invoke)
         }
     }
 }

@@ -65,8 +65,7 @@ public abstract class Properties : ScriptProperties() {
         private val logger: Logger = Logging.getLogger(Properties::class.java)
 
         internal inline operator fun <reified P : Properties, reified T> File.invoke(
-            evaluationImplicitReceiver: T,
-            beforeInvoke: (P) -> Unit,
+            evaluationImplicitReceiver: T
         ): P where T : PluginAware, T : ExtensionAware {
             logger.lifecycle(
                 "${Ansi.CYAN}${Ansi.BOLD}${evaluationImplicitReceiver.toString().uppercase()}${Ansi.RESET}"
@@ -92,11 +91,7 @@ public abstract class Properties : ScriptProperties() {
 
                     defaultImports(*IMPORTS)
                 }
-            }.also { properties ->
-                logger.lifecycle(properties.toString())
-                beforeInvoke(properties)
-                properties()
-            }
+            }.also { properties -> logger.lifecycle(properties.toString()) }
         }
 
         internal fun tryAssignProperty(valueClass: KClass<*>, value: Any?): String? =
