@@ -4,7 +4,8 @@ config:
 script:
   - plugins:
       - id: ("maven-publish")
-      - id: (libs("vanniktech.maven.publish"))
+      - id: ("signing")
+      - id: (libs.plugins("vanniktech.maven.publish").pluginId)
   # publishing
   - publishing:
       repositories:

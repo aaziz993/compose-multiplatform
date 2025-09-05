@@ -17,8 +17,8 @@ script:
                   )
               }
             }
-  - dependencies:
-      - implementation: (dependencies.kotlin("stdlib"))
+#  - dependencies:
+#      - implementation: (dependencies.kotlin("stdlib"))
   - tasks:
       - withType<KotlinJvmTest>: |
           {

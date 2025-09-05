@@ -1,7 +1,11 @@
-kotlin:
-  targets:
-    - jvm:
-      name: ''
-      binaries:
-        executables:
-          - mainClass: ApplicationKt
+script:
+  - kotlin:
+      targets:
+        - withType<KotlinJvmTarget>: |
+            {
+              binaries { 
+                executable {
+                  mainClass = "ApplicationKt"
+                }
+              }
+            }

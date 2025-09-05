@@ -4,6 +4,7 @@ config:
     - com.android.build.gradle.ProguardFiles.getDefaultProguardFile
 script:
   - kotlin:
+      androidTarget: ()
       sourceSets:
         - named: |
             ("androidMain") {
@@ -50,12 +51,22 @@ script:
           (listOf(
             "consumer-proguard-rules.pro",
           ).map(::file))
+      signingConfigs:
+        - create: |
+            ("release") { signingConfig ->
+              signingConfig.storeFile = file("resources@android/release.keystore")
+              signingConfig.storePassword = sensitive("android.release.signing.store.password")
+              signingConfig.storeType = sensitive("android.release.signing.store.type")
+              signingConfig.keyAlias = sensitive("android.release.signing.key.alias")
+              signingConfig.keyPassword = sensitive("android.release.signing.key.password")
+              signingConfig.isV2SigningEnabled = true
+            }
       buildTypes:
         - getByName: |
             ("release") { builtType ->
                 builtType.isMinifyEnabled = true
                 builtType.proguardFiles(
-                    getDefaultProguardFile("sf", layout.buildDirectory),
+                    getDefaultProguardFile("proguard-android-optimize.txt", layout.buildDirectory),
                     "proguard-rules.pro",
                 )
                 builtType.signingConfig = android.signingConfigs.getByName("release")
@@ -128,16 +139,6 @@ script:
               productFlavor.minSdk = 21
               productFlavor.versionCode = 10000  + (android.defaultConfig.versionCode ?: 0)
               productFlavor.versionNameSuffix = "-minApi21"
-            }
-      signingConfigs:
-        - create: |
-            ("release") { signingConfig ->
-              signingConfig.storeFile = file("resources@android/release.keystore")
-              signingConfig.storePassword = sensitive("android.release.signing.store.password")
-              signingConfig.storeType = sensitive("android.release.signing.store.type")
-              signingConfig.keyAlias = sensitive("android.release.signing.key.alias")
-              signingConfig.keyPassword = sensitive("android.release.signing.key.password")
-              signingConfig.isV2SigningEnabled = true
             }
       packagingOptions:
         resources:

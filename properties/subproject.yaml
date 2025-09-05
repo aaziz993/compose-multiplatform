@@ -86,7 +86,7 @@ script:
               }
             }
         - named: |
-            ("nonWebMain") {
+            ("jvmCommonIosMain") {
               dependencies {
                 implementation(libs("androidx.room.runtime.ktx"))
               }

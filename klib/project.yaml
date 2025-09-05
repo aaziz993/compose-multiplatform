@@ -23,9 +23,9 @@ imports:
 #  - ../templates/gradle/publish.yaml
 script:
   - description: '"Kotlin multiplatform libraries."'
-  - plugins:
-      # Converter of TypeScript declaration files to Kotlin declarations.
-      - id: (libs.plugins("karakum").pluginId)
+#  - plugins:
+#      # Converter of TypeScript declaration files to Kotlin declarations.
+#      - id: (libs.plugins("karakum").pluginId)
   # Publishing
   - publishing:
       - publications:
