@@ -91,6 +91,8 @@ public val Project.libs: gradle.api.initialization.dsl.VersionCatalog
     get() = settings.libs
 
 public fun Project.allLibs(name: String): VersionCatalog = extensions.getByType<VersionCatalogsExtension>().named(name)
+public val Project.kotlinWrappers: VersionCatalog
+    get() = allLibs("kotlinWrappers")
 
 public val Project.composeLibs: ComposePlugin.Dependencies
     get() = extensions.getByType<ComposeExtension>().dependencies
