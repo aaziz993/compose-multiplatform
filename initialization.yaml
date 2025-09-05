@@ -82,6 +82,8 @@ script:
       # Android.
       - alias: (libs.plugins("android.kotlin.multiplatform.library"), false)
       - alias: (libs.plugins("android.application"), false)
+      # Kotlin Multiplatform.
+      - alias: (libs.plugins("kotlin.multiplatform"), false)
   # Gives the data to speed up your build, improve build reliability and accelerate build debugging.
   # servers: https://ge.solutions-team.gradle.com, https://ge.jetbrains.com
   - develocity:

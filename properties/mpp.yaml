@@ -6,188 +6,224 @@ config:
     - org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
     - org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 script:
-  plugins:
-    - id: (libs.plugins("kotlin.multiplatform").pluginId)
-  kotlin:
-    iosArm64: ()
-    iosX64: ()
-    iosSimulatorArm64: ()
-    targets:
-      # apply to all above native targets
-      - withType<KotlinNativeTarget>: |
-          {
-            compilerOptions {
-              optIn.addAll(
-                "kotlin.experimental.ExperimentalObjCName",
-                "kotlin.experimental.ExperimentalNativeApi",
-                "kotlinx.cinterop.ExperimentalForeignApi",
-                "kotlinx.cinterop.BetaInteropApi",
-                "kotlinx.cinterop.UnsafeNumber",
-              )
-  
-              freeCompilerArgs.addAll(
-                "-Xexport-kdoc",
-                "-Xallocator=custom",
-                "-XXLanguage+ImplicitSignedToUnsignedIntegerConversion",
-                "-Xadd-light-debug=enable",
-              )
-            }
-            binaries {
-              framework {
-                // add it to avoid sqllite3 issues in iOS . Required when using NativeSQLiteDriver
-                linkerOpts.addAll(listOf("--lsqlite3"))
+  - plugins:
+      - id: (libs.plugins("kotlin.multiplatform").pluginId)
+  - kotlin:
+      iosArm64: ()
+      iosX64: ()
+      iosSimulatorArm64: ()
+      targets:
+        # apply to all above native targets
+        - withType<KotlinNativeTarget>: |
+            {
+              compilerOptions {
+                optIn.addAll(
+                  "kotlin.experimental.ExperimentalObjCName",
+                  "kotlin.experimental.ExperimentalNativeApi",
+                  "kotlinx.cinterop.ExperimentalForeignApi",
+                  "kotlinx.cinterop.BetaInteropApi",
+                  "kotlinx.cinterop.UnsafeNumber",
+                )
+            
+                freeCompilerArgs.addAll(
+                  "-Xexport-kdoc",
+                  "-Xallocator=custom",
+                  "-XXLanguage+ImplicitSignedToUnsignedIntegerConversion",
+                  "-Xadd-light-debug=enable",
+                )
               }
-  
-              test(listOf(NativeBuildType.RELEASE))
+              binaries {
+                framework {
+                  // add it to avoid sqllite3 issues in iOS . Required when using NativeSQLiteDriver
+                  linkerOpts.addAll(listOf("--lsqlite3"))
+                }
+            
+                test(listOf(NativeBuildType.RELEASE))
+              }
             }
-          }
 
-      - withType<KotlinNativeTargetWithTests<*>>: |
-          {
-            testRuns.register("releaseTest") { testRun ->
-                testRun.setExecutionSourceFrom(binaries.getTest(NativeBuildType.RELEASE))
-            }
-          }
-
-      # apply to all above js and wasm targets
-      - withType<KotlinJsTargetDsl>: |
-          {
-            compilerOptions.optIn.addAll(
-              "kotlin.js.ExperimentalJsExport",
-            )
-  
-            browser {
-              val rootDirPath = project.rootDir.path
-              val projectDirPath = project.projectDir.path
-  
-              commonWebpackConfig { commonWebpackConfig ->
-                commonWebpackConfig.devServer = (commonWebpackConfig.devServer ?: KotlinWebpackConfig.DevServer()).apply {
-                    static = (static ?: mutableListOf()).apply {
-                        // Serve sources to debug inside browser
-                        add(rootDirPath)
-                        add(projectDirPath)
-                    }
-                }
-  
-                commonWebpackConfig.cssSupport { cssSupport ->
-                  cssSupport.enabled /= true
-                }
-              }
-  
-              testTask { testTask ->
-                testTask.testLogging { testLogging ->
-                    testLogging.showStandardStreams = true
-                }
-                testTask.useKarma {
-                    useChromeHeadless()
-                }
+        - withType<KotlinNativeTargetWithTests<*>>: |
+            {
+              testRuns.register("releaseTest") { testRun ->
+                  testRun.setExecutionSourceFrom(binaries.getTest(NativeBuildType.RELEASE))
               }
             }
-          }
-    applyDefaultHierarchyTemplate: |
-      {
-        common {
-          group("jvmCommon") {
-            withJvm()
-            withAndroidTarget()
-          }
-          group("jvmCommonIos") {
-            group("jvmCommon")
-            withIos()
-          }
-          group("jvmIosWeb") {
-            withJvm()
-            withIos()
-            group("web")
-          }
-          group("jvmWeb") {
-            withJvm()
-            group("web")
-          }
-          group("androidIos") {
-            withAndroidTarget()
-            withIos()
-          }
-          group("androidIosWeb") {
-            group("androidIos")
-            group("web")
-          }
-          group("androidNative32") {
-            withAndroidNativeArm32()
-            withAndroidNativeX86()
-          }
-          group("androidNative64") {
-            withAndroidNativeX64()
-            withAndroidNativeArm64()
-          }
-          group("androidNative") {
-            group("androidNative32")
-            group("androidNative64")
-          }
-          group("apple32") {
-            withWatchosArm32()
-            withWatchosArm64()  // NB watchosArm64 is weird target w/ 32-bit numbers.
-          }
-          group("apple64") {
-            withIos()
-            withMacos()
-            withTvos()
-            withWatchosX64()
-            withWatchosDeviceArm64()
-            withWatchosSimulatorArm64()
-          }
-          group("apple") {
-            group("apple32")
-            group("apple64")
-          }
-          group("nonIos") {
-            group("jvmCommon")
-            group("web")
-          }
-          group("nix") {
-            withLinux()
-            withApple()
-            withAndroidNative()
-          }
-          group("posix") {
-            withMingw()
-            group("nix")
-          }
-          group("nativeNonApple") {
-            withAndroidNative()
-            withMingw()
-            withLinux()
-          }
-          group("nativeNonAndroid") {
-            withApple()
-            withMingw()
-            withLinux()
-          }
-          group("native") {
-            withNative()
-          }
-          group("desktop") {
-            withLinux()
-            withMingw()
-            withMacos()
-          }
-          group("multithreaded") {
-            group("jvmCommon")
-            withNative()
-          }
-          group("jsCommon") {
-            withJs()
-            withWasmJs()
-          }
-          group("wasm") {
-            withWasmJs()
-            withWasmWasi()
-          }
-          group("web") {
-            group("jsCommon")
-            withWasmWasi()
+        # apply to all above js and wasm targets
+        - withType<KotlinJsTargetDsl>: |
+            {
+              compilerOptions.optIn.addAll(
+                "kotlin.js.ExperimentalJsExport",
+              )
+            
+              browser {
+                val rootDirPath = project.rootDir.path
+                val projectDirPath = project.projectDir.path
+            
+                commonWebpackConfig { commonWebpackConfig ->
+                  commonWebpackConfig.devServer = (commonWebpackConfig.devServer ?: KotlinWebpackConfig.DevServer()).apply {
+                      static = (static ?: mutableListOf()).apply {
+                          // Serve sources to debug inside browser
+                          add(rootDirPath)
+                          add(projectDirPath)
+                      }
+                  }
+            
+                  commonWebpackConfig.cssSupport { cssSupport ->
+                    cssSupport.enabled /= true
+                  }
+                }
+            
+                testTask { testTask ->
+                  testTask.testLogging { testLogging ->
+                      testLogging.showStandardStreams = true
+                  }
+                  testTask.useKarma {
+                      useChromeHeadless()
+                  }
+                }
+              }
+            }
+        - withType<KotlinJsTargetDsl>: |
+            {
+              compilerOptions.optIn.addAll(
+                "-Xjvm-default=all",
+              )
+            }
+      applyDefaultHierarchyTemplate: |
+        {
+          common {
+            group("jvmCommon") {
+              withJvm()
+              withAndroidTarget()
+            }
+            group("jvmCommonIos") {
+              group("jvmCommon")
+              withIos()
+            }
+            group("jvmIosWeb") {
+              withJvm()
+              withIos()
+              group("web")
+            }
+            group("jvmWeb") {
+              withJvm()
+              group("web")
+            }
+            group("androidIos") {
+              withAndroidTarget()
+              withIos()
+            }
+            group("androidIosWeb") {
+              group("androidIos")
+              group("web")
+            }
+            group("androidNative32") {
+              withAndroidNativeArm32()
+              withAndroidNativeX86()
+            }
+            group("androidNative64") {
+              withAndroidNativeX64()
+              withAndroidNativeArm64()
+            }
+            group("androidNative") {
+              group("androidNative32")
+              group("androidNative64")
+            }
+            group("apple32") {
+              withWatchosArm32()
+              withWatchosArm64()  // NB watchosArm64 is weird target w/ 32-bit numbers.
+            }
+            group("apple64") {
+              withIos()
+              withMacos()
+              withTvos()
+              withWatchosX64()
+              withWatchosDeviceArm64()
+              withWatchosSimulatorArm64()
+            }
+            group("apple") {
+              group("apple32")
+              group("apple64")
+            }
+            group("nonIos") {
+              group("jvmCommon")
+              group("web")
+            }
+            group("nix") {
+              withLinux()
+              withApple()
+              withAndroidNative()
+            }
+            group("posix") {
+              withMingw()
+              group("nix")
+            }
+            group("nativeNonApple") {
+              withAndroidNative()
+              withMingw()
+              withLinux()
+            }
+            group("nativeNonAndroid") {
+              withApple()
+              withMingw()
+              withLinux()
+            }
+            group("native") {
+              withNative()
+            }
+            group("desktop") {
+              withLinux()
+              withMingw()
+              withMacos()
+            }
+            group("multithreaded") {
+              group("jvmCommon")
+              withNative()
+            }
+            group("jsCommon") {
+              withJs()
+              withWasmJs()
+            }
+            group("wasm") {
+              withWasmJs()
+              withWasmWasi()
+            }
+            group("web") {
+              group("jsCommon")
+              withWasmWasi()
+            }
           }
         }
-      }
-#    cocoapods:
-#      ios: { }
+      sourceSets:
+        - named: |
+            ("commonMain") { sourceSet ->
+              sourceSet.dependencies {
+                implementation(libs("atomicfu"))
+                implementation(libs("kotlinx.serialization.json"))
+                implementation(libs("kotlinx.serialization.properties"))
+                implementation(libs("kotlinx.benchmark.runtime"))
+              }
+            }
+        - named: |
+            ("jvmCommon") { sourceSet ->
+              sourceSet.dependencies {
+                implementation: (dependencies.kotlin("stdlib"))
+              }
+            }
+        - named: |
+            ("jvmCommonTest") {
+              dependencies {
+                implementation(libs("mockito.core"))
+                implementation(libs("mockito.kotlin"))
+                implementation(libs("truth
+              }
+            }
+        - named: |
+            ("jvmCommonIosMain") { sourceSet ->
+              sourceSet.dependencies {
+                implementation(libs("androidx.room.runtime.ktx"))
+                implementation(libs("androidx.sqlite.bundled"))
+              }
+            }
+#      cocoapods:
+#        ios: { }

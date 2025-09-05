@@ -14,11 +14,12 @@ script:
                    "-Xno-param-assertions",
                    "-Xno-call-assertions",
                    "-Xno-receiver-assertions"
-                  )
+                )
+                optIn.addAll(
+                  "-Xjvm-default=all",
+                )
               }
             }
-#  - dependencies:
-#      - implementation: (dependencies.kotlin("stdlib"))
   - tasks:
       - withType<KotlinJvmTest>: |
           {
