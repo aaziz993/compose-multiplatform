@@ -19,6 +19,12 @@ script:
               println("KotlinSourceSet: ${sourceSet.name}")
             }
         - named: |
+            ("androidHostTest") { sourceSet ->
+              sourceSet.dependencies {
+                implementation(libs("androidx.arch.core.testing"))
+              }
+            }
+        - named: |
             ("androidDeviceTest") { sourceSet ->
               sourceSet.dependencies {
                 implementation(libs("androidx.test.core"))
@@ -29,6 +35,5 @@ script:
                 implementation(libs("androidx.test.monitor"))
               }
             }
-
   - dependencies:
       - dokkaPlugin: (libs("android.documentation.plugin"))
