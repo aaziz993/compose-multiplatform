@@ -349,7 +349,9 @@ public fun Project.version(
 }
 
 public fun Project.flatten() {
-
+    kotlin.targets.forEach { target ->
+        println("Kotlin target: ${target.name}")
+    }
 }
 
 public inline fun <reified T : Task> Project.registerAggregationTestTask(

@@ -205,20 +205,6 @@ script:
               }
             }
         - named: |
-            ("jvmCommon") { sourceSet ->
-              sourceSet.dependencies {
-                implementation(dependencies.kotlin("stdlib"))
-              }
-            }
-        - named: |
-            ("jvmCommonTest") {
-              dependencies {
-                implementation(libs("mockito.core"))
-                implementation(libs("mockito.kotlin"))
-                implementation(libs("truth"))
-              }
-            }
-        - named: |
             ("jvmCommonIosMain") { sourceSet ->
               sourceSet.dependencies {
                 implementation(libs("androidx.room.runtime.ktx"))
