@@ -14,10 +14,6 @@ script:
                 implementation(libs("androidx.room.paging"))
               }
             }
-        - all: |
-            { sourceSet ->
-              println("KotlinSourceSet: ${sourceSet.name}")
-            }
         - named: |
             ("androidHostTest") { sourceSet ->
               sourceSet.dependencies {
