@@ -2,7 +2,7 @@ package klib.data.type.primitives.string.humanreadable
 
 import klib.data.type.primitives.string.humanreadable.model.RelativeTime
 import klib.data.type.primitives.string.humanreadable.model.TimeUnit
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 import kotlin.time.ExperimentalTime
 
 /**
@@ -64,9 +64,9 @@ public fun Instant.toHumanReadable(
         { "year${if (it > 1) "s" else ""}" },
         { "" },
     ),
-    timeInFuture: String = "in \${time}",
+    timeInFuture: String = $$"in ${time}",
     now: String = "now",
-    timeAgo: String = "\${time} ago",
+    timeAgo: String = $$"${time} ago",
 ): String {
     val diff = baseInstant - this
     val secondsAgo = diff.inWholeSeconds
