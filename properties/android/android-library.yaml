@@ -1,14 +1,14 @@
-imports:
-  - android-library-plugin.yaml
 config:
   imports:
     - org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
     - com.android.build.api.dsl.androidLibrary
 script:
+  - plugins:
+      - id: (libs.plugins("android.kotlin.multiplatform.library").pluginId)
   - kotlin:
       androidLibrary: |
         {
-          namespace = moduleName
+          namespace = androidNamespace
           compileSdk = libs.versions("android.compileSdk")!!.requiredVersion.toInt()  
           minSdk = libs.versions("android.minSdk")!!.requiredVersion.toInt()
           
@@ -18,16 +18,6 @@ script:
             enable = true
           }
         
-          withHostTestBuilder {}.configure {
-            isIncludeAndroidResources = true
-          }
-        
-          withDeviceTestBuilder {
-            sourceSetTreeName = "test"
-          }.configure {
-            instrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-            execution = "ANDROIDX_TEST_ORCHESTRATOR"
-          }
 
           // Configure the JVM target for both Kotlin and Java sources
           compilerOptions {

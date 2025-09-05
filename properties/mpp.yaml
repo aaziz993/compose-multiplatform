@@ -109,7 +109,7 @@ script:
             withIos()
           }
           group("androidIosWeb") {
-            group("mobile")
+            group("androidIos")
             group("web")
           }
           group("androidNative32") {
