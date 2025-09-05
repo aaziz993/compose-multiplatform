@@ -59,14 +59,21 @@ public fun Any.getOrNull(
 
 public fun Any.deepGetOrNull(
     vararg propertyNamePath: String,
-    predicate: (KProperty<*>) -> Boolean = { property ->
+    predicate: List<Pair<Any, Any?>>.(KProperty<*>) -> Boolean = { property ->
         property.visibility == KVisibility.PUBLIC
     }
-): Pair<List<Pair<Any, Any?>>, Any?> =
-    deepGet(*propertyNamePath) { last().first.getOrNull(last().second, predicate) }
+): Pair<List<Pair<Any, Any?>>, Any?> = deepGet(*propertyNamePath) {
+    last().first.getOrNull(last().second) { property -> predicate(property) }
+}
 
-public fun Any.deepGet(vararg propertyNamePath: String): Pair<List<Pair<Any, Any?>>, Any?> =
-    deepGet(*propertyNamePath) { last().first.getMemberProperty(last().second) }
+public fun Any.deepGet(
+    vararg propertyNamePath: String,
+    predicate: List<Pair<Any, Any?>>.(KProperty<*>) -> Boolean = { property ->
+        property.visibility == KVisibility.PUBLIC
+    }
+): Pair<List<Pair<Any, Any?>>, Any?> = deepGet(*propertyNamePath) {
+    last().first.getMemberProperty(last().second) { property -> predicate(property) }
+}
 
 public operator fun Any.get(propertyName: String): Any? = getMemberProperty(propertyName)
 
@@ -75,9 +82,14 @@ public fun Any.getStaticPropertyOrNull(
     predicate: (KProperty<*>) -> Boolean = { property ->
         property.visibility == KVisibility.PUBLIC
     }
-): Any? = this::class.getStaticPropertyOrNull(propertyName)
+): Any? = this::class.getStaticPropertyOrNull(propertyName, predicate)
 
-public fun Any.getStaticProperty(propertyName: String): Any? = this::class.getStaticProperty(propertyName)
+public fun Any.getStaticProperty(
+    propertyName: String,
+    predicate: (KProperty<*>) -> Boolean = { property ->
+        property.visibility == KVisibility.PUBLIC
+    }
+): Any? = this::class.getStaticProperty(propertyName, predicate)
 
 /////////////////////////////////////////////////////////FUNCTIONS//////////////////////////////////////////////////////
 public fun Any.callDeclaredMemberFunctionOrNull(funName: String, vararg arguments: Pair<KType, Any?>): Any? =
