@@ -168,7 +168,7 @@ dependencies {
     // file system
     implementation(libs.okio)
     // sqlite jdbc driver
-    implementation(libs.sqlite)
+    implementation(libs.sqlite.jdbc)
     // toolkit for running benchmarks for multiplatform code written in Kotlin. It is designed to work with Kotlin/JVM, Kotlin/JS, Kotlin/Native, and Kotlin/WasmJs (experimental) targets.
     implementation(libs.plugins.kotlinx.benchmark.toDep())
     // multiplatform
