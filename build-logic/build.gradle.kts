@@ -171,7 +171,7 @@ dependencies {
     // toolkit for running benchmarks for multiplatform code written in Kotlin. It is designed to work with Kotlin/JVM, Kotlin/JS, Kotlin/Native, and Kotlin/WasmJs (experimental) targets.
     implementation(libs.plugins.kotlinx.benchmark.toDep())
     // multiplatform
-    implementation(libs.plugins.kotlin.multiplatform.toDep())
+    implementation(libs.plugins.kotlinMultiplatform.toDep())
     // multiplatform library that provides the idiomatic and efficient way of using atomic operations in Kotlin.
     implementation(libs.plugins.atomicfu.toDep())
     // jvm
