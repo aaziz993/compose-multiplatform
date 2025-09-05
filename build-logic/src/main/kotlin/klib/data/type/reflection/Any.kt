@@ -3,37 +3,79 @@ package klib.data.type.reflection
 import klib.data.type.cast
 import klib.data.type.collections.deepGet
 import kotlin.reflect.KClass
+import kotlin.reflect.KProperty
 import kotlin.reflect.KType
+import kotlin.reflect.KVisibility
 
 ////////////////////////////////////////////////////////PROPERTIES//////////////////////////////////////////////////////
-public fun Any.getDeclaredMemberPropertyOrNull(propertyName: String): Any? =
-    this::class.declaredMemberProperty(propertyName)?.invoke(this)
+public fun Any.getDeclaredMemberPropertyOrNull(
+    propertyName: String,
+    predicate: (KProperty<*>) -> Boolean = { property ->
+        property.visibility == KVisibility.PUBLIC
+    }
+): Any? = this::class.declaredMemberProperty(propertyName)?.takeIf(predicate)?.invoke(this)
 
-public fun Any.getDeclaredMemberProperty(propertyName: String): Any? =
-    this::class.declaredMemberProperty(propertyName)!!(this)
+public fun Any.getDeclaredMemberProperty(
+    propertyName: String,
+    predicate: (KProperty<*>) -> Boolean = { property ->
+        property.visibility == KVisibility.PUBLIC
+    }
+): Any? = this::class.declaredMemberProperty(propertyName)?.takeIf(predicate)!!(this)
 
-public fun Any.getDeclaredMemberExtensionPropertyOrNull(propertyName: String): Any? =
-    this::class.declaredMemberProperty(propertyName)?.invoke(this)
+public fun Any.getDeclaredMemberExtensionPropertyOrNull(
+    propertyName: String,
+    predicate: (KProperty<*>) -> Boolean = { property ->
+        property.visibility == KVisibility.PUBLIC
+    }
+): Any? = this::class.declaredMemberProperty(propertyName)?.takeIf(predicate)?.invoke(this)
 
-public fun Any.getDeclaredMemberExtensionProperty(propertyName: String): Any? =
-    this::class.declaredMemberProperty(propertyName)!!(this)
+public fun Any.getDeclaredMemberExtensionProperty(
+    propertyName: String,
+    predicate: (KProperty<*>) -> Boolean = { property ->
+        property.visibility == KVisibility.PUBLIC
+    }
+): Any? = this::class.declaredMemberProperty(propertyName)?.takeIf(predicate)!!(this)
 
-public fun Any.getMemberPropertyOrNull(propertyName: String): Any? = this::class[propertyName]?.invoke(this)
+public fun Any.getMemberPropertyOrNull(
+    propertyName: String,
+    predicate: (KProperty<*>) -> Boolean = { property ->
+        property.visibility == KVisibility.PUBLIC
+    }
+): Any? = this::class[propertyName]?.takeIf(predicate)?.invoke(this)
 
-public fun Any.getMemberProperty(propertyName: String): Any? = this::class[propertyName]!!(this)
+public fun Any.getMemberProperty(
+    propertyName: String,
+    predicate: (KProperty<*>) -> Boolean = { property ->
+        property.visibility == KVisibility.PUBLIC
+    }
+): Any? = this::class[propertyName]?.takeIf(predicate)!!(this)
 
-public fun Any.getOrNull(propertyName: String): Any? = getMemberPropertyOrNull(propertyName)
+public fun Any.getOrNull(
+    propertyName: String,
+    predicate: (KProperty<*>) -> Boolean = { property ->
+        property.visibility == KVisibility.PUBLIC
+    }
+): Any? = getMemberPropertyOrNull(propertyName, predicate)
 
-public fun Any.deepGetOrNull(vararg propertyNamePath: String): Pair<List<Pair<Any, Any?>>, Any?> =
-    deepGet(*propertyNamePath) { last().first.getOrNull(last().second!!.cast()) }
+public fun Any.deepGetOrNull(
+    vararg propertyNamePath: String,
+    predicate: (KProperty<*>) -> Boolean = { property ->
+        property.visibility == KVisibility.PUBLIC
+    }
+): Pair<List<Pair<Any, Any?>>, Any?> =
+    deepGet(*propertyNamePath) { last().first.getOrNull(last().second, predicate) }
+
+public fun Any.deepGet(vararg propertyNamePath: String): Pair<List<Pair<Any, Any?>>, Any?> =
+    deepGet(*propertyNamePath) { last().first.getMemberProperty(last().second) }
 
 public operator fun Any.get(propertyName: String): Any? = getMemberProperty(propertyName)
 
-public fun Any.deepGet(vararg propertyNamePath: String): Pair<List<Pair<Any, Any?>>, Any?> =
-    deepGet(*propertyNamePath) { last().first[last().second!!.cast()] }
-
-public fun Any.getStaticPropertyOrNull(propertyName: String): Any? =
-    this::class.getStaticPropertyOrNull(propertyName)
+public fun Any.getStaticPropertyOrNull(
+    propertyName: String,
+    predicate: (KProperty<*>) -> Boolean = { property ->
+        property.visibility == KVisibility.PUBLIC
+    }
+): Any? = this::class.getStaticPropertyOrNull(propertyName)
 
 public fun Any.getStaticProperty(propertyName: String): Any? = this::class.getStaticProperty(propertyName)
 

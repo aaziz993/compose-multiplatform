@@ -29,6 +29,7 @@ import kotlin.reflect.full.staticProperties
 import org.reflections.Reflections
 import org.reflections.scanners.Scanners
 import org.reflections.util.ConfigurationBuilder
+import kotlin.reflect.KVisibility
 
 //////////////////////////////////////////////////////////GENERIC///////////////////////////////////////////////////////
 @Suppress("UNCHECKED_CAST")
@@ -37,7 +38,8 @@ public val KClass<*>.typeArguments: List<KClass<*>>
         .actualTypeArguments.map { type -> (type as Class<*>).kotlin }
 
 ////////////////////////////////////////////////////////PROPERTIES//////////////////////////////////////////////////////
-public fun KClass<*>.declaredMemberProperty(propertyName: String): KProperty<*>? = declaredMemberProperties[propertyName]
+public fun KClass<*>.declaredMemberProperty(propertyName: String): KProperty<*>? =
+    declaredMemberProperties[propertyName]
 
 public fun KClass<*>.declaredMemberExtensionProperty(propertyName: String): KProperty<*>? =
     declaredMemberExtensionProperties[propertyName]
@@ -48,9 +50,19 @@ public operator fun KClass<*>.get(propertyName: String): KProperty<*>? = memberP
 
 public fun KClass<*>.staticProperty(propertyName: String): KProperty<*>? = staticProperties[propertyName]
 
-public fun KClass<*>.getStaticPropertyOrNull(propertyName: String): Any? = staticProperties[propertyName]?.invoke()
+public fun KClass<*>.getStaticPropertyOrNull(
+    propertyName: String,
+    predicate: (KProperty<*>) -> Boolean = { property ->
+        property.visibility == KVisibility.PUBLIC
+    }
+): Any? = staticProperties[propertyName]?.takeIf(predicate)?.invoke()
 
-public fun KClass<*>.getStaticProperty(propertyName: String): Any? = staticProperties[propertyName]!!()
+public fun KClass<*>.getStaticProperty(
+    propertyName: String,
+    predicate: (KProperty<*>) -> Boolean = { property ->
+        property.visibility == KVisibility.PUBLIC
+    }
+): Any? = staticProperties[propertyName]?.takeIf(predicate)!!()
 
 /////////////////////////////////////////////////////////FUNCTIONS//////////////////////////////////////////////////////
 public fun KClass<*>.declaredMemberFunctions(funName: String): List<KFunction<*>> = declaredMemberFunctions.get(funName)
@@ -74,7 +86,7 @@ public fun KClass<*>.memberFunctions(funName: String): List<KFunction<*>> =
     memberFunctions.get(funName)
 
 public fun KClass<*>.memberFunction(funName: String, vararg arguments: KType): KFunction<*>? =
-    memberFunctions.get(funName, * arguments)
+    memberFunctions.get(funName, *arguments)
 
 public fun KClass<*>.staticFunctions(funName: String): List<KFunction<*>> = staticFunctions.get(funName)
 
@@ -82,23 +94,24 @@ public fun KClass<*>.staticFunction(funName: String, vararg arguments: KType): K
     staticFunctions.get(funName, *arguments)
 
 public fun KClass<*>.callStaticFunctionOrNull(funName: String, vararg arguments: Pair<KType, Any?>): Any? =
-    callCallableOrNull(null, funName, * arguments, callable = KClass<*>::staticFunction)
+    callCallableOrNull(null, funName, *arguments, callable = KClass<*>::staticFunction)
 
 public fun KClass<*>.callStaticFunction(funName: String, vararg arguments: Pair<KType, Any?>): Any? =
-    callCallable(null, funName, * arguments, callable = KClass<*>::staticFunction)
+    callCallable(null, funName, *arguments, callable = KClass<*>::staticFunction)
 
 //////////////////////////////////////////////////////////MEMBERS///////////////////////////////////////////////////////
 public fun KClass<*>.declaredMembers(memberName: String): List<KCallable<*>> = declaredMembers.get(memberName)
 
 public fun KClass<*>.declaredMember(memberName: String, vararg arguments: KType): KCallable<*>? =
-    declaredMembers.get(memberName, * arguments)
+    declaredMembers.get(memberName, *arguments)
 
 public fun KClass<*>.member(memberName: String): List<KCallable<*>> = members.get(memberName)
 
 public fun KClass<*>.member(memberName: String, vararg arguments: KType): KCallable<*>? =
-    members.get(memberName, * arguments)
+    members.get(memberName, *arguments)
 
-private operator fun Collection<KProperty<*>>.get(propertyName: String): KProperty<*>? = find { it.name == propertyName }
+private operator fun Collection<KProperty<*>>.get(propertyName: String): KProperty<*>? =
+    find { it.name == propertyName }
 
 private fun <T : KCallable<*>> Collection<T>.get(name: String): List<T> =
     filter { kCallable -> kCallable.name == name }
@@ -113,13 +126,13 @@ public fun KCallable<*>.hasSignature(name: String, vararg arguments: KType): Boo
     val parameters = if (instanceParameter == null) parameters else parameters.drop()
 
     return parameters.size == arguments.size &&
-        parameters.map(KParameter::type).zip(arguments).all { (parameterType, argType) ->
-            if (parameterType is KTypeParameter)
-                (parameterType.classifier as KTypeParameter).upperBounds.any { bound ->
-                    argType.classifier == parameterType.classifier || argType.isSubtypeOf(bound)
-                }
-            else argType.classifier == parameterType.classifier || argType.isSubtypeOf(parameterType)
-        }
+            parameters.map(KParameter::type).zip(arguments).all { (parameterType, argType) ->
+                if (parameterType is KTypeParameter)
+                    (parameterType.classifier as KTypeParameter).upperBounds.any { bound ->
+                        argType.classifier == parameterType.classifier || argType.isSubtypeOf(bound)
+                    }
+                else argType.classifier == parameterType.classifier || argType.isSubtypeOf(parameterType)
+            }
 }
 
 internal fun KClass<*>.callCallableOrNull(
@@ -130,7 +143,7 @@ internal fun KClass<*>.callCallableOrNull(
 ) = callable(
     name,
     arguments.map(Pair<KType, *>::first).toTypedArray(),
-)?.invoke(instance, * arguments.map(Pair<*, *>::second).toTypedArray())
+)?.invoke(instance, *arguments.map(Pair<*, *>::second).toTypedArray())
 
 internal fun KClass<*>.callCallable(
     instance: Any?,
@@ -140,7 +153,7 @@ internal fun KClass<*>.callCallable(
 ) = callable(
     name,
     arguments.map(Pair<KType, *>::first).toTypedArray(),
-)!!(instance, * arguments.map(Pair<*, *>::second).toTypedArray())
+)!!(instance, *arguments.map(Pair<*, *>::second).toTypedArray())
 
 public fun KClass<*>.packageExtensions(packages: Set<String>): Sequence<Method> = sequence {
     val reflections = Reflections(
@@ -154,17 +167,17 @@ public fun KClass<*>.packageExtensions(packages: Set<String>): Sequence<Method> 
     )
 
     (reflections.getSubTypesOf(Any::class.java) +
-        reflections.getTypesAnnotatedWith(Metadata::class.java))
+            reflections.getTypesAnnotatedWith(Metadata::class.java))
         .forEach { kClass ->
             try {
                 kClass.methods.filter { method ->
                     !method.isSynthetic &&
-                        method.parameterTypes.firstOrNull()?.isAssignableFrom(this@packageExtensions.java) == true
+                            method.parameterTypes.firstOrNull()?.isAssignableFrom(this@packageExtensions.java) == true
                 }.forEach { method ->
                     yield(method)
                 }
+            } catch (e: NoClassDefFoundError) {
             }
-            catch (e: NoClassDefFoundError) { }
         }
 }
 

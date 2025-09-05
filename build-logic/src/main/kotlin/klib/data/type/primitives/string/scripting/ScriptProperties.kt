@@ -13,9 +13,15 @@ import klib.data.type.collections.map.asMapOrNull
 import klib.data.type.collections.map.asStringNullableMap
 import klib.data.type.primitives.string.addSuffixIfNotEmpty
 import klib.data.type.primitives.string.tokenization.evaluation.SubstituteOption
+import klib.data.type.reflection.callDeclaredFunctionOrNull
+import klib.data.type.reflection.callMember
+import klib.data.type.reflection.callMemberOrNull
 import klib.data.type.reflection.declaredMemberExtensionFunction
 import klib.data.type.reflection.declaredMemberExtensionFunctions
 import klib.data.type.reflection.declaredMemberExtensionProperty
+import klib.data.type.reflection.getDeclaredMemberPropertyOrNull
+import klib.data.type.reflection.getMemberPropertyOrNull
+import klib.data.type.reflection.getStaticPropertyOrNull
 import klib.data.type.reflection.memberFunction
 import klib.data.type.reflection.memberFunctions
 import klib.data.type.reflection.memberProperty
@@ -109,15 +115,20 @@ public abstract class ScriptProperties {
             import.removeSuffix(".*")
         }.toSet()
 
-        return config.compilationImplicitReceivers
+        return config.evaluationImplicitReceivers
             .firstNotNullOfOrNull { implicitReceiver ->
                 implicitReceiver.deepRunOnPenultimate(
                     *path,
                     getter = {
-                        val kClass = last().first as KClass<*>
+                        val receiver = last().first
 
                         val memberName = last().second
                         val getterName = memberName.toGetterName()
+
+                        receiver.getMemberPropertyOrNull(memberName)
+                            ?:receiver.getDeclaredMemberPropertyOrNull(memberName)
+                            ?: receiver.callMemberOrNull(getterName)
+                            ?:receiver.callDeclaredFunctionOrNull(getterName)
 
                         (kClass.memberProperty(memberName)
                             ?: kClass.declaredMemberExtensionProperty(memberName)

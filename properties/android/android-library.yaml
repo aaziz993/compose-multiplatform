@@ -10,9 +10,9 @@ script:
                 "release",
               )
             }
-#  - android:
-#      publishing:
-#        singleVariant:  |
-#          ("release") {
-#            withSourcesJar()
-#          }
+  - android:
+      publishing:
+        singleVariant:  |
+          ("release") {
+            withSourcesJar()
+          }
