@@ -1,7 +1,6 @@
-config:
-  imports:
-    - android-library-plugin.yaml
-    - android-library.yaml
+imports:
+  - android-library-plugin.yaml
+  - android.yaml
 script:
   - kotlin:
       targets:
