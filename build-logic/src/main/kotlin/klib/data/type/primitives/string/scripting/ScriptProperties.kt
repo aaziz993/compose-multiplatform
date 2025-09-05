@@ -11,7 +11,6 @@ import klib.data.type.collections.list.asList
 import klib.data.type.collections.list.dropLast
 import klib.data.type.collections.map.asMapOrNull
 import klib.data.type.collections.map.asStringNullableMap
-import klib.data.type.collections.map.toTreeString
 import klib.data.type.primitives.string.addSuffixIfNotEmpty
 import klib.data.type.primitives.string.tokenization.evaluation.SubstituteOption
 import klib.data.type.reflection.declaredMemberExtensionFunction
@@ -89,9 +88,10 @@ public abstract class ScriptProperties {
     }
 
     override fun toString(): String = buildString {
-        append(fileTree.toTreeString(fileTree.entries.first().key) { value, visited ->
-            if (visited) "${"File:".toAnsi(Ansi.YELLOW)} $value ↻"
-            else "${"File:".toAnsi(Ansi.GREEN)} $value"
+        append(fileTree.entries.first().key.toTreeString({
+            fileTree[this].orEmpty()
+        }) { value, visited ->
+            if (visited) "${"File:".toAnsi(Ansi.YELLOW)} $value ↻" else "${"File:".toAnsi(Ansi.GREEN)} $value"
         })
 
         ansi(Ansi.GREEN) {

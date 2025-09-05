@@ -600,57 +600,40 @@ public fun <T : Any> T.substitute(
     }
 )
 
-public fun Any.toTreeString(
-    sourceIteratorOrNull: List<Pair<Any, Any?>>.(value: Any) -> Iterator<Map.Entry<Any?, Any?>>? = { value ->
-        value.iteratorOrNull()
-    },
-    intermediateConnector: String = "├── ",
+public fun <T> T.toTreeString(
+    children: T.() -> List<T>,
+    intermediateConnector: String = "├──",
     verticalConnector: String = "│",
-    lastConnector: String = "└── ",
-    transform: List<Pair<Any, Any?>>.(visited: Boolean) -> String = { "${last().second}" }
+    lastConnector: String = "└──",
+    transform: (T, visited: Boolean) -> String = { value, visited ->
+        value.toString() + if (visited) " ↻" else ""
+    }
 ): String = buildString {
-    val visits = mutableSetOf<Any>()
+    appendLine(transform(this@toTreeString, false))
 
-    DeepRecursiveFunction<ToTreeStringArgs, Unit> { (sources, sourceIterator, prefix) ->
-        val entries = sourceIterator.asSequence().toList()
+    val visits = mutableSetOf(this@toTreeString)
 
-        entries.forEachIndexed { index, (key, value) ->
-            val currentSources = sources.replaceLast { copy(second = key) }
+    DeepRecursiveFunction<PrintTreeArgs<T>, Unit> { (nodes, prefix) ->
+        nodes.forEachIndexed { index, node ->
+            val isLast = index == nodes.lastIndex
+            val connector = if (isLast) "$lastConnector " else "$intermediateConnector "
 
-            val isLast = index == entries.lastIndex
+            append(prefix)
+            append(connector)
 
-            val connector = when {
-                prefix.isEmpty() -> ""
-                isLast -> lastConnector
-                else -> intermediateConnector
-            }
+            appendLine(transform(node, node != null && !visits.add(node)))
 
-            val visited = key != null && !visits.add(key)
-
-            appendLine("$prefix$connector${currentSources.transform(visited)}")
-
-            if (value != null)
-                currentSources.sourceIteratorOrNull(value)?.let { nextSourceIterator ->
-                    callRecursive(
-                        ToTreeStringArgs(
-                            currentSources + (value to 0),
-                            nextSourceIterator,
-                            prefix + if (isLast) "    " else "$verticalConnector   ",
-                        ),
-                    )
-                }
+            callRecursive(
+                PrintTreeArgs(
+                    children(node),
+                    prefix + if (isLast) "    " else "$verticalConnector   "
+                )
+            )
         }
-    }(
-        ToTreeStringArgs(
-            listOf(this@toTreeString to 0),
-            emptyList<Pair<Any, Int>>().sourceIteratorOrNull(this@toTreeString)!!,
-            "",
-        ),
-    )
+    }(PrintTreeArgs(this@toTreeString.children(), ""))
 }
 
-private data class ToTreeStringArgs(
-    val sources: List<Pair<Any, Any?>>,
-    val sourceIterator: Iterator<Map.Entry<Any?, Any?>>,
+private data class PrintTreeArgs<T>(
+    val node: List<T>,
     val prefix: String,
 )
