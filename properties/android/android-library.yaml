@@ -18,6 +18,16 @@ script:
             enable = true
           }
         
+          withHostTestBuilder {}.configure {
+            isIncludeAndroidResources = true
+          }
+        
+          withDeviceTestBuilder {
+            sourceSetTreeName = "test"
+          }.configure {
+            instrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+            execution = "ANDROIDX_TEST_ORCHESTRATOR"
+          }
 
           // Configure the JVM target for both Kotlin and Java sources
           compilerOptions {
