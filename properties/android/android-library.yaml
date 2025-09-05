@@ -1,3 +1,7 @@
+config:
+  imports:
+    - android-library-plugin.yaml
+    - android-library.yaml
 script:
   - kotlin:
       targets:
