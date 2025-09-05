@@ -1,7 +1,6 @@
 config:
   imports:
     - kotlinx.benchmark.gradle.JvmBenchmarkTarget
-    - org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
     - kotlinx.rpc.RpcStrictMode
     - com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
     - org.gradle.api.file.DuplicatesStrategy

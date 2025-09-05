@@ -21,13 +21,10 @@ script:
           }
         }
 
-#  targets:
-#    - wasmJs:
-#
-#        devServer:
-#          static: [ src@wasmJs ]
-
-#  sourceSets:
-#    - wasmJsMain:
-#        dependencies:
-#          - $kotlinWrappers.browser
+      sourceSets:
+        - named: |
+            ("wasmJsMain") { sourceSet ->
+              sourceSet.dependencies {
+                implementation(kotlinWrappers("browser"))
+              }
+            }
