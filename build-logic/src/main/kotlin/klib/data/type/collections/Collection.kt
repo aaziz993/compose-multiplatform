@@ -600,9 +600,9 @@ public fun <T : Any> T.substitute(
     }
 )
 
-public fun <T> treeString(
-    vararg nodes: T,
-    nodeChildren: T.() -> List<T>?,
+
+public fun <T> T.toTreeString(
+    children: T.() -> List<T>,
     intermediateConnector: String = "├──",
     verticalConnector: String = "│",
     lastConnector: String = "└──",
@@ -610,34 +610,29 @@ public fun <T> treeString(
         value.toString() + if (visited) " ↻" else ""
     }
 ): String = buildString {
-    val visits = mutableSetOf<T>()
+    appendLine(transform(this@toTreeString, false))
+
+    val visits = mutableSetOf(this@toTreeString)
 
     DeepRecursiveFunction<PrintTreeArgs<T>, Unit> { (nodes, prefix) ->
         nodes.forEachIndexed { index, node ->
             val isLast = index == nodes.lastIndex
-            val connector = when {
-                prefix.isEmpty() -> ""
-                isLast -> "$lastConnector "
-                else -> "$intermediateConnector "
-            }
+            val connector = if (isLast) lastConnector else intermediateConnector
 
             append(prefix)
             append(connector)
 
             appendLine(transform(node, !visits.add(node)))
 
-            node.nodeChildren()?.let { nextNodes ->
-                callRecursive(
-                    PrintTreeArgs(
-                        nextNodes,
-                        prefix + if (isLast) "    " else "$verticalConnector   "
-                    )
+            callRecursive(
+                PrintTreeArgs(
+                    children(node),
+                    prefix + if (isLast) "    " else "$verticalConnector   "
                 )
-            }
+            )
         }
-    }(PrintTreeArgs(nodes.toList(), ""))
+    }(PrintTreeArgs(this@toTreeString.children(), ""))
 }
-
 
 private data class PrintTreeArgs<T>(
     val node: List<T>,

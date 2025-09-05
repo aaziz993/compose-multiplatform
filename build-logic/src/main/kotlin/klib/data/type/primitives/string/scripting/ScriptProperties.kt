@@ -88,7 +88,7 @@ public abstract class ScriptProperties {
     }
 
     override fun toString(): String = buildString {
-        append(treeString(fileTree.entries.first().key, nodeChildren = {
+        append(fileTree.entries.first().key.toTreeString({
             fileTree[this].orEmpty()
         }) { value, visited ->
             if (visited) "${"File:".toAnsi(Ansi.YELLOW)} $value ↻" else "${"File:".toAnsi(Ansi.GREEN)} $value"
