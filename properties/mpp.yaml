@@ -352,7 +352,7 @@ script:
         - named: |
             ("wasmJsMain") { sourceSet ->
               sourceSet.dependencies {
-                // implementation(allLibs("kotlinWrappers")("browser"))
+                implementation(allLibs("kotlinWrappers")("browser"))
               }
             }
         # Jvm, js, wasmJs.

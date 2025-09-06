@@ -1,11 +1,9 @@
 package gradle.plugins.initialization
 
 import gradle.api.initialization.SettingsProperties
-import gradle.api.initialization.libs
 import gradle.plugins.project.ProjectPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
-import org.gradle.api.initialization.dsl.VersionCatalogBuilder
 import org.sqlite.JDBC
 import java.sql.DriverManager
 
