@@ -13,6 +13,7 @@ import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
+import org.gradle.api.Project
 import org.gradle.api.artifacts.ExternalModuleDependencyBundle
 import org.gradle.api.artifacts.MinimalExternalModuleDependency
 import org.gradle.api.artifacts.MutableVersionConstraint
@@ -22,6 +23,7 @@ import org.gradle.api.internal.artifacts.dependencies.DefaultMutableMinimalDepen
 import org.gradle.api.internal.artifacts.dependencies.DefaultMutableVersionConstraint
 import org.gradle.api.internal.artifacts.dependencies.DefaultPluginDependency
 import org.gradle.api.internal.catalog.DefaultExternalModuleDependencyBundle
+import org.gradle.api.provider.Provider
 import org.gradle.plugin.use.PluginDependency
 
 @Serializable(with = VersionCatalogSerializer::class)
@@ -41,9 +43,7 @@ public data class VersionCatalog(
         plugins[alias] ?: throw IllegalArgumentException("Unresolved plugin '$alias'")
 
     public fun bundles(alias: String): ExternalModuleDependencyBundle =
-        DefaultExternalModuleDependencyBundle().apply {
-            addAll(bundles[alias] ?: throw IllegalArgumentException("Unresolved bundle '$alias'"))
-        }
+        bundles[alias] ?: throw IllegalArgumentException("Unresolved bundle '$alias'")
 
     public operator fun invoke(alias: String): MinimalExternalModuleDependency = libraries(alias)
 }
