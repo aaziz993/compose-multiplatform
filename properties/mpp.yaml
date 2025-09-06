@@ -262,7 +262,7 @@ script:
                 implementation(libs.bundles("r2dbc"))
                 implementation(libs.bundles("kotysa"))
                 implementation(libs.bundles("exposed"))
-                implementation(libs("dataframe"))
+                // implementation(libs("dataframe"))
                 implementation(libs("kandy"))
                 implementation(libs("ktor.serialization.kotlinx.xml"))
                 implementation(libs.bundles("ktor.server"))
@@ -395,6 +395,14 @@ script:
             "CUSTOM_DEBUG" to NativeBuildType.DEBUG,
             "CUSTOM_RELEASE" to NativeBuildType.RELEASE,
           ))
+        ios:
+          deploymentTarget: libs.versions("kotlin.cocoapods.iosDeploymentTarget")!!.requiredVersion
+        osx:
+          deploymentTarget: libs.versions("kotlin.cocoapods.osxDeploymentTarget")!!.requiredVersion
+        tvos:
+          deploymentTarget: libs.versions("kotlin.cocoapods.tvosDeploymentTarget")!!.requiredVersion
+        watchos:
+          deploymentTarget: libs.versions("kotlin.cocoapods.watchosDeploymentTarget")!!.requiredVersion
   - tasks:
       # Jvm.
       - withType<KotlinJvmTest>: |
