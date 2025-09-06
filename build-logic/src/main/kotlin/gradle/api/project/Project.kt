@@ -17,6 +17,8 @@ import gradle.api.initialization.localProperties
 import gradle.api.initialization.sensitive
 import gradle.api.repositories.CacheRedirector
 import io.github.sgrishchenko.karakum.gradle.plugin.KarakumExtension
+import klib.data.type.collections.getOrNull
+import klib.data.type.primitives.toInt
 import kotlin.jvm.optionals.getOrNull
 import kotlinx.atomicfu.plugin.gradle.AtomicFUPluginExtension
 import kotlinx.benchmark.gradle.BenchmarksExtension
@@ -336,15 +338,15 @@ public fun Project.version(
     val camelCaseName = project.name.toCamelCase()
 
     return io.github.z4kn4fein.semver.Version(
-        project.libs.versions("$camelCaseName.version.major")?.toString()?.toInt()
+        project.libs.versions("$camelCaseName.version.major").getOrNull()?.requiredVersion?.toInt()
             ?: major,
-        project.libs.versions("$camelCaseName.version.minor")?.toString()?.toInt()
+        project.libs.versions("$camelCaseName.version.minor").getOrNull()?.requiredVersion?.toInt()
             ?: minor,
-        project.libs.versions("$camelCaseName.version.patch")?.toString()?.toInt()
+        project.libs.versions("$camelCaseName.version.patch").getOrNull()?.requiredVersion?.toInt()
             ?: patch,
-        project.libs.versions("$camelCaseName.version.preRelease")?.toString()
+        project.libs.versions("$camelCaseName.version.preRelease").getOrNull()?.requiredVersion
             ?: preRelease,
-        project.libs.versions("$camelCaseName.version.buildMetadata")?.toString()
+        project.libs.versions("$camelCaseName.version.buildMetadata").getOrNull()?.requiredVersion
             ?: buildMetadata ?: CI.current?.buildMetadata,
     ).toString()
 }
