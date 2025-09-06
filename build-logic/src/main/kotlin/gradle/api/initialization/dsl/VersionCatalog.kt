@@ -6,6 +6,8 @@ import klib.data.type.collections.map.asMap
 import klib.data.type.serialization.serializers.transform.TransformingSerializer
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.Serializable
+import org.gradle.api.artifacts.MinimalExternalModuleDependency
+import org.gradle.plugin.use.PluginDependency
 
 @KeepGeneratedSerializer
 @Serializable(with = VersionCatalogTransformingSerializer::class)
@@ -16,18 +18,21 @@ public data class VersionCatalog(
     private val bundles: Map<String, List<Library>>
 ) {
 
-    public fun versions(alias: String): VersionConstraint? = versions[alias]
+    public fun versions(alias: String): org.gradle.api.artifacts.VersionConstraint? = versions[alias]
 
-    public fun libraries(alias: String): Library =
+    public fun libraries(alias: String): MinimalExternalModuleDependency =
         libraries[alias] ?: throw IllegalArgumentException("Unresolved library '$alias'")
 
-    public fun plugins(alias: String): Plugin =
+    public fun plugins(alias: String): PluginDependency =
         plugins[alias] ?: throw IllegalArgumentException("Unresolved plugin '$alias'")
 
-    public fun bundles(alias: String): List<Library> =
-        bundles[alias] ?: throw IllegalArgumentException("Unresolved bundle '$alias'")
+    public fun bundles(alias: String): Bundle =
+        Bundle(
+            bundles[alias]?.toMutableList()
+                ?: throw IllegalArgumentException("Unresolved bundle '$alias'")
+        )
 
-    public operator fun invoke(alias: String): String = libraries(alias).toString()
+    public operator fun invoke(alias: String): MinimalExternalModuleDependency = libraries(alias)
 }
 
 private object VersionCatalogTransformingSerializer :

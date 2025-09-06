@@ -1,16 +1,25 @@
 package gradle.api.initialization.dsl
 
 import gradle.api.artifacts.VersionConstraint
-import klib.data.type.primitives.string.addPrefix
-import klib.data.type.primitives.string.addPrefixIfNotEmpty
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import org.gradle.api.artifacts.MinimalExternalModuleDependency
+import org.gradle.api.internal.artifacts.DefaultModuleIdentifier
+import org.gradle.api.internal.artifacts.dependencies.DefaultMutableMinimalDependency
+import org.gradle.api.internal.artifacts.dependencies.DefaultMutableVersionConstraint
+import org.gradle.api.internal.artifacts.dependencies.MinimalExternalModuleDependencyInternal
 
+@Suppress("PropertyName")
 @Serializable
 public data class Library(
-    val group: String,
-    val name: String,
-    val version: VersionConstraint? = null,
-) {
-
-    override fun toString(): String = "$group:$name${version.toString().addPrefixIfNotEmpty(":")}"
-}
+    @SerialName("group")
+    val _group: String,
+    @SerialName("name")
+    val _name: String,
+    @SerialName("version")
+    val _version: VersionConstraint = VersionConstraint(require = ""),
+) : MinimalExternalModuleDependencyInternal by DefaultMutableMinimalDependency(
+    DefaultModuleIdentifier.newId(_group, _name),
+    DefaultMutableVersionConstraint(_version),
+    null
+)

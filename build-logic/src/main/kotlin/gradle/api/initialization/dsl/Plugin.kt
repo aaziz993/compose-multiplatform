@@ -1,9 +1,10 @@
 package gradle.api.initialization.dsl
 
 import gradle.api.artifacts.VersionConstraint
-import klib.data.type.primitives.string.addPrefixIfNotEmpty
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import org.gradle.api.internal.artifacts.dependencies.DefaultMutableVersionConstraint
+import org.gradle.api.internal.artifacts.dependencies.DefaultPluginDependency
 import org.gradle.plugin.use.PluginDependency
 
 @Serializable
@@ -12,9 +13,7 @@ public data class Plugin(
     private val _pluginId: String,
     @SerialName("version")
     private val _version: VersionConstraint,
-) : PluginDependency {
-
-    override fun getPluginId(): String = _pluginId
-
-    override fun getVersion(): org.gradle.api.artifacts.VersionConstraint = _version
-}
+) : PluginDependency by DefaultPluginDependency(
+    _pluginId,
+    DefaultMutableVersionConstraint(_version)
+)

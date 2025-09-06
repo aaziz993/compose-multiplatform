@@ -12,6 +12,7 @@ import gradle.api.project.libs
 import gradle.api.project.moduleName
 import gradle.plugins.initialization.SLF4JProblemReporterContext
 import klib.data.type.primitives.toInt
+import org.gradle.accessors.dm.LibrariesForLibs
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
