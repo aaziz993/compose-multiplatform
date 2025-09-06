@@ -88,7 +88,7 @@ private object VersionCatalogSerializer : KSerializer<VersionCatalog> {
         return VersionCatalog(
             versions.toCatalogAliasMap(),
             libraries.toCatalogAliasMap(),
-            value["plugins"]!!.asMap.mapValues { (_, plugin) ->
+            value["plugins"]?.asMap.orEmpty().mapValues { (_, plugin) ->
                 plugin as Map<String, Any>
 
                 DefaultPluginDependency(
