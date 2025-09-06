@@ -22,10 +22,8 @@ import org.gradle.api.internal.artifacts.DefaultModuleIdentifier
 import org.gradle.api.internal.artifacts.dependencies.DefaultMutableMinimalDependency
 import org.gradle.api.internal.artifacts.dependencies.DefaultMutableVersionConstraint
 import org.gradle.api.internal.artifacts.dependencies.DefaultPluginDependency
-import org.gradle.api.internal.artifacts.dsl.dependencies.DefaultDependencyHandler
 import org.gradle.api.internal.catalog.DefaultExternalModuleDependencyBundle
 import org.gradle.api.provider.Provider
-import org.gradle.kotlin.dsl.of
 import org.gradle.plugin.use.PluginDependency
 
 @Serializable(with = VersionCatalogSerializer::class)

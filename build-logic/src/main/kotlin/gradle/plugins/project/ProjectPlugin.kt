@@ -3,17 +3,13 @@ package gradle.plugins.project
 import gradle.api.ci.CI
 import gradle.api.maybeNamed
 import gradle.api.project.ProjectProperties
-import gradle.api.project.kotlin
-import gradle.api.project.libs
 import gradle.plugins.initialization.SLF4JProblemReporterContext
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.artifacts.ExternalModuleDependencyBundle
 import org.gradle.internal.os.OperatingSystem
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.tasks.KotlinNativeLink
-import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
 
 public class ProjectPlugin : Plugin<Project> {
 
