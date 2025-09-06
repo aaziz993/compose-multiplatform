@@ -253,22 +253,7 @@ script:
                 implementation(libs("jackcess"))
                 implementation(libs("jnativehook"))
                 implementation(libs.bundles("jna"))
-                implementation(libs("webrtc.java"))
-                implementation(libs.bundles("webcam.capture"))
-                implementation(libs("kotlinx.coroutines.swing"))
-                implementation(libs.bundles("jdbc"))
-                implementation(libs.bundles("r2dbc"))
-                implementation(libs.bundles("kotysa"))
-                implementation(libs.bundles("exposed"))
-                implementation(libs("dataframe"))
-                implementation(libs("kandy"))
-                implementation(libs("ktor.serialization.kotlinx.xml"))
-                implementation(libs.bundles("ktor.server"))
-                implementation(libs.bundles("kotlinx.rpc.server"))
-                implementation(libs.bundles("kgraphql"))
-                implementation(libs.bundles("metrics"))
-                implementation(libs("jxmapviewer2"))
-                implementation(libs.bundles("koin.ktor"))
+               
               }
             }
         - named: |
