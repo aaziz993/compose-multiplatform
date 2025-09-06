@@ -152,7 +152,7 @@ script:
         # GitHub Packages
         - maven: ("https://maven.pkg.github.com/aaziz993")
       versionCatalogs:
-        - create: ("kotlinWrappers"){ catalog -> catalog.from(libs("kotlin.wrappers.catalog")) }
+        - create: ("kotlinWrappers"){ catalog -> catalog.fromLibs("kotlin.wrappers.catalog") }
   - enableCacheRedirect: ()
   - buildCache:
       - local:

@@ -19,14 +19,6 @@ public class ProjectPlugin : Plugin<Project> {
             // Load and apply project.yaml to build.gradle.kts.
             ProjectProperties()
 
-            afterEvaluate {
-                afterEvaluate {
-                    val l = allLibs("kotlinWrappers")
-
-                    val t = 0
-                }
-            }
-
             configureLinkTasks()
 
             CI.configureTasks()

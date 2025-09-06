@@ -11,6 +11,7 @@ import org.danilopianini.gradle.git.hooks.GitHooksExtension
 import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.api.initialization.Settings
+import org.gradle.api.initialization.dsl.VersionCatalogBuilder
 import org.gradle.kotlin.dsl.getByType
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import java.util.Properties
@@ -36,6 +37,11 @@ public val Settings.libs: VersionCatalog
             layout.settingsDirectory.file("gradle/libs.versions.toml").asFile.readText(),
         )
     }
+
+context(settings: Settings)
+public fun VersionCatalogBuilder.fromLibs(alias: String) {
+    settings.libs(alias).toString()
+}
 
 public val Settings.gitHooks: GitHooksExtension
     get() = extensions.getByType<GitHooksExtension>()

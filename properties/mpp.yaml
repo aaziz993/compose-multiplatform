@@ -252,7 +252,7 @@ script:
                 implementation(libs("reflections"))
                 implementation(libs("jackcess"))
                 implementation(libs("jnativehook"))
-                 implementation(libs.bundles("jna"))
+                implementation(libs.bundles("jna"))
                 implementation(libs("webrtc.java"))
                 implementation(libs.bundles("webcam.capture"))
                 implementation(libs("kotlinx.coroutines.swing"))
