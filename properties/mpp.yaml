@@ -19,7 +19,7 @@ script:
       - id: (libs.plugins("kotlin.multiplatform").pluginId)
       - id: (libs.plugins("cocoapods").pluginId)
       # Converter of TypeScript declaration files to Kotlin declarations.
-  #      - id: (libs.plugins("karakum").pluginId)
+      - id: (libs.plugins("karakum").pluginId)
   - kotlin:
       jvm: ()
       iosArm64: ()
