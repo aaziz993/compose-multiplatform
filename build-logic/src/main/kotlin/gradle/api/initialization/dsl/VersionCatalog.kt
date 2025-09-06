@@ -95,7 +95,10 @@ private object VersionCatalogSerializer : KSerializer<VersionCatalog> {
             }.toCatalogAliasMap(),
             value["bundles"]!!.asMap.mapValues { (_, references) ->
                 DefaultExternalModuleDependencyBundle().apply {
-                    addAll(references.asList<String>().map { reference -> libraries[reference]!! })
+                    addAll(
+                        references.asList<String>().map { reference ->
+                            libraries[reference] ?: throw IllegalArgumentException("Unknown library $reference")
+                        })
                 }
             }.toCatalogAliasMap(),
         )
