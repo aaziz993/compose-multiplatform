@@ -6,6 +6,7 @@ import gradle.api.maybeNamed
 import gradle.api.project.ProjectProperties
 import gradle.api.project.android
 import gradle.api.project.androidNamespace
+import gradle.api.project.karakum
 import gradle.api.project.kotlin
 import gradle.api.project.libs
 import gradle.api.project.moduleName

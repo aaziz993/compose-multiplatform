@@ -3,17 +3,64 @@ config:
     - org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
     - org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTargetWithTests
     - org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
-    - org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
     - org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
+    - org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest
+    - org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
+    - org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
+    - org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinWasmJsTargetDsl
+    - org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
+    - org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
+    - org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
+    - org.jetbrains.kotlin.gradle.targets.js.npm.tasks.KotlinNpmInstallTask
 script:
+  - '@file:OptIn': (ExperimentalWasmDsl::class)
   - plugins:
       - id: (libs.plugins("kotlin.multiplatform").pluginId)
+      # Converter of TypeScript declaration files to Kotlin declarations.
+#      - id: (libs.plugins("karakum").pluginId)
   - kotlin:
+      jvm: ()
       iosArm64: ()
       iosX64: ()
       iosSimulatorArm64: ()
+      js: |
+        {
+          browser {
+            commonWebpackConfig { commonWebpackConfig ->
+              commonWebpackConfig.devServer = (commonWebpackConfig.devServer ?: KotlinWebpackConfig.DevServer()).apply {
+                static = (static ?: mutableListOf()).apply{
+                  add("src@js")
+                }
+              }
+            }
+          }
+        }
+      wasmJs: |
+        {
+          browser {
+            commonWebpackConfig { commonWebpackConfig ->
+              commonWebpackConfig.devServer = (commonWebpackConfig.devServer ?: KotlinWebpackConfig.DevServer()).apply {
+                  static = (static ?: mutableListOf()).apply{
+                    add("src@wasmJs")
+                  }
+              }
+            }
+          }
+        }
       targets:
-        # apply to all above native targets
+        - withType<KotlinJvmTarget>: |
+            {
+              compilerOptions {
+                freeCompilerArgs.addAll(
+                   "-Xno-param-assertions",
+                   "-Xno-call-assertions",
+                   "-Xno-receiver-assertions"
+                )
+                optIn.addAll(
+                  "-Xjvm-default=all",
+                )
+              }
+            }
         - withType<KotlinNativeTarget>: |
             {
               compilerOptions {
@@ -41,11 +88,45 @@ script:
                 test(listOf(NativeBuildType.RELEASE))
               }
             }
-
         - withType<KotlinNativeTargetWithTests<*>>: |
             {
               testRuns.register("releaseTest") { testRun ->
                   testRun.setExecutionSourceFrom(binaries.getTest(NativeBuildType.RELEASE))
+              }
+            }
+        - withType<KotlinJsTargetDsl>: |
+            {
+              compilerOptions.optIn.addAll(
+                "kotlin.js.ExperimentalJsExport",
+              )
+            
+              browser {
+                val rootDirPath = project.rootDir.path
+                val projectDirPath = project.projectDir.path
+            
+                commonWebpackConfig { commonWebpackConfig ->
+                  commonWebpackConfig.devServer = (commonWebpackConfig.devServer ?: KotlinWebpackConfig.DevServer()).apply {
+                      static = (static ?: mutableListOf()).apply {
+                          // Serve sources to debug inside browser
+                          add(rootDirPath)
+                          add(projectDirPath)
+                      }
+                  }
+            
+                  commonWebpackConfig.cssSupport { cssSupport ->
+                    cssSupport.enabled /= true
+                  }
+                }
+            
+                testTask { testTask ->
+                  testTask.testLogging { testLogging ->
+                      testLogging.showStandardStreams = true
+                  }
+            
+                  testTask.useKarma {
+                      useChromeHeadless()
+                  }
+                }
               }
             }
       applyDefaultHierarchyTemplate: |
@@ -164,11 +245,111 @@ script:
               }
             }
         - named: |
+            ("jvmCommonMain") { sourceSet ->
+              sourceSet.dependencies {
+                implementation(dependencies.kotlin("stdlib"))
+              }
+            }
+        - named: |
+            ("jvmCommonTest") { sourceSet ->
+              sourceSet.dependencies {
+                implementation(libs("mockito.core"))
+                implementation(libs("mockito.kotlin"))
+                implementation(libs("truth"))
+              }
+            }
+        - named: |
             ("jvmCommonIosMain") { sourceSet ->
               sourceSet.dependencies {
                 implementation(libs("androidx.room.runtime.ktx"))
                 implementation(libs("androidx.sqlite.bundled"))
               }
             }
+        - named: |
+            ("jvmWebMain") { sourceSet ->
+              sourceSet.dependencies {
+                implementation(libs("compass.geocoder.web.googlemaps"))
+              }
+            }
+        # Js.
+        - named: |
+            ("jsMain") { sourceSet ->
+              val karakumGeneratedDir = projectDir.resolve("src/jsMain/generated")
+              if (karakumGeneratedDir.exists()) {
+                sourceSet.kotlin.srcDir(karakumGeneratedDir)
+              }
+
+              sourceSet.dependencies {
+                implementation(libs("seskar"))
+                implementation(libs("kstore.storage"))
+                implementation(libs("sqldelight.web.worker.driver"))
+                implementation(libs("compass.geolocation.browser"))
+                implementation(libs("ktor.client.js"))
+                implementation(libs("worldwind"))
+                implementation(npm("@js-joda/timezone", libs.versions("npm.js.joda.timezone")!!.requiredVersion))
+                implementation(devNpm("copy-webpack-plugin", libs.versions("npm.copy.webpack.plugin")!!.requiredVersion))
+                implementation(npm("openpgp", libs.versions("npm.openpgp")!!.requiredVersion))
+                implementation(npm("pako", libs.versions("npm.pako")!!.requiredVersion))
+                implementation(npm("puppeteer", libs.versions("npm.puppeteer")!!.requiredVersion))
+              }
+            }
+        - named: |
+            ("jsTest") { sourceSet ->
+              sourceSet.dependencies {
+                implementation(kotlin("test-js"))
+              }
+            }
+        # WasmJs.
+        - named: |
+            ("wasmJsMain") { sourceSet ->
+              sourceSet.dependencies {
+                implementation(kotlinWrappers["browser"])
+              }
+            }
 #      cocoapods:
 #        ios: { }
+
+  - tasks:
+      # Jvm.
+      - withType<KotlinJvmTest>: |
+          {
+            maxHeapSize = "2g"
+          
+            useJUnitPlatform()
+          
+            filter { filter ->
+              filter.isFailOnNoMatchingTests = false
+            }
+          
+            testLogging { testLogging ->
+              testLogging.showExceptions = true
+              testLogging.showStandardStreams = true
+              testLogging.events = setOf(TestLogEvent.FAILED, TestLogEvent.PASSED)
+              testLogging.exceptionFormat = TestExceptionFormat.FULL
+            }
+          }
+      # Js.
+      - withType<KotlinNpmInstallTask>: |
+          {
+            args.addAll(listOf(
+              "--ignore-engines",
+              "--ignore-scripts",
+            ))
+          }
+      - withType<Kotlin2JsCompile>: |
+          {
+            compilerOptions {
+                target /= "es2015"
+                freeCompilerArgs.addAll(
+                    "-Xdont-warn-on-error-suppression",
+                    //  https://youtrack.jetbrains.com/issue/KT-67355
+                    "-Xir-generate-inline-anonymous-functions",
+                    "-Xsuppress-warning=NOTHING_TO_INLINE",
+                    "-Xpartial-linkage-loglevel=ERROR",
+                )
+            }
+          }
+
+# Converter of TypeScript declaration files to Kotlin declarations.
+#karakum:
+#  configFile: karakum.config.json
