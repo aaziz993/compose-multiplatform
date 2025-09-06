@@ -8,10 +8,16 @@ script:
         - named: |
             ("androidMain") { sourceSet ->
               sourceSet.dependencies {
+                implementation(libs("splitties.appctx"))
+                implementation(libs("kotlinx.coroutines.android"))
+                implementation(libs("android.documentation.plugin"))
                 implementation(libs("androidx.activity.ktx"))
                 implementation(libs("androidx.fragment.ktx"))
+                implementation(libs("sqldelight.android.driver"))
                 implementation(libs("androidx.room.runtime.android"))
                 implementation(libs("androidx.room.paging"))
+                implementation(libs("permissions"))
+                implementation(libs("worldwind"))
               }
             }
         - named: |
