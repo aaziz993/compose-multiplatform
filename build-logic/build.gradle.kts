@@ -228,9 +228,7 @@ dependencies {
 }
 
 fun Provider<PluginDependency>.toDep() =
-    map {
-        "${it.pluginId}:${it.pluginId}.gradle.plugin:${it.version}"
-    }
+    map { plugin -> "${plugin.pluginId}:${plugin.pluginId}.gradle.plugin:${plugin.version}" }
 
 gradlePlugin {
     plugins {

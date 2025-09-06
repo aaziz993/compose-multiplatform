@@ -32,7 +32,7 @@ public val Settings.localProperties: Properties
 public val Settings.libs: VersionCatalog
     get() = extraProperties.getOrPut(LIBS_VERSION_CATALOG_EXT) {
         Toml.Default.decodeFromString(
-            settings.layout.settingsDirectory.file("gradle/libs.versions.toml").asFile.readText(),
+            layout.settingsDirectory.file("gradle/libs.versions.toml").asFile.readText(),
         )
     }
 

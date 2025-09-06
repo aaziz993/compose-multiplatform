@@ -25,6 +25,7 @@ import kotlinx.kover.gradle.plugin.dsl.KoverProjectExtension
 import kotlinx.rpc.RpcExtension
 import kotlinx.validation.ApiValidationExtension
 import net.pearx.kasechange.toCamelCase
+import org.gradle.accessors.dm.LibrariesForLibs
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.artifacts.ExternalModuleDependencyBundle
@@ -91,8 +92,6 @@ public val Project.libs: gradle.api.initialization.dsl.VersionCatalog
     get() = settings.libs
 
 public fun Project.allLibs(name: String): VersionCatalog = extensions.getByType<VersionCatalogsExtension>().named(name)
-public val Project.kotlinWrappers: VersionCatalog
-    get() = allLibs("kotlinWrappers")
 
 public val Project.composeLibs: ComposePlugin.Dependencies
     get() = extensions.getByType<ComposeExtension>().dependencies

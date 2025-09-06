@@ -1,0 +1,19 @@
+config:
+  imports:
+    - org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
+    - org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinWasmJsTargetDsl
+    - org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
+script:
+  - '@file:OptIn': (ExperimentalWasmDsl::class)
+  - kotlin:
+      wasmJs: |
+        {
+          browser()
+        }
+#      sourceSets:
+#        - named: |
+#            ("wasmJsMain") { sourceSet ->
+#              sourceSet.dependencies {
+#                implementation(kotlinWrappers["browser"])
+#              }
+#            }

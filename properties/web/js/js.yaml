@@ -1,0 +1,23 @@
+plugins:
+  ids: [ $libs.karakum ]
+
+kotlin:
+  targets:
+    - js:
+        devServer:
+          static: [ src@js ]
+
+  sourceSets:
+    - jsMain:
+        dependencies:
+          - kotlin: test-js
+          #          - npm: $libs.js.joda.timezone
+          - npm: $libs.npm.copy.webpack.plugin
+          - npm: $libs.npm.openpgp
+          - npm: $libs.npm.pako
+          - npm: $libs.npm.puppeteer
+
+
+# Converter of TypeScript declaration files to Kotlin declarations.
+karakum:
+  configFile: karakum.config.json

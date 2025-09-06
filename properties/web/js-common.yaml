@@ -1,9 +1,11 @@
 config:
   imports:
     - org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
+    - org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
+    - org.jetbrains.kotlin.gradle.targets.js.npm.tasks.KotlinNpmInstallTask
 script:
   - kotlin:
-      sourceSets:
+      targets:
         # apply to all above js and wasm targets
         - withType<KotlinJsTargetDsl>: |
             {
@@ -40,14 +42,25 @@ script:
                 }
               }
             }
-#tasks:
-#  - KotlinNpmInstallTask:
-#      args: [ --ignore-engines ]
-#  - Kotlin2JsCompile:
-#      compilerOptions:
-#        target: es2015
-#      freeCompilerArgs:
-#        - -Xdont-warn-on-error-suppression
-#        - -Xir-generate-inline-anonymous-functions #  https://youtrack.jetbrains.com/issue/KT-67355
-#        - -Xsuppress-warning=NOTHING_TO_INLINE
-#        - -Xpartial-linkage-loglevel=ERROR
+  - tasks:
+      - withType<KotlinNpmInstallTask>: |
+          {
+            args.addAll(listOf(
+              "--ignore-engines",
+              "--ignore-scripts",
+            ))
+          }
+      - withType<Kotlin2JsCompile>: |
+          {
+            compilerOptions {
+                target /= "es2015"
+                freeCompilerArgs.addAll(
+                    "-Xdont-warn-on-error-suppression",
+                    //  https://youtrack.jetbrains.com/issue/KT-67355
+                    "-Xir-generate-inline-anonymous-functions",
+                    "-Xsuppress-warning=NOTHING_TO_INLINE",
+                    "-Xpartial-linkage-loglevel=ERROR",
+                )
+            }
+          }
+
