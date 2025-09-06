@@ -373,9 +373,9 @@ script:
             }
       cocoapods:
         version: libs.versions("kotlin.cocoapods.version")!!.requiredVersion
-        summary: Some description for a Kotlin/Native module
-        homepage: Link to a Kotlin/Native module homepage
-        name: MyCocoaPod
+        summary: '"Some description for a Kotlin/Native module"'
+        homepage: '"Link to a Kotlin/Native module homepage"'
+        name: '"MyCocoaPod"'
         framework: |
           {
             // Required properties
@@ -390,7 +390,7 @@ script:
             // export(project(":<your other KMP module>"))
             transitiveExport = false // This is default.
           }
-        xcodeConfigurationToNativeBuildType.addAll: |
+        xcodeConfigurationToNativeBuildType.putAll: |
           (mapOf(
             "CUSTOM_DEBUG" to NativeBuildType.DEBUG,
             "CUSTOM_RELEASE" to NativeBuildType.RELEASE,
