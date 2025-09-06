@@ -829,11 +829,6 @@ kotlin-wrappers-catalog = { module = "org.jetbrains.kotlin-wrappers:kotlin-wrapp
 kotlinx-html = { module = "org.jetbrains.kotlinx:kotlinx-html", version.ref = "kotlinx-html" }
 kotlinx-browser = { module = "org.jetbrains.kotlinx:kotlinx-browser", version.ref = "kotlinx-browser" }
 seskar = { module = "io.github.turansky.seskar:seskar-core", version.ref = "seskar" }
-js-joda-timezone = { module = "npm:js-joda-timezone", version.ref = "npm-js-joda-timezone" }
-npm-copy-webpack-plugin = { module = "npm:copy-webpack-plugin", version.ref = "npm-copy-webpack-plugin" }
-npm-openpgp = { module = "npm:openpgp", version.ref = "npm-openpgp" }
-npm-pako = { module = "npm:pako", version.ref = "npm-pako" }
-npm-puppeteer = { module = "npm:puppeteer", version.ref = "npm-puppeteer" }
 
 ##Compose multiplatform
 # color picker

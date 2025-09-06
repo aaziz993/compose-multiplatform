@@ -15,18 +15,28 @@ script:
             }
           }
         }
-#    sourceSets:
-#      - named: |
-#          ("jsMain") { sourceSet ->
-#            sourceSet.dependencies {
-#              implementation(kotlin("test-js"))
-#              implementation(npm(libs("js.joda.timezone")))
-#              implementation(npm(libs("npm.copy.webpack.plugin")))
-#              implementation(npm(libs("npm.openpgp")))
-#              implementation(npm(libs("npm.pako")))
-#              implementation(npm(libs("npm.puppeteer")))
-#            }
-#          }
+      sourceSets:
+        - named: |
+            ("jsMain") { sourceSet ->
+              sourceSet.dependencies {
+                implementation(libs("kstore.storage"))
+                implementation(libs("sqldelight.web.worker.driver"))
+                implementation(libs("compass.geolocation.browser"))
+                implementation(libs("ktor.client.js"))
+                implementation(libs("worldwind"))
+                implementation(npm("@js-joda/timezone", libs.versions("npm.js.joda.timezone")!!.requiredVersion))
+                implementation(devNpm("copy-webpack-plugin", libs.versions("npm.copy.webpack.plugin")!!.requiredVersion))
+                implementation(npm("openpgp", libs.versions("npm.openpgp")!!.requiredVersion))
+                implementation(npm("pako", libs.versions("npm.pako")!!.requiredVersion))
+                implementation(npm("puppeteer", libs.versions("npm.puppeteer")!!.requiredVersion))
+              }
+            }
+        - named: |
+            ("jsTest") { sourceSet ->
+              sourceSet.dependencies {
+                implementation(kotlin("test-js"))
+              }
+            }
 # Converter of TypeScript declaration files to Kotlin declarations.
 #karakum:
 #  configFile: karakum.config.json
