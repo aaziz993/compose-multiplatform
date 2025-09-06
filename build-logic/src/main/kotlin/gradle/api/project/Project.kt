@@ -18,7 +18,6 @@ import gradle.api.initialization.sensitive
 import gradle.api.repositories.CacheRedirector
 import io.github.sgrishchenko.karakum.gradle.plugin.KarakumExtension
 import klib.data.type.collections.getOrNull
-import klib.data.type.primitives.toInt
 import kotlin.jvm.optionals.getOrNull
 import kotlinx.atomicfu.plugin.gradle.AtomicFUPluginExtension
 import kotlinx.benchmark.gradle.BenchmarksExtension

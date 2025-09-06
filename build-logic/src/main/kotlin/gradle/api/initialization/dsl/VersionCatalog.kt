@@ -54,14 +54,8 @@ public data class VersionCatalog(
     public operator fun invoke(alias: String): Provider<MinimalExternalModuleDependency> =
         project.provider { libraries(alias) }
 
-    private fun _plugins(alias: String): PluginDependency =
+    public fun plugins(alias: String): PluginDependency =
         plugins[alias] ?: throw IllegalArgumentException("Unresolved plugin '$alias'")
-
-    context(settings: Settings)
-    public fun plugins(alias: String): Provider<PluginDependency> = settings.providers.provider { _plugins(alias) }
-
-    context(project: Project)
-    public fun plugins(alias: String): Provider<PluginDependency> = project.provider { _plugins(alias) }
 
     context(project: Project)
     public fun bundles(alias: String): Provider<ExternalModuleDependencyBundle> =
