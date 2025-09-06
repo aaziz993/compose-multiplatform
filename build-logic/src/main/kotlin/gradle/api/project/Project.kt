@@ -11,6 +11,8 @@ import com.google.devtools.ksp.gradle.KspExtension
 import com.osacky.doctor.DoctorExtension
 import de.jensklingenberg.ktorfit.gradle.KtorfitPluginExtension
 import gradle.api.ci.CI
+import gradle.api.initialization.allLibs
+import gradle.api.initialization.dsl.VersionCatalog
 import gradle.api.initialization.libs
 import gradle.api.initialization.sensitive
 import gradle.api.repositories.CacheRedirector
@@ -24,13 +26,11 @@ import kotlinx.validation.ApiValidationExtension
 import net.pearx.kasechange.toCamelCase
 import org.gradle.api.Project
 import org.gradle.api.Task
-import org.gradle.api.artifacts.*
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.initialization.Settings
 import org.gradle.api.internal.GradleInternal
 import org.gradle.api.plugins.JavaApplication
 import org.gradle.api.plugins.JavaPluginExtension
-import org.gradle.api.provider.Provider
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.api.tasks.TaskCollection
@@ -40,7 +40,6 @@ import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.the
 import org.gradle.kotlin.dsl.withType
-import org.gradle.plugin.use.PluginDependency
 import org.gradle.plugins.signing.SigningExtension
 import org.jetbrains.compose.ComposeExtension
 import org.jetbrains.compose.ComposePlugin
@@ -63,7 +62,6 @@ import org.jetbrains.kotlin.noarg.gradle.NoArgExtension
 import org.jetbrains.kotlin.powerassert.gradle.PowerAssertGradleExtension
 import org.owasp.dependencycheck.gradle.extension.DependencyCheckExtension
 import org.sonarqube.gradle.SonarExtension
-import kotlin.jvm.optionals.getOrNull
 
 /**
  * Create native module name from project path.
@@ -80,22 +78,13 @@ public val Project.androidNamespace: String
 
 public val Project.settings: Settings get() = (gradle as GradleInternal).settings
 
-public val Project.libs: gradle.api.initialization.dsl.VersionCatalog
+public val Project.libs: VersionCatalog
     get() = settings.libs
 
 public val Project.composeLibs: ComposePlugin.Dependencies
     get() = extensions.getByType<ComposeExtension>().dependencies
 
-public fun Project.allLibs(name: String): VersionCatalog = extensions.getByType<VersionCatalogsExtension>().named(name)
-
-public fun VersionCatalog.plugins(alias: String): PluginDependency = findPlugin(alias).get().get()
-
-public fun VersionCatalog.versions(alias: String): VersionConstraint? = findVersion(alias).getOrNull()
-
-public operator fun VersionCatalog.get(alias: String): Provider<MinimalExternalModuleDependency> =
-    findLibrary(alias).get()
-
-public fun VersionCatalog.bundles(alias: String): Provider<ExternalModuleDependencyBundle> = findBundle(alias).get()
+public fun Project.allLibs(name: String): VersionCatalog = settings.allLibs(name)
 
 @Suppress("UnstableApiUsage")
 public val Project.toolchain: ToolchainManagement get() = the()

@@ -1,20 +1,23 @@
 package gradle.api.initialization
 
 import gradle.api.initialization.dsl.VersionCatalog
-import gradle.api.project.settings
+import gradle.api.initialization.dsl.toCatalogUrl
 import gradle.api.repositories.CacheRedirector
 import gradle.plugins.getOrPut
-import java.io.File
 import kotlinx.serialization.decodeFromString
 import net.peanuuutz.tomlkt.Toml
 import org.danilopianini.gradle.git.hooks.GitHooksExtension
 import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalogsExtension
+import org.gradle.api.artifacts.repositories.IvyArtifactRepository
+import org.gradle.api.artifacts.repositories.MavenArtifactRepository
 import org.gradle.api.initialization.Settings
 import org.gradle.api.initialization.dsl.VersionCatalogBuilder
 import org.gradle.kotlin.dsl.getByType
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
-import java.util.Properties
+import java.io.File
+import java.net.URI
+import java.util.*
 
 public const val LIBS_VERSION_CATALOG_EXT: String = "libs.versions.catalog.ext"
 
@@ -40,8 +43,23 @@ public val Settings.libs: VersionCatalog
 
 context(settings: Settings)
 public fun VersionCatalogBuilder.fromLibs(alias: String) {
-    settings.libs(alias).toString()
+    settings.extraProperties[name] = settings.dependencyResolutionManagement.repositories.firstNotNullOfOrNull { repo ->
+        URI(
+            "${
+                when (repo) {
+                    is MavenArtifactRepository -> repo.url.toString()
+                    is IvyArtifactRepository -> repo.url.toString()
+                    else -> null // flatDir etc. don’t have a URL
+                }
+            }${settings.libs(alias).toCatalogUrl()}"
+        ).toURL().readText()
+    }?.let { text ->
+        Toml.decodeFromString<VersionCatalog>(text)
+    } ?: error("Couldn't find version catalog ''")
 }
+
+public fun Settings.allLibs(name: String): VersionCatalog =
+    (extraProperties[name] ?: throw IllegalArgumentException("Unresolved version catalog '$name'")) as VersionCatalog
 
 public val Settings.gitHooks: GitHooksExtension
     get() = extensions.getByType<GitHooksExtension>()

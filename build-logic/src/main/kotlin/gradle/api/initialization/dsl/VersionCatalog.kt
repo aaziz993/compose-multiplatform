@@ -68,22 +68,22 @@ private object VersionCatalogSerializer : KSerializer<VersionCatalog> {
             MapSerializer(String.serializer(), AnySerializer)
         )
 
-        val versions = value["versions"]!!.asMap.mapValues { (_, version) -> mutableVersionConstraint(version) }
+        val versions =
+            value["versions"]?.asMap.orEmpty().mapValues { (_, version) -> mutableVersionConstraint(version) }
 
-        val libraries =
-            value["libraries"]!!.asMap.mapValues { (_, value) ->
-                value as Map<String, Any>
+        val libraries = value["libraries"]?.asMap.orEmpty().mapValues { (_, value) ->
+            value as Map<String, Any>
 
-                val (group, name) = if (value.containsKey("module"))
-                    (value["module"] as String).split(":").let { (group, name) -> group to name }
-                else value["group"] as String to value["name"] as String
+            val (group, name) = if (value.containsKey("module"))
+                (value["module"] as String).split(":").let { (group, name) -> group to name }
+            else value["group"] as String to value["name"] as String
 
-                DefaultMutableMinimalDependency(
-                    DefaultModuleIdentifier.newId(group, name),
-                    resolveVersion(value["version"], versions),
-                    null
-                )
-            }
+            DefaultMutableMinimalDependency(
+                DefaultModuleIdentifier.newId(group, name),
+                resolveVersion(value["version"], versions),
+                null
+            )
+        }
 
         return VersionCatalog(
             versions.toCatalogAliasMap(),
@@ -96,7 +96,7 @@ private object VersionCatalogSerializer : KSerializer<VersionCatalog> {
                     resolveVersion(plugin["version"], versions)
                 )
             }.toCatalogAliasMap(),
-            value["bundles"]!!.asMap.mapValues { (_, references) ->
+            value["bundles"]?.asMap.orEmpty().mapValues { (_, references) ->
                 DefaultExternalModuleDependencyBundle().apply {
                     addAll(
                         references.asList<String>().map { reference ->
@@ -136,4 +136,12 @@ private object VersionCatalogSerializer : KSerializer<VersionCatalog> {
     private fun <V> Map<String, V>.toCatalogAliasMap() = mapKeys { (key, _) -> key.toCatalogAlias() }
 
     private fun String.toCatalogAlias() = replace("-", ".")
+}
+
+public fun MinimalExternalModuleDependency.toCatalogUrl(): String = toString().run {
+    val fileNamePart = substringAfter(":", "").replace(":", "-")
+
+    return "${substringBeforeLast(":").replace("[.:]".toRegex(), "/")}/${
+        substringAfterLast(":", "")
+    }/$fileNamePart.toml"
 }
