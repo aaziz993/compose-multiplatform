@@ -18,13 +18,14 @@ import org.gradle.api.artifacts.ExternalModuleDependencyBundle
 import org.gradle.api.artifacts.MinimalExternalModuleDependency
 import org.gradle.api.artifacts.MutableVersionConstraint
 import org.gradle.api.artifacts.VersionConstraint
-import org.gradle.api.initialization.Settings
 import org.gradle.api.internal.artifacts.DefaultModuleIdentifier
 import org.gradle.api.internal.artifacts.dependencies.DefaultMutableMinimalDependency
 import org.gradle.api.internal.artifacts.dependencies.DefaultMutableVersionConstraint
 import org.gradle.api.internal.artifacts.dependencies.DefaultPluginDependency
+import org.gradle.api.internal.artifacts.dsl.dependencies.DefaultDependencyHandler
 import org.gradle.api.internal.catalog.DefaultExternalModuleDependencyBundle
 import org.gradle.api.provider.Provider
+import org.gradle.kotlin.dsl.of
 import org.gradle.plugin.use.PluginDependency
 
 @Serializable(with = VersionCatalogSerializer::class)
@@ -34,32 +35,22 @@ public data class VersionCatalog(
     private val plugins: Map<String, PluginDependency>,
     private val bundles: Map<String, ExternalModuleDependencyBundle>
 ) {
+    public fun versions(alias: String): VersionConstraint? = versions[alias]
 
-    private fun _versions(alias: String): VersionConstraint? = versions[alias]
-
-    context(settings: Settings)
-    public fun versions(alias: String): Provider<VersionConstraint> = settings.providers.provider { _versions(alias) }
-
-    context(project: Project)
-    public fun versions(alias: String): Provider<VersionConstraint> = project.provider { _versions(alias) }
-
-    private fun libraries(alias: String): MinimalExternalModuleDependency =
+    public fun libraries(alias: String): MinimalExternalModuleDependency =
         libraries[alias] ?: throw IllegalArgumentException("Unresolved library '$alias'")
 
-    context(settings: Settings)
-    public operator fun invoke(alias: String): Provider<MinimalExternalModuleDependency> =
-        settings.providers.provider { libraries(alias) }
-
-    context(project: Project)
-    public operator fun invoke(alias: String): Provider<MinimalExternalModuleDependency> =
-        project.provider { libraries(alias) }
+    public operator fun invoke(alias: String): MinimalExternalModuleDependency = libraries(alias)
 
     public fun plugins(alias: String): PluginDependency =
         plugins[alias] ?: throw IllegalArgumentException("Unresolved plugin '$alias'")
 
+
     context(project: Project)
     public fun bundles(alias: String): Provider<ExternalModuleDependencyBundle> =
-        project.provider { bundles[alias] ?: throw IllegalArgumentException("Unresolved bundle '$alias'") }
+        project.objects.property(ExternalModuleDependencyBundle::class.java).apply {
+            set(bundles[alias] ?: error("Unresolved bundle '$alias'"))
+        }
 }
 
 private object VersionCatalogSerializer : KSerializer<VersionCatalog> {

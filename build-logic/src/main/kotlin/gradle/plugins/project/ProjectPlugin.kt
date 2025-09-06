@@ -1,34 +1,19 @@
 package gradle.plugins.project
 
-import com.android.build.api.dsl.androidLibrary
 import gradle.api.ci.CI
 import gradle.api.maybeNamed
 import gradle.api.project.ProjectProperties
-import gradle.api.project.android
-import gradle.api.project.androidNamespace
-import gradle.api.project.karakum
 import gradle.api.project.kotlin
 import gradle.api.project.libs
-import gradle.api.project.moduleName
 import gradle.plugins.initialization.SLF4JProblemReporterContext
-import klib.data.type.primitives.toInt
-import org.gradle.accessors.dm.LibrariesForLibs
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.artifacts.VersionConstraint
-import org.gradle.api.provider.Provider
+import org.gradle.api.artifacts.ExternalModuleDependencyBundle
 import org.gradle.internal.os.OperatingSystem
 import org.gradle.kotlin.dsl.withType
-import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompilerOptions
-import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
-import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinWasmJsTargetDsl
-import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 import org.jetbrains.kotlin.gradle.tasks.KotlinNativeLink
-import org.jetbrains.kotlin.gradle.utils.loadPropertyFromResources
-import org.gradle.kotlin.dsl.*
 import org.jetbrains.kotlin.gradle.plugin.KotlinDependencyHandler
-import org.jetbrains.kotlin.gradle.targets.js.npm.tasks.KotlinNpmInstallTask
 
 public class ProjectPlugin : Plugin<Project> {
 

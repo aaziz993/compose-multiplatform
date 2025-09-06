@@ -337,15 +337,15 @@ public fun Project.version(
     val camelCaseName = project.name.toCamelCase()
 
     return io.github.z4kn4fein.semver.Version(
-        project.libs.versions("$camelCaseName.version.major").getOrNull()?.requiredVersion?.toInt()
+        project.libs.versions("$camelCaseName.version.major")?.requiredVersion?.toInt()
             ?: major,
-        project.libs.versions("$camelCaseName.version.minor").getOrNull()?.requiredVersion?.toInt()
+        project.libs.versions("$camelCaseName.version.minor")?.requiredVersion?.toInt()
             ?: minor,
-        project.libs.versions("$camelCaseName.version.patch").getOrNull()?.requiredVersion?.toInt()
+        project.libs.versions("$camelCaseName.version.patch")?.requiredVersion?.toInt()
             ?: patch,
-        project.libs.versions("$camelCaseName.version.preRelease").getOrNull()?.requiredVersion
+        project.libs.versions("$camelCaseName.version.preRelease")?.requiredVersion
             ?: preRelease,
-        project.libs.versions("$camelCaseName.version.buildMetadata").getOrNull()?.requiredVersion
+        project.libs.versions("$camelCaseName.version.buildMetadata")?.requiredVersion
             ?: buildMetadata ?: CI.current?.buildMetadata,
     ).toString()
 }
