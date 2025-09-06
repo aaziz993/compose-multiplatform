@@ -1,23 +1,32 @@
-plugins:
-  ids: [ $libs.karakum ]
+#plugins:
+#  ids: [ $libs.karakum ]
 
-kotlin:
-  targets:
-    - js:
-        devServer:
-          static: [ src@js ]
-
-  sourceSets:
-    - jsMain:
-        dependencies:
-          - kotlin: test-js
-          #          - npm: $libs.js.joda.timezone
-          - npm: $libs.npm.copy.webpack.plugin
-          - npm: $libs.npm.openpgp
-          - npm: $libs.npm.pako
-          - npm: $libs.npm.puppeteer
-
-
+script:
+  - kotlin:
+      js: |
+        {
+          browser {
+            commonWebpackConfig { commonWebpackConfig ->
+              commonWebpackConfig.devServer = (commonWebpackConfig.devServer ?: KotlinWebpackConfig.DevServer()).apply {
+                static = (static ?: mutableListOf()).apply{
+                  add("src@js")
+                }
+              }
+            }
+          }
+        }
+#    sourceSets:
+#      - named: |
+#          ("jsMain") { sourceSet ->
+#            sourceSet.dependencies {
+#              implementation(kotlin("test-js"))
+#              implementation(npm(libs("js.joda.timezone")))
+#              implementation(npm(libs("npm.copy.webpack.plugin")))
+#              implementation(npm(libs("npm.openpgp")))
+#              implementation(npm(libs("npm.pako")))
+#              implementation(npm(libs("npm.puppeteer")))
+#            }
+#          }
 # Converter of TypeScript declaration files to Kotlin declarations.
-karakum:
-  configFile: karakum.config.json
+#karakum:
+#  configFile: karakum.config.json

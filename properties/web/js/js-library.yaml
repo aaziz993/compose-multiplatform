@@ -1,0 +1,9 @@
+imports:
+  - js.yaml
+script:
+  - kotlin:
+      targets:
+        - withType<KotlinJsTargetDsl>: |
+            {
+              binaries.library()
+            }

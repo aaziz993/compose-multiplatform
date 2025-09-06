@@ -4,6 +4,7 @@ imports:
   - ../properties/jvm/jvm.yaml
   - ../properties/jvm/android/android-library.yaml
   - ../properties/jvm/jvm-common.yaml
+  - ../properties/web/js/js-library.yaml
   - ../properties/web/wasmJs/wasm-js-library.yaml
   - ../properties/web/js-common.yaml
   - ../properties/subproject.yaml
