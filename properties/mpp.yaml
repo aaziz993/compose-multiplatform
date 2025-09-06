@@ -12,12 +12,14 @@ config:
     - org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
     - org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
     - org.jetbrains.kotlin.gradle.targets.js.npm.tasks.KotlinNpmInstallTask
+    - org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
 script:
   - '@file:OptIn': (ExperimentalWasmDsl::class)
   - plugins:
       - id: (libs.plugins("kotlin.multiplatform").pluginId)
+      - id: (libs.plugins("cocoapods").pluginId)
       # Converter of TypeScript declaration files to Kotlin declarations.
-#      - id: (libs.plugins("karakum").pluginId)
+  #      - id: (libs.plugins("karakum").pluginId)
   - kotlin:
       jvm: ()
       iosArm64: ()
@@ -369,8 +371,30 @@ script:
                 implementation(libs("webrtc.kmp"))
               }
             }
-  #      cocoapods:
-#        ios: { }
+      cocoapods:
+        version: libs.versions("kotlin.cocoapods.version")!!.requiredVersion
+        summary: Some description for a Kotlin/Native module
+        homepage: Link to a Kotlin/Native module homepage
+        name: MyCocoaPod
+        framework: |
+          {
+            // Required properties
+            // Framework name configuration. Use this property instead of deprecated 'frameworkName'
+            baseName = "MyFramework"
+  
+            // Optional properties
+            // Specify the framework linking type. It's dynamic by default.
+            isStatic = false
+            // Dependency export
+            // Uncomment and specify another project module if you have one:
+            // export(project(":<your other KMP module>"))
+            transitiveExport = false // This is default.
+          }
+        xcodeConfigurationToNativeBuildType.addAll: |
+          (mapOf(
+            "CUSTOM_DEBUG" to NativeBuildType.DEBUG,
+            "CUSTOM_RELEASE" to NativeBuildType.RELEASE,
+          ))
   - tasks:
       # Jvm.
       - withType<KotlinJvmTest>: |
