@@ -9,6 +9,7 @@ import kotlinx.serialization.decodeFromString
 import net.peanuuutz.tomlkt.Toml
 import org.danilopianini.gradle.git.hooks.GitHooksExtension
 import org.gradle.api.Project
+import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.api.initialization.Settings
 import org.gradle.kotlin.dsl.getByType
 import org.jetbrains.kotlin.gradle.plugin.extraProperties

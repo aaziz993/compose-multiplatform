@@ -3,7 +3,6 @@ package gradle.api.project
 import androidx.room.gradle.RoomExtension
 import app.cash.sqldelight.gradle.SqlDelightExtension
 import com.android.build.gradle.BaseExtension
-import com.android.build.gradle.LibraryExtension
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import com.apollographql.apollo3.gradle.api.ApolloExtension
 import com.diffplug.gradle.spotless.SpotlessExtension
@@ -13,12 +12,9 @@ import com.osacky.doctor.DoctorExtension
 import de.jensklingenberg.ktorfit.gradle.KtorfitPluginExtension
 import gradle.api.ci.CI
 import gradle.api.initialization.libs
-import gradle.api.initialization.localProperties
 import gradle.api.initialization.sensitive
 import gradle.api.repositories.CacheRedirector
 import io.github.sgrishchenko.karakum.gradle.plugin.KarakumExtension
-import klib.data.type.collections.getOrNull
-import kotlin.jvm.optionals.getOrNull
 import kotlinx.atomicfu.plugin.gradle.AtomicFUPluginExtension
 import kotlinx.benchmark.gradle.BenchmarksExtension
 import kotlinx.knit.KnitPluginExtension
@@ -26,14 +22,9 @@ import kotlinx.kover.gradle.plugin.dsl.KoverProjectExtension
 import kotlinx.rpc.RpcExtension
 import kotlinx.validation.ApiValidationExtension
 import net.pearx.kasechange.toCamelCase
-import org.gradle.accessors.dm.LibrariesForLibs
 import org.gradle.api.Project
 import org.gradle.api.Task
-import org.gradle.api.artifacts.ExternalModuleDependencyBundle
-import org.gradle.api.artifacts.MinimalExternalModuleDependency
-import org.gradle.api.artifacts.VersionCatalog
-import org.gradle.api.artifacts.VersionCatalogsExtension
-import org.gradle.api.artifacts.VersionConstraint
+import org.gradle.api.artifacts.*
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.initialization.Settings
 import org.gradle.api.internal.GradleInternal
@@ -44,7 +35,6 @@ import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.api.tasks.TaskCollection
 import org.gradle.api.toolchain.management.ToolchainManagement
-import org.gradle.internal.extensions.stdlib.capitalized
 import org.gradle.jvm.toolchain.JavaToolchainService
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.getByType
@@ -73,6 +63,7 @@ import org.jetbrains.kotlin.noarg.gradle.NoArgExtension
 import org.jetbrains.kotlin.powerassert.gradle.PowerAssertGradleExtension
 import org.owasp.dependencycheck.gradle.extension.DependencyCheckExtension
 import org.sonarqube.gradle.SonarExtension
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * Create native module name from project path.
@@ -92,10 +83,10 @@ public val Project.settings: Settings get() = (gradle as GradleInternal).setting
 public val Project.libs: gradle.api.initialization.dsl.VersionCatalog
     get() = settings.libs
 
-public fun Project.allLibs(name: String): VersionCatalog = extensions.getByType<VersionCatalogsExtension>().named(name)
-
 public val Project.composeLibs: ComposePlugin.Dependencies
     get() = extensions.getByType<ComposeExtension>().dependencies
+
+public fun Project.allLibs(name: String): VersionCatalog = extensions.getByType<VersionCatalogsExtension>().named(name)
 
 public fun VersionCatalog.plugins(alias: String): PluginDependency = findPlugin(alias).get().get()
 

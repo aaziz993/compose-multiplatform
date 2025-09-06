@@ -3,6 +3,7 @@ package gradle.plugins.project
 import gradle.api.ci.CI
 import gradle.api.maybeNamed
 import gradle.api.project.ProjectProperties
+import gradle.api.project.allLibs
 import gradle.plugins.initialization.SLF4JProblemReporterContext
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
@@ -17,6 +18,14 @@ public class ProjectPlugin : Plugin<Project> {
         with(target) {
             // Load and apply project.yaml to build.gradle.kts.
             ProjectProperties()
+
+            afterEvaluate {
+                afterEvaluate {
+                    val l = allLibs("kotlinWrappers")
+
+                    val t = 0
+                }
+            }
 
             configureLinkTasks()
 
