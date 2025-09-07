@@ -30,10 +30,10 @@ script:
             "CUSTOM_RELEASE" to NativeBuildType.RELEASE,
           ))
         ios:
-          deploymentTarget: libs.versions("kotlin.cocoapods.iosDeploymentTarget")!!.requiredVersion
+          deploymentTarget: libs.versions("kotlin.cocoapods.ios-deploymentTarget")!!.requiredVersion
         osx:
-          deploymentTarget: libs.versions("kotlin.cocoapods.osxDeploymentTarget")!!.requiredVersion
+          deploymentTarget: libs.versions("kotlin.cocoapods.osx-deploymentTarget")!!.requiredVersion
         tvos:
-          deploymentTarget: libs.versions("kotlin.cocoapods.tvosDeploymentTarget")!!.requiredVersion
+          deploymentTarget: libs.versions("kotlin.cocoapods.tvos-deploymentTarget")!!.requiredVersion
         watchos:
-          deploymentTarget: libs.versions("kotlin.cocoapods.watchosDeploymentTarget")!!.requiredVersion
+          deploymentTarget: libs.versions("kotlin.cocoapods.watchos-deploymentTarget")!!.requiredVersion

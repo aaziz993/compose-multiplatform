@@ -287,13 +287,13 @@ truth = "1.4.4"
 # In project version
 kotlin-cocoapods-version = "1.0"
 # In project version
-kotlin-cocoapods-iosDeploymentTarget = "18.2"
+kotlin-cocoapods-ios-deploymentTarget = "18.2"
 # In project version
-kotlin-cocoapods-osxDeploymentTarget = "15.2"
+kotlin-cocoapods-osx-deploymentTarget = "15.2"
 # In project version
-kotlin-cocoapods-tvosDeploymentTarget = "18.2"
+kotlin-cocoapods-tvos-deploymentTarget = "18.2"
 # In project version
-kotlin-cocoapods-watchosDeploymentTarget = "11.2"
+kotlin-cocoapods-watchos-deploymentTarget = "11.2"
 
 ##Android
 agp = "8.13.0"

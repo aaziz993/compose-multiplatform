@@ -93,7 +93,7 @@ script:
               builtType.buildConfigField("String", "API_URL", "https://dev.api.example.com")
             }
         - create: |
-            ("staging") {
+            ("staging") { builtType ->
               builtType.applicationIdSuffix = ".staging"
               builtType.versionNameSuffix = "-STAGING"
               builtType.buildConfigField("String", "API_URL", "https://staging.api.example.com")
