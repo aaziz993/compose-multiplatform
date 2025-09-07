@@ -7,7 +7,7 @@ config:
     - gradle.plugins.spotless.*
 script:
   - group: '"io.github.aaziz993"'
-  - version: ()
+  - version: version()
   - plugins:
       - id: (libs.plugins("dependencycheck").pluginId)
       - id: (libs.plugins("buildconfig").pluginId)

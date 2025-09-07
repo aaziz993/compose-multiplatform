@@ -321,10 +321,10 @@ public fun Project.version(
     patch: Int? = null,
     preRelease: String? = null,
     buildMetadata: String? = null,
-) {
+): String {
     val camelCaseName = project.name.toCamelCase()
 
-    version = Version(
+    return Version(
         major ?: project.libs.versions("$camelCaseName.version.major").requiredVersion.toInt(),
         minor ?: project.libs.versions("$camelCaseName.version.minor").requiredVersion.toInt(),
         patch ?: project.libs.versions("$camelCaseName.version.patch").requiredVersion.toInt(),
