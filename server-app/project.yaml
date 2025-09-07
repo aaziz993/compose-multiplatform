@@ -9,7 +9,7 @@ script:
       sourceSets:
         - named: |
             ("commonMain") { sourceSet -> 
-              dependencies {
+              sourceSet.dependencies {
                 implementation(project(":klib"))
                 implementation(project(":shared"))
               }
