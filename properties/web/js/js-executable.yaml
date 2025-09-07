@@ -1,3 +1,5 @@
+imports:
+  - js.yaml
 script:
   - kotlin:
       targets:

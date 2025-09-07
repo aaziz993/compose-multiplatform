@@ -1,3 +1,5 @@
+imports:
+  - wasm-js.yaml
 script:
   - kotlin:
       targets:

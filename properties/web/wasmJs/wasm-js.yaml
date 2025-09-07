@@ -2,6 +2,7 @@ config:
   imports:
     - org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
     - org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
+    - org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinWasmJsTargetDsl
 script:
   - '@file:OptIn': (ExperimentalWasmDsl::class)
   - kotlin:
