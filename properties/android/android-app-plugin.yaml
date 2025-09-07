@@ -146,6 +146,7 @@ script:
       buildFeatures:
         buildConfig: true
         viewBinding: true
+        compose: true
   - dependencies:
       - add: ("coreLibraryDesugaring", libs("android.desugar.jdk.libs"))
 

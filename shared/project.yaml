@@ -23,7 +23,7 @@ script:
             ("commonMain") { sourceSet ->
               sourceSet.dependencies {
                 implementation(project(":klib"))
-                // implementation(project(":compose-lib"))
+                implementation(project(":clib"))
               }
             }
 

@@ -7,6 +7,7 @@ import gradle.api.file.replace
 import gradle.api.project.ProjectLayout
 import gradle.api.project.kotlin
 import gradle.api.project.projectProperties
+import gradle.api.project.sourceSetsToComposeResourcesDirs
 import klib.data.type.primitives.string.addPrefixIfNotEmpty
 import klib.data.type.primitives.string.lowercaseFirst
 import net.pearx.kasechange.splitToWords
@@ -113,7 +114,7 @@ public class MPPPlugin : Plugin<Project> {
                             "src/${sourceSet.name}/resources",
                             "${resourcesPrefixPart}Resources$targetPart".lowercaseFirst()
                         )
-//                        sourceSetsToComposeResourcesDirs[sourceSet] = project.layout.projectDirectory.dir("${resourcesPrefixPart}ComposeResources$targetPart".decapitalize())
+                        sourceSetsToComposeResourcesDirs[sourceSet] = project.layout.projectDirectory.dir("${resourcesPrefixPart}ComposeResources$targetPart".lowercaseFirst())
                     }
                 }
 

@@ -16,7 +16,9 @@ import gradle.api.initialization.dsl.VersionCatalog
 import gradle.api.initialization.libs
 import gradle.api.initialization.sensitive
 import gradle.api.repositories.CacheRedirector
+import gradle.plugins.getOrPut
 import io.github.sgrishchenko.karakum.gradle.plugin.KarakumExtension
+import io.github.z4kn4fein.semver.Version
 import kotlinx.atomicfu.plugin.gradle.AtomicFUPluginExtension
 import kotlinx.benchmark.gradle.BenchmarksExtension
 import kotlinx.knit.KnitPluginExtension
@@ -27,6 +29,7 @@ import net.pearx.kasechange.toCamelCase
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.file.ConfigurableFileCollection
+import org.gradle.api.file.Directory
 import org.gradle.api.initialization.Settings
 import org.gradle.api.internal.GradleInternal
 import org.gradle.api.plugins.JavaApplication
@@ -51,8 +54,10 @@ import org.jetbrains.dokka.versioning.VersioningConfiguration
 import org.jetbrains.gradle.apple.AppleProjectExtension
 import org.jetbrains.kotlin.allopen.gradle.AllOpenExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
 import org.jetbrains.kotlin.gradle.plugin.cocoapods.CocoapodsExtension
+import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsEnvSpec
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension
 import org.jetbrains.kotlin.gradle.targets.js.npm.NpmExtension
@@ -275,6 +280,11 @@ public val ComposeExtension.resources: ResourcesExtension get() = the()
 public fun ComposeExtension.resources(configure: ResourcesExtension.() -> Unit): Unit =
     extensions.configure(configure)
 
+public const val SOURCES_SET_TO_COMPOSE_RESOURCES_DIR_EXT: String = "sourceset.compose.resources.dir.ext"
+
+public val Project.sourceSetsToComposeResourcesDirs: MutableMap<KotlinSourceSet, Directory>
+    get() = extraProperties.getOrPut(SOURCES_SET_TO_COMPOSE_RESOURCES_DIR_EXT, ::mutableMapOf)
+
 public val ComposeExtension.desktop: DesktopExtension get() = the()
 
 public fun ComposeExtension.desktop(configure: DesktopExtension.() -> Unit): Unit =
@@ -314,7 +324,7 @@ public fun Project.version(
 ): String {
     val camelCaseName = project.name.toCamelCase()
 
-    return io.github.z4kn4fein.semver.Version(
+    return Version(
         project.libs.versions("$camelCaseName.version.major")?.requiredVersion?.toInt()
             ?: major,
         project.libs.versions("$camelCaseName.version.minor")?.requiredVersion?.toInt()

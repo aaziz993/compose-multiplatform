@@ -3,13 +3,13 @@ config:
     - org.jetbrains.compose.resources.ResourcesExtension
 script:
   - plugins:
-      - id: (libs("compose.multiplatform").pluginId)
-      - id: (libs("compose.compiler").pluginId)
+      - id: (libs.plugins("compose.multiplatform").pluginId)
+      - id: (libs.plugins("compose.compiler").pluginId)
   - kotlin:
       sourceSets:
         - named: |
             ("commonMain") { sourceSet ->
-              sourceSet.dependencies:
+              sourceSet.dependencies {
                 implementation(composeLibs.runtime)
                 implementation(composeLibs.foundation)
                 implementation(composeLibs.material3)
@@ -20,18 +20,19 @@ script:
                 implementation(composeLibs.materialIconsExtended)
                 implementation(libs("androidx.lifecycle.viewmodel"))
                 implementation(libs("androidx.lifecycle.runtime.compose"))
+              }
             }
         - named: |
-            ("commonTest") {
-              sourceSet.dependencies { sourceSet ->
+            ("commonTest") { sourceSet ->
+              sourceSet.dependencies { 
                 implementation(composeLibs.uiTest)
               }
             }
         - named: |
-            ("jvmMain") {
-              sourceSet.dependencies { sourceSet ->
+            ("jvmMain") { sourceSet ->
+              sourceSet.dependencies { 
                 implementation(composeLibs.desktop.currentOs)
-                implementation(libs("kotlinx.coroutines.swing")
+                implementation(libs("kotlinx.coroutines.swing"))
               }
             }
         - named: |
@@ -47,15 +48,11 @@ script:
                 implementation(composeLibs.html.core)
               }
             }
-#    android:
-#      buildFeatures:
-#        # enable compose
-#        compose: true
-    compose:
+  - compose:
       resources:
         publicResClass: true
         generateResClass: ResourcesExtension.ResourceClassGeneration.Auto
-    dependencies:
+  - dependencies:
       - debugImplementation: (composeLibs.uiTooling)
       # android dependencies
       - add: ("lintChecks", libs("compose.lint.checks"))

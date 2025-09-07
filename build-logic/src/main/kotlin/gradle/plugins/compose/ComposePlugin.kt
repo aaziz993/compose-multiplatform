@@ -1,0 +1,33 @@
+@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
+
+package gradle.plugins.compose
+
+import gradle.api.project.ProjectLayout
+import gradle.api.project.compose
+import gradle.api.project.kotlin
+import gradle.api.project.projectProperties
+import gradle.api.project.resources
+import org.gradle.api.Plugin
+import org.gradle.api.Project
+
+public class ComposePlugin : Plugin<Project> {
+
+    override fun apply(target: Project) {
+        with(target) {
+            adjustResources()
+        }
+    }
+
+    private fun Project.adjustResources() =project.pluginManager.withPlugin("org.jetbrains.compose") {
+        when (project.projectProperties.layout) {
+            is ProjectLayout.Flat -> kotlin.sourceSets.forEach { sourceSet ->
+                compose.resources.customDirectory(
+                    sourceSet.name,
+                    project.provider { project.sourceSetsToComposeResourcesDirs[sourceSet]!! },
+                )
+            }
+
+            else -> Unit
+        }
+    }
+}
