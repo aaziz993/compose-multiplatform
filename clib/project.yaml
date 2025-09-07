@@ -1,5 +1,3 @@
-description: Compose multiplatform libraries.
-
 templates:
   - ../templates/gradle/jvm/jvm.yaml
   - ../templates/gradle/android/android.yaml
@@ -16,17 +14,22 @@ templates:
   - ../templates/gradle/subproject.yaml
   - ../templates/gradle/root.yaml
   - ../templates/gradle/publish.yaml
-
-plugins:
+script:
+  - description: '"Compose multiplatform libraries."'
+  - kotlin:
+      sourceSets:
+        - named: |
+            ("commonMain") { sourceSet ->
+              sourceSet.dependencies {
+                implementation(project(":klib"))
+              }
+            }
   # Publishing
-  publishing:
-    publications:
-      - maven:
-          pom:
-            url: https://github.com/aaziz993/compose-multiplatform/cmp-lib
-
-kotlin:
-  sourceSets:
-    - commonMain:
-        dependencies:
-          - :kmp-lib
+  - publishing:
+      - publications:
+          - withType<MavenPublication>: |
+              {
+                pom { pom ->
+                    pom.url /= "https://github.com/aaziz993/compose-multiplatform/clib"
+                }
+              }

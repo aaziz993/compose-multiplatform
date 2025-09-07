@@ -165,7 +165,7 @@ script:
         ":klib",
         //":compose-lib",
         ":compiler",
-        //":shared",
+        ":shared",
         //":compose-app",
         //":server-app"
       )
