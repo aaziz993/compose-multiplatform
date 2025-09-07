@@ -12,6 +12,6 @@ public fun KnitPluginExtension.moduleRootsFromIncludes(): Unit =
     project.pluginManager.withPlugin("org.jetbrains.kotlinx.knit") {
         moduleRoots =
             (project.settings.gradle.rootProject.subprojects.map { project ->
-                ".${project.path.replace(":", "/").addPrefix(".")}"
+                project.path.replace(":", "/").addPrefix(".")
             } + ".")
     }
