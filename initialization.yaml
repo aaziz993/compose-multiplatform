@@ -149,8 +149,6 @@ script:
         - maven: ("https://cache-redirector.jetbrains.com/www.jetbrains.com/intellij-repository/releases")
         - maven: ("https://cache-redirector.jetbrains.com/packages.jetbrains.team/maven/p/ij/intellij-dependencies")
         - maven: ("https://cache-redirector.jetbrains.com/download.jetbrains.com/teamcity-repository")
-        # GitHub Packages
-        - maven: ("https://maven.pkg.github.com/aaziz993")
       versionCatalogs:
         - create: ("kotlinWrappers"){ catalog -> catalog.fromLib(libs("kotlin.wrappers.catalog")) }
   - enableCacheRedirect: ()
