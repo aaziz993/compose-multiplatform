@@ -24,29 +24,29 @@ public data class LicenseHeaderFile(
             task.configure {
                 val intoFile = project.file(into)
 
-                var previousTemplateText: String? = null
+                var previousLicenseText: String? = null
 
                 doFirst {
                     // Remember previous template
                     if (intoFile.exists()) {
-                        previousTemplateText = intoFile.readText()
+                        previousLicenseText = intoFile.readText()
                     }
                 }
 
                 doLast {
                     if (intoFile.exists()) {
-                        val templateText = intoFile.readText()
+                        val licenseText = intoFile.readText()
 
-                        if (previousTemplateText == null || templateText != previousTemplateText) {
-                            project.file("${into}_SLASHED").writeText(
+                        if (previousLicenseText == null || licenseText != previousLicenseText) {
+                            project.file("SLASH_$into").writeText(
                                 "/**\n${
-                                    templateText.lines().joinToString("\n", " * ")
+                                    licenseText.lines().joinToString("\n", " * ")
                                 }\n */",
                             )
-                            project.file("${into}_SHARPED").writeText(
-                                templateText.lines().joinToString("\n", " # "),
+                            project.file("HASH_$into").writeText(
+                                licenseText.lines().joinToString("\n", " # "),
                             )
-                            project.file("${into}_TAGGED").writeText("$<--\n$templateText\n -->")
+                            project.file("TAG_$into").writeText("$<--\n$licenseText\n -->")
                         }
                     }
                 }
