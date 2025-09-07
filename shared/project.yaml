@@ -1,4 +1,3 @@
-description: Shared sources for compose app and server app.
 imports:
   - ../properties/root.yaml
   - ../properties/mpp.yaml
@@ -16,8 +15,8 @@ imports:
   - ../properties/jvm-web.yaml
   - ../properties/subproject.yaml
   - ../properties/publish.yaml
-
 script:
+  - description: '"Shared sources for compose app and server app."'
   - kotlin:
       sourceSets:
         - named: |

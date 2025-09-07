@@ -3,6 +3,7 @@ config:
     - java.net.URI
     - java.util.Date
     - org.gradle.kotlin.dsl.*
+    - org.gradle.api.JavaVersion
   compilerOptions:
     - -Xignore-const-optimization-errors
     - -Xinline-classes

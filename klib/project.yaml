@@ -15,7 +15,6 @@ imports:
   - ../properties/jvm-web.yaml
   - ../properties/subproject.yaml
   - ../properties/publish.yaml
-
 script:
   - description: '"Kotlin multiplatform libraries."'
   # Publishing

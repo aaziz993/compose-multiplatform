@@ -1,19 +1,20 @@
-templates:
-  - ../templates/gradle/jvm/jvm.yaml
-  - ../templates/gradle/android/android.yaml
-  - ../templates/gradle/android/android-library.yaml
-  - ../templates/gradle/jvm-subproject.yaml
-  - ../templates/gradle/apple.yaml
-  - ../templates/gradle/web/js/js.yaml
-  - ../templates/gradle/web/js/js-library.yaml
-  - ../templates/gradle/web/wasm-js.yaml
-  - ../templates/gradle/web/wasm-js-library.yaml
-  - ../templates/gradle/web/js-subproject.yaml
-  - ../templates/gradle/mpp.yaml
-  - ../templates/gradle/compose.yaml
-  - ../templates/gradle/subproject.yaml
-  - ../templates/gradle/root.yaml
-  - ../templates/gradle/publish.yaml
+imports:
+  - ../properties/root.yaml
+  - ../properties/mpp.yaml
+  - ../properties/android/android-library.yaml
+  - ../properties/jvm/jvm.yaml
+  - ../properties/jvm-common.yaml
+  - ../properties/native/apple/ios.yaml
+  - ../properties/native/apple/cocoapods.yaml
+  - ../properties/android-ios.yaml
+  - ../properties/android-ios-web.yaml
+  - ../properties/jvm-android-ios.yaml
+  - ../properties/web/js/js-library.yaml
+  - ../properties/web/wasmJs/wasm-js-library.yaml
+  - ../properties/web/js-common.yaml
+  - ../properties/jvm-web.yaml
+  - ../properties/subproject.yaml
+  - ../properties/publish.yaml
 script:
   - description: '"Compose multiplatform libraries."'
   - kotlin:

@@ -1,50 +1,61 @@
-plugins:
-  ids: [ $libs.compose.multiplatform, $libs.compose.compiler ]
-
-kotlin:
-  sourceSets:
-    - commonMain:
-        dependencies:
-          - $compose.runtime
-          - $compose.foundation
-          - $compose.material3
-          - $compose.ui
-          - $compose.components.resources
-          - $compose.components.uiToolingPreview
-          - $compose.material3AdaptiveNavigationSuite
-          - $compose.materialIconsExtended
-          - $libs.androidx.lifecycle.viewmodel
-          - $libs.androidx.lifecycle.runtime.compose
-
-    - commonTest:
-        dependencies:
-          - $compose.uiTest
-
-    - jvmMain:
-        dependencies:
-          - $compose.desktop.currentOs
-          - $libs.kotlinx.coroutines.swing
-
-    - androidMain:
-        dependencies:
-          - $compose.preview
-          - $libs.androidx.activity.compose
-
-    - jsMain:
-        dependencies:
-          - $compose.html.core
-
-android:
-  buildFeatures:
-    # enable compose
-    compose: true
-
-compose:
-  resources:
-    publicResClass: true
-    generateResClass: Auto
-
-dependencies:
-  - debugImplementation: $compose.uiTooling
-  # android dependencies
-  - lintChecks: $libs.compose.lint.checks
+config:
+  imports:
+    - org.jetbrains.compose.resources.ResourcesExtension
+script:
+  - plugins:
+      - id: (libs("compose.multiplatform").pluginId)
+      - id: (libs("compose.compiler").pluginId)
+  - kotlin:
+      sourceSets:
+        - named: |
+            ("commonMain") { sourceSet ->
+              sourceSet.dependencies:
+                implementation(composeLibs.runtime)
+                implementation(composeLibs.foundation)
+                implementation(composeLibs.material3)
+                implementation(composeLibs.ui)
+                implementation(composeLibs.components.resources)
+                implementation(composeLibs.components.uiToolingPreview)
+                implementation(composeLibs.material3AdaptiveNavigationSuite)
+                implementation(composeLibs.materialIconsExtended)
+                implementation(libs("androidx.lifecycle.viewmodel"))
+                implementation(libs("androidx.lifecycle.runtime.compose"))
+            }
+        - named: |
+            ("commonTest") {
+              sourceSet.dependencies { sourceSet ->
+                implementation(composeLibs.uiTest)
+              }
+            }
+        - named: |
+            ("jvmMain") {
+              sourceSet.dependencies { sourceSet ->
+                implementation(composeLibs.desktop.currentOs)
+                implementation(libs("kotlinx.coroutines.swing")
+              }
+            }
+        - named: |
+            ("androidMain") { sourceSet ->
+              sourceSet.dependencies {
+                implementation(composeLibs.preview)
+                implementation(libs("androidx.activity.compose"))
+              }
+            }
+        - named: |
+            ("jsMain") { sourceSet ->
+              sourceSet.dependencies {
+                implementation(composeLibs.html.core)
+              }
+            }
+#    android:
+#      buildFeatures:
+#        # enable compose
+#        compose: true
+    compose:
+      resources:
+        publicResClass: true
+        generateResClass: ResourcesExtension.ResourceClassGeneration.Auto
+    dependencies:
+      - debugImplementation: (composeLibs.uiTooling)
+      # android dependencies
+      - add: ("lintChecks", libs("compose.lint.checks"))

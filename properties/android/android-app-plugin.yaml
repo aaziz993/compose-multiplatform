@@ -8,6 +8,8 @@ script:
       compileSdk: libs.versions("android.compileSdk")!!.requiredVersion.toInt()
       compileOptions:
         isCoreLibraryDesugaringEnabled: true
+        sourceCompatibility: JavaVersion.VERSION_11
+        targetCompatibility: JavaVersion.VERSION_11
       lintOptions:
         isCheckReleaseBuilds: false
         isAbortOnError: false
