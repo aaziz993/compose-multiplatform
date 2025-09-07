@@ -3,7 +3,9 @@ package gradle.plugins.project
 import gradle.api.ci.CI
 import gradle.api.maybeNamed
 import gradle.api.project.ProjectProperties
+import gradle.plugins.android.AndroidPlugin
 import gradle.plugins.initialization.SLF4JProblemReporterContext
+import gradle.plugins.kotlin.mpp.MPPPlugin
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -17,6 +19,9 @@ public class ProjectPlugin : Plugin<Project> {
         with(target) {
             // Load and apply project.yaml to build.gradle.kts.
             ProjectProperties()
+
+            pluginManager.apply(AndroidPlugin::class.java)
+            pluginManager.apply(MPPPlugin::class.java)
 
             configureLinkTasks()
 

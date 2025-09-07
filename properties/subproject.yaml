@@ -6,8 +6,6 @@ config:
     - org.gradle.api.file.DuplicatesStrategy
     - gradle.plugins.spotless.*
 script:
-  # Flatten source code directories.
-  - flatten: ()
   - group: '"io.github.aaziz993"'
   - plugins:
       - id: (libs.plugins("dependencycheck").pluginId)

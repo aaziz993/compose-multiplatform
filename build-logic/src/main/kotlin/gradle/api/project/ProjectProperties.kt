@@ -13,6 +13,7 @@ public const val PROJECT_PROPERTIES_FILE: String = "project.yaml"
 
 @Serializable
 public class ProjectProperties(
+    public val layout: ProjectLayout = ProjectLayout.Flat(),
     override val config: ScriptConfig = ScriptConfig(),
     override val script: List<SerializableAny>,
     override val fileTree: Map<String, List<String>>,
