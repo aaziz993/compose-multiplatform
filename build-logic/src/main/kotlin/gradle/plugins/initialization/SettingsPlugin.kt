@@ -1,7 +1,6 @@
 package gradle.plugins.initialization
 
 import gradle.api.initialization.SettingsProperties
-import gradle.api.initialization.libs
 import gradle.plugins.project.ProjectPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
@@ -18,7 +17,7 @@ public class SettingsPlugin : Plugin<Settings> {
             with(target) {
                 // Load and apply settings.yaml to settings.gradle.kts.
                 SettingsProperties()
-dependencyResolutionManagement.versionCatalogs.create()
+
                 gradle.projectsLoaded {
                     // at this point all projects have been created by settings.gradle.kts, but none were evaluated yet
                     allprojects {
