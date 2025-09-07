@@ -1,25 +1,26 @@
-description: Ksp source generator.
-
-templates:
-  - ../templates/gradle/jvm/jvm.yaml
-  - ../templates/gradle/jvm-subproject.yaml
-  - ../templates/gradle/subproject.yaml
-  - ../templates/gradle/publish.yaml
-  - ../templates/gradle/root.yaml
-
-plugins:
+imports:
+  - ../properties/root.yaml
+  - ../properties/mpp.yaml
+  - ../properties/jvm/jvm.yaml
+  - ../properties/subproject.yaml
+  - ../properties/publish.yaml
+script:
+  - description: '"Ksp source generator."'
+  - kotlin:
+      sourceSets:
+        - named: |
+            ("jvmMain") { sourceSet ->
+              sourceSet.dependencies {
+                implementation(project(":klib"))
+                implementation(libs("symbol.processing.api"))
+              }
+            }
   # Publishing
-  publishing:
-    publications:
-      - maven:
-          pom:
-            url: https://github.com/aaziz993/compose-multiplatform/compiler
-
-kotlin:
-  targets: [ jvm ]
-
-  sourceSets:
-    - jvmMain:
-        dependencies:
-          - :kmp-lib
-          - $libs.symbol.processing.api
+  - publishing:
+      - publications:
+          - withType<MavenPublication>: |
+              {
+                pom { pom ->
+                    pom.url /= "https://github.com/aaziz993/compose-multiplatform/compiler"
+                }
+              }
