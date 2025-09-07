@@ -233,7 +233,7 @@ androidx-sqlite = "2.5.2"
 # h2 jdbc driver
 h2 = "2.3.232"
 # sqlite jdbc driver
-sqlite="3.50.3.0"
+sqlite = "3.50.3.0"
 # jdbc
 mariadb-java-client = "3.5.5"
 postgresql = "42.7.7"
@@ -316,7 +316,7 @@ androidx-core-ktx = "1.17.0"
 androidx-test-espresso-core = "3.7.0"
 androidx-test-rules = "1.7.0"
 androidx-test-monitor = "1.8.0"
-androidx-arch-core-testing="2.2.0"
+androidx-arch-core-testing = "2.2.0"
 androidx-ui-test = "1.9.0"
 # tooling
 desugar = "2.1.5"
