@@ -21,19 +21,15 @@ import kotlinx.datetime.LocalTime
 import okio.Buffer
 import okio.BufferedSource
 import okio.ByteString.Companion.encodeUtf8
-import kotlin.also
 import kotlin.collections.joinToString
 import kotlin.collections.map
 import kotlin.collections.plus
 import kotlin.let
-import kotlin.sequences.map
-import kotlin.sequences.toList
 import kotlin.text.equals
 import kotlin.text.isNotEmpty
 import kotlin.text.lowercase
 import kotlin.text.replace
 import kotlin.text.replaceFirstChar
-import kotlin.text.substring
 import kotlin.text.toRegex
 
 // Line break pattern
@@ -80,9 +76,9 @@ public fun String.singleQuote(): String = "'$this'"
 
 public fun String.doubleQuote(): String = "\"$this\""
 
-public fun String.capitalize(): String = replaceFirstChar(Char::uppercase)
+public fun String.uppercaseFirst(): String = replaceFirstChar(Char::uppercase)
 
-public fun String.decapitalize(): String = replaceFirstChar(Char::lowercase)
+public fun String.lowercaseFirst(): String = replaceFirstChar(Char::lowercase)
 
 public fun String.ifNotEmpty(transform: (String) -> String): String =
     if (isNotEmpty()) transform(this) else this

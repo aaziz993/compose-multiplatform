@@ -1,19 +1,21 @@
 package gradle.plugins.kotlin.mpp
 
 
+import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryTarget
 import gradle.api.configureEach
 import gradle.api.file.replace
 import gradle.api.project.ProjectLayout
 import gradle.api.project.kotlin
 import gradle.api.project.projectProperties
 import klib.data.type.primitives.string.addPrefixIfNotEmpty
-import klib.data.type.primitives.string.decapitalize
+import klib.data.type.primitives.string.lowercaseFirst
 import net.pearx.kasechange.splitToWords
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.SourceSet
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
+import org.gradle.kotlin.dsl.getByType
 
 public class MPPPlugin : Plugin<Project> {
 
@@ -37,12 +39,14 @@ public class MPPPlugin : Plugin<Project> {
                         var srcPrefixPart: String
                         var resourcesPrefixPart: String
 
-                        val androidTarget = androidTargets.find { target -> sourceSet.name.startsWith(target.targetName) }
+                        val androidTarget =
+                            androidTargets.filter { target -> sourceSet.name.startsWith(target.targetName) }
+                                .maxByOrNull { target -> target.name.length }
 
                         if (androidTarget != null) {
                             targetPart = "${layout.targetDelimiter}${androidTarget.targetName}"
 
-                            val restPart = sourceSet.name.removePrefix(androidTarget.targetName).decapitalize()
+                            val restPart = sourceSet.name.removePrefix(androidTarget.targetName).lowercaseFirst()
 
                             val mainSourceSetNamePrefix = androidTarget.mainVariant.sourceSetTree.get().name
 
@@ -55,9 +59,8 @@ public class MPPPlugin : Plugin<Project> {
                             if (restPart == mainSourceSetNamePrefix) {
                                 srcPrefixPart = "src"
                                 resourcesPrefixPart = ""
-                            }
-                            else {
-                                val prefix = testSourceSetNamePrefixes.find { prefix -> restPart.startsWith(prefix) }
+                            } else {
+                                val prefix = testSourceSetNamePrefixes.find(restPart::startsWith)
 
                                 if (prefix == null) {
                                     srcPrefixPart = restPart
@@ -65,13 +68,12 @@ public class MPPPlugin : Plugin<Project> {
                                         .let { words ->
                                             words.firstOrNull()
                                                 .orEmpty() +
-                                                words.drop(1)
-                                                    .joinToString(layout.androidVariantDelimiter)
-                                                    .addPrefixIfNotEmpty(layout.androidAllVariantsDelimiter)
+                                                    words.drop(1)
+                                                        .joinToString(layout.androidVariantDelimiter)
+                                                        .addPrefixIfNotEmpty(layout.androidAllVariantsDelimiter)
                                         }
                                     resourcesPrefixPart = srcPrefixPart
-                                }
-                                else {
+                                } else {
                                     srcPrefixPart =
                                         "$prefix${
                                             restPart
@@ -83,29 +85,34 @@ public class MPPPlugin : Plugin<Project> {
                                     resourcesPrefixPart = srcPrefixPart
                                 }
                             }
-                        }
-                        else {
+                        } else {
 
-                            val sourceSetNameParts = "(.*[a-z\\d])([A-Z]\\w+)$".toRegex().matchEntire(sourceSet.name)!!
+                            val sourceSetNameParts =
+                                "(.*[a-z\\d])([A-Z]\\w+)$".toRegex().matchEntire(sourceSet.name)!!.groupValues
 
-                            targetPart = sourceSetNameParts.groupValues[1].let { targetName ->
+                            targetPart = sourceSetNameParts[1].let { targetName ->
                                 if (targetName == "common") "" else "${layout.targetDelimiter}$targetName"
                             }
 
-                            val compilationName = sourceSetNameParts.groupValues[2].decapitalize()
+                            val compilationName = sourceSetNameParts[2].lowercaseFirst()
 
                             if (compilationName == KotlinCompilation.MAIN_COMPILATION_NAME) {
                                 srcPrefixPart = "src"
                                 resourcesPrefixPart = ""
-                            }
-                            else {
+                            } else {
                                 srcPrefixPart = compilationName
                                 resourcesPrefixPart = compilationName
                             }
                         }
 
-                        sourceSet.kotlin.replace("src/${sourceSet.name}/kotlin", "$srcPrefixPart$targetPart")
-                        sourceSet.resources.replace("src/${sourceSet.name}/resources", "${resourcesPrefixPart}Resources$targetPart".decapitalize())
+                        sourceSet.kotlin.replace(
+                            "src/${sourceSet.name}/kotlin",
+                            "$srcPrefixPart$targetPart"
+                        )
+                        sourceSet.resources.replace(
+                            "src/${sourceSet.name}/resources",
+                            "${resourcesPrefixPart}Resources$targetPart".lowercaseFirst()
+                        )
 //                        sourceSetsToComposeResourcesDirs[sourceSet] = project.layout.projectDirectory.dir("${resourcesPrefixPart}ComposeResources$targetPart".decapitalize())
                     }
                 }
