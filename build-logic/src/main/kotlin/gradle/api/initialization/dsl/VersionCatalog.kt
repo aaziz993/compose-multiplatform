@@ -64,15 +64,17 @@ public data class VersionCatalog(
         context(settings: Settings)
         public operator fun invoke(lib: MinimalExternalModuleDependency): VersionCatalog =
             settings.dependencyResolutionManagement.repositories.firstNotNullOfOrNull { repo ->
-                URI(
-                    "${
-                        when (repo) {
-                            is MavenArtifactRepository -> repo.url.toString()
-                            is IvyArtifactRepository -> repo.url.toString()
-                            else -> null // flatDir etc. don’t have a URL
-                        }
-                    }${lib.toString().toCatalogUrl()}"
-                ).toURL().readText()
+                runCatching {
+                    URI(
+                        "${
+                            when (repo) {
+                                is MavenArtifactRepository -> repo.url.toString()
+                                is IvyArtifactRepository -> repo.url.toString()
+                                else -> null // flatDir etc. don’t have a URL
+                            }
+                        }${lib.toString().toCatalogUrl()}"
+                    ).toURL()
+                }.getOrNull()
             }?.let { text ->
                 Toml.decodeFromString<VersionCatalog>(text)
             } ?: error("Couldn't find version catalog ''")
