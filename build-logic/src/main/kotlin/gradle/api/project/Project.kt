@@ -16,6 +16,8 @@ import gradle.api.initialization.dsl.VersionCatalog
 import gradle.api.initialization.libs
 import gradle.api.initialization.sensitive
 import gradle.api.repositories.CacheRedirector
+import gradle.plugins.android.flatten
+import gradle.plugins.kotlin.mpp.flatten
 import io.github.sgrishchenko.karakum.gradle.plugin.KarakumExtension
 import kotlinx.atomicfu.plugin.gradle.AtomicFUPluginExtension
 import kotlinx.benchmark.gradle.BenchmarksExtension
@@ -300,6 +302,15 @@ public fun Project.signing(configure: SigningExtension.() -> Unit): Unit =
 public fun Project.files(elements: Iterable<String>): ConfigurableFileCollection =
     files(*elements.toList().toTypedArray())
 
+public fun Project.flatten(
+    targetDelimiter: String = "@",
+    androidAllVariantsDelimiter: String = "+",
+    androidVariantDelimiter: String = ""
+) {
+    kotlin.flatten(targetDelimiter, androidAllVariantsDelimiter, androidVariantDelimiter)
+    android.flatten(targetDelimiter, androidAllVariantsDelimiter, androidVariantDelimiter)
+}
+
 // Semantic Versioning 2.0.0
 // major gradle.api.version when you make incompatible API changes
 // minor gradle.api.version when you add functionality in a backward compatible manner
@@ -328,12 +339,6 @@ public fun Project.version(
         project.libs.versions("$camelCaseName.version.buildMetadata")?.requiredVersion
             ?: buildMetadata ?: CI.current?.buildMetadata,
     ).toString()
-}
-
-public fun Project.flatten() {
-    kotlin.targets.forEach { target ->
-        println("Kotlin target: ${target.name}")
-    }
 }
 
 public inline fun <reified T : Task> Project.registerAggregationTestTask(

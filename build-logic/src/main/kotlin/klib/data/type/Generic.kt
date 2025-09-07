@@ -1,7 +1,15 @@
 package klib.data.type
 
+import klib.data.type.tuples.Quadruple
+
 public val <T> T.exhaustive: T
     get() = this
+
+public fun <T> T.pair(): Pair<T, T> = this to this
+
+public fun <T> T.triple(): Triple<T, T, T> = Triple(this, this, this)
+
+public fun <T> T.quadruple(): Quadruple<T, T, T, T> = Quadruple(this, this, this, this)
 
 public inline fun <T> T.act(block: () -> Unit): T {
     block()
