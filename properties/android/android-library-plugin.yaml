@@ -9,24 +9,45 @@ script:
       androidLibrary: |
         {
           namespace = androidNamespace
-          compileSdk = libs.versions("android.compileSdk").requiredVersion.toInt()  
+          compileSdk = libs.versions("android.compileSdk").requiredVersion.toInt()
           minSdk = libs.versions("android.minSdk").requiredVersion.toInt()
+          enableCoreLibraryDesugaring = true
+          
+          lint {
+            abortOnError = false
+            checkReleaseBuilds = false
+            xmlReport = true
+            xmlOutput = file("build/reports/lint-results.xml")
+          }
         
-          withJava() // enable java compilation support
+          packaging {
+            resources {
+              excludes += setOf(
+                "/META-INF/{AL2.0,LGPL2.1}",
+              )
+            }
+          }
+        
+          aarMetadata {
+            minCompileSdk = libs.versions("android.minSdk").requiredVersion.toInt()
+          }
+        
+          // Enable java compilation support.
+          withJava() 
+          
           // Enable Android resource processing
           androidResources {
             enable = true
           }
         
-          withHostTestBuilder {}.configure {
+          // JVM-based unit tests.
+          withHostTest {
             isIncludeAndroidResources = true
           }
         
-          withDeviceTestBuilder {
-            sourceSetTreeName = "test"
-          }.configure {
+          // Device/instrumented tests.
+          withDeviceTest {
             instrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-            execution = "ANDROIDX_TEST_ORCHESTRATOR"
           }
 
           // Configure the JVM target for both Kotlin and Java sources
