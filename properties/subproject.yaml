@@ -16,7 +16,6 @@ script:
       - id: (libs.plugins("ksp").pluginId)
       - id: (libs.plugins("allopen").pluginId)
       - id: (libs.plugins("noarg").pluginId)
-      - id: (libs.plugins("atomicfu").pluginId)
       - id: (libs.plugins("kotlin.serialization").pluginId)
       - id: (libs.plugins("kotlinx.benchmark").pluginId)
       - id: (libs.plugins("sqldelight").pluginId)
@@ -284,8 +283,6 @@ script:
           (
             "data.type.annotation.NoArg",
           )
-  # Multiplatform library that provides the idiomatic and efficient way of using atomic operations in Kotlin.
-  - atomicFU: '{ }'
   # Toolkit for running benchmarks for multiplatform code written in Kotlin. It is designed to work with Kotlin/JVM, Kotlin/JS, Kotlin/Native, and Kotlin/WasmJs (experimental) targets.
   - benchmark:
       reportsDir: '"build/reports"'
@@ -339,8 +336,6 @@ script:
       - add: ("kspCommonMainMetadata", libs("ktorfit.ksp"))
       # Use import org.koin.ksp.generated.* in project.
       - add: ("kspCommonMainMetadata", libs("koin.ksp.compiler"))
-      # knit
-#      - testImplementation: ("org.jetbrains.kotlinx:kotlinx-knit-test")
   - tasks:
       - withType<ShadowJar>: |
           { 
