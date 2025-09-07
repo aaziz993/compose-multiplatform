@@ -2,10 +2,11 @@ package gradle.plugins.kotlin.mpp
 
 import gradle.api.configureEach
 import gradle.api.file.replace
+import klib.data.type.primitives.string.addPrefixIfNotEmpty
 import klib.data.type.primitives.string.decapitalize
 import net.pearx.kasechange.splitToWords
+import org.gradle.api.Project
 import org.gradle.api.tasks.SourceSet
-import org.jetbrains.amper.frontend.schema.Project
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
@@ -15,7 +16,7 @@ public fun KotlinMultiplatformExtension.flatten(
     targetDelimiter: String = "@",
     androidAllVariantsDelimiter: String = "+",
     androidVariantDelimiter: String = ""
-): Unit {
+): Unit = project.pluginManager.withPlugin("org.jetbrains.kotlin.multiplatform") {
     val androidTargets = targets.filterIsInstance<KotlinAndroidTarget>()
 
     sourceSets.configureEach { sourceSet ->
@@ -28,7 +29,7 @@ public fun KotlinMultiplatformExtension.flatten(
         if (androidTarget != null) {
             targetPart = "@${androidTarget.targetName}"
 
-            val restPart = sourceSet.name.removePrefix(androidTarget.targetName).decapitalized()
+            val restPart = sourceSet.name.removePrefix(androidTarget.targetName).decapitalize()
 
             val mainSourceSetNamePrefix = androidTarget.mainVariant.sourceSetTree.get().name
 

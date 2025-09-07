@@ -3,7 +3,6 @@ package gradle.plugins.android
 import com.android.build.gradle.BaseExtension
 import gradle.api.configureEach
 import gradle.api.file.replace
-import gradle.api.project.android
 import klib.data.type.pair
 import klib.data.type.primitives.string.addPrefixIfNotEmpty
 import klib.data.type.primitives.string.decapitalize
@@ -17,7 +16,7 @@ private val TEST_SOURCE_SET_NAME_PREFIXES = listOf(
 )
 
 context(project: Project)
-public fun BaseExtension.flatten(
+public fun <T:BaseExtension> T.flatten(
     targetDelimiter: String = "@",
     androidAllVariantsDelimiter: String = "+",
     androidVariantDelimiter: String = ""
@@ -49,27 +48,27 @@ public fun BaseExtension.flatten(
             )
             sourceSet.assets.replace(
                 "src/${sourceSet.name}/assets",
-                "${resourcesPrefixPart}Assets${targetDelimiter}android".decapitalized()
+                "${resourcesPrefixPart}Assets${targetDelimiter}android".decapitalize()
             )
             sourceSet.aidl.replace(
                 "src/${sourceSet.name}/aidl",
-                "${resourcesPrefixPart}Aidl${targetDelimiter}android".decapitalized()
+                "${resourcesPrefixPart}Aidl${targetDelimiter}android".decapitalize()
             )
             sourceSet.renderscript.replace(
                 "src/${sourceSet.name}/rs",
-                "${resourcesPrefixPart}Rs${targetDelimiter}android".decapitalized()
+                "${resourcesPrefixPart}Rs${targetDelimiter}android".decapitalize()
             )
             sourceSet.jniLibs.replace(
                 "src/${sourceSet.name}/jniLibs",
-                "${resourcesPrefixPart}JniLibs${targetDelimiter}android".decapitalized()
+                "${resourcesPrefixPart}JniLibs${targetDelimiter}android".decapitalize()
             )
             sourceSet.shaders.replace(
                 "src/${sourceSet.name}/shaders",
-                "${resourcesPrefixPart}Shaders${targetDelimiter}android".decapitalized()
+                "${resourcesPrefixPart}Shaders${targetDelimiter}android".decapitalize()
             )
             sourceSet.mlModels.replace(
                 "src/${sourceSet.name}/mlModels",
-                "${resourcesPrefixPart}MlModels${targetDelimiter}android".decapitalized()
+                "${resourcesPrefixPart}MlModels${targetDelimiter}android".decapitalize()
             )
         }
     }

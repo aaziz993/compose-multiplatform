@@ -308,7 +308,7 @@ public fun Project.flatten(
     androidVariantDelimiter: String = ""
 ) {
     kotlin.flatten(targetDelimiter, androidAllVariantsDelimiter, androidVariantDelimiter)
-    android.flatten(targetDelimiter, androidAllVariantsDelimiter, androidVariantDelimiter)
+//    android.flatten(targetDelimiter, androidAllVariantsDelimiter, androidVariantDelimiter)
 }
 
 // Semantic Versioning 2.0.0
