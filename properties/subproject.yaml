@@ -86,7 +86,7 @@ script:
             java.removeUnusedImports()
             // Tells spotless to format according to the Google Style Guide
             // (https://google.github.io/styleguide/javaguide.html)
-            java.googleJavaFormat().apply {
+            java.googleJavaFormat(libs.versions("googleJavaFormat")!!requiredVersion).apply {
               groupArtifact("com.google.googlejavaformat:google-java-format")
               reflowLongStrings(true)
               reorderImports(true)
@@ -100,7 +100,7 @@ script:
       - kotlin: |
           { kotlin ->
             // use ktlint with version and custom .editorconfig
-            kotlin.ktlint().setEditorConfigPath("../.editorconfig")
+            kotlin.ktlint(libs.versions("ktlint")!!requiredVersion).setEditorConfigPath("../.editorconfig")
             // remove old license header
             kotlin.replaceRegex("remove license header", """^\s*(//.*|/\*[\s\S]*?\*\/)\s*""", "")
             // specify license header text
@@ -111,7 +111,7 @@ script:
       - kotlinGradle: |
           { kotlinGradle ->
             // use ktlint with version and custom .editorconfig
-            kotlinGradle.ktlint().setEditorConfigPath("../.editorconfig")
+            kotlinGradle.ktlint(libs.versions("ktlint")!!requiredVersion).setEditorConfigPath("../.editorconfig")
             // remove old license header
             kotlinGradle.replaceRegex("remove license header", """^\s*(//.*|/\*[\s\S]*?\*\/)\s*""", "")
             // specify license header text

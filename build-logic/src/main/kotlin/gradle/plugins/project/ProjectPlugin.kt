@@ -10,6 +10,7 @@ import gradle.api.project.composeLibs
 import gradle.api.project.desktop
 import gradle.api.project.kotlin
 import gradle.api.project.resources
+import gradle.api.project.spotless
 import gradle.plugins.android.AndroidPlugin
 import gradle.plugins.compose.ComposePlugin
 import gradle.plugins.initialization.SLF4JProblemReporterContext
