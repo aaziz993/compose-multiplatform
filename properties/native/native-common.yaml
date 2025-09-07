@@ -25,7 +25,7 @@ script:
               }
               binaries {
                 framework {
-                  // add it to avoid sqllite3 issues in iOS . Required when using NativeSQLiteDriver
+                  // Add it to avoid sqllite3 issues in iOS . Required when using NativeSQLiteDriver.
                   linkerOpts.addAll(listOf("--lsqlite3"))
                 }
 

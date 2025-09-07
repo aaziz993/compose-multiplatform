@@ -2,7 +2,7 @@ script:
   - kotlin:
       sourceSets:
         - named:
-            ("androidMain") {
+            ("androidMain") { sourceSet ->
               sourceSet.dependencies {
                 implementation(composeLibs.preview)
               }
