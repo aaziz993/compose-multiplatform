@@ -627,7 +627,7 @@ public fun <T> T.toTreeString(
             callRecursive(
                 PrintTreeArgs(
                     children(node),
-                    prefix + if (isLast) "    " else "$verticalConnector   "
+                    prefix + if (isLast) "   " else "$verticalConnector  "
                 )
             )
         }
