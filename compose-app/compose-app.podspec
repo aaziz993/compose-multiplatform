@@ -1,11 +1,11 @@
 Pod::Spec.new do |spec|
     spec.name                     = 'compose-app'
     spec.version                  = '1.0'
-    spec.homepage                 = 'Link to a Kotlin/Native module homepage'
+    spec.homepage                 = 'https://github.com/aaziz993/compose-multiplatform'
     spec.source                   = { :http=> ''}
     spec.authors                  = ''
     spec.license                  = ''
-    spec.summary                  = 'Some description for a Kotlin/Native module'
+    spec.summary                  = ''
     spec.vendored_frameworks      = 'build/cocoapods/framework/MyFramework.framework'
     spec.libraries                = 'c++'
     spec.ios.deployment_target    = '18.2'

@@ -21,4 +21,5 @@ script:
               }
             }
   - dependencies:
+      - add: ("coreLibraryDesugaring", libs("android.desugar.jdk.libs"))
       - dokkaPlugin: (libs("android.documentation.plugin"))
