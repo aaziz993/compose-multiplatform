@@ -2,6 +2,7 @@ package gradle.plugins.android
 
 import com.android.build.gradle.BaseExtension
 import gradle.api.configureEach
+import gradle.api.file.replace
 import gradle.api.project.android
 import klib.data.type.pair
 import klib.data.type.primitives.string.addPrefixIfNotEmpty
@@ -71,6 +72,5 @@ public fun BaseExtension.flatten(
                 "${resourcesPrefixPart}MlModels${targetDelimiter}android".decapitalized()
             )
         }
-
     }
 }

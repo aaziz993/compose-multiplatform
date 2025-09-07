@@ -1,6 +1,7 @@
 package gradle.plugins.kotlin.mpp
 
 import gradle.api.configureEach
+import gradle.api.file.replace
 import klib.data.type.primitives.string.decapitalize
 import net.pearx.kasechange.splitToWords
 import org.gradle.api.tasks.SourceSet
@@ -90,6 +91,6 @@ public fun KotlinMultiplatformExtension.flatten(
             "src/${sourceSet.name}/resources",
             "${resourcesPrefixPart}Resources$targetPart".decapitalize()
         )
-//        sourceSetsToComposeResourcesDirs[sourceSet] = project.layout.projectDirectory.dir("${resourcesPrefixPart}ComposeResources$targetPart".decapitalized())
+//        sourceSetsToComposeResourcesDirs[sourceSet] = project.layout.projectDirectory.dir("${resourcesPrefixPart}ComposeResources$targetPart".decapitalize())
     }
 }
