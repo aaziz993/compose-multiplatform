@@ -26,41 +26,7 @@ public class ProjectPlugin : Plugin<Project> {
         with(target) {
             // Load and apply project.yaml to build.gradle.kts.
             ProjectProperties()
-kotlin.androidLibrary {
-    namespace = androidNamespace
-    compileSdk = libs.versions("android.compileSdk").requiredVersion.toInt()
-    minSdk = libs.versions("android.minSdk").requiredVersion.toInt()
-    enableCoreLibraryDesugaring = true
 
-    lint {
-        abortOnError = false
-        checkReleaseBuilds = false
-        xmlReport = true
-        xmlOutput = file("build/reports/lint-results.xml")
-    }
-
-    packaging {
-        resources {
-            excludes += setOf(
-                "/META-INF/{AL2.0,LGPL2.1}",
-            )
-        }
-    }
-
-    aarMetadata {
-        minCompileSdk = libs.versions("android.minSdk").requiredVersion.toInt()
-    }
-
-    // JVM-based unit tests.
-    withHostTest {
-        isIncludeAndroidResources = true
-    }
-
-    // Device/instrumented tests.
-    withDeviceTest {
-        instrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-}
             pluginManager.apply(MPPPlugin::class.java)
             pluginManager.apply(AndroidPlugin::class.java)
             pluginManager.apply(JvmPlugin::class.java)
