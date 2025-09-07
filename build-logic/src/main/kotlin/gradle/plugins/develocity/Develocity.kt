@@ -13,7 +13,7 @@ import gradle.api.initialization.gitStatus
 
 context(settings: Settings)
 public fun DevelocityConfiguration.enrichGitData(
-    url: String,
+    url: String = settings.settingsProperties.remote.url!!,
     skipTags: Boolean = false
 ): Unit = settings.pluginManager.withPlugin("com.gradle.develocity") {
     settings.gradle.projectsEvaluated {
@@ -28,7 +28,7 @@ public fun DevelocityConfiguration.enrichGitData(
 
             // Git branch name
             settings.gitBranch()
-                ?.takeIf(String::isNotBlank)
+                .takeIf(String::isNotBlank)
                 ?.let { branchName ->
                     buildScan.value("Git Branch Name", branchName)
                     buildScan.link("GitHub Branch Link", "$url/tree/$branchName")
