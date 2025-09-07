@@ -44,7 +44,8 @@ public val Settings.libs: VersionCatalog
 
 @Suppress("UnusedReceiverParameter")
 context(settings: Settings)
-public fun MutableVersionCatalogContainer.create(name: String, lib: MinimalExternalModuleDependency) {
+public fun VersionCatalogBuilder.fromLibs(name: String, lib: MinimalExternalModuleDependency) {
+    from(lib.toString())
     settings.extraProperties[name] = VersionCatalog(lib)
 }
 

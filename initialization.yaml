@@ -164,7 +164,7 @@ script:
         - maven: ("https://cache-redirector.jetbrains.com/packages.jetbrains.team/maven/p/ij/intellij-dependencies")
         - maven: ("https://cache-redirector.jetbrains.com/download.jetbrains.com/teamcity-repository")
       versionCatalogs:
-        - create: ("kotlinWrappers", libs("kotlin.wrappers.catalog"))
+        - create: ("kotlinWrappers"){ catalog -> catalog.fromLib(libs("kotlin.wrappers.catalog")) }
   - enableCacheRedirect: ()
   - buildCache:
       - local:
