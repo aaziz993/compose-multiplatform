@@ -1,13 +1,14 @@
 package gradle.api.initialization
 
 import gradle.api.initialization.dsl.VersionCatalog
-import gradle.api.initialization.dsl.toCatalogUrl
 import gradle.api.repositories.CacheRedirector
 import gradle.plugins.getOrPut
+import klib.data.type.reflection.invoke
 import kotlinx.serialization.decodeFromString
 import net.peanuuutz.tomlkt.Toml
 import org.danilopianini.gradle.git.hooks.GitHooksExtension
 import org.gradle.api.Project
+import org.gradle.api.artifacts.MinimalExternalModuleDependency
 import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.api.artifacts.repositories.IvyArtifactRepository
 import org.gradle.api.artifacts.repositories.MavenArtifactRepository
@@ -42,20 +43,8 @@ public val Settings.libs: VersionCatalog
     }
 
 context(settings: Settings)
-public fun VersionCatalogBuilder.fromLibs(alias: String) {
-    settings.extraProperties[name] = settings.dependencyResolutionManagement.repositories.firstNotNullOfOrNull { repo ->
-        URI(
-            "${
-                when (repo) {
-                    is MavenArtifactRepository -> repo.url.toString()
-                    is IvyArtifactRepository -> repo.url.toString()
-                    else -> null // flatDir etc. don’t have a URL
-                }
-            }${settings.libs(alias).toCatalogUrl()}"
-        ).toURL().readText()
-    }?.let { text ->
-        Toml.decodeFromString<VersionCatalog>(text)
-    } ?: error("Couldn't find version catalog ''")
+public fun VersionCatalogBuilder.from(lib: MinimalExternalModuleDependency) {
+    settings.extraProperties[name] = VersionCatalog(lib)
 }
 
 public fun Settings.allLibs(name: String): VersionCatalog =

@@ -20,6 +20,8 @@ script:
       - id: (libs.plugins("cocoapods").pluginId)
       # Converter of TypeScript declaration files to Kotlin declarations.
       - id: (libs.plugins("karakum").pluginId)
+  - karakum:
+      output: layout.buildDirectory.dir("generated/karakum")
   - kotlin:
       jvm: ()
       iosArm64: ()
@@ -325,11 +327,8 @@ script:
         # Js.
         - named: |
             ("jsMain") { sourceSet ->
-              val karakumGeneratedDir = projectDir.resolve("src/jsMain/generated")
-              if (karakumGeneratedDir.exists()) {
-                sourceSet.kotlin.srcDir(karakumGeneratedDir)
-              }
-
+              sourceSet.kotlin.srcDir(karakum.output)
+            
               sourceSet.dependencies {
                 implementation(libs("seskar"))
                 implementation(libs("kstore.storage"))
@@ -443,7 +442,3 @@ script:
                 )
             }
           }
-
-# Converter of TypeScript declaration files to Kotlin declarations.
-#karakum:
-#  configFile: karakum.config.json

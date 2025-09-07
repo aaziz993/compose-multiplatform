@@ -1,5 +1,6 @@
 package gradle.api.initialization.dsl
 
+import gradle.api.initialization.libs
 import klib.data.type.collections.list.asList
 import klib.data.type.collections.map.asMap
 import klib.data.type.collections.takeIfNotEmpty
@@ -9,15 +10,21 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.MapSerializer
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
+import net.peanuuutz.tomlkt.Toml
 import org.gradle.api.Project
 import org.gradle.api.artifacts.ExternalModuleDependencyBundle
 import org.gradle.api.artifacts.MinimalExternalModuleDependency
 import org.gradle.api.artifacts.MutableVersionConstraint
 import org.gradle.api.artifacts.VersionConstraint
+import org.gradle.api.artifacts.repositories.IvyArtifactRepository
+import org.gradle.api.artifacts.repositories.MavenArtifactRepository
+import org.gradle.api.initialization.Settings
+import org.gradle.api.initialization.dsl.VersionCatalogBuilder
 import org.gradle.api.internal.artifacts.DefaultModuleIdentifier
 import org.gradle.api.internal.artifacts.dependencies.DefaultMutableMinimalDependency
 import org.gradle.api.internal.artifacts.dependencies.DefaultMutableVersionConstraint
@@ -25,6 +32,8 @@ import org.gradle.api.internal.artifacts.dependencies.DefaultPluginDependency
 import org.gradle.api.internal.catalog.DefaultExternalModuleDependencyBundle
 import org.gradle.api.provider.Provider
 import org.gradle.plugin.use.PluginDependency
+import org.jetbrains.kotlin.gradle.plugin.extraProperties
+import java.net.URI
 
 @Serializable(with = VersionCatalogSerializer::class)
 public data class VersionCatalog(
@@ -49,6 +58,33 @@ public data class VersionCatalog(
         project.objects.property(ExternalModuleDependencyBundle::class.java).apply {
             set(bundles[alias] ?: error("Unresolved bundle '$alias'"))
         }
+
+    public companion object {
+        @Suppress("UnstableApiUsage")
+        context(settings: Settings)
+        public operator fun invoke(lib: MinimalExternalModuleDependency): VersionCatalog =
+            settings.dependencyResolutionManagement.repositories.firstNotNullOfOrNull { repo ->
+                URI(
+                    "${
+                        when (repo) {
+                            is MavenArtifactRepository -> repo.url.toString()
+                            is IvyArtifactRepository -> repo.url.toString()
+                            else -> null // flatDir etc. don’t have a URL
+                        }
+                    }${lib.toString().toCatalogUrl()}"
+                ).toURL().readText()
+            }?.let { text ->
+                Toml.decodeFromString<VersionCatalog>(text)
+            } ?: error("Couldn't find version catalog ''")
+
+        private fun String.toCatalogUrl(): String {
+            val fileNamePart = substringAfter(":", "").replace(":", "-")
+
+            return "${substringBeforeLast(":").replace("[.:]".toRegex(), "/")}/${
+                substringAfterLast(":", "")
+            }/$fileNamePart.toml"
+        }
+    }
 }
 
 private object VersionCatalogSerializer : KSerializer<VersionCatalog> {
@@ -136,12 +172,4 @@ private object VersionCatalogSerializer : KSerializer<VersionCatalog> {
     private fun <V> Map<String, V>.toCatalogAliasMap() = mapKeys { (key, _) -> key.toCatalogAlias() }
 
     private fun String.toCatalogAlias() = replace("-", ".")
-}
-
-public fun MinimalExternalModuleDependency.toCatalogUrl(): String = toString().run {
-    val fileNamePart = substringAfter(":", "").replace(":", "-")
-
-    return "${substringBeforeLast(":").replace("[.:]".toRegex(), "/")}/${
-        substringAfterLast(":", "")
-    }/$fileNamePart.toml"
 }
