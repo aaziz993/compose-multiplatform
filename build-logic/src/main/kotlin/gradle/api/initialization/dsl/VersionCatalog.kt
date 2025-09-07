@@ -75,8 +75,8 @@ public data class VersionCatalog(
                         }${lib.toString().toCatalogUrl()}"
                     ).toURL()
                 }.getOrNull()
-            }?.let { text ->
-                Toml.decodeFromString<VersionCatalog>(text)
+            }?.let { url ->
+                Toml.decodeFromString<VersionCatalog>(url.readText())
             } ?: error("Couldn't find version catalog ''")
 
         private fun String.toCatalogUrl(): String {
