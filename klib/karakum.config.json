@@ -5,7 +5,7 @@
     "<nodeModules>/@openpgp/web-stream-tools/**/*.d.ts",
     "<nodeModules>/basic-ftp/dist/*.d.ts"
   ],
-  "output": "build/karakum",
+  "output": "build/generated/karakum",
   "libraryName": "generated",
   "libraryNameOutputPrefix": false,
   "granularity": "top-level",
