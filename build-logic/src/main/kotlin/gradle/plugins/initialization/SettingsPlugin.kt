@@ -5,7 +5,6 @@ package gradle.plugins.initialization
 import gradle.api.configureEach
 import gradle.api.initialization.SettingsProperties
 import gradle.api.initialization.file.LicenseHeaderFile
-import gradle.api.initialization.file.ProjectFileImpl
 import gradle.api.initialization.settingsProperties
 import gradle.plugins.project.ProjectPlugin
 import org.gradle.api.Plugin
@@ -32,7 +31,7 @@ public class SettingsPlugin : Plugin<Settings> {
                             target.settingsProperties.licenseFile,
                             target.settingsProperties.codeOfConductFile,
                             target.settingsProperties.contributingFile,
-                        ) + LicenseHeaderFile("licenses/LICENSE_HEADER") + settingsProperties.projectFiles)
+                        ) + LicenseHeaderFile("licenses/LICENSE_HEADER") + settingsProperties.files)
                             .flatMapIndexed { index, projectFile -> projectFile.applyTo("projectFile$index") }
 
                         //setup sync tasks execution during IDE import

@@ -31,7 +31,7 @@ public class SettingsProperties(
     public val licenseHeaderFile: LicenseHeaderFile? = null,
     public val codeOfConductFile: CodeOfConductFile? = null,
     public val contributingFile: ContributingFile? = null,
-    public val projectFiles: List<ProjectFileImpl> = emptyList(),
+    public val files: List<ProjectFileImpl> = emptyList(),
     override val config: ScriptConfig = ScriptConfig(),
     override val script: List<SerializableAny>,
     override val fileTree: Map<String, List<String>>,
