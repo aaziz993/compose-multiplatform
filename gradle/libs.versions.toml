@@ -347,7 +347,6 @@ npm-puppeteer = "24.4.0"
 
 ##Compose
 compose = "1.8.2"
-compose-hotReload = "1.0.0-beta06"
 materialExtendedIcon = "1.7.0-rc01"
 # colorr picker
 colorpicker = "1.1.2"
@@ -1439,4 +1438,3 @@ karakum = { id = "io.github.sgrishchenko.karakum", version.ref = "karakum" }
 ##Compose
 compose-multiplatform = { id = "org.jetbrains.compose", version.ref = "compose" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-compose-hotReload = { id = "org.jetbrains.compose.hot-reload", version.ref = "compose-hotReload" }
