@@ -1,20 +1,23 @@
 Pod::Spec.new do |spec|
     spec.name                     = 'shared'
-    spec.version                  = '1.0.0'
-    spec.homepage                 = ''
+    spec.version                  = '1.0'
+    spec.homepage                 = 'Link to a Kotlin/Native module homepage'
     spec.source                   = { :http=> ''}
     spec.authors                  = ''
     spec.license                  = ''
-    spec.summary                  = ''
-    spec.vendored_frameworks      = 'build/cocoapods/framework/shared.framework'
+    spec.summary                  = 'Some description for a Kotlin/Native module'
+    spec.vendored_frameworks      = 'build/cocoapods/framework/MyFramework.framework'
     spec.libraries                = 'c++'
+    spec.ios.deployment_target    = '18.2'
+    spec.osx.deployment_target    = '15.2'
+    spec.tvos.deployment_target    = '18.2'
+    spec.watchos.deployment_target    = '11.2'
                 
                 
-                
-    if !Dir.exist?('build/cocoapods/framework/shared.framework') || Dir.empty?('build/cocoapods/framework/shared.framework')
+    if !Dir.exist?('build/cocoapods/framework/MyFramework.framework') || Dir.empty?('build/cocoapods/framework/MyFramework.framework')
         raise "
 
-        Kotlin framework 'shared' doesn't exist yet, so a proper Xcode project can't be generated.
+        Kotlin framework 'MyFramework' doesn't exist yet, so a proper Xcode project can't be generated.
         'pod install' should be executed after running ':generateDummyFramework' Gradle task:
 
             ./gradlew :shared:generateDummyFramework
@@ -28,7 +31,7 @@ Pod::Spec.new do |spec|
                 
     spec.pod_target_xcconfig = {
         'KOTLIN_PROJECT_PATH' => ':shared',
-        'PRODUCT_MODULE_NAME' => 'shared',
+        'PRODUCT_MODULE_NAME' => 'MyFramework',
     }
                 
     spec.script_phases = [
