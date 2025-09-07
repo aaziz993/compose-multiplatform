@@ -63,20 +63,19 @@ public data class VersionCatalog(
         @Suppress("UnstableApiUsage")
         context(settings: Settings)
         public operator fun invoke(lib: MinimalExternalModuleDependency): VersionCatalog =
-            settings.dependencyResolutionManagement.repositories.firstNotNullOfOrNull { repo ->
-                runCatching {
-                    URI(
-                        "${
-                            when (repo) {
-                                is MavenArtifactRepository -> repo.url.toString()
-                                is IvyArtifactRepository -> repo.url.toString()
-                                else -> null // flatDir etc. don’t have a URL
-                            }
-                        }${lib.toString().toCatalogUrl()}"
-                    ).toURL()
-                }.getOrNull()
-            }?.let { url ->
-                Toml.decodeFromString<VersionCatalog>(url.readText())
+            settings.dependencyResolutionManagement.repositories.firstNotNullOfOrNull { repository ->
+
+                when (repository) {
+                    is MavenArtifactRepository -> repository.url
+                    is IvyArtifactRepository -> repository.url
+                    else -> null
+                }?.let { url ->
+                    runCatching {
+                        url.resolve(lib.toString().toCatalogUrl()).toURL().readText()
+                    }.getOrNull()
+                }
+            }?.let { text ->
+                Toml.decodeFromString<VersionCatalog>(text)
             } ?: error("Couldn't find version catalog ''")
 
         private fun String.toCatalogUrl(): String {
