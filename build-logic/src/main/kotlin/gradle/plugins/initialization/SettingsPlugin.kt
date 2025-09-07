@@ -32,9 +32,8 @@ public class SettingsPlugin : Plugin<Settings> {
                             target.settingsProperties.licenseFile,
                             target.settingsProperties.codeOfConductFile,
                             target.settingsProperties.contributingFile,
-                        ) + LicenseHeaderFile("licenses/LICENSE_HEADER")).flatMapIndexed { index, projectFile ->
-                            projectFile.applyTo("projectFile$index")
-                        }
+                        ) + LicenseHeaderFile("licenses/LICENSE_HEADER") + settingsProperties.projectFiles)
+                            .flatMapIndexed { index, projectFile -> projectFile.applyTo("projectFile$index") }
 
                         //setup sync tasks execution during IDE import
                         tasks.configureEach { importTask ->
