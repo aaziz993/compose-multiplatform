@@ -1,13 +1,8 @@
 package gradle.plugins.project
 
-import com.android.build.api.dsl.androidLibrary
 import gradle.api.ci.CI
 import gradle.api.maybeNamed
 import gradle.api.project.ProjectProperties
-import gradle.api.project.androidApplication
-import gradle.api.project.androidNamespace
-import gradle.api.project.composeLibs
-import gradle.api.project.kotlin
 import gradle.plugins.android.AndroidPlugin
 import gradle.plugins.compose.ComposePlugin
 import gradle.plugins.initialization.SLF4JProblemReporterContext

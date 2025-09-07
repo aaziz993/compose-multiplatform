@@ -7,8 +7,8 @@ script:
   - kotlin:
       cocoapods:
         version: libs.versions("kotlin.cocoapods.version").requiredVersion
-        summary: '"Some description for a Kotlin/Native module"'
-        homepage: '"Link to a Kotlin/Native module homepage"'
+        summary: description
+        homepage: settings.settingsProperties.remote.url
         name: name
         framework: |
           {
