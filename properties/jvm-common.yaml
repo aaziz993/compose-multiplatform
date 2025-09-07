@@ -19,8 +19,7 @@ script:
         - named: |
             ("jvmCommonTest") { sourceSet ->
               sourceSet.dependencies {
-                implementation(libs("mockito.core"))
-                implementation(libs("mockito.kotlin"))
+                implementation(libs("mockk"))
                 implementation(libs("truth"))
               }
             }

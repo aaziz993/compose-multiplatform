@@ -1,6 +1,7 @@
 config:
   imports:
     - org.jetbrains.compose.resources.ResourcesExtension
+    - org.jetbrains.compose.ExperimentalComposeLibrary
 script:
   - plugins:
       - id: (libs.plugins("compose.multiplatform").pluginId)
@@ -25,6 +26,7 @@ script:
         - named: |
             ("commonTest") { sourceSet ->
               sourceSet.dependencies { 
+                @OptIn(ExperimentalComposeLibrary::class)
                 implementation(composeLibs.uiTest)
               }
             }
@@ -53,6 +55,6 @@ script:
         publicResClass: true
         generateResClass: ResourcesExtension.ResourceClassGeneration.Auto
   - dependencies:
-      - debugImplementation: (composeLibs.uiTooling)
+#      - debugImplementation: (composeLibs.uiTooling)
       # android dependencies
       - add: ("lintChecks", libs("compose.lint.checks"))
