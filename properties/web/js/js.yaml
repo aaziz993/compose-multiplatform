@@ -31,11 +31,11 @@ script:
                 implementation(libs("compass.geolocation.browser"))
                 implementation(libs("worldwind"))
                 implementation(libs("ktor.client.js"))
-                implementation(npm("@js-joda/timezone", libs.versions("npm.js.joda.timezone")!!.requiredVersion))
-                implementation(devNpm("copy-webpack-plugin", libs.versions("npm.copy.webpack.plugin")!!.requiredVersion))
-                implementation(npm("openpgp", libs.versions("npm.openpgp")!!.requiredVersion))
-                implementation(npm("pako", libs.versions("npm.pako")!!.requiredVersion))
-                implementation(npm("puppeteer", libs.versions("npm.puppeteer")!!.requiredVersion))
+                implementation(npm("@js-joda/timezone", libs.versions("npm.js.joda.timezone").requiredVersion))
+                implementation(devNpm("copy-webpack-plugin", libs.versions("npm.copy.webpack.plugin").requiredVersion))
+                implementation(npm("openpgp", libs.versions("npm.openpgp").requiredVersion))
+                implementation(npm("pako", libs.versions("npm.pako").requiredVersion))
+                implementation(npm("puppeteer", libs.versions("npm.puppeteer").requiredVersion))
               }
             }
         - named: |

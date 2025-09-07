@@ -316,24 +316,21 @@ public fun Project.files(elements: Iterable<String>): ConfigurableFileCollection
 // a pre-release gradle.api.version MAY be denoted by appending a hyphen and a series of dot separated identifiers immediately following the patch gradle.api.version. Identifiers MUST comprise only ASCII alphanumerics and hyphens [0-9A-Za-z-]. Identifiers MUST NOT be empty. Numeric identifiers MUST NOT include leading zeroes. Examples: 1.0.0-alpha, 1.0.0-alpha.1, 1.0.0-0.3.7, 1.0.0-x.7.z.92, 1.0.0-x-y-z.--.
 // build metadata MAY be denoted by appending a plus sign and a series of dot separated identifiers immediately following the patch or pre-release gradle.api.version. Identifiers MUST comprise only ASCII alphanumerics and hyphens [0-9A-Za-z-]. Identifiers MUST NOT be empty. Examples: 1.0.0-alpha+001, 1.0.0+20130313144700, 1.0.0-beta+exp.sha.5114f85, 1.0.0+21AF26D3----117B344092BD.
 public fun Project.version(
-    major: Int = 1,
-    minor: Int = 0,
-    patch: Int = 0,
+    major: Int? = null,
+    minor: Int? = null,
+    patch: Int? = null,
     preRelease: String? = null,
     buildMetadata: String? = null,
-): String {
+) {
     val camelCaseName = project.name.toCamelCase()
 
-    return Version(
-        project.libs.versions("$camelCaseName.version.major")?.requiredVersion?.toInt()
-            ?: major,
-        project.libs.versions("$camelCaseName.version.minor")?.requiredVersion?.toInt()
-            ?: minor,
-        project.libs.versions("$camelCaseName.version.patch")?.requiredVersion?.toInt()
-            ?: patch,
-        project.libs.versions("$camelCaseName.version.preRelease")?.requiredVersion
+    version = Version(
+        major ?: project.libs.versions("$camelCaseName.version.major").requiredVersion.toInt(),
+        minor ?: project.libs.versions("$camelCaseName.version.minor").requiredVersion.toInt(),
+        patch ?: project.libs.versions("$camelCaseName.version.patch").requiredVersion.toInt(),
+        project.libs.versions["$camelCaseName.version.preRelease"]?.requiredVersion
             ?: preRelease,
-        project.libs.versions("$camelCaseName.version.buildMetadata")?.requiredVersion
+        project.libs.versions["$camelCaseName.version.buildMetadata"]?.requiredVersion
             ?: buildMetadata ?: CI.current?.buildMetadata,
     ).toString()
 }

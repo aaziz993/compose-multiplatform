@@ -6,7 +6,7 @@ script:
       - id: (libs.plugins("cocoapods").pluginId)
   - kotlin:
       cocoapods:
-        version: libs.versions("kotlin.cocoapods.version")!!.requiredVersion
+        version: libs.versions("kotlin.cocoapods.version").requiredVersion
         summary: '"Some description for a Kotlin/Native module"'
         homepage: '"Link to a Kotlin/Native module homepage"'
         name: name
@@ -30,10 +30,10 @@ script:
             "CUSTOM_RELEASE" to NativeBuildType.RELEASE,
           ))
         ios:
-          deploymentTarget: libs.versions("kotlin.cocoapods.ios-deploymentTarget")!!.requiredVersion
+          deploymentTarget: libs.versions("kotlin.cocoapods.ios-deploymentTarget").requiredVersion
         osx:
-          deploymentTarget: libs.versions("kotlin.cocoapods.osx-deploymentTarget")!!.requiredVersion
+          deploymentTarget: libs.versions("kotlin.cocoapods.osx-deploymentTarget").requiredVersion
         tvos:
-          deploymentTarget: libs.versions("kotlin.cocoapods.tvos-deploymentTarget")!!.requiredVersion
+          deploymentTarget: libs.versions("kotlin.cocoapods.tvos-deploymentTarget").requiredVersion
         watchos:
-          deploymentTarget: libs.versions("kotlin.cocoapods.watchos-deploymentTarget")!!.requiredVersion
+          deploymentTarget: libs.versions("kotlin.cocoapods.watchos-deploymentTarget").requiredVersion

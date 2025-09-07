@@ -32,17 +32,17 @@ import org.gradle.api.internal.artifacts.dependencies.DefaultPluginDependency
 import org.gradle.api.internal.catalog.DefaultExternalModuleDependencyBundle
 import org.gradle.api.provider.Provider
 import org.gradle.plugin.use.PluginDependency
-import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import java.net.URI
 
 @Serializable(with = VersionCatalogSerializer::class)
 public data class VersionCatalog(
-    private val versions: Map<String, VersionConstraint>,
-    private val libraries: Map<String, MinimalExternalModuleDependency>,
-    private val plugins: Map<String, PluginDependency>,
-    private val bundles: Map<String, ExternalModuleDependencyBundle>
+    public val versions: Map<String, VersionConstraint>,
+    public val libraries: Map<String, MinimalExternalModuleDependency>,
+    public val plugins: Map<String, PluginDependency>,
+    public val bundles: Map<String, ExternalModuleDependencyBundle>
 ) {
-    public fun versions(alias: String): VersionConstraint? = versions[alias]
+    public fun versions(alias: String): VersionConstraint =
+        versions[alias] ?: throw IllegalArgumentException("Unresolved version '$alias'")
 
     public fun libraries(alias: String): MinimalExternalModuleDependency =
         libraries[alias] ?: throw IllegalArgumentException("Unresolved library '$alias'")
