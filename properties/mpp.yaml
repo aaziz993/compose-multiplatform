@@ -440,7 +440,7 @@ script:
         version: libs.versions("kotlin.cocoapods.version")!!.requiredVersion
         summary: '"Some description for a Kotlin/Native module"'
         homepage: '"Link to a Kotlin/Native module homepage"'
-        name: '"MyCocoaPod"'
+        name: name
         framework: |
           {
             // Required properties

@@ -3,17 +3,13 @@ package gradle.plugins.project
 import gradle.api.ci.CI
 import gradle.api.maybeNamed
 import gradle.api.project.ProjectProperties
-import gradle.api.project.karakum
-import gradle.api.project.kotlin
 import gradle.plugins.initialization.SLF4JProblemReporterContext
-import gradle.plugins.karakum.setKarakumSrcDir
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.internal.os.OperatingSystem
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.tasks.KotlinNativeLink
-import org.gradle.kotlin.dsl.*
 
 public class ProjectPlugin : Plugin<Project> {
 
@@ -21,9 +17,7 @@ public class ProjectPlugin : Plugin<Project> {
         with(target) {
             // Load and apply project.yaml to build.gradle.kts.
             ProjectProperties()
-pluginManager.withPlugin("org.jetbrains.kotlin.multiplatform"){
 
-}
             configureLinkTasks()
 
             CI.configureTasks()
