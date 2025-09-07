@@ -3,12 +3,15 @@ package gradle.plugins.project
 import gradle.api.ci.CI
 import gradle.api.maybeNamed
 import gradle.api.project.ProjectProperties
+import gradle.api.project.android
+import gradle.api.project.androidApplication
 import gradle.api.project.atomicFU
 import gradle.plugins.android.AndroidPlugin
 import gradle.plugins.compose.ComposePlugin
 import gradle.plugins.initialization.SLF4JProblemReporterContext
 import gradle.plugins.kotlin.mpp.MPPPlugin
 import gradle.plugins.kotlin.targets.JvmPlugin
+import klib.data.type.tuples.and
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project

@@ -19,9 +19,9 @@ script:
                 implementation(libs("androidx.ui.test.junit4.android"))
               }
             }
-  - android:
+  - androidApplication:
       namespace: androidNamespace
-      compileSdk: libs.versions("android.compileSdk").requiredVersion
+      compileSdk: libs.versions("android.compileSdk").requiredVersion.toInt()
       compileOptions:
         isCoreLibraryDesugaringEnabled: true
         sourceCompatibility: JavaVersion.VERSION_11
