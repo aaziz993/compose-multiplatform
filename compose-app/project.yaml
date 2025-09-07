@@ -18,7 +18,17 @@ imports:
   - ../properties/publish.yaml
 script:
   - description: '"Compose multiplatform application."'
+  - plugins:
+      - id: (libs.plugins("compose.hotReload").pluginId)
   - kotlin:
+      targets:
+        - withType<KotlinNativeTarget>: |
+            {
+              binaries.framework {
+                baseName = moduleName
+                isStatic = true
+              }
+            }
       sourceSets:
         - named: |
             ("commonMain") { sourceSet ->
