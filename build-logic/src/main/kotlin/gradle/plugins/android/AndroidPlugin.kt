@@ -1,22 +1,20 @@
 package gradle.plugins.android
 
-import gradle.api.project.projectProperties
-
-import gradle.api.project.ProjectLayout
-import gradle.api.project.android
-import klib.data.type.trySetSystemProperty
-import javax.xml.stream.XMLEventFactory
-import javax.xml.stream.XMLInputFactory
-import javax.xml.stream.XMLOutputFactory
-import org.gradle.api.Plugin
-import org.gradle.api.Project
-import org.gradle.api.tasks.SourceSet
 import gradle.api.configureEach
 import gradle.api.file.replace
+import gradle.api.project.ProjectLayout
 import gradle.api.project.androidApplication
+import gradle.api.project.projectProperties
 import klib.data.type.pair
 import klib.data.type.primitives.string.addPrefixIfNotEmpty
 import klib.data.type.primitives.string.lowercaseFirst
+import klib.data.type.trySetSystemProperty
+import org.gradle.api.Plugin
+import org.gradle.api.Project
+import org.gradle.api.tasks.SourceSet
+import javax.xml.stream.XMLEventFactory
+import javax.xml.stream.XMLInputFactory
+import javax.xml.stream.XMLOutputFactory
 
 private val TEST_SOURCE_SET_NAME_PREFIXES = listOf(
     SourceSet.TEST_SOURCE_SET_NAME,
