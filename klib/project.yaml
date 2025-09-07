@@ -5,6 +5,7 @@ imports:
   - ../properties/jvm/jvm.yaml
   - ../properties/jvm-common.yaml
   - ../properties/native/apple/ios.yaml
+  - ../properties/native/apple/cocoapods.yaml
   - ../properties/android-ios.yaml
   - ../properties/android-ios-web.yaml
   - ../properties/jvm-android-ios.yaml

@@ -14,7 +14,11 @@ script:
         xmlReport: true
         xmlOutput: file("build/reports/lint-results.xml") # path to the lint report to consume by sonar
       defaultConfig:
+        applicationId: androidNamespace
         minSdk: libs.versions("android.minSdk")!!.requiredVersion.toInt()
+        targetSdk: libs.versions("android.targetSdk")!!.requiredVersion.toInt()
+        versionCode: libs.versions("android.versionCode")!!.requiredVersion.toInt()
+        versionName: libs.versions("android.versionName")!!.requiredVersion.toInt()
         testInstrumentationRunner: '"androidx.test.runner.AndroidJUnitRunner"'
         manifestPlaceholders.putAll: |
           (mapOf(
@@ -135,7 +139,7 @@ script:
         resources:
           excludes.addAll: |
             (setOf(
-              "/META-INF/{AL2.0,LGPL2.1",
+              "/META-INF/{AL2.0,LGPL2.1}",
             ))
       buildFeatures:
         buildConfig: true

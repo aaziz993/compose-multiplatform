@@ -1,8 +1,0 @@
-plugins:
-  ids: [ $libs.apple ]
-
-apple:
-  teamID: io.github.aaziz993
-  iosApp:
-    buildSettings:
-      DEVELOPMENT_TEAM: io.github.aaziz993
