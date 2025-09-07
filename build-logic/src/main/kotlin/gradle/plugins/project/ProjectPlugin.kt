@@ -1,33 +1,20 @@
 package gradle.plugins.project
 
-import com.android.build.api.dsl.androidLibrary
 import gradle.api.ci.CI
 import gradle.api.maybeNamed
 import gradle.api.project.ProjectProperties
-import gradle.api.project.android
-import gradle.api.project.compose
-import gradle.api.project.composeLibs
-import gradle.api.project.desktop
-import gradle.api.project.kotlin
-import gradle.api.project.resources
-import gradle.api.project.spotless
 import gradle.plugins.android.AndroidPlugin
 import gradle.plugins.compose.ComposePlugin
 import gradle.plugins.initialization.SLF4JProblemReporterContext
 import gradle.plugins.kotlin.mpp.MPPPlugin
 import gradle.plugins.kotlin.targets.JvmPlugin
 import org.gradle.api.GradleException
-import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.internal.os.OperatingSystem
 import org.gradle.kotlin.dsl.withType
-import org.jetbrains.compose.desktop.application.dsl.JvmApplication
-import org.jetbrains.compose.resources.ResourcesExtension
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
-import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 import org.jetbrains.kotlin.gradle.tasks.KotlinNativeLink
-import org.gradle.kotlin.dsl.*
+
 public class ProjectPlugin : Plugin<Project> {
 
     override fun apply(target: Project): Unit = with(SLF4JProblemReporterContext()) {

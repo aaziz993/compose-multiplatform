@@ -1,14 +1,13 @@
-config:
-  imports:
-    - jvm.yaml
+imports:
+  - jvm.yaml
 script:
   - kotlin:
       targets:
         - withType<KotlinJvmTarget>: |
             {
-              binaries { 
+              binaries {
                 executable {
-                  mainClass = "ApplicationKt"
+                  mainClass /= "ApplicationKt"
                 }
               }
             }
