@@ -476,7 +476,7 @@ kotlin-scripting-jvm-host = { module = "org.jetbrains.kotlin:kotlin-scripting-jv
 # api that you can use to develop lightweight compiler plugins. KSP provides a simplified compiler plugin API that leverages the power of Kotlin while keeping the learning curve at a minimum. Compared to KAPT, annotation processors that use KSP can run up to 2x faster.
 symbol-processing-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
 # logging library targeting Android, iOS, JVM, WasmJS and JS.
-km-logging = { module = "org.diamondedge:logging", version.ref = "km-logging" }
+km-logging = { module = "com.diamondedge:logging", version.ref = "km-logging" }
 # multiplatform library that provides the idiomatic and efficient way of using atomic operations in Kotlin.
 atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "atomicfu" }
 # human readable
