@@ -2,7 +2,6 @@ imports:
   - ../properties/root.yaml
   - ../properties/mpp.yaml
   - ../properties/android/android-application.yaml
-  - ../properties/android/android-application-compose.yaml
   - ../properties/jvm/jvm-app.yaml
   - ../properties/jvm-common.yaml
   - ../properties/native/apple/ios.yaml
@@ -17,6 +16,7 @@ imports:
   - ../properties/jvm-web.yaml
   - ../properties/subproject.yaml
   - ../properties/compose.yaml
+  - ../properties/android/android-application-compose.yaml
   - ../properties/publish.yaml
 script:
   - description: '"Compose multiplatform application."'
