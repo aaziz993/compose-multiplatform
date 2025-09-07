@@ -3,7 +3,6 @@ package gradle.api.initialization
 import gradle.api.initialization.dsl.VersionCatalog
 import gradle.api.repositories.CacheRedirector
 import gradle.plugins.getOrPut
-import klib.data.type.reflection.invoke
 import kotlinx.serialization.decodeFromString
 import net.peanuuutz.tomlkt.Toml
 import org.danilopianini.gradle.git.hooks.GitHooksExtension
@@ -43,7 +42,7 @@ public val Settings.libs: VersionCatalog
     }
 
 context(settings: Settings)
-public fun VersionCatalogBuilder.from(lib: MinimalExternalModuleDependency) {
+public fun VersionCatalogBuilder.fromLib(lib: MinimalExternalModuleDependency) {
     settings.extraProperties[name] = VersionCatalog(lib)
 }
 
