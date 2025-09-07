@@ -50,6 +50,7 @@ script:
                 implementation(libs("androidx.test.espresso.core"))
                 implementation(libs("androidx.test.rules"))
                 implementation(libs("androidx.test.monitor"))
+                implementation(libs("androidx.ui.test.manifest"))
                 implementation(libs("mockk.android"))
                 implementation(libs("androidx.ui.test.junit4.android"))
               }

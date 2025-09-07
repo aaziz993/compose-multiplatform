@@ -164,5 +164,6 @@ script:
         viewBinding: true
         compose: true
   - dependencies:
+      - debugImplementation: (libs("androidx.ui.test.manifest"))
       - add: ("coreLibraryDesugaring", libs("android.desugar.jdk.libs"))
 

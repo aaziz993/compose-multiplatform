@@ -21,5 +21,4 @@ script:
               }
             }
   - dependencies:
-      - debugImplementation: (libs("androidx.ui.test.manifest"))
       - dokkaPlugin: (libs("android.documentation.plugin"))
