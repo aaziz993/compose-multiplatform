@@ -1,15 +1,16 @@
-description: Server application.
-
-templates:
-  - ../templates/gradle/jvm/jvm.yaml
-  - ../templates/gradle/jvm/jvm-app.yaml
-  - ../templates/gradle/jvm-subproject.yaml
-  - ../templates/gradle/subproject.yaml
-  - ../templates/gradle/root.yaml
-
-kotlin:
-  sourceSets:
-    - commonMain:
-        dependencies:
-          - :kmp-lib
-          - :shared
+imports:
+  - ../properties/root.yaml
+  - ../properties/mpp.yaml
+  - ../properties/jvm/jvm-app.yaml
+  - ../properties/subproject.yaml
+script:
+  - description: '"Server application."'
+  - kotlin:
+      sourceSets:
+        - named: |
+            ("commonMain") { sourceSet -> 
+              dependencies {
+                implementation(project(":klib"))
+                implementation(project(":shared"))
+              }
+            }
