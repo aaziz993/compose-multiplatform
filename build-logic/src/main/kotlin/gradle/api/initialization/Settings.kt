@@ -13,6 +13,7 @@ import org.gradle.api.artifacts.repositories.IvyArtifactRepository
 import org.gradle.api.artifacts.repositories.MavenArtifactRepository
 import org.gradle.api.initialization.Settings
 import org.gradle.api.initialization.dsl.VersionCatalogBuilder
+import org.gradle.api.initialization.resolve.MutableVersionCatalogContainer
 import org.gradle.kotlin.dsl.getByType
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import java.io.File
@@ -41,8 +42,9 @@ public val Settings.libs: VersionCatalog
         )
     }
 
+@Suppress("UnusedReceiverParameter")
 context(settings: Settings)
-public fun VersionCatalogBuilder.fromLib(lib: MinimalExternalModuleDependency) {
+public fun MutableVersionCatalogContainer.create(name: String, lib: MinimalExternalModuleDependency) {
     settings.extraProperties[name] = VersionCatalog(lib)
 }
 

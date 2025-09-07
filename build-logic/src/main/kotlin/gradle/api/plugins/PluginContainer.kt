@@ -13,11 +13,13 @@ private fun PluginAware.plugins(block: PluginDependenciesSpecScope.() -> Unit): 
         if (pluginDependencySpec.apply) pluginManager.apply(pluginDependencySpec.pluginId)
     }
 
+@Suppress("UnusedReceiverParameter")
 context(settings: Settings)
 public fun PluginContainer.id(id: String): Unit = settings.plugins {
     id(id)
 }
 
+@Suppress("UnusedReceiverParameter")
 context(settings: Settings)
 public fun PluginContainer.alias(notation: PluginDependency, apply: Boolean = true): Unit = settings.plugins {
     val notationProvider = settings.providers.provider { notation }
@@ -25,6 +27,7 @@ public fun PluginContainer.alias(notation: PluginDependency, apply: Boolean = tr
     alias(notationProvider) apply apply
 }
 
+@Suppress("UnusedReceiverParameter")
 context(project: Project)
 public fun PluginContainer.id(id: String): Unit = project.plugins {
     id(id)

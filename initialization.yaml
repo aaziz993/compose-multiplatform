@@ -45,8 +45,15 @@ script:
   - enableFeaturePreview: ("TYPESAFE_PROJECT_ACCESSORS")
   - pluginManagement:
       repositories:
+        - google: |
+            { repository ->
+              repository.mavenContent { mavenContent ->
+                mavenContent.includeGroupAndSubgroups("androidx")
+                mavenContent.includeGroupAndSubgroups("com.android")
+                mavenContent.includeGroupAndSubgroups("com.google")
+              }
+            }
         - mavenCentral: ()
-        - google: ()
         - gradlePluginPortal: ()
         - maven: ("https://company/com/maven2")
         - maven: ("https://packages.jetbrains.team/maven/p/ij/intellij-dependencies")
@@ -132,9 +139,16 @@ script:
   - dependencyResolutionManagement:
       repositoriesMode.set: (RepositoriesMode.FAIL_ON_PROJECT_REPOS)
       repositories:
-        - mavenCentral: ()
         # For the Android plugin and dependencies
-        - google: ()
+        - google: |
+            { repository ->
+              repository.mavenContent { mavenContent ->
+                mavenContent.includeGroupAndSubgroups("androidx")
+                mavenContent.includeGroupAndSubgroups("com.android")
+                mavenContent.includeGroupAndSubgroups("com.google")
+              }
+            }
+        - mavenCentral: ()
         # For other Gradle plugins
         - gradlePluginPortal: ()
         # For dev versions of kotlin
@@ -150,7 +164,7 @@ script:
         - maven: ("https://cache-redirector.jetbrains.com/packages.jetbrains.team/maven/p/ij/intellij-dependencies")
         - maven: ("https://cache-redirector.jetbrains.com/download.jetbrains.com/teamcity-repository")
       versionCatalogs:
-        - create: ("kotlinWrappers"){ catalog -> catalog.fromLib(libs("kotlin.wrappers.catalog")) }
+        - create: ("kotlinWrappers", libs("kotlin.wrappers.catalog"))
   - enableCacheRedirect: ()
   - buildCache:
       - local:
