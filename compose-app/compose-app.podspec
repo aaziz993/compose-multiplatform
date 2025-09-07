@@ -1,20 +1,23 @@
 Pod::Spec.new do |spec|
     spec.name                     = 'compose-app'
-    spec.version                  = '1.0.0'
-    spec.homepage                 = ''
+    spec.version                  = '1.0'
+    spec.homepage                 = 'Link to a Kotlin/Native module homepage'
     spec.source                   = { :http=> ''}
     spec.authors                  = ''
     spec.license                  = ''
-    spec.summary                  = ''
-    spec.vendored_frameworks      = 'build/cocoapods/framework/compose_app.framework'
+    spec.summary                  = 'Some description for a Kotlin/Native module'
+    spec.vendored_frameworks      = 'build/cocoapods/framework/MyFramework.framework'
     spec.libraries                = 'c++'
+    spec.ios.deployment_target    = '18.2'
+    spec.osx.deployment_target    = '15.2'
+    spec.tvos.deployment_target    = '18.2'
+    spec.watchos.deployment_target    = '11.2'
                 
                 
-                
-    if !Dir.exist?('build/cocoapods/framework/compose_app.framework') || Dir.empty?('build/cocoapods/framework/compose_app.framework')
+    if !Dir.exist?('build/cocoapods/framework/MyFramework.framework') || Dir.empty?('build/cocoapods/framework/MyFramework.framework')
         raise "
 
-        Kotlin framework 'compose_app' doesn't exist yet, so a proper Xcode project can't be generated.
+        Kotlin framework 'MyFramework' doesn't exist yet, so a proper Xcode project can't be generated.
         'pod install' should be executed after running ':generateDummyFramework' Gradle task:
 
             ./gradlew :compose-app:generateDummyFramework
@@ -28,7 +31,7 @@ Pod::Spec.new do |spec|
                 
     spec.pod_target_xcconfig = {
         'KOTLIN_PROJECT_PATH' => ':compose-app',
-        'PRODUCT_MODULE_NAME' => 'compose_app',
+        'PRODUCT_MODULE_NAME' => 'MyFramework',
     }
                 
     spec.script_phases = [
@@ -50,5 +53,5 @@ Pod::Spec.new do |spec|
             SCRIPT
         }
     ]
-                
+    spec.resources = ['build/compose/cocoapods/compose-resources']
 end
