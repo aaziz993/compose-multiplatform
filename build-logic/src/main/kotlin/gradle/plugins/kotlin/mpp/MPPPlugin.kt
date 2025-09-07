@@ -18,6 +18,12 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
 import org.gradle.kotlin.dsl.getByType
 
+private val TEST_SOURCE_SET_NAME_PREFIXES = listOf(
+    SourceSet.TEST_SOURCE_SET_NAME,
+    "unitTest",
+    "instrumentedTest",
+)
+
 public class MPPPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
@@ -49,19 +55,11 @@ public class MPPPlugin : Plugin<Project> {
 
                             val restPart = sourceSet.name.removePrefix(androidTarget.targetName).lowercaseFirst()
 
-                            val mainSourceSetNamePrefix = androidTarget.mainVariant.sourceSetTree.get().name
-
-                            val testSourceSetNamePrefixes = listOf(
-                                SourceSet.TEST_SOURCE_SET_NAME,
-                                "unitTest",
-                                androidTarget.instrumentedTestVariant.sourceSetTree.get().name,
-                            )
-
-                            if (restPart == mainSourceSetNamePrefix) {
+                            if (restPart == androidTarget.mainVariant.sourceSetTree.get().name) {
                                 srcPrefixPart = "src"
                                 resourcesPrefixPart = ""
                             } else {
-                                val prefix = testSourceSetNamePrefixes.find(restPart::startsWith)
+                                val prefix = TEST_SOURCE_SET_NAME_PREFIXES.find(restPart::startsWith)
 
                                 if (prefix == null) {
                                     srcPrefixPart = restPart
