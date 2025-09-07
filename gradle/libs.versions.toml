@@ -8,23 +8,23 @@
 ## a pre-release version MAY be denoted by appending a hyphen and a series of dot separated identifiers immediately following the patch version. Identifiers MUST comprise only ASCII alphanumerics and hyphens [0-9A-Za-z-]. Identifiers MUST NOT be empty. Numeric identifiers MUST NOT include leading zeroes. Examples: 1.0.0-alpha, 1.0.0-alpha.1, 1.0.0-0.3.7, 1.0.0-x.7.z.92, 1.0.0-x-y-z.--.
 ## build metadata MAY be denoted by appending a plus sign and a series of dot separated identifiers immediately following the patch or pre-release version. Identifiers MUST comprise only ASCII alphanumerics and hyphens [0-9A-Za-z-]. Identifiers MUST NOT be empty. Examples: 1.0.0-alpha+001, 1.0.0+20130313144700, 1.0.0-beta+exp.sha.5114f85, 1.0.0+21AF26D3----117B344092BD.
 # build-logic-settings
-buildLigicSettings-version-major = "1"
-buildLigicSettings-version-minor = "0"
-buildLigicSettings-version-patch = "0"
-buildLigicSettings-version-preRelase = "alpha" # optional
+buildLogic-version-major = "1"
+buildLogic-version-minor = "0"
+buildLogic-version-patch = "0"
+buildLogic-version-preRelase = "alpha" # optional
 #buildLigicSettings-version-buildMetadata = "" # optional
 # kmp-lib
-kotlinLib-version-major = "1"
-kotlinLib-version-minor = "0"
-kotlinLib-version-patch = "0"
-kotlinLib-version-preRelase = "alpha" # optional
-#kotlinLib-version-buildMetadata = "" # optional
+klib-version-major = "1"
+klib-version-minor = "0"
+klib-version-patch = "0"
+klib-version-preRelase = "alpha" # optional
+#klib-version-buildMetadata = "" # optional
 # cmp-lib
-composeLib-version-major = "1"
-composeLib-version-minor = "0"
-composeLib-version-patch = "0"
-composeLib-version-preRelase = "alpha" # optional
-#composeLib-version-buildMetadata = "" # optional
+clib-version-major = "1"
+clib-version-minor = "0"
+clib-version-patch = "0"
+clib-version-preRelase = "alpha" # optional
+#clib-version-buildMetadata = "" # optional
 # compiler
 compiler-version-major = "1"
 compiler-version-minor = "0"
