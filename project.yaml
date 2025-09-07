@@ -26,5 +26,5 @@ script:
   - knit:
       siteRoot: '"${settings.settingsProperties.remote.url}"'
       moduleRootsFromIncludes: ()
-      moduleDocs: '"build/dokka"'
-      dokkaMultiModuleRoot: '"build/dokka"'
+      moduleDocs: '"build/dokka/html"'
+      dokkaMultiModuleRoot: '"build/dokka/htmlMultiModule/"'
