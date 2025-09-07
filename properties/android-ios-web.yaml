@@ -1,0 +1,9 @@
+script:
+  - kotlin:
+      sourceSets:
+        - named: |
+            ("androidIosWebMain") { sourceSet ->
+              sourceSet.dependencies {
+                implementation(libs("webrtc.kmp"))
+              }
+            }

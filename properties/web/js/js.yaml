@@ -1,0 +1,48 @@
+config:
+  imports:
+    - org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
+    - gradle.plugins.karakum.*
+script:
+  - plugins:
+      # Converter of TypeScript declaration files to Kotlin declarations.
+      - id: (libs.plugins("karakum").pluginId)
+  - kotlin:
+      js: |
+        {
+          browser {
+            commonWebpackConfig { commonWebpackConfig ->
+              commonWebpackConfig.devServer = (commonWebpackConfig.devServer ?: KotlinWebpackConfig.DevServer()).apply {
+                static = (static ?: mutableListOf()).apply{
+                  add("src@js")
+                }
+              }
+            }
+          }
+        }
+      sourceSets:
+        - named: |
+            ("jsMain") { sourceSet ->
+              sourceSet.setKarakumSrcDir()
+
+              sourceSet.dependencies {
+                implementation(libs("seskar"))
+                implementation(libs("kstore.storage"))
+                implementation(libs("sqldelight.web.worker.driver"))
+                implementation(libs("compass.geolocation.browser"))
+                implementation(libs("worldwind"))
+                implementation(libs("ktor.client.js"))
+                implementation(npm("@js-joda/timezone", libs.versions("npm.js.joda.timezone")!!.requiredVersion))
+                implementation(devNpm("copy-webpack-plugin", libs.versions("npm.copy.webpack.plugin")!!.requiredVersion))
+                implementation(npm("openpgp", libs.versions("npm.openpgp")!!.requiredVersion))
+                implementation(npm("pako", libs.versions("npm.pako")!!.requiredVersion))
+                implementation(npm("puppeteer", libs.versions("npm.puppeteer")!!.requiredVersion))
+              }
+            }
+        - named: |
+            ("jsTest") { sourceSet ->
+              sourceSet.setKarakumSrcDir()
+
+              sourceSet.dependencies {
+                implementation(kotlin("test-js"))
+              }
+            }

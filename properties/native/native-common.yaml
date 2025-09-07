@@ -1,0 +1,40 @@
+config:
+  imports:
+    - org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
+    - org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTargetWithTests
+script:
+  - kotlin:
+      targets:
+        - withType<KotlinNativeTarget>: |
+            {
+              compilerOptions {
+                optIn.addAll(
+                  "kotlin.experimental.ExperimentalObjCName",
+                  "kotlin.experimental.ExperimentalNativeApi",
+                  "kotlinx.cinterop.ExperimentalForeignApi",
+                  "kotlinx.cinterop.BetaInteropApi",
+                  "kotlinx.cinterop.UnsafeNumber",
+                )
+
+                freeCompilerArgs.addAll(
+                  "-Xexport-kdoc",
+                  "-Xallocator=custom",
+                  "-XXLanguage+ImplicitSignedToUnsignedIntegerConversion",
+                  "-Xadd-light-debug=enable",
+                )
+              }
+              binaries {
+                framework {
+                  // add it to avoid sqllite3 issues in iOS . Required when using NativeSQLiteDriver
+                  linkerOpts.addAll(listOf("--lsqlite3"))
+                }
+
+                test(listOf(NativeBuildType.RELEASE))
+              }
+            }
+        - withType<KotlinNativeTargetWithTests<*>>: |
+            {
+              testRuns.register("releaseTest") { testRun ->
+                  testRun.setExecutionSourceFrom(binaries.getTest(NativeBuildType.RELEASE))
+              }
+            }

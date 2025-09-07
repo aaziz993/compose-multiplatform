@@ -1,0 +1,9 @@
+script:
+  - kotlin:
+      sourceSets:
+        - named: |
+            ("androidIosTest") { sourceSet ->
+              sourceSet.dependencies {
+                implementation(libs("permissions.test"))
+              }
+            }

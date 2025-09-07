@@ -1,7 +1,7 @@
 imports:
   - ../properties/root.yaml
   - ../properties/mpp.yaml
-  - ../properties/jvm/android/android-library.yaml
+  - ../properties/android/android-library.yaml
   - ../properties/web/js/js-library.yaml
   - ../properties/web/wasmJs/wasm-js-library.yaml
   - ../properties/subproject.yaml

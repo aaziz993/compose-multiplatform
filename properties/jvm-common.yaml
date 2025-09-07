@@ -1,0 +1,26 @@
+script:
+  - kotlin:
+      sourceSets:
+        - named: |
+            ("jvmCommonMain") { sourceSet ->
+              sourceSet.dependencies {
+                implementation(libs.bundles("apache.commons"))
+                implementation(libs("itext.core"))
+                implementation(libs("cryptography.provider.jdk"))
+                implementation(libs.bundles("pgpainless"))
+                implementation(libs("sqldelight.sqlite.driver"))
+                implementation(libs("jsch"))
+                implementation(libs("sshj"))
+                implementation(libs("ktor.client.okhttp"))
+                implementation(kotlin("stdlib"))
+                implementation(libs("worldwind"))
+              }
+            }
+        - named: |
+            ("jvmCommonTest") { sourceSet ->
+              sourceSet.dependencies {
+                implementation(libs("mockito.core"))
+                implementation(libs("mockito.kotlin"))
+                implementation(libs("truth"))
+              }
+            }

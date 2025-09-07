@@ -1,0 +1,9 @@
+script:
+  - kotlin:
+      sourceSets:
+        - named: |
+            ("jvmWebMain") { sourceSet ->
+              sourceSet.dependencies {
+                implementation(libs("compass.geocoder.web.googlemaps"))
+              }
+            }

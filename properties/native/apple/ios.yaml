@@ -1,0 +1,15 @@
+script:
+  - kotlin:
+      iosArm64: ()
+      iosX64: ()
+      iosSimulatorArm64: ()
+      sourceSets:
+        - named: |
+            ("iosMain") { sourceSet ->
+              sourceSet.dependencies {
+                implementation(libs("cryptography.provider.openssl3"))
+                implementation(libs("sqldelight.native.driver"))
+                implementation(libs("ktor.client.darwin"))
+                implementation(libs("permissions"))
+              }
+            }
