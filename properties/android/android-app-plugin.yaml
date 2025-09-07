@@ -36,7 +36,7 @@ script:
         minSdk: libs.versions("android.minSdk").requiredVersion.toInt()
         targetSdk: libs.versions("android.targetSdk").requiredVersion.toInt()
         versionCode: libs.versions("android.versionCode").requiredVersion.toInt()
-        versionName: libs.versions("android.versionName").requiredVersion.toInt()
+        versionName: libs.versions("android.versionName").requiredVersion
         testInstrumentationRunner: '"androidx.test.runner.AndroidJUnitRunner"'
         manifestPlaceholders.putAll: |
           (mapOf(
