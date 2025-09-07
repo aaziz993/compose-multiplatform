@@ -10,11 +10,15 @@ script:
         {
           @OptIn(ExperimentalKotlinGradlePluginApi::class)
           instrumentedTestVariant.sourceSetTree.set(KotlinSourceSetTree.test)
-          dependencies {
-             androidTestImplementation("androidx.compose.ui:ui-test-junit4-android:1.8.2")
-             debugImplementation("androidx.compose.ui:ui-test-manifest:1.8.2")
-          }
         }
+      sourceSets:
+        - named: |
+            ("androidInstrumentedTest") { sourceSet ->
+              sourceSet.dependencies {
+                implementation(libs("mockk.android"))
+                implementation(libs("androidx.ui.test.junit4.android"))
+              }
+            }
   - android:
       namespace: androidNamespace
       compileSdk: libs.versions("android.compileSdk")!!.requiredVersion.toInt()

@@ -34,3 +34,23 @@ script:
             jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_1_8)
           }
         }
+      sourceSets:
+        - named: |
+            ("androidHostTest") { sourceSet ->
+              sourceSet.dependencies {
+                implementation(libs("androidx.arch.core.testing"))
+              }
+            }
+        - named: |
+            ("androidDeviceTest") { sourceSet ->
+              sourceSet.dependencies {
+                implementation(libs("androidx.test.core"))
+                implementation(libs("androidx.test.runner"))
+                implementation(libs("androidx.test.ext.junit"))
+                implementation(libs("androidx.test.espresso.core"))
+                implementation(libs("androidx.test.rules"))
+                implementation(libs("androidx.test.monitor"))
+                implementation(libs("mockk.android"))
+                implementation(libs("androidx.ui.test.junit4.android"))
+              }
+            }

@@ -20,22 +20,6 @@ script:
                 implementation(libs("worldwind"))
               }
             }
-        - named: |
-            ("androidHostTest") { sourceSet ->
-              sourceSet.dependencies {
-                implementation(libs("androidx.arch.core.testing"))
-              }
-            }
-        - named: |
-            ("androidDeviceTest") { sourceSet ->
-              sourceSet.dependencies {
-                implementation(libs("androidx.test.core"))
-                implementation(libs("androidx.test.runner"))
-                implementation(libs("androidx.test.ext.junit"))
-                implementation(libs("androidx.test.espresso.core"))
-                implementation(libs("androidx.test.rules"))
-                implementation(libs("androidx.test.monitor"))
-              }
-            }
   - dependencies:
+      - debugImplementation: (libs("androidx.ui.test.manifest"))
       - dokkaPlugin: (libs("android.documentation.plugin"))
