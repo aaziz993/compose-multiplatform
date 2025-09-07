@@ -2,6 +2,7 @@ imports:
   - ../properties/root.yaml
   - ../properties/mpp.yaml
   - ../properties/android/android-application.yaml
+  - ../properties/android/android-application-compose.yaml
   - ../properties/jvm/jvm-app.yaml
   - ../properties/jvm-common.yaml
   - ../properties/native/apple/ios.yaml
@@ -20,14 +21,6 @@ imports:
 script:
   - description: '"Compose multiplatform application."'
   - kotlin:
-      targets:
-        - withType<KotlinNativeTarget>: |
-            {
-              binaries.framework {
-                baseName = moduleName
-                isStatic = true
-              }
-            }
       sourceSets:
         - named: |
             ("commonMain") { sourceSet ->

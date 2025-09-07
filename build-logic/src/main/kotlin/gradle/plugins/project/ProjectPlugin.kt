@@ -3,6 +3,8 @@ package gradle.plugins.project
 import gradle.api.ci.CI
 import gradle.api.maybeNamed
 import gradle.api.project.ProjectProperties
+import gradle.api.project.androidApplication
+import gradle.api.project.composeLibs
 import gradle.plugins.android.AndroidPlugin
 import gradle.plugins.compose.ComposePlugin
 import gradle.plugins.initialization.SLF4JProblemReporterContext

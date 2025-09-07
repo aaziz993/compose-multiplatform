@@ -55,6 +55,5 @@ script:
         publicResClass: true
         generateResClass: ResourcesExtension.ResourceClassGeneration.Auto
   - dependencies:
-#      - debugImplementation: (composeLibs.uiTooling)
-      # android dependencies
+      # Android dependencies.
       - add: ("lintChecks", libs("compose.lint.checks"))

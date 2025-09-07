@@ -2,6 +2,7 @@ imports:
   - ../properties/root.yaml
   - ../properties/mpp.yaml
   - ../properties/android/android-library.yaml
+  - ../properties/android/android-library-compose.yaml
   - ../properties/jvm/jvm.yaml
   - ../properties/jvm-common.yaml
   - ../properties/native/apple/ios.yaml
