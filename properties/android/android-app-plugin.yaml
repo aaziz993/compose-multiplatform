@@ -21,7 +21,7 @@ script:
             }
   - android:
       namespace: androidNamespace
-      compileSdk: libs.versions("android.compileSdk")!!.requiredVersion.toInt()
+      compileSdk: libs.versions("android.compileSdk")!!.requiredVersion
       compileOptions:
         isCoreLibraryDesugaringEnabled: true
         sourceCompatibility: JavaVersion.VERSION_11
