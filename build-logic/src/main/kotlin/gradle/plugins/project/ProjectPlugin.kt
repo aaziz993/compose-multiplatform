@@ -14,6 +14,7 @@ import gradle.plugins.android.AndroidPlugin
 import gradle.plugins.compose.ComposePlugin
 import gradle.plugins.initialization.SLF4JProblemReporterContext
 import gradle.plugins.kotlin.mpp.MPPPlugin
+import gradle.plugins.kotlin.targets.JvmPlugin
 import org.gradle.api.GradleException
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
@@ -35,6 +36,7 @@ public class ProjectPlugin : Plugin<Project> {
 
             pluginManager.apply(MPPPlugin::class.java)
             pluginManager.apply(AndroidPlugin::class.java)
+            pluginManager.apply(JvmPlugin::class.java)
             pluginManager.apply(ComposePlugin::class.java)
 
             configureLinkTasks()
