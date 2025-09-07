@@ -27,7 +27,7 @@ public class SettingsPlugin : Plugin<Settings> {
                 gradle.projectsLoaded {
                     // Apply project files
                     with(rootProject) {
-                        val projectFiles = (listOfNotNull(
+                        val files = (listOfNotNull(
                             target.settingsProperties.licenseFile,
                             target.settingsProperties.codeOfConductFile,
                             target.settingsProperties.contributingFile,
@@ -37,7 +37,7 @@ public class SettingsPlugin : Plugin<Settings> {
                         //setup sync tasks execution during IDE import
                         tasks.configureEach { importTask ->
                             if (importTask.name == IDEA_IMPORT_TASK_NAME) {
-                                importTask.dependsOn(*projectFiles.toTypedArray())
+                                importTask.dependsOn(*files.toTypedArray())
                             }
                         }
                     }
