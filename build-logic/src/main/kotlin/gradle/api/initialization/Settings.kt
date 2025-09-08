@@ -42,7 +42,7 @@ public val Settings.localProperties: Properties
 public val Settings.catalogs: MutableMap<String, VersionCatalog>
     get() = extraProperties.getOrPut(VERSION_CATALOGS_EXT, ::mutableMapOf)
 
-public fun Settings.libs(name: String): VersionCatalog =
+public fun Settings.catalogs(name: String): VersionCatalog =
     catalogs[name] ?: throw IllegalArgumentException("Unresolved version catalog '$name'")
 
 @Suppress("UnstableApiUsage", "UNCHECKED_CAST")

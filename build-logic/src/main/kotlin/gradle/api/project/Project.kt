@@ -107,7 +107,7 @@ public val Project.settings: Settings get() = (gradle as GradleInternal).setting
 public val Project.catalogs: Map<String, VersionCatalog>
     get() = settings.catalogs
 
-public fun Project.libs(name: String): VersionCatalog = settings.libs(name)
+public fun Project.catalogs(name: String): VersionCatalog = settings.catalogs(name)
 
 public val Project.libs: VersionCatalog
     get() = settings.libs
