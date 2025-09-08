@@ -5,6 +5,10 @@ import com.fleeksoft.charset.decodeToString
 import com.fleeksoft.charset.toByteArray
 import com.ionspin.kotlin.bignum.decimal.BigDecimal
 import com.ionspin.kotlin.bignum.integer.BigInteger
+import dev.snipme.highlights.Highlights
+import dev.snipme.highlights.model.SyntaxLanguage
+import dev.snipme.highlights.model.SyntaxTheme
+import dev.snipme.highlights.model.SyntaxThemes
 import klib.data.type.primitives.string.fuzzywuzzy.Applicable
 import klib.data.type.primitives.string.fuzzywuzzy.FuzzySearch
 import klib.data.type.primitives.string.fuzzywuzzy.ToStringFunction
@@ -347,14 +351,13 @@ public fun matcher(
 // /////////////////////////////////////////////////////STRING//////////////////////////////////////////////////////////
 public fun ByteArray.decode(charset: Charset = Charset.UTF_8): String = decodeToString(Charsets.forName(charset.name))
 
-//public fun colorizeWithHighlightsAnsi(
-//    code: String,
-//    lang: SyntaxLanguage,
+//public fun String.highlight(
+//    lang: SyntaxLanguage = SyntaxLanguage.KOTLIN,
 //    theme: SyntaxTheme = SyntaxThemes.monokai()
 //): String {
 //    // (B) Build and run highlighter — adjust to your actual API.
 //    val highlights = Highlights.Builder()
-//        .code(code)
+//        .code(this)
 //        .language(lang)
 //        .theme(theme)
 //        .build()
@@ -363,9 +366,9 @@ public fun ByteArray.decode(charset: Charset = Charset.UTF_8): String = decodeTo
 //    // (C) Map each token to ANSI using its style color field; adjust field name.
 //    // Many libs expose something like token.text and token.style.color (hex).
 //    return buildString {
-//        for (token in highlights) {
+//        highlights.forEach { token->
 //            // Replace with your actual accessors:
-//            val text: String = token.text
+//            val text: String = token.toString()
 //            val hexColor: String? = token.style?.color // e.g. "#93CF55"
 //            append(colorChunkAnsi(text, hexColor))
 //        }

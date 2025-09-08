@@ -210,8 +210,7 @@ public object Ansi {
     public fun ansiFg256(idx: Int): String = "\u001B[38;5;${idx}m"
     public fun ansiBg256(idx: Int): String = "\u001B[48;5;${idx}m"
 
-    public fun stripAnsi(s: String): String =
-        s.replace(Regex("\\u001B\\[[0-9;]*m"), "")
+    public fun stripAnsi(s: String): String = s.replace(Regex("\\u001B\\[[0-9;]*m"), "")
 
     public fun hexToRgb(hex: String?): Triple<Int, Int, Int>? {
         if (hex == null) return null
@@ -238,16 +237,22 @@ public object Ansi {
         bold: Boolean = false,
         italic: Boolean = false,
         underline: Boolean = false,
-    ): String {
+    ): String = buildString {
         val fg = hexToRgb(fgHex)?.let { (r, g, b) -> ansiFg24(r, g, b) }.orEmpty()
         val bg = hexToRgb(bgHex)?.let { (r, g, b) -> ansiBg24(r, g, b) }.orEmpty()
-        val style = buildString {
-            if (bold) append(ANSI_BOLD)
-            if (italic) append(ANSI_ITALIC)
-            if (underline) append(ANSI_UNDERLINE)
-        }
-        return buildString {
-            append(style); append(fg); append(bg); append(text); append(ANSI_RESET)
+
+        if (bold) append(BOLD)
+        if (italic) append(ITALIC)
+        if (underline) append(UNDERLINE)
+        append(fg)
+        append(bg)
+        append(text);
+        append(RESET)
+    }
+
+    public fun colorize24(vararg chunks: ColoredChunk): String = buildString {
+        chunks.forEach { chunk ->
+            append(color24(chunk.text, chunk.fgHex, chunk.bgHex, chunk.bold, chunk.italic, chunk.underline))
         }
     }
 
@@ -258,24 +263,24 @@ public object Ansi {
         bold: Boolean = false,
         italic: Boolean = false,
         underline: Boolean = false,
-    ): String {
+    ): String = buildString {
         val fg = hexToXterm256(fgHex)?.let(::ansiFg256).orEmpty()
         val bg = hexToXterm256(bgHex)?.let(::ansiBg256).orEmpty()
-        val style = buildString {
-            if (bold) append(ANSI_BOLD)
-            if (italic) append(ANSI_ITALIC)
-            if (underline) append(ANSI_UNDERLINE)
-        }
-        return buildString {
-            append(style); append(fg); append(bg); append(text); append(ANSI_RESET)
-        }
+
+        if (bold) append(BOLD)
+        if (italic) append(ITALIC)
+        if (underline) append(UNDERLINE)
+        append(fg)
+        append(bg)
+        append(text)
+        append(RESET)
     }
 
-    public fun colorize24(vararg chunks: ColoredChunk): String =
-        buildString { for (c in chunks) append(color24(c.text, c.fgHex, c.bgHex, c.bold, c.italic, c.underline)) }
-
-    public fun colorize256(vararg chunks: ColoredChunk): String =
-        buildString { for (c in chunks) append(color256(c.text, c.fgHex, c.bgHex, c.bold, c.italic, c.underline)) }
+    public fun colorize256(vararg chunks: ColoredChunk): String = buildString {
+        chunks.forEach { chunk ->
+            append(color256(chunk.text, chunk.fgHex, chunk.bgHex, chunk.bold, chunk.italic, chunk.underline))
+        }
+    }
 }
 
 public fun String.toAnsi(ansi: String): String = "$ansi$this${Ansi.RESET}"
