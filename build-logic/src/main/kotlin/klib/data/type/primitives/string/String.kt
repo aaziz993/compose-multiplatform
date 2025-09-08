@@ -5,6 +5,7 @@ import com.fleeksoft.charset.decodeToString
 import com.fleeksoft.charset.toByteArray
 import com.ionspin.kotlin.bignum.decimal.BigDecimal
 import com.ionspin.kotlin.bignum.integer.BigInteger
+import java.nio.charset.StandardCharsets
 import klib.data.type.primitives.string.fuzzywuzzy.Applicable
 import klib.data.type.primitives.string.fuzzywuzzy.FuzzySearch
 import klib.data.type.primitives.string.fuzzywuzzy.ToStringFunction
@@ -363,4 +364,6 @@ public inline fun <reified T : Enum<T>> String.toEnum(): T = enumValueOf(this)
 // ///////////////////////////////////////////////////////ARRAY//////////////////////////////////////////////////////////
 public fun String.encode(charset: Charset = Charset.UTF_8): ByteArray = toByteArray(Charsets.forName(charset.name))
 
-public fun String.toBuffer(): Buffer = Buffer().apply { writeString(this@toBuffer) }
+public fun String.toBuffer(): Buffer = Buffer().apply {
+    writeString(this@toBuffer, StandardCharsets.UTF_8)
+}
