@@ -1,7 +1,6 @@
 imports:
   - ../properties/root.yaml
   - ../properties/mpp.yaml
-  - ../properties/subproject.yaml
   - ../properties/android/android-library.yaml
   - ../properties/jvm/jvm.yaml
   - ../properties/jvm-common.yaml
@@ -17,6 +16,7 @@ imports:
   - ../properties/jvm-web.yaml
   - ../properties/compose.yaml
   - ../properties/android/android-library-compose.yaml
+  - ../properties/subproject.yaml
   - ../properties/publish.yaml
 script:
   - description: '"Compose multiplatform libraries."'

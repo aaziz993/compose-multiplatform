@@ -1,7 +1,6 @@
 imports:
   - ../properties/root.yaml
   - ../properties/mpp.yaml
-  - ../properties/subproject.yaml
   - ../properties/android/android-library.yaml
   - ../properties/jvm/jvm.yaml
   - ../properties/jvm-common.yaml
@@ -15,6 +14,7 @@ imports:
   - ../properties/web/wasmJs/wasm-js-library.yaml
   - ../properties/web/js-common.yaml
   - ../properties/jvm-web.yaml
+  - ../properties/subproject.yaml
   - ../properties/publish.yaml
 script:
   - description: '"Kotlin multiplatform libraries."'
