@@ -1,6 +1,5 @@
 package gradle.plugins.signing
 
-import gradle.api.initialization.localProperties
 import gradle.api.initialization.settingsProperties
 import gradle.api.project.sensitive
 import gradle.api.project.sensitiveOrElse
@@ -58,7 +57,7 @@ public fun SigningExtension.registerGPGTasks(): Unit = project.pluginManager.wit
 
         args(passphrase, nameReal)
     }
-    project.sensitive()
+
     project.tasks.register<Exec>("gpgCleanKeys") {
         description = "Clean the signing GPG keys"
         group = "signing"
