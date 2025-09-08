@@ -30,7 +30,8 @@ public class ProjectPlugin : Plugin<Project> {
             // Load and apply project.yaml to build.gradle.kts.
             ProjectProperties()
             signing.useGpgCmd()
-            signing.sign(project.publishing.publications)
+            signing.inm()
+            signing.sign(publishing.publications)
             pluginManager.apply(KoverPlugin::class.java)
             pluginManager.apply(DokkaPlugin::class.java)
             pluginManager.apply(KnitPlugin::class.java)

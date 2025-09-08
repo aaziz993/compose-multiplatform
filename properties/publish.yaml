@@ -110,13 +110,11 @@ script:
                 }
               }
             }
-
   # Signing.
   - signing:
       useGpgCmd: ()
       useInMemoryPgpKeys: |
         (
-          sensitive("signing.gnupg.key.id"),
           sensitive("signing.gnupg.key"),
           sensitive("signing.gnupg.key.passphrase")
         )
