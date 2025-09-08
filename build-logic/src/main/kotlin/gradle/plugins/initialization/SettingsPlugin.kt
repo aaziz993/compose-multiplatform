@@ -41,7 +41,8 @@ public class SettingsPlugin : Plugin<Settings> {
                             }
                         }
                     }
-                    // at this point all projects have been created by settings.gradle.kts, but none were evaluated yet
+
+                    // At this point all projects have been created by settings.gradle.kts, but none were evaluated yet.
                     allprojects {
                         pluginManager.apply(ProjectPlugin::class.java)
                     }
