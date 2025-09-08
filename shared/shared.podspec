@@ -6,7 +6,7 @@ Pod::Spec.new do |spec|
     spec.authors                  = ''
     spec.license                  = ''
     spec.summary                  = ''
-    spec.vendored_frameworks      = 'build/cocoapods/framework/MyFramework.framework'
+    spec.vendored_frameworks      = 'build/cocoapods/framework/shared.framework'
     spec.libraries                = 'c++'
     spec.ios.deployment_target    = '18.2'
     spec.osx.deployment_target    = '15.2'
@@ -14,10 +14,10 @@ Pod::Spec.new do |spec|
     spec.watchos.deployment_target    = '11.2'
                 
                 
-    if !Dir.exist?('build/cocoapods/framework/MyFramework.framework') || Dir.empty?('build/cocoapods/framework/MyFramework.framework')
+    if !Dir.exist?('build/cocoapods/framework/shared.framework') || Dir.empty?('build/cocoapods/framework/shared.framework')
         raise "
 
-        Kotlin framework 'MyFramework' doesn't exist yet, so a proper Xcode project can't be generated.
+        Kotlin framework 'shared' doesn't exist yet, so a proper Xcode project can't be generated.
         'pod install' should be executed after running ':generateDummyFramework' Gradle task:
 
             ./gradlew :shared:generateDummyFramework
@@ -31,7 +31,7 @@ Pod::Spec.new do |spec|
                 
     spec.pod_target_xcconfig = {
         'KOTLIN_PROJECT_PATH' => ':shared',
-        'PRODUCT_MODULE_NAME' => 'MyFramework',
+        'PRODUCT_MODULE_NAME' => 'shared',
     }
                 
     spec.script_phases = [
