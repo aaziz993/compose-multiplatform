@@ -5,14 +5,13 @@ package gradle.plugins.initialization
 import gradle.api.configureEach
 import gradle.api.initialization.SettingsProperties
 import gradle.api.initialization.file.LicenseHeaderFile
-import gradle.api.initialization.gitHooks
 import gradle.api.initialization.settingsProperties
 import gradle.plugins.project.ProjectPlugin
+import java.sql.DriverManager
 import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
 import org.jetbrains.compose.internal.IDEA_IMPORT_TASK_NAME
 import org.sqlite.JDBC
-import java.sql.DriverManager
 
 public class SettingsPlugin : Plugin<Settings> {
 
