@@ -117,13 +117,11 @@ public fun Project.allLibs(name: String): VersionCatalog = settings.allLibs(name
 public val Project.toolchain: ToolchainManagement get() = the()
 
 @Suppress("UnstableApiUsage")
-public fun Project.toolchain(configure: ToolchainManagement.() -> Unit): Unit =
-    extensions.configure(configure)
+public fun Project.toolchain(configure: ToolchainManagement.() -> Unit): Unit = extensions.configure(configure)
 
 public val Project.doctor: DoctorExtension get() = the()
 
-public fun Project.doctor(configure: DoctorExtension.() -> Unit): Unit =
-    extensions.configure(configure)
+public fun Project.doctor(configure: DoctorExtension.() -> Unit): Unit = extensions.configure(configure)
 
 public val Project.dependencyCheck: DependencyCheckExtension get() = the()
 
@@ -137,28 +135,23 @@ public fun Project.buildConfig(configure: BuildConfigExtension.() -> Unit): Unit
 
 public val Project.spotless: SpotlessExtension get() = the()
 
-public fun Project.spotless(configure: SpotlessExtension.() -> Unit): Unit =
-    extensions.configure(configure)
+public fun Project.spotless(configure: SpotlessExtension.() -> Unit): Unit = extensions.configure(configure)
 
 public val Project.kover: KoverProjectExtension get() = the()
 
-public fun Project.kover(configure: KoverProjectExtension.() -> Unit): Unit =
-    extensions.configure(configure)
+public fun Project.kover(configure: KoverProjectExtension.() -> Unit): Unit = extensions.configure(configure)
 
 public val Project.sonar: SonarExtension get() = the()
 
-public fun Project.sonar(configure: SonarExtension.() -> Unit): Unit =
-    extensions.configure(configure)
+public fun Project.sonar(configure: SonarExtension.() -> Unit): Unit = extensions.configure(configure)
 
 public val Project.knit: KnitPluginExtension get() = the()
 
-public fun Project.knit(configure: KnitPluginExtension.() -> Unit): Unit =
-    extensions.configure(configure)
+public fun Project.knit(configure: KnitPluginExtension.() -> Unit): Unit = extensions.configure(configure)
 
 public val Project.dokka: DokkaExtension get() = the()
 
-public fun Project.dokka(configure: DokkaExtension.() -> Unit): Unit =
-    extensions.configure(configure)
+public fun Project.dokka(configure: DokkaExtension.() -> Unit): Unit = extensions.configure(configure)
 
 public val Project.versioning: VersioningConfiguration get() = the()
 
@@ -172,35 +165,29 @@ public fun Project.apiValidation(configure: ApiValidationExtension.() -> Unit): 
 
 public val Project.ksp: KspExtension get() = the()
 
-public fun Project.ksp(configure: KspExtension.() -> Unit): Unit =
-    extensions.configure(configure)
+public fun Project.ksp(configure: KspExtension.() -> Unit): Unit = extensions.configure(configure)
 
 public val Project.allOpen: AllOpenExtension get() = the()
 
-public fun Project.allOpen(configure: AllOpenExtension.() -> Unit): Unit =
-    extensions.configure(configure)
+public fun Project.allOpen(configure: AllOpenExtension.() -> Unit): Unit = extensions.configure(configure)
 
 public val Project.noArg: NoArgExtension get() = the()
 
-public fun Project.noArg(configure: NoArgExtension.() -> Unit): Unit =
-    extensions.configure(configure)
+public fun Project.noArg(configure: NoArgExtension.() -> Unit): Unit = extensions.configure(configure)
 
 public val Project.benchmark: BenchmarksExtension get() = the()
 
-public fun Project.benchmark(configure: BenchmarksExtension.() -> Unit): Unit =
-    extensions.configure(configure)
+public fun Project.benchmark(configure: BenchmarksExtension.() -> Unit): Unit = extensions.configure(configure)
 
 public val Project.javaToolchain: JavaToolchainService get() = the()
 
 public val Project.java: JavaPluginExtension get() = the()
 
-public fun Project.java(configure: JavaPluginExtension.() -> Unit): Unit =
-    extensions.configure(configure)
+public fun Project.java(configure: JavaPluginExtension.() -> Unit): Unit = extensions.configure(configure)
 
 public val Project.javaApp: JavaApplication get() = the()
 
-public fun Project.javaApp(configure: JavaApplication.() -> Unit): Unit =
-    extensions.configure(configure)
+public fun Project.javaApp(configure: JavaApplication.() -> Unit): Unit = extensions.configure(configure)
 
 public val Project.androidApplication: BaseAppModuleExtension get() = the()
 
@@ -214,28 +201,23 @@ public fun Project.kotlin(configure: KotlinMultiplatformExtension.() -> Unit): U
 
 public val Project.sqldelight: SqlDelightExtension get() = the()
 
-public fun Project.sqldelight(configure: SqlDelightExtension.() -> Unit): Unit =
-    extensions.configure(configure)
+public fun Project.sqldelight(configure: SqlDelightExtension.() -> Unit): Unit = extensions.configure(configure)
 
 public val Project.room: RoomExtension get() = the()
 
-public fun Project.room(configure: RoomExtension.() -> Unit): Unit =
-    extensions.configure(configure)
+public fun Project.room(configure: RoomExtension.() -> Unit): Unit = extensions.configure(configure)
 
 public val Project.rpc: RpcExtension get() = the()
 
-public fun Project.rpc(configure: RpcExtension.() -> Unit): Unit =
-    extensions.configure(configure)
+public fun Project.rpc(configure: RpcExtension.() -> Unit): Unit = extensions.configure(configure)
 
 public val Project.ktorfit: KtorfitPluginExtension get() = the()
 
-public fun Project.ktorfit(configure: KtorfitPluginExtension.() -> Unit): Unit =
-    extensions.configure(configure)
+public fun Project.ktorfit(configure: KtorfitPluginExtension.() -> Unit): Unit = extensions.configure(configure)
 
 public val Project.apollo: ApolloExtension get() = the()
 
-public fun Project.apollo(configure: ApolloExtension.() -> Unit): Unit =
-    extensions.configure(configure)
+public fun Project.apollo(configure: ApolloExtension.() -> Unit): Unit = extensions.configure(configure)
 
 public val Project.powerAssert: PowerAssertGradleExtension get() = the()
 
@@ -249,43 +231,35 @@ public fun KotlinMultiplatformExtension.cocoapods(configure: CocoapodsExtension.
 
 public val Project.apple: AppleProjectExtension get() = the()
 
-public fun Project.apple(configure: AppleProjectExtension.() -> Unit): Unit =
-    extensions.configure(configure)
+public fun Project.apple(configure: AppleProjectExtension.() -> Unit): Unit = extensions.configure(configure)
 
 public val Project.npm: NpmExtension get() = the()
 
-public fun Project.npm(configure: NpmExtension.() -> Unit): Unit =
-    extensions.configure(configure)
+public fun Project.npm(configure: NpmExtension.() -> Unit): Unit = extensions.configure(configure)
 
 public val Project.yarn: YarnRootExtension get() = the()
 
-public fun Project.yarn(configure: YarnRootExtension.() -> Unit): Unit =
-    extensions.configure(configure)
+public fun Project.yarn(configure: YarnRootExtension.() -> Unit): Unit = extensions.configure(configure)
 
 public val Project.node: NodeJsRootExtension get() = the()
 
-public fun Project.node(configure: NodeJsRootExtension.() -> Unit): Unit =
-    extensions.configure(configure)
+public fun Project.node(configure: NodeJsRootExtension.() -> Unit): Unit = extensions.configure(configure)
 
 public val Project.nodeJsEnv: NodeJsEnvSpec get() = the()
 
-public fun Project.nodeEnv(configure: NodeJsEnvSpec.() -> Unit): Unit =
-    extensions.configure(configure)
+public fun Project.nodeEnv(configure: NodeJsEnvSpec.() -> Unit): Unit = extensions.configure(configure)
 
 public val Project.yarnEnv: YarnRootEnvSpec get() = the()
 
-public fun Project.yarnEnv(configure: YarnRootEnvSpec.() -> Unit): Unit =
-    extensions.configure(configure)
+public fun Project.yarnEnv(configure: YarnRootEnvSpec.() -> Unit): Unit = extensions.configure(configure)
 
 public val Project.karakum: KarakumExtension get() = the()
 
-public fun Project.karakum(configure: KarakumExtension.() -> Unit): Unit =
-    extensions.configure(configure)
+public fun Project.karakum(configure: KarakumExtension.() -> Unit): Unit = extensions.configure(configure)
 
 public val Project.compose: ComposeExtension get() = the()
 
-public fun Project.compose(configure: ComposeExtension.() -> Unit): Unit =
-    extensions.configure(configure)
+public fun Project.compose(configure: ComposeExtension.() -> Unit): Unit = extensions.configure(configure)
 
 public val Project.sourceSets: SourceSetContainer get() = the()
 
@@ -311,13 +285,11 @@ public fun ComposeExtension.android(configure: AndroidExtension.() -> Unit): Uni
 
 public val Project.publishing: PublishingExtension get() = the()
 
-public fun Project.publishing(configure: PublishingExtension.() -> Unit): Unit =
-    extensions.configure(configure)
+public fun Project.publishing(configure: PublishingExtension.() -> Unit): Unit = extensions.configure(configure)
 
 public val Project.signing: SigningExtension get() = the()
 
-public fun Project.signing(configure: SigningExtension.() -> Unit): Unit =
-    extensions.configure(configure)
+public fun Project.signing(configure: SigningExtension.() -> Unit): Unit = extensions.configure(configure)
 
 public fun Project.files(elements: Iterable<String>): ConfigurableFileCollection =
     files(*elements.toList().toTypedArray())
