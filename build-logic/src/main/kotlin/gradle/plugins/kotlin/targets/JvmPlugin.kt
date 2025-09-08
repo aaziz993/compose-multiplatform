@@ -26,23 +26,22 @@ internal class JvmPlugin : Plugin<Project> {
 
     private fun Project.registerJvmStressTest() {
         val jvmTest = tasks.withType<KotlinJvmTest>()
+        if (jvmTest.isEmpty()) return
 
-        if (jvmTest.isNotEmpty()) {
-            tasks.register<Test>("stressTest") {
-                classpath = files(jvmTest.map { it.classpath })
-                testClassesDirs = files(jvmTest.map { it.testClassesDirs })
-                maxHeapSize = "2g"
-                jvmArgs("-XX:+HeapDumpOnOutOfMemoryError")
-                forkEvery = 1
-                systemProperty("enable.stress.tests", "true")
-                include("**/*StressTest*")
-                useJUnitPlatform()
-            }
-
-            jvmTest.configureEach {
-                exclude("**/*StressTest*")
-            }
+        val stress = tasks.register<Test>("stressTest") {
+            classpath = files(jvmTest.map { it.classpath })
+            testClassesDirs = files(jvmTest.map { it.testClassesDirs })
+            maxHeapSize = "2g"
+            jvmArgs("-XX:+HeapDumpOnOutOfMemoryError")
+            forkEvery = 1
+            systemProperty("enable.stress.tests", "true")
+            include("**/*StressTest*")
+            useJUnitPlatform()
         }
+
+        jvmTest.configureEach { exclude("**/*StressTest*") }
+
+        tasks.matching { task -> task.name == "check" }.configureEach { dependsOn(stress) }
     }
 
     /**
@@ -85,9 +84,10 @@ internal class JvmPlugin : Plugin<Project> {
 
                     val testRun = jvmTarget.testRuns.create("javaCodegen").apply {
                         setExecutionSourceFrom(javaCodegenCompilation)
+                        executionTask.configure { useJUnitPlatform() }
                     }
 
-                    tasks.matching { it.name == "check" }.configureEach {
+                    tasks.matching { task -> task.name == "check" }.configureEach {
                         dependsOn(testRun.executionTask)
                     }
                 }
