@@ -1,7 +1,7 @@
 package gradle.api
 
 import gradle.api.cache.SqliteCache
-import klib.data.type.Ansi
+import klib.data.type.ansi.Ansi
 import klib.data.type.primitives.string.scripting.ScriptProperties
 import kotlinx.serialization.builtins.serializer
 import org.gradle.api.file.ConfigurableFileCollection

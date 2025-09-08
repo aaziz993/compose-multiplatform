@@ -5,7 +5,6 @@ import com.fleeksoft.charset.decodeToString
 import com.fleeksoft.charset.toByteArray
 import com.ionspin.kotlin.bignum.decimal.BigDecimal
 import com.ionspin.kotlin.bignum.integer.BigInteger
-import java.nio.charset.StandardCharsets
 import klib.data.type.primitives.string.fuzzywuzzy.Applicable
 import klib.data.type.primitives.string.fuzzywuzzy.FuzzySearch
 import klib.data.type.primitives.string.fuzzywuzzy.ToStringFunction
@@ -19,16 +18,6 @@ import kotlinx.datetime.DateTimePeriod
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
-import kotlin.collections.joinToString
-import kotlin.collections.map
-import kotlin.collections.plus
-import kotlin.let
-import kotlin.text.equals
-import kotlin.text.isNotEmpty
-import kotlin.text.lowercase
-import kotlin.text.replace
-import kotlin.text.replaceFirstChar
-import kotlin.text.toRegex
 import kotlinx.io.Buffer
 import kotlinx.io.writeString
 
@@ -357,6 +346,31 @@ public fun matcher(
 
 // /////////////////////////////////////////////////////STRING//////////////////////////////////////////////////////////
 public fun ByteArray.decode(charset: Charset = Charset.UTF_8): String = decodeToString(Charsets.forName(charset.name))
+
+//public fun colorizeWithHighlightsAnsi(
+//    code: String,
+//    lang: SyntaxLanguage,
+//    theme: SyntaxTheme = SyntaxThemes.monokai()
+//): String {
+//    // (B) Build and run highlighter — adjust to your actual API.
+//    val highlights = Highlights.Builder()
+//        .code(code)
+//        .language(lang)
+//        .theme(theme)
+//        .build()
+//        .getHighlights() // returns list of tokens (text + style)
+//
+//    // (C) Map each token to ANSI using its style color field; adjust field name.
+//    // Many libs expose something like token.text and token.style.color (hex).
+//    return buildString {
+//        for (token in highlights) {
+//            // Replace with your actual accessors:
+//            val text: String = token.text
+//            val hexColor: String? = token.style?.color // e.g. "#93CF55"
+//            append(colorChunkAnsi(text, hexColor))
+//        }
+//    }
+//}
 
 // ///////////////////////////////////////////////////////ENUM//////////////////////////////////////////////////////////
 public inline fun <reified T : Enum<T>> String.toEnum(): T = enumValueOf(this)

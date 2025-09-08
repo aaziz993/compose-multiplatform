@@ -523,7 +523,7 @@ kasechange = { module = "net.pearx.kasechange:kasechange", version.ref = "kasech
 better-parse = { module = "com.github.h0tk3y.betterParse:better-parse", version.ref = "better-parse" }
 # string fuzzywuzzy match
 fuzzywuzzy-kotlin = { module = "com.willowtreeapps:fuzzywuzzy-kotlin", version.ref = "fuzzywuzzy-kotlin" }
-# code highlight
+# kotlin multiplatform syntax highlighting engine.
 highlights = { module = "dev.snipme:highlights", version.ref = "highlights" }
 # country, locale and currency
 fluid-country = { module = "io.fluidsonic.country:fluid-country", version.ref = "fluid" }

@@ -146,6 +146,8 @@ dependencies {
     implementation(libs.bundles.fleeksoft.charset)
     // hex, base32, base45 and base64 encoding
     implementation(libs.encoding)
+    // kotlin multiplatform syntax highlighting engine.
+    implementation(libs.highlights)
     // a nice parser combinator library for Kotlin JVM, JS, and Multiplatform projects
     implementation(libs.better.parse)
     // provide a lingua franca of interfaces and abstractions across Kotlin libraries. For this, it includes the most popular data types such as Option, and Either, functional operators such as zipOrAccumulate, and computation blocks to empower users to write pure FP apps and libraries built atop higher order abstractions.

@@ -3,8 +3,8 @@ package klib.data.type.primitives.string.scripting
 import com.charleskorn.kaml.Yaml
 import klib.data.cache.Cache
 import klib.data.cache.NoCache
-import klib.data.type.Ansi
-import klib.data.type.ansi
+import klib.data.type.ansi.Ansi
+import klib.data.type.ansi.ansi
 import klib.data.type.collections.*
 import klib.data.type.collections.deepGetOrNull
 import klib.data.type.collections.list.asList
@@ -13,15 +13,9 @@ import klib.data.type.collections.map.asMapOrNull
 import klib.data.type.collections.map.asStringNullableMap
 import klib.data.type.primitives.string.addSuffixIfNotEmpty
 import klib.data.type.primitives.string.tokenization.evaluation.SubstituteOption
-import klib.data.type.reflection.callDeclaredFunctionOrNull
-import klib.data.type.reflection.callMember
-import klib.data.type.reflection.callMemberOrNull
 import klib.data.type.reflection.declaredMemberExtensionFunction
 import klib.data.type.reflection.declaredMemberExtensionFunctions
 import klib.data.type.reflection.declaredMemberExtensionProperty
-import klib.data.type.reflection.getDeclaredMemberPropertyOrNull
-import klib.data.type.reflection.getMemberPropertyOrNull
-import klib.data.type.reflection.getStaticPropertyOrNull
 import klib.data.type.reflection.memberFunction
 import klib.data.type.reflection.memberFunctions
 import klib.data.type.reflection.memberProperty
@@ -35,7 +29,7 @@ import klib.data.type.serialization.json.decodeAnyFromString
 import klib.data.type.serialization.properties.Properties
 import klib.data.type.serialization.serializers.any.SerializableAny
 import klib.data.type.serialization.yaml.decodeAnyFromString
-import klib.data.type.toAnsi
+import klib.data.type.ansi.toAnsi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import kotlinx.serialization.json.Json
