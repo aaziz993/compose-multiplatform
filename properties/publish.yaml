@@ -73,56 +73,54 @@ script:
               version = project.version.toString()
 
               pom { pom ->
-                  pom.packaging = "jar"
-                  pom.name /=project.name
-                  pom.url /=settings.settingsProperties.license.url
-                  pom.description /= project.description
+                pom.packaging = "jar"
+                pom.name /=project.name
+                pom.url /=settings.settingsProperties.license.url
+                pom.description /= project.description
 
-                  pom.licenses { licenses ->
-                      licenses.license { license ->
-                          license.name /= settings.settingsProperties.license.name
-                          license.url /= settings.settingsProperties.license.url
-                          license.distribution /= settings.settingsProperties.license.distribution
-                          license.comments /= settings.settingsProperties.license.comments
-                      }
-                  }
+                pom.licenses { licenses ->
+                    licenses.license { license ->
+                        license.name /= settings.settingsProperties.license.name
+                        license.url /= settings.settingsProperties.license.url
+                        license.distribution /= settings.settingsProperties.license.distribution
+                        license.comments /= settings.settingsProperties.license.comments
+                    }
+                }
 
-                  pom.developers { developers ->
-                      developers.developer { developer ->
-                          developer.id /= settings.settingsProperties.developer.id
-                          developer.name /= settings.settingsProperties.developer.name
-                          developer.email /= settings.settingsProperties.developer.email
-                          developer.organization /= settings.settingsProperties.developer.organization
-                          developer.organizationUrl /= settings.settingsProperties.developer.organizationUrl
-                      }
-                  }
+                pom.developers { developers ->
+                    developers.developer { developer ->
+                        developer.id /= settings.settingsProperties.developer.id
+                        developer.name /= settings.settingsProperties.developer.name
+                        developer.email /= settings.settingsProperties.developer.email
+                        developer.organization /= settings.settingsProperties.developer.organization
+                        developer.organizationUrl /= settings.settingsProperties.developer.organizationUrl
+                    }
+                }
 
-                  pom.issueManagement { issueManagement ->
-                      issueManagement.system /= "GitHub Issues"
-                      issueManagement.url /= "https://github.com/aaziz993/compose-multiplatform/issues"
-                  }
+                pom.issueManagement { issueManagement ->
+                    issueManagement.system /= "GitHub Issues"
+                    issueManagement.url /= "https://github.com/aaziz993/compose-multiplatform/issues"
+                }
 
-                  pom.scm { scm ->
-                      scm.url /= settings.settingsProperties.remote.url
-                      scm.connection /= settings.settingsProperties.remote.connection
-                      scm.developerConnection /= settings.settingsProperties.remote.developerConnection
-                      scm.tag /= settings.settingsProperties.remote.tag
-                  }
-              }
-
-              // Signing.
-              signing {
-                  useGpgCmd()
-                  useInMemoryPgpKeys(
-                      sensitive("signing.gnupg.key.id"),
-                      sensitive("signing.gnupg.key"),
-                      sensitive("signing.gnupg.key.passphrase")
-                  )
-
-                  // Sign all publications.
-                  sign(publishing.publications)
-
-                  // Register additional gpg tasks.
-                  registerGPGTasks()
+                pom.scm { scm ->
+                    scm.url /= settings.settingsProperties.remote.url
+                    scm.connection /= settings.settingsProperties.remote.connection
+                    scm.developerConnection /= settings.settingsProperties.remote.developerConnection
+                    scm.tag /= settings.settingsProperties.remote.tag
+                }
               }
             }
+
+  # Signing.
+  - signing:
+      useGpgCmd: ()
+      useInMemoryPgpKeys: |
+        (
+          sensitive("signing.gnupg.key.id"),
+          sensitive("signing.gnupg.key"),
+          sensitive("signing.gnupg.key.passphrase")
+        )
+      # Sign all publications.
+      sign: (publishing.publications)
+      # Register additional gpg tasks.
+      registerGPGTasks: ()
