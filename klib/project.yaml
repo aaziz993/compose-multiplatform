@@ -24,7 +24,7 @@ script:
           - withType<MavenPublication>: |
               {
                 pom { pom ->
-                    pom.url /= "https://github.com/aaziz993/compose-multiplatform/kmp-lib"
+                    pom.url /= "https://github.com/aaziz993/compose-multiplatform/klib"
                 }
               }
   # Generates typesafe Kotlin APIs from your SQL statements. It verifies your schema, statements, and migrations at compile-time and provides IDE features like autocomplete and refactoring which make writing and maintaining SQL simple.

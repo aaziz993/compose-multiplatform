@@ -27,6 +27,14 @@ script:
                 implementation(project(":clib"))
               }
             }
-
-#  - dependencies:
-#      - add: ("kspCommonMainMetadata", dependencies.project(":compiler"))
+  # Publishing
+  - publishing:
+      - publications:
+          - withType<MavenPublication>: |
+              {
+                pom { pom ->
+                    pom.url /= "https://github.com/aaziz993/compose-multiplatform/shared"
+                }
+              }
+  - dependencies:
+      - add: ("kspCommonMainMetadata", dependencies.project(":compiler"))

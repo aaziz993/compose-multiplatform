@@ -124,7 +124,7 @@ script:
                 implementation(libs("kotlinx.uuid.core"))
                 implementation(libs.bundles("fleeksoft.charset"))
                 // implementation(libs.bundles("diglol"))
-                // implementation(libs("kasechange"))
+                implementation(libs("kasechange"))
                 // implementation(libs("highlights"))
                 // implementation(libs.bundles("fluid"))
                 // implementation(libs("buffer"))
