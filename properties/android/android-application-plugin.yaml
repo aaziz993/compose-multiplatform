@@ -1,20 +1,24 @@
 config:
   imports:
     - org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+    - org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
     - org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 script:
   - plugins:
       - id: (libs.plugins("android.application").pluginId)
   - kotlin:
-      androidTarget: |
-        {
-          @OptIn(ExperimentalKotlinGradlePluginApi::class)
-          compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_11)
-          }
-          @OptIn(ExperimentalKotlinGradlePluginApi::class)
-          instrumentedTestVariant.sourceSetTree.set(KotlinSourceSetTree.test)
-        }
+      androidTarget: ()
+      targets:
+        - withType<KotlinAndroidTarget>: |
+            {
+              @OptIn(ExperimentalKotlinGradlePluginApi::class)
+              compilerOptions {
+                jvmTarget /= libs.versions("android.jvm.target").requiredVersion.toJvmTarget()
+              }
+
+              @OptIn(ExperimentalKotlinGradlePluginApi::class)
+              instrumentedTestVariant.sourceSetTree.set(KotlinSourceSetTree.test)
+            }
       sourceSets:
         - named: |
             ("androidInstrumentedTest") { sourceSet ->
@@ -28,8 +32,8 @@ script:
       compileSdk: libs.versions("android.compileSdk").requiredVersion.toInt()
       compileOptions:
         isCoreLibraryDesugaringEnabled: true
-        sourceCompatibility: JavaVersion.VERSION_11
-        targetCompatibility: JavaVersion.VERSION_11
+        sourceCompatibility: JavaVersion.toVersion(libs.versions("android.jvm.target").requiredVersion)
+        targetCompatibility: JavaVersion.toVersion(libs.versions("android.jvm.target").requiredVersion)
       lintOptions:
         isCheckReleaseBuilds: false
         isAbortOnError: false

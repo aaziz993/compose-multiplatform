@@ -21,14 +21,15 @@ version = Version(1, 0, 0).toString()
 // Configure the build-logic plugins to target JDK
 // This matches the JDK used to build the project, and is not related to what is running on device.
 java {
-    sourceCompatibility = libs.versions.java.sourceCompatibility.get().let(JavaVersion::toVersion)
-    targetCompatibility = libs.versions.java.targetCompatibility.get().let(JavaVersion::toVersion)
+    toolchain.languageVersion.set(JavaLanguageVersion.of(libs.versions.java.toolchain.get().toInt()))
+    sourceCompatibility = JavaVersion.toVersion(libs.versions.jvm.target.get())
+    targetCompatibility = JavaVersion.toVersion(libs.versions.jvm.target.get())
 }
 
 kotlin {
     explicitApi()
 
-    jvmToolchain(libs.versions.java.languageVersion.get().toInt())
+    jvmToolchain(libs.versions.java.toolchain.get().toInt())
 
     compilerOptions {
         freeCompilerArgs.addAll(

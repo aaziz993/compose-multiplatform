@@ -9,6 +9,7 @@ script:
         - withType<KotlinJvmTarget>: |
             {
               compilerOptions {
+                jvmTarget /= libs.versions("jvm.target").requiredVersion.toJvmTarget()
                 freeCompilerArgs.addAll(
                    "-Xno-param-assertions",
                    "-Xno-call-assertions",
@@ -37,7 +38,7 @@ script:
                 implementation(libs.bundles("exposed"))
                 // implementation(libs["dataframe"])
                 implementation(libs["kandy"])
-                implementation(libs.bundles("ktor.server"))
+                // implementation(libs.bundles("ktor.server"))
                 implementation(libs("ktor")["server.rateLimit"])
                 implementation(libs("ktor")["network.tls"])
                 implementation(libs("ktor")["server.core"])

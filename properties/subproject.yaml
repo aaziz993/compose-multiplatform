@@ -23,8 +23,14 @@ script:
       - id: (libs.plugins("ktorfit").pluginId)
       - id: (libs.plugins("apollo3").pluginId)
       - id: (libs.plugins("powerAssert").pluginId)
+  - java:
+      toolchain:
+        languageVersion: JavaLanguageVersion.of(libs.versions("java.toolchain").requiredVersion.toInt())
+      sourceCompatibility: JavaVersion.toVersion(libs.versions("jvm.target").requiredVersion)
+      targetCompatibility: JavaVersion.toVersion(libs.versions("jvm.target").requiredVersion)
   - kotlin:
       explicitApi: ExplicitApiMode.Strict
+      jvmToolchain: (libs.versions("java.toolchain").requiredVersion.toInt())
       compilerOptions:
         allWarningsAsErrors: false
         progressiveMode: true

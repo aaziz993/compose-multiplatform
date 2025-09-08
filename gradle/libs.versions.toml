@@ -101,11 +101,11 @@ vanniktech-maven-publish = "0.30.0"
 
 ##Java
 # in project version
-java-languageVersion = "22"
+java-toolchain = "22"
 # in project version
-java-sourceCompatibility = "22"
+jvm-target = "17"
 # in project version
-java-targetCompatibility = "22"
+android-jvm-target = "22"
 # google java format code formatter
 googleJavaFormat = "1.25.0"
 # logging

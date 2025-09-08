@@ -4,6 +4,9 @@ config:
     - java.util.Date
     - org.gradle.kotlin.dsl.*
     - org.gradle.api.JavaVersion
+    - org.gradle.jvm.toolchain.JavaLanguageVersion
+    - org.jetbrains.kotlin.gradle.dsl.JvmTarget
+    - gradle.plugins.kotlin.targets.toJvmTarget
   compilerOptions:
     - -Xignore-const-optimization-errors
     - -Xinline-classes
