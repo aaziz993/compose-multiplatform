@@ -1,6 +1,5 @@
 package gradle.api.initialization.dsl
 
-import gradle.api.initialization.libs
 import klib.data.type.collections.list.asList
 import klib.data.type.collections.map.asMap
 import klib.data.type.collections.takeIfNotEmpty
@@ -24,7 +23,6 @@ import org.gradle.api.artifacts.VersionConstraint
 import org.gradle.api.artifacts.repositories.IvyArtifactRepository
 import org.gradle.api.artifacts.repositories.MavenArtifactRepository
 import org.gradle.api.initialization.Settings
-import org.gradle.api.initialization.dsl.VersionCatalogBuilder
 import org.gradle.api.internal.artifacts.DefaultModuleIdentifier
 import org.gradle.api.internal.artifacts.dependencies.DefaultMutableMinimalDependency
 import org.gradle.api.internal.artifacts.dependencies.DefaultMutableVersionConstraint
@@ -32,7 +30,6 @@ import org.gradle.api.internal.artifacts.dependencies.DefaultPluginDependency
 import org.gradle.api.internal.catalog.DefaultExternalModuleDependencyBundle
 import org.gradle.api.provider.Provider
 import org.gradle.plugin.use.PluginDependency
-import java.net.URI
 
 @Serializable(with = VersionCatalogSerializer::class)
 public data class VersionCatalog(
@@ -47,7 +44,7 @@ public data class VersionCatalog(
     public fun libraries(alias: String): MinimalExternalModuleDependency =
         libraries[alias] ?: throw IllegalArgumentException("Unresolved library '$alias'")
 
-    public operator fun invoke(alias: String): MinimalExternalModuleDependency = libraries(alias)
+    public operator fun get(alias: String): MinimalExternalModuleDependency = libraries(alias)
 
     public fun plugins(alias: String): PluginDependency =
         plugins[alias] ?: throw IllegalArgumentException("Unresolved plugin '$alias'")

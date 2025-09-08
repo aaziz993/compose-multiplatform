@@ -14,6 +14,6 @@ script:
         - named: |
             ("wasmJsMain") { sourceSet ->
               sourceSet.dependencies {
-                implementation(catalogs("kotlinWrappers")("browser"))
+                implementation(catalogs("kotlinWrappers")["browser"])
               }
             }
