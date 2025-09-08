@@ -18,7 +18,7 @@ script:
                 implementation(composeLibs.components.resources)
                 implementation(composeLibs.components.uiToolingPreview)
                 implementation(composeLibs.material3AdaptiveNavigationSuite)
-                implementation(composeLibs.materialIconsExtended)
+                // implementation(composeLibs.materialIconsExtended)
                 implementation(libs["androidx.lifecycle.viewmodel"])
                 implementation(libs["androidx.lifecycle.runtime.compose"])
                 implementation(libs["connectivity.compose"])

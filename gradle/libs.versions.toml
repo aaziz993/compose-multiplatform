@@ -59,7 +59,9 @@ serverApp-version-preRelase = "alpha" # optional
 # intellij
 intellij-platform = "243.23654.166"
 # telemetry
-opentelemetry = "1.53.0"
+opentelemetry = "1.54.0"
+opentelemetry-semconv = "1.37.0"
+opentelemetry-ktor = "2.19.0-alpha"
 # configuration and build tool. Its goal is to provide a great and smooth user experience and IDE support
 amper = "0.6.0-dev-2425"
 # print suggestions for your build as you run regular tasks
@@ -267,8 +269,11 @@ store = "5.1.0-alpha06"
 connectivity = "2.2.1"
 # ktor
 ktor = "3.2.3"
-ktor-server-task-scheduling = "2.1.1"
+ktor-cache = "0.55.3"
+kotlin-asyncapi-ktor = "3.1.2"
 ktor-swagger-ui = "2.9.0"
+ktor-server-task-scheduling = "2.1.1"
+ktor-server-kafka = "2.2.1"
 # kotlin library for adding asynchronous Remote Procedure Call (RPC) services to your applications. Build your RPC with already known language constructs and nothing more!
 kotlinx-rpc = "0.9.1"
 # http client/Kotlin Symbol Processor for Kotlin Multiplatform ( Android, iOS, Js, Jvm, Linux) using KSP and Ktor clients inspired by Retrofit
@@ -281,6 +286,7 @@ kgraphql = "0.19.0"
 # firebase
 firebase-bom = "34.2.0"
 firebase-crashlytics-plugin = "3.0.6"
+firebase-auth-provider = "1.6.0"
 # google services
 google-play-services = "4.4.3"
 # firebase auth
@@ -395,6 +401,7 @@ compose-desktop-packageVersion = "1.0.0"
 ##Metrics
 prometheus = "1.12.2"
 dropwizard = "4.2.25"
+khealth = "3.0.2"
 cohort = "2.6.0"
 cohort-http = "2.4.1"
 
@@ -419,6 +426,10 @@ opentelemetry-api = { module = "io.opentelemetry:opentelemetry-api", version.ref
 opentelemetry-kotlin = { module = "io.opentelemetry:opentelemetry-extension-kotlin", version.ref = "opentelemetry" }
 opentelemetry-sdk = { module = "io.opentelemetry:opentelemetry-sdk", version.ref = "opentelemetry" }
 opentelemetry-sdkTrace = { module = "io.opentelemetry:opentelemetry-sdk-trace", version.ref = "opentelemetry" }
+opentelemetry-sdk-extension-autoconfigure = { module = "io.opentelemetry:opentelemetry-sdk-extension-autoconfigure", version.ref = "opentelemetry" }
+opentelemetry-exporter-otlp = { module = "io.opentelemetry:opentelemetry-exporter-otlp", version.ref = "opentelemetry" }
+opentelemetry-semconv = { module = "io.opentelemetry.semconv:opentelemetry-semconv", version.ref = "opentelemetry-semconv" }
+opentelemetry-ktor = { module = "io.opentelemetry.instrumentation:opentelemetry-ktor-3.0", version.ref = "opentelemetry-ktor" }
 # configuration and build tool. Its goal is to provide a great and smooth user experience and IDE support
 amper-cli = { module = "org.jetbrains.amper:cli", version.ref = "amper" }
 amper = { module = "org.jetbrains.amper.settings.plugin:org.jetbrains.amper.settings.plugin.gradle.plugin", version.ref = "amper" }
@@ -637,13 +648,12 @@ androidx-sqlite = { module = "androidx.sqlite:sqlite", version.ref = "androidx-s
 androidx-sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "androidx-sqlite" }
 # realm database
 realm = { module = "io.realm:realm-gradle-plugin", version.ref = "realm" }
-# h2 jdbc driver.
-h2 = { module = "com.h2database:h2", version.ref = "h2" }
 # jdbc drivers
+h2 = { module = "com.h2database:h2", version.ref = "h2" }
+sqlite-jdbc = { module = "org.xerial:sqlite-jdbc", version.ref = "sqlite-jdbc" }
 mariadb-java-client = { module = "org.mariadb.jdbc:mariadb-java-client", version.ref = "mariadb-java-client" }
 postgresql = { module = "org.postgresql:postgresql", version.ref = "postgresql" }
 mysql-connector-j = { module = "com.mysql:mysql-connector-j", version.ref = "mysql-connector-j" }
-sqlite-jdbc = { module = "org.xerial:sqlite-jdbc", version.ref = "sqlite-jdbc" }
 mssql-jdbc = { module = "com.microsoft.sqlserver:mssql-jdbc", version.ref = "mssql-jdbc" }
 hikari = { module = "com.zaxxer:HikariCP", version.ref = "hikari" }
 # r2dbc drivers
@@ -656,7 +666,7 @@ r2dbc-postgresql = { module = "org.postgresql:r2dbc-postgresql", version.ref = "
 r2dbc-oracle = { module = "com.oracle.database.r2dbc:oracle-r2dbc", version.ref = "r2dbc-oracle" }
 # lightweight SQL library on top of a JDBC driver for the Kotlin language.
 # has two flavors of database access: typesafe SQL wrapping DSL and lightweight Data Access Objects (DAO).
-exposed = { module = "org.jetbrains.exposed:exposed-core", version.ref = "exposed" }
+exposed-core = { module = "org.jetbrains.exposed:exposed-core", version.ref = "exposed" }
 exposed-crypt = { module = "org.jetbrains.exposed:exposed-crypt", version.ref = "exposed" }
 exposed-dao = { module = "org.jetbrains.exposed:exposed-dao", version.ref = "exposed" }
 exposed-jdbc = { module = "org.jetbrains.exposed:exposed-jdbc", version.ref = "exposed" }
@@ -678,91 +688,32 @@ connectivity-http = { module = "dev.jordond.connectivity:connectivity-http", ver
 connectivity-compose = { module = "dev.jordond.connectivity:connectivity-compose", version.ref = "connectivity" }
 connectivity-compose-device = { module = "dev.jordond.connectivity:connectivity-compose-device", version.ref = "connectivity" }
 connectivity-compose-http = { module = "dev.jordond.connectivity:connectivity-compose-http", version.ref = "connectivity" }
-##Ktor
+##Ktor server
 ktor-version-catalog = { module = "io.ktor:ktor-version-catalog", version.ref = "ktor" }
-ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
-ktor-serialization-kotlinx-xml = { module = "io.ktor:ktor-serialization-kotlinx-xml", version.ref = "ktor" }
-ktor-serialization-kotlinx-cbor = { module = "io.ktor:ktor-serialization-kotlinx-cbor", version.ref = "ktor" }
-ktor-serialization-kotlinx-protobuf = { module = "io.ktor:ktor-serialization-kotlinx-protobuf", version.ref = "ktor" }
-# ktor server
-ktor-server-core = { module = "io.ktor:ktor-server-core", version.ref = "ktor" }
-ktor-server-netty = { module = "io.ktor:ktor-server-netty", version.ref = "ktor" }
-ktor-server-test-host = { module = "io.ktor:ktor-server-test-host", version.ref = "ktor" }
-# sse
-ktor-server-sse = { module = "io.ktor:ktor-server-sse", version.ref = "ktor" }
-# csrf
-ktor-server-csrf = { module = "io.ktor:ktor-server-csrf", version.ref = "ktor" }
-# content negotiation
-ktor-server-content-negotiation = { module = "io.ktor:ktor-server-content-negotiation", version.ref = "ktor" }
-# ssl/tls
-ktor-network-tls-certificates = { module = "io.ktor:ktor-network-tls-certificates", version.ref = "ktor" }
-# yaml configuration file
-ktor-server-config-yaml = { module = "io.ktor:ktor-server-config-yaml", version.ref = "ktor" }
-# cors
-ktor-server-cors = { module = "io.ktor:ktor-server-cors", version.ref = "ktor" }
-# auth
-ktor-server-auth = { module = "io.ktor:ktor-server-auth", version.ref = "ktor" }
-ktor-server-auth-jwt = { module = "io.ktor:ktor-server-auth-jwt", version.ref = "ktor" }
-ktor-server-auth-ldap = { module = "io.ktor:ktor-server-auth-ldap", version.ref = "ktor" }
+# host
 ktor-server-host-common = { module = "io.ktor:ktor-server-host-common", version.ref = "ktor" }
-# compression
-ktor-server-compression = { module = "io.ktor:ktor-server-compression", version.ref = "ktor" }
-# websockets
-ktor-server-websockets = { module = "io.ktor:ktor-server-websockets", version.ref = "ktor" }
-#  content validation
-ktor-server-request-validation = { module = "io.ktor:ktor-server-request-validation", version.ref = "ktor" }
-# server status pages
-ktor-server-status-pages = { module = "io.ktor:ktor-server-status-pages", version.ref = "ktor" }
-# server rate limit
-ktor-server-rate-limit = { module = "io.ktor:ktor-server-rate-limit", version.ref = "ktor" }
-# openapi swagger ui
-ktor-server-swagger = { module = "io.ktor:ktor-server-swagger", version.ref = "ktor" }
-ktor-server-openapi = { module = "io.ktor:ktor-server-openapi", version.ref = "ktor" }
+# cache
+ktor-simple-cache = { module = "com.ucasoft.ktor:ktor-simple-cache", version.ref = "ktor-cache" }
+ktor-simple-redis-cache = { module = "com.ucasoft.ktor:ktor-simple-redis-cache", version = "ktor-cache" }
+ktor-simple-memory-cache = { module = "com.ucasoft.ktor:ktor-simple-memory-cache", version = "ktor-cache" }
+# asyncapi
+kotlin-asyncapi-ktor = { module = "org.openfolder:kotlin-asyncapi-ktor", version.ref = "kotlin-asyncapi-ktor" }
+# swagger ui
 ktor-swagger-ui = { module = "io.github.smiley4:ktor-swagger-ui", version.ref = "ktor-swagger-ui" }
-# templating
-ktor-server-freemarker = { module = "io.ktor:ktor-server-freemarker", version.ref = "ktor" }
-# type-safe routing
-ktor-server-resources = { module = "io.ktor:ktor-server-resources", version.ref = "ktor" }
-# auto head response
-ktor-server-auto-head-response = { module = "io.ktor:ktor-server-auto-head-response", version.ref = "ktor" }
-# xhttpmethodoverride
-ktor-server-method-override = { module = "io.ktor:ktor-server-method-override", version.ref = "ktor" }
-# caching headers
-ktor-server-caching-headers = { module = "io.ktor:ktor-server-caching-headers", version.ref = "ktor" }
-# default headers
-ktor-server-default-headers = { module = "io.ktor:ktor-server-default-headers", version.ref = "ktor" }
-# conditional headers
-ktor-server-conditional-headers = { module = "io.ktor:ktor-server-conditional-headers", version.ref = "ktor" }
-# forwarded headers
-ktor-server-forwarded-header = { module = "io.ktor:ktor-server-forwarded-header", version.ref = "ktor" }
-# hsts (http strict transport security)
-ktor-server-hsts = { module = "io.ktor:ktor-server-hsts", version.ref = "ktor" }
-# https redirect
-ktor-server-http-redirect = { module = "io.ktor:ktor-server-http-redirect", version.ref = "ktor" }
-# partial content
-ktor-server-partial-content = { module = "io.ktor:ktor-server-partial-content", version.ref = "ktor" }
-# data conversion
-ktor-server-data-conversion = { module = "io.ktor:ktor-server-data-conversion", version.ref = "ktor" }
-# call logging
-ktor-server-call-logging = { module = "io.ktor:ktor-server-call-logging", version.ref = "ktor" }
-# call id
-ktor-server-call-id = { module = "io.ktor:ktor-server-call-id", version.ref = "ktor" }
-# micrometer metrics
+# task scheduler
+ktor-server-task-scheduling-core = { module = "io.github.flaxoos:ktor-server-task-scheduling-core", version.ref = "ktor-server-task-scheduling" }
+ktor-server-task-scheduling-redis = { module = "io.github.flaxoos:ktor-server-task-scheduling-redis", version.ref = "ktor-server-task-scheduling" }
+ktor-server-task-scheduling-jdbc = { module = "io.github.flaxoos:ktor-server-task-scheduling-jdbc", version.ref = "ktor-server-task-scheduling" }
+ktor-server-task-scheduling-mongodb = { module = "io.github.flaxoos:ktor-server-task-scheduling-mongodb", version.ref = "ktor-server-task-scheduling" }
+# kafka
+ktor-server-kafka = { module = "io.github.flaxoos:ktor-server-kafka", version.ref = "ktor-server-kafka" }
+# line webhook plugin
+ktor-line-webhook-plugin = { module = "io.github.cotrin8672:ktor-line-webhook-plugin", version = "1.5.0" }
+# metrics
 ktor-server-metrics = { module = "io.ktor:ktor-server-metrics", version.ref = "ktor" }
 ktor-server-metrics-micrometer = { module = "io.ktor:ktor-server-metrics-micrometer", version.ref = "ktor" }
-# ktor client
-ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
-ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
-ktor-client-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor" }
-ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
-ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
-ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "ktor" }
-ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
-ktor-client-java = { module = "io.ktor:ktor-client-java", version.ref = "ktor" }
-ktor-client-js = { module = "io.ktor:ktor-client-js", version.ref = "ktor" }
-ktor-client-json = { module = "io.ktor:ktor-client-json", version.ref = "ktor" }
-ktor-client-serialization = { module = "io.ktor:ktor-client-serialization", version.ref = "ktor" }
-#kotlin library for adding asynchronous Remote Procedure Call (RPC) services to your applications. Build your RPC with already known language constructs and nothing more!
+# kotlin library for adding asynchronous Remote Procedure Call (RPC) services to your applications. Build your RPC with already known language constructs and nothing more!
+kotlinx-rpc-core = { module = "org.jetbrains.kotlinx:kotlinx-rpc-core", version.ref = "kotlinx-rpc" }
 # serialization module. also, protobuf and cbor are available
 kotlinx-rpc-krpc-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-rpc-krpc-serialization-json", version.ref = "kotlinx-rpc" }
 kotlinx-rpc-krpc-serialization-protobuf = { module = "org.jetbrains.kotlinx:kotlinx-rpc-krpc-serialization-protobuf", version.ref = "kotlinx-rpc" }
@@ -790,6 +741,7 @@ apollo-normalized-cache = { module = "com.apollographql.apollo3:apollo-normalize
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }
 firebase-crashlyticsKtx = { module = "com.google.firebase:firebase-crashlytics-ktx" }
 firebase-admin = { module = "com.google.firebase:firebase-admin", version.ref = "firebase-admin" }
+firebase-auth-provider = { module = "com.kborowy:firebase-auth-provider", version.ref = "firebase-auth-provider" }
 # permissions
 permissions = { module = "dev.icerock.moko:permissions", version.ref = "permissions" }
 permissions-compose = { module = "dev.icerock.moko:permissions-compose", version.ref = "permissions" }
@@ -917,6 +869,7 @@ micrometer-registry-prometheus = { module = "io.micrometer:micrometer-registry-p
 # dropwizard
 metrics-jmx = { module = "io.dropwizard.metrics:metrics-jmx", version.ref = "dropwizard" }
 # health
+khealth = { module = "dev.hayden:khealth", version.ref = "khealth" }
 cohort-logback = { module = "com.sksamuel.cohort:cohort-logback", version.ref = "cohort" }
 cohort-ktor = { module = "com.sksamuel.cohort:cohort-ktor", version.ref = "cohort" }
 cohort-http = { module = "com.sksamuel.cohort:cohort-http", version.ref = "cohort-http" }
@@ -937,11 +890,6 @@ koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 koin-logger-slf4j = { module = "io.insert-koin:koin-logger-slf4j", version.ref = "koin" }
 koin-ktor = { module = "io.insert-koin:koin-ktor", version.ref = "koin" }
 koin-test-junit5 = { module = "io.insert-koin:koin-test-junit5", version.ref = "koin" }
-# task scheduler
-ktor-server-task-scheduling-core = { module = "io.github.flaxoos:ktor-server-task-scheduling-core", version.ref = "ktor-server-task-scheduling" }
-ktor-server-task-scheduling-redis = { module = "io.github.flaxoos:ktor-server-task-scheduling-redis", version.ref = "ktor-server-task-scheduling" }
-ktor-server-task-scheduling-jdbc = { module = "io.github.flaxoos:ktor-server-task-scheduling-jdbc", version.ref = "ktor-server-task-scheduling" }
-ktor-server-task-scheduling-mongodb = { module = "io.github.flaxoos:ktor-server-task-scheduling-mongodb", version.ref = "ktor-server-task-scheduling" }
 
 ##Gandle graceful shutdown
 suspendapp = { module = "io.arrow-kt:suspendapp", version.ref = "suspendapp" }
@@ -957,7 +905,11 @@ opentelemetry = [
     "opentelemetry-api",
     "opentelemetry-sdk",
     "opentelemetry-sdkTrace",
-    "opentelemetry-kotlin"
+    "opentelemetry-kotlin",
+    "opentelemetry-sdk-extension-autoconfigure",
+    "opentelemetry-semconv",
+    "opentelemetry-exporter-otlp",
+    "opentelemetry-ktor",
 ]
 # intellij
 intellij-platform = [
@@ -1051,10 +1003,10 @@ kotlinx-serialization = [
 # communoty supported serialization
 serialization = [
     "xmlutil-serialization", # replaced by ksoup
-#    "serialization-msgpack",
-#    "serialization-msgpack-timestamp-extension",
-#    "knbt",
-#    "yamlkt",
+    #    "serialization-msgpack",
+    #    "serialization-msgpack-timestamp-extension",
+    #    "knbt",
+    #    "yamlkt",
     #    "tomlkt",
 ]
 # xml and html parser
@@ -1097,6 +1049,7 @@ sqldelight = [
 ]
 # jdbc drivers
 jdbc = [
+    "h2",
     "mariadb-java-client",
     "postgresql",
     "mysql-connector-j",
@@ -1117,7 +1070,7 @@ r2dbc = [
 # lightweight SQL library on top of a JDBC driver for the Kotlin language.
 # has two flavors of database access: typesafe SQL wrapping DSL and lightweight Data Access Objects (DAO).
 exposed = [
-    "exposed",
+    "exposed-core",
     "exposed-crypt",
     "exposed-dao",
     "exposed-jdbc",
@@ -1144,62 +1097,23 @@ connectivity-compose-multiplatform = [
     "connectivity-compose",
     "connectivity-compose-http",
 ]
-##ktor
-ktor-serialization = [
-    "ktor-serialization-kotlinx-json",
-    #    "ktor-serialization-kotlinx-xml",
-    "ktor-serialization-kotlinx-cbor",
-    "ktor-serialization-kotlinx-protobuf",
-]
+##Ktor
 # server
 ktor-server = [
-    "ktor-server-core",
-    "ktor-server-netty",
-    "ktor-server-sse",
-    "ktor-server-csrf",
-    "ktor-network-tls-certificates",
-    "ktor-server-config-yaml",
-    "ktor-server-cors",
-    "ktor-server-auth",
-    "ktor-server-auth-jwt",
-    "ktor-server-auth-ldap",
     "ktor-server-host-common",
-    "ktor-server-compression",
-    "ktor-server-websockets",
-    "ktor-server-content-negotiation",
-    "ktor-server-request-validation",
-    "ktor-server-status-pages",
-    "ktor-server-rate-limit",
-    "ktor-server-freemarker",
-    "ktor-server-resources",
-    "ktor-server-auto-head-response",
-    "ktor-server-method-override",
-    "ktor-server-caching-headers",
-    "ktor-server-default-headers",
-    "ktor-server-conditional-headers",
-    "ktor-server-forwarded-header",
-    "ktor-server-hsts",
-    "ktor-server-http-redirect",
-    "ktor-server-partial-content",
-    "ktor-server-data-conversion",
-    "ktor-server-call-logging",
-    "ktor-server-call-id",
+    "ktor-simple-cache",
+    "ktor-simple-memory-cache",
+    "ktor-simple-redis-cache",
+    "kotlin-asyncapi-ktor",
+    "ktor-swagger-ui",
+    "ktor-server-task-scheduling-core",
+    "ktor-server-task-scheduling-redis",
+    "ktor-server-task-scheduling-jdbc",
+    "ktor-server-task-scheduling-mongodb",
+    "ktor-server-kafka",
+    "ktor-line-webhook-plugin",
     "ktor-server-metrics",
     "ktor-server-metrics-micrometer",
-    "ktor-swagger-ui",
-#    "ktor-server-task-scheduling-core",
-#    "ktor-server-task-scheduling-redis",
-    "ktor-server-task-scheduling-jdbc",
-    "ktor-server-task-scheduling-mongodb"
-]
-#client
-ktor-client = [
-    "ktor-client-core",
-    "ktor-client-content-negotiation",
-    "ktor-client-auth",
-    "ktor-client-logging",
-    "ktor-client-json",
-    "ktor-client-serialization",
 ]
 # http client/Kotlin Symbol Processor for Kotlin Multiplatform ( Android, iOS, Js, Jvm, Linux) using KSP and Ktor clients inspired by Retrofit
 ktorfit = [
@@ -1316,6 +1230,7 @@ compass-mobile = [
 metrics = [
     "micrometer-registry-prometheus",
     "metrics-jmx",
+    "khealth",
     "cohort-logback",
     "cohort-ktor",
     "cohort-http",
@@ -1327,7 +1242,7 @@ metrics = [
 ##Dependency injection
 koin-kotlin-multiplatform = [
     "koin-core",
-#    "koin-core-coroutines",
+    #    "koin-core-coroutines",
     "koin-annotations",
 ]
 koin-compose-multiplatform = [
