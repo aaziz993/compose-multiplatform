@@ -2,6 +2,8 @@ package gradle.plugins.signing
 
 import gradle.api.initialization.localProperties
 import gradle.api.initialization.settingsProperties
+import gradle.api.project.sensitive
+import gradle.api.project.sensitiveOrElse
 import gradle.api.project.settings
 import org.gradle.api.Project
 import org.gradle.api.tasks.Exec
@@ -12,27 +14,19 @@ import org.gradle.process.CommandLineArgumentProvider
 @Suppress("UnusedReceiverParameter")
 context(project: Project)
 public fun SigningExtension.registerGPGTasks(): Unit = project.pluginManager.withPlugin("signing") {
-    val passphrase = project.settings.localProperties.getProperty("signing.gnupg.passphrase")
-    val keyType = project.settings.localProperties.getProperty("signing.gnupg.key.type", "RSA")
-    val keyLength =
-        project.settings.localProperties.getProperty("signing.gnupg.key.length", "4096").toInt()
-    val subkeyType = project.settings.localProperties.getProperty("signing.gnupg.subkey.type", "RSA")
-    val subkeyLength =
-        project.settings.localProperties.getProperty("signing.gnupg.subkey.length", "4096").toInt()
-    val nameReal = project.settings.localProperties.getProperty(
-        "signing.gnupg.name.real",
-        project.settings.settingsProperties.developer.name!!,
-    )
-    val nameComment = project.settings.localProperties.getProperty(
-        "signing.gnupg.name.comment",
-        project.description.orEmpty(),
-    )
-    val nameEmail = project.settings.localProperties.getProperty(
-        "signing.gnupg.name.email",
-        project.settings.settingsProperties.developer.email!!,
-    )
-    val expireDate =
-        project.settings.localProperties.getProperty("signing.gnupg.expiryDate", "0").toLong()
+    val passphrase = project.sensitive("signing.gnupg.passphrase")
+    val keyType = project.sensitiveOrElse("signing.gnupg.key.type") { "RSA" }
+    val keyLength = project.sensitiveOrElse("signing.gnupg.key.length") { "4096" }.toInt()
+    val subkeyType = project.sensitiveOrElse("signing.gnupg.subkey.type") { "RSA" }
+    val subkeyLength = project.sensitiveOrElse("signing.gnupg.subkey.length") { "4096" }.toInt()
+    val nameReal = project.sensitiveOrElse("signing.gnupg.name.real") {
+        project.settings.settingsProperties.developer.name!!
+    }
+    val nameComment = project.sensitiveOrElse("signing.gnupg.name.comment") { project.description.orEmpty() }
+    val nameEmail = project.sensitiveOrElse("signing.gnupg.name.email") {
+        project.settings.settingsProperties.developer.email!!
+    }
+    val expireDate = project.sensitiveOrElse("signing.gnupg.expiryDate") { "0" }.toLong()
 
     /** Distribute signing gpg key
      * There are 3 servers supported by Central servers: [ keyserver.ubuntu.com, keys.openpgp.org, pgp.mit.edu ]
@@ -64,7 +58,7 @@ public fun SigningExtension.registerGPGTasks(): Unit = project.pluginManager.wit
 
         args(passphrase, nameReal)
     }
-
+    project.sensitive()
     project.tasks.register<Exec>("gpgCleanKeys") {
         description = "Clean the signing GPG keys"
         group = "signing"
@@ -83,8 +77,8 @@ public fun SigningExtension.registerGPGTasks(): Unit = project.pluginManager.wit
         argumentProviders.add(
             CommandLineArgumentProvider {
                 listOf(
-                    project.settings.localProperties.getProperty("signing.gnupg.key.servers", ""),
-                    project.settings.localProperties.getProperty("signing.gnupg.key"),
+                    project.sensitiveOrElse("signing.gnupg.key.servers") { "" },
+                    project.sensitive("signing.gnupg.key"),
                 )
             },
         )

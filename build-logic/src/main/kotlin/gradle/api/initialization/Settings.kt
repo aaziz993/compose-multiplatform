@@ -19,6 +19,7 @@ import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import java.io.File
 import java.net.URI
 import java.util.*
+import net.pearx.kasechange.toScreamingSnakeCase
 
 public const val LIBS_VERSION_CATALOG_EXT: String = "libs.versions.catalog.ext"
 
@@ -66,5 +67,11 @@ public fun Settings.gitBranch(): String = execute("git rev-parse --abbrev-ref HE
 
 public fun Settings.gitStatus(): String = execute("git status --porcelain")
 
-public fun Settings.sensitive(key: String): String = System.getenv(key) ?: localProperties.getProperty(key)
+public fun Settings.sensitiveOrElse(key: String, defaultValue: () -> String): String =
+    System.getenv(key.toScreamingSnakeCase())
+        ?: localProperties.getProperty(key)
+        ?: defaultValue()
 
+public fun Settings.sensitive(key: String): String = sensitiveOrElse(key) {
+    throw IllegalArgumentException("Unresolved sensitive variable $key")
+}

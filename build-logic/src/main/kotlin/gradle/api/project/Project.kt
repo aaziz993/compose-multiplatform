@@ -15,6 +15,7 @@ import gradle.api.initialization.allLibs
 import gradle.api.initialization.dsl.VersionCatalog
 import gradle.api.initialization.libs
 import gradle.api.initialization.sensitive
+import gradle.api.initialization.sensitiveOrElse
 import gradle.api.repositories.CacheRedirector
 import gradle.plugins.getOrPut
 import io.github.sgrishchenko.karakum.gradle.plugin.KarakumExtension
@@ -396,6 +397,9 @@ public fun Project.enableCacheRedirect(): Unit = CacheRedirector.applyTo(project
 public fun Project.execute(cmd: String): String = providers.exec {
     commandLine(cmd.split(" "))
 }.standardOutput.asText.get().trim()
+
+public fun Project.sensitiveOrElse(key: String, defaultValue: () -> String): String =
+    settings.sensitiveOrElse(key, defaultValue)
 
 public fun Project.sensitive(key: String): String = settings.sensitive(key)
 
