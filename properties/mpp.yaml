@@ -113,7 +113,7 @@ script:
             ("commonMain") { sourceSet ->
               // Ksp generated source directory.
               sourceSet.kotlin.srcDir(projectDir.resolve("build/generated/ksp/metadata/commonMain/gradle.kotlin"))
-              
+
               sourceSet.dependencies {
                 implementation(libs("km.logging"))
                 implementation(libs("atomicfu"))
@@ -162,7 +162,7 @@ script:
               }
             }
         - named: |
-            ("commonMain") { sourceSet ->
+            ("commonTest") { sourceSet ->
               sourceSet.dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
