@@ -20,6 +20,6 @@ script:
               sourceSet.dependencies {
                 implementation(libs("mockk"))
                 implementation(libs("truth"))
-                implementation(kotlin("kotlinx-knit-test"))
+                implementation(libs("kotlinx.knit.test"))
               }
             }

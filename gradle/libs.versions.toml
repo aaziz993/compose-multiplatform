@@ -800,6 +800,9 @@ kotest-runner-junit5 = { module = "io.kotest:kotest-runner-junit5", version.ref 
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 mockk-android = { module = "io.mockk:mockk-android", version.ref = "mockk" }
 truth = { module = "com.google.truth:truth", version.ref = "truth" }
+# knit
+kotlinx-knit-test = { module = "org.jetbrains.kotlinx:kotlinx-knit-test", version.ref = "knit" }
+
 
 ##Android
 # gradle plugin
