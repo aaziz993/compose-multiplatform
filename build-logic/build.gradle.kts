@@ -166,6 +166,7 @@ dependencies {
     // a lightweight Kotlin Multiplatform library that provides a unified and type-safe interface for key-value storage across different platforms. It simplifies the process of storing and retrieving data by abstracting the underlying storage mechanisms.
     implementation(libs.klibs.kstorage)
     // file system
+    implementation(libs.kotlinx.io.core)
     implementation(libs.okio)
     // sqlite jdbc driver
     implementation(libs.sqlite.jdbc)
