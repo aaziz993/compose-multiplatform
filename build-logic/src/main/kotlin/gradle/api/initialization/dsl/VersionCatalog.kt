@@ -76,7 +76,7 @@ public data class VersionCatalog(
                 }
             }?.let { text ->
                 Toml.decodeFromString<VersionCatalog>(text)
-            } ?: error("Couldn't find version catalog ''")
+            } ?: error("Couldn't find version catalog '$lib'")
 
         private fun String.toCatalogUrl(): String {
             val fileNamePart = substringAfter(":", "").replace(":", "-")
