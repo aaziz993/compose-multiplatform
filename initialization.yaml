@@ -77,7 +77,6 @@ script:
       - alias: (libs.plugins("ksp"), false)
       - alias: (libs.plugins("allopen"), false)
       - alias: (libs.plugins("noarg"), false)
-      - alias: (libs.plugins("atomicfu"), false)
       - alias: (libs.plugins("kotlin.serialization"), false)
       - alias: (libs.plugins("kotlinx.benchmark"), false)
       - alias: (libs.plugins("sqldelight"), false)
@@ -110,7 +109,7 @@ script:
         - uploadInBackground: CI.current == null
         - publishing: |
             { publishing ->
-              publishing.onlyIf { context -> 
+              publishing.onlyIf { context ->
                 context.isAuthenticated && (context.buildResult.failures.isNotEmpty() || CI.current != null)
               }
             }
