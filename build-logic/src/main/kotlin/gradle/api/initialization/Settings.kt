@@ -19,11 +19,15 @@ import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import java.io.File
 import java.net.URI
 import java.util.*
+import klib.data.type.collections.getOrPut
 import net.pearx.kasechange.toScreamingSnakeCase
 
-public const val LIBS_VERSION_CATALOG_EXT: String = "libs.versions.catalog.ext"
-
 public const val LOCAL_PROPERTIES_EXT: String = "local.properties.ext"
+
+public const val VERSION_CATALOGS_EXT: String = "versions.catalog.ext"
+
+public const val LIBS_VERSION_CATALOG_EXT: String = "libs"
+public const val LIBS_VERSION_CATALOGS_FILE: String = "gradle/libs.versions.toml"
 
 @Suppress("UnstableApiUsage")
 public val Settings.localProperties: Properties
@@ -35,22 +39,29 @@ public val Settings.localProperties: Properties
         }
     }
 
-@Suppress("UnstableApiUsage")
+public val Settings.catalogs: MutableMap<String, VersionCatalog>
+    get() = extraProperties.getOrPut(VERSION_CATALOGS_EXT, ::mutableMapOf)
+
+public fun Settings.libs(name: String): VersionCatalog =
+    catalogs[name] ?: throw IllegalArgumentException("Unresolved version catalog '$name'")
+
+@Suppress("UnstableApiUsage", "UNCHECKED_CAST")
 public val Settings.libs: VersionCatalog
-    get() = extraProperties.getOrPut(LIBS_VERSION_CATALOG_EXT) {
-        Toml.Default.decodeFromString(
-            layout.settingsDirectory.file("gradle/libs.versions.toml").asFile.readText(),
+    get() = catalogs.getOrPut(LIBS_VERSION_CATALOG_EXT) {
+        Toml.decodeFromString<VersionCatalog>(
+            layout.settingsDirectory.file(LIBS_VERSION_CATALOGS_FILE).asFile.also { file ->
+                if (!file.exists())
+                    error("Unresolved version catalog file '$LIBS_VERSION_CATALOGS_FILE'")
+            }.readText(),
         )
     }
 
+@Suppress("UNCHECKED_CAST")
 context(settings: Settings)
 public fun VersionCatalogBuilder.fromLib(lib: MinimalExternalModuleDependency) {
     from(lib.toString())
-    settings.extraProperties[name] = VersionCatalog(lib)
+    settings.catalogs[name] = VersionCatalog(lib)
 }
-
-public fun Settings.allLibs(name: String): VersionCatalog =
-    (extraProperties[name] ?: throw IllegalArgumentException("Unresolved version catalog '$name'")) as VersionCatalog
 
 public val Settings.gitHooks: GitHooksExtension
     get() = extensions.getByType<GitHooksExtension>()

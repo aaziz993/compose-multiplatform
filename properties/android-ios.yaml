@@ -2,7 +2,7 @@ script:
   - kotlin:
       sourceSets:
         - named: |
-            ("androidIos") { sourceSet ->
+            ("androidIosMain") { sourceSet ->
               sourceSet.dependencies {
                 implementation(libs("permissions"))
               }

@@ -2,7 +2,6 @@ package gradle.api.project
 
 import androidx.room.gradle.RoomExtension
 import app.cash.sqldelight.gradle.SqlDelightExtension
-import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import com.apollographql.apollo3.gradle.api.ApolloExtension
 import com.diffplug.gradle.spotless.SpotlessExtension
@@ -11,7 +10,7 @@ import com.google.devtools.ksp.gradle.KspExtension
 import com.osacky.doctor.DoctorExtension
 import de.jensklingenberg.ktorfit.gradle.KtorfitPluginExtension
 import gradle.api.ci.CI
-import gradle.api.initialization.allLibs
+import gradle.api.initialization.catalogs
 import gradle.api.initialization.dsl.VersionCatalog
 import gradle.api.initialization.libs
 import gradle.api.initialization.sensitive
@@ -105,13 +104,16 @@ private fun String.sanitize(): String {
 
 public val Project.settings: Settings get() = (gradle as GradleInternal).settings
 
+public val Project.catalogs: Map<String, VersionCatalog>
+    get() = settings.catalogs
+
+public fun Project.libs(name: String): VersionCatalog = settings.libs(name)
+
 public val Project.libs: VersionCatalog
     get() = settings.libs
 
 public val Project.composeLibs: ComposePlugin.Dependencies
     get() = extensions.getByType<ComposeExtension>().dependencies
-
-public fun Project.allLibs(name: String): VersionCatalog = settings.allLibs(name)
 
 @Suppress("UnstableApiUsage")
 public val Project.toolchain: ToolchainManagement get() = the()
