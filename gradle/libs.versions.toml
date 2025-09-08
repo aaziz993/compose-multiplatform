@@ -571,6 +571,7 @@ tomlkt = { module = "net.peanuuutz.tomlkt:tomlkt", version.ref = "tomlkt" }
 # jsonpath
 jsonpathkt-kotlinx = { module = "com.eygraber:jsonpathkt-kotlinx", version.ref = "jsonpathkt-kotlinx" }
 # xml and html parser
+ksoup = { module = "com.fleeksoft.ksoup:ksoup", version.ref = "ksoup" }
 ksoup-kotlinx = { module = "com.fleeksoft.ksoup:ksoup-kotlinx", version.ref = "ksoup" }
 ksoup-network = { module = "com.fleeksoft.ksoup:ksoup-network", version.ref = "ksoup" }
 # rss parser
@@ -694,8 +695,8 @@ ktor-version-catalog = { module = "io.ktor:ktor-version-catalog", version.ref = 
 ktor-server-host-common = { module = "io.ktor:ktor-server-host-common", version.ref = "ktor" }
 # cache
 ktor-simple-cache = { module = "com.ucasoft.ktor:ktor-simple-cache", version.ref = "ktor-cache" }
-ktor-simple-redis-cache = { module = "com.ucasoft.ktor:ktor-simple-redis-cache", version = "ktor-cache" }
-ktor-simple-memory-cache = { module = "com.ucasoft.ktor:ktor-simple-memory-cache", version = "ktor-cache" }
+ktor-simple-redis-cache = { module = "com.ucasoft.ktor:ktor-simple-redis-cache", version.ref = "ktor-cache" }
+ktor-simple-memory-cache = { module = "com.ucasoft.ktor:ktor-simple-memory-cache", version.ref = "ktor-cache" }
 # asyncapi
 kotlin-asyncapi-ktor = { module = "org.openfolder:kotlin-asyncapi-ktor", version.ref = "kotlin-asyncapi-ktor" }
 # swagger ui
@@ -1003,6 +1004,7 @@ kotlinx-serialization = [
 # communoty supported serialization
 serialization = [
     "xmlutil-serialization", # replaced by ksoup
+    "kaml",
     #    "serialization-msgpack",
     #    "serialization-msgpack-timestamp-extension",
     #    "knbt",
@@ -1011,6 +1013,7 @@ serialization = [
 ]
 # xml and html parser
 ksoup = [
+    "ksoup",
     "ksoup-kotlinx",
     "ksoup-network"
 ]
@@ -1148,7 +1151,7 @@ kgraphql = [
 # strongly typed GraphQL client that generates Kotlin models for your GraphQL operations.
 apollo = [
     "apollo-runtime",
-    "apollo-normalized-cache"
+    #    "apollo-normalized-cache" no wasmJs
 ]
 # testing
 kotest-multiplatform = [

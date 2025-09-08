@@ -9,7 +9,7 @@ import gradle.api.project.projectProperties
 import gradle.api.project.sourceSetsToComposeResourcesDirs
 import klib.data.type.primitives.string.addPrefixIfNotEmpty
 import klib.data.type.primitives.string.lowercaseFirstChar
-import net.pearx.kasechange.splitToWords
+import klib.data.type.primitives.string.case.splitToWords
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.SourceSet

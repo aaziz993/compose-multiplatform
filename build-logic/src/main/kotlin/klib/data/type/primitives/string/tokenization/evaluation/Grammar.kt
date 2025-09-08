@@ -15,7 +15,7 @@ import klib.data.type.primitives.string.tokenization.Parsers
 import klib.data.type.primitives.string.tokenization.Tokens
 import klib.data.type.primitives.string.tokenization.mapToken
 import klib.data.type.primitives.string.tokenization.mapWithMatches
-import net.pearx.kasechange.toCamelCase
+import klib.data.type.primitives.string.case.toCamelCase
 import kotlin.collections.Set
 import kotlin.collections.map
 

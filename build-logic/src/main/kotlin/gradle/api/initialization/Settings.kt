@@ -7,7 +7,7 @@ import java.io.File
 import java.util.*
 import kotlinx.serialization.decodeFromString
 import net.peanuuutz.tomlkt.Toml
-import net.pearx.kasechange.toScreamingSnakeCase
+import klib.data.type.primitives.string.case.toScreamingSnakeCase
 import org.danilopianini.gradle.git.hooks.GitHooksExtension
 import org.gradle.api.artifacts.MinimalExternalModuleDependency
 import org.gradle.api.initialization.Settings
