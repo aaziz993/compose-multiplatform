@@ -1,6 +1,5 @@
 config:
   imports:
-    - org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
     - com.android.build.api.dsl.androidLibrary
 script:
   - plugins:
