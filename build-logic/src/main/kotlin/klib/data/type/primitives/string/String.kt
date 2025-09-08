@@ -76,9 +76,9 @@ public fun String.singleQuote(): String = "'$this'"
 
 public fun String.doubleQuote(): String = "\"$this\""
 
-public fun String.uppercaseFirst(): String = replaceFirstChar(Char::uppercase)
+public fun String.uppercaseFirstChar(): String = replaceFirstChar(Char::uppercase)
 
-public fun String.lowercaseFirst(): String = replaceFirstChar(Char::lowercase)
+public fun String.lowercaseFirstChar(): String = replaceFirstChar(Char::lowercase)
 
 public fun String.ifNotEmpty(transform: (String) -> String): String =
     if (isNotEmpty()) transform(this) else this

@@ -1,7 +1,6 @@
 package gradle.plugins.kotlin.mpp
 
 
-import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryTarget
 import gradle.api.configureEach
 import gradle.api.file.replace
 import gradle.api.project.ProjectLayout
@@ -9,14 +8,13 @@ import gradle.api.project.kotlin
 import gradle.api.project.projectProperties
 import gradle.api.project.sourceSetsToComposeResourcesDirs
 import klib.data.type.primitives.string.addPrefixIfNotEmpty
-import klib.data.type.primitives.string.lowercaseFirst
+import klib.data.type.primitives.string.lowercaseFirstChar
 import net.pearx.kasechange.splitToWords
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.SourceSet
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
-import org.gradle.kotlin.dsl.getByType
 
 private val TEST_SOURCE_SET_NAME_PREFIXES = listOf(
     SourceSet.TEST_SOURCE_SET_NAME,
@@ -53,7 +51,7 @@ public class MPPPlugin : Plugin<Project> {
                         if (androidTarget != null) {
                             targetPart = "${layout.targetDelimiter}${androidTarget.targetName}"
 
-                            val restPart = sourceSet.name.removePrefix(androidTarget.targetName).lowercaseFirst()
+                            val restPart = sourceSet.name.removePrefix(androidTarget.targetName).lowercaseFirstChar()
 
                             if (restPart == androidTarget.mainVariant.sourceSetTree.get().name) {
                                 srcPrefixPart = "src"
@@ -93,7 +91,7 @@ public class MPPPlugin : Plugin<Project> {
                                 if (targetName == "common") "" else "${layout.targetDelimiter}$targetName"
                             }
 
-                            val compilationName = sourceSetNameParts[2].lowercaseFirst()
+                            val compilationName = sourceSetNameParts[2].lowercaseFirstChar()
 
                             if (compilationName == KotlinCompilation.MAIN_COMPILATION_NAME) {
                                 srcPrefixPart = "src"
@@ -110,9 +108,9 @@ public class MPPPlugin : Plugin<Project> {
                         )
                         sourceSet.resources.replace(
                             "src/${sourceSet.name}/resources",
-                            "${resourcesPrefixPart}Resources$targetPart".lowercaseFirst()
+                            "${resourcesPrefixPart}Resources$targetPart".lowercaseFirstChar()
                         )
-                        sourceSetsToComposeResourcesDirs[sourceSet] = project.layout.projectDirectory.dir("${resourcesPrefixPart}ComposeResources$targetPart".lowercaseFirst())
+                        sourceSetsToComposeResourcesDirs[sourceSet] = project.layout.projectDirectory.dir("${resourcesPrefixPart}ComposeResources$targetPart".lowercaseFirstChar())
                     }
                 }
 

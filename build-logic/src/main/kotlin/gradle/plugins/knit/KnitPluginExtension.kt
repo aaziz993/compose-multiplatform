@@ -1,7 +1,6 @@
 package gradle.plugins.knit
 
 import gradle.api.project.settings
-import klib.data.type.primitives.string.addPrefix
 import kotlinx.knit.KnitPluginExtension
 import org.gradle.api.Project
 

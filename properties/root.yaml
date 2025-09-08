@@ -64,6 +64,7 @@ script:
               dokkaSourceSet.enableKotlinStdLibDocumentationLink /= true
               dokkaSourceSet.enableJdkDocumentationLink /= true
               dokkaSourceSet.enableAndroidDocumentationLink /= true
+              dokkaSourceSet.jdkVersion /= libs.versions("java.languageVersion").requiredVersion.toInt()
             }
       pluginsConfiguration:
         - html:

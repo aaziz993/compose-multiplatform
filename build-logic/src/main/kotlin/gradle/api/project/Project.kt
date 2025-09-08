@@ -72,14 +72,36 @@ import org.sonarqube.gradle.SonarExtension
  * Create native module name from project path.
  */
 public val Project.moduleName: String
-    get() = path.removePrefix(":").replace(":", "-")
+    get() = path
+        .removePrefix(":")
+        .replace(":", "-")
+        .replace("[^A-Za-z0-9_]".toRegex(), "_")
 
 /**
  * Create android namespace from project group and path.
  * Replace '-' and ':' in path with '.'
  */
 public val Project.androidNamespace: String
-    get() = "$group.${path.removePrefix(":").replace("[-_:]".toRegex(), ".")}"
+    get() = "$group.${path.removePrefix(":")}"
+        .split("[-_:]".toRegex()).filter(String::isNotBlank)
+        .joinToString(".", transform = String::sanitize)
+
+private val RESERVED = setOf(
+    "abstract", "assert", "boolean", "break", "byte", "case", "catch", "char", "class",
+    "const", "continue", "default", "do", "double", "else", "enum", "extends", "final",
+    "finally", "float", "for", "goto", "if", "implements", "import", "instanceof", "int",
+    "interface", "long", "native", "new", "package", "private", "protected", "public",
+    "return", "short", "static", "strictfp", "super", "switch", "synchronized", "this",
+    "throw", "throws", "transient", "try", "void", "volatile", "while",
+)
+
+private fun String.sanitize(): String {
+    val cleaned = replace("[^A-Za-z0-9_]".toRegex(), "_") // invalid → underscore
+        .trim('_')                               // no leading/trailing _
+        .ifEmpty { "module" }                    // fallback if empty
+
+    return if (cleaned in RESERVED) "${cleaned}x" else cleaned
+}
 
 public val Project.settings: Settings get() = (gradle as GradleInternal).settings
 

@@ -9,12 +9,12 @@ script:
         version: libs.versions("kotlin.cocoapods.version").requiredVersion
         summary: description
         homepage: settings.settingsProperties.remote.url
-        name: name
+        name: moduleName
         framework: |
           {
             // Required properties
             // Framework name configuration. Use this property instead of deprecated 'frameworkName'
-            baseName = "MyFramework"
+            baseName = moduleName
 
             // Optional properties
             // Specify the framework linking type. It's dynamic by default.

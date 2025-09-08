@@ -6,8 +6,9 @@ import gradle.api.services.unregister
 import org.gradle.api.Project
 
 // Always monitor tasks on CI, but disable it locally by default with providing an option to opt-in.
+@Suppress("UnusedReceiverParameter")
 context(project: Project)
-public fun DoctorExtension.disableTaskMonitoring(): Unit =
+public fun DoctorExtension.taskMonitoring(): Unit =
     project.pluginManager.withPlugin("com.osacky.doctor") {
         if (CI.current != null) {
             project.logger.info("Gradle Doctor task monitoring is disabled.")

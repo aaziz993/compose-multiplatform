@@ -4,10 +4,16 @@ import gradle.api.ci.CI
 import gradle.api.maybeNamed
 import gradle.api.project.ProjectProperties
 import gradle.plugins.android.AndroidPlugin
+import gradle.plugins.apivalidation.ApiValidationPlugin
 import gradle.plugins.compose.ComposePlugin
+import gradle.plugins.dokka.DokkaPlugin
 import gradle.plugins.initialization.SLF4JProblemReporterContext
+import gradle.plugins.knit.KnitPlugin
 import gradle.plugins.kotlin.mpp.MPPPlugin
 import gradle.plugins.kotlin.targets.JvmPlugin
+import gradle.plugins.kover.KoverPlugin
+import gradle.plugins.publish.PublishPlugin
+import gradle.plugins.signing.SigningPlugin
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -22,10 +28,16 @@ public class ProjectPlugin : Plugin<Project> {
             // Load and apply project.yaml to build.gradle.kts.
             ProjectProperties()
 
+            pluginManager.apply(KoverPlugin::class.java)
+            pluginManager.apply(DokkaPlugin::class.java)
+            pluginManager.apply(KnitPlugin::class.java)
+            pluginManager.apply(ApiValidationPlugin::class.java)
             pluginManager.apply(MPPPlugin::class.java)
             pluginManager.apply(AndroidPlugin::class.java)
             pluginManager.apply(JvmPlugin::class.java)
             pluginManager.apply(ComposePlugin::class.java)
+            pluginManager.apply(PublishPlugin::class.java)
+            pluginManager.apply(SigningPlugin::class.java)
 
             configureLinkTasks()
 

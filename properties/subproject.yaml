@@ -245,6 +245,7 @@ script:
                 "sonar.projectKey" to "aaziz993_compose-multiplatform",
                 "sonar.coverage.jacoco.xmlReportPaths" to "build/reports/kover/report.xml",
                 "sonar.androidLint.reportPaths" to "build/reports/lint-results.xml",
+                "sonar.projectVersion" to version,
             )
           )
         }
@@ -287,6 +288,7 @@ script:
   # Toolkit for running benchmarks for multiplatform code written in Kotlin. It is designed to work with Kotlin/JVM, Kotlin/JS, Kotlin/Native, and Kotlin/WasmJs (experimental) targets.
   - benchmark:
       reportsDir: '"build/reports"'
+      kotlinCompilerVersion: libs.versions("kotlin").requiredVersion
       targets:
         - withType<JvmBenchmarkTarget>: |
             {
@@ -339,7 +341,7 @@ script:
       - add: ("kspCommonMainMetadata", libs("koin.ksp.compiler"))
   - tasks:
       - withType<ShadowJar>: |
-          { 
+          {
             duplicatesStrategy = DuplicatesStrategy.EXCLUDE
             mergeServiceFiles()
           }

@@ -2,10 +2,8 @@ package gradle.plugins.develocity
 
 import com.gradle.develocity.agent.gradle.DevelocityConfiguration
 import gradle.api.ci.CI
-import gradle.api.ci.CI.TeamCity.Companion.gitBranch
 import gradle.api.initialization.settingsProperties
 import java.net.URLEncoder
-import klib.data.type.isGithubUrl
 import org.gradle.api.initialization.Settings
 import gradle.api.initialization.gitCommitId
 import gradle.api.initialization.gitBranch

@@ -5,7 +5,7 @@ import com.gradle.develocity.agent.gradle.test.DevelocityTestConfiguration
 import com.gradle.develocity.agent.gradle.test.TestRetryConfiguration
 import gradle.api.project.execute
 import gradle.api.project.registerAggregationTestTask
-import klib.data.type.primitives.string.uppercaseFirst
+import klib.data.type.primitives.string.uppercaseFirstChar
 import org.gradle.api.Project
 import org.gradle.api.tasks.testing.AbstractTestTask
 import org.gradle.api.tasks.testing.Test
@@ -192,8 +192,8 @@ public sealed class CI {
 
             pluginManager.withPlugin("maven-publish") {
                 ci.publishRepositories.forEach { (name, enabled) ->
-                    val publishTaskName = "publishAllPublicationsTo${name.uppercaseFirst()}Repository"
-                    tasks.register("${ci.name}${publishTaskName.uppercaseFirst()}") {
+                    val publishTaskName = "publishAllPublicationsTo${name.uppercaseFirstChar()}Repository"
+                    tasks.register("${ci.name}${publishTaskName.uppercaseFirstChar()}") {
                         dependsOn(tasks.named(publishTaskName))
                         onlyIf { enabled }
                     }

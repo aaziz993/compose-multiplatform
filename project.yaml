@@ -8,7 +8,7 @@ script:
       - id: (libs.plugins("doctor").pluginId)
   # Print suggestions for your build as you run regular tasks.
   - doctor:
-      disableTaskMonitoring: ()
+      taskMonitoring: ()
       enableTestCaching: true
       javaHome: |
         { javaHome ->

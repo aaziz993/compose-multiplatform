@@ -1,14 +1,14 @@
 imports:
   - ../properties/root.yaml
   - ../properties/mpp.yaml
-  - ../properties/jvm/jvm-app.yaml
   - ../properties/subproject.yaml
+  - ../properties/jvm/jvm-app.yaml
 script:
   - description: '"Server application."'
   - kotlin:
       sourceSets:
         - named: |
-            ("commonMain") { sourceSet -> 
+            ("commonMain") { sourceSet ->
               sourceSet.dependencies {
                 implementation(project(":klib"))
                 implementation(project(":shared"))
