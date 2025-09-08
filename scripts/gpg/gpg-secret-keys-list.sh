@@ -4,4 +4,4 @@ set -euo pipefail
 
 . "$(dirname "$(readlink -f "$0")")/../../../scripts/gpg-utils.sh"
 
-gpg_key_list "$@"
+gpg_secret_key_list "$@"

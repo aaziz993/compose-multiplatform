@@ -70,13 +70,13 @@ public fun SigningExtension.registerGPGTasks(): Unit = project.pluginManager.wit
         )
     }
 
-    project.tasks.register<Exec>("gpgKeyList") {
+    project.tasks.register<Exec>("gpgSecretKeyList") {
         description = "List the signing GPG keys"
         group = "signing"
 
-        executable = project.settings.settingsDir.resolve("scripts/gpg/gpg-key-list.sh").absolutePath
+        executable = project.settings.settingsDir.resolve("scripts/gpg/gpg-secret-key-list.sh").absolutePath
 
-        args(nameReal, passphrase)
+        args(passphrase, nameReal)
     }
 
     project.tasks.register<Exec>("gpgCleanKeys") {
@@ -95,6 +95,9 @@ public fun SigningExtension.registerGPGTasks(): Unit = project.pluginManager.wit
         executable = project.settings.settingsDir.resolve("scripts/gpg/gpg-export-key.sh").absolutePath
 
         args(
+            project.providers.provider {
+                project.settings.localProperties.getProperty("signing.gnupg.key.servers", "")
+            },
             project.providers.provider {
                 project.settings.localProperties.getProperty("signing.gnupg.key")
                     ?: error("signing.gnupg.key missing in local.properties")

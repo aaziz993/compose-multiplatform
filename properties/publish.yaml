@@ -1,5 +1,6 @@
 config:
   imports:
+    - org.gradle.plugins.signing.*
     - org.gradle.api.publish.maven.MavenPublication
 script:
   - plugins:
