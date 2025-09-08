@@ -19,9 +19,9 @@ script:
                 implementation(composeLibs.components.uiToolingPreview)
                 implementation(composeLibs.material3AdaptiveNavigationSuite)
                 implementation(composeLibs.materialIconsExtended)
-                implementation(libs("androidx.lifecycle.viewmodel"))
-                implementation(libs("androidx.lifecycle.runtime.compose"))
-                implementation(libs("connectivity.compose"))
+                implementation(libs["androidx.lifecycle.viewmodel"])
+                implementation(libs["androidx.lifecycle.runtime.compose"])
+                implementation(libs["connectivity.compose"])
               }
             }
         - named: |
@@ -35,20 +35,20 @@ script:
             ("jvmMain") { sourceSet ->
               sourceSet.dependencies {
                 implementation(composeLibs.desktop.currentOs)
-                implementation(libs("kotlinx.coroutines.swing"))
+                implementation(libs["kotlinx.coroutines.swing"])
               }
             }
         - named: |
             ("androidMain") { sourceSet ->
               sourceSet.dependencies {
                 implementation(composeLibs.preview)
-                implementation(libs("androidx.activity.compose"))
+                implementation(libs["androidx.activity.compose"])
               }
             }
         - named: |
             ("androidIosMain") { sourceSet ->
               sourceSet.dependencies {
-                implementation(libs("connectivity.compose.device"))
+                implementation(libs["connectivity.compose.device"])
               }
             }
         - named: |
@@ -60,7 +60,7 @@ script:
         - named: |
             ("jvmJsCommonMain") { sourceSet ->
               sourceSet.dependencies {
-                implementation(libs("connectivity.compose.http"))
+                implementation(libs["connectivity.compose.http"])
               }
             }
   - compose:
@@ -69,4 +69,4 @@ script:
         generateResClass: ResourcesExtension.ResourceClassGeneration.Auto
   - dependencies:
       # Android dependencies.
-      - add: ("lintChecks", libs("compose.lint.checks"))
+      - add: ("lintChecks", libs["compose.lint.checks"])

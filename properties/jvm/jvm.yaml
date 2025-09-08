@@ -23,35 +23,35 @@ script:
         - named: |
             ("jvmMain") { sourceSet ->
               sourceSet.dependencies {
-                implementation(libs("logback.classic"))
-                implementation(libs("reflections"))
-                implementation(libs("jackcess"))
-                implementation(libs("jnativehook"))
+                implementation(libs["logback.classic"])
+                implementation(libs["reflections"])
+                implementation(libs["jackcess"])
+                implementation(libs["jnativehook"])
                 implementation(libs.bundles("jna"))
-                implementation(libs("webrtc.java"))
+                implementation(libs["webrtc.java"])
                 implementation(libs.bundles("webcam.capture"))
-                implementation(libs("kotlinx.coroutines.swing"))
+                implementation(libs["kotlinx.coroutines.swing"])
                 implementation(libs.bundles("jdbc"))
                 implementation(libs.bundles("r2dbc"))
                 implementation(libs.bundles("kotysa"))
                 implementation(libs.bundles("exposed"))
-                // implementation(libs("dataframe"))
-                implementation(libs("kandy"))
-                implementation(libs("ktor.serialization.kotlinx.xml"))
+                // implementation(libs["dataframe"])
+                implementation(libs["kandy"])
+                implementation(libs["ktor.serialization.kotlinx.xml"])
                 implementation(libs.bundles("ktor.server"))
                 implementation(libs.bundles("kotlinx.rpc.server"))
                 implementation(libs.bundles("kgraphql"))
                 implementation(libs.bundles("metrics"))
-                implementation(libs("jxmapviewer2"))
+                implementation(libs["jxmapviewer2"])
                 implementation(libs.bundles("koin.ktor"))
               }
             }
         - named: |
             ("jvmTest") { sourceSet ->
               sourceSet.dependencies {
-                implementation(libs("kotest.runner.junit5"))
-                implementation(libs("ktor.server.test.host"))
-                implementation(libs("koin.test.junit5"))
+                implementation(libs["kotest.runner.junit5"])
+                implementation(libs["ktor.server.test.host"])
+                implementation(libs["koin.test.junit5"])
               }
             }
   - tasks:

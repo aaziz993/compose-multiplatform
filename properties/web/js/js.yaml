@@ -1,5 +1,6 @@
 config:
   imports:
+    - org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
     - org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
     - gradle.plugins.karakum.*
 script:
@@ -15,12 +16,12 @@ script:
         - named: |
             ("jsMain") { sourceSet ->
               sourceSet.dependencies {
-                implementation(libs("seskar"))
-                implementation(libs("kstore.storage"))
-                implementation(libs("sqldelight.web.worker.driver"))
-                implementation(libs("compass.geolocation.browser"))
-                implementation(libs("worldwind"))
-                implementation(libs("ktor.client.js"))
+                implementation(libs["seskar"])
+                implementation(libs["kstore.storage"])
+                implementation(libs["sqldelight.web.worker.driver"])
+                implementation(libs["compass.geolocation.browser"])
+                implementation(libs["worldwind"])
+                implementation(libs["ktor.client.js"])
                 implementation(npm("@js-joda/timezone", libs.versions("npm.js.joda.timezone").requiredVersion))
                 implementation(devNpm("copy-webpack-plugin", libs.versions("npm.copy.webpack.plugin").requiredVersion))
                 implementation(npm("openpgp", libs.versions("npm.openpgp").requiredVersion))

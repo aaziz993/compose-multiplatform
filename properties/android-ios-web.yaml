@@ -4,6 +4,6 @@ script:
         - named: |
             ("androidIosWebMain") { sourceSet ->
               sourceSet.dependencies {
-                implementation(libs("webrtc.kmp"))
+                implementation(libs["webrtc.kmp"])
               }
             }

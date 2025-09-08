@@ -5,13 +5,13 @@ script:
             ("androidIosMain") { sourceSet ->
               sourceSet.dependencies {
                 implementation(libs.bundles("compass.mobile"))
-                implementation(libs("permissions"))
-                implementation(libs("connectivity.device"))
+                implementation(libs["permissions"])
+                implementation(libs["connectivity.device"])
               }
             }
         - named: |
             ("androidIosTest") { sourceSet ->
               sourceSet.dependencies {
-                implementation(libs("permissions.test"))
+                implementation(libs["permissions.test"])
               }
             }

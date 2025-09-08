@@ -12,7 +12,7 @@ script:
             ("jvmMain") { sourceSet ->
               sourceSet.dependencies {
                 implementation(project(":klib"))
-                implementation(libs("symbol.processing.api"))
+                implementation(libs["symbol.processing.api"])
               }
             }
   # Publishing

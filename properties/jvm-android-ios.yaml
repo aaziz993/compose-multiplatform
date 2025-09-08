@@ -4,9 +4,9 @@ script:
         - named: |
             ("jvmCommonIosMain") { sourceSet ->
               sourceSet.dependencies {
-                implementation(libs("kstore.file"))
-                implementation(libs("androidx.room.runtime.ktx"))
-                implementation(libs("androidx.sqlite.bundled"))
-                implementation(libs("androidx.sqlite"))
+                implementation(libs["kstore.file"])
+                implementation(libs["androidx.room.runtime.ktx"])
+                implementation(libs["androidx.sqlite.bundled"])
+                implementation(libs["androidx.sqlite"])
               }
             }

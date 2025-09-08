@@ -12,14 +12,14 @@ script:
           compileSdk = libs.versions("android.compileSdk").requiredVersion.toInt()
           minSdk = libs.versions("android.minSdk").requiredVersion.toInt()
           enableCoreLibraryDesugaring = true
-          
+
           lint {
             abortOnError = false
             checkReleaseBuilds = false
             xmlReport = true
             xmlOutput = file("build/reports/lint-results.xml")
           }
-        
+
           packaging {
             resources {
               excludes += setOf(
@@ -27,24 +27,24 @@ script:
               )
             }
           }
-        
+
           aarMetadata {
             minCompileSdk = libs.versions("android.minSdk").requiredVersion.toInt()
           }
-        
+
           // Enable java compilation support.
-          withJava() 
-          
+          withJava()
+
           // Enable Android resource processing
           androidResources {
             enable = true
           }
-        
+
           // JVM-based unit tests.
           withHostTest {
             isIncludeAndroidResources = true
           }
-        
+
           // Device/instrumented tests.
           withDeviceTest {
             instrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -59,20 +59,20 @@ script:
         - named: |
             ("androidHostTest") { sourceSet ->
               sourceSet.dependencies {
-                implementation(libs("androidx.arch.core.testing"))
+                implementation(libs["androidx.arch.core.testing"])
               }
             }
         - named: |
             ("androidDeviceTest") { sourceSet ->
               sourceSet.dependencies {
-                implementation(libs("androidx.test.core"))
-                implementation(libs("androidx.test.runner"))
-                implementation(libs("androidx.test.ext.junit"))
-                implementation(libs("androidx.test.espresso.core"))
-                implementation(libs("androidx.test.rules"))
-                implementation(libs("androidx.test.monitor"))
-                implementation(libs("androidx.ui.test.manifest"))
-                implementation(libs("mockk.android"))
-                implementation(libs("androidx.ui.test.junit4.android"))
+                implementation(libs["androidx.test.core"])
+                implementation(libs["androidx.test.runner"])
+                implementation(libs["androidx.test.ext.junit"])
+                implementation(libs["androidx.test.espresso.core"])
+                implementation(libs["androidx.test.rules"])
+                implementation(libs["androidx.test.monitor"])
+                implementation(libs["androidx.ui.test.manifest"])
+                implementation(libs["mockk.android"])
+                implementation(libs["androidx.ui.test.junit4.android"])
               }
             }

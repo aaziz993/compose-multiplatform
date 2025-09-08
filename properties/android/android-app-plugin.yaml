@@ -19,8 +19,8 @@ script:
         - named: |
             ("androidInstrumentedTest") { sourceSet ->
               sourceSet.dependencies {
-                implementation(libs("mockk.android"))
-                implementation(libs("androidx.ui.test.junit4.android"))
+                implementation(libs["mockk.android"])
+                implementation(libs["androidx.ui.test.junit4.android"])
               }
             }
   - androidApplication:
@@ -168,5 +168,5 @@ script:
         viewBinding: true
         compose: true
   - dependencies:
-      - debugImplementation: (libs("androidx.ui.test.manifest"))
+      - debugImplementation: (libs["androidx.ui.test.manifest"])
 

@@ -5,21 +5,21 @@ script:
             ("jvmCommonMain") { sourceSet ->
               sourceSet.dependencies {
                 implementation(libs.bundles("apache.commons"))
-                implementation(libs("itext.core"))
-                implementation(libs("cryptography.provider.jdk"))
+                implementation(libs["itext.core"])
+                implementation(libs["cryptography.provider.jdk"])
                 implementation(libs.bundles("pgpainless"))
-                implementation(libs("sqldelight.sqlite.driver"))
-                implementation(libs("jsch"))
-                implementation(libs("sshj"))
-                implementation(libs("ktor.client.okhttp"))
-                // implementation(libs("worldwind"))
+                implementation(libs["sqldelight.sqlite.driver"])
+                implementation(libs["jsch"])
+                implementation(libs["sshj"])
+                implementation(libs["ktor.client.okhttp"])
+                // implementation(libs["worldwind"])
               }
             }
         - named: |
             ("jvmCommonTest") { sourceSet ->
               sourceSet.dependencies {
-                implementation(libs("mockk"))
-                implementation(libs("truth"))
-                implementation(libs("kotlinx.knit.test"))
+                implementation(libs["mockk"])
+                implementation(libs["truth"])
+                implementation(libs["kotlinx.knit.test"])
               }
             }

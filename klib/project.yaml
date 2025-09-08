@@ -33,6 +33,6 @@ script:
         - create: |
             ("Cache") { database ->
               database.packageName /= "data.database.sqldelight"
-              // required by asynchronous web-worker-driver for js.
+              // Required by asynchronous web-worker-driver for js.
               database.generateAsync /= true
             }

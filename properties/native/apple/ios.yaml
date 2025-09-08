@@ -7,8 +7,8 @@ script:
         - named: |
             ("iosMain") { sourceSet ->
               sourceSet.dependencies {
-                implementation(libs("cryptography.provider.openssl3"))
-                implementation(libs("sqldelight.native.driver"))
-                implementation(libs("ktor.client.darwin"))
+                implementation(libs["cryptography.provider.openssl3"])
+                implementation(libs["sqldelight.native.driver"])
+                implementation(libs["ktor.client.darwin"])
               }
             }
