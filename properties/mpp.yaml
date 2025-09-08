@@ -117,7 +117,7 @@ script:
               sourceSet.dependencies {
                 implementation(libs("km.logging"))
                 implementation(libs("kotlinx.datetime"))
-                implementation(libs("kcron"))
+                implementation(libs("kcron.common"))
                 implementation(libs("bignum"))
                 implementation(libs.bundles("kmath"))
                 implementation(libs("javamath2kmp"))

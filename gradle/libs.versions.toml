@@ -385,7 +385,7 @@ circuit = "0.24.0"
 # geolocation
 compass = "1.2.4"
 # jvm, android and js map
-worldwind = "1.5.19"
+worldwind = "1.8.5"
 # jvm map
 jxmapviewer2 = "2.8"
 ## desktop
@@ -490,7 +490,7 @@ atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "atomicfu"
 human-readable = { module = "nl.jacobras:Human-Readable", version.ref = "human-readable" }
 # date and time
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
-kcron = { module = "com.ucasoft.kcron:kcron-common", version.ref = "kcron" }
+kcron-common = { module = "com.ucasoft.kcron:kcron-common", version.ref = "kcron" }
 # big numbers
 bignum = { module = "com.ionspin.kotlin:bignum", version.ref = "bignum" }
 # math
@@ -905,6 +905,8 @@ compass-geolocation-browser = { module = "dev.jordond.compass:geolocation-browse
 compass-permissions-mobile = { module = "dev.jordond.compass:permissions-mobile", version.ref = "compass" }
 # map for Js, Jvm and Android
 worldwind = { module = "earth.worldwind:worldwind", version.ref = "worldwind" }
+worldwind-js = { module = "earth.worldwind:worldwind-js", version.ref = "worldwind" }
+worldwind-jvm = { module = "earth.worldwind:worldwind-jvm", version.ref = "worldwind" }
 # jvm map
 jxmapviewer2 = { module = "org.jxmapviewer:jxmapviewer2", version.ref = "jxmapviewer2" }
 
@@ -1184,8 +1186,8 @@ ktor-server = [
     "ktor-server-metrics",
     "ktor-server-metrics-micrometer",
     "ktor-swagger-ui",
-    "ktor-server-task-scheduling-core",
-    "ktor-server-task-scheduling-redis",
+#    "ktor-server-task-scheduling-core",
+#    "ktor-server-task-scheduling-redis",
     "ktor-server-task-scheduling-jdbc",
     "ktor-server-task-scheduling-mongodb"
 ]
