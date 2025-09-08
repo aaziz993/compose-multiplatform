@@ -136,7 +136,14 @@ script:
   # Provides a repository for downloading JVMs
   - toolchainManagement: '{ }'
   # Enforcing pre-commit and commit-msg Git hooks configuration. Conventional-commits-ready.
-  - gitHooks: '{ }'
+  - gitHooks:
+      preCommit: |
+        {
+          // Script from a source, can be a String, URL or File
+          from("scripts/pre-commit/spotless-pre-commit.sh")
+        }
+      # Applies all above hooks.
+      createHooks: ()
   - dependencyResolutionManagement:
       repositoriesMode.set: (RepositoriesMode.FAIL_ON_PROJECT_REPOS)
       repositories:

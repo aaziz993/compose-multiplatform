@@ -5,6 +5,7 @@ package gradle.plugins.initialization
 import gradle.api.configureEach
 import gradle.api.initialization.SettingsProperties
 import gradle.api.initialization.file.LicenseHeaderFile
+import gradle.api.initialization.gitHooks
 import gradle.api.initialization.settingsProperties
 import gradle.plugins.project.ProjectPlugin
 import org.gradle.api.Plugin
