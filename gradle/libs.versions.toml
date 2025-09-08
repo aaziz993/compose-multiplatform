@@ -139,6 +139,8 @@ jsch = "0.1.55"
 kotlin = "2.2.0"
 # ktlint code formatter
 ktlint = "1.7.1"
+# ktfmt code formatter
+ktfmt = "0.58"
 # api that you can use to develop lightweight compiler plugins. KSP provides a simplified compiler plugin API that leverages the power of Kotlin while keeping the learning curve at a minimum. Compared to KAPT, annotation processors that use KSP can run up to 2x faster.
 ksp = "2.2.0-2.0.2"
 # multiplatform logging

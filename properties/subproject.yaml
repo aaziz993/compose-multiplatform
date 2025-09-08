@@ -98,7 +98,11 @@ script:
       - kotlin: |
           { kotlin ->
             // use ktlint with version and custom .editorconfig
-            kotlin.ktlint(libs.versions("ktlint").requiredVersion).setEditorConfigPath("../.editorconfig")
+            kotlin.ktlint(libs.versions("ktlint").requiredVersion)
+              .setEditorConfigPath("../.editorconfig")
+            // use ktfmt
+            ktfmt(libs.versions("ktfmt").requiredVersion)
+              .googleStyle()
             // remove old license header
             kotlin.replaceRegex("remove license header", """^\s*(//.*|/\*[\s\S]*?\*\/)\s*""", "")
             // specify license header text
@@ -109,7 +113,11 @@ script:
       - kotlinGradle: |
           { kotlinGradle ->
             // use ktlint with version and custom .editorconfig
-            kotlinGradle.ktlint(libs.versions("ktlint").requiredVersion).setEditorConfigPath("../.editorconfig")
+            kotlinGradle.ktlint(libs.versions("ktlint").requiredVersion)
+              .setEditorConfigPath("../.editorconfig")
+            // use ktfmt
+            ktfmt(libs.versions("ktfmt").requiredVersion)
+              .googleStyle()
             // remove old license header
             kotlinGradle.replaceRegex("remove license header", """^\s*(//.*|/\*[\s\S]*?\*\/)\s*""", "")
             // specify license header text
