@@ -22,8 +22,6 @@ script:
       sourceSets:
         - named: |
             ("jsMain") { sourceSet ->
-              sourceSet.setKarakumSrcDir()
-
               sourceSet.dependencies {
                 implementation(libs("seskar"))
                 implementation(libs("kstore.storage"))
@@ -40,9 +38,9 @@ script:
             }
         - named: |
             ("jsTest") { sourceSet ->
-              sourceSet.setKarakumSrcDir()
-
               sourceSet.dependencies {
                 implementation(kotlin("test-js"))
               }
             }
+  - karakum:
+      sourceSets: ("jsMain", "jsTest")
