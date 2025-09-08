@@ -116,7 +116,7 @@ script:
       useInMemoryPgpKeys: |
         (
           sensitive("signing.gnupg.key"),
-          sensitive("signing.gnupg.key.passphrase")
+          sensitive("signing.gnupg.passphrase")
         )
       # Sign all publications.
       sign: (publishing.publications)
