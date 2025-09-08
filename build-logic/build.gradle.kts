@@ -173,8 +173,6 @@ dependencies {
     implementation(libs.plugins.kotlinx.benchmark.toDep())
     // multiplatform
     implementation(libs.plugins.kotlin.multiplatform.toDep())
-    // multiplatform library that provides the idiomatic and efficient way of using atomic operations in Kotlin.
-    implementation(libs.plugins.atomicfu.toDep())
     // jvm
     runtimeOnly(libs.plugins.kotlin.jvm.toDep())
     // data pipeline processing
@@ -217,6 +215,7 @@ dependencies {
 
     // Compose multiplatform
     implementation(libs.plugins.compose.multiplatform.toDep())
+    implementation(libs.plugins.compose.hotReload.toDep())
     runtimeOnly(libs.plugins.compose.compiler.toDep())
 
     // Semantic version
