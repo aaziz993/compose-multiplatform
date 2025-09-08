@@ -63,35 +63,33 @@ internal class JvmPlugin : Plugin<Project> {
          */
         kotlin.targets.withType<KotlinJvmTarget>()
             .takeIf(NamedDomainObjectCollection<*>::isNotEmpty)?.let { jvmTargets ->
+                val commonTest = kotlin.sourceSets.getByName("commonTest")
+
                 val commonJavaCodegenTest = kotlin.sourceSets.create("commonJavaCodegenTest") {
-                    when (projectProperties.layout) {
-                        is ProjectLayout.Flat -> kotlin.srcDir("test")
-                        else -> kotlin.srcDir("src/commonTest/kotlin")
-                    }
+                    dependsOn(commonTest)
                 }
 
                 jvmTargets.configureEach { jvmTarget ->
-                    val javaCodegenCompilation = jvmTarget.compilations.create("javaCodegenTest")
+                    val baseTestCompilation = jvmTarget.compilations.getByName("test")
+                    val testCompileClasspath = configurations.getByName(baseTestCompilation.compileDependencyConfigurationName)
+                    val testRuntimeClasspath = configurations.getByName(baseTestCompilation.runtimeDependencyConfigurationName)
 
-                    val testRun = jvmTarget.testRuns.create("javaCodegen")
+                    val javaCodegenCompilation = jvmTarget.compilations.create("javaCodegenTest").apply {
+                        defaultSourceSet.dependsOn(commonJavaCodegenTest)
 
-                    testRun.setExecutionSourceFrom(javaCodegenCompilation)
+                        configurations.compileDependencyConfiguration.extendsFrom(testCompileClasspath)
+                        configurations.runtimeDependencyConfiguration?.extendsFrom(testRuntimeClasspath)
 
-                    val testCompileClasspath = configurations.getByName("${jvmTarget.targetName}TestCompileClasspath")
-
-                    javaCodegenCompilation.compileJavaTaskProvider?.configure {
-                        classpath += testCompileClasspath
+                        compileJavaTaskProvider?.configure { classpath += testCompileClasspath }
                     }
 
-                    javaCodegenCompilation.configurations.compileDependencyConfiguration.extendsFrom(
-                        testCompileClasspath
-                    )
-                    javaCodegenCompilation.configurations.runtimeDependencyConfiguration?.extendsFrom(
-                        configurations.getByName(
-                            "${jvmTarget.targetName}TestRuntimeClasspath"
-                        )
-                    )
-                    javaCodegenCompilation.defaultSourceSet.dependsOn(commonJavaCodegenTest)
+                    val testRun = jvmTarget.testRuns.create("javaCodegen").apply {
+                        setExecutionSourceFrom(javaCodegenCompilation)
+                    }
+
+                    tasks.matching { it.name == "check" }.configureEach {
+                        dependsOn(testRun.executionTask)
+                    }
                 }
             }
     }
