@@ -1,11 +1,15 @@
 package klib.data.type.serialization.properties
 
+import io.ktor.utils.io.core.Sink
 import klib.data.type.collections.getOrPut
 import klib.data.type.collections.isZeroConsecutive
 import klib.data.type.collections.unflattenKeys
-import klib.data.type.primitives.string.asBufferedSource
+import klib.data.type.primitives.string.toBuffer
 import klib.data.type.serialization.coders.tree.serialize
 import klib.data.type.serialization.serializers.any.NullableAnySerializer
+import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.readString
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.StringFormat
@@ -13,9 +17,6 @@ import kotlinx.serialization.json.internal.FormatLanguage
 import kotlinx.serialization.modules.EmptySerializersModule
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.serializer
-import okio.Buffer
-import okio.BufferedSink
-import okio.BufferedSource
 
 public open class Properties(
     public val configuration: PropertiesConfiguration = PropertiesConfiguration(),
@@ -27,19 +28,19 @@ public open class Properties(
 
     override fun <T> encodeToString(serializer: SerializationStrategy<T>, value: T): String {
         val buffer = Buffer()
-        encodeToBufferedSink(serializer, value, buffer)
-        return buffer.readUtf8().trimEnd()
+        encodeToSink(serializer, value, buffer)
+        return buffer.readString().trimEnd()
     }
 
-    public fun <T> encodeToBufferedSink(serializer: SerializationStrategy<T>, value: T, sink: BufferedSink): Unit =
+    public fun <T> encodeToSink(serializer: SerializationStrategy<T>, value: T, sink: Sink): Unit =
         PropertiesEncoder(PropertiesWriter(sink, configuration.escUnicode), this)
             .encodeSerializableValue(
                 serializer,
                 value,
             )
 
-    public inline fun <reified T> encodeToBufferedSink(value: T, sink: BufferedSink): Unit =
-        encodeToBufferedSink(serializersModule.serializer(), value, sink)
+    public inline fun <reified T> encodeToSink(value: T, sink: Sink): Unit =
+        encodeToSink(serializersModule.serializer(), value, sink)
 
     public fun <T> encodeToAny(serializer: SerializationStrategy<T>, value: T): Any? =
         serializer.serialize(value, serializersModule, configuration.asTreeEncoderConfiguration)
@@ -52,13 +53,13 @@ public open class Properties(
     override fun <T> decodeFromString(deserializer: DeserializationStrategy<T>, string: String): T =
         decodeFromAny(deserializer, decodeAnyFromString(string))
 
-    public fun <T> decodeFromBufferedSource(
+    public fun <T> decodeFromBuffer(
         deserializer: DeserializationStrategy<T>,
-        source: BufferedSource
+        source: Buffer
     ): T = decodeFromAny(deserializer, decodeAnyFromString(source))
 
-    public inline fun <reified T> decodeFromBufferedSource(source: BufferedSource): T =
-        decodeFromBufferedSource(serializersModule.serializer(), source)
+    public inline fun <reified T> decodeFromBuffer(source: Buffer): T =
+        decodeFromBuffer(serializersModule.serializer(), source)
 
     public fun <T> decodeFromAny(deserializer: DeserializationStrategy<T>, value: Any?): T =
         deserializer.deserialize(PropertiesDecoder(value, serializersModule, configuration))
@@ -68,10 +69,10 @@ public open class Properties(
 
     public fun decodeAnyFromString(
         @FormatLanguage("properties", "", "") string: String
-    ): Any = decodeAnyFromString(string.asBufferedSource)
+    ): Any = decodeAnyFromString(string.toBuffer())
 
     public fun decodeAnyFromString(
-        @FormatLanguage("properties", "", "") source: BufferedSource
+        @FormatLanguage("properties", "", "") source: Buffer
     ): Any = PropertiesReader(source)
         .read()
         .map { (path, value) -> path.split(".") to value }

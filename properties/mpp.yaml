@@ -132,7 +132,7 @@ script:
                 implementation(libs.bundles("kotlinx.serialization"))
                 implementation(libs.bundles("serialization"))
                 // implementation(libs.bundles("ksoup"))
-                implementation(libs("rssparser")) // no js target
+                // implementation(libs("rssparser")) // no js target
                 implementation(libs("xmpcore"))
                 implementation(libs("jsonpathkt.kotlinx"))
                 implementation(libs.bundles("coroutines"))
@@ -153,7 +153,7 @@ script:
                 implementation(libs.bundles("kotlinx.rpc.serialization"))
                 implementation(libs.bundles("kotlinx.rpc.client"))
                 implementation(libs.bundles("ktorfit"))
-                implementation(libs.bundles("apollo"))
+                // implementation(libs.bundles("apollo"))
                 implementation(libs.bundles("compass"))
                 implementation(libs.bundles("koin.kotlin.multiplatform"))
                 implementation(libs("semver"))
@@ -167,7 +167,7 @@ script:
                 implementation(kotlin("test-annotations-common"))
                 implementation(libs.bundles("kotest.multiplatform"))
                 implementation(libs("kotlinx.coroutines.test"))
-                implementation(libs("androidx.paging.testing"))
+                // implementation(libs("androidx.paging.testing"))
                 implementation(libs("koin.test"))
               }
             }

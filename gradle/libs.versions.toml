@@ -1046,10 +1046,10 @@ kotlinx-serialization = [
 # communoty supported serialization
 serialization = [
     "xmlutil-serialization", # replaced by ksoup
-    "serialization-msgpack",
-    "serialization-msgpack-timestamp-extension",
-    "knbt",
-    "yamlkt",
+#    "serialization-msgpack",
+#    "serialization-msgpack-timestamp-extension",
+#    "knbt",
+#    "yamlkt",
     #    "tomlkt",
 ]
 # xml and html parser
@@ -1322,7 +1322,7 @@ metrics = [
 ##Dependency injection
 koin-kotlin-multiplatform = [
     "koin-core",
-    "koin-core-coroutines",
+#    "koin-core-coroutines",
     "koin-annotations",
 ]
 koin-compose-multiplatform = [

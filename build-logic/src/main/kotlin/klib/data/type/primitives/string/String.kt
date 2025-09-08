@@ -18,9 +18,6 @@ import kotlinx.datetime.DateTimePeriod
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
-import okio.Buffer
-import okio.BufferedSource
-import okio.ByteString.Companion.encodeUtf8
 import kotlin.collections.joinToString
 import kotlin.collections.map
 import kotlin.collections.plus
@@ -31,6 +28,7 @@ import kotlin.text.lowercase
 import kotlin.text.replace
 import kotlin.text.replaceFirstChar
 import kotlin.text.toRegex
+import kotlinx.io.Buffer
 
 // Line break pattern
 public const val LBP: String = """(\r?\n|\n)"""
@@ -337,13 +335,15 @@ public fun matcher(
         regexMatch -> {
             val regexMatcher: (String) -> Regex = if (ignoreCase) {
                 { pattern -> Regex(pattern, RegexOption.IGNORE_CASE) }
-            } else {
+            }
+            else {
                 { pattern -> Regex(pattern) }
             }
 
             if (matchAll) {
                 { str, pattern -> regexMatcher(pattern).matches(str) }
-            } else {
+            }
+            else {
                 { str, pattern -> regexMatcher(pattern).containsMatchIn(str) }
             }
         }
@@ -362,5 +362,4 @@ public inline fun <reified T : Enum<T>> String.toEnum(): T = enumValueOf(this)
 // ///////////////////////////////////////////////////////ARRAY//////////////////////////////////////////////////////////
 public fun String.encode(charset: Charset = Charset.UTF_8): ByteArray = toByteArray(Charsets.forName(charset.name))
 
-public val String.asBufferedSource: BufferedSource
-    get() = Buffer().write(encodeUtf8())
+public fun String.toBuffer(): Buffer = Buffer().apply {  write(encodeToByteArray())}

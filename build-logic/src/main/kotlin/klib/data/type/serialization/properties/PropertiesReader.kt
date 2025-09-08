@@ -1,14 +1,14 @@
 package klib.data.type.serialization.properties
 
-import klib.data.type.primitives.string.asBufferedSource
-import okio.BufferedSource
-
+import klib.data.type.primitives.string.toBuffer
+import kotlinx.io.Buffer
+import kotlinx.io.readLine
 
 public class PropertiesReader(
-    private val source: BufferedSource
+    private val source: Buffer
 ) {
 
-    public constructor(value: String) : this(value.asBufferedSource)
+    public constructor(value: String) : this(value.toBuffer())
 
     private var lineBuf: CharArray = CharArray(1024)
     private lateinit var charBuf: CharArray
@@ -16,7 +16,7 @@ public class PropertiesReader(
     private var off = 0
 
     private fun nextChars() {
-        charBuf = source.readUtf8Line()?.let { line -> "$line\n" }.orEmpty().toCharArray()
+        charBuf = source.readLine()?.let { line -> "$line\n" }.orEmpty().toCharArray()
         limit = charBuf.size
     }
 

@@ -1,25 +1,26 @@
 package klib.data.type.serialization.properties
 
-import okio.BufferedSink
+import kotlinx.io.Sink
+import kotlinx.io.writeString
 
 public class PropertiesWriter(
-    private val sink: BufferedSink,
+    private val sink: Sink,
     private val escapeUnicode: Boolean
 ) : AutoCloseable {
 
     public fun writeComment(value: String) {
-        sink.writeUtf8(value.asPropertyComment)
+        sink.writeString(value.toPropertyComment())
     }
 
     public fun writeKey(value: String) {
-        sink.writeUtf8(convert(value, true, escapeUnicode))
+        sink.writeString(convert(value, true, escapeUnicode))
     }
 
     /** Converts unicodes to encoded &#92;uxxxx and escapes
      * special characters with a preceding slash
      */
     public fun writeValue(value: String) {
-        sink.writeUtf8("=${convert(value, false, escapeUnicode)}\n")
+        sink.writeString("=${convert(value, false, escapeUnicode)}\n")
     }
 
     public fun writeKeyValue(key: String, value: String) {
@@ -34,36 +35,36 @@ public class PropertiesWriter(
 }
 
 @OptIn(ExperimentalStdlibApi::class)
-private val String.asPropertyComment: String
-    get() = buildString {
-        append("#")
-        val len = this@asPropertyComment.length
-        var current = 0
-        var last = 0
-        while (current < len) {
-            val c = this@asPropertyComment[current]
-            if (c > '\u00ff' || c == '\n' || c == '\r') {
-                if (last != current) append(this@asPropertyComment.substring(last, current))
-                if (c > '\u00ff') {
-                    append("\\u")
-                    append(c.code.toHexString(HexFormat.UpperCase))
-                } else {
-                    append("\n")
-                    if (c == '\r' && current != len - 1 && this@asPropertyComment[current + 1] == '\n') {
-                        current++
-                    }
-                    if (current == len - 1 ||
-                        (this@asPropertyComment[current + 1] != '#' &&
-                                this@asPropertyComment[current + 1] != '!')
-                    ) append("#")
-                }
-                last = current + 1
+private fun String.toPropertyComment(): String = buildString {
+    append("#")
+    val len = this@toPropertyComment.length
+    var current = 0
+    var last = 0
+    while (current < len) {
+        val c = this@toPropertyComment[current]
+        if (c > '\u00ff' || c == '\n' || c == '\r') {
+            if (last != current) append(this@toPropertyComment.substring(last, current))
+            if (c > '\u00ff') {
+                append("\\u")
+                append(c.code.toHexString(HexFormat.UpperCase))
             }
-            current++
+            else {
+                append("\n")
+                if (c == '\r' && current != len - 1 && this@toPropertyComment[current + 1] == '\n') {
+                    current++
+                }
+                if (current == len - 1 ||
+                    (this@toPropertyComment[current + 1] != '#' &&
+                        this@toPropertyComment[current + 1] != '!')
+                ) append("#")
+            }
+            last = current + 1
         }
-        if (last != current) append(this@asPropertyComment.substring(last, current))
-        append("\n")
+        current++
     }
+    if (last != current) append(this@toPropertyComment.substring(last, current))
+    append("\n")
+}
 
 @OptIn(ExperimentalStdlibApi::class)
 private fun convert(
@@ -126,7 +127,8 @@ private fun convert(
                 else -> if (((aChar.code < 0x0020) || (aChar.code > 0x007e)) and escapeUnicode) {
                     append("\\u")
                     append(aChar.code.toHexString(HexFormat.UpperCase))
-                } else {
+                }
+                else {
                     append(aChar)
                 }
             }
