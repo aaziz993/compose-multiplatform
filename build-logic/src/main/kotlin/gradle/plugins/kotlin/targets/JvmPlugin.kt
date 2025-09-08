@@ -65,7 +65,7 @@ internal class JvmPlugin : Plugin<Project> {
                 val commonTest = kotlin.sourceSets.getByName("commonTest")
 
                 val commonJavaCodegenTest = kotlin.sourceSets.create("commonJavaCodegenTest") {
-                    dependsOn(commonTest)
+                    kotlin.srcDir(commonTest.kotlin.srcDirs.first())
                 }
 
                 jvmTargets.configureEach { jvmTarget ->
