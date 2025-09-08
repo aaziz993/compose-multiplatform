@@ -1,5 +1,6 @@
 package gradle.plugins.signing
 
+import gradle.api.initialization.localProperties
 import gradle.api.initialization.settingsProperties
 import gradle.api.project.settings
 import org.gradle.api.Project
@@ -9,17 +10,44 @@ import org.gradle.plugins.signing.SigningExtension
 
 @Suppress("UnusedReceiverParameter")
 context(project: Project)
-public fun SigningExtension.generateGPGTasks(
-    keyType: String = "RSA",
-    keyLength: Int = 4096,
-    subkeyType: String = " RSA",
-    subkeyLength: Int = 4096,
-    nameReal: String = project.settings.settingsProperties.developer.name!!,
-    nameComment: String = "",
-    nameEmail: String = project.settings.settingsProperties.developer.email!!,
-    expireDate: Long = 0,
-    passphrase: String,
-): Unit = project.pluginManager.withPlugin("signing") {
+public fun SigningExtension.registerGPGTasks(): Unit = project.pluginManager.withPlugin("signing") {
+    val passphrase = project.providers.provider {
+        project.settings.localProperties.getProperty("signing.gnupg.passphrase")
+    }
+    val keyType = project.providers.provider {
+        project.settings.localProperties.getProperty("signing.gnupg.key.type", "RSA")
+    }
+    val keyLength = project.providers.provider {
+        project.settings.localProperties.getProperty("signing.gnupg.key.length", "4096").toInt()
+    }
+    val subkeyType = project.providers.provider {
+        project.settings.localProperties.getProperty("signing.gnupg.subkey.type", "RSA")
+    }
+    val subkeyLength = project.providers.provider {
+        project.settings.localProperties.getProperty("signing.gnupg.subkey.length", "4096").toInt()
+    }
+    val nameReal = project.providers.provider {
+        project.settings.localProperties.getProperty(
+            "signing.gnupg.name.real",
+            project.settings.settingsProperties.developer.name!!,
+        )
+    }
+    val nameComment = project.providers.provider {
+        project.settings.localProperties.getProperty(
+            "signing.gnupg.name.comment",
+            project.description.orEmpty(),
+        )
+    }
+    val nameEmail = project.providers.provider {
+        project.settings.localProperties.getProperty(
+            "signing.gnupg.name.email",
+            project.settings.settingsProperties.developer.email!!,
+        )
+    }
+    val expireDate = project.providers.provider {
+        project.settings.localProperties.getProperty("signing.gnupg.expiryDate", "0").toLong()
+    }
+
     /** Distribute signing gpg key
      * There are 3 servers supported by Central servers: [ keyserver.ubuntu.com, keys.openpgp.org, pgp.mit.edu ]
      */
@@ -30,6 +58,7 @@ public fun SigningExtension.generateGPGTasks(
         executable = project.settings.settingsDir.resolve("scripts/gpg/gpg-gen-key.sh").absolutePath
 
         args(
+            passphrase,
             keyType,
             keyLength,
             subkeyType,
@@ -38,7 +67,6 @@ public fun SigningExtension.generateGPGTasks(
             nameComment,
             nameEmail,
             expireDate,
-            passphrase,
         )
     }
 
@@ -48,10 +76,7 @@ public fun SigningExtension.generateGPGTasks(
 
         executable = project.settings.settingsDir.resolve("scripts/gpg/gpg-key-list.sh").absolutePath
 
-        args(
-            nameReal,
-            passphrase,
-        )
+        args(nameReal, passphrase)
     }
 
     project.tasks.register<Exec>("gpgCleanKeys") {
@@ -60,22 +85,21 @@ public fun SigningExtension.generateGPGTasks(
 
         executable = project.settings.settingsDir.resolve("scripts/gpg/gpg-clean-keys.sh").absolutePath
 
-        args(
-            nameReal,
-        )
+        args(nameReal)
     }
-}
 
-@Suppress("UnusedReceiverParameter")
-context(project: Project)
-public fun SigningExtension.exportGPGTask(key: String): Unit = project.pluginManager.withPlugin("signing") {
     project.tasks.register<Exec>("gpgExportKey") {
         description = "Export the signing GPG key to servers: [keyserver.ubuntu.com, keys.openpgp.org, pgp.mit.edu]"
         group = "signing"
 
         executable = project.settings.settingsDir.resolve("scripts/gpg/gpg-export-key.sh").absolutePath
 
-        args(key)
+        args(
+            project.providers.provider {
+                project.settings.localProperties.getProperty("signing.gnupg.key")
+                    ?: error("signing.gnupg.key missing in local.properties")
+            },
+        )
     }
 }
 

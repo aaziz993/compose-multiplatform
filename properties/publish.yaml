@@ -23,7 +23,7 @@ script:
             { repository ->
               repository.name = "GithubPackages"
               repository.url = uri("https://maven.pkg.github.com/aaziz993")
-              repository.credentials { credentials -> 
+              repository.credentials { credentials ->
                 credentials.username = sensitive("publishing.repositories.githubPackages.username")
                 credentials.password = sensitive("publishing.repositories.githubPackages.password")
               }
@@ -32,7 +32,7 @@ script:
             { repository ->
               repository.name = "Sonatype"
               repository.url = uri("https://oss.sonatype.org")
-              repository.credentials { credentials -> 
+              repository.credentials { credentials ->
                 credentials.username = sensitive("publishing.repositories.sonatype.username")
                 credentials.password = sensitive("publishing.repositories.sonatype.password")
               }
@@ -41,7 +41,7 @@ script:
             { repository ->
               repository.name = "SonatypeS01"
               repository.url = uri("https://s01.oss.sonatype.org")
-              repository.credentials { credentials -> 
+              repository.credentials { credentials ->
                 credentials.username = sensitive("publishing.repositories.sonatype.s01.username")
                 credentials.password = sensitive("publishing.repositories.sonatype.s01.password")
               }
@@ -50,7 +50,7 @@ script:
             { repository ->
               repository.name = "SonatypeCentral"
               repository.url = uri("https://central.sonatype.com")
-              repository.credentials { credentials -> 
+              repository.credentials { credentials ->
                 credentials.username = sensitive("publishing.repositories.sonatype.central.username")
                 credentials.password = sensitive("publishing.repositories.sonatype.central.password")
               }
@@ -59,14 +59,14 @@ script:
             { repository ->
               repository.name = "SonatypeStaging"
               repository.url = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2")
-              repository.credentials { credentials -> 
+              repository.credentials { credentials ->
                 credentials.username = sensitive("publishing.repositories.sonatype.staging.username")
                 credentials.password = sensitive("publishing.repositories.sonatype.staging.password")
               }
             }
       publications:
         - create<MavenPublication>: |
-            ("jar") { 
+            ("jar") {
               artifactId = project.name
               groupId = project.group.toString()
               version = project.version.toString()
@@ -76,7 +76,7 @@ script:
                   pom.name /=project.name
                   pom.url /=settings.settingsProperties.license.url
                   pom.description /= project.description
-            
+
                   pom.licenses { licenses ->
                       licenses.license { license ->
                           license.name /= settings.settingsProperties.license.name
@@ -100,7 +100,7 @@ script:
                       issueManagement.system /= "GitHub Issues"
                       issueManagement.url /= "https://github.com/aaziz993/compose-multiplatform/issues"
                   }
-            
+
                   pom.scm { scm ->
                       scm.url /= settings.settingsProperties.remote.url
                       scm.connection /= settings.settingsProperties.remote.connection
@@ -120,5 +120,8 @@ script:
 
                   // Sign all publications.
                   sign(publishing.publications)
+
+                  // Register additional gpg tasks.
+                  registerGPGTasks()
               }
             }
