@@ -15,6 +15,7 @@ import org.gradle.api.tasks.SourceSet
 import javax.xml.stream.XMLEventFactory
 import javax.xml.stream.XMLInputFactory
 import javax.xml.stream.XMLOutputFactory
+import klib.data.type.primitives.string.case.splitToWords
 
 private val TEST_SOURCE_SET_NAME_PREFIXES = listOf(
     SourceSet.TEST_SOURCE_SET_NAME,
@@ -43,47 +44,50 @@ public class AndroidPlugin : Plugin<Project> {
                         sourceSet.name.startsWith(prefix)
                     }?.let { prefix ->
                         "$prefix${
-                            sourceSet.name.removePrefix(prefix).addPrefixIfNotEmpty(layout.androidAllVariantsDelimiter)
+                            sourceSet.name.removePrefix(prefix)
+                                .splitToWords()
+                                .joinToString(layout.androidVariantDelimiter)
+                                .addPrefixIfNotEmpty(layout.androidAllVariantsDelimiter)
                         }"
                     } ?: sourceSet.name).pair()
 
                 sourceSet.kotlin.replace(
                     "src/${sourceSet.name}/kotlin",
-                    "$srcPrefixPart${layout.targetDelimiter}android"
+                    "$srcPrefixPart${layout.targetDelimiter}android",
                 )
                 sourceSet.resources.replace(
                     "src/${sourceSet.name}/resources",
-                    "${resourcesPrefixPart}Resources${layout.targetDelimiter}android".lowercaseFirstChar()
+                    "${resourcesPrefixPart}Resources${layout.targetDelimiter}android".lowercaseFirstChar(),
                 )
                 sourceSet.java.replace("src/${sourceSet.name}/java", "$srcPrefixPart${layout.targetDelimiter}android")
                 sourceSet.manifest.srcFile("$srcPrefixPart${layout.targetDelimiter}android/AndroidManifest.xml")
                 sourceSet.res.replace(
                     "src/${sourceSet.name}/res",
-                    "${resourcesPrefixPart}Res${layout.targetDelimiter}android".lowercaseFirstChar()
+                    "${resourcesPrefixPart}Res${layout.targetDelimiter}android".lowercaseFirstChar(),
                 )
                 sourceSet.assets.replace(
                     "src/${sourceSet.name}/assets",
-                    "${resourcesPrefixPart}Assets${layout.targetDelimiter}android".lowercaseFirstChar()
+                    "${resourcesPrefixPart}Assets${layout.targetDelimiter}android".lowercaseFirstChar(),
                 )
                 sourceSet.aidl.replace(
                     "src/${sourceSet.name}/aidl",
-                    "${resourcesPrefixPart}Aidl${layout.targetDelimiter}android".lowercaseFirstChar()
+                    "${resourcesPrefixPart}Aidl${layout.targetDelimiter}android".lowercaseFirstChar(),
                 )
                 sourceSet.renderscript.replace(
                     "src/${sourceSet.name}/rs",
-                    "${resourcesPrefixPart}Rs${layout.targetDelimiter}android".lowercaseFirstChar()
+                    "${resourcesPrefixPart}Rs${layout.targetDelimiter}android".lowercaseFirstChar(),
                 )
                 sourceSet.jniLibs.replace(
                     "src/${sourceSet.name}/jniLibs",
-                    "${resourcesPrefixPart}JniLibs${layout.targetDelimiter}android".lowercaseFirstChar()
+                    "${resourcesPrefixPart}JniLibs${layout.targetDelimiter}android".lowercaseFirstChar(),
                 )
                 sourceSet.shaders.replace(
                     "src/${sourceSet.name}/shaders",
-                    "${resourcesPrefixPart}Shaders${layout.targetDelimiter}android".lowercaseFirstChar()
+                    "${resourcesPrefixPart}Shaders${layout.targetDelimiter}android".lowercaseFirstChar(),
                 )
                 sourceSet.mlModels.replace(
                     "src/${sourceSet.name}/mlModels",
-                    "${resourcesPrefixPart}MlModels${layout.targetDelimiter}android".lowercaseFirstChar()
+                    "${resourcesPrefixPart}MlModels${layout.targetDelimiter}android".lowercaseFirstChar(),
                 )
             }
 
