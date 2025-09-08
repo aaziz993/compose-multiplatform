@@ -364,6 +364,4 @@ public inline fun <reified T : Enum<T>> String.toEnum(): T = enumValueOf(this)
 // ///////////////////////////////////////////////////////ARRAY//////////////////////////////////////////////////////////
 public fun String.encode(charset: Charset = Charset.UTF_8): ByteArray = toByteArray(Charsets.forName(charset.name))
 
-public fun String.toBuffer(): Buffer = Buffer().apply {
-    writeString(this@toBuffer, StandardCharsets.UTF_8)
-}
+public fun String.toBuffer(): Buffer = Buffer().apply { writeString(this@toBuffer) }
