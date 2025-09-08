@@ -3,8 +3,6 @@ package gradle.plugins.project
 import gradle.api.ci.CI
 import gradle.api.maybeNamed
 import gradle.api.project.ProjectProperties
-import gradle.api.project.publishing
-import gradle.api.project.signing
 import gradle.plugins.android.AndroidPlugin
 import gradle.plugins.apivalidation.ApiValidationPlugin
 import gradle.plugins.compose.ComposePlugin
@@ -29,9 +27,7 @@ public class ProjectPlugin : Plugin<Project> {
         with(target) {
             // Load and apply project.yaml to build.gradle.kts.
             ProjectProperties()
-            signing.useGpgCmd()
-            signing.inm()
-            signing.sign(publishing.publications)
+
             pluginManager.apply(KoverPlugin::class.java)
             pluginManager.apply(DokkaPlugin::class.java)
             pluginManager.apply(KnitPlugin::class.java)
