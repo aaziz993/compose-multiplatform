@@ -18,9 +18,9 @@ import javax.xml.stream.XMLOutputFactory
 import klib.data.type.primitives.string.case.splitToWords
 
 private val TEST_SOURCE_SET_NAME_PREFIXES = listOf(
-    SourceSet.TEST_SOURCE_SET_NAME,
     "androidTest",
     "testFixtures",
+    SourceSet.TEST_SOURCE_SET_NAME,
 )
 
 public class AndroidPlugin : Plugin<Project> {
