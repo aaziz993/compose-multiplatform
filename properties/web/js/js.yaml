@@ -9,15 +9,7 @@ script:
   - kotlin:
       js: |
         {
-          browser {
-            commonWebpackConfig { commonWebpackConfig ->
-              commonWebpackConfig.devServer = (commonWebpackConfig.devServer ?: KotlinWebpackConfig.DevServer()).apply {
-                static = (static ?: mutableListOf()).apply{
-                  add("src@js")
-                }
-              }
-            }
-          }
+          browser()
         }
       sourceSets:
         - named: |

@@ -14,6 +14,8 @@ import gradle.plugins.kotlin.targets.JvmPlugin
 import gradle.plugins.kover.KoverPlugin
 import gradle.plugins.publish.PublishPlugin
 import gradle.plugins.signing.SigningPlugin
+import gradle.plugins.web.JsPlugin
+import gradle.plugins.web.WasmJsPlugin
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -35,6 +37,8 @@ public class ProjectPlugin : Plugin<Project> {
             pluginManager.apply(MPPPlugin::class.java)
             pluginManager.apply(AndroidPlugin::class.java)
             pluginManager.apply(JvmPlugin::class.java)
+            pluginManager.apply(JsPlugin::class.java)
+            pluginManager.apply(WasmJsPlugin::class.java)
             pluginManager.apply(ComposePlugin::class.java)
             pluginManager.apply(PublishPlugin::class.java)
             pluginManager.apply(SigningPlugin::class.java)

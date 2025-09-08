@@ -8,15 +8,7 @@ script:
   - kotlin:
       wasmJs: |
         {
-          browser {
-            commonWebpackConfig { commonWebpackConfig ->
-              commonWebpackConfig.devServer = (commonWebpackConfig.devServer ?: KotlinWebpackConfig.DevServer()).apply {
-                  static = (static ?: mutableListOf()).apply{
-                    add("src@wasmJs")
-                  }
-              }
-            }
-          }
+          browser()
         }
       sourceSets:
         - named: |
