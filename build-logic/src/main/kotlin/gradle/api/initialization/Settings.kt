@@ -3,24 +3,17 @@ package gradle.api.initialization
 import gradle.api.initialization.dsl.VersionCatalog
 import gradle.api.repositories.CacheRedirector
 import gradle.plugins.getOrPut
+import java.io.File
+import java.util.*
 import kotlinx.serialization.decodeFromString
 import net.peanuuutz.tomlkt.Toml
+import net.pearx.kasechange.toScreamingSnakeCase
 import org.danilopianini.gradle.git.hooks.GitHooksExtension
-import org.gradle.api.Project
 import org.gradle.api.artifacts.MinimalExternalModuleDependency
-import org.gradle.api.artifacts.VersionCatalogsExtension
-import org.gradle.api.artifacts.repositories.IvyArtifactRepository
-import org.gradle.api.artifacts.repositories.MavenArtifactRepository
 import org.gradle.api.initialization.Settings
 import org.gradle.api.initialization.dsl.VersionCatalogBuilder
-import org.gradle.api.initialization.resolve.MutableVersionCatalogContainer
 import org.gradle.kotlin.dsl.getByType
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
-import java.io.File
-import java.net.URI
-import java.util.*
-import klib.data.type.collections.getOrPut
-import net.pearx.kasechange.toScreamingSnakeCase
 
 public const val LOCAL_PROPERTIES_EXT: String = "local.properties.ext"
 
@@ -42,8 +35,8 @@ public val Settings.localProperties: Properties
 public val Settings.catalogs: MutableMap<String, VersionCatalog>
     get() = extraProperties.getOrPut(VERSION_CATALOGS_EXT, ::mutableMapOf)
 
-public fun Settings.catalogs(name: String): VersionCatalog =
-    catalogs[name] ?: throw IllegalArgumentException("Unresolved version catalog '$name'")
+public  fun Settings.catalogs(name: String): VersionCatalog =
+    settings.catalogs[name] ?: throw IllegalArgumentException("Unresolved version catalog '$name'")
 
 @Suppress("UnstableApiUsage", "UNCHECKED_CAST")
 public val Settings.libs: VersionCatalog

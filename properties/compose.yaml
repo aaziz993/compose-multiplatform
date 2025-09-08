@@ -21,18 +21,19 @@ script:
                 implementation(composeLibs.materialIconsExtended)
                 implementation(libs("androidx.lifecycle.viewmodel"))
                 implementation(libs("androidx.lifecycle.runtime.compose"))
+                implementation(libs("connectivity.compose"))
               }
             }
         - named: |
             ("commonTest") { sourceSet ->
-              sourceSet.dependencies { 
+              sourceSet.dependencies {
                 @OptIn(ExperimentalComposeLibrary::class)
                 implementation(composeLibs.uiTest)
               }
             }
         - named: |
             ("jvmMain") { sourceSet ->
-              sourceSet.dependencies { 
+              sourceSet.dependencies {
                 implementation(composeLibs.desktop.currentOs)
                 implementation(libs("kotlinx.coroutines.swing"))
               }
@@ -45,9 +46,21 @@ script:
               }
             }
         - named: |
+            ("androidIosMain") { sourceSet ->
+              sourceSet.dependencies {
+                implementation(libs("connectivity.compose.device"))
+              }
+            }
+        - named: |
             ("jsMain") { sourceSet ->
               sourceSet.dependencies {
                 implementation(composeLibs.html.core)
+              }
+            }
+        - named: |
+            ("jvmJsCommonMain") { sourceSet ->
+              sourceSet.dependencies {
+                implementation(libs("connectivity.compose.http"))
               }
             }
   - compose:

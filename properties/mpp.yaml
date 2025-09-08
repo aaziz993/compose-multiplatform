@@ -22,6 +22,10 @@ script:
               withJvm()
               group("web")
             }
+            group("jvmJsCommon") {
+              withJvm()
+              group("jsCommon")
+            }
             group("androidIos") {
               withAndroidTarget()
               withIos()
@@ -147,7 +151,7 @@ script:
                 // implementation(libs("kstore"))
                 implementation(libs.bundles("sqldelight"))
                 implementation(libs.bundles("store"))
-                // implementation(libs.bundles("connectivity.kotlin.multiplatform"))
+                implementation(libs("connectivity.core"))
                 implementation(libs.bundles("ktor.serialization"))
                 implementation(libs.bundles("ktor.client"))
                 implementation(libs.bundles("kotlinx.rpc.serialization"))

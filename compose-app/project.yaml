@@ -13,7 +13,7 @@ imports:
   - ../properties/web/js/js-executable.yaml
   - ../properties/web/wasmJs/wasm-js-executable.yaml
   - ../properties/web/js-common.yaml
-  - ../properties/jvm-web.yaml
+  - ../properties/jvm-js-common.yaml
   - ../properties/compose.yaml
   - ../properties/android/android-application-compose.yaml
   - ../properties/subproject.yaml

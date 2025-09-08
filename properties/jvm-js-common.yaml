@@ -2,8 +2,9 @@ script:
   - kotlin:
       sourceSets:
         - named: |
-            ("jvmWebMain") { sourceSet ->
+            ("jvmJsCommonMain") { sourceSet ->
               sourceSet.dependencies {
                 implementation(libs("compass.geocoder.web.googlemaps"))
+                implementation(libs("connectivity.http"))
               }
             }

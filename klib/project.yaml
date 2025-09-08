@@ -13,7 +13,7 @@ imports:
   - ../properties/web/js/js-library.yaml
   - ../properties/web/wasmJs/wasm-js-library.yaml
   - ../properties/web/js-common.yaml
-  - ../properties/jvm-web.yaml
+  - ../properties/jvm-js-common.yaml
   - ../properties/subproject.yaml
   - ../properties/publish.yaml
 script:
