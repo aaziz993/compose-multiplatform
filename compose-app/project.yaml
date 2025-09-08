@@ -23,6 +23,8 @@ config:
     - org.jetbrains.compose.desktop.application.dsl.TargetFormat
 script:
   - description: '"Compose multiplatform application."'
+  - plugins:
+      - id: (libs.plugins("compose.hotReload").pluginId)
   - kotlin:
       sourceSets:
         - named: |
