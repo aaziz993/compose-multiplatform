@@ -95,13 +95,8 @@ public open class Ansi(private val builder: StringBuilder = StringBuilder(80)) :
         return this
     }
 
-    public open fun add(index: HasIndex): Ansi {
+    public open fun attribute(index: HasIndex): Ansi {
         options.add(index.index)
-        return this
-    }
-
-    public open fun addAll(indices: Collection<HasIndex>): Ansi {
-        options.addAll(indices.map(HasIndex::index))
         return this
     }
 
@@ -256,11 +251,11 @@ public open class Ansi(private val builder: StringBuilder = StringBuilder(80)) :
         return this
     }
 
-    public open fun reset(): Ansi = add(Attribute.RESET)
+    public open fun reset(): Ansi = attribute(AnsiAttribute.RESET)
 
-    public fun bold(): Ansi = add(Attribute.INTENSITY_BOLD)
+    public fun bold(): Ansi = attribute(AnsiAttribute.INTENSITY_BOLD)
 
-    public fun boldOff(): Ansi = add(Attribute.INTENSITY_BOLD_OFF)
+    public fun boldOff(): Ansi = attribute(AnsiAttribute.INTENSITY_BOLD_OFF)
 
     public fun attribute(value: String): Ansi {
         flushAttributes()
@@ -464,36 +459,36 @@ public open class Ansi(private val builder: StringBuilder = StringBuilder(80)) :
 }
 
 public inline fun String.span(vararg indices: HasIndex, block: Ansi.() -> Unit = {}): String =
-    Ansi().span(this, block).apply { addAll(indices.toList()) }.toString()
+    Ansi().span(this, block).apply { indices.forEach(::attribute) }.toString()
 
-public fun String.spanFg(colorIndex: Int, vararg indices: Attribute): String = span(*indices) {
+public fun String.spanFg(colorIndex: Int, vararg indices: AnsiAttribute): String = span(*indices) {
     fg(colorIndex)
 }
 
-public fun String.spanFgRgb(r: Int, g: Int, b: Int, vararg indices: Attribute): String = span(*indices) {
+public fun String.spanFgRgb(r: Int, g: Int, b: Int, vararg indices: AnsiAttribute): String = span(*indices) {
     fgRgb(r, g, b)
 }
 
-public fun String.spanFgHex24(hex: String, vararg indices: Attribute): String = span(*indices) {
+public fun String.spanFgHex24(hex: String, vararg indices: AnsiAttribute): String = span(*indices) {
     fgHex24(hex)
 }
 
-public fun String.spanFgHex256(hex: String, vararg indices: Attribute): String = span(*indices) {
+public fun String.spanFgHex256(hex: String, vararg indices: AnsiAttribute): String = span(*indices) {
     fgHex256(hex)
 }
 
-public fun String.spanBg(colorIndex: Int, vararg indices: Attribute): String = span(*indices) {
+public fun String.spanBg(colorIndex: Int, vararg indices: AnsiAttribute): String = span(*indices) {
     bg(colorIndex)
 }
 
-public fun String.spanBgRgb(r: Int, g: Int, b: Int, vararg indices: Attribute): String = span(*indices) {
+public fun String.spanBgRgb(r: Int, g: Int, b: Int, vararg indices: AnsiAttribute): String = span(*indices) {
     bgRgb(r, g, b)
 }
 
-public fun String.spanBgHex24(hex: String, vararg indices: Attribute): String = span(*indices) {
+public fun String.spanBgHex24(hex: String, vararg indices: AnsiAttribute): String = span(*indices) {
     bgHex24(hex)
 }
 
-public fun String.spanBgHex256(hex: String, vararg indices: Attribute): String = span(*indices) {
+public fun String.spanBgHex256(hex: String, vararg indices: AnsiAttribute): String = span(*indices) {
     bgHex256(hex)
 }

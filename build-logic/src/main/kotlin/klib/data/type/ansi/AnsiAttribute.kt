@@ -5,7 +5,7 @@ package klib.data.type.ansi
  * [SGR
  * (Select Graphic Rendition) parameters](https://en.wikipedia.org/wiki/ANSI_escape_code#SGR_(Select_Graphic_Rendition)_parameters).
  */
-public enum class Attribute(override val index: Int) : HasIndex {
+public enum class AnsiAttribute(override val index: Int) : HasIndex {
     RESET(0),
     INTENSITY_BOLD(1),
     INTENSITY_FAINT(2),

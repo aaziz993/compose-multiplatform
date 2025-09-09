@@ -98,7 +98,7 @@ public abstract class ScriptProperties {
             render(
                 "@|intensity_bold,${
                     if (visited) "yellow ↻" else "green"
-                } File:|@ %s",
+                } File:|@ %s\n",
                 value,
             ).toString()
         }

@@ -117,7 +117,7 @@ public class AnsiRenderer(private val ansi: Ansi = Ansi()) {
     @Suppress("FunctionName")
     private fun _render(vararg names: String): Ansi =
         names.map(String::uppercase).fold(ansi) { acc, name ->
-            AnsiColor.parseOrNull(name)?.let(acc::add) ?: acc.add(Attribute.valueOf(name))
+            AnsiColor.parseOrNull(name)?.let(acc::attribute) ?: acc.attribute(AnsiAttribute.valueOf(name))
         }
 
     public fun test(text: String): Boolean = text.contains(BEGIN_TOKEN)

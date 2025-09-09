@@ -1,7 +1,5 @@
 package klib.data.type.colors
 
-import klib.data.type.ansi.Attribute
-import klib.data.type.ansi.span
 import kotlin.math.cbrt
 import kotlin.math.pow
 import kotlin.math.sqrt
