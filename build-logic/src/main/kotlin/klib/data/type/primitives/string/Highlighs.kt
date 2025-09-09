@@ -64,13 +64,13 @@ public fun Highlights.highlight(
     }
 }
 
-
 public fun String.highlight(
     language: SyntaxLanguage = SyntaxLanguage.KOTLIN,
-    theme: SyntaxTheme = SyntaxThemes.monokai(),
+    theme: SyntaxTheme = SyntaxThemes.atom(),
     transform: (text: String, bold: Boolean, rgb: UInt?) -> String = DEFAULT_MAPPER
 ): String = Highlights.Builder()
     .code(this)
     .language(language)
     .theme(theme)
-    .build().highlight(transform)
+    .build()
+    .highlight(transform)
