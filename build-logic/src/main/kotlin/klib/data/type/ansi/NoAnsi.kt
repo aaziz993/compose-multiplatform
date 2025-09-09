@@ -13,7 +13,9 @@ public class NoAnsi : Ansi {
 
     override fun bgRgb(r: Int, g: Int, b: Int): Ansi = this
 
-    override fun ansiIndex(ansiIndex: HasIndex): Ansi = this
+    override fun add(index: HasIndex): Ansi = this
+
+    override fun addAll(indices: Collection<HasIndex>): Ansi = this
 
     override fun cursor(row: Int, column: Int): Ansi = this
 

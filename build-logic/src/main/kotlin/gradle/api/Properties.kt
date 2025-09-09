@@ -90,7 +90,7 @@ public abstract class Properties : ScriptProperties() {
                 defaultImports(*IMPORTS)
             }
         }.also { properties ->
-            logger.lifecycle(
+             logger.lifecycle(
                 evaluationImplicitReceiver.toString()
                     .uppercase()
                     .span(Color.CYAN.ansi(), Attribute.INTENSITY_BOLD),

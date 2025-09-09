@@ -95,8 +95,13 @@ public open class Ansi(private val builder: StringBuilder = StringBuilder(80)) :
         return this
     }
 
-    public open fun ansiIndex(ansiIndex: HasIndex): Ansi {
-        options.add(ansiIndex.index)
+    public open fun add(index: HasIndex): Ansi {
+        options.add(index.index)
+        return this
+    }
+
+    public open fun addAll(indices: Collection<HasIndex>): Ansi {
+        options.addAll(indices.map(HasIndex::index))
         return this
     }
 
@@ -251,11 +256,11 @@ public open class Ansi(private val builder: StringBuilder = StringBuilder(80)) :
         return this
     }
 
-    public open fun reset(): Ansi = ansiIndex(Attribute.RESET)
+    public open fun reset(): Ansi = add(Attribute.RESET)
 
-    public fun bold(): Ansi = ansiIndex(Attribute.INTENSITY_BOLD)
+    public fun bold(): Ansi = add(Attribute.INTENSITY_BOLD)
 
-    public fun boldOff(): Ansi = ansiIndex(Attribute.INTENSITY_BOLD_OFF)
+    public fun boldOff(): Ansi = add(Attribute.INTENSITY_BOLD_OFF)
 
     public fun attribute(value: String): Ansi {
         flushAttributes()
@@ -458,10 +463,8 @@ public open class Ansi(private val builder: StringBuilder = StringBuilder(80)) :
     }
 }
 
-public inline fun String.span(vararg indices: HasIndex, block: Ansi.() -> Unit): String =
-    Ansi().span(this, block).apply { indices.forEach(::ansiIndex) }.toString()
-
-public fun String.span(vararg indices: HasIndex): String = span(*indices) {}
+public inline fun String.span(vararg indices: HasIndex, block: Ansi.() -> Unit = {}): String =
+    Ansi().span(this, block).apply { addAll(indices.toList()) }.toString()
 
 public fun String.spanFg(colorIndex: Int, vararg indices: Attribute): String = span(*indices) {
     fg(colorIndex)

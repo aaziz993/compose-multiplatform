@@ -165,9 +165,9 @@ public object Colors {
         italic: Boolean = false,
         underline: Boolean = false,
     ): String = text.span {
-        if (bold) ansiIndex(Attribute.INTENSITY_BOLD)
-        if (italic) ansiIndex(Attribute.ITALIC)
-        if (underline) ansiIndex(Attribute.UNDERLINE)
+        if (bold) indices(Attribute.INTENSITY_BOLD)
+        if (italic) indices(Attribute.ITALIC)
+        if (underline) indices(Attribute.UNDERLINE)
         hexToRgb(fgHex)?.let { (r, g, b) -> fgRgb(r, g, b) }
         hexToRgb(bgHex)?.let { (r, g, b) -> bgRgb(r, g, b) }
     }
@@ -181,9 +181,9 @@ public object Colors {
         underline: Boolean = false,
     ): String = text.span {
 
-        if (bold) ansiIndex(Attribute.INTENSITY_BOLD)
-        if (italic) ansiIndex(Attribute.ITALIC)
-        if (underline) ansiIndex(Attribute.UNDERLINE)
+        if (bold) indices(Attribute.INTENSITY_BOLD)
+        if (italic) indices(Attribute.ITALIC)
+        if (underline) indices(Attribute.UNDERLINE)
         hexToColorIndex256(fgHex)?.let(::fg)
         hexToColorIndex256(bgHex)?.let(::bg)
     }
