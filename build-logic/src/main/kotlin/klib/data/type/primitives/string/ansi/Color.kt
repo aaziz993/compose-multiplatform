@@ -1,4 +1,4 @@
-package klib.data.type.ansi;
+package klib.data.type.primitives.string.ansi
 
 /**
  * [ANSI 8 colors](https://en.wikipedia.org/wiki/ANSI_escape_code#Colors) for fluent API

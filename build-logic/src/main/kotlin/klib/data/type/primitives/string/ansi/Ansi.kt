@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package klib.data.type.ansi
+package klib.data.type.primitives.string.ansi
 
 import klib.data.type.colors.Colors.hexToColorIndex256
 import klib.data.type.colors.Colors.hexToRgb
 import klib.data.type.primitives.string.format
 import kotlin.math.max
-import kotlin.text.StringBuilder
+
+public fun supportsAnsi(): Boolean = true
 
 /**
  * Provides a fluent API for generating
@@ -448,12 +449,67 @@ public open class Ansi(private val builder: StringBuilder = StringBuilder(80)) :
     public fun span(text: String, vararg attributes: HasIndex): Ansi =
         apply { attributes.forEach(::attribute) }.attribute(text).reset()
 
+    private object NoAnsi : Ansi() {
+
+        override fun fg(color: Int): Ansi = this
+
+        override fun fgRgb(r: Int, g: Int, b: Int): Ansi = this
+
+        override fun bg(color: Int): Ansi = this
+
+        override fun bgRgb(r: Int, g: Int, b: Int): Ansi = this
+
+        override fun attribute(index: HasIndex): Ansi = this
+
+        override fun cursor(row: Int, column: Int): Ansi = this
+
+        override fun cursorToColumn(x: Int): Ansi = this
+
+        override fun cursorUp(y: Int): Ansi = this
+
+        override fun cursorRight(x: Int): Ansi = this
+
+        override fun cursorDown(y: Int): Ansi = this
+
+        override fun cursorLeft(x: Int): Ansi = this
+
+        override fun cursorDownLine(): Ansi = this
+
+        override fun cursorDownLine(n: Int): Ansi = this
+
+        override fun cursorUpLine(): Ansi = this
+
+        override fun cursorUpLine(n: Int): Ansi = this
+
+        override fun eraseScreen(): Ansi = this
+
+        override fun eraseScreen(kind: Erase): Ansi = this
+
+        override fun eraseLine(): Ansi = this
+
+        override fun eraseLine(kind: Erase): Ansi = this
+
+        override fun scrollUp(rows: Int): Ansi = this
+
+        override fun scrollDown(rows: Int): Ansi = this
+
+        override fun saveCursorPosition(): Ansi = this
+
+        override fun restoreCursorPosition(): Ansi = this
+
+        override fun reset(): Ansi = this
+    }
+
     public companion object {
 
         private const val FIRST_ESC_CHAR = 27.toChar()
         private const val SECOND_ESC_CHAR = '['
 
-        public fun ansi(): Ansi = Ansi()
+        public fun ansi(): Ansi = if (supportsAnsi()) Ansi() else NoAnsi
+
+        public fun ansi(builder: StringBuilder): Ansi = if (supportsAnsi()) Ansi(builder) else NoAnsi
+
+        public fun ansi(size: Int): Ansi = if (supportsAnsi()) Ansi(size) else NoAnsi
     }
 }
 

@@ -12,9 +12,9 @@ import org.gradle.api.provider.HasMultipleValues
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import java.io.File
-import klib.data.type.ansi.Attribute
-import klib.data.type.ansi.Color
-import klib.data.type.ansi.span
+import klib.data.type.primitives.string.ansi.Attribute
+import klib.data.type.primitives.string.ansi.Color
+import klib.data.type.primitives.string.ansi.span
 import kotlin.reflect.KClass
 import kotlin.reflect.full.isSubclassOf
 import kotlin.script.experimental.api.defaultImports

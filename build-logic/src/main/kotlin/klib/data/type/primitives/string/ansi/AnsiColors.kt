@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package klib.data.type.ansi
+package klib.data.type.primitives.string.ansi
 
 /**
- * Ansi mode.
+ * Colors support.
  *
  * @since 2.1
  */
-public enum class AnsiMode(public val description: String) {
-    Strip("Strip all ansi sequences"),
-    Default("Print ansi sequences if the stream is a terminal"),
-    Force("Always print ansi sequences, even if the stream is redirected");
+public enum class AnsiColors(public val description: String) {
+    COLORS_16("16 colors"),
+    COLORS_256("256 colors"),
+    TRUE_COLOR("24-bit colors");
 }

@@ -33,10 +33,10 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.serializer
 import java.io.File
 import java.lang.reflect.Modifier
-import klib.data.type.ansi.Ansi
-import klib.data.type.ansi.Attribute
-import klib.data.type.ansi.Color
-import klib.data.type.ansi.span
+import klib.data.type.primitives.string.ansi.Ansi
+import klib.data.type.primitives.string.ansi.Attribute
+import klib.data.type.primitives.string.ansi.Color
+import klib.data.type.primitives.string.ansi.span
 import kotlin.reflect.KClass
 import kotlin.reflect.KMutableProperty
 import kotlin.reflect.KVisibility
@@ -90,19 +90,15 @@ public abstract class ScriptProperties {
     }
 
     override fun toString(): String = Ansi.ansi().apply {
-        render(
+
+        attribute(
             fileTree.entries.first().key.toTreeString(
                 {
                     fileTree[this].orEmpty()
                 },
             ) { value, visited ->
-                if (visited)
-                    "File:".span(Attribute.INTENSITY_BOLD, Color.YELLOW)}"
-                else value.span(Attribute.INTENSITY_BOLD, Color.YELLOW)
-
-                "@|${Attribute.INTENSITY_BOLD},${
-                    if (visited) "${Color.YELLOW} ↻" else Color.GREEN
-                } File:|@ $value"
+                if (visited) "${"File:".span(Attribute.INTENSITY_BOLD, Color.YELLOW)} $value ↻"
+                else "${"File:".span(Attribute.INTENSITY_BOLD, Color.GREEN)} $value"
             },
         )
 

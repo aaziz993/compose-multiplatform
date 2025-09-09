@@ -1,7 +1,6 @@
-package klib.data.type.ansi
+package klib.data.type.primitives.string.ansi
 
-import klib.data.type.ansi.Color.DEFAULT
-import klib.data.type.colors.Colors
+import klib.data.type.primitives.string.ansi.Color.DEFAULT
 import kotlinx.serialization.Serializable
 import kotlin.text.removePrefix
 import kotlin.text.startsWith
