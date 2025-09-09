@@ -3,7 +3,6 @@ package gradle.plugins.project
 import gradle.api.ci.CI
 import gradle.api.maybeNamed
 import gradle.api.project.ProjectProperties
-import gradle.api.project.kotlin
 import gradle.plugins.android.AndroidPlugin
 import gradle.plugins.apivalidation.ApiValidationPlugin
 import gradle.plugins.compose.ComposePlugin
@@ -12,7 +11,6 @@ import gradle.plugins.initialization.SLF4JProblemReporterContext
 import gradle.plugins.knit.KnitPlugin
 import gradle.plugins.kotlin.mpp.MPPPlugin
 import gradle.plugins.kotlin.targets.JvmPlugin
-import gradle.plugins.kotlin.targets.toJvmTarget
 import gradle.plugins.kover.KoverPlugin
 import gradle.plugins.publish.PublishPlugin
 import gradle.plugins.signing.SigningPlugin
@@ -24,7 +22,6 @@ import org.gradle.api.Project
 import org.gradle.internal.os.OperatingSystem
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.tasks.KotlinNativeLink
-
 
 public class ProjectPlugin : Plugin<Project> {
 
