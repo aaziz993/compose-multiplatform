@@ -369,7 +369,8 @@ public open class Ansi(private val builder: StringBuilder = StringBuilder(80)) :
             builder.append(SECOND_ESC_CHAR)
             builder.append('0')
             builder.append('m')
-        } else _appendEscapeSequence('m', *attributes.toTypedArray())
+        }
+        else _appendEscapeSequence('m', *attributes.toTypedArray())
         attributes.clear()
     }
 
@@ -408,6 +409,7 @@ public open class Ansi(private val builder: StringBuilder = StringBuilder(80)) :
     public inline fun span(text: String, block: Ansi.() -> Unit = {}): Ansi = apply(block).attribute(text).reset()
 
     private object NoAnsi : Ansi() {
+
         override fun attribute(attribute: Ansi16): Ansi = this
 
         override fun attribute(attribute: Ansi256, background: Boolean): Ansi = this
@@ -465,5 +467,7 @@ public open class Ansi(private val builder: StringBuilder = StringBuilder(80)) :
         public fun ansi(size: Int): Ansi = if (supportsAnsi()) Ansi(size) else NoAnsi
     }
 }
+
+public fun buildStringAnsi(block: Ansi.() -> Unit): String = Ansi.ansi().apply(block).toString()
 
 public inline fun String.ansiSpan(block: Ansi.() -> Unit = {}): String = Ansi.ansi().span(this, block).toString()

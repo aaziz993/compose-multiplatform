@@ -37,6 +37,7 @@ import java.lang.reflect.Modifier
 import klib.data.type.ansi.Ansi
 import klib.data.type.ansi.Attribute
 import klib.data.type.ansi.ansiSpan
+import klib.data.type.ansi.buildStringAnsi
 import klib.data.type.primitives.string.addSuffix
 import kotlin.reflect.KClass
 import kotlin.reflect.KMutableProperty
@@ -91,8 +92,7 @@ public abstract class ScriptProperties {
         if (this is Throwable) throw this else Unit
     }
 
-    override fun toString(): String = Ansi.ansi().apply {
-
+    override fun toString(): String = buildStringAnsi {
         attribute(
             fileTree.entries.first().key.toTreeString(
                 {
@@ -113,13 +113,13 @@ public abstract class ScriptProperties {
                 } $value"
             },
         )
-
+        attribute('\n')
         attribute(
             config.imports.sorted().joinToString("\n", postfix = "\n") { import -> "import $import" }
                 .addSuffixIfNotEmpty("\n")
                 .addSuffix(compiled).highlight(),
         )
-    }.toString()
+    }
 
     private fun tryAssign(path: Array<String>, value: Any?): Any? {
         val packages = config.imports.filter { import -> import.endsWith(".*") }.map { import ->
