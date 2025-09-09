@@ -96,17 +96,19 @@ public abstract class ScriptProperties {
                     fileTree[this].orEmpty()
                 },
             ) { value, visited ->
+                if (visited)
+                    "File:".span(Attribute.INTENSITY_BOLD, Color.YELLOW)}"
+                else value.span(Attribute.INTENSITY_BOLD, Color.YELLOW)
+
                 "@|${Attribute.INTENSITY_BOLD},${
                     if (visited) "${Color.YELLOW} ↻" else Color.GREEN
                 } File:|@ $value"
             },
         )
 
-        appendLine()
-
         config.imports.takeIfNotEmpty()?.let { imports ->
-            span(imports.sorted().joinToString("\n") { import -> "import $import" }, Color.MAGENTA)
-            appendLine()
+            span(imports.sorted().joinToString("\n", postfix = "\n") { import -> "import $import" }, Color.MAGENTA)
+            attribute('\n')
         }
 
         span(compiled, Color.GREEN)
