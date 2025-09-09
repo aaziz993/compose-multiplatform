@@ -15,278 +15,439 @@
  */
 package klib.data.type.ansi
 
-import kotlin.math.cbrt
-import kotlin.math.pow
-import kotlin.math.sqrt
+import klib.data.type.primitives.string.format
+import kotlin.math.max
+import kotlin.text.StringBuilder
 
 /**
- * Helper class for dealing with color rounding.
- * This is a simplified version of the JLine's one at
- * https://github.com/jline/jline3/blob/a24636dc5de83baa6b65049e8215fb372433b3b1/terminal/src/main/java/org/jline/utils/Colors.java
+ * Provides a fluent API for generating
+ * [ANSI escape sequences](https://en.wikipedia.org/wiki/ANSI_escape_code#CSI_sequences).
+ *
+ * @since 1.0
  */
-public object Ansi {
+public open class Ansi(private val builder: StringBuilder = StringBuilder(80)) : Appendable {
+    public constructor(parent: Ansi) : this(StringBuilder(parent.builder)) {
+        options.addAll(parent.options)
+    }
 
-    // Reset
-    public const val RESET: String = "\u001B[0m"
+    public constructor(size: Int) : this(StringBuilder(size))
 
-    // Regular Colors
-    public const val BLACK: String = "\u001B[30m"
-    public const val RED: String = "\u001B[31m"
-    public const val GREEN: String = "\u001B[32m"
-    public const val YELLOW: String = "\u001B[33m"
-    public const val BLUE: String = "\u001B[34m"
-    public const val PURPLE: String = "\u001B[35m"
-    public const val CYAN: String = "\u001B[36m"
-    public const val WHITE: String = "\u001B[37m"
+    private val options = ArrayList<Int>(5)
 
-    // Bright Colors
-    public const val BRIGHT_BLACK: String = "\u001B[90m"
-    public const val BRIGHT_RED: String = "\u001B[91m"
-    public const val BRIGHT_GREEN: String = "\u001B[92m"
-    public const val BRIGHT_YELLOW: String = "\u001B[93m"
-    public const val BRIGHT_BLUE: String = "\u001B[94m"
-    public const val BRIGHT_PURPLE: String = "\u001B[95m"
-    public const val BRIGHT_CYAN: String = "\u001B[96m"
-    public const val BRIGHT_WHITE: String = "\u001B[97m"
+    private val ansiRenderer = AnsiRenderer(this)
 
-    // Background Colors
-    public const val BG_BLACK: String = "\u001B[40m"
-    public const val BG_RED: String = "\u001B[41m"
-    public const val BG_GREEN: String = "\u001B[42m"
-    public const val BG_YELLOW: String = "\u001B[43m"
-    public const val BG_BLUE: String = "\u001B[44m"
-    public const val BG_PURPLE: String = "\u001B[45m"
-    public const val BG_CYAN: String = "\u001B[46m"
-    public const val BG_WHITE: String = "\u001B[47m"
+    public open fun fg(color: Int): Ansi {
+        options.add(38)
+        options.add(5)
+        options.add(color and 0xff)
+        return this
+    }
 
-    // Bright Background Colors
-    public const val BG_BRIGHT_BLACK: String = "\u001B[100m"
-    public const val BG_BRIGHT_RED: String = "\u001B[101m"
-    public const val BG_BRIGHT_GREEN: String = "\u001B[102m"
-    public const val BG_BRIGHT_YELLOW: String = "\u001B[103m"
-    public const val BG_BRIGHT_BLUE: String = "\u001B[104m"
-    public const val BG_BRIGHT_PURPLE: String = "\u001B[105m"
-    public const val BG_BRIGHT_CYAN: String = "\u001B[106m"
-    public const val BG_BRIGHT_WHITE: String = "\u001B[107m"
+    public fun fgRgb(color: Int): Ansi = fgRgb((color ushr 16) and 0xFF, (color ushr 8) and 0xFF, color and 0xFF)
 
-    // Styles
-    public const val BOLD: String = "\u001B[1m"
-    public const val DIM: String = "\u001B[2m"
-    public const val ITALIC: String = "\u001B[3m"
-    public const val UNDERLINE: String = "\u001B[4m"
-    public const val BLINK: String = "\u001B[5m"
-    public const val REVERSE: String = "\u001B[7m"
-    public const val HIDDEN: String = "\u001B[8m"
+    public open fun fgRgb(r: Int, g: Int, b: Int): Ansi {
+        options.add(38)
+        options.add(2)
+        options.add(r and 0xff)
+        options.add(g and 0xff)
+        options.add(b and 0xff)
+        return this
+    }
+
+    public open fun bg(color: Int): Ansi {
+        options.add(48)
+        options.add(5)
+        options.add(color and 0xff)
+        return this
+    }
+
+    public fun bgRgb(color: Int): Ansi = bgRgb((color ushr 16) and 0xFF, (color ushr 8) and 0xFF, color and 0xFF)
+
+    public open fun bgRgb(r: Int, g: Int, b: Int): Ansi {
+        options.add(48)
+        options.add(2)
+        options.add(r and 0xff)
+        options.add(g and 0xff)
+        options.add(b and 0xff)
+        return this
+    }
+
+    public open fun ansiIndex(ansiIndex: HasIndex): Ansi {
+        options.add(ansiIndex.index)
+        return this
+    }
 
     /**
-     * Default 256 colors palette
+     * Moves the cursor to row n, column m. The values are 1-based.
+     * Any values less than 1 are mapped to 1.
+     *
+     * @param row    row (1-based) from top
+     * @param column column (1 based) from left
+     * @return this Ansi instance
      */
-    // spotless:off
-    public val DEFAULT_COLORS_256: IntArray = intArrayOf(
-        // 16 ansi
-        0x000000, 0x800000, 0x008000, 0x808000, 0x000080, 0x800080, 0x008080, 0xc0c0c0,
-        0x808080, 0xff0000, 0x00ff00, 0xffff00, 0x0000ff, 0xff00ff, 0x00ffff, 0xffffff,  // 6x6x6 color cube
+    public open fun cursor(row: Int, column: Int): Ansi =
+        appendEscapeSequence('H', max(1, row), max(1, column))
 
-        0x000000, 0x00005f, 0x000087, 0x0000af, 0x0000d7, 0x0000ff,
-        0x005f00, 0x005f5f, 0x005f87, 0x005faf, 0x005fd7, 0x005fff,
-        0x008700, 0x00875f, 0x008787, 0x0087af, 0x0087d7, 0x0087ff,
-        0x00af00, 0x00af5f, 0x00af87, 0x00afaf, 0x00afd7, 0x00afff,
-        0x00d700, 0x00d75f, 0x00d787, 0x00d7af, 0x00d7d7, 0x00d7ff,
-        0x00ff00, 0x00ff5f, 0x00ff87, 0x00ffaf, 0x00ffd7, 0x00ffff,
+    /**
+     * Moves the cursor to column n. The parameter n is 1-based.
+     * If n is less than 1 it is moved to the first column.
+     *
+     * @param x the index (1-based) of the column to move to
+     * @return this Ansi instance
+     */
+    public open fun cursorToColumn(x: Int): Ansi = appendEscapeSequence('G', max(1, x))
 
-        0x5f0000, 0x5f005f, 0x5f0087, 0x5f00af, 0x5f00d7, 0x5f00ff,
-        0x5f5f00, 0x5f5f5f, 0x5f5f87, 0x5f5faf, 0x5f5fd7, 0x5f5fff,
-        0x5f8700, 0x5f875f, 0x5f8787, 0x5f87af, 0x5f87d7, 0x5f87ff,
-        0x5faf00, 0x5faf5f, 0x5faf87, 0x5fafaf, 0x5fafd7, 0x5fafff,
-        0x5fd700, 0x5fd75f, 0x5fd787, 0x5fd7af, 0x5fd7d7, 0x5fd7ff,
-        0x5fff00, 0x5fff5f, 0x5fff87, 0x5fffaf, 0x5fffd7, 0x5fffff,
+    /**
+     * Moves the cursor up. If the parameter y is negative it moves the cursor down.
+     *
+     * @param y the number of lines to move up
+     * @return this Ansi instance
+     */
+    public open fun cursorUp(y: Int): Ansi =
+        if (y > 0) appendEscapeSequence('A', y) else if (y < 0) cursorDown(-y) else this
 
-        0x870000, 0x87005f, 0x870087, 0x8700af, 0x8700d7, 0x8700ff,
-        0x875f00, 0x875f5f, 0x875f87, 0x875faf, 0x875fd7, 0x875fff,
-        0x878700, 0x87875f, 0x878787, 0x8787af, 0x8787d7, 0x8787ff,
-        0x87af00, 0x87af5f, 0x87af87, 0x87afaf, 0x87afd7, 0x87afff,
-        0x87d700, 0x87d75f, 0x87d787, 0x87d7af, 0x87d7d7, 0x87d7ff,
-        0x87ff00, 0x87ff5f, 0x87ff87, 0x87ffaf, 0x87ffd7, 0x87ffff,
+    /**
+     * Moves the cursor down. If the parameter y is negative it moves the cursor up.
+     *
+     * @param y the number of lines to move down
+     * @return this Ansi instance
+     */
+    public open fun cursorDown(y: Int): Ansi =
+        if (y > 0) appendEscapeSequence('B', y) else if (y < 0) cursorUp(-y) else this
 
-        0xaf0000, 0xaf005f, 0xaf0087, 0xaf00af, 0xaf00d7, 0xaf00ff,
-        0xaf5f00, 0xaf5f5f, 0xaf5f87, 0xaf5faf, 0xaf5fd7, 0xaf5fff,
-        0xaf8700, 0xaf875f, 0xaf8787, 0xaf87af, 0xaf87d7, 0xaf87ff,
-        0xafaf00, 0xafaf5f, 0xafaf87, 0xafafaf, 0xafafd7, 0xafafff,
-        0xafd700, 0xafd75f, 0xafd787, 0xafd7af, 0xafd7d7, 0xafd7ff,
-        0xafff00, 0xafff5f, 0xafff87, 0xafffaf, 0xafffd7, 0xafffff,
+    /**
+     * Moves the cursor right. If the parameter x is negative it moves the cursor left.
+     *
+     * @param x the number of characters to move right
+     * @return this Ansi instance
+     */
+    public open fun cursorRight(x: Int): Ansi =
+        if (x > 0) appendEscapeSequence('C', x) else if (x < 0) cursorLeft(-x) else this
 
-        0xd70000, 0xd7005f, 0xd70087, 0xd700af, 0xd700d7, 0xd700ff,
-        0xd75f00, 0xd75f5f, 0xd75f87, 0xd75faf, 0xd75fd7, 0xd75fff,
-        0xd78700, 0xd7875f, 0xd78787, 0xd787af, 0xd787d7, 0xd787ff,
-        0xd7af00, 0xd7af5f, 0xd7af87, 0xd7afaf, 0xd7afd7, 0xd7afff,
-        0xd7d700, 0xd7d75f, 0xd7d787, 0xd7d7af, 0xd7d7d7, 0xd7d7ff,
-        0xd7ff00, 0xd7ff5f, 0xd7ff87, 0xd7ffaf, 0xd7ffd7, 0xd7ffff,
+    /**
+     * Moves the cursor left. If the parameter x is negative it moves the cursor right.
+     *
+     * @param x the number of characters to move left
+     * @return this Ansi instance
+     */
+    public open fun cursorLeft(x: Int): Ansi =
+        if (x > 0) appendEscapeSequence('D', x) else if (x < 0) cursorRight(-x) else this
 
-        0xff0000, 0xff005f, 0xff0087, 0xff00af, 0xff00d7, 0xff00ff,
-        0xff5f00, 0xff5f5f, 0xff5f87, 0xff5faf, 0xff5fd7, 0xff5fff,
-        0xff8700, 0xff875f, 0xff8787, 0xff87af, 0xff87d7, 0xff87ff,
-        0xffaf00, 0xffaf5f, 0xffaf87, 0xffafaf, 0xffafd7, 0xffafff,
-        0xffd700, 0xffd75f, 0xffd787, 0xffd7af, 0xffd7d7, 0xffd7ff,
-        0xffff00, 0xffff5f, 0xffff87, 0xffffaf, 0xffffd7, 0xffffff,  // 24 grey ramp
+    /**
+     * Moves the cursor relative to the current position. The cursor is moved right if x is
+     * positive, left if negative and down if y is positive and up if negative.
+     *
+     * @param x the number of characters to move horizontally
+     * @param y the number of lines to move vertically
+     * @return this Ansi instance
+     * @since 2.2
+     */
+    public fun cursorMove(x: Int, y: Int): Ansi = cursorRight(x).cursorDown(y)
 
-        0x080808, 0x121212, 0x1c1c1c, 0x262626, 0x303030, 0x3a3a3a, 0x444444, 0x4e4e4e,
-        0x585858, 0x626262, 0x6c6c6c, 0x767676, 0x808080, 0x8a8a8a, 0x949494, 0x9e9e9e,
-        0xa8a8a8, 0xb2b2b2, 0xbcbcbc, 0xc6c6c6, 0xd0d0d0, 0xdadada, 0xe4e4e4, 0xeeeeee,
-    )
+    /**
+     * Moves the cursor to the beginning of the line below.
+     *
+     * @return this Ansi instance
+     */
+    public open fun cursorDownLine(): Ansi = appendEscapeSequence('E')
 
-    // spotless:on
-    public fun roundColor(col: Int, max: Int): Int {
-        var col = col
-        if (col >= max) {
-            val c = DEFAULT_COLORS_256[col]
-            col = roundColor(c, DEFAULT_COLORS_256, max)
-        }
-        return col
+    /**
+     * Moves the cursor to the beginning of the n-th line below. If the parameter n is negative it
+     * moves the cursor to the beginning of the n-th line above.
+     *
+     * @param n the number of lines to move the cursor
+     * @return this Ansi instance
+     */
+    public open fun cursorDownLine(n: Int): Ansi =
+        if (n < 0) cursorUpLine(-n) else appendEscapeSequence('E', n)
+
+    /**
+     * Moves the cursor to the beginning of the line above.
+     *
+     * @return this Ansi instance
+     */
+    public open fun cursorUpLine(): Ansi = appendEscapeSequence('F')
+
+    /**
+     * Moves the cursor to the beginning of the n-th line above. If the parameter n is negative it
+     * moves the cursor to the beginning of the n-th line below.
+     *
+     * @param n the number of lines to move the cursor
+     * @return this Ansi instance
+     */
+    public open fun cursorUpLine(n: Int): Ansi =
+        if (n < 0) cursorDownLine(-n) else appendEscapeSequence('F', n)
+
+    public open fun eraseScreen(): Ansi = appendEscapeSequence('J', Erase.ALL.value)
+
+    public open fun eraseScreen(kind: Erase): Ansi = appendEscapeSequence('J', kind.value)
+
+    public open fun eraseLine(): Ansi = appendEscapeSequence('K')
+
+    public open fun eraseLine(kind: Erase): Ansi = appendEscapeSequence('K', kind.value)
+
+    public open fun scrollUp(rows: Int): Ansi {
+        if (rows == Int.MIN_VALUE) return scrollDown(Int.MAX_VALUE)
+
+        return if (rows > 0) appendEscapeSequence('S', rows) else if (rows < 0) scrollDown(-rows) else this
     }
 
-    public fun roundRgbColor(r: Int, g: Int, b: Int, max: Int): Int =
-        roundColor((r shl 16) + (g shl 8) + b, DEFAULT_COLORS_256, max)
+    public open fun scrollDown(rows: Int): Ansi {
+        if (rows == Int.MIN_VALUE) return scrollUp(Int.MAX_VALUE)
 
-    private fun roundColor(color: Int, colors: IntArray, max: Int): Int {
-        var bestDistance = Int.MAX_VALUE.toDouble()
-        var bestIndex = Int.MAX_VALUE
-        for (idx in 0..<max) {
-            val d = cie76(color, colors[idx])
-            if (d <= bestDistance) {
-                bestIndex = idx
-                bestDistance = d
+        return if (rows > 0) appendEscapeSequence('T', rows) else if (rows < 0) scrollUp(-rows) else this
+    }
+
+    public open fun saveCursorPosition(): Ansi {
+        saveCursorPositionSCO()
+        return saveCursorPositionDEC()
+    }
+
+    // SCO command
+    public fun saveCursorPositionSCO(): Ansi = appendEscapeSequence('s')
+
+    // DEC command
+    public fun saveCursorPositionDEC(): Ansi {
+        builder.append(FIRST_ESC_CHAR)
+        builder.append('7')
+        return this
+    }
+
+    public open fun restoreCursorPosition(): Ansi {
+        restoreCursorPositionSCO()
+        return restoreCursorPositionDEC()
+    }
+
+    // SCO command
+    public fun restoreCursorPositionSCO(): Ansi = appendEscapeSequence('u')
+
+    // DEC command
+    public fun restoreCursorPositionDEC(): Ansi {
+        builder.append(FIRST_ESC_CHAR)
+        builder.append('8')
+        return this
+    }
+
+    public open fun reset(): Ansi = ansiIndex(Attribute.RESET)
+
+    public fun bold(): Ansi = ansiIndex(Attribute.INTENSITY_BOLD)
+
+    public fun boldOff(): Ansi = ansiIndex(Attribute.INTENSITY_BOLD_OFF)
+
+    public fun attribute(value: String): Ansi {
+        flushAttributes()
+        builder.append(value)
+        return this
+    }
+
+    public fun attribute(value: Boolean): Ansi {
+        flushAttributes()
+        builder.append(value)
+        return this
+    }
+
+    public fun attribute(value: Char): Ansi {
+        flushAttributes()
+        builder.append(value)
+        return this
+    }
+
+    public fun attribute(value: CharArray, offset: Int, len: Int): Ansi {
+        flushAttributes()
+        builder.append(value, offset, len)
+        return this
+    }
+
+    public fun attribute(value: CharArray): Ansi {
+        flushAttributes()
+        builder.append(value)
+        return this
+    }
+
+    public fun attribute(value: CharSequence, start: Int, end: Int): Ansi {
+        flushAttributes()
+        builder.append(value, start, end)
+        return this
+    }
+
+    public fun attribute(value: CharSequence): Ansi {
+        flushAttributes()
+        builder.append(value)
+        return this
+    }
+
+    public fun attribute(value: Double): Ansi {
+        flushAttributes()
+        builder.append(value)
+        return this
+    }
+
+    public fun attribute(value: Float): Ansi {
+        flushAttributes()
+        builder.append(value)
+        return this
+    }
+
+    public fun attribute(value: Int): Ansi {
+        flushAttributes()
+        builder.append(value)
+        return this
+    }
+
+    public fun attribute(value: Long): Ansi {
+        flushAttributes()
+        builder.append(value)
+        return this
+    }
+
+    public fun attribute(value: Any?): Ansi {
+        flushAttributes()
+        builder.append(value)
+        return this
+    }
+
+    public fun attribute(value: StringBuilder): Ansi {
+        flushAttributes()
+        builder.append(value)
+        return this
+    }
+
+    public fun newline(): Ansi {
+        flushAttributes()
+        builder.append('\n')
+        return this
+    }
+
+    public fun format(pattern: String, vararg args: Any?): Ansi {
+        flushAttributes()
+        builder.append(pattern.format(*args))
+        return this
+    }
+
+    /**
+     * Uses the [AnsiRenderer]
+     * to generate the ANSI escape sequences for the supplied text.
+     *
+     * @param text text
+     * @return this
+     * @since 2.2
+     */
+    public fun render(text: String): Ansi {
+        attribute(ansiRenderer.render(text))
+        return this
+    }
+
+    /**
+     * String formats and renders the supplied arguments.  Uses the [AnsiRenderer]
+     * to generate the ANSI escape sequences.
+     *
+     * @param text format
+     * @param args arguments
+     * @return this
+     * @since 2.2
+     */
+    public fun render(text: String, vararg args: Any?): Ansi {
+        attribute(ansiRenderer.render(text).format(*args))
+        return this
+    }
+
+    override fun toString(): String {
+        flushAttributes()
+        return builder.toString()
+    }
+
+    /**//////////////////////////////////////////////////////////////// */ // Private Helper Methods
+    /**//////////////////////////////////////////////////////////////// */
+    private fun appendEscapeSequence(command: Char): Ansi {
+        flushAttributes()
+        builder.append(FIRST_ESC_CHAR)
+        builder.append(SECOND_ESC_CHAR)
+        builder.append(command)
+        return this
+    }
+
+    private fun appendEscapeSequence(command: Char, option: Int): Ansi {
+        flushAttributes()
+        builder.append(FIRST_ESC_CHAR)
+        builder.append(SECOND_ESC_CHAR)
+        builder.append(option)
+        builder.append(command)
+        return this
+    }
+
+    private fun appendEscapeSequence(command: Char, vararg options: Any?): Ansi {
+        flushAttributes()
+        return _appendEscapeSequence(command, *options)
+    }
+
+    private fun flushAttributes() {
+        if (options.isEmpty()) return
+        if (options.size == 1 && options[0] == 0) {
+            builder.append(FIRST_ESC_CHAR)
+            builder.append(SECOND_ESC_CHAR)
+            builder.append('0')
+            builder.append('m')
+        } else _appendEscapeSequence('m', *options.toTypedArray())
+        options.clear()
+    }
+
+    @Suppress("FunctionName")
+    private fun _appendEscapeSequence(command: Char, vararg options: Any?): Ansi {
+        builder.append(FIRST_ESC_CHAR)
+        builder.append(SECOND_ESC_CHAR)
+        val size = options.size
+        for (i in 0..<size) {
+            if (i != 0) {
+                builder.append(';')
+            }
+            if (options[i] != null) {
+                builder.append(options[i])
             }
         }
-        return bestIndex
+        builder.append(command)
+        return this
     }
 
-    private fun cie76(c1: Int, c2: Int): Double = scalar(rgb2CIELab(c1), rgb2CIELab(c2))
-
-    private fun scalar(c1: DoubleArray, c2: DoubleArray): Double =
-        sqrt(c1[0] - c2[0]) + sqrt(c1[1] - c2[1]) + sqrt(c1[2] - c2[2])
-
-    private fun rgb(color: Int): DoubleArray {
-        val r = (color shr 16) and 0xFF
-        val g = (color shr 8) and 0xFF
-        val b = (color shr 0) and 0xFF
-        return doubleArrayOf(r / 255.0, g / 255.0, b / 255.0)
+    override fun append(csq: CharSequence?): Ansi {
+        builder.append(csq)
+        return this
     }
 
-    private fun rgb2CIELab(color: Int): DoubleArray = rgb2CIELab(rgb(color))
-
-    private fun rgb2CIELab(rgb: DoubleArray): DoubleArray = xyz2lab(rgb2xyz(rgb))
-
-    private fun rgb2xyz(rgb: DoubleArray): DoubleArray {
-        val vr = pivotRgb(rgb[0])
-        val vg = pivotRgb(rgb[1])
-        val vb = pivotRgb(rgb[2])
-        // http://www.brucelindbloom.com/index.html?Eqn_RGB_XYZ_Matrix.html
-        val x = vr * 0.4124564 + vg * 0.3575761 + vb * 0.1804375
-        val y = vr * 0.2126729 + vg * 0.7151522 + vb * 0.0721750
-        val z = vr * 0.0193339 + vg * 0.1191920 + vb * 0.9503041
-        return doubleArrayOf(x, y, z)
+    override fun append(csq: CharSequence?, start: Int, end: Int): Ansi {
+        builder.append(csq, start, end)
+        return this
     }
 
-    private fun pivotRgb(n: Double): Double = if (n > 0.04045) ((n + 0.055) / 1.055).pow(2.4) else n / 12.92
-
-    private fun xyz2lab(xyz: DoubleArray): DoubleArray {
-        val fx = pivotXyz(xyz[0])
-        val fy = pivotXyz(xyz[1])
-        val fz = pivotXyz(xyz[2])
-        val l = 116.0 * fy - 16.0
-        val a = 500.0 * (fx - fy)
-        val b = 200.0 * (fy - fz)
-        return doubleArrayOf(l, a, b)
+    override fun append(c: Char): Ansi {
+        builder.append(c)
+        return this
     }
 
-    private const val epsilon = 216.0 / 24389.0
-    private const val kappa = 24389.0 / 27.0
-
-    private fun pivotXyz(n: Double): Double = if (n > epsilon) cbrt(n) else (kappa * n + 16) / 116
-
-    public fun ansiFg24(r: Int, g: Int, b: Int): String = "\u001B[38;2;${r};${g};${b}m"
-    public fun ansiBg24(r: Int, g: Int, b: Int): String = "\u001B[48;2;${r};${g};${b}m"
-
-    public fun ansiFg256(idx: Int): String = "\u001B[38;5;${idx}m"
-    public fun ansiBg256(idx: Int): String = "\u001B[48;5;${idx}m"
-
-    public fun stripAnsi(s: String): String = s.replace(Regex("\\u001B\\[[0-9;]*m"), "")
-
-    public fun hexToRgb(hex: String?): Triple<Int, Int, Int>? {
-        if (hex == null) return null
-        val s = hex.removePrefix("#")
-        if (s.length != 6) return null
-        return runCatching {
-            Triple(
-                s.take(2).toInt(16),
-                s.substring(2, 4).toInt(16),
-                s.substring(4, 6).toInt(16),
-            )
-        }.getOrNull()
-    }
-
-    public fun rgbToXterm256(r: Int, g: Int, b: Int): Int = roundRgbColor(r, g, b, 256)
-
-    public fun hexToXterm256(hex: String?): Int? =
-        hexToRgb(hex)?.let { (r, g, b) -> rgbToXterm256(r, g, b) }
-
-    public fun color24(
-        text: String,
-        fgHex: String?,
-        bgHex: String? = null,
-        bold: Boolean = false,
-        italic: Boolean = false,
-        underline: Boolean = false,
-    ): String = buildString {
-        val fg = hexToRgb(fgHex)?.let { (r, g, b) -> ansiFg24(r, g, b) }.orEmpty()
-        val bg = hexToRgb(bgHex)?.let { (r, g, b) -> ansiBg24(r, g, b) }.orEmpty()
-
-        if (bold) append(BOLD)
-        if (italic) append(ITALIC)
-        if (underline) append(UNDERLINE)
-        append(fg)
-        append(bg)
-        append(text);
-        append(RESET)
-    }
-
-    public fun colorize24(vararg chunks: ColoredChunk): String = buildString {
-        chunks.forEach { chunk ->
-            append(color24(chunk.text, chunk.fgHex, chunk.bgHex, chunk.bold, chunk.italic, chunk.underline))
-        }
-    }
-
-    public fun color256(
-        text: String,
-        fgHex: String?,
-        bgHex: String? = null,
-        bold: Boolean = false,
-        italic: Boolean = false,
-        underline: Boolean = false,
-    ): String = buildString {
-        val fg = hexToXterm256(fgHex)?.let(::ansiFg256).orEmpty()
-        val bg = hexToXterm256(bgHex)?.let(::ansiBg256).orEmpty()
-
-        if (bold) append(BOLD)
-        if (italic) append(ITALIC)
-        if (underline) append(UNDERLINE)
-        append(fg)
-        append(bg)
-        append(text)
-        append(RESET)
-    }
-
-    public fun colorize256(vararg chunks: ColoredChunk): String = buildString {
-        chunks.forEach { chunk ->
-            append(color256(chunk.text, chunk.fgHex, chunk.bgHex, chunk.bold, chunk.italic, chunk.underline))
-        }
+    public companion object {
+        private const val FIRST_ESC_CHAR = 27.toChar()
+        private const val SECOND_ESC_CHAR = '['
     }
 }
 
-public fun String.toAnsi(ansi: String): String = "$ansi$this${Ansi.RESET}"
+public inline fun String.span(vararg ansiIndices: HasIndex, block: Ansi.() -> Unit): String =
+    Ansi().apply(block).apply {
+        ansiIndices.forEach(::ansiIndex)
+    }.attribute(this).reset().toString()
 
-public inline fun StringBuilder.ansi(ansi: String, block: () -> Unit) {
-    append(ansi)
-    block()
-    append(Ansi.RESET)
+public fun String.span(vararg ansiIndices: HasIndex): String = span(*ansiIndices) {}
+
+public fun String.spanFg(colorIndex: Int, vararg ansiIndices: Attribute): String = span(*ansiIndices) {
+    fg(colorIndex)
+}
+
+public fun String.spanFgRgb(r: Int, g: Int, b: Int, vararg ansiIndices: Attribute): String = span(*ansiIndices) {
+    fgRgb(r, g, b)
+}
+
+public fun String.spanBg(colorIndex: Int, vararg ansiIndices: Attribute): String = span(*ansiIndices) {
+    bg(colorIndex)
+}
+
+public fun String.spanBgRgb(r: Int, g: Int, b: Int, vararg ansiIndices: Attribute): String = span(*ansiIndices) {
+    bgRgb(r, g, b)
 }

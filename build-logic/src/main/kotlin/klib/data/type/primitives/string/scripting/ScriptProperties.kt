@@ -3,7 +3,7 @@ package klib.data.type.primitives.string.scripting
 import com.charleskorn.kaml.Yaml
 import klib.data.cache.Cache
 import klib.data.cache.NoCache
-import klib.data.type.ansi.Ansi
+import klib.data.type.ansi.Colors
 import klib.data.type.ansi.ansi
 import klib.data.type.collections.*
 import klib.data.type.collections.deepGetOrNull
@@ -91,17 +91,17 @@ public abstract class ScriptProperties {
         appendLine(fileTree.entries.first().key.toTreeString({
             fileTree[this].orEmpty()
         }) { value, visited ->
-            if (visited) "${"File:".toAnsi(Ansi.YELLOW)} $value ↻" else "${"File:".toAnsi(Ansi.GREEN)} $value"
+            if (visited) "${"File:".toAnsi(Colors.YELLOW)} $value ↻" else "${"File:".toAnsi(Colors.GREEN)} $value"
         })
 
-        ansi(Ansi.BRIGHT_PURPLE) {
+        ansi(Colors.BRIGHT_PURPLE) {
             config.imports.takeIfNotEmpty()?.let { imports ->
                 appendLine(imports.sorted().joinToString("\n") { import -> "import $import" })
                 appendLine()
             }
         }
 
-        append(compiled.toAnsi(Ansi.GREEN))
+        append(compiled.toAnsi(Colors.GREEN))
     }
 
     private fun tryAssign(path: Array<String>, value: Any?): Any? {

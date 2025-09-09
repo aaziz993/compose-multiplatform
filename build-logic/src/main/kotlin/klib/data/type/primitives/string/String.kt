@@ -88,11 +88,11 @@ public fun String.addPrefixIfNotEmpty(prefix: String): String =
 public fun String.addSuffixIfNotEmpty(suffix: String): String =
     ifNotEmpty { "$it$suffix" }
 
-private val STRING_FORMAT_REGEX: Regex = "%(\\d)\\$[ds]".toRegex()
+private val STRING_FORMAT_REGEX: Regex = "%(\\d+)\\$[ds]".toRegex()
 
-public fun String.format(vararg args: String): String =
+public fun String.format(vararg args: Any?): String =
     STRING_FORMAT_REGEX.replace(this) { matchResult ->
-        args[matchResult.groupValues[1].toInt() - 1]
+        args.getOrNull(matchResult.groupValues[1].toInt() - 1)?.toString().orEmpty()
     }
 
 public val String.escapedPattern: String

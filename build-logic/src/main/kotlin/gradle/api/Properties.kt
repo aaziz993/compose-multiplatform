@@ -1,7 +1,7 @@
 package gradle.api
 
 import gradle.api.cache.SqliteCache
-import klib.data.type.ansi.Ansi
+import klib.data.type.ansi.Colors
 import klib.data.type.primitives.string.scripting.ScriptProperties
 import kotlinx.serialization.builtins.serializer
 import org.gradle.api.file.ConfigurableFileCollection
@@ -88,7 +88,7 @@ public abstract class Properties : ScriptProperties() {
             }
         }.also { properties ->
             logger.lifecycle(
-                "${Ansi.CYAN}${Ansi.BOLD}${evaluationImplicitReceiver.toString().uppercase()}${Ansi.RESET}"
+                "${Colors.CYAN}${Colors.BOLD}${evaluationImplicitReceiver.toString().uppercase()}${Colors.RESET}"
             )
             logger.lifecycle(properties.toString())
         }
