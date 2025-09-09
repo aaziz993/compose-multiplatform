@@ -38,7 +38,19 @@ import kotlin.text.StringBuilder
  *
  * @since 2.2
  */
-public class AnsiRenderer(private val ansi: Ansi = Ansi()) {
+public object AnsiRenderer {
+
+    public const val BEGIN_TOKEN: String = "@|"
+
+    public const val END_TOKEN: String = "|@"
+
+    public const val CODE_TEXT_SEPARATOR: String = " "
+
+    public const val CODE_LIST_SEPARATOR: String = ","
+
+    private const val BEGIN_TOKEN_LEN = 2
+
+    private const val END_TOKEN_LEN = 2
 
     public fun render(input: String): String = render(input, StringBuilder()).toString()
 
@@ -87,7 +99,7 @@ public class AnsiRenderer(private val ansi: Ansi = Ansi()) {
             }
             val replacement = render(
                 items[1],
-                *items.first().split(CODE_LIST_SEPARATOR.toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+                *items.first().split(CODE_LIST_SEPARATOR.toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray(),
             )
 
             target.append(replacement)
@@ -97,14 +109,14 @@ public class AnsiRenderer(private val ansi: Ansi = Ansi()) {
     }
 
     public fun render(text: String, vararg codes: String): String =
-        _render(*codes).attribute(text).reset().toString()
+        _render(Ansi.ansi(), *codes).attribute(text).reset().toString()
 
     /**
      * Renders names as an ANSI escape string.
      * @param codes The code names to render
      * @return an ANSI escape string.
      */
-    public fun renderCodes(vararg codes: String): String = _render(*codes).toString()
+    public fun renderCodes(vararg codes: String): String = _render(Ansi.ansi(), *codes).toString()
 
     /**
      * Renders names as an ANSI escape string.
@@ -115,26 +127,12 @@ public class AnsiRenderer(private val ansi: Ansi = Ansi()) {
         renderCodes(*codes.split("\\s".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray())
 
     @Suppress("FunctionName")
-    private fun _render(vararg names: String): Ansi =
+    private fun _render(ansi: Ansi, vararg names: String): Ansi =
         names.map(String::uppercase).fold(ansi) { acc, name ->
-            AnsiColor.parseOrNull(name)?.let(acc::attribute) ?: acc.attribute(AnsiAttribute.valueOf(name))
+            AnsiColor.parseOrNull(name)?.let(acc::attribute) ?: acc.attribute(Attribute.valueOf(name))
         }
 
     public fun test(text: String): Boolean = text.contains(BEGIN_TOKEN)
-
-    public companion object {
-        public const val BEGIN_TOKEN: String = "@|"
-
-        public const val END_TOKEN: String = "|@"
-
-        public const val CODE_TEXT_SEPARATOR: String = " "
-
-        public const val CODE_LIST_SEPARATOR: String = ","
-
-        private const val BEGIN_TOKEN_LEN = 2
-
-        private const val END_TOKEN_LEN = 2
-    }
 }
 
 

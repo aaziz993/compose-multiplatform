@@ -12,7 +12,7 @@ import org.gradle.api.provider.HasMultipleValues
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import java.io.File
-import klib.data.type.ansi.AnsiAttribute
+import klib.data.type.ansi.Attribute
 import klib.data.type.ansi.Color
 import klib.data.type.ansi.span
 import kotlin.reflect.KClass
@@ -93,7 +93,7 @@ public abstract class Properties : ScriptProperties() {
              logger.lifecycle(
                 evaluationImplicitReceiver.toString()
                     .uppercase()
-                    .span(Color.CYAN.ansi(), AnsiAttribute.INTENSITY_BOLD),
+                    .span(Color.CYAN.ansi(), Attribute.INTENSITY_BOLD),
             )
             logger.lifecycle(properties.toString())
         }

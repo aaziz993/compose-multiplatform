@@ -1,5 +1,6 @@
 package klib.data.type.ansi
 
+import klib.data.type.ansi.Color.DEFAULT
 import klib.data.type.colors.Colors
 import kotlinx.serialization.Serializable
 import kotlin.text.removePrefix
@@ -16,10 +17,6 @@ public data class AnsiColor(
 ) : HasIndex {
     override val index: Int
         get() = if (background) bg(bright) else fg(bright)
-
-    private fun fg(bright: Boolean = false): Int = color.value + (if (bright) 90 else 30)
-
-    private fun bg(bright: Boolean = false): Int = color.value + (if (bright) 100 else 40)
 
     public companion object {
         public operator fun invoke(value: String): AnsiColor =
@@ -43,7 +40,7 @@ public data class AnsiColor(
 
             val color = runCatching { Color.valueOf(cleaned) }.getOrNull() ?: return null
 
-            return color.ansi(background, bright)
+            return  AnsiColor(this, background, bright && color != DEFAULT)
         }
     }
 }

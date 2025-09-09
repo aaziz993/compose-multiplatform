@@ -3,7 +3,6 @@ package klib.data.type.primitives.string.scripting
 import com.charleskorn.kaml.Yaml
 import klib.data.cache.Cache
 import klib.data.cache.NoCache
-import klib.data.type.colors.Colors
 import klib.data.type.collections.*
 import klib.data.type.collections.deepGetOrNull
 import klib.data.type.collections.list.asList
@@ -35,6 +34,7 @@ import kotlinx.serialization.serializer
 import java.io.File
 import java.lang.reflect.Modifier
 import klib.data.type.ansi.Ansi
+import klib.data.type.ansi.Attribute
 import klib.data.type.ansi.Color
 import klib.data.type.ansi.span
 import kotlin.reflect.KClass
@@ -90,25 +90,24 @@ public abstract class ScriptProperties {
     }
 
     override fun toString(): String = Ansi.ansi().apply {
-        fileTree.entries.first().key.toTreeString(
-            {
-                fileTree[this].orEmpty()
+        render(
+            fileTree.entries.first().key.toTreeString(
+                {
+                    fileTree[this].orEmpty()
+                },
+            ) { value, visited ->
+                "@|${Attribute.INTENSITY_BOLD},${
+                    if (visited) "${Color.YELLOW} ↻" else Color.GREEN
+                } File:|@ $value"
             },
-        ) { value, visited ->
-            render(
-                "@|intensity_bold,${
-                    if (visited) "yellow ↻" else "green"
-                } File:|@ %s\n",
-                value,
-            ).toString()
-        }
+        )
 
         config.imports.takeIfNotEmpty()?.let { imports ->
-            imports.sorted().joinToString("\n") { import -> "import $import" }.span(Color.MAGENTA.ansi())
+            span(imports.sorted().joinToString("\n") { import -> "import $import" }, Color.MAGENTA.ansi())
             appendLine()
         }
 
-        compiled.span(Color.GREEN.ansi())
+        span(compiled, Color.GREEN.ansi())
     }.toString()
 
     private fun tryAssign(path: Array<String>, value: Any?): Any? {

@@ -151,40 +151,46 @@ public sealed class CI {
             val ci = current ?: return@with
 
             pluginManager.withPlugin("org.owasp.dependencycheck") {
-                tasks.register(ci.name) {
+                tasks.register("${ci.name}DependencyCheckAnalyze") {
+                    group = "ci"
                     dependsOn(tasks.named("dependencyCheckAnalyze"))
                     onlyIf { ci.dependenciesCheck }
                 }
             }
 
             pluginManager.withPlugin("com.diffplug.spotless") {
-                tasks.register(ci.name) {
+                tasks.register("${ci.name}SpotlessCheck") {
+                    group = "ci"
                     dependsOn(tasks.named("spotlessCheck"))
                     onlyIf { ci.formatCheck }
                 }
             }
 
             pluginManager.withPlugin("org.sonarqube") {
-                tasks.register(ci.name) {
+                tasks.register("${ci.name}Sonar") {
+                    group = "ci"
                     dependsOn(tasks.named("sonar"))
                     onlyIf { ci.qualityCheck }
                 }
             }
 
-            tasks.register(ci.name) {
+            tasks.register("${ci.name}Check") {
+                group = "ci"
                 dependsOn(tasks.named("check"))
                 onlyIf { ci.test }
             }
 
             pluginManager.withPlugin("org.jetbrains.kotlinx.kover") {
-                tasks.register(ci.name) {
+                tasks.register("${ci.name}KoverVerify") {
+                    group = "ci"
                     dependsOn(tasks.named("koverVerify"))
                     onlyIf { ci.coverageVerify }
                 }
             }
 
             pluginManager.withPlugin("org.jetbrains.kotlinx.knit") {
-                tasks.register(ci.name) {
+                tasks.register("${ci.name}KnitCheck") {
+                    group = "ci"
                     dependsOn(tasks.named("knitCheck"))
                     onlyIf { ci.docSamplesCheck }
                 }
@@ -194,6 +200,7 @@ public sealed class CI {
                 ci.publishRepositories.forEach { (name, enabled) ->
                     val publishTaskName = "publishAllPublicationsTo${name.uppercaseFirstChar()}Repository"
                     tasks.register("${ci.name}${publishTaskName.uppercaseFirstChar()}") {
+                        group = "ci"
                         dependsOn(tasks.named(publishTaskName))
                         onlyIf { enabled }
                     }
