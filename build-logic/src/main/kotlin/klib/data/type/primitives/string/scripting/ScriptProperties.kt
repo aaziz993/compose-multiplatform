@@ -96,7 +96,7 @@ public abstract class ScriptProperties {
             },
         ) { value, visited ->
             render(
-                "@|bold,${
+                "@|intensity_bold,${
                     if (visited) "yellow ↻" else "green"
                 } File:|@ %s",
                 value,
