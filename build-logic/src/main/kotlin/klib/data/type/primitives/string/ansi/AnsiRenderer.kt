@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package klib.data.type.primitives.string.ansi
+package klib.data.type.ansi
 
+import com.github.ajalt.colormath.model.Ansi16
 import kotlin.text.StringBuilder
 
 /**
@@ -129,7 +130,7 @@ public object AnsiRenderer {
     @Suppress("FunctionName")
     private fun _render(ansi: Ansi, vararg names: String): Ansi =
         names.map(String::uppercase).fold(ansi) { acc, name ->
-            AnsiColor.parseOrNull(name)?.let(acc::attribute) ?: acc.attribute(Attribute.valueOf(name))
+            name.toIntOrNull()?.let(::Ansi16)?.let(acc::attribute) ?: acc.attribute(Attribute.valueOf(name))
         }
 
     public fun test(text: String): Boolean = text.contains(BEGIN_TOKEN)

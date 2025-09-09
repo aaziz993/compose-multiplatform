@@ -1,5 +1,6 @@
 package gradle.api
 
+import com.github.ajalt.colormath.model.Ansi16
 import gradle.api.cache.SqliteCache
 import klib.data.type.primitives.string.scripting.ScriptProperties
 import kotlinx.serialization.builtins.serializer
@@ -12,9 +13,8 @@ import org.gradle.api.provider.HasMultipleValues
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import java.io.File
-import klib.data.type.primitives.string.ansi.Attribute
-import klib.data.type.primitives.string.ansi.Color
-import klib.data.type.primitives.string.ansi.span
+import klib.data.type.ansi.Attribute
+import klib.data.type.ansi.ansiSpan
 import kotlin.reflect.KClass
 import kotlin.reflect.full.isSubclassOf
 import kotlin.script.experimental.api.defaultImports
@@ -90,10 +90,13 @@ public abstract class Properties : ScriptProperties() {
                 defaultImports(*IMPORTS)
             }
         }.also { properties ->
-             logger.lifecycle(
+            logger.lifecycle(
                 evaluationImplicitReceiver.toString()
                     .uppercase()
-                    .span(Color.CYAN, Attribute.INTENSITY_BOLD),
+                    .ansiSpan {
+                        attribute(Attribute.INTENSITY_BOLD)
+                        attribute(Ansi16(36))
+                    },
             )
             logger.lifecycle(properties.toString())
         }

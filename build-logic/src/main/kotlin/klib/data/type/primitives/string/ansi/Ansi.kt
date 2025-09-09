@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package klib.data.type.primitives.string.ansi
+package klib.data.type.ansi
 
-import klib.data.type.colors.Colors.hexToColorIndex256
-import klib.data.type.colors.Colors.hexToRgb
+import com.github.ajalt.colormath.Color
+import com.github.ajalt.colormath.model.Ansi16
+import com.github.ajalt.colormath.model.Ansi256
 import klib.data.type.primitives.string.format
 import kotlin.math.max
 
@@ -31,71 +32,30 @@ public fun supportsAnsi(): Boolean = true
 public open class Ansi(private val builder: StringBuilder = StringBuilder(80)) : Appendable {
 
     public constructor(parent: Ansi) : this(StringBuilder(parent.builder)) {
-        options.addAll(parent.options)
+        attributes.addAll(parent.attributes)
     }
 
     public constructor(size: Int) : this(StringBuilder(size))
 
-    private val options = ArrayList<Int>(5)
+    private val attributes = ArrayList<Int>(5)
 
-    public open fun fg(color: Int): Ansi {
-        options.add(38)
-        options.add(5)
-        options.add(color and 0xff)
+    public open fun attribute(attribute: Ansi16): Ansi {
+        attributes.add(attribute.code)
         return this
     }
 
-    public fun fgRgb(color: Int): Ansi = fgRgb((color ushr 16) and 0xFF, (color ushr 8) and 0xFF, color and 0xFF)
-
-    public open fun fgRgb(r: Int, g: Int, b: Int): Ansi {
-        options.add(38)
-        options.add(2)
-        options.add(r and 0xff)
-        options.add(g and 0xff)
-        options.add(b and 0xff)
+    public open fun attribute(attribute: Ansi256, background: Boolean = false): Ansi {
+        attributes.add(if (background) 48 else 38)
+        attributes.add(5)
+        attributes.add(attribute.code and 0xff)
         return this
     }
 
-    public fun fgHex24(hex: String): Ansi {
-        hexToRgb(hex)?.let { (r, g, b) -> fgRgb(r, g, b) }
-        return this
-    }
+    public open fun attribute(attribute: Color, background: Boolean = false): Ansi =
+        attribute(attribute.toAnsi256(), background)
 
-    public fun fgHex256(hex: String): Ansi {
-        hexToColorIndex256(hex)?.let(::fg)
-        return this
-    }
-
-    public open fun bg(color: Int): Ansi {
-        options.add(48)
-        options.add(5)
-        options.add(color and 0xff)
-        return this
-    }
-
-    public fun bgRgb(color: Int): Ansi = bgRgb((color ushr 16) and 0xFF, (color ushr 8) and 0xFF, color and 0xFF)
-
-    public open fun bgRgb(r: Int, g: Int, b: Int): Ansi {
-        options.add(48)
-        options.add(2)
-        options.add(r and 0xff)
-        options.add(g and 0xff)
-        options.add(b and 0xff)
-        return this
-    }
-
-    public fun bgHex24(hex: String): Ansi {
-        hexToRgb(hex)?.let { (r, g, b) -> bgRgb(r, g, b) }
-        return this
-    }
-
-    public fun bgHex256(hex: String): Ansi {
-        hexToColorIndex256(hex)?.let(::bg)
-        return this
-    }
-
-    public open fun attribute(index: HasIndex): Ansi {
-        options.add(index.index)
+    public open fun attribute(attribute: Attribute): Ansi {
+        attributes.add(attribute.code)
         return this
     }
 
@@ -403,15 +363,14 @@ public open class Ansi(private val builder: StringBuilder = StringBuilder(80)) :
     }
 
     private fun flushAttributes() {
-        if (options.isEmpty()) return
-        if (options.size == 1 && options[0] == 0) {
+        if (attributes.isEmpty()) return
+        if (attributes.size == 1 && attributes[0] == 0) {
             builder.append(FIRST_ESC_CHAR)
             builder.append(SECOND_ESC_CHAR)
             builder.append('0')
             builder.append('m')
-        }
-        else _appendEscapeSequence('m', *options.toTypedArray())
-        options.clear()
+        } else _appendEscapeSequence('m', *attributes.toTypedArray())
+        attributes.clear()
     }
 
     @Suppress("FunctionName")
@@ -446,20 +405,14 @@ public open class Ansi(private val builder: StringBuilder = StringBuilder(80)) :
         return this
     }
 
-    public fun span(text: String, vararg attributes: HasIndex): Ansi =
-        apply { attributes.forEach(::attribute) }.attribute(text).reset()
+    public inline fun span(text: String, block: Ansi.() -> Unit = {}): Ansi = apply(block).attribute(text).reset()
 
     private object NoAnsi : Ansi() {
+        override fun attribute(attribute: Ansi16): Ansi = this
 
-        override fun fg(color: Int): Ansi = this
+        override fun attribute(attribute: Ansi256, background: Boolean): Ansi = this
 
-        override fun fgRgb(r: Int, g: Int, b: Int): Ansi = this
-
-        override fun bg(color: Int): Ansi = this
-
-        override fun bgRgb(r: Int, g: Int, b: Int): Ansi = this
-
-        override fun attribute(index: HasIndex): Ansi = this
+        override fun attribute(attribute: Attribute): Ansi = this
 
         override fun cursor(row: Int, column: Int): Ansi = this
 
@@ -513,37 +466,4 @@ public open class Ansi(private val builder: StringBuilder = StringBuilder(80)) :
     }
 }
 
-public inline fun String.span(vararg attributes: HasIndex, block: Ansi.() -> Unit = {}): String =
-    Ansi.ansi().span(this, *attributes).apply(block).toString()
-
-public fun String.spanFg(colorIndex: Int, vararg attributes: Attribute): String = span(*attributes) {
-    fg(colorIndex)
-}
-
-public fun String.spanFgRgb(r: Int, g: Int, b: Int, vararg attributes: Attribute): String = span(*attributes) {
-    fgRgb(r, g, b)
-}
-
-public fun String.spanFgHex24(hex: String, vararg attributes: Attribute): String = span(*attributes) {
-    fgHex24(hex)
-}
-
-public fun String.spanFgHex256(hex: String, vararg attributes: Attribute): String = span(*attributes) {
-    fgHex256(hex)
-}
-
-public fun String.spanBg(colorIndex: Int, vararg attributes: Attribute): String = span(*attributes) {
-    bg(colorIndex)
-}
-
-public fun String.spanBgRgb(r: Int, g: Int, b: Int, vararg attributes: Attribute): String = span(*attributes) {
-    bgRgb(r, g, b)
-}
-
-public fun String.spanBgHex24(hex: String, vararg attributes: Attribute): String = span(*attributes) {
-    bgHex24(hex)
-}
-
-public fun String.spanBgHex256(hex: String, vararg attributes: Attribute): String = span(*attributes) {
-    bgHex256(hex)
-}
+public inline fun String.ansiSpan(block: Ansi.() -> Unit = {}): String = Ansi.ansi().span(this, block).toString()

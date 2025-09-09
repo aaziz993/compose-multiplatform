@@ -1,4 +1,4 @@
-package klib.data.type.primitives.string.ansi
+package klib.data.type.ansi
 
 /**
  * ED (Erase in Display) / EL (Erase in Line) parameter (see

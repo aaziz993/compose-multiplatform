@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package klib.data.type.primitives.string.ansi
+package klib.data.type.ansi
 
 /**
  * Ansi mode.

@@ -164,6 +164,8 @@ dependencies {
     implementation(libs.tomlkt)
     // xml and html parser
     implementation(libs.bundles.ksoup)
+    // color space conversions
+    implementation(libs.colormath)
     // a lightweight Kotlin Multiplatform library that provides a unified and type-safe interface for key-value storage across different platforms. It simplifies the process of storing and retrieving data by abstracting the underlying storage mechanisms.
     implementation(libs.klibs.kstorage)
     // file system

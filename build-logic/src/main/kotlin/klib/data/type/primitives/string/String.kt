@@ -351,30 +351,6 @@ public fun matcher(
 // /////////////////////////////////////////////////////STRING//////////////////////////////////////////////////////////
 public fun ByteArray.decode(charset: Charset = Charset.UTF_8): String = decodeToString(Charsets.forName(charset.name))
 
-public fun String.highlight(
-    lang: SyntaxLanguage = SyntaxLanguage.KOTLIN,
-    theme: SyntaxTheme = SyntaxThemes.monokai()
-): String {
-    // (B) Build and run highlighter — adjust to your actual API.
-    val highlights = Highlights.Builder()
-        .code(this)
-        .language(lang)
-        .theme(theme)
-        .build()
-        .getHighlights() // returns list of tokens (text + style)
-
-    // (C) Map each token to ANSI using its style color field; adjust field name.
-    // Many libs expose something like token.text and token.style.color (hex).
-    return buildString {
-        highlights.forEach { token->
-            // Replace with your actual accessors:
-            val text: String = token.toString()
-            val hexColor: String? = token.style?.color // e.g. "#93CF55"
-            append(colorChunkAnsi(text, hexColor))
-        }
-    }
-}
-
 // ///////////////////////////////////////////////////////ENUM//////////////////////////////////////////////////////////
 public inline fun <reified T : Enum<T>> String.toEnum(): T = enumValueOf(this)
 

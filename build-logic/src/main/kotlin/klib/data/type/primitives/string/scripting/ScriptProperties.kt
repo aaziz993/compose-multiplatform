@@ -1,6 +1,7 @@
 package klib.data.type.primitives.string.scripting
 
 import com.charleskorn.kaml.Yaml
+import com.github.ajalt.colormath.model.Ansi16
 import klib.data.cache.Cache
 import klib.data.cache.NoCache
 import klib.data.type.collections.*
@@ -33,14 +34,15 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.serializer
 import java.io.File
 import java.lang.reflect.Modifier
-import klib.data.type.primitives.string.ansi.Ansi
-import klib.data.type.primitives.string.ansi.Attribute
-import klib.data.type.primitives.string.ansi.Color
-import klib.data.type.primitives.string.ansi.span
+import klib.data.type.ansi.Ansi
+import klib.data.type.ansi.Attribute
+import klib.data.type.ansi.ansiSpan
+import klib.data.type.primitives.string.addSuffix
 import kotlin.reflect.KClass
 import kotlin.reflect.KMutableProperty
 import kotlin.reflect.KVisibility
 import kotlin.reflect.full.isSubclassOf
+import org.example.klib.data.type.primitives.string.highlight
 
 public const val SCRIPT_KEY: String = "script"
 
@@ -97,17 +99,26 @@ public abstract class ScriptProperties {
                     fileTree[this].orEmpty()
                 },
             ) { value, visited ->
-                if (visited) "${"File:".span(Attribute.INTENSITY_BOLD, Color.YELLOW)} $value ↻"
-                else "${"File:".span(Attribute.INTENSITY_BOLD, Color.GREEN)} $value"
+                if (visited) "${
+                    "File:".ansiSpan {
+                        attribute(Attribute.INTENSITY_BOLD)
+                        attribute(Ansi16(33))
+                    }
+                } $value ↻"
+                else "${
+                    "File:".ansiSpan {
+                        attribute(Attribute.INTENSITY_BOLD)
+                        attribute(Ansi16(32))
+                    }
+                } $value"
             },
         )
 
-        config.imports.takeIfNotEmpty()?.let { imports ->
-            span(imports.sorted().joinToString("\n", postfix = "\n") { import -> "import $import" }, Color.MAGENTA)
-            attribute('\n')
-        }
-
-        span(compiled, Color.GREEN)
+        attribute(
+            config.imports.sorted().joinToString("\n", postfix = "\n") { import -> "import $import" }
+                .addSuffixIfNotEmpty("\n")
+                .addSuffix(compiled).highlight(),
+        )
     }.toString()
 
     private fun tryAssign(path: Array<String>, value: Any?): Any? {
