@@ -1,5 +1,3 @@
-@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
-
 package gradle.plugins.compose
 
 import gradle.api.project.ProjectLayout
