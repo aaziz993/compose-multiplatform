@@ -15,10 +15,12 @@ public data class AnsiColor(
     public val background: Boolean = false,
     public val bright: Boolean = false,
 ) : HasIndex {
+
     override val index: Int
-        get() = if (background) bg(bright) else fg(bright)
+        get() = if (background) color.bg(bright) else color.fg(bright)
 
     public companion object {
+
         public operator fun invoke(value: String): AnsiColor =
             parseOrNull(value) ?: throw IllegalArgumentException("Unresolved ansi color '$value'")
 
@@ -37,10 +39,9 @@ public data class AnsiColor(
                 cleaned = cleaned.removePrefix(prefix)
             }
 
-
             val color = runCatching { Color.valueOf(cleaned) }.getOrNull() ?: return null
 
-            return  AnsiColor(this, background, bright && color != DEFAULT)
+            return AnsiColor(color, background, bright && color != DEFAULT)
         }
     }
 }

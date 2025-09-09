@@ -335,7 +335,7 @@ public open class Ansi(private val builder: StringBuilder = StringBuilder(80)) :
 
     public fun newline(): Ansi {
         flushAttributes()
-        builder.append('\n')
+        builder.appendLine()
         return this
     }
 

@@ -93,7 +93,7 @@ public abstract class Properties : ScriptProperties() {
              logger.lifecycle(
                 evaluationImplicitReceiver.toString()
                     .uppercase()
-                    .span(Color.CYAN.ansi(), Attribute.INTENSITY_BOLD),
+                    .span(Color.CYAN, Attribute.INTENSITY_BOLD),
             )
             logger.lifecycle(properties.toString())
         }

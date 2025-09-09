@@ -102,12 +102,14 @@ public abstract class ScriptProperties {
             },
         )
 
+        appendLine()
+
         config.imports.takeIfNotEmpty()?.let { imports ->
-            span(imports.sorted().joinToString("\n") { import -> "import $import" }, Color.MAGENTA.ansi())
+            span(imports.sorted().joinToString("\n") { import -> "import $import" }, Color.MAGENTA)
             appendLine()
         }
 
-        span(compiled, Color.GREEN.ansi())
+        span(compiled, Color.GREEN)
     }.toString()
 
     private fun tryAssign(path: Array<String>, value: Any?): Any? {
