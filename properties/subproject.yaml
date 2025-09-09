@@ -4,6 +4,7 @@ config:
     - kotlinx.rpc.RpcStrictMode
     - com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
     - org.gradle.api.file.DuplicatesStrategy
+    - org.jetbrains.kotlin.gradle.tasks.KotlinCompile
     - gradle.plugins.spotless.*
 script:
   - plugins:
@@ -352,6 +353,10 @@ script:
       # Use import org.koin.ksp.generated.* in project.
       - add: ("kspCommonMainMetadata", libs["koin.ksp.compiler"])
   - tasks:
+      - withType<KotlinCompile>: |
+          {
+            compilerOptions.jvmTarget /= libs.versions("jvm.target").requiredVersion.toJvmTarget()
+          }
       - withType<ShadowJar>: |
           {
             duplicatesStrategy = DuplicatesStrategy.EXCLUDE
