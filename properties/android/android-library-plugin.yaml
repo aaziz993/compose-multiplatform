@@ -51,7 +51,7 @@ script:
 
           // Configure the JVM target for both Kotlin and Java sources
           compilerOptions {
-            jvmTarget /= libs.versions("android.jvmTarget").requiredVersion.toJvmTarget()
+            jvmTarget /= libs.versions("android.jvm.target").requiredVersion.toJvmTarget()
           }
         }
       sourceSets:
