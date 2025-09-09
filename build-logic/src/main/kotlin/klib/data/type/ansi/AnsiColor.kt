@@ -10,7 +10,7 @@ public val ANSI_BRIGHT_PREFIXES: List<String> = listOf("BRIGHT_", "LIGHT_", "HI_
 
 @Serializable
 public data class AnsiColor(
-    public val color: Colors,
+    public val color: Color,
     public val background: Boolean = false,
     public val bright: Boolean = false,
 ) : HasIndex {
@@ -41,7 +41,7 @@ public data class AnsiColor(
             }
 
 
-            val color = runCatching { Colors.valueOf(cleaned) }.getOrNull() ?: return null
+            val color = runCatching { Color.valueOf(cleaned) }.getOrNull() ?: return null
 
             return color.ansi(background, bright)
         }

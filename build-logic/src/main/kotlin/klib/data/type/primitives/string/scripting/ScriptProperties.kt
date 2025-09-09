@@ -4,7 +4,6 @@ import com.charleskorn.kaml.Yaml
 import klib.data.cache.Cache
 import klib.data.cache.NoCache
 import klib.data.type.colors.Colors
-import klib.data.type.ansi.ansi
 import klib.data.type.collections.*
 import klib.data.type.collections.deepGetOrNull
 import klib.data.type.collections.list.asList
@@ -29,13 +28,15 @@ import klib.data.type.serialization.json.decodeAnyFromString
 import klib.data.type.serialization.properties.Properties
 import klib.data.type.serialization.serializers.any.SerializableAny
 import klib.data.type.serialization.yaml.decodeAnyFromString
-import klib.data.type.ansi.toAnsi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.serializer
 import java.io.File
 import java.lang.reflect.Modifier
+import klib.data.type.ansi.Ansi
+import klib.data.type.ansi.Color
+import klib.data.type.ansi.span
 import kotlin.reflect.KClass
 import kotlin.reflect.KMutableProperty
 import kotlin.reflect.KVisibility
@@ -51,6 +52,7 @@ public val EXPLICIT_OPERATION_RECEIVERS: Set<KClass<out Any>> = setOf(
 
 @Serializable
 public abstract class ScriptProperties {
+
     public abstract val config: ScriptConfig
 
     public abstract val script: List<SerializableAny>
@@ -87,22 +89,27 @@ public abstract class ScriptProperties {
         if (this is Throwable) throw this else Unit
     }
 
-    override fun toString(): String = buildString {
-        appendLine(fileTree.entries.first().key.toTreeString({
-            fileTree[this].orEmpty()
-        }) { value, visited ->
-            if (visited) "${"File:".toAnsi(Colors.YELLOW)} $value ↻" else "${"File:".toAnsi(Colors.GREEN)} $value"
-        })
-
-        ansi(Colors.BRIGHT_PURPLE) {
-            config.imports.takeIfNotEmpty()?.let { imports ->
-                appendLine(imports.sorted().joinToString("\n") { import -> "import $import" })
-                appendLine()
-            }
+    override fun toString(): String = Ansi.ansi().apply {
+        fileTree.entries.first().key.toTreeString(
+            {
+                fileTree[this].orEmpty()
+            },
+        ) { value, visited ->
+            render(
+                "@|bold,${
+                    if (visited) "yellow ↻" else "green"
+                } File:|@ %s",
+                value,
+            ).toString()
         }
 
-        append(compiled.toAnsi(Colors.GREEN))
-    }
+        config.imports.takeIfNotEmpty()?.let { imports ->
+            imports.sorted().joinToString("\n") { import -> "import $import" }.span(Color.MAGENTA.ansi())
+            appendLine()
+        }
+
+        compiled.span(Color.GREEN.ansi())
+    }.toString()
 
     private fun tryAssign(path: Array<String>, value: Any?): Any? {
         val packages = config.imports.filter { import -> import.endsWith(".*") }.map { import ->
@@ -134,7 +141,7 @@ public abstract class ScriptProperties {
                         error(
                             "Unresolved reference '${
                                 dropLast().map(Pair<*, Any?>::second).joinToString(".").addSuffixIfNotEmpty("->")
-                            }${last().second}' on '${last().first}' with imports ${config.imports}"
+                            }${last().second}' on '${last().first}' with imports ${config.imports}",
                         )
 
                     val receiver = last().first
@@ -234,13 +241,15 @@ public abstract class ScriptProperties {
                         val mergedImportScripts =
                             decodedImports.flatMap { decodedImport -> decodedImport[SCRIPT_KEY]!!.asList }
 
-                        substitutedFile.substitute(getter = { path ->
-                            mergedImports.deepGetOrNull(*path.toTypedArray()).second
-                        }).deepMap(mergedImports) + (SCRIPT_KEY to mergedImportScripts + decodedFileScript)
+                        substitutedFile.substitute(
+                            getter = { path ->
+                                mergedImports.deepGetOrNull(*path.toTypedArray()).second
+                            },
+                        ).deepMap(mergedImports) + (SCRIPT_KEY to mergedImportScripts + decodedFileScript)
                     }
                 }.apply {
                     this["fileTree"] = fileTree
-                }
+                },
             ).apply {
                 this.cache = cache
                 this.explicitOperationReceivers = EXPLICIT_OPERATION_RECEIVERS + explicitOperationReceivers
@@ -255,7 +264,7 @@ public abstract class ScriptProperties {
                 destination = other,
                 destinationGetter = { source ->
                     last().first.getOrPut(last().second, source::toNewMutableCollection)
-                }
+                },
             )
     }
 }

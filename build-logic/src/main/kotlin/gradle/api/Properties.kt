@@ -1,7 +1,6 @@
 package gradle.api
 
 import gradle.api.cache.SqliteCache
-import klib.data.type.colors.Colors
 import klib.data.type.primitives.string.scripting.ScriptProperties
 import kotlinx.serialization.builtins.serializer
 import org.gradle.api.file.ConfigurableFileCollection
@@ -13,6 +12,9 @@ import org.gradle.api.provider.HasMultipleValues
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import java.io.File
+import klib.data.type.ansi.Attribute
+import klib.data.type.ansi.Color
+import klib.data.type.ansi.span
 import kotlin.reflect.KClass
 import kotlin.reflect.full.isSubclassOf
 import kotlin.script.experimental.api.defaultImports
@@ -62,6 +64,7 @@ public val IMPORTS: Array<String> = arrayOf(
 
 public abstract class Properties : ScriptProperties() {
     public companion object {
+
         private val logger: Logger = Logging.getLogger(Properties::class.java)
 
         internal inline operator fun <reified P : Properties, reified T> File.invoke(
@@ -71,7 +74,7 @@ public abstract class Properties : ScriptProperties() {
             cache = SqliteCache(
                 parentFile.resolve(".$name.cache"),
                 String.serializer(),
-                String.serializer()
+                String.serializer(),
             ),
             explicitOperationReceivers = EXPLICIT_OPERATION_RECEIVERS,
             implicitOperation = ::tryAssignProperty,
@@ -88,7 +91,9 @@ public abstract class Properties : ScriptProperties() {
             }
         }.also { properties ->
             logger.lifecycle(
-                "${Colors.CYAN}${Colors.BOLD}${evaluationImplicitReceiver.toString().uppercase()}${Colors.RESET}"
+                evaluationImplicitReceiver.toString()
+                    .uppercase()
+                    .span(Color.CYAN.ansi(), Attribute.INTENSITY_BOLD),
             )
             logger.lifecycle(properties.toString())
         }
@@ -96,8 +101,8 @@ public abstract class Properties : ScriptProperties() {
         internal fun tryAssignProperty(valueClass: KClass<*>, value: Any?): String? =
             when {
                 valueClass.isSubclassOf(Property::class) ||
-                        valueClass.isSubclassOf(HasMultipleValues::class) ||
-                        valueClass.isSubclassOf(MapProperty::class) -> ".set($value)"
+                    valueClass.isSubclassOf(HasMultipleValues::class) ||
+                    valueClass.isSubclassOf(MapProperty::class) -> ".set($value)"
 
                 valueClass.isSubclassOf(ConfigurableFileCollection::class) -> ".setFrom($value)"
 
