@@ -156,35 +156,4 @@ public object Colors {
 
     public fun hexToColorIndex256(hex: String?): Int? =
         hexToRgb(hex)?.let { (r, g, b) -> rgbToColorIndex256(r, g, b) }
-
-    public fun color24(
-        text: String,
-        fgHex: String?,
-        bgHex: String? = null,
-        bold: Boolean = false,
-        italic: Boolean = false,
-        underline: Boolean = false,
-    ): String = text.span {
-        if (bold) indices(Attribute.INTENSITY_BOLD)
-        if (italic) indices(Attribute.ITALIC)
-        if (underline) indices(Attribute.UNDERLINE)
-        hexToRgb(fgHex)?.let { (r, g, b) -> fgRgb(r, g, b) }
-        hexToRgb(bgHex)?.let { (r, g, b) -> bgRgb(r, g, b) }
-    }
-
-    public fun color256(
-        text: String,
-        fgHex: String?,
-        bgHex: String? = null,
-        bold: Boolean = false,
-        italic: Boolean = false,
-        underline: Boolean = false,
-    ): String = text.span {
-
-        if (bold) indices(Attribute.INTENSITY_BOLD)
-        if (italic) indices(Attribute.ITALIC)
-        if (underline) indices(Attribute.UNDERLINE)
-        hexToColorIndex256(fgHex)?.let(::fg)
-        hexToColorIndex256(bgHex)?.let(::bg)
-    }
 }
