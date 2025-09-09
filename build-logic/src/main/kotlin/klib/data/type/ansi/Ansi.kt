@@ -15,6 +15,8 @@
  */
 package klib.data.type.ansi
 
+import klib.data.type.colors.Colors.hexToColorIndex256
+import klib.data.type.colors.Colors.hexToRgb
 import klib.data.type.primitives.string.format
 import kotlin.math.max
 import kotlin.text.StringBuilder
@@ -26,6 +28,7 @@ import kotlin.text.StringBuilder
  * @since 1.0
  */
 public open class Ansi(private val builder: StringBuilder = StringBuilder(80)) : Appendable {
+
     public constructor(parent: Ansi) : this(StringBuilder(parent.builder)) {
         options.addAll(parent.options)
     }
@@ -54,6 +57,16 @@ public open class Ansi(private val builder: StringBuilder = StringBuilder(80)) :
         return this
     }
 
+    public fun fgHex24(hex: String): Ansi {
+        hexToRgb(hex)?.let { (r, g, b) -> fgRgb(r, g, b) }
+        return this
+    }
+
+    public fun fgHex256(hex: String): Ansi {
+        hexToColorIndex256(hex)?.let(::fg)
+        return this
+    }
+
     public open fun bg(color: Int): Ansi {
         options.add(48)
         options.add(5)
@@ -69,6 +82,16 @@ public open class Ansi(private val builder: StringBuilder = StringBuilder(80)) :
         options.add(r and 0xff)
         options.add(g and 0xff)
         options.add(b and 0xff)
+        return this
+    }
+
+    public fun bgHex24(hex: String): Ansi {
+        hexToRgb(hex)?.let { (r, g, b) -> bgRgb(r, g, b) }
+        return this
+    }
+
+    public fun bgHex256(hex: String): Ansi {
+        hexToColorIndex256(hex)?.let(::bg)
         return this
     }
 
@@ -387,7 +410,8 @@ public open class Ansi(private val builder: StringBuilder = StringBuilder(80)) :
             builder.append(SECOND_ESC_CHAR)
             builder.append('0')
             builder.append('m')
-        } else _appendEscapeSequence('m', *options.toTypedArray())
+        }
+        else _appendEscapeSequence('m', *options.toTypedArray())
         options.clear()
     }
 
@@ -424,6 +448,7 @@ public open class Ansi(private val builder: StringBuilder = StringBuilder(80)) :
     }
 
     public companion object {
+
         private const val FIRST_ESC_CHAR = 27.toChar()
         private const val SECOND_ESC_CHAR = '['
     }

@@ -1,5 +1,6 @@
 package klib.data.type.ansi
 
+import klib.data.type.colors.Colors
 import kotlinx.serialization.Serializable
 import kotlin.text.removePrefix
 import kotlin.text.startsWith

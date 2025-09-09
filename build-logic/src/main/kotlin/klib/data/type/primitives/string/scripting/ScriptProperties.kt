@@ -3,7 +3,7 @@ package klib.data.type.primitives.string.scripting
 import com.charleskorn.kaml.Yaml
 import klib.data.cache.Cache
 import klib.data.cache.NoCache
-import klib.data.type.ansi.Colors
+import klib.data.type.colors.Colors
 import klib.data.type.ansi.ansi
 import klib.data.type.collections.*
 import klib.data.type.collections.deepGetOrNull
