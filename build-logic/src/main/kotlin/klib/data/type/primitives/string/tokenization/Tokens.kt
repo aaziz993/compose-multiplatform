@@ -5,11 +5,14 @@ import com.github.h0tk3y.betterParse.lexer.LiteralToken
 import com.github.h0tk3y.betterParse.lexer.RegexToken
 import com.github.h0tk3y.betterParse.lexer.literalToken
 import com.github.h0tk3y.betterParse.lexer.regexToken
+import klib.data.type.primitives.string.DOUBLE_QUOTED_STRING_PATTERN
+import klib.data.type.primitives.string.ID_PATTERN
+import klib.data.type.primitives.string.SINGLE_QUOTED_STRING_PATTERN
 
 public object Tokens {
+
     public const val PREFIX: String = """(?<![\p{L}\p{N}_])"""
     public const val SUFFIX: String = """(?![\p{L}\p{N}_])"""
-    public const val STRING: String = """[^\\"]*(\\["nrtb\\][^\\"]*)*"""
 
     // Comment tokens.
     public val hashComment: RegexToken = regexToken("""#[^\r\n]*""")
@@ -179,7 +182,7 @@ public object Tokens {
     //   [^\\"]*       – and any number of non-special characters
     // )*              – repeating as a group any number of times
     // '               – closing single quote
-    public val singleQuotedStringRegex: RegexToken = regexToken("""'$STRING'""")
+    public val singleQuotedStringRegex: RegexToken = regexToken(SINGLE_QUOTED_STRING_PATTERN)
 
     // the regex "[^\\"]*(\\["nrtbf\\][^\\"]*)*" matches:
     // "               – opening double quote,
@@ -189,10 +192,10 @@ public object Tokens {
     //   [^\\"]*       – and any number of non-special characters
     // )*              – repeating as a group any number of times
     // "               – closing double quote
-    public val doubleQuotedString: RegexToken = regexToken(""""$STRING"""")
+    public val doubleQuotedString: RegexToken = regexToken(DOUBLE_QUOTED_STRING_PATTERN)
 
     // Id token.
-    public val id: RegexToken = regexToken("[_\\p{L}][_\\p{L}\\p{N}]*")
+    public val id: RegexToken = regexToken(ID_PATTERN)
 
     public fun keyword(value: String): RegexToken = regexToken("$PREFIX$value$SUFFIX")
 

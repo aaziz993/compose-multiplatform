@@ -52,6 +52,11 @@ public const val LP: String = "[$LLP$LUP]"
 // Letter and digit pattern
 public const val LDP: String = """[$LP\d]"""
 
+
+public const val ID_PATTERN: String ="[_\\p{L}][_\\p{L}\\p{N}]*"
+public const val SINGLE_QUOTED_STRING_PATTERN: String ="""'[^\\']*(\\['nrtb\\][^\\']*)*'"""
+public const val DOUBLE_QUOTED_STRING_PATTERN: String =""""[^\\"]*(\\["nrtb\\][^\\"]*)*""""
+
 @Suppress("SameReturnValue")
 public val String.Companion.DEFAULT: String
     get() = ""

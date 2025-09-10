@@ -406,12 +406,17 @@ internal object ProgramGrammar : Grammar<Program>() {
         .map { (name, parameters, body) -> Function(name, parameters, body) }
 
     override val rootParser: Parser<Program> by
-    oneOrMore(function or (statement * optional(semicolonToken) use { t1 }))
+    (oneOrMore(function or (statement * optional(semicolonToken) use { t1 })) *
+            -zeroOrMore(wsIgnoreToken or nlIgnoreToken or hashCommentIgnoreToken))
         .map { program ->
             Program(
-                Function("main", listOf(), chainOf(*program.filterIsInstance<Statement>().let { statement ->
-                    if (statement.isEmpty()) listOf(Skip) else statement
-                }.toTypedArray())),
+                Function(
+                    "main",
+                    listOf(),
+                    chainOf(*program.filterIsInstance<Statement>().ifEmpty {
+                        listOf(Skip)
+                    }.toTypedArray())
+                ),
                 program.filterIsInstance<Function>()
             )
         }
