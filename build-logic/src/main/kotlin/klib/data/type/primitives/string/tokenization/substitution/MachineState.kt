@@ -6,7 +6,7 @@ import klib.data.type.collections.replaceLast
 
 public data class MachineState(
     val input: (name: String) -> Any? = { null },
-    val scopes: List<Map<String, Declared>> = listOf(emptyMap()),
+    val scopes: List<Map<String, Declaration>> = listOf(emptyMap()),
     val functionScopes: List<Map<String, List<Function>>> = listOf(emptyMap()),
     val log: List<String> = emptyList(),
     val exceptionType: Type? = null,
@@ -33,12 +33,12 @@ public data class MachineState(
 
             type check value
 
-            this + (name to Declared(type, mutable, value))
+            this + (name to Declaration(type, mutable, value))
         },
         result = Unit
     )
 
-    public fun getDeclared(name: String): Declared =
+    public fun getDeclared(name: String): Declaration =
         findDeclared(name) ?: throw IllegalArgumentException("Undeclared variable '$name'")
 
     public operator fun set(name: String, value: Any?): MachineState {
@@ -107,7 +107,7 @@ public data class MachineState(
             }
         } ?: error("Unresolved function $name($argTypes)")
 
-    private fun findDeclared(name: String): Declared? =
+    private fun findDeclared(name: String): Declaration? =
         scopes.asReversed().firstNotNullOfOrNull { scopes -> scopes[name] }
 
     private fun Function.typeSignature(): List<Type> = parameters.map(Variable::type)

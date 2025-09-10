@@ -171,12 +171,12 @@ private class TemplateGrammar(
         dollarsEscaper(joinToString("") { (d0, d1) -> "${d0.text}${d1.text}" })
     }
 
-    private val key = (idToken or integerToken).use { text } or
-        doubleQuotedStringToken.use { text.substring(1, text.lastIndex) }
-
     // Interpolate.
     private val interpolate =
-        -dollarToken * separatedTerms(key, periodToken) map valueGetter
+        -dollarToken * idToken use { valueGetter(listOf(text)) }
+
+    private val key = (idToken or integerToken).use { text } or
+        doubleQuotedStringToken.use { text.substring(1, text.lastIndex) }
 
     private val interpolateBraces =
         -dollarToken * -leftBrToken * -optional(wsToken) * separatedTerms(

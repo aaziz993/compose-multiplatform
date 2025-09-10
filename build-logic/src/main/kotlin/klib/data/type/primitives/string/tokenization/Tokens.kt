@@ -194,7 +194,6 @@ public object Tokens {
     // Id token.
     public val id: RegexToken = regexToken("[_\\p{L}][_\\p{L}\\p{N}]*")
 
-
     public fun keyword(value: String): RegexToken = regexToken("$PREFIX$value$SUFFIX")
 
     public fun suffix(value: String, ignoreCase: Boolean = false): RegexToken =
