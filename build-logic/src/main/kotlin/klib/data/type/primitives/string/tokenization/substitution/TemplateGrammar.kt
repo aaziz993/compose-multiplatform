@@ -1,32 +1,22 @@
 package klib.data.type.primitives.string.tokenization.substitution
 
-import com.github.h0tk3y.betterParse.combinators.map
-import com.github.h0tk3y.betterParse.combinators.oneOrMore
-import com.github.h0tk3y.betterParse.combinators.optional
-import com.github.h0tk3y.betterParse.combinators.or
-import com.github.h0tk3y.betterParse.combinators.separatedTerms
-import com.github.h0tk3y.betterParse.combinators.times
-import com.github.h0tk3y.betterParse.combinators.unaryMinus
-import com.github.h0tk3y.betterParse.combinators.use
-import com.github.h0tk3y.betterParse.combinators.zeroOrMore
-import com.github.h0tk3y.betterParse.grammar.Grammar
-import com.github.h0tk3y.betterParse.grammar.parseToEnd
-import com.github.h0tk3y.betterParse.grammar.tryParseToEnd
 import com.github.h0tk3y.betterParse.lexer.TokenMatch
-import com.github.h0tk3y.betterParse.lexer.regexToken
-import com.github.h0tk3y.betterParse.parser.Parser
 import com.github.h0tk3y.betterParse.parser.toParsedOrThrow
-import com.github.h0tk3y.betterParse.utils.Tuple2
-import klib.data.type.collections.list.subListFrom
-import klib.data.type.collections.list.subListTo
 import klib.data.type.primitives.string.DOUBLE_QUOTED_STRING_PATTERN
 import klib.data.type.primitives.string.ID_PATTERN
-import klib.data.type.primitives.string.tokenization.Tokens
-import klib.data.type.primitives.string.tokenization.mapToken
 import klib.data.type.primitives.string.tokenization.mapWithMatches
-import klib.data.type.tuples.to
-import kotlin.collections.ArrayList
+import kotlin.collections.List
 import kotlin.collections.Set
+import kotlin.collections.buildList
+import kotlin.collections.first
+import kotlin.collections.joinToString
+import kotlin.collections.listOf
+import kotlin.collections.single
+import kotlin.collections.sumOf
+import kotlin.collections.take
+import kotlin.collections.toSet
+import kotlin.sequences.map
+import kotlin.sequences.toList
 
 private val INTERPOLATE_REGEX = Regex($$"""(\$+)($$ID_PATTERN)""")
 private const val KEY_PATTERN = """(?:$ID_PATTERN|\d+|$DOUBLE_QUOTED_STRING_PATTERN)"""
