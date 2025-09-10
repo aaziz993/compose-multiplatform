@@ -3,15 +3,21 @@
 
 . "$(dirname "$(readlink -f "$0")")/../scripts/utils.sh"
 
-_EVEN_DOLLARS_PATTERN='(?:\$\$)+'
+function halve() {
+    local value=$1
+    local half_len=$((${#value} / 2))
+    printf "%s" "${value:0:half_len}"
+}
+
 _SINGLE_QUOTED_STRING_PATTERN="'[^\\']*(\\['nrtb\\][^\\']*)*'"
 _DOUBLE_QUOTED_STRING_PATTERN='"[^\\"]*(\\["nrtb\\][^\\"]*)*"'
 _ID_PATTERN='[_\p{L}][_\p{L}\p{N}]*'
-_INTERPOLATE_PATTERN='\$('$_ID_PATTERN')'
+_INTERPOLATE_PATTERN='(\$+)('$_ID_PATTERN')'
 _KEY_PATTERN='(?:'"$_ID_PATTERN"'|\d+|'"$_DOUBLE_QUOTED_STRING_PATTERN"')'
-_INTERPOLATE_BRACED_PATTERN='\$\{\s*('"$_KEY_PATTERN"'(?:\s*\.\s*'"$_KEY_PATTERN"')*)\s*\}'
-_EVALUATE_START_PATTERN='\\*\{'
-_OTHER_PATTERN='[^$\\{]}+'
+_INTERPOLATE_BRACED_PATTERN='(\$+)\{\s*('"$_KEY_PATTERN"'(?:\s*\.\s*'"$_KEY_PATTERN"')*)\s*\}'
+_EVEN_DOLLARS_PATTERN='(?:\$\$)+'
+_EVALUATE_START_PATTERN='(\\*)\{'
+_OTHER_PATTERN='[^$\\{]+'
 
 token_match() {
     local string=$1 regex=$2
@@ -41,71 +47,6 @@ function bash_env() {
   return 1
 }
 
-#+-------------------------+
-#| while rest not empty     |
-#+-------------------------+
-#          |
-#          v
-#+-------------------------+
-#| Check EVEN_DOLLARS      |
-#|   regex: (?:\$\$)+      |
-#+-------------------------+
-#  if match:
-#    - convert to literal $ if esc_interpolate=true
-#    - append to output
-#    - advance rest
-#          |
-#          v
-#+-------------------------+
-#| Check simple $IDENT     |
-#|   regex: \$\w+          |
-#+-------------------------+
-#  if match:
-#    - call get_value([IDENT])
-#    - deep interpolate if enabled
-#    - append to output
-#    - advance rest
-#          |
-#          v
-#+-------------------------+
-#| Check braced ${KEYS}    |
-#|   regex: \${(_KEY(\s*\.\s*_KEY)*)} |
-#+-------------------------+
-#  if match:
-#    - parse keys (quotes stripped)
-#    - call get_value(keys_array)
-#    - deep interpolate if enabled
-#    - append to output
-#    - advance rest
-#          |
-#          v
-#+-------------------------+
-#| Check evaluation {      |
-#|   regex: (\\*\{)        |
-#+-------------------------+
-#  if match:
-#    - count leading backslashes
-#    - if even → literal `{`
-#    - if odd → treat as expression start
-#    - append converted value
-#    - advance rest
-#          |
-#          v
-#+-------------------------+
-#| Else: consume any other |
-#|   regex: [^$\\]+        |
-#+-------------------------+
-#  if match:
-#    - append to output
-#    - advance rest
-#          |
-#          v
-#+-------------------------+
-#| Consume 1 char if nothing matched
-#+-------------------------+
-#          |
-#          v
-#         loop
 function substitute_string() {
     local interpolate=false
     local interpolate_braced=true
@@ -144,31 +85,32 @@ function substitute_string() {
     while [[ -n "$rest" ]]; do
         local match
         local len
-        if [[ "$interpolate" == true || "$interpolate_braced" == true ]]; then
-            match=$(token_match "$rest" "$_EVEN_DOLLARS_PATTERN")
-            if [[ -n "$match" ]]; then
-                len=${#match}
-                [[ "$esc_interpolate" == true ]] && match="${match:0:$((len/2))}"
-                output+="$match"
-                rest="${rest:$len}"
-                continue
-            fi
-        fi
 
         if [[ "$interpolate" == true ]]; then
-            match=$(perl -e 'my ($s) = @ARGV; if($s =~ /^\$(\w+)/) { print $1; }' "$rest")
-            if [[ -n "$match" ]]; then
-                local -a path=("$match")
-                local value
-                value=$("$getter" path)
-                local status=$?
-                if [[ $status == 0 && "$deep_interpolate" == true ]]; then
-                    value=$(substitute_string -i "$interpolate" -ib "$interpolate_braced" -di "$deep_interpolate" \
-                        -ei "$esc_interpolate" -e "$evaluate" -ee "$esc_evaluate" "$getter" "$evaluator" <<< "$value")
+            read -r dollars key <<< "$(perl -e 'my ($s, $regex) = @ARGV; if($s =~ /^$regex/) { print "$1 $2"; }' \
+                "$rest" "$_INTERPOLATE_PATTERN")"
+
+            if [[ -n "$dollars" ]]; then
+                len=${#dollars}
+                local value=$key
+
+                if (( len % 2 != 0 )); then
+                    local -a path=("$key")
+                    dollars=${dollars:1}
+
+                    value=$("$getter" path)
+
+                    local status=$?
+                    if [[ $status == 0 && "$deep_interpolate" == true ]]; then
+                        value=$(substitute_string -i "$interpolate" -ib "$interpolate_braced" -di "$deep_interpolate" \
+                            -ei "$esc_interpolate" -e "$evaluate" -ee "$esc_evaluate" "$getter" "$evaluator" <<< "$value")
+                    fi
                 fi
 
-                output+="$value"
-                rest="${rest:${#match}+1}"
+                [[ "$esc_interpolate" == true ]] && dollars=$(halve "$dollars")
+
+                output+="$dollars$value"
+                rest="${rest:$len+${#key}}"
                 continue
             fi
         fi
@@ -177,30 +119,48 @@ function substitute_string() {
             match=$(perl -MJSON -CS -e '
                 my ($s, $regex, $kr) = @ARGV;
                 if ($s =~ /^($regex)/) {
-                    my $full = $1;
+                    my $dollars = $1;
+                    my $path = $2;
                     my $len = length($&);
                     my @keys;
-                    while ($full =~ /$kr/g) {
+                    while ($path =~ /$kr/g) {
                         my $key = $&;
                         $key =~ s/^"(.*)"$/$1/;
                         push @keys, $key;
                     }
-                    print "$len\n" . encode_json(\@keys);
+                    print "$len $dollars\n" . encode_json(\@keys);
                 }
             ' "$rest" "$_INTERPOLATE_BRACED_PATTERN" "$_KEY_PATTERN")
 
             if [[ -n "$match" ]]; then
-                len="${match%%$'\n'*}"
+                len=${match%% *}
+                dollars=${match#* }
                 mapfile -t path < <(echo "${match#*$'\n'}" | jq -r '.[]')
-                local value
-                value=$("$getter" path)
 
-                if [[ "$deep_interpolate" == true ]]; then
-                    value=$(substitute_string -i "$interpolate" -ib "$interpolate_braced" -di "$deep_interpolate" \
-                        -ei "$esc_interpolate" -e "$evaluate" -ee "$esc_evaluate" "$getter" "$evaluator" <<< "$value")
+                local value
+
+                if (( len % 2 != 0 )); then
+                    value=$("$getter" path)
+                    if [[ "$deep_interpolate" == true ]]; then
+                        value=$(substitute_string -i "$interpolate" -ib "$interpolate_braced" -di "$deep_interpolate" \
+                            -ei "$esc_interpolate" -e "$evaluate" -ee "$esc_evaluate" "$getter" "$evaluator" <<< "$value")
+                    fi
                 fi
 
-                output+="$value"
+                [[ "$esc_interpolate" == true ]] && dollars=$(halve "$dollars")
+
+                output+="$dollars$value"
+                rest="${rest:$len}"
+                continue
+            fi
+        fi
+
+        if [[ "$interpolate" == true || "$interpolate_braced" == true ]]; then
+            match=$(token_match "$rest" "$_EVEN_DOLLARS_PATTERN")
+            if [[ -n "$match" ]]; then
+                len=${#match}
+                [[ "$esc_interpolate" == true ]] && match="${match:0:$((len/2))}"
+                output+="$match"
                 rest="${rest:$len}"
                 continue
             fi
@@ -347,12 +307,12 @@ EOF
 )
 # Example test
 examples=(
- "$example"
+ "\$\$key \$\$\$"
 )
 
 for ex in "${examples[@]}"; do
     echo "Input:  $ex"
-    result=$(substitute_string -i true getter "" "$ex")
+    result=$(substitute_string -i true -ei true getter "" "$ex")
     echo "Output: $result"
     echo "-----------------------"
 done

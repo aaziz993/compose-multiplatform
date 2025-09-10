@@ -38,7 +38,6 @@ public fun String.substitute(
     evaluator: (text: String, Program) -> Any? = { _, program -> program { name -> getter(listOf(name)) } }
 ): Any? = TemplateGrammar(options.toSet(), getter, evaluator).parseToEnd(this)
 
-
 @Suppress("UNUSED")
 private class TemplateGrammar(
     private val options: Set<SubstituteOption>,
@@ -68,28 +67,40 @@ private class TemplateGrammar(
         while (i < value.length) {
             if (SubstituteOption.INTERPOLATE in options)
                 INTERPOLATE_REGEX.matchAt(value, i)?.let { match ->
-                    val dollars = match.groupValues[1]
+                    var dollars = match.groupValues[1]
                     val key = match.groupValues[2]
-                    add(dollarsEscaper(dollars))
-                    add(if (dollars.length % 2 == 0) key else valueGetter(listOf(key)))
+                    var value: Any? = key
+
+                    if (dollars.length % 2 != 0) {
+                        dollars = dollars.drop(1)
+                        value = valueGetter(listOf(key))
+                    }
+
+                    if (dollars.isNotEmpty()) add(dollarsEscaper(dollars))
+                    add(value)
+
                     i += match.value.length
                     continue
                 }
 
             if (SubstituteOption.INTERPOLATE_BRACES in options)
                 INTERPOLATE_BRACED_REGEX.matchAt(value, i)?.let { match ->
-                    val dollars = match.groupValues[1]
+                    var dollars = match.groupValues[1]
                     val path = match.groupValues[2]
-                    add(dollarsEscaper(dollars))
+                    var value: Any? = "{$path}"
 
-                    if (dollars.length % 2 == 0) add("{$path}")
-                    else add(
-                        valueGetter(
+                    if (dollars.length % 2 != 0) {
+                        dollars = dollars.drop(1)
+                        value = valueGetter(
                             KEY_REGEX
                                 .findAll(path)
                                 .map { it.groupValues.first().removeSurrounding("\"") }
-                                .toList()
-                        ))
+                                .toList(),
+                        )
+                    }
+
+                    if (dollars.isNotEmpty()) add(dollarsEscaper(dollars))
+                    add(value)
 
                     i += match.value.length
                     continue
@@ -98,31 +109,39 @@ private class TemplateGrammar(
             if (SubstituteOption.INTERPOLATE in options || SubstituteOption.INTERPOLATE_BRACES in options)
                 EVEN_DOLLARS_REGEX.matchAt(value, i)?.let { match ->
                     val dollars = match.groupValues.first()
+
                     add(dollarsEscaper(dollars))
+
                     i += match.value.length
                     continue
                 }
 
             if (SubstituteOption.EVALUATE in options)
                 EVALUATE_START_REGEX.matchAt(value, i)?.let { match ->
-                    val backslashes = match.groupValues[1]
-                    add(backslashEscaper(backslashes))
+                    var backslashes = match.groupValues[1]
+                    var result: Any? = "{"
+
                     i += backslashes.length + 1
+
                     if (backslashes.length % 2 == 0) {
                         val tokens = ProgramGrammar.tokenizer.tokenize(value.substring(i))
                         val tokenList = tokens.toList()
 
-                        val result = ProgramGrammar.mapWithMatches { (matches, program) ->
+                        val parseResult = ProgramGrammar.mapWithMatches { (matches, program) ->
                             evaluator(matches.joinToString("", transform = TokenMatch::text), program)
                         }.tryParse(tokens, 0).toParsedOrThrow()
 
-                        add(result.value)
+                        result = parseResult.value
 
-                        if (result.nextPosition >= tokenList.size || tokenList[result.nextPosition].text != "}")
+                        if (parseResult.nextPosition >= tokenList.size || tokenList[parseResult.nextPosition].text != "}")
                             error("Closing brackets not found")
 
-                        i += tokenList.take(result.nextPosition + 1).sumOf { token -> token.text.length }
-                    } else add("{")
+                        i += tokenList.take(parseResult.nextPosition + 1).sumOf { token -> token.text.length }
+                    } else backslashes = backslashes.drop(1)
+
+                    if (backslashes.isNotEmpty()) add(backslashEscaper(backslashes))
+                    add(result)
+
                     continue
                 }
 
