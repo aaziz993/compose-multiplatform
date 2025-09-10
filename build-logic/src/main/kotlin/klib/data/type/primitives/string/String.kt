@@ -5,10 +5,6 @@ import com.fleeksoft.charset.decodeToString
 import com.fleeksoft.charset.toByteArray
 import com.ionspin.kotlin.bignum.decimal.BigDecimal
 import com.ionspin.kotlin.bignum.integer.BigInteger
-import dev.snipme.highlights.Highlights
-import dev.snipme.highlights.model.SyntaxLanguage
-import dev.snipme.highlights.model.SyntaxTheme
-import dev.snipme.highlights.model.SyntaxThemes
 import klib.data.type.primitives.string.fuzzywuzzy.Applicable
 import klib.data.type.primitives.string.fuzzywuzzy.FuzzySearch
 import klib.data.type.primitives.string.fuzzywuzzy.ToStringFunction
@@ -26,33 +22,19 @@ import kotlinx.io.Buffer
 import kotlinx.io.writeString
 
 // Line break pattern
-public const val LBP: String = """(\r?\n|\n)"""
-
+public const val NEW_LINE_PATTERN: String = """(\r?\n|\n)"""
 // Any pattern (space and non-space)
-public const val AP: String = """[\s\S]"""
-
+public const val ANY_PATTERN: String = """[\s\S]"""
 // Letter uppercase pattern
-public const val LUP: String = "[A-ZА-Я]"
-
+public const val UPPERCASE_LETTER_PATTERN: String = "[A-ZА-Я]"
 // Letter lowercase pattern
-public const val LLP: String = "[a-zа-я]"
-
+public const val LOWERCASE_LETTER_PATTERN: String = "[a-zа-я]"
 // Letter lowercase to uppercase pattern
-public const val LLUP: String = "(?<=$LLP)(?=$LUP)"
-
+public const val LOWERCASE_UPPERCASE_LETTER_PATTERN: String = "(?<=$LOWERCASE_LETTER_PATTERN)(?=$UPPERCASE_LETTER_PATTERN)"
 // Letter uppercase to lowercase pattern
-public const val LULP: String = "(?<=$LUP)(?=$LLP)"
-
-// Letter uppercase to uppercase pattern
-public const val LUUP: String = "(?<=$LUP)(?=$LUP)"
-
-// Letter pattern
-public const val LP: String = "[$LLP$LUP]"
-
+public const val UPPERCASE_LOWERCASE_PATTERN: String = "(?<=$UPPERCASE_LETTER_PATTERN)(?=$LOWERCASE_LETTER_PATTERN)"
 // Letter and digit pattern
-public const val LDP: String = """[$LP\d]"""
-
-
+public const val LETTER_DIGIT_PATTERN: String = """[\w\d]"""
 public const val ID_PATTERN: String ="[_\\p{L}][_\\p{L}\\p{N}]*"
 public const val SINGLE_QUOTED_STRING_PATTERN: String ="""'[^\\']*(\\['nrtb\\][^\\']*)*'"""
 public const val DOUBLE_QUOTED_STRING_PATTERN: String =""""[^\\"]*(\\["nrtb\\][^\\"]*)*""""
@@ -108,12 +90,12 @@ public fun randomString(length: Int, charPool: List<Char> = ('a'..'z') + ('A'..'
 
 private val EXTENSION_TEXT_REGEX: Map<String, Regex> =
     mapOf(
-        "json" to """^\s*(\{$AP*\}|\[$AP*\])\s*$""".toRegex(),
+        "json" to """^\s*(\{$ANY_PATTERN*\}|\[$ANY_PATTERN*\])\s*$""".toRegex(),
         "xml" to """^\s*<\?xml[\s\S]*""".toRegex(),
-        "html" to """^\s*<(!DOCTYPE +)?html$AP*""".toRegex(),
-        "yaml" to """^( *((#|[^{\s]*:|-).*)?$LBP?)+$""".toRegex(),
-        "properties" to """^( *((#|[^{\s\[].*?=).*)?$LBP?)+$""".toRegex(),
-        "toml" to """^( *(([#\[\]"{}]|.*=).*)?$LBP?)+$""".toRegex(),
+        "html" to """^\s*<(!DOCTYPE +)?html$ANY_PATTERN*""".toRegex(),
+        "yaml" to """^( *((#|[^{\s]*:|-).*)?$NEW_LINE_PATTERN?)+$""".toRegex(),
+        "properties" to """^( *((#|[^{\s\[].*?=).*)?$NEW_LINE_PATTERN?)+$""".toRegex(),
+        "toml" to """^( *(([#\[\]"{}]|.*=).*)?$NEW_LINE_PATTERN?)+$""".toRegex(),
     )
 
 public val String.extension: String?
