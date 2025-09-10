@@ -1,9 +1,10 @@
-package org.example.klib.data.type.primitives.string
+package klib.data.type.primitives.string
 
 import com.github.ajalt.colormath.model.RGBInt
 import dev.snipme.highlights.Highlights
 import dev.snipme.highlights.model.*
 import klib.data.type.ansi.ansiSpan
+import klib.data.type.primitives.unsigned
 
 public val DEFAULT_MAPPER: (text: String, bold: Boolean, rgb: UInt?) -> String = { text, bold, rgb ->
     text.ansiSpan {
@@ -16,57 +17,59 @@ public fun Highlights.highlight(
     transform: (text: String, bold: Boolean, rgb: UInt?) -> String = DEFAULT_MAPPER
 ): String = buildString {
     val code = getCode()
-    val removes = mutableMapOf<Int, MutableList<CodeHighlight>>()
-    val adds = mutableMapOf<Int, MutableList<CodeHighlight>>()
-    val bounds = mutableSetOf(0, code.length)
+    val highlights = getHighlights().sortedWith(compareBy({ it.location.start }, { it.location.end }))
 
-    for (highlight in getHighlights()) {
-        val start = highlight.location.start
-        val end = highlight.location.end
-
-        bounds += start;
-        bounds += end
-        removes.getOrPut(end, ::mutableListOf).add(highlight)
-        adds.getOrPut(start, ::mutableListOf).add(highlight)
+    // Collect all unique boundaries (start/end positions of highlights)
+    val boundaries = mutableSetOf(0, code.length)
+    highlights.forEach { highlight ->
+        val (start, end) = highlight.location.let { (s, e) -> if (s < e) s to e else e to s }
+        boundaries += start
+        boundaries += end
     }
 
-    val sorted = bounds.toList().sorted()
+    val sortedBounds = boundaries.sorted()
 
-    // active state
+    // Active state for overlapping highlights
     var boldCount = 0
-    val colorStack = LinkedHashMap<CodeHighlight, UInt>() // last entry wins
+    val colorStack = LinkedHashMap<CodeHighlight, UInt>() // last color wins
 
-    fun current() = (boldCount > 0) to colorStack.entries.lastOrNull()?.value
+    fun current(): Pair<Boolean, UInt?> = (boldCount > 0) to colorStack.entries.lastOrNull()?.value
 
-    for (i in 0 until sorted.size - 1) {
-        val p = sorted[i]
-        val q = sorted[i + 1]
+    // Map for quick access to highlights starting/ending at a position
+    val opens = highlights.groupBy { it.location.start }
+    val closes = highlights.groupBy { it.location.end }
 
-        // close at p
-        removes[p]?.forEach { h ->
+    for (i in 0 until sortedBounds.size - 1) {
+        val start = sortedBounds[i]
+        val end = sortedBounds[i + 1]
+
+        // Close highlights that end at this boundary
+        closes[start]?.forEach { h ->
             when (h) {
                 is BoldHighlight -> if (boldCount > 0) boldCount--
                 is ColorHighlight -> colorStack.remove(h)
             }
         }
-        // open at p
-        adds[p]?.forEach { h ->
+
+        // Open highlights that start at this boundary
+        opens[start]?.forEach { h ->
             when (h) {
                 is BoldHighlight -> boldCount++
                 is ColorHighlight -> colorStack[h] = h.rgb.toUInt() and 0xFFFFFFu
             }
         }
 
-        if (q > p) {
+        // Append the substring with current active highlights
+        if (end > start) {
             val (bold, rgb) = current()
-            append(transform(code.substring(p, q), bold, rgb))
+            append(transform(code.substring(start, end), bold, rgb))
         }
     }
 }
 
 public fun String.highlight(
     language: SyntaxLanguage = SyntaxLanguage.KOTLIN,
-    theme: SyntaxTheme = SyntaxThemes.atom(),
+    theme: SyntaxTheme = SyntaxThemes.default(true),
     transform: (text: String, bold: Boolean, rgb: UInt?) -> String = DEFAULT_MAPPER
 ): String = Highlights.Builder()
     .code(this)

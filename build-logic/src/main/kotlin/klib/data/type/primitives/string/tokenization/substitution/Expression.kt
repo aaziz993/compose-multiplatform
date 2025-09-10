@@ -1,4 +1,4 @@
-package klib.data.type.primitives.string.tokenization.evaluation
+package klib.data.type.primitives.string.tokenization.substitution
 
 import klib.data.type.cast
 import klib.data.type.collections.*

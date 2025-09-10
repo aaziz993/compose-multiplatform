@@ -3,10 +3,10 @@ package klib.data.type.collections
 import klib.data.type.collections.list.asList
 import klib.data.type.collections.list.drop
 import klib.data.type.collections.map.asMap
-import klib.data.type.primitives.string.tokenization.evaluation.Program
-import klib.data.type.primitives.string.tokenization.evaluation.substitute
+import klib.data.type.primitives.string.tokenization.substitution.Program
+import klib.data.type.primitives.string.tokenization.substitution.substitute
 import klib.data.type.primitives.toInt
-import klib.data.type.primitives.string.tokenization.evaluation.SubstituteOption
+import klib.data.type.primitives.string.tokenization.substitution.SubstituteOption
 import kotlin.collections.getOrElse
 import kotlin.collections.getOrNull
 import kotlin.collections.toTypedArray

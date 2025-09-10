@@ -1,4 +1,4 @@
-package klib.data.type.primitives.string.tokenization.evaluation
+package klib.data.type.primitives.string.tokenization.substitution
 
 public enum class SubstituteOption {
     INTERPOLATE,

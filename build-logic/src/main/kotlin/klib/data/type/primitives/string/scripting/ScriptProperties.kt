@@ -11,7 +11,7 @@ import klib.data.type.collections.list.dropLast
 import klib.data.type.collections.map.asMapOrNull
 import klib.data.type.collections.map.asStringNullableMap
 import klib.data.type.primitives.string.addSuffixIfNotEmpty
-import klib.data.type.primitives.string.tokenization.evaluation.SubstituteOption
+import klib.data.type.primitives.string.tokenization.substitution.SubstituteOption
 import klib.data.type.reflection.declaredMemberExtensionFunction
 import klib.data.type.reflection.declaredMemberExtensionFunctions
 import klib.data.type.reflection.declaredMemberExtensionProperty
@@ -34,16 +34,15 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.serializer
 import java.io.File
 import java.lang.reflect.Modifier
-import klib.data.type.ansi.Ansi
 import klib.data.type.ansi.Attribute
 import klib.data.type.ansi.ansiSpan
 import klib.data.type.ansi.buildStringAnsi
 import klib.data.type.primitives.string.addSuffix
+import klib.data.type.primitives.string.highlight
 import kotlin.reflect.KClass
 import kotlin.reflect.KMutableProperty
 import kotlin.reflect.KVisibility
 import kotlin.reflect.full.isSubclassOf
-import org.example.klib.data.type.primitives.string.highlight
 
 public const val SCRIPT_KEY: String = "script"
 

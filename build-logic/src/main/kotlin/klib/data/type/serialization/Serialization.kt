@@ -6,7 +6,7 @@ import klib.data.type.collections.list.asList
 import klib.data.type.collections.minusKeys
 import klib.data.type.collections.substitute
 import klib.data.type.collections.toNewMutableCollection
-import klib.data.type.primitives.string.tokenization.evaluation.SubstituteOption
+import klib.data.type.primitives.string.tokenization.substitution.SubstituteOption
 import kotlinx.serialization.modules.EmptySerializersModule
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.serializer
