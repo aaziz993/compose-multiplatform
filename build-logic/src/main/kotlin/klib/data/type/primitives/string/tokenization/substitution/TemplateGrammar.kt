@@ -28,7 +28,7 @@ public fun String.substitute(
         SubstituteOption.DEEP_INTERPOLATION,
         SubstituteOption.ESCAPE_DOLLARS,
         SubstituteOption.EVALUATE,
-        SubstituteOption.ESCAPE_BACKSLASHES
+        SubstituteOption.ESCAPE_BACKSLASHES,
     ),
     getter: (path: List<String>) -> Any? = { null },
     evaluator: (text: String, Program) -> Any? = { _, program -> program { name -> getter(listOf(name)) } }
@@ -50,7 +50,7 @@ public fun String.substitute(
             append(tokenList[result.nextPosition].text[0])
 
             str = tokenList[result.nextPosition].text.drop(1) + tokenList.drop(result.nextPosition + 1)
-                .joinToString("") { it.text }
+                .joinToString("", transform = TokenMatch::text)
         }
     }
 }
@@ -61,6 +61,7 @@ private class TemplateGrammar(
     getter: (path: List<String>) -> Any?,
     evaluator: (text: String, Program) -> Any?
 ) : Grammar<Any?>() {
+
     private val dollarsEscaper: (String) -> String =
         if (SubstituteOption.ESCAPE_DOLLARS in options) { dollars -> dollars.substring(0, dollars.length / 2) }
         else { dollars -> dollars }
@@ -68,7 +69,8 @@ private class TemplateGrammar(
     private val backslashEscaper: (String) -> String =
         if (SubstituteOption.ESCAPE_BACKSLASHES in options) { backslashes ->
             backslashes.substring(0, backslashes.length / 2)
-        } else { backslashes -> backslashes }
+        }
+        else { backslashes -> backslashes }
 
     private val valueGetter: (path: List<String>) -> Any? =
         if (SubstituteOption.DEEP_INTERPOLATION in options) { path ->
@@ -179,7 +181,7 @@ private class TemplateGrammar(
     private val interpolateBraces =
         -dollarToken * -leftBrToken * -optional(wsToken) * separatedTerms(
             key,
-            periodToken
+            periodToken,
         ) * -optional(wsToken) * -rightBrToken map valueGetter
 
     private val evenBS by oneOrMore(backslashToken * backslashToken) use {
@@ -271,13 +273,14 @@ private class TemplateGrammar(
         (zeroOrMore(
             listOfNotNull(
                 if (SubstituteOption.INTERPOLATE in options || SubstituteOption.INTERPOLATE_BRACES in options)
-                    evenDollars else null,
+                    evenDollars
+                else null,
                 if (SubstituteOption.INTERPOLATE in options) interpolate else null,
                 if (SubstituteOption.INTERPOLATE_BRACES in options) interpolateBraces else null,
                 if (SubstituteOption.EVALUATE in options) escEvaluate else null,
                 if (SubstituteOption.EVALUATE in options) evaluate else null,
-                text
-            ).reduce { l, r -> l or r }
+                text,
+            ).reduce { l, r -> l or r },
         )).map { values ->
             if (values.size == 1) values.single() else values.joinToString("")
         }
