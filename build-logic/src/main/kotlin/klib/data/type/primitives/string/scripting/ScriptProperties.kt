@@ -94,7 +94,8 @@ public abstract class ScriptProperties {
     override fun toString(): String = buildStringAnsi {
         attribute(
             fileTree.entries.first().key.printTreeDiagram(
-                {
+                this,
+                children = {
                     fileTree[this].orEmpty()
                 },
             ) { value, visited ->
@@ -231,7 +232,7 @@ public abstract class ScriptProperties {
                 ) { decodedFile, decodedImports ->
                     val substitutedFile =
                         (decodedFile - listOf(IMPORTS_KEY, SCRIPT_KEY)).substitute(
-                            SubstituteOption.INTERPOLATE_BRACES,
+                            SubstituteOption.INTERPOLATE,
                             SubstituteOption.DEEP_INTERPOLATION,
                             SubstituteOption.EVALUATE,
                         )
@@ -269,7 +270,7 @@ public abstract class ScriptProperties {
 
         @PublishedApi
         internal fun Map<String, Any?>.deepMap(other: MutableMap<String, Any?>): MutableMap<String, Any?> =
-            deepMap(
+            deepMapTo(
                 destination = other,
                 destinationGetter = { source ->
                     last().first.getOrPut(last().second, source::toNewMutableCollection)

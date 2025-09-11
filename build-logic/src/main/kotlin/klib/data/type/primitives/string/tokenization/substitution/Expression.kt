@@ -61,7 +61,6 @@ public data class StringLiteral(val value: String) : Expression() {
     override fun invoke(machine: MachineState): MachineState = machine.copy(
         result = value.substitute(
             SubstituteOption.INTERPOLATE,
-            SubstituteOption.INTERPOLATE_BRACES,
             SubstituteOption.DEEP_INTERPOLATION,
             SubstituteOption.ESCAPE_DOLLARS,
             SubstituteOption.EVALUATE,
