@@ -18,17 +18,16 @@ import kotlin.collections.toSet
 import kotlin.sequences.map
 import kotlin.sequences.toList
 
-private val INTERPOLATE_REGEX = Regex($$"""(\$+)($$ID_PATTERN)""")
 private const val KEY_PATTERN = """(?:$ID_PATTERN|\d+|$DOUBLE_QUOTED_STRING_PATTERN)"""
 private val KEY_REGEX = Regex(KEY_PATTERN)
-private val INTERPOLATE_BRACED_REGEX = Regex($$"""(\$+)\{(\s*$$KEY_PATTERN(?:\s*\.\s*$$KEY_PATTERN)*\s*)\}""")
+private val INTERPOLATE_REGEX = Regex($$"""(\$+)\{(\s*$$KEY_PATTERN(?:\s*\.\s*$$KEY_PATTERN)*\s*)\}""")
 private val EVEN_DOLLARS_REGEX = Regex("""(?:\$\$)+""")
 private val EVALUATE_START_REGEX = Regex("""(\\*)\{""")
 private val OTHER_REGEX = Regex("""[^$\\{]+""")
 
 public fun String.substitute(
     vararg options: SubstituteOption = arrayOf(
-        SubstituteOption.INTERPOLATE_BRACES,
+        SubstituteOption.INTERPOLATE,
         SubstituteOption.DEEP_INTERPOLATION,
         SubstituteOption.ESCAPE_DOLLARS,
         SubstituteOption.EVALUATE,
@@ -65,26 +64,8 @@ private class TemplateGrammar(
         var i = 0
 
         while (i < value.length) {
-            if (SubstituteOption.INTERPOLATE in options)
+            if (SubstituteOption.INTERPOLATE in options) {
                 INTERPOLATE_REGEX.matchAt(value, i)?.let { match ->
-                    i += match.value.length
-
-                    var dollars = match.groupValues[1]
-                    val key = match.groupValues[2]
-                    var value: Any? = key
-
-                    if (dollars.length % 2 != 0) {
-                        dollars = dollars.dropLast(1)
-                        value = valueGetter(listOf(key))
-                    }
-
-                    if (dollars.isNotEmpty()) add(dollarsEscaper(dollars))
-                    add(value)
-                    continue
-                }
-
-            if (SubstituteOption.INTERPOLATE_BRACES in options)
-                INTERPOLATE_BRACED_REGEX.matchAt(value, i)?.let { match ->
                     i += match.value.length
 
                     var dollars = match.groupValues[1]
@@ -106,13 +87,13 @@ private class TemplateGrammar(
                     continue
                 }
 
-            if (SubstituteOption.INTERPOLATE in options || SubstituteOption.INTERPOLATE_BRACES in options)
                 EVEN_DOLLARS_REGEX.matchAt(value, i)?.let { match ->
                     i += match.value.length
 
                     add(dollarsEscaper(match.groupValues.first()))
                     continue
                 }
+            }
 
             if (SubstituteOption.EVALUATE in options)
                 EVALUATE_START_REGEX.matchAt(value, i)?.let { match ->

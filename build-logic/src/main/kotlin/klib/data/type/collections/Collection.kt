@@ -586,7 +586,7 @@ public fun <T : Any> Any.deepMinusKeys(
 @Suppress("UNCHECKED_CAST")
 public fun <T : Any> T.substitute(
     vararg options: SubstituteOption = arrayOf(
-        SubstituteOption.INTERPOLATE_BRACES,
+        SubstituteOption.INTERPOLATE,
         SubstituteOption.DEEP_INTERPOLATION,
         SubstituteOption.ESCAPE_DOLLARS,
         SubstituteOption.EVALUATE,
