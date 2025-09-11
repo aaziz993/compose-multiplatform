@@ -32,7 +32,9 @@ public fun String.substitute(
         SubstituteOption.ESCAPE_BACKSLASHES,
     ),
     getter: (path: List<String>) -> Any? = { null },
-    evaluator: (text: String, Program) -> Any? = { _, program -> program { name -> getter(listOf(name)) } }
+    evaluator: (programScript: String, program: Program) -> Any? = { _, program ->
+        program { name -> getter(listOf(name)) }
+    }
 ): Any? = TemplateGrammar(options.toSet(), getter, evaluator).parseToEnd(this)
 
 @Suppress("UNUSED")
@@ -71,18 +73,20 @@ private class TemplateGrammar(
 
                     if (dollars.length % 2 != 0) {
                         dollars = dollars.dropLast(1)
-                        value = valueGetter(buildList {
-                            while (true) {
-                                KEY_REGEX.matchAt(input, i)?.let { match ->
-                                    add(match.groupValues[1].removeSurrounding("\""))
-                                    i += match.value.length
-                                } ?: break
+                        value = valueGetter(
+                            buildList {
+                                while (true) {
+                                    KEY_REGEX.matchAt(input, i)?.let { match ->
+                                        add(match.groupValues[1].removeSurrounding("\""))
+                                        i += match.value.length
+                                    } ?: break
 
-                                if (input[i] == '.') i++
-                            }
-                            check(isNotEmpty()){"Empty interpolation"}
-                            check(input.getOrNull(i++) == '}') { "Missing closing brace at position $i" }
-                        })
+                                    if (input[i] == '.') i++
+                                }
+                                check(isNotEmpty()) { "Empty interpolation" }
+                                check(input.getOrNull(i++) == '}') { "Missing closing brace at position $i" }
+                            },
+                        )
                     }
 
                     if (dollars.isNotEmpty()) add(dollarsEscaper(dollars))
@@ -119,7 +123,8 @@ private class TemplateGrammar(
                             error("Closing brackets not found")
 
                         i += tokenList.take(parseResult.nextPosition + 1).sumOf { token -> token.text.length }
-                    } else {
+                    }
+                    else {
                         add("\\")
                         backslashes = backslashes.dropLast(1)
                     }

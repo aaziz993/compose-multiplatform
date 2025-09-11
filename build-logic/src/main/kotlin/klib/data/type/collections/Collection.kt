@@ -810,7 +810,9 @@ public fun <T : Any> T.substitute(
         SubstituteOption.ESCAPE_BACKSLASHES,
     ),
     getter: (path: List<String>) -> Any? = { path -> deepGetOrNull(*path.toTypedArray()).second },
-    evaluator: (text: String, Program) -> Any? = { _, program -> program { name -> getter(listOf(name)) } }
+    evaluator: (programScript: String, program: Program) -> Any? = { _, program ->
+        program { name -> getter(listOf(name)) }
+    }
 ): T = deepMapValues(
     sourceTransform = { value ->
         if (value is String) value.substitute(*options, getter = getter, evaluator = evaluator) else value
