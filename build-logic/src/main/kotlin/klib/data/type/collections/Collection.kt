@@ -119,6 +119,16 @@ public fun <T : Any> T.map(
     destinationSetter,
 )
 
+@Suppress("UNCHECKED_CAST")
+public fun <T : Any> T.plus(
+    sourceIterator: Any.() -> Iterator<Map.Entry<Any?, Any?>> = Any::iterator,
+    sourceTransform: Any.(key: Any?, value: Any?) -> Pair<Any?, Any?>? = { key, value -> key to value },
+    destination: Any,
+    destinationSetter: T.(key: Any?, value: Any?) -> Unit = { key, value -> put(key, value) },
+): T = listOf(this, destination).fold(toNewMutableCollection() as T) { acc, value ->
+    value.mapTo(sourceIterator, sourceTransform, acc, destinationSetter)
+}
+
 public fun <T : Any> Any.mapKeysTo(
     sourceIterator: Any.() -> Iterator<Map.Entry<Any?, Any?>> = Any::iterator,
     sourceFilter: Any.(key: Any?, value: Any?) -> Boolean = { _, _ -> true },
@@ -420,6 +430,25 @@ public fun <T : Any> T.deepMap(
         last().first.put(last().second, value)
     },
 ): T = deepMapTo(sourceIteratorOrNull, sourceTransform, destination, destinationGetter, destinationSetter)
+
+@Suppress("UNCHECKED_CAST")
+public fun <T : Any> T.deepPlus(
+    sourceIteratorOrNull: List<Pair<Any, Any?>>.(value: Any) -> Iterator<Map.Entry<Any?, Any?>>? = { value ->
+        value.iteratorOrNull()
+    },
+    sourceTransform: List<Pair<Any, Any?>>.(value: Any?) -> Pair<Any?, Any?>? = { value -> last().second to value },
+    destination: Any,
+    destinationGetter: List<Pair<Any, Any?>>.(source: Any) -> Any = { source ->
+        last().first.getOrPut(last().second, source::toNewMutableCollection).apply {
+            (this as? MutableList<*>)?.clear()
+        }
+    },
+    destinationSetter: List<Pair<Any, Any?>>.(value: Any?) -> Unit = { value ->
+        last().first.put(last().second, value)
+    },
+): T = listOf(this, destination).fold(toNewMutableCollection() as T) { acc, value ->
+    value.deepMapTo(sourceIteratorOrNull, sourceTransform, acc, destinationGetter, destinationSetter)
+}
 
 public fun <T : Any> Any.deepMapKeysTo(
     sourceIteratorOrNull: List<Pair<Any, Any?>>.(value: Any) -> Iterator<Map.Entry<Any?, Any?>>? = { value ->
