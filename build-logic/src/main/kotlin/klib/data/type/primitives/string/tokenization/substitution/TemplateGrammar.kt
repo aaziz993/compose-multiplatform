@@ -67,30 +67,32 @@ private class TemplateGrammar(
         while (i < value.length) {
             if (SubstituteOption.INTERPOLATE in options)
                 INTERPOLATE_REGEX.matchAt(value, i)?.let { match ->
+                    i += match.value.length
+
                     var dollars = match.groupValues[1]
                     val key = match.groupValues[2]
                     var value: Any? = key
 
                     if (dollars.length % 2 != 0) {
-                        dollars = dollars.drop(1)
+                        dollars = dollars.dropLast(1)
                         value = valueGetter(listOf(key))
                     }
 
                     if (dollars.isNotEmpty()) add(dollarsEscaper(dollars))
                     add(value)
-
-                    i += match.value.length
                     continue
                 }
 
             if (SubstituteOption.INTERPOLATE_BRACES in options)
                 INTERPOLATE_BRACED_REGEX.matchAt(value, i)?.let { match ->
+                    i += match.value.length
+
                     var dollars = match.groupValues[1]
                     val path = match.groupValues[2]
                     var value: Any? = "{$path}"
 
                     if (dollars.length % 2 != 0) {
-                        dollars = dollars.drop(1)
+                        dollars = dollars.dropLast(1)
                         value = valueGetter(
                             KEY_REGEX
                                 .findAll(path)
@@ -101,18 +103,14 @@ private class TemplateGrammar(
 
                     if (dollars.isNotEmpty()) add(dollarsEscaper(dollars))
                     add(value)
-
-                    i += match.value.length
                     continue
                 }
 
             if (SubstituteOption.INTERPOLATE in options || SubstituteOption.INTERPOLATE_BRACES in options)
                 EVEN_DOLLARS_REGEX.matchAt(value, i)?.let { match ->
-                    val dollars = match.groupValues.first()
-
-                    add(dollarsEscaper(dollars))
-
                     i += match.value.length
+
+                    add(dollarsEscaper(match.groupValues.first()))
                     continue
                 }
 
@@ -137,7 +135,11 @@ private class TemplateGrammar(
                             error("Closing brackets not found")
 
                         i += tokenList.take(parseResult.nextPosition + 1).sumOf { token -> token.text.length }
-                    } else backslashes = backslashes.drop(1)
+                    }
+                    else {
+                        add("\\")
+                        backslashes = backslashes.dropLast(1)
+                    }
 
                     if (backslashes.isNotEmpty()) add(backslashEscaper(backslashes))
                     add(result)
@@ -146,8 +148,9 @@ private class TemplateGrammar(
                 }
 
             OTHER_REGEX.matchAt(value, i)?.let { match ->
-                add(match.value)
                 i += match.value.length
+
+                add(match.value)
                 continue
             }
 
