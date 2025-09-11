@@ -12,6 +12,7 @@ import klib.data.type.primitives.*
 import kotlin.Pair
 
 public sealed class Expression {
+
     public infix fun coalesce(other: Expression): Coalesce = Coalesce(this, other)
     public operator fun plus(other: Expression): Plus = Plus(this, other)
     public operator fun minus(other: Expression): Minus = Minus(this, other)
@@ -41,6 +42,7 @@ public sealed class Expression {
 }
 
 public data class StatementExpression(val body: Statement) : Expression() {
+
     override fun invoke(machine: MachineState): MachineState {
         val entered = machine.pushScope()
 
@@ -48,40 +50,47 @@ public data class StatementExpression(val body: Statement) : Expression() {
 
         return after.copy(
             scopes = machine.scopes,
-            functionScopes = machine.functionScopes
+            functionScopes = machine.functionScopes,
         )
     }
 }
 
 public data class Literal(val value: Any?) : Expression() {
+
     override fun invoke(machine: MachineState): MachineState = machine.copy(result = value)
 }
 
 public data class StringLiteral(val value: String) : Expression() {
+
     override fun invoke(machine: MachineState): MachineState = machine.copy(
         result = value.substitute(
             SubstituteOption.INTERPOLATE,
+            SubstituteOption.INTERPOLATE_BRACED,
             SubstituteOption.DEEP_INTERPOLATION,
             SubstituteOption.ESCAPE_DOLLARS,
             SubstituteOption.EVALUATE,
             SubstituteOption.ESCAPE_BACKSLASHES,
             getter = { path ->
                 machine[path.first()]?.deepGetOrNull(*path.drop(1).toTypedArray())?.second
-            })
+            },
+        ),
     )
 }
 
 public data class Variable(val name: String, val type: Type) : Expression() {
+
     override fun invoke(machine: MachineState): MachineState = machine.copy(result = machine[name])
 
     override fun toString(): String = "$name:$type"
 }
 
 public object UnitLiteral : Expression() {
+
     override fun invoke(machine: MachineState): MachineState = machine.copy(result = Unit)
 }
 
 public data class Pair(val first: Expression, val second: Expression) : Expression() {
+
     override fun invoke(machine: MachineState): MachineState {
         var currentMachine = machine
 
@@ -98,11 +107,11 @@ public data class Pair(val first: Expression, val second: Expression) : Expressi
 }
 
 public sealed class Call(public val arguments: List<Expression>) : Expression() {
+
     protected open fun operate(arguments: List<Any?>): Any? = throw UnsupportedOperationException()
 
     protected open fun operate(machine: MachineState, arguments: List<Any?>): MachineState =
         machine.copy(result = operate(arguments))
-
 
     protected open fun shouldInvokeNext(arguments: List<Any?>): Boolean = true
 
@@ -126,10 +135,12 @@ public sealed class Call(public val arguments: List<Expression>) : Expression() 
 }
 
 public class TypeCall(public val type: Type, arguments: List<Expression>) : Call(arguments) {
+
     override fun operate(arguments: List<Any?>): Any? = type(*arguments.toTypedArray())
 }
 
 public class FunctionCall(public val name: String, arguments: List<Expression>) : Call(arguments) {
+
     override fun operate(machine: MachineState, arguments: List<Any?>): MachineState {
         val argTypes: List<Type> = this.arguments.mapIndexed { i, argument ->
             if (argument is Variable) {
@@ -156,14 +167,17 @@ public class FunctionCall(public val name: String, arguments: List<Expression>) 
 public sealed class Unary(operand: Expression) : Call(listOf(operand))
 
 public class NotNull(operand: Expression) : Unary(operand) {
+
     override fun operate(arguments: List<Any?>): Any = arguments[0]!!
 }
 
 public class UnaryMinus(operand: Expression) : Unary(operand) {
+
     override fun operate(arguments: List<Any?>): Any? = -arguments[0]!!
 }
 
 public class PreInc(operand: Expression) : Unary(operand) {
+
     override fun operate(machine: MachineState, arguments: List<Any?>): MachineState {
         val receiver = this.arguments[0]
 
@@ -179,6 +193,7 @@ public class PreInc(operand: Expression) : Unary(operand) {
 }
 
 public class Inc(operand: Expression) : Unary(operand) {
+
     override fun operate(machine: MachineState, arguments: List<Any?>): MachineState {
         val receiver = this.arguments[0]
 
@@ -194,6 +209,7 @@ public class Inc(operand: Expression) : Unary(operand) {
 }
 
 public class PreDec(operand: Expression) : Unary(operand) {
+
     override fun operate(machine: MachineState, arguments: List<Any?>): MachineState {
         val receiver = this.arguments[0]
 
@@ -224,18 +240,21 @@ public class Dec(operand: Expression) : Unary(operand) { // postfix --
 }
 
 public class Not(operand: Expression) : Unary(operand) {
+
     override fun operate(arguments: List<Any?>): Any? = !(arguments[0] as Boolean)
 }
 
 public sealed class Binary(left: Expression, right: Expression) : Call(listOf(left, right))
 
 public class Coalesce(left: Expression, right: Expression) : Binary(left, right) {
+
     override fun shouldInvokeNext(arguments: List<Any?>): Boolean = arguments.last() == null
 
     override fun operate(arguments: List<Any?>): Any? = arguments.last()
 }
 
 public class Plus(left: Expression, right: Expression) : Binary(left, right) {
+
     override fun operate(arguments: List<Any?>): Any? = when {
         arguments.any { argument -> argument is String } -> arguments.joinToString("")
         arguments.any { argument -> argument is List<*> } -> arguments.reduce { a, b -> a!!.asList + b!!.asList }
@@ -246,6 +265,7 @@ public class Plus(left: Expression, right: Expression) : Binary(left, right) {
 }
 
 public class Minus(left: Expression, right: Expression) : Binary(left, right) {
+
     override fun operate(arguments: List<Any?>): Any? = when {
         arguments.any { argument -> argument is String } -> arguments.joinToString("")
         arguments.any { argument -> argument is List<*> } -> arguments.reduce { a, b -> a!!.asList - b!!.asList }
@@ -256,62 +276,76 @@ public class Minus(left: Expression, right: Expression) : Binary(left, right) {
 }
 
 public class Times(left: Expression, right: Expression) : Binary(left, right) {
+
     override fun operate(arguments: List<Any?>): Any? = arguments[0]!! * arguments[1]!!
 }
 
 public class Div(left: Expression, right: Expression) : Binary(left, right) {
+
     override fun operate(arguments: List<Any?>): Any? = arguments[0]!! / arguments[1]!!
 }
 
 public class Rem(left: Expression, right: Expression) : Binary(left, right) {
+
     override fun operate(arguments: List<Any?>): Any? = arguments[0]!! % arguments[1]!!
 }
 
 public class Pow(left: Expression, right: Expression) : Binary(left, right) {
+
     override fun operate(arguments: List<Any?>): Any? = arguments[0]!!.pow(arguments[1]!!)
 }
 
 public class And(left: Expression, right: Expression) : Binary(left, right) {
+
     override fun shouldInvokeNext(arguments: List<Any?>): Boolean = arguments.last() == true
 
     override fun operate(arguments: List<Any?>): Any? = arguments[0] as Boolean && arguments[1] as Boolean
 }
 
 public class Or(left: Expression, right: Expression) : Binary(left, right) {
+
     override fun shouldInvokeNext(arguments: List<Any?>): Boolean = arguments.last() == false
 
     override fun operate(arguments: List<Any?>): Any? = arguments[0] as Boolean || arguments[1] as Boolean
 }
 
 public class Equals(left: Expression, right: Expression) : Binary(left, right) {
+
     override fun operate(arguments: List<Any?>): Any? = arguments[0] == arguments[1]
 }
 
 public class RefEquals(left: Expression, right: Expression) : Binary(left, right) {
+
     override fun operate(arguments: List<Any?>): Any? = arguments[0] === arguments[1]
 }
 
 public class NotEquals(left: Expression, right: Expression) : Binary(left, right) {
+
     override fun operate(arguments: List<Any?>): Any? = arguments[0] != arguments[1]
 }
 
 public class RefNotEquals(left: Expression, right: Expression) : Binary(left, right) {
+
     override fun operate(arguments: List<Any?>): Any? = arguments[0] !== arguments[1]
 }
 
 public class LessThan(left: Expression, right: Expression) : Binary(left, right) {
+
     override fun operate(arguments: List<Any?>): Any? = arguments[0]!! lt arguments[1]!!
 }
 
 public class LessOrEqualsThan(left: Expression, right: Expression) : Binary(left, right) {
+
     override fun operate(arguments: List<Any?>): Any? = arguments[0]!! lte arguments[1]!!
 }
 
 public class GreaterThan(left: Expression, right: Expression) : Binary(left, right) {
+
     override fun operate(arguments: List<Any?>): Any? = arguments[0]!! gt arguments[1]!!
 }
 
 public class GreaterOrEqualsThan(left: Expression, right: Expression) : Binary(left, right) {
+
     override fun operate(arguments: List<Any?>): Any? = arguments[0]!! gte arguments[1]!!
 }
 
@@ -319,6 +353,7 @@ public open class Member(
     arguments: List<Expression>,
     public val optional: Boolean
 ) : Call(arguments) {
+
     protected fun <T : Any> T?.runSafely(block: T.() -> Any?): Any? =
         if (this == null && optional) null else this!!.block()
 }
@@ -328,6 +363,7 @@ public class First(
     arguments: List<Expression>,
     optional: Boolean
 ) : Member(arguments, optional) {
+
     override fun operate(arguments: List<Any?>): Any? = arguments[0].runSafely {
         (this as Pair<*, *>).first
     }
@@ -337,6 +373,7 @@ public class Second(
     arguments: List<Expression>,
     optional: Boolean
 ) : Member(arguments, optional) {
+
     override fun operate(arguments: List<Any?>): Any? = arguments[0].runSafely {
         (this as Pair<*, *>).second
     }
@@ -347,6 +384,7 @@ public class ToUByte(
     arguments: List<Expression>,
     optional: Boolean
 ) : Member(arguments, optional) {
+
     override fun operate(arguments: List<Any?>): Any? = arguments[0].runSafely {
         toNumber(UByte::class)
     }
@@ -356,6 +394,7 @@ public class ToUShort(
     arguments: List<Expression>,
     optional: Boolean
 ) : Member(arguments, optional) {
+
     override fun operate(arguments: List<Any?>): Any? = arguments[0].runSafely {
         toNumber(UShort::class)
     }
@@ -365,6 +404,7 @@ public class ToUInt(
     arguments: List<Expression>,
     optional: Boolean
 ) : Member(arguments, optional) {
+
     override fun operate(arguments: List<Any?>): Any? = arguments[0].runSafely {
         toNumber(UInt::class)
     }
@@ -374,6 +414,7 @@ public class ToULong(
     arguments: List<Expression>,
     optional: Boolean
 ) : Member(arguments, optional) {
+
     override fun operate(arguments: List<Any?>): Any? = arguments[0].runSafely {
         toNumber(ULong::class)
     }
@@ -383,6 +424,7 @@ public class ToByte(
     arguments: List<Expression>,
     optional: Boolean
 ) : Member(arguments, optional) {
+
     override fun operate(arguments: List<Any?>): Any? = arguments[0].runSafely {
         toNumber(Byte::class)
     }
@@ -392,6 +434,7 @@ public class ToShort(
     arguments: List<Expression>,
     optional: Boolean
 ) : Member(arguments, optional) {
+
     override fun operate(arguments: List<Any?>): Any? = arguments[0].runSafely {
         toNumber(Short::class)
     }
@@ -401,6 +444,7 @@ public class ToInt(
     arguments: List<Expression>,
     optional: Boolean
 ) : Member(arguments, optional) {
+
     override fun operate(arguments: List<Any?>): Any? = arguments[0].runSafely {
         toNumber(Int::class)
     }
@@ -410,6 +454,7 @@ public class ToLong(
     arguments: List<Expression>,
     optional: Boolean
 ) : Member(arguments, optional) {
+
     override fun operate(arguments: List<Any?>): Any? = arguments[0].runSafely {
         toNumber(Long::class)
     }
@@ -419,6 +464,7 @@ public class ToFloat(
     arguments: List<Expression>,
     optional: Boolean
 ) : Member(arguments, optional) {
+
     override fun operate(arguments: List<Any?>): Any? = arguments[0].runSafely {
         toNumber(Float::class)
     }
@@ -428,6 +474,7 @@ public class ToDouble(
     arguments: List<Expression>,
     optional: Boolean
 ) : Member(arguments, optional) {
+
     override fun operate(arguments: List<Any?>): Any? = arguments[0].runSafely {
         toNumber(Double::class)
     }
@@ -438,6 +485,7 @@ public class Get(
     arguments: List<Expression>,
     optional: Boolean
 ) : Member(arguments, optional) {
+
     override fun operate(arguments: List<Any?>): Any? = arguments[0].runSafely {
         getOrNull(arguments[1])
     }
@@ -447,6 +495,7 @@ public class Set(
     arguments: List<Expression>,
     optional: Boolean
 ) : Member(arguments, optional) {
+
     override fun operate(arguments: List<Any?>): Any? = arguments[0].runSafely {
         this[arguments[1]] = arguments[2]
     }
@@ -456,6 +505,7 @@ public class ToList(
     arguments: List<Expression>,
     optional: Boolean
 ) : Member(arguments, optional) {
+
     override fun operate(arguments: List<Any?>): Any? = arguments[0].runSafely {
         (this as Iterable<*>).toList()
     }
@@ -465,6 +515,7 @@ public class ToMutableList(
     arguments: List<Expression>,
     optional: Boolean
 ) : Member(arguments, optional) {
+
     override fun operate(arguments: List<Any?>): Any? = arguments[0].runSafely {
         (this as Iterable<*>).toMutableList()
     }
@@ -474,6 +525,7 @@ public class ToMap(
     arguments: List<Expression>,
     optional: Boolean
 ) : Member(arguments, optional) {
+
     @Suppress("UNCHECKED_CAST")
     override fun operate(arguments: List<Any?>): Any? = arguments[0].runSafely {
         (this as Iterable<Pair<*, *>>).toMap()
@@ -485,6 +537,7 @@ public class Add(
     arguments: List<Expression>,
     optional: Boolean
 ) : Member(arguments, optional) {
+
     override fun operate(arguments: List<Any?>): Any? = arguments[0]?.asMutableList<Any?>().runSafely {
         if (arguments.size > 2) add(arguments[1] as Int, arguments[2]) else add(arguments[1])
     }
@@ -494,6 +547,7 @@ public class AddAll(
     arguments: List<Expression>,
     optional: Boolean
 ) : Member(arguments, optional) {
+
     override fun operate(arguments: List<Any?>): Any? = arguments[0]?.asMutableList<Any?>().runSafely {
         if (arguments.size > 2) addAll(arguments[1] as Int, arguments[2]!!.cast()) else addAll(arguments[1]!!.cast())
     }
@@ -503,6 +557,7 @@ public class Remove(
     arguments: List<Expression>,
     optional: Boolean
 ) : Member(arguments, optional) {
+
     override fun operate(arguments: List<Any?>): Any? = arguments[0].runSafely {
         remove(arguments[1])
     }
@@ -512,6 +567,7 @@ public class Clear(
     arguments: List<Expression>,
     optional: Boolean
 ) : Member(arguments, optional) {
+
     override fun operate(arguments: List<Any?>): Any? = arguments[0].runSafely(Any::clear)
 }
 
@@ -519,6 +575,7 @@ public class Size(
     arguments: List<Expression>,
     optional: Boolean
 ) : Member(arguments, optional) {
+
     override fun operate(arguments: List<Any?>): Any? = arguments[0].runSafely(Any::size)
 }
 
@@ -527,6 +584,7 @@ public class Pairs(
     arguments: List<Expression>,
     optional: Boolean
 ) : Member(arguments, optional) {
+
     override fun operate(arguments: List<Any?>): Any? = arguments[0]?.asMap<Any?, Any?>().runSafely(Map<*, *>::pairs)
 }
 
@@ -534,6 +592,7 @@ public class Keys(
     arguments: List<Expression>,
     optional: Boolean
 ) : Member(arguments, optional) {
+
     override fun operate(arguments: List<Any?>): Any? = arguments[0]?.asMap<Any?, Any?>().runSafely(Map<*, *>::keys)
 }
 
@@ -541,6 +600,7 @@ public class Values(
     arguments: List<Expression>,
     optional: Boolean
 ) : Member(arguments, optional) {
+
     override fun operate(arguments: List<Any?>): Any? = arguments[0]?.asMap<Any?, Any?>().runSafely(Map<*, *>::values)
 }
 
@@ -548,6 +608,7 @@ public class ToMutableMap(
     arguments: List<Expression>,
     optional: Boolean
 ) : Member(arguments, optional) {
+
     override fun operate(arguments: List<Any?>): Any? = arguments[0].runSafely {
         (this as Map<*, *>).toMutableMap()
     }
@@ -558,6 +619,7 @@ public class Cause(
     arguments: List<Expression>,
     optional: Boolean
 ) : Member(arguments, optional) {
+
     override fun operate(arguments: List<Any?>): Any? = arguments[0].runSafely {
         (this as Throwable).cause
     }
@@ -567,6 +629,7 @@ public class Message(
     arguments: List<Expression>,
     optional: Boolean
 ) : Member(arguments, optional) {
+
     override fun operate(arguments: List<Any?>): Any? = arguments[0].runSafely {
         (this as Throwable).message
     }
@@ -576,6 +639,7 @@ public class StackTraceToString(
     arguments: List<Expression>,
     optional: Boolean
 ) : Member(arguments, optional) {
+
     override fun operate(arguments: List<Any?>): Any? = arguments[0].runSafely {
         (this as Throwable).stackTraceToString()
     }

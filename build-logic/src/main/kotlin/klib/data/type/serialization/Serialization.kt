@@ -33,7 +33,7 @@ public fun <T : Any> decodeFile(
     decoder: (file: String) -> T,
     merger: (decodedFile: T, decodedImports: List<T>) -> T = { decodedFile, decodedImports ->
         val substitutedFile = decodedFile.minusKeys(IMPORTS_KEY).substitute(
-            SubstituteOption.INTERPOLATE,
+            SubstituteOption.INTERPOLATE_BRACED,
             SubstituteOption.DEEP_INTERPOLATION,
             SubstituteOption.EVALUATE,
         )

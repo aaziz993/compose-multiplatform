@@ -232,7 +232,7 @@ public abstract class ScriptProperties {
                 ) { decodedFile, decodedImports ->
                     val substitutedFile =
                         (decodedFile - listOf(IMPORTS_KEY, SCRIPT_KEY)).substitute(
-                            SubstituteOption.INTERPOLATE,
+                            SubstituteOption.INTERPOLATE_BRACED,
                             SubstituteOption.DEEP_INTERPOLATION,
                             SubstituteOption.EVALUATE,
                         )
