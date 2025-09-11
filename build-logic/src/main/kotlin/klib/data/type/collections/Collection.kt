@@ -826,7 +826,7 @@ public fun <T> T.printTreeDiagram(
     transform: (T, visited: Boolean) -> String = { value, visited ->
         value.toString() + if (visited) " ↻" else ""
     }
-): Unit {
+) {
     appendable.appendLine(transform(this@printTreeDiagram, false))
 
     val visits = mutableSetOf(this@printTreeDiagram)
