@@ -280,7 +280,7 @@ public fun Any.flatten(
         value.iteratorOrNull()
     },
 ): Sequence<Pair<List<Pair<Any, Any?>>, Any?>> = sequence {
-    suspend fun SequenceScope<Pair<List<Pair<Any, Any?>>, Any?>>.flattenKeys(
+    suspend fun SequenceScope<Pair<List<Pair<Any, Any?>>, Any?>>.flatten(
         sources: List<Pair<Any, Any?>>,
         iterator: Iterator<Map.Entry<Any?, Any?>>,
     ) {
@@ -289,14 +289,14 @@ public fun Any.flatten(
 
             if (value != null)
                 currentSources.iteratorOrNull(value)?.also { nextSourceIterator ->
-                    return@forEach flattenKeys(currentSources + (value to null), nextSourceIterator)
+                    return@forEach flatten(currentSources + (value to null), nextSourceIterator)
                 }
 
             yield(currentSources to value)
         }
     }
 
-    flattenKeys(
+    flatten(
         listOf(this@flatten to null),
         emptyList<Pair<Any, Any?>>().iteratorOrNull(this@flatten)!!,
     )
@@ -817,28 +817,28 @@ public fun <T : Any> T.substitute(
     },
 )
 
-public fun <T> T.toTreeString(
-    children: T.() -> List<T>,
+public fun <T> T.printTreeDiagram(
+    appendable: Appendable,
     intermediateConnector: String = "├──",
     verticalConnector: String = "│",
     lastConnector: String = "└──",
+    children: T.() -> List<T>,
     transform: (T, visited: Boolean) -> String = { value, visited ->
         value.toString() + if (visited) " ↻" else ""
     }
-): String = buildString {
-    appendLine(transform(this@toTreeString, false))
+): Unit {
+    appendable.appendLine(transform(this@printTreeDiagram, false))
 
-    val visits = mutableSetOf(this@toTreeString)
+    val visits = mutableSetOf(this@printTreeDiagram)
 
     DeepRecursiveFunction<PrintTreeArgs<T>, Unit> { (nodes, prefix) ->
         nodes.forEachIndexed { index, node ->
             val isLast = index == nodes.lastIndex
             val connector = if (isLast) lastConnector else intermediateConnector
 
-            append(prefix)
-            append(connector)
-
-            appendLine(transform(node, !visits.add(node)))
+            appendable.append(prefix)
+            appendable.append(connector)
+            appendable.appendLine(transform(node, !visits.add(node)))
 
             callRecursive(
                 PrintTreeArgs(
@@ -847,10 +847,22 @@ public fun <T> T.toTreeString(
                 ),
             )
         }
-    }(PrintTreeArgs(this@toTreeString.children(), ""))
+    }(PrintTreeArgs(this@printTreeDiagram.children(), ""))
 }
 
 private data class PrintTreeArgs<T>(
     val node: List<T>,
     val prefix: String,
 )
+
+public fun <T> T.toTreeDiagram(
+    intermediateConnector: String = "├──",
+    verticalConnector: String = "│",
+    lastConnector: String = "└──",
+    children: T.() -> List<T>,
+    transform: (T, visited: Boolean) -> String = { value, visited ->
+        value.toString() + if (visited) " ↻" else ""
+    }
+): String = buildString {
+    printTreeDiagram(this, intermediateConnector, verticalConnector, lastConnector, children, transform)
+}
