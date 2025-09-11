@@ -1,5 +1,6 @@
 package klib.data.type.serialization
 
+import klib.data.type.cast
 import klib.data.type.collections.deepGetOrNull
 import klib.data.type.collections.deepMap
 import klib.data.type.collections.list.asList
@@ -26,13 +27,13 @@ public const val IMPORTS_KEY: String = "imports"
 @Suppress("UNCHECKED_CAST")
 public fun <T : Any> decodeFile(
     file: String,
-    imports: (file: String, decodedFile: T) -> List<String>? = { file, decodedFile ->
-        decodedFile.deepGetOrNull(IMPORTS_KEY).second?.asList<String>()
+    imports: (file: String, decodedFile: T) -> List<String>? = { _, decodedFile ->
+        decodedFile.deepGetOrNull(IMPORTS_KEY).second?.cast()
     },
     decoder: (file: String) -> T,
     merger: (decodedFile: T, decodedImports: List<T>) -> T = { decodedFile, decodedImports ->
         val substitutedFile = decodedFile.minusKeys(IMPORTS_KEY).substitute(
-            SubstituteOption.INTERPOLATE_BRACES,
+            SubstituteOption.INTERPOLATE,
             SubstituteOption.DEEP_INTERPOLATION,
             SubstituteOption.EVALUATE,
         )
