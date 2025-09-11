@@ -14,7 +14,7 @@ _DOUBLE_QUOTED_STRING_PATTERN='"[^\\"]*(\\["nrtb\\][^\\"]*)*"'
 _ID_PATTERN='[_\p{L}][_\p{L}\p{N}]*'
 _INTERPOLATE_PATTERN='(\$+)('$_ID_PATTERN')'
 _KEY_PATTERN='(?:'"$_ID_PATTERN"'|\d+|'"$_DOUBLE_QUOTED_STRING_PATTERN"')'
-_INTERPOLATE_BRACED_PATTERN='(\$+)\{\s*('"$_KEY_PATTERN"'(?:\s*\.\s*'"$_KEY_PATTERN"')*)\s*\}'
+_INTERPOLATE_BRACED_PATTERN='(\$+)\{(\s*'"$_KEY_PATTERN"'(?:\s*\.\s*'"$_KEY_PATTERN"')*\s*)\}'
 _EVEN_DOLLARS_PATTERN='(?:\$\$)+'
 _EVALUATE_START_PATTERN='(\\*)\{'
 _OTHER_PATTERN='[^$\\{]+'
@@ -116,30 +116,26 @@ function substitute_string() {
         fi
 
         if [[ "$interpolate_braced" == true ]]; then
-            match=$(perl -MJSON -CS -e '
-                my ($s, $regex, $kr) = @ARGV;
-                if ($s =~ /^($regex)/) {
-                    my $dollars = $1;
-                    my $path = $2;
-                    my $len = length($&);
-                    my @keys;
-                    while ($path =~ /$kr/g) {
-                        my $key = $&;
-                        $key =~ s/^"(.*)"$/$1/;
-                        push @keys, $key;
-                    }
-                    print "$len $dollars\n" . encode_json(\@keys);
-                }
-            ' "$rest" "$_INTERPOLATE_BRACED_PATTERN" "$_KEY_PATTERN")
+            read -r dollars raw_path <<< "$(perl -e 'my ($s, $regex) = @ARGV; if($s =~ /^$regex/) { print "length(&)$1 $2"; }' \
+                            "$rest" "$_INTERPOLATE_BRACED_PATTERN")"
 
-            if [[ -n "$match" ]]; then
-                len=${match%% *}
-                dollars=${match#* }
-                mapfile -t path < <(echo "${match#*$'\n'}" | jq -r '.[]')
-
-                local value
+            if [[ -n "$dollars" ]]; then
+                len=${#dollars}
+                local value=$raw_path
 
                 if (( len % 2 != 0 )); then
+                    dollars=${dollars:1}
+                    mapfile -t path < <(perl -MJSON -CS -e '
+                                        my ($s, $regex) = @ARGV;
+                                        my @keys;
+                                        while ($s =~ /$regex/g) {
+                                            my $key = $&;
+                                            $key =~ s/^"(.*)"$/$1/;
+                                            push @keys, $key;
+                                        }
+                                        print encode_json(\@keys);
+                                    ' "$raw_path" "$_KEY_PATTERN")
+
                     value=$("$getter" path)
                     if [[ "$deep_interpolate" == true ]]; then
                         value=$(substitute_string -i "$interpolate" -ib "$interpolate_braced" -di "$deep_interpolate" \
@@ -148,9 +144,9 @@ function substitute_string() {
                 fi
 
                 [[ "$esc_interpolate" == true ]] && dollars=$(halve "$dollars")
-
+echo $output>&2
                 output+="$dollars$value"
-                rest="${rest:$len}"
+                rest="${rest:$len+${#row_path}+2}"
                 continue
             fi
         fi
@@ -295,7 +291,7 @@ function getter() {
     local -n keys=$1   # keys is now a reference to the array
     local key_path
     key_path=$(IFS='.'; echo "${keys[*]}")  # join keys with dots
-    echo "Key:$keys">&2
+    echo "Key:$key_path">&2
     echo "${vars[$key_path]}"
 }
 
@@ -307,7 +303,7 @@ EOF
 )
 # Example test
 examples=(
- "\$\$key \$\$\$"
+ "\$\$key \$\$\$ \${nested}"
 )
 
 for ex in "${examples[@]}"; do

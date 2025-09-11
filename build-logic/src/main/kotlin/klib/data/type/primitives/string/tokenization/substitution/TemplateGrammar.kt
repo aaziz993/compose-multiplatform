@@ -21,7 +21,7 @@ import kotlin.sequences.toList
 private val INTERPOLATE_REGEX = Regex($$"""(\$+)($$ID_PATTERN)""")
 private const val KEY_PATTERN = """(?:$ID_PATTERN|\d+|$DOUBLE_QUOTED_STRING_PATTERN)"""
 private val KEY_REGEX = Regex(KEY_PATTERN)
-private val INTERPOLATE_BRACED_REGEX = Regex($$"""(\$+)\{\s*($$KEY_PATTERN(?:\s*\.\s*$$KEY_PATTERN)*)\s*\}""")
+private val INTERPOLATE_BRACED_REGEX = Regex($$"""(\$+)\{(\s*$$KEY_PATTERN(?:\s*\.\s*$$KEY_PATTERN)*\s*)\}""")
 private val EVEN_DOLLARS_REGEX = Regex("""(?:\$\$)+""")
 private val EVALUATE_START_REGEX = Regex("""(\\*)\{""")
 private val OTHER_REGEX = Regex("""[^$\\{]+""")
