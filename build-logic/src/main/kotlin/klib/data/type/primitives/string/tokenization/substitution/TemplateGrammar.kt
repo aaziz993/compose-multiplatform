@@ -15,12 +15,10 @@ import kotlin.collections.single
 import kotlin.collections.sumOf
 import kotlin.collections.take
 import kotlin.collections.toSet
-import kotlin.sequences.map
 import kotlin.sequences.toList
 
-private const val KEY_PATTERN = """(?:$ID_PATTERN|\d+|$DOUBLE_QUOTED_STRING_PATTERN)"""
-private val KEY_REGEX = Regex(KEY_PATTERN)
-private val INTERPOLATE_REGEX = Regex($$"""(\$+)\{(\s*$$KEY_PATTERN(?:\s*\.\s*$$KEY_PATTERN)*\s*)\}""")
+private val KEY_REGEX = Regex("""\s*($ID_PATTERN|\d+|$DOUBLE_QUOTED_STRING_PATTERN)\s*""")
+private val INTERPOLATE_START_REGEX = Regex($$"""(\$+)\{""")
 private val EVEN_DOLLARS_REGEX = Regex("""(?:\$\$)+""")
 private val EVALUATE_START_REGEX = Regex("""(\\*)\{""")
 private val OTHER_REGEX = Regex("""[^$\\{]+""")
@@ -60,26 +58,31 @@ private class TemplateGrammar(
         }
         else getter
 
-    fun parseToEnd(value: String): Any? = buildList {
+    fun parseToEnd(input: String): Any? = buildList {
         var i = 0
 
-        while (i < value.length) {
+        while (i < input.length) {
             if (SubstituteOption.INTERPOLATE in options) {
-                INTERPOLATE_REGEX.matchAt(value, i)?.let { match ->
+                INTERPOLATE_START_REGEX.matchAt(input, i)?.let { match ->
                     i += match.value.length
 
                     var dollars = match.groupValues[1]
-                    val path = match.groupValues[2]
-                    var value: Any? = "{$path}"
+                    var value: Any? = "{"
 
                     if (dollars.length % 2 != 0) {
                         dollars = dollars.dropLast(1)
-                        value = valueGetter(
-                            KEY_REGEX
-                                .findAll(path)
-                                .map { it.groupValues.first().removeSurrounding("\"") }
-                                .toList(),
-                        )
+                        value = valueGetter(buildList {
+                            while (true) {
+                                KEY_REGEX.matchAt(input, i)?.let { match ->
+                                    add(match.groupValues[1].removeSurrounding("\""))
+                                    i += match.value.length
+                                } ?: break
+
+                                if (input[i] == '.') i++
+                            }
+                            check(isNotEmpty()){"Empty interpolation"}
+                            check(input.getOrNull(i++) == '}') { "Missing closing brace at position $i" }
+                        })
                     }
 
                     if (dollars.isNotEmpty()) add(dollarsEscaper(dollars))
@@ -87,7 +90,7 @@ private class TemplateGrammar(
                     continue
                 }
 
-                EVEN_DOLLARS_REGEX.matchAt(value, i)?.let { match ->
+                EVEN_DOLLARS_REGEX.matchAt(input, i)?.let { match ->
                     i += match.value.length
 
                     add(dollarsEscaper(match.groupValues.first()))
@@ -96,46 +99,45 @@ private class TemplateGrammar(
             }
 
             if (SubstituteOption.EVALUATE in options)
-                EVALUATE_START_REGEX.matchAt(value, i)?.let { match ->
-                    var backslashes = match.groupValues[1]
-                    var result: Any? = "{"
+                EVALUATE_START_REGEX.matchAt(input, i)?.let { match ->
+                    i += match.value.length
 
-                    i += backslashes.length + 1
+                    var backslashes = match.groupValues[1]
+                    var value: Any? = "{"
 
                     if (backslashes.length % 2 == 0) {
-                        val tokens = ProgramGrammar.tokenizer.tokenize(value.substring(i))
+                        val tokens = ProgramGrammar.tokenizer.tokenize(input.substring(i))
                         val tokenList = tokens.toList()
 
                         val parseResult = ProgramGrammar.mapWithMatches { (matches, program) ->
                             evaluator(matches.joinToString("", transform = TokenMatch::text), program)
                         }.tryParse(tokens, 0).toParsedOrThrow()
 
-                        result = parseResult.value
+                        value = parseResult.value
 
                         if (parseResult.nextPosition >= tokenList.size || tokenList[parseResult.nextPosition].text != "}")
                             error("Closing brackets not found")
 
                         i += tokenList.take(parseResult.nextPosition + 1).sumOf { token -> token.text.length }
-                    }
-                    else {
+                    } else {
                         add("\\")
                         backslashes = backslashes.dropLast(1)
                     }
 
                     if (backslashes.isNotEmpty()) add(backslashEscaper(backslashes))
-                    add(result)
+                    add(value)
 
                     continue
                 }
 
-            OTHER_REGEX.matchAt(value, i)?.let { match ->
+            OTHER_REGEX.matchAt(input, i)?.let { match ->
                 i += match.value.length
 
                 add(match.value)
                 continue
             }
 
-            add(value[i++])
+            add(input[i++])
         }
     }.let { values ->
         if (values.size == 1) values.single() else values.joinToString("")
