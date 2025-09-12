@@ -25,8 +25,8 @@ public fun Highlights.highlight(
     val closes = highlights.groupBy { it.location.end }
 
     var boldCount = 0
-    val colorStack = mutableListOf<UInt>()
-    fun current() = (boldCount > 0) to colorStack.lastOrNull()
+    val colorStack = mutableListOf<ColorHighlight>()
+    fun currentColor() = colorStack.lastOrNull()?.rgb?.toUInt()?.and(0xFFFFFFu)
 
     for (i in 0 until boundaries.size - 1) {
         val start = boundaries[i]
@@ -35,21 +35,19 @@ public fun Highlights.highlight(
         closes[start]?.forEach { highlight ->
             when (highlight) {
                 is BoldHighlight -> boldCount--
-                is ColorHighlight -> colorStack.remove(highlight.rgb.toUInt() and 0xFFFFFFu)
+                is ColorHighlight -> colorStack.remove(highlight)
             }
         }
 
         opens[start]?.forEach { highlight ->
             when (highlight) {
                 is BoldHighlight -> boldCount++
-                is ColorHighlight -> colorStack.add(highlight.rgb.toUInt() and 0xFFFFFFu)
+                is ColorHighlight -> colorStack.add(highlight)
             }
         }
 
-        if (end > start) {
-            val (bold, rgb) = current()
-            append(transform(code.subSequence(start, end), bold, rgb))
-        }
+        if (end > start)
+            append(transform(code.subSequence(start, end), boldCount > 0, currentColor()))
     }
 }
 
