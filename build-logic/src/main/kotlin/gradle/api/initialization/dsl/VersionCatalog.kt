@@ -31,13 +31,16 @@ import org.gradle.api.internal.catalog.DefaultExternalModuleDependencyBundle
 import org.gradle.api.provider.Provider
 import org.gradle.plugin.use.PluginDependency
 
+public const val VERSION_CATALOG_DIR: String = "gradle"
+
 @Serializable(with = VersionCatalogSerializer::class)
 public data class VersionCatalog(
     public val versions: Map<String, VersionConstraint>,
-    public val libraries: Map<String, MinimalExternalModuleDependency>,
-    public val plugins: Map<String, PluginDependency>,
-    public val bundles: Map<String, ExternalModuleDependencyBundle>
+    private val libraries: Map<String, MinimalExternalModuleDependency>,
+    private val plugins: Map<String, PluginDependency>,
+    private val bundles: Map<String, ExternalModuleDependencyBundle>
 ) {
+
     public fun versions(alias: String): VersionConstraint =
         versions[alias] ?: throw IllegalArgumentException("Unresolved version '$alias'")
 
@@ -49,7 +52,6 @@ public data class VersionCatalog(
     public fun plugins(alias: String): PluginDependency =
         plugins[alias] ?: throw IllegalArgumentException("Unresolved plugin '$alias'")
 
-
     context(project: Project)
     public fun bundles(alias: String): Provider<ExternalModuleDependencyBundle> =
         project.objects.property(ExternalModuleDependencyBundle::class.java).apply {
@@ -57,11 +59,14 @@ public data class VersionCatalog(
         }
 
     public companion object {
+
         @Suppress("UnstableApiUsage")
         context(settings: Settings)
-        public operator fun invoke(lib: MinimalExternalModuleDependency): VersionCatalog =
-            settings.dependencyResolutionManagement.repositories.firstNotNullOfOrNull { repository ->
+        public operator fun invoke(lib: MinimalExternalModuleDependency): VersionCatalog {
+            val file = settings.layout.settingsDirectory.dir(VERSION_CATALOG_DIR).file(".$lib").asFile
 
+            val text = if (file.exists()) file.readText()
+            else settings.dependencyResolutionManagement.repositories.firstNotNullOfOrNull { repository ->
                 when (repository) {
                     is MavenArtifactRepository -> repository.url
                     is IvyArtifactRepository -> repository.url
@@ -71,9 +76,10 @@ public data class VersionCatalog(
                         url.resolve(lib.toString().toCatalogUrl()).toURL().readText()
                     }.getOrNull()
                 }
-            }?.let { text ->
-                Toml.decodeFromString<VersionCatalog>(text)
-            } ?: error("Couldn't find version catalog '$lib'")
+            }?.also(file::writeText) ?: error("Couldn't find version catalog '$lib'")
+
+            return Toml.decodeFromString<VersionCatalog>(text)
+        }
 
         private fun String.toCatalogUrl(): String {
             val fileNamePart = substringAfter(":", "").replace(":", "-")
@@ -86,6 +92,7 @@ public data class VersionCatalog(
 }
 
 private object VersionCatalogSerializer : KSerializer<VersionCatalog> {
+
     override val descriptor: SerialDescriptor =
         buildClassSerialDescriptor("VersionCatalog") {
             element("versions", MapSerializer(String.serializer(), String.serializer()).descriptor)
@@ -99,7 +106,7 @@ private object VersionCatalogSerializer : KSerializer<VersionCatalog> {
     @Suppress("UNCHECKED_CAST")
     override fun deserialize(decoder: Decoder): VersionCatalog {
         val value = decoder.decodeSerializableValue(
-            MapSerializer(String.serializer(), AnySerializer)
+            MapSerializer(String.serializer(), AnySerializer),
         )
 
         val versions =
@@ -115,7 +122,7 @@ private object VersionCatalogSerializer : KSerializer<VersionCatalog> {
             DefaultMutableMinimalDependency(
                 DefaultModuleIdentifier.newId(group, name),
                 resolveVersion(value["version"], versions),
-                null
+                null,
             )
         }
 
@@ -127,7 +134,7 @@ private object VersionCatalogSerializer : KSerializer<VersionCatalog> {
 
                 DefaultPluginDependency(
                     plugin["id"] as String,
-                    resolveVersion(plugin["version"], versions)
+                    resolveVersion(plugin["version"], versions),
                 )
             }.toCatalogAliasMap(),
             value["bundles"]?.asMap.orEmpty().mapValues { (_, references) ->
@@ -135,7 +142,8 @@ private object VersionCatalogSerializer : KSerializer<VersionCatalog> {
                     addAll(
                         references.asList<String>().map { reference ->
                             libraries[reference] ?: throw IllegalArgumentException("Unknown library $reference")
-                        })
+                        },
+                    )
                 }
             }.toCatalogAliasMap(),
         )
