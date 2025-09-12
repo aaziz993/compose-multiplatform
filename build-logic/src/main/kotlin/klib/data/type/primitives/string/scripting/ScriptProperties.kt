@@ -97,8 +97,7 @@ public abstract class ScriptProperties {
 
     override fun toString(): String = buildStringAnsi {
         attribute(
-            fileTree.entries.first().key.printTree(
-                this,
+            fileTree.entries.first().key.toTreeString(
                 children = {
                     fileTree[this].orEmpty()
                 },
