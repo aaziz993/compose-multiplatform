@@ -47,6 +47,8 @@ private class TemplateGrammar(
     private val evaluator: (text: String, Program) -> Any?
 ) {
 
+    private val cache = mutableMapOf<String, Any?>()
+
     fun parseToEnd(input: String): Any? = buildList {
         var index = 0
 
@@ -66,12 +68,19 @@ private class TemplateGrammar(
                 INTERPOLATE_REGEX.matchAt(input, index)?.let { match ->
                     index += match.value.length
 
-                    val value = getter(listOf(match.groupValues[1]))
+                    val key = match.groupValues[1]
 
-                    add(
-                        if (SubstituteOption.DEEP_INTERPOLATION in options && value is String) parseToEnd(value)
-                        else value
-                    )
+                    var value: Any?
+
+                    if (key in cache) value = cache[key]
+                    else {
+                        value = getter(listOf(key))
+                        if (SubstituteOption.DEEP_INTERPOLATION in options && value is String)
+                            value = parseToEnd(value)
+                        cache[key] = value
+                    }
+
+                    add(value)
 
                     continue
                 }
@@ -80,26 +89,33 @@ private class TemplateGrammar(
                 INTERPOLATE_START_REGEX.matchAt(input, index)?.let { match ->
                     index += match.value.length
 
-                    val value = getter(
-                        buildList {
-                            while (true) {
-                                KEY_REGEX.matchAt(input, index)?.let { match ->
-                                    add(match.groupValues[1].removeSurrounding("\""))
-                                    index += match.value.length
-                                } ?: break
+                    val path = buildList {
+                        while (true) {
+                            KEY_REGEX.matchAt(input, index)?.let { match ->
+                                add(match.groupValues[1].removeSurrounding("\""))
+                                index += match.value.length
+                            } ?: break
 
-                                if (input[index] == '.') index++
-                            }
-                            check(isNotEmpty()) { "Empty interpolation" }
-                            check(input.getOrNull(index) == '}') { "Missing closing brace at position $index" }
-                            index++
-                        },
-                    )
+                            if (input[index] == '.') index++
+                        }
+                        check(isNotEmpty()) { "Empty interpolation" }
+                        check(input.getOrNull(index) == '}') { "Missing closing brace at position $index" }
+                        index++
+                    }
 
-                    add(
-                        if (SubstituteOption.DEEP_INTERPOLATION in options && value is String) parseToEnd(value)
-                        else value
-                    )
+                    val dotPath = path.joinToString(".")
+
+                    var value: Any?
+
+                    if (dotPath in cache) value = cache[dotPath]
+                    else {
+                        value = getter(path)
+                        if (SubstituteOption.DEEP_INTERPOLATION in options && value is String)
+                            value = parseToEnd(value)
+                        cache[dotPath] = value
+                    }
+
+                    add(value)
 
                     continue
                 }
