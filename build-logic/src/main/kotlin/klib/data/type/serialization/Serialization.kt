@@ -40,7 +40,9 @@ public fun <T : Any> decodeFile(
 
         if (decodedImports.isEmpty()) substitutedFile
         else {
-            val mergedImports =
+
+            val mergedImports =decodedImports.first().deepPlus()
+
                 decodedImports.fold(decodedImports.first().toNewMutableCollection()) { mergedImports, decodedImport ->
                     decodedImport.deepMap(destination = mergedImports)
                 }
