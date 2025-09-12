@@ -22,7 +22,6 @@ import klib.data.type.reflection.packageExtensions
 import klib.data.type.reflection.toGetterName
 import klib.data.type.reflection.toSetterName
 import klib.data.type.serialization.IMPORTS_KEY
-import klib.data.type.serialization.coders.tree.deserialize
 import klib.data.type.serialization.decodeFile
 import klib.data.type.serialization.json.decodeAnyFromString
 import klib.data.type.serialization.properties.Properties
@@ -39,6 +38,7 @@ import klib.data.type.ansi.ansiSpan
 import klib.data.type.ansi.buildStringAnsi
 import klib.data.type.primitives.string.addSuffix
 import klib.data.type.primitives.string.highlight
+import klib.data.type.serialization.coders.tree.deserialize
 import kotlin.Any
 import kotlin.Pair
 import kotlin.collections.last

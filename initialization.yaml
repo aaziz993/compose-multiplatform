@@ -18,7 +18,7 @@ license:
   distribution: repo
   comments: A business-friendly OSS license.
 licenseFile:
-  source: ${licence.url}
+  source: ${license.url}
   year: ${year}
   yearPlaceholder: '[yyyy]'
   owner: ${developer.name}

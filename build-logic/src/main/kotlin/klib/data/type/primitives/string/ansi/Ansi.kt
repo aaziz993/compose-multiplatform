@@ -406,7 +406,7 @@ public open class Ansi(private val builder: StringBuilder = StringBuilder(80)) :
         return this
     }
 
-    public inline fun span(text: String, block: Ansi.() -> Unit = {}): Ansi = apply(block).attribute(text).reset()
+    public inline fun span(csq: CharSequence, block: Ansi.() -> Unit = {}): Ansi = apply(block).attribute(csq).reset()
 
     private object NoAnsi : Ansi() {
 
@@ -470,4 +470,4 @@ public open class Ansi(private val builder: StringBuilder = StringBuilder(80)) :
 
 public fun buildStringAnsi(block: Ansi.() -> Unit): String = Ansi.ansi().apply(block).toString()
 
-public inline fun String.ansiSpan(block: Ansi.() -> Unit = {}): String = Ansi.ansi().span(this, block).toString()
+public inline fun CharSequence.ansiSpan(block: Ansi.() -> Unit = {}): String = Ansi.ansi().span(this, block).toString()
