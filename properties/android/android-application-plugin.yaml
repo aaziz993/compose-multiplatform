@@ -66,11 +66,11 @@ script:
         testProguardFiles.addAll: |
           (listOf(
             "test-proguard-rules.pro"
-          ).map(::file))
+          ).map { file-> file(file) })
         consumerProguardFiles.addAll: |
           (listOf(
             "consumer-proguard-rules.pro",
-          ).map(::file))
+          ).map { file -> file(file) })
       signingConfigs:
         - create: |
             ("release") { signingConfig ->
