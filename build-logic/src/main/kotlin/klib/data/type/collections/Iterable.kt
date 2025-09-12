@@ -1,14 +1,13 @@
 package klib.data.type.collections
 
-import klib.data.type.functions.Equator
-import klib.data.type.functions.Merger
 import klib.data.type.collections.list.add
 import klib.data.type.collections.list.updateFirst
 import klib.data.type.collections.list.updateLast
 import klib.data.type.collections.map.with
+import klib.data.type.functions.Equator
+import klib.data.type.functions.Merger
 import klib.data.type.primitives.ifTrue
-import java.util.ArrayList
-import kotlin.comparisons.compareBy
+import kotlin.collections.map
 
 public val <E> Iterable<E>.entries: List<Map.Entry<Int, E>>
     get() = mapIndexed { index, value -> index with value }
