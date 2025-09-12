@@ -91,8 +91,9 @@ public fun Collection<Int>.isZeroConsecutive(): Boolean = withIndex().all { (ind
 public fun Collection<Int>.isConsecutive(): Boolean = zipWithNext().all { (a, b) -> b == a + 1 }
 
 //////////////////////////////////////////////////////////SHALLOW//////////////////////////////////////////////////////
-public fun <T : Any> Any.mapTo(
-    destination: T,
+@Suppress("UNCHECKED_CAST")
+public fun <T : Any> T.map(
+    destination: T = toNewMutableCollection() as T,
     sourceIterator: Any.() -> Iterator<Map.Entry<Any?, Any?>> = Any::iterator,
     sourceTransform: Any.(key: Any?, value: Any?) -> Pair<Any?, Any?>? = { key, value -> key to value },
     destinationSetter: T.(key: Any?, value: Any?) -> Unit = { key, value -> put(key, value) },
@@ -107,43 +108,14 @@ public fun <T : Any> Any.mapTo(
 }
 
 @Suppress("UNCHECKED_CAST")
-public fun <T : Any> T.map(
-    destination: T = toNewMutableCollection() as T,
-    sourceIterator: Any.() -> Iterator<Map.Entry<Any?, Any?>> = Any::iterator,
-    sourceTransform: Any.(key: Any?, value: Any?) -> Pair<Any?, Any?>? = { key, value -> key to value },
-    destinationSetter: T.(key: Any?, value: Any?) -> Unit = { key, value -> put(key, value) },
-): T = mapTo(
-    destination,
-    sourceIterator,
-    sourceTransform,
-    destinationSetter,
-)
-
-@Suppress("UNCHECKED_CAST")
 public fun <T : Any> T.plus(
-    vararg others: Any,
+    vararg others: T,
     sourceIterator: Any.() -> Iterator<Map.Entry<Any?, Any?>> = Any::iterator,
     sourceTransform: Any.(key: Any?, value: Any?) -> Pair<Any?, Any?>? = { key, value -> key to value },
     destinationSetter: T.(key: Any?, value: Any?) -> Unit = { key, value -> put(key, value) },
 ): T = listOf(this, *others).fold(toNewMutableCollection() as T) { acc, value ->
-    value.mapTo(acc, sourceIterator, sourceTransform, destinationSetter)
+    value.map(acc, sourceIterator, sourceTransform, destinationSetter)
 }
-
-public fun <T : Any> Any.mapKeysTo(
-    destination: T,
-    sourceIterator: Any.() -> Iterator<Map.Entry<Any?, Any?>> = Any::iterator,
-    sourceFilter: Any.(key: Any?, value: Any?) -> Boolean = { _, _ -> true },
-    sourceTransform: Any.(key: Any?, value: Any?) -> Any?,
-    destinationSetter: T.(key: Any?, value: Any?) -> Unit = { key, value -> put(key, value) },
-): T = mapTo(
-    destination,
-    sourceIterator,
-    { key, value ->
-        if (sourceFilter(key, value)) sourceTransform(key, value) to value else null
-    },
-
-    destinationSetter,
-)
 
 @Suppress("UNCHECKED_CAST")
 public fun <T : Any> T.mapKeys(
@@ -152,25 +124,11 @@ public fun <T : Any> T.mapKeys(
     sourceFilter: Any.(key: Any?, value: Any?) -> Boolean = { _, _ -> true },
     sourceTransform: Any.(key: Any?, value: Any?) -> Any?,
     destinationSetter: T.(key: Any?, value: Any?) -> Unit = { key, value -> put(key, value) },
-): T = mapKeysTo(
-    destination,
-    sourceIterator,
-    sourceFilter,
-    sourceTransform,
-    destinationSetter,
-)
-
-public fun <T : Any> Any.mapValuesTo(
-    destination: T,
-    sourceIterator: Any.() -> Iterator<Map.Entry<Any?, Any?>> = Any::iterator,
-    sourceFilter: Any.(key: Any?, value: Any?) -> Boolean = { _, _ -> true },
-    sourceTransform: Any.(key: Any?, value: Any?) -> Any?,
-    destinationSetter: T.(key: Any?, value: Any?) -> Unit = { key, value -> put(key, value) },
-): T = mapTo(
+): T = map(
     destination,
     sourceIterator,
     { key, value ->
-        if (sourceFilter(key, value)) key to sourceTransform(key, value) else null
+        if (sourceFilter(key, value)) sourceTransform(key, value) to value else null
     },
     destinationSetter,
 )
@@ -182,18 +140,20 @@ public fun <T : Any> T.mapValues(
     sourceFilter: Any.(key: Any?, value: Any?) -> Boolean = { _, _ -> true },
     sourceTransform: Any.(key: Any?, value: Any?) -> Any?,
     destinationSetter: T.(key: Any?, value: Any?) -> Unit = { key, value -> put(key, value) },
-): T = mapValuesTo(
+): T = map(
     destination,
     sourceIterator,
-    sourceFilter,
-    sourceTransform,
+    { key, value ->
+        if (sourceFilter(key, value)) key to sourceTransform(key, value) else null
+    },
     destinationSetter,
 )
 
-public fun <T : Any, K> Any.sliceTo(
+@Suppress("UNCHECKED_CAST")
+public fun <T : Any, K> T.slice(
     vararg sourceKeys: K,
     sourceGetter: Any.(key: K) -> Any? = Any::getOrNull,
-    destination: T,
+    destination: T = toNewMutableCollection() as T,
     destinationSetter: T.(key: K, value: Any?) -> Unit = { key, value -> put(key, value) },
 ): T {
     sourceKeys.forEach { key ->
@@ -204,22 +164,10 @@ public fun <T : Any, K> Any.sliceTo(
 }
 
 @Suppress("UNCHECKED_CAST")
-public fun <T : Any, K> Any.slice(
-    vararg sourceKeys: K,
-    sourceGetter: Any.(key: K) -> Any? = Any::getOrNull,
-    destination: T = toNewMutableCollection() as T,
-    destinationSetter: T.(key: K, value: Any?) -> Unit = { key, value -> put(key, value) },
-): T = sliceTo(
-    *sourceKeys,
-    sourceGetter = sourceGetter,
-    destination = destination,
-    destinationSetter = destinationSetter,
-)
-
-public fun <T : Any> Any.minusKeysTo(
+public fun <T : Any> T.minusKeys(
     vararg sourceKeys: Any?,
     sourceIterator: Any.() -> Iterator<Map.Entry<Any?, Any?>> = Any::iterator,
-    destination: T,
+    destination: T = toNewMutableCollection() as T,
     destinationSetter: T.(key: Any?, value: Any?) -> Unit = { key, value -> put(key, value) },
 ): T {
     sourceIterator().forEach { (key, value) ->
@@ -230,19 +178,6 @@ public fun <T : Any> Any.minusKeysTo(
 
     return destination
 }
-
-@Suppress("UNCHECKED_CAST")
-public fun <T : Any> Any.minusKeys(
-    vararg sourceKeys: Any?,
-    sourceIterator: Any.() -> Iterator<Map.Entry<Any?, Any?>> = Any::iterator,
-    destination: T = toNewMutableCollection() as T,
-    destinationSetter: T.(key: Any?, value: Any?) -> Unit = { key, value -> put(key, value) },
-): T = minusKeysTo(
-    *sourceKeys,
-    sourceIterator = sourceIterator,
-    destination = destination,
-    destinationSetter = destinationSetter,
-)
 
 ////////////////////////////////////////////////////////////DEEP////////////////////////////////////////////////////////
 @Suppress("UNCHECKED_CAST")
@@ -383,8 +318,9 @@ public fun <K> Collection<Pair<List<K>, Any?>>.unflattenKeys(
     },
 ): Any = unflatten({ key -> key }, destinationGetter, destinationSetter)
 
-public fun <T : Any> Any.deepMapTo(
-    destination: T,
+@Suppress("UNCHECKED_CAST")
+public fun <T : Any> T.deepMap(
+    destination: T = toNewMutableCollection() as T,
     sourceIteratorOrNull: List<Pair<Any, Any?>>.(value: Any) -> Iterator<Map.Entry<Any?, Any?>>? = { value ->
         value.iteratorOrNull()
     },
@@ -440,25 +376,8 @@ private data class DeepMapToArgs(
 )
 
 @Suppress("UNCHECKED_CAST")
-public fun <T : Any> T.deepMap(
-    destination: T = toNewMutableCollection() as T,
-    sourceIteratorOrNull: List<Pair<Any, Any?>>.(value: Any) -> Iterator<Map.Entry<Any?, Any?>>? = { value ->
-        value.iteratorOrNull()
-    },
-    sourceTransform: List<Pair<Any, Any?>>.(value: Any?) -> Pair<Any?, Any?>? = { value -> last().second to value },
-    destinationGetter: List<Pair<Any, Any?>>.(source: Any) -> Any = { source ->
-        last().first.getOrPut(last().second, source::toNewMutableCollection).apply {
-            (this as? MutableList<*>)?.clear()
-        }
-    },
-    destinationSetter: List<Pair<Any, Any?>>.(value: Any?) -> Unit = { value ->
-        last().first.put(last().second, value)
-    },
-): T = deepMapTo(destination, sourceIteratorOrNull, sourceTransform, destinationGetter, destinationSetter)
-
-@Suppress("UNCHECKED_CAST")
 public fun <T : Any> T.deepPlus(
-    vararg others: Any,
+    vararg others: T,
     sourceIteratorOrNull: List<Pair<Any, Any?>>.(value: Any) -> Iterator<Map.Entry<Any?, Any?>>? = { value ->
         value.iteratorOrNull()
     },
@@ -472,33 +391,8 @@ public fun <T : Any> T.deepPlus(
         last().first.put(last().second, value)
     },
 ): T = listOf(this, *others).fold(toNewMutableCollection() as T) { acc, value ->
-    value.deepMapTo(acc, sourceIteratorOrNull, sourceTransform, destinationGetter, destinationSetter)
+    value.deepMap(acc, sourceIteratorOrNull, sourceTransform, destinationGetter, destinationSetter)
 }
-
-public fun <T : Any> Any.deepMapKeysTo(
-    destination: T,
-    sourceIteratorOrNull: List<Pair<Any, Any?>>.(value: Any) -> Iterator<Map.Entry<Any?, Any?>>? = { value ->
-        value.iteratorOrNull()
-    },
-    sourceFilter: List<Pair<Any, Any?>>.(value: Any?) -> Boolean = { true },
-    sourceTransform: List<Pair<Any, Any?>>.(value: Any?) -> Any?,
-    destinationGetter: List<Pair<Any, Any?>>.(source: Any) -> Any = { source ->
-        last().first.getOrPut(last().second, source::toNewMutableCollection).apply {
-            (this as? MutableList<*>)?.clear()
-        }
-    },
-    destinationSetter: List<Pair<Any, Any?>>.(value: Any?) -> Unit = { value ->
-        last().first.put(last().second, value)
-    },
-): T = deepMapTo(
-    destination,
-    sourceIteratorOrNull,
-    { value ->
-        if (sourceFilter(value)) sourceTransform(value) to value else null
-    },
-    destinationGetter,
-    destinationSetter,
-)
 
 @Suppress("UNCHECKED_CAST")
 public fun <T : Any> T.deepMapKeys(
@@ -516,35 +410,11 @@ public fun <T : Any> T.deepMapKeys(
     destinationSetter: List<Pair<Any, Any?>>.(value: Any?) -> Unit = { value ->
         last().first.put(last().second, value)
     },
-): T = deepMapKeysTo(
-    destination,
-    sourceIteratorOrNull,
-    sourceFilter,
-    sourceTransform,
-    destinationGetter,
-    destinationSetter,
-)
-
-public fun <T : Any> Any.deepMapValuesTo(
-    destination: T,
-    sourceIteratorOrNull: List<Pair<Any, Any?>>.(value: Any) -> Iterator<Map.Entry<Any?, Any?>>? = { value ->
-        value.iteratorOrNull()
-    },
-    sourceFilter: List<Pair<Any, Any?>>.(value: Any?) -> Boolean = { true },
-    sourceTransform: List<Pair<Any, Any?>>.(value: Any?) -> Any?,
-    destinationGetter: List<Pair<Any, Any?>>.(source: Any) -> Any = { source ->
-        last().first.getOrPut(last().second, source::toNewMutableCollection).apply {
-            (this as? MutableList<*>)?.clear()
-        }
-    },
-    destinationSetter: List<Pair<Any, Any?>>.(value: Any?) -> Unit = { value ->
-        last().first.put(last().second, value)
-    },
-): T = deepMapTo(
+): T = deepMap(
     destination,
     sourceIteratorOrNull,
     { value ->
-        if (sourceFilter(value)) last().second to sourceTransform(value) else null
+        if (sourceFilter(value)) sourceTransform(value) to value else null
     },
     destinationGetter,
     destinationSetter,
@@ -566,21 +436,23 @@ public fun <T : Any> T.deepMapValues(
     destinationSetter: List<Pair<Any, Any?>>.(value: Any?) -> Unit = { value ->
         last().first.put(last().second, value)
     },
-): T = deepMapValuesTo(
+): T = deepMap(
     destination,
     sourceIteratorOrNull,
-    sourceFilter,
-    sourceTransform,
+    { value ->
+        if (sourceFilter(value)) last().second to sourceTransform(value) else null
+    },
     destinationGetter,
     destinationSetter,
 )
 
-public fun <T : Any, P : Any> Any.deepSliceTo(
+@Suppress("UNCHECKED_CAST")
+public fun <T : Any, P : Any> T.deepSlice(
     vararg sourcePaths: P,
     sourcePathKey: List<Pair<Any, Any?>>.(sourcePath: P) -> Any?,
     sourcePathChildren: List<Pair<Any, Any?>>.(value: Any, sourcePath: P) -> List<P>,
     sourceGetter: List<Pair<Any, Any?>>.() -> Any? = { last().first.getOrNull(last().second) },
-    destination: T,
+    destination: T = toNewMutableCollection() as T,
     destinationGetter: List<Pair<Any, Any?>>.(source: Any) -> Any = { source ->
         last().first.getOrPut(last().second, source::toNewMutableCollection)
     },
@@ -630,10 +502,8 @@ private data class DeepSliceArgs<P : Any>(
 )
 
 @Suppress("UNCHECKED_CAST")
-public fun <T : Any, P : Any> T.deepSlice(
-    vararg sourcePaths: P,
-    sourcePathKey: List<Pair<Any, Any?>>.(sourcePath: P) -> Any?,
-    sourcePathChildren: List<Pair<Any, Any?>>.(value: Any, sourcePath: P) -> List<P>,
+public fun <T : Any> T.deepSlice(
+    vararg sourcePaths: List<Any?>,
     sourceGetter: List<Pair<Any, Any?>>.() -> Any? = { last().first.getOrNull(last().second) },
     destination: T = toNewMutableCollection() as T,
     destinationGetter: List<Pair<Any, Any?>>.(source: Any) -> Any = { source ->
@@ -642,27 +512,7 @@ public fun <T : Any, P : Any> T.deepSlice(
     destinationSetter: List<Pair<Any, Any?>>.(value: Any?) -> Unit = { value ->
         last().first.put(last().second, value)
     },
-): T = deepSliceTo(
-    *sourcePaths,
-    sourcePathKey = sourcePathKey,
-    sourcePathChildren = sourcePathChildren,
-    sourceGetter = sourceGetter,
-    destination = destination,
-    destinationGetter = destinationGetter,
-    destinationSetter = destinationSetter,
-)
-
-public fun <T : Any> Any.deepSliceTo(
-    vararg sourcePaths: List<Any?>,
-    sourceGetter: List<Pair<Any, Any?>>.() -> Any? = { last().first.getOrNull(last().second) },
-    destination: T,
-    destinationGetter: List<Pair<Any, Any?>>.(source: Any) -> Any = { source ->
-        last().first.getOrPut(last().second, source::toNewMutableCollection)
-    },
-    destinationSetter: List<Pair<Any, Any?>>.(value: Any?) -> Unit = { value ->
-        last().first.put(last().second, value)
-    },
-): T = deepSliceTo(
+): T = deepSlice(
     *sourcePaths,
     sourcePathKey = { sourcePath -> sourcePath.first() },
     sourcePathChildren = { _, sourcePath ->
@@ -675,32 +525,14 @@ public fun <T : Any> Any.deepSliceTo(
 )
 
 @Suppress("UNCHECKED_CAST")
-public fun <T : Any> T.deepSlice(
-    vararg sourcePaths: List<Any?>,
-    sourceGetter: List<Pair<Any, Any?>>.() -> Any? = { last().first.getOrNull(last().second) },
-    destination: T = toNewMutableCollection() as T,
-    destinationGetter: List<Pair<Any, Any?>>.(source: Any) -> Any = { source ->
-        last().first.getOrPut(last().second, source::toNewMutableCollection)
-    },
-    destinationSetter: List<Pair<Any, Any?>>.(value: Any?) -> Unit = { value ->
-        last().first.put(last().second, value)
-    },
-): T = deepSliceTo(
-    *sourcePaths,
-    sourceGetter = sourceGetter,
-    destination = destination,
-    destinationGetter = destinationGetter,
-    destinationSetter = destinationSetter,
-)
-
-public fun <T : Any, P : Any> Any.deepMinusKeysTo(
+public fun <T : Any, P : Any> T.deepMinusKeys(
     vararg sourcePaths: P,
     sourcePathKey: List<Pair<Any, Any?>>.(sourcePath: P) -> Any?,
     sourcePathChildren: List<Pair<Any, Any?>>.(value: Any, sourcePath: P) -> List<P>,
     sourceIteratorOrNull: List<Pair<Any, Any?>>.(source: Any) -> Iterator<Map.Entry<Any?, Any?>>? = { source ->
         source.iteratorOrNull()
     },
-    destination: T,
+    destination: T = toNewMutableCollection() as T,
     destinationGetter: List<Pair<Any, Any?>>.(source: Any) -> Any = { source ->
         last().first.getOrPut(last().second, source::toNewMutableCollection)
     },
@@ -756,10 +588,8 @@ private data class DeepMinusKeysArgs<P : Any>(
 )
 
 @Suppress("UNCHECKED_CAST")
-public fun <T : Any, P : Any> T.deepMinusKeys(
-    vararg sourcePaths: P,
-    sourcePathKey: List<Pair<Any, Any?>>.(sourcePath: P) -> Any?,
-    sourcePathChildren: List<Pair<Any, Any?>>.(value: Any, sourcePath: P) -> List<P>,
+public fun <T : Any> T.deepMinusKeys(
+    vararg sourcePaths: List<Any?>,
     sourceIteratorOrNull: List<Pair<Any, Any?>>.(source: Any) -> Iterator<Map.Entry<Any?, Any?>>? = { source ->
         source.iteratorOrNull()
     },
@@ -770,55 +600,12 @@ public fun <T : Any, P : Any> T.deepMinusKeys(
     destinationSetter: List<Pair<Any, Any?>>.(value: Any?) -> Unit = { value ->
         last().first.put(last().second, value)
     },
-): T = deepMinusKeysTo(
-    *sourcePaths,
-    sourcePathKey = sourcePathKey,
-    sourcePathChildren = sourcePathChildren,
-    sourceIteratorOrNull = sourceIteratorOrNull,
-    destination = destination,
-    destinationGetter = destinationGetter,
-    destinationSetter = destinationSetter,
-)
-
-public fun <T : Any> Any.deepMinusKeysTo(
-    vararg sourcePaths: List<Any?>,
-    sourceIteratorOrNull: List<Pair<Any, Any?>>.(source: Any) -> Iterator<Map.Entry<Any?, Any?>>? = { source ->
-        source.iteratorOrNull()
-    },
-    destination: T,
-    destinationGetter: List<Pair<Any, Any?>>.(source: Any) -> Any = { source ->
-        last().first.getOrPut(last().second, source::toNewMutableCollection)
-    },
-    destinationSetter: List<Pair<Any, Any?>>.(value: Any?) -> Unit = { value ->
-        last().first.put(last().second, value)
-    },
-): T = deepMinusKeysTo(
+): T = deepMinusKeys(
     *sourcePaths,
     sourcePathKey = { sourcePath -> sourcePath.first() },
     sourcePathChildren = { _, sourcePath ->
         sourcePath.drop().let { path -> if (path.isEmpty()) emptyList() else listOf(path) }
     },
-    sourceIteratorOrNull = sourceIteratorOrNull,
-    destination = destination,
-    destinationGetter = destinationGetter,
-    destinationSetter = destinationSetter,
-)
-
-@Suppress("UNCHECKED_CAST")
-public fun <T : Any> Any.deepMinusKeys(
-    vararg sourcePaths: List<Any?>,
-    sourceIteratorOrNull: List<Pair<Any, Any?>>.(source: Any) -> Iterator<Map.Entry<Any?, Any?>>? = { source ->
-        source.iteratorOrNull()
-    },
-    destination: T = toNewMutableCollection() as T,
-    destinationGetter: List<Pair<Any, Any?>>.(source: Any) -> Any = { source ->
-        last().first.getOrPut(last().second, source::toNewMutableCollection)
-    },
-    destinationSetter: List<Pair<Any, Any?>>.(value: Any?) -> Unit = { value ->
-        last().first.put(last().second, value)
-    },
-): T = deepMinusKeysTo(
-    *sourcePaths,
     sourceIteratorOrNull = sourceIteratorOrNull,
     destination = destination,
     destinationGetter = destinationGetter,

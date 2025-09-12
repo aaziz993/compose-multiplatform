@@ -2,7 +2,6 @@ package klib.data.type.primitives.string.tokenization.substitution
 
 import com.github.h0tk3y.betterParse.lexer.TokenMatch
 import com.github.h0tk3y.betterParse.parser.toParsedOrThrow
-import klib.data.type.collections.deepGetOrNull
 import klib.data.type.primitives.string.DOUBLE_QUOTED_STRING_PATTERN
 import klib.data.type.primitives.string.ID_PATTERN
 import klib.data.type.primitives.string.tokenization.mapWithMatches
@@ -10,6 +9,7 @@ import kotlin.collections.List
 import kotlin.collections.Set
 import kotlin.collections.buildList
 import kotlin.collections.first
+import kotlin.collections.isNotEmpty
 import kotlin.collections.joinToString
 import kotlin.collections.listOf
 import kotlin.collections.single
@@ -18,12 +18,12 @@ import kotlin.collections.take
 import kotlin.collections.toSet
 import kotlin.sequences.toList
 
+private val EVEN_DOLLARS_REGEX = Regex("""(?:\$\$)+""")
 private val INTERPOLATE_REGEX = Regex($$"""(\$+)($$ID_PATTERN)""")
 private val KEY_REGEX = Regex("""\s*($ID_PATTERN|\d+|$DOUBLE_QUOTED_STRING_PATTERN)\s*""")
-private val INTERPOLATE_START_REGEX = Regex($$"""(\$+)\{""")
-private val EVEN_DOLLARS_REGEX = Regex("""(?:\$\$)+""")
-private val EVALUATE_START_REGEX = Regex("""(\\*)\{""")
-private val OTHER_REGEX = Regex("""[^$\\{]+""")
+private val INTERPOLATE_START_REGEX = Regex("""\$\{""")
+private val EVALUATE_START_REGEX = Regex("""\$<""")
+private val OTHER_REGEX = Regex("""[^$]+""")
 
 public fun String.substitute(
     vararg options: SubstituteOption = arrayOf(
@@ -68,6 +68,14 @@ private class TemplateGrammar(
         var i = 0
 
         while (i < input.length) {
+            if (SubstituteOption.INTERPOLATE in options || SubstituteOption.INTERPOLATE_BRACED in options || SubstituteOption.EVALUATE in options)
+                EVEN_DOLLARS_REGEX.matchAt(input, i)?.let { match ->
+                    i += match.value.length
+
+                    add(dollarsEscaper(match.groupValues.first()))
+                    continue
+                }
+
             if (SubstituteOption.INTERPOLATE in options)
                 INTERPOLATE_REGEX.matchAt(input, i)?.let { match ->
                     i += match.value.length
@@ -118,20 +126,12 @@ private class TemplateGrammar(
                     continue
                 }
 
-            if (SubstituteOption.INTERPOLATE in options || SubstituteOption.INTERPOLATE_BRACED in options)
-                EVEN_DOLLARS_REGEX.matchAt(input, i)?.let { match ->
-                    i += match.value.length
-
-                    add(dollarsEscaper(match.groupValues.first()))
-                    continue
-                }
-
             if (SubstituteOption.EVALUATE in options)
                 EVALUATE_START_REGEX.matchAt(input, i)?.let { match ->
                     i += match.value.length
 
                     var backslashes = match.groupValues[1]
-                    var value: Any? = "{"
+                    var value: Any? = "<"
 
                     if (backslashes.length % 2 == 0) {
                         val tokens = ProgramGrammar.tokenizer.tokenize(input.substring(i))
@@ -143,7 +143,7 @@ private class TemplateGrammar(
 
                         value = parseResult.value
 
-                        if (parseResult.nextPosition >= tokenList.size || tokenList[parseResult.nextPosition].text != "}")
+                        if (parseResult.nextPosition >= tokenList.size || tokenList[parseResult.nextPosition].text != ">")
                             error("Missing closing brace")
 
                         i += tokenList.take(parseResult.nextPosition + 1).sumOf { token -> token.text.length }
