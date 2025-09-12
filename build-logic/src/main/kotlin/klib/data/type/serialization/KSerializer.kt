@@ -3,6 +3,7 @@ package klib.data.type.serialization
 import klib.data.type.collections.deepMap
 import klib.data.type.collections.list.drop
 import klib.data.type.collections.map
+import klib.data.type.collections.plus
 import klib.data.type.collections.toNewMutableCollection
 import klib.data.type.reflection.callMember
 import klib.data.type.serialization.coders.tree.deserialize
@@ -32,7 +33,8 @@ public fun KSerializer<*>.childSerializer(index: Int): KSerializer<*> {
 
     try {
         deserialize(elementDecoder)
-    } catch (_: Exception) {
+    }
+    catch (_: Exception) {
     }
 
     return elementDecoder.elementDeserializer
@@ -75,10 +77,8 @@ public fun <T : Any> KSerializer<T>.plus(
     serializersModule: SerializersModule = EmptySerializersModule()
 ): T = values.map { value -> serialize(value, serializersModule)!! }.let { sources ->
     deserialize(
-        sources.fold(sources.first().toNewMutableCollection()) { destination, source ->
-            source.map(destination = destination)
-        },
-        serializersModule
+        sources.first().plus(*sources.drop().toTypedArray()),
+        serializersModule,
     )
 }
 
@@ -87,10 +87,8 @@ public fun <T : Any> KSerializer<T>.deepPlus(
     serializersModule: SerializersModule = EmptySerializersModule(),
 ): T = values.map { value -> serialize(value, serializersModule)!! }.let { sources ->
     deserialize(
-        sources.fold(sources.first().toNewMutableCollection()) { destination, source ->
-            source.deepMap(destination = destination)
-        },
-        serializersModule
+        sources.first().deepPlus(*sources.drop().toTypedArray()),
+        serializersModule,
     )
 }
 

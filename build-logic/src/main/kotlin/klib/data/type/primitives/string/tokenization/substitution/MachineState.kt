@@ -39,7 +39,7 @@ public data class MachineState(
     )
 
     public fun getDeclared(name: String): Declaration =
-        findDeclared(name) ?: throw IllegalArgumentException("Undeclared variable '$name'")
+        findDeclaration(name) ?: throw IllegalArgumentException("Undeclared variable '$name'")
 
     public operator fun set(name: String, value: Any?): MachineState {
         val index = scopes.indexOfLast { scope -> name in scope }
@@ -56,8 +56,8 @@ public data class MachineState(
         )
     }
 
-    public operator fun get(name: String): Any? = findDeclared(name).let { declared ->
-        if (declared == null) input(name) else declared.value
+    public operator fun get(name: String): Any? = findDeclaration(name).let { declaration ->
+        if (declaration == null) input(name) else declaration.value
     }
 
     public fun declareFunction(function: Function): MachineState = copy(
@@ -107,7 +107,7 @@ public data class MachineState(
             }
         } ?: error("Unresolved function $name($argTypes)")
 
-    private fun findDeclared(name: String): Declaration? =
+    private fun findDeclaration(name: String): Declaration? =
         scopes.asReversed().firstNotNullOfOrNull { scopes -> scopes[name] }
 
     private fun Function.typeSignature(): List<Type> = parameters.map(Variable::type)

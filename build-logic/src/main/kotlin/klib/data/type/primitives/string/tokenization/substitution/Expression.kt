@@ -63,17 +63,7 @@ public data class Literal(val value: Any?) : Expression() {
 public data class StringLiteral(val value: String) : Expression() {
 
     override fun invoke(machine: MachineState): MachineState = machine.copy(
-        result = value.substitute(
-            SubstituteOption.INTERPOLATE,
-            SubstituteOption.INTERPOLATE_BRACED,
-            SubstituteOption.DEEP_INTERPOLATION,
-            SubstituteOption.ESCAPE_DOLLARS,
-            SubstituteOption.EVALUATE,
-            SubstituteOption.ESCAPE_BACKSLASHES,
-            getter = { path ->
-                machine[path.first()]?.deepGetOrNull(*path.drop(1).toTypedArray())?.second
-            },
-        ),
+        result = machine.input(value),
     )
 }
 

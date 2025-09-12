@@ -2,6 +2,7 @@ package klib.data.type.primitives.string.tokenization.substitution
 
 import com.github.h0tk3y.betterParse.lexer.TokenMatch
 import com.github.h0tk3y.betterParse.parser.toParsedOrThrow
+import klib.data.type.collections.deepGetOrNull
 import klib.data.type.primitives.string.DOUBLE_QUOTED_STRING_PATTERN
 import klib.data.type.primitives.string.ID_PATTERN
 import klib.data.type.primitives.string.tokenization.mapWithMatches
@@ -34,7 +35,9 @@ public fun String.substitute(
     ),
     getter: (path: List<String>) -> Any? = { null },
     evaluator: (programScript: String, program: Program) -> Any? = { _, program ->
-        program { name -> getter(listOf(name)) }
+        program { name ->
+            getter(listOf(name))
+        }
     }
 ): Any? = TemplateGrammar(options.toSet(), getter, evaluator).parseToEnd(this)
 
@@ -104,7 +107,8 @@ private class TemplateGrammar(
                                     if (input[i] == '.') i++
                                 }
                                 check(isNotEmpty()) { "Empty interpolation" }
-                                check(input.getOrNull(i++) == '}') { "Missing closing brace at position $i" }
+                                check(input.getOrNull(i) == '}') { "Missing closing brace at position $i" }
+                                i++
                             },
                         )
                     }
@@ -140,7 +144,7 @@ private class TemplateGrammar(
                         value = parseResult.value
 
                         if (parseResult.nextPosition >= tokenList.size || tokenList[parseResult.nextPosition].text != "}")
-                            error("Closing brackets not found")
+                            error("Missing closing brace")
 
                         i += tokenList.take(parseResult.nextPosition + 1).sumOf { token -> token.text.length }
                     }
