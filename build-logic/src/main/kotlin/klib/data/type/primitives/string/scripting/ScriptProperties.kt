@@ -39,6 +39,9 @@ import klib.data.type.ansi.ansiSpan
 import klib.data.type.ansi.buildStringAnsi
 import klib.data.type.primitives.string.addSuffix
 import klib.data.type.primitives.string.highlight
+import kotlin.Any
+import kotlin.Pair
+import kotlin.collections.last
 import kotlin.reflect.KClass
 import kotlin.reflect.KMutableProperty
 import kotlin.reflect.KVisibility
@@ -243,19 +246,29 @@ public abstract class ScriptProperties {
 
                     if (decodedImports.isEmpty()) substitutedFile + (SCRIPT_KEY to decodedFileScript)
                     else {
-                        val mergedImports =
-                            decodedImports.fold(mutableMapOf<String, Any?>()) { mergedImportsConfig, decodedImport ->
-                                (decodedImport - SCRIPT_KEY).deepMap(mergedImportsConfig)
-                            }
+                        val mergedImports = decodedImports
+                            .map { decodedImport -> decodedImport - SCRIPT_KEY }
+                            .first()
+                            .deepPlus(
+                                *decodedImports.toTypedArray(),
+                                destinationGetter = { source ->
+                                    last().first.getOrPut(last().second, source::toNewMutableCollection)
+                                },
+                            )
 
-                        val mergedImportScripts =
-                            decodedImports.flatMap { decodedImport -> decodedImport[SCRIPT_KEY]!!.asList }
+                        val mergedImportScripts = decodedImports
+                            .flatMap { decodedImport -> decodedImport[SCRIPT_KEY]!!.asList }
 
                         substitutedFile.substitute(
                             getter = { path ->
                                 mergedImports.deepGetOrNull(*path.toTypedArray()).second
                             },
-                        ).deepMap(mergedImports) + (SCRIPT_KEY to mergedImportScripts + decodedFileScript)
+                        ).deepMap(
+                            mergedImports,
+                            destinationGetter = { source ->
+                                last().first.getOrPut(last().second, source::toNewMutableCollection)
+                            },
+                        ) + (SCRIPT_KEY to (mergedImportScripts + decodedFileScript))
                     }
                 }.apply {
                     this["fileTree"] = fileTree
@@ -267,14 +280,5 @@ public abstract class ScriptProperties {
                 this.config.config()
             }
         }
-
-        @PublishedApi
-        internal fun Map<String, Any?>.deepMap(other: MutableMap<String, Any?>): MutableMap<String, Any?> =
-            deepMapTo(
-                destination = other,
-                destinationGetter = { source ->
-                    last().first.getOrPut(last().second, source::toNewMutableCollection)
-                },
-            )
     }
 }

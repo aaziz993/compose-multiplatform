@@ -4,6 +4,7 @@ import klib.data.type.cast
 import klib.data.type.collections.deepGetOrNull
 import klib.data.type.collections.deepMap
 import klib.data.type.collections.list.asList
+import klib.data.type.collections.list.drop
 import klib.data.type.collections.minusKeys
 import klib.data.type.collections.substitute
 import klib.data.type.collections.toNewMutableCollection
@@ -25,13 +26,13 @@ import kotlin.collections.toTypedArray
 public const val IMPORTS_KEY: String = "imports"
 
 @Suppress("UNCHECKED_CAST")
-public fun <T : Any> decodeFile(
+public inline fun <reified T : Any> decodeFile(
     file: String,
-    imports: (file: String, decodedFile: T) -> List<String>? = { _, decodedFile ->
+    crossinline imports: (file: String, decodedFile: T) -> List<String>? = { _, decodedFile ->
         decodedFile.deepGetOrNull(IMPORTS_KEY).second?.cast()
     },
-    decoder: (file: String) -> T,
-    merger: (decodedFile: T, decodedImports: List<T>) -> T = { decodedFile, decodedImports ->
+    crossinline decoder: (file: String) -> T,
+    crossinline merger: (decodedFile: T, decodedImports: List<T>) -> T = { decodedFile, decodedImports ->
         val substitutedFile = decodedFile.minusKeys(IMPORTS_KEY).substitute(
             SubstituteOption.INTERPOLATE_BRACED,
             SubstituteOption.DEEP_INTERPOLATION,
@@ -40,16 +41,11 @@ public fun <T : Any> decodeFile(
 
         if (decodedImports.isEmpty()) substitutedFile
         else {
+            val mergedImports = decodedImports.first().deepPlus(*decodedImports.drop().toTypedArray())
 
-            val mergedImports =decodedImports.first().deepPlus()
-
-                decodedImports.fold(decodedImports.first().toNewMutableCollection()) { mergedImports, decodedImport ->
-                    decodedImport.deepMap(destination = mergedImports)
-                }
-
-            substitutedFile.substitute(getter = { path ->
-                mergedImports.deepGetOrNull(*path.toTypedArray()).second
-            }).deepMap(destination = mergedImports) as T
+            substitutedFile.substitute(
+                getter = { path -> mergedImports.deepGetOrNull(*path.toTypedArray()).second },
+            ).deepMap(mergedImports)
         }
     },
 ): T = DeepRecursiveFunction<DecodeFileArgs<T>, T> { (file, mergedFiles) ->
@@ -57,13 +53,17 @@ public fun <T : Any> decodeFile(
 
     val decodedFile = decoder(file)
 
-    merger(decodedFile, imports(file, decodedFile).orEmpty().map { importFile ->
-        if (importFile in mergedFiles) mergedFiles[importFile] ?: error("Cyclic import: $file -> $importFile")
-        else callRecursive(DecodeFileArgs(importFile, mergedFiles))
-    }).also { mergedFile -> mergedFiles[file] = mergedFile }
+    merger(
+        decodedFile,
+        imports(file, decodedFile).orEmpty().map { importFile ->
+            if (importFile in mergedFiles) mergedFiles[importFile] ?: error("Cyclic import: $file -> $importFile")
+            else callRecursive(DecodeFileArgs(importFile, mergedFiles))
+        },
+    ).also { mergedFile -> mergedFiles[file] = mergedFile }
 }(DecodeFileArgs(file, mutableMapOf()))
 
-private data class DecodeFileArgs<T>(
+@PublishedApi
+internal data class DecodeFileArgs<T>(
     val file: String,
     val mergedFiles: MutableMap<String, T?>,
 )
