@@ -17,7 +17,7 @@ public fun Highlights.highlight(
     val boundaries = (listOf(0, code.length) + highlights.flatMap { highlight ->
         listOf(
             minOf(highlight.location.start, highlight.location.end),
-            maxOf(highlight.location.start, highlight.location.end)
+            maxOf(highlight.location.start, highlight.location.end),
         )
     }).distinct().sorted()
 
@@ -32,17 +32,17 @@ public fun Highlights.highlight(
         val start = boundaries[i]
         val end = boundaries[i + 1]
 
-        closes[start]?.forEach {
-            when (it) {
+        closes[start]?.forEach { highlight ->
+            when (highlight) {
                 is BoldHighlight -> boldCount--
-                is ColorHighlight -> colorStack.remove(it.rgb.toUInt() and 0xFFFFFFu)
+                is ColorHighlight -> colorStack.remove(highlight.rgb.toUInt() and 0xFFFFFFu)
             }
         }
 
-        opens[start]?.forEach {
-            when (it) {
+        opens[start]?.forEach { highlight ->
+            when (highlight) {
                 is BoldHighlight -> boldCount++
-                is ColorHighlight -> colorStack.add(it.rgb.toUInt() and 0xFFFFFFu)
+                is ColorHighlight -> colorStack.add(highlight.rgb.toUInt() and 0xFFFFFFu)
             }
         }
 
