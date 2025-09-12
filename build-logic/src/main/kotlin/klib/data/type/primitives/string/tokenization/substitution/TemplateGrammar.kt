@@ -17,9 +17,10 @@ import kotlin.collections.sumOf
 import kotlin.collections.take
 import kotlin.collections.toSet
 import kotlin.sequences.toList
+import kotlin.text.take
 
 private val EVEN_DOLLARS_REGEX = Regex("""(?:\$\$)+""")
-private val INTERPOLATE_REGEX = Regex($$"""(\$+)($$ID_PATTERN)""")
+private val INTERPOLATE_REGEX = Regex("""\$($ID_PATTERN|\d+)""")
 private val KEY_REGEX = Regex("""\s*($ID_PATTERN|\d+|$DOUBLE_QUOTED_STRING_PATTERN)\s*""")
 private val INTERPOLATE_START_REGEX = Regex("""\$\{""")
 private val EVALUATE_START_REGEX = Regex("""\$<""")
@@ -35,138 +36,104 @@ public fun String.substitute(
     ),
     getter: (path: List<String>) -> Any? = { null },
     evaluator: (programScript: String, program: Program) -> Any? = { _, program ->
-        program { name ->
-            getter(listOf(name))
-        }
+        program { name -> getter(listOf(name)) }
     }
 ): Any? = TemplateGrammar(options.toSet(), getter, evaluator).parseToEnd(this)
 
 @Suppress("UNUSED")
 private class TemplateGrammar(
     private val options: Set<SubstituteOption>,
-    getter: (path: List<String>) -> Any?,
+    private val getter: (path: List<String>) -> Any?,
     private val evaluator: (text: String, Program) -> Any?
 ) {
 
-    private val dollarsEscaper: (String) -> String =
-        if (SubstituteOption.ESCAPE_DOLLARS in options) { dollars -> dollars.take(dollars.length / 2) }
-        else { dollars -> dollars }
-
-    private val backslashEscaper: (String) -> String =
-        if (SubstituteOption.ESCAPE_BACKSLASHES in options) { backslashes ->
-            backslashes.take(backslashes.length / 2)
-        }
-        else { backslashes -> backslashes }
-
-    private val valueGetter: (path: List<String>) -> Any? =
-        if (SubstituteOption.DEEP_INTERPOLATION in options) { path ->
-            getter(path)?.let { value -> if (value is String) parseToEnd(value) else value }
-        }
-        else getter
-
     fun parseToEnd(input: String): Any? = buildList {
-        var i = 0
+        var index = 0
 
-        while (i < input.length) {
+        while (index < input.length) {
             if (SubstituteOption.INTERPOLATE in options || SubstituteOption.INTERPOLATE_BRACED in options || SubstituteOption.EVALUATE in options)
-                EVEN_DOLLARS_REGEX.matchAt(input, i)?.let { match ->
-                    i += match.value.length
+                EVEN_DOLLARS_REGEX.matchAt(input, index)?.let { match ->
+                    index += match.value.length
 
-                    add(dollarsEscaper(match.groupValues.first()))
+                    val dollars = match.groupValues.first()
+
+                    add(if (SubstituteOption.ESCAPE_DOLLARS in options) dollars.take(dollars.length / 2) else dollars)
+
                     continue
                 }
 
             if (SubstituteOption.INTERPOLATE in options)
-                INTERPOLATE_REGEX.matchAt(input, i)?.let { match ->
-                    i += match.value.length
+                INTERPOLATE_REGEX.matchAt(input, index)?.let { match ->
+                    index += match.value.length
 
-                    var dollars = match.groupValues[1]
-                    val key = match.groupValues[2]
-                    var value: Any? = key
+                    val value = getter(listOf(match.groupValues[1]))
 
-                    if (dollars.length % 2 != 0) {
-                        dollars = dollars.dropLast(1)
-                        value = valueGetter(listOf(key))
-                    }
-
-                    if (dollars.isNotEmpty()) add(dollarsEscaper(dollars))
-                    add(value)
+                    add(
+                        if (SubstituteOption.DEEP_INTERPOLATION in options && value is String) parseToEnd(value)
+                        else value
+                    )
 
                     continue
                 }
 
             if (SubstituteOption.INTERPOLATE_BRACED in options)
-                INTERPOLATE_START_REGEX.matchAt(input, i)?.let { match ->
-                    i += match.value.length
+                INTERPOLATE_START_REGEX.matchAt(input, index)?.let { match ->
+                    index += match.value.length
 
-                    var dollars = match.groupValues[1]
-                    var value: Any? = "{"
+                    val value = getter(
+                        buildList {
+                            while (true) {
+                                KEY_REGEX.matchAt(input, index)?.let { match ->
+                                    add(match.groupValues[1].removeSurrounding("\""))
+                                    index += match.value.length
+                                } ?: break
 
-                    if (dollars.length % 2 != 0) {
-                        dollars = dollars.dropLast(1)
-                        value = valueGetter(
-                            buildList {
-                                while (true) {
-                                    KEY_REGEX.matchAt(input, i)?.let { match ->
-                                        add(match.groupValues[1].removeSurrounding("\""))
-                                        i += match.value.length
-                                    } ?: break
+                                if (input[index] == '.') index++
+                            }
+                            check(isNotEmpty()) { "Empty interpolation" }
+                            check(input.getOrNull(index) == '}') { "Missing closing brace at position $index" }
+                            index++
+                        },
+                    )
 
-                                    if (input[i] == '.') i++
-                                }
-                                check(isNotEmpty()) { "Empty interpolation" }
-                                check(input.getOrNull(i) == '}') { "Missing closing brace at position $i" }
-                                i++
-                            },
-                        )
-                    }
+                    add(
+                        if (SubstituteOption.DEEP_INTERPOLATION in options && value is String) parseToEnd(value)
+                        else value
+                    )
 
-                    if (dollars.isNotEmpty()) add(dollarsEscaper(dollars))
-                    add(value)
                     continue
                 }
 
             if (SubstituteOption.EVALUATE in options)
-                EVALUATE_START_REGEX.matchAt(input, i)?.let { match ->
-                    i += match.value.length
+                EVALUATE_START_REGEX.matchAt(input, index)?.let { match ->
+                    index += match.value.length
 
-                    var backslashes = match.groupValues[1]
-                    var value: Any? = "<"
+                    val tokens = ProgramGrammar.tokenizer.tokenize(input.substring(index))
+                    val tokenList = tokens.toList()
 
-                    if (backslashes.length % 2 == 0) {
-                        val tokens = ProgramGrammar.tokenizer.tokenize(input.substring(i))
-                        val tokenList = tokens.toList()
+                    val parseResult = ProgramGrammar.mapWithMatches { (matches, program) ->
+                        evaluator(matches.joinToString("", transform = TokenMatch::text), program)
+                    }.tryParse(tokens, 0).toParsedOrThrow()
 
-                        val parseResult = ProgramGrammar.mapWithMatches { (matches, program) ->
-                            evaluator(matches.joinToString("", transform = TokenMatch::text), program)
-                        }.tryParse(tokens, 0).toParsedOrThrow()
+                    add(parseResult.value)
 
-                        value = parseResult.value
+                    if (parseResult.nextPosition >= tokenList.size || tokenList[parseResult.nextPosition].text != ">")
+                        error("Missing closing brace")
 
-                        if (parseResult.nextPosition >= tokenList.size || tokenList[parseResult.nextPosition].text != ">")
-                            error("Missing closing brace")
-
-                        i += tokenList.take(parseResult.nextPosition + 1).sumOf { token -> token.text.length }
-                    }
-                    else {
-                        add("\\")
-                        backslashes = backslashes.dropLast(1)
-                    }
-
-                    if (backslashes.isNotEmpty()) add(backslashEscaper(backslashes))
-                    add(value)
+                    index += tokenList.take(parseResult.nextPosition + 1).sumOf { token -> token.text.length }
 
                     continue
                 }
 
-            OTHER_REGEX.matchAt(input, i)?.let { match ->
-                i += match.value.length
+            OTHER_REGEX.matchAt(input, index)?.let { match ->
+                index += match.value.length
 
                 add(match.value)
+
                 continue
             }
 
-            add(input[i++])
+            add(input[index++])
         }
     }.let { values ->
         if (values.size == 1) values.single() else values.joinToString("")
