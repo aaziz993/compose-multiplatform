@@ -42,6 +42,7 @@ import klib.data.type.primitives.string.highlight
 import kotlin.Any
 import kotlin.Pair
 import kotlin.collections.last
+import kotlin.collections.map
 import kotlin.reflect.KClass
 import kotlin.reflect.KMutableProperty
 import kotlin.reflect.KVisibility
@@ -153,7 +154,9 @@ public abstract class ScriptProperties {
                     if (size < path.size)
                         error(
                             "Unresolved reference '${
-                                dropLast().map(Pair<*, Any?>::second).joinToString(".").addSuffixIfNotEmpty("->")
+                                dropLast()
+                                    .joinToString(".", transform = Pair<*, String>::second)
+                                    .addSuffixIfNotEmpty("->")
                             }${last().second}' on '${last().first}' with imports ${config.imports}",
                         )
 

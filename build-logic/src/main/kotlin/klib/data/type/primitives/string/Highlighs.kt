@@ -6,15 +6,13 @@ import dev.snipme.highlights.model.*
 import klib.data.type.ansi.ansiSpan
 import klib.data.type.primitives.unsigned
 
-public val DEFAULT_MAPPER: (text: String, bold: Boolean, rgb: UInt?) -> String = { text, bold, rgb ->
-    text.ansiSpan {
-        if (bold) bold()
-        if (rgb != null) attribute(RGBInt(rgb).toAnsi16())
-    }
-}
-
 public fun Highlights.highlight(
-    transform: (text: String, bold: Boolean, rgb: UInt?) -> String = DEFAULT_MAPPER
+    transform: (text: String, bold: Boolean, rgb: UInt?) -> String = { text, bold, rgb ->
+        text.ansiSpan {
+            if (bold) bold()
+            if (rgb != null) attribute(RGBInt(rgb).toAnsi16())
+        }
+    }
 ): String = buildString {
     val code = getCode()
     val highlights = getHighlights().sortedWith(compareBy({ it.location.start }, { it.location.end }))
@@ -70,7 +68,12 @@ public fun Highlights.highlight(
 public fun String.highlight(
     language: SyntaxLanguage = SyntaxLanguage.KOTLIN,
     theme: SyntaxTheme = SyntaxThemes.default(true),
-    transform: (text: String, bold: Boolean, rgb: UInt?) -> String = DEFAULT_MAPPER
+    transform: (text: String, bold: Boolean, rgb: UInt?) -> String = { text, bold, rgb ->
+        text.ansiSpan {
+            if (bold) bold()
+            if (rgb != null) attribute(RGBInt(rgb).toAnsi16())
+        }
+    }
 ): String = Highlights.Builder()
     .code(this)
     .language(language)
