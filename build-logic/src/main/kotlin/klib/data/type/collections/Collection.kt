@@ -617,7 +617,7 @@ public fun <T : Any> T.substitute(
     interpolateBraced: Boolean = true,
     deepInterpolation: Boolean = true,
     evaluate: Boolean = true,
-    escapeDollars: Boolean = true,
+    unescapeDollars: Boolean = false,
     getter: (path: List<String>) -> Any? = { path -> deepGetOrNull(*path.toTypedArray()).second },
     evaluator: (programScript: String, program: Program) -> Any? = { _, program ->
         program { name -> getter(listOf(name)) }
@@ -629,7 +629,7 @@ public fun <T : Any> T.substitute(
             interpolateBraced,
             deepInterpolation,
             evaluate,
-            escapeDollars,
+            unescapeDollars,
             getter,
             evaluator,
         )

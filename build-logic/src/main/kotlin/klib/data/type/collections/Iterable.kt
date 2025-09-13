@@ -106,7 +106,8 @@ public inline fun <E, R : Any> Iterable<E>.firstNotThrowOf(transform: (E) -> R?)
     for (element in this) {
         try {
             return transform(element)
-        } catch (t: Throwable) {
+        }
+        catch (t: Throwable) {
             throwable = t
         }
     }
@@ -139,6 +140,12 @@ public fun <E> Iterable<E>.merge(merger: Merger<E>): List<E> = buildList {
     }
 }
 
+public fun <E> Iterable<E>.merge(equator: Equator<E>, merger: Merger<E>): List<E> = buildList {
+    this@merge.forEach { element ->
+        add(element, equator, merger)
+    }
+}
+
 public inline fun <E, T> Iterable<E>.topKHeap(
     k: Int,
     crossinline selector: (E) -> T,
@@ -161,7 +168,7 @@ public infix fun <E : Comparable<E>> Iterable<E>.topKFrequent(k: Int): PriorityQ
         frequencyMap.entries.topKHeap(
             k,
             { (element, _) -> element },
-            compareBy { element -> frequencyMap[element] }
+            compareBy { element -> frequencyMap[element] },
         )
     }
 

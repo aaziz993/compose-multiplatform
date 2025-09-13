@@ -1,14 +1,19 @@
+@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
+
 package klib.data.type.collections.set
 
 import klib.data.type.collections.list.add
 import klib.data.type.functions.Equator
 import klib.data.type.functions.Merger
 
-public class MutableMergeSet<E>(
+public interface MutableMergeSet<E> : MergeSet<E>, MutableCollection<E>
+
+internal class MutableMergeSetIml<E>(
     initialCapacity: Int = 16,
     override val equator: Equator<E> = Equator.default(),
     override val merger: Merger<E> = Merger.default(),
-) : MergeSet<E>, MutableSet<E> {
+) : MutableMergeSet<E> {
+
     public constructor(
         elements: Collection<E>,
         equator: Equator<E> = Equator.default(),
@@ -46,3 +51,12 @@ public class MutableMergeSet<E>(
 
     override fun isEmpty(): Boolean = delegate.isEmpty()
 }
+
+public fun <T> mutableMergeSetOf(
+    vararg elements: T,
+    equator: Equator<T> = Equator.default(),
+    merger: Merger<T> = Merger.default()
+): MutableMergeSet<T> = elements.toCollection(
+    MutableMergeSetIml(mapCapacity(elements.size), equator, merger),
+)
+

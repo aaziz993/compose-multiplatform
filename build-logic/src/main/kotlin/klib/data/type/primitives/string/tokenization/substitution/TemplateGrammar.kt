@@ -6,7 +6,6 @@ import klib.data.type.primitives.string.DOUBLE_QUOTED_STRING_PATTERN
 import klib.data.type.primitives.string.ID_PATTERN
 import klib.data.type.primitives.string.tokenization.mapWithMatches
 import kotlin.collections.List
-import kotlin.collections.Set
 import kotlin.collections.buildList
 import kotlin.collections.first
 import kotlin.collections.isNotEmpty
@@ -15,7 +14,6 @@ import kotlin.collections.listOf
 import kotlin.collections.single
 import kotlin.collections.sumOf
 import kotlin.collections.take
-import kotlin.collections.toSet
 import kotlin.sequences.toList
 import kotlin.text.take
 
@@ -31,7 +29,7 @@ public fun String.substitute(
     interpolateBraced: Boolean = true,
     deepInterpolation: Boolean = true,
     evaluate: Boolean = true,
-    escapeDollars: Boolean = true,
+    unescapeDollars: Boolean = false,
     getter: (path: List<String>) -> Any? = { null },
     evaluator: (programScript: String, program: Program) -> Any? = { _, program ->
         program { name -> getter(listOf(name)) }
@@ -41,7 +39,7 @@ public fun String.substitute(
     interpolateBraced,
     deepInterpolation,
     evaluate,
-    escapeDollars,
+    unescapeDollars,
     getter,
     evaluator,
 ).parseToEnd(this)
@@ -52,7 +50,7 @@ internal class TemplateGrammar(
     private val interpolateBraced: Boolean = true,
     private val deepInterpolation: Boolean = true,
     private val evaluate: Boolean = true,
-    private val escapeDollars: Boolean = true,
+    private val unescapeDollars: Boolean = true,
     private val getter: (path: List<String>) -> Any?,
     private val evaluator: (text: String, Program) -> Any?
 ) {
@@ -69,7 +67,7 @@ internal class TemplateGrammar(
 
                     val dollars = match.groupValues.first()
 
-                    add(if (escapeDollars) dollars.take(dollars.length / 2) else dollars)
+                    add(if (unescapeDollars) dollars.take(dollars.length / 2) else dollars)
 
                     continue
                 }

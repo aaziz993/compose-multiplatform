@@ -2,6 +2,7 @@
 
 package klib.data.type.collections.set
 
+import klib.data.type.collections.merge
 import klib.data.type.functions.Equator
 import klib.data.type.functions.Merger
 import klib.data.type.serialization.deepPlus
@@ -17,9 +18,10 @@ import kotlinx.serialization.encoding.Encoder
 import kotlin.collections.LinkedHashSet
 
 @Serializable(with = MergeSetSerializer::class)
-public interface MergeSet<out E> : Set<E> {
-    public val equator: Equator<@UnsafeVariance E>
-    public val merger: Merger<@UnsafeVariance E>
+public interface MergeSet<E> : Set<E> {
+
+    public val equator: Equator<E>
+    public val merger: Merger<E>
 }
 
 public class MergeSetSerializer<E>(public val eSerializer: KSerializer<E>) : KSerializer<MergeSet<E>> {
@@ -38,7 +40,7 @@ public class MergeSetSerializer<E>(public val eSerializer: KSerializer<E>) : KSe
         return if (
             eSerializer.descriptor.kind is StructureKind ||
             eSerializer.descriptor.kind is PolymorphicKind
-        ) MutableMergeSet(
+        ) MergeSetIml(
             elements,
             merger = { o1, o2 ->
                 when {
@@ -48,11 +50,18 @@ public class MergeSetSerializer<E>(public val eSerializer: KSerializer<E>) : KSe
                 }
             },
         )
-        else MutableMergeSet(elements)
+        else MergeSetIml(elements)
     }
 }
 
+internal class MergeSetIml<E>(
+    delegate: Collection<E>,
+    override val equator: Equator<E> = Equator.default(),
+    override val merger: Merger<E> = Merger.default(),
+) : MergeSet<E>, Collection<E> by delegate
+
 internal object EmptyMergeSet : MergeSet<Nothing> {
+
     override val equator: Equator<Nothing> = Equator { _, _ -> false }
     override val merger: Merger<Nothing> = Merger { _, _ ->
         throw UnsupportedOperationException("Cannot merge elements of EmptyMergeSet")
@@ -70,20 +79,14 @@ internal object EmptyMergeSet : MergeSet<Nothing> {
     override fun iterator(): Iterator<Nothing> = EmptyIterator
 }
 
-public fun <T> mutableMergeSetOf(
-    vararg elements: T,
-    equator: Equator<T> = Equator.default(),
-    merger: Merger<T> = Merger.default()
-): MutableMergeSet<T> =
-    elements.toCollection(MutableMergeSet(mapCapacity(elements.size), equator, merger))
-
 public fun <T> mergeSetOf(
     vararg elements: T,
     equator: Equator<T> = Equator.default(),
     merger: Merger<T> = Merger.default()
 ): MergeSet<T> = elements.toMergeSet(equator, merger)
 
-public fun <T> emptyMergeSet(): MergeSet<T> = EmptyMergeSet
+@Suppress("UNCHECKED_CAST")
+public fun <T> emptyMergeSet(): MergeSet<T> = EmptyMergeSet as MergeSet<T>
 
 /**
  * Returns a [MergeSet] of all elements.
@@ -93,4 +96,5 @@ public fun <T> emptyMergeSet(): MergeSet<T> = EmptyMergeSet
 public fun <T> Array<out T>.toMergeSet(
     equator: Equator<T> = Equator.default(),
     merger: Merger<T> = Merger.default()
-): MergeSet<T> = if (isEmpty()) emptyMergeSet() else mutableMergeSetOf(*this, equator = equator, merger = merger)
+): MergeSet<T> =
+    if (isEmpty()) emptyMergeSet() else MergeSetIml(toList().merge(equator, merger), equator, merger)

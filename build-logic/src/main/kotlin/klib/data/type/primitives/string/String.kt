@@ -23,34 +23,90 @@ import kotlinx.io.writeString
 
 // Line break pattern
 public const val NEW_LINE_PATTERN: String = """(\r?\n|\n)"""
+
 // Any pattern (space and non-space)
 public const val ANY_PATTERN: String = """[\s\S]"""
+
 // Letter uppercase pattern
 public const val UPPERCASE_LETTER_PATTERN: String = "[A-ZА-Я]"
+
 // Letter lowercase pattern
 public const val LOWERCASE_LETTER_PATTERN: String = "[a-zа-я]"
+
 // Letter lowercase to uppercase pattern
 public const val LOWERCASE_UPPERCASE_LETTER_PATTERN: String = "(?<=$LOWERCASE_LETTER_PATTERN)(?=$UPPERCASE_LETTER_PATTERN)"
+
 // Letter uppercase to lowercase pattern
 public const val UPPERCASE_LOWERCASE_PATTERN: String = "(?<=$UPPERCASE_LETTER_PATTERN)(?=$LOWERCASE_LETTER_PATTERN)"
+
 // Letter and digit pattern
 public const val LETTER_DIGIT_PATTERN: String = """[\w\d]"""
-public const val ID_PATTERN: String ="[_\\p{L}][_\\p{L}\\p{N}]*"
-public const val SINGLE_QUOTED_STRING_PATTERN: String ="""'(?:[^'\\]|\\.)*'"""
-public const val DOUBLE_QUOTED_STRING_PATTERN: String =""""(?:[^"\\]|\\.)*""""
+public const val ID_PATTERN: String = "[_\\p{L}][_\\p{L}\\p{N}]*"
+
+// String pattern.
+public const val SINGLE_QUOTED_STRING_PATTERN: String = """'(?:[^'\\]|\\.)*'"""
+public const val DOUBLE_QUOTED_STRING_PATTERN: String = """"(?:[^"\\]|\\.)*""""
 
 @Suppress("SameReturnValue")
 public val String.Companion.DEFAULT: String
     get() = ""
 
-public fun String.escape(quoteMark: Char = '"'): String =
-    replace("\\$quoteMark", "$quoteMark")
-        .replace("\\n", "\n")
-        .replace("\\r", "\r")
-        .replace("\\t", "\t")
-        .replace("\\b", "\b")
-        .replace("\\f", "\u000C")
-        .replace("\\\\", "\\")
+public fun String.escape(escapeChar: Char = '"'): String = buildString {
+    this@escape.forEach { char ->
+        when (char) {
+            '\n' -> append("\\n")
+            '\r' -> append("\\r")
+            '\t' -> append("\\t")
+            '\b' -> append("\\b")
+            '\u000C' -> append("\\f")
+            '\\' -> append("\\\\")
+            escapeChar -> append("\\$escapeChar")
+            in '\u0000'..'\u001F', in '\u007F'..'\uFFFF' ->
+                append("\\u${char.code.toString(16).padStart(4, '0')}")
+
+            else -> append(char)
+        }
+    }
+}
+
+public fun String.unescape(escapeChar: Char = '"'): String = buildString {
+    var i = 0
+    while (i < length) {
+        val char = this@unescape[i]
+        if (char == '\\' && i + 1 < length) {
+            when (val next = this@unescape[i + 1]) {
+                'n' -> append('\n')
+                'r' -> append('\r')
+                't' -> append('\t')
+                'b' -> append('\b')
+                'f' -> append('\u000C')
+                '\\' -> append('\\')
+                escapeChar -> append(escapeChar)
+                'u' -> {
+                    // \uXXXX
+                    val hex = this@unescape.getOrNull(i + 2..i + 5)
+                    hex?.toIntOrNull(16)?.toChar()?.let(::append)
+                    i += 4
+                }
+                'U' -> {
+                    // \UXXXXXXXX
+                    val hex = this@unescape.getOrNull(i + 2..i + 9)
+                    hex?.toIntOrNull(16)?.let(::appendCodePoint)
+                    i += 8
+                }
+
+                else -> append(next) // unknown escape
+            }
+            i += 2
+        }
+        else {
+            append(char)
+            i++
+        }
+    }
+}
+
+private fun String.getOrNull(range: IntRange): String? = if (range.last < length) substring(range) else null
 
 public fun String.singleQuote(): String = "'$this'"
 

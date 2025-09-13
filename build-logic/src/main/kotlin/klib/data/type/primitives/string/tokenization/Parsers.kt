@@ -9,7 +9,7 @@ import com.github.h0tk3y.betterParse.combinators.times
 import com.github.h0tk3y.betterParse.combinators.unaryMinus
 import com.github.h0tk3y.betterParse.combinators.use
 import com.github.h0tk3y.betterParse.parser.Parser
-import klib.data.type.primitives.string.escape
+import klib.data.type.primitives.string.unescape
 import klib.data.type.primitives.toNumber
 
 public object Parsers {
@@ -45,9 +45,9 @@ public object Parsers {
             }
         }
     public val singleQuotedString: Parser<String> = Tokens.doubleQuotedString use {
-        text.substring(1, length - 1).escape('\'')
+        text.substring(1, length - 1).unescape('\'')
     }
     public val doubleQuotedString: Parser<String> = Tokens.doubleQuotedString use {
-        text.substring(1, length - 1).escape()
+        text.substring(1, length - 1).unescape()
     }
 }
