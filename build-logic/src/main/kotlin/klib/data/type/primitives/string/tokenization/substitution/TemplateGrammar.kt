@@ -27,23 +27,32 @@ private val EVALUATE_START_REGEX = Regex("""\$<""")
 private val OTHER_REGEX = Regex("""[^$]+""")
 
 public fun String.substitute(
-    vararg options: SubstituteOption = arrayOf(
-        SubstituteOption.INTERPOLATE_CACHE,
-        SubstituteOption.INTERPOLATE_BRACED,
-        SubstituteOption.DEEP_INTERPOLATION,
-        SubstituteOption.ESCAPE_DOLLARS,
-        SubstituteOption.EVALUATE,
-        SubstituteOption.ESCAPE_BACKSLASHES,
-    ),
+    interpolate: Boolean = false,
+    interpolateBraced: Boolean = true,
+    deepInterpolation: Boolean = true,
+    evaluate: Boolean = true,
+    escapeDollars: Boolean = true,
     getter: (path: List<String>) -> Any? = { null },
     evaluator: (programScript: String, program: Program) -> Any? = { _, program ->
         program { name -> getter(listOf(name)) }
     }
-): Any? = TemplateGrammar(options.toSet(), getter, evaluator).parseToEnd(this)
+): Any? = TemplateGrammar(
+    interpolate,
+    interpolateBraced,
+    deepInterpolation,
+    evaluate,
+    escapeDollars,
+    getter,
+    evaluator,
+).parseToEnd(this)
 
 @Suppress("UNUSED")
 internal class TemplateGrammar(
-    private val options: Set<SubstituteOption>,
+    private val interpolate: Boolean = false,
+    private val interpolateBraced: Boolean = true,
+    private val deepInterpolation: Boolean = true,
+    private val evaluate: Boolean = true,
+    private val escapeDollars: Boolean = true,
     private val getter: (path: List<String>) -> Any?,
     private val evaluator: (text: String, Program) -> Any?
 ) {
@@ -54,18 +63,18 @@ internal class TemplateGrammar(
         var index = 0
 
         while (index < input.length) {
-            if (SubstituteOption.INTERPOLATE in options || SubstituteOption.INTERPOLATE_BRACED in options || SubstituteOption.EVALUATE in options)
+            if (interpolate || interpolateBraced || evaluate)
                 EVEN_DOLLARS_REGEX.matchAt(input, index)?.let { match ->
                     index += match.value.length
 
                     val dollars = match.groupValues.first()
 
-                    add(if (SubstituteOption.ESCAPE_DOLLARS in options) dollars.take(dollars.length / 2) else dollars)
+                    add(if (escapeDollars) dollars.take(dollars.length / 2) else dollars)
 
                     continue
                 }
 
-            if (SubstituteOption.INTERPOLATE in options)
+            if (interpolate)
                 INTERPOLATE_REGEX.matchAt(input, index)?.let { match ->
                     index += match.value.length
 
@@ -76,8 +85,9 @@ internal class TemplateGrammar(
                     if (key in cache) value = cache[key]
                     else {
                         value = getter(listOf(key))
-                        if (SubstituteOption.DEEP_INTERPOLATION in options && value is String)
+                        if (deepInterpolation && value is String)
                             value = parseToEnd(value)
+
                         cache[key] = value
                     }
 
@@ -86,7 +96,7 @@ internal class TemplateGrammar(
                     continue
                 }
 
-            if (SubstituteOption.INTERPOLATE_BRACED in options)
+            if (interpolateBraced)
                 INTERPOLATE_START_REGEX.matchAt(input, index)?.let { match ->
                     index += match.value.length
 
@@ -111,8 +121,9 @@ internal class TemplateGrammar(
                     if (dotPath in cache) value = cache[dotPath]
                     else {
                         value = getter(path)
-                        if (SubstituteOption.DEEP_INTERPOLATION in options && value is String)
+                        if (deepInterpolation && value is String)
                             value = parseToEnd(value)
+
                         cache[dotPath] = value
                     }
 
@@ -121,7 +132,7 @@ internal class TemplateGrammar(
                     continue
                 }
 
-            if (SubstituteOption.EVALUATE in options)
+            if (evaluate)
                 EVALUATE_START_REGEX.matchAt(input, index)?.let { match ->
                     index += match.value.length
 

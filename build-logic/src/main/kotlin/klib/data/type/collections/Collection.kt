@@ -6,8 +6,6 @@ import klib.data.type.collections.map.asMap
 import klib.data.type.primitives.string.tokenization.substitution.Program
 import klib.data.type.primitives.string.tokenization.substitution.substitute
 import klib.data.type.primitives.toInt
-import klib.data.type.primitives.string.tokenization.substitution.SubstituteOption
-import klib.data.type.primitives.string.tokenization.substitution.TemplateGrammar
 import kotlin.collections.getOrElse
 import kotlin.collections.getOrNull
 import kotlin.collections.toTypedArray
@@ -615,20 +613,27 @@ public fun <T : Any> T.deepMinusKeys(
 
 @Suppress("UNCHECKED_CAST")
 public fun <T : Any> T.substitute(
-    vararg options: SubstituteOption = arrayOf(
-        SubstituteOption.INTERPOLATE_BRACED,
-        SubstituteOption.DEEP_INTERPOLATION,
-        SubstituteOption.ESCAPE_DOLLARS,
-        SubstituteOption.EVALUATE,
-        SubstituteOption.ESCAPE_BACKSLASHES,
-    ),
+    interpolate: Boolean = false,
+    interpolateBraced: Boolean = true,
+    deepInterpolation: Boolean = true,
+    evaluate: Boolean = true,
+    escapeDollars: Boolean = true,
     getter: (path: List<String>) -> Any? = { path -> deepGetOrNull(*path.toTypedArray()).second },
     evaluator: (programScript: String, program: Program) -> Any? = { _, program ->
         program { name -> getter(listOf(name)) }
     }
 ): T = deepMapValues(
     sourceTransform = { value ->
-        if (value is String) value.substitute(*options, getter = getter, evaluator = evaluator) else value
+        if (value is String) value.substitute(
+            interpolate,
+            interpolateBraced,
+            deepInterpolation,
+            evaluate,
+            escapeDollars,
+            getter,
+            evaluator,
+        )
+        else value
     },
 )
 
