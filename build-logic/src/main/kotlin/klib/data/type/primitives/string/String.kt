@@ -42,6 +42,7 @@ public const val UPPERCASE_LOWERCASE_PATTERN: String = "(?<=$UPPERCASE_LETTER_PA
 // Letter and digit pattern
 public const val LETTER_DIGIT_PATTERN: String = """[\w\d]"""
 public const val ID_PATTERN: String = "[_\\p{L}][_\\p{L}\\p{N}]*"
+public const val KEY_PATTERN: String = "[_\\p{L}\\p{N}][_\\p{L}\\p{N}-]*"
 
 // String pattern.
 public const val SINGLE_QUOTED_STRING_PATTERN: String = """'(?:[^'\\]|\\.)*'"""
