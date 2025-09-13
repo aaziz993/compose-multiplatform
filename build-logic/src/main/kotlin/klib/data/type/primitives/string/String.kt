@@ -36,8 +36,8 @@ public const val UPPERCASE_LOWERCASE_PATTERN: String = "(?<=$UPPERCASE_LETTER_PA
 // Letter and digit pattern
 public const val LETTER_DIGIT_PATTERN: String = """[\w\d]"""
 public const val ID_PATTERN: String ="[_\\p{L}][_\\p{L}\\p{N}]*"
-public const val SINGLE_QUOTED_STRING_PATTERN: String ="""'[^\\']*(\\['nrtb\\][^\\']*)*'"""
-public const val DOUBLE_QUOTED_STRING_PATTERN: String =""""[^\\"]*(\\["nrtb\\][^\\"]*)*""""
+public const val SINGLE_QUOTED_STRING_PATTERN: String ="""'(?:[^'\\]|\\.)*'"""
+public const val DOUBLE_QUOTED_STRING_PATTERN: String =""""(?:[^"\\]|\\.)*""""
 
 @Suppress("SameReturnValue")
 public val String.Companion.DEFAULT: String
