@@ -2,16 +2,30 @@ package klib.data.type.primitives.string.scripting
 
 import com.charleskorn.kaml.Yaml
 import com.github.ajalt.colormath.model.Ansi16
+import java.io.File
+import java.lang.reflect.Modifier
 import klib.data.cache.Cache
 import klib.data.cache.NoCache
-import klib.data.type.collections.*
+import klib.data.type.ansi.Attribute
+import klib.data.type.ansi.ansiSpan
+import klib.data.type.ansi.buildStringAnsi
 import klib.data.type.collections.deepGetOrNull
+import klib.data.type.collections.deepMap
+import klib.data.type.collections.deepPlus
+import klib.data.type.collections.deepRunOnPenultimate
+import klib.data.type.collections.flatten
+import klib.data.type.collections.getOrPut
 import klib.data.type.collections.list.asList
 import klib.data.type.collections.list.dropLast
 import klib.data.type.collections.map.asMapOrNull
 import klib.data.type.collections.map.asStringNullableMap
+import klib.data.type.collections.set
+import klib.data.type.collections.substitute
+import klib.data.type.collections.toNewMutableCollection
+import klib.data.type.collections.toTreeString
+import klib.data.type.primitives.string.addSuffix
 import klib.data.type.primitives.string.addSuffixIfNotEmpty
-import klib.data.type.primitives.string.tokenization.substitution.SubstituteOption
+import klib.data.type.primitives.string.highlight
 import klib.data.type.reflection.declaredMemberExtensionFunction
 import klib.data.type.reflection.declaredMemberExtensionFunctions
 import klib.data.type.reflection.declaredMemberExtensionProperty
@@ -22,31 +36,20 @@ import klib.data.type.reflection.packageExtensions
 import klib.data.type.reflection.toGetterName
 import klib.data.type.reflection.toSetterName
 import klib.data.type.serialization.IMPORTS_KEY
+import klib.data.type.serialization.coders.tree.deserialize
 import klib.data.type.serialization.decodeFile
 import klib.data.type.serialization.json.decodeAnyFromString
 import klib.data.type.serialization.properties.Properties
 import klib.data.type.serialization.serializers.any.SerializableAny
 import klib.data.type.serialization.yaml.decodeAnyFromString
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.Transient
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.serializer
-import java.io.File
-import java.lang.reflect.Modifier
-import klib.data.type.ansi.Attribute
-import klib.data.type.ansi.ansiSpan
-import klib.data.type.ansi.buildStringAnsi
-import klib.data.type.primitives.string.addSuffix
-import klib.data.type.primitives.string.highlight
-import klib.data.type.serialization.coders.tree.deserialize
-import kotlin.Any
-import kotlin.Pair
-import kotlin.collections.last
-import kotlin.collections.map
 import kotlin.reflect.KClass
 import kotlin.reflect.KMutableProperty
 import kotlin.reflect.KVisibility
 import kotlin.reflect.full.isSubclassOf
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.serializer
 
 public const val SCRIPT_KEY: String = "script"
 
@@ -236,11 +239,7 @@ public abstract class ScriptProperties {
                     decoder = decoder,
                 ) { decodedFile, decodedImports ->
                     val substitutedFile =
-                        (decodedFile - listOf(IMPORTS_KEY, SCRIPT_KEY)).substitute(
-                            SubstituteOption.INTERPOLATE_BRACED,
-                            SubstituteOption.DEEP_INTERPOLATION,
-                            SubstituteOption.EVALUATE,
-                        )
+                        (decodedFile - listOf(IMPORTS_KEY, SCRIPT_KEY)).substitute(unescapeDollars = false)
 
                     val decodedFileScript: List<Any?> = decodedFile[SCRIPT_KEY]?.let { script ->
                         script.asMapOrNull?.map { (key, value) -> mapOf(key to value) } ?: script.asList

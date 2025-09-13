@@ -3,25 +3,12 @@ package klib.data.type.serialization
 import klib.data.type.cast
 import klib.data.type.collections.deepGetOrNull
 import klib.data.type.collections.deepMap
-import klib.data.type.collections.list.asList
 import klib.data.type.collections.list.drop
 import klib.data.type.collections.minusKeys
 import klib.data.type.collections.substitute
-import klib.data.type.collections.toNewMutableCollection
-import klib.data.type.primitives.string.tokenization.substitution.SubstituteOption
 import kotlinx.serialization.modules.EmptySerializersModule
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.serializer
-import kotlin.collections.List
-import kotlin.collections.MutableMap
-import kotlin.collections.contains
-import kotlin.collections.first
-import kotlin.collections.fold
-import kotlin.collections.map
-import kotlin.collections.mutableMapOf
-import kotlin.collections.orEmpty
-import kotlin.collections.set
-import kotlin.collections.toTypedArray
 
 public const val IMPORTS_KEY: String = "imports"
 
@@ -33,11 +20,7 @@ public inline fun <reified T : Any> decodeFile(
     },
     crossinline decoder: (file: String) -> T,
     crossinline merger: (decodedFile: T, decodedImports: List<T>) -> T = { decodedFile, decodedImports ->
-        val substitutedFile = decodedFile.minusKeys(IMPORTS_KEY).substitute(
-            SubstituteOption.INTERPOLATE_BRACED,
-            SubstituteOption.DEEP_INTERPOLATION,
-            SubstituteOption.EVALUATE,
-        )
+        val substitutedFile = decodedFile.minusKeys(IMPORTS_KEY).substitute(unescapeDollars = false)
 
         if (decodedImports.isEmpty()) substitutedFile
         else {
