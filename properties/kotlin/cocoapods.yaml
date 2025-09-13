@@ -8,7 +8,7 @@ script:
       cocoapods:
         version: libs.versions("kotlin.cocoapods.version").requiredVersion
         summary: description
-        homepage: settings.settingsProperties.remote.url
+        homepage: settings.settingsScript.remote.url
         name: moduleName
         framework: |
           {
