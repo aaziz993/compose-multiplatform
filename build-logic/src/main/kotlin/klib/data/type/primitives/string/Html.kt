@@ -18,32 +18,29 @@ public fun String.escapeHtml(): String = buildString {
 }
 
 public fun String.unescapeHtml(): String = buildString {
+    val s = this@unescapeHtml
     var i = 0
-    while (i < length) {
-        if (this@unescapeHtml[i] == '&') {
+    while (i < s.length) {
+        val char = s[i]
+        if (char == '&') {
             // Named entity
-            val named = HTML_ESCAPE_MAP.inverse.entries.firstOrNull { (key, _) ->
-                this@unescapeHtml.startsWith(key, i)
-            }
+            val named = HTML_ESCAPE_MAP.inverse.entries.firstOrNull { (key, _) -> s.startsWith(key, i) }
             if (named != null) {
                 append(named.value)
                 i += named.key.length
                 continue
             }
 
-            // Numeric entity: decimal &#NNN; or hex &#xHHHH;
-            if (this@unescapeHtml.startsWith("&#", i)) {
-                val semi = indexOf(';', i + 2)
+            // Numeric entity
+            if (s.startsWith("&#", i)) {
+                val semi = s.indexOf(';', i + 2)
                 if (semi != -1) {
-                    val code = this@unescapeHtml.substring(i + 2, semi)
-                    val char = try {
+                    val code = s.substring(i + 2, semi)
+                    val ch = try {
                         if (code.startsWith("x", ignoreCase = true)) code.drop(1).toInt(16).toChar()
                         else code.toInt().toChar()
-                    }
-                    catch (_: NumberFormatException) {
-                        null
-                    }
-                    append(char ?: '&')
+                    } catch (_: NumberFormatException) { null }
+                    append(ch ?: s.substring(i, semi + 1))
                     i = semi + 1
                     continue
                 }
@@ -52,9 +49,8 @@ public fun String.unescapeHtml(): String = buildString {
             // Fallback for malformed entity
             append('&')
             i++
-        }
-        else {
-            append(this@unescapeHtml[i])
+        } else {
+            append(char)
             i++
         }
     }
