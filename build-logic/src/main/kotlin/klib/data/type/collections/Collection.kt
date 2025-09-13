@@ -615,7 +615,6 @@ public fun <T : Any> T.deepMinusKeys(
 public fun <T : Any> T.substitute(
     interpolate: Boolean = false,
     interpolateBraced: Boolean = true,
-    deepInterpolation: Boolean = true,
     evaluate: Boolean = true,
     unescapeDollars: Boolean = false,
     getter: (path: List<String>) -> Any? = { path ->
@@ -636,7 +635,6 @@ public fun <T : Any> T.substitute(
             if (value is String) value.substitute(
                 interpolate,
                 interpolateBraced,
-                deepInterpolation,
                 evaluate,
                 unescapeDollars,
                 { path ->

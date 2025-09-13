@@ -27,7 +27,6 @@ private val OTHER_REGEX = Regex("""[^$]+""")
 public fun String.substitute(
     interpolate: Boolean = false,
     interpolateBraced: Boolean = true,
-    deepInterpolation: Boolean = true,
     evaluate: Boolean = true,
     unescapeDollars: Boolean = false,
     getter: (path: List<String>) -> Any? = { null },
@@ -37,7 +36,6 @@ public fun String.substitute(
 ): Any? = TemplateGrammar(
     interpolate,
     interpolateBraced,
-    deepInterpolation,
     evaluate,
     unescapeDollars,
     getter,
@@ -48,7 +46,6 @@ public fun String.substitute(
 internal class TemplateGrammar(
     private val interpolate: Boolean = false,
     private val interpolateBraced: Boolean = true,
-    private val deepInterpolation: Boolean = true,
     private val evaluate: Boolean = true,
     private val unescapeDollars: Boolean = true,
     private val getter: (path: List<String>) -> Any?,
@@ -83,8 +80,7 @@ internal class TemplateGrammar(
                     if (key in cache) value = cache[key]
                     else {
                         value = getter(listOf(key))
-                        if (deepInterpolation && value is String)
-                            value = parseToEnd(value)
+                        if (value is String) value = parseToEnd(value)
 
                         cache[key] = value
                     }
@@ -119,8 +115,7 @@ internal class TemplateGrammar(
                     if (plainPath in cache) value = cache[plainPath]
                     else {
                         value = getter(path)
-                        if (deepInterpolation && value is String)
-                            value = parseToEnd(value)
+                        if (value is String) value = parseToEnd(value)
 
                         cache[plainPath] = value
                     }
