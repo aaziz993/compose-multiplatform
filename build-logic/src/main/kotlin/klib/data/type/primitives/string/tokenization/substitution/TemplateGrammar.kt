@@ -112,17 +112,17 @@ internal class TemplateGrammar(
                         index++
                     }
 
-                    val dotPath = path.joinToString(".")
+                    val plainPath = path.joinToString(".")
 
                     var value: Any?
 
-                    if (dotPath in cache) value = cache[dotPath]
+                    if (plainPath in cache) value = cache[plainPath]
                     else {
                         value = getter(path)
                         if (deepInterpolation && value is String)
                             value = parseToEnd(value)
 
-                        cache[dotPath] = value
+                        cache[plainPath] = value
                     }
 
                     add(value)

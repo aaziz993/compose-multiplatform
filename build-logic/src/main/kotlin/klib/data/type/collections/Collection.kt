@@ -628,20 +628,28 @@ public fun <T : Any> T.substitute(
     evaluator: (programScript: String, program: Program) -> Any? = { _, program ->
         program { name -> getter(listOf(name)) }
     }
-): T = deepMapValues(
-    sourceTransform = { value ->
-        if (value is String) value.substitute(
-            interpolate,
-            interpolateBraced,
-            deepInterpolation,
-            evaluate,
-            unescapeDollars,
-            getter,
-            evaluator,
-        )
-        else value
-    },
-)
+): T {
+    val cache = mutableMapOf<String, Any?>()
+
+    return deepMapValues(
+        sourceTransform = { value ->
+            if (value is String) value.substitute(
+                interpolate,
+                interpolateBraced,
+                deepInterpolation,
+                evaluate,
+                unescapeDollars,
+                { path ->
+                    val plainPath = path.joinToString(".")
+
+                    if (plainPath in cache) cache[plainPath] else getter(path)
+                },
+                evaluator,
+            )
+            else value
+        },
+    )
+}
 
 public fun <T> T.printTree(
     appendable: Appendable,
