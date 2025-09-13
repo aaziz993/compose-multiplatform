@@ -618,7 +618,13 @@ public fun <T : Any> T.substitute(
     deepInterpolation: Boolean = true,
     evaluate: Boolean = true,
     unescapeDollars: Boolean = false,
-    getter: (path: List<String>) -> Any? = { path -> deepGetOrNull(*path.toTypedArray()).second },
+    getter: (path: List<String>) -> Any? = { path ->
+        deepGetOrNull(*path.toTypedArray()).also { sources ->
+            check(sources.first.size == path.size) {
+                "Unresolved path '${path.joinToString(".")}'"
+            }
+        }.second
+    },
     evaluator: (programScript: String, program: Program) -> Any? = { _, program ->
         program { name -> getter(listOf(name)) }
     }
