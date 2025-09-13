@@ -24,43 +24,7 @@ package klib.data.type.collections.bimap
  */
 public interface MutableBiMap<K, V> : MutableMap<K, V>, BiMap<K, V> {
 
-    override val inverse: MutableBiMap<V, K>
-
     override val values: MutableSet<V>
-
-    /**
-     * Associates the specified [value] with the specified [key] in the bimap.
-     *
-     * The bimap throws [IllegalArgumentException] if the given value is already
-     * bound to a different key in it. The bimap will remain unmodified in this
-     * event. To avoid this exception, call [forcePut] instead.
-     *
-     * @param key the key with which the specified value is to be associated.
-     * @param value the value to be associated with the specified key.
-     * @return the previous value associated with the key, or `null` if the key
-     *         was not present in the bimap.
-     */
-    override fun put(key: K, value: V): V?
-
-    /**
-     * An alternate form of [put] that silently removes any existing entry
-     * with the value [value] before proceeding with the [put] operation.
-     *
-     * If the bimap previously contained the provided key-value
-     * mapping, this method has no effect.
-     *
-     * Note that a successful call to this method could cause the size of the
-     * bimap to increase by one, stay the same, or even decrease by one.
-     *
-     * __Warning__: If an existing entry with this value is removed, the key
-     * for that entry is discarded and not returned.
-     *
-     * @param key the key with which the specified value is to be associated.
-     * @param value the value to be associated with the specified key.
-     * @return the value which was previously associated with the key, or `null`
-     *         if there was no previous entry.
-     */
-    public fun forcePut(key: K, value: V): V?
 }
 
 internal class MutableBiMapImpl<K, V> : MutableBiMap<K, V> {
@@ -70,28 +34,20 @@ internal class MutableBiMapImpl<K, V> : MutableBiMap<K, V> {
 
     override val entries: MutableSet<MutableMap.MutableEntry<K, V>> get() = forward.entries
     override val keys: MutableSet<K> get() = forward.keys
-    override val values: MutableSet<V> get() = forward.values.toMutableSet()
+    override val values: MutableSet<V> get() = backward.keys
     override val size: Int get() = forward.size
 
     override val inverse: MutableBiMap<V, K> by lazy {
         object : MutableBiMap<V, K> {
             override val inverse: MutableBiMap<K, V> get() = this@MutableBiMapImpl
             override val keys: MutableSet<V> get() = backward.keys
-            override val values: MutableSet<K> get() = backward.values.toMutableSet()
+            override val values: MutableSet<K> get() = forward.keys
             override val entries: MutableSet<MutableMap.MutableEntry<V, K>> get() = backward.entries
             override val size: Int get() = backward.size
 
-            override fun put(key: V, value: K): K? {
-                if (forward.containsKey(value) && forward[value] != key)
-                    throw IllegalArgumentException("Value '$value' already bound to another key")
-                return forcePut(key, value)
-            }
-
-            override fun forcePut(key: V, value: K): K? {
-                val oldKey = backward.put(key, value)
-                oldKey?.let(forward::remove)
+            override fun put(key: V, value: K): K? = backward.put(key, value).also { oldValue ->
+                oldValue?.let(forward::remove)
                 forward[value] = key
-                return oldKey
             }
 
             override fun putAll(from: Map<out V, K>) = from.forEach(::put)
@@ -108,17 +64,9 @@ internal class MutableBiMapImpl<K, V> : MutableBiMap<K, V> {
         }
     }
 
-    override fun put(key: K, value: V): V? {
-        if (backward.containsKey(value) && backward[value] != key)
-            throw IllegalArgumentException("Value '$value' already bound to another key")
-        return forcePut(key, value)
-    }
-
-    override fun forcePut(key: K, value: V): V? {
-        val oldValue = forward.put(key, value)
+    override fun put(key: K, value: V): V? = forward.put(key, value).also { oldValue ->
         oldValue?.let(backward::remove)
         backward[value] = key
-        return oldValue
     }
 
     override fun putAll(from: Map<out K, V>) = from.forEach(::put)
