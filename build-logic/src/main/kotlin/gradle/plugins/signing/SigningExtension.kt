@@ -1,6 +1,6 @@
 package gradle.plugins.signing
 
-import gradle.api.initialization.settingsProperties
+import gradle.api.initialization.settingsScript
 import gradle.api.project.sensitive
 import gradle.api.project.sensitiveOrElse
 import gradle.api.project.settings
@@ -19,11 +19,11 @@ public fun SigningExtension.registerGPGTasks(): Unit = project.pluginManager.wit
     val subkeyType = project.sensitiveOrElse("signing.gnupg.subkey.type") { "RSA" }
     val subkeyLength = project.sensitiveOrElse("signing.gnupg.subkey.length") { "4096" }.toInt()
     val nameReal = project.sensitiveOrElse("signing.gnupg.name.real") {
-        project.settings.settingsProperties.developer.name!!
+        project.settings.settingsScript.developer.name!!
     }
     val nameComment = project.sensitiveOrElse("signing.gnupg.name.comment") { project.description.orEmpty() }
     val nameEmail = project.sensitiveOrElse("signing.gnupg.name.email") {
-        project.settings.settingsProperties.developer.email!!
+        project.settings.settingsScript.developer.email!!
     }
     val expireDate = project.sensitiveOrElse("signing.gnupg.expiryDate") { "0" }.toLong()
 

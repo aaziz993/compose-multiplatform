@@ -2,7 +2,7 @@ package gradle.api
 
 import com.github.ajalt.colormath.model.Ansi16
 import gradle.api.cache.SqliteCache
-import klib.data.type.primitives.string.scripting.ScriptProperties
+import klib.data.type.primitives.string.scripting.Script
 import kotlinx.serialization.builtins.serializer
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.logging.Logger
@@ -62,14 +62,14 @@ public val IMPORTS: Array<String> = arrayOf(
     "klib.data.type.serialization.xml.*",
 )
 
-public abstract class Properties : ScriptProperties() {
+public abstract class GradleScript : Script() {
     public companion object {
 
-        private val logger: Logger = Logging.getLogger(Properties::class.java)
+        private val logger: Logger = Logging.getLogger(GradleScript::class.java)
 
-        internal inline operator fun <reified P : Properties, reified T> File.invoke(
+        internal inline operator fun <reified P : GradleScript, reified T> File.invoke(
             evaluationImplicitReceiver: T
-        ): P where T : PluginAware, T : ExtensionAware = ScriptProperties<P>(
+        ): P where T : PluginAware, T : ExtensionAware = Script<P>(
             path,
             cache = SqliteCache(
                 parentFile.resolve(".$name.cache"),

@@ -2,7 +2,7 @@ package gradle.plugins.apple
 
 import gradle.api.project.ProjectLayout
 import gradle.api.project.apple
-import gradle.api.project.projectProperties
+import gradle.api.project.projectScript
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -16,7 +16,7 @@ public class ApplePlugin : Plugin<Project> {
         }
     }
 
-    private fun Project.adjustSourceSets() = when (val layout = projectProperties.layout) {
+    private fun Project.adjustSourceSets() = when (val layout = projectScript.layout) {
         is ProjectLayout.Flat -> apple.sourceSets.configureEach {
             apple.srcDir(
                 if (sourceSetName.endsWith("AppMain"))

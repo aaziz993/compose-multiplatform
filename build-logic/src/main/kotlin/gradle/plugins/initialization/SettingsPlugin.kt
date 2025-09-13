@@ -3,9 +3,9 @@
 package gradle.plugins.initialization
 
 import gradle.api.configureEach
-import gradle.api.initialization.SettingsProperties
+import gradle.api.initialization.SettingsScript
 import gradle.api.initialization.file.LicenseHeaderFile
-import gradle.api.initialization.settingsProperties
+import gradle.api.initialization.settingsScript
 import gradle.plugins.project.ProjectPlugin
 import java.sql.DriverManager
 import org.gradle.api.Plugin
@@ -22,16 +22,16 @@ public class SettingsPlugin : Plugin<Settings> {
         with(SLF4JProblemReporterContext()) {
             with(target) {
                 // Load and apply settings.yaml to settings.gradle.kts.
-                SettingsProperties()
+                SettingsScript()
 
                 gradle.projectsLoaded {
                     // Apply project files
                     with(rootProject) {
                         val files = (listOfNotNull(
-                            target.settingsProperties.licenseFile,
-                            target.settingsProperties.codeOfConductFile,
-                            target.settingsProperties.contributingFile,
-                        ) + LicenseHeaderFile("licenses/LICENSE_HEADER") + settingsProperties.files)
+                            target.settingsScript.licenseFile,
+                            target.settingsScript.codeOfConductFile,
+                            target.settingsScript.contributingFile,
+                        ) + LicenseHeaderFile("licenses/LICENSE_HEADER") + settingsScript.files)
                             .flatMapIndexed { index, projectFile -> projectFile.applyTo("projectFile$index") }
 
                         //setup sync tasks execution during IDE import

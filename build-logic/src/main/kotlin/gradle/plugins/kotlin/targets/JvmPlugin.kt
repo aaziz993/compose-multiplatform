@@ -1,9 +1,7 @@
 package gradle.plugins.kotlin.targets
 
 import gradle.api.configureEach
-import gradle.api.project.ProjectLayout
 import gradle.api.project.kotlin
-import gradle.api.project.projectProperties
 import org.gradle.api.NamedDomainObjectCollection
 import org.gradle.api.Plugin
 import org.gradle.api.Project

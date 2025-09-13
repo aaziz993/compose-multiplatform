@@ -3,7 +3,7 @@ package gradle.plugins.compose
 import gradle.api.project.ProjectLayout
 import gradle.api.project.compose
 import gradle.api.project.kotlin
-import gradle.api.project.projectProperties
+import gradle.api.project.projectScript
 import gradle.api.project.resources
 import gradle.api.project.sourceSetsToComposeResourcesDirs
 import org.gradle.api.Plugin
@@ -18,7 +18,7 @@ public class ComposePlugin : Plugin<Project> {
     }
 
     private fun Project.adjustResources() = project.pluginManager.withPlugin("org.jetbrains.compose") {
-        when (project.projectProperties.layout) {
+        when (project.projectScript.layout) {
             is ProjectLayout.Flat -> kotlin.sourceSets.forEach { sourceSet ->
                 compose.resources.customDirectory(
                     sourceSet.name,

@@ -2,7 +2,7 @@ package gradle.plugins.project
 
 import gradle.api.ci.CI
 import gradle.api.maybeNamed
-import gradle.api.project.ProjectProperties
+import gradle.api.project.ProjectScript
 import gradle.plugins.android.AndroidPlugin
 import gradle.plugins.apivalidation.ApiValidationPlugin
 import gradle.plugins.compose.ComposePlugin
@@ -28,7 +28,7 @@ public class ProjectPlugin : Plugin<Project> {
     override fun apply(target: Project): Unit = with(SLF4JProblemReporterContext()) {
         with(target) {
             // Load and apply project.yaml to build.gradle.kts.
-            ProjectProperties()
+            ProjectScript()
 
             pluginManager.apply(KoverPlugin::class.java)
             pluginManager.apply(DokkaPlugin::class.java)

@@ -4,7 +4,7 @@ import gradle.api.configureEach
 import gradle.api.file.replace
 import gradle.api.project.ProjectLayout
 import gradle.api.project.androidApplication
-import gradle.api.project.projectProperties
+import gradle.api.project.projectScript
 import klib.data.type.pair
 import klib.data.type.primitives.string.addPrefixIfNotEmpty
 import klib.data.type.primitives.string.lowercaseFirstChar
@@ -36,7 +36,7 @@ public class AndroidPlugin : Plugin<Project> {
     }
 
     private fun Project.adjustSourceSets() =
-        when (val layout = projectProperties.layout) {
+        when (val layout = projectScript.layout) {
             is ProjectLayout.Flat -> androidApplication.sourceSets.configureEach { sourceSet ->
                 val (srcPrefixPart, resourcesPrefixPart) =
                     if (sourceSet.name == SourceSet.MAIN_SOURCE_SET_NAME) "src" to ""

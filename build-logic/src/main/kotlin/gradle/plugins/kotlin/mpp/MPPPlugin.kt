@@ -5,7 +5,7 @@ import gradle.api.configureEach
 import gradle.api.file.replace
 import gradle.api.project.ProjectLayout
 import gradle.api.project.kotlin
-import gradle.api.project.projectProperties
+import gradle.api.project.projectScript
 import gradle.api.project.sourceSetsToComposeResourcesDirs
 import klib.data.type.primitives.string.addPrefixIfNotEmpty
 import klib.data.type.primitives.string.lowercaseFirstChar
@@ -35,7 +35,7 @@ public class MPPPlugin : Plugin<Project> {
     @Suppress("UNCHECKED_CAST")
     private fun Project.adjustSourceSets() {
         kotlin {
-            when (val layout = projectProperties.layout) {
+            when (val layout = projectScript.layout) {
                 is ProjectLayout.Flat -> {
                     val androidTargets = kotlin.targets.filterIsInstance<KotlinAndroidTarget>()
 

@@ -2,7 +2,7 @@ package gradle.plugins.develocity
 
 import com.gradle.develocity.agent.gradle.DevelocityConfiguration
 import gradle.api.ci.CI
-import gradle.api.initialization.settingsProperties
+import gradle.api.initialization.settingsScript
 import java.net.URLEncoder
 import org.gradle.api.initialization.Settings
 import gradle.api.initialization.gitCommitId
@@ -11,7 +11,7 @@ import gradle.api.initialization.gitStatus
 
 context(settings: Settings)
 public fun DevelocityConfiguration.enrichGitData(
-    url: String = settings.settingsProperties.remote.url!!,
+    url: String = settings.settingsScript.remote.url!!,
     skipTags: Boolean = false
 ): Unit = settings.pluginManager.withPlugin("com.gradle.develocity") {
     settings.gradle.projectsEvaluated {
