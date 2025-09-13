@@ -28,6 +28,7 @@ private val OTHER_REGEX = Regex("""[^$]+""")
 
 public fun String.substitute(
     vararg options: SubstituteOption = arrayOf(
+        SubstituteOption.INTERPOLATE_CACHE,
         SubstituteOption.INTERPOLATE_BRACED,
         SubstituteOption.DEEP_INTERPOLATION,
         SubstituteOption.ESCAPE_DOLLARS,
@@ -41,7 +42,7 @@ public fun String.substitute(
 ): Any? = TemplateGrammar(options.toSet(), getter, evaluator).parseToEnd(this)
 
 @Suppress("UNUSED")
-private class TemplateGrammar(
+internal class TemplateGrammar(
     private val options: Set<SubstituteOption>,
     private val getter: (path: List<String>) -> Any?,
     private val evaluator: (text: String, Program) -> Any?
