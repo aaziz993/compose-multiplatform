@@ -12,9 +12,7 @@ private val HTML_ESCAPE_MAP = biMapOf(
 )
 
 public fun String.escapeHtml(): String = buildString {
-    this@escapeHtml.forEach { char ->
-        append(HTML_ESCAPE_MAP[char] ?: char)
-    }
+    this@escapeHtml.forEach { char -> append(HTML_ESCAPE_MAP[char] ?: char) }
 }
 
 public fun String.unescapeHtml(): String = buildString {
@@ -24,7 +22,9 @@ public fun String.unescapeHtml(): String = buildString {
         val char = s[i]
         if (char == '&') {
             // Named entity
-            val named = HTML_ESCAPE_MAP.inverse.entries.firstOrNull { (key, _) -> s.startsWith(key, i) }
+            val named = HTML_ESCAPE_MAP.inverse.entries.firstOrNull { (key, _) ->
+                s.startsWith(key, i)
+            }
             if (named != null) {
                 append(named.value)
                 i += named.key.length
@@ -39,7 +39,10 @@ public fun String.unescapeHtml(): String = buildString {
                     val ch = try {
                         if (code.startsWith("x", ignoreCase = true)) code.drop(1).toInt(16).toChar()
                         else code.toInt().toChar()
-                    } catch (_: NumberFormatException) { null }
+                    }
+                    catch (_: NumberFormatException) {
+                        null
+                    }
                     append(ch ?: s.substring(i, semi + 1))
                     i = semi + 1
                     continue
@@ -49,7 +52,8 @@ public fun String.unescapeHtml(): String = buildString {
             // Fallback for malformed entity
             append('&')
             i++
-        } else {
+        }
+        else {
             append(char)
             i++
         }
