@@ -18,8 +18,8 @@ import kotlin.sequences.toList
 import kotlin.text.take
 
 private val EVEN_DOLLARS_REGEX = Regex("""(?:\$\$)+""")
-private val INTERPOLATE_REGEX = Regex("""\$($KEY_PATTERN)""")
-private val KEY_OR_STRING_REGEX = Regex("""\s*($KEY_PATTERN|$DOUBLE_QUOTED_STRING_PATTERN)\s*""")
+private val INTERPOLATE_KEY = Regex("""\s*($KEY_PATTERN|$DOUBLE_QUOTED_STRING_PATTERN)\s*""")
+private val INTERPOLATE_REGEX = Regex("""\$($INTERPOLATE_KEY)""")
 private val INTERPOLATE_START_REGEX = Regex("""\$\{""")
 private val EVALUATE_START_REGEX = Regex("""\$<""")
 private val OTHER_REGEX = Regex("""[^$]+""")
@@ -92,7 +92,7 @@ internal class TemplateGrammar(
 
                     val path = buildList {
                         while (true) {
-                            KEY_OR_STRING_REGEX.matchAt(input, index)?.let { match ->
+                            INTERPOLATE_KEY.matchAt(input, index)?.let { match ->
                                 add(match.groupValues[1].removeSurrounding("\""))
                                 index += match.value.length
                             } ?: break
