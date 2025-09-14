@@ -181,7 +181,7 @@ public fun <T : Any> T.minusKeys(
 
 ////////////////////////////////////////////////////////////DEEP////////////////////////////////////////////////////////
 @Suppress("UNCHECKED_CAST")
-public fun <K> Any.deepGet(
+public fun  <K> Any.deepGet(
     vararg path: K,
     getter: List<Pair<Any, K>>.() -> Any? = { last().first[last().second] }
 ): Pair<List<Pair<Any, K>>, Any?> {
