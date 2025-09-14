@@ -64,7 +64,7 @@ public fun Any.getOrNull(key: Any?): Any? = when (this) {
 }
 
 public operator fun Any.get(key: Any?): Any =
-    getOrElse(key) { throw IllegalArgumentException("Unknown key '$key' in: ${this::class::simpleName}") }
+    getOrElse(key) { throw NoSuchElementException("Unresolved key '$key' in: ${this::class::simpleName}") }
 
 @Suppress("UNCHECKED_CAST")
 public fun Any.containsKey(key: Any?): Boolean =
@@ -617,13 +617,8 @@ public fun <T : Any> T.substitute(
     interpolateBraced: Boolean = true,
     evaluate: Boolean = true,
     unescapeDollars: Boolean = false,
-    getter: (path: List<String>) -> Any? = { path ->
-        deepGetOrNull(*path.toTypedArray()).also { sources ->
-            check(sources.first.size == path.size) {
-                "Unresolved path '${path.joinToString(".")}'"
-            }
-        }.second
-    },
+    strict: Boolean = true,
+    getter: (path: List<String>) -> Any? = { path -> deepGet(*path.toTypedArray()).second },
     evaluator: (programScript: String, program: Program) -> Any? = { _, program ->
         program { name -> getter(listOf(name)) }
     }
@@ -637,6 +632,7 @@ public fun <T : Any> T.substitute(
                 interpolateBraced,
                 evaluate,
                 unescapeDollars,
+                strict,
                 { path ->
                     val plainPath = path.joinToString(".")
 

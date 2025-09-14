@@ -246,7 +246,7 @@ public abstract class Script {
                     decoder = decoder,
                 ) { decodedFile, decodedImports ->
                     val substitutedFile =
-                        (decodedFile - listOf(IMPORTS_KEY, SCRIPT_KEY)).substitute(unescapeDollars = false)
+                        (decodedFile - listOf(IMPORTS_KEY, SCRIPT_KEY)).substitute(unescapeDollars = false, strict = false)
 
                     val decodedFileScript: List<Any?> = decodedFile[SCRIPT_KEY]?.let { script ->
                         script.asMapOrNull?.map { (key, value) -> mapOf(key to value) } ?: script.asList
@@ -290,7 +290,6 @@ public abstract class Script {
         }
     }
 }
-
 
 /**
  * Consumes only public implicit receivers

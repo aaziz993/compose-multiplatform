@@ -20,7 +20,7 @@ public inline fun <reified T : Any> decodeFile(
     },
     crossinline decoder: (file: String) -> T,
     crossinline merger: (decodedFile: T, decodedImports: List<T>) -> T = { decodedFile, decodedImports ->
-        val substitutedFile = decodedFile.minusKeys(IMPORTS_KEY).substitute(unescapeDollars = false)
+        val substitutedFile = decodedFile.minusKeys(IMPORTS_KEY).substitute(unescapeDollars = false, strict = false)
 
         if (decodedImports.isEmpty()) substitutedFile
         else {

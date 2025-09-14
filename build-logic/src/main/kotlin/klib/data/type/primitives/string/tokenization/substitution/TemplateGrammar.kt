@@ -32,6 +32,7 @@ public fun String.substitute(
     interpolateBraced: Boolean = true,
     evaluate: Boolean = true,
     unescapeDollars: Boolean = false,
+    strict: Boolean = true,
     getter: (path: List<String>) -> Any? = { null },
     evaluator: (programScript: String, program: Program) -> Any? = { _, program ->
         program { name -> getter(listOf(name)) }
@@ -41,6 +42,7 @@ public fun String.substitute(
     interpolateBraced,
     evaluate,
     unescapeDollars,
+    strict,
     getter,
     evaluator,
 ).parseToEnd(this)
@@ -51,6 +53,7 @@ internal class TemplateGrammar(
     private val interpolateBraced: Boolean = true,
     private val evaluate: Boolean = true,
     private val unescapeDollars: Boolean = true,
+    private val strict: Boolean = true,
     private val getter: (path: List<String>) -> Any?,
     private val evaluator: (text: String, Program) -> Any?
 ) {
@@ -93,11 +96,16 @@ internal class TemplateGrammar(
 
                     add(
                         if (pathPlain in cache) cache[pathPlain]
-                        else getter(path).let { value ->
-                            if (value is String) parseToEnd(value) else value
-                        }.also { value ->
-                            cache[pathPlain] = value
-                        },
+                        else try {
+                            getter(path).let { value ->
+                                if (value is String) parseToEnd(value) else value
+                            }.also { value ->
+                                cache[pathPlain] = value
+                            }
+                        }catch (e:NoSuchElementException){
+                            if (strict) throw e
+
+                        }
                     )
                     continue
                 }
