@@ -45,8 +45,10 @@ public const val ID_PATTERN: String = "[_\\p{L}][_\\p{L}\\p{N}]*"
 public const val KEY_PATTERN: String = "[_\\p{L}\\p{N}][_\\p{L}\\p{N}-]*"
 
 // String pattern.
-public const val SINGLE_QUOTED_STRING_PATTERN: String = """'(?:[^'\\]|\\.)*'"""
-public const val DOUBLE_QUOTED_STRING_PATTERN: String = """"(?:[^"\\]|\\.)*""""
+public const val SINGLE_QUOTED_STRING_PLAIN_PATTERN: String = """(?:[^'\\]|\\.)*"""
+public const val SINGLE_QUOTED_STRING_PATTERN: String = """'$SINGLE_QUOTED_STRING_PLAIN_PATTERN'"""
+public const val DOUBLE_QUOTED_STRING_PLAIN_PATTERN: String = """(?:[^"\\]|\\.)*"""
+public const val DOUBLE_QUOTED_STRING_PATTERN: String = """"$DOUBLE_QUOTED_STRING_PLAIN_PATTERN""""
 
 @Suppress("SameReturnValue")
 public val String.Companion.DEFAULT: String
@@ -89,6 +91,7 @@ public fun String.unescape(escapeChar: Char = '"'): String = buildString {
                     hex?.toIntOrNull(16)?.toChar()?.let(::append)
                     i += 4
                 }
+
                 'U' -> {
                     // \UXXXXXXXX
                     val hex = this@unescape.getOrNull(i + 2..i + 9)

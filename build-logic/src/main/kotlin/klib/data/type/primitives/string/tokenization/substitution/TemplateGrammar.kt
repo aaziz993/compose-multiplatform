@@ -3,7 +3,10 @@ package klib.data.type.primitives.string.tokenization.substitution
 import com.github.h0tk3y.betterParse.lexer.TokenMatch
 import com.github.h0tk3y.betterParse.parser.toParsedOrThrow
 import klib.data.type.primitives.string.DOUBLE_QUOTED_STRING_PATTERN
+import klib.data.type.primitives.string.DOUBLE_QUOTED_STRING_PLAIN_PATTERN
 import klib.data.type.primitives.string.KEY_PATTERN
+import klib.data.type.primitives.string.SINGLE_QUOTED_STRING_PATTERN
+import klib.data.type.primitives.string.SINGLE_QUOTED_STRING_PLAIN_PATTERN
 import klib.data.type.primitives.string.tokenization.mapWithMatches
 import kotlin.collections.List
 import kotlin.collections.buildList
@@ -18,7 +21,7 @@ import kotlin.sequences.toList
 import kotlin.text.take
 
 private val EVEN_DOLLARS_REGEX = Regex("""(?:\$\$)+""")
-private val INTERPOLATE_KEY = Regex("""\s*($KEY_PATTERN|$DOUBLE_QUOTED_STRING_PATTERN)\s*""")
+private val INTERPOLATE_KEY = Regex("""\s*($KEY_PATTERN)|'($SINGLE_QUOTED_STRING_PLAIN_PATTERN)'|"($DOUBLE_QUOTED_STRING_PLAIN_PATTERN)"\s*""")
 private val INTERPOLATE_REGEX = Regex("""\$($INTERPOLATE_KEY)""")
 private val INTERPOLATE_START_REGEX = Regex("""\$\{""")
 private val EVALUATE_START_REGEX = Regex("""\$<""")
@@ -93,7 +96,7 @@ internal class TemplateGrammar(
                     val path = buildList {
                         while (true) {
                             INTERPOLATE_KEY.matchAt(input, index)?.let { match ->
-                                add(match.groupValues[1].removeSurrounding("\""))
+                                add(match.groupValues[1])
                                 index += match.value.length
                             } ?: break
 
