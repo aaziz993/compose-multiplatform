@@ -21,7 +21,7 @@ import kotlin.sequences.toList
 import kotlin.text.take
 
 private val EVEN_DOLLARS_REGEX = Regex("""(?:\$\$)+""")
-private val INTERPOLATE_KEY = Regex("""\s*(?|($KEY_PATTERN)|'($SINGLE_QUOTED_STRING_PLAIN_PATTERN)'|"($DOUBLE_QUOTED_STRING_PLAIN_PATTERN)")\s*""")
+private val INTERPOLATE_KEY = Regex("""\s*(?|($KEY_PATTERN)|\[\d+\]|'($SINGLE_QUOTED_STRING_PLAIN_PATTERN)'|"($DOUBLE_QUOTED_STRING_PLAIN_PATTERN)")\s*""")
 private val INTERPOLATE_START_REGEX = Regex("""\$""")
 private val INTERPOLATE_BRACED_START_REGEX = Regex("""\$\{""")
 private val EVALUATE_START_REGEX = Regex("""\$<""")
