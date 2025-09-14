@@ -65,7 +65,6 @@ internal class TemplateGrammar(
                     val dollars = match.groupValues.first()
 
                     add(if (unescapeDollars) dollars.take(dollars.length / 2) else dollars)
-
                     continue
                 }
 
@@ -74,19 +73,16 @@ internal class TemplateGrammar(
                     index += match.value.length
 
                     val key = match.groupValues[1]
-
                     var value: Any?
 
                     if (key in cache) value = cache[key]
                     else {
                         value = getter(listOf(key))
                         if (value is String) value = parseToEnd(value)
-
                         cache[key] = value
                     }
 
                     add(value)
-
                     continue
                 }
 
@@ -108,20 +104,17 @@ internal class TemplateGrammar(
                         index++
                     }
 
-                    val plainPath = path.joinToString(".")
-
+                    val pathPlain = path.joinToString(".")
                     var value: Any?
 
-                    if (plainPath in cache) value = cache[plainPath]
+                    if (pathPlain in cache) value = cache[pathPlain]
                     else {
                         value = getter(path)
                         if (value is String) value = parseToEnd(value)
-
-                        cache[plainPath] = value
+                        cache[pathPlain] = value
                     }
 
                     add(value)
-
                     continue
                 }
 
@@ -150,7 +143,6 @@ internal class TemplateGrammar(
                 index += match.value.length
 
                 add(match.value)
-
                 continue
             }
 
