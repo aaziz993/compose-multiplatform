@@ -4,6 +4,7 @@ import klib.data.type.collections.list.asList
 import klib.data.type.collections.list.drop
 import klib.data.type.collections.map.asMap
 import klib.data.type.primitives.string.tokenization.substitution.Program
+import klib.data.type.primitives.string.tokenization.substitution.TemplateGrammar
 import klib.data.type.primitives.string.tokenization.substitution.substitute
 import klib.data.type.primitives.toInt
 import kotlin.collections.getOrElse
@@ -619,29 +620,36 @@ public fun <T : Any> T.substitute(
     unescapeDollars: Boolean = false,
     strict: Boolean = true,
     getter: (path: List<String>) -> Any? = { path -> deepGet(*path.toTypedArray()).second },
-    evaluator: (programScript: String, program: Program) -> Any? = { _, program ->
-        program { name -> getter(listOf(name)) }
-    }
+    destination: T = toNewMutableCollection() as T,
+    sourceIteratorOrNull: List<Pair<Any, Any?>>.(value: Any) -> Iterator<Map.Entry<Any?, Any?>>? = { value ->
+        value.iteratorOrNull()
+    },
+    sourceFilter: List<Pair<Any, Any?>>.(value: Any?) -> Boolean = { true },
+    destinationGetter: List<Pair<Any, Any?>>.(source: Any) -> Any = { source ->
+        last().first.getOrPut(last().second, source::toNewMutableCollection).apply {
+            (this as? MutableList<*>)?.clear()
+        }
+    },
+    destinationSetter: List<Pair<Any, Any?>>.(value: Any?) -> Unit = { value ->
+        last().first.put(last().second, value)
+    },
 ): T {
-    val cache = mutableMapOf<String, Any?>()
+    val grammar = TemplateGrammar(
+        interpolate,
+        interpolateBraced,
+        evaluate,
+        unescapeDollars,
+        strict,
+        getter,
+    ) { _, program -> program { name -> getValue(listOf(name)) } }
 
     return deepMapValues(
-        sourceTransform = { value ->
-            if (value is String) value.substitute(
-                interpolate,
-                interpolateBraced,
-                evaluate,
-                unescapeDollars,
-                strict,
-                { path ->
-                    val plainPath = path.joinToString(".")
-
-                    if (plainPath in cache) cache[plainPath] else getter(path)
-                },
-                evaluator,
-            )
-            else value
-        },
+        destination,
+        sourceIteratorOrNull,
+        sourceFilter,
+        { value -> if (value is String) grammar.parseToEnd(value) else value },
+        destinationGetter,
+        destinationSetter,
     )
 }
 

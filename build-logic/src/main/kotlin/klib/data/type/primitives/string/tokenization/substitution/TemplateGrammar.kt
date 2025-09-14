@@ -2,6 +2,7 @@ package klib.data.type.primitives.string.tokenization.substitution
 
 import com.github.h0tk3y.betterParse.lexer.TokenMatch
 import com.github.h0tk3y.betterParse.parser.toParsedOrThrow
+import klib.data.type.collections.substitute
 import klib.data.type.primitives.string.DOUBLE_QUOTED_STRING_PATTERN
 import klib.data.type.primitives.string.DOUBLE_QUOTED_STRING_PLAIN_PATTERN
 import klib.data.type.primitives.string.KEY_PATTERN
@@ -34,7 +35,7 @@ public fun String.substitute(
     unescapeDollars: Boolean = false,
     strict: Boolean = true,
     getter: (path: List<String>) -> Any? = { null },
-    evaluator: (programScript: String, program: Program) -> Any? = { _, program ->
+    evaluator: TemplateGrammar.(programScript: String, program: Program) -> Any? = { _, program ->
         program { name -> getter(listOf(name)) }
     }
 ): Any? = TemplateGrammar(
@@ -47,20 +48,30 @@ public fun String.substitute(
     evaluator,
 ).parseToEnd(this)
 
-@Suppress("UNUSED")
-internal class TemplateGrammar(
+public class TemplateGrammar(
     private val interpolate: Boolean = false,
     private val interpolateBraced: Boolean = true,
     private val evaluate: Boolean = true,
     private val unescapeDollars: Boolean = true,
     private val strict: Boolean = true,
     private val getter: (path: List<String>) -> Any?,
-    private val evaluator: (text: String, Program) -> Any?
+    private val evaluator: TemplateGrammar.(text: String, Program) -> Any?
 ) {
 
-    private val cache = mutableMapOf<String, Any?>()
+    private val cache: MutableMap<String, Any?> = mutableMapOf()
 
-    fun parseToEnd(input: String): Any? = buildList {
+    public fun getValue(path: List<String>): Any? {
+        val pathPlain = path.joinToString(".")
+
+        return if (pathPlain in cache) cache[pathPlain]
+        else getter(path).let { value ->
+            if (value is String) parseToEnd(value) else value
+        }.also { value ->
+            cache[pathPlain] = value
+        }
+    }
+
+    public fun parseToEnd(input: String): Any? = buildList {
         var index = 0
 
         while (index < input.length) {
@@ -94,16 +105,9 @@ internal class TemplateGrammar(
                         index++
                     }
 
-                    val pathPlain = path.joinToString(".")
-
                     add(
-                        if (pathPlain in cache) cache[pathPlain]
-                        else try {
-                            getter(path).let { value ->
-                                if (value is String) parseToEnd(value) else value
-                            }.also { value ->
-                                cache[pathPlain] = value
-                            }
+                        try {
+                            getValue(path)
                         }
                         catch (e: NoSuchElementException) {
                             if (strict) throw e
@@ -130,16 +134,9 @@ internal class TemplateGrammar(
 
                     if (path.isEmpty()) index = offset
                     else {
-                        val pathPlain = path.joinToString(".")
-
                         add(
-                            if (pathPlain in cache) cache[pathPlain]
-                            else try {
-                                getter(path).let { value ->
-                                    if (value is String) parseToEnd(value) else value
-                                }.also { value ->
-                                    cache[pathPlain] = value
-                                }
+                            try {
+                                getValue(path)
                             }
                             catch (e: NoSuchElementException) {
                                 if (strict) throw e

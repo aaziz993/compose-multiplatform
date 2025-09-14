@@ -22,7 +22,7 @@ import kotlin.collections.map
 public fun String.compile(): Program = ProgramGrammar.parseToEnd(this)
 
 @Suppress("UNUSED")
-internal object ProgramGrammar : Grammar<Program>() {
+public object ProgramGrammar : Grammar<Program>() {
     // Comment tokens.
     private val hashCommentIgnoreToken by Tokens.hashCommentIgnore
 
