@@ -76,6 +76,8 @@ internal class TemplateGrammar(
 
             if (interpolateBraced)
                 INTERPOLATE_BRACED_START_REGEX.matchAt(input, index)?.let { match ->
+                    val offset = index
+
                     index += match.value.length
 
                     val path = buildList {
@@ -102,10 +104,11 @@ internal class TemplateGrammar(
                             }.also { value ->
                                 cache[pathPlain] = value
                             }
-                        }catch (e:NoSuchElementException){
-                            if (strict) throw e
-
                         }
+                        catch (e: NoSuchElementException) {
+                            if (strict) throw e
+                            input.substring(offset, index)
+                        },
                     )
                     continue
                 }
@@ -131,10 +134,16 @@ internal class TemplateGrammar(
 
                         add(
                             if (pathPlain in cache) cache[pathPlain]
-                            else getter(path).let { value ->
-                                if (value is String) parseToEnd(value) else value
-                            }.also { value ->
-                                cache[pathPlain] = value
+                            else try {
+                                getter(path).let { value ->
+                                    if (value is String) parseToEnd(value) else value
+                                }.also { value ->
+                                    cache[pathPlain] = value
+                                }
+                            }
+                            catch (e: NoSuchElementException) {
+                                if (strict) throw e
+                                input.substring(offset, index)
                             },
                         )
                         continue
