@@ -22,8 +22,8 @@ import kotlin.text.take
 
 private val EVEN_DOLLARS_REGEX = Regex("""(?:\$\$)+""")
 private val INTERPOLATE_KEY = Regex("""\s*(?|($KEY_PATTERN)|'($SINGLE_QUOTED_STRING_PLAIN_PATTERN)'|"($DOUBLE_QUOTED_STRING_PLAIN_PATTERN)")\s*""")
-private val INTERPOLATE_REGEX = Regex("""\$($INTERPOLATE_KEY)""")
-private val INTERPOLATE_START_REGEX = Regex("""\$\{""")
+private val INTERPOLATE_START_REGEX = Regex("""\$""")
+private val INTERPOLATE_BRACED_START_REGEX = Regex("""\$\{""")
 private val EVALUATE_START_REGEX = Regex("""\$<""")
 private val OTHER_REGEX = Regex("""[^$]+""")
 
@@ -71,26 +71,8 @@ internal class TemplateGrammar(
                     continue
                 }
 
-            if (interpolate)
-                INTERPOLATE_REGEX.matchAt(input, index)?.let { match ->
-                    index += match.value.length
-
-                    val key = match.groupValues[1]
-                    var value: Any?
-
-                    if (key in cache) value = cache[key]
-                    else {
-                        value = getter(listOf(key))
-                        if (value is String) value = parseToEnd(value)
-                        cache[key] = value
-                    }
-
-                    add(value)
-                    continue
-                }
-
             if (interpolateBraced)
-                INTERPOLATE_START_REGEX.matchAt(input, index)?.let { match ->
+                INTERPOLATE_BRACED_START_REGEX.matchAt(input, index)?.let { match ->
                     index += match.value.length
 
                     val path = buildList {
@@ -108,17 +90,47 @@ internal class TemplateGrammar(
                     }
 
                     val pathPlain = path.joinToString(".")
-                    var value: Any?
 
-                    if (pathPlain in cache) value = cache[pathPlain]
-                    else {
-                        value = getter(path)
-                        if (value is String) value = parseToEnd(value)
-                        cache[pathPlain] = value
+                    add(
+                        if (pathPlain in cache) cache[pathPlain]
+                        else getter(path).let { value ->
+                            if (value is String) parseToEnd(value) else value
+                        }.also { value ->
+                            cache[pathPlain] = value
+                        },
+                    )
+                    continue
+                }
+
+            if (interpolate)
+                INTERPOLATE_START_REGEX.matchAt(input, index)?.let { match ->
+                    var offset = index
+
+                    val path = buildList {
+                        while (true) {
+                            INTERPOLATE_KEY.matchAt(input, index)?.let { match ->
+                                add(match.groupValues[1])
+                                index += match.value.length
+                            } ?: break
+
+                            if (input[index] == '.') index++
+                        }
                     }
 
-                    add(value)
-                    continue
+                    if (path.isEmpty()) index = offset
+                    else {
+                        val pathPlain = path.joinToString(".")
+
+                        add(
+                            if (pathPlain in cache) cache[pathPlain]
+                            else getter(path).let { value ->
+                                if (value is String) parseToEnd(value) else value
+                            }.also { value ->
+                                cache[pathPlain] = value
+                            },
+                        )
+                        continue
+                    }
                 }
 
             if (evaluate)
