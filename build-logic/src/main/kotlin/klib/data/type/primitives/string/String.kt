@@ -34,7 +34,8 @@ public const val UPPERCASE_LETTER_PATTERN: String = "[A-ZА-Я]"
 public const val LOWERCASE_LETTER_PATTERN: String = "[a-zа-я]"
 
 // Letter lowercase to uppercase pattern
-public const val LOWERCASE_UPPERCASE_LETTER_PATTERN: String = "(?<=$LOWERCASE_LETTER_PATTERN)(?=$UPPERCASE_LETTER_PATTERN)"
+public const val LOWERCASE_UPPERCASE_LETTER_PATTERN: String =
+    "(?<=$LOWERCASE_LETTER_PATTERN)(?=$UPPERCASE_LETTER_PATTERN)"
 
 // Letter uppercase to lowercase pattern
 public const val UPPERCASE_LOWERCASE_PATTERN: String = "(?<=$UPPERCASE_LETTER_PATTERN)(?=$LOWERCASE_LETTER_PATTERN)"
@@ -73,11 +74,12 @@ public fun String.escape(escapeChar: Char = '"'): String = buildString {
 }
 
 public fun String.unescape(escapeChar: Char = '"'): String = buildString {
+    val value = this@unescape
     var i = 0
-    while (i < length) {
-        val char = this@unescape[i]
-        if (char == '\\' && i + 1 < length) {
-            when (val next = this@unescape[i + 1]) {
+    while (i < value.length) {
+        val char = value[i]
+        if (char == '\\' && i + 1 < value.length) {
+            when (val next = value[i + 1]) {
                 'n' -> append('\n')
                 'r' -> append('\r')
                 't' -> append('\t')
@@ -87,14 +89,14 @@ public fun String.unescape(escapeChar: Char = '"'): String = buildString {
                 escapeChar -> append(escapeChar)
                 'u' -> {
                     // \uXXXX
-                    val hex = this@unescape.getOrNull(i + 2..i + 5)
+                    val hex = value.getOrNull(i + 2..i + 5)
                     hex?.toIntOrNull(16)?.toChar()?.let(::append)
                     i += 4
                 }
 
                 'U' -> {
                     // \UXXXXXXXX
-                    val hex = this@unescape.getOrNull(i + 2..i + 9)
+                    val hex = value.getOrNull(i + 2..i + 9)
                     hex?.toIntOrNull(16)?.let(::appendCodePoint)
                     i += 8
                 }
@@ -102,8 +104,7 @@ public fun String.unescape(escapeChar: Char = '"'): String = buildString {
                 else -> append(next) // unknown escape
             }
             i += 2
-        }
-        else {
+        } else {
             append(char)
             i++
         }
@@ -377,15 +378,13 @@ public fun matcher(
         regexMatch -> {
             val regexMatcher: (String) -> Regex = if (ignoreCase) {
                 { pattern -> Regex(pattern, RegexOption.IGNORE_CASE) }
-            }
-            else {
+            } else {
                 { pattern -> Regex(pattern) }
             }
 
             if (matchAll) {
                 { str, pattern -> regexMatcher(pattern).matches(str) }
-            }
-            else {
+            } else {
                 { str, pattern -> regexMatcher(pattern).containsMatchIn(str) }
             }
         }
