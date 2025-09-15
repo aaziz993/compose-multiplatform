@@ -18,7 +18,7 @@ public val Number.v: NumberVariable
         is Long -> v
         is Float -> v
         is Double -> v
-        else -> throw IllegalArgumentException("Unknown type \"${this::class.simpleName}\"")
+        else -> throw IllegalArgumentException("Unknown value $this")
     }
 
 public val <T>  T.v: ComparableOperand
@@ -59,7 +59,7 @@ public inline val <reified T> Collection<T>.v: CollectionVariable
         LocalDate::class -> (this as Collection<LocalDate?>).v
         LocalDateTime::class -> (this as Collection<LocalDateTime?>).v
         Uuid::class -> (this as Collection<Uuid?>).v
-        else -> throw IllegalArgumentException("Unknown type \"${this::class.simpleName}\"")
+        else -> throw IllegalArgumentException("Unknown type ${T::class.simpleName}")
     }
 
 public val Boolean.v: BooleanValue

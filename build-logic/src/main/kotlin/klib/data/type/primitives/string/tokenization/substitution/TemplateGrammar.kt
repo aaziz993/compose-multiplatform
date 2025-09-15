@@ -23,7 +23,8 @@ import kotlin.sequences.toList
 import kotlin.text.take
 
 private val EVEN_DOLLARS_REGEX = Regex("""(?:\$\$)+""")
-private val INTERPOLATE_KEY = Regex("""\s*(?:($KEY_PATTERN)|\[\d+\]|'($SINGLE_QUOTED_STRING_PLAIN_PATTERN)'|"($DOUBLE_QUOTED_STRING_PLAIN_PATTERN)")\s*""")
+private val INTERPOLATE_KEY =
+    Regex("""\s*(?:($KEY_PATTERN)|\[\d+\]|'($SINGLE_QUOTED_STRING_PLAIN_PATTERN)'|"($DOUBLE_QUOTED_STRING_PLAIN_PATTERN)")\s*""")
 private val INTERPOLATE_START_REGEX = Regex("""\$""")
 private val INTERPOLATE_BRACED_START_REGEX = Regex("""\$\{""")
 private val EVALUATE_START_REGEX = Regex("""\$<""")
@@ -34,9 +35,8 @@ public fun String.substitute(
     interpolateBraced: Boolean = true,
     evaluate: Boolean = true,
     unescapeDollars: Boolean = false,
-    strict: Boolean = true,
     getter: (path: List<String>) -> Any? = { null },
-    evaluator: TemplateGrammar.(programScript: String, program: Program) -> Any? = { _, program ->
+    evaluator: (programScript: String, program: Program) -> Any? = { _, program ->
         program { name -> getter(listOf(name)) }
     }
 ): Any? = TemplateGrammar(
@@ -44,35 +44,22 @@ public fun String.substitute(
     interpolateBraced,
     evaluate,
     unescapeDollars,
-    strict,
     getter,
     evaluator,
 ).parseToEnd(this)
 
-public class TemplateGrammar(
+private class TemplateGrammar(
     private val interpolate: Boolean = false,
     private val interpolateBraced: Boolean = true,
     private val evaluate: Boolean = true,
     private val unescapeDollars: Boolean = true,
-    private val strict: Boolean = true,
     private val getter: (path: List<String>) -> Any?,
-    private val evaluator: TemplateGrammar.(text: String, Program) -> Any?
+    private val evaluator: (text: String, Program) -> Any?
 ) {
 
     private val cache: MutableMap<String, Any?> = mutableMapOf()
 
-    public fun getValue(path: List<String>): Any? {
-        val pathPlain = path.joinToString(".")
-
-        return if (pathPlain in cache) cache[pathPlain]
-        else getter(path).let { value ->
-            if (value is String) parseToEnd(value) else value
-        }.also { value ->
-            cache[pathPlain] = value
-        }
-    }
-
-    public fun parseToEnd(input: String): Any? = buildList {
+    fun parseToEnd(input: String): Any? = buildList {
         var index = 0
 
         while (index < input.length) {
@@ -106,15 +93,7 @@ public class TemplateGrammar(
                         index++
                     }
 
-                    add(
-                        try {
-                            getValue(path)
-                        }
-                        catch (e: NoSuchElementException) {
-                            if (strict) throw e
-                            input.substring(offset, index)
-                        },
-                    )
+                    add(getValue(path))
                     continue
                 }
 
@@ -135,15 +114,7 @@ public class TemplateGrammar(
 
                     if (path.isEmpty()) index = offset
                     else {
-                        add(
-                            try {
-                                getValue(path)
-                            }
-                            catch (e: NoSuchElementException) {
-                                if (strict) throw e
-                                input.substring(offset, index)
-                            },
-                        )
+                        add(getValue(path))
                         continue
                     }
                 }
@@ -180,5 +151,16 @@ public class TemplateGrammar(
         }
     }.let { values ->
         if (values.size == 1) values.single() else values.joinToString("")
+    }
+
+    private fun getValue(path: List<String>): Any? {
+        val pathPlain = path.joinToString(".")
+
+        return if (pathPlain in cache) cache[pathPlain]
+        else getter(path).let { value ->
+            if (value is String) parseToEnd(value) else value
+        }.also { value ->
+            cache[pathPlain] = value
+        }
     }
 }

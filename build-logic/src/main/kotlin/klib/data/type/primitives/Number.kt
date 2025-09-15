@@ -535,7 +535,7 @@ public fun Any.pow(exponent: Any): Any = when (exponent) {
     is Int -> toBigDecimal().pow(exponent)
     is Long -> toBigDecimal().pow(exponent)
 
-    else -> throw IllegalArgumentException("Expected Int or Long but got ${exponent::class.simpleName}")
+    else -> throw IllegalArgumentException("Expected Int or Long but got $exponent")
 }.toNumber(this::class, exactRequired = false)
 
 public fun Any.abs(): Any = toBigDecimal().abs().toNumber(this::class)

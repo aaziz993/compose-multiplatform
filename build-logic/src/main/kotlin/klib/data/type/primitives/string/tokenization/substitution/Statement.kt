@@ -4,19 +4,23 @@ import klib.data.type.collections.map.pairs
 import kotlin.collections.iterator
 
 public sealed class Statement {
+
     public open fun join(machine: MachineState): MachineState = machine
 }
 
 public data class Scoped(val statement: Statement) : Statement() {
+
     override fun join(machine: MachineState): MachineState = statement.join(machine.pushScope()).popScope()
 }
 
 public data class ExpressionStatement(val expression: Expression) : Statement() {
+
     override fun join(machine: MachineState): MachineState = expression(machine)
 }
 
 // Println.
 public data class Println(val message: Expression) : Statement() {
+
     override fun join(machine: MachineState): MachineState = message(machine).run {
         if (shouldReturn) this else copy(log = log + result.toString(), result = Unit)
     }
@@ -30,6 +34,7 @@ public data class Declare(
     val value: Expression?,
     val mutable: Boolean
 ) : Statement() {
+
     override fun join(machine: MachineState): MachineState {
         if (value == null) {
             val boundType = if (variable.type == Type.UNDEFINED) Type.ANY_Q else variable.type
@@ -48,6 +53,7 @@ public data class Declare(
 }
 
 public data class Assign(val receiver: Expression, val value: Expression) : Statement() {
+
     override fun join(machine: MachineState): MachineState = when (receiver) {
         is Variable -> value(machine).run {
             if (shouldReturn) this else machine.set(receiver.name, result)
@@ -60,6 +66,7 @@ public data class Assign(val receiver: Expression, val value: Expression) : Stat
 }
 
 public data class DeclareFunction(val function: Function) : Statement() {
+
     override fun join(machine: MachineState): MachineState = machine.declareFunction(function)
 }
 
@@ -69,6 +76,7 @@ public data class If(
     val thenBody: Statement,
     val elseBody: Statement
 ) : Statement() {
+
     override fun join(machine: MachineState): MachineState = condition(machine).run {
         when {
             shouldReturn -> this
@@ -82,6 +90,7 @@ public data class While(
     val condition: Expression,
     val body: Statement
 ) : Statement() {
+
     override fun join(machine: MachineState): MachineState = condition(machine).run {
         if (shouldReturn || !(result as Boolean)) copy(result = Unit) else join(body.join(this))
     }
@@ -92,6 +101,7 @@ public data class Foreach(
     val receiver: Expression,
     val body: Statement
 ) : Statement() {
+
     override fun join(machine: MachineState): MachineState {
         var state = receiver(machine)
         if (state.shouldReturn) return state
@@ -117,7 +127,7 @@ public data class Foreach(
         is Iterable<*> -> iterator()
         is Sequence<*> -> iterator()
         is Map<*, *> -> pairs().iterator()
-        else -> error("Expected Iterable, Sequence or Map, but got '${this::class.simpleName}'")
+        else -> error("Expected Iterable, Sequence or Map, but got $this")
     }
 }
 
@@ -127,6 +137,7 @@ public data class Try(
     val catches: List<Catch>,
     val finallyBody: Statement = Skip
 ) : Statement() {
+
     override fun join(machine: MachineState): MachineState {
         val afterBody = body.join(machine)
 
@@ -140,19 +151,20 @@ public data class Try(
                                     catchBlock.variable.name,
                                     catchBlock.variable.type(afterBody.result),
                                     catchBlock.variable.type,
-                                    false
+                                    false,
                                 )
-                                .copy(exceptionType = null, shouldReturn = false)
+                                .copy(exceptionType = null, shouldReturn = false),
                         ).popScope()
                     } ?: afterBody
-            } else afterBody
+            }
+            else afterBody
 
         return finallyBody.join(beforeFinally.copy(exceptionType = null, shouldReturn = false)).run {
             if (exceptionType != null) this
             else copy(
                 shouldReturn = shouldReturn || beforeFinally.shouldReturn,
                 result = if (shouldReturn) result else beforeFinally.result,
-                exceptionType = if (shouldReturn) exceptionType else beforeFinally.exceptionType
+                exceptionType = if (shouldReturn) exceptionType else beforeFinally.exceptionType,
             )
         }
     }
@@ -161,6 +173,7 @@ public data class Try(
 }
 
 public data class Throw(val exceptionType: Type, val message: Expression) : Statement() {
+
     override fun join(machine: MachineState): MachineState = message(machine).run {
         if (exceptionType == null) copy(exceptionType = this@Throw.exceptionType, shouldReturn = true) else this
     }
@@ -168,11 +181,13 @@ public data class Throw(val exceptionType: Type, val message: Expression) : Stat
 
 // Exceptions.
 public data class Return(val value: Expression) : Statement() {
+
     override fun join(machine: MachineState): MachineState = value(machine).copy(shouldReturn = true)
 }
 
 // Chain.
 public data class Chain(val leftPart: Statement, val rightPart: Statement) : Statement() {
+
     override fun join(machine: MachineState): MachineState = leftPart.join(machine).run {
         if (shouldReturn) this else rightPart.join(this)
     }

@@ -51,10 +51,9 @@ public const val SINGLE_QUOTED_STRING_PATTERN: String = """'$SINGLE_QUOTED_STRIN
 public const val DOUBLE_QUOTED_STRING_PLAIN_PATTERN: String = """(?:[^"\\]|\\.)*"""
 public const val DOUBLE_QUOTED_STRING_PATTERN: String = """"$DOUBLE_QUOTED_STRING_PLAIN_PATTERN""""
 
-// Id and key pattern.
+// Id and key.
 public const val ID_PATTERN: String = "[_\\p{L}][_\\p{L}\\p{N}]*"
-public const val KEY_PATTERN: String =
-    """\s*(?:([_\p{L}\p{N}][_\p{L}\p{N}-]*)|\[\d+\]|'($SINGLE_QUOTED_STRING_PLAIN_PATTERN)'|"($DOUBLE_QUOTED_STRING_PLAIN_PATTERN)")\s*"""
+public const val KEY_PATTERN: String = "[_\\p{L}\\p{N}][_\\p{L}\\p{N}-]*"
 
 @Suppress("SameReturnValue")
 public val String.Companion.DEFAULT: String

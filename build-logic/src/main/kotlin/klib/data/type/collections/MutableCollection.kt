@@ -24,7 +24,7 @@ public fun Any?.toNewMutableCollection(
 
     is Map<*, *> -> (this as Map<Any?, Any?>).newMutableMap(size)
 
-    else -> throw IllegalArgumentException("Expected List or Map, but got ${this::class.simpleName}")
+    else -> throw IllegalArgumentException("Expected List or Map, but got $this")
 }
 
 public infix fun <E> MutableCollection<E>.tryAddAll(elements: Iterable<E>?): Boolean? =
@@ -85,7 +85,7 @@ public inline fun <K, V> Any.getOrPut(key: K, defaultValue: () -> V, set: Boolea
 
     is MutableMap<*, *> -> asMutableMap<K, V>().getOrPut(key, defaultValue)
 
-    else -> throw IllegalArgumentException("Expected a MutableList or MutableMap, but got ${this::class.simpleName}")
+    else -> throw IllegalArgumentException("Expected a MutableList or MutableMap, but got $this")
 }
 
 @Suppress("UNCHECKED_CAST")
@@ -94,7 +94,7 @@ public operator fun <K, V> Any.set(key: K, value: V): Unit = when (this) {
 
     is MutableMap<*, *> -> asMutableMap<K, V>()[key] = value
 
-    else -> throw IllegalArgumentException("Expected a MutableList or MutableMap, but got ${this::class.simpleName}")
+    else -> throw IllegalArgumentException("Expected a MutableList or MutableMap, but got $this")
 }
 
 @Suppress("UNCHECKED_CAST")
@@ -103,7 +103,7 @@ public fun <K, V> Any.put(key: K, value: V, set: Boolean = false): V? = when (th
 
     is MutableMap<*, *> -> asMutableMap<K, V>().put(key, value)
 
-    else -> throw IllegalArgumentException("Expected a MutableList or MutableMap, but got ${this::class.simpleName}")
+    else -> throw IllegalArgumentException("Expected a MutableList or MutableMap, but got $this")
 }
 
 @Suppress("UNCHECKED_CAST")
@@ -115,7 +115,7 @@ public fun Any.remove(key: Any?): Any? =
 
         is MutableMap<*, *> -> asMutableMap<Any?, Any?>().remove(key)
 
-        else -> throw IllegalArgumentException("Expected a MutableList or MutableMap, but got ${this::class.simpleName}")
+        else -> throw IllegalArgumentException("Expected a MutableList or MutableMap, but got $this")
     }
 
 public fun Any.clear(): Unit =
@@ -124,7 +124,7 @@ public fun Any.clear(): Unit =
 
         is MutableMap<*, *> -> clear()
 
-        else -> throw IllegalArgumentException("Expected a MutableList or MutableMap, but got ${this::class.simpleName}")
+        else -> throw IllegalArgumentException("Expected a MutableList or MutableMap, but got $this")
     }
 
 ////////////////////////////////////////////////////////////DEEP////////////////////////////////////////////////////////

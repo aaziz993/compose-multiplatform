@@ -7,6 +7,7 @@ import com.github.h0tk3y.betterParse.lexer.literalToken
 import com.github.h0tk3y.betterParse.lexer.regexToken
 import klib.data.type.primitives.string.DOUBLE_QUOTED_STRING_PATTERN
 import klib.data.type.primitives.string.ID_PATTERN
+import klib.data.type.primitives.string.KEY_PATTERN
 import klib.data.type.primitives.string.SINGLE_QUOTED_STRING_PATTERN
 
 public object Tokens {
@@ -196,6 +197,9 @@ public object Tokens {
 
     // Id token.
     public val id: RegexToken = regexToken(ID_PATTERN)
+
+    // Key token.
+    public val key: RegexToken = regexToken(KEY_PATTERN)
 
     public fun keyword(value: String): RegexToken = regexToken("$PREFIX$value$SUFFIX")
 

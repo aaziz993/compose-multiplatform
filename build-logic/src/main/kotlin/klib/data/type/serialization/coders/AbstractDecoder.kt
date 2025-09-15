@@ -20,7 +20,7 @@ public abstract class AbstractDecoder : Decoder, CompositeDecoder {
     /**
      * Invoked to decode a value when specialized `decode*` method was not overridden.
      */
-    public open fun decodeValue(): Any = throw SerializationException("${this::class} can't retrieve untyped values")
+    public open fun decodeValue(): Any = throw SerializationException("$this can't retrieve untyped values")
 
     override fun decodeNotNullMark(): Boolean = true
     override fun decodeNull(): Nothing? = null

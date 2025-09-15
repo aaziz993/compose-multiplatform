@@ -39,4 +39,4 @@ public val ANY_ENCODERS: MutableList<Encoder.() -> AnyEncoder<out Encoder>?> = m
 
 public val Encoder.asAnyEncoder: AnyEncoder<out Encoder>
     get() = ANY_ENCODERS.firstNotNullOfOrNull { fn -> fn(this) }
-        ?: throw SerializationException("Unsupported decoder: ${this::class.simpleName}")
+        ?: throw SerializationException("Unsupported decoder $this")
