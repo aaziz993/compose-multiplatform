@@ -13,50 +13,48 @@ public val HTML_ESCAPE_MAP: BiMap<Char, String> = biMapOf(
 )
 
 public fun String.escapeHtml(): String = buildString {
-    this@escapeHtml.forEach { char -> append(HTML_ESCAPE_MAP[char] ?: char) }
+    for (char in this@escapeHtml) {
+        append(HTML_ESCAPE_MAP[char] ?: char)
+    }
 }
 
 public fun String.unescapeHtml(): String = buildString {
-    val s = this@unescapeHtml
-    var i = 0
-    while (i < s.length) {
-        val char = s[i]
-        if (char == '&') {
+    val value = this@unescapeHtml
+    val inverse = HTML_ESCAPE_MAP.inverse
+    var index = 0
+
+    while (index < value.length) {
+        if (value[index] == '&') {
             // Named entity
-            val named = HTML_ESCAPE_MAP.inverse.entries.firstOrNull { (key, _) ->
-                s.startsWith(key, i)
-            }
-            if (named != null) {
-                append(named.value)
-                i += named.key.length
+            val matched = inverse.entries.firstOrNull { (key, _) -> value.startsWith(key, index) }
+            if (matched != null) {
+                append(matched.value)
+                index += matched.key.length
                 continue
             }
 
             // Numeric entity
-            if (s.startsWith("&#", i)) {
-                val semi = s.indexOf(';', i + 2)
+            if (value.startsWith("&#", index)) {
+                val semi = value.indexOf(';', index + 2)
                 if (semi != -1) {
-                    val code = s.substring(i + 2, semi)
-                    val ch = try {
+                    val code = value.substring(index + 2, semi)
+                    val char = try {
                         if (code.startsWith("x", ignoreCase = true)) code.drop(1).toInt(16).toChar()
                         else code.toInt().toChar()
-                    }
-                    catch (_: NumberFormatException) {
-                        null
-                    }
-                    append(ch ?: s.substring(i, semi + 1))
-                    i = semi + 1
+                    } catch (_: NumberFormatException) { null }
+
+                    append(char ?: value.substring(index, semi + 1))
+                    index = semi + 1
                     continue
                 }
             }
 
-            // Fallback for malformed entity
+            // Fallback
             append('&')
-            i++
-        }
-        else {
-            append(char)
-            i++
+            index++
+        } else {
+            append(value[index])
+            index++
         }
     }
 }

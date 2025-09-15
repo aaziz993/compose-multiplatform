@@ -84,34 +84,34 @@ public fun String.escape(escapeChar: Char = '"'): String = buildString {
 public fun String.unescape(escapeChar: Char = '"'): String = buildString {
     val value = this@unescape
     val n = value.length
-    var i = 0
+    var index = 0
 
-    while (i < n) {
-        val char = value[i]
-        if (char == '\\' && i + 1 < n) {
-            val nextChar = value[i + 1]
+    while (index < n) {
+        val char = value[index]
+        if (char == '\\' && index + 1 < n) {
+            val nextChar = value[index + 1]
             when {
                 nextChar == escapeChar -> {
                     append(escapeChar);
-                    i += 2
+                    index += 2
                 }
 
                 ESCAPES.containsKey(nextChar) -> {
                     append(ESCAPES[nextChar]);
-                    i += 2
+                    index += 2
                 }
 
-                nextChar == 'u' -> i = appendUnicodeEscape(value, i, n, 4, 'u')
-                nextChar == 'U' -> i = appendUnicodeEscape(value, i, n, 8, 'U')
+                nextChar == 'u' -> index = appendUnicodeEscape(value, index, n, 4, 'u')
+                nextChar == 'U' -> index = appendUnicodeEscape(value, index, n, 8, 'U')
                 else -> {
                     append('\\');
                     append(nextChar);
-                    i += 2
+                    index += 2
                 }
             }
         } else {
             append(char);
-            i++
+            index++
         }
     }
 }
