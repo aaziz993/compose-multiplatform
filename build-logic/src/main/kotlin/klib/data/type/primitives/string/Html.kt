@@ -1,9 +1,10 @@
 package klib.data.type.primitives.string
 
+import klib.data.type.collections.bimap.BiMap
 import klib.data.type.collections.bimap.biMapOf
 import kotlin.text.StringBuilder
 
-private val HTML_ESCAPE_MAP = biMapOf(
+public val HTML_ESCAPE_MAP: BiMap<Char, String> = biMapOf(
     '&' to "&amp;",
     '<' to "&lt;",
     '>' to "&gt;",

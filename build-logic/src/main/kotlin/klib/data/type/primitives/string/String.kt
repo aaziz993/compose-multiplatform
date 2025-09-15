@@ -5,6 +5,8 @@ import com.fleeksoft.charset.decodeToString
 import com.fleeksoft.charset.toByteArray
 import com.ionspin.kotlin.bignum.decimal.BigDecimal
 import com.ionspin.kotlin.bignum.integer.BigInteger
+import klib.data.type.collections.bimap.BiMap
+import klib.data.type.collections.bimap.biMapOf
 import klib.data.type.primitives.string.fuzzywuzzy.Applicable
 import klib.data.type.primitives.string.fuzzywuzzy.FuzzySearch
 import klib.data.type.primitives.string.fuzzywuzzy.ToStringFunction
@@ -55,17 +57,23 @@ public const val DOUBLE_QUOTED_STRING_PATTERN: String = """"$DOUBLE_QUOTED_STRIN
 public val String.Companion.DEFAULT: String
     get() = ""
 
+public val ESCAPES: BiMap<Char, Char> = biMapOf(
+    'n' to '\n',
+    'r' to '\r',
+    't' to '\t',
+    'b' to '\b',
+    'f' to '\u000C',
+    '\\' to '\\',
+)
+
 public fun String.escape(escapeChar: Char = '"'): String = buildString {
-    this@escape.forEach { char ->
-        when (char) {
-            '\n' -> append("\\n")
-            '\r' -> append("\\r")
-            '\t' -> append("\\t")
-            '\b' -> append("\\b")
-            '\u000C' -> append("\\f")
-            '\\' -> append("\\\\")
-            escapeChar -> append("\\$escapeChar")
-            in '\u0000'..'\u001F', in '\u007F'..'\uFFFF' ->
+    for (char in this@escape) {
+        when {
+            char == escapeChar -> append("\\$escapeChar")
+
+            ESCAPES.inverse[char] != null -> append("\\${ESCAPES.inverse[char]}")
+
+            char in '\u0000'..'\u001F' || char in '\u007F'..'\uFFFF' ->
                 append("\\u${char.code.toString(16).padStart(4, '0')}")
 
             else -> append(char)
@@ -75,43 +83,66 @@ public fun String.escape(escapeChar: Char = '"'): String = buildString {
 
 public fun String.unescape(escapeChar: Char = '"'): String = buildString {
     val value = this@unescape
+    val n = value.length
     var i = 0
-    while (i < value.length) {
+
+    while (i < n) {
         val char = value[i]
-        if (char == '\\' && i + 1 < value.length) {
-            when (val next = value[i + 1]) {
-                'n' -> append('\n')
-                'r' -> append('\r')
-                't' -> append('\t')
-                'b' -> append('\b')
-                'f' -> append('\u000C')
-                '\\' -> append('\\')
-                escapeChar -> append(escapeChar)
-                'u' -> {
-                    // \uXXXX
-                    val hex = value.getOrNull(i + 2..i + 5)
-                    hex?.toIntOrNull(16)?.toChar()?.let(::append)
-                    i += 4
+        if (char == '\\' && i + 1 < n) {
+            val nextChar = value[i + 1]
+            when {
+                nextChar == escapeChar -> {
+                    append(escapeChar);
+                    i += 2
                 }
 
-                'U' -> {
-                    // \UXXXXXXXX
-                    val hex = value.getOrNull(i + 2..i + 9)
-                    hex?.toIntOrNull(16)?.let(::appendCodePoint)
-                    i += 8
+                ESCAPES.containsKey(nextChar) -> {
+                    append(ESCAPES[nextChar]);
+                    i += 2
                 }
 
-                else -> append(next) // unknown escape
+                nextChar == 'u' -> i = appendUnicodeEscape(value, i, n, 4, 'u')
+                nextChar == 'U' -> i = appendUnicodeEscape(value, i, n, 8, 'U')
+                else -> {
+                    append('\\');
+                    append(nextChar);
+                    i += 2
+                }
             }
-            i += 2
         } else {
-            append(char)
+            append(char);
             i++
         }
     }
 }
 
-private fun String.getOrNull(range: IntRange): String? = if (range.last < length) substring(range) else null
+private fun Appendable.appendUnicodeEscape(s: String, i: Int, n: Int, width: Int, label: Char): Int =
+    if (i + width + 1 < n) {
+        val hex = s.substring(i + 2, i + 2 + width)
+        val cp = hex.toIntOrNull(16)
+        if (cp != null && (width == 4 || cp in 0..0x10FFFF)) {
+            if (width == 4) append(cp.toChar()) else appendCodePoint(cp)
+            i + 2 + width
+        } else {
+            append('\\');
+            append(label);
+            i + 2
+        }
+    } else {
+        append('\\');
+        append(label);
+        i + 2
+    }
+
+public fun Appendable.appendCodePoint(cp: Int) {
+    if (cp in 0..0xFFFF) append(cp.toChar())
+    else {
+        val high = ((cp - 0x10000) shr 10) + 0xD800
+        val low = ((cp - 0x10000) and 0x3FF) + 0xDC00
+        append(high.toChar())
+        append(low.toChar())
+    }
+}
 
 public fun String.singleQuote(): String = "'$this'"
 
