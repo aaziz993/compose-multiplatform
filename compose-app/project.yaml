@@ -17,7 +17,6 @@ imports:
   - ../properties/compose.yaml
   - ../properties/android/android-application-compose.yaml
   - ../properties/subproject.yaml
-  - ../properties/publish.yaml
 config:
   imports:
     - org.jetbrains.compose.desktop.application.dsl.TargetFormat
