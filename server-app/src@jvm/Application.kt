@@ -1,6 +1,7 @@
 import arrow.continuations.SuspendApp
 import arrow.continuations.ktor.server
 import arrow.fx.coroutines.resourceScope
+import io.ktor.server.http.content.staticResources
 import io.ktor.server.netty.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -12,6 +13,11 @@ public fun main(args: Array<String>): Unit = SuspendApp {
             routing {
                 get("/ping") {
                     call.respond("pong")
+                }
+
+                // Serve files from resources/static
+                staticResources("/", "static") {
+                    default("static/index.html")
                 }
             }
         }
