@@ -1,4 +1,4 @@
-package klib.data.type
+package klib.data.type.primitives
 
 import com.github.ajalt.colormath.Color
 import com.github.ajalt.colormath.ColorSpace
@@ -6,12 +6,9 @@ import com.github.ajalt.colormath.convertTo
 import com.github.ajalt.colormath.model.Ansi16
 import com.github.ajalt.colormath.model.Ansi256
 import com.github.ajalt.colormath.model.RGB
-import klib.data.type.primitives.denormalizeByte
-import klib.data.type.primitives.denormalizeInt
-import klib.data.type.primitives.normalize
-import klib.data.type.primitives.toByteArray
-import klib.data.type.primitives.toInt
-import klib.data.type.primitives.unsigned
+import kotlin.collections.get
+import kotlin.collections.plus
+import kotlin.text.toByte
 
 public fun Color.toByteArray(alpha: Boolean = true): ByteArray =
     toArray().dropLast(1).let { components ->
