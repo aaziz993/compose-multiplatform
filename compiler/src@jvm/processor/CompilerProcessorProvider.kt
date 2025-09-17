@@ -1,4 +1,3 @@
-../licenses/SLASH_LICENSE_HEADER
 package processor
 
 import com.google.devtools.ksp.processing.SymbolProcessor
