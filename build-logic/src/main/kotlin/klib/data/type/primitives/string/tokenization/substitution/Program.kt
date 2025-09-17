@@ -6,7 +6,7 @@ public data class Program(
     val mainFunction: Function,
     val functions: List<Function>,
 ) {
-    public operator fun invoke(input: (name: String) -> Any? = { null }): Any? =
+    public operator fun invoke(input: (path: List<Any?>) -> Any?): Any? =
         NaiveProgramInterpreter()(this, input).run {
             log.forEach(::println)
 

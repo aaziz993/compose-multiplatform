@@ -1,6 +1,7 @@
 package klib.data.type.serialization
 
 import klib.data.type.cast
+import klib.data.type.collections.deepGet
 import klib.data.type.collections.deepGetOrNull
 import klib.data.type.collections.deepMap
 import klib.data.type.collections.list.drop
@@ -20,14 +21,14 @@ public inline fun <reified T : Any> decodeFile(
     },
     crossinline decoder: (file: String) -> T,
     crossinline merger: (decodedFile: T, decodedImports: List<T>) -> T = { decodedFile, decodedImports ->
-        val substitutedFile = decodedFile.minusKeys(IMPORTS_KEY).substitute(unescapeDollars = false, strict = false)
+        val substitutedFile = decodedFile.minusKeys(IMPORTS_KEY).substitute(unescapeDollars = false)
 
         if (decodedImports.isEmpty()) substitutedFile
         else {
             val mergedImports = decodedImports.first().deepPlus(*decodedImports.drop().toTypedArray())
 
             substitutedFile.substitute(
-                getter = { path -> mergedImports.deepGetOrNull(*path.toTypedArray()).second },
+                getter = { path -> mergedImports.deepGet(*path.toTypedArray()).second },
             ).deepMap(mergedImports)
         }
     },

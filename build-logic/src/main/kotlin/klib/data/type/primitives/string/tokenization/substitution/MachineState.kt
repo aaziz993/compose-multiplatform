@@ -5,12 +5,12 @@ import klib.data.type.collections.replaceAt
 import klib.data.type.collections.replaceLast
 
 public data class MachineState(
-    val input: (name: String) -> Any? = { null },
+    val input: (path: List<Any?>) -> Any?,
     val scopes: List<Map<String, Declaration>> = listOf(emptyMap()),
     val functionScopes: List<Map<String, List<Function>>> = listOf(emptyMap()),
     val log: List<String> = emptyList(),
     val exceptionType: Type? = null,
-    val shouldReturn: Boolean = false,
+    val control: Control = Control.NORMAL,
     val result: Any? = null,
 ) {
     public fun pushScope(): MachineState = copy(
@@ -57,7 +57,7 @@ public data class MachineState(
     }
 
     public operator fun get(name: String): Any? = findDeclaration(name).let { declaration ->
-        if (declaration == null) input(name) else declaration.value
+        if (declaration == null) error("Unresolved declaration '$name'") else declaration.value
     }
 
     public fun declareFunction(function: Function): MachineState = copy(

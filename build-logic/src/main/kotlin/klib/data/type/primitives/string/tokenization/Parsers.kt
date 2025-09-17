@@ -3,13 +3,19 @@ package klib.data.type.primitives.string.tokenization
 import com.github.h0tk3y.betterParse.combinators.and
 import com.github.h0tk3y.betterParse.combinators.asJust
 import com.github.h0tk3y.betterParse.combinators.map
+import com.github.h0tk3y.betterParse.combinators.oneOrMore
 import com.github.h0tk3y.betterParse.combinators.optional
 import com.github.h0tk3y.betterParse.combinators.or
+import com.github.h0tk3y.betterParse.combinators.separatedTerms
 import com.github.h0tk3y.betterParse.combinators.times
 import com.github.h0tk3y.betterParse.combinators.unaryMinus
 import com.github.h0tk3y.betterParse.combinators.use
+import com.github.h0tk3y.betterParse.lexer.Token
+import com.github.h0tk3y.betterParse.lexer.TokenMatch
 import com.github.h0tk3y.betterParse.parser.Parser
+import klib.data.type.primitives.string.tokenization.Parsers.`null`
 import klib.data.type.primitives.string.unescape
+import klib.data.type.primitives.toInt
 import klib.data.type.primitives.toNumber
 
 public object Parsers {
@@ -50,4 +56,18 @@ public object Parsers {
     public val doubleQuotedString: Parser<String> = Tokens.doubleQuotedString use {
         text.substring(1, length - 1).unescape()
     }
+
+    // Id.
+    public val id: Parser<String> = Tokens.id use TokenMatch::text
+
+    // Reference.
+    public val key: Parser<Any?> = `null` or
+            Tokens.integer.use { text.toInt() } or
+            oneOrMore(Tokens.id or Tokens.integer or Tokens.hyphen use TokenMatch::text).use { joinToString("") } or
+            (-Tokens.leftSqBr * Tokens.integer * -Tokens.rightSqBr).use { text.toInt() } or
+            Tokens.doubleQuotedString.use { text.substring(1, length - 1) }
+    public val path: Parser<List<Any?>> = separatedTerms(key, Tokens.period)
+    public val reference: Parser<List<Any?>> = -Tokens.dollar * path
+    public val reference_braced: Parser<List<Any?>> =
+        -Tokens.dollar * -Tokens.leftBr * path * -Tokens.rightBr
 }

@@ -9,6 +9,22 @@ import kotlin.text.toInt
 import kotlin.toUInt
 import kotlin.toULong
 
+public val U_BYTE_DEFAULT: UByte = 0U.toUByte()
+public val U_SHORT_DEFAULT: UShort = 0U.toUShort()
+public const val U_INT_DEFAULT: UInt = 0U
+public const val U_LONG_DEFAULT: ULong = 0UL
+public const val BYTE_DEFAULT: Byte = 0.toByte()
+public const val SHORT_DEFAULT: Short = 0.toShort()
+public const val INT_DEFAULT: Int = 0
+public const val LONG_DEFAULT: Long = 0L
+public const val FLOAT_DEFAULT: Float = 0F
+public const val DOUBLE_DEFAULT: Double = 0.0
+public const val CHAR_DEFAULT: Char = ' '
+public const val STRING_DEFAULT: String = ""
+public val BIG_INTEGER_DEFAULT: BigInteger = BigInteger.ZERO
+public val BIG_DECIMAL_DEFAULT: BigDecimal = BigDecimal.ZERO
+
+
 private val INT_MIN = BigInteger(Int.MIN_VALUE)
 private val INT_MAX = BigInteger(Int.MAX_VALUE)
 private val LONG_MIN = BigInteger(Long.MIN_VALUE)
@@ -535,7 +551,7 @@ public fun Any.pow(exponent: Any): Any = when (exponent) {
     is Int -> toBigDecimal().pow(exponent)
     is Long -> toBigDecimal().pow(exponent)
 
-    else -> throw IllegalArgumentException("Expected Int or Long but got $exponent")
+    else -> throw IllegalArgumentException("Expected Int or Long but got ${exponent::class.simpleName}")
 }.toNumber(this::class, exactRequired = false)
 
 public fun Any.abs(): Any = toBigDecimal().abs().toNumber(this::class)

@@ -1,14 +1,9 @@
 package klib.data.type.primitives.string.tokenization
 
-import com.github.h0tk3y.betterParse.lexer.CharToken
-import com.github.h0tk3y.betterParse.lexer.LiteralToken
-import com.github.h0tk3y.betterParse.lexer.RegexToken
-import com.github.h0tk3y.betterParse.lexer.literalToken
-import com.github.h0tk3y.betterParse.lexer.regexToken
-import klib.data.type.primitives.string.DOUBLE_QUOTED_STRING_PATTERN
-import klib.data.type.primitives.string.ID_PATTERN
-import klib.data.type.primitives.string.KEY_PATTERN
-import klib.data.type.primitives.string.SINGLE_QUOTED_STRING_PATTERN
+import com.github.h0tk3y.betterParse.lexer.*
+import klib.data.type.primitives.string.DOUBLE_QUOTED_STRING
+import klib.data.type.primitives.string.ID
+import klib.data.type.primitives.string.SINGLE_QUOTED_STRING
 
 public object Tokens {
 
@@ -138,6 +133,7 @@ public object Tokens {
 
     // If-else tokens.
     public val `if`: RegexToken = keyword("if")
+    public val `when`: RegexToken = keyword("when")
     public val then: RegexToken = keyword("then")
     public val elif: RegexToken = keyword("elif")
     public val `else`: RegexToken = keyword("else")
@@ -150,6 +146,8 @@ public object Tokens {
     public val `do`: RegexToken = keyword("do")
     public val od: RegexToken = keyword("od")
     public val `in`: RegexToken = keyword("in")
+    public val `break`: RegexToken = keyword("break")
+    public val `continue`: RegexToken = keyword("break")
 
     // Try-catch tokens.
     public val `try`: RegexToken = keyword("try")
@@ -183,7 +181,7 @@ public object Tokens {
     //   [^\\"]*       – and any number of non-special characters
     // )*              – repeating as a group any number of times
     // '               – closing single quote
-    public val singleQuotedStringRegex: RegexToken = regexToken(SINGLE_QUOTED_STRING_PATTERN)
+    public val singleQuotedString: RegexToken = regexToken(Regex.SINGLE_QUOTED_STRING)
 
     // the regex "[^\\"]*(\\["nrtbf\\][^\\"]*)*" matches:
     // "               – opening double quote,
@@ -193,13 +191,10 @@ public object Tokens {
     //   [^\\"]*       – and any number of non-special characters
     // )*              – repeating as a group any number of times
     // "               – closing double quote
-    public val doubleQuotedString: RegexToken = regexToken(DOUBLE_QUOTED_STRING_PATTERN)
+    public val doubleQuotedString: RegexToken = regexToken(Regex.DOUBLE_QUOTED_STRING)
 
     // Id token.
-    public val id: RegexToken = regexToken(ID_PATTERN)
-
-    // Key token.
-    public val key: RegexToken = regexToken(KEY_PATTERN)
+    public val id: RegexToken = regexToken(Regex.ID)
 
     public fun keyword(value: String): RegexToken = regexToken("$PREFIX$value$SUFFIX")
 

@@ -49,10 +49,6 @@ public object AnsiRenderer {
 
     public const val CODE_LIST_SEPARATOR: String = ","
 
-    private const val BEGIN_TOKEN_LEN = 2
-
-    private const val END_TOKEN_LEN = 2
-
     public fun render(input: String): String = render(input, StringBuilder()).toString()
 
     /**
@@ -87,7 +83,7 @@ public object AnsiRenderer {
                 target.append(input)
                 return target
             }
-            j += BEGIN_TOKEN_LEN
+            j += BEGIN_TOKEN.length
 
             // Check for invalid string with END_TOKEN before BEGIN_TOKEN
             require(k >= j) { "Invalid input string found." }
@@ -105,7 +101,7 @@ public object AnsiRenderer {
 
             target.append(replacement)
 
-            i = k + END_TOKEN_LEN
+            i = k + END_TOKEN.length
         }
     }
 

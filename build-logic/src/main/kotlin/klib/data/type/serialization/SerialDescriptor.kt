@@ -8,8 +8,15 @@ import klib.data.type.collections.list.asList
 import klib.data.type.collections.map.asMap
 import klib.data.type.collections.takeIfNotEmpty
 import klib.data.type.reflection.callMember
+import klib.data.type.reflection.isFloatNumber
+import klib.data.type.reflection.isIntNumber
+import klib.data.type.reflection.isUIntNumber
+import klib.data.type.reflection.kClass
 import klib.data.type.serialization.serializers.bignum.BigDecimalSerializer
 import klib.data.type.serialization.serializers.bignum.BigIntegerSerializer
+import klib.data.type.validator.Validation
+import klib.data.type.validator.Validator
+import klib.data.type.validator.ValidatorRule
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
 import kotlin.reflect.typeOf
@@ -28,6 +35,7 @@ import kotlinx.serialization.descriptors.buildSerialDescriptor
 import kotlinx.serialization.descriptors.elementDescriptors
 import kotlinx.serialization.descriptors.elementNames
 import kotlinx.serialization.encoding.CompositeDecoder
+import kotlin.collections.plus
 
 
 @OptIn(ExperimentalUuidApi::class)
@@ -72,10 +80,10 @@ private val PRIMITIVE_SERIAL_TYPES = mapOf(
     Uuid.serializer().nullable.descriptor.serialName to typeOf<Uuid?>(),
 )
 
-public val String.primitiveTypeOrNull: KType?
-    get() = PRIMITIVE_SERIAL_TYPES[this]
+public val SerialDescriptor.primitiveTypeOrNull: KType?
+    get() = PRIMITIVE_SERIAL_TYPES[serialName]
 
-public val String.primitiveType: KType
+public val SerialDescriptor.primitiveType: KType
     get() = primitiveTypeOrNull!!
 
 @Suppress("UNCHECKED_CAST")
@@ -122,6 +130,26 @@ public fun SerialDescriptor.getElementAnnotations(name: String): List<Annotation
 
 public fun SerialDescriptor.isElementOptional(name: String): Boolean? =
     getElementIndexOrNull(name)?.let(::isElementOptional)
+
+public fun SerialDescriptor.validatorRules(
+    uIntPatternMessage: String = "value_is_not_unsigned_integer",
+    intPatternMessage: String = "value_is_not_integer",
+    floatPatternMessage: String = "value_is_not_float",
+): List<ValidatorRule> = listOfNotNull(
+    isNullable.takeIf { !it }?.let { ValidatorRule.nonEmpty("value_is_empty") },
+    primitiveType.kClass.isUIntNumber.takeIf { it }?.let { ValidatorRule.uIntValue(uIntPatternMessage) },
+    primitiveType.kClass.isIntNumber.takeIf { it }?.let { ValidatorRule.intValue(intPatternMessage) },
+    primitiveType.kClass.isFloatNumber.takeIf { it }?.let { ValidatorRule.floatValue(floatPatternMessage) },
+)
+
+public fun SerialDescriptor.validator(
+    type: Validation = Validation.FAIL_FAST,
+    additionalRules: List<ValidatorRule> = emptyList(),
+    uIntPatternMessage: String = "value_is_not_unsigned_integer",
+    intPatternMessage: String = "value_is_not_integer",
+    floatPatternMessage: String = "value_is_not_float",
+): Validator? = validatorRules(uIntPatternMessage, intPatternMessage, floatPatternMessage).takeIfNotEmpty()
+    ?.let { Validator(type, it + additionalRules, !isNullable) }
 
 public fun SerialDescriptor.buildPolymorphicDescriptor(classDiscriminator: String): SerialDescriptor =
     buildSerialDescriptor(serialName, kind) {

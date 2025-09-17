@@ -11,6 +11,8 @@ import com.github.h0tk3y.betterParse.lexer.regexToken
 import com.github.h0tk3y.betterParse.parser.Parser
 import com.github.h0tk3y.betterParse.parser.toParsedOrThrow
 import com.github.h0tk3y.betterParse.utils.Tuple2
+import klib.data.type.collections.takeIfNotEmpty
+import klib.data.type.expression.Length
 import klib.data.type.primitives.string.tokenization.Parsers
 import klib.data.type.primitives.string.tokenization.Tokens
 import klib.data.type.primitives.string.tokenization.mapToken
@@ -38,7 +40,9 @@ public object ProgramGrammar : Grammar<Program>() {
     private val leftBrToken by Tokens.leftBr
     private val rightBrToken by Tokens.rightBr
     private val exclamationMarkToken by Tokens.exclamationMark
+    private val dollar by Tokens.dollar
     private val ampersandToken by Tokens.ampersand
+    private val atToken by Tokens.at
     private val pipeToken by Tokens.pipe
     private val periodToken by Tokens.period
     private val commaToken by Tokens.comma
@@ -67,6 +71,7 @@ public object ProgramGrammar : Grammar<Program>() {
 
     // If-else tokens.
     private val ifToken by Tokens.`if`
+    private val whenToken by Tokens.`when`
     private val thenToken by Tokens.then
     private val elifToken by Tokens.elif
     private val elseToken by Tokens.`else`
@@ -78,6 +83,8 @@ public object ProgramGrammar : Grammar<Program>() {
     private val doToken by Tokens.`do`
     private val odToken by Tokens.od
     private val inToken by Tokens.`in`
+    private val breakToken by Tokens.`break`
+    private val continueToken by Tokens.`continue`
 
     // Try-catch tokens.
     private val tryToken by Tokens.`try`
@@ -92,7 +99,7 @@ public object ProgramGrammar : Grammar<Program>() {
     private val endToken by Tokens.end
     private val returnToken by Tokens.`return`
 
-    // Pair.
+    // Pair to token.
     private val toToken by Tokens.to
 
     // Literal tokens.
@@ -107,7 +114,6 @@ public object ProgramGrammar : Grammar<Program>() {
     // Id token.
     private val idToken by Tokens.id
 
-
     // Literals.
     private val literal by (Parsers.`null` or
             Parsers.boolean or
@@ -116,7 +122,7 @@ public object ProgramGrammar : Grammar<Program>() {
             Parsers.doubleQuotedString.map(::StringLiteral)
 
     // Variable.
-    private val id by (Tokens.id or exponentToken or numberSuffixToken use { text } or Parsers.doubleQuotedString)
+    private val id by Parsers.id or (exponentToken or numberSuffixToken).use(TokenMatch::text) or Parsers.doubleQuotedString
     private val type by (idToken * optional(questionMarkToken)) map { (type, optional) ->
         "${type.text}${optional?.text.orEmpty()}".toType()
     }
@@ -139,45 +145,60 @@ public object ProgramGrammar : Grammar<Program>() {
     private val parenthesesTerm by -leftParToken * parser(::expr) * -rightParToken
 
     private val ifTerm by parser(::ifStatement) map ::StatementExpression
+    private val whenTerm by parser(::whenStatement) map ::StatementExpression
     private val tryTerm by parser(::tryStatement) map ::StatementExpression
     private val throwTerm by parser(::throwStatement) map ::StatementExpression
 
-    private val baseTerm by literal or funCall or variable or parenthesesTerm or ifTerm or tryTerm or throwTerm
+    private val reference by Parsers.reference or Parsers.reference_braced use ::Reference
+
+    private val baseTerm by literal or
+            funCall or
+            variable or
+            reference or
+            parenthesesTerm or
+            ifTerm or
+            whenTerm or
+            tryTerm or
+            throwTerm
 
     private val memberTerm: Parser<(Expression, Boolean) -> Expression> by
     (-periodToken * id * optional(arguments))
         .map { (name, args) ->
             { receiver, optional ->
                 when (name) {
+                    // Any.
+                    Class::class.simpleName!!.toCamelCase() -> Class(receiver, optional)
+                    SimpleName::class.simpleName!!.toCamelCase() -> SimpleName(receiver, optional)
+
                     // Pair.
-                    First::class.simpleName!!.toCamelCase() -> First(listOf(receiver), optional)
-                    Second::class.simpleName!!.toCamelCase() -> Second(listOf(receiver), optional)
+                    First::class.simpleName!!.toCamelCase() -> First(receiver, optional)
+                    Second::class.simpleName!!.toCamelCase() -> Second(receiver, optional)
 
                     // Collection.
-                    ToList::class.simpleName!!.toCamelCase() -> ToList(listOf(receiver), optional)
-                    ToMutableList::class.simpleName!!.toCamelCase() -> ToMutableList(listOf(receiver), optional)
-                    ToMap::class.simpleName!!.toCamelCase() -> ToMap(listOf(receiver), optional)
+                    ToList::class.simpleName!!.toCamelCase() -> ToList(receiver, optional)
+                    ToMutableList::class.simpleName!!.toCamelCase() -> ToMutableList(receiver, optional)
+                    ToMap::class.simpleName!!.toCamelCase() -> ToMap(receiver, optional)
+                    Iterator::class.simpleName!!.toCamelCase() -> Iterator(receiver, optional)
+                    HasNext::class.simpleName!!.toCamelCase() -> HasNext(receiver, optional)
+                    Next::class.simpleName!!.toCamelCase() -> Next(receiver, optional)
+                    Size::class.simpleName!!.toCamelCase() -> Size(receiver, optional)
 
                     // List.
                     Add::class.simpleName!!.toCamelCase() -> Add(listOf(receiver) + args!!, optional)
                     AddAll::class.simpleName!!.toCamelCase() -> AddAll(listOf(receiver) + args!!, optional)
                     Remove::class.simpleName!!.toCamelCase() -> Remove(listOf(receiver) + args!!, optional)
-                    Clear::class.simpleName!!.toCamelCase() -> Clear(listOf(receiver), optional)
-                    Size::class.simpleName!!.toCamelCase() -> Size(listOf(receiver), optional)
+                    Clear::class.simpleName!!.toCamelCase() -> Clear(receiver, optional)
 
                     // Map.
-                    Pairs::class.simpleName!!.toCamelCase() -> Pairs(listOf(receiver), optional)
-                    Keys::class.simpleName!!.toCamelCase() -> Keys(listOf(receiver), optional)
-                    Values::class.simpleName!!.toCamelCase() -> Values(listOf(receiver), optional)
-                    ToMutableMap::class.simpleName!!.toCamelCase() -> ToMutableMap(listOf(receiver), optional)
+                    Pairs::class.simpleName!!.toCamelCase() -> Pairs(receiver, optional)
+                    Keys::class.simpleName!!.toCamelCase() -> Keys(receiver, optional)
+                    Values::class.simpleName!!.toCamelCase() -> Values(receiver, optional)
+                    ToMutableMap::class.simpleName!!.toCamelCase() -> ToMutableMap(receiver, optional)
 
                     // Exception.
-                    Cause::class.simpleName!!.toCamelCase() -> Cause(listOf(receiver), optional)
-                    Message::class.simpleName!!.toCamelCase() -> Message(listOf(receiver), optional)
-                    StackTraceToString::class.simpleName!!.toCamelCase() -> StackTraceToString(
-                        listOf(receiver),
-                        optional
-                    )
+                    Cause::class.simpleName!!.toCamelCase() -> Cause(receiver, optional)
+                    Message::class.simpleName!!.toCamelCase() -> Message(receiver, optional)
+                    StackTraceToString::class.simpleName!!.toCamelCase() -> StackTraceToString(receiver, optional)
 
                     else -> error("Unknown member call '$name'")
                 }
@@ -290,7 +311,7 @@ public object ProgramGrammar : Grammar<Program>() {
 
     private val printlnStatement by -printlnToken * -leftParToken * expr * -rightParToken map ::Println
 
-    private val skipStatement by skipToken.map { Skip }
+    private val skipStatement by skipToken asJust Skip
 
     private val declareStatement by ((valToken asJust false) or (varToken asJust true)) *
             variable * optional(-equalsToken * expr) map { (mutable, variable, value) ->
@@ -307,75 +328,98 @@ public object ProgramGrammar : Grammar<Program>() {
     private val compound by plusToken or hyphenToken or asteriskToken or forwardSlashToken or remToken or powToken
 
     private val assignStatement: Parser<Statement> by
-    (assignee * optional(compound) * -equalsToken * expr).map { (receiver, compound, value) ->
+    (assignee * optional(compound) * -equalsToken * expr).map { (assignee, compound, value) ->
         Assign(
-            receiver,
+            assignee,
             when (compound?.type) {
                 null -> value
-                plusToken -> receiver + value
-                hyphenToken -> receiver - value
-                asteriskToken -> receiver * value
-                forwardSlashToken -> receiver / value
-                remToken -> receiver % value
-                powToken -> receiver pow value
+                plusToken -> assignee + value
+                hyphenToken -> assignee - value
+                asteriskToken -> assignee * value
+                forwardSlashToken -> assignee / value
+                remToken -> assignee % value
+                powToken -> assignee pow value
                 else -> error("Unsupported compound assign '${compound.type}'")
             }
         )
     }
 
     // If-else.
-    private val ifStatement: Parser<If> by
+    private val ifStatement by
     (-ifToken * expr * -thenToken *
             parser(::statementsChain) *
             zeroOrMore(-elifToken * expr * -thenToken * parser(::statementsChain)) *
             optional(-elseToken * parser(::statementsChain)).map { body -> body ?: Skip } *
             -fiToken
             ).map { (condition, thenBody, elIfs, elseBody) ->
-            val elses = elIfs.foldRight(elseBody) { (elifC, elifB), el -> If(elifC, elifB, el) }
-            If(condition, thenBody, elses)
+            val elses =
+                elIfs.foldRight(elseBody.scoped()) { (condition, thenBody), elseBody ->
+                    If(condition, thenBody.scoped(), elseBody)
+                }
+            If(condition, thenBody.scoped(), elses)
+        }
+
+    // When.
+    private val whenStatement by
+    (-whenToken * optional(declareStatement or expr.use(::ExpressionStatement)) * -beginToken *
+            zeroOrMore(expr * -thenToken * parser(::statementsChain) * -fiToken) *
+            optional(-elseToken * parser(::statementsChain)).map { body -> body ?: Skip } *
+            -endToken
+            ).map { (init, branches, elseBody) ->
+            val elses =
+                branches.foldRight(elseBody.scoped()) { (condition, thenBody), elseBody ->
+                    If(condition, thenBody.scoped(), elseBody)
+                }
+            Chain(init ?: Skip, elses).scoped()
         }
 
     // Loop.
+    private val label by -atToken * id
     private val forStatement by
-    (-forToken * parser(::statement) * -commaToken * expr * -commaToken * parser(::statement) * -doToken *
-            parser(::statementsChain) * -odToken).map { (init, condition, step, body) ->
-        Chain(init, While(condition, Chain(body, step).scoped()))
+    (optional(label) * -forToken * parser(::statement) * -commaToken * expr * -commaToken * parser(::statement) * -doToken *
+            parser(::statementsChain) * -odToken).map { (label, init, condition, step, body) ->
+        Chain(init, While(label, condition, Chain(body, step).scoped())).scoped()
     }
 
     private val foreachStatement by
-    (-forToken * variable * -inToken * expr * -doToken * parser(::statementsChain) * -odToken)
-        .map { (element, receiver, body) -> Foreach(element, receiver, body.scoped()) }
+    (optional(label) * -forToken * variable * -inToken * expr * -doToken * parser(::statementsChain) * -odToken)
+        .map { (label, item, receiver, body) ->
+            val iterator = Variable("__iter_${item.name}", Type.ITERATOR)
+            val declareIterator = Declare(iterator, Iterator(receiver, false), false)
+            val condition = HasNext(iterator, false)
+            val declareItem = Declare(item, Next(iterator, false), false)
 
-    private val whileStatement by (-whileToken * expr * -doToken * parser(::statementsChain) * -odToken)
-        .map { (condition, body) -> While(condition, body.scoped()) }
-
-    private val doStatement by
-    (-doToken * parser(::statementsChain) * -odToken * -whileToken * expr).map { (body, condition) ->
-        Chain(body.scoped(), While(condition, body.scoped()))
-    }
-
-    // Exception.
-    private val tryStatement: Parser<Try> by
-    (-tryToken * parser(::statementsChain) *
-            zeroOrMore(-catchToken * -leftParToken * variable * -rightParToken * parser(::statementsChain)).use {
-                map { (variable, body) ->
-                    Try.Catch(variable, body)
-                }
-            } *
-            optional(-finallyToken * parser { statementsChain }) *
-            -yrtToken
-            ).map { (body, catch, finally) ->
-            Try(body, catch, finally ?: Skip)
+            Chain(declareIterator, While(label, condition, Chain(declareItem, body).scoped())).scoped()
         }
 
-    private val throwStatement: Parser<Throw> by
+    private val whileStatement by (optional(label) * -whileToken * expr * -doToken * parser(::statementsChain) * -odToken)
+        .map { (label, condition, body) -> While(label, condition, body.scoped()) }
+
+    private val doStatement by
+    (optional(label) * -doToken * parser(::statementsChain) * -odToken * -whileToken * expr)
+        .map { (label, body, condition) ->
+            Chain(body.scoped(), While(label, condition, body.scoped()))
+        }
+
+    private val breakStatement by -breakToken * optional(id) map ::Break
+    private val continueStatement by -continueToken * optional(id) map ::Continue
+
+    // Exception.
+    private val tryStatement by
+    (-tryToken * parser(::statementsChain) *
+            zeroOrMore(-catchToken * -leftParToken * variable * -rightParToken * parser(::statementsChain)).use {
+                map { (variable, body) -> Try.Catch(variable, body.scoped()) }
+            } *
+            optional(-finallyToken * parser(::statementsChain)) *
+            -yrtToken
+            ).map { (body, catches, finallyBody) -> Try(body.scoped(), catches, finallyBody?.scoped() ?: Skip) }
+
+    private val throwStatement by
     -throwToken * idToken * -leftParToken * optional(expr) * -rightParToken map { (type, message) ->
         Throw(type.text.toType(), message ?: StringLiteral(""))
     }
 
-    private val returnStatement by -returnToken * optional(expr) map { value ->
-        Return(value ?: UnitLiteral)
-    }
+    private val returnStatement by -returnToken * optional(expr) map { value -> Return(value ?: UnitLiteral) }
 
     private val expressionStatement by expr map ::ExpressionStatement
 
@@ -403,7 +447,7 @@ public object ProgramGrammar : Grammar<Program>() {
                 acceptZero = true
             )
             * -rightParToken * -beginToken * statementsChain * -endToken)
-        .map { (name, parameters, body) -> Function(name, parameters, body) }
+        .map { (name, parameters, body) -> Function(name, parameters, body.scoped()) }
 
     override val rootParser: Parser<Program> by
     (oneOrMore(function or (statement * optional(semicolonToken) use { t1 })) *
@@ -413,9 +457,9 @@ public object ProgramGrammar : Grammar<Program>() {
                 Function(
                     "main",
                     listOf(),
-                    chainOf(*program.filterIsInstance<Statement>().ifEmpty {
-                        listOf(Skip)
-                    }.toTypedArray())
+                    program.filterIsInstance<Statement>().takeIfNotEmpty()
+                        ?.let { statements -> chainOf(*statements.toTypedArray()).scoped() }
+                        ?: Skip
                 ),
                 program.filterIsInstance<Function>()
             )

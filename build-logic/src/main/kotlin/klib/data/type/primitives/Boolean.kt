@@ -2,6 +2,8 @@ package klib.data.type.primitives
 
 import klib.data.type.act
 
+public const val BOOLEAN_DEFAULT: Boolean = false
+
 public fun Boolean.takeIfTrue(): Boolean? = takeIfTrue()
 
 public infix fun Boolean.ifTrue(action: () -> Unit): Boolean? =

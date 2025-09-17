@@ -3,13 +3,15 @@ package klib.data.type.collections
 import klib.data.type.collections.list.asList
 import klib.data.type.collections.list.drop
 import klib.data.type.collections.map.asMap
+import klib.data.type.primitives.string.tokenization.substitution.Program
 import klib.data.type.primitives.toInt
 import kotlin.collections.getOrElse
 import kotlin.collections.getOrNull
-import kotlin.collections.toTypedArray
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
+import klib.data.type.primitives.string.tokenization.substitution.substitute
+import klib.data.type.reflection.isPrimitive
 
 public fun <T : Collection<E>, E> T.takeIfNotEmpty(): T? = takeIf(Collection<*>::isNotEmpty)
 
@@ -35,7 +37,7 @@ public val Any.size: Int
 
         is MutableMap<*, *> -> size
 
-        else -> throw IllegalArgumentException("Expected a List or Map, but got ${this::class.simpleName}")
+        else -> throw IllegalArgumentException("Expected a List or Map, but got $this")
     }
 
 @OptIn(ExperimentalContracts::class)
@@ -49,7 +51,7 @@ public inline fun <T : Any, K, V> T.getOrElse(key: K, defaultValue: () -> V): V 
 
         is Map<*, *> -> asMap<K, V>().getOrElse(key, defaultValue)
 
-        else -> throw IllegalArgumentException("Expected a List or Map, but got ${this::class.simpleName}")
+        else -> throw IllegalArgumentException("Expected a List or Map, but got $this")
     }
 }
 
@@ -58,11 +60,17 @@ public fun Any.getOrNull(key: Any?): Any? = when (this) {
 
     is Map<*, *> -> asMap<Any?, Any?>()[key]
 
-    else -> throw IllegalArgumentException("Expected a List or Map, but got ${this::class.simpleName}")
+    else -> throw IllegalArgumentException("Expected a List or Map, but got $this")
 }
 
 public operator fun Any.get(key: Any?): Any =
-    getOrElse(key) { throw NoSuchElementException("Unresolved key '$key' in: ${this::class::simpleName}") }
+    when (this) {
+        is List<*> -> asList<Any?>()[key!!.toInt()]
+
+        is Map<*, *> -> asMap<Any?, Any?>()[key]
+
+        else -> throw IllegalArgumentException("Expected a List or Map, but got $this")
+    } ?: throw NoSuchElementException("Unresolved key '$key' in: $this")
 
 @Suppress("UNCHECKED_CAST")
 public fun Any.containsKey(key: Any?): Boolean =
@@ -71,7 +79,7 @@ public fun Any.containsKey(key: Any?): Boolean =
 
         is Map<*, *> -> (this as Map<Any?, *>).containsKey(key)
 
-        else -> throw IllegalArgumentException("Expected a List or Map, but got ${this::class.simpleName}")
+        else -> throw IllegalArgumentException("Expected a List or Map, but got $this")
     }
 
 @Suppress("UNCHECKED_CAST")
@@ -80,7 +88,7 @@ public fun <T : Any> T.minusKeys(vararg keys: Any?): T = when (this) {
 
     is Map<*, *> -> this - keys.toSet()
 
-    else -> throw IllegalArgumentException("Expected a List or Map, but got ${this::class.simpleName}")
+    else -> throw IllegalArgumentException("Expected a List or Map, but got $this")
 } as T
 
 public fun Collection<Int>.isZeroConsecutive(): Boolean = withIndex().all { (index, element) -> index == element }
@@ -178,7 +186,7 @@ public fun <T : Any> T.minusKeys(
 
 ////////////////////////////////////////////////////////////DEEP////////////////////////////////////////////////////////
 @Suppress("UNCHECKED_CAST")
-public fun  <K> Any.deepGet(
+public fun <K> Any.deepGet(
     vararg path: K,
     getter: List<Pair<Any, K>>.() -> Any? = { last().first[last().second] }
 ): Pair<List<Pair<Any, K>>, Any?> {
@@ -611,13 +619,7 @@ public fun <T : Any> T.deepMinusKeys(
 
 @Suppress("UNCHECKED_CAST")
 public fun <T : Any> T.substitute(
-    interpolate: Boolean = false,
-    interpolateBraced: Boolean = true,
-    evaluate: Boolean = true,
-    unescapeDollars: Boolean = false,
-    strict: Boolean = true,
-    getter: (path: List<String>) -> Any? = { path -> deepGet(*path.toTypedArray()).second },
-    destination: T = toNewMutableCollection() as T,
+    destination: Any.() -> Any = Any::toNewMutableCollection,
     sourceIteratorOrNull: List<Pair<Any, Any?>>.(value: Any) -> Iterator<Map.Entry<Any?, Any?>>? = { value ->
         value.iteratorOrNull()
     },
@@ -630,24 +632,53 @@ public fun <T : Any> T.substitute(
     destinationSetter: List<Pair<Any, Any?>>.(value: Any?) -> Unit = { value ->
         last().first.put(last().second, value)
     },
+    interpolate: Boolean = false,
+    interpolateBraced: Boolean = true,
+    evaluate: Boolean = true,
+    unescapeDollars: Boolean = true,
+    getter: (path: List<Any?>) -> Any? = { path -> deepGet(*path.toTypedArray()).second },
 ): T {
-    val grammar = TemplateGrammar(
-        interpolate,
-        interpolateBraced,
-        evaluate,
-        unescapeDollars,
-        strict,
-        getter,
-    ) { _, program -> program { name -> getValue(listOf(name)) } }
+    val cache = mutableMapOf<String, Any?>()
 
-    return deepMapValues(
-        destination,
-        sourceIteratorOrNull,
-        sourceFilter,
-        { value -> if (value is String) grammar.parseToEnd(value) else value },
-        destinationGetter,
-        destinationSetter,
-    )
+    lateinit var deepSubstitute: DeepRecursiveFunction<Any, Any>
+
+    fun deepGetter(path: List<Any?>): Any? = getter(path)?.let { value ->
+        if (value::class.isPrimitive) value else deepSubstitute(value)
+    }
+
+    fun innerSubstitute(path: List<Any?>, value: Any?): Any? {
+        val pathPlain = path.joinToString(".")
+
+        return if (value is String)
+            if (pathPlain in cache) cache[pathPlain]
+            else try {
+                value.substitute(
+                    interpolate,
+                    interpolateBraced,
+                    evaluate,
+                    unescapeDollars,
+                    ::deepGetter,
+                    { _, program -> program { path -> innerSubstitute(path, getter(path)) } },
+                    cache
+                )
+            } catch (e: NoSuchElementException) {
+                e.message
+            }.also { value -> cache[pathPlain] = value }
+        else value
+    }
+
+    deepSubstitute = DeepRecursiveFunction<Any, Any> { value ->
+        value.deepMapValues(
+            value.destination(),
+            sourceIteratorOrNull,
+            sourceFilter,
+            { value -> innerSubstitute(map(transform = Pair<*, Any?>::second), value) },
+            destinationGetter,
+            destinationSetter,
+        )
+    }
+
+    return deepSubstitute(this) as T
 }
 
 public fun <T> T.printTree(
@@ -694,7 +725,7 @@ public fun <T> T.toTreeString(
     lastConnector: String = "└──",
     children: T.() -> List<T>,
     transform: (T, visited: Boolean) -> String = { value, visited ->
-        value.toString() + if (visited) " ↻" else ""
+        value.toString() + if (visited) " ↑" else ""
     }
 ): String = buildString {
     printTree(this, intermediateConnector, verticalConnector, lastConnector, children, transform)

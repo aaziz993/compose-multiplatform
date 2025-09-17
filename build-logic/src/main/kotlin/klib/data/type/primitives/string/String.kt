@@ -23,38 +23,6 @@ import kotlinx.datetime.LocalTime
 import kotlinx.io.Buffer
 import kotlinx.io.writeString
 
-// Line break pattern
-public const val NEW_LINE_PATTERN: String = """(\r?\n|\n)"""
-
-// Any pattern (space and non-space)
-public const val ANY_PATTERN: String = """[\s\S]"""
-
-// Letter uppercase pattern
-public const val UPPERCASE_LETTER_PATTERN: String = "[A-ZА-Я]"
-
-// Letter lowercase pattern
-public const val LOWERCASE_LETTER_PATTERN: String = "[a-zа-я]"
-
-// Letter lowercase to uppercase pattern
-public const val LOWERCASE_UPPERCASE_LETTER_PATTERN: String =
-    "(?<=$LOWERCASE_LETTER_PATTERN)(?=$UPPERCASE_LETTER_PATTERN)"
-
-// Letter uppercase to lowercase pattern
-public const val UPPERCASE_LOWERCASE_PATTERN: String = "(?<=$UPPERCASE_LETTER_PATTERN)(?=$LOWERCASE_LETTER_PATTERN)"
-
-// Letter and digit pattern
-public const val LETTER_DIGIT_PATTERN: String = """[\w\d]"""
-
-// String pattern.
-public const val SINGLE_QUOTED_STRING_PLAIN_PATTERN: String = """(?:[^'\\]|\\.)*"""
-public const val SINGLE_QUOTED_STRING_PATTERN: String = """'$SINGLE_QUOTED_STRING_PLAIN_PATTERN'"""
-public const val DOUBLE_QUOTED_STRING_PLAIN_PATTERN: String = """(?:[^"\\]|\\.)*"""
-public const val DOUBLE_QUOTED_STRING_PATTERN: String = """"$DOUBLE_QUOTED_STRING_PLAIN_PATTERN""""
-
-// Id and key.
-public const val ID_PATTERN: String = "[_\\p{L}][_\\p{L}\\p{N}]*"
-public const val KEY_PATTERN: String = "[_\\p{L}\\p{N}][_\\p{L}\\p{N}-]*"
-
 @Suppress("SameReturnValue")
 public val String.Companion.DEFAULT: String
     get() = ""
@@ -176,20 +144,19 @@ public fun String.format(vararg args: Any?): String =
         args.getOrNull(matchResult.groupValues[1].toInt() - 1)?.toString().orEmpty()
     }
 
-public val String.escapedPattern: String
-    get() = Regex.escape(this)
+public fun String.escapePattern(): String = Regex.escape(this)
 
 public fun randomString(length: Int, charPool: List<Char> = ('a'..'z') + ('A'..'Z')): String =
     (1..length).map { Random.nextInt(0, charPool.size).let { charPool[it] } }.joinToString("")
 
 private val EXTENSION_TEXT_REGEX: Map<String, Regex> =
     mapOf(
-        "json" to """^\s*(\{$ANY_PATTERN*\}|\[$ANY_PATTERN*\])\s*$""".toRegex(),
+        "json" to Regex("""^\s*(\{.*\}|\[.*\])\s*$""", RegexOption.DOT_MATCHES_ALL),
         "xml" to """^\s*<\?xml[\s\S]*""".toRegex(),
-        "html" to """^\s*<(!DOCTYPE +)?html$ANY_PATTERN*""".toRegex(),
-        "yaml" to """^( *((#|[^{\s]*:|-).*)?$NEW_LINE_PATTERN?)+$""".toRegex(),
-        "properties" to """^( *((#|[^{\s\[].*?=).*)?$NEW_LINE_PATTERN?)+$""".toRegex(),
-        "toml" to """^( *(([#\[\]"{}]|.*=).*)?$NEW_LINE_PATTERN?)+$""".toRegex(),
+        "html" to Regex("""^\s*<(!DOCTYPE +)?html.*""", RegexOption.DOT_MATCHES_ALL),
+        "yaml" to Regex("""^( *((#|[^{\s]*:|-).*)?${Regex.NEW_LINE}?)+$"""),
+        "properties" to Regex("""^( *((#|[^{\s\[].*?=).*)?${Regex.NEW_LINE}?)+$"""),
+        "toml" to """^( *(([#\[\]"{}]|.*=).*)?${Regex.NEW_LINE}?)+$""".toRegex(),
     )
 
 public val String.extension: String?
@@ -206,7 +173,7 @@ public fun String.toTemporal(kClass: KClass<*>): Any =
         else -> IllegalArgumentException("Can't convert ${singleQuote()} to ${kClass.simpleName?.singleQuote()}")
     }
 
-public fun String.toPrime(kClass: KClass<*>): Any =
+public fun String.toPrimitive(kClass: KClass<*>): Any =
     when (kClass) {
         Boolean::class -> toBoolean()
         UByte::class -> toUByte()

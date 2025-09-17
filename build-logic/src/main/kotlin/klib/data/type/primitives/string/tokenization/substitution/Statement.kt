@@ -1,48 +1,44 @@
 package klib.data.type.primitives.string.tokenization.substitution
 
-import klib.data.type.collections.map.pairs
-import kotlin.collections.iterator
+import klib.data.type.reflection.invoke
 
 public sealed class Statement {
-
-    public open fun join(machine: MachineState): MachineState = machine
+    public open operator fun invoke(machine: MachineState): MachineState = machine
 }
 
 public data class Scoped(val statement: Statement) : Statement() {
-
-    override fun join(machine: MachineState): MachineState = statement.join(machine.pushScope()).popScope()
+    override fun invoke(machine: MachineState): MachineState = statement(machine.pushScope()).popScope()
 }
 
 public data class ExpressionStatement(val expression: Expression) : Statement() {
-
-    override fun join(machine: MachineState): MachineState = expression(machine)
+    override fun invoke(machine: MachineState): MachineState = expression(machine)
 }
 
 // Println.
 public data class Println(val message: Expression) : Statement() {
-
-    override fun join(machine: MachineState): MachineState = message(machine).run {
-        if (shouldReturn) this else copy(log = log + result.toString(), result = Unit)
+    override fun invoke(machine: MachineState): MachineState = message(machine).run {
+        if (control != Control.NORMAL) this else copy(log = log + result.toString(), result = Unit)
     }
 }
 
 // Skip.
-public object Skip : Statement()
+public object Skip : Statement() {
+    override fun invoke(machine: MachineState): MachineState = machine.copy(result = Unit)
+}
 
 public data class Declare(
     val variable: Variable,
     val value: Expression?,
     val mutable: Boolean
 ) : Statement() {
-
-    override fun join(machine: MachineState): MachineState {
+    override fun invoke(machine: MachineState): MachineState {
         if (value == null) {
             val boundType = if (variable.type == Type.UNDEFINED) Type.ANY_Q else variable.type
             return machine.declare(variable.name, value, boundType, mutable)
         }
 
-        val after = value(machine)
-        if (after.shouldReturn) return after
+        val after = value.invoke(machine)
+        if (after.control != Control.NORMAL) return after
 
         val boundType = variable.type.takeUnless { type -> type == Type.UNDEFINED }
             ?: after.result?.let { it::class.simpleName!!.toType() }
@@ -52,22 +48,20 @@ public data class Declare(
     }
 }
 
-public data class Assign(val receiver: Expression, val value: Expression) : Statement() {
-
-    override fun join(machine: MachineState): MachineState = when (receiver) {
+public data class Assign(val assignee: Expression, val value: Expression) : Statement() {
+    override fun invoke(machine: MachineState): MachineState = when (assignee) {
         is Variable -> value(machine).run {
-            if (shouldReturn) this else machine.set(receiver.name, result)
+            if (control != Control.NORMAL) this else machine.set(assignee.name, result)
         }
 
-        is Get -> ExpressionStatement(Set(receiver.arguments + value, receiver.optional)).join(machine)
+        is Get -> ExpressionStatement(Set(assignee.arguments + value, assignee.optional))(machine)
 
         else -> error("Invalid assignment target")
     }
 }
 
 public data class DeclareFunction(val function: Function) : Statement() {
-
-    override fun join(machine: MachineState): MachineState = machine.declareFunction(function)
+    override fun invoke(machine: MachineState): MachineState = machine.declareFunction(function)
 }
 
 // If-else.
@@ -76,59 +70,47 @@ public data class If(
     val thenBody: Statement,
     val elseBody: Statement
 ) : Statement() {
-
-    override fun join(machine: MachineState): MachineState = condition(machine).run {
+    override fun invoke(machine: MachineState): MachineState = condition(machine).run {
         when {
-            shouldReturn -> this
-            result as Boolean -> thenBody.join(this)
-            else -> elseBody.join(this)
+            control != Control.NORMAL -> this
+            result as Boolean -> thenBody(this)
+            else -> elseBody(this)
         }
     }
 }
 
 public data class While(
+    val label: String? = null,
     val condition: Expression,
     val body: Statement
 ) : Statement() {
+    override tailrec fun invoke(machine: MachineState): MachineState {
+        var state = condition(machine)
 
-    override fun join(machine: MachineState): MachineState = condition(machine).run {
-        if (shouldReturn || !(result as Boolean)) copy(result = Unit) else join(body.join(this))
+        when (state.control) {
+            is Control.BREAK -> return if (state.control.label == label) state.copy(control = Control.NORMAL) else state
+
+            is Control.CONTINUE -> {
+                if (state.control.label == label) state = state.copy(control = Control.NORMAL) else return state
+            }
+
+            Control.RETURN -> return state
+
+            else -> Unit
+        }
+
+        return if (state.result as Boolean) this(body(state)) else state
     }
 }
 
-public data class Foreach(
-    val element: Variable,
-    val receiver: Expression,
-    val body: Statement
-) : Statement() {
+public data class Break(val label: String? = null) : Statement() {
+    override fun invoke(machine: MachineState): MachineState =
+        machine.copy(control = Control.BREAK(label), result = Unit)
+}
 
-    override fun join(machine: MachineState): MachineState {
-        var state = receiver(machine)
-        if (state.shouldReturn) return state
-
-        val iterator = state.result?.iterator() ?: throw NullPointerException("Cannot iterate")
-
-        for (item in iterator) {
-            val boundType = element.type.takeUnless { type -> type == Type.UNDEFINED }
-                ?: item?.let { it::class.simpleName!!.toType() }
-                ?: Type.ANY_Q
-
-            val scoped = state.pushScope().declare(element.name, item, boundType, false)
-
-            val afterBody = body.join(scoped).popScope()
-            if (afterBody.shouldReturn) return afterBody
-            state = afterBody
-        }
-
-        return state
-    }
-
-    private fun Any.iterator(): Iterator<Any?> = when (this) {
-        is Iterable<*> -> iterator()
-        is Sequence<*> -> iterator()
-        is Map<*, *> -> pairs().iterator()
-        else -> error("Expected Iterable, Sequence or Map, but got $this")
-    }
+public data class Continue(val label: String? = null) : Statement() {
+    override fun invoke(machine: MachineState): MachineState =
+        machine.copy(control = Control.CONTINUE(label), result = Unit)
 }
 
 // Exceptions
@@ -137,34 +119,30 @@ public data class Try(
     val catches: List<Catch>,
     val finallyBody: Statement = Skip
 ) : Statement() {
-
-    override fun join(machine: MachineState): MachineState {
-        val afterBody = body.join(machine)
+    override fun invoke(machine: MachineState): MachineState {
+        val afterBody = body(machine)
 
         val beforeFinally =
-            if (afterBody.exceptionType != null) {
+            if (afterBody.exceptionType == null) afterBody else {
                 catches.find { catch -> catch.variable.type isAssignableFrom afterBody.exceptionType }
                     ?.let { catchBlock ->
-                        catchBlock.body.join(
-                            afterBody.pushScope()
-                                .declare(
-                                    catchBlock.variable.name,
-                                    catchBlock.variable.type(afterBody.result),
-                                    catchBlock.variable.type,
-                                    false,
-                                )
-                                .copy(exceptionType = null, shouldReturn = false),
+                        catchBlock.body(
+                            afterBody.pushScope().declare(
+                                catchBlock.variable.name,
+                                catchBlock.variable.type(afterBody.result),
+                                catchBlock.variable.type,
+                                false
+                            ).copy(exceptionType = null, control = Control.NORMAL)
                         ).popScope()
                     } ?: afterBody
             }
-            else afterBody
 
-        return finallyBody.join(beforeFinally.copy(exceptionType = null, shouldReturn = false)).run {
+        return finallyBody(beforeFinally.copy(exceptionType = null, control = Control.NORMAL)).run {
             if (exceptionType != null) this
             else copy(
-                shouldReturn = shouldReturn || beforeFinally.shouldReturn,
-                result = if (shouldReturn) result else beforeFinally.result,
-                exceptionType = if (shouldReturn) exceptionType else beforeFinally.exceptionType,
+                control = if (control != Control.NORMAL || beforeFinally.control != Control.NORMAL) Control.RETURN else Control.NORMAL,
+                result = if (control != Control.NORMAL) result else beforeFinally.result,
+                exceptionType = if (control != Control.NORMAL) exceptionType else beforeFinally.exceptionType
             )
         }
     }
@@ -173,27 +151,24 @@ public data class Try(
 }
 
 public data class Throw(val exceptionType: Type, val message: Expression) : Statement() {
-
-    override fun join(machine: MachineState): MachineState = message(machine).run {
-        if (exceptionType == null) copy(exceptionType = this@Throw.exceptionType, shouldReturn = true) else this
+    override fun invoke(machine: MachineState): MachineState = message(machine).run {
+        if (exceptionType == null) copy(exceptionType = this@Throw.exceptionType, control = Control.RETURN) else this
     }
 }
 
 // Exceptions.
 public data class Return(val value: Expression) : Statement() {
-
-    override fun join(machine: MachineState): MachineState = value(machine).copy(shouldReturn = true)
+    override fun invoke(machine: MachineState): MachineState = value(machine).copy(control = Control.RETURN)
 }
 
 // Chain.
 public data class Chain(val leftPart: Statement, val rightPart: Statement) : Statement() {
-
-    override fun join(machine: MachineState): MachineState = leftPart.join(machine).run {
-        if (shouldReturn) this else rightPart.join(this)
+    override fun invoke(machine: MachineState): MachineState = leftPart(machine).run {
+        if (control != Control.NORMAL) this else rightPart(this)
     }
 }
 
-public fun Statement.scoped(): Scoped = Scoped(this)
+public fun Statement.scoped(): Statement = Scoped(this)
 
 public fun chainOf(vararg statements: Statement): Statement = when (statements.size) {
     0 -> Skip
