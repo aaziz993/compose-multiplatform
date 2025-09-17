@@ -1,8 +1,5 @@
 imports:
   - jvm.yaml
-config:
-  imports:
-    - org.gradle.api.tasks.JavaExec
 script:
   - kotlin:
       targets:
