@@ -19,6 +19,7 @@ import gradle.api.repositories.CacheRedirector
 import gradle.plugins.getOrPut
 import io.github.sgrishchenko.karakum.gradle.plugin.KarakumExtension
 import io.github.z4kn4fein.semver.Version
+import io.ktor.plugin.features.KtorExtension
 import kotlinx.benchmark.gradle.BenchmarksExtension
 import kotlinx.knit.KnitPluginExtension
 import kotlinx.kover.gradle.plugin.dsl.KoverProjectExtension
@@ -208,6 +209,10 @@ public fun Project.sqldelight(configure: SqlDelightExtension.() -> Unit): Unit =
 public val Project.room: RoomExtension get() = the()
 
 public fun Project.room(configure: RoomExtension.() -> Unit): Unit = extensions.configure(configure)
+
+public val Project.ktor: KtorExtension get() = the()
+
+public fun Project.ktor(configure: KtorExtension.() -> Unit): Unit = extensions.configure(configure)
 
 public val Project.rpc: RpcExtension get() = the()
 
