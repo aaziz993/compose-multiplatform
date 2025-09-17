@@ -21,7 +21,5 @@ script:
                 implementation(libs.bundles("arrow.suspendapp"))
               }
             }
-  - tasks.withType<JavaExec>: |
-      {
-        systemProperty("io.ktor.development", "true")
-      }
+  - ktor:
+      development: systemProperty("io.ktor.development", "true")
