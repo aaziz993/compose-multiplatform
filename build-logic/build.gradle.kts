@@ -187,7 +187,7 @@ dependencies {
     // Abstraction layer over SQLite to allow for more robust database access while harnessing the full power of SQLite.
     implementation(libs.plugins.room.toDep())
     // ktor
-    runtimeOnly(libs.plugins.ktor.toDep())
+    implementation(libs.plugins.ktor.toDep())
     // kotlin library for adding asynchronous Remote Procedure Call (RPC) services to your applications. Build your RPC with already known language constructs and nothing more!
     implementation(libs.plugins.kotlinx.rpc.toDep())
     // HTTP client/Kotlin Symbol Processor for Kotlin Multiplatform ( Android, iOS, Js, Jvm, Linux) using KSP and Ktor clients inspired by Retrofit
