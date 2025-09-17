@@ -60,7 +60,7 @@ ktor:
   ## To enable SSL, you need to generate a certificate and configure it here
   security:
     ssl:
-      keyStore: resources/security/ktor-server.p12
+      keyStore: resources/security/ssl/ktor-server.p12
       keyStorePassword: KtorServer2025
       keyAlias: ktor-server
       privateKeyPassword: KtorServer2025
