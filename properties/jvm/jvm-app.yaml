@@ -1,8 +1,8 @@
+imports:
+  - jvm.yaml
 config:
   imports:
     - org.gradle.api.tasks.JavaExec
-imports:
-  - jvm.yaml
 script:
   - plugins:
       id: (libs.plugins("ktor").pluginId)
