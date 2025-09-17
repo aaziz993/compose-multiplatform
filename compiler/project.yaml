@@ -15,12 +15,3 @@ script:
                 implementation(libs["symbol.processing.api"])
               }
             }
-  # Publishing
-  - publishing:
-      - publications:
-          - withType<MavenPublication>: |
-              {
-                pom { pom ->
-                    pom.url /= "https://github.com/aaziz993/compose-multiplatform/compiler"
-                }
-              }

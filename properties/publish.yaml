@@ -75,7 +75,7 @@ script:
               pom { pom ->
                 pom.packaging = "jar"
                 pom.name /=project.name
-                pom.url /=settings.settingsScript.license.url
+                pom.url /="${settings.settingsScript.remote.url}/${project.projectDir.relativeTo(rootProject.projectDir)}"
                 pom.description /= project.description
 
                 pom.licenses { licenses ->

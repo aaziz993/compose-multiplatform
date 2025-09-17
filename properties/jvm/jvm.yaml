@@ -38,7 +38,7 @@ script:
                 implementation(libs.bundles("exposed"))
                 // implementation(libs["dataframe"])
                 implementation(libs["kandy"])
-                // implementation(libs.bundles("ktor.server"))
+                implementation(libs.bundles("ktor.server"))
                 implementation(libs("ktor")["server.rateLimit"])
                 implementation(libs("ktor")["network.tls"])
                 implementation(libs("ktor")["network.tls.certificates"])
