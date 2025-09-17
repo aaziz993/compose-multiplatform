@@ -1,6 +1,11 @@
+config:
+  imports:
+    - org.gradle.api.tasks.JavaExec
 imports:
   - jvm.yaml
 script:
+  - plugins:
+      id: (libs.plugins("ktor").pluginId)
   - kotlin:
       targets:
         - withType<KotlinJvmTarget>: |
@@ -18,3 +23,7 @@ script:
                 implementation(libs.bundles("arrow.suspendapp"))
               }
             }
+  - tasks.withType<JavaExec>: |
+      {
+        systemProperty("io.ktor.development", "true")
+      }
