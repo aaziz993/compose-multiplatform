@@ -258,24 +258,14 @@ public abstract class Script {
                         val mergedImports = decodedImports
                             .map { decodedImport -> decodedImport - SCRIPT_KEY }
                             .first()
-                            .deepPlus(
-                                *decodedImports.toTypedArray(),
-                                destinationGetter = { source ->
-                                    last().first.getOrPut(last().second, source::toNewMutableCollection)
-                                },
-                            )
+                            .deepPlus(*decodedImports.toTypedArray())
 
                         val mergedImportScripts = decodedImports
                             .flatMap { decodedImport -> decodedImport[SCRIPT_KEY]!!.asList }
 
                         substitutedFile.deepSubstitute(
                             getter = { path -> mergedImports.deepGet(*path.toTypedArray()).second },
-                        ).deepMap(
-                            mergedImports,
-                            destinationGetter = { source ->
-                                last().first.getOrPut(last().second, source::toNewMutableCollection)
-                            },
-                        ) + (SCRIPT_KEY to (mergedImportScripts + decodedFileScript))
+                        ).deepMap(mergedImports) + (SCRIPT_KEY to (mergedImportScripts + decodedFileScript))
                     }
                 }.apply {
                     this["fileTree"] = fileTree
