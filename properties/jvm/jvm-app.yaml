@@ -21,5 +21,3 @@ script:
                 implementation(libs.bundles("arrow.suspendapp"))
               }
             }
-  - ktor:
-      development: System.getProperty("io.ktor.development","true").toBoolean()
