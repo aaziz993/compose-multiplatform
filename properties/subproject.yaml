@@ -75,7 +75,7 @@ script:
       outputDirectory: '"build/reports"'
       format: '"ALL"'
   # Generating BuildConstants for any kind of Gradle projects: Java, Kotlin, Android, Groovy, etc. Designed for KTS scripts, with experimental support for Kotlin's multi-platform plugin
-#  - buildConfig: '{ }'
+  - buildConfig: '{ }'
   # Can format <antlr | c | c# | c++ | css | flow | graphql | groovy | html | java | javascript | json | jsx | kotlin | less | license headers | markdown | objective-c | protobuf | python | scala | scss | shell | sql | typeScript | vue | yaml | anything> using <gradle | maven | sbt | anything>.
   - spotless:
       - java: |

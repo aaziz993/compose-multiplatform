@@ -5,6 +5,7 @@ import app.cash.sqldelight.gradle.SqlDelightExtension
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import com.apollographql.apollo3.gradle.api.ApolloExtension
 import com.diffplug.gradle.spotless.SpotlessExtension
+import com.github.gmazzo.buildconfig.BuildConfigExtension
 import com.google.devtools.ksp.gradle.KspExtension
 import com.osacky.doctor.DoctorExtension
 import de.jensklingenberg.ktorfit.gradle.KtorfitPluginExtension
@@ -130,10 +131,10 @@ public val Project.dependencyCheck: DependencyCheckExtension get() = the()
 public fun Project.dependencyCheck(configure: DependencyCheckExtension.() -> Unit): Unit =
     extensions.configure(configure)
 
-//public val Project.buildConfig: BuildConfigExtension get() = the()
-//
-//public fun Project.buildConfig(configure: BuildConfigExtension.() -> Unit): Unit =
-//    extensions.configure(configure)
+public val Project.buildConfig: BuildConfigExtension get() = the()
+
+public fun Project.buildConfig(configure: BuildConfigExtension.() -> Unit): Unit =
+    extensions.configure(configure)
 
 public val Project.spotless: SpotlessExtension get() = the()
 
