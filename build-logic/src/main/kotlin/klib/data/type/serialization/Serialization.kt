@@ -5,8 +5,11 @@ import klib.data.type.collections.deepGet
 import klib.data.type.collections.deepGetOrNull
 import klib.data.type.collections.deepMap
 import klib.data.type.collections.deepSubstitute
+import klib.data.type.collections.getOrPut
 import klib.data.type.collections.list.drop
 import klib.data.type.collections.minusKeys
+import klib.data.type.collections.toNewMutableCollection
+import kotlin.collections.last
 import kotlinx.serialization.modules.EmptySerializersModule
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.serializer
@@ -25,11 +28,21 @@ public inline fun <reified T : Any> decodeFile(
 
         if (decodedImports.isEmpty()) substitutedFile
         else {
-            val mergedImports = decodedImports.first().deepPlus(*decodedImports.drop().toTypedArray())
+            val mergedImports = decodedImports.first().deepPlus(
+                *decodedImports.drop().toTypedArray(),
+                destinationGetter = { source ->
+                    last().first.getOrPut(last().second, source::toNewMutableCollection)
+                },
+            )
 
             substitutedFile.deepSubstitute(
                 getter = { path -> mergedImports.deepGet(*path.toTypedArray()).second },
-            ).deepMap(mergedImports)
+            ).deepMap(
+                mergedImports,
+                destinationGetter = { source ->
+                    last().first.getOrPut(last().second, source::toNewMutableCollection)
+                },
+            )
         }
     },
 ): T = DeepRecursiveFunction<DecodeFileArgs<T>, T> { (file, mergedFiles) ->

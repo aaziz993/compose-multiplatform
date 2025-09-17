@@ -178,7 +178,7 @@ script:
             // include source files
             format.target("**/*.properties")
             // removes any extra whitespace at the beginning of lines
-            format.indentWithSpaces()
+            format.leadingTabsToSpaces()
           }
       - format: |
           ("html") { format ->
@@ -205,7 +205,7 @@ script:
             // include source files
             format.target("**/.editconfig")
             // removes any extra whitespace at the beginning of lines
-            format.indentWithSpaces()
+            format.leadingTabsToSpaces()
           }
       - format: |
           ("gitignore") { format ->
@@ -214,7 +214,7 @@ script:
             // include source files
             format.target("**/.gitignore")
             // removes any extra whitespace at the beginning of lines
-            format.indentWithSpaces()
+            format.leadingTabsToSpaces()
           }
       - format: |
           ("gitattributes") { format ->
@@ -223,7 +223,7 @@ script:
             // include source files
             format.target("**/.gitattributes")
             // removes any extra whitespace at the beginning of lines
-            format.indentWithSpaces()
+            format.leadingTabsToSpaces()
           }
       - formats: |
           {
