@@ -188,7 +188,7 @@ flow-ext = "1.0.0"
 # data type-safe pipeline
 dataframe = "1727"
 # kandy is an open-source plotting library for Kotlin that provides a powerful and flexible DSL for creating graphs and utilizes various popular engines.
-kandy = "0.8.0"
+kandy = "0.8.1"
 # compiler plugin, that generates visitor code for serializable classes, runtime library with core serialization API and support libraries with various serialization formats.
 kotlinx-serialization = "1.9.0"
 kotlinx-serialization-csv = "0.0.23"
@@ -218,7 +218,7 @@ colormath = "3.6.1"
 # image metadata read and write
 kim = "0.26.2"
 # webrtc for android, ios and js/wasmjs
-webrtc-kmp = "0.125.10"
+webrtc-kmp = "0.125.11"
 # cache
 cache4k = "0.14.0"
 # a lightweight Kotlin Multiplatform caching library that supports both in-memory and persistent caches and supports different eviction strategies (LRU, FIFO, MRU, FILO)
