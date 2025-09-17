@@ -863,8 +863,6 @@ compass-geolocation-browser = { module = "dev.jordond.compass:geolocation-browse
 compass-permissions-mobile = { module = "dev.jordond.compass:permissions-mobile", version.ref = "compass" }
 # map for Js, Jvm and Android
 worldwind = { module = "earth.worldwind:worldwind", version.ref = "worldwind" }
-worldwind-js = { module = "earth.worldwind:worldwind-js", version.ref = "worldwind" }
-worldwind-jvm = { module = "earth.worldwind:worldwind-jvm", version.ref = "worldwind" }
 # jvm map
 jxmapviewer2 = { module = "org.jxmapviewer:jxmapviewer2", version.ref = "jxmapviewer2" }
 

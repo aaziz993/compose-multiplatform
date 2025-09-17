@@ -20,7 +20,7 @@ script:
                 implementation(libs["kstore.storage"])
                 implementation(libs["sqldelight.web.worker.driver"])
                 implementation(libs["compass.geolocation.browser"])
-                implementation(libs["worldwind.js"])
+                implementation(libs["worldwind"])
                 implementation(libs("ktor")["client.js"])
                 implementation(npm("@js-joda/timezone", libs.versions("npm.js.joda.timezone").requiredVersion))
                 implementation(devNpm("copy-webpack-plugin", libs.versions("npm.copy.webpack.plugin").requiredVersion))
