@@ -411,9 +411,6 @@ cohort-http = "2.4.1"
 koin = "4.0.0"
 koin-annotations = "2.0.0-Beta2"
 
-##Gracefull shutdown
-suspendapp = "0.4.1-alpha.5"
-
 # Semantic version
 semver = "2.0.0"
 
@@ -540,11 +537,15 @@ kmputils-common = { module = "pro.respawn.kmmutils:common", version.ref = "kmput
 kmputils-datetime = { module = "pro.respawn.kmmutils:datetime", version.ref = "kmputils" }
 kmputils-coroutines = { module = "pro.respawn.kmmutils:coroutines", version.ref = "kmputils" }
 # provide a lingua franca of interfaces and abstractions across Kotlin libraries. For this, it includes the most popular data types such as Option, and Either, functional operators such as zipOrAccumulate, and computation blocks to empower users to write pure FP apps and libraries built atop higher order abstractions.
-arrow-core = { module = "io.arrow-kt:arrow-core", version.ref = "arrow" }
-arrow-fx-coroutines = { module = "io.arrow-kt:arrow-fx-coroutines", version.ref = "arrow" }
-arrow-resilience = { module = "io.arrow-kt:arrow-resilience", version.ref = "arrow" }
-arrow-optics = { module = "io.arrow-kt:arrow-optics", version.ref = "arrow" }
-arrow-optics-ksp-plugin = { module = "io.arrow-kt:arrow-optics-ksp-plugin", version.ref = "arrow" }
+arrow-stack = { module = "io.arrow-kt:arrow-stack", version.ref = "arrow" }
+arrow-core = { module = "io.arrow-kt:arrow-core" }
+arrow-fx-coroutines = { module = "io.arrow-kt:arrow-fx-coroutines" }
+arrow-resilience = { module = "io.arrow-kt:arrow-resilience" }
+arrow-optics = { module = "io.arrow-kt:arrow-optics" }
+arrow-optics-ksp-plugin = { module = "io.arrow-kt:arrow-optics-ksp-plugin" }
+# graceful shutdown
+arrow-suspendapp = { module = "io.arrow-kt:suspendapp" }
+arrow-suspendapp-ktor = { module = "io.arrow-kt:suspendapp-ktor" }
 # flow extensions
 flow-ext = { module = "io.github.hoc081098:FlowExt", version.ref = "flow-ext" }
 # kandy is an open-source plotting library for Kotlin that provides a powerful and flexible DSL for creating graphs and utilizes various popular engines.
@@ -896,10 +897,6 @@ koin-logger-slf4j = { module = "io.insert-koin:koin-logger-slf4j", version.ref =
 koin-ktor = { module = "io.insert-koin:koin-ktor", version.ref = "koin" }
 koin-test-junit5 = { module = "io.insert-koin:koin-test-junit5", version.ref = "koin" }
 
-##Gandle graceful shutdown
-suspendapp = { module = "io.arrow-kt:suspendapp", version.ref = "suspendapp" }
-suspendapp-ktor = { module = "io.arrow-kt:suspendapp-ktor", version.ref = "suspendapp" }
-
 ##Semantic version
 semver = { module = "io.github.z4kn4fein:semver", version.ref = "semver" }
 
@@ -987,13 +984,20 @@ kmputils = [
     "kmputils-datetime",
     "kmputils-coroutines",
 ]
-# arrow
+# arrow.
 arrow = [
+    "arrow-stack",
     "arrow-core",
     "arrow-fx-coroutines",
     "arrow-resilience",
     "arrow-optics"
 ]
+# graceful shutdown.
+arrow-suspendapp = [
+    "arrow-suspendapp",
+    "arrow-suspendapp-ktor"
+]
+
 # official serialization
 kotlinx-serialization = [
     "kotlinx-serialization-json",
@@ -1266,12 +1270,6 @@ koin-ktor = [
 koin-test = [
     "koin-test",
     "koin-test-junit5"
-]
-
-##Graceful shutdown
-suspendapp = [
-    "suspendapp",
-    "suspendapp-ktor"
 ]
 
 [plugins]
