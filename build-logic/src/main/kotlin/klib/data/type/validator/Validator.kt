@@ -22,74 +22,74 @@ public data class Validator(
 
     public companion object {
 
-        public fun nonEmpty(emptyMessage: String = "value_is_empty"): Validator = Validator(
+        public fun nonEmpty(emptyMessage: String = "Value is empty"): Validator = Validator(
             rules = listOf(
-                ValidatorRule.Companion.nonEmpty(emptyMessage),
+                ValidatorRule.nonEmpty(emptyMessage),
             ),
         )
 
         public fun numericPhone(
             required: Boolean = true,
-            emptyMessage: String = "value_is_empty",
-            lengthMessage: String = "value_length_is_invalid",
-            prefixMessage: String = "value_prefix_is_not_plus",
-            digitsMessage: String = "value_has_not_digits",
-            lettersMessage: String = "value_has_letters",
-            patternMessage: String = "value_is_invalid",
+            emptyMessage: String = "Value is empty",
+            lengthMessage: String = "Value length is invalid",
+            prefixMessage: String = "Value prefix is not plus",
+            digitsMessage: String = "Value has not digits",
+            lettersMessage: String = "Value has letters",
+            patternMessage: String = "Value is invalid",
         ): Validator = Validator(
             rules = listOf(
-                ValidatorRule.Companion.nonEmpty(emptyMessage),
-                ValidatorRule.Companion.numericPhoneLength(lengthMessage),
-                ValidatorRule.Companion.startsWith("+", message = prefixMessage),
-                ValidatorRule.Companion.containsDigit(digitsMessage),
-                ValidatorRule.Companion.nonLetters(lettersMessage),
-                ValidatorRule.Companion.numericPhonePattern(patternMessage),
+                ValidatorRule.nonEmpty(emptyMessage),
+                ValidatorRule.numericPhoneLength(lengthMessage),
+                ValidatorRule.startsWith("+", message = prefixMessage),
+                ValidatorRule.containsDigit(digitsMessage),
+                ValidatorRule.nonLetters(lettersMessage),
+                ValidatorRule.numericPhonePattern(patternMessage),
             ),
             required = required,
         )
 
         public fun delimitedPhone(
             required: Boolean = true,
-            emptyMessage: String = "value_is_empty",
-            lengthMessage: String = "value_length_is_invalid",
-            prefixMessage: String = "value_prefix_is_not_plus",
-            digitsMessage: String = "value_has_not_digits",
-            lettersMessage: String = "value_has_letters",
-            patternMessage: String = "value_is_invalid",
+            emptyMessage: String = "Value is empty",
+            lengthMessage: String = "Value length is invalid",
+            prefixMessage: String = "Value prefix is not plus",
+            digitsMessage: String = "Value has not digits",
+            lettersMessage: String = "Value has letters",
+            patternMessage: String = "Value is invalid",
         ): Validator = Validator(
             rules = listOf(
-                ValidatorRule.Companion.nonEmpty(emptyMessage),
-                ValidatorRule.Companion.delimitedPhoneLength(lengthMessage),
-                ValidatorRule.Companion.startsWith("+", message = prefixMessage),
-                ValidatorRule.Companion.containsDigit(digitsMessage),
-                ValidatorRule.Companion.nonLetters(lettersMessage),
-                ValidatorRule.Companion.delimitedPhonePattern(patternMessage),
+                ValidatorRule.nonEmpty(emptyMessage),
+                ValidatorRule.delimitedPhoneLength(lengthMessage),
+                ValidatorRule.startsWith("+", message = prefixMessage),
+                ValidatorRule.containsDigit(digitsMessage),
+                ValidatorRule.nonLetters(lettersMessage),
+                ValidatorRule.delimitedPhonePattern(patternMessage),
             ),
             required = required,
         )
 
         public fun email(
             required: Boolean = true,
-            emptyMessage: String = "value_is_empty",
-            lengthMessage: String = "value_length_is_invalid",
-            whitespaceMessage: String = "value_has_whitespace",
-            patternMessage: String = "value_is_invalid",
+            emptyMessage: String = "Value is empty",
+            lengthMessage: String = "Value length is invalid",
+            whitespaceMessage: String = "Value has whitespace",
+            patternMessage: String = "Value is invalid",
         ): Validator = Validator(
             rules = listOf(
-                ValidatorRule.Companion.nonEmpty(emptyMessage),
-                ValidatorRule.Companion.emailLength(lengthMessage),
-                ValidatorRule.Companion.nonWhitespace(whitespaceMessage),
-                ValidatorRule.Companion.emailPattern(patternMessage),
+                ValidatorRule.nonEmpty(emptyMessage),
+                ValidatorRule.emailLength(lengthMessage),
+                ValidatorRule.nonWhitespace(whitespaceMessage),
+                ValidatorRule.emailPattern(patternMessage),
             ),
             required = required,
         )
 
         public fun kotlinDuration(
             required: Boolean = true,
-            patternMessage: String = "value_is_invalid_duration",
+            patternMessage: String = "Value is invalid duration",
         ): Validator = Validator(
             rules = listOf(
-                ValidatorRule.Companion.kotlinDurationPattern(patternMessage),
+                ValidatorRule.kotlinDurationPattern(patternMessage),
             ),
             required = required,
         )

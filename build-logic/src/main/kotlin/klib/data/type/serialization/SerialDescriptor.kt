@@ -132,9 +132,9 @@ public fun SerialDescriptor.isElementOptional(name: String): Boolean? =
     getElementIndexOrNull(name)?.let(::isElementOptional)
 
 public fun SerialDescriptor.validatorRules(
-    uIntPatternMessage: String = "value_is_not_unsigned_integer",
-    intPatternMessage: String = "value_is_not_integer",
-    floatPatternMessage: String = "value_is_not_float",
+    uIntPatternMessage: String = "Value is not unsigned integer",
+    intPatternMessage: String = "Value is not integer",
+    floatPatternMessage: String = "Value is not float",
 ): List<ValidatorRule> = listOfNotNull(
     isNullable.takeIf { !it }?.let { ValidatorRule.nonEmpty("value_is_empty") },
     primitiveType.kClass.isUIntNumber.takeIf { it }?.let { ValidatorRule.uIntValue(uIntPatternMessage) },
