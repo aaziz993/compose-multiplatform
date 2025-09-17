@@ -210,11 +210,6 @@ public val Project.room: RoomExtension get() = the()
 
 public fun Project.room(configure: RoomExtension.() -> Unit): Unit = extensions.configure(configure)
 
-public val Project.ktor: KtorExtension get() = the()
-
-public fun Project.ktor(configure: KtorExtension.() -> Unit): Unit = extensions.configure(configure)
-
-
 public val Project.rpc: RpcExtension get() = the()
 
 public fun Project.rpc(configure: RpcExtension.() -> Unit): Unit = extensions.configure(configure)
