@@ -82,7 +82,7 @@ script:
           { format ->
             format.replaceRegex("remove license header", """^\s*(//.*|/\*[\s\S]*?\*\/)\s*""", "")
             // specify license header text
-            format.licenseHeader("../licenses/SLASH_LICENSE_HEADER", "^")
+            format.licenseHeaderFile("../licenses/SLASH_LICENSE_HEADER", "^")
             // include source files
             format.target("**/*.java")
             // uses the default importOrder configuration
@@ -113,7 +113,7 @@ script:
             // remove old license header
             format.replaceRegex("remove license header", """^\s*(//.*|/\*[\s\S]*?\*\/)\s*""", "")
             // specify license header text
-            format.licenseHeader("../licenses/SLASH_LICENSE_HEADER", "^")
+            format.licenseHeaderFile("../licenses/SLASH_LICENSE_HEADER", "^")
             // include source files
             format.target("**/*.kt", "**/*.kts")
           }
@@ -128,7 +128,7 @@ script:
             // remove old license header
             format.replaceRegex("remove license header", """^\s*(//.*|/\*[\s\S]*?\*\/)\s*""", "")
             // specify license header text
-            format.licenseHeader("../licenses/SLASH_LICENSE_HEADER", "^")
+            format.licenseHeaderFile("../licenses/SLASH_LICENSE_HEADER", "^")
             // include source files
             format.target("**/*.gradle.kts")
           }
@@ -137,7 +137,7 @@ script:
             // remove old license header
             format.replaceRegex("remove license header", """^\s*(//.*|/\*[\s\S]*?\*\/)\s*""", "")
             // specify license header text
-            format.licenseHeader("../licenses/SLASH_LICENSE_HEADER", "^")
+            format.licenseHeaderFile("../licenses/SLASH_LICENSE_HEADER", "^")
             // include source files
             format.target("**/*.js")
           }
@@ -146,7 +146,7 @@ script:
             // remove old license header
             format.replaceRegex("remove license header", """^\s*(//.*|/\*[\s\S]*?\*\/)\s*""", "")
             // specify license header text
-            format.licenseHeader("../licenses/SLASH_LICENSE_HEADER", "^")
+            format.licenseHeaderFile("../licenses/SLASH_LICENSE_HEADER", "^")
             // include source files
             format.target("**/*.ts")
           }
@@ -158,7 +158,7 @@ script:
       - yaml: |
           { format ->
             // specify license header text
-            format.licenseHeader("../licenses/HASH_LICENSE_HEADER", """^(?!\s*#).*""")
+            format.licenseHeaderFile("../licenses/HASH_LICENSE_HEADER", """^(?!\s*#).*""")
             // include source files
             format.target("**/*.yaml", "**/*.yml")
           }
@@ -167,14 +167,14 @@ script:
             // remove old license header
             format.replaceRegex("remove license header", """^\s*<--[\s\S]*?-->\s*""", "")
             // specify license header text
-            format.licenseHeader("../licenses/TAG_LICENSE_HEADER", "^")
+            format.licenseHeaderFile("../licenses/TAG_LICENSE_HEADER", "^")
             // include source files
             format.target("**/*.xml")
           }
       - format: |
           ("properties") { format ->
             // specify license header text
-            format.licenseHeader("../licenses/HASH_LICENSE_HEADER", """^(?!\s*#).*""")
+            format.licenseHeaderFile("../licenses/HASH_LICENSE_HEADER", """^(?!\s*#).*""")
             // include source files
             format.target("**/*.properties")
             // removes any extra whitespace at the beginning of lines
@@ -185,7 +185,7 @@ script:
             // remove old license header
             format.replaceRegex("remove license header", """^\s*<--[\s\S]*?-->\s*""", "")
             // specify license header text
-            format.licenseHeader("../licenses/TAG_LICENSE_HEADER", "^")
+            format.licenseHeaderFile("../licenses/TAG_LICENSE_HEADER", "^")
             // include source files
             format.target("**/*.html")
           }
@@ -194,14 +194,14 @@ script:
             // remove old license header
             format.replaceRegex("remove license header", """^\s*<--[\s\S]*?-->\s*""", "")
             // specify license header text
-            format.licenseHeader("../licenses/TAG_LICENSE_HEADER", "^")
+            format.licenseHeaderFile("../licenses/TAG_LICENSE_HEADER", "^")
             // include source files
             format.target("**/*.md")
           }
       - format: |
           ("editconfig") { format ->
             // specify license header text
-            format.licenseHeader("../licenses/HASH_LICENSE_HEADER", """^(?!\s*#).*""")
+            format.licenseHeaderFile("../licenses/HASH_LICENSE_HEADER", """^(?!\s*#).*""")
             // include source files
             format.target("**/.editconfig")
             // removes any extra whitespace at the beginning of lines
@@ -210,7 +210,7 @@ script:
       - format: |
           ("gitignore") { format ->
             // specify license header text
-            format.licenseHeader("../licenses/HASH_LICENSE_HEADER", """^(?!\s*#).*""")
+            format.licenseHeaderFile("../licenses/HASH_LICENSE_HEADER", """^(?!\s*#).*""")
             // include source files
             format.target("**/.gitignore")
             // removes any extra whitespace at the beginning of lines
@@ -219,7 +219,7 @@ script:
       - format: |
           ("gitattributes") { format ->
             // specify license header text
-            format.licenseHeader("../licenses/HASH_LICENSE_HEADER", """^(?!\s*#).*""")
+            format.licenseHeaderFile("../licenses/HASH_LICENSE_HEADER", """^(?!\s*#).*""")
             // include source files
             format.target("**/.gitattributes")
             // removes any extra whitespace at the beginning of lines
