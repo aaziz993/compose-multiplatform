@@ -11,3 +11,10 @@ script:
                 }
               }
             }
+      sourceSets:
+        - named: |
+            ("jvmMain") { sourceSet ->
+              sourceSet.dependencies {
+                implementation(libs.bundles("arrow-suspendapp"))
+              }
+            }
