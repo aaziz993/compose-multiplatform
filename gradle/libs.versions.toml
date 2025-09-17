@@ -111,7 +111,7 @@ googleJavaFormat = "1.25.0"
 # logging.
 logback-classic = "1.5.18"
 # cinterop.
-bridj="0.7.0"
+bridj = "0.7.0"
 # apache commons.
 commons-lang3 = "3.18.0"
 commons-beanutils = "1.11.0"
@@ -537,15 +537,14 @@ kmputils-common = { module = "pro.respawn.kmmutils:common", version.ref = "kmput
 kmputils-datetime = { module = "pro.respawn.kmmutils:datetime", version.ref = "kmputils" }
 kmputils-coroutines = { module = "pro.respawn.kmmutils:coroutines", version.ref = "kmputils" }
 # provide a lingua franca of interfaces and abstractions across Kotlin libraries. For this, it includes the most popular data types such as Option, and Either, functional operators such as zipOrAccumulate, and computation blocks to empower users to write pure FP apps and libraries built atop higher order abstractions.
-arrow-stack = { module = "io.arrow-kt:arrow-stack", version.ref = "arrow" }
-arrow-core = { module = "io.arrow-kt:arrow-core" }
-arrow-fx-coroutines = { module = "io.arrow-kt:arrow-fx-coroutines" }
-arrow-resilience = { module = "io.arrow-kt:arrow-resilience" }
-arrow-optics = { module = "io.arrow-kt:arrow-optics" }
-arrow-optics-ksp-plugin = { module = "io.arrow-kt:arrow-optics-ksp-plugin" }
+arrow-core = { module = "io.arrow-kt:arrow-core", version.ref = "arrow" }
+arrow-fx-coroutines = { module = "io.arrow-kt:arrow-fx-coroutines", version.ref = "arrow" }
+arrow-resilience = { module = "io.arrow-kt:arrow-resilience", version.ref = "arrow" }
+arrow-optics = { module = "io.arrow-kt:arrow-optics", version.ref = "arrow" }
+arrow-optics-ksp-plugin = { module = "io.arrow-kt:arrow-optics-ksp-plugin", version.ref = "arrow" }
 # graceful shutdown
-arrow-suspendapp = { module = "io.arrow-kt:suspendapp" }
-arrow-suspendapp-ktor = { module = "io.arrow-kt:suspendapp-ktor" }
+arrow-suspendapp = { module = "io.arrow-kt:suspendapp", version.ref = "arrow" }
+arrow-suspendapp-ktor = { module = "io.arrow-kt:suspendapp-ktor", version.ref = "arrow" }
 # flow extensions
 flow-ext = { module = "io.github.hoc081098:FlowExt", version.ref = "flow-ext" }
 # kandy is an open-source plotting library for Kotlin that provides a powerful and flexible DSL for creating graphs and utilizes various popular engines.
@@ -745,7 +744,7 @@ apollo-runtime = { module = "com.apollographql.apollo3:apollo-runtime", version.
 apollo-normalized-cache = { module = "com.apollographql.apollo3:apollo-normalized-cache", version.ref = "apollo3" }
 # firebase
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }
-firebase-crashlyticsKtx = { module = "com.google.firebase:firebase-crashlytics-ktx" }
+firebase-crashlytics-ktx = { module = "com.google.firebase:firebase-crashlytics-ktx" }
 firebase-admin = { module = "com.google.firebase:firebase-admin", version.ref = "firebase-admin" }
 firebase-auth-provider = { module = "com.kborowy:firebase-auth-provider", version.ref = "firebase-auth-provider" }
 # permissions
@@ -986,7 +985,6 @@ kmputils = [
 ]
 # arrow.
 arrow = [
-    "arrow-stack",
     "arrow-core",
     "arrow-fx-coroutines",
     "arrow-resilience",
