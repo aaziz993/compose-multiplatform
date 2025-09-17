@@ -13,6 +13,7 @@ import kotlin.collections.last
 import kotlinx.serialization.modules.EmptySerializersModule
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.serializer
+import klib.data.type.collections.deepPlus
 
 public const val IMPORTS_KEY: String = "imports"
 
