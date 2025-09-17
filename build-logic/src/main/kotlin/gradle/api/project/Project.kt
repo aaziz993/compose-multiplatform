@@ -19,7 +19,6 @@ import gradle.api.repositories.CacheRedirector
 import gradle.plugins.getOrPut
 import io.github.sgrishchenko.karakum.gradle.plugin.KarakumExtension
 import io.github.z4kn4fein.semver.Version
-import io.ktor.plugin.features.KtorExtension
 import kotlinx.benchmark.gradle.BenchmarksExtension
 import kotlinx.knit.KnitPluginExtension
 import kotlinx.kover.gradle.plugin.dsl.KoverProjectExtension
