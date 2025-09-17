@@ -65,31 +65,31 @@ opentelemetry-ktor = "2.19.0-alpha"
 # configuration and build tool. Its goal is to provide a great and smooth user experience and IDE support
 amper = "0.6.0-dev-2425"
 # print suggestions for your build as you run regular tasks
-doctor = "0.11.0"
+doctor = "0.12.1"
 # ktlint
-gradle-ktlint = "11.1.0"
+gradle-ktlint = "13.1.0"
 # software Composition Analysis (SCA) tool that attempts to detect publicly disclosed vulnerabilities contained within a project's dependencies. It does this by determining if there is a Common Platform Enumeration (CPE) identifier for a given dependency. If found, it will generate a report linking to the associated CVE entries.
-dependencycheck = "12.1.1"
+dependencycheck = "12.1.3"
 # gives the data to speed up your build, improve build reliability and accelerate build debugging.
-develocity = "3.19.1" # Should be compatible with our server: ge.jetbrains.com
+develocity = "4.2" # Should be compatible with our server: ge.jetbrains.com
 # enhances published build scans by adding a set of tags, links and custom values that have proven to be useful for many projects building with Develocity.
-develocityCommonCustomUserData = "2.1"
+develocityCommonCustomUserData = "2.4.0"
 # provides a repository for downloading JVMs
-foojayResolverConvention = "0.9.0"
+foojayResolverConvention = "1.0.0"
 # creates fat/uber JARs with support for package relocation.
-shadow = "8.3.5"
+shadow = "9.1.0"
 # generating BuildConstants for any kind of Gradle projects: Java, Kotlin, Android, Groovy, etc. Designed for KTS scripts, with experimental support for Kotlin's multi-platform plugin
 buildconfig = "5.6.8"
 # string and image resource generation
-libres = "1.2.3"
+libres = "1.2.4"
 # enforcing pre-commit and commit-msg Git hooks configuration. Conventional-commits-ready.
-gradlePreCommitGitHooks = "2.0.4"
+gradlePreCommitGitHooks = "2.1.1"
 # set of solutions for collecting test coverage of Kotlin code compiled for JVM and Android platforms.
-kover = "0.9.1"
+kover = "0.9.2"
 # format <antlr | c | c# | c++ | css | flow | graphql | groovy | html | java | javascript | json | jsx | kotlin | less | license headers | markdown | objective-c | protobuf | python | scala | scss | shell | sql | typeScript | vue | yaml | anything> using <gradle | maven | sbt | anything>.
 spotless = "7.2.1"
 # help developers deliver high-quality, efficient code standards that benefit the entire team or organization.
-sonarqube = "5.0.0.4638"
+sonarqube = "6.3.1.5724"
 # api documentation engine for Kotlin.
 dokka = "2.0.0"
 # produces Kotlin source example files and tests from Markdown documents with embedded snippets of Kotlin code
@@ -97,7 +97,7 @@ knit = "0.5.0"
 # allows dumping binary API of a JVM part of a Kotlin library that is public in the sense of Kotlin visibilities and ensures that the public binary API wasn't changed in a way that makes this change binary incompatible.
 binaryCompatibilityValidator = "0.16.3"
 # publishing
-vanniktech-maven-publish = "0.30.0"
+vanniktech-maven-publish = "0.34.0"
 
 ##Java
 # in project version
@@ -188,7 +188,7 @@ flow-ext = "1.0.0"
 # data type-safe pipeline
 dataframe = "1727"
 # kandy is an open-source plotting library for Kotlin that provides a powerful and flexible DSL for creating graphs and utilizes various popular engines.
-kandy = "0.8.0"
+kandy = "0.8.1"
 # compiler plugin, that generates visitor code for serializable classes, runtime library with core serialization API and support libraries with various serialization formats.
 kotlinx-serialization = "1.9.0"
 kotlinx-serialization-csv = "0.0.23"
@@ -200,7 +200,7 @@ kotlinx-benchmark = "0.4.14"
 # community-supported serialization
 knbt = "0.11.8"
 tomlkt = "0.5.0"
-kaml = "0.94.0"
+kaml = "0.96.0"
 yamlkt = "0.13.0"
 ksoup = "0.2.5"
 rssparser = "6.0.12"
@@ -209,7 +209,7 @@ jsonpathkt-kotlinx = "3.0.2"
 # coroutine
 kotlinx-coroutines = "1.10.2"
 stately-concurrency = "2.1.0"
-kmp-nativecoroutines = "1.0.0-ALPHA-38"
+kmp-nativecoroutines = "1.0.0-ALPHA-47"
 # cryptography
 cryptography = "0.5.0"
 pgpainless = "1.7.6"
@@ -218,7 +218,7 @@ colormath = "3.6.1"
 # image metadata read and write
 kim = "0.26.2"
 # webrtc for android, ios and js/wasmjs
-webrtc-kmp = "0.125.10"
+webrtc-kmp = "0.125.11"
 # cache
 cache4k = "0.14.0"
 # a lightweight Kotlin Multiplatform caching library that supports both in-memory and persistent caches and supports different eviction strategies (LRU, FIFO, MRU, FILO)
@@ -237,17 +237,17 @@ multiplatform-settings = "1.3.0"
 # generates typesafe Kotlin APIs from your SQL statements. It verifies your schema, statements, and migrations at compile-time and provides IDE features like autocomplete and refactoring which make writing and maintaining SQL simple.
 sqldelight = "2.1.0"
 # abstraction layer over SQLite to allow for more robust database access while harnessing the full power of SQLite.
-room = "2.7.2"
+room = "2.8.0"
 # realm database
 realm = "10.19.0"
 # sqlite
-androidx-sqlite = "2.5.2"
+androidx-sqlite = "2.6.0"
 # h2 jdbc driver
 h2 = "2.3.232"
 # sqlite jdbc driver
 sqlite = "3.50.3.0"
 # jdbc
-mariadb-java-client = "3.5.5"
+mariadb-java-client = "3.5.6"
 postgresql = "42.7.7"
 mysql-connector-j = "9.4.0"
 sqlite-jdbc = "3.50.3.0"
@@ -297,9 +297,9 @@ firebase-admin = "9.4.1"
 permissions = "0.18.0"
 # testing
 junit = "4.13.2"
-kotest = "6.0.0.M2"
+kotest = "6.0.0.M4"
 mockk = "1.14.5"
-truth = "1.4.4"
+truth = "1.4.5"
 # In project version
 kotlin-cocoapods-version = "1.0"
 # In project version
@@ -326,14 +326,14 @@ android-versionName = "1.0"
 splitties-appctx = "3.0.0"
 androidx-appcompat = "1.7.1"
 androidx-fragment-ktx = "1.8.9"
-androidx-activity = "1.10.1"
+androidx-activity = "1.11.0"
 androidx-constraint-layout = "2.2.1"
 androidx-core-ktx = "1.17.0"
 androidx-test-espresso-core = "3.7.0"
 androidx-test-rules = "1.7.0"
 androidx-test-monitor = "1.8.0"
 androidx-arch-core-testing = "2.2.0"
-androidx-ui-test = "1.9.0"
+androidx-ui-test = "1.9.1"
 # tooling
 desugar = "2.1.5"
 compose-lint-checks = "1.2.0"
@@ -346,13 +346,13 @@ apple = "222.4595-0.23.2"
 
 ##Web
 gradle-node-plugin = "7.1.0"
-kotlin-wrappers-catalog = "2025.5.6"
+kotlin-wrappers-catalog = "2025.9.8"
 kotlinx-html = "0.12.0"
-kotlinx-browser = "0.3.0"
-js-plain-objects = "2.2.0"
-seskar = "4.8.0"
+kotlinx-browser = "0.3.1"
+js-plain-objects = "2.2.20"
+seskar = "4.20.0"
 # converter of TypeScript declaration files to Kotlin declarations.
-karakum = "1.0.0-alpha.75"
+karakum = "1.0.0-alpha.76"
 npm-js-joda-timezone = "2.11.0"
 npm-copy-webpack-plugin = "13.0.0"
 npm-encoding-japanese = "2.2.0"
@@ -362,8 +362,8 @@ npm-pako = "2.1.0"
 npm-puppeteer = "24.4.0"
 
 ##Compose
-compose = "1.8.2"
-compose-hotReload = "1.0.0-beta06"
+compose = "1.9.0"
+compose-hotReload = "1.0.0-beta07"
 materialExtendedIcon = "1.7.0-rc01"
 # colorr picker
 colorpicker = "1.1.2"
@@ -374,17 +374,17 @@ coil3 = "3.0.0-rc01"
 # ui shape
 squircle-shape = "2.0.10"
 # adaptive ui
-material3-adaptive = "1.0.1"
+material3-adaptive = "1.1.2"
 androidx-material = "1.13.0"
 # setting ui
 compose-settings = "2.4.0"
 # repository paging
 androidx-paging = "3.3.0-alpha02-0.5.1"
 # business logic
-androidx-lifecycle = "2.9.3"
+androidx-lifecycle = "2.9.4"
 # navigation
-androidx-navigation-compose = "2.8.0-alpha10"
-androidx-material-navigation = "1.7.0-beta02"
+androidx-navigation-compose = "2.9.0"
+androidx-material-navigation = "1.9.0"
 # testing
 androidx-test-ext-junit = "1.3.0"
 # file picker
@@ -393,7 +393,7 @@ circuit = "0.24.0"
 # geolocation
 compass = "1.2.4"
 # jvm, android and js map
-worldwind = "1.8.5"
+worldwind = "1.8.6"
 # jvm map
 jxmapviewer2 = "2.8"
 ## desktop
@@ -401,8 +401,8 @@ jxmapviewer2 = "2.8"
 compose-desktop-packageVersion = "1.0.0"
 
 ##Metrics
-prometheus = "1.12.2"
-dropwizard = "4.2.25"
+prometheus = "1.15.4"
+dropwizard = "4.2.37"
 khealth = "3.0.2"
 cohort = "2.6.0"
 cohort-http = "2.4.1"
