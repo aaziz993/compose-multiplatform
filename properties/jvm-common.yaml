@@ -13,7 +13,7 @@ script:
                 implementation(libs["jsch"])
                 implementation(libs["sshj"])
                 implementation(libs("ktor")["client.okhttp"])
-                // implementation(libs["worldwind.jvm"])
+                implementation(libs["worldwind"])
               }
             }
         - named: |

@@ -2,9 +2,22 @@ config:
   imports:
     - org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
     - org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest
+    - org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 script:
   - kotlin:
-      jvm: ()
+      jvm: |
+        {
+          compilations.all { compilation ->
+            // Force Gradle to use JVM variants for multiplatform deps.
+            compilation.compileDependencyConfigurationName.let { configName ->
+              project.configurations.named(configName) {
+                  attributes {
+                      attribute(KotlinPlatformType.attribute, KotlinPlatformType.jvm)
+                  }
+              }
+            }
+          }
+        }
       targets:
         - withType<KotlinJvmTarget>: |
             {

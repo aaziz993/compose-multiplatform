@@ -706,10 +706,10 @@ kotlin-asyncapi-ktor = { module = "org.openfolder:kotlin-asyncapi-ktor", version
 # swagger ui
 ktor-swagger-ui = { module = "io.github.smiley4:ktor-swagger-ui", version.ref = "ktor-swagger-ui" }
 # task scheduler
-ktor-server-task-scheduling-core = { module = "io.github.flaxoos:ktor-server-task-scheduling-core-jvm", version.ref = "ktor-server-task-scheduling" }
-ktor-server-task-scheduling-redis = { module = "io.github.flaxoos:ktor-server-task-scheduling-redis-jvm", version.ref = "ktor-server-task-scheduling" }
-ktor-server-task-scheduling-jdbc = { module = "io.github.flaxoos:ktor-server-task-scheduling-jdbc-jvm", version.ref = "ktor-server-task-scheduling" }
-ktor-server-task-scheduling-mongodb = { module = "io.github.flaxoos:ktor-server-task-scheduling-mongodb-jvm", version.ref = "ktor-server-task-scheduling" }
+ktor-server-task-scheduling-core = { module = "io.github.flaxoos:ktor-server-task-scheduling-core", version.ref = "ktor-server-task-scheduling" }
+ktor-server-task-scheduling-redis = { module = "io.github.flaxoos:ktor-server-task-scheduling-redis", version.ref = "ktor-server-task-scheduling" }
+ktor-server-task-scheduling-jdbc = { module = "io.github.flaxoos:ktor-server-task-scheduling-jdbc", version.ref = "ktor-server-task-scheduling" }
+ktor-server-task-scheduling-mongodb = { module = "io.github.flaxoos:ktor-server-task-scheduling-mongodb", version.ref = "ktor-server-task-scheduling" }
 # kafka
 ktor-server-kafka = { module = "io.github.flaxoos:ktor-server-kafka", version.ref = "ktor-server-kafka" }
 # line webhook plugin
