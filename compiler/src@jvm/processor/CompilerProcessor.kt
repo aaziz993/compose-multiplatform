@@ -13,45 +13,40 @@ import com.google.devtools.ksp.symbol.KSVisitorVoid
 import java.io.OutputStream
 
 public class CompilerProcessor(
-    private val options: Map<String, String>,
-    private val logger: KSPLogger,
-    private val codeGenerator: CodeGenerator,
+  private val options: Map<String, String>,
+  private val logger: KSPLogger,
+  private val codeGenerator: CodeGenerator,
 ) : SymbolProcessor {
 
-    private var imports = mutableSetOf<String>()
+  private var imports = mutableSetOf<String>()
 
-    public operator fun OutputStream.plusAssign(str: String) {
-        this.write(str.toByteArray())
-    }
+  public operator fun OutputStream.plusAssign(str: String) {
+    this.write(str.toByteArray())
+  }
 
-    override fun process(resolver: Resolver): List<KSAnnotated> {
-        logger.info("Processing compilation graph...")
+  override fun process(resolver: Resolver): List<KSAnnotated> {
+    logger.info("Processing compilation graph...")
 
-        val compiledFile = codeGenerator.getFile("ai.tech.core.type", "Compiled")
+    val compiledFile = codeGenerator.getFile("ai.tech.core.type", "Compiled")
 
-        compiledFile += "package ai.tech.core.type\n\n"
+    compiledFile += "package ai.tech.core.type\n\n"
 
-        compiledFile += imports.joinToString("\n", postfix = "\n\n") { "import $it" }
+    compiledFile += imports.joinToString("\n", postfix = "\n\n") { "import $it" }
 
-        compiledFile.close()
+    compiledFile.close()
 
-        return emptyList()
-    }
+    return emptyList()
+  }
 
-    private inner class CompilerVisitor : KSVisitorVoid() {
+  private inner class CompilerVisitor : KSVisitorVoid() {
 
-        override fun visitClassDeclaration(classDeclaration: KSClassDeclaration, data: Unit) {
-        }
-    }
+    override fun visitClassDeclaration(classDeclaration: KSClassDeclaration, data: Unit) {}
+  }
 
-    private fun CodeGenerator.getFile(packageName: String, fileName: String): OutputStream {
-        return try {
-            createNewFile(
-                Dependencies.ALL_FILES, packageName, fileName,
-            )
-        }
-        catch (ex: FileAlreadyExistsException) {
-            ex.file.outputStream()
-        }
+  private fun CodeGenerator.getFile(packageName: String, fileName: String): OutputStream =
+    try {
+      createNewFile(Dependencies.ALL_FILES, packageName, fileName)
+    } catch (ex: FileAlreadyExistsException) {
+      ex.file.outputStream()
     }
 }
