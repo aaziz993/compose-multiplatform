@@ -16,10 +16,12 @@ import klib.data.cache.NoCache
 import klib.data.type.ansi.Attribute
 import klib.data.type.ansi.ansiSpan
 import klib.data.type.ansi.buildStringAnsi
+import klib.data.type.collections.deepGet
 import klib.data.type.collections.deepGetOrNull
 import klib.data.type.collections.deepMap
 import klib.data.type.collections.deepPlus
 import klib.data.type.collections.deepRunOnPenultimate
+import klib.data.type.collections.deepSubstitute
 import klib.data.type.collections.flatten
 import klib.data.type.collections.getOrPut
 import klib.data.type.collections.list.asList
@@ -27,7 +29,6 @@ import klib.data.type.collections.list.dropLast
 import klib.data.type.collections.map.asMapOrNull
 import klib.data.type.collections.map.asStringNullableMap
 import klib.data.type.collections.set
-import klib.data.type.collections.substitute
 import klib.data.type.collections.toNewMutableCollection
 import klib.data.type.collections.toTreeString
 import klib.data.type.primitives.string.addSuffix
@@ -246,7 +247,7 @@ public abstract class Script {
                     decoder = decoder,
                 ) { decodedFile, decodedImports ->
                     val substitutedFile =
-                        (decodedFile - listOf(IMPORTS_KEY, SCRIPT_KEY)).substitute(unescapeDollars = false)
+                        (decodedFile - listOf(IMPORTS_KEY, SCRIPT_KEY)).deepSubstitute(unescapeDollars = false)
 
                     val decodedFileScript: List<Any?> = decodedFile[SCRIPT_KEY]?.let { script ->
                         script.asMapOrNull?.map { (key, value) -> mapOf(key to value) } ?: script.asList
@@ -267,10 +268,8 @@ public abstract class Script {
                         val mergedImportScripts = decodedImports
                             .flatMap { decodedImport -> decodedImport[SCRIPT_KEY]!!.asList }
 
-                        substitutedFile.substitute(
-                            getter = { path ->
-                                mergedImports.deepGetOrNull(*path.toTypedArray()).second
-                            },
+                        substitutedFile.deepSubstitute(
+                            getter = { path -> mergedImports.deepGet(*path.toTypedArray()).second },
                         ).deepMap(
                             mergedImports,
                             destinationGetter = { source ->
