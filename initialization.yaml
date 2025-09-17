@@ -81,6 +81,7 @@ script:
       - alias: (libs.plugins("kotlinx.benchmark"), false)
       - alias: (libs.plugins("sqldelight"), false)
       - alias: (libs.plugins("room"), false)
+      - alias: (libs.plugins("ktor"), false)
       - alias: (libs.plugins("kotlinx.rpc"), false)
       - alias: (libs.plugins("ktorfit"), false)
       - alias: (libs.plugins("apollo3"), false)
