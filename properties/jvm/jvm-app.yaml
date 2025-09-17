@@ -22,4 +22,4 @@ script:
               }
             }
   - ktor:
-      development: systemProperty("io.ktor.development", "true")
+      development: System.getProperty("io.ktor.development","true").toBoolean()
