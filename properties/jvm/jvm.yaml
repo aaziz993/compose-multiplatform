@@ -82,6 +82,7 @@ script:
 
                 // To enable HTTP/2 in Netty, use OpenSSL bindings (See https://netty.io/wiki/forked-tomcat-native.html).
                 val osName = System.getProperty("os.name").lowercase()
+                val tcnative_version = libs.versions("tcnative").requiredVersion
                 val tcnative_classifier = when {
                   osName.contains("win") -> "windows-x86_64"
                   osName.contains("linux") -> "linux-x86_64"
