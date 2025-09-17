@@ -1,5 +1,3 @@
-@file:Suppress("UnnecessaryVariable")
-
 package processor
 
 import com.google.devtools.ksp.processing.CodeGenerator
