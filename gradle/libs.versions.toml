@@ -108,9 +108,11 @@ jvm-target = "22"
 android-jvm-target = "22"
 # google java format code formatter
 googleJavaFormat = "1.25.0"
-# logging
+# logging.
 logback-classic = "1.5.18"
-# apache commons
+# cinterop.
+bridj="0.7.0"
+# apache commons.
 commons-lang3 = "3.18.0"
 commons-beanutils = "1.11.0"
 commons-net = "3.12.0"
@@ -444,6 +446,8 @@ dokka-versioning = { module = "org.jetbrains.dokka:versioning-plugin", version.r
 ##Java
 # logging
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback-classic" }
+# cinterop.
+bridj = { module = "com.nativelibs4java:bridj", version.ref = "bridj" }
 # apache commons
 commons-lang3 = { module = "org.apache.commons:commons-lang3", version.ref = "commons-lang3" }
 commons-beanutils = { module = "commons-beanutils:commons-beanutils", version.ref = "commons-beanutils" }
