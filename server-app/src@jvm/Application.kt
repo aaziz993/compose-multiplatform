@@ -10,7 +10,6 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import java.io.File
 import kotlinx.coroutines.awaitCancellation
-import io.ktor.server.plugins.swagger.swaggerUI
 
 public fun main(): Unit = SuspendApp {
     resourceScope {
@@ -39,9 +38,6 @@ public fun main(): Unit = SuspendApp {
 @Suppress("unused")
 public fun Application.module() {
 
-        swaggerUI(path = "swagger", swaggerFile = "openapi/documentation.yaml")
-
-    }
 }
 
 public fun Application.ping(): Routing = routing {
