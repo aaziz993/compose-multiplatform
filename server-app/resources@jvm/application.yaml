@@ -18,7 +18,7 @@ imports:
 #  - application-validation.yaml
 #  - application-resources.yaml
 #  - application-status-pages.yaml
-#  - application-default-headers.yaml
+  - application-default-headers.yaml
   - application-caching-headers.yaml
   - application-conditional-headers.yaml
 #  - application-forwarded-headers.yaml
@@ -34,6 +34,7 @@ imports:
 #  - application-shutdown.yaml
 config:
   imports:
+    - java.util.UUID
     - java.io.File
     - io.ktor.server.engine.connector
     - config.ssl

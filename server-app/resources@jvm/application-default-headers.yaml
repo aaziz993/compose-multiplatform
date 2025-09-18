@@ -1,2 +1,13 @@
-default-headers:
-  enable: true
+config:
+  imports:
+    - io.ktor.server.plugins.defaultheaders.DefaultHeaders
+    - io.ktor.http.HttpHeaders
+script:
+  - module: |
+      {
+        install(DefaultHeaders) {
+          header(HttpHeaders.ETag, UUID.randomUUID().toString())
+          header(HttpHeaders.Server, this@module.environment::class.simpleName ?: "KtorServer")
+          header("X-Powered-By", "Ktor")
+        }
+      }

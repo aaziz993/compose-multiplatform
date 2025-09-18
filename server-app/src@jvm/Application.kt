@@ -7,12 +7,10 @@ import engine.Netty
 import io.ktor.server.application.*
 import io.ktor.server.http.content.*
 import io.ktor.server.netty.*
-import io.ktor.server.plugins.callid.callId
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import java.io.File
 import kotlinx.coroutines.awaitCancellation
-
 public fun main(): Unit = SuspendApp {
     resourceScope {
         val applicationFile = File(
