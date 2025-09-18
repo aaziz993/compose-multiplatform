@@ -2,7 +2,6 @@ import arrow.continuations.SuspendApp
 import arrow.continuations.ktor.server
 import arrow.fx.coroutines.resourceScope
 import io.ktor.server.application.*
-import io.ktor.server.engine.ApplicationEngine
 import io.ktor.server.http.content.*
 import io.ktor.server.netty.*
 import io.ktor.server.response.*
@@ -17,14 +16,14 @@ public fun main(): Unit = SuspendApp {
                 ?: error("application.yaml not found in resources"),
         )
 
+        val serverConfig = ServerConfig(NettyApplicationEngine.Configuration()).apply {
+            ApplicationScript(applicationFile, this)()
+            module(Application::module)
+        }
+
         server(
-            Netty,
-            rootConfig = serverConfig {
-                module(Application::module)
-            },
-            configure = {
-                ApplicationScript(applicationFile, this)()
-            },
+            Netty(serverConfig.engine),
+            rootConfig = serverConfig.toServerConfig(),
         )
 
         awaitCancellation()

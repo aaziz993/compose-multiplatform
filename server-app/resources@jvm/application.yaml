@@ -64,10 +64,18 @@ ktor:
       keyStorePassword: KtorServer2025
       keyAlias: ktor-server
       privateKeyPassword: KtorServer2025
+config:
+  imports:
+    - io.ktor.server.engine.connector
 script:
-  - ssl: |
-      (
-        keyStorePassword = "KtorServer2025",
-        privateKeyPassword = "KtorServer2025",
-        port = 8443
-      )
+  - engine:
+      connector: |
+        {
+          port = 8080
+        }
+      ssl: |
+        (
+          keyStorePassword = "KtorServer2025",
+          privateKeyPassword = "KtorServer2025",
+          port = 8443
+        )
