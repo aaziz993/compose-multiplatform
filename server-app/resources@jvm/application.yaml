@@ -1,76 +1,48 @@
 imports:
-#  - koin.yaml
-#  - auth.yaml
-#  - generate-config.ssl.yaml
-#  - cache.yaml
-#  - database.yaml
-#  - serialization.yaml
-#  - https-redirect.yaml
-#  - routing.yaml
-#  - websockets.yaml
-#  - graphql.yaml
-#  - call-logging.yaml
-  - call-id.yaml
-#  - rate-limit.yaml
-#  - cors.yaml
-#  - compression.yaml
-#  - partial-content.yaml
-#  - data-conversion.yaml
-#  - validation.yaml
-#  - resources.yaml
-#  - status-pages.yaml
-#  - default-headers.yaml
-#  - caching-headers.yaml
-#  - conditional-headers.yaml
-#  - forwarded-headers.yaml
-#  - x-forwarded-headers.yaml
-#  - hsts.yaml
-#  - auto-head-response.yaml
-#  - x-http-method-override.yaml
-#  - freemarker.yaml
-#  - swagger.yaml
-#  - application-monitoring.yaml
-#  - micrometer-metrics.yaml
-#  - dropwizard-metrics.yaml
-#  - shutdown.yaml
-
-# Configure the application based on the environment variables
-ktor:
-  ## Development mode
-  # Enable development mode. Recommended to set it via -Dktor.deployment.environment=development
-  # development = true
-  deployment:
-    host: 0.0.0.0
-    port: '$PORT:8080'
-    ## SSL, you need to enable it
-    sslPort: '$SSL_PORT:8443'
-    ## Watch for changes in this directory and automatically reload the application if any file changes in development mode.
-    watch:
-      - classes
-      - resources
-
-  # Configure the main module
-  application:
-    modules:
-      - ApplicationKt.module
-
-  ## Environment
-  environment: '$KTOR_ENV:development'
-
-  ## To enable SSL, you need to generate a certificate and configure it here
-  security:
-    ssl:
-      keyStore: resources/security/config.ssl/ktor-server.p12
-      keyStorePassword: KtorServer2025
-      keyAlias: ktor-server
-      privateKeyPassword: KtorServer2025
+#  - application-koin.yaml
+#  - application-auth.yaml
+#  - application-generate-config.ssl.yaml
+#  - application-cache.yaml
+#  - application-database.yaml
+#  - application-serialization.yaml
+#  - application-https-redirect.yaml
+#  - application-routing.yaml
+#  - application-websockets.yaml
+#  - application-graphql.yaml
+#  - application-call-logging.yaml
+  - application-call-id.yaml
+#  - application-rate-limit.yaml
+#  - application-cors.yaml
+#  - application-compression.yaml
+#  - application-partial-content.yaml
+#  - application-data-conversion.yaml
+#  - application-validation.yaml
+#  - application-resources.yaml
+#  - application-status-pages.yaml
+#  - application-default-headers.yaml
+#  - application-caching-headers.yaml
+#  - application-conditional-headers.yaml
+#  - application-forwarded-headers.yaml
+#  - application-x-forwarded-headers.yaml
+#  - application-hsts.yaml
+#  - application-auto-head-response.yaml
+#  - application-x-http-method-override.yaml
+#  - application-freemarker.yaml
+#  - application-swagger.yaml
+#  - application-application-monitoring.yaml
+#  - application-micrometer-metrics.yaml
+#  - application-dropwizard-metrics.yaml
+#  - application-shutdown.yaml
 config:
   imports:
     - io.ktor.server.engine.connector
     - config.ssl
 script:
+  # Enable development mode. Recommended to set it via -Dktor.deployment.environment=development
+  - development: true
   - connector: |
         {
+          host = "0.0.0.0"
           port = 8080
         }
   - ssl: |
@@ -79,6 +51,8 @@ script:
         privateKeyPassword = "KtorServer2025",
         port = 8443
       )
+  # Watch for changes in this directory and automatically reload the application if any file changes in development mode.
+  - watchPaths: listOf("classes", "resources")
   - module: |
       {
         ping()
