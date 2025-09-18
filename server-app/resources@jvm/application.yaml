@@ -30,6 +30,7 @@ imports:
   - application-micrometer-metrics.yaml
   - application-dropwizard-metrics.yaml
   - application-shutdown.yaml
+host: 0.0.0.0
 port: 8080
 sslPort: 8443
 config:
@@ -50,7 +51,7 @@ script:
   - developmentMode: true
   - connector: |
         {
-          host = "0.0.0.0"
+          host = applicationScript.host
           port = applicationScript.port
         }
   - ssl: |
@@ -58,7 +59,7 @@ script:
         keyStoreFile = File("resources@jvm/security/ssl/keystore.p12"),
         keyStorePassword = "KtorServer2025",
         privateKeyPassword = "KtorServer2025",
-        domains = listOf("localhost", "127.0.0.1", "0.0.0.0"),
+        domains = listOf("localhost", "127.0.0.1", applicationScript.host),
         port = applicationScript.sslPort
       )
   # Watch for changes in this directory and automatically reload the application if any file changes in development mode.

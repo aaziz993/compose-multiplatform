@@ -46,6 +46,8 @@ public lateinit var applicationScript: ApplicationScript
 
 @Serializable
 public class ApplicationScript(
+    public val host: String = "0.0.0.0",
+    public val port: Int = 80,
     public val sslPort: Int = 443,
     override val config: ScriptConfig = ScriptConfig(),
     override val script: List<SerializableAny>,
