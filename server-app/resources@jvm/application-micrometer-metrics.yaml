@@ -1,14 +1,62 @@
-micrometer-metrics:
-  enable: true
-  type: PROMETHEUS
-  class-loader-metrics: true
-  jvm-memory-metrics: true
-  jvm-gc-metrics: true
-  processor-metrics: true
-  jvm-thread-metrics: true
-  file-descriptor-metrics: true
-  distribution-statistics:
-    enable: true
-    percentilesHistogram: true
-    maximumExpectedValue: 20s
-    serviceLevelObjectives: [ 100ms, 500ms ]
+config:
+  imports:
+    - io.ktor.server.metrics.micrometer.*
+    - io.micrometer.core.instrument.binder.jvm.ClassLoaderMetrics
+    - io.micrometer.core.instrument.binder.jvm.JvmCompilationMetrics
+    - io.micrometer.core.instrument.binder.jvm.JvmGcMetrics
+    - io.micrometer.core.instrument.binder.jvm.JvmHeapPressureMetrics
+    - io.micrometer.core.instrument.binder.jvm.JvmInfoMetrics
+    - io.micrometer.core.instrument.binder.jvm.JvmMemoryMetrics
+    - io.micrometer.core.instrument.binder.jvm.JvmThreadDeadlockMetrics
+    - io.micrometer.core.instrument.binder.jvm.JvmThreadMetrics
+    - io.micrometer.core.instrument.binder.logging.LogbackMetrics
+    - io.micrometer.core.instrument.binder.system.FileDescriptorMetrics
+    - io.micrometer.core.instrument.binder.system.ProcessorMetrics
+    - io.micrometer.core.instrument.binder.system.UptimeMetrics
+    - io.micrometer.core.instrument.distribution.DistributionStatisticConfig
+    - io.micrometer.prometheus.PrometheusConfig
+    - io.micrometer.prometheus.PrometheusMeterRegistry
+    - java.time.Duration
+script:
+  - module: |
+      {
+        val appMicrometerRegistry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT)
+
+        install(MicrometerMetrics) {
+          registry = appMicrometerRegistry
+
+          timers { call, exception ->
+            tag("region", call.request.headers["regionId"].orEmpty())
+          }
+
+          distributionStatisticConfig = DistributionStatisticConfig.Builder()
+          .percentilesHistogram(true)
+          .maximumExpectedValue(Duration.ofSeconds(20).toNanos().toDouble())
+          .serviceLevelObjectives(
+            Duration.ofMillis(100).toNanos().toDouble(),
+            Duration.ofMillis(500).toNanos().toDouble(),
+          )
+          .build()
+
+          meterBinders = listOf(
+            JvmInfoMetrics(),
+            JvmMemoryMetrics(),
+            JvmGcMetrics(),
+            JvmCompilationMetrics(),
+            JvmHeapPressureMetrics(),
+            JvmThreadMetrics(),
+            JvmThreadDeadlockMetrics(),
+            ClassLoaderMetrics(),
+            ProcessorMetrics(),
+            FileDescriptorMetrics(),
+            UptimeMetrics(),
+            LogbackMetrics(),
+          )
+        }
+
+        routing {
+          get("/metrics") {
+            call.respond(appMicrometerRegistry.scrape())
+          }
+        }
+      }

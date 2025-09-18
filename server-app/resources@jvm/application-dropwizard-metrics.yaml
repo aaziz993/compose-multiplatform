@@ -1,16 +1,23 @@
-dropwizard-metrics:
-  enable: true
-  register-jvm-metric-sets: false
-  slf4j-reporter:
-    enable: true
-    convertRatesTo: SECONDS
-    convertDurationsTo: MILLISECONDS
-    start:
-      period: 10
-      unit: SECONDS
-  jmx-reporter:
-    enable: true
-    convertRatesTo: SECONDS
-    convertDurationsTo: MILLISECONDS
-
-
+config:
+  imports:
+    - io.ktor.server.metrics.dropwizard.DropwizardMetrics
+    - java.util.concurrent.TimeUnit
+    - com.codahale.metrics.Slf4jReporter
+    - com.codahale.metrics.jmx.JmxReporter
+script:
+  - module: |
+      {
+        install(DropwizardMetrics) {
+          Slf4jReporter.forRegistry(registry)
+            .outputTo(this@module.log)
+            .convertRatesTo(TimeUnit.SECONDS)
+            .convertDurationsTo(TimeUnit.MILLISECONDS)
+            .build()
+            .start(10, TimeUnit.SECONDS)
+          JmxReporter.forRegistry(registry)
+            .convertRatesTo(TimeUnit.SECONDS)
+            .convertDurationsTo(TimeUnit.MILLISECONDS)
+            .build()
+            .start()
+        }
+      }

@@ -1,4 +1,11 @@
-shutdown:
-  enable: true
-  shut-down-url: /shutdown
-  exitCodeSupplier: 0
+config:
+  imports:
+    - io.ktor.server.engine.ShutDownUrl
+script:
+  - module: |
+      {
+        install(ShutDownUrl.ApplicationCallPlugin) {
+          shutDownUrl = "/shutdown"
+          exitCodeSupplier = { 0 }
+        }
+      }
