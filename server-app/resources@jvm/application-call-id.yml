@@ -1,3 +1,13 @@
-call-id:
-  enable: true
-  header: X-Request-ID
+config:
+  imports:
+    - io.ktor.server.plugins.callid.CallId
+    - java.util.UUID
+script:
+  - module: |
+      {
+         install(CallId) {
+           header("X-Request-ID")
+           generate { UUID.randomUUID().toString() }
+           verify(String::isNotEmpty)
+         }
+      }

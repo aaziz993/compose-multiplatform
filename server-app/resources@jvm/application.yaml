@@ -1,4 +1,4 @@
-#imports:
+imports:
 #  - koin.yaml
 #  - auth.yaml
 #  - generate-config.ssl.yaml
@@ -10,7 +10,7 @@
 #  - websockets.yaml
 #  - graphql.yaml
 #  - call-logging.yaml
-#  - call-id.yaml
+  - call-id.yaml
 #  - rate-limit.yaml
 #  - cors.yaml
 #  - compression.yaml
