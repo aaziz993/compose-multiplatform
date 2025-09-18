@@ -35,11 +35,12 @@ imports:
 #  - application-shutdown.yaml
 config:
   imports:
+    - java.io.File
     - io.ktor.server.engine.connector
     - config.ssl
 script:
   # Enable development mode. Recommended to set it via -Dktor.deployment.environment=development
-  - development: true
+  - developmentMode: true
   - connector: |
         {
           host = "0.0.0.0"

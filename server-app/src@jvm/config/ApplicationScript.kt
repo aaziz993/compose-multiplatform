@@ -17,6 +17,11 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 public val IMPORTS: Array<String> = arrayOf(
+    "io.ktor.server.application.*",
+    "io.ktor.server.http.content.*",
+    "io.ktor.server.netty.*",
+    "io.ktor.server.response.*",
+    "io.ktor.server.routing.*",
     "klib.data.type.*",
     "klib.data.type.primitives.*",
     "klib.data.type.primitives.string.*",
