@@ -1,19 +1,28 @@
-routing:
-  enable: true
-  static-files:
-    enable: true
-    remote-path: /static
-    path-name: files
-    pre-compressed:
-      - BROTLI
-      - GZIP
-    enable-auto-head-response: true
-  static-resources:
-    enable: true
-    remote-path: /static
-    path-name: assets
-    pre-compressed:
-      - BROTLI
-      - GZIP
-    enable-auto-head-response: true
+script:
+  - module: |
+      {
+        install(RoutingRoot) {
+          staticFiles(
+            remotePath = "/",
+            dir = File("files"),
+          ) {
+            preCompressed(
+                CompressedFileType.BROTLI,
+                CompressedFileType.GZIP,
+            )
+            enableAutoHeadResponse()
+          }
 
+          staticResources(
+            remotePath = "/",
+            basePackage = "static",
+          ) {
+            default("static/index.html")
+            preCompressed(
+                CompressedFileType.BROTLI,
+                CompressedFileType.GZIP,
+            )
+            enableAutoHeadResponse()
+          }
+        }
+      }

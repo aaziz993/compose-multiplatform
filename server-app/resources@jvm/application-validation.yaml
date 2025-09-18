@@ -1,2 +1,11 @@
-validation:
-  enable: true
+config:
+  imports:
+    - io.ktor.server.plugins.requestvalidation.RequestValidation
+    - io.ktor.server.plugins.requestvalidation.ValidationResult
+script:
+  - module: |
+      {
+        install(RequestValidation) {
+
+        }
+      }

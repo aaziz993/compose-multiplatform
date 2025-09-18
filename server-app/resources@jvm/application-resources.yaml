@@ -1,2 +1,8 @@
-resources:
-  enable: true
+config:
+  imports:
+    - io.ktor.server.resources.Resources
+script:
+  - module: |
+      {
+        install(Resources)
+      }

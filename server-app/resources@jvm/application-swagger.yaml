@@ -11,6 +11,7 @@ script:
             swaggerUrl = "swagger"
             forwardRoot = false
           }
+
           info {
             title = "Ktor API REST"
             version = "latest"
@@ -19,6 +20,7 @@ script:
               name = "Atoev Aziz"
               url = "https://github.com/a-aziz93"
             }
+
             license {
               name = "Apache 2.0"
               url = "https://www.apache.org/licenses/LICENSE-2.0.html"

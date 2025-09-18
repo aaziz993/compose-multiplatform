@@ -1,3 +1,10 @@
-x-http-method-override:
-  enable: true
-  header-name: X-Http-Method-Override
+config:
+  imports:
+    - io.ktor.server.plugins.methodoverride.XHttpMethodOverride
+script:
+  - module: |
+      {
+        install(XHttpMethodOverride) {
+          headerName = "X-HTTP-Method-Override"
+        }
+      }

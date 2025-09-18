@@ -1,6 +1,29 @@
-rate-limit:
-  enable: true
-  global:
-    enable: true
-    limit: 5
-    refill-period: 60s
+config:
+  imports:
+    - io.ktor.server.plugins.ratelimit.RateLimit
+    - io.ktor.server.plugins.ratelimit.RateLimitName
+    - kotlin.time.Duration.Companion.seconds
+script:
+  - module: |
+      {
+        install(RateLimit) {
+          register {
+            rateLimiter(limit = 5, refillPeriod = 60.seconds)
+          }
+          register(RateLimitName("public")) {
+            rateLimiter(limit = 10, refillPeriod = 60.seconds)
+          }
+          register(RateLimitName("protected")) {
+            rateLimiter(limit = 30, refillPeriod = 60.seconds)
+            requestKey { applicationCall ->
+                applicationCall.request.queryParameters["login"]!!
+            }
+            requestWeight { applicationCall, key ->
+                when(key) {
+                    "jetbrains" -> 1
+                    else -> 2
+                }
+            }
+          }
+        }
+      }

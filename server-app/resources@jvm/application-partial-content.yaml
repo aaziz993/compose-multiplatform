@@ -1,2 +1,8 @@
-partial-content:
-  enable: true
+config:
+  imports:
+    - io.ktor.server.plugins.partialcontent.PartialContent
+script:
+  - module: |
+      {
+        install(PartialContent)
+      }

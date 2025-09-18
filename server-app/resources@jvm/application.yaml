@@ -4,20 +4,20 @@ imports:
 #  - application-cache.yaml
 #  - application-database.yaml
 #  - application-serialization.yaml
-#  - application-https-redirect.yaml
-#  - application-routing.yaml
+  - application-https-redirect.yaml
+  - application-routing.yaml
 #  - application-websockets.yaml
 #  - application-graphql.yaml
   - application-call-logging.yaml
   - application-call-id.yaml
-#  - application-rate-limit.yaml
+  - application-rate-limit.yaml
   - application-cors.yaml
   - application-compression.yaml
-#  - application-partial-content.yaml
+  - application-partial-content.yaml
   - application-data-conversion.yaml
-#  - application-validation.yaml
-#  - application-resources.yaml
-#  - application-status-pages.yaml
+  - application-validation.yaml
+  - application-resources.yaml
+  - application-status-pages.yaml
   - application-default-headers.yaml
   - application-caching-headers.yaml
   - application-conditional-headers.yaml
@@ -27,7 +27,7 @@ imports:
   - application-hsts.yaml
   - application-auto-head-response.yaml
   - application-freemarker.yaml
-  - application-swagger.yaml
+#  - application-swagger.yaml
   - application-application-monitoring.yaml
   - application-micrometer-metrics.yaml
   - application-dropwizard-metrics.yaml
@@ -37,6 +37,8 @@ config:
     - java.util.UUID
     - java.io.File
     - io.ktor.server.engine.connector
+    - io.ktor.http.HttpStatusCode
+    - io.ktor.http.HttpHeaders.ContentEncoding
     - config.ssl
 script:
   # Enable development mode. Recommended to set it via -Dktor.deployment.environment=development
@@ -59,5 +61,4 @@ script:
   - module: |
       {
         ping()
-        indexHtml()
       }

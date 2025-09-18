@@ -1,2 +1,19 @@
-status-pages:
-  enable: true
+config:
+  imports:
+    - io.ktor.server.plugins.statuspages.StatusPages
+    - io.ktor.server.plugins.statuspages.statusFile
+script:
+  - module: |
+      {
+        install(StatusPages) {
+          status(HttpStatusCode.NotFound) { call, status ->
+            call.respondText(text = "404: Page Not Found", status = status)
+          }
+
+          statusFile(HttpStatusCode.Unauthorized, HttpStatusCode.PaymentRequired, filePattern = "error#.html")
+
+          exception<Throwable> { call, cause ->
+            call.respondText(text = "500: $cause" , status = HttpStatusCode.InternalServerError)
+          }
+        }
+      }
