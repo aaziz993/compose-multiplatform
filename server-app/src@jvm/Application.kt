@@ -7,11 +7,16 @@ import io.ktor.server.http.content.*
 import io.ktor.server.netty.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import klib.data.type.reflection.invoke
 import kotlinx.coroutines.awaitCancellation
 
 public fun main(): Unit = SuspendApp {
     resourceScope {
-        server(Netty) {
+        server(
+            Netty,
+            watchPaths = emptyList(),
+//            configure = {  },
+        ) {
             ping()
             indexHtml()
         }
