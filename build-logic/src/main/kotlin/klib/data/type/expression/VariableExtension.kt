@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalUuidApi::class)
-
 package klib.data.type.expression
 
 import com.ionspin.kotlin.bignum.decimal.BigDecimal

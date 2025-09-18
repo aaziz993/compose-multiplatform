@@ -38,7 +38,6 @@ public fun KSerializer<*>.childSerializer(index: Int): KSerializer<*> {
     return elementDecoder.elementDeserializer
 }
 
-@OptIn(ExperimentalSerializationApi::class)
 private class ElementDecoder(private val index: Int) : AbstractDecoder() {
 
     override val serializersModule: SerializersModule = EmptySerializersModule()

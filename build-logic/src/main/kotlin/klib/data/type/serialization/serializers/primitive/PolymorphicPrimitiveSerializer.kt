@@ -1,10 +1,6 @@
-@file:OptIn(ExperimentalSerializationApi::class, InternalSerializationApi::class)
-
 package klib.data.type.serialization.serializers.primitive
 
 import kotlin.reflect.KClass
-import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor

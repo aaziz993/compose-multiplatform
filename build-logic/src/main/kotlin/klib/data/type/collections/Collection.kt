@@ -38,7 +38,6 @@ public val Any.size: Int
         else -> throw IllegalArgumentException("Expected a List or Map, but got $this")
     }
 
-@OptIn(ExperimentalContracts::class)
 public inline fun <T : Any, K, V> T.getOrElse(key: K, defaultValue: () -> V): V {
     contract {
         callsInPlace(defaultValue, InvocationKind.AT_MOST_ONCE)

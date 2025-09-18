@@ -788,11 +788,9 @@ public data class LocalDateTimeValue(override val value: LocalDateTime) : Tempor
 public data class LocalDateTimeCollection(override val value: Collection<LocalDateTime?>) : CollectionVariable(),
     Value<Collection<LocalDateTime?>>
 
-@OptIn(ExperimentalUuidApi::class)
 @Serializable
 public data class UUIDValue(override val value: Uuid) : ComparableVariable(), Value<Uuid>
 
-@OptIn(ExperimentalUuidApi::class)
 @Serializable
 public data class UUIDCollection(override val value: Collection<Uuid?>) : CollectionVariable(), Value<Collection<Uuid?>>
 

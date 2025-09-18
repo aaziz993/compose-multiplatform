@@ -39,11 +39,29 @@ kotlin {
         )
         optIn.addAll(
             listOf(
-                "kotlinx.serialization.InternalSerializationApi",
-                "kotlinx.serialization.ExperimentalSerializationApi",
                 "org.jetbrains.dokka.gradle.internal.InternalDokkaGradlePluginApi",
                 "org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi",
                 "org.jetbrains.kotlin.gradle.ExperimentalWasmDsl",
+                "kotlin.RequiresOptIn",
+                "kotlin.ExperimentalSubclassOptIn",
+                "kotlin.ExperimentalStdlibApi",
+                "kotlin.ExperimentalUnsignedTypes",
+                "kotlin.uuid.ExperimentalUuidApi",
+                "kotlin.time.ExperimentalTime",
+                "kotlin.ExperimentalAtomicApi",
+                "nl.adaptivity.xmlutil.ExperimentalXmlUtilApi",
+                "nl.adaptivity.xmlutil.XmlUtilInternal",
+                "kotlin.contracts.ExperimentalContracts",
+                "kotlin.experimental.ExperimentalObjCName",
+                "kotlin.js.ExperimentalJsExport",
+                "kotlinx.coroutines.ExperimentalCoroutinesApi",
+                "kotlinx.coroutines.DelicateCoroutinesApi",
+                "kotlinx.coroutines.FlowPreview",
+                "kotlinx.serialization.ExperimentalSerializationApi",
+                "kotlinx.serialization.InternalSerializationApi",
+                "dev.whyoleg.cryptography.DelicateCryptographyApi",
+                "androidx.compose.ui.ExperimentalComposeUiApi",
+                "org.jetbrains.compose.resources.InternalResourceApi",
             ),
         )
     }

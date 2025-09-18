@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalTime::class)
-
 package klib.data.type.primitives
 
 import kotlinx.datetime.DatePeriod

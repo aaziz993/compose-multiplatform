@@ -133,7 +133,6 @@ public fun YamlPath.withMapElementValue(key: String, value: Any?): YamlPath =
  *     }
  * ```
  */
-@OptIn(ExperimentalContracts::class)
 public inline fun buildYamlMap(
     path: YamlPath = YamlPath(YamlPathSegment.Root),
     encodingIndentationSize: Int = Yaml.ENCODING_INDENTATION_SIZE,

@@ -34,7 +34,6 @@ public class PropertiesWriter(
     }
 }
 
-@OptIn(ExperimentalStdlibApi::class)
 private fun String.toPropertyComment(): String = buildString {
     append("#")
     val len = this@toPropertyComment.length
@@ -66,7 +65,6 @@ private fun String.toPropertyComment(): String = buildString {
     append("\n")
 }
 
-@OptIn(ExperimentalStdlibApi::class)
 private fun convert(
     theString: String,
     escapeSpace: Boolean,

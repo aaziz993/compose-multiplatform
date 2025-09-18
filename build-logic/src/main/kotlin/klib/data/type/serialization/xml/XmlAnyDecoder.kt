@@ -10,7 +10,6 @@ import nl.adaptivity.xmlutil.XmlUtilInternal
 import nl.adaptivity.xmlutil.serialization.XML
 import nl.adaptivity.xmlutil.serialization.XmlDecoderBase.XmlDecoder
 
-@OptIn(XmlUtilInternal::class)
 internal class XmlAnyDecoder(decoder: XmlDecoder) : AnyDecoder<XmlDecoder>(decoder) {
 
     private val xml = XML(decoder.config)

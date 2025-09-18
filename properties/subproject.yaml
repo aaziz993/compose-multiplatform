@@ -43,9 +43,11 @@ script:
             "kotlin.ExperimentalSubclassOptIn",
             "kotlin.ExperimentalStdlibApi",
             "kotlin.ExperimentalUnsignedTypes",
-            "kotlin.ExperimentalUuidApi",
+            "kotlin.uuid.ExperimentalUuidApi",
             "kotlin.time.ExperimentalTime",
             "kotlin.ExperimentalAtomicApi",
+            "nl.adaptivity.xmlutil.ExperimentalXmlUtilApi",
+            "nl.adaptivity.xmlutil.XmlUtilInternal",
             "kotlin.contracts.ExperimentalContracts",
             "kotlin.experimental.ExperimentalObjCName",
             "kotlin.js.ExperimentalJsExport",
@@ -55,6 +57,8 @@ script:
             "kotlinx.serialization.ExperimentalSerializationApi",
             "kotlinx.serialization.InternalSerializationApi",
             "dev.whyoleg.cryptography.DelicateCryptographyApi",
+            "androidx.compose.ui.ExperimentalComposeUiApi",
+            "org.jetbrains.compose.resources.InternalResourceApi",
           )
         freeCompilerArgs.addAll: |
           (

@@ -5,7 +5,6 @@ import io.github.aaziz993.compose_app.generated.resources.app_name
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.skiko.wasm.onWasmReady
 
-@OptIn(ExperimentalComposeUiApi::class)
 public suspend fun main() {
     val title = getString(Res.string.app_name)
 

@@ -131,7 +131,6 @@ public class PriorityQueue<T>(initialCapacity: Int = 16, private val comparator:
 public fun <T> priorityQueueOf(elements: Collection<T>, comparator: Comparator<in T>? = null): PriorityQueue<T> =
     PriorityQueue(elements, comparator)
 
-@OptIn(ExperimentalContracts::class)
 public inline fun <E> buildPriorityQueue(
     initialCapacity: Int = 16,
     comparator: Comparator<in E>? = null,

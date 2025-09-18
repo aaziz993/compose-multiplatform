@@ -136,7 +136,6 @@ public class YamlListBuilder @PublishedApi internal constructor(
  *          }
  * ```
  */
-@OptIn(ExperimentalContracts::class)
 public inline fun buildYamlList(
     path: YamlPath = YamlPath(),
     sequenceBlockIndent: Int = Yaml.SEQUENCE_BLOCK_INDENT,

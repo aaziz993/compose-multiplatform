@@ -24,7 +24,6 @@ public fun <T> XML.decodeFromMap(
 public inline fun <reified T> XML.decodeFromMap(value: Map<XmlEvent.StartElementEvent, Any>): T =
     decodeFromMap(serializersModule.serializer(), value)
 
-@OptIn(ExperimentalXmlUtilApi::class)
 public fun XML.decodeMapFromString(value: String): Map<XmlEvent.StartElementEvent, Any> = when {
     config.defaultToGenericParser -> xmlStreaming.newGenericReader(value)
     else -> xmlStreaming.newReader(value)
