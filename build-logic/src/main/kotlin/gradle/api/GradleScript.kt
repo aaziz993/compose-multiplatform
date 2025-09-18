@@ -65,7 +65,7 @@ public val IMPORTS: Array<String> = arrayOf(
 public abstract class GradleScript : Script() {
     public companion object {
 
-        private val logger: Logger = Logging.getLogger(GradleScript::class.java)
+        private val log: Logger = Logging.getLogger(GradleScript::class.java)
 
         internal inline operator fun <reified P : GradleScript, reified T> File.invoke(
             evaluationImplicitReceiver: T
@@ -90,7 +90,7 @@ public abstract class GradleScript : Script() {
                 defaultImports(*IMPORTS)
             }
         }.also { properties ->
-            logger.lifecycle(
+            log.lifecycle(
                 evaluationImplicitReceiver.toString()
                     .uppercase()
                     .ansiSpan {
@@ -98,7 +98,7 @@ public abstract class GradleScript : Script() {
                         attribute(Ansi16(36))
                     },
             )
-            logger.lifecycle(properties.toString())
+            log.lifecycle(properties.toString())
         }
 
         internal fun tryAssignProperty(valueClass: KClass<*>, value: Any?): String? =
