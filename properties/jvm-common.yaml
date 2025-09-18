@@ -5,7 +5,9 @@ script:
             ("jvmCommonMain") { sourceSet ->
               sourceSet.dependencies {
                 implementation(libs["bridj"])
+                implementation(libs.bundles("kotlin.scripting"))
                 implementation(libs["reflections"])
+                implementation(libs["jackcess"])
                 implementation(libs.bundles("apache.commons"))
                 implementation(libs["itext.core"])
                 implementation(libs["cryptography.provider.jdk"])

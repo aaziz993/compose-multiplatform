@@ -38,8 +38,6 @@ script:
             ("jvmMain") { sourceSet ->
               sourceSet.dependencies {
                 implementation(libs["logback.classic"])
-                implementation(libs.bundles("kotlin.scripting"))
-                implementation(libs["jackcess"])
                 implementation(libs["jnativehook"])
                 implementation(libs.bundles("jna"))
                 implementation(libs["webrtc.java"])
