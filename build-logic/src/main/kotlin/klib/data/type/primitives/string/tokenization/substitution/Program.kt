@@ -1,7 +1,5 @@
 package klib.data.type.primitives.string.tokenization.substitution
 
-import klib.data.type.primitives.string.tokenization.invoke
-
 public data class Program(
     val mainFunction: Function,
     val functions: List<Function>,

@@ -18,13 +18,11 @@ public fun Any?.toNewMutableCollection(
     newMutableList: List<Any?>.(size: Int) -> Any = { size -> ArrayList<Any?>(size) },
     newMutableMap: Map<Any?, Any?>.(size: Int) -> Any = { size -> LinkedHashMap<Any?, Any?>(size) },
 ): Any = when (this) {
-    null -> mutableMapOf<Any?, Any?>()
-
     is List<*> -> newMutableList(size)
 
     is Map<*, *> -> (this as Map<Any?, Any?>).newMutableMap(size)
 
-    else -> throw IllegalArgumentException("Expected List or Map, but got $this")
+    else -> mutableMapOf<Any?, Any?>()
 }
 
 public infix fun <E> MutableCollection<E>.tryAddAll(elements: Iterable<E>?): Boolean? =
@@ -143,7 +141,8 @@ public fun <P : Any> Any.deepRemove(
 
             val value = currentSources.getter()
 
-            val nextSourcePaths = if (value == null) emptyList() else paths.flatMap { path ->
+            val nextSourcePaths = if (value == null) emptyList()
+            else paths.flatMap { path ->
                 currentSources.subPaths(value, path)
             }
 
@@ -155,15 +154,15 @@ public fun <P : Any> Any.deepRemove(
                     nextSourcePaths,
                     currentSources + (value!! to null),
                     sourceRemoves,
-                )
+                ),
             )
         }
     }(
         DeepRemoveArgs(
             paths.toList(),
             listOf(this@deepRemove to null),
-            this
-        )
+            this,
+        ),
     )
 }
 
@@ -184,5 +183,5 @@ public fun Any.deepRemove(
         sourcePath.drop().let { path -> if (path.isEmpty()) emptyList() else listOf(path) }
     },
     getter = getter,
-    remover = remover
+    remover = remover,
 )

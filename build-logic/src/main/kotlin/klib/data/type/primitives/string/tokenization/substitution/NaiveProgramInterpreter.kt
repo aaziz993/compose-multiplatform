@@ -1,7 +1,5 @@
 package klib.data.type.primitives.string.tokenization.substitution
 
-import klib.data.type.primitives.string.tokenization.Interpreter
-
 public class NaiveProgramInterpreter() : Interpreter<MachineState, Program, (path:List<Any?>)->Any?> {
     private val interpreter = NaiveInterpreter()
 

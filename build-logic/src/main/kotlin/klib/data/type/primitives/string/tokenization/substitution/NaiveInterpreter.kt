@@ -1,7 +1,5 @@
 package klib.data.type.primitives.string.tokenization.substitution
 
-import klib.data.type.primitives.string.tokenization.Interpreter
-
 public class NaiveInterpreter : Interpreter<MachineState, Statement, (path:List<Any?>)->Any?> {
     override fun initialState(input: (path:List<Any?>)->Any?): MachineState = MachineState(input)
 
