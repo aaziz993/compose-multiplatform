@@ -6,13 +6,19 @@ config:
     - org.jetbrains.kotlin.gradle.targets.js.yarn.YarnPlugin
     - org.jetbrains.kotlin.gradle.targets.js.yarn.YarnLockMismatchReport
     - org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension
+    - org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin
 script:
+  # TODO remove if https://youtrack.jetbrains.com/issue/KT-55701 provides a better
   - rootProject.plugins.withType<YarnPlugin>: |
       {
-        // WARNING, NONE, FAIL.
-        rootProject.yarn.yarnLockMismatchReport = YarnLockMismatchReport.WARNING
+        rootProject.yarn.yarnLockMismatchReport = YarnLockMismatchReport.WARNING // NONE | FAIL
         rootProject.yarn.reportNewYarnLock = true
         rootProject.yarn.yarnLockAutoReplace = true
+      }
+  # TODO Remove when it's fixed https://github.com/antelle/argon2-browser/issues/81
+  - rootProject.plugins.withType<NodeJsRootPlugin>: |
+      {
+        rootProject.nodeJsEnv.version /= "24.7.0"
       }
   - kotlin:
       targets:
