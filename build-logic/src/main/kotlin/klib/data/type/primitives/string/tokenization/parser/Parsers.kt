@@ -1,6 +1,5 @@
 package klib.data.type.primitives.string.tokenization.parser
 
-import klib.data.type.primitives.string.tokenization.lexer.Tokens
 import klib.data.type.primitives.string.tokenization.combinators.and
 import klib.data.type.primitives.string.tokenization.combinators.asJust
 import klib.data.type.primitives.string.tokenization.combinators.map
@@ -12,6 +11,7 @@ import klib.data.type.primitives.string.tokenization.combinators.times
 import klib.data.type.primitives.string.tokenization.combinators.unaryMinus
 import klib.data.type.primitives.string.tokenization.combinators.use
 import klib.data.type.primitives.string.tokenization.lexer.TokenMatch
+import klib.data.type.primitives.string.tokenization.lexer.Tokens
 import klib.data.type.primitives.string.unescape
 import klib.data.type.primitives.toInt
 import klib.data.type.primitives.toNumber

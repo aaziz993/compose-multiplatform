@@ -1,10 +1,11 @@
 package klib.data.type.serialization.properties
 
-import kotlinx.serialization.descriptors.SerialDescriptor
 import klib.data.type.primitives.string.case.toCamelCase
 import klib.data.type.primitives.string.case.toKebabCase
 import klib.data.type.primitives.string.case.toPascalCase
 import klib.data.type.primitives.string.case.toSnakeCase
+import klib.data.type.serialization.properties.PropertiesNamingStrategy.Builtins.PascalCase
+import kotlinx.serialization.descriptors.SerialDescriptor
 
 public fun interface PropertiesNamingStrategy {
     public fun serialNameForProperties(descriptor: SerialDescriptor, index: Int): String

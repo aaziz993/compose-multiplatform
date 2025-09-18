@@ -6,8 +6,6 @@ import kotlin.math.absoluteValue
 import kotlin.math.pow
 import kotlin.reflect.KClass
 import kotlin.text.toInt
-import kotlin.toUInt
-import kotlin.toULong
 
 public val U_BYTE_DEFAULT: UByte = 0U.toUByte()
 public val U_SHORT_DEFAULT: UShort = 0U.toUShort()

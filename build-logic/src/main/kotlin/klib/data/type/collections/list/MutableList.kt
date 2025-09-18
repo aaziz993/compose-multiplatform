@@ -2,7 +2,6 @@ package klib.data.type.collections.list
 
 import klib.data.type.functions.Equator
 import klib.data.type.functions.Merger
-import kotlin.collections.getOrNull
 
 @Suppress("UNCHECKED_CAST")
 public val Any.asNullableMutableListOrNull: MutableList<Any?>?

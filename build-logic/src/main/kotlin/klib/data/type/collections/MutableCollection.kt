@@ -1,17 +1,15 @@
 package klib.data.type.collections
 
-import klib.data.type.functions.Equator
 import klib.data.type.act
 import klib.data.type.collections.list.asMutableList
-import klib.data.type.primitives.toInt
 import klib.data.type.collections.list.drop
 import klib.data.type.collections.list.getOrPut
 import klib.data.type.collections.list.put
 import klib.data.type.collections.map.asMutableMap
-import kotlin.collections.map
-import kotlin.collections.plus
-import kotlin.collections.set
+import klib.data.type.functions.Equator
+import klib.data.type.primitives.toInt
 import kotlin.collections.getOrPut
+import kotlin.collections.set
 
 @Suppress("UNCHECKED_CAST")
 public fun Any?.toNewMutableCollection(

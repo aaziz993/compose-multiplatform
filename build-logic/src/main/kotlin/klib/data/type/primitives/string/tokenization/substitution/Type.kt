@@ -1,9 +1,23 @@
 package klib.data.type.primitives.string.tokenization.substitution
 
+import klib.data.type.primitives.string.case.toPascalCase
 import klib.data.type.primitives.toBigDecimal
 import klib.data.type.primitives.toBigInteger
-import klib.data.type.primitives.string.case.toPascalCase
 import kotlin.Pair
+import kotlin.collections.ArrayDeque
+import kotlin.collections.HashSet
+import kotlin.collections.List
+import kotlin.collections.addAll
+import kotlin.collections.contains
+import kotlin.collections.firstOrNull
+import kotlin.collections.isNotEmpty
+import kotlin.collections.listOf
+import kotlin.collections.mapOf
+import kotlin.collections.mutableListOf
+import kotlin.collections.mutableMapOf
+import kotlin.collections.plusAssign
+import kotlin.collections.toList
+import kotlin.collections.toTypedArray
 
 public enum class Type(public vararg val parents: Type) {
     UNDEFINED,

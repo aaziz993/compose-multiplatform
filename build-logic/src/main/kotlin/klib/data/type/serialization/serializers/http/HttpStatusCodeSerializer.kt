@@ -1,6 +1,6 @@
 package klib.data.type.serialization.serializers.http
 
-import io.ktor.http.HttpStatusCode
+import io.ktor.http.*
 import klib.data.type.serialization.serializers.primitive.PrimitiveIntSerializer
 import kotlinx.serialization.Serializable
 

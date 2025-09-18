@@ -1,6 +1,6 @@
 package klib.data.type.serialization.serializers.http
 
-import io.ktor.http.HttpMethod
+import io.ktor.http.*
 import klib.data.type.serialization.serializers.primitive.PrimitiveStringSerializer
 import kotlinx.serialization.Serializable
 

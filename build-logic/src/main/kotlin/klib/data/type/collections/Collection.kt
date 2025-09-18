@@ -3,13 +3,13 @@ package klib.data.type.collections
 import klib.data.type.collections.list.asList
 import klib.data.type.collections.list.drop
 import klib.data.type.collections.map.asMap
+import klib.data.type.primitives.string.tokenization.substitution.substitute
 import klib.data.type.primitives.toInt
 import kotlin.collections.getOrElse
 import kotlin.collections.getOrNull
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
-import klib.data.type.primitives.string.tokenization.substitution.substitute
 
 public fun <T : Collection<E>, E> T.takeIfNotEmpty(): T? = takeIf(Collection<*>::isNotEmpty)
 

@@ -1,9 +1,26 @@
 package klib.data.type.primitives.string.tokenization.combinators
 
 import klib.data.type.primitives.string.tokenization.lexer.TokenMatchesSequence
-import klib.data.type.primitives.string.tokenization.parser.*
-import klib.data.type.tuples.*
-import kotlin.jvm.JvmName
+import klib.data.type.primitives.string.tokenization.parser.ErrorResult
+import klib.data.type.primitives.string.tokenization.parser.ParseResult
+import klib.data.type.primitives.string.tokenization.parser.Parsed
+import klib.data.type.primitives.string.tokenization.parser.ParsedValue
+import klib.data.type.primitives.string.tokenization.parser.Parser
+import klib.data.type.tuples.Tuple10
+import klib.data.type.tuples.Tuple11
+import klib.data.type.tuples.Tuple12
+import klib.data.type.tuples.Tuple13
+import klib.data.type.tuples.Tuple14
+import klib.data.type.tuples.Tuple15
+import klib.data.type.tuples.Tuple16
+import klib.data.type.tuples.Tuple2
+import klib.data.type.tuples.Tuple3
+import klib.data.type.tuples.Tuple4
+import klib.data.type.tuples.Tuple5
+import klib.data.type.tuples.Tuple6
+import klib.data.type.tuples.Tuple7
+import klib.data.type.tuples.Tuple8
+import klib.data.type.tuples.Tuple9
 
 /** Parses the sequence with the receiver [Parser] and then with the [other] parser. If both succeed, returns a [Tuple2]
  * with the values from the [Parsed] results. Otherwise, returns the [ErrorResult] of the failed parser. */

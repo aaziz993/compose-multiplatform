@@ -1,7 +1,6 @@
 package klib.data.type.primitives.string.scripting
 
 import java.io.File
-import kotlin.collections.toTypedArray
 import kotlin.reflect.KClass
 import kotlin.script.experimental.api.ScriptCompilationConfiguration
 import kotlin.script.experimental.api.ScriptEvaluationConfiguration

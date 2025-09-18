@@ -29,8 +29,7 @@ package klib.data.type.serialization.properties.annotations
  * @see klib.data.type.serialization.properties.PropertiesConfiguration.classDiscriminator
  */
 
-import kotlin.annotation.AnnotationTarget;
-import kotlinx.serialization.InheritableSerialInfo;
+import kotlinx.serialization.InheritableSerialInfo
 
 @InheritableSerialInfo
 @Target(AnnotationTarget.CLASS)

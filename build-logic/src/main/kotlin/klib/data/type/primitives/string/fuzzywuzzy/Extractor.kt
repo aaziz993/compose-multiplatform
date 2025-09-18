@@ -1,7 +1,6 @@
 package klib.data.type.primitives.string.fuzzywuzzy
 
 import klib.data.type.collections.topKElements
-import klib.data.type.collections.topKHeap
 import klib.data.type.primitives.string.fuzzywuzzy.model.BoundExtractedResult
 import klib.data.type.primitives.string.fuzzywuzzy.model.ExtractedResult
 

@@ -11,7 +11,7 @@ import com.fleeksoft.ksoup.parseFile
 import com.fleeksoft.ksoup.parseSource
 import com.fleeksoft.ksoup.parser.Parser
 import com.fleeksoft.ksoup.safety.Safelist
-import io.ktor.client.HttpClient
+import io.ktor.client.*
 import io.ktor.client.request.*
 import kotlinx.io.RawSource
 import kotlinx.io.Source

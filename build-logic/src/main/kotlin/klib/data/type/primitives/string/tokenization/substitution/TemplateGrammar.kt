@@ -1,10 +1,10 @@
 package klib.data.type.primitives.string.tokenization.substitution
 
-import klib.data.type.primitives.string.tokenization.lexer.TokenMatch
-import klib.data.type.primitives.string.tokenization.parser.toParsedOrThrow
 import klib.data.type.primitives.string.DOUBLE_QUOTED_STRING_PLAIN
 import klib.data.type.primitives.string.ID
 import klib.data.type.primitives.string.tokenization.combinators.mapWithMatches
+import klib.data.type.primitives.string.tokenization.lexer.TokenMatch
+import klib.data.type.primitives.string.tokenization.parser.toParsedOrThrow
 
 private val EVEN_DOLLARS_REGEX = Regex("""(?:\$\$)+""")
 private val NULL_KEY_REGEX = Regex("""\s*(null)\s*""")

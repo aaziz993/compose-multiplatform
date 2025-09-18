@@ -2,10 +2,6 @@
 
 package klib.data.type.collections.bimap
 
-import klib.data.type.collections.set.MergeSet
-import klib.data.type.functions.Equator
-import klib.data.type.functions.Merger
-
 /**
  * A bimap (or "bidirectional map") is a map that preserves the uniqueness of
  * its values as well as that of its keys. This constraint enables bimaps to

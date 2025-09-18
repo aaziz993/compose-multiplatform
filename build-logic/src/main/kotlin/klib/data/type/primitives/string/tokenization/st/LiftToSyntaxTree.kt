@@ -1,13 +1,30 @@
 package klib.data.type.primitives.string.tokenization.st
 
-import klib.data.type.primitives.string.tokenization.combinators.*
+import klib.data.type.primitives.string.tokenization.combinators.AndCombinator
+import klib.data.type.primitives.string.tokenization.combinators.MapCombinator
+import klib.data.type.primitives.string.tokenization.combinators.OptionalCombinator
+import klib.data.type.primitives.string.tokenization.combinators.OrCombinator
+import klib.data.type.primitives.string.tokenization.combinators.RepeatCombinator
+import klib.data.type.primitives.string.tokenization.combinators.Separated
+import klib.data.type.primitives.string.tokenization.combinators.SeparatedCombinator
+import klib.data.type.primitives.string.tokenization.combinators.SkipParser
+import klib.data.type.primitives.string.tokenization.combinators.leftAssociative
+import klib.data.type.primitives.string.tokenization.combinators.map
+import klib.data.type.primitives.string.tokenization.combinators.optional
+import klib.data.type.primitives.string.tokenization.combinators.rightAssociative
+import klib.data.type.primitives.string.tokenization.combinators.separated
+import klib.data.type.primitives.string.tokenization.combinators.skip
 import klib.data.type.primitives.string.tokenization.grammar.Grammar
 import klib.data.type.primitives.string.tokenization.grammar.ParserReference
 import klib.data.type.primitives.string.tokenization.lexer.Token
 import klib.data.type.primitives.string.tokenization.lexer.TokenMatch
 import klib.data.type.primitives.string.tokenization.lexer.TokenMatchesSequence
-import klib.data.type.primitives.string.tokenization.parser.*
+import klib.data.type.primitives.string.tokenization.parser.EmptyParser
+import klib.data.type.primitives.string.tokenization.parser.ErrorResult
+import klib.data.type.primitives.string.tokenization.parser.ParseResult
+import klib.data.type.primitives.string.tokenization.parser.Parsed
 import klib.data.type.primitives.string.tokenization.parser.ParsedValue
+import klib.data.type.primitives.string.tokenization.parser.Parser
 
 /** Encloses custom logic for transforming a [Parser] to a parser of [SyntaxTree].
  * A correct implementation overrides [liftToSyntaxTree] so that it calls `recurse` for the sub-parsers, if any, and

@@ -7,7 +7,36 @@ import klib.data.type.collections.map.with
 import klib.data.type.functions.Equator
 import klib.data.type.functions.Merger
 import klib.data.type.primitives.ifTrue
+import kotlin.collections.Iterable
+import kotlin.collections.List
+import kotlin.collections.Map
+import kotlin.collections.all
+import kotlin.collections.any
+import kotlin.collections.associate
+import kotlin.collections.associateWith
+import kotlin.collections.buildList
+import kotlin.collections.component1
+import kotlin.collections.component2
+import kotlin.collections.contains
+import kotlin.collections.eachCount
+import kotlin.collections.filter
+import kotlin.collections.filterIndexed
+import kotlin.collections.filterValues
+import kotlin.collections.fold
+import kotlin.collections.forEach
+import kotlin.collections.groupingBy
+import kotlin.collections.indexOf
+import kotlin.collections.indexOfFirst
+import kotlin.collections.indexOfLast
+import kotlin.collections.lastIndexOf
 import kotlin.collections.map
+import kotlin.collections.mapIndexed
+import kotlin.collections.minus
+import kotlin.collections.none
+import kotlin.collections.plus
+import kotlin.collections.toList
+import kotlin.collections.toMutableList
+import kotlin.collections.toSet
 
 public val <E> Iterable<E>.entries: List<Map.Entry<Int, E>>
     get() = mapIndexed { index, value -> index with value }

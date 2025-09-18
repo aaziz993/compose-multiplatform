@@ -1,6 +1,5 @@
 package klib.data.type.serialization.properties
 
-import io.ktor.utils.io.core.Sink
 import klib.data.type.collections.getOrPut
 import klib.data.type.collections.isZeroConsecutive
 import klib.data.type.collections.unflattenKeys

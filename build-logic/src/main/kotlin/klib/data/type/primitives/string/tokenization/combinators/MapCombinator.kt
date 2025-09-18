@@ -1,7 +1,11 @@
 package klib.data.type.primitives.string.tokenization.combinators
 
-import klib.data.type.primitives.string.tokenization.lexer.*
-import klib.data.type.primitives.string.tokenization.parser.*
+import klib.data.type.primitives.string.tokenization.lexer.TokenMatchesSequence
+import klib.data.type.primitives.string.tokenization.parser.ErrorResult
+import klib.data.type.primitives.string.tokenization.parser.ParseResult
+import klib.data.type.primitives.string.tokenization.parser.Parsed
+import klib.data.type.primitives.string.tokenization.parser.ParsedValue
+import klib.data.type.primitives.string.tokenization.parser.Parser
 
 /** Parses the sequence with [innerParser], and if that succeeds, maps its [Parsed] result with [transform].
  * Returns the [ErrorResult] of the `innerParser` otherwise.

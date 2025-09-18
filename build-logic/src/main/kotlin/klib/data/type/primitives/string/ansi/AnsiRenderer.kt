@@ -16,7 +16,6 @@
 package klib.data.type.ansi
 
 import com.github.ajalt.colormath.model.Ansi16
-import kotlin.text.StringBuilder
 
 /**
  * Renders ANSI color escape-codes in strings by parsing out some special syntax to pick up the correct fluff to use.

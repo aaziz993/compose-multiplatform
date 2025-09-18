@@ -1,7 +1,11 @@
 package klib.data.type.primitives.string.tokenization.combinators
 
 import klib.data.type.primitives.string.tokenization.lexer.TokenMatchesSequence
-import klib.data.type.primitives.string.tokenization.parser.*
+import klib.data.type.primitives.string.tokenization.parser.ErrorResult
+import klib.data.type.primitives.string.tokenization.parser.ParseResult
+import klib.data.type.primitives.string.tokenization.parser.Parsed
+import klib.data.type.primitives.string.tokenization.parser.ParsedValue
+import klib.data.type.primitives.string.tokenization.parser.Parser
 
 @Suppress("UNCHECKED_CAST")
 public class SeparatedCombinator<T, S>(

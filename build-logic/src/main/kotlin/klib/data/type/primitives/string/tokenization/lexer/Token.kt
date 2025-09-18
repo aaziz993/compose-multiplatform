@@ -1,6 +1,10 @@
 package klib.data.type.primitives.string.tokenization.lexer
 
-import klib.data.type.primitives.string.tokenization.parser.*
+import klib.data.type.primitives.string.tokenization.parser.MismatchedToken
+import klib.data.type.primitives.string.tokenization.parser.NoMatchingToken
+import klib.data.type.primitives.string.tokenization.parser.ParseResult
+import klib.data.type.primitives.string.tokenization.parser.Parser
+import klib.data.type.primitives.string.tokenization.parser.UnexpectedEof
 
 /**
  * Represents a basic detectable part of the input that may be [ignored] during parsing.

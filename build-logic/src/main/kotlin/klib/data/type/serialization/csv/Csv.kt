@@ -6,12 +6,10 @@ import app.softwork.serialization.csv.*
 import app.softwork.serialization.csv.CSVNode
 import klib.data.type.collections.chunked
 import klib.data.type.collections.intersperse
-import klib.data.type.collections.iterator
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.descriptors.StructureKind
 import kotlinx.serialization.serializer
-import kotlin.collections.plus
 
 internal fun <T> CSVFormat.encodeToNodes(serializer: SerializationStrategy<T>, value: T): List<CSVNode> =
     encodeToString(serializer, value)

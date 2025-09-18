@@ -1,10 +1,9 @@
 package klib.data.type.serialization.yaml
 
 import com.charleskorn.kaml.*
-import kotlinx.serialization.json.JsonObject
-import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
+import kotlinx.serialization.json.JsonObject
 
 /**
  * DSL builder for a [YamlList]. To create an instance of builder, use [buildYamlList] build function.

@@ -1,7 +1,7 @@
 package klib.data.type.serialization.serializers.bignum
 
-import klib.data.type.serialization.serializers.primitive.PrimitiveStringSerializer
 import com.ionspin.kotlin.bignum.decimal.BigDecimal
+import klib.data.type.serialization.serializers.primitive.PrimitiveStringSerializer
 import kotlinx.serialization.Serializable
 
 public object BigDecimalSerializer :

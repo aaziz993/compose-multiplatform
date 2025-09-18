@@ -6,9 +6,16 @@ import com.github.ajalt.colormath.convertTo
 import com.github.ajalt.colormath.model.Ansi16
 import com.github.ajalt.colormath.model.Ansi256
 import com.github.ajalt.colormath.model.RGB
-import kotlin.collections.get
+import kotlin.collections.copyOfRange
+import kotlin.collections.dropLast
+import kotlin.collections.fold
+import kotlin.collections.indices
+import kotlin.collections.map
+import kotlin.collections.mutableListOf
 import kotlin.collections.plus
-import kotlin.text.toByte
+import kotlin.collections.toByteArray
+import kotlin.collections.toFloatArray
+import kotlin.collections.toMutableList
 
 public fun Color.toByteArray(alpha: Boolean = true): ByteArray =
     toArray().dropLast(1).let { components ->

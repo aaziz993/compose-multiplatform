@@ -1,11 +1,8 @@
 package klib.data.type.serialization.serializers.transform
 
 import klib.data.type.serialization.serializers.polymorphic.PolymorphicSerializer
-import kotlinx.serialization.modules.EmptySerializersModule
-import kotlinx.serialization.modules.SerializersModule
 import kotlin.reflect.KClass
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.modules.PolymorphicModuleBuilder
 
 public open class MapTransformingPolymorphicSerializer<T : Any>(
     baseClass: KClass<T>,

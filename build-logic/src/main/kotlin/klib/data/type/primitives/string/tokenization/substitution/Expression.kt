@@ -1,18 +1,42 @@
 package klib.data.type.primitives.string.tokenization.substitution
 
 import klib.data.type.cast
-import klib.data.type.collections.*
-import kotlin.collections.plus
-import kotlin.collections.minus
+import klib.data.type.collections.clear
+import klib.data.type.collections.deepGet
+import klib.data.type.collections.getOrNull
 import klib.data.type.collections.list.asList
 import klib.data.type.collections.list.asMutableList
 import klib.data.type.collections.list.drop
 import klib.data.type.collections.map.asMap
 import klib.data.type.collections.map.pairs
+import klib.data.type.collections.remove
+import klib.data.type.collections.set
+import klib.data.type.collections.size
 import klib.data.type.primitives.*
 import kotlin.Pair
+import kotlin.collections.ArrayList
+import kotlin.collections.Iterable
 import kotlin.collections.Iterator
+import kotlin.collections.List
+import kotlin.collections.Map
+import kotlin.collections.any
+import kotlin.collections.first
+import kotlin.collections.forEach
+import kotlin.collections.joinToString
+import kotlin.collections.last
+import kotlin.collections.listOf
+import kotlin.collections.mapIndexed
+import kotlin.collections.minus
+import kotlin.collections.plus
+import kotlin.collections.reduce
+import kotlin.collections.toList
+import kotlin.collections.toMap
+import kotlin.collections.toMutableList
+import kotlin.collections.toMutableMap
+import kotlin.collections.toTypedArray
+import kotlin.collections.zip
 import kotlin.reflect.KClass
+import kotlin.sequences.Sequence
 
 public sealed class Expression {
 
