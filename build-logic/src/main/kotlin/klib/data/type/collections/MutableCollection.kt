@@ -22,7 +22,7 @@ public fun Any?.toNewMutableCollection(
     is List<*> -> newMutableList(size)
     is Map<*, *> -> (this as Map<Any?, Any?>).newMutableMap(size)
 
-    else -> emptyMap()
+    else -> emptyMap<Any?, Any?>()
 }
 
 public infix fun <E> MutableCollection<E>.tryAddAll(elements: Iterable<E>?): Boolean? =
