@@ -3,7 +3,6 @@ package klib.data.type.serialization.yaml
 import com.charleskorn.kaml.*
 import kotlin.collections.ArrayList
 import kotlinx.serialization.json.JsonObject
-import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 import kotlin.jvm.JvmName
@@ -15,7 +14,7 @@ public class YamlListBuilder @PublishedApi internal constructor(
     public val path: YamlPath,
     public val sequenceBlockIndent: Int,
     public val encodingIndentationSize: Int,
-) : MutableList<YamlNode> by ArrayList() {
+) : MutableList<YamlNode> by mutableListOf() {
 
     /**
      * Adds the given boolean [value] to a resulting YAML array.

@@ -3,7 +3,6 @@ package klib.data.type.serialization.yaml
 import com.charleskorn.kaml.*
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
-import kotlinx.serialization.ExperimentalSerializationApi
 
 /**
  * DSL builder for a [YamlMap]. To create an instance of builder, use [buildYamlMap] build function.
@@ -12,7 +11,7 @@ public class YamlMapBuilder @PublishedApi internal constructor(
     public val path: YamlPath,
     public val encodingIndentationSize: Int,
     public val sequenceBlockIndent: Int,
-) : LinkedHashMap<YamlScalar, YamlNode>() {
+) : MutableMap<YamlScalar, YamlNode> by mutableMapOf() {
 
     /**
      * Add the [YAML object][YamlMap] produced by the [builderAction] function to a resulting YAML object using the given [key].
@@ -27,8 +26,8 @@ public class YamlMapBuilder @PublishedApi internal constructor(
                     keyScalar.path.withMapElementValue(),
                     encodingIndentationSize,
                     sequenceBlockIndent,
-                    builderAction
-                )
+                    builderAction,
+                ),
             )
         }
 
@@ -45,8 +44,8 @@ public class YamlMapBuilder @PublishedApi internal constructor(
                     keyScalar.path.withMapElementValue(column = 0),
                     sequenceBlockIndent,
                     encodingIndentationSize,
-                    builderAction
-                )
+                    builderAction,
+                ),
             )
         }
 
@@ -85,7 +84,6 @@ public class YamlMapBuilder @PublishedApi internal constructor(
      *
      * Returns the previous value associated with [key], or `null` if the key was not present.
      */
-    @ExperimentalSerializationApi
     @Suppress("UNUSED_PARAMETER") // allows to call `put("key", null)`
     public fun putNull(key: String): YamlNode? = put(key, null as String?)
 
@@ -104,7 +102,7 @@ public class YamlMapBuilder @PublishedApi internal constructor(
         )
 
     private val endLine
-        get() = lastEntry()?.value?.location?.line ?: (path.endLocation.line - 1)
+        get() = values.lastOrNull()?.location?.line ?: (path.endLocation.line - 1)
 
     @PublishedApi
     internal fun build(): YamlMap = YamlMap(this, path)
@@ -143,4 +141,3 @@ public inline fun buildYamlMap(
     builder.builderAction()
     return builder.build()
 }
-
