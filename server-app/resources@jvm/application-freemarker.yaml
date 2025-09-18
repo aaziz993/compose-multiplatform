@@ -11,4 +11,9 @@ script:
             "templates"
           )
         }
+        routing {
+          get("/ws") {
+            call.respond(FreeMarkerContent("websocket.ftl", mapOf()))
+          }
+        }
       }
