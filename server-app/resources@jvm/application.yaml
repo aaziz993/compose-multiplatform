@@ -24,7 +24,8 @@ imports:
   - application-hsts.yaml
   - application-auto-head-response.yaml
   - application-freemarker.yaml
-#  - application-swagger.yaml
+  - application-swagger.yaml
+  - application-openapi.yaml
   - application-application-monitoring.yaml
   - application-micrometer-metrics.yaml
   - application-dropwizard-metrics.yaml

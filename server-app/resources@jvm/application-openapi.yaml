@@ -1,0 +1,13 @@
+config:
+  imports:
+    - io.ktor.server.plugins.openapi.openAPI
+    - io.swagger.codegen.v3.generators.html.StaticHtmlCodegen
+script:
+  - module: |
+      {
+        routing {
+          openAPI(path="openapi", swaggerFile = "openapi/documentation.yaml"){
+            codegen = StaticHtmlCodegen()
+          }
+        }
+      }

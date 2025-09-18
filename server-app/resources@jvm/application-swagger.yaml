@@ -1,36 +1,10 @@
 config:
   imports:
-    - io.github.smiley4.ktorswaggerui.SwaggerUI
-    - io.github.smiley4.ktorswaggerui.data.AuthScheme
-    - io.github.smiley4.ktorswaggerui.data.AuthType
+    - io.ktor.server.plugins.swagger.swaggerUI
 script:
   - module: |
       {
-        install(SwaggerUI) {
-          swagger {
-            swaggerUrl = "swagger"
-            forwardRoot = false
-          }
-
-          info {
-            title = "Ktor API REST"
-            version = "latest"
-            description = "Ktor API REST using Kotlin and Ktor"
-            contact {
-              name = "Atoev Aziz"
-              url = "https://github.com/a-aziz93"
-            }
-
-            license {
-              name = "Apache 2.0"
-              url = "https://www.apache.org/licenses/LICENSE-2.0.html"
-            }
-          }
-
-          securityScheme("keycloak") {
-            type = AuthType.HTTP
-            scheme = AuthScheme.BEARER
-            bearerFormat = "oauth2"
-          }
+        routing {
+          swaggerUI(path = "swagger", swaggerFile = "openapi/documentation.yaml")
         }
       }

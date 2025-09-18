@@ -273,7 +273,8 @@ connectivity = "2.2.1"
 ktor = "3.2.3"
 ktor-cache = "0.55.3"
 kotlin-asyncapi-ktor = "3.1.2"
-ktor-swagger-ui = "2.9.0"
+swagger-codegen-generators = "1.0.57"
+ktor-swagger-ui = "5.2.0"
 ktor-server-task-scheduling = "2.1.1"
 ktor-server-kafka = "2.2.1"
 # kotlin library for adding asynchronous Remote Procedure Call (RPC) services to your applications. Build your RPC with already known language constructs and nothing more!
@@ -706,6 +707,7 @@ ktor-simple-memory-cache = { module = "com.ucasoft.ktor:ktor-simple-memory-cache
 # asyncapi
 kotlin-asyncapi-ktor = { module = "org.openfolder:kotlin-asyncapi-ktor", version.ref = "kotlin-asyncapi-ktor" }
 # swagger ui
+swagger-codegen-generators = { module = "io.swagger.codegen.v3:swagger-codegen-generators", version.ref = "swagger-codegen-generators" }
 ktor-swagger-ui = { module = "io.github.smiley4:ktor-swagger-ui", version.ref = "ktor-swagger-ui" }
 # task scheduler
 ktor-server-task-scheduling-core = { module = "io.github.flaxoos:ktor-server-task-scheduling-core", version.ref = "ktor-server-task-scheduling" }

@@ -85,6 +85,7 @@ script:
                 implementation(libs("ktor")["server.methodOverride"])
                 implementation(libs("ktor")["server.netty"])
                 implementation(libs("ktor")["server.config.yaml"])
+                implementation(libs["swagger.codegen.generators"])
                 implementation(libs["firebase.auth.provider"])
                 implementation(libs.bundles("kotlinx.rpc.server"))
                 implementation(libs["graphql.kotlin.ktor.server"])
