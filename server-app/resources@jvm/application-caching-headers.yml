@@ -1,0 +1,20 @@
+caching-headers:
+  enable: true
+  options:
+    - enable: true
+      content-type:
+        content-type: text
+        content-subtype: css
+      cache-control:
+        enable: true
+        type: max_age
+        max-age-seconds: 3600
+
+    - enable: true
+      content-type:
+        content-type: application
+        content-subtype: json
+      cache-control:
+        enable: true
+        type: max_age
+        max-age-seconds: 60

@@ -1,0 +1,5 @@
+call-logging:
+  enable: true
+  logging:
+    enable: true
+    level: INFO

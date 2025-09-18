@@ -1,0 +1,19 @@
+routing:
+  enable: true
+  static-files:
+    enable: true
+    remote-path: /static
+    path-name: files
+    pre-compressed:
+      - BROTLI
+      - GZIP
+    enable-auto-head-response: true
+  static-resources:
+    enable: true
+    remote-path: /static
+    path-name: assets
+    pre-compressed:
+      - BROTLI
+      - GZIP
+    enable-auto-head-response: true
+

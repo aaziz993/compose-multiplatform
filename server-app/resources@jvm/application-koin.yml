@@ -1,0 +1,5 @@
+koin:
+  enable: true
+  logging:
+    enable: true
+    level: INFO

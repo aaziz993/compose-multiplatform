@@ -6,7 +6,6 @@ import klib.data.type.collections.deepPlus
 import klib.data.type.serialization.coders.tree.deserialize
 import klib.data.type.serialization.coders.tree.serialize
 import kotlinx.serialization.DeserializationStrategy
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.AbstractDecoder
