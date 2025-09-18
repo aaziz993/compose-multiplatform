@@ -1,0 +1,116 @@
+<#-- ws-test.ftl -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Test</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f6fa;
+            color: #2f3640;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+        }
+        h1 {
+            color: #273c75;
+            margin-bottom: 1rem;
+        }
+        #log {
+            width: 90%;
+            max-width: 600px;
+            height: 300px;
+            border: 1px solid #dcdde1;
+            border-radius: 8px;
+            padding: 1rem;
+            overflow-y: auto;
+            background-color: #ffffff;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        input, button {
+            padding: 0.5rem 1rem;
+            margin: 0.25rem;
+            border-radius: 5px;
+            border: 1px solid #dcdde1;
+            font-size: 1rem;
+        }
+        button {
+            background-color: #40739e;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        button:hover {
+            background-color: #2f3640;
+        }
+        .controls {
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+<h1>WebSocket Test Page</h1>
+
+<div class="controls">
+    <label for="wsUrl">WebSocket URL:</label>
+    <input type="text" id="wsUrl" placeholder="${wsUrl}" size="40">
+    <button id="connectBtn">Connect</button>
+    <button id="disconnectBtn">Disconnect</button>
+</div>
+
+<div id="log"></div>
+
+<div class="controls">
+    <input type="text" id="messageInput" placeholder="Type a message">
+    <button id="sendBtn">Send</button>
+</div>
+
+<script>
+    let socket = null;
+    const logDiv = document.getElementById("log");
+
+    function log(message) {
+        const p = document.createElement("p");
+        p.textContent = message;
+        logDiv.appendChild(p);
+        logDiv.scrollTop = logDiv.scrollHeight;
+    }
+
+    document.getElementById("connectBtn").onclick = () => {
+        const url = document.getElementById("wsUrl").value;
+        if (!url) return alert("Please enter a WebSocket URL");
+
+        socket = new WebSocket(url);
+
+        socket.onopen = () => log(`Connected to ${url}`);
+        socket.onmessage = (event) => log(`Received: ${event.data}`);
+        socket.onclose = () => log(`Disconnected`);
+        socket.onerror = (error) => log(`Error: ${error.message || error}`);
+    };
+
+    document.getElementById("disconnectBtn").onclick = () => {
+        if (socket) {
+            socket.close();
+            socket = null;
+        }
+    };
+
+    document.getElementById("sendBtn").onclick = () => {
+        const message = document.getElementById("messageInput").value;
+        if (socket && socket.readyState === WebSocket.OPEN) {
+            socket.send(message);
+            log(`Sent: ${message}`);
+        } else {
+            alert("WebSocket is not connected");
+        }
+    };
+</script>
+
+</body>
+</html>
