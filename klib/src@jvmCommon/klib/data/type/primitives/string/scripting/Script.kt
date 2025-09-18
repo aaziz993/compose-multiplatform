@@ -127,7 +127,7 @@ public abstract class Script {
                         attribute(Attribute.INTENSITY_BOLD)
                         attribute(Ansi16(32))
                     }
-                } $value"
+                } $value "
             },
         )
         attribute('\n')
