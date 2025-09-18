@@ -7,8 +7,6 @@ import io.github.z4kn4fein.semver.toVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.publish.maven.tasks.AbstractPublishToMaven
-import org.gradle.api.tasks.Exec
-import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.withType
 import org.gradle.plugins.signing.Sign
 import org.gradle.plugins.signing.type.pgp.ArmoredSignatureType
@@ -18,8 +16,6 @@ public class SigningPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             project.pluginManager.withPlugin("signing") {
-                signing.isRequired = !project.version.toString().toVersion().isPreRelease
-
                 // TODO: https://youtrack.jetbrains.com/issue/KT-61313/ https://github.com/gradle/gradle/issues/26132
                 adjustSigning()
                 // NOTE: This is a temporary WA, see KT-61313.

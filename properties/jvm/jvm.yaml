@@ -39,7 +39,6 @@ script:
               sourceSet.dependencies {
                 implementation(libs["logback.classic"])
                 implementation(libs.bundles("kotlin.scripting"))
-                implementation(libs["reflections"])
                 implementation(libs["jackcess"])
                 implementation(libs["jnativehook"])
                 implementation(libs.bundles("jna"))
