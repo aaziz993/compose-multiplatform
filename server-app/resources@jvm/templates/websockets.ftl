@@ -114,7 +114,7 @@
 <div class="controls">
     <input type="text" id="wsUrl" value="${wsUrl}">
     <button id="connectBtn">Connect</button>
-    <button id="disconnectBtn">Disconnect</button>
+    <button id="disconnectBtn" disabled>Disconnect</button>
 </div>
 
 <div id="log"></div>
@@ -129,6 +129,9 @@
     <#noparse>
     let socket = null;
     const logDiv = document.getElementById("log");
+    const connectBtn = document.getElementById("connectBtn");
+    const disconnectBtn = document.getElementById("disconnectBtn");
+    const wsUrlInput = document.getElementById("wsUrl");
 
     function log(message, type = "info") {
         const p = document.createElement("p");
@@ -143,6 +146,10 @@
         const url = document.getElementById("wsUrl").value;
         if (!url) return alert("Enter WebSocket URL");
 
+        connectBtn.disabled = true;
+        wsUrlInput.disabled = true;
+        disconnectBtn.disabled = false;
+
         socket = new WebSocket(url);
         socket.onopen = () => log(`Connected to ${url}`, "info");
         socket.onmessage = (event) => log(`Received: ${event.data}`, "info");
@@ -154,6 +161,9 @@
         if (socket) {
             socket.close();
             socket = null;
+            wsUrlInput.disabled = true;
+            disconnectBtn.disabled = false;
+            connectBtn.disabled = true;
         }
     };
 
