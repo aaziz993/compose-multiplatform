@@ -5,13 +5,11 @@ import config.ApplicationScript
 import config.ServerConfig
 import engine.Netty
 import io.ktor.server.application.*
-import io.ktor.server.http.content.*
 import io.ktor.server.netty.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import java.io.File
 import kotlinx.coroutines.awaitCancellation
-
 
 public fun main(): Unit = SuspendApp {
     resourceScope {
@@ -44,10 +42,4 @@ public fun Application.module() {
 
 public fun Application.ping(): Routing = routing {
     get("/ping") { call.respondText("pong") }
-}
-
-public fun Application.indexHtml(): Routing = routing {
-    staticResources("/", "static") {
-        default("static/index.html")
-    }
 }

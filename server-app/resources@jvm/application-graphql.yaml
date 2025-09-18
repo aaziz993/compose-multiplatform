@@ -1,4 +1,13 @@
-graphql:
-  enable: true
-  playground: true
-  endpoint: /graphql
+config:
+  imports:
+    - com.apurebase.kgraphql.GraphQL
+script:
+  - module: |
+      {
+        install(GraphQL) {
+          schema {
+            playground = true
+            endpoint = "/graphql"
+          }
+        }
+      }

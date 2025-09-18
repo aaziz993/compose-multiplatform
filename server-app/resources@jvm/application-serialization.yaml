@@ -1,19 +1,27 @@
-serialization:
-  enable: true
-  json:
-    enable: true
-    encode-defaults: true
-    is-lenient: true
-    allow-special-floating-point-values: true
-    allow-structured-map-keys: true
-    pretty-print: false
-    use-array-polymorphism: false
-
-  xml:
-    enable: true
-
-  cbor:
-    enable: true
-
-  protobuf:
-    enable: true
+config:
+  imports:
+    - io.ktor.server.plugins.contentnegotiation.ContentNegotiation
+    - io.ktor.serialization.kotlinx.json.json
+    - kotlinx.serialization.json.Json
+    - io.ktor.serialization.kotlinx.xml.xml
+    - io.ktor.serialization.kotlinx.cbor.cbor
+    - io.ktor.serialization.kotlinx.protobuf.protobuf
+script:
+  - module: |
+      {
+        install(ContentNegotiation) {
+          json(
+            Json {
+              encodeDefaults = true
+              isLenient = true
+              allowSpecialFloatingPointValues = true
+              allowStructuredMapKeys = true
+              prettyPrint = false
+              useArrayPolymorphism = false
+            },
+          )
+          xml()
+          cbor()
+          protobuf()
+        }
+      }

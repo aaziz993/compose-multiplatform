@@ -1,9 +1,17 @@
-websocket:
-  enable: true
-  ping-period: 15s
-  timeout: 15s
-  max-frame-size: 9223372036854775807
-  masking: false
+config:
+  imports:
+    - io.ktor.server.websocket.WebSockets
+script:
+  - module: |
+      {
+        install(WebSockets) {
+          pingPeriodMillis= 15000
+          timeoutMillis = 15000
+          maxFrameSize = Long.MAX_VALUE
+          masking = false
+        }
+      }
+
 #  page:
 #    - enable: true
 #      uri:
