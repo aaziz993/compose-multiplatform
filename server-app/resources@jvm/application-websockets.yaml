@@ -1,10 +1,12 @@
 config:
   imports:
     - io.ktor.server.websocket.WebSockets
+    - io.ktor.serialization.kotlinx.KotlinxWebsocketSerializationConverter
 script:
   - module: |
       {
         install(WebSockets) {
+          contentConverter = KotlinxWebsocketSerializationConverter(Json)
           pingPeriodMillis= 15000
           timeoutMillis = 15000
           maxFrameSize = Long.MAX_VALUE

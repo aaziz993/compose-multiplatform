@@ -10,6 +10,9 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import java.io.File
 import kotlinx.coroutines.awaitCancellation
+import io.ktor.server.websocket.WebSockets
+import io.ktor.websocket.WebSocketDeflateExtension
+import java.util.zip.Deflater
 
 public fun main(): Unit = SuspendApp {
     resourceScope {
@@ -37,9 +40,25 @@ public fun main(): Unit = SuspendApp {
 
 @Suppress("unused")
 public fun Application.module() {
+    install(WebSockets) {
+        extensions {
+            install(WebSocketDeflateExtension) {
+                /**
+                 * Compression level to use for [java.util.zip.Deflater].
+                 */
+                compressionLevel = Deflater.DEFAULT_COMPRESSION
 
+                /**
+                 * Prevent compressing small outgoing frames.
+                 */
+                compressIfBiggerThan(bytes = 4 * 1024)
+            }
+        }
+    }
 }
 
 public fun Application.ping(): Routing = routing {
     get("/ping") { call.respondText("pong") }
 }
+
+

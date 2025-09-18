@@ -284,6 +284,7 @@ ktorfit = "2.6.4"
 tcnative = "2.0.62.Final"
 # strongly typed GraphQL client that generates Kotlin models for your GraphQL operations.
 apollo3 = "4.0.0-beta.7"
+graphql-kotlin-ktor-server = "9.0.0-alpha.8"
 kgraphql = "0.19.0"
 # firebase
 firebase-bom = "34.2.0"
@@ -737,6 +738,7 @@ ktorfit-converters-flow = { module = "de.jensklingenberg.ktorfit:ktorfit-convert
 ktorfit-converters-response = { module = "de.jensklingenberg.ktorfit:ktorfit-converters-response", version.ref = "ktorfit" }
 ktorfit-ksp = { module = "de.jensklingenberg.ktorfit:ktorfit-ksp", version.ref = "ktorfit" }
 ##graphql
+graphql-kotlin-ktor-server = { module = "com.expediagroup:graphql-kotlin-ktor-server", version.ref = "graphql-kotlin-ktor-server" }
 # server
 kgraphql = { module = "com.apurebase:kgraphql", version.ref = "kgraphql" }
 kgraphql-ktor = { module = "com.apurebase:kgraphql-ktor", version.ref = "kgraphql" }

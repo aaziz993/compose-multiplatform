@@ -1,12 +1,11 @@
 imports:
-#  - application-auth.yaml
-#  - application-database.yaml
   - application-serialization.yaml
   - application-https-redirect.yaml
   - application-routing.yaml
   - application-websockets.yaml
-  - application-graphql.yaml
+#  - application-graphql.yaml
   - application-call-logging.yaml
+  - application-double-receive.yaml
   - application-call-id.yaml
   - application-rate-limit.yaml
   - application-cors.yaml
@@ -34,6 +33,7 @@ config:
   imports:
     - java.util.UUID
     - java.io.File
+    - kotlinx.serialization.json.Json
     - io.ktor.server.engine.connector
     - io.ktor.http.HttpStatusCode
     - io.ktor.http.HttpHeaders.ContentEncoding

@@ -1,13 +1,22 @@
 config:
   imports:
-    - com.apurebase.kgraphql.GraphQL
+    - com.expediagroup.graphql.generator.annotations.GraphQLDescription
+    - com.expediagroup.graphql.generator.federation.directives.ContactDirective
+    - com.expediagroup.graphql.server.Schema
+    - com.expediagroup.graphql.server.ktor.GraphQL
+    - com.expediagroup.graphql.server.ktor.graphQLPostRoute
+    - com.expediagroup.graphql.server.operations.Mutation
+    - com.expediagroup.graphql.server.operations.Query
 script:
   - module: |
       {
         install(GraphQL) {
           schema {
-            playground = true
-            endpoint = "/graphql"
+            packages = listOf("graphql")
           }
+        }
+
+        routing {
+          graphQLPostRoute()
         }
       }

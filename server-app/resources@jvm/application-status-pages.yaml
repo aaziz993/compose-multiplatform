@@ -2,6 +2,7 @@ config:
   imports:
     - io.ktor.server.plugins.statuspages.StatusPages
     - io.ktor.server.plugins.statuspages.statusFile
+    - com.expediagroup.graphql.server.ktor.defaultGraphQLStatusPages
 script:
   - module: |
       {
@@ -15,5 +16,7 @@ script:
           exception<Throwable> { call, cause ->
             call.respondText(text = "500: $cause" , status = HttpStatusCode.InternalServerError)
           }
+
+          defaultGraphQLStatusPages()
         }
       }

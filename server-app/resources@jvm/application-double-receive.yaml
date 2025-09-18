@@ -1,0 +1,10 @@
+config:
+  imports:
+    - io.ktor.server.plugins.doublereceive.DoubleReceive
+script:
+  - module: |
+      {
+        install(DoubleReceive) {
+          cacheRawRequest = false
+        }
+      }

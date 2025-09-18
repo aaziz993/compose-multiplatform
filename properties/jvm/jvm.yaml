@@ -87,7 +87,7 @@ script:
                 implementation(libs("ktor")["server.config.yaml"])
                 implementation(libs["firebase.auth.provider"])
                 implementation(libs.bundles("kotlinx.rpc.server"))
-                implementation(libs.bundles("kgraphql"))
+                implementation(libs["graphql.kotlin.ktor.server"])
                 implementation(libs.bundles("metrics"))
                 implementation(libs["jxmapviewer2"])
                 implementation(libs.bundles("koin.ktor"))

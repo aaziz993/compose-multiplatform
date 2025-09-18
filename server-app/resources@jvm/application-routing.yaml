@@ -2,22 +2,7 @@ script:
   - module: |
       {
         install(RoutingRoot) {
-          staticFiles(
-            remotePath = "/",
-            dir = File("files"),
-          ) {
-            preCompressed(
-                CompressedFileType.BROTLI,
-                CompressedFileType.GZIP,
-            )
-            enableAutoHeadResponse()
-          }
-
-          staticResources(
-            remotePath = "/",
-            basePackage = "static",
-          ) {
-            default("static/index.html")
+          staticResources("/", "static") {
             preCompressed(
                 CompressedFileType.BROTLI,
                 CompressedFileType.GZIP,
