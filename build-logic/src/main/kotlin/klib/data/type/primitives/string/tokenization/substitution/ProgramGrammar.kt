@@ -1,25 +1,26 @@
 package klib.data.type.primitives.string.tokenization.substitution
 
-import com.github.h0tk3y.betterParse.combinators.*
-import com.github.h0tk3y.betterParse.combinators.map
-import com.github.h0tk3y.betterParse.combinators.times
-import com.github.h0tk3y.betterParse.grammar.Grammar
-import com.github.h0tk3y.betterParse.grammar.parseToEnd
-import com.github.h0tk3y.betterParse.grammar.parser
-import com.github.h0tk3y.betterParse.lexer.TokenMatch
-import com.github.h0tk3y.betterParse.lexer.regexToken
-import com.github.h0tk3y.betterParse.parser.Parser
-import com.github.h0tk3y.betterParse.parser.toParsedOrThrow
-import com.github.h0tk3y.betterParse.utils.Tuple2
 import klib.data.type.collections.takeIfNotEmpty
-import klib.data.type.expression.Length
-import klib.data.type.primitives.string.tokenization.Parsers
-import klib.data.type.primitives.string.tokenization.Tokens
-import klib.data.type.primitives.string.tokenization.mapToken
-import klib.data.type.primitives.string.tokenization.mapWithMatches
 import klib.data.type.primitives.string.case.toCamelCase
-import kotlin.collections.Set
-import kotlin.collections.map
+import klib.data.type.primitives.string.tokenization.combinators.asJust
+import klib.data.type.primitives.string.tokenization.combinators.leftAssociative
+import klib.data.type.primitives.string.tokenization.combinators.map
+import klib.data.type.primitives.string.tokenization.combinators.oneOrMore
+import klib.data.type.primitives.string.tokenization.combinators.optional
+import klib.data.type.primitives.string.tokenization.combinators.or
+import klib.data.type.primitives.string.tokenization.combinators.rightAssociative
+import klib.data.type.primitives.string.tokenization.combinators.separatedTerms
+import klib.data.type.primitives.string.tokenization.combinators.times
+import klib.data.type.primitives.string.tokenization.combinators.unaryMinus
+import klib.data.type.primitives.string.tokenization.combinators.use
+import klib.data.type.primitives.string.tokenization.combinators.zeroOrMore
+import klib.data.type.primitives.string.tokenization.grammar.Grammar
+import klib.data.type.primitives.string.tokenization.grammar.parseToEnd
+import klib.data.type.primitives.string.tokenization.grammar.parser
+import klib.data.type.primitives.string.tokenization.lexer.TokenMatch
+import klib.data.type.primitives.string.tokenization.lexer.Tokens
+import klib.data.type.primitives.string.tokenization.parser.Parser
+import klib.data.type.primitives.string.tokenization.parser.Parsers
 
 public fun String.compile(): Program = ProgramGrammar.parseToEnd(this)
 
