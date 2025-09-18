@@ -5,7 +5,7 @@ script:
   - module: |
       {
         install(HttpsRedirect) {
-          sslPort = 8443
+          sslPort = applicationScript.sslPort
           permanentRedirect = true
         }
       }

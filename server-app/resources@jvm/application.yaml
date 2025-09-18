@@ -29,6 +29,7 @@ imports:
   - application-micrometer-metrics.yaml
   - application-dropwizard-metrics.yaml
   - application-shutdown.yaml
+sslPort: 8443
 config:
   imports:
     - java.util.UUID
@@ -40,6 +41,7 @@ config:
     - io.ktor.http.HttpHeaders
     - io.ktor.http.HttpStatusCode
     - io.ktor.http.HttpHeaders.ContentEncoding
+    - config.applicationScript
     - config.ssl
 script:
   # Enable development mode. Recommended to set it via -Dktor.deployment.environment=development
@@ -55,7 +57,7 @@ script:
         keyStorePassword = "KtorServer2025",
         privateKeyPassword = "KtorServer2025",
         domains = listOf("localhost", "127.0.0.1", "0.0.0.0"),
-        port = 8443
+        port = applicationScript.sslPort
       )
   # Watch for changes in this directory and automatically reload the application if any file changes in development mode.
   - watchPaths: listOf("classes", "resources")

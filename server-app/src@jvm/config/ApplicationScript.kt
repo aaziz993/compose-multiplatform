@@ -46,6 +46,7 @@ public lateinit var applicationScript: ApplicationScript
 
 @Serializable
 public class ApplicationScript(
+    public val sslPort: Int = 443,
     override val config: ScriptConfig = ScriptConfig(),
     override val script: List<SerializableAny>,
     override val fileTree: Map<String, List<String>>,
@@ -89,6 +90,7 @@ public class ApplicationScript(
                 }",
             )
             log.info("${System.lineSeparator()}$properties")
+
             applicationScript = properties
         }
     }

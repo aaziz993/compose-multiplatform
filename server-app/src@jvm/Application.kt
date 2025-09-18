@@ -4,10 +4,8 @@ import arrow.fx.coroutines.resourceScope
 import config.ApplicationScript
 import config.ServerConfig
 import engine.Netty
-import io.ktor.http.HttpHeaders
 import io.ktor.server.application.*
 import io.ktor.server.netty.*
-import io.ktor.server.plugins.callid.CallId
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import java.io.File
