@@ -18,11 +18,11 @@ public fun Any?.toNewMutableCollection(
     newMutableList: List<Any?>.(size: Int) -> Any = { size -> ArrayList<Any?>(size) },
     newMutableMap: Map<Any?, Any?>.(size: Int) -> Any = { size -> LinkedHashMap<Any?, Any?>(size) },
 ): Any = when (this) {
+    null -> mutableMapOf<Any?, Any?>()
     is List<*> -> newMutableList(size)
-
     is Map<*, *> -> (this as Map<Any?, Any?>).newMutableMap(size)
 
-    else -> mutableMapOf<Any?, Any?>()
+    else -> emptyMap()
 }
 
 public infix fun <E> MutableCollection<E>.tryAddAll(elements: Iterable<E>?): Boolean? =
