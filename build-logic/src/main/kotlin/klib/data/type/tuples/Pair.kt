@@ -4,7 +4,6 @@ public fun <A> A.to(): Pair<A, A> = this to this
 
 public infix fun <A, B> A.to(second: (A) -> B): Pair<A, B> = this to second(this)
 
-public infix fun <A, B, C> Pair<A, B>.and(that: C): Triple<A, B, C> = Triple(first, second, that)
+public infix fun <A, B, C> Pair<A, B>.and(t3: C): Tuple3<A, B, C> = Tuple3(first, second, t3)
 
-public infix fun <A, B, C> A.and(that: Pair<B, C>): Triple<A, B, C> =
-    Triple(this, that.first, that.second)
+public infix fun <A, B, C> A.and(that: Pair<B, C>): Tuple3<A, B, C> = Tuple3(this, that.first, that.second)

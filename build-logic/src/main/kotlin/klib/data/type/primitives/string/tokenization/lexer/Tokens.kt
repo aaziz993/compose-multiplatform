@@ -1,6 +1,5 @@
-package klib.data.type.primitives.string.tokenization
+package klib.data.type.primitives.string.tokenization.lexer
 
-import com.github.h0tk3y.betterParse.lexer.*
 import klib.data.type.primitives.string.DOUBLE_QUOTED_STRING
 import klib.data.type.primitives.string.ID
 import klib.data.type.primitives.string.SINGLE_QUOTED_STRING
@@ -181,7 +180,7 @@ public object Tokens {
     //   [^\\"]*       – and any number of non-special characters
     // )*              – repeating as a group any number of times
     // '               – closing single quote
-    public val singleQuotedString: RegexToken = regexToken(Regex.SINGLE_QUOTED_STRING)
+    public val singleQuotedString: RegexToken = regexToken(Regex.Companion.SINGLE_QUOTED_STRING)
 
     // the regex "[^\\"]*(\\["nrtbf\\][^\\"]*)*" matches:
     // "               – opening double quote,
@@ -191,10 +190,10 @@ public object Tokens {
     //   [^\\"]*       – and any number of non-special characters
     // )*              – repeating as a group any number of times
     // "               – closing double quote
-    public val doubleQuotedString: RegexToken = regexToken(Regex.DOUBLE_QUOTED_STRING)
+    public val doubleQuotedString: RegexToken = regexToken(Regex.Companion.DOUBLE_QUOTED_STRING)
 
     // Id token.
-    public val id: RegexToken = regexToken(Regex.ID)
+    public val id: RegexToken = regexToken(Regex.Companion.ID)
 
     public fun keyword(value: String): RegexToken = regexToken("$PREFIX$value$SUFFIX")
 
