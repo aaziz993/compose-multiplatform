@@ -129,6 +129,7 @@ script:
                 implementation(libs.bundles("fleeksoft.charset"))
                 // implementation(libs.bundles("diglol"))
                 implementation(libs["highlights"])
+                implementation(libs["better.parse"])
                 implementation(libs.bundles("kmputils"))
                 implementation(libs.bundles("kotlinx.serialization"))
                 implementation(libs.bundles("serialization"))
