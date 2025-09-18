@@ -1,6 +1,7 @@
 config:
   imports:
     - io.ktor.server.plugins.callid.CallId
+    - io.ktor.server.plugins.callid.callId
 script:
   - module: |
       {

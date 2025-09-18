@@ -11,6 +11,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import java.io.File
 import kotlinx.coroutines.awaitCancellation
+
 public fun main(): Unit = SuspendApp {
     resourceScope {
         val applicationFile = File(
