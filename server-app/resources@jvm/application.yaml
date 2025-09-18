@@ -79,3 +79,8 @@ script:
         privateKeyPassword = "KtorServer2025",
         port = 8443
       )
+  - module: |
+      {
+        ping()
+        indexHtml()
+      }
