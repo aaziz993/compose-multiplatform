@@ -5,7 +5,7 @@ import com.github.ajalt.colormath.model.Ansi16
 import java.io.File
 import java.lang.reflect.Modifier
 import klib.data.cache.Cache
-import klib.data.cache.NoCache
+import klib.data.cache.emptyCache
 import klib.data.type.ansi.Attribute
 import klib.data.type.ansi.ansiSpan
 import klib.data.type.ansi.buildStringAnsi
@@ -77,7 +77,7 @@ public abstract class Script {
     public abstract val fileTree: Map<String, List<String>>
 
     @Transient
-    public var cache: Cache<String, String> = NoCache()
+    public var cache: Cache<String, String> = emptyCache()
 
     @Transient
     public var explicitOperationReceivers: Set<KClass<*>> = emptySet()
@@ -229,7 +229,7 @@ public abstract class Script {
                     else -> error("Unsupported file extension ${file.extension}")
                 }!!.asStringNullableMap
             },
-            cache: Cache<String, String> = NoCache(),
+            cache: Cache<String, String> = emptyCache(),
             explicitOperationReceivers: Set<KClass<*>> = emptySet(),
             noinline implicitOperation: (valueClass: KClass<*>, value: Any?) -> String? = { _, _ -> null },
             config: ScriptConfig.() -> Unit = { },
