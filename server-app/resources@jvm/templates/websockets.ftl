@@ -112,7 +112,7 @@
 <h1>WebSocket</h1>
 
 <div class="controls">
-    <input type="text" id="wsUrl" placeholder="${wsUrl}">
+    <input type="text" id="wsUrl" value="${wsUrl}">
     <button id="connectBtn">Connect</button>
     <button id="disconnectBtn">Disconnect</button>
 </div>
@@ -122,9 +122,11 @@
 <div class="controls">
     <input type="text" id="messageInput" placeholder="Type a message...">
     <button id="sendBtn">Send</button>
+    <button id="cleanBtn">Clean</button>
 </div>
 
 <script>
+    <#noparse>
     let socket = null;
     const logDiv = document.getElementById("log");
 
@@ -142,8 +144,7 @@
         if (!url) return alert("Enter WebSocket URL");
 
         socket = new WebSocket(url);
-
-        socket.onopen = () => log(`Connected to ${wsUrl}`, "info");
+        socket.onopen = () => log(`Connected to ${url}`, "info");
         socket.onmessage = (event) => log(`Received: ${event.data}`, "info");
         socket.onclose = () => log(`Disconnected`, "error");
         socket.onerror = (err) => log(`Error: ${err.message || err}`, "error");
@@ -165,6 +166,10 @@
             alert("WebSocket is not connected");
         }
     };
+    document.getElementById("cleanBtn").onclick = () => {
+        logDiv.innerHTML = "";
+    };
+    </#noparse>
 </script>
 
 </body>
