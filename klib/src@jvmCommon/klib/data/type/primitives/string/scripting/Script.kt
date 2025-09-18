@@ -27,6 +27,7 @@ import klib.data.type.collections.toTreeString
 import klib.data.type.primitives.string.addSuffix
 import klib.data.type.primitives.string.addSuffixIfNotEmpty
 import klib.data.type.primitives.string.highlight
+import klib.data.type.reflecion.classifierOrUpperBound
 import klib.data.type.reflection.declaredMemberExtensionFunction
 import klib.data.type.reflection.declaredMemberExtensionFunctions
 import klib.data.type.reflection.declaredMemberExtensionProperty
@@ -45,6 +46,8 @@ import klib.data.type.serialization.serializers.any.SerializableAny
 import klib.data.type.serialization.yaml.decodeAnyFromString
 import kotlin.reflect.KClass
 import kotlin.reflect.KMutableProperty
+import kotlin.reflect.KType
+import kotlin.reflect.KTypeParameter
 import kotlin.reflect.KVisibility
 import kotlin.reflect.full.isSubclassOf
 import kotlin.script.experimental.api.ResultValue
@@ -155,7 +158,7 @@ public abstract class Script {
                             ?: kClass.memberFunction(getterName)
                             ?: kClass.declaredMemberExtensionFunction(getterName))
                             ?.takeIf { property -> property.visibility == KVisibility.PUBLIC }
-                            ?.returnType?.classifier as KClass<*>?
+                            ?.returnType?.classifierOrUpperBound()
                             ?: kClass.packageExtensions(getterName, packages).singleOrNull { method ->
                                 Modifier.isPublic(method.modifiers)
                             }?.returnType?.kotlin

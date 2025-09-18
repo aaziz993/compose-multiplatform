@@ -1,7 +1,7 @@
 #imports:
 #  - koin.yaml
 #  - auth.yaml
-#  - generate-engine.ssl.yaml
+#  - generate-config.ssl.yaml
 #  - cache.yaml
 #  - database.yaml
 #  - serialization.yaml
@@ -60,13 +60,14 @@ ktor:
   ## To enable SSL, you need to generate a certificate and configure it here
   security:
     ssl:
-      keyStore: resources/security/engine.ssl/ktor-server.p12
+      keyStore: resources/security/config.ssl/ktor-server.p12
       keyStorePassword: KtorServer2025
       keyAlias: ktor-server
       privateKeyPassword: KtorServer2025
 config:
   imports:
     - io.ktor.server.engine.connector
+    - config
 script:
   - engine:
       connector: |

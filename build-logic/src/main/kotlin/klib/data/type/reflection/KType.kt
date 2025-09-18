@@ -26,6 +26,7 @@ import klib.data.type.primitives.U_LONG_DEFAULT
 import klib.data.type.primitives.U_SHORT_DEFAULT
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
+import kotlin.reflect.KTypeParameter
 import kotlin.time.Duration
 import kotlin.uuid.Uuid
 import kotlinx.datetime.DatePeriod
@@ -86,3 +87,11 @@ else kClass.primitiveDefault(
     dateTimePeriodDefault,
     uuidDefault,
 )
+
+public fun KType.classifierOrUpperBound(): KClass<*>? {
+    return when (val c = classifier) {
+        is KClass<*> -> c
+        is KTypeParameter -> c.upperBounds.firstOrNull()?.classifierOrUpperBound()
+        else -> null
+    }
+}
