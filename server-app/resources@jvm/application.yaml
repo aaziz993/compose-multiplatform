@@ -12,7 +12,7 @@ imports:
   - application-call-id.yaml
 #  - application-rate-limit.yaml
 #  - application-cors.yaml
-#  - application-compression.yaml
+  - application-compression.yaml
 #  - application-partial-content.yaml
 #  - application-data-conversion.yaml
 #  - application-validation.yaml

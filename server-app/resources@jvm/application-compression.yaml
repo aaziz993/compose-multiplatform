@@ -1,5 +1,15 @@
-compression:
-  enable: true
-  gzip:
-    enable: true
-    minimum-size: 200
+config:
+  imports:
+    - io.ktor.server.plugins.compression.Compression
+    - io.ktor.server.plugins.compression.gzip
+    - io.ktor.server.plugins.compression.minimumSize
+script:
+  - module: |
+      {
+        install(Compression) {
+          gzip {
+              priority = 1.0
+              minimumSize(200L)
+          }
+        }
+      }

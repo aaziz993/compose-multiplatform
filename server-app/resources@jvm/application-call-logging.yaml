@@ -1,5 +1,12 @@
-call-logging:
-  enable: true
-  logging:
-    enable: true
-    level: INFO
+config:
+  imports:
+    - io.ktor.server.plugins.calllogging.CallLogging
+    - org.slf4j.event.Level
+script:
+  - module: |
+      {
+        install(CallLogging) {
+          level = Level.INFO
+          filter { call -> true }
+        }
+      }
