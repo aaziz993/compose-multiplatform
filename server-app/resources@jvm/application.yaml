@@ -65,7 +65,7 @@ ktor:
       keyAlias: ktor-server
       privateKeyPassword: KtorServer2025
 script:
-  - selfSignedSSL: |
+  - ssl: |
       (
         keyStorePassword = "KtorServer2025",
         privateKeyPassword = "KtorServer2025",

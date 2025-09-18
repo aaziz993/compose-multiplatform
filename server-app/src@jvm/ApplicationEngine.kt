@@ -7,7 +7,7 @@ import java.net.Inet4Address
 import java.security.KeyStore
 import javax.security.auth.x500.X500Principal
 
-public fun ApplicationEngine.Configuration.selfSignedSSL(
+public fun ApplicationEngine.Configuration.ssl(
     keyStoreFile: File = File("resources/security/ssl/keystore.p12"),
     keyStorePassword: String,
     keyAlias: String = "server",
