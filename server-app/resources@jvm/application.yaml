@@ -1,7 +1,6 @@
 imports:
 #  - application-koin.yaml
 #  - application-auth.yaml
-#  - application-generate-config.ssl.yaml
 #  - application-cache.yaml
 #  - application-database.yaml
 #  - application-serialization.yaml
@@ -29,7 +28,7 @@ imports:
 #  - application-x-http-method-override.yaml
 #  - application-freemarker.yaml
 #  - application-swagger.yaml
-#  - application-application-monitoring.yaml
+  - application-application-monitoring.yaml
 #  - application-micrometer-metrics.yaml
 #  - application-dropwizard-metrics.yaml
 #  - application-shutdown.yaml
