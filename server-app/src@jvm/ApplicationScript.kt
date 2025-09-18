@@ -4,11 +4,8 @@ import klib.data.cache.SqliteCache
 import klib.data.type.ansi.Attribute
 import klib.data.type.ansi.ansiSpan
 import klib.data.type.primitives.string.scripting.Script
-import klib.data.type.primitives.string.scripting.Script.Companion.invoke
 import klib.data.type.primitives.string.scripting.ScriptConfig
 import klib.data.type.serialization.serializers.any.SerializableAny
-import kotlin.reflect.KClass
-import kotlin.reflect.full.isSubclassOf
 import kotlin.script.experimental.api.defaultImports
 import kotlin.script.experimental.jvm.dependenciesFromCurrentContext
 import kotlin.script.experimental.jvm.jvm

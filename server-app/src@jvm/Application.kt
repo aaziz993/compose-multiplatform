@@ -11,8 +11,10 @@ import kotlinx.coroutines.awaitCancellation
 
 public fun main(): Unit = SuspendApp {
     resourceScope {
-        val resourceUrl = object {}.javaClass.classLoader.getResource("application.yaml")
-            ?: error("application.yaml not found in resources")
+        val applicationFile = File(
+            object {}.javaClass.classLoader.getResource("application.yaml")?.toURI()
+                ?: error("application.yaml not found in resources"),
+        )
 
         server(
             Netty,
@@ -20,7 +22,9 @@ public fun main(): Unit = SuspendApp {
                 module(Application::module)
             },
             configure = {
-                ApplicationScript(File(resourceUrl.toURI()), this)()
+                val applicationScript = ApplicationScript(applicationFile, this)
+
+                applicationScript()
             },
         )
 
