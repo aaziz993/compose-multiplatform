@@ -2,6 +2,7 @@ config:
   imports:
     - io.ktor.server.freemarker.FreeMarker
     - freemarker.cache.ClassTemplateLoader
+    - io.ktor.server.freemarker.FreeMarkerContent
 script:
   - module: |
       {
