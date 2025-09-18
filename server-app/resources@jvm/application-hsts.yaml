@@ -1,2 +1,19 @@
-hsts:
-  enable: true
+config:
+  imports:
+    - io.ktor.server.plugins.hsts.HSTS
+script:
+  - module: |
+      {
+        install(HSTS) {
+          // Default settings for all hosts
+          maxAgeInSeconds = 10 // short lifetime, demo purposes
+          includeSubDomains = true
+          preload = false
+
+          // Override for a specific host
+          withHost("sample-host") {
+            maxAgeInSeconds = 60
+            includeSubDomains = false
+          }
+        }
+      }

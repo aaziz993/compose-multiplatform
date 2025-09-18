@@ -21,13 +21,13 @@ imports:
   - application-default-headers.yaml
   - application-caching-headers.yaml
   - application-conditional-headers.yaml
-#  - application-forwarded-headers.yaml
-#  - application-x-forwarded-headers.yaml
-#  - application-hsts.yaml
+  - application-forwarded-headers.yaml
+  - application-x-forwarded-headers.yaml
+  - application-x-http-method-override.yaml
+  - application-hsts.yaml
   - application-auto-head-response.yaml
-#  - application-x-http-method-override.yaml
-#  - application-freemarker.yaml
-#  - application-swagger.yaml
+  - application-freemarker.yaml
+  - application-swagger.yaml
   - application-application-monitoring.yaml
   - application-micrometer-metrics.yaml
   - application-dropwizard-metrics.yaml

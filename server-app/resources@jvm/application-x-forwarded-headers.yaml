@@ -1,2 +1,8 @@
-forwarded-headers:
-  enable: true
+config:
+  imports:
+    - io.ktor.server.plugins.forwardedheaders.XForwardedHeaders
+script:
+  - module: |
+      {
+        install(XForwardedHeaders)
+      }

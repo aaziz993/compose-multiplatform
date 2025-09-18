@@ -1,4 +1,14 @@
-freemarker:
-  enable: true
-  class-paths:
-    - templates
+config:
+  imports:
+    - io.ktor.server.freemarker.FreeMarker
+    - freemarker.cache.ClassTemplateLoader
+script:
+  - module: |
+      {
+        install(FreeMarker) {
+          templateLoader = ClassTemplateLoader(
+            this::class.java.classLoader,
+            "templates"
+          )
+        }
+      }
