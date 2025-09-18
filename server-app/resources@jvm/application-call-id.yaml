@@ -5,9 +5,15 @@ config:
 script:
   - module: |
       {
-         install(CallId) {
-           header("X-Request-ID")
-           generate { UUID.randomUUID().toString() }
-           verify(String::isNotEmpty)
-         }
+        install(CallId) {
+          header("X-Request-ID")
+          generate { UUID.randomUUID().toString() }
+          verify(String::isNotEmpty)
+        }
+
+        routing {
+          get("/callId") {
+            call.respondText(call.callId.orEmpty())
+          }
+        }
       }
