@@ -2,6 +2,9 @@ package klib.data.type.reflection
 
 import com.ionspin.kotlin.bignum.decimal.BigDecimal
 import com.ionspin.kotlin.bignum.integer.BigInteger
+import java.lang.reflect.Method
+import java.lang.reflect.Modifier
+import java.lang.reflect.ParameterizedType
 import klib.data.type.collections.drop
 import klib.data.type.collections.list.drop
 import klib.data.type.primitives.BIG_DECIMAL_DEFAULT
@@ -27,57 +30,38 @@ import klib.data.type.primitives.U_INT_DEFAULT
 import klib.data.type.primitives.U_LONG_DEFAULT
 import klib.data.type.primitives.U_SHORT_DEFAULT
 import klib.data.type.primitives.parseOrNull
-import kotlinx.datetime.*
+import kotlin.reflect.KCallable
+import kotlin.reflect.KClass
+import kotlin.reflect.KFunction
+import kotlin.reflect.KParameter
+import kotlin.reflect.KProperty
+import kotlin.reflect.KType
+import kotlin.reflect.KTypeParameter
+import kotlin.reflect.KVisibility
+import kotlin.reflect.full.declaredFunctions
+import kotlin.reflect.full.declaredMemberExtensionFunctions
+import kotlin.reflect.full.declaredMemberExtensionProperties
+import kotlin.reflect.full.declaredMemberFunctions
+import kotlin.reflect.full.declaredMemberProperties
+import kotlin.reflect.full.declaredMembers
+import kotlin.reflect.full.instanceParameter
+import kotlin.reflect.full.isSubtypeOf
+import kotlin.reflect.full.memberFunctions
+import kotlin.reflect.full.memberProperties
+import kotlin.reflect.full.staticFunctions
+import kotlin.reflect.full.staticProperties
+import kotlin.time.Duration
+import kotlin.uuid.Uuid
+import kotlinx.datetime.DatePeriod
+import kotlinx.datetime.DateTimePeriod
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.LocalTime
 import kotlinx.datetime.format.DateTimeComponents
 import kotlinx.datetime.format.DateTimeFormat
 import org.reflections.Reflections
 import org.reflections.scanners.Scanners
 import org.reflections.util.ConfigurationBuilder
-import java.lang.reflect.Method
-import java.lang.reflect.Modifier
-import java.lang.reflect.ParameterizedType
-import kotlin.collections.ArrayList
-import kotlin.collections.Collection
-import kotlin.collections.HashMap
-import kotlin.collections.HashSet
-import kotlin.collections.LinkedHashMap
-import kotlin.collections.LinkedHashSet
-import kotlin.collections.List
-import kotlin.collections.Map
-import kotlin.collections.MutableList
-import kotlin.collections.MutableMap
-import kotlin.collections.MutableSet
-import kotlin.collections.Set
-import kotlin.collections.all
-import kotlin.collections.any
-import kotlin.collections.filter
-import kotlin.collections.find
-import kotlin.collections.firstOrNull
-import kotlin.collections.forEach
-import kotlin.collections.map
-import kotlin.collections.plus
-import kotlin.collections.toList
-import kotlin.collections.toTypedArray
-import kotlin.collections.zip
-import kotlin.reflect.*
-import kotlin.reflect.full.*
-import kotlin.sequences.Sequence
-import kotlin.sequences.filter
-import kotlin.sequences.sequence
-import kotlin.text.toBooleanStrictOrNull
-import kotlin.text.toByteOrNull
-import kotlin.text.toDoubleOrNull
-import kotlin.text.toFloatOrNull
-import kotlin.text.toIntOrNull
-import kotlin.text.toLongOrNull
-import kotlin.text.toShortOrNull
-import kotlin.text.toUByteOrNull
-import kotlin.text.toUIntOrNull
-import kotlin.text.toULongOrNull
-import kotlin.text.toUShortOrNull
-import kotlin.time.Duration
-import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
 
 //////////////////////////////////////////////////////////GENERIC///////////////////////////////////////////////////////
 public val KClass<*>.isUIntNumber: Boolean
@@ -420,8 +404,7 @@ public fun KClass<*>.packageExtensions(packages: Set<String>): Sequence<Method> 
                 }.forEach { method ->
                     yield(method)
                 }
-            } catch (e: NoClassDefFoundError) {
-            }
+            } catch (_: NoClassDefFoundError) { }
         }
 }
 
