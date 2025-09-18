@@ -10,14 +10,14 @@ import klib.data.type.serialization.csv.CSVAnyEncoder
 import klib.data.type.serialization.json.JsonAnyEncoder
 import klib.data.type.serialization.properties.PropertiesAnyEncoder
 import klib.data.type.serialization.properties.PropertiesEncoder
-import klib.data.type.serialization.toml.TomlAnyEncoder
+//import klib.data.type.serialization.toml.TomlAnyEncoder
 import klib.data.type.serialization.xml.XmlAnyEncoder
 import klib.data.type.serialization.yaml.YamlAnyEncoder
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.json.JsonEncoder
-import net.peanuuutz.tomlkt.TomlEncoder
+//import net.peanuuutz.tomlkt.TomlEncoder
 import nl.adaptivity.xmlutil.serialization.XmlEncoderBase.XmlEncoder
 
 public abstract class AnyEncoder<T : Encoder>(public val encoder: T) {
@@ -31,7 +31,7 @@ public val ANY_ENCODERS: MutableList<Encoder.() -> AnyEncoder<out Encoder>?> = m
     { (this as? TreeEncoder)?.let(::TreeAnyEncoder) },
     { (this as? JsonEncoder)?.let(::JsonAnyEncoder) },
     { (this as? YamlOutput)?.let(::YamlAnyEncoder) },
-    { (this as? TomlEncoder)?.let(::TomlAnyEncoder) },
+//    { (this as? TomlEncoder)?.let(::TomlAnyEncoder) },
     { (this as? PropertiesEncoder)?.let(::PropertiesAnyEncoder) },
     { (this as? CSVEncoder)?.let(::CSVAnyEncoder) },
     { (this as? XmlEncoder)?.let(::XmlAnyEncoder) },

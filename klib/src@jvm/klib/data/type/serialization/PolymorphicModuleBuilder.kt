@@ -16,6 +16,7 @@ public inline fun <Base : Any, reified T : Base> PolymorphicModuleBuilder<Base>.
     serializer: (typeSerializers: List<KSerializer<*>>) -> KSerializer<*>
 ): Unit = subclass(subclass, serializer(subclass.typeParameters.map { NothingSerializer() }) as KSerializer<T>)
 
+@Suppress("UNCHECKED_CAST")
 public fun <T : Any> reflectionPolymorphicSubclasses(baseClass: KClass<T>): Map<KClass<T>, KSerializer<T>> =
     (if (baseClass.isSealed) baseClass.sealedSubclasses
     else REFLECTIONS.getSubTypesOf(baseClass.java).map(Class<out T>::kotlin))
@@ -25,9 +26,6 @@ public fun <T : Any> reflectionPolymorphicSubclasses(baseClass: KClass<T>): Map<
                 kClass as KClass<T> to serializer as KSerializer<T>
             }
         }.toMap()
-
-public fun <T : Any> PolymorphicModuleBuilder<T>.subclasses(value: Map<KClass<T>, KSerializer<T>>): Unit =
-    value.forEach(::subclass)
 
 public fun <T : Any> PolymorphicModuleBuilder<T>.reflectionSubclasses(baseClass: KClass<T>): Unit =
     subclasses(reflectionPolymorphicSubclasses(baseClass))

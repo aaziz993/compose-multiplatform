@@ -5,6 +5,7 @@ import kotlinx.serialization.json.JsonObject
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
+import kotlin.jvm.JvmName
 
 /**
  * DSL builder for a [YamlList]. To create an instance of builder, use [buildYamlList] build function.
@@ -13,7 +14,7 @@ public class YamlListBuilder @PublishedApi internal constructor(
     public val path: YamlPath,
     public val sequenceBlockIndent: Int,
     public val encodingIndentationSize: Int,
-) : ArrayList<YamlNode>() {
+) : MutableList<YamlNode> by ArrayList<YamlNode>() {
 
     /**
      * Adds the given boolean [value] to a resulting YAML array.
@@ -57,8 +58,8 @@ public class YamlListBuilder @PublishedApi internal constructor(
                 withListEntry(),
                 encodingIndentationSize,
                 sequenceBlockIndent,
-                builderAction
-            )
+                builderAction,
+            ),
         )
 
     /**
@@ -72,8 +73,8 @@ public class YamlListBuilder @PublishedApi internal constructor(
                 withListEntry(),
                 sequenceBlockIndent,
                 encodingIndentationSize,
-                builderAction
-            )
+                builderAction,
+            ),
         )
 
     /**

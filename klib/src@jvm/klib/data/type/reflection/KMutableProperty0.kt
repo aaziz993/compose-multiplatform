@@ -1,7 +1,8 @@
+@file:Suppress("UNCHECKED_CAST")
+
 package klib.data.type.reflection
 
 import kotlin.reflect.KMutableProperty0
-import org.gradle.api.file.FileCollection
 
 public infix fun <T> KMutableProperty0<T>.trySet(value: T?): Unit? = value?.let(::set)
 
@@ -44,11 +45,3 @@ public fun <K, V> KMutableProperty0<out MutableMap<K, V>?>.putAll(value: Map<K, 
 
 public infix fun <K, V> KMutableProperty0<out MutableMap<K, V>?>.tryPutAll(value: Map<K, V>?): Unit? =
     value?.let(::putAll)
-
-public operator fun KMutableProperty0<out FileCollection?>.plus(value: FileCollection) {
-    this as KMutableProperty0<FileCollection?>
-    set(get()?.plus(value) ?: value)
-}
-
-public infix fun KMutableProperty0<out FileCollection?>.tryPlus(value: FileCollection?): Unit? =
-    value?.let(::plus)

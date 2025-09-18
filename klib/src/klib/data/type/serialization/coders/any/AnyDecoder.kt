@@ -8,14 +8,14 @@ import klib.data.type.serialization.coders.tree.TreeAnyDecoder
 import klib.data.type.serialization.coders.tree.TreeDecoder
 import klib.data.type.serialization.csv.CSVAnyDecoder
 import klib.data.type.serialization.json.JsonAnyDecoder
-import klib.data.type.serialization.toml.TomlAnyDecoder
+//import klib.data.type.serialization.toml.TomlAnyDecoder
 import klib.data.type.serialization.xml.XmlAnyDecoder
 import klib.data.type.serialization.yaml.YamlAnyDecoder
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.json.JsonDecoder
-import net.peanuuutz.tomlkt.TomlDecoder
+//import net.peanuuutz.tomlkt.TomlDecoder
 import nl.adaptivity.xmlutil.serialization.XmlDecoderBase.XmlDecoder
 
 public abstract class AnyDecoder<T : Decoder>(public val decoder: T) {
@@ -29,7 +29,7 @@ public val ANY_DECODERS: MutableList<Decoder.() -> AnyDecoder<out Decoder>?> = m
     { (this as? TreeDecoder)?.let(::TreeAnyDecoder) },
     { (this as? JsonDecoder)?.let(::JsonAnyDecoder) },
     { (this as? YamlInput)?.let(::YamlAnyDecoder) },
-    { (this as? TomlDecoder)?.let(::TomlAnyDecoder) },
+//    { (this as? TomlDecoder)?.let(::TomlAnyDecoder) },
     { (this as? CSVDecoder)?.let(::CSVAnyDecoder) },
     { (this as? XmlDecoder)?.let(::XmlAnyDecoder) },
 )

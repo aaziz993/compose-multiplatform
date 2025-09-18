@@ -9,3 +9,8 @@ public inline fun <Base : Any, reified T : Base> PolymorphicModuleBuilder<Base>.
     subclass: KClass<T>,
     serializer: KSerializer<*>
 ): Unit = subclass(subclass, serializer as KSerializer<T>)
+
+public fun <T : Any> PolymorphicModuleBuilder<T>.subclasses(value: Map<KClass<T>, KSerializer<T>>): Unit =
+    value.forEach { (kClass, serializer) ->
+        subclass(kClass, serializer)
+    }

@@ -16,7 +16,6 @@ import kotlinx.serialization.descriptors.withContext
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.internal.AbstractPolymorphicSerializer
-import kotlinx.serialization.modules.PolymorphicModuleBuilder
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 

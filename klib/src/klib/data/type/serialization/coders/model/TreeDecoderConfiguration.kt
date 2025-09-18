@@ -1,7 +1,6 @@
 package klib.data.type.serialization.coders.model
 
 import klib.data.type.serialization.classDiscriminator
-import klib.data.type.serialization.typeParametersSerializers
 import klib.data.type.tuples.to
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor
@@ -23,8 +22,8 @@ public open class TreeDecoderConfiguration(
                 name to map::get
             }
         },
-    public var typeParameterSerializer: (KSerializer<*>, index: Int) -> KSerializer<*> = { serializer, index ->
-        serializer.typeParametersSerializers[0]
+    public var typeParameterSerializer: (KSerializer<*>, index: Int) -> KSerializer<*> = { _, _ ->
+        throw error("Type parameter serializer is not provided")
     },
     public var serializationContext: (SerialDescriptor, index: Int) -> Any? = { _, _ -> null },
     public var computeValue: (SerialDescriptor, index: Int, value: String) -> Any? = { _, _, _ -> null }
