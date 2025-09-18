@@ -3,6 +3,15 @@ config:
     - io.ktor.server.websocket.WebSockets
     - io.ktor.websocket.WebSocketDeflateExtension
     - io.ktor.serialization.kotlinx.KotlinxWebsocketSerializationConverter
+    - io.ktor.server.websocket.webSocket
+    - io.ktor.websocket.Frame
+    - io.ktor.websocket.readText
+    - io.ktor.websocket.send
+    - kotlinx.coroutines.channels.ClosedReceiveChannelException
+    - kotlinx.coroutines.channels.consumeEach
+    - kotlinx.coroutines.flow.MutableSharedFlow
+    - kotlinx.coroutines.flow.asSharedFlow
+    - kotlinx.coroutines.launch
 script:
   - module: |
       {
@@ -24,6 +33,26 @@ script:
                  * Prevent compressing small outgoing frames.
                  */
                 compressIfBiggerThan(bytes = 4 * 1024)
+            }
+          }
+        }
+
+        routing {
+          val messageResponseFlow = MutableSharedFlow<String>()
+          val sharedFlow = messageResponseFlow.asSharedFlow()
+          webSocket("/ws") {
+            send("You are connected to WebSocket!")
+
+            val job = launch { sharedFlow.collect(::send) }
+
+            runCatching {
+                incoming.consumeEach { frame ->
+                    if (frame is Frame.Text) messageResponseFlow.emit(frame.readText())
+                }
+            }.onFailure { exception ->
+                println("WebSocket exception: ${exception.localizedMessage}")
+            }.also {
+                job.cancel()
             }
           }
         }

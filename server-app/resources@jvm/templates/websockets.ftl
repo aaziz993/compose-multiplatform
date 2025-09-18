@@ -143,7 +143,7 @@
 
         socket = new WebSocket(url);
 
-        socket.onopen = () => log(`Connected to ${url}`, "info");
+        socket.onopen = () => log(`Connected to ${wsUrl}`, "info");
         socket.onmessage = (event) => log(`Received: ${event.data}`, "info");
         socket.onclose = () => log(`Disconnected`, "error");
         socket.onerror = (err) => log(`Error: ${err.message || err}`, "error");

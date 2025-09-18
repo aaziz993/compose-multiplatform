@@ -3,6 +3,9 @@ config:
     - io.ktor.server.freemarker.FreeMarker
     - freemarker.cache.ClassTemplateLoader
     - io.ktor.server.freemarker.FreeMarkerContent
+    - io.ktor.server.plugins.origin
+    - io.ktor.server.request.host
+    - io.ktor.server.request.port
 script:
   - module: |
       {
@@ -15,7 +18,21 @@ script:
 
         routing {
           get("/ws") {
-            call.respond(FreeMarkerContent("websocket.ftl", mapOf("wsUrl" to "wss://localhost:8080")))
+            // Determine WS URL dynamically
+            val protocol = if (call.request.origin.scheme == "https") "wss" else "ws"
+            val host = call.request.host()
+            val port = call.request.port()
+            val wsPath = "/ws"
+            val wsUrl = "$protocol://$host:$port$wsPath"
+
+            call.respond(
+              FreeMarkerContent(
+                "websockets.ftl",
+                mapOf(
+                  "wsUrl" to wsUrl
+                )
+              )
+            )
           }
         }
       }
