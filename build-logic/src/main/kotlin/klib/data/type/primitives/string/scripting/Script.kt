@@ -118,7 +118,7 @@ public abstract class Script {
                         attribute(Attribute.INTENSITY_BOLD)
                         attribute(Ansi16(33))
                     }
-                } $value ↻"
+                } $value ↑"
                 else "${
                     "File:".ansiSpan {
                         attribute(Attribute.INTENSITY_BOLD)
