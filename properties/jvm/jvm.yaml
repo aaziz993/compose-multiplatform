@@ -44,7 +44,6 @@ script:
                 implementation(libs.bundles("jna"))
                 implementation(libs["webrtc.java"])
                 implementation(libs.bundles("webcam.capture"))
-                implementation(libs["kotlinx.coroutines.swing"])
                 implementation(libs.bundles("jdbc"))
                 implementation(libs.bundles("r2dbc"))
                 implementation(libs.bundles("kotysa"))

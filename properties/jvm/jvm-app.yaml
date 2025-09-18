@@ -15,6 +15,7 @@ script:
         - named: |
             ("jvmMain") { sourceSet ->
               sourceSet.dependencies {
+                implementation(libs["kotlinx.coroutines.swing"])
                 implementation(libs.bundles("arrow.suspendapp"))
               }
             }
