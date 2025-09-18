@@ -1,2 +1,40 @@
-data-conversion:
-  enable: true
+config:
+  imports:
+    - io.ktor.server.plugins.dataconversion.DataConversion
+    - io.ktor.server.plugins.dataconversion.conversionService
+    - io.ktor.util.reflect.typeInfo
+    - java.text.SimpleDateFormat
+    - java.time.LocalDate
+    - java.time.format.DateTimeFormatterBuilder
+    - java.time.format.SignStyle
+    - java.time.temporal.ChronoField
+    - java.util.Locale
+script:
+  - module: |
+      {
+        install(DataConversion) {
+          convert<LocalDate> { // this: DelegatingConversionService
+            val formatter = DateTimeFormatterBuilder()
+              .appendValue(ChronoField.YEAR, 4, 4, SignStyle.NEVER)
+              .appendValue(ChronoField.MONTH_OF_YEAR, 2)
+              .appendValue(ChronoField.DAY_OF_MONTH, 2)
+              .toFormatter(Locale.ROOT)
+
+            decode { values -> // converter: (values: List<String>) -> Any?
+              LocalDate.from(formatter.parse(values.single()))
+            }
+
+            encode { value -> // converter: (value: Any?) -> List<String>
+              listOf(SimpleDateFormat.getInstance().format(value))
+            }
+          }
+        }
+
+        routing {
+          get("/date") {
+            val encodedDate = application.conversionService.toValues(call.parameters["date"])
+            val decodedDate = application.conversionService.fromValues(encodedDate, typeInfo<LocalDate>())
+            call.respondText("The date is $decodedDate")
+          }
+        }
+      }

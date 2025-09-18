@@ -81,6 +81,7 @@ script:
                 implementation(libs("ktor")["server.conditionalHeaders"])
                 implementation(libs("ktor")["server.compression"])
                 implementation(libs("ktor")["server.cachingHeaders"])
+                implementation(libs("ktor")["server.dataConversion"])
                 implementation(libs("ktor")["server.netty"])
                 implementation(libs("ktor")["server.config.yaml"])
                 implementation(libs["firebase.auth.provider"])

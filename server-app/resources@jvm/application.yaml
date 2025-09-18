@@ -14,7 +14,7 @@ imports:
   - application-cors.yaml
   - application-compression.yaml
 #  - application-partial-content.yaml
-#  - application-data-conversion.yaml
+  - application-data-conversion.yaml
 #  - application-validation.yaml
 #  - application-resources.yaml
 #  - application-status-pages.yaml
