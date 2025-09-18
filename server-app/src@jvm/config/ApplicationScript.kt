@@ -78,19 +78,16 @@ public class ApplicationScript(
             }
         }.also { properties ->
             log.info(
-                engineConfigEvaluationImplicitReceiver.toString()
-                    .uppercase()
-                    .ansiSpan {
-                        attribute(Attribute.INTENSITY_BOLD)
-                        attribute(Ansi16(36))
-                    },
+                "${System.lineSeparator()}${
+                    engineConfigEvaluationImplicitReceiver.toString()
+                        .uppercase()
+                        .ansiSpan {
+                            attribute(Attribute.INTENSITY_BOLD)
+                            attribute(Ansi16(36))
+                        }
+                }",
             )
-            log.info(
-                """
-            -
-            $properties
-            """.trimIndent(),
-            )
+            log.info("${System.lineSeparator()}$properties")
             applicationScript = properties
         }
     }
