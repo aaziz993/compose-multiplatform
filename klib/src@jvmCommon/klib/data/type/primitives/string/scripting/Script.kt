@@ -187,7 +187,7 @@ public abstract class Script {
                         ?.takeIf { property -> property.visibility == KVisibility.PUBLIC }
                         ?.let { property ->
                             return@deepRunOnPenultimate if (property is KMutableProperty<*>) " = $value"
-                            else implicitOperation(property.returnType.classifier as KClass<*>, value)
+                            else implicitOperation(property.returnType.classifierOrUpperBound()!!, value)
                         }
 
                     if (receiver.memberFunctions(setterName).any { setter ->
@@ -205,7 +205,7 @@ public abstract class Script {
                     ((receiver.memberFunction(getterName)
                         ?: receiver.declaredMemberExtensionFunction(getterName))?.takeIf { property ->
                         property.visibility == KVisibility.PUBLIC
-                    }?.returnType?.classifier as KClass<*>?
+                    }?.returnType?.classifierOrUpperBound()
                         ?: receiver.packageExtensions(getterName, packages).singleOrNull { property ->
                             Modifier.isPublic(property.modifiers)
                         }?.returnType?.kotlin)

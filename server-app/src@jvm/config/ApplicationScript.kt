@@ -49,9 +49,10 @@ public class ApplicationScript(
 
         private val log: Logger = LoggerFactory.getLogger(Script::class.java)
 
-        internal inline operator fun <reified T : Any> invoke(
+        internal inline operator fun <reified TConfiguration : Any> invoke(
             file: File,
-            evaluationImplicitReceiver: T
+            engineConfigEvaluationImplicitReceiver: TConfiguration,
+            serverConfigEvaluationImplicitReceiver: ServerConfig,
         ): ApplicationScript = Script<ApplicationScript>(
             file.path,
             cache = SqliteCache(
@@ -60,8 +61,8 @@ public class ApplicationScript(
                 String.serializer(),
             ),
         ) {
-            compilationImplicitReceivers = listOf(T::class)
-            evaluationImplicitReceivers = listOf(evaluationImplicitReceiver)
+            compilationImplicitReceivers = listOf(TConfiguration::class, serverConfigEvaluationImplicitReceiver::class)
+            evaluationImplicitReceivers = listOf(engineConfigEvaluationImplicitReceiver, serverConfigEvaluationImplicitReceiver)
 
             compilationBody = {
                 jvm {
@@ -72,7 +73,7 @@ public class ApplicationScript(
             }
         }.also { properties ->
             log.info(
-                evaluationImplicitReceiver.toString()
+                engineConfigEvaluationImplicitReceiver.toString()
                     .uppercase()
                     .ansiSpan {
                         attribute(Attribute.INTENSITY_BOLD)

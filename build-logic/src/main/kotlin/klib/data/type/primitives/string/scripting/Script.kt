@@ -27,6 +27,8 @@ import klib.data.type.collections.toTreeString
 import klib.data.type.primitives.string.addSuffix
 import klib.data.type.primitives.string.addSuffixIfNotEmpty
 import klib.data.type.primitives.string.highlight
+import klib.data.type.reflection.classifierOrUpperBound
+import klib.data.type.reflection.classifierOrUpperBound
 import klib.data.type.reflection.declaredMemberExtensionFunction
 import klib.data.type.reflection.declaredMemberExtensionFunctions
 import klib.data.type.reflection.declaredMemberExtensionProperty
@@ -45,6 +47,8 @@ import klib.data.type.serialization.serializers.any.SerializableAny
 import klib.data.type.serialization.yaml.decodeAnyFromString
 import kotlin.reflect.KClass
 import kotlin.reflect.KMutableProperty
+import kotlin.reflect.KType
+import kotlin.reflect.KTypeParameter
 import kotlin.reflect.KVisibility
 import kotlin.reflect.full.isSubclassOf
 import kotlin.script.experimental.api.ResultValue
@@ -155,7 +159,7 @@ public abstract class Script {
                             ?: kClass.memberFunction(getterName)
                             ?: kClass.declaredMemberExtensionFunction(getterName))
                             ?.takeIf { property -> property.visibility == KVisibility.PUBLIC }
-                            ?.returnType?.classifier as KClass<*>?
+                            ?.returnType?.classifierOrUpperBound()
                             ?: kClass.packageExtensions(getterName, packages).singleOrNull { method ->
                                 Modifier.isPublic(method.modifiers)
                             }?.returnType?.kotlin
@@ -184,7 +188,7 @@ public abstract class Script {
                         ?.takeIf { property -> property.visibility == KVisibility.PUBLIC }
                         ?.let { property ->
                             return@deepRunOnPenultimate if (property is KMutableProperty<*>) " = $value"
-                            else implicitOperation(property.returnType.classifier as KClass<*>, value)
+                            else implicitOperation(property.returnType.classifierOrUpperBound()!!, value)
                         }
 
                     if (receiver.memberFunctions(setterName).any { setter ->
@@ -202,7 +206,7 @@ public abstract class Script {
                     ((receiver.memberFunction(getterName)
                         ?: receiver.declaredMemberExtensionFunction(getterName))?.takeIf { property ->
                         property.visibility == KVisibility.PUBLIC
-                    }?.returnType?.classifier as KClass<*>?
+                    }?.returnType?.classifierOrUpperBound()
                         ?: receiver.packageExtensions(getterName, packages).singleOrNull { property ->
                             Modifier.isPublic(property.modifiers)
                         }?.returnType?.kotlin)

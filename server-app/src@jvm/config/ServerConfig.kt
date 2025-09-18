@@ -2,18 +2,14 @@
 
 package config
 
-import io.ktor.server.application.Application
+import io.ktor.server.application.*
 import io.ktor.server.application.ServerConfig
-import io.ktor.server.engine.ApplicationEngine;
-import io.ktor.server.engine.ApplicationEnvironmentBuilder
-import io.ktor.util.PlatformUtils
+import io.ktor.server.engine.*
+import io.ktor.util.*
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
-import io.ktor.server.engine.WORKING_DIRECTORY_PATH
 
-public class ServerConfig<TConfiguration : ApplicationEngine.Configuration>(
-    public val engine: TConfiguration
-) {
+public class ServerConfig {
 
     public val environment: ApplicationEnvironmentBuilder = ApplicationEnvironmentBuilder()
 

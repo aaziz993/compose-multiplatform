@@ -19,13 +19,16 @@ public fun main(): Unit = SuspendApp {
                 ?: error("application.yaml not found in resources"),
         )
 
-        val serverConfig = ServerConfig(NettyApplicationEngine.Configuration()).apply {
-            ApplicationScript(applicationFile, this)()
+        val engineConfig = NettyApplicationEngine.Configuration()
+
+        val serverConfig = ServerConfig().apply {
             module(Application::module)
         }
 
+        ApplicationScript(applicationFile, engineConfig, serverConfig)()
+
         server(
-            Netty(serverConfig.engine),
+            Netty(engineConfig),
             rootConfig = serverConfig.config(),
         )
 

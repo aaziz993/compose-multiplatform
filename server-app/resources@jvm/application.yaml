@@ -67,16 +67,15 @@ ktor:
 config:
   imports:
     - io.ktor.server.engine.connector
-    - config
+    - config.ssl
 script:
-  - engine:
-      connector: |
+  - connector: |
         {
           port = 8080
         }
-      ssl: |
-        (
-          keyStorePassword = "KtorServer2025",
-          privateKeyPassword = "KtorServer2025",
-          port = 8443
-        )
+  - ssl: |
+      (
+        keyStorePassword = "KtorServer2025",
+        privateKeyPassword = "KtorServer2025",
+        port = 8443
+      )
