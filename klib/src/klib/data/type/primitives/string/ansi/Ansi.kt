@@ -236,7 +236,7 @@ public open class Ansi(private val builder: StringBuilder = StringBuilder(80)) :
 
     public fun attribute(value: CharArray, offset: Int, len: Int): Ansi {
         flushAttributes()
-        builder.append(value, offset, len)
+        builder.appendRange(value, offset, len)
         return this
     }
 

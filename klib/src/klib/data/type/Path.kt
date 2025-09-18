@@ -1,13 +1,11 @@
 package klib.data.type
 
-import java.nio.file.InvalidPathException
-import java.nio.file.Path
-import java.nio.file.Paths
+import kotlinx.io.files.Path
 
-public fun pathOrNull(first: String, vararg more: String): Path? = try {
-    Paths.get(first, *more)
-} catch (_: InvalidPathException) {
-    null
-} catch (_: NullPointerException) {
-    null
-}
+public fun pathOrNull(base: String, vararg parts: String): Path? =
+    try {
+        Path(base, *parts)
+    }
+    catch (_: IllegalArgumentException) {
+        null
+    }

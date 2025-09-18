@@ -79,7 +79,8 @@ public fun String.unescape(escapeChar: Char = '"'): String = buildString {
                     index += 2
                 }
             }
-        } else {
+        }
+        else {
             append(char);
             index++
         }
@@ -93,12 +94,14 @@ private fun Appendable.appendUnicodeEscape(s: String, i: Int, n: Int, width: Int
         if (cp != null && (width == 4 || cp in 0..0x10FFFF)) {
             if (width == 4) append(cp.toChar()) else appendCodePoint(cp)
             i + 2 + width
-        } else {
+        }
+        else {
             append('\\');
             append(label);
             i + 2
         }
-    } else {
+    }
+    else {
         append('\\');
         append(label);
         i + 2
@@ -151,9 +154,9 @@ public fun randomString(length: Int, charPool: List<Char> = ('a'..'z') + ('A'..'
 
 private val EXTENSION_TEXT_REGEX: Map<String, Regex> =
     mapOf(
-        "json" to Regex("""^\s*(\{.*\}|\[.*\])\s*$""", RegexOption.DOT_MATCHES_ALL),
+        "json" to Regex("""^\s*(\{${Regex.ANY}*\}|\[${Regex.ANY}*\])\s*$"""),
         "xml" to """^\s*<\?xml[\s\S]*""".toRegex(),
-        "html" to Regex("""^\s*<(!DOCTYPE +)?html.*""", RegexOption.DOT_MATCHES_ALL),
+        "html" to Regex("""^\s*<(!DOCTYPE +)?html${Regex.ANY}*"""),
         "yaml" to Regex("""^( *((#|[^{\s]*:|-).*)?${Regex.NEW_LINE}?)+$"""),
         "properties" to Regex("""^( *((#|[^{\s\[].*?=).*)?${Regex.NEW_LINE}?)+$"""),
         "toml" to """^( *(([#\[\]"{}]|.*=).*)?${Regex.NEW_LINE}?)+$""".toRegex(),
@@ -378,13 +381,15 @@ public fun matcher(
         regexMatch -> {
             val regexMatcher: (String) -> Regex = if (ignoreCase) {
                 { pattern -> Regex(pattern, RegexOption.IGNORE_CASE) }
-            } else {
+            }
+            else {
                 { pattern -> Regex(pattern) }
             }
 
             if (matchAll) {
                 { str, pattern -> regexMatcher(pattern).matches(str) }
-            } else {
+            }
+            else {
                 { str, pattern -> regexMatcher(pattern).containsMatchIn(str) }
             }
         }

@@ -50,7 +50,7 @@ internal class MutableBiMapImpl<K, V> : MutableBiMap<K, V> {
                 forward[value] = key
             }
 
-            override fun putAll(from: Map<out V, K>) = from.forEach(::put)
+            override fun putAll(from: Map<out V, K>) = from.forEach { (key, value) -> put(key, value) }
             override fun remove(key: V): K? = backward[key]?.also { value ->
                 forward.remove(value)
                 backward.remove(key)
@@ -69,7 +69,7 @@ internal class MutableBiMapImpl<K, V> : MutableBiMap<K, V> {
         backward[value] = key
     }
 
-    override fun putAll(from: Map<out K, V>) = from.forEach(::put)
+    override fun putAll(from: Map<out K, V>) = from.forEach { (key, value) -> put(key, value) }
 
     override fun remove(key: K): V? = forward[key]?.also { value ->
         backward.remove(value)
