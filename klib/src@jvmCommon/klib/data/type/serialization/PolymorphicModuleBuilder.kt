@@ -1,3 +1,4 @@
+@file:JvmName("PolymorphicModuleBuilderJvmCommon")
 package klib.data.type.serialization
 
 import klib.data.type.reflection.REFLECTIONS

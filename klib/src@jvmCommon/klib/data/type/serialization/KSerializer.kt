@@ -1,3 +1,4 @@
+@file:JvmName("KSerializerJvmCommon")
 package klib.data.type.serialization
 
 import kotlinx.serialization.KSerializer

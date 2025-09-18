@@ -1,3 +1,4 @@
+@file:JvmName("KClassJvmCommon")
 package klib.data.type.reflection
 
 import java.lang.reflect.Method
