@@ -12,9 +12,10 @@ script:
             "templates"
           )
         }
+
         routing {
           get("/ws") {
-            call.respond(FreeMarkerContent("websocket.ftl", mapOf()))
+            call.respond(FreeMarkerContent("websocket.ftl", mapOf("wsUrl" to "wss://localhost:8080")))
           }
         }
       }
