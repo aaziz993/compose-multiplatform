@@ -48,6 +48,7 @@ script:
         }
   - ssl: |
       (
+        keyStoreFile = File("resources@jvm/security/ssl/keystore.p12"),
         keyStorePassword = "KtorServer2025",
         privateKeyPassword = "KtorServer2025",
         port = 8443

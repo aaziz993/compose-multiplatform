@@ -1,2 +1,5 @@
-application-monitoring:
-  enable: true
+script:
+  - module: |
+      {
+         install(ApplicationMonitoringPlugin)
+      }

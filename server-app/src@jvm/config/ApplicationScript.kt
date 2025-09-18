@@ -22,6 +22,7 @@ public val IMPORTS: Array<String> = arrayOf(
     "io.ktor.server.netty.*",
     "io.ktor.server.response.*",
     "io.ktor.server.routing.*",
+    "plugins.*",
     "klib.data.type.*",
     "klib.data.type.primitives.*",
     "klib.data.type.primitives.string.*",
