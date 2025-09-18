@@ -1,6 +1,7 @@
 config:
   imports:
     - io.ktor.server.websocket.WebSockets
+    - io.ktor.websocket.WebSocketDeflateExtension
     - io.ktor.serialization.kotlinx.KotlinxWebsocketSerializationConverter
 script:
   - module: |
@@ -11,6 +12,20 @@ script:
           timeoutMillis = 15000
           maxFrameSize = Long.MAX_VALUE
           masking = false
+
+          extensions {
+            install(WebSocketDeflateExtension) {
+                /**
+                 * Compression level to use for [java.util.zip.Deflater].
+                 */
+                compressionLevel = Deflater.DEFAULT_COMPRESSION
+
+                /**
+                 * Prevent compressing small outgoing frames.
+                 */
+                compressIfBiggerThan(bytes = 4 * 1024)
+            }
+          }
         }
       }
 

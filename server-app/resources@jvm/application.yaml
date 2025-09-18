@@ -33,6 +33,7 @@ config:
   imports:
     - java.util.UUID
     - java.io.File
+    - java.util.zip.Deflater
     - kotlinx.serialization.json.Json
     - io.ktor.server.engine.connector
     - io.ktor.http.HttpStatusCode
