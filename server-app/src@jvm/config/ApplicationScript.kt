@@ -85,9 +85,8 @@ public class ApplicationScript(
                             attribute(Attribute.INTENSITY_BOLD)
                             attribute(Ansi16(36))
                         }
-                }",
+                }${System.lineSeparator()}$properties",
             )
-            log.info("${System.lineSeparator()}$properties")
             applicationScript = properties
         }
     }
