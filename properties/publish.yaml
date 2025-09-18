@@ -2,6 +2,7 @@ config:
   imports:
     - org.gradle.api.publish.maven.MavenPublication
     - gradle.plugins.signing.*
+    - com.vanniktech.maven.publish.SonatypeHost
 script:
   - plugins:
       - id: ("maven-publish")
