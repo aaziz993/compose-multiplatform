@@ -147,10 +147,7 @@ dependencies {
 
     // Kotlin
     // scripting
-    implementation(libs.kotlin.scripting.common)
-    implementation(libs.kotlin.scripting.jvm)
-    implementation(libs.kotlin.scripting.jvm.host)
-    implementation(kotlin("script-runtime"))
+    implementation(libs.bundles.kotlin.scripting)
     // api that you can use to develop lightweight compiler plugins. KSP provides a simplified compiler plugin API that leverages the power of Kotlin while keeping the learning curve at a minimum. Compared to KAPT, annotation processors that use KSP can run up to 2x faster.
     implementation(libs.plugins.ksp.toDep())
     // generates an additional zero-argument constructor for classes with a specific annotation.

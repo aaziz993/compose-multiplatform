@@ -492,6 +492,7 @@ junit = { module = "junit:junit", version.ref = "junit" }
 kotlin-scripting-common = { module = "org.jetbrains.kotlin:kotlin-scripting-common" }
 kotlin-scripting-jvm = { module = "org.jetbrains.kotlin:kotlin-scripting-jvm" }
 kotlin-scripting-jvm-host = { module = "org.jetbrains.kotlin:kotlin-scripting-jvm-host" }
+kotlin-script-runtime = { module = "org.jetbrains.kotlin:script-runtime" }
 # api that you can use to develop lightweight compiler plugins. KSP provides a simplified compiler plugin API that leverages the power of Kotlin while keeping the learning curve at a minimum. Compared to KAPT, annotation processors that use KSP can run up to 2x faster.
 symbol-processing-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
 # logging library targeting Android, iOS, JVM, WasmJS and JS.
@@ -955,6 +956,13 @@ webcam-capture = [
 ]
 
 ##Kotlin
+# kotlin scripting
+kotlin-scripting = [
+    "kotlin-scripting-common",
+    "kotlin-scripting-jvm",
+    "kotlin-scripting-jvm-host",
+    "kotlin-script-runtime",
+]
 # math
 kmath = [
     "kmath-core",
