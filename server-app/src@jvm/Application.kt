@@ -4,9 +4,11 @@ import arrow.fx.coroutines.resourceScope
 import config.ApplicationScript
 import config.ServerConfig
 import engine.Netty
+
 import io.ktor.server.application.*
 import io.ktor.server.http.content.*
 import io.ktor.server.netty.*
+import io.ktor.server.plugins.cachingheaders.CachingHeaders
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import java.io.File
@@ -38,6 +40,7 @@ public fun main(): Unit = SuspendApp {
 
 @Suppress("unused")
 public fun Application.module() {
+
 }
 
 public fun Application.ping(): Routing = routing {

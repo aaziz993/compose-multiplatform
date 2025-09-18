@@ -1,0 +1,8 @@
+config:
+  imports:
+    - io.ktor.server.plugins.autohead.AutoHeadResponse
+script:
+  - module: |
+      {
+         install(AutoHeadResponse)
+      }

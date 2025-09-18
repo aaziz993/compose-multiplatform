@@ -8,7 +8,7 @@ imports:
 #  - application-routing.yaml
 #  - application-websockets.yaml
 #  - application-graphql.yaml
-#  - application-call-logging.yaml
+  - application-call-logging.yaml
   - application-call-id.yaml
 #  - application-rate-limit.yaml
 #  - application-cors.yaml
@@ -19,12 +19,12 @@ imports:
 #  - application-resources.yaml
 #  - application-status-pages.yaml
 #  - application-default-headers.yaml
-#  - application-caching-headers.yaml
+  - application-caching-headers.yaml
 #  - application-conditional-headers.yaml
 #  - application-forwarded-headers.yaml
 #  - application-x-forwarded-headers.yaml
 #  - application-hsts.yaml
-#  - application-auto-head-response.yaml
+  - application-auto-head-response.yaml
 #  - application-x-http-method-override.yaml
 #  - application-freemarker.yaml
 #  - application-swagger.yaml
