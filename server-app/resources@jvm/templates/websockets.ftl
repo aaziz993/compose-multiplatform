@@ -20,12 +20,12 @@
             overflow-x: hidden;
             animation: fadeInBody 1s ease-out;
         }
-
+    
         @keyframes fadeInBody {
             0% {opacity: 0; transform: translateY(-20px);}
             100% {opacity: 1; transform: translateY(0);}
         }
-
+    
         /* --- Header --- */
         h1 {
             font-size: 2.5rem;
@@ -33,12 +33,12 @@
             text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
             animation: slideInHeader 1s ease-out;
         }
-
+    
         @keyframes slideInHeader {
             0% {opacity:0; transform: translateX(-100px);}
             100% {opacity:1; transform: translateX(0);}
         }
-
+    
         /* --- Log Box --- */
         #log {
             width: 90%;
@@ -54,7 +54,7 @@
             backdrop-filter: blur(8px);
             transition: transform 0.3s;
         }
-
+    
         /* --- Inputs & Buttons --- */
         input, button {
             padding: 0.5rem 1rem;
@@ -63,26 +63,34 @@
             border: none;
             font-size: 1rem;
             outline: none;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
         }
-
+    
         input {
             width: 250px;
             max-width: 80vw;
         }
-
+    
         button {
-            background: linear-gradient(45deg, #ff7eb3, #ff758c);
-            color: #fff;
             cursor: pointer;
+            color: #fff;
+            background: linear-gradient(45deg, #ff7eb3, #ff758c);
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
-
-        button:hover {
+    
+        button:not(:disabled):hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 15px rgba(0,0,0,0.4);
         }
-
+    
+        button:disabled {
+            cursor: not-allowed;
+            background: linear-gradient(45deg, #d8a0b8, #d88f99);
+            opacity: 0.7;
+            box-shadow: none;
+            transform: none;
+        }
+    
         .controls {
             display: flex;
             flex-wrap: wrap;
@@ -90,13 +98,13 @@
             margin-bottom: 1rem;
             gap: 0.5rem;
         }
-
+    
         /* --- Messages Animation --- */
         p {
             margin: 0.25rem 0;
             animation: fadeInMsg 0.3s ease-out;
         }
-
+    
         @keyframes fadeInMsg {
             0% {opacity: 0; transform: translateX(-10px);}
             100% {opacity: 1; transform: translateX(0);}
@@ -132,7 +140,7 @@
     const connectBtn = document.getElementById("connectBtn");
     const disconnectBtn = document.getElementById("disconnectBtn");
     const wsUrlInput = document.getElementById("wsUrl");
-
+    
     function log(message, type = "info") {
         const p = document.createElement("p");
         p.textContent = message;
@@ -141,32 +149,37 @@
         logDiv.appendChild(p);
         logDiv.scrollTop = logDiv.scrollHeight;
     }
-
-    document.getElementById("connectBtn").onclick = () => {
-        const url = document.getElementById("wsUrl").value;
+    
+    connectBtn.onclick = () => {
+        const url = wsUrlInput.value;
         if (!url) return alert("Enter WebSocket URL");
-
+    
+        // Disable connect, enable disconnect
         connectBtn.disabled = true;
         wsUrlInput.disabled = true;
         disconnectBtn.disabled = false;
-
+    
         socket = new WebSocket(url);
+    
         socket.onopen = () => log(`Connected to ${url}`, "info");
         socket.onmessage = (event) => log(`Received: ${event.data}`, "info");
-        socket.onclose = () => log(`Disconnected`, "error");
+        socket.onclose = () => {
+            log(`Disconnected`, "error");
+            // Enable connect button on close
+            connectBtn.disabled = false;
+            wsUrlInput.disabled = false;
+            disconnectBtn.disabled = true;
+        };
         socket.onerror = (err) => log(`Error: ${err.message || err}`, "error");
     };
-
-    document.getElementById("disconnectBtn").onclick = () => {
+    
+    disconnectBtn.onclick = () => {
         if (socket) {
             socket.close();
             socket = null;
-            wsUrlInput.disabled = true;
-            disconnectBtn.disabled = false;
-            connectBtn.disabled = true;
         }
     };
-
+    
     document.getElementById("sendBtn").onclick = () => {
         const message = document.getElementById("messageInput").value;
         if (socket && socket.readyState === WebSocket.OPEN) {
@@ -176,6 +189,7 @@
             alert("WebSocket is not connected");
         }
     };
+    
     document.getElementById("cleanBtn").onclick = () => {
         logDiv.innerHTML = "";
     };
