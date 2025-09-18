@@ -1,11 +1,10 @@
-package gradle.api.cache
+package klib.data.cache
 
-import klib.data.cache.Cache
-import kotlinx.serialization.KSerializer
-import kotlinx.serialization.json.Json
 import java.io.File
 import java.sql.Connection
 import java.sql.DriverManager
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.json.Json
 
 public abstract class JdbcCache<K, V>(
     dbFile: File,

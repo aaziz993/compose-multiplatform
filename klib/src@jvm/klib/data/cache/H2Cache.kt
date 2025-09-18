@@ -1,4 +1,4 @@
-package gradle.api.cache
+package klib.data.cache
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json

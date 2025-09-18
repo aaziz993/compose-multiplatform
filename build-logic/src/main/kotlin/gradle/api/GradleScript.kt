@@ -1,7 +1,6 @@
 package gradle.api
 
 import com.github.ajalt.colormath.model.Ansi16
-import gradle.api.cache.SqliteCache
 import klib.data.type.primitives.string.scripting.Script
 import kotlinx.serialization.builtins.serializer
 import org.gradle.api.file.ConfigurableFileCollection
@@ -13,6 +12,7 @@ import org.gradle.api.provider.HasMultipleValues
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import java.io.File
+import klib.data.cache.SqliteCache
 import klib.data.type.ansi.Attribute
 import klib.data.type.ansi.ansiSpan
 import kotlin.reflect.KClass
