@@ -1,6 +1,9 @@
 import arrow.continuations.SuspendApp
 import arrow.continuations.ktor.server
 import arrow.fx.coroutines.resourceScope
+import config.ApplicationScript
+import config.ServerConfig
+import engine.Netty
 import io.ktor.server.application.*
 import io.ktor.server.http.content.*
 import io.ktor.server.netty.*
@@ -23,7 +26,7 @@ public fun main(): Unit = SuspendApp {
 
         server(
             Netty(serverConfig.engine),
-            rootConfig = serverConfig.toServerConfig(),
+            rootConfig = serverConfig.config(),
         )
 
         awaitCancellation()

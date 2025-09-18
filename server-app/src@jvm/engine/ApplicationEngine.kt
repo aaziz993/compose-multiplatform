@@ -1,3 +1,5 @@
+package engine
+
 import io.ktor.network.tls.certificates.*
 import io.ktor.network.tls.extensions.*
 import io.ktor.server.engine.*
@@ -8,7 +10,7 @@ import java.security.KeyStore
 import javax.security.auth.x500.X500Principal
 
 public fun ApplicationEngine.Configuration.ssl(
-    keyStoreFile: File = File("resources/security/ssl/keystore.p12"),
+    keyStoreFile: File = File("resources/security/engine.ssl/keystore.p12"),
     keyStorePassword: String,
     keyAlias: String = "server",
     hash: String? = null,

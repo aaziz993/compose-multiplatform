@@ -1,5 +1,7 @@
 @file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
 
+package config
+
 import io.ktor.server.application.Application
 import io.ktor.server.application.ServerConfig
 import io.ktor.server.engine.ApplicationEngine;
@@ -54,6 +56,6 @@ public class ServerConfig<TConfiguration : ApplicationEngine.Configuration>(
         modules.add(body)
     }
 
-    public fun toServerConfig(): ServerConfig =
+    public fun config(): ServerConfig =
         ServerConfig(environment.build(), modules.toList(), watchPaths, rootPath, developmentMode, parentCoroutineContext)
 }

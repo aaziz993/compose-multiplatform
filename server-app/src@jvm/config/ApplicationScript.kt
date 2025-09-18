@@ -1,3 +1,5 @@
+package config
+
 import com.github.ajalt.colormath.model.Ansi16
 import java.io.File
 import klib.data.cache.SqliteCache
