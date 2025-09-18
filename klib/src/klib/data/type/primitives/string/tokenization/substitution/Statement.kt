@@ -1,7 +1,5 @@
 package klib.data.type.primitives.string.tokenization.substitution
 
-import klib.data.type.reflection.invoke
-
 public sealed class Statement {
     public open operator fun invoke(machine: MachineState): MachineState = machine
 }
