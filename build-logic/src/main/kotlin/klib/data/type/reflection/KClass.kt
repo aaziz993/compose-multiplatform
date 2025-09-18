@@ -404,8 +404,7 @@ public fun KClass<*>.packageExtensions(packages: Set<String>): Sequence<Method> 
                 }.forEach { method ->
                     yield(method)
                 }
-            } catch (e: NoClassDefFoundError) {
-            }
+            } catch (_: NoClassDefFoundError) { }
         }
 }
 
