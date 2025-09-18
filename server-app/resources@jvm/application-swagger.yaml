@@ -5,6 +5,6 @@ script:
   - module: |
       {
         routing {
-          swaggerUI(path = "swagger", swaggerFile = "resources@jvm/documentation.yaml")
+          swaggerUI(path = "swagger", swaggerFile = "resources@jvm/openapi/documentation.yaml")
         }
       }

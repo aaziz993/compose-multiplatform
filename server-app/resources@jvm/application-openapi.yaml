@@ -6,7 +6,7 @@ script:
   - module: |
       {
         routing {
-          openAPI(path="openapi", swaggerFile = "resources@jvm/documentation.yaml"){
+          openAPI(path="openapi", swaggerFile = "resources@jvm/openapi/documentation.yaml"){
             codegen = StaticHtmlCodegen()
           }
         }
