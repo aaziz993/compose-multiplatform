@@ -11,7 +11,7 @@ imports:
   - application-call-logging.yaml
   - application-call-id.yaml
 #  - application-rate-limit.yaml
-#  - application-cors.yaml
+  - application-cors.yaml
   - application-compression.yaml
 #  - application-partial-content.yaml
 #  - application-data-conversion.yaml
@@ -20,7 +20,7 @@ imports:
 #  - application-status-pages.yaml
 #  - application-default-headers.yaml
   - application-caching-headers.yaml
-#  - application-conditional-headers.yaml
+  - application-conditional-headers.yaml
 #  - application-forwarded-headers.yaml
 #  - application-x-forwarded-headers.yaml
 #  - application-hsts.yaml
@@ -50,6 +50,7 @@ script:
         keyStoreFile = File("resources@jvm/security/ssl/keystore.p12"),
         keyStorePassword = "KtorServer2025",
         privateKeyPassword = "KtorServer2025",
+        domains = listOf("localhost", "127.0.0.1", "0.0.0.0"),
         port = 8443
       )
   # Watch for changes in this directory and automatically reload the application if any file changes in development mode.

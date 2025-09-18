@@ -1,3 +1,23 @@
-conditional-headers:
-  enable: true
-  version-headers-path: src/main/kotlin/ai/tech/Application.kt
+config:
+  imports:
+    - io.ktor.server.plugins.conditionalheaders.ConditionalHeaders
+    - java.util.Date
+    - io.ktor.http.ContentType
+    - io.ktor.http.content.EntityTagVersion
+    - io.ktor.http.content.LastModifiedVersion
+script:
+  - module: |
+      {
+        install(ConditionalHeaders) {
+          val file = File("src@jvm/Application.kt")
+          version { call, outgoingContent ->
+            when (outgoingContent.contentType?.withoutParameters()) {
+              ContentType.Text.CSS -> listOf(
+                  EntityTagVersion(file.lastModified().hashCode().toString()),
+                  LastModifiedVersion(Date(file.lastModified()))
+              )
+              else -> emptyList()
+            }
+          }
+        }
+      }

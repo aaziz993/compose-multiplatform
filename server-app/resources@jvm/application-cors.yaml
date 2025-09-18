@@ -1,17 +1,28 @@
-cors:
-  enable: true
-  hosts:
-    - enable: true
-      host: *
-      schemes:
-        - http
-        - https
-  headers:
-    - Content-Type
-    - Authorization
-  methods:
-    - GET
-    - POST
-    - PUT
-    - PATCH
-    - DELETE
+config:
+  imports:
+    - io.ktor.server.plugins.cors.routing.CORS
+    - io.ktor.http.HttpMethod
+script:
+  - module: |
+      {
+        install(CORS) {
+          // Hosts
+          anyHost() // corresponds to host = "*"
+          // If you want to limit schemes
+          allowHost("localhost", schemes = listOf("http", "https")) // example for real hosts
+
+          // Allowed headers
+          allowHeaders { header ->
+              header in listOf("Content-Type", "Authorization")
+          }
+
+          // Allowed methods
+          allowMethod(HttpMethod.Get)
+          allowMethod(HttpMethod.Post)
+          allowMethod(HttpMethod.Put)
+          allowMethod(HttpMethod.Patch)
+          allowMethod(HttpMethod.Delete)
+
+          allowCredentials = true
+        }
+      }
