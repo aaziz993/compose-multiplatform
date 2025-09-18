@@ -37,6 +37,7 @@ config:
     - org.slf4j.event.Level
     - kotlinx.serialization.json.Json
     - io.ktor.server.engine.connector
+    - io.ktor.http.HttpHeaders
     - io.ktor.http.HttpStatusCode
     - io.ktor.http.HttpHeaders.ContentEncoding
     - config.ssl
