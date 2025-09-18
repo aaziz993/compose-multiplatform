@@ -38,6 +38,7 @@ public val Any.size: Int
         else -> throw IllegalArgumentException("Expected a List or Map, but got $this")
     }
 
+@OptIn(ExperimentalContracts::class)
 public inline fun <T : Any, K, V> T.getOrElse(key: K, defaultValue: () -> V): V {
     contract {
         callsInPlace(defaultValue, InvocationKind.AT_MOST_ONCE)
@@ -96,15 +97,15 @@ public fun Collection<Int>.isConsecutive(): Boolean = zipWithNext().all { (a, b)
 @Suppress("UNCHECKED_CAST")
 public fun <T : Any> T.map(
     destination: T = toNewMutableCollection() as T,
-    sourceIterator: Any.() -> Iterator<Map.Entry<Any?, Any?>> = Any::iterator,
+    sourceIteratorOrNull: Any.() -> Iterator<Map.Entry<Any?, Any?>>? = Any::iteratorOrNull,
     sourceTransform: Any.(key: Any?, value: Any?) -> Pair<Any?, Any?>? = { key, value -> key to value },
     destinationSetter: T.(key: Any?, value: Any?) -> Unit = { key, value -> put(key, value) },
 ): T {
-    sourceIterator().forEach { (key, value) ->
+    sourceIteratorOrNull()?.forEach { (key, value) ->
         val (key, value) = sourceTransform(key, value) ?: return@forEach
 
         destination.destinationSetter(key, value)
-    }
+    } ?: return this
 
     return destination
 }
@@ -112,13 +113,13 @@ public fun <T : Any> T.map(
 @Suppress("UNCHECKED_CAST")
 public fun <T : Any> T.mapKeys(
     destination: T = toNewMutableCollection() as T,
-    sourceIterator: Any.() -> Iterator<Map.Entry<Any?, Any?>> = Any::iterator,
+    sourceIteratorOrNull: Any.() -> Iterator<Map.Entry<Any?, Any?>>? = Any::iteratorOrNull,
     sourceFilter: Any.(key: Any?, value: Any?) -> Boolean = { _, _ -> true },
     sourceTransform: Any.(key: Any?, value: Any?) -> Any?,
     destinationSetter: T.(key: Any?, value: Any?) -> Unit = { key, value -> put(key, value) },
 ): T = map(
     destination,
-    sourceIterator,
+    sourceIteratorOrNull,
     { key, value ->
         if (sourceFilter(key, value)) sourceTransform(key, value) to value else null
     },
@@ -128,13 +129,13 @@ public fun <T : Any> T.mapKeys(
 @Suppress("UNCHECKED_CAST")
 public fun <T : Any> T.mapValues(
     destination: T = toNewMutableCollection() as T,
-    sourceIterator: Any.() -> Iterator<Map.Entry<Any?, Any?>> = Any::iterator,
+    sourceIteratorOrNull: Any.() -> Iterator<Map.Entry<Any?, Any?>>? = Any::iteratorOrNull,
     sourceFilter: Any.(key: Any?, value: Any?) -> Boolean = { _, _ -> true },
     sourceTransform: Any.(key: Any?, value: Any?) -> Any?,
     destinationSetter: T.(key: Any?, value: Any?) -> Unit = { key, value -> put(key, value) },
 ): T = map(
     destination,
-    sourceIterator,
+    sourceIteratorOrNull,
     { key, value ->
         if (sourceFilter(key, value)) key to sourceTransform(key, value) else null
     },
@@ -144,11 +145,11 @@ public fun <T : Any> T.mapValues(
 @Suppress("UNCHECKED_CAST")
 public fun <T : Any> T.plus(
     vararg others: T,
-    sourceIterator: Any.() -> Iterator<Map.Entry<Any?, Any?>> = Any::iterator,
+    sourceIteratorOrNull: Any.() -> Iterator<Map.Entry<Any?, Any?>>? = Any::iteratorOrNull,
     sourceTransform: Any.(key: Any?, value: Any?) -> Pair<Any?, Any?>? = { key, value -> key to value },
     destinationSetter: T.(key: Any?, value: Any?) -> Unit = { key, value -> put(key, value) },
 ): T = listOf(this, *others).fold(toNewMutableCollection() as T) { acc, value ->
-    value.map(acc, sourceIterator, sourceTransform, destinationSetter)
+    value.map(acc, sourceIteratorOrNull, sourceTransform, destinationSetter)
 }
 
 @Suppress("UNCHECKED_CAST")
@@ -363,7 +364,7 @@ public fun <T : Any> T.deepMap(
     }(
         DeepMapToArgs(
             listOf(this to null),
-            emptyList<Pair<Any, Any?>>().sourceIteratorOrNull(this)!!,
+            emptyList<Pair<Any, Any?>>().sourceIteratorOrNull(this) ?: return this,
             listOf(destination to null),
         ),
     )
@@ -574,7 +575,7 @@ public fun <T : Any, P : Any> T.deepMinusKeys(
         DeepMinusKeysArgs(
             sourcePaths.toList(),
             listOf(this to null),
-            emptyList<Pair<Any, Any?>>().sourceIteratorOrNull(this)!!,
+            emptyList<Pair<Any, Any?>>().sourceIteratorOrNull(this) ?: return this,
             listOf(destination to null),
         ),
     )
@@ -619,7 +620,7 @@ public fun <T : Any> T.deepSubstitute(
     sourceIteratorOrNull: List<Pair<Any, Any?>>.(value: Any) -> Iterator<Map.Entry<Any?, Any?>>? = { value ->
         value.iteratorOrNull()
     },
-    sourceFilter: List<Pair<Any, Any?>>.(value: Any?) -> Boolean = { true },
+    sourceTransform: List<Pair<Any, Any?>>.(value: Any?) -> Pair<Any?, Any?>? = { value -> last().second to value },
     destinationGetter: List<Pair<Any, Any?>>.(source: Any) -> Any = { source ->
         if (isEmpty()) source.toNewMutableCollection()
         else last().first.getOrPut(last().second, source::toNewMutableCollection).apply {
@@ -637,21 +638,7 @@ public fun <T : Any> T.deepSubstitute(
 ): T {
     val cache = mutableMapOf<String, Any?>()
 
-    lateinit var deepSubstitute: DeepRecursiveFunction<DeepMapToArgs, Unit>
-
-    fun tryDeepSubstitute(value: Any): Any =
-        emptyList<Pair<Any, Any?>>().sourceIteratorOrNull(value)?.let { sourceIterator ->
-            val destination = emptyList<Pair<Any, Any?>>().destinationGetter(value)
-
-            deepSubstitute(
-                DeepMapToArgs(
-                    listOf(value to null),
-                    sourceIterator,
-                    listOf(destination to null)
-                )
-            )
-            destination
-        } ?: value
+    lateinit var tryDeepSubstitute: (Any) -> Any
 
     fun substitute(path: List<Any?>, value: Any?): Any? {
         val pathPlain = path.joinToString(".")
@@ -664,40 +651,24 @@ public fun <T : Any> T.deepSubstitute(
                     interpolateBraced,
                     evaluate,
                     unescapeDollars,
-                    { path -> getter(path)?.let(::tryDeepSubstitute) },
+                    { path -> getter(path)?.let(tryDeepSubstitute) },
                     { _, program -> program { path -> substitute(path, getter(path)) } },
                     cache
                 )
             } catch (e: NoSuchElementException) {
                 e.message
             }.also { value -> cache[pathPlain] = value }
-        else value
+        else value?.let(tryDeepSubstitute)
     }
 
-    deepSubstitute = DeepRecursiveFunction { (sources, sourceIterator, destinations) ->
-        sourceIterator.forEach { (key, value) ->
-            val currentSources = sources.replaceLast { copy(second = key) }
-
-            if (!currentSources.sourceFilter(value)) return@DeepRecursiveFunction
-
-            val currentDestinations = destinations.replaceLast { copy(second = key) }
-
-            if (value != null)
-                currentSources.sourceIteratorOrNull(value)?.let { nextSourceIterator ->
-                    val nextDestination = currentDestinations.destinationGetter(value)
-
-                    return@forEach callRecursive(
-                        DeepMapToArgs(
-                            currentSources + (value to null),
-                            nextSourceIterator,
-                            currentDestinations + (nextDestination to null),
-                        ),
-                    )
-                }
-
-            currentDestinations.destinationSetter(
-                substitute(currentSources.map(transform = Pair<*, Any?>::second), value)
-            )
+    tryDeepSubstitute = { source ->
+        source.deepMap(
+            emptyList<Pair<Any, Any?>>().destinationGetter(source),
+            sourceIteratorOrNull,
+            sourceTransform,
+            destinationGetter,
+        ) { value ->
+            destinationSetter(substitute(map(transform = Pair<*, Any?>::second), value))
         }
     }
 
