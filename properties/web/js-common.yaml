@@ -3,7 +3,17 @@ config:
     - org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
     - org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
     - org.jetbrains.kotlin.gradle.targets.js.npm.tasks.KotlinNpmInstallTask
+    - org.jetbrains.kotlin.gradle.targets.js.yarn.YarnPlugin
+    - org.jetbrains.kotlin.gradle.targets.js.yarn.YarnLockMismatchReport
+    - org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension
 script:
+  - rootProject.plugins.withType<YarnPlugin>: |
+      {
+        // WARNING, NONE, FAIL.
+        rootProject.yarn.yarnLockMismatchReport = YarnLockMismatchReport.WARNING
+        rootProject.yarn.reportNewYarnLock = true
+        rootProject.yarn.yarnLockAutoReplace = true
+      }
   - kotlin:
       targets:
         - withType<KotlinJsTargetDsl>: |
