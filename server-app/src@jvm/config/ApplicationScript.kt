@@ -85,8 +85,12 @@ public class ApplicationScript(
                         attribute(Ansi16(36))
                     },
             )
-            log.info(properties.toString())
-
+            log.info(
+                """
+            -
+            $properties
+            """.trimIndent(),
+            )
             applicationScript = properties
         }
     }
