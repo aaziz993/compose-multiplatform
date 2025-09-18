@@ -7,11 +7,10 @@ import klib.data.type.collections.deepMinusKeys
 import klib.data.type.collections.list.asList
 import klib.data.type.collections.map.asMap
 import klib.data.type.collections.takeIfNotEmpty
-import klib.data.type.reflection.callMember
-import klib.data.type.reflection.isFloatNumber
-import klib.data.type.reflection.isIntNumber
-import klib.data.type.reflection.isUIntNumber
-import klib.data.type.reflection.kClass
+import klib.data.type.reflecion.isFloatNumber
+import klib.data.type.reflecion.isIntNumber
+import klib.data.type.reflecion.isUIntNumber
+import klib.data.type.reflecion.kClass
 import klib.data.type.serialization.serializers.bignum.BigDecimalSerializer
 import klib.data.type.serialization.serializers.bignum.BigIntegerSerializer
 import klib.data.type.validator.Validation
@@ -84,10 +83,6 @@ public val SerialDescriptor.primitiveTypeOrNull: KType?
 public val SerialDescriptor.primitiveType: KType
     get() = primitiveTypeOrNull!!
 
-@Suppress("UNCHECKED_CAST")
-public val SerialDescriptor.typeParameterDescriptors: Array<SerialDescriptor>
-    get() = callMember("typeParameterDescriptors") as Array<SerialDescriptor>
-
 public val SerialDescriptor.classDiscriminator: String
     get() = getElementName(0)
 
@@ -102,9 +97,6 @@ public inline fun <reified T : Annotation> SerialDescriptor.getAnnotations(): Li
 
 public inline fun <reified T : Annotation> SerialDescriptor.getAnnotation(): T? =
     getAnnotations<T>().singleOrNull()
-
-public val SerialDescriptor.kClass: KClass<*>
-    get() = Class.forName(serialName).kotlin
 
 public inline fun <reified T : Annotation> SerialDescriptor.hasElementAnnotation(index: Int): Boolean =
     getElementAnnotations(index).filterIsInstance<T>().isNotEmpty()

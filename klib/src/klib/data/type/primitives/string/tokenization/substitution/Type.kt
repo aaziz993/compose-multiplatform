@@ -112,10 +112,6 @@ public enum class Type(public vararg val parents: Type) {
     },
     ERROR_Q(THROWABLE_Q),
     ERROR(THROWABLE, ERROR_Q),
-    OUT_OF_MEMORY_ERROR_Q(THROWABLE_Q),
-    OUT_OF_MEMORY_ERROR(THROWABLE, OUT_OF_MEMORY_ERROR_Q) {
-        override fun invoke(vararg args: Any?): Any? = OutOfMemoryError(args[0]?.toString())
-    },
     NOT_IMPLEMENTED_ERROR_Q(ERROR_Q),
     NOT_IMPLEMENTED_ERROR(ERROR, NOT_IMPLEMENTED_ERROR_Q) {
         override fun invoke(vararg args: Any?): Any? = NotImplementedError(args[0].toString())
@@ -147,11 +143,7 @@ public enum class Type(public vararg val parents: Type) {
         override fun invoke(vararg args: Any?): Any? = NoSuchElementException(args[0].toString())
     },
     INDEX_OUT_OF_BOUNDS_EXCEPTION_Q(RUNTIME_EXCEPTION_Q),
-    INDEX_OUT_OF_BOUNDS_EXCEPTION(RUNTIME_EXCEPTION, INDEX_OUT_OF_BOUNDS_EXCEPTION_Q),
-    ARRAY_INDEX_OUT_OF_BOUNDS_EXCEPTION_Q(INDEX_OUT_OF_BOUNDS_EXCEPTION_Q),
-    ARRAY_INDEX_OUT_OF_BOUNDS_EXCEPTION(INDEX_OUT_OF_BOUNDS_EXCEPTION, ARRAY_INDEX_OUT_OF_BOUNDS_EXCEPTION_Q) {
-        override fun invoke(vararg args: Any?): Any? = ArrayIndexOutOfBoundsException(args[0]?.toString())
-    };
+    INDEX_OUT_OF_BOUNDS_EXCEPTION(RUNTIME_EXCEPTION, INDEX_OUT_OF_BOUNDS_EXCEPTION_Q);
 
     public val type: String = name.removeSuffix("_Q").toPascalCase().let { base ->
         if (name.endsWith("_Q")) "$base?" else base

@@ -1,4 +1,4 @@
-package klib.data.type.reflection
+package klib.data.type.reflecion
 
 import com.ionspin.kotlin.bignum.decimal.BigDecimal
 import com.ionspin.kotlin.bignum.integer.BigInteger
@@ -24,7 +24,6 @@ import klib.data.type.primitives.U_BYTE_DEFAULT
 import klib.data.type.primitives.U_INT_DEFAULT
 import klib.data.type.primitives.U_LONG_DEFAULT
 import klib.data.type.primitives.U_SHORT_DEFAULT
-import klib.data.type.reflection.primitiveDefault
 import kotlinx.datetime.DatePeriod
 import kotlinx.datetime.DateTimePeriod
 import kotlinx.datetime.LocalDate

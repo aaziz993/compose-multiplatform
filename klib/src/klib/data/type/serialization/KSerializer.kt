@@ -3,7 +3,6 @@ package klib.data.type.serialization
 import klib.data.type.collections.list.drop
 import klib.data.type.collections.plus
 import klib.data.type.collections.deepPlus
-import klib.data.type.reflection.callMember
 import klib.data.type.serialization.coders.tree.deserialize
 import klib.data.type.serialization.coders.tree.serialize
 import kotlinx.serialization.DeserializationStrategy
@@ -15,10 +14,6 @@ import kotlinx.serialization.internal.MapLikeSerializer
 import kotlinx.serialization.modules.EmptySerializersModule
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.serializer
-
-@Suppress("UNCHECKED_CAST")
-public val KSerializer<*>.typeParametersSerializers: Array<KSerializer<*>>
-    get() = callMember("typeParametersSerializers") as Array<KSerializer<*>>
 
 public val KSerializer<*>.childSerializers: List<KSerializer<*>>
     get() = (0 until descriptor.elementsCount).map(transform = ::childSerializer)
