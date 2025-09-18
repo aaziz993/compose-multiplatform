@@ -37,7 +37,7 @@ public fun main(): Unit = SuspendApp {
 
 @Suppress("unused")
 public fun Application.module() {
-    install(SSE)
+
 }
 
 public fun Application.ping(): Routing = routing {

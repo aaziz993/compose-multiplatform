@@ -1,7 +1,6 @@
 config:
   imports:
     - io.ktor.server.plugins.calllogging.CallLogging
-    - org.slf4j.event.Level
 script:
   - module: |
       {

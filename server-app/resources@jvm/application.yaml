@@ -34,6 +34,7 @@ config:
     - java.util.UUID
     - java.io.File
     - java.util.zip.Deflater
+    - org.slf4j.event.Level
     - kotlinx.serialization.json.Json
     - io.ktor.server.engine.connector
     - io.ktor.http.HttpStatusCode
