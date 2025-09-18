@@ -34,6 +34,8 @@ public val IMPORTS: Array<String> = arrayOf(
     "klib.data.type.serialization.xml.*",
 )
 
+public lateinit var applicationScript: ApplicationScript
+
 @Serializable
 public class ApplicationScript(
     override val config: ScriptConfig = ScriptConfig(),
@@ -76,6 +78,8 @@ public class ApplicationScript(
                     },
             )
             log.info(properties.toString())
+
+            applicationScript = properties
         }
     }
 }

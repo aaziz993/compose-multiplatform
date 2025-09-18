@@ -2,6 +2,7 @@ import arrow.continuations.SuspendApp
 import arrow.continuations.ktor.server
 import arrow.fx.coroutines.resourceScope
 import io.ktor.server.application.*
+import io.ktor.server.engine.ApplicationEngine
 import io.ktor.server.http.content.*
 import io.ktor.server.netty.*
 import io.ktor.server.response.*
@@ -12,7 +13,7 @@ import kotlinx.coroutines.awaitCancellation
 public fun main(): Unit = SuspendApp {
     resourceScope {
         val applicationFile = File(
-            object {}.javaClass.classLoader.getResource("application.yaml")?.toURI()
+            {}.javaClass.classLoader.getResource("application.yaml")?.toURI()
                 ?: error("application.yaml not found in resources"),
         )
 
@@ -22,9 +23,7 @@ public fun main(): Unit = SuspendApp {
                 module(Application::module)
             },
             configure = {
-                val applicationScript = ApplicationScript(applicationFile, this)
-
-                applicationScript()
+                ApplicationScript(applicationFile, this)()
             },
         )
 

@@ -64,3 +64,10 @@ ktor:
       keyStorePassword: KtorServer2025
       keyAlias: ktor-server
       privateKeyPassword: KtorServer2025
+script:
+  - selfSignedSSL: |
+      (
+        keyStorePassword = "KtorServer2025",
+        privateKeyPassword = "KtorServer2025",
+        port = 8443
+      )
