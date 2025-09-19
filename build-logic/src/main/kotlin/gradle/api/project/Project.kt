@@ -103,6 +103,13 @@ private fun String.sanitize(): String {
     return if (cleaned in RESERVED) "${cleaned}x" else cleaned
 }
 
+public val Project.packageOfResClass: String
+    get() = "${project.name.lowercase().asUnderscoredIdentifier()}.generated.resources"
+
+private fun String.asUnderscoredIdentifier(): String =
+    replace('-', '_')
+        .let { if (it.isNotEmpty() && it.first().isDigit()) "_$it" else it }
+
 public val Project.settings: Settings get() = (gradle as GradleInternal).settings
 
 public val Project.catalogs: Map<String, VersionCatalog>
