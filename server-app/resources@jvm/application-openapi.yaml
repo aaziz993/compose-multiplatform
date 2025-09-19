@@ -8,20 +8,15 @@ script:
   - module: |
       {
         install(OpenApi) {
-          spec("yaml") {
+          spec(OpenApiPluginConfig.DEFAULT_SPEC_ID) {
             outputFormat = OutputFormat.YAML
           }
         }
 
         routing {
-          route("api.json") {
-            // Create a route to expose the OpenAPI specification file at `/api.json`.
-            openApi()
-          }
-
           route("api.yaml") {
             // Create a route to expose the OpenAPI specification file at `/api.yaml`.
-            openApi("yaml")
+            openApi()
           }
         }
       }
