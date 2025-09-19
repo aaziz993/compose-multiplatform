@@ -58,7 +58,7 @@ script:
         keyStorePassword = "KtorServerAdmin",
         keyPassword = "KtorServerAdmin",
         domains = listOf("localhost", "127.0.0.1", applicationScript.host),
-        expire = 0L,ßßßß
+        expire = 0L,
         port = applicationScript.sslPort
       )
   # Watch for changes in this directory and automatically reload the application if any file changes in development mode.
