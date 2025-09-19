@@ -174,7 +174,7 @@
             logDiv.innerHTML = "";
             connectBtn.disabled = false;
             wsUrlInput.disabled = false;
-            messageInput.innerHTML = "";
+            messageInput.value = "";
             messageInput.disabled = true;
             disconnectBtn.disabled = true;
             sendBtn.disabled = true;

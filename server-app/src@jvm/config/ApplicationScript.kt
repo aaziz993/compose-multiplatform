@@ -1,18 +1,25 @@
 package config
 
+import com.charleskorn.kaml.Yaml
 import com.github.ajalt.colormath.model.Ansi16
 import java.io.File
 import klib.data.cache.SqliteCache
 import klib.data.type.ansi.Attribute
 import klib.data.type.ansi.ansiSpan
+import klib.data.type.collections.map.asStringNullableMap
 import klib.data.type.primitives.string.scripting.Script
 import klib.data.type.primitives.string.scripting.ScriptConfig
+import klib.data.type.serialization.json.decodeAnyFromString
+import klib.data.type.serialization.properties.Properties
 import klib.data.type.serialization.serializers.any.SerializableAny
+import klib.data.type.serialization.yaml.decodeAnyFromString
 import kotlin.script.experimental.api.defaultImports
 import kotlin.script.experimental.jvm.dependenciesFromCurrentContext
 import kotlin.script.experimental.jvm.jvm
+import kotlinx.io.files.SystemFileSystem
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.json.Json
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -61,13 +68,29 @@ public class ApplicationScript(
         private val log: Logger = LoggerFactory.getLogger(Script::class.java)
 
         internal inline operator fun <reified TConfiguration : Any> invoke(
-            file: File,
+            file: String,
+            noinline importToFile: (file: String, import: String) -> String = { file, import ->
+                File(file).parentFile.resolve(import).path
+            },
+            noinline decoder: (file: String) -> Map<String, Any?> = { file ->
+                val file = File(file)
+                val text = file.readText()
+                when (file.extension) {
+                    "yaml" -> Yaml.default.decodeAnyFromString(text)
+                    "json" -> Json.decodeAnyFromString(text)
+                    "properties" -> Properties.decodeAnyFromString(text)
+
+                    else -> error("Unsupported file extension ${file.extension}")
+                }!!.asStringNullableMap
+            },
             engineConfigEvaluationImplicitReceiver: TConfiguration,
             serverConfigEvaluationImplicitReceiver: ServerConfig,
         ): ApplicationScript = Script<ApplicationScript>(
-            file.path,
+            file,
             cache = SqliteCache(
-                file.parentFile.resolve(".${file.name}.cache"),
+                File(
+                    {}::class.java.protectionDomain.codeSource.location.toURI(),
+                ).parentFile.resolve(".${file.substringAfterLast(File.separator)}.cache"),
                 String.serializer(),
                 String.serializer(),
             ),

@@ -20,10 +20,8 @@ public fun main(): Unit = SuspendApp {
 
         val applicationFileName = "application-${bootstrap.getOrElse("environment") { "dev" }}.yaml"
 
-        val applicationFile = File(
-            {}.javaClass.classLoader.getResource(applicationFileName)?.toURI()
-                ?: error("$applicationFileName not found in resources"),
-        )
+        val applicationFile = {}.javaClass.classLoader.getResource(applicationFileName)?.toURI()?.path
+            ?: error("$applicationFileName not found in resources")
 
         val engineConfig = NettyApplicationEngine.Configuration()
 
@@ -31,7 +29,11 @@ public fun main(): Unit = SuspendApp {
             module(Application::module)
         }
 
-        ApplicationScript(applicationFile, engineConfig, serverConfig)()
+        ApplicationScript(
+            applicationFile,
+            engineConfigEvaluationImplicitReceiver = engineConfig,
+            serverConfigEvaluationImplicitReceiver = serverConfig,
+        )()
 
         server(
             Netty(engineConfig),
