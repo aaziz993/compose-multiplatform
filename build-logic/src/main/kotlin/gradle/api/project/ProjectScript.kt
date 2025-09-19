@@ -22,13 +22,8 @@ public class ProjectScript(
     public companion object {
         context(project: Project)
         public operator fun invoke(): ProjectScript = with(project) {
-            // Export extras.
-            // enable Default Kotlin Hierarchy.
-            extraProperties["kotlin.mpp.applyDefaultHierarchyTemplate"] = "true"
             // ios Compose uses UiKit, so we need to explicitly enable it, since it is experimental.
             extraProperties["org.jetbrains.compose.experimental.uikit.enabled"] = "true"
-
-            extraProperties["generateBuildableXcodeproj.skipKotlinFrameworkDependencies"] = "true"
 
             // Load project.yaml.
             file(PROJECT_PROPERTIES_FILE)<ProjectScript, Project>(project)

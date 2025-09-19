@@ -11,9 +11,9 @@ public class ApplePlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            project.extraProperties.set("generateBuildableXcodeproj.skipKotlinFrameworkDependencies", "true")
-
             pluginManager.withPlugin("org.jetbrains.gradle.apple.applePlugin") {
+                project.extraProperties.set("generateBuildableXcodeproj.skipKotlinFrameworkDependencies", "true")
+
                 // Add ios App
                 apple.iosApp {
                     buildSettings.DEVELOPMENT_TEAM(group.toString())
