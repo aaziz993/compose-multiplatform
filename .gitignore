@@ -20,4 +20,6 @@ captures
 **/*.podspec
 **/*.yaml.cache
 **/*-catalog:*
+**/*.signing.*
+**/*.keystore.*
 
