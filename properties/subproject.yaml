@@ -58,6 +58,7 @@ script:
             "kotlinx.serialization.InternalSerializationApi",
             "dev.whyoleg.cryptography.DelicateCryptographyApi",
             "androidx.compose.ui.ExperimentalComposeUiApi",
+            "androidx.navigation.ExperimentalBrowserHistoryApi",
             "org.jetbrains.compose.resources.InternalResourceApi",
           )
         freeCompilerArgs.addAll: |
