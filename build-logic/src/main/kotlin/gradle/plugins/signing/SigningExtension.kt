@@ -108,7 +108,7 @@ private fun PGPainless.Companion.modernKeyRing(
         }
         .build()
 
-private fun String.toKeyType(arg: String): KeyType = when (this) {
+private fun String.toKeyType(arg: String): KeyType = when (uppercase()) {
     "EDDSA_LEGACY" -> KeyType.EDDSA_LEGACY(EdDSALegacyCurve.valueOf("_$arg"))
     "ECDSA" -> KeyType.ECDSA(EllipticCurve.valueOf("_$arg"))
     "XDH_LEGACY" -> KeyType.XDH_LEGACY(XDHLegacySpec.valueOf("_$arg"))
