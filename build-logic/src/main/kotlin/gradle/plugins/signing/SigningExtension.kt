@@ -30,9 +30,9 @@ import org.pgpainless.util.Passphrase
 context(project: Project)
 public fun SigningExtension.gpg(
     keyFile: File = File(project.projectDir, "signing.asc"),
-    password: String = project.sensitive("signing.gnupg.password"),
     keyType: String = project.sensitiveOrElse("signing.gnupg.key.type") { "RSA" },
     keyParam: String = project.sensitiveOrElse("signing.gnupg.key.param") { "4096" },
+    password: String = project.sensitive("signing.gnupg.password"),
     subkeyType: String = project.sensitiveOrElse("signing.gnupg.subkey.type") { "RSA" },
     subkeyParam: String = project.sensitiveOrElse("signing.gnupg.subkey.param") { "4096" },
     nameReal: String = project.sensitiveOrElse("signing.gnupg.name.real") {
@@ -61,10 +61,10 @@ public fun SigningExtension.gpg(
     project.signing.useInMemoryPgpKeys(key, password)
 }
 
-public fun PGPainless.Companion.modernKeyRing(
-    passphrase: String = "",
+private fun PGPainless.Companion.modernKeyRing(
     keyType: String = "RSA",
     keyParam: String = "4096",
+    passphrase: String = "",
     subkeyType: String = "RSA",
     subkeyParam: String = "4096",
     nameReal: String = "",
@@ -108,7 +108,7 @@ public fun PGPainless.Companion.modernKeyRing(
         }
         .build()
 
-public fun String.toKeyType(arg: String): KeyType = when (this) {
+private fun String.toKeyType(arg: String): KeyType = when (this) {
     "EDDSA_LEGACY" -> KeyType.EDDSA_LEGACY(EdDSALegacyCurve.valueOf("_$arg"))
     "ECDSA" -> KeyType.ECDSA(EllipticCurve.valueOf("_$arg"))
     "XDH_LEGACY" -> KeyType.XDH_LEGACY(XDHLegacySpec.valueOf("_$arg"))
@@ -117,7 +117,7 @@ public fun String.toKeyType(arg: String): KeyType = when (this) {
     else -> throw IllegalArgumentException("Unknown key type: $this")
 }
 
-public fun PGPSecretKeyRing.toAsciiArmored(): String = ByteArrayOutputStream().run {
+private fun PGPSecretKeyRing.toAsciiArmored(): String = ByteArrayOutputStream().run {
     ArmoredOutputStream(this).use { armor ->
         encode(armor)
     }

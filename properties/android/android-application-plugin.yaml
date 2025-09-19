@@ -71,16 +71,7 @@ script:
           (listOf(
             "consumer-proguard-rules.pro",
           ).map { file -> file(file) })
-      signingConfigs:
-        - create: |
-            ("release") { signingConfig ->
-              signingConfig.storeFile = file("resources@android/release.keystore")
-              signingConfig.storePassword = sensitive("android.release.signing.store.password")
-              signingConfig.storeType = sensitive("android.release.signing.store.type")
-              signingConfig.keyAlias = sensitive("android.release.signing.key.alias")
-              signingConfig.keyPassword = sensitive("android.release.signing.key.password")
-              signingConfig.isV2SigningEnabled = true
-            }
+      signingConfig: ("release")
       buildTypes:
         - getByName: |
             ("release") { buildType ->
