@@ -56,6 +56,7 @@ script:
               iconFile: file("composeResources/drawable/compose-multiplatform.png")
             windows:
               iconFile: file("composeResources/drawable/compose-multiplatform.ico")
+            packageVersion: libs.versions("compose.desktop.packageVersion").requiredVersion
           buildTypes:
             release:
               proguard:

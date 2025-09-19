@@ -5,6 +5,7 @@ import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import io.github.aaziz993.compose_app.generated.resources.Res
 import io.github.aaziz993.compose_app.generated.resources.app_name
+import io.github.aaziz993.compose_app.generated.resources.compose_multiplatform
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.painterResource
 
@@ -21,7 +22,7 @@ public suspend fun main() {
             windowState,
             title = title,
             icon = if (isDevelopmentMode())
-                painterResource(Res.drawable)
+                painterResource(Res.drawable.compose_multiplatform)
             else null,
         ) {
             App()
