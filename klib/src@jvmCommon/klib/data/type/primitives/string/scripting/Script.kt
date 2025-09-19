@@ -5,6 +5,7 @@ import com.github.ajalt.colormath.model.Ansi16
 import java.io.File
 import java.lang.reflect.Modifier
 import klib.data.cache.Cache
+import klib.data.cache.SqliteCache
 import klib.data.cache.emptyCache
 import klib.data.type.ansi.Attribute
 import klib.data.type.ansi.ansiSpan
@@ -59,6 +60,7 @@ import kotlin.script.experimental.host.toScriptSource
 import kotlin.script.experimental.jvmhost.BasicJvmScriptingHost
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
+import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.serializer
 
@@ -232,7 +234,13 @@ public abstract class Script {
                     else -> error("Unsupported file extension ${file.extension}")
                 }!!.asStringNullableMap
             },
-            cache: Cache<String, String> = emptyCache(),
+            cache: Cache<String, String> = SqliteCache(
+                File(
+                    {}::class.java.protectionDomain.codeSource.location.toURI(),
+                ).parentFile.resolve(".${file.substringAfterLast(File.pathSeparator)}.cache"),
+                String.serializer(),
+                String.serializer(),
+            ),
             explicitOperationReceivers: Set<KClass<*>> = emptySet(),
             noinline implicitOperation: (valueClass: KClass<*>, value: Any?) -> String? = { _, _ -> null },
             config: ScriptConfig.() -> Unit = { },

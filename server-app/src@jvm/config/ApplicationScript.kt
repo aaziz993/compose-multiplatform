@@ -1,25 +1,19 @@
 package config
 
-import com.charleskorn.kaml.Yaml
 import com.github.ajalt.colormath.model.Ansi16
+import io.ktor.server.config.yaml.YamlConfig
 import java.io.File
 import klib.data.cache.SqliteCache
 import klib.data.type.ansi.Attribute
 import klib.data.type.ansi.ansiSpan
-import klib.data.type.collections.map.asStringNullableMap
 import klib.data.type.primitives.string.scripting.Script
 import klib.data.type.primitives.string.scripting.ScriptConfig
-import klib.data.type.serialization.json.decodeAnyFromString
-import klib.data.type.serialization.properties.Properties
 import klib.data.type.serialization.serializers.any.SerializableAny
-import klib.data.type.serialization.yaml.decodeAnyFromString
 import kotlin.script.experimental.api.defaultImports
 import kotlin.script.experimental.jvm.dependenciesFromCurrentContext
 import kotlin.script.experimental.jvm.jvm
-import kotlinx.io.files.SystemFileSystem
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.json.Json
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -68,57 +62,51 @@ public class ApplicationScript(
         private val log: Logger = LoggerFactory.getLogger(Script::class.java)
 
         internal inline operator fun <reified TConfiguration : Any> invoke(
-            file: String,
-            noinline importToFile: (file: String, import: String) -> String = { file, import ->
-                File(file).parentFile.resolve(import).path
-            },
-            noinline decoder: (file: String) -> Map<String, Any?> = { file ->
-                val file = File(file)
-                val text = file.readText()
-                when (file.extension) {
-                    "yaml" -> Yaml.default.decodeAnyFromString(text)
-                    "json" -> Json.decodeAnyFromString(text)
-                    "properties" -> Properties.decodeAnyFromString(text)
-
-                    else -> error("Unsupported file extension ${file.extension}")
-                }!!.asStringNullableMap
-            },
             engineConfigEvaluationImplicitReceiver: TConfiguration,
             serverConfigEvaluationImplicitReceiver: ServerConfig,
-        ): ApplicationScript = Script<ApplicationScript>(
-            file,
-            cache = SqliteCache(
-                File(
-                    {}::class.java.protectionDomain.codeSource.location.toURI(),
-                ).parentFile.resolve(".${file.substringAfterLast(File.separator)}.cache"),
-                String.serializer(),
-                String.serializer(),
-            ),
-        ) {
-            compilationImplicitReceivers = listOf(TConfiguration::class, serverConfigEvaluationImplicitReceiver::class)
-            evaluationImplicitReceivers = listOf(engineConfigEvaluationImplicitReceiver, serverConfigEvaluationImplicitReceiver)
+        ): ApplicationScript {
+            val bootstrap = loadBootstrap()
 
-            compilationBody = {
-                jvm {
-                    dependenciesFromCurrentContext(wholeClasspath = true)
+            val environment = bootstrap.getOrElse("environment") { "dev" }.toString()
+
+            val applicationFileName = "application-$environment.yaml"
+
+            val applicationFile = {}.javaClass.classLoader.getResource(applicationFileName)?.toURI()?.path
+                ?: error("$applicationFileName not found in resources")
+
+            return Script<ApplicationScript>(
+                File(applicationFile).path,
+            ) {
+                compilationImplicitReceivers = listOf(TConfiguration::class, serverConfigEvaluationImplicitReceiver::class)
+                evaluationImplicitReceivers = listOf(engineConfigEvaluationImplicitReceiver, serverConfigEvaluationImplicitReceiver)
+
+                compilationBody = {
+                    jvm {
+                        dependenciesFromCurrentContext(wholeClasspath = true)
+                    }
+
+                    defaultImports(*IMPORTS)
                 }
+            }.also { properties ->
+                log.info(
+                    "${System.lineSeparator()}${
+                        engineConfigEvaluationImplicitReceiver.toString()
+                            .uppercase()
+                            .ansiSpan {
+                                attribute(Attribute.INTENSITY_BOLD)
+                                attribute(Ansi16(36))
+                            }
+                    }/${environment.ansiSpan { attribute(Ansi16(34)) }}",
+                )
+                log.info("${System.lineSeparator()}$properties")
 
-                defaultImports(*IMPORTS)
+                applicationScript = properties
             }
-        }.also { properties ->
-            log.info(
-                "${System.lineSeparator()}${
-                    engineConfigEvaluationImplicitReceiver.toString()
-                        .uppercase()
-                        .ansiSpan {
-                            attribute(Attribute.INTENSITY_BOLD)
-                            attribute(Ansi16(36))
-                        }
-                }",
-            )
-            log.info("${System.lineSeparator()}$properties")
+        }
 
-            applicationScript = properties
+        private fun loadBootstrap(path: String = "bootstrap.yaml"): Map<String, Any?> {
+            val yaml = YamlConfig(path) ?: return emptyMap()
+            return yaml.toMap()
         }
     }
 }

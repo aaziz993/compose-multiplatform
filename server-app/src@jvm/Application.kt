@@ -16,37 +16,21 @@ import kotlinx.coroutines.awaitCancellation
 
 public fun main(): Unit = SuspendApp {
     resourceScope {
-        val bootstrap = loadBootstrap()
-
-        val applicationFileName = "application-${bootstrap.getOrElse("environment") { "dev" }}.yaml"
-
-        val applicationFile = {}.javaClass.classLoader.getResource(applicationFileName)?.toURI()?.path
-            ?: error("$applicationFileName not found in resources")
-
         val engineConfig = NettyApplicationEngine.Configuration()
 
         val serverConfig = ServerConfig().apply {
             module(Application::module)
         }
 
-        ApplicationScript(
-            applicationFile,
-            engineConfigEvaluationImplicitReceiver = engineConfig,
-            serverConfigEvaluationImplicitReceiver = serverConfig,
-        )()
+        ApplicationScript(engineConfig, serverConfig)()
 
         server(
             Netty(engineConfig),
-            rootConfig = serverConfig.config(),
+            rootConfig = serverConfig(),
         )
 
         awaitCancellation()
     }
-}
-
-private fun loadBootstrap(path: String = "bootstrap.yaml"): Map<String, Any?> {
-    val yaml = YamlConfig(path) ?: return emptyMap()
-    return yaml.toMap()
 }
 
 @Suppress("unused")

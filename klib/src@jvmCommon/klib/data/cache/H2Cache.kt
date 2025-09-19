@@ -3,9 +3,6 @@ package klib.data.cache
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 import java.io.File
-import java.sql.Connection
-import java.sql.DriverManager
-import kotlin.use
 
 public class H2Cache<K, V>(
     dbFile: File,
