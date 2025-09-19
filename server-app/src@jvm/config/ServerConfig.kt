@@ -52,6 +52,6 @@ public class ServerConfig {
         modules.add(body)
     }
 
-    public fun config(): ServerConfig =
+    public operator fun invoke(): ServerConfig =
         ServerConfig(environment.build(), modules.toList(), watchPaths, rootPath, developmentMode, parentCoroutineContext)
 }
