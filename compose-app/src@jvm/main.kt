@@ -21,8 +21,7 @@ public suspend fun main() {
             onCloseRequest = ::exitApplication,
             windowState,
             title = title,
-            icon = if (isDevelopmentMode())
-                painterResource(Res.drawable.compose_multiplatform)
+            icon = if (isDevelopmentMode()) painterResource(Res.drawable.compose_multiplatform)
             else null,
         ) {
             App()
