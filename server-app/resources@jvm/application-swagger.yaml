@@ -5,6 +5,9 @@ script:
   - module: |
       {
         routing {
-          swaggerUI(path = "swagger", swaggerFile = "resources@jvm/openapi/documentation.yaml")
+          swaggerUI(openApiUrl = "/api.yaml") {
+              deepLinking = true
+              docExpansion = "none"
+          }
         }
       }

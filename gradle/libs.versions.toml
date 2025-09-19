@@ -708,8 +708,8 @@ ktor-simple-memory-cache = { module = "com.ucasoft.ktor:ktor-simple-memory-cache
 kotlin-asyncapi-ktor = { module = "org.openfolder:kotlin-asyncapi-ktor", version.ref = "kotlin-asyncapi-ktor" }
 # swagger ui
 swagger-codegen-generators = { module = "io.swagger.codegen.v3:swagger-codegen-generators", version.ref = "swagger-codegen-generators" }
-ktor-swagger-ui = { module = "io.github.smiley4:ktor-swagger-ui", version.ref = "ktor-openapi" }
 ktor-openapi = { module = "io.github.smiley4:ktor-openapi", version.ref = "ktor-openapi" }
+ktor-swagger-ui = { module = "io.github.smiley4:ktor-swagger-ui", version.ref = "ktor-openapi" }
 # task scheduler
 ktor-server-task-scheduling-core = { module = "io.github.flaxoos:ktor-server-task-scheduling-core", version.ref = "ktor-server-task-scheduling" }
 ktor-server-task-scheduling-redis = { module = "io.github.flaxoos:ktor-server-task-scheduling-redis", version.ref = "ktor-server-task-scheduling" }
@@ -1134,6 +1134,10 @@ ktor-server = [
     "ktor-line-webhook-plugin",
     "ktor-server-metrics",
     "ktor-server-metrics-micrometer",
+]
+ktor-openapi = [
+    "ktor-openapi",
+    "ktor-swagger-ui",
 ]
 # http client/Kotlin Symbol Processor for Kotlin Multiplatform ( Android, iOS, Js, Jvm, Linux) using KSP and Ktor clients inspired by Retrofit
 ktorfit = [
