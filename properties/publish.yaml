@@ -115,13 +115,6 @@ script:
   # Signing.
   - signing:
       isRequired: (!version.toString().toVersion().isPreRelease)
-      useGpgCmd: ()
-      useInMemoryPgpKeys: |
-        (
-          sensitive("signing.gnupg.key"),
-          sensitive("signing.gnupg.passphrase")
-        )
+      gpg: ()
       # Sign all publications.
       sign: (publishing.publications)
-      # Register additional gpg tasks.
-      registerGPGTasks: ()

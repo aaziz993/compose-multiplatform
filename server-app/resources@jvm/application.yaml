@@ -55,8 +55,8 @@ script:
   - ssl: |
       (
         keyStoreFile = File("resources@jvm/security/ssl/keystore.p12"),
-        keyStorePassword = "KtorServer2025",
-        privateKeyPassword = "KtorServer2025",
+        keyStorePassword = "KtorServerAdmin",
+        privateKeyPassword = "KtorServerAdmin",
         domains = listOf("localhost", "127.0.0.1", applicationScript.host),
         port = applicationScript.sslPort
       )
