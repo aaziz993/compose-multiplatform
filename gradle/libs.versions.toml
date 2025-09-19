@@ -128,6 +128,8 @@ snakeyaml = "2.5"
 jackcess = "4.0.8"
 # pdf generator
 itext = "9.3.0"
+# cryptography.
+jdk18on = "1.82"
 # user input hooks
 jnativehook = "2.2.2"
 jna = "5.17.0"
@@ -464,6 +466,11 @@ tomlj = { module = "org.tomlj:tomlj", version.ref = "tomlj" }
 jackcess = { module = "com.healthmarketscience.jackcess:jackcess", version.ref = "jackcess" }
 # pdf generator
 itext-core = { module = "com.itextpdf:itext-core", version.ref = "itext" }
+# cryptography.
+bcprov-jdk18on = { module = "org.bouncycastle:bcprov-jdk18on", version.ref = "jdk18on" }
+bcpkix-jdk18on = { module = "org.bouncycastle:bcpkix-jdk18on", version.ref = "jdk18on" }
+pgpainless-core = { module = "org.pgpainless:pgpainless-core", version.ref = "pgpainless" }
+pgpainless-sop = { module = "org.pgpainless:pgpainless-sop", version.ref = "pgpainless" }
 # user input hooks
 jnativehook = { module = "com.github.kwhat:jnativehook", version.ref = "jnativehook" }
 jna = { module = "net.java.dev.jna:jna", version.ref = "jna" }
@@ -601,8 +608,6 @@ cryptography-random = { module = "dev.whyoleg.cryptography:cryptography-random",
 cryptography-serialization-asn1 = { module = "dev.whyoleg.cryptography:cryptography-serialization-asn1", version.ref = "cryptography" }
 cryptography-serialization-asn1-modules = { module = "dev.whyoleg.cryptography:cryptography-serialization-asn1-modules", version.ref = "cryptography" }
 cryptography-serialization-pem = { module = "dev.whyoleg.cryptography:cryptography-serialization-pem", version.ref = "cryptography" }
-pgpainless-core = { module = "org.pgpainless:pgpainless-core", version.ref = "pgpainless" }
-pgpainless-sop = { module = "org.pgpainless:pgpainless-sop", version.ref = "pgpainless" }
 # color space conversions
 colormath = { module = "com.github.ajalt.colormath:colormath", version.ref = "colormath" }
 # image metadata read and write
@@ -937,6 +942,10 @@ apache-commons = [
     "commons-net"
 ]
 # cryptography
+jdk18on = [
+    "bcprov-jdk18on",
+    "bcpkix-jdk18on",
+]
 pgpainless = [
     "pgpainless-core",
     "pgpainless-sop",

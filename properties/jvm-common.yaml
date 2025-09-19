@@ -11,6 +11,7 @@ script:
                 implementation(libs.bundles("apache.commons"))
                 implementation(libs["itext.core"])
                 implementation(libs["cryptography.provider.jdk"])
+                implementation(libs.bundles("jdk18on"))
                 implementation(libs.bundles("pgpainless"))
                 implementation(libs["sqldelight.sqlite.driver"])
                 implementation(libs["jsch"])

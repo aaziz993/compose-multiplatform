@@ -144,6 +144,8 @@ dependencies {
     implementation(libs.tomlj)
     // parse yaml
     implementation(libs.snakeyaml)
+    // cryptography.
+    implementation(libs.bundles.jdk18on)
 
     // Kotlin
     // scripting
