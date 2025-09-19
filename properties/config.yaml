@@ -7,6 +7,7 @@ config:
     - org.gradle.jvm.toolchain.JavaLanguageVersion
     - org.jetbrains.kotlin.gradle.dsl.JvmTarget
     - gradle.plugins.kotlin.targets.toJvmTarget
+  jvmTarget: 22
   compilerOptions:
     - -Xignore-const-optimization-errors
     - -Xinline-classes

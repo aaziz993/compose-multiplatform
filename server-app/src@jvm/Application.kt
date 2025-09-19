@@ -42,13 +42,13 @@ public fun main(): Unit = SuspendApp {
     }
 }
 
-public fun loadBootstrap(path: String = "bootstrap.yaml", default: String = "dev"): Map<String, Any?> {
+private fun loadBootstrap(path: String = "bootstrap.yaml"): Map<String, Any?> {
     val yaml = YamlConfig(path) ?: return emptyMap()
     return yaml.toMap()
 }
 
 @Suppress("unused")
-public fun Application.module() {
+private fun Application.module() {
 }
 
 public fun Application.ping(): Routing = routing {

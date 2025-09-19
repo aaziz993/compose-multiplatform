@@ -6,7 +6,7 @@ imports:
 #  - application-graphql.yaml
   - application-call-logging.yaml
   - application-double-receive.yaml
-#  - application-call-id.yaml
+  - application-call-id.yaml
   - application-rate-limit.yaml
   - application-cors.yaml
   - application-compression.yaml
@@ -43,6 +43,7 @@ config:
     - io.ktor.server.engine.connector
     - config.applicationScript
     - config.ssl
+  jvmTarget: 22
 script:
   # Enable development mode. Recommended to set it via -Dktor.deployment.environment=development
   - developmentMode: true
