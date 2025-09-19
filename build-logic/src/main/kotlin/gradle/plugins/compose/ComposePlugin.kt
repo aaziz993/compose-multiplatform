@@ -13,7 +13,9 @@ public class ComposePlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            adjustResources()
+            project.pluginManager.withPlugin("org.jetbrains.compose") {
+                adjustResources()
+            }
         }
     }
 

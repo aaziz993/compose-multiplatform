@@ -21,7 +21,7 @@ public suspend fun main() {
             windowState,
             title = title,
             icon = if (isDevelopmentMode())
-                painterResource(Res.drawable.c)
+                painterResource(Res.drawable)
             else null,
         ) {
             App()
