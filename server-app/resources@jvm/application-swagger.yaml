@@ -5,8 +5,8 @@ script:
   - module: |
       {
         routing {
-          route("api") {
-            // Expose Swagger UI using OpenAPI specification at `/yaml.json`.
+          route("swagger") {
+            // Expose Swagger UI using OpenAPI specification at `/api.yaml`.
             // Path can be relative pointing to specification provided by this application or absolute pointing to an external resource.
             swaggerUI("/api.yaml") {
               // Add configuration for this Swagger UI "instance" here.
