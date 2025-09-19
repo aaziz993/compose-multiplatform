@@ -32,7 +32,7 @@ script:
 
         routing {
           get("/date", {
-            description = "A Data conversion plugin test."
+            description = "A Data conversion Plugin test."
             response {
                 HttpStatusCode.OK to {
                     description = "A success response"

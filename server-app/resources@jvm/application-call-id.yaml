@@ -14,7 +14,7 @@ script:
 
         routing {
           get("/callId", {
-            description = "A CallId plugin test."
+            description = "A CallId Plugin test."
             response {
                 HttpStatusCode.OK to {
                     description = "A success response"

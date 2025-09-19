@@ -6,7 +6,7 @@ imports:
 #  - application-graphql.yaml
   - application-call-logging.yaml
   - application-double-receive.yaml
-  - application-call-id.yaml
+#  - application-call-id.yaml
   - application-rate-limit.yaml
   - application-cors.yaml
   - application-compression.yaml
@@ -41,9 +41,6 @@ config:
     - org.slf4j.event.Level
     - kotlinx.serialization.json.Json
     - io.ktor.server.engine.connector
-    - io.ktor.http.HttpHeaders
-    - io.ktor.http.HttpStatusCode
-    - io.ktor.http.HttpHeaders.ContentEncoding
     - config.applicationScript
     - config.ssl
 script:
