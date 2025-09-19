@@ -15,8 +15,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import io.github.aaziz993.compose_app.generated.resources.Res
-import io.github.aaziz993.compose_app.generated.resources.compose_multiplatform
+import compose_app.generated.resources.Res
+import compose_app.generated.resources.compose_multiplatform
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
