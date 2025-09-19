@@ -82,7 +82,7 @@ public val Project.moduleName: String
  * Replace '-' and ':' in path with '.'
  */
 public val Project.androidNamespace: String
-    get() = "$group.${path.removePrefix(":")}"
+    get() = path.removePrefix(":")
         .split("[-_:]".toRegex()).filter(String::isNotBlank)
         .joinToString(".", transform = String::sanitize)
 

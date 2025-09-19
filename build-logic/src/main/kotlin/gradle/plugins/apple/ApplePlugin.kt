@@ -5,12 +5,20 @@ import gradle.api.project.apple
 import gradle.api.project.projectScript
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.jetbrains.kotlin.gradle.plugin.extraProperties
 
 public class ApplePlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
+            project.extraProperties.set("generateBuildableXcodeproj.skipKotlinFrameworkDependencies", "true")
+
             pluginManager.withPlugin("org.jetbrains.gradle.apple.applePlugin") {
+                // Add ios App
+                apple.iosApp {
+                    buildSettings.DEVELOPMENT_TEAM(group.toString())
+                    productInfo["UILaunchScreen"] = mapOf<String, Any>()
+                }
                 adjustSourceSets()
             }
         }
