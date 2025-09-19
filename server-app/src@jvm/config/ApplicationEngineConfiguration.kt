@@ -39,9 +39,7 @@ public fun ApplicationEngine.Configuration.ssl(
             domains?.let { domains -> this.domains = domains }
             ipAddresses?.let { ipAddresses -> this.ipAddresses = ipAddresses.map(Inet4Address::getByName) }
         }
-    }
-
-    keyStore.saveToFile(keyStoreFile, keyStorePassword)
+    }.also { keyStore -> keyStore.saveToFile(keyStoreFile, keyStorePassword) }
 
     sslConnector(
         keyStore = keyStore,
