@@ -22,7 +22,6 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.internal.os.OperatingSystem
 import org.gradle.kotlin.dsl.withType
-import org.jetbrains.amper.gradle.BindingProjectPlugin
 import org.jetbrains.kotlin.gradle.tasks.KotlinNativeLink
 
 public class ProjectPlugin : Plugin<Project> {
@@ -31,7 +30,7 @@ public class ProjectPlugin : Plugin<Project> {
         with(target) {
             // Load and apply project.yaml to build.gradle.kts.
             ProjectScript()
-            BindingProjectPlugin
+
             pluginManager.apply(KoverPlugin::class.java)
             pluginManager.apply(DokkaPlugin::class.java)
             pluginManager.apply(KnitPlugin::class.java)
