@@ -13,7 +13,7 @@ import javax.security.auth.x500.X500Principal
 
 public fun ApplicationEngine.Configuration.ssl(
     keyStoreType: String = "PKCS12",
-    keyStoreFile: File = File("resources/security/ssl/keystore.$keyStoreType"),
+    keyStoreFile: File = File("resources/security/ssl/.keystore.$keyStoreType"),
     keyStorePassword: String,
     keySize: Int? = null,
     keyAlias: String = "server",
