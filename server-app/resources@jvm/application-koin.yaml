@@ -1,0 +1,11 @@
+config:
+  imports:
+    - org.koin.core.KoinApplication
+    - org.koin.ktor.plugin.Koin
+script:
+  - module: |
+      {
+        install(Koin) {
+          modules()
+        }
+      }
