@@ -56,8 +56,9 @@ script:
       (
         keyStoreFile = File("resources@jvm/security/ssl/keystore.p12"),
         keyStorePassword = "KtorServerAdmin",
-        privateKeyPassword = "KtorServerAdmin",
+        keyPassword = "KtorServerAdmin",
         domains = listOf("localhost", "127.0.0.1", applicationScript.host),
+        expire = 0L,ßßßß
         port = applicationScript.sslPort
       )
   # Watch for changes in this directory and automatically reload the application if any file changes in development mode.

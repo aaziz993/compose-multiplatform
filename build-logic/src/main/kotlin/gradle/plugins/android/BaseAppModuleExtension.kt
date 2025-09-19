@@ -77,12 +77,10 @@ private fun generateAndroidKeystore(
     val keyPair = keyPairGen.generateKeyPair()
 
     val now = Date()
+
     // Handle expire = 0L as unexpired → use far future date
-    val endDate = if (expire > 0L) {
-        Date(now.time + expire * 24 * 60 * 60 * 1000)
-    } else {
-        Date(Long.MAX_VALUE)
-    }
+    val endDate = if (expire > 0L) Date(now.time + TimeUnit.SECONDS.toMillis(expire))
+    else Date(Long.MAX_VALUE)
 
     // Build X.509 certificate
     val certBuilder = JcaX509v3CertificateBuilder(
@@ -91,7 +89,7 @@ private fun generateAndroidKeystore(
         now,
         endDate,
         X500Name(dn),
-        keyPair.public
+        keyPair.public,
     )
 
     val sigAlg = when (keyAlgorithm.uppercase()) {
