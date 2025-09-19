@@ -1,4 +1,4 @@
-@file:JvmName("SerialDescriptorJvmCommon")
+@file:JvmName("SerialDescriptor_jvm")
 package klib.data.type.serialization
 
 import klib.data.type.reflection.callMember
