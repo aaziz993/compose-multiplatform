@@ -82,20 +82,20 @@ script:
                     "proguard-rules.pro",
                 )
                 buildType.signingConfig = androidApplication.signingConfigs.getByName("release")
-                buildType.buildConfigField("String", "API_URL", "https://api.example.com")
+                buildType.buildConfigField("String", "API_URL", "\"https://api.example.com\"")
             }
         - getByName: |
             ("debug") { buildType ->
               buildType.isDebuggable = true
               buildType.applicationIdSuffix = ".debug"
               buildType.versionNameSuffix = "-DEBUG"
-              buildType.buildConfigField("String", "API_URL", "https://dev.api.example.com")
+              buildType.buildConfigField("String", "API_URL", "\"https://dev.api.example.com\"")
             }
         - create: |
             ("staging") { buildType ->
               buildType.applicationIdSuffix = ".staging"
               buildType.versionNameSuffix = "-STAGING"
-              buildType.buildConfigField("String", "API_URL", "https://staging.api.example.com")
+              buildType.buildConfigField("String", "API_URL", "\"https://staging.api.example.com\"")
             }
       # Specifies the flavor dimensions you want to use. The order in which you
       # list the dimensions determines their priority, from highest to lowest,
