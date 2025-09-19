@@ -1,13 +1,27 @@
 config:
   imports:
-    - io.ktor.server.plugins.openapi.openAPI
-    - io.swagger.codegen.v3.generators.html.StaticHtmlCodegen
+    - io.github.smiley4.ktoropenapi.OpenApi
+    - io.github.smiley4.ktoropenapi.config.OpenApiPluginConfig
+    - io.github.smiley4.ktoropenapi.config.OutputFormat
+    - io.github.smiley4.ktoropenapi.openApi
 script:
   - module: |
       {
+        install(OpenApi) {
+          spec("yaml") {
+            outputFormat = OutputFormat.YAML
+          }
+        }
+
         routing {
-          openAPI(path="openapi", swaggerFile = "resources@jvm/openapi/documentation.yaml"){
-            codegen = StaticHtmlCodegen()
+          route("api.json") {
+            // Create a route to expose the OpenAPI specification file at `/api.json`.
+            openApi()
+          }
+
+          route("api.yaml") {
+            // Create a route to expose the OpenAPI specification file at `/api.yaml`.
+            openApi("yaml")
           }
         }
       }

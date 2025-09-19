@@ -4,6 +4,10 @@ import arrow.fx.coroutines.resourceScope
 import config.ApplicationScript
 import config.ServerConfig
 import engine.Netty
+import io.github.smiley4.ktoropenapi.OpenApi
+import io.github.smiley4.ktoropenapi.config.OpenApiPluginConfig
+import io.github.smiley4.ktoropenapi.config.OutputFormat
+import io.github.smiley4.ktoropenapi.openApi
 import io.ktor.server.application.*
 import io.ktor.server.netty.*
 import io.ktor.server.response.*
@@ -37,6 +41,8 @@ public fun main(): Unit = SuspendApp {
 
 @Suppress("unused")
 public fun Application.module() {
+
+
 
 }
 
