@@ -3,13 +3,15 @@ package klib.data.type.collections
 import klib.data.type.collections.list.asList
 import klib.data.type.collections.list.drop
 import klib.data.type.collections.map.asMap
-import klib.data.type.primitives.string.tokenization.substitution.substitute
 import klib.data.type.primitives.toInt
 import kotlin.collections.getOrElse
 import kotlin.collections.getOrNull
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
+import klib.data.type.primitives.string.tokenization.substitution.substitute
+import kotlin.IllegalArgumentException
+import kotlin.NoSuchElementException
 
 public fun <T : Collection<E>, E> T.takeIfNotEmpty(): T? = takeIf(Collection<*>::isNotEmpty)
 
@@ -640,7 +642,7 @@ public fun <T : Any> T.deepSubstitute(
 
     lateinit var tryDeepSubstitute: (Any) -> Any
 
-    fun substitute(path: List<Any?>, value: Any?): Any? {
+    fun substitute(path: List<Any?>, value: Any?, unknown: (Any) -> Any = { it }): Any? {
         val pathPlain = path.joinToString(".")
 
         return if (value is String)
@@ -652,13 +654,13 @@ public fun <T : Any> T.deepSubstitute(
                     evaluate,
                     unescapeDollars,
                     { path -> getter(path)?.let(tryDeepSubstitute) },
-                    { _, program -> program { path -> substitute(path, getter(path)) } },
+                    { _, program -> program { path -> substitute(path, getter(path), tryDeepSubstitute) } },
                     cache
                 )
             } catch (e: NoSuchElementException) {
                 e.message
             }.also { value -> cache[pathPlain] = value }
-        else value?.let(tryDeepSubstitute)
+        else value?.let(unknown)
     }
 
     tryDeepSubstitute = { source ->

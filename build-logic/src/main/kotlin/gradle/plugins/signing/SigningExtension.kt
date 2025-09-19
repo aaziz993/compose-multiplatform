@@ -32,7 +32,7 @@ public fun SigningExtension.gpg(
     keyFile: File = File(project.projectDir, ".signing.asc"),
     keyType: String = project.sensitiveOrElse("signing.gnupg.key.type") { "RSA" },
     keyParam: String = project.sensitiveOrElse("signing.gnupg.key.param") { "4096" },
-    password: String = project.sensitive("signing.gnupg.password"),
+    password: String = project.sensitive("signing.gnupg.key.password"),
     subkeyType: String = project.sensitiveOrElse("signing.gnupg.subkey.type") { "RSA" },
     subkeyParam: String = project.sensitiveOrElse("signing.gnupg.subkey.param") { "4096" },
     nameReal: String = project.sensitiveOrElse("signing.gnupg.name.real") {
@@ -47,9 +47,9 @@ public fun SigningExtension.gpg(
 ): Unit = project.pluginManager.withPlugin("signing") {
     val key = keyFile.takeIf(File::exists)?.readText()
         ?: PGPainless.modernKeyRing(
-            password,
             keyType,
             keyParam,
+            password,
             subkeyType,
             subkeyParam,
             nameReal,

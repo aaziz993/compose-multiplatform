@@ -640,7 +640,7 @@ public fun <T : Any> T.deepSubstitute(
 
     lateinit var tryDeepSubstitute: (Any) -> Any
 
-    fun substitute(path: List<Any?>, value: Any?): Any? {
+    fun substitute(path: List<Any?>, value: Any?, unknown: (Any) -> Any = { it }): Any? {
         val pathPlain = path.joinToString(".")
 
         return if (value is String)
@@ -652,13 +652,13 @@ public fun <T : Any> T.deepSubstitute(
                     evaluate,
                     unescapeDollars,
                     { path -> getter(path)?.let(tryDeepSubstitute) },
-                    { _, program -> program { path -> substitute(path, getter(path)) } },
+                    { _, program -> program { path -> substitute(path, getter(path), tryDeepSubstitute) } },
                     cache
                 )
             } catch (e: NoSuchElementException) {
                 e.message
             }.also { value -> cache[pathPlain] = value }
-        else value?.let(tryDeepSubstitute)
+        else value?.let(unknown)
     }
 
     tryDeepSubstitute = { source ->
