@@ -5,6 +5,7 @@ import gradle.api.maybeNamed
 import gradle.api.project.ProjectScript
 import gradle.plugins.android.AndroidPlugin
 import gradle.plugins.apivalidation.ApiValidationPlugin
+import gradle.plugins.apple.ApplePlugin
 import gradle.plugins.compose.ComposePlugin
 import gradle.plugins.dokka.DokkaPlugin
 import gradle.plugins.initialization.SLF4JProblemReporterContext
@@ -37,6 +38,7 @@ public class ProjectPlugin : Plugin<Project> {
             pluginManager.apply(ApiValidationPlugin::class.java)
             pluginManager.apply(MPPPlugin::class.java)
             pluginManager.apply(AndroidPlugin::class.java)
+            pluginManager.apply(ApplePlugin::class.java)
             pluginManager.apply(JvmPlugin::class.java)
             pluginManager.apply(JsPlugin::class.java)
             pluginManager.apply(WasmJsPlugin::class.java)
