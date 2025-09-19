@@ -13,8 +13,14 @@ script:
         }
 
         routing {
-          get("/callId") {
-            call.respondText(call.callId.orEmpty())
-          }
+          get("/callId", {
+            description = "A CallId plugin test."
+            response {
+                HttpStatusCode.OK to {
+                    description = "A success response"
+                    body<String>()
+                }
+            }
+          }) { call.respondText(call.callId.orEmpty()) }
         }
       }

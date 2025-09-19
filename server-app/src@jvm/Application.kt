@@ -4,7 +4,8 @@ import arrow.fx.coroutines.resourceScope
 import config.ApplicationScript
 import config.ServerConfig
 import engine.Netty
-import io.github.smiley4.ktorswaggerui.swaggerUI
+import io.github.smiley4.ktoropenapi.*
+import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.netty.*
 import io.ktor.server.response.*
@@ -38,11 +39,21 @@ public fun main(): Unit = SuspendApp {
 
 @Suppress("unused")
 public fun Application.module() {
-
 }
 
 public fun Application.ping(): Routing = routing {
-    get("/ping") { call.respondText("pong") }
+    get(
+        "/ping",
+        {
+            description = "A server test ping pong."
+            response {
+                HttpStatusCode.OK to {
+                    description = "A success response"
+                    body<String>()
+                }
+            }
+        },
+    ) { call.respondText("pong") }
 }
 
 

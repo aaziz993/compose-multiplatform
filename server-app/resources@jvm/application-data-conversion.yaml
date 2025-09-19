@@ -31,7 +31,15 @@ script:
         }
 
         routing {
-          get("/date") {
+          get("/date", {
+            description = "A Data conversion plugin test."
+            response {
+                HttpStatusCode.OK to {
+                    description = "A success response"
+                    body<String>()
+                }
+            }
+          }) {
             val encodedDate = application.conversionService.toValues(call.parameters["date"])
             val decodedDate = application.conversionService.fromValues(encodedDate, typeInfo<LocalDate>())
             call.respondText("The date is $decodedDate")
