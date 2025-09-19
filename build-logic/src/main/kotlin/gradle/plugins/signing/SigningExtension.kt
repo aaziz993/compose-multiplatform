@@ -28,23 +28,23 @@ import org.pgpainless.util.Passphrase
 
 @Suppress("UnusedReceiverParameter")
 context(project: Project)
-public fun SigningExtension.gpg(): Unit = project.pluginManager.withPlugin("signing") {
-    val password = project.sensitive("signing.gnupg.password")
-    val keyType = project.sensitiveOrElse("signing.gnupg.key.type") { "RSA" }
-    val keyParam = project.sensitiveOrElse("signing.gnupg.key.param") { "4096" }
-    val subkeyType = project.sensitiveOrElse("signing.gnupg.subkey.type") { "RSA" }
-    val subkeyParam = project.sensitiveOrElse("signing.gnupg.subkey.param") { "4096" }
-    val nameReal = project.sensitiveOrElse("signing.gnupg.name.real") {
+public fun SigningExtension.gpg(
+    keyFile: File = File(project.projectDir, "signing.asc"),
+    password: String = project.sensitive("signing.gnupg.password"),
+    keyType: String = project.sensitiveOrElse("signing.gnupg.key.type") { "RSA" },
+    keyParam: String = project.sensitiveOrElse("signing.gnupg.key.param") { "4096" },
+    subkeyType: String = project.sensitiveOrElse("signing.gnupg.subkey.type") { "RSA" },
+    subkeyParam: String = project.sensitiveOrElse("signing.gnupg.subkey.param") { "4096" },
+    nameReal: String = project.sensitiveOrElse("signing.gnupg.name.real") {
         project.settings.settingsScript.developer.name!!
-    }
-    val nameEmail = project.sensitiveOrElse("signing.gnupg.name.email") {
+    },
+    nameEmail: String = project.sensitiveOrElse("signing.gnupg.name.email") {
         project.settings.settingsScript.developer.email!!
-    }
-    val nameComment = project.sensitiveOrElse("signing.gnupg.name.comment") { project.description.orEmpty() }
-    val expire = project.sensitiveOrElse("signing.gnupg.expire") { "0" }.toLong()
+    },
+    nameComment: String = project.sensitiveOrElse("signing.gnupg.name.comment") { project.description.orEmpty() },
+    expire: Long = project.sensitiveOrElse("signing.gnupg.expire") { "0" }.toLong()
 
-    val keyFile = File(project.projectDir, "signing.asc")
-
+): Unit = project.pluginManager.withPlugin("signing") {
     val key = keyFile.takeIf(File::exists)?.readText()
         ?: PGPainless.modernKeyRing(
             password,
