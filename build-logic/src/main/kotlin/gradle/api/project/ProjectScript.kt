@@ -22,10 +22,6 @@ public class ProjectScript(
     public companion object {
         context(project: Project)
         public operator fun invoke(): ProjectScript = with(project) {
-            // ios Compose uses UiKit, so we need to explicitly enable it, since it is experimental.
-            extraProperties["org.jetbrains.compose.experimental.uikit.enabled"] = "true"
-
-            // Load project.yaml.
             file(PROJECT_PROPERTIES_FILE)<ProjectScript, Project>(project)
                 .also { properties -> projectScript = properties }
                 .also(ProjectScript::invoke)
