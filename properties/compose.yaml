@@ -66,6 +66,7 @@ script:
   - compose:
       resources:
         publicResClass: true
+        packageOfResClass: '"$moduleName.generated.resources"'
         generateResClass: ResourcesExtension.ResourceClassGeneration.Auto
   - dependencies:
       # Android dependencies.
