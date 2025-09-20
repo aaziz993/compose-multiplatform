@@ -29,7 +29,6 @@ import klib.data.type.primitives.string.addSuffix
 import klib.data.type.primitives.string.addSuffixIfNotEmpty
 import klib.data.type.primitives.string.highlight
 import klib.data.type.reflection.classifierOrUpperBound
-import klib.data.type.reflection.classifierOrUpperBound
 import klib.data.type.reflection.declaredMemberExtensionFunction
 import klib.data.type.reflection.declaredMemberExtensionFunctions
 import klib.data.type.reflection.declaredMemberExtensionProperty
@@ -114,11 +113,7 @@ public abstract class Script {
 
     override fun toString(): String = buildStringAnsi {
         attribute(
-            fileTree.entries.first().key.toTreeString(
-                children = {
-                    fileTree[this].orEmpty()
-                },
-            ) { value, visited ->
+            fileTree.entries.first().key.toTreeString(fileTree) { value, visited ->
                 if (visited) "${
                     "File:".ansiSpan {
                         attribute(Attribute.INTENSITY_BOLD)

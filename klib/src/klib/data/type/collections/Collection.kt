@@ -1,5 +1,8 @@
 package klib.data.type.collections
 
+import com.github.ajalt.colormath.model.Ansi16
+import klib.data.type.ansi.Attribute
+import klib.data.type.ansi.ansiSpan
 import klib.data.type.collections.list.asList
 import klib.data.type.collections.list.drop
 import klib.data.type.collections.map.asMap
@@ -10,6 +13,8 @@ import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 import klib.data.type.primitives.string.tokenization.substitution.substitute
+import kotlin.IllegalArgumentException
+import kotlin.NoSuchElementException
 
 public fun <T : Collection<E>, E> T.takeIfNotEmpty(): T? = takeIf(Collection<*>::isNotEmpty)
 
@@ -653,9 +658,10 @@ public fun <T : Any> T.deepSubstitute(
                     unescapeDollars,
                     { path -> getter(path)?.let(tryDeepSubstitute) },
                     { _, program -> program { path -> substitute(path, getter(path), tryDeepSubstitute) } },
-                    cache
+                    cache,
                 )
-            } catch (e: NoSuchElementException) {
+            }
+            catch (e: NoSuchElementException) {
                 e.message
             }.also { value -> cache[pathPlain] = value }
         else value?.let(unknown)
@@ -680,9 +686,9 @@ public fun <T> T.printTree(
     intermediateConnector: String = "├──",
     verticalConnector: String = "│",
     lastConnector: String = "└──",
-    children: T.() -> List<T>,
-    transform: (T, visited: Boolean) -> String = { value, visited ->
-        value.toString() + if (visited) " ↻" else ""
+    children: (node: T) -> List<T>,
+    transform: (node: T, visited: Boolean) -> String = { value, visited ->
+        "$value${if (visited) " ↑" else " "}"
     }
 ) {
     appendable.appendLine(transform(this@printTree, false))
@@ -705,7 +711,7 @@ public fun <T> T.printTree(
                 ),
             )
         }
-    }(PrintTreeArgs(this@printTree.children(), ""))
+    }(PrintTreeArgs(children(this@printTree), ""))
 }
 
 private data class PrintTreeArgs<T>(
@@ -718,9 +724,39 @@ public fun <T> T.toTreeString(
     verticalConnector: String = "│",
     lastConnector: String = "└──",
     children: T.() -> List<T>,
-    transform: (T, visited: Boolean) -> String = { value, visited ->
-        value.toString() + if (visited) " ↑" else ""
+    transform: (value: T, visited: Boolean) -> String = { value, visited ->
+        "$value${if (visited) " ↑" else " "}"
     }
 ): String = buildString {
     printTree(this, intermediateConnector, verticalConnector, lastConnector, children, transform)
+}
+
+public fun String.printTree(
+    map: Map<String, List<String>>,
+    appendable: Appendable,
+    intermediateConnector: String = "├──",
+    verticalConnector: String = "│",
+    lastConnector: String = "└──",
+    transform: (node: String, visited: Boolean) -> String = { value, visited ->
+        "$value${if (visited) " ↑" else " "}"
+    }
+): Unit = printTree(
+    appendable,
+    intermediateConnector,
+    verticalConnector,
+    lastConnector,
+    children = { node -> map[node].orEmpty() },
+    transform,
+)
+
+public fun String.toTreeString(
+    map: Map<String, List<String>>,
+    intermediateConnector: String = "├──",
+    verticalConnector: String = "│",
+    lastConnector: String = "└──",
+    transform: (value: String, visited: Boolean) -> String = { value, visited ->
+        "$value${if (visited) " ↑" else " "}"
+    }
+): String = buildString {
+    printTree(map, this, intermediateConnector, verticalConnector, lastConnector, transform)
 }

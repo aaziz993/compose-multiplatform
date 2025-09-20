@@ -3,6 +3,7 @@ package gradle.plugins.project
 import gradle.api.ci.CI
 import gradle.api.maybeNamed
 import gradle.api.project.ProjectScript
+import gradle.api.project.kotlin
 import gradle.plugins.android.AndroidPlugin
 import gradle.plugins.apivalidation.ApiValidationPlugin
 import gradle.plugins.apple.ApplePlugin
@@ -22,6 +23,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.internal.os.OperatingSystem
 import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import org.jetbrains.kotlin.gradle.tasks.KotlinNativeLink
 
 public class ProjectPlugin : Plugin<Project> {
@@ -48,6 +50,18 @@ public class ProjectPlugin : Plugin<Project> {
             configureLinkTasks()
 
             CI.configureTasks()
+
+            pluginManager.withPlugin("org.jetbrains.kotlin.multiplatform"){
+                tasks.register("printSourceSetHierarchy") {
+                    doLast {
+                        val hierarchy=mutableMapOf<String,List<String>>()
+                        kotlin.sourceSets.forEach { sourceSet ->
+                            hierarchy[sourceSet.name] =sourceSet.dependsOn.map(KotlinSourceSet::getName)
+                        }
+                        hierarchy.
+                    }
+                }
+            }
 
             if (problemReporter.getErrors().isNotEmpty()) {
                 throw GradleException(problemReporter.getGradleError())

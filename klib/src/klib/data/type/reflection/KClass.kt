@@ -1,4 +1,4 @@
-package klib.data.type.reflecion
+package klib.data.type.reflection
 
 import com.ionspin.kotlin.bignum.decimal.BigDecimal
 import com.ionspin.kotlin.bignum.integer.BigInteger
