@@ -51,8 +51,8 @@ script:
             targetFormats: setOf(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName: group.toString()
             packageVersion: libs.versions("compose.desktop.packageVersion").requiredVersion
-            description: '"Compose Multiplatform App"'
-            copyright: '"© 2024 My Name. All rights reserved."'
+            description: description
+            copyright: '"© 2025 ${settings.settingsScript.developer.name}. All rights reserved."'
             vendor: '"Example vendor"'
             licenseFile: (rootProject.file("LICENSE.txt"))
             appResourcesRootDir: project.layout.projectDirectory.dir("resources")
