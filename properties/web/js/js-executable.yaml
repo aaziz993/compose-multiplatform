@@ -5,6 +5,5 @@ script:
       targets:
         - withType<KotlinJsTargetDsl>: |
             {
-              if(this::class == KotlinJsTargetDsl::class)
-                binaries.executable()
+              binaries.executable()
             }
