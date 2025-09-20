@@ -3,6 +3,7 @@ config:
     - org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
     - org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest
     - org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
+    - gradle.plugins.kotlin.targets.jvm.registerJavaCodegenTestTask
 script:
   - kotlin:
       jvm: |
@@ -32,6 +33,8 @@ script:
                   "-Xjvm-default=all",
                 )
               }
+
+              createJavaCodegenTest
             }
       sourceSets:
         - named: |

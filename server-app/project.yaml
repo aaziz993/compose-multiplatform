@@ -1,7 +1,7 @@
 imports:
   - ../properties/root.yaml
   - ../properties/kotlin/mpp/mpp.yaml
-  - ../properties/jvm/jvm-app.yaml
+  - ../properties/kotlin/targets/jvm/jvm-app.yaml
   - ../properties/subproject.yaml
 script:
   - description: '"Server application."'

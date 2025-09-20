@@ -12,7 +12,7 @@ import gradle.plugins.initialization.SLF4JProblemReporterContext
 import gradle.plugins.karakum.KarakumPlugin
 import gradle.plugins.knit.KnitPlugin
 import gradle.plugins.kotlin.mpp.MPPPlugin
-import gradle.plugins.kotlin.targets.JvmPlugin
+import gradle.plugins.kotlin.targets.jvm.JvmPlugin
 import gradle.plugins.kover.KoverPlugin
 import gradle.plugins.publish.PublishPlugin
 import gradle.plugins.signing.SigningPlugin

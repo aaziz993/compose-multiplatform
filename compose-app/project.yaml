@@ -1,20 +1,20 @@
 imports:
   - ../properties/root.yaml
   - ../properties/kotlin/mpp/mpp.yaml
-  - ../properties/jvm/jvm-app.yaml
+  - ../properties/kotlin/targets/jvm/jvm-app.yaml
   - ../properties/android/android-application.yaml
-  - ../properties/native/apple/ios/ios.yaml
+  - ../properties/kotlin/targets/native/apple/ios/ios.yaml
   - ../properties/kotlin/cocoapods.yaml
-  - ../properties/web/js/js-executable.yaml
-  - ../properties/web/wasmJs/wasm-js-executable.yaml
+  - ../properties/kotlin/targets/js/js-executable.yaml
+  - ../properties/kotlin/targets/wasmJs/wasm-js-executable.yaml
   - ../properties/kotlin/mpp/mpp-hierarchy-template.yaml
-  - ../properties/jvm-common.yaml
-  - ../properties/native/native-common.yaml
-  - ../properties/android-ios.yaml
-  - ../properties/android-ios-web.yaml
-  - ../properties/jvm-android-ios.yaml
-  - ../properties/web/js-common.yaml
-  - ../properties/jvm-js-common.yaml
+  - ../properties/kotlin/targets/jvm-common.yaml
+  - ../properties/kotlin/targets/native/native-common.yaml
+  - ../properties/kotlin/targets/android-ios.yaml
+  - ../properties/kotlin/targets/android-ios-web.yaml
+  - ../properties/kotlin/targets/jvm-android-ios.yaml
+  - ../properties/kotlin/targets/js-common.yaml
+  - ../properties/kotlin/targets/jvm-js-common.yaml
   - ../properties/compose.yaml
   - ../properties/android/android-application-compose.yaml
   - ../properties/subproject.yaml
