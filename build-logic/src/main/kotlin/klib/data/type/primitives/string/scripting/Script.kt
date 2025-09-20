@@ -217,7 +217,7 @@ public abstract class Script {
         public inline operator fun <reified T : Script> invoke(
             file: String,
             noinline importToFile: (file: String, import: String) -> String = { file, import ->
-                File(file).parentFile.resolve(import).path
+                File(file).parentFile.resolve(import).canonicalPath
             },
             noinline decoder: (file: String) -> Map<String, Any?> = { file ->
                 val file = File(file)

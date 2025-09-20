@@ -73,7 +73,7 @@ public class ApplicationScript(
                 ?: error("$applicationFileName not found in resources")
 
             return Script<ApplicationScript>(
-                File(applicationFile).path,
+                File(applicationFile).canonicalPath,
             ) {
                 compilationImplicitReceivers = listOf(TConfiguration::class, serverConfigEvaluationImplicitReceiver::class)
                 evaluationImplicitReceivers = listOf(engineConfigEvaluationImplicitReceiver, serverConfigEvaluationImplicitReceiver)
