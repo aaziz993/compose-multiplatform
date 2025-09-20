@@ -7,8 +7,9 @@ set -euo pipefail
 IFS=$'\n\t'
 
 PATTERNS=(
-    ".signing*"
-    "*.podspec"
+"*.podspec"
+"*.gpg.*"
+"*.keystore.*"
 )
 
 FIND_ARGS=()
