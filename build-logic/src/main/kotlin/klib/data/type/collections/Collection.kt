@@ -710,7 +710,7 @@ public fun <T> T.printTree(
                 ),
             )
         }
-    }(PrintTreeArgs(children(this@printTree), 0, ""))
+    }(PrintTreeArgs(children(this@printTree), 1, ""))
 }
 
 private data class PrintTreeArgs<T>(
