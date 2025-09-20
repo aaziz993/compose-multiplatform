@@ -5,6 +5,7 @@ config:
     - org.gradle.kotlin.dsl.*
     - org.gradle.api.JavaVersion
     - org.gradle.jvm.toolchain.JavaLanguageVersion
+    - org.gradle.jvm.toolchain.JvmVendorSpec
     - org.jetbrains.kotlin.gradle.dsl.JvmTarget
     - gradle.plugins.kotlin.targets.jvm.toJvmTarget
   jvmTarget: 22

@@ -31,7 +31,11 @@ script:
       targetCompatibility: JavaVersion.toVersion(libs.versions("jvm.target").requiredVersion)
   - kotlin:
       explicitApi: ExplicitApiMode.Strict
-      jvmToolchain: (libs.versions("java.toolchain").requiredVersion.toInt())
+      jvmToolchain: |
+        { jvmToolchain ->
+          jvmToolchain.languageVersion /= JavaLanguageVersion.of(libs.versions("java.toolchain").requiredVersion.toInt())
+          jvmToolchain.vendor /= JvmVendorSpec.ORACLE
+        }
       compilerOptions:
         allWarningsAsErrors: false
         progressiveMode: true
