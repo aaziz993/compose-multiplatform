@@ -10,7 +10,7 @@ script:
               sourceSet.kotlin.srcDir(projectDir.resolve("build/generated/ksp/metadata/commonMain/gradle.kotlin"))
 
               sourceSet.dependencies {
-                implementation(libs["km.logging"])
+                // implementation(libs["km.logging"])
                 implementation(libs["kotlinx.datetime"])
                 implementation(libs["kcron.common"])
                 implementation(libs["bignum"])
