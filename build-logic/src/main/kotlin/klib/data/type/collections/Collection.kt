@@ -1,15 +1,20 @@
 package klib.data.type.collections
 
+import com.github.ajalt.colormath.model.Ansi16
+import klib.data.type.ansi.Attribute
+import klib.data.type.ansi.ansiSpan
 import klib.data.type.collections.list.asList
 import klib.data.type.collections.list.drop
 import klib.data.type.collections.map.asMap
-import klib.data.type.primitives.string.tokenization.substitution.substitute
 import klib.data.type.primitives.toInt
 import kotlin.collections.getOrElse
 import kotlin.collections.getOrNull
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
+import klib.data.type.primitives.string.tokenization.substitution.substitute
+import kotlin.IllegalArgumentException
+import kotlin.NoSuchElementException
 
 public fun <T : Collection<E>, E> T.takeIfNotEmpty(): T? = takeIf(Collection<*>::isNotEmpty)
 
@@ -655,8 +660,7 @@ public fun <T : Any> T.deepSubstitute(
                     { _, program -> program { path -> substitute(path, getter(path), tryDeepSubstitute) } },
                     cache,
                 )
-            }
-            catch (e: NoSuchElementException) {
+            } catch (e: NoSuchElementException) {
                 e.message
             }.also { value -> cache[pathPlain] = value }
         else value?.let(unknown)
@@ -681,36 +685,31 @@ public fun <T> T.printTree(
     intermediateConnector: String = "├──",
     verticalConnector: String = "│",
     lastConnector: String = "└──",
-    children: (node: T) -> List<T>,
-    transform: (node: T, depth: Int, visited: Boolean) -> String = { value, _, _ -> value.toString() }
+    children: List<T>.() -> List<T>,
+    transform: List<T>.(visited: Boolean) -> String = { last().toString() }
 ) {
-    appendable.appendLine(transform(this@printTree, 0, false))
+    appendable.appendLine(listOf(this).transform(false))
 
-    val visits = mutableSetOf(this@printTree)
+    val visits = mutableSetOf(this)
 
-    DeepRecursiveFunction<PrintTreeArgs<T>, Unit> { (nodes, depth, prefix) ->
-        nodes.forEachIndexed { index, node ->
+    DeepRecursiveFunction<PrintTreeArgs<T>, Unit> { (nodes, prefix) ->
+        nodes.children().forEachIndexed { index, node ->
             val isLast = index == nodes.lastIndex
             val connector = if (isLast) lastConnector else intermediateConnector
 
             appendable.append(prefix)
             appendable.append(connector)
-            appendable.appendLine(transform(node, depth, !visits.add(node)))
+            appendable.appendLine(nodes.transform(!visits.add(node)))
 
             callRecursive(
-                PrintTreeArgs(
-                    children(node),
-                    depth + 1,
-                    "$prefix${if (isLast) "   " else "$verticalConnector  "}",
-                ),
+                PrintTreeArgs(nodes + node, "$prefix${if (isLast) "   " else "$verticalConnector  "}"),
             )
         }
-    }(PrintTreeArgs(children(this@printTree), 1, ""))
+    }(PrintTreeArgs(listOf(this), ""))
 }
 
 private data class PrintTreeArgs<T>(
-    val node: List<T>,
-    val depth: Int,
+    val nodes: List<T>,
     val prefix: String,
 )
 
@@ -718,8 +717,8 @@ public fun <T> T.toTreeString(
     intermediateConnector: String = "├──",
     verticalConnector: String = "│",
     lastConnector: String = "└──",
-    children: T.() -> List<T>,
-    transform: (value: T, depth: Int, visited: Boolean) -> String = { value, _, _ -> value.toString() }
+    children: List<T>.() -> List<T>,
+    transform: List<T>.(visited: Boolean) -> String = { last().toString() }
 ): String = buildString {
     printTree(this, intermediateConnector, verticalConnector, lastConnector, children, transform)
 }
@@ -730,13 +729,13 @@ public fun String.printTree(
     intermediateConnector: String = "├──",
     verticalConnector: String = "│",
     lastConnector: String = "└──",
-    transform: (node: String, depth: Int, visited: Boolean) -> String = { value, _, _ -> value }
+    transform: List<String>.(visited: Boolean) -> String = { last() }
 ): Unit = printTree(
     appendable,
     intermediateConnector,
     verticalConnector,
     lastConnector,
-    children = { node -> map[node].orEmpty() },
+    children = { map[last()].orEmpty() },
     transform,
 )
 
@@ -745,7 +744,7 @@ public fun String.toTreeString(
     intermediateConnector: String = "├──",
     verticalConnector: String = "│",
     lastConnector: String = "└──",
-    transform: (value: String, depth: Int, visited: Boolean) -> String = { value, _, _ -> value }
+    transform: List<String>.(visited: Boolean) -> String = { last() }
 ): String = buildString {
     printTree(map, this, intermediateConnector, verticalConnector, lastConnector, transform)
 }
