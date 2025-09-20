@@ -9,6 +9,7 @@ import gradle.plugins.apple.ApplePlugin
 import gradle.plugins.compose.ComposePlugin
 import gradle.plugins.dokka.DokkaPlugin
 import gradle.plugins.initialization.SLF4JProblemReporterContext
+import gradle.plugins.karakum.KarakumPlugin
 import gradle.plugins.knit.KnitPlugin
 import gradle.plugins.kotlin.mpp.MPPPlugin
 import gradle.plugins.kotlin.targets.JvmPlugin
@@ -40,6 +41,7 @@ public class ProjectPlugin : Plugin<Project> {
             pluginManager.apply(ApplePlugin::class.java)
             pluginManager.apply(JvmPlugin::class.java)
             pluginManager.apply(JsPlugin::class.java)
+            pluginManager.apply(KarakumPlugin::class.java)
             pluginManager.apply(WasmJsPlugin::class.java)
             pluginManager.apply(ComposePlugin::class.java)
             pluginManager.apply(PublishPlugin::class.java)

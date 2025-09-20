@@ -74,7 +74,7 @@ script:
                     "-Xdont-warn-on-error-suppression",
                     //  https://youtrack.jetbrains.com/issue/KT-67355
                     "-Xir-generate-inline-anonymous-functions",
-                    "-Xsuppress-warning=NOTHING_TO_INLINE",
+                    "Xwarning-level=NOTHING_TO_INLINE:disabled",
                     "-Xpartial-linkage-loglevel=ERROR",
                 )
             }

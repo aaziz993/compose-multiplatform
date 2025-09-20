@@ -11,6 +11,15 @@ script:
       js: |
         {
           browser()
+          nodejs()
+          compilations.all {
+            compilerOptions {
+              freeCompilerArgs.addAll(listOf(
+                  "-Xir-generate-inline-anonymous-functions",
+                  "-Xpartial-linkage-loglevel=ERROR",
+              ))
+            }
+          }
         }
       sourceSets:
         - named: |
@@ -35,5 +44,3 @@ script:
                 implementation(kotlin("test-js"))
               }
             }
-  - karakum:
-      sourceSets: ()
