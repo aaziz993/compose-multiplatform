@@ -15,7 +15,6 @@ script:
         - withType<KotlinWasmJsTargetDsl>: |
             {
               compilerOptions {
-                // WASM does NOT support -Xexport-kdoc or JS-specific flags
                 freeCompilerArgs.addAll(listOf(
                   "-Xpartial-linkage-loglevel=ERROR",
                 ))

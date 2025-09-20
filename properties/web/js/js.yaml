@@ -17,7 +17,6 @@ script:
         - withType<KotlinJsTargetDsl>: |
             {
               compilerOptions {
-                // ECMAScript target for JS output.
                 target /= "es2015"
                 freeCompilerArgs.addAll(listOf(
                     "-Xdont-warn-on-error-suppression",
