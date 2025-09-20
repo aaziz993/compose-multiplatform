@@ -3,7 +3,7 @@ config:
     - org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
     - org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest
     - org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
-    - gradle.plugins.kotlin.targets.jvm.registerJavaCodegenTestTask
+    - gradle.plugins.kotlin.targets.jvm.createJavaCodegenTest
 script:
   - kotlin:
       jvm: |
