@@ -192,5 +192,5 @@ script:
         ":compiler",
         ":shared",
         ":compose-app",
-        ":server-app"
+        ":server-app",
       )
