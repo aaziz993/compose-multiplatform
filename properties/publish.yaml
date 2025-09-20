@@ -35,9 +35,9 @@ script:
             { repository ->
               repository.name = "MavenCentral"
               repository.url = uri(
-                if(version.toString().toVersion().preRelease == null)
-                "https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/"
-                else "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+                if(version.toString().toVersion().isPreRelease)
+                  "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+                else "https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/"
               )
               repository.credentials { credentials ->
                 credentials.username = sensitive("publishing.repositories.sonatype.username")
