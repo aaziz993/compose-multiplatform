@@ -126,29 +126,34 @@ public class MPPPlugin : Plugin<Project> {
     }
 
     private fun Project.registerTasks() {
-        val kotlin = extensions.getByType(org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension::class.java)
-
         tasks.register("printHierarchyTemplate") {
             group = "help"
             description = "Prints Kotlin source set hierarchy"
 
             doLast {
-                val hierarchy = kotlin.sourceSets.associate { sourceSet ->
-                    sourceSet.name to sourceSet.dependsOn.map(KotlinSourceSet::getName)
-                }
+                val dependees: Map<String, List<String>> = kotlin.sourceSets
+                    .associate { sourceSet -> sourceSet.name to emptyList<String>() }
+                    .toMutableMap()
+                    .apply {
+                        kotlin.sourceSets.forEach { sourceSet ->
+                            sourceSet.dependsOn.forEach { parent ->
+                                val children = getOrDefault(parent.name, emptyList())
+                                put(parent.name, children + sourceSet.name)
+                            }
+                        }
+                    }
 
                 val commonMain = KotlinSourceSet.COMMON_MAIN_SOURCE_SET_NAME
-                project.logger.lifecycle("Kotlin SourceSet Hierarchy from commonMain:")
-                project.logger.lifecycle(commonMain.toTreeString(hierarchy))
+                project.logger.lifecycle("Kotlin SourceSet Dependees Hierarchy from commonMain:")
+                project.logger.lifecycle(commonMain.toTreeString(dependees))
 
+                // Print hierarchies from other roots (if any).
                 val allSourceSets = kotlin.sourceSets.map(KotlinSourceSet::getName).toSet()
-                val childrenSets = hierarchy.values.flatten().toSet()
+                val childrenSets = dependees.values.flatten().toSet()
                 val roots = allSourceSets - childrenSets
-                roots.forEach { root ->
-                    if (root != commonMain) {
-                        project.logger.lifecycle("Kotlin SourceSet Hierarchy from $root:")
-                        project.logger.lifecycle(root.toTreeString(hierarchy))
-                    }
+                roots.filter { root -> root != commonMain }.forEach { root ->
+                    project.logger.lifecycle("Kotlin SourceSet Dependees Hierarchy from $root:")
+                    project.logger.lifecycle(root.toTreeString(dependees))
                 }
             }
         }
