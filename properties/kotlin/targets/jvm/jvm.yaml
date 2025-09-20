@@ -34,7 +34,7 @@ script:
                 )
               }
 
-              createJavaCodegenTest
+              createJavaCodegenTest()
             }
       sourceSets:
         - named: |
