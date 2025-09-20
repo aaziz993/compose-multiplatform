@@ -14,9 +14,8 @@ config:
     - io.micrometer.core.instrument.binder.system.ProcessorMetrics
     - io.micrometer.core.instrument.binder.system.UptimeMetrics
     - io.micrometer.core.instrument.distribution.DistributionStatisticConfig
-    - io.micrometer.prometheus.PrometheusConfig
-    - io.micrometer.prometheus.PrometheusMeterRegistry
-    - java.time.Duration
+    - io.micrometer.prometheusmetrics.PrometheusMeterRegistry
+    - io.micrometer.prometheusmetrics.PrometheusConfig
 script:
   - module: |
       {

@@ -38,6 +38,7 @@ config:
   imports:
     - java.util.UUID
     - java.io.File
+    - java.time.Duration
     - java.util.zip.Deflater
     - org.slf4j.event.Level
     - kotlinx.serialization.json.Json

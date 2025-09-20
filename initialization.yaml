@@ -144,9 +144,9 @@ script:
           from(layout.settingsDirectory.file("project.sh").asFile)
           // Content can be added at the bottom of the script
           appendScript {
-            """
-            spotless_pre_commit
-            """
+          """
+          spotless_pre_commit
+          """
           }
         }
       # Applies all above hooks.
