@@ -141,7 +141,13 @@ script:
       preCommit: |
         {
           // Script from a source, can be a String, URL or File.
-          from(layout.settingsDirectory.file("scripts/pre-commit/spotless-pre-commit.sh").asFile)
+          from(layout.settingsDirectory.file("project.sh").asFile)
+          // Content can be added at the bottom of the script
+          appendScript {
+            """
+            spotless_pre_commit
+            """
+          }
         }
       # Applies all above hooks.
       createHooks: ()
