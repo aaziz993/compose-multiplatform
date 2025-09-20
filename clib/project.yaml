@@ -1,17 +1,18 @@
 imports:
   - ../properties/root.yaml
   - ../properties/mpp.yaml
-  - ../properties/android/android-library.yaml
   - ../properties/jvm/jvm.yaml
-  - ../properties/jvm-common.yaml
+  - ../properties/android/android-library.yaml
   - ../properties/native/apple/ios.yaml
   - ../properties/kotlin/cocoapods.yaml
+  - ../properties/web/js/js-library.yaml
+  - ../properties/web/wasmJs/wasm-js-library.yaml
+  - ../properties/mpp-hierarchy-template.yaml
+  - ../properties/jvm-common.yaml
   - ../properties/native/native-common.yaml
   - ../properties/android-ios.yaml
   - ../properties/android-ios-web.yaml
   - ../properties/jvm-android-ios.yaml
-  - ../properties/web/js/js-library.yaml
-  - ../properties/web/wasmJs/wasm-js-library.yaml
   - ../properties/web/js-common.yaml
   - ../properties/jvm-js-common.yaml
   - ../properties/compose.yaml
