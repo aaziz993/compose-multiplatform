@@ -83,4 +83,4 @@ server-auto-reload: # 🔄 Server application hot reload.
   ./gradlew -t autoreload-engine-main:build
 
 clean: # 🧹 Clean all.
-	@. project.sh && clear
+	@. project.sh && clean

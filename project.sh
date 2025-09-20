@@ -37,7 +37,7 @@ _CLEAN=(
 "*.keystore.*"
 )
 
-function clear(){
+function clean(){
   set -euo pipefail
 
   ./gradlew clean
