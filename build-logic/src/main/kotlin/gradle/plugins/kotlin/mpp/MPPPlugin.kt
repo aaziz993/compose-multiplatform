@@ -163,7 +163,14 @@ public class MPPPlugin : Plugin<Project> {
                 val roots = all - children
                 roots.filter { root -> root != commonMain }.forEach { root ->
                     project.logger.lifecycle("Kotlin SourceSet Dependees Hierarchy from $root:")
-                    project.logger.lifecycle(root.toTreeString(dependees))
+                    project.logger.lifecycle(
+                        root.toTreeString(dependees) { value, _ ->
+                            value.ansiSpan {
+                                attribute(Attribute.INTENSITY_BOLD)
+                                attribute(Ansi16(32))
+                            }
+                        },
+                    )
                 }
             }
         }
