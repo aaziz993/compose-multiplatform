@@ -10,7 +10,7 @@ script:
             when (outgoingContent.contentType?.withoutParameters()) {
               ContentType.Text.CSS -> listOf(
                   EntityTagVersion(file.lastModified().hashCode().toString()),
-                  // LastModifiedVersion(Date(file.lastModified()))
+                  LastModifiedVersion(Date(file.lastModified()))
               )
               else -> emptyList()
             }
