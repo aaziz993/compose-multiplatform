@@ -54,6 +54,13 @@ script:
               }
               generateTypeScriptDefinitions()
             }
+      sourceSets:
+        - named: |
+            ("jsCommonMain") { sourceSet ->
+              sourceSet.dependencies {
+                implementation(libs("kotlinWrappers")["browser"])
+              }
+            }
   - tasks:
       - withType<KotlinNpmInstallTask>: |
           {
