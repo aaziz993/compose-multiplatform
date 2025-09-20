@@ -36,6 +36,22 @@
           from { opacity: 0; transform: translateY(20px); }
           to   { opacity: 1; transform: translateY(0); }
         }
+        .btn {
+            display: inline-block;
+            padding: 0.6rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            color: #fff;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #ff7e5f, #feb47b);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.35);
+        }
     </style>
 </head>
 <body>
@@ -46,6 +62,11 @@
     </h1>
     <h2>Running</h2>
     <p>Welcome! Your server is alive and serving requests.</p>
+    <!-- Links to WS and Swagger -->
+    <div class="links" style="margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: center;">
+        <a href="/ws" class="btn">WebSocket</a>
+        <a href="/swagger" class="btn">Swagger Docs</a>
+    </div>
 </div>
 </body>
 </html>
