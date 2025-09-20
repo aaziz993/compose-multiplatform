@@ -1,6 +1,6 @@
 imports:
   - ../properties/root.yaml
-  - ../properties/mpp.yaml
+  - ../properties/kotlin/mpp.yaml
   - ../properties/jvm/jvm-app.yaml
   - ../properties/subproject.yaml
 script:
