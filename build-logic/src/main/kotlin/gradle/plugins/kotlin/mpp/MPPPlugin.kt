@@ -29,7 +29,7 @@ public class MPPPlugin : Plugin<Project> {
         with(target) {
             pluginManager.withPlugin("org.jetbrains.kotlin.multiplatform") {
                 adjustSourceSets()
-                registerTasks()
+                registerPrintHierarchyTemplateTask()
             }
         }
     }
@@ -125,7 +125,7 @@ public class MPPPlugin : Plugin<Project> {
         }
     }
 
-    private fun Project.registerTasks() {
+    private fun Project.registerPrintHierarchyTemplateTask() =
         tasks.register("printHierarchyTemplate") {
             group = "help"
             description = "Prints Kotlin source set hierarchy"
@@ -148,14 +148,13 @@ public class MPPPlugin : Plugin<Project> {
                 project.logger.lifecycle(commonMain.toTreeString(dependees))
 
                 // Print hierarchies from other roots (if any).
-                val allSourceSets = kotlin.sourceSets.map(KotlinSourceSet::getName).toSet()
-                val childrenSets = dependees.values.flatten().toSet()
-                val roots = allSourceSets - childrenSets
+                val all = kotlin.sourceSets.map(KotlinSourceSet::getName).toSet()
+                val children = dependees.values.flatten().toSet()
+                val roots = all - children
                 roots.filter { root -> root != commonMain }.forEach { root ->
                     project.logger.lifecycle("Kotlin SourceSet Dependees Hierarchy from $root:")
                     project.logger.lifecycle(root.toTreeString(dependees))
                 }
             }
         }
-    }
 }
