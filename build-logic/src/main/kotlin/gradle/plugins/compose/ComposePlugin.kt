@@ -12,10 +12,6 @@ import gradle.api.project.sourceSetsToComposeResourcesDirs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.assign
-import org.jetbrains.compose.resources.configureComposeResourcesGeneration
-import org.jetbrains.compose.resources.configureMultimoduleResources
-import org.jetbrains.compose.resources.AssembleTargetResourcesTask
-import org.jetbrains.compose.resources.onKotlinJvmApplied
 
 public class ComposePlugin : Plugin<Project> {
 
