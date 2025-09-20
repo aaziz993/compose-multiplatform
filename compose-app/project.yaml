@@ -51,7 +51,13 @@ script:
             targetFormats: setOf(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName: group.toString()
             packageVersion: libs.versions("compose.desktop.packageVersion").requiredVersion
+            description: '"Compose Multiplatform App"'
+            copyright: '"© 2024 My Name. All rights reserved."'
+            vendor: '"Example vendor"'
+            licenseFile: (rootProject.file("LICENSE.txt"))
+            appResourcesRootDir: project.layout.projectDirectory.dir("resources")
           buildTypes:
             release:
               proguard:
-                configurationFiles.from: ("compose-desktop.pro")
+                configurationFiles.from: (file("compose-desktop.pro"))
+                obfuscate: true
