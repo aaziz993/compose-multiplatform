@@ -1,6 +1,6 @@
 .PHONY: chmod dependencies-check build-config format-check format quality-check \
 coverage-verify coverage doc doc-samples-check doc-samples test full-check kotlin-ts jar generate signing-gpg \
-list-signing-gpg clean-signing-gpg dist-signing-gpg publish-local publish-github publish-space publish-maven publish\
+list-signing-gpg clean-signing-gpg dist-signing-gpg publish-local publish-github publish-maven publish\
 server-auto-reload clean
 
 chmod: # 🔓 Give permission to execute gradlew.
@@ -66,9 +66,6 @@ publish-local: full-check # 📦🚀 Publish to Maven Local.
 
 publish-github: full-check # 📦🚀 Publish to GitHub Packages.
 	./gradlew publishAllPublicationsToGithubPackagesRepository
-
-publish-space: full-check # 📦🚀 Publish to Jetbrains Space Packages.
-	./gradlew publishAllPublicationsToSpacePackagesRepository
 
 publish-maven: full-check # 📦🚀 Publish to Maven Repository.
 	./gradlew publishAllPublicationsToMavenRepository
