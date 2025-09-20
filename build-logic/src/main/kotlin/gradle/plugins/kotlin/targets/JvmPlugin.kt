@@ -16,8 +16,8 @@ internal class JvmPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             pluginManager.withPlugin("org.jetbrains.kotlin.multiplatform") {
-//                registerJvmStressTest()
-//                registerJavaCodegenTestTask()
+                registerJvmStressTest()
+                registerJavaCodegenTestTask()
             }
         }
     }
