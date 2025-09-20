@@ -149,10 +149,10 @@ public class MPPPlugin : Plugin<Project> {
                 val commonMain = KotlinSourceSet.COMMON_MAIN_SOURCE_SET_NAME
                 project.logger.lifecycle("Kotlin SourceSet Dependees Hierarchy from commonMain:")
                 project.logger.lifecycle(
-                    commonMain.toTreeString(dependees) { value, depth, _ ->
-                        value.ansiSpan {
+                    commonMain.toTreeString(dependees) {
+                        last().ansiSpan {
                             attribute(Attribute.INTENSITY_BOLD)
-                            attribute(Ansi16(32 + depth))
+                            attribute(Ansi16(31 + size))
                         }
                     },
                 )
@@ -164,10 +164,10 @@ public class MPPPlugin : Plugin<Project> {
                 roots.filter { root -> root != commonMain }.forEach { root ->
                     project.logger.lifecycle("Kotlin SourceSet Dependees Hierarchy from $root:")
                     project.logger.lifecycle(
-                        root.toTreeString(dependees) { value, depth, _ ->
-                            value.ansiSpan {
+                        root.toTreeString(dependees) {
+                            last().ansiSpan {
                                 attribute(Attribute.INTENSITY_BOLD)
-                                attribute(Ansi16(32 + depth))
+                                attribute(Ansi16(31 + size))
                             }
                         },
                     )

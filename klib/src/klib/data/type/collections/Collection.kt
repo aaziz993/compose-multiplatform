@@ -15,6 +15,7 @@ import kotlin.contracts.contract
 import klib.data.type.primitives.string.tokenization.substitution.substitute
 import kotlin.IllegalArgumentException
 import kotlin.NoSuchElementException
+import kotlin.text.append
 
 public fun <T : Collection<E>, E> T.takeIfNotEmpty(): T? = takeIf(Collection<*>::isNotEmpty)
 
@@ -694,15 +695,17 @@ public fun <T> T.printTree(
 
     DeepRecursiveFunction<PrintTreeArgs<T>, Unit> { (nodes, prefix) ->
         nodes.children().forEachIndexed { index, node ->
+            val currentNodes = nodes + node
+
             val isLast = index == nodes.lastIndex
             val connector = if (isLast) lastConnector else intermediateConnector
 
             appendable.append(prefix)
             appendable.append(connector)
-            appendable.appendLine(nodes.transform(!visits.add(node)))
+            appendable.appendLine(currentNodes.transform(!visits.add(node)))
 
             callRecursive(
-                PrintTreeArgs(nodes + node, "$prefix${if (isLast) "   " else "$verticalConnector  "}"),
+                PrintTreeArgs(currentNodes, "$prefix${if (isLast) "   " else "$verticalConnector  "}"),
             )
         }
     }(PrintTreeArgs(listOf(this), ""))

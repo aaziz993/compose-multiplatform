@@ -113,19 +113,19 @@ public abstract class Script {
 
     override fun toString(): String = buildStringAnsi {
         attribute(
-            fileTree.entries.first().key.toTreeString(fileTree) { value, depth, visited ->
+            fileTree.keys.first().toTreeString(fileTree) { visited ->
                 if (visited) "${
                     "File:".ansiSpan {
                         attribute(Attribute.INTENSITY_BOLD)
                         attribute(Ansi16(31))
                     }
-                } $value ↑"
+                } ${last()} ↑"
                 else "${
                     "File:".ansiSpan {
                         attribute(Attribute.INTENSITY_BOLD)
-                        attribute(Ansi16(32 + depth))
+                        attribute(Ansi16(31 + size))
                     }
-                } $value "
+                } ${last()} "
             },
         )
         attribute('\n')
