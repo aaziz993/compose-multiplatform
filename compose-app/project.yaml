@@ -3,7 +3,7 @@ imports:
   - ../properties/mpp.yaml
   - ../properties/jvm/jvm-app.yaml
   - ../properties/android/android-application.yaml
-  - ../properties/native/apple/ios.yaml
+  - ../properties/native/apple/ios/ios.yaml
   - ../properties/kotlin/cocoapods.yaml
   - ../properties/web/js/js-executable.yaml
   - ../properties/web/wasmJs/wasm-js-executable.yaml
