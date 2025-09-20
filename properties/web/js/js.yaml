@@ -18,17 +18,16 @@ script:
             {
               compilerOptions {
                 target /= "es2015"
-                freeCompilerArgs.addAll(listOf(
+                freeCompilerArgs.addAll(
                     "-Xdont-warn-on-error-suppression",
                     // https://youtrack.jetbrains.com/issue/KT-67355
                     "-Xir-generate-inline-anonymous-functions",
-                    "-Xpartial-linkage-loglevel=ERROR",
                     "-Xexplicit-api=strict"
-                ))
+                )
 
-                optIn.addAll(listOf(
+                optIn.addAll(
                   "kotlin.js.ExperimentalJsExport",
-                ))
+                )
               }
             }
       sourceSets:

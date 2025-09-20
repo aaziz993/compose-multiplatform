@@ -69,3 +69,12 @@ script:
               "--ignore-scripts",
             ))
           }
+      - withType<Kotlin2JsCompile>: |
+          {
+            compilerOptions {
+                target /= "es2015"
+                freeCompilerArgs.addAll(
+                  "-Xpartial-linkage-loglevel=ERROR",
+                )
+            }
+          }

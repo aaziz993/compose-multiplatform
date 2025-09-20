@@ -11,12 +11,3 @@ script:
           browser()
           nodejs()
         }
-      targets:
-        - withType<KotlinWasmJsTargetDsl>: |
-            {
-              compilerOptions {
-                freeCompilerArgs.addAll(listOf(
-                  "-Xpartial-linkage-loglevel=ERROR",
-                ))
-              }
-            }
