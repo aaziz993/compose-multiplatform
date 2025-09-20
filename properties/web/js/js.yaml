@@ -12,15 +12,26 @@ script:
         {
           browser()
           nodejs()
-          compilations.all {
-            compilerOptions {
-              freeCompilerArgs.addAll(listOf(
-                  "-Xir-generate-inline-anonymous-functions",
-                  "-Xpartial-linkage-loglevel=ERROR",
-              ))
-            }
-          }
         }
+      targets:
+        - withType<KotlinJsTargetDsl>: |
+            {
+              compilerOptions {
+                // ECMAScript target for JS output.
+                target /= "es2015"
+                freeCompilerArgs.addAll(listOf(
+                    "-Xdont-warn-on-error-suppression",
+                    // https://youtrack.jetbrains.com/issue/KT-67355
+                    "-Xir-generate-inline-anonymous-functions",
+                    "-Xpartial-linkage-loglevel=ERROR",
+                    "-Xexplicit-api=strict"
+                ))
+
+                optIn.addAll(listOf(
+                  "kotlin.js.ExperimentalJsExport",
+                ))
+              }
+            }
       sourceSets:
         - named: |
             ("jsMain") { sourceSet ->

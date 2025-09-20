@@ -24,10 +24,6 @@ script:
       targets:
         - withType<KotlinJsTargetDsl>: |
             {
-              compilerOptions.optIn.addAll(
-                "kotlin.js.ExperimentalJsExport",
-              )
-
               browser {
                 val rootDirPath = project.rootDir.path
                 val projectDirPath = project.projectDir.path
@@ -65,17 +61,4 @@ script:
               "--ignore-engines",
               "--ignore-scripts",
             ))
-          }
-      - withType<Kotlin2JsCompile>: |
-          {
-            compilerOptions {
-                target /= "es2015"
-                freeCompilerArgs.addAll(
-                    "-Xdont-warn-on-error-suppression",
-                    //  https://youtrack.jetbrains.com/issue/KT-67355
-                    "-Xir-generate-inline-anonymous-functions",
-                    "Xwarning-level=NOTHING_TO_INLINE:disabled",
-                    "-Xpartial-linkage-loglevel=ERROR",
-                )
-            }
           }

@@ -10,14 +10,17 @@ script:
         {
           browser()
           nodejs()
-          compilations.all {
-            compilerOptions {
-              freeCompilerArgs.addAll(listOf(
-                "Xwarning-level=NOTHING_TO_INLINE:disabled",
-              ))
-            }
-          }
         }
+      targets:
+        - withType<KotlinWasmJsTargetDsl>: |
+            {
+              compilerOptions {
+                // WASM does NOT support -Xexport-kdoc or JS-specific flags
+                freeCompilerArgs.addAll(listOf(
+                  "-Xpartial-linkage-loglevel=ERROR",
+                ))
+              }
+            }
       sourceSets:
         - named: |
             ("wasmJsMain") { sourceSet ->
