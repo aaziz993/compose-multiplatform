@@ -687,9 +687,7 @@ public fun <T> T.printTree(
     verticalConnector: String = "│",
     lastConnector: String = "└──",
     children: (node: T) -> List<T>,
-    transform: (node: T, visited: Boolean) -> String = { value, visited ->
-        "$value${if (visited) " ↑" else " "}"
-    }
+    transform: (node: T, visited: Boolean) -> String = { value, _ -> value.toString() }
 ) {
     appendable.appendLine(transform(this@printTree, false))
 
@@ -724,9 +722,7 @@ public fun <T> T.toTreeString(
     verticalConnector: String = "│",
     lastConnector: String = "└──",
     children: T.() -> List<T>,
-    transform: (value: T, visited: Boolean) -> String = { value, visited ->
-        "$value${if (visited) " ↑" else " "}"
-    }
+    transform: (value: T, visited: Boolean) -> String = { value, _ -> value.toString() }
 ): String = buildString {
     printTree(this, intermediateConnector, verticalConnector, lastConnector, children, transform)
 }
@@ -737,9 +733,7 @@ public fun String.printTree(
     intermediateConnector: String = "├──",
     verticalConnector: String = "│",
     lastConnector: String = "└──",
-    transform: (node: String, visited: Boolean) -> String = { value, visited ->
-        "$value${if (visited) " ↑" else " "}"
-    }
+    transform: (node: String, visited: Boolean) -> String = { value, _ -> value }
 ): Unit = printTree(
     appendable,
     intermediateConnector,
@@ -754,9 +748,7 @@ public fun String.toTreeString(
     intermediateConnector: String = "├──",
     verticalConnector: String = "│",
     lastConnector: String = "└──",
-    transform: (value: String, visited: Boolean) -> String = { value, visited ->
-        "$value${if (visited) " ↑" else " "}"
-    }
+    transform: (value: String, visited: Boolean) -> String = { value, _ -> value }
 ): String = buildString {
     printTree(map, this, intermediateConnector, verticalConnector, lastConnector, transform)
 }
