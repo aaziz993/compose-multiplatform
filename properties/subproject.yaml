@@ -34,7 +34,7 @@ script:
       jvmToolchain: |
         { jvmToolchain ->
           jvmToolchain.languageVersion /= JavaLanguageVersion.of(libs.versions("java.toolchain").requiredVersion.toInt())
-          jvmToolchain.vendor /= JvmVendorSpec.JETBRAINS
+          jvmToolchain.vendor /= JvmVendorSpec.ORACLE
         }
       compilerOptions:
         allWarningsAsErrors: false
