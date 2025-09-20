@@ -227,8 +227,7 @@ dependencies {
     runtimeOnly(libs.plugins.kmp.nativecoroutines.toDep())
 
     // Web
-    runtimeOnly(libs.kotlinx.html)
-    runtimeOnly(libs.plugins.js.plain.objects.toDep())
+    implementation(libs.plugins.js.plain.objects.toDep())
     implementation(libs.plugins.seskar.toDep())
     // converter of TypeScript declaration files to Kotlin declarations.
     implementation(libs.plugins.karakum.toDep())

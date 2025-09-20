@@ -68,7 +68,6 @@ script:
         freeCompilerArgs.addAll: |
           (
             "-Xignore-const-optimization-errors",
-            "-Xexplicit-api=strict",
             "-Xexport-kdoc",
             "-Xinline-classes",
             "-Xwhen-guards",

@@ -351,7 +351,6 @@ apple = "222.4595-0.23.2"
 ##Web
 gradle-node-plugin = "7.1.0"
 kotlin-wrappers-catalog = "2025.9.8"
-kotlinx-html = "0.12.0"
 js-plain-objects = "2.2.20"
 seskar = "4.20.0"
 # converter of TypeScript declaration files to Kotlin declarations.
@@ -805,7 +804,6 @@ compose-lint-checks = { module = "com.slack.lint.compose:compose-lint-checks", v
 
 ##Web
 kotlin-wrappers-catalog = { module = "org.jetbrains.kotlin-wrappers:kotlin-wrappers-catalog", version.ref = "kotlin-wrappers-catalog" }
-kotlinx-html = { module = "org.jetbrains.kotlinx:kotlinx-html", version.ref = "kotlinx-html" }
 seskar = { module = "io.github.turansky.seskar:seskar-core", version.ref = "seskar" }
 
 ##Compose multiplatform
