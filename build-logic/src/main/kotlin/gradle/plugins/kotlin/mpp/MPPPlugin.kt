@@ -136,9 +136,9 @@ public class MPPPlugin : Plugin<Project> {
                     .toMutableMap()
                     .apply {
                         kotlin.sourceSets.forEach { sourceSet ->
-                            sourceSet.dependsOn.forEach { parent ->
-                                val children = getOrDefault(parent.name, emptyList())
-                                put(parent.name, children + sourceSet.name)
+                            sourceSet.dependsOn.forEach { parentSourceSet ->
+                                val children = getOrDefault(parentSourceSet.name, emptyList())
+                                put(parentSourceSet.name, children + sourceSet.name)
                             }
                         }
                     }
