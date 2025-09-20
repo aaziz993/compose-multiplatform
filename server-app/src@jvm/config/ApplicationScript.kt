@@ -57,7 +57,7 @@ public class ApplicationScript(
 
     public companion object {
 
-        private val logging: Logger = LoggerFactory.getLogger(Script::class.java)
+        private val logger: Logger = LoggerFactory.getLogger(Script::class.java)
 
         internal inline operator fun <reified TConfiguration : Any> invoke(
             engineConfigEvaluationImplicitReceiver: TConfiguration,
@@ -86,7 +86,7 @@ public class ApplicationScript(
                     defaultImports(*IMPORTS)
                 }
             }.also { properties ->
-                logging.info(
+                logger.info(
                     "${System.lineSeparator()}${
                         engineConfigEvaluationImplicitReceiver.toString()
                             .uppercase()
@@ -96,7 +96,7 @@ public class ApplicationScript(
                             }
                     }/${environment.ansiSpan { attribute(Ansi16(34)) }}",
                 )
-                logging.info("${System.lineSeparator()}$properties")
+                logger.info("${System.lineSeparator()}$properties")
 
                 applicationScript = properties
             }
