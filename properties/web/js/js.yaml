@@ -9,7 +9,7 @@ script:
       - id: (libs.plugins("karakum").pluginId)
   - kotlin:
       js: |
-        {
+        (kotlin.IR) {
           browser()
           nodejs()
         }
