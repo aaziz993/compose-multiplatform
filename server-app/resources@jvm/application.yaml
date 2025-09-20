@@ -38,6 +38,8 @@ config:
   imports:
     - org.slf4j.event.Level
     - java.time.*
+    - java.time.temporal.*
+    - java.time.format.*
     - java.text.*
     - java.util.*
     - java.util.concurrent.TimeUnit
