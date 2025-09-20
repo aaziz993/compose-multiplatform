@@ -62,7 +62,7 @@ dist-signing-gpg: # 🌐 Distributes signing gpg key.
 	./gradlew distributeSigningGPGKey
 
 publish-local: full-check # 📦🚀 Publish to Maven Local.
-	./scripts/publish/publish-local.sh
+	@. project.sh && publish_local
 
 publish-github: full-check # 📦🚀 Publish to GitHub Packages.
 	./gradlew publishAllPublicationsToGithubPackagesRepository
@@ -74,7 +74,7 @@ publish-maven: full-check # 📦🚀 Publish to Maven Repository.
 	./gradlew publishAllPublicationsToMavenRepository
 
 publish: full-check # 📦🚀 Publish to Maven Local, Space Packages, GitHub Packages and Maven Repository.
-	./scripts/publish/publish.sh
+	@. project.sh && publish
 
 warmup: # 🔥 Warmup for jetbrains development environment.
 	./gradlew assemble
@@ -83,4 +83,4 @@ server-auto-reload: # 🔄 Server application hot reload.
   ./gradlew -t autoreload-engine-main:build
 
 clean: # 🧹 Clean all.
-	./scripts/clean.sh
+	@. project.sh && clear

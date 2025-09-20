@@ -5,7 +5,7 @@ import gradle.api.maybeNamed
 import gradle.api.project.ProjectScript
 import gradle.plugins.android.AndroidPlugin
 import gradle.plugins.apivalidation.ApiValidationPlugin
-import gradle.plugins.apple.ApplePlugin
+import gradle.plugins.kotlin.targets.nat.apple.ApplePlugin
 import gradle.plugins.compose.ComposePlugin
 import gradle.plugins.dokka.DokkaPlugin
 import gradle.plugins.initialization.SLF4JProblemReporterContext
@@ -16,8 +16,8 @@ import gradle.plugins.kotlin.targets.jvm.JvmPlugin
 import gradle.plugins.kover.KoverPlugin
 import gradle.plugins.publish.PublishPlugin
 import gradle.plugins.signing.SigningPlugin
-import gradle.plugins.web.JsPlugin
-import gradle.plugins.web.WasmJsPlugin
+import gradle.plugins.kotlin.targets.web.JsPlugin
+import gradle.plugins.kotlin.targets.web.WasmJsPlugin
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project

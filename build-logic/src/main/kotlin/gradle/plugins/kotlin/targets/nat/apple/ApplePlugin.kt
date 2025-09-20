@@ -1,4 +1,4 @@
-package gradle.plugins.apple
+package gradle.plugins.kotlin.targets.nat.apple
 
 import gradle.api.project.ProjectLayout
 import gradle.api.project.apple

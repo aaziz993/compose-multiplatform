@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-echo Publish
-
-source publish-local.sh
-
-./gradlew publishAllPublicationsToMavenLocalRepository publishAllPublicationsToBuildRepoRepository \
-    publishAllPublicationsToGithubPackagesRepository publishAllPublicationsToSpacePackagesRepository publishAllPublicationsToMavenRepository
