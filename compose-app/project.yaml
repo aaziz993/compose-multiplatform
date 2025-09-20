@@ -52,7 +52,7 @@ script:
             packageName: group.toString()
             packageVersion: libs.versions("compose.desktop.packageVersion").requiredVersion
             description: description
-            copyright: '"© 2025 ${settings.settingsScript.developer.name}. All rights reserved."'
+            copyright: '"© ${settings.settingsScript.year} - ${settings.settingsScript.developer.name}. All rights reserved."'
             vendor: '"Example vendor"'
             licenseFile: (rootProject.file("LICENSE.txt"))
             appResourcesRootDir: project.layout.projectDirectory.dir("resources")
