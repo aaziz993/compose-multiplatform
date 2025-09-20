@@ -1,11 +1,14 @@
 package gradle.plugins.kotlin.mpp
 
+import com.github.ajalt.colormath.model.Ansi16
 import gradle.api.configureEach
 import gradle.api.file.replace
 import gradle.api.project.ProjectLayout
 import gradle.api.project.kotlin
 import gradle.api.project.projectScript
 import gradle.api.project.sourceSetsToComposeResourcesDirs
+import klib.data.type.ansi.Attribute
+import klib.data.type.ansi.ansiSpan
 import klib.data.type.collections.toTreeString
 import klib.data.type.primitives.string.addPrefixIfNotEmpty
 import klib.data.type.primitives.string.lowercaseFirstChar
@@ -145,7 +148,14 @@ public class MPPPlugin : Plugin<Project> {
 
                 val commonMain = KotlinSourceSet.COMMON_MAIN_SOURCE_SET_NAME
                 project.logger.lifecycle("Kotlin SourceSet Dependees Hierarchy from commonMain:")
-                project.logger.lifecycle(commonMain.toTreeString(dependees))
+                project.logger.lifecycle(
+                    commonMain.toTreeString(dependees) { value, _ ->
+                        value.ansiSpan {
+                            attribute(Attribute.INTENSITY_BOLD)
+                            attribute(Ansi16(32))
+                        }
+                    },
+                )
 
                 // Print hierarchies from other roots (if any).
                 val all = kotlin.sourceSets.map(KotlinSourceSet::getName).toSet()
