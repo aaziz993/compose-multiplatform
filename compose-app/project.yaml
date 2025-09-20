@@ -5,15 +5,15 @@ imports:
   - ../properties/android/android-application.yaml
   - ../properties/kotlin/targets/native/apple/ios/ios.yaml
   - ../properties/kotlin/cocoapods.yaml
-  - ../properties/kotlin/targets/js/js-executable.yaml
-  - ../properties/kotlin/targets/wasmJs/wasm-js-executable.yaml
+  - ../properties/kotlin/targets/web/js/js-executable.yaml
+  - ../properties/kotlin/targets/web/wasmJs/wasm-js-executable.yaml
   - ../properties/kotlin/mpp/mpp-hierarchy-template.yaml
   - ../properties/kotlin/targets/jvm-common.yaml
   - ../properties/kotlin/targets/native/native-common.yaml
   - ../properties/kotlin/targets/android-ios.yaml
   - ../properties/kotlin/targets/android-ios-web.yaml
   - ../properties/kotlin/targets/jvm-android-ios.yaml
-  - ../properties/kotlin/targets/web.yaml
+  - ../properties/kotlin/targets/web/web.yaml
   - ../properties/kotlin/targets/jvm-web.yaml
   - ../properties/compose.yaml
   - ../properties/android/android-application-compose.yaml
