@@ -19,7 +19,7 @@ captures
 **/xcshareddata/WorkspaceSettings.xcsettings
 **/*.podspec
 **/*.yaml.cache
-**/*-catalog:*
+gradle/.*
 **/*.gpg.*
 **/*.keystore.*
 
