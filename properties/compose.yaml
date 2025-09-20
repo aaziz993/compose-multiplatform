@@ -58,7 +58,7 @@ script:
               }
             }
         - named: |
-            ("jvmJsCommonMain") { sourceSet ->
+            ("jvmWebMain") { sourceSet ->
               sourceSet.dependencies {
                 implementation(libs["connectivity.compose.http"])
               }

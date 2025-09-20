@@ -56,7 +56,7 @@ script:
             }
       sourceSets:
         - named: |
-            ("jsCommonMain") { sourceSet ->
+            ("webMain") { sourceSet ->
               sourceSet.dependencies {
                 implementation(libs("kotlinWrappers")["browser"])
               }
