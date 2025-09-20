@@ -26,9 +26,7 @@ function publish(){
 
   info "Publish"
 
-  ./gradlew publishAllPublicationsToMavenLocalRepository publishAllPublicationsToBuildRepoRepository \
-      publishAllPublicationsToGithubPackagesRepository publishAllPublicationsToSpacePackagesRepository \
-      publishAllPublicationsToMavenRepository
+  ./gradlew publishAllPublicationsToGithubPackagesRepository publishAllPublicationsToMavenCentralRepository
 }
 
 _CLEAN=(

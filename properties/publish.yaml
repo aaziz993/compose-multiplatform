@@ -33,38 +33,15 @@ script:
             }
         - maven: |
             { repository ->
-              repository.name = "Sonatype"
-              repository.url = uri("https://oss.sonatype.org")
+              repository.name = "MavenCentral"
+              repository.url = uri(
+                if(version.toString().toVersion().preRelease == null)
+                "https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/"
+                else "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+              )
               repository.credentials { credentials ->
                 credentials.username = sensitive("publishing.repositories.sonatype.username")
                 credentials.password = sensitive("publishing.repositories.sonatype.password")
-              }
-            }
-        - maven: |
-            { repository ->
-              repository.name = "SonatypeS01"
-              repository.url = uri("https://s01.oss.sonatype.org")
-              repository.credentials { credentials ->
-                credentials.username = sensitive("publishing.repositories.sonatype.s01.username")
-                credentials.password = sensitive("publishing.repositories.sonatype.s01.password")
-              }
-            }
-        - maven: |
-            { repository ->
-              repository.name = "SonatypeCentral"
-              repository.url = uri("https://central.sonatype.com")
-              repository.credentials { credentials ->
-                credentials.username = sensitive("publishing.repositories.sonatype.central.username")
-                credentials.password = sensitive("publishing.repositories.sonatype.central.password")
-              }
-            }
-        - maven: |
-            { repository ->
-              repository.name = "SonatypeStaging"
-              repository.url = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2")
-              repository.credentials { credentials ->
-                credentials.username = sensitive("publishing.repositories.sonatype.staging.username")
-                credentials.password = sensitive("publishing.repositories.sonatype.staging.password")
               }
             }
       publications:
