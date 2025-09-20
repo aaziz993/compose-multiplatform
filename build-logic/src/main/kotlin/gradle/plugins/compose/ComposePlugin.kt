@@ -43,13 +43,13 @@ public class ComposePlugin : Plugin<Project> {
         // Also it seems that ico and icns need to contain an icon in multiple resolutions, so the conversion becomes a bit inconvenient.
         compose.desktop.application.nativeDistributions {
             macOS {
-                if (!iconFile.isPresent) iconFile = project.file("$dir/drawable/compose-multiplatform.icns")
+                if (!iconFile.isPresent) iconFile = project.file("$dir/drawable/compose-multiplatform-osx.icns")
             }
             linux {
-                if (!iconFile.isPresent) iconFile = project.file("$dir/drawable/compose-multiplatform.png")
+                if (!iconFile.isPresent) iconFile = project.file("$dir/drawable/compose-multiplatform-linux.png")
             }
             windows {
-                if (!iconFile.isPresent) iconFile = project.file("$dir/drawable/compose-multiplatform.ico")
+                if (!iconFile.isPresent) iconFile = project.file("$dir/drawable/compose-multiplatform-mingw.ico")
             }
         }
     }
