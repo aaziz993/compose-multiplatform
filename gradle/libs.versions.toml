@@ -101,11 +101,11 @@ vanniktech-maven-publish = "0.34.0"
 
 ##Java
 # in project version
-java-toolchain = "21"
+java-toolchain = "24"
 # in project version
-jvm-target = "21"
+jvm-target = "24"
 # in project version
-android-jvm-target = "21"
+android-jvm-target = "24"
 # google java format code formatter
 googleJavaFormat = "1.25.0"
 # logging.
@@ -316,7 +316,7 @@ kotlin-cocoapods-tvos-deploymentTarget = "18.2"
 kotlin-cocoapods-watchos-deploymentTarget = "11.2"
 
 ##Android
-agp = "8.11.0"
+agp = "8.11.2"
 # in project version
 android-compileSdk = "36"
 # in project version

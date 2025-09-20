@@ -20,9 +20,9 @@ script:
               withJvm()
               group("web")
             }
-            group("jvmJsCommon") {
+            group("jvmWeb") {
               withJvm()
-              group("jsCommon")
+              group("web")
             }
             group("androidIos") {
               withAndroidTarget()
@@ -95,16 +95,12 @@ script:
               group("jvmCommon")
               withNative()
             }
-            group("jsCommon") {
-              withJs()
-              withWasmJs()
-            }
             group("wasm") {
               withWasmJs()
               withWasmWasi()
             }
-            group("web") {
-              group("jsCommon")
+            group("webCommon") {
+              group("web")
               withWasmWasi()
             }
           }

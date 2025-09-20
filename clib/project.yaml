@@ -14,8 +14,8 @@ imports:
   - ../properties/kotlin/targets/android-ios.yaml
   - ../properties/kotlin/targets/android-ios-web.yaml
   - ../properties/kotlin/targets/jvm-android-ios.yaml
-  - ../properties/kotlin/targets/js-common.yaml
-  - ../properties/kotlin/targets/jvm-js-common.yaml
+  - ../properties/kotlin/targets/web.yaml
+  - ../properties/kotlin/targets/jvm-web.yaml
   - ../properties/compose.yaml
   - ../properties/android/android-library-compose.yaml
   - ../properties/subproject.yaml
