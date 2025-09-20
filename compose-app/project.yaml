@@ -48,6 +48,7 @@ script:
             ))
           nativeDistributions:
             targetFormats: setOf(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+            packageName: group.toString()
             packageVersion: libs.versions("compose.desktop.packageVersion").requiredVersion
           buildTypes:
             release:

@@ -1,9 +1,9 @@
-.PHONY: chmod-scrips dependencies-check build-config signatures-check format-check format quality-check \
+.PHONY: chmod dependencies-check build-config format-check format quality-check \
 coverage-verify coverage doc doc-samples-check doc-samples test full-check kotlin-ts jar generate signing-gpg \
 list-signing-gpg clean-signing-gpg dist-signing-gpg publish-local publish-github publish-space publish-maven publish\
 server-auto-reload clean
 
-chmod-scripts: # 🔓 Give permission to execute gradlew.
+chmod: # 🔓 Give permission to execute gradlew.
 	git update-index --chmod=+x gradlew && chmod -R 777 scripts/
 
 dependencies-check:  # 🔬 Monitor dependent libraries for known, published vulnerabilities.
@@ -36,7 +36,7 @@ doc-samples-check: # 🔬 Produces Kotlin source example files and tests from ma
 doc-samples: # 📜 Produces Kotlin source example files and tests from markdown documents with embedded snippets of Kotlin code.
 	./gradlew knitPrepare
 
-full-check: test format quality-check signatures-check  # ✅ Code format, test and quality check.
+full-check: test format quality-check  # ✅ Code format, test and quality check.
 
 build-config: # 📜 Generating BuildConstants for any kind of Gradle projects: Java, Kotlin, Android, Groovy, etc. Designed for KTS scripts, with experimental support for Kotlin's multi-platform plugin.
 	./gradlew generateBuildConfig
@@ -83,4 +83,4 @@ server-auto-reload: # 🔄 Server application hot reload.
   ./gradlew -t autoreload-engine-main:build
 
 clean: # 🧹 Clean all.
-	./gradlew clean
+	./scripts/clean.sh

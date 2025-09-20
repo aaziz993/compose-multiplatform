@@ -1,3 +1,5 @@
+@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
+
 package gradle.plugins.compose
 
 import gradle.api.project.ProjectLayout
@@ -7,10 +9,13 @@ import gradle.api.project.kotlin
 import gradle.api.project.projectScript
 import gradle.api.project.resources
 import gradle.api.project.sourceSetsToComposeResourcesDirs
-import klib.data.type.reflection.invoke
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.assign
+import org.jetbrains.compose.resources.configureComposeResourcesGeneration
+import org.jetbrains.compose.resources.configureMultimoduleResources
+import org.jetbrains.compose.resources.AssembleTargetResourcesTask
+import org.jetbrains.compose.resources.onKotlinJvmApplied
 
 public class ComposePlugin : Plugin<Project> {
 
