@@ -7,18 +7,18 @@
 ## additional labels for pre-release and build metadata are available as extensions to the MAJOR.MINOR.PATCH format.
 ## a pre-release version MAY be denoted by appending a hyphen and a series of dot separated identifiers immediately following the patch version. Identifiers MUST comprise only ASCII alphanumerics and hyphens [0-9A-Za-z-]. Identifiers MUST NOT be empty. Numeric identifiers MUST NOT include leading zeroes. Examples: 1.0.0-alpha, 1.0.0-alpha.1, 1.0.0-0.3.7, 1.0.0-x.7.z.92, 1.0.0-x-y-z.--.
 ## build metadata MAY be denoted by appending a plus sign and a series of dot separated identifiers immediately following the patch or pre-release version. Identifiers MUST comprise only ASCII alphanumerics and hyphens [0-9A-Za-z-]. Identifiers MUST NOT be empty. Examples: 1.0.0-alpha+001, 1.0.0+20130313144700, 1.0.0-beta+exp.sha.5114f85, 1.0.0+21AF26D3----117B344092BD.
-# build-logic-settings
-composeMultiplatform-version-major = "1"
-composeMultiplatform-version-minor = "0"
-composeMultiplatform-version-patch = "0"
-composeMultiplatform-version-preRelase = "alpha" # optional
-#buildLigicSettings-version-buildMetadata = "" # optional
+# compose-multiplatform
+compose-multiplatform-version-major = "1"
+compose-multiplatform-version-minor = "0"
+compose-multiplatform-version-patch = "0"
+compose-multiplatform-version-preRelase = "alpha" # optional
+#compose-multiplatform-version-buildMetadata = "" # optional
 # build-logic
-buildLogic-version-major = "1"
-buildLogic-version-minor = "0"
-buildLogic-version-patch = "0"
-buildLogic-version-preRelase = "alpha" # optional
-#buildLigicSettings-version-buildMetadata = "" # optional
+build-logic-version-major = "1"
+build-logic-version-minor = "0"
+build-logic-version-patch = "0"
+build-logic-version-preRelase = "alpha" # optional
+#build-logic-version-buildMetadata = "" # optional
 # kmp-lib
 klib-version-major = "1"
 klib-version-minor = "0"
@@ -44,17 +44,17 @@ shared-version-patch = "0"
 shared-version-preRelase = "alpha" # optional
 #shared-version-buildMetadata = "" # optional
 # compose-app
-composeApp-version-major = "1"
-composeApp-version-minor = "0"
-composeApp-version-patch = "0"
-composeApp-version-preRelase = "alpha" # optional
-#composeApp-version-buildMetadata = "" # optional
+compose-app-version-major = "1"
+compose-app-version-minor = "0"
+compose-app-version-patch = "0"
+compose-app-version-preRelase = "alpha" # optional
+#compose-app-version-buildMetadata = "" # optional
 # server-app
-serverApp-version-major = "1"
-serverApp-version-minor = "0"
-serverApp-version-patch = "0"
-serverApp-version-preRelase = "alpha" # optional
-#serverApp-version-buildMetadata = "" # optional
+server-app-version-major = "1"
+server-app-version-minor = "0"
+server-app-version-patch = "0"
+server-app-version-preRelase = "alpha" # optional
+#server-app-version-buildMetadata = "" # optional
 ##Gradle
 # intellij
 intellij-platform = "243.23654.166"
@@ -101,11 +101,11 @@ vanniktech-maven-publish = "0.34.0"
 
 ##Java
 # in project version
-java-toolchain = "24"
+java-toolchain = "21"
 # in project version
-jvm-target = "24"
+jvm-target = "21"
 # in project version
-android-jvm-target = "24"
+android-jvm-target = "21"
 # google java format code formatter
 googleJavaFormat = "1.25.0"
 # logging.
@@ -142,13 +142,13 @@ sshj = "0.40.0"
 jsch = "0.1.55"
 
 ##Kotlin
-kotlin = "2.2.0"
+kotlin = "2.2.20"
 # ktlint code formatter
 ktlint = "1.7.1"
 # ktfmt code formatter
 ktfmt = "0.58"
 # api that you can use to develop lightweight compiler plugins. KSP provides a simplified compiler plugin API that leverages the power of Kotlin while keeping the learning curve at a minimum. Compared to KAPT, annotation processors that use KSP can run up to 2x faster.
-ksp = "2.2.0-2.0.2"
+ksp = "2.2.20-2.0.2"
 # multiplatform logging
 km-logging = "2.0.3"
 # multiplatform library that provides the idiomatic and efficient way of using atomic operations in Kotlin.

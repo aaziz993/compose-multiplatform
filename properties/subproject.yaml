@@ -20,7 +20,7 @@ script:
       - id: (libs.plugins("kotlinx.benchmark").pluginId)
       - id: (libs.plugins("sqldelight").pluginId)
       - id: (libs.plugins("room").pluginId)
-      - id: (libs.plugins("kotlinx.rpc").pluginId)
+#      - id: (libs.plugins("kotlinx.rpc").pluginId)
       - id: (libs.plugins("ktorfit").pluginId)
       - id: (libs.plugins("apollo3").pluginId)
       - id: (libs.plugins("powerAssert").pluginId)
@@ -319,11 +319,11 @@ script:
   - room:
       - schemaDirectory: ("$projectDir/schemas")
   ## Kotlin library for adding asynchronous Remote Procedure Call (RPC) services to your applications. Build your RPC with already known language constructs and nothing more!
-  - rpc:
-      strict:
-        stateFlow: RpcStrictMode.WARNING
-        sharedFlow: RpcStrictMode.WARNING
-        nestedFlow: RpcStrictMode.WARNING
+#  - rpc:
+#      strict:
+#        stateFlow: RpcStrictMode.WARNING
+#        sharedFlow: RpcStrictMode.WARNING
+#        nestedFlow: RpcStrictMode.WARNING
   ## Http client/Kotlin Symbol Processor for Kotlin Multiplatform ( Android, iOS, Js, Jvm, Linux) using KSP and Ktor clients inspired by Retrofit
   - ktorfit:
       generateQualifiedTypeName: true

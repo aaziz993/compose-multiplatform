@@ -322,15 +322,15 @@ public fun Project.version(
     preRelease: String? = null,
     buildMetadata: String? = null,
 ): String {
-    val camelCaseName = project.name.toCamelCase()
+    val projectDotName = project.name.replace("-", ".")
 
     return Version(
-        major ?: project.libs.versions("$camelCaseName.version.major").requiredVersion.toInt(),
-        minor ?: project.libs.versions("$camelCaseName.version.minor").requiredVersion.toInt(),
-        patch ?: project.libs.versions("$camelCaseName.version.patch").requiredVersion.toInt(),
-        project.libs.versions["$camelCaseName.version.preRelease"]?.requiredVersion
+        major ?: project.libs.versions("$projectDotName.version.major").requiredVersion.toInt(),
+        minor ?: project.libs.versions("$projectDotName.version.minor").requiredVersion.toInt(),
+        patch ?: project.libs.versions("$projectDotName.version.patch").requiredVersion.toInt(),
+        project.libs.versions["$projectDotName.version.preRelease"]?.requiredVersion
             ?: preRelease,
-        project.libs.versions["$camelCaseName.version.buildMetadata"]?.requiredVersion
+        project.libs.versions["$projectDotName.version.buildMetadata"]?.requiredVersion
             ?: buildMetadata ?: CI.current?.buildMetadata,
     ).toString()
 }
