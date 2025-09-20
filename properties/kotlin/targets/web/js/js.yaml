@@ -5,6 +5,7 @@ config:
     - gradle.plugins.karakum.*
 script:
   - plugins:
+      - id: (libs.plugins("js.plain.objects").pluginId)
       - id: (libs.plugins("seskar").pluginId)
       # Converter of TypeScript declaration files to Kotlin declarations.
       - id: (libs.plugins("karakum").pluginId)
