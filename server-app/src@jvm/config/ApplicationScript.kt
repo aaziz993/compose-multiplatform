@@ -3,7 +3,6 @@ package config
 import com.github.ajalt.colormath.model.Ansi16
 import io.ktor.server.config.yaml.YamlConfig
 import java.io.File
-import klib.data.cache.SqliteCache
 import klib.data.type.ansi.Attribute
 import klib.data.type.ansi.ansiSpan
 import klib.data.type.primitives.string.scripting.Script
@@ -13,7 +12,6 @@ import kotlin.script.experimental.api.defaultImports
 import kotlin.script.experimental.jvm.dependenciesFromCurrentContext
 import kotlin.script.experimental.jvm.jvm
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.builtins.serializer
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -59,7 +57,7 @@ public class ApplicationScript(
 
     public companion object {
 
-        private val log: Logger = LoggerFactory.getLogger(Script::class.java)
+        private val logging: Logger = LoggerFactory.getLogger(Script::class.java)
 
         internal inline operator fun <reified TConfiguration : Any> invoke(
             engineConfigEvaluationImplicitReceiver: TConfiguration,
@@ -88,7 +86,7 @@ public class ApplicationScript(
                     defaultImports(*IMPORTS)
                 }
             }.also { properties ->
-                log.info(
+                logging.info(
                     "${System.lineSeparator()}${
                         engineConfigEvaluationImplicitReceiver.toString()
                             .uppercase()
@@ -98,7 +96,7 @@ public class ApplicationScript(
                             }
                     }/${environment.ansiSpan { attribute(Ansi16(34)) }}",
                 )
-                log.info("${System.lineSeparator()}$properties")
+                logging.info("${System.lineSeparator()}$properties")
 
                 applicationScript = properties
             }

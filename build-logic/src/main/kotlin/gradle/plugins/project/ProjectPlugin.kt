@@ -18,6 +18,7 @@ import gradle.plugins.publish.PublishPlugin
 import gradle.plugins.signing.SigningPlugin
 import gradle.plugins.web.JsPlugin
 import gradle.plugins.web.WasmJsPlugin
+import klib.data.type.collections.toTreeString
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -51,14 +52,18 @@ public class ProjectPlugin : Plugin<Project> {
 
             CI.configureTasks()
 
-            pluginManager.withPlugin("org.jetbrains.kotlin.multiplatform"){
-                tasks.register("printSourceSetHierarchy") {
+            pluginManager.withPlugin("org.jetbrains.kotlin.multiplatform") {
+                tasks.register("printHierarchyTemplate") {
                     doLast {
-                        val hierarchy=mutableMapOf<String,List<String>>()
-                        kotlin.sourceSets.forEach { sourceSet ->
-                            hierarchy[sourceSet.name] =sourceSet.dependsOn.map(KotlinSourceSet::getName)
+                        // Build the map of source set -> its dependsOn list
+                        val hierarchy = kotlin.sourceSets.associate { sourceSet ->
+                            sourceSet.name to sourceSet.dependsOn.map(KotlinSourceSet::getName)
                         }
-                        hierarchy.
+
+                        val commonMain = KotlinSourceSet.COMMON_MAIN_SOURCE_SET_NAME
+
+                       logging println("Kotlin SourceSet Hierarchy:")
+                        println(commonMain.toTreeString(hierarchy))
                     }
                 }
             }
