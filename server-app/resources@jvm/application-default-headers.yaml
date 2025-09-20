@@ -1,7 +1,6 @@
 config:
   imports:
     - io.ktor.server.plugins.defaultheaders.DefaultHeaders
-    - io.ktor.http.HttpHeaders
 script:
   - module: |
       {

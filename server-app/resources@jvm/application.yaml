@@ -36,11 +36,13 @@ port: 8080
 sslPort: 8443
 config:
   imports:
-    - java.util.UUID
-    - java.io.File
-    - java.time.Duration
-    - java.util.zip.Deflater
     - org.slf4j.event.Level
+    - java.time.*
+    - java.text.*
+    - java.util.*
+    - java.util.concurrent.TimeUnit
+    - java.util.zip.Deflater
+    - java.io.File
     - kotlinx.serialization.json.Json
     - io.ktor.server.engine.connector
     - config.applicationScript

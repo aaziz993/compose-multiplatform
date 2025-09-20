@@ -3,12 +3,6 @@ config:
     - io.ktor.server.plugins.dataconversion.DataConversion
     - io.ktor.server.plugins.dataconversion.conversionService
     - io.ktor.util.reflect.typeInfo
-    - java.text.SimpleDateFormat
-    - java.time.LocalDate
-    - java.time.format.DateTimeFormatterBuilder
-    - java.time.format.SignStyle
-    - java.time.temporal.ChronoField
-    - java.util.Locale
 script:
   - module: |
       {
