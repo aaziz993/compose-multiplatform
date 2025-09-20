@@ -188,9 +188,9 @@ script:
   - include: |
       (
         ":klib",
-        //":clib",
-        //":compiler",
-        //":shared",
-        //":compose-app",
-        //":server-app"
+        ":clib",
+        ":compiler",
+        ":shared",
+        ":compose-app",
+        ":server-app"
       )
