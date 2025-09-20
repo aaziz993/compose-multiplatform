@@ -687,33 +687,35 @@ public fun <T> T.printTree(
     verticalConnector: String = "│",
     lastConnector: String = "└──",
     children: (node: T) -> List<T>,
-    transform: (node: T, visited: Boolean) -> String = { value, _ -> value.toString() }
+    transform: (node: T, depth: Int, visited: Boolean) -> String = { value, _, _ -> value.toString() }
 ) {
-    appendable.appendLine(transform(this@printTree, false))
+    appendable.appendLine(transform(this@printTree, 0, false))
 
     val visits = mutableSetOf(this@printTree)
 
-    DeepRecursiveFunction<PrintTreeArgs<T>, Unit> { (nodes, prefix) ->
+    DeepRecursiveFunction<PrintTreeArgs<T>, Unit> { (nodes, depth, prefix) ->
         nodes.forEachIndexed { index, node ->
             val isLast = index == nodes.lastIndex
             val connector = if (isLast) lastConnector else intermediateConnector
 
             appendable.append(prefix)
             appendable.append(connector)
-            appendable.appendLine(transform(node, !visits.add(node)))
+            appendable.appendLine(transform(node, depth, !visits.add(node)))
 
             callRecursive(
                 PrintTreeArgs(
                     children(node),
+                    depth + 1,
                     "$prefix${if (isLast) "   " else "$verticalConnector  "}",
                 ),
             )
         }
-    }(PrintTreeArgs(children(this@printTree), ""))
+    }(PrintTreeArgs(children(this@printTree), 0, ""))
 }
 
 private data class PrintTreeArgs<T>(
     val node: List<T>,
+    val depth: Int,
     val prefix: String,
 )
 
@@ -722,7 +724,7 @@ public fun <T> T.toTreeString(
     verticalConnector: String = "│",
     lastConnector: String = "└──",
     children: T.() -> List<T>,
-    transform: (value: T, visited: Boolean) -> String = { value, _ -> value.toString() }
+    transform: (value: T, depth: Int, visited: Boolean) -> String = { value, _, _ -> value.toString() }
 ): String = buildString {
     printTree(this, intermediateConnector, verticalConnector, lastConnector, children, transform)
 }
@@ -733,7 +735,7 @@ public fun String.printTree(
     intermediateConnector: String = "├──",
     verticalConnector: String = "│",
     lastConnector: String = "└──",
-    transform: (node: String, visited: Boolean) -> String = { value, _ -> value }
+    transform: (node: String, depth: Int, visited: Boolean) -> String = { value, _, _ -> value }
 ): Unit = printTree(
     appendable,
     intermediateConnector,
@@ -748,7 +750,7 @@ public fun String.toTreeString(
     intermediateConnector: String = "├──",
     verticalConnector: String = "│",
     lastConnector: String = "└──",
-    transform: (value: String, visited: Boolean) -> String = { value, _ -> value }
+    transform: (value: String, depth: Int, visited: Boolean) -> String = { value, _, _ -> value }
 ): String = buildString {
     printTree(map, this, intermediateConnector, verticalConnector, lastConnector, transform)
 }
