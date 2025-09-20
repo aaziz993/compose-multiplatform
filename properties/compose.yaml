@@ -52,7 +52,7 @@ script:
               }
             }
         - named: |
-            ("jsMain") { sourceSet ->
+            ("webMain") { sourceSet ->
               sourceSet.dependencies {
                 implementation(composeLibs.html.core)
               }

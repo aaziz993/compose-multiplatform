@@ -140,7 +140,7 @@ public class PublishPlugin : Plugin<Project> {
 
         registerAggregatingPublishTask<KotlinWasmTargetDsl>("wasmAll")
 
-        registerAggregatingPublishTask<KotlinJsTargetDsl>("jsCommon")
+        registerAggregatingPublishTask<KotlinJsTargetDsl>("web")
 
         registerAggregatingPublishTask<KotlinWasmWasiTargetDsl>("wasmWasiAll")
     }
