@@ -4,14 +4,13 @@ import arrow.fx.coroutines.resourceScope
 import config.ApplicationScript
 import config.ServerConfig
 import engine.Netty
-import io.github.smiley4.ktoropenapi.*
+import io.github.smiley4.ktoropenapi.get
 import io.ktor.http.*
 import io.ktor.server.application.*
-import io.ktor.server.config.yaml.YamlConfig
 import io.ktor.server.netty.*
+import io.ktor.server.plugins.openapi.openAPI
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import java.io.File
 import kotlinx.coroutines.awaitCancellation
 
 public fun main(): Unit = SuspendApp {
@@ -35,6 +34,9 @@ public fun main(): Unit = SuspendApp {
 
 @Suppress("unused")
 private fun Application.module() {
+    routing {
+        openAPI()
+    }
 }
 
 public fun Application.ping(): Routing = routing {
