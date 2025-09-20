@@ -30,20 +30,19 @@ import org.pgpainless.util.Passphrase
 context(project: Project)
 public fun SigningExtension.gpg(
     keyFile: File = File(project.projectDir, ".signing.gpg.asc"),
-    keyType: String = project.sensitiveOrElse("signing.gnupg.key.type") { "RSA" },
-    keyParam: String = project.sensitiveOrElse("signing.gnupg.key.param") { "4096" },
-    password: String = project.sensitive("signing.gnupg.key.password"),
-    subkeyType: String = project.sensitiveOrElse("signing.gnupg.subkey.type") { "RSA" },
-    subkeyParam: String = project.sensitiveOrElse("signing.gnupg.subkey.param") { "4096" },
-    nameReal: String = project.sensitiveOrElse("signing.gnupg.name.real") {
+    keyType: String = project.sensitiveOrElse("signing.gpg.key.type") { "RSA" },
+    keyParam: String = project.sensitiveOrElse("signing.gpg.key.param") { "4096" },
+    password: String = project.sensitive("signing.gpg.key.password"),
+    subkeyType: String = project.sensitiveOrElse("signing.gpg.subkey.type") { "RSA" },
+    subkeyParam: String = project.sensitiveOrElse("signing.gpg.subkey.param") { "4096" },
+    nameReal: String = project.sensitiveOrElse("signing.gpg.name.real") {
         project.settings.settingsScript.developer.name!!
     },
-    nameEmail: String = project.sensitiveOrElse("signing.gnupg.name.email") {
+    nameEmail: String = project.sensitiveOrElse("signing.gpg.name.email") {
         project.settings.settingsScript.developer.email!!
     },
-    nameComment: String = project.sensitiveOrElse("signing.gnupg.name.comment") { project.description.orEmpty() },
-    expire: Long = project.sensitiveOrElse("signing.gnupg.expire") { "0" }.toLong()
-
+    nameComment: String = project.sensitiveOrElse("signing.gpg.name.comment") { project.description.orEmpty() },
+    expire: Long = project.sensitiveOrElse("signing.gpg.expire") { "0" }.toLong()
 ): Unit = project.pluginManager.withPlugin("signing") {
     val key = keyFile.takeIf(File::exists)?.readText()
         ?: PGPainless.modernKeyRing(
