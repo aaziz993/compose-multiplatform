@@ -65,8 +65,9 @@ import kotlinx.serialization.serializer
 public const val SCRIPT_KEY: String = "script"
 
 public val DECLARATION_KEYWORDS: Set<String> = setOf(
-    "val", "var", "fun", "class", "interface", "object",
-    "enum", "annotation", "typealias",
+    "val", "var", "fun", "class", "interface", "object", "enum", "annotation", "typealias",
+    "abstract", "data", "sealed", "open", "private", "public", "internal",
+    "inline", "tailrec", "suspend", "operator", "infix", "const", "lateinit"
 )
 
 public val EXPLICIT_OPERATION_RECEIVERS: Set<KClass<out Any>> = setOf(
