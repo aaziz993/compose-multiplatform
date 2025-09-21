@@ -37,11 +37,18 @@ public class AndroidPlugin : Plugin<Project> {
             is ProjectLayout.Flat -> android.sourceSets.configureEach { sourceSet ->
                 val compilationName = sourceSet.name.removePrefix("android").lowercaseFirstChar()
 
-                val (srcPart, resourcesPart) =
-                    if (compilationName == KotlinCompilation.MAIN_COMPILATION_NAME) "src" to ""
+                var (srcPart, resourcesPart) =
+                    if (compilationName == SourceSet.MAIN_SOURCE_SET_NAME) "src" to ""
                     else layout.androidParts(ANDROID_APPLICATION_COMPILATIONS, compilationName)
 
-                val targetPart = if (sourceSet.name.startsWith("android")) "${layout.targetDelimiter}android" else ""
+                if (srcPart == SourceSet.TEST_SOURCE_SET_NAME) {
+                    srcPart = "instrumentedTest"
+                    resourcesPart = "instrumentedTest"
+                }
+
+                val targetPart = if (sourceSet.name.startsWith("android") ||
+                    compilationName == KotlinCompilation.MAIN_COMPILATION_NAME) "${layout.targetDelimiter}android"
+                else ""
 
                 sourceSet.kotlin.replace(
                     "src/${sourceSet.name}/kotlin",
