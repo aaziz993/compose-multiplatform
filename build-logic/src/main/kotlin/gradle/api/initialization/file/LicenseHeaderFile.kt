@@ -40,7 +40,7 @@ public data class LicenseHeaderFile(
             slashLicenseFile.writeText(
                 "/**\n${
                     licenseText.lines().joinToString("\n") { line -> " * $line" }
-                }\n*/",
+                }\n */",
             )
 
         if (create || !hashLicenseFile.exists())
@@ -52,7 +52,7 @@ public data class LicenseHeaderFile(
             tagLicenseFile.writeText(
                 "$<--\n${
                     licenseText.lines().joinToString("\n") { line -> " * $line" }
-                }\n-->",
+                }\n -->",
             )
     }
 }
