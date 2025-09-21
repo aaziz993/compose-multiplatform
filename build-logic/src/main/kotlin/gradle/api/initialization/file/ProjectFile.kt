@@ -5,16 +5,19 @@ import java.io.File
 import java.net.URI
 import java.security.MessageDigest
 import klib.data.type.isValidHttpUrl
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings
 import org.gradle.internal.impldep.org.apache.ivy.util.url.ApacheURLLister
 
-public abstract class ProjectFile {
+
+@Serializable
+public sealed class ProjectFile {
 
     public abstract val from: List<String>
     public abstract val into: String
     public abstract val resolution: FileResolution
-    public open val replace: Map<String, String> = emptyMap()
+    public abstract val replace: Map<String, String>
 
     context(settings: Settings)
     public open fun sync() {
@@ -68,6 +71,7 @@ public abstract class ProjectFile {
 }
 
 @Serializable
+@SerialName("ProjectFile")
 public data class ProjectFileImpl(
     override val from: List<String>,
     override val into: String,

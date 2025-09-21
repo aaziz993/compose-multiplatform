@@ -5,7 +5,7 @@ import gradle.api.initialization.file.CodeOfConductFile
 import gradle.api.initialization.file.ContributingFile
 import gradle.api.initialization.file.LicenseFile
 import gradle.api.initialization.file.LicenseHeaderFile
-import gradle.api.initialization.file.ProjectFileImpl
+import gradle.api.initialization.file.ProjectFile
 import gradle.api.publish.maven.MavenPomDeveloper
 import gradle.api.publish.maven.MavenPomLicense
 import gradle.api.publish.maven.MavenPomScm
@@ -30,7 +30,7 @@ public class SettingsScript(
     public val licenseHeaderFile: LicenseHeaderFile = LicenseHeaderFile(),
     public val codeOfConductFile: CodeOfConductFile? = null,
     public val contributingFile: ContributingFile? = null,
-    public val files: List<ProjectFileImpl> = emptyList(),
+    public val files: List<ProjectFile> = emptyList(),
     override val config: ScriptConfig = ScriptConfig(),
     override val script: List<SerializableAny>,
     override val fileTree: Map<String, List<String>>,

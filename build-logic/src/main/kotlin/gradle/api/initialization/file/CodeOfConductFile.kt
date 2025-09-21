@@ -1,10 +1,12 @@
 package gradle.api.initialization.file
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import org.gradle.api.initialization.Settings
 
 @Serializable
+@SerialName("CodeOfConductFile")
 public data class CodeOfConductFile(
     val source: String,
     override val resolution: FileResolution = FileResolution.NEWER,

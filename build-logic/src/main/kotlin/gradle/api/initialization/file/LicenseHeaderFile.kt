@@ -2,6 +2,7 @@ package gradle.api.initialization.file
 
 import gradle.api.initialization.settingsScript
 import java.io.File
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import org.gradle.api.initialization.Settings
@@ -9,6 +10,7 @@ import org.gradle.api.initialization.Settings
 public const val LICENSE_HEADER_FILE: String = "licenses/LICENSE_HEADER"
 
 @Serializable
+@SerialName("LicenseHeaderFile")
 public data class LicenseHeaderFile(
     val source: String = "licenses/LICENSE_HEADER",
     override val resolution: FileResolution = FileResolution.NEWER,
