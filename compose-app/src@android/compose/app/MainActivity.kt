@@ -1,4 +1,4 @@
-package io.github.aaziz993.compose.app
+package compose.app
 
 import App
 import android.os.Bundle
