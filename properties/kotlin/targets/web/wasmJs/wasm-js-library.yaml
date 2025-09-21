@@ -5,5 +5,4 @@ script:
       targets:
         - withType<KotlinWasmJsTargetDsl>: |
             {
-              binaries.library()
             }
