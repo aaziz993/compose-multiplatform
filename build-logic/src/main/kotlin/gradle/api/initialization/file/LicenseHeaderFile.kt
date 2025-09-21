@@ -62,9 +62,9 @@ public data class LicenseHeaderFile(
 
         if (create || !tagLicenseFile.exists())
             tagLicenseFile.writeText(
-                "$<--\n${
+                "<!--\n${
                     licenseText.lines().joinToString("\n") { line -> " * $line" }
-                }\n -->",
+                }\n-->",
             )
     }
 }
