@@ -7,7 +7,7 @@ import dev.snipme.highlights.model.ColorHighlight
 import dev.snipme.highlights.model.SyntaxLanguage
 import dev.snipme.highlights.model.SyntaxTheme
 import dev.snipme.highlights.model.SyntaxThemes
-import klib.data.type.ansi.ansiSpan
+import klib.data.type.primitives.string.ansi.ansiSpan
 
 public fun Highlights.highlight(
     transform: (text: CharSequence, bold: Boolean, rgb: UInt?) -> String = { text, bold, rgb ->

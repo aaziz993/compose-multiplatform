@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package klib.data.type.ansi
+package klib.data.type.primitives.string.ansi
 
 import com.github.ajalt.colormath.Color
 import com.github.ajalt.colormath.model.Ansi16
@@ -391,18 +391,18 @@ public open class Ansi(private val builder: StringBuilder = StringBuilder(80)) :
         return this
     }
 
-    override fun append(csq: CharSequence?): Ansi {
-        builder.append(csq)
+    override fun append(value: CharSequence?): Ansi {
+        builder.append(value)
         return this
     }
 
-    override fun append(csq: CharSequence?, start: Int, end: Int): Ansi {
-        builder.append(csq, start, end)
+    override fun append(value: CharSequence?, startIndex: Int, endIndex: Int): Ansi {
+        builder.append(value, startIndex, endIndex)
         return this
     }
 
-    override fun append(c: Char): Ansi {
-        builder.append(c)
+    override fun append(value: Char): Ansi {
+        builder.append(value)
         return this
     }
 

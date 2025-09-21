@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package klib.data.type.ansi
+package klib.data.type.primitives.string.ansi
 
 import com.github.ajalt.colormath.model.Ansi16
 

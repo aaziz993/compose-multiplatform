@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package klib.data.type.ansi
+package klib.data.type.primitives.string.ansi
 
 import com.github.ajalt.colormath.model.Ansi16
-import kotlin.text.StringBuilder
 
 /**
  * Renders ANSI color escape-codes in strings by parsing out some special syntax to pick up the correct fluff to use.

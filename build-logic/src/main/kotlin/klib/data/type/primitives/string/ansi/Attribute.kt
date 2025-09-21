@@ -1,4 +1,4 @@
-package klib.data.type.ansi
+package klib.data.type.primitives.string.ansi
 
 /**
  * Display attributes, also know as

@@ -1,7 +1,16 @@
 package gradle.api
 
 import com.github.ajalt.colormath.model.Ansi16
+import java.io.File
+import klib.data.cache.SqliteCache
+import klib.data.type.primitives.string.ansi.Attribute
+import klib.data.type.primitives.string.ansi.ansiSpan
 import klib.data.type.primitives.string.scripting.Script
+import kotlin.reflect.KClass
+import kotlin.reflect.full.isSubclassOf
+import kotlin.script.experimental.api.defaultImports
+import kotlin.script.experimental.jvm.dependenciesFromCurrentContext
+import kotlin.script.experimental.jvm.jvm
 import kotlinx.serialization.builtins.serializer
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.logging.Logger
@@ -11,15 +20,6 @@ import org.gradle.api.plugins.PluginAware
 import org.gradle.api.provider.HasMultipleValues
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
-import java.io.File
-import klib.data.cache.SqliteCache
-import klib.data.type.ansi.Attribute
-import klib.data.type.ansi.ansiSpan
-import kotlin.reflect.KClass
-import kotlin.reflect.full.isSubclassOf
-import kotlin.script.experimental.api.defaultImports
-import kotlin.script.experimental.jvm.dependenciesFromCurrentContext
-import kotlin.script.experimental.jvm.jvm
 
 public val EXPLICIT_OPERATION_RECEIVERS: Set<KClass<out Any>> = setOf(
     Property::class,

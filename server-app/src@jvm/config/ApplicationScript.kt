@@ -1,10 +1,10 @@
 package config
 
 import com.github.ajalt.colormath.model.Ansi16
-import io.ktor.server.config.yaml.YamlConfig
+import io.ktor.server.config.yaml.*
 import java.io.File
-import klib.data.type.ansi.Attribute
-import klib.data.type.ansi.ansiSpan
+import klib.data.type.primitives.string.ansi.Attribute
+import klib.data.type.primitives.string.ansi.ansiSpan
 import klib.data.type.primitives.string.scripting.Script
 import klib.data.type.primitives.string.scripting.ScriptConfig
 import klib.data.type.serialization.serializers.any.SerializableAny

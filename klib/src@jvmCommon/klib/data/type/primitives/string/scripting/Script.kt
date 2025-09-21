@@ -7,9 +7,6 @@ import java.lang.reflect.Modifier
 import klib.data.cache.Cache
 import klib.data.cache.SqliteCache
 import klib.data.cache.emptyCache
-import klib.data.type.ansi.Attribute
-import klib.data.type.ansi.ansiSpan
-import klib.data.type.ansi.buildStringAnsi
 import klib.data.type.collections.deepGet
 import klib.data.type.collections.deepGetOrNull
 import klib.data.type.collections.deepMap
@@ -27,6 +24,9 @@ import klib.data.type.collections.toNewMutableCollection
 import klib.data.type.collections.toTreeString
 import klib.data.type.primitives.string.addSuffix
 import klib.data.type.primitives.string.addSuffixIfNotEmpty
+import klib.data.type.primitives.string.ansi.Attribute
+import klib.data.type.primitives.string.ansi.ansiSpan
+import klib.data.type.primitives.string.ansi.buildStringAnsi
 import klib.data.type.primitives.string.highlight
 import klib.data.type.reflection.classifierOrUpperBound
 import klib.data.type.reflection.declaredMemberExtensionFunction

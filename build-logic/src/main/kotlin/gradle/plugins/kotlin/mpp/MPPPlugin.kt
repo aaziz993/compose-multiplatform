@@ -6,11 +6,11 @@ import gradle.api.project.ProjectLayout
 import gradle.api.project.kotlin
 import gradle.api.project.projectScript
 import gradle.api.project.sourceSetsToComposeResourcesDirs
-import klib.data.type.ansi.Attribute
-import klib.data.type.ansi.ansiSpan
 import klib.data.type.collections.associateWithNotNull
 import klib.data.type.collections.toTreeString
 import klib.data.type.pair
+import klib.data.type.primitives.string.ansi.Attribute
+import klib.data.type.primitives.string.ansi.ansiSpan
 import klib.data.type.primitives.string.lowercaseFirstChar
 import klib.data.type.primitives.string.uppercaseFirstChar
 import klib.data.type.tuples.and
