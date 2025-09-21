@@ -7,6 +7,13 @@ script:
       - id: (libs.plugins("compose.multiplatform").pluginId)
       - id: (libs.plugins("compose.compiler").pluginId)
   - kotlin:
+      compilerOptions:
+        optIn.addAll: |
+          (
+            "androidx.compose.ui.ExperimentalComposeUiApi",
+            "androidx.navigation.ExperimentalBrowserHistoryApi",
+            "org.jetbrains.compose.resources.InternalResourceApi",
+          )
       sourceSets:
         - named: |
             ("commonMain") { sourceSet ->
