@@ -47,8 +47,6 @@ import klib.data.type.serialization.serializers.any.SerializableAny
 import klib.data.type.serialization.yaml.decodeAnyFromString
 import kotlin.reflect.KClass
 import kotlin.reflect.KMutableProperty
-import kotlin.reflect.KType
-import kotlin.reflect.KTypeParameter
 import kotlin.reflect.KVisibility
 import kotlin.reflect.full.isSubclassOf
 import kotlin.script.experimental.api.ResultValue
@@ -65,6 +63,11 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.serializer
 
 public const val SCRIPT_KEY: String = "script"
+
+public val DECLARATION_KEYWORDS: Set<String> = setOf(
+    "val", "var", "fun", "class", "interface", "object",
+    "enum", "annotation", "typealias",
+)
 
 public val EXPLICIT_OPERATION_RECEIVERS: Set<KClass<out Any>> = setOf(
     Array::class,
@@ -96,12 +99,14 @@ public abstract class Script {
         script.flatten().joinToString("\n") { (path, value) ->
             val referencePath = path.filter { (source, _) -> source !is List<*> }.map { (_, key) -> key!!.toString() }
             val reference = referencePath.joinToString(".")
-            val cacheKey = "$reference:$value"
 
+            val cacheKey = "$reference:$value"
             cacheKeys.add(cacheKey)
 
-            cache[cacheKey] ?: "$reference${tryAssign(referencePath.toTypedArray(), value)}"
-                .also { operation -> cache[cacheKey] = operation }
+            cache[cacheKey] ?: "$reference${
+                if (reference in DECLARATION_KEYWORDS) " $value"
+                else tryAssign(referencePath.toTypedArray(), value)
+            }".also { operation -> cache[cacheKey] = operation }
         }.also {
             (cache.asMap().keys - cacheKeys).forEach(cache::remove)
         }
