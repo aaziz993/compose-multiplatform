@@ -3,13 +3,23 @@ package klib.data.type.serialization.json
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationStrategy
-import kotlinx.serialization.json.*
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonNull
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.booleanOrNull
+import kotlinx.serialization.json.doubleOrNull
+import kotlinx.serialization.json.floatOrNull
+import kotlinx.serialization.json.intOrNull
+import kotlinx.serialization.json.longOrNull
 import kotlinx.serialization.serializer
-import kotlin.invoke
 
 internal fun Json.encodeAnyToJsonElement(value: Any?): JsonElement =
     encodeAnyToJsonElementDeepRecursiveFunction(this to value)
 
+@Suppress("UNCHECKED_CAST")
 private val encodeAnyToJsonElementDeepRecursiveFunction =
     DeepRecursiveFunction<Pair<Json, Any?>, JsonElement> { (json, value) ->
         when (value) {
