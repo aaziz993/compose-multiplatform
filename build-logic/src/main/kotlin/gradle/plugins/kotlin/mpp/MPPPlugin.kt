@@ -11,8 +11,6 @@ import klib.data.type.ansi.ansiSpan
 import klib.data.type.collections.associateWithNotNull
 import klib.data.type.collections.toTreeString
 import klib.data.type.pair
-import klib.data.type.primitives.string.addPrefixIfNotEmpty
-import klib.data.type.primitives.string.case.splitToWords
 import klib.data.type.primitives.string.lowercaseFirstChar
 import klib.data.type.primitives.string.uppercaseFirstChar
 import klib.data.type.tuples.and
@@ -73,25 +71,7 @@ public class MPPPlugin : Plugin<Project> {
                             when (target) {
                                 is KotlinAndroidTarget ->
                                     if (compilationName == KotlinCompilation.MAIN_COMPILATION_NAME) "src" to ""
-                                    else (ANDROID_APPLICATION_COMPILATIONS.find { androidCompilationName ->
-                                        compilationName.startsWith(androidCompilationName)
-                                    }?.let { androidCompilationName ->
-                                        "$androidCompilationName${
-                                            compilationName
-                                                .removePrefix(androidCompilationName)
-                                                .splitToWords()
-                                                .joinToString(layout.androidVariantDelimiter)
-                                                .addPrefixIfNotEmpty(layout.androidAllVariantsDelimiter)
-                                        }"
-                                    } ?: compilationName
-                                        .splitToWords()
-                                        .let { words ->
-                                            words.firstOrNull()
-                                                .orEmpty() +
-                                                words.drop(1)
-                                                    .joinToString(layout.androidVariantDelimiter)
-                                                    .addPrefixIfNotEmpty(layout.androidAllVariantsDelimiter)
-                                        }).pair()
+                                    else layout.androidParts(ANDROID_APPLICATION_COMPILATIONS, compilationName)
 
                                 else -> if (compilationName == KotlinCompilation.MAIN_COMPILATION_NAME) "src" to ""
                                 else compilationName.pair()

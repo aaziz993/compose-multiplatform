@@ -8,9 +8,6 @@ import gradle.api.project.projectScript
 import javax.xml.stream.XMLEventFactory
 import javax.xml.stream.XMLInputFactory
 import javax.xml.stream.XMLOutputFactory
-import klib.data.type.pair
-import klib.data.type.primitives.string.addPrefixIfNotEmpty
-import klib.data.type.primitives.string.case.splitToWords
 import klib.data.type.primitives.string.lowercaseFirstChar
 import klib.data.type.trySetSystemProperty
 import org.gradle.api.Plugin
@@ -18,8 +15,8 @@ import org.gradle.api.Project
 import org.gradle.api.tasks.SourceSet
 
 private val ANDROID_APPLICATION_COMPILATIONS = listOf(
-    "testFixtures",
     SourceSet.TEST_SOURCE_SET_NAME,
+    "testFixtures",
 )
 
 public class AndroidPlugin : Plugin<Project> {
@@ -37,20 +34,9 @@ public class AndroidPlugin : Plugin<Project> {
     private fun Project.adjustSourceSets() =
         when (val layout = projectScript.layout) {
             is ProjectLayout.Flat -> androidApplication.sourceSets.configureEach { sourceSet ->
-                val sourceSetName = sourceSet.name.removePrefix("android")
+                val compilationName = sourceSet.name.removePrefix("android").lowercaseFirstChar()
 
-                val (srcPart, resourcesPart) =
-                    if (sourceSet.name == SourceSet.MAIN_SOURCE_SET_NAME) "src" to ""
-                    else (ANDROID_APPLICATION_COMPILATIONS.find { compilationName ->
-                        sourceSetName.startsWith(compilationName)
-                    }?.let { compilationName ->
-                        "$compilationName${
-                            sourceSetName.removePrefix(compilationName)
-                                .splitToWords()
-                                .joinToString(layout.androidVariantDelimiter)
-                                .addPrefixIfNotEmpty(layout.androidAllVariantsDelimiter)
-                        }"
-                    } ?: sourceSetName).pair()
+                val (srcPart, resourcesPart) = layout.androidParts(ANDROID_APPLICATION_COMPILATIONS, compilationName)
 
                 val targetPart = if (sourceSet.name.startsWith("android")) "${layout.targetDelimiter}android" else ""
 
