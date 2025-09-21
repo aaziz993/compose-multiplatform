@@ -54,7 +54,7 @@ script:
             description: description
             copyright: '"© ${settings.settingsScript.year} - ${settings.settingsScript.developer.name}. All rights reserved."'
             vendor: '"Example vendor"'
-            licenseFile: (rootProject.file("LICENSE.txt"))
+            licenseFile: (file("LICENSE.txt"))
             appResourcesRootDir: project.layout.projectDirectory.dir("resources")
           buildTypes:
             release:

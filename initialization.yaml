@@ -39,6 +39,15 @@ codeOfConductFile:
 contributingFile:
   source: https://www.contributor-covenant.org/version/1/4/code-of-conduct/code_of_conduct.md
   resolution: MODIFIED
+files:
+  - type: LicenseFile
+    source: ${license.url}
+    into: compose-app
+    year: ${year}
+    yearPlaceholder: '[yyyy]'
+    owner: ${developer.name}
+    ownerPlaceholder: '[name of copyright owner]'
+    resolution: MODIFIED
 config:
   imports:
     - org.gradle.api.initialization.resolve.RepositoriesMode
