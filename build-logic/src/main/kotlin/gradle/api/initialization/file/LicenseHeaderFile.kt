@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import org.gradle.api.initialization.Settings
 
-public const val LICENSE_HEADER_FILE_NAME: String = "LICENSE_HEADER"
+public const val LICENSE_HEADER_FILE: String = "licenses/LICENSE_HEADER"
 
 @Serializable
 public data class LicenseHeaderFile(
@@ -17,7 +17,7 @@ public data class LicenseHeaderFile(
     override val from: List<String> = listOf(source)
 
     @Transient
-    override val into: String = "licenses"
+    override val into: String = LICENSE_HEADER_FILE
 
     @Suppress("UnstableApiUsage")
     context(settings: Settings)
@@ -32,9 +32,9 @@ public data class LicenseHeaderFile(
 
         val create = previousLicenseText == null || previousLicenseText != licenseText
 
-        val slashLicenseFile = settings.layout.settingsDirectory.file(into).asFile.resolve("SLASH_$LICENSE_HEADER_FILE_NAME")
-        val hashLicenseFile = settings.layout.settingsDirectory.file(into).asFile.resolve("HASH_$LICENSE_HEADER_FILE_NAME")
-        val tagLicenseFile = settings.layout.settingsDirectory.file(into).asFile.resolve("TAG_$LICENSE_HEADER_FILE_NAME")
+        val slashLicenseFile = settings.layout.settingsDirectory.file("${LICENSE_HEADER_FILE}_SLASH").asFile
+        val hashLicenseFile = settings.layout.settingsDirectory.file("${LICENSE_HEADER_FILE}_HASH").asFile
+        val tagLicenseFile = settings.layout.settingsDirectory.file("${LICENSE_HEADER_FILE}_TAG").asFile
 
         if (create || !slashLicenseFile.exists())
             slashLicenseFile.writeText(
