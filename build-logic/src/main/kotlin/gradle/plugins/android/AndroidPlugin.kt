@@ -18,7 +18,6 @@ import org.gradle.api.Project
 import org.gradle.api.tasks.SourceSet
 
 private val ANDROID_APPLICATION_COMPILATIONS = listOf(
-    "androidTest",
     "testFixtures",
     SourceSet.TEST_SOURCE_SET_NAME,
 )
@@ -38,56 +37,60 @@ public class AndroidPlugin : Plugin<Project> {
     private fun Project.adjustSourceSets() =
         when (val layout = projectScript.layout) {
             is ProjectLayout.Flat -> androidApplication.sourceSets.configureEach { sourceSet ->
+                val sourceSetName = sourceSet.name.removePrefix("android")
+
                 val (srcPart, resourcesPart) =
                     if (sourceSet.name == SourceSet.MAIN_SOURCE_SET_NAME) "src" to ""
                     else (ANDROID_APPLICATION_COMPILATIONS.find { compilationName ->
-                        sourceSet.name.startsWith(compilationName)
+                        sourceSetName.startsWith(compilationName)
                     }?.let { compilationName ->
                         "$compilationName${
-                            sourceSet.name.removePrefix(compilationName)
+                            sourceSetName.removePrefix(compilationName)
                                 .splitToWords()
                                 .joinToString(layout.androidVariantDelimiter)
                                 .addPrefixIfNotEmpty(layout.androidAllVariantsDelimiter)
                         }"
-                    } ?: sourceSet.name).pair()
+                    } ?: sourceSetName).pair()
+
+                val targetPart = if (sourceSet.name.startsWith("android")) "${layout.targetDelimiter}android" else ""
 
                 sourceSet.kotlin.replace(
                     "src/${sourceSet.name}/kotlin",
-                    "$srcPart${layout.targetDelimiter}android",
+                    "$srcPart$targetPart",
                 )
                 sourceSet.resources.replace(
                     "src/${sourceSet.name}/resources",
-                    "${resourcesPart}Resources${layout.targetDelimiter}android".lowercaseFirstChar(),
+                    "${resourcesPart}Resources$targetPart".lowercaseFirstChar(),
                 )
-                sourceSet.java.replace("src/${sourceSet.name}/java", "$srcPart${layout.targetDelimiter}android")
-                sourceSet.manifest.srcFile("$srcPart${layout.targetDelimiter}android/AndroidManifest.xml")
+                sourceSet.java.replace("src/${sourceSet.name}/java", "$srcPart$targetPart")
+                sourceSet.manifest.srcFile("$srcPart$targetPart/AndroidManifest.xml")
                 sourceSet.res.replace(
                     "src/${sourceSet.name}/res",
-                    "${resourcesPart}Res${layout.targetDelimiter}android".lowercaseFirstChar(),
+                    "${resourcesPart}Res$targetPart".lowercaseFirstChar(),
                 )
                 sourceSet.assets.replace(
                     "src/${sourceSet.name}/assets",
-                    "${resourcesPart}Assets${layout.targetDelimiter}android".lowercaseFirstChar(),
+                    "${resourcesPart}Assets$targetPart".lowercaseFirstChar(),
                 )
                 sourceSet.aidl.replace(
                     "src/${sourceSet.name}/aidl",
-                    "${resourcesPart}Aidl${layout.targetDelimiter}android".lowercaseFirstChar(),
+                    "${resourcesPart}Aidl$targetPart".lowercaseFirstChar(),
                 )
                 sourceSet.renderscript.replace(
                     "src/${sourceSet.name}/rs",
-                    "${resourcesPart}Rs${layout.targetDelimiter}android".lowercaseFirstChar(),
+                    "${resourcesPart}Rs$targetPart".lowercaseFirstChar(),
                 )
                 sourceSet.jniLibs.replace(
                     "src/${sourceSet.name}/jniLibs",
-                    "${resourcesPart}JniLibs${layout.targetDelimiter}android".lowercaseFirstChar(),
+                    "${resourcesPart}JniLibs$targetPart".lowercaseFirstChar(),
                 )
                 sourceSet.shaders.replace(
                     "src/${sourceSet.name}/shaders",
-                    "${resourcesPart}Shaders${layout.targetDelimiter}android".lowercaseFirstChar(),
+                    "${resourcesPart}Shaders$targetPart".lowercaseFirstChar(),
                 )
                 sourceSet.mlModels.replace(
                     "src/${sourceSet.name}/mlModels",
-                    "${resourcesPart}MlModels${layout.targetDelimiter}android".lowercaseFirstChar(),
+                    "${resourcesPart}MlModels$targetPart".lowercaseFirstChar(),
                 )
             }
 
