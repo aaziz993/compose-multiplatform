@@ -157,11 +157,17 @@ script:
           excludes.addAll: |
             (setOf(
               "/META-INF/{AL2.0,LGPL2.1}",
-              "META-INF/versions/**/OSGI-INF/MANIFEST.MF",
+              "META-INF/*.kotlin_module",    // Kotlin metadata
+              "META-INF/*.SF",               // Signature files
+              "META-INF/*.DSA",
+              "META-INF/*.RSA",
             ))
           pickFirsts.addAll: |
             (listOf(
-              "kotlin/**",
+              "META-INF/NOTICE*",             // NOTICE.md, NOTICE.txt, etc.
+              "META-INF/LICENSE*",            // LICENSE, LICENSE.txt, etc.
+              "META-INF/versions/**",         // OSGI or multi-version module info
+              "kotlin/**",                     // Kotlin built-ins and metadata
             ))
       buildFeatures:
         buildConfig: true
