@@ -1,7 +1,6 @@
 package gradle.api.initialization.file
 
 import arrow.core.fold
-import java.io.File
 import java.net.URI
 import java.security.MessageDigest
 import klib.data.type.isValidHttpUrl
@@ -19,6 +18,7 @@ public sealed class ProjectFile {
     public abstract val resolution: FileResolution
     public abstract val replace: Map<String, String>
 
+    @Suppress("UnstableApiUsage")
     context(settings: Settings)
     public open fun sync() {
         val (fromUrls, fromFiles) = from.partition(String::isValidHttpUrl)
@@ -33,7 +33,7 @@ public sealed class ProjectFile {
         }
 
         fromFiles.forEach { fromFile ->
-            val file = File(fromFile)
+            val file = settings.layout.settingsDirectory.file(fromFile).asFile
             settings.trySync({ file.readText().replace() }) { file.lastModified() }
         }
     }
