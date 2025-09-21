@@ -29,7 +29,8 @@ private val KOTLIN_COMPILATIONS = listOf(
     KotlinCompilation.TEST_COMPILATION_NAME,
 )
 
-private val ANDROID_COMPILATIONS = listOf(
+private val ANDROID_APPLICATION_COMPILATIONS = listOf(
+    SourceSet.MAIN_SOURCE_SET_NAME,
     SourceSet.TEST_SOURCE_SET_NAME,
     "unitTest",
     "instrumentedTest",
@@ -55,6 +56,12 @@ public class MPPPlugin : Plugin<Project> {
                         target.compilations.map { compilation ->
                             target to compilation.name
                         }
+                    } + kotlin.targets.filterIsInstance<KotlinMetadataTarget>().map { target ->
+                        target to KotlinCompilation.TEST_COMPILATION_NAME
+                    } + kotlin.targets.filterIsInstance<KotlinAndroidTarget>().flatMap { target ->
+                        ANDROID_APPLICATION_COMPILATIONS.map { compilationName ->
+                            target to compilationName
+                        }
                     }
 
                     val sourceSets = kotlin.sourceSets.associateWithNotNull { sourceSet ->
@@ -65,7 +72,8 @@ public class MPPPlugin : Plugin<Project> {
                         }?.let { (target, compilationName) ->
                             when (target) {
                                 is KotlinAndroidTarget ->
-                                    (ANDROID_COMPILATIONS.find { androidCompilationName ->
+                                    if (compilationName == KotlinCompilation.MAIN_COMPILATION_NAME) "src" to ""
+                                    else (ANDROID_APPLICATION_COMPILATIONS.find { androidCompilationName ->
                                         compilationName.startsWith(androidCompilationName)
                                     }?.let { androidCompilationName ->
                                         "$androidCompilationName${
