@@ -39,16 +39,20 @@ public data class LicenseHeaderFile(
         if (create || !slashLicenseFile.exists())
             slashLicenseFile.writeText(
                 "/**\n${
-                    licenseText.lines().joinToString("\n", " * ")
-                }\n */",
+                    licenseText.lines().joinToString("\n") { line -> " * $line" }
+                }\n*/",
             )
 
         if (create || !hashLicenseFile.exists())
             hashLicenseFile.writeText(
-                licenseText.lines().joinToString("\n", " # "),
+                licenseText.lines().joinToString("\n") { line -> "# $line" },
             )
 
         if (create || !tagLicenseFile.exists())
-            tagLicenseFile.writeText("$<--\n$licenseText\n -->")
+            tagLicenseFile.writeText(
+                "$<--\n${
+                    licenseText.lines().joinToString("\n") { line -> " * $line" }
+                }\n-->",
+            )
     }
 }
