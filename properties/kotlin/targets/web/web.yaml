@@ -74,7 +74,11 @@ script:
             compilerOptions {
                 target /= "es2015"
                 freeCompilerArgs.addAll(
-                  "-Xpartial-linkage-loglevel=ERROR",
+                  "-Xskip-prerelease-check",
+                  "-Xignore-errors-on-partial-linkage",
+                  "-Xdont-warn-on-error-suppression",
+                  // https://youtrack.jetbrains.com/issue/KT-67355
+                  "-Xir-generate-inline-anonymous-functions",
                 )
             }
           }
