@@ -1,7 +1,6 @@
 package gradle.plugins.kotlin.mpp
 
 import com.github.ajalt.colormath.model.Ansi16
-import gradle.api.configureEach
 import gradle.api.file.replace
 import gradle.api.project.ProjectLayout
 import gradle.api.project.kotlin
@@ -9,18 +8,29 @@ import gradle.api.project.projectScript
 import gradle.api.project.sourceSetsToComposeResourcesDirs
 import klib.data.type.ansi.Attribute
 import klib.data.type.ansi.ansiSpan
+import klib.data.type.collections.associateWithNotNull
 import klib.data.type.collections.toTreeString
+import klib.data.type.pair
 import klib.data.type.primitives.string.addPrefixIfNotEmpty
-import klib.data.type.primitives.string.lowercaseFirstChar
 import klib.data.type.primitives.string.case.splitToWords
+import klib.data.type.primitives.string.lowercaseFirstChar
+import klib.data.type.primitives.string.uppercaseFirstChar
+import klib.data.type.tuples.Tuple3
+import klib.data.type.tuples.and
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.SourceSet
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinMetadataTarget
 
-private val TEST_SOURCE_SET_NAME_PREFIXES = listOf(
+private val KOTLIN_COMPILATIONS = listOf(
+    KotlinCompilation.MAIN_COMPILATION_NAME,
+    KotlinCompilation.TEST_COMPILATION_NAME,
+)
+
+private val ANDROID_TEST_COMPILATIONS = listOf(
     SourceSet.TEST_SOURCE_SET_NAME,
     "unitTest",
     "instrumentedTest",
@@ -42,31 +52,30 @@ public class MPPPlugin : Plugin<Project> {
         kotlin {
             when (val layout = projectScript.layout) {
                 is ProjectLayout.Flat -> {
-                    val androidTargets = kotlin.targets.filterIsInstance<KotlinAndroidTarget>()
+                    val parts = kotlin.targets.flatMap { target ->
+                        target.compilations.map { compilation ->
+                            target to compilation.name
+                        }
+                    }
 
-                    kotlin.sourceSets.configureEach { sourceSet ->
-                        var targetPart: String
-                        var srcPrefixPart: String
-                        var resourcesPrefixPart: String
-
-                        val androidTarget =
-                            androidTargets.filter { target -> sourceSet.name.startsWith(target.targetName) }
-                                .maxByOrNull { target -> target.name.length }
-
-                        if (androidTarget != null) {
-                            targetPart = "${layout.targetDelimiter}${androidTarget.targetName}"
-
-                            val restPart = sourceSet.name.removePrefix(androidTarget.targetName).lowercaseFirstChar()
-
-                            if (restPart == androidTarget.mainVariant.sourceSetTree.get().name) {
-                                srcPrefixPart = "src"
-                                resourcesPrefixPart = ""
-                            }
-                            else {
-                                val prefix = TEST_SOURCE_SET_NAME_PREFIXES.find(restPart::startsWith)
-
-                                if (prefix == null) {
-                                    srcPrefixPart = restPart
+                    val sourceSets = kotlin.sourceSets.associateWithNotNull { sourceSet ->
+                        parts.find { (target, compilationName) ->
+                            sourceSet.name == "${target.name}${compilationName.uppercaseFirstChar()}"
+                        }?.let { (target, compilationName) ->
+                            when (target) {
+                                is KotlinMetadataTarget -> Tuple3("src", "", "")
+                                is KotlinAndroidTarget ->
+                                    (ANDROID_TEST_COMPILATIONS.find { testCompilationName ->
+                                        compilationName.startsWith(testCompilationName)
+                                    }?.let { testCompilationName ->
+                                        "$testCompilationName${
+                                            compilationName
+                                                .removePrefix(testCompilationName)
+                                                .splitToWords()
+                                                .joinToString(layout.androidVariantDelimiter)
+                                                .addPrefixIfNotEmpty(layout.androidAllVariantsDelimiter)
+                                        }"
+                                    } ?: compilationName
                                         .splitToWords()
                                         .let { words ->
                                             words.firstOrNull()
@@ -74,52 +83,36 @@ public class MPPPlugin : Plugin<Project> {
                                                 words.drop(1)
                                                     .joinToString(layout.androidVariantDelimiter)
                                                     .addPrefixIfNotEmpty(layout.androidAllVariantsDelimiter)
-                                        }
-                                    resourcesPrefixPart = srcPrefixPart
-                                }
-                                else {
-                                    srcPrefixPart =
-                                        "$prefix${
-                                            restPart
-                                                .removePrefix(prefix)
-                                                .splitToWords()
-                                                .joinToString(layout.androidVariantDelimiter)
-                                                .addPrefixIfNotEmpty(layout.androidAllVariantsDelimiter)
-                                        }"
-                                    resourcesPrefixPart = srcPrefixPart
-                                }
+                                        }).pair() and "${layout.targetDelimiter}${target.name}"
+
+                                else -> Tuple3(compilationName, compilationName, "${layout.targetDelimiter}${target.name}")
                             }
                         }
-                        else {
+                    }
 
-                            val sourceSetNameParts =
-                                "(.*[a-z\\d])([A-Z]\\w+)$".toRegex().matchEntire(sourceSet.name)!!.groupValues
+                    val customSourceSets = (kotlin.sourceSets - sourceSets.keys).associateWithNotNull { sourceSet ->
+                        KOTLIN_COMPILATIONS.find { compilationName ->
+                            sourceSet.name.endsWith(compilationName.uppercaseFirstChar())
+                        }?.let { compilationName ->
+                            if (compilationName == KotlinCompilation.MAIN_COMPILATION_NAME)
+                                Tuple3("src", "", sourceSet.name.removeSuffix(compilationName.uppercaseFirstChar()))
+                            else Tuple3(compilationName, "", sourceSet.name.removeSuffix(compilationName.uppercaseFirstChar()))
 
-                            targetPart = sourceSetNameParts[1].let { targetName ->
-                                if (targetName == "common") "" else "${layout.targetDelimiter}$targetName"
-                            }
-
-                            val compilationName = sourceSetNameParts[2].lowercaseFirstChar()
-
-                            if (compilationName == KotlinCompilation.MAIN_COMPILATION_NAME) {
-                                srcPrefixPart = "src"
-                                resourcesPrefixPart = ""
-                            }
-                            else {
-                                srcPrefixPart = compilationName
-                                resourcesPrefixPart = compilationName
-                            }
                         }
+                    }
+
+                    (sourceSets + customSourceSets).forEach { (sourceSet, parts) ->
+                        val (srcPart, resourcesPart, targetPart) = parts
 
                         sourceSet.kotlin.replace(
                             "src/${sourceSet.name}/kotlin",
-                            "$srcPrefixPart$targetPart",
+                            "$srcPart$targetPart",
                         )
                         sourceSet.resources.replace(
                             "src/${sourceSet.name}/resources",
-                            "${resourcesPrefixPart}Resources$targetPart".lowercaseFirstChar(),
+                            "${resourcesPart}Resources$targetPart".lowercaseFirstChar(),
                         )
-                        sourceSetsToComposeResourcesDirs[sourceSet] = project.layout.projectDirectory.dir("${resourcesPrefixPart}ComposeResources$targetPart".lowercaseFirstChar())
+                        sourceSetsToComposeResourcesDirs[sourceSet] = project.layout.projectDirectory.dir("${resourcesPart}ComposeResources$targetPart".lowercaseFirstChar())
                     }
                 }
 
