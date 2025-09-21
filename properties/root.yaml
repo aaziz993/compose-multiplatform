@@ -1,5 +1,5 @@
 imports:
-  - config.yaml
+  - scripting/project-scripting.yaml
 config:
   imports:
     - org.gradle.api.Project
@@ -8,6 +8,7 @@ config:
     - org.gradle.api.tasks.testing.logging.TestLogEvent
     - org.jetbrains.dokka.gradle.engine.parameters.VisibilityModifier
     - gradle.api.project.*
+
 script:
   - group: '"io.github.${settings.settingsScript.developer.id}"'
   - version: version()
