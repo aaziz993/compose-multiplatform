@@ -63,11 +63,8 @@ public class MPPPlugin : Plugin<Project> {
                             sourceSet.name == "${target.name}${compilationName.uppercaseFirstChar()}"
                         }?.let { (target, compilationName) ->
                             when (target) {
-                                is KotlinMetadataTarget -> Tuple3("src", "", "")
                                 is KotlinAndroidTarget ->
-                                    if (compilationName == SourceSet.MAIN_SOURCE_SET_NAME)
-                                        Tuple3("src", "", "${layout.targetDelimiter}${target.name}")
-                                    else (ANDROID_COMPILATIONS.find { androidCompilationName ->
+                                    (ANDROID_COMPILATIONS.find { androidCompilationName ->
                                         compilationName.startsWith(androidCompilationName)
                                     }?.let { androidCompilationName ->
                                         "$androidCompilationName${
@@ -85,10 +82,11 @@ public class MPPPlugin : Plugin<Project> {
                                                 words.drop(1)
                                                     .joinToString(layout.androidVariantDelimiter)
                                                     .addPrefixIfNotEmpty(layout.androidAllVariantsDelimiter)
-                                        }).pair() and "${layout.targetDelimiter}${target.name}"
+                                        }).pair()
 
-                                else -> Tuple3(compilationName, compilationName, "${layout.targetDelimiter}${target.name}")
-                            }
+                                else -> if (compilationName == KotlinCompilation.MAIN_COMPILATION_NAME) "src" to ""
+                                else compilationName.pair()
+                            } and if (target is KotlinMetadataTarget) "" else "${layout.targetDelimiter}${target.name}"
                         }
                     }
 
@@ -96,10 +94,8 @@ public class MPPPlugin : Plugin<Project> {
                         KOTLIN_COMPILATIONS.find { compilationName ->
                             sourceSet.name.endsWith(compilationName.uppercaseFirstChar())
                         }?.let { compilationName ->
-                            if (compilationName == KotlinCompilation.MAIN_COMPILATION_NAME)
-                                Tuple3("src", "", sourceSet.name.removeSuffix(compilationName.uppercaseFirstChar()))
-                            else Tuple3(compilationName, compilationName, sourceSet.name.removeSuffix(compilationName.uppercaseFirstChar()))
-
+                            (if (compilationName == KotlinCompilation.MAIN_COMPILATION_NAME) "src" to ""
+                            else compilationName.pair()) and sourceSet.name.removeSuffix(compilationName.uppercaseFirstChar())
                         }
                     }
 
