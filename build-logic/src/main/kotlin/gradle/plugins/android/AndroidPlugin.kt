@@ -17,7 +17,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.SourceSet
 
-private val TEST_SOURCE_SET_NAME_PREFIXES = listOf(
+private val ANDROID_APPLICATION_COMPILATIONS = listOf(
     "androidTest",
     "testFixtures",
     SourceSet.TEST_SOURCE_SET_NAME,
@@ -40,11 +40,11 @@ public class AndroidPlugin : Plugin<Project> {
             is ProjectLayout.Flat -> androidApplication.sourceSets.configureEach { sourceSet ->
                 val (srcPart, resourcesPart) =
                     if (sourceSet.name == SourceSet.MAIN_SOURCE_SET_NAME) "src" to ""
-                    else (TEST_SOURCE_SET_NAME_PREFIXES.find { prefix ->
-                        sourceSet.name.startsWith(prefix)
-                    }?.let { prefix ->
-                        "$prefix${
-                            sourceSet.name.removePrefix(prefix)
+                    else (ANDROID_APPLICATION_COMPILATIONS.find { compilationName ->
+                        sourceSet.name.startsWith(compilationName)
+                    }?.let { compilationName ->
+                        "$compilationName${
+                            sourceSet.name.removePrefix(compilationName)
                                 .splitToWords()
                                 .joinToString(layout.androidVariantDelimiter)
                                 .addPrefixIfNotEmpty(layout.androidAllVariantsDelimiter)
