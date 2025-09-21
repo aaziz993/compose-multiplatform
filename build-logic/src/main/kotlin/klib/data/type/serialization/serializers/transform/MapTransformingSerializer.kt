@@ -16,7 +16,8 @@ public abstract class MapTransformingSerializer<T : Any>(
                 val key = value.keys.single().toString()
                 val value = value.values.single()
 
-                transformDeserializeKey(key) + (value as? Map<*, *> ?: transformDeserializeValue(key, value))
+                transformDeserializeKey(key) +
+                    if (value is Map<*, *> && valueAs == null) value else transformDeserializeValue(key, value)
             }
             else value
         }

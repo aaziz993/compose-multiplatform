@@ -5,12 +5,14 @@ import kotlin.reflect.KClass
 
 public open class ReflectionMapTransformingPolymorphicSerializer<T : Any>(
     baseClass: KClass<T>,
-    keyAs: String = "type",
-    valueAs: String? = null,
+    classDiscriminator: String = "type",
+    valueDiscriminator: String = "value"
 ) : MapTransformingSerializer<T>(
     ReflectionPolymorphicSerializer(
         baseClass,
+        classDiscriminator,
+        valueDiscriminator,
     ),
-    keyAs,
-    valueAs,
+    classDiscriminator,
+    valueDiscriminator,
 )

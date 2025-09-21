@@ -10,8 +10,6 @@ public open class MapTransformingPolymorphicSerializer<T : Any>(
     subclasses: Map<KClass<T>, KSerializer<T>>,
     classDiscriminator: String = "type",
     valueDiscriminator: String = "value",
-    keyAs: String = "type",
-    valueAs: String? = null,
 ) : MapTransformingSerializer<T>(
     PolymorphicSerializer(
         baseClass,
@@ -20,6 +18,6 @@ public open class MapTransformingPolymorphicSerializer<T : Any>(
         classDiscriminator,
         valueDiscriminator,
     ),
-    keyAs,
-    valueAs,
+    classDiscriminator,
+    valueDiscriminator,
 )
