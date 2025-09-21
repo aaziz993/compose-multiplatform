@@ -1,5 +1,6 @@
 package gradle.api.initialization.file
 
+import gradle.api.initialization.settingsScript
 import java.io.File
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
@@ -10,7 +11,13 @@ public const val LICENSE_HEADER_FILE: String = "licenses/LICENSE_HEADER"
 @Serializable
 public data class LicenseHeaderFile(
     val source: String = "licenses/LICENSE_HEADER",
-    override val resolution: FileResolution = FileResolution.NEWER
+    override val resolution: FileResolution = FileResolution.NEWER,
+    val year: String? = null,
+    val yearPlaceholder: String = "[yyyy]",
+    val owner: String? = null,
+    val ownerPlaceholder: String = "[name of copyright owner]",
+    val name: String? = null,
+    val namePlaceholder: String = "[name of license]"
 ) : ProjectFile() {
 
     @Transient
@@ -19,9 +26,16 @@ public data class LicenseHeaderFile(
     @Transient
     override val into: String = LICENSE_HEADER_FILE
 
+    @Transient
+    override val replace: MutableMap<String, String> = mutableMapOf()
+
     @Suppress("UnstableApiUsage")
     context(settings: Settings)
     override fun sync() {
+        replace[yearPlaceholder] = year ?: settings.settingsScript.year
+        replace[ownerPlaceholder] = owner ?: settings.settingsScript.developer.name!!
+        replace[namePlaceholder] = name ?: settings.settingsScript.license.name!!
+
         val intoFile = settings.layout.settingsDirectory.file(into).asFile
 
         val previousLicenseText = intoFile.takeIf(File::exists)?.readText()

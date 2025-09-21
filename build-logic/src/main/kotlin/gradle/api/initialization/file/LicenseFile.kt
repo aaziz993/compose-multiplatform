@@ -1,12 +1,13 @@
 package gradle.api.initialization.file
 
+import gradle.api.initialization.settingsScript
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import org.gradle.api.initialization.Settings
 
 @Serializable
 public data class LicenseFile(
-    val source: String,
+    val source: String? = null,
     override val resolution: FileResolution = FileResolution.NEWER,
     val year: String? = null,
     val yearPlaceholder: String = "[yyyy]",
@@ -25,9 +26,9 @@ public data class LicenseFile(
 
     context(settings: Settings)
     override fun sync() {
-        from.add(source)
-        year?.let { year -> replace[yearPlaceholder] = year }
-        owner?.let { owner -> replace[ownerPlaceholder] = owner }
+        from.add(source ?: settings.settingsScript.remote.url!!)
+        replace[yearPlaceholder] = year ?: settings.settingsScript.year
+        replace[ownerPlaceholder] = owner ?: settings.settingsScript.developer.name!!
 
         super.sync()
     }
