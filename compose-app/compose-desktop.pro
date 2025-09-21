@@ -1,41 +1,80 @@
--dontoptimize
-
--dontwarn androidx.compose.desktop.DesktopTheme*
--dontwarn kotlinx.datetime.**
-
--keep class dev.romainguy.kotlin.explorer.code.*TokenMarker { *; }
--dontnote dev.romainguy.kotlin.explorer.code.*TokenMarker
-
--keep class org.fife.** { *; }
--dontnote org.fife.**
-
--keep class sun.misc.Unsafe { *; }
--dontnote sun.misc.Unsafe
-
+# ===================================================
+# 1. Compose Desktop & Skiko Libraries (keep intact)
+# ===================================================
+-keep class androidx.compose.** { *; }
+-keep class androidx.ui.** { *; }
+-keep class org.jetbrains.skiko.** { *; }
 -keep class com.jetbrains.JBR* { *; }
--dontnote com.jetbrains.JBR*
 
--keep class com.sun.jna** { *; }
--dontnote com.sun.jna**
+# Desktop theme / styling / KeyEvents
+-dontwarn androidx.compose.desktop.DesktopTheme*
+-dontwarn androidx.compose.ui.input.key.KeyEvent_*
+-dontnote androidx.compose.ui.input.key.KeyEvent_*
 
--keep class androidx.compose.ui.input.key.KeyEvent_desktopKt { *; }
--dontnote androidx.compose.ui.input.key.KeyEvent_desktopKt
+# ===================================================
+# 2. Kotlin / Coroutines / Serialization / Reflection
+# ===================================================
+# Kotlin Metadata
+-keepclassmembers class kotlin.Metadata { *; }
 
--dontnote androidx.compose.ui.input.key.KeyEvent_skikoKt
--dontwarn androidx.compose.ui.input.key.KeyEvent_skikoKt
+# Coroutines
+-keep class kotlinx.coroutines.** { *; }
+-keepclassmembers class kotlinx.coroutines.** { *; }
 
--dontnote org.jetbrains.jewel.intui.markdown.standalone.styling.extensions.**
--dontwarn org.jetbrains.jewel.intui.markdown.standalone.styling.extensions.**
+# Serialization
+-keep class kotlinx.serialization.** { *; }
+-keepclassmembers class kotlinx.serialization.** { *; }
 
-# Ktor
+# ===================================================
+# 3. Ktor & Networking
+# ===================================================
 -keep class io.ktor.** { *; }
 -keepclassmembers class io.ktor.** { volatile <fields>; }
 -keep class io.ktor.client.engine.cio.** { *; }
--keep class kotlinx.coroutines.** { *; }
--dontwarn kotlinx.atomicfu.**
+
+# Warnings suppression
 -dontwarn io.netty.**
 -dontwarn com.typesafe.**
 -dontwarn org.slf4j.**
 
-# Obfuscation breaks coroutines/ktor for some reason
--dontobfuscate
+# ===================================================
+# 4. JetBrains / Fife / JNA
+# ===================================================
+-keep class org.fife.** { *; }
+
+# Unsafe – optional, suppress warnings
+-dontwarn sun.misc.**
+-dontnote sun.misc.**
+
+-keep class com.sun.jna** { *; }
+-dontnote com.sun.jna**
+
+# ===================================================
+# 5. TokenMarker & Markdown Extensions
+# ===================================================
+-keep class dev.romainguy.kotlin.explorer.code.*TokenMarker { *; }
+-dontnote dev.romainguy.kotlin.explorer.code.*TokenMarker
+-dontnote org.jetbrains.jewel.intui.markdown.standalone.styling.extensions.**
+-dontwarn org.jetbrains.jewel.intui.markdown.standalone.styling.extensions.**
+
+# ===================================================
+# 6. Application code – obfuscate & shrink
+# ===================================================
+# Keep libraries intact, obfuscate only your app
+# Replace "com.example.myapp" with your actual package name
+-keep class io.github.aaziz993.composeapp.** { *; }
+
+# Adapt class names in strings and resource files
+-adaptclassstrings
+-adaptresourcefilecontents **.xml,**.json
+
+# ===================================================
+# 7. Debug / Crash Reporting
+# ===================================================
+# Keep line numbers for crash logs
+-keepattributes SourceFile,LineNumberTable
+
+# ===================================================
+# 8. Optional: print config
+# ===================================================
+-printconfiguration ../build/tmp/full-r8-config-desktop.txt
