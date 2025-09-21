@@ -3,115 +3,74 @@ package gradle.api.initialization.file
 import arrow.core.fold
 import java.io.File
 import java.net.URI
+import java.security.MessageDigest
 import klib.data.type.isValidHttpUrl
 import kotlinx.serialization.Serializable
-import org.apache.commons.io.FileUtils
-import org.apache.tools.ant.filters.ReplaceTokens
-import org.gradle.api.DefaultTask
-import org.gradle.api.Project
-import org.gradle.api.file.DuplicatesStrategy
-import org.gradle.api.tasks.AbstractCopyTask
-import org.gradle.api.tasks.Copy
-import org.gradle.api.tasks.TaskProvider
+import org.gradle.api.initialization.Settings
 import org.gradle.internal.impldep.org.apache.ivy.util.url.ApacheURLLister
-import org.gradle.kotlin.dsl.register
-import org.jetbrains.compose.internal.de.undercouch.gradle.tasks.download.Download
 
 public abstract class ProjectFile {
 
     public abstract val from: List<String>
     public abstract val into: String
     public abstract val resolution: FileResolution
-
     public open val replace: Map<String, String> = emptyMap()
 
-    context(project: Project)
-    internal open fun applyTo(receiver: String): List<TaskProvider<out DefaultTask>> {
-        val (urls, files) = from.partition(String::isValidHttpUrl)
+    context(settings: Settings)
+    public open fun sync() {
+        val (fromUrls, fromFiles) = from.partition(String::isValidHttpUrl)
 
-        return listOfNotNull(
-            urls.takeIf(List<*>::isNotEmpty)?.flatMap { url ->
-                if (url.endsWith("/")) {
-                    val urlLister = ApacheURLLister()
-                    urlLister.listFiles(URI(url).toURL())
-                }
-                else listOf(url)
-            }?.let { urls ->
-                project.rootProject.tasks.register<Download>(receiver) {
-                    doLast {
-                        try {
-                            download().run {
-                                src(urls)
-                                dest(into)
-
-                                when (resolution) {
-                                    FileResolution.ABSENT -> overwrite(false)
-                                    FileResolution.OVERRIDE -> {
-                                        overwrite(true)
-                                        tempAndMove(true)
-                                    }
-
-                                    FileResolution.MODIFIED -> onlyIfModified(true)
-                                    FileResolution.NEWER -> onlyIfNewer(true)
-                                }
-
-                                doLast {
-                                    if (dest.exists()) {
-                                        // Read the downloaded file and replace placeholders
-                                        val content = replace.fold(dest.readText()) { acc, (key, value) ->
-                                            acc.replace(key, value)
-                                        }
-
-                                        // Write the modified content back to the file
-                                        dest.writeText(content)
-                                    }
-                                }
-                            }
-                        }
-                        catch (e: Exception) {
-                            logger.warn(e.message!!)
-                        }
-                    }
-                }
-            },
-            files.takeIf(List<*>::isNotEmpty)?.let { files ->
-                project.rootProject.tasks.register<Copy>(receiver) {
-                    from(*files.toTypedArray())
-                    into(into)
-                    when (resolution) {
-                        FileResolution.ABSENT -> duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-                        FileResolution.OVERRIDE -> duplicatesStrategy = DuplicatesStrategy.INCLUDE
-                        FileResolution.MODIFIED -> exclude(FileUtils::contentEquals)
-                        FileResolution.NEWER -> exclude { fromFile, intoFile ->
-                            fromFile.lastModified() > intoFile.lastModified()
-                        }
-                    }
-                    filter(replace, ReplaceTokens::class.java)
-
-                    includeEmptyDirs = false
-                }
-            },
-        )
-    }
-
-    context(project: Project)
-    private fun AbstractCopyTask.exclude(equator: (from: File, into: File) -> Boolean) =
-        exclude { fileTree ->
-            if (fileTree.isDirectory) false
-            else {
-                val intoFile = project.file(into).let { intoFile ->
-                    if (intoFile.isDirectory()) intoFile.resolve(fileTree.relativePath.pathString)
-                    else intoFile
-                }
-                equator(fileTree.file, intoFile)
+        fromUrls.flatMap { url ->
+            if (url.endsWith("/")) ApacheURLLister().listFiles(URI(url).toURL())
+            else listOf(URI(url).toURL())
+        }.forEach { fromUrl ->
+            settings.trySync({ fromUrl.readText().replace() }) {
+                fromUrl.openConnection().lastModified
             }
         }
+
+        fromFiles.forEach { fromFile ->
+            val file = File(fromFile)
+            settings.trySync({ file.readText().replace() }) { file.lastModified() }
+        }
+    }
+
+    @Suppress("UnstableApiUsage")
+    private fun Settings.trySync(
+        readText: () -> String,
+        lastModified: () -> Long,
+    ) {
+        val file = settings.layout.settingsDirectory.file(into).asFile
+
+        if (!file.exists()) {
+            file.parentFile?.mkdirs()
+            return file.writeText(readText())
+        }
+
+        when (resolution) {
+            FileResolution.OVERRIDE -> file.writeText(readText())
+            FileResolution.MODIFIED -> readText().let { text ->
+                if (file.readText().hash() != text.hash()) file.writeText(text)
+            }
+
+            FileResolution.NEWER -> if (file.lastModified() < lastModified()) file.writeText(readText())
+
+            else -> Unit
+        }
+    }
+
+    private fun String.hash(algorithm: String = "SHA-256"): String =
+        MessageDigest.getInstance(algorithm).digest(toByteArray())
+            .joinToString("", transform = "%02x"::format)
+
+    private fun String.replace() =
+        replace.fold(this) { acc, (key, value) -> acc.replace(key, value) }
 }
 
 @Serializable
 public data class ProjectFileImpl(
     override val from: List<String>,
     override val into: String,
-    override val resolution: FileResolution = FileResolution.ABSENT,
+    override val resolution: FileResolution = FileResolution.NEWER,
     override val replace: Map<String, String> = emptyMap()
 ) : ProjectFile()

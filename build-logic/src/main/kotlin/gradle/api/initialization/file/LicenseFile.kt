@@ -2,14 +2,12 @@ package gradle.api.initialization.file
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
-import org.gradle.api.DefaultTask
-import org.gradle.api.tasks.TaskProvider
-import org.gradle.api.Project
+import org.gradle.api.initialization.Settings
 
 @Serializable
 public data class LicenseFile(
     val source: String,
-    override val resolution: FileResolution = FileResolution.ABSENT,
+    override val resolution: FileResolution = FileResolution.NEWER,
     val year: String? = null,
     val yearPlaceholder: String = "[yyyy]",
     val owner: String? = null,
@@ -25,12 +23,12 @@ public data class LicenseFile(
     @Transient
     override val replace: MutableMap<String, String> = mutableMapOf()
 
-    context(project: Project)
-    override fun applyTo(receiver: String): List<TaskProvider<out DefaultTask>> {
+    context(settings: Settings)
+    override fun sync() {
         from.add(source)
         year?.let { year -> replace[yearPlaceholder] = year }
         owner?.let { owner -> replace[ownerPlaceholder] = owner }
 
-        return super.applyTo(receiver)
+        super.sync()
     }
 }

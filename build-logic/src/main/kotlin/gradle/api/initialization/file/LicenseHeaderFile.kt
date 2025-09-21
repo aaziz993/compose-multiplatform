@@ -1,15 +1,14 @@
 package gradle.api.initialization.file
 
+import java.io.File
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
-import org.gradle.api.DefaultTask
-import org.gradle.api.Project
-import org.gradle.api.tasks.TaskProvider
+import org.gradle.api.initialization.Settings
 
 @Serializable
 public data class LicenseHeaderFile(
     val source: String,
-    override val resolution: FileResolution = FileResolution.ABSENT
+    override val resolution: FileResolution = FileResolution.NEWER
 ) : ProjectFile() {
 
     @Transient
@@ -18,38 +17,37 @@ public data class LicenseHeaderFile(
     @Transient
     override val into: String = "licenses/LICENSE_HEADER"
 
-    context(project: Project)
-    override fun applyTo(receiver: String): List<TaskProvider<out DefaultTask>> =
-        super.applyTo(receiver).onEach { task ->
-            task.configure {
-                val intoFile = project.file(into)
+    @Suppress("UnstableApiUsage")
+    context(settings: Settings)
+    override fun sync() {
+        val intoFile = settings.layout.settingsDirectory.file(into).asFile
 
-                var previousLicenseText: String? = null
+        val previousLicenseText = intoFile.takeIf(File::exists)?.readText()
 
-                doFirst {
-                    // Remember previous template
-                    if (intoFile.exists()) {
-                        previousLicenseText = intoFile.readText()
-                    }
-                }
+        super.sync()
 
-                doLast {
-                    if (intoFile.exists()) {
-                        val licenseText = intoFile.readText()
+        val licenseText = intoFile.readText()
 
-                        if (previousLicenseText == null || licenseText != previousLicenseText) {
-                            project.file("SLASH_$into").writeText(
-                                "/**\n${
-                                    licenseText.lines().joinToString("\n", " * ")
-                                }\n */",
-                            )
-                            project.file("HASH_$into").writeText(
-                                licenseText.lines().joinToString("\n", " # "),
-                            )
-                            project.file("TAG_$into").writeText("$<--\n$licenseText\n -->")
-                        }
-                    }
-                }
-            }
-        }
+        val create = previousLicenseText == null || previousLicenseText != licenseText
+
+        val slashLicenseFile = settings.layout.settingsDirectory.file("SLASH_$into").asFile
+        val hashLicenseFile = settings.layout.settingsDirectory.file("HASH_$into").asFile
+
+        val tagLicenseFile = settings.layout.settingsDirectory.file("TAG_$into").asFile
+
+        if (create || !slashLicenseFile.exists())
+            slashLicenseFile.writeText(
+                "/**\n${
+                    licenseText.lines().joinToString("\n", " * ")
+                }\n */",
+            )
+
+        if (create || !hashLicenseFile.exists())
+            hashLicenseFile.writeText(
+                licenseText.lines().joinToString("\n", " # "),
+            )
+
+        if (create || !tagLicenseFile.exists())
+            tagLicenseFile.writeText("$<--\n$licenseText\n -->")
+    }
 }

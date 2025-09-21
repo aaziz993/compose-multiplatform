@@ -1,7 +1,7 @@
 package gradle.api.initialization.file
 
 public enum class FileResolution {
-    ABSENT,
+    NEVER,
     OVERRIDE,
     MODIFIED,
     NEWER
