@@ -1,10 +1,8 @@
-# =========================================
-# Compose Desktop + Kotlin MPP ProGuard Rules
-# =========================================
+# ===========================
+# Compose Desktop + Kotlin MPP
+# ===========================
 
-# ---------------------------
-# Basic settings
-# ---------------------------
+# General
 -dontoptimize
 -dontwarn androidx.compose.desktop.**
 -dontwarn kotlinx.datetime.**
@@ -12,31 +10,23 @@
 -dontwarn io.ktor.**
 -dontwarn kotlinx.coroutines.**
 
-# Keep Kotlin metadata and built-ins
+# Keep Kotlin metadata & built-ins
 -keep class kotlin.Metadata { *; }
 -keep class kotlin.** { *; }
 
 # Keep entry point
 -keep class MainKt { *; }
 
-# ---------------------------
 # Compose & Skiko
-# ---------------------------
 -keep class androidx.compose.** { *; }
 -keep class org.jetbrains.skiko.** { *; }
 
-# ---------------------------
-# Ktor client & coroutines
-# ---------------------------
+# Ktor & coroutines
 -keep class io.ktor.** { *; }
 -keep class kotlinx.coroutines.** { *; }
-
-# Keep volatile fields in Ktor for concurrency
 -keepclassmembers class io.ktor.** { volatile <fields>; }
 
-# ---------------------------
-# Skiko / Desktop platform interop
-# ---------------------------
+# Platform / Desktop interop
 -keep class sun.misc.Unsafe { *; }
 -dontnote sun.misc.Unsafe
 
@@ -46,17 +36,12 @@
 -keep class com.jetbrains.JBR* { *; }
 -dontnote com.jetbrains.JBR*
 
-# ---------------------------
-# Optional: token/highlighting libraries (if used)
-# ---------------------------
+# Optional: syntax/highlighting libs
 -keep class dev.romainguy.kotlin.explorer.code.*TokenMarker { *; }
 -dontnote dev.romainguy.kotlin.explorer.code.*TokenMarker
 
 -keep class org.fife.** { *; }
 -dontnote org.fife.**
 
-# ---------------------------
-# General guidance
-# ---------------------------
--dontobfuscate # only remove if confident all entry points & runtime classes are kept
+# Print final config for debug
 -printconfiguration build/tmp/full-r8-config.txt
