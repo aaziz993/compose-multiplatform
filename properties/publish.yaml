@@ -25,7 +25,7 @@ script:
         - maven: |
             { repository ->
               repository.name = "GithubPackages"
-              repository.url = uri("https://maven.pkg.github.com/aaziz993")
+              repository.url = uri("https://maven.pkg.github.com/${settings.settingsScript.developer.id}")
               repository.credentials { credentials ->
                 credentials.username = sensitive("publishing.repositories.githubPackages.username")
                 credentials.password = sensitive("publishing.repositories.githubPackages.password")
@@ -78,7 +78,7 @@ script:
 
                 pom.issueManagement { issueManagement ->
                     issueManagement.system /= "GitHub Issues"
-                    issueManagement.url /= "https://github.com/aaziz993/compose-multiplatform/issues"
+                    issueManagement.url /= "${settings.settingsScript.remove.url}/issues"
                 }
 
                 pom.scm { scm ->

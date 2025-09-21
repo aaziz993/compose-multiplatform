@@ -262,8 +262,8 @@ script:
           properties.properties(
             mapOf(
                 "sonar.host.url" to "https://sonarcloud.io",
-                "sonar.organization" to "aaziz993",
-                "sonar.projectKey" to "aaziz993_compose-multiplatform",
+                "sonar.organization" to settings.settingsScript.developer.id,
+                "sonar.projectKey" to "${settings.settingsScript.developer.id}_compose-multiplatform",
                 "sonar.coverage.jacoco.xmlReportPaths" to "build/reports/kover/report.xml",
                 "sonar.androidLint.reportPaths" to "build/reports/lint-results.xml",
                 "sonar.projectVersion" to version,

@@ -9,7 +9,7 @@ config:
     - org.jetbrains.dokka.gradle.engine.parameters.VisibilityModifier
     - gradle.api.project.*
 script:
-  - group: '"io.github.aaziz993"'
+  - group: '"io.github.${settings.settingsScript.developer.id}"'
   - version: version()
   - buildscript:
       repositories:
