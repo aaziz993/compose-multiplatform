@@ -13,6 +13,7 @@ import klib.data.type.trySetSystemProperty
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.SourceSet
+import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
 
 private val ANDROID_APPLICATION_COMPILATIONS = listOf(
     "testFixtures",
@@ -36,7 +37,9 @@ public class AndroidPlugin : Plugin<Project> {
             is ProjectLayout.Flat -> androidApplication.sourceSets.configureEach { sourceSet ->
                 val compilationName = sourceSet.name.removePrefix("android").lowercaseFirstChar()
 
-                val (srcPart, resourcesPart) = layout.androidParts(ANDROID_APPLICATION_COMPILATIONS, compilationName)
+                val (srcPart, resourcesPart) =
+                    if (compilationName == KotlinCompilation.MAIN_COMPILATION_NAME) "src" to ""
+                    else layout.androidParts(ANDROID_APPLICATION_COMPILATIONS, compilationName)
 
                 val targetPart = if (sourceSet.name.startsWith("android")) "${layout.targetDelimiter}android" else ""
 
