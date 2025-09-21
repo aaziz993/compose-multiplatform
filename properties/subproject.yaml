@@ -1,10 +1,10 @@
 config:
   imports:
+    - org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+    - org.gradle.api.file.DuplicatesStrategy
     - kotlinx.benchmark.gradle.JvmBenchmarkTarget
     - kotlinx.rpc.RpcStrictMode
     - com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-    - org.gradle.api.file.DuplicatesStrategy
-    - org.jetbrains.kotlin.gradle.tasks.KotlinCompile
     - gradle.plugins.spotless.*
 script:
   - plugins:

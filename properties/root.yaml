@@ -1,5 +1,5 @@
 imports:
-  - scripting/project-scripting.yaml
+  - config.yaml
 config:
   imports:
     - org.gradle.api.Project
