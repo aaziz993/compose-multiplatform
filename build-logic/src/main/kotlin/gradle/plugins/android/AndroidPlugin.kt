@@ -15,8 +15,8 @@ import org.gradle.api.Project
 import org.gradle.api.tasks.SourceSet
 
 private val ANDROID_APPLICATION_COMPILATIONS = listOf(
-    SourceSet.TEST_SOURCE_SET_NAME,
     "testFixtures",
+    SourceSet.TEST_SOURCE_SET_NAME,
 )
 
 public class AndroidPlugin : Plugin<Project> {
