@@ -3,7 +3,6 @@
 package gradle.plugins.initialization
 
 import gradle.api.initialization.SettingsScript
-import gradle.api.initialization.file.LicenseHeaderFile
 import gradle.api.initialization.settingsScript
 import gradle.plugins.project.ProjectPlugin
 import java.sql.DriverManager
@@ -24,9 +23,10 @@ public class SettingsPlugin : Plugin<Settings> {
 
                 (listOfNotNull(
                     target.settingsScript.licenseFile,
+                    target.settingsScript.licenseHeaderFile,
                     target.settingsScript.codeOfConductFile,
                     target.settingsScript.contributingFile,
-                ) + LicenseHeaderFile() + settingsScript.files)
+                ) + settingsScript.files)
                     .forEach { projectFile -> projectFile.sync() }
 
                 gradle.projectsLoaded {
