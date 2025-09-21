@@ -9,7 +9,7 @@ public const val LICENSE_HEADER_FILE: String = "licenses/LICENSE_HEADER"
 
 @Serializable
 public data class LicenseHeaderFile(
-    val source: String,
+    val source: String = "licenses/LICENSE_HEADER",
     override val resolution: FileResolution = FileResolution.NEWER
 ) : ProjectFile() {
 

@@ -9,12 +9,12 @@ import gradle.api.initialization.file.ProjectFileImpl
 import gradle.api.publish.maven.MavenPomDeveloper
 import gradle.api.publish.maven.MavenPomLicense
 import gradle.api.publish.maven.MavenPomScm
+import java.util.*
 import klib.data.type.primitives.string.scripting.ScriptConfig
 import klib.data.type.serialization.serializers.any.SerializableAny
 import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
-import java.util.*
 
 public const val SETTINGS_PROPERTIES_EXT: String = "settings.properties.ext"
 
@@ -27,7 +27,7 @@ public class SettingsScript(
     public val developer: MavenPomDeveloper = MavenPomDeveloper(),
     public val license: MavenPomLicense = MavenPomLicense(),
     public val licenseFile: LicenseFile? = null,
-    public val licenseHeaderFile: LicenseHeaderFile? = null,
+    public val licenseHeaderFile: LicenseHeaderFile = LicenseHeaderFile(),
     public val codeOfConductFile: CodeOfConductFile? = null,
     public val contributingFile: ContributingFile? = null,
     public val files: List<ProjectFileImpl> = emptyList(),

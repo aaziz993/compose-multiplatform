@@ -6,6 +6,7 @@ config:
     - kotlinx.rpc.RpcStrictMode
     - com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
     - gradle.plugins.spotless.*
+    - gradle.api.initialization.file.LICENSE_HEADER_FILE
 script:
   - plugins:
       - id: (libs.plugins("dependencycheck").pluginId)

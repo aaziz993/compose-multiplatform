@@ -26,7 +26,7 @@ public class SettingsPlugin : Plugin<Settings> {
                     target.settingsScript.licenseFile,
                     target.settingsScript.codeOfConductFile,
                     target.settingsScript.contributingFile,
-                ) + LicenseHeaderFile("licenses/LICENSE_HEADER") + settingsScript.files)
+                ) + LicenseHeaderFile() + settingsScript.files)
                     .forEach { projectFile -> projectFile.sync() }
 
                 gradle.projectsLoaded {
