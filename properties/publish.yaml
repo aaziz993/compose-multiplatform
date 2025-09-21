@@ -3,7 +3,6 @@ config:
     - org.gradle.api.publish.maven.MavenPublication
     - gradle.plugins.signing.*
     - io.github.z4kn4fein.semver.toVersion
-    - com.vanniktech.maven.publish.SonatypeHost
 script:
   - plugins:
       - id: ("maven-publish")
