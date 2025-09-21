@@ -78,7 +78,7 @@ script:
 
                 pom.issueManagement { issueManagement ->
                     issueManagement.system /= "GitHub Issues"
-                    issueManagement.url /= "${settings.settingsScript.remove.url}/issues"
+                    issueManagement.url /= "${settings.settingsScript.remote.url}/issues"
                 }
 
                 pom.scm { scm ->

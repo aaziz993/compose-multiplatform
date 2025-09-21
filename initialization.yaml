@@ -1,17 +1,17 @@
 imports:
   - properties/config.yaml
 year: 2025
-remote:
-  url: https://github.com/${developer.id}/compose-multiplatform
-  connection: scm:git:git://github.com:${developer.id}/compose-multiplatform.git
-  developerConnection: scm:git:ssh://github.com:${developer.id}/compose-multiplatform.git
-  tag: HEAD
 developer:
   id: aaziz993
   name: Aziz Atoev
   email: a.atoev93@gmail.com
   organization: AITech
   organizationUrl: https://github.com/${developer.id}
+remote:
+  url: https://github.com/${developer.id}/compose-multiplatform
+  connection: scm:git:git://github.com:${developer.id}/compose-multiplatform.git
+  developerConnection: scm:git:ssh://github.com:${developer.id}/compose-multiplatform.git
+  tag: HEAD
 license:
   name: Apache License, Version 2.0
   url: https://www.apache.org/licenses/LICENSE-2.0.txt
