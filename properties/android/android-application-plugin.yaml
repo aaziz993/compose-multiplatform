@@ -152,11 +152,15 @@ script:
               productFlavor.versionCode = 20000  + (android.defaultConfig.versionCode ?: 0)
               productFlavor.versionNameSuffix = "-minApi26"
             }
-      packagingOptions:
+      packaging:
         resources:
           excludes.addAll: |
             (setOf(
               "/META-INF/{AL2.0,LGPL2.1}",
+            ))
+          pickFirsts.addAll: |
+            (listOf(
+              "kotlin/**",
             ))
       buildFeatures:
         buildConfig: true
