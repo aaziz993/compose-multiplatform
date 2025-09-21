@@ -25,12 +25,14 @@ licenseFile:
   ownerPlaceholder: '[name of copyright owner]'
   resolution: MODIFIED
 licenseHeaderFile:
-  source: licenses/LICENSE_HEADER
+  source: LICENSE_HEADER
   resolution: MODIFIED
   year: ${year}
   yearPlaceholder: '[yyyy]'
   owner: ${developer.name}
   ownerPlaceholder: '[name of copyright owner]'
+  licenseName: ${license.name}
+  licenseNamePlaceHolder: '[name of license]'
 codeOfConductFile:
   source: https://www.contributor-covenant.org/version/1/4/code-of-conduct/code_of_conduct.md
   email: ${developer.email}
@@ -42,7 +44,7 @@ contributingFile:
 files:
   - type: LicenseFile
     source: ${license.url}
-    into: compose-app
+    into: compose-app/LICENSE
     year: ${year}
     yearPlaceholder: '[yyyy]'
     owner: ${developer.name}

@@ -27,7 +27,7 @@ public class SettingsScript(
     public val developer: MavenPomDeveloper = MavenPomDeveloper(),
     public val license: MavenPomLicense = MavenPomLicense(),
     public val licenseFile: LicenseFile? = null,
-    public val licenseHeaderFile: LicenseHeaderFile = LicenseHeaderFile(),
+    public val licenseHeaderFile: LicenseHeaderFile? = null,
     public val codeOfConductFile: CodeOfConductFile? = null,
     public val contributingFile: ContributingFile? = null,
     public val files: List<ProjectFile> = emptyList(),

@@ -8,15 +8,11 @@ import kotlinx.serialization.Transient
 @SerialName("ContributingFile")
 public data class ContributingFile(
     val source: String,
+    override val into: String = "CONTRIBUTING.md",
     override val resolution: FileResolution = FileResolution.NEWER,
+    override val replace: Map<String, String> = emptyMap()
 ) : ProjectFile() {
 
     @Transient
     override val from: List<String> = listOf(source)
-
-    @Transient
-    override val into: String = "CONTRIBUTING.md"
-
-    @Transient
-    override val replace: Map<String, String> = emptyMap()
 }
