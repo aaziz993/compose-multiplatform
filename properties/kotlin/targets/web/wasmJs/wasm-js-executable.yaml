@@ -5,11 +5,5 @@ script:
       targets:
         - withType<KotlinWasmJsTargetDsl>: |
             {
-              outputModuleName.set(project.moduleName)
-              browser {
-                  commonWebpackConfig { commonWebpackConfig ->
-                      commonWebpackConfig.outputFileName = "${project.moduleName}.js"
-                  }
-              }
               binaries.executable()
             }
