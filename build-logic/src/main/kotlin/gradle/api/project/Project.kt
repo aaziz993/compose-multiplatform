@@ -198,9 +198,9 @@ public val Project.javaApp: JavaApplication get() = the()
 
 public fun Project.javaApp(configure: JavaApplication.() -> Unit): Unit = extensions.configure(configure)
 
-public val Project.androidApplication: BaseAppModuleExtension get() = the()
+public val Project.android: BaseAppModuleExtension get() = the()
 
-public fun Project.androidApplication(configure: BaseAppModuleExtension.() -> Unit): Unit =
+public fun Project.android(configure: BaseAppModuleExtension.() -> Unit): Unit =
     extensions.configure(configure)
 
 public val Project.kotlin: KotlinMultiplatformExtension get() = the()

@@ -3,7 +3,7 @@ package gradle.plugins.android
 import gradle.api.configureEach
 import gradle.api.file.replace
 import gradle.api.project.ProjectLayout
-import gradle.api.project.androidApplication
+import gradle.api.project.android
 import gradle.api.project.projectScript
 import javax.xml.stream.XMLEventFactory
 import javax.xml.stream.XMLInputFactory
@@ -34,7 +34,7 @@ public class AndroidPlugin : Plugin<Project> {
 
     private fun Project.adjustSourceSets() =
         when (val layout = projectScript.layout) {
-            is ProjectLayout.Flat -> androidApplication.sourceSets.configureEach { sourceSet ->
+            is ProjectLayout.Flat -> android.sourceSets.configureEach { sourceSet ->
                 val compilationName = sourceSet.name.removePrefix("android").lowercaseFirstChar()
 
                 val (srcPart, resourcesPart) =
