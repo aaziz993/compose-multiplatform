@@ -5,13 +5,13 @@ import java.io.File
 import java.net.URI
 import java.security.MessageDigest
 import klib.data.type.isValidHttpUrl
+import klib.data.type.serialization.serializers.transform.ReflectionMapTransformingPolymorphicSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.initialization.Settings
 import org.gradle.internal.impldep.org.apache.ivy.util.url.ApacheURLLister
 
-
-@Serializable
+@Serializable(with = ProjectFileSerializer::class)
 public sealed class ProjectFile {
 
     public abstract val from: List<String>
@@ -69,6 +69,10 @@ public sealed class ProjectFile {
     private fun String.replace() =
         replace.fold(this) { acc, (key, value) -> acc.replace(key, value) }
 }
+
+private object ProjectFileSerializer : ReflectionMapTransformingPolymorphicSerializer<ProjectFile>(
+    ProjectFile::class,
+)
 
 @Serializable
 @SerialName("ProjectFile")

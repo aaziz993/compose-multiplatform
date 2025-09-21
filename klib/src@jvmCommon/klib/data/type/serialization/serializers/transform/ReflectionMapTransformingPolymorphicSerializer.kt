@@ -4,7 +4,7 @@ import klib.data.type.serialization.serializers.polymorphic.ReflectionPolymorphi
 import kotlin.reflect.KClass
 
 public open class ReflectionMapTransformingPolymorphicSerializer<T : Any>(
-    public val baseClass: KClass<T>,
+    baseClass: KClass<T>,
     keyAs: String = "type",
     valueAs: String? = null,
 ) : MapTransformingSerializer<T>(
