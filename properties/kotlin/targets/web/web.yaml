@@ -75,7 +75,7 @@ script:
                 target /= "es2015"
                 freeCompilerArgs.addAll(
                   "-Xskip-prerelease-check",
-                  "-Xignore-errors-on-partial-linkage",
+                  "-Xpartial-linkage-loglevel=INFO",
                   "-Xdont-warn-on-error-suppression",
                   // https://youtrack.jetbrains.com/issue/KT-67355
                   "-Xir-generate-inline-anonymous-functions",
