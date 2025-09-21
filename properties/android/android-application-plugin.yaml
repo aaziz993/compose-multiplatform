@@ -145,13 +145,6 @@ script:
               productFlavor.versionCode = 20000  + (android.defaultConfig.versionCode ?: 0)
               productFlavor.versionNameSuffix = "-minApi26"
             }
-        - create: |
-            ("minApi24") { productFlavor ->
-              productFlavor.dimension = "api"
-              productFlavor.minSdk = 24
-              productFlavor.versionCode = 10000  + (android.defaultConfig.versionCode ?: 0)
-              productFlavor.versionNameSuffix = "-minApi24"
-            }
       packagingOptions:
         resources:
           excludes.addAll: |

@@ -320,7 +320,7 @@ agp = "8.11.2"
 # in project version
 android-compileSdk = "36"
 # in project version
-android-minSdk = "24"
+android-minSdk = "26"
 # in project version
 android-targetSdk = "35"
 # in project version
