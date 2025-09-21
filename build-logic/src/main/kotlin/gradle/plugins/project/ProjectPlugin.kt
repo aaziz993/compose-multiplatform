@@ -13,7 +13,7 @@ import gradle.plugins.knit.KnitPlugin
 import gradle.plugins.kotlin.mpp.MPPPlugin
 import gradle.plugins.kotlin.targets.jvm.JvmPlugin
 import gradle.plugins.kotlin.targets.nat.apple.ApplePlugin
-import gradle.plugins.kotlin.targets.web.WasmJsPlugin
+import gradle.plugins.kotlin.targets.web.WebPlugin
 import gradle.plugins.kover.KoverPlugin
 import gradle.plugins.publish.PublishPlugin
 import gradle.plugins.signing.SigningPlugin
@@ -39,9 +39,8 @@ public class ProjectPlugin : Plugin<Project> {
             pluginManager.apply(AndroidPlugin::class.java)
             pluginManager.apply(ApplePlugin::class.java)
             pluginManager.apply(JvmPlugin::class.java)
-//            pluginManager.apply(JsPlugin::class.java)
+            pluginManager.apply(WebPlugin::class.java)
             pluginManager.apply(KarakumPlugin::class.java)
-            pluginManager.apply(WasmJsPlugin::class.java)
             pluginManager.apply(ComposePlugin::class.java)
             pluginManager.apply(PublishPlugin::class.java)
             pluginManager.apply(SigningPlugin::class.java)
