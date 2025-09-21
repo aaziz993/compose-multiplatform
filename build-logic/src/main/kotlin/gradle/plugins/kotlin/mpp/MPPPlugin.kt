@@ -59,7 +59,9 @@ public class MPPPlugin : Plugin<Project> {
 
                     val sourceSets = kotlin.sourceSets.associateWithNotNull { sourceSet ->
                         parts.find { (target, compilationName) ->
-                            sourceSet.name == "${target.name}${compilationName.uppercaseFirstChar()}"
+                            sourceSet.name == "${
+                                if (target is KotlinMetadataTarget) "common" else target.name
+                            }${compilationName.uppercaseFirstChar()}"
                         }?.let { (target, compilationName) ->
                             when (target) {
                                 is KotlinAndroidTarget ->
@@ -94,8 +96,9 @@ public class MPPPlugin : Plugin<Project> {
                             sourceSet.name.endsWith(compilationName.uppercaseFirstChar())
                         }?.let { compilationName ->
                             (if (compilationName == KotlinCompilation.MAIN_COMPILATION_NAME) "src" to ""
-                            else compilationName.pair()) and
-                                "${layout.targetDelimiter}${sourceSet.name.removeSuffix(compilationName.uppercaseFirstChar())}"
+                            else compilationName.pair()) and "${layout.targetDelimiter}${
+                                sourceSet.name.removeSuffix(compilationName.uppercaseFirstChar())
+                            }"
                         }
                     }
 
