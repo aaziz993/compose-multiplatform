@@ -30,7 +30,7 @@ private val KOTLIN_COMPILATIONS = listOf(
     KotlinCompilation.TEST_COMPILATION_NAME,
 )
 
-private val ANDROID_TEST_COMPILATIONS = listOf(
+private val ANDROID_COMPILATIONS = listOf(
     SourceSet.TEST_SOURCE_SET_NAME,
     "unitTest",
     "instrumentedTest",
@@ -65,12 +65,14 @@ public class MPPPlugin : Plugin<Project> {
                             when (target) {
                                 is KotlinMetadataTarget -> Tuple3("src", "", "")
                                 is KotlinAndroidTarget ->
-                                    (ANDROID_TEST_COMPILATIONS.find { testCompilationName ->
-                                        compilationName.startsWith(testCompilationName)
-                                    }?.let { testCompilationName ->
-                                        "$testCompilationName${
+                                    if (compilationName == SourceSet.MAIN_SOURCE_SET_NAME)
+                                        Tuple3("src", "", "${layout.targetDelimiter}${target.name}")
+                                    else (ANDROID_COMPILATIONS.find { androidCompilationName ->
+                                        compilationName.startsWith(androidCompilationName)
+                                    }?.let { androidCompilationName ->
+                                        "$androidCompilationName${
                                             compilationName
-                                                .removePrefix(testCompilationName)
+                                                .removePrefix(androidCompilationName)
                                                 .splitToWords()
                                                 .joinToString(layout.androidVariantDelimiter)
                                                 .addPrefixIfNotEmpty(layout.androidAllVariantsDelimiter)
@@ -96,7 +98,7 @@ public class MPPPlugin : Plugin<Project> {
                         }?.let { compilationName ->
                             if (compilationName == KotlinCompilation.MAIN_COMPILATION_NAME)
                                 Tuple3("src", "", sourceSet.name.removeSuffix(compilationName.uppercaseFirstChar()))
-                            else Tuple3(compilationName, "", sourceSet.name.removeSuffix(compilationName.uppercaseFirstChar()))
+                            else Tuple3(compilationName, compilationName, sourceSet.name.removeSuffix(compilationName.uppercaseFirstChar()))
 
                         }
                     }
@@ -104,15 +106,14 @@ public class MPPPlugin : Plugin<Project> {
                     (sourceSets + customSourceSets).forEach { (sourceSet, parts) ->
                         val (srcPart, resourcesPart, targetPart) = parts
 
-                        sourceSet.kotlin.replace(
-                            "src/${sourceSet.name}/kotlin",
-                            "$srcPart$targetPart",
-                        )
+                        sourceSet.kotlin.replace("src/${sourceSet.name}/kotlin", "$srcPart$targetPart")
                         sourceSet.resources.replace(
                             "src/${sourceSet.name}/resources",
                             "${resourcesPart}Resources$targetPart".lowercaseFirstChar(),
                         )
-                        sourceSetsToComposeResourcesDirs[sourceSet] = project.layout.projectDirectory.dir("${resourcesPart}ComposeResources$targetPart".lowercaseFirstChar())
+                        sourceSetsToComposeResourcesDirs[sourceSet] = project.layout.projectDirectory.dir(
+                            "${resourcesPart}ComposeResources$targetPart".lowercaseFirstChar(),
+                        )
                     }
                 }
 
