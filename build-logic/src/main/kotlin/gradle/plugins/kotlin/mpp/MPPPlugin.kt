@@ -15,7 +15,6 @@ import klib.data.type.primitives.string.addPrefixIfNotEmpty
 import klib.data.type.primitives.string.case.splitToWords
 import klib.data.type.primitives.string.lowercaseFirstChar
 import klib.data.type.primitives.string.uppercaseFirstChar
-import klib.data.type.tuples.Tuple3
 import klib.data.type.tuples.and
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -95,7 +94,8 @@ public class MPPPlugin : Plugin<Project> {
                             sourceSet.name.endsWith(compilationName.uppercaseFirstChar())
                         }?.let { compilationName ->
                             (if (compilationName == KotlinCompilation.MAIN_COMPILATION_NAME) "src" to ""
-                            else compilationName.pair()) and sourceSet.name.removeSuffix(compilationName.uppercaseFirstChar())
+                            else compilationName.pair()) and
+                                "${layout.targetDelimiter}${sourceSet.name.removeSuffix(compilationName.uppercaseFirstChar())}"
                         }
                     }
 
