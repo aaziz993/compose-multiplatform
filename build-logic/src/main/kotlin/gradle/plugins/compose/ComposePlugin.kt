@@ -26,9 +26,8 @@ public class ComposePlugin : Plugin<Project> {
         with(target) {
             project.pluginManager.withPlugin("org.jetbrains.compose") {
                 adjustResources()
-                kotlin.targets.withType<KotlinJvmTarget> {
-                    adjustAssembleResTask(this)
-                }
+                // Trick to make assemble jvm resources task to work.
+                kotlin.targets.withType<KotlinJvmTarget> { adjustAssembleResTask(this) }
             }
         }
     }
