@@ -65,14 +65,9 @@ public class MPPPlugin : Plugin<Project> {
                                 if (target is KotlinMetadataTarget) "common" else target.name
                             }${compilationName.uppercaseFirstChar()}"
                         }?.let { (target, compilationName) ->
-                            when (target) {
-                                is KotlinAndroidTarget ->
-                                    if (compilationName == KotlinCompilation.MAIN_COMPILATION_NAME) "src" to ""
-                                    else layout.androidParts(ANDROID_APPLICATION_COMPILATIONS, compilationName)
-
-                                else -> if (compilationName == KotlinCompilation.MAIN_COMPILATION_NAME) "src" to ""
-                                else compilationName.pair()
-                            } and if (target is KotlinMetadataTarget) "" else "${layout.targetDelimiter}${target.name}"
+                            (if (compilationName == KotlinCompilation.MAIN_COMPILATION_NAME) "src" to ""
+                            else compilationName.pair()) and if (target is KotlinMetadataTarget) ""
+                            else "${layout.targetDelimiter}${target.name}"
                         }
                     }
 
