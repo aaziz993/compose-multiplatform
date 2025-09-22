@@ -1,6 +1,7 @@
 package gradle.api.project
 
 import gradle.api.GradleScript
+import java.io.File
 import klib.data.type.primitives.string.scripting.ScriptConfig
 import klib.data.type.serialization.serializers.any.SerializableAny
 import kotlinx.serialization.Serializable
@@ -20,11 +21,14 @@ public class ProjectScript(
 ) : GradleScript() {
 
     public companion object {
+
         context(project: Project)
-        public operator fun invoke(): ProjectScript = with(project) {
-            file(PROJECT_PROPERTIES_FILE)<ProjectScript, Project>(project)
-                .also { properties -> projectScript = properties }
-                .also(ProjectScript::invoke)
+        public operator fun invoke(): Unit = with(project) {
+            file(PROJECT_PROPERTIES_FILE).takeIf(File::exists)?.invoke<ProjectScript, Project>(project)
+                .let { properties ->
+                    projectScript = properties ?: ProjectScript(script = emptyList(), fileTree = emptyMap())
+                    if (properties != null) properties()
+                }
         }
     }
 }

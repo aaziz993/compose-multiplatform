@@ -9,6 +9,7 @@ import gradle.api.initialization.file.ProjectFile
 import gradle.api.publish.maven.MavenPomDeveloper
 import gradle.api.publish.maven.MavenPomLicense
 import gradle.api.publish.maven.MavenPomScm
+import java.io.File
 import java.util.*
 import klib.data.type.primitives.string.scripting.ScriptConfig
 import klib.data.type.serialization.serializers.any.SerializableAny
@@ -40,11 +41,13 @@ public class SettingsScript(
 
         context(settings: Settings)
         @Suppress("UnstableApiUsage")
-        public operator fun invoke(): SettingsScript = with(settings) {
+        public operator fun invoke(): Unit = with(settings) {
             layout.settingsDirectory.file(SETTINGS_PROPERTIES_FILE)
-                .asFile<SettingsScript, Settings>(settings).also { properties ->
-                    settingsScript = properties
-                }.also(SettingsScript::invoke)
+                .asFile.takeIf(File::exists)?.invoke<SettingsScript, Settings>(settings)
+                .let { properties ->
+                    settingsScript = properties ?: SettingsScript(script = emptyList(), fileTree = emptyMap())
+                    if (properties != null) properties()
+                }
         }
     }
 }
