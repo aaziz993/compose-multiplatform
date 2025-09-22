@@ -36,8 +36,9 @@ public fun App(
             Button(onClick = { showContent = !showContent }) {
                 Text("Click me!")
             }
+            Text("Test")
             AnimatedVisibility(showContent) {
-                val greeting = remember { "Some" }
+                val greeting = remember { "Hello" }
                 Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
                     Image(painterResource(Res.drawable.compose_multiplatform), null)
                     Text("Compose: $greeting")
