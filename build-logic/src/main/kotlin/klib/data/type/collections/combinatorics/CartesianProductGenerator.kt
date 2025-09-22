@@ -30,7 +30,8 @@ public object CartesianProductGenerator {
                 for (i in lastIndex downTo 0) {
                     if (indices[i] >= dimensions[i] - 1) {
                         indices[i] = 0
-                    } else {
+                    }
+                    else {
                         indices[i]++
                         return nextValue
                     }
@@ -99,7 +100,8 @@ public object CartesianProductGenerator {
             build(sizes.toIntArray(), repeat) { indices ->
                 indices.mapIndexed { index, it -> pools[index][it] }
             }
-        } else {
+        }
+        else {
             build(sizes.toIntArray(), repeat) { indices ->
                 var index = 0
                 indices.map {
@@ -133,7 +135,7 @@ public object CartesianProductGenerator {
             if (it.isEmpty()) {
                 return CombinatorialSequence(BigInteger.ZERO, emptySequence())
             }
-            total *= it.size.toBigInteger()
+            total = total.multiply(it.size.toBigInteger())
             it.copyOf().asSequence()
         } * repeat
         total = total.pow(repeat)

@@ -8,7 +8,7 @@ public fun BitSet.set(bitIndex: Int) {
     this[bitIndex] = true
 }
 
-public fun BitSet.set(fromIndex: Int = 0, toIndex: Int = size, value: Boolean = true) = set(fromIndex, toIndex) { value }
+public fun BitSet.set(fromIndex: Int = 0, toIndex: Int = size, value: Boolean = true): Unit = set(fromIndex, toIndex) { value }
 
 public fun BitSet.clear(bitIndex: Int) {
     require(bitIndex >= 0) { "bitIndex < 0: $bitIndex" }
@@ -16,9 +16,9 @@ public fun BitSet.clear(bitIndex: Int) {
     this[bitIndex] = false
 }
 
-public fun BitSet.clear(fromIndex: Int = 0, toIndex: Int = size) = set(fromIndex, toIndex, false)
+public fun BitSet.clear(fromIndex: Int = 0, toIndex: Int = size): Unit = set(fromIndex, toIndex, false)
 
-public fun BitSet.flip(fromIndex: Int, toIndex: Int) = set(fromIndex, toIndex) { !it }
+public fun BitSet.flip(fromIndex: Int, toIndex: Int): Unit = set(fromIndex, toIndex) { !it }
 
 public fun BitSet.nextSetBit(fromIndex: Int): Int = nextBit(fromIndex) { it }
 

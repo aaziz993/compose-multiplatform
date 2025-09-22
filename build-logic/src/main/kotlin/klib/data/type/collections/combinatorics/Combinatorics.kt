@@ -236,7 +236,7 @@ public object Combinatorics {
         val partials = arrays.indices.map { index ->
             val suffix = arrays.sliceArray(0..index)
             val partial = CartesianProductGenerator.generate(*suffix)
-            total += partial.totalSize
+            total = total.add(partial.totalSize)
             partial
         }
 
