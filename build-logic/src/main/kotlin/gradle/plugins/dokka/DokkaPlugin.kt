@@ -12,7 +12,9 @@ public class DokkaPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            adjustSourceLinks()
+            pluginManager.withPlugin("org.jetbrains.dokka") {
+                adjustSourceLinks()
+            }
         }
     }
 
