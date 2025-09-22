@@ -103,7 +103,7 @@ private fun String.sanitize(): String {
 }
 
 public val Project.packageOfResClass: String
-    get() = "${project.name.lowercase().asUnderscoredIdentifier()}.generated.resources"
+    get() = "${name.lowercase().asUnderscoredIdentifier()}.generated.resources"
 
 private fun String.asUnderscoredIdentifier(): String =
     replace('-', '_')
