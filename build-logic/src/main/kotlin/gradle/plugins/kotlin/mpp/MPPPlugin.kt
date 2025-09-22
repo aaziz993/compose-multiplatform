@@ -16,7 +16,6 @@ import klib.data.type.primitives.string.uppercaseFirstChar
 import klib.data.type.tuples.and
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.tasks.SourceSet
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
@@ -27,9 +26,7 @@ private val KOTLIN_COMPILATIONS = listOf(
     KotlinCompilation.TEST_COMPILATION_NAME,
 )
 
-private val ANDROID_APPLICATION_COMPILATIONS = listOf(
-    SourceSet.MAIN_SOURCE_SET_NAME,
-    SourceSet.TEST_SOURCE_SET_NAME,
+private val ANDROID_APPLICATION_COMPILATIONS = KOTLIN_COMPILATIONS + listOf(
     "unitTest",
     "instrumentedTest",
 )
@@ -39,6 +36,7 @@ public class MPPPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             pluginManager.withPlugin("org.jetbrains.kotlin.multiplatform") {
+                println("MPP plugin applied: ${project.name}")
                 adjustSourceSets()
                 registerPrintHierarchyTemplateTask()
             }
@@ -50,7 +48,7 @@ public class MPPPlugin : Plugin<Project> {
         kotlin {
             when (val layout = projectScript.layout) {
                 is ProjectLayout.Flat -> {
-                    val parts = kotlin.targets.flatMap { target ->
+                    val sourceNameParts = kotlin.targets.flatMap { target ->
                         target.compilations.map { compilation ->
                             target to compilation.name
                         }
@@ -63,7 +61,7 @@ public class MPPPlugin : Plugin<Project> {
                     }
 
                     val sourceSets = kotlin.sourceSets.associateWithNotNull { sourceSet ->
-                        parts.find { (target, compilationName) ->
+                        sourceNameParts.find { (target, compilationName) ->
                             sourceSet.name == "${
                                 if (target is KotlinMetadataTarget) "common" else target.name
                             }${compilationName.uppercaseFirstChar()}"
