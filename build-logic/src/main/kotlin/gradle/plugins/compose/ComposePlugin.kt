@@ -2,6 +2,7 @@
 
 package gradle.plugins.compose
 
+import gradle.api.all
 import gradle.api.project.ProjectLayout
 import gradle.api.project.compose
 import gradle.api.project.desktop
@@ -12,6 +13,12 @@ import gradle.api.project.sourceSetsToComposeResourcesDirs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.assign
+import org.gradle.kotlin.dsl.withType
+import org.jetbrains.compose.internal.utils.uppercaseFirstChar
+import org.jetbrains.compose.resources.AssembleTargetResourcesTask
+import org.jetbrains.compose.resources.getPreparedComposeResourcesDir
+import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
+import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
 
 public class ComposePlugin : Plugin<Project> {
 
@@ -19,6 +26,9 @@ public class ComposePlugin : Plugin<Project> {
         with(target) {
             project.pluginManager.withPlugin("org.jetbrains.compose") {
                 adjustResources()
+                kotlin.targets.withType<KotlinJvmTarget> {
+                    adjustAssembleResTask(this)
+                }
             }
         }
     }
@@ -51,6 +61,26 @@ public class ComposePlugin : Plugin<Project> {
             windows {
                 if (!iconFile.isPresent) iconFile = project.file("$dir/drawable/compose-multiplatform-mingw.ico")
             }
+        }
+    }
+
+    private fun Project.adjustAssembleResTask(target: KotlinTarget) {
+        target.compilations.all { compilation ->
+            val compilationResources = files(
+                {
+                    compilation.allKotlinSourceSets.map { sourceSet -> getPreparedComposeResourcesDir(sourceSet) }
+                },
+            )
+            val assembleResTask = tasks.named(
+                "assemble${target.targetName.uppercaseFirstChar()}${compilation.name.uppercaseFirstChar()}Resources",
+                AssembleTargetResourcesTask::class.java,
+            ) {
+                resourceDirectories.setFrom(compilationResources)
+            }
+
+            val allCompilationResources = assembleResTask.flatMap { it.outputDirectory.asFile }
+
+            compilation.defaultSourceSet.resources.srcDir(allCompilationResources)
         }
     }
 }
