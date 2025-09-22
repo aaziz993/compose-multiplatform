@@ -23,6 +23,8 @@ public fun <T> Iterable<T>.combinationsWithRepetition(length: Int): Combinatoria
 
 public fun <T> Iterable<T>.cartesianProduct(vararg others: Iterable<T>, repeat: Int = 1): CombinatorialSequence<List<T>> = Combinatorics.cartesianProduct(this, *others, repeat = repeat)
 
+public fun <T> Iterable<T>.progressiveCartesianProduct(vararg others: Iterable<T>): CombinatorialSequence<List<T>> = Combinatorics.progressiveCartesianProduct(this, *others)
+
 public fun <T> Iterable<T>.powerset(): CombinatorialSequence<List<T>> = Combinatorics.powerset(this)
 
 public inline fun <reified T> Array<T>.permutations(length: Int? = null): CombinatorialSequence<Array<T>> = Combinatorics.permutations(this, length)
@@ -36,5 +38,7 @@ public inline fun <reified T> Array<T>.combinations(length: Int): CombinatorialS
 public inline fun <reified T> Array<T>.combinationsWithRepetition(length: Int): CombinatorialSequence<Array<T>> = Combinatorics.combinationsWithRepetition(this, length)
 
 public inline fun <reified T> Array<T>.cartesianProduct(vararg others: Array<T>, repeat: Int = 1): CombinatorialSequence<Array<T>> = Combinatorics.cartesianProduct(this, *others, repeat = repeat)
+
+public inline fun <reified T> Array<T>.progressiveCartesianProduct(vararg others: Array<T>): CombinatorialSequence<Array<T>> = Combinatorics.progressiveCartesianProduct(this, *others)
 
 public inline fun <reified T> Array<T>.powerset(): CombinatorialSequence<Array<T>> = Combinatorics.powerset(this)

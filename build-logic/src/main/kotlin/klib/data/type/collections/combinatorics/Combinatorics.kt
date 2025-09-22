@@ -70,6 +70,67 @@ public object Combinatorics {
         CartesianProductGenerator.generate(*iterables, repeat = repeat)
 
     /**
+     * Returns a sequence of progressive cartesian products of the elements of [iterables].
+     *
+     * The combinations are generated progressively from **left to right**:
+     * - First, the first iterable alone (length = 1)
+     * - Then the first two iterables combined (length = 2)
+     * - And so on until all iterables are combined
+     *
+     * Example:
+     * ```
+     * val list1 = listOf("A", "B")
+     * val list2 = listOf("1", "2")
+     * val list3 = listOf("x", "y")
+     *
+     * val result = Combinatorics.progressiveCartesian(list1, list2, list3)
+     * result.forEach { println(it) }
+     * ```
+     * Output:
+     * ```
+     * [A]
+     * [B]
+     * [A, 1]
+     * [A, 2]
+     * [B, 1]
+     * [B, 2]
+     * [A, 1, x]
+     * [A, 1, y]
+     * [A, 2, x]
+     * [A, 2, y]
+     * [B, 1, x]
+     * [B, 1, y]
+     * [B, 2, x]
+     * [B, 2, y]
+     * ```
+     *
+     * @param iterables Vararg of iterables to combine progressively.
+     * @return A [CombinatorialSequence] containing all progressive combinations.
+     */
+    @JvmStatic
+    @JvmOverloads
+    public fun <T> progressiveCartesianProduct(vararg iterables: Iterable<T>): CombinatorialSequence<List<T>> {
+        if (iterables.isEmpty())
+            return CombinatorialSequence(BigInteger.ZERO, sequenceOf())
+
+        // Compute total size eagerly using totalSize property
+        var total: BigInteger = BigInteger.ZERO
+        val partials = iterables.indices.map { index ->
+            val suffix = iterables.sliceArray(0..index)
+            val partial = CartesianProductGenerator.generate(*suffix)
+            total += partial.totalSize
+            partial
+        }
+
+        return CombinatorialSequence(
+            total,
+            sequence {
+                partials.forEach { partial -> yieldAll(partial) }
+            },
+        )
+    }
+
+    /**
      * Returns a sequence of power set of the elements of [iterable].
      */
     @JvmStatic
@@ -165,14 +226,15 @@ public object Combinatorics {
      * @param iterables Vararg of iterables to combine progressively.
      * @return A [CombinatorialSequence] containing all progressive combinations.
      */
-    public fun <T> progressiveCartesianProduct(vararg iterables: Iterable<T>): CombinatorialSequence<List<T>> {
-        if (iterables.isEmpty())
+    @JvmStatic
+    public inline fun <reified T> progressiveCartesianProduct(vararg arrays: Array<T>): CombinatorialSequence<Array<T>> {
+        if (arrays.isEmpty())
             return CombinatorialSequence(BigInteger.ZERO, sequenceOf())
 
         // Compute total size eagerly using totalSize property
         var total: BigInteger = BigInteger.ZERO
-        val partials = iterables.indices.map { index ->
-            val suffix = iterables.sliceArray(0..index)
+        val partials = arrays.indices.map { index ->
+            val suffix = arrays.sliceArray(0..index)
             val partial = CartesianProductGenerator.generate(*suffix)
             total += partial.totalSize
             partial

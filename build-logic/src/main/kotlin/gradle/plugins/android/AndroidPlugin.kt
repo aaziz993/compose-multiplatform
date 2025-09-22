@@ -106,10 +106,12 @@ public class AndroidPlugin : Plugin<Project> {
             else -> Unit
         }
 
-    private fun Project.progressiveVariants(): Sequence<List<String>> = sequence {
+    private fun Project.progressiveVariants(): Sequence<List<String>>  {
         val compilations = listOf(KotlinCompilation.TEST_COMPILATION_NAME)
         val productFlavors = android.productFlavors.map(ProductFlavor::getName)
         val buildTypes = android.buildTypes.map(BuildType::getName)
+
+        compilations.progress
 
         yieldAll(buildTypes.map(::listOf))
 
