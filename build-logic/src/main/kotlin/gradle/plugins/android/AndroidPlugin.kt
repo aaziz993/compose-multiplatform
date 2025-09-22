@@ -10,6 +10,7 @@ import gradle.api.project.projectScript
 import javax.xml.stream.XMLEventFactory
 import javax.xml.stream.XMLInputFactory
 import javax.xml.stream.XMLOutputFactory
+import klib.data.type.collections.combinatorics.cartesianProduct
 import klib.data.type.collections.combinatorics.progressiveCartesianProduct
 import klib.data.type.collections.list.drop
 import klib.data.type.pair
@@ -48,10 +49,10 @@ public class AndroidPlugin : Plugin<Project> {
                         else {
                             val rest = sourceSet.name.removePrefix("android").lowercaseFirstChar()
 
-                            dimensions().find { dimension ->
+                            (dimensions().toList().find { dimension ->
                                 rest == "${dimension.first()}${dimension.drop().joinToString("", transform = String::uppercaseFirstChar)}"
-                            }!!.let { dimension ->
-                                "${dimension.first()}${
+                            } ?: error("Unknown sourceSet: ${sourceSet.name}")).let { dimension ->
+                                "${if (dimension.first() == KotlinCompilation.TEST_COMPILATION_NAME) "instrumentedTest" else dimension.first()}${
                                     dimension.drop().joinToString { variant ->
                                         "${layout.androidVariantDelimiter}$variant".uppercaseFirstChar()
                                     }.addPrefixIfNotEmpty(layout.androidAllVariantsDelimiter)
@@ -111,8 +112,9 @@ public class AndroidPlugin : Plugin<Project> {
         val productFlavors = android.productFlavors.map(ProductFlavor::getName)
         val buildTypes = android.buildTypes.map(BuildType::getName)
 
-        yieldAll(productFlavors.map(::listOf))
         yieldAll(buildTypes.map(::listOf))
+        yieldAll(compilations.cartesianProduct(buildTypes))
+        yieldAll(productFlavors.progressiveCartesianProduct(buildTypes))
         yieldAll(compilations.progressiveCartesianProduct(productFlavors, buildTypes))
     }
 
