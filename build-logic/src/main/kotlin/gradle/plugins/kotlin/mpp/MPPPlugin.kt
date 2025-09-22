@@ -36,7 +36,6 @@ public class MPPPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             pluginManager.withPlugin("org.jetbrains.kotlin.multiplatform") {
-                println("MPP plugin applied: ${project.name}")
                 adjustSourceSets()
                 registerPrintHierarchyTemplateTask()
             }
