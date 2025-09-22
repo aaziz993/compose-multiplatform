@@ -13,7 +13,6 @@ import klib.data.type.trySetSystemProperty
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.SourceSet
-import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
 
 private val ANDROID_APPLICATION_COMPILATIONS = listOf(
     "testFixtures",
@@ -35,11 +34,13 @@ public class AndroidPlugin : Plugin<Project> {
     private fun Project.adjustSourceSets() =
         when (val layout = projectScript.layout) {
             is ProjectLayout.Flat -> android.sourceSets.configureEach { sourceSet ->
-                val compilationName = sourceSet.name.removePrefix("android").lowercaseFirstChar()
 
                 var (srcPart, resourcesPart) =
-                    if (compilationName == SourceSet.MAIN_SOURCE_SET_NAME) "src" to ""
-                    else layout.androidParts(ANDROID_APPLICATION_COMPILATIONS, compilationName)
+                    if (sourceSet.name == SourceSet.MAIN_SOURCE_SET_NAME) "src" to ""
+                    else layout.androidParts(
+                        ANDROID_APPLICATION_COMPILATIONS,
+                        sourceSet.name.removePrefix("android").lowercaseFirstChar(),
+                    )
 
                 if (srcPart == SourceSet.TEST_SOURCE_SET_NAME) {
                     srcPart = "instrumentedTest"
@@ -47,7 +48,7 @@ public class AndroidPlugin : Plugin<Project> {
                 }
 
                 val targetPart = if (sourceSet.name.startsWith("android") ||
-                    compilationName == KotlinCompilation.MAIN_COMPILATION_NAME) "${layout.targetDelimiter}android"
+                    sourceSet.name == SourceSet.MAIN_SOURCE_SET_NAME) "${layout.targetDelimiter}android"
                 else ""
 
                 sourceSet.kotlin.replace(

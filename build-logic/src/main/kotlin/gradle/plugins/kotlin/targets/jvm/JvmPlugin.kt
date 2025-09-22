@@ -1,20 +1,41 @@
 package gradle.plugins.kotlin.targets.jvm
 
+import gradle.api.configureEach
+import gradle.api.file.replace
+import gradle.api.project.ProjectLayout
+import gradle.api.project.java
+import gradle.api.project.projectScript
+import klib.data.type.pair
+import klib.data.type.tuples.and
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.testing.Test
 import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.withType
-import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
 import org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest
 
 internal class JvmPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            pluginManager.withPlugin("org.jetbrains.kotlin.multiplatform") {
-                registerJvmStressTest()
+            adjustSourceSets()
+            registerJvmStressTest()
+        }
+    }
+
+    private fun Project.adjustSourceSets() = pluginManager.withPlugin("org.gradle.java-base") {
+        when (val layout = project.projectScript.layout) {
+            is ProjectLayout.Flat -> java.sourceSets.configureEach { sourceSet ->
+                val (srcPart, resourcesPart, targetPart) =
+                    (if (sourceSet.name == SourceSet.MAIN_SOURCE_SET_NAME) "src" to ""
+                    else sourceSet.name.pair()) and "${layout.targetDelimiter}java"
+
+                sourceSet.java.replace("src/${sourceSet.name}/java", "$srcPart$targetPart")
+                sourceSet.resources.replace("src/${sourceSet.name}/resources", "$resourcesPart$targetPart")
             }
+
+            else -> Unit
         }
     }
 
