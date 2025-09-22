@@ -6,13 +6,13 @@ import gradle.api.project.ProjectLayout
 import gradle.api.project.java
 import gradle.api.project.projectScript
 import klib.data.type.pair
-import klib.data.type.tuples.and
+import klib.data.type.primitives.string.lowercaseFirstChar
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.testing.Test
 import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
 import org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest
 
 internal class JvmPlugin : Plugin<Project> {
@@ -27,12 +27,16 @@ internal class JvmPlugin : Plugin<Project> {
     private fun Project.adjustSourceSets() = pluginManager.withPlugin("org.gradle.java-base") {
         when (val layout = project.projectScript.layout) {
             is ProjectLayout.Flat -> java.sourceSets.configureEach { sourceSet ->
-                val (srcPart, resourcesPart, targetPart) =
-                    (if (sourceSet.name == SourceSet.MAIN_SOURCE_SET_NAME) "src" to ""
-                    else sourceSet.name.pair()) and "${layout.targetDelimiter}java"
+                val compilationName = sourceSet.name.removePrefix("jvm").lowercaseFirstChar()
+
+                val (srcPart, resourcesPart) =
+                    if (compilationName == KotlinCompilation.MAIN_COMPILATION_NAME) "src" to ""
+                    else compilationName.pair()
+
+                val targetPart = "${layout.targetDelimiter}java"
 
                 sourceSet.java.replace("src/${sourceSet.name}/java", "$srcPart$targetPart")
-                sourceSet.resources.replace("src/${sourceSet.name}/resources", "$resourcesPart$targetPart")
+                sourceSet.resources.replace("src/${sourceSet.name}/resources", "${resourcesPart}Resources$targetPart".lowercaseFirstChar())
             }
 
             else -> Unit
