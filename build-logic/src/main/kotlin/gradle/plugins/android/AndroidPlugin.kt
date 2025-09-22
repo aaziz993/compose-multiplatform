@@ -1,17 +1,15 @@
 package gradle.plugins.android
 
-import com.android.build.api.dsl.BuildType
-import com.android.build.api.dsl.ProductFlavor
 import gradle.api.configureEach
 import gradle.api.file.replace
 import gradle.api.project.ProjectLayout
 import gradle.api.project.android
+import gradle.api.project.androidComponents
 import gradle.api.project.projectScript
 import javax.xml.stream.XMLEventFactory
 import javax.xml.stream.XMLInputFactory
 import javax.xml.stream.XMLOutputFactory
 import klib.data.type.collections.combinatorics.cartesianProduct
-import klib.data.type.collections.combinatorics.progressiveCartesianProduct
 import klib.data.type.collections.list.drop
 import klib.data.type.pair
 import klib.data.type.primitives.string.addPrefixIfNotEmpty
@@ -42,16 +40,16 @@ public class AndroidPlugin : Plugin<Project> {
 
     private fun Project.adjustSourceSets() =
         when (val layout = projectScript.layout) {
-            is ProjectLayout.Flat ->
+            is ProjectLayout.Flat -> onDimensions { dimensions ->
                 android.sourceSets.configureEach { sourceSet ->
                     val (srcPart, resourcesPart) =
                         if (sourceSet.name == SourceSet.MAIN_SOURCE_SET_NAME) "src" to ""
                         else {
                             val rest = sourceSet.name.removePrefix("android").lowercaseFirstChar()
 
-                            (dimensions().toList().find { dimension ->
+                            dimensions.single { dimension ->
                                 rest == "${dimension.first()}${dimension.drop().joinToString("", transform = String::uppercaseFirstChar)}"
-                            } ?: error("Unknown sourceSet: ${sourceSet.name}")).let { dimension ->
+                            }.let { dimension ->
                                 "${if (dimension.first() == KotlinCompilation.TEST_COMPILATION_NAME) "instrumentedTest" else dimension.first()}${
                                     dimension.drop().joinToString { variant ->
                                         "${layout.androidVariantDelimiter}$variant".uppercaseFirstChar()
@@ -103,19 +101,30 @@ public class AndroidPlugin : Plugin<Project> {
                         "${resourcesPart}MlModels$targetPart".lowercaseFirstChar(),
                     )
                 }
+            }
 
             else -> Unit
         }
 
-    private fun Project.dimensions(): Sequence<List<String>> = sequence {
-        val compilations = listOf("testFixtures", KotlinCompilation.TEST_COMPILATION_NAME)
-        val productFlavors = android.productFlavors.map(ProductFlavor::getName)
-        val buildTypes = android.buildTypes.map(BuildType::getName)
+    private fun Project.onDimensions(block: (Sequence<List<String>>) -> Unit) {
+        val variants = mutableSetOf<List<String>>()
+        androidComponents {
+            onVariants { variant ->
+                variants.add(listOfNotNull(variant.flavorName,variant.buildType))
+            }
+        }
 
-        yieldAll(buildTypes.map(::listOf))
-        yieldAll(compilations.cartesianProduct(buildTypes))
-        yieldAll(productFlavors.progressiveCartesianProduct(buildTypes))
-        yieldAll(compilations.progressiveCartesianProduct(productFlavors, buildTypes))
+        gradle.projectsEvaluated {
+            block(
+                sequence {
+                    yieldAll(variants)
+                    yieldAll(
+                        ANDROID_APPLICATION_COMPILATIONS.map(::listOf).cartesianProduct(variants)
+                            .map { (compilation, variant) -> compilation + variant },
+                    )
+                },
+            )
+        }
     }
 
     private fun Project.applyGoogleServicesPlugin() {
