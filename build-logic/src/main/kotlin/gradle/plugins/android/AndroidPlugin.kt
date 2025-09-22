@@ -11,8 +11,6 @@ import javax.xml.stream.XMLOutputFactory
 import klib.data.type.pair
 import klib.data.type.primitives.string.lowercaseFirstChar
 import klib.data.type.trySetSystemProperty
-import klib.data.type.tuples.Tuple3
-import klib.data.type.tuples.and
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
@@ -39,12 +37,14 @@ public class AndroidPlugin : Plugin<Project> {
             is ProjectLayout.Flat -> android.sourceSets.configureEach { sourceSet ->
                 val compilationName = sourceSet.name.removePrefix("android").lowercaseFirstChar()
 
-                val (srcPart, resourcesPart, targetPart) =
-                    if (compilationName == KotlinCompilation.MAIN_COMPILATION_NAME) Tuple3("src", "", "android")
+                val (srcPart, resourcesPart) =
+                    if (compilationName == KotlinCompilation.MAIN_COMPILATION_NAME) "src" to ""
                     else layout.androidParts(ANDROID_APPLICATION_COMPILATIONS, compilationName).let { parts ->
                         if (compilationName == KotlinCompilation.TEST_COMPILATION_NAME) "instrumentedTest".pair()
                         else parts
-                    } and if (sourceSet.name.startsWith("android")) "android" else ""
+                    }
+
+                val targetPart = "${layout.targetDelimiter}android"
 
                 sourceSet.kotlin.replace(
                     "src/${sourceSet.name}/kotlin",
