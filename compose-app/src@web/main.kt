@@ -1,5 +1,6 @@
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.window.ComposeViewport
+import androidx.navigation.NavController
 import androidx.navigation.bindToBrowserNavigation
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.app_name
@@ -13,7 +14,7 @@ public suspend fun main() {
     document.title = getString(Res.string.app_name)
     ComposeViewport {
         App(
-            onNavHostReady = { it.bindToBrowserNavigation() },
+            onNavHostReady = NavController::bindToBrowserNavigation,
         )
     }
 }
