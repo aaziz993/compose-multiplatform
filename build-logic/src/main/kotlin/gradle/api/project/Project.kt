@@ -51,7 +51,6 @@ import org.jetbrains.compose.desktop.DesktopExtension
 import org.jetbrains.compose.resources.ResourcesExtension
 import org.jetbrains.dokka.gradle.DokkaExtension
 import org.jetbrains.dokka.versioning.VersioningConfiguration
-import org.jetbrains.gradle.apple.AppleProjectExtension
 import org.jetbrains.kotlin.allopen.gradle.AllOpenExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
@@ -247,10 +246,6 @@ public val KotlinMultiplatformExtension.cocoapods: CocoapodsExtension get() = th
 
 public fun KotlinMultiplatformExtension.cocoapods(configure: CocoapodsExtension.() -> Unit): Unit =
     extensions.configure(configure)
-
-public val Project.apple: AppleProjectExtension get() = the()
-
-public fun Project.apple(configure: AppleProjectExtension.() -> Unit): Unit = extensions.configure(configure)
 
 public val Project.npm: NpmExtension get() = the()
 
