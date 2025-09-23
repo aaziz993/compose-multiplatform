@@ -102,8 +102,8 @@ public class ComposePlugin : Plugin<Project> {
             }
         }
 
-        val drawableQualifiedDir = THEMES.firstNotNullOfOrNull {
-            composeResourcesDir.resolve("drawable-${DENSITIES.keys.last()}").takeIf(File::exists)
+        val drawableQualifiedDir = THEMES.firstNotNullOfOrNull { theme ->
+            composeResourcesDir.resolve("drawable-${DENSITIES.keys.last()}${theme.addPrefixIfNotEmpty("-")}").takeIf(File::exists)
         } ?: return
 
         // jpackage only supports .png on Linux, .ico on Windows, .icns on Mac, so a developer must do a conversion (probably from a png) to a 3 different formats.
