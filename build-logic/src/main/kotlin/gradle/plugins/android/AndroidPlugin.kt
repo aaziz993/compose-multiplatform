@@ -1,15 +1,16 @@
 package gradle.plugins.android
 
+import com.android.build.api.dsl.BuildType
 import com.android.build.api.dsl.ProductFlavor
 import gradle.api.configureEach
 import gradle.api.file.replace
 import gradle.api.project.ProjectLayout
 import gradle.api.project.android
-import gradle.api.project.androidComponents
 import gradle.api.project.projectScript
 import javax.xml.stream.XMLEventFactory
 import javax.xml.stream.XMLInputFactory
 import javax.xml.stream.XMLOutputFactory
+import klib.data.type.collections.combinatorics.Combinatorics
 import klib.data.type.collections.combinatorics.cartesianProduct
 import klib.data.type.collections.list.drop
 import klib.data.type.pair
@@ -41,16 +42,17 @@ public class AndroidPlugin : Plugin<Project> {
 
     private fun Project.adjustSourceSets() =
         when (val layout = projectScript.layout) {
-            is ProjectLayout.Flat -> variants { variants ->
+            is ProjectLayout.Flat -> {
+                val variants = variants()
                 android.sourceSets.configureEach { sourceSet ->
                     val (srcPart, resourcesPart) =
                         if (sourceSet.name == SourceSet.MAIN_SOURCE_SET_NAME) "src" to ""
                         else {
                             val rest = sourceSet.name.removePrefix("android").lowercaseFirstChar()
 
-                            variants.single { variant ->
+                            (variants.singleOrNull { variant ->
                                 rest == "${variant.first()}${variant.drop().joinToString("", transform = String::uppercaseFirstChar)}"
-                            }.let { dimension ->
+                            } ?: error(rest)).let { dimension ->
                                 if (dimension.first() in ANDROID_APPLICATION_COMPILATIONS) {
                                     "${
                                         if (dimension.first() == KotlinCompilation.TEST_COMPILATION_NAME) "instrumentedTest"
@@ -119,37 +121,31 @@ public class AndroidPlugin : Plugin<Project> {
             else -> Unit
         }
 
-    private fun Project.variants(block: (Set<List<String>>) -> Unit) {
-        val variants = mutableSetOf<List<String>>()
-        androidComponents {
-            onVariants { variant ->
-                variants.add(listOfNotNull(variant.flavorName, variant.buildType))
+    private fun Project.variants(): Set<List<String>> =
+        buildSet {
+            addAll(ANDROID_APPLICATION_COMPILATIONS.map(::listOf))
+
+            val productFlavors = android.productFlavors.map(ProductFlavor::getName)
+            val buildTypes = android.buildTypes.map(BuildType::getName)
+
+            addAll(ANDROID_APPLICATION_COMPILATIONS.cartesianProduct(productFlavors).toList())
+            addAll(ANDROID_APPLICATION_COMPILATIONS.cartesianProduct(buildTypes))
+            addAll(ANDROID_APPLICATION_COMPILATIONS.cartesianProduct(productFlavors, buildTypes))
+            addAll(productFlavors.map(::listOf))
+            addAll(buildTypes.map(::listOf))
+            addAll(productFlavors.cartesianProduct(buildTypes))
+
+            val flavors = android.flavorDimensionList.map { dimension ->
+                android.productFlavors
+                    .filter { productFlavor -> productFlavor.dimension == dimension }
+                    .map(ProductFlavor::getName)
             }
-        }
 
-        afterEvaluate {
-            block(
-                buildSet {
-                    addAll(ANDROID_APPLICATION_COMPILATIONS.map(::listOf))
-
-                    android.flavorDimensionList.map { flavorDimension ->
-                        android.productFlavors
-                            .filter { productFlavor -> productFlavor.dimension == flavorDimension }
-                            .map(ProductFlavor::getName)
-                    }.forEach { productFlavors ->
-                        addAll(ANDROID_APPLICATION_COMPILATIONS.cartesianProduct(productFlavors))
-                        addAll(productFlavors.map(::listOf))
-                    }
-                    variants.forEach { variant ->
-                        addAll(ANDROID_APPLICATION_COMPILATIONS.cartesianProduct(variant))
-                        addAll(ANDROID_APPLICATION_COMPILATIONS.map { compilationName -> listOf(compilationName) + variant })
-                        addAll(variant.map(::listOf))
-                    }
-                    addAll(variants)
-                },
-            )
+            addAll(ANDROID_APPLICATION_COMPILATIONS.cartesianProduct(*flavors.toTypedArray()))
+            addAll(ANDROID_APPLICATION_COMPILATIONS.cartesianProduct(*flavors.toTypedArray(), buildTypes))
+            addAll(Combinatorics.cartesianProduct(*flavors.toTypedArray()))
+            addAll(Combinatorics.cartesianProduct(*flavors.toTypedArray(), buildTypes))
         }
-    }
 
     private fun Project.applyGoogleServicesPlugin() {
         if (file("google-services.json").exists()) {
