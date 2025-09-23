@@ -54,7 +54,7 @@ public class ProjectPlugin : Plugin<Project> {
 
             CI.configureTasks()
 
-            registerPrintTaskDependencyHierarchyTask()
+            registerPrintTasksTask()
 
             if (problemReporter.getErrors().isNotEmpty()) {
                 throw GradleException(problemReporter.getGradleError())
@@ -84,7 +84,7 @@ public class ProjectPlugin : Plugin<Project> {
             }
         }
 
-    private fun Project.registerPrintTaskDependencyHierarchyTask() =
+    private fun Project.registerPrintTasksTask() =
         tasks.register("printTaskDependencyHierarchy") {
             group = "help"
             description = "Prints Gradle task dependency hierarchy"
