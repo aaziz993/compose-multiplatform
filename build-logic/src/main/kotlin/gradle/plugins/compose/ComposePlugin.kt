@@ -56,7 +56,7 @@ public class ComposePlugin : Plugin<Project> {
     }
 
     private fun Project.adjustResources() = project.pluginManager.withPlugin("org.jetbrains.compose") {
-        var dir = "src/commonMain/composeResources"
+        var composeResourcesDir = "src/commonMain/composeResources"
         when (project.projectScript.layout) {
             is ProjectLayout.Flat -> {
                 kotlin.sourceSets.forEach { sourceSet ->
@@ -65,47 +65,49 @@ public class ComposePlugin : Plugin<Project> {
                         project.provider { sourceSetsToComposeResourcesDirs[sourceSet]!! },
                     )
                 }
-                dir = "composeResources"
+                composeResourcesDir = "composeResources"
             }
 
             else -> Unit
         }
 
-        adjustDesktopIcons(dir)
+        adjustDesktopIcons(composeResourcesDir)
     }
 
-    private fun Project.adjustDesktopIcons(dir: String) = pluginManager.withPlugin("org.jetbrains.compose.desktop") {
-        val drawableDir = project.file(dir).resolve("drawable")
+    private fun Project.adjustDesktopIcons(composeResourcesDir: String) {
+        val drawableDir = project.file(composeResourcesDir).resolve("drawable")
+        drawableDir.mkdirs()
+
         val composeMultiplatformSvg = drawableDir.resolve("$COMPOSE_MULTIPLATFORM_ICON_NAME.svg")
 
-        if (!composeMultiplatformSvg.exists()) return@withPlugin
+        if (!composeMultiplatformSvg.exists()) return
 
         DENSITIES.forEach { (qualifier, size) ->
-            val densityDir = drawableDir.resolve("drawable-$qualifier")
-            densityDir.mkdirs()
+            val drawableQualifiedDir = drawableDir.resolve("drawable-$qualifier")
+            drawableQualifiedDir.mkdirs()
 
-            val linuxIconFile = drawableDir.resolve("$COMPOSE_MULTIPLATFORM_ICON_NAME-linux.png")
-            val windowsIconFile = drawableDir.resolve("$COMPOSE_MULTIPLATFORM_ICON_NAME-windows.ico")
-            val macosIconFile = densityDir.resolve("$COMPOSE_MULTIPLATFORM_ICON_NAME.icns")
+            val linuxIconFile = drawableQualifiedDir.resolve("$COMPOSE_MULTIPLATFORM_ICON_NAME-linux.png")
+            val windowsIconFile = drawableQualifiedDir.resolve("$COMPOSE_MULTIPLATFORM_ICON_NAME-windows.ico")
+            val macosIconFile = drawableQualifiedDir.resolve("$COMPOSE_MULTIPLATFORM_ICON_NAME.icns")
 
             svgToPng(composeMultiplatformSvg, linuxIconFile, size)
             Imaging.writeImage(ImageIO.read(linuxIconFile), windowsIconFile, ImageFormats.ICO)
             linuxIconFile.copyTo(macosIconFile, overwrite = true)
         }
 
-        val desktopDensityDir = drawableDir.resolve("drawable-${DENSITIES.keys.last()}")
+        val drawableQualifiedDir = drawableDir.resolve("drawable-${DENSITIES.keys.last()}")
 
         // jpackage only supports .png on Linux, .ico on Windows, .icns on Mac, so a developer must do a conversion (probably from a png) to a 3 different formats.
         // Also it seems that ico and icns need to contain an icon in multiple resolutions, so the conversion becomes a bit inconvenient.
         compose.desktop.application.nativeDistributions {
             macOS {
-                if (!iconFile.isPresent) iconFile = desktopDensityDir.resolve("$COMPOSE_MULTIPLATFORM_ICON_NAME-macos.icns")
+                if (!iconFile.isPresent) iconFile = drawableQualifiedDir.resolve("$COMPOSE_MULTIPLATFORM_ICON_NAME-macos.icns")
             }
             linux {
-                if (!iconFile.isPresent) iconFile = desktopDensityDir.resolve("$COMPOSE_MULTIPLATFORM_ICON_NAME-linux.png")
+                if (!iconFile.isPresent) iconFile = drawableQualifiedDir.resolve("$COMPOSE_MULTIPLATFORM_ICON_NAME-linux.png")
             }
             windows {
-                if (!iconFile.isPresent) iconFile = desktopDensityDir.resolve("$COMPOSE_MULTIPLATFORM_ICON_NAME-windows.ico")
+                if (!iconFile.isPresent) iconFile = drawableQualifiedDir.resolve("$COMPOSE_MULTIPLATFORM_ICON_NAME-windows.ico")
             }
         }
     }
