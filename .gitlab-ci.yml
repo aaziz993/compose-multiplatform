@@ -1,0 +1,103 @@
+stages:
+  - setup
+  - dependency-check
+  - format-quality
+  - qodana
+  - test-coverage
+  - publish
+
+# -----------------------------
+# Common Setup
+# -----------------------------
+setup:
+  stage: setup
+  image: gradle:8.4-jdk23
+  before_script:
+    - git checkout $CI_COMMIT_SHA
+    - java -version
+    - gradle -v
+  cache:
+    key: "gradle-${CI_COMMIT_REF_SLUG}"
+    paths:
+      - .gradle/caches/
+      - .gradle/wrapper/
+
+# -----------------------------
+# Dependency Check
+# -----------------------------
+dependency-check:
+  stage: dependency-check
+  image: gradle:8.4-jdk23
+  needs: [setup]
+  script:
+    - ./gradlew ciDependencyCheckAnalyze
+
+# -----------------------------
+# Format & Quality Check
+# -----------------------------
+format-quality-check:
+  stage: format-quality
+  image: gradle:8.4-jdk23
+  needs: [dependency-check]
+  variables:
+    SONAR_TOKEN: $SONAR_TOKEN
+  script:
+    - ./gradlew ciSpotlessCheck
+    - ./gradlew ciSonar
+    - ./gradlew ciKnitCheck
+
+# -----------------------------
+# Qodana Scan
+# -----------------------------
+qodana:
+  stage: qodana
+  image: jetbrains/qodana-jvm:2025.2
+  needs: [format-quality-check]
+  variables:
+    QODANA_TOKEN: $QODANA_TOKEN
+  script:
+    - qodana scan \
+      --results-dir=build/reports/qodana \
+      --save-report \
+      --post-pr-comment=false \
+      --pr-mode=false
+  artifacts:
+    paths:
+      - build/reports/qodana/
+    when: always
+    expire_in: 1 week
+
+# -----------------------------
+# Tests & Coverage
+# -----------------------------
+test-coverage:
+  stage: test-coverage
+  image: gradle:8.4-jdk23
+  needs: [qodana]
+  artifacts:
+    paths:
+      - build/test-results/
+      - build/reports/kover/
+    when: always
+  script:
+    - ./gradlew ciCheck
+    - ./gradlew ciKoverReport
+    - ./gradlew ciKoverVerify
+
+# -----------------------------
+# Publish
+# -----------------------------
+# -----------------------------
+# Publish to GitLab Packages
+# -----------------------------
+publish:
+  stage: publish
+  image: gradle:8.4-jdk23
+  needs: [test-coverage]
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+  script:
+    - ./gradlew publishAllPublicationsToMavenRepository
+  variables:
+    MAVEN_USERNAME: gitlab-ci-token
+    MAVEN_PASSWORD: $CI_JOB_TOKEN
