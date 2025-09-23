@@ -19,7 +19,6 @@ script:
                 freeCompilerArgs.addAll(
                   "-Xexport-kdoc",
                   "-Xallocator=custom",
-                  "-XXLanguage:+ImplicitSignedToUnsignedIntegerConversion",
                   "-Xadd-light-debug=enable",
                 )
               }

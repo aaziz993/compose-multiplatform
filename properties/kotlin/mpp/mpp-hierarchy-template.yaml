@@ -3,12 +3,12 @@ script:
       applyDefaultHierarchyTemplate: |
         {
           common {
-            group("jvmCommon") {
+            group("jvmAndroid") {
               withJvm()
               withAndroidTarget()
             }
             group("jvmCommonIos") {
-              group("jvmCommon")
+              group("jvmAndroid")
               withIos()
             }
             group("jvmIosWeb") {
@@ -57,7 +57,7 @@ script:
               group("apple64")
             }
             group("nonIos") {
-              group("jvmCommon")
+              group("jvmAndroid")
               group("web")
             }
             group("nix") {
@@ -88,7 +88,7 @@ script:
               withMacos()
             }
             group("multithreaded") {
-              group("jvmCommon")
+              group("jvmAndroid")
               withNative()
             }
             group("wasm") {

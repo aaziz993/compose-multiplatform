@@ -8,7 +8,7 @@ imports:
   - ../properties/kotlin/targets/web/js/js-library.yaml
   - ../properties/kotlin/targets/web/wasmJs/wasm-js-library.yaml
   - ../properties/kotlin/mpp/mpp-hierarchy-template.yaml
-  - ../properties/kotlin/targets/jvm-common.yaml
+  - ../properties/kotlin/targets/jvm-android.yaml
   - ../properties/kotlin/targets/native/apple/ios/ios-common.yaml
   - ../properties/kotlin/targets/native/native-common.yaml
   - ../properties/kotlin/targets/android-ios.yaml
