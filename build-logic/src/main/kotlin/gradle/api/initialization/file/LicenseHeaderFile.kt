@@ -44,9 +44,9 @@ public data class LicenseHeaderFile(
 
         val create = previousLicenseText == null || previousLicenseText != licenseText
 
-        val slashLicenseFile = settings.layout.settingsDirectory.file("${into}.slash").asFile
-        val hashLicenseFile = settings.layout.settingsDirectory.file("${into}.hash").asFile
-        val tagLicenseFile = settings.layout.settingsDirectory.file("${into}.tag").asFile
+        val slashLicenseFile = settings.layout.settingsDirectory.file("${into}.kt").asFile
+        val hashLicenseFile = settings.layout.settingsDirectory.file("${into}.properties").asFile
+        val tagLicenseFile = settings.layout.settingsDirectory.file("${into}.html").asFile
 
         if (create || !slashLicenseFile.exists())
             slashLicenseFile.writeText(
