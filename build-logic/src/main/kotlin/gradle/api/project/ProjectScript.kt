@@ -30,7 +30,12 @@ public class ProjectScript(
             file(PROJECT_PROPERTIES_FILE).takeIf(File::exists)?.invoke<ProjectScript, Project>(project)
                 .let { properties ->
                     projectScript = properties ?: ProjectScript(group = "", script = emptyList(), fileTree = emptyMap())
-                    if (properties != null) properties()
+                    if (properties != null) {
+                        group = properties.group
+                        version = properties.version.toVersion().toString()
+                        description = properties.description
+                        properties()
+                    }
                 }
         }
     }
