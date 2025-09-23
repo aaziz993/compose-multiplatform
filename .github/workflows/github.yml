@@ -7,10 +7,10 @@ on:
       - main
 
 permissions:
-  contents: read        # Needed by checkout in almost all jobs
-  packages: write       # Needed for publish job to GitHub Packages
-  pull-requests: write  # Needed by Qodana if post-pr-comment: true
-  checks: write         # Needed by Qodana/Sonar/Kover for annotations
+  contents: write
+  packages: write
+  pull-requests: write
+  checks: write
 
 jobs:
   #-------------------------------------------------------------------------------#
