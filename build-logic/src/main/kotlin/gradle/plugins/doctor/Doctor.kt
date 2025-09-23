@@ -10,7 +10,7 @@ import org.gradle.api.Project
 context(project: Project)
 public fun DoctorExtension.taskMonitoring(): Unit =
     project.pluginManager.withPlugin("com.osacky.doctor") {
-        if (CI.current != null) {
+        if (CI != null) {
             project.logger.info("Gradle Doctor task monitoring is disabled.")
             project.gradle.sharedServices.unregister("listener-service")
         }

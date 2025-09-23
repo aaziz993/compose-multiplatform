@@ -2,12 +2,13 @@ package gradle.plugins.develocity
 
 import com.gradle.develocity.agent.gradle.DevelocityConfiguration
 import gradle.api.ci.CI
+import gradle.api.ci.Ci
+import gradle.api.initialization.gitBranch
+import gradle.api.initialization.gitCommitId
+import gradle.api.initialization.gitStatus
 import gradle.api.initialization.settingsScript
 import java.net.URLEncoder
 import org.gradle.api.initialization.Settings
-import gradle.api.initialization.gitCommitId
-import gradle.api.initialization.gitBranch
-import gradle.api.initialization.gitStatus
 
 context(settings: Settings)
 public fun DevelocityConfiguration.enrichGitData(
@@ -15,7 +16,7 @@ public fun DevelocityConfiguration.enrichGitData(
     skipTags: Boolean = false
 ): Unit = settings.pluginManager.withPlugin("com.gradle.develocity") {
     settings.gradle.projectsEvaluated {
-        if (CI.current == null && !skipTags) {
+        if (CI == null && !skipTags) {
             // Git commit id
             settings.gitCommitId()
                 .takeIf(String::isNotBlank)
@@ -45,9 +46,9 @@ public fun DevelocityConfiguration.enrichTeamCityData(url: String): Unit =
     settings.pluginManager.withPlugin("com.gradle.develocity") {
         settings.gradle.projectsEvaluated {
             with(rootProject) {
-                if (CI.current != null) {
-                    CI.TeamCity.buildId?.let { teamCityBuildId ->
-                        CI.TeamCity.buildTypeId?.let { teamCityBuildTypeId ->
+                if (CI != null) {
+                    Ci.TeamCity.buildId?.let { teamCityBuildId ->
+                        Ci.TeamCity.buildTypeId?.let { teamCityBuildTypeId ->
                             val teamCityBuildNumber = URLEncoder.encode(teamCityBuildId, "UTF-8")
 
                             buildScan.link(

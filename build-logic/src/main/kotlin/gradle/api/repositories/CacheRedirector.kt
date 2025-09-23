@@ -265,7 +265,7 @@ private fun Project.addCheckRepositoriesTask() {
         doLast {
             val testName = "$name in ${project.displayName}"
 
-            CI.current?.name?.let { name -> testStarted(name, testName) }
+            CI?.name?.let { name -> testStarted(name, testName) }
 
             project.repositories.filterIsInstance<IvyArtifactRepository>().forEach { repository ->
                 @Suppress("SENSELESS_COMPARISON") if (repository.url == null) {
@@ -281,7 +281,7 @@ private fun Project.addCheckRepositoriesTask() {
                 logNonCachedRepo(testName, repository)
             }
 
-            CI.current?.name?.let { name -> testFinished(name, testName) }
+            CI?.name?.let { name -> testFinished(name, testName) }
         }
     }
 
@@ -318,7 +318,7 @@ private fun Project.logNonCachedRepo(
     val details = "Using non cached repository may lead to download failures in CI builds." +
         " Check https://github.com/JetBrains/kotlin/blob/master/repo/scripts/cache-redirector.settings.gradle.kts for details."
 
-    CI.current?.name?.let { name -> testFailed(name, testName, msg, details) }
+    CI?.name?.let { name -> testFailed(name, testName, msg, details) }
 
 
     logger.warn("WARNING - $msg\n$details")
@@ -330,7 +330,7 @@ private fun Project.logInvalidIvyRepo(
     val msg = "Invalid ivy repo found in ${project.displayName}"
     val details = "Url must be not null"
 
-    CI.current?.name?.let { name -> testFailed(name, testName, msg, details) }
+    CI?.name?.let { name -> testFailed(name, testName, msg, details) }
 
     logger.warn("WARNING - $msg: $details")
 }

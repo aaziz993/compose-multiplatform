@@ -336,7 +336,7 @@ public fun Project.version(
         project.libs.versions["$projectDotName.version.preRelease"]?.requiredVersion
             ?: preRelease,
         project.libs.versions["$projectDotName.version.buildMetadata"]?.requiredVersion
-            ?: buildMetadata ?: CI.current?.buildMetadata,
+            ?: buildMetadata ?: CI?.buildMetadata,
     ).toString()
 }
 

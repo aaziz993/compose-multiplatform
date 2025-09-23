@@ -56,6 +56,7 @@ config:
     - org.gradle.caching.http.HttpBuildCache
     - com.gradle.develocity.agent.gradle.buildcache.DevelocityBuildCache
     - gradle.api.initialization.*
+    - gradle.api.ci.CI
 script:
   - enableFeaturePreview: ("TYPESAFE_PROJECT_ACCESSORS")
   - pluginManagement:
@@ -83,7 +84,7 @@ script:
   - develocity:
       server: '"https://ge.solutions-team.gradle.com"'
       buildScan:
-        - tag: (if (CI.current == null) "Local" else "CI")
+        - tag: (if (CI == null) "Local" else "CI")
         - tag: (System.getProperty("os.name"))
         - buildScanPublished: |
             { buildScanPublished ->
@@ -94,11 +95,11 @@ script:
         # By default, Build Scans are uploaded in the background after the build has finished.
         # This allows the build to finish sooner, but can be problematic in build environments (e.g. ephemeral CI agents) that terminate as soon as the build is finished, as the upload may be terminated before it completes.
         # Background uploading should be disabled for such environments.
-        - uploadInBackground: CI.current == null
+        - uploadInBackground: CI == null
         - publishing: |
             { publishing ->
               publishing.onlyIf { context ->
-                context.isAuthenticated && (context.buildResult.failures.isNotEmpty() || CI.current != null)
+                context.isAuthenticated && (context.buildResult.failures.isNotEmpty() || CI != null)
               }
             }
         # obfuscate NIC since we don't want to expose user real IP (will be relevant without VPN)
@@ -113,7 +114,7 @@ script:
               }
             username: |
               { username ->
-                CI.current?.name ?: username
+                CI?.name ?: username
               }
         - capture:
             fileFingerprints: true
@@ -170,11 +171,11 @@ script:
   - enableCacheRedirect: ()
   - buildCache:
       - local:
-          isEnabled: CI.current == null # Default is if not CI.
+          isEnabled: CI == null # Default is if not CI.
       # Develocity build cache configured by default
       - remote: |
           (develocity.buildCache) { buildCache ->
-            buildCache.isPush = CI.current != null
+            buildCache.isPush = CI != null
           }
   - include: |
       (

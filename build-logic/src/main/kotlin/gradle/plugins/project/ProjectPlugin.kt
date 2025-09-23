@@ -1,11 +1,11 @@
 package gradle.plugins.project
 
 import com.github.ajalt.colormath.model.Ansi16
-import gradle.api.ci.CI
 import gradle.api.maybeNamed
 import gradle.api.project.ProjectScript
 import gradle.plugins.android.AndroidPlugin
 import gradle.plugins.apivalidation.ApiValidationPlugin
+import gradle.plugins.ci.CIPlugin
 import gradle.plugins.compose.ComposePlugin
 import gradle.plugins.dokka.DokkaPlugin
 import gradle.plugins.initialization.SLF4JProblemReporterContext
@@ -49,10 +49,9 @@ public class ProjectPlugin : Plugin<Project> {
             pluginManager.apply(ComposePlugin::class.java)
             pluginManager.apply(PublishPlugin::class.java)
             pluginManager.apply(SigningPlugin::class.java)
+            pluginManager.apply(CIPlugin::class.java)
 
             configureLinkTasks()
-
-            CI.configureTasks()
 
             registerPrintTasksTask()
 
