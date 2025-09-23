@@ -63,9 +63,11 @@ public class AndroidPlugin : Plugin<Project> {
                                             }.addPrefixIfNotEmpty(layout.androidAllVariantsDelimiter)
                                     }"
                                 }
-                                else dimension.joinToString("") { variant ->
-                                    "${layout.androidVariantDelimiter}${variant.uppercaseFirstChar()}"
-                                }.addPrefixIfNotEmpty(layout.androidAllVariantsDelimiter)
+                                else "${dimension.first()}${
+                                    dimension.drop().joinToString("") { variant ->
+                                        "${layout.androidVariantDelimiter}${variant.uppercaseFirstChar()}"
+                                    }
+                                }"
                             }.pair()
                         }
 
@@ -125,7 +127,7 @@ public class AndroidPlugin : Plugin<Project> {
             }
         }
 
-        gradle.projectsEvaluated {
+        afterEvaluate {
             block(
                 buildSet {
                     addAll(ANDROID_APPLICATION_COMPILATIONS.map(::listOf))
