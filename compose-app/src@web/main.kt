@@ -9,7 +9,7 @@ import web.dom.document
 
 @OptIn(ExperimentalComposeUiApi::class)
 public suspend fun main() {
-    document.favicon(Res.getUri("drawable/compose-multiplatform.xml"), "image/svg+xml")
+    document.favicon(Res.getUri("drawable/compose-multiplatform.svg"), "image/svg+xml")
     document.title = getString(Res.string.app_name)
     ComposeViewport {
         App(
