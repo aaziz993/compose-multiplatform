@@ -74,16 +74,15 @@ public class ComposePlugin : Plugin<Project> {
         adjustDesktopIcons(composeResourcesDir)
     }
 
-    private fun Project.adjustDesktopIcons(composeResourcesDir: String) {
-        val drawableDir = project.file(composeResourcesDir).resolve("drawable")
-        drawableDir.mkdirs()
+    private fun Project.adjustDesktopIcons(dir: String) {
+        val composeResourcesDir = project.file(dir)
+        if(!composeResourcesDir.exists()) return
 
-        val composeMultiplatformSvg = drawableDir.resolve("$COMPOSE_MULTIPLATFORM_ICON_NAME.svg")
-
+        val composeMultiplatformSvg = composeResourcesDir.resolve("drawable/$COMPOSE_MULTIPLATFORM_ICON_NAME.svg")
         if (!composeMultiplatformSvg.exists()) return
 
         DENSITIES.forEach { (qualifier, size) ->
-            val drawableQualifiedDir = drawableDir.resolve("drawable-$qualifier")
+            val drawableQualifiedDir = composeResourcesDir.resolve("drawable-$qualifier")
             drawableQualifiedDir.mkdirs()
 
             val linuxIconFile = drawableQualifiedDir.resolve("$COMPOSE_MULTIPLATFORM_ICON_NAME-linux.png")
@@ -95,7 +94,7 @@ public class ComposePlugin : Plugin<Project> {
             linuxIconFile.copyTo(macosIconFile, overwrite = true)
         }
 
-        val drawableQualifiedDir = drawableDir.resolve("drawable-${DENSITIES.keys.last()}")
+        val drawableQualifiedDir = composeResourcesDir.resolve("drawable-${DENSITIES.keys.last()}")
 
         // jpackage only supports .png on Linux, .ico on Windows, .icns on Mac, so a developer must do a conversion (probably from a png) to a 3 different formats.
         // Also it seems that ico and icns need to contain an icon in multiple resolutions, so the conversion becomes a bit inconvenient.
