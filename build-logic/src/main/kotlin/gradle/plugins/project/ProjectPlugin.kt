@@ -53,7 +53,7 @@ public class ProjectPlugin : Plugin<Project> {
 
             configureLinkTasks()
 
-            registerPrintTasksTask()
+            registerTasksHierarchyTask()
 
             if (problemReporter.getErrors().isNotEmpty()) {
                 throw GradleException(problemReporter.getGradleError())
@@ -83,8 +83,8 @@ public class ProjectPlugin : Plugin<Project> {
             }
         }
 
-    private fun Project.registerPrintTasksTask() =
-        tasks.register("printTaskDependencyHierarchy") {
+    private fun Project.registerTasksHierarchyTask() =
+        tasks.register("tasksHierarchy") {
             group = "help"
             description = "Prints Gradle task dependency hierarchy"
 

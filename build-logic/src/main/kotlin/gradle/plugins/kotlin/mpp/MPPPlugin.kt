@@ -37,7 +37,7 @@ public class MPPPlugin : Plugin<Project> {
         with(target) {
             pluginManager.withPlugin("org.jetbrains.kotlin.multiplatform") {
                 adjustSourceSets()
-                registerPrintHierarchyTemplateTask()
+                registerTargetsHierarchyTask()
             }
         }
     }
@@ -101,8 +101,8 @@ public class MPPPlugin : Plugin<Project> {
         }
     }
 
-    private fun Project.registerPrintHierarchyTemplateTask() =
-        tasks.register("printHierarchyTemplate") {
+    private fun Project.registerTargetsHierarchyTask() =
+        tasks.register("targetsHierarchy") {
             group = "help"
             description = "Prints Kotlin source set hierarchy"
 
