@@ -1,5 +1,5 @@
-#imports:
-#  - apple.yaml
+imports:
+  - apple.yaml
 script:
   - kotlin:
       iosX64: ()
