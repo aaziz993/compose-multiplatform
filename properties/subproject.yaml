@@ -2,6 +2,7 @@ config:
   imports:
     - org.jetbrains.kotlin.gradle.tasks.KotlinCompile
     - org.gradle.api.file.DuplicatesStrategy
+    - com.diffplug.spotless.kotlin.KotlinConstants
     - kotlinx.benchmark.gradle.JvmBenchmarkTarget
     - kotlinx.rpc.RpcStrictMode
     - com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
@@ -86,9 +87,8 @@ script:
   - spotless:
       - java: |
           { format ->
-            format.replaceRegex("remove license header", """^\s*(//.*|/\*[\s\S]*?\*\/)\s*""", "")
             // specify license header text
-            format.licenseHeaderFile("../${settings.settingsScript.licenseHeaderFile!!.into}.kt", "^")
+            format.licenseHeaderFile("../${settings.settingsScript.licenseHeaderFile!!.into}.kt")
             // include source files
             format.target("**/*.java")
             // uses the default importOrder configuration
@@ -116,10 +116,8 @@ script:
             // use ktfmt
             format.ktfmt(libs.versions("ktfmt").requiredVersion)
               .googleStyle()
-            // remove old license header
-            format.replaceRegex("remove license header", """^\s*(//.*|/\*[\s\S]*?\*\/)\s*""", "")
             // specify license header text
-            format.licenseHeaderFile("../${settings.settingsScript.licenseHeaderFile!!.into}.kt", "^")
+            format.licenseHeaderFile("../${settings.settingsScript.licenseHeaderFile!!.into}.kt")
             // include source files
             format.target("**/*.kt", "**/*.kts")
           }
@@ -131,28 +129,22 @@ script:
             // use ktfmt
             format.ktfmt(libs.versions("ktfmt").requiredVersion)
               .googleStyle()
-            // remove old license header
-            format.replaceRegex("remove license header", """^\s*(//.*|/\*[\s\S]*?\*\/)\s*""", "")
             // specify license header text
-            format.licenseHeaderFile("../${settings.settingsScript.licenseHeaderFile!!.into}.kt", "^")
+            format.licenseHeaderFile("../${settings.settingsScript.licenseHeaderFile!!.into}.kt", KotlinConstants.LICENSE_HEADER_DELIMITER)
             // include source files
             format.target("**/*.gradle.kts")
           }
       - javascript: |
           { format ->
-            // remove old license header
-            format.replaceRegex("remove license header", """^\s*(//.*|/\*[\s\S]*?\*\/)\s*""", "")
             // specify license header text
-            format.licenseHeaderFile("../${settings.settingsScript.licenseHeaderFile!!.into}.kt", "^")
+            format.licenseHeaderFile("../${settings.settingsScript.licenseHeaderFile!!.into}.kt", JS_LICENSE_HEADER_DELIMITER)
             // include source files
             format.target("**/*.js")
           }
       - typescript: |
           { format ->
-            // remove old license header
-            format.replaceRegex("remove license header", """^\s*(//.*|/\*[\s\S]*?\*\/)\s*""", "")
             // specify license header text
-            format.licenseHeaderFile("../${settings.settingsScript.licenseHeaderFile!!.into}.kt", "^")
+            format.licenseHeaderFile("../${settings.settingsScript.licenseHeaderFile!!.into}.kt", JS_LICENSE_HEADER_DELIMITER)
             // include source files
             format.target("**/*.ts")
           }
@@ -164,14 +156,14 @@ script:
       - yaml: |
           { format ->
             // specify license header text
-            format.licenseHeaderFile("../${settings.settingsScript.licenseHeaderFile!!.into}.properties", """^(?!\s*#).*""")
+            format.licenseHeaderFile("../${settings.settingsScript.licenseHeaderFile!!.into}.properties", """(?!\s*#).*""")
             // include source files
             format.target("**/*.yaml", "**/*.yml")
           }
       - format: |
           ("xml") { format ->
             // remove old license header
-            format.replaceRegex("remove license header", """^\s*<--[\s\S]*?-->\s*""", "")
+            format.replaceRegex("remove old license header", """^\s*<!--[\s\S]*?-->\s*""", "")
             // specify license header text
             format.licenseHeaderFile("../${settings.settingsScript.licenseHeaderFile!!.into}.html", "^")
             // include source files
@@ -180,7 +172,7 @@ script:
       - format: |
           ("properties") { format ->
             // specify license header text
-            format.licenseHeaderFile("../${settings.settingsScript.licenseHeaderFile!!.into}.properties", """^(?!\s*#).*""")
+            format.licenseHeaderFile("../${settings.settingsScript.licenseHeaderFile!!.into}.properties", """(?!\s*#).*""")
             // include source files
             format.target("**/*.properties")
             // removes any extra whitespace at the beginning of lines
@@ -189,7 +181,7 @@ script:
       - format: |
           ("html") { format ->
             // remove old license header
-            format.replaceRegex("remove license header", """^\s*<--[\s\S]*?-->\s*""", "")
+            format.replaceRegex("remove old license header", """^\s*<!--[\s\S]*?-->\s*""", "")
             // specify license header text
             format.licenseHeaderFile("../${settings.settingsScript.licenseHeaderFile!!.into}.html", "^")
             // include source files
@@ -198,7 +190,7 @@ script:
       - format: |
           ("md") { format ->
             // remove old license header
-            format.replaceRegex("remove license header", """^\s*<--[\s\S]*?-->\s*""", "")
+            format.replaceRegex("remove license header", """^\s*<!--[\s\S]*?-->\s*""", "")
             // specify license header text
             format.licenseHeaderFile("../${settings.settingsScript.licenseHeaderFile!!.into}.html", "^")
             // include source files
@@ -207,7 +199,7 @@ script:
       - format: |
           ("editconfig") { format ->
             // specify license header text
-            format.licenseHeaderFile("../${settings.settingsScript.licenseHeaderFile!!.into}.properties", """^(?!\s*#).*""")
+            format.licenseHeaderFile("../${settings.settingsScript.licenseHeaderFile!!.into}.properties", """(?!\s*#).*""")
             // include source files
             format.target("**/.editconfig")
             // removes any extra whitespace at the beginning of lines
@@ -216,7 +208,7 @@ script:
       - format: |
           ("gitignore") { format ->
             // specify license header text
-            format.licenseHeaderFile("../${settings.settingsScript.licenseHeaderFile!!.into}.properties", """^(?!\s*#).*""")
+            format.licenseHeaderFile("../${settings.settingsScript.licenseHeaderFile!!.into}.properties", """(?!\s*#).*""")
             // include source files
             format.target("**/.gitignore")
             // removes any extra whitespace at the beginning of lines
@@ -225,7 +217,7 @@ script:
       - format: |
           ("gitattributes") { format ->
             // specify license header text
-            format.licenseHeaderFile("../${settings.settingsScript.licenseHeaderFile!!.into}.properties", """^(?!\s*#).*""")
+            format.licenseHeaderFile("../${settings.settingsScript.licenseHeaderFile!!.into}.properties", """(?!\s*#).*""")
             // include source files
             format.target("**/.gitattributes")
             // removes any extra whitespace at the beginning of lines
