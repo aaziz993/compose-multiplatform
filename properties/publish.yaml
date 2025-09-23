@@ -31,12 +31,12 @@ script:
               }
             }
         - maven: |
-            {
-              name = "GitLab"
-              url = uri("https://gitlab.com/api/v4/projects/${System.getenv("CI_PROJECT_ID")}/packages/maven")
-              credentials {
-                username = sensitive("publishing.repositories.gitlab.username")
-                password = sensitive("publishing.repositories.gitlab.password")
+            { repository ->
+              repository.name = "GitLab"
+              repository.url = uri("https://gitlab.com/api/v4/projects/${System.getenv("CI_PROJECT_ID")}/packages/maven")
+              repository.credentials { credentials ->
+                credentials.username = sensitive("publishing.repositories.gitlab.username")
+                credentials.password = sensitive("publishing.repositories.gitlab.password")
               }
             }
         - maven: |
