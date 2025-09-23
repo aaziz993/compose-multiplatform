@@ -2,7 +2,7 @@ script:
   - kotlin:
       sourceSets:
         - named: |
-            ("jvmCommonMain") { sourceSet ->
+            ("jvmAndroidMain") { sourceSet ->
               sourceSet.dependencies {
                 implementation(libs["bridj"])
                 implementation(libs.bundles("kotlin.scripting"))
