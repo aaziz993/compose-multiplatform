@@ -1,3 +1,7 @@
+workflow:
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+
 stages:
   - setup
   - dependency-check
@@ -6,9 +10,9 @@ stages:
   - test-coverage
   - publish
 
-# -----------------------------
-# Common Setup
-# -----------------------------
+#-------------------------------------------------------------------------------#
+#            Setup                                                              #
+#-------------------------------------------------------------------------------#
 setup:
   stage: setup
   image: gradle:8.4-jdk23
@@ -22,9 +26,9 @@ setup:
       - .gradle/caches/
       - .gradle/wrapper/
 
-# -----------------------------
-# Dependency Check
-# -----------------------------
+#-------------------------------------------------------------------------------#
+#            Dependency Check                                                   #
+#-------------------------------------------------------------------------------#
 dependency-check:
   stage: dependency-check
   image: gradle:8.4-jdk23
@@ -32,9 +36,9 @@ dependency-check:
   script:
     - ./gradlew ciDependencyCheckAnalyze
 
-# -----------------------------
-# Format & Quality Check
-# -----------------------------
+#-------------------------------------------------------------------------------#
+#            Format & Quality Check                                             #
+#-------------------------------------------------------------------------------#
 format-quality-check:
   stage: format-quality
   image: gradle:8.4-jdk23
@@ -46,9 +50,11 @@ format-quality-check:
     - ./gradlew ciSonar
     - ./gradlew ciKnitCheck
 
-# -----------------------------
-# Qodana Scan
-# -----------------------------
+#-------------------------------------------------------------------------------#
+#            Qodana                                                             #
+#            Discover all capabilities of Qodana in our documentation           #
+#            https://www.jetbrains.com/help/qodana/about-qodana.html            #
+#-------------------------------------------------------------------------------#
 qodana:
   stage: qodana
   image: jetbrains/qodana-jvm:2025.2
@@ -67,9 +73,9 @@ qodana:
     when: always
     expire_in: 1 week
 
-# -----------------------------
-# Tests & Coverage
-# -----------------------------
+#-------------------------------------------------------------------------------#
+#            Tests & Coverage                                                   #
+#-------------------------------------------------------------------------------#
 test-coverage:
   stage: test-coverage
   image: gradle:8.4-jdk23
@@ -84,18 +90,13 @@ test-coverage:
     - ./gradlew ciKoverReport
     - ./gradlew ciKoverVerify
 
-# -----------------------------
-# Publish
-# -----------------------------
-# -----------------------------
-# Publish to GitLab Packages
-# -----------------------------
+#-------------------------------------------------------------------------------#
+#            Publish                                                            #
+#-------------------------------------------------------------------------------#
 publish:
   stage: publish
   image: gradle:8.4-jdk23
   needs: [test-coverage]
-  rules:
-    - if: $CI_COMMIT_BRANCH == "main"
   script:
     - ./gradlew publishAllPublicationsToMavenRepository
   variables:
