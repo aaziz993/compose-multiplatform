@@ -76,7 +76,7 @@ public class ComposePlugin : Plugin<Project> {
 
     private fun Project.adjustDesktopIcons(dir: String) {
         val composeResourcesDir = project.file(dir)
-        if(!composeResourcesDir.exists()) return
+        if (!composeResourcesDir.exists()) return
 
         val composeMultiplatformSvg = composeResourcesDir.resolve("drawable/$COMPOSE_MULTIPLATFORM_ICON_NAME.svg")
         if (!composeMultiplatformSvg.exists()) return
@@ -89,9 +89,10 @@ public class ComposePlugin : Plugin<Project> {
             val windowsIconFile = drawableQualifiedDir.resolve("$COMPOSE_MULTIPLATFORM_ICON_NAME-windows.ico")
             val macosIconFile = drawableQualifiedDir.resolve("$COMPOSE_MULTIPLATFORM_ICON_NAME.icns")
 
-            svgToPng(composeMultiplatformSvg, linuxIconFile, size)
-            Imaging.writeImage(ImageIO.read(linuxIconFile), windowsIconFile, ImageFormats.ICO)
-            linuxIconFile.copyTo(macosIconFile, overwrite = true)
+            if (!linuxIconFile.exists()) svgToPng(composeMultiplatformSvg, linuxIconFile, size)
+            if (!windowsIconFile.exists())
+                Imaging.writeImage(ImageIO.read(linuxIconFile), windowsIconFile, ImageFormats.ICO)
+            if (!macosIconFile.exists()) linuxIconFile.copyTo(macosIconFile, overwrite = true)
         }
 
         val drawableQualifiedDir = composeResourcesDir.resolve("drawable-${DENSITIES.keys.last()}")
