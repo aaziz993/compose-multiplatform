@@ -7,16 +7,12 @@ import gradle.api.project.settings
 import gradle.api.project.signing
 import java.io.ByteArrayOutputStream
 import java.io.File
-import java.util.Date
+import java.util.*
 import org.bouncycastle.bcpg.ArmoredOutputStream
 import org.bouncycastle.openpgp.PGPSecretKeyRing
 import org.gradle.api.Project
-import org.gradle.api.tasks.Exec
-import org.gradle.kotlin.dsl.register
 import org.gradle.plugins.signing.SigningExtension
-import org.gradle.process.CommandLineArgumentProvider
 import org.pgpainless.PGPainless
-import org.pgpainless.PGPainless.Companion.buildKeyRing
 import org.pgpainless.algorithm.KeyFlag
 import org.pgpainless.key.generation.KeySpec.Companion.getBuilder
 import org.pgpainless.key.generation.type.KeyType
@@ -29,7 +25,7 @@ import org.pgpainless.util.Passphrase
 @Suppress("UnusedReceiverParameter")
 context(project: Project)
 public fun SigningExtension.gpg(
-    keyFile: File = File(project.projectDir, ".signing.gpg.asc"),
+    keyFile: File = File(project.projectDir, ".signing.gpg"),
     keyType: String = project.sensitiveOrElse("signing.gpg.key.type") { "RSA" },
     keyParam: String = project.sensitiveOrElse("signing.gpg.key.param") { "4096" },
     password: String = project.sensitive("signing.gpg.key.password"),
