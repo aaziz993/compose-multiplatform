@@ -4,7 +4,7 @@ imports:
   - ../properties/kotlin/targets/jvm/jvm.yaml
   - ../properties/android/android-library.yaml
   - ../properties/kotlin/targets/native/apple/ios/ios.yaml
-  - ../properties/kotlin/cocoapods.yaml
+  - ../properties/kotlin/targets/native/apple/cocoapods.yaml
   - ../properties/kotlin/targets/web/js/js-library.yaml
   - ../properties/kotlin/targets/web/wasmJs/wasm-js-library.yaml
   - ../properties/kotlin/mpp/mpp-hierarchy-template.yaml
