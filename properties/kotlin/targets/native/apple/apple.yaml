@@ -1,3 +1,0 @@
-script:
-  - plugins:
-      - id: (libs.plugins("apple").pluginId)

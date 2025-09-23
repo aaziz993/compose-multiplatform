@@ -221,8 +221,7 @@ dependencies {
     runtimeOnly(libs.plugins.android.kotlin.multiplatform.library.toDep())
     runtimeOnly(libs.plugins.android.application.toDep())
 
-    // IOS.
-    implementation(libs.plugins.apple.toDep())
+    // Apple.
     implementation(libs.plugins.cocoapods.toDep())
 
     // Native.
