@@ -83,6 +83,7 @@ public class ComposePlugin : Plugin<Project> {
 
         THEMES.forEach { theme ->
             val themePart = theme.addPrefixIfNotEmpty("-")
+
             val composeMultiplatformSvg = composeResourcesDir.resolve("drawable$themePart/$COMPOSE_MULTIPLATFORM_ICON_NAME.svg")
             if (!composeMultiplatformSvg.exists()) return@forEach
 
@@ -135,6 +136,7 @@ public class ComposePlugin : Plugin<Project> {
 
     // Trick to make assemble jvm resources task to work.
     private fun Project.adjustAssembleJvmResTask() = kotlin.targets.withType<KotlinJvmTarget> { adjustAssembleResTask(this) }
+
     private fun Project.adjustAssembleResTask(target: KotlinTarget) {
         target.compilations.all { compilation ->
             val compilationResources = files(
