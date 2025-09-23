@@ -2,6 +2,7 @@ package gradle.plugins.project
 
 import gradle.api.maybeNamed
 import gradle.api.project.ProjectScript
+import gradle.api.project.projectScript
 import gradle.plugins.android.AndroidPlugin
 import gradle.plugins.apivalidation.ApiValidationPlugin
 import gradle.plugins.ci.CIPlugin
@@ -30,6 +31,10 @@ public class ProjectPlugin : Plugin<Project> {
         with(target) {
             // Load and apply project.yaml to build.gradle.kts.
             ProjectScript()
+
+            group = projectScript.group
+            version = projectScript.version.toVersion().toString()
+            description = projectScript.description
 
             pluginManager.apply(KoverPlugin::class.java)
             pluginManager.apply(DokkaPlugin::class.java)

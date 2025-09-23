@@ -3,8 +3,8 @@ imports:
   - ../properties/kotlin/mpp/mpp.yaml
   - ../properties/kotlin/targets/jvm/jvm-app.yaml
   - ../properties/subproject.yaml
+description: Server application.
 script:
-  - description: '"Server application."'
   - kotlin:
       sourceSets:
         - named: |

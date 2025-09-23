@@ -10,7 +10,6 @@ import com.github.gmazzo.buildconfig.BuildConfigExtension
 import com.google.devtools.ksp.gradle.KspExtension
 import com.osacky.doctor.DoctorExtension
 import de.jensklingenberg.ktorfit.gradle.KtorfitPluginExtension
-import gradle.api.ci.CI
 import gradle.api.initialization.catalogs
 import gradle.api.initialization.dsl.VersionCatalog
 import gradle.api.initialization.libs
@@ -19,8 +18,7 @@ import gradle.api.initialization.sensitiveOrElse
 import gradle.api.repositories.CacheRedirector
 import gradle.plugins.getOrPut
 import io.github.sgrishchenko.karakum.gradle.plugin.KarakumExtension
-import io.github.z4kn4fein.semver.Version
-import io.ktor.plugin.features.*
+import io.ktor.plugin.features.KtorExtension
 import kotlinx.benchmark.gradle.BenchmarksExtension
 import kotlinx.knit.KnitPluginExtension
 import kotlinx.kover.gradle.plugin.dsl.KoverProjectExtension
@@ -307,33 +305,6 @@ public fun Project.signing(configure: SigningExtension.() -> Unit): Unit = exten
 
 public fun Project.files(elements: Iterable<String>): ConfigurableFileCollection =
     files(*elements.toList().toTypedArray())
-
-// Semantic Versioning 2.0.0
-// major gradle.api.version when you make incompatible API changes
-// minor gradle.api.version when you add functionality in a backward compatible manner
-// patch gradle.api.version when you make backward compatible bug fixes
-// additional labels for pre-release and build metadata are available as extensions to the MAJOR.MINOR.PATCH format.
-// a pre-release gradle.api.version MAY be denoted by appending a hyphen and a series of dot separated identifiers immediately following the patch gradle.api.version. Identifiers MUST comprise only ASCII alphanumerics and hyphens [0-9A-Za-z-]. Identifiers MUST NOT be empty. Numeric identifiers MUST NOT include leading zeroes. Examples: 1.0.0-alpha, 1.0.0-alpha.1, 1.0.0-0.3.7, 1.0.0-x.7.z.92, 1.0.0-x-y-z.--.
-// build metadata MAY be denoted by appending a plus sign and a series of dot separated identifiers immediately following the patch or pre-release gradle.api.version. Identifiers MUST comprise only ASCII alphanumerics and hyphens [0-9A-Za-z-]. Identifiers MUST NOT be empty. Examples: 1.0.0-alpha+001, 1.0.0+20130313144700, 1.0.0-beta+exp.sha.5114f85, 1.0.0+21AF26D3----117B344092BD.
-public fun Project.version(
-    major: Int? = null,
-    minor: Int? = null,
-    patch: Int? = null,
-    preRelease: String? = null,
-    buildMetadata: String? = null,
-): String {
-    val projectDotName = project.name.replace("-", ".")
-
-    return Version(
-        major ?: project.libs.versions("$projectDotName.version.major").requiredVersion.toInt(),
-        minor ?: project.libs.versions("$projectDotName.version.minor").requiredVersion.toInt(),
-        patch ?: project.libs.versions("$projectDotName.version.patch").requiredVersion.toInt(),
-        project.libs.versions["$projectDotName.version.preRelease"]?.requiredVersion
-            ?: preRelease,
-        project.libs.versions["$projectDotName.version.buildMetadata"]?.requiredVersion
-            ?: buildMetadata ?: CI?.buildMetadata,
-    ).toString()
-}
 
 public inline fun <reified T : Task> Project.registerAggregationTestTask(
     name: String,

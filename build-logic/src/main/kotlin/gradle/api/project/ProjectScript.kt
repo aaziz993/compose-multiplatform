@@ -15,6 +15,9 @@ public const val PROJECT_PROPERTIES_FILE: String = "project.yaml"
 @Serializable
 public class ProjectScript(
     public val layout: ProjectLayout = ProjectLayout.Flat(),
+    public val group: String,
+    public val version: SemanticVersion = SemanticVersion(),
+    public val description: String = "",
     override val config: ScriptConfig = ScriptConfig(),
     override val script: List<SerializableAny>,
     override val fileTree: Map<String, List<String>>,
@@ -26,7 +29,7 @@ public class ProjectScript(
         public operator fun invoke(): Unit = with(project) {
             file(PROJECT_PROPERTIES_FILE).takeIf(File::exists)?.invoke<ProjectScript, Project>(project)
                 .let { properties ->
-                    projectScript = properties ?: ProjectScript(script = emptyList(), fileTree = emptyMap())
+                    projectScript = properties ?: ProjectScript(group = "", script = emptyList(), fileTree = emptyMap())
                     if (properties != null) properties()
                 }
         }

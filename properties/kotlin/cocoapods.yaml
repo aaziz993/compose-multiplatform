@@ -7,9 +7,11 @@ script:
   - kotlin:
       cocoapods:
         version: libs.versions("kotlin.cocoapods.version").requiredVersion
-        summary: description
+        summary: projectScript.description
         homepage: settings.settingsScript.remote.url
+        license: settings.settingsScript.license.name
         name: moduleName
+        podfile: file("../iosApp/Podfile")
         framework: |
           {
             // Required properties
@@ -18,7 +20,7 @@ script:
 
             // Optional properties
             // Specify the framework linking type. It's dynamic by default.
-            isStatic = false
+            isStatic = true
             // Dependency export
             // Uncomment and specify another project module if you have one:
             // export(project(":<your other KMP module>"))

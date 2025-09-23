@@ -1,0 +1,7 @@
+platform :ios, '18.2'
+use_frameworks! :linkage => :static
+
+target 'iosApp' do
+  pod 'shared', :path => '../shared'
+  pod 'WebRTC-SDK', '125.6422.05'
+end

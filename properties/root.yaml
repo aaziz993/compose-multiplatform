@@ -1,5 +1,6 @@
 imports:
   - config.yaml
+  - meta.yaml
 config:
   imports:
     - org.gradle.api.Project
@@ -8,10 +9,8 @@ config:
     - org.gradle.api.tasks.testing.logging.TestLogEvent
     - org.jetbrains.dokka.gradle.engine.parameters.VisibilityModifier
     - gradle.api.project.*
-
+group: io.github.${developer.id}
 script:
-  - group: '"io.github.${settings.settingsScript.developer.id}"'
-  - version: version()
   - buildscript:
       repositories:
         - mavenCentral: ()

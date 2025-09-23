@@ -18,8 +18,8 @@ imports:
   - ../properties/kotlin/targets/jvm-web.yaml
   - ../properties/subproject.yaml
   - ../properties/publish.yaml
+description: Kotlin Multiplatform libraries.
 script:
-  - description: '"Kotlin multiplatform libraries."'
   # Generates typesafe Kotlin APIs from your SQL statements. It verifies your schema, statements, and migrations at compile-time and provides IDE features like autocomplete and refactoring which make writing and maintaining SQL simple.
   - sqldelight:
       databases:
