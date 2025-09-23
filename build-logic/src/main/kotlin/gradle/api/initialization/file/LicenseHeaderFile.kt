@@ -10,7 +10,7 @@ import org.gradle.api.initialization.Settings
 @SerialName("LicenseHeaderFile")
 public data class LicenseHeaderFile(
     val source: String,
-    override val into: String = "LICENSE_HEADER",
+    override val into: String = "license.header",
     override val resolution: FileResolution = FileResolution.NEWER,
     val year: String? = null,
     val yearPlaceholder: String = "[yyyy]",
@@ -44,9 +44,9 @@ public data class LicenseHeaderFile(
 
         val create = previousLicenseText == null || previousLicenseText != licenseText
 
-        val slashLicenseFile = settings.layout.settingsDirectory.file("${into}_SLASH").asFile
-        val hashLicenseFile = settings.layout.settingsDirectory.file("${into}_HASH").asFile
-        val tagLicenseFile = settings.layout.settingsDirectory.file("${into}_TAG").asFile
+        val slashLicenseFile = settings.layout.settingsDirectory.file("${into}.slash").asFile
+        val hashLicenseFile = settings.layout.settingsDirectory.file("${into}.hash").asFile
+        val tagLicenseFile = settings.layout.settingsDirectory.file("${into}.tag").asFile
 
         if (create || !slashLicenseFile.exists())
             slashLicenseFile.writeText(

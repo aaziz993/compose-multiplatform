@@ -25,7 +25,7 @@ licenseFile:
   ownerPlaceholder: '[name of copyright owner]'
   resolution: MODIFIED
 licenseHeaderFile:
-  source: LICENSE_HEADER
+  source: license.header
   resolution: MODIFIED
   year: ${year}
   yearPlaceholder: '[yyyy]'
