@@ -3,11 +3,13 @@ import androidx.compose.ui.window.ComposeViewport
 import androidx.navigation.bindToBrowserNavigation
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.app_name
+import data.type.favicon
 import org.jetbrains.compose.resources.getString
 import web.dom.document
 
 @OptIn(ExperimentalComposeUiApi::class)
 public suspend fun main() {
+    document.favicon(Res.getUri("drawable/compose-multiplatform.xml"), "image/svg+xml")
     document.title = getString(Res.string.app_name)
     ComposeViewport {
         App(
