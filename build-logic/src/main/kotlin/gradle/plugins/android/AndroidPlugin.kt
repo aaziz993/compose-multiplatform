@@ -1,5 +1,6 @@
 package gradle.plugins.android
 
+import com.android.build.api.dsl.ProductFlavor
 import gradle.api.configureEach
 import gradle.api.file.replace
 import gradle.api.project.ProjectLayout
@@ -40,21 +41,31 @@ public class AndroidPlugin : Plugin<Project> {
 
     private fun Project.adjustSourceSets() =
         when (val layout = projectScript.layout) {
-            is ProjectLayout.Flat -> onDimensions { dimensions ->
+            is ProjectLayout.Flat -> variants { variants ->
                 android.sourceSets.configureEach { sourceSet ->
                     val (srcPart, resourcesPart) =
                         if (sourceSet.name == SourceSet.MAIN_SOURCE_SET_NAME) "src" to ""
                         else {
                             val rest = sourceSet.name.removePrefix("android").lowercaseFirstChar()
 
-                            dimensions.single { dimension ->
-                                rest == "${dimension.first()}${dimension.drop().joinToString("", transform = String::uppercaseFirstChar)}"
+                            variants.single { variant ->
+                                rest == "${variant.first()}${variant.drop().joinToString("", transform = String::uppercaseFirstChar)}"
                             }.let { dimension ->
-                                "${if (dimension.first() == KotlinCompilation.TEST_COMPILATION_NAME) "instrumentedTest" else dimension.first()}${
-                                    dimension.drop().joinToString { variant ->
-                                        "${layout.androidVariantDelimiter}$variant".uppercaseFirstChar()
-                                    }.addPrefixIfNotEmpty(layout.androidAllVariantsDelimiter)
-                                }"
+                                if (dimension.first() in ANDROID_APPLICATION_COMPILATIONS) {
+                                    "${
+                                        if (dimension.first() == KotlinCompilation.TEST_COMPILATION_NAME) "instrumentedTest"
+                                        else dimension.first()
+                                    }${
+                                        dimension
+                                            .drop()
+                                            .joinToString("") { variant ->
+                                                "${layout.androidVariantDelimiter}${variant.uppercaseFirstChar()}"
+                                            }.addPrefixIfNotEmpty(layout.androidAllVariantsDelimiter)
+                                    }"
+                                }
+                                else dimension.joinToString("") { variant ->
+                                    "${layout.androidVariantDelimiter}${variant.uppercaseFirstChar()}"
+                                }.addPrefixIfNotEmpty(layout.androidAllVariantsDelimiter)
                             }.pair()
                         }
 
@@ -106,22 +117,33 @@ public class AndroidPlugin : Plugin<Project> {
             else -> Unit
         }
 
-    private fun Project.onDimensions(block: (Sequence<List<String>>) -> Unit) {
+    private fun Project.variants(block: (Set<List<String>>) -> Unit) {
         val variants = mutableSetOf<List<String>>()
         androidComponents {
             onVariants { variant ->
-                variants.add(listOfNotNull(variant.flavorName,variant.buildType))
+                variants.add(listOfNotNull(variant.flavorName, variant.buildType))
             }
         }
 
         gradle.projectsEvaluated {
             block(
-                sequence {
-                    yieldAll(variants)
-                    yieldAll(
-                        ANDROID_APPLICATION_COMPILATIONS.map(::listOf).cartesianProduct(variants)
-                            .map { (compilation, variant) -> compilation + variant },
-                    )
+                buildSet {
+                    addAll(ANDROID_APPLICATION_COMPILATIONS.map(::listOf))
+
+                    android.flavorDimensionList.map { flavorDimension ->
+                        android.productFlavors
+                            .filter { productFlavor -> productFlavor.dimension == flavorDimension }
+                            .map(ProductFlavor::getName)
+                    }.forEach { productFlavors ->
+                        addAll(ANDROID_APPLICATION_COMPILATIONS.cartesianProduct(productFlavors))
+                        addAll(productFlavors.map(::listOf))
+                    }
+                    variants.forEach { variant ->
+                        addAll(ANDROID_APPLICATION_COMPILATIONS.cartesianProduct(variant))
+                        addAll(ANDROID_APPLICATION_COMPILATIONS.map { compilationName -> listOf(compilationName) + variant })
+                        addAll(variant.map(::listOf))
+                    }
+                    addAll(variants)
                 },
             )
         }
