@@ -62,12 +62,12 @@ public class MPPPlugin : Plugin<Project> {
                     val sourceSets = kotlin.sourceSets.associateWithNotNull { sourceSet ->
                         sourceNameParts.find { (target, compilationName) ->
                             sourceSet.name == "${
-                                if (target is KotlinMetadataTarget) "common" else target.name
+                                if (target is KotlinMetadataTarget) "common" else target.targetName
                             }${compilationName.uppercaseFirstChar()}"
                         }?.let { (target, compilationName) ->
                             (if (compilationName == KotlinCompilation.MAIN_COMPILATION_NAME) "src" to ""
                             else compilationName.pair()) and if (target is KotlinMetadataTarget) ""
-                            else "${layout.targetDelimiter}${target.name}"
+                            else "${layout.targetDelimiter}${target.targetName}"
                         }
                     }
 
