@@ -100,14 +100,13 @@ public class ProjectPlugin : Plugin<Project> {
                     }
                 }
 
-                logger.lifecycle("Gradle Task Dependency Hierarchy:")
-
                 // Identify roots = tasks that no other task depends on
                 val all = tasks.map(Task::getName).toSet()
                 val children = dependees.values.flatten().toSet()
                 val roots = all - children
 
                 roots.sorted().forEach { root ->
+                    project.logger.lifecycle("Gradle Task Dependency Hierarchy from $root:")
                     logger.lifecycle(
                         root.toTreeString(dependees) {
                             last().ansiSpan {
