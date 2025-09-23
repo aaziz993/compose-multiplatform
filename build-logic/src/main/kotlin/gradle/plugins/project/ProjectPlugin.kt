@@ -1,5 +1,6 @@
 package gradle.plugins.project
 
+import com.github.ajalt.colormath.model.Ansi16
 import gradle.api.ci.CI
 import gradle.api.maybeNamed
 import gradle.api.project.ProjectScript
@@ -17,9 +18,13 @@ import gradle.plugins.kotlin.targets.web.WebPlugin
 import gradle.plugins.kover.KoverPlugin
 import gradle.plugins.publish.PublishPlugin
 import gradle.plugins.signing.SigningPlugin
+import klib.data.type.collections.toTreeString
+import klib.data.type.primitives.string.ansi.Attribute
+import klib.data.type.primitives.string.ansi.ansiSpan
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.Task
 import org.gradle.internal.os.OperatingSystem
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.tasks.KotlinNativeLink
@@ -49,6 +54,8 @@ public class ProjectPlugin : Plugin<Project> {
 
             CI.configureTasks()
 
+            registerPrintTaskDependencyHierarchyTask()
+
             if (problemReporter.getErrors().isNotEmpty()) {
                 throw GradleException(problemReporter.getGradleError())
             }
@@ -74,6 +81,42 @@ public class ProjectPlugin : Plugin<Project> {
             }
             tasks.maybeNamed("linkDebugTestMingwX64") {
                 onlyIf("run only on Windows") { os == OperatingSystem.WINDOWS }
+            }
+        }
+
+    private fun Project.registerPrintTaskDependencyHierarchyTask() =
+        tasks.register("printTaskDependencyHierarchy") {
+            group = "help"
+            description = "Prints Gradle task dependency hierarchy"
+
+            doLast {
+                // Build dependency map: task -> its dependents (children in the graph)
+                val dependees: MutableMap<String, MutableList<String>> =
+                    tasks.associate { it.name to mutableListOf<String>() }.toMutableMap()
+
+                tasks.forEach { task ->
+                    task.taskDependencies.getDependencies(task).forEach { parent ->
+                        dependees[parent.name]?.add(task.name)
+                    }
+                }
+
+                logger.lifecycle("Gradle Task Dependency Hierarchy:")
+
+                // Identify roots = tasks that no other task depends on
+                val all = tasks.map(Task::getName).toSet()
+                val children = dependees.values.flatten().toSet()
+                val roots = all - children
+
+                roots.sorted().forEach { root ->
+                    logger.lifecycle(
+                        root.toTreeString(dependees) {
+                            last().ansiSpan {
+                                attribute(Attribute.INTENSITY_BOLD)
+                                attribute(Ansi16(31 + (size % 6))) // cycle through colors
+                            }
+                        },
+                    )
+                }
             }
         }
 }

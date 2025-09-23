@@ -107,17 +107,15 @@ public class MPPPlugin : Plugin<Project> {
             description = "Prints Kotlin source set hierarchy"
 
             doLast {
-                val dependees: Map<String, List<String>> = kotlin.sourceSets
-                    .associate { sourceSet -> sourceSet.name to emptyList<String>() }
+                val dependees = kotlin.sourceSets
+                    .associate { sourceSet -> sourceSet.name to mutableListOf<String>() }
                     .toMutableMap()
-                    .apply {
-                        kotlin.sourceSets.forEach { sourceSet ->
-                            sourceSet.dependsOn.forEach { parentSourceSet ->
-                                val children = getOrDefault(parentSourceSet.name, emptyList())
-                                put(parentSourceSet.name, children + sourceSet.name)
-                            }
-                        }
+
+                kotlin.sourceSets.forEach { sourceSet ->
+                    sourceSet.dependsOn.forEach { parentSourceSet ->
+                        dependees[parentSourceSet.name]?.add(sourceSet.name)
                     }
+                }
 
                 val commonMain = KotlinSourceSet.COMMON_MAIN_SOURCE_SET_NAME
                 project.logger.lifecycle("Kotlin SourceSet Dependees Hierarchy from commonMain:")
