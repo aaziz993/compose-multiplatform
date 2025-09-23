@@ -36,13 +36,13 @@ public sealed class Ci {
 
     public abstract var qualityCheck: Boolean
 
+    public abstract var coverageReport: Boolean
+
     public abstract var coverageVerify: Boolean
 
     public abstract var docSamplesCheck: Boolean
 
     public abstract var test: Boolean
-
-    public val publishRepositories: MutableSet<PublishRepository> = linkedSetOf()
 
     private val versioning: Versioning = Versioning()
 
@@ -56,6 +56,7 @@ public sealed class Ci {
         override var dependenciesCheck: Boolean = true,
         override var formatCheck: Boolean = true,
         override var qualityCheck: Boolean = true,
+        override var coverageReport: Boolean = true,
         override var coverageVerify: Boolean = true,
         override var docSamplesCheck: Boolean = true,
         override var test: Boolean = true,
@@ -89,6 +90,7 @@ public sealed class Ci {
         override var dependenciesCheck: Boolean = true,
         override var formatCheck: Boolean = true,
         override var qualityCheck: Boolean = true,
+        override var coverageReport: Boolean = true,
         override var coverageVerify: Boolean = true,
         override var docSamplesCheck: Boolean = true,
         override var test: Boolean = true,

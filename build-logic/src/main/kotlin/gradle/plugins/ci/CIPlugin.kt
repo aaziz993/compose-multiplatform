@@ -4,8 +4,8 @@ import com.android.build.gradle.internal.tasks.AndroidTestTask
 import com.gradle.develocity.agent.gradle.test.DevelocityTestConfiguration
 import com.gradle.develocity.agent.gradle.test.TestRetryConfiguration
 import gradle.api.ci.CI
+import gradle.api.ci.Ci
 import gradle.api.project.registerAggregationTestTask
-import klib.data.type.primitives.string.uppercaseFirstChar
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.testing.AbstractTestTask
@@ -31,68 +31,65 @@ public class CIPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            configureTasks()
+            CI?.run {
+                configureTasks()
+            }
         }
     }
 
     context(project: Project)
-    private fun configureTasks(): Unit = with(project) {
-        val ci = CI ?: return@with
-
+    private fun Ci.configureTasks(): Unit = with(project) {
         pluginManager.withPlugin("org.owasp.dependencycheck") {
-            tasks.register("${ci.name}DependencyCheckAnalyze") {
+            tasks.register("ciDependencyCheckAnalyze") {
                 group = "ci"
                 dependsOn(tasks.named("dependencyCheckAnalyze"))
-                onlyIf { ci.dependenciesCheck }
+                onlyIf { dependenciesCheck }
             }
         }
 
         pluginManager.withPlugin("com.diffplug.spotless") {
-            tasks.register("${ci.name}SpotlessCheck") {
+            tasks.register("ciSpotlessCheck") {
                 group = "ci"
                 dependsOn(tasks.named("spotlessCheck"))
-                onlyIf { ci.formatCheck }
+                onlyIf { formatCheck }
             }
         }
 
         pluginManager.withPlugin("org.sonarqube") {
-            tasks.register("${ci.name}Sonar") {
+            tasks.register("ciSonar") {
                 group = "ci"
                 dependsOn(tasks.named("sonar"))
-                onlyIf { ci.qualityCheck }
-            }
-        }
-
-        tasks.register("${ci.name}Check") {
-            group = "ci"
-            dependsOn(tasks.named("check"))
-            onlyIf { ci.test }
-        }
-
-        pluginManager.withPlugin("org.jetbrains.kotlinx.kover") {
-            tasks.register("${ci.name}KoverVerify") {
-                group = "ci"
-                dependsOn(tasks.named("koverVerify"))
-                onlyIf { ci.coverageVerify }
+                onlyIf { qualityCheck }
             }
         }
 
         pluginManager.withPlugin("org.jetbrains.kotlinx.knit") {
-            tasks.register("${ci.name}KnitCheck") {
+            tasks.register("ciKnitCheck") {
                 group = "ci"
                 dependsOn(tasks.named("knitCheck"))
-                onlyIf { ci.docSamplesCheck }
+                onlyIf { docSamplesCheck }
             }
         }
 
-        pluginManager.withPlugin("maven-publish") {
-            ci.publishRepositories.forEach { (name, enabled) ->
-                val publishTaskName = "publishAllPublicationsTo${name.uppercaseFirstChar()}Repository"
-                tasks.register("${ci.name}${publishTaskName.uppercaseFirstChar()}") {
-                    group = "ci"
-                    dependsOn(tasks.named(publishTaskName))
-                    onlyIf { enabled }
-                }
+        tasks.register("ciCheck") {
+            group = "ci"
+            dependsOn(tasks.named("check"))
+            onlyIf { test }
+        }
+
+        pluginManager.withPlugin("org.jetbrains.kotlinx.kover") {
+            tasks.register("ciKoverReport") {
+                group = "ci"
+                dependsOn(tasks.named("koverReport"))
+                onlyIf { coverageReport }
+            }
+        }
+
+        pluginManager.withPlugin("org.jetbrains.kotlinx.kover") {
+            tasks.register("ciKoverVerify") {
+                group = "ci"
+                dependsOn(tasks.named("koverVerify"))
+                onlyIf { coverageVerify }
             }
         }
 
