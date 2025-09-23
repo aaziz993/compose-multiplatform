@@ -144,6 +144,8 @@ dependencies {
     implementation(libs.tomlj)
     // parse yaml.
     implementation(libs.snakeyaml)
+    // image.
+    implementation(libs.bundles.apache.image)
     // cryptography.
     implementation(libs.bundles.jdk18on)
 

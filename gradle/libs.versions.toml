@@ -128,11 +128,14 @@ snakeyaml = "2.5"
 jackcess = "4.0.8"
 # pdf generator.
 itext = "9.3.0"
+# image
+xmlgraphics-batik = "1.19"
+commons-imaging = "1.0.0-alpha6"
 # cryptography.
 jdk18on = "1.82"
 # user input hooks.
 jnativehook = "2.2.2"
-jna = "5.17.0"
+jna = "5.18.0"
 # webrtc.
 webrtc-java = "0.14.0"
 # webcam.
@@ -464,6 +467,10 @@ tomlj = { module = "org.tomlj:tomlj", version.ref = "tomlj" }
 jackcess = { module = "com.healthmarketscience.jackcess:jackcess", version.ref = "jackcess" }
 # pdf generator.
 itext-core = { module = "com.itextpdf:itext-core", version.ref = "itext" }
+# image.
+batik-codec = { module = "oorg.apache.xmlgraphics:batik-codec", version.ref = "xmlgraphics-batik" }
+batik-transcoder = { module = "org.apache.xmlgraphics:batik-transcoder", version.ref = "xmlgraphics-batik" }
+commons-imaging = { module = "org.apache.commons:commons-imaging", version.ref = "commons-imaging" }
 # cryptography.
 bcprov-jdk18on = { module = "org.bouncycastle:bcprov-jdk18on", version.ref = "jdk18on" }
 bcpkix-jdk18on = { module = "org.bouncycastle:bcpkix-jdk18on", version.ref = "jdk18on" }
@@ -946,6 +953,13 @@ pgpainless = [
     "pgpainless-core",
     "pgpainless-sop",
 ]
+# image
+apache-image = [
+    "batik-codec",
+    "batik-transcoder",
+    "commons-imaging",
+]
+# jna.
 jna = [
     "jna",
     "jna-platform"
