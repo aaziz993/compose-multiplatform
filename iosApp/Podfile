@@ -3,5 +3,7 @@ use_frameworks! :linkage => :static
 
 target 'iosApp' do
   pod 'shared', :path => '../shared'
+  pod 'klib', :path => '../klib'
+  pod 'clib', :path => '../clib'
   pod 'WebRTC-SDK', '125.6422.05'
 end

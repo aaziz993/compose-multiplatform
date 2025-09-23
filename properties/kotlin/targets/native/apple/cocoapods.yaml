@@ -6,11 +6,13 @@ script:
       - id: (libs.plugins("cocoapods").pluginId)
   - kotlin:
       cocoapods:
-        version: libs.versions("kotlin.cocoapods.version").requiredVersion
-        summary: projectScript.description
-        homepage: settings.settingsScript.remote.url
-        license: settings.settingsScript.license.name
         name: moduleName
+        version: libs.versions("kotlin.cocoapods.version").requiredVersion
+        homepage: settings.settingsScript.remote.url
+        source: settings.settingsScript.remote.url
+        authors: settings.settingsScript.developer.name
+        license: settings.settingsScript.license.name
+        summary: projectScript.description
         podfile: file("../iosApp/Podfile")
         framework: |
           {
