@@ -14,6 +14,7 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import javax.imageio.ImageIO
+import klib.data.type.primitives.string.addPrefixIfNotEmpty
 import org.apache.batik.transcoder.TranscoderInput
 import org.apache.batik.transcoder.TranscoderOutput
 import org.apache.batik.transcoder.image.PNGTranscoder
@@ -37,6 +38,8 @@ private val DENSITIES = mapOf(
     "xxhdpi" to 72,
     "xxxhdpi" to 96,
 )
+
+private val THEMES = listOf("", "light", "dark")
 
 private val ICNS_SIZES = listOf(16, 32, 64, 128, 256, 512, 1024)
 
@@ -78,24 +81,29 @@ public class ComposePlugin : Plugin<Project> {
         val composeResourcesDir = project.file(dir)
         if (!composeResourcesDir.exists()) return
 
-        val composeMultiplatformSvg = composeResourcesDir.resolve("drawable/$COMPOSE_MULTIPLATFORM_ICON_NAME.svg")
-        if (!composeMultiplatformSvg.exists()) return
+        THEMES.forEach { theme ->
+            val themePart = theme.addPrefixIfNotEmpty("-")
+            val composeMultiplatformSvg = composeResourcesDir.resolve("drawable$themePart/$COMPOSE_MULTIPLATFORM_ICON_NAME.svg")
+            if (!composeMultiplatformSvg.exists()) return@forEach
 
-        DENSITIES.forEach { (qualifier, size) ->
-            val drawableQualifiedDir = composeResourcesDir.resolve("drawable-$qualifier")
-            drawableQualifiedDir.mkdirs()
+            DENSITIES.forEach { (qualifier, size) ->
+                val drawableQualifiedDir = composeResourcesDir.resolve("drawable-$qualifier$themePart")
+                drawableQualifiedDir.mkdirs()
 
-            val linuxIconFile = drawableQualifiedDir.resolve("$COMPOSE_MULTIPLATFORM_ICON_NAME-linux.png")
-            val windowsIconFile = drawableQualifiedDir.resolve("$COMPOSE_MULTIPLATFORM_ICON_NAME-windows.ico")
-            val macosIconFile = drawableQualifiedDir.resolve("$COMPOSE_MULTIPLATFORM_ICON_NAME.icns")
+                val pngFile = drawableQualifiedDir.resolve("$COMPOSE_MULTIPLATFORM_ICON_NAME-png.png")
+                val icoFile = drawableQualifiedDir.resolve("$COMPOSE_MULTIPLATFORM_ICON_NAME-ico.ico")
+                val icnsFile = drawableQualifiedDir.resolve("$COMPOSE_MULTIPLATFORM_ICON_NAME-icns.icns")
 
-            if (!linuxIconFile.exists()) svgToPng(composeMultiplatformSvg, linuxIconFile, size)
-            if (!windowsIconFile.exists())
-                Imaging.writeImage(ImageIO.read(linuxIconFile), windowsIconFile, ImageFormats.ICO)
-            if (!macosIconFile.exists()) linuxIconFile.copyTo(macosIconFile, overwrite = true)
+                if (!pngFile.exists()) svgToPng(composeMultiplatformSvg, pngFile, size)
+                if (!icoFile.exists())
+                    Imaging.writeImage(ImageIO.read(pngFile), icoFile, ImageFormats.ICO)
+                if (!icnsFile.exists()) pngFile.copyTo(icnsFile, overwrite = true)
+            }
         }
 
-        val drawableQualifiedDir = composeResourcesDir.resolve("drawable-${DENSITIES.keys.last()}")
+        val drawableQualifiedDir = THEMES.firstNotNullOfOrNull {
+            composeResourcesDir.resolve("drawable-${DENSITIES.keys.last()}").takeIf(File::exists)
+        } ?: return
 
         // jpackage only supports .png on Linux, .ico on Windows, .icns on Mac, so a developer must do a conversion (probably from a png) to a 3 different formats.
         // Also it seems that ico and icns need to contain an icon in multiple resolutions, so the conversion becomes a bit inconvenient.
