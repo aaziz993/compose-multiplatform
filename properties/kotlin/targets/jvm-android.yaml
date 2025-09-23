@@ -21,7 +21,7 @@ script:
               }
             }
         - named: |
-            ("jvmCommonTest") { sourceSet ->
+            ("jvmAndroidTest") { sourceSet ->
               sourceSet.dependencies {
                 implementation(libs["mockk"])
                 implementation(libs["truth"])
