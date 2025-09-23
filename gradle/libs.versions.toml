@@ -468,7 +468,7 @@ jackcess = { module = "com.healthmarketscience.jackcess:jackcess", version.ref =
 # pdf generator.
 itext-core = { module = "com.itextpdf:itext-core", version.ref = "itext" }
 # image.
-batik-codec = { module = "oorg.apache.xmlgraphics:batik-codec", version.ref = "xmlgraphics-batik" }
+batik-codec = { module = "org.apache.xmlgraphics:batik-codec", version.ref = "xmlgraphics-batik" }
 batik-transcoder = { module = "org.apache.xmlgraphics:batik-transcoder", version.ref = "xmlgraphics-batik" }
 commons-imaging = { module = "org.apache.commons:commons-imaging", version.ref = "commons-imaging" }
 # cryptography.
