@@ -93,11 +93,12 @@ jobs:
         run: ./gradlew ciKnitCheck
 
   #-------------------------------------------------------------------------------#
-  #            Qodana                                                             #
+  #            Qodana Scan                                                        #
   #            Discover all capabilities of Qodana in our documentation           #
   #            https://www.jetbrains.com/help/qodana/about-qodana.html            #
   #-------------------------------------------------------------------------------#
   qodana:
+    name: Qodana Scan
     runs-on: ubuntu-latest
     needs: format-quality-check
     steps:
