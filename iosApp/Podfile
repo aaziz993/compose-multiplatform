@@ -4,6 +4,7 @@ source 'https://cdn.cocoapods.org'
 platform :ios, '18.2'
 
 use_frameworks!
+use_modular_headers!
 
 target 'iosApp' do
   pod 'klib', :path => '../klib'
