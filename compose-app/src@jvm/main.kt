@@ -5,7 +5,7 @@ import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import compose_app.generated.resources.Res
 import compose_app.generated.resources.app_name
-import compose_app.generated.resources.compose_multiplatform_ico
+import compose_app.generated.resources.compose_multiplatform
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.painterResource
 
@@ -21,7 +21,7 @@ public suspend fun main() {
             onCloseRequest = ::exitApplication,
             windowState,
             title = title,
-            icon = if (isDevelopmentMode()) painterResource(Res.drawable.compose_multiplatform_ico)
+            icon = if (isDevelopmentMode()) painterResource(Res.drawable.compose_multiplatform)
             else null,
         ) {
             App()
