@@ -3,7 +3,7 @@
 
 First off, thanks for taking the time to contribute! ❤️
 
-All types of contributions are encouraged and valued. See the [Table of Contents](#table-of-contents) for different ways to help and details about how this project handles them. Please make sure to read the relevant section before making your contribution. It will make it a lot easier for us maintainers and smooth out the experience for all involved. The community looks forward to your contributions. 🎉
+All types of contributions are encouraged and valued. See the [Table of Contents](#table-of-contents) for different ways to help and details about how this project handles them. Please make sure to read the relevant section before making your contribution. It will make it a lot easier for us [INSERT DEFAULT BRANCH]tainers and smooth out the experience for all involved. The community looks forward to your contributions. 🎉
 
 > And if you like the project, but just don't have time to contribute, that's fine. There are other easy ways to support the project and show your appreciation, which we would also be very happy about:
 > - Star the project
@@ -36,7 +36,7 @@ to [INSERT EMAIL ADDRESS].
 
 ## I Have a Question
 
-> If you want to ask a question, we assume that you have read the available [Documentation]([INSERT REPOSITORY URL]/README.md).
+> If you want to ask a question, we assume that you have read the available [Documentation]([INSERT DOCUMENTATION URL]).
 
 Before you ask a question, it is best to search for existing [Issues]([INSERT REPOSITORY URL]/issues) that might help you. In case you have found a suitable issue and still need clarification, you can write your question in this issue. It is also advisable to search the internet for answers first.
 
@@ -89,7 +89,7 @@ A good bug report shouldn't leave others needing to chase you up for more inform
 <!-- omit in toc -->
 #### How Do I Submit a Good Bug Report?
 
-> You must never report security related issues, vulnerabilities or bugs including sensitive information to the issue tracker, or elsewhere in public. Instead sensitive bugs must be sent by email to <a.atoev93@gmail.com>.
+> You must never report security related issues, vulnerabilities or bugs including sensitive information to the issue tracker, or elsewhere in public. Instead sensitive bugs must be sent by email to <[INSERT EMAIL ADDRESS]>.
 <!-- You may add a PGP key to allow the messages to be sent encrypted as well. -->
 
 We use GitHub issues to track bugs and errors. If you run into an issue with the project:
@@ -110,7 +110,7 @@ Once it's filed:
 
 ### Suggesting Enhancements
 
-This section guides you through submitting an enhancement suggestion for compose-multiplatform, **including completely new features and minor improvements to existing functionality**. Following these guidelines will help maintainers and the community to understand your suggestion and find related suggestions.
+This section guides you through submitting an enhancement suggestion for [INSERT PROJECT NAME] **including completely new features and minor improvements to existing functionality**. Following these guidelines will help [INSERT DEFAULT BRANCH]tainers and the community to understand your suggestion and find related suggestions.
 
 <!-- omit in toc -->
 #### Before Submitting an Enhancement

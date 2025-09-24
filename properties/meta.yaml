@@ -32,9 +32,9 @@ licenseHeaderFile:
   licenseName: ${license.name}
   licenseNamePlaceHolder: '[name of license]'
 codeOfConductFile:
-  source: https://www.contributor-covenant.org/version/1/4/code-of-conduct/code_of_conduct.md
-  enforcementEmail: ${developer.email}
-  enforcementEmailPlaceholder: '[INSERT EMAIL ADDRESS]'
+  source: https://www.contributor-covenant.org/version/2/0/code_of_conduct/code_of_conduct.md
+  contactMethod: ${developer.email}
+  contactMethodPlaceholder: '[INSERT CONTACT METHOD]'
   resolution: MODIFIED
 contributingFile:
   source: files/CONTRIBUTING.md
@@ -46,8 +46,8 @@ contributingFile:
   repositoryUrlPlaceholder: '[INSERT REPOSITORY URL]'
   documentationURL: ${remote.url}/README.md
   documentationUrlPlaceholder: '[INSERT DOCUMENTATION URL]'
-  securityEmail: ${developer.email}
-  securityEmailPlaceholder: '[INSERT EMAIL ADDRESS]'
+  contactMethod: ${developer.email}
+  contactMethodPlaceholder: '[INSERT CONTACT METHOD]'
   resolution: MODIFIED
 files:
   - LicenseFile:

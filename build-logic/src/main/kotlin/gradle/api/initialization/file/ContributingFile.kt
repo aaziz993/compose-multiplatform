@@ -18,8 +18,8 @@ public data class ContributingFile(
     val repositoryUrlPlaceholder: String = "[INSERT REPOSITORY URL]",
     val documentationURL: String? = null,
     val documentationUrlPlaceholder: String = "[INSERT DOCUMENTATION URL]",
-    val securityEmail: String? = null,
-    val securityEmailPlaceholder: String = "[INSERT EMAIL ADDRESS]",
+    val contactMethod: String? = null,
+    val contactMethodPlaceholder: String = "[INSERT CONTACT METHOD]",
 ) : ProjectFile() {
 
     @Transient
@@ -31,6 +31,6 @@ public data class ContributingFile(
         defaultBranch?.let { defaultBranch -> defaultBranch to defaultBranchPlaceholder },
         repositoryURL?.let { repositoryURL -> repositoryURL to repositoryUrlPlaceholder },
         documentationURL?.let { documentationURL -> documentationURL to documentationUrlPlaceholder },
-        securityEmail?.let { securityEmail -> securityEmail to securityEmailPlaceholder },
+        contactMethod?.let { contactMethod -> contactMethod to contactMethodPlaceholder },
     ).toMap()
 }
