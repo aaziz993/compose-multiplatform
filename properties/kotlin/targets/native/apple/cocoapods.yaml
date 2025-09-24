@@ -8,9 +8,9 @@ script:
       cocoapods:
         name: moduleName
         version: version.toString()
-        homepage: '"https://github.com/JetBrains/kotlin"'
+        homepage: '"${settings.settingsScript.remote.url}/${project.projectDir.relativeTo(rootProject.projectDir)}"'
         source: |
-          "{ :http => '${settings.settingsScript.remote.url}', :tag => '$version' }"
+          "{ :http => '${settings.settingsScript.remote.url}' }"
         authors: settings.settingsScript.developer.name
         license: |
           "{  :type => '${settings.settingsScript.license.name}', :url => '${settings.settingsScript.license.url}', :file => 'LICENSE' }"
