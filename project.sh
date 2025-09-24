@@ -34,6 +34,7 @@ _CLEAN=(
 ".*.toml"
 "*.podspec"
 "*.yaml.cache"
+"license.header.txt"
 "license.header.properties"
 "license.header.kt"
 "license.header.html"

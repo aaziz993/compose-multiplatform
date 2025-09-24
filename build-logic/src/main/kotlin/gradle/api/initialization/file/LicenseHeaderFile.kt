@@ -23,7 +23,7 @@ public data class LicenseHeaderFile(
     override val from: List<String> = listOf(source)
 
     @Transient
-    override val into: String = "license.header"
+    override val into: String = "license.header.txt"
 
     @Transient
     override val replace: Map<String, String> = listOfNotNull(
