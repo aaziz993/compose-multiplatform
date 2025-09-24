@@ -58,11 +58,8 @@ script:
 
           // Compiler settings.
           compilerOptions {
-            jvmTarget = libs.versions("android.jvm.target").requiredVersion.toJvmTarget()
+            jvmTarget /= libs.versions("android.jvm.target").requiredVersion.toJvmTarget()
           }
-
-          // Restrict published variants (avoid resolution errors).
-          publishLibraryVariants("release", "debug")
         }
 
       sourceSets:
