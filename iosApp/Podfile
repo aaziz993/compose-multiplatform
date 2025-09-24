@@ -6,5 +6,8 @@ platform :ios, '18.2'
 use_frameworks!
 
 target 'iosApp' do
+  pod 'klib', :path => '../klib'
+  pod 'clib', :path => '../clib'
   pod 'shared', :path => '../shared'
+  pod 'compose_app', :path => '../compose-app'
 end
