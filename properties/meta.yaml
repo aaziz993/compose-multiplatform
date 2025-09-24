@@ -21,24 +21,18 @@ licenseFile:
   yearPlaceholder: '[yyyy]'
   owner: ${developer.name}
   ownerPlaceholder: '[name of copyright owner]'
-  resolution: MODIFIED
+  resolution: NEWER
 licenseHeaderFile:
   source: files/license.header
-  resolution: MODIFIED
+  resolution: NEWER
   year: ${year}
   yearPlaceholder: '[yyyy]'
   owner: ${developer.name}
   ownerPlaceholder: '[name of copyright owner]'
   licenseName: ${license.name}
   licenseNamePlaceHolder: '[name of license]'
-codeOfConductFile:
-  source: https://www.contributor-covenant.org/version/2/0/code_of_conduct/code_of_conduct.md
-  contactMethod: <${developer.email}>
-  contactMethodPlaceholder: '[INSERT CONTACT METHOD]'
-  resolution: MODIFIED
 contributingFile:
   source: files/CONTRIBUTING.md
-  projectName: compose-multiplatform,
   projectNamePlaceholder: '[INSERT PROJECT NAME]'
   defaultBranch: main
   defaultBranchPlaceholder: '[INSERT DEFAULT BRANCH]'
@@ -48,7 +42,12 @@ contributingFile:
   documentationUrlPlaceholder: '[INSERT DOCUMENTATION URL]'
   contactMethod: <${developer.email}>
   contactMethodPlaceholder: '[INSERT CONTACT METHOD]'
-  resolution: MODIFIED
+  resolution: NEWER
+codeOfConductFile:
+  source: https://www.contributor-covenant.org/version/2/0/code_of_conduct/code_of_conduct.md
+  contactMethod: <${developer.email}>
+  contactMethodPlaceholder: '[INSERT CONTACT METHOD]'
+  resolution: NEWER
 files:
   - LicenseFile:
       source: ${license.url}
@@ -57,4 +56,4 @@ files:
       yearPlaceholder: '[yyyy]'
       owner: ${developer.name}
       ownerPlaceholder: '[name of copyright owner]'
-      resolution: MODIFIED
+      resolution: NEWER
