@@ -31,7 +31,7 @@ All types of contributions are encouraged and valued. See the [Table of Contents
 This project and everyone participating in it is governed by the
 [compose-multiplatform Code of Conduct]([INSERT REPOSITORY URL]/blob/[INSERT DEFAULT BRANCH]/CODE_OF_CONDUCT.md).
 By participating, you are expected to uphold this code. Please report unacceptable behavior
-to [INSERT EMAIL ADDRESS].
+to [INSERT CONTACT METHOD].
 
 
 ## I Have a Question
