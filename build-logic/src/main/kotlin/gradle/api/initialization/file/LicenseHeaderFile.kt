@@ -10,7 +10,6 @@ import org.gradle.api.initialization.Settings
 @SerialName("LicenseHeaderFile")
 public data class LicenseHeaderFile(
     val source: String,
-    override val into: String = "license.header",
     override val resolution: FileResolution = FileResolution.NEWER,
     val year: String? = null,
     val yearPlaceholder: String = "[yyyy]",
@@ -22,6 +21,9 @@ public data class LicenseHeaderFile(
 
     @Transient
     override val from: List<String> = listOf(source)
+
+    @Transient
+    override val into: String = ".license.header"
 
     @Transient
     override val replace: Map<String, String> = listOfNotNull(

@@ -20,10 +20,13 @@ script:
                   "-Xexport-kdoc",
                   "-Xallocator=custom",
                   "-Xadd-light-debug=enable",
+                  "-Xbinary=bundleId=$name",
                 )
               }
               binaries {
                 framework {
+                  baseName = moduleName
+                  isStatic = true
                   // Add it to avoid sqllite3 issues in iOS . Required when using NativeSQLiteDriver.
                   // linkerOpts.addAll(listOf("--lsqlite3"))
                 }

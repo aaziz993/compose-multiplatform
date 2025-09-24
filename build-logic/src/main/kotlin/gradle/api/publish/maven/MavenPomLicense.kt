@@ -1,8 +1,6 @@
 package gradle.api.publish.maven
 
-import gradle.api.provider.tryAssign
 import kotlinx.serialization.Serializable
-import org.gradle.api.publish.maven.MavenPomLicense
 
 /**
  * A license of a Maven publication.

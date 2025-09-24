@@ -1,12 +1,16 @@
+@file:Suppress("UnstableApiUsage")
+
 package gradle.api.initialization.file
 
 import arrow.core.fold
+import gradle.api.project.settings
 import java.net.URI
 import java.security.MessageDigest
 import klib.data.type.isValidHttpUrl
 import klib.data.type.serialization.serializers.transform.ReflectionMapTransformingPolymorphicSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import org.gradle.api.Project
 import org.gradle.api.initialization.Settings
 import org.gradle.internal.impldep.org.apache.ivy.util.url.ApacheURLLister
 
@@ -18,7 +22,6 @@ public sealed class ProjectFile {
     public abstract val resolution: FileResolution
     public abstract val replace: Map<String, String>
 
-    @Suppress("UnstableApiUsage")
     context(settings: Settings)
     public open fun sync() {
         val (fromUrls, fromFiles) = from.partition(String::isValidHttpUrl)
@@ -37,6 +40,12 @@ public sealed class ProjectFile {
             settings.trySync({ file.readText().replace() }) { file.lastModified() }
         }
     }
+
+    context(settings: Settings)
+    public fun readText(): String = settings.layout.settingsDirectory.file(into).asFile.readText()
+
+    context(project: Project)
+    public fun readText(): String = project.settings.layout.settingsDirectory.file(into).asFile.readText()
 
     @Suppress("UnstableApiUsage")
     private fun Settings.trySync(

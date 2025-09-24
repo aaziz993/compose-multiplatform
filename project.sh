@@ -30,25 +30,34 @@ function publish(){
 }
 
 _CLEAN=(
+".*.toml"
 "*.podspec"
-"*.gpg.*"
-"*.keystore.*"
+"*.yaml.cache"
+".*.properties"
+".*.kt"
+".*.html"
+"*-png.png"
+"*-ico.ico"
+"*-icns.icns"
+".*.gpg"
+".*.p12"
+".*.pkcs12"
+".*.jks"
 )
 
-function clean(){
-  set -euo pipefail
+function clean() {
+    set -euo pipefail
 
-  ./gradlew clean
+    ./gradlew clean
 
-  IFS=$'\n\t'
+    info "🧹Cleaning files..."
 
-  local find=()
-  for f in "${_CLEAN[@]}"; do
-      find+=(-name "$f" -o)
-  done
+    local find_args=()
+    for f in "${_CLEAN[@]}"; do
+        find_args+=(-name "$f" -o)
+    done
 
-  unset 'find[-1]'
+    unset "find_args[${#find_args[@]}-1]"
 
-  info "Clean files"
-  find . -maxdepth 2 -type f \( "${find[@]}" \) -print -delete
+    find . -maxdepth 2 -type f \( "${find_args[@]}" \) -print -delete
 }

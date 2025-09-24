@@ -8,11 +8,18 @@ script:
       cocoapods:
         name: moduleName
         version: libs.versions("kotlin.cocoapods.version").requiredVersion
-        homepage: settings.settingsScript.remote.url
-        source: settings.settingsScript.remote.url
+        homepage: '"https://github.com/JetBrains/kotlin"'
+        source: |
+          "{ :http => '${settings.settingsScript.remote.url}', :tag => '$version' }"
         authors: settings.settingsScript.developer.name
-        license: settings.settingsScript.license.name
+        license: |
+          "{  :type => '${settings.settingsScript.license.name}', :url => '${settings.settingsScript.license.url}', :text => '${settings.settingsScript.licenseFile.readText()}' }"
         summary: projectScript.description
+        pod: |
+          ("WebRTC-SDK") {
+            version = "125.6422.05"
+            moduleName = "WebRTC"
+          }
         podfile: file("../iosApp/Podfile")
         framework: |
           {

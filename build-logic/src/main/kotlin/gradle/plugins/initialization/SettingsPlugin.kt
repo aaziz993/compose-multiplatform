@@ -22,10 +22,10 @@ public class SettingsPlugin : Plugin<Settings> {
                 SettingsScript()
 
                 (listOfNotNull(
-                    target.settingsScript.licenseFile,
-                    target.settingsScript.licenseHeaderFile,
-                    target.settingsScript.codeOfConductFile,
-                    target.settingsScript.contributingFile,
+                    settingsScript.licenseFile,
+                    settingsScript.licenseHeaderFile,
+                    settingsScript.codeOfConductFile,
+                    settingsScript.contributingFile,
                 ) + settingsScript.files)
                     .forEach { projectFile -> projectFile.sync() }
 

@@ -23,7 +23,7 @@ context(project: Project)
 public fun BaseAppModuleExtension.signingConfig(
     name: String,
     storeType: String = project.sensitiveOrElse("android.$name.signing.store.type") { "PKCS12" },
-    storeFile: File = project.file(".signing.android.$name.keystore.$storeType"),
+    storeFile: File = project.file(".signing.android.$name.$storeType"),
     storePassword: String = project.sensitive("android.$name.signing.store.password"),
     keyAlgorithm: String = project.sensitiveOrElse("android.$name.signing.key.algorithm") { "RSA" },
     keySize: Int = project.sensitiveOrElse("android.$name.signing.key.size") { "4096" }.toInt(),

@@ -22,7 +22,7 @@ script:
       - id: (libs.plugins("kotlinx.benchmark").pluginId)
       - id: (libs.plugins("sqldelight").pluginId)
       - id: (libs.plugins("room").pluginId)
-#      - id: (libs.plugins("kotlinx.rpc").pluginId)
+      #      - id: (libs.plugins("kotlinx.rpc").pluginId)
       - id: (libs.plugins("ktorfit").pluginId)
       - id: (libs.plugins("apollo3").pluginId)
       - id: (libs.plugins("powerAssert").pluginId)
@@ -87,8 +87,12 @@ script:
   - spotless:
       - java: |
           { format ->
-            // specify license header text
-            format.licenseHeaderFile("../${settings.settingsScript.licenseHeaderFile!!.into}.kt")
+            settings.settingsScript.licenseHeaderFile?.into?.let { into ->
+              // Remove old license header at the very top
+              format.replaceRegex("remove old license header", """^\s*(//.*|/\*[\s\S]*?\*/)\s*""", "")
+              // specify license header text
+              format.licenseHeaderFile("../$into.kt", "^")
+            }
             // include source files
             format.target("**/*.java")
             // uses the default importOrder configuration
@@ -116,8 +120,12 @@ script:
             // use ktfmt
             format.ktfmt(libs.versions("ktfmt").requiredVersion)
               .googleStyle()
-            // specify license header text
-            format.licenseHeaderFile("../${settings.settingsScript.licenseHeaderFile!!.into}.kt")
+            settings.settingsScript.licenseHeaderFile?.into?.let { into ->
+              // Remove old license header at the very top
+              format.replaceRegex("remove old license header", """^\s*(//.*|/\*[\s\S]*?\*/)\s*""", "")
+              // specify license header text
+              format.licenseHeaderFile("../$into.kt", "^")
+            }
             // include source files
             format.target("**/*.kt", "**/*.kts")
           }
@@ -129,22 +137,34 @@ script:
             // use ktfmt
             format.ktfmt(libs.versions("ktfmt").requiredVersion)
               .googleStyle()
-            // specify license header text
-            format.licenseHeaderFile("../${settings.settingsScript.licenseHeaderFile!!.into}.kt", KotlinConstants.LICENSE_HEADER_DELIMITER)
+            settings.settingsScript.licenseHeaderFile?.into?.let { into ->
+              // Remove old license header at the very top
+              format.replaceRegex("remove old license header", """^\s*(//.*|/\*[\s\S]*?\*/)\s*""", "")
+              // specify license header text
+              format.licenseHeaderFile("../$into.kt", "^")
+            }
             // include source files
             format.target("**/*.gradle.kts")
           }
       - javascript: |
           { format ->
-            // specify license header text
-            format.licenseHeaderFile("../${settings.settingsScript.licenseHeaderFile!!.into}.kt", JS_LICENSE_HEADER_DELIMITER)
+            settings.settingsScript.licenseHeaderFile?.into?.let { into ->
+              // Remove old license header at the very top
+              format.replaceRegex("remove old license header", """^\s*(//.*|/\*[\s\S]*?\*/)\s*""", "")
+              // specify license header text
+              format.licenseHeaderFile("../$into.kt", "^")
+            }
             // include source files
             format.target("**/*.js")
           }
       - typescript: |
           { format ->
-            // specify license header text
-            format.licenseHeaderFile("../${settings.settingsScript.licenseHeaderFile!!.into}.kt", JS_LICENSE_HEADER_DELIMITER)
+            settings.settingsScript.licenseHeaderFile?.into?.let { into ->
+              // Remove old license header at the very top
+              format.replaceRegex("remove old license header", """^\s*(//.*|/\*[\s\S]*?\*/)\s*""", "")
+              // specify license header text
+              format.licenseHeaderFile("../$into.kt", "^")
+            }
             // include source files
             format.target("**/*.ts")
           }
@@ -155,24 +175,30 @@ script:
           }
       - yaml: |
           { format ->
-            // specify license header text
-            format.licenseHeaderFile("../${settings.settingsScript.licenseHeaderFile!!.into}.properties", """(?!\s*#).*""")
+            settings.settingsScript.licenseHeaderFile?.into?.let { into ->
+              // specify license header text
+              format.licenseHeaderFile("../$into.properties", """(?!\s*#).*""")
+            }
             // include source files
             format.target("**/*.yaml", "**/*.yml")
           }
       - format: |
           ("xml") { format ->
-            // remove old license header
-            format.replaceRegex("remove old license header", """^\s*<!--[\s\S]*?-->\s*""", "")
-            // specify license header text
-            format.licenseHeaderFile("../${settings.settingsScript.licenseHeaderFile!!.into}.html", "^")
+            settings.settingsScript.licenseHeaderFile?.into?.let { into ->
+              // remove old license header
+              format.replaceRegex("remove old license header", """^\s*<!--[\s\S]*?-->\s*""", "")
+              // specify license header text
+              format.licenseHeaderFile("../$into.html", "^")
+            }
             // include source files
             format.target("**/*.xml")
           }
       - format: |
           ("properties") { format ->
-            // specify license header text
-            format.licenseHeaderFile("../${settings.settingsScript.licenseHeaderFile!!.into}.properties", """(?!\s*#).*""")
+            settings.settingsScript.licenseHeaderFile?.into?.let { into ->
+              // specify license header text
+              format.licenseHeaderFile("../$into.properties", """(?!\s*#).*""")
+            }
             // include source files
             format.target("**/*.properties")
             // removes any extra whitespace at the beginning of lines
@@ -180,26 +206,32 @@ script:
           }
       - format: |
           ("html") { format ->
-            // remove old license header
-            format.replaceRegex("remove old license header", """^\s*<!--[\s\S]*?-->\s*""", "")
-            // specify license header text
-            format.licenseHeaderFile("../${settings.settingsScript.licenseHeaderFile!!.into}.html", "^")
+            settings.settingsScript.licenseHeaderFile?.into?.let { into ->
+              // remove old license header
+              format.replaceRegex("remove old license header", """^\s*<!--[\s\S]*?-->\s*""", "")
+              // specify license header text
+              format.licenseHeaderFile("../$into.html", "^")
+            }
             // include source files
             format.target("**/*.html")
           }
       - format: |
           ("md") { format ->
-            // remove old license header
-            format.replaceRegex("remove license header", """^\s*<!--[\s\S]*?-->\s*""", "")
-            // specify license header text
-            format.licenseHeaderFile("../${settings.settingsScript.licenseHeaderFile!!.into}.html", "^")
+            settings.settingsScript.licenseHeaderFile?.into?.let { into ->
+              // remove old license header
+              format.replaceRegex("remove license header", """^\s*<!--[\s\S]*?-->\s*""", "")
+              // specify license header text
+              format.licenseHeaderFile("../$into.html", "^")
+            }
             // include source files
             format.target("**/*.md")
           }
       - format: |
           ("editconfig") { format ->
-            // specify license header text
-            format.licenseHeaderFile("../${settings.settingsScript.licenseHeaderFile!!.into}.properties", """(?!\s*#).*""")
+            settings.settingsScript.licenseHeaderFile?.into?.let { into ->
+              // specify license header text
+              format.licenseHeaderFile("../$into.properties", """(?!\s*#).*""")
+            }
             // include source files
             format.target("**/.editconfig")
             // removes any extra whitespace at the beginning of lines
@@ -207,8 +239,10 @@ script:
           }
       - format: |
           ("gitignore") { format ->
-            // specify license header text
-            format.licenseHeaderFile("../${settings.settingsScript.licenseHeaderFile!!.into}.properties", """(?!\s*#).*""")
+            settings.settingsScript.licenseHeaderFile?.into?.let { into ->
+              // specify license header text
+              format.licenseHeaderFile("../$into.properties", """(?!\s*#).*""")
+            }
             // include source files
             format.target("**/.gitignore")
             // removes any extra whitespace at the beginning of lines
@@ -216,8 +250,10 @@ script:
           }
       - format: |
           ("gitattributes") { format ->
-            // specify license header text
-            format.licenseHeaderFile("../${settings.settingsScript.licenseHeaderFile!!.into}.properties", """(?!\s*#).*""")
+            settings.settingsScript.licenseHeaderFile?.into?.let { into ->
+              // specify license header text
+              format.licenseHeaderFile("../$into.properties", """(?!\s*#).*""")
+            }
             // include source files
             format.target("**/.gitattributes")
             // removes any extra whitespace at the beginning of lines
@@ -312,11 +348,11 @@ script:
   - room:
       - schemaDirectory: ("$projectDir/schemas")
   ## Kotlin library for adding asynchronous Remote Procedure Call (RPC) services to your applications. Build your RPC with already known language constructs and nothing more!
-#  - rpc:
-#      strict:
-#        stateFlow: RpcStrictMode.WARNING
-#        sharedFlow: RpcStrictMode.WARNING
-#        nestedFlow: RpcStrictMode.WARNING
+  #  - rpc:
+  #      strict:
+  #        stateFlow: RpcStrictMode.WARNING
+  #        sharedFlow: RpcStrictMode.WARNING
+  #        nestedFlow: RpcStrictMode.WARNING
   ## Http client/Kotlin Symbol Processor for Kotlin Multiplatform ( Android, iOS, Js, Jvm, Linux) using KSP and Ktor clients inspired by Retrofit
   - ktorfit:
       generateQualifiedTypeName: true
