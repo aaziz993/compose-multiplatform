@@ -224,6 +224,7 @@ colormath = "3.6.1"
 kim = "0.26.2"
 # webrtc for android, ios and js/wasmjs.
 webrtc-kmp = "0.125.11"
+pod-webrtc = "125.6422.05"
 # cache.
 cache4k = "0.14.0"
 # a lightweight Kotlin Multiplatform caching library that supports both in-memory and persistent caches and supports different eviction strategies (LRU, FIFO, MRU, FILO).

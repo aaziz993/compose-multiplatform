@@ -23,12 +23,11 @@ script:
                   "-Xbinary=bundleId=$name",
                 )
               }
+
               binaries {
                 framework {
                   baseName = moduleName
-                  isStatic = true
-                  // Add it to avoid sqllite3 issues in iOS . Required when using NativeSQLiteDriver.
-                  // linkerOpts.addAll(listOf("--lsqlite3"))
+                  isStatic = false
                 }
 
                 test(listOf(NativeBuildType.RELEASE))

@@ -1,0 +1,5 @@
+config:
+  imports:
+    - gradle.plugins.kotlin.mpp.flatten
+script:
+  - flatten: ()

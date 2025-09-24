@@ -1,13 +1,13 @@
 # CocoaPods repository
 source 'https://cdn.cocoapods.org'
 
-platform :ios, '26.0'
-
-use_frameworks!
-
 target 'iosApp' do
+  use_frameworks!
+  platform :ios, '26.0'
+
   pod 'klib', :path => '../klib'
   pod 'clib', :path => '../clib'
   pod 'shared', :path => '../shared'
   pod 'compose_app', :path => '../compose-app'
+  pod 'WebRTC-SDK', '125.6422.05'
 end
