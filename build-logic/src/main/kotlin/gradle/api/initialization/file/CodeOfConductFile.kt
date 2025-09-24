@@ -7,7 +7,7 @@ import kotlinx.serialization.Transient
 @Serializable
 @SerialName("CodeOfConductFile")
 public data class CodeOfConductFile(
-    val source: String,
+    val source: String = "files/CODE_OF_CONDUCT.md",
     override val into: String = "CODE_OF_CONDUCT.md",
     override val resolution: FileResolution = FileResolution.NEWER,
     val contactMethod: String? = null,

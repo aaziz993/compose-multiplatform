@@ -7,7 +7,7 @@ import kotlinx.serialization.Transient
 @Serializable
 @SerialName("LicenseFile")
 public data class LicenseFile(
-    val source: String = "",
+    val source: String = "files/LICENSE.txt",
     override val into: String = "LICENSE",
     override val resolution: FileResolution = FileResolution.NEWER,
     val year: String? = null,

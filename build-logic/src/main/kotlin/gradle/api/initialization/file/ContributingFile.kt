@@ -7,7 +7,7 @@ import kotlinx.serialization.Transient
 @Serializable
 @SerialName("ContributingFile")
 public data class ContributingFile(
-    val source: String,
+    val source: String = "files/CONTRIBUTING.md",
     override val into: String = "CONTRIBUTING.md",
     override val resolution: FileResolution = FileResolution.NEWER,
     val projectName: String? = null,

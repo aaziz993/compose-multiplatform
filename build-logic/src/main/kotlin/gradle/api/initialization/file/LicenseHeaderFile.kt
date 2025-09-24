@@ -11,7 +11,7 @@ private const val LICENSE_HEADER_FILE = "license.header"
 @Serializable
 @SerialName("LicenseHeaderFile")
 public data class LicenseHeaderFile(
-    val source: String,
+    val source: String = "files/license.header",
     override val resolution: FileResolution = FileResolution.NEWER,
     val year: String? = null,
     val yearPlaceholder: String = "[yyyy]",
