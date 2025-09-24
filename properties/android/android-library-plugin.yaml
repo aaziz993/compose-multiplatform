@@ -61,7 +61,6 @@ script:
             jvmTarget /= libs.versions("android.jvm.target").requiredVersion.toJvmTarget()
           }
         }
-
       sourceSets:
         - named: |
             ("androidHostTest") { sourceSet ->
