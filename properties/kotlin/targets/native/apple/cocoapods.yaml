@@ -6,45 +6,45 @@ script:
       - id: (libs.plugins("cocoapods").pluginId)
   - kotlin:
       cocoapods:
-        name: moduleName
-        version: version.toString()
-        homepage: '"${settings.settingsScript.remote.url}/${project.projectDir.relativeTo(rootProject.projectDir)}"'
-        source: |
-          "{ :http => '${settings.settingsScript.remote.url}' }"
-        authors: settings.settingsScript.developer.name
-        license: |
-          "{  :type => '${settings.settingsScript.license.name}', :url => '${settings.settingsScript.license.url}', :file => 'LICENSE' }"
-        summary: projectScript.description
-        pod: |
-          ("WebRTC-SDK") {
-            version = "125.6422.05"
-            moduleName = "WebRTC"
-          }
-        podfile: file("../iosApp/Podfile")
-        framework: |
-          {
-            // Required properties
-            // Framework name configuration. Use this property instead of deprecated 'frameworkName'
-            baseName = moduleName
+        - name: moduleName
+        - version: version.toString()
+        - homepage: '"${settings.settingsScript.remote.url}/${project.projectDir.relativeTo(rootProject.projectDir)}"'
+        - source: |
+            "{ :http => '${settings.settingsScript.remote.url}' }"
+        - authors: settings.settingsScript.developer.name
+        - license: |
+            "{  :type => '${settings.settingsScript.license.name}', :url => '${settings.settingsScript.license.url}' }"
+        - summary: projectScript.description
+        - pod: |
+            ("WebRTC-SDK") {
+              version = libs.versions("pod.webrtc").requiredVersion
+              moduleName = "WebRTC"
+            }
+        - podfile: file("../iosApp/Podfile")
+        - framework: |
+            {
+              // Required properties
+              // Framework name configuration. Use this property instead of deprecated 'frameworkName'
+              baseName = moduleName
 
-            // Optional properties
-            // Specify the framework linking type. It's dynamic by default.
-            isStatic = true
-            // Dependency export
-            // Uncomment and specify another project module if you have one:
-            // export(project(":<your other KMP module>"))
-            transitiveExport = false // This is default.
-          }
-        xcodeConfigurationToNativeBuildType.putAll: |
-          (mapOf(
-            "CUSTOM_DEBUG" to NativeBuildType.DEBUG,
-            "CUSTOM_RELEASE" to NativeBuildType.RELEASE,
-          ))
-        ios:
-          deploymentTarget: libs.versions("kotlin.cocoapods.ios.deploymentTarget").requiredVersion
-        osx:
-          deploymentTarget: libs.versions("kotlin.cocoapods.osx.deploymentTarget").requiredVersion
-        tvos:
-          deploymentTarget: libs.versions("kotlin.cocoapods.tvos.deploymentTarget").requiredVersion
-        watchos:
-          deploymentTarget: libs.versions("kotlin.cocoapods.watchos.deploymentTarget").requiredVersion
+              // Optional properties
+              // Specify the framework linking type. It's dynamic by default.
+              isStatic = false
+              // Dependency export
+              // Uncomment and specify another project module if you have one:
+                // export(project(":<your other KMP module>"))
+                transitiveExport = false // This is default.
+            }
+        - xcodeConfigurationToNativeBuildType.putAll: |
+            (mapOf(
+              "CUSTOM_DEBUG" to NativeBuildType.DEBUG,
+              "CUSTOM_RELEASE" to NativeBuildType.RELEASE,
+            ))
+        - ios:
+            deploymentTarget: libs.versions("kotlin.cocoapods.ios.deploymentTarget").requiredVersion
+        - osx:
+            deploymentTarget: libs.versions("kotlin.cocoapods.osx.deploymentTarget").requiredVersion
+        - tvos:
+            deploymentTarget: libs.versions("kotlin.cocoapods.tvos.deploymentTarget").requiredVersion
+        - watchos:
+            deploymentTarget: libs.versions("kotlin.cocoapods.watchos.deploymentTarget").requiredVersion

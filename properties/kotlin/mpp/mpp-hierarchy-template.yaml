@@ -1,3 +1,6 @@
+config:
+  imports:
+    - gradle.plugins.kotlin.mpp.flatten
 script:
   - kotlin:
       applyDefaultHierarchyTemplate: |
@@ -97,3 +100,4 @@ script:
             }
           }
         }
+  - flatten: ()

@@ -3,11 +3,7 @@ source 'https://cdn.cocoapods.org'
 
 target 'iosApp' do
   use_frameworks!
-  platform :ios, '26.0'
+  platform :ios, '18.2'
 
   pod 'klib', :path => '../klib'
-  pod 'clib', :path => '../clib'
-  pod 'shared', :path => '../shared'
-  pod 'compose_app', :path => '../compose-app'
-  pod 'WebRTC-SDK', '125.6422.05'
 end
