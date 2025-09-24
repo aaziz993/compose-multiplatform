@@ -3,6 +3,7 @@
 package gradle.plugins.initialization
 
 import gradle.api.initialization.SettingsScript
+import gradle.api.initialization.enableCacheRedirect
 import gradle.api.initialization.settingsScript
 import gradle.plugins.project.ProjectPlugin
 import java.sql.DriverManager
@@ -20,6 +21,8 @@ public class SettingsPlugin : Plugin<Settings> {
             with(target) {
                 // Load and apply settings.yaml to settings.gradle.kts.
                 SettingsScript()
+
+                enableCacheRedirect()
 
                 (listOfNotNull(
                     settingsScript.licenseFile,

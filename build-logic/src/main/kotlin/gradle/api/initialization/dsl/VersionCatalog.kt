@@ -63,7 +63,7 @@ public data class VersionCatalog(
         @Suppress("UnstableApiUsage")
         context(settings: Settings)
         public operator fun invoke(lib: MinimalExternalModuleDependency): VersionCatalog {
-            val file = settings.layout.settingsDirectory.dir(VERSION_CATALOG_DIR).file(".$lib").asFile
+            val file = settings.layout.settingsDirectory.dir(VERSION_CATALOG_DIR).file(".$lib.toml").asFile
 
             val text = if (file.exists()) file.readText()
             else settings.dependencyResolutionManagement.repositories.firstNotNullOfOrNull { repository ->

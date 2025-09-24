@@ -2,6 +2,7 @@ package gradle.plugins.project
 
 import gradle.api.maybeNamed
 import gradle.api.project.ProjectScript
+import gradle.api.project.enableCacheRedirect
 import gradle.plugins.android.AndroidPlugin
 import gradle.plugins.apivalidation.ApiValidationPlugin
 import gradle.plugins.ci.CIPlugin
@@ -47,6 +48,8 @@ public class ProjectPlugin : Plugin<Project> {
             pluginManager.apply(CIPlugin::class.java)
 
             configureLinkTasks()
+
+            enableCacheRedirect()
 
             if (problemReporter.getErrors().isNotEmpty()) {
                 throw GradleException(problemReporter.getGradleError())
