@@ -324,7 +324,7 @@ android-compileSdk = "36"
 # in project version.
 android-minSdk = "26"
 # in project version.
-android-targetSdk = "35"
+android-targetSdk = "36"
 # in project version.
 android-versionCode = "1"
 # in project version.

@@ -263,7 +263,7 @@ script:
           {
             // exclude source files
             targetExclude(
-              "../LICENSE_HEADER_*",
+              "**/license.header*",
               "**/generated-src/**",
               "**/build-*/**",
               "**/.idea/**",
