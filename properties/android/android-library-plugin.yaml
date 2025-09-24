@@ -1,3 +1,6 @@
+config:
+  imports:
+    - com.android.build.api.dsl.androidLibrary
 script:
   - plugins:
       - id: (libs.plugins("android.kotlin.multiplatform.library").pluginId)
@@ -7,60 +10,61 @@ script:
           namespace = androidNamespace
           compileSdk = libs.versions("android.compileSdk").requiredVersion.toInt()
           minSdk = libs.versions("android.minSdk").requiredVersion.toInt()
+
+          // Optional: core library desugaring.
           enableCoreLibraryDesugaring = true
 
-          lint {
-            abortOnError = false
-            checkReleaseBuilds = false
-            xmlReport = true
-            xmlOutput = file("build/reports/lint-results.xml")
-          }
-
+          // Packaging options.
           packaging {
             resources {
               excludes += setOf(
                 "/META-INF/{AL2.0,LGPL2.1}",
-                "META-INF/*.kotlin_module",    // Kotlin metadata
-                "META-INF/*.SF",               // Signature files
+                "META-INF/*.kotlin_module",
+                "META-INF/*.SF",
                 "META-INF/*.DSA",
                 "META-INF/*.RSA",
               )
               pickFirsts += listOf(
-                "META-INF/NOTICE*",             // NOTICE.md, NOTICE.txt, etc.
-                "META-INF/LICENSE*",            // LICENSE, LICENSE.txt, etc.
-                "META-INF/versions/**",         // OSGI or multi-version module info
-                "kotlin/**",                     // Kotlin built-ins and metadata
+                "META-INF/NOTICE*",
+                "META-INF/LICENSE*",
+                "META-INF/versions/**",
+                "kotlin/**",
               )
             }
           }
 
+          // Metadata for publishing.
           aarMetadata {
             minCompileSdk = libs.versions("android.minSdk").requiredVersion.toInt()
           }
 
-          // Enable java compilation support.
+          // Enable Java compilation.
           withJava()
 
-          // Enable Android resource processing
+          // Enable Android resources.
           androidResources {
             enable = true
           }
 
-          // JVM-based unit tests.
+          // JVM-based unit tests (disabled by default unless you opt in).
           withHostTest {
             isIncludeAndroidResources = true
           }
 
-          // Device/instrumented tests.
+          // Instrumented tests (opt-in).
           withDeviceTest {
             instrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
           }
 
-          // Configure the JVM target for both Kotlin and Java sources
+          // Compiler settings.
           compilerOptions {
-            jvmTarget /= libs.versions("android.jvm.target").requiredVersion.toJvmTarget()
+            jvmTarget = libs.versions("android.jvm.target").requiredVersion.toJvmTarget()
           }
+
+          // Restrict published variants (avoid resolution errors).
+          publishLibraryVariants("release", "debug")
         }
+
       sourceSets:
         - named: |
             ("androidHostTest") { sourceSet ->
