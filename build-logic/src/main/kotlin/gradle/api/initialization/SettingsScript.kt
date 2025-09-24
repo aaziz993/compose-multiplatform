@@ -13,9 +13,7 @@ import java.io.File
 import java.util.Calendar
 import klib.data.type.primitives.string.scripting.ScriptConfig
 import klib.data.type.serialization.serializers.any.SerializableAny
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.Transient
 import org.gradle.api.initialization.Settings
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 
@@ -29,8 +27,7 @@ public class SettingsScript(
     public val remote: MavenPomScm = MavenPomScm(),
     public val developer: MavenPomDeveloper = MavenPomDeveloper(),
     public val license: MavenPomLicense = MavenPomLicense(),
-    @SerialName("licenseFile")
-    private val _licenseFile: LicenseFile? = null,
+    public val licenseFile: LicenseFile = LicenseFile(license.url!!),
     public val licenseHeaderFile: LicenseHeaderFile? = null,
     public val codeOfConductFile: CodeOfConductFile? = null,
     public val contributingFile: ContributingFile? = null,
@@ -39,9 +36,6 @@ public class SettingsScript(
     override val script: List<SerializableAny>,
     override val fileTree: Map<String, List<String>>,
 ) : GradleScript() {
-
-    @Transient
-    public val licenseFile: LicenseFile = _licenseFile?.copy(license.url!!) ?: LicenseFile(license.url!!)
 
     public companion object {
 
