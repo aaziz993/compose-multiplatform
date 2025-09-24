@@ -27,10 +27,10 @@ public data class ContributingFile(
 
     @Transient
     override val replace: Map<String, String> = listOfNotNull(
-        projectName?.let { projectName -> projectName to projectNamePlaceholder },
-        defaultBranch?.let { defaultBranch -> defaultBranch to defaultBranchPlaceholder },
-        repositoryURL?.let { repositoryURL -> repositoryURL to repositoryUrlPlaceholder },
-        documentationURL?.let { documentationURL -> documentationURL to documentationUrlPlaceholder },
-        contactMethod?.let { contactMethod -> contactMethod to contactMethodPlaceholder },
+        projectName?.let { projectName -> projectNamePlaceholder to projectName },
+        defaultBranch?.let { defaultBranch -> defaultBranchPlaceholder to defaultBranch },
+        repositoryURL?.let { repositoryURL -> repositoryUrlPlaceholder to repositoryURL },
+        documentationURL?.let { documentationURL -> documentationUrlPlaceholder to documentationURL },
+        contactMethod?.let { contactMethod -> contactMethodPlaceholder to contactMethod },
     ).toMap()
 }

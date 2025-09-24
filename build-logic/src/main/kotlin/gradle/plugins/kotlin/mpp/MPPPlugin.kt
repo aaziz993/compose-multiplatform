@@ -21,15 +21,6 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinMetadataTarget
 
-private val KOTLIN_COMPILATIONS = listOf(
-    KotlinCompilation.MAIN_COMPILATION_NAME,
-    KotlinCompilation.TEST_COMPILATION_NAME,
-)
-
-private val ANDROID_APPLICATION_COMPILATIONS = KOTLIN_COMPILATIONS + listOf(
-    "unitTest",
-    "instrumentedTest",
-)
 
 public class MPPPlugin : Plugin<Project> {
 
