@@ -6,6 +6,8 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import org.gradle.api.initialization.Settings
 
+private const val LICENSE_HEADER_FILE = "license.header"
+
 @Serializable
 @SerialName("LicenseHeaderFile")
 public data class LicenseHeaderFile(
@@ -23,7 +25,7 @@ public data class LicenseHeaderFile(
     override val from: List<String> = listOf(source)
 
     @Transient
-    override val into: String = "license.header"
+    override val into: String = "$LICENSE_HEADER_FILE.txt"
 
     @Transient
     override val replace: Map<String, String> = listOfNotNull(
@@ -36,7 +38,7 @@ public data class LicenseHeaderFile(
     context(settings: Settings)
     override fun sync() {
 
-        val intoFile = settings.layout.settingsDirectory.file("$into.txt").asFile
+        val intoFile = settings.layout.settingsDirectory.file(into).asFile
 
         val previousLicenseText = intoFile.takeIf(File::exists)?.readText()
 
@@ -46,9 +48,9 @@ public data class LicenseHeaderFile(
 
         val create = previousLicenseText == null || previousLicenseText != licenseText
 
-        val slashLicenseFile = settings.layout.settingsDirectory.file("$into.kt").asFile
-        val hashLicenseFile = settings.layout.settingsDirectory.file("$into.properties").asFile
-        val tagLicenseFile = settings.layout.settingsDirectory.file("$into.html").asFile
+        val slashLicenseFile = settings.layout.settingsDirectory.file("$LICENSE_HEADER_FILE.kt").asFile
+        val hashLicenseFile = settings.layout.settingsDirectory.file("$LICENSE_HEADER_FILE.properties").asFile
+        val tagLicenseFile = settings.layout.settingsDirectory.file("$LICENSE_HEADER_FILE.html").asFile
 
         if (create || !slashLicenseFile.exists())
             slashLicenseFile.writeText(
