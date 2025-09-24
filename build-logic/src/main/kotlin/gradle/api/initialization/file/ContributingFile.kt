@@ -12,7 +12,7 @@ public data class ContributingFile(
     override val resolution: FileResolution = FileResolution.NEWER,
     val projectName: String? = null,
     val projectNamePlaceholder: String = "[INSERT PROJECT NAME]",
-    val defaultBranch: String = "main",
+    val defaultBranch: String? = null,
     val defaultBranchPlaceholder: String = "[INSERT DEFAULT BRANCH]",
     val repositoryURL: String? = null,
     val repositoryUrlPlaceholder: String = "[INSERT REPOSITORY URL]",
@@ -20,9 +20,17 @@ public data class ContributingFile(
     val documentationUrlPlaceholder: String = "[INSERT DOCUMENTATION URL]",
     val securityEmail: String? = null,
     val securityEmailPlaceholder: String = "[INSERT EMAIL ADDRESS]",
-    override val replace: Map<String, String> = emptyMap()
 ) : ProjectFile() {
 
     @Transient
     override val from: List<String> = listOf(source)
+
+    @Transient
+    override val replace: Map<String, String> = listOfNotNull(
+        projectName?.let { projectName -> projectName to projectNamePlaceholder },
+        defaultBranch?.let { defaultBranch -> defaultBranch to defaultBranchPlaceholder },
+        repositoryURL?.let { repositoryURL -> repositoryURL to repositoryUrlPlaceholder },
+        documentationURL?.let { documentationURL -> documentationURL to documentationUrlPlaceholder },
+        securityEmail?.let { securityEmail -> securityEmail to securityEmailPlaceholder },
+    ).toMap()
 }
