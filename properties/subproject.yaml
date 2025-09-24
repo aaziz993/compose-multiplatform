@@ -89,7 +89,7 @@ script:
           { format ->
             settings.settingsScript.licenseHeaderFile?.into?.let { into ->
               // Remove old license header at the very top
-              format.replaceRegex("remove old license header", """^\s*(//.*|/\*[\s\S]*?\*/)\s*""", "")
+              format.replaceRegex("remove old license header", """\A\s*(//.*|/\*[\s\S]*?\*/)\s*""", "")
               // specify license header text
               format.licenseHeaderFile("../$into.kt", "^")
             }
@@ -122,7 +122,7 @@ script:
               .googleStyle()
             settings.settingsScript.licenseHeaderFile?.into?.let { into ->
               // Remove old license header at the very top
-              format.replaceRegex("remove old license header", """^\s*(//.*|/\*[\s\S]*?\*/)\s*""", "")
+              format.replaceRegex("remove old license header", """\A\s*(//.*|/\*[\s\S]*?\*/)\s*""", "")
               // specify license header text
               format.licenseHeaderFile("../$into.kt", "^")
             }
@@ -139,7 +139,7 @@ script:
               .googleStyle()
             settings.settingsScript.licenseHeaderFile?.into?.let { into ->
               // Remove old license header at the very top
-              format.replaceRegex("remove old license header", """^\s*(//.*|/\*[\s\S]*?\*/)\s*""", "")
+              format.replaceRegex("remove old license header", """\A\s*(//.*|/\*[\s\S]*?\*/)\s*""", "")
               // specify license header text
               format.licenseHeaderFile("../$into.kt", "^")
             }
@@ -150,7 +150,7 @@ script:
           { format ->
             settings.settingsScript.licenseHeaderFile?.into?.let { into ->
               // Remove old license header at the very top
-              format.replaceRegex("remove old license header", """^\s*(//.*|/\*[\s\S]*?\*/)\s*""", "")
+              format.replaceRegex("remove old license header", """\A\s*(//.*|/\*[\s\S]*?\*/)\s*""", "")
               // specify license header text
               format.licenseHeaderFile("../$into.kt", "^")
             }
@@ -161,7 +161,7 @@ script:
           { format ->
             settings.settingsScript.licenseHeaderFile?.into?.let { into ->
               // Remove old license header at the very top
-              format.replaceRegex("remove old license header", """^\s*(//.*|/\*[\s\S]*?\*/)\s*""", "")
+              format.replaceRegex("remove old license header", """\A\s*(//.*|/\*[\s\S]*?\*/)\s*""", "")
               // specify license header text
               format.licenseHeaderFile("../$into.kt", "^")
             }

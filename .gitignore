@@ -20,6 +20,7 @@ captures
 **/*.yaml.cache
 gradle/.*.toml
 **/*.podspec
+license.header.txt
 license.header.properties
 license.header.kt
 license.header.html
