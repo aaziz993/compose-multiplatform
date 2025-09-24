@@ -23,7 +23,7 @@ public data class LicenseHeaderFile(
     override val from: List<String> = listOf(source)
 
     @Transient
-    override val into: String = "license.header.txt"
+    override val into: String = "license.header"
 
     @Transient
     override val replace: Map<String, String> = listOfNotNull(
@@ -36,7 +36,7 @@ public data class LicenseHeaderFile(
     context(settings: Settings)
     override fun sync() {
 
-        val intoFile = settings.layout.settingsDirectory.file(into).asFile
+        val intoFile = settings.layout.settingsDirectory.file("$into.txt").asFile
 
         val previousLicenseText = intoFile.takeIf(File::exists)?.readText()
 
@@ -46,9 +46,9 @@ public data class LicenseHeaderFile(
 
         val create = previousLicenseText == null || previousLicenseText != licenseText
 
-        val slashLicenseFile = settings.layout.settingsDirectory.file("${into}.kt").asFile
-        val hashLicenseFile = settings.layout.settingsDirectory.file("${into}.properties").asFile
-        val tagLicenseFile = settings.layout.settingsDirectory.file("${into}.html").asFile
+        val slashLicenseFile = settings.layout.settingsDirectory.file("$into.kt").asFile
+        val hashLicenseFile = settings.layout.settingsDirectory.file("$into.properties").asFile
+        val tagLicenseFile = settings.layout.settingsDirectory.file("$into.html").asFile
 
         if (create || !slashLicenseFile.exists())
             slashLicenseFile.writeText(
