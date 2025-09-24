@@ -87,7 +87,7 @@ script:
           }
         }
       # Applies all above hooks.
-      createHooks: ()
+      createHooks: (true)
   - dependencyResolutionManagement:
       repositories:
         # For the Android plugin and dependencies
