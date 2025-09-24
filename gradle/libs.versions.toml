@@ -309,13 +309,13 @@ mockk = "1.14.5"
 truth = "1.4.5"
 # In project version.
 # In project version.
-kotlin-cocoapods-ios-deploymentTarget = "18.2"
+kotlin-cocoapods-ios-deploymentTarget = "26.0"
 # In project version.
-kotlin-cocoapods-osx-deploymentTarget = "15.2"
+kotlin-cocoapods-osx-deploymentTarget = "26.0"
 # In project version.
-kotlin-cocoapods-tvos-deploymentTarget = "18.2"
+kotlin-cocoapods-tvos-deploymentTarget = "26.0"
 # In project version.
-kotlin-cocoapods-watchos-deploymentTarget = "11.2"
+kotlin-cocoapods-watchos-deploymentTarget = "26.0"
 
 ##Android.
 agp = "8.13.0"
