@@ -30,7 +30,7 @@ function publish(){
 }
 
 _CLEAN=(
-"*.yaml.cache"
+"*.yaml.db"
 ".*.toml"
 "*.podspec"
 "*.yaml.cache"

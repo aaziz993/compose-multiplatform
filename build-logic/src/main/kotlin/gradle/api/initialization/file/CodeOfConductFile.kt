@@ -10,8 +10,8 @@ public data class CodeOfConductFile(
     val source: String,
     override val into: String = "CODE_OF_CONDUCT.md",
     override val resolution: FileResolution = FileResolution.NEWER,
-    val email: String? = null,
-    val emailPlaceholder: String
+    val enforcementEmail: String? = null,
+    val enforcementEmailPlaceholder: String
 ) : ProjectFile() {
 
     @Transient
@@ -19,6 +19,6 @@ public data class CodeOfConductFile(
 
     @Transient
     override val replace: Map<String, String> = listOfNotNull(
-        email?.let { email -> emailPlaceholder to email },
+        enforcementEmail?.let { email -> enforcementEmailPlaceholder to email },
     ).toMap()
 }

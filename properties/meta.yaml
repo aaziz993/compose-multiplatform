@@ -33,11 +33,21 @@ licenseHeaderFile:
   licenseNamePlaceHolder: '[name of license]'
 codeOfConductFile:
   source: https://www.contributor-covenant.org/version/1/4/code-of-conduct/code_of_conduct.md
-  email: ${developer.email}
-  emailPlaceholder: '[INSERT EMAIL ADDRESS]'
+  enforcementEmail: ${developer.email}
+  enforcementEmailPlaceholder: '[INSERT EMAIL ADDRESS]'
   resolution: MODIFIED
 contributingFile:
-  source: https://www.contributor-covenant.org/version/1/4/code-of-conduct/code_of_conduct.md
+  source: files/CONTRIBUTING.md
+  projectName: compose-multiplatform,
+  projectNamePlaceholder: '[INSERT PROJECT NAME]'
+  defaultBranch: main
+  defaultBranchPlaceholder: '[INSERT DEFAULT BRANCH]'
+  repositoryURL: ${remote.url}
+  repositoryUrlPlaceholder: '[INSERT REPOSITORY URL]'
+  documentationURL: ${remote.url}/README.md
+  documentationUrlPlaceholder: '[INSERT DOCUMENTATION URL]'
+  securityEmail: ${developer.email}
+  securityEmailPlaceholder: '[INSERT EMAIL ADDRESS]'
   resolution: MODIFIED
 files:
   - LicenseFile:

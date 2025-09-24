@@ -72,7 +72,7 @@ public abstract class GradleScript : Script() {
         ): P where T : PluginAware, T : ExtensionAware = Script<P>(
             path,
             cache = SqliteCache(
-                parentFile.resolve(".$name.cache"),
+                parentFile.resolve(".$name.db"),
                 String.serializer(),
                 String.serializer(),
             ),
