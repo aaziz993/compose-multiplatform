@@ -59,9 +59,6 @@ kotlin {
                 "kotlinx.coroutines.FlowPreview",
                 "kotlinx.serialization.ExperimentalSerializationApi",
                 "kotlinx.serialization.InternalSerializationApi",
-                "dev.whyoleg.cryptography.DelicateCryptographyApi",
-                "androidx.compose.ui.ExperimentalComposeUiApi",
-                "org.jetbrains.compose.resources.InternalResourceApi",
             ),
         )
     }
