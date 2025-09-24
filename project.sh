@@ -30,12 +30,13 @@ function publish(){
 }
 
 _CLEAN=(
+"*.yaml.cache"
 ".*.toml"
 "*.podspec"
 "*.yaml.cache"
-".*.properties"
-".*.kt"
-".*.html"
+"license.header.properties"
+"license.header.kt"
+"license.header.html"
 "*-png.png"
 "*-ico.ico"
 "*-icns.icns"
@@ -60,4 +61,9 @@ function clean() {
     unset "find_args[${#find_args[@]}-1]"
 
     find . -maxdepth 2 -type f \( "${find_args[@]}" \) -print -delete
+
+    pushd "iosApp" >/dev/null || return
+        pod deintegrate
+        pod cache clean --all
+    popd >/dev/null
 }

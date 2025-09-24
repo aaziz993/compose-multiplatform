@@ -1,6 +1,14 @@
+# CocoaPods repository
+source 'https://cdn.cocoapods.org'
+
 platform :ios, '18.2'
+
 use_frameworks! :linkage => :static
 
 target 'iosApp' do
+  # Your shared Kotlin module
   pod 'shared', :path => '../shared'
+
+  # Any external dependencies the shared module requires
+  pod 'WebRTC-SDK', '125.6422.05'
 end
