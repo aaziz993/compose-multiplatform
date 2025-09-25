@@ -3,6 +3,7 @@ package klib.data.type.collections.combinatorics
 import com.ionspin.kotlin.bignum.integer.BigInteger
 import klib.data.type.collections.combinatorics.internal.combinations
 import klib.data.type.collections.combinatorics.internal.mapToArray
+import kotlin.jvm.JvmStatic
 
 /**
  * The class [CombinationsGenerator] contains methods for generating combinations.

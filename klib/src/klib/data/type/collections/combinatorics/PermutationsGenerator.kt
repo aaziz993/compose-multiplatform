@@ -5,6 +5,7 @@ import klib.data.type.collections.combinatorics.internal.mapToArray
 import klib.data.type.collections.combinatorics.internal.mapToList
 import klib.data.type.collections.combinatorics.internal.permutations
 import klib.data.type.collections.combinatorics.internal.swap
+import kotlin.jvm.JvmStatic
 
 /**
  * The class [PermutationsGenerator] contains methods for generating permutations.

@@ -4,6 +4,7 @@ import com.ionspin.kotlin.bignum.integer.BigInteger
 import klib.data.type.collections.combinatorics.internal.mapToArray
 import klib.data.type.collections.combinatorics.internal.subFactorial
 import klib.data.type.collections.combinatorics.internal.swap
+import kotlin.jvm.JvmStatic
 
 /**
  * The class [DerangementGenerator] contains methods for generating derangement.

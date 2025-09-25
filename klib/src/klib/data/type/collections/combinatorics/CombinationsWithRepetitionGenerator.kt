@@ -3,6 +3,7 @@ package klib.data.type.collections.combinatorics
 import com.ionspin.kotlin.bignum.integer.BigInteger
 import klib.data.type.collections.combinatorics.internal.combinationsWithRepetition
 import klib.data.type.collections.combinatorics.internal.mapToArray
+import kotlin.jvm.JvmStatic
 
 /**
  * The class [CombinationsWithRepetitionGenerator] contains methods for generating combinations with repetition.

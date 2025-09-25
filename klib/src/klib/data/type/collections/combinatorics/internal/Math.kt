@@ -4,6 +4,7 @@ package klib.data.type.collections.combinatorics.internal
 
 import com.ionspin.kotlin.bignum.integer.BigInteger
 import com.ionspin.kotlin.bignum.integer.toBigInteger
+import kotlin.jvm.JvmName
 import kotlin.math.max
 
 @PublishedApi

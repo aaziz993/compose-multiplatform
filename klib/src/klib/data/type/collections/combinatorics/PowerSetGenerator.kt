@@ -1,6 +1,7 @@
 package klib.data.type.collections.combinatorics
 
 import com.ionspin.kotlin.bignum.integer.toBigInteger
+import kotlin.jvm.JvmStatic
 
 /**
  * The class [PowerSetGenerator] contains methods for generating power set.

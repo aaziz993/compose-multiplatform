@@ -2,6 +2,10 @@
 
 package klib.data.type.collections.combinatorics
 
+import kotlin.jvm.JvmName
+import kotlin.jvm.JvmOverloads
+import kotlin.jvm.JvmStatic
+
 /**
  * The class [Combinatorics] contains methods for generating combinatorial sequence.
  */
