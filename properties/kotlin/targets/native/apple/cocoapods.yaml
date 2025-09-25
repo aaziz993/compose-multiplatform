@@ -12,29 +12,7 @@ script:
         - authors: settings.settingsScript.developer.name
         - license: |
             "{  :type => '${settings.settingsScript.license.name}', :url => '${settings.settingsScript.license.url}' }"
-        - summary: projectScript.description
-        # https://youtrack.jetbrains.com/issue/KT-41830/
-        # Only link against pods the library (lorem-ipsum and google-maps) depends on.
-        - pod: |
-            ("WebRTC-SDK") {
-              version = libs.versions("pod.webrtc").requiredVersion
-              moduleName = "WebRTC"
-            }
-        - podfile: file("../appleApp/Podfile")
-        - framework: |
-            {
-              // Required properties
-              // Framework name configuration. Use this property instead of deprecated 'frameworkName'
-              baseName = moduleName
-
-              // Optional properties
-              // Specify the framework linking type. It's dynamic by default.
-              isStatic = true
-              // Dependency export
-              // Uncomment and specify another project module if you have one:
-                // export(project(":<your other KMP module>"))
-                transitiveExport = false // This is default.
-            }
+        - summary: description.orEmpty()
         - xcodeConfigurationToNativeBuildType.putAll: |
             (mapOf(
               "CUSTOM_DEBUG" to NativeBuildType.DEBUG,

@@ -1,7 +1,7 @@
 imports:
   - ../properties/root.yaml
   - ../properties/kotlin/mpp/mpp.yaml
-  - ../properties/kotlin/targets/jvm/jvm-app.yaml
+  - ../properties/kotlin/targets/jvm/jvm.yaml
   - ../properties/android/android-application.yaml
   - ../properties/kotlin/targets/native/apple/ios.yaml
   - ../properties/kotlin/targets/web/js/js-executable.yaml
@@ -27,21 +27,36 @@ script:
   - plugins:
       - id: (libs.plugins("compose.hotReload").pluginId)
   - kotlin:
+      cocoapods:
+        - podfile: file("../appleApp/Podfile")
+        # https://youtrack.jetbrains.com/issue/KT-41830/
+        # Only link against pods the library (lorem-ipsum and google-maps) depends on.
+        - pod: |
+            ("shared") {
+              version = rootProject.subprojects.find { project -> project.name == "shared" }!!.version.toString()
+              linkOnly = true
+            }
+        - framework: |
+            {
+              // Required properties
+              // Framework name configuration. Use this property instead of deprecated 'frameworkName'
+              baseName = moduleName
+
+              // Optional properties
+              // Specify the framework linking type. It's dynamic by default.
+              isStatic = true
+              // Dependency export
+              // Uncomment and specify another project module if you have one:
+                // export(project(":<your other KMP module>"))
+                transitiveExport = false // This is default.
+            }
       sourceSets:
         - named: |
             ("commonMain") { sourceSet ->
               sourceSet.dependencies {
-                implementation(project(":klib"))
-                implementation(project(":clib"))
                 implementation(project(":shared"))
               }
             }
-      cocoapods:
-        # https://youtrack.jetbrains.com/issue/KT-41830/
-        # Only link against pods the library (lorem-ipsum and google-maps) depends on.
-        - pod: ("klib")
-        - pod: ("clib")
-        - pod: ("shared")
   - compose:
       desktop:
         application:

@@ -4,9 +4,9 @@ imports:
   - ../properties/kotlin/targets/jvm/jvm.yaml
   - ../properties/android/android-library.yaml
   - ../properties/kotlin/targets/native/apple/ios.yaml
-#  - ../properties/kotlin/targets/native/apple/osx.yaml
-#  - ../properties/kotlin/targets/native/apple/tvos.yaml
-#  - ../properties/kotlin/targets/native/apple/watchos.yaml
+  #  - ../properties/kotlin/targets/native/apple/osx.yaml
+  #  - ../properties/kotlin/targets/native/apple/tvos.yaml
+  #  - ../properties/kotlin/targets/native/apple/watchos.yaml
   - ../properties/kotlin/targets/web/js/js-library.yaml
   - ../properties/kotlin/targets/web/wasmJs/wasm-js-library.yaml
   - ../properties/kotlin/mpp/mpp-hierarchy-template.yaml
@@ -23,6 +23,15 @@ imports:
   - ../properties/publish.yaml
 description: Kotlin Multiplatform libraries.
 script:
+  - kotlin:
+      cocoapods:
+        # We don't need a podspec for a module dependency.
+        - noPodspec: ()
+        - pod: |
+            ("WebRTC-SDK") {
+              version = libs.versions("pod.webrtc").requiredVersion
+              moduleName = "WebRTC"
+            }
   # Generates typesafe Kotlin APIs from your SQL statements. It verifies your schema, statements, and migrations at compile-time and provides IDE features like autocomplete and refactoring which make writing and maintaining SQL simple.
   - sqldelight:
       databases:

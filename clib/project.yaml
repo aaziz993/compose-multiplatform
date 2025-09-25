@@ -23,14 +23,13 @@ imports:
 description: Compose Multiplatform libraries.
 script:
   - kotlin:
+      cocoapods:
+        # We don't need a podspec for a module dependency.
+        - noPodspec: ()
       sourceSets:
         - named: |
             ("commonMain") { sourceSet ->
               sourceSet.dependencies {
-                implementation(project(":klib"))
+                api(project(":klib"))
               }
             }
-      cocoapods:
-        # https://youtrack.jetbrains.com/issue/KT-41830/
-        # Only link against pods the library (lorem-ipsum and google-maps) depends on.
-        - pod: ("klib")

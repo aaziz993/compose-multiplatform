@@ -20,18 +20,15 @@ imports:
 description: Shared sources for compose app and server app.
 script:
   - kotlin:
+      cocoapods:
+        # We don't need a podspec for a module dependency.
+        - noPodspec: ()
       sourceSets:
         - named: |
             ("commonMain") { sourceSet ->
               sourceSet.dependencies {
-                implementation(project(":klib"))
-                implementation(project(":clib"))
+                api(project(":clib"))
               }
             }
-      cocoapods:
-        # https://youtrack.jetbrains.com/issue/KT-41830/
-        # Only link against pods the library (lorem-ipsum and google-maps) depends on.
-        - pod: ("klib")
-        - pod: ("clib")
   - dependencies:
       - add: ("kspCommonMainMetadata", dependencies.project(":compiler"))
