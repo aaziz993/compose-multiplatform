@@ -121,7 +121,7 @@ public class ComposePlugin : Plugin<Project> {
                 }
             }
 
-            Imaging.writeImage(ImageIO.read(pngs[pngs.size - 3]), icnsFile, ImageFormats.ICNS)
+            Imaging.writeImage(ImageIO.read(pngs[3]), icnsFile, ImageFormats.ICNS)
 
             icnsTempDir.deleteRecursively()
         }
