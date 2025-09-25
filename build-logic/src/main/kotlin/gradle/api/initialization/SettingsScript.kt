@@ -60,9 +60,9 @@ public class SettingsScript(
         public operator fun invoke(): Unit = with(settings) {
             layout.settingsDirectory.file(SETTINGS_PROPERTIES_FILE)
                 .asFile.takeIf(File::exists)?.invoke<SettingsScript, Settings>(settings)
-                .let { properties ->
+                .also { properties ->
                     settingsScript = properties ?: SettingsScript(script = emptyList(), fileTree = emptyMap())
-                    if (properties != null) properties()
+                    properties?.invoke()
                 }
         }
     }

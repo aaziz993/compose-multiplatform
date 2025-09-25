@@ -5,6 +5,7 @@ package gradle.plugins.initialization
 import gradle.api.initialization.SettingsScript
 import gradle.api.initialization.enableCacheRedirect
 import gradle.api.initialization.settingsScript
+import gradle.api.project.ProjectScript
 import gradle.plugins.project.ProjectPlugin
 import java.sql.DriverManager
 import org.gradle.api.Plugin
@@ -19,7 +20,7 @@ public class SettingsPlugin : Plugin<Settings> {
 
         with(SLF4JProblemReporterContext()) {
             with(target) {
-                // Load and apply settings.yaml to settings.gradle.kts.
+                // Load and apply settings.yaml.
                 SettingsScript()
 
                 enableCacheRedirect()
@@ -34,6 +35,11 @@ public class SettingsPlugin : Plugin<Settings> {
 
                 gradle.projectsLoaded {
                     // At this point all projects have been created by settings.gradle.kts, but none were evaluated yet.
+                    // Load project.yaml.
+                    allprojects {
+                        ProjectScript()
+                    }
+
                     allprojects {
                         pluginManager.apply(ProjectPlugin::class.java)
                     }

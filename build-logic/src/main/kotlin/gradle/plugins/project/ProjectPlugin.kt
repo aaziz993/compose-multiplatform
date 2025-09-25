@@ -1,8 +1,8 @@
 package gradle.plugins.project
 
 import gradle.api.maybeNamed
-import gradle.api.project.ProjectScript
 import gradle.api.project.enableCacheRedirect
+import gradle.api.project.projectScript
 import gradle.plugins.android.AndroidPlugin
 import gradle.plugins.apivalidation.ApiValidationPlugin
 import gradle.plugins.ci.CIPlugin
@@ -28,8 +28,8 @@ public class ProjectPlugin : Plugin<Project> {
 
     override fun apply(target: Project): Unit = with(SLF4JProblemReporterContext()) {
         with(target) {
-            // Load and apply project.yaml to build.gradle.kts.
-            ProjectScript()
+            // Apply project.yaml.
+            projectScript()
 
             pluginManager.apply(KoverPlugin::class.java)
             pluginManager.apply(DokkaPlugin::class.java)

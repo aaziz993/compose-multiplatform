@@ -26,16 +26,17 @@ public class ProjectScript(
     public companion object {
 
         context(project: Project)
-        public operator fun invoke(): Unit = with(project) {
+        public operator fun invoke(): ProjectScript = with(project) {
             file(PROJECT_PROPERTIES_FILE).takeIf(File::exists)?.invoke<ProjectScript, Project>(project)
+                ?.also { properties ->
+                    group = properties.group
+                    version = properties.version.toVersion().toString()
+                    description = properties.description
+                }
                 .let { properties ->
-                    projectScript = properties ?: ProjectScript(group = "", script = emptyList(), fileTree = emptyMap())
-                    if (properties != null) {
-                        group = properties.group
-                        version = properties.version.toVersion().toString()
-                        description = properties.description
-                        properties()
-                    }
+                    properties ?: ProjectScript(group = "", script = emptyList(), fileTree = emptyMap())
+                }.also { properties ->
+                    projectScript = properties
                 }
         }
     }
