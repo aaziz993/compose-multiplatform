@@ -33,9 +33,7 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
 import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
 
 private val THEMES = listOf("", "-light", "-dark")
-
 private const val COMPOSE_MULTIPLATFORM_ICON_NAME = "compose-multiplatform"
-
 private val DENSITIES = mapOf(
     "ldpi" to 18,
     "mdpi" to 24,
@@ -45,16 +43,19 @@ private val DENSITIES = mapOf(
     "xxxhdpi" to 96,
 )
 
-private val IOS_ICON_SIZES = listOf(20, 29, 40, 60, 76, 83, 1024)
-private val IOS_SCALES = listOf(1, 2, 3)
-private val IOS_THEMES = listOf("", "dark", "tinted")
+private val IOS_APP_ICON_SIZES = listOf(20, 29, 40, 60, 76, 83, 1024)
+private val IOS_APP_ICON_SCALES = listOf(1, 2, 3)
+private val IOS_APP_ICON_THEMES = listOf("", "dark", "tinted")
 private const val IOS_APPICONSET_DIR = "appleApp/iosApp/Assets.xcassets/AppIcon.appiconset"
 
-private val TVOS_ICON_SIZES = listOf(400, 1280)
-private val TVOS_SCALES = listOf(1, 2, 1)
-private const val TVOS_APPICONSET_DIR = "appleApp/TVosApp/Assets.xcassets/AppIcon.appiconset"
+private val TVOS_APP_ICON_STACKS = listOf("App Icon.imagestack", "App Icon - App Store.imagestack")
+private val TVOS_APP_ICON_LAYERS = listOf("Back", "Middle", "Front")
 
-private val MACOS_ICNS_SIZES = setOf(16, 32, 64, 128, 256, 512, 1024)
+private val TVOS_APP_ICON_SIZES = listOf(400, 1280)
+private val TVOS_SCALES = listOf(1, 2)
+private val TVOS_TOP_SHELF_IMAGES = listOf("Top Shelf Image", "Top Shelf Image Wide")
+private val TVOS_TOP_SHELF_ICON_SIZES = listOf(1920, 3840) // example sizes for top shelf; adjust as needed
+private const val TVOS_BRANDASSETS_DIR = "appleApp/tvOSApp/Assets.xcassets/App Icon & Top Shelf Image.brandassets"
 
 private val WATCHOS_ICON_SIZES = listOf(48, 55, 58, 80, 87, 88, 172)
 private const val WATCHOS_APPICONSET_DIR = "appleApp/WatchosApp Watch App/Assets.xcassets/AppIcon.appiconset"
@@ -115,7 +116,7 @@ public class ComposePlugin : Plugin<Project> {
             val icnsFile = composeResourcesDir.resolve("drawable$theme/$COMPOSE_MULTIPLATFORM_ICON_NAME-icns.icns")
 
             val icnsTempDir = Files.createTempDirectory("icns$theme-iconset").toFile()
-            val pngs = MACOS_ICNS_SIZES.map { size ->
+            val pngs = MACOS_ICON_SIZES.map { size ->
                 icnsTempDir.resolve("icon_${size}x${size}.png").apply {
                     svgToPng(svg, this, size)
                 }
@@ -158,11 +159,11 @@ public class ComposePlugin : Plugin<Project> {
         THEMES.forEachIndexed { index, theme ->
             val svg = composeResourcesDir.resolve("drawable$theme/$COMPOSE_MULTIPLATFORM_ICON_NAME.svg")
             if (!svg.exists()) return@forEachIndexed
-            val iosTheme = IOS_THEMES[index]
+            val iosTheme = IOS_APP_ICON_THEMES[index]
             val iosThemePart = iosTheme.ifNotEmpty { "-$it" }
 
-            IOS_ICON_SIZES.forEach { size ->
-                IOS_SCALES.forEach { scale ->
+            IOS_APP_ICON_SIZES.forEach { size ->
+                IOS_APP_ICON_SCALES.forEach { scale ->
                     val filename = "icon-${size}x$size${if (scale > 1) "@${scale}x" else ""}$iosThemePart.png"
                     val file = appIconSet.resolve(filename)
                     file.parentFile.mkdirs()
@@ -184,27 +185,54 @@ public class ComposePlugin : Plugin<Project> {
     }
 
     private fun Project.adjustTVosIcons(composeResourcesDir: File) {
-        val appIconSet = rootProject.file(TVOS_APPICONSET_DIR).apply(File::mkdirs)
-        val images = mutableListOf<Map<String, Any>>()
         val svg = composeResourcesDir.resolve("drawable/$COMPOSE_MULTIPLATFORM_ICON_NAME.svg")
         if (!svg.exists()) return
 
-        TVOS_ICON_SIZES.forEachIndexed { index, size ->
-            val scale = TVOS_SCALES.getOrElse(index) { 1 }
-            val filename = "icon-${size}x$size${if (scale > 1) "@${scale}x" else ""}.png"
-            val file = appIconSet.resolve(filename)
-            svgToPng(svg, file, size * scale)
-            images.add(
-                mapOf(
-                    "size" to "${size}x$size",
-                    "platform" to "tvos",
-                    "filename" to filename,
-                    "scale" to "${scale}x",
-                ),
-            )
+        val brandAssetsRoot = rootProject.file(TVOS_BRANDASSETS_DIR).apply(File::mkdirs)
+
+        TVOS_APP_ICON_STACKS.forEach { stack ->
+            TVOS_APP_ICON_LAYERS.forEach { layer ->
+                val layerDir = brandAssetsRoot.resolve("$stack/$layer.imagestacklayer/Content.imageset").apply(File::mkdirs)
+
+                val images = mutableListOf<Map<String, Any>>()
+                TVOS_APP_ICON_SIZES.forEachIndexed { index, size ->
+                    val scale = TVOS_SCALES[index]
+                    val filename = "icon-${size}x$size${if (scale > 1) "@${scale}x" else ""}.png"
+                    val file = layerDir.resolve(filename)
+                    svgToPng(svg, file, size * scale)
+                    images.add(
+                        mapOf(
+                            "idiom" to "tv",
+                            "filename" to filename,
+                            "size" to "${size}x$size",
+                            "scale" to "${scale}x",
+                            "role" to layer,
+                        ),
+                    )
+                }
+                writeContentsJson(layerDir, images)
+            }
         }
 
-        writeContentsJson(appIconSet, images)
+        TVOS_TOP_SHELF_IMAGES.forEach { image ->
+            val imagesetDir = brandAssetsRoot.resolve("$image.imageset").apply(File::mkdirs)
+            val images = mutableListOf<Map<String, Any>>()
+            TVOS_TOP_SHELF_ICON_SIZES.forEachIndexed { index, size ->
+                val scale = TVOS_SCALES[index]
+                val filename = "icon-${size}x$size${if (scale > 1) "@${scale}x" else ""}.png"
+                val file = imagesetDir.resolve(filename)
+                svgToPng(svg, file, size * scale)
+                images.add(
+                    mapOf(
+                        "idiom" to "tv",
+                        "filename" to filename,
+                        "size" to "${size}x$size",
+                        "scale" to "${scale}x",
+                    ),
+                )
+            }
+            writeContentsJson(imagesetDir, images)
+        }
     }
 
     private fun Project.adjustWatchosWatchAppIcons(composeResourcesDir: File) {
@@ -237,7 +265,7 @@ public class ComposePlugin : Plugin<Project> {
                     mapOf(
                         "images" to images,
                         "info" to mapOf(
-                            "author" toßß "xcode",
+                            "author" to "xcode",
                             "version" to 1,
                         ),
                     ),
