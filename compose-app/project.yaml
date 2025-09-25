@@ -29,6 +29,11 @@ script:
   - kotlin:
       cocoapods:
         - podfile: file("../appleApp/Podfile")
+        - pod: |
+            ("WebRTC-SDK") {
+              version = libs.versions("pod.webrtc").requiredVersion
+              moduleName = "WebRTC"
+            }
         - framework: |
             {
               // Required properties
