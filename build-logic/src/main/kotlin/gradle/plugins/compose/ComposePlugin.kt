@@ -37,7 +37,6 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
 import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJsCompilation
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.resources.KotlinTargetResourcesPublication
 import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
 
@@ -81,10 +80,10 @@ public class ComposePlugin : Plugin<Project> {
             else -> Unit
         }
 
-        adjustDesktopIcons(composeResourcesDir)
+        adjustIcons(composeResourcesDir)
     }
 
-    private fun Project.adjustDesktopIcons(dir: String) {
+    private fun Project.adjustIcons(dir: String) {
         val composeResourcesDir = project.file(dir)
         if (!composeResourcesDir.exists()) return
 
@@ -143,7 +142,7 @@ public class ComposePlugin : Plugin<Project> {
 
     // Trick to make assemble jvm and native resources task to work after source sets directories change.
     private fun Project.adjustAssembleResTask() = kotlin.targets
-        .matching { target -> target is KotlinJvmTarget || target is KotlinNativeTarget }
+        .matching { target -> target is KotlinJvmTarget }
         .configureEach { target -> adjustAssembleResTask(target) }
 
     private fun Project.adjustAssembleResTask(target: KotlinTarget) {
@@ -196,6 +195,7 @@ public class ComposePlugin : Plugin<Project> {
         val kmpEmptyPath = provider { File("") }
         val emptyDir = layout.buildDirectory.dir("$RES_GEN_DIR/emptyResourcesDir").map { it.asFile }
         logger.info("Configure KMP component publication for '${compilation.target.targetName}'")
+
         kmpResources.publishResourcesAsKotlinComponent(
             target,
             { kotlinSourceSet ->
