@@ -9,12 +9,12 @@ script:
         - name: moduleName
         - version: version.toString()
         - homepage: '"${settings.settingsScript.remote.url}/${project.projectDir.relativeTo(rootProject.projectDir)}"'
-        - source: |
-            "{ :http => '${settings.settingsScript.remote.url}' }"
         - authors: settings.settingsScript.developer.name
         - license: |
             "{  :type => '${settings.settingsScript.license.name}', :url => '${settings.settingsScript.license.url}' }"
         - summary: projectScript.description
+        # https://youtrack.jetbrains.com/issue/KT-41830/
+        # Only link against pods the library (lorem-ipsum and google-maps) depends on.
         - pod: |
             ("WebRTC-SDK") {
               version = libs.versions("pod.webrtc").requiredVersion
