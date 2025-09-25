@@ -3,7 +3,6 @@ osx_deployment_target = '15.6'
 tvos_deployment_target = '18.6'
 watchos_deployment_target = '18.6'
 watchos_watch_app_deployment_target = '11.6'
-webrtc_version='125.6422.05'
 
 target 'iosApp' do
   # Comment the next line if you don't want to use dynamic frameworks
