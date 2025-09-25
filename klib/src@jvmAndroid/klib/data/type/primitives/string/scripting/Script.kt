@@ -239,7 +239,7 @@ public abstract class Script {
             cache: Cache<String, String> = SqliteCache(
                 File(
                     {}::class.java.protectionDomain.codeSource.location.toURI(),
-                ).parentFile.resolve(".${file.substringAfterLast(File.pathSeparator)}.db"),
+                ).parentFile.resolve("${file.substringAfterLast(File.pathSeparator)}.db"),
                 String.serializer(),
                 String.serializer(),
             ),

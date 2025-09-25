@@ -7,7 +7,7 @@ import gradle.api.project.settings
 import gradle.api.project.signing
 import java.io.ByteArrayOutputStream
 import java.io.File
-import java.util.*
+import java.util.Date
 import org.bouncycastle.bcpg.ArmoredOutputStream
 import org.bouncycastle.openpgp.PGPSecretKeyRing
 import org.gradle.api.Project
@@ -25,7 +25,7 @@ import org.pgpainless.util.Passphrase
 @Suppress("UnusedReceiverParameter")
 context(project: Project)
 public fun SigningExtension.gpg(
-    keyFile: File = File(project.projectDir, ".signing.gpg"),
+    keyFile: File = File(project.projectDir, "signing.gpg"),
     keyType: String = project.sensitiveOrElse("signing.gpg.key.type") { "RSA" },
     keyParam: String = project.sensitiveOrElse("signing.gpg.key.param") { "4096" },
     password: String = project.sensitive("signing.gpg.key.password"),
