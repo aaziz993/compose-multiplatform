@@ -48,14 +48,14 @@ private val IOS_APP_ICON_SCALES = listOf(1, 2, 3)
 private val IOS_APP_ICON_THEMES = listOf("", "dark", "tinted")
 private const val IOS_APPICONSET_DIR = "appleApp/iosApp/Assets.xcassets/AppIcon.appiconset"
 
-private val TVOS_APP_ICON_STACKS = listOf("App Icon.imagestack", "App Icon - App Store.imagestack")
-private val TVOS_APP_ICON_LAYERS = listOf("Back", "Middle", "Front")
+private val TVOS_IMAGESTACKS = listOf("App Icon", "App Icon - App Store")
+private val TVOS_IMAGESTACKS_LAYERS = listOf("Back", "Middle", "Front")
 
-private val TVOS_APP_ICON_SIZES = listOf(400, 1280)
+private val TVOS_IMAGESTACKS_ICON_SIZES = listOf(400, 1280)
 private val TVOS_SCALES = listOf(1, 2)
-private val TVOS_TOP_SHELF_IMAGES = listOf("Top Shelf Image", "Top Shelf Image Wide")
-private val TVOS_TOP_SHELF_ICON_SIZES = listOf(1920, 3840) // example sizes for top shelf; adjust as needed
-private const val TVOS_BRANDASSETS_DIR = "appleApp/tvOSApp/Assets.xcassets/App Icon & Top Shelf Image.brandassets"
+private val TVOS_IMAGESETS = listOf("Top Shelf Image", "Top Shelf Image Wide")
+private val TVOS_IMAGESETS_ICON_SIZES = listOf(1920, 3840) // example sizes for top shelf; adjust as needed
+private const val TVOS_BRANDASSETS_DIR = "appleApp/TVosApp/Assets.xcassets/App Icon & Top Shelf Image.brandassets"
 
 private val WATCHOS_ICON_SIZES = listOf(48, 55, 58, 80, 87, 88, 172)
 private const val WATCHOS_APPICONSET_DIR = "appleApp/WatchosApp Watch App/Assets.xcassets/AppIcon.appiconset"
@@ -190,12 +190,12 @@ public class ComposePlugin : Plugin<Project> {
 
         val brandAssetsRoot = rootProject.file(TVOS_BRANDASSETS_DIR).apply(File::mkdirs)
 
-        TVOS_APP_ICON_STACKS.forEach { stack ->
-            TVOS_APP_ICON_LAYERS.forEach { layer ->
-                val layerDir = brandAssetsRoot.resolve("$stack/$layer.imagestacklayer/Content.imageset").apply(File::mkdirs)
+        TVOS_IMAGESTACKS.forEach { stack ->
+            TVOS_IMAGESTACKS_LAYERS.forEach { layer ->
+                val layerDir = brandAssetsRoot.resolve("$stack.imagestack/$layer.imagestacklayer/Content.imageset").apply(File::mkdirs)
 
                 val images = mutableListOf<Map<String, Any>>()
-                TVOS_APP_ICON_SIZES.forEachIndexed { index, size ->
+                TVOS_IMAGESTACKS_ICON_SIZES.forEachIndexed { index, size ->
                     val scale = TVOS_SCALES[index]
                     val filename = "icon-${size}x$size${if (scale > 1) "@${scale}x" else ""}.png"
                     val file = layerDir.resolve(filename)
@@ -214,10 +214,10 @@ public class ComposePlugin : Plugin<Project> {
             }
         }
 
-        TVOS_TOP_SHELF_IMAGES.forEach { image ->
+        TVOS_IMAGESETS.forEach { image ->
             val imagesetDir = brandAssetsRoot.resolve("$image.imageset").apply(File::mkdirs)
             val images = mutableListOf<Map<String, Any>>()
-            TVOS_TOP_SHELF_ICON_SIZES.forEachIndexed { index, size ->
+            TVOS_IMAGESETS_ICON_SIZES.forEachIndexed { index, size ->
                 val scale = TVOS_SCALES[index]
                 val filename = "icon-${size}x$size${if (scale > 1) "@${scale}x" else ""}.png"
                 val file = imagesetDir.resolve(filename)
