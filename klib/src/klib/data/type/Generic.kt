@@ -7,6 +7,8 @@ public val <T> T.exhaustive: T
 
 public fun <T> T.pair(): Pair<T, T> = this to this
 
+public infix fun <V, T> T.pairBy(other: V): Pair<V, T> = other to this
+
 public fun <T> T.triple(): Triple<T, T, T> = Triple(this, this, this)
 
 public fun <T> T.quadruple(): Tuple4<T, T, T, T> = Tuple4(this, this, this, this)
