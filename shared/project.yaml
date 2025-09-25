@@ -28,5 +28,10 @@ script:
                 implementation(project(":clib"))
               }
             }
+      cocoapods:
+        # https://youtrack.jetbrains.com/issue/KT-41830/
+        # Only link against pods the library (lorem-ipsum and google-maps) depends on.
+        - pod: ("klib")
+        - pod: ("clib")
   - dependencies:
       - add: ("kspCommonMainMetadata", dependencies.project(":compiler"))

@@ -36,6 +36,12 @@ script:
                 implementation(project(":shared"))
               }
             }
+      cocoapods:
+        # https://youtrack.jetbrains.com/issue/KT-41830/
+        # Only link against pods the library (lorem-ipsum and google-maps) depends on.
+        - pod: ("klib")
+        - pod: ("clib")
+        - pod: ("shared")
   - compose:
       desktop:
         application:
