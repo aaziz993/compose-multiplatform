@@ -15,11 +15,11 @@ script:
         - license: |
             "{  :type => '${settings.settingsScript.license.name}', :url => '${settings.settingsScript.license.url}' }"
         - summary: projectScript.description
-#        - pod: |
-#            ("WebRTC-SDK") {
-#              version = libs.versions("pod.webrtc").requiredVersion
-#              moduleName = "WebRTC"
-#            }
+        - pod: |
+            ("WebRTC-SDK") {
+              version = libs.versions("pod.webrtc").requiredVersion
+              moduleName = "WebRTC"
+            }
         - podfile: file("../appleApp/Podfile")
         - framework: |
             {
