@@ -170,7 +170,7 @@ public class ComposePlugin : Plugin<Project> {
                     images.add(
                         listOfNotNull(
                             "size" to "${size}x$size",
-                            "idiom" to "iphone",
+                            "platform" to "ios",
                             "filename" to filename,
                             "scale" to "${scale}x",
                             iosTheme.takeIf(String::isNotEmpty)?.pairBy("appearance"),
@@ -197,7 +197,7 @@ public class ComposePlugin : Plugin<Project> {
             images.add(
                 mapOf(
                     "size" to "${size}x$size",
-                    "idiom" to "tv",
+                    "platform" to "tvos",
                     "filename" to filename,
                     "scale" to "${scale}x",
                 ),
@@ -220,7 +220,7 @@ public class ComposePlugin : Plugin<Project> {
             images.add(
                 mapOf(
                     "size" to "${size}x$size",
-                    "idiom" to "watch",
+                    "platform" to "watchos",
                     "filename" to filename,
                     "scale" to "2x",
                 ),
@@ -237,8 +237,8 @@ public class ComposePlugin : Plugin<Project> {
                     mapOf(
                         "images" to images,
                         "info" to mapOf(
+                            "author" toßß "xcode",
                             "version" to 1,
-                            "author" to "xcode",
                         ),
                     ),
                 ),
