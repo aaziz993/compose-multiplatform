@@ -29,13 +29,6 @@ script:
   - kotlin:
       cocoapods:
         - podfile: file("../appleApp/Podfile")
-        # https://youtrack.jetbrains.com/issue/KT-41830/
-        # Only link against pods the library (lorem-ipsum and google-maps) depends on.
-        - pod: |
-            ("shared") {
-              version = rootProject.subprojects.find { project -> project.name == "shared" }!!.version.toString()
-              linkOnly = true
-            }
         - framework: |
             {
               // Required properties

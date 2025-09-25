@@ -29,6 +29,19 @@ function publish(){
   ./gradlew publishAllPublicationsToGithubPackagesRepository publishAllPublicationsToMavenCentralRepository
 }
 
+function clean_apple_app(){
+  info "🧹Cleaning appleApp..."
+
+  pushd "appleApp" >/dev/null || return
+    pod deintegrate
+    pod cache clean --all
+    rm -rf appleApp.xcworkspace
+    rm -rf appleApp.xcodeproj/project.xcworkspace
+    rm -rf appleApp.xcodeproj/xcuserdata
+    rm -rf Podfile.lock
+  popd >/dev/null
+}
+
 _CLEAN=(
 "*.yaml.db"
 ".*.toml"
@@ -47,21 +60,9 @@ _CLEAN=(
 ".*.jks"
 )
 
-function clean_apple_app(){
-  info "🧹Cleaning appleApp..."
-
-  pushd "appleApp" >/dev/null || return
-    pod deintegrate
-    pod cache clean --all
-    rm -rf appleApp.xcworkspace
-    rm -rf appleApp.xcodeproj/project.xcworkspace
-    rm -rf appleApp.xcodeproj/xcuserdata
-    rm -rf Podfile.lock
-  popd >/dev/null
-}
-
 function clean_files(){
-    info "🧹Cleaning files..."
+  info "🧹Cleaning files..."
+
   local find_args=()
   for arg in "${_CLEAN[@]}"; do
     find_args+=(-name "$arg" -o)
@@ -81,13 +82,9 @@ function clean() {
 
     info "🧹Cleaning project..."
 
-    rm -rf .idea
-    ./gradlew clean
-    rm -rf .gradle
-    rm -rf build
-    rm -rf */build
-
-
-
-
+    rm -rf ".idea"
+    ./gradlew "clean"
+    rm -rf ".gradle"
+    rm -rf "build"
+    rm -rf "*/build"
 }
