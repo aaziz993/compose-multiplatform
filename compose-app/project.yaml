@@ -3,12 +3,13 @@ imports:
   - ../properties/kotlin/mpp/mpp.yaml
   - ../properties/kotlin/targets/jvm/jvm-app.yaml
   - ../properties/android/android-application.yaml
-  - ../properties/kotlin/targets/native/apple/ios/ios.yaml
+  - ../properties/kotlin/targets/native/apple/ios.yaml
   - ../properties/kotlin/targets/web/js/js-executable.yaml
   - ../properties/kotlin/targets/web/wasmJs/wasm-js-executable.yaml
   - ../properties/kotlin/mpp/mpp-hierarchy-template.yaml
   - ../properties/kotlin/targets/native/apple/cocoapods.yaml
   - ../properties/kotlin/targets/jvm-android.yaml
+  - ../properties/kotlin/targets/native/apple/apple-common.yaml
   - ../properties/kotlin/targets/native/native-common.yaml
   - ../properties/kotlin/targets/android-ios.yaml
   - ../properties/kotlin/targets/android-ios-web.yaml

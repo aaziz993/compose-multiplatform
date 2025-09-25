@@ -9,13 +9,11 @@ import klib.data.type.serialization.coders.encodePolymorphically
 import klib.data.type.serialization.coders.model.TreeEncoderConfiguration
 import klib.data.type.serialization.getElementAnnotation
 import klib.data.type.serialization.hasElementAnnotation
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.StructureKind
 import kotlinx.serialization.encoding.AbstractEncoder
 import kotlinx.serialization.encoding.CompositeEncoder
-import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.EmptySerializersModule
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.serializer

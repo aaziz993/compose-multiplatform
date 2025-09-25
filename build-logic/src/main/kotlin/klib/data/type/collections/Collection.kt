@@ -655,7 +655,8 @@ public fun <T : Any> T.deepSubstitute(
                     { _, program -> program { path -> substitute(path, getter(path), tryDeepSubstitute) } },
                     cache,
                 )
-            } catch (e: NoSuchElementException) {
+            }
+            catch (e: NoSuchElementException) {
                 e.message
             }.also { value -> cache[pathPlain] = value }
         else value?.let(unknown)
@@ -688,10 +689,11 @@ public fun <T> T.printTree(
     val visits = mutableSetOf(this)
 
     DeepRecursiveFunction<PrintTreeArgs<T>, Unit> { (nodes, prefix) ->
-        nodes.children().forEachIndexed { index, node ->
+        val children = nodes.children()
+        children.forEachIndexed { index, node ->
             val currentNodes = nodes + node
 
-            val isLast = index == nodes.lastIndex
+            val isLast = index == children.lastIndex
             val connector = if (isLast) lastConnector else intermediateConnector
 
             appendable.append(prefix)

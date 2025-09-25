@@ -1,7 +1,7 @@
 .PHONY: chmod dependencies-check build-config format-check format quality-check \
 coverage-verify coverage doc doc-samples-check doc-samples test full-check kotlin-ts jar generate signing-gpg \
 list-signing-gpg clean-signing-gpg dist-signing-gpg publish-local publish-github publish-maven publish\
-server-auto-reload clean
+server-auto-reload clean_apple_app clean_files clean
 
 chmod: # 🔓 Give permission to execute gradlew.
 	git update-index --chmod=+x gradlew && chmod -R 777 scripts/
@@ -78,6 +78,12 @@ warmup: # 🔥 Warmup for jetbrains development environment.
 
 server-auto-reload: # 🔄 Server application hot reload.
   ./gradlew -t autoreload-engine-main:build
+
+clean-apple-app: # 🧹 Clean appleApp.
+	@. project.sh && clean_apple_app
+
+clean-files: # 🧹 Clean appleApp.
+	@. project.sh && clean_files
 
 clean: # 🧹 Clean all.
 	@. project.sh && clean

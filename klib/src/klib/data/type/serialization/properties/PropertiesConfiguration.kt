@@ -7,7 +7,6 @@ import klib.data.type.serialization.hasAnnotation
 import klib.data.type.serialization.properties.annotations.PropertiesClassDiscriminator
 import klib.data.type.serialization.properties.annotations.PropertiesIgnoreUnknownKeys
 import klib.data.type.tuples.to
-import kotlinx.serialization.SerializationException
 
 /**
  * Configuration of the current [Properties] instance available through [Properties.configuration]

@@ -15,7 +15,6 @@ import kotlinx.serialization.descriptors.StructureKind
 import kotlinx.serialization.descriptors.setSerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlin.collections.LinkedHashSet
 
 @Serializable(with = MergeSetSerializer::class)
 public interface MergeSet<E> : Set<E> {

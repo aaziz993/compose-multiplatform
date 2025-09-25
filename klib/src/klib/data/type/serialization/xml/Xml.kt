@@ -3,12 +3,18 @@ package klib.data.type.serialization.xml
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.serializer
-import nl.adaptivity.xmlutil.*
+import nl.adaptivity.xmlutil.EventType
+import nl.adaptivity.xmlutil.XmlDeclMode
+import nl.adaptivity.xmlutil.XmlEvent
+import nl.adaptivity.xmlutil.XmlReader
+import nl.adaptivity.xmlutil.XmlWriter
 import nl.adaptivity.xmlutil.core.impl.multiplatform.StringWriter
 import nl.adaptivity.xmlutil.core.impl.multiplatform.use
+import nl.adaptivity.xmlutil.newGenericWriter
+import nl.adaptivity.xmlutil.newWriter
 import nl.adaptivity.xmlutil.serialization.XML
-import nl.adaptivity.xmlutil.serialization.XmlConfig
-import kotlin.invoke
+import nl.adaptivity.xmlutil.toEvent
+import nl.adaptivity.xmlutil.xmlStreaming
 
 public fun <T> XML.encodeToMap(serializer: SerializationStrategy<T>, value: T): Map<XmlEvent.StartElementEvent, Any> =
     decodeMapFromString(encodeToString(serializer, value))

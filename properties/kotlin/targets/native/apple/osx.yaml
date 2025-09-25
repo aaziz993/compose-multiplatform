@@ -1,0 +1,3 @@
+script:
+  - kotlin:
+      macosArm64: ()

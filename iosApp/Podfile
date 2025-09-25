@@ -1,9 +1,0 @@
-# CocoaPods repository
-source 'https://cdn.cocoapods.org'
-
-target 'iosApp' do
-  use_frameworks!
-  platform :ios, '18.2'
-
-  pod 'klib', :path => '../klib'
-end

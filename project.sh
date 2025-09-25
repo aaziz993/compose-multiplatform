@@ -47,24 +47,47 @@ _CLEAN=(
 ".*.jks"
 )
 
+function clean_apple_app(){
+  info "🧹Cleaning appleApp..."
+
+  pushd "appleApp" >/dev/null || return
+    pod deintegrate
+    pod cache clean --all
+    rm -rf appleApp.xcworkspace
+    rm -rf appleApp.xcodeproj/project.xcworkspace
+    rm -rf appleApp.xcodeproj/xcuserdata
+    rm -rf Podfile.lock
+  popd >/dev/null
+}
+
+function clean_files(){
+    info "🧹Cleaning files..."
+  local find_args=()
+  for arg in "${_CLEAN[@]}"; do
+    find_args+=(-name "$arg" -o)
+  done
+
+  unset "find_args[${#find_args[@]}-1]"
+
+  find . -maxdepth 2 -type f \( "${find_args[@]}" \) -print -delete
+}
+
 function clean() {
     set -euo pipefail
 
+    clean_apple_app
+
+    clean_files
+
+    info "🧹Cleaning project..."
+
+    rm -rf .idea
     ./gradlew clean
+    rm -rf .gradle
+    rm -rf build
+    rm -rf */build
 
-    info "🧹Cleaning files..."
 
-    local find_args=()
-    for f in "${_CLEAN[@]}"; do
-        find_args+=(-name "$f" -o)
-    done
 
-    unset "find_args[${#find_args[@]}-1]"
 
-    find . -maxdepth 2 -type f \( "${find_args[@]}" \) -print -delete
-
-    pushd "iosApp" >/dev/null || return
-        pod deintegrate
-        pod cache clean --all
-    popd >/dev/null
 }

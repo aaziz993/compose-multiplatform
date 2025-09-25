@@ -3,10 +3,8 @@
 package klib.data.type.serialization.xml
 
 import klib.data.type.cast
-import klib.data.type.collections.map.asMap
 import klib.data.type.serialization.coders.any.AnyDecoder
 import kotlinx.serialization.DeserializationStrategy
-import nl.adaptivity.xmlutil.XmlUtilInternal
 import nl.adaptivity.xmlutil.serialization.XML
 import nl.adaptivity.xmlutil.serialization.XmlDecoderBase.XmlDecoder
 

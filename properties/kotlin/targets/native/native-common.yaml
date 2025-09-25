@@ -25,11 +25,6 @@ script:
               }
 
               binaries {
-                framework {
-                  baseName = moduleName
-                  isStatic = false
-                }
-
                 test(listOf(NativeBuildType.RELEASE))
               }
             }

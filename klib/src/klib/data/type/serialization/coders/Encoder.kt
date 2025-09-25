@@ -1,7 +1,7 @@
 package klib.data.type.serialization.coders
 
-import klib.data.type.serialization.classDiscriminator
 import klib.data.type.serialization.buildPolymorphicDescriptor
+import klib.data.type.serialization.classDiscriminator
 import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.CompositeEncoder

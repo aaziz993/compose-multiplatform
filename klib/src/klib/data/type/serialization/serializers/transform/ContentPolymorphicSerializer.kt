@@ -5,6 +5,7 @@ package klib.data.type.serialization.serializers.transform
 import com.charleskorn.kaml.YamlContentPolymorphicSerializer
 import klib.data.type.serialization.coders.any.asAnyDecoder
 import klib.data.type.serialization.getPolymorphicOrValue
+import kotlin.reflect.KClass
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.PolymorphicKind
@@ -12,7 +13,6 @@ import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildSerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlin.reflect.KClass
 
 /**
  * Base class for custom serializers that allows selecting polymorphic serializer

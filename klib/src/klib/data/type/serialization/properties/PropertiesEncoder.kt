@@ -2,19 +2,14 @@ package klib.data.type.serialization.properties
 
 import klib.data.type.primitives.string.addSuffixIfNotEmpty
 import klib.data.type.serialization.coders.encodePolymorphically
-import klib.data.type.serialization.coders.encodeStructure
 import klib.data.type.serialization.properties.annotations.PropertiesComment
 import klib.data.type.serialization.serializers.any.NullableAnySerializer
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerializationStrategy
-import kotlinx.serialization.builtins.MapSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.StructureKind
 import kotlinx.serialization.encoding.AbstractEncoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.modules.SerializersModule
-
 
 public open class PropertiesEncoder(
     private val writer: PropertiesWriter,

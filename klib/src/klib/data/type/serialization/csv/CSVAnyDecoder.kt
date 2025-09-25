@@ -5,7 +5,6 @@ package klib.data.type.serialization.csv
 import app.softwork.serialization.csv.CSVDecoder
 import app.softwork.serialization.csv.CSVFormat
 import klib.data.type.cast
-import klib.data.type.collections.list.asList
 import klib.data.type.serialization.coders.any.AnyDecoder
 import kotlinx.serialization.DeserializationStrategy
 

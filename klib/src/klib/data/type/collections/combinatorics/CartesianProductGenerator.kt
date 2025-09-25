@@ -4,6 +4,7 @@ import com.ionspin.kotlin.bignum.integer.BigInteger
 import com.ionspin.kotlin.bignum.integer.toBigInteger
 import klib.data.type.collections.combinatorics.internal.mapToArray
 import klib.data.type.collections.combinatorics.internal.times
+import kotlin.jvm.JvmStatic
 
 /**
  * The class [CartesianProductGenerator] contains methods for generating cartesian product.

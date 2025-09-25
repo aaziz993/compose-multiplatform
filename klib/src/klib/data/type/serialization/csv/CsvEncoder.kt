@@ -1,9 +1,6 @@
 package klib.data.type.serialization.csv
 
 import app.softwork.serialization.csv.CSVEncoder
-import kotlinx.serialization.ContextualSerializer
-import kotlinx.serialization.descriptors.SerialKind
-import kotlinx.serialization.descriptors.buildSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.encodeStructure
 

@@ -1,0 +1,4 @@
+script:
+  - kotlin:
+      watchosSimulatorArm64: ()
+      watchosDeviceArm64: ()

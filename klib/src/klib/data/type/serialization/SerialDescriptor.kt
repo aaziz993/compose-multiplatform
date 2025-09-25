@@ -32,7 +32,6 @@ import kotlinx.serialization.descriptors.buildSerialDescriptor
 import kotlinx.serialization.descriptors.elementDescriptors
 import kotlinx.serialization.descriptors.elementNames
 import kotlinx.serialization.encoding.CompositeDecoder
-import kotlin.collections.plus
 
 private val PRIMITIVE_SERIAL_TYPES = mapOf(
     Boolean.serializer().descriptor.serialName to typeOf<Boolean>(),

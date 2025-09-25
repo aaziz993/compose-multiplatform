@@ -9,6 +9,7 @@ import klib.data.type.collections.list.asNullableListOrNull
 import klib.data.type.collections.map.asMap
 import klib.data.type.collections.map.asMapOrNull
 import klib.data.type.collections.map.toSortedValues
+import klib.data.type.primitives.toInt
 import klib.data.type.primitives.toNumber
 import klib.data.type.serialization.annotations.SerialContext
 import klib.data.type.serialization.annotations.SerialScript
@@ -19,8 +20,9 @@ import klib.data.type.serialization.coders.model.TreeDecoderConfiguration
 import klib.data.type.serialization.getElementAnnotation
 import klib.data.type.serialization.hasElementAnnotation
 import klib.data.type.serialization.toPolymorphicValues
-import klib.data.type.primitives.toInt
-import kotlinx.serialization.*
+import kotlinx.serialization.DeserializationStrategy
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.descriptors.PolymorphicKind
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.StructureKind
@@ -29,6 +31,8 @@ import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.decodeIfNullable
 import kotlinx.serialization.modules.EmptySerializersModule
 import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.serializer
+import kotlinx.serialization.serializerOrNull
 
 public open class TreeDecoder(
     protected val value: Any?,

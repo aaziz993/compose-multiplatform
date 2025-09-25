@@ -12,7 +12,7 @@ import com.fleeksoft.ksoup.parseSource
 import com.fleeksoft.ksoup.parser.Parser
 import com.fleeksoft.ksoup.safety.Safelist
 import io.ktor.client.HttpClient
-import io.ktor.client.request.*
+import io.ktor.client.request.HttpRequestBuilder
 import kotlinx.io.RawSource
 import kotlinx.io.Source
 import kotlinx.io.files.Path

@@ -1,6 +1,5 @@
 package klib.data.type.serialization.serializers.primitive
 
-import kotlin.reflect.KClass
 import kotlinx.serialization.descriptors.PrimitiveKind
 
 public abstract class PrimitiveByteSerializer<T : Any>(

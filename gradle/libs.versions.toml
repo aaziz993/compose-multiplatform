@@ -8,53 +8,53 @@
 ## a pre-release version MAY be denoted by appending a hyphen and a series of dot separated identifiers immediately following the patch version. Identifiers MUST comprise only ASCII alphanumerics and hyphens [0-9A-Za-z-]. Identifiers MUST NOT be empty. Numeric identifiers MUST NOT include leading zeroes. Examples: 1.0.0-alpha, 1.0.0-alpha.1, 1.0.0-0.3.7, 1.0.0-x.7.z.92, 1.0.0-x-y-z.--.
 ## build metadata MAY be denoted by appending a plus sign and a series of dot separated identifiers immediately following the patch or pre-release version. Identifiers MUST comprise only ASCII alphanumerics and hyphens [0-9A-Za-z-]. Identifiers MUST NOT be empty. Examples: 1.0.0-alpha+001, 1.0.0+20130313144700, 1.0.0-beta+exp.sha.5114f85, 1.0.0+21AF26D3----117B344092BD.
 # compose-multiplatform.
-compose-multiplatform-version-major = "1"
-compose-multiplatform-version-minor = "0"
-compose-multiplatform-version-patch = "0"
-compose-multiplatform-version-preRelase = "alpha" # optional
-#compose-multiplatform-version-buildMetadata = "" # optional
+compose-multiplatform-major = "1"
+compose-multiplatform-minor = "0"
+compose-multiplatform-patch = "0"
+compose-multiplatform-preRelase = "alpha" # optional
+#compose-multiplatform-buildMetadata = "" # optional
 # build-logic.
-build-logic-version-major = "1"
-build-logic-version-minor = "0"
-build-logic-version-patch = "0"
-build-logic-version-preRelase = "alpha" # optional
-#build-logic-version-buildMetadata = "" # optional
+build-logic-major = "1"
+build-logic-minor = "0"
+build-logic-patch = "0"
+build-logic-preRelase = "alpha" # optional
+#build-logic-buildMetadata = "" # optional
 # kmp-lib.
-klib-version-major = "1"
-klib-version-minor = "0"
-klib-version-patch = "0"
-klib-version-preRelase = "alpha" # optional
-#klib-version-buildMetadata = "" # optional
+klib-major = "1"
+klib-minor = "0"
+klib-patch = "0"
+klib-preRelase = "alpha" # optional
+#klib-buildMetadata = "" # optional
 # cmp-lib.
-clib-version-major = "1"
-clib-version-minor = "0"
-clib-version-patch = "0"
-clib-version-preRelase = "alpha" # optional
-#clib-version-buildMetadata = "" # optional
+clib-major = "1"
+clib-minor = "0"
+clib-patch = "0"
+clib-preRelase = "alpha" # optional
+#clib-buildMetadata = "" # optional
 # compiler.
-compiler-version-major = "1"
-compiler-version-minor = "0"
-compiler-version-patch = "0"
-compiler-version-preRelase = "alpha" # optional
-#compiler-version-buildMetadata = "" # optional
+compiler-major = "1"
+compiler-minor = "0"
+compiler-patch = "0"
+compiler-preRelase = "alpha" # optional
+#compiler-buildMetadata = "" # optional
 # shared.
-shared-version-major = "1"
-shared-version-minor = "0"
-shared-version-patch = "0"
-shared-version-preRelase = "alpha" # optional
-#shared-version-buildMetadata = "" # optional
+shared-major = "1"
+shared-minor = "0"
+shared-patch = "0"
+shared-preRelase = "alpha" # optional
+#shared-buildMetadata = "" # optional
 # compose-app.
-compose-app-version-major = "1"
-compose-app-version-minor = "0"
-compose-app-version-patch = "0"
-compose-app-version-preRelase = "alpha" # optional
-#compose-app-version-buildMetadata = "" # optional
+compose-app-major = "1"
+compose-app-minor = "0"
+compose-app-patch = "0"
+compose-app-preRelase = "alpha" # optional
+#compose-app-buildMetadata = "" # optional
 # server-app.
-server-app-version-major = "1"
-server-app-version-minor = "0"
-server-app-version-patch = "0"
-server-app-version-preRelase = "alpha" # optional
-#server-app-version-buildMetadata = "" # optional
+server-app-major = "1"
+server-app-minor = "0"
+server-app-patch = "0"
+server-app-preRelase = "alpha" # optional
+#server-app-buildMetadata = "" # optional
 ##Gradle.
 # intellij.
 intellij-platform = "243.23654.166"
@@ -310,13 +310,13 @@ mockk = "1.14.5"
 truth = "1.4.5"
 # In project version.
 # In project version.
-kotlin-cocoapods-ios-deploymentTarget = "18.2"
+kotlin-cocoapods-ios-deploymentTarget = "18.6"
 # In project version.
-kotlin-cocoapods-osx-deploymentTarget = "15.2"
+kotlin-cocoapods-osx-deploymentTarget = "15.6"
 # In project version.
-kotlin-cocoapods-tvos-deploymentTarget = "18.2"
+kotlin-cocoapods-tvos-deploymentTarget = "18.6"
 # In project version.
-kotlin-cocoapods-watchos-deploymentTarget = "11.2"
+kotlin-cocoapods-watchos-deploymentTarget = "11.6"
 
 ##Android.
 agp = "8.13.0"

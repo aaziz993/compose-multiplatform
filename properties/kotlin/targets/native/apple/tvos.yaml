@@ -1,0 +1,4 @@
+script:
+  - kotlin:
+      tvosArm64: ()
+      tvosSimulatorArm64: ()

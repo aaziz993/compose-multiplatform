@@ -4,16 +4,15 @@ import klib.data.type.cast
 import klib.data.type.collections.deepGet
 import klib.data.type.collections.deepGetOrNull
 import klib.data.type.collections.deepMap
+import klib.data.type.collections.deepPlus
 import klib.data.type.collections.deepSubstitute
 import klib.data.type.collections.getOrPut
 import klib.data.type.collections.list.drop
 import klib.data.type.collections.minusKeys
 import klib.data.type.collections.toNewMutableCollection
-import kotlin.collections.last
 import kotlinx.serialization.modules.EmptySerializersModule
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.serializer
-import klib.data.type.collections.deepPlus
 
 public const val IMPORTS_KEY: String = "imports"
 
