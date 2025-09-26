@@ -36,16 +36,10 @@ import org.jetbrains.compose.resources.getPreparedComposeResourcesDir
 import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
 import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
 
-private val THEMES = listOf("", "-dark", "-light")
+private val THEMES = listOf("") + ThemeQualifier.entries.map { theme -> "-${theme.name.lowercase()}" }
+
 private const val APP_ICON = "app-icon"
-private val DENSITIES = mapOf(
-    "ldpi" to 18,
-    "mdpi" to 24,
-    "hdpi" to 36,
-    "xhdpi" to 48,
-    "xxhdpi" to 72,
-    "xxxhdpi" to 96,
-)
+
 private val IOS_IMAGE_APPEARANCE = mapOf("" to 0, "dark" to 1, "tinted" to 2)
 private const val IOS_APPICONSET_DIR = "appleApp/iosApp/Assets.xcassets/AppIcon.appiconset"
 private const val TVOS_BRANDASSETS_DIR = "appleApp/TVosApp/Assets.xcassets/App Icon & Top Shelf Image.brandassets"
@@ -87,19 +81,20 @@ public class ComposePlugin : Plugin<Project> {
     }
 
     private fun Project.adjustDesktopIcons(composeResourcesDir: File) {
-        THEMES.forEachIndexed { index, theme ->
 
+        THEMES.forEach { theme ->
             val svg = composeResourcesDir.resolve("drawable$theme/$APP_ICON.svg").takeIf(File::exists)
-                ?: return@forEachIndexed
+                ?: return@forEach
 
-            DENSITIES.entries.forEachIndexed { index, (qualifier, size) ->
-                val drawableQualifiedDir = composeResourcesDir.resolve("drawable-$qualifier$theme")
+
+            DensityQualifier.entries.forEachIndexed { index, qualifier ->
+                val drawableQualifiedDir = composeResourcesDir.resolve("drawable-${qualifier.name.lowercase()}$theme")
                 drawableQualifiedDir.mkdirs()
 
                 val pngFile = drawableQualifiedDir.resolve("$APP_ICON-png.png")
                 val icoFile = drawableQualifiedDir.resolve("$APP_ICON-ico.ico")
 
-                svgToPng(svg, pngFile, size)
+                svgToPng(svg, pngFile, qualifier.dpi)
                 Imaging.writeImage(ImageIO.read(pngFile), icoFile, ImageFormats.ICO)
             }
 
@@ -118,7 +113,7 @@ public class ComposePlugin : Plugin<Project> {
         }
 
         val drawableQualifiedDir = THEMES.firstNotNullOfOrNull { theme ->
-            composeResourcesDir.resolve("drawable-${DENSITIES.keys.last()}$theme").takeIf(File::exists)
+            composeResourcesDir.resolve("drawable-${DensityQualifier.entries.last().name.lowercase()}$theme").takeIf(File::exists)
         }
 
         val icnsFile = THEMES.firstNotNullOfOrNull { theme ->
@@ -164,6 +159,8 @@ public class ComposePlugin : Plugin<Project> {
 
         val images: List<Image> = contents["images"]?.asList<Map<String, Any>>()?.map(transform)?.map(json::decodeFromAny)
             ?: return
+
+
 
         images.forEach { image ->
             image.appearances.filter { (appearance, _) -> appearance == "luminosity" }.forEach { (_, value) ->

@@ -33,6 +33,7 @@ script:
             ("WebRTC-SDK") {
               version = libs.versions("pod.webrtc").requiredVersion
               moduleName = "WebRTC"
+              // extraOpts += listOf("-compiler-option", "-fmodules")
             }
         - framework: |
             {
