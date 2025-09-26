@@ -35,7 +35,7 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
 import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
 
 private val THEMES = listOf("", "-dark", "-light")
-private const val COMPOSE_MULTIPLATFORM_ICON_NAME = "compose-multiplatform"
+private const val APP_ICON = "app-icon"
 private val DENSITIES = mapOf(
     "ldpi" to 18,
     "mdpi" to 24,
@@ -87,21 +87,21 @@ public class ComposePlugin : Plugin<Project> {
     private fun Project.adjustDesktopIcons(composeResourcesDir: File) {
         THEMES.forEachIndexed { index, theme ->
 
-            val svg = composeResourcesDir.resolve("drawable$theme/$COMPOSE_MULTIPLATFORM_ICON_NAME.svg").takeIf(File::exists)
+            val svg = composeResourcesDir.resolve("drawable$theme/$APP_ICON.svg").takeIf(File::exists)
                 ?: return@forEachIndexed
 
             DENSITIES.entries.forEachIndexed { index, (qualifier, size) ->
                 val drawableQualifiedDir = composeResourcesDir.resolve("drawable-$qualifier$theme")
                 drawableQualifiedDir.mkdirs()
 
-                val pngFile = drawableQualifiedDir.resolve("$COMPOSE_MULTIPLATFORM_ICON_NAME-png.png")
-                val icoFile = drawableQualifiedDir.resolve("$COMPOSE_MULTIPLATFORM_ICON_NAME-ico.ico")
+                val pngFile = drawableQualifiedDir.resolve("$APP_ICON-png.png")
+                val icoFile = drawableQualifiedDir.resolve("$APP_ICON-ico.ico")
 
                 svgToPng(svg, pngFile, size)
                 Imaging.writeImage(ImageIO.read(pngFile), icoFile, ImageFormats.ICO)
             }
 
-            val icnsFile = composeResourcesDir.resolve("drawable$theme/$COMPOSE_MULTIPLATFORM_ICON_NAME-icns.icns")
+            val icnsFile = composeResourcesDir.resolve("drawable$theme/$APP_ICON-icns.icns")
 
             val icnsTempDir = Files.createTempDirectory("icns$theme-iconset").toFile()
             val pngFiles = MACOS_ICON_SIZES.map { size ->
@@ -120,17 +120,23 @@ public class ComposePlugin : Plugin<Project> {
         }
 
         val icnsFile = THEMES.firstNotNullOfOrNull { theme ->
-            composeResourcesDir.resolve("drawable$theme/$COMPOSE_MULTIPLATFORM_ICON_NAME-icns.icns").takeIf(File::exists)
+            composeResourcesDir.resolve("drawable$theme/$APP_ICON-icns.icns").takeIf(File::exists)
         }
 
         // jpackage only supports .png on Linux, .ico on Windows, .icns on Mac, so a developer must do a conversion (probably from a png) to a 3 different formats.
         // Also it seems that ico and icns need to contain an icon in multiple resolutions, so the conversion becomes a bit inconvenient.
         compose.desktop.application.nativeDistributions {
             linux {
-                if (!iconFile.isPresent && drawableQualifiedDir != null) iconFile = drawableQualifiedDir.resolve("$COMPOSE_MULTIPLATFORM_ICON_NAME-png.png")
+                if (!iconFile.isPresent)
+                    drawableQualifiedDir?.resolve("$APP_ICON-png.png")?.takeIf(File::exists)?.let { iconFile ->
+                        this.iconFile = iconFile
+                    }
             }
             windows {
-                if (!iconFile.isPresent && drawableQualifiedDir != null) iconFile = drawableQualifiedDir.resolve("$COMPOSE_MULTIPLATFORM_ICON_NAME-ico.ico")
+                if (!iconFile.isPresent)
+                    drawableQualifiedDir?.resolve("$APP_ICON-ico.ico")?.takeIf(File::exists)?.let { iconFile ->
+                        this.iconFile = iconFile
+                    }
             }
             macOS {
                 if (!iconFile.isPresent && icnsFile != null) iconFile = icnsFile
@@ -162,7 +168,7 @@ public class ComposePlugin : Plugin<Project> {
                 val themeIndex = IOS_IMAGE_APPEARANCE[value]!!
                 val theme = THEMES[themeIndex]
 
-                val svg = composeResourcesDir.resolve("drawable$theme/$COMPOSE_MULTIPLATFORM_ICON_NAME.svg").takeIf(File::exists)
+                val svg = composeResourcesDir.resolve("drawable$theme/$APP_ICON.svg").takeIf(File::exists)
                     ?: return@forEach
 
                 val (width, height) = image.size!!.split("x").map(String::toInt)

@@ -53,9 +53,9 @@ _CLEAN_PATH=(
   "shared/signing.gpg"
   "compose-app/signing.android.*.pkcs12"
   "compose-app/compose_app.podspec"
-  "*/composeResources/*/compose-multiplatform-png.png"
-  "*/composeResources/*/compose-multiplatform-ico.ico"
-  "*/composeResources/*/compose-multiplatform-icns.icns"
+  "*/composeResources/*/app-icon-png.png"
+  "*/composeResources/*/app-icon-ico.ico"
+  "*/composeResources/*/app-icon-icns.icns"
   "appleApp/iosApp/Assets.xcassets/AppIcon.appiconset/*.png"
   "appleApp/TVosApp/Assets.xcassets/App Icon & Top Shelf Image.brandassets/*/*.png"
   "appleApp/WatchosApp Watch App/Assets.xcassets/AppIcon.appiconset/*.png")
