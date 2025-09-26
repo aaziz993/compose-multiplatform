@@ -9,6 +9,7 @@ import klib.data.type.collections.deepSubstitute
 import klib.data.type.collections.getOrPut
 import klib.data.type.collections.list.drop
 import klib.data.type.collections.minusKeys
+import klib.data.type.collections.put
 import klib.data.type.collections.toNewMutableCollection
 import kotlinx.serialization.modules.EmptySerializersModule
 import kotlinx.serialization.modules.SerializersModule
@@ -67,13 +68,31 @@ internal data class DecodeFileArgs<T>(
 
 public inline fun <reified T : Any> T.plus(
     vararg values: T,
+    noinline sourceTransform: Any.(key: Any?, value: Any?) -> Pair<Any?, Any?>? = { key, value -> key to value },
+    noinline destinationSetter: Any.(key: Any?, value: Any?) -> Unit = { key, value -> put(key, value) },
     serializersModule: SerializersModule = EmptySerializersModule()
-): T = serializer<T>().plus(this, *values, serializersModule = serializersModule)
+): T = serializer<T>().plus(
+    this,
+    *values,
+    sourceTransform = sourceTransform,
+    destinationSetter = destinationSetter,
+    serializersModule = serializersModule,
+)
 
 public inline fun <reified T : Any> T.deepPlus(
     vararg values: T,
+    noinline sourceTransform: List<Pair<Any, Any?>>.(value: Any?) -> Pair<Any?, Any?>? = { value -> last().second to value },
+    noinline destinationSetter: List<Pair<Any, Any?>>.(value: Any?) -> Unit = { value ->
+        last().first.put(last().second, value)
+    },
     serializersModule: SerializersModule = EmptySerializersModule()
-): T = serializer<T>().deepPlus(this, *values, serializersModule = serializersModule)
+): T = serializer<T>().deepPlus(
+    this,
+    *values,
+    sourceTransform = sourceTransform,
+    destinationSetter = destinationSetter,
+    serializersModule = serializersModule,
+)
 
 public inline fun <reified T : Any> T.deepCopy(
     serializersModule: SerializersModule = EmptySerializersModule(),

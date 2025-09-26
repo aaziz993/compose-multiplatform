@@ -2,7 +2,7 @@ package klib.data.type.serialization
 
 import klib.data.type.collections.deepPlus
 import klib.data.type.collections.list.drop
-import klib.data.type.collections.plus
+import klib.data.type.collections.put
 import klib.data.type.serialization.coders.tree.deserialize
 import klib.data.type.serialization.coders.tree.serialize
 import kotlinx.serialization.DeserializationStrategy
@@ -65,20 +65,34 @@ private class ElementDecoder(private val index: Int) : AbstractDecoder() {
 
 public fun <T : Any> KSerializer<T>.plus(
     vararg values: T,
+    sourceTransform: Any.(key: Any?, value: Any?) -> Pair<Any?, Any?>? = { key, value -> key to value },
+    destinationSetter: Any.(key: Any?, value: Any?) -> Unit = { key, value -> put(key, value) },
     serializersModule: SerializersModule = EmptySerializersModule()
 ): T = values.map { value -> serialize(value, serializersModule)!! }.let { sources ->
     deserialize(
-        sources.first().plus(*sources.drop().toTypedArray()),
-        serializersModule,
+        sources.first().plus(
+            *sources.drop().toTypedArray(),
+            sourceTransform = sourceTransform,
+            destinationSetter = destinationSetter,
+            serializersModule = serializersModule,
+        ),
     )
 }
 
 public fun <T : Any> KSerializer<T>.deepPlus(
     vararg values: T,
+    sourceTransform: List<Pair<Any, Any?>>.(value: Any?) -> Pair<Any?, Any?>? = { value -> last().second to value },
+    destinationSetter: List<Pair<Any, Any?>>.(value: Any?) -> Unit = { value ->
+        last().first.put(last().second, value)
+    },
     serializersModule: SerializersModule = EmptySerializersModule(),
 ): T = values.map { value -> serialize(value, serializersModule)!! }.let { sources ->
     deserialize(
-        sources.first().deepPlus(*sources.drop().toTypedArray()),
+        sources.first().deepPlus(
+            *sources.drop().toTypedArray(),
+            sourceTransform = sourceTransform,
+            destinationSetter = destinationSetter,
+        ),
         serializersModule,
     )
 }

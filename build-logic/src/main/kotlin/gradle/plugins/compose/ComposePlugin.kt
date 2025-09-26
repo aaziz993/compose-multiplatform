@@ -18,7 +18,7 @@ import java.io.FileOutputStream
 import java.nio.file.Files
 import javax.imageio.ImageIO
 import klib.data.type.primitives.string.emptyIf
-import klib.data.type.serialization.deepPlus
+import klib.data.type.serialization.plus
 import kotlinx.serialization.json.Json
 import org.apache.batik.transcoder.TranscoderInput
 import org.apache.batik.transcoder.TranscoderOutput
@@ -188,7 +188,9 @@ public class ComposePlugin : Plugin<Project> {
             val brandAssetDir = brandAssetsDir.resolve(asset.filename!!).takeIf(File::exists) ?: return@forEach
 
             adjustIconSet(composeResourcesDir, brandAssetDir) {
-                images?.map { image -> image.deepPlus(asset) }.orEmpty().toSet()
+                images?.map { image ->
+                    asset.plus(image)
+                }.orEmpty().toSet()
             }
 
             val brandAssetContents: Contents = brandAssetDir.resolve("Contents.json")
@@ -197,7 +199,9 @@ public class ComposePlugin : Plugin<Project> {
             brandAssetContents.layers?.forEach { layer ->
                 val layerDir = brandAssetDir.resolve(layer.filename)
                 adjustIconSet(composeResourcesDir, layerDir.resolve("Content.imageset")) {
-                    images?.map { image -> image.deepPlus(asset) }.orEmpty().toSet()
+                    images?.map { image ->
+                        asset.plus(image)
+                    }.orEmpty().toSet()
                 }
             }
         }
