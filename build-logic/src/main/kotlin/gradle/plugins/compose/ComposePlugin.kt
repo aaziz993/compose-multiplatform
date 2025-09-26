@@ -154,7 +154,7 @@ public class ComposePlugin : Plugin<Project> {
         adjustIconSet(composeResourcesDir, rootProject.file(WATCHOS_APPICONSET_DIR))
     }
 
-    private fun adjustIconSet(composeResourcesDir: File, iconSetDir: File, forceOpaque: Boolean = true, transform: (Map<String, Any>) -> Map<String, Any> = { it }) {
+    private fun adjustIconSet(composeResourcesDir: File, iconSetDir: File, forceOpaque: Boolean = false, transform: (Map<String, Any>) -> Map<String, Any> = { it }) {
         if (!iconSetDir.exists()) return
 
         val contents = iconSetDir.resolve("Contents.json")
@@ -209,7 +209,7 @@ public class ComposePlugin : Plugin<Project> {
 
             brandAssetContents.layers?.forEach { layer ->
                 val layerDir = brandAssetDir.resolve(layer.filename)
-                adjustIconSet(composeResourcesDir, layerDir.resolve("Content.imageset")) { image ->
+                adjustIconSet(composeResourcesDir, layerDir.resolve("Content.imageset"), true) { image ->
                     buildMap {
                         asset["size"]?.let { size -> put("size", size) }
                         asset["scale"]?.let { scale -> put("scale", scale) }
