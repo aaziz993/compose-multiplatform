@@ -4,6 +4,8 @@ config:
     - io.github.smiley4.ktoropenapi.config.OpenApiPluginConfig
     - io.github.smiley4.ktoropenapi.config.OutputFormat
     - io.github.smiley4.ktoropenapi.openApi
+    - io.ktor.server.plugins.openapi.openAPI
+    - io.swagger.codegen.v3.generators.html.StaticHtmlCodegen
 script:
   - module: |
       {
@@ -14,6 +16,12 @@ script:
         }
 
         routing {
+          // Generate from file.
+          openAPI("openapi", "openapi/documentation.yaml") {
+            codegen = StaticHtmlCodegen()
+          }
+
+          // Generate from routes.
           route("api.yaml") {
             // Create a route to expose the OpenAPI specification file at `/api.yaml`.
             openApi()
