@@ -10,13 +10,16 @@ import gradle.api.project.kotlin
 import gradle.api.project.projectScript
 import gradle.api.project.resources
 import gradle.api.project.sourceSetsToComposeResourcesDirs
+import gradle.plugins.compose.apple.Contents
+import gradle.plugins.compose.apple.imageset.Image
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.nio.file.Files
 import javax.imageio.ImageIO
-import klib.data.type.pairBy
-import klib.data.type.primitives.string.ifNotEmpty
+import klib.data.type.primitives.string.addPrefixIfNotEmpty
+import klib.data.type.primitives.string.emptyIf
+import kotlinx.serialization.json.Json
 import org.apache.batik.transcoder.TranscoderInput
 import org.apache.batik.transcoder.TranscoderOutput
 import org.apache.batik.transcoder.image.PNGTranscoder
@@ -42,24 +45,10 @@ private val DENSITIES = mapOf(
     "xxhdpi" to 72,
     "xxxhdpi" to 96,
 )
-
-private val IOS_APP_ICON_SIZES = listOf(20, 29, 40, 60, 76, 83, 1024)
-private val IOS_APP_ICON_SCALES = listOf(1, 2, 3)
-private val IOS_APP_ICON_THEMES = listOf("", "dark", "tinted")
+private val IOS_ASSET_APPEARANCE = mapOf("" to 0, "tinted" to 0, "dark" to 2)
 private const val IOS_APPICONSET_DIR = "appleApp/iosApp/Assets.xcassets/AppIcon.appiconset"
-
-private val TVOS_IMAGESTACKS = listOf("App Icon", "App Icon - App Store")
-private val TVOS_IMAGESTACKS_LAYERS = listOf("Back", "Middle", "Front")
-
-private val TVOS_IMAGESTACKS_ICON_SIZES = listOf(400, 1280)
-private val TVOS_SCALES = listOf(1, 2)
-private val TVOS_IMAGESETS = listOf("Top Shelf Image", "Top Shelf Image Wide")
-private val TVOS_IMAGESETS_ICON_SIZES = listOf(1920, 3840) // example sizes for top shelf; adjust as needed
 private const val TVOS_BRANDASSETS_DIR = "appleApp/TVosApp/Assets.xcassets/App Icon & Top Shelf Image.brandassets"
-
-private val WATCHOS_ICON_SIZES = listOf(48, 55, 58, 80, 87, 88, 172)
 private const val WATCHOS_APPICONSET_DIR = "appleApp/WatchosApp Watch App/Assets.xcassets/AppIcon.appiconset"
-
 private val MACOS_ICON_SIZES = listOf(16, 32, 64, 128, 256, 512, 1024)
 
 public class ComposePlugin : Plugin<Project> {
@@ -99,8 +88,8 @@ public class ComposePlugin : Plugin<Project> {
     private fun Project.adjustDesktopIcons(composeResourcesDir: File) {
         THEMES.forEachIndexed { index, theme ->
 
-            val svg = composeResourcesDir.resolve("drawable$theme/$COMPOSE_MULTIPLATFORM_ICON_NAME.svg")
-            if (!svg.exists()) return@forEachIndexed
+            val svg = composeResourcesDir.resolve("drawable$theme/$COMPOSE_MULTIPLATFORM_ICON_NAME.svg").takeIf(File::exists)
+                ?: return@forEachIndexed
 
             DENSITIES.entries.forEachIndexed { index, (qualifier, size) ->
                 val drawableQualifiedDir = composeResourcesDir.resolve("drawable-$qualifier$theme")
@@ -116,162 +105,101 @@ public class ComposePlugin : Plugin<Project> {
             val icnsFile = composeResourcesDir.resolve("drawable$theme/$COMPOSE_MULTIPLATFORM_ICON_NAME-icns.icns")
 
             val icnsTempDir = Files.createTempDirectory("icns$theme-iconset").toFile()
-            val pngs = MACOS_ICON_SIZES.map { size ->
+            val pngFiles = MACOS_ICON_SIZES.map { size ->
                 icnsTempDir.resolve("icon_${size}x${size}.png").apply {
                     svgToPng(svg, this, size)
                 }
             }
 
-            Imaging.writeImage(ImageIO.read(pngs[3]), icnsFile, ImageFormats.ICNS)
+            pngsToIconSet(pngFiles, icnsFile)
 
             icnsTempDir.deleteRecursively()
         }
 
         val drawableQualifiedDir = THEMES.firstNotNullOfOrNull { theme ->
             composeResourcesDir.resolve("drawable-${DENSITIES.keys.last()}$theme").takeIf(File::exists)
-        } ?: return
+        }
+
+        val icnsFile = THEMES.firstNotNullOfOrNull { theme ->
+            composeResourcesDir.resolve("drawable$theme/$COMPOSE_MULTIPLATFORM_ICON_NAME-icns.icns").takeIf(File::exists)
+        }
 
         // jpackage only supports .png on Linux, .ico on Windows, .icns on Mac, so a developer must do a conversion (probably from a png) to a 3 different formats.
         // Also it seems that ico and icns need to contain an icon in multiple resolutions, so the conversion becomes a bit inconvenient.
         compose.desktop.application.nativeDistributions {
-            macOS {
-                if (!iconFile.isPresent) iconFile = drawableQualifiedDir.resolve("$COMPOSE_MULTIPLATFORM_ICON_NAME-icns.icns")
-            }
             linux {
-                if (!iconFile.isPresent) iconFile = drawableQualifiedDir.resolve("$COMPOSE_MULTIPLATFORM_ICON_NAME-png.png")
+                if (!iconFile.isPresent && drawableQualifiedDir != null) iconFile = drawableQualifiedDir.resolve("$COMPOSE_MULTIPLATFORM_ICON_NAME-png.png")
             }
             windows {
-                if (!iconFile.isPresent) iconFile = drawableQualifiedDir.resolve("$COMPOSE_MULTIPLATFORM_ICON_NAME-ico.ico")
+                if (!iconFile.isPresent && drawableQualifiedDir != null) iconFile = drawableQualifiedDir.resolve("$COMPOSE_MULTIPLATFORM_ICON_NAME-ico.ico")
+            }
+            macOS {
+                if (!iconFile.isPresent && icnsFile != null) iconFile = icnsFile
             }
         }
+    }
+
+    private val json = Json {
+        ignoreUnknownKeys = true
     }
 
     private fun Project.adjustAppleIcons(composeResourcesDir: File) {
-        adjustIosIcons(composeResourcesDir)
-        adjustTVosIcons(composeResourcesDir)
-        adjustWatchosWatchAppIcons(composeResourcesDir)
+        adjustIconSet(composeResourcesDir, rootProject.file(IOS_APPICONSET_DIR))
+        adjustTVosIcons(composeResourcesDir, rootProject.file(TVOS_BRANDASSETS_DIR))
+        adjustIconSet(composeResourcesDir, rootProject.file(WATCHOS_APPICONSET_DIR))
     }
 
-    private fun Project.adjustIosIcons(composeResourcesDir: File) {
-        val appIconSet = rootProject.file(IOS_APPICONSET_DIR).apply(File::mkdirs)
-        val images = mutableListOf<Map<String, Any>>()
+    private fun adjustIconSet(composeResourcesDir: File, iconSetDir: File, images: Set<Image> = emptySet()) {
+        if (!iconSetDir.exists()) return
 
-        THEMES.forEachIndexed { index, theme ->
-            val svg = composeResourcesDir.resolve("drawable$theme/$COMPOSE_MULTIPLATFORM_ICON_NAME.svg")
-            if (!svg.exists()) return@forEachIndexed
-            val iosTheme = IOS_APP_ICON_THEMES[index]
-            val iosThemePart = iosTheme.ifNotEmpty { "-$it" }
+        val contents: Contents = iconSetDir.resolve("Contents.json")
+            .takeIf(File::exists)?.readText()?.let(json::decodeFromString) ?: return
 
-            IOS_APP_ICON_SIZES.forEach { size ->
-                IOS_APP_ICON_SCALES.forEach { scale ->
-                    val filename = "icon-${size}x$size${if (scale > 1) "@${scale}x" else ""}$iosThemePart.png"
-                    val file = appIconSet.resolve(filename)
-                    file.parentFile.mkdirs()
-                    svgToPng(svg, file, size * scale)
-                    images.add(
-                        listOfNotNull(
-                            "size" to "${size}x$size",
-                            "platform" to "ios",
-                            "filename" to filename,
-                            "scale" to "${scale}x",
-                            iosTheme.takeIf(String::isNotEmpty)?.pairBy("appearance"),
-                        ).toMap(),
-                    )
-                }
-            }
-        }
+        (contents.images.orEmpty() + images).forEach { image ->
+            image.appearances.filter { (appearance, _) -> appearance == "luminosity" }.forEach { (_, value) ->
+                val theme = THEMES[IOS_ASSET_APPEARANCE[value]!!]
 
-        writeContentsJson(appIconSet, images)
-    }
+                val svg = composeResourcesDir.resolve("drawable$theme/$COMPOSE_MULTIPLATFORM_ICON_NAME.svg").takeIf(File::exists)
+                    ?: return@forEach
 
-    private fun Project.adjustTVosIcons(composeResourcesDir: File) {
-        val svg = composeResourcesDir.resolve("drawable/$COMPOSE_MULTIPLATFORM_ICON_NAME.svg")
-        if (!svg.exists()) return
+                val iconFile = iconSetDir.resolve(
+                    image.filename
+                        ?: "app-icon-${image.size}${image.scale.emptyIf { scale -> scale == "1x" }}${value.addPrefixIfNotEmpty("-")}.png",
+                )
 
-        val brandAssetsRoot = rootProject.file(TVOS_BRANDASSETS_DIR).apply(File::mkdirs)
-
-        TVOS_IMAGESTACKS.forEach { stack ->
-            TVOS_IMAGESTACKS_LAYERS.forEach { layer ->
-                val layerDir = brandAssetsRoot.resolve("$stack.imagestack/$layer.imagestacklayer/Content.imageset").apply(File::mkdirs)
-
-                val images = mutableListOf<Map<String, Any>>()
-                TVOS_IMAGESTACKS_ICON_SIZES.forEachIndexed { index, size ->
-                    val scale = TVOS_SCALES[index]
-                    val filename = "icon-${size}x$size${if (scale > 1) "@${scale}x" else ""}.png"
-                    val file = layerDir.resolve(filename)
-                    svgToPng(svg, file, size * scale)
-                    images.add(
-                        mapOf(
-                            "idiom" to "tv",
-                            "filename" to filename,
-                            "size" to "${size}x$size",
-                            "scale" to "${scale}x",
-                            "role" to layer,
-                        ),
-                    )
-                }
-                writeContentsJson(layerDir, images)
-            }
-        }
-
-        TVOS_IMAGESETS.forEach { image ->
-            val imagesetDir = brandAssetsRoot.resolve("$image.imageset").apply(File::mkdirs)
-            val images = mutableListOf<Map<String, Any>>()
-            TVOS_IMAGESETS_ICON_SIZES.forEachIndexed { index, size ->
-                val scale = TVOS_SCALES[index]
-                val filename = "icon-${size}x$size${if (scale > 1) "@${scale}x" else ""}.png"
-                val file = imagesetDir.resolve(filename)
-                svgToPng(svg, file, size * scale)
-                images.add(
-                    mapOf(
-                        "idiom" to "tv",
-                        "filename" to filename,
-                        "size" to "${size}x$size",
-                        "scale" to "${scale}x",
-                    ),
+                svgToPng(
+                    svg, iconFile,
+                    image.size.split("x").first().toInt() * image.scale.removeSuffix("x").toInt(),
                 )
             }
-            writeContentsJson(imagesetDir, images)
         }
     }
 
-    private fun Project.adjustWatchosWatchAppIcons(composeResourcesDir: File) {
-        val appIconSet = rootProject.file(WATCHOS_APPICONSET_DIR).apply { mkdirs() }
-        val images = mutableListOf<Map<String, Any>>()
-        val svg = composeResourcesDir.resolve("drawable/$COMPOSE_MULTIPLATFORM_ICON_NAME.svg")
-        if (!svg.exists()) return
+    private fun adjustTVosIcons(composeResourcesDir: File, brandAssetsDir: File) {
+        if (!brandAssetsDir.exists()) return
 
-        WATCHOS_ICON_SIZES.forEach { size ->
-            val filename = "icon-${size}x$size.png"
-            val file = appIconSet.resolve(filename)
-            svgToPng(svg, file, size * 2) // watchOS always @2x
-            images.add(
-                mapOf(
-                    "size" to "${size}x$size",
-                    "platform" to "watchos",
-                    "filename" to filename,
-                    "scale" to "2x",
-                ),
-            )
+        val brandAssetsContents: Contents = brandAssetsDir.resolve("Contents.json")
+            .takeIf(File::exists)?.readText()?.let(json::decodeFromString) ?: return
+
+        brandAssetsContents.assets?.forEach { asset ->
+            val brandAssetDir = brandAssetsDir.resolve(asset.filename!!).takeIf(File::exists) ?: return@forEach
+            val brandAssetContents: Contents = brandAssetDir.resolve("Contents.json")
+                .takeIf(File::exists)?.readText()?.let(json::decodeFromString) ?: Contents()
+
+            adjustIconSet(composeResourcesDir, brandAssetDir, brandAssetsContents.assets + brandAssetContents.images.orEmpty())
+
+            brandAssetContents.layers?.forEach { layer ->
+                val layerDir = brandAssetDir.resolve(layer.filename)
+                val layerContents: Contents = layerDir.resolve("Contents.json")
+                    .takeIf(File::exists)?.readText()?.let(json::decodeFromString) ?: Contents()
+
+                adjustIconSet(
+                    composeResourcesDir, layerDir.resolve("Content.imageset"),
+                    brandAssetsContents.assets + brandAssetContents.images.orEmpty() + layerContents.images.orEmpty(),
+                )
+            }
         }
-
-        writeContentsJson(appIconSet, images)
     }
-
-    private fun writeContentsJson(assetDir: File, images: List<Map<String, Any>>) =
-        assetDir.resolve("Contents.json").writeText(
-            groovy.json.JsonOutput.prettyPrint(
-                groovy.json.JsonOutput.toJson(
-                    mapOf(
-                        "images" to images,
-                        "info" to mapOf(
-                            "author" to "xcode",
-                            "version" to 1,
-                        ),
-                    ),
-                ),
-            ),
-        )
 
     private fun svgToPng(svgFile: File, pngFile: File, size: Int) {
         FileInputStream(svgFile).use { input ->
@@ -285,6 +213,9 @@ public class ComposePlugin : Plugin<Project> {
             }
         }
     }
+
+    private fun pngsToIconSet(pngFiles: List<File>, icnsFile: File) =
+        Imaging.writeImage(ImageIO.read(pngFiles[3]), icnsFile, ImageFormats.ICNS)
 
     // Trick to make assemble jvm resources task to work.
     private fun Project.adjustAssembleJvmResTask() = kotlin.targets.withType<KotlinJvmTarget> { adjustAssembleResTask(this) }

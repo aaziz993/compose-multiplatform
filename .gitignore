@@ -17,20 +17,20 @@ captures
 !*.xcodeproj/project.xcworkspace/
 !*.xcworkspace/contents.xcworkspacedata
 **/xcshareddata/WorkspaceSettings.xcsettings
-appleApp/iosApp/Assets.xcassets/AppIcon.appiconset/
-appleApp/TVosApp/Assets.xcassets/AppIcon.appiconset/
-appleApp/WatchosApp Watch App/Assets.xcassets/AppIcon.appiconset/
-**/*.yaml.db
 gradle/.*.toml
-**/*.podspec
 license.header.txt
 license.header.properties
 license.header.kt
 license.header.html
-**/*-png.png
-**/*-ico.ico
-**/*-icns.icns
-**/.*.gpg
-**/.*.p12
-**/.*.pkcs12
-**/.*.jks
+klib/signing.gpg
+clib/signing.gpg
+shared/signing.gpg
+server-app/**/security/ssl/keystore.p12
+compose-app/signing.android.*.pkcs12
+compose-app/compose_app.podspec
+*/composeResources/**/compose-multiplatform-png.png
+*/composeResources/**/compose-multiplatform-ico.ico
+*/composeResources/**/compose-multiplatform-icns.icns
+appleApp/iosApp/Assets.xcassets/AppIcon.appiconset/*.png
+appleApp/TVosApp/Assets.xcassets/App\ Icon\ &\ Top\ Shelf\ Image.brandassets/**/*.png
+appleApp/WatchosApp\ Watch\ App/Assets.xcassets/AppIcon.appiconset/*.png

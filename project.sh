@@ -29,62 +29,65 @@ function publish(){
   ./gradlew publishAllPublicationsToGithubPackagesRepository publishAllPublicationsToMavenCentralRepository
 }
 
+_CLEAN_APPLE_PATH=(
+  "iosApp/Assets.xcassets/AppIcon.appiconset/*.png"
+  "TVosApp/Assets.xcassets/App Icon & Top Shelf Image.brandassets/*/*.png"
+  "WatchosApp Watch App/Assets.xcassets/AppIcon.appiconset/*.png"
+)
+
 function clean_apple_app(){
   info "🧹Cleaning appleApp..."
 
   pushd "appleApp" >/dev/null || return
     pod deintegrate
     pod cache clean --all
-    rm -rf appleApp.xcworkspace
-    rm -rf appleApp.xcodeproj/project.xcworkspace
-    rm -rf appleApp.xcodeproj/xcuserdata
+    rm -rf *.xcworkspace
+    rm -rf *.xcodeproj/project.xcworkspace
+    rm -rf *.xcodeproj/xcuserdata
     rm -rf Podfile.lock
+
+    for pattern in "${_CLEAN_APPLE_PATH[@]}"; do
+      find . -type f -path "./$pattern" -print -delete
+    done
   popd >/dev/null
 }
 
-_CLEAN=(
-"*.yaml.db"
-".*.toml"
-"*.podspec"
-"*.yaml.cache"
-"license.header.txt"
-"license.header.properties"
-"license.header.kt"
-"license.header.html"
-"*-png.png"
-"*-ico.ico"
-"*-icns.icns"
-".*.gpg"
-".*.p12"
-".*.pkcs12"
-".*.jks"
+_CLEAN_PATH=(
+  "gradle/.*.toml"
+  "license.header.txt"
+  "license.header.properties"
+  "license.header.kt"
+  "license.header.html"
+  "klib/signing.gpg"
+  "clib/signing.gpg"
+  "shared/signing.gpg"
+  "compose-app/signing.android.*.pkcs12"
+  "compose-app/compose_app.podspec"
+  "*/composeResources/*/compose-multiplatform-png.png"
+  "*/composeResources/*/compose-multiplatform-ico.ico"
+  "*/composeResources/*/compose-multiplatform-icns.icns"
 )
 
 function clean_files(){
   info "🧹Cleaning files..."
 
-  local find_args=()
-  for arg in "${_CLEAN[@]}"; do
-    find_args+=(-name "$arg" -o)
+  for pattern in "${_CLEAN_PATH[@]}"; do
+    find . -type f -path "./$pattern" -print -delete
   done
-
-  unset "find_args[${#find_args[@]}-1]"
-
-  find . -maxdepth 2 -type f \( "${find_args[@]}" \) -print -delete
 }
 
 function clean() {
-    set -euo pipefail
+  set -euo pipefail
 
-    clean_apple_app
+  clean_apple_app
 
-    clean_files
+  info "🧹Cleaning project..."
 
-    info "🧹Cleaning project..."
+  rm -rf ".idea"
+  ./gradlew "clean"
+  rm -rf ".gradle"
+  rm -rf "build"
+  rm -rf "*/build"
 
-    rm -rf ".idea"
-    ./gradlew "clean"
-    rm -rf ".gradle"
-    rm -rf "build"
-    rm -rf "*/build"
+  clean_files
 }
