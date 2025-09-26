@@ -75,9 +75,8 @@ function clean() {
 
   info "🧹Cleaning project..."
 
-  rm -rf ".idea"
   ./gradlew "clean"
-  rm -rf ".gradle"
+
   rm -rf "build"
   rm -rf "*/build"
 

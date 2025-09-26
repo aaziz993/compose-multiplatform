@@ -2,7 +2,6 @@ package gradle.plugins.publish
 
 import gradle.api.findByName
 import gradle.api.project.kotlin
-import gradle.api.project.publishing
 import gradle.api.tasks.dokkaGeneratePublicationHtml
 import gradle.api.tasks.dokkaGeneratePublicationJavadoc
 import java.util.regex.Pattern
@@ -15,7 +14,6 @@ import org.gradle.api.publish.maven.tasks.AbstractPublishToMaven
 import org.gradle.api.publish.plugins.PublishingPlugin
 import org.gradle.api.tasks.TaskCollection
 import org.gradle.api.tasks.bundling.Jar
-import org.gradle.internal.extensions.stdlib.capitalized
 import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.provideDelegate

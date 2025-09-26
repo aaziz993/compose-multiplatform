@@ -5,7 +5,6 @@ import com.android.build.api.dsl.ProductFlavor
 import gradle.api.configureEach
 import gradle.api.file.replace
 import gradle.api.project.ProjectLayout
-import gradle.api.project.android
 import gradle.api.project.projectScript
 import javax.xml.stream.XMLEventFactory
 import javax.xml.stream.XMLInputFactory

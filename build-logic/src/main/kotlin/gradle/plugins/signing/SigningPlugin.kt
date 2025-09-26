@@ -2,8 +2,6 @@ package gradle.plugins.signing
 
 import com.vanniktech.maven.publish.tasks.WorkaroundSignatureType
 import gradle.api.configureEach
-import gradle.api.project.signing
-import io.github.z4kn4fein.semver.toVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.publish.maven.tasks.AbstractPublishToMaven
@@ -17,14 +15,15 @@ public class SigningPlugin : Plugin<Project> {
         with(target) {
             project.pluginManager.withPlugin("signing") {
                 // TODO: https://youtrack.jetbrains.com/issue/KT-61313/ https://github.com/gradle/gradle/issues/26132
-                adjustSigning()
+                adjustMppSigning()
                 // NOTE: This is a temporary WA, see KT-61313.
                 configureSignTask()
             }
         }
     }
 
-    private fun Project.adjustSigning() =
+    private fun Project.adjustMppSigning() =
+        // TODO: https://youtrack.jetbrains.com/issue/KT-61313/ https://github.com/gradle/gradle/issues/26132
         project.plugins.withId("org.jetbrains.kotlin.multiplatform") {
             project.tasks.withType<Sign>().configureEach { sign ->
                 sign.signatureType = WorkaroundSignatureType(

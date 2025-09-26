@@ -18,6 +18,8 @@ import org.bouncycastle.cert.jcajce.JcaX509v3CertificateBuilder
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.the
 
 context(project: Project)
 public fun BaseAppModuleExtension.signingConfig(
@@ -115,3 +117,9 @@ private fun generateAndroidKeystore(
         keyStore.store(fos, storePassword.toCharArray())
     }
 }
+
+public val Project.android: BaseAppModuleExtension get() = the()
+
+public fun Project.android(configure: BaseAppModuleExtension.() -> Unit): Unit =
+    extensions.configure(configure)
+

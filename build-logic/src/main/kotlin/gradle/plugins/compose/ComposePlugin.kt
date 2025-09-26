@@ -4,11 +4,8 @@ package gradle.plugins.compose
 
 import gradle.api.all
 import gradle.api.project.ProjectLayout
-import gradle.api.project.compose
-import gradle.api.project.desktop
 import gradle.api.project.kotlin
 import gradle.api.project.projectScript
-import gradle.api.project.resources
 import gradle.api.project.sourceSetsToComposeResourcesDirs
 import gradle.plugins.compose.apple.Contents
 import gradle.plugins.compose.apple.image.Image

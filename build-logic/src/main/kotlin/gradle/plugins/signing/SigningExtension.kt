@@ -4,13 +4,14 @@ import gradle.api.initialization.settingsScript
 import gradle.api.project.sensitive
 import gradle.api.project.sensitiveOrElse
 import gradle.api.project.settings
-import gradle.api.project.signing
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.util.Date
 import org.bouncycastle.bcpg.ArmoredOutputStream
 import org.bouncycastle.openpgp.PGPSecretKeyRing
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.the
 import org.gradle.plugins.signing.SigningExtension
 import org.pgpainless.PGPainless
 import org.pgpainless.algorithm.KeyFlag
@@ -55,6 +56,10 @@ public fun SigningExtension.gpg(
 
     project.signing.useInMemoryPgpKeys(key, password)
 }
+
+public val Project.signing: SigningExtension get() = the()
+
+public fun Project.signing(configure: SigningExtension.() -> Unit): Unit = extensions.configure(configure)
 
 private fun PGPainless.Companion.modernKeyRing(
     keyType: String = "RSA",

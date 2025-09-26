@@ -44,7 +44,14 @@ public class ProjectPlugin : Plugin<Project> {
             pluginManager.apply(PublishPlugin::class.java)
             pluginManager.apply(SigningPlugin::class.java)
             pluginManager.apply(CIPlugin::class.java)
-
+//mavenPublishing {
+//    coordinates()
+//    pom {  }
+//
+//    publishToMavenCentral()
+//
+//    signAllPublications()
+//}
             configureLinkTasks()
 
             enableCacheRedirect()

@@ -44,7 +44,7 @@ script:
               repository.name = "MavenCentral"
               repository.url = uri(
                 if(version.toString().toVersion().isPreRelease)
-                  "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+                  "https://central.sonatype.com/repository/maven-snapshots/"
                 else "https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/"
               )
               repository.credentials { credentials ->
