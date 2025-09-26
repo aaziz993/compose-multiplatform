@@ -17,13 +17,13 @@ script:
 
         routing {
           // Generate from file.
-          openAPI("openapi", "openapi/documentation.yaml") {
+          openAPI("openapi/file", "openapi/documentation.yaml") {
             codegen = StaticHtmlCodegen()
           }
 
           // Generate from routes.
-          route("api.yaml") {
-            // Create a route to expose the OpenAPI specification file at `/api.yaml`.
+          route("openapi/api.yaml") {
+            // Create a route to expose the OpenAPI specification file at `/openapi/api.yaml`.
             openApi()
           }
         }

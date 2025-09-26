@@ -6,14 +6,14 @@ script:
       {
         routing {
           // Expose Swagger UI using OpenAPI specification at documentation file.
-          swaggerUI("swagger", "openapi/documentation.yaml") {
+          swaggerUI("swagger/file", "openapi/documentation.yaml") {
             // Add configuration for this Swagger UI "instance" here.
           }
 
-          route("swagger") {
-            // Expose Swagger UI using OpenAPI specification at `/api.yaml`.
+          route("swagger/api") {
+            // Expose Swagger UI using OpenAPI specification at `/openapi/api.yaml`.
             // Path can be relative pointing to specification provided by this application or absolute pointing to an external resource.
-            io.github.smiley4.ktorswaggerui.swaggerUI("/api.yaml") {
+            io.github.smiley4.ktorswaggerui.swaggerUI("/openapi/api.yaml") {
               // Add configuration for this Swagger UI "instance" here.
             }
           }
