@@ -3,6 +3,7 @@ package klib.data.type.serialization
 import klib.data.type.collections.deepPlus
 import klib.data.type.collections.getOrPut
 import klib.data.type.collections.list.drop
+import klib.data.type.collections.plus
 import klib.data.type.collections.put
 import klib.data.type.collections.toNewMutableCollection
 import klib.data.type.reflection.callMember
@@ -81,8 +82,8 @@ public fun <T : Any> KSerializer<T>.plus(
             *sources.drop().toTypedArray(),
             sourceTransform = sourceTransform,
             destinationSetter = destinationSetter,
-            serializersModule = serializersModule,
         ),
+        serializersModule
     )
 }
 

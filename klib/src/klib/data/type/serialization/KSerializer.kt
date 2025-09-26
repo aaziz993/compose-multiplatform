@@ -76,8 +76,8 @@ public fun <T : Any> KSerializer<T>.plus(
             *sources.drop().toTypedArray(),
             sourceTransform = sourceTransform,
             destinationSetter = destinationSetter,
-            serializersModule = serializersModule,
         ),
+        serializersModule = serializersModule,
     )
 }
 
