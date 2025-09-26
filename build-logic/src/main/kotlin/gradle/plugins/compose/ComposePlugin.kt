@@ -11,15 +11,17 @@ import gradle.api.project.projectScript
 import gradle.api.project.resources
 import gradle.api.project.sourceSetsToComposeResourcesDirs
 import gradle.plugins.compose.apple.Contents
-import gradle.plugins.compose.apple.image.Appearance
 import gradle.plugins.compose.apple.image.Image
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.nio.file.Files
 import javax.imageio.ImageIO
+import klib.data.type.collections.list.asList
+import klib.data.type.collections.map.asMap
 import klib.data.type.primitives.string.emptyIf
-import klib.data.type.serialization.plus
+import klib.data.type.serialization.json.decodeAnyFromString
+import klib.data.type.serialization.json.decodeFromAny
 import kotlinx.serialization.json.Json
 import org.apache.batik.transcoder.TranscoderInput
 import org.apache.batik.transcoder.TranscoderOutput
@@ -150,15 +152,17 @@ public class ComposePlugin : Plugin<Project> {
         adjustIconSet(composeResourcesDir, rootProject.file(WATCHOS_APPICONSET_DIR))
     }
 
-    private fun adjustIconSet(composeResourcesDir: File, iconSetDir: File, transform: (Image) -> Image = { it }) {
+    private fun adjustIconSet(composeResourcesDir: File, iconSetDir: File, transform: (Map<String, Any>) -> Map<String, Any> = { it }) {
         if (!iconSetDir.exists()) return
 
-        val contents: Contents = iconSetDir.resolve("Contents.json")
-            .takeIf(File::exists)?.readText()?.let(json::decodeFromString) ?: return
+        val contents = iconSetDir.resolve("Contents.json")
+            .takeIf(File::exists)?.readText()?.let(json::decodeAnyFromString)?.asMap ?: return
 
-        contents.images?.map(transform)?.forEach { image ->
-            (image.appearances
-                ?: listOf(Appearance())).filter { (appearance, _) -> appearance == "luminosity" }?.forEach { (_, value) ->
+        val images: List<Image> = contents["images"]?.asList<Map<String, Any>>()?.map(transform)?.map(json::decodeFromAny)
+            ?: return
+
+        images.forEach { image ->
+            image.appearances.filter { (appearance, _) -> appearance == "luminosity" }.forEach { (_, value) ->
                 val themeIndex = IOS_IMAGE_APPEARANCE[value]!!
                 val theme = THEMES[themeIndex]
 
@@ -181,16 +185,20 @@ public class ComposePlugin : Plugin<Project> {
         }
     }
 
+    @Suppress("UNCHECKED_CAST")
     private fun adjustTVosIcons(composeResourcesDir: File, brandAssetsDir: File) {
         if (!brandAssetsDir.exists()) return
 
-        val brandAssetsContents: Contents = brandAssetsDir.resolve("Contents.json")
-            .takeIf(File::exists)?.readText()?.let(json::decodeFromString) ?: return
+        val brandAssetsContents = brandAssetsDir.resolve("Contents.json")
+            .takeIf(File::exists)?.readText()?.let(json::decodeAnyFromString)?.asMap ?: return
 
-        brandAssetsContents.assets?.forEach { asset ->
-            val brandAssetDir = brandAssetsDir.resolve(asset.filename!!).takeIf(File::exists) ?: return@forEach
+        brandAssetsContents["assets"]?.asList?.forEach { asset ->
+            asset as Map<String, Any>
 
-            adjustIconSet(composeResourcesDir, brandAssetDir) { image -> asset.plus(image) }
+            val brandAssetDir = brandAssetsDir.resolve(asset["filename"] as String).takeIf(File::exists)
+                ?: return@forEach
+
+            adjustIconSet(composeResourcesDir, brandAssetDir) { image -> asset + image }
 
             val brandAssetContents: Contents = brandAssetDir.resolve("Contents.json")
                 .takeIf(File::exists)?.readText()?.let(json::decodeFromString) ?: Contents()
@@ -198,7 +206,7 @@ public class ComposePlugin : Plugin<Project> {
             brandAssetContents.layers?.forEach { layer ->
                 val layerDir = brandAssetDir.resolve(layer.filename)
                 adjustIconSet(composeResourcesDir, layerDir.resolve("Content.imageset")) { image ->
-                    asset.plus(image)
+                    asset + image
                 }
             }
         }

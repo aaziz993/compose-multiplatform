@@ -7,5 +7,5 @@ public data class Image(
     val filename: String? = null,
     val size: String? = null,
     val scale: String? = null,
-    val appearances: Set<Appearance>? = null,
+    val appearances: Set<Appearance> = setOf(Appearance()),
 )
