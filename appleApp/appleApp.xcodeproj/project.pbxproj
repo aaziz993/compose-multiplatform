@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		BD0A4CAA2DC2704D00FC6E3D /* WatchosApp Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = BD0A4CA92DC2704D00FC6E3D /* WatchosApp Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		CEF16280CC6CFCC8079977E3 /* Pods_iosApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F98A6918405317457DB847B9 /* Pods_iosApp.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,11 +45,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3C94962F962127DD23306F61 /* Pods-iosApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosApp.debug.xcconfig"; path = "Target Support Files/Pods-iosApp/Pods-iosApp.debug.xcconfig"; sourceTree = "<group>"; };
 		BD0A4CA42DC2704D00FC6E3D /* WatchosApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WatchosApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD0A4CA92DC2704D00FC6E3D /* WatchosApp Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "WatchosApp Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C504C15CACEDF83EE0F3AF37 /* Pods-iosApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosApp.release.xcconfig"; path = "Target Support Files/Pods-iosApp/Pods-iosApp.release.xcconfig"; sourceTree = "<group>"; };
 		CB1BD2B0249B4D2000707679 /* iosApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iosApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB1BD2C9249B4D4C00707679 /* MacosCLI */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = MacosCLI; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB1BD2D4249B4DDC00707679 /* TVosApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TVosApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F98A6918405317457DB847B9 /* Pods_iosApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iosApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -101,6 +105,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEF16280CC6CFCC8079977E3 /* Pods_iosApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -124,8 +129,18 @@
 		05D6FCDC1CDC24C84A5EA73F /* Pods */ = {
 			isa = PBXGroup;
 			children = (
+				3C94962F962127DD23306F61 /* Pods-iosApp.debug.xcconfig */,
+				C504C15CACEDF83EE0F3AF37 /* Pods-iosApp.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		1F89F0854D4A9608354C6242 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F98A6918405317457DB847B9 /* Pods_iosApp.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		CB1BD2A5249B4CDC00707679 = {
@@ -137,6 +152,7 @@
 				BD0A4CAD2DC2704D00FC6E3D /* WatchosApp Watch App */,
 				CB1BD2B1249B4D2000707679 /* Products */,
 				05D6FCDC1CDC24C84A5EA73F /* Pods */,
+				1F89F0854D4A9608354C6242 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -197,10 +213,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CB1BD2C2249B4D2200707679 /* Build configuration list for PBXNativeTarget "iosApp" */;
 			buildPhases = (
+				DA6DF2C6F86CB9DEA79CBD9A /* [CP] Check Pods Manifest.lock */,
 				1F9940652E859AC6004762AA /* Compile Kotlin Framework */,
 				CB1BD2AC249B4D2000707679 /* Sources */,
 				CB1BD2AD249B4D2000707679 /* Frameworks */,
 				CB1BD2AE249B4D2000707679 /* Resources */,
+				BE149D975943A0FD95ECE87C /* [CP] Embed Pods Frameworks */,
+				ADE5B312ADB63EB5C586723C /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -354,6 +373,62 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif [ \"YES\" = \"$OVERRIDE_KOTLIN_BUILD_IDE_SUPPORTED\" ]; then\n  echo \"Skipping Gradle build task invocation due to OVERRIDE_KOTLIN_BUILD_IDE_SUPPORTED environment variable set to \\\"YES\\\"\"\n  exit 0\nfi\ncd \"$SRCROOT/..\"\n./gradlew :compose-app:embedAndSignAppleFrameworkForXcode\n";
+		};
+		ADE5B312ADB63EB5C586723C /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-iosApp/Pods-iosApp-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-iosApp/Pods-iosApp-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-iosApp/Pods-iosApp-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BE149D975943A0FD95ECE87C /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-iosApp/Pods-iosApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-iosApp/Pods-iosApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-iosApp/Pods-iosApp-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DA6DF2C6F86CB9DEA79CBD9A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-iosApp-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -703,6 +778,7 @@
 		};
 		CB1BD2C3249B4D2200707679 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3C94962F962127DD23306F61 /* Pods-iosApp.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -781,6 +857,7 @@
 		};
 		CB1BD2C4249B4D2200707679 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C504C15CACEDF83EE0F3AF37 /* Pods-iosApp.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;

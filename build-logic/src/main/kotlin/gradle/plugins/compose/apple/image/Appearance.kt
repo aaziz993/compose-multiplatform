@@ -1,4 +1,4 @@
-package gradle.plugins.compose.apple.imageset
+package gradle.plugins.compose.apple.image
 
 import kotlinx.serialization.Serializable
 

@@ -1,4 +1,4 @@
-package gradle.plugins.compose.apple.imageset
+package gradle.plugins.compose.apple.image
 
 import kotlinx.serialization.Serializable
 
@@ -6,6 +6,6 @@ import kotlinx.serialization.Serializable
 public data class Image(
     val filename: String? = null,
     val size: String? = null,
-    val scale: String = "1x",
-    val appearances: Set<Appearance> = setOf(Appearance()),
+    val scale: String? = null,
+    val appearances: Set<Appearance>? = null,
 )

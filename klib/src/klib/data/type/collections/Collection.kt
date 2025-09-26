@@ -147,7 +147,7 @@ public fun <T : Any> T.plus(
     vararg others: T,
     sourceIteratorOrNull: Any.() -> Iterator<Map.Entry<Any?, Any?>>? = Any::iteratorOrNull,
     sourceTransform: Any.(key: Any?, value: Any?) -> Pair<Any?, Any?>? = { key, value -> key to value },
-    destinationSetter: T.(key: Any?, value: Any?) -> Unit = { key, value -> put(key, value) },
+    destinationSetter: T.(key: Any?, value: Any?) -> Unit = { key, value -> if (value != null) put(key, value) },
 ): T = listOf(this, *others).fold(toNewMutableCollection() as T) { acc, value ->
     value.map(acc, sourceIteratorOrNull, sourceTransform, destinationSetter)
 }
@@ -443,7 +443,7 @@ public fun <T : Any> T.deepPlus(
         }
     },
     destinationSetter: List<Pair<Any, Any?>>.(value: Any?) -> Unit = { value ->
-        last().first.put(last().second, value)
+        if (value != null) last().first.put(last().second, value)
     },
 ): T = listOf(this, *others).fold(toNewMutableCollection() as T) { acc, value ->
     value.deepMap(acc, sourceIteratorOrNull, sourceTransform, destinationGetter, destinationSetter)
@@ -655,7 +655,8 @@ public fun <T : Any> T.deepSubstitute(
                     { _, program -> program { path -> substitute(path, getter(path), tryDeepSubstitute) } },
                     cache,
                 )
-            } catch (e: NoSuchElementException) {
+            }
+            catch (e: NoSuchElementException) {
                 e.message
             }.also { value -> cache[pathPlain] = value }
         else value?.let(unknown)
@@ -688,10 +689,11 @@ public fun <T> T.printTree(
     val visits = mutableSetOf(this)
 
     DeepRecursiveFunction<PrintTreeArgs<T>, Unit> { (nodes, prefix) ->
-        nodes.children().forEachIndexed { index, node ->
+        val children = nodes.children()
+        children.forEachIndexed { index, node ->
             val currentNodes = nodes + node
 
-            val isLast = index == nodes.lastIndex
+            val isLast = index == children.lastIndex
             val connector = if (isLast) lastConnector else intermediateConnector
 
             appendable.append(prefix)

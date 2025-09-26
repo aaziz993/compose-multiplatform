@@ -7,13 +7,10 @@ script:
         install(CORS) {
           // Hosts
           anyHost() // corresponds to host = "*"
-          // If you want to limit schemes
-          allowHost("localhost", schemes = listOf("http", "https")) // example for real hosts
 
           // Allowed headers
-          allowHeaders { header ->
-              header in listOf("Content-Type", "Authorization")
-          }
+          allowHeader(HttpHeaders.ContentType)
+          allowHeader(HttpHeaders.Authorization)
 
           // Allowed methods
           allowMethod(HttpMethod.Get)

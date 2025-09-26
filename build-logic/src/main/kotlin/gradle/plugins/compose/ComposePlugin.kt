@@ -11,7 +11,7 @@ import gradle.api.project.projectScript
 import gradle.api.project.resources
 import gradle.api.project.sourceSetsToComposeResourcesDirs
 import gradle.plugins.compose.apple.Contents
-import gradle.plugins.compose.apple.imageset.Image
+import gradle.plugins.compose.apple.image.Image
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -156,7 +156,7 @@ public class ComposePlugin : Plugin<Project> {
             .takeIf(File::exists)?.readText()?.let(json::decodeFromString) ?: return
 
         contents.images().forEach { image ->
-            image.appearances.filter { (appearance, _) -> appearance == "luminosity" }.forEach { (_, value) ->
+            image.appearances?.filter { (appearance, _) -> appearance == "luminosity" }?.forEach { (_, value) ->
                 val themeIndex = IOS_IMAGE_APPEARANCE[value]!!
                 val theme = THEMES[themeIndex]
 
@@ -164,15 +164,16 @@ public class ComposePlugin : Plugin<Project> {
                     ?: return@forEach
 
                 val (width, height) = image.size!!.split("x").map(String::toInt)
+                val scale = image.scale ?: "1x"
 
                 val iconFile = iconSetDir.resolve(
                     image.filename
-                        ?: "app-icon-${if (width == height) width else image.size}${image.scale.emptyIf { scale -> scale == "1x" }}${if (themeIndex == 0) "" else " $themeIndex"}.png",
+                        ?: "app-icon-${if (width == height) width else image.size}${scale.emptyIf { scale -> scale == "1x" }}${if (themeIndex == 0) "" else " $themeIndex"}.png",
                 )
 
                 svgToPng(
                     svg, iconFile,
-                    width * image.scale.removeSuffix("x").toInt(),
+                    width * scale.removeSuffix("x").toInt(),
                 )
             }
         }
@@ -188,9 +189,7 @@ public class ComposePlugin : Plugin<Project> {
             val brandAssetDir = brandAssetsDir.resolve(asset.filename!!).takeIf(File::exists) ?: return@forEach
 
             adjustIconSet(composeResourcesDir, brandAssetDir) {
-                images?.map { image ->
-                    asset.plus(image)
-                }.orEmpty().toSet()
+                images?.map { image -> asset.plus(image) }.orEmpty().toSet()
             }
 
             val brandAssetContents: Contents = brandAssetDir.resolve("Contents.json")
@@ -199,9 +198,7 @@ public class ComposePlugin : Plugin<Project> {
             brandAssetContents.layers?.forEach { layer ->
                 val layerDir = brandAssetDir.resolve(layer.filename)
                 adjustIconSet(composeResourcesDir, layerDir.resolve("Content.imageset")) {
-                    images?.map { image ->
-                        asset.plus(image)
-                    }.orEmpty().toSet()
+                    images?.map { image -> asset.plus(image) }.orEmpty().toSet()
                 }
             }
         }
